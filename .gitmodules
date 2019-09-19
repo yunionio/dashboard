@@ -1,0 +1,6 @@
+[submodule "src"]
+	path = src
+	url = git@github.com:yunionio/dashboard-common.git
+[submodule "containers/Compute"]
+	path = containers/Compute
+	url = git@github.com:yunionio/dashboard-module-compute.git
