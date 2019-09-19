@@ -1,0 +1,183 @@
+<template>
+  <div>
+    <page-header title="主机" />
+    <page-body>
+      <page-list
+        :list="list"
+        :columns="columns"
+        :single-actions="singleActions" />
+    </page-body>
+  </div>
+</template>
+
+<script>
+import { sizestr } from '@/utils/utils'
+import SystemIcon from '@/sections/SystemIcon'
+import expectStatus from '@/constants/expectStatus'
+import { getBrandTableColumn, getStatusTableColumn } from '@/utils//common/tableColumn'
+
+export default {
+  data () {
+    return {
+      list: this.$list.createList(this, {
+        resource: 'servers',
+        getParams: this.getParams,
+        steadyStatus: Object.values(expectStatus.server).flat(),
+        filterOptions: {
+          name: {
+            label: '实例名称',
+            filter: true,
+            formatter: val => {
+              return `name.contains(${val})`
+            },
+          },
+          status: {
+            label: '实例状态',
+            dropdown: true,
+            multiple: true,
+            items: [
+              { label: '运行中', key: 'running' },
+              { label: '关机', key: 'ready' },
+              { label: '未知', key: 'unknown' },
+              { label: '调度失败', key: 'sched_fail' },
+            ],
+            filter: true,
+            formatter: val => {
+              return `status.in(${val.join(',')})`
+            },
+          },
+          brand: {
+            label: '平台',
+            dropdown: true,
+            multiple: true,
+            items: [
+              { label: 'OneCloud', key: 'OneCloud' },
+              { label: 'OpenStack', key: 'OpenStack' },
+            ],
+          },
+          os_type: {
+            label: '系统类型',
+            dropdown: true,
+            multiple: true,
+            items: [
+              { label: 'Windows', key: 'windows' },
+              { label: 'Linux', key: 'linux' },
+              { label: 'VMware', key: 'VMWare' },
+            ],
+            filter: true,
+            formatter: val => {
+              return `os_type.contains(${val})`
+            },
+          },
+        },
+      }),
+      columns: [
+        { field: 'name', title: '名称' },
+        {
+          field: 'ip',
+          title: 'IP',
+          slots: {
+            default: ({ row }) => {
+              let ret = []
+              if (row.eip) {
+                ret.push(<div>{ row.eip }<span class='ml-2 text-weak'>（弹性）</span></div>)
+              }
+              if (row.ips) {
+                const ips = row.ips.split(',').map(ip => {
+                  return <div>{ ip }<span class='ml-2 text-weak'>（内网）</span></div>
+                })
+                ret = ret.concat(ips)
+              }
+              return ret
+            },
+          },
+        },
+        {
+          field: 'instance_type',
+          title: '配置',
+          slots: {
+            default: ({ row }) => {
+              let ret = []
+              if (row.instance_type) {
+                ret.push(<div style={{ color: '#0A1F44' }}>{ row.instance_type }</div>)
+              }
+              const config = row.vcpu_count + 'C' + sizestr(row.vmem_size, 'M', 1024) + (row.disk ? sizestr(row.disk, 'M', 1024) : '')
+              return ret.concat(<div style={{ color: '#53627C' }}>{ config }</div>)
+            },
+          },
+        },
+        {
+          field: 'os_type',
+          title: '系统',
+          slots: {
+            default: ({ row }) => {
+              let name = (row.metadata && row.metadata.os_distribution) ? row.metadata.os_distribution : row.os_type
+              if (name.includes('Windows') || name.includes('windows')) {
+                name = 'Windows'
+              }
+              const version = (row.metadata && row.metadata.os_version) ? `${row.metadata.os_version}` : ''
+              const tooltip = version.includes(name) ? version : `${name} ${version}` // 去重
+              return [
+                <SystemIcon tooltip={ tooltip } name={ name } />,
+              ]
+            },
+          },
+        },
+        getStatusTableColumn({ statusModule: 'server' }),
+        {
+          field: 'host',
+          title: '宿主机',
+        },
+        getBrandTableColumn(),
+        {
+          field: 'auto_delete_at',
+          title: '自动清除时间',
+          formatter: ({ cellValue }) => {
+            return this.$moment(cellValue).format()
+          },
+        },
+      ],
+      singleActions: [
+        {
+          label: '清除',
+          action: (obj) => {
+            this.list.onManager('delete', {
+              id: obj.id,
+              managerArgs: {
+                params: {
+                  override_pending_delete: true,
+                },
+              },
+            })
+          },
+        },
+        {
+          label: '恢复',
+          action: (obj) => {
+            this.list.onManager('performAction', {
+              id: obj.id,
+              managerArgs: {
+                action: 'cancel-delete',
+              },
+            }).then(() => {
+              this.list.refresh()
+            })
+          },
+        },
+      ],
+    }
+  },
+  created () {
+    this.list.fetchData()
+  },
+  methods: {
+    getParams () {
+      return {
+        details: true,
+        with_meta: true,
+        pending_delete: true,
+      }
+    },
+  },
+}
+</script>
