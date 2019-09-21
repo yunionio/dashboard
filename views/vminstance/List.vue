@@ -222,7 +222,7 @@ export default {
                       hypervisor: obj.hypervisor,
                       os_type: obj.os_type,
                     }
-                    const href = `https://office.yunion.io/web-console?${qs.stringify(query)}`
+                    const href = `https://console.yunion.cn/web-console?${qs.stringify(query)}`
                     open(href)
                   }
                 })
@@ -251,7 +251,7 @@ export default {
                         hypervisor: obj.hypervisor,
                         os_type: obj.os_type,
                       }
-                      const href = `https://office.yunion.io/web-console?${qs.stringify(query)}`
+                      const href = `https://console.yunion.cn/web-console?${qs.stringify(query)}`
                       open(href)
                     })
                   },
