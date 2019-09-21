@@ -21,10 +21,44 @@ export default {
         resource: 'images',
         apiVersion: 'v1',
         getParams: this.getParams,
+        filterOptions: {
+          name: {
+            label: '镜像名称',
+            filter: true,
+            formatter: val => {
+              return `name.contains(${val})`
+            },
+          },
+          disk_format: {
+            label: '镜像格式',
+            dropdown: true,
+            items: [
+              { label: 'VMDK', key: 'vmdk' },
+              { label: 'RAW', key: 'raw' },
+              { label: 'VHD', key: 'vhd' },
+              { label: 'QCOW2', key: 'qcow2' },
+              { label: 'ISO', key: 'iso' },
+            ],
+          },
+          is_standard: {
+            label: '镜像类型',
+            dropdown: true,
+            items: [
+              { label: '标准镜像', key: true },
+              { label: '非标准镜像', key: false },
+            ],
+          },
+        },
       }),
       columns: [
         { field: 'name', title: '名称' },
-        { field: 'disk_format', title: '格式' },
+        {
+          field: 'disk_format',
+          title: '格式',
+          formatter: ({ cellValue }) => {
+            return cellValue && cellValue.toUpperCase()
+          },
+        },
         {
           field: 'os_type',
           title: '系统',
@@ -47,6 +81,14 @@ export default {
           title: '镜像大小',
           formatter: ({ cellValue }) => {
             return sizestr(cellValue, 'B', 1024)
+          },
+        },
+        {
+          field: 'is_standard',
+          title: '镜像类型',
+          formatter: ({ cellValue }) => {
+            if (cellValue) return '标准镜像'
+            return '非标准镜像'
           },
         },
         getStatusTableColumn({ statusModule: 'image' }),
