@@ -11,7 +11,6 @@
 </template>
 
 <script>
-import qs from 'qs'
 import { Manager } from '@/utils/manager'
 import { sizestr } from '@/utils/utils'
 import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn } from '@/utils//common/tableColumn'
@@ -165,86 +164,6 @@ export default {
         },
       ],
       singleActions: [
-        {
-          label: '远程控制',
-          actions: obj => {
-            let ret = []
-            ret.push({
-              label: 'VNC 远程终端',
-              action: () => {
-                const isValidURL = str => {
-                  let regex = /(\w+):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!-/]))?/
-                  if (!regex.test(str)) {
-                    return false
-                  } else {
-                    return true
-                  }
-                }
-                this.webconsoleManager.performAction({
-                  id: 'server',
-                  action: obj.id,
-                }).then(({ data }) => {
-                  if (isValidURL(data.connect_params)) {
-                    open(data.connect_params)
-                  } else {
-                    const connectParams = qs.parse(data.connect_params)
-                    const query = {
-                      ...connectParams,
-                      session: data.session,
-                      hypervisor: obj.hypervisor,
-                      os_type: obj.os_type,
-                    }
-                    const href = `https://office.yunion.io/web-console?${qs.stringify(query)}`
-                    open(href)
-                  }
-                })
-              },
-              meta: () => {
-                return {
-                  validate: true,
-                }
-              },
-            })
-            const mapIpActions = (ipArr, type) => {
-              if (!['IP SSH', 'EIP SSH'].includes(type)) throw Error('ssh 类型必须为 IP SSH,EIP SSH 中的一种')
-              const options = []
-              ipArr.forEach(v => {
-                options.push({
-                  label: `SSH ${v}`,
-                  action: () => {
-                    this.webconsoleManager.performAction({
-                      id: 'ssh',
-                      action: v,
-                    }).then(({ data }) => {
-                      const connectParams = qs.parse(data.connect_params)
-                      const query = {
-                        ...connectParams,
-                        session: data.session,
-                        hypervisor: obj.hypervisor,
-                        os_type: obj.os_type,
-                      }
-                      const href = `https://office.yunion.io/web-console?${qs.stringify(query)}`
-                      open(href)
-                    })
-                  },
-                  meta: () => {
-                    return {
-                      tooltip: obj.os_type === 'Windows' ? 'Windows 不支持 SSH 连接' : null,
-                      validate: obj.os_type !== 'Windows',
-                    }
-                  },
-                })
-              })
-              return options
-            }
-            let eips = (obj.eip || '').split(',').filter(item => !!item)
-            let ips = (obj.ips || '').split(',').filter(item => !!item)
-            eips = eips.length ? mapIpActions(eips, 'EIP SSH') : []
-            ips = ips.length ? mapIpActions(ips, 'IP SSH') : []
-            ret = ret.concat(eips).concat(ips)
-            return ret
-          },
-        },
         {
           label: '更多',
           actions: (obj) => {
