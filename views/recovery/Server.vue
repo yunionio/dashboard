@@ -14,7 +14,7 @@
 import { sizestr } from '@/utils/utils'
 import SystemIcon from '@/sections/SystemIcon'
 import expectStatus from '@/constants/expectStatus'
-import { getBrandTableColumn, getStatusTableColumn } from '@/utils//common/tableColumn'
+import { getBrandTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   data () {

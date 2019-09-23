@@ -11,7 +11,7 @@
 
 <script>
 import { sizestr } from '@/utils/utils'
-import { getStatusTableColumn } from '@/utils//common/tableColumn'
+import { getStatusTableColumn } from '@/utils/common/tableColumn'
 import SystemIcon from '@/sections/SystemIcon'
 
 export default {

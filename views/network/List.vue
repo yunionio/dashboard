@@ -16,7 +16,7 @@ import {
   getRegionTableColumn,
   getBrandTableColumn,
   getStatusTableColumn,
-} from '@/utils//common/tableColumn'
+} from '@/utils/common/tableColumn'
 
 export default {
   name: 'NetworkList',
