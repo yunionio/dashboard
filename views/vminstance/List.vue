@@ -8,21 +8,30 @@
         :group-actions="groupActions"
         :single-actions="singleActions" />
     </page-body>
+    <update-dialog :visible.sync="dialog.visible" :selected-items="dialog.selectedItems" :list="list" :columns="columns" />
   </div>
 </template>
 
 <script>
 import qs from 'qs'
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
+import UpdateDialog from './components/UpdateDialog'
 import { Manager } from '@/utils/manager'
 import { sizestr } from '@/utils/utils'
-import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getBrandTableColumn } from '@/utils//common/tableColumn'
+import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getBrandTableColumn } from '@/utils/common/tableColumn'
 import SystemIcon from '@/sections/SystemIcon'
 import expectStatus from '@/constants/expectStatus'
 
 export default {
+  components: {
+    UpdateDialog,
+  },
   data () {
     return {
+      dialog: {
+        visible: false,
+        selectedItems: [],
+      },
       list: this.$list.createList(this, {
         resource: 'servers',
         getParams: this.getParams,
@@ -76,7 +85,23 @@ export default {
         },
       }),
       columns: [
-        { field: 'name', title: '名称' },
+        {
+          field: 'name',
+          title: '名称',
+          slots: {
+            default: ({ row }) => {
+              const ret = [<span>{ row.name }</span>]
+              if (row.disable_delete) {
+                ret.push(
+                  <a-tooltip title='删除保护，如需解除，请点击【修改属性】'>
+                    <a-icon class='ml-1' type='lock' theme='twoTone' twoToneColor='#52c41a' />
+                  </a-tooltip>
+                )
+              }
+              return ret
+            },
+          },
+        },
         {
           field: 'ip',
           title: 'IP',
@@ -329,6 +354,18 @@ export default {
                 ],
               },
               {
+                label: '实例设置',
+                submenus: [
+                  {
+                    label: '修改属性',
+                    action: () => {
+                      this.dialog.visible = true
+                      this.dialog.selectedItems = [obj]
+                    },
+                  },
+                ],
+              },
+              {
                 label: '删除',
                 submenus: [
                   {
@@ -341,6 +378,7 @@ export default {
                     meta: () => {
                       return {
                         validate: obj.can_delete,
+                        tooltip: obj.disable_delete ? '请点击修改属性禁用删除保护后重试' : null,
                       }
                     },
                   },
