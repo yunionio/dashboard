@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { getRegionTableColumn, getStatusTableColumn, getBrandTableColumn, getEnabledTableColumn } from '@/utils//common/tableColumn'
+import { getRegionTableColumn, getStatusTableColumn, getBrandTableColumn, getEnabledTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   name: 'HostList',

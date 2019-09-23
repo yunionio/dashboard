@@ -13,7 +13,7 @@
 <script>
 import { Manager } from '@/utils/manager'
 import { sizestr } from '@/utils/utils'
-import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn } from '@/utils//common/tableColumn'
+import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   data () {
