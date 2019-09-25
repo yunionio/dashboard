@@ -70,3 +70,15 @@ export const getEnabledTableColumn = ({ field = 'enabled', title = '启用' } = 
     statusModule: 'enabled',
   })
 }
+
+export const getPublicTableColumn = ({ field = 'is_public', title = '是否共享' } = {}) => {
+  return {
+    field,
+    title,
+    slots: {
+      default: ({ row }) => {
+        return row.is_public ? '共享' : '私有'
+      },
+    },
+  }
+}

@@ -1,49 +1,7 @@
-const BRAND_ICON_OPTIONS = {
-  VMware: {
-    label: 'VMware',
-    value: 'vmware',
-  },
-  OneCloud: {
-    label: 'OneCloud',
-    value: 'onecloud',
-  },
-  Aliyun: {
-    label: '阿里云',
-    value: 'aliyun',
-  },
-  Qcloud: {
-    label: '腾讯云',
-    value: 'qcloud',
-  },
-  Azure: {
-    label: '微软云',
-    value: 'azure',
-  },
-  Aws: {
-    label: 'Aws',
-    value: 'aws',
-  },
-  Huawei: {
-    label: '华为云',
-    value: 'huawei',
-  },
-  OpenStack: {
-    label: 'OpenStack',
-    value: 'openstack',
-  },
-  Ucloud: {
-    label: 'Ucloud',
-    value: 'ucloud',
-  },
-  ZStack: {
-    label: 'ZStack',
-    value: 'zstack',
-  },
-  DStack: {
-    label: 'DStack',
-    value: 'dstack',
-  },
-}
+import { TypeClouds } from '@/utils/common/hypervisor'
+
+const typeclouds = new TypeClouds()
+const brandMap = typeclouds.getBrand()
 
 export default {
   name: 'BrandIcon',
@@ -54,7 +12,8 @@ export default {
     },
   },
   render (h) {
-    const option = BRAND_ICON_OPTIONS[this.name]
+    const option = brandMap[this.name]
+    const name = option.key.toLowerCase()
     const small = ['DStack', 'OpenStack']
     let width = '20px'
     let height = '20px'
@@ -65,7 +24,7 @@ export default {
     return (
       <a-tooltip title={ option.label }>
         <span>
-          <icon name={ option.value } width={ width } height={ height } />
+          <icon name={ name } width={ width } height={ height } />
         </span>
       </a-tooltip>
     )

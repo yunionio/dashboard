@@ -1,5 +1,13 @@
 {
   "status": {
+    "enabled": {
+      "true": "true",
+      "false": "false"
+    },
+    "host_status": {
+      "online": "online",
+      "offline": "offline"
+    },
     "server": {
       "init": "init",
       "unknown": "unknown",
@@ -88,6 +96,80 @@
       "detach_disk": "detach_disk",
       "disk_reset": "disk_reset",
       "disk_reset_failed": "disk_reset_failed"
+    },
+    "network": {
+      "init": "init",
+      "pending": "pending",
+      "available": "available",
+      "failed": "failed",
+      "start_delete": "start_delete",
+      "deleting": "deleting",
+      "deleted": "deleted",
+      "delete_failed": "delete_failed",
+      "unknown": "unknown",
+      "unavailable": "unavailable"
+    },
+    "host": {
+      "ready": "ready",
+      "start_start": "start_start",
+      "starting": "starting",
+      "start_fail": "start_fail",
+      "running": "running",
+      "start_stop": "start_stop",
+      "stoping": "stoping",
+      "stop_fail": "stop_fail",
+      "start_delete": "start_delete",
+      "delete_fail": "delete_fail",
+      "deleting": "deleting",
+      "syncing": "syncing",
+      "sync_config": "sync_config",
+      "sync_fail": "sync_fail",
+      "online": "online",
+      "offline": "offline",
+      "unknown": "unknown",
+      "start_convert": "start_convert",
+      "start_maintain": "start_maintain",
+      "maintaining": "maintaining",
+      "maintain_fail": "maintain_fail"
+    },
+    "image": {
+      "init": "init",
+      "saving": "saving",
+      "caching": "caching",
+      "deleting": "deleting",
+      "active": "active",
+      "deleted": "deleted",
+      "queued": "queued",
+      "killed": "killed",
+      "unknown": "unknown",
+      "pending_delete": "pending_delete",
+      "converting": "converting",
+      "deactivated": "deactivated"
+    },
+    "cloudaccount": {
+      "init": "init",
+      "connected": "connected",
+      "disconnected": "disconnected",
+      "start_sync": "start_sync",
+      "syncing": "syncing",
+      "unknown": "unknown",
+      "start_delete": "start_delete",
+      "deleting": "deleting",
+      "delete_failed": "delete_failed"
+    },
+    "cloudaccountHealthStatus": {
+      "normal": "normal",
+      "insufficient": "insufficient",
+      "suspended": "suspended",
+      "arrears": "arrears",
+      "unknown": "unknown",
+      "no_permission": "no_permission"
+    },
+    "cloudaccountSyncStatus": {
+      "idle": "idle",
+      "queued": "queued",
+      "syncing": "syncing",
+      "queuing": "queuing"
     }
   },
   "skuCategoryOptions": {
