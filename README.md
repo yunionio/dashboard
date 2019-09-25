@@ -1,13 +1,13 @@
 # onecloud
 
-## Clone
-```
-git clone --recurse-submodules --depth 2 git@github.com:yunionio/dashboard.git
-```
-
 ## Project setup
 ```
 yarn install
+```
+
+## Init Subs
+```
+yarn init:subtree
 ```
 
 ### Compiles and hot-reloads for development
