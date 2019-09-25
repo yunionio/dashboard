@@ -5,7 +5,7 @@
 yarn install
 ```
 
-## Init Subs
+## Init subtree
 ```
 yarn init:subtree
 ```
