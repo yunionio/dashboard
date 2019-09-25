@@ -145,6 +145,31 @@
       "pending_delete": "待删除",
       "converting": "格式转换中",
       "deactivated": "正在删除"
+    },
+    "cloudaccount": {
+      "init": "初始化",
+      "connected": "已连接",
+      "disconnected": "连接断开",
+      "start_sync": "开始同步",
+      "syncing": "正在同步",
+      "unknown": "未知",
+      "start_delete": "开始删除",
+      "deleting": "正在删除",
+      "delete_failed": "删除失败"
+    },
+    "cloudaccountHealthStatus": {
+      "normal": "正常",
+      "insufficient": "余额不足",
+      "suspended": "冻结",
+      "arrears": "欠费",
+      "unknown": "未知状态",
+      "no_permission": "无账单权"
+    },
+    "cloudaccountSyncStatus": {
+      "idle": "同步完成",
+      "queued": "开始同步",
+      "syncing": "同步中",
+      "queuing": "准备同步"
     }
   },
   "skuCategoryOptions": {

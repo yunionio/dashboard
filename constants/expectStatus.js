@@ -28,4 +28,17 @@ export default {
     success: ['online'],
     info: ['offline'],
   },
+  cloudaccount: {
+    success: ['connected'],
+    danger: ['disconnected'],
+    info: ['unknown'],
+  },
+  cloudaccountHealthStatus: {
+    success: ['normal'],
+    danger: ['insufficient', 'suspended', 'arrears'],
+    info: ['unknown', 'no_permission'],
+  },
+  cloudaccountSyncStatus: {
+    success: ['idle'],
+  },
 }

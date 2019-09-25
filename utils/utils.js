@@ -1,3 +1,5 @@
+import * as R from 'ramda'
+
 export const UNITS = ['B', 'K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y']
 
 export function camel2Words (camel) {
@@ -129,3 +131,8 @@ export const arrayToObj = (arr, itemKey = 'id') => {
   })
   return obj
 }
+
+export const changeToArr = R.unless(
+  R.is(Array),
+  R.of
+)
