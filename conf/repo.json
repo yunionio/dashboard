@@ -8,10 +8,5 @@
     "label": "主机模块",
     "dir": "containers/Compute",
     "repo": "git@github.com:yunionio/dashboard-module-compute.git"
-  },
-  "cloudenv": {
-    "label": "多云管理模块",
-    "dir": "containers/Cloudenv",
-    "repo": "git@github.com:yunionio/dashboard-module-cloudenv.git"
   }
 }
