@@ -10,7 +10,6 @@
       <search-box v-if="filterOptions" :options="filterOptions" :value="filter" @input="handleFilterChange" />
     </page-toolbar>
     <vxe-grid
-      border
       highlight-hover-row
       :data="data"
       :columns="tableColumns"
