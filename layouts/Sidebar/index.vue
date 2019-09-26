@@ -51,9 +51,7 @@ export default {
               if (item.menus) {
                 l2MenuVisible = true
               }
-              if (this.l2MenuVisible !== l2MenuVisible) {
-                this.$emit('update:l2MenuVisible', l2MenuVisible)
-              }
+              this.$emit('update:l2MenuVisible', l2MenuVisible)
               break
             } else {
               this.currentMenu = {}

@@ -115,7 +115,7 @@ export default {
   z-index: 4;
   overflow: hidden;
   border-right: 1px solid #e6e9f0;
-  transition: all .1s ease;
+  transition: all .15s ease;
   &:hover {
     width: 224px;
   }

@@ -56,6 +56,25 @@ function getModulesRouteConfig () {
   r.keys().forEach(dir => {
     ret = ret.concat(r(dir).default)
   })
+  for (let i = 0, len = ret.length; i < len; i++) {
+    let item = ret[i]
+    item.meta.group = i
+    if (item.menus) {
+      for (let j = 0; j < item.menus.length; j++) {
+        let menu = item.menus[j]
+        if (menu.submenus) {
+          for (let m = 0; m < menu.submenus.length; m++) {
+            let subitem = menu.submenus[m]
+            subitem.meta.group = i
+          }
+        } else {
+          menu.meta.group = i
+        }
+      }
+    } else {
+      item.menu.meta.group = i
+    }
+  }
   return ret
 }
 
