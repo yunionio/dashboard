@@ -229,7 +229,6 @@ export default {
       this.setSku(row)
     },
     skuTypeChange () {
-      console.log(this.skuResults, 'this.skuResults')
       if (this.skuResults && this.skuResults.length) {
         this.setSku(this.skuResults[0])
       }
