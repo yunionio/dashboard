@@ -20,9 +20,10 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: yarn install and build
       run: |
-        git submodule sync --recursive
-        git submodule update --init --recursive
+        git config --global user.name "FIRST_NAME LAST_NAME"
+        git config --global user.email "MY_NAME@example.com"
         yarn install
+        yarn init:subtree:noconfirm
         yarn run build
         #yarn run test
       env:

@@ -1,6 +1,11 @@
 #!/usr/bin/env node
+const minimist = require('minimist')
 const inquirer = require('inquirer')
 const execa = require('execa')
+const {
+  logWithSpinner,
+  stopSpinner,
+} = require('@vue/cli-shared-utils')
 
 const REPO_OPTIONS = require('../conf/repo.json')
 
@@ -36,14 +41,29 @@ async function promptRepo (answers) {
     }
   })
   const repos = await inquirer.prompt(questions)
+  initRepos(repos)
+}
+
+async function initRepos (repos) {
+  logWithSpinner(`🗃`, `开始初始化子模块...`)
   for (let key in repos) {
     await execa('git', ['remote', 'add', key, repos[key]])
     await execa('git', ['subtree', 'add', `--prefix=${REPO_OPTIONS[key].dir}`, key, 'master'])
   }
+  stopSpinner()
 }
 
 function setup () {
-  promptSelectSubs()
+  const args = minimist(process.argv.slice(2))
+  if (args.noconfirm) {
+    const repos = {}
+    for (let key in REPO_OPTIONS) {
+      repos[key] = REPO_OPTIONS[key].repo
+    }
+    initRepos(repos)
+  } else {
+    promptSelectSubs()
+  }
 }
 
 setup()
