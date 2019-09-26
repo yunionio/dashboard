@@ -3,8 +3,8 @@
     <a-radio-group v-model="skuType" @change="skuTypeChange">
       <a-radio-button
         v-for="item of skuInfo.categoryOptions"
-        :value="item.value"
-        :key="item.value"
+        :value="item.key"
+        :key="item.key"
         :disabled="item.disabled">{{ item.label }}</a-radio-button>
     </a-radio-group>
     <vxe-grid
@@ -139,7 +139,7 @@ export default {
         }
         categoryOptions[item] = {
           label: this.getI18NValue(`skuCategoryOptions.${type}.${item}`, item),
-          value: item,
+          key: item,
           disabled: true,
         }
       })
@@ -229,7 +229,8 @@ export default {
       this.setSku(row)
     },
     skuTypeChange () {
-      if (this.skuList && this.skuList.length) {
+      console.log(this.skuResults, 'this.skuResults')
+      if (this.skuResults && this.skuResults.length) {
         this.setSku(this.skuResults[0])
       }
     },
