@@ -2,16 +2,16 @@
   "common": {
     "label": "公共模块",
     "dir": "src",
-    "repo": "git@github.com:yunionio/dashboard-common.git"
+    "repo": "https://github.com/yunionio/dashboard-common.git"
   },
   "compute": {
     "label": "主机模块",
     "dir": "containers/Compute",
-    "repo": "git@github.com:yunionio/dashboard-module-compute.git"
+    "repo": "https://github.com/yunionio/dashboard-module-compute.git"
   },
   "cloudenv": {
     "label": "多云管理模块",
     "dir": "containers/Cloudenv",
-    "repo": "git@github.com:yunionio/dashboard-module-cloudenv.git"
+    "repo": "https://github.com/yunionio/dashboard-module-cloudenv.git"
   }
 }
