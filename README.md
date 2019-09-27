@@ -5,11 +5,6 @@
 yarn install
 ```
 
-## Init subtree
-```
-yarn init:subtree
-```
-
 ### Compiles and hot-reloads for development
 ```
 yarn run serve
