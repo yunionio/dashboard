@@ -64,7 +64,6 @@ export default {
       this.$bus.$emit('updateFi', { specs: this.specs }) // 广播事件
       this.specOpts = this.genSpecOpts(this.specs)
       if (this.specOpts && this.specOpts.length) { // 默认选择下拉第一个
-        console.log(_.get(this.specOpts, '[0]', { key: '', label: '' }), 123)
         this.form.setFieldsValue({
           spec: _.get(this.specOpts, '[0]', { key: '', label: '' }),
         })
