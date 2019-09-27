@@ -1,0 +1,218 @@
+<template>
+  <div class="wrap">
+    <a-card>
+      <div class="wrap-inner">
+        <h5>管理员已开启登录保护，请按照以下步骤开启虚拟MFA</h5>
+        <div class="setup-wrap-top">
+          <div class="setup-tip">
+            <div>
+              <i class="tip-icon fa fa-hand-o-right" />
+              <span class="tip-text">第1步 获取Google Authenticator</span>
+            </div>
+            <div class="qr-wrap">
+              <div>
+                <div class="qr-code-bg-wrap" :style="{ backgroundImage: `url(${androidAppQr})` }">
+                  <div v-if="!androidQrShow" @click="showQrCode('androidQrShow')">点击获取二维码</div>
+                </div>
+                <p>安卓</p>
+              </div>
+              <div>
+                <div class="qr-code-bg-wrap" :style="{ backgroundImage: `url(${iosAppQr})` }">
+                  <div v-if="!iosQrShow" @click="showQrCode('iosQrShow')">点击获取二维码</div>
+                </div>
+                <p>IOS</p>
+              </div>
+            </div>
+            <div class="qr-tip">扫相应二维码获取应用，或打开应用商店搜索Google Authenticator下载应用</div>
+          </div>
+          <div class="setup-tip">
+            <div>
+              <i class="tip-icon fa fa-hand-o-right" />
+              <span class="tip-text">第2步 获取安全码</span>
+            </div>
+            <div class="qr-wrap">
+              <div>
+                <img :src="secretQr" />
+              </div>
+            </div>
+            <div class="qr-tip">打开Google Authenticator App，扫描二维码，获取安全码</div>
+          </div>
+        </div>
+        <div class="setup-wrap-bottom">
+          <div class="setup-tip">
+            <i class="tip-icon fa fa-hand-o-right" />
+            <span class="tip-text">第3步 输入安全码</span>
+          </div>
+          <div class="code-wrap">
+            <security-code ref="security-code" v-model="securityCode" :error="error" @completed="onValid" @clear="onClear" blurOnComplete />
+          </div>
+          <div class="status-tip">
+            <div v-if="error" class="error">安全码错误，请重新输入</div>
+            <div v-if="loading" class="loading"><i class="fa fa-refresh fa-spin" />正在验证</div>
+          </div>
+        </div>
+      </div>
+    </a-card>
+  </div>
+</template>
+
+<script>
+import { mapGetters } from 'vuex'
+import { STORE_SECRET_PERFIX_KEY } from './constants'
+import storage from '@/utils/storage'
+
+export default {
+  name: 'BindSecret',
+  data () {
+    return {
+      androidAppQr: require('./assets/google-authenticator-android-qr.png'),
+      iosAppQr: require('./assets/google-authenticator-ios-qr.png'),
+      securityCode: '',
+      error: false,
+      loading: false,
+      androidQrShow: false,
+      iosQrShow: false,
+    }
+  },
+  computed: {
+    ...mapGetters(['auth']),
+    secretQr () {
+      return `data:image/png;base64,${storage.get(`${STORE_SECRET_PERFIX_KEY}${this.auth.inputUsername}`)}`
+    },
+  },
+  watch: {
+    securityCode (val) {
+      if (val.length < 6) {
+        this.error = false
+      }
+    },
+  },
+  mounted () {
+    this.$refs['security-code'].focusInput(1)
+  },
+  methods: {
+    async onValid () {
+      this.loading = true
+      try {
+        await this.$store.dispatch('auth/validPasscode', {
+          passcode: this.securityCode,
+        })
+        storage.remove(`${STORE_SECRET_PERFIX_KEY}${this.auth.inputUsername}`)
+        await this.$store.dispatch('auth/getInfo')
+        this.loading = false
+        this.$router.push('/')
+      } catch (error) {
+        this.error = true
+        this.loading = false
+      }
+    },
+    onClear () {
+      this.error = false
+      this.$refs['security-code'].focusInput(1)
+    },
+    showQrCode (key) {
+      this[key] = true
+    },
+  },
+}
+</script>
+
+<style lang="scss" scoped>
+.wrap {
+  width: 710px;
+  height: 660px;
+  position: relative;
+}
+.wrap-inner {
+  padding: 0 70px;
+}
+.setup-wrap-top {
+  display: flex;
+  border-bottom: 1px solid #EDF1F7;
+  .setup-tip {
+    flex: 1;
+    padding: 20px 0;
+    &:first-child {
+      border-right: 1px solid #EDF1F7;
+      padding-right: 20px;
+    }
+    &:last-child {
+      padding-left: 30px;
+    }
+  }
+}
+.setup-tip {
+  .tip-icon {
+    color: #4da1ff;
+  }
+  .tip-text {
+    font-size: 14px;
+  }
+}
+
+.qr-wrap {
+  margin: 15px 0;
+  display: flex;
+  > div {
+    height: 114px;
+    &:first-child {
+      margin-right: 10px;
+    }
+    > img {
+      width: 100px;
+    }
+    .qr-code-bg-wrap {
+      width: 100px;
+      height: 100px;
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
+      > div {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(255, 255, 255, .9);
+        color: #666;
+        font-size: 12px;
+        cursor: pointer;
+      }
+    }
+    > p {
+      color: #666;
+      font-size: 12px;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+  }
+}
+
+.qr-tip {
+  color: #A6AEBC;
+  font-size: 12px;
+}
+
+.setup-wrap-bottom {
+  margin-top: 15px;
+}
+
+.code-wrap {
+  margin-top: 15px;
+}
+
+.status-tip {
+  font-size: 12px;
+  margin-top: 15px;
+  text-align: center;
+  .error {
+    color: #DD2727;
+  }
+  .loading {
+    i {
+      margin-right: 5px;
+    }
+  }
+}
+</style>
