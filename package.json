@@ -6,9 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "test:unit": "vue-cli-service test:unit",
-    "init:subtree": "node ./scripts/init-subtree",
-    "init:subtree:noconfirm": "node ./scripts/init-subtree --noconfirm"
+    "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
     "ant-design-vue": "^1.3.16",
