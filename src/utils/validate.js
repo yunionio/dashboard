@@ -30,6 +30,11 @@ export const REGEXP = {
     regexp: /^([a-zA-Z0-9_]{1}[a-zA-Z0-9_-]{0,62}){1}(\.[a-zA-Z0-9_]{1}[a-zA-Z0-9_-]{0,62})*[._]?$/,
     message: i18n.t('validator.domain'),
   },
+  /* eslint-disable no-useless-escape */
+  url: {
+    regexp: /^(https?):\/\/(-\.)?([^\s\/?\.#-]+\.?)+(\/[^\s]*)?$/i,
+    message: i18n.t('validator.url'),
+  },
 }
 
 /**

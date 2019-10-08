@@ -1,7 +1,6 @@
-import { TypeClouds } from '@/utils/common/hypervisor'
+import { typeClouds } from '@/utils/common/hypervisor'
 
-const typeclouds = new TypeClouds()
-const brandMap = typeclouds.getBrand()
+const brandMap = typeClouds.getBrand()
 
 export default {
   name: 'BrandIcon',
