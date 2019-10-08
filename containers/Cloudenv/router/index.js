@@ -2,6 +2,7 @@ import Layout from '@Compute/components/Layout'
 import CloudaccountList from '@Cloudenv/views/cloudaccount/List'
 
 export default {
+  index: 7,
   meta: {
     label: '多云环境',
     icon: 'onecloud',

@@ -1,13 +1,8 @@
 <template>
-  <div>
-    <page-header title="IP子网" />
-    <page-body>
-      <page-list
-        :list="list"
-        :columns="columns"
-        :group-actions="groupActions" />
-    </page-body>
-  </div>
+  <page-list
+    :list="list"
+    :columns="columns"
+    :group-actions="groupActions" />
 </template>
 
 <script>

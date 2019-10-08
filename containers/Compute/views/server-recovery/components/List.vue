@@ -1,13 +1,8 @@
 <template>
-  <div>
-    <page-header title="主机" />
-    <page-body>
-      <page-list
-        :list="list"
-        :columns="columns"
-        :single-actions="singleActions" />
-    </page-body>
-  </div>
+  <page-list
+    :list="list"
+    :columns="columns"
+    :single-actions="singleActions" />
 </template>
 
 <script>
@@ -17,6 +12,7 @@ import expectStatus from '@/constants/expectStatus'
 import { getBrandTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
 
 export default {
+  name: 'ServerRecoveryList',
   data () {
     return {
       list: this.$list.createList(this, {
