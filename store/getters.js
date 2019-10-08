@@ -3,5 +3,8 @@ export default {
   userInfo: state => state.auth.info,
   windows: state => state.window.windows,
   common: state => state.common,
-  $scope: (state, getters) => getters['auth/$scope'],
+  scope: (state, getters) => getters['auth/scope'],
+  isAdminMode: (state, getters) => getters['auth/isAdminMode'],
+  isDomainMode: (state, getters) => getters['auth/isDomainMode'],
+  l3PermissionEnable: (state, getters) => getters['auth/l3PermissionEnable'],
 }
