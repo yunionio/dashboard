@@ -1,5 +1,6 @@
 import Layout from '@Compute/components/Layout'
-import CloudaccountList from '@Cloudenv/views/cloudaccount/List'
+import Cloudaccount from '@Cloudenv/views/cloudaccount'
+import CloudaccountCreate from '@Cloudenv/views/cloudaccount/create'
 
 export default {
   index: 7,
@@ -21,9 +22,14 @@ export default {
           component: Layout,
           children: [
             {
-              name: 'CloudaccountList',
+              name: 'Cloudaccount',
               path: '',
-              component: CloudaccountList,
+              component: Cloudaccount,
+            },
+            {
+              name: 'CloudaccountCreate',
+              path: 'create',
+              component: CloudaccountCreate,
             },
           ],
         },
