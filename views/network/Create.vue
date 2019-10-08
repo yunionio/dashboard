@@ -245,16 +245,16 @@ export default {
       },
       params: {
         cloudregion: {
-          scope: this.$store.getters.$scope,
+          scope: this.$store.getters.scope,
           limit: 0,
           is_on_premise: true,
         },
         vpc: {
-          scope: this.$store.getters.$scope,
+          scope: this.$store.getters.scope,
           limit: 0,
         },
         wire: {
-          scope: this.$store.getters.$scope,
+          scope: this.$store.getters.scope,
         },
       },
       serverTypeOpts: [

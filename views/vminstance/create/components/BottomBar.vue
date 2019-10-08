@@ -1,49 +1,49 @@
 <template>
   <page-footer>
-    <div class="create-server-result-wrap d-flex">
-      <div class="content d-flex">
+    <template class="content" v-slot:left>
+      <div
+        v-for="(tip, idx) of tips"
+        :key="idx"
+        class="d-flex flex-column justify-content-center flex-grow-1">
         <div
-          v-for="(tip, idx) of tips"
-          :key="idx"
-          class="d-flex flex-column justify-content-center flex-grow-1">
-          <div
-            v-for="obj of tip"
-            :key="obj.label"
-            class="d-flex align-items-center">
-            <span class="label" :class="obj.labelClass">{{ obj.label }}：</span>
-            <template v-if="obj.value">
-              <span class="value text-truncate" :class="obj.valueClass">{{ obj.value }}</span>
-            </template>
-            <template v-else>
-              <span class="value placeholder text-truncate" :class="obj.valueClass">------</span>
-            </template>
-          </div>
+          v-for="obj of tip"
+          :key="obj.label"
+          class="d-flex align-items-center">
+          <span class="label" :class="obj.labelClass">{{ obj.label }}：</span>
+          <template v-if="obj.value">
+            <span class="value text-truncate" :class="obj.valueClass">{{ obj.value }}</span>
+          </template>
+          <template v-else>
+            <span class="value placeholder text-truncate" :class="obj.valueClass">------</span>
+          </template>
         </div>
-        <!-- <div>费用估算</div> -->
       </div>
+      <!-- <div>费用估算</div> -->
+    </template>
+    <template v-slot:right>
       <div class="btns-wrapper d-flex align-items-center">
         <a-button :loading="loading" type="primary" html-type="submit" class="ml-3">确认</a-button>
       </div>
-      <transition name="errors-slide-fade">
-      <div v-if="errors.length" class="errors-wrap" v-clickoutside="closeError">
-        <div class="title d-flex align-items-center">
-          <i class="el-icon-error mr-2" />
-          <span>新建主机失败</span>
+      <transition>
+        <div v-if="errors.length" class="errors-wrap" v-clickoutside="closeError">
+          <div class="title d-flex align-items-center">
+            <i class="el-icon-error mr-2" />
+            <span>新建主机失败</span>
+          </div>
+          <div class="divider" />
+          <ul class="list">
+            <li
+              v-for="(item, idx) of errors"
+              :key="idx">
+              <div>{{ item.message }}</div>
+              <ul class="list sec-list" v-if="item.children">
+                <li v-for="(child, childIdx) of item.children" :key="`child-${childIdx}`">{{ child }}</li>
+              </ul>
+            </li>
+          </ul>
         </div>
-        <div class="divider" />
-        <ul class="list">
-          <li
-            v-for="(item, idx) of errors"
-            :key="idx">
-            <div>{{ item.message }}</div>
-            <ul class="list sec-list" v-if="item.children">
-              <li v-for="(child, childIdx) of item.children" :key="`child-${childIdx}`">{{ child }}</li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-    </transition>
-    </div>
+      </transition>
+    </template>
   </page-footer>
 </template>
 

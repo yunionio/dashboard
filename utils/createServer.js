@@ -410,14 +410,14 @@ const decoratorGroup = {
 export class ControlParams {
   constructor (type) {
     this.type = type
-    this.$scope = store.getters.$scope
+    this.scope = store.getters.scope
     this.params = DEFAULT_PARAMS[type]
     this.initScope()
   }
   initScope () {
     R.forEachObjIndexed((value, key) => {
       if (!R.isNil(value.scope)) {
-        this.params[key].scope = this.$scope
+        this.params[key].scope = this.scope
       }
     }, this.params)
   }
