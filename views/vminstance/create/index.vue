@@ -1,5 +1,5 @@
 <template>
-  <div class="baremetal-create-form">
+  <div>
     <page-header title="新建本地IDC服务器" />
     <a-form
       class="mt-3"
@@ -324,7 +324,7 @@ export default {
       const params = {
         show_emulated: true,
         resource_type: 'shared',
-        scope: this.$store.getters.$scope,
+        scope: this.$store.getters.scope,
         host_type: 'baremetal',
       }
       const { key } = this.form.fc.getFieldValue('zone')
@@ -356,9 +356,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.baremetal-create-form {
-  padding-bottom: 50px;
-}
-</style>

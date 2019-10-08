@@ -1,5 +1,5 @@
 <template>
-  <div class="baremetal-create-form">
+  <div>
     <page-header title="创建裸金属服务器" />
     <a-form
       class="mt-3"
