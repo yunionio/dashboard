@@ -46,8 +46,8 @@ let routes = [
       },
     ],
   },
-  { name: '404', path: '/404', component: NotFoundPage },
-  { name: 'NotFound', path: '*', component: NotFoundPage },
+  { name: '404', path: '/404', component: NotFoundPage, meta: { layout: 'full-screen' } },
+  { name: 'NotFound', path: '*', component: NotFoundPage, meta: { layout: 'full-screen' } },
 ]
 
 function getModulesRouteConfig () {
@@ -56,6 +56,7 @@ function getModulesRouteConfig () {
   r.keys().forEach(dir => {
     ret = ret.concat(r(dir).default)
   })
+  ret.sort((a, b) => a.index - b.index)
   for (let i = 0, len = ret.length; i < len; i++) {
     let item = ret[i]
     item.meta.group = i

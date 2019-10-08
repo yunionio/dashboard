@@ -1,37 +1,26 @@
 <template>
-  <div>
-    <page-header title="主机" />
-    <page-body>
-      <page-list
-        :list="list"
-        :columns="columns"
-        :group-actions="groupActions"
-        :single-actions="singleActions" />
-    </page-body>
-    <update-dialog :visible.sync="dialog.visible" :selected-items="dialog.selectedItems" :list="list" :columns="columns" />
-  </div>
+  <page-list
+    :list="list"
+    :columns="columns"
+    :group-actions="groupActions"
+    :single-actions="singleActions" />
 </template>
 
 <script>
 import qs from 'qs'
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
-import UpdateDialog from './components/UpdateDialog'
 import { Manager } from '@/utils/manager'
 import { sizestr } from '@/utils/utils'
 import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getBrandTableColumn } from '@/utils/common/tableColumn'
 import SystemIcon from '@/sections/SystemIcon'
 import expectStatus from '@/constants/expectStatus'
+import WindowsMixin from '@/mixins/windows'
 
 export default {
-  components: {
-    UpdateDialog,
-  },
+  name: 'VmInstanceList',
+  mixins: [WindowsMixin],
   data () {
     return {
-      dialog: {
-        visible: false,
-        selectedItems: [],
-      },
       list: this.$list.createList(this, {
         resource: 'servers',
         getParams: this.getParams,
@@ -359,8 +348,11 @@ export default {
                   {
                     label: '修改属性',
                     action: () => {
-                      this.dialog.visible = true
-                      this.dialog.selectedItems = [obj]
+                      this.createDialog('VmUpdateDialog', {
+                        selectedItems: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                      })
                     },
                   },
                 ],
@@ -395,15 +387,15 @@ export default {
     this.list.fetchData()
   },
   methods: {
+    createServer () {
+      this.$router.push('/vminstance/create')
+    },
     getParams () {
       return {
         details: true,
         with_meta: true,
         filter: 'hypervisor.notin(baremetal,container)',
       }
-    },
-    createServer () {
-      this.$router.push('/vminstance/create')
     },
   },
 }

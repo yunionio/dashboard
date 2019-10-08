@@ -7,18 +7,21 @@
         <slot />
       </div>
     </div>
+    <dialog-manager />
   </div>
 </template>
 
 <script>
 import Sidebar from '../Sidebar'
 import Navbar from '../Navbar'
+import DialogManager from '@/sections/DialogManager'
 
 export default {
   name: 'DefaultLayout',
   components: {
     Sidebar,
     Navbar,
+    DialogManager,
   },
   data () {
     return {

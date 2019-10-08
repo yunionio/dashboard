@@ -1,21 +1,16 @@
 <template>
-  <div>
-    <page-header title="裸金属" />
-    <page-body>
-      <page-list
-        :list="list"
-        :columns="columns"
-        :single-actions="singleActions" />
-    </page-body>
-  </div>
+  <page-list
+    :list="list"
+    :columns="columns"
+    :single-actions="singleActions" />
 </template>
 
 <script>
-import { Manager } from '@/utils/manager'
 import { sizestr } from '@/utils/utils'
 import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
 
 export default {
+  name: 'ImageList',
   data () {
     return {
       list: this.$list.createList(this, {
@@ -239,7 +234,6 @@ export default {
     }
   },
   created () {
-    this.webconsoleManager = new Manager('webconsole', 'v1')
     this.list.fetchData()
   },
   methods: {
