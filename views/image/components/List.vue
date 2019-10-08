@@ -1,12 +1,7 @@
 <template>
-  <div>
-    <page-header title="镜像" />
-    <page-body>
-      <page-list
-        :list="list"
-        :columns="columns" />
-    </page-body>
-  </div>
+  <page-list
+    :list="list"
+    :columns="columns" />
 </template>
 
 <script>
@@ -15,6 +10,7 @@ import { getStatusTableColumn } from '@/utils/common/tableColumn'
 import SystemIcon from '@/sections/SystemIcon'
 
 export default {
+  name: 'ImageList',
   data () {
     return {
       list: this.$list.createList(this, {

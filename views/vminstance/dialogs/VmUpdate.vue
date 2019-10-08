@@ -1,50 +1,53 @@
 <template>
-  <a-modal
-    title="修改属性"
-    ok-text="确定"
-    cancel-text="取消"
-    destroy-on-close
-    :visible="visible"
-    :confirm-loading="loading"
-    @cancel="handleCancel"
-    @ok="handleConfirm">
-    <div class="mb-2">你所选的<span class="ml-2 mr-2" style="color: #1890ff;">{{ this.selectedItems.length }}个实例</span>将执行<span class="ml-2 mr-2" style="color: #faad14;">修改属性</span>操作，你是否确认操作？</div>
-    <vxe-grid class="mb-2" :data="selectedItems" :columns="columns.slice(0, 3)" />
-    <a-form
-      :form="form.fc">
-      <a-form-item label="删除保护" v-bind="formItemLayout">
-        <a-radio-group v-decorator="decorators.disable_delete">
-          <a-radio-button
-            v-for="item of disableDeleteOptions"
-            :key="item.key"
-            :value="item.key">{{ item.label }}</a-radio-button>
-        </a-radio-group>
-      </a-form-item>
-      <template v-if="isKvm">
-        <a-form-item label="启动介质" v-bind="formItemLayout">
-          <a-radio-group v-decorator="decorators.boot_order">
+  <base-dialog @cancel="cancelDialog">
+    <div slot="header">修改属性</div>
+    <div slot="body">
+      <div class="mb-2">你所选的<span class="ml-2 mr-2" style="color: #1890ff;">{{ params.selectedItems.length }}个实例</span>将执行<span class="ml-2 mr-2" style="color: #faad14;">修改属性</span>操作，你是否确认操作？</div>
+      <vxe-grid class="mb-2" :data="params.selectedItems" :columns="params.columns.slice(0, 3)" />
+      <a-form
+        :form="form.fc">
+        <a-form-item label="删除保护" v-bind="formItemLayout">
+          <a-radio-group v-decorator="decorators.disable_delete">
             <a-radio-button
-              v-for="item of bootOrderOptions"
+              v-for="item of disableDeleteOptions"
               :key="item.key"
               :value="item.key">{{ item.label }}</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item label="引导方式" v-bind="formItemLayout">
-          <a-radio-group v-decorator="decorators.bios">
-            <a-radio-button
-              v-for="item of biosOptions"
-              :key="item.key"
-              :value="item.key">{{ item.label }}</a-radio-button>
-          </a-radio-group>
-        </a-form-item>
-      </template>
-    </a-form>
-  </a-modal>
+        <template v-if="isKvm">
+          <a-form-item label="启动介质" v-bind="formItemLayout">
+            <a-radio-group v-decorator="decorators.boot_order">
+              <a-radio-button
+                v-for="item of bootOrderOptions"
+                :key="item.key"
+                :value="item.key">{{ item.label }}</a-radio-button>
+            </a-radio-group>
+          </a-form-item>
+          <a-form-item label="引导方式" v-bind="formItemLayout">
+            <a-radio-group v-decorator="decorators.bios">
+              <a-radio-button
+                v-for="item of biosOptions"
+                :key="item.key"
+                :value="item.key">{{ item.label }}</a-radio-button>
+            </a-radio-group>
+          </a-form-item>
+        </template>
+      </a-form>
+    </div>
+    <div slot="footer">
+      <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
+      <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
+    </div>
+  </base-dialog>
 </template>
 
 <script>
+import DialogMixin from '@/mixins/dialog'
+import WindowsMixin from '@/mixins/windows'
+
 export default {
-  props: ['visible', 'selectedItems', 'list', 'columns'],
+  name: 'VmUpdateDialog',
+  mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
       loading: false,
@@ -113,27 +116,21 @@ export default {
       ],
       formItemLayout: {
         wrapperCol: {
-          span: 19,
+          span: 21,
         },
         labelCol: {
-          span: 5,
+          span: 3,
         },
       },
     }
   },
   computed: {
     isKvm () {
-      return this.selectedItems.length >= 1 && this.selectedItems[0].hypervisor === 'kvm'
+      return this.params.selectedItems.length >= 1 && this.params.selectedItems[0].hypervisor === 'kvm'
     },
   },
-  watch: {
-    selectedItems: {
-      handler (val) {
-        if (val && val.length >= 1) {
-          this.initFormValue(val[0])
-        }
-      },
-    },
+  created () {
+    this.initFormValue(this.params.selectedItems[0])
   },
   methods: {
     validateForm () {
@@ -147,22 +144,19 @@ export default {
         })
       })
     },
-    handleCancel () {
-      this.$emit('update:visible', false)
-    },
     async handleConfirm () {
       this.loading = true
       try {
         const values = await this.validateForm()
-        const ids = this.selectedItems.map(item => item.id)
-        await this.list.onManager('batchUpdate', {
+        const ids = this.params.selectedItems.map(item => item.id)
+        await this.params.list.onManager('batchUpdate', {
           id: ids,
           managerArgs: {
             data: values,
           },
         })
         this.loading = false
-        this.handleCancel()
+        this.cancelDialog()
       } catch (error) {
         this.loading = false
       }

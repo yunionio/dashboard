@@ -1,12 +1,7 @@
 <template>
-  <div>
-    <page-header title="宿主机" />
-    <page-body>
-      <page-list
-        :list="list"
-        :columns="columns" />
-    </page-body>
-  </div>
+  <page-list
+    :list="list"
+    :columns="columns" />
 </template>
 
 <script>
