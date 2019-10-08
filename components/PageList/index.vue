@@ -11,6 +11,7 @@
     </page-toolbar>
     <vxe-grid
       highlight-hover-row
+      show-header-overflow="title"
       :data="data"
       :columns="tableColumns"
       :pager-config="tablePage"
