@@ -1,5 +1,6 @@
 import Layout from '@Compute/components/Layout'
 import CloudaccountList from '@Cloudenv/views/cloudaccount/List'
+import CloudaccountCreate from '@Cloudenv/views/cloudaccount/create'
 
 export default {
   meta: {
@@ -23,6 +24,11 @@ export default {
               name: 'CloudaccountList',
               path: '',
               component: CloudaccountList,
+            },
+            {
+              name: 'CloudaccountCreate',
+              path: 'create',
+              component: CloudaccountCreate,
             },
           ],
         },

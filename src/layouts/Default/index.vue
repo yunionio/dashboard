@@ -32,6 +32,7 @@ export default {
 .app-page {
   padding-top: 80px;
   margin-left: 80px;
+  margin-bottom: 74px;
   &.l2-menu-show {
     margin-left: 224px;
   }
