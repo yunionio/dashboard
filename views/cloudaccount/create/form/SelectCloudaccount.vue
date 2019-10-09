@@ -34,12 +34,8 @@ export default {
       this.$emit('update:currentItem', item)
     },
     showName (item) {
-      if (item.data) {
-        if (item.data.hiddenName === true) {
-          return false
-        } else {
-          return true
-        }
+      if (item.hiddenName === true) {
+        return false
       } else {
         return true
       }
