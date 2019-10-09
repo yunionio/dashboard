@@ -69,7 +69,7 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: '请输入vCenter地址' },
-              { validator: validateForm(['url', 'IPv4']), trigger: ['blur', 'change'] },
+              { validator: validateForm(['url', 'IPv4'], true, 'some'), trigger: ['blur', 'change'], message: '请输入域名或者ip' },
             ],
           },
         ],
