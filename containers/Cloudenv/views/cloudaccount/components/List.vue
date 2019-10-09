@@ -12,6 +12,7 @@ import {
   getStatusTableColumn,
   getEnabledTableColumn,
   getPublicTableColumn,
+  getCopyWithContentTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -31,10 +32,7 @@ export default {
         },
       }),
       columns: [
-        {
-          field: 'name',
-          title: '名称',
-        },
+        getCopyWithContentTableColumn({ field: 'name', title: '名称' }),
         {
           field: 'access_url',
           title: '服务器地址',
@@ -61,10 +59,7 @@ export default {
           field: 'host_count',
           title: '宿主机',
         },
-        {
-          field: 'account',
-          title: '账号',
-        },
+        getCopyWithContentTableColumn({ field: 'account', title: '账号' }),
         getBrandTableColumn(),
         getEnabledTableColumn({ field: 'enable_auto_sync', title: '自动同步' }),
         {
@@ -91,7 +86,7 @@ export default {
           },
         },
         getPublicTableColumn(),
-        getProjectTableColumn(),
+        getProjectTableColumn({ field: 'projects' }),
       ],
       groupActions: [
         {
