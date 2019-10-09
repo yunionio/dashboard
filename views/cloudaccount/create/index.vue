@@ -1,7 +1,10 @@
 <template>
   <div class="cloudaccount-create">
-    <steps class="mb-3" v-model="step" />
-    <component :is="currentComponent" :current-item.sync="currentItem" ref="stepRef" />
+    <page-header title="新建云账号" />
+    <steps class="my-3" v-model="step" />
+    <keep-alive>
+      <component :is="currentComponent" :current-item.sync="currentItem" ref="stepRef" :provider="currentItem.provider" /><!-- provider 是为了 VmNetwork 的 prop 不报错 -->
+    </keep-alive>
     <page-footer>
       <div slot="left">
         <div class="d-flex align-items-center">
@@ -13,8 +16,8 @@
         </div>
       </div>
       <div slot="right">
-        <a-button class="mr-3" @click="perv" v-if="step.currentStep === 1">上一步</a-button>
-        <a-button type="primary" @click="next">{{ nextStepTitle }}</a-button>
+        <a-button class="mr-3" @click="perv">上一步</a-button>
+        <a-button type="primary" @click="next" :loading="loading">{{ nextStepTitle }}</a-button>
       </div>
     </page-footer>
   </div>
@@ -26,6 +29,7 @@ import SelectCloudaccount from './form/SelectCloudaccount'
 import CreateCloudaccount from './form/CreateCloudaccount'
 import VmNetwork from './form/VmNetwork'
 import step from '@/mixins/step'
+import { Manager } from '@/utils/manager'
 
 export default {
   name: 'Cloudaccount',
@@ -37,9 +41,13 @@ export default {
   mixins: [step],
   data () {
     return {
-      c: null,
+      isAdminMode: this.$store.getters.isAdminMode,
+      isDomainMode: this.$store.getters.isDomainMode,
+      l3PermissionEnable: this.$store.getters.l3PermissionEnable,
+      userInfo: this.$store.getters.userInfo,
       currentItem: Object.values(Object.values(CLOUDACCOUNT_TYPES)[0])[0],
       currentComponent: 'SelectCloudaccount',
+      loading: false,
       step: {
         steps: [
           { title: '选择云平台', key: 'platform' },
@@ -82,6 +90,10 @@ export default {
       }
     },
   },
+  created () {
+    this.cloudaccountsM = new Manager('cloudaccounts', 'v2')
+    this.networksM = new Manager('networks', 'v2')
+  },
   methods: {
     showName (item) {
       if (item.data) {
@@ -94,17 +106,102 @@ export default {
         return true
       }
     },
+    _addDomainProject (data) {
+      data.domain_id = this.userInfo.projectDomainId
+      data.tenant = this.userInfo.projectId
+      if (data.domain && data.domain.key) data.domain_id = data.domain.key
+      if (data.project && data.project.key) data.tenant = data.project.key
+      delete data.domain
+      delete data.project
+      if (!this.isAdminMode || !this.l3PermissionEnable) delete data.domain_id
+    },
+    _providerDiff (data) {
+      const brand = this.currentItem.provider.toLowerCase()
+      if (brand === 'ucloud' || brand === 'huawei' || brand === 'azure') {
+        data['auto_create_project'] = true
+      }
+      if (brand === 'dstack') {
+        data.brand = 'DStack'
+        data.provider = 'ZStack'
+      }
+    },
+    create (formData) {
+      const data = {
+        ...formData,
+        enabled: true,
+        provider: this.currentItem.provider,
+      }
+      this._addDomainProject(data)
+      this._providerDiff(data)
+      return this.cloudaccountsM.create({ data })
+    },
+    async createNetwork (formData) {
+      const data = {
+        'wire_id': formData.wire.key,
+        name: formData.name,
+      }
+      for (const uid in formData.startip) {
+        data['guest_ip_start'] = formData.startip[uid]
+        data['guest_ip_end'] = formData.endip[uid]
+        data['guest_ip_mask'] = formData.netmask[uid]
+        if (formData.gateway[uid]) {
+          data['guest_gateway'] = formData.gateway[uid]
+        }
+        if (formData.vlan[uid]) {
+          data['vlan_id'] = formData.vlan[uid]
+        }
+        try {
+          await this.networksM.create(data)
+        } catch (error) {
+          console.error(error, '<----createNetwork')
+          return false
+        }
+      }
+      return true
+    },
     validateForm () {
-      const refs = this.$refs.stepRef.$refs
-      const { createForm } = refs
+      const successFn = () => {
+        this.loading = false
+        this.$message.success('操作成功')
+        this.$router.push('/cloudaccount')
+      }
+      const errorFn = () => {
+        this.loading = false
+      }
+      const brand = this.currentItem.provider.toLowerCase()
+      let createForm = this.$refs.stepRef.$refs.createForm
+      if (this.step.currentStep === 2) createForm = this.$refs.stepRef // VmNetwork 组件
       return new Promise((resolve, reject) => {
         if (createForm && createForm.validateForm) {
-          createForm.validateForm().then(values => {
-            console.log(values, 'values111')
-            resolve(values)
-          }).catch(err => {
-            reject(err)
-          })
+          createForm.validateForm()
+            .then(values => {
+              if (brand === 'vmware') { // vmware 需要第三步的时候提交云账号的创建和network的创建
+                if (this.step.currentStep === 2) {
+                  this.loading = true
+                  return this.create(values)
+                    .then(() => {
+                      const networkRef = this.$refs.stepRef
+                      if (networkRef.configNetwork) {
+                        this.createNetwork(values) // 创建IP子网
+                          .then(successFn)
+                          .catch(err => {
+                            this.$message.error(`创建云账号出错：${err}`)
+                            errorFn()
+                          })
+                      }
+                    })
+                    .catch(errorFn)
+                }
+                resolve()
+              } else {
+                this.loading = true
+                return this.create(values)
+                  .then(successFn)
+                  .catch(errorFn)
+              }
+            }).catch(err => {
+              reject(err)
+            })
         } else {
           resolve()
         }

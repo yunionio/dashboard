@@ -39,10 +39,9 @@ export default {
       return this.currentItem.component
     },
     props () {
-      if (this.currentItem.data && this.currentItem.data.props) {
-        return this.currentItem.data.props
+      return {
+        provider: this.currentItem.provider,
       }
-      return {}
     },
   },
 }
