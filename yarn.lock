@@ -1374,10 +1374,10 @@ ansi-styles@^3.2.0, ansi-styles@^3.2.1:
   dependencies:
     color-convert "^1.9.0"
 
-ant-design-vue@^1.3.16:
-  version "1.3.16"
-  resolved "https://r.cnpmjs.org/ant-design-vue/download/ant-design-vue-1.3.16.tgz#b18f7fa265edc7c798a5a65d15d92d72d3a0beb1"
-  integrity sha1-sY9/omXtx8eYpaZdFdktctOgvrE=
+ant-design-vue@^1.3.17:
+  version "1.3.17"
+  resolved "https://registry.npm.taobao.org/ant-design-vue/download/ant-design-vue-1.3.17.tgz#4c420fd53f5a5bc255e01c16aaf34744f143026b"
+  integrity sha1-TEIP1T9aW8JV4BwWqvNHRPFDAms=
   dependencies:
     "@ant-design/icons" "^2.1.1"
     "@ant-design/icons-vue" "^2.0.0"
