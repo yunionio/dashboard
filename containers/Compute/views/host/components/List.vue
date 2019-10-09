@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { getRegionTableColumn, getStatusTableColumn, getBrandTableColumn, getEnabledTableColumn } from '@/utils/common/tableColumn'
+import { getRegionTableColumn, getStatusTableColumn, getBrandTableColumn, getEnabledTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   name: 'HostList',
@@ -27,7 +27,7 @@ export default {
         },
       }),
       columns: [
-        { field: 'name', title: '名称' },
+        getCopyWithContentTableColumn({ field: 'name', title: '名称' }),
         getEnabledTableColumn(),
         getStatusTableColumn({ statusModule: 'host' }),
         {
@@ -42,6 +42,13 @@ export default {
         {
           field: 'access_ip',
           title: 'IP',
+          slots: {
+            default: ({ row }) => {
+              return [
+                <copy-with-content message={ row.access_ip }>{ row.access_ip }</copy-with-content>,
+              ]
+            },
+          },
         },
         getBrandTableColumn(),
         getRegionTableColumn(),
