@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">修改属性</div>
     <div slot="body">
-      <div class="mb-2">你所选的<span class="ml-2 mr-2" style="color: #1890ff;">{{ params.selectedItems.length }}个实例</span>将执行<span class="ml-2 mr-2" style="color: #faad14;">修改属性</span>操作，你是否确认操作？</div>
+      <dialog-selected-tips :count="params.selectedItems.length" action="修改属性" />
       <vxe-grid class="mb-2" :data="params.selectedItems" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">

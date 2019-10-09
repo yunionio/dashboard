@@ -29,9 +29,9 @@ export default {
   getters: {
     scope (state) {
       let scope = 'project'
-      if (state.info.projectName === SCOPES_MAP.system.key) {
-        scope = 'system'
-      }
+      // if (state.info.projectName === SCOPES_MAP.system.key) {
+      //   scope = 'system'
+      // }
       return scope
     },
     // 是否切换到管理后台
