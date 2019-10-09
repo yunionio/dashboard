@@ -5,7 +5,7 @@
       :key="item.id"
       :is="item.name"
       :assigned-id="item.id"
-      :param="item.params" />
+      :params="item.params" />
   </div>
 </template>
 

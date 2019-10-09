@@ -44,7 +44,7 @@ export default {
       }
     },
     getMeta (item) {
-      const { validate = true, ...rest } = R.is(Function, item.meta) ? item.meta() : {}
+      const { validate = true, ...rest } = R.is(Function, item.meta) ? item.meta(this.row) : {}
       return {
         validate,
         ...rest,

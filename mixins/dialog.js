@@ -1,12 +1,10 @@
 import * as R from 'ramda'
 
 export default {
+  props: ['params'],
   computed: {
     dialogData () {
       return this.$store.getters.dialogs[this.windowId]
-    },
-    params () {
-      return this.dialogData.params
     },
   },
   methods: {
