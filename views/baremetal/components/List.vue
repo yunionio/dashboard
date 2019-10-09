@@ -7,7 +7,7 @@
 
 <script>
 import { sizestr } from '@/utils/utils'
-import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
+import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   name: 'ImageList',
@@ -65,7 +65,7 @@ export default {
         },
       }),
       columns: [
-        { field: 'name', title: '名称' },
+        getCopyWithContentTableColumn({ field: 'name', title: '名称' }),
         {
           field: 'ip',
           title: 'IP',
@@ -73,11 +73,13 @@ export default {
             default: ({ row }) => {
               let ret = []
               if (row.eip) {
-                ret.push(<div>{ row.eip }<span class='ml-2 text-weak'>（弹性）</span></div>)
+                ret.push(
+                  <copy-with-content message={ row.eip }>{ row.eip }<span class='ml-2 text-weak'>（弹性）</span></copy-with-content>
+                )
               }
               if (row.ips) {
                 const ips = row.ips.split(',').map(ip => {
-                  return <div>{ ip }<span class='ml-2 text-weak'>（内网）</span></div>
+                  return <copy-with-content message={ ip }>{ ip }<span class='ml-2 text-weak'>（内网）</span></copy-with-content>
                 })
                 ret = ret.concat(ips)
               }
@@ -130,14 +132,8 @@ export default {
           },
         },
         getStatusTableColumn({ statusModule: 'server' }),
-        {
-          field: 'vpc',
-          title: 'VPC',
-        },
-        {
-          field: 'host',
-          title: '宿主机',
-        },
+        getCopyWithContentTableColumn({ field: 'vpc', title: 'VPC' }),
+        getCopyWithContentTableColumn({ field: 'host', title: '宿主机' }),
         {
           field: 'brand',
           title: '平台',
