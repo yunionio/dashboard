@@ -47,6 +47,7 @@ export default {
       userInfo: this.$store.getters.userInfo,
       currentItem: Object.values(Object.values(CLOUDACCOUNT_TYPES)[0])[0],
       currentComponent: 'SelectCloudaccount',
+      vmwareFormData: null,
       loading: false,
       step: {
         steps: [
@@ -176,9 +177,11 @@ export default {
           createForm.validateForm()
             .then(values => {
               if (brand === 'vmware') { // vmware 需要第三步的时候提交云账号的创建和network的创建
-                if (this.step.currentStep === 2) {
+                if (this.step.currentStep === 1) {
+                  this.vmwareFormData = values
+                } else if (this.step.currentStep === 2) {
                   this.loading = true
-                  return this.create(values)
+                  return this.create(this.vmwareFormData)
                     .then(() => {
                       const networkRef = this.$refs.stepRef
                       if (networkRef.configNetwork) {
