@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import expectStatus from '@/constants/expectStatus'
 import {
   getProjectTableColumn,
   getBrandTableColumn,
@@ -20,6 +21,7 @@ export default {
     return {
       list: this.$list.createList(this, {
         resource: 'cloudaccounts',
+        steadyStatus: Object.values(expectStatus.cloudaccount).flat(),
         filterOptions: {
           name: {
             label: '名称',
