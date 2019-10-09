@@ -4,11 +4,14 @@
  * date: 2019/08/08
  */
 
-import { message } from 'ant-design-vue'
+import { message, notification } from 'ant-design-vue'
 import axios from 'axios'
 import qs from 'qs'
 import store from '@/store'
 import router from '@/router'
+import { logout } from '@/utils/auth'
+import { getHttpErrorMessage } from '@/utils/error'
+import { uuid } from '@/utils/utils'
 
 const http = axios.create({
   baseURL: process.env.VUE_APP_BASE_API,
@@ -43,6 +46,66 @@ const cancelRquest = requestKey => {
   if (request) {
     request.cancel()
     delete requestMap[requestKey]
+  }
+}
+
+// const showDetailError = (errorMsg) => {
+//   Modal.confirm({
+//     width: 600,
+//     class: 'error-dialog-wrapper',
+//     closable: true,
+//     // title: errorMsg.class,
+//     content: h => <error-template error={errorMsg} />,
+//   })
+// }
+
+const showErrorNotify = errorMsg => {
+  notification.error({
+    message: errorMsg.class,
+    description: errorMsg.detail,
+    btn: h => {
+      const id = `ErrorDialog-${uuid(32)}`
+      return h('a-button', {
+        props: {
+          type: 'link',
+          size: 'small',
+        },
+        class: 'error-color',
+        on: {
+          click: () => store.dispatch('dialog/create', {
+            name: 'ErrorDialog',
+            parentWindowId: 'ErrorDialogWrapper',
+            id,
+            params: {
+              error: errorMsg,
+            },
+          }),
+        },
+      }, '查看详情')
+    },
+  })
+}
+
+const showHttpErrorMessage = (error) => {
+  console.dir({ error })
+  if (error.response) {
+    const status = error.response.status
+    const errMsg = getHttpErrorMessage(error)
+    if (error.config) {
+      if (status === 404) {
+        if (error.config.method.toLowerCase() !== 'get') {
+          if (errMsg) message.error(errMsg)
+        }
+      } else {
+        showErrorNotify(errMsg)
+      }
+    }
+    if (status === 401) {
+      logout()
+        .then(() => {
+          window.location.href = `${window.location.origin}/auth/login`
+        })
+    }
   }
 }
 
@@ -87,6 +150,8 @@ http.interceptors.response.use(
       const status = error.response.status
       if (status === 401) {
         router.push('/auth')
+      } else {
+        showHttpErrorMessage(error)
       }
     }
     return Promise.reject(error)

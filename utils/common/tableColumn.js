@@ -110,6 +110,7 @@ export const getCopyWithContentTableColumn = ({ field = 'name', title = '名称'
     title,
     slots: {
       default: ({ row }, h) => {
+        if (!row[field]) return '-'
         return [
           <copy-with-content message={ row[field] }>{ row[field] }</copy-with-content>,
         ]
