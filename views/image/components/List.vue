@@ -1,20 +1,16 @@
 <template>
-  <div>
-    <page-header title="镜像" />
-    <page-body>
-      <page-list
-        :list="list"
-        :columns="columns" />
-    </page-body>
-  </div>
+  <page-list
+    :list="list"
+    :columns="columns" />
 </template>
 
 <script>
 import { sizestr } from '@/utils/utils'
-import { getStatusTableColumn } from '@/utils/common/tableColumn'
+import { getStatusTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 import SystemIcon from '@/sections/SystemIcon'
 
 export default {
+  name: 'ImageList',
   data () {
     return {
       list: this.$list.createList(this, {
@@ -51,7 +47,7 @@ export default {
         },
       }),
       columns: [
-        { field: 'name', title: '名称' },
+        getCopyWithContentTableColumn({ field: 'name', title: '名称' }),
         {
           field: 'disk_format',
           title: '格式',

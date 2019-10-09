@@ -3,7 +3,7 @@
     <div class="d-flex" v-for="(item, i) in ipSubnets" :key="item.key">
       <ip-subnet
         :decorator="genDecorator(item.key)" />
-      <a-button shape="circle" icon="minus" size="small" @click="decrease(i)" class="mt-2 ml-2" />
+      <a-button shape="circle" icon="minus" size="small" v-if="ipSubnets.length > 1" @click="decrease(i)" class="mt-2 ml-2" />
     </div>
     <div class="d-flex align-items-center" v-if="remain > 0">
       <a-button type="primary" shape="circle" icon="plus" size="small" @click="add" />
@@ -15,7 +15,7 @@
 
 <script>
 import * as R from 'ramda'
-import IpSubnet from '@Compute/sections/IpSubnet'
+import IpSubnet from '@/sections/IpSubnet'
 import { uuid } from '@/utils/utils'
 
 export default {
@@ -23,7 +23,6 @@ export default {
   components: {
     IpSubnet,
   },
-  inject: ['form'],
   props: {
     decorator: {
       type: Object,
@@ -36,7 +35,7 @@ export default {
   },
   data () {
     return {
-      ipSubnets: [],
+      ipSubnets: [{ key: uuid() }],
     }
   },
   computed: {

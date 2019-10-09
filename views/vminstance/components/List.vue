@@ -1,37 +1,26 @@
 <template>
-  <div>
-    <page-header title="主机" />
-    <page-body>
-      <page-list
-        :list="list"
-        :columns="columns"
-        :group-actions="groupActions"
-        :single-actions="singleActions" />
-    </page-body>
-    <update-dialog :visible.sync="dialog.visible" :selected-items="dialog.selectedItems" :list="list" :columns="columns" />
-  </div>
+  <page-list
+    :list="list"
+    :columns="columns"
+    :group-actions="groupActions"
+    :single-actions="singleActions" />
 </template>
 
 <script>
 import qs from 'qs'
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
-import UpdateDialog from './components/UpdateDialog'
 import { Manager } from '@/utils/manager'
 import { sizestr } from '@/utils/utils'
-import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getBrandTableColumn } from '@/utils/common/tableColumn'
+import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getBrandTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 import SystemIcon from '@/sections/SystemIcon'
 import expectStatus from '@/constants/expectStatus'
+import WindowsMixin from '@/mixins/windows'
 
 export default {
-  components: {
-    UpdateDialog,
-  },
+  name: 'VmInstanceList',
+  mixins: [WindowsMixin],
   data () {
     return {
-      dialog: {
-        visible: false,
-        selectedItems: [],
-      },
       list: this.$list.createList(this, {
         resource: 'servers',
         getParams: this.getParams,
@@ -86,19 +75,19 @@ export default {
       }),
       columns: [
         {
+          width: 100,
           field: 'name',
           title: '名称',
           slots: {
             default: ({ row }) => {
-              const ret = [<span>{ row.name }</span>]
-              if (row.disable_delete) {
-                ret.push(
-                  <a-tooltip title='删除保护，如需解除，请点击【修改属性】'>
+              return [(
+                <copy-with-content message={ row.name }>
+                  <span>{ row.name }</span>
+                  { row.disable_delete ? <a-tooltip title='删除保护，如需解除，请点击【修改属性】'>
                     <a-icon class='ml-1' type='lock' theme='twoTone' twoToneColor='#52c41a' />
-                  </a-tooltip>
-                )
-              }
-              return ret
+                  </a-tooltip> : null }
+                </copy-with-content>
+              )]
             },
           },
         },
@@ -109,11 +98,13 @@ export default {
             default: ({ row }) => {
               let ret = []
               if (row.eip) {
-                ret.push(<div>{ row.eip }<span class='ml-2 text-weak'>（弹性）</span></div>)
+                ret.push(
+                  <copy-with-content message={ row.eip }>{ row.eip }<span class='ml-2 text-weak'>（弹性）</span></copy-with-content>
+                )
               }
               if (row.ips) {
                 const ips = row.ips.split(',').map(ip => {
-                  return <div>{ ip }<span class='ml-2 text-weak'>（内网）</span></div>
+                  return <copy-with-content message={ ip }>{ ip }<span class='ml-2 text-weak'>（内网）</span></copy-with-content>
                 })
                 ret = ret.concat(ips)
               }
@@ -192,14 +183,8 @@ export default {
           },
         },
         getStatusTableColumn({ statusModule: 'server' }),
-        {
-          field: 'vpc',
-          title: 'VPC',
-        },
-        {
-          field: 'host',
-          title: '宿主机',
-        },
+        getCopyWithContentTableColumn({ field: 'vpc', title: 'VPC' }),
+        getCopyWithContentTableColumn({ field: 'host', title: '宿主机' }),
         getProjectTableColumn(),
         getBrandTableColumn(),
         getRegionTableColumn(),
@@ -359,8 +344,11 @@ export default {
                   {
                     label: '修改属性',
                     action: () => {
-                      this.dialog.visible = true
-                      this.dialog.selectedItems = [obj]
+                      this.createDialog('VmUpdateDialog', {
+                        selectedItems: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                      })
                     },
                   },
                 ],
@@ -395,15 +383,15 @@ export default {
     this.list.fetchData()
   },
   methods: {
+    createServer () {
+      this.$router.push('/vminstance/create')
+    },
     getParams () {
       return {
         details: true,
         with_meta: true,
         filter: 'hypervisor.notin(baremetal,container)',
       }
-    },
-    createServer () {
-      this.$router.push('/vminstance/create')
     },
   },
 }

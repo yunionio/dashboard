@@ -1,13 +1,8 @@
 <template>
-  <div>
-    <page-header title="IP子网" />
-    <page-body>
-      <page-list
-        :list="list"
-        :columns="columns"
-        :group-actions="groupActions" />
-    </page-body>
-  </div>
+  <page-list
+    :list="list"
+    :columns="columns"
+    :group-actions="groupActions" />
 </template>
 
 <script>
@@ -16,6 +11,7 @@ import {
   getRegionTableColumn,
   getBrandTableColumn,
   getStatusTableColumn,
+  getCopyWithContentTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -72,7 +68,7 @@ export default {
         },
       }),
       columns: [
-        { field: 'name', title: '名称' },
+        getCopyWithContentTableColumn({ field: 'name', title: '名称' }),
         {
           field: 'ip',
           title: 'IP地址',
@@ -118,22 +114,13 @@ export default {
         getBrandTableColumn(),
         getProjectTableColumn(),
         getRegionTableColumn(),
-        {
-          field: 'wire',
-          title: '二层网络',
-        },
+        getCopyWithContentTableColumn({ field: 'wire', title: '二层网络' }),
         {
           field: 'vlan_id',
           title: 'VLAN',
         },
-        {
-          field: 'vpc',
-          title: 'VPC',
-        },
-        {
-          field: 'account',
-          title: '云账号',
-        },
+        getCopyWithContentTableColumn({ field: 'vpc', title: 'VPC' }),
+        getCopyWithContentTableColumn({ field: 'account', title: '云账号' }),
       ],
       groupActions: [
         {

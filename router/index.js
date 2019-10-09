@@ -1,15 +1,16 @@
 import Layout from '@Compute/components/Layout'
-import VMInstanceList from '@Compute/views/vminstance/List'
-import BaremetalList from '@Compute/views/baremetal/List'
+import VMInstance from '@Compute/views/vminstance'
+import Baremetal from '@Compute/views/baremetal'
 import BaremetalCreate from '@Compute/views/baremetal/create/index'
-import ImageList from '@Compute/views/image/List'
+import Image from '@Compute/views/image'
 import VMInstanceCreate from '@Compute/views/vminstance/create/index'
-import NetworkList from '@Compute/views/network/List'
+import Network from '@Compute/views/network'
 import NetworkCreate from '@Compute/views/network/Create'
-import HostList from '@Compute/views/host/List'
-import RecoveryServerList from '@Compute/views/recovery/Server'
+import Host from '@Compute/views/host'
+import ServerRecovery from '@Compute/views/server-recovery'
 
 export default {
+  index: 2,
   meta: {
     label: '主机',
     icon: 'menu-compute',
@@ -28,9 +29,9 @@ export default {
           component: Layout,
           children: [
             {
-              name: 'VMInstanceList',
+              name: 'VMInstance',
               path: '',
-              component: VMInstanceList,
+              component: VMInstance,
             },
             {
               name: 'VMInstanceCreate',
@@ -47,9 +48,9 @@ export default {
           component: Layout,
           children: [
             {
-              name: 'BaremetalList',
+              name: 'Baremetal',
               path: '',
-              component: BaremetalList,
+              component: Baremetal,
             },
             {
               name: 'BaremetalCreate',
@@ -73,9 +74,9 @@ export default {
           component: Layout,
           children: [
             {
-              name: 'ImageList',
+              name: 'Image',
               path: '',
-              component: ImageList,
+              component: Image,
             },
           ],
         },
@@ -94,9 +95,9 @@ export default {
           component: Layout,
           children: [
             {
-              name: 'NetworkList',
+              name: 'Network',
               path: '',
-              component: NetworkList,
+              component: Network,
             },
             {
               name: 'NetworkCreate',
@@ -120,9 +121,9 @@ export default {
           component: Layout,
           children: [
             {
-              name: 'HostList',
+              name: 'Host',
               path: '',
-              component: HostList,
+              component: Host,
             },
           ],
         },
@@ -134,16 +135,16 @@ export default {
       },
       submenus: [
         {
-          path: '/recoveryserver',
+          path: '/serverrecovery',
           meta: {
             label: '主机',
           },
           component: Layout,
           children: [
             {
-              name: 'RecoveryServerList',
+              name: 'ServerRecovery',
               path: '',
-              component: RecoveryServerList,
+              component: ServerRecovery,
             },
           ],
         },
