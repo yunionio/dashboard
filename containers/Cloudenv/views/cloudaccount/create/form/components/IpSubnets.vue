@@ -19,7 +19,7 @@ import IpSubnet from '@/sections/IpSubnet'
 import { uuid } from '@/utils/utils'
 
 export default {
-  name: 'IpSubnets',
+  name: 'VmNetworkIpSubnets',
   components: {
     IpSubnet,
   },

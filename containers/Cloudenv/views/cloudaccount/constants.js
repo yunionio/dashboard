@@ -14,7 +14,6 @@ const zstackLogo = require('../../../../src/assets/images/providers/zstack.svg')
 const s3Logo = require('../../../../src/assets/images/providers/s3.svg')
 const cephLogo = require('../../../../src/assets/images/providers/ceph.svg')
 const xskyLogo = require('../../../../src/assets/images/providers/xsky.svg')
-console.log(providerMap, 'providerMap')
 
 export const CLOUDACCOUNT_TYPES = {
   public: {
@@ -22,49 +21,37 @@ export const CLOUDACCOUNT_TYPES = {
       name: providerMap.aliyun.label,
       logo: aliyunLogo,
       component: 'AliyunCreate',
-      data: {
-        props: { provider: providerMap.aliyun.key },
-      },
+      provider: providerMap.aliyun.key,
     },
     'aws': {
       name: providerMap.aws.label,
       logo: awsLogo,
       component: 'AwsCreate',
-      data: {
-        props: { provider: providerMap.aws.key },
-      },
+      provider: providerMap.aws.key,
     },
     'azure': {
       name: providerMap.azure.label,
       logo: azureLogo,
       component: 'AzureCreate',
-      data: {
-        props: { provider: providerMap.azure.key },
-      },
+      provider: providerMap.azure.key,
     },
     'huawei': {
       name: providerMap.huawei.label,
       logo: huaweiLogo,
       component: 'HuaweiCreate',
-      data: {
-        props: { provider: providerMap.huawei.key },
-      },
+      provider: providerMap.huawei.key,
     },
     'qcloud': {
       name: providerMap.qcloud.label,
       logo: qcloudLogo,
       component: 'QcloudCreate',
-      data: {
-        props: { provider: providerMap.qcloud.key },
-      },
+      provider: providerMap.qcloud.key,
     },
     'ucloud': {
       name: providerMap.ucloud.label,
       logo: ucloudLogo,
       component: 'UcloudCreate',
-      data: {
-        props: { provider: providerMap.ucloud.key },
-      },
+      provider: providerMap.ucloud.key,
     },
   },
   private: {
@@ -72,67 +59,53 @@ export const CLOUDACCOUNT_TYPES = {
       name: providerMap.vmware.label,
       logo: vmwareLogo,
       component: 'VMwareCreate',
-      data: {
-        props: { provider: providerMap.vmware.key },
-      },
+      provider: providerMap.vmware.key,
     },
     'openstack': {
       name: providerMap.openstack.label,
       logo: openstackLogo,
       component: 'OpenstackCreate',
-      data: {
-        props: { provider: providerMap.openstack.key },
-      },
+      provider: providerMap.openstack.key,
     },
     'dstack': {
       name: providerMap.dstack.label,
       logo: dstackLogo,
       component: 'DstackCreate',
-      data: {
-        props: { provider: providerMap.dstack.key },
-      },
+      provider: providerMap.dstack.key,
     },
     'zstack': {
       name: providerMap.zstack.label,
       logo: zstackLogo,
       component: 'ZstackCreate',
-      data: {
-        props: { provider: providerMap.zstack.key },
-      },
+      provider: providerMap.zstack.key,
     },
   },
-  store: {
+  storage: {
     's3': {
       name: providerMap.s3.label,
       logo: s3Logo,
       component: 'S3Create',
-      data: {
-        props: { provider: providerMap.s3.key },
-      },
+      provider: providerMap.s3.key,
     },
     'ceph': {
       name: providerMap.ceph.label,
       logo: cephLogo,
       component: 'CephCreate',
-      data: {
-        props: { provider: providerMap.ceph.key },
-      },
+      provider: providerMap.ceph.key,
     },
     'xsky': {
       name: providerMap.xsky.label,
       logo: xskyLogo,
       component: 'XskyCreate',
-      data: {
-        hiddenName: true,
-        props: { provider: providerMap.xsky.key },
-      },
+      provider: providerMap.xsky.key,
+      hiddenName: true,
     },
   },
 }
 
 export const ENV_TITLE = {
   'public': '公有云',
-  'store': '对象存储',
+  'storage': '对象存储',
   'private': '私有云 & 虚拟化平台',
 }
 

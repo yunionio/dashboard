@@ -3,21 +3,21 @@
     <a-row :gutter="8">
       <a-col :span="8">
         <a-form-item>
-          <a-select label-in-value v-decorator="decorator.cloudregion" placeholder="区域">
+          <a-select label-in-value v-decorator="decorator.cloudregion" placeholder="请选择区域" @change="regionChange">
             <a-select-option v-for="item in regionOpts" :key="item.id">{{ item.name }}</a-select-option>
           </a-select>
         </a-form-item>
       </a-col>
       <a-col :span="8">
         <a-form-item>
-          <a-select label-in-value  v-decorator="decorator.vpc" allow-clear placeholder="专有网络">
+          <a-select label-in-value  v-decorator="decorator.vpc" allow-clear placeholder="请选择专有网络" @change="vpcChange">
             <a-select-option v-for="item in vpcOpts" :key="item.id">{{ item.name }}</a-select-option>
           </a-select>
         </a-form-item>
       </a-col>
       <a-col :span="8">
         <a-form-item>
-          <a-select label-in-value  v-decorator="decorator.wire" allow-clear placeholder="二层网络">
+          <a-select label-in-value  v-decorator="decorator.wire" allow-clear placeholder="请选择二层网络">
             <a-select-option v-for="item in wireOpts" :key="item.id">{{ item.name }}</a-select-option>
           </a-select>
         </a-form-item>
@@ -68,6 +68,18 @@ export default {
     this.fetchRegions()
   },
   methods: {
+    regionChange (cloudregion) {
+      this.fetchVpcs(cloudregion.key)
+      this.form.fc.setFieldsValue({
+        cloudregion,
+      })
+    },
+    vpcChange (vpc) {
+      this.fetchWires(vpc.key)
+      this.form.fc.setFieldsValue({
+        vpc,
+      })
+    },
     fetchRegions () {
       this.regionLoading = true
       this.cloudregionsM.list({ params: this.cloudregionParams })
@@ -76,10 +88,7 @@ export default {
           this.regionOpts = data
           if (this.regionOpts.length && this.form && this.form.fc) {
             const firstRegion = this.regionOpts[0]
-            this.fetchVpcs(firstRegion.id)
-            this.form.fc.setFieldsValue({
-              cloudregion: { key: firstRegion.id, label: firstRegion.name },
-            })
+            this.regionChange({ key: firstRegion.id, label: firstRegion.name })
           }
         })
         .catch(() => {
@@ -96,10 +105,7 @@ export default {
           this.vpcOpts = data
           if (this.vpcOpts.length && this.form && this.form.fc) {
             const firstVpc = this.vpcOpts[0]
-            this.fetchWires(firstVpc.id)
-            this.form.fc.setFieldsValue({
-              vpc: { key: firstVpc.id, label: firstVpc.name },
-            })
+            this.vpcChange({ key: firstVpc.id, label: firstVpc.name })
           }
         })
         .catch(() => {

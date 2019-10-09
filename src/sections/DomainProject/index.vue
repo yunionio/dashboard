@@ -1,10 +1,10 @@
 <template>
   <div class="d-flex">
     <template v-if="!isAdminMode && !isDomainMode">
-      <div>{{ projectData.name }}</div>
+      <div style="margin-bottom: 24px;">{{ projectData.name }}</div>
     </template>
     <template v-else>
-      <a-form-item class="w-50">
+      <a-form-item class="w-50" v-if="isAdminMode && isDomainMode">
         <a-select
           class="w-100"
           labelInValue
@@ -60,7 +60,7 @@ export default {
       projectData: {},
       projects: [],
       projectLoading: false,
-      isAdminMode: true,
+      isAdminMode: this.$store.getters.isAdminMode,
       scope: this.$store.getters.scope,
       isDomainMode: this.$store.getters.isDomainMode,
       userInfo: this.$store.getters.userInfo,
@@ -80,7 +80,7 @@ export default {
     async fetchDomains () {
       if (!this.isAdminMode) {
         const data = [{
-          id: this.userInfo.projectDomainId,
+          key: this.userInfo.projectDomainId,
           name: this.userInfo.projectDomain,
         }]
         this.domains = data
@@ -108,7 +108,7 @@ export default {
     async fetchProjects () {
       if (!this.isAdminMode && !this.isDomainMode) {
         const data = [{
-          id: this.userInfo.projectId,
+          key: this.userInfo.projectId,
           name: this.userInfo.projectName,
         }]
         this.projects = data

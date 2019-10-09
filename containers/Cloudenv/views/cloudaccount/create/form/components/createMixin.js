@@ -11,8 +11,16 @@ export default {
         fc: this.$form.createForm(this),
       },
       formLayout: {
-        labelCol: { span: 3 },
-        wrapperCol: { span: 10 },
+        wrapperCol: {
+          md: { span: 18 },
+          xl: { span: 20 },
+          xxl: { span: 22 },
+        },
+        labelCol: {
+          md: { span: 6 },
+          xl: { span: 3 },
+          xxl: { span: 2 },
+        },
       },
     }
   },
