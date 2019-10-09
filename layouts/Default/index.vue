@@ -7,18 +7,21 @@
         <slot />
       </div>
     </div>
+    <dialog-manager />
   </div>
 </template>
 
 <script>
 import Sidebar from '../Sidebar'
 import Navbar from '../Navbar'
+import DialogManager from '@/sections/DialogManager'
 
 export default {
   name: 'DefaultLayout',
   components: {
     Sidebar,
     Navbar,
+    DialogManager,
   },
   data () {
     return {
@@ -32,6 +35,7 @@ export default {
 .app-page {
   padding-top: 80px;
   margin-left: 80px;
+  margin-bottom: 74px;
   &.l2-menu-show {
     margin-left: 224px;
   }

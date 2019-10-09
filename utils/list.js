@@ -235,7 +235,7 @@ class CreateList {
    */
   genParams (offset, limit) {
     let params = {
-      scope: this.templateContext.$store.getters.$scope,
+      scope: this.templateContext.$store.getters.scope,
     }
     if (R.is(Function, this.getParams)) {
       params = {

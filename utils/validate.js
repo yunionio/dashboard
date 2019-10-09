@@ -30,6 +30,11 @@ export const REGEXP = {
     regexp: /^([a-zA-Z0-9_]{1}[a-zA-Z0-9_-]{0,62}){1}(\.[a-zA-Z0-9_]{1}[a-zA-Z0-9_-]{0,62})*[._]?$/,
     message: i18n.t('validator.domain'),
   },
+  /* eslint-disable no-useless-escape */
+  url: {
+    regexp: /^(https?):\/\/(-\.)?([^\s\/?\.#-]+\.?)+(\/[^\s]*)?$/i,
+    message: i18n.t('validator.url'),
+  },
 }
 
 /**
@@ -54,14 +59,15 @@ export const isRequired = (isObj = true) => {
 /**
  * @description 传入验证规则，得到验证结果，全局的 $validate 方法
  * @param {Array|String} rules: 验证的规则数组 例如： ['email', 'phone']
+ * @param {String} checkMethod: 默认是 every, 既有一个规则不合格则失败，some 表示 有一个规则合格则成功
  * @return {Function} validator: vue-ant-design 要求的自定义规则校验函数
  */
-const validateForm = (rules, isRequired = true) => {
+const validateForm = (rules, isRequired = true, checkMethod = 'every') => {
   rules = R.unless(R.is(Array), R.of)(rules)
   return (rule, value, callback) => {
     if (!isRequired && (R.isNil(value) || R.isEmpty(value))) return callback()
     let msg = '输入信息不正确'
-    const everyIsTrue = rules.every(r => {
+    const everyIsTrue = rules[checkMethod](r => {
       const result = validate(value, r)
       if (result === true) return true
       msg = result.msg

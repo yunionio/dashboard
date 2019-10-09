@@ -31,8 +31,8 @@ export default {
       e.stopPropagation()
       e.preventDefault()
       if (this.disabled) return
-      this.option.action(this.row)
       this.$emit('hidden-dropdown')
+      this.option.action(this.row)
     },
   },
   render () {

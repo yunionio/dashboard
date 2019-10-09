@@ -2,10 +2,12 @@ import * as R from 'ramda'
 import { HYPERVISORS_MAP, EXTRA_HYPERVISORS } from '@/constants'
 import { changeToArr } from '@/utils/utils'
 
-export class TypeClouds {
+class TypeClouds {
   hypervisorMap = {}
   brandMap = {}
+  brandlowcaseMap = {}
   providerMap = {}
+  providerlowcaseMap = {}
   hosttypeMap = {}
   constructor ({ ignore = [], env = ['idc', 'private', 'public'] } = {}) {
     this.ignore = ignore
@@ -17,18 +19,14 @@ export class TypeClouds {
     // 支持 hypervisor、brand、provider、host_type
     R.forEachObjIndexed((obj, key) => {
       if (this.env.includes(obj.env)) {
-        this.brandMap[obj.brand] = {
-          ...obj,
-          key: obj.brand,
-        }
-        this.providerMap[obj.provider] = {
-          ...obj,
-          key: obj.provider,
-        }
-        this.hosttypeMap[obj.host_type] = {
-          ...obj,
-          key: obj.host_type,
-        }
+        const brandObj = { ...obj, key: obj.brand }
+        const providerObj = { ...obj, key: obj.provider }
+        const hosttypeObj = { ...obj, key: obj.host_type }
+        this.brandMap[obj.brand] = brandObj
+        this.brandlowcaseMap[obj.brand.toLowerCase()] = brandObj
+        this.providerMap[obj.provider] = providerObj
+        this.providerlowcaseMap[obj.provider.toLowerCase()] = providerObj
+        this.hosttypeMap[obj.host_type] = hosttypeObj
       }
     }, this.hypervisorMap)
   }
@@ -40,6 +38,12 @@ export class TypeClouds {
       }
     }, map)
     return currentMap
+  }
+  getBrandlowcase () {
+    return this.commonGet(this.brandlowcaseMap)
+  }
+  getProviderlowcase () {
+    return this.commonGet(this.brandlowcaseMap)
   }
   getHypervisor () {
     return this.commonGet(this.hypervisorMap)
@@ -54,3 +58,5 @@ export class TypeClouds {
     return this.commonGet(this.hosttypeMap)
   }
 }
+
+export const typeClouds = new TypeClouds()

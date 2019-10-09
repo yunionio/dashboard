@@ -27,12 +27,39 @@ export default {
     },
   },
   getters: {
-    $scope (state) {
+    scope (state) {
       let scope = 'project'
-      if (state.info.projectName === SCOPES_MAP.system.key) {
-        scope = 'system'
-      }
+      // if (state.info.projectName === SCOPES_MAP.system.key) {
+      //   scope = 'system'
+      // }
       return scope
+    },
+    // 是否切换到管理后台
+    isAdmin (state, getters) {
+      return getters.scope === SCOPES_MAP.system.value
+    },
+    // 是否切换到域管理后台
+    isDomain (state, getters) {
+      return getters.scope === SCOPES_MAP.domain.value
+    },
+    // 当前用户是否有含有 system 权限 项目
+    isSystemAdmin (state) {
+      return state.info.projects.some(item => item.id === state.info.projectId && item.system_capable)
+    },
+    // 当前用户是否有含有 domain 权限 项目
+    isDomainAdmin (state) {
+      return state.info.projects.some(item => item.id === state.info.projectId && item.domain_capable)
+    },
+    // 是否在管理后台视图下
+    isAdminMode (state, getters) {
+      return getters.isAdmin && getters.isSystemAdmin
+    },
+    // 是否在域管理后台视图下
+    isDomainMode (state, getters) {
+      return getters.isDomain && getters.isDomainAdmin
+    },
+    l3PermissionEnable (state) {
+      return state.info.non_default_domain_projects
     },
   },
   actions: {

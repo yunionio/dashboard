@@ -1,42 +1,61 @@
-import { mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 import { uuid } from '@/utils/utils'
 
 export default {
+  props: {
+    assignedId: String,
+  },
   data () {
     return {
       windowId: '',
     }
   },
   computed: {
-    ...mapGetters(['windows', 'common']),
     windowData () {
-      return this.windows[this.windowId]
+      return this.$store.getters.windows[this.windowId]
     },
   },
-  beforeDestroy () {
+  destroyed () {
     this.destroyWindow(this.windowId)
   },
   created () {
     this.createWindow()
   },
   methods: {
+    ...mapActions({
+      _createWindow: 'window/create',
+      _updateWindow: 'window/update',
+      _destroyWindow: 'window/destroy',
+      _createDialog: 'dialog/create',
+      _updateDialog: 'dialog/update',
+      destroyWindow: 'window/destroy',
+      destroyDialog: 'dialog/destroy',
+      updateCommonObject: 'common/updateObject',
+    }),
     createWindow () {
-      this.windowId = `${this.$options.name}-${uuid(32)}`
+      if (this.assignedId) {
+        this.windowId = this.assignedId
+      } else {
+        this.windowId = `${this.$options.name}-${uuid(32)}`
+      }
       if (this.$store.getters.windows[this.windowId]) {
         return Promise.resolve()
       }
-      return this.$store.dispatch('window/create', {
+      return this._createWindow({
         id: this.windowId,
       })
     },
     updateWindow (payload) {
-      return this.$store.dispatch('window/update', { id: this.windowId, ...payload })
+      return this._updateWindow({ id: this.windowId, ...payload })
     },
-    destroyWindow (id) {
-      this.$store.dispatch('window/destroy', id)
-    },
-    updateDbObject (payload) {
-      return this.$store.dispatch('common/updateObject', payload)
+    createDialog (name, params) {
+      const id = `${name}-${uuid(32)}`
+      return this._createDialog({
+        id,
+        parentWindowId: this.windowId,
+        name,
+        params,
+      })
     },
   },
 }
