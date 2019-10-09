@@ -8,12 +8,21 @@
         :form="form.fc">
         <a-form-item label="AppID" v-bind="formItemLayout" v-if="isQcloud">
           <a-input v-decorator="decorators.app_id" placeholder="请输入App ID" />
+          <div slot="extra" class="text-right">
+            <help-link :href="doc">如何获取腾讯云的 App ID 和密钥？</help-link>
+          </div>
         </a-form-item>
         <a-form-item label="租户（Tenant） ID" v-bind="formItemLayout" v-if="isAzure">
           <a-input v-decorator="decorators.directory_id" placeholder="请输入租户（Tenant）ID" />
+          <div slot="extra" class="text-right">
+            <help-link :href="doc">如何获取Azure的租户（Tenant） ID ？</help-link>
+          </div>
         </a-form-item>
         <a-form-item :label="field.label.k" v-bind="formItemLayout">
           <a-input v-decorator="decorators.keyId" :placeholder="field.placeholder.k" />
+          <div slot="extra" class="text-right">
+            <help-link :href="doc">如何获取{{ field.text }} {{ field.label.k }} 和 {{ field.label.s }}？</help-link>
+          </div>
         </a-form-item>
         <a-form-item :label="field.label.s" v-bind="formItemLayout">
           <a-input v-decorator="decorators.keySecret" :placeholder="field.placeholder.s" type="password" />
