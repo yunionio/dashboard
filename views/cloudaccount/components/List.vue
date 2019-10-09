@@ -2,7 +2,8 @@
   <page-list
     :list="list"
     :columns="columns"
-    :group-actions="groupActions" />
+    :group-actions="groupActions"
+    :single-actions="singleActions" />
 </template>
 
 <script>
@@ -15,9 +16,11 @@ import {
   getPublicTableColumn,
   getCopyWithContentTableColumn,
 } from '@/utils/common/tableColumn'
+import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'CloudaccountList',
+  mixins: [WindowsMixin],
   data () {
     return {
       list: this.$list.createList(this, {
@@ -99,6 +102,28 @@ export default {
           meta: () => {
             return {
               buttonType: 'primary',
+            }
+          },
+        },
+      ],
+      singleActions: [
+        {
+          label: '更新账号密码',
+          action: obj => {
+            this.createDialog('CloudaccountUpdateDialog', {
+              selectedItems: [obj],
+              columns: this.columns,
+              list: this.list,
+            })
+          },
+          meta: obj => {
+            const ownerDomain = this.$store.getters.isAdminMode || obj.domain_id === this.$store.getters.userInfo.projectDomainId
+            let tooltip
+            if (!obj.enabled) tooltip = '请先启用云账号'
+            if (!ownerDomain) tooltip = '无权限操作'
+            return {
+              validate: obj.enabled && ownerDomain,
+              tooltip,
             }
           },
         },
