@@ -1,30 +1,31 @@
 <template>
-  <div>
-    <page-header title="云账号" />
-    <page-body>
-      <page-list
-        :list="list"
-        :columns="columns"
-        :group-actions="groupActions" />
-    </page-body>
-  </div>
+  <page-list
+    :list="list"
+    :columns="columns"
+    :group-actions="groupActions"
+    :single-actions="singleActions" />
 </template>
 
 <script>
+import expectStatus from '@/constants/expectStatus'
 import {
   getProjectTableColumn,
   getBrandTableColumn,
   getStatusTableColumn,
   getEnabledTableColumn,
   getPublicTableColumn,
+  getCopyWithContentTableColumn,
 } from '@/utils/common/tableColumn'
+import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'CloudaccountList',
+  mixins: [WindowsMixin],
   data () {
     return {
       list: this.$list.createList(this, {
         resource: 'cloudaccounts',
+        steadyStatus: Object.values(expectStatus.cloudaccount).flat(),
         filterOptions: {
           name: {
             label: '名称',
@@ -36,10 +37,7 @@ export default {
         },
       }),
       columns: [
-        {
-          field: 'name',
-          title: '名称',
-        },
+        getCopyWithContentTableColumn({ field: 'name', title: '名称' }),
         {
           field: 'access_url',
           title: '服务器地址',
@@ -66,10 +64,7 @@ export default {
           field: 'host_count',
           title: '宿主机',
         },
-        {
-          field: 'account',
-          title: '账号',
-        },
+        getCopyWithContentTableColumn({ field: 'account', title: '账号' }),
         getBrandTableColumn(),
         getEnabledTableColumn({ field: 'enable_auto_sync', title: '自动同步' }),
         {
@@ -96,17 +91,39 @@ export default {
           },
         },
         getPublicTableColumn(),
-        getProjectTableColumn(),
+        getProjectTableColumn({ field: 'projects' }),
       ],
       groupActions: [
         {
           label: '新建',
           action: () => {
-            this.$router.push({ name: 'NetworkCreate' })
+            this.$router.push({ name: 'CloudaccountCreate' })
           },
           meta: () => {
             return {
               buttonType: 'primary',
+            }
+          },
+        },
+      ],
+      singleActions: [
+        {
+          label: '更新账号密码',
+          action: obj => {
+            this.createDialog('CloudaccountUpdateDialog', {
+              selectedItems: [obj],
+              columns: this.columns,
+              list: this.list,
+            })
+          },
+          meta: obj => {
+            const ownerDomain = this.$store.getters.isAdminMode || obj.domain_id === this.$store.getters.userInfo.projectDomainId
+            let tooltip
+            if (!obj.enabled) tooltip = '请先启用云账号'
+            if (!ownerDomain) tooltip = '无权限操作'
+            return {
+              validate: obj.enabled && ownerDomain,
+              tooltip,
             }
           },
         },
