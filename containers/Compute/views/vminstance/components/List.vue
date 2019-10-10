@@ -346,7 +346,7 @@ export default {
                     label: '修改属性',
                     action: () => {
                       this.createDialog('VmUpdateDialog', {
-                        selectedItems: [obj],
+                        data: [obj],
                         columns: this.columns,
                         list: this.list,
                       })

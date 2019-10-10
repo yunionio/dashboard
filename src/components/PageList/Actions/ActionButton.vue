@@ -57,9 +57,4 @@ export default {
   color: rgba(0, 0, 0, 0.25);
   cursor: not-allowed;
 }
-.list-action {
-  & + .list-action {
-    margin-left: 5px;
-  }
-}
 </style>
