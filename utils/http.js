@@ -49,20 +49,14 @@ const cancelRquest = requestKey => {
   }
 }
 
-// const showDetailError = (errorMsg) => {
-//   Modal.confirm({
-//     width: 600,
-//     class: 'error-dialog-wrapper',
-//     closable: true,
-//     // title: errorMsg.class,
-//     content: h => <error-template error={errorMsg} />,
-//   })
-// }
-
 const showErrorNotify = errorMsg => {
+  const key = `notification-${uuid(32)}`
   notification.error({
+    key,
+    class: 'error-notification',
     message: errorMsg.class,
     description: errorMsg.detail,
+    duration: null,
     btn: h => {
       const id = `ErrorDialog-${uuid(32)}`
       return h('a-button', {
@@ -72,14 +66,17 @@ const showErrorNotify = errorMsg => {
         },
         class: 'error-color',
         on: {
-          click: () => store.dispatch('dialog/create', {
-            name: 'ErrorDialog',
-            parentWindowId: 'ErrorDialogWrapper',
-            id,
-            params: {
-              error: errorMsg,
-            },
-          }),
+          click: () => {
+            notification.close(key)
+            store.dispatch('dialog/create', {
+              name: 'ErrorDialog',
+              parentWindowId: 'ErrorDialogWrapper',
+              id,
+              params: {
+                error: errorMsg,
+              },
+            })
+          },
         },
       }, '查看详情')
     },
@@ -87,14 +84,13 @@ const showErrorNotify = errorMsg => {
 }
 
 const showHttpErrorMessage = (error) => {
-  console.dir({ error })
   if (error.response) {
     const status = error.response.status
     const errMsg = getHttpErrorMessage(error)
     if (error.config) {
       if (status === 404) {
         if (error.config.method.toLowerCase() !== 'get') {
-          if (errMsg) message.error(errMsg)
+          showErrorNotify(errMsg)
         }
       } else {
         showErrorNotify(errMsg)
