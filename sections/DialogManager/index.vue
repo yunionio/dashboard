@@ -11,8 +11,8 @@
 
 <script>
 const components = {}
-const requireDialogs = require.context('../../../containers', true, /.\/views\/.*\/dialogs\/\w+\.(jsx|vue)$/)
-const commonDialogs = require.context('./components', false, /.\/\w+\.(jsx|vue)$/)
+const requireDialogs = require.context('../../../containers', true, /.\/views\/.*\/dialogs\/\w+\.(jsx?|vue)$/)
+const commonDialogs = require.context('./components', false, /.\/\w+\.(jsx?|vue)$/)
 
 const registerDialogs = (dialogs) => {
   const keys = dialogs.keys()
