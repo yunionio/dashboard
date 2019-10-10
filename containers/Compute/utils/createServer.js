@@ -395,6 +395,7 @@ export const decorators = {
     backupEnable: [
       'backupEnable',
       {
+        valuePropName: 'checked',
         initialValue: false,
       },
     ],

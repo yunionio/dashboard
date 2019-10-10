@@ -10,7 +10,7 @@ import qs from 'qs'
 import store from '@/store'
 import router from '@/router'
 import { logout } from '@/utils/auth'
-import { getHttpErrorMessage } from '@/utils/error'
+import { getHttpErrorMessage, getHttpReqMessage } from '@/utils/error'
 import { uuid } from '@/utils/utils'
 
 const http = axios.create({
@@ -49,14 +49,15 @@ const cancelRquest = requestKey => {
   }
 }
 
-const showErrorNotify = errorMsg => {
+const showErrorNotify = error => {
+  const errorMsg = getHttpErrorMessage(error)
+  const reqMsg = getHttpReqMessage(error)
   const key = `notification-${uuid(32)}`
   notification.error({
     key,
     class: 'error-notification',
     message: errorMsg.class,
     description: errorMsg.detail,
-    duration: null,
     btn: h => {
       const id = `ErrorDialog-${uuid(32)}`
       return h('a-button', {
@@ -74,6 +75,7 @@ const showErrorNotify = errorMsg => {
               id,
               params: {
                 error: errorMsg,
+                request: reqMsg,
               },
             })
           },
@@ -86,20 +88,19 @@ const showErrorNotify = errorMsg => {
 const showHttpErrorMessage = (error) => {
   if (error.response) {
     const status = error.response.status
-    const errMsg = getHttpErrorMessage(error)
     if (error.config) {
       if (status === 404) {
         if (error.config.method.toLowerCase() !== 'get') {
-          showErrorNotify(errMsg)
+          showErrorNotify(error)
         }
       } else {
-        showErrorNotify(errMsg)
+        showErrorNotify(error)
       }
     }
     if (status === 401) {
       logout()
         .then(() => {
-          window.location.href = `${window.location.origin}/auth/login`
+          router.push('/auth')
         })
     }
   }
