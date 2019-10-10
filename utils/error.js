@@ -26,9 +26,10 @@ const replaceErrorMessage = (obj, arr) => {
   })
 }
 
-export const getHttpErrorMessage = (err, isBatchItem = false) => {
-  if (!isBatchItem && (!err.response || !err.response.data)) return
-  const errorData = isBatchItem ? err : err.response.data
+// 获取http请求报错信息
+export const getHttpErrorMessage = err => {
+  if (!err.response || !err.response.data) return
+  const errorData = err.response.data
   const errorBody = getErrorBody(errorData)
   if (!errorBody.class) return
   // 默认为错误的元信息
@@ -51,4 +52,17 @@ export const getHttpErrorMessage = (err, isBatchItem = false) => {
     detail: ret,
     resource: err.response.data,
   }
+}
+
+// 获取http请求信息
+export const getHttpReqMessage = error => {
+  const { headers, method, params, data, url } = error.config
+  const req = {
+    method,
+    url,
+    headers,
+  }
+  if (data) req.data = R.is(String, data) ? JSON.parse(data) : data
+  if (params) req.params = R.is(String, params) ? JSON.parse(params) : params
+  return req
 }
