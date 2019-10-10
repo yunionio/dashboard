@@ -96,6 +96,7 @@ export default {
           title: 'IP',
           slots: {
             default: ({ row }) => {
+              if (!row.eip && !row.ips) return '-'
               let ret = []
               if (row.eip) {
                 ret.push(
