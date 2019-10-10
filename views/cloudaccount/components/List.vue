@@ -111,7 +111,7 @@ export default {
           label: '更新账号密码',
           action: obj => {
             this.createDialog('CloudaccountUpdateDialog', {
-              selectedItems: [obj],
+              data: [obj],
               columns: this.columns,
               list: this.list,
             })
@@ -125,6 +125,150 @@ export default {
               validate: obj.enabled && ownerDomain,
               tooltip,
             }
+          },
+        },
+        {
+          label: '更多',
+          actions: obj => {
+            const ownerDomain = this.$store.getters.isAdminMode || obj.domain_id === this.$store.getters.userInfo.projectDomainId
+            return [
+              {
+                label: '全量同步',
+                action: () => {
+                  this.list.onManager('performAction', {
+                    id: obj.id,
+                    steadyStatus: this.list.steadyStatus,
+                    managerArgs: {
+                      action: 'sync',
+                      params: {
+                        full_sync: true,
+                      },
+                    },
+                  })
+                },
+                meta: () => {
+                  let tooltip
+                  if (!obj.enabled) tooltip = '请先启用云账号'
+                  if (obj.enable_auto_sync) tooltip = '请先取消设置自动同步'
+                  if (!ownerDomain) tooltip = '无权限操作'
+                  return {
+                    validate: (obj.enabled && !obj.enable_auto_sync) && ownerDomain,
+                    tooltip,
+                  }
+                },
+              },
+              {
+                label: '设置自动同步',
+                action: () => {
+                  this.createDialog('CloudaccountSetAutoSyncDialog', {
+                    data: [obj],
+                    columns: this.columns,
+                    list: this.list,
+                  })
+                },
+                meta: () => {
+                  let tooltip
+                  if (!obj.enabled) tooltip = '请先启用云账号'
+                  if (!ownerDomain) tooltip = '无权限操作'
+                  return {
+                    validate: obj.enabled && ownerDomain,
+                    tooltip,
+                  }
+                },
+              },
+              {
+                label: '连接测试',
+                action: () => {
+                  this.list.onManager('performAction', {
+                    id: obj.id,
+                    steadyStatus: this.list.steadyStatus,
+                    managerArgs: {
+                      action: 'sync',
+                    },
+                  })
+                },
+                meta: () => {
+                  let tooltip
+                  if (!obj.enabled) tooltip = '请先启用云账号'
+                  if (obj.enable_auto_sync) tooltip = '请先取消设置自动同步'
+                  if (!ownerDomain) tooltip = '无权限操作'
+                  return {
+                    validate: (obj.enabled && !obj.enable_auto_sync) && ownerDomain,
+                    tooltip,
+                  }
+                },
+              },
+              {
+                label: '设置为共享',
+                action: () => {
+                  this.list.onManager('performAction', {
+                    id: obj.id,
+                    managerArgs: {
+                      action: 'public',
+                    },
+                  })
+                },
+                meta: () => {
+                  return {
+                    validate: !obj.is_public,
+                  }
+                },
+              },
+              {
+                label: '设置为私有',
+                action: () => {
+                  this.list.onManager('performAction', {
+                    id: obj.id,
+                    managerArgs: {
+                      action: 'private',
+                    },
+                  })
+                },
+                meta: () => {
+                  return {
+                    validate: obj.is_public,
+                  }
+                },
+              },
+              {
+                label: '启用',
+                action: () => {
+                  this.list.onManager('performAction', {
+                    id: obj.id,
+                    managerArgs: {
+                      action: 'enable',
+                    },
+                  })
+                },
+                meta: () => {
+                  let tooltip
+                  if (!ownerDomain) tooltip = '无权限操作'
+                  return {
+                    validate: !obj.enabled && ownerDomain,
+                    tooltip,
+                  }
+                },
+              },
+              {
+                label: '禁用',
+                action: () => {
+                  this.list.onManager('performAction', {
+                    id: obj.id,
+                    managerArgs: {
+                      action: 'disable',
+                    },
+                  })
+                },
+                meta: () => {
+                  let tooltip
+                  if (!ownerDomain) tooltip = '无权限操作'
+                  return {
+                    validate: obj.enabled && ownerDomain,
+                    tooltip,
+                  }
+                },
+              },
+            ]
           },
         },
       ],

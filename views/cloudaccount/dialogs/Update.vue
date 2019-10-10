@@ -2,8 +2,8 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">更新账号密码</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.selectedItems.length" action="更新账号密码" />
-      <vxe-grid class="mb-2" :data="params.selectedItems" :columns="params.columns.slice(0, 3)" />
+      <dialog-selected-tips :count="params.data.length" action="更新账号密码" />
+      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
         <a-form-item label="AppID" v-bind="formItemLayout" v-if="isQcloud">
@@ -60,7 +60,7 @@ export default {
   name: 'CloudaccountUpdateDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
-    const provider = this.params.selectedItems[0].provider.toLowerCase()
+    const provider = this.params.data[0].provider.toLowerCase()
     return {
       loading: false,
       form: {
@@ -170,7 +170,7 @@ export default {
       this.loading = true
       try {
         const values = await this.validateForm()
-        const ids = this.params.selectedItems.map(item => item.id)
+        const ids = this.params.data.map(item => item.id)
         await this.params.list.onManager('batchPerformAction', {
           id: ids,
           managerArgs: {
