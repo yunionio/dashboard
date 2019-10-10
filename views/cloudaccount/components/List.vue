@@ -268,6 +268,28 @@ export default {
                   }
                 },
               },
+              {
+                label: '删除',
+                action: () => {
+                  this.createDialog('DeleteResDialog', {
+                    data: [obj],
+                    columns: this.columns,
+                    title: '删除云账号',
+                    list: this.list,
+                  })
+                },
+                meta: () => {
+                  let tooltip
+                  if (obj.enabled) tooltip = '请先禁用该账户'
+                  if (obj.enable_auto_sync) tooltip = '请先关闭自动同步'
+                  if (obj.sync_status === 'syncing') tooltip = '当前账号正在同步中，请稍后再试'
+                  if (!ownerDomain) tooltip = '无权限操作'
+                  return {
+                    validate: obj.can_delete && ownerDomain,
+                    tooltip,
+                  }
+                },
+              },
             ]
           },
         },
