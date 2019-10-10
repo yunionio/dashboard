@@ -1,3 +1,4 @@
+import * as R from 'ramda'
 import { mapActions } from 'vuex'
 import { uuid } from '@/utils/utils'
 
@@ -15,11 +16,18 @@ export default {
       return this.$store.getters.windows[this.windowId]
     },
   },
+  beforeDestroy () {
+    this.destroyDialogs()
+  },
   destroyed () {
     this.destroyWindow(this.windowId)
   },
   created () {
-    this.createWindow()
+    this.createWindow().then(() => {
+      this.updateWindow({
+        dialogIds: [],
+      })
+    })
   },
   methods: {
     ...mapActions({
@@ -55,7 +63,21 @@ export default {
         parentWindowId: this.windowId,
         name,
         params,
+      }).then(dialogId => {
+        const dialogIds = R.clone(this.windowData.dialogIds)
+        dialogIds.push(dialogId)
+        this.updateWindow({
+          dialogIds,
+        })
       })
+    },
+    destroyDialogs () {
+      if (this.windowData && this.windowData.dialogIds && this.windowData.dialogIds.length > 0) {
+        const tasks = this.windowData.dialogIds.map(id => this.destroyDialog(id))
+        tasks.push(this.updateWindow({ dialogIds: [] }))
+        return Promise.all(tasks)
+      }
+      return Promise.resolve()
     },
   },
 }

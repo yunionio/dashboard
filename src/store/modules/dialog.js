@@ -2,11 +2,13 @@ import Vue from 'vue'
 
 export default {
   state: {
+    dialogIds: [],
     dialogs: {},
   },
   mutations: {
     CREATE (state, payload) {
       Vue.set(state.dialogs, payload.id, payload)
+      state.dialogIds.push(payload.id)
     },
     UPDATE (state, payload) {
       const keys = Object.keys(payload)
@@ -17,12 +19,18 @@ export default {
       }
     },
     DESTROY (state, id) {
+      const index = state.dialogIds.indexOf(id)
+      if (index <= -1) return
+      state.dialogIds.splice(index, 1)
       Vue.delete(state.dialogs, id)
     },
   },
   actions: {
     create ({ commit }, payload) {
-      commit('CREATE', payload)
+      return new Promise((resolve, reject) => {
+        commit('CREATE', payload)
+        resolve(payload.id)
+      })
     },
     update ({ commit }, payload) {
       commit('UPDATE', payload)

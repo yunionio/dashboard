@@ -2,8 +2,8 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">修改属性</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.selectedItems.length" action="修改属性" />
-      <vxe-grid class="mb-2" :data="params.selectedItems" :columns="params.columns.slice(0, 3)" />
+      <dialog-selected-tips :count="params.data.length" action="修改属性" />
+      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
         <a-form-item label="删除保护" v-bind="formItemLayout">
@@ -126,11 +126,11 @@ export default {
   },
   computed: {
     isKvm () {
-      return this.params.selectedItems.length >= 1 && this.params.selectedItems[0].hypervisor === 'kvm'
+      return this.params.data.length >= 1 && this.params.data[0].hypervisor === 'kvm'
     },
   },
   created () {
-    this.initFormValue(this.params.selectedItems[0])
+    this.initFormValue(this.params.data[0])
   },
   methods: {
     validateForm () {
@@ -148,7 +148,7 @@ export default {
       this.loading = true
       try {
         const values = await this.validateForm()
-        const ids = this.params.selectedItems.map(item => item.id)
+        const ids = this.params.data.map(item => item.id)
         await this.params.list.onManager('batchUpdate', {
           id: ids,
           managerArgs: {

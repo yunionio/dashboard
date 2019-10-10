@@ -37,7 +37,7 @@ class WaitStatusJob {
    */
   async checkStatus () {
     if (!this.data.list.manager) return
-    const params = this.data.list.getParams()
+    const params = this.data.list.getParams ? this.data.list.getParams() : {}
     try {
       const { data = {} } = await this.data.list.manager.get({
         id: this.data.id,
