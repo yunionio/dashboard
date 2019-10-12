@@ -44,11 +44,6 @@ const app = new Vue({
 })
 
 async function start () {
-  try {
-    await store.dispatch('auth/getInfo')
-  } catch (error) {
-    router.push('/auth')
-  }
   app.$mount('#app')
 }
 
