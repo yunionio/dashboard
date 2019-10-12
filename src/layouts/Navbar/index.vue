@@ -10,11 +10,26 @@
       <a-dropdown :trigger="['click']">
         <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
           <a-icon type="rocket" class="icon" />
-          <span class="ml-2">{{ userInfo.projectName }}</span>
+          <span class="ml-2">{{ displayProjectLabel }}</span>
           <a-icon type="down" class="ml-2 mt-1" />
         </div>
         <a-menu slot="overlay" @click="projectChange">
-          <a-menu-item v-for="item of projects" :key="item.id">{{ item.name }}</a-menu-item>
+          <a-menu-item v-for="item of projects" :key="`${item.id}$$project`">
+            <a-radio :checked="item.id === userInfo.projectId && scope === 'project'" />{{ item.name }}
+          </a-menu-item>
+          <template v-if="systemProject || domainProject">
+            <a-menu-divider />
+            <template v-if="!systemProject && domainProject">
+              <a-menu-item scope="domain" :key="`${domainProject.id}$$domain`">
+                <a-radio :checked="domainProject.id === userInfo.projectId &&  scope === 'domain'" />域管理后台
+              </a-menu-item>
+            </template>
+            <template v-else>
+              <a-menu-item scope="system" :key="`${systemProject.id}$$system`">
+                <a-radio :checked="systemProject.id === userInfo.projectId &&  scope === 'system'" />管理后台
+              </a-menu-item>
+            </template>
+          </template>
         </a-menu>
       </a-dropdown>
     </div>
@@ -36,33 +51,50 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import { logout } from '@/utils/auth'
 
 export default {
   name: 'Navbar',
   computed: {
-    ...mapGetters(['userInfo']),
+    ...mapGetters(['userInfo', 'scope']),
     projects () {
       return R.sort((a, b) => {
         return a.name.localeCompare(b.name)
       }, this.userInfo.projects)
     },
+    systemProject () {
+      return R.find(R.propEq('system_capable', true))(this.projects)
+    },
+    domainProject () {
+      return R.find(R.propEq('domain_capable', true))(this.projects)
+    },
+    displayProjectLabel () {
+      let ret = this.userInfo.projectName
+      if (this.$store.getters['auth/isAdmin']) {
+        ret = '管理后台'
+      }
+      if (this.$store.getters['auth/isDomain']) {
+        ret = '域管理后台'
+      }
+      return ret
+    },
   },
   methods: {
     userMenuClick (item) {
       if (item.key === 'logout') {
-        logout()
+        this.$store.dispatch('auth/logout')
         this.$router.push('/auth')
       }
     },
     projectChange (item) {
-      this.reLogin(item.key)
+      const [projectId, scope] = item.key.split('$$')
+      if (this.userInfo.projectId === projectId && this.scope === scope) return
+      this.reLogin(projectId, scope)
     },
-    async reLogin (pid) {
-      await this.$store.dispatch('auth/login', {
-        tenantId: pid,
+    async reLogin (projectId, scope) {
+      await this.$store.dispatch('auth/reLogin', {
+        projectId,
+        scope,
       })
-      await this.$store.dispatch('auth/getInfo')
     },
   },
 }
