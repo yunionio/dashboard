@@ -43,7 +43,6 @@ export default {
         await this.$store.dispatch('auth/validPasscode', {
           passcode: this.securityCode,
         })
-        await this.$store.dispatch('auth/getInfo')
         this.loading = false
         this.$router.push('/')
       } catch (error) {
