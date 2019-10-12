@@ -11,7 +11,7 @@ import qs from 'qs'
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { Manager } from '@/utils/manager'
 import { sizestr } from '@/utils/utils'
-import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getBrandTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
+import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getBrandTableColumn, getCopyWithContentTableColumn, getIpsTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 import SystemIcon from '@/sections/SystemIcon'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
@@ -74,45 +74,8 @@ export default {
         },
       }),
       columns: [
-        {
-          width: 100,
-          field: 'name',
-          title: '名称',
-          slots: {
-            default: ({ row }) => {
-              return [(
-                <copy-with-content message={ row.name }>
-                  <span>{ row.name }</span>
-                  { row.disable_delete ? <a-tooltip title='删除保护，如需解除，请点击【修改属性】'>
-                    <a-icon class='ml-1' type='lock' theme='twoTone' twoToneColor='#52c41a' />
-                  </a-tooltip> : null }
-                </copy-with-content>
-              )]
-            },
-          },
-        },
-        {
-          field: 'ip',
-          title: 'IP',
-          slots: {
-            default: ({ row }) => {
-              if (!row.eip && !row.ips) return '-'
-              let ret = []
-              if (row.eip) {
-                ret.push(
-                  <copy-with-content message={ row.eip }>{ row.eip }<span class='ml-2 text-weak'>（弹性）</span></copy-with-content>
-                )
-              }
-              if (row.ips) {
-                const ips = row.ips.split(',').map(ip => {
-                  return <copy-with-content message={ ip }>{ ip }<span class='ml-2 text-weak'>（内网）</span></copy-with-content>
-                })
-                ret = ret.concat(ips)
-              }
-              return ret
-            },
-          },
-        },
+        getNameDescriptionTableColumn({ addLock: true, vm: this }),
+        getIpsTableColumn({ field: 'ip', title: 'IP' }),
         {
           field: 'instance_type',
           title: '配置',
