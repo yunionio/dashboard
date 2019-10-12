@@ -55,6 +55,7 @@ export default {
           path: '/cloudaccount',
           meta: {
             label: '云账号',
+            permission: 'cloudaccounts_list',
           },
           component: Layout,
           children: [
