@@ -11,16 +11,7 @@
             </div>
             <div class="qr-wrap">
               <div>
-                <div class="qr-code-bg-wrap" :style="{ backgroundImage: `url(${androidAppQr})` }">
-                  <div v-if="!androidQrShow" @click="showQrCode('androidQrShow')">点击获取二维码</div>
-                </div>
-                <p>安卓</p>
-              </div>
-              <div>
-                <div class="qr-code-bg-wrap" :style="{ backgroundImage: `url(${iosAppQr})` }">
-                  <div v-if="!iosQrShow" @click="showQrCode('iosQrShow')">点击获取二维码</div>
-                </div>
-                <p>IOS</p>
+                <div class="qr-code-bg-wrap" :style="{ backgroundImage: `url(${oneloginprotectAppQr})` }" />
               </div>
             </div>
             <div class="qr-tip">扫相应二维码获取应用，或打开应用商店搜索Google Authenticator下载应用</div>
@@ -65,13 +56,10 @@ export default {
   name: 'BindSecret',
   data () {
     return {
-      androidAppQr: require('./assets/google-authenticator-android-qr.png'),
-      iosAppQr: require('./assets/google-authenticator-ios-qr.png'),
+      oneloginprotectAppQr: require('./assets/onelogin-protect-qrcode.png'),
       securityCode: '',
       error: false,
       loading: false,
-      androidQrShow: false,
-      iosQrShow: false,
     }
   },
   computed: {
@@ -98,7 +86,6 @@ export default {
           passcode: this.securityCode,
         })
         storage.remove(`${STORE_SECRET_PERFIX_KEY}${this.auth.inputUsername}`)
-        await this.$store.dispatch('auth/getInfo')
         this.loading = false
         this.$router.push('/')
       } catch (error) {
@@ -109,9 +96,6 @@ export default {
     onClear () {
       this.error = false
       this.$refs['security-code'].focusInput(1)
-    },
-    showQrCode (key) {
-      this[key] = true
     },
   },
 }
@@ -154,16 +138,16 @@ export default {
   margin: 15px 0;
   display: flex;
   > div {
-    height: 114px;
+    height: 150px;
     &:first-child {
       margin-right: 10px;
     }
     > img {
-      width: 100px;
+      width: 150px;
     }
     .qr-code-bg-wrap {
-      width: 100px;
-      height: 100px;
+      width: 150px;
+      height: 150px;
       background-repeat: no-repeat;
       background-size: contain;
       background-position: center;
