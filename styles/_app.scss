@@ -17,37 +17,6 @@
   }
 }
 
-.copy-icon {
-  display: inline-block;
-  cursor: pointer;
-  position: relative;
-  &:active {
-    .anticon-copy {
-      transform: translateY(2px);
-    }
-  }
-  .copy-tips {
-    position: absolute;
-    top: 0;
-    left: -20px;
-    transition: all 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-    opacity: 0;
-    text-align: center;
-    width: max-content;
-    padding: 3px 5px;
-    border-radius: 3px;
-    background-color: #fff;
-    box-shadow: 0 2px 4px 0 hsla(0,0%,93%,.5), 0 2px 4px 0 hsla(0,0%,93%,.5);
-    color: #999;
-  }
-  &.copied {
-    .copy-tips {
-      opacity: 1;
-      transform: translateY(-28px);
-    }
-  }
-}
-
 .error-notification {
   .ant-notification-notice-description {
     word-wrap: break-word;
