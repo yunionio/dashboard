@@ -25,6 +25,7 @@ export default {
           path: '/vminstance',
           meta: {
             label: '虚拟机',
+            permission: 'servers_list',
           },
           component: Layout,
           children: [
@@ -44,6 +45,7 @@ export default {
           path: '/baremetal',
           meta: {
             label: '裸金属',
+            permission: 'servers_list',
           },
           component: Layout,
           children: [
@@ -70,6 +72,7 @@ export default {
           path: '/image',
           meta: {
             label: '镜像',
+            permission: 'images_list',
           },
           component: Layout,
           children: [
@@ -91,6 +94,7 @@ export default {
           path: '/network',
           meta: {
             label: 'IP子网',
+            permission: 'networks_list',
           },
           component: Layout,
           children: [
@@ -117,6 +121,7 @@ export default {
           path: '/host',
           meta: {
             label: '宿主机',
+            permission: 'hosts_list',
           },
           component: Layout,
           children: [
@@ -138,6 +143,7 @@ export default {
           path: '/serverrecovery',
           meta: {
             label: '主机',
+            permission: 'servers_list',
           },
           component: Layout,
           children: [
