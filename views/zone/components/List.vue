@@ -1,7 +1,9 @@
 <template>
   <page-list
     :list="list"
-    :columns="columns" />
+    :columns="columns"
+    :group-actions="groupActions"
+    :single-actions="singleActions" />
 </template>
 
 <script>
@@ -58,6 +60,40 @@ export default {
         {
           field: 'wires',
           title: '二层网络',
+        },
+      ],
+      groupActions: [
+        {
+          label: '新建',
+          action: () => {
+            this.createDialog('CreateZoneDialog', {
+              title: '创建可用区',
+              list: this.list,
+            })
+          },
+          meta: () => {
+            return {
+              buttonType: 'primary',
+            }
+          },
+        },
+      ],
+      singleActions: [
+        {
+          label: '删除',
+          action: obj => {
+            this.createDialog('DeleteResDialog', {
+              data: [obj],
+              columns: this.columns,
+              title: '删除可用区',
+              list: this.list,
+            })
+          },
+          meta: obj => {
+            return {
+              validate: obj.can_delete,
+            }
+          },
         },
       ],
     }
