@@ -10,6 +10,7 @@ import { mapGetters } from 'vuex'
 import Level1Menu from './level-1-menu'
 import Level2Menu from './level-2-menu'
 import { menusConfig } from '@/router/routes'
+import { hasPermission } from '@/utils/auth'
 
 const R = require('ramda')
 
@@ -39,8 +40,8 @@ export default {
   watch: {
     $route: {
       handler (val, oldVal) {
-        const newParentPath = val.matched[0]['path']
-        const oldParentPath = oldVal && oldVal.matched && oldVal.matched[0]['path']
+        const newParentPath = val.matched[0] && val.matched[0]['path']
+        const oldParentPath = oldVal && oldVal.matched && oldVal.matched[0] && oldVal.matched[0]['path']
         if (newParentPath !== oldParentPath) {
           const firstMatched = val.matched[0]
           for (let i = 0, len = this.menuitems.length; i < len; i++) {
@@ -75,7 +76,10 @@ export default {
     },
     showMenu (item) {
       const hidden = this.getMenuHidden(item)
-      return hidden
+      if (R.isNil(item.meta.permission) || R.isEmpty(item.meta.permission)) {
+        return hidden && true
+      }
+      return hidden && hasPermission({ key: item.meta.permission })
     },
   },
 }

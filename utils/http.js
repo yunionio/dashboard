@@ -9,7 +9,6 @@ import axios from 'axios'
 import qs from 'qs'
 import store from '@/store'
 import router from '@/router'
-import { logout } from '@/utils/auth'
 import { getHttpErrorMessage, getHttpReqMessage } from '@/utils/error'
 import { uuid } from '@/utils/utils'
 
@@ -98,7 +97,7 @@ const showHttpErrorMessage = (error) => {
       }
     }
     if (status === 401) {
-      logout()
+      store.dispatch('auth/logout')
         .then(() => {
           router.push('/auth')
         })
