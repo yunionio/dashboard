@@ -6,7 +6,7 @@
 
 <script>
 import { sizestr } from '@/utils/utils'
-import { getStatusTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
+import { getStatusTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 import SystemIcon from '@/sections/SystemIcon'
 
 export default {
@@ -47,7 +47,7 @@ export default {
         },
       }),
       columns: [
-        getCopyWithContentTableColumn({ field: 'name', title: '名称' }),
+        getNameDescriptionTableColumn({ width: 200, addLock: true, vm: this }),
         {
           field: 'disk_format',
           title: '格式',

@@ -9,7 +9,7 @@
 import { sizestr } from '@/utils/utils'
 import SystemIcon from '@/sections/SystemIcon'
 import expectStatus from '@/constants/expectStatus'
-import { getBrandTableColumn, getStatusTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
+import { getBrandTableColumn, getStatusTableColumn, getCopyWithContentTableColumn, getIpsTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   name: 'ServerRecoveryList',
@@ -69,25 +69,7 @@ export default {
       }),
       columns: [
         getCopyWithContentTableColumn({ field: 'name', title: '名称' }),
-        {
-          field: 'ip',
-          title: 'IP',
-          slots: {
-            default: ({ row }) => {
-              let ret = []
-              if (row.eip) {
-                ret.push(<copy-with-content message={ row.eip }>{ row.eip }<span class='ml-2 text-weak'>（弹性）</span></copy-with-content>)
-              }
-              if (row.ips) {
-                const ips = row.ips.split(',').map(ip => {
-                  return <copy-with-content message={ ip }>{ ip }<span class='ml-2 text-weak'>（内网）</span></copy-with-content>
-                })
-                ret = ret.concat(ips)
-              }
-              return ret
-            },
-          },
-        },
+        getIpsTableColumn({ field: 'ips', title: 'IP' }),
         {
           field: 'instance_type',
           title: '配置',
