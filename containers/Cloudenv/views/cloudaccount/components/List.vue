@@ -15,6 +15,7 @@ import {
   getEnabledTableColumn,
   getPublicTableColumn,
   getCopyWithContentTableColumn,
+  getNameDescriptionTableColumn,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 
@@ -37,7 +38,7 @@ export default {
         },
       }),
       columns: [
-        getCopyWithContentTableColumn({ field: 'name', title: '名称' }),
+        getNameDescriptionTableColumn({ vm: this }),
         {
           field: 'access_url',
           title: '服务器地址',

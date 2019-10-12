@@ -11,17 +11,18 @@ export const getProjectTableColumn = ({ field = 'tenant', title = '项目' } = {
         let project = row[field]
         if (R.is(Array, project)) {
           for (let i = 0, len = project.length; i < len; i++) {
-            ret.push(<copy-with-content message={ project[i]['tenant'] }>{ project[i]['tenant'] }</copy-with-content>)
+            const row = project[i]
+            ret.push(<list-body-cell-wrap copy row={row} field="tenant" />)
           }
         } else {
-          ret.push(<copy-with-content message={ project }>{ project }</copy-with-content>)
+          ret.push(<list-body-cell-wrap copy field="project" row={{ project }} message={ project } />)
         }
         const domain = row.project_domain || row.domain
         if (domain) {
           ret.push(
-            <copy-with-content message={ domain }>
+            <list-body-cell-wrap hide-field copy field="domain" row={{ domain }}>
               <span class='text-weak'>{ domain }</span>
-            </copy-with-content>
+            </list-body-cell-wrap>
           )
         }
         return ret
@@ -38,15 +39,15 @@ export const getRegionTableColumn = ({ field = 'region', title = '区域' } = {}
       default: ({ row }, h) => {
         const ret = []
         ret.push(
-          <copy-with-content message={ row[field] }>
+          <list-body-cell-wrap hide-field copy field={field} row={row}>
             <span style={{ color: '#0A1F44' }}>{ row[field] }</span>
-          </copy-with-content>
+          </list-body-cell-wrap>
         )
         if (row.zone) {
           ret.push(
-            <copy-with-content message={ row.zone }>
+            <list-body-cell-wrap hide-field copy field="zone" row={row}>
               <span style={{ color: '#53627C' }}>{ row.zone }</span>
-            </copy-with-content>
+            </list-body-cell-wrap>
           )
         }
         return ret
@@ -104,6 +105,32 @@ export const getPublicTableColumn = ({ field = 'is_public', title = '是否共�
   }
 }
 
+export const getNameDescriptionTableColumn = ({ slotCallback, vm, width, addLock } = {}) => {
+  return {
+    width: width || 'auto',
+    minWidth: 100,
+    field: 'name',
+    title: '名称',
+    slots: {
+      default: ({ row }, h) => {
+        let lockSlot = null
+        if (addLock && row.disable_delete) {
+          lockSlot = <a-tooltip title='删除保护，如需解除，请点击【修改属性】'>
+            <a-icon class='ml-1' type='lock' theme='twoTone' twoToneColor='#52c41a' />
+          </a-tooltip>
+        }
+        return [
+          <list-body-cell-wrap copy edit row={row} list={vm.list}>
+            { slotCallback ? slotCallback(row) : null }
+            { lockSlot }
+          </list-body-cell-wrap>,
+          <list-body-cell-wrap edit field="description" row={row} list={vm.list} />,
+        ]
+      },
+    },
+  }
+}
+
 export const getCopyWithContentTableColumn = ({ field = 'name', title = '名称' } = {}) => {
   return {
     field,
@@ -112,8 +139,33 @@ export const getCopyWithContentTableColumn = ({ field = 'name', title = '名称'
       default: ({ row }, h) => {
         if (!row[field]) return '-'
         return [
-          <copy-with-content message={ row[field] }>{ row[field] }</copy-with-content>,
+          <list-body-cell-wrap copy field={field} row={row} />,
         ]
+      },
+    },
+  }
+}
+
+export const getIpsTableColumn = ({ field = 'ips', title = 'IP' } = {}) => {
+  return {
+    field,
+    title,
+    slots: {
+      default: ({ row }, h) => {
+        if (!row.eip && !row.ips) return '-'
+        let ret = []
+        if (row.eip) {
+          ret.push(
+            <list-body-cell-wrap field="eip" copy><span class='ml-2 text-weak'>（弹性）</span></list-body-cell-wrap>
+          )
+        }
+        if (row.ips) {
+          const ips = row.ips.split(',').map(ip => {
+            return <list-body-cell-wrap copy row={{ ip }} field="ip">{ ip }<span class='ml-2 text-weak'>（内网）</span></list-body-cell-wrap>
+          })
+          ret = ret.concat(ips)
+        }
+        return ret
       },
     },
   }

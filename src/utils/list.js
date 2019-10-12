@@ -37,7 +37,7 @@ class WaitStatusJob {
    */
   async checkStatus () {
     if (!this.data.list.manager) return
-    const params = this.data.list.getParams ? this.data.list.getParams() : {}
+    const params = this.data.list.getOptionParams()
     try {
       const { data = {} } = await this.data.list.manager.get({
         id: this.data.id,
@@ -227,6 +227,16 @@ class CreateList {
     this.fetchData(this.offset, this.getLimit())
   }
   /**
+   * @description 获取api资源相关的参数
+   * @memberof CreateList
+   */
+  getOptionParams () {
+    if (R.is(Function, this.getParams)) {
+      return this.getParams() || {}
+    }
+    return this.getParams || {}
+  }
+  /**
    * @description 生成所有的请求参数
    * @param {Number} offset
    * @param {Number} limit
@@ -236,12 +246,7 @@ class CreateList {
   genParams (offset, limit) {
     let params = {
       scope: this.templateContext.$store.getters.scope,
-    }
-    if (R.is(Function, this.getParams)) {
-      params = {
-        ...params,
-        ...this.getParams(),
-      }
+      ...this.getOptionParams(),
     }
     if (limit) {
       params.limit = limit
@@ -423,6 +428,15 @@ class CreateList {
       ret['filter'] = filters
     }
     return ret
+  }
+  singleUpdate (id, data, steadyStatus) {
+    return this.onManager('update', {
+      id,
+      steadyStatus,
+      managerArgs: {
+        data,
+      },
+    })
   }
   /**
    * @description 调用manager方法的桥接方法，调用此方法可以同时更新 list 的对应数据

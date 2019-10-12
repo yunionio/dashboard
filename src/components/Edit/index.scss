@@ -1,0 +1,8 @@
+.edit-icon {
+  cursor: pointer;
+  &:active {
+    .anticon-edit {
+      transform: translateY(2px);
+    }
+  }
+}
