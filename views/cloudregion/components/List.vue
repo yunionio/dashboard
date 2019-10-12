@@ -1,0 +1,54 @@
+<template>
+  <page-list
+    :list="list"
+    :columns="columns" />
+</template>
+
+<script>
+import {
+  getEnabledTableColumn,
+  getNameDescriptionTableColumn,
+} from '@/utils/common/tableColumn'
+import WindowsMixin from '@/mixins/windows'
+
+export default {
+  name: 'CloudregionList',
+  mixins: [WindowsMixin],
+  data () {
+    return {
+      list: this.$list.createList(this, {
+        resource: 'cloudregions',
+        getParams: { cloud_env: 'private_or_onpremise' },
+        filterOptions: {
+          name: {
+            label: '名称',
+            filter: true,
+            formatter: val => {
+              return `name.contains(${val})`
+            },
+          },
+        },
+      }),
+      columns: [
+        getNameDescriptionTableColumn({ vm: this, width: 300 }),
+        getEnabledTableColumn({ title: '状态' }),
+        {
+          field: 'guest_count',
+          title: '云服务器',
+        },
+        {
+          field: 'vpc_count',
+          title: '专有网络(VPC)',
+        },
+        {
+          field: 'zone_count',
+          title: '可用区',
+        },
+      ],
+    }
+  },
+  created () {
+    this.list.fetchData()
+  },
+}
+</script>
