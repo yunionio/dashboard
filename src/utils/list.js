@@ -175,8 +175,7 @@ class CreateList {
     this.offset = 0
     // 重置数据
     this.data = {}
-    this.selectedItems = []
-    this.selected = []
+    this.clearSelected()
   }
   async fetchData (offset, limit) {
     this.loading = true
@@ -394,6 +393,28 @@ class CreateList {
     this.filter = filter
     this.reset()
     this.fetchData(0, 0)
+  }
+  /**
+   * @description 勾选的数据发生改变事件
+   *
+   * @param {*} selection
+   * @memberof CreateList
+   */
+  changeSelected (selection) {
+    const ids = []
+    for (let i = 0, len = selection.length; i < len; i++) {
+      ids.push(selection[i][this.idKey])
+    }
+    this.selectedItems = selection
+    this.selected = ids
+  }
+  /**
+   * @description 清空勾选的数据
+   * @memberof CreateList
+   */
+  clearSelected () {
+    this.selectedItems = []
+    this.selected = []
   }
   /**
    * @description 生成自定义filter的params

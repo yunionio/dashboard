@@ -1,5 +1,6 @@
 .edit-icon {
   cursor: pointer;
+  display: inline-block;
   &:active {
     .anticon-edit {
       transform: translateY(2px);

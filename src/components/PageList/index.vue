@@ -4,19 +4,22 @@
       <div class="mb-2 d-flex">
         <refresh-button :loading="loading" @refresh="refresh" />
         <template v-if="groupActions">
-          <actions :options="groupActions" class="ml-2" />
+          <actions :options="groupActions" class="ml-2" @action-click="handleClearSelected" />
         </template>
       </div>
       <search-box v-if="filterOptions" :options="filterOptions" :value="filter" @input="handleFilterChange" />
     </page-toolbar>
     <vxe-grid
+      ref="grid"
       highlight-hover-row
       show-header-overflow="title"
       :data="data"
       :columns="tableColumns"
       :pager-config="tablePage"
       @current-page-change="handleCurrentPageChange"
-      @page-size-change="handlePageSizeChange">
+      @page-size-change="handlePageSizeChange"
+      @select-change="handleSelectChange"
+      @select-all="handleSelectChange">
       <template v-slot:empty>
         <loader :loading="loading" />
       </template>
@@ -125,6 +128,13 @@ export default {
     },
     handleFilterChange (filter) {
       this.list.changeFilter(filter)
+    },
+    handleSelectChange ({ selection }) {
+      this.list.changeSelected(selection)
+    },
+    handleClearSelected () {
+      this.list.clearSelected()
+      this.$refs.grid.clearSelection()
     },
   },
 }
