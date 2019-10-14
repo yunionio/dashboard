@@ -33,13 +33,14 @@ export default {
       if (this.disabled) return
       this.$emit('hidden-dropdown')
       this.option.action(this.row)
+      this.$emit('action-click')
     },
   },
   render () {
     let v = []
     let action
     if (this.buttonMode) {
-      action = <a-button class='list-action' type={ this.buttonType } disable={ this.disabled } onClick={ this.handleClick }>{ this.label }</a-button>
+      action = <a-button class='list-action' type={ this.buttonType } disabled={ this.disabled } onClick={ this.handleClick }>{ this.label }</a-button>
     } else {
       action = <a class={{ disabled: this.disabled, 'list-action': true }} onClick={ this.handleClick }>{ this.label }</a>
     }
