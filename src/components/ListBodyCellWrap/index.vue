@@ -2,21 +2,20 @@
   <div v-on="events">
     <span v-if="!hideField" :class="{ 'text-weak': field === 'description' }">{{ row[field] || '-' }}</span>
     <slot />
-    <div class="d-flex">
-      <edit
-        slot="edit"
-        v-if="showEdit"
-        @update="update"
-        :label="labelCn"
-        :input-rules="inputRules"
-        :visible.sync="editVisible"
-        :defaultValue="row[field]" />
-      <copy
-        slot="copy"
-        class="ml-1"
-        v-if="showCopy"
-        :message="row[field]" />
-    </div>
+    <edit
+      slot="edit"
+      class="ml-1"
+      v-if="showEdit"
+      @update="update"
+      :label="labelCn"
+      :input-rules="inputRules"
+      :visible.sync="editVisible"
+      :defaultValue="row[field]" />
+    <copy
+      slot="copy"
+      class="ml-1"
+      v-if="showCopy"
+      :message="row[field]" />
   </div>
 </template>
 

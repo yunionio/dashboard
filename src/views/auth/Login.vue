@@ -76,9 +76,8 @@ export default {
       if (lastLoginUserName !== currentUserName) {
         Cookies.remove('tenant')
         Cookies.remove('scope')
-      } else {
-        storage.set(STORE_LAST_LOGIN_USERNAME_KEY, currentUserName)
       }
+      storage.set(STORE_LAST_LOGIN_USERNAME_KEY, currentUserName)
     },
     handleSubmit (e) {
       e.preventDefault()
