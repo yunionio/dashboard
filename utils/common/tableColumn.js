@@ -105,7 +105,7 @@ export const getPublicTableColumn = ({ field = 'is_public', title = '是否共�
   }
 }
 
-export const getNameDescriptionTableColumn = ({ slotCallback, vm, width, addLock, showDesc = true } = {}) => {
+export const getNameDescriptionTableColumn = ({ slotCallback, vm, width, addLock, hideField, showDesc = true } = {}) => {
   return {
     width: width || 'auto',
     minWidth: 100,
@@ -120,11 +120,11 @@ export const getNameDescriptionTableColumn = ({ slotCallback, vm, width, addLock
           </a-tooltip>
         }
         return [
-          <list-body-cell-wrap copy edit row={row} list={vm.list}>
+          <list-body-cell-wrap copy edit row={row} list={vm.list} hideField={ hideField }>
             { slotCallback ? slotCallback(row) : null }
             { lockSlot }
           </list-body-cell-wrap>,
-          showDesc ? <list-body-cell-wrap edit field="description" row={row} list={vm.list} /> : null,
+          showDesc ? <list-body-cell-wrap edit field="description" row={row} list={vm.list} hideField={ hideField } /> : null,
         ]
       },
     },

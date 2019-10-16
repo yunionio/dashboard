@@ -34,6 +34,8 @@ Vue.use(eventBus)
 Vue.use(list)
 Vue.use(clipboard)
 
+Vue.prototype.$log = window.console.log
+
 VXETable.use(VXETablePluginAntd)
 
 const app = new Vue({
