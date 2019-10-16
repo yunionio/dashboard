@@ -38,7 +38,15 @@ export default {
         },
       }),
       columns: [
-        getNameDescriptionTableColumn({ vm: this }),
+        getNameDescriptionTableColumn({
+          vm: this,
+          hideField: true,
+          slotCallback: row => {
+            return (
+              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id) }>{ row.name }</side-page-trigger>
+            )
+          },
+        }),
         {
           field: 'access_url',
           title: '服务器地址',
@@ -299,6 +307,15 @@ export default {
   },
   created () {
     this.list.fetchData()
+  },
+  methods: {
+    sidePageTriggerHandle (resId) {
+      this.createSidePageForList('CloudaccountSidePage', {
+        resId,
+        list: this.list,
+        singleActions: this.singleActions,
+      })
+    },
   },
 }
 </script>

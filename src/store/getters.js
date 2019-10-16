@@ -7,6 +7,7 @@ export default {
   windows: state => state.window.windows,
   common: state => state.common,
   dialogs: state => state.dialog.dialogs,
+  sidePages: state => state.sidePage.sidePages,
   isAdminMode: (state, getters) => getters['auth/isAdminMode'],
   isDomainMode: (state, getters) => getters['auth/isDomainMode'],
   l3PermissionEnable: (state, getters) => getters['auth/l3PermissionEnable'],

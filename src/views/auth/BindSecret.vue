@@ -7,14 +7,14 @@
           <div class="setup-tip">
             <div>
               <i class="tip-icon fa fa-hand-o-right" />
-              <span class="tip-text">第1步 获取Google Authenticator</span>
+              <span class="tip-text">第1步 获取OneLogin Protect</span>
             </div>
             <div class="qr-wrap">
               <div>
                 <div class="qr-code-bg-wrap" :style="{ backgroundImage: `url(${oneloginprotectAppQr})` }" />
               </div>
             </div>
-            <div class="qr-tip">扫相应二维码获取应用，或打开应用商店搜索Google Authenticator下载应用</div>
+            <div class="qr-tip">扫相应二维码获取应用，或打开应用商店搜索OneLogin Protect下载应用</div>
           </div>
           <div class="setup-tip">
             <div>
@@ -26,7 +26,7 @@
                 <img :src="secretQr" />
               </div>
             </div>
-            <div class="qr-tip">打开Google Authenticator App，扫描二维码，获取安全码</div>
+            <div class="qr-tip">打开OneLogin Protect App，扫描二维码，获取安全码</div>
           </div>
         </div>
         <div class="setup-wrap-bottom">
