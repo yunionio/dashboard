@@ -1,0 +1,51 @@
+@import '../../styles/variables';
+
+.detail {
+  &-left {
+    float: left;
+    width: 360px;
+    min-height: 100%;
+    border-right: 1px solid #dae0e6;
+  }
+  &-right {
+    margin-left: 430px;
+  }
+  &-content {
+    padding: 30px 0;
+  }
+  &-title {
+    border-bottom: 1px solid #5e6978;
+    padding-bottom: 8px;
+    color: #1a2736;
+    font-size: 16px;
+    margin-right: 60px;
+    margin-bottom: 5px;
+  }
+  &-item {
+    &-title {
+      width: 140px;
+      color: #5e6978;
+      position: absolute;
+    }
+    &-value {
+      color: #1a2736;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-left: 140px;
+    }
+  }
+}
+
+@media only screen and (max-width: 1366px) {
+  .detail {
+    &-left {
+      float: none;
+      width: auto;
+      border-right: 0;
+    }
+    &-right {
+      margin-left: 0;
+    }
+  }
+}

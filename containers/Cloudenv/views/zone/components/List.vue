@@ -8,6 +8,9 @@
 
 <script>
 import WindowsMixin from '@/mixins/windows'
+import {
+  getNameDescriptionTableColumn,
+} from '@/utils/common/tableColumn'
 
 export default {
   name: 'ZoneList',
@@ -28,21 +31,12 @@ export default {
         },
       }),
       columns: [
-        {
-          field: 'name',
-          title: '名称',
-          width: 300,
-          slots: {
-            default: ({ row }, h) => {
-              return [
-                <list-body-cell-wrap ignore-field copy edit row={row} list={this.list}>
-                  { row.name_cn ? `${row.name}(${row.name_cn})` : row.name }
-                </list-body-cell-wrap>,
-                <list-body-cell-wrap edit field="description" row={row} list={this.list} />,
-              ]
-            },
+        getNameDescriptionTableColumn({
+          vm: this,
+          slotCallback: row => {
+            return row.name_cn ? `${row.name}(${row.name_cn})` : row.name
           },
-        },
+        }),
         {
           field: 'hosts',
           title: '物理机/可用物理机',

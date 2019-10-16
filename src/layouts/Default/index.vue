@@ -8,6 +8,7 @@
       </div>
     </div>
     <dialog-manager />
+    <side-page-manager />
   </div>
 </template>
 
@@ -15,6 +16,7 @@
 import Sidebar from '../Sidebar'
 import Navbar from '../Navbar'
 import DialogManager from '@/sections/DialogManager'
+import SidePageManager from '@/sections/SidePageManager'
 
 export default {
   name: 'DefaultLayout',
@@ -22,6 +24,7 @@ export default {
     Sidebar,
     Navbar,
     DialogManager,
+    SidePageManager,
   },
   data () {
     return {
