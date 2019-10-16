@@ -17,11 +17,6 @@ import * as R from 'ramda'
 import { Manager } from '@/utils/manager'
 import { arrayToObj } from '@/utils/utils'
 
-const initData = {
-  key: '',
-  name: '',
-}
-
 export default {
   name: 'BaseSelect',
   inheritAttrs: false,
@@ -57,10 +52,12 @@ export default {
     labelFormat: {
       type: Function,
     },
-    // 远程搜索时 search key
-    searchKey: {
+    searchKey: { // 远程搜索时 search key
       type: String,
       default: 'name',
+    },
+    remoteFn: { // 远程搜索回调函数取参数
+      type: Function,
     },
     selectProps: { // vue-ant-design a-select 的属性
       type: Object,
@@ -130,8 +127,7 @@ export default {
       return false
     },
     clearSelect () {
-      let initValue = ''
-      if (this.labelInValue) initValue = { ...initData }
+      let initValue
       this.change(initValue)
     },
     change (val) {
@@ -156,9 +152,13 @@ export default {
     loadOpts (query) {
       this.loading = true
       let manager = new Manager(this.resource, this.version)
-      const params = { ...this.params }
+      let params = { ...this.params }
       if (query) {
-        params[this.searchKey] = query
+        if (this.remoteFn) {
+          params = { ...params, ...this.remoteFn(query) }
+        } else {
+          params[this.searchKey] = query
+        }
       }
       manager.list({ params, ctx: this.ctx })
         .then(({ data: { data = [] } }) => {
