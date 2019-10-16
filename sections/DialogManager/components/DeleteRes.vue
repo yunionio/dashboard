@@ -38,6 +38,7 @@ export default {
           })
         }
         this.cancelDialog()
+        this.$message.success('操作成功')
       } catch (error) {
         this.loading = false
       }

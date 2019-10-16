@@ -450,6 +450,53 @@ class CreateList {
     }
     return ret
   }
+  /**
+   * @description 是否允许删除
+   **/
+  allowDelete () {
+    if (this.selectedItems.length <= 0) {
+      return false
+    }
+    for (let i = 0, len = this.selectedItems.length; i < len; i++) {
+      const { disable_delete: disableDelete, can_delete: canDelete } = this.selectedItems[i]
+      if (R.is(Boolean, disableDelete) && disableDelete) {
+        return false
+      } else if (R.is(Boolean, canDelete) && !canDelete) {
+        return false
+      }
+    }
+    return true
+  }
+  /**
+   * @description 对应 manager 里面的 performAction 方法
+   *
+   * @param {String} action
+   * @param {Object} data
+   * @param {Array} steadyStatus 期待状态
+   * @returns Promise
+   * @memberof CreateList
+   */
+  singlePerformAction (action, data, steadyStatus) {
+    const id = data.id
+    delete data.id
+    return this.onManager('performAction', {
+      id,
+      steadyStatus,
+      managerArgs: {
+        action,
+        data,
+      },
+    })
+  }
+  /**
+   * @description 对应 manager 里面的 update 方法
+   *
+   * @param {String} id
+   * @param {Object} data
+   * @param {Array} steadyStatus 期待状态
+   * @returns Promise
+   * @memberof CreateList
+   */
   singleUpdate (id, data, steadyStatus) {
     return this.onManager('update', {
       id,

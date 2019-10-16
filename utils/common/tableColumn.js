@@ -105,7 +105,7 @@ export const getPublicTableColumn = ({ field = 'is_public', title = '是否共�
   }
 }
 
-export const getNameDescriptionTableColumn = ({ slotCallback, vm, width, addLock } = {}) => {
+export const getNameDescriptionTableColumn = ({ slotCallback, vm, width, addLock, showDesc = true } = {}) => {
   return {
     width: width || 'auto',
     minWidth: 100,
@@ -124,7 +124,7 @@ export const getNameDescriptionTableColumn = ({ slotCallback, vm, width, addLock
             { slotCallback ? slotCallback(row) : null }
             { lockSlot }
           </list-body-cell-wrap>,
-          <list-body-cell-wrap edit field="description" row={row} list={vm.list} />,
+          showDesc ? <list-body-cell-wrap edit field="description" row={row} list={vm.list} /> : null,
         ]
       },
     },
@@ -156,12 +156,12 @@ export const getIpsTableColumn = ({ field = 'ips', title = 'IP' } = {}) => {
         let ret = []
         if (row.eip) {
           ret.push(
-            <list-body-cell-wrap field="eip" copy><span class='ml-2 text-weak'>（弹性）</span></list-body-cell-wrap>
+            <list-body-cell-wrap row={row} field="eip" copy><span class='ml-2 text-weak'>（弹性）</span></list-body-cell-wrap>
           )
         }
         if (row.ips) {
           const ips = row.ips.split(',').map(ip => {
-            return <list-body-cell-wrap copy row={{ ip }} field="ip">{ ip }<span class='ml-2 text-weak'>（内网）</span></list-body-cell-wrap>
+            return <list-body-cell-wrap copy row={{ ip }} hide-field field="ip">{ ip }<span class='ml-2 text-weak'>（内网）</span></list-body-cell-wrap>
           })
           ret = ret.concat(ips)
         }
