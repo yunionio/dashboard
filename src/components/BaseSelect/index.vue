@@ -77,11 +77,8 @@ export default {
     }
   },
   watch: {
-    params: {
-      handler (val, oldV) {
-        this.paramsChange(val, oldV)
-      },
-      immediate: true,
+    params (val, oldV) {
+      this.paramsChange(val, oldV)
     },
     ctx (val, oldV) {
       this.paramsChange(val, oldV)
