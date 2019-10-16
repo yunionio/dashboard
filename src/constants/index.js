@@ -87,3 +87,8 @@ export const SCHEDTAG_POLICY_OPTIONS = [
   { key: 'avoid', label: '避免使用' },
   { key: 'exclude', label: '禁止使用' },
 ]
+
+export const ENABLED_OPTS = [
+  { key: true, label: '启用' },
+  { key: false, label: '禁用' },
+]

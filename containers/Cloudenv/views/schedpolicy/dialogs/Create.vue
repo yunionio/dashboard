@@ -1,23 +1,26 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{ params.title }}</div>
+    <div slot="header">创建调度标签</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" :action="this.params.title" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <schedpolicy-form ref="formRef" />
     </div>
     <div slot="footer">
-      <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t("dialog.ok") }}</a-button>
+      <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
       <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
     </div>
   </base-dialog>
 </template>
 
 <script>
+import SchedpolicyForm from '../components/Form'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'DeleteResDialog',
+  name: 'CreateSchedpolicyDialog',
+  components: {
+    SchedpolicyForm,
+  },
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
@@ -25,18 +28,20 @@ export default {
     }
   },
   methods: {
+    doCreate (data) {
+      return this.params.list.onManager('create', {
+        managerArgs: {
+          data,
+        },
+      })
+    },
     async handleConfirm () {
       this.loading = true
       try {
+        const values = await this.$refs.formRef.validateForm()
+        this.loading = true
+        await this.doCreate(values)
         this.loading = false
-        if (this.params.ok) {
-          await this.params.ok()
-        } else {
-          const ids = this.params.data.map(item => item.id)
-          await this.params.list.onManager('batchDelete', {
-            id: ids,
-          })
-        }
         this.cancelDialog()
         this.$message.success('操作成功')
       } catch (error) {
