@@ -1,6 +1,11 @@
 <template>
   <a-dropdown :trigger="['click']" v-model="visible" @visibleChange="handleVisibleChange">
-    <a class="menu">{{ label }}<a-icon type="down" class="ml-1" /></a>
+    <template v-if="buttonMode">
+      <a-button>{{ label }}<a-icon type="down" /></a-button>
+    </template>
+    <template v-else>
+      <a class="menu">{{ label }}<a-icon type="down" class="ml-1" /></a>
+    </template>
     <a-menu slot="overlay">
       <template v-if="options.length > 0">
         <template v-if="!submenusMode">
@@ -9,7 +14,7 @@
             v-for="item of options"
             :key="item.label"
             :disabled="!item.meta.validate">
-            <action-button :option="item" @hidden-dropdown="hiddenDropdown" :button-mode="buttonMode" />
+            <action-button :option="item" @hidden-dropdown="hiddenDropdown" :button-mode="false" />
           </a-menu-item>
         </template>
         <template v-else>
@@ -55,12 +60,11 @@ export default {
       required: true,
     },
     actions: {
-      type: [Array, Function],
+      type: Function,
       required: true,
     },
     row: {
       type: Object,
-      required: true,
     },
     buttonMode: {
       type: Boolean,
