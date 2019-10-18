@@ -9,10 +9,16 @@ import { getRegionTableColumn, getStatusTableColumn, getBrandTableColumn, getEna
 
 export default {
   name: 'HostList',
+  props: {
+    getParams: {
+      type: Function,
+    },
+  },
   data () {
     return {
       list: this.$list.createList(this, {
         resource: 'hosts',
+        getParams: this.getParams,
         filterOptions: {
           name: {
             label: '实例名称',

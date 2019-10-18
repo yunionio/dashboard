@@ -1,7 +1,7 @@
 import * as R from 'ramda'
 import BrandIcon from '@/sections/BrandIcon'
 
-export const getProjectTableColumn = ({ field = 'tenant', title = '项目' } = {}) => {
+export const getProjectTableColumn = ({ field = 'tenant', title = '项目', projectsItem = 'tenant' } = {}) => {
   return {
     field,
     title,
@@ -12,10 +12,10 @@ export const getProjectTableColumn = ({ field = 'tenant', title = '项目' } = {
         if (R.is(Array, project)) {
           for (let i = 0, len = project.length; i < len; i++) {
             const row = project[i]
-            ret.push(<list-body-cell-wrap copy row={row} field="tenant" />)
+            ret.push(<list-body-cell-wrap copy row={row} field={projectsItem} />)
           }
         } else {
-          ret.push(<list-body-cell-wrap copy field="project" row={{ project }} message={ project } />)
+          ret.push(<list-body-cell-wrap copy field={field} row={{ [field]: project }} />)
         }
         const domain = row.project_domain || row.domain
         if (domain) {

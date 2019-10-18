@@ -11,28 +11,17 @@ import '@/styles/index.scss'
 
 import './components'
 import './directives'
+import './plugins'
 
 import store from './store'
 import router from './router'
 import i18n from './locales'
-import http from './plugins/http'
-import validate from './plugins/validate'
-import moment from './plugins/moment'
-import eventBus from './plugins/eventBus'
-import list from './plugins/list'
-import clipboard from './plugins/clipboard'
 import App from './App.vue'
 
 Vue.config.productionTip = false
 
 Vue.use(Antd)
-Vue.use(http)
-Vue.use(validate)
 Vue.use(VXETable)
-Vue.use(moment)
-Vue.use(eventBus)
-Vue.use(list)
-Vue.use(clipboard)
 
 Vue.prototype.$log = window.console.log
 

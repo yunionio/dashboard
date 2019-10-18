@@ -488,6 +488,22 @@ class CreateList {
       },
     })
   }
+  batchPerformAction (action, data, steadyStatus, selectedIds = this.selected) {
+    if (steadyStatus) {
+      for (let i = 0, len = selectedIds.length; i < len; i++) {
+        let idstr = selectedIds[i]
+        this.waitStatus(idstr, steadyStatus)
+      }
+    }
+    return this.onManager('batchPerformAction', {
+      id: selectedIds,
+      steadyStatus,
+      managerArgs: {
+        action,
+        data,
+      },
+    })
+  }
   /**
    * @description 对应 manager 里面的 update 方法
    *
@@ -500,6 +516,21 @@ class CreateList {
   singleUpdate (id, data, steadyStatus) {
     return this.onManager('update', {
       id,
+      steadyStatus,
+      managerArgs: {
+        data,
+      },
+    })
+  }
+  batchUpdate (selectedIds = this.selected, data, steadyStatus) {
+    if (steadyStatus) {
+      for (let i = 0, len = selectedIds.length; i < len; i++) {
+        let idstr = selectedIds[i]
+        this.waitStatus(idstr, steadyStatus)
+      }
+    }
+    return this.onManager('batchUpdate', {
+      id: selectedIds,
       steadyStatus,
       managerArgs: {
         data,

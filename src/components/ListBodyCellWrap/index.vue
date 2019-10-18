@@ -15,7 +15,7 @@
       slot="copy"
       class="ml-1"
       v-if="showCopy"
-      :message="row[field]" />
+      :message="copyMessage" />
   </div>
 </template>
 
@@ -33,7 +33,8 @@ export default {
     },
     row: { // 当前行数据
       type: Object,
-      required: true,
+    },
+    message: { // copy 的内容
     },
     field: {
       type: String,
@@ -68,6 +69,12 @@ export default {
     }
   },
   computed: {
+    copyMessage () {
+      if (this.message) {
+        return this.message
+      }
+      return this.row[this.field]
+    },
     labelCn () {
       if (this.label) return this.label
       const fieldMap = {

@@ -27,9 +27,9 @@ const replaceErrorMessage = (obj, arr) => {
 }
 
 // 获取http请求报错信息
-export const getHttpErrorMessage = err => {
-  if (!err.response || !err.response.data) return
-  const errorData = err.response.data
+export const getHttpErrorMessage = (err, isErrorBody = false) => {
+  if (!isErrorBody && (!err.response || !err.response.data)) return
+  const errorData = isErrorBody ? err : err.response.data
   const errorBody = getErrorBody(errorData)
   if (!errorBody.class) return
   // 默认为错误的元信息
@@ -50,7 +50,7 @@ export const getHttpErrorMessage = err => {
   return {
     class: errorInfo['zh-CN'],
     detail: ret,
-    resource: err.response.data,
+    resource: !isErrorBody ? err.response.data : err,
   }
 }
 
@@ -65,4 +65,26 @@ export const getHttpReqMessage = error => {
   if (data) req.data = R.is(String, data) ? JSON.parse(data) : data
   if (params) req.params = R.is(String, params) ? JSON.parse(params) : params
   return req
+}
+
+// 获取列表删除操作权限
+export const getDeleteResult = (row, deleteField = 'can_delete') => {
+  let validate = true
+  let tooltip = ''
+  if (R.is(Array, row)) {
+    if (!row.length) return { validate: false }
+    validate = row.every(obj => obj[deleteField])
+  } else {
+    validate = row[deleteField]
+    if (!validate) {
+      const deleteFailReason = R.is(String, row.delete_fail_reason) ? JSON.parse(row.delete_fail_reason) : row.delete_fail_reason
+      const error = deleteFailReason.error
+      const errorMessage = getHttpErrorMessage(error, true)
+      tooltip = `${errorMessage.class}: ${errorMessage.detail}`
+    }
+  }
+  return {
+    validate,
+    tooltip,
+  }
 }
