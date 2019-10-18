@@ -95,22 +95,12 @@ export default {
     login ({ commit, dispatch }, data) {
       return new Promise(async (resolve, reject) => {
         try {
-          const scope = data.scope
-          delete data.scope
-          const loginResponse = await http.post('/v1/auth/login', data)
+          const response = await http.post('/v1/auth/login', data)
           const token = getToken()
           const auth = decodeToken(token)
           await commit('SET_TOKEN', token)
           await commit('SET_AUTH', auth)
-          const permissionResponse = await dispatch('getPermission', scope)
-          Cookies.set('scope', scope, { expires: 365 })
-          await commit('SET_SCOPE', scope)
-          const userInfoResponse = await dispatch('getInfo')
-          resolve({
-            loginResponse,
-            userInfoResponse,
-            permissionResponse,
-          })
+          resolve(response)
         } catch (error) {
           reject(error)
         }
@@ -133,17 +123,17 @@ export default {
         }
       })
     },
-    reLogin ({ commit, dispatch }, { projectId, scope } = {}) {
+    reLogin ({ commit, dispatch }, projectId) {
       return new Promise(async (resolve, reject) => {
         try {
-          const response = await dispatch('login', { tenantId: projectId, scope })
+          const response = await dispatch('login', { tenantId: projectId })
           resolve(response)
         } catch (error) {
           reject(error)
         }
       })
     },
-    getInfo ({ commit }) {
+    getInfo ({ commit, state }) {
       return new Promise(async (resolve, reject) => {
         try {
           const { data: { data } } = await http.get('/v1/auth/user')
@@ -151,7 +141,8 @@ export default {
             reject(new Error('Verification failed, please Login again.'))
           }
           await commit('SET_INFO', data)
-          Cookies.set('tenant', data.projectId, { expires: 365 })
+          Cookies.set('tenant', data.projectId, { expires: 7 })
+          Cookies.set('scope', state.scope, { expires: 7 })
           resolve(data)
         } catch (error) {
           reject(error)

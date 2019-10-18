@@ -40,7 +40,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import Cookies from 'js-cookie'
-import { STORE_SECRET_PERFIX_KEY, STORE_LAST_LOGIN_USERNAME_KEY } from './constants'
+import { STORE_SECRET_PERFIX_KEY } from './constants'
 import storage from '@/utils/storage'
 
 export default {
@@ -71,14 +71,6 @@ export default {
     ...mapGetters(['auth', 'userInfo']),
   },
   methods: {
-    updateLastLoginUserName (currentUserName) {
-      const lastLoginUserName = storage.get(STORE_LAST_LOGIN_USERNAME_KEY)
-      if (lastLoginUserName !== currentUserName) {
-        Cookies.remove('tenant')
-        Cookies.remove('scope')
-      }
-      storage.set(STORE_LAST_LOGIN_USERNAME_KEY, currentUserName)
-    },
     handleSubmit (e) {
       e.preventDefault()
       this.form.validateFields(async (err, values) => {
@@ -90,8 +82,7 @@ export default {
         if (tenant) data.username = `${tenant}/${data.username}`
         if (scope) data.scope = scope
         try {
-          const { loginResponse, userInfoResponse } = await this.$store.dispatch('auth/login', data)
-          this.updateLastLoginUserName(userInfoResponse.name)
+          const loginResponse = await this.$store.dispatch('auth/login', data)
           this.onTotpLogin(loginResponse)
         } catch (error) {
           this.loading = false

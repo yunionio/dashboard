@@ -1,7 +1,5 @@
 export const STORE_SECRET_PERFIX_KEY = '__oc_auth_secret_key__'
 
-export const STORE_LAST_LOGIN_USERNAME_KEY = '__oc_auth_last_login_name__'
-
 export const SECRET_QUESTION_OPTIONS = {
   group1: [
     { label: '我出生的城市?' },
