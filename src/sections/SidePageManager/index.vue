@@ -11,7 +11,7 @@
 
 <script>
 const components = {}
-const requireSidePages = require.context('../../../containers', true, /.\/views\/.*\/sidepages\/\w+\.(jsx?|vue)$/)
+const requireSidePages = require.context('../../../containers', true, /.\/views\/.*\/sidepage\/index\.(jsx?|vue)$/)
 const commonSidePages = require.context('./components', false, /.\/\w+\.(jsx?|vue)$/)
 
 const registerSidePages = (sidePages) => {

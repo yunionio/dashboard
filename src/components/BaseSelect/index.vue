@@ -1,7 +1,7 @@
 <template>
   <a-select
     class="base-select"
-    v-bind="selectProps"
+    v-bind="{ ...selectProps, ...filterOpts}"
     not-found-content="暂无数据"
     :value="value"
     @change="change"
@@ -52,6 +52,13 @@ export default {
     labelFormat: {
       type: Function,
     },
+    filterable: { // 是否开启本地搜索
+      type: Boolean,
+    },
+    remote: { // 是否开启远程搜索
+      type: Boolean,
+      default: false,
+    },
     searchKey: { // 远程搜索时 search key
       type: String,
       default: 'name',
@@ -75,6 +82,18 @@ export default {
       resOpts: {},
       loading: false,
     }
+  },
+  computed: {
+    filterOpts () {
+      if (this.filterable) {
+        return {
+          optionFilterProp: 'children',
+          showSearch: true,
+          filterOption: this.filterOption,
+        }
+      }
+      return {}
+    },
   },
   watch: {
     params (val, oldV) {
@@ -108,6 +127,9 @@ export default {
     if (this._valid()) this.loadOpts()
   },
   methods: {
+    filterOption (input, option) {
+      return option.componentOptions.children[0].text.toLowerCase().includes(input.toLowerCase())
+    },
     paramsChange (val, oldV) {
       if (!R.equals(val, oldV)) {
         this.clearSelect()
@@ -153,7 +175,7 @@ export default {
       this.loading = true
       let manager = new Manager(this.resource, this.version)
       let params = { ...this.params }
-      if (query) {
+      if (query && this.remote) {
         if (this.remoteFn) {
           params = { ...params, ...this.remoteFn(query) }
         } else {

@@ -96,12 +96,6 @@ const showHttpErrorMessage = (error) => {
         showErrorNotify(error)
       }
     }
-    if (status === 401) {
-      store.dispatch('auth/logout')
-        .then(() => {
-          router.push('/auth')
-        })
-    }
   }
 }
 
@@ -145,7 +139,10 @@ http.interceptors.response.use(
     if (error.response) {
       const status = error.response.status
       if (status === 401) {
-        router.push('/auth')
+        store.dispatch('auth/logout')
+          .then(() => {
+            router.push('/auth')
+          })
       } else {
         showHttpErrorMessage(error)
       }
