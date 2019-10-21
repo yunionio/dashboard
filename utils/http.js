@@ -4,11 +4,13 @@
  * date: 2019/08/08
  */
 
-import { message } from 'ant-design-vue'
+import { message, notification } from 'ant-design-vue'
 import axios from 'axios'
 import qs from 'qs'
 import store from '@/store'
 import router from '@/router'
+import { getHttpErrorMessage, getHttpReqMessage } from '@/utils/error'
+import { uuid } from '@/utils/utils'
 
 const http = axios.create({
   baseURL: process.env.VUE_APP_BASE_API,
@@ -43,6 +45,57 @@ const cancelRquest = requestKey => {
   if (request) {
     request.cancel()
     delete requestMap[requestKey]
+  }
+}
+
+const showErrorNotify = error => {
+  const errorMsg = getHttpErrorMessage(error)
+  const reqMsg = getHttpReqMessage(error)
+  const key = `notification-${uuid(32)}`
+  notification.error({
+    key,
+    class: 'error-notification',
+    message: errorMsg.class,
+    description: errorMsg.detail,
+    btn: h => {
+      const id = `ErrorDialog-${uuid(32)}`
+      return h('a-button', {
+        props: {
+          type: 'link',
+          size: 'small',
+        },
+        class: 'error-color',
+        on: {
+          click: () => {
+            notification.close(key)
+            store.dispatch('dialog/create', {
+              name: 'ErrorDialog',
+              parentWindowId: 'ErrorDialogWrapper',
+              id,
+              params: {
+                error: errorMsg,
+                request: reqMsg,
+              },
+            })
+          },
+        },
+      }, '查看详情')
+    },
+  })
+}
+
+const showHttpErrorMessage = (error) => {
+  if (error.response) {
+    const status = error.response.status
+    if (error.config) {
+      if (status === 404) {
+        if (error.config.method.toLowerCase() !== 'get') {
+          showErrorNotify(error)
+        }
+      } else {
+        showErrorNotify(error)
+      }
+    }
   }
 }
 
@@ -86,7 +139,12 @@ http.interceptors.response.use(
     if (error.response) {
       const status = error.response.status
       if (status === 401) {
-        router.push('/auth')
+        store.dispatch('auth/logout')
+          .then(() => {
+            router.push('/auth')
+          })
+      } else {
+        showHttpErrorMessage(error)
       }
     }
     return Promise.reject(error)

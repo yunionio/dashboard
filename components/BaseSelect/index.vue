@@ -1,7 +1,7 @@
 <template>
   <a-select
     class="base-select"
-    v-bind="selectProps"
+    v-bind="{ ...selectProps, ...filterOpts}"
     not-found-content="暂无数据"
     :value="value"
     @change="change"
@@ -16,11 +16,6 @@
 import * as R from 'ramda'
 import { Manager } from '@/utils/manager'
 import { arrayToObj } from '@/utils/utils'
-
-const initData = {
-  key: '',
-  name: '',
-}
 
 export default {
   name: 'BaseSelect',
@@ -57,10 +52,19 @@ export default {
     labelFormat: {
       type: Function,
     },
-    // 远程搜索时 search key
-    searchKey: {
+    filterable: { // 是否开启本地搜索
+      type: Boolean,
+    },
+    remote: { // 是否开启远程搜索
+      type: Boolean,
+      default: false,
+    },
+    searchKey: { // 远程搜索时 search key
       type: String,
       default: 'name',
+    },
+    remoteFn: { // 远程搜索回调函数取参数
+      type: Function,
     },
     selectProps: { // vue-ant-design a-select 的属性
       type: Object,
@@ -78,6 +82,18 @@ export default {
       resOpts: {},
       loading: false,
     }
+  },
+  computed: {
+    filterOpts () {
+      if (this.filterable) {
+        return {
+          optionFilterProp: 'children',
+          showSearch: true,
+          filterOption: this.filterOption,
+        }
+      }
+      return {}
+    },
   },
   watch: {
     params (val, oldV) {
@@ -111,6 +127,9 @@ export default {
     if (this._valid()) this.loadOpts()
   },
   methods: {
+    filterOption (input, option) {
+      return option.componentOptions.children[0].text.toLowerCase().includes(input.toLowerCase())
+    },
     paramsChange (val, oldV) {
       if (!R.equals(val, oldV)) {
         this.clearSelect()
@@ -130,8 +149,7 @@ export default {
       return false
     },
     clearSelect () {
-      let initValue = ''
-      if (this.labelInValue) initValue = { ...initData }
+      let initValue
       this.change(initValue)
     },
     change (val) {
@@ -156,9 +174,13 @@ export default {
     loadOpts (query) {
       this.loading = true
       let manager = new Manager(this.resource, this.version)
-      const params = { ...this.params }
-      if (query) {
-        params[this.searchKey] = query
+      let params = { ...this.params }
+      if (query && this.remote) {
+        if (this.remoteFn) {
+          params = { ...params, ...this.remoteFn(query) }
+        } else {
+          params[this.searchKey] = query
+        }
       }
       manager.list({ params, ctx: this.ctx })
         .then(({ data: { data = [] } }) => {

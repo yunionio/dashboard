@@ -1,0 +1,29 @@
+.copy-icon {
+  display: inline-block;
+  cursor: pointer;
+  position: relative;
+  &:active {
+    .anticon-copy {
+      transform: translateY(2px);
+    }
+  }
+  .copy-tips {
+    position: absolute;
+    width: 50px;
+    top: -30px;
+    left: -20px;
+    text-align: center;
+    padding: 3px 5px;
+    border-radius: 3px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px 0 hsla(0,0%,93%,.5), 0 2px 4px 0 hsla(0,0%,93%,.5);
+    color: #999;
+  }
+  .copy_icon-slide-enter-active, .copy_icon-slide-leave-active {
+    transition: all 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+  }
+  .copy_icon-slide-enter, .copy_icon-slide-leave-to {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+}

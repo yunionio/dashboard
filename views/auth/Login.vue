@@ -40,7 +40,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import Cookies from 'js-cookie'
-import { STORE_SECRET_PERFIX_KEY, STORE_LAST_LOGIN_USERNAME_KEY } from './constants'
+import { STORE_SECRET_PERFIX_KEY } from './constants'
 import storage from '@/utils/storage'
 
 export default {
@@ -68,18 +68,9 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['auth']),
+    ...mapGetters(['auth', 'userInfo']),
   },
   methods: {
-    updateLastLoginUserName (currentUserName) {
-      const lastLoginUserName = storage.get(STORE_LAST_LOGIN_USERNAME_KEY)
-      if (lastLoginUserName !== currentUserName) {
-        Cookies.remove('tenant')
-        Cookies.remove('scope')
-      } else {
-        storage.set(STORE_LAST_LOGIN_USERNAME_KEY, currentUserName)
-      }
-    },
     handleSubmit (e) {
       e.preventDefault()
       this.form.validateFields(async (err, values) => {
@@ -90,12 +81,9 @@ export default {
         const scope = Cookies.get('scope')
         if (tenant) data.username = `${tenant}/${data.username}`
         if (scope) data.scope = scope
-        const username = data['username'].split('/')[tenant ? 1 : 0]
-        this.updateLastLoginUserName(username)
         try {
-          await this.$store.dispatch('auth/setInputUsername', username)
-          const loginRes = await this.$store.dispatch('auth/login', data)
-          this.onTotpLogin(loginRes)
+          const loginResponse = await this.$store.dispatch('auth/login', data)
+          this.onTotpLogin(loginResponse)
         } catch (error) {
           this.loading = false
         }
@@ -103,9 +91,9 @@ export default {
     },
     async onTotpLogin (res) {
       // 如果 data 不为空，则是 server 返回的首次绑定秘钥的二维码，存入 storage，以免刷新后重新登录丢失的问题
-      if (res.data) storage.set(`${STORE_SECRET_PERFIX_KEY}${this.auth.inputUsername}`, res.data)
+      if (res.data) storage.set(`${STORE_SECRET_PERFIX_KEY}${this.userInfo.name}`, res.data)
       // 如果获取到有效的二维码则进入首次初始化页面
-      if (res.data || storage.get(`${STORE_SECRET_PERFIX_KEY}${this.auth.inputUsername}`)) {
+      if (res.data || storage.get(`${STORE_SECRET_PERFIX_KEY}${this.userInfo.name}`)) {
         // 获取密码问题，如果设置过则直接进入绑定秘钥页面，没有跳转至设置密码问题页面
         try {
           const recoveryRes = await this.$store.dispatch('auth/getRecovery')
@@ -125,7 +113,6 @@ export default {
         this.$router.push({ name: 'SecretVerify' })
       } else {
         // 否则直接登录
-        await this.$store.dispatch('auth/getInfo')
         this.$router.push('/')
       }
     },

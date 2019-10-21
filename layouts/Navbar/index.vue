@@ -6,7 +6,35 @@
       </div>
       <h1 class="header-title ml-3">管理控制台</h1>
     </div>
-    <div class="navbar-item d-flex align-items-center justify-content-end">
+    <!-- 视图选择 -->
+    <div class="navbar-item d-flex align-items-center justify-content-end" v-if="systemProject || domainProject">
+      <a-dropdown :trigger="['click']">
+        <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
+          <a-icon type="rocket" class="icon" />
+          <span class="ml-2">{{ viewLabel }}</span>
+          <a-icon type="down" class="ml-2 mt-1" />
+        </div>
+        <a-menu slot="overlay" @click="projectChange">
+          <a-menu-item scope="project" :key="`${projects[0].id}$$project$$${true}`">
+            <a-radio :checked="scope === 'project'" />普通项目
+          </a-menu-item>
+          <template v-if="systemProject || domainProject">
+            <template v-if="!systemProject && domainProject">
+              <a-menu-item scope="domain" :key="`${domainProject.id}$$domain`">
+                <a-radio :checked="scope === 'domain'" />域管理后台
+              </a-menu-item>
+            </template>
+            <template v-else>
+              <a-menu-item scope="system" :key="`${systemProject.id}$$system`">
+                <a-radio :checked="scope === 'system'" />管理后台
+              </a-menu-item>
+            </template>
+          </template>
+        </a-menu>
+      </a-dropdown>
+    </div>
+    <!-- 项目选择 -->
+    <div class="navbar-item d-flex align-items-center justify-content-end" v-if="scope ==='project'">
       <a-dropdown :trigger="['click']">
         <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
           <a-icon type="rocket" class="icon" />
@@ -14,7 +42,9 @@
           <a-icon type="down" class="ml-2 mt-1" />
         </div>
         <a-menu slot="overlay" @click="projectChange">
-          <a-menu-item v-for="item of projects" :key="item.id">{{ item.name }}</a-menu-item>
+          <a-menu-item v-for="item of projects" :key="`${item.id}$$project`">
+            <a-radio :checked="item.id === userInfo.projectId" />{{ item.name }}
+          </a-menu-item>
         </a-menu>
       </a-dropdown>
     </div>
@@ -36,33 +66,57 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import { logout } from '@/utils/auth'
 
 export default {
   name: 'Navbar',
   computed: {
-    ...mapGetters(['userInfo']),
+    ...mapGetters(['userInfo', 'scope']),
     projects () {
       return R.sort((a, b) => {
         return a.name.localeCompare(b.name)
       }, this.userInfo.projects)
     },
+    systemProject () {
+      return R.find(R.propEq('system_capable', true))(this.projects)
+    },
+    domainProject () {
+      return R.find(R.propEq('domain_capable', true))(this.projects)
+    },
+    viewLabel () {
+      let ret = '普通项目'
+      if (this.$store.getters['auth/isAdmin']) {
+        ret = '管理后台'
+      }
+      if (this.$store.getters['auth/isDomain']) {
+        ret = '域管理后台'
+      }
+      return ret
+    },
   },
   methods: {
     userMenuClick (item) {
       if (item.key === 'logout') {
-        logout()
+        this.$store.dispatch('auth/logout')
         this.$router.push('/auth')
       }
     },
     projectChange (item) {
-      this.reLogin(item.key)
+      let [projectId, scope, viewMode] = item.key.split('$$')
+      // 从视图下拉切换至普通项目
+      if (viewMode) {
+        // 优先选择 domain
+        if (this.domainProject) projectId = this.domainProject.id
+        if (this.systemProject) projectId = this.systemProject.id
+      }
+      if (this.userInfo.projectId === projectId && this.scope === scope) return
+      this.reLogin(projectId, scope)
     },
-    async reLogin (pid) {
-      await this.$store.dispatch('auth/login', {
-        tenantId: pid,
-      })
+    async reLogin (projectId, scope) {
+      await this.$store.dispatch('auth/reLogin', projectId)
+      await this.$store.commit('auth/SET_SCOPE', scope)
       await this.$store.dispatch('auth/getInfo')
+      await this.$store.dispatch('auth/getPermission', scope)
+      await this.$store.dispatch('auth/getScopeResource')
     },
   },
 }

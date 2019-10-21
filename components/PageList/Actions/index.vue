@@ -5,7 +5,13 @@
         <dropmenus :key="item.label" :label="item.label" :actions="item.actions" :row="row" :button-mode="buttonMode" />
       </template>
       <template v-else>
-        <action-button :key="item.label" :option="getOption(item)" :row="row" :button-mode="buttonMode" button-type="" />
+        <action-button
+          class="mr-2"
+          :key="item.label"
+          :option="getOption(item)"
+          :row="row"
+          :button-mode="buttonMode"
+          @action-click="actionClick" />
       </template>
     </template>
   </div>
@@ -49,6 +55,9 @@ export default {
         validate,
         ...rest,
       }
+    },
+    actionClick () {
+      this.$emit('action-click')
     },
   },
 }

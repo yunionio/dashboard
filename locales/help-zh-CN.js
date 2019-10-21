@@ -29,5 +29,8 @@ export default {
       <p>主机域名后缀为gh.baidu.com</p>
       <p>主机创建成功后，ping vm01.gh.baidu.com就会得到vm01的ip</p>
     `,
+    cloudaccountSetAutoSyncTime: `
+      <div>最少时间间隔为30分钟</div>
+    `,
   },
 }

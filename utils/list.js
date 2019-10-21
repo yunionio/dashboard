@@ -37,7 +37,7 @@ class WaitStatusJob {
    */
   async checkStatus () {
     if (!this.data.list.manager) return
-    const params = this.data.list.getParams()
+    const params = this.data.list.getOptionParams()
     try {
       const { data = {} } = await this.data.list.manager.get({
         id: this.data.id,
@@ -175,8 +175,7 @@ class CreateList {
     this.offset = 0
     // 重置数据
     this.data = {}
-    this.selectedItems = []
-    this.selected = []
+    this.clearSelected()
   }
   async fetchData (offset, limit) {
     this.loading = true
@@ -227,6 +226,16 @@ class CreateList {
     this.fetchData(this.offset, this.getLimit())
   }
   /**
+   * @description 获取api资源相关的参数
+   * @memberof CreateList
+   */
+  getOptionParams () {
+    if (R.is(Function, this.getParams)) {
+      return this.getParams() || {}
+    }
+    return this.getParams || {}
+  }
+  /**
    * @description 生成所有的请求参数
    * @param {Number} offset
    * @param {Number} limit
@@ -236,12 +245,7 @@ class CreateList {
   genParams (offset, limit) {
     let params = {
       scope: this.templateContext.$store.getters.scope,
-    }
-    if (R.is(Function, this.getParams)) {
-      params = {
-        ...params,
-        ...this.getParams(),
-      }
+      ...this.getOptionParams(),
     }
     if (limit) {
       params.limit = limit
@@ -391,6 +395,28 @@ class CreateList {
     this.fetchData(0, 0)
   }
   /**
+   * @description 勾选的数据发生改变事件
+   *
+   * @param {*} selection
+   * @memberof CreateList
+   */
+  changeSelected (selection) {
+    const ids = []
+    for (let i = 0, len = selection.length; i < len; i++) {
+      ids.push(selection[i][this.idKey])
+    }
+    this.selectedItems = selection
+    this.selected = ids
+  }
+  /**
+   * @description 清空勾选的数据
+   * @memberof CreateList
+   */
+  clearSelected () {
+    this.selectedItems = []
+    this.selected = []
+  }
+  /**
    * @description 生成自定义filter的params
    *
    * @param {Object} params
@@ -423,6 +449,93 @@ class CreateList {
       ret['filter'] = filters
     }
     return ret
+  }
+  /**
+   * @description 是否允许删除
+   **/
+  allowDelete () {
+    if (this.selectedItems.length <= 0) {
+      return false
+    }
+    for (let i = 0, len = this.selectedItems.length; i < len; i++) {
+      const { disable_delete: disableDelete, can_delete: canDelete } = this.selectedItems[i]
+      if (R.is(Boolean, disableDelete) && disableDelete) {
+        return false
+      } else if (R.is(Boolean, canDelete) && !canDelete) {
+        return false
+      }
+    }
+    return true
+  }
+  /**
+   * @description 对应 manager 里面的 performAction 方法
+   *
+   * @param {String} action
+   * @param {Object} data
+   * @param {Array} steadyStatus 期待状态
+   * @returns Promise
+   * @memberof CreateList
+   */
+  singlePerformAction (action, data, steadyStatus) {
+    const id = data.id
+    delete data.id
+    return this.onManager('performAction', {
+      id,
+      steadyStatus,
+      managerArgs: {
+        action,
+        data,
+      },
+    })
+  }
+  batchPerformAction (action, data, steadyStatus, selectedIds = this.selected) {
+    if (steadyStatus) {
+      for (let i = 0, len = selectedIds.length; i < len; i++) {
+        let idstr = selectedIds[i]
+        this.waitStatus(idstr, steadyStatus)
+      }
+    }
+    return this.onManager('batchPerformAction', {
+      id: selectedIds,
+      steadyStatus,
+      managerArgs: {
+        action,
+        data,
+      },
+    })
+  }
+  /**
+   * @description 对应 manager 里面的 update 方法
+   *
+   * @param {String} id
+   * @param {Object} data
+   * @param {Array} steadyStatus 期待状态
+   * @returns Promise
+   * @memberof CreateList
+   */
+  singleUpdate (id, data, steadyStatus) {
+    return this.onManager('update', {
+      id,
+      steadyStatus,
+      managerArgs: {
+        data,
+      },
+    })
+  }
+  batchUpdate (selectedIds = this.selected, data, steadyStatus) {
+    if (steadyStatus) {
+      for (let i = 0, len = selectedIds.length; i < len; i++) {
+        let idstr = selectedIds[i]
+        this.waitStatus(idstr, steadyStatus)
+      }
+    }
+    return this.onManager('batchUpdate', {
+      id: selectedIds,
+      steadyStatus,
+      managerArgs: {
+        data,
+      },
+    })
   }
   /**
    * @description 调用manager方法的桥接方法，调用此方法可以同时更新 list 的对应数据

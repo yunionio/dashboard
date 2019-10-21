@@ -1,3 +1,5 @@
+import './index.scss'
+
 export default {
   name: 'Copy',
   props: {
@@ -35,9 +37,11 @@ export default {
   },
   render (h) {
     return (
-      <div class={ ['copy-icon', { copied: this.copied }] } onClick={ this.doCopy }>
+      <div class="copy-icon" onClick={ this.doCopy }>
         <a-icon type='copy' theme='twoTone' twoToneColor='#1890ff' />
-        <span class='copy-tips'>已复制</span>
+        <transition name="copy_icon-slide">
+          { this.copied ? <span class='copy-tips'>已复制</span> : null }
+        </transition>
       </div>
     )
   },

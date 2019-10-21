@@ -3,7 +3,7 @@
     <a-card>
       <div class="wrap-inner">
         <h5 class="auth-base-title text-center">登录保护已开启，请输入6位安全码</h5>
-        <div class="verify-tip">请在手机打开Google Authenticator APP，获取MFA安全码。无法获取，请<a class="reset-secret-btn" @click="resetSecret">重置密钥</a></div>
+        <div class="verify-tip">请在手机打开OneLogin Protect APP，获取MFA安全码。无法获取，请<a class="reset-secret-btn" @click="resetSecret">重置密钥</a></div>
         <div class="code-wrap d-flex justify-content-center">
           <security-code ref="security-code" v-model="securityCode" :error="error" @completed="onValid" @clear="onClear" blurOnComplete />
         </div>
@@ -43,7 +43,6 @@ export default {
         await this.$store.dispatch('auth/validPasscode', {
           passcode: this.securityCode,
         })
-        await this.$store.dispatch('auth/getInfo')
         this.loading = false
         this.$router.push('/')
       } catch (error) {
