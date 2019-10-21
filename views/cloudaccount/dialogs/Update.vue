@@ -2,18 +2,27 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">更新账号密码</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.selectedItems.length" action="更新账号密码" />
-      <vxe-grid class="mb-2" :data="params.selectedItems" :columns="params.columns.slice(0, 3)" />
+      <dialog-selected-tips :count="params.data.length" action="更新账号密码" />
+      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
         <a-form-item label="AppID" v-bind="formItemLayout" v-if="isQcloud">
           <a-input v-decorator="decorators.app_id" placeholder="请输入App ID" />
+          <div slot="extra" class="text-right">
+            <help-link :href="doc">如何获取腾讯云的 App ID 和密钥？</help-link>
+          </div>
         </a-form-item>
         <a-form-item label="租户（Tenant） ID" v-bind="formItemLayout" v-if="isAzure">
           <a-input v-decorator="decorators.directory_id" placeholder="请输入租户（Tenant）ID" />
+          <div slot="extra" class="text-right">
+            <help-link :href="doc">如何获取Azure的租户（Tenant） ID ？</help-link>
+          </div>
         </a-form-item>
         <a-form-item :label="field.label.k" v-bind="formItemLayout">
           <a-input v-decorator="decorators.keyId" :placeholder="field.placeholder.k" />
+          <div slot="extra" class="text-right">
+            <help-link :href="doc">如何获取{{ field.text }} {{ field.label.k }} 和 {{ field.label.s }}？</help-link>
+          </div>
         </a-form-item>
         <a-form-item :label="field.label.s" v-bind="formItemLayout">
           <a-input v-decorator="decorators.keySecret" :placeholder="field.placeholder.s" type="password" />
@@ -51,7 +60,7 @@ export default {
   name: 'CloudaccountUpdateDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
-    const provider = this.params.selectedItems[0].provider.toLowerCase()
+    const provider = this.params.data[0].provider.toLowerCase()
     return {
       loading: false,
       form: {
@@ -161,7 +170,7 @@ export default {
       this.loading = true
       try {
         const values = await this.validateForm()
-        const ids = this.params.selectedItems.map(item => item.id)
+        const ids = this.params.data.map(item => item.id)
         await this.params.list.onManager('batchPerformAction', {
           id: ids,
           managerArgs: {

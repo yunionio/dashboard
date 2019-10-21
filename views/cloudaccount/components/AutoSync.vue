@@ -35,6 +35,7 @@ export default {
         enable_auto_sync: [
           'enable_auto_sync',
           {
+            valuePropName: 'checked',
             initialValue: false,
           },
         ],
@@ -47,6 +48,7 @@ export default {
         is_public: [
           'is_public',
           {
+            valuePropName: 'checked',
             initialValue: false,
           },
         ],
