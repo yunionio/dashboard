@@ -12,6 +12,7 @@ import {
   getBrandTableColumn,
   getStatusTableColumn,
   getCopyWithContentTableColumn,
+  getNameDescriptionTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -68,7 +69,7 @@ export default {
         },
       }),
       columns: [
-        getCopyWithContentTableColumn({ field: 'name', title: '名称' }),
+        getNameDescriptionTableColumn({ vm: this }),
         {
           field: 'ip',
           title: 'IP地址',

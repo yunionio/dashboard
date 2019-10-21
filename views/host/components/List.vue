@@ -5,14 +5,20 @@
 </template>
 
 <script>
-import { getRegionTableColumn, getStatusTableColumn, getBrandTableColumn, getEnabledTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
+import { getRegionTableColumn, getStatusTableColumn, getBrandTableColumn, getEnabledTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   name: 'HostList',
+  props: {
+    getParams: {
+      type: Function,
+    },
+  },
   data () {
     return {
       list: this.$list.createList(this, {
         resource: 'hosts',
+        getParams: this.getParams,
         filterOptions: {
           name: {
             label: '实例名称',
@@ -27,7 +33,7 @@ export default {
         },
       }),
       columns: [
-        getCopyWithContentTableColumn({ field: 'name', title: '名称' }),
+        getNameDescriptionTableColumn({ vm: this }),
         getEnabledTableColumn(),
         getStatusTableColumn({ statusModule: 'host' }),
         {
@@ -45,7 +51,7 @@ export default {
           slots: {
             default: ({ row }) => {
               return [
-                <copy-with-content message={ row.access_ip }>{ row.access_ip }</copy-with-content>,
+                <list-body-cell-wrap row={row} field="access_ip" copy />,
               ]
             },
           },
