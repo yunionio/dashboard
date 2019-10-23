@@ -66,7 +66,7 @@ export default {
     resourceType: {
       type: String,
       required: true,
-      validator: val => ['servers', 'baremetals'].includes(val),
+      validator: val => ['servers', 'baremetals', 'baremetal_ssh'].includes(val),
     },
   },
   data () {
@@ -77,6 +77,14 @@ export default {
       requestConfigs: {
         servers: {
           resource: 'servers',
+          methodname: 'GetLoginInfo',
+        },
+        baremetals: {
+          resource: 'hosts',
+          methodname: 'GetIpmiInfo',
+        },
+        baremetal_ssh: {
+          resource: 'hosts',
           methodname: 'GetLoginInfo',
         },
       },
