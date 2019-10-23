@@ -21,7 +21,7 @@ export default {
   mixins: [WindowsMixin],
   props: {
     getParams: {
-      type: Function,
+      type: [Function, Object],
     },
   },
   data () {
@@ -47,7 +47,7 @@ export default {
           hideField: true,
           slotCallback: row => {
             return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id) }>{ row.name }</side-page-trigger>
+              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'CloudproviderSidePage') }>{ row.name }</side-page-trigger>
             )
           },
         }),
@@ -250,15 +250,6 @@ export default {
   },
   created () {
     this.list.fetchData()
-  },
-  methods: {
-    sidePageTriggerHandle (resId) {
-      this.createSidePageForList('CloudproviderSidePage', {
-        resId,
-        list: this.list,
-        singleActions: this.singleActions,
-      })
-    },
   },
 }
 </script>

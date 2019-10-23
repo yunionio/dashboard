@@ -1,13 +1,18 @@
 <template>
   <detail
+    :list="list"
     :data="data"
     :base-info="baseInfo"
     :extra-info="extraInfo" />
 </template>
 
 <script>
-import BrandIcon from '@/sections/BrandIcon'
-
+import {
+  getProjectTableColumn,
+  getStatusTableColumn,
+  getEnabledTableColumn,
+  getBrandTableColumn,
+} from '@/utils/common/tableColumn'
 export default {
   name: 'CloudproviderDetail',
   props: {
@@ -23,73 +28,27 @@ export default {
   data () {
     return {
       baseInfo: [
-        {
-          field: 'brand',
-          title: '平台',
-          slots: {
-            default: data => {
-              return [
-                <BrandIcon tooltip={ data.brand } name={ data.provider } />,
-              ]
-            },
-          },
-        },
+        getBrandTableColumn({ field: 'provider' }),
         {
           field: 'account',
           title: '账号',
         },
-        {
-          field: 'enabled',
-          title: '是否启用',
-          slots: {
-            default: (data) => {
-              return [
-                <status status={ data.enabled } statusModule='enabled' />,
-              ]
-            },
-          },
-        },
-        {
-          field: 'status',
-          title: '状态',
-          slots: {
-            default: (data) => {
-              return [
-                <status status={ data.status } statusModule='cloudaccount' />,
-              ]
-            },
-          },
-        },
-        {
-          field: 'created_at',
-          title: '创建时间',
-          formatter: data => {
-            return this.$moment(data.created_at).format()
-          },
-        },
+        getEnabledTableColumn(),
+        getStatusTableColumn({ statusModule: 'cloudaccount' }),
         {
           field: 'last_sync',
           title: '同步时间',
-          formatter: data => {
-            return this.$moment(data.last_sync).format()
+          formatter: ({ row }) => {
+            return this.$moment(row.last_sync).format()
           },
         },
+        getProjectTableColumn(),
       ],
       extraInfo: [
         {
           title: '其他信息',
           items: [
-            {
-              field: 'health_status',
-              title: '健康状态',
-              slots: {
-                default: data => {
-                  return [
-                    <status status={ data.health_status } statusModule='cloudaccountHealthStatus' />,
-                  ]
-                },
-              },
-            },
+            getStatusTableColumn({ statusModule: 'cloudaccountHealthStatus', title: '健康状态', field: 'health_status' }),
           ],
         },
       ],

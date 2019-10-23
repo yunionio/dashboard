@@ -14,7 +14,7 @@ export default {
   mixins: [WindowsMixin],
   props: {
     getParams: {
-      type: Function,
+      type: [Function, Object],
     },
   },
   data () {
