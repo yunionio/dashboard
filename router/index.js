@@ -1,5 +1,6 @@
 import Layout from '@Compute/components/Layout'
 import Redis from '@DB/views/redis'
+import RedisCreate from '@DB/views/redis/create'
 
 export default {
   index: 6,
@@ -24,6 +25,11 @@ export default {
               name: 'Redis',
               path: '',
               component: Redis,
+            },
+            {
+              name: 'RedisCreate',
+              path: 'create',
+              component: RedisCreate,
             },
           ],
         },

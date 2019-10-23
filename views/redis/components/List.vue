@@ -1,0 +1,230 @@
+<template>
+  <page-list
+    :columns="columns"
+    :group-actions="groupActions"
+    :list="list"
+    :single-actions="singleActions" />
+</template>
+
+<script>
+import PasswordFetcher from '@Compute/sections/PasswordFetcher'
+import { Manager } from '@/utils/manager'
+import { sizestr } from '@/utils/utils'
+import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
+import expectStatus from '@/constants/expectStatus'
+import WindowsMixin from '@/mixins/windows'
+
+export default {
+  name: 'RedisList',
+  mixins: [WindowsMixin],
+  data () {
+    return {
+      list: this.$list.createList(this, {
+        resource: 'elasticcaches',
+        getParams: this.getParams,
+        steadyStatus: Object.values(expectStatus.server).flat(),
+        filterOptions: {
+          name: {
+            label: '实例名称',
+            filter: true,
+            formatter: val => {
+              return `name.contains(${val})`
+            },
+          },
+          status: {
+            label: '实例状态',
+            dropdown: true,
+            multiple: true,
+            items: [
+              { label: '运行中', key: 'running' },
+              { label: '关机', key: 'ready' },
+              { label: '未知', key: 'unknown' },
+              { label: '调度失败', key: 'sched_fail' },
+            ],
+            filter: true,
+            formatter: val => {
+              return `status.in(${val.join(',')})`
+            },
+          },
+          brand: {
+            label: '平台',
+            dropdown: true,
+            multiple: true,
+            items: [
+              { label: 'OneCloud', key: 'OneCloud' },
+              { label: 'OpenStack', key: 'OpenStack' },
+            ],
+          },
+        },
+      }),
+      columns: [
+        getNameDescriptionTableColumn({
+          vm: this,
+          hideField: true,
+          slotCallback: row => {
+            return (
+              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id) }>{ row.name }</side-page-trigger>
+            )
+          },
+        }),
+        {
+          field: 'category',
+          title: '类型',
+        },
+        {
+          field: 'instance_type',
+          title: '配置',
+          slots: {
+            default: ({ row }) => {
+              return sizestr(row.capacity_mb, 'M', 1024)
+            },
+          },
+        },
+        {
+          field: 'engine',
+          title: '类型版本',
+          slots: {
+            default: ({ row }) => {
+              return `${row.engine} ${row.engine_version}`
+            },
+          },
+        },
+        {
+          field: 'password',
+          title: '密码',
+          slots: {
+            default: ({ row }) => {
+              return [<PasswordFetcher serverId={row.id} resourceType='servers' />]
+            },
+          },
+        },
+        {
+          field: 'account',
+          title: '云账号',
+          slots: {
+            default: ({ row }) => {
+              return row.account
+            },
+          },
+        },
+        {
+          field: 'billing_type',
+          title: '计费方式',
+          slots: {
+            default: ({ row }) => {
+              const ret = []
+              if (row.billing_type === 'postpaid') {
+                ret.push(<div style={{ color: '#0A1F44' }}>按量付费</div>)
+              } else if (row.billing_type === 'prepaid') {
+                ret.push(<div style={{ color: '#0A1F44' }}>包年包月</div>)
+              }
+              if (row.expired_at) {
+                let dateArr = this.$moment(row.expired_at).fromNow().split(' ')
+                let date = dateArr.join('')
+                let seconds = this.$moment(row.expired_at).diff(new Date()) / 1000
+                let textColor = seconds / 24 / 60 / 60 < 7 ? '#DD2727' : '#53627C'
+                let text = seconds < 0 ? '已过期' : `${date.substring(0, date.length - 1)}后到期`
+                ret.push(<div style={{ color: textColor }}>{text}</div>)
+              }
+              return ret
+            },
+          },
+        },
+        getStatusTableColumn({ statusModule: 'redis' }),
+        getProjectTableColumn(),
+        // getBrandTableColumn(),
+        getRegionTableColumn(),
+      ],
+      groupActions: [
+        {
+          label: '新建',
+          action: () => {
+            this.createServer()
+          },
+          meta: () => {
+            return {
+              buttonType: 'primary',
+            }
+          },
+        },
+      ],
+      singleActions: [
+        {
+          label: '重启',
+          action: (obj) => {
+            this.list.onManager('performAction', {
+              steadyStatus: 'running',
+              id: obj.id,
+              managerArgs: {
+                action: 'restart',
+              },
+            })
+          },
+        },
+        {
+          label: '更多',
+          actions: (obj) => {
+            return [
+              {
+                label: '续费',
+                action: (obj) => {
+                  this.createDialog('RedisRenewDialog', {
+                    data: [obj],
+                    columns: this.columns,
+                    list: this.list,
+                  })
+                },
+              },
+              {
+                label: '修改属性',
+                action: (obj) => {
+                  this.createDialog('VmUpdateDialog', {
+                    data: [obj],
+                    columns: this.columns,
+                    list: this.list,
+                  })
+                },
+              },
+              {
+                label: '删除',
+                action: () => {
+                  this.list.onManager('delete', {
+                    id: obj.id,
+                  })
+                },
+                meta: () => {
+                  return {
+                    validate: obj.can_delete,
+                    tooltip: obj.disable_delete ? '请点击修改属性禁用删除保护后重试' : null,
+                  }
+                },
+              },
+            ]
+          },
+        },
+      ],
+    }
+  },
+  created () {
+    this.webconsoleManager = new Manager('webconsole', 'v1')
+    this.list.fetchData()
+  },
+  methods: {
+    createServer () {
+      this.$router.push('/redis/create')
+    },
+    getParams () {
+      return {
+        details: true,
+      }
+    },
+    sidePageTriggerHandle (resId) {
+      this.createSidePageForList('RedisSidePage', {
+        resId,
+        list: this.list,
+        singleActions: this.singleActions,
+      })
+    },
+  },
+}
+</script>
