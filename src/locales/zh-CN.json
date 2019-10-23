@@ -122,6 +122,7 @@
       "delete_fail": "删除失败",
       "deleting": "删除中",
       "syncing": "正在同步",
+      "syncing_status": "正在同步",
       "sync_config": "同步配置",
       "sync_fail": "同步失败",
       "online": "在线",
@@ -297,7 +298,8 @@
     "phone": "请输入合法电话号码",
     "isChinese": "请输入中文字符",
     "domain": "请输入合法域名",
-    "url": "请输入合法的URL"
+    "url": "请输入合法的URL",
+    "resourceName": "请输入合法的资源名称"
   },
   "dialog": {
     "ok": "确定",

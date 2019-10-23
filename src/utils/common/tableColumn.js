@@ -124,7 +124,7 @@ export const getNameDescriptionTableColumn = ({ slotCallback, vm, width, addLock
             { slotCallback ? slotCallback(row) : null }
             { lockSlot }
           </list-body-cell-wrap>,
-          showDesc ? <list-body-cell-wrap edit field="description" row={row} list={vm.list} hideField={ hideField } /> : null,
+          showDesc ? <list-body-cell-wrap edit field="description" row={row} list={vm.list} /> : null,
         ]
       },
     },
