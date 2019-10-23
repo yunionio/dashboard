@@ -10,7 +10,7 @@
     <template v-slot:actions>
       <actions :options="params.singleActions" :row="data" :buttonMode="false" />
     </template>
-    <component :is="detailComponent" :data="data" :list="params.list" :getParams="getParams" />
+    <component :is="detailComponent" :data="data" :res-id="params.resId" :list="params.list" :getParams="getParams" />
   </base-side-page>
 </template>
 
@@ -38,6 +38,7 @@ export default {
         { label: '详情', key: 'cloudaccount-detail' },
         { label: '订阅', key: 'cloudprovider-list' },
         { label: '宿主机', key: 'host-list' },
+        { label: '操作日志', key: 'event-drawer' },
       ],
     }
   },
