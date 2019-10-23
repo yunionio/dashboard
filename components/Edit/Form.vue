@@ -35,7 +35,7 @@ export default {
     defaultValue: {
       type: String,
     },
-    inputRules: {
+    formRules: {
       type: Array,
     },
   },
@@ -47,8 +47,10 @@ export default {
           'input',
           {
             initialValue: this.defaultValue,
-            rules: this.inputRules || [
+            validateFirst: true,
+            rules: this.formRules || [
               { required: true, message: `请输入${this.label}` },
+              { validator: this.$validate('resourceName') },
             ],
           },
         ],
