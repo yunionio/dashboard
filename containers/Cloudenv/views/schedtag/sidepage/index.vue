@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="云账号"
+    title="调度标签"
     icon="onecloud"
     :res-name="data.name"
     :actions="params.actions"
@@ -15,28 +15,28 @@
 </template>
 
 <script>
-import CloudproviderList from '@Cloudenv/views/cloudprovider/components/List'
 import HostList from '@Compute/views/host/components/List'
-import CloudaccountDetail from './Detail'
+import PhysicalmachineList from '@Compute/views/physicalmachine/components/List'
+import SchedtagDetail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
 
 export default {
-  name: 'CloudaccountSidePage',
+  name: 'SchedtagSidePage',
   components: {
     Actions,
-    CloudaccountDetail,
-    CloudproviderList,
+    SchedtagDetail,
     HostList,
+    PhysicalmachineList,
   },
   mixins: [SidePageMixin, WindowsMixin],
   data () {
     return {
-      detailComponent: 'cloudaccount-detail',
+      detailComponent: 'schedtag-detail',
       detailTabs: [
-        { label: '详情', key: 'cloudaccount-detail' },
-        { label: '订阅', key: 'cloudprovider-list' },
+        { label: '详情', key: 'schedtag-detail' },
+        { label: '物理机', key: 'physicalmachine-list' },
         { label: '宿主机', key: 'host-list' },
         { label: '操作日志', key: 'event-drawer' },
       ],
@@ -44,15 +44,16 @@ export default {
   },
   computed: {
     getParams () {
-      if (this.detailComponent === 'cloudprovider-list') {
+      if (this.detailComponent === 'physicalmachine-list') {
         return {
-          detail: true,
-          cloudaccount_id: this.params.resId,
+          details: true,
+          schedtag: this.params.resId,
+          baremetal: true,
         }
       } else if (this.detailComponent === 'host-list') {
         return {
           detail: true,
-          account: this.params.resId,
+          schedtag: this.params.resId,
           baremetal: false,
         }
       }

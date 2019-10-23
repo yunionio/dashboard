@@ -15,11 +15,17 @@ import {
 export default {
   name: 'ZoneList',
   mixins: [WindowsMixin],
+  props: {
+    getParams: {
+      type: [Object, Function],
+      default: () => ({}),
+    },
+  },
   data () {
     return {
       list: this.$list.createList(this, {
         resource: 'zones',
-        getParams: { details: true, with_meta: true, cloud_env: 'private_or_onpremise' },
+        getParams: this.getParams,
         filterOptions: {
           name: {
             label: '名称',
@@ -33,8 +39,11 @@ export default {
       columns: [
         getNameDescriptionTableColumn({
           vm: this,
+          hideField: true,
           slotCallback: row => {
-            return row.name_cn ? `${row.name}(${row.name_cn})` : row.name
+            return (
+              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'ZoneSidePage') }>{ row.name_cn ? `${row.name}(${row.name_cn})` : row.name }</side-page-trigger>
+            )
           },
         }),
         {
