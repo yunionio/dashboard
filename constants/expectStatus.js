@@ -1,3 +1,4 @@
+
 export default {
   server: {
     success: ['running'],
@@ -40,5 +41,10 @@ export default {
   },
   cloudaccountSyncStatus: {
     success: ['idle'],
+  },
+  redis: {
+    success: ['running'],
+    danger: ['restart_failed', 'create_failed', 'change_failed', 'release_failed', 'error'],
+    info: ['inactive', 'unknown', 'init', 'unavailable'],
   },
 }

@@ -3,23 +3,27 @@
     <template v-if="!isAdminMode && !isDomainMode">
       <div style="margin-bottom: 24px;">{{ projectData.name }}</div>
     </template>
-    <template v-else>
-      <a-form-item class="w-50" v-if="isAdminMode && isDomainMode">
+    <a-row :gutter="8" class="w-100" v-else>
+      <a-col :span="12">
+        <a-form-item v-if="isAdminMode && isDomainMode">
+          <a-select
+            class="w-100"
+            style="width:100%"
+            :labelInValue="labelInValue"
+            v-decorator="decorators.domain"
+            :loading="domainLoading"
+            placeholder="请选择域"
+            @change="domainChange"
+            showSearch>
+            <a-select-option v-for="item of domains" :value="item.id" :key="item.id">{{ item.name }}</a-select-option>
+          </a-select>
+        </a-form-item>
+      </a-col>
+      <a-col :span="12">
+       <a-form-item>
         <a-select
           class="w-100"
-          labelInValue
-          v-decorator="decorators.domain"
-          :loading="domainLoading"
-          placeholder="请选择域"
-          @change="domainChange"
-          showSearch>
-          <a-select-option v-for="item of domains" :value="item.id" :key="item.id">{{ item.name }}</a-select-option>
-        </a-select>
-      </a-form-item>
-      <a-form-item class="w-50">
-        <a-select
-          class="w-100"
-          labelInValue
+          :labelInValue="labelInValue"
           v-decorator="decorators.project"
           :loading="projectLoading"
           placeholder="请选择项目"
@@ -27,8 +31,9 @@
           showSearch>
           <a-select-option v-for="item of projects" :value="item.id" :key="item.id" :label="item.name">{{ item.name }}</a-select-option>
         </a-select>
-      </a-form-item>
-    </template>
+       </a-form-item>
+      </a-col>
+    </a-row>
   </div>
 </template>
 
@@ -39,6 +44,10 @@ import { Manager } from '@/utils/manager'
 export default {
   name: 'DomainProject',
   props: {
+    labelInValue: {
+      type: Boolean,
+      default: true,
+    },
     defaultProjectDomain: { // 表单回填时的对象 { domain: <domain_id>, project: <project_id> }
       type: Object,
       default: () => ({}),
@@ -62,9 +71,11 @@ export default {
       projectLoading: false,
       isAdminMode: this.$store.getters.isAdminMode,
       scope: this.$store.getters.scope,
-      isDomainMode: this.$store.getters.isDomainMode,
+      // isDomainMode: this.$store.getters.isDomainMode,
+      isDomainMode: true,
       userInfo: this.$store.getters.userInfo,
-      l3PermissionEnable: this.$store.getters.l3PermissionEnable,
+      // l3PermissionEnable: this.$store.getters.l3PermissionEnable,
+      l3PermissionEnable: true,
     }
   },
   created () {
@@ -136,9 +147,9 @@ export default {
     domainChange (domain) {
       this.domainData = domain
       this.fetchProjects()
-      this.fc.setFieldsValue({
-        project: undefined,
-      })
+      // this.fc.setFieldsValue({
+      //   project: undefined,
+      // })
     },
     projectChange (project) {
       this.projectData = project
