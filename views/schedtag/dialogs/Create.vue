@@ -4,8 +4,8 @@
     <div slot="body">
       <a-form
         :form="form.fc">
-        <a-form-item label="名称" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverName')" />
+        <a-form-item label="名称" v-bind="formItemLayout">resourceName
+          <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
         </a-form-item>
         <a-form-item label="偏好" v-bind="formItemLayout">
           <strategy-radio :decorator="decorators.default_strategy" />
@@ -31,7 +31,6 @@
 import StrategyRadio from '@Cloudenv/sections/StrategyRadio'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import validateForm from '@/utils/validate'
 
 export default {
   name: 'CreateSchedtagDialog',
@@ -52,7 +51,7 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: '请输入名称' },
-              { validator: validateForm('serverName') },
+              { validator: this.$validate('resourceName') },
             ],
           },
         ],

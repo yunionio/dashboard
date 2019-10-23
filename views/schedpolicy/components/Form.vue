@@ -2,7 +2,7 @@
   <a-form
     :form="form.fc">
     <a-form-item label="名称" v-bind="formItemLayout" v-if="!updateValue">
-      <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverName')" />
+      <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
     </a-form-item>
     <a-form-item label="偏好" v-bind="formItemLayout">
       <strategy-radio :decorator="decorators.strategy" />
@@ -21,7 +21,6 @@
 <script>
 import StrategyRadio from '@Cloudenv/sections/StrategyRadio'
 import ConditionSelect from '@Cloudenv/sections/ConditionSelect'
-import validateForm from '@/utils/validate'
 
 export default {
   name: 'SchedpolicyForm',
@@ -66,7 +65,7 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: '请输入名称' },
-              { validator: validateForm('serverName') },
+              { validator: this.$validate('resourceName') },
             ],
           },
         ],
