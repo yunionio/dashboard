@@ -107,9 +107,27 @@ export default {
       }
       return Promise.resolve()
     },
+    // 默认打开抽屉的方法，组件有自定义的情况可以覆盖
+    sidePageTriggerHandle (resId, sidepageName) {
+      if (!sidepageName) {
+        throw Error('请填入要打开的抽屉名称')
+      }
+      this.createSidePageForList(sidepageName, {
+        resId,
+        list: this.list,
+        singleActions: this.singleActions,
+        windowData: this.windowData,
+      })
+    },
     async createSidePageForList (name, params) {
       await this.destroySidePages()
       return this.createSidePage(name, params)
+    },
+    initSidePageTab (tab) {
+      this.updateWindow({
+        _currentTab: tab,
+        currentTab: tab,
+      })
     },
   },
 }
