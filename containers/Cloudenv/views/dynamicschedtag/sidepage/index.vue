@@ -5,12 +5,13 @@
     icon="onecloud"
     :res-name="data.name"
     :actions="params.actions"
+    :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
-    v-model="detailComponent">
+    @tab-change="handleTabChange">
     <template v-slot:actions>
       <actions :options="params.singleActions" :row="data" :buttonMode="false" />
     </template>
-    <component :is="detailComponent" :data="data" :res-id="params.resId" :list="params.list" />
+    <component :is="params.windowData.currentTab" :data="data" :res-id="params.resId" :list="params.list" />
   </base-side-page>
 </template>
 
@@ -29,7 +30,6 @@ export default {
   mixins: [SidePageMixin, WindowsMixin],
   data () {
     return {
-      detailComponent: 'dynamicschedtag-detail',
       detailTabs: [
         { label: '详情', key: 'dynamicschedtag-detail' },
         { label: '操作日志', key: 'event-drawer' },

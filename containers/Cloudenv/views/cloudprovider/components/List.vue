@@ -249,6 +249,7 @@ export default {
     }
   },
   created () {
+    this.initSidePageTab('cloudaccount-detail')
     this.list.fetchData()
   },
 }

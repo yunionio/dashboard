@@ -56,6 +56,7 @@ export default {
     }
   },
   created () {
+    this.initSidePageTab('cloudregion-detail')
     this.list.fetchData()
   },
 }

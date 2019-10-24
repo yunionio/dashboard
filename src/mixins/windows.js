@@ -116,11 +116,18 @@ export default {
         resId,
         list: this.list,
         singleActions: this.singleActions,
+        windowData: this.windowData,
       })
     },
     async createSidePageForList (name, params) {
       await this.destroySidePages()
       return this.createSidePage(name, params)
+    },
+    initSidePageTab (tab) {
+      this.updateWindow({
+        _currentTab: tab,
+        currentTab: tab,
+      })
     },
   },
 }
