@@ -3,11 +3,13 @@
     <div class="auth-container d-flex justify-content-center align-items-center" :style="containerStyles">
       <router-view />
     </div>
-    <div class="cp">Made with<span class="ml-1 mr-1">❤</span>Yunion</div>
+    <div class="cp">{{ copyright }}</div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'AuthLayout',
   data () {
@@ -21,6 +23,7 @@ export default {
       },
     }
   },
+  computed: mapGetters(['copyright']),
   mounted () {
     if (document.body.clientWidth < 1920) {
       this.containerStyles.height = '100%'

@@ -2,31 +2,34 @@ import http from '@/utils/http'
 
 export default {
   state: {
-    captcha: false,
-    domains: [],
-    regions: [],
+    companyInfo: {},
+  },
+  getters: {
+    logo (state) {
+      if ((state.companyInfo.logo && state.companyInfo.logo !== '') && (state.companyInfo.logo_format && state.companyInfo.logo_format !== '')) {
+        return `data:${state.companyInfo.logo_format};base64,${state.companyInfo.logo}`
+      }
+      return null
+    },
+    copyright (state) {
+      if (state.companyInfo.copyright && state.companyInfo.copyright !== '') {
+        return state.companyInfo.copyright
+      }
+      return null
+    },
   },
   mutations: {
-    SET_DOMAINS (state, payload) {
-      state.domains = payload
-    },
-    SET_CAPTCHA (state, payload) {
-      state.captcha = payload
-    },
-    SET_REGIONS (state, payload) {
-      state.regions = payload
+    SET_COMPANY_INFO (state, payload) {
+      state.companyInfo = payload
     },
   },
   actions: {
-    getRegions ({ commit }) {
+    fetchCompayInfo ({ commit }) {
       return new Promise((resolve, reject) => {
-        http.get('/v1/auth/regions').then(response => {
+        http.get('/v1/infos/info').then(response => {
           const { data = {} } = response
-          const { captcha = false, regions = [], domains = [] } = data
-          commit('SET_CAPTCHA', captcha)
-          commit('SET_REGIONS', regions)
-          commit('SET_DOMAINS', domains)
-          resolve(data)
+          commit('SET_COMPANY_INFO', data)
+          resolve(response)
         }).catch(error => {
           reject(error)
         })
