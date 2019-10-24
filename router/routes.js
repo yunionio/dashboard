@@ -1,5 +1,6 @@
 import AuthLayout from '@/layouts/Auth'
 import Login from '@/views/auth/Login'
+import Register from '@/views/auth/Register'
 import SecretVerify from '@/views/auth/SecretVerify'
 import BindSecret from '@/views/auth/BindSecret'
 import SetSecretQuestion from '@/views/auth/SetSecretQuestion'
@@ -18,6 +19,12 @@ let routes = [
         name: 'Login',
         path: 'login',
         component: Login,
+        meta: { layout: 'full-screen' },
+      },
+      {
+        name: 'Register',
+        path: 'register',
+        component: Register,
         meta: { layout: 'full-screen' },
       },
       {

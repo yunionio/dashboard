@@ -37,7 +37,7 @@ export default {
   },
   render (h) {
     return (
-      <div class="copy-icon" onClick={ this.doCopy }>
+      <div class="copy-icon mini-text" onClick={ this.doCopy }>
         <a-icon type='copy' theme='twoTone' twoToneColor='#1890ff' />
         <transition name="copy_icon-slide">
           { this.copied ? <span class='copy-tips'>已复制</span> : null }

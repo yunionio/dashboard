@@ -8,6 +8,7 @@
       v-if="showEdit"
       @update="update"
       :label="labelCn"
+      :formRules="formRules"
       :input-rules="inputRules"
       :visible.sync="editVisible"
       :defaultValue="row[field]" />
@@ -61,6 +62,9 @@ export default {
       type: Boolean,
       default: false,
     },
+    formRules: {
+      type: Array,
+    },
   },
   data () {
     return {
@@ -73,7 +77,7 @@ export default {
       if (this.message) {
         return this.message
       }
-      return this.row[this.field]
+      return this.row[this.field] || '-'
     },
     labelCn () {
       if (this.label) return this.label

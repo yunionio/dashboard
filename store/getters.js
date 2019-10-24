@@ -1,4 +1,6 @@
 export default {
+  logo: (state, getters) => getters['app/logo'],
+  copyright: (state, getters) => getters['app/copyright'],
   scope: state => state.auth.scope,
   auth: state => state.auth,
   userInfo: state => state.auth.info,

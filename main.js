@@ -4,6 +4,8 @@ import 'xe-utils'
 import VXETable from 'vxe-table'
 import VXETablePluginAntd from 'vxe-table-plugin-antd'
 
+import 'codemirror/lib/codemirror.css'
+import 'codemirror/theme/material.css'
 import 'vxe-table/lib/index.css'
 import 'vxe-table-plugin-antd/dist/style.css'
 import '@/styles/antd/index.less'
@@ -35,7 +37,11 @@ const app = new Vue({
 })
 
 async function start () {
-  app.$mount('#app')
+  try {
+    await store.dispatch('app/fetchCompayInfo')
+  } finally {
+    app.$mount('#app')
+  }
 }
 
 start()
