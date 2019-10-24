@@ -11,7 +11,7 @@ export default {
   name: 'HostList',
   props: {
     getParams: {
-      type: Function,
+      type: [Function, Object],
     },
   },
   data () {
