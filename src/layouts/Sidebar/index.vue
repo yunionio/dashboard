@@ -90,7 +90,7 @@ export default {
   position: fixed;
   top: 60px;
   left: 0;
-  height: 100%;
+  bottom: 0;
   z-index: 98;
 }
 </style>

@@ -26,7 +26,7 @@
       </div>
       <!-- header tabs -->
       <div class="side-page-header-tabs">
-        <a-tabs :active-key="value" @change="handleTabChange" :tab-bar-style="{ padding: '0 30px', marginBottom: 0 }">
+        <a-tabs :active-key="currentTab" @change="handleTabChange" :tab-bar-style="{ padding: '0 30px', marginBottom: 0 }">
           <a-tab-pane
             v-for="item of tabs"
             :key="item.key"
@@ -65,7 +65,7 @@ export default {
       type: String,
       required: true,
     },
-    value: {
+    currentTab: {
       type: String,
       required: true,
     },
@@ -98,7 +98,7 @@ export default {
       this.$emit('cancel')
     },
     handleTabChange (key) {
-      this.$emit('input', key)
+      this.$emit('tab-change', key)
     },
   },
 }

@@ -5,12 +5,13 @@
     icon="onecloud"
     :res-name="data.name"
     :actions="params.actions"
+    :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
-    v-model="detailComponent">
+    @tab-change="handleTabChange">
     <template v-slot:actions>
       <actions :options="params.singleActions" :row="data" :buttonMode="false" />
     </template>
-    <component :is="detailComponent" :res-id="params.resId" :data="data" :list="params.list" :cloudprovider-id="params.resId" :getParams="getParams" />
+    <component :is="params.windowData.currentTab" :res-id="params.resId" :data="data" :list="params.list" :cloudprovider-id="params.resId" :getParams="getParams" />
   </base-side-page>
 </template>
 
@@ -33,7 +34,6 @@ export default {
   mixins: [SidePageMixin, WindowsMixin],
   data () {
     return {
-      detailComponent: 'cloudaccount-detail',
       detailTabs: [
         { label: '详情', key: 'cloudaccount-detail' },
         { label: '区域', key: 'cloudproviderregion-list' },
@@ -44,14 +44,14 @@ export default {
   },
   computed: {
     getParams () {
-      if (this.detailComponent === 'cloudproviderregion-list') {
+      if (this.params.windowData.currentTab === 'cloudproviderregion-list') {
         return () => {
           return {
             cloudprovider_id: this.params.resId,
             details: true,
           }
         }
-      } else if (this.detailComponent === 'externalproject-list') {
+      } else if (this.params.windowData.currentTab === 'externalproject-list') {
         return () => {
           return {
             manager_id: this.params.resId,

@@ -5,12 +5,13 @@
     icon="onecloud"
     :res-name="data.name"
     :actions="params.actions"
+    :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
-    v-model="detailComponent">
+    @tab-change="handleTabChange">
     <template v-slot:actions>
       <actions :options="params.singleActions" :row="data" :buttonMode="false" />
     </template>
-    <component :is="detailComponent" :data="data" :res-id="params.resId" :list="params.list" :getParams="getParams" />
+    <component :is="params.windowData.currentTab" :data="data" :res-id="params.resId" :list="params.list" :getParams="getParams" />
   </base-side-page>
 </template>
 
@@ -33,7 +34,6 @@ export default {
   mixins: [SidePageMixin, WindowsMixin],
   data () {
     return {
-      detailComponent: 'schedtag-detail',
       detailTabs: [
         { label: '详情', key: 'schedtag-detail' },
         { label: '物理机', key: 'physicalmachine-list' },
@@ -44,13 +44,13 @@ export default {
   },
   computed: {
     getParams () {
-      if (this.detailComponent === 'physicalmachine-list') {
+      if (this.params.windowData.currentTab === 'physicalmachine-list') {
         return {
           details: true,
           schedtag: this.params.resId,
           baremetal: true,
         }
-      } else if (this.detailComponent === 'host-list') {
+      } else if (this.params.windowData.currentTab === 'host-list') {
         return {
           detail: true,
           schedtag: this.params.resId,
