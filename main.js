@@ -37,7 +37,11 @@ const app = new Vue({
 })
 
 async function start () {
-  app.$mount('#app')
+  try {
+    await store.dispatch('app/fetchCompayInfo')
+  } finally {
+    app.$mount('#app')
+  }
 }
 
 start()

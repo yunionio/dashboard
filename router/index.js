@@ -20,6 +20,7 @@ const router = new Router({
 const loginPageRouteName = [
   'Auth',
   'Login',
+  'Register',
   'SecretVerify',
   'BindSecret',
   'SetSecretQuestion',
