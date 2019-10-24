@@ -158,6 +158,7 @@ export default {
     }
   },
   created () {
+    this.initSidePageTab('schedtag-detail')
     this.list.fetchData()
   },
 }

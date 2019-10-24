@@ -155,6 +155,7 @@ export default {
     }
   },
   created () {
+    this.initSidePageTab('schedpolicy-detail')
     this.list.fetchData()
   },
 }

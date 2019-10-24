@@ -148,6 +148,7 @@ export default {
     }
   },
   created () {
+    this.initSidePageTab('dynamicschedtag-detail')
     this.list.fetchData()
   },
 }

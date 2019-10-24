@@ -4,9 +4,10 @@
     title="区域"
     icon="onecloud"
     :res-name="data.name"
+    :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
-    v-model="detailComponent">
-    <component :is="detailComponent" :res-id="params.resId" :data="data" :list="params.list" :getParams="getParams" />
+    @tab-change="handleTabChange">
+    <component :is="params.windowData.currentTab" :res-id="params.resId" :data="data" :list="params.list" :getParams="getParams" />
   </base-side-page>
 </template>
 
@@ -25,7 +26,6 @@ export default {
   mixins: [SidePageMixin, WindowsMixin],
   data () {
     return {
-      detailComponent: 'cloudregion-detail',
       detailTabs: [
         { label: '详情', key: 'cloudregion-detail' },
         { label: '可用区', key: 'zone-list' },
@@ -35,7 +35,7 @@ export default {
   },
   computed: {
     getParams () {
-      if (this.detailComponent === 'zone-list') {
+      if (this.params.windowData.currentTab === 'zone-list') {
         return {
           details: true,
           with_meta: true,

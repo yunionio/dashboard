@@ -102,6 +102,7 @@ export default {
     }
   },
   created () {
+    this.initSidePageTab('zone-detail')
     this.list.fetchData()
   },
 }

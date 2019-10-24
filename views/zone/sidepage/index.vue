@@ -5,12 +5,13 @@
     icon="onecloud"
     :res-name="data.name"
     :actions="params.actions"
+    :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
-    v-model="detailComponent">
+    @tab-change="handleTabChange">
     <template v-slot:actions>
       <actions :options="params.singleActions" :row="data" :buttonMode="false" />
     </template>
-    <component :is="detailComponent" :res-id="params.resId" :data="data" :list="params.list" :cloudprovider-id="params.resId" :getParams="getParams" />
+    <component :is="params.windowData.currentTab" :res-id="params.resId" :data="data" :list="params.list" :cloudprovider-id="params.resId" :getParams="getParams" />
   </base-side-page>
 </template>
 
@@ -31,7 +32,6 @@ export default {
   mixins: [SidePageMixin, WindowsMixin],
   data () {
     return {
-      detailComponent: 'zone-detail',
       detailTabs: [
         { label: '详情', key: 'zone-detail' },
         { label: '宿主机', key: 'host-list' },
@@ -41,7 +41,7 @@ export default {
   },
   computed: {
     getParams () {
-      if (this.detailComponent === 'host-list') {
+      if (this.params.windowData.currentTab === 'host-list') {
         return () => {
           return {
             zone: this.params.resId,
