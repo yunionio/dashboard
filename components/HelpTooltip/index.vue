@@ -4,7 +4,7 @@
       <div v-html="content" class="help-tooltip-content-wrap" />
     </template>
     <template v-slot:default>
-      <icon name="question" />
+      <icon type="question" />
     </template>
   </a-tooltip>
 </template>
