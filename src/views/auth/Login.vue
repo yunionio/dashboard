@@ -1,6 +1,6 @@
 <template>
   <div class="login-body">
-    <div class="login-left">
+    <div class="login-left" :style="{ height: `${panelHeight}px` }">
       <h2>OneCloud</h2>
       <a-carousel autoplay :dots="false">
         <div v-for="(item, idx) of tips" :key="idx">
@@ -9,15 +9,13 @@
         </div>
       </a-carousel>
     </div>
-    <div class="login-right">
+    <div class="login-right" :style="{ height: `${panelHeight}px` }">
       <div class="logo">
-        <svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
-          <path d="M498.372923 573.085538c-0.196923 2.363077-0.354462 4.765538-0.472615 7.128616-0.196923 3.032615-0.393846 6.065231-0.669539 9.058461-2.205538 22.409846-15.753846 34.934154-38.203077 35.249231a4428.8 4428.8 0 0 1-97.28 0c-23.394462-0.236308-39.030154-14.926769-38.912-36.470154 0.118154-21.661538 15.281231-35.249231 39.620923-35.406769l18.628923-0.039385 44.11077 0.039385 3.150769-11.579077c28.238769-105.117538 93.144615-167.187692 198.380308-189.794461l20.873846-4.489847-10.555077-18.432c-19.692308-34.500923-74.397538-60.494769-127.212308-60.494769-9.294769 0-18.235077 0.827077-26.663384 2.441846-75.539692 14.336-123.313231 66.284308-138.712616 150.449231l-1.142154 0.196923a282.505846 282.505846 0 0 0-28.356923 5.710769c-82.313846 22.291692-132.647385 98.225231-122.486154 184.635077 9.294769 78.611692 80.541538 141.587692 162.225231 143.36a2571.894154 2571.894154 0 0 0 111.340308 0 167.660308 167.660308 0 0 0 163.209846-161.831384c0.866462-25.166769 14.454154-40.172308 36.352-40.172308h0.748308c10.003692 0.157538 18.510769 3.544615 24.615384 9.846154 7.207385 7.364923 10.870154 18.313846 10.633846 31.625846a232.448 232.448 0 0 1-32.571076 114.372923c-2.599385 4.411077-5.238154 8.743385-8.349539 13.784616l-5.238154 8.546461-14.966154 24.536615 28.829539-0.866461c47.261538-1.457231 86.646154-18.550154 117.051077-50.806154 48.088615-51.121231 60.494769-111.891692 35.761231-175.773538-24.930462-64.512-75.697231-101.612308-146.747077-107.204923a154.387692 154.387692 0 0 0-12.091077-0.472616c-84.125538 0-158.089846 68.568615-164.903385 152.851692m-136.664615 253.873231c-116.696615-0.512-214.567385-77.508923-237.922462-187.273846-24.418462-114.412308 32.137846-224.019692 140.642462-272.738461 12.406154-5.553231 21.858462-17.723077 26.54523-27.293539C337.683692 244.972308 411.963077 196.923077 511.881846 196.923077h1.496616c100.115692 0.472615 174.198154 48.679385 220.16 143.36 5.592615 11.421538 16.147692 21.937231 26.978461 26.820923 96.886154 43.716923 152.300308 135.995077 144.620308 240.797538-8.625231 118.153846-107.52 213.976615-225.083077 218.112-18.589538 0.669538-38.439385 0.984615-62.424616 0.984616-17.408 0-34.816-0.157538-52.263384-0.315077-17.486769-0.157538-35.012923-0.354462-52.499692-0.354462h-15.714462v0.669539L465.526154 827.076923 418.146462 827.076923c-18.825846 0-37.612308 0-56.39877-0.118154" fill="#69AFE8" />
-        </svg>
+        <img :src="logo" />
       </div>
       <div class="login">
         <h4>用户登录</h4>
-        <a-form :form="form" @submit="handleSubmit">
+        <a-form :form="form.fc" @submit="handleSubmit">
           <a-form-item>
             <a-input class="material-input" v-decorator="decorator.username" placeholder="请输入用户名">
               <a-icon slot="prefix" type="user" style="color: rgba(0, 0, 0, .25)" />
@@ -28,10 +26,49 @@
               <a-icon slot="prefix" type="lock" style="color: rgba(0, 0, 0, .25)" />
             </a-input>
           </a-form-item>
+           <!--- 如果超过3个 domain，为了后端验证效率，还是在前端选择domain -->
+          <a-form-item v-if="form.fi.showDomain">
+            <a-select class="material-input" v-decorator="decorator.domain" placeholder="请选择认证域">
+              <a-select-option
+                v-for="item in form.fi.domains"
+                :key="item"
+                :value="item">{{ item }}</a-select-option>
+            </a-select>
+          </a-form-item>
+          <a-form-item v-if="showRegion">
+            <a-select class="material-input" v-decorator="decorator.region" placeholder="请选择区域">
+              <a-select-option
+                v-for="item in form.fi.regions"
+                :key="item"
+                :value="item">{{ item }}</a-select-option>
+            </a-select>
+          </a-form-item>
+          <a-form-item v-if="form.fi.showCaptcha">
+            <a-input class="material-input" v-decorator="decorator.captcha" placeholder="验证码">
+              <a-icon slot="prefix" type="lock" style="color: rgba(0, 0, 0, .25)" />
+              <template>
+                <a-icon v-show="form.fi.captchaLoading" slot="suffix" type="loading" style="color: rgba(0, 0, 0, .25)" />
+                <img v-show="!form.fi.captchaLoading" class="captcha-img" slot="suffix" :src="form.fi.captchaImg" @load="captchaLoadHandle" @error="captchaErrorHandle" @click="fetchCaptcha" />
+              </template>
+            </a-input>
+          </a-form-item>
           <a-form-item>
             <a-button type="primary" html-type="submit" :loading="loading" block>登录</a-button>
           </a-form-item>
         </a-form>
+      </div>
+      <div class="sso-login" v-if="casServerUrl">
+        <div class="sso-login-title d-flex justify-content-center align-items-center"><span class="mr-2" />其他登录<span class="ml-2" /></div>
+        <div class="sso-login-items mt-2 mb-2">
+          <a class="sso-login-item d-flex align-items-center justify-content-center ml-2 mr-2" :href="casServerUrl">
+            <a-tooltip placement="top">
+              <template slot="title">
+                <span>CAS登录</span>
+              </template>
+              <img src="./assets/cas.png" />
+            </a-tooltip>
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -46,9 +83,37 @@ import storage from '@/utils/storage'
 export default {
   name: 'Login',
   data () {
+    const captchaValidator = (rule, value, callback) => {
+      const msg = '验证码错误'
+      if (value.length !== 4) {
+        callback(msg)
+        return
+      }
+      this.$http.post('/v1/auth/captcha', { captcha: value }).then((res) => {
+        if (res.data.vali) {
+          callback()
+        } else {
+          callback(msg)
+        }
+      }).catch(() => {
+        this.fetchCaptcha()
+        callback(msg)
+      })
+    }
     return {
       loading: false,
-      form: this.$form.createForm(this),
+      form: {
+        fc: this.$form.createForm(this),
+        fi: {
+          captchaLoading: false,
+          captchaImg: '',
+          regions: [],
+          domains: [],
+          idps: [],
+          showDomain: false,
+          showCaptcha: false,
+        },
+      },
       decorator: {
         username: [
           'username',
@@ -57,6 +122,23 @@ export default {
         password: [
           'password',
           { rules: [{ required: true, message: '请输入密码' }] },
+        ],
+        domain: [
+          'domain',
+        ],
+        region: [
+          'region',
+        ],
+        captcha: [
+          'captcha',
+          {
+            validateFirst: true,
+            validateTrigger: 'blur',
+            rules: [
+              { required: true, message: '请输入验证码' },
+              { validator: captchaValidator },
+            ],
+          },
         ],
       },
       tips: [
@@ -68,12 +150,93 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['auth', 'userInfo']),
+    ...mapGetters(['auth', 'userInfo', 'logo']),
+    casConfig () {
+      const cas = this.form.fi.idps.find(item => item.driver === 'cas')
+      return cas && cas.config
+    },
+    casServerUrl () {
+      return this.casConfig && `${this.casConfig.cas.cas_server_url}?service=${this.casConfig.cas.service}`
+    },
+    showRegion () {
+      return this.form.fi.regions.length > 1
+    },
+    panelHeight () {
+      let h = 550
+      const a = [true, true, this.form.fi.showDomain, this.showRegion, this.form.fi.showCaptcha, true]
+      const l = a.filter(item => item).length
+      if (l > 5) h = 650
+      return h
+    },
+  },
+  async created () {
+    if (this.$route.query.ticket) {
+      this.ssoLogin()
+    } else {
+      this.loading = true
+      try {
+        const isRegister = await this.fetchRegisterStatus()
+        if (!isRegister) {
+          this.$router.push({ name: 'Register' })
+        } else {
+          this.fetchCaptcha()
+          this.fetchRegions()
+        }
+      } catch (error) {
+        this.loading = false
+      }
+    }
   },
   methods: {
+    async fetchRegisterStatus () {
+      this.loading = true
+      try {
+        const { data } = await this.$http.get('/v1/registers/status')
+        if (data.status === 'true') return true
+        return false
+      } catch (error) {
+        throw error
+      }
+    },
+    async fetchRegions () {
+      this.loading = true
+      try {
+        const { data: { domains, regions, idps, captcha } } = await this.$http.get('/v1/auth/regions')
+        this.form.fi.regions = regions
+        this.form.fi.domains = domains
+        this.form.fi.idps = idps
+        if (captcha) this.form.fi.showCaptcha = true
+      } finally {
+        this.loading = false
+      }
+    },
+    fetchCaptcha () {
+      this.form.fi.captchaLoading = true
+      let epochstr = +new Date()
+      this.captchaImg = ''
+      let url = '/api/v1/auth/captcha?rand=' + epochstr
+      this.form.fi.captchaImg = url
+    },
+    captchaLoadHandle () {
+      this.form.fi.captchaLoading = false
+    },
+    captchaErrorHandle () {
+      this.form.fi.captchaLoading = false
+    },
+    async ssoLogin (ticket) {
+      this.loading = true
+      try {
+        const loginResponse = await this.$store.dispatch('auth/login', {
+          cas_ticket: this.$route.query.ticket,
+        })
+        this.onTotpLogin(loginResponse)
+      } catch (error) {
+        this.loading = false
+      }
+    },
     handleSubmit (e) {
       e.preventDefault()
-      this.form.validateFields(async (err, values) => {
+      this.form.fc.validateFields(async (err, values) => {
         if (err) return
         this.loading = true
         const data = { ...values }
@@ -85,6 +248,9 @@ export default {
           const loginResponse = await this.$store.dispatch('auth/login', data)
           this.onTotpLogin(loginResponse)
         } catch (error) {
+          if (error.response.status === 409) {
+            this.form.fi.showDomain = true
+          }
           this.loading = false
         }
       })
@@ -121,6 +287,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../../styles/variables";
+
 .login-body {
   width: 810px;
   height: 660px;
@@ -160,16 +328,42 @@ export default {
     text-align: right;
     margin-right: 30px;
     margin-top: 40px;
-    svg {
-      width: 120px;
+    img {
+      height: 40px;
     }
   }
 }
 .login {
-  margin: 5px 60px 20px;
+  margin: 20px 60px 20px;
   h4 {
     font-weight: normal;
     margin-bottom: 40px;
   }
+}
+.sso-login {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.sso-login-title {
+  font-size: 12px;
+  color: #999;
+  > span {
+    width: 40px;
+    height: 1px;
+    background-color: $border-color-base;
+  }
+}
+.sso-login-item {
+  height: 35px;
+  overflow: hidden;
+  img {
+    height: 100%;
+  }
+}
+.captcha-img {
+  height: 28px;
+  width: 98px;
 }
 </style>
