@@ -7,14 +7,14 @@ const DEFAULT_BASE_INFO = [
     field: 'created_at',
     title: '创建时间',
     formatter: ({ row }) => {
-      return moment(row.created_at).format('YYYY年MM月DD日 HH:mm:ss')
+      return moment(row.created_at).format()
     },
   },
   {
     field: 'updated_at',
     title: '更新时间',
     formatter: ({ row }) => {
-      return moment(row.updated_at).format('YYYY年MM月DD日 HH:mm:ss')
+      return moment(row.updated_at).format()
     },
   },
 ]

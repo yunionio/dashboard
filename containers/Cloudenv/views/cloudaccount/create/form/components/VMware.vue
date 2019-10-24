@@ -38,7 +38,7 @@ import AutoSync from '@Cloudenv/views/cloudaccount/components/AutoSync'
 import { CLOUDACCOUNT_DOCS, keySecretFields } from '@Cloudenv/views/cloudaccount/constants'
 import createMixin from './createMixin'
 import DomainProject from '@/sections/DomainProject'
-import validateForm, { isRequired } from '@/utils/validate'
+import { isRequired } from '@/utils/validate'
 
 export default {
   name: 'VMwareCreate',
@@ -59,7 +59,7 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: '请输入名称' },
-              { validator: validateForm('serverName') },
+              { validator: this.$validate('resourceName') },
             ],
           },
         ],
@@ -69,7 +69,7 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: '请输入vCenter地址' },
-              { validator: validateForm(['url', 'IPv4'], true, 'some'), trigger: ['blur', 'change'], message: '请输入域名或者ip' },
+              { validator: this.$validate(['url', 'IPv4'], true, 'some'), trigger: ['blur', 'change'], message: '请输入域名或者ip' },
             ],
           },
         ],

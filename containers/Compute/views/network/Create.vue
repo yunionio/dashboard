@@ -4,7 +4,7 @@
     <a-form class="mt-3" :form="form.fc" @submit.prevent="handleSubmit">
       <a-divider orientation="left">基础配置</a-divider>
       <a-form-item label="名称" v-bind="formItemLayout">
-        <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverName')" />
+        <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
       </a-form-item>
       <a-form-item label="二层网络" class="mb-0" v-bind="formItemLayout">
         <cloudregion-vpc-wire
@@ -52,7 +52,7 @@
 <script>
 import * as R from 'ramda'
 import IpSubnets from './components/IpSubnets'
-import validateForm, { isRequired, isWithinRange } from '@/utils/validate'
+import { isRequired, isWithinRange } from '@/utils/validate'
 import CloudregionVpcWire from '@/sections/CloudregionVpcWire'
 import { Manager } from '@/utils/manager'
 
@@ -117,7 +117,7 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: '请输入名称' },
-              { validator: validateForm('serverName') },
+              { validator: this.$validate('resourceName') },
             ],
           },
         ],
@@ -172,7 +172,7 @@ export default {
             initialValue: '',
             validateTrigger: ['change', 'blur'],
             rules: [
-              { validator: validateForm('IPv4', false) },
+              { validator: this.$validate('IPv4', false) },
             ],
           },
         ],
@@ -182,7 +182,7 @@ export default {
             initialValue: '',
             validateTrigger: ['change', 'blur'],
             rules: [
-              { validator: validateForm('domain', false) },
+              { validator: this.$validate('domain', false) },
             ],
           },
         ],
@@ -195,7 +195,7 @@ export default {
               validateFirst: true,
               rules: [
                 { required: true, message: '请输入起始IP' },
-                { validator: validateForm('IPv4') },
+                { validator: this.$validate('IPv4') },
               ],
             },
           ],
@@ -207,7 +207,7 @@ export default {
               validateFirst: true,
               rules: [
                 { required: true, message: '请输入结束IP' },
-                { validator: validateForm('IPv4') },
+                { validator: this.$validate('IPv4') },
               ],
             },
           ],
@@ -229,7 +229,7 @@ export default {
               validateFirst: true,
               rules: [
                 { required: true, message: '请输入默认网关' },
-                { validator: validateForm('IPv4') },
+                { validator: this.$validate('IPv4') },
                 { validator: validateGateway },
                 { validator: checkIpInSegment(i, this.form) },
               ],
