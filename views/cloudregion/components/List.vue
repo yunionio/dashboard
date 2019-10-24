@@ -30,7 +30,15 @@ export default {
         },
       }),
       columns: [
-        getNameDescriptionTableColumn({ vm: this, width: 300 }),
+        getNameDescriptionTableColumn({
+          vm: this,
+          hideField: true,
+          slotCallback: row => {
+            return (
+              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'CloudregionSidePage') }>{ row.name }</side-page-trigger>
+            )
+          },
+        }),
         getEnabledTableColumn({ title: '状态' }),
         {
           field: 'guest_count',
@@ -48,6 +56,7 @@ export default {
     }
   },
   created () {
+    this.initSidePageTab('cloudregion-detail')
     this.list.fetchData()
   },
 }

@@ -36,7 +36,15 @@ export default {
         },
       }),
       columns: [
-        getNameDescriptionTableColumn({ vm: this }),
+        getNameDescriptionTableColumn({
+          vm: this,
+          hideField: true,
+          slotCallback: row => {
+            return (
+              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'SchedpolicySidePage') }>{ row.name }</side-page-trigger>
+            )
+          },
+        }),
         getEnabledTableColumn(),
         {
           field: 'strategy',
@@ -147,6 +155,7 @@ export default {
     }
   },
   created () {
+    this.initSidePageTab('schedpolicy-detail')
     this.list.fetchData()
   },
 }

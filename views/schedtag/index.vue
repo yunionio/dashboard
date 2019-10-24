@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import SchedtagList from './components/SchedtagList'
+import SchedtagList from './components/List'
 
 export default {
   name: 'Schedtag',

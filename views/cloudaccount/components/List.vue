@@ -87,7 +87,7 @@ export default {
           hideField: true,
           slotCallback: row => {
             return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id) }>{ row.name }</side-page-trigger>
+              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'CloudaccountSidePage') }>{ row.name }</side-page-trigger>
             )
           },
         }),
@@ -411,16 +411,8 @@ export default {
     }
   },
   created () {
+    this.initSidePageTab('cloudaccount-detail')
     this.list.fetchData()
-  },
-  methods: {
-    sidePageTriggerHandle (resId) {
-      this.createSidePageForList('CloudaccountSidePage', {
-        resId,
-        list: this.list,
-        singleActions: this.singleActions,
-      })
-    },
   },
 }
 </script>

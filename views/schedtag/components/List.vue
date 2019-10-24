@@ -36,7 +36,15 @@ export default {
         },
       }),
       columns: [
-        getNameDescriptionTableColumn({ vm: this }),
+        getNameDescriptionTableColumn({
+          vm: this,
+          hideField: true,
+          slotCallback: row => {
+            return (
+              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'SchedtagSidePage') }>{ row.name }</side-page-trigger>
+            )
+          },
+        }),
         {
           field: 'default_strategy',
           title: '偏好',
@@ -150,6 +158,7 @@ export default {
     }
   },
   created () {
+    this.initSidePageTab('schedtag-detail')
     this.list.fetchData()
   },
 }

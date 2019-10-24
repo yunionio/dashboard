@@ -41,7 +41,7 @@ import AutoSync from '@Cloudenv/views/cloudaccount/components/AutoSync'
 import { CLOUDACCOUNT_DOCS, keySecretFields } from '@Cloudenv/views/cloudaccount/constants'
 import createMixin from './createMixin'
 import DomainProject from '@/sections/DomainProject'
-import validateForm, { isRequired } from '@/utils/validate'
+import { isRequired } from '@/utils/validate'
 
 export default {
   name: 'OpenstackZstack',
@@ -62,7 +62,7 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: '请输入名称' },
-              { validator: validateForm('serverName') },
+              { validator: this.$validate('resourceName') },
             ],
           },
         ],

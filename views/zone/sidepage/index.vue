@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="订阅"
+    title="可用区"
     icon="onecloud"
     :res-name="data.name"
     :actions="params.actions"
@@ -16,45 +16,36 @@
 </template>
 
 <script>
-import CloudproviderregionList from '@Cloudenv/views/cloudproviderregion/components/List'
-import ExternalprojectList from '@Cloudenv/views/externalproject/components/List'
-import CloudaccountDetail from './Detail'
+import HostList from '@Compute/views/host/components/List'
+import ZoneDetail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
 
 export default {
-  name: 'CloudproviderSidePage',
+  name: 'ZoneSidePage',
   components: {
     Actions,
-    CloudaccountDetail,
-    CloudproviderregionList,
-    ExternalprojectList,
+    ZoneDetail,
+    HostList,
   },
   mixins: [SidePageMixin, WindowsMixin],
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'cloudaccount-detail' },
-        { label: '区域', key: 'cloudproviderregion-list' },
-        { label: '项目', key: 'externalproject-list' },
+        { label: '详情', key: 'zone-detail' },
+        { label: '宿主机', key: 'host-list' },
         { label: '操作日志', key: 'event-drawer' },
       ],
     }
   },
   computed: {
     getParams () {
-      if (this.params.windowData.currentTab === 'cloudproviderregion-list') {
+      if (this.params.windowData.currentTab === 'host-list') {
         return () => {
           return {
-            cloudprovider_id: this.params.resId,
+            zone: this.params.resId,
             details: true,
-          }
-        }
-      } else if (this.params.windowData.currentTab === 'externalproject-list') {
-        return () => {
-          return {
-            manager_id: this.params.resId,
           }
         }
       }

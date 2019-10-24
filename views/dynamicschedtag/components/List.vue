@@ -36,7 +36,15 @@ export default {
         },
       }),
       columns: [
-        getNameDescriptionTableColumn({ vm: this }),
+        getNameDescriptionTableColumn({
+          vm: this,
+          hideField: true,
+          slotCallback: row => {
+            return (
+              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'DynamicschedtagSidePage') }>{ row.name }</side-page-trigger>
+            )
+          },
+        }),
         getEnabledTableColumn(),
         {
           field: 'schedtag',
@@ -140,6 +148,7 @@ export default {
     }
   },
   created () {
+    this.initSidePageTab('dynamicschedtag-detail')
     this.list.fetchData()
   },
 }
