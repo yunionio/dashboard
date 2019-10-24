@@ -14,7 +14,7 @@
       <!-- header info -->
       <div class="side-page-header-info d-flex align-items-center">
         <div class="side-page-header-icon d-flex align-items-center justify-content-center">
-          <icon :name="icon" width="3rem" height="3rem" fill="#888" />
+          <icon :type="icon" style="font-size: 3rem;" fill="#888" />
         </div>
         <div class="ml-4">
           <h5>{{ title }}</h5>
