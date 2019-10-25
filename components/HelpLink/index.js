@@ -18,7 +18,7 @@ export default {
     return (
       <a href={ href } target={ target }>
         { slots.default ? h('span', slots.default) : null }
-        { blank ? <icon class='ml-1' name='blank' /> : null }
+        { blank ? <icon class='ml-1' type='blank' /> : null }
       </a>
     )
   },

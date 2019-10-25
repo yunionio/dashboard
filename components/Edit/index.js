@@ -11,6 +11,9 @@ export default {
       type: String,
       default: '名称',
     },
+    formRules: {
+      type: Array,
+    },
   },
   data () {
     return {
@@ -42,7 +45,7 @@ export default {
   render (h) {
     const { default: customForm } = this.$slots
     return (
-      <div class={['edit-icon']}>
+      <div class='edit-icon mini-text'>
         <a-popover v-model={ this.visible } title={ this.title } trigger="click" destroyTooltipOnHide={true}>
           <a-icon type='edit' theme='twoTone' twoToneColor='#1890ff' />
           { customForm ? <customForm slot="content" onSubmit={this.submit} /> : <edit-form slot="content" { ...{ attrs: this.$attrs, props: this.$props } } onSubmit={this.submit} onCancel={ this.hideForm } /> }

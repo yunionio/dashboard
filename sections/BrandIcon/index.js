@@ -14,16 +14,14 @@ export default {
     const option = brandMap[this.name]
     const name = option.key.toLowerCase()
     const small = ['DStack', 'OpenStack']
-    let width = '20px'
-    let height = '20px'
+    let fontSize = '20px'
     if (small.includes(this.name)) {
-      width = '16px'
-      height = '16px'
+      fontSize = '16px'
     }
     return (
       <a-tooltip title={ option.label }>
         <span>
-          <icon name={ name } width={ width } height={ height } />
+          <icon type={ name } style={{ fontSize }} />
         </span>
       </a-tooltip>
     )

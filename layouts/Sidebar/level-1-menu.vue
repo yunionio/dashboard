@@ -7,7 +7,7 @@
       @click="toPage(item)">
       <div class="level-1-item-wrap" :class="{ 'active': item.meta.group === currentGroup }">
         <div class="level-1-item-icon">
-          <icon :name="item.meta.icon" />
+          <icon :type="item.meta.icon" />
         </div>
         <p class="level-1-item-text">{{ getLabel(item.meta) }}</p>
       </div>
@@ -116,13 +116,10 @@ export default {
   overflow: hidden;
   border-right: 1px solid #e6e9f0;
   transition: all .15s ease;
-  &:hover {
-    width: 224px;
-  }
 }
 .level-1-item-wrap {
   cursor: pointer;
-  height: 46px;
+  height: 64px;
   color: #fff;
   font-size: 14px;
   font-weight: 400;
@@ -131,6 +128,9 @@ export default {
   display: block;
   width: 100%;
   position: relative;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
   &:hover {
     color: #fff;
     background-color: #007fdf;
@@ -139,37 +139,25 @@ export default {
     border-left-color: #007fdf;
     color: #fff;
     background-color: #007fdf;
-    .level-1-item-icon {
-      border-radius: 50%;
-      background-color: #3ea6f5;
-    }
   }
   .level-1-item-icon {
-    width: 32px;
-    height: 32px;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    position: absolute;
-    top: 7px;
-    left: 14px;
-    .oc-icon {
-      font-size: 24px;
-      fill: #fff;
-    }
+    line-height: 1;
+    font-size: 24px;
   }
 }
 .level-1-item-text {
-  position: absolute;
-  left: 64px;
-  top: 0;
-  height: 46px;
-  line-height: 46px;
+  text-align: center;
+  font-size: 12px;
+  margin: 2px 0 0 0;
 }
 .bottom-line {
   height: 1px;
-  background: rgb(245, 245, 245);
-  margin: 7px 0 7px 10px;
+  background: rgba(255, 255, 255, .2);
+  margin: 0;
   position: relative;
 }
 </style>

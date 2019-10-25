@@ -12,7 +12,14 @@ export default {
       if (this.params && R.is(Function, this.params.cancel)) {
         this.params.cancel()
       }
+      this.handleTabChange(this.params.windowData._currentTab)
       this.destroySidePage(this.windowId)
+    },
+    handleTabChange (val) {
+      this._updateWindow({
+        id: this.sidePageData.parentWindowId,
+        currentTab: val,
+      })
     },
   },
 }

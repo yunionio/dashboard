@@ -1,18 +1,31 @@
 <template>
   <div class="navbar-wrap d-flex align-items-center">
-    <div class="flex-fill d-flex align-items-center">
+    <div class="flex-fill d-flex align-items-center h-100">
       <div class="header-logo ml-2">
-        <icon name="logo" />
+        <img class="logo" :src="logo" />
       </div>
       <h1 class="header-title ml-3">管理控制台</h1>
+    </div>
+    <!-- 系统选择 -->
+    <div class="navbar-item d-flex align-items-center justify-content-end" v-if="products">
+      <a-dropdown :trigger="['click']">
+        <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
+          <icon type="navbar-setting" />
+          <span class="ml-2">云管平台</span>
+          <icon type="caret-down" style="font-size: 24px; line-height: normal;" />
+        </div>
+        <a-menu slot="overlay" @click="productChange">
+          <a-menu-item v-for="item of products" :key="item.key">{{ item.label }}</a-menu-item>
+        </a-menu>
+      </a-dropdown>
     </div>
     <!-- 视图选择 -->
     <div class="navbar-item d-flex align-items-center justify-content-end" v-if="systemProject || domainProject">
       <a-dropdown :trigger="['click']">
         <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
-          <a-icon type="rocket" class="icon" />
+          <icon type="navbar-view-switch" />
           <span class="ml-2">{{ viewLabel }}</span>
-          <a-icon type="down" class="ml-2 mt-1" />
+          <icon type="caret-down" style="font-size: 24px; line-height: normal;" />
         </div>
         <a-menu slot="overlay" @click="projectChange">
           <a-menu-item scope="project" :key="`${projects[0].id}$$project$$${true}`">
@@ -37,9 +50,9 @@
     <div class="navbar-item d-flex align-items-center justify-content-end" v-if="scope ==='project'">
       <a-dropdown :trigger="['click']">
         <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
-          <a-icon type="rocket" class="icon" />
+          <icon type="navbar-project" />
           <span class="ml-2">{{ userInfo.projectName }}</span>
-          <a-icon type="down" class="ml-2 mt-1" />
+          <icon type="caret-down" style="font-size: 24px; line-height: normal;" />
         </div>
         <a-menu slot="overlay" @click="projectChange">
           <a-menu-item v-for="item of projects" :key="`${item.id}$$project`">
@@ -48,17 +61,29 @@
         </a-menu>
       </a-dropdown>
     </div>
+    <!-- 消息中心 -->
     <div class="navbar-item">
-      <a-dropdown :trigger="['click']">
-        <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
-          <a-icon type="user" class="icon" />
-          <span class="ml-2">{{ userInfo.name }}</span>
-          <a-icon type="down" class="ml-2 mt-1" />
-        </div>
-        <a-menu slot="overlay" @click="userMenuClick">
-          <a-menu-item key="logout">退出</a-menu-item>
-        </a-menu>
-      </a-dropdown>
+      <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
+        <icon type="navbar-notify" style="font-size: 24px;" />
+      </div>
+    </div>
+    <!-- 工单 -->
+    <div class="navbar-item">
+      <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
+        <icon type="navbar-process" style="font-size: 20px;" />
+      </div>
+    </div>
+    <!-- 帮助 -->
+    <div class="navbar-item">
+      <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
+        <icon type="question" style="font-size: 22px;" />
+      </div>
+    </div>
+    <!-- 用户 -->
+    <div class="navbar-item">
+      <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
+        <icon type="navbar-user" style="font-size: 24px;" />
+      </div>
     </div>
   </div>
 </template>
@@ -70,7 +95,19 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'Navbar',
   computed: {
-    ...mapGetters(['userInfo', 'scope']),
+    ...mapGetters(['userInfo', 'scope', 'logo']),
+    products () {
+      if (this.userInfo.menus && this.userInfo.menus.length > 0) {
+        const menus = this.userInfo.menus.map(item => {
+          return {
+            key: item.url,
+            label: item.name,
+          }
+        })
+        return menus
+      }
+      return null
+    },
     projects () {
       return R.sort((a, b) => {
         return a.name.localeCompare(b.name)
@@ -111,6 +148,9 @@ export default {
       if (this.userInfo.projectId === projectId && this.scope === scope) return
       this.reLogin(projectId, scope)
     },
+    productChange (item) {
+      window.open(item.key, '_blank')
+    },
     async reLogin (projectId, scope) {
       await this.$store.dispatch('auth/reLogin', projectId)
       await this.$store.commit('auth/SET_SCOPE', scope)
@@ -144,19 +184,17 @@ export default {
   padding: 0 20px;
   cursor: pointer;
   text-decoration: none;
-  .icon {
-    font-size: 18px;
-  }
 }
 .header-logo {
-  .oc-icon {
-    font-size: 42px;
+  line-height: 1;
+  img {
+    width: 45px;
   }
 }
 .header-title {
   margin: 0;
   padding: 0;
-  font-weight: normal;
+  font-weight: 400;
   font-size: 18px;
 }
 </style>
