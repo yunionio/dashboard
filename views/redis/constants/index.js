@@ -1,12 +1,12 @@
 // 公有云计费方式配置选项
 export const BILL_TYPES_MAP = {
-  quantity: {
+  postpaid: {
     label: '按量付费',
-    key: 'quantity',
+    key: 'postpaid',
   },
-  package: {
+  prepaid: {
     label: '包年包月',
-    key: 'package',
+    key: 'prepaid',
   },
 }
 
@@ -47,3 +47,18 @@ export const BUY_DURATIONS_OPTIONS = [
     unit: 'Y',
   },
 ]
+
+// 账号权限
+export const ACCOUNT_PRIVILEGES = {
+  'read': '只读',
+  'write': '读写',
+  'repl': '复制',
+}
+
+// Elasticache机型翻译
+export const ENGINE_ARCH = {
+  'single': '基础版',
+  'master': '高可用',
+  'cluster': '集群',
+  'splitrw': '读写分离',
+}

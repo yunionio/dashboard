@@ -1,38 +1,36 @@
 <template>
-  <div>
-    <a-row :gutter="8">
-      <a-col :span="8">
-         <a-form-item>
-            <a-select  v-decorator="decorators.city" @change="fetchQueryProviders">
-                <a-select-option
-                    :key="item.name"
-                    :value="item.name"
-                    v-for="item in cityOpts">{{item.cname}}</a-select-option>
-            </a-select>
-         </a-form-item>
-      </a-col>
-      <a-col :span="8">
+  <a-row :gutter="8">
+    <a-col :span="8">
         <a-form-item>
-            <a-select :loading="providerLoading" placeholder="请选择平台" v-decorator="decorators.provider" @change="fetchQueryRegions">
-                <a-select-option
-                    :key="item.name"
-                    :value="item.name"
-                    v-for="item in providerOps">{{item.cname}}</a-select-option>
-            </a-select>
+          <a-select  v-decorator="decorators.city" @change="fetchQueryProviders">
+              <a-select-option
+                  :key="item.name"
+                  :value="item.name"
+                  v-for="item in cityOpts">{{item.cname}}</a-select-option>
+          </a-select>
         </a-form-item>
-      </a-col>
-      <a-col :span="8">
-        <a-form-item>
-            <a-select :loading="regionLoading" placeholder="请选择区域"  v-decorator="decorators.region">
-                <a-select-option
-                    :key="item.id"
-                    :value="item.id"
-                    v-for="item in regionOpts">{{item.name}}</a-select-option>
-            </a-select>
-        </a-form-item>
-      </a-col>
-    </a-row>
-  </div>
+    </a-col>
+    <a-col :span="8">
+      <a-form-item>
+          <a-select :loading="providerLoading" placeholder="请选择平台" v-decorator="decorators.provider" @change="fetchQueryRegions">
+              <a-select-option
+                  :key="item.name"
+                  :value="item.name"
+                  v-for="item in providerOps">{{item.cname}}</a-select-option>
+          </a-select>
+      </a-form-item>
+    </a-col>
+    <a-col :span="8">
+      <a-form-item>
+          <a-select :loading="regionLoading"  placeholder="请选择区域"  v-decorator="decorators.region" @change="handleRegionChange">
+              <a-select-option
+                  :key="item.id"
+                  :value="item.id"
+                  v-for="item in regionOpts">{{item.name}}</a-select-option>
+          </a-select>
+      </a-form-item>
+    </a-col>
+  </a-row>
 </template>
 <script>
 import { Manager } from '@/utils/manager'
@@ -114,11 +112,11 @@ export default {
         throw err
       }
     },
-    async fetchQueryProviders () {
+    async fetchQueryProviders (city) {
       const params = {
         service: 'dbinstances',
         usable: true,
-        city: this.getFieldValue('city') || undefined,
+        city: city || undefined,
       }
       this.FC.setFieldsValue({
         provider: undefined,
@@ -142,14 +140,17 @@ export default {
         throw err
       }
     },
-    async fetchQueryRegions () {
+    async fetchQueryRegions (provider) {
       const params = {
         service: 'dbinstances',
         usable: true,
         is_public: true,
         city: this.getFieldValue('city') || undefined,
-        provider: this.getFieldValue('provider') || undefined,
+        provider: provider || undefined,
       }
+      this.FC.setFieldsValue({
+        region: undefined,
+      })
       try {
         this.regionLoading = true
         const { data } = await this.crManager.list({ params })
@@ -158,6 +159,18 @@ export default {
       } catch (err) {
         this.regionLoading = false
         throw err
+      }
+    },
+    handleRegionChange (regionId) {
+      const regionItem = this.regionOpts.find(({ id }) => {
+        return id === regionId
+      })
+      if (regionItem) {
+        const { city, provider } = regionItem
+        this.FC.setFieldsValue({
+          city,
+          provider,
+        })
       }
     },
   },

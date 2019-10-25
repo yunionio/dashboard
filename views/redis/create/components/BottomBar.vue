@@ -14,7 +14,7 @@
             <span class="value text-truncate" :class="obj.valueClass">{{ obj.value }}</span>
           </template>
           <template v-else>
-            <span class="value placeholder text-truncate" :class="obj.valueClass">------</span>
+            <span class="value placeholder text-truncate" :class="obj.valueClass">-</span>
           </template>
         </div>
       </div>
@@ -22,7 +22,7 @@
     </template>
     <template v-slot:right>
       <div class="btns-wrapper d-flex align-items-center">
-        <a-button @click="doCreate" :loading="loading" type="primary" class="ml-3">确认</a-button>
+        <a-button @click="doCreate" :loading="loading" type="primary" class="ml-3">创建</a-button>
       </div>
       <!-- <transition>
         <div v-if="errors.length" class="errors-wrap" v-clickoutside="closeError">
@@ -74,12 +74,12 @@ export default {
           { label: '数量', labelClass: 'label-w-50', value: count },
         ],
         [
-          { label: '区域', labelClass: 'label-w-50', value: '----' },
-          { label: '实例类型', labelClass: 'label-w-50', value: `${this.values['engine_arch']}` },
+          { label: '区域', labelClass: 'label-w-50', value: '-' },
+          { label: '实例类型', labelClass: 'label-w-50', value: `${this.values['engine_arch'] || '-'}` },
         ],
         [
           { label: '配置', labelClass: 'label-w-80', value: `${sizestrWithUnit(sku.memory_size_mb, 'M', 1024)}内存` },
-          { label: '类型版本', labelClass: 'label-w-80', value: `${this.values['engine']}${this.values['engine_version']}` },
+          { label: '类型版本', labelClass: 'label-w-80', value: `${this.values['engine'] || '-'}${this.values['engine_version'] || ''}` },
         ],
       ]
       return ret
@@ -97,12 +97,19 @@ export default {
       const params = {
         ...this.values,
       }
+      params['cloudregion'] = params.region || params.sku.cloudregion_id
+      params['zone'] = params.sku.zone_id
+      params['engine_version'] = params.sku.engine_version
+      params['engine'] = params.sku.engine
+      params['instance_type'] = params.sku.id
+      delete params.sku
       return params
     },
     async doCreate () {
+      console.log(this.formatParams())
       if (!this.validateForm()) return false
-      const manager = new Manager('elasticcacheacls', 'v2')
-      const ret = await manager.create(this.formatParams())
+      const manager = new Manager('elasticcaches', 'v2')
+      const ret = await manager.create({ data: this.formatParams() })
       console.log(ret)
     },
   },

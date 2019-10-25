@@ -7,11 +7,12 @@
 </template>
 
 <script>
+import { ACCOUNT_PRIVILEGES } from '../constants'
 import { getStatusTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'RedisWhiteList',
+  name: 'RedisAccountList',
   mixins: [WindowsMixin],
   props: {
     getParams: {
@@ -24,7 +25,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
-        resource: 'elasticcacheacls',
+        resource: 'elasticcacheaccounts',
         getParams: this.getParams,
       }),
       columns: [
@@ -32,19 +33,13 @@ export default {
           field: 'name',
           title: '名称',
         },
-        getStatusTableColumn({ statusModule: 'redisACL' }),
+        getStatusTableColumn({ statusModule: 'redisAccount' }),
         {
           field: 'ip',
-          title: 'IP',
+          title: '权限',
           slots: {
             default: ({ row }) => {
-              if (row.ip_list) {
-                const ips = row.ip_list.split(',')
-                return ips.map(ip => {
-                  return <div><a-tag>{ip}</a-tag></div>
-                })
-              }
-              return ''
+              return ACCOUNT_PRIVILEGES[row.account_privilege] || '-'
             },
           },
         },
@@ -52,8 +47,8 @@ export default {
       groupActions: [
         {
           label: '新建',
-          action: (obj) => {
-            this.createDialog('RedisWhiteListFormDialog', {
+          action: () => {
+            this.createDialog('RedisAccountDialog', {
               list: this.list,
               redisItem: this.data,
             })
@@ -67,14 +62,26 @@ export default {
       ],
       singleActions: [
         {
-          label: '修改',
+          label: '重置密码',
           action: (obj) => {
-            this.createDialog('RedisWhiteListFormDialog', {
-              initialValues: {
-                name: obj.name,
-                ip_list: obj.ip_list,
-              },
+            this.createDialog('RedisAccountLisResetPwdDialog', {
+              data: [obj],
               list: this.list,
+              columns: this.columns,
+              redisItem: this.data,
+            })
+          },
+        },
+        {
+          label: '修改权限',
+          action: (obj) => {
+            this.createDialog('RedisAccountListSetPrivilegeDialog', {
+              initialValues: {
+                account_privilege: obj['account_privilege'],
+              },
+              data: [obj],
+              list: this.list,
+              columns: this.columns,
               redisItem: this.data,
             })
           },

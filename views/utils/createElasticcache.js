@@ -41,7 +41,7 @@ export const decorators = {
   billing_type: [
     'billing_type',
     {
-      initialValue: 'quantity',
+      initialValue: 'postpaid',
     },
   ],
   sku: [
@@ -113,7 +113,7 @@ export const decorators = {
     'vpc': [
       'vpc',
       {
-        initialValue: '',
+        initialValue: undefined,
         rules: [
           { required: true, message: '请选择VPC' },
         ],
@@ -122,7 +122,7 @@ export const decorators = {
     'network': [
       'network',
       {
-        initialValue: '',
+        initialValue: undefined,
         rules: [
           { required: true, message: '请选择IP子网' },
         ],

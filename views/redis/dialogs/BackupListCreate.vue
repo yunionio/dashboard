@@ -1,14 +1,14 @@
 <template>
     <base-dialog @cancel="cancelDialog">
-        <div slot="header">新建</div>
+        <div slot="header">创建账号</div>
         <a-form slot="body" :form="form.fc" class="mt-3">
-            <a-form-item v-bind="formItemLayout" label="分组名">
-                <a-input placeholder="请选择分组名称" v-decorator="decorators.name" />
+            <a-form-item v-bind="formItemLayout" label="数据库名称">
+                <a-input placeholder="以字母开头，由小写字母，数字、下划线组成。长度不超过16个字符" v-decorator="decorators.name" />
             </a-form-item>
-            <a-form-item v-bind="formItemLayout" label="IP地址/地段名">
-                <a-textarea placeholder="例：10.10.10.1 或者 10.10.0.0/10"
+            <a-form-item v-bind="formItemLayout" label="描述">
+                 <a-textarea placeholder="请输入描述信息"
                  :autosize="{ minRows: 4, maxRows: 7 }"
-                 v-decorator="decorators['ip_list']" />
+                 v-decorator="decorators.description" />
             </a-form-item>
         </a-form>
          <div slot="footer">
@@ -19,25 +19,26 @@
 </template>
 
 <script>
-import validateForm, { REGEXP } from '@/utils/validate'
+import { CreateServerForm } from '@Compute/constants'
+import { ACCOUNT_PRIVILEGES } from '../constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import validateForm from '@/utils/validate'
 
 export default {
-  name: 'RedisWhiteListFormDialog',
+  name: 'BackupListCreate',
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
       loading: false,
-      title: '新建',
+      privileges: ACCOUNT_PRIVILEGES,
       form: {
         fc: this.$form.createForm(this),
       },
       formItemLayout: {
-        wrapperCol: { span: 20 },
-        labelCol: { span: 4 },
+        wrapperCol: { span: CreateServerForm.wrapperCol },
+        labelCol: { span: CreateServerForm.labelCol },
       },
-      ipsLength: 0,
     }
   },
   computed: {
@@ -55,14 +56,12 @@ export default {
             ],
           },
         ],
-        ip_list: [
-          'ip_list',
+        description: [
+          'description',
           {
             initialValue: initialValues.ip_list,
-            validateFirst: true,
             rules: [
-              { required: true, message: '请添加IP地址/地段名' },
-              { validator: this.validateIps },
+              { max: 200, message: '长度不能大于200' },
             ],
           },
         ],
@@ -71,25 +70,13 @@ export default {
     },
   },
   methods: {
-    validateIps (rule, value, _callback) {
-      const REG_IP = REGEXP.IPv4
-      const REG_NUM = /\d/
-      if (value) {
-        const ips = value.split(',')
-        const ipsLength = ips.length
-        for (let i = 0; i < ipsLength; i++) {
-          const _item = ips[i]
-          const [_ip, _u] = _item.split('/')
-          console.log(_item, REG_IP.test(_ip))
-          if (!REG_IP.test(_ip)) {
-            _callback(`IP地址：（${_item}）格式不对`)
-          }
-          if (_u && !REG_NUM.test(_u)) {
-            _callback(`IP地址：（${_item}）请输入数字类型地址段`)
-          }
-        }
+    rulesCheckPassword (rule, value, callback) {
+      const form = this.form.fc
+      if (value && value !== form.getFieldValue('password')) {
+        callback(new Error('两次输入的密码不一致'))
+      } else {
+        callback()
       }
-      _callback()
     },
     validateForm () {
       return new Promise((resolve, reject) => {
@@ -106,13 +93,14 @@ export default {
       this.loading = true
       try {
         const values = await this.validateForm()
-        console.log(this)
+        const params = {
+          ...values,
+          elasticcache: this.params.redisItem.id,
+        }
+        delete params.checkPassword
         await this.params.list.onManager('create', {
           managerArgs: {
-            data: {
-              ...values,
-              elasticcache: this.params.redisItem.id,
-            },
+            data: params,
           },
         })
         this.loading = false

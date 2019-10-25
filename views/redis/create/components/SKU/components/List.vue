@@ -1,6 +1,6 @@
 <template>
   <div>
-    <vxe-grid :columns="tableColumn" :data="skuList" @radio-change="handleSkuChange" ref="tableRef">
+    <vxe-grid :loading="loading" max-height="500" :columns="tableColumn" :data="skuList" @radio-change="handleSkuChange" ref="tableRef">
       <template v-slot:empty>
         <page-list-empty :loading="skuLoading" />
       </template>
@@ -9,8 +9,10 @@
 </template>
 
 <script>
+import BrandIcon from '@/sections/BrandIcon'
 // import * as R from 'ramda'
 import PageListEmpty from '@/components/PageList/Loader'
+import { sizestr } from '@/utils/utils'
 
 export default {
   name: 'SKUList',
@@ -21,6 +23,9 @@ export default {
   props: {
     skuList: {
       type: Array,
+    },
+    loading: {
+      type: Boolean,
     },
   },
   data () {
@@ -38,12 +43,28 @@ export default {
     tableColumn () {
       const column = [
         { type: 'radio', width: 40 },
-        { field: 'instance_spec', title: '规格' },
-        { field: 'memory_size_mb', title: '内存(GB)' },
-        { field: 'cpu', title: 'CPU' },
+        { field: 'name', title: '规格' },
+        {
+          field: 'provider',
+          title: '平台',
+          default: ({ row }) => {
+            return <BrandIcon name={ row['provider'] } />
+          },
+        },
+        {
+          field: 'memory_size_mb',
+          title: '内存(GB)',
+          sortable: true,
+          slots: {
+            default: ({ row }) => {
+              return sizestr(row.memory_size_mb, 'M', 1024)
+            },
+          },
+        },
+        { field: 'cpu_arch', title: 'CPU' },
         { field: 'storage_type', title: '存储架构' },
-        { field: 'ada', title: '最大链接数' },
-        { field: 'cpu_core_count', title: '备注' },
+        { field: 'max_connections', title: '最大链接数', sortable: true },
+        { field: 'description', title: '备注' },
       ]
       return column
     },

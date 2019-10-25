@@ -31,15 +31,15 @@ export default {
           field: 'status',
           title: '状态',
           slots: {
-            default: (data) => {
+            default: (row) => {
               return [
-                <status status={ data.status } statusModule='redis' />,
+                <status status={ row.status } statusModule='redis' />,
               ]
             },
           },
         },
         {
-          field: 'zone',
+          field: 'project_domain',
           title: '部门（域）',
         },
         {
@@ -58,16 +58,19 @@ export default {
             {
               title: '类型版本',
               slots: {
-                default: (data) => {
-                  return `${data.engine || ''} ${data.engine_version || ''}`
+                default: (row) => {
+                  return `${row.engine || ''} ${row.engine_version || ''}`
                 },
               },
             },
             {
               title: '可维护时间段',
               slots: {
-                default: (data) => {
-                  return ''
+                default: (row) => {
+                  if (row.maintain_start_time && row.maintain_end_time) {
+                    return `${row.maintain_start_time} ~ ${row.maintain_end_time}`
+                  }
+                  return '-'
                 },
               },
             },
@@ -80,7 +83,13 @@ export default {
               title: '实例类型',
             },
             {
+              field: 'cpu_arch',
               title: 'CPU',
+              slots: {
+                default: (row) => {
+                  return row.cpu_arch || '-'
+                },
+              },
             },
             {
               field: 'arch_type',
@@ -99,8 +108,11 @@ export default {
               field: 'private_ip_addr',
               title: '内网地址',
               slots: {
-                default: (data) => {
-                  return `${data['private_private_ip_addrconnect_port']} ${data['private_connect_port']}`
+                default: (row) => {
+                  if (row.private_ip_addr) {
+                    return `${row['private_ip_addr']}:${row['private_connect_port']}`
+                  }
+                  return '-'
                 },
               },
             },
@@ -108,25 +120,38 @@ export default {
               field: 'public_ip_addr',
               title: '外网地址',
               slots: {
-                default: (data) => {
-                  return `${data['public_ip_addr' || '']} ${data['public_connect_port']}`
+                default: (row) => {
+                  if (row.public_ip_addr) {
+                    return `${row['public_ip_addr']}:${row['public_connect_port']}`
+                  }
+                  return '-'
                 },
               },
             },
             {
               field: 'vpc',
               title: 'VPC',
+              slots: {
+                default: (row) => {
+                  return row.vpc || '-'
+                },
+              },
             },
             {
               field: 'network',
               title: '子网',
+              slots: {
+                default: (row) => {
+                  return row.network || '-'
+                },
+              },
             },
             {
               field: 'auth_mode',
               title: '访问方式',
               slots: {
-                default: (data) => {
-                  return data['auth_mode'] === 'on' ? '密码访问' : '免密访问'
+                default: (row) => {
+                  return row['auth_mode'] === 'on' ? '密码访问' : '免密访问'
                 },
               },
             },
@@ -136,8 +161,30 @@ export default {
           title: '其他信息',
           items: [
             {
-              field: 'health_status',
-              title: '健康状态',
+              field: 'created_at',
+              title: '创建时间',
+              slots: {
+                default: (row) => {
+                  return this.$moment(row.created_at).format()
+                },
+              },
+            },
+            {
+              field: 'updated_at',
+              title: '更新时间',
+              slots: {
+                default: (row) => {
+                  return this.$moment(row.updated_at).format()
+                },
+              },
+            },
+            {
+              title: '删除保护',
+              slots: {
+                default: (row) => {
+                  return <div>asda</div>
+                },
+              },
             },
           ],
         },

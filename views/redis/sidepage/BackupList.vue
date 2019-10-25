@@ -7,11 +7,11 @@
 </template>
 
 <script>
-import { getStatusTableColumn } from '@/utils/common/tableColumn'
+import { getStatusTableColumn, getRegionTableColumn, getBrandTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'RedisWhiteList',
+  name: 'RedisBackupList',
   mixins: [WindowsMixin],
   props: {
     getParams: {
@@ -24,7 +24,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
-        resource: 'elasticcacheacls',
+        resource: 'elasticcachebackups',
         getParams: this.getParams,
       }),
       columns: [
@@ -32,28 +32,47 @@ export default {
           field: 'name',
           title: '名称',
         },
-        getStatusTableColumn({ statusModule: 'redisACL' }),
         {
-          field: 'ip',
-          title: 'IP',
+          field: 'backup_mode',
+          title: '备份类型',
+        },
+        {
+          field: 'name',
+          title: '实例类型',
+        },
+        {
+          field: 'name',
+          title: '标签',
+        },
+        {
+          field: 'backup_size_mb',
+          title: '大小',
           slots: {
             default: ({ row }) => {
-              if (row.ip_list) {
-                const ips = row.ip_list.split(',')
-                return ips.map(ip => {
-                  return <div><a-tag>{ip}</a-tag></div>
-                })
-              }
-              return ''
+              return `${row.backup_size_mb}`
             },
           },
         },
+        getBrandTableColumn(),
+        getStatusTableColumn({ statusModule: 'redisBackup' }),
+        {
+          title: '备份开始/结束时间',
+          slots: {
+            default: ({ row }) => {
+              if (row.start_time && row.end_time) {
+                return `${row.start_time} ~ ${row.end_time}`
+              }
+              return '-'
+            },
+          },
+        },
+        getRegionTableColumn(),
       ],
       groupActions: [
         {
           label: '新建',
-          action: (obj) => {
-            this.createDialog('RedisWhiteListFormDialog', {
+          action: () => {
+            this.createDialog('BackupListCreate', {
               list: this.list,
               redisItem: this.data,
             })
@@ -67,25 +86,11 @@ export default {
       ],
       singleActions: [
         {
-          label: '修改',
+          label: '恢复',
           action: (obj) => {
-            this.createDialog('RedisWhiteListFormDialog', {
-              initialValues: {
-                name: obj.name,
-                ip_list: obj.ip_list,
-              },
-              list: this.list,
-              redisItem: this.data,
-            })
-          },
-        },
-        {
-          label: '删除',
-          action: (obj) => {
-            this.createDialog('RedisWhiteListDeleteDialog', {
+            this.createDialog('RedisBackupResumeDialog', {
               data: [obj],
               columns: this.columns,
-              title: '删除白名单',
               list: this.list,
             })
           },
@@ -95,7 +100,6 @@ export default {
   },
   created () {
     this.list.fetchData()
-    console.log(this.data)
   },
 }
 </script>

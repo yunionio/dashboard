@@ -8,9 +8,10 @@
 
 <script>
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
+import { ENGINE_ARCH } from '../constants/index.js'
 import { Manager } from '@/utils/manager'
 import { sizestr } from '@/utils/utils'
-import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
+import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getNameDescriptionTableColumn, getBrandTableColumn } from '@/utils/common/tableColumn'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 
@@ -61,6 +62,7 @@ export default {
         getNameDescriptionTableColumn({
           vm: this,
           hideField: true,
+          addLock: true,
           slotCallback: row => {
             return (
               <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id) }>{ row.name }</side-page-trigger>
@@ -68,8 +70,14 @@ export default {
           },
         }),
         {
-          field: 'category',
+          field: 'arch_type',
           title: '类型',
+          slots: {
+            default: ({ row }) => {
+              const type = row.local_category || row.arch_type
+              return ENGINE_ARCH[type] || type
+            },
+          },
         },
         {
           field: 'instance_type',
@@ -132,7 +140,7 @@ export default {
         },
         getStatusTableColumn({ statusModule: 'redis' }),
         getProjectTableColumn(),
-        // getBrandTableColumn(),
+        getBrandTableColumn(),
         getRegionTableColumn(),
       ],
       groupActions: [
@@ -164,32 +172,87 @@ export default {
         {
           label: '更多',
           actions: (obj) => {
+            const isRunning = obj.status === 'running'
+            const notRunninTip = !isRunning ? '仅运行中的实例支持此操作' : null
             return [
               {
                 label: '续费',
-                action: (obj) => {
+                action: () => {
                   this.createDialog('RedisRenewDialog', {
+                    title: '续费',
                     data: [obj],
                     columns: this.columns,
                     list: this.list,
                   })
                 },
+                meta: () => {
+                  const isPrepaid = obj.billing_type === 'prepaid'
+                  const validate = (isRunning && isPrepaid)
+                  return {
+                    validate: validate,
+                    tooltip: notRunninTip || (!isPrepaid ? '仅包年包月的实例支持此操作' : null),
+                  }
+                },
               },
               {
-                label: '修改属性',
-                action: (obj) => {
-                  this.createDialog('VmUpdateDialog', {
+                label: '调整配置',
+                action: () => {
+                  this.createDialog('RedisSetConfigDialog', {
+                    title: '调整配置',
                     data: [obj],
                     columns: this.columns,
                     list: this.list,
                   })
+                },
+                meta: () => {
+                  return {
+                    validate: isRunning,
+                    tooltip: notRunninTip,
+                  }
+                },
+              },
+              {
+                label: '清空数据',
+                action: () => {
+                  this.createDialog('RedisClearDataDialog', {
+                    title: '清空数据',
+                    data: [obj],
+                    columns: this.columns,
+                    list: this.list,
+                  })
+                },
+                meta: () => {
+                  return {
+                    validate: isRunning,
+                    tooltip: notRunninTip,
+                  }
+                },
+              },
+              {
+                label: '重置密码',
+                action: () => {
+                  this.createDialog('RedisResetPassworddialog', {
+                    title: '重置密码',
+                    data: [obj],
+                    columns: this.columns,
+                    list: this.list,
+                  })
+                },
+                meta: () => {
+                  return {
+                    validate: obj.can_delete,
+                    tooltip: obj.disable_delete ? '请点击修改属性禁用删除保护后重试' : null,
+                  }
                 },
               },
               {
                 label: '删除',
                 action: () => {
-                  this.list.onManager('delete', {
-                    id: obj.id,
+                  this.createDialog('RedisDeletedialog', {
+                    title: '删除',
+                    data: [obj],
+                    columns: this.columns,
+                    list: this.list,
                   })
                 },
                 meta: () => {

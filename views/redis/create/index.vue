@@ -24,10 +24,10 @@
        <s-k-u ref="REF_SKU" />
        <a-divider orientation="left">高级配置</a-divider>
         <a-form-item label="管理员密码" v-bind="formItemLayout">
-          <server-password :decorator="decorators.loginConfig" />
+          <server-password :loginTypes="['random', 'password']" :decorator="decorators.loginConfig" />
        </a-form-item>
         <a-form-item label="VPC" v-bind="formItemLayout">
-          <item-vpc-opts :decorators="decorators.vpcNetwork" />
+          <item-vpc-opts ref="REF_VPC" :decorators="decorators.vpcNetwork" />
        </a-form-item>
     </a-form>
     <bottom-bar :values="form.fc.getFieldsValue()" />
@@ -113,8 +113,14 @@ export default {
         }
       }
     },
+    _queryNetworks (changedFields) {
+      if (changedFields['sku']) {
+        this.$refs['REF_VPC'].fetchQueryNetworks()
+      }
+    },
     onFieldsChange (vm, changedFields) {
       this._querySkus(changedFields)
+      this._queryNetworks(changedFields)
     },
   },
 }

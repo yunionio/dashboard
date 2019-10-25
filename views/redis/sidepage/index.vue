@@ -17,6 +17,8 @@
 <script>
 import RedisDetail from './Detail'
 import RedisWhiteList from './WhiteList'
+import RedisAccountList from './AccountList'
+import RedisBackupList from './BackupList'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -27,6 +29,8 @@ export default {
     Actions,
     RedisDetail,
     RedisWhiteList,
+    RedisAccountList,
+    RedisBackupList,
   },
   mixins: [SidePageMixin, WindowsMixin],
   data () {
@@ -35,6 +39,8 @@ export default {
       detailTabs: [
         { label: '详情', key: 'redis-detail' },
         { label: '白名单设置', key: 'redis-white-list' },
+        { label: '账号管理', key: 'redis-account-list' },
+        { label: '备份列表', key: 'redis-backup-list' },
       ],
     }
   },

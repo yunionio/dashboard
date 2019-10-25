@@ -1,9 +1,19 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">续费</div>
+    <div slot="header">{{params.title}}</div>
     <div slot="body">
+      <dialog-selected-tips :count="params.data.length" :action="params.title" />
+      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc">
-        <billing-opts />
+        <a-form-item label="计费方式" v-bind="formItemLayout">
+          <a-radio-group v-decorator="['duration', {initialValue: (params.data && params.data.length > 0) ? (params.data[0].duration || '1M') : '1M' }]">
+              <a-radio-button
+                :key="item.value"
+                :value="item.value"
+                v-for="item in BUY_DURATIONS_OPTIONS">
+                {{item.label}}</a-radio-button>
+          </a-radio-group>
+        </a-form-item>
       </a-form>
     </div>
     <div slot="footer">
@@ -14,21 +24,29 @@
 </template>
 
 <script>
-import BillingOpts from '../components/BillingOpts'
+import { CreateServerForm } from '@Compute/constants'
+import { BUY_DURATIONS_OPTIONS } from '../constants/index.js'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'RedisRenewDialog',
-  components: {
-    BillingOpts,
-  },
   mixins: [DialogMixin, WindowsMixin],
+  provide () {
+    return {
+      form: this.form,
+    }
+  },
   data () {
     return {
+      BUY_DURATIONS_OPTIONS,
       loading: false,
       form: {
         fc: this.$form.createForm(this),
+      },
+      formItemLayout: {
+        wrapperCol: { span: CreateServerForm.wrapperCol },
+        labelCol: { span: CreateServerForm.labelCol },
       },
       decorators: {
         boot_order: [
@@ -41,14 +59,6 @@ export default {
         ],
       },
     }
-  },
-  computed: {
-    isKvm () {
-      return this.params.data.length >= 1 && this.params.data[0].hypervisor === 'kvm'
-    },
-  },
-  created () {
-    // this.initFormValue(this.params.data[0])
   },
   methods: {
     validateForm () {
@@ -78,18 +88,6 @@ export default {
       } catch (error) {
         this.loading = false
       }
-    },
-    initFormValue (data) {
-      this.$nextTick(() => {
-        const updateObj = {
-          disable_delete: data.disable_delete,
-        }
-        if (this.isKvm) {
-          updateObj.boot_order = data.boot_order
-          updateObj.bios = data.bios
-        }
-        this.form.fc.setFieldsValue(updateObj)
-      })
     },
   },
 }

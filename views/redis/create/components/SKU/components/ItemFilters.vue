@@ -1,27 +1,28 @@
 <template>
   <div>
     <a-form-item label="类型" v-bind="formItemLayout">
-      <a-radio-group v-decorator="['engine']" @change="getVersion">
+      <a-radio-group :disabled="!!disableds.engine" v-decorator="decorators.engine || ['engine']" @change="getVersion">
         <a-radio-button :key="item" :value="item" v-for="item in engines">{{item}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
     <a-form-item label="版本" v-bind="formItemLayout">
-      <a-radio-group v-decorator="['engine_version']" @change="getArcha">
+      <a-radio-group :disabled="!!disableds.engine_version" v-decorator="decorators.engine_version || ['engine_version']" @change="getArcha">
         <a-radio-button :key="item" :value="item" v-for="item in versions">{{item}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
     <a-form-item label="实例类型" v-bind="formItemLayout">
-      <a-radio-group v-decorator="['engine_arch']" @change="eimtChange()">
-        <a-radio-button :key="item" :value="item" v-for="item in archs">{{item}}</a-radio-button>
+      <a-radio-group :disabled="!!disableds.local_category" v-decorator="decorators.local_category || ['local_category']" @change="eimtChange()">
+        <a-radio-button :key="item" :value="item" v-for="item in archs">{{ENGINE_ARCH[item] || item}}</a-radio-button>
       </a-radio-group>
       <div style="color:#888;font-size:12px">
-        {{archPoints(getFieldValue('engine_arch'))}}
+        {{archPoints(getFieldValue('local_category'))}}
       </div>
     </a-form-item>
   </div>
 </template>
 <script>
 import { CreateServerForm } from '@Compute/constants'
+import { ENGINE_ARCH } from '@DB/views/redis/constants'
 
 export default {
   name: 'SkuFilters',
@@ -30,9 +31,26 @@ export default {
     filterParams: {
       type: Object,
     },
+    decorators: {
+      type: Object,
+      default: () => {
+        return {}
+      },
+    },
+    disableds: {
+      type: Object,
+      default: () => {
+        return {
+          engine: false,
+          engine_version: false,
+          local_category: false,
+        }
+      },
+    },
   },
   data () {
     return {
+      ENGINE_ARCH,
       versions: [],
       archs: [],
       formItemLayout: {
@@ -55,12 +73,21 @@ export default {
       return () => null
     },
     engines () {
-      return Object.keys(this.filterParams)
+      const engines = Object.keys(this.filterParams)
+      if (engines && engines.length === 1) {
+        this.FC.setFieldsValue({
+          engine: engines[0],
+        })
+      }
+      return engines
     },
   },
   created () {
     this.getVersion()
     this.getArcha()
+  },
+  mounted () {
+    this.eimtChange()
   },
   methods: {
     getVersion () {
@@ -83,6 +110,8 @@ export default {
     getArcha () {
       const engine = this.getFieldValue('engine')
       const version = this.getFieldValue('engine_version')
+      const category = this.getFieldValue('local_category')
+      console.log(category)
       let archs = []
       if (engine) {
         if (version) {
@@ -106,6 +135,11 @@ export default {
           })
         })
         archs = Object.keys(_archs)
+      }
+      if (archs.indexOf('category') === -1) {
+        this.FC.setFieldsValue({
+          local_category: undefined,
+        })
       }
       this.archs = archs
       this.eimtChange()

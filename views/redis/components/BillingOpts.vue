@@ -7,15 +7,15 @@
           :value="key"
           v-for="key in Object.keys(BILL_TYPES_MAP)">{{BILL_TYPES_MAP[key].label}}</a-radio-button>
       </a-radio-group>
-      <a-form-item v-if="getFieldValue('billing_type') === 'package'">
+      <div v-if="getFieldValue('billing_type') === 'prepaid'">
         <a-radio-group v-decorator="decorators['duration']">
-          <a-radio-button
-            :key="item.value"
-            :value="item.value"
-            v-for="item in BUY_DURATIONS_OPTIONS">
-            {{item.label}}</a-radio-button>
+            <a-radio-button
+              :key="item.value"
+              :value="item.value"
+              v-for="item in BUY_DURATIONS_OPTIONS">
+              {{item.label}}</a-radio-button>
         </a-radio-group>
-      </a-form-item>
+      </div>
     </a-form-item>
   </div>
 </template>
@@ -27,7 +27,7 @@ const decorators = {
   billing_type: [
     'billing_type',
     {
-      initialValue: 'quantity',
+      initialValue: 'postpaid',
     },
   ],
   duration: [
@@ -71,9 +71,6 @@ export default {
       }
       return () => null
     },
-  },
-  created () {
-    console.log(this.form)
   },
 }
 </script>

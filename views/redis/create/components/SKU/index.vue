@@ -1,7 +1,12 @@
 <template>
   <div>
-    <item-filters v-if="skuFilters" :filterParams="skuFilters" @change="handleFilterChange" />
-    <sku-list :skuList="skuList" />
+    <item-filters
+       v-if="skuFilters && Object.keys(skuFilters).length > 0"
+      :disableds="disableds"
+      :decorators="decorators"
+      :filterParams="skuFilters"
+      @change="handleFilterChange" />
+    <sku-list :loading="loading" :skuList="skuList" />
   </div>
 </template>
 <script>
@@ -16,9 +21,20 @@ export default {
     SkuList,
   },
   inject: ['form'],
+  props: {
+    decorators: {
+      type: Object,
+    },
+    filterSkuCallback: {
+      type: Function,
+    },
+    disableds: {
+      type: Object,
+    },
+  },
   data () {
     return {
-      loading: true,
+      loading: false,
       skuFilters: null,
       skuList: [],
       SKU_LIST: [],
@@ -49,38 +65,20 @@ export default {
     this.fetchQuerySkus()
   },
   methods: {
-    async fetchQuerySkus (_parmas) {
-      const params = {
-        provider: this.getFieldValue('provider'),
-        city: 'shanghai',
-        cloudregion: this.getFieldValue('region'),
-      }
-      try {
-        this.loading = true
-        const { data } = await new Manager('elasticcacheskus', 'v2').list({ params })
-        this.skuList = data.data
-        this.SKU_LIST = data.data
-        this.formatFilters(this.skuList)
-        this.loading = false
-      } catch (err) {
-        this.loading = false
-        throw err
-      }
-    },
     formatFilters (skuList) {
       const skuFilters = {}
       skuList.forEach(item => {
         const engine = item.engine
         const version = item.engine_version
-        const arch = item.engine_arch
+        const category = item.local_category
         if (engine && !skuFilters[engine]) {
           skuFilters[engine] = {}
         }
         if (version && !skuFilters[engine][version]) {
           skuFilters[engine][version] = {}
         }
-        if (arch && !skuFilters[engine][version][arch]) {
-          skuFilters[engine][version][arch] = {}
+        if (category && !skuFilters[engine][version][category]) {
+          skuFilters[engine][version][category] = {}
         }
       })
       this.skuFilters = skuFilters
@@ -96,8 +94,11 @@ export default {
         return f
       })
     },
+    skuSort (skuList) {
+      return skuList.sort((a, b) => a.memory_size_mb - b.memory_size_mb)
+    },
     handleFilterChange () {
-      const keys = ['engine', 'engine_version', 'engine_arch']
+      const keys = ['engine', 'engine_version', 'local_category']
       const params = this.getFieldsValue(keys)
       clearTimeout(this.T)
       this.T = setTimeout(() => {
@@ -108,6 +109,32 @@ export default {
         })
         this.filterSKU(params)
       }, 0)
+      console.log(params)
+    },
+    async fetchQuerySkus (_parmas) {
+      const params = {
+        provider: this.getFieldValue('provider'),
+        city: this.getFieldValue('city'),
+        cloudregion: this.getFieldValue('region'),
+        engine: 'redis',
+      }
+      try {
+        this.loading = true
+        const { data } = await new Manager('elasticcacheskus', 'v2').list({ params })
+        const retList = (data && data.data && data.data.length > 0) ? data.data : []
+        let _skuList = this.skuSort(retList)
+        if (this.filterSkuCallback) {
+          _skuList = _skuList.filter(this.filterSkuCallback)
+        }
+        this.skuList = _skuList
+        this.SKU_LIST = _skuList
+        this.formatFilters(_skuList)
+        this.handleFilterChange()
+        this.loading = false
+      } catch (err) {
+        this.loading = false
+        throw err
+      }
     },
   },
 }
