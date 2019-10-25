@@ -35,6 +35,10 @@ export const REGEXP = {
     regexp: /^(https?):\/\/(-\.)?([^\s\/?\.#-]+\.?)+(\/[^\s]*)?$/i,
     message: i18n.t('validator.url'),
   },
+  IP: {
+    reg: /^[a-zA-Z][a-zA-Z0-9._@-]*$/,
+    msg: '请输入合法IP',
+  },
 }
 
 /**

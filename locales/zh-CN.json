@@ -193,6 +193,34 @@
       "sslmodifying": "SSL变更中",
       "majorversionupgrading": "大版本升级中，可正常访问",
       "unknown": "未知状态"
+    },
+    "redisAccount" : {
+      "available": "正常",
+      "unavailable": "不可用",
+      "creating": "创建中",
+      "create_failed": "创建失败",
+      "deleting": "删除中",
+      "delete_failed": "删除失败",
+      "unknown": "未知状态"
+    },
+    "redisACL" : {
+      "available": "正常",
+      "unavailable": "不可用",
+      "creating": "创建中",
+      "create_failed": "创建失败",
+      "deleting": "删除中",
+      "delete_failed": "删除失败",
+      "updating": "更新中",
+      "update_failed": "更新失败",
+      "unknown": "未知状态"
+    },
+    "redisBackup" : {
+      "creating": "备份中",
+      "expired": "备份文件已过期",
+      "deleted": "备份文件已删除",
+      "deleting": "删除中",
+      "success": "备份成功",
+      "failed": "备份失败"
     }
   },
   "skuCategoryOptions": {
