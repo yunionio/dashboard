@@ -30,7 +30,7 @@
         </template>
       </template>
       <span @click.stop="fetchLoginInfo">
-        <icon name="keypairs" fill="#555" width="18px" height="18px" />
+        <icon class="keypair-icon" type="keypairs" fill="#555" />
       </span>
     </a-popover>
     <a-modal
@@ -66,7 +66,7 @@ export default {
     resourceType: {
       type: String,
       required: true,
-      validator: val => ['servers', 'baremetals'].includes(val),
+      validator: val => ['servers', 'baremetals', 'baremetal_ssh'].includes(val),
     },
   },
   data () {
@@ -77,6 +77,14 @@ export default {
       requestConfigs: {
         servers: {
           resource: 'servers',
+          methodname: 'GetLoginInfo',
+        },
+        baremetals: {
+          resource: 'hosts',
+          methodname: 'GetIpmiInfo',
+        },
+        baremetal_ssh: {
+          resource: 'hosts',
           methodname: 'GetLoginInfo',
         },
       },
@@ -152,8 +160,9 @@ export default {
 @import "../../../../src/styles/variables";
 
 .wrap {
-  .oc-icon {
+  .keypair-icon {
     cursor: pointer;
+    font-size: 18px;
     svg {
       &:hover {
         fill: $primary-color;

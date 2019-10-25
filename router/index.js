@@ -7,6 +7,7 @@ import VMInstanceCreate from '@Compute/views/vminstance/create/index'
 import Network from '@Compute/views/network'
 import NetworkCreate from '@Compute/views/network/Create'
 import Host from '@Compute/views/host'
+import Physicalmachine from '@Compute/views/physicalmachine'
 import ServerRecovery from '@Compute/views/server-recovery'
 
 export default {
@@ -129,6 +130,21 @@ export default {
               name: 'Host',
               path: '',
               component: Host,
+            },
+          ],
+        },
+        {
+          path: '/physicalmachine',
+          meta: {
+            label: '物理机',
+            permission: 'hosts_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Physicalmachine',
+              path: '',
+              component: Physicalmachine,
             },
           ],
         },
