@@ -8,6 +8,7 @@ const registerPlugins = (plugins) => {
     const item = keys[i]
     if (item.includes('index.js')) continue
     const plugin = plugins(item)
+    if (plugin.default.autoRegister === false) continue
     Vue.use(plugin.default)
   }
 }
