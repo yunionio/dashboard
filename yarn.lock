@@ -7366,12 +7366,7 @@ number-is-nan@^1.0.0:
   resolved "https://registry.npm.taobao.org/number-is-nan/download/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
   integrity sha1-CXtgK1NCKlIsGvuHkDGDNpQaAR0=
 
-numerify@1.2.9:
-  version "1.2.9"
-  resolved "http://r.cnpmjs.org/numerify/download/numerify-1.2.9.tgz#af4696bb1d57f8d3970a615d8b0cd53d932bd559"
-  integrity sha1-r0aWux1X+NOXCmFdiwzVPZMr1Vk=
-
-numerify@^1.2.9:
+numerify@1.2.9, numerify@^1.2.9:
   version "1.2.9"
   resolved "https://registry.npmjs.org/numerify/-/numerify-1.2.9.tgz#af4696bb1d57f8d3970a615d8b0cd53d932bd559"
   integrity sha512-X4QzQiytV5ZN3TVLhzbtFzjTarUNnaa1pgNDFqt7u7Nqhxe7FvY2eYrGt4WYHlYXDqgtfC/n/a5nJ2y0LijV8w==
