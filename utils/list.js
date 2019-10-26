@@ -199,11 +199,9 @@ class CreateList {
           offset: responseOffset = 0,
         },
       } = response
-      if (data.length > 0) {
-        this.clearWaitJob()
-        this.data = this.wrapData(data)
-        this.checkSteadyStatus()
-      }
+      this.clearWaitJob()
+      this.data = this.wrapData(data)
+      this.checkSteadyStatus()
       if (total) {
         this.total = total
       } else {
