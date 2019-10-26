@@ -14,6 +14,7 @@
 <script>
 import ZoneList from '@Cloudenv/views/zone/components/List'
 import CloudregionDetail from './Detail'
+import Dashboard from './Dashboard'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 
@@ -22,6 +23,7 @@ export default {
   components: {
     CloudregionDetail,
     ZoneList,
+    Dashboard,
   },
   mixins: [SidePageMixin, WindowsMixin],
   data () {
@@ -29,6 +31,7 @@ export default {
       detailTabs: [
         { label: '详情', key: 'cloudregion-detail' },
         { label: '可用区', key: 'zone-list' },
+        { label: '资源统计', key: 'dashboard' },
         { label: '操作日志', key: 'event-drawer' },
       ],
     }

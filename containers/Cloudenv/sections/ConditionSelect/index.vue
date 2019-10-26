@@ -33,6 +33,11 @@ export default {
       required: true,
     },
   },
+  data () {
+    return {
+      scope: this.$store.getters.scope,
+    }
+  },
   computed: {
     projectParams () {
       return {
