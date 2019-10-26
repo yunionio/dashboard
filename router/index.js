@@ -40,7 +40,7 @@ router.beforeEach(async (to, from, next) => {
   const hasToken = !!store.getters.auth.token
   if (hasToken) {
     if (loginPageRouteName.includes(to.name)) {
-      next({ name: 'Home' })
+      next()
     } else {
       const hasRoles = !!store.getters.userInfo.roles
       const hasPermission = !!store.getters.permission
