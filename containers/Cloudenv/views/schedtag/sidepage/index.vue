@@ -19,6 +19,7 @@
 import HostList from '@Compute/views/host/components/List'
 import PhysicalmachineList from '@Compute/views/physicalmachine/components/List'
 import SchedtagDetail from './Detail'
+import Dashboard from './Dashboard'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -29,6 +30,7 @@ export default {
     Actions,
     SchedtagDetail,
     HostList,
+    Dashboard,
     PhysicalmachineList,
   },
   mixins: [SidePageMixin, WindowsMixin],
@@ -38,6 +40,7 @@ export default {
         { label: '详情', key: 'schedtag-detail' },
         { label: '物理机', key: 'physicalmachine-list' },
         { label: '宿主机', key: 'host-list' },
+        { label: '资源统计', key: 'dashboard' },
         { label: '操作日志', key: 'event-drawer' },
       ],
     }
