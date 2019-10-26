@@ -58,11 +58,16 @@ let routes = [
 ]
 
 function getModulesRouteConfig () {
-  const r = require.context('../../containers', true, /.\/router\/index.js/)
+  const isPrivate = process.env.VUE_APP_IS_PRIVATE
   let ret = []
-  r.keys().forEach(dir => {
-    ret = ret.concat(r(dir).default)
-  })
+  if (isPrivate) {
+    ret = require('../../routerConfig').default
+  } else {
+    const r = require.context('../../containers', true, /.\/router\/index.js/)
+    r.keys().forEach(dir => {
+      ret = ret.concat(r(dir).default)
+    })
+  }
   ret.sort((a, b) => a.index - b.index)
   for (let i = 0, len = ret.length; i < len; i++) {
     let item = ret[i]
