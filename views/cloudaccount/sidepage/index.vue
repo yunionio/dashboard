@@ -19,6 +19,7 @@
 import CloudproviderList from '@Cloudenv/views/cloudprovider/components/List'
 import HostList from '@Compute/views/host/components/List'
 import CloudaccountDetail from './Detail'
+import Dashboard from './Dashboard'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -30,6 +31,7 @@ export default {
     CloudaccountDetail,
     CloudproviderList,
     HostList,
+    Dashboard,
   },
   mixins: [SidePageMixin, WindowsMixin],
   data () {
@@ -38,6 +40,7 @@ export default {
         { label: '详情', key: 'cloudaccount-detail' },
         { label: '订阅', key: 'cloudprovider-list' },
         { label: '宿主机', key: 'host-list' },
+        { label: '资源统计', key: 'dashboard' },
         { label: '操作日志', key: 'event-drawer' },
       ],
     }
