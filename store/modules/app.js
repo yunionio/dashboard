@@ -29,6 +29,7 @@ export default {
         http.get('/v1/infos/info').then(response => {
           const { data = {} } = response
           commit('SET_COMPANY_INFO', data)
+          document.title = data.name || 'OneCloud'
           resolve(response)
         }).catch(error => {
           reject(error)

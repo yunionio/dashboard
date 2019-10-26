@@ -279,7 +279,11 @@ export default {
         this.$router.push({ name: 'SecretVerify' })
       } else {
         // 否则直接登录
-        this.$router.push('/')
+        if (this.$appConfig.isPrivate) {
+          window.location.href = this.$appConfig.v1Perfix
+        } else {
+          this.$router.push('/')
+        }
       }
     },
   },
