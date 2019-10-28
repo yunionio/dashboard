@@ -23,6 +23,7 @@ export default {
           path: '/cloudregion',
           meta: {
             label: '区域',
+            permission: 'areas_list',
           },
           component: Layout,
           children: [
@@ -37,6 +38,7 @@ export default {
           path: '/zone',
           meta: {
             label: '可用区',
+            permission: 'zones_list',
           },
           component: Layout,
           children: [
@@ -85,6 +87,7 @@ export default {
           path: '/schedtag',
           meta: {
             label: '调度标签',
+            permission: 'schedtags_list',
           },
           component: Layout,
           children: [
@@ -99,6 +102,7 @@ export default {
           path: '/schedpolicy',
           meta: {
             label: '调度策略',
+            permission: 'schedpolicies_list',
           },
           component: Layout,
           children: [
@@ -113,6 +117,7 @@ export default {
           path: '/dynamicschedtag',
           meta: {
             label: '动态调度标签',
+            permission: 'dynamicschedtags_list',
           },
           component: Layout,
           children: [
