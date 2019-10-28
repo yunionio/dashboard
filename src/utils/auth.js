@@ -1,6 +1,8 @@
+import * as R from 'ramda'
 import Cookies from 'js-cookie'
 import { Base64 } from 'js-base64'
 import store from '@/store'
+import { typeClouds } from '@/utils/common/hypervisor'
 
 const ONECLOUD_AUTH_KEY = 'yunionauth'
 
@@ -82,4 +84,57 @@ export function hasPermission ({
     return true
   })
   return has
+}
+
+export function hasServices (services) {
+  let s = R.is(String, services) ? [services] : services
+  return s.some(item => {
+    const r = (store.getters.userInfo.services || []).find(v => v.type === item && v.status === true)
+    return !!r
+  })
+}
+
+export function hasHypervisors (hypervisors) {
+  let h = R.is(String, hypervisors) ? [hypervisors] : hypervisors
+  return h.some(item => (store.getters.userInfo.hypervisors || []).includes(item))
+}
+
+export function hasBrands (brands) {
+  let b = R.is(String, brands) ? [brands] : brands
+  return b.some(item => (store.getters.userInfo.brands || []).includes(item))
+}
+
+export function hasHypervisorsByEnv (envs) {
+  const envsMap = {
+    idc: [],
+    private: [],
+    public: [],
+    baremetal: ['baremetal'],
+  }
+  R.forEachObjIndexed((val, key) => {
+    envsMap[val.env].push(key)
+  }, typeClouds.getHypervisor())
+  if (R.is(String, envs)) {
+    return hasHypervisors(envsMap[envs])
+  }
+  if (R.is(Array, envs)) {
+    return envs.some(t => hasHypervisors(envsMap[t]))
+  }
+}
+
+export function hasBrandsByEnv (envs) {
+  const envsMap = {
+    idc: [],
+    private: [],
+    public: [],
+  }
+  R.forEachObjIndexed((val, key) => {
+    envsMap[val.env].push(key)
+  }, typeClouds.getBrand())
+  if (R.is(String, envs)) {
+    return hasBrands(envsMap[envs])
+  }
+  if (R.is(Array, envs)) {
+    return envs.some(t => hasBrands(envsMap[t]))
+  }
 }

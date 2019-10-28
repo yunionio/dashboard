@@ -104,12 +104,6 @@ export default {
       }
     },
   },
-  watch: {
-    'userInfo.projectId' () {
-      this.reset()
-      this.refresh()
-    },
-  },
   beforeDestroy () {
     this.list.clearWaitJob()
   },

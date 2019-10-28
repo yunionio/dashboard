@@ -133,7 +133,7 @@ export default {
         }
       })
     },
-    getInfo ({ commit, state }) {
+    getInfo ({ commit, dispatch, state }) {
       return new Promise(async (resolve, reject) => {
         try {
           const { data: { data } } = await http.get('/v1/auth/user')
@@ -141,9 +141,30 @@ export default {
             reject(new Error('Verification failed, please Login again.'))
           }
           await commit('SET_INFO', data)
+          await dispatch('getCapabilities')
           Cookies.set('tenant', data.projectId, { expires: 7 })
           Cookies.set('scope', state.scope, { expires: 7 })
           resolve(data)
+        } catch (error) {
+          reject(error)
+        }
+      })
+    },
+    getCapabilities ({ commit, state }) {
+      return new Promise(async (resolve, reject) => {
+        const params = {}
+        if (state.scope === 'system') {
+          params.scope = state.scope
+        }
+        try {
+          const response = await http.get('/v2/capabilities', { params })
+          const data = {
+            ...state.info,
+            hypervisors: response.data.data[0].hypervisors,
+            brands: response.data.data[0].brands,
+          }
+          await commit('SET_INFO', data)
+          resolve(response)
         } catch (error) {
           reject(error)
         }

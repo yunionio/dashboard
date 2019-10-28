@@ -171,6 +171,29 @@
       "queued": "开始同步",
       "syncing": "同步中",
       "queuing": "准备同步"
+    },
+    "redis" : {
+      "running": "正常",
+      "restarting": "重启中",
+      "restart_failed": "重启失败",
+      "deploying": "创建中",
+      "create_failed": "创建失败",
+      "changing": "修改中",
+      "change_failed": "修改失败",
+      "inactive": "被禁用",
+      "flushing": "清除中",
+      "released": "已释放",
+      "release_failed": "释放失败",
+      "transforming": "转换中",
+      "unavailable": "服务停止",
+      "error": "删除失败",
+      "migrating": "迁移中",
+      "backuprecovering": "备份恢复中",
+      "minorversionupgrading": "小版本升级中",
+      "networkmodifying": "网络变更中",
+      "sslmodifying": "SSL变更中",
+      "majorversionupgrading": "大版本升级中，可正常访问",
+      "unknown": "未知状态"
     }
   },
   "skuCategoryOptions": {
@@ -187,7 +210,7 @@
       "high-clockSpeed": "高主频型",
       "local-ssd": "本地SSD",
       "memory-optimized": "内存优化型",
-      "super-computeCluster-compute": "超级计算集群（SCC）"
+      "super-computeCluster-compute": "超级计算集群（SCC"
     },
     "aws": {
       "Compute optimized": "计算优化型",
