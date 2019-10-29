@@ -50,7 +50,7 @@ export default {
   redisAccount: {
     success: ['available'],
     danger: ['create_failed', 'delete_failed'],
-    info: ['unknown'],
+    info: ['unknown', 'unavailable'],
   },
   redisACL: {
     success: ['available'],

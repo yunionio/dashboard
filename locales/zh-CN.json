@@ -177,6 +177,7 @@
       "restarting": "重启中",
       "restart_failed": "重启失败",
       "deploying": "创建中",
+      "creating": "创建中",
       "create_failed": "创建失败",
       "changing": "修改中",
       "change_failed": "修改失败",
@@ -202,7 +203,8 @@
       "create_failed": "创建失败",
       "deleting": "删除中",
       "delete_failed": "删除失败",
-      "unknown": "未知状态"
+      "unknown": "未知状态",
+      "changing": "变更中"
     },
     "redisACL" : {
       "available": "正常",
