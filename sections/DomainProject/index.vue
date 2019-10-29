@@ -130,7 +130,7 @@ export default {
       try {
         const params = {
           scope: this.scope,
-          domain_id: this.l3PermissionEnable ? this.domainData.key : 'default',
+          domain_id: this.l3PermissionEnable ? this.domainData.id : 'default',
         }
         const response = await this.pm.list({ params })
         const data = response.data.data || []
@@ -147,9 +147,9 @@ export default {
     domainChange (domain) {
       this.domainData = domain
       this.fetchProjects()
-      // this.fc.setFieldsValue({
-      //   project: undefined,
-      // })
+      this.fc.setFieldsValue({
+        project: undefined,
+      })
     },
     projectChange (project) {
       this.projectData = project
