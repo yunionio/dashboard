@@ -20,18 +20,18 @@
         </a-form-item>
       </a-col>
       <a-col :span="12">
-       <a-form-item>
-        <a-select
-          class="w-100"
-          :labelInValue="labelInValue"
-          v-decorator="decorators.project"
-          :loading="projectLoading"
-          placeholder="请选择项目"
-          @change="projectChange"
-          showSearch>
-          <a-select-option v-for="item of projects" :value="item.id" :key="item.id" :label="item.name">{{ item.name }}</a-select-option>
-        </a-select>
-       </a-form-item>
+        <a-form-item>
+          <a-select
+            class="w-100"
+            :labelInValue="labelInValue"
+            v-decorator="decorators.project"
+            :loading="projectLoading"
+            placeholder="请选择项目"
+            @change="projectChange"
+            showSearch>
+            <a-select-option v-for="item of projects" :value="item.id" :key="item.id" :label="item.name">{{ item.name }}</a-select-option>
+          </a-select>
+        </a-form-item>
       </a-col>
     </a-row>
   </div>
@@ -39,6 +39,7 @@
 
 <script>
 import * as R from 'ramda'
+import { mapGetters } from 'vuex'
 import { Manager } from '@/utils/manager'
 
 export default {
@@ -69,15 +70,9 @@ export default {
       projectData: {},
       projects: [],
       projectLoading: false,
-      isAdminMode: this.$store.getters.isAdminMode,
-      scope: this.$store.getters.scope,
-      // isDomainMode: this.$store.getters.isDomainMode,
-      isDomainMode: true,
-      userInfo: this.$store.getters.userInfo,
-      // l3PermissionEnable: this.$store.getters.l3PermissionEnable,
-      l3PermissionEnable: true,
     }
   },
+  computed: mapGetters(['isAdminMode', 'scope', 'isDomainMode', 'userInfo', 'l3PermissionEnable']),
   created () {
     this.dm = new Manager('domains', 'v1')
     this.pm = new Manager('projects', 'v1')

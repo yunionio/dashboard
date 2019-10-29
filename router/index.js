@@ -33,10 +33,14 @@ const whiteList = loginPageRouteName.concat([
 ])
 
 router.beforeEach(async (to, from, next) => {
+  if (process.env.VUE_APP_IS_PRIVATE && to.meta && to.meta.v1) {
+    window.location.href = `${process.env.VUE_APP_V1_PERFIX}${to.path}`
+    return
+  }
   const hasToken = !!store.getters.auth.token
   if (hasToken) {
     if (loginPageRouteName.includes(to.name)) {
-      next({ name: 'Home' })
+      next()
     } else {
       const hasRoles = !!store.getters.userInfo.roles
       const hasPermission = !!store.getters.permission
