@@ -6,11 +6,12 @@
     :res-name="data.name"
     :actions="params.actions"
     :tabs="detailTabs"
-    v-model="detailComponent">
+    :current-tab="params.windowData.currentTab"
+    @tab-change="handleTabChange">
     <!-- <template v-slot:actions>
       <actions :options="params.singleActions" :row="data" :buttonMode="false" />
     </template> -->
-    <component :is="detailComponent" :data="data" :list="params.list" :params="getParams" />
+    <component :is="params.windowData.currentTab" :data="data" :list="params.list" :params="getParams" />
   </base-side-page>
 </template>
 
@@ -35,7 +36,6 @@ export default {
   mixins: [SidePageMixin, WindowsMixin],
   data () {
     return {
-      detailComponent: 'redis-detail',
       detailTabs: [
         { label: '详情', key: 'redis-detail' },
         { label: '白名单设置', key: 'redis-white-list' },
@@ -54,6 +54,9 @@ export default {
     data () {
       return this.params.list.data[this.params.resId].data
     },
+  },
+  created () {
+    console.log(this.params)
   },
 }
 </script>

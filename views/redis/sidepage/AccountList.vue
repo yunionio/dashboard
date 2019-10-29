@@ -10,13 +10,14 @@
 import { ACCOUNT_PRIVILEGES } from '../constants'
 import { getStatusTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
+import expectStatus from '@/constants/expectStatus'
 
 export default {
   name: 'RedisAccountList',
   mixins: [WindowsMixin],
   props: {
-    getParams: {
-      type: Function,
+    params: {
+      type: Object,
     },
     data: {
       type: Object,
@@ -26,7 +27,8 @@ export default {
     return {
       list: this.$list.createList(this, {
         resource: 'elasticcacheaccounts',
-        getParams: this.getParams,
+        getParams: this.params,
+        steadyStatus: Object.values(expectStatus.redisAccount).flat(),
       }),
       columns: [
         {
@@ -56,6 +58,7 @@ export default {
           meta: () => {
             return {
               buttonType: 'primary',
+              ...this.commonMeta,
             }
           },
         },
@@ -71,6 +74,7 @@ export default {
               redisItem: this.data,
             })
           },
+          meta: () => this.commonMeta,
         },
         {
           label: '修改权限',
@@ -85,6 +89,7 @@ export default {
               redisItem: this.data,
             })
           },
+          meta: () => this.commonMeta,
         },
         {
           label: '删除',
@@ -96,9 +101,32 @@ export default {
               list: this.list,
             })
           },
+          meta: (obj) => {
+            const isHuawei = this.data.brand === 'Huawei'
+            let tooltip = ''
+            if (isHuawei) {
+              tooltip = '华为云不支持此操作'
+            }
+            if (obj.account_type === 'admin') {
+              tooltip = '主账号不允许删除'
+            }
+            return {
+              validate: !isHuawei && obj.account_type !== 'admin',
+              tooltip,
+            }
+          },
         },
       ],
     }
+  },
+  computed: {
+    commonMeta () {
+      const isHuawei = this.data.brand === 'Huawei'
+      return {
+        validate: !isHuawei,
+        tooltip: isHuawei ? '华为云不支持此操作' : null,
+      }
+    },
   },
   created () {
     this.list.fetchData()

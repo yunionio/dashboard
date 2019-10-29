@@ -59,9 +59,10 @@ export default {
           account_privilege: this.form.fc.getFieldValue('account_privilege'),
           elasticcache: this.params.redisItem.id,
         }
-        await this.params.list.onManager('batchPost', {
+        await this.params.list.onManager('performAction', {
+          id: this.params.data[0].id,
           managerArgs: {
-            // action: 'elasticcacheaccounts',
+            action: 'reset-password',
             data: params,
           },
         })

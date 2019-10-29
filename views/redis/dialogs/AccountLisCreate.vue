@@ -2,7 +2,7 @@
     <base-dialog @cancel="cancelDialog">
         <div slot="header">创建账号</div>
         <a-form slot="body" :form="form.fc" class="mt-3">
-            <a-form-item  v-bind="formItemLayout" label="数据库名称">
+            <a-form-item  v-bind="formItemLayout" label="账户名称">
                 <a-input placeholder="以字母开头，由小写字母，数字、下划线组成。长度不超过16个字符" v-decorator="decorators.name" />
             </a-form-item>
             <a-form-item v-bind="formItemLayout" label="权限设置">
@@ -13,10 +13,10 @@
               </a-radio-group>
             </a-form-item>
             <a-form-item v-bind="formItemLayout" label="密码">
-                <a-input placeholder="请输入密码" v-decorator="decorators.password" />
+                <a-input type="password" placeholder="请输入密码" v-decorator="decorators.password" />
             </a-form-item>
              <a-form-item v-bind="formItemLayout" label="确认密码">
-                <a-input placeholder="请再次确认密码" v-decorator="decorators.checkPassword" />
+                <a-input type="password" placeholder="请再次确认密码" v-decorator="decorators.checkPassword" />
             </a-form-item>
         </a-form>
          <div slot="footer">

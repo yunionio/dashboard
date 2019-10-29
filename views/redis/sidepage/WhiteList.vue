@@ -9,13 +9,14 @@
 <script>
 import { getStatusTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
+import expectStatus from '@/constants/expectStatus'
 
 export default {
   name: 'RedisWhiteList',
   mixins: [WindowsMixin],
   props: {
-    getParams: {
-      type: Function,
+    params: {
+      type: Object,
     },
     data: {
       type: Object,
@@ -25,7 +26,8 @@ export default {
     return {
       list: this.$list.createList(this, {
         resource: 'elasticcacheacls',
-        getParams: this.getParams,
+        getParams: this.params,
+        steadyStatus: Object.values(expectStatus.redisACL).flat(),
       }),
       columns: [
         {
@@ -59,8 +61,11 @@ export default {
             })
           },
           meta: () => {
+            const isHuawei = this.data.brand === 'Huawei'
             return {
               buttonType: 'primary',
+              validate: !isHuawei,
+              tooltip: isHuawei ? '华为云不支持创建白名单' : null,
             }
           },
         },
@@ -77,6 +82,14 @@ export default {
               list: this.list,
               redisItem: this.data,
             })
+          },
+          meta: () => {
+            const isHuawei = this.data.brand === 'Huawei'
+            return {
+              buttonType: 'primary',
+              validate: !isHuawei,
+              tooltip: isHuawei ? '华为云不支持此操作' : null,
+            }
           },
         },
         {

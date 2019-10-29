@@ -1,17 +1,18 @@
 <template>
     <base-dialog @cancel="cancelDialog">
-        <div slot="header">创建账号</div>
+        <div slot="header">重置密码</div>
         <div slot="body">
+             <dialog-selected-tips :count="params.data.length" action="重置密码" />
             <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
             <a-form slot="body" :form="form.fc" class="mt-3">
-              <a-form-item label="账号名称">
+              <a-form-item v-bind="formItemLayout" label="账号名称">
                   {{this.params.data[0].name}}
               </a-form-item>
-              <a-form-item label="新密码">
-                  <a-input placeholder="请输入新密码" v-decorator="decorators.password" />
+              <a-form-item v-bind="formItemLayout" label="新密码">
+                  <a-input type="password" placeholder="请输入新密码" v-decorator="decorators.password" />
               </a-form-item>
-              <a-form-item label="确认密码">
-                  <a-input placeholder="请再次确认密码" v-decorator="decorators.checkPassword" />
+              <a-form-item v-bind="formItemLayout" label="确认密码">
+                  <a-input type="password" placeholder="请再次确认密码" v-decorator="decorators.checkPassword" />
               </a-form-item>
             </a-form>
         </div>
@@ -23,9 +24,11 @@
 </template>
 
 <script>
+import { CreateServerForm } from '@Compute/constants'
 import { ACCOUNT_PRIVILEGES } from '../constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import validateForm from '@/utils/validate'
 // import validateForm from '@/utils/validate'
 
 export default {
@@ -38,6 +41,10 @@ export default {
       form: {
         fc: this.$form.createForm(this),
       },
+      formItemLayout: {
+        wrapperCol: { span: CreateServerForm.wrapperCol },
+        labelCol: { span: CreateServerForm.labelCol },
+      },
     }
   },
   computed: {
@@ -47,8 +54,10 @@ export default {
           'password',
           {
             initialValue: undefined,
+            validateFirst: true,
             rules: [
               { required: true, message: '请输入密码' },
+              { validator: validateForm('serverName') },
             ],
           },
         ],
@@ -95,8 +104,10 @@ export default {
           elasticcache: this.params.redisItem.id,
         }
         delete params.checkPassword
-        await this.params.list.onManager('batchPost', {
+        await this.params.list.onManager('performAction', {
+          id: this.params.data[0].id,
           managerArgs: {
+            action: 'reset-password',
             data: params,
           },
         })

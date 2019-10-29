@@ -22,8 +22,10 @@ export default {
     return {
       list: this.$list.createList(this, {
         resource: 'elasticcaches',
-        getParams: this.getParams,
-        steadyStatus: Object.values(expectStatus.server).flat(),
+        getParams: {
+          details: true,
+        },
+        steadyStatus: Object.values(expectStatus.redis).flat(),
         filterOptions: {
           name: {
             label: '实例名称',
@@ -65,7 +67,7 @@ export default {
           addLock: true,
           slotCallback: row => {
             return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id) }>{ row.name }</side-page-trigger>
+              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'RedisSidePage') }>啊实打实{ row.name }</side-page-trigger>
             )
           },
         }),
@@ -103,6 +105,36 @@ export default {
           slots: {
             default: ({ row }) => {
               return [<PasswordFetcher serverId={row.id} resourceType='servers' />]
+            },
+          },
+        },
+        {
+          title: '链接地址',
+          slots: {
+            default: ({ row }) => {
+              const pri = row.private_dns || row.private_ip_addr
+              const pub = row.public_dns || row.public_ip_addr
+              if (!pri && !pub) {
+                return '-'
+              }
+              return [
+                <div>{pri}</div>,
+                <div>{pub}</div>,
+              ]
+            },
+          },
+        },
+        {
+          title: '端口',
+          slots: {
+            default: ({ row }) => {
+              if (!row.private_connect_port && !row.public_connect_port) {
+                return '-'
+              }
+              return [
+                <div>{row.private_connect_port}</div>,
+                <div>{row.public_connect_port}</div>,
+              ]
             },
           },
         },
@@ -167,6 +199,14 @@ export default {
                 action: 'restart',
               },
             })
+          },
+          meta: (obj) => {
+            const isRunning = obj.status === 'running'
+            const notRunninTip = !isRunning ? '仅运行中的实例支持此操作' : null
+            return {
+              validate: isRunning,
+              tooltip: notRunninTip,
+            }
           },
         },
         {
@@ -271,22 +311,11 @@ export default {
   created () {
     this.webconsoleManager = new Manager('webconsole', 'v1')
     this.list.fetchData()
+    this.initSidePageTab('redis-detail')
   },
   methods: {
     createServer () {
       this.$router.push('/redis/create')
-    },
-    getParams () {
-      return {
-        details: true,
-      }
-    },
-    sidePageTriggerHandle (resId) {
-      this.createSidePageForList('RedisSidePage', {
-        resId,
-        list: this.list,
-        singleActions: this.singleActions,
-      })
     },
   },
 }

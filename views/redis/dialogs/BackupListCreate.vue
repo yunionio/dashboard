@@ -1,8 +1,8 @@
 <template>
     <base-dialog @cancel="cancelDialog">
-        <div slot="header">创建账号</div>
+        <div slot="header">创建备份</div>
         <a-form slot="body" :form="form.fc" class="mt-3">
-            <a-form-item v-bind="formItemLayout" label="数据库名称">
+            <a-form-item v-bind="formItemLayout" label="名称">
                 <a-input placeholder="以字母开头，由小写字母，数字、下划线组成。长度不超过16个字符" v-decorator="decorators.name" />
             </a-form-item>
             <a-form-item v-bind="formItemLayout" label="描述">

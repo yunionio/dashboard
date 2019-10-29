@@ -5,6 +5,7 @@
       :disableds="disableds"
       :decorators="decorators"
       :filterParams="skuFilters"
+      :ffilterMemorys="skuMemorys"
       @change="handleFilterChange" />
     <sku-list :loading="loading" :skuList="skuList" />
   </div>
@@ -35,7 +36,8 @@ export default {
   data () {
     return {
       loading: false,
-      skuFilters: null,
+      skuFilters: {},
+      skuMemorys: {},
       skuList: [],
       SKU_LIST: [],
       T: undefined,
@@ -67,10 +69,12 @@ export default {
   methods: {
     formatFilters (skuList) {
       const skuFilters = {}
+      const skuMemorys = {}
       skuList.forEach(item => {
         const engine = item.engine
         const version = item.engine_version
         const category = item.local_category
+        const memory = item.memory_size_mb
         if (engine && !skuFilters[engine]) {
           skuFilters[engine] = {}
         }
@@ -80,8 +84,15 @@ export default {
         if (category && !skuFilters[engine][version][category]) {
           skuFilters[engine][version][category] = {}
         }
+        if (memory) {
+          skuMemorys[memory] = memory
+        }
       })
-      this.skuFilters = skuFilters
+      this.skuFilters = {}
+      this.skuMemorys = skuMemorys
+      setTimeout(() => {
+        this.skuFilters = skuFilters
+      }, 10)
     },
     filterSKU (params = {}) {
       this.skuList = this.SKU_LIST.filter(sku => {
@@ -95,11 +106,12 @@ export default {
       })
     },
     skuSort (skuList) {
-      return skuList.sort((a, b) => a.memory_size_mb - b.memory_size_mb)
+      return skuList ? skuList.sort((a, b) => a.memory_size_mb - b.memory_size_mb) : []
     },
     handleFilterChange () {
       const keys = ['engine', 'engine_version', 'local_category']
       const params = this.getFieldsValue(keys)
+      console.log(params)
       clearTimeout(this.T)
       this.T = setTimeout(() => {
         keys.forEach(k => {
@@ -109,19 +121,26 @@ export default {
         })
         this.filterSKU(params)
       }, 0)
-      console.log(params)
     },
     async fetchQuerySkus (_parmas) {
       const params = {
         provider: this.getFieldValue('provider'),
         city: this.getFieldValue('city'),
         cloudregion: this.getFieldValue('region'),
+        zone: this.getFieldValue('zone'),
         engine: 'redis',
+        usable: true,
       }
       try {
         this.loading = true
         const { data } = await new Manager('elasticcacheskus', 'v2').list({ params })
         const retList = (data && data.data && data.data.length > 0) ? data.data : []
+        this.FC.setFieldsValue({
+          engine: undefined,
+          engine_version: undefined,
+          local_category: undefined,
+          zone_id: undefined,
+        })
         let _skuList = this.skuSort(retList)
         if (this.filterSkuCallback) {
           _skuList = _skuList.filter(this.filterSkuCallback)
@@ -129,7 +148,6 @@ export default {
         this.skuList = _skuList
         this.SKU_LIST = _skuList
         this.formatFilters(_skuList)
-        this.handleFilterChange()
         this.loading = false
       } catch (err) {
         this.loading = false

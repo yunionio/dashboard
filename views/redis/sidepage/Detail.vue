@@ -31,10 +31,8 @@ export default {
           field: 'status',
           title: '状态',
           slots: {
-            default: (row) => {
-              return [
-                <status status={ row.status } statusModule='redis' />,
-              ]
+            default: ({ row }) => {
+              return <status status={ row.status } statusModule='redis' />
             },
           },
         },
@@ -58,7 +56,7 @@ export default {
             {
               title: '类型版本',
               slots: {
-                default: (row) => {
+                default: ({ row }) => {
                   return `${row.engine || ''} ${row.engine_version || ''}`
                 },
               },
@@ -66,9 +64,9 @@ export default {
             {
               title: '可维护时间段',
               slots: {
-                default: (row) => {
+                default: ({ row }) => {
                   if (row.maintain_start_time && row.maintain_end_time) {
-                    return `${row.maintain_start_time} ~ ${row.maintain_end_time}`
+                    return `${row.maintain_start_time}${row.maintain_end_time ? ' ~ ' + row.maintain_end_time : ''}`
                   }
                   return '-'
                 },
@@ -86,7 +84,7 @@ export default {
               field: 'cpu_arch',
               title: 'CPU',
               slots: {
-                default: (row) => {
+                default: ({ row }) => {
                   return row.cpu_arch || '-'
                 },
               },
@@ -108,7 +106,7 @@ export default {
               field: 'private_ip_addr',
               title: '内网地址',
               slots: {
-                default: (row) => {
+                default: ({ row }) => {
                   if (row.private_ip_addr) {
                     return `${row['private_ip_addr']}:${row['private_connect_port']}`
                   }
@@ -120,7 +118,7 @@ export default {
               field: 'public_ip_addr',
               title: '外网地址',
               slots: {
-                default: (row) => {
+                default: ({ row }) => {
                   if (row.public_ip_addr) {
                     return `${row['public_ip_addr']}:${row['public_connect_port']}`
                   }
@@ -132,7 +130,7 @@ export default {
               field: 'vpc',
               title: 'VPC',
               slots: {
-                default: (row) => {
+                default: ({ row }) => {
                   return row.vpc || '-'
                 },
               },
@@ -141,7 +139,7 @@ export default {
               field: 'network',
               title: '子网',
               slots: {
-                default: (row) => {
+                default: ({ row }) => {
                   return row.network || '-'
                 },
               },
@@ -150,7 +148,7 @@ export default {
               field: 'auth_mode',
               title: '访问方式',
               slots: {
-                default: (row) => {
+                default: ({ row }) => {
                   return row['auth_mode'] === 'on' ? '密码访问' : '免密访问'
                 },
               },
@@ -164,7 +162,7 @@ export default {
               field: 'created_at',
               title: '创建时间',
               slots: {
-                default: (row) => {
+                default: ({ row }) => {
                   return this.$moment(row.created_at).format()
                 },
               },
@@ -173,7 +171,7 @@ export default {
               field: 'updated_at',
               title: '更新时间',
               slots: {
-                default: (row) => {
+                default: ({ row }) => {
                   return this.$moment(row.updated_at).format()
                 },
               },
@@ -181,8 +179,16 @@ export default {
             {
               title: '删除保护',
               slots: {
-                default: (row) => {
-                  return <div>asda</div>
+                default: (row, h) => {
+                  const handleChange = ({ target }) => {
+                    console.log(target.value)
+                  }
+                  return (
+                    <a-radio-group onChange={handleChange}>
+                      <a-radio-button value={true}>开启</a-radio-button>
+                      <a-radio-button value={false}>关闭</a-radio-button>
+                    </a-radio-group>
+                  )
                 },
               },
             },

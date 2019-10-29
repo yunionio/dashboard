@@ -49,12 +49,31 @@ export default {
     }
   },
   methods: {
+    validateForm () {
+      return new Promise((resolve, reject) => {
+        this.form.fc.validateFields((err, values) => {
+          if (!err) {
+            resolve(values)
+          } else {
+            reject(err)
+          }
+        })
+      })
+    },
     async handleConfirm () {
       this.loading = true
       try {
         this.loading = false
-        await this.params.list.onManager('delete', {
+        const values = await this.validateForm()
+        await this.params.list.onManager('performAction', {
           id: this.params.data[0].id,
+          managerArgs: {
+            action: 'reset-password',
+            data: {
+              ...values,
+              password: values.loginPassword,
+            },
+          },
         })
         this.cancelDialog()
         this.$message.success('操作成功')

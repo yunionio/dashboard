@@ -14,6 +14,10 @@ import BrandIcon from '@/sections/BrandIcon'
 import PageListEmpty from '@/components/PageList/Loader'
 import { sizestr } from '@/utils/utils'
 
+const ELASTIC_CACHE_STORAGE_TYPE = {
+  inmemory: '内存',
+  hybrid: '混合存储',
+}
 export default {
   name: 'SKUList',
   inject: ['form'],
@@ -62,18 +66,19 @@ export default {
           },
         },
         { field: 'cpu_arch', title: 'CPU' },
-        { field: 'storage_type', title: '存储架构' },
+        {
+          field: 'storage_type',
+          title: '存储架构',
+          slots: {
+            default: ({ row }) => {
+              return ELASTIC_CACHE_STORAGE_TYPE[row.storage_type]
+            },
+          },
+        },
         { field: 'max_connections', title: '最大链接数', sortable: true },
         { field: 'description', title: '备注' },
       ]
       return column
-    },
-    skuResults () {
-      let ret = this.skuInfo.skuOptions[this.skuType]
-      if (ret && ret.length > 0 && ret[0]['hour_price']) {
-        ret.sort((a, b) => a.hour_price - b.hour_price)
-      }
-      return ret
     },
   },
   watch: {

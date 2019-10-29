@@ -82,6 +82,9 @@ export const decorators = {
     region: ['region', {
       initialValue: undefined,
     }],
+    zone: ['zone', {
+      initialValue: undefined,
+    }],
   },
   loginConfig: {
     loginType: [

@@ -15,8 +15,15 @@
         <a-radio-button :key="item" :value="item" v-for="item in archs">{{ENGINE_ARCH[item] || item}}</a-radio-button>
       </a-radio-group>
       <div style="color:#888;font-size:12px">
+        {{this.getFieldValue('local_category')}}
         {{archPoints(getFieldValue('local_category'))}}
       </div>
+    </a-form-item>
+    {{filterMemorys}}
+     <a-form-item class="redis-create-zones" label="内存" v-bind="formItemLayout" v-if="filterMemorys && Object.keys(filterMemorys).length > 0">
+      <a-radio-group @change="eimtChange()">
+        <a-radio-button :key="k" :value="k" v-for="(k, v) in filterMemorys">{{v}}</a-radio-button>
+      </a-radio-group>
     </a-form-item>
   </div>
 </template>
@@ -29,6 +36,9 @@ export default {
   inject: ['form'],
   props: {
     filterParams: {
+      type: Object,
+    },
+    filterMemorys: {
       type: Object,
     },
     decorators: {
@@ -85,9 +95,16 @@ export default {
   created () {
     this.getVersion()
     this.getArcha()
-  },
-  mounted () {
-    this.eimtChange()
+    if (this.skuZones) {
+      const zones = Object.keys(this.skuZones)
+      let key = zones[0]
+      console.log(this.skuZones[key],)
+      this.$nextTick(() => {
+        this.FC.setFieldsValue({
+          zone_id: this.skuZones[key],
+        })
+      })
+    }
   },
   methods: {
     getVersion () {
@@ -105,13 +122,18 @@ export default {
         versions = Object.keys(_versions)
       }
       this.versions = versions
-      this.eimtChange()
+      this.$nextTick(() => {
+        this.FC.setFieldsValue({
+          engine_version: (versions && versions.length > 0) ? versions[0] : undefined,
+        })
+        this.getArcha()
+      })
     },
     getArcha () {
       const engine = this.getFieldValue('engine')
       const version = this.getFieldValue('engine_version')
       const category = this.getFieldValue('local_category')
-      console.log(category)
+      // console.log(version, category)
       let archs = []
       if (engine) {
         if (version) {
@@ -136,19 +158,28 @@ export default {
         })
         archs = Object.keys(_archs)
       }
-      if (archs.indexOf('category') === -1) {
+      if (archs.indexOf(category) === -1) {
         this.FC.setFieldsValue({
           local_category: undefined,
         })
       }
       this.archs = archs
-      this.eimtChange()
+      this.$nextTick(() => {
+        if (!this.getFieldValue('local_category')) {
+          this.FC.setFieldsValue({
+            local_category: archs && archs.length > 0 ? archs[0] : undefined,
+          })
+        }
+        this.eimtChange()
+      })
     },
     archPoints (type) {
       const points = {
         'single': '数据双副本 | 数据持久化 | 提供数据可靠性',
         'ha': '数据单副本 | 不支持数据持久化 | 不承诺数据可靠性',
         'proxy': '数据双副本 | 数据持久化| 提供数据可靠性｜支持分片',
+        'master': '数据双副本 | 数据持久化 | 提供数据可靠性',
+        'cluster': '数据双副本 | 数据持久化| 提供数据可靠性｜支持分片',
       }
       return points[type]
     },
@@ -158,3 +189,10 @@ export default {
   },
 }
 </script>
+<style lang="scss" scoped>
+  .redis-create-zones{
+    .ant-radio-button-wrapper{
+      margin-right: 8px
+    }
+  }
+</style>

@@ -9,6 +9,9 @@
                 <a-textarea placeholder="例：10.10.10.1 或者 10.10.0.0/10"
                  :autosize="{ minRows: 4, maxRows: 7 }"
                  v-decorator="decorators['ip_list']" />
+                 <div style="line-height:20px;color:#999">有多个IP地址/地址段，请用“，”进行分割。每个实例最多添加20个IP地址/地址段，请用“，”进行分割。每个实例最多添加20个IP地址
+                     ，您还可以添加<b style="color:#666">{{20-this.ipsLength}}</b>个IP地址/地址段
+                 </div>
             </a-form-item>
         </a-form>
          <div slot="footer">
@@ -60,6 +63,7 @@ export default {
           {
             initialValue: initialValues.ip_list,
             validateFirst: true,
+            validateTrigger: 'blur',
             rules: [
               { required: true, message: '请添加IP地址/地段名' },
               { validator: this.validateIps },
@@ -70,9 +74,15 @@ export default {
       return decorators
     },
   },
+  created () {
+    const { initialValues = {} } = this.params
+    if (initialValues.ip_list) {
+      this.ipsLength = initialValues.ip_list.split(',').length
+    }
+  },
   methods: {
     validateIps (rule, value, _callback) {
-      const REG_IP = REGEXP.IPv4
+      const REG_IP = REGEXP.IPv4.regexp
       const REG_NUM = /\d/
       if (value) {
         const ips = value.split(',')
@@ -80,14 +90,14 @@ export default {
         for (let i = 0; i < ipsLength; i++) {
           const _item = ips[i]
           const [_ip, _u] = _item.split('/')
-          console.log(_item, REG_IP.test(_ip))
-          if (!REG_IP.test(_ip)) {
-            _callback(`IP地址：（${_item}）格式不对`)
+          if (_ip && !REG_IP.test(_ip)) {
+            _callback(`${_item}格式不对`)
           }
           if (_u && !REG_NUM.test(_u)) {
-            _callback(`IP地址：（${_item}）请输入数字类型地址段`)
+            _callback(`地址段${_u}只能是数字`)
           }
         }
+        this.ipsLength = ipsLength
       }
       _callback()
     },
@@ -106,7 +116,6 @@ export default {
       this.loading = true
       try {
         const values = await this.validateForm()
-        console.log(this)
         await this.params.list.onManager('create', {
           managerArgs: {
             data: {

@@ -7,15 +7,17 @@
 </template>
 
 <script>
+import { sizestr } from '@/utils/utils'
 import { getStatusTableColumn, getRegionTableColumn, getBrandTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
+import expectStatus from '@/constants/expectStatus'
 
 export default {
   name: 'RedisBackupList',
   mixins: [WindowsMixin],
   props: {
-    getParams: {
-      type: Function,
+    params: {
+      type: Object,
     },
     data: {
       type: Object,
@@ -25,7 +27,8 @@ export default {
     return {
       list: this.$list.createList(this, {
         resource: 'elasticcachebackups',
-        getParams: this.getParams,
+        getParams: this.params,
+        steadyStatus: Object.values(expectStatus.redisBackup).flat(),
       }),
       columns: [
         {
@@ -35,21 +38,27 @@ export default {
         {
           field: 'backup_mode',
           title: '备份类型',
+          slots: {
+            default: ({ row }) => {
+              return row.backup_mode === 'manual' ? '手动备份' : '自动备份'
+            },
+          },
         },
         {
-          field: 'name',
-          title: '实例类型',
-        },
-        {
-          field: 'name',
-          title: '标签',
+          field: 'engine',
+          title: '类型版本',
+          slots: {
+            default: ({ row }) => {
+              return `${row.engine} ${row.engine_version}`
+            },
+          },
         },
         {
           field: 'backup_size_mb',
           title: '大小',
           slots: {
             default: ({ row }) => {
-              return `${row.backup_size_mb}`
+              return sizestr(row.backup_size_mb, 'M', 1024)
             },
           },
         },
@@ -78,8 +87,16 @@ export default {
             })
           },
           meta: () => {
+            let validate = true
+            let tooltip = ''
+            if (this.data.brand === 'Huawei' && this.data.arch_type === 'single') {
+              validate = false
+              tooltip = '华为云基础版不支持此操作'
+            }
             return {
               buttonType: 'primary',
+              validate,
+              tooltip,
             }
           },
         },
@@ -94,9 +111,30 @@ export default {
               list: this.list,
             })
           },
+          meta: () => {
+            let validate = true
+            let tooltip = ''
+            if (this.data.brand === 'Huawei' && this.data.arch_type === 'single') {
+              validate = false
+              tooltip = '华为云基础版不支持此操作'
+            }
+            return {
+              validate,
+              tooltip,
+            }
+          },
         },
       ],
     }
+  },
+  computed: {
+    commonMeta () {
+      const isHuawei = this.data.brand === 'Huawei'
+      return {
+        validate: !isHuawei,
+        tooltip: isHuawei ? '华为云不支持创建白名单' : null,
+      }
+    },
   },
   created () {
     this.list.fetchData()

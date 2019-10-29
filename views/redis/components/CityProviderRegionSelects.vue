@@ -1,6 +1,6 @@
 <template>
   <a-row :gutter="8">
-    <a-col :span="8">
+    <a-col :span="6">
         <a-form-item>
           <a-select  v-decorator="decorators.city" @change="fetchQueryProviders">
               <a-select-option
@@ -10,7 +10,7 @@
           </a-select>
         </a-form-item>
     </a-col>
-    <a-col :span="8">
+    <a-col :span="6">
       <a-form-item>
           <a-select :loading="providerLoading" placeholder="请选择平台" v-decorator="decorators.provider" @change="fetchQueryRegions">
               <a-select-option
@@ -20,13 +20,23 @@
           </a-select>
       </a-form-item>
     </a-col>
-    <a-col :span="8">
+    <a-col :span="6">
       <a-form-item>
           <a-select :loading="regionLoading"  placeholder="请选择区域"  v-decorator="decorators.region" @change="handleRegionChange">
               <a-select-option
                   :key="item.id"
                   :value="item.id"
                   v-for="item in regionOpts">{{item.name}}</a-select-option>
+          </a-select>
+      </a-form-item>
+    </a-col>
+    <a-col :span="6">
+      <a-form-item>
+          <a-select :loading="regionLoading"  placeholder="请选择可用区"  v-decorator="decorators.zone" @change="handleZoneChange">
+              <a-select-option
+                  :key="item.id"
+                  :value="item.id"
+                  v-for="item in zoneOpts">{{item.name}}</a-select-option>
           </a-select>
       </a-form-item>
     </a-col>
@@ -46,6 +56,9 @@ const defaultDecorators = {
   region: ['region', {
     initialValue: undefined,
   }],
+  zone: ['zone', {
+    initialValue: undefined,
+  }],
 }
 export default {
   name: 'CityProviderRegionSelects',
@@ -55,6 +68,9 @@ export default {
       type: Object,
       default: defaultDecorators,
     },
+    selectProviders: {
+      type: Array,
+    },
   },
   data () {
     return {
@@ -63,6 +79,8 @@ export default {
       providerOps: [],
       regionLoading: false,
       regionOpts: [],
+      zoneLoading: false,
+      zoneOpts: [],
     }
   },
   computed: {
@@ -88,6 +106,7 @@ export default {
       await this.fetchQueryCitys()
       await this.fetchQueryProviders()
       await this.fetchQueryRegions()
+      await this.fetchQueryZones()
     },
     async fetchQueryCitys () {
       const params = {
@@ -134,6 +153,11 @@ export default {
             item['cname'] = CLOUD_PROVIDERS_MAP[item.name] || item.name
             return item
           })
+          if (this.selectProviders && this.selectProviders.length > 0) {
+            this.providerOps = this.providerOps.filter(({ name }) => {
+              return this.selectProviders.indexOf(name) > -1
+            })
+          }
         }
       } catch (err) {
         this.providerLoading = false
@@ -154,10 +178,43 @@ export default {
       try {
         this.regionLoading = true
         const { data } = await this.crManager.list({ params })
+        if (this.selectProviders && this.selectProviders.length > 0) {
+          this.regionOpts = (data.data && data.data.length > 0) ? data.data.filter(({ provider }) => {
+            return this.selectProviders.indexOf(provider) > -1
+          }) : []
+        } else {
+          this.regionOpts = data.data || []
+        }
         this.regionLoading = false
-        this.regionOpts = data.data
       } catch (err) {
         this.regionLoading = false
+        throw err
+      }
+    },
+    async fetchQueryZones (region) {
+      const params = {
+        service: 'zones',
+        usable: true,
+        is_public: true,
+        city: this.getFieldValue('city') || undefined,
+        provider: this.getFieldValue('provider') || undefined,
+        cloudregion_id: region,
+      }
+      try {
+        this.zoneLoading = true
+        const { data } = await new Manager('zones', 'v2').list({
+          params,
+        })
+        if (this.selectProviders && this.selectProviders.length > 0) {
+          this.zoneOpts = (data.data && data.data.length > 0) ? data.data.filter(({ provider }) => {
+            return this.selectProviders.indexOf(provider) > -1
+          }) : []
+        } else {
+          this.zoneOpts = data.data || []
+        }
+        this.zoneLoading = false
+      } catch (err) {
+        this.zoneLoading = false
         throw err
       }
     },
@@ -170,6 +227,19 @@ export default {
         this.FC.setFieldsValue({
           city,
           provider,
+        })
+        this.fetchQueryZones(regionId)
+      }
+    },
+    handleZoneChange (zoneId) {
+      const zoneItem = this.zoneOpts.find(({ id }) => {
+        return id === zoneId
+      })
+      if (zoneItem) {
+        const { provider } = zoneItem
+        this.FC.setFieldsValue({
+          provider,
+          region: zoneItem.cloudregion_id,
         })
       }
     },

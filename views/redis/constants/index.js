@@ -60,5 +60,5 @@ export const ENGINE_ARCH = {
   'single': '基础版',
   'master': '高可用',
   'cluster': '集群',
-  'splitrw': '读写分离',
+  'rwsplit': '读写分离',
 }

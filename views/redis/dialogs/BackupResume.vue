@@ -3,7 +3,7 @@
         <div slot="header">{{title}}</div>
         <div slot="body">
           <dialog-selected-tips :count="params.data.length" :action="title" />
-          <vxe-grid class="mb-2" :data="params.data" :columns="columns" />
+          <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
         </div>
          <div slot="footer">
             <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
@@ -29,12 +29,6 @@ export default {
       form: {
         fc: this.$form.createForm(this),
       },
-      columns: [
-        {
-          field: 'name',
-          title: '名称',
-        },
-      ],
     }
   },
   methods: {

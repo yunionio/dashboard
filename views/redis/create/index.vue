@@ -19,7 +19,7 @@
         <a-input-number v-decorator="decorators.count" :min="1" :max="10" />
       </a-form-item>
       <a-form-item label="区域" v-bind="formItemLayout">
-        <item-city-provider-region-selects :decorators="decorators.cityProviderRegion" />
+        <item-city-provider-region-selects :selectProviders="['Huawei', 'Aliyun']" :decorators="decorators.cityProviderRegion" />
        </a-form-item>
        <s-k-u ref="REF_SKU" />
        <a-divider orientation="left">高级配置</a-divider>
@@ -104,7 +104,8 @@ export default {
   },
   methods: {
     _querySkus (changedFields) {
-      const skuParamKeys = ['city', 'provider', 'region']
+      console.log(changedFields)
+      const skuParamKeys = ['city', 'provider', 'region', 'zone']
       for (let i = 0; i < skuParamKeys.length; i++) {
         let key = skuParamKeys[i]
         if (changedFields[key]) {
@@ -115,7 +116,7 @@ export default {
     },
     _queryNetworks (changedFields) {
       if (changedFields['sku']) {
-        this.$refs['REF_VPC'].fetchQueryNetworks()
+        this.$refs['REF_VPC'].fetchQueryVpcs()
       }
     },
     onFieldsChange (vm, changedFields) {
