@@ -41,6 +41,7 @@ export default {
         { label: '白名单设置', key: 'redis-white-list' },
         { label: '账号管理', key: 'redis-account-list' },
         { label: '备份列表', key: 'redis-backup-list' },
+        { label: '操作日志', key: 'event-drawer' },
       ],
     }
   },

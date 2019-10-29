@@ -5,7 +5,7 @@
       :disableds="disableds"
       :decorators="decorators"
       :filterParams="skuFilters"
-      :ffilterMemorys="skuMemorys"
+      :filterMemorys="skuMemorys"
       @change="handleFilterChange" />
     <sku-list :loading="loading" :skuList="skuList" />
   </div>
@@ -14,6 +14,7 @@
 import ItemFilters from './components/ItemFilters'
 import SkuList from './components/List'
 import { Manager } from '@/utils/manager'
+import { sizestr } from '@/utils/utils'
 
 export default {
   name: 'rdisiCreateSkus',
@@ -85,7 +86,8 @@ export default {
           skuFilters[engine][version][category] = {}
         }
         if (memory) {
-          skuMemorys[memory] = memory
+          const key = sizestr(item.memory_size_mb, 'M', 1024)
+          skuMemorys[key] = memory
         }
       })
       this.skuFilters = {}
@@ -109,7 +111,7 @@ export default {
       return skuList ? skuList.sort((a, b) => a.memory_size_mb - b.memory_size_mb) : []
     },
     handleFilterChange () {
-      const keys = ['engine', 'engine_version', 'local_category']
+      const keys = ['engine', 'engine_version', 'local_category', 'memory_size_mb']
       const params = this.getFieldsValue(keys)
       console.log(params)
       clearTimeout(this.T)

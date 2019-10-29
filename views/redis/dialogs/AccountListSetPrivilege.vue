@@ -1,10 +1,11 @@
 <template>
     <base-dialog @cancel="cancelDialog">
-        <div slot="header">修改权限</div>
+        <div slot="header">{{params.title}}</div>
         <div slot="body">
+            <dialog-selected-tips :count="params.data.length" :action="params.title" />
            <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
-           <a-form :form="form.fc" class="mt-3">
-              <a-form-item label="权限设置">
+           <a-form :form="form.fc" class="mt-5">
+              <a-form-item label="权限设置" v-bind="formItemLayout">
                 <a-radio-group v-decorator="decorators.account_privilege">
                     <a-radio v-for="k in Object.keys(privileges)" :key="k" :value="k">
                       {{privileges[k]}}
@@ -21,6 +22,7 @@
 </template>
 
 <script>
+import { CreateServerForm } from '@Compute/constants'
 import { ACCOUNT_PRIVILEGES } from '../constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -34,6 +36,10 @@ export default {
       privileges: ACCOUNT_PRIVILEGES,
       form: {
         fc: this.$form.createForm(this),
+      },
+      formItemLayout: {
+        wrapperCol: { span: CreateServerForm.wrapperCol },
+        labelCol: { span: CreateServerForm.labelCol },
       },
     }
   },

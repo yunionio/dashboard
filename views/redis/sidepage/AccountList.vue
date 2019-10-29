@@ -37,6 +37,15 @@ export default {
         },
         getStatusTableColumn({ statusModule: 'redisAccount' }),
         {
+          field: 'account_type',
+          title: '账号类型',
+          slots: {
+            default: ({ row }) => {
+              return row.account_type === 'admin' ? '管理员' : '普通账号'
+            },
+          },
+        },
+        {
           field: 'ip',
           title: '权限',
           slots: {
@@ -80,6 +89,7 @@ export default {
           label: '修改权限',
           action: (obj) => {
             this.createDialog('RedisAccountListSetPrivilegeDialog', {
+              title: '修改权限',
               initialValues: {
                 account_privilege: obj['account_privilege'],
               },

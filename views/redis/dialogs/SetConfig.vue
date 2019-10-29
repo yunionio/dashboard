@@ -48,6 +48,7 @@ export default {
     redisItem () {
       const { data } = this.params
       const redisItem = data && data.length > 0 ? data[0] : {}
+      console.log(redisItem)
       return redisItem
     },
     decorators () {
@@ -64,18 +65,19 @@ export default {
             initialValue: this.redisItem.engine_version,
           },
         ],
-        // local_category: [
-        //   'local_category',
-        //   {
-        //     initialValue: this.redisItem.local_category || this.redisItem.arch_type,
-        //   },
-        // ],
+        local_category: [
+          'local_category',
+          {
+            initialValue: this.redisItem.local_category || this.redisItem.arch_type,
+          },
+        ],
       }
     },
   },
   created () {
-    // this.form.fc.getFieldDecorator('provider', { initialValue: this.redisItem.provider })
-    // this.form.fc.getFieldDecorator('region', { initialValue: this.redisItem.cloudregion_id })
+    this.form.fc.getFieldDecorator('provider', { initialValue: this.redisItem.provider })
+    this.form.fc.getFieldDecorator('region', { initialValue: this.redisItem.cloudregion_id })
+    this.form.fc.getFieldDecorator('zone', { initialValue: this.redisItem.zone_id })
   },
   methods: {
     async handleConfirm () {
@@ -86,7 +88,7 @@ export default {
         await this.params.list.onManager('performAction', {
           id: this.params.data[0].id,
           managerArgs: {
-            action: 'change_spec',
+            action: 'change-spec',
             data: {
               sku: sku.id,
             },
@@ -99,6 +101,7 @@ export default {
     },
     filterSkuCallback (row) {
       const mdSize = this.redisItem.memory_size_mb || this.redisItem.capacity_mb
+      console.log(row.engine_version)
       if (mdSize < row.memory_size_mb) {
         return true
       }

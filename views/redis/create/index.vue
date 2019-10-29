@@ -104,7 +104,6 @@ export default {
   },
   methods: {
     _querySkus (changedFields) {
-      console.log(changedFields)
       const skuParamKeys = ['city', 'provider', 'region', 'zone']
       for (let i = 0; i < skuParamKeys.length; i++) {
         let key = skuParamKeys[i]

@@ -67,7 +67,7 @@ export default {
           addLock: true,
           slotCallback: row => {
             return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'RedisSidePage') }>啊实打实{ row.name }</side-page-trigger>
+              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'RedisSidePage') }>dd{ row.name }</side-page-trigger>
             )
           },
         }),
@@ -104,7 +104,7 @@ export default {
           title: '密码',
           slots: {
             default: ({ row }) => {
-              return [<PasswordFetcher serverId={row.id} resourceType='servers' />]
+              return [<PasswordFetcher serverId={row.id} resourceType='elasticcaches' />]
             },
           },
         },
@@ -132,8 +132,8 @@ export default {
                 return '-'
               }
               return [
-                <div>{row.private_connect_port}</div>,
-                <div>{row.public_connect_port}</div>,
+                <div>{row.private_connect_port > 0 && row.private_connect_port}</div>,
+                <div>{row.public_connect_port > 0 && row.public_connect_port}</div>,
               ]
             },
           },
@@ -214,6 +214,45 @@ export default {
           actions: (obj) => {
             const isRunning = obj.status === 'running'
             const notRunninTip = !isRunning ? '仅运行中的实例支持此操作' : null
+            const isAuthModeOn = obj.auth_mode === 'on'
+            const setAuthMode = () => {
+              if (isAuthModeOn) {
+                return {
+                  label: '关闭免密访问',
+                  action: () => {
+                    this.createDialog('RedisUpdateAuthModeDialog', {
+                      title: '关闭免密访问',
+                      data: [obj],
+                      columns: this.columns,
+                      list: this.list,
+                    })
+                  },
+                  meta: () => {
+                    return {
+                      validate: isRunning,
+                      tooltip: notRunninTip,
+                    }
+                  },
+                }
+              }
+              return {
+                label: '开启密码访问',
+                action: () => {
+                  this.createDialog('RedisUpdateAuthModeDialog', {
+                    title: '开启密码访问',
+                    data: [obj],
+                    columns: this.columns,
+                    list: this.list,
+                  })
+                },
+                meta: () => {
+                  return {
+                    validate: isRunning,
+                    tooltip: notRunninTip,
+                  }
+                },
+              }
+            }
             return [
               {
                 label: '续费',
@@ -280,11 +319,12 @@ export default {
                 },
                 meta: () => {
                   return {
-                    validate: obj.can_delete,
-                    tooltip: obj.disable_delete ? '请点击修改属性禁用删除保护后重试' : null,
+                    validate: isRunning,
+                    tooltip: notRunninTip,
                   }
                 },
               },
+              setAuthMode(),
               {
                 label: '删除',
                 action: () => {

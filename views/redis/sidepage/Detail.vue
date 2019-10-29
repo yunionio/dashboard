@@ -176,22 +176,22 @@ export default {
                 },
               },
             },
-            {
-              title: '删除保护',
-              slots: {
-                default: (row, h) => {
-                  const handleChange = ({ target }) => {
-                    console.log(target.value)
-                  }
-                  return (
-                    <a-radio-group onChange={handleChange}>
-                      <a-radio-button value={true}>开启</a-radio-button>
-                      <a-radio-button value={false}>关闭</a-radio-button>
-                    </a-radio-group>
-                  )
-                },
-              },
-            },
+            // {
+            //   title: '删除保护',
+            //   slots: {
+            //     default: (row, h) => {
+            //       const handleChange = ({ target }) => {
+            //         console.log(target.value)
+            //       }
+            //       return (
+            //         <a-radio-group onChange={handleChange}>
+            //           <a-radio-button value={true}>开启</a-radio-button>
+            //           <a-radio-button value={false}>关闭</a-radio-button>
+            //         </a-radio-group>
+            //       )
+            //     },
+            //   },
+            // },
           ],
         },
       ],

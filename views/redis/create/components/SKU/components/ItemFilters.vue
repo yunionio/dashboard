@@ -15,13 +15,11 @@
         <a-radio-button :key="item" :value="item" v-for="item in archs">{{ENGINE_ARCH[item] || item}}</a-radio-button>
       </a-radio-group>
       <div style="color:#888;font-size:12px">
-        {{this.getFieldValue('local_category')}}
         {{archPoints(getFieldValue('local_category'))}}
       </div>
     </a-form-item>
-    {{filterMemorys}}
-     <a-form-item class="redis-create-zones" label="内存" v-bind="formItemLayout" v-if="filterMemorys && Object.keys(filterMemorys).length > 0">
-      <a-radio-group @change="eimtChange()">
+     <a-form-item label="内存" v-bind="formItemLayout" v-if="filterMemorys && Object.keys(filterMemorys).length > 0">
+      <a-radio-group v-decorator="decorators.memory_size_mb || ['memory_size_mb']" @change="eimtChange()">
         <a-radio-button :key="k" :value="k" v-for="(k, v) in filterMemorys">{{v}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
@@ -95,16 +93,7 @@ export default {
   created () {
     this.getVersion()
     this.getArcha()
-    if (this.skuZones) {
-      const zones = Object.keys(this.skuZones)
-      let key = zones[0]
-      console.log(this.skuZones[key],)
-      this.$nextTick(() => {
-        this.FC.setFieldsValue({
-          zone_id: this.skuZones[key],
-        })
-      })
-    }
+    console.log(this.filterMemorys)
   },
   methods: {
     getVersion () {
@@ -123,9 +112,11 @@ export default {
       }
       this.versions = versions
       this.$nextTick(() => {
-        this.FC.setFieldsValue({
-          engine_version: (versions && versions.length > 0) ? versions[0] : undefined,
-        })
+        if (!this.decorators.engine_version) {
+          this.FC.setFieldsValue({
+            engine_version: (versions && versions.length > 0) ? versions[0] : undefined,
+          })
+        }
         this.getArcha()
       })
     },
@@ -189,10 +180,3 @@ export default {
   },
 }
 </script>
-<style lang="scss" scoped>
-  .redis-create-zones{
-    .ant-radio-button-wrapper{
-      margin-right: 8px
-    }
-  }
-</style>

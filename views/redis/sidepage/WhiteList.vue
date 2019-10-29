@@ -56,6 +56,7 @@ export default {
           label: '新建',
           action: (obj) => {
             this.createDialog('RedisWhiteListFormDialog', {
+              title: '新建',
               list: this.list,
               redisItem: this.data,
             })
@@ -75,11 +76,14 @@ export default {
           label: '修改',
           action: (obj) => {
             this.createDialog('RedisWhiteListFormDialog', {
+              title: '修改',
               initialValues: {
                 name: obj.name,
                 ip_list: obj.ip_list,
               },
+              data: [obj],
               list: this.list,
+              columns: this.columns,
               redisItem: this.data,
             })
           },

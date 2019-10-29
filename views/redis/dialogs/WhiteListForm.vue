@@ -1,7 +1,11 @@
 <template>
     <base-dialog @cancel="cancelDialog">
-        <div slot="header">新建</div>
+        <div slot="header">{{params.title}}</div>
         <a-form slot="body" :form="form.fc" class="mt-3">
+           <template v-if="params.data && params.data.length > 0">
+              <dialog-selected-tips :count="params.data.length" :action="params.title" />
+              <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+           </template>
             <a-form-item v-bind="formItemLayout" label="分组名">
                 <a-input placeholder="请选择分组名称" v-decorator="decorators.name" />
             </a-form-item>
@@ -116,14 +120,30 @@ export default {
       this.loading = true
       try {
         const values = await this.validateForm()
-        await this.params.list.onManager('create', {
-          managerArgs: {
-            data: {
-              ...values,
-              elasticcache: this.params.redisItem.id,
+        if (this.params.data && this.params.data.length > 0) {
+          const params = {
+            ...values,
+            elasticcache: this.params.redisItem.id,
+          }
+          if (params.name === this.params.data[0].name) {
+            delete params.name
+          }
+          await this.params.list.onManager('update', {
+            id: this.params.data[0].id,
+            managerArgs: {
+              data: params,
             },
-          },
-        })
+          })
+        } else {
+          await this.params.list.onManager('create', {
+            managerArgs: {
+              data: {
+                ...values,
+                elasticcache: this.params.redisItem.id,
+              },
+            },
+          })
+        }
         this.loading = false
         this.cancelDialog()
       } catch (error) {

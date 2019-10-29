@@ -3,7 +3,7 @@
     <div slot="header">{{this.params.title}}</div>
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" :action="this.params.title" />
-      <!-- <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" /> -->
+      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
     </div>
     <div slot="footer">
       <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t("dialog.ok") }}</a-button>
@@ -15,7 +15,6 @@
 <script>
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-// import { getStatusTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   name: 'RedisClearDataDialog',
@@ -23,22 +22,6 @@ export default {
   data () {
     return {
       loading: false,
-    //   columns: [
-    //     {
-    //       field: 'name',
-    //       title: '名称',
-    //     },
-    //     getStatusTableColumn({ statusModule: 'redis' }),
-    //     {
-    //       field: 'created_at',
-    //       title: '创建时间',
-    //       slots: {
-    //         default: ({ row }) => {
-    //           return this.$moment(row.created_at).format()
-    //         },
-    //       },
-    //     },
-    //   ],
     }
   },
   methods: {

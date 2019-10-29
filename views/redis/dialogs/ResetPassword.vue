@@ -65,13 +65,17 @@ export default {
       try {
         this.loading = false
         const values = await this.validateForm()
+        if (values.loginType === 'random') {
+          values['reset_password'] = true
+        } else {
+          values['password'] = values.loginPassword
+        }
         await this.params.list.onManager('performAction', {
           id: this.params.data[0].id,
           managerArgs: {
             action: 'reset-password',
             data: {
               ...values,
-              password: values.loginPassword,
             },
           },
         })

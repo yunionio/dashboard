@@ -49,6 +49,7 @@
 <script>
 // import * as R from 'ramda'
 // import _ from 'lodash'
+import { ENGINE_ARCH } from '@DB/views/redis/constants'
 import { sizestrWithUnit } from '@/utils/utils'
 import { Manager } from '@/utils/manager'
 
@@ -68,14 +69,15 @@ export default {
   computed: {
     tips () {
       const { name, count, sku = {} } = this.values
+      const category = sku.local_category
       const ret = [
         [
           { label: '名称', labelClass: 'label-w-50', value: name, valueClass: 'name-value' },
           { label: '数量', labelClass: 'label-w-50', value: count },
         ],
         [
-          { label: '区域', labelClass: 'label-w-50', value: '-' },
-          { label: '实例类型', labelClass: 'label-w-50', value: `${this.values['engine_arch'] || '-'}` },
+          { label: '区域', labelClass: 'label-w-50', value: sku.region },
+          { label: '实例类型', labelClass: 'label-w-50', value: ENGINE_ARCH[category] },
         ],
         [
           { label: '配置', labelClass: 'label-w-80', value: `${sizestrWithUnit(sku.memory_size_mb, 'M', 1024)}内存` },
