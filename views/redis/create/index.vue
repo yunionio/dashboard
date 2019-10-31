@@ -1,7 +1,6 @@
 <template>
   <div>
     <page-header title="新建" />
-    {{form.fc.getFieldsValue()}}
     <a-form
       class="mt-3"
       :form="form.fc">
