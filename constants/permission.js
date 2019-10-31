@@ -414,6 +414,18 @@ export const PERMISSION = {
   'underutilizedinstances_list': ['cloudwatcher', 'underutilizedinstances', 'list'],
   // 工单管理相关操作
   'process_manage_list': ['itsm', 'process-definitions', 'list'],
+  /**
+   * 数据库-RDS
+   */
+  'rds_dbinstances_list': ['compute', 'dbinstances', 'list'],
+  /**
+   * 数据库-RDS备份列表
+   */
+  'rds_dbinstancebackups_list': ['compute', 'dbinstancebackups', 'list'],
+  /**
+   * 数据库-redis
+   */
+  'redis_elasticcaches_list': ['compute', 'elasticcaches', 'list'],
 }
 
 // 已声明权限的资源
