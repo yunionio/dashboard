@@ -125,7 +125,7 @@ export default {
       try {
         const params = {
           scope: this.scope,
-          domain_id: this.l3PermissionEnable ? this.domainData.key : 'default',
+          domain_id: this.l3PermissionEnable ? this.domainData.id : 'default',
         }
         const response = await this.pm.list({ params })
         const data = response.data.data || []

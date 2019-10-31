@@ -54,7 +54,8 @@ export default {
         class: 'detail-item mt-2',
       }, [
         h('div', { class: 'detail-item-title' }, item.title),
-        h('div', { class: 'detail-item-value', attrs: { title: val } }, val),
+        <div class="detail-item-value" title={val}>{val}</div>,
+        // h('div', { class: 'detail-item-value', attrs: { title: val } }, val),
       ])
     },
     renderItems (h, items) {

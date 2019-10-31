@@ -418,6 +418,18 @@ export const PERMISSION = {
    * 主机组
    */
   'instancegroups_list': ['itsm', 'instancegroups', 'list'],
+  /**
+   * 数据库-RDS
+   */
+  'rds_dbinstances_list': ['compute', 'dbinstances', 'list'],
+  /**
+   * 数据库-RDS备份列表
+   */
+  'rds_dbinstancebackups_list': ['compute', 'dbinstancebackups', 'list'],
+  /**
+   * 数据库-redis
+   */
+  'redis_elasticcaches_list': ['compute', 'elasticcaches', 'list'],
 }
 
 // 已声明权限的资源
