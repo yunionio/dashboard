@@ -6,14 +6,14 @@
       </a-radio-group>
       <help-tooltip name="serverPassword" class="ml-2" />
     </a-form-item>
-    <a-form-item v-if="vmLoginType === loginTypeMap.keypair.key">
+    <a-form-item v-if="(loginTypeMap && loginTypeMap.keypair) && vmLoginType === loginTypeMap.keypair.key">
       <base-select
         class="w-50"
         v-decorator="decorator.keypair"
         resource="keypairs"
         :select-props="{ allowClear: true, labelInValue: true, placeholder: '请选择关联密钥' }" />
     </a-form-item>
-    <a-form-item v-if="vmLoginType === loginTypeMap.password.key">
+    <a-form-item v-if="(loginTypeMap && loginTypeMap.password) && vmLoginType === loginTypeMap.password.key">
       <a-input
         class="w-50"
         v-decorator="decorator.password"
@@ -30,6 +30,9 @@ import { LOGIN_TYPES_MAP } from '@Compute/constants'
 export default {
   name: 'ServerPassword',
   props: {
+    loginTypes: {
+      type: Array,
+    },
     decorator: {
       type: Object,
       required: true,
@@ -39,8 +42,21 @@ export default {
   data () {
     return {
       vmLoginType: 'random',
-      loginTypeMap: LOGIN_TYPES_MAP,
     }
+  },
+  computed: {
+    loginTypeMap () {
+      if (this.loginTypes && this.loginTypes.length > 0) {
+        const _ = {}
+        for (let k in LOGIN_TYPES_MAP) {
+          if (this.loginTypes.indexOf(k) > -1) {
+            _[k] = LOGIN_TYPES_MAP[k]
+          }
+        }
+        return _
+      }
+      return LOGIN_TYPES_MAP
+    },
   },
   methods: {
     loginTypeChange (e) {

@@ -66,7 +66,7 @@ export default {
     resourceType: {
       type: String,
       required: true,
-      validator: val => ['servers', 'baremetals', 'baremetal_ssh'].includes(val),
+      validator: val => ['servers', 'baremetals', 'baremetal_ssh', 'elasticcaches'].includes(val),
     },
   },
   data () {
@@ -85,6 +85,10 @@ export default {
         },
         baremetal_ssh: {
           resource: 'hosts',
+          methodname: 'GetLoginInfo',
+        },
+        elasticcaches: {
+          resource: 'elasticcaches',
           methodname: 'GetLoginInfo',
         },
       },
