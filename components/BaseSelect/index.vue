@@ -76,6 +76,10 @@ export default {
     disabledItems: { // options 中的 disabled 项
       type: Array,
     },
+    mapper: { // 请求数据后进行数据处理
+      type: Function,
+      required: false,
+    },
   },
   data: function () {
     return {
@@ -188,14 +192,18 @@ export default {
           if (this.labelFormat) {
             resOpts = data.map(val => ({ ...val, name: this.labelFormat(val) }))
           }
+          if (this.mapper) {
+            resOpts = this.mapper(resOpts)
+          }
           this.$emit('update:options', resOpts)
           resOpts = arrayToObj(resOpts)
           this.resOpts = resOpts
           this.disabledOpts()
           this.loading = false
         })
-        .catch(() => {
+        .catch((error) => {
           this.loading = false
+          throw error
         })
     },
   },

@@ -47,4 +47,7 @@ export default {
     danger: ['restart_failed', 'create_failed', 'change_failed', 'release_failed', 'error'],
     info: ['inactive', 'unknown', 'init', 'unavailable'],
   },
+  instanceGroup: {
+    success: ['init'],
+  },
 }

@@ -414,6 +414,10 @@ export const PERMISSION = {
   'underutilizedinstances_list': ['cloudwatcher', 'underutilizedinstances', 'list'],
   // 工单管理相关操作
   'process_manage_list': ['itsm', 'process-definitions', 'list'],
+  /**
+   * 主机组
+   */
+  'instancegroups_list': ['itsm', 'instancegroups', 'list'],
 }
 
 // 已声明权限的资源
