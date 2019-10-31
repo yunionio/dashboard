@@ -39,6 +39,10 @@ export const REGEXP = {
     regexp: /^(https?):\/\/(-\.)?([^\s\/?\.#-]+\.?)+(\/[^\s]*)?$/i,
     message: i18n.t('validator.url'),
   },
+  password: {
+    reg: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+    msg: '至少八个字符，至少一个字母和一个数字',
+  },
 }
 
 /**

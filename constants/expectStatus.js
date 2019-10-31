@@ -47,4 +47,22 @@ export default {
     danger: ['restart_failed', 'create_failed', 'change_failed', 'release_failed', 'error'],
     info: ['inactive', 'unknown', 'init', 'unavailable'],
   },
+  instanceGroup: {
+    success: ['init'],
+  },
+  redisAccount: {
+    success: ['available'],
+    danger: ['create_failed', 'delete_failed'],
+    info: ['unknown', 'unavailable'],
+  },
+  redisACL: {
+    success: ['available'],
+    danger: ['create_failed', 'delete_failed', 'update_failed'],
+    info: ['unknown', 'unavailable'],
+  },
+  redisBackup: {
+    success: ['success'],
+    danger: ['failed', 'deleted', 'expired'],
+    info: ['unknown', 'unavailable'],
+  },
 }
