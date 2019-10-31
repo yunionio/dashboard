@@ -82,18 +82,21 @@ export default {
     },
     engines () {
       const engines = Object.keys(this.filterParams)
-      if (engines && engines.length === 1) {
+      return engines
+    },
+  },
+  watch: {
+    engines (value) {
+      if (value && value.length === 1) {
         this.FC.setFieldsValue({
-          engine: engines[0],
+          engine: value[0],
         })
       }
-      return engines
     },
   },
   created () {
     this.getVersion()
     this.getArcha()
-    console.log(this.filterMemorys)
   },
   methods: {
     getVersion () {
