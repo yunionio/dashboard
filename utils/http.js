@@ -139,13 +139,11 @@ http.interceptors.response.use(
     if (error.response) {
       const status = error.response.status
       if (status === 401) {
-        store.dispatch('auth/logout')
-          .then(() => {
-            router.push('/auth')
-          })
-      } else {
-        showHttpErrorMessage(error)
+        store.dispatch('auth/logout').then(() => {
+          router.push('/auth')
+        })
       }
+      showHttpErrorMessage(error)
     }
     return Promise.reject(error)
   }
