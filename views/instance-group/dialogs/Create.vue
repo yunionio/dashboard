@@ -7,7 +7,7 @@
         <a-form-item label="名称" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" placeholder="输入名称" />
         </a-form-item>
-        <a-form-item label="策略" v-bind="formItemLayout" extra="组内主机严格根据粒度要求分布在不同宿主机，当没有更多物理机时，则创建失败">
+        <a-form-item label="策略" v-bind="formItemLayout" :extra="forceDispersionExtra">
           <a-radio-group v-decorator="decorators.force_dispersion">
             <a-radio-button :value="true">强制</a-radio-button>
             <a-radio-button :value="false">非强制</a-radio-button>
@@ -36,7 +36,16 @@ export default {
     return {
       loading: false,
       form: {
-        fc: this.$form.createForm(this),
+        fc: this.$form.createForm(this, {
+          onValuesChange: (props, values) => {
+            if (values.hasOwnProperty('force_dispersion')) {
+              this.form.fd.force_dispersion = values.force_dispersion
+            }
+          },
+        }),
+        fd: {
+          force_dispersion: true,
+        },
       },
       decorators: {
         name: [
@@ -76,6 +85,15 @@ export default {
         },
       },
     }
+  },
+  computed: {
+    forceDispersionExtra () {
+      let s = '组内主机严格根据粒度要求分布在不同宿主机，当没有更多物理机时，则创建失败'
+      if (!this.form.fd.force_dispersion) {
+        s = '组内主机尽可能根据粒度要求分布在不同宿主机，当没有更多物理机时，可以重复'
+      }
+      return s
+    },
   },
   methods: {
     validateForm () {
