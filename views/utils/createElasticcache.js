@@ -18,7 +18,7 @@ import { IMAGES_TYPE_MAP } from '@/constants/compute'
 import { HYPERVISORS_MAP } from '@/constants'
 import validateForm, { isRequired } from '@/utils/validate'
 import store from '@/store'
-console.log(store.getters.userInfo.projectDomainId, store.getters.userInfo.projectDomainId)
+
 export const decorators = {
   name: [
     'name',
