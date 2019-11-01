@@ -48,7 +48,7 @@ export const getHttpErrorMessage = (err, isErrorBody = false) => {
     }
   }
   return {
-    class: errorInfo['zh-CN'],
+    class: errorInfo ? errorInfo['zh-CN'] : errorBody.class,
     detail: ret,
     resource: !isErrorBody ? err.response.data : err,
   }

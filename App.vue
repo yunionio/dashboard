@@ -4,6 +4,7 @@
       <component :is="layout">
         <router-view />
       </component>
+      <dialog-manager />
     </div>
   </a-locale-provider>
 </template>
@@ -12,12 +13,14 @@
 import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN'
 import DefaultLayout from '@/layouts/Default'
 import FullScreenLayout from '@/layouts/FullScreen'
+import DialogManager from '@/sections/DialogManager'
 
 export default {
   name: 'App',
   components: {
     DefaultLayout,
     FullScreenLayout,
+    DialogManager,
   },
   data () {
     return {
