@@ -98,7 +98,7 @@ export default {
         this.loading = true
         try {
           await this.$http.post('/v1/registers', values)
-          storage.setItem(INIT_SETUP, true)
+          storage.set(INIT_SETUP, true)
           this.$router.push({ name: 'Login' })
         } finally {
           this.loading = false
