@@ -65,6 +65,30 @@ export const isRequired = (isObj = true) => {
 }
 
 /**
+ * @description 校验密码
+ */
+export const passwordValidator = (rule, value, _callback) => {
+  value = value.trim()
+  const ALL_DIGITS = /\d+/g
+  const ALL_LETTERS = /[a-z]/g
+  const ALL_UPPERS = /[A-Z]/g
+  /* eslint-disable no-useless-escape */
+  const ALL_PUNC = '~`!@#$%^&*()-_=+[]{}|;\':\",./<>?'.split('')
+  let spec = false
+  ALL_PUNC.forEach(v => {
+    if (value.includes(v)) {
+      spec = true
+    }
+  })
+  if (ALL_DIGITS.test(value) && ALL_LETTERS.test(value) && ALL_UPPERS.test(value) && spec && value.charAt(0) !== '/' && value.length >= 12 && value.length <= 30) {
+    _callback()
+  } else {
+    // callback(new Error('8~30个字符，密码中有一个数字、大写字母、小写字母、特殊符号 ~`!@#$%^&*()-_=+[]{}|:\':\\",./<>?中至少一个'))
+    _callback(new Error('12~30个字符，必须同时包含三项（大小写字母、数字、特殊符号 ~`!@#$%^&*()-_=+[]{}|:\':\\",./<>?中至少一个），不能以“/”开头'))
+  }
+}
+
+/**
  * @description 传入验证规则，得到验证结果，全局的 $validate 方法
  * @param {Array|String} rules: 验证的规则数组 例如： ['email', 'phone']
  * @param {String} checkMethod: 默认是 every, 既有一个规则不合格则失败，some 表示 有一个规则合格则成功

@@ -173,6 +173,7 @@
       "queuing": "准备同步"
     },
     "redis" : {
+      "RUNNING": "正常",
       "running": "正常",
       "restarting": "重启中",
       "restart_failed": "重启失败",
