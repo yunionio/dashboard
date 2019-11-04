@@ -79,11 +79,9 @@ export default {
               list: this.list,
             })
           },
-          meta: () => {
-            return {
-              buttonType: 'primary',
-            }
-          },
+          meta: () => ({
+            buttonType: 'primary',
+          }),
         },
         {
           label: '更多',
@@ -95,13 +93,9 @@ export default {
                 action: () => {
                   this.list.batchPerformAction('enable', null)
                 },
-                meta: () => {
-                  let tooltip
-                  return {
-                    validate: this.list.selectedItems.length,
-                    tooltip,
-                  }
-                },
+                meta: () => ({
+                  validate: this.list.selectedItems.length,
+                }),
               },
               {
                 label: '禁用',
@@ -109,13 +103,9 @@ export default {
                 action: () => {
                   this.list.batchPerformAction('disable', null)
                 },
-                meta: () => {
-                  let tooltip
-                  return {
-                    validate: this.list.selectedItems.length,
-                    tooltip,
-                  }
-                },
+                meta: () => ({
+                  validate: this.list.selectedItems.length,
+                }),
               },
               {
                 label: '删除',
@@ -169,13 +159,9 @@ export default {
                     },
                   })
                 },
-                meta: () => {
-                  let tooltip
-                  return {
-                    validate: !obj.enabled,
-                    tooltip,
-                  }
-                },
+                meta: () => ({
+                  validate: !obj.enabled,
+                }),
               },
               {
                 label: '禁用',
@@ -188,13 +174,9 @@ export default {
                     },
                   })
                 },
-                meta: () => {
-                  let tooltip
-                  return {
-                    validate: obj.enabled,
-                    tooltip,
-                  }
-                },
+                meta: () => ({
+                  validate: !obj.enabled,
+                }),
               },
               {
                 label: '删除',
