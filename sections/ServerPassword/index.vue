@@ -1,24 +1,28 @@
 <template>
   <div class="server-password">
     <a-form-item class="mb-0">
-      <a-radio-group v-decorator="decorator.loginType" @change="loginTypeChange">
-        <a-radio-button v-for="item of loginTypeMap" :value="item.key" :key="item.key">{{ item.label }}</a-radio-button>
+      <a-radio-group v-decorator="decorators.loginType" @change="loginTypeChange">
+        <a-radio-button v-for="item of loginTypeMap" :value="item.key" :key="item.key">
+          {{ item.label }}
+          <help-tooltip v-if="['image', 'keypair'].includes(item.key)" :name="`${item.key}Password`" class="ml-2" />
+        </a-radio-button>
       </a-radio-group>
-      <help-tooltip name="serverPassword" class="ml-2" />
     </a-form-item>
     <a-form-item v-if="(loginTypeMap && loginTypeMap.keypair) && vmLoginType === loginTypeMap.keypair.key">
       <base-select
         class="w-50"
-        v-decorator="decorator.keypair"
+        v-decorator="decorators.keypair"
         resource="keypairs"
         :select-props="{ allowClear: true, labelInValue: true, placeholder: '请选择关联密钥' }" />
     </a-form-item>
     <a-form-item v-if="(loginTypeMap && loginTypeMap.password) && vmLoginType === loginTypeMap.password.key">
       <a-input
         class="w-50"
-        v-decorator="decorator.password"
-        type="password"
-        placeholder="请输入密码" />
+        v-decorator="decorators.password"
+        :type="isShowPwd ? 'text' : 'password'"
+        placeholder="请输入密码">
+        <a slot="suffix" @click="handleEyeClick"><a-icon  :type="isShowPwd ? 'eye' : 'eye-invisible'" style="color: rgba(0,0,0,.45)" /></a>
+      </a-input>
     </a-form-item>
   </div>
 </template>
@@ -26,6 +30,20 @@
 <script>
 import * as R from 'ramda'
 import { LOGIN_TYPES_MAP } from '@Compute/constants'
+import { passwordValidator } from '@/utils/validate'
+
+const DEFAULT_DECORATOR = {
+  password: [
+    'password',
+    {
+      validateFirst: true,
+      rules: [
+        { required: true, message: '请输入密码' },
+        { validator: passwordValidator },
+      ],
+    },
+  ],
+}
 
 export default {
   name: 'ServerPassword',
@@ -42,6 +60,7 @@ export default {
   data () {
     return {
       vmLoginType: 'random',
+      isShowPwd: false,
     }
   },
   computed: {
@@ -57,10 +76,19 @@ export default {
       }
       return LOGIN_TYPES_MAP
     },
+    decorators () {
+      return {
+        ...DEFAULT_DECORATOR,
+        ...this.decorator,
+      }
+    },
   },
   methods: {
     loginTypeChange (e) {
       this.vmLoginType = e.target.value
+    },
+    handleEyeClick () {
+      this.isShowPwd = !this.isShowPwd
     },
   },
 }
