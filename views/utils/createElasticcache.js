@@ -102,15 +102,6 @@ export const decorators = {
         ],
       },
     ],
-    password: [
-      'loginPassword',
-      {
-        initialValue: '',
-        rules: [
-          { required: true, message: '请输入密码' },
-        ],
-      },
-    ],
   },
   vpcNetwork: {
     'vpc': [

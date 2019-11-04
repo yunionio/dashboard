@@ -76,6 +76,11 @@ export default {
         const version = item.engine_version
         const category = item.local_category
         const memory = item.memory_size_mb
+        const provider = item.provider
+        // 华为3.0先隐藏掉
+        if (provider === 'Huawei' && version === '3.0') {
+          return false
+        }
         if (engine && !skuFilters[engine]) {
           skuFilters[engine] = {}
         }
@@ -111,18 +116,16 @@ export default {
       return skuList ? skuList.sort((a, b) => a.memory_size_mb - b.memory_size_mb) : []
     },
     handleFilterChange () {
-      const keys = ['engine', 'engine_version', 'local_category', 'memory_size_mb']
-      const params = this.getFieldsValue(keys)
-      console.log(params)
-      clearTimeout(this.T)
-      this.T = setTimeout(() => {
+      this.$nextTick(() => {
+        const keys = ['engine', 'engine_version', 'local_category', 'memory_size_mb', 'performance_type']
+        const params = this.getFieldsValue(keys)
         keys.forEach(k => {
           if (params[k] === undefined) {
             delete params[k]
           }
         })
         this.filterSKU(params)
-      }, 0)
+      })
     },
     async fetchQuerySkus (_parmas) {
       const params = {

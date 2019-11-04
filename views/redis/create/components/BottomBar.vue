@@ -99,11 +99,13 @@ export default {
       const params = {
         ...this.values,
       }
-      params['cloudregion'] = params.region || params.sku.cloudregion_id
-      params['zone'] = params.sku.zone_id
-      params['engine_version'] = params.sku.engine_version
-      params['engine'] = params.sku.engine
-      params['instance_type'] = params.sku.id
+      if (params.sku) {
+        params['cloudregion'] = params.sku.cloudregion_id
+        params['zone'] = params.sku.zone_id
+        params['engine_version'] = params.sku.engine_version
+        params['engine'] = params.sku.engine
+        params['instance_type'] = params.sku.id
+      }
       delete params.sku
       return params
     },

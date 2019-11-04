@@ -7,6 +7,7 @@
 
 <script>
 // import BrandIcon from '@/sections/BrandIcon'
+import { sizestr } from '@/utils/utils'
 
 export default {
   name: 'redisDetail',
@@ -96,6 +97,11 @@ export default {
             {
               field: 'capacity_mb',
               title: '内存',
+              slots: {
+                default: ({ row }) => {
+                  return sizestr(row.capacity_mb, 'M', 1024)
+                },
+              },
             },
           ],
         },

@@ -15,7 +15,7 @@
       </a-form-item>
       <item-billing-opts />
       <a-form-item label="数量" v-bind="formItemLayout">
-        <a-input-number v-decorator="decorators.count" :min="1" :max="10" />
+        <a-input-number v-decorator="decorators.count" :min="1" :max="10" @blur="handleBlurCount" />
       </a-form-item>
       <a-form-item label="区域" v-bind="formItemLayout">
         <item-city-provider-region-selects :selectProviders="['Huawei', 'Aliyun']" :decorators="decorators.cityProviderRegion" />
@@ -101,6 +101,9 @@ export default {
       form: this.form,
     }
   },
+  created () {
+    this.form.fc.getFieldDecorator('manager', { preserve: true })
+  },
   methods: {
     _querySkus (changedFields) {
       const skuParamKeys = ['city', 'provider', 'region', 'zone']
@@ -120,6 +123,13 @@ export default {
     onFieldsChange (vm, changedFields) {
       this._querySkus(changedFields)
       this._queryNetworks(changedFields)
+    },
+    handleBlurCount (count, d) {
+      if (!this.form.fc.getFieldValue('count')) {
+        this.form.fc.setFieldsValue({
+          count: 1,
+        })
+      }
     },
   },
 }

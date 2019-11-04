@@ -84,6 +84,7 @@ export default {
           },
         })
         this.loading = false
+        this.$message.success('操作成功')
         this.cancelDialog()
       } catch (error) {
         this.loading = false

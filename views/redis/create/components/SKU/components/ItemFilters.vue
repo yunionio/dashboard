@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-form-item label="类型" v-bind="formItemLayout">
-      <a-radio-group :disabled="!!disableds.engine" v-decorator="decorators.engine || ['engine']" @change="getVersion">
+      <a-radio-group :disabled="!!disableds.engine" v-decorator="decorators.engine || ['engine', { initialValue: 'redis' }]" @change="getVersion">
         <a-radio-button :key="item" :value="item" v-for="item in engines">{{item}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
@@ -18,8 +18,13 @@
         {{archPoints(getFieldValue('local_category'))}}
       </div>
     </a-form-item>
-     <a-form-item label="内存" v-bind="formItemLayout" v-if="filterMemorys && Object.keys(filterMemorys).length > 0">
-      <a-radio-group v-decorator="decorators.memory_size_mb || ['memory_size_mb']" @change="eimtChange()">
+     <a-form-item label="性能类型" v-bind="formItemLayout">
+      <a-radio-group v-decorator="decorators.performance_type || ['performance_type', { initialValue: 'standard' }]" @change="eimtChange()">
+         <a-radio-button :key="item.value" :value="item.value" v-for="item in performanceTypes">{{item.key}}</a-radio-button>
+      </a-radio-group>
+    </a-form-item>
+    <a-form-item label="内存" v-bind="formItemLayout" v-if="filterMemorys && Object.keys(filterMemorys).length > 0">
+      <a-radio-group v-decorator="decorators.memory_size_mb || ['memory_size_mb', { initialValue: filterMemorys[Object.keys(filterMemorys)[0]] }]" @change="eimtChange()">
         <a-radio-button :key="k" :value="k" v-for="(k, v) in filterMemorys">{{v}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
@@ -61,6 +66,16 @@ export default {
       ENGINE_ARCH,
       versions: [],
       archs: [],
+      performanceTypes: [
+        {
+          key: '标准性能',
+          value: 'standard',
+        },
+        {
+          key: '增强性能',
+          value: 'enhanced',
+        },
+      ],
       formItemLayout: {
         wrapperCol: { span: CreateServerForm.wrapperCol },
         labelCol: { span: CreateServerForm.labelCol },
@@ -83,15 +98,6 @@ export default {
     engines () {
       const engines = Object.keys(this.filterParams)
       return engines
-    },
-  },
-  watch: {
-    engines (value) {
-      if (value && value.length === 1) {
-        this.FC.setFieldsValue({
-          engine: value[0],
-        })
-      }
     },
   },
   created () {
@@ -168,12 +174,17 @@ export default {
       })
     },
     archPoints (type) {
+      // single': '基础版',
+      // 'master': '高可用',
+      // 'cluster': '集群',
+      // 'rwsplit': '读写分离',
       const points = {
-        'single': '数据双副本 | 数据持久化 | 提供数据可靠性',
-        'ha': '数据单副本 | 不支持数据持久化 | 不承诺数据可靠性',
-        'proxy': '数据双副本 | 数据持久化| 提供数据可靠性｜支持分片',
+        'single': '数据单副本 | 不支持数据持久化 | 不承诺数据可靠性',
+        'ha': '数据双副本 | 数据持久化 | 提供数据可靠性',
+        'proxy': '大容量 | 高性能| 支持分片',
         'master': '数据双副本 | 数据持久化 | 提供数据可靠性',
-        'cluster': '数据双副本 | 数据持久化| 提供数据可靠性｜支持分片',
+        'cluster': '大容量 | 高性能| 支持分片',
+        'rwsplit': '高可用| 高性能｜高灵活的读写分离服务',
       }
       return points[type]
     },
