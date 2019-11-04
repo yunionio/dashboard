@@ -65,4 +65,9 @@ export default {
     danger: ['failed', 'deleted', 'expired'],
     info: ['unknown', 'unavailable'],
   },
+  sku: {
+    success: ['ready'],
+    danger: ['create_failed', 'delete_failed'],
+    info: ['unknown'],
+  },
 }

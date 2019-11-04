@@ -227,6 +227,15 @@
       "deleting": "删除中",
       "success": "备份成功",
       "failed": "备份失败"
+    },
+    "sku": {
+      "creating": "创建中",
+      "create_failed": "创建失败",
+      "deleting": "删除中",
+      "delete_failed": "删除失败",
+      "unknown": "未知",
+      "ready": "正常",
+      "init": "初始化"
     }
   },
   "skuCategoryOptions": {
