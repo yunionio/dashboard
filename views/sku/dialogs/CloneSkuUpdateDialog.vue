@@ -86,7 +86,6 @@ export default {
           memory_size_mb: values.memory_size_mb * 1024,
           brand: this.params.data[0].brand,
         }
-        console.log(values)
         this.loading = true
         await this.doCreate(values)
         this.loading = false

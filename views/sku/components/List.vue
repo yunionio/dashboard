@@ -72,6 +72,7 @@ export default {
       groupActions: [
         {
           label: '新建',
+          permission: 'skus_create',
           action: () => {
             this.createDialog('CreateSkuDialog', {
               title: '新建',
@@ -87,46 +88,43 @@ export default {
         {
           label: '更多',
           actions: () => {
-            const ownerDomain = this.$store.getters.isAdminMode || this.list.selectedItems.every(obj => obj.domain_id === this.$store.getters.userInfo.projectDomainId)
             return [
               {
                 label: '启用',
-                permission: 'cloudaccounts_perform_enable',
+                permission: 'skus_update',
                 action: () => {
                   this.list.batchPerformAction('enable', null)
                 },
                 meta: () => {
                   let tooltip
-                  if (!ownerDomain) tooltip = '无权限操作'
                   return {
-                    validate: this.list.selectedItems.length && ownerDomain,
+                    validate: this.list.selectedItems.length,
                     tooltip,
                   }
                 },
               },
               {
                 label: '禁用',
-                permission: 'cloudaccounts_perform_disable',
+                permission: 'skus_update',
                 action: () => {
                   this.list.batchPerformAction('disable', null)
                 },
                 meta: () => {
                   let tooltip
-                  if (!ownerDomain) tooltip = '无权限操作'
                   return {
-                    validate: this.list.selectedItems.length && ownerDomain,
+                    validate: this.list.selectedItems.length,
                     tooltip,
                   }
                 },
               },
               {
                 label: '删除',
-                permission: 'cloudaccounts_delete',
+                permission: 'skus_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    title: '删除云账号',
+                    title: '删除账号',
                     list: this.list,
                   })
                 },
@@ -148,12 +146,10 @@ export default {
             })
           },
           meta: obj => {
-            const ownerDomain = this.$store.getters.isAdminMode || obj.domain_id === this.$store.getters.userInfo.projectDomainId
             let tooltip
             if (!obj.enabled) tooltip = '请先设置启用'
-            if (!ownerDomain) tooltip = '无权限操作'
             return {
-              validate: obj.enabled && ownerDomain,
+              validate: obj.enabled,
               tooltip,
             }
           },
@@ -161,7 +157,6 @@ export default {
         {
           label: '更多',
           actions: obj => {
-            const ownerDomain = this.$store.getters.isAdminMode || obj.domain_id === this.$store.getters.userInfo.projectDomainId
             return [
               {
                 label: '启用',
@@ -176,9 +171,8 @@ export default {
                 },
                 meta: () => {
                   let tooltip
-                  if (!ownerDomain) tooltip = '无权限操作'
                   return {
-                    validate: !obj.enabled && ownerDomain,
+                    validate: !obj.enabled,
                     tooltip,
                   }
                 },
@@ -196,9 +190,8 @@ export default {
                 },
                 meta: () => {
                   let tooltip
-                  if (!ownerDomain) tooltip = '无权限操作'
                   return {
-                    validate: obj.enabled && ownerDomain,
+                    validate: obj.enabled,
                     tooltip,
                   }
                 },
