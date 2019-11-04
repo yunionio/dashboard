@@ -39,6 +39,9 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import storage from '@/utils/storage'
+
+const INIT_SETUP = 'INIT_SETUP'
 
 export default {
   name: 'Register',
@@ -95,6 +98,7 @@ export default {
         this.loading = true
         try {
           await this.$http.post('/v1/registers', values)
+          storage.setItem(INIT_SETUP, true)
           this.$router.push({ name: 'Login' })
         } finally {
           this.loading = false
