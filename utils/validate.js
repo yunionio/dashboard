@@ -40,8 +40,21 @@ export const REGEXP = {
     message: i18n.t('validator.url'),
   },
   password: {
-    reg: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-    msg: '至少八个字符，至少一个字母和一个数字',
+    regexp: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+    message: '至少八个字符，至少一个字母和一个数字',
+  },
+  publicKey: {
+    func: value => {
+      if (value.startsWith('ssh-rsa') || value.startsWith('ssh-dss')) {
+        return true
+      }
+      return false
+    },
+    message: '无效的公钥, 只支持 RSA/DSA 类型公钥',
+  },
+  secretKeyName: {
+    regexp: /^[a-zA-Z][a-zA-Z0-9._@-]*$/,
+    message: '名称必须以字母开头,且只能包含字母、数字、._@-字符',
   },
 }
 
