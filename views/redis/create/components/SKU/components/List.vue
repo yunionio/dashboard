@@ -5,6 +5,9 @@
         <page-list-empty :loading="skuLoading" />
       </template>
     </vxe-grid>
+    <a-form-item>
+       <a-input v-show="false" v-decorator="skuDecorator" :placeholder="$t('validator.serverName')" />
+    </a-form-item>
   </div>
 </template>
 
@@ -35,6 +38,12 @@ export default {
   data () {
     return {
       skuLoading: false,
+      skuDecorator: [
+        'sku',
+        {
+          rules: [{ required: true, message: '请选择套餐' }],
+        },
+      ],
     }
   },
   computed: {
@@ -54,6 +63,10 @@ export default {
           default: ({ row }) => {
             return <BrandIcon name={ row['provider'] } />
           },
+        },
+        {
+          field: 'node_type',
+          title: '节点类型',
         },
         {
           field: 'memory_size_mb',
@@ -88,7 +101,7 @@ export default {
     },
   },
   created () {
-    this.FC.getFieldDecorator('sku', { initialValue: [], preserve: true })
+    // this.FC.getFieldDecorator('sku', { preserve: true })
   },
   methods: {
     handleSkuChange ({ row }) {

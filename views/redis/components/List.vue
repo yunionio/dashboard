@@ -67,7 +67,7 @@ export default {
           addLock: true,
           slotCallback: row => {
             return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'RedisSidePage') }>dd{ row.name }</side-page-trigger>
+              <side-page-trigger onTrigger={() => this.sidePageTriggerHandle(row.id, 'RedisSidePage')}>{row.name}</side-page-trigger>
             )
           },
         }),
@@ -190,23 +190,18 @@ export default {
       ],
       singleActions: [
         {
-          label: '重启',
+          label: '同步状态',
           action: (obj) => {
             this.list.onManager('performAction', {
-              steadyStatus: 'running',
               id: obj.id,
               managerArgs: {
-                action: 'restart',
+                action: 'Sync',
               },
+            }).then(ret => {
+              if (ret.status === 200) {
+                this.$message.success('操作成功')
+              }
             })
-          },
-          meta: (obj) => {
-            const isRunning = obj.status === 'running'
-            const notRunninTip = !isRunning ? '仅运行中的实例支持此操作' : null
-            return {
-              validate: isRunning,
-              tooltip: notRunninTip,
-            }
           },
         },
         {
@@ -254,6 +249,31 @@ export default {
               }
             }
             return [
+              {
+                label: '修改属性',
+                action: () => {
+                },
+              },
+              {
+                label: '重启',
+                action: () => {
+                  this.list.onManager('performAction', {
+                    steadyStatus: 'running',
+                    id: obj.id,
+                    managerArgs: {
+                      action: 'restart',
+                    },
+                  })
+                },
+                meta: () => {
+                  const isRunning = obj.status === 'running'
+                  const notRunninTip = !isRunning ? '仅运行中的实例支持此操作' : null
+                  return {
+                    validate: isRunning,
+                    tooltip: notRunninTip,
+                  }
+                },
+              },
               {
                 label: '续费',
                 action: () => {

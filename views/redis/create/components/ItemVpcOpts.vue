@@ -108,9 +108,13 @@ export default {
         this.networkLoading = true
         const { data = {} } = await this.netWrokManager.list({ params })
         this.networkOptions = data.data || []
-        this.FC.setFieldsValue({
-          network: (this.networkOptions && this.networkOptions.length > 0) ? this.networkOptions[0].id : undefined,
-        })
+        if (this.networkOptions && this.networkOptions.length > 0) {
+          const { id, manager } = this.networkOptions[0]
+          this.FC.setFieldsValue({
+            network: id,
+            manager: manager,
+          })
+        }
         this.networkLoading = false
       } catch (err) {
         this.networkLoading = false
