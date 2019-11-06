@@ -41,6 +41,17 @@ export default {
               { label: '非强制', key: false },
             ],
           },
+          enabled: {
+            label: '是否启用',
+            dropdown: true,
+            items: [
+              { label: '启用', key: true },
+              { label: '禁用', key: false },
+            ],
+          },
+          tenant: {
+            label: '项目',
+          },
         },
       }),
       columns: [
@@ -64,6 +75,10 @@ export default {
           },
         },
         getStatusTableColumn({ statusModule: 'instanceGroup' }),
+        {
+          field: 'granularity',
+          title: '粒度',
+        },
         {
           field: 'guest_count',
           title: '绑定主机数量',
@@ -129,7 +144,7 @@ export default {
                   })
                 },
                 meta: () => ({
-                  validate: false,
+                  validate: !obj.enabled,
                 }),
               },
               {
@@ -154,6 +169,7 @@ export default {
                     columns: this.columns,
                     title: '删除主机组',
                     list: this.list,
+                    success: () => this.destroySidePages(),
                   })
                 },
                 meta: () => this.$getDeleteResult(obj),
