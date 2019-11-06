@@ -133,7 +133,7 @@ export default {
           'captcha',
           {
             validateFirst: true,
-            validateTrigger: 'blur',
+            validateTrigger: 'submit',
             rules: [
               { required: true, message: '请输入验证码' },
               { validator: captchaValidator },

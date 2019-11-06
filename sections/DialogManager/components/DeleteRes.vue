@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
@@ -33,9 +34,12 @@ export default {
           await this.params.ok()
         } else {
           const ids = this.params.data.map(item => item.id)
-          await this.params.list.onManager('batchDelete', {
+          const response = await this.params.list.onManager('batchDelete', {
             id: ids,
           })
+          if (this.params.success && R.is(Function, this.params.success)) {
+            this.params.success(response)
+          }
         }
         this.cancelDialog()
         this.$message.success('操作成功')
