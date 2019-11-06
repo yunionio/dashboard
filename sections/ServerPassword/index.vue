@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import * as R from 'ramda'
+// import * as R from 'ramda'
 import { LOGIN_TYPES_MAP } from '@Compute/constants'
 import { passwordValidator } from '@/utils/validate'
 
@@ -54,7 +54,7 @@ export default {
     decorator: {
       type: Object,
       required: true,
-      validator: val => R.is(Array, val.loginType) && R.is(Array, val.keypair) && R.is(Array, val.password),
+      // validator: val => R.is(Array, val.loginType) && R.is(Array, val.keypair) && R.is(Array, val.password),
     },
   },
   data () {
