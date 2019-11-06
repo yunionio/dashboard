@@ -5,7 +5,7 @@
       <a-form
         :form="form.fc">
         <a-form-item label="名称" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.name" placeholder="输入名称" />
+          <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
         </a-form-item>
         <a-form-item label="策略" v-bind="formItemLayout" :extra="forceDispersionExtra">
           <a-radio-group v-decorator="decorators.force_dispersion">
@@ -13,7 +13,7 @@
             <a-radio-button :value="false">非强制</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item label="粒度" v-bind="formItemLayout" extra="该组内每台宿主机可以允许重复虚拟机的数量">
+        <a-form-item label="粒度" v-bind="formItemLayout" extra="该组内每台宿主机可以允许重复虚拟机的数量（范围 1 ~ 10 台）">
           <a-input-number :min="1" :max="10" v-decorator="decorators.granularity" />
         </a-form-item>
       </a-form>
@@ -88,9 +88,9 @@ export default {
   },
   computed: {
     forceDispersionExtra () {
-      let s = '组内主机严格根据粒度要求分布在不同宿主机，当没有更多物理机时，则创建失败'
+      let s = '组内主机严格根据粒度要求分布在不同宿主机，当没有更多宿主机时，则创建失败'
       if (!this.form.fd.force_dispersion) {
-        s = '组内主机尽可能根据粒度要求分布在不同宿主机，当没有更多物理机时，可以重复'
+        s = '组内主机尽可能根据粒度要求分布在不同宿主机，当没有更多宿主机时，可以重复'
       }
       return s
     },
