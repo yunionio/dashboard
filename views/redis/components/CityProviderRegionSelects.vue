@@ -166,7 +166,6 @@ export default {
     },
     async fetchQueryRegions (provider) {
       const params = {
-        service: 'dbinstances',
         usable: true,
         is_public: true,
         city: this.getFieldValue('city') || undefined,

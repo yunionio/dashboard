@@ -187,6 +187,80 @@ export default {
             }
           },
         },
+        {
+          label: '删除',
+          action: () => {
+            this.createDialog('RedisDeletedialog', {
+              title: '删除',
+              data: this.list.selectedItems,
+              columns: this.columns,
+              list: this.list,
+            })
+          },
+          meta: () => {
+            const selectedLength = this.list.selectedItems.length
+            const notSelectedTooltip = selectedLength <= 0 ? '请选择需要操作的实例' : ''
+            return {
+              validate: selectedLength,
+              tooltip: notSelectedTooltip,
+            }
+          },
+        },
+        {
+          label: '更多',
+          actions: (obj) => {
+            const selectedLength = this.list.selectedItems.length
+            const notSelectedTooltip = selectedLength <= 0 ? '请选择需要操作的实例' : ''
+            return [
+              {
+                label: '同步状态',
+                action: (obj) => {
+                  this.list.batchPerformAction('Sync', null)
+                },
+                meta: () => {
+                  return {
+                    validate: selectedLength,
+                    tooltip: notSelectedTooltip,
+                  }
+                },
+              },
+              {
+                label: '修改属性',
+                action: () => {
+                  this.createDialog('RedisEditAttrDialog', {
+                    title: '修改属性',
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    list: this.list,
+                  })
+                },
+                meta: () => {
+                  return {
+                    validate: selectedLength,
+                    tooltip: notSelectedTooltip,
+                  }
+                },
+              },
+              {
+                label: '清空数据',
+                action: () => {
+                  this.createDialog('RedisClearDataDialog', {
+                    title: '清空数据',
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    list: this.list,
+                  })
+                },
+                meta: () => {
+                  return {
+                    validate: selectedLength,
+                    tooltip: notSelectedTooltip,
+                  }
+                },
+              },
+            ]
+          },
+        },
       ],
       singleActions: [
         {
@@ -252,6 +326,12 @@ export default {
               {
                 label: '修改属性',
                 action: () => {
+                  this.createDialog('RedisEditAttrDialog', {
+                    title: '修改属性',
+                    data: [obj],
+                    columns: this.columns,
+                    list: this.list,
+                  })
                 },
               },
               {

@@ -76,6 +76,7 @@ export default {
         const version = item.engine_version
         const category = item.local_category
         const memory = item.memory_size_mb
+        const nodeType = item.node_type
         const provider = item.provider
         // 华为3.0先隐藏掉
         if (provider === 'Huawei' && version === '3.0') {
@@ -90,6 +91,9 @@ export default {
         if (category && !skuFilters[engine][version][category]) {
           skuFilters[engine][version][category] = {}
         }
+        if (nodeType && !skuFilters[engine][version][category][nodeType]) {
+          skuFilters[engine][version][category][nodeType] = {}
+        }
         if (memory) {
           const key = sizestr(item.memory_size_mb, 'M', 1024)
           skuMemorys[key] = memory
@@ -97,9 +101,9 @@ export default {
       })
       this.skuFilters = {}
       this.skuMemorys = skuMemorys
-      setTimeout(() => {
+      this.$nextTick(() => {
         this.skuFilters = skuFilters
-      }, 10)
+      })
     },
     filterSKU (params = {}) {
       this.skuList = this.SKU_LIST.filter(sku => {
@@ -117,7 +121,7 @@ export default {
     },
     handleFilterChange () {
       this.$nextTick(() => {
-        const keys = ['engine', 'engine_version', 'local_category', 'memory_size_mb', 'performance_type']
+        const keys = ['engine', 'engine_version', 'local_category', 'memory_size_mb', 'performance_type', 'node_type']
         const params = this.getFieldsValue(keys)
         keys.forEach(k => {
           if (params[k] === undefined) {
@@ -140,12 +144,6 @@ export default {
         this.loading = true
         const { data } = await new Manager('elasticcacheskus', 'v2').list({ params })
         const retList = (data && data.data && data.data.length > 0) ? data.data : []
-        this.FC.setFieldsValue({
-          engine: undefined,
-          engine_version: undefined,
-          local_category: undefined,
-          zone_id: undefined,
-        })
         let _skuList = this.skuSort(retList)
         if (this.filterSkuCallback) {
           _skuList = _skuList.filter(this.filterSkuCallback)

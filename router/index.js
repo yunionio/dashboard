@@ -11,13 +11,13 @@ export default {
   menus: [
     {
       meta: {
-        label: 'Redis',
+        label: 'redis',
       },
       submenus: [
         {
           path: '/redis',
           meta: {
-            label: 'Redis',
+            label: '实例列表',
           },
           component: Layout,
           children: [

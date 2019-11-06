@@ -4,6 +4,16 @@
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" :action="params.title" />
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <a-form
+        class="mt-3"
+        :form="form.fc">
+        <a-form-item label="删除保护" v-bind="formItemLayout">
+          <a-radio-group  v-decorator="decorators.disable_delete">
+            <a-radio :value="true">启用</a-radio>
+            <a-radio :value="false">禁用</a-radio>
+          </a-radio-group>
+        </a-form-item>
+      </a-form>
     </div>
     <div slot="footer">
       <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t("dialog.ok") }}</a-button>
@@ -13,16 +23,41 @@
 </template>
 
 <script>
+import { CreateServerForm } from '@Compute/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'RedisDeletedialog',
+  name: 'RedisEditAttrDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
       loading: false,
+      form: {
+        fc: this.$form.createForm(this, { onFieldsChange: this.onFieldsChange }),
+      },
+      formItemLayout: {
+        wrapperCol: { span: CreateServerForm.wrapperCol },
+        labelCol: { span: CreateServerForm.labelCol },
+      },
     }
+  },
+  computed: {
+    decorators () {
+      const { data } = this.params
+      let initialValueDisableDelete = true
+      if (data && data.length === 0) {
+        initialValueDisableDelete = data[0]['disable_delete']
+      }
+      return {
+        disable_delete: [
+          'disable_delete',
+          {
+            initialValue: initialValueDisableDelete,
+          },
+        ],
+      }
+    },
   },
   methods: {
     async handleConfirm () {
