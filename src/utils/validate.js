@@ -39,6 +39,23 @@ export const REGEXP = {
     regexp: /^(https?):\/\/(-\.)?([^\s\/?\.#-]+\.?)+(\/[^\s]*)?$/i,
     message: i18n.t('validator.url'),
   },
+  password: {
+    regexp: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+    message: '至少八个字符，至少一个字母和一个数字',
+  },
+  publicKey: {
+    func: value => {
+      if (value.startsWith('ssh-rsa') || value.startsWith('ssh-dss')) {
+        return true
+      }
+      return false
+    },
+    message: '无效的公钥, 只支持 RSA/DSA 类型公钥',
+  },
+  secretKeyName: {
+    regexp: /^[a-zA-Z][a-zA-Z0-9._@-]*$/,
+    message: '名称必须以字母开头,且只能包含字母、数字、._@-字符',
+  },
 }
 
 /**
@@ -57,6 +74,30 @@ export const isRequired = (isObj = true) => {
     } else {
       callback(Error)
     }
+  }
+}
+
+/**
+ * @description 校验密码
+ */
+export const passwordValidator = (rule, value, _callback) => {
+  value = value.trim()
+  const ALL_DIGITS = /\d+/g
+  const ALL_LETTERS = /[a-z]/g
+  const ALL_UPPERS = /[A-Z]/g
+  /* eslint-disable no-useless-escape */
+  const ALL_PUNC = '~`!@#$%^&*()-_=+[]{}|;\':\",./<>?'.split('')
+  let spec = false
+  ALL_PUNC.forEach(v => {
+    if (value.includes(v)) {
+      spec = true
+    }
+  })
+  if (ALL_DIGITS.test(value) && ALL_LETTERS.test(value) && ALL_UPPERS.test(value) && spec && value.charAt(0) !== '/' && value.length >= 12 && value.length <= 30) {
+    _callback()
+  } else {
+    // callback(new Error('8~30个字符，密码中有一个数字、大写字母、小写字母、特殊符号 ~`!@#$%^&*()-_=+[]{}|:\':\\",./<>?中至少一个'))
+    _callback(new Error('12~30个字符，必须同时包含三项（大小写字母、数字、特殊符号 ~`!@#$%^&*()-_=+[]{}|:\':\\",./<>?中至少一个），不能以“/”开头'))
   }
 }
 

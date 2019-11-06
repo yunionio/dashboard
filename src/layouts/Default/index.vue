@@ -7,7 +7,6 @@
         <slot />
       </div>
     </div>
-    <dialog-manager />
     <side-page-manager />
   </div>
 </template>
@@ -15,7 +14,6 @@
 <script>
 import Sidebar from '../Sidebar'
 import Navbar from '../Navbar'
-import DialogManager from '@/sections/DialogManager'
 import SidePageManager from '@/sections/SidePageManager'
 
 export default {
@@ -23,7 +21,6 @@ export default {
   components: {
     Sidebar,
     Navbar,
-    DialogManager,
     SidePageManager,
   },
   data () {
