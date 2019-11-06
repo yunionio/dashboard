@@ -3632,5 +3632,16 @@ export default {
         }
       }
     }
+  },
+  "InvalidCredentialError": {
+    "zh-CN": "认证失败",
+    "details": {
+      "username/password incorrect": {
+        "zh-CN": {
+          "fields": {},
+          "message": "用户名或密码错误"
+        }
+      }
+    }
   }
 }

@@ -39,6 +39,9 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import storage from '@/utils/storage'
+
+const INIT_SETUP = 'INIT_SETUP'
 
 export default {
   name: 'Register',
@@ -73,7 +76,13 @@ export default {
         ],
         mobile: [
           'mobile',
-          { rules: [{ required: true, message: '请输入手机' }] },
+          {
+            validateFirst: true,
+            rules: [
+              { required: true, message: '请输入手机' },
+              { validator: this.$validate('phone') },
+            ],
+          },
         ],
       },
     }
@@ -88,7 +97,8 @@ export default {
         if (err) return
         this.loading = true
         try {
-          await this.$http.post('registers', values)
+          await this.$http.post('/v1/registers', values)
+          storage.set(INIT_SETUP, true)
           this.$router.push({ name: 'Login' })
         } finally {
           this.loading = false

@@ -19,7 +19,7 @@
           </a-select>
         </a-form-item>
       </a-col>
-      <a-col :span="12">
+      <a-col :span="(isAdminMode && isDomainMode) ? 12 : 24">
         <a-form-item>
           <a-select
             class="w-100"
@@ -125,7 +125,7 @@ export default {
       try {
         const params = {
           scope: this.scope,
-          domain_id: this.l3PermissionEnable ? this.domainData.key : 'default',
+          domain_id: this.l3PermissionEnable ? this.domainData.id : 'default',
         }
         const response = await this.pm.list({ params })
         const data = response.data.data || []

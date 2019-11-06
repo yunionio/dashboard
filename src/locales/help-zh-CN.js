@@ -14,6 +14,14 @@ export default {
       <h4>保留镜像设置</h4>
       <p>使用镜像原有密码，请确保您知晓选择镜像的原有密码。</p>
     `,
+    keypairPassword: `
+      <h4>关联密钥</h4>
+      <p>通过设置SSH密钥的方式登录服务器</p>
+    `,
+    imagePassword: `
+      <h4>保留镜像设置</h4>
+      <p>使用镜像原有密码，请确保您知晓选择镜像的原有密码。</p>
+    `,
     networkIpSubnets: `
       <p>1.VLAN ID用于网络物理隔离，默认1，相同VLAN ID的IP子网互通，不同VLAN ID的IP子网不通。</p>
       <p>2.创建多个IP子网时，系统自动分配名称</p>
