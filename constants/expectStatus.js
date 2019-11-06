@@ -43,7 +43,7 @@ export default {
     success: ['idle'],
   },
   redis: {
-    success: ['running'],
+    success: ['running', 'RUNNING'],
     danger: ['restart_failed', 'create_failed', 'change_failed', 'release_failed', 'error'],
     info: ['inactive', 'unknown', 'init', 'unavailable'],
   },
@@ -64,5 +64,10 @@ export default {
     success: ['success'],
     danger: ['failed', 'deleted', 'expired'],
     info: ['unknown', 'unavailable'],
+  },
+  sku: {
+    success: ['ready'],
+    danger: ['create_failed', 'delete_failed'],
+    info: ['unknown'],
   },
 }

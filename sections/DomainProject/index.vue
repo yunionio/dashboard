@@ -19,7 +19,7 @@
           </a-select>
         </a-form-item>
       </a-col>
-      <a-col :span="12">
+      <a-col :span="(isAdminMode && isDomainMode) ? 12 : 24">
         <a-form-item>
           <a-select
             class="w-100"
