@@ -22,7 +22,7 @@
     </template>
     <template v-slot:right>
       <div class="btns-wrapper d-flex align-items-center">
-        <a-button @click="doCreate" :loading="loading" type="primary" class="ml-3">创建</a-button>
+        <a-button @click="doCreate" :loading="loading" type="primary" class="ml-3">新建</a-button>
       </div>
       <!-- <transition>
         <div v-if="errors.length" class="errors-wrap" v-clickoutside="closeError">
@@ -110,7 +110,6 @@ export default {
       return params
     },
     async doCreate () {
-      console.log(this.formatParams())
       if (!this.validateForm()) return false
       const manager = new Manager('elasticcaches', 'v2')
       const { data, status } = await manager.create({ data: this.formatParams() })

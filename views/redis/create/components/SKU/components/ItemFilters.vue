@@ -11,12 +11,17 @@
       </a-radio-group>
     </a-form-item>
     <a-form-item label="实例类型" v-bind="formItemLayout">
-      <a-radio-group :disabled="!!disableds.local_category" v-decorator="decorators.local_category || ['local_category']" @change="eimtChange()">
+      <a-radio-group :disabled="!!disableds.local_category" v-decorator="decorators.local_category || ['local_category']" @change="getNodeTypes">
         <a-radio-button :key="item" :value="item" v-for="item in archs">{{ENGINE_ARCH[item] || item}}</a-radio-button>
       </a-radio-group>
-      <div style="color:#888;font-size:12px">
+      <div style="color:#888;font-size:12px;line-height:30px">
         {{archPoints(getFieldValue('local_category'))}}
       </div>
+    </a-form-item>
+     <a-form-item label="节点类型" v-bind="formItemLayout">
+      <a-radio-group v-decorator="decorators.nodeType || ['node_type']" @change="eimtChange">
+         <a-radio-button :key="item" :value="item" v-for="item in nodeTypes">{{NODE_TYPE[item]}}</a-radio-button>
+      </a-radio-group>
     </a-form-item>
      <a-form-item label="性能类型" v-bind="formItemLayout">
       <a-radio-group v-decorator="decorators.performance_type || ['performance_type', { initialValue: 'standard' }]" @change="eimtChange()">
@@ -32,7 +37,7 @@
 </template>
 <script>
 import { CreateServerForm } from '@Compute/constants'
-import { ENGINE_ARCH } from '@DB/views/redis/constants'
+import { ENGINE_ARCH, NODE_TYPE } from '@DB/views/redis/constants'
 
 export default {
   name: 'SkuFilters',
@@ -63,9 +68,11 @@ export default {
   },
   data () {
     return {
+      NODE_TYPE,
       ENGINE_ARCH,
       versions: [],
       archs: [],
+      nodeTypes: [],
       performanceTypes: [
         {
           key: '标准性能',
@@ -133,7 +140,6 @@ export default {
       const engine = this.getFieldValue('engine')
       const version = this.getFieldValue('engine_version')
       const category = this.getFieldValue('local_category')
-      // console.log(version, category)
       let archs = []
       if (engine) {
         if (version) {
@@ -158,20 +164,30 @@ export default {
         })
         archs = Object.keys(_archs)
       }
+      this.archs = archs
       if (archs.indexOf(category) === -1) {
         this.FC.setFieldsValue({
-          local_category: undefined,
+          local_category: archs && archs.length > 0 ? archs[0] : undefined,
         })
       }
-      this.archs = archs
-      this.$nextTick(() => {
-        if (!this.getFieldValue('local_category')) {
-          this.FC.setFieldsValue({
-            local_category: archs && archs.length > 0 ? archs[0] : undefined,
-          })
-        }
-        this.eimtChange()
-      })
+      this.getNodeTypes()
+    },
+    getNodeTypes () {
+      const engine = this.getFieldValue('engine')
+      const version = this.getFieldValue('engine_version')
+      const category = this.getFieldValue('local_category')
+      const nodeType = this.getFieldValue('node_type')
+      let nodeTypes = []
+      if (this.filterParams[engine] && this.filterParams[engine][version] && this.filterParams[engine][version][category]) {
+        nodeTypes = Object.keys(this.filterParams[engine][version][category])
+      }
+      this.nodeTypes = nodeTypes
+      if (nodeTypes.indexOf(nodeType) === -1) {
+        this.FC.setFieldsValue({
+          node_type: nodeTypes && nodeTypes.length > 0 ? nodeTypes[0] : undefined,
+        })
+      }
+      this.eimtChange()
     },
     archPoints (type) {
       // single': '基础版',

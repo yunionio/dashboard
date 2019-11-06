@@ -2,14 +2,14 @@
   <a-row :gutter="8">
     <a-col :span="12">
       <a-form-item>
-        <a-select v-decorator="decorators.vpc" :loading="vpcLoading" placeholder="请选择VPC" @change="(vpc)=>fetchQueryNetworks(vpc, true)">
+        <a-select v-decorator="decorators.vpc" :loading="vpcLoading" placeholder="请选择VPC" showSearch :filterOption="filterOption"  @change="(vpc)=>fetchQueryNetworks(vpc, true)">
           <a-select-option  :key="item.id" :value="item.id" v-for="item in vpcOptions">{{item.name}}</a-select-option>
         </a-select>
       </a-form-item>
     </a-col>
     <a-col :span="12">
       <a-form-item>
-        <a-select :loaidng="networkLoading" :loading="networkLoading" v-decorator="decorators.network" placeholder="请选择子网netwrok">
+        <a-select v-decorator="decorators.network" :loading="networkLoading" placeholder="请选择子网netwrok" showSearch :filterOption="filterOption" @change="handleNetworkChange">
           <a-select-option :key="item.id" :value="item.id" v-for="item in networkOptions">{{item.name}}</a-select-option>
         </a-select>
        </a-form-item>
@@ -57,17 +57,36 @@ export default {
     this.netWrokManager = new Manager('networks', 'v2')
   },
   methods: {
+    filterOption (input, option) {
+      return (
+        option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      )
+    },
+    handleNetworkChange (networkId) {
+      if (this.networkOptions && this.networkOptions.length > 0) {
+        for (let i = 0; i < this.networkOptions.length; i++) {
+          const { _id, manager } = this.networkOptions[i]
+          if (networkId === _id) {
+            this.FC.setFieldsValue({
+              manager: manager,
+            })
+            break
+          }
+        }
+      }
+    },
     async fetchQueryVpcs () {
       const sku = this.getFieldValue('sku')
       const params = {
         limit: 0,
         usable: true,
+        cloudregion_id: this.getFieldValue('region'),
       }
       if (sku) {
         if (sku.cloudregion_id === this.cloudregion) {
           return false
         }
-        params['cloudregion_id'] = sku.cloudregion_id
+        params['cloudregion'] = sku.cloudregion_id
         params['provider'] = sku.provider
         params['zone'] = sku.zone_id
       }
@@ -78,6 +97,7 @@ export default {
         if (this.vpcOptions && this.vpcOptions.length > 0) {
           this.FC.setFieldsValue({
             vpc: this.vpcOptions[0].id,
+            network: undefined,
           })
         }
         this.fetchQueryNetworks()
@@ -92,17 +112,6 @@ export default {
         limit: 0,
         usable: true,
         vpc: vpc || this.getFieldValue('vpc'),
-      }
-      const sku = this.getFieldValue('sku')
-      if (sku) {
-        if (!update && sku.cloudregion_id === this.cloudregion) {
-          return false
-        }
-        this.cloudregion = sku.cloudregion_id
-        params['cloudregion_id'] = sku.cloudregion_id
-        params['cloudregion'] = sku.cloudregion_id
-        params['provider'] = sku.provider
-        params['zone'] = sku.zone_id
       }
       try {
         this.networkLoading = true

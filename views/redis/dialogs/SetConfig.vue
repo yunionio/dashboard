@@ -48,7 +48,6 @@ export default {
     redisItem () {
       const { data } = this.params
       const redisItem = data && data.length > 0 ? data[0] : {}
-      console.log(redisItem)
       return redisItem
     },
     decorators () {
@@ -56,7 +55,7 @@ export default {
         engine: [
           'engine',
           {
-            initialValue: this.redisItem.engine,
+            initialValue: this.redisItem.engine.toLowerCase(),
           },
         ],
         engine_version: [
@@ -101,7 +100,6 @@ export default {
     },
     filterSkuCallback (row) {
       const mdSize = this.redisItem.memory_size_mb || this.redisItem.capacity_mb
-      console.log(row.engine_version)
       if (mdSize < row.memory_size_mb) {
         return true
       }

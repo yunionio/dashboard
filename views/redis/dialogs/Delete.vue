@@ -29,9 +29,14 @@ export default {
       this.loading = true
       try {
         this.loading = false
-        await this.params.list.onManager('delete', {
-          id: this.params.data[0].id,
-        })
+        if (this.params.data && this.params.data.length > 1) {
+          const ids = this.params.data.map(({ id }) => id)
+          await this.params.list.batchPerformAction('delete', { ids })
+        } else {
+          await this.params.list.onManager('delete', {
+            id: this.params.data[0].id,
+          })
+        }
         this.cancelDialog()
         this.$message.success('操作成功')
       } catch (error) {

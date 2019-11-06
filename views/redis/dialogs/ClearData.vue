@@ -29,12 +29,16 @@ export default {
       this.loading = true
       try {
         this.loading = false
-        await this.params.list.onManager('performAction', {
-          id: this.params.data[0].id,
-          managerArgs: {
-            action: 'flush-instance',
-          },
-        })
+        if (this.params.data && this.params.data.length > 0) {
+          await this.params.list.batchPerformAction('flush-instance', null, 'ready')
+        } else {
+          await this.params.list.onManager('performAction', {
+            id: this.params.data[0].id,
+            managerArgs: {
+              action: 'flush-instance',
+            },
+          })
+        }
         this.cancelDialog()
         this.$message.success('操作成功')
       } catch (error) {

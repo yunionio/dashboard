@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="Redis" />
+    <page-header title="实例列表" />
     <page-body>
       <redis-list />
     </page-body>

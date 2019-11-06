@@ -2,18 +2,19 @@
   <div>
     <vxe-grid :loading="loading" max-height="500" :columns="tableColumn" :data="skuList" @radio-change="handleSkuChange" ref="tableRef">
       <template v-slot:empty>
-        <page-list-empty :loading="skuLoading" />
+        <page-list-empty :loading="loading" />
       </template>
     </vxe-grid>
     <a-form-item>
-       <a-input v-show="false" v-decorator="skuDecorator" :placeholder="$t('validator.serverName')" />
+      <template v-show="false">
+        <a-radio-group v-decorator="skuDecorator" :placeholder="$t('validator.serverName')" />
+      </template>
     </a-form-item>
   </div>
 </template>
 
 <script>
-import BrandIcon from '@/sections/BrandIcon'
-// import * as R from 'ramda'
+import { NODE_TYPE } from '@DB/views/redis/constants'
 import PageListEmpty from '@/components/PageList/Loader'
 import { sizestr } from '@/utils/utils'
 
@@ -27,17 +28,9 @@ export default {
   components: {
     PageListEmpty,
   },
-  props: {
-    skuList: {
-      type: Array,
-    },
-    loading: {
-      type: Boolean,
-    },
-  },
+  props: ['skuList', 'loading'],
   data () {
     return {
-      skuLoading: false,
       skuDecorator: [
         'sku',
         {
@@ -60,13 +53,15 @@ export default {
         {
           field: 'provider',
           title: '平台',
-          default: ({ row }) => {
-            return <BrandIcon name={ row['provider'] } />
-          },
         },
         {
           field: 'node_type',
           title: '节点类型',
+          slots: {
+            default: ({ row }) => {
+              return NODE_TYPE[row.node_type] || row.node_type
+            },
+          },
         },
         {
           field: 'memory_size_mb',
@@ -99,9 +94,6 @@ export default {
       this.$refs['tableRef'].setRadioRow(this.skuList[0])
       this.handleSkuChange({ row: this.skuList[0] })
     },
-  },
-  created () {
-    // this.FC.getFieldDecorator('sku', { preserve: true })
   },
   methods: {
     handleSkuChange ({ row }) {

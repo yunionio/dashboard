@@ -62,3 +62,12 @@ export const ENGINE_ARCH = {
   'cluster': '集群',
   'rwsplit': '读写分离',
 }
+
+// 节点类型翻译
+export const NODE_TYPE = {
+  'readthree': '只读节点（1个）',
+  'readone': '只读节点（2个）',
+  'readfive': '只读节点（5个）',
+  'single': '单副本',
+  'double': '双副本',
+}
