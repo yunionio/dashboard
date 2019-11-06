@@ -48,6 +48,18 @@ export default {
             return ret
           },
         },
+        {
+          field: 'project_domain',
+          title: '部门',
+        },
+        {
+          field: 'tenant',
+          title: '所属项目',
+        },
+        {
+          field: 'granularity',
+          title: '粒度',
+        },
       ],
     }
   },
