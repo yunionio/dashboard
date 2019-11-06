@@ -276,7 +276,7 @@ export default {
                     steadyStatus: this.list.steadyStatus,
                     managerArgs: {
                       action: 'sync',
-                      params: {
+                      data: {
                         full_sync: true,
                       },
                     },
