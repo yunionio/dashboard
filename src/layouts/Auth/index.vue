@@ -55,6 +55,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../../styles/variables";
+
 .wrap {
   height: 100%;
   width: 100%;
@@ -76,6 +78,6 @@ export default {
   left: 0;
   width: 100%;
   text-align: center;
-  color: #fff;
+  color: $text-color-help;
 }
 </style>

@@ -71,6 +71,7 @@
         </div>
       </div>
     </div>
+    <p class="browser-update" v-if="!isChrome">为了获取更好的产品体验，请使用 Chrome 最新版本的浏览器</p>
   </div>
 </template>
 
@@ -79,6 +80,7 @@ import { mapGetters } from 'vuex'
 import Cookies from 'js-cookie'
 import { STORE_SECRET_PERFIX_KEY } from './constants'
 import storage from '@/utils/storage'
+import { getBrowser } from '@/utils/utils'
 
 export default {
   name: 'Login',
@@ -167,6 +169,9 @@ export default {
       const l = a.filter(item => item).length
       if (l > 5) h = 650
       return h
+    },
+    isChrome () {
+      return getBrowser() === 'Chrome'
     },
   },
   async created () {
@@ -336,6 +341,17 @@ export default {
       height: 40px;
     }
   }
+}
+.browser-update {
+  position: absolute;
+  left: 50%;
+  bottom: 40px;
+  transform: translateX(-50%);
+  font-size: 12px;
+  white-space: pre;
+  letter-spacing: 0;
+  line-height: 16px;
+  color: $text-color-help;
 }
 .login {
   margin: 20px 60px 20px;
