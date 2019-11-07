@@ -122,7 +122,7 @@ export default {
     skuRepeat (skuList) {
       const skuObj = {}
       return skuList.filter(item => {
-        const key = `${item.name}-${item.provider}`
+        const key = `${item.name}-${item.provider}-${item.memory_size_mb}`
         if (!skuObj[key]) {
           skuObj[key] = true
           return true
