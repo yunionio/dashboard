@@ -31,7 +31,7 @@ import { CreateServerForm } from '@Compute/constants'
 import { ACCOUNT_PRIVILEGES } from '../constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import validateForm from '@/utils/validate'
+import validateForm, { passwordValidator } from '@/utils/validate'
 
 export default {
   name: 'RedisAccountDialog',
@@ -74,9 +74,10 @@ export default {
         password: [
           'password',
           {
-            initialValue: undefined,
+            validateFirst: true,
             rules: [
               { required: true, message: '请输入密码' },
+              { validator: passwordValidator },
             ],
           },
         ],

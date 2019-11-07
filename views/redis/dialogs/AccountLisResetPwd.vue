@@ -28,7 +28,7 @@ import { CreateServerForm } from '@Compute/constants'
 import { ACCOUNT_PRIVILEGES } from '../constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import validateForm from '@/utils/validate'
+import { passwordValidator } from '@/utils/validate'
 // import validateForm from '@/utils/validate'
 
 export default {
@@ -53,11 +53,10 @@ export default {
         password: [
           'password',
           {
-            initialValue: undefined,
             validateFirst: true,
             rules: [
               { required: true, message: '请输入密码' },
-              { validator: validateForm('serverName') },
+              { validator: passwordValidator },
             ],
           },
         ],

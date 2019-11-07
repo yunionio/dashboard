@@ -119,6 +119,16 @@ export default {
     skuSort (skuList) {
       return skuList ? skuList.sort((a, b) => a.memory_size_mb - b.memory_size_mb) : []
     },
+    skuRepeat (skuList) {
+      const skuObj = {}
+      return skuList.filter(item => {
+        const key = `${item.name}-${item.provider}-${item.memory_size_mb}`
+        if (!skuObj[key]) {
+          skuObj[key] = true
+          return true
+        }
+      })
+    },
     handleFilterChange () {
       this.$nextTick(() => {
         const keys = ['engine', 'engine_version', 'local_category', 'memory_size_mb', 'performance_type', 'node_type']
@@ -145,6 +155,7 @@ export default {
         const { data } = await new Manager('elasticcacheskus', 'v2').list({ params })
         const retList = (data && data.data && data.data.length > 0) ? data.data : []
         let _skuList = this.skuSort(retList)
+        _skuList = this.skuRepeat(_skuList)
         if (this.filterSkuCallback) {
           _skuList = _skuList.filter(this.filterSkuCallback)
         }

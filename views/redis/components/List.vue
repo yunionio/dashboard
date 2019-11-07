@@ -110,6 +110,7 @@ export default {
         },
         {
           title: '链接地址',
+          width: 200,
           slots: {
             default: ({ row }) => {
               const pri = row.private_dns || row.private_ip_addr
@@ -118,8 +119,8 @@ export default {
                 return '-'
               }
               return [
-                <div>{pri}</div>,
-                <div>{pub}</div>,
+                <div class='td-ellipsis'>{pri && <a-tooltip placement='topLeft' title={`内网：${pri}`}>内网：{pri}</a-tooltip> }</div>,
+                <div class='td-ellipsis'>{pub && <a-tooltip placement='topLeft' title={`外网：${pub}`}>内网：{pub}</a-tooltip> }</div>,
               ]
             },
           },
@@ -132,8 +133,8 @@ export default {
                 return '-'
               }
               return [
-                <div>{row.private_connect_port > 0 && row.private_connect_port}</div>,
-                <div>{row.public_connect_port > 0 && row.public_connect_port}</div>,
+                <div>{row.private_connect_port > 0 && `内网：${row.private_connect_port}`}</div>,
+                <div>{row.public_connect_port > 0 && `外网：${row.public_connect_port}`}</div>,
               ]
             },
           },
@@ -190,7 +191,7 @@ export default {
         {
           label: '删除',
           action: () => {
-            this.createDialog('RedisDeletedialog', {
+            this.createDialog('DeleteResDialog', {
               title: '删除',
               data: this.list.selectedItems,
               columns: this.columns,
@@ -281,7 +282,7 @@ export default {
         {
           label: '更多',
           actions: (obj) => {
-            const isRunning = obj.status === 'running'
+            const isRunning = obj.status.toLowerCase() === 'running'
             const notRunninTip = !isRunning ? '仅运行中的实例支持此操作' : null
             const isAuthModeOn = obj.auth_mode === 'on'
             const setAuthMode = () => {
@@ -346,8 +347,6 @@ export default {
                   })
                 },
                 meta: () => {
-                  const isRunning = obj.status === 'running'
-                  const notRunninTip = !isRunning ? '仅运行中的实例支持此操作' : null
                   return {
                     validate: isRunning,
                     tooltip: notRunninTip,
@@ -428,7 +427,7 @@ export default {
               {
                 label: '删除',
                 action: () => {
-                  this.createDialog('RedisDeletedialog', {
+                  this.createDialog('DeleteResDialog', {
                     title: '删除',
                     data: [obj],
                     columns: this.columns,
@@ -460,3 +459,12 @@ export default {
   },
 }
 </script>
+<style lang="scss">
+ .td-ellipsis{
+    width: 150px;
+    word-break: keep-all;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+ }
+</style>
