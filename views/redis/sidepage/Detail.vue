@@ -113,8 +113,9 @@ export default {
               title: '内网地址',
               slots: {
                 default: ({ row }) => {
-                  if (row.private_ip_addr) {
-                    return `${row['private_ip_addr']}:${row['private_connect_port']}`
+                  const pri = row.private_dns || row.private_ip_addr
+                  if (pri) {
+                    return `${pri}:${row['private_connect_port']}`
                   }
                   return '-'
                 },
@@ -125,10 +126,29 @@ export default {
               title: '外网地址',
               slots: {
                 default: ({ row }) => {
-                  if (row.public_ip_addr) {
-                    return `${row['public_ip_addr']}:${row['public_connect_port']}`
+                  const pub = row.public_dns || row.public_ip_addr
+                  const port = row['public_connect_port']
+                  const isRunning = row.status === 'running'
+                  const notRunninTip = !isRunning ? '仅运行中的实例支持此操作' : null
+                  let RenderSwitch = null
+                  if (isRunning) {
+                    RenderSwitch = (<a-switch checkedChildren="关闭外网地址" unCheckedChildren="开启外网地址" defaultChecked={!!pub} onChange={this.handleSwitchPublicAddress} />)
+                  } else {
+                    RenderSwitch = (
+                      <a-tooltip placement="top" title={notRunninTip}>
+                        <a-switch disabled checkedChildren="关闭外网地址" unCheckedChildren="开启外网地址" defaultChecked={!!pub} />
+                      </a-tooltip>
+                    )
                   }
-                  return '-'
+                  if (row.provider === 'Huawei') {
+                    return '-'
+                  }
+                  return (
+                    <div>
+                      {pub && `${pub}:${port}`}
+                      {RenderSwitch}
+                    </div>
+                  )
                 },
               },
             },
@@ -161,47 +181,66 @@ export default {
             },
           ],
         },
-        {
-          title: '其他信息',
-          items: [
-            {
-              field: 'created_at',
-              title: '创建时间',
-              slots: {
-                default: ({ row }) => {
-                  return this.$moment(row.created_at).format()
-                },
-              },
-            },
-            {
-              field: 'updated_at',
-              title: '更新时间',
-              slots: {
-                default: ({ row }) => {
-                  return this.$moment(row.updated_at).format()
-                },
-              },
-            },
-            // {
-            //   title: '删除保护',
-            //   slots: {
-            //     default: (row, h) => {
-            //       const handleChange = ({ target }) => {
-            //         console.log(target.value)
-            //       }
-            //       return (
-            //         <a-radio-group onChange={handleChange}>
-            //           <a-radio-button value={true}>开启</a-radio-button>
-            //           <a-radio-button value={false}>关闭</a-radio-button>
-            //         </a-radio-group>
-            //       )
-            //     },
-            //   },
-            // },
-          ],
-        },
+        // {
+        //   title: '其他信息',
+        //   items: [
+        //     {
+        //       field: 'created_at',
+        //       title: '创建时间',
+        //       slots: {
+        //         default: ({ row }) => {
+        //           return this.$moment(row.created_at).format()
+        //         },
+        //       },
+        //     },
+        //     {
+        //       field: 'updated_at',
+        //       title: '更新时间',
+        //       slots: {
+        //         default: ({ row }) => {
+        //           return this.$moment(row.updated_at).format()
+        //         },
+        //       },
+        //     },
+        //     {
+        //       title: '删除保护',
+        //       slots: {
+        //         default: (row, h) => {
+        //           const handleChange = ({ target }) => {
+        //             console.log(target.value)
+        //           }
+        //           return (
+        //             <a-radio-group onChange={handleChange}>
+        //               <a-radio-button value={true}>开启</a-radio-button>
+        //               <a-radio-button value={false}>关闭</a-radio-button>
+        //             </a-radio-group>
+        //           )
+        //         },
+        //       },
+        //     },
+        //   ],
+        // },
       ],
     }
+  },
+  methods: {
+    async handleSwitchPublicAddress (bool) {
+      if (bool) {
+        this.list.onManager('performAction', {
+          id: this.data.id,
+          managerArgs: {
+            action: 'allocate-public-connection',
+          },
+        })
+      } else {
+        this.list.onManager('performAction', {
+          id: this.data.id,
+          managerArgs: {
+            action: 'release-public-connection',
+          },
+        })
+      }
+    },
   },
 }
 </script>

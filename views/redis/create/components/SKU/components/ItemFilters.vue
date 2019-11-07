@@ -170,7 +170,9 @@ export default {
           local_category: archs && archs.length > 0 ? archs[0] : undefined,
         })
       }
-      this.getNodeTypes()
+      this.$nextTick(() => {
+        this.getNodeTypes()
+      })
     },
     getNodeTypes () {
       const engine = this.getFieldValue('engine')
