@@ -1,43 +1,43 @@
 <template>
   <a-row :gutter="8">
     <a-col :span="6">
-        <a-form-item>
-          <a-select  v-decorator="decorators.city" @change="fetchQueryProviders">
-              <a-select-option
-                  :key="item.name"
-                  :value="item.name"
-                  v-for="item in cityOpts">{{item.cname}}</a-select-option>
-          </a-select>
-        </a-form-item>
-    </a-col>
-    <a-col :span="6">
       <a-form-item>
-          <a-select allowClear :loading="providerLoading" placeholder="请选择平台" v-decorator="decorators.provider" @change="fetchQueryRegions">
-              <a-select-option
-                  :key="item.name"
-                  :value="item.name"
-                  v-for="item in providerOps">{{item.cname}}</a-select-option>
-          </a-select>
+        <a-select  v-decorator="decorators.city" @change="fetchQueryProviders">
+          <a-select-option
+            :key="item.name"
+            :value="item.name"
+            v-for="item in cityOpts">{{item.cname}}</a-select-option>
+        </a-select>
       </a-form-item>
     </a-col>
     <a-col :span="6">
       <a-form-item>
-          <a-select allowClear :loading="regionLoading"  placeholder="请选择区域"  v-decorator="decorators.region" @change="handleRegionChange">
-              <a-select-option
-                  :key="item.id"
-                  :value="item.id"
-                  v-for="item in regionOpts">{{item.name}}</a-select-option>
-          </a-select>
+        <a-select allowClear :loading="providerLoading" placeholder="请选择平台" v-decorator="decorators.provider" @change="fetchQueryRegions">
+          <a-select-option
+            :key="item.name"
+            :value="item.name"
+            v-for="item in providerOps">{{item.cname}}</a-select-option>
+        </a-select>
       </a-form-item>
     </a-col>
     <a-col :span="6">
       <a-form-item>
-          <a-select allowClear :loading="regionLoading"  placeholder="请选择可用区"  v-decorator="decorators.zone" @change="handleZoneChange">
-              <a-select-option
-                  :key="item.id"
-                  :value="item.id"
-                  v-for="item in zoneOpts">{{item.name}}</a-select-option>
-          </a-select>
+        <a-select allowClear :loading="regionLoading"  placeholder="请选择区域"  v-decorator="decorators.region" @change="handleRegionChange">
+          <a-select-option
+            :key="item.id"
+            :value="item.id"
+            v-for="item in regionOpts">{{item.name}}</a-select-option>
+        </a-select>
+      </a-form-item>
+    </a-col>
+    <a-col :span="6">
+      <a-form-item>
+        <a-select allowClear :loading="regionLoading"  placeholder="请选择可用区"  v-decorator="decorators.zone" @change="handleZoneChange">
+          <a-select-option
+            :key="item.id"
+            :value="item.id"
+            v-for="item in zoneOpts">{{item.name}}</a-select-option>
+        </a-select>
       </a-form-item>
     </a-col>
   </a-row>

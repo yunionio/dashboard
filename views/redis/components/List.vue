@@ -119,8 +119,8 @@ export default {
                 return '-'
               }
               return [
-                <div class="td-ellipsis">{pri && <a-tooltip placement="topLeft" title={`内网：${pri}`}>内网： {pri}</a-tooltip> }</div>,
-                <div class="td-ellipsis">{pub && <a-tooltip placement="topLeft" title={`外网：${pub}`}>内网：{pub}</a-tooltip> }</div>,
+                <div class='td-ellipsis'>{pri && <a-tooltip placement='topLeft' title={`内网：${pri}`}>内网：{pri}</a-tooltip> }</div>,
+                <div class='td-ellipsis'>{pub && <a-tooltip placement='topLeft' title={`外网：${pub}`}>内网：{pub}</a-tooltip> }</div>,
               ]
             },
           },

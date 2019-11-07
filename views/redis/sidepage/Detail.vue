@@ -132,11 +132,11 @@ export default {
                   const notRunninTip = !isRunning ? '仅运行中的实例支持此操作' : null
                   let RenderSwitch = null
                   if (isRunning) {
-                    RenderSwitch = (<a-switch checkedChildren="关闭外网地址" unCheckedChildren="开启外网地址" defaultChecked={!!pub} onChange={this.handleSwitchPublicAddress} />)
+                    RenderSwitch = (<a-switch checkedChildren='关闭外网地址' unCheckedChildren='开启外网地址' defaultChecked={!!pub} onChange={this.handleSwitchPublicAddress} />)
                   } else {
                     RenderSwitch = (
-                      <a-tooltip placement="top" title={notRunninTip}>
-                        <a-switch disabled checkedChildren="关闭外网地址" unCheckedChildren="开启外网地址" defaultChecked={!!pub} />
+                      <a-tooltip placement='top' title={notRunninTip}>
+                        <a-switch disabled checkedChildren='关闭外网地址' unCheckedChildren='开启外网地址' defaultChecked={!!pub} />
                       </a-tooltip>
                     )
                   }
