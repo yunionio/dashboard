@@ -1,3 +1,8 @@
+/**
+ * List manager
+ * author: houjiazong <houjiazong@gmail.com>
+ * date: 2018/08/07
+ */
 import * as R from 'ramda'
 import _ from 'lodash'
 import { Manager } from '@/utils/manager'
@@ -125,7 +130,7 @@ class DataWrap {
 class CreateList {
   constructor (templateContext, {
     resource,
-    apiVersion,
+    apiVersion = 'v2',
     ctx,
     getParams,
     limit = 20,
@@ -145,6 +150,7 @@ class CreateList {
     if (R.is(String, resource)) {
       this.manager = new Manager(resource, apiVersion)
     }
+    this.apiVersion = apiVersion
     this.loading = false
     // 获取的数据
     this.data = {}

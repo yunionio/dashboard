@@ -7,7 +7,15 @@
           <actions :options="groupActions" class="ml-2" @action-click="handleClearSelected" />
         </template>
       </div>
-      <search-box v-if="filterOptions" :options="filterOptions" :value="filter" @input="handleFilterChange" />
+      <div class="d-flex">
+        <div class="flex-fill">
+          <search-box v-if="filterOptions" :options="filterOptions" :value="filter" @input="handleFilterChange" />
+        </div>
+        <div class="ml-4" v-if="exportDataOptions">
+          <a-tooltip title="导出数据"><a-button icon="download" style="height: 38px;" @click="handleExportData" /></a-tooltip>
+          <!-- <a-tooltip title="自定义列"><a-button class="ml-2" icon="setting" style="height: 38px;" /></a-tooltip> -->
+        </div>
+      </div>
     </page-toolbar>
     <vxe-grid
       ref="grid"
@@ -58,6 +66,10 @@ export default {
     // 列表头部操作按钮
     groupActions: {
       type: Array,
+    },
+    // 导出数据配置
+    exportDataOptions: {
+      type: Object,
     },
   },
   computed: {
@@ -129,6 +141,13 @@ export default {
     handleClearSelected () {
       this.list.clearSelected()
       this.$refs.grid.clearSelection()
+    },
+    handleExportData () {
+      this.$parent.createDialog('ExportListDataDialog', {
+        title: '导出数据',
+        list: this.list,
+        options: this.exportDataOptions,
+      })
     },
   },
 }
