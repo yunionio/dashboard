@@ -1,3 +1,8 @@
+/**
+ * Window mixin
+ * author: houjiazong <houjiazong@gmail.com>
+ * date: 2018/08/07
+ */
 import * as R from 'ramda'
 import { mapActions } from 'vuex'
 import { uuid } from '@/utils/utils'
