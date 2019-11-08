@@ -16,7 +16,8 @@
         </div>
       </div>
       <div slot="right">
-        <a-button class="mr-3" @click="perv">上一步</a-button>
+        <a-button class="mr-3" @click="cancel">取 消</a-button>
+        <a-button class="mr-3" @click="perv" v-if="!isFirstStep">上一步</a-button>
         <a-button type="primary" @click="next" :loading="loading">{{ nextStepTitle }}</a-button>
       </div>
     </page-footer>
@@ -96,6 +97,9 @@ export default {
     this.networksM = new Manager('networks', 'v2')
   },
   methods: {
+    cancel () {
+      this.$router.push('/cloudaccount')
+    },
     showName (item) {
       if (item.data) {
         if (item.data.hiddenName === true) {
@@ -126,17 +130,20 @@ export default {
         data.provider = 'ZStack'
       }
     },
-    create (formData) {
+    doCreateCloudaccount (formData) {
       const data = {
         ...formData,
         enabled: true,
         provider: this.currentItem.provider,
       }
+      if (formData.sync_interval_seconds) {
+        data.sync_interval_seconds = formData.sync_interval_seconds * 60 // 转换为秒
+      }
       this._addDomainProject(data)
       this._providerDiff(data)
       return this.cloudaccountsM.create({ data })
     },
-    async createNetwork (formData) {
+    async doCreateNetwork (formData) {
       const data = {
         'wire_id': formData.wire.key,
         name: formData.name,
@@ -154,7 +161,7 @@ export default {
         try {
           await this.networksM.create(data)
         } catch (error) {
-          console.error(error, '<----createNetwork')
+          console.error(error, '<----doCreateNetwork')
           return false
         }
       }
@@ -181,11 +188,11 @@ export default {
                   this.vmwareFormData = values
                 } else if (this.step.currentStep === 2) {
                   this.loading = true
-                  return this.create(this.vmwareFormData)
+                  return this.doCreateCloudaccount(this.vmwareFormData)
                     .then(() => {
                       const networkRef = this.$refs.stepRef
                       if (networkRef.configNetwork) {
-                        this.createNetwork(values) // 创建IP子网
+                        this.doCreateNetwork(values) // 创建IP子网
                           .then(successFn)
                           .catch(err => {
                             this.$message.error(`创建云账号出错：${err}`)
@@ -198,7 +205,7 @@ export default {
                 resolve()
               } else {
                 this.loading = true
-                return this.create(values)
+                return this.doCreateCloudaccount(values)
                   .then(successFn)
                   .catch(errorFn)
               }
