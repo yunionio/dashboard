@@ -112,8 +112,9 @@ export default {
     this.getArcha()
   },
   methods: {
-    getVersion () {
-      const engine = this.getFieldValue('engine')
+    getVersion (e) {
+      const targe = (e && e.targe) ? e.targe : {}
+      const engine = targe.value || this.getFieldValue('engine')
       let versions = []
       if (engine) {
         versions = Object.keys(this.filterParams[engine])
@@ -136,9 +137,10 @@ export default {
         this.getArcha()
       })
     },
-    getArcha () {
+    getArcha (e) {
+      const targe = (e && e.targe) ? e.targe : {}
       const engine = this.getFieldValue('engine')
-      const version = this.getFieldValue('engine_version')
+      const version = targe.value || this.getFieldValue('engine_version')
       const category = this.getFieldValue('local_category')
       let archs = []
       if (engine) {
@@ -174,10 +176,11 @@ export default {
         this.getNodeTypes()
       })
     },
-    getNodeTypes () {
+    getNodeTypes (e) {
+      const targe = (e && e.targe) ? e.targe : {}
       const engine = this.getFieldValue('engine')
       const version = this.getFieldValue('engine_version')
-      const category = this.getFieldValue('local_category')
+      const category = targe.value || this.getFieldValue('local_category')
       const nodeType = this.getFieldValue('node_type')
       let nodeTypes = []
       if (this.filterParams[engine] && this.filterParams[engine][version] && this.filterParams[engine][version][category]) {
