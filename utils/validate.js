@@ -56,6 +56,10 @@ export const REGEXP = {
     regexp: /^[a-zA-Z][a-zA-Z0-9._@-]*$/,
     message: '名称必须以字母开头,且只能包含字母、数字、._@-字符',
   },
+  snapshotName: {
+    regexp: /^[a-zA-Z][a-zA-Z0-9._-]{1,127}$/,
+    message: '字母开头，数字和字母大小写组合，长度为2-128个字符，可含".","-","_"',
+  },
 }
 
 /**
