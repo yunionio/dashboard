@@ -57,6 +57,7 @@ const showErrorNotify = error => {
     class: 'error-notification',
     message: errorMsg.class,
     description: errorMsg.detail,
+    icon: h => <a-icon type="info-circle" class="error-color" />,
     btn: h => {
       const id = `ErrorDialog-${uuid(32)}`
       return h('a-button', {

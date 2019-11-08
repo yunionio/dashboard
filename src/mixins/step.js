@@ -6,6 +6,9 @@ import * as R from 'ramda'
  */
 export default {
   computed: {
+    isFirstStep () {
+      return this.step.currentStep === 0
+    },
     isLastStep () {
       return R.equals(this.step.steps.length - 1, this.step.currentStep)
     },
