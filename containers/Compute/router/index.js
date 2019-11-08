@@ -9,6 +9,9 @@ import NetworkCreate from '@Compute/views/network/Create'
 import Host from '@Compute/views/host'
 import Physicalmachine from '@Compute/views/physicalmachine'
 import ServerRecovery from '@Compute/views/server-recovery'
+import InstanceGroup from '@Compute/views/instance-group'
+import SKU from '@Compute/views/sku'
+import Keypair from '@Compute/views/keypair'
 
 export default {
   index: 2,
@@ -62,6 +65,22 @@ export default {
             },
           ],
         },
+        {
+          path: '/instancegroup',
+          meta: {
+            label: '主机组',
+            permission: 'instancegroups_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'InstanceGroup',
+              path: '',
+              meta: {},
+              component: InstanceGroup,
+            },
+          ],
+        },
       ],
     },
     {
@@ -108,6 +127,52 @@ export default {
               name: 'NetworkCreate',
               path: 'create',
               component: NetworkCreate,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      meta: {
+        label: '密钥',
+      },
+      submenus: [
+        {
+          path: '/keypair',
+          meta: {
+            label: '密钥',
+            permission: 'keypairs_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Keypair',
+              path: '',
+              meta: {},
+              component: Keypair,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      meta: {
+        label: '套餐',
+      },
+      submenus: [
+        {
+          path: '/sku',
+          meta: {
+            label: '套餐',
+            permission: 'serverskus_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Sku',
+              path: '',
+              meta: {},
+              component: SKU,
             },
           ],
         },
