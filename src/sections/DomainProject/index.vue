@@ -5,7 +5,7 @@
     </template>
     <a-row :gutter="8" class="w-100" v-else>
       <a-col :span="12">
-        <a-form-item v-if="isAdminMode && isDomainMode">
+        <a-form-item v-if="isAdminMode && l3PermissionEnable">
           <a-select
             class="w-100"
             style="width:100%"
@@ -14,12 +14,13 @@
             :loading="domainLoading"
             placeholder="请选择域"
             @change="domainChange"
+            :filterOption="filterOption"
             showSearch>
             <a-select-option v-for="item of domains" :value="item.id" :key="item.id">{{ item.name }}</a-select-option>
           </a-select>
         </a-form-item>
       </a-col>
-      <a-col :span="(isAdminMode && isDomainMode) ? 12 : 24">
+      <a-col :span="(isAdminMode && l3PermissionEnable) ? 12 : 24">
         <a-form-item>
           <a-select
             class="w-100"
@@ -28,6 +29,7 @@
             :loading="projectLoading"
             placeholder="请选择项目"
             @change="projectChange"
+            :filterOption="filterOption"
             showSearch>
             <a-select-option v-for="item of projects" :value="item.id" :key="item.id" :label="item.name">{{ item.name }}</a-select-option>
           </a-select>
@@ -64,7 +66,6 @@ export default {
   },
   data () {
     return {
-      domainData: {},
       domains: [],
       domainLoading: false,
       projectData: {},
@@ -76,17 +77,22 @@ export default {
   created () {
     this.dm = new Manager('domains', 'v1')
     this.pm = new Manager('projects', 'v1')
-    if (this.l3PermissionEnable) {
+    if (this.isAdminMode && this.l3PermissionEnable) {
       this.fetchDomains()
     } else {
-      this.fetchProjects()
+      this.fetchProjects('default')
     }
   },
   methods: {
+    filterOption (input, option) {
+      return (
+        option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      )
+    },
     async fetchDomains () {
       if (!this.isAdminMode) {
         const data = [{
-          key: this.userInfo.projectDomainId,
+          id: this.userInfo.projectDomainId,
           name: this.userInfo.projectDomain,
         }]
         this.domains = data
@@ -103,7 +109,8 @@ export default {
         const data = response.data.data || []
         this.domains = data
         const findDomain = this.domains.find(val => val.id === this.defaultProjectDomain.domain)
-        const defaultDomain = findDomain || data[0]
+        const domainData = findDomain || data[0]
+        const defaultDomain = { key: domainData.id, label: domainData.name }
         this.domainChange(defaultDomain || {})
       } catch (error) {
         throw error
@@ -111,7 +118,7 @@ export default {
         this.domainLoading = false
       }
     },
-    async fetchProjects () {
+    async fetchProjects (domainId) {
       if (!this.isAdminMode && !this.isDomainMode) {
         const data = [{
           key: this.userInfo.projectId,
@@ -125,7 +132,7 @@ export default {
       try {
         const params = {
           scope: this.scope,
-          domain_id: this.l3PermissionEnable ? this.domainData.id : 'default',
+          domain_id: domainId,
         }
         const response = await this.pm.list({ params })
         const data = response.data.data || []
@@ -139,9 +146,12 @@ export default {
         this.projectLoading = false
       }
     },
+    /**
+     * domain {Object|String}
+     */
     domainChange (domain) {
-      this.domainData = domain
-      this.fetchProjects()
+      const domainId = R.is(Object, domain) ? (domain.key || domain.id) : domain
+      this.fetchProjects(domainId)
       this.fc.setFieldsValue({
         project: undefined,
       })
