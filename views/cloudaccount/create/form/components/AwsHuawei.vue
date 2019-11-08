@@ -73,7 +73,7 @@ export default {
           },
         ],
         username: [
-          keySecretField.label.k,
+          keySecretField.k,
           {
             rules: [
               { required: true, message: keySecretField.placeholder.k },
@@ -81,7 +81,7 @@ export default {
           },
         ],
         password: [
-          keySecretField.label.s,
+          keySecretField.s,
           {
             rules: [
               { required: true, message: keySecretField.placeholder.s },

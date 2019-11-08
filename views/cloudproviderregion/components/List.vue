@@ -30,6 +30,7 @@ export default {
       list: this.$list.createList(this, {
         resource: 'cloudproviderregions',
         getParams: this.getParams,
+        idKey: 'cloudregion_id',
         filterOptions: {
           name: {
             label: '名称',
