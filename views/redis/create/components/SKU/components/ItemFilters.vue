@@ -113,8 +113,8 @@ export default {
   },
   methods: {
     getVersion (e) {
-      const targe = (e && e.targe) ? e.targe : {}
-      const engine = targe.value || this.getFieldValue('engine')
+      const target = (e && e.target) ? e.target : {}
+      const engine = target.value || this.getFieldValue('engine')
       let versions = []
       if (engine) {
         versions = Object.keys(this.filterParams[engine])
@@ -138,9 +138,9 @@ export default {
       })
     },
     getArcha (e) {
-      const targe = (e && e.targe) ? e.targe : {}
+      const target = (e && e.target) ? e.target : {}
       const engine = this.getFieldValue('engine')
-      const version = targe.value || this.getFieldValue('engine_version')
+      const version = target.value || this.getFieldValue('engine_version')
       const category = this.getFieldValue('local_category')
       let archs = []
       if (engine) {
@@ -177,10 +177,10 @@ export default {
       })
     },
     getNodeTypes (e) {
-      const targe = (e && e.targe) ? e.targe : {}
+      const target = (e && e.target) ? e.target : {}
       const engine = this.getFieldValue('engine')
       const version = this.getFieldValue('engine_version')
-      const category = targe.value || this.getFieldValue('local_category')
+      const category = target.value || this.getFieldValue('local_category')
       const nodeType = this.getFieldValue('node_type')
       let nodeTypes = []
       if (this.filterParams[engine] && this.filterParams[engine][version] && this.filterParams[engine][version][category]) {
