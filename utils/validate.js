@@ -41,7 +41,7 @@ export const REGEXP = {
   },
   password: {
     regexp: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-    message: '至少八个字符，至少一个字母和一个数字',
+    message: i18n.t('validator.password'),
   },
   publicKey: {
     func: value => {
@@ -50,15 +50,15 @@ export const REGEXP = {
       }
       return false
     },
-    message: '无效的公钥, 只支持 RSA/DSA 类型公钥',
+    message: i18n.t('validator.publicKey'),
   },
   secretKeyName: {
     regexp: /^[a-zA-Z][a-zA-Z0-9._@-]*$/,
-    message: '名称必须以字母开头,且只能包含字母、数字、._@-字符',
+    message: i18n.t('validator.secretKeyName'),
   },
   snapshotName: {
     regexp: /^[a-zA-Z][a-zA-Z0-9._-]{1,127}$/,
-    message: '字母开头，数字和字母大小写组合，长度为2-128个字符，可含".","-","_"',
+    message: i18n.t('validator.snapshotName'),
   },
 }
 
