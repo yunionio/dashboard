@@ -1,5 +1,5 @@
 <template>
-  <common-dashboard :range-id="resId" range-type="cloudregions" />
+  <common-dashboard :range-id="resId" range-type="disks" />
 </template>
 
 <script>
