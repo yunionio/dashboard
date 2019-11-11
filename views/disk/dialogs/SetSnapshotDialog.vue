@@ -59,6 +59,7 @@ export default {
   data () {
     return {
       loading: false,
+      scope: this.$store.getters.scope,
       form: {
         fc: this.$form.createForm(this, {
           onValuesChange: (props, values) => {
@@ -177,7 +178,7 @@ export default {
     async fetchSnaphotpolicy () {
       const manager = new this.$Manager('snapshotpolicies')
       let params = {
-        scope: 'system',
+        scope: this.scope,
       }
       try {
         const res = await manager.list({ params })
