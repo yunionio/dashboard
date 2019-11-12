@@ -12,6 +12,7 @@ import ServerRecovery from '@Compute/views/server-recovery'
 import InstanceGroup from '@Compute/views/instance-group'
 import SKU from '@Compute/views/sku'
 import Keypair from '@Compute/views/keypair'
+import Disk from '@Compute/views/disk'
 
 export default {
   index: 2,
@@ -100,6 +101,28 @@ export default {
               name: 'Image',
               path: '',
               component: Image,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      meta: {
+        label: '存储',
+      },
+      submenus: [
+        {
+          path: '/disk',
+          meta: {
+            label: '硬盘',
+            permission: 'disks_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Disk',
+              path: '',
+              component: Disk,
             },
           ],
         },
