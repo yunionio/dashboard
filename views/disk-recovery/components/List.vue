@@ -59,11 +59,12 @@ export default {
           label: '清除',
           permission: 'disks_delete',
           action: () => {
-            this.createDialog('RemoveDialog', {
-              title: '清除',
+            this.createDialog('DeleteResDialog', {
               data: this.list.selectedItems,
               columns: this.columns,
+              title: '清除',
               list: this.list,
+              requestParams: { override_pending_delete: true },
             })
           },
           meta: () => {
@@ -76,7 +77,7 @@ export default {
           label: '恢复',
           permission: 'disks_perform_cancel_delete',
           action: () => {
-            this.createDialog('RestoreDialog', {
+            this.createDialog('DiskRestoreDialog', {
               title: '恢复',
               data: this.list.selectedItems,
               columns: this.columns,
@@ -95,10 +96,12 @@ export default {
           label: '清除',
           permission: 'disks_delete',
           action: obj => {
-            this.createDialog('RemoveDialog', {
+            this.createDialog('DeleteResDialog', {
               data: [obj],
               columns: this.columns,
+              title: '清除',
               list: this.list,
+              requestParams: { override_pending_delete: true },
             })
           },
           meta: obj => {
@@ -111,7 +114,7 @@ export default {
           label: '恢复',
           permission: 'disks_perform_cancel_delete',
           action: (obj) => {
-            this.createDialog('RestoreDialog', {
+            this.createDialog('DiskRestoreDialog', {
               data: [obj],
               columns: this.columns,
               list: this.list,

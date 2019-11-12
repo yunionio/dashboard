@@ -1,8 +1,8 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">清除</div>
+    <div slot="header">恢复</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" action="清除" />
+      <dialog-selected-tips :count="params.data.length" action="恢复" />
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
     </div>
     <div slot="footer">
@@ -17,7 +17,7 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'RemoveDialog',
+  name: 'ImageRestoreDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
@@ -29,9 +29,9 @@ export default {
       const selectedIds = this.params.data.map((item) => {
         return item.id
       })
-      return new this.$Manager('disks').batchDelete({
+      return new this.$Manager('images', 'v1').batchPerformAction({
         ids: selectedIds,
-        params: { override_pending_delete: true },
+        action: 'cancel-delete',
       })
     },
     async handleConfirm () {
