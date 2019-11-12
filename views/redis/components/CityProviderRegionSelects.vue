@@ -173,6 +173,7 @@ export default {
       }
       this.FC.setFieldsValue({
         region: undefined,
+        zone: undefined,
       })
       try {
         this.regionLoading = true

@@ -28,8 +28,8 @@
          <a-radio-button :key="item.value" :value="item.value" v-for="item in performanceTypes">{{item.key}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-form-item label="内存" v-bind="formItemLayout" v-if="filterMemorys && Object.keys(filterMemorys).length > 0">
-      <a-radio-group v-decorator="decorators.memory_size_mb || ['memory_size_mb', { initialValue: filterMemorys[Object.keys(filterMemorys)[0]] }]" @change="eimtChange()">
+    <a-form-item label="内存" v-bind="formItemLayout" v-if="memorys && memorys.length > 0">
+      <a-radio-group v-decorator="decorators.memory_size_mb || ['memory_size_mb']" @change="eimtChange()">
         <a-radio-button :key="size" :value="parseInt(size)" v-for="size in memorys">{{sizestr(size, 'M', 1024)}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
@@ -45,9 +45,6 @@ export default {
   inject: ['form'],
   props: {
     filterParams: {
-      type: Object,
-    },
-    filterMemorys: {
       type: Object,
     },
     decorators: {

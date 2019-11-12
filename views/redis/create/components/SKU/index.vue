@@ -5,7 +5,6 @@
       :disableds="disableds"
       :decorators="decorators"
       :filterParams="skuFilters"
-      :filterMemorys="skuMemorys"
       @change="handleFilterChange" />
     <sku-list :loading="loading" :skuList="skuList" />
   </div>
@@ -14,7 +13,6 @@
 import ItemFilters from './components/ItemFilters'
 import SkuList from './components/List'
 import { Manager } from '@/utils/manager'
-import { sizestr } from '@/utils/utils'
 
 export default {
   name: 'rdisiCreateSkus',
@@ -38,7 +36,6 @@ export default {
     return {
       loading: false,
       skuFilters: {},
-      skuMemorys: {},
       skuList: [],
       SKU_LIST: [],
       T: undefined,
@@ -70,7 +67,6 @@ export default {
   methods: {
     formatFilters (skuList) {
       const skuFilters = {}
-      const skuMemorys = {}
       skuList.forEach(item => {
         const engine = item.engine
         const version = item.engine_version
@@ -97,20 +93,13 @@ export default {
         if (memory && !skuFilters[engine][version][category][nodeType][memory]) {
           skuFilters[engine][version][category][nodeType][memory] = {}
         }
-        if (memory) {
-          const key = sizestr(item.memory_size_mb, 'M', 1024)
-          skuMemorys[key] = memory
-        }
       })
       this.skuFilters = {}
-      this.skuMemorys = skuMemorys
       this.$nextTick(() => {
         this.skuFilters = skuFilters
       })
-      console.log(skuFilters)
     },
     filterSKU (params = {}) {
-      console.log(params)
       this.skuList = this.SKU_LIST.filter(sku => {
         let f = true
         for (let key in params) {
