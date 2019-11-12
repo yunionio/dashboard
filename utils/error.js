@@ -68,19 +68,28 @@ export const getHttpReqMessage = error => {
 }
 
 // 获取列表删除操作权限
-export const getDeleteResult = (row, deleteField = 'can_delete') => {
+export const getDeleteResult = (row, deleteField = 'can_delete', failKey = 'delete_fail_reason') => {
   let validate = true
-  let tooltip = ''
+  let tooltip = null
   if (R.is(Array, row)) {
     if (!row.length) return { validate: false }
     validate = row.every(obj => obj[deleteField])
   } else {
     validate = row[deleteField]
     if (!validate) {
-      const deleteFailReason = R.is(String, row.delete_fail_reason) ? JSON.parse(row.delete_fail_reason) : row.delete_fail_reason
-      const error = deleteFailReason.error
-      const errorMessage = getHttpErrorMessage(error, true)
-      tooltip = `${errorMessage.class}: ${errorMessage.detail}`
+      let deleteFailReason
+      if (R.is(String, row[failKey])) {
+        try {
+          deleteFailReason = JSON.parse(row[failKey])
+        } catch (error) {
+          console.warn(`${failKey}格式匹配错误`)
+        }
+      }
+      if (deleteFailReason) {
+        const error = deleteFailReason.error
+        const errorMessage = getHttpErrorMessage(error, true)
+        tooltip = `${errorMessage.class}: ${errorMessage.detail}`
+      }
     }
   }
   return {
