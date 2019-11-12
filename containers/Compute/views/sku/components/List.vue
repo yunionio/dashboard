@@ -10,7 +10,6 @@
 import {
   getEnabledTableColumn,
   getNameDescriptionTableColumn,
-  getBrandTableColumn,
   getStatusTableColumn,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
@@ -66,7 +65,6 @@ export default {
           field: 'total_guest_count',
           title: '关联主机数量',
         },
-        getBrandTableColumn(),
         getEnabledTableColumn(),
       ],
       groupActions: [
