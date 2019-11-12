@@ -24,13 +24,13 @@
       </a-radio-group>
     </a-form-item>
      <a-form-item label="性能类型" v-bind="formItemLayout">
-      <a-radio-group v-decorator="decorators.performance_type || ['performance_type', { initialValue: 'standard' }]" @change="eimtChange()">
+      <a-radio-group v-decorator="decorators.performance_type || ['performance_type', { initialValue: 'standard' }]" @change="getMemorys">
          <a-radio-button :key="item.value" :value="item.value" v-for="item in performanceTypes">{{item.key}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
     <a-form-item label="内存" v-bind="formItemLayout" v-if="filterMemorys && Object.keys(filterMemorys).length > 0">
       <a-radio-group v-decorator="decorators.memory_size_mb || ['memory_size_mb', { initialValue: filterMemorys[Object.keys(filterMemorys)[0]] }]" @change="eimtChange()">
-        <a-radio-button :key="k" :value="k" v-for="(k, v) in filterMemorys">{{v}}</a-radio-button>
+        <a-radio-button :key="size" :value="parseInt(size)" v-for="size in memorys">{{sizestr(size, 'M', 1024)}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
   </div>
@@ -38,6 +38,7 @@
 <script>
 import { CreateServerForm } from '@Compute/constants'
 import { ENGINE_ARCH, NODE_TYPE } from '@DB/views/redis/constants'
+import { sizestr } from '@/utils/utils'
 
 export default {
   name: 'SkuFilters',
@@ -68,11 +69,13 @@ export default {
   },
   data () {
     return {
+      sizestr,
       NODE_TYPE,
       ENGINE_ARCH,
       versions: [],
       archs: [],
       nodeTypes: [],
+      memorys: [],
       performanceTypes: [
         {
           key: '标准性能',
@@ -190,6 +193,28 @@ export default {
       if (nodeTypes.indexOf(nodeType) === -1) {
         this.FC.setFieldsValue({
           node_type: nodeTypes && nodeTypes.length > 0 ? nodeTypes[0] : undefined,
+        })
+      }
+      this.$nextTick(() => {
+        this.getMemorys()
+      })
+    },
+    getMemorys (e) {
+      const target = (e && e.target) ? e.target : {}
+      const engine = this.getFieldValue('engine')
+      const version = this.getFieldValue('engine_version')
+      const category = this.getFieldValue('local_category')
+      const nodeType = target.value || this.getFieldValue('node_type')
+      const memory = this.getFieldValue('memory_size_mb')
+
+      let memorys = []
+      if (this.filterParams[engine] && this.filterParams[engine][version] && this.filterParams[engine][version][category] && this.filterParams[engine][version][category][nodeType]) {
+        memorys = Object.keys(this.filterParams[engine][version][category][nodeType])
+      }
+      this.memorys = memorys
+      if (memorys.indexOf(memory) === -1) {
+        this.FC.setFieldsValue({
+          memory_size_mb: memorys && memorys.length > 0 ? parseInt(memorys[0]) : undefined,
         })
       }
       this.eimtChange()

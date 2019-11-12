@@ -94,6 +94,9 @@ export default {
         if (nodeType && !skuFilters[engine][version][category][nodeType]) {
           skuFilters[engine][version][category][nodeType] = {}
         }
+        if (memory && !skuFilters[engine][version][category][nodeType][memory]) {
+          skuFilters[engine][version][category][nodeType][memory] = {}
+        }
         if (memory) {
           const key = sizestr(item.memory_size_mb, 'M', 1024)
           skuMemorys[key] = memory
@@ -104,8 +107,10 @@ export default {
       this.$nextTick(() => {
         this.skuFilters = skuFilters
       })
+      console.log(skuFilters)
     },
     filterSKU (params = {}) {
+      console.log(params)
       this.skuList = this.SKU_LIST.filter(sku => {
         let f = true
         for (let key in params) {

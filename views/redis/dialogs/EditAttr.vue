@@ -64,7 +64,7 @@ export default {
       this.loading = true
       try {
         this.loading = false
-        const ids = this.params.list.selectedItems.map(({ id }) => id)
+        const ids = this.params.data.map(({ id }) => id)
         await this.params.list.batchUpdate(ids, {
           disable_delete: this.form.fc.getFieldValue('disable_delete'),
         })

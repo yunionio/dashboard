@@ -86,7 +86,7 @@ export default {
         if (sku.cloudregion_id === this.cloudregion) {
           return false
         }
-        params['cloudregion'] = sku.cloudregion_id
+        params['cloudregion_id'] = sku.cloudregion_id
         params['provider'] = sku.provider
         params['zone'] = sku.zone_id
       }
