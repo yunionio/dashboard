@@ -351,6 +351,16 @@ export default {
                       })
                     },
                   },
+                  {
+                    label: '更改项目',
+                    action: () => {
+                      this.createDialog('ChangeProjectDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                      })
+                    },
+                  },
                 ],
               },
               {
