@@ -4,7 +4,7 @@
     <div slot="body">
       <a-form
         :form="form.fc">
-        <a-form-item label="名称" v-bind="formItemLayout">resourceName
+        <a-form-item label="名称" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
         </a-form-item>
         <a-form-item label="偏好" v-bind="formItemLayout">
