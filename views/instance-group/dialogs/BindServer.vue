@@ -29,6 +29,7 @@
 <script>
 import * as R from 'ramda'
 import debounce from 'lodash/debounce'
+import { mapGetters } from 'vuex'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
@@ -51,6 +52,7 @@ export default {
       defaultSelected: [],
     }
   },
+  computed: mapGetters(['scope']),
   destroyed () {
     this.serversManager = null
     this.debounceFetchServers = null
@@ -78,7 +80,10 @@ export default {
       const manager = new this.$Manager('servers')
       try {
         const { data: { data = [] } } = await manager.list({
-          params: { group: this.params.data[0]['id'] },
+          params: {
+            scope: this.scope,
+            group: this.params.data[0]['id'],
+          },
         })
         this.bindedServers = data
         this.defaultSelected = data.map(item => item.id)
@@ -89,7 +94,12 @@ export default {
     },
     async fetchServers (query) {
       this.serversLoading = true
-      const params = {}
+      const params = {
+        scope: this.scope,
+        project: this.params.data[0]['tenant_id'],
+        limit: 20,
+        filter: 'hypervisor.notin(baremetal,container)',
+      }
       if (query) params.filter = `name.contains(${query})`
       try {
         const { data: { data = [] } } = await this.serversManager.list({
