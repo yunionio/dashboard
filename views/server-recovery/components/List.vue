@@ -2,6 +2,7 @@
   <page-list
     :list="list"
     :columns="columns"
+    :group-actions="groupActions"
     :single-actions="singleActions" />
 </template>
 
@@ -10,9 +11,11 @@ import { sizestr } from '@/utils/utils'
 import SystemIcon from '@/sections/SystemIcon'
 import expectStatus from '@/constants/expectStatus'
 import { getBrandTableColumn, getStatusTableColumn, getCopyWithContentTableColumn, getIpsTableColumn } from '@/utils/common/tableColumn'
+import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'ServerRecoveryList',
+  mixins: [WindowsMixin],
   data () {
     return {
       list: this.$list.createList(this, {
@@ -112,30 +115,67 @@ export default {
           },
         },
       ],
+      groupActions: [
+        {
+          label: '清除',
+          permission: 'server_delete',
+          action: () => {
+            this.createDialog('RemoveDialog', {
+              title: '清除',
+              data: this.list.selectedItems,
+              columns: this.columns,
+              list: this.list,
+            })
+          },
+          meta: () => {
+            return {
+              validate: this.list.allowDelete(),
+            }
+          },
+        },
+        {
+          label: '恢复',
+          permission: 'server_perform_cancel_delete',
+          action: () => {
+            this.createDialog('RestoreDialog', {
+              title: '恢复',
+              data: this.list.selectedItems,
+              columns: this.columns,
+              list: this.list,
+            })
+          },
+          meta: () => {
+            if (this.list.selectedItems.length > 0 && this.list.selectedItems.find(v => v.status === 'deleting') === undefined) {
+              return {
+                validate: true,
+              }
+            }
+            return {
+              validate: false,
+            }
+          },
+        },
+      ],
       singleActions: [
         {
           label: '清除',
+          permission: 'server_delete',
           action: (obj) => {
-            this.list.onManager('delete', {
-              id: obj.id,
-              managerArgs: {
-                params: {
-                  override_pending_delete: true,
-                },
-              },
+            this.createDialog('RemoveDialog', {
+              data: [obj],
+              columns: this.columns,
+              list: this.list,
             })
           },
         },
         {
           label: '恢复',
+          permission: 'server_perform_cancel_delete',
           action: (obj) => {
-            this.list.onManager('performAction', {
-              id: obj.id,
-              managerArgs: {
-                action: 'cancel-delete',
-              },
-            }).then(() => {
-              this.list.refresh()
+            this.createDialog('RestoreDialog', {
+              data: [obj],
+              columns: this.columns,
+              list: this.list,
             })
           },
         },
