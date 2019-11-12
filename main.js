@@ -3,7 +3,6 @@ import Antd from 'ant-design-vue'
 import 'xe-utils'
 import VXETable from 'vxe-table'
 import VXETablePluginAntd from 'vxe-table-plugin-antd'
-import antdGlobalConfig from './plugins/antdGlobalConfig'
 
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/theme/material.css'
@@ -12,14 +11,16 @@ import 'vxe-table-plugin-antd/dist/style.css'
 import '@/styles/antd/index.less'
 import '@/styles/index.scss'
 
-import './components'
-import './directives'
-import './plugins'
-
 import store from './store'
 import router from './router'
 import i18n from './locales'
 import App from './App.vue'
+import antdGlobalConfig from './plugins/antdGlobalConfig'
+
+import './components'
+import './directives'
+import './plugins'
+import './permission'
 
 Vue.config.productionTip = false
 

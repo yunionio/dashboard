@@ -1,3 +1,8 @@
+/**
+ * List manager
+ * author: houjiazong <houjiazong@gmail.com>
+ * date: 2018/08/07
+ */
 import * as R from 'ramda'
 import _ from 'lodash'
 import { Manager } from '@/utils/manager'
@@ -124,8 +129,9 @@ class DataWrap {
 
 class CreateList {
   constructor (templateContext, {
+    id,
     resource,
-    apiVersion,
+    apiVersion = 'v2',
     ctx,
     getParams,
     limit = 20,
@@ -136,7 +142,11 @@ class CreateList {
     steadyStatus = null,
     // 定时更新间隔时间，默认10s
     refreshInterval = 10,
+    // 定义的默认隐藏列
+    hiddenColumns = [],
   }) {
+    // 列表唯一标识
+    this.id = id
     // vm 实例
     this.templateContext = templateContext
     this.resource = resource
@@ -145,6 +155,7 @@ class CreateList {
     if (R.is(String, resource)) {
       this.manager = new Manager(resource, apiVersion)
     }
+    this.apiVersion = apiVersion
     this.loading = false
     // 获取的数据
     this.data = {}
@@ -163,6 +174,60 @@ class CreateList {
     this.filter = filter
     this.steadyStatus = this.genSteadyStatus(steadyStatus)
     this.refreshInterval = refreshInterval
+    // 用于存放自定义列表的配置
+    this.config = {
+      hiddenColumns: hiddenColumns,
+    }
+    // 列表配置是否已经加载过
+    this.configLoaded = false
+  }
+  /**
+   * @description 获取列表配置，如果没有则创建
+   */
+  async fetchConfig () {
+    const manager = new Manager('parameters', 'v1')
+    try {
+      const response = await manager.get({ id: this.id })
+      if (response.data && response.data.value) {
+        // 如果没有设置过隐藏列，则设置默认的隐藏列
+        if (response.data.update_version === 0) {
+          response.data.value.hiddenColumns = this.config.hiddenColumns
+        }
+        this.config = response.data.value
+      }
+      this.configLoaded = true
+    } catch (error) {
+      if (error.response && error.response.status === 404) {
+        await manager.create({
+          data: {
+            name: this.id,
+            value: this.config,
+          },
+        })
+        this.configLoaded = true
+      }
+    }
+  }
+  /**
+   * @description 更新列表配置
+   * @param {Object} 需要更新的数据
+   */
+  async updateConfig (value) {
+    const manager = new Manager('parameters', 'v1')
+    try {
+      const response = await manager.update({
+        id: this.id,
+        data: {
+          value,
+        },
+      })
+      if (response.data && response.data.value) {
+        this.config = response.data.value
+      }
+      return response
+    } catch (error) {
+      throw error
+    }
   }
   /**
    * @description 重置数据
@@ -181,6 +246,10 @@ class CreateList {
     this.loading = true
     this.params = this.genParams(offset, limit)
     try {
+      // 如果有id并且没有获取过列表配置则获取列表配置
+      if (this.id && !this.configLoaded) {
+        await this.fetchConfig()
+      }
       let response
       if (R.is(String, this.resource)) {
         response = await this.manager.list({

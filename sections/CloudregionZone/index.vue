@@ -3,14 +3,14 @@
     <a-row :gutter="8">
       <a-col :span="12">
         <a-form-item>
-          <a-select label-in-value v-decorator="decorator.cloudregion">
+          <a-select label-in-value v-decorator="decorator.cloudregion" @change="handleChange">
             <a-select-option v-for="item in regionOpts" :key="item.id">{{ item.name }}</a-select-option>
           </a-select>
         </a-form-item>
       </a-col>
       <a-col :span="12">
         <a-form-item>
-          <a-select label-in-value  v-decorator="decorator.zone" allow-clear>
+          <a-select label-in-value  v-decorator="decorator.zone" allow-clear @change="handleChange">
             <a-select-option v-for="item in zoneOpts" :key="item.id">{{ item.name }}</a-select-option>
           </a-select>
         </a-form-item>
@@ -53,12 +53,24 @@ export default {
     this.fetchRegions()
   },
   methods: {
+    emit (item, emitStr) {
+      const opts = this.regionOpts.concat(this.zoneOpts)
+      let itemObj = {}
+      if (R.is(String, item)) {
+        itemObj = opts.find(val => val.id === item)
+      } else if (R.is(Object, item)) {
+        itemObj = opts.find(val => val.id === item.id)
+      }
+      this.$emit(`update:${emitStr}`, itemObj)
+    },
     fetchRegions () {
       this.cloudregionsM.list({ params: this.cloudregionParams })
         .then(({ data: { data = [] } }) => {
           this.regionOpts = data
+          this.$emit('update:closeregionOpts', this.regionOpts)
           if (this.regionOpts.length && this.form) {
             const firstRegion = this.regionOpts[0]
+            this.emit(firstRegion, 'cloudregion')
             this.fetchZones(firstRegion.id)
             this.form.fc.setFieldsValue({
               cloudregion: { key: firstRegion.id, label: firstRegion.name },
@@ -74,11 +86,15 @@ export default {
           this.zoneOpts = data
           if (this.zoneOpts.length && this.form) {
             const firstZone = this.zoneOpts[0]
+            this.emit(firstZone, 'zone')
             this.form.fc.setFieldsValue({
               zone: { key: firstZone.id, label: firstZone.name },
             })
           }
         })
+    },
+    handleChange (value) {
+      this.emit(value)
     },
   },
 }
