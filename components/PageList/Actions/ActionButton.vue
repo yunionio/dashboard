@@ -1,4 +1,6 @@
 <script>
+import { hasPermission } from '@/utils/auth'
+
 export default {
   name: 'PageListActionButton',
   props: {
@@ -17,7 +19,12 @@ export default {
       return this.option.label
     },
     disabled () {
-      return !this.option.meta.validate
+      let isValidate = this.option.meta.validate
+      let isPermission = true
+      if (this.option.permission) {
+        isPermission = hasPermission({ key: this.option.permission, resourceData: this.row })
+      }
+      return !isValidate || !isPermission
     },
     tooltip () {
       return this.option.meta.tooltip

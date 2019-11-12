@@ -170,9 +170,9 @@ export default {
         }
       })
     },
-    getPermission ({ commit, getters }, scope) {
+    getPermission ({ commit, state }, scope) {
       return new Promise(async (resolve, reject) => {
-        const data = R.map(item => [scope || getters.scope, ...item], PERMISSION)
+        const data = R.map(item => [scope || state.scope, ...item], PERMISSION)
         try {
           const permissionResponse = await http.post('/v1/auth/permissions', data)
           await commit('SET_PERMISSION', permissionResponse.data)
