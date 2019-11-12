@@ -11,7 +11,7 @@
 import DiskList from './components/List'
 
 export default {
-  name: 'SKUIndex',
+  name: 'DiskIndex',
   components: {
     DiskList,
   },
