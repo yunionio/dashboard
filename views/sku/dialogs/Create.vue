@@ -4,14 +4,6 @@
     <div slot="body">
       <a-form
         :form="form.fc">
-        <a-form-item label="平台" v-bind="formItemLayout">
-          <a-radio-group v-decorator="decorators.resource_type">
-            <a-radio-button
-              v-for="item in resourceTypeOpts"
-              :value="item.key"
-              :key="item.key">{{ item.label }}</a-radio-button>
-          </a-radio-group>
-        </a-form-item>
         <a-form-item label="虚拟CPU核数" v-bind="formItemLayout">
           <a-input-number :min="1" :max="100000" v-decorator="decorators.cpu_core_count" /> 核
         </a-form-item>
@@ -41,12 +33,6 @@ export default {
         fc: this.$form.createForm(this),
       },
       decorators: {
-        resource_type: [
-          'resource_type',
-          {
-            initialValue: 'VMware',
-          },
-        ],
         cpu_core_count: [
           'cpu_core_count',
           {
@@ -60,12 +46,6 @@ export default {
           },
         ],
       },
-      resourceTypeOpts: [
-        { key: 'VMware', label: 'VMware' },
-        { key: 'OneCloud', label: 'OneCloud' },
-        { key: 'OpenStack', label: 'OpenStack' },
-        { key: 'DStack', label: 'DStack' },
-      ],
       formItemLayout: {
         wrapperCol: {
           span: 21,
