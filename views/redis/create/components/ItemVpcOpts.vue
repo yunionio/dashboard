@@ -88,7 +88,6 @@ export default {
         }
         params['cloudregion_id'] = sku.cloudregion_id
         params['provider'] = sku.provider
-        params['zone'] = sku.zone_id
       }
       try {
         this.vpcLoading = true
@@ -112,6 +111,10 @@ export default {
         limit: 0,
         usable: true,
         vpc: vpc || this.getFieldValue('vpc'),
+      }
+      const sku = this.getFieldValue('sku')
+      if (sku && sku.provider === 'Aliyun') {
+        params['zone'] = sku.zone_id
       }
       try {
         this.networkLoading = true
