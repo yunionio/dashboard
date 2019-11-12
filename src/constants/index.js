@@ -9,7 +9,7 @@ export const HYPERVISORS_MAP = {
   // Private
   openstack: { key: 'openstack', label: 'OpenStack', provider: 'OpenStack', brand: 'OpenStack', host_type: 'openstack', hypervisor: 'openstack', env: 'private' },
   zstack: { key: 'zstack', label: 'ZStack', provider: 'ZStack', brand: 'ZStack', host_type: 'zstack', hypervisor: 'zstack', env: 'private' },
-  dstack: { key: 'dstack', label: 'DStack', provider: 'DStack', brand: 'DStack', host_type: 'dstack', hypervisor: 'dstack', env: 'private' },
+  dstack: { key: 'dstack', label: 'DStack', provider: 'ZStack', brand: 'DStack', host_type: 'dstack', hypervisor: 'dstack', env: 'private' },
   // Public
   aliyun: { key: 'aliyun', label: '阿里云', provider: 'Aliyun', brand: 'Aliyun', host_type: 'aliyun', hypervisor: 'aliyun', env: 'public' },
   azure: { key: 'azure', label: 'Azure', provider: 'Azure', brand: 'Azure', host_type: 'azure', hypervisor: 'azure', env: 'public' },
