@@ -20,9 +20,13 @@ import WindowsMixin from '@/mixins/windows'
 export default {
   name: 'VmInstanceList',
   mixins: [WindowsMixin],
+  props: {
+    id: String,
+  },
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'servers',
         getParams: this.getParams,
         steadyStatus: Object.values(expectStatus.server).flat(),

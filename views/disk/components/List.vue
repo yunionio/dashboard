@@ -120,11 +120,11 @@ export default {
       groupActions: [
         {
           label: '新建',
-          permission: 'disks_create',
           actions: () => {
             return [
               {
                 label: 'IDC',
+                permission: 'disks_create',
                 action: () => {
                   this.createDialog('CreateDialog', {
                     title: '新建',
@@ -135,6 +135,7 @@ export default {
               },
               {
                 label: '私有云',
+                permission: 'disks_create',
                 action: () => {
                   this.createDialog('CreateDialog', {
                     title: '新建',
@@ -145,6 +146,7 @@ export default {
               },
               {
                 label: '公有云',
+                permission: 'disks_create',
                 action: () => {
                   this.createDialog('CreateDialog', {
                     title: '新建',
