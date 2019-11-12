@@ -10404,10 +10404,10 @@ vxe-table-plugin-antd@^1.4.4:
   resolved "https://registry.npm.taobao.org/vxe-table-plugin-antd/download/vxe-table-plugin-antd-1.4.4.tgz#d32ea707d4ebfc4c6f89e4563ca9d01d815e7589"
   integrity sha1-0y6nB9Tr/ExvieRWPKnQHYFedYk=
 
-vxe-table@^2.5.22:
-  version "2.5.22"
-  resolved "https://registry.npm.taobao.org/vxe-table/download/vxe-table-2.5.22.tgz#c493b093baf018e71cd5cf24cac07f3003a71f82"
-  integrity sha1-xJOwk7rwGOcc1c8kysB/MAOnH4I=
+vxe-table@^2.6.18:
+  version "2.6.18"
+  resolved "https://registry.npm.taobao.org/vxe-table/download/vxe-table-2.6.18.tgz#4293eb4b4b813ac40661f93dda149388bd5aa9f0"
+  integrity sha1-QpPrS0uBOsQGYfk92hSTiL1aqfA=
 
 w3c-hr-time@^1.0.1:
   version "1.0.1"
