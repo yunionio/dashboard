@@ -11,7 +11,7 @@
     <!-- <template v-slot:actions>
       <actions :options="params.singleActions" :row="data" :buttonMode="false" />
     </template> -->
-    <component :is="params.windowData.currentTab" :data="data" :list="params.list" :params="getParams" />
+    <component :is="params.windowData.currentTab" :data="data" :list="params.list" :params="getParams" :res-id="getParams.elasticcache_id" />
   </base-side-page>
 </template>
 

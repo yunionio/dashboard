@@ -64,8 +64,9 @@ export default {
       this.loading = true
       try {
         this.loading = false
-        await this.params.list.onManager('delete', {
-          id: this.params.data[0].id,
+        const ids = this.params.list.selectedItems.map(({ id }) => id)
+        await this.params.list.batchUpdate(ids, {
+          disable_delete: this.form.fc.getFieldValue('disable_delete'),
         })
         this.cancelDialog()
         this.$message.success('操作成功')

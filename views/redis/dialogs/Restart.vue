@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{this.params.title}}</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" :action="this.params.title" />
+      <dialog-selected-tips :count="params.data.length" :action="params.title" />
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
     </div>
     <div slot="footer">
@@ -17,7 +17,7 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'RedisClearDataDialog',
+  name: 'RedisRestartdialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
@@ -30,12 +30,13 @@ export default {
       try {
         this.loading = false
         if (this.params.data && this.params.data.length > 1) {
-          await this.params.list.batchPerformAction('flush-instance', null, 'ready')
+          const ids = this.params.data.map(({ id }) => id)
+          await this.params.list.batchPerformAction('restart', { ids })
         } else {
           await this.params.list.onManager('performAction', {
             id: this.params.data[0].id,
             managerArgs: {
-              action: 'flush-instance',
+              action: 'restart',
             },
           })
         }

@@ -92,9 +92,13 @@ export default {
           meta: () => {
             let validate = true
             let tooltip = ''
-            if (this.data.brand === 'Huawei' && this.data.arch_type === 'single') {
+            if (this.data.brand === 'Huawei' && this.data.local_category === 'single') {
               validate = false
               tooltip = '华为云基础版不支持此操作'
+            }
+            if (this.data.status !== 'running') {
+              validate = false
+              tooltip = '仅运行中的实例支持此操作'
             }
             return {
               buttonType: 'primary',

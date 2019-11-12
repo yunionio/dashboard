@@ -259,6 +259,23 @@ export default {
                   }
                 },
               },
+              {
+                label: '重启',
+                action: () => {
+                  this.createDialog('RedisRestartdialog', {
+                    title: '重启',
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    list: this.list,
+                  })
+                },
+                meta: () => {
+                  return {
+                    validate: selectedLength,
+                    tooltip: notSelectedTooltip,
+                  }
+                },
+              },
             ]
           },
         },
@@ -286,7 +303,7 @@ export default {
             const notRunninTip = !isRunning ? '仅运行中的实例支持此操作' : null
             const isAuthModeOn = obj.auth_mode === 'on'
             const setAuthMode = () => {
-              if (isAuthModeOn) {
+              if (isAuthModeOn && obj.brand !== 'Huawei') {
                 return {
                   label: '关闭免密访问',
                   action: () => {
@@ -317,8 +334,8 @@ export default {
                 },
                 meta: () => {
                   return {
-                    validate: isRunning,
-                    tooltip: notRunninTip,
+                    validate: isRunning && obj.brand !== 'Huawei',
+                    tooltip: notRunninTip || (obj.brand === 'Huawei' && '华为云暂不支持此操作'),
                   }
                 },
               }
@@ -338,13 +355,19 @@ export default {
               {
                 label: '重启',
                 action: () => {
-                  this.list.onManager('performAction', {
-                    steadyStatus: 'running',
-                    id: obj.id,
-                    managerArgs: {
-                      action: 'restart',
-                    },
+                  this.createDialog('RedisRestartdialog', {
+                    title: '重启',
+                    data: [obj],
+                    columns: this.columns,
+                    list: this.list,
                   })
+                  // this.list.onManager('performAction', {
+                  //   steadyStatus: 'running',
+                  //   id: obj.id,
+                  //   managerArgs: {
+                  //     action: 'restart',
+                  //   },
+                  // })
                 },
                 meta: () => {
                   return {

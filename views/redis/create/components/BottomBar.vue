@@ -106,6 +106,10 @@ export default {
         params['engine'] = params.sku.engine
         params['instance_type'] = params.sku.id
       }
+      if (params.loginType === 'random') {
+        params['reset_password'] = true
+        delete params.loginType
+      }
       delete params.sku
       return params
     },

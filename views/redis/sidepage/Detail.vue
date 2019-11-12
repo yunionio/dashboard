@@ -128,15 +128,16 @@ export default {
                 default: ({ row }) => {
                   const pub = row.public_dns || row.public_ip_addr
                   const port = row['public_connect_port']
+                  const btnTxt = port ? '关闭外网地址' : '开启外网地址'
                   const isRunning = row.status === 'running'
                   const notRunninTip = !isRunning ? '仅运行中的实例支持此操作' : null
-                  let RenderSwitch = null
+                  let RenderSwitchBtn = null
                   if (isRunning) {
-                    RenderSwitch = (<a-switch checkedChildren='关闭外网地址' unCheckedChildren='开启外网地址' defaultChecked={!!pub} onChange={this.handleSwitchPublicAddress} />)
+                    RenderSwitchBtn = (<a-button type="link" onClick={() => this.handleSwitchPublicAddress(!port)}>{btnTxt}</a-button>)
                   } else {
-                    RenderSwitch = (
+                    RenderSwitchBtn = (
                       <a-tooltip placement='top' title={notRunninTip}>
-                        <a-switch disabled checkedChildren='关闭外网地址' unCheckedChildren='开启外网地址' defaultChecked={!!pub} />
+                        <a-button type="link" disabled>{btnTxt}</a-button>
                       </a-tooltip>
                     )
                   }
@@ -145,8 +146,8 @@ export default {
                   }
                   return (
                     <div>
-                      {pub && `${pub}:${port}`}
-                      {RenderSwitch}
+                      {pub ? `${pub}:${port}` : '-' }
+                      {RenderSwitchBtn}
                     </div>
                   )
                 },
