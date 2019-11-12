@@ -19,18 +19,18 @@
       </div>
     </a-form-item>
      <a-form-item label="节点类型" v-bind="formItemLayout">
-      <a-radio-group v-decorator="decorators.nodeType || ['node_type']" @change="eimtChange">
+      <a-radio-group v-decorator="decorators.nodeType || ['node_type']" @change="getMemorys">
          <a-radio-button :key="item" :value="item" v-for="item in nodeTypes">{{NODE_TYPE[item]}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
      <a-form-item label="性能类型" v-bind="formItemLayout">
-      <a-radio-group v-decorator="decorators.performance_type || ['performance_type', { initialValue: 'standard' }]" @change="getMemorys">
+      <a-radio-group v-decorator="decorators.performance_type || ['performance_type', { initialValue: 'standard' }]" @change="eimtChange">
          <a-radio-button :key="item.value" :value="item.value" v-for="item in performanceTypes">{{item.key}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
     <a-form-item label="内存" v-bind="formItemLayout" v-if="memorys && memorys.length > 0">
-      <a-radio-group v-decorator="decorators.memory_size_mb || ['memory_size_mb']" @change="eimtChange()">
-        <a-radio-button :key="size" :value="parseInt(size)" v-for="size in memorys">{{sizestr(size, 'M', 1024)}}</a-radio-button>
+      <a-radio-group v-decorator="decorators.memory_size_mb || ['memory_size_mb']" @change="eimtChange">
+        <a-radio-button :key="size" :value="size" v-for="size in memorys">{{sizestr(size, 'M', 1024)}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
   </div>
@@ -207,6 +207,9 @@ export default {
       let memorys = []
       if (this.filterParams[engine] && this.filterParams[engine][version] && this.filterParams[engine][version][category] && this.filterParams[engine][version][category][nodeType]) {
         memorys = Object.keys(this.filterParams[engine][version][category][nodeType])
+        if (memorys && memorys.length > 0) {
+          memorys = memorys.map(numStr => parseInt(numStr))
+        }
       }
       this.memorys = memorys
       if (memorys.indexOf(memory) === -1) {

@@ -73,11 +73,6 @@ export default {
         const category = item.local_category
         const memory = item.memory_size_mb
         const nodeType = item.node_type
-        const provider = item.provider
-        // 华为3.0先隐藏掉
-        if (provider === 'Huawei' && version === '3.0') {
-          return false
-        }
         if (engine && !skuFilters[engine]) {
           skuFilters[engine] = {}
         }
@@ -116,6 +111,10 @@ export default {
     skuRepeat (skuList) {
       const skuObj = {}
       return skuList.filter(item => {
+        // 20191112不支持华为3.0创建
+        if (item.provider === 'Huawei' && item.engine_version === '3.0') {
+          return false
+        }
         const key = `${item.name}-${item.provider}-${item.memory_size_mb}`
         if (!skuObj[key]) {
           skuObj[key] = true
