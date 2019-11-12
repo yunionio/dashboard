@@ -10,7 +10,7 @@ import Dynamicschedtag from '@Cloudenv/views/dynamicschedtag'
 export default {
   index: 7,
   meta: {
-    label: '多云环境',
+    label: '多云管理',
     icon: 'onecloud',
   },
   menus: [

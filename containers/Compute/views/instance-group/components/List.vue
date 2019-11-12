@@ -128,6 +128,10 @@ export default {
               list: this.list,
             })
           },
+          meta: (obj) => ({
+            validate: obj.enabled,
+            tooltip: !obj.enabled ? '启用后重试' : null,
+          }),
         },
         {
           label: '更多',
