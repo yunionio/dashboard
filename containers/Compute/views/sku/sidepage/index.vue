@@ -17,7 +17,6 @@
 
 <script>
 import SkuDetail from './Detail'
-import Dashboard from './Dashboard'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -26,7 +25,6 @@ export default {
   name: 'SkuSidePage',
   components: {
     SkuDetail,
-    Dashboard,
     Actions,
   },
   mixins: [SidePageMixin, WindowsMixin],
