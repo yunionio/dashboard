@@ -335,3 +335,378 @@ export const RESOURCE_TYPES_MAP = {
     key: 'prepaid',
   },
 }
+
+// 介质过滤类型映射表
+export const MEDIUM_MAP = {
+  'rotate': '机械盘',
+  'ssd': '固态硬盘',
+}
+
+export const DISK_TYPES = {
+  'sys': '系统盘',
+  'data': '数据盘',
+  'swap-swap': '分区',
+}
+
+// 支持自定义的存储类型
+export const CUSTOM_STORAGE_TYPES = ['openstack', 'kvm']
+// 公有云存储类型 + 私有云存储类型
+export const STORAGE_TYPES = {
+  aliyun: {
+    'cloud': {
+      label: '普通云盘',
+      value: 'cloud',
+      min: 5, // 数据盘或者新建云硬盘的取值范围【G】
+      max: 2000, // 数据盘或者新建云硬盘的取值范围【G】
+      sysMin: 20, // 系统盘取值范围【G】
+      sysMax: 500, // 系统盘取值范围【G】
+    },
+    'cloud_ssd': {
+      label: 'SSD 云盘',
+      value: 'cloud_ssd',
+      min: 20,
+      max: 32768,
+      sysMin: 20,
+      sysMax: 500,
+    },
+    cloud_essd: {
+      label: 'ESSD云盘PL1',
+      value: 'cloud_essd',
+      min: 20,
+      max: 32768,
+      sysMin: 20,
+      sysMax: 500,
+    },
+    cloud_essd_pl2: {
+      label: 'ESSD云盘PL2',
+      value: 'cloud_essd_pl2',
+      min: 461,
+      max: 32768,
+      sysMin: 20,
+      sysMax: 500,
+    },
+    cloud_essd_pl3: {
+      label: 'ESSD云盘PL3',
+      value: 'cloud_essd_pl3',
+      min: 1261,
+      max: 32768,
+      sysMin: 20,
+      sysMax: 500,
+    },
+    'cloud_efficiency': {
+      label: '高效云盘',
+      value: 'cloud_efficiency',
+      min: 20,
+      max: 32768,
+      default: true,
+      sysMin: 20,
+      sysMax: 500,
+    },
+    'ephemeral_ssd': {
+      label: '本地 SSD 盘',
+      value: 'ephemeral_ssd',
+      min: 5,
+      max: 800,
+      sysMin: 20,
+      sysMax: 500,
+    },
+  },
+  aws: {
+    'gp2': {
+      label: '通用型 SSD',
+      value: 'gp2',
+      min: 1,
+      max: 16384,
+      default: true,
+      sysMin: 1,
+      sysMax: 16384,
+    },
+    'io1': {
+      label: '预配置 IOPS SSD',
+      value: 'io1',
+      min: 4,
+      max: 16384,
+      sysMin: 1,
+      sysMax: 16384,
+    },
+    'st1': {
+      label: '吞吐优化 HDD',
+      value: 'st1',
+      sysUnusable: true, // 系统盘不可用
+      min: 500,
+      max: 16384,
+    },
+    'sc1': {
+      label: 'Cold HDD',
+      value: 'sc1',
+      sysUnusable: true, // 系统盘不可用
+      min: 500,
+      max: 16384,
+    },
+    'standard': {
+      label: '磁介质',
+      value: 'standard',
+      min: 1,
+      max: 1024,
+      sysMin: 1,
+      sysMax: 16384,
+    },
+  },
+  qcloud: {
+    'local_basic': { // 公有云下架了这两款磁盘类型
+      label: '普通本地盘',
+      value: 'local_basic',
+      min: 10,
+      max: 1600,
+      sysUnusable: true, // 系统盘不可用
+      resizeStep: 10, // 扩容步长，默认值是 1 G
+      unCreateCloud: true, // 不支持创建云硬盘
+    },
+    'cloud_basic': {
+      label: '普通云硬盘',
+      value: 'cloud_basic',
+      min: 10,
+      max: 16000,
+      default: true,
+      sysMin: 50,
+      sysMax: 500,
+      resizeStep: 10,
+    },
+    'cloud_premium': {
+      label: '高性能云硬盘',
+      value: 'cloud_premium',
+      min: 50,
+      max: 16000,
+      sysMin: 50,
+      sysMax: 1024,
+      resizeStep: 10,
+    },
+    'cloud_ssd': {
+      label: 'SSD 云硬盘',
+      value: 'cloud_ssd',
+      min: 100,
+      max: 16000,
+      sysMin: 50,
+      sysMax: 500,
+      resizeStep: 10,
+    },
+  },
+  azure: {
+    'standard_lrs': {
+      label: '标准 HDD',
+      value: 'standard_lrs',
+      min: 1,
+      max: 4095,
+      default: true,
+      sysMin: 30,
+      sysMax: 4095,
+    },
+    'standardssd_lrs': {
+      label: '标准 SSD',
+      value: 'standardssd_lrs',
+      min: 1,
+      max: 4095,
+      sysMin: 30,
+      sysMax: 4095,
+    },
+    'premium_lrs': {
+      label: '高级 SSD',
+      value: 'premium_lrs',
+      min: 1,
+      max: 4095,
+      sysMin: 30,
+      sysMax: 4095,
+    },
+  },
+  kvm: {
+    'local': {
+      label: '本地硬盘',
+      value: 'local',
+      min: 1,
+      max: 3 * 1024, // 鹏博士需求，数据盘上限扩大到 3T
+      default: true,
+      sysMin: 10,
+      sysMax: 500,
+      unCreateCloud: true, // 不支持创建云硬盘
+    },
+    'nfs': {
+      label: 'NFS',
+      value: 'nfs',
+      min: 1,
+      max: 3 * 1024,
+      sysMin: 10,
+      sysMax: 500,
+      unCreateCloud: true, // 不支持创建云硬盘
+    },
+    'gpfs': {
+      label: 'GPFS',
+      value: 'gpfs',
+      min: 1,
+      max: 3 * 1024,
+      sysMin: 10,
+      sysMax: 500,
+    },
+    'rbd': {
+      label: 'rbd',
+      value: 'rbd',
+      min: 1,
+      max: 3072,
+      sysMin: 10,
+      sysMax: 500,
+    },
+  },
+  esxi: {
+    'local': {
+      label: '本地硬盘',
+      value: 'local',
+      min: 1,
+      // max: 500,
+      max: 3 * 1024, // 鹏博士需求，数据盘上限扩大到 3T
+      default: true,
+      sysMin: 10,
+      sysMax: 500,
+      unCreateCloud: true, // 不支持创建云硬盘
+    },
+    'nas': {
+      label: 'nas 云盘',
+      value: 'nas',
+      min: 1,
+      max: 3072,
+      sysMin: 10,
+      sysMax: 500,
+      unCreateCloud: true, // 不支持创建云硬盘
+    },
+    'vsan': {
+      label: 'vsan 云盘',
+      value: 'vsan',
+      min: 1,
+      max: 3072,
+      sysMin: 10,
+      sysMax: 500,
+      unCreateCloud: true, // 不支持创建云硬盘
+    },
+  },
+  huawei: {
+    'SSD': {
+      label: '超高IO云硬盘',
+      value: 'SSD',
+      min: 10,
+      max: 32768,
+      sysMin: 20,
+      sysMax: 1024,
+      sort: 3,
+    },
+    'SAS': {
+      label: '高IO云硬盘',
+      value: 'SAS',
+      min: 10,
+      max: 32768,
+      sysMin: 20,
+      sysMax: 1024,
+      sort: 2,
+    },
+    'SATA': {
+      label: '普通IO云硬盘',
+      value: 'SATA',
+      min: 10,
+      max: 32768,
+      default: true,
+      sysMin: 20,
+      sysMax: 1024,
+      sort: 1,
+    },
+  },
+  openstack: {
+    iscsi: {
+      label: 'iscsi',
+      value: 'iscsi',
+      min: 1,
+      max: 500,
+      sysMin: 10,
+      sysMax: 500,
+    },
+  },
+  ucloud: {
+    CLOUD_NORMAL: {
+      label: '普通云盘',
+      value: 'CLOUD_NORMAL',
+      min: 20,
+      max: 8000,
+      sysUnusable: true, // 系统盘不可用
+      skuFamily: ['N2', 'N3'],
+    },
+    CLOUD_SSD: {
+      label: 'SSD云盘',
+      value: 'CLOUD_SSD',
+      min: 20,
+      max: 4000,
+      sysMin: 20,
+      sysMax: 500,
+      skuFamily: ['N3', 'C1', 'N2', 'I2', 'G2', 'G3'],
+    },
+    EXCLUSIVE_LOCAL_DISK: {
+      label: '独享本地盘',
+      value: 'EXCLUSIVE_LOCAL_DISK',
+      min: 4096,
+      max: 4096,
+      sysUnusable: true, // 系统盘不可用
+      skuFamily: ['D1'],
+    },
+  },
+  zstack: {
+    localstorage: {
+      label: '本地盘',
+      value: 'localstorage',
+      min: 1,
+      max: 3 * 1024,
+      sysMin: 10,
+      sysMax: 500,
+    },
+    ceph: {
+      label: '共享云盘',
+      value: 'ceph',
+      min: 1,
+      max: 3 * 1024,
+      sysMin: 10,
+      sysMax: 500,
+    },
+  },
+}
+export const ALL_STORAGE = {}
+export const ALL_STORAGE_LABEL = {}
+Object.keys(STORAGE_TYPES).forEach(hypervisor => {
+  Object.assign(ALL_STORAGE, STORAGE_TYPES[hypervisor])
+})
+
+Object.keys(ALL_STORAGE).forEach(sType => {
+  ALL_STORAGE_LABEL[sType] = ALL_STORAGE[sType].label
+})
+
+export const weekOptions = ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日']
+
+export const timeOptions = [
+  '00:00',
+  '01:00',
+  '02:00',
+  '03:00',
+  '04:00',
+  '05:00',
+  '06:00',
+  '07:00',
+  '08:00',
+  '09:00',
+  '10:00',
+  '11:00',
+  '12:00',
+  '13:00',
+  '14:00',
+  '15:00',
+  '16:00',
+  '17:00',
+  '18:00',
+  '19:00',
+  '20:00',
+  '21:00',
+  '22:00',
+  '23:00',
+]
