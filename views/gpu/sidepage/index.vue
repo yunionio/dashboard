@@ -17,7 +17,6 @@
 
 <script>
 import GpuDetail from './Detail'
-import Dashboard from './Dashboard'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -26,7 +25,6 @@ export default {
   name: 'GpuSidePage',
   components: {
     GpuDetail,
-    Dashboard,
     Actions,
   },
   mixins: [SidePageMixin, WindowsMixin],
