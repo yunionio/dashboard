@@ -361,6 +361,22 @@ export default {
                       })
                     },
                   },
+                  {
+                    label: '同步状态',
+                    action: () => {
+                      this.list.onManager('performAction', {
+                        id: obj.id,
+                        managerArgs: {
+                          action: 'syncstatus',
+                        },
+                      })
+                    },
+                    meta: () => {
+                      return {
+                        validate: ['sched_fail', 'net_fail', 'disk_fail'].includes(obj.status),
+                      }
+                    },
+                  },
                 ],
               },
               {
