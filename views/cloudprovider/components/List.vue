@@ -25,7 +25,7 @@ export default {
     },
   },
   data () {
-    const ownerDomain = this.$store.getters.isAdminMode || this.list.selectedItems.every(obj => obj.domain_id === this.$store.getters.userInfo.projectDomainId)
+    const ownerDomain = list => this.$store.getters.isAdminMode || list.selectedItems.every(obj => obj.domain_id === this.$store.getters.userInfo.projectDomainId)
     return {
       list: this.$list.createList(this, {
         resource: 'cloudproviders',
@@ -112,9 +112,9 @@ export default {
           },
           meta: () => {
             let tooltip
-            if (!ownerDomain) tooltip = '无权限操作'
+            if (!ownerDomain(this.list)) tooltip = '无权限操作'
             return {
-              validate: this.list.selectedItems.length && ownerDomain,
+              validate: this.list.selectedItems.length && ownerDomain(this.list),
               tooltip,
             }
           },
@@ -126,9 +126,9 @@ export default {
           },
           meta: () => {
             let tooltip
-            if (!ownerDomain) tooltip = '无权限操作'
+            if (!ownerDomain(this.list)) tooltip = '无权限操作'
             return {
-              validate: this.list.selectedItems.length && ownerDomain,
+              validate: this.list.selectedItems.length && ownerDomain(this.list),
               tooltip,
             }
           },
@@ -144,7 +144,7 @@ export default {
           },
           meta: () => {
             return {
-              validate: this.list.selectedItems.length && this.list.selectedItems.every(val => val.enabled) && ownerDomain,
+              validate: this.list.selectedItems.length && this.list.selectedItems.every(val => val.enabled) && ownerDomain(this.list),
             }
           },
         },
@@ -162,9 +162,9 @@ export default {
           meta: obj => {
             let tooltip
             if (!obj.enabled) tooltip = '请先启用'
-            if (!ownerDomain) tooltip = '无权限操作'
+            if (!ownerDomain(this.list)) tooltip = '无权限操作'
             return {
-              validate: obj.enabled && ownerDomain,
+              validate: obj.enabled && ownerDomain(this.list),
               tooltip,
             }
           },
@@ -186,7 +186,7 @@ export default {
           meta: obj => {
             let tooltip
             let validate = true
-            if (!ownerDomain) {
+            if (!ownerDomain(this.list)) {
               tooltip = '权限不足'
               validate = false
             }
@@ -216,9 +216,9 @@ export default {
                 },
                 meta: () => {
                   let tooltip
-                  if (!ownerDomain) tooltip = '无权限操作'
+                  if (!ownerDomain(this.list)) tooltip = '无权限操作'
                   return {
-                    validate: !obj.enabled && ownerDomain,
+                    validate: !obj.enabled && ownerDomain(this.list),
                     tooltip,
                   }
                 },
@@ -235,9 +235,9 @@ export default {
                 },
                 meta: () => {
                   let tooltip
-                  if (!ownerDomain) tooltip = '无权限操作'
+                  if (!ownerDomain(this.list)) tooltip = '无权限操作'
                   return {
-                    validate: obj.enabled && ownerDomain,
+                    validate: obj.enabled && ownerDomain(this.list),
                     tooltip,
                   }
                 },

@@ -25,7 +25,7 @@ export default {
     },
   },
   data () {
-    const ownerDomain = this.$store.getters.isAdminMode || this.list.selectedItems.every(obj => obj.domain_id === this.$store.getters.userInfo.projectDomainId)
+    const ownerDomain = list => this.$store.getters.isAdminMode || this.list.selectedItems.every(obj => obj.domain_id === this.$store.getters.userInfo.projectDomainId)
     return {
       list: this.$list.createList(this, {
         resource: 'cloudproviderregions',
@@ -95,7 +95,7 @@ export default {
           },
           meta: () => {
             return {
-              validate: this.list.selectedItems.length && ownerDomain,
+              validate: this.list.selectedItems.length && ownerDomain(this.list),
             }
           },
         },
@@ -113,9 +113,9 @@ export default {
           },
           meta: obj => {
             let tooltip
-            if (!ownerDomain) tooltip = '无权限操作'
+            if (!ownerDomain(this.list)) tooltip = '无权限操作'
             return {
-              validate: ownerDomain,
+              validate: ownerDomain(this.list),
               tooltip,
             }
           },
