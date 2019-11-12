@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="套餐"
+    title="透传设备"
     icon="onecloud"
     :res-name="data.name"
     :actions="params.actions"
@@ -16,22 +16,22 @@
 </template>
 
 <script>
-import SkuDetail from './Detail'
+import GpuDetail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
 
 export default {
-  name: 'SkuSidePage',
+  name: 'GpuSidePage',
   components: {
-    SkuDetail,
+    GpuDetail,
     Actions,
   },
   mixins: [SidePageMixin, WindowsMixin],
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'sku-detail' },
+        { label: '详情', key: 'gpu-detail' },
         { label: '操作日志', key: 'event-drawer' },
       ],
     }

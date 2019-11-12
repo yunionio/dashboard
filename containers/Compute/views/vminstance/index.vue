@@ -2,7 +2,7 @@
   <div>
     <page-header title="主机" />
     <page-body>
-      <vm-instance-list />
+      <vm-instance-list :id="listId" />
     </page-body>
   </div>
 </template>
@@ -14,6 +14,11 @@ export default {
   name: 'VmInstanceIndex',
   components: {
     VmInstanceList,
+  },
+  data () {
+    return {
+      listId: 'VMInstanceList',
+    }
   },
   methods: {
     createServer () {

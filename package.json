@@ -28,7 +28,7 @@
     "vue-i18n": "^8.14.0",
     "vue-router": "^3.0.3",
     "vuex": "^3.0.1",
-    "vxe-table": "^2.5.22",
+    "vxe-table": "^2.6.18",
     "vxe-table-plugin-antd": "^1.4.4",
     "xe-utils": "^2.2.4"
   },

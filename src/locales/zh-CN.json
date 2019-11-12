@@ -237,6 +237,34 @@
       "unknown": "未知",
       "ready": "正常",
       "init": "初始化"
+    },
+    "disk": {
+      "init": "初始化中",
+      "rebuild": "重建中",
+      "alloc_failed": "分配失败",
+      "start_alloc": "开始分配",
+      "allocating": "分配中",
+      "ready": "可用",
+      "deallocating": "删除中",
+      "dealloc_failed": "删除失败",
+      "start_save": "开始保存镜像",
+      "saving": "正在保存镜像",
+      "start_resize": "开始调整大小",
+      "resizing": "正在调整大小",
+      "start_migrate": "开始迁移",
+      "post_migrate": "迁移完成",
+      "migrating": "迁移中",
+      "start_clone": "开始克隆",
+      "clone_failed": "克隆失败",
+      "unknown": "未知",
+      "reset": "回滚中",
+      "attaching": "挂载中",
+      "detaching": "卸载中",
+      "backup_start_alloc": "备份磁盘创建中",
+      "backup_alloc_failed": "备份磁盘创建失败",
+      "schedule": "调度中",
+      "apply_snapshot_failed": "绑定快照策略失败",
+      "cancel_snapshot_failed": "解绑快照策略失败"
     }
   },
   "skuCategoryOptions": {
@@ -365,7 +393,11 @@
     "isChinese": "请输入中文字符",
     "domain": "请输入合法域名",
     "url": "请输入合法的URL",
-    "resourceName": "字母开头，数字和字母大小写组合，长度为2-128个字符，不含\".\",\"_\",\"@\""
+    "resourceName": "字母开头，数字和字母大小写组合，长度为2-128个字符，不含\".\",\"_\",\"@\"",
+    "password": "至少八个字符，至少一个字母和一个数字",
+    "publicKey": "无效的公钥, 只支持 RSA/DSA 类型公钥",
+    "secretKeyName": "名称必须以字母开头,且只能包含字母、数字、._@-字符",
+    "snapshotName": "字母开头，数字和字母大小写组合，长度为2-128个字符，可含\".\",\"-\",\"_\""
   },
   "dialog": {
     "ok": "确定",

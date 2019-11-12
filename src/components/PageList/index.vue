@@ -11,9 +11,13 @@
         <div class="flex-fill">
           <search-box v-if="filterOptions" :options="filterOptions" :value="filter" @input="handleFilterChange" />
         </div>
-        <div class="ml-4" v-if="exportDataOptions">
-          <a-tooltip title="导出数据"><a-button icon="download" style="height: 38px;" @click="handleExportData" /></a-tooltip>
-          <!-- <a-tooltip title="自定义列"><a-button class="ml-2" icon="setting" style="height: 38px;" /></a-tooltip> -->
+        <div class="ml-4" v-if="exportDataOptions || list.id">
+          <a-tooltip title="导出数据" v-if="exportDataOptions">
+            <a-button icon="download" style="height: 38px;" @click="handleExportData" />
+          </a-tooltip>
+          <a-tooltip title="自定义列" v-if="list.id">
+            <a-button class="ml-2" icon="setting" style="height: 38px;" @click="handleCustomList" />
+          </a-tooltip>
         </div>
       </div>
     </page-toolbar>
@@ -24,6 +28,7 @@
       :data="data"
       :columns="tableColumns"
       :pager-config="tablePage"
+      :customs.sync="customs"
       @current-page-change="handleCurrentPageChange"
       @page-size-change="handlePageSizeChange"
       @select-change="handleSelectChange"
@@ -36,6 +41,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import Actions from './Actions'
 import RefreshButton from './RefreshButton'
@@ -72,6 +78,11 @@ export default {
       type: Object,
     },
   },
+  data () {
+    return {
+      customs: this.list.config.hiddenColumns.map(item => ({ field: item, visible: false })),
+    }
+  },
   computed: {
     ...mapGetters(['userInfo']),
     loading () {
@@ -89,7 +100,7 @@ export default {
     tableColumns () {
       let defaultColumns = []
       if (this.groupActions && this.groupActions.length > 0) {
-        defaultColumns.push({ type: 'selection', width: 60 })
+        defaultColumns.push({ type: 'checkbox', width: 60 })
       }
       defaultColumns = defaultColumns.concat(this.columns)
       if (this.singleActions && this.singleActions.length) {
@@ -113,6 +124,20 @@ export default {
         total: this.list.total,
         currentPage,
         pageSize: limit,
+      }
+    },
+  },
+  watch: {
+    'list.config.hiddenColumns' (val, oldVal) {
+      if (!R.equals(val, oldVal)) {
+        for (let i = 0, len = this.customs.length; i < len; i++) {
+          if (val.includes(this.customs[i]['property'])) {
+            this.customs[i]['visible'] = false
+          } else {
+            this.customs[i]['visible'] = true
+          }
+        }
+        this.$refs.grid.reloadCustoms(this.customs)
       }
     },
   },
@@ -147,6 +172,13 @@ export default {
         title: '导出数据',
         list: this.list,
         options: this.exportDataOptions,
+      })
+    },
+    handleCustomList () {
+      this.$parent.createDialog('CustomListDialog', {
+        title: '自定义列表',
+        list: this.list,
+        customs: this.customs,
       })
     },
   },
