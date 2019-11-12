@@ -175,7 +175,7 @@ export default {
                   })
                 },
                 meta: () => ({
-                  validate: !obj.enabled,
+                  validate: obj.enabled,
                 }),
               },
               {
