@@ -2,6 +2,7 @@ import * as R from 'ramda'
 import Cookies from 'js-cookie'
 import { Base64 } from 'js-base64'
 import store from '@/store'
+import router from '@/router'
 import { typeClouds } from '@/utils/common/hypervisor'
 
 const ONECLOUD_AUTH_KEY = 'yunionauth'
@@ -22,7 +23,12 @@ export function decodeToken (token) {
   if (token) {
     const auth = Base64.decode(token)
     if (auth) {
-      return JSON.parse(auth)
+      try {
+        return JSON.parse(auth)
+      } catch (error) {
+        router.push('/auth')
+        console.warn('Parse auth failed, please re login')
+      }
     }
   }
   return null
