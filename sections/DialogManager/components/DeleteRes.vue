@@ -34,8 +34,14 @@ export default {
           await this.params.ok()
         } else {
           const ids = this.params.data.map(item => item.id)
+          let params = {}
+          params = {
+            ...params,
+            ...this.params.requestParams,
+          }
           const response = await this.params.list.onManager('batchDelete', {
             id: ids,
+            params,
           })
           if (this.params.success && R.is(Function, this.params.success)) {
             this.params.success(response)
