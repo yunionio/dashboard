@@ -9,13 +9,16 @@
 
 <script>
 import qs from 'qs'
+import { mapGetters } from 'vuex'
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
+import { commonUnabled, cloudEnabled, cloudUnabledTip, commonEnabled, commonTip } from '../utils'
 import { Manager } from '@/utils/manager'
 import { sizestr } from '@/utils/utils'
 import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getBrandTableColumn, getCopyWithContentTableColumn, getIpsTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 import SystemIcon from '@/sections/SystemIcon'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
+import { typeClouds } from '@/utils/common/hypervisor'
 
 export default {
   name: 'VmInstanceList',
@@ -295,7 +298,7 @@ export default {
                     },
                     meta: () => {
                       return {
-                        validate: obj.status !== 'running',
+                        validate: obj.status === 'ready' && !commonUnabled(obj),
                       }
                     },
                   },
@@ -312,7 +315,7 @@ export default {
                     },
                     meta: () => {
                       return {
-                        validate: obj.status !== 'ready',
+                        validate: obj.status === 'running' && !commonUnabled(obj),
                       }
                     },
                   },
@@ -326,6 +329,11 @@ export default {
                           action: 'restart',
                         },
                       })
+                    },
+                    meta: () => {
+                      return {
+                        validate: (obj.status === 'running' || obj.status === 'stop_fail') && !commonUnabled(obj),
+                      }
                     },
                   },
                 ],
@@ -346,21 +354,382 @@ export default {
                 ],
               },
               {
+                label: '密码密钥',
+                submenus: [
+                  {
+                    label: '重置密码',
+                    permission: 'server_perform_deploy',
+                    action: () => {
+                      this.createDialog('VmResetPasswordDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      if (commonUnabled(obj)) return ret
+                      if (obj.keypair_id && obj.keypair_id.toLowerCase() !== 'none') {
+                        ret.tooltip = '已绑定密钥的云服务器无法重置密码'
+                        return ret
+                      }
+                      ret.validate = cloudEnabled('resetPassword', obj)
+                      ret.tooltip = cloudUnabledTip('resetPassword', obj)
+                      return ret
+                    },
+                  },
+                  {
+                    label: '绑定密钥',
+                    permission: 'server_perform_deploy',
+                    action: () => {
+                      this.createDialog('VmBindKeypairDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      const osType = obj.metadata && obj.metadata.os_name
+                      if (['aws', 'azure'].includes(obj.hypervisor) && osType === 'Windows') {
+                        ret.tooltip = 'Windows操作系统不支持该功能'
+                        return ret
+                      }
+                      if (commonUnabled(obj)) return ret
+                      if (obj.keypair) {
+                        ret.tooltip = '该服务器已关联密钥'
+                        return ret
+                      }
+                      ret.validate = cloudEnabled('bindKeyPair', obj)
+                      ret.tooltip = cloudUnabledTip('bindKeyPair', obj)
+                      return ret
+                    },
+                  },
+                  {
+                    label: '解绑密钥',
+                    permission: 'server_perform_deploy',
+                    action: () => {
+                      this.createDialog('VmUnbindKeypairDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      if (commonUnabled(obj)) return ret
+                      if (!obj.keypair) {
+                        ret.tooltip = '该服务器未关联密钥'
+                        return ret
+                      }
+                      ret.validate = cloudEnabled('unBindKeyPair', obj)
+                      ret.tooltip = cloudUnabledTip('unBindKeyPair', obj)
+                      return ret
+                    },
+                  },
+                ],
+              },
+              {
+                label: '镜像',
+                submenus: [
+                  {
+                    label: '保存镜像',
+                    permission: 'server_perform_save_image',
+                    action: () => {
+                      this.createDialog('VmSaveImageDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      const noSupportBrand = [
+                        typeClouds.hypervisorMap.openstack.brand,
+                        typeClouds.hypervisorMap.zstack.brand,
+                        typeClouds.hypervisorMap.dstack.brand,
+                      ]
+                      if (noSupportBrand.includes(obj.brand)) {
+                        ret.tooltip = `${obj.brand}暂不支持该操作`
+                        return ret
+                      }
+                      if (commonUnabled(obj)) return ret
+                      ret.validate = commonEnabled(obj)
+                      ret.tooltip = commonTip(obj)
+                      return ret
+                    },
+                  },
+                  {
+                    label: '挂载ISO',
+                    permission: 'server_perform_insertiso',
+                    action: () => {
+                      // this.createDialog('VmResetPasswordDialog', {
+                      //   data: [obj],
+                      //   columns: this.columns,
+                      //   list: this.list,
+                      // })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      if (commonUnabled(obj)) return ret
+                      if (obj.cdrom) {
+                        ret.tooltip = '该服务器已经挂载ISO镜像'
+                        return ret
+                      }
+                      ret.validate = cloudEnabled('insertiso', obj)
+                      ret.tooltip = cloudUnabledTip('insertiso', obj)
+                      return ret
+                    },
+                  },
+                  {
+                    label: '卸载ISO',
+                    permission: 'server_perform_ejectiso',
+                    action: () => {
+                      // this.createDialog('VmResetPasswordDialog', {
+                      //   data: [obj],
+                      //   columns: this.columns,
+                      //   list: this.list,
+                      // })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      if (commonUnabled(obj)) return ret
+                      if (!obj.cdrom) {
+                        ret.tooltip = '该服务器未挂载ISO镜像'
+                        return ret
+                      }
+                      ret.validate = cloudEnabled('ejectiso', obj)
+                      ret.tooltip = cloudUnabledTip('ejectiso', obj)
+                      return ret
+                    },
+                  },
+                ],
+              },
+              {
+                label: '网络安全',
+                submenus: [
+                  {
+                    label: '关联安全组',
+                    permission: 'server_perform_add_secgroup',
+                    action: () => {
+                      // this.createDialog('VmResetPasswordDialog', {
+                      //   data: [obj],
+                      //   columns: this.columns,
+                      //   list: this.list,
+                      // })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: cloudEnabled('assignSecgroup', obj),
+                        tooltip: cloudUnabledTip('assignSecgroup', obj),
+                      }
+                      return ret
+                    },
+                  },
+                  {
+                    label: '绑定弹性公网IP',
+                    action: () => {
+                      // this.createDialog('VmResetPasswordDialog', {
+                      //   data: [obj],
+                      //   columns: this.columns,
+                      //   list: this.list,
+                      // })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      if (commonUnabled(obj)) return ret
+                      if (obj.eip) {
+                        ret.tooltip = '已绑定，解绑后重试'
+                        return ret
+                      }
+                      ret.validate = cloudEnabled('bindEip', obj)
+                      ret.tooltip = cloudUnabledTip('bindEip', obj)
+                      return ret
+                    },
+                  },
+                  {
+                    label: '解绑弹性公网IP',
+                    action: () => {
+                      // this.createDialog('VmResetPasswordDialog', {
+                      //   data: [obj],
+                      //   columns: this.columns,
+                      //   list: this.list,
+                      // })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      if (commonUnabled(obj)) return ret
+                      if (obj.eip_mode === 'public_ip') {
+                        ret.tooltip = 'Public IP无法解绑'
+                        return ret
+                      }
+                      ret.validate = cloudUnabledTip('unbindEip', obj)
+                      ret.tooltip = cloudEnabled('unbindEip', obj)
+                      return ret
+                    },
+                  },
+                ],
+              },
+              {
+                label: '高可用',
+                submenus: [
+                  {
+                    label: '添加备份机',
+                    action: () => {
+                      // this.createDialog('VmResetPasswordDialog', {
+                      //   data: [obj],
+                      //   columns: this.columns,
+                      //   list: this.list,
+                      // })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      if (!this.isAdminMode) {
+                        ret.tooltip = '无权限操作'
+                        return ret
+                      }
+                      if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
+                        ret.tooltip = '只有OneCloud主机支持此操作'
+                        return ret
+                      }
+                      if (obj.backup_host_id) {
+                        ret.tooltip = '已经添加备份机'
+                        return ret
+                      }
+                      ret.validate = true
+                      return ret
+                    },
+                  },
+                  {
+                    label: '删除备份机',
+                    action: () => {
+                      // this.createDialog('VmResetPasswordDialog', {
+                      //   data: [obj],
+                      //   columns: this.columns,
+                      //   list: this.list,
+                      // })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      if (!this.isAdminMode) {
+                        ret.tooltip = '无权限操作'
+                        return ret
+                      }
+                      if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
+                        ret.tooltip = '只有OneCloud主机支持此操作'
+                        return ret
+                      }
+                      ret.validate = true
+                      return ret
+                    },
+                  },
+                  {
+                    label: '切换',
+                    action: () => {
+                      // this.createDialog('VmResetPasswordDialog', {
+                      //   data: [obj],
+                      //   columns: this.columns,
+                      //   list: this.list,
+                      // })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      if (!this.isAdminMode) {
+                        ret.tooltip = '无权限操作'
+                        return ret
+                      }
+                      if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
+                        ret.tooltip = '只有OneCloud主机支持此操作'
+                        return ret
+                      }
+                      ret.validate = true
+                      return ret
+                    },
+                  },
+                  {
+                    label: '迁移',
+                    action: () => {
+                      // this.createDialog('VmResetPasswordDialog', {
+                      //   data: [obj],
+                      //   columns: this.columns,
+                      //   list: this.list,
+                      // })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      if (obj.backup_host_id) {
+                        ret.tooltip = '高可用机器不允许迁移'
+                        return ret
+                      }
+                      if (obj.is_gpu) {
+                        ret.tooltip = '仅通用型云服务器支持该操作'
+                        return ret
+                      }
+                      if (!this.isAdminMode) {
+                        ret.tooltip = '无权限操作'
+                        return ret
+                      }
+                      if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
+                        ret.tooltip = '只有OneCloud主机支持此操作'
+                        return ret
+                      }
+                      ret.validate = true
+                      ret.tooltip = cloudUnabledTip('transfer', obj)
+                      return ret
+                    },
+                  },
+                ],
+              },
+              {
                 label: '删除',
                 submenus: [
                   {
                     label: '删除',
                     action: () => {
-                      this.list.onManager('delete', {
-                        id: obj.id,
+                      this.createDialog('DeleteResDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                        title: '删除',
                       })
                     },
-                    meta: () => {
-                      return {
-                        validate: obj.can_delete,
-                        tooltip: obj.disable_delete ? '请点击修改属性禁用删除保护后重试' : null,
-                      }
-                    },
+                    meta: () => this.$getDeleteResult(obj),
                   },
                 ],
               },
@@ -370,6 +739,7 @@ export default {
       ],
     }
   },
+  computed: mapGetters(['isAdminMode']),
   created () {
     this.webconsoleManager = new Manager('webconsole', 'v1')
     this.list.fetchData()

@@ -16,13 +16,10 @@
         :select-props="{ allowClear: true, labelInValue: true, placeholder: '请选择关联密钥' }" />
     </a-form-item>
     <a-form-item v-if="(loginTypeMap && loginTypeMap.password) && vmLoginType === loginTypeMap.password.key">
-      <a-input
+      <a-input-password
         class="w-50"
         v-decorator="decorators.password"
-        :type="isShowPwd ? 'text' : 'password'"
-        placeholder="请输入密码">
-        <a slot="suffix" @click="handleEyeClick"><a-icon  :type="isShowPwd ? 'eye' : 'eye-invisible'" style="color: rgba(0,0,0,.45)" /></a>
-      </a-input>
+        placeholder="请输入密码" />
     </a-form-item>
   </div>
 </template>
@@ -60,7 +57,6 @@ export default {
   data () {
     return {
       vmLoginType: 'random',
-      isShowPwd: false,
     }
   },
   computed: {
@@ -86,9 +82,6 @@ export default {
   methods: {
     loginTypeChange (e) {
       this.vmLoginType = e.target.value
-    },
-    handleEyeClick () {
-      this.isShowPwd = !this.isShowPwd
     },
   },
 }
