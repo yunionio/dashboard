@@ -13,10 +13,10 @@
         </div>
         <div class="ml-4" v-if="exportDataOptions || list.id">
           <a-tooltip title="导出数据" v-if="exportDataOptions">
-            <a-button icon="download" style="height: 38px;" @click="handleExportData" />
+            <a-button icon="download" style="height: 38px; width: 40px;" @click="handleExportData" />
           </a-tooltip>
           <a-tooltip title="自定义列" v-if="list.id">
-            <a-button class="ml-2" icon="setting" style="height: 38px;" @click="handleCustomList" />
+            <a-button class="ml-2" icon="setting" style="height: 38px; width: 40px;" @click="handleCustomList" />
           </a-tooltip>
         </div>
       </div>
