@@ -77,7 +77,7 @@ export default {
       // 如果为域管理后台返回所有资源减去管理的资源
       if (getters.isDomainMode) {
         _.remove(ret, resource => {
-          return systemResource && domainResource.includes(resource)
+          return systemResource && systemResource.includes(resource)
         })
         return ret
       }
