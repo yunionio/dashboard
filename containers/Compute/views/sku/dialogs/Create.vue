@@ -80,6 +80,7 @@ export default {
       try {
         const values = await this.validateForm()
         this.loading = true
+        values.memory_size_mb = values.memory_size_mb * 1024
         await this.doCreate(values)
         this.loading = false
         this.cancelDialog()

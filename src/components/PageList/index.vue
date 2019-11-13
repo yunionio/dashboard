@@ -131,7 +131,8 @@ export default {
     'list.config.hiddenColumns' (val, oldVal) {
       if (!R.equals(val, oldVal)) {
         for (let i = 0, len = this.customs.length; i < len; i++) {
-          if (val.includes(this.customs[i]['property'])) {
+          const item = this.customs[i]
+          if (item.type !== 'checkbox' && item.property !== 'action' && val.includes(item.property)) {
             this.customs[i]['visible'] = false
           } else {
             this.customs[i]['visible'] = true
