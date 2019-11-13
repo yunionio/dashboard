@@ -146,7 +146,7 @@ class CreateList {
     hiddenColumns = [],
   }) {
     // 列表唯一标识
-    this.id = id
+    this.id = id ? `LIST_${id}` : undefined
     // vm 实例
     this.templateContext = templateContext
     this.resource = resource

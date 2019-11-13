@@ -29,7 +29,6 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        this.loading = false
         if (this.params.ok) {
           await this.params.ok()
         } else {
@@ -49,7 +48,7 @@ export default {
         }
         this.cancelDialog()
         this.$message.success('操作成功')
-      } catch (error) {
+      } finally {
         this.loading = false
       }
     },
