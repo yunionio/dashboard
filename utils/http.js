@@ -139,7 +139,7 @@ http.interceptors.response.use(
     pendingCount === 0 && hiddenLoading()
     if (error.response) {
       const status = error.response.status
-      if (status === 401) {
+      if (status === 401 && error.config.url.startsWith('/api/v1/auth')) {
         store.dispatch('auth/logout').then(() => {
           router.push('/auth')
         })
