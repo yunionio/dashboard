@@ -28,7 +28,7 @@ import WindowsMixin from '@/mixins/windows'
 import DomainProject from '@/sections/DomainProject'
 
 export default {
-  name: 'ChangeProjectDialog',
+  name: 'VmChangeProjectDialog',
   components: {
     DomainProject,
   },

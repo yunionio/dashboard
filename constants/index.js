@@ -710,3 +710,15 @@ export const timeOptions = [
   '22:00',
   '23:00',
 ]
+
+// 磁盘类型
+export const DISK_TYPE = {
+  'data': {
+    value: 'data',
+    text: '数据盘',
+  },
+  'sys': {
+    value: 'sys',
+    text: '系统盘',
+  },
+}

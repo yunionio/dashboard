@@ -23,13 +23,9 @@ import { typeClouds } from '@/utils/common/hypervisor'
 export default {
   name: 'VmInstanceList',
   mixins: [WindowsMixin],
-  props: {
-    id: String,
-  },
   data () {
     return {
       list: this.$list.createList(this, {
-        id: this.id,
         resource: 'servers',
         getParams: this.getParams,
         steadyStatus: Object.values(expectStatus.server).flat(),
@@ -354,7 +350,7 @@ export default {
                   {
                     label: '更改项目',
                     action: () => {
-                      this.createDialog('ChangeProjectDialog', {
+                      this.createDialog('VmChangeProjectDialog', {
                         data: [obj],
                         columns: this.columns,
                         list: this.list,
@@ -371,10 +367,15 @@ export default {
                         },
                       })
                     },
-                    meta: () => {
-                      return {
-                        validate: ['sched_fail', 'net_fail', 'disk_fail'].includes(obj.status),
-                      }
+                  },
+                  {
+                    label: '创建快照',
+                    action: () => {
+                      this.createDialog('VmSnapshotCreateDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                      })
                     },
                   },
                 ],
