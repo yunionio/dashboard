@@ -1,25 +1,24 @@
 import { CITYS, CLOUD_PROVIDERS_MAP } from '@/constants'
 
 // eslint-disable-next-line no-unused-vars
-const Select = {
-  name: 'Select',
-  methods: {
-    filterOption (input, option) {
-      return (
-        option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
-      )
-    },
-  },
-  render (h) {
-    const children = this.$slots.default
-    const { placeholder, loading } = this.$attrs
-    return (
-      <a-select allowClear showSearch filterOption={this.filterOption} onChange={() => this.$emit('change')} loading={loading} placeholder={placeholder}>
-        {children}
-      </a-select>
-    )
-  },
-}
+// const Select = {
+//   name: 'Select',
+//   methods: {
+//     filterOption (input, option) {
+//       return (
+//         option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+//       )
+//     },
+//   },
+//   render (h) {
+//     const children = this.$slots.default
+//     return (
+//       <a-select allowClear showSearch filterOption={this.filterOption} onChange={() => this.$emit('change')}>
+//         {children}
+//       </a-select>
+//     )
+//   },
+// }
 
 export default {
   name: 'AreaSelect',
@@ -66,6 +65,7 @@ export default {
   },
   computed: {
     FC () {
+      console.log(this.form, '===')
       if (this.form && this.form.fc) {
         return this.form.fc
       }
@@ -82,6 +82,11 @@ export default {
     },
   },
   methods: {
+    filterOption (input, option) {
+      return (
+        option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      )
+    },
     firstName (name) {
       return name.replace(/^\S/, s => s.toUpperCase())
     },
@@ -158,12 +163,12 @@ export default {
         })
       }
       return (
-        <Select onChange={_handleChange} loading={this.cityLoading} placeholder="请选择城市">
+        <a-select allowClear showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.cityLoading} placeholder="请选择城市">
           {this.cityList.map(city => {
             const { id, name } = city
             return <a-select-option key={id} value={name}>{CITYS[name] || name}</a-select-option>
           })}
-        </Select>
+        </a-select>
       )
     },
     async fetchProvider () {
@@ -199,12 +204,12 @@ export default {
         })
       }
       return (
-        <Select onChange={_handleChange} loading={this.providerLoading} placeholder="请选择平台">
+        <a-select allowClear showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.providerLoading} placeholder="请选择平台">
           {this.providerList.map(provider => {
             const { name } = provider
             return <a-select-option key={name} value={name}>{CLOUD_PROVIDERS_MAP[name] || name}</a-select-option>
           })}
-        </Select>
+        </a-select>
       )
     },
     async fetchRegion () {
@@ -245,12 +250,12 @@ export default {
         }, _callback)
       }
       return (
-        <Select onChange={_handleChange} loading={this.regionLoading} placeholder="请选择区域">
+        <a-select allowClear showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.regionLoading} placeholder="请选择区域">
           {this.regionList.map(region => {
             const { id, name } = region
             return <a-select-option key={id} value={id}>{name}</a-select-option>
           })}
-        </Select>
+        </a-select>
       )
     },
     async fetchZone () {
@@ -293,17 +298,18 @@ export default {
         }, _callback)
       }
       return (
-        <Select onChange={_handleChange} loading={this.regionLoading} placeholder="请选择可用区">
+        <a-select allowClear showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.regionLoading} placeholder="请选择可用区">
           {this.zoneList.map(zone => {
             const { id, name } = zone
             return <a-select-option key={id} value={id}>{name}</a-select-option>
           })}
-        </Select>
+        </a-select>
       )
     },
   },
   created () {
     this.fetchs()
+    console.log(this.form, '---')
   },
   render (h) {
     const { getFieldDecorator, getFieldsValue } = this.FC
