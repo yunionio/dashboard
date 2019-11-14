@@ -31,7 +31,7 @@ import { CreateServerForm } from '@Compute/constants'
 import { ACCOUNT_PRIVILEGES } from '../constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import validateForm, { passwordValidator } from '@/utils/validate'
+import { passwordValidator } from '@/utils/validate'
 
 export default {
   name: 'RedisAccountDialog',
@@ -52,6 +52,16 @@ export default {
   computed: {
     decorators () {
       const { initialValues = {} } = this.params
+      const validateNmae = (rule, value, _callback) => {
+        const ALL_DIGITS = /\d+/g
+        const ALL_LETTERS = /[a-z]/g
+        const REG = /^[a-z][a-z0-9_]*$/
+        if (value && value.length <= 16 && new RegExp('_').test(value) && REG.test(value) && ALL_DIGITS.test(value) && ALL_LETTERS.test(value)) {
+          _callback()
+        } else {
+          _callback('以字母开头，由小写字母，数字、下划线组成。长度不超过16个字符')
+        }
+      }
       const decorators = {
         name: [
           'name',
@@ -60,7 +70,7 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: '请输入名称' },
-              { validator: validateForm('serverName') },
+              { validator: validateNmae },
             ],
           },
         ],

@@ -323,10 +323,10 @@ export default {
                 }
               }
               return {
-                label: '开启密码访问',
+                label: '开启免密访问',
                 action: () => {
                   this.createDialog('RedisUpdateAuthModeDialog', {
-                    title: '开启密码访问',
+                    title: '开启免密访问',
                     data: [obj],
                     columns: this.columns,
                     list: this.list,
