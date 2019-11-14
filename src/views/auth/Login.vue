@@ -207,9 +207,9 @@ export default {
       this.loading = true
       try {
         const { data: { domains, regions, idps, captcha } } = await this.$http.get('/v1/auth/regions')
-        this.form.fi.regions = regions
-        this.form.fi.domains = domains
-        this.form.fi.idps = idps
+        if (regions) this.form.fi.regions = regions
+        if (domains) this.form.fi.domains = domains
+        if (idps) this.form.fi.idps = idps
         if (captcha) this.form.fi.showCaptcha = true
       } finally {
         this.loading = false
