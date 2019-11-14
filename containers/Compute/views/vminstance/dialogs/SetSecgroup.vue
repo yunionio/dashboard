@@ -102,7 +102,7 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        const values = await this.$promiseValidateForm(this.form.fc)
+        const values = await this.form.fc.validateFields()
         const ids = this.params.data.map(item => item.id)
         const data = {}
         values.secgroups.forEach((id, idx) => {
