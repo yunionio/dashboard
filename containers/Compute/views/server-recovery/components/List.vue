@@ -92,12 +92,12 @@ export default {
           title: '系统',
           slots: {
             default: ({ row }) => {
-              let name = (row.metadata && row.metadata.os_distribution) ? row.metadata.os_distribution : row.os_type
+              let name = (row.metadata && row.metadata.os_distribution) ? row.metadata.os_distribution : row.os_type || ''
               if (name.includes('Windows') || name.includes('windows')) {
                 name = 'Windows'
               }
               const version = (row.metadata && row.metadata.os_version) ? `${row.metadata.os_version}` : ''
-              const tooltip = version.includes(name) ? version : `${name} ${version}` // 去重
+              const tooltip = (version.includes(name) ? version : `${name} ${version}`) || '未知' // 去重
               return [
                 <SystemIcon tooltip={ tooltip } name={ name } />,
               ]
