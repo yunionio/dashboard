@@ -179,3 +179,17 @@ export function download (data, filename = 'download', mime = 'application/octet
     window.URL.revokeObjectURL(blobURL)
   }
 }
+
+/**
+ * @description 限制文字最大长度
+ * @param {String} text 文字内容
+ * @param {Number} maxLen 限制的最大长度
+ * @returns {String} text
+ */
+export const maxTextLength = (text, maxLen) => {
+  if (text && text.length > maxLen) {
+    return text.substr(0, maxLen) + '...'
+  } else {
+    return text
+  }
+}
