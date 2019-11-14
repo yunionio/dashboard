@@ -1,6 +1,8 @@
 import Layout from '@Compute/components/Layout'
 import Redis from '@DB/views/redis'
 import RedisCreate from '@DB/views/redis/create'
+import RDS from '@DB/views/rds'
+import RDSCreate from '@DB/views/rds/create'
 
 export default {
   index: 6,
@@ -30,6 +32,32 @@ export default {
               name: 'RedisCreate',
               path: 'create',
               component: RedisCreate,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      meta: {
+        label: 'RDS',
+      },
+      submenus: [
+        {
+          path: '/rds',
+          meta: {
+            label: '实例列表',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'RDS',
+              path: '',
+              component: RDS,
+            },
+            {
+              name: 'RDSCreate',
+              path: 'create',
+              component: RDSCreate,
             },
           ],
         },

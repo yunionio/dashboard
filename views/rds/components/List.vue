@@ -7,12 +7,10 @@
 </template>
 
 <script>
-import PasswordFetcher from '@Compute/sections/PasswordFetcher'
-import { ENGINE_ARCH } from '../constants/index.js'
-import { Manager } from '@/utils/manager'
+import { DBINSTANCE_CATEGORY } from '../constants/index.js'
 import { sizestr } from '@/utils/utils'
+import { Manager } from '@/utils/manager'
 import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getNameDescriptionTableColumn, getBrandTableColumn } from '@/utils/common/tableColumn'
-import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -21,11 +19,11 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
-        resource: 'elasticcaches',
+        resource: 'dbinstances',
         getParams: {
           details: true,
         },
-        steadyStatus: Object.values(expectStatus.redis).flat(),
+        // steadyStatus: Object.values(expectStatus.redis).flat(),
         filterOptions: {
           name: {
             label: '实例名称',
@@ -72,27 +70,23 @@ export default {
           },
         }),
         {
-          field: 'arch_type',
           title: '类型',
           slots: {
             default: ({ row }) => {
-              const type = row.local_category || row.arch_type
-              return ENGINE_ARCH[type] || type
+              return DBINSTANCE_CATEGORY[row.category]
             },
           },
         },
         {
-          field: 'instance_type',
           title: '配置',
           slots: {
             default: ({ row }) => {
-              return sizestr(row.capacity_mb, 'M', 1024)
+              return `${row.vcpu_count}核 ${sizestr(row.vmem_size_mb, 'M', 1024)}`
             },
           },
         },
         {
-          field: 'engine',
-          title: '类型版本',
+          title: '数据库引擎',
           slots: {
             default: ({ row }) => {
               return `${row.engine} ${row.engine_version}`
@@ -142,11 +136,6 @@ export default {
         {
           field: 'account',
           title: '云账号',
-          slots: {
-            default: ({ row }) => {
-              return row.account
-            },
-          },
         },
         {
           field: 'billing_type',
