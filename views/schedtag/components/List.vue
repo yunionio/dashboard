@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { STRATEGY_OPT, STRATEGY_CN } from '@Cloudenv/constants/sched'
 import WindowsMixin from '@/mixins/windows'
 import { getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
@@ -93,9 +94,16 @@ export default {
             })
           },
           meta: () => {
-            return {
+            const ret = {
+              validate: true,
+              tooltip: null,
               buttonType: 'primary',
             }
+            if (!this.isAdminMode) {
+              ret.validate = false
+              ret.tooltip = '无权限操作'
+            }
+            return ret
           },
         },
         {
@@ -109,9 +117,15 @@ export default {
             })
           },
           meta: () => {
-            return {
+            const ret = {
               validate: this.list.allowDelete(),
+              tooltip: null,
             }
+            if (!this.isAdminMode) {
+              ret.validate = false
+              ret.tooltip = '无权限操作'
+            }
+            return ret
           },
         },
       ],
@@ -126,6 +140,17 @@ export default {
               list: this.list,
             })
           },
+          meta: () => {
+            const ret = {
+              validate: true,
+              tooltip: null,
+            }
+            if (!this.isAdminMode) {
+              ret.validate = false
+              ret.tooltip = '无权限操作'
+            }
+            return ret
+          },
         },
         {
           label: '偏好设置',
@@ -136,6 +161,17 @@ export default {
               title: '偏好设置',
               list: this.list,
             })
+          },
+          meta: () => {
+            const ret = {
+              validate: true,
+              tooltip: null,
+            }
+            if (!this.isAdminMode) {
+              ret.validate = false
+              ret.tooltip = '无权限操作'
+            }
+            return ret
           },
         },
         {
@@ -149,14 +185,21 @@ export default {
             })
           },
           meta: obj => {
-            return {
+            const ret = {
               validate: obj.can_delete,
+              tooltip: null,
             }
+            if (!this.isAdminMode) {
+              ret.validate = false
+              ret.tooltip = '无权限操作'
+            }
+            return ret
           },
         },
       ],
     }
   },
+  computed: mapGetters(['isAdminMode']),
   created () {
     this.initSidePageTab('schedtag-detail')
     this.list.fetchData()
