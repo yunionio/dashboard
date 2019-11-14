@@ -126,12 +126,12 @@ export default {
           title: '系统',
           slots: {
             default: ({ row }) => {
-              let name = (row.metadata && row.metadata.os_distribution) ? row.metadata.os_distribution : row.os_type
+              let name = (row.metadata && row.metadata.os_distribution) ? row.metadata.os_distribution : row.os_type || ''
               if (name.includes('Windows') || name.includes('windows')) {
                 name = 'Windows'
               }
               const version = (row.metadata && row.metadata.os_version) ? `${row.metadata.os_version}` : ''
-              const tooltip = version.includes(name) ? version : `${name} ${version}` // 去重
+              const tooltip = (version.includes(name) ? version : `${name} ${version}`) || '未知' // 去重
               return [
                 <SystemIcon tooltip={ tooltip } name={ name } />,
               ]
@@ -475,11 +475,11 @@ export default {
                     label: '挂载ISO',
                     permission: 'server_perform_insertiso',
                     action: () => {
-                      // this.createDialog('VmResetPasswordDialog', {
-                      //   data: [obj],
-                      //   columns: this.columns,
-                      //   list: this.list,
-                      // })
+                      this.createDialog('VmMountIsoDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                      })
                     },
                     meta: () => {
                       const ret = {
@@ -500,11 +500,11 @@ export default {
                     label: '卸载ISO',
                     permission: 'server_perform_ejectiso',
                     action: () => {
-                      // this.createDialog('VmResetPasswordDialog', {
-                      //   data: [obj],
-                      //   columns: this.columns,
-                      //   list: this.list,
-                      // })
+                      this.createDialog('VmUnmountIsoDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                      })
                     },
                     meta: () => {
                       const ret = {
@@ -530,11 +530,11 @@ export default {
                     label: '关联安全组',
                     permission: 'server_perform_add_secgroup',
                     action: () => {
-                      // this.createDialog('VmResetPasswordDialog', {
-                      //   data: [obj],
-                      //   columns: this.columns,
-                      //   list: this.list,
-                      // })
+                      this.createDialog('VmSetSecgroupDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                      })
                     },
                     meta: () => {
                       const ret = {
