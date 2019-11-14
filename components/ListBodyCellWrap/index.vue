@@ -8,7 +8,7 @@
       v-if="showEdit"
       @update="update"
       :label="labelCn"
-      :formRules="formRules"
+      :formRules="formRulesComputer"
       :input-rules="inputRules"
       :visible.sync="editVisible"
       :defaultValue="row[field]" />
@@ -103,6 +103,15 @@ export default {
     },
     inputRules () {
       if (this.field === 'description') return []
+      return null
+    },
+    formRulesComputer () {
+      if (this.formRules && this.formRules.length) {
+        return this.formRules
+      }
+      if (this.field === 'description') { // 备注不校验规则
+        return []
+      }
       return null
     },
   },

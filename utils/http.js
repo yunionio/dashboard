@@ -126,6 +126,12 @@ http.interceptors.request.use(
   }
 )
 
+function needLogout (error) {
+  const isAuth = error.config.url.startsWith('/api/v1/auth')
+  const isNoToken = error.response.data && error.response.data.details && error.response.data.details.includes('No token in header')
+  return isAuth || isNoToken
+}
+
 // response interceptor
 http.interceptors.response.use(
   (response) => {
@@ -139,7 +145,7 @@ http.interceptors.response.use(
     pendingCount === 0 && hiddenLoading()
     if (error.response) {
       const status = error.response.status
-      if (status === 401 && error.config.url.startsWith('/api/v1/auth')) {
+      if (status === 401 && needLogout(error)) {
         store.dispatch('auth/logout').then(() => {
           router.push('/auth')
         })
