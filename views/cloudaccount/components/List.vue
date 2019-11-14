@@ -9,7 +9,6 @@
 <script>
 import expectStatus from '@/constants/expectStatus'
 import {
-  getProjectTableColumn,
   getBrandTableColumn,
   getStatusTableColumn,
   getEnabledTableColumn,
@@ -18,7 +17,7 @@ import {
   getNameDescriptionTableColumn,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
-import { changeToArr } from '@/utils/utils'
+import { changeToArr, maxTextLength } from '@/utils/utils'
 
 const syncPolicy = (item, ownerDomain) => {
   let tooltip
@@ -145,7 +144,25 @@ export default {
           },
         },
         getPublicTableColumn(),
-        getProjectTableColumn({ field: 'projects' }),
+        {
+          field: 'projects',
+          title: '项目',
+          slots: {
+            default: ({ row }) => {
+              const projects = row.projects.map(val => val.tenant)
+              const projectsText = projects.join('，')
+              return [
+                <div>
+                  <div title={projectsText}>
+                    <span class="mr-1">{maxTextLength(projectsText, 24)}</span>
+                    <copy message={projectsText} />
+                  </div>
+                  <div class="text-weak">{row.domain}</div>
+                </div>,
+              ]
+            },
+          },
+        },
       ],
       groupActions: [
         {
