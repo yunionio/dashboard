@@ -351,6 +351,37 @@ export default {
                       })
                     },
                   },
+                  {
+                    label: '更改项目',
+                    action: () => {
+                      this.createDialog('VmChangeProjectDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                      })
+                    },
+                  },
+                  {
+                    label: '同步状态',
+                    action: () => {
+                      this.list.onManager('performAction', {
+                        id: obj.id,
+                        managerArgs: {
+                          action: 'syncstatus',
+                        },
+                      })
+                    },
+                  },
+                  {
+                    label: '创建快照',
+                    action: () => {
+                      this.createDialog('VmSnapshotCreateDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                      })
+                    },
+                  },
                 ],
               },
               {
