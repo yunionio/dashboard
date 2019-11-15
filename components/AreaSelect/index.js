@@ -1,6 +1,5 @@
+import * as R from 'ramda'
 import { CITYS, CLOUD_PROVIDERS_MAP } from '@/constants'
-
-// eslint-disable-next-line no-unused-vars
 // const Select = {
 //   name: 'Select',
 //   methods: {
@@ -28,7 +27,7 @@ export default {
       type: String,
       default: '区域',
     },
-    areas: {
+    types: {
       type: Array,
       default: () => {
         return ['city', 'provider', 'region', 'zone']
@@ -80,7 +79,7 @@ export default {
       }
     },
     colSpan () {
-      return 24 / this.areas.length
+      return 24 / this.types.length
     },
   },
   methods: {
@@ -108,11 +107,11 @@ export default {
     },
     handleChange (selectItem = {}, callback) {
       const key = Object.keys(selectItem)[0]
-      const { id, fetchAreas } = { ...selectItem[key] }
+      const { id, fetchTypes } = { ...selectItem[key] }
       const selectedValue = this.getSelectedValue(key, id)
-      if (fetchAreas && fetchAreas.length > 0) {
-        this.resetValues(fetchAreas)
-        this.fetchs(fetchAreas)
+      if (fetchTypes && fetchTypes.length > 0) {
+        this.resetValues(fetchTypes)
+        this.fetchs(fetchTypes)
       }
       this.$emit('change', {
         [key]: {
@@ -122,17 +121,32 @@ export default {
       })
       callback && callback(selectedValue)
     },
-    async fetchs (fetchAreas = this.areas) {
-      if (fetchAreas && fetchAreas.length > 0) {
-        fetchAreas.forEach(name => {
-          if (this.areas.indexOf(name) > -1) {
-            const sn = this.firstName(name)
-            const fetchFn = this[`fetch${sn}`]
-            this.$nextTick(() => {
-              fetchFn && fetchFn()
-            })
-          }
+    async fetchChange (name, list) {
+      const events = this._events || {}
+      const changes = events[`${name}FetchChange`]
+      if (changes && changes.length > 0) {
+        changes.forEach(e => {
+          e(list)
         })
+      } else {
+        const _item = !R.isEmpty(list) ? list[0] : {}
+        this.FC.setFieldsValue({
+          [name]: _item.id || _item.name,
+        })
+      }
+      console.log('111')
+    },
+    async fetchs (fetchTypes = this.types) {
+      if (fetchTypes && fetchTypes.length > 0) {
+        for (let i = 0; i < fetchTypes.length; i++) {
+          const name = fetchTypes[i]
+          const sn = this.firstName(name)
+          const fetchFn = this[`fetch${sn}`]
+          if (this.types.indexOf(name) > -1 && fetchFn) {
+            const list = await fetchFn()
+            await this.fetchChange(name, list)
+          }
+        }
       }
     },
     async fetchCity () {
@@ -155,12 +169,12 @@ export default {
       }
     },
     RenderCity () {
-      const fetchAreas = ['provider', 'region', 'zone']
+      const fetchTypes = ['provider', 'region', 'zone']
       const _handleChange = (id) => {
         this.handleChange({
           city: {
             id,
-            fetchAreas,
+            fetchTypes,
           },
         })
       }
@@ -174,8 +188,9 @@ export default {
       )
     },
     async fetchProvider () {
+      console.log('2222')
       const { getFieldsValue } = this.FC
-      const { city } = getFieldsValue(this.areas)
+      const { city } = getFieldsValue(this.types)
       const params = {
         usable: true,
         city,
@@ -196,12 +211,12 @@ export default {
       }
     },
     RenderProvider () {
-      const fetchAreas = ['region', 'zone']
+      const fetchTypes = ['region', 'zone']
       const _handleChange = (id) => {
         this.handleChange({
           provider: {
             id,
-            fetchAreas,
+            fetchTypes,
           },
         })
       }
@@ -216,7 +231,7 @@ export default {
     },
     async fetchRegion () {
       const { getFieldsValue } = this.FC
-      const { city, provider } = getFieldsValue(this.areas)
+      const { city, provider } = getFieldsValue(this.types)
       const params = {
         usable: true,
         city,
@@ -225,16 +240,18 @@ export default {
       this.regionLoading = true
       try {
         const manager = new this.$Manager('cloudregions', 'v2')
-        const { data = [] } = await manager.list({ params })
+        const { data = {} } = await manager.list({ params })
+        const retList = !R.isEmpty(data.data) ? data.data : []
         this.regionLoading = false
-        this.regionList = data && data.data.length > 0 ? data.data : []
+        this.regionList = retList
+        return retList
       } catch (err) {
         this.regionLoading = false
         throw err
       }
     },
     RenderRegion () {
-      const fetchAreas = ['zone']
+      const fetchTypes = ['zone']
       const { setFieldsValue } = this.FC
       const _callback = (item = {}) => {
         const { city, provider } = item
@@ -247,7 +264,7 @@ export default {
         this.handleChange({
           region: {
             id,
-            fetchAreas,
+            fetchTypes,
           },
         }, _callback)
       }
@@ -262,7 +279,7 @@ export default {
     },
     async fetchZone () {
       const { getFieldsValue } = this.FC
-      const { city, provider, region } = getFieldsValue(this.areas)
+      const { city, provider, region } = getFieldsValue(this.types)
       const params = {
         usable: true,
         city,
@@ -272,22 +289,23 @@ export default {
       this.zoneLoading = true
       try {
         const manager = new this.$Manager('zones', 'v2')
-        const { data } = await manager.list({
+        const { data = {} } = await manager.list({
           params,
         })
+        const retList = !R.isEmpty(data.data) ? data.data : []
         this.zoneLoading = false
-        this.zoneList = data && data.data.length > 0 ? data.data : []
+        this.zoneList = retList
+        return retList
       } catch (err) {
         this.zoneLoading = false
         throw err
       }
     },
     RenderZone () {
-      const { setFieldsValue } = this.FC
       const _callback = (item = {}) => {
         // eslint-disable-next-line camelcase
         const { provider, cloudregion_id } = item
-        setFieldsValue({
+        this.FC.setFieldsValue({
           provider,
           region: cloudregion_id,
         })
@@ -311,8 +329,8 @@ export default {
   },
   render (h) {
     const { getFieldDecorator } = this.FC
-    const { areas } = this
-    const RenderCols = areas.map(name => {
+    const { types } = this
+    const RenderCols = types.map(name => {
       const sn = this.firstName(name)
       if (this[`Render${sn}`]) {
         const Render = this[`Render${sn}`]()
