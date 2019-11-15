@@ -38,12 +38,7 @@ export default {
             label: '实例状态',
             dropdown: true,
             multiple: true,
-            items: [
-              { label: '运行中', key: 'running' },
-              { label: '关机', key: 'ready' },
-              { label: '未知', key: 'unknown' },
-              { label: '调度失败', key: 'sched_fail' },
-            ],
+            items: this.getSeachStatus(),
             filter: true,
             formatter: val => {
               return `status.in(${val.join(',')})`
@@ -54,8 +49,8 @@ export default {
             dropdown: true,
             multiple: true,
             items: [
-              { label: 'OneCloud', key: 'OneCloud' },
-              { label: 'OpenStack', key: 'OpenStack' },
+              { label: '华为云', key: 'Huawei' },
+              { label: '阿里云', key: 'Aliyun' },
             ],
           },
         },
@@ -474,10 +469,24 @@ export default {
     this.webconsoleManager = new Manager('webconsole', 'v1')
     this.list.fetchData()
     this.initSidePageTab('redis-detail')
+    console.log(this.$t('status.redis'))
   },
   methods: {
     createServer () {
       this.$router.push('/redis/create')
+    },
+    getSeachStatus () {
+      const OTHER_STATUS = ['RUNNING', 'minorversionupgrading', 'networkmodifying', 'sslmodifying', 'majorversionupgrading']
+      const status = []
+      for (let key in this.$t('status.redis')) {
+        if (OTHER_STATUS.indexOf(key) === -1) {
+          status.push({
+            key,
+            label: this.$t('status.redis')[key],
+          })
+        }
+      }
+      return status
     },
   },
 }
