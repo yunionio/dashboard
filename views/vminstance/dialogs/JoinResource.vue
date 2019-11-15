@@ -49,7 +49,6 @@ export default {
       formItemLayout: {
         wrapperCol: {
           span: 12,
-          offset: 2,
         },
       },
     }
