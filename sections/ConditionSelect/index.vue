@@ -12,6 +12,7 @@
           version="v1"
           @change="conditionValsChange"
           :params="projectParams"
+          remote
           :remote-fn="q => ({ filter: `name.contains(${q})` })"
           :select-props="{ placeholder: '请选择项目', mode: 'multiple' }" />
       </a-form-item>
