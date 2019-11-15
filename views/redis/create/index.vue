@@ -71,12 +71,18 @@ export default {
           'project',
           {
             initialValue: projectId,
+            rules: [
+              { required: true, message: '请选择项目' },
+            ],
           },
         ],
         domain: [
           'domain',
           {
             initialValue: projectDomainId,
+            rules: [
+              { required: true, message: '请选择域' },
+            ],
           },
         ],
       },
