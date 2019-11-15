@@ -28,13 +28,10 @@ export default {
     Disk,
   },
   props: {
-    isPublic: {
-      type: Boolean,
+    type: {
+      type: String,
       required: true,
-    },
-    isIDC: {
-      type: Boolean,
-      required: true,
+      validator: val => ['idc', 'private', 'public'].includes(val),
     },
     hypervisor: {
       type: String,
@@ -56,6 +53,15 @@ export default {
     },
   },
   computed: {
+    isPublic () {
+      return this.type === 'public'
+    },
+    isPrivate () {
+      return this.type === 'private'
+    },
+    isIDC () {
+      return this.type === 'idc'
+    },
     imageMinDisk () {
       const image = this.image
       if (image.info) {
