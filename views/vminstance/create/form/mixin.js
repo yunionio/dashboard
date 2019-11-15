@@ -12,6 +12,7 @@ import ServerNetwork from '@Compute/sections/ServerNetwork'
 import SchedPolicy from '@Compute/sections/SchedPolicy'
 import Bios from '@Compute/sections/BIOS'
 import Backup from '@Compute/sections/Backup'
+import Duration from '@Compute/sections/Duration'
 import BottomBar from '../components/BottomBar'
 import SystemDisk from '../components/SystemDisk'
 import DataDisk from '../components/DataDisk'
@@ -40,6 +41,7 @@ export default {
     Bios,
     Backup,
     DomainProject,
+    Duration,
   },
   props: {
     type: {
