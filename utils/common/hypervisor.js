@@ -82,5 +82,3 @@ export const findPlatform = (provider, type = 'brand') => {
   }
   return false // 未找到平台
 }
-
-console.log(findPlatform('Dstack'))
