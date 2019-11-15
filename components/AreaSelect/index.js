@@ -51,6 +51,9 @@ export default {
       },
     },
   },
+  created () {
+    this.fetchs()
+  },
   data () {
     return {
       cityLoading: false,
@@ -65,7 +68,6 @@ export default {
   },
   computed: {
     FC () {
-      console.log(this.form, '===')
       if (this.form && this.form.fc) {
         return this.form.fc
       }
@@ -307,18 +309,13 @@ export default {
       )
     },
   },
-  created () {
-    this.fetchs()
-    console.log(this.form, '---')
-  },
   render (h) {
-    const { getFieldDecorator, getFieldsValue } = this.FC
+    const { getFieldDecorator } = this.FC
     const { areas } = this
-    const values = getFieldsValue(this.areas)
     const RenderCols = areas.map(name => {
       const sn = this.firstName(name)
       if (this[`Render${sn}`]) {
-        const Render = this[`Render${sn}`](values)
+        const Render = this[`Render${sn}`]()
         return <a-col span={this.colSpan}> {getFieldDecorator(name)(Render)} </a-col>
       }
       return null
