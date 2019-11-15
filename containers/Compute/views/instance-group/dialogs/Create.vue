@@ -13,7 +13,7 @@
             <a-radio-button :value="false">非强制</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item label="粒度" v-bind="formItemLayout" extra="该组内每台宿主机可以允许重复虚拟机的数量（范围 1 ~ 10 台）">
+        <a-form-item label="粒度" v-bind="formItemLayout" extra="该组内虚拟机可以在同一宿主机存在的数量（范围 1 ~ 10 台）">
           <a-input-number :min="1" :max="10" v-decorator="decorators.granularity" />
         </a-form-item>
       </a-form>

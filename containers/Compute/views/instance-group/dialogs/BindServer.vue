@@ -2,7 +2,12 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">绑定主机</div>
     <div slot="body">
-      <a-alert class="mb-2" type="warning" message="提示信息：主机组仅针对新创建且加入主机组的主机有效，对已创建主机没有影响" />
+      <a-alert class="mb-2" type="warning">
+        <template v-slot:message>
+          <div>新建虚拟机时加入主机组，将按照主机组内规则调度选择宿主机。</div>
+          <div class="mt-2">已创建的虚拟机加入主机组后虚拟机所属宿主机不会变化。</div>
+        </template>
+      </a-alert>
       <dialog-selected-tips :count="params.data.length" action="绑定主机" name="主机组" />
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-select
