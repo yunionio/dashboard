@@ -419,10 +419,25 @@ export const decorators = {
       'backup',
     ],
   },
+  duration: {
+    durationEnable: [
+      'durationEnable',
+      {
+        valuePropName: 'checked',
+        initialValue: false,
+      },
+    ],
+    duration: [
+      'duration',
+      {
+        initialValue: '1h',
+      },
+    ],
+  },
 }
 
 const decoratorGroup = {
-  idc: ['domain', 'project', 'cloudregionZone', 'name', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'gpu', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'schedPolicy', 'bios', 'backup'],
+  idc: ['domain', 'project', 'cloudregionZone', 'name', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'gpu', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'schedPolicy', 'bios', 'backup', 'duration'],
 }
 export class ControlParams {
   constructor (type) {
@@ -824,6 +839,12 @@ export class GenCreateData {
     if (this.fd.hypervisor === HYPERVISORS_MAP.kvm.key) {
       data['bios'] = this.fd.bios
     }
+    // 到期释放
+    if (this.fd.durationEnable) {
+      data['duration'] = this.fd.duration
+      data['billing_type'] = 'postpaid'
+    }
+    // 镜像类型为 iso 需要加参数 cdrom
     if (this.fd.imageType === IMAGES_TYPE_MAP.iso.key) {
       data.cdrom = this.fd.image.key
     }
