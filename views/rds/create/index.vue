@@ -1,7 +1,7 @@
 <template>
   <div>
     <page-header title="新建" />
-    {{form.values}}
+    {{form.getFieldsValue()}}
     <a-form :form="form.fc" class="mt-3">
       <a-divider orientation="left">基础配置</a-divider>
       <a-form-item label="指定项目" v-bind="formItemLayout">
@@ -19,6 +19,8 @@
         v-bind="formItemLayout" />
       <!-- 套餐信息 -->
       <s-k-u ref="SKU" />
+      <a-divider orientation="left">高级配置</a-divider>
+      <network-select v-bind="formItemLayout" />
     </a-form>
   </div>
 </template>
@@ -46,9 +48,10 @@ export default {
   computed: {
     form () {
       const fc = this.$form.createForm(this, { onFieldsChange: this.onFieldsChange })
-      const { getFieldValue, getFieldsValue, setFieldsValue } = fc
+      const { getFieldDecorator, getFieldValue, getFieldsValue, setFieldsValue } = fc
       return {
         fc,
+        getFieldDecorator,
         getFieldValue,
         getFieldsValue,
         setFieldsValue,
@@ -61,16 +64,20 @@ export default {
       formItemLayout: this.formItemLayout,
     }
   },
+  mounted () {
+    const { fetchs } = this.$refs['SKU']
+    fetchs('462f113c-976b-406c-8b58-00ceede5b322')
+  },
   methods: {
     onFieldsChange (vm, values) {
       // console.log(values)
     },
     skuController (values) {
-      const { fetchFilter } = this.$refs['SKU']
+      const { fetchs } = this.$refs['SKU']
       if (values && values.region) {
         const { id } = values.region
         // 获取sku筛选项
-        fetchFilter(id)
+        fetchs(id)
       }
     },
     handleAreaChange (values) {

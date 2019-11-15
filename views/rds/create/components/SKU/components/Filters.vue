@@ -44,7 +44,6 @@ export default {
   methods: {
     versionCn (key) {
       const _arr = key.split('_')
-      console.log(_arr, key)
       if (_arr && _arr.length > 0) {
         const t = ENGINR_VERSION[_arr.pop()]
         if (t) {
@@ -111,8 +110,8 @@ export default {
       // eslint-disable-next-line camelcase
       const _category = target.value || category
       this.storage_types = this.dbInstance[engine][engine_version][_category]
-      console.log(this.storage_types)
       this.setInitValue('storage_type')
+      this.$emit('change')
     },
     async fetchQueryData (regionId) {
       const params = {

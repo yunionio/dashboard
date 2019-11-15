@@ -1,0 +1,41 @@
+<template>
+  <a-form-item label="存储空间" v-bind="formItemLayout">
+    <a-tooltip placement="top">
+      <template slot="title">
+          <span v-if="selectedSku">存储范围在：{{numberProps.min}}GB ~ {{numberProps.max}}GB之间</span>
+          <span v-else>请选择实例规格</span>
+        </template>
+      <a-input-number v-bind="numberProps" v-decorator="['disk_size_gb', { initialValue: numberProps.min }]" /> GB
+    </a-tooltip>
+  </a-form-item>
+</template>
+<script>
+export default {
+  name: 'DiskSizeInput',
+  inject: ['form', 'formItemLayout'],
+  props: {
+    selectedSku: {
+      type: Object,
+    },
+  },
+  computed: {
+    numberProps () {
+      if (!this.selectedSku) {
+        return {
+          disabled: true,
+        }
+      }
+      let min = this.selectedSku['min_disk_size_gb']
+      let max = this.selectedSku['max_disk_size_gb']
+      let step = this.selectedSku['disk_size_step']
+      return {
+        min,
+        max,
+        step,
+        // formatter: (v) => `${v}%`,
+        // parser: (v) => v.replace('%', ''),
+      }
+    },
+  },
+}
+</script>
