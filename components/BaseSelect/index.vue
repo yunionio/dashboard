@@ -1,7 +1,7 @@
 <template>
   <a-select
     class="base-select"
-    v-bind="{ ...selectProps, ...filterOpts}"
+    v-bind="{ ...selectProps, ...filterOpts }"
     not-found-content="暂无数据"
     :value="value"
     @change="change"
@@ -104,7 +104,9 @@ export default {
           filterOption: this.filterOption,
         }
       }
-      return {}
+      return {
+        filterOption: false,
+      }
     },
   },
   watch: {

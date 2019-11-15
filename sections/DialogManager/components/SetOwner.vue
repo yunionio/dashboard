@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">更改所属</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" action="更改所属" name="调度标签" />
+      <dialog-selected-tips :count="params.data.length" action="更改所属" :name="this.params.tipName || ''" />
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
@@ -14,19 +14,21 @@
               :key="item.key">{{ item.label }}</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item label="域" v-bind="formItemLayout" v-if="isDomainScope">
+        <a-form-item label="域" key="domain" v-bind="formItemLayout" v-if="isDomainScope">
           <base-select
             resource="domains"
             v-decorator="decorators.domain"
             :params="domainParams"
+            filterable
             version="v1"
             :select-props="{ placeholder: '请选择所属范围域' }" />
         </a-form-item>
-        <a-form-item label="项目" v-bind="formItemLayout" v-if="isProjectScope">
+        <a-form-item label="项目" key="project" v-bind="formItemLayout" v-if="isProjectScope">
           <base-select
             resource="projects"
             v-decorator="decorators.project"
             :params="projectParams"
+            filterable
             version="v1"
             :need-params="true"
             :select-props="{ placeholder: '请选择所属范围项目' }" />
@@ -69,7 +71,7 @@ export default {
     const initValue = getScopeInitValue()
     return {
       loading: false,
-      tipName: this.params.tipName || '调度标签',
+      tipName: this.params.tipName,
       scope: this.$store.getters.scope,
       isAdminMode: this.$store.getters.isAdminMode,
       isDomainMode: this.$store.getters.isDomainMode,
