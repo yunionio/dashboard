@@ -44,7 +44,6 @@ export const DEFAULT_PARAMS = {
       scope: '',
       details: true,
       status: 'active',
-      'filter.0': 'disk_format.notequals(iso)',
     },
     cloudregion: { // 区域
       cloud_env: 'onpremise',

@@ -61,7 +61,7 @@ export default {
     },
     loadSpecOpts (data) {
       this.specs = this.genSpecObj(data)
-      this.$bus.$emit('updateFi', { specs: this.specs }) // 广播事件
+      this.$bus.$emit('VMInstanceCreateUpdateFi', { specs: this.specs }) // 广播事件
       this.specOpts = this.genSpecOpts(this.specs)
       if (this.specOpts && this.specOpts.length) { // 默认选择下拉第一个
         this.form.setFieldsValue({

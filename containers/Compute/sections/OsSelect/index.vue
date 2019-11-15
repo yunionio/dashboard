@@ -5,7 +5,12 @@
         <a-radio-button v-for="item in mirrorTypeOptions" :value="item.key" :key="item.key">{{ item.label }}</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <image-select :image-type="imageType" :decorator="decorator" @input="imageInput" :image-params="imageSelectParams" />
+    <image-select
+      :image-type="imageType"
+      :decorator="decorator"
+      @input="imageInput"
+      :imageParams="imageParams"
+      :form="form" />
   </div>
 </template>
 
@@ -30,24 +35,35 @@ export default {
       type: Object,
       required: true,
     },
+    type: {
+      type: String,
+      validator: val => ['public', 'private', 'idc'].includes(val),
+      required: true,
+    },
+    hypervisor: {
+      type: String,
+    },
   },
+  inject: ['form'],
   data () {
     return {
       imageType: IMAGES_TYPE_MAP.standard.key,
     }
   },
   computed: {
-    imageSelectParams () {
-      if (this.imageType === IMAGES_TYPE_MAP.standard.key) {
-        return Object.assign({}, this.imageParams, { is_standard: true })
-      } else {
-        return Object.assign({}, this.imageParams, { is_standard: false })
-      }
+    isPublic () {
+      return this.type === 'public'
+    },
+    isPrivate () {
+      return this.type === 'private'
+    },
+    isIDC () {
+      return this.type === 'idc'
     },
     mirrorTypeOptions () {
       const ret = [IMAGES_TYPE_MAP.standard, IMAGES_TYPE_MAP.customize]
-      if (this.isIDC && this.fd.hypervisor === HYPERVISORS_MAP.kvm.key) {
-        ret.push(IMAGES_TYPE_MAP.iso)
+      if (this.isIDC && this.hypervisor === HYPERVISORS_MAP.kvm.key) {
+        ret.push(IMAGES_TYPE_MAP.iso, IMAGES_TYPE_MAP.host, IMAGES_TYPE_MAP.snapshot)
       } else if (this.isPublic) {
         ret.unshift(IMAGES_TYPE_MAP.publicCustomize)
         ret.unshift(IMAGES_TYPE_MAP.public)

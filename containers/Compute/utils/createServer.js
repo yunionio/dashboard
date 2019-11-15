@@ -44,6 +44,22 @@ function diskValidator (rule, value, callback) {
 }
 
 export const decorators = {
+  domain: [
+    'domain',
+    {
+      rules: [
+        { validator: isRequired(), message: '请选择域', trigger: 'change' },
+      ],
+    },
+  ],
+  project: [
+    'project',
+    {
+      rules: [
+        { validator: isRequired(), message: '请选择项目', trigger: 'change' },
+      ],
+    },
+  ],
   name: [
     'name',
     {
@@ -406,7 +422,7 @@ export const decorators = {
 }
 
 const decoratorGroup = {
-  idc: ['cloudregionZone', 'name', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'gpu', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'schedPolicy', 'bios', 'backup'],
+  idc: ['domain', 'project', 'cloudregionZone', 'name', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'gpu', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'schedPolicy', 'bios', 'backup'],
 }
 export class ControlParams {
   constructor (type) {
@@ -751,11 +767,7 @@ export class GenCreateData {
       prefer_region: this.getPreferRegion(),
       vcpu_count: this.getCpuCount(),
       vmem_size: this.getMemSize(),
-      project_id: store.getters.userInfo.projectId,
-      // project_id: this.fd.project.id || store.getters.userInfo.projectId,
-    }
-    if (this.fd.imageType === IMAGES_TYPE_MAP.iso.key) {
-      data.cdrom = this.fd.image.data.id
+      project_id: (this.fd.project && this.fd.project.key) || store.getters.userInfo.projectId,
     }
     // 非预付费资源池不会添加sku
     if (!this.isPrepaid) {
@@ -811,6 +823,18 @@ export class GenCreateData {
     // 只有kvm支持启动方式
     if (this.fd.hypervisor === HYPERVISORS_MAP.kvm.key) {
       data['bios'] = this.fd.bios
+    }
+    if (this.fd.imageType === IMAGES_TYPE_MAP.iso.key) {
+      data.cdrom = this.fd.image.key
+    }
+    // 主机镜像需要guest image id参数
+    if (this.fd.imageType === IMAGES_TYPE_MAP.host.key) {
+      data.guest_image_id = this.fd.image.key
+    }
+    // 主机快照需要instance_snapshot_id参数
+    if (this.fd.imageType === IMAGES_TYPE_MAP.snapshot.key) {
+      data.instance_snapshot_id = this.fd.image.key
+      delete data.disks // 主机快照不需要 disks 字段
     }
     return data
   }
