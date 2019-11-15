@@ -10,6 +10,11 @@
         <a-radio-button :key="size" :value="size" v-for="size in mems_mbs">{{sizestr(size, 'M', 1024)}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
+    <a-form-item label="可用区" v-bind="formItemLayout">
+      <a-radio-group v-decorator="['zones']" @change="$emit('change')">
+        <a-radio-button :key="id" :value="id" v-for="(zone, id) of zones">{{zone}}</a-radio-button>
+      </a-radio-group>
+    </a-form-item>
   </div>
 </template>
 <script>
@@ -22,6 +27,7 @@ export default {
     return {
       cpus: [],
       mems_mbs: [],
+      zones: {},
       cpu_mems_mb: {},
     }
   },
@@ -61,6 +67,10 @@ export default {
         this.cpu_mems_mb = data['cpu_mems_mb']
         this.initCpu()
         this.getMemsMb()
+        const { zones } = data
+        if (zones) {
+          this.zones = zones.zones || {}
+        }
       } catch (err) {
         throw err
       }
