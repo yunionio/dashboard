@@ -392,6 +392,16 @@ export default {
                       })
                     },
                   },
+                  {
+                    label: '加入资源池',
+                    action: () => {
+                      this.createDialog('VmJoinResourceDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                      })
+                    },
+                  },
                 ],
               },
               {
