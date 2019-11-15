@@ -184,7 +184,7 @@ export default {
     }
   },
   created () {
-    this.$bus.$on('updateFi', this.updateFi, this)
+    this.$bus.$on('VMInstanceCreateUpdateFi', this.updateFi, this)
   },
   methods: {
     updateFi (fiItems) { // 子组件更新fi
