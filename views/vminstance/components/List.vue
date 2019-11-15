@@ -382,6 +382,16 @@ export default {
                       })
                     },
                   },
+                  {
+                    label: '续费',
+                    action: () => {
+                      this.createDialog('VmResourceFeeDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                      })
+                    },
+                  },
                 ],
               },
               {
