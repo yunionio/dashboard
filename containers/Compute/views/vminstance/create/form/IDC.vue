@@ -91,7 +91,7 @@
       <a-form-item label="引导方式" v-bind="formItemLayout" class="mb-0">
         <bios :decorator="decorators.bios" />
       </a-form-item>
-      <a-form-item v-bind="formItemLayout" class="mb-0">
+      <a-form-item v-bind="formItemLayout">
         <span slot="label">
           高可用
           <a-tooltip class="item" title="只有宿主机数量不少于2台时才可以使用该功能">
@@ -102,6 +102,9 @@
           :decorator="decorators.backup"
           :disabled="form.fd.systemDiskType === 'gpfs'"
           :disabled-items="backupDisableds" />
+      </a-form-item>
+      <a-form-item v-bind="formItemLayout" label="到期释放">
+        <duration :decorators="decorators.duration" />
       </a-form-item>
       <bottom-bar :loading="submiting" :fd="form.fd" :errors.sync="errors" />
     </a-form>
