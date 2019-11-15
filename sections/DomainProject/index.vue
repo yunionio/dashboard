@@ -132,7 +132,9 @@ export default {
       try {
         const params = {
           scope: this.scope,
-          domain_id: domainId,
+        }
+        if (this.isAdminMode) {
+          params['domain_id'] = domainId
         }
         const response = await this.pm.list({ params })
         const data = response.data.data || []
