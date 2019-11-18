@@ -45,10 +45,6 @@ export default {
         return true
       },
     },
-    isPublic: {
-      type: Boolean,
-      required: true,
-    },
     value: { // v-decorator 的props
       required: true,
     },
@@ -69,6 +65,11 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    type: {
+      type: String,
+      required: true,
+      validator: val => ['idc', 'private', 'public'].includes(val),
+    },
   },
   data () {
     return {
@@ -80,6 +81,15 @@ export default {
     }
   },
   computed: {
+    isPublic () {
+      return this.type === 'public'
+    },
+    isPrivate () {
+      return this.type === 'private'
+    },
+    isIDC () {
+      return this.type === 'idc'
+    },
     tableColumn () {
       const column = [
         { type: 'radio', width: 40 },

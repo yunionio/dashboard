@@ -11,6 +11,7 @@
 import qs from 'qs'
 import { mapGetters } from 'vuex'
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
+import { SERVER_TYPE } from '@Compute/constants'
 import { commonUnabled, cloudEnabled, cloudUnabledTip, commonEnabled, commonTip } from '../utils'
 import { Manager } from '@/utils/manager'
 import { sizestr } from '@/utils/utils'
@@ -18,7 +19,7 @@ import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getB
 import SystemIcon from '@/sections/SystemIcon'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
-import { typeClouds } from '@/utils/common/hypervisor'
+import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
 
 export default {
   name: 'VmInstanceList',
@@ -360,16 +361,35 @@ export default {
                         list: this.list,
                       })
                     },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      if (commonUnabled(obj)) return ret
+                      ret.validate = true
+                      return ret
+                    },
                   },
                   {
                     label: '同步状态',
                     action: () => {
                       this.list.onManager('performAction', {
+                        steadyStatus: ['running', 'ready'],
                         id: obj.id,
                         managerArgs: {
                           action: 'syncstatus',
                         },
                       })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      if (commonUnabled(obj)) return ret
+                      ret.validate = true
+                      return ret
                     },
                   },
                   {
@@ -380,6 +400,85 @@ export default {
                         columns: this.columns,
                         list: this.list,
                       })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      if (obj.is_prepaid_recycle) {
+                        ret.tooltip = '包年包月机器，不支持此操作'
+                        return ret
+                      }
+                      if (obj.backup_host_id) {
+                        ret.tooltip = '高可用的机器不支持创建快照'
+                        return ret
+                      }
+                      if (commonUnabled(obj)) return ret
+                      ret.validate = cloudEnabled('createSnapshot', obj)
+                      ret.tooltip = cloudUnabledTip('createSnapshot', obj)
+                      return ret
+                    },
+                  },
+                  {
+                    label: '续费',
+                    action: () => {
+                      this.createDialog('VmResourceFeeDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      if (!this.isAdminMode && !this.isDomainMode) {
+                        ret.tooltip = '无权限操作'
+                        return ret
+                      }
+                      if (findPlatform(obj.hypervisor) !== SERVER_TYPE.public) {
+                        ret.tooltip = '仅公有云支持此操作'
+                        return ret
+                      }
+                      if (obj.billing_type !== 'prepaid') {
+                        ret.tooltip = '仅包年包月的资源支持此操作'
+                        return ret
+                      }
+                      ret.validate = true
+                      return ret
+                    },
+                  },
+                  {
+                    label: '加入资源池',
+                    action: () => {
+                      this.createDialog('VmJoinResourceDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      if (!this.isAdminMode && !this.isDomainMode) {
+                        ret.tooltip = '无权限操作'
+                        return ret
+                      }
+                      if (commonUnabled(obj)) return ret
+                      if (findPlatform(obj.hypervisor) !== SERVER_TYPE.public) {
+                        ret.tooltip = '仅公有云支持此操作'
+                        return ret
+                      }
+                      if (obj.billing_type !== 'prepaid') {
+                        ret.tooltip = '仅包年包月的资源支持此操作'
+                        return ret
+                      }
+                      ret.validate = true
+                      return ret
                     },
                   },
                 ],
@@ -578,11 +677,11 @@ export default {
                   {
                     label: '绑定弹性公网IP',
                     action: () => {
-                      // this.createDialog('VmResetPasswordDialog', {
-                      //   data: [obj],
-                      //   columns: this.columns,
-                      //   list: this.list,
-                      // })
+                      this.createDialog('VmBindEipDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                      })
                     },
                     meta: () => {
                       const ret = {
@@ -602,11 +701,11 @@ export default {
                   {
                     label: '解绑弹性公网IP',
                     action: () => {
-                      // this.createDialog('VmResetPasswordDialog', {
-                      //   data: [obj],
-                      //   columns: this.columns,
-                      //   list: this.list,
-                      // })
+                      this.createDialog('VmUnbindEipDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                      })
                     },
                     meta: () => {
                       const ret = {
@@ -618,8 +717,8 @@ export default {
                         ret.tooltip = 'Public IP无法解绑'
                         return ret
                       }
-                      ret.validate = cloudUnabledTip('unbindEip', obj)
-                      ret.tooltip = cloudEnabled('unbindEip', obj)
+                      ret.validate = cloudEnabled('unbindEip', obj)
+                      ret.tooltip = cloudUnabledTip('unbindEip', obj)
                       return ret
                     },
                   },
@@ -631,11 +730,11 @@ export default {
                   {
                     label: '添加备份机',
                     action: () => {
-                      // this.createDialog('VmResetPasswordDialog', {
-                      //   data: [obj],
-                      //   columns: this.columns,
-                      //   list: this.list,
-                      // })
+                      this.createDialog('VmAddBackupDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                      })
                     },
                     meta: () => {
                       const ret = {
@@ -661,16 +760,19 @@ export default {
                   {
                     label: '删除备份机',
                     action: () => {
-                      // this.createDialog('VmResetPasswordDialog', {
-                      //   data: [obj],
-                      //   columns: this.columns,
-                      //   list: this.list,
-                      // })
+                      this.createDialog('VmDeleteBackupDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                      })
                     },
                     meta: () => {
                       const ret = {
                         validate: false,
                         tooltip: null,
+                      }
+                      if (!obj.backup_host_id) {
+                        return ret
                       }
                       if (!this.isAdminMode) {
                         ret.tooltip = '无权限操作'
@@ -687,16 +789,19 @@ export default {
                   {
                     label: '切换',
                     action: () => {
-                      // this.createDialog('VmResetPasswordDialog', {
-                      //   data: [obj],
-                      //   columns: this.columns,
-                      //   list: this.list,
-                      // })
+                      this.createDialog('VmSwitchBackupDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                      })
                     },
                     meta: () => {
                       const ret = {
                         validate: false,
                         tooltip: null,
+                      }
+                      if (!obj.backup_host_id) {
+                        return ret
                       }
                       if (!this.isAdminMode) {
                         ret.tooltip = '无权限操作'
@@ -713,11 +818,11 @@ export default {
                   {
                     label: '迁移',
                     action: () => {
-                      // this.createDialog('VmResetPasswordDialog', {
-                      //   data: [obj],
-                      //   columns: this.columns,
-                      //   list: this.list,
-                      // })
+                      this.createDialog('VmTransferDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                      })
                     },
                     meta: () => {
                       const ret = {
@@ -770,7 +875,7 @@ export default {
       ],
     }
   },
-  computed: mapGetters(['isAdminMode']),
+  computed: mapGetters(['isAdminMode', 'isDomainMode']),
   created () {
     this.webconsoleManager = new Manager('webconsole', 'v1')
     this.list.fetchData()
