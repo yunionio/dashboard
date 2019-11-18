@@ -2,7 +2,6 @@
   <a-select
     class="base-select"
     v-bind="{ ...selectProps, ...filterOpts}"
-    not-found-content="暂无数据"
     :value="value"
     @change="change"
     @search="loadOpts"
