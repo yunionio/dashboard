@@ -434,10 +434,22 @@ export const decorators = {
       },
     ],
   },
+  groups: {
+    groupsEnable: [
+      'groupsEnable',
+      {
+        valuePropName: 'checked',
+        initialValue: false,
+      },
+    ],
+    groups: [
+      'groups',
+    ],
+  },
 }
 
 const decoratorGroup = {
-  idc: ['domain', 'project', 'cloudregionZone', 'name', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'gpu', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'schedPolicy', 'bios', 'backup', 'duration'],
+  idc: ['domain', 'project', 'cloudregionZone', 'name', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'gpu', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'schedPolicy', 'bios', 'backup', 'duration', 'groups'],
 }
 export class ControlParams {
   constructor (type) {
@@ -856,6 +868,10 @@ export class GenCreateData {
     if (this.fd.imageType === IMAGES_TYPE_MAP.snapshot.key) {
       data.instance_snapshot_id = this.fd.image.key
       delete data.disks // 主机快照不需要 disks 字段
+    }
+    // 主机组
+    if (this.fd.groupsEnable && this.fd.groups && this.fd.groups.length) {
+      data.groups = this.fd.groups
     }
     return data
   }
