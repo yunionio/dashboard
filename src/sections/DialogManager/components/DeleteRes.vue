@@ -40,7 +40,7 @@ export default {
           }
           const response = await this.params.list.onManager('batchDelete', {
             id: ids,
-            params,
+            managerArgs: { params },
           })
           if (this.params.success && R.is(Function, this.params.success)) {
             this.params.success(response)

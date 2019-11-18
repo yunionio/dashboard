@@ -103,7 +103,9 @@ export default {
           filterOption: this.filterOption,
         }
       }
-      return {}
+      return {
+        filterOption: false,
+      }
     },
   },
   watch: {
