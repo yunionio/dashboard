@@ -38,12 +38,7 @@ export default {
             label: '实例状态',
             dropdown: true,
             multiple: true,
-            items: [
-              { label: '运行中', key: 'running' },
-              { label: '关机', key: 'ready' },
-              { label: '未知', key: 'unknown' },
-              { label: '调度失败', key: 'sched_fail' },
-            ],
+            items: this.getSeachStatus(),
             filter: true,
             formatter: val => {
               return `status.in(${val.join(',')})`
@@ -323,10 +318,10 @@ export default {
                 }
               }
               return {
-                label: '开启密码访问',
+                label: '开启免密访问',
                 action: () => {
                   this.createDialog('RedisUpdateAuthModeDialog', {
-                    title: '开启密码访问',
+                    title: '开启免密访问',
                     data: [obj],
                     columns: this.columns,
                     list: this.list,
@@ -474,10 +469,24 @@ export default {
     this.webconsoleManager = new Manager('webconsole', 'v1')
     this.list.fetchData()
     this.initSidePageTab('redis-detail')
+    console.log(this.$t('status.redis'))
   },
   methods: {
     createServer () {
       this.$router.push('/redis/create')
+    },
+    getSeachStatus () {
+      const OTHER_STATUS = ['RUNNING', 'minorversionupgrading', 'networkmodifying', 'sslmodifying', 'majorversionupgrading']
+      const status = []
+      for (let key in this.$t('status.redis')) {
+        if (OTHER_STATUS.indexOf(key) === -1) {
+          status.push({
+            key,
+            label: this.$t('status.redis')[key],
+          })
+        }
+      }
+      return status
     },
   },
 }

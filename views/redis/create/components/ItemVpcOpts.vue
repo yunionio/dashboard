@@ -89,6 +89,10 @@ export default {
         params['cloudregion_id'] = sku.cloudregion_id
         params['provider'] = sku.provider
       }
+      this.FC.setFieldsValue({
+        vpc: undefined,
+        network: undefined,
+      })
       try {
         this.vpcLoading = true
         const { data = {} } = await this.vpcManager.list({ params })
@@ -96,7 +100,6 @@ export default {
         if (this.vpcOptions && this.vpcOptions.length > 0) {
           this.FC.setFieldsValue({
             vpc: this.vpcOptions[0].id,
-            network: undefined,
           })
         }
         this.fetchQueryNetworks()

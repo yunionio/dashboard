@@ -11,7 +11,7 @@
 import rdsList from './components/List'
 
 export default {
-  name: 'VmInstanceIndex',
+  name: 'RDSIndex',
   components: {
     rdsList,
   },
