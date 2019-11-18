@@ -91,7 +91,7 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        const values = await this.$promiseValidateForm(this.form.fc)
+        const values = await this.form.fc.validateFields()
         const ids = this.params.data.map(item => item.id)
         const data = { reset_password: true, auto_start: values.auto_start }
         if (values.loginType === LOGIN_TYPES_MAP.password.key) {

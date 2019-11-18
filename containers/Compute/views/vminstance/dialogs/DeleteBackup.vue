@@ -1,18 +1,12 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">绑定密钥</div>
+    <div slot="header">删除备份机</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" action="绑定密钥" />
+      <dialog-selected-tips :count="params.data.length" action="删除备份机" />
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
-        <a-form-item label="密钥对" v-bind="formItemLayout">
-          <base-select
-            v-decorator="decorators.keypair"
-            resource="keypairs"
-            :select-props="{ allowClear: true, placeholder: '请选择关密钥对' }" />
-        </a-form-item>
-        <a-form-item label="自动启动" v-bind="formItemLayout" extra="绑定密钥成功后自动启动">
-          <a-switch v-decorator="decorators.auto_start" :disabled="form.fi.disableAutoStart" />
+        <a-form-item label="强制清除" v-bind="formItemLayout" extra="强制清除备份机记录（适用于备份机宿主机离线的情况下）">
+          <a-switch v-decorator="decorators.purge" />
         </a-form-item>
       </a-form>
     </div>
@@ -26,42 +20,21 @@
 <script>
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import { typeClouds } from '@/utils/common/hypervisor'
-
-const hypervisorMap = typeClouds.hypervisorMap
 
 export default {
-  name: 'VmBindKeypairDialog',
+  name: 'VmDeleteBackupDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
-    let autoStartInitialValue = true
-    let disableAutoStart = false
-    const firstData = this.params.data && this.params.data[0]
-    if (firstData && (firstData.status === 'running' || firstData.hypervisor === hypervisorMap.azure.key)) {
-      autoStartInitialValue = false
-      disableAutoStart = true
-    }
     return {
       loading: false,
       form: {
         fc: this.$form.createForm(this),
-        fi: {
-          disableAutoStart,
-        },
       },
       decorators: {
-        keypair: [
-          'keypair',
+        purge: [
+          'purge',
           {
-            rules: [
-              { required: true, message: '请选择关联密钥', trigger: 'blur' },
-            ],
-          },
-        ],
-        auto_start: [
-          'auto_start',
-          {
-            initialValue: autoStartInitialValue,
+            initialValue: true,
             valuePropName: 'checked',
           },
         ],
@@ -86,7 +59,7 @@ export default {
           id: ids,
           steadyStatus: ['running', 'ready'],
           managerArgs: {
-            action: 'deploy',
+            action: 'delete-backup',
             data: values,
           },
         })

@@ -1,18 +1,17 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">绑定密钥</div>
+    <div slot="header">添加备份机</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" action="绑定密钥" />
+      <dialog-selected-tips :count="params.data.length" action="添加备份机" />
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
         <a-form-item label="密钥对" v-bind="formItemLayout">
           <base-select
-            v-decorator="decorators.keypair"
-            resource="keypairs"
-            :select-props="{ allowClear: true, placeholder: '请选择关密钥对' }" />
-        </a-form-item>
-        <a-form-item label="自动启动" v-bind="formItemLayout" extra="绑定密钥成功后自动启动">
-          <a-switch v-decorator="decorators.auto_start" :disabled="form.fi.disableAutoStart" />
+            v-decorator="decorators.prefer_host_id"
+            resource="hosts"
+            :params="selectParams"
+            :disabled-items="disabledItems"
+            :select-props="{ placeholder: '请选择备份机' }" />
         </a-form-item>
       </a-form>
     </div>
@@ -31,38 +30,21 @@ import { typeClouds } from '@/utils/common/hypervisor'
 const hypervisorMap = typeClouds.hypervisorMap
 
 export default {
-  name: 'VmBindKeypairDialog',
+  name: 'VmAddBackupDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
-    let autoStartInitialValue = true
-    let disableAutoStart = false
-    const firstData = this.params.data && this.params.data[0]
-    if (firstData && (firstData.status === 'running' || firstData.hypervisor === hypervisorMap.azure.key)) {
-      autoStartInitialValue = false
-      disableAutoStart = true
-    }
     return {
       loading: false,
       form: {
         fc: this.$form.createForm(this),
-        fi: {
-          disableAutoStart,
-        },
       },
       decorators: {
-        keypair: [
-          'keypair',
+        prefer_host_id: [
+          'prefer_host_id',
           {
             rules: [
-              { required: true, message: '请选择关联密钥', trigger: 'blur' },
+              { required: true, message: '请选择备份机', trigger: 'blur' },
             ],
-          },
-        ],
-        auto_start: [
-          'auto_start',
-          {
-            initialValue: autoStartInitialValue,
-            valuePropName: 'checked',
           },
         ],
       },
@@ -76,6 +58,21 @@ export default {
       },
     }
   },
+  computed: {
+    firstData () {
+      return this.params.data[0]
+    },
+    selectParams () {
+      const params = { enabled: 1, host_type: this.firstData['hypervisor'] }
+      if (this.firstData['hypervisor'] === hypervisorMap.kvm.key) {
+        params.host_type = 'hypervisor'
+      }
+      return params
+    },
+    disabledItems () {
+      return [this.firstData.host_id]
+    },
+  },
   methods: {
     async handleConfirm () {
       this.loading = true
@@ -86,7 +83,7 @@ export default {
           id: ids,
           steadyStatus: ['running', 'ready'],
           managerArgs: {
-            action: 'deploy',
+            action: 'create-backup',
             data: values,
           },
         })
