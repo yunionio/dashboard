@@ -1,7 +1,7 @@
 import * as R from 'ramda'
 
 export default {
-  name: 'NetworkSelect',
+  name: 'NetworkSelects',
   inject: ['form'],
   props: {
     label: {
@@ -17,13 +17,13 @@ export default {
     form: {
       type: Object,
     },
-    vpcFetchParams: {
+    vpcParams: {
       type: [Object, Function],
     },
     vpcFetchChange: {
       type: Function,
     },
-    networkFetchParams: {
+    networkParams: {
       type: [Object, Function],
     },
     networkFetchChange: {
@@ -91,24 +91,24 @@ export default {
         return item.id === id || item.name === id
       })
     },
-    getVpcParams () {
+    async getVpcParams () {
       const _default = {
         limit: 0,
         usable: true,
       }
-      if (this.vpcFetchParams) {
-        if (R.type(this.vpcFetchParams) === 'Object') {
-          return Object.assign({}, _default, this.vpcFetchParams)
+      if (this.vpcParams) {
+        if (R.type(this.vpcParams) === 'Object') {
+          return Object.assign({}, _default, this.vpcParams)
         }
-        if (R.type(this.vpcFetchParams) === 'Function') {
-          const _params = this.vpcFetchParams() || {}
+        if (R.type(this.vpcParams) === 'Function') {
+          const _params = await this.vpcParams() || {}
           return Object.assign({}, _default, _params)
         }
       }
       return _default
     },
     async fetchVpc () {
-      const PARAMS = this.getVpcParams()
+      const PARAMS = await this.getVpcParams()
       const MANAGER = new this.$Manager('vpcs', 'v2')
       this.vpcLoading = true
       try {
@@ -146,26 +146,26 @@ export default {
         </a-select>
       )
     },
-    getNetworkParams () {
+    async getNetworkParams () {
       const vpc = this.FC.getFieldValue('vpc')
       const _default = {
         vpc,
         limit: 0,
         usable: true,
       }
-      if (this.vpcFetchParams) {
-        if (R.type(this.networkFetchParams) === 'Object') {
-          return Object.assign({}, _default, this.vpcFetchParams)
+      if (this.networkParams) {
+        if (R.type(this.networkParams) === 'Object') {
+          return Object.assign({}, _default, this.vpcParams)
         }
-        if (R.type(this.networkFetchParams) === 'Function') {
-          const _params = this.vpcFetchParams() || {}
+        if (R.type(this.networkParams) === 'Function') {
+          const _params = await this.networkParams() || {}
           return Object.assign({}, _default, _params)
         }
       }
       return _default
     },
     async fetchNetwork () {
-      const PARAMS = this.getNetworkParams()
+      const PARAMS = await this.getNetworkParams()
       const MANAGER = new this.$Manager('networks', 'v2')
       this.networkLoading = true
       try {

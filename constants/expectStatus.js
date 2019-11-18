@@ -75,4 +75,9 @@ export default {
     danger: ['alloc_failed', 'dealloc_failed', 'clone_failed', 'backup_alloc_failed', 'cancel_snapshot_failed'],
     info: ['init', 'unknown', 'unavailable'],
   },
+  rdsAccount: {
+    success: ['available'],
+    danger: ['create_failed', 'delete_failed', 'reset_passwd_failed'],
+    info: ['unknown', 'unavailable'],
+  },
 }

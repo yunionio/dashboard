@@ -1,5 +1,6 @@
 import * as R from 'ramda'
 import { CITYS, CLOUD_PROVIDERS_MAP } from '@/constants'
+
 // const Select = {
 //   name: 'Select',
 //   methods: {
@@ -20,18 +21,30 @@ import { CITYS, CLOUD_PROVIDERS_MAP } from '@/constants'
 // }
 
 export default {
-  name: 'AreaSelect',
+  name: 'AreaSelects',
   inject: ['form'],
   props: {
     label: {
       type: String,
       default: '区域',
     },
-    types: {
+    names: {
       type: Array,
       default: () => {
-        return ['city', 'provider', 'region', 'zone']
+        return ['city', 'provider', 'cloudregion', 'zone']
       },
+    },
+    cityFetchSuccess: {
+      type: Function,
+    },
+    providerFetchSuccess: {
+      type: Function,
+    },
+    cloudregionFetchSuccess: {
+      type: Function,
+    },
+    zoneFetchSuccess: {
+      type: Function,
     },
     labelCol: {
       type: Object,
@@ -59,9 +72,9 @@ export default {
       cityList: [],
       providerLoading: false,
       providerList: [],
-      regionLoading: true,
-      regionList: [],
-      zoneLoading: true,
+      cloudregionLoading: false,
+      cloudregionList: [],
+      zoneLoading: false,
       zoneList: [],
     }
   },
@@ -79,7 +92,7 @@ export default {
       }
     },
     colSpan () {
-      return 24 / this.types.length
+      return 24 / this.names.length
     },
   },
   methods: {
@@ -107,11 +120,13 @@ export default {
     },
     handleChange (selectItem = {}, callback) {
       const key = Object.keys(selectItem)[0]
-      const { id, fetchTypes } = { ...selectItem[key] }
+      const { id, fetchNames } = { ...selectItem[key] }
       const selectedValue = this.getSelectedValue(key, id)
-      if (fetchTypes && fetchTypes.length > 0) {
-        this.resetValues(fetchTypes)
-        this.fetchs(fetchTypes)
+      if (fetchNames && fetchNames.length > 0) {
+        this.resetValues(fetchNames)
+        this.$nextTick(() => {
+          this.fetchs(fetchNames)
+        })
       }
       this.$emit('change', {
         [key]: {
@@ -123,7 +138,7 @@ export default {
     },
     async fetchChange (name, list) {
       const events = this._events || {}
-      const changes = events[`${name}FetchChange`]
+      const changes = events[`${name}FetchSuccess`]
       if (changes && changes.length > 0) {
         changes.forEach(e => {
           e(list)
@@ -134,15 +149,14 @@ export default {
           [name]: _item.id || _item.name,
         })
       }
-      console.log('111')
     },
-    async fetchs (fetchTypes = this.types) {
-      if (fetchTypes && fetchTypes.length > 0) {
-        for (let i = 0; i < fetchTypes.length; i++) {
-          const name = fetchTypes[i]
+    async fetchs (fetchNames = this.names) {
+      if (fetchNames && fetchNames.length > 0) {
+        for (let i = 0; i < fetchNames.length; i++) {
+          const name = fetchNames[i]
           const sn = this.firstName(name)
           const fetchFn = this[`fetch${sn}`]
-          if (this.types.indexOf(name) > -1 && fetchFn) {
+          if (this.names.indexOf(name) > -1 && fetchFn) {
             const list = await fetchFn()
             await this.fetchChange(name, list)
           }
@@ -169,12 +183,12 @@ export default {
       }
     },
     RenderCity () {
-      const fetchTypes = ['provider', 'region', 'zone']
+      const fetchNames = ['provider', 'cloudregion', 'zone']
       const _handleChange = (id) => {
         this.handleChange({
           city: {
             id,
-            fetchTypes,
+            fetchNames,
           },
         })
       }
@@ -188,9 +202,8 @@ export default {
       )
     },
     async fetchProvider () {
-      console.log('2222')
       const { getFieldsValue } = this.FC
-      const { city } = getFieldsValue(this.types)
+      const { city } = getFieldsValue(this.names)
       const params = {
         usable: true,
         city,
@@ -211,12 +224,12 @@ export default {
       }
     },
     RenderProvider () {
-      const fetchTypes = ['region', 'zone']
+      const fetchNames = ['cloudregion', 'zone']
       const _handleChange = (id) => {
         this.handleChange({
           provider: {
             id,
-            fetchTypes,
+            fetchNames,
           },
         })
       }
@@ -229,29 +242,29 @@ export default {
         </a-select>
       )
     },
-    async fetchRegion () {
+    async fetchCloudregion () {
       const { getFieldsValue } = this.FC
-      const { city, provider } = getFieldsValue(this.types)
+      const { city, provider } = getFieldsValue(this.names)
       const params = {
         usable: true,
         city,
         provider,
       }
-      this.regionLoading = true
+      this.cloudregionLoading = true
       try {
         const manager = new this.$Manager('cloudregions', 'v2')
         const { data = {} } = await manager.list({ params })
         const retList = !R.isEmpty(data.data) ? data.data : []
-        this.regionLoading = false
-        this.regionList = retList
+        this.cloudregionLoading = false
+        this.cloudregionList = retList
         return retList
       } catch (err) {
-        this.regionLoading = false
+        this.cloudregionLoading = false
         throw err
       }
     },
-    RenderRegion () {
-      const fetchTypes = ['zone']
+    RenderCloudregion () {
+      const fetchNames = ['zone']
       const { setFieldsValue } = this.FC
       const _callback = (item = {}) => {
         const { city, provider } = item
@@ -262,16 +275,16 @@ export default {
       }
       const _handleChange = (id) => {
         this.handleChange({
-          region: {
+          cloudregion: {
             id,
-            fetchTypes,
+            fetchNames,
           },
         }, _callback)
       }
       return (
-        <a-select allowClear showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.regionLoading} placeholder="请选择区域">
-          {this.regionList.map(region => {
-            const { id, name } = region
+        <a-select allowClear showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.cloudregionLoading} placeholder="请选择区域">
+          {this.cloudregionList.map(cloudregion => {
+            const { id, name } = cloudregion
             return <a-select-option key={id} value={id}>{name}</a-select-option>
           })}
         </a-select>
@@ -279,12 +292,12 @@ export default {
     },
     async fetchZone () {
       const { getFieldsValue } = this.FC
-      const { city, provider, region } = getFieldsValue(this.types)
+      const { city, provider, cloudregion } = getFieldsValue(this.names)
       const params = {
         usable: true,
         city,
         provider,
-        region,
+        cloudregion,
       }
       this.zoneLoading = true
       try {
@@ -307,7 +320,7 @@ export default {
         const { provider, cloudregion_id } = item
         this.FC.setFieldsValue({
           provider,
-          region: cloudregion_id,
+          cloudregion: cloudregion_id,
         })
       }
       const _handleChange = (id) => {
@@ -329,8 +342,8 @@ export default {
   },
   render (h) {
     const { getFieldDecorator } = this.FC
-    const { types } = this
-    const RenderCols = types.map(name => {
+    const { names } = this
+    const RenderCols = names.map(name => {
       const sn = this.firstName(name)
       if (this[`Render${sn}`]) {
         const Render = this[`Render${sn}`]()
