@@ -13,6 +13,7 @@ import SchedPolicy from '@Compute/sections/SchedPolicy'
 import Bios from '@Compute/sections/BIOS'
 import Backup from '@Compute/sections/Backup'
 import Duration from '@Compute/sections/Duration'
+import InstanceGroups from '@Compute/sections/InstanceGroups'
 import BottomBar from '../components/BottomBar'
 import SystemDisk from '../components/SystemDisk'
 import DataDisk from '../components/DataDisk'
@@ -42,6 +43,7 @@ export default {
     Backup,
     DomainProject,
     Duration,
+    InstanceGroups,
   },
   props: {
     type: {
