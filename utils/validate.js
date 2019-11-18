@@ -60,6 +60,18 @@ export const REGEXP = {
     regexp: /^[a-zA-Z][a-zA-Z0-9._-]{1,127}$/,
     message: i18n.t('validator.snapshotName'),
   },
+  templateName: {
+    regexp: /^[a-zA-Z][a-zA-Z0-9-]{0,127}([a-zA-Z0-9-]|#{1,3})$/,
+    message: i18n.t('validator.resourceName'),
+  },
+  cidr: {
+    regexp: /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(\/\d{1,2})?$/,
+    message: i18n.t('validator.cidr'),
+  },
+  ports: {
+    regexp: /^([1-9]|[1-9]\d{1,3}|[1-5]\d{4}|6[0-5]{2}[0-3][0-5])$/,
+    message: i18n.t('validator.ports'),
+  },
 }
 
 /**
