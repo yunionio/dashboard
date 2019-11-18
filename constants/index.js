@@ -44,7 +44,6 @@ export const DEFAULT_PARAMS = {
       scope: '',
       details: true,
       status: 'active',
-      'filter.0': 'disk_format.notequals(iso)',
     },
     cloudregion: { // 区域
       cloud_env: 'onpremise',
@@ -709,4 +708,55 @@ export const timeOptions = [
   '21:00',
   '22:00',
   '23:00',
+]
+
+// 磁盘类型
+export const DISK_TYPE = {
+  'data': {
+    value: 'data',
+    text: '数据盘',
+  },
+  'sys': {
+    value: 'sys',
+    text: '系统盘',
+  },
+}
+
+// 购买时长
+export const BUY_DURATIONS_OPTIONS = [
+  {
+    label: '1个月',
+    value: '1M',
+    unit: 'M',
+  },
+  {
+    label: '2个月',
+    value: '2M',
+    unit: 'M',
+  },
+  {
+    label: '3个月',
+    value: '3M',
+    unit: 'M',
+  },
+  {
+    label: '半年',
+    value: '6M',
+    unit: 'M',
+  },
+  {
+    label: '1年',
+    value: '1Y',
+    unit: 'Y',
+  },
+  {
+    label: '2年',
+    value: '2Y',
+    unit: 'Y',
+  },
+  {
+    label: '3年',
+    value: '3Y',
+    unit: 'Y',
+  },
 ]

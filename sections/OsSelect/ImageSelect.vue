@@ -40,7 +40,7 @@ export default {
     imageType: {
       type: String,
       required: true,
-      validator: val => [IMAGES_TYPE_MAP.standard.key, IMAGES_TYPE_MAP.customize.key].includes(val),
+      validator: val => !R.isNil(IMAGES_TYPE_MAP[val]),
     },
     cloudType: {
       type: String,
@@ -56,18 +56,24 @@ export default {
       type: Object,
       required: true,
     },
+    form: {
+      type: Object,
+      required: true,
+      validator: val => !R.isNil(val.fc) && !R.isNil(val.fd),
+    },
   },
   data () {
     return {
       images: {
-        list: [],
-        cacheimagesList: [],
+        list: [], // 标准镜像、iso、自定义镜像 list
+        cacheimagesList: [], // 镜像缓存list，用于对比哪些镜像已缓存
+        hostimagesList: [], // 主机镜像 list
+        instanceSnapshotsList: [], // 主机快照 list
       },
       loading: false,
       imageOpts: [],
     }
   },
-  inject: ['form'],
   computed: {
     // 选择的镜像类型是否为公有云镜像
     isPublicImage () {
@@ -77,8 +83,31 @@ export default {
     isPrivateImage () {
       return this.imageType === IMAGES_TYPE_MAP.private.key
     },
+    // 选择的镜像类型是否为主机镜像
+    isHostImage () {
+      return this.fi.imageType === IMAGES_TYPE_MAP.host.key
+    },
+    // 选择的镜像类型是否为主机快照
+    isShapshotImage () {
+      return this.fi.imageType === IMAGES_TYPE_MAP.snapshot.key
+    },
     cacheimageIds () {
       return this.images.cacheimagesList.map(item => item.id)
+    },
+    standardImageParams () { // 标准镜像
+      return Object.assign({}, this.imageParams, {
+        is_standard: true,
+        'filter.0': 'disk_format.notequals(iso)',
+      })
+    },
+    customImageParams () { // 自定义镜像参数
+      return Object.assign({}, this.imageParams, {
+        is_standard: false,
+        'filter.0': 'disk_format.notequals(iso)',
+      })
+    },
+    isoImageParams () { // iso 参数
+      return Object.assign({}, this.imageParams, { disk_formats: 'iso' })
     },
     imagesInfo () {
       let images = this.images.list
@@ -142,13 +171,33 @@ export default {
     },
   },
   watch: {
-    imageParams () {
-      this.fetchImages()
+    imageType () {
+      switch (this.imageType) { // 自定义镜像
+        case IMAGES_TYPE_MAP.customize.key:
+          this.fetchImages(this.customImageParams)
+          break
+        case IMAGES_TYPE_MAP.iso.key: // iso
+          this.fetchImages(this.isoImageParams)
+          break
+        case IMAGES_TYPE_MAP.host.key: // 主机镜像
+          this.fetchHostImages(this.imageParams)
+          break
+        case IMAGES_TYPE_MAP.snapshot.key: // 主机快照
+          this.fetchSnapshotImages(this.imageParams)
+          break
+        default: // 标准镜像
+          this.fetchImages(this.standardImageParams)
+          break
+      }
     },
   },
   created () {
     this.imagesM = new Manager('images', 'v1')
-    this.fetchImages()
+    this.cachedimagesM = new Manager('cachedimages', 'v2')
+    this.guestimagesM = new Manager('guestimages', 'v1')
+    this.instanceSnapshots = new Manager('instance_snapshots', 'v2')
+    this.fetchImages(this.standardImageParams)
+    this.fetchCacheimages()
   },
   methods: {
     imageChange (imageObj) {
@@ -156,27 +205,71 @@ export default {
       if (imageObj && R.is(Object, imageObj)) {
         imageMsg = this.images.list.find(image => image.id === imageObj.key)
       }
-      this.$bus.$emit('updateFi', { imageMsg }) // 📢将当前 image 的详细信息广播出去
+      this.$bus.$emit('VMInstanceCreateUpdateFi', { imageMsg }) // 📢将当前 image 的详细信息广播出去
     },
     osChange (osValue) {
       this.defaultSelect(osValue)
     },
-    fetchImages () {
-      this.loading = true
+    _resetImage () {
       const { os, image } = this.form.fc.getFieldsValue(['os', 'image'])
       if (os && image) {
         this.form.fc.setFieldsValue({ os: '' })
         this.form.fc.setFieldsValue({ image: { ...initData } })
       }
-      this.imagesM.list({ params: this.imageParams })
-        .then(({ data: { data = [] } }) => {
-          this.loading = false
-          this.images.list = data
-          this.$nextTick(this.defaultSelect)// 默认选择下拉第一项
-        })
-        .catch(() => {
-          this.loading = false
-        })
+    },
+    async fetchImages (params) {
+      this.loading = true
+      this._resetImage()
+      try {
+        const { data: { data = [] } } = await this.imagesM.list({ params })
+        this.loading = false
+        this.images.list = data
+        this.$nextTick(this.defaultSelect)// 默认选择下拉第一项
+      } catch (error) {
+        this.loading = false
+      }
+    },
+    async fetchCacheimages () {
+      const params = {
+        details: false,
+        order_by: 'ref_count',
+        order: 'desc',
+        image_type: 'customized',
+        zone: this.form.fd.zone.key,
+      }
+      this.loading = true
+      try {
+        const { data: { data = [] } } = await this.cachedimagesM.list({ params })
+        this.loading = false
+        this.images.cacheimagesList = data
+      } catch (error) {
+        this.loading = false
+      }
+    },
+
+    async fetchHostImages (params) {
+      this.loading = true
+      this._resetImage()
+      try {
+        const { data: { data = [] } } = await this.guestimagesM.list({ params })
+        this.loading = false
+        this.images.list = data
+        this.$nextTick(this.defaultSelect)// 默认选择下拉第一项
+      } catch (error) {
+        this.loading = false
+      }
+    },
+    async fetchSnapshotImages (params) {
+      this.loading = true
+      this._resetImage()
+      try {
+        const { data: { data = [] } } = await this.instanceSnapshots.list({ params })
+        this.loading = false
+        this.images.list = data
+        this.$nextTick(this.defaultSelect)// 默认选择下拉第一项
+      } catch (error) {
+        this.loading = false
+      }
     },
     getProperties (img) {
       if (this.isPublicImage || this.isPrivateImage) {

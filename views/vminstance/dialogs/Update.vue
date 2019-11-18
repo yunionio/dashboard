@@ -133,21 +133,10 @@ export default {
     this.initFormValue(this.params.data[0])
   },
   methods: {
-    validateForm () {
-      return new Promise((resolve, reject) => {
-        this.form.fc.validateFields((err, values) => {
-          if (!err) {
-            resolve(values)
-          } else {
-            reject(err)
-          }
-        })
-      })
-    },
     async handleConfirm () {
       this.loading = true
       try {
-        const values = await this.validateForm()
+        const values = await this.form.fc.validateFields()
         const ids = this.params.data.map(item => item.id)
         await this.params.list.onManager('batchUpdate', {
           id: ids,
