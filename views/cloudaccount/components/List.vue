@@ -348,8 +348,8 @@ export default {
                 },
                 meta: () => {
                   return {
-                    validate: !obj.is_public && this.$store.getters.isAdminMode,
-                    tooltip: this.$store.getters.isAdminMode ? '' : '无操作权限',
+                    validate: !obj.is_public && ownerDomain,
+                    tooltip: ownerDomain ? '' : '无操作权限',
                   }
                 },
               },
@@ -365,8 +365,8 @@ export default {
                 },
                 meta: () => {
                   return {
-                    validate: obj.is_public && this.$store.getters.isAdminMode,
-                    tooltip: this.$store.getters.isAdminMode ? '' : '无操作权限',
+                    validate: obj.is_public && ownerDomain,
+                    tooltip: ownerDomain ? '' : '无操作权限',
                   }
                 },
               },
