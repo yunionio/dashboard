@@ -29,7 +29,6 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        this.loading = false
         if (this.params.ok) {
           await this.params.ok()
         } else {
@@ -41,7 +40,7 @@ export default {
           }
           const response = await this.params.list.onManager('batchDelete', {
             id: ids,
-            params,
+            managerArgs: { params },
           })
           if (this.params.success && R.is(Function, this.params.success)) {
             this.params.success(response)
@@ -49,7 +48,7 @@ export default {
         }
         this.cancelDialog()
         this.$message.success('操作成功')
-      } catch (error) {
+      } finally {
         this.loading = false
       }
     },

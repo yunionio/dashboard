@@ -5,6 +5,7 @@
     :destroy-on-close="true"
     :keyboard="false"
     :width="width"
+    :mask-closable="false"
     @cancel="cancel">
     <template v-slot:title>
       <div class="base-dialog-header">

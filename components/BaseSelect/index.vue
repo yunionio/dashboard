@@ -2,7 +2,6 @@
   <a-select
     class="base-select"
     v-bind="{ ...selectProps, ...filterOpts}"
-    not-found-content="暂无数据"
     :value="value"
     @change="change"
     @search="loadOpts"
@@ -80,6 +79,14 @@ export default {
       type: Function,
       required: false,
     },
+    idKey: {
+      type: String,
+      default: 'id',
+    },
+    nameKey: {
+      type: String,
+      default: 'name',
+    },
   },
   data: function () {
     return {
@@ -96,7 +103,9 @@ export default {
           filterOption: this.filterOption,
         }
       }
-      return {}
+      return {
+        filterOption: false,
+      }
     },
   },
   watch: {
@@ -112,7 +121,7 @@ export default {
           const resOpts = val.map(item => {
             return {
               ...item,
-              id: item.id || item.key || item.value,
+              id: item[this.idKey] || item.key || item.value,
               name: item.name || item.label,
             }
           })
@@ -188,9 +197,9 @@ export default {
       }
       manager.list({ params, ctx: this.ctx })
         .then(({ data: { data = [] } }) => {
-          let resOpts = data
+          let resOpts = data.map(val => ({ ...val, id: val[this.idKey], name: val[this.nameKey] }))
           if (this.labelFormat) {
-            resOpts = data.map(val => ({ ...val, name: this.labelFormat(val) }))
+            resOpts = data.map(val => ({ ...val, id: val[this.idKey], name: this.labelFormat(val) }))
           }
           if (this.mapper) {
             resOpts = this.mapper(resOpts)
