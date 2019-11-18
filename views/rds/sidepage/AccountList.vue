@@ -89,7 +89,7 @@ export default {
         {
           label: '修改权限',
           action: (obj) => {
-            this.createDialog('RedisAccountListSetPrivilegeDialog', {
+            this.createDialog('RDSAccountListUpdatePrivilegeDialog', {
               title: '修改权限',
               initialValues: {
                 account_privilege: obj['account_privilege'],

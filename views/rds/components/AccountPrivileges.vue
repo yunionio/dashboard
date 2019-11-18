@@ -2,6 +2,7 @@
   <div>
     <a-transfer
       :dataSource="dbList"
+      :titles="['未授权的数据库', '已授权的数据库']"
       :listStyle="{
         width: '332px',
         height: '332px',
@@ -15,17 +16,28 @@
 import { ACCOUNT_PRIVILEGES } from '../constants'
 export default {
   inject: ['form'],
+  props: {
+    privileges: {
+      type: Array,
+    },
+  },
   data () {
     return {
       mockData: [],
       targetKeys: [],
       dbList: [],
       dbIdItemObj: {},
+      propsPrivileges: {},
     }
   },
   created () {
     this.fetchQueryDBList()
     this.form.fc.getFieldDecorator('privileges', { preserve: true })
+    if (this.privileges && this.privileges.length > 0) {
+      this.privileges.forEach(item => {
+        this.propsPrivileges[item.dbinstancedatabase_id] = item
+      })
+    }
   },
   methods: {
     async fetchQueryDBList () {
@@ -42,9 +54,17 @@ export default {
           this.dbList = retList
             .filter(({ status }) => status === 'running')
             .map(item => {
-              item['key'] = item.id
               item['title'] = item.name
               this.dbIdItemObj[item.id] = item
+              if (this.propsPrivileges[item.id]) {
+                item = {
+                  ...item,
+                  ...this.propsPrivileges[item.id],
+                }
+                this.targetKeys.push(item.id)
+              }
+              console.log(item, this.propsPrivileges)
+              item['key'] = item.id
               return item
             })
         }
@@ -66,7 +86,9 @@ export default {
       return (
         <a-form-item class="radios">
           {
-            getFieldDecorator(id)(
+            getFieldDecorator(id, {
+              initialValue: item.privileges,
+            })(
               <a-radio-group onChange={_handleChange}>
                 {renderRadios}
               </a-radio-group>

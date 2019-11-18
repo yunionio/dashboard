@@ -2,7 +2,7 @@
     <base-dialog @cancel="cancelDialog">
         <div slot="header">{{params.title}}</div>
         <div slot="body">
-            <dialog-selected-tips :count="params.data.length" :action="params.title" />
+           <dialog-selected-tips :count="params.data.length" :action="params.title" />
            <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
            <a-form :form="form.fc" class="mt-5">
               <a-form-item label="权限设置" v-bind="formItemLayout">
