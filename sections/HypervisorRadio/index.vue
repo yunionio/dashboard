@@ -1,5 +1,5 @@
 <template>
-  <a-form-item>
+  <a-form-item class="mb-0">
     <a-radio-group v-decorator="decorator">
       <a-radio-button v-for="item in hypervisorOpts" :value="item.key" :key="item.key">{{ item.label }}</a-radio-button>
     </a-radio-group>
