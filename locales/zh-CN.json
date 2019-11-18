@@ -268,6 +268,13 @@
       "schedule": "调度中",
       "apply_snapshot_failed": "绑定快照策略失败",
       "cancel_snapshot_failed": "解绑快照策略失败"
+    },
+    "secgroupCache": {
+      "ready": "正常",
+      "deleting": "删除中",
+      "caching": "缓存中",
+      "delete_failed": "删除失败",
+      "init": "初始化"
     }
   },
   "skuCategoryOptions": {
@@ -400,7 +407,9 @@
     "password": "至少八个字符，至少一个字母和一个数字",
     "publicKey": "无效的公钥, 只支持 RSA/DSA 类型公钥",
     "secretKeyName": "名称必须以字母开头,且只能包含字母、数字、._@-字符",
-    "snapshotName": "字母开头，数字和字母大小写组合，长度为2-128个字符，可含\".\",\"-\",\"_\""
+    "snapshotName": "字母开头，数字和字母大小写组合，长度为2-128个字符，可含\".\",\"-\",\"_\"",
+    "cidr": "请输入合法CIDR",
+    "ports": "请输入合法的端口号"
   },
   "dialog": {
     "ok": "确定",
