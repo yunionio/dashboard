@@ -37,8 +37,7 @@
           label="快照名称">
           <a-input
             v-decorator="decorators.snapshotName"
-            :placeholder="$t('validator.resourceName')"
-            @change="checkTemplateName" />
+            :placeholder="$t('validator.resourceName')" />
           <div slot="extra">
             <div v-if="showRepeatTips">名称重复，系统默认追加“-1”</div>
             <div v-show="!isDiskSnapshot">友情提示：该主机快照占用快照配额 {{ diskCount }} 个</div>
@@ -56,8 +55,10 @@
 </template>
 
 <script>
-import { DISK_TYPE } from '@Compute/constants'
+import debounce from 'lodash/debounce'
 import * as R from 'ramda'
+import { DISK_TYPE } from '@Compute/constants'
+import { INPUT_DEBOUNCE_TIMER } from '@/constants/config'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { sizestr } from '@/utils/utils'
@@ -73,8 +74,10 @@ export default {
         fc: this.$form.createForm(this, {
           name: 'snapshort_create_form',
           onFieldsChange: this.onFieldsChange,
+          onValuesChange: this.onValuesChange,
         }),
         fd: {
+          snapshotName: '',
           snapshotType: 'disk',
         },
       },
@@ -128,9 +131,19 @@ export default {
       return this.params.data[0].disk_count
     },
   },
+  watch: {
+    'form.fd.snapshotName' (val) {
+      this.debounceCheckTemplateName()
+    },
+  },
+  created () {
+    this.debounceCheckTemplateName = debounce(() => {
+      this.checkTemplateName()
+    }, INPUT_DEBOUNCE_TIMER)
+  },
   methods: {
-    checkTemplateName (e) {
-      const snapshotName = e.target.value
+    checkTemplateName () {
+      const snapshotName = this.form.fd.snapshotName
       if (!R.isNil(snapshotName) && !R.isEmpty(snapshotName)) {
         this.manager.get({ id: snapshotName })
           .then(res => {
@@ -141,6 +154,8 @@ export default {
           }).catch(() => {
             this.showRepeatTips = false
           })
+      } else {
+        this.showRepeatTips = false
       }
     },
     validateForm (fileds = []) {
@@ -197,7 +212,14 @@ export default {
       }, ${sizestr(item.disk_size, 'M', 1024)}）`
     },
     snapshotTypeChangeHandle (e) {
-      this.form.fd.snapshotType = e.target.value
+      this.$nextTick(() => {
+        this.debounceCheckTemplateName()
+      })
+    },
+    onValuesChange (props, values) {
+      Object.keys(values).forEach((key) => {
+        this.form.fd[key] = values[key]
+      })
     },
   },
 }
