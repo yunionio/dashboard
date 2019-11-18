@@ -362,7 +362,7 @@ export const cloudUnabledTip = (action, value, othersEabledStatus = ['ready']) =
       } else {
         if (H === 'onecloud') H = 'kvm'
         if (H === 'vmware') H = 'esxi'
-        const { tooltip } = hypervisorMap[H]['label']
+        const tooltip = hypervisorMap[H]['label']
         errorMsg = `${tooltip}暂不支持该操作`
         return false
       }
