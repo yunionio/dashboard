@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex">
     <template v-if="!isAdminMode && !isDomainMode">
-      <div style="margin-bottom: 24px;">{{ projectData.name }}</div>
+      <div style="margin-bottom: 24px;">{{ projectData.label }}</div>
     </template>
     <a-row :gutter="8" class="w-100" v-else>
       <a-col :span="12">
@@ -16,7 +16,7 @@
             @change="domainChange"
             :filterOption="filterOption"
             showSearch>
-            <a-select-option v-for="item of domains" :value="item.id" :key="item.id">{{ item.name }}</a-select-option>
+            <a-select-option v-for="item of domains" :value="item.key" :key="item.key">{{ item.label }}</a-select-option>
           </a-select>
         </a-form-item>
       </a-col>
@@ -31,7 +31,7 @@
             @change="projectChange"
             :filterOption="filterOption"
             showSearch>
-            <a-select-option v-for="item of projects" :value="item.id" :key="item.id" :label="item.name">{{ item.name }}</a-select-option>
+            <a-select-option v-for="item of projects" :value="item.key" :key="item.key">{{ item.label }}</a-select-option>
           </a-select>
         </a-form-item>
       </a-col>
@@ -41,6 +41,7 @@
 
 <script>
 import * as R from 'ramda'
+import _ from 'lodash'
 import { mapGetters } from 'vuex'
 import { Manager } from '@/utils/manager'
 
@@ -50,10 +51,6 @@ export default {
     labelInValue: {
       type: Boolean,
       default: true,
-    },
-    defaultProjectDomain: { // 表单回填时的对象 { domain: <domain_id>, project: <project_id> }
-      type: Object,
-      default: () => ({}),
     },
     decorators: {
       type: Object,
@@ -89,11 +86,43 @@ export default {
         option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
       )
     },
+    /*
+     * @params {Object} domain { key: <domainId> }
+     */
+    _setInitDomain (domain) {
+      if (!R.isNil(domain) && !R.isEmpty(domain)) {
+        if (this.labelInValue) {
+          this.fc.setFieldsValue({
+            domain: { key: domain.key, label: domain.label },
+          })
+        } else {
+          this.fc.setFieldsValue({
+            domain: domain.key,
+          })
+        }
+      }
+    },
+    /*
+     * @params {Object} project { key: <projectId> }
+     */
+    _setInitProject (project) {
+      if (!R.isNil(project) && !R.isEmpty(project)) {
+        if (this.labelInValue) {
+          this.fc.setFieldsValue({
+            project: { key: project.key, label: project.label },
+          })
+        } else {
+          this.fc.setFieldsValue({
+            project: project.key,
+          })
+        }
+      }
+    },
     async fetchDomains () {
       if (!this.isAdminMode) {
         const data = [{
-          id: this.userInfo.projectDomainId,
-          name: this.userInfo.projectDomain,
+          key: this.userInfo.projectDomainId,
+          label: this.userInfo.projectDomain,
         }]
         this.domains = data
         this.domainChange(data[0])
@@ -107,11 +136,18 @@ export default {
         }
         const response = await this.dm.list({ params })
         const data = response.data.data || []
-        this.domains = data
-        const findDomain = this.domains.find(val => val.id === this.defaultProjectDomain.domain)
-        const domainData = findDomain || data[0]
-        const defaultDomain = { key: domainData.id, label: domainData.name }
-        this.domainChange(defaultDomain || {})
+        this.domains = data.map(val => ({ ...val, key: val.id, label: val.name }))
+        let defaultData = this.domains[0]
+        if (!defaultData) return // 说明列表为空
+        const initialValue = _.get(this.decorators, 'domain[1].initialValue')
+        if (initialValue) {
+          const findInitValue = this.domains.find(val => val.key === (initialValue.key || initialValue))
+          if (findInitValue) {
+            defaultData = { key: findInitValue.key, label: findInitValue.label }
+          }
+        }
+        this._setInitDomain(defaultData)
+        this.domainChange(defaultData || {})
       } catch (error) {
         throw error
       } finally {
@@ -122,10 +158,11 @@ export default {
       if (!this.isAdminMode && !this.isDomainMode) {
         const data = [{
           key: this.userInfo.projectId,
-          name: this.userInfo.projectName,
+          label: this.userInfo.projectName,
         }]
         this.projects = data
         this.projectChange(data[0])
+        this._setInitProject(data[0])
         return
       }
       this.projectLoading = true
@@ -133,15 +170,21 @@ export default {
         const params = {
           scope: this.scope,
         }
-        if (this.isAdminMode) {
-          params['domain_id'] = domainId
-        }
+        if (domainId) params.domain_id = domainId
         const response = await this.pm.list({ params })
-        const data = response.data.data || []
-        this.projects = data
-        const findProject = this.projects.find(val => val.id === this.defaultProjectDomain.project)
-        const defaultProject = findProject || data[0]
-        this.projectChange(defaultProject || {})
+        const data = response.data.data
+        this.projects = data.map(val => ({ ...val, key: val.id, label: val.name })) || []
+        let defaultData = this.projects[0]
+        if (!defaultData) return // 说明列表为空
+        const initialValue = _.get(this.decorators, 'project[1].initialValue')
+        if (initialValue) {
+          const findInitValue = this.projects.find(val => val.key === (initialValue.key || initialValue))
+          if (findInitValue) {
+            defaultData = { key: findInitValue.key, label: findInitValue.label }
+          }
+        }
+        this.projectChange(defaultData || {})
+        this._setInitProject(defaultData || {})
       } catch (error) {
         throw error
       } finally {
@@ -152,7 +195,7 @@ export default {
      * domain {Object|String}
      */
     domainChange (domain) {
-      const domainId = R.is(Object, domain) ? (domain.key || domain.id) : domain
+      const domainId = R.is(Object, domain) ? domain.key : domain
       this.fetchProjects(domainId)
       this.fc.setFieldsValue({
         project: undefined,
