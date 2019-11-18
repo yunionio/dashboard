@@ -348,7 +348,8 @@ export default {
                 },
                 meta: () => {
                   return {
-                    validate: !obj.is_public,
+                    validate: !obj.is_public && this.$store.getters.isAdminMode,
+                    tooltip: this.$store.getters.isAdminMode ? '' : '无操作权限',
                   }
                 },
               },
@@ -364,7 +365,8 @@ export default {
                 },
                 meta: () => {
                   return {
-                    validate: obj.is_public,
+                    validate: obj.is_public && this.$store.getters.isAdminMode,
+                    tooltip: this.$store.getters.isAdminMode ? '' : '无操作权限',
                   }
                 },
               },
