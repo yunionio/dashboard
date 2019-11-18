@@ -27,4 +27,21 @@ export const DECORATORS = {
       ],
     },
   ],
+  loginConfig: {
+    loginType: [
+      'loginType',
+      {
+        initialValue: 'random',
+      },
+    ],
+    keypair: [
+      'loginKeypair',
+      {
+        initialValue: undefined, // { key: '', label: '' }
+        rules: [
+          { validator: true, message: '请选择关联密钥' },
+        ],
+      },
+    ],
+  },
 }

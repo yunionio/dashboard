@@ -65,7 +65,7 @@ export default {
           addLock: true,
           slotCallback: row => {
             return (
-              <side-page-trigger onTrigger={() => this.sidePageTriggerHandle(row.id, 'RedisSidePage')}>{row.name}</side-page-trigger>
+              <side-page-trigger onTrigger={() => this.sidePageTriggerHandle(row.id, 'RDSSidePage')}>{row.name}</side-page-trigger>
             )
           },
         }),
@@ -93,15 +93,15 @@ export default {
             },
           },
         },
-        {
-          field: 'password',
-          title: '密码',
-          slots: {
-            default: ({ row }) => {
-              return [<PasswordFetcher serverId={row.id} resourceType='elasticcaches' />]
-            },
-          },
-        },
+        // {
+        //   field: 'password',
+        //   title: '密码',
+        //   slots: {
+        //     default: ({ row }) => {
+        //       return [<PasswordFetcher serverId={row.id} resourceType='elasticcaches' />]
+        //     },
+        //   },
+        // },
         {
           title: '链接地址',
           width: 200,

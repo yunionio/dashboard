@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="cpu_mems_mb">
     <a-form-item label="CPU核数" v-bind="formItemLayout">
       <a-radio-group v-decorator="['vcpu_count']" @change="getMemsMb">
         <a-radio-button :key="cpu" :value="cpu" v-for="cpu in cpus">{{cpu}}核</a-radio-button>
@@ -28,7 +28,7 @@ export default {
       cpus: [],
       mems_mbs: [],
       zones: {},
-      cpu_mems_mb: {},
+      cpu_mems_mb: undefined,
     }
   },
   methods: {
@@ -38,6 +38,14 @@ export default {
       if (!count) {
         this.form.setFieldsValue({
           vcpu_count: this.cpus[0],
+        })
+      }
+    },
+    initZone () {
+      const zones = this.form.getFieldValue('zones')
+      if (!zones) {
+        this.form.setFieldsValue({
+          zones: Object.keys(this.zones)[0],
         })
       }
     },
@@ -55,11 +63,19 @@ export default {
         this.$emit('change')
       })
     },
-    getParams () {
-      return {}
+    getSpecsParams () {
+      const { getFieldsValue } = this.form
+      const paramsKeys = ['provider', 'cloudregion', 'engine', 'engine_version', 'category', 'storage_type']
+      return new Promise((resolve, reject) => {
+        this.$nextTick(() => {
+          const PARASM = getFieldsValue(paramsKeys)
+          PARASM['cloudregion_id'] = PARASM['cloudregion']
+          resolve(PARASM)
+        })
+      })
     },
-    async fetchQuerySpecs () {
-      const PARAMS = this.getParams()
+    async fetchSpecs () {
+      const PARAMS = await this.getSpecsParams()
       try {
         const manager = new this.$Manager('dbinstance_skus/instance-specs', 'v2')
         const { data = {} } = await manager.list({ params: PARAMS })
@@ -71,9 +87,9 @@ export default {
         if (zones) {
           this.zones = zones.zones || {}
         }
-      } catch (err) {
-        throw err
-      }
+        this.initZone()
+        return data
+      } catch (err) {}
     },
   },
 }

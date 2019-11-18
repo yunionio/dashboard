@@ -1,7 +1,7 @@
 <template>
   <div>
     <filters ref="FILTERS" @change="handleFilterChange" />
-    <size-filters ref="SIZE_FILTER" @change="handleFilterChange" />
+    <size-filters ref="SIZE_FILTER" @change="handleSpecsChange" />
     <list ref="LIST" @change="handleSkuChange" />
     <disk-input :selectedSku="selectedSku" />
   </div>
@@ -21,26 +21,37 @@ export default {
   },
   inject: ['form', 'formItemLayout'],
   data () {
+    const _F = () => {}
     return {
       selectedSku: {},
+      fetchFilters: _F,
+      fetchSpecs: _F,
+      fetchSkus: _F,
     }
   },
+  mounted () {
+    const { fetchFilters } = this.$refs['FILTERS']
+    const { fetchSpecs } = this.$refs['SIZE_FILTER']
+    const { fetchSkus } = this.$refs['LIST']
+    this.fetchFilters = fetchFilters
+    this.fetchSpecs = fetchSpecs
+    this.fetchSkus = fetchSkus
+  },
   methods: {
-    handleFilterChange () {
-      const { fetchQuerySkus } = this.$refs['LIST']
-      fetchQuerySkus()
-    },
     handleSkuChange (sku) {
       this.selectedSku = sku
     },
+    async handleSpecsChange () {
+      await this.fetchSkus()
+    },
+    async handleFilterChange () {
+      await this.fetchSpecs()
+      await this.fetchSkus()
+    },
     async fetchs (regionId) {
-      const { fetchQueryData } = this.$refs['FILTERS']
-      const { fetchQuerySpecs } = this.$refs['SIZE_FILTER']
-      const { fetchQuerySkus } = this.$refs['LIST']
-      // 获取sku筛选项接口
-      await fetchQueryData(regionId)
-      await fetchQuerySpecs()
-      await fetchQuerySkus()
+      await this.fetchFilters(regionId)
+      await this.fetchSpecs()
+      await this.fetchSkus()
     },
   },
 }

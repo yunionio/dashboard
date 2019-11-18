@@ -38,9 +38,6 @@ export default {
       storage_types: [],
     }
   },
-  created () {
-    this.fetchQueryData()
-  },
   methods: {
     versionCn (key) {
       const _arr = key.split('_')
@@ -113,15 +110,20 @@ export default {
       this.setInitValue('storage_type')
       this.$emit('change')
     },
-    async fetchQueryData (regionId) {
+    async fetchFilters (cloudregionId) {
       const params = {
         resource_type: 'shared',
         show_emulated: true,
         scope: this.$scope,
       }
-      const { data } = await new this.$Manager('cloudregions', 'v2').getSpecific({ id: '462f113c-976b-406c-8b58-00ceede5b322', spec: 'capability', params })
-      this.dbInstance = data && data.db_instance ? data.db_instance : {}
-      this.getEngine()
+      try {
+        const { data } = await new this.$Manager('cloudregions', 'v2').getSpecific({ id: cloudregionId, spec: 'capability', params })
+        this.dbInstance = data && data.db_instance ? data.db_instance : {}
+        this.getEngine()
+        return await data
+      } catch (err) {
+        throw err
+      }
     },
   },
 }

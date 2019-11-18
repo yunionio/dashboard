@@ -48,16 +48,22 @@ export default {
         { type: 'radio', width: 40 },
         { field: 'name', title: '规格' },
         {
-          field: 'provider',
-          title: '平台',
-        },
-        {
           field: 'vcpu_count',
           title: 'CPU(核)',
+          slots: {
+            default: ({ row }) => {
+              return `${row.vcpu_count}核`
+            },
+          },
         },
         {
           field: 'vmem_size_mb',
           title: '内存（GB）',
+          slots: {
+            default: ({ row }) => {
+              return sizestr(row.vmem_size_mb, 'M', 1024)
+            },
+          },
         },
         {
           field: 'max_connections',
@@ -93,10 +99,21 @@ export default {
     },
     getSkuParams () {
       const { getFieldsValue } = this.form
-      const paramsKeys = ['engine', 'engine_version', 'category', 'storage_type', 'vcpu_count', 'vmem_size_mb', 'region']
-      return getFieldsValue(paramsKeys)
+      const paramsKeys = ['engine', 'engine_version', 'category', 'storage_type', 'vcpu_count', 'vmem_size_mb', 'cloudregion', 'zones']
+      const PARAMS = getFieldsValue(paramsKeys)
+      PARAMS['cloudregion_id'] = PARAMS.cloudregion
+      if (PARAMS.zones) {
+        const zoneArr = PARAMS.zones.split('+')
+        if (zoneArr && zoneArr.length > 0) {
+          for (let i = 0; i < zoneArr.length; i++) {
+            PARAMS[`zone${i + 1}`] = zoneArr[i]
+          }
+        }
+        delete PARAMS.zones
+      }
+      return PARAMS
     },
-    async fetchQuerySkus () {
+    async fetchSkus () {
       this.manager = new this.$Manager('dbinstance_skus', 'v2')
       const PARAMS = this.getSkuParams()
       this.loading = true
@@ -105,6 +122,7 @@ export default {
         const { data } = await this.manager.list({ params: PARAMS })
         this.skuList = (data && data.data.length > 0) ? data.data : []
         this.loading = false
+        return await data
       } catch (err) {
         this.loading = false
       }

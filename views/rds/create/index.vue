@@ -13,28 +13,41 @@
       <!-- 计费方式 -->
       <clearing-radios v-bind="formItemLayout" />
       <!-- 区域 -->
-      <area-select
-        :areas="['city', 'provider', 'region']"
-        @change="handleAreaChange"
-        v-bind="formItemLayout" />
+      <area-selects
+        :names="['city', 'provider']"
+        v-bind="formItemLayout"
+        @providerFetchSuccess="providerChange" />
       <!-- 套餐信息 -->
       <s-k-u ref="SKU" />
       <a-divider orientation="left">高级配置</a-divider>
-      <network-select v-bind="formItemLayout" />
+       <a-form-item label="管理员密码" v-bind="formItemLayout">
+         <server-password :loginTypes="['random', 'password']" :decorator="decorators.loginConfig" />
+       </a-form-item>
+      <network-selects ref="NETWORK" :vpcParams="getVpcParams" :networkParams="getNetworkParams" v-bind="formItemLayout" />
     </a-form>
+    <bottom-bar :values="form.getFieldsValue()" />
   </div>
 </template>
 <script>
+import { debounce } from 'lodash'
 import { CreateServerForm } from '@Compute/constants'
+import ServerPassword from '@Compute/sections/ServerPassword'
 import { DECORATORS } from './constants/index'
 import SKU from './components/SKU'
+import BottomBar from './components/BottomBar'
 import DomainProject from '@/sections/DomainProject'
+import NetworkSelects from '@/sections/NetworkSelects'
+import AreaSelects from '@/sections/AreaSelects'
 
 export default {
   name: 'RDSCreate',
   components: {
     SKU,
     DomainProject,
+    BottomBar,
+    ServerPassword,
+    AreaSelects,
+    NetworkSelects,
   },
   data () {
     return {
@@ -47,7 +60,7 @@ export default {
   },
   computed: {
     form () {
-      const fc = this.$form.createForm(this, { onFieldsChange: this.onFieldsChange })
+      const fc = this.$form.createForm(this, { onFieldsChange: debounce((f, v) => this._debounceFieldsChange(v), 1) })
       const { getFieldDecorator, getFieldValue, getFieldsValue, setFieldsValue } = fc
       return {
         fc,
@@ -66,22 +79,59 @@ export default {
   },
   mounted () {
     const { fetchs } = this.$refs['SKU']
-    fetchs('462f113c-976b-406c-8b58-00ceede5b322')
+    this.fetchSku = fetchs
+    const { fetchVpc, fetchNetwork } = this.$refs['NETWORK']
+    this.fetchVpc = fetchVpc
+    this.fetchNetwork = fetchNetwork
   },
   methods: {
-    onFieldsChange (vm, values) {
-      // console.log(values)
+    providerChange (list) {
+      console.log(list)
     },
-    skuController (values) {
-      const { fetchs } = this.$refs['SKU']
-      if (values && values.region) {
-        const { id } = values.region
+    getVpcParams () {
+      return new Promise((resolve, reject) => {
+        this.$nextTick(() => {
+          resolve({
+            cloudregion_id: this.form.getFieldValue('cloudregion'),
+          })
+        })
+      })
+    },
+    getNetworkParams () {
+      return new Promise((resolve, reject) => {
+        this.$nextTick(() => {
+          const zoneStr = this.form.getFieldValue('zones')
+          const params = {
+            cloudregion_id: this.form.getFieldValue('region'),
+          }
+          if (zoneStr) {
+            const zoneArr = zoneStr.split('+')
+            if (zoneArr && zoneArr.length > 0) {
+              for (let i = 0; i < zoneArr.length; i++) {
+                params[`zone.${i}`] = zoneArr[i]
+              }
+            }
+          }
+          resolve(params)
+        })
+      })
+    },
+    regionChange (values) {
+      if (values && values.cloudregion) {
+        const { cloudregion } = values
         // 获取sku筛选项
-        fetchs(id)
+        this.fetchSku(cloudregion.value)
+        this.fetchVpc()
       }
     },
-    handleAreaChange (values) {
-      this.skuController(values)
+    zonesChange (values) {
+      if (values && values.zones) {
+        this.fetchNetwork()
+      }
+    },
+    _debounceFieldsChange (values) {
+      this.regionChange(values)
+      this.zonesChange(values)
     },
   },
 }

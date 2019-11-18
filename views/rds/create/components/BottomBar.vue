@@ -1,0 +1,203 @@
+<template>
+  <page-footer>
+     <template class="content" v-slot:left>
+      <div
+        v-for="(tip, idx) of tips"
+        :key="idx"
+        class="d-flex flex-column justify-content-center flex-grow-1">
+        <div
+          v-for="obj of tip"
+          :key="obj.label"
+          class="d-flex align-items-center">
+          <span class="label" :class="obj.labelClass">{{ obj.label }}：</span>
+          <template v-if="obj.value">
+            <span class="value text-truncate" :class="obj.valueClass">{{ obj.value }}</span>
+          </template>
+          <template v-else>
+            <span class="value placeholder text-truncate" :class="obj.valueClass">-</span>
+          </template>
+        </div>
+      </div>
+      <!-- <div>费用估算</div> -->
+    </template>
+    <template v-slot:right>
+      <div class="btns-wrapper d-flex align-items-center">
+        <a-button @click="doCreate" :loading="loading" type="primary" class="ml-3">新建</a-button>
+      </div>
+    </template>
+  </page-footer>
+</template>
+<script>
+// import * as R from 'ramda'
+// import _ from 'lodash'
+// import { ENGINE_ARCH } from '@DB/views/redis/constants'
+import { sizestrWithUnit } from '@/utils/utils'
+import { Manager } from '@/utils/manager'
+
+export default {
+  name: 'BottomBar',
+  inject: ['form'],
+  props: {
+    values: {
+      type: Object,
+    },
+  },
+  data () {
+    return {
+      loading: false,
+    }
+  },
+  computed: {
+    tips () {
+      const { name, sku = {} } = this.values
+      const ret = [
+        [
+          { label: '名称', labelClass: 'label-w-50', value: name, valueClass: 'name-value' },
+          { label: '区域', labelClass: 'label-w-50', value: sku.region },
+        ],
+        [
+          { label: '配置', labelClass: 'label-w-80', value: `${sizestrWithUnit(sku.memory_size_mb, 'M', 1024)}内存` },
+          { label: '系列', labelClass: 'label-w-50', value: sku.name },
+        ],
+        [
+          { label: '类型版本', labelClass: 'label-w-80', value: `${this.values['engine'] || '-'}${this.values['engine_version'] || ''}` },
+        ],
+      ]
+      return ret
+    },
+  },
+  methods: {
+    validateForm () {
+      let f = false
+      this.form.fc.validateFields((err, values) => {
+        f = err === null
+      })
+      return f
+    },
+    formatParams () {
+      const params = {
+        ...this.values,
+      }
+      if (params.zones) {
+        const { zones } = params
+        const zoneArr = zones.split('+')
+        if (zoneArr && zoneArr.length > 0) {
+          for (let i = 0; i < zoneArr.length; i++) {
+            params[`zone${i + 1}`] = zoneArr[i]
+          }
+        }
+        delete params.zones
+      }
+      if (params.sku) {
+        const { sku } = params
+        params['instance_type'] = sku['name']
+      }
+      return params
+    },
+    async doCreate () {
+      if (!this.validateForm()) return false
+      console.log(this.formatParams())
+      const manager = new Manager('dbinstances', 'v2')
+      const { data, status } = await manager.create({ data: this.formatParams() })
+      if (status === 200 && data) {
+        this.$router.push('/rds')
+      }
+    },
+  },
+}
+</script>
+
+<style lang="scss" scoped>
+@import '../../../../../../src/styles/_variables.scss';
+
+.create-server-result-wrap {
+  position: relative;
+  .content {
+    width: 80%;
+    .label {
+      color: #999;
+      &.label-w-50 {
+        width: 50px;
+      }
+      &.label-w-80 {
+        width: 80px;
+      }
+    }
+    .value {
+      max-width: 300px;
+      &.name-value {
+        width: 100px;
+      }
+      &.placeholder {
+        color: #888;
+        font-style: italic;
+      }
+    }
+    .prices {
+      .hour {
+        color: $error-color;
+        font-size: 24px;
+      }
+      .tips {
+        color: #999;
+        font-size: 12px;
+      }
+    }
+  }
+  .btns-wrapper {
+    position: absolute;
+    right: 20px;
+  }
+  .errors-wrap {
+    position: absolute;
+    right: 0;
+    bottom: 100px;
+    width: 300px;
+    padding: 15px;
+    opacity: 1;
+    transform: translateX(0);
+    background-color: #fef0f0;
+    box-shadow: -5px -5px 5px rgba(0, 0, 0, 0.1);
+    border-top-left-radius: 3px;
+    .title {
+      color: $error-color;
+      > i {
+        font-size: 28px;
+      }
+      > span {
+        font-size: 13px;
+        font-weight: bold;
+      }
+    }
+    .divider {
+      margin: 15px 0;
+      background-color: #dcdfe6;
+      height: 1px;
+    }
+    .list {
+      padding: 0 15px;
+      color: $error-color;
+      li {
+        line-height: 1.8;
+        list-style-type: disc;
+      }
+      &.sec-list {
+        li {
+          list-style-type: circle;
+        }
+      }
+    }
+  }
+  .errors-slide-fade-enter-active {
+    transition: all 0.3s ease;
+  }
+  .errors-slide-fade-leave-active {
+    transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+  }
+  .errors-slide-fade-enter,
+  .errors-slide-fade-leave-to {
+    transform: translateX(300px);
+    opacity: 0;
+  }
+}
+</style>

@@ -18,7 +18,7 @@ export const DBINSTANCE_STORAGE_TYPE = {
   SATA: '普通IO云硬盘',
 }
 
-export const PRIVILEGES = {
+export const ACCOUNT_PRIVILEGES = {
   rw: '读写',
   r: '只读',
   ddl: '仅DDL',
