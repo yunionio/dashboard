@@ -60,3 +60,25 @@ class TypeClouds {
 }
 
 export const typeClouds = new TypeClouds()
+
+/**
+ * @param {String} provider 传入的 provider, e.g. kvm、vmware、aliyun
+ * @param {String} type 根据 provider, brand 还是 hypervisor 去查找
+ * @returns {String|false} 返回对应的平台
+ */
+export const findPlatform = (provider, type = 'brand') => {
+  provider = provider.toLowerCase()
+  if (type === 'provider') {
+    const provierItem = typeClouds.providerlowcaseMap[provider]
+    if (provierItem) return provierItem.env
+  }
+  if (type === 'hypervisor') {
+    const provierItem = typeClouds.hypervisorMap[provider]
+    if (provierItem) return provierItem.env
+  }
+  if (type === 'brand') {
+    const provierItem = typeClouds.brandlowcaseMap[provider]
+    if (provierItem) return provierItem.env
+  }
+  return false // 未找到平台
+}
