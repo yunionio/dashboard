@@ -294,7 +294,7 @@ export default {
             const notRunninTip = !isRunning ? '仅运行中的实例支持此操作' : null
             const isAuthModeOn = obj.auth_mode === 'on'
             const setAuthMode = () => {
-              if (isAuthModeOn && obj.brand !== 'Huawei') {
+              if (!isAuthModeOn && obj.brand !== 'Huawei') {
                 return {
                   label: '关闭免密访问',
                   action: () => {
