@@ -85,4 +85,9 @@ export default {
     danger: ['create_failed', 'deleted', 'delete_failed'],
     info: ['unknown', 'unavailable'],
   },
+  rdsBackup: {
+    success: ['ready'],
+    danger: ['create_failed', 'deleted', 'delete_failed'],
+    info: ['unknown', 'unavailable', 'failed'],
+  },
 }

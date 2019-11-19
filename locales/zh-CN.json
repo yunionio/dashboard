@@ -292,6 +292,16 @@
       "running": "正常",
       "deleting": "删除中",
       "delete_failed": "删除失败"
+    },
+    "rdsBackup": {
+      "init": "初始化中",
+      "ready": "正常",
+      "creating": "创建中",
+      "deleting": "删除中",
+      "failed": "异常",
+      "unknown": "未知",
+      "create_failed": "创建失败",
+      "delete_failed": "删除失败"
     }
   },
   "skuCategoryOptions": {
