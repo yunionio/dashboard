@@ -4,7 +4,7 @@
     :visible="true"
     :destroy-on-close="true"
     :keyboard="false"
-    :width="800"
+    :width="width"
     :mask-closable="false"
     @cancel="cancel">
     <template v-slot:title>
@@ -28,6 +28,12 @@
 <script>
 export default {
   name: 'BaseDialog',
+  props: {
+    width: {
+      type: [Number, String],
+      default: 800,
+    },
+  },
   methods: {
     cancel () {
       this.$emit('cancel')

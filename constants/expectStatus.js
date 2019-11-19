@@ -80,4 +80,9 @@ export default {
     success: ['ready'],
     info: ['init'],
   },
+  rdsAccount: {
+    success: ['available'],
+    danger: ['create_failed', 'delete_failed', 'reset_passwd_failed'],
+    info: ['unknown', 'unavailable'],
+  },
 }
