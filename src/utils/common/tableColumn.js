@@ -98,7 +98,7 @@ export const getPublicTableColumn = ({ field = 'is_public', title = '是否共�
     field,
     title,
     slots: {
-      default: ({ row }) => {
+      default: ({ row }, h) => {
         return row.is_public ? '共享' : '私有'
       },
     },

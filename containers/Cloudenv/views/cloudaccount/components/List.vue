@@ -348,7 +348,8 @@ export default {
                 },
                 meta: () => {
                   return {
-                    validate: !obj.is_public,
+                    validate: !obj.is_public && ownerDomain,
+                    tooltip: ownerDomain ? '' : '无操作权限',
                   }
                 },
               },
@@ -364,7 +365,8 @@ export default {
                 },
                 meta: () => {
                   return {
-                    validate: obj.is_public,
+                    validate: obj.is_public && ownerDomain,
+                    tooltip: ownerDomain ? '' : '无操作权限',
                   }
                 },
               },

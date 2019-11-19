@@ -66,7 +66,7 @@ export default {
     resourceType: {
       type: String,
       required: true,
-      validator: val => ['servers', 'baremetals', 'baremetal_ssh', 'elasticcaches'].includes(val),
+      validator: val => ['servers', 'baremetals', 'baremetal_ssh', 'elasticcaches', 'dbinstanceaccounts'].includes(val),
     },
   },
   data () {
@@ -89,6 +89,10 @@ export default {
         },
         elasticcaches: {
           resource: 'elasticcaches',
+          methodname: 'GetLoginInfo',
+        },
+        dbinstanceaccounts: {
+          resource: 'dbinstanceaccounts',
           methodname: 'GetLoginInfo',
         },
       },
@@ -119,11 +123,11 @@ export default {
         const manager = new Manager(config.resource)
         this.loading = true
         try {
-          const { data: { password, username, keypair, login_key: loginKey } } = await manager.objectRpc({
+          const { data: { password, username, account, keypair, login_key: loginKey } } = await manager.objectRpc({
             methodname: config.methodname,
             objId: this.serverId,
           })
-          this.loginInfos.username.value = username
+          this.loginInfos.username.value = username || account
           if (keypair) {
             this.loginInfos.password.keypair = keypair
             this.loginInfos.password.loginKey = loginKey
