@@ -138,6 +138,7 @@ export default {
               columns: this.columns,
               title: '更改所属',
               list: this.list,
+              tipName: '调度标签',
             })
           },
           meta: () => {
