@@ -88,6 +88,7 @@ export default {
         }
         params['cloudregion_id'] = sku.cloudregion_id
         params['provider'] = sku.provider
+        this.cloudregion = sku.cloudregion_id
       }
       this.FC.setFieldsValue({
         vpc: undefined,
