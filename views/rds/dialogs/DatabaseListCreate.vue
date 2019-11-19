@@ -5,14 +5,16 @@
             <a-form-item  v-bind="formItemLayout" label="数据库名称">
                 <a-input placeholder="字母开头，数字和字母大小写组合，长度为2-128个字符，不含“.”,“_”,“@”" v-decorator="decorators.name" />
             </a-form-item>
+            <a-form-item  v-bind="formItemLayout" label="字符集">
+               <a-select allowClear showSearch placeholder="请选择字符集">
+                  <a-select-option
+                    v-for="item in CHARACTER_SET"
+                    :key="item"
+                    :value="item">{{ item }}</a-select-option>
+               </a-select>
+            </a-form-item>
             <a-form-item v-bind="formItemLayout" label="数据库">
-              <account-privileges />
-            </a-form-item>
-            <a-form-item v-bind="formItemLayout" label="密码">
-                <a-input type="password" placeholder="请输入密码" v-decorator="decorators.password" />
-            </a-form-item>
-             <a-form-item v-bind="formItemLayout" label="确认密码">
-                <a-input type="password" placeholder="请再次确认密码" v-decorator="decorators.checkPassword" />
+              <database-privileges />
             </a-form-item>
         </a-form>
          <div slot="footer">
@@ -24,21 +26,23 @@
 
 <script>
 import { CreateServerForm } from '@Compute/constants'
-import AccountPrivileges from '../components/AccountPrivileges'
+import DatabasePrivileges from '../components/DatabasePrivileges'
 import { ACCOUNT_PRIVILEGES } from '../constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import validateForm, { passwordValidator } from '@/utils/validate'
 
+const CHARACTER_SET = ['utf8', 'gbk', 'latin1', 'utf8mb4', 'euckr', 'armscii8', 'ascii', 'big5', 'binary', 'cp1250', 'cp1251', 'cp1256', 'cp1257', 'cp850', 'cp852', 'cp866', 'cp932', 'dec8', 'eucjpms', 'gb2312', 'geostd8', 'greek', 'hebrew', 'hp8', 'keybcs2', 'koi8r', 'koi8u', 'latin2', 'latin5', 'latin7', 'macce', 'macroman', 'sjis', 'swe7', 'tis620', 'ucs2', 'ujis', 'utf16', 'utf16le', 'utf32']
 export default {
-  name: 'RDSAccountDialog',
+  name: 'RDSDatabaseCreateDialog',
   components: {
-    AccountPrivileges,
+    DatabasePrivileges,
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
       loading: false,
+      CHARACTER_SET,
       privileges: ACCOUNT_PRIVILEGES,
       form: {
         fc: this.$form.createForm(this),
@@ -103,14 +107,6 @@ export default {
   created () {
   },
   methods: {
-    rulesCheckPassword (rule, value, callback) {
-      const form = this.form.fc
-      if (value && value !== form.getFieldValue('password')) {
-        callback(new Error('两次输入的密码不一致'))
-      } else {
-        callback()
-      }
-    },
     validateForm () {
       return new Promise((resolve, reject) => {
         this.form.fc.validateFields((err, values) => {

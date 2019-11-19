@@ -7,14 +7,16 @@
 </template>
 
 <script>
-import PasswordFetcher from '@Compute/sections/PasswordFetcher'
-import { ACCOUNT_PRIVILEGES } from '../constants'
 import { getStatusTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import expectStatus from '@/constants/expectStatus'
-
+import { sizestr } from '@/utils/utils'
+const BACKUP_TYPE = {
+  automated: '自动',
+  manual: '手动',
+}
 export default {
-  name: 'RDSDatabaseList',
+  name: 'RDSBAckupList',
   mixins: [WindowsMixin],
   props: {
     params: {
@@ -27,7 +29,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
-        resource: 'dbinstancedatabases',
+        resource: 'dbinstancebackups',
         getParams: this.params,
         steadyStatus: Object.values(expectStatus.redisAccount).flat(),
       }),
@@ -36,33 +38,58 @@ export default {
           field: 'name',
           title: '名称',
         },
-        getStatusTableColumn({ statusModule: 'rdsDatabase' }),
         {
-          field: 'password',
-          title: '密码',
+          field: 'dbinstance',
+          title: '实例名称',
+        },
+        {
+          field: 'backup_mode',
+          title: '备份类型',
           slots: {
             default: ({ row }) => {
-              return [<PasswordFetcher serverId={row.id} resourceType='dbinstanceaccounts' />]
+              return BACKUP_TYPE[row.backup_mode]
             },
           },
         },
         {
-          field: 'ip',
-          title: '权限',
+          id: 'engine',
+          header: '数据库类型',
           slots: {
             default: ({ row }) => {
-              return ACCOUNT_PRIVILEGES[row.account_privilege] || '-'
+              return `${row.engine || ''} ${row.engine_version || ''}`
             },
           },
+        },
+        {
+          id: 'backup_size_mb',
+          header: '大小',
+          slots: {
+            default: ({ row }) => {
+              return sizestr(row.backup_size_mb, 'M', 1024)
+            },
+          },
+        },
+        getStatusTableColumn({ statusModule: 'rdsBackup' }),
+        // getBrandTableColumn(),
+        {
+          header: '备份开始/结束时间',
+          slots: {
+            default: ({ row }) => {
+              return `${this.$moment(row.start_time).format()} - ${this.$moment(row.end_time).format()}`
+            },
+          },
+        },
+        {
+          id: 'region',
+          header: '区域',
         },
       ],
       groupActions: [
         {
           label: '新建',
           action: () => {
-            this.createDialog('RDSDatabaseCreateDialog', {
+            this.createDialog('RDSBackupCreate', {
               list: this.list,
-              redisItem: this.data,
             })
           },
           meta: () => {
@@ -74,17 +101,6 @@ export default {
         },
       ],
       singleActions: [
-        {
-          label: '删除',
-          action: (obj) => {
-            this.createDialog('DeleteResDialog', {
-              data: [obj],
-              columns: this.columns,
-              title: '删除',
-              list: this.list,
-            })
-          },
-        },
       ],
     }
   },
@@ -103,7 +119,6 @@ export default {
   },
   created () {
     this.list.fetchData()
-    console.log(this.data)
   },
 }
 </script>

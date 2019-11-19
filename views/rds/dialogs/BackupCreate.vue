@@ -1,11 +1,13 @@
 <template>
     <base-dialog @cancel="cancelDialog" :width="900">
-        <div slot="header">修改权限</div>
+        <div slot="header">创建账号</div>
         <a-form slot="body" :form="form.fc" class="mt-3">
-           {{params.data[0].dbinstanceprivileges}}
-          <dialog-selected-tips :count="params.data.length" :action="params.title" />
-          <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
-          <account-privileges :privileges="params.data[0].dbinstanceprivileges || []" />
+            <a-form-item  v-bind="formItemLayout" label="名称">
+                <a-input v-decorator="decorators.name" placeholder="字母开头，数字和字母大小写组合，长度为2-128个字符，不含’.‘,’_‘,’@‘ " />
+            </a-form-item>
+            <a-form-item v-bind="formItemLayout" label="描述">
+              <a-textarea v-decorator="decorators.name" placeholder="请输入描述信息" :rows="4" />
+            </a-form-item>
         </a-form>
          <div slot="footer">
             <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
@@ -15,22 +17,23 @@
 </template>
 
 <script>
-import AccountPrivileges from '../components/AccountPrivileges'
+import { CreateServerForm } from '@Compute/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import validateForm, { passwordValidator } from '@/utils/validate'
+// import validateForm from '@/utils/validate'
 
 export default {
-  name: 'RDSAccountListUpdatePrivilegeDialog',
-  components: {
-    AccountPrivileges,
-  },
+  name: 'RDSBackupCreate',
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
       loading: false,
       form: {
         fc: this.$form.createForm(this),
+      },
+      formItemLayout: {
+        wrapperCol: { span: CreateServerForm.wrapperCol },
+        labelCol: { span: CreateServerForm.labelCol },
       },
     }
   },
@@ -41,43 +44,21 @@ export default {
   },
   computed: {
     decorators () {
-      const { initialValues = {} } = this.params
       const decorators = {
         name: [
           'name',
           {
-            initialValue: initialValues.name,
             validateFirst: true,
             rules: [
               { required: true, message: '请输入名称' },
-              { validator: validateForm('serverName') },
             ],
           },
         ],
-        account_privilege: [
-          'account_privilege',
+        description: [
+          'description',
           {
-            initialValue: 'read',
-            rules: [{ required: true, message: '请输入名称' }],
-          },
-        ],
-        password: [
-          'password',
-          {
-            validateFirst: true,
             rules: [
-              { required: true, message: '请输入密码' },
-              { validator: passwordValidator },
-            ],
-          },
-        ],
-        checkPassword: [
-          'checkPassword',
-          {
-            initialValue: initialValues.ip_list,
-            rules: [
-              { required: true, message: '请再次确认密码' },
-              { validator: this.rulesCheckPassword },
+              { max: 200 },
             ],
           },
         ],
@@ -85,15 +66,9 @@ export default {
       return decorators
     },
   },
+  created () {
+  },
   methods: {
-    rulesCheckPassword (rule, value, callback) {
-      const form = this.form.fc
-      if (value && value !== form.getFieldValue('password')) {
-        callback(new Error('两次输入的密码不一致'))
-      } else {
-        callback()
-      }
-    },
     validateForm () {
       return new Promise((resolve, reject) => {
         this.form.fc.validateFields((err, values) => {
@@ -112,12 +87,12 @@ export default {
         const params = {
           ...values,
         }
-        delete params.checkPassword
-        await this.params.list.onManager('create', {
+        const ret = await this.params.list.onManager('create', {
           managerArgs: {
             data: params,
           },
         })
+        console.log(ret)
         this.loading = false
         this.cancelDialog()
       } catch (error) {

@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import BackupList from '../components/BackupList'
 import RedisDetail from './Detail'
 import AccountList from './AccountList'
 import DatabaseList from './DatabaseList'
@@ -30,6 +31,7 @@ export default {
     AccountList,
     RedisDetail,
     DatabaseList,
+    BackupList,
   },
   mixins: [SidePageMixin, WindowsMixin],
   data () {
@@ -38,6 +40,7 @@ export default {
         { label: '详情', key: 'redis-detail' },
         { label: '账号', key: 'account-list' },
         { label: '数据库管理', key: 'database-list' },
+        { label: '备份管理', key: 'backup-list' },
       ],
     }
   },
