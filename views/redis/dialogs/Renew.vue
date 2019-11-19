@@ -79,6 +79,7 @@ export default {
         const ids = this.params.data.map(item => item.id)
         await this.params.list.onManager('batchUpdate', {
           id: ids,
+          steadyStatus: 'running',
           managerArgs: {
             data: values,
           },

@@ -86,6 +86,7 @@ export default {
         const sku = this.form.fc.getFieldValue('sku') || {}
         await this.params.list.onManager('performAction', {
           id: this.params.data[0].id,
+          steadyStatus: 'running',
           managerArgs: {
             action: 'change-spec',
             data: {
