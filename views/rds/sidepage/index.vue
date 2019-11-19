@@ -18,6 +18,7 @@
 <script>
 import RedisDetail from './Detail'
 import AccountList from './AccountList'
+import DatabaseList from './DatabaseList'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -28,6 +29,7 @@ export default {
     Actions,
     AccountList,
     RedisDetail,
+    DatabaseList,
   },
   mixins: [SidePageMixin, WindowsMixin],
   data () {
@@ -35,6 +37,7 @@ export default {
       detailTabs: [
         { label: '详情', key: 'redis-detail' },
         { label: '账号', key: 'account-list' },
+        { label: '数据库管理', key: 'account-list' },
       ],
     }
   },
