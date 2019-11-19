@@ -90,6 +90,7 @@ export default {
       this.loading = true
       try {
         await this.params.list.onManager('performAction', {
+          steadyStatus: 'running',
           id: this.params.data[0].id,
           managerArgs: {
             action: '/update-auth-mode',

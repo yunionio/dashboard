@@ -35,6 +35,7 @@ export default {
         } else {
           await this.params.list.onManager('performAction', {
             id: this.params.data[0].id,
+            steadyStatus: 'running',
             managerArgs: {
               action: 'restart',
             },

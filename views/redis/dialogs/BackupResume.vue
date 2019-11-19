@@ -61,6 +61,7 @@ export default {
         }
         delete params.checkPassword
         await this.params.list.onManager('batchPost', {
+          steadyStatus: 'running',
           managerArgs: {
             data: params,
           },

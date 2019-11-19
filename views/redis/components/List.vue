@@ -9,7 +9,6 @@
 <script>
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { ENGINE_ARCH } from '../constants/index.js'
-import { Manager } from '@/utils/manager'
 import { sizestr } from '@/utils/utils'
 import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getNameDescriptionTableColumn, getBrandTableColumn } from '@/utils/common/tableColumn'
 import expectStatus from '@/constants/expectStatus'
@@ -281,13 +280,10 @@ export default {
           action: (obj) => {
             this.list.onManager('performAction', {
               id: obj.id,
+              steadyStatus: 'running',
               managerArgs: {
                 action: 'Sync',
               },
-            }).then(ret => {
-              if (ret.status === 200) {
-                this.$message.success('操作成功')
-              }
             })
           },
         },
@@ -466,7 +462,6 @@ export default {
     }
   },
   created () {
-    this.webconsoleManager = new Manager('webconsole', 'v1')
     this.list.fetchData()
     this.initSidePageTab('redis-detail')
   },
