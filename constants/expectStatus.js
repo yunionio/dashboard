@@ -61,7 +61,7 @@ export default {
     info: ['unknown', 'unavailable'],
   },
   redisBackup: {
-    success: ['success'],
+    success: ['success', 'running'],
     danger: ['failed', 'deleted', 'expired'],
     info: ['unknown', 'unavailable'],
   },

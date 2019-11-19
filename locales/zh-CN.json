@@ -225,6 +225,7 @@
       "unknown": "未知状态"
     },
     "redisBackup" : {
+      "running": "正常",
       "creating": "备份中",
       "expired": "备份文件已过期",
       "deleted": "备份文件已删除",
