@@ -114,7 +114,7 @@ export default {
               }
               return [
                 <div class='td-ellipsis'>{pri && <a-tooltip placement='topLeft' title={`内网：${pri}`}>内网：{pri}</a-tooltip> }</div>,
-                <div class='td-ellipsis'>{pub && <a-tooltip placement='topLeft' title={`外网：${pub}`}>内网：{pub}</a-tooltip> }</div>,
+                <div class='td-ellipsis'>{pub && <a-tooltip placement='topLeft' title={`外网：${pub}`}>外网：{pub}</a-tooltip> }</div>,
               ]
             },
           },
@@ -126,10 +126,14 @@ export default {
               if (!row.private_connect_port && !row.public_connect_port) {
                 return '-'
               }
-              return [
-                <div>{row.private_connect_port > 0 && `内网：${row.private_connect_port}`}</div>,
-                <div>{row.public_connect_port > 0 && `外网：${row.public_connect_port}`}</div>,
-              ]
+              const ports = []
+              if (row.private_connect_port && (row.private_dns || row.private_ip_addr)) {
+                ports.push(<div> 内网：{row.private_connect_port}</div>)
+              }
+              if (row.public_connect_port && (row.public_dns || row.public_ip_addr)) {
+                ports.push(<div>外网：{row.public_connect_port}</div>,)
+              }
+              return ports
             },
           },
         },
@@ -294,7 +298,7 @@ export default {
             const notRunninTip = !isRunning ? '仅运行中的实例支持此操作' : null
             const isAuthModeOn = obj.auth_mode === 'on'
             const setAuthMode = () => {
-              if (isAuthModeOn && obj.brand !== 'Huawei') {
+              if (!isAuthModeOn && obj.brand !== 'Huawei') {
                 return {
                   label: '关闭免密访问',
                   action: () => {
