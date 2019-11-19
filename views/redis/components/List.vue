@@ -469,17 +469,16 @@ export default {
     this.webconsoleManager = new Manager('webconsole', 'v1')
     this.list.fetchData()
     this.initSidePageTab('redis-detail')
-    console.log(this.$t('status.redis'))
   },
   methods: {
     createServer () {
       this.$router.push('/redis/create')
     },
     getSeachStatus () {
-      const OTHER_STATUS = ['RUNNING', 'minorversionupgrading', 'networkmodifying', 'sslmodifying', 'majorversionupgrading']
+      const selectedStatus = ['running', 'unknown', 'sync_failed']
       const status = []
       for (let key in this.$t('status.redis')) {
-        if (OTHER_STATUS.indexOf(key) === -1) {
+        if (selectedStatus.indexOf(key) > -1) {
           status.push({
             key,
             label: this.$t('status.redis')[key],
