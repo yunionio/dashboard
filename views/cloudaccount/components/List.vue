@@ -347,9 +347,15 @@ export default {
                   })
                 },
                 meta: () => {
+                  let tooltip = ''
+                  if (!obj.is_public) {
+                    if (!ownerDomain) {
+                      tooltip = '无操作权限'
+                    }
+                  }
                   return {
                     validate: !obj.is_public && ownerDomain,
-                    tooltip: ownerDomain ? '' : '无操作权限',
+                    tooltip,
                   }
                 },
               },
@@ -364,9 +370,15 @@ export default {
                   })
                 },
                 meta: () => {
+                  let tooltip = ''
+                  if (obj.is_public) {
+                    if (!ownerDomain) {
+                      tooltip = '无操作权限'
+                    }
+                  }
                   return {
                     validate: obj.is_public && ownerDomain,
-                    tooltip: ownerDomain ? '' : '无操作权限',
+                    tooltip,
                   }
                 },
               },
