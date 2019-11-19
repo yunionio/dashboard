@@ -36,7 +36,7 @@ export default {
           field: 'name',
           title: '名称',
         },
-        getStatusTableColumn({ statusModule: 'rdsAccount' }),
+        getStatusTableColumn({ statusModule: 'rdsDatabase' }),
         {
           field: 'password',
           title: '密码',

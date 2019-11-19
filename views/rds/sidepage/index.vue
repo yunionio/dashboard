@@ -37,7 +37,7 @@ export default {
       detailTabs: [
         { label: '详情', key: 'redis-detail' },
         { label: '账号', key: 'account-list' },
-        { label: '数据库管理', key: 'account-list' },
+        { label: '数据库管理', key: 'database-list' },
       ],
     }
   },
