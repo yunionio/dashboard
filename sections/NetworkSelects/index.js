@@ -6,7 +6,7 @@ export default {
   props: {
     label: {
       type: String,
-      default: 'VPC',
+      default: 'IP子网',
     },
     types: {
       type: Array,
