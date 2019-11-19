@@ -417,7 +417,7 @@ export const PERMISSION = {
   /**
    * 主机组
    */
-  'instancegroups_list': ['itsm', 'instancegroups', 'list'],
+  'instancegroups_list': ['compute', 'instancegroups', 'list'],
   /**
    * 数据库-RDS
    */
