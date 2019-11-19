@@ -80,4 +80,9 @@ export default {
     danger: ['create_failed', 'delete_failed', 'reset_passwd_failed'],
     info: ['unknown', 'unavailable'],
   },
+  rdsDatabase: {
+    success: ['running'],
+    danger: ['create_failed', 'deleted', 'delete_failed'],
+    info: ['unknown', 'unavailable'],
+  },
 }

@@ -283,6 +283,15 @@
       "set_privilege": "设置权限中",
       "revoke_privilege": "解除权限中",
       "reset_passwd_failed": "重置密码失败"
+    },
+    "rdsDatabase": {
+      "init": "初始化中",
+      "unknown": "未知状态",
+      "creating": "创建中",
+      "create_failed": "创建失败",
+      "running": "正常",
+      "deleting": "删除中",
+      "delete_failed": "删除失败"
     }
   },
   "skuCategoryOptions": {
