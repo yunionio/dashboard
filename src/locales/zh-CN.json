@@ -197,7 +197,7 @@
       "majorversionupgrading": "大版本升级中，可正常访问",
       "unknown": "未知状态",
       "syncing": "同步中",
-      "sync_failed": "同步状态失败"
+      "sync_failed": "同步失败"
     },
     "instanceGroup": {
       "init": "正常"
@@ -268,6 +268,28 @@
       "schedule": "调度中",
       "apply_snapshot_failed": "绑定快照策略失败",
       "cancel_snapshot_failed": "解绑快照策略失败"
+    },
+    "secgroupCache": {
+      "ready": "正常",
+      "deleting": "删除中",
+      "caching": "缓存中",
+      "delete_failed": "删除失败",
+      "init": "初始化"
+    },
+    "rdsAccount": {
+      "init": "初始化中",
+      "unknown": "未知状态",
+      "unavailable": "不可用",
+      "available": "正常",
+      "creating": "创建中",
+      "create_failed": "创建失败",
+      "deleting": "删除中",
+      "delete_failed": "删除失败",
+      "reset_passwd": "重置密码中",
+      "grant_privilege": "赋予权限中",
+      "set_privilege": "设置权限中",
+      "revoke_privilege": "解除权限中",
+      "reset_passwd_failed": "重置密码失败"
     }
   },
   "skuCategoryOptions": {
@@ -400,7 +422,9 @@
     "password": "至少八个字符，至少一个字母和一个数字",
     "publicKey": "无效的公钥, 只支持 RSA/DSA 类型公钥",
     "secretKeyName": "名称必须以字母开头,且只能包含字母、数字、._@-字符",
-    "snapshotName": "字母开头，数字和字母大小写组合，长度为2-128个字符，可含\".\",\"-\",\"_\""
+    "snapshotName": "字母开头，数字和字母大小写组合，长度为2-128个字符，可含\".\",\"-\",\"_\"",
+    "cidr": "请输入合法CIDR",
+    "ports": "请输入合法的端口号"
   },
   "dialog": {
     "ok": "确定",
