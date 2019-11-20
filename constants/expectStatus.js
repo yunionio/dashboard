@@ -90,4 +90,9 @@ export default {
     danger: ['create_failed', 'deleted', 'delete_failed'],
     info: ['unknown', 'unavailable', 'failed'],
   },
+  rds: {
+    danger: ['delete_failed', 'restore_failed', 'failed', 'renew_failed', 'create_failed', 'reboot_failed', 'change_config_failed'],
+    success: ['running'],
+    info: ['unknown'],
+  },
 }
