@@ -80,6 +80,24 @@ export default {
               return `os_type.contains(${val})`
             },
           },
+          tenant: {
+            label: '项目',
+            dropdown: true,
+            multiple: true,
+            distinctField: {
+              type: 'extra_field',
+              key: 'tenant',
+            },
+          },
+          account: {
+            label: '云账号',
+            dropdown: true,
+            multiple: false,
+            distinctField: {
+              type: 'extra_field',
+              key: 'account',
+            },
+          },
         },
       }),
       exportDataOptions: {
@@ -353,9 +371,30 @@ export default {
                     },
                   },
                   {
+                    label: '重装系统',
+                    permission: 'server_perform_rebuild_root',
+                    action: () => {
+                      this.createDialog('VmRebuildRootDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      if (commonUnabled(obj)) return ret
+                      ret.validate = cloudEnabled('rebuildRoot', obj)
+                      ret.tooltip = cloudUnabledTip('rebuildRoot', obj)
+                      return ret
+                    },
+                  },
+                  {
                     label: '更改项目',
                     action: () => {
-                      this.createDialog('ChangeOwenrDialog', {
+                      this.createDialog('VmChangeProjectDialog', {
                         data: [obj],
                         columns: this.columns,
                         list: this.list,
