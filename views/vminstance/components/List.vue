@@ -689,7 +689,7 @@ export default {
                         tooltip: null,
                       }
                       if (commonUnabled(obj)) return ret
-                      if (obj.eip) {
+                      if (obj.eip && obj.eip_mode !== 'public_ip') {
                         ret.tooltip = '已绑定，解绑后重试'
                         return ret
                       }
