@@ -1,7 +1,11 @@
 <template>
   <div>
     <filters ref="FILTERS" @change="handleFilterChange" />
-    <size-filters ref="SIZE_FILTER" @change="handleSpecsChange" />
+    <size-filters ref="SIZE_FILTER" @change="handleSpecsChange">
+      <div v-if="$slots.zone" slot="zone">
+        <slot name="zone" />
+      </div>
+    </size-filters>
     <list ref="LIST" @change="handleSkuChange" />
     <disk-input :selectedSku="selectedSku" />
   </div>
@@ -19,7 +23,20 @@ export default {
     List,
     DiskInput,
   },
+  props: {
+    disableds: {
+      type: Array,
+      default: () => {
+        return []
+      },
+    },
+  },
   inject: ['form', 'formItemLayout'],
+  provide () {
+    return {
+      disableds: this.disabledData,
+    }
+  },
   data () {
     const _F = () => {}
     return {
@@ -28,6 +45,15 @@ export default {
       fetchSpecs: _F,
       fetchSkus: _F,
     }
+  },
+  computed: {
+    disabledData () {
+      const _ = {}
+      this.disableds.forEach(item => {
+        _[item] = true
+      })
+      return _
+    },
   },
   mounted () {
     const { fetchFilters } = this.$refs['FILTERS']

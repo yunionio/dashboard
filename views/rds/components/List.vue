@@ -11,6 +11,7 @@ import { DBINSTANCE_CATEGORY } from '../constants/index.js'
 import { sizestr } from '@/utils/utils'
 import { Manager } from '@/utils/manager'
 import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getNameDescriptionTableColumn, getBrandTableColumn } from '@/utils/common/tableColumn'
+import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -23,7 +24,7 @@ export default {
         getParams: {
           details: true,
         },
-        // steadyStatus: Object.values(expectStatus.redis).flat(),
+        steadyStatus: Object.values(expectStatus.rds).flat(),
         filterOptions: {
           name: {
             label: '实例名称',
@@ -160,7 +161,7 @@ export default {
             },
           },
         },
-        getStatusTableColumn({ statusModule: 'redis' }),
+        getStatusTableColumn({ statusModule: 'rds' }),
         getProjectTableColumn(),
         getBrandTableColumn(),
         getRegionTableColumn(),
@@ -169,7 +170,7 @@ export default {
         {
           label: '新建',
           action: () => {
-            this.createServer()
+            this.$router.push('/rds/create')
           },
           meta: () => {
             return {
@@ -205,7 +206,7 @@ export default {
               {
                 label: '同步状态',
                 action: (obj) => {
-                  this.list.batchPerformAction('Sync', null)
+                  this.list.batchPerformAction('sync-status', null)
                 },
                 meta: () => {
                   return {
@@ -217,7 +218,7 @@ export default {
               {
                 label: '修改属性',
                 action: () => {
-                  this.createDialog('RedisEditAttrDialog', {
+                  this.createDialog('RDSEditAttrDialog', {
                     title: '修改属性',
                     data: this.list.selectedItems,
                     columns: this.columns,
@@ -251,7 +252,7 @@ export default {
               {
                 label: '重启',
                 action: () => {
-                  this.createDialog('RedisRestartdialog', {
+                  this.createDialog('RDSRestartdialog', {
                     title: '重启',
                     data: this.list.selectedItems,
                     columns: this.columns,
@@ -274,9 +275,10 @@ export default {
           label: '同步状态',
           action: (obj) => {
             this.list.onManager('performAction', {
+              steadyStatus: 'running',
               id: obj.id,
               managerArgs: {
-                action: 'Sync',
+                action: 'sync-status',
               },
             }).then(ret => {
               if (ret.status === 200) {
@@ -290,45 +292,6 @@ export default {
           actions: (obj) => {
             const isRunning = obj.status.toLowerCase() === 'running'
             const notRunninTip = !isRunning ? '仅运行中的实例支持此操作' : null
-            const isAuthModeOn = obj.auth_mode === 'on'
-            const setAuthMode = () => {
-              if (isAuthModeOn && obj.brand !== 'Huawei') {
-                return {
-                  label: '关闭免密访问',
-                  action: () => {
-                    this.createDialog('RedisUpdateAuthModeDialog', {
-                      title: '关闭免密访问',
-                      data: [obj],
-                      columns: this.columns,
-                      list: this.list,
-                    })
-                  },
-                  meta: () => {
-                    return {
-                      validate: isRunning,
-                      tooltip: notRunninTip,
-                    }
-                  },
-                }
-              }
-              return {
-                label: '开启密码访问',
-                action: () => {
-                  this.createDialog('RedisUpdateAuthModeDialog', {
-                    title: '开启密码访问',
-                    data: [obj],
-                    columns: this.columns,
-                    list: this.list,
-                  })
-                },
-                meta: () => {
-                  return {
-                    validate: isRunning && obj.brand !== 'Huawei',
-                    tooltip: notRunninTip || (obj.brand === 'Huawei' && '华为云暂不支持此操作'),
-                  }
-                },
-              }
-            }
             return [
               {
                 label: '修改属性',
@@ -344,7 +307,7 @@ export default {
               {
                 label: '重启',
                 action: () => {
-                  this.createDialog('RedisRestartdialog', {
+                  this.createDialog('RDSRestartdialog', {
                     title: '重启',
                     data: [obj],
                     columns: this.columns,
@@ -387,7 +350,7 @@ export default {
               {
                 label: '调整配置',
                 action: () => {
-                  this.createDialog('RedisSetConfigDialog', {
+                  this.createDialog('RSDSetConfig', {
                     title: '调整配置',
                     data: [obj],
                     columns: this.columns,
@@ -401,41 +364,6 @@ export default {
                   }
                 },
               },
-              {
-                label: '清空数据',
-                action: () => {
-                  this.createDialog('RedisClearDataDialog', {
-                    title: '清空数据',
-                    data: [obj],
-                    columns: this.columns,
-                    list: this.list,
-                  })
-                },
-                meta: () => {
-                  return {
-                    validate: isRunning,
-                    tooltip: notRunninTip,
-                  }
-                },
-              },
-              {
-                label: '重置密码',
-                action: () => {
-                  this.createDialog('RedisResetPassworddialog', {
-                    title: '重置密码',
-                    data: [obj],
-                    columns: this.columns,
-                    list: this.list,
-                  })
-                },
-                meta: () => {
-                  return {
-                    validate: isRunning,
-                    tooltip: notRunninTip,
-                  }
-                },
-              },
-              setAuthMode(),
               {
                 label: '删除',
                 action: () => {
@@ -463,11 +391,6 @@ export default {
     this.webconsoleManager = new Manager('webconsole', 'v1')
     this.list.fetchData()
     this.initSidePageTab('redis-detail')
-  },
-  methods: {
-    createServer () {
-      this.$router.push('/redis/create')
-    },
   },
 }
 </script>

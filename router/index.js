@@ -3,6 +3,7 @@ import Redis from '@DB/views/redis'
 import RedisCreate from '@DB/views/redis/create'
 import RDS from '@DB/views/rds'
 import RDSCreate from '@DB/views/rds/create'
+import RDSBackup from '@DB/views/rds/backup'
 
 export default {
   index: 6,
@@ -58,6 +59,11 @@ export default {
               name: 'RDSCreate',
               path: 'create',
               component: RDSCreate,
+            },
+            {
+              name: 'RDSBackup',
+              path: 'backup',
+              component: RDSBackup,
             },
           ],
         },

@@ -31,7 +31,7 @@ export default {
       list: this.$list.createList(this, {
         resource: 'dbinstancebackups',
         getParams: this.params,
-        steadyStatus: Object.values(expectStatus.redisAccount).flat(),
+        steadyStatus: Object.values(expectStatus.rdsBackup).flat(),
       }),
       columns: [
         {
@@ -53,7 +53,7 @@ export default {
         },
         {
           id: 'engine',
-          header: '数据库类型',
+          title: '数据库类型',
           slots: {
             default: ({ row }) => {
               return `${row.engine || ''} ${row.engine_version || ''}`
@@ -62,7 +62,7 @@ export default {
         },
         {
           id: 'backup_size_mb',
-          header: '大小',
+          title: '大小',
           slots: {
             default: ({ row }) => {
               return sizestr(row.backup_size_mb, 'M', 1024)
@@ -72,16 +72,21 @@ export default {
         getStatusTableColumn({ statusModule: 'rdsBackup' }),
         // getBrandTableColumn(),
         {
-          header: '备份开始/结束时间',
+          title: '备份开始/结束时间',
           slots: {
             default: ({ row }) => {
-              return `${this.$moment(row.start_time).format()} - ${this.$moment(row.end_time).format()}`
+              return `${this.$moment(row.start_time).format()} / ${this.$moment(row.end_time).format()}`
             },
           },
         },
         {
           id: 'region',
-          header: '区域',
+          title: '区域',
+          slots: {
+            default: ({ row }) => {
+              return row.region
+            },
+          },
         },
       ],
       groupActions: [
@@ -95,27 +100,35 @@ export default {
           meta: () => {
             return {
               buttonType: 'primary',
-              ...this.commonMeta,
             }
           },
         },
       ],
       singleActions: [
+        {
+          label: '恢复',
+          action: (obj) => {
+            this.createDialog('RDSBackupRecovery', {
+              title: '恢复',
+              data: [obj],
+              columns: this.columns,
+              list: this.list,
+            })
+          },
+        },
+        {
+          label: '删除',
+          action: (obj) => {
+            this.createDialog('DeleteResDialog', {
+              title: '删除',
+              data: [obj],
+              columns: this.columns,
+              list: this.list,
+            })
+          },
+        },
       ],
     }
-  },
-  computed: {
-    commonMeta () {
-      const isRun = this.data.status === 'running'
-      let tooltip = ''
-      if (!isRun) {
-        tooltip = '仅在运行中状态下支持新建操作'
-      }
-      return {
-        validate: isRun,
-        tooltip: tooltip,
-      }
-    },
   },
   created () {
     this.list.fetchData()

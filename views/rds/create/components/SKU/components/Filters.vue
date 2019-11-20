@@ -1,12 +1,12 @@
 <template>
   <div v-if="dbInstance">
      <a-form-item label="数据库引擎" v-bind="formItemLayout">
-      <a-radio-group v-decorator="['engine']" @change="getVersion">
+      <a-radio-group v-decorator="['engine']" :disabled="!!disableds.engine" @change="getVersion">
         <a-radio-button :key="engine" :value="engine" v-for="(value, engine) of engines">{{engine}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
     <a-form-item label="数据库版本" v-bind="formItemLayout">
-      <a-radio-group v-decorator="['engine_version']" @change="getCategory">
+      <a-radio-group v-decorator="['engine_version']" :disabled="!!disableds.engine_version" @change="getCategory">
         <a-radio-button :key="key" :value="key" v-for="(value, key) of engine_versions"> {{form.getFieldValue('engine') === 'SQLServer' ? versionCn(key) : key }}</a-radio-button>
       </a-radio-group>
     </a-form-item>
@@ -28,7 +28,7 @@ import { DBINSTANCE_CATEGORY, DBINSTANCE_STORAGE_TYPE, ENGINR_VERSION } from '@D
 
 export default {
   name: 'rdsSkuFilter',
-  inject: ['form', 'formItemLayout'],
+  inject: ['form', 'formItemLayout', 'disableds'],
   data () {
     return {
       dbInstance: undefined,

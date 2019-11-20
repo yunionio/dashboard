@@ -11,7 +11,8 @@
       </a-radio-group>
     </a-form-item>
     <a-form-item label="可用区" v-bind="formItemLayout">
-      <a-radio-group v-decorator="['zones']" @change="$emit('change')">
+      <slot name="zone" v-if="$slots.zone" />
+      <a-radio-group v-else v-decorator="['zones']" @change="$emit('change')">
         <a-radio-button :key="id" :value="id" v-for="(zone, id) of zones">{{zone}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
@@ -30,6 +31,9 @@ export default {
       zones: {},
       cpu_mems_mb: undefined,
     }
+  },
+  created () {
+    console.log(this.$slots)
   },
   methods: {
     sizestr,

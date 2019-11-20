@@ -14,9 +14,8 @@
       <clearing-radios v-bind="formItemLayout" />
       <!-- 区域 -->
       <area-selects
-        :names="['city', 'provider']"
-        v-bind="formItemLayout"
-        @providerFetchSuccess="providerChange" />
+        :names="['city', 'provider', 'cloudregion']"
+        v-bind="formItemLayout" />
       <!-- 套餐信息 -->
       <s-k-u ref="SKU" />
       <a-divider orientation="left">高级配置</a-divider>

@@ -47,7 +47,7 @@ export default {
   computed: {
     getParams () {
       return {
-        elasticcache_id: this.params.resId,
+        dbinstance: this.params.resId,
         details: true,
       }
     },

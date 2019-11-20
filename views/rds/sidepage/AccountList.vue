@@ -145,7 +145,6 @@ export default {
   },
   created () {
     this.list.fetchData()
-    console.log(this.data)
   },
 }
 </script>

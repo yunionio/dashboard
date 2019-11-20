@@ -211,19 +211,6 @@ export default {
             },
           ],
         },
-        {
-          title: '其他',
-          items: [
-            {
-              field: 'created_at',
-              title: '创建时间',
-            },
-            {
-              field: 'update_at',
-              title: '更新时间',
-            },
-          ],
-        },
       ],
     }
   },
