@@ -9,7 +9,12 @@
       </div>
       <div class="d-flex">
         <div class="flex-fill">
-          <search-box v-if="filterOptions" :options="filterOptions" :value="filter" @input="handleFilterChange" />
+          <search-box
+            v-if="filterOptions"
+            :options="filterOptions"
+            :value="filter"
+            :list="list"
+            @input="handleFilterChange" />
         </div>
         <div class="ml-4" v-if="exportDataOptions || list.id">
           <a-tooltip title="导出数据" v-if="exportDataOptions">
@@ -45,14 +50,12 @@ import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import Actions from './Actions'
 import RefreshButton from './RefreshButton'
-import Loader from './Loader'
 
 export default {
   name: 'PageList',
   components: {
     Actions,
     RefreshButton,
-    Loader,
   },
   props: {
     // 生成的list实例store
