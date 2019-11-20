@@ -13,10 +13,10 @@
               </a-radio-group>
             </a-form-item>
             <a-form-item v-bind="formItemLayout" label="密码">
-                <a-input type="password" placeholder="请输入密码" v-decorator="decorators.password" />
+                <a-input-password type="password" placeholder="请输入密码" v-decorator="decorators.password" />
             </a-form-item>
              <a-form-item v-bind="formItemLayout" label="确认密码">
-                <a-input type="password" placeholder="请再次确认密码" v-decorator="decorators.checkPassword" />
+                <a-input-password type="password" placeholder="请再次确认密码" v-decorator="decorators.checkPassword" />
             </a-form-item>
         </a-form>
          <div slot="footer">

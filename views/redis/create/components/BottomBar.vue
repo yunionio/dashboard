@@ -111,6 +111,7 @@ export default {
         delete params.loginType
       }
       params['__count__'] = params['count']
+      params['billing_cycle'] = params['duration']
       delete params.sku
       return params
     },
