@@ -14,7 +14,7 @@
       :columns="tableColumn"
       :data="skuResults">
       <template v-slot:empty>
-        <page-list-empty :loading="skuLoading" />
+        <loader :loading="skuLoading" />
       </template>
     </vxe-grid>
   </div>
@@ -25,16 +25,12 @@ import * as R from 'ramda'
 import { ALL_SKU_CATEGORY_OPT, SKU_CATEGORY_MAP } from '@Compute/constants'
 import { Manager } from '@/utils/manager'
 import { PROVIDER_MAP, HYPERVISORS_MAP } from '@/constants'
-import PageListEmpty from '@/components/PageList/Loader'
 
 const keys = ['hour_price', 'month_price', 'year_price']
 const units = ['小时', '月', '年']
 
 export default {
   name: 'SKU',
-  components: {
-    PageListEmpty,
-  },
   props: {
     billType: {
       type: String,
