@@ -42,13 +42,11 @@ import * as R from 'ramda'
 import { Manager } from '@/utils/manager'
 import OBJ_TYPE from '@/constants/actionObjType'
 import RefreshButton from '@/components/PageList/RefreshButton'
-import Loader from '@/components/PageList/Loader'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'EventList',
   components: {
-    Loader,
     RefreshButton,
   },
   mixins: [WindowsMixin],
