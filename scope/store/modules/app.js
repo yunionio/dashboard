@@ -8,6 +8,13 @@ export default {
       loginLogo: logo,
       name: 'OneCloud',
     },
+    workflow: {
+      statistics: {
+        'nr-historic-process-instance': 0,
+        'nr-process-task': 0,
+      },
+      enabledKeys: [],
+    },
   },
   getters: {
     logo (state) {
@@ -28,6 +35,12 @@ export default {
   actions: {
     fetchCompayInfo ({ commit, state }) {
       return Promise.resolve(state.companyInfo)
+    },
+    fetchWorkflowStatistics () {
+      return Promise.resolve()
+    },
+    fetchWorkflowEnabledKeys () {
+      return Promise.resolve()
     },
   },
 }
