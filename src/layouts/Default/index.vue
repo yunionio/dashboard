@@ -15,6 +15,7 @@
 import Navbar from '@scope/layouts/Navbar'
 import Sidebar from '../Sidebar'
 import SidePageManager from '@/sections/SidePageManager'
+import notificationListener from '@/utils/notificationListener'
 
 export default {
   name: 'DefaultLayout',
@@ -27,6 +28,23 @@ export default {
     return {
       l2MenuVisible: false,
     }
+  },
+  created () {
+    this.enableWs()
+  },
+  methods: {
+    enableWs () {
+      if (!this.$appConfig.isPrivate) return
+      let proto = 'wss'
+      if (window.location.protocol === 'http:') {
+        proto = 'ws'
+      }
+      const options = {}
+      if (process.env.NODE_ENV === 'production') {
+        options.server = `${proto}://${window.location.hostname}`
+      }
+      notificationListener(this.$store, options)
+    },
   },
 }
 </script>

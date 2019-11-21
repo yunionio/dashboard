@@ -69,6 +69,9 @@ export default {
       if (this.$store.getters.l3PermissionEnable) {
         params.domain_id = this.params.data[0].domain_id
       }
+      if (this.params.isHiddenDomain) {
+        delete params.domain_id
+      }
       return params
     },
   },
