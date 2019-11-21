@@ -61,29 +61,16 @@
         </a-menu>
       </a-dropdown>
     </div>
-    <template v-if="$appConfig.isPrivate">
-      <!-- 消息中心 -->
-      <notify-popover class="navbar-item" />
-      <!-- 工单 -->
-      <work-order-popover class="navbar-item" />
-      <!-- 帮助 -->
-      <help-popover class="navbar-item" />
-      <!-- 用户 -->
-      <user-popover class="navbar-item" />
-    </template>
-    <template v-else>
-      <!-- 用户 -->
-      <div class="navbar-item">
-        <a-dropdown :trigger="['click']">
-          <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
-            <icon type="navbar-user" style="font-size: 24px;" />
-          </div>
-          <a-menu slot="overlay" @click="userMenuClick">
-            <a-menu-item key="logout">退出</a-menu-item>
-          </a-menu>
-        </a-dropdown>
-      </div>
-    </template>
+    <div class="navbar-item">
+      <a-dropdown :trigger="['click']">
+        <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
+          <icon type="navbar-user" style="font-size: 24px;" />
+        </div>
+        <a-menu slot="overlay" @click="userMenuClick">
+          <a-menu-item key="logout">退出</a-menu-item>
+        </a-menu>
+      </a-dropdown>
+    </div>
   </div>
 </template>
 
@@ -91,19 +78,8 @@
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 
-import NotifyPopover from './NotifyPopover'
-import WorkOrderPopover from './WorkOrderPopover'
-import HelpPopover from './HelpPopover'
-import UserPopover from './UserPopover'
-
 export default {
   name: 'Navbar',
-  components: {
-    NotifyPopover,
-    WorkOrderPopover,
-    HelpPopover,
-    UserPopover,
-  },
   computed: {
     ...mapGetters(['userInfo', 'scope', 'logo']),
     products () {
@@ -167,9 +143,7 @@ export default {
       await this.$store.dispatch('auth/getInfo')
       await this.$store.dispatch('auth/getPermission', scope)
       await this.$store.dispatch('auth/getScopeResource')
-      if (this.$appConfig.isPrivate) {
-        window.location.href = this.$appConfig.v1Perfix
-      }
+      window.location.reload()
     },
   },
 }

@@ -43,6 +43,7 @@ module.exports = {
           '~': resolve('./src'),
           '@@': resolve('.'),
           '~~': resolve('.'),
+          '@scope': resolve('./scope'),
           ...aliasSrcDirConfig,
         },
       },

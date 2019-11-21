@@ -1,9 +1,11 @@
 export default {
   logo: (state, getters) => getters['app/logo'],
+  loginLogo: (state, getters) => getters['app/loginLogo'],
   copyright: (state, getters) => getters['app/copyright'],
   scope: state => state.auth.scope,
   auth: state => state.auth,
   userInfo: state => state.auth.info,
+  capability: state => state.auth.capability,
   permission: state => state.auth.permission,
   scopeResource: state => state.auth.scopeResource,
   windows: state => state.window.windows,

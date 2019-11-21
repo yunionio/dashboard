@@ -11,7 +11,7 @@
     </div>
     <div class="login-right" :style="{ height: `${panelHeight}px` }">
       <div class="logo">
-        <img :src="logo" />
+        <img :src="loginLogo" />
       </div>
       <div class="login">
         <h4>用户登录</h4>
@@ -152,7 +152,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['auth', 'userInfo', 'logo']),
+    ...mapGetters(['auth', 'userInfo', 'loginLogo']),
     casConfig () {
       const cas = this.form.fi.idps.find(item => item.driver === 'cas')
       return cas && cas.config
@@ -180,7 +180,10 @@ export default {
     } else {
       this.loading = true
       try {
-        const isRegister = await this.fetchRegisterStatus()
+        let isRegister = true
+        if (this.$appConfig.isPrivate) {
+          isRegister = await this.fetchRegisterStatus()
+        }
         if (!isRegister) {
           this.$router.push({ name: 'Register' })
         } else {
