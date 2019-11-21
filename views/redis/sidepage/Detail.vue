@@ -228,6 +228,7 @@ export default {
     async handleSwitchPublicAddress (bool) {
       if (bool) {
         this.list.onManager('performAction', {
+          steadyStatus: 'running',
           id: this.data.id,
           managerArgs: {
             action: 'allocate-public-connection',
@@ -235,6 +236,7 @@ export default {
         })
       } else {
         this.list.onManager('performAction', {
+          steadyStatus: 'running',
           id: this.data.id,
           managerArgs: {
             action: 'release-public-connection',

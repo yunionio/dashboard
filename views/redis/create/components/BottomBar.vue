@@ -110,6 +110,8 @@ export default {
         params['reset_password'] = true
         delete params.loginType
       }
+      params['__count__'] = params['count']
+      params['billing_cycle'] = params['duration']
       delete params.sku
       return params
     },
@@ -117,7 +119,7 @@ export default {
       if (!this.validateForm()) return false
       const manager = new Manager('elasticcaches', 'v2')
       const { data, status } = await manager.create({ data: this.formatParams() })
-      if (status === 200 && data) {
+      if ((status === 200 || status === 207) && data) {
         this.$router.push('/redis')
       }
     },

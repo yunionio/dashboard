@@ -66,8 +66,7 @@ export default {
   computed: {
     alertMsg () {
       const data = this.params.data[0]
-      console.log(data)
-      if (data['auth_mode'] === 'on') {
+      if (data['auth_mode'] !== 'on') {
         return '关闭免密访问后，应用程序必须通过用户名/密码认证访问Redis，请确认应用程序的连接方式，以免对业务系统造成影响'
       } else {
         return '数据库Redis支持在VPC网络内的免密访问，开启成功后可以通过免认证的方式访问Redis，设置免密后可以支持VPC内的服务器免认证访问Redis，免密访问具有安全隐患，请及时关闭'
@@ -90,6 +89,7 @@ export default {
       this.loading = true
       try {
         await this.params.list.onManager('performAction', {
+          steadyStatus: 'running',
           id: this.params.data[0].id,
           managerArgs: {
             action: '/update-auth-mode',

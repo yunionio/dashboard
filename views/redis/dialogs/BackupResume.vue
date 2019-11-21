@@ -32,37 +32,14 @@ export default {
     }
   },
   methods: {
-    rulesCheckPassword (rule, value, callback) {
-      const form = this.form.fc
-      if (value && value !== form.getFieldValue('password')) {
-        callback(new Error('两次输入的密码不一致'))
-      } else {
-        callback()
-      }
-    },
-    validateForm () {
-      return new Promise((resolve, reject) => {
-        this.form.fc.validateFields((err, values) => {
-          if (!err) {
-            resolve(values)
-          } else {
-            reject(err)
-          }
-        })
-      })
-    },
     async handleConfirm () {
       this.loading = true
       try {
-        const values = await this.validateForm()
-        const params = {
-          ...values,
-          elasticcache: this.params.redisItem.id,
-        }
-        delete params.checkPassword
-        await this.params.list.onManager('batchPost', {
+        await this.params.list.onManager('performAction', {
+          steadyStatus: 'running',
+          id: this.params.data[0].id,
           managerArgs: {
-            data: params,
+            action: 'restore-instance',
           },
         })
         this.loading = false

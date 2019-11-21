@@ -34,6 +34,7 @@ export default {
           await this.params.list.batchPerformAction('delete', { ids })
         } else {
           await this.params.list.onManager('delete', {
+            steadyStatus: 'running',
             id: this.params.data[0].id,
           })
         }

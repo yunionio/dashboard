@@ -120,6 +120,9 @@ export default {
       if (sku && sku.provider === 'Aliyun') {
         params['zone'] = sku.zone_id
       }
+      this.FC.setFieldsValue({
+        network: undefined,
+      })
       try {
         this.networkLoading = true
         const { data = {} } = await this.netWrokManager.list({ params })
