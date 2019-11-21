@@ -225,12 +225,14 @@
       "unknown": "未知状态"
     },
     "redisBackup" : {
+      "running": "正常",
       "creating": "备份中",
       "expired": "备份文件已过期",
       "deleted": "备份文件已删除",
       "deleting": "删除中",
       "success": "备份成功",
-      "failed": "备份失败"
+      "failed": "备份失败",
+      "backuprecovering": "备份恢复中"
     },
     "sku": {
       "creating": "创建中",

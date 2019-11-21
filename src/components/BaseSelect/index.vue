@@ -1,7 +1,7 @@
 <template>
   <a-select
     class="base-select"
-    v-bind="{ ...selectProps, ...filterOpts}"
+    v-bind="{ ...selectProps, ...filterOpts }"
     :value="value"
     @change="change"
     @search="loadOpts"
@@ -13,6 +13,7 @@
 </template>
 <script>
 import * as R from 'ramda'
+import debounce from 'lodash/debounce'
 import { Manager } from '@/utils/manager'
 import { arrayToObj } from '@/utils/utils'
 
@@ -88,7 +89,8 @@ export default {
       default: 'name',
     },
   },
-  data: function () {
+  data () {
+    this.loadOpts = debounce(this.loadOpts, 500)
     return {
       resOpts: {},
       loading: false,
@@ -185,6 +187,7 @@ export default {
       }
     },
     loadOpts (query) {
+      if (!R.isNil(query) && this.filterable) return // 如果开启本地搜索，远程搜索将取消
       this.loading = true
       let manager = new Manager(this.resource, this.version)
       let params = { ...this.params }
