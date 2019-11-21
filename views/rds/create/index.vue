@@ -84,8 +84,9 @@ export default {
     this.fetchNetwork = fetchNetwork
   },
   methods: {
-    providerChange (list) {
+    handleAreaChange (list) {
       console.log(list)
+      // return []
     },
     getVpcParams () {
       return new Promise((resolve, reject) => {

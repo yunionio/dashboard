@@ -48,7 +48,7 @@ export default {
           title: '状态',
           slots: {
             default: ({ row }) => {
-              return <status status={row.status} statusModule='redis' />
+              return <status status={row.status} statusModule='rds' />
             },
           },
         },

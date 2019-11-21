@@ -39,7 +39,7 @@ export default {
     sizestr,
     initCpu () {
       const count = this.form.getFieldValue('vcpu_count')
-      if (!count) {
+      if (!count || this.cpus.indexOf(count) === -1) {
         this.form.setFieldsValue({
           vcpu_count: this.cpus[0],
         })
