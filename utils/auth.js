@@ -102,12 +102,12 @@ export function hasServices (services) {
 
 export function hasHypervisors (hypervisors) {
   let h = R.is(String, hypervisors) ? [hypervisors] : hypervisors
-  return h.some(item => (store.getters.userInfo.hypervisors || []).includes(item))
+  return h.some(item => (store.getters.capability.hypervisors || []).includes(item))
 }
 
 export function hasBrands (brands) {
   let b = R.is(String, brands) ? [brands] : brands
-  return b.some(item => (store.getters.userInfo.brands || []).includes(item))
+  return b.some(item => (store.getters.capability.brands || []).includes(item))
 }
 
 export function hasHypervisorsByEnv (envs) {
