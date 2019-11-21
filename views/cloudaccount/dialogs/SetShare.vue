@@ -25,7 +25,7 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'VmSetShareDialog',
+  name: 'CloudaccountSetShareDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
     const data = this.params.data[0]

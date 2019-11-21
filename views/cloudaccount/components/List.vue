@@ -340,7 +340,7 @@ export default {
               {
                 label: '设置共享',
                 action: () => {
-                  this.createDialog('VmSetShareDialog', {
+                  this.createDialog('CloudaccountSetShareDialog', {
                     data: [obj],
                     columns: this.columns,
                     list: this.list,
