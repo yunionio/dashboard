@@ -65,9 +65,20 @@ export default {
             })
           },
           meta: () => {
+            let validate = true
+            let tooltip = ''
+            if (this.data.brand === 'Huawei') {
+              validate = false
+              tooltip = '华为云不支持此操作'
+            }
+            if (this.data.brand === 'Aliyun' && this.data.engine_version === '2.8') {
+              validate = false
+              tooltip = '阿里云Redis2.8不支持此操作'
+            }
             return {
               buttonType: 'primary',
-              ...this.commonMeta,
+              validate,
+              tooltip,
             }
           },
         },
@@ -99,7 +110,13 @@ export default {
               redisItem: this.data,
             })
           },
-          meta: () => this.commonMeta,
+          meta: (obj) => {
+            const isAdmin = obj.account_type === 'admin'
+            return {
+              validate: this.commonMeta.validate && !isAdmin,
+              tooltip: this.commonMeta.tooltip || (isAdmin ? '阿里云主账号不支持此操作' : null),
+            }
+          },
         },
         {
           label: '删除',
