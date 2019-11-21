@@ -16,6 +16,7 @@ import { commonUnabled, cloudEnabled, cloudUnabledTip, commonEnabled, commonTip 
 import { Manager } from '@/utils/manager'
 import { sizestr } from '@/utils/utils'
 import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getBrandTableColumn, getCopyWithContentTableColumn, getIpsTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
+import { getBrandItems, mapperStatusToItems } from '@/utils/common/tableFilter'
 import SystemIcon from '@/sections/SystemIcon'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
@@ -36,35 +37,27 @@ export default {
         steadyStatus: Object.values(expectStatus.server).flat(),
         filterOptions: {
           name: {
-            label: '实例名称',
+            label: '名称',
             filter: true,
             formatter: val => {
               return `name.contains(${val})`
             },
           },
           status: {
-            label: '实例状态',
+            label: '状态',
             dropdown: true,
             multiple: true,
-            items: [
-              { label: '运行中', key: 'running' },
-              { label: '关机', key: 'ready' },
-              { label: '未知', key: 'unknown' },
-              { label: '调度失败', key: 'sched_fail' },
-            ],
+            distinctField: {
+              type: 'field',
+              key: 'status',
+            },
+            mapper: data => {
+              return mapperStatusToItems(data, 'status.server')
+            },
             filter: true,
             formatter: val => {
               return `status.in(${val.join(',')})`
             },
-          },
-          brand: {
-            label: '平台',
-            dropdown: true,
-            multiple: true,
-            items: [
-              { label: 'OneCloud', key: 'OneCloud' },
-              { label: 'OpenStack', key: 'OpenStack' },
-            ],
           },
           os_type: {
             label: '系统类型',
@@ -97,6 +90,12 @@ export default {
               type: 'extra_field',
               key: 'account',
             },
+          },
+          brand: {
+            label: '平台',
+            dropdown: true,
+            multiple: true,
+            items: getBrandItems('compute_engine_brands'),
           },
         },
       }),
