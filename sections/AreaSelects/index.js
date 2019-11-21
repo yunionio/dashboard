@@ -34,17 +34,8 @@ export default {
         return ['city', 'provider', 'cloudregion', 'zone']
       },
     },
-    cityFetchSuccess: {
-      type: Function,
-    },
-    providerFetchSuccess: {
-      type: Function,
-    },
-    cloudregionFetchSuccess: {
-      type: Function,
-    },
-    zoneFetchSuccess: {
-      type: Function,
+    decorators: {
+      type: Object,
     },
     labelCol: {
       type: Object,
@@ -61,6 +52,22 @@ export default {
           span: 24,
         }
       },
+    },
+    cityParams: {
+      type: [Object, Function],
+    },
+    providerParams: {
+      type: [Object, Function],
+    },
+    cloudregionParams: {
+      type: [Object, Function],
+    },
+    zoneParams: {
+      type: [Object, Function],
+    },
+    defaultActiveFirstOption: {
+      type: [Array, Boolean],
+      default: true,
     },
   },
   created () {
@@ -122,6 +129,13 @@ export default {
       const key = Object.keys(selectItem)[0]
       const { id, fetchNames } = { ...selectItem[key] }
       const selectedValue = this.getSelectedValue(key, id)
+      // 清空操作
+      if (!id) {
+        this.$emit('change', {
+          [key]: undefined,
+        })
+        return false
+      }
       if (fetchNames && fetchNames.length > 0) {
         this.resetValues(fetchNames)
         this.$nextTick(() => {
@@ -139,16 +153,29 @@ export default {
     async fetchChange (name, list) {
       const events = this._events || {}
       const changes = events[`${name}FetchSuccess`]
+      let _list = list
       if (changes && changes.length > 0) {
-        changes.forEach(e => {
-          e(list)
-        })
-      } else {
-        const _item = !R.isEmpty(list) ? list[0] : {}
-        this.FC.setFieldsValue({
-          [name]: _item.id || _item.name,
-        })
+        const changeFetchSuccess = changes[0]
+        const value = await changeFetchSuccess(list, this.FC)
+        if (value && R.type(value) === 'Array') {
+          _list = value
+        }
       }
+      const _item = !R.isEmpty(list) ? list[0] : {}
+      if (this.defaultActiveFirstOption) {
+        const df = this.defaultActiveFirstOption
+        if (R.type(df) === 'Boolean') {
+          this.FC.setFieldsValue({
+            [name]: _item.id || _item.name,
+          })
+        }
+        if (R.type(df) === 'Array' && !R.isEmpty(df) && df.indexOf(name) > -1) {
+          this.FC.setFieldsValue({
+            [name]: _item.id || _item.name,
+          })
+        }
+      }
+      this[`${name}List`] = _list
     },
     async fetchs (fetchNames = this.names) {
       if (fetchNames && fetchNames.length > 0) {
@@ -156,16 +183,18 @@ export default {
           const name = fetchNames[i]
           const sn = this.firstName(name)
           const fetchFn = this[`fetch${sn}`]
+          const getParams = R.is(Function, this[`${name}Params`]) ? await this[`${name}Params`]() : this[`${name}Params`]
           if (this.names.indexOf(name) > -1 && fetchFn) {
-            const list = await fetchFn()
+            const list = await fetchFn(getParams)
             await this.fetchChange(name, list)
           }
         }
       }
     },
-    async fetchCity () {
+    async fetchCity (queryParams = {}) {
       const params = {
         usable: true,
+        ...queryParams,
       }
       this.cityLoading = true
       try {
@@ -174,12 +203,9 @@ export default {
           methodname: 'getRegionCities',
           params,
         })
-        this.cityLoading = false
-        this.cityList = data
         return data
-      } catch (err) {
-        this.cityLoading = true
-        throw err
+      } finally {
+        this.cityLoading = false
       }
     },
     RenderCity () {
@@ -201,12 +227,13 @@ export default {
         </a-select>
       )
     },
-    async fetchProvider () {
+    async fetchProvider (queryParams = {}) {
       const { getFieldsValue } = this.FC
       const { city } = getFieldsValue(this.names)
       const params = {
         usable: true,
         city,
+        ...queryParams,
       }
       this.providerLoading = true
       try {
@@ -215,12 +242,9 @@ export default {
           methodname: 'getRegionProviders',
           params,
         })
-        this.providerLoading = false
-        this.providerList = data
         return data
-      } catch (err) {
-        this.providerLoading = true
-        throw err
+      } finally {
+        this.providerLoading = false
       }
     },
     RenderProvider () {
@@ -242,25 +266,23 @@ export default {
         </a-select>
       )
     },
-    async fetchCloudregion () {
+    async fetchCloudregion (queryParams) {
       const { getFieldsValue } = this.FC
       const { city, provider } = getFieldsValue(this.names)
       const params = {
         usable: true,
         city,
         provider,
+        ...queryParams,
       }
       this.cloudregionLoading = true
       try {
         const manager = new this.$Manager('cloudregions', 'v2')
         const { data = {} } = await manager.list({ params })
         const retList = !R.isEmpty(data.data) ? data.data : []
-        this.cloudregionLoading = false
-        this.cloudregionList = retList
         return retList
-      } catch (err) {
+      } finally {
         this.cloudregionLoading = false
-        throw err
       }
     },
     RenderCloudregion () {
@@ -290,7 +312,7 @@ export default {
         </a-select>
       )
     },
-    async fetchZone () {
+    async fetchZone (queryParams = {}) {
       const { getFieldsValue } = this.FC
       const { city, provider, cloudregion } = getFieldsValue(this.names)
       const params = {
@@ -298,6 +320,7 @@ export default {
         city,
         provider,
         cloudregion,
+        ...queryParams,
       }
       this.zoneLoading = true
       try {
@@ -306,12 +329,9 @@ export default {
           params,
         })
         const retList = !R.isEmpty(data.data) ? data.data : []
-        this.zoneLoading = false
-        this.zoneList = retList
         return retList
-      } catch (err) {
+      } finally {
         this.zoneLoading = false
-        throw err
       }
     },
     RenderZone () {
@@ -345,9 +365,14 @@ export default {
     const { names } = this
     const RenderCols = names.map(name => {
       const sn = this.firstName(name)
+      let fieldDecorator = getFieldDecorator(name)
+      if (this.decorators && this.decorators[name]) {
+        const { id, options } = this.decorators[name]
+        fieldDecorator = getFieldDecorator(id, options)
+      }
       if (this[`Render${sn}`]) {
         const Render = this[`Render${sn}`]()
-        return <a-col span={this.colSpan}> {getFieldDecorator(name)(Render)} </a-col>
+        return <a-col span={this.colSpan}> {fieldDecorator(Render)} </a-col>
       }
       return null
     })
