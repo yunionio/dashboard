@@ -12,8 +12,8 @@
 </template>
 
 <script>
+import Navbar from '@scope/layouts/Navbar'
 import Sidebar from '../Sidebar'
-import Navbar from '../Navbar'
 import SidePageManager from '@/sections/SidePageManager'
 
 export default {
