@@ -51,7 +51,6 @@ export default {
         return {
           detail: true,
           cloudaccount_id: this.params.resId,
-          itemData: this.data,
         }
       } else if (this.params.windowData.currentTab === 'host-list') {
         return {

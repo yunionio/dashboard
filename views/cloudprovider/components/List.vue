@@ -23,10 +23,13 @@ export default {
     getParams: {
       type: [Function, Object],
     },
+    data: {
+      type: Object,
+    },
   },
   data () {
     const ownerDomain = list => this.$store.getters.isAdminMode || list.selectedItems.every(obj => obj.domain_id === this.$store.getters.userInfo.projectDomainId)
-    const isHiddenDomain = list => list.params.itemData.share_mode !== 'account_domain'
+    const isHiddenDomain = data => data.share_mode !== 'account_domain'
     return {
       list: this.$list.createList(this, {
         resource: 'cloudproviders',
@@ -141,7 +144,7 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               list: this.list,
-              isHiddenDomain: isHiddenDomain(this.list),
+              isHiddenDomain: isHiddenDomain(this.data),
             })
           },
           meta: () => {
@@ -159,7 +162,7 @@ export default {
               data: [obj],
               columns: this.columns,
               list: this.list,
-              isHiddenDomain: isHiddenDomain(this.list),
+              isHiddenDomain: isHiddenDomain(this.data),
             })
           },
           meta: obj => {

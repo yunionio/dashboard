@@ -348,7 +348,7 @@ export default {
                 },
                 meta: () => {
                   let tooltip = ''
-                  if (this.l3PermissionEnable) {
+                  if (!this.l3PermissionEnable) {
                     tooltip = '无操作权限'
                   }
                   if (!obj.is_public) {
@@ -357,7 +357,7 @@ export default {
                     }
                   }
                   return {
-                    validate: !this.l3PermissionEnable && !obj.is_public && ownerDomain,
+                    validate: this.l3PermissionEnable && !obj.is_public && ownerDomain,
                     tooltip,
                   }
                 },
