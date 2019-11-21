@@ -93,13 +93,18 @@ export const getEnabledTableColumn = ({ field = 'enabled', title = '启用' } = 
   })
 }
 
-export const getPublicTableColumn = ({ field = 'is_public', title = '是否共享' } = {}) => {
+export const getPublicTableColumn = ({ field = 'share_mode', title = '共享模式' } = {}) => {
+  const shareMode = {
+    account_domain: '私有',
+    system: '共享云账号',
+    provider_domain: '共享订阅',
+  }
   return {
     field,
     title,
     slots: {
-      default: ({ row }) => {
-        return row.is_public ? '共享' : '私有'
+      default: ({ row }, h) => {
+        return shareMode[row[field]]
       },
     },
   }

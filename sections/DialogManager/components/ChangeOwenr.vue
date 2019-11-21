@@ -7,13 +7,11 @@
       <a-form
         :form="form.fc">
         <a-form-item label="项目" v-bind="formItemLayout">
-          <base-select
-            v-decorator="decorators.project"
-            :params="projectParams"
-            version="v1"
-            :select-props="{ placeholder: '请选择项目' }"
-            resource="projects"
-            :filterable="true" />
+          <domain-project
+            :fc="form.fc"
+            :form-layout="formItemLayout"
+            :labelInValue="false"
+            :decorators="{ project: decorators.project, domain: decorators.domain }" />
         </a-form-item>
       </a-form>
     </div>
@@ -27,25 +25,34 @@
 <script>
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import DomainProject from '@/sections/DomainProject'
 
 export default {
-  name: 'ChangeProjectDialog',
+  name: 'ChangeOwenrDialog',
+  components: {
+    DomainProject,
+  },
   mixins: [DialogMixin, WindowsMixin],
   data () {
-    const firstData = this.params.data[0]
-    const initialValue = this.params.data.length === 1 ? firstData.tenant_id : undefined
     return {
       loading: false,
       form: {
-        fc: this.$form.createForm(this),
+        fc: this.$form.createForm(this, { name: 'change_project_form' }),
       },
       decorators: {
+        domain: [
+          'domain',
+          {
+            rules: [
+              { required: true, message: '请选择域', trigger: 'change' },
+            ],
+          },
+        ],
         project: [
           'project',
           {
-            initialValue,
             rules: [
-              { required: true, message: '请选择项目' },
+              { required: true, message: '请选择项目', trigger: 'change' },
             ],
           },
         ],
@@ -60,21 +67,6 @@ export default {
       },
     }
   },
-  computed: {
-    projectParams () {
-      const params = {
-        scope: this.$store.getters.scope,
-        domain_id: 'default',
-      }
-      if (this.$store.getters.l3PermissionEnable) {
-        params.domain_id = this.params.data[0].domain_id
-      }
-      if (this.params.isHiddenDomain) {
-        delete params.domain_id
-      }
-      return params
-    },
-  },
   methods: {
     validateForm () {
       return new Promise((resolve, reject) => {
@@ -87,16 +79,18 @@ export default {
         })
       })
     },
-    async doChangeProject (values, ids) {
-      return this.params.list.batchPerformAction('change-project', values, null, ids)
-    },
     async handleConfirm () {
       this.loading = true
       try {
         const values = await this.validateForm()
         const ids = this.params.data.map(item => item.id)
-        this.loading = true
-        await this.doChangeProject(values, ids)
+        await this.params.list.onManager('batchPerformAction', {
+          id: ids,
+          managerArgs: {
+            action: 'change-owner',
+            data: values,
+          },
+        })
         this.loading = false
         this.cancelDialog()
       } catch (error) {
