@@ -4,7 +4,7 @@
       <a-col :span="8">
         <a-form-item>
           <a-select label-in-value v-decorator="decorator.cloudregion" placeholder="请选择区域" @change="regionChange">
-            <a-select-option v-for="item in regionOpts" :key="item.id">{{ item.name }}</a-select-option>
+            <a-select-option v-for="item in regionOpts" :key="item.id" :provider="item.provider">{{ item.name }}</a-select-option>
           </a-select>
         </a-form-item>
       </a-col>
@@ -17,8 +17,11 @@
       </a-col>
       <a-col :span="8">
         <a-form-item>
-          <a-select label-in-value  v-decorator="decorator.wire" allow-clear placeholder="请选择二层网络">
+          <a-select label-in-value  v-decorator="decorator.wire" allow-clear placeholder="请选择二层网络" v-if="show">
             <a-select-option v-for="item in wireOpts" :key="item.id">{{ item.name }}</a-select-option>
+          </a-select>
+          <a-select label-in-value  v-decorator="decorator.zone" allow-clear placeholder="请选择可用区" v-if="!show">
+            <a-select-option v-for="item in zonesOpts" :key="item.id">{{ item.name }}</a-select-option>
           </a-select>
         </a-form-item>
       </a-col>
@@ -36,7 +39,7 @@ export default {
     decorator: {
       type: Object,
       required: true,
-      validator: obj => R.is(Array, obj.cloudregion) && R.is(Array, obj.vpc) && R.is(Array, obj.wire),
+      validator: obj => R.is(Array, obj.cloudregion) && R.is(Array, obj.vpc) && (R.is(Array, obj.wire) || R.is(Array, obj.zone)),
     },
     cloudregionParams: {
       type: Object,
@@ -50,6 +53,10 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    zoneParams: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   inject: ['form'],
   data () {
@@ -57,25 +64,52 @@ export default {
       regionOpts: [],
       vpcOpts: [],
       wireOpts: [],
+      zonesOpts: [],
       regionLoading: false,
       vpcLoading: false,
       wireLoading: false,
+      zoneLoading: false,
+      show: true,
     }
+  },
+  watch: {
+    cloudregionParams: {
+      handler (val) {
+        this.$nextTick(() => {
+          this.fetchRegions()
+          const platformType = this.form.fc.getFieldValue('platform_type')
+          if (platformType === 'idc') {
+            this.show = true
+          } else {
+            this.show = false
+          }
+        })
+      },
+      deep: true,
+    },
   },
   created () {
     this.cloudregionsM = new Manager('cloudregions')
     this.wiresM = new Manager('wires')
+    this.zonesM = new Manager('zones')
     this.fetchRegions()
   },
   methods: {
     regionChange (cloudregion) {
       this.fetchVpcs(cloudregion.key)
+      const platformType = this.form.fc.getFieldValue('platform_type')
+      if (platformType !== 'idc') {
+        this.fetchZones(cloudregion.key)
+      }
       this.form.fc.setFieldsValue({
         cloudregion,
       })
     },
     vpcChange (vpc) {
-      this.fetchWires(vpc.key)
+      const platformType = this.form.fc.getFieldValue('platform_type')
+      if (platformType === 'idc') {
+        this.fetchWires(vpc.key)
+      }
       this.form.fc.setFieldsValue({
         vpc,
       })
@@ -88,7 +122,7 @@ export default {
           this.regionOpts = data
           if (this.regionOpts.length && this.form && this.form.fc) {
             const firstRegion = this.regionOpts[0]
-            this.regionChange({ key: firstRegion.id, label: firstRegion.name })
+            this.regionChange({ key: firstRegion.id, label: firstRegion.name, provider: firstRegion.provider })
           }
         })
         .catch(() => {
@@ -129,6 +163,25 @@ export default {
         })
         .catch(() => {
           this.wireLoading = false
+        })
+    },
+    fetchZones (cloudregionId) {
+      this.zoneLoading = true
+      const params = Object.assign({}, this.zoneParams)
+      this.zonesOpts = [] // 清空可用区
+      this.cloudregionsM.getSpecific({ id: cloudregionId, spec: 'zones', params })
+        .then(({ data: { data = [] } }) => {
+          this.zoneLoading = false
+          this.zonesOpts = data
+          if (this.zonesOpts.length && this.form && this.form.fc) {
+            const firstZone = this.zonesOpts[0]
+            this.form.fc.setFieldsValue({
+              zone: { key: firstZone.id, label: firstZone.name },
+            })
+          }
+        })
+        .catch(() => {
+          this.zoneLoading = false
         })
     },
   },
