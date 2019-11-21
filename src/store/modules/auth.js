@@ -17,6 +17,7 @@ export default {
     },
     permission: null,
     scopeResource: null,
+    capability: {},
   },
   mutations: {
     SET_SCOPE (state, payload) {
@@ -27,6 +28,9 @@ export default {
     },
     SET_INFO (state, payload) {
       state.info = payload
+    },
+    SET_CAPABILITY (state, payload) {
+      state.capability = payload
     },
     SET_AUTH (state, payload) {
       state.auth = payload
@@ -158,12 +162,8 @@ export default {
         }
         try {
           const response = await http.get('/v2/capabilities', { params })
-          const data = {
-            ...state.info,
-            hypervisors: response.data.data[0].hypervisors,
-            brands: response.data.data[0].brands,
-          }
-          await commit('SET_INFO', data)
+          const data = (response.data.data && response.data.data[0]) || {}
+          await commit('SET_CAPABILITY', data)
           resolve(response)
         } catch (error) {
           reject(error)
