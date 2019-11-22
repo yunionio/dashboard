@@ -1,10 +1,11 @@
 import * as R from 'ramda'
 import BrandIcon from '@/sections/BrandIcon'
 
-export const getProjectTableColumn = ({ field = 'tenant', title = '项目', projectsItem = 'tenant' } = {}) => {
+export const getProjectTableColumn = ({ field = 'tenant', title = '项目', projectsItem = 'tenant', sortable = true } = {}) => {
   return {
     field,
     title,
+    sortable,
     slots: {
       default: ({ row }, h) => {
         const ret = []
@@ -70,10 +71,11 @@ export const getBrandTableColumn = ({ field = 'brand', title = '平台' } = {}) 
   }
 }
 
-export const getStatusTableColumn = ({ field = 'status', title = '状态', statusModule } = {}) => {
+export const getStatusTableColumn = ({ field = 'status', title = '状态', statusModule, sortable = true } = {}) => {
   return {
     field,
     title,
+    sortable,
     slots: {
       default: ({ row }, h) => {
         if (!statusModule) return 'status module undefined'
@@ -110,12 +112,21 @@ export const getPublicTableColumn = ({ field = 'share_mode', title = '共享模�
   }
 }
 
-export const getNameDescriptionTableColumn = ({ slotCallback, vm, width, addLock, hideField, showDesc = true } = {}) => {
+export const getNameDescriptionTableColumn = ({
+  slotCallback,
+  vm,
+  width,
+  addLock,
+  hideField,
+  showDesc = true,
+  sortable = true,
+} = {}) => {
   return {
     width: width || 'auto',
     minWidth: 100,
     field: 'name',
     title: '名称',
+    sortable,
     slots: {
       default: ({ row }, h) => {
         let lockSlot = null
@@ -136,10 +147,11 @@ export const getNameDescriptionTableColumn = ({ slotCallback, vm, width, addLock
   }
 }
 
-export const getCopyWithContentTableColumn = ({ field = 'name', title = '名称' } = {}) => {
+export const getCopyWithContentTableColumn = ({ field = 'name', title = '名称', sortable } = {}) => {
   return {
     field,
     title,
+    sortable,
     slots: {
       default: ({ row }, h) => {
         if (!row[field]) return '-'
