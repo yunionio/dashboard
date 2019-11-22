@@ -519,6 +519,55 @@ export default {
                       return ret
                     },
                   },
+                  {
+                    label: '设置GPU卡',
+                    action: () => {
+                      this.createDialog('VmAttachGpuDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      if (!this.isAdminMode && findPlatform(obj.hypervisor) !== SERVER_TYPE.idc) {
+                        ret.tooltip = '仅本地IDC支持此操作'
+                        return ret
+                      }
+                      ret.validate = cloudEnabled('acttachGpu', obj)
+                      ret.tooltip = cloudUnabledTip('acttachGpu', obj)
+                      return ret
+                    },
+                  },
+                  {
+                    label: '设置磁盘速度',
+                    action: () => {
+                      this.createDialog('VmSetSpeedDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
+                        ret.tooltip = '只有OneCloud主机支持此操作'
+                        return ret
+                      }
+                      if (obj.status !== 'running') {
+                        ret.tooltip = '仅在运行中状态下支持此操作'
+                        return ret
+                      }
+                      ret.validate = true
+                      return ret
+                    },
+                  },
                 ],
               },
               {
