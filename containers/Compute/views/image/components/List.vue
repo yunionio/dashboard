@@ -61,11 +61,11 @@ export default {
           slots: {
             default: ({ row }) => {
               if (!row.properties) return
-              let name = !row.properties.os_distribution ? row.properties.os_type : decodeURI(row.properties.os_distribution || '')
+              let name = row.properties.os_distribution ? decodeURI(row.properties.os_distribution) : row.properties.os_type || ''
               if (name.includes('Windows') || name.includes('windows')) {
                 name = 'Windows'
               }
-              const tooltip = row.properties.os_version ? `${name} ${row.properties.os_version}` : name
+              const tooltip = (row.properties.os_version ? `${name} ${row.properties.os_version}` : name) || '未知'
               return [
                 <SystemIcon tooltip={ tooltip } name={ name } />,
               ]
