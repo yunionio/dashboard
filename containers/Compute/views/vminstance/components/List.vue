@@ -123,7 +123,16 @@ export default {
         ],
       },
       columns: [
-        getNameDescriptionTableColumn({ addLock: true, vm: this }),
+        getNameDescriptionTableColumn({
+          vm: this,
+          hideField: true,
+          addLock: true,
+          slotCallback: row => {
+            return (
+              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'VmInstanceSidePage') }>{ row.name }</side-page-trigger>
+            )
+          },
+        }),
         getIpsTableColumn({ field: 'ip', title: 'IP' }),
         {
           field: 'instance_type',
@@ -197,7 +206,7 @@ export default {
         },
         getStatusTableColumn({ statusModule: 'server' }),
         getCopyWithContentTableColumn({ field: 'vpc', title: 'VPC' }),
-        getCopyWithContentTableColumn({ field: 'host', title: '宿主机' }),
+        getCopyWithContentTableColumn({ field: 'host', title: '宿主机', sortable: true }),
         getProjectTableColumn(),
         getBrandTableColumn(),
         getRegionTableColumn(),
@@ -964,6 +973,7 @@ export default {
   },
   computed: mapGetters(['isAdminMode', 'isDomainMode']),
   created () {
+    this.initSidePageTab('vm-instance-detail')
     this.webconsoleManager = new Manager('webconsole', 'v1')
     this.list.fetchData()
   },

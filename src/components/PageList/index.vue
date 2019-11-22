@@ -4,7 +4,7 @@
       <div class="mb-2 d-flex">
         <refresh-button :loading="loading" @refresh="refresh" />
         <template v-if="groupActions">
-          <actions :options="groupActions" class="ml-2" @action-click="handleClearSelected" />
+          <actions :options="groupActions" @clear-selected="handleClearSelected" button-type="default" group />
         </template>
       </div>
       <div class="d-flex">
@@ -34,6 +34,8 @@
       :columns="tableColumns"
       :pager-config="tablePage"
       :customs.sync="customs"
+      :sort-method="() => {}"
+      @sort-change="handleSortChange"
       @current-page-change="handleCurrentPageChange"
       @page-size-change="handlePageSizeChange"
       @select-change="handleSelectChange"
@@ -112,7 +114,7 @@ export default {
           title: '操作',
           slots: {
             default: ({ row }, h) => {
-              return [<Actions options={ this.singleActions } row={ row } buttonMode={ false } />]
+              return [<Actions options={ this.singleActions } row={ row } button-type='link' button-size='small' />]
             },
           },
         }])
@@ -184,6 +186,9 @@ export default {
         list: this.list,
         customs: this.customs,
       })
+    },
+    handleSortChange ({ property, order }) {
+      this.list.doSort(property, order)
     },
   },
 }

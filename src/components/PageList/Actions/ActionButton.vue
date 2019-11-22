@@ -1,68 +1,75 @@
 <script>
+import * as R from 'ramda'
 import { hasPermission } from '@/utils/auth'
 
 export default {
   name: 'PageListActionButton',
   props: {
-    option: {
+    item: {
       type: Object,
-    },
-    buttonMode: {
-      type: Boolean,
     },
     row: {
       type: Object,
     },
+    buttonType: {
+      type: String,
+      default: 'link',
+    },
+    buttonSize: {
+      type: String,
+      default: 'default',
+    },
+    // 是否作为 popover 的 trigger 渲染
+    popoverTrigger: Boolean,
   },
   computed: {
     label () {
-      return this.option.label
+      return this.item.label
+    },
+    meta () {
+      const { validate = true, ...rest } = R.is(Function, this.item.meta) ? this.item.meta(this.row) : {}
+      return {
+        validate,
+        ...rest,
+      }
     },
     disabled () {
-      let isValidate = this.option.meta.validate
+      let isValidate = this.meta.validate
       let isPermission = true
-      if (this.option.permission) {
-        isPermission = hasPermission({ key: this.option.permission, resourceData: this.row })
+      if (this.item.permission) {
+        isPermission = hasPermission({ key: this.item.permission, resourceData: this.row })
       }
       return !isValidate || !isPermission
     },
     tooltip () {
-      return this.option.meta.tooltip
-    },
-    buttonType () {
-      return this.option.meta.buttonType
+      return this.meta.tooltip
     },
   },
   methods: {
     handleClick (e) {
       e.stopPropagation()
-      e.preventDefault()
       if (this.disabled) return
-      this.$emit('hidden-dropdown')
-      this.option.action(this.row)
-      this.$emit('action-click')
+      this.$emit('hidden-popover', e)
+      this.item.action(this.row)
+      this.$emit('clear-selected')
+    },
+    handlePopoverClick (e) {
+      this.$emit('click', e)
     },
   },
   render () {
-    let v = []
+    const v = []
     let action
-    if (this.buttonMode) {
-      action = <a-button class='list-action' type={ this.buttonType } disabled={ this.disabled } onClick={ this.handleClick }>{ this.label }</a-button>
+    if (this.popoverTrigger) {
+      action = <a-button size={ this.buttonSize } type={ this.meta.buttonType || this.buttonType } disabled={ this.disabled } onClick={ this.handlePopoverClick }>{ this.label }<a-icon type='down' /></a-button>
     } else {
-      action = <a class={{ disabled: this.disabled, 'list-action': true }} onClick={ this.handleClick }>{ this.label }</a>
+      action = <a-button size={ this.buttonSize } type={ this.meta.buttonType || this.buttonType } disabled={ this.disabled } onClick={ this.handleClick }>{ this.label }</a-button>
     }
     if (this.tooltip) {
-      action = <a-tooltip title={ this.tooltip } placement='left'>{ action }</a-tooltip>
+      action = <a-tooltip title={ this.tooltip } placement='left' destroyTooltipOnHide>{ action }</a-tooltip>
     }
     v.push(action)
     return v
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.disabled {
-  color: rgba(0, 0, 0, 0.25);
-  cursor: not-allowed;
-}
-</style>
