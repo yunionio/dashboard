@@ -292,6 +292,48 @@
       "set_privilege": "设置权限中",
       "revoke_privilege": "解除权限中",
       "reset_passwd_failed": "重置密码失败"
+    },
+    "rdsDatabase": {
+      "init": "初始化中",
+      "unknown": "未知状态",
+      "creating": "创建中",
+      "create_failed": "创建失败",
+      "running": "正常",
+      "deleting": "删除中",
+      "delete_failed": "删除失败"
+    },
+    "rdsBackup": {
+      "init": "初始化中",
+      "ready": "正常",
+      "creating": "创建中",
+      "deleting": "删除中",
+      "failed": "异常",
+      "unknown": "未知",
+      "create_failed": "创建失败",
+      "delete_failed": "删除失败"
+    },
+    "rds": {
+      "failed": "操作失败",
+      "init": "初始化中",
+      "deploying": "部署中",
+      "running": "运行中",
+      "rebooting": "重启中",
+      "migrating": "迁移中",
+      "backing_up": "备份中",
+      "restoring": "备份恢复中",
+      "importing": "数据导入中",
+      "cloning": "克隆中",
+      "deleting": "删除中",
+      "unknown": "未知状态",
+      "change_config": "调整配置中",
+      "change_config_failed": "调整配置失败",
+      "renewing": "续费中",
+      "renew_failed": "续费失败",
+      "sync_status": "同步状态",
+      "reboot_failed": "重启失败",
+      "create_failed": "创建失败",
+      "restore_failed": "恢复失败",
+      "delete_failed": "删除失败"
     }
   },
   "skuCategoryOptions": {
