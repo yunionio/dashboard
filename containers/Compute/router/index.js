@@ -6,6 +6,7 @@ import Image from '@Compute/views/image'
 import VMInstanceCreate from '@Compute/views/vminstance/create/index'
 import Network from '@Compute/views/network'
 import NetworkCreate from '@Compute/views/network/Create'
+import EditAttributes from '@Compute/views/network/EditAttributes'
 import Host from '@Compute/views/host'
 import Physicalmachine from '@Compute/views/physicalmachine'
 import ServerRecovery from '@Compute/views/server-recovery'
@@ -150,6 +151,11 @@ export default {
               name: 'NetworkCreate',
               path: 'create',
               component: NetworkCreate,
+            },
+            {
+              name: 'EditAttributes',
+              path: 'edit',
+              component: EditAttributes,
             },
           ],
         },
