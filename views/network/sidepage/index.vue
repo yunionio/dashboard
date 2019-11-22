@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="套餐"
+    title="IP子网"
     icon="onecloud"
     :res-name="data.name"
     :actions="params.actions"
@@ -9,29 +9,44 @@
     :tabs="detailTabs"
     @tab-change="handleTabChange">
     <template v-slot:actions>
-      <actions :options="params.singleActions" :row="data" button-type="link" button-size="small" />
+      <actions :options="params.singleActions" :row="data" :buttonMode="false" />
     </template>
     <component :is="params.windowData.currentTab" :res-id="params.resId" :data="data" :list="params.list" :getParams="getParams" />
   </base-side-page>
 </template>
 
 <script>
-import DiskDetail from './Detail'
+import NetworkDetail from './Detail'
+import HostMachineip from './HostMachineIp'
+import HostIp from './HostIp'
+import ReservedIp from './ReservedIp'
+import LbIp from './LbIp'
+import FlexIp from './FlexIp'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
 
 export default {
-  name: 'DiskSidePage',
+  name: 'NetworkSidePage',
   components: {
-    DiskDetail,
+    NetworkDetail,
+    HostMachineip,
+    HostIp,
+    ReservedIp,
+    LbIp,
+    FlexIp,
     Actions,
   },
   mixins: [SidePageMixin, WindowsMixin],
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'disk-detail' },
+        { label: '详情', key: 'network-detail' },
+        { label: '宿主机IP', key: 'host-machineip' },
+        { label: '主机IP', key: 'host-ip' },
+        { label: '预留IP', key: 'reserved-ip' },
+        { label: '负载均衡IP', key: 'lb-ip' },
+        { label: '弹性网卡IP', key: 'flex-ip' },
         { label: '操作日志', key: 'event-drawer' },
       ],
     }

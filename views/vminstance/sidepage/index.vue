@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="套餐"
+    title="虚拟机"
     icon="onecloud"
     :res-name="data.name"
     :actions="params.actions"
@@ -11,35 +11,37 @@
     <template v-slot:actions>
       <actions :options="params.singleActions" :row="data" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :res-id="params.resId" :data="data" :list="params.list" :getParams="getParams" />
+    <component
+      :is="params.windowData.currentTab"
+      :data="data"
+      :list="params.list"
+      :res-id="params.resId"
+      @tab-change="handleTabChange" />
   </base-side-page>
 </template>
 
 <script>
-import DiskDetail from './Detail'
+import VmInstanceDetail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
 
 export default {
-  name: 'DiskSidePage',
+  name: 'VmInstanceSidePage',
   components: {
-    DiskDetail,
     Actions,
+    VmInstanceDetail,
   },
   mixins: [SidePageMixin, WindowsMixin],
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'disk-detail' },
+        { label: '详情', key: 'vm-instance-detail' },
         { label: '操作日志', key: 'event-drawer' },
       ],
     }
   },
   computed: {
-    getParams () {
-      return null
-    },
     data () {
       return this.params.list.data[this.params.resId].data
     },

@@ -123,7 +123,16 @@ export default {
         ],
       },
       columns: [
-        getNameDescriptionTableColumn({ addLock: true, vm: this }),
+        getNameDescriptionTableColumn({
+          vm: this,
+          hideField: true,
+          addLock: true,
+          slotCallback: row => {
+            return (
+              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'VmInstanceSidePage') }>{ row.name }</side-page-trigger>
+            )
+          },
+        }),
         getIpsTableColumn({ field: 'ip', title: 'IP' }),
         {
           field: 'instance_type',
@@ -197,7 +206,7 @@ export default {
         },
         getStatusTableColumn({ statusModule: 'server' }),
         getCopyWithContentTableColumn({ field: 'vpc', title: 'VPC' }),
-        getCopyWithContentTableColumn({ field: 'host', title: '宿主机' }),
+        getCopyWithContentTableColumn({ field: 'host', title: '宿主机', sortable: true }),
         getProjectTableColumn(),
         getBrandTableColumn(),
         getRegionTableColumn(),
@@ -513,6 +522,55 @@ export default {
                       }
                       if (obj.billing_type !== 'prepaid') {
                         ret.tooltip = '仅包年包月的资源支持此操作'
+                        return ret
+                      }
+                      ret.validate = true
+                      return ret
+                    },
+                  },
+                  {
+                    label: '设置GPU卡',
+                    action: () => {
+                      this.createDialog('VmAttachGpuDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      if (!this.isAdminMode && findPlatform(obj.hypervisor) !== SERVER_TYPE.idc) {
+                        ret.tooltip = '仅本地IDC支持此操作'
+                        return ret
+                      }
+                      ret.validate = cloudEnabled('acttachGpu', obj)
+                      ret.tooltip = cloudUnabledTip('acttachGpu', obj)
+                      return ret
+                    },
+                  },
+                  {
+                    label: '设置磁盘速度',
+                    action: () => {
+                      this.createDialog('VmSetSpeedDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
+                        ret.tooltip = '只有OneCloud主机支持此操作'
+                        return ret
+                      }
+                      if (obj.status !== 'running') {
+                        ret.tooltip = '仅在运行中状态下支持此操作'
                         return ret
                       }
                       ret.validate = true
@@ -915,6 +973,7 @@ export default {
   },
   computed: mapGetters(['isAdminMode', 'isDomainMode']),
   created () {
+    this.initSidePageTab('vm-instance-detail')
     this.webconsoleManager = new Manager('webconsole', 'v1')
     this.list.fetchData()
   },
