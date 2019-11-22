@@ -2,6 +2,11 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{action}}</div>
     <div slot="body">
+      <a-alert class="mb-2" type="warning">
+        <div slot="message">
+          开关打开后可绑定一个或多个GPU卡，开关关闭后则取消绑定所有GPU卡
+        </div>
+      </a-alert>
       <dialog-selected-tips :count="params.data.length" :action="action" />
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
