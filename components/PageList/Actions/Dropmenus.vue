@@ -1,48 +1,52 @@
 <template>
-  <a-dropdown :trigger="['click']" v-model="visible" @visibleChange="handleVisibleChange">
-    <template v-if="buttonMode">
-      <a-button>{{ label }}<a-icon type="down" /></a-button>
-    </template>
-    <template v-else>
-      <a class="menu">{{ label }}<a-icon type="down" class="ml-1" /></a>
-    </template>
-    <a-menu slot="overlay">
+  <a-popover
+    trigger="click"
+    v-model="visible"
+    placement="bottomRight"
+    destroyTooltipOnHide
+    overlayClassName="page-list-actions-dropmenus-wrap"
+    @visibleChange="handleVisibleChange">
+    <action-button :class="{ 'ml-2': group }" :button-size="buttonSize" :row="row" :item="item" :button-type="buttonType" popover-trigger />
+    <div slot="content">
       <template v-if="options.length > 0">
-        <template v-if="!submenusMode">
-          <a-menu-item
-            class="menu-item"
-            v-for="item of options"
-            :key="item.label"
-            :disabled="!item.meta.validate">
-            <action-button :option="item" @hidden-dropdown="hiddenDropdown" :button-mode="false" />
-          </a-menu-item>
+        <template v-if="!isSubmenus">
+          <template v-for="item of options">
+            <div :key="item.label" class="menu-item">
+              <action-button button-size="small" :item="item" :row="row" @hidden-popover="hiddenPopover" />
+            </div>
+          </template>
         </template>
         <template v-else>
-          <a-menu-item
-            class="submenu-item"
-            v-for="item of options"
-            :key="item.label">
-            <a-row :gutter="20">
-              <a-col :span="6">
-                <div class="submenu-item-label">{{ item.label }}</div>
-              </a-col>
-              <a-col :span="18">
+          <div class="pl-3 pr-3">
+            <template v-for="item of options">
+              <div class="submenu-item" :key="item.label">
                 <a-row :gutter="20">
-                  <a-col
-                    :span="12"
-                    v-for="submenu of item.submenus"
-                    :key="submenu.label"
-                    class="submenu-item-action-wrap">
-                    <action-button :option="submenu" @hidden-dropdown="hiddenDropdown" :button-mode="buttonMode" />
+                  <a-col :span="6">
+                    <div class="submenu-item-label">{{ item.label }}</div>
+                  </a-col>
+                  <a-col :span="18">
+                    <a-row :gutter="20">
+                      <a-col
+                        :span="12"
+                        v-for="submenu of item.submenus"
+                        :key="submenu.label"
+                        class="submenu-item-action-wrap">
+                        <action-button
+                          :item="submenu"
+                          :row="row"
+                          button-size="small"
+                          @hidden-popover="hiddenPopover" />
+                      </a-col>
+                    </a-row>
                   </a-col>
                 </a-row>
-              </a-col>
-            </a-row>
-          </a-menu-item>
+              </div>
+            </template>
+          </div>
         </template>
       </template>
-    </a-menu>
-  </a-dropdown>
+    </div>
+  </a-popover>
 </template>
 
 <script>
@@ -55,91 +59,64 @@ export default {
     ActionButton,
   },
   props: {
-    label: {
-      type: String,
-      required: true,
-    },
-    actions: {
-      type: Function,
+    item: {
+      type: Object,
       required: true,
     },
     row: {
       type: Object,
     },
-    buttonMode: {
+    buttonType: {
+      type: String,
+    },
+    buttonSize: {
+      type: String,
+    },
+    group: {
       type: Boolean,
     },
   },
   data () {
     return {
       visible: false,
-      submenusMode: false,
       options: [],
+      // 是否为组模式
+      isSubmenus: false,
     }
   },
   methods: {
-    handleVisibleChange (val) {
-      if (val) {
-        this.options = this.getOptions()
-      }
-    },
-    getOptions () {
-      if (!R.is(Function, this.actions)) {
+    genOptions () {
+      if (!R.is(Function, this.item.actions)) {
         throw new Error('actions must be a function')
       }
-      let options = this.actions(this.row)
+      const options = this.item.actions(this.row)
       if (options.every(item => item.hasOwnProperty('submenus'))) {
-        options = options.map(item => {
-          const { submenus, ...rest } = item
-          return {
-            ...rest,
-            submenus: submenus.map(submenu => this.getSubmenu(submenu)),
-          }
-        })
-        this.submenusMode = true
-      } else {
-        options = options.map(item => {
-          return {
-            ...item,
-            meta: this.getMeta(item),
-          }
-        })
-        this.submenusMode = false
+        this.isSubmenus = true
       }
-      return options
+      this.options = options
     },
-    handleClick (item) {
-      if (!item.meta.validate) return
-      item.action()
+    handleVisibleChange (visible) {
+      if (visible) {
+        this.genOptions()
+      }
+    },
+    hiddenPopover () {
       this.visible = false
-    },
-    hiddenDropdown () {
-      this.visible = false
-    },
-    getMeta (item) {
-      const { validate = true, ...rest } = R.is(Function, item.meta) ? item.meta() : {}
-      return {
-        validate,
-        ...rest,
-      }
-    },
-    getSubmenu (submenu) {
-      const { meta, ...rest } = submenu
-      return {
-        ...rest,
-        meta: this.getMeta(submenu),
-      }
     },
   },
 }
 </script>
 
-<style lang="scss" scoped>
-.menu {
-  & + .menu {
-    margin-left: 5px;
+<style lang="scss">
+.page-list-actions-dropmenus-wrap {
+  .ant-popover-inner-content {
+    padding-left: 5px !important;
+    padding-right: 5px !important;
   }
 }
+</style>
+
+<style lang="scss" scoped>
 .submenu-item {
   cursor: default;
   width: 320px;
@@ -154,20 +131,41 @@ export default {
 .submenu-item-label {
   font-size: 12px;
   color: #3c73b9;
-  padding-top: 6px;
+  padding-top: 8px;
 }
 .submenu-item-action-wrap {
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
   color: rgba(0, 0, 0, 0.65);
-  a {
+  button {
     color: rgba(0, 0, 0, 0.65);
     &:hover {
       color: #3c73b9;
     }
-    &.disabled {
+    &:disabled {
       color: rgba(0, 0, 0, 0.25);
       cursor: not-allowed;
+      &:hover {
+        color: rgba(0, 0, 0, 0.25);
+      }
+    }
+  }
+}
+.menu-item {
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+  color: rgba(0, 0, 0, 0.65);
+  button {
+    color: rgba(0, 0, 0, 0.65);
+    &:hover {
+      color: #3c73b9;
+    }
+    &:disabled {
+      color: rgba(0, 0, 0, 0.25);
+      cursor: not-allowed;
+      &:hover {
+        color: rgba(0, 0, 0, 0.25);
+      }
     }
   }
 }

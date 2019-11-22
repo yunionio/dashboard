@@ -136,10 +136,17 @@ export const CITYS = {
   'Kanchipuram': '印度 甘吉布勒姆',
   'Huhehaote': '呼和浩特',
 }
+
 export const CLOUD_PROVIDERS_MAP = {
   'Aliyun': '阿里云',
   'Aws': 'AWS',
   'Huawei': '华为云',
   'Qcloud': '腾讯云',
   'Azure': '微软云',
+}
+
+export const PROVIDER_FILTER_CN = {
+  idc: '本地IDC',
+  private: '私有云',
+  public: '公有云',
 }

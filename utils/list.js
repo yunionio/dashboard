@@ -152,6 +152,8 @@ class CreateList {
     this.resource = resource
     this.ctx = ctx
     this.getParams = getParams
+    // 排序参数
+    this.sortParams = null
     if (R.is(String, resource)) {
       this.manager = new Manager(resource, apiVersion)
     }
@@ -293,6 +295,23 @@ class CreateList {
     this.fetchData(this.offset, this.getLimit())
   }
   /**
+   * @description 更新排序
+   * @param {String} property 排序的key
+   * @param {String} order 排序方式
+   */
+  doSort (property, order) {
+    if (!order) {
+      this.sortParams = null
+      this.refresh()
+      return
+    }
+    this.sortParams = {
+      order_by: property,
+      order,
+    }
+    this.refresh()
+  }
+  /**
    * @description 获取api资源相关的参数
    * @memberof CreateList
    */
@@ -323,6 +342,12 @@ class CreateList {
     params = {
       ...params,
       ...this.genFilterParams(params),
+    }
+    if (this.sortParams) {
+      params = {
+        ...params,
+        ...this.sortParams,
+      }
     }
     return params
   }
