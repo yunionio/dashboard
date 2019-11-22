@@ -519,6 +519,29 @@ export default {
                       return ret
                     },
                   },
+                  {
+                    label: '设置GPU卡',
+                    action: () => {
+                      this.createDialog('VmAttachGpuDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      if (!this.isAdminMode && findPlatform(obj.hypervisor) !== SERVER_TYPE.idc) {
+                        ret.tooltip = '仅本地IDC支持此操作'
+                        return ret
+                      }
+                      ret.validate = cloudEnabled('acttachGpu', obj)
+                      ret.tooltip = cloudUnabledTip('acttachGpu', obj)
+                      return ret
+                    },
+                  },
                 ],
               },
               {
