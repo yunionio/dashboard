@@ -542,6 +542,32 @@ export default {
                       return ret
                     },
                   },
+                  {
+                    label: '设置磁盘速度',
+                    action: () => {
+                      this.createDialog('VmSetSpeedDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
+                        ret.tooltip = '只有OneCloud主机支持此操作'
+                        return ret
+                      }
+                      if (obj.status !== 'running') {
+                        ret.tooltip = '仅在运行中状态下支持此操作'
+                        return ret
+                      }
+                      ret.validate = true
+                      return ret
+                    },
+                  },
                 ],
               },
               {
