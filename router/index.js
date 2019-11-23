@@ -7,6 +7,7 @@ import VMInstanceCreate from '@Compute/views/vminstance/create/index'
 import Network from '@Compute/views/network'
 import NetworkCreate from '@Compute/views/network/Create'
 import EditAttributes from '@Compute/views/network/EditAttributes'
+import Eip from '@Compute/views/eip'
 import Host from '@Compute/views/host'
 import Physicalmachine from '@Compute/views/physicalmachine'
 import ServerRecovery from '@Compute/views/server-recovery'
@@ -175,6 +176,21 @@ export default {
               name: 'EditAttributes',
               path: 'edit',
               component: EditAttributes,
+            },
+          ],
+        },
+        {
+          path: '/eip',
+          meta: {
+            label: '弹性公网IP',
+            permission: 'eips_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Eip',
+              path: '',
+              component: Eip,
             },
           ],
         },
