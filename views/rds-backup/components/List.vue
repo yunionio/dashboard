@@ -16,7 +16,7 @@ const BACKUP_TYPE = {
   manual: '手动',
 }
 export default {
-  name: 'RDSBAckupList',
+  name: 'RDSBackupList',
   mixins: [WindowsMixin],
   props: {
     params: {

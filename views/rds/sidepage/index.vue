@@ -1,8 +1,8 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="实例详情"
-    icon="onecloud"
+    title="RDS"
+    icon="res-rds"
     :res-name="data.name"
     :actions="params.actions"
     :tabs="detailTabs"
