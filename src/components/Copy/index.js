@@ -10,7 +10,8 @@ export default {
   },
   data () {
     return {
-      copied: false,
+      visible: false,
+      title: '',
     }
   },
   methods: {
@@ -18,18 +19,18 @@ export default {
       clearTimeout(this.timer)
       this.timer = null
     },
-    copySuccess () {
-      this.clearTimer()
-      this.copied = true
-      this.timer = setTimeout(() => {
-        this.copied = false
-      }, 800)
-    },
-    doCopy (e) {
+    async doCopy (e) {
       e.stopPropagation()
-      this.$copyText(this.message).then(() => {
-        this.copySuccess()
-      })
+      try {
+        this.title = '已复制'
+        await this.$copyText(this.message)
+      } catch (error) {
+        this.title = '复制失败'
+      }
+      this.clearTimer()
+      this.timer = setTimeout(() => {
+        this.visible = false
+      }, 800)
     },
   },
   destroyed () {
@@ -37,12 +38,18 @@ export default {
   },
   render (h) {
     return (
-      <div class="copy-icon mini-text" onClick={ this.doCopy }>
-        <a-icon type='copy' theme='twoTone' twoToneColor='#1890ff' />
-        <transition name="copy_icon-slide">
-          { this.copied ? <span class='copy-tips'>已复制</span> : null }
-        </transition>
-      </div>
+      <a-tooltip
+        v-model={ this.visible }
+        title={ this.title }
+        trigger='click'
+        destroyTooltipOnHide>
+        <a-icon
+          class='copy-icon'
+          type='copy'
+          theme='twoTone'
+          twoToneColor='#1890ff'
+          onClick={ this.doCopy } />
+      </a-tooltip>
     )
   },
 }
