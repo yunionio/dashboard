@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     title="区域"
-    icon="onecloud"
+    icon="res-region"
     :res-name="data.name"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
