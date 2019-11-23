@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     title="调度策略"
-    icon="onecloud"
+    icon="res-schedpolicy"
     :res-name="data.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"
