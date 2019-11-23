@@ -34,8 +34,5 @@ export default {
       return this.params.list.data[this.params.resId].data
     },
   },
-  created () {
-    console.log(this.params.windowData.currentTab)
-  },
 }
 </script>

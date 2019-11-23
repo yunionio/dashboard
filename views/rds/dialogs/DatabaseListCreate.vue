@@ -69,7 +69,7 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: '请输入名称' },
-              { validator: validateForm('commonName') },
+              { validator: validateForm('resourceName') },
             ],
           },
         ],
