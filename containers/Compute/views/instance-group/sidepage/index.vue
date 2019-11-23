@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     title="主机组"
-    icon="onecloud"
+    icon="res-instancegroup"
     :res-name="data.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"
