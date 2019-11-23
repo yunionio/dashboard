@@ -1,8 +1,8 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="套餐"
-    icon="onecloud"
+    title="硬盘"
+    icon="res-disk"
     :res-name="data.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"

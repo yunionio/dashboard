@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     title="安全组"
-    icon="onecloud"
+    icon="res-secgroup"
     :res-name="data.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"

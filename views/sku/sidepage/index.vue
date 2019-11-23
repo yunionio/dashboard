@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     title="套餐"
-    icon="onecloud"
+    icon="res-sku"
     :res-name="data.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"
