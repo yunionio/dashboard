@@ -254,9 +254,9 @@ export default {
      */
     handleInput (e) {
       e.stopPropagation()
+      let value = (e.target.value && e.target.value.split(this.keySeparator)) || []
+      value = value[1] && value[1].split(this.valueSeparator)
       if (this.isDropdown) {
-        let value = (e.target.value && e.target.value.split(this.keySeparator)) || []
-        value = value[1] && value[1].split(this.valueSeparator)
         if (!value) {
           this.selectKey = null
           return
@@ -266,6 +266,8 @@ export default {
           if (op) return op.key
         }).filter(item => !!item)
         if (!this.config.multiple && this.selectValue.length) this.selectValue = this.selectValue[0]
+      } else {
+        this.selectValue = value
       }
     },
   },
