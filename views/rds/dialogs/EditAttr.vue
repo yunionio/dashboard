@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">修改属性</div>
+    <div slot="header">{{params.title}}</div>
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" :action="params.title" />
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
@@ -46,7 +46,7 @@ export default {
     decorators () {
       const { data } = this.params
       let initialValueDisableDelete = true
-      if (data && data.length === 0) {
+      if (data && data.length === 1) {
         initialValueDisableDelete = data[0]['disable_delete']
       }
       return {
@@ -63,16 +63,13 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        this.loading = false
         const ids = this.params.data.map(({ id }) => id)
         await this.params.list.batchUpdate(ids, {
           disable_delete: this.form.fc.getFieldValue('disable_delete'),
         })
         this.cancelDialog()
-        this.$message.success('操作成功')
-      } catch (error) {
+      } finally {
         this.loading = false
-        throw error
       }
     },
   },

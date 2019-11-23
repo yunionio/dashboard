@@ -1,12 +1,12 @@
 <template>
     <base-dialog @cancel="cancelDialog" :width="900">
-        <div slot="header">创建账号</div>
+        <div slot="header">{{params.title}}</div>
         <a-form slot="body" :form="form.fc" class="mt-3">
             <a-form-item  v-bind="formItemLayout" label="数据库名称">
                 <a-input placeholder="字母开头，数字和字母大小写组合，长度为2-128个字符，不含“.”,“_”,“@”" v-decorator="decorators.name" />
             </a-form-item>
             <a-form-item  v-bind="formItemLayout" label="字符集">
-               <a-select allowClear showSearch placeholder="请选择字符集">
+               <a-select allowClear showSearch placeholder="请选择字符集" v-decorator="decorators.character_set">
                   <a-select-option
                     v-for="item in CHARACTER_SET"
                     :key="item"
@@ -14,7 +14,7 @@
                </a-select>
             </a-form-item>
             <a-form-item v-bind="formItemLayout" label="数据库">
-              <database-privileges />
+              <database-privileges :rdsItem="params.rdsItem" />
             </a-form-item>
         </a-form>
          <div slot="footer">
@@ -30,7 +30,7 @@ import DatabasePrivileges from '../components/DatabasePrivileges'
 import { ACCOUNT_PRIVILEGES } from '../constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import validateForm, { passwordValidator } from '@/utils/validate'
+import validateForm from '@/utils/validate'
 
 const CHARACTER_SET = ['utf8', 'gbk', 'latin1', 'utf8mb4', 'euckr', 'armscii8', 'ascii', 'big5', 'binary', 'cp1250', 'cp1251', 'cp1256', 'cp1257', 'cp850', 'cp852', 'cp866', 'cp932', 'dec8', 'eucjpms', 'gb2312', 'geostd8', 'greek', 'hebrew', 'hp8', 'keybcs2', 'koi8r', 'koi8u', 'latin2', 'latin5', 'latin7', 'macce', 'macroman', 'sjis', 'swe7', 'tis620', 'ucs2', 'ujis', 'utf16', 'utf16le', 'utf32']
 export default {
@@ -69,42 +69,20 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: '请输入名称' },
-              { validator: validateForm('serverName') },
+              { validator: validateForm('comName') },
             ],
           },
         ],
-        account_privilege: [
-          'account_privilege',
+        character_set: [
+          'character_set',
           {
-            initialValue: 'read',
-            rules: [{ required: true, message: '请输入名称' }],
-          },
-        ],
-        password: [
-          'password',
-          {
-            validateFirst: true,
-            rules: [
-              { required: true, message: '请输入密码' },
-              { validator: passwordValidator },
-            ],
-          },
-        ],
-        checkPassword: [
-          'checkPassword',
-          {
-            initialValue: initialValues.ip_list,
-            rules: [
-              { required: true, message: '请再次确认密码' },
-              { validator: this.rulesCheckPassword },
-            ],
+            initialValue: 'utf8',
+            rules: [{ required: true, message: '请选择字符集' }],
           },
         ],
       }
       return decorators
     },
-  },
-  created () {
   },
   methods: {
     validateForm () {
@@ -124,9 +102,8 @@ export default {
         const values = await this.validateForm()
         const params = {
           ...values,
-          dbinstance: this.params.redisItem.id,
+          dbinstance: this.params.rdsItem.id,
         }
-        delete params.checkPassword
         await this.params.list.onManager('create', {
           managerArgs: {
             data: params,

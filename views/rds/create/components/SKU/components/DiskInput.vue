@@ -5,7 +5,7 @@
           <span v-if="selectedSku">存储范围在：{{numberProps.min}}GB ~ {{numberProps.max}}GB之间</span>
           <span v-else>请选择实例规格</span>
         </template>
-      <a-input-number v-bind="numberProps" v-decorator="['disk_size_gb', { initialValue: numberProps.min }]" /> GB
+      <a-input-number  v-bind="numberProps" @blur="handleBlurDiskSize" v-decorator="['disk_size_gb', { initialValue: numberProps.min }]" /> GB
     </a-tooltip>
   </a-form-item>
 </template>
@@ -17,6 +17,9 @@ export default {
     selectedSku: {
       type: Object,
     },
+    min: {
+      type: Number,
+    },
   },
   computed: {
     numberProps () {
@@ -25,15 +28,26 @@ export default {
           disabled: true,
         }
       }
-      let min = this.selectedSku['min_disk_size_gb']
+      let min = this.min > 0 ? this.min : this.selectedSku['min_disk_size_gb']
       let max = this.selectedSku['max_disk_size_gb']
       let step = this.selectedSku['disk_size_step']
       return {
         min,
         max,
         step,
-        // formatter: (v) => `${v}%`,
-        // parser: (v) => v.replace('%', ''),
+      }
+    },
+  },
+  methods: {
+    handleBlurDiskSize (e, step = this.numberProps.step) {
+      const val = parseFloat(e.target.value)
+      if (val > 0) {
+        const num = val % step
+        if (num > 0) {
+          this.form.setFieldsValue({
+            disk_size_gb: val + (step - num),
+          })
+        }
       }
     },
   },

@@ -1,17 +1,19 @@
 <template>
-    <base-dialog @cancel="cancelDialog" :width="900">
-        <div slot="header">修改权限</div>
-        <a-form slot="body" :form="form.fc" class="mt-3">
-           {{params.data[0].dbinstanceprivileges}}
-          <dialog-selected-tips :count="params.data.length" :action="params.title" />
-          <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
-          <account-privileges :privileges="params.data[0].dbinstanceprivileges || []" />
-        </a-form>
-         <div slot="footer">
-            <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
-            <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
-         </div>
-    </base-dialog>
+  <base-dialog :width="900" @cancel="cancelDialog">
+    <div slot="header">修改权限</div>
+    <a-form :form="form.fc" class="mt-3" slot="body">
+      {{form.fc.getFieldsValue()}}
+      <dialog-selected-tips :action="params.title" :count="params.data.length" />
+      <vxe-grid :columns="params.columns.slice(0, 3)" :data="params.data" class="mb-2" />
+      <account-privileges
+        :privileges="params.data[0].dbinstanceprivileges || []"
+        :rdsItem="params.rdsItem" />
+    </a-form>
+    <div slot="footer">
+      <a-button :loading="loading" @click="handleConfirm" type="primary">{{ $t('dialog.ok') }}</a-button>
+      <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
+    </div>
+  </base-dialog>
 </template>
 
 <script>
@@ -109,13 +111,12 @@ export default {
       this.loading = true
       try {
         const values = await this.validateForm()
-        const params = {
-          ...values,
-        }
-        delete params.checkPassword
-        await this.params.list.onManager('create', {
+        await this.params.list.onManager('performAction', {
+          id: this.params.data[0].id,
+          steadyStatus: ['available'],
           managerArgs: {
-            data: params,
+            action: 'set-privileges',
+            data: values,
           },
         })
         this.loading = false

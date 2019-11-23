@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import BackupList from '../components/BackupList'
+import BackupList from './components/List'
 export default {
   name: 'RDSIndex',
   components: {

@@ -25,7 +25,7 @@
 import { CreateServerForm } from '@Compute/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-// import validateForm from '@/utils/validate'
+import validateForm from '@/utils/validate'
 
 export default {
   name: 'RDSBackupCreate',
@@ -58,6 +58,7 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: '请输入名称' },
+              { validator: validateForm('serverName') },
             ],
           },
         ],

@@ -7,7 +7,7 @@
       <a-form
         class="mt-3"
         :form="form.fc">
-        <s-k-u ref="SKU" :disableds="['engine', 'engine_version', 'zones']">
+        <s-k-u ref="SKU" :disableds="['engine', 'engine_version', 'zones']" :rdsItem="rdsItem">
           <a-radio-group disabled slot="zone" :defaultValue="Object.keys(rdsZone)[0]">
             <a-radio-button :key="key" :value="key" v-for="(value, key) in rdsZone">{{value}}</a-radio-button>
           </a-radio-group>
@@ -114,8 +114,16 @@ export default {
       return new Promise((resolve, reject) => {
         this.form.fc.validateFields((err, values) => {
           if (!err) {
-            const { sku } = values
-            values['instance_type'] = sku.instance_type
+            if (values.sku) {
+              values['instance_type'] = values.sku.name
+              delete values.sku
+            }
+            if (values.zones) {
+              values.zones.split('+').forEacch((zone, index) => {
+                values[`zone${index + 1}`] = zone
+              })
+              delete values.zones
+            }
             resolve(values)
           } else {
             reject(err)
@@ -127,16 +135,15 @@ export default {
       this.loading = true
       try {
         const values = await this.validateForm()
-        console.log(values)
         await this.params.list.onManager('performAction', {
           id: this.params.data[0].id,
+          steadyStatus: ['running'],
           managerArgs: {
             action: 'change-config',
             data: values,
           },
         })
         this.cancelDialog()
-        this.$message.success('操作成功')
       } finally {
         this.loading = false
       }

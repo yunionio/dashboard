@@ -96,7 +96,6 @@ export default {
     },
     async doCreate () {
       if (!this.validateForm()) return false
-      console.log(this.formatParams())
       const manager = new Manager('dbinstances', 'v2')
       const { data, status } = await manager.create({ data: this.formatParams() })
       if (status === 200 && data) {

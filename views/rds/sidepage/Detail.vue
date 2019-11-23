@@ -147,14 +147,13 @@ export default {
               title: '外网地址',
               slots: {
                 default: ({ row }) => {
-                  const pub = row.public_dns || row.public_ip_addr
-                  const port = row['public_connect_port']
-                  const btnTxt = port ? '关闭外网地址' : '开启外网地址'
+                  const addr = row.connection_str
+                  const btnTxt = addr ? '关闭外网地址' : '开启外网地址'
                   const isRunning = row.status === 'running'
                   const notRunninTip = !isRunning ? '仅运行中的实例支持此操作' : null
                   let RenderSwitchBtn = null
                   if (isRunning) {
-                    RenderSwitchBtn = (<a-button type="link" onClick={() => this.handleSwitchPublicAddress(!port)}>{btnTxt}</a-button>)
+                    RenderSwitchBtn = (<a-button type="link" onClick={() => this.handleSwitchPublicAddress(!addr)}>{btnTxt}</a-button>)
                   } else {
                     RenderSwitchBtn = (
                       <a-tooltip placement='top' title={notRunninTip}>
@@ -167,7 +166,7 @@ export default {
                   }
                   return (
                     <div>
-                      {pub ? `${pub}:${port}` : '-'}
+                      {addr || '-'}
                       {RenderSwitchBtn}
                     </div>
                   )
@@ -216,21 +215,16 @@ export default {
   },
   methods: {
     async handleSwitchPublicAddress (bool) {
-      if (bool) {
-        this.list.onManager('performAction', {
-          id: this.data.id,
-          managerArgs: {
-            action: 'allocate-public-connection',
+      this.list.onManager('performAction', {
+        id: this.data.id,
+        steadyStatus: ['runing'],
+        managerArgs: {
+          action: 'public-connection',
+          data: {
+            open: bool,
           },
-        })
-      } else {
-        this.list.onManager('performAction', {
-          id: this.data.id,
-          managerArgs: {
-            action: 'release-public-connection',
-          },
-        })
-      }
+        },
+      })
     },
   },
 }

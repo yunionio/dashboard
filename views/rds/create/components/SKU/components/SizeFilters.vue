@@ -32,9 +32,6 @@ export default {
       cpu_mems_mb: undefined,
     }
   },
-  created () {
-    console.log(this.$slots)
-  },
   methods: {
     sizestr,
     initCpu () {
@@ -42,12 +39,12 @@ export default {
       if (!count || this.cpus.indexOf(count) === -1) {
         this.form.setFieldsValue({
           vcpu_count: this.cpus[0],
-        })
+        }, this.getMemsMb)
       }
     },
     initZone () {
       const zones = this.form.getFieldValue('zones')
-      if (!zones) {
+      if (!zones || this.cpus.indexOf(zones) === -1) {
         this.form.setFieldsValue({
           zones: Object.keys(this.zones)[0],
         })
@@ -86,7 +83,6 @@ export default {
         this.cpus = data['cpus']
         this.cpu_mems_mb = data['cpu_mems_mb']
         this.initCpu()
-        this.getMemsMb()
         const { zones } = data
         if (zones) {
           this.zones = zones.zones || {}

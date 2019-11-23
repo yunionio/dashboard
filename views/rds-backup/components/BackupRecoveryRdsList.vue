@@ -1,17 +1,15 @@
 <template>
-  <div style="margin-bottom: 20px">
-    <vxe-grid
-      :columns="tableColumn"
-      :data="rdsList"
-      :loading="loading"
-      @radio-change="handleRdsChange"
-      max-height="300"
-      ref="tableRef">
-      <template v-slot:empty>
-        <page-list-empty :loading="loading" />
-      </template>
-    </vxe-grid>
-  </div>
+  <vxe-grid
+    :columns="tableColumn"
+    :data="rdsList"
+    :loading="loading"
+    @radio-change="handleRdsChange"
+    max-height="300"
+    ref="tableRef">
+    <template v-slot:empty>
+      <page-list-empty :loading="loading" />
+    </template>
+  </vxe-grid>
 </template>
 <script>
 import { sizestr } from '@/utils/utils'
@@ -44,22 +42,35 @@ export default {
           },
         },
         {
-          title: '数据库类型',
-          render: (row) => {
-            return row.engine
+          id: 'engine',
+          title: '数据库引擎',
+          slots: {
+            default: ({ row }) => {
+              return `${row.engine || ''} ${row.engine_version || ''}`
+            },
           },
         },
       ]
       return column
     },
   },
+  watch: {
+    rdsList (newList) {
+      if (newList && newList.length > 0) {
+        this.$refs['tableRef'].setRadioRow(newList[0])
+        this.handleRdsChange({ row: newList[0] })
+      }
+    },
+  },
   created () {
-    // this.form.getFieldDecorator('sku', { preserve: true })
     this.fetchQueryRDSList()
   },
   methods: {
-    handleRdsChange (id) {
-      console.log(id)
+    handleRdsChange ({ row = {} }) {
+      const { id } = row
+      this.form.fc.setFieldsValue({
+        dbinstance_id: id,
+      })
     },
     async fetchQueryRDSList () {
       // eslint-disable-next-line camelcase
@@ -76,7 +87,7 @@ export default {
       this.loading = true
       try {
         const { data } = await new this.$Manager('dbinstances', 'v2').list({ params })
-        this.rdsList = data.data
+        this.rdsList = data.data.filter(item => item.id !== this.backupItem.dbinstance_id)
       } finally {
         this.loading = false
       }

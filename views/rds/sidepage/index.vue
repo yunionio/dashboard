@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="Redis"
+    title="实例详情"
     icon="onecloud"
     :res-name="data.name"
     :actions="params.actions"
@@ -16,8 +16,8 @@
 </template>
 
 <script>
-import BackupList from '../components/BackupList'
-import RedisDetail from './Detail'
+import BackupList from '@DB/views/rds-backup/components/List'
+import Detail from './Detail'
 import AccountList from './AccountList'
 import DatabaseList from './DatabaseList'
 import SidePageMixin from '@/mixins/sidePage'
@@ -29,7 +29,7 @@ export default {
   components: {
     Actions,
     AccountList,
-    RedisDetail,
+    Detail,
     DatabaseList,
     BackupList,
   },
@@ -37,7 +37,7 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'redis-detail' },
+        { label: '详情', key: 'detail' },
         { label: '账号', key: 'account-list' },
         { label: '数据库管理', key: 'database-list' },
         { label: '备份管理', key: 'backup-list' },
@@ -54,9 +54,6 @@ export default {
     data () {
       return this.params.list.data[this.params.resId].data
     },
-  },
-  created () {
-    console.log(this.params)
   },
 }
 </script>

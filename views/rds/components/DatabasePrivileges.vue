@@ -17,8 +17,11 @@ import { ACCOUNT_PRIVILEGES } from '../constants'
 export default {
   inject: ['form'],
   props: {
-    privileges: {
-      type: Array,
+    rdsItem: {
+      type: Object,
+      default: () => {
+        return {}
+      },
     },
   },
   data () {
@@ -27,44 +30,29 @@ export default {
       targetKeys: [],
       dbList: [],
       dbIdItemObj: {},
-      propsPrivileges: {},
     }
   },
   created () {
     this.fetchQueryDBList()
-    this.form.fc.getFieldDecorator('privileges', { preserve: true })
-    if (this.privileges && this.privileges.length > 0) {
-      this.privileges.forEach(item => {
-        this.propsPrivileges[item.dbinstancedatabase_id] = item
-      })
-    }
   },
   methods: {
     async fetchQueryDBList () {
       try {
+        const params = {
+          scope: this.$store.getters.scope,
+          limit: 0,
+          dbinstance: this.rdsItem.id,
+        }
         const manager = new this.$Manager('dbinstanceaccounts', 'v2')
-        const { status, data } = await manager.list({
-          parmas: {
-            scope: this.$scope,
-            limit: 0,
-          },
-        })
+        const { status, data } = await manager.list({ params })
         if (status === 200 && data.total > 0) {
           const retList = data.data
           this.dbList = retList
             // .filter(({ status }) => status === 'running')
             .map(item => {
               item['title'] = item.name
-              this.dbIdItemObj[item.id] = item
-              if (this.propsPrivileges[item.id]) {
-                item = {
-                  ...item,
-                  ...this.propsPrivileges[item.id],
-                }
-                this.targetKeys.push(item.id)
-              }
-              console.log(item, this.propsPrivileges)
               item['key'] = item.id
+              this.dbIdItemObj[item.id] = item
               return item
             })
         }

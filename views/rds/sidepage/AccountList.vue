@@ -47,11 +47,15 @@ export default {
           },
         },
         {
-          field: 'ip',
+          field: '已授权的数据库',
           title: '权限',
           slots: {
             default: ({ row }) => {
-              return ACCOUNT_PRIVILEGES[row.account_privilege] || '-'
+              if (row.dbinstanceprivileges && row.dbinstanceprivileges.length > 0) {
+                return row.dbinstanceprivileges.map(({ database, privileges }) => {
+                  return <div>{database} <span style="color:#666;margin:0 0 0 3px">({ACCOUNT_PRIVILEGES[privileges]})</span></div>
+                })
+              }
             },
           },
         },
@@ -62,7 +66,8 @@ export default {
           action: () => {
             this.createDialog('RDSAccountDialog', {
               list: this.list,
-              redisItem: this.data,
+              title: '新建账号',
+              rdsItem: this.data,
             })
           },
           meta: () => {
@@ -97,10 +102,16 @@ export default {
               data: [obj],
               list: this.list,
               columns: this.columns,
-              redisItem: this.data,
+              rdsItem: this.data,
             })
           },
-          meta: () => this.commonMeta,
+          meta: (obj) => {
+            const { isHuawei } = this.commonMeta
+            return {
+              validate: !(isHuawei && obj.name === 'root'),
+              tooltip: (isHuawei && obj.name === 'root') ? '华为云主账号不支持此操作' : '',
+            }
+          },
         },
         {
           label: '删除',
@@ -113,14 +124,7 @@ export default {
             })
           },
           meta: (obj) => {
-            const isHuawei = this.data.brand === 'Huawei'
-            let tooltip = ''
-            if (isHuawei) {
-              tooltip = '华为云不支持此操作'
-            }
-            if (obj.account_type === 'admin') {
-              tooltip = '主账号不允许删除'
-            }
+            const { isHuawei, tooltip } = this.commonMeta
             return {
               validate: !isHuawei && obj.account_type !== 'admin',
               tooltip,
@@ -132,14 +136,19 @@ export default {
   },
   computed: {
     commonMeta () {
-      const isRun = this.data.status === 'running'
+      const isRunning = this.data.status === 'running'
+      const isHuawei = this.data.brand === 'Huawei'
+      const isAliyun = this.data.brand === 'Aliyun'
       let tooltip = ''
-      if (!isRun) {
+      if (!isRunning) {
         tooltip = '仅在运行中状态下支持新建操作'
       }
       return {
-        validate: isRun,
-        tooltip: tooltip,
+        isRunning,
+        isHuawei,
+        isAliyun,
+        tooltip,
+        validate: isRunning,
       }
     },
   },

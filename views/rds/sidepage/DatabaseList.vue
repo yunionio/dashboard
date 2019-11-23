@@ -7,7 +7,6 @@
 </template>
 
 <script>
-import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { ACCOUNT_PRIVILEGES } from '../constants'
 import { getStatusTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
@@ -38,20 +37,15 @@ export default {
         },
         getStatusTableColumn({ statusModule: 'rdsDatabase' }),
         {
-          field: 'password',
-          title: '密码',
+          field: 'dbinstanceprivileges',
+          title: '已授权的账户',
           slots: {
             default: ({ row }) => {
-              return [<PasswordFetcher serverId={row.id} resourceType='dbinstanceaccounts' />]
-            },
-          },
-        },
-        {
-          field: 'ip',
-          title: '权限',
-          slots: {
-            default: ({ row }) => {
-              return ACCOUNT_PRIVILEGES[row.account_privilege] || '-'
+              if (row.dbinstanceprivileges && row.dbinstanceprivileges.length > 0) {
+                return row.dbinstanceprivileges.map(({ account, privileges }) => {
+                  return <div>{account} <span style="color:#666;margin:0 0 0 3px">({ACCOUNT_PRIVILEGES[privileges]})</span></div>
+                })
+              }
             },
           },
         },
@@ -62,7 +56,8 @@ export default {
           action: () => {
             this.createDialog('RDSDatabaseCreateDialog', {
               list: this.list,
-              redisItem: this.data,
+              title: '新建数据库',
+              rdsItem: this.data,
             })
           },
           meta: () => {
@@ -103,7 +98,6 @@ export default {
   },
   created () {
     this.list.fetchData()
-    console.log(this.data)
   },
 }
 </script>

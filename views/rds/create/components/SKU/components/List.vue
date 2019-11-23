@@ -50,6 +50,7 @@ export default {
         {
           field: 'vcpu_count',
           title: 'CPU(核)',
+          sortable: true,
           slots: {
             default: ({ row }) => {
               return `${row.vcpu_count}核`
@@ -59,6 +60,7 @@ export default {
         {
           field: 'vmem_size_mb',
           title: '内存（GB）',
+          sortable: true,
           slots: {
             default: ({ row }) => {
               return sizestr(row.vmem_size_mb, 'M', 1024)
@@ -68,10 +70,19 @@ export default {
         {
           field: 'max_connections',
           title: '最大链接数',
+          sortable: true,
         },
         {
           field: 'iops',
           title: 'IOPS',
+          sortable: true,
+        },
+        {
+          title: '规格参考价格',
+          sortable: true,
+          slots: {
+            default: () => '-',
+          },
         },
       ]
       return column
@@ -100,22 +111,26 @@ export default {
     getSkuParams () {
       const { getFieldsValue } = this.form
       const paramsKeys = ['engine', 'engine_version', 'category', 'storage_type', 'vcpu_count', 'vmem_size_mb', 'cloudregion', 'zones']
-      const PARAMS = getFieldsValue(paramsKeys)
-      PARAMS['cloudregion_id'] = PARAMS.cloudregion
-      if (PARAMS.zones) {
-        const zoneArr = PARAMS.zones.split('+')
-        if (zoneArr && zoneArr.length > 0) {
-          for (let i = 0; i < zoneArr.length; i++) {
-            PARAMS[`zone${i + 1}`] = zoneArr[i]
+      return new Promise((resolve, reject) => {
+        this.$nextTick(() => {
+          const PARAMS = getFieldsValue(paramsKeys)
+          PARAMS['cloudregion_id'] = PARAMS.cloudregion
+          if (PARAMS.zones) {
+            const zoneArr = PARAMS.zones.split('+')
+            if (zoneArr && zoneArr.length > 0) {
+              for (let i = 0; i < zoneArr.length; i++) {
+                PARAMS[`zone${i + 1}`] = zoneArr[i]
+              }
+            }
+            delete PARAMS.zones
           }
-        }
-        delete PARAMS.zones
-      }
-      return PARAMS
+          resolve(PARAMS)
+        })
+      })
     },
     async fetchSkus () {
       this.manager = new this.$Manager('dbinstance_skus', 'v2')
-      const PARAMS = this.getSkuParams()
+      const PARAMS = await this.getSkuParams()
       this.loading = true
       this.selectedSku = undefined
       try {

@@ -108,30 +108,23 @@ export default {
           width: 200,
           slots: {
             default: ({ row }) => {
-              const pri = row.private_dns || row.private_ip_addr
-              const pub = row.public_dns || row.public_ip_addr
+              const pri = row.internal_connection_str
+              const pub = row.connection_str
               if (!pri && !pub) {
                 return '-'
               }
               return [
-                <div class='td-ellipsis'>{pri && <a-tooltip placement='topLeft' title={`内网：${pri}`}>内网：{pri}</a-tooltip> }</div>,
-                <div class='td-ellipsis'>{pub && <a-tooltip placement='topLeft' title={`外网：${pub}`}>内网：{pub}</a-tooltip> }</div>,
+                <div class='td-ellipsis'>{pri && <a-tooltip placement='topLeft' title={`内网：${pri}`}>内网：{pri}</a-tooltip>}</div>,
+                <div class='td-ellipsis'>{pub && <a-tooltip placement='topLeft' title={`外网：${pub}`}>外网：{pub}</a-tooltip>}</div>,
               ]
             },
           },
         },
         {
-          title: '端口',
+          title: '数据库端口号',
+          field: 'port',
           slots: {
-            default: ({ row }) => {
-              if (!row.private_connect_port && !row.public_connect_port) {
-                return '-'
-              }
-              return [
-                <div>{row.private_connect_port > 0 && `内网：${row.private_connect_port}`}</div>,
-                <div>{row.public_connect_port > 0 && `外网：${row.public_connect_port}`}</div>,
-              ]
-            },
+            default: ({ row }) => row.port || '-',
           },
         },
         {
@@ -189,11 +182,25 @@ export default {
             })
           },
           meta: () => {
-            const selectedLength = this.list.selectedItems.length
-            const notSelectedTooltip = selectedLength <= 0 ? '请选择需要操作的实例' : ''
+            let validate = true
+            let tooltip = ''
+            if (this.list.selectedItems.length === 0) {
+              validate = false
+              tooltip = '请选择需要操作的实例'
+            }
+            if (this.list.selectedItems.length > 0) {
+              for (let i = 0; i < this.list.selectedItems.length; i++) {
+                let _ = this.list.selectedItems[i]
+                if (_['disable_delete']) {
+                  tooltip = '请先点击【修改属性】解除删除保护'
+                  validate = false
+                  break
+                }
+              }
+            }
             return {
-              validate: selectedLength,
-              tooltip: notSelectedTooltip,
+              validate,
+              tooltip,
             }
           },
         },
@@ -220,23 +227,6 @@ export default {
                 action: () => {
                   this.createDialog('RDSEditAttrDialog', {
                     title: '修改属性',
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    list: this.list,
-                  })
-                },
-                meta: () => {
-                  return {
-                    validate: selectedLength,
-                    tooltip: notSelectedTooltip,
-                  }
-                },
-              },
-              {
-                label: '清空数据',
-                action: () => {
-                  this.createDialog('RedisClearDataDialog', {
-                    title: '清空数据',
                     data: this.list.selectedItems,
                     columns: this.columns,
                     list: this.list,
@@ -296,7 +286,7 @@ export default {
               {
                 label: '修改属性',
                 action: () => {
-                  this.createDialog('RedisEditAttrDialog', {
+                  this.createDialog('RDSEditAttrDialog', {
                     title: '修改属性',
                     data: [obj],
                     columns: this.columns,
@@ -375,9 +365,15 @@ export default {
                   })
                 },
                 meta: () => {
+                  let tooltip = ''
+                  if (!obj.can_delete) {
+                    tooltip = '请点击修改属性禁用删除保护后重试'
+                  } else if (obj.billing_type === 'prepaid' && this.$moment(obj.expired_at).diff(new Date()) <= 0) {
+                    tooltip = '实例还未过到期不允许删除'
+                  }
                   return {
-                    validate: obj.can_delete,
-                    tooltip: obj.disable_delete ? '请点击修改属性禁用删除保护后重试' : null,
+                    validate: !tooltip,
+                    tooltip: tooltip,
                   }
                 },
               },
@@ -390,16 +386,16 @@ export default {
   created () {
     this.webconsoleManager = new Manager('webconsole', 'v1')
     this.list.fetchData()
-    this.initSidePageTab('redis-detail')
+    this.initSidePageTab('detail')
   },
 }
 </script>
 <style lang="scss">
- .td-ellipsis{
-    width: 150px;
-    word-break: keep-all;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
- }
+.td-ellipsis {
+  width: 150px;
+  word-break: keep-all;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 </style>

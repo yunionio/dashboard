@@ -15,7 +15,8 @@
       <!-- 区域 -->
       <area-selects
         :names="['city', 'provider', 'cloudregion']"
-        v-bind="formItemLayout" />
+        v-bind="formItemLayout"
+        @providerFetchSuccess="providerFetchSuccess" />
       <!-- 套餐信息 -->
       <s-k-u ref="SKU" />
       <a-divider orientation="left">高级配置</a-divider>
@@ -84,9 +85,9 @@ export default {
     this.fetchNetwork = fetchNetwork
   },
   methods: {
-    handleAreaChange (list) {
-      console.log(list)
-      // return []
+    providerFetchSuccess (list = []) {
+      const needProvider = ['Aliyun', 'Huawei']
+      return list.filter(({ name }) => needProvider.indexOf(name) > -1)
     },
     getVpcParams () {
       return new Promise((resolve, reject) => {

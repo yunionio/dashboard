@@ -7,7 +7,7 @@
       </div>
     </size-filters>
     <list ref="LIST" @change="handleSkuChange" />
-    <disk-input :selectedSku="selectedSku" />
+    <disk-input :selectedSku="selectedSku" :min="rdsItem ? rdsItem.disk_size_gb : -1" />
   </div>
 </template>
 <script>
@@ -29,6 +29,9 @@ export default {
       default: () => {
         return []
       },
+    },
+    rdsItem: {
+      type: Object,
     },
   },
   inject: ['form', 'formItemLayout'],

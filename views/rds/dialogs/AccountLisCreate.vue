@@ -1,18 +1,18 @@
 <template>
     <base-dialog @cancel="cancelDialog" :width="900">
-        <div slot="header">创建账号</div>
+        <div slot="header">{{params.title}}</div>
         <a-form slot="body" :form="form.fc" class="mt-3">
             <a-form-item  v-bind="formItemLayout" label="名称">
                 <a-input placeholder="字母开头，数字和字母大小写组合，长度为2-128个字符，不含“.”,“_”,“@”" v-decorator="decorators.name" />
             </a-form-item>
             <a-form-item v-bind="formItemLayout" label="数据库">
-              <account-privileges />
+              <account-privileges :rdsItem="params.rdsItem" />
             </a-form-item>
             <a-form-item v-bind="formItemLayout" label="密码">
-                <a-input type="password" placeholder="请输入密码" v-decorator="decorators.password" />
+                <a-input-password type="password" placeholder="请输入密码" v-decorator="decorators.password" />
             </a-form-item>
              <a-form-item v-bind="formItemLayout" label="确认密码">
-                <a-input type="password" placeholder="请再次确认密码" v-decorator="decorators.checkPassword" />
+                <a-input-password type="password" placeholder="请再次确认密码" v-decorator="decorators.checkPassword" />
             </a-form-item>
         </a-form>
          <div slot="footer">
@@ -65,7 +65,7 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: '请输入名称' },
-              { validator: validateForm('serverName') },
+              { validator: validateForm('comName') },
             ],
           },
         ],
@@ -128,7 +128,7 @@ export default {
         const values = await this.validateForm()
         const params = {
           ...values,
-          dbinstance: this.params.redisItem.id,
+          dbinstance: this.params.rdsItem.id,
         }
         delete params.checkPassword
         await this.params.list.onManager('create', {

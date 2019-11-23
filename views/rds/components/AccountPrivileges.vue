@@ -20,6 +20,12 @@ export default {
     privileges: {
       type: Array,
     },
+    rdsItem: {
+      type: Object,
+      default: () => {
+        return {}
+      },
+    },
   },
   data () {
     return {
@@ -42,13 +48,13 @@ export default {
   methods: {
     async fetchQueryDBList () {
       try {
+        const params = {
+          scope: this.$store.getters.scope,
+          limit: 0,
+          dbinstance: this.rdsItem.id,
+        }
         const manager = new this.$Manager('dbinstancedatabases', 'v2')
-        const { status, data } = await manager.list({
-          parmas: {
-            scope: this.$scope,
-            limit: 0,
-          },
-        })
+        const { status, data } = await manager.list({ params })
         if (status === 200 && data.total > 0) {
           const retList = data.data
           this.dbList = retList
@@ -63,10 +69,10 @@ export default {
                 }
                 this.targetKeys.push(item.id)
               }
-              console.log(item, this.propsPrivileges)
               item['key'] = item.id
               return item
             })
+          this.setPrivileges()
         }
       } catch (err) {
         throw err
@@ -87,7 +93,7 @@ export default {
         <a-form-item class="radios">
           {
             getFieldDecorator(id, {
-              initialValue: item.privileges,
+              initialValue: item.privileges || 'rw',
             })(
               <a-radio-group onChange={_handleChange}>
                 {renderRadios}
@@ -105,8 +111,8 @@ export default {
       )
 
       return {
-        label: customLabel, // for displayed item
-        value: item.title, // for title and filter matching
+        label: customLabel,
+        value: item.title,
       }
     },
     setPrivileges () {
@@ -115,7 +121,7 @@ export default {
         privileges: this.targetKeys.map(id => {
           return {
             database: this.dbIdItemObj[id].name,
-            privilege: values[id],
+            privilege: values[id] || this.dbIdItemObj[id].name,
           }
         }),
       })
@@ -141,6 +147,7 @@ export default {
 }
 .ant-transfer-list-content-item {
   display: flex;
+  line-height: 30px;
   > span {
     flex: 1;
   }
