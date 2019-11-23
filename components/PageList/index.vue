@@ -29,6 +29,7 @@
     <vxe-grid
       ref="grid"
       highlight-hover-row
+      highlight-current-row
       show-header-overflow="title"
       :data="data"
       :columns="tableColumns"
