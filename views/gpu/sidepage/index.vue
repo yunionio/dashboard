@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     title="透传设备"
-    icon="onecloud"
+    icon="res-gpu"
     :res-name="data.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"
