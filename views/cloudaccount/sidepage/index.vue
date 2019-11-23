@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     title="云账号"
-    icon="onecloud"
+    icon="res-cloudaccount"
     :res-name="data.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"
