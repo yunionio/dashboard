@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     title="IP子网"
-    icon="onecloud"
+    icon="res-network"
     :res-name="data.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"

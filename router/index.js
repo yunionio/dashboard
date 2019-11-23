@@ -10,10 +10,14 @@ import EditAttributes from '@Compute/views/network/EditAttributes'
 import Host from '@Compute/views/host'
 import Physicalmachine from '@Compute/views/physicalmachine'
 import ServerRecovery from '@Compute/views/server-recovery'
+import DiskRecovery from '@Compute/views/disk-recovery'
+import ImageRecovery from '@Compute/views/image-recovery'
 import InstanceGroup from '@Compute/views/instance-group'
 import SKU from '@Compute/views/sku'
 import Keypair from '@Compute/views/keypair'
 import Disk from '@Compute/views/disk'
+import GPU from '@Compute/views/gpu'
+import Secgroup from '@Compute/views/secgroup'
 
 export default {
   index: 2,
@@ -135,6 +139,21 @@ export default {
       },
       submenus: [
         {
+          path: '/secgroup',
+          meta: {
+            label: '安全组',
+            permission: 'secgroups_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Secgroup',
+              path: '',
+              component: Secgroup,
+            },
+          ],
+        },
+        {
           path: '/network',
           meta: {
             label: 'IP子网',
@@ -242,6 +261,21 @@ export default {
             },
           ],
         },
+        {
+          path: '/gpu',
+          meta: {
+            label: '透传设备',
+            permission: 'isolated_devices_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'GPU',
+              path: '',
+              component: GPU,
+            },
+          ],
+        },
       ],
     },
     {
@@ -261,6 +295,36 @@ export default {
               name: 'ServerRecovery',
               path: '',
               component: ServerRecovery,
+            },
+          ],
+        },
+        {
+          path: '/diskrecovery',
+          meta: {
+            label: '硬盘',
+            permission: 'disks_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'DiskRecovery',
+              path: '',
+              component: DiskRecovery,
+            },
+          ],
+        },
+        {
+          path: '/imagerecovery',
+          meta: {
+            label: '镜像',
+            permission: 'images_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'ImageRecovery',
+              path: '',
+              component: ImageRecovery,
             },
           ],
         },

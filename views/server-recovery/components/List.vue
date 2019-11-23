@@ -71,7 +71,7 @@ export default {
         },
       }),
       columns: [
-        getCopyWithContentTableColumn({ field: 'name', title: '名称' }),
+        getCopyWithContentTableColumn({ field: 'name', title: '名称', sortable: true }),
         getIpsTableColumn({ field: 'ips', title: 'IP' }),
         {
           field: 'instance_type',
