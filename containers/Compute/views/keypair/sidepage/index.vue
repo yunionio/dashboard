@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     title="密钥"
-    icon="onecloud"
+    icon="res-keypair"
     :res-name="data.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"

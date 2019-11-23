@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     title="动态调度标签"
-    icon="onecloud"
+    icon="res-dynamicschedtag"
     :res-name="data.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"
