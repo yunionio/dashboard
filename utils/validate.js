@@ -76,6 +76,10 @@ export const REGEXP = {
     regexp: /^([1-9]|[1-9]\d{1,3}|[1-5]\d{4}|6[0-5]{2}[0-3][0-5])$/,
     message: i18n.t('validator.ports'),
   },
+  networkSegment: {
+    regexp: /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(\/\d{1,2})$/,
+    message: i18n.t('validator.networkSegment'),
+  },
 }
 
 /**

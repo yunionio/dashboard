@@ -4,12 +4,17 @@
       <div class="mb-2 d-flex">
         <refresh-button :loading="loading" @refresh="refresh" />
         <template v-if="groupActions">
-          <actions :options="groupActions" class="ml-2" @action-click="handleClearSelected" />
+          <actions :options="groupActions" @clear-selected="handleClearSelected" button-type="default" group />
         </template>
       </div>
       <div class="d-flex">
         <div class="flex-fill">
-          <search-box v-if="filterOptions" :options="filterOptions" :value="filter" @input="handleFilterChange" />
+          <search-box
+            v-if="filterOptions"
+            :options="filterOptions"
+            :value="filter"
+            :list="list"
+            @input="handleFilterChange" />
         </div>
         <div class="ml-4" v-if="exportDataOptions || list.id">
           <a-tooltip title="导出数据" v-if="exportDataOptions">
@@ -29,6 +34,8 @@
       :columns="tableColumns"
       :pager-config="tablePage"
       :customs.sync="customs"
+      :sort-method="() => {}"
+      @sort-change="handleSortChange"
       @current-page-change="handleCurrentPageChange"
       @page-size-change="handlePageSizeChange"
       @select-change="handleSelectChange"
@@ -45,14 +52,12 @@ import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import Actions from './Actions'
 import RefreshButton from './RefreshButton'
-import Loader from './Loader'
 
 export default {
   name: 'PageList',
   components: {
     Actions,
     RefreshButton,
-    Loader,
   },
   props: {
     // 生成的list实例store
@@ -109,7 +114,7 @@ export default {
           title: '操作',
           slots: {
             default: ({ row }, h) => {
-              return [<Actions options={ this.singleActions } row={ row } buttonMode={ false } />]
+              return [<Actions options={ this.singleActions } row={ row } button-type='link' button-size='small' />]
             },
           },
         }])
@@ -181,6 +186,9 @@ export default {
         list: this.list,
         customs: this.customs,
       })
+    },
+    handleSortChange ({ property, order }) {
+      this.list.doSort(property, order)
     },
   },
 }

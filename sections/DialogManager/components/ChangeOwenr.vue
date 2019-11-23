@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import DomainProject from '@/sections/DomainProject'
@@ -43,6 +44,7 @@ export default {
         domain: [
           'domain',
           {
+            initialValue: _.get(this.params, 'data[0].domain_id'),
             rules: [
               { required: true, message: '请选择域', trigger: 'change' },
             ],
@@ -51,6 +53,7 @@ export default {
         project: [
           'project',
           {
+            initialValue: _.get(this.params, 'data[0].tenant_id'),
             rules: [
               { required: true, message: '请选择项目', trigger: 'change' },
             ],
@@ -86,8 +89,9 @@ export default {
         const ids = this.params.data.map(item => item.id)
         await this.params.list.onManager('batchPerformAction', {
           id: ids,
+          steadyStatus: this.params.steadyStatus || ['running', 'ready'],
           managerArgs: {
-            action: 'change-owner',
+            action: this.params.action || 'change-owner',
             data: values,
           },
         })

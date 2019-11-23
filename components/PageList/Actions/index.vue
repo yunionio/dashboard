@@ -1,26 +1,28 @@
 <template>
   <div>
     <template v-for="item of options">
+      <!-- 一组操作，下拉形式展示 -->
       <template v-if="item.actions">
-        <dropmenus :key="item.label" :label="item.label" :actions="item.actions" :row="row" :button-mode="buttonMode" />
+        <dropmenus :group="group" :key="item.label" :item="item" :row="row" :button-type="buttonType" :button-size="buttonSize" />
       </template>
+      <!-- 单个操作 -->
       <template v-else>
         <action-button
-          class="mr-2"
           :key="item.label"
-          :option="getOption(item)"
+          :item="item"
           :row="row"
-          :button-mode="buttonMode"
-          @action-click="actionClick" />
+          :button-type="buttonType"
+          :button-size="buttonSize"
+          :class="{ 'ml-2': group }"
+          @clear-selected="clearSelected" />
       </template>
     </template>
   </div>
 </template>
 
 <script>
-import * as R from 'ramda'
-import ActionButton from './ActionButton'
 import Dropmenus from './Dropmenus'
+import ActionButton from './ActionButton'
 
 export default {
   name: 'PageListActions',
@@ -29,6 +31,7 @@ export default {
     ActionButton,
   },
   props: {
+    // 有 row 则认为是列表每行的 actions
     row: {
       type: Object,
     },
@@ -36,28 +39,20 @@ export default {
       type: Array,
       required: true,
     },
-    // 是否使用按钮样式
-    buttonMode: {
+    buttonType: {
+      type: String,
+    },
+    buttonSize: {
+      type: String,
+    },
+    group: {
       type: Boolean,
-      default: true,
     },
   },
   methods: {
-    getOption (item) {
-      return {
-        ...item,
-        meta: this.getMeta(item),
-      }
-    },
-    getMeta (item) {
-      const { validate = true, ...rest } = R.is(Function, item.meta) ? item.meta(this.row) : {}
-      return {
-        validate,
-        ...rest,
-      }
-    },
-    actionClick () {
-      this.$emit('action-click')
+    // 清除已选项
+    clearSelected () {
+      this.$emit('clear-selected')
     },
   },
 }
