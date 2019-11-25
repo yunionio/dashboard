@@ -402,7 +402,7 @@ export default {
                   {
                     label: '更改项目',
                     action: () => {
-                      this.createDialog('VmChangeProjectDialog', {
+                      this.createDialog('ChangeProjectDialog', {
                         data: [obj],
                         columns: this.columns,
                         list: this.list,

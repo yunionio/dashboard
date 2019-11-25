@@ -3,12 +3,11 @@
     :list="list"
     :data="data"
     :base-info="baseInfo"
-    :extra-info="extraInfo" />
+    :extra-info="extraInfo"
+    status-module="network" />
 </template>
 
 <script>
-import { getStatusTableColumn } from '@/utils/common/tableColumn'
-
 export default {
   name: 'NetworkDetail',
   props: {
@@ -24,11 +23,6 @@ export default {
   data () {
     return {
       baseInfo: [
-        {
-          field: 'name',
-          title: '名称',
-        },
-        getStatusTableColumn({ statusModule: 'network' }),
         {
           field: 'guest_ip_start',
           title: 'IP范围',
@@ -90,13 +84,6 @@ export default {
             {
               field: 'vlan_id',
               title: 'VLAN ID',
-              formatter: ({ cellValue }) => {
-                return cellValue || '-'
-              },
-            },
-            {
-              field: 'tenant',
-              title: '所属项目',
               formatter: ({ cellValue }) => {
                 return cellValue || '-'
               },

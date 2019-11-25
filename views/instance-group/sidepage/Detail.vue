@@ -2,11 +2,12 @@
   <detail
     :list="list"
     :data="data"
-    :base-info="baseInfo" />
+    :base-info="baseInfo"
+    status-module="instanceGroup" />
 </template>
 
 <script>
-import { getEnabledTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
+import { getEnabledTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   name: 'InstanceGroupDetail',
@@ -24,7 +25,6 @@ export default {
     return {
       baseInfo: [
         getEnabledTableColumn(),
-        getStatusTableColumn({ statusModule: 'instanceGroup' }),
         {
           field: 'guest_count',
           title: '绑定主机数量',
@@ -47,14 +47,6 @@ export default {
             if (cellValue) ret = '强制'
             return ret
           },
-        },
-        {
-          field: 'project_domain',
-          title: '部门',
-        },
-        {
-          field: 'tenant',
-          title: '所属项目',
         },
         {
           field: 'granularity',
