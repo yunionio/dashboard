@@ -2,12 +2,12 @@
   <detail
     :list="list"
     :data="data"
-    :base-info="baseInfo"
-    :extra-info="extraInfo" />
+    :extra-info="extraInfo"
+    status-module="server" />
 </template>
 
 <script>
-import { getStatusTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
+import { getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   name: 'VmInstanceDetail',
@@ -23,17 +23,6 @@ export default {
   },
   data () {
     return {
-      baseInfo: [
-        getStatusTableColumn({ statusModule: 'server' }),
-        {
-          field: 'project_domain',
-          title: '部门',
-        },
-        {
-          field: 'tenant',
-          title: '所属项目',
-        },
-      ],
       extraInfo: [
         {
           title: '配置信息',

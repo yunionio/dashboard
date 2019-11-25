@@ -22,10 +22,6 @@ export default {
     return {
       baseInfo: [
         {
-          field: 'name',
-          title: '名称',
-        },
-        {
           field: 'guest_cnt',
           title: '关联实例',
         },
@@ -36,14 +32,6 @@ export default {
         {
           field: 'public_scope',
           title: '共享范围',
-        },
-        {
-          field: 'tenant',
-          title: '项目',
-        },
-        {
-          field: 'project_domain',
-          title: '部门(域)',
         },
       ],
     }

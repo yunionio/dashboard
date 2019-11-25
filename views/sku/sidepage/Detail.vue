@@ -3,11 +3,12 @@
     :list="list"
     :data="data"
     :base-info="baseInfo"
-    :extra-info="extraInfo" />
+    :extra-info="extraInfo"
+    status-module="sku" />
 </template>
 
 <script>
-import { getEnabledTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
+import { getEnabledTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   name: 'SkuDetail',
@@ -24,12 +25,7 @@ export default {
   data () {
     return {
       baseInfo: [
-        {
-          field: 'name',
-          title: '名称',
-        },
         getEnabledTableColumn(),
-        getStatusTableColumn({ statusModule: 'sku' }),
         {
           field: 'cpu_core_count',
           title: 'CPU核数',
