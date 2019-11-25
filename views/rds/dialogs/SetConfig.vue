@@ -98,7 +98,7 @@ export default {
         engine_version: this.rdsItem['engine_version'],
         category: this.rdsItem['category'],
         storage_type: this.rdsItem['storage_type'],
-        vcpu_count: 2, // this.rdsItem['vcpu_count'],
+        vcpu_count: this.rdsItem['vcpu_count'],
         vmem_size_mb: this.rdsItem['vmem_size_mb'],
         zones: zoneIds.join('+'),
       }, SKU.linkageValue)
