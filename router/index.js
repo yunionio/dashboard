@@ -19,6 +19,7 @@ import Keypair from '@Compute/views/keypair'
 import Disk from '@Compute/views/disk'
 import GPU from '@Compute/views/gpu'
 import Secgroup from '@Compute/views/secgroup'
+import FlexNetwork from '@Compute/views/flex-network'
 
 export default {
   index: 2,
@@ -151,6 +152,21 @@ export default {
               name: 'Secgroup',
               path: '',
               component: Secgroup,
+            },
+          ],
+        },
+        {
+          path: '/flexnetwork',
+          meta: {
+            label: '弹性网卡',
+            permission: 'networkcard_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'NetworkcardList',
+              path: '',
+              component: FlexNetwork,
             },
           ],
         },
