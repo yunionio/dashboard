@@ -3,8 +3,8 @@ export const DBINSTANCE_CATEGORY = {
   high_availability: '高可用',
   always_on: '集群版',
   finance: '金融版',
-  ha: '主备',
-  single: '单机',
+  ha: '高可用',
+  single: '基础版',
   replica: '只读',
   gr: '金融版',
 }

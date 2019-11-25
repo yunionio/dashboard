@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     title="Redis"
-    icon="onecloud"
+    icon="res-redis"
     :res-name="data.name"
     :actions="params.actions"
     :tabs="detailTabs"
@@ -55,9 +55,6 @@ export default {
     data () {
       return this.params.list.data[this.params.resId].data
     },
-  },
-  created () {
-    console.log(this.params)
   },
 }
 </script>

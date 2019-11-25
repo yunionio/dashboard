@@ -46,7 +46,7 @@ export default {
     decorators () {
       const { data } = this.params
       let initialValueDisableDelete = true
-      if (data && data.length === 0) {
+      if (data && data.length === 1) {
         initialValueDisableDelete = data[0]['disable_delete']
       }
       return {

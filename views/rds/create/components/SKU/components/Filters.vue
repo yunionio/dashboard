@@ -72,6 +72,8 @@ export default {
         this.form.setFieldsValue({
           [key]: newVal,
         }, callback)
+      } else {
+        callback && callback()
       }
     },
     getEngine () {
@@ -113,7 +115,12 @@ export default {
       try {
         const { data } = await new this.$Manager('cloudregions', 'v2').getSpecific({ id: cloudregionId, spec: 'capability', params })
         this.dbInstance = data && data.db_instance ? data.db_instance : {}
-        this.getEngine()
+        this.form.setFieldsValue({
+          engine: undefined,
+          engine_version: undefined,
+          category: undefined,
+          storage_type: undefined,
+        }, this.getEngine)
         return await data
       } catch (err) {
         throw err

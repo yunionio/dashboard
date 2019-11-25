@@ -71,9 +71,35 @@ export default {
             })
           },
           meta: () => {
+            const { engine, provider } = this.data
+            const { isRun } = this.commonMeta
+            const _meta = () => {
+              if (!isRun) {
+                return {
+                  validate: false,
+                  tooltip: '仅在运行中状态下支持新建操作',
+                }
+              }
+              if (engine === 'SQLServer' && provider === 'Huawei') {
+                return {
+                  validate: false,
+                  tooltip: 'SQLServer数据库引擎，暂不支持此操作',
+                }
+              }
+              if (engine === 'PostgreSQL' && provider === 'Huawei') {
+                return {
+                  validate: false,
+                  tooltip: '华为云PostgreSQL数据库引擎，暂不支持此操作',
+                }
+              }
+              return {
+                validate: true,
+                tooltip: '',
+              }
+            }
             return {
               buttonType: 'primary',
-              ...this.commonMeta,
+              ..._meta(),
             }
           },
         },

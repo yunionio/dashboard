@@ -57,7 +57,6 @@ export default {
         const ALL_LETTERS = /[a-z]/g
         const REG = /^[a-z][a-z0-9_]*$/
         if (value && value.length <= 16 && new RegExp('_').test(value) && REG.test(value) && ALL_DIGITS.test(value) && ALL_LETTERS.test(value)) {
-          console.log(value, value[value.length])
           if (value[value.length - 1] === '_') {
             _callback('不可以下划线结尾')
           }

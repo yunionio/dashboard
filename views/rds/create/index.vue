@@ -1,7 +1,6 @@
 <template>
   <div>
     <page-header title="新建" />
-    {{form.getFieldsValue()}}
     <a-form :form="form.fc" class="mt-3">
       <a-divider orientation="left">基础配置</a-divider>
       <a-form-item label="指定项目" v-bind="formItemLayout">

@@ -5,7 +5,7 @@
             <a-form-item  v-bind="formItemLayout" label="名称">
               <a-input v-decorator="decorators.name" placeholder="字母开头，数字和字母大小写组合，长度为2-128个字符，不含’.‘,’_‘,’@‘ " />
             </a-form-item>
-             <a-form-item v-bind="formItemLayout" label="实例" v-if="!isNullRDS">
+             <a-form-item v-bind="formItemLayout" label="实例" v-if="!params.rdsItem">
               <a-select v-decorator="decorators.dbinstance" placeholder="请选中RDS实例" :loading="rdsListLoading">
                 <a-select-option :key="item.id" v-for="item in rdsList">{{item.name}}</a-select-option>
               </a-select>
@@ -81,12 +81,9 @@ export default {
       }
       return decorators
     },
-    isNullRDS () {
-      return !!this.params.rdsItem
-    },
   },
   created () {
-    if (!this.isNullRDS) {
+    if (!this.params.rdsItem) {
       this.fetchQueryRDSList()
     }
   },
@@ -113,7 +110,7 @@ export default {
       return new Promise((resolve, reject) => {
         this.form.fc.validateFields((err, values) => {
           if (!err) {
-            if (!this.isNullRDS) {
+            if (this.params.rdsItem) {
               values['dbinstance_id'] = this.params.rdsItem.id
               values['dbinstance'] = this.params.rdsItem.id
             }
@@ -134,6 +131,8 @@ export default {
           },
         })
         this.cancelDialog()
+      } catch (err) {
+        throw err
       } finally {
         this.loading = false
       }

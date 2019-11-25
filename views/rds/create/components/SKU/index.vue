@@ -59,12 +59,13 @@ export default {
     },
   },
   mounted () {
-    const { fetchFilters } = this.$refs['FILTERS']
+    const { fetchFilters, getVersion } = this.$refs['FILTERS']
     const { fetchSpecs } = this.$refs['SIZE_FILTER']
     const { fetchSkus } = this.$refs['LIST']
     this.fetchFilters = fetchFilters
     this.fetchSpecs = fetchSpecs
     this.fetchSkus = fetchSkus
+    this.linkageValue = getVersion
   },
   methods: {
     handleSkuChange (sku) {

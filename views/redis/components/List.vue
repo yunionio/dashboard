@@ -197,11 +197,25 @@ export default {
             })
           },
           meta: () => {
-            const selectedLength = this.list.selectedItems.length
-            const notSelectedTooltip = selectedLength <= 0 ? '请选择需要操作的实例' : ''
+            let validate = true
+            let tooltip = ''
+            if (this.list.selectedItems.length === 0) {
+              validate = false
+              tooltip = '请选择需要操作的实例'
+            }
+            if (this.list.selectedItems.length > 0) {
+              for (let i = 0; i < this.list.selectedItems.length; i++) {
+                let _ = this.list.selectedItems[i]
+                if (_['disable_delete']) {
+                  tooltip = '请先点击【修改属性】解除删除保护'
+                  validate = false
+                  break
+                }
+              }
+            }
             return {
-              validate: selectedLength,
-              tooltip: notSelectedTooltip,
+              validate,
+              tooltip,
             }
           },
         },
@@ -371,25 +385,25 @@ export default {
                   }
                 },
               },
-              {
-                label: '续费',
-                action: () => {
-                  this.createDialog('RedisRenewDialog', {
-                    title: '续费',
-                    data: [obj],
-                    columns: this.columns,
-                    list: this.list,
-                  })
-                },
-                meta: () => {
-                  const isPrepaid = obj.billing_type === 'prepaid'
-                  const validate = (isRunning && isPrepaid)
-                  return {
-                    validate: validate,
-                    tooltip: notRunninTip || (!isPrepaid ? '仅包年包月的实例支持此操作' : null),
-                  }
-                },
-              },
+              // {
+              //   label: '续费',
+              //   action: () => {
+              //     this.createDialog('RedisRenewDialog', {
+              //       title: '续费',
+              //       data: [obj],
+              //       columns: this.columns,
+              //       list: this.list,
+              //     })
+              //   },
+              //   meta: () => {
+              //     const isPrepaid = obj.billing_type === 'prepaid'
+              //     const validate = (isRunning && isPrepaid)
+              //     return {
+              //       validate: validate,
+              //       tooltip: notRunninTip || (!isPrepaid ? '仅包年包月的实例支持此操作' : null),
+              //     }
+              //   },
+              // },
               {
                 label: '调整配置',
                 action: () => {
@@ -401,9 +415,10 @@ export default {
                   })
                 },
                 meta: () => {
+                  const isPrepaid = obj.billing_type === 'prepaid'
                   return {
-                    validate: isRunning,
-                    tooltip: notRunninTip,
+                    validate: isRunning && !isPrepaid,
+                    tooltip: notRunninTip || (isPrepaid ? '仅包年包月的实例，暂不支持此操作' : ''),
                   }
                 },
               },

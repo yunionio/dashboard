@@ -101,6 +101,7 @@ export default {
           action: () => {
             this.createDialog('RDSBackupCreate', {
               list: this.list,
+              rdsItem: this.data,
             })
           },
           meta: () => {

@@ -69,7 +69,6 @@ export default {
     validateForm () {
       return new Promise((resolve, reject) => {
         this.form.fc.validateFields((err, values) => {
-          console.log(values)
           if (!err) {
             resolve(values)
           } else {

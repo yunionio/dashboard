@@ -74,6 +74,7 @@ export default {
   },
   methods: {
     setValues () {
+      const SKU = this.$refs['SKU']
       const { engine } = this.rdsItem
       const zoneIds = []
       const zoneNames = []
@@ -94,17 +95,16 @@ export default {
       }
       this.form.setFieldsValue({
         engine,
-        engine_version: '5.7',
+        engine_version: this.rdsItem['engine_version'],
         category: this.rdsItem['category'],
         storage_type: this.rdsItem['storage_type'],
-        vcpu_count: this.rdsItem['vcpu_count'],
+        vcpu_count: 2, // this.rdsItem['vcpu_count'],
         vmem_size_mb: this.rdsItem['vmem_size_mb'],
         zones: zoneIds.join('+'),
-      })
+      }, SKU.linkageValue)
     },
     async _fetchs () {
       const SKU = this.$refs['SKU']
-      // await fetchs(this.rdsItem['cloudregion_id'])
       await SKU.fetchFilters(this.rdsItem['cloudregion_id'])
       await this.setValues()
       await SKU.fetchSpecs()
