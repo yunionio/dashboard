@@ -3,7 +3,8 @@
     :list="list"
     :data="data"
     :base-info="baseInfo"
-    :extra-info="extraInfo" />
+    :extra-info="extraInfo"
+    status-module="cloudaccount" />
 </template>
 
 <script>
@@ -30,7 +31,6 @@ export default {
           title: '账号',
         },
         getEnabledTableColumn(),
-        getStatusTableColumn({ statusModule: 'cloudaccount' }),
         {
           field: 'last_sync',
           title: '同步时间',
