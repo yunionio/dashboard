@@ -3,12 +3,12 @@
     :list="list"
     :data="data"
     :base-info="baseInfo"
-    :extra-info="extraInfo" />
+    :extra-info="extraInfo"
+    status-module="cloudaccount" />
 </template>
 
 <script>
 import {
-  getProjectTableColumn,
   getStatusTableColumn,
   getEnabledTableColumn,
   getBrandTableColumn,
@@ -34,7 +34,6 @@ export default {
           title: '账号',
         },
         getEnabledTableColumn(),
-        getStatusTableColumn({ statusModule: 'cloudaccount' }),
         {
           field: 'last_sync',
           title: '同步时间',
@@ -42,7 +41,6 @@ export default {
             return this.$moment(row.last_sync).format()
           },
         },
-        getProjectTableColumn(),
       ],
       extraInfo: [
         {
