@@ -8,7 +8,7 @@
         <a-form-item label="管理员密码" v-bind="formItemLayout">
           <server-password :decorator="decorators.loginConfig" :login-types="loginTypes" />
         </a-form-item>
-        <a-form-item label="自动启动" v-bind="formItemLayout" extra="重置密码成功后自动启动">
+        <a-form-item label="自动启动" v-bind="formItemLayout" extra="重置密码成功后是否自动启动">
           <a-switch v-decorator="decorators.auto_start" :disabled="form.fi.disableAutoStart" />
         </a-form-item>
       </a-form>
