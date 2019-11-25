@@ -18,7 +18,7 @@
         <a-form-item label="自动启动" v-bind="formItemLayout">
           <a-switch v-decorator="decorators.auto_start" />
           <template v-slot:extra>
-            <div>保存镜像成功后自动启动</div>
+            <div>保存镜像成功后是否自动启动</div>
             <div v-if="form.fi.type === types.system.key" class="mt-2">友情提示：该主机镜像占用镜像配额 1 个</div>
           </template>
         </a-form-item>
