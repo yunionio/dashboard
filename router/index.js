@@ -7,6 +7,7 @@ import VMInstanceCreate from '@Compute/views/vminstance/create/index'
 import Network from '@Compute/views/network'
 import NetworkCreate from '@Compute/views/network/Create'
 import EditAttributes from '@Compute/views/network/EditAttributes'
+import Eip from '@Compute/views/eip'
 import Host from '@Compute/views/host'
 import Physicalmachine from '@Compute/views/physicalmachine'
 import ServerRecovery from '@Compute/views/server-recovery'
@@ -18,6 +19,7 @@ import Keypair from '@Compute/views/keypair'
 import Disk from '@Compute/views/disk'
 import GPU from '@Compute/views/gpu'
 import Secgroup from '@Compute/views/secgroup'
+import FlexNetwork from '@Compute/views/flex-network'
 
 export default {
   index: 2,
@@ -154,6 +156,21 @@ export default {
           ],
         },
         {
+          path: '/flexnetwork',
+          meta: {
+            label: '弹性网卡',
+            permission: 'networkcard_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'NetworkcardList',
+              path: '',
+              component: FlexNetwork,
+            },
+          ],
+        },
+        {
           path: '/network',
           meta: {
             label: 'IP子网',
@@ -175,6 +192,21 @@ export default {
               name: 'EditAttributes',
               path: 'edit',
               component: EditAttributes,
+            },
+          ],
+        },
+        {
+          path: '/eip',
+          meta: {
+            label: '弹性公网IP',
+            permission: 'eips_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Eip',
+              path: '',
+              component: Eip,
             },
           ],
         },
