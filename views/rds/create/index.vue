@@ -22,7 +22,7 @@
        <a-form-item label="管理员密码" v-bind="formItemLayout">
          <server-password :loginTypes="['random', 'password']" :decorator="decorators.loginConfig" />
        </a-form-item>
-      <network-selects ref="NETWORK" :vpcParams="getVpcParams" :networkParams="getNetworkParams" v-bind="formItemLayout" />
+      <network-selects lable="VPC" ref="NETWORK" :vpcParams="getVpcParams" :networkParams="getNetworkParams" v-bind="formItemLayout" />
     </a-form>
     <bottom-bar :values="form.getFieldsValue()" />
   </div>

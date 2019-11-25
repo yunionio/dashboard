@@ -72,9 +72,9 @@ export default {
           },
           meta: () => {
             const { engine, provider } = this.data
-            const { isRun } = this.commonMeta
+            const { isRunning } = this.commonMeta
             const _meta = () => {
-              if (!isRun) {
+              if (!isRunning) {
                 return {
                   validate: false,
                   tooltip: '仅在运行中状态下支持新建操作',
@@ -145,7 +145,8 @@ export default {
             this.createDialog('RedisWhiteListDeleteDialog', {
               data: [obj],
               columns: this.columns,
-              title: '删除白名单',
+              name: '账号',
+              title: '删除账号',
               list: this.list,
             })
           },

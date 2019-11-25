@@ -366,9 +366,10 @@ export default {
                 },
                 meta: () => {
                   let tooltip = ''
+                  let seconds = this.$moment(obj.expired_at).diff(new Date()) / 1000
                   if (!obj.can_delete) {
                     tooltip = '请点击修改属性禁用删除保护后重试'
-                  } else if (obj.billing_type === 'prepaid' && this.$moment(obj.expired_at).diff(new Date()) <= 0) {
+                  } else if (obj.billing_type === 'prepaid' && seconds > 0) {
                     tooltip = '实例还未过到期不允许删除'
                   }
                   return {

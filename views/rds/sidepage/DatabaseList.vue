@@ -99,9 +99,10 @@ export default {
           label: '删除',
           action: (obj) => {
             this.createDialog('DeleteResDialog', {
+              title: '删除数据库',
+              name: '数据库',
               data: [obj],
               columns: this.columns,
-              title: '删除',
               list: this.list,
             })
           },
