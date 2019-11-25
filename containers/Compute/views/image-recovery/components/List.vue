@@ -60,7 +60,7 @@ export default {
           field: 'size',
           title: '镜像大小',
           formatter: ({ cellValue }) => {
-            return sizestr(cellValue, 'M', 1024)
+            return sizestr(cellValue, 'B', 1024)
           },
         },
         getStatusTableColumn({ statusModule: 'image' }),
