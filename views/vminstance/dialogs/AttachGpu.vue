@@ -26,10 +26,8 @@
             placeholder="请选择GPU设备"
             resource="isolated_devices" />
         </a-form-item>
-        <a-form-item v-bind="formItemLayout">
-          <a-checkbox v-decorator="decorators.autoStart">
-            设置成功后自动启动
-          </a-checkbox>
+        <a-form-item label="自动启动" v-bind="formItemLayout" extra="设置成功后是否自动启动">
+          <a-switch v-decorator="decorators.autoStart" />
         </a-form-item>
       </a-form>
     </div>

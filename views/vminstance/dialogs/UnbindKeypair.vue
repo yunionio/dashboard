@@ -5,7 +5,7 @@
       <dialog-selected-tips :count="params.data.length" action="解绑密钥" />
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
-        <a-form-item label="自动启动" v-bind="formItemLayout" extra="解绑密钥成功后自动启动">
+        <a-form-item label="自动启动" v-bind="formItemLayout" extra="解绑密钥成功后是否自动启动">
           <a-switch v-decorator="decorators.auto_start" :disabled="form.fi.disableAutoStart" />
         </a-form-item>
       </a-form>

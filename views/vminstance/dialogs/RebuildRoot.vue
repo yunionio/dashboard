@@ -12,10 +12,8 @@
         <a-form-item label="管理员密码" v-bind="formItemLayout">
           <server-password :decorator="decorators.loginConfig" />
         </a-form-item>
-        <a-form-item v-bind="formItemLayout">
-          <a-checkbox v-decorator="decorators.autoStart">
-            重装系统后自动启动
-          </a-checkbox>
+        <a-form-item label="自动启动" v-bind="formItemLayout" extra="重装系统后是否自动启动">
+          <a-switch v-decorator="decorators.autoStart" />
         </a-form-item>
       </a-form>
     </div>
