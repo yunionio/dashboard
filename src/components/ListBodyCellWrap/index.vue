@@ -1,6 +1,6 @@
 <template>
   <div v-on="events">
-    <span v-if="!hideField" :class="{ 'text-weak': field === 'description' }">{{ row[field] || '-' }}</span>
+    <span v-if="!hideField" :class="{ 'text-weak': field === 'description', [titleClass]: titleClass }">{{ row[field] || '-' }}</span>
     <slot />
     <edit
       slot="edit"
@@ -65,6 +65,7 @@ export default {
     formRules: {
       type: Array,
     },
+    titleClass: String,
   },
   data () {
     return {

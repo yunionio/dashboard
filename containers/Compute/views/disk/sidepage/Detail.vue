@@ -3,12 +3,12 @@
     :list="list"
     :data="data"
     :base-info="baseInfo"
-    :extra-info="extraInfo" />
+    :extra-info="extraInfo"
+    status-module="disk" />
 </template>
 
 <script>
 import { MEDIUM_MAP } from '../../../constants'
-import { getStatusTableColumn } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 
 export default {
@@ -26,11 +26,6 @@ export default {
   data () {
     return {
       baseInfo: [
-        {
-          field: 'name',
-          title: '名称',
-        },
-        getStatusTableColumn({ statusModule: 'disk' }),
         {
           field: 'disk_size',
           title: '容量',
