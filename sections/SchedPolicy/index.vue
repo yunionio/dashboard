@@ -1,18 +1,21 @@
 <template>
-  <div>
+  <div class="vm-sched-policy">
     <a-form-item>
       <a-radio-group v-decorator="decorators.schedPolicyType" @change="change">
         <a-radio-button v-for="(item, key) of schedPolicyOptionsMap" :value="key" :key="key">{{ item.label }}</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-form-item v-if="schedPolicyComponent === 'host'">
+    <a-form-item v-if="schedPolicyComponent === 'host'" class="host-form-item">
       <base-select
+        class="w-50"
         resource="hosts"
         :disabled-items="disabledHost"
         v-decorator="decorators.schedPolicyHost"
         :params="policyHostParams"
+        :label-format="labelFormat"
         :need-params="true"
-        :select-props="{ placeholder: '指定宿主机' }" />
+        :filterable="true"
+        :select-props="{ placeholder: schedPolicyOptionsMap.host.label }" />
     </a-form-item>
     <a-form-item v-if="schedPolicyComponent === 'schedtag'">
       <policy-schedtag
@@ -75,10 +78,10 @@ export default {
           ...rest,
         }
       }
-      // !!! 限制非管理后台模式下不能指定宿主机(私有云)、云账号(公有云)
-      // if (!this.$isAdminMode && !this.$isDomainMode) {
-      //   delete ret['host']
-      // }
+      // 限制非管理后台模式下不能指定宿主机(私有云)、云账号(公有云)
+      if (!this.$store.getters.isAdminMode && !this.$store.getters.isDomainMode) {
+        delete ret['host']
+      }
       return ret
     },
   },
@@ -96,6 +99,20 @@ export default {
           break
       }
     },
+    labelFormat (item) {
+      if (this.serverType === SERVER_TYPE.public) {
+        return `${item.account} / ${item.manager} / ${item.zone}`
+      }
+      return item.name
+    },
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.vm-sched-policy {
+  .host-form-item ::v-deep .ant-form-item-control {
+    width: 100%;
+  }
+}
+</style>

@@ -214,8 +214,21 @@ export default {
       groupActions: [
         {
           label: '新建',
-          action: () => {
-            this.createServer()
+          actions: () => {
+            return [
+              {
+                label: 'IDC',
+                action: () => {
+                  this.createServer('idc')
+                },
+              },
+              {
+                label: '公有云',
+                action: () => {
+                  this.createServer('public')
+                },
+              },
+            ]
           },
           meta: () => {
             return {
@@ -529,6 +542,32 @@ export default {
                     },
                   },
                   {
+                    label: '创建相同配置',
+                    action: () => {
+                      this.createDialog('VmCloneDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      if (obj.is_prepaid_recycle) {
+                        ret.tooltip = '包年包月机器，不支持此操作'
+                        return ret
+                      }
+                      if (obj.hypervisor !== 'kvm' && findPlatform(obj.hypervisor) !== SERVER_TYPE.public) {
+                        ret.tooltip = '仅公有云、OneCloud支持此操作'
+                        return ret
+                      }
+                      ret.validate = true
+                      return ret
+                    },
+                  },
+                  {
                     label: '设置GPU卡',
                     action: () => {
                       this.createDialog('VmAttachGpuDialog', {
@@ -572,6 +611,31 @@ export default {
                       if (obj.status !== 'running') {
                         ret.tooltip = '仅在运行中状态下支持此操作'
                         return ret
+                      }
+                      ret.validate = true
+                      return ret
+                    },
+                  },
+                  {
+                    label: '到期释放',
+                    action: () => {
+                      this.createDialog('VmSetDurationDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      if (findPlatform(obj.hypervisor) === SERVER_TYPE.public) {
+                        ret.tooltip = '公有云不支持此操作'
+                        return ret
+                      }
+                      if (obj.billing_type === 'prepaid') {
+                        ret.tooltip = '包年包月机器，不支持此操作'
                       }
                       ret.validate = true
                       return ret
@@ -978,8 +1042,13 @@ export default {
     this.list.fetchData()
   },
   methods: {
-    createServer () {
-      this.$router.push('/vminstance/create')
+    createServer (type) {
+      this.$router.push({
+        path: '/vminstance/create',
+        query: {
+          type,
+        },
+      })
     },
     getParams () {
       return {
