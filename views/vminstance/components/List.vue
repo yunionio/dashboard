@@ -215,7 +215,18 @@ export default {
         {
           label: '新建',
           action: () => {
-            this.createServer()
+            this.createServer('idc')
+          },
+          meta: () => {
+            return {
+              buttonType: 'primary',
+            }
+          },
+        },
+        {
+          label: '新建公有云',
+          action: () => {
+            this.createServer('public')
           },
           meta: () => {
             return {
@@ -978,8 +989,13 @@ export default {
     this.list.fetchData()
   },
   methods: {
-    createServer () {
-      this.$router.push('/vminstance/create')
+    createServer (type) {
+      this.$router.push({
+        path: '/vminstance/create',
+        query: {
+          type,
+        },
+      })
     },
     getParams () {
       return {

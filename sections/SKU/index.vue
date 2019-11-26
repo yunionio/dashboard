@@ -10,6 +10,7 @@
     <vxe-grid
       ref="tableRef"
       resizable
+      max-height="400"
       @radio-change="skuChange"
       :columns="tableColumn"
       :data="skuResults">
@@ -17,6 +18,9 @@
         <loader :loading="skuLoading" />
       </template>
     </vxe-grid>
+    <div class="mt-1" v-if="selectedTip">
+      已选择：{{ selectedTip }}
+    </div>
   </div>
 </template>
 
@@ -25,6 +29,7 @@ import * as R from 'ramda'
 import { ALL_SKU_CATEGORY_OPT, SKU_CATEGORY_MAP } from '@Compute/constants'
 import { Manager } from '@/utils/manager'
 import { PROVIDER_MAP, HYPERVISORS_MAP } from '@/constants'
+import { sizestr } from '@/utils/utils'
 
 const keys = ['hour_price', 'month_price', 'year_price']
 const units = ['小时', '月', '年']
@@ -73,6 +78,7 @@ export default {
       ratesList: [], // 套餐价格列表
       rateLoading: false,
       skuLoading: false,
+      selectedSkuData: {},
       skuType: ALL_SKU_CATEGORY_OPT.key,
     }
   },
@@ -104,7 +110,7 @@ export default {
         { field: 'region', title: '区域' },
         { field: 'name', title: '规格' },
         { field: 'cpu_core_count', title: 'CPU(核)' },
-        { field: 'memory_size_mb_compute', title: '内存(GB))' },
+        { field: 'memory_size_mb_compute', title: '内存(GB)' },
       ]
       if (this.isPublic) {
         column.push({
@@ -205,6 +211,12 @@ export default {
       }
       return ret
     },
+    selectedTip () {
+      if (this.selectedSkuData.id) {
+        return `${this.selectedSkuData.name} (${this.selectedSkuData.instance_type_category_i18n} ${this.selectedSkuData.cpu_core_count}核 ${sizestr(this.selectedSkuData.memory_size_mb, 'M', 1024)}B)`
+      }
+      return null
+    },
   },
   watch: {
     skuParams: {
@@ -240,6 +252,7 @@ export default {
       }
     },
     setSku (skuData) {
+      this.selectedSkuData = skuData
       this.$nextTick(() => {
         this.$refs.tableRef.setRadioRow(skuData)
         this.$emit('change', skuData)

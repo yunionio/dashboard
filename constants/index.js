@@ -80,6 +80,12 @@ export const DEFAULT_PARAMS = {
     },
   },
   [SERVER_TYPE.public]: {
+    image: {
+      limit: 0,
+      scope: '',
+      details: true,
+      status: 'active',
+    },
     cloudRegionList: {
       cloud_env: 'public',
     },
@@ -278,6 +284,45 @@ export const BILL_TYPES_MAP = {
     key: 'package',
   },
 }
+
+// 包年包月购买时长选项配置
+export const BUY_DURATION_OPTIONS = [
+  {
+    label: '1个月',
+    key: '1M',
+    unit: 'M',
+  },
+  {
+    label: '2个月',
+    key: '2M',
+    unit: 'M',
+  },
+  {
+    label: '3个月',
+    key: '3M',
+    unit: 'M',
+  },
+  {
+    label: '半年',
+    key: '6M',
+    unit: 'M',
+  },
+  {
+    label: '1年',
+    key: '1Y',
+    unit: 'Y',
+  },
+  {
+    label: '2年',
+    key: '2Y',
+    unit: 'Y',
+  },
+  {
+    label: '3年',
+    key: '3Y',
+    unit: 'Y',
+  },
+]
 
 // 管理员密码选择配置
 export const LOGIN_TYPES_MAP = {

@@ -1,7 +1,6 @@
 // 创建主机相应组件的参数
 import * as R from 'ramda'
 import {
-  DEFAULT_PARAMS,
   NETWORK_OPTIONS_MAP,
   SERVER_TYPE,
   EIP_TYPES_MAP,
@@ -43,431 +42,493 @@ function diskValidator (rule, value, callback) {
   callback()
 }
 
-export const decorators = {
-  domain: [
-    'domain',
-    {
-      rules: [
-        { validator: isRequired(), message: '请选择域', trigger: 'change' },
-      ],
-    },
-  ],
-  project: [
-    'project',
-    {
-      rules: [
-        { validator: isRequired(), message: '请选择项目', trigger: 'change' },
-      ],
-    },
-  ],
-  name: [
-    'name',
-    {
-      initialValue: '',
-      validateTrigger: ['change', 'blur'],
-      validateFirst: true,
-      rules: [
-        { required: true, message: '请输入名称' },
-        { validator: validateForm('serverName') },
-      ],
-    },
-  ],
-  count: [
-    'count',
-    {
-      initialValue: 1,
-    },
-  ],
-  cloudregionZone: {
-    cloudregion: [
-      'cloudregion',
+export const createVmDecorators = type => {
+  let imageTypeInitValue = IMAGES_TYPE_MAP.standard.key
+  if (type === SERVER_TYPE.public) { // 公有云机器默认选择公有云镜像
+    imageTypeInitValue = IMAGES_TYPE_MAP.public.key
+  }
+  if (type === SERVER_TYPE.private) { // 私有云机器默认选择私有云镜像
+    imageTypeInitValue = IMAGES_TYPE_MAP.private.key
+  }
+  return {
+    domain: [
+      'domain',
       {
-        initialValue: { key: '', label: '' },
+        initialValue: 'default',
         rules: [
-          { validator: isRequired(), message: '请选择区域' },
+          { validator: isRequired(), message: '请选择域', trigger: 'change' },
         ],
       },
     ],
-    zone: [
-      'zone',
+    project: [
+      'project',
       {
-        initialValue: { key: '', label: '' },
         rules: [
-          { validator: isRequired(), message: '请选择可用区' },
+          { validator: isRequired(), message: '请选择项目', trigger: 'change' },
         ],
       },
     ],
-  },
-  imageOS: {
-    os: [
-      'os',
+    name: [
+      'name',
       {
         initialValue: '',
+        validateTrigger: ['change', 'blur'],
+        validateFirst: true,
         rules: [
-          { required: true, message: '请选择操作系统' },
+          { required: true, message: '请输入名称' },
+          { validator: validateForm('serverName') },
         ],
       },
     ],
-    image: [
-      'image',
-      {
-        initialValue: { key: '', label: '' },
-        rules: [
-          { validator: isRequired(), message: '请选择镜像' },
-        ],
-      },
-    ],
-    imageType: [
-      'imageType',
-      {
-        initialValue: IMAGES_TYPE_MAP.standard.key,
-      },
-    ],
-  },
-  loginConfig: {
-    loginType: [
-      'loginType',
-      {
-        initialValue: 'random',
-      },
-    ],
-    keypair: [
-      'loginKeypair',
-      {
-        initialValue: undefined, // { key: '', label: '' }
-        rules: [
-          { validator: isRequired(), message: '请选择关联密钥' },
-        ],
-      },
-    ],
-    password: [
-      'loginPassword',
-      {
-        initialValue: '',
-        rules: [
-          { required: true, message: '请输入密码' },
-        ],
-      },
-    ],
-  },
-  hypervisor: [
-    'hypervisor',
-    {
-      rules: [
-        { required: true, message: '请选择平台' },
-      ],
-    },
-  ],
-  gpu: {
-    gpuEnable: [
-      'gpuEnable',
-      {
-        initialValue: false,
-      },
-    ],
-    gpu: [
-      'gpu',
-      {
-        rules: [
-          { required: true, message: '请选择GPU型号' },
-        ],
-      },
-    ],
-    gpuCount: [
-      'gpuCount',
+    count: [
+      'count',
       {
         initialValue: 1,
       },
     ],
-  },
-  vcpu: [
-    'vcpu',
-    {
-      initialValue: 2,
-    },
-  ],
-  vmem: [
-    'vmem',
-    {
-      initialValue: 2048,
-    },
-  ],
-  sku: [
-    'sku',
-    {
-      rules: [
-        { required: true, message: '请选择套餐' },
+    cloudregionZone: {
+      cloudregion: [
+        'cloudregion',
+        {
+          initialValue: { key: '', label: '' },
+          rules: [
+            { validator: isRequired(), message: '请选择区域' },
+          ],
+        },
+      ],
+      zone: [
+        'zone',
+        {
+          initialValue: { key: '', label: '' },
+          rules: [
+            { validator: isRequired(), message: '请选择可用区' },
+          ],
+        },
       ],
     },
-  ],
-  systemDisk: {
-    type: [
-      'systemDiskType',
+    imageOS: {
+      os: [
+        'os',
+        {
+          initialValue: '',
+          rules: [
+            { required: true, message: '请选择操作系统' },
+          ],
+        },
+      ],
+      image: [
+        'image',
+        {
+          initialValue: { key: '', label: '' },
+          rules: [
+            { validator: isRequired(), message: '请选择镜像' },
+          ],
+        },
+      ],
+      imageType: [
+        'imageType',
+        {
+          initialValue: imageTypeInitValue,
+        },
+      ],
+    },
+    loginConfig: {
+      loginType: [
+        'loginType',
+        {
+          initialValue: 'random',
+        },
+      ],
+      keypair: [
+        'loginKeypair',
+        {
+          initialValue: undefined, // { key: '', label: '' }
+          rules: [
+            { validator: isRequired(), message: '请选择关联密钥' },
+          ],
+        },
+      ],
+      password: [
+        'loginPassword',
+        {
+          initialValue: '',
+          rules: [
+            { required: true, message: '请输入密码' },
+          ],
+        },
+      ],
+    },
+    hypervisor: [
+      'hypervisor',
       {
         rules: [
-          { validator: isRequired(), message: '请选择磁盘类型' },
+          { required: true, message: '请选择平台' },
         ],
       },
     ],
-    size: [
-      'systemDiskSize',
+    gpu: {
+      gpuEnable: [
+        'gpuEnable',
+        {
+          initialValue: false,
+        },
+      ],
+      gpu: [
+        'gpu',
+        {
+          rules: [
+            { required: true, message: '请选择GPU型号' },
+          ],
+        },
+      ],
+      gpuCount: [
+        'gpuCount',
+        {
+          initialValue: 1,
+        },
+      ],
+    },
+    vcpu: [
+      'vcpu',
+      {
+        initialValue: 2,
+      },
+    ],
+    vmem: [
+      'vmem',
+      {
+        initialValue: 2048,
+      },
+    ],
+    sku: [
+      'sku',
       {
         rules: [
-          { required: true, message: '请输入磁盘大小' },
+          { required: true, message: '请选择套餐' },
         ],
       },
     ],
-    schedtag: [
-      'systemDiskSchedtag',
-      {
-        validateTrigger: ['change', 'blur'],
-        rules: [{
-          required: true,
-          message: '请选择调度标签',
-        }],
-      },
-    ],
-    policy: [
-      'systemDiskPolicy',
-      {
-        validateTrigger: ['blur', 'change'],
-        rules: [{
-          required: true,
-          message: '请选择调度标签',
-        }],
-      },
-    ],
-  },
-  dataDisk: {
-    type: i => [
-      `dataDiskTypes[${i}]`,
-      {
-        rules: [
-          { validator: isRequired(), message: '请选择磁盘类型' },
-        ],
-      },
-    ],
-    size: i => [
-      `dataDiskSizes[${i}]`,
-      {
-        rules: [
-          { required: true, message: '请输入磁盘大小' },
-        ],
-      },
-    ],
-    schedtag: i => [
-      `dataDiskSchedtags[${i}]`,
-      {
-        validateTrigger: ['change', 'blur'],
-        rules: [{
-          required: true,
-          message: '请选择调度标签',
-        }],
-      },
-    ],
-    policy: i => [
-      `dataDiskPolicys[${i}]`,
-      {
-        validateTrigger: ['blur', 'change'],
-        rules: [{
-          required: true,
-          message: '请选择调度标签',
-        }],
-      },
-    ],
-    snapshot: i => [
-      `dataDiskSnapshots[${i}]`,
-      {
-        validateTrigger: ['blur', 'change'],
-        rules: [{
-          required: true,
-          message: '请选择快照',
-        }],
-      },
-    ],
-    filetype: i => [
-      `dataDiskFiletypes[${i}]`,
-      {
-        validateTrigger: ['blur', 'change'],
-        rules: [{
-          required: true,
-          message: '请选择文件系统',
-        }],
-      },
-    ],
-    mountPath: i => [
-      `dataDiskMountPaths[${i}]`,
-      {
-        validateTrigger: ['blur', 'change'],
-        rules: [{
-          required: true,
-          message: '请填写挂载点',
-        }, {
-          validator: diskValidator,
-        }],
-      },
-    ],
-  },
-  network: {
-    networkType: [
-      'networkType',
-      {
-        initialValue: NETWORK_OPTIONS_MAP.manual.key,
-      },
-    ],
-    networkConfig: {
-      networks: i => [
-        `networks[${i}]`,
+    systemDisk: {
+      type: [
+        'systemDiskType',
+        {
+          rules: [
+            { validator: isRequired(), message: '请选择磁盘类型' },
+          ],
+        },
+      ],
+      size: [
+        'systemDiskSize',
+        {
+          rules: [
+            { required: true, message: '请输入磁盘大小' },
+          ],
+        },
+      ],
+      schedtag: [
+        'systemDiskSchedtag',
         {
           validateTrigger: ['change', 'blur'],
           rules: [{
             required: true,
-            message: '请选择ip子网',
+            message: '请选择调度标签',
           }],
         },
       ],
-      ips: (i, networkData) => [
-        `networkIps[${i}]`,
+      policy: [
+        'systemDiskPolicy',
         {
-          validateFirst: true,
           validateTrigger: ['blur', 'change'],
           rules: [{
             required: true,
-            message: '请输入ip',
+            message: '请选择调度标签',
+          }],
+        },
+      ],
+    },
+    dataDisk: {
+      type: i => [
+        `dataDiskTypes[${i}]`,
+        {
+          rules: [
+            { validator: isRequired(), message: '请选择磁盘类型' },
+          ],
+        },
+      ],
+      size: i => [
+        `dataDiskSizes[${i}]`,
+        {
+          rules: [
+            { required: true, message: '请输入磁盘大小' },
+          ],
+        },
+      ],
+      schedtag: i => [
+        `dataDiskSchedtags[${i}]`,
+        {
+          validateTrigger: ['change', 'blur'],
+          rules: [{
+            required: true,
+            message: '请选择调度标签',
+          }],
+        },
+      ],
+      policy: i => [
+        `dataDiskPolicys[${i}]`,
+        {
+          validateTrigger: ['blur', 'change'],
+          rules: [{
+            required: true,
+            message: '请选择调度标签',
+          }],
+        },
+      ],
+      snapshot: i => [
+        `dataDiskSnapshots[${i}]`,
+        {
+          validateTrigger: ['blur', 'change'],
+          rules: [{
+            required: true,
+            message: '请选择快照',
+          }],
+        },
+      ],
+      filetype: i => [
+        `dataDiskFiletypes[${i}]`,
+        {
+          validateTrigger: ['blur', 'change'],
+          rules: [{
+            required: true,
+            message: '请选择文件系统',
+          }],
+        },
+      ],
+      mountPath: i => [
+        `dataDiskMountPaths[${i}]`,
+        {
+          validateTrigger: ['blur', 'change'],
+          rules: [{
+            required: true,
+            message: '请填写挂载点',
           }, {
-            validator: checkIpInSegment(i, networkData),
+            validator: diskValidator,
           }],
         },
       ],
     },
-    networkSchedtag: {
-      schedtags: i => [
-        `networkSchedtags[${i}]`,
+    network: {
+      networkType: [
+        'networkType',
         {
-          validateTrigger: ['change', 'blur'],
-          rules: [{
-            required: true,
-            message: '请选择调度标签',
-          }],
+          initialValue: NETWORK_OPTIONS_MAP.manual.key,
         },
       ],
-      policys: (i, networkData) => [
-        `networkPolicys[${i}]`,
-        {
-          validateTrigger: ['blur', 'change'],
-          rules: [{
-            required: true,
-            message: '请选择调度标签',
-          }],
-        },
-      ],
-    },
-  },
-  schedPolicy: {
-    schedPolicyType: [
-      'schedPolicyType',
-      {
-        initialValue: 'default',
-      },
-    ],
-    schedPolicyHost: [
-      'schedPolicyHost',
-      {
-        rules: [
-          { required: true, message: '请选择宿主机' },
+      networkConfig: {
+        networks: i => [
+          `networks[${i}]`,
+          {
+            validateTrigger: ['change', 'blur'],
+            rules: [{
+              required: true,
+              message: '请选择ip子网',
+            }],
+          },
+        ],
+        ips: (i, networkData) => [
+          `networkIps[${i}]`,
+          {
+            validateFirst: true,
+            validateTrigger: ['blur', 'change'],
+            rules: [{
+              required: true,
+              message: '请输入ip',
+            }, {
+              validator: checkIpInSegment(i, networkData),
+            }],
+          },
         ],
       },
-    ],
-    policySchedtag: {
-      schedtags: i => [
-        `policySchedtagSchedtags[${i}]`,
+      networkSchedtag: {
+        schedtags: i => [
+          `networkSchedtags[${i}]`,
+          {
+            validateTrigger: ['change', 'blur'],
+            rules: [{
+              required: true,
+              message: '请选择调度标签',
+            }],
+          },
+        ],
+        policys: (i, networkData) => [
+          `networkPolicys[${i}]`,
+          {
+            validateTrigger: ['blur', 'change'],
+            rules: [{
+              required: true,
+              message: '请选择调度标签',
+            }],
+          },
+        ],
+      },
+    },
+    schedPolicy: {
+      schedPolicyType: [
+        'schedPolicyType',
         {
-          validateTrigger: ['change', 'blur'],
-          rules: [{
-            required: true,
-            message: '请选择调度标签',
-          }],
+          initialValue: 'default',
         },
       ],
-      policys: (i, networkData) => [
-        `policySchedtagPolicys[${i}]`,
+      schedPolicyHost: [
+        'schedPolicyHost',
         {
-          validateTrigger: ['blur', 'change'],
-          rules: [{
-            required: true,
-            message: '请选择调度标签',
-          }],
+          rules: [
+            { required: true, message: '请选择宿主机' },
+          ],
+        },
+      ],
+      policySchedtag: {
+        schedtags: i => [
+          `policySchedtagSchedtags[${i}]`,
+          {
+            validateTrigger: ['change', 'blur'],
+            rules: [{
+              required: true,
+              message: '请选择调度标签',
+            }],
+          },
+        ],
+        policys: (i, networkData) => [
+          `policySchedtagPolicys[${i}]`,
+          {
+            validateTrigger: ['blur', 'change'],
+            rules: [{
+              required: true,
+              message: '请选择调度标签',
+            }],
+          },
+        ],
+      },
+    },
+    bios: [
+      'bios',
+      {
+        initialValue: 'BIOS',
+      },
+    ],
+    backup: {
+      backupEnable: [
+        'backupEnable',
+        {
+          valuePropName: 'checked',
+          initialValue: false,
+        },
+      ],
+      backup: [
+        'backup',
+      ],
+    },
+    duration: {
+      durationEnable: [
+        'durationEnable',
+        {
+          valuePropName: 'checked',
+          initialValue: false,
+        },
+      ],
+      duration: [
+        'duration',
+        {
+          initialValue: '1h',
         },
       ],
     },
-  },
-  bios: [
-    'bios',
-    {
-      initialValue: 'BIOS',
+    groups: {
+      groupsEnable: [
+        'groupsEnable',
+        {
+          valuePropName: 'checked',
+          initialValue: false,
+        },
+      ],
+      groups: [
+        'groups',
+      ],
     },
-  ],
-  backup: {
-    backupEnable: [
-      'backupEnable',
+    bill: {
+      billType: [
+        'billType',
+        {
+          initialValue: 'quantity',
+        },
+      ],
+      duration: [
+        'duration',
+        {
+          initialValue: '1M',
+        },
+      ],
+      auto_prepaid_recycle: [
+        'auto_prepaid_recycle',
+        {
+          valuePropName: 'checked',
+          initialValue: false,
+        },
+      ],
+    },
+    resourceType: [
+      'resourceType',
       {
-        valuePropName: 'checked',
-        initialValue: false,
+        preserve: true,
+        initialValue: RESOURCE_TYPES_MAP.shared.key,
       },
     ],
-    backup: [
-      'backup',
-    ],
-  },
-  duration: {
-    durationEnable: [
-      'durationEnable',
-      {
-        valuePropName: 'checked',
-        initialValue: false,
-      },
-    ],
-    duration: [
-      'duration',
-      {
-        initialValue: '1h',
-      },
-    ],
-  },
-  groups: {
-    groupsEnable: [
-      'groupsEnable',
-      {
-        valuePropName: 'checked',
-        initialValue: false,
-      },
-    ],
-    groups: [
-      'groups',
-    ],
-  },
+    eip: {
+      type: [
+        'eip_type',
+        {
+          initialValue: 'none',
+        },
+      ],
+      charge_type: [
+        'eip_charge_type',
+        {
+          initialValue: 'traffic',
+        },
+      ],
+      bandwidth: [
+        'eip_bw',
+      ],
+      eip: [
+        'eip',
+        {
+          rules: [
+            { required: true, message: '请选择弹性公网IP' },
+          ],
+        },
+      ],
+    },
+    secgroup: {
+      type: [
+        'secgroup_type',
+        {
+          initialValue: 'default',
+        },
+      ],
+      secgroup: [
+        'secgroup',
+        {
+          rules: [
+            { required: true, message: '请选择安全组' },
+          ],
+        },
+      ],
+    },
+  }
 }
 
 const decoratorGroup = {
   idc: ['domain', 'project', 'cloudregionZone', 'name', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'gpu', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'schedPolicy', 'bios', 'backup', 'duration', 'groups'],
-}
-export class ControlParams {
-  constructor (type) {
-    this.type = type
-    this.scope = store.getters.scope
-    this.params = DEFAULT_PARAMS[type]
-    this.initScope()
-  }
-  initScope () {
-    R.forEachObjIndexed((value, key) => {
-      if (!R.isNil(value.scope)) {
-        this.params[key].scope = this.scope
-      }
-    }, this.params)
-  }
-  zoneChange (zoneId) {
-    this.params.network.zone = zoneId
-  }
+  public: ['domain', 'project', 'name', 'count', 'imageOS', 'loginConfig', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'schedPolicy', 'bill', 'eip', 'secgroup', 'resourceType'],
 }
 
 export class Decorator {
@@ -479,6 +540,7 @@ export class Decorator {
     const decoratorArr = decoratorGroup[this.type]
     if (decoratorArr) {
       decoratorArr.forEach(dec => {
+        const decorators = createVmDecorators(this.type)
         if (decorators[dec]) {
           this.decorators[dec] = decorators[dec]
         } else {
@@ -722,7 +784,7 @@ export class GenCreateData {
   getHypervisor () {
     let ret = this.fd.hypervisor
     if (this.isPublic && !this.isPrepaid) {
-      let provider = this.fd.sku.selected.provider
+      let provider = this.fd.sku.provider
       if (provider) ret = provider.toLowerCase()
     }
     return ret
@@ -734,12 +796,10 @@ export class GenCreateData {
    * @memberof GenCreateData
    */
   getPreferRegion () {
-    let ret = this.fd.cloudregion.key
     if (this.isPublic && !this.isPrepaid) {
-      let region = this.fd.sku.selected.cloudregion_id
-      if (region) ret = region
+      return this.fd.sku.cloudregion_id
     }
-    return ret
+    return this.fd.cloudregion.key
   }
   /**
    * 获取Zone
@@ -802,7 +862,7 @@ export class GenCreateData {
     }
     // 弹性IP
     if (this.isPublic) {
-      if (this.fi.eipType === EIP_TYPES_MAP.new.key) {
+      if (this.fd.eip_type === EIP_TYPES_MAP.new.key) {
         if (
           this.fd.eip_charge_type === EIP_CHARGE_TYPES_MAP.traffic.key ||
           this.fd.eip_charge_type === EIP_CHARGE_TYPES_MAP.bandwidth.key
@@ -814,7 +874,7 @@ export class GenCreateData {
       // resource_type
       data.resource_type = this.fd.resourceType
       // 包年包月参数
-      if (this.fi.billType === BILL_TYPES_MAP.package.key) {
+      if (this.fd.billType === BILL_TYPES_MAP.package.key) {
         data.duration = this.fd.duration
         data.auto_prepaid_recycle = this.fd.auto_prepaid_recycle
       }
@@ -829,8 +889,8 @@ export class GenCreateData {
       data[loginValueKey.key] = loginValueKey.value
     }
     // 安全组
-    if (this.fd.secgroupType === SECGROUP_OPTIONS_MAP.manual.key) {
-      data.secgroup = this.fd.secgroup.id
+    if (this.fd.secgroup_type === SECGROUP_OPTIONS_MAP.manual.key) {
+      data.secgroup = this.fd.secgroup
     }
     // 如果设置了调度策略则拼装调度所需数据
     if (this.fd.schedPolicyType !== SCHED_POLICY_OPTIONS_MAP.default.key) {
