@@ -11,9 +11,9 @@
         <div slot="title">最少时间间隔为 30 分钟</div>
       </a-tooltip>
     </a-form-item>
-    <a-form-item label="是否共享" v-bind="formLayout">
+    <!-- <a-form-item label="是否共享" v-bind="formLayout">
       <a-switch v-decorator="decorators.is_public" />
-    </a-form-item>
+    </a-form-item> -->
   </div>
 </template>
 
@@ -45,13 +45,13 @@ export default {
             initialValue: 60,
           },
         ],
-        is_public: [
-          'is_public',
-          {
-            valuePropName: 'checked',
-            initialValue: false,
-          },
-        ],
+        // is_public: [
+        //   'is_public',
+        //   {
+        //     valuePropName: 'checked',
+        //     initialValue: false,
+        //   },
+        // ],
       },
     }
   },

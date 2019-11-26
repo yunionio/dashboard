@@ -23,9 +23,13 @@ export default {
     getParams: {
       type: [Function, Object],
     },
+    data: {
+      type: Object,
+    },
   },
   data () {
     const ownerDomain = list => this.$store.getters.isAdminMode || list.selectedItems.every(obj => obj.domain_id === this.$store.getters.userInfo.projectDomainId)
+    const isAccountDomain = data => data.share_mode === 'account_domain'
     return {
       list: this.$list.createList(this, {
         resource: 'cloudproviders',
@@ -136,11 +140,20 @@ export default {
         {
           label: '更改项目',
           action: () => {
-            this.createDialog('ChangeProjectDialog', {
-              data: this.list.selectedItems,
-              columns: this.columns,
-              list: this.list,
-            })
+            if (isAccountDomain(this.data)) {
+              this.createDialog('ChangeProjectDialog', {
+                data: this.list.selectedItems,
+                columns: this.columns,
+                list: this.list,
+              })
+            } else {
+              this.createDialog('ChangeOwenrDialog', {
+                data: this.list.selectedItems,
+                columns: this.columns,
+                list: this.list,
+                action: 'change-project',
+              })
+            }
           },
           meta: () => {
             return {
@@ -153,11 +166,20 @@ export default {
         {
           label: '更改项目',
           action: obj => {
-            this.createDialog('ChangeProjectDialog', {
-              data: [obj],
-              columns: this.columns,
-              list: this.list,
-            })
+            if (isAccountDomain(this.data)) {
+              this.createDialog('ChangeProjectDialog', {
+                data: [obj],
+                columns: this.columns,
+                list: this.list,
+              })
+            } else {
+              this.createDialog('ChangeOwenrDialog', {
+                data: [obj],
+                columns: this.columns,
+                list: this.list,
+                action: 'change-project',
+              })
+            }
           },
           meta: obj => {
             let tooltip
