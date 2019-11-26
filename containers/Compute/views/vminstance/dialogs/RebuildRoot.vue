@@ -7,7 +7,7 @@
       <a-form
         :form="form.fc">
         <a-form-item v-bind="formItemLayout" label="操作系统" extra="操作系统会根据选择的虚拟化平台和可用区域的变化而变化公共镜像的维护请联系管理员">
-          <os-select :type="type" :hypervisor="hypervisor" :image-params="image" :decorator="decorators.imageOS" />
+          <os-select :type="type" :hypervisor="hypervisor" :image-params="image" :cache-image-params="cacheImageParams" :decorator="decorators.imageOS" />
         </a-form-item>
         <a-form-item label="管理员密码" v-bind="formItemLayout">
           <server-password :decorator="decorators.loginConfig" />
@@ -27,6 +27,7 @@
 <script>
 import OsSelect from '@Compute/sections/OsSelect'
 import ServerPassword from '@Compute/sections/ServerPassword'
+import { SERVER_TYPE } from '@Compute/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { HYPERVISORS_MAP } from '@/constants'
@@ -52,6 +53,7 @@ export default {
       action: '重装系统',
       form: {
         fc: this.$form.createForm(this),
+        fd: {},
       },
       image: {
         limit: 0,
@@ -151,6 +153,19 @@ export default {
     type () {
       const brand = this.params.data[0].brand
       return findPlatform(brand)
+    },
+    cacheImageParams () {
+      let params = {
+        details: false,
+        order_by: 'ref_count',
+        order: 'desc',
+        image_type: 'customized',
+        zone: this.params.data[0].zone_id,
+      }
+      if (this.type === SERVER_TYPE.private || this.type === SERVER_TYPE.public) {
+        params.image_type = 'system'
+      }
+      return params
     },
   },
   methods: {
