@@ -34,7 +34,7 @@ export default {
         auto_delete: [
           'auto_delete',
           {
-            initialValue: true,
+            initialValue: false,
             valuePropName: 'checked',
           },
         ],
