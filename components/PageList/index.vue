@@ -124,7 +124,7 @@ export default {
     },
     tablePage () {
       const limit = this.list.getLimit()
-      if (this.data.length <= 0) return null
+      if (this.list.total <= 0) return null
       const currentPage = limit ? Math.floor(this.list.offset / limit) + 1 : 1
       return {
         total: this.list.total,

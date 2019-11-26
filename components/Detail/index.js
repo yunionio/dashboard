@@ -1,8 +1,9 @@
 import './style.scss'
 import * as R from 'ramda'
 import moment from 'moment'
+import classNames from 'classnames'
 
-const DEFAULT_BASE_INFO = [
+const DEFAULT_LAST_BASE_INFO = [
   {
     field: 'created_at',
     title: '创建时间',
@@ -19,6 +20,46 @@ const DEFAULT_BASE_INFO = [
   },
 ]
 
+const getDefaultTopBaseInfo = (h, { idKey, statusKey, statusModule, data, list }) => {
+  return [
+    {
+      field: idKey,
+      title: 'ID',
+      slots: {
+        default: ({ row }) => {
+          return [<list-body-cell-wrap copy row={ data } list={ list } field={ idKey } />]
+        },
+      },
+    },
+    {
+      field: statusKey,
+      title: '状态',
+      slots: {
+        default: ({ row }) => {
+          if (statusModule) {
+            return [<status status={ row[statusKey] } statusModule={ statusModule } />]
+          }
+          return '-'
+        },
+      },
+    },
+    {
+      field: 'project_domain',
+      title: '域',
+      formatter: ({ row }) => {
+        return row.project_domain || '-'
+      },
+    },
+    {
+      field: 'tenant',
+      title: '项目',
+      formatter: ({ row }) => {
+        return row.tenant || '-'
+      },
+    },
+  ]
+}
+
 export default {
   name: 'Detail',
   props: {
@@ -28,7 +69,7 @@ export default {
     },
     baseInfo: {
       type: Array,
-      required: true,
+      default: () => ([]),
     },
     extraInfo: {
       type: Array,
@@ -39,9 +80,33 @@ export default {
     nameRules: {
       type: Array,
     },
+    statusModule: {
+      type: String,
+    },
+    idKey: {
+      type: String,
+      default: 'id',
+    },
+    statusKey: {
+      type: String,
+      default: 'status',
+    },
+  },
+  computed: {
+    commonBaseInfo () {
+      let baseInfo = getDefaultTopBaseInfo(this.$createElement, {
+        idKey: this.idKey,
+        statusKey: this.statusKey,
+        statusModule: this.statusModule,
+        data: this.data,
+        list: this.list,
+      }).concat(this.baseInfo).concat(DEFAULT_LAST_BASE_INFO)
+      baseInfo = R.uniqBy(item => item.field, baseInfo)
+      return baseInfo
+    },
   },
   methods: {
-    renderItem (h, item) {
+    renderItem (h, item, renderTitle = true) {
       let val
       if (item.slots && item.slots.default) {
         val = item.slots.default({ row: this.data }, h)
@@ -50,13 +115,14 @@ export default {
       } else {
         val = this.data[item.field] || '-'
       }
+      const children = []
+      if (renderTitle) {
+        children.push(h('div', { class: 'detail-item-title' }, item.title))
+      }
+      children.push(<div class={classNames('detail-item-value', { 'ml-0': !renderTitle })} title={val}>{val}</div>)
       return h('div', {
         class: 'detail-item mt-2',
-      }, [
-        h('div', { class: 'detail-item-title' }, item.title),
-        <div class="detail-item-value" title={val}>{val}</div>,
-        // h('div', { class: 'detail-item-value', attrs: { title: val } }, val),
-      ])
+      }, children)
     },
     renderItems (h, items) {
       return h('div', {
@@ -77,27 +143,26 @@ export default {
         h('span', { class: 'ml-2' }, title),
       ])
     },
-    renderContent (h, icon, title, items) {
+    renderContent (h, icon, title, items, item) {
       return h('div', {
         class: 'detail-content',
       }, [
         this.renderTitle(h, icon, title),
-        this.renderItems(h, items),
+        items ? this.renderItems(h, items) : this.renderItem(h, item, false),
       ])
     },
     renderBase (h) {
-      const baseInfo = R.unionWith(R.eqBy(R.prop('field')), this.baseInfo, DEFAULT_BASE_INFO)
       return h('div', {
         class: 'detail-left',
       }, [
-        this.renderContent(h, 'info', '基本信息', baseInfo),
+        this.renderContent(h, 'info', '基本信息', this.commonBaseInfo),
       ])
     },
     renderExtra (h) {
       return h('div', {
         class: 'detail-right',
       }, this.extraInfo.map(item => {
-        return this.renderContent(h, 'info2', item.title, item.items)
+        return this.renderContent(h, 'info2', item.title, item.items, item)
       }))
     },
     renderCommon (h) {
@@ -109,8 +174,9 @@ export default {
             row: this.data,
             list: this.list,
             formRules: this.nameRules,
+            titleClass: 'h4',
           },
-          class: ['h4 m-0'],
+          class: ['m-0'],
         }),
         h('div', {
           class: 'd-flex mt-2 small-text',
