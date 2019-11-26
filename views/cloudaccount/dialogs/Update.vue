@@ -60,7 +60,7 @@ export default {
   name: 'CloudaccountUpdateDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
-    const provider = this.params.data[0].provider.toLowerCase()
+    const provider = this.params.data[0].brand.toLowerCase()
     return {
       loading: false,
       form: {
