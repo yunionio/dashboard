@@ -119,7 +119,7 @@ export default {
               delete values.sku
             }
             if (values.zones) {
-              values.zones.split('+').forEacch((zone, index) => {
+              values.zones.split('+').forEach((zone, index) => {
                 values[`zone${index + 1}`] = zone
               })
               delete values.zones

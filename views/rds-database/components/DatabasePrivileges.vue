@@ -13,7 +13,7 @@
   </div>
 </template>
 <script>
-import { ACCOUNT_PRIVILEGES } from '../constants'
+import { RDS_ACCOUNT_PRIVILEGES } from '@DB/constants'
 export default {
   inject: ['form'],
   props: {
@@ -33,11 +33,10 @@ export default {
     }
   },
   created () {
-    this.fetchQueryAccountList()
-    this.form.fc.getFieldDecorator('accounts', { preserve: true })
+    this.fetchQueryDBList()
   },
   methods: {
-    async fetchQueryAccountList () {
+    async fetchQueryDBList () {
       try {
         const params = {
           scope: this.$store.getters.scope,
@@ -65,7 +64,7 @@ export default {
       const { id } = item
       const { getFieldDecorator } = this.form.fc
       const renderRadios = ['rw', 'r'].map(v => {
-        return <a-radio value={v}>{ACCOUNT_PRIVILEGES[v]}</a-radio>
+        return <a-radio value={v}>{RDS_ACCOUNT_PRIVILEGES[v]}</a-radio>
       })
       const _handleChange = () => {
         this.$nextTick(() => {
@@ -76,7 +75,7 @@ export default {
         <a-form-item class="radios">
           {
             getFieldDecorator(id, {
-              initialValue: item.privileges || 'rw',
+              initialValue: item.privileges,
             })(
               <a-radio-group onChange={_handleChange}>
                 {renderRadios}
@@ -101,9 +100,9 @@ export default {
     setPrivileges () {
       const values = this.form.fc.getFieldsValue()
       this.form.fc.setFieldsValue({
-        accounts: this.targetKeys.map(id => {
+        privileges: this.targetKeys.map(id => {
           return {
-            account: this.dbIdItemObj[id].name,
+            database: this.dbIdItemObj[id].name,
             privilege: values[id],
           }
         }),

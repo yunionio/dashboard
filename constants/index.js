@@ -17,3 +17,12 @@ export const LOGIN_TYPES_MAP = {
     key: 'password',
   },
 }
+
+export const RDS_ACCOUNT_PRIVILEGES = {
+  rw: '读写',
+  r: '只读',
+  ddl: '仅DDL',
+  dml: '仅DML',
+  owner: '所有者',
+  custom: '自定义',
+}

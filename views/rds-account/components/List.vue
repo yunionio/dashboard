@@ -8,8 +8,8 @@
 
 <script>
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
-import { ACCOUNT_PRIVILEGES } from '../constants'
-import { getStatusTableColumn } from '@/utils/common/tableColumn'
+import { RDS_ACCOUNT_PRIVILEGES } from '@DB/constants'
+import { getStatusTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import expectStatus from '@/constants/expectStatus'
 
@@ -32,10 +32,16 @@ export default {
         steadyStatus: Object.values(expectStatus.redisAccount).flat(),
       }),
       columns: [
-        {
-          field: 'name',
-          title: '名称',
-        },
+        getNameDescriptionTableColumn({
+          vm: this,
+          hideField: true,
+          addLock: true,
+          slotCallback: row => {
+            return (
+              <side-page-trigger onTrigger={() => this.sidePageTriggerHandle(row.id, 'RDSAcountSidePage')}>{row.name}</side-page-trigger>
+            )
+          },
+        }),
         getStatusTableColumn({ statusModule: 'rdsAccount' }),
         {
           field: 'password',
@@ -47,13 +53,13 @@ export default {
           },
         },
         {
-          field: '已授权的数据库',
-          title: '权限',
+          field: 'dbinstanceprivileges',
+          title: '已授权的数据库',
           slots: {
             default: ({ row }) => {
               if (row.dbinstanceprivileges && row.dbinstanceprivileges.length > 0) {
                 return row.dbinstanceprivileges.map(({ database, privileges }) => {
-                  return <div>{database} <span style="color:#666;margin:0 0 0 3px">({ACCOUNT_PRIVILEGES[privileges]})</span></div>
+                  return <div>{database} <span style="color:#666;margin:0 0 0 3px">({RDS_ACCOUNT_PRIVILEGES[privileges]})</span></div>
                 })
               }
             },
@@ -64,42 +70,16 @@ export default {
         {
           label: '新建',
           action: () => {
-            this.createDialog('RDSAccountDialog', {
+            this.createDialog('RDSAccountCreateDialog', {
               list: this.list,
               title: '新建账号',
               rdsItem: this.data,
             })
           },
           meta: () => {
-            const { engine, provider } = this.data
-            const { isRunning } = this.commonMeta
-            const _meta = () => {
-              if (!isRunning) {
-                return {
-                  validate: false,
-                  tooltip: '仅在运行中状态下支持新建操作',
-                }
-              }
-              if (engine === 'SQLServer' && provider === 'Huawei') {
-                return {
-                  validate: false,
-                  tooltip: 'SQLServer数据库引擎，暂不支持此操作',
-                }
-              }
-              if (engine === 'PostgreSQL' && provider === 'Huawei') {
-                return {
-                  validate: false,
-                  tooltip: '华为云PostgreSQL数据库引擎，暂不支持此操作',
-                }
-              }
-              return {
-                validate: true,
-                tooltip: '',
-              }
-            }
             return {
               buttonType: 'primary',
-              ..._meta(),
+              ...this.commonMeta,
             }
           },
         },
@@ -120,7 +100,7 @@ export default {
         {
           label: '修改权限',
           action: (obj) => {
-            this.createDialog('RDSAccountListUpdatePrivilegeDialog', {
+            this.createDialog('RDSAccountUpdatePrivilegeDialog', {
               title: '修改权限',
               initialValues: {
                 account_privilege: obj['account_privilege'],
@@ -145,8 +125,7 @@ export default {
             this.createDialog('RedisWhiteListDeleteDialog', {
               data: [obj],
               columns: this.columns,
-              name: '账号',
-              title: '删除账号',
+              title: '删除白名单',
               list: this.list,
             })
           },
@@ -181,6 +160,7 @@ export default {
   },
   created () {
     this.list.fetchData()
+    this.initSidePageTab('detail')
   },
 }
 </script>

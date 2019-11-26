@@ -120,6 +120,7 @@ export default {
       if (values && values.cloudregion) {
         const { cloudregion } = values
         // 获取sku筛选项
+        // console.log(values.cloudregion)
         this.fetchSku(cloudregion.value)
         this.fetchVpc()
       }

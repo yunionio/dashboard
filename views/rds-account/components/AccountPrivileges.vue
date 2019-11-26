@@ -13,7 +13,7 @@
   </div>
 </template>
 <script>
-import { ACCOUNT_PRIVILEGES } from '../constants'
+import { RDS_ACCOUNT_PRIVILEGES } from '@DB/constants'
 export default {
   inject: ['form'],
   props: {
@@ -82,7 +82,7 @@ export default {
       const { id } = item
       const { getFieldDecorator } = this.form.fc
       const renderRadios = ['rw', 'r'].map(v => {
-        return <a-radio value={v}>{ACCOUNT_PRIVILEGES[v]}</a-radio>
+        return <a-radio value={v}>{RDS_ACCOUNT_PRIVILEGES[v]}</a-radio>
       })
       const _handleChange = () => {
         this.$nextTick(() => {
