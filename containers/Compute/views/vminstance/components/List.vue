@@ -214,19 +214,21 @@ export default {
       groupActions: [
         {
           label: '新建',
-          action: () => {
-            this.createServer('idc')
-          },
-          meta: () => {
-            return {
-              buttonType: 'primary',
-            }
-          },
-        },
-        {
-          label: '新建公有云',
-          action: () => {
-            this.createServer('public')
+          actions: () => {
+            return [
+              {
+                label: 'IDC',
+                action: () => {
+                  this.createServer('idc')
+                },
+              },
+              {
+                label: '公有云',
+                action: () => {
+                  this.createServer('public')
+                },
+              },
+            ]
           },
           meta: () => {
             return {
