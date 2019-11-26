@@ -20,6 +20,10 @@ import { CITYS, CLOUD_PROVIDERS_MAP } from '@/constants'
 //   },
 // }
 
+const DEFAULT_PARAMS = {
+  usable: true,
+}
+
 export default {
   name: 'AreaSelects',
   inject: ['form'],
@@ -61,6 +65,24 @@ export default {
           span: 24,
         }
       },
+    },
+    cityParams: {
+      type: [Object, Function],
+    },
+    providerParams: {
+      type: [Object, Function],
+    },
+    cloudregionParams: {
+      type: [Object, Function],
+    },
+    zoneParams: {
+      type: [Object, Function],
+    },
+  },
+  watch: {
+    cityParams (val, oldVal) {
+      if (R.equals(val, oldVal)) return
+      this.fetchs()
     },
   },
   created () {
@@ -164,9 +186,8 @@ export default {
       }
     },
     async fetchCity () {
-      const params = {
-        usable: true,
-      }
+      let params = R.is(Function, this.cityParams) ? this.cityParams() : this.cityParams
+      params = { ...DEFAULT_PARAMS, ...params }
       this.cityLoading = true
       try {
         const manager = new this.$Manager('cloudregions', 'v2')
@@ -204,8 +225,10 @@ export default {
     async fetchProvider () {
       const { getFieldsValue } = this.FC
       const { city } = getFieldsValue(this.names)
+      const providerParams = R.is(Function, this.providerParams) ? this.providerParams() : this.providerParams
       const params = {
-        usable: true,
+        ...DEFAULT_PARAMS,
+        ...providerParams,
         city,
       }
       this.providerLoading = true
@@ -245,8 +268,10 @@ export default {
     async fetchCloudregion () {
       const { getFieldsValue } = this.FC
       const { city, provider } = getFieldsValue(this.names)
+      const cloudregionParams = R.is(Function, this.cloudregionParams) ? this.cloudregionParams() : this.cloudregionParams
       const params = {
-        usable: true,
+        ...DEFAULT_PARAMS,
+        ...cloudregionParams,
         city,
         provider,
       }
@@ -293,8 +318,10 @@ export default {
     async fetchZone () {
       const { getFieldsValue } = this.FC
       const { city, provider, cloudregion } = getFieldsValue(this.names)
+      const zoneParams = R.is(Function, this.zoneParams) ? this.zoneParams() : this.zoneParams
       const params = {
-        usable: true,
+        ...DEFAULT_PARAMS,
+        ...zoneParams,
         city,
         provider,
         cloudregion,
