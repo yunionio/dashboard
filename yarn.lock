@@ -1379,10 +1379,10 @@ ansi-styles@^3.2.0, ansi-styles@^3.2.1:
   dependencies:
     color-convert "^1.9.0"
 
-ant-design-vue@^1.4.4:
-  version "1.4.4"
-  resolved "https://registry.npm.taobao.org/ant-design-vue/download/ant-design-vue-1.4.4.tgz#e3950489324a870273928ed22f5dabf6284424a7"
-  integrity sha1-45UEiTJKhwJzko7SL12r9ihEJKc=
+ant-design-vue@^1.4.6:
+  version "1.4.6"
+  resolved "https://registry.npm.taobao.org/ant-design-vue/download/ant-design-vue-1.4.6.tgz?cache=0&sync_timestamp=1574258321622&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fant-design-vue%2Fdownload%2Fant-design-vue-1.4.6.tgz#9f01171332710d006d5dd5ca3b79b48e3eaa3331"
+  integrity sha1-nwEXEzJxDQBtXdXKO3m0jj6qMzE=
   dependencies:
     "@ant-design/icons" "^2.1.1"
     "@ant-design/icons-vue" "^2.0.0"
@@ -10404,15 +10404,15 @@ vuex@^3.0.1:
   resolved "https://registry.npm.taobao.org/vuex/download/vuex-3.1.1.tgz#0c264bfe30cdbccf96ab9db3177d211828a5910e"
   integrity sha1-DCZL/jDNvM+Wq52zF30hGCilkQ4=
 
-vxe-table-plugin-antd@^1.4.4:
-  version "1.4.4"
-  resolved "https://registry.npm.taobao.org/vxe-table-plugin-antd/download/vxe-table-plugin-antd-1.4.4.tgz#d32ea707d4ebfc4c6f89e4563ca9d01d815e7589"
-  integrity sha1-0y6nB9Tr/ExvieRWPKnQHYFedYk=
+vxe-table-plugin-antd@^1.5.8:
+  version "1.5.8"
+  resolved "https://registry.npm.taobao.org/vxe-table-plugin-antd/download/vxe-table-plugin-antd-1.5.8.tgz#cd9bb5ce1e9c19140bc173136fc38ce3d788cd91"
+  integrity sha1-zZu1zh6cGRQLwXMTb8OM49eIzZE=
 
-vxe-table@^2.6.18:
-  version "2.6.18"
-  resolved "https://registry.npm.taobao.org/vxe-table/download/vxe-table-2.6.18.tgz#4293eb4b4b813ac40661f93dda149388bd5aa9f0"
-  integrity sha1-QpPrS0uBOsQGYfk92hSTiL1aqfA=
+vxe-table@^2.6.22:
+  version "2.6.22"
+  resolved "https://registry.npm.taobao.org/vxe-table/download/vxe-table-2.6.22.tgz#5c82f8094b0b3d46475197cbf24001ae6cec0cfd"
+  integrity sha1-XIL4CUsLPUZHUZfL8kABrmzsDP0=
 
 w3c-hr-time@^1.0.1:
   version "1.0.1"
@@ -10744,10 +10744,10 @@ ws@^6.0.0:
   dependencies:
     async-limiter "~1.0.0"
 
-xe-utils@^2.2.4:
-  version "2.2.4"
-  resolved "https://registry.npm.taobao.org/xe-utils/download/xe-utils-2.2.4.tgz#d0d1f2e00405afeaa94e96a5d2ca68576ae7038f"
-  integrity sha1-0NHy4AQFr+qpTpal0spoV2rnA48=
+xe-utils@^2.2.14:
+  version "2.2.14"
+  resolved "https://registry.npm.taobao.org/xe-utils/download/xe-utils-2.2.14.tgz?cache=0&sync_timestamp=1574659221718&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fxe-utils%2Fdownload%2Fxe-utils-2.2.14.tgz#a6c17147dbaf031be8f940a30b6b9690398cc721"
+  integrity sha1-psFxR9uvAxvo+UCjC2uWkDmMxyE=
 
 xml-name-validator@^3.0.0:
   version "3.0.0"

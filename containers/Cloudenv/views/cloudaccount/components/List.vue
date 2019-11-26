@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import expectStatus from '@/constants/expectStatus'
 import {
   getBrandTableColumn,
@@ -337,36 +338,27 @@ export default {
                 },
               },
               {
-                label: '设置为共享',
+                label: '设置共享',
                 action: () => {
-                  this.list.onManager('performAction', {
-                    id: obj.id,
-                    managerArgs: {
-                      action: 'public',
-                    },
+                  this.createDialog('CloudaccountSetShareDialog', {
+                    data: [obj],
+                    columns: this.columns,
+                    list: this.list,
                   })
                 },
                 meta: () => {
-                  return {
-                    validate: !obj.is_public && ownerDomain,
-                    tooltip: ownerDomain ? '' : '无操作权限',
+                  let tooltip = ''
+                  if (!this.l3PermissionEnable) {
+                    tooltip = '无操作权限'
                   }
-                },
-              },
-              {
-                label: '设置为私有',
-                action: () => {
-                  this.list.onManager('performAction', {
-                    id: obj.id,
-                    managerArgs: {
-                      action: 'private',
-                    },
-                  })
-                },
-                meta: () => {
+                  if (!obj.is_public) {
+                    if (!ownerDomain) {
+                      tooltip = '无操作权限'
+                    }
+                  }
                   return {
-                    validate: obj.is_public && ownerDomain,
-                    tooltip: ownerDomain ? '' : '无操作权限',
+                    validate: this.l3PermissionEnable && !obj.is_public && ownerDomain,
+                    tooltip,
                   }
                 },
               },
@@ -428,6 +420,9 @@ export default {
         },
       ],
     }
+  },
+  computed: {
+    ...mapGetters(['l3PermissionEnable']),
   },
   created () {
     this.initSidePageTab('cloudaccount-detail')
