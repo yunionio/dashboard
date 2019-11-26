@@ -10,6 +10,7 @@
       :decorator="decorator"
       @input="imageInput"
       :imageParams="imageParams"
+      :cacheImageParams="cacheImageParams"
       :form="form" />
   </div>
 </template>
@@ -35,6 +36,10 @@ export default {
       type: Object,
       required: true,
     },
+    cacheImageParams: {
+      type: Object,
+      required: true,
+    },
     type: {
       type: String,
       validator: val => ['public', 'private', 'idc'].includes(val),
@@ -47,7 +52,7 @@ export default {
   inject: ['form'],
   data () {
     return {
-      imageType: IMAGES_TYPE_MAP.standard.key,
+      imageType: this.decorator.imageType[1].initialValue,
     }
   },
   computed: {
@@ -65,7 +70,7 @@ export default {
       if (this.isIDC && this.hypervisor === HYPERVISORS_MAP.kvm.key) {
         ret.push(IMAGES_TYPE_MAP.iso, IMAGES_TYPE_MAP.host, IMAGES_TYPE_MAP.snapshot)
       } else if (this.isPublic) {
-        ret.unshift(IMAGES_TYPE_MAP.publicCustomize)
+        ret.unshift(IMAGES_TYPE_MAP.public_customize)
         ret.unshift(IMAGES_TYPE_MAP.public)
       } else if (this.isPrivate) {
         ret.unshift(IMAGES_TYPE_MAP.private)
