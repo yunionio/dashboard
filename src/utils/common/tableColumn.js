@@ -173,7 +173,7 @@ export const getIpsTableColumn = ({ field = 'ips', title = 'IP' } = {}) => {
         let ret = []
         if (row.eip) {
           ret.push(
-            <list-body-cell-wrap row={row} field="eip" copy><span class='ml-2 text-weak'>（弹性）</span></list-body-cell-wrap>
+            <list-body-cell-wrap row={row} field="eip" copy><span class='ml-2 text-weak'>（公网）</span></list-body-cell-wrap>
           )
         }
         if (row.ips) {

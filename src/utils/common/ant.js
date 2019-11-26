@@ -2,7 +2,7 @@
 import * as R from 'ramda'
 
 /**
- * @description 将 ant.design form 的 onFieldsChange方法的回调参数解析成 formData
+ * @description 将 ant.design form 的 onFieldsChange 方法的回调参数解析成 formData
  * @param {Object} changedFields { zone: { value: { key: <id>, label: ’YunionHQ‘ }, name: 'zone' } } -> { zone: { key: <id>, label: ’YunionHQ‘ } }
  */
 export const resolveChangeField = changedFields => {
@@ -13,6 +13,18 @@ export const resolveChangeField = changedFields => {
     } else {
       fields = { ...fields, ...resolveChangeField(obj) }
     }
+  }, changedFields)
+  return fields
+}
+
+/**
+ * @description 将 ant.design form 的 onValuesChange 方法的回调参数解析成 formData
+ * @param {Object} changedFields { zone: { value: { key: <id>, label: ’YunionHQ‘ }, name: 'zone' } } -> { zone: { key: <id>, label: ’YunionHQ‘ } }
+ */
+export const resolveValueChangeField = changedFields => {
+  let fields = {}
+  R.forEachObjIndexed((obj, key) => {
+    fields[key] = obj
   }, changedFields)
   return fields
 }
