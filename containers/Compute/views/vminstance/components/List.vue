@@ -577,6 +577,31 @@ export default {
                       return ret
                     },
                   },
+                  {
+                    label: '到期释放',
+                    action: () => {
+                      this.createDialog('VmSetDurationDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      if (findPlatform(obj.hypervisor) === SERVER_TYPE.public) {
+                        ret.tooltip = '公有云不支持此操作'
+                        return ret
+                      }
+                      if (obj.billing_type === 'prepaid') {
+                        ret.tooltip = '包年包月机器，不支持此操作'
+                      }
+                      ret.validate = true
+                      return ret
+                    },
+                  },
                 ],
               },
               {
