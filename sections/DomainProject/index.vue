@@ -21,7 +21,7 @@
         </a-form-item>
       </a-col>
       <a-col :span="(isAdminMode && l3PermissionEnable) ? 12 : 24">
-        <a-form-item>
+        <a-form-item class="mb-0">
           <a-select
             class="w-100"
             :labelInValue="labelInValue"
@@ -200,6 +200,7 @@ export default {
       this.fc.setFieldsValue({
         project: undefined,
       })
+      this.$emit('update:domain', domainId)
     },
     projectChange (project) {
       this.projectData = project

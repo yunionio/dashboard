@@ -20,6 +20,10 @@ import { CITYS, CLOUD_PROVIDERS_MAP } from '@/constants'
 //   },
 // }
 
+const DEFAULT_PARAMS = {
+  usable: true,
+}
+
 export default {
   name: 'AreaSelects',
   inject: ['form'],
@@ -68,6 +72,12 @@ export default {
     defaultActiveFirstOption: {
       type: [Array, Boolean],
       default: true,
+    },
+  },
+  watch: {
+    cityParams (val, oldVal) {
+      if (R.equals(val, oldVal)) return
+      this.fetchs()
     },
   },
   created () {
@@ -193,7 +203,7 @@ export default {
     },
     async fetchCity (queryParams = {}) {
       const params = {
-        usable: true,
+        ...DEFAULT_PARAMS,
         ...queryParams,
       }
       this.cityLoading = true
@@ -230,8 +240,10 @@ export default {
     async fetchProvider (queryParams = {}) {
       const { getFieldsValue } = this.FC
       const { city } = getFieldsValue(this.names)
+      const providerParams = R.is(Function, this.providerParams) ? this.providerParams() : this.providerParams
       const params = {
-        usable: true,
+        ...DEFAULT_PARAMS,
+        ...providerParams,
         city,
         ...queryParams,
       }
@@ -269,8 +281,10 @@ export default {
     async fetchCloudregion (queryParams) {
       const { getFieldsValue } = this.FC
       const { city, provider } = getFieldsValue(this.names)
+      const cloudregionParams = R.is(Function, this.cloudregionParams) ? this.cloudregionParams() : this.cloudregionParams
       const params = {
-        usable: true,
+        ...DEFAULT_PARAMS,
+        ...cloudregionParams,
         city,
         provider,
         ...queryParams,
@@ -315,8 +329,10 @@ export default {
     async fetchZone (queryParams = {}) {
       const { getFieldsValue } = this.FC
       const { city, provider, cloudregion } = getFieldsValue(this.names)
+      const zoneParams = R.is(Function, this.zoneParams) ? this.zoneParams() : this.zoneParams
       const params = {
-        usable: true,
+        ...DEFAULT_PARAMS,
+        ...zoneParams,
         city,
         provider,
         cloudregion,

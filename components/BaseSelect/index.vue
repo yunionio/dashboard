@@ -105,6 +105,12 @@ export default {
           filterOption: this.filterOption,
         }
       }
+      if (this.remote && this.selectProps.mode !== 'mutiple') {
+        return {
+          filterOption: false,
+          showSearch: true,
+        }
+      }
       return {
         filterOption: false,
       }

@@ -334,6 +334,20 @@
       "create_failed": "创建失败",
       "restore_failed": "恢复失败",
       "delete_failed": "删除失败"
+    },
+    "eip": {
+      "ready": "可用",
+      "unknown": "未知",
+      "allocate": "开始分配",
+      "allocate_fail": "分配失败",
+      "deallocate": "正在释放",
+      "deallocate_fail": "释放失败",
+      "associate": "开始绑定",
+      "associate_fail": "绑定失败",
+      "dissociate": "开始解绑",
+      "dissociate_fail": "解绑失败",
+      "change_bandwidth": "修改带宽",
+      "init": "初始化"
     }
   },
   "skuCategoryOptions": {
