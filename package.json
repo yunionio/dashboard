@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "animejs": "^3.1.0",
-    "ant-design-vue": "^1.4.4",
+    "ant-design-vue": "^1.4.6",
     "axios": "^0.19.0",
     "clipboard": "^2.0.4",
     "codemirror": "^5.38.0",
@@ -29,9 +29,9 @@
     "vue-i18n": "^8.14.0",
     "vue-router": "^3.0.3",
     "vuex": "^3.0.1",
-    "vxe-table": "^2.6.18",
-    "vxe-table-plugin-antd": "^1.4.4",
-    "xe-utils": "^2.2.4"
+    "vxe-table": "^2.6.22",
+    "vxe-table-plugin-antd": "^1.5.8",
+    "xe-utils": "^2.2.14"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.11.0",
