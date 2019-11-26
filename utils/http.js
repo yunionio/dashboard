@@ -50,6 +50,7 @@ const cancelRquest = requestKey => {
 
 const showErrorNotify = error => {
   const errorMsg = getHttpErrorMessage(error)
+  if (!errorMsg) throw error
   const reqMsg = getHttpReqMessage(error)
   const key = `notification-${uuid(32)}`
   notification.error({
