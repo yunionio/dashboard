@@ -542,6 +542,32 @@ export default {
                     },
                   },
                   {
+                    label: '创建相同配置',
+                    action: () => {
+                      this.createDialog('VmCloneDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      if (obj.is_prepaid_recycle) {
+                        ret.tooltip = '包年包月机器，不支持此操作'
+                        return ret
+                      }
+                      if (obj.hypervisor !== 'kvm' && findPlatform(obj.hypervisor) !== SERVER_TYPE.public) {
+                        ret.tooltip = '仅公有云、OneCloud支持此操作'
+                        return ret
+                      }
+                      ret.validate = true
+                      return ret
+                    },
+                  },
+                  {
                     label: '设置GPU卡',
                     action: () => {
                       this.createDialog('VmAttachGpuDialog', {
