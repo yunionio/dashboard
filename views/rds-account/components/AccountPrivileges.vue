@@ -58,7 +58,7 @@ export default {
         if (status === 200 && data.total > 0) {
           const retList = data.data
           this.dbList = retList
-            .filter(({ status }) => status === 'running')
+            .filter(({ status, name }) => status === 'running')
             .map(item => {
               item['title'] = item.name
               this.dbIdItemObj[item.id] = item

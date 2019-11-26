@@ -33,10 +33,11 @@ export default {
     }
   },
   created () {
-    this.fetchQueryDBList()
+    this.fetchQueryAccountList()
+    this.form.fc.getFieldDecorator('accounts', { preserve: true })
   },
   methods: {
-    async fetchQueryDBList () {
+    async fetchQueryAccountList () {
       try {
         const params = {
           scope: this.$store.getters.scope,
@@ -48,7 +49,7 @@ export default {
         if (status === 200 && data.total > 0) {
           const retList = data.data
           this.dbList = retList
-            // .filter(({ status }) => status === 'running')
+            .filter(({ status, name }) => status === 'available' && name !== 'root')
             .map(item => {
               item['title'] = item.name
               item['key'] = item.id
@@ -75,7 +76,7 @@ export default {
         <a-form-item class="radios">
           {
             getFieldDecorator(id, {
-              initialValue: item.privileges,
+              initialValue: item.privileges || 'rw',
             })(
               <a-radio-group onChange={_handleChange}>
                 {renderRadios}
@@ -100,9 +101,9 @@ export default {
     setPrivileges () {
       const values = this.form.fc.getFieldsValue()
       this.form.fc.setFieldsValue({
-        privileges: this.targetKeys.map(id => {
+        accounts: this.targetKeys.map(id => {
           return {
-            database: this.dbIdItemObj[id].name,
+            account: this.dbIdItemObj[id].name,
             privilege: values[id],
           }
         }),

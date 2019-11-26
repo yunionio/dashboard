@@ -13,6 +13,7 @@
       <clearing-radios v-bind="formItemLayout" />
       <!-- 区域 -->
       <area-selects
+        :cityParams="{cloud_env: 'public'}"
         :names="['city', 'provider', 'cloudregion']"
         v-bind="formItemLayout"
         @providerFetchSuccess="providerFetchSuccess" />
@@ -49,7 +50,28 @@ export default {
     NetworkSelects,
   },
   data () {
+    const { projectId, projectDomainId } = this.$store.getters.userInfo
     return {
+      defaultProjectDomain: {
+        project: [
+          'project',
+          {
+            initialValue: projectId,
+            rules: [
+              { required: true, message: '请选择项目' },
+            ],
+          },
+        ],
+        domain: [
+          'domain',
+          {
+            initialValue: projectDomainId,
+            rules: [
+              { required: true, message: '请选择域' },
+            ],
+          },
+        ],
+      },
       decorators: DECORATORS,
       formItemLayout: {
         wrapperCol: { span: CreateServerForm.wrapperCol },

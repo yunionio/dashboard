@@ -53,8 +53,8 @@ export default {
           },
         },
         {
-          field: 'dbinstanceprivileges',
-          title: '已授权的数据库',
+          field: '已授权的数据库',
+          title: '权限',
           slots: {
             default: ({ row }) => {
               if (row.dbinstanceprivileges && row.dbinstanceprivileges.length > 0) {
@@ -77,9 +77,35 @@ export default {
             })
           },
           meta: () => {
+            const { engine, provider } = this.data
+            const { isRunning } = this.commonMeta
+            const _meta = () => {
+              if (!isRunning) {
+                return {
+                  validate: false,
+                  tooltip: '仅在运行中状态下支持新建操作',
+                }
+              }
+              if (engine === 'SQLServer' && provider === 'Huawei') {
+                return {
+                  validate: false,
+                  tooltip: 'SQLServer数据库引擎，暂不支持此操作',
+                }
+              }
+              if (engine === 'PostgreSQL' && provider === 'Huawei') {
+                return {
+                  validate: false,
+                  tooltip: '华为云PostgreSQL数据库引擎，暂不支持此操作',
+                }
+              }
+              return {
+                validate: true,
+                tooltip: '',
+              }
+            }
             return {
               buttonType: 'primary',
-              ...this.commonMeta,
+              ..._meta(),
             }
           },
         },
@@ -100,7 +126,7 @@ export default {
         {
           label: '修改权限',
           action: (obj) => {
-            this.createDialog('RDSAccountUpdatePrivilegeDialog', {
+            this.createDialog('RDSAccountListUpdatePrivilegeDialog', {
               title: '修改权限',
               initialValues: {
                 account_privilege: obj['account_privilege'],
@@ -125,14 +151,14 @@ export default {
             this.createDialog('RedisWhiteListDeleteDialog', {
               data: [obj],
               columns: this.columns,
-              title: '删除白名单',
+              title: '删除账号',
               list: this.list,
             })
           },
           meta: (obj) => {
-            const { isHuawei, tooltip } = this.commonMeta
+            const { tooltip } = this.commonMeta
             return {
-              validate: !isHuawei && obj.account_type !== 'admin',
+              validate: obj.name !== 'root',
               tooltip,
             }
           },
