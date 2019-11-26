@@ -11,11 +11,12 @@ export const REGEXP = {
     message: i18n.t('validator.IPv6'),
   },
   resourceName: {
-    regexp: /^[a-zA-Z][a-zA-Z0-9-]{1,126}(?<!-)$/,
+    // regexp: /^[a-zA-Z][a-zA-Z0-9-]{1,126}(?<!-)$/, // firefox 不支持 后行否定断言
+    regexp: /^[a-zA-Z][a-zA-Z0-9-]?[a-zA-Z0-9]{1,126}$/,
     message: i18n.t('validator.resourceName'),
   },
   serverName: {
-    regexp: /^[a-zA-Z][a-zA-Z0-9-]{0,127}([a-zA-Z0-9-]|#{1,3})$/,
+    regexp: /^[a-zA-Z][a-zA-Z0-9-]{0,127}$/,
     message: i18n.t('validator.serverName'),
   },
   email: {
