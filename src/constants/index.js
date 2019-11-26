@@ -135,6 +135,7 @@ export const CITYS = {
   'Quebec': '加拿大 魁北克市',
   'Kanchipuram': '印度 甘吉布勒姆',
   'Huhehaote': '呼和浩特',
+  'Qingdao': '青岛',
 }
 
 export const CLOUD_PROVIDERS_MAP = {

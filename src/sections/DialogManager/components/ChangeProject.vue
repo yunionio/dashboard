@@ -88,7 +88,14 @@ export default {
       })
     },
     async doChangeProject (values, ids) {
-      return this.params.list.batchPerformAction('change-project', values, null, ids)
+      return this.params.list.onManager('batchPerformAction', {
+        id: ids,
+        steadyStatus: this.params.steadyStatus || ['running', 'ready'],
+        managerArgs: {
+          action: this.params.action || 'change-project',
+          data: values,
+        },
+      })
     },
     async handleConfirm () {
       this.loading = true
