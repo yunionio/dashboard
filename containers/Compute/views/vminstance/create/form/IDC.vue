@@ -28,7 +28,12 @@
         <gpu :decorators="decorators.gpu" :gpu-options="gpuOptions" />
       </a-form-item>
       <a-form-item v-bind="formItemLayout" label="操作系统" extra="操作系统会根据选择的虚拟化平台和可用区域的变化而变化公共镜像的维护请联系管理员">
-        <os-select :type="type" :hypervisor="form.fd.hypervisor" :image-params="params.image" :decorator="decorators.imageOS" />
+        <os-select
+          :type="type"
+          :hypervisor="form.fd.hypervisor"
+          :image-params="imageParams"
+          :decorator="decorators.imageOS"
+          :cacheImageParams="cacheImageParams" />
       </a-form-item>
       <a-form-item label="CPU核数" v-bind="formItemLayout" class="mb-0">
         <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" @change="cpuChange" />
@@ -97,12 +102,15 @@
       <a-form-item v-bind="formItemLayout" label="主机组" extra="对资源的简单编排策略，组内的机器根据设置分布在不同的宿主机上，从而实现业务的高可用">
         <instance-groups :decorators="decorators.groups" :params="instanceGroupsParams" />
       </a-form-item>
-      <bottom-bar :loading="submiting" :fd="form.fd" :errors.sync="errors" />
+      <bottom-bar :loading="submiting" :form="form" :type="type" :errors.sync="errors" />
     </a-form>
   </div>
 </template>
 <script>
+import _ from 'lodash'
+import * as R from 'ramda'
 import mixin from './mixin'
+import { resolveValueChangeField } from '@/utils/common/ant'
 
 export default {
   name: 'IDCCreate',
@@ -117,6 +125,111 @@ export default {
         }
       }
       return {}
+    },
+    imageParams () {
+      return {
+        limit: 0,
+        scope: this.$store.getters.scope,
+        details: true,
+        status: 'active',
+      }
+    },
+    cacheImageParams () {
+      const params = {
+        details: false,
+        order_by: 'ref_count',
+        order: 'desc',
+        image_type: 'customized',
+        zone: this.form.fd.zone.key,
+      }
+      return params
+    },
+    showSku () {
+      if (this.form.fd.hypervisor && this.form.fd.vcpu && this.form.fd.vmem) {
+        return true
+      }
+      return false
+    },
+    skuParam () {
+      return {
+        limit: 0,
+        public_cloud: false,
+        postpaid_status: 'available',
+        cpu_core_count: this.form.fd.vcpu || this.decorators.vcpu[1].initialValue,
+        memory_size_mb: this.form.fd.vmem,
+        cloudregion: _.get(this.form, 'fd.cloudregion.key'),
+        project_domain: _.get(this.form, 'fd.domain.key'),
+      }
+    },
+    policyHostParams () {
+      const zone = _.get(this.form.fd, 'zone.key')
+      if (zone) {
+        return {
+          enabled: 1,
+          usable: true,
+          zone,
+          hypervisor: this.form.fd.hypervisor,
+        }
+      }
+      return {}
+    },
+    networkParam () {
+      return {
+        scope: this.$store.getters.scope,
+        filter: 'server_type.notin(ipmi, pxe)',
+        usable: true,
+        zone: _.get(this.form, 'fd.zone.key'),
+      }
+    },
+  },
+  methods: {
+    onValuesChange (vm, changedFields) {
+      this.$nextTick(() => {
+        const formValue = this.form.fc.getFieldsValue()
+        const newField = resolveValueChangeField(changedFields)
+        const keys = Object.keys(newField)
+        const { zone, cloudregion } = newField
+        if (keys.includes('cloudregion')) {
+          if (!R.equals(cloudregion, this.form.fd.cloudregion)) { // 区域变化
+            this.fetchInstanceSpeces()
+          }
+        }
+        if (keys.includes('zone')) {
+          if (!R.equals(zone, this.form.fd.zone)) { // 可用区变化
+            this.fetchCapability()
+          }
+        }
+        this._setNewFieldToFd(newField, formValue)
+      })
+    },
+    fetchCapability () {
+      const params = {
+        show_emulated: true,
+        resource_type: 'shared',
+        scope: this.$store.getters.scope,
+        host_type: 'baremetal',
+      }
+      const { key } = this.form.fc.getFieldValue('zone')
+      this.zoneM.getSpecific({ id: key, spec: 'capability', params })
+        .then(({ data }) => {
+          this.form.fi.capability = {
+            ...data,
+            hypervisors: data.hypervisors.filter(val => val !== 'baremetal'),
+          }
+          this.form.fc.setFieldsValue({
+            hypervisor: this.form.fi.capability.hypervisors[0], // 赋值默认第一个平台
+          })
+        })
+    },
+    fetchInstanceSpeces () {
+      const { key } = this.form.fc.getFieldValue('cloudregion')
+      this.serverskusM.get({ id: 'instance-specs', params: { cloudregion: key } })
+        .then(({ data }) => {
+          this.form.fi.cpuMem = data
+          const vcpuDecorator = this.decorators.vcpu
+          const vcpuInit = vcpuDecorator[1].initialValue
+          this.cpuChange(vcpuInit)
+        })
     },
   },
 }

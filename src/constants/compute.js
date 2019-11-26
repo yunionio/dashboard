@@ -8,7 +8,7 @@ export const IMAGES_TYPE_MAP = {
   host: { key: 'host', label: '主机镜像' },
   snapshot: { key: 'snapshot', label: '主机快照' },
   public: { key: 'public', label: '公有云镜像', tooltip: '公有云平台提供的标准镜像' },
-  publicCustomize: { key: 'public_customize', label: '公有云自定义镜像', tooltip: '用户在公有云平台上传的镜像' },
+  'public_customize': { key: 'public_customize', label: '公有云自定义镜像', tooltip: '用户在公有云平台上传的镜像' },
   private: { key: 'private', label: '私有云镜像', tooltip: '私有云平台提供的镜像' },
 }
 

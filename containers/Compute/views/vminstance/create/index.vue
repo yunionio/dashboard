@@ -4,11 +4,13 @@
 
 <script>
 import IDC from './form/IDC'
+import Public from './form/Public'
 
 export default {
   name: 'ServerCreate',
   components: {
     IDC,
+    Public,
   },
   computed: {
     type () {
