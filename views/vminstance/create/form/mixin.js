@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import * as R from 'ramda'
 import { CreateServerForm, SCHED_POLICY_OPTIONS_MAP, SERVER_TYPE } from '@Compute/constants'
 import OsSelect from '@Compute/sections/OsSelect'
@@ -7,7 +6,7 @@ import CpuRadio from '@Compute/sections/CpuRadio'
 import MemRadio from '@Compute/sections/MemRadio'
 import sku from '@Compute/sections/SKU'
 import gpu from '@Compute/sections/GPU/index'
-import { ControlParams, Decorator, GenCreateData } from '@Compute/utils/createServer'
+import { Decorator, GenCreateData } from '@Compute/utils/createServer'
 import ServerNetwork from '@Compute/sections/ServerNetwork'
 import SchedPolicy from '@Compute/sections/SchedPolicy'
 import Bios from '@Compute/sections/BIOS'
@@ -21,7 +20,7 @@ import { Manager } from '@/utils/manager'
 import CloudregionZone from '@/sections/CloudregionZone'
 import HypervisorRadio from '@/sections/HypervisorRadio'
 import DomainProject from '@/sections/DomainProject'
-import { resolveChangeField, getInitialValue } from '@/utils/common/ant'
+import { getInitialValue } from '@/utils/common/ant'
 
 export default {
   name: 'IDCCreate',
@@ -53,7 +52,6 @@ export default {
     },
   },
   data () {
-    this.initParams = new ControlParams(SERVER_TYPE[this.type])
     const decorators = new Decorator(SERVER_TYPE[this.type]).createDecorators()
     const initFd = getInitialValue(decorators)
     return {
@@ -64,7 +62,7 @@ export default {
         labelCol: { span: CreateServerForm.labelCol },
       },
       form: {
-        fc: this.$form.createForm(this, { onFieldsChange: this.onFieldsChange }),
+        fc: this.$form.createForm(this, { onValuesChange: this.onValuesChange }),
         fi: { // formInfo 存储着和表单相关的数据
           capability: {}, // 可用区下的可用资源
           imageMsg: {}, // 当前选中的 image
@@ -75,10 +73,13 @@ export default {
       },
       decorators,
       params: {
-        cloudregion: this.initParams.params.cloudregion,
-        image: this.initParams.params.image,
-        schedtag: this.initParams.params.schedtag,
-        policySchedtag: this.initParams.params.policySchedtag,
+        cloudregion: {
+          cloud_env: 'onpremise',
+          usable: true,
+          show_emulated: true,
+        },
+        schedtag: { resource_type: 'networks' },
+        policySchedtag: { limit: 0, 'filter.0': 'resource_type.equals(hosts)' },
       },
     }
   },
@@ -88,31 +89,8 @@ export default {
     }
   },
   computed: {
-    policyHostParams () {
-      return {
-        enabled: 1,
-        usable: true,
-        zone: this.form.fd.zone.key,
-        hypervisor: this.form.fd.hypervisor,
-      }
-    },
-    showSku () {
-      return this.form.fd.hypervisor && this.form.fd.vcpu && this.form.fd.vmem
-    },
-    skuParam () {
-      return {
-        ...this.initParams.params.sku,
-        cpu_core_count: this.form.fd.vcpu || this.decorators.vcpu[1].initialValue,
-        memory_size_mb: this.form.fd.vmem,
-        cloudregion: _.get(this.form, 'fd.cloudregion.key'),
-        // project_domain: 暂不支持
-      }
-    },
-    networkParam () {
-      return {
-        ...this.initParams.params.network,
-        zone: _.get(this.form, 'fd.zone.key'),
-      }
+    project () {
+      return this.form.fd.project ? this.form.fd.project.key : this.$store.getters.userInfo.projectId
     },
     gpuOptions () {
       const specs = this.form.fi.capability.specs || {}
@@ -142,6 +120,10 @@ export default {
       }
       return []
     },
+    dataDiskSizes () {
+      const disk = this.form.fd.dataDiskSizes
+      return R.is(Object, disk) ? Object.values(disk) : []
+    },
   },
   created () {
     this.$bus.$on('VMInstanceCreateUpdateFi', this.updateFi, this)
@@ -151,30 +133,18 @@ export default {
     this.schedulerM = new Manager('schedulers', 'v1')
   },
   methods: {
+    baywatch (props, watcher) {
+      const iterator = function (prop) {
+        this.$watch(prop, watcher)
+      }
+      props.forEach(iterator, this)
+    },
     updateFi (fiItems) { // 子组件更新fi
       if (R.is(Object, fiItems)) {
         R.forEachObjIndexed((item, key) => {
           this.$set(this.form.fi, key, item)
         }, fiItems)
       }
-    },
-    onFieldsChange (vm, changedFields) {
-      const newField = resolveChangeField(changedFields)
-      const keys = Object.keys(newField)
-      const { zone, cloudregion } = newField
-      if (keys.includes('cloudregion')) {
-        if (!R.equals(cloudregion, this.form.fd.cloudregion)) { // 区域变化
-          this.fetchInstanceSpeces()
-        }
-      }
-      if (keys.includes('zone')) {
-        if (!R.equals(zone, this.form.fd.zone)) { // 可用区变化
-          this.fetchCapability()
-        }
-      }
-      R.forEachObjIndexed((item, key) => {
-        this.$set(this.form.fd, key, item)
-      }, newField)
     },
     submit (e) {
       e.preventDefault()
@@ -223,41 +193,21 @@ export default {
         })
       })
     },
-    fetchCapability () {
-      const params = {
-        show_emulated: true,
-        resource_type: 'shared',
-        scope: this.$store.getters.scope,
-        host_type: 'baremetal',
-      }
-      const { key } = this.form.fc.getFieldValue('zone')
-      this.zoneM.getSpecific({ id: key, spec: 'capability', params })
-        .then(({ data }) => {
-          this.form.fi.capability = {
-            ...data,
-            hypervisors: data.hypervisors.filter(val => val !== 'baremetal'),
-          }
-          this.form.fc.setFieldsValue({
-            hypervisor: this.form.fi.capability.hypervisors[0], // 赋值默认第一个平台
-          })
-        })
-    },
-    fetchInstanceSpeces () {
-      const { key } = this.form.fc.getFieldValue('cloudregion')
-      this.serverskusM.get({ id: 'instance-specs', params: { cloudregion: key } })
-        .then(({ data }) => {
-          this.form.fi.cpuMem = data
-          const vcpuDecorator = this.decorators.vcpu
-          const vcpuInit = vcpuDecorator[1].initialValue
-          this.cpuChange(vcpuInit)
-        })
-    },
     cpuChange (cpu) {
       const memOpts = this.form.fi.cpuMem.cpu_mems_mb[cpu]
       this.form.fi.cpuMem.mems_mb = memOpts
       this.form.fc.setFieldsValue({
         vmem: memOpts[0],
       })
+    },
+    _setNewFieldToFd (newField, formValue) { // vue-ant-form change 后赋值 fd
+      const changeKeys = Object.keys(newField)
+      R.forEachObjIndexed((item, key) => {
+        this.$set(this.form.fd, key, item)
+      }, newField)
+      if (changeKeys.some(val => val.includes('dataDiskSizes'))) { // 动态赋值默认值的表单需要单独处理
+        this.$set(this.form.fd, 'dataDiskSizes', formValue.dataDiskSizes)
+      }
     },
   },
 }

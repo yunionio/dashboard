@@ -140,7 +140,7 @@ export default {
           max: 500,
         },
       }
-      if (this.type === 'bandwidth') {
+      if (this.chargeType === 'bandwidth') {
         return (
           brandWidthMax[this.hypervisor] &&
           brandWidthMax[this.hypervisor].max
