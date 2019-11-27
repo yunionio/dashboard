@@ -20,6 +20,7 @@ import Disk from '@Compute/views/disk'
 import GPU from '@Compute/views/gpu'
 import Secgroup from '@Compute/views/secgroup'
 import FlexNetwork from '@Compute/views/flex-network'
+import Wire from '@Compute/views/wire'
 
 export default {
   index: 2,
@@ -167,6 +168,21 @@ export default {
               name: 'NetworkcardList',
               path: '',
               component: FlexNetwork,
+            },
+          ],
+        },
+        {
+          path: '/wire',
+          meta: {
+            label: '二层网络',
+            permission: 'wires_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'WireList',
+              path: '',
+              component: Wire,
             },
           ],
         },

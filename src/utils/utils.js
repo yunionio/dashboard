@@ -118,11 +118,15 @@ class Sizestr {
     }
     return Math.floor(num * base + 0.5) / base
   }
+  percentStr (val) {
+    return '' + this.round(val * 100, 0) + '%'
+  }
 }
 const sizestrInstance = new Sizestr()
 
 export const sizestr = sizestrInstance.sizestr.bind(sizestrInstance) // -> 12G  4.5T
 export const sizestrWithUnit = sizestrInstance.sizestrWithUnit.bind(sizestrInstance) // -> 12 GB   4.5 TB
+export const percentstr = sizestrInstance.percentStr.bind(sizestrInstance)
 
 export const arrayToObj = (arr, itemKey = 'id') => {
   const obj = {}
