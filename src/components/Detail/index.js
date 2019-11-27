@@ -111,7 +111,7 @@ export default {
       if (item.slots && item.slots.default) {
         val = item.slots.default({ row: this.data }, h)
       } else if (item.formatter) {
-        val = item.formatter({ row: this.data, cellValue: this.data[item.field] })
+        val = item.formatter({ row: this.data, cellValue: this.data[item.field] }) || '-'
       } else {
         val = this.data[item.field] || '-'
       }
