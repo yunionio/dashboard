@@ -190,9 +190,15 @@ export default {
             }
             if (this.list.selectedItems.length > 0) {
               for (let i = 0; i < this.list.selectedItems.length; i++) {
-                let _ = this.list.selectedItems[i]
-                if (_['disable_delete']) {
+                let obj = this.list.selectedItems[i]
+                if (obj['disable_delete']) {
                   tooltip = '请先点击【修改属性】解除删除保护'
+                  validate = false
+                  break
+                }
+                let seconds = this.$moment(obj.expired_at).diff(new Date()) / 1000
+                if (obj.billing_type === 'prepaid' && seconds > 0) {
+                  tooltip = '实例未到期不允许删除'
                   validate = false
                   break
                 }
@@ -387,7 +393,7 @@ export default {
                   if (!obj.can_delete) {
                     tooltip = '请点击修改属性禁用删除保护后重试'
                   } else if (obj.billing_type === 'prepaid' && seconds > 0) {
-                    tooltip = '实例还未过到期不允许删除'
+                    tooltip = '实例未到期不允许删除'
                   }
                   return {
                     validate: !tooltip,
