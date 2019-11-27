@@ -39,6 +39,13 @@ export default {
     font-size: 12px;
     color: #909399;
   }
+  ::v-deep .ant-collapse-header {
+    font-size: 12px !important;
+    padding: 0 0 0 20px !important;
+  }
+  ::v-deep .ant-collapse-arrow {
+    left: 0 !important;
+  }
 }
 .ant-collapse-borderless {
   background: none;
