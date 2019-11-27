@@ -1,0 +1,86 @@
+<template>
+  <base-dialog @cancel="cancelDialog">
+    <div slot="header">{{params.title}}</div>
+    <div slot="body">
+      <dialog-selected-tips :count="params.data.length" :action="params.title" />
+      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <a-form :form="form.fc">
+         <clearing-radios v-bind="formItemLayout" />
+      </a-form>
+    </div>
+    <div slot="footer">
+      <a-button :loading="loading" @click="handleConfirm" type="primary">{{ $t('dialog.ok') }}</a-button>
+      <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
+    </div>
+  </base-dialog>
+</template>
+
+<script>
+import { CreateServerForm } from '@Compute/constants'
+import DialogMixin from '@/mixins/dialog'
+import WindowsMixin from '@/mixins/windows'
+
+export default {
+  name: 'RedisRenewDialog',
+  mixins: [DialogMixin, WindowsMixin],
+  provide () {
+    return {
+      form: this.form,
+    }
+  },
+  data () {
+    return {
+      loading: false,
+      form: {
+        fc: this.$form.createForm(this),
+      },
+      formItemLayout: {
+        wrapperCol: { span: CreateServerForm.wrapperCol },
+        labelCol: { span: CreateServerForm.labelCol },
+      },
+      decorators: {
+        boot_order: [
+          'boot_order',
+          {
+            rules: [
+              { required: true, message: '请选择启动介质' },
+            ],
+          },
+        ],
+      },
+    }
+  },
+  methods: {
+    validateForm () {
+      return new Promise((resolve, reject) => {
+        this.form.fc.validateFields((err, values) => {
+          if (!err) {
+            resolve(values)
+          } else {
+            reject(err)
+          }
+        })
+      })
+    },
+    async handleConfirm () {
+      this.loading = true
+      try {
+        const values = await this.validateForm()
+        const ids = this.params.data.map(item => item.id)
+        await this.params.list.onManager('batchUpdate', {
+          id: ids,
+          steadyStatus: ['running'],
+          managerArgs: {
+            data: values,
+          },
+        })
+        this.loading = false
+        this.$message.success('操作成功')
+        this.cancelDialog()
+      } catch (error) {
+        this.loading = false
+      }
+    },
+  },
+}
+</script>

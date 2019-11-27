@@ -2,22 +2,22 @@
   <div>
     <page-header title="实例列表" />
     <page-body>
-      <redis-list />
+      <rds-list />
     </page-body>
   </div>
 </template>
 
 <script>
-import RedisList from './components/List'
+import rdsList from './components/List'
 
 export default {
-  name: 'VmInstanceIndex',
+  name: 'RDSIndex',
   components: {
-    RedisList,
+    rdsList,
   },
   methods: {
     createServer () {
-      this.$router.push('/redis/create')
+      this.$router.push('/rds/create')
     },
   },
 }
