@@ -12,7 +12,13 @@ export const REGEXP = {
   },
   resourceName: {
     // regexp: /^[a-zA-Z][a-zA-Z0-9-]{1,126}(?<!-)$/, // firefox 不支持 后行否定断言
-    regexp: /^[a-zA-Z][a-zA-Z0-9-]?[a-zA-Z0-9]{1,126}$/,
+    func: value => {
+      const regexp = /^(?!-|[0-9])[a-zA-Z0-9-]{1,126}$/
+      if (regexp.test(value) && !value.endsWith('-')) {
+        return true
+      }
+      return false
+    },
     message: i18n.t('validator.resourceName'),
   },
   serverName: {
