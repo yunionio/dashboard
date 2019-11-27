@@ -73,15 +73,12 @@ export default {
       type: [Array, Boolean],
       default: true,
     },
-<<<<<<< HEAD
-=======
   },
   watch: {
     cityParams (val, oldVal) {
       if (R.equals(val, oldVal)) return
       this.fetchs()
     },
->>>>>>> ecadef353fea04d5d354349e7691a5012a3d2985
   },
   created () {
     this.fetchs()
