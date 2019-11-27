@@ -170,7 +170,7 @@ export default {
         const params = {
           scope: this.scope,
         }
-        if (domainId) params.domain_id = domainId
+        if (domainId && !this.isDomainMode) params.domain_id = domainId
         const response = await this.pm.list({ params })
         const data = response.data.data
         this.projects = data.map(val => ({ ...val, key: val.id, label: val.name })) || []
@@ -205,6 +205,9 @@ export default {
     projectChange (project) {
       this.projectData = project
       this.$emit('update:project', project)
+      if (!this.isAdminMode && !this.isDomainMode) {
+        this.fc.getFieldDecorator('project', { preserve: true, initialValue: project })
+      }
     },
   },
 }

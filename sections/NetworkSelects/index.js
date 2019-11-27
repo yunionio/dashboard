@@ -120,7 +120,7 @@ export default {
         } else {
           await this.FC.setFieldsValue({
             vpc: !R.isEmpty(this.vpcList) ? this.vpcList[0].id : undefined,
-          })
+          }, this.fetchNetwork)
         }
       } catch (err) {
         this.vpcLoading = false
