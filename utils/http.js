@@ -48,10 +48,10 @@ const cancelRquest = requestKey => {
   }
 }
 
-const showErrorNotify = error => {
-  const errorMsg = getHttpErrorMessage(error)
+const showErrorNotify = (error, isErrorBody = false) => {
+  const errorMsg = getHttpErrorMessage(error, isErrorBody)
   if (!errorMsg) throw error
-  const reqMsg = getHttpReqMessage(error)
+  const reqMsg = isErrorBody ? '' : getHttpReqMessage(error)
   const key = `notification-${uuid(32)}`
   notification.error({
     key,
@@ -139,6 +139,12 @@ http.interceptors.response.use(
     cancelRquest(response.config['$requestKey'])
     pendingCount--
     pendingCount === 0 && hiddenLoading()
+    if (response.status === 207) { // 批量操作
+      const errorList = response.data.data.filter(val => val.status !== 200)
+      errorList.forEach(errorData => {
+        showErrorNotify(errorData.data, true)
+      })
+    }
     return response
   },
   (error) => {
