@@ -407,9 +407,9 @@ export default {
               {
                 label: '预留IP',
                 // permission: 'networks_delete',
-                action: () => {
+                action: (obj) => {
                   this.createDialog('NetworkReversedIPDialog', {
-                    data: this.list.selectedItems,
+                    data: [obj],
                     columns: this.columns,
                     title: '预留IP',
                     list: this.list,
