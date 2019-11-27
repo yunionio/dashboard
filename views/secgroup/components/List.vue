@@ -19,13 +19,19 @@ import WindowsMixin from '@/mixins/windows'
 export default {
   name: 'SecgroupList',
   mixins: [WindowsMixin],
+  props: {
+    getParams: {
+      type: [Function, Object],
+      default: () => ({
+        details: true,
+      }),
+    },
+  },
   data () {
     return {
       list: this.$list.createList(this, {
         resource: 'secgroups',
-        getParams: {
-          details: true,
-        },
+        getParams: this.getParams,
         filterOptions: {
           name: {
             label: '名称',
