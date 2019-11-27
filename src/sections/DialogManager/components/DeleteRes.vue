@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{ params.title }}</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" :action="this.params.title" />
+      <dialog-selected-tips :count="params.data.length" :action="this.params.title" :name="this.params.name" />
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
     </div>
     <div slot="footer">
