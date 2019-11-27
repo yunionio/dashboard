@@ -76,6 +76,10 @@ export const REGEXP = {
     regexp: /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(\/\d{1,2})$/,
     message: i18n.t('validator.networkSegment'),
   },
+  wiresName: {
+    regexp: /^[a-zA-Z][a-zA-Z0-9-]{1,8}$/,
+    message: i18n.t('validator.wiresName'),
+  },
 }
 
 /**
