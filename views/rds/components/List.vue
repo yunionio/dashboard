@@ -162,6 +162,7 @@ export default {
       groupActions: [
         {
           label: '新建',
+          permission: 'rds_dbinstances_create',
           action: () => {
             this.$router.push('/rds/create')
           },
@@ -173,6 +174,7 @@ export default {
         },
         {
           label: '删除',
+          permission: 'rds_dbinstances_detelt',
           action: () => {
             this.createDialog('DeleteResDialog', {
               title: '删除',
@@ -379,6 +381,7 @@ export default {
               },
               {
                 label: '删除',
+                permission: 'rds_dbinstances_detelt',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     title: '删除',
@@ -390,7 +393,7 @@ export default {
                 meta: () => {
                   let tooltip = ''
                   let seconds = this.$moment(obj.expired_at).diff(new Date()) / 1000
-                  if (!obj.can_delete) {
+                  if (obj.disable_delete) {
                     tooltip = '请点击修改属性禁用删除保护后重试'
                   } else if (obj.billing_type === 'prepaid' && seconds > 0) {
                     tooltip = '实例未到期不允许删除'
