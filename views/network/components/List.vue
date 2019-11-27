@@ -39,10 +39,16 @@ const canAdjustConfig = (obj) => {
 export default {
   name: 'NetworkList',
   mixins: [windows],
+  props: {
+    getParams: {
+      type: [Function, Object],
+    },
+  },
   data () {
     return {
       list: this.$list.createList(this, {
         resource: 'networks',
+        getParams: this.getParams,
         filterOptions: {
           name: {
             label: '实例名称',
