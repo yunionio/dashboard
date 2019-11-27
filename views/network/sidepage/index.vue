@@ -22,6 +22,7 @@ import HostIp from './HostIp'
 import ReservedIp from './ReservedIp'
 import LbIp from './LbIp'
 import FlexIp from './FlexIp'
+import IPList from './IPList'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -36,12 +37,14 @@ export default {
     LbIp,
     FlexIp,
     Actions,
+    IPList,
   },
   mixins: [SidePageMixin, WindowsMixin],
   data () {
     return {
       detailTabs: [
         { label: '详情', key: 'network-detail' },
+        { label: 'IP使用情况', key: 'i-p-list' },
         { label: '宿主机IP', key: 'host-machineip' },
         { label: '主机IP', key: 'host-ip' },
         { label: '预留IP', key: 'reserved-ip' },
