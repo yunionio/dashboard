@@ -112,6 +112,7 @@ export default {
       const params = {
         usable: true,
         // service: 'dbinstances',
+        cloud_env: 'public',
       }
       try {
         const { data } = await this.crManager.rpc({

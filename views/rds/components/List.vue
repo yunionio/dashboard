@@ -295,6 +295,23 @@ export default {
                 },
               },
               {
+                label: '更改项目',
+                action: () => {
+                  this.createDialog('ChangeOwenrDialog', {
+                    title: '更改项目',
+                    data: [obj],
+                    columns: this.columns,
+                    list: this.list,
+                  })
+                },
+                meta: () => {
+                  return {
+                    // validate: selectedLength,
+                    // tooltip: notSelectedTooltip,
+                  }
+                },
+              },
+              {
                 label: '重启',
                 action: () => {
                   this.createDialog('RDSRestartdialog', {
