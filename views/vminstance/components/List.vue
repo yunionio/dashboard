@@ -641,6 +641,36 @@ export default {
                       return ret
                     },
                   },
+                  {
+                    label: '主机克隆',
+                    action: () => {
+                      this.createDialog('VmCloneDeepDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
+                        ret.tooltip = '只有OneCloud主机支持此操作'
+                        return ret
+                      }
+                      if (!['running', 'ready'].includes(obj.status)) {
+                        ret.tooltip = '只有运行中或关机状态的主机支持此操作'
+                        return ret
+                      }
+                      if (obj.backup_host_id) {
+                        ret.tooltip = '高可用的主机不支持此操作'
+                        return ret
+                      }
+                      ret.validate = true
+                      return ret
+                    },
+                  },
                 ],
               },
               {
