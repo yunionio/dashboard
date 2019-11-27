@@ -70,7 +70,10 @@ export default {
     return {
       list: this.$list.createList(this, {
         resource: 'cloudaccounts',
-        steadyStatus: Object.values(expectStatus.cloudaccount).flat(),
+        steadyStatus: {
+          status: Object.values(expectStatus.cloudaccount).flat(),
+          sync_status: Object.values(expectStatus.cloudaccountSyncStatus).flat(),
+        },
         filterOptions: {
           name: {
             label: '名称',
