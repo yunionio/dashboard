@@ -16,12 +16,16 @@
       :data="data"
       :list="params.list"
       :res-id="params.resId"
+      :getParams="getParams"
       @tab-change="handleTabChange" />
   </base-side-page>
 </template>
 
 <script>
+import SecgroupList from '@Compute/views/secgroup/components/List'
 import VmInstanceDetail from './Detail'
+import NetworkListForVmInstanceSidepage from './Network'
+import DiskListForVmInstanceSidepage from './Disk'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -31,12 +35,18 @@ export default {
   components: {
     Actions,
     VmInstanceDetail,
+    NetworkListForVmInstanceSidepage,
+    DiskListForVmInstanceSidepage,
+    SecgroupList,
   },
   mixins: [SidePageMixin, WindowsMixin],
   data () {
     return {
       detailTabs: [
         { label: '详情', key: 'vm-instance-detail' },
+        { label: '安全组', key: 'secgroup-list' },
+        { label: '网络', key: 'network-list-for-vm-instance-sidepage' },
+        { label: '磁盘', key: 'disk-list-for-vm-instance-sidepage' },
         { label: '操作日志', key: 'event-drawer' },
       ],
     }
@@ -44,6 +54,15 @@ export default {
   computed: {
     data () {
       return this.params.list.data[this.params.resId].data
+    },
+    getParams () {
+      if (this.params.windowData.currentTab === 'secgroup-list') {
+        return {
+          detail: true,
+          server: this.params.resId,
+        }
+      }
+      return null
     },
   },
 }
