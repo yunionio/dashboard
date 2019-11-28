@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import { getStatusTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import expectStatus from '@/constants/expectStatus'
@@ -59,14 +60,21 @@ export default {
               title: '新建',
               list: this.list,
               redisItem: this.data,
+              allIPList: this.allIPList,
             })
           },
           meta: () => {
             const isHuawei = this.data.brand === 'Huawei'
+            let tooltip = ''
+            if (isHuawei) {
+              tooltip = '华为云不支持创建白名单'
+            } else if (this.list.total >= 4) {
+              tooltip = '仅支持创建4个白名单'
+            }
             return {
               buttonType: 'primary',
-              validate: !isHuawei,
-              tooltip: isHuawei ? '华为云不支持创建白名单' : null,
+              validate: !tooltip,
+              tooltip: tooltip,
             }
           },
         },
@@ -81,6 +89,7 @@ export default {
                 name: obj.name,
                 ip_list: obj.ip_list,
               },
+              allIPList: this.allIPList,
               data: [obj],
               list: this.list,
               columns: this.columns,
@@ -90,7 +99,6 @@ export default {
           meta: () => {
             const isHuawei = this.data.brand === 'Huawei'
             return {
-              buttonType: 'primary',
               validate: !isHuawei,
               tooltip: isHuawei ? '华为云不支持此操作' : null,
             }
@@ -109,6 +117,20 @@ export default {
         },
       ],
     }
+  },
+  computed: {
+    allIPList () {
+      if (this.list && !R.isEmpty(this.list.data)) {
+        let ipList = []
+        Object.values(this.list.data).forEach(({ data }) => {
+          if (data.ip_list && R.type(data.ip_list) === 'String' && !R.isEmpty(data.ip_list)) {
+            ipList = [...ipList, ...data.ip_list.split(',')]
+          }
+        })
+        return ipList
+      }
+      return []
+    },
   },
   created () {
     this.list.fetchData()

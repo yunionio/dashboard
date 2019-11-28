@@ -110,6 +110,19 @@ export default {
             }
           },
         },
+        {
+          label: '删除',
+          action: () => {
+            this.createDialog('DeleteResDialog', {
+              data: this.list.selectedItems,
+              columns: this.columns,
+              title: '删除备份',
+              list: this.list,
+              name: '备份',
+            })
+          },
+          meta: () => this.$getDeleteResult(this.list.selectedItems),
+        },
       ],
       singleActions: [
         {
@@ -137,6 +150,7 @@ export default {
               data: [obj],
               columns: this.columns,
               list: this.list,
+              name: '备份',
             })
           },
         },

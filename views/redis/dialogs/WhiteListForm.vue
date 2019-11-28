@@ -6,15 +6,15 @@
               <dialog-selected-tips :count="params.data.length" :action="params.title" />
               <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
            </template>
-            <a-form-item v-bind="formItemLayout" label="分组名">
-                <a-input placeholder="请选择分组名称" v-decorator="decorators.name" />
+            <a-form-item v-bind="formItemLayout" label="名称">
+                <a-input placeholder="请输入名称" v-decorator="decorators.name" />
             </a-form-item>
             <a-form-item v-bind="formItemLayout" label="IP地址/地段名">
                 <a-textarea placeholder="例：10.10.10.1 或者 10.10.0.0/10"
                  :autosize="{ minRows: 4, maxRows: 7 }"
                  v-decorator="decorators['ip_list']" />
                  <div style="line-height:20px;color:#999">有多个IP地址/地址段，请用“，”进行分割。每个实例最多添加20个IP地址/地址段，请用“，”进行分割。每个实例最多添加20个IP地址
-                     ，您还可以添加<b style="color:#666">{{20-this.ipsLength}}</b>个IP地址/地址段
+                     ，您还可以添加<b style="color:#666">{{20 - (this.params.allIPList.length + (this.form.fc.getFieldValue('ip_list') ? this.form.fc.getFieldValue('ip_list').split(',').length : 0))}}</b>个IP地址/地址段
                  </div>
             </a-form-item>
         </a-form>
@@ -77,6 +77,10 @@ export default {
       }
       return decorators
     },
+    remainIpCount () {
+      const ipValue = this.form.fc.getFieldValue('ip_list')
+      return 20 - (this.params.allIPList.length + (ipValue ? ipValue.split(',').length : 0))
+    },
   },
   created () {
     const { initialValues = {} } = this.params
@@ -89,8 +93,11 @@ export default {
       const REG_IP = REGEXP.IPv4.regexp
       const REG_NUM = /\d/
       if (value) {
-        const ips = value.split(',')
+        const ips = [...this.params.allIPList, ...value.split(',')]
         const ipsLength = ips.length
+        if (ipsLength > this.params.allIPList) {
+          _callback('每个实例最多添加20个IP地址/地址段')
+        }
         for (let i = 0; i < ipsLength; i++) {
           const _item = ips[i]
           const [_ip, _u] = _item.split('/')
@@ -99,6 +106,9 @@ export default {
           }
           if (_u && !REG_NUM.test(_u)) {
             _callback(`地址段${_u}只能是数字`)
+          }
+          if (ips.indexOf(_item, (i + 1)) > -1) {
+            return _callback(`实例中不允许出现重复IP“${_item}”`)
           }
         }
         this.ipsLength = ipsLength
