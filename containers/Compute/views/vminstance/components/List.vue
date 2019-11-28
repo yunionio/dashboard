@@ -228,6 +228,12 @@ export default {
                   this.createServer('public')
                 },
               },
+              {
+                label: '私有云',
+                action: () => {
+                  this.createServer('private')
+                },
+              },
             ]
           },
           meta: () => {

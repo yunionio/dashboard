@@ -68,16 +68,13 @@ export default {
           imageMsg: {}, // 当前选中的 image
           cpuMem: {}, // cpu 和 内存 的关联关系
           createType: SERVER_TYPE[this.type],
+          dataDiskDisabled: false, // 数据盘是否禁用
+          sysDiskDisabled: false, // 系统盘是否禁用
         },
         fd: initFd,
       },
       decorators,
       params: {
-        cloudregion: {
-          cloud_env: 'onpremise',
-          usable: true,
-          show_emulated: true,
-        },
         schedtag: { resource_type: 'networks' },
         policySchedtag: { limit: 0, 'filter.0': 'resource_type.equals(hosts)' },
       },
@@ -89,6 +86,9 @@ export default {
     }
   },
   computed: {
+    project_domain () {
+      return this.form.fd.domain ? this.form.fd.domain.key : this.$store.getters.userInfo.projectDomainId
+    },
     project () {
       return this.form.fd.project ? this.form.fd.project.key : this.$store.getters.userInfo.projectId
     },
@@ -124,6 +124,11 @@ export default {
       const disk = this.form.fd.dataDiskSizes
       return R.is(Object, disk) ? Object.values(disk) : []
     },
+    secgroupParams () {
+      return {
+        tenant: this.project,
+      }
+    },
   },
   created () {
     this.$bus.$on('VMInstanceCreateUpdateFi', this.updateFi, this)
@@ -131,6 +136,17 @@ export default {
     this.serverM = new Manager('servers')
     this.serverskusM = new Manager('serverskus')
     this.schedulerM = new Manager('schedulers', 'v1')
+  },
+  watch: {
+    'form.fi.imageMsg': {
+      deep: true,
+      handler (val, oldVal) {
+        if (R.equals(val, oldVal)) return
+        this.$nextTick(() => {
+          this._resetDataDisk() // 重置数据盘数据
+        })
+      },
+    },
   },
   methods: {
     baywatch (props, watcher) {
@@ -199,6 +215,13 @@ export default {
       this.form.fc.setFieldsValue({
         vmem: memOpts[0],
       })
+    },
+    _resetDataDisk () { // 重置数据盘
+      const formValue = this.form.fc.getFieldsValue()
+      if (formValue.dataDiskSizes) {
+        const dataDiskKeys = Object.keys(formValue.dataDiskSizes)
+        dataDiskKeys.forEach(key => this.$refs.dataDiskRef.decrease(key))
+      }
     },
     _setNewFieldToFd (newField, formValue) { // vue-ant-form change 后赋值 fd
       const changeKeys = Object.keys(newField)

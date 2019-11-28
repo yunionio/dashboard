@@ -47,7 +47,7 @@
           :sku-params="skuParam"
           :hypervisor="hypervisor" />
       </a-form-item>
-      <a-form-item v-bind="formItemLayout" label="操作系统" extra="操作系统会根据选择的虚拟化平台和可用区域的变化而变化公共镜像的维护请联系管理员">
+      <a-form-item v-bind="formItemLayout" label="操作系统" extra="操作系统会根据选择的虚拟化平台和可用区域的变化而变化，公共镜像的维护请联系管理员">
         <os-select
           :type="type"
           :hypervisor="hypervisor"
@@ -73,7 +73,7 @@
           :hypervisor="hypervisor"
           :sku="form.fd.sku"
           :capability-data="form.fi.capability"
-          :image="form.fi.imageMsg" />
+          ref="dataDiskRef" />
       </a-form-item>
       <a-form-item label="管理员密码" v-bind="formItemLayout">
         <server-password :decorator="decorators.loginConfig" :loginTypes="loginTypes" />
@@ -128,7 +128,7 @@ import { PROVIDER_MAP, HYPERVISORS_MAP } from '@/constants'
 import AreaSelects from '@/sections/AreaSelects'
 
 export default {
-  name: 'PublicCreate',
+  name: 'VMPublicCreate',
   components: {
     Bill,
     AreaSelects,
@@ -168,13 +168,13 @@ export default {
       return {
         usable: true,
         public_cloud: true,
-        project_domain: this.form.fd.domain ? this.form.fd.domain.key : this.$store.userInfo.projectDomainId,
+        project_domain: this.project_domain,
       }
     },
     providerParams () {
       return {
         usable: true,
-        project_domain: this.form.fd.domain ? this.form.fd.domain.key : this.$store.userInfo.projectDomainId,
+        project_domain: this.project_domain,
       }
     },
     cloudregionParams () {
@@ -182,7 +182,7 @@ export default {
         cloud_env: 'public',
         usable: true,
         show_emulated: true,
-        project_domain: this.form.fd.domain ? this.form.fd.domain.key : this.$store.userInfo.projectDomainId,
+        project_domain: this.project_domain,
       }
     },
     zoneParams () {
@@ -192,7 +192,7 @@ export default {
         show_emulated: true,
         order_by: 'created_at',
         order: 'asc',
-        project_domain: this.form.fd.domain ? this.form.fd.domain.key : this.$store.userInfo.projectDomainId,
+        project_domain: this.project_domain,
       }
     },
     imageParams () {
@@ -225,11 +225,6 @@ export default {
         region: this.skuCloudregionZone.cloudregion,
       }
     },
-    secgroupParams () {
-      return {
-        tenant: this.project,
-      }
-    },
     skuParam () {
       const params = {
         public_cloud: true,
@@ -238,7 +233,7 @@ export default {
         memory_size_mb: this.form.fd.vmem,
         usable: true,
         enabled: true,
-        project_domain: this.form.fd.domain.key,
+        project_domain: this.project_domain,
         city: this.form.fd.city,
       }
       if (this.form.fd.cloudregion) params.cloudregion = this.form.fd.cloudregion
@@ -344,7 +339,7 @@ export default {
     fetchCapability () {
       const params = {
         show_emulated: true,
-        project_domain: this.form.fc.getFieldValue('domain'),
+        project_domain: this.project_domain,
         resource_type: this.form.fc.getFieldValue('resourceType'),
       }
       const { sku } = this.form.fd
