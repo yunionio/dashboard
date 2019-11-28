@@ -2,7 +2,7 @@ import * as R from 'ramda'
 import { HYPERVISORS_MAP, EXTRA_HYPERVISORS } from '@/constants'
 import { changeToArr } from '@/utils/utils'
 
-class TypeClouds {
+export class TypeClouds {
   hypervisorMap = {}
   brandMap = {}
   brandlowcaseMap = {}
