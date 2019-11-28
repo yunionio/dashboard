@@ -1,5 +1,5 @@
 <template>
-  <detail :base-info="baseInfo" :data="data" />
+  <detail :base-info="baseInfo" statusModule="rdsAccount" :data="data" />
 </template>
 
 <script>
@@ -23,15 +23,6 @@ export default {
         {
           field: 'name',
           title: '名称',
-        },
-        {
-          field: 'status',
-          title: '状态',
-          slots: {
-            default: ({ row }) => {
-              return <status status={row.status} statusModule='rdsAccount' />
-            },
-          },
         },
         {
           field: 'dbinstanceprivileges',

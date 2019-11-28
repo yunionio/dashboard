@@ -2,7 +2,8 @@
   <detail
     :data="data"
     :base-info="baseInfo"
-    :extra-info="extraInfo" />
+    :extra-info="extraInfo"
+    statusModule="redis" />
 </template>
 
 <script>
@@ -27,15 +28,6 @@ export default {
         {
           field: 'name',
           title: '名称',
-        },
-        {
-          field: 'status',
-          title: '状态',
-          slots: {
-            default: ({ row }) => {
-              return <status status={ row.status } statusModule='redis' />
-            },
-          },
         },
         {
           field: 'project_domain',

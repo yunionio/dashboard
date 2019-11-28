@@ -1,5 +1,5 @@
 <template>
-  <detail :base-info="baseInfo" :data="data" :extra-info="extraInfo" />
+  <detail :base-info="baseInfo" :data="data"  statusModule="rdsBackup" :extra-info="extraInfo" />
 </template>
 <script>
 // import { sizestr } from '@/utils/utils'
@@ -25,15 +25,6 @@ export default {
         {
           field: 'name',
           title: '名称',
-        },
-        {
-          field: 'status',
-          title: '状态',
-          slots: {
-            default: ({ row }) => {
-              return <status status={row.status} statusModule='rdsBackup' />
-            },
-          },
         },
       ],
       extraInfo: [

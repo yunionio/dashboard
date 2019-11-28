@@ -8,9 +8,9 @@
     :tabs="detailTabs"
     :current-tab="params.windowData.currentTab"
     @tab-change="handleTabChange">
-    <!-- <template v-slot:actions>
+    <template v-slot:actions>
       <actions :options="params.singleActions" :row="data" :buttonMode="false" />
-    </template> -->
+    </template>
     <component :is="params.windowData.currentTab" :data="data" :list="params.list" :params="getParams" :res-id="getParams.elasticcache_id" />
   </base-side-page>
 </template>
