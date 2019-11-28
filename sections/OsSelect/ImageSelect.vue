@@ -15,7 +15,7 @@
       </a-col>
       <a-col :span="16">
         <a-form-item>
-          <a-select label-in-value v-decorator="decorator.image" :loading="loading" @change="imageChange" allow-clear>
+          <a-select label-in-value v-decorator="decorator.image" :loading="loading" @change="imageChange">
             <a-select-option v-for="item in imageOpts" :key="item.id">{{ item.name }}</a-select-option>
           </a-select>
         </a-form-item>
@@ -60,7 +60,7 @@ export default {
     form: {
       type: Object,
       required: true,
-      validator: val => !R.isNil(val.fc) && !R.isNil(val.fd),
+      validator: val => !R.isNil(val.fc),
     },
     cacheImageParams: {
       type: Object,
@@ -156,6 +156,7 @@ export default {
       props.forEach(iterator, this)
     },
     fetchData () {
+      this.images.list = []
       switch (this.imageType) { // 自定义镜像
         case IMAGES_TYPE_MAP.customize.key:
           this.fetchImages(this.customImageParams)
@@ -230,6 +231,7 @@ export default {
       }
     },
     async fetchCacheimages () {
+      this.images.cacheimagesList = []
       this.loading = true
       try {
         const { data: { data = [] } } = await this.cachedimagesM.list({ params: this.cacheImageParams })
@@ -292,7 +294,9 @@ export default {
       if (this.isPublicImage || this.isPrivateImage) {
         images = this.images.cacheimagesList
       } else {
-        images = images.filter(item => item.disk_format && item.disk_format !== 'docker')
+        if (this.imageType !== IMAGES_TYPE_MAP.snapshot.key) {
+          images = images.filter(item => item.disk_format && item.disk_format !== 'docker')
+        }
       }
       const osOpts = []
       const imageOptsMap = {}
@@ -305,6 +309,8 @@ export default {
         const properties = this.getProperties(item)
         if (properties && properties.os_distribution) {
           osVal = properties.os_distribution
+        } else if (properties && properties.os_type) {
+          osVal = properties.os_type
         } else {
           isOther = true
         }
@@ -347,6 +353,7 @@ export default {
       this.defaultSelect()
     },
     defaultSelect (osValue) {
+      this.imageOpts = []
       const { osOpts, imageOptsMap } = this.imagesInfo
       if (osOpts && osOpts.length) {
         const os = osValue || osOpts[0].key

@@ -150,11 +150,9 @@ export default {
     },
     disk () {
       const diskValueArr = []
-      R.forEachObjIndexed((item, key) => {
-        if (key.includes('DiskSize')) {
-          diskValueArr.push(item)
-        }
-      }, this.fd)
+      R.forEachObjIndexed(value => {
+        diskValueArr.push(value)
+      }, this.fd.dataDiskSizes)
       return diskValueArr.reduce((prevDisk, diskValue) => prevDisk + diskValue, 0)
     },
     config () {
@@ -287,7 +285,6 @@ export default {
         }
         let dataDiskSpec = []
         const isUcloudAzure = (provider === HYPERVISORS_MAP.ucloud.key || provider === HYPERVISORS_MAP.azure.key)
-        console.log(this.dataDiskSizes, 'this.dataDiskSizes')
         R.forEach((value) => {
           if (isUcloudAzure) {
             dataDiskSpec.push(`${value}:${provider}::${regionExtId}::::disk::${systemDiskType.key}`)
