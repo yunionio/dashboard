@@ -422,7 +422,7 @@ export const PERMISSION = {
    * 数据库-RDS
    */
   'rds_dbinstances_list': ['compute', 'dbinstances', 'list'],
-  'rds_dbinstances_detelt': ['compute', 'dbinstances', 'delete'],
+  'rds_dbinstances_delete': ['compute', 'dbinstances', 'delete'],
   'rds_dbinstances_create': ['compute', 'dbinstances', 'create'],
   /**
    * 数据库-RDS备份列表
