@@ -9,7 +9,7 @@
     :current-tab="params.windowData.currentTab"
     @tab-change="handleTabChange">
     <template v-slot:actions>
-      <actions :options="params.singleActions" :row="data" :buttonMode="false" />
+      <actions :options="params.singleActions" :row="data" :buttonMode="false" button-type="link" button-size="small" />
     </template>
     <component :is="params.windowData.currentTab" :data="data" :list="params.list" :params="getParams" :res-id="getParams.dbinstance" />
   </base-side-page>
