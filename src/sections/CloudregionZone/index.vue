@@ -47,6 +47,16 @@ export default {
       zoneOpts: [],
     }
   },
+  watch: {
+    cloudregionParams: {
+      deep: true,
+      handler (val, oldVal) {
+        if (!R.equals(val, oldVal)) {
+          this.fetchRegions()
+        }
+      },
+    },
+  },
   created () {
     this.zonesM = new Manager('zones', 'v2')
     this.cloudregionsM = new Manager('cloudregions', 'v2')
