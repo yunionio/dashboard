@@ -1,5 +1,5 @@
 <template>
-  <event-list :obj-id="resId" />
+  <event-list :obj-id="resId" :obj-type="resType" />
 </template>
 
 <script>
@@ -17,6 +17,9 @@ export default {
     resId: {
       type: String,
       required: true,
+    },
+    resType: {
+      type: String,
     },
   },
   methods: {
