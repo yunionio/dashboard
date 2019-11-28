@@ -5,6 +5,7 @@
  */
 
 import { message, notification } from 'ant-design-vue'
+import * as R from 'ramda'
 import axios from 'axios'
 import qs from 'qs'
 import store from '@/store'
@@ -48,16 +49,22 @@ const cancelRquest = requestKey => {
   }
 }
 
-const showErrorNotify = error => {
+const resolveError = error => {
   const errorMsg = getHttpErrorMessage(error)
   if (!errorMsg) throw error
   const reqMsg = getHttpReqMessage(error)
+  showErrorNotify({ errorMsg, reqMsg })
+}
+
+const showErrorNotify = ({ errorMsg, reqMsg }) => {
+  const message = R.is(Array, errorMsg) ? '批量操作错误' : errorMsg.class
+  const description = R.is(Array, errorMsg) ? errorMsg[0].class : errorMsg.detail
   const key = `notification-${uuid(32)}`
   notification.error({
     key,
     class: 'error-notification',
-    message: errorMsg.class,
-    description: errorMsg.detail,
+    message,
+    description,
     icon: h => <a-icon type="info-circle" class="error-color" />,
     btn: h => {
       const id = `ErrorDialog-${uuid(32)}`
@@ -86,16 +93,24 @@ const showErrorNotify = error => {
   })
 }
 
+const showHttpBatchErrorMessage = response => {
+  const errorList = response.data.data.filter(val => val.status !== 200)
+  const errorMsgList = errorList.map(errorData => ({ ...getHttpErrorMessage(errorData.data, true), id: errorData.id }))
+  if (!errorMsgList || !errorMsgList.length) return
+  const reqMsg = getHttpReqMessage(response)
+  showErrorNotify({ errorMsg: errorMsgList, reqMsg })
+}
+
 const showHttpErrorMessage = (error) => {
   if (error.response) {
     const status = error.response.status
     if (error.config) {
       if (status === 404) {
         if (error.config.method.toLowerCase() !== 'get') {
-          showErrorNotify(error)
+          resolveError(error)
         }
       } else {
-        showErrorNotify(error)
+        resolveError(error)
       }
     }
   }
@@ -139,6 +154,9 @@ http.interceptors.response.use(
     cancelRquest(response.config['$requestKey'])
     pendingCount--
     pendingCount === 0 && hiddenLoading()
+    if (response.status === 207) { // 批量操作
+      showHttpBatchErrorMessage(response)
+    }
     return response
   },
   (error) => {
