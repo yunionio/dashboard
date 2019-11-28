@@ -54,6 +54,9 @@ export default {
     objId: {
       type: String,
     },
+    objType: {
+      type: String,
+    },
     limit: {
       type: Number,
       default: 20,
@@ -192,6 +195,7 @@ export default {
       }
       if (this.nextMarker) params.paging_marker = this.nextMarker
       if (this.objId) params.obj_id = this.objId
+      if (this.objType) params.obj_type = this.objType
       if (this.searched && !R.isEmpty(this.searched)) {
         for (let key in this.searched) {
           params[key] = this.searched[key]['value']
