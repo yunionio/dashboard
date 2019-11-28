@@ -55,7 +55,7 @@ export function hasPermission ({
       if (val === 'deny') {
         return false
       }
-      if (resourceData && !store.getters.isAdminMode) {
+      if (resourceData && !store.getters.isAdminMode && !store.getters.isDomainMode) {
         if (val === 'allow') {
           const action = pArr[2]
           if (resourceData.fingerprint && resourceData.public_key && resourceData.scheme) {
