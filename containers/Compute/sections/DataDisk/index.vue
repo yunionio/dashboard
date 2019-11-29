@@ -173,7 +173,7 @@ export default {
         }
       })
     },
-    add ({ size, type, policy, schedtag, snapshot, filetype, mountPath }) {
+    add ({ size, diskType, policy, schedtag, snapshot, filetype, mountPath } = {}) {
       const key = uuid()
       this.dataDisks.push({
         key,
@@ -183,16 +183,21 @@ export default {
           [`dataDiskSizes[${key}]`]: R.is(Number, size) ? size : this.min,
         }
         if (!this.diskTypeLabel) { // 表单中无系统盘，需要 set 磁盘类型默认值
-          const typeObj = this.typesMap[type]
-          if (type && R.is(Object, typeObj)) {
-            value[`dataDiskTypes[${key}]`] = {
-              key: typeObj.key,
-              label: typeObj.label,
+          const typeObj = this.typesMap[diskType]
+          if (diskType) {
+            if (R.is(Object, typeObj)) {
+              value[`dataDiskTypes[${key}]`] = {
+                key: typeObj.key,
+                label: typeObj.label,
+              }
             }
-          } else {
-            value[`dataDiskTypes[${key}]`] = {
-              key: this.currentTypeObj.key,
-              label: this.currentTypeObj.label,
+          } else if (diskType === undefined) { // 新加数据盘
+            const defaultKey = Object.keys(this.typesMap)[0]
+            if (defaultKey) {
+              value[`dataDiskTypes[${key}]`] = {
+                key: this.typesMap[defaultKey].key,
+                label: this.typesMap[defaultKey].label,
+              }
             }
           }
         }
