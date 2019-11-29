@@ -227,6 +227,14 @@ export default {
       },
       deep: true,
     },
+    skuResults: {
+      handler (val, oldV) {
+        if (!R.equals(val, oldV)) {
+          this.setSku(val && val[0])
+        }
+      },
+      deep: true,
+    },
   },
   created () {
     this.skusM = new Manager('serverskus')
