@@ -26,6 +26,7 @@
 
 <script>
 import * as R from 'ramda'
+import { SERVER_TYPE } from '@Compute/constants'
 import { Manager } from '@/utils/manager'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
 
@@ -61,14 +62,22 @@ export default {
       required: true,
       validator: val => !R.isNil(val.fc) && !R.isNil(val.fd),
     },
+    cacheImageParams: {
+      type: Object,
+      required: true,
+    },
   },
   data () {
     return {
       images: {
         list: [], // 标准镜像、iso、自定义镜像 list
-        cacheimagesList: [], // 镜像缓存list，用于对比哪些镜像已缓存
+        cacheimagesList: [], // idc: 镜像缓存list，用于对比哪些镜像已缓存，public|private: image-list
         hostimagesList: [], // 主机镜像 list
         instanceSnapshotsList: [], // 主机快照 list
+      },
+      imagesInfo: {
+        osOpts: [],
+        imageOptsMap: {},
       },
       loading: false,
       imageOpts: [],
@@ -77,7 +86,7 @@ export default {
   computed: {
     // 选择的镜像类型是否为公有云镜像
     isPublicImage () {
-      return this.imageType === IMAGES_TYPE_MAP.public.key || this.imageType === IMAGES_TYPE_MAP.publicCustomize.key
+      return this.imageType === IMAGES_TYPE_MAP.public.key || this.imageType === IMAGES_TYPE_MAP.public_customize.key
     },
     // 选择的镜像类型是否为私有云镜像
     isPrivateImage () {
@@ -94,8 +103,13 @@ export default {
     cacheimageIds () {
       return this.images.cacheimagesList.map(item => item.id)
     },
-    standardImageParams () { // 标准镜像
-      return Object.assign({}, this.imageParams, {
+    imageListParams () {
+      if (this.cloudType === SERVER_TYPE.private) { // private
+        return Object.assign({}, this.imageParams, {
+          'filter.0': 'disk_format.notequals(iso)',
+        })
+      }
+      return Object.assign({}, this.imageParams, { // idc
         is_standard: true,
         'filter.0': 'disk_format.notequals(iso)',
       })
@@ -109,7 +123,169 @@ export default {
     isoImageParams () { // iso 参数
       return Object.assign({}, this.imageParams, { disk_formats: 'iso' })
     },
-    imagesInfo () {
+  },
+  watch: {
+    imageType (val, oldVal) {
+      if (R.equals(val, oldVal)) return
+      this.fetchData()
+    },
+    cacheImageParams (val, oldVal) {
+      if (R.equals(val, oldVal)) return
+      this.fetchCacheimages()
+    },
+  },
+  created () {
+    this.imagesM = new Manager('images', 'v1')
+    this.cachedimagesM = new Manager('cachedimages', 'v2')
+    this.guestimagesM = new Manager('guestimages', 'v1')
+    this.instanceSnapshots = new Manager('instance_snapshots', 'v2')
+    if (!this.isPublicImage && !this.isPrivateImage) {
+      this.fetchData()
+    }
+    this.fetchCacheimages()
+    this.baywatch(['customImageParams', 'isoImageParams', 'imageParams'], (val, oldVal) => {
+      if (R.equals(val, oldVal)) return
+      this.fetchData()
+    })
+  },
+  methods: {
+    baywatch (props, watcher) {
+      const iterator = function (prop) {
+        this.$watch(prop, watcher)
+      }
+      props.forEach(iterator, this)
+    },
+    fetchData () {
+      switch (this.imageType) { // 自定义镜像
+        case IMAGES_TYPE_MAP.customize.key:
+          this.fetchImages(this.customImageParams)
+          break
+        case IMAGES_TYPE_MAP.iso.key: // iso
+          this.fetchImages(this.isoImageParams)
+          break
+        case IMAGES_TYPE_MAP.host.key: // 主机镜像
+          this.fetchHostImages(this.imageParams)
+          break
+        case IMAGES_TYPE_MAP.snapshot.key: // 主机快照
+          this.fetchSnapshotImages(this.imageParams)
+          break
+        default: // image list
+          this.fetchImages(this.imageListParams)
+          break
+      }
+    },
+    imageChange (imageObj) {
+      let imageMsg = {}
+      if (imageObj && R.is(Object, imageObj)) {
+        let list = this.images.list
+        if (this.isPublicImage || this.isPrivateImage) list = this.images.cacheimagesList
+        imageMsg = list.find(image => image.id === imageObj.key)
+      }
+      this.$bus.$emit('VMInstanceCreateUpdateFi', { imageMsg }) // 📢将当前 image 的详细信息广播出去
+    },
+    osChange (osValue) {
+      this.defaultSelect(osValue)
+    },
+    _resetImage () {
+      const { os, image } = this.form.fc.getFieldsValue(['os', 'image'])
+      if (os && image) {
+        this.form.fc.setFieldsValue({ os: '' })
+        this.form.fc.setFieldsValue({ image: { ...initData } })
+      }
+    },
+    async fetchImages (params) {
+      this.loading = true
+      this._resetImage()
+      try {
+        const { data: { data = [] } } = await this.imagesM.list({ params })
+        this.loading = false
+        this.images.list = data
+        this.getImagesInfo()
+      } catch (error) {
+        this.loading = false
+      }
+    },
+    async fetchHostImages (params) {
+      this.loading = true
+      this._resetImage()
+      try {
+        const { data: { data = [] } } = await this.guestimagesM.list({ params })
+        this.loading = false
+        this.images.list = data
+        this.getImagesInfo()
+      } catch (error) {
+        this.loading = false
+      }
+    },
+    async fetchSnapshotImages (params) {
+      this.loading = true
+      this._resetImage()
+      try {
+        const { data: { data = [] } } = await this.instanceSnapshots.list({ params })
+        this.loading = false
+        this.images.list = data
+        this.getImagesInfo()
+      } catch (error) {
+        this.loading = false
+      }
+    },
+    async fetchCacheimages () {
+      this.loading = true
+      try {
+        const { data: { data = [] } } = await this.cachedimagesM.list({ params: this.cacheImageParams })
+        this.loading = false
+        this.images.cacheimagesList = data
+        if (this.isPublicImage || this.isPrivateImage) {
+          this.getImagesInfo()
+        }
+      } catch (error) {
+        this.loading = false
+      }
+    },
+    getProperties (img) {
+      if (this.isPublicImage || this.isPrivateImage) {
+        return img.info.properties
+      }
+      return img.properties
+    },
+    getOsDistribution (osDistribution) {
+      if (osDistribution.indexOf('Windows') !== -1) {
+        return 'Windows'
+      }
+      return osDistribution
+    },
+    genImageName (img) {
+      let name = ''
+      if (img.properties && img.properties['os_distribution']) {
+        name = img.properties['os_distribution']
+        if (img.properties['os_version']) {
+          name += ' ' + img.properties['os_version']
+        }
+        if (img.properties['os_codename']) {
+          name += ' ' + img.properties['os_codename']
+        }
+        name += ' (' + img.name + ')'
+      } else {
+        name = img.name
+      }
+      return name
+    },
+    getImageType (img) {
+      let imageType = null
+      const properties = this.getProperties(img)
+      if (properties) {
+        if (properties.os_distribution) {
+          imageType = this.getOsDistribution(properties.os_distribution)
+        } else {
+          imageType = properties.os_type
+        }
+      }
+      return imageType
+    },
+    getImageCached (img) {
+      return this.cacheimageIds.includes(img.id)
+    },
+    getImagesInfo () {
       let images = this.images.list
       // 如果选择的是公有云镜像类型，则取cache image list
       // 其他类型再进行过滤一次
@@ -164,155 +340,11 @@ export default {
       if (isOther) {
         osOpts.push({ label: '其他', key: 'other' })
       }
-      return {
+      this.imagesInfo = {
         osOpts,
         imageOptsMap,
       }
-    },
-  },
-  watch: {
-    imageType () {
-      switch (this.imageType) { // 自定义镜像
-        case IMAGES_TYPE_MAP.customize.key:
-          this.fetchImages(this.customImageParams)
-          break
-        case IMAGES_TYPE_MAP.iso.key: // iso
-          this.fetchImages(this.isoImageParams)
-          break
-        case IMAGES_TYPE_MAP.host.key: // 主机镜像
-          this.fetchHostImages(this.imageParams)
-          break
-        case IMAGES_TYPE_MAP.snapshot.key: // 主机快照
-          this.fetchSnapshotImages(this.imageParams)
-          break
-        default: // 标准镜像
-          this.fetchImages(this.standardImageParams)
-          break
-      }
-    },
-  },
-  created () {
-    this.imagesM = new Manager('images', 'v1')
-    this.cachedimagesM = new Manager('cachedimages', 'v2')
-    this.guestimagesM = new Manager('guestimages', 'v1')
-    this.instanceSnapshots = new Manager('instance_snapshots', 'v2')
-    this.fetchImages(this.standardImageParams)
-    this.fetchCacheimages()
-  },
-  methods: {
-    imageChange (imageObj) {
-      let imageMsg = {}
-      if (imageObj && R.is(Object, imageObj)) {
-        imageMsg = this.images.list.find(image => image.id === imageObj.key)
-      }
-      this.$bus.$emit('VMInstanceCreateUpdateFi', { imageMsg }) // 📢将当前 image 的详细信息广播出去
-    },
-    osChange (osValue) {
-      this.defaultSelect(osValue)
-    },
-    _resetImage () {
-      const { os, image } = this.form.fc.getFieldsValue(['os', 'image'])
-      if (os && image) {
-        this.form.fc.setFieldsValue({ os: '' })
-        this.form.fc.setFieldsValue({ image: { ...initData } })
-      }
-    },
-    async fetchImages (params) {
-      this.loading = true
-      this._resetImage()
-      try {
-        const { data: { data = [] } } = await this.imagesM.list({ params })
-        this.loading = false
-        this.images.list = data
-        this.$nextTick(this.defaultSelect)// 默认选择下拉第一项
-      } catch (error) {
-        this.loading = false
-      }
-    },
-    async fetchCacheimages () {
-      const params = {
-        details: false,
-        order_by: 'ref_count',
-        order: 'desc',
-        image_type: 'customized',
-        zone: this.form.fd.zone.key,
-      }
-      this.loading = true
-      try {
-        const { data: { data = [] } } = await this.cachedimagesM.list({ params })
-        this.loading = false
-        this.images.cacheimagesList = data
-      } catch (error) {
-        this.loading = false
-      }
-    },
-
-    async fetchHostImages (params) {
-      this.loading = true
-      this._resetImage()
-      try {
-        const { data: { data = [] } } = await this.guestimagesM.list({ params })
-        this.loading = false
-        this.images.list = data
-        this.$nextTick(this.defaultSelect)// 默认选择下拉第一项
-      } catch (error) {
-        this.loading = false
-      }
-    },
-    async fetchSnapshotImages (params) {
-      this.loading = true
-      this._resetImage()
-      try {
-        const { data: { data = [] } } = await this.instanceSnapshots.list({ params })
-        this.loading = false
-        this.images.list = data
-        this.$nextTick(this.defaultSelect)// 默认选择下拉第一项
-      } catch (error) {
-        this.loading = false
-      }
-    },
-    getProperties (img) {
-      if (this.isPublicImage || this.isPrivateImage) {
-        return img.info.properties
-      }
-      return img.properties
-    },
-    getOsDistribution (osDistribution) {
-      if (osDistribution.indexOf('Windows') !== -1) {
-        return 'Windows'
-      }
-      return osDistribution
-    },
-    genImageName (img) {
-      let name = ''
-      if (img.properties && img.properties['os_distribution']) {
-        name = img.properties['os_distribution']
-        if (img.properties['os_version']) {
-          name += ' ' + img.properties['os_version']
-        }
-        if (img.properties['os_codename']) {
-          name += ' ' + img.properties['os_codename']
-        }
-        name += ' (' + img.name + ')'
-      } else {
-        name = img.name
-      }
-      return name
-    },
-    getImageType (img) {
-      let imageType = null
-      const properties = this.getProperties(img)
-      if (properties) {
-        if (properties.os_distribution) {
-          imageType = this.getOsDistribution(properties.os_distribution)
-        } else {
-          imageType = properties.os_type
-        }
-      }
-      return imageType
-    },
-    getImageCached (img) {
-      return this.cacheimageIds.includes(img.id)
+      this.defaultSelect()
     },
     defaultSelect (osValue) {
       const { osOpts, imageOptsMap } = this.imagesInfo

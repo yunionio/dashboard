@@ -20,6 +20,7 @@ import { HYPERVISORS_MAP } from '@/constants'
 
 // 磁盘最小值
 export const DISK_MIN_SIZE = 10
+let isFirstSetDefaultSize = true
 
 export default {
   name: 'SystemDisk',
@@ -64,6 +65,7 @@ export default {
     },
     imageMinDisk () {
       const image = this.image
+      if (!image) return 0
       if (image.info) {
         return (image.info.min_disk / 1024) || 0
       }
@@ -78,9 +80,9 @@ export default {
     },
     typesMap () {
       const ret = {}
-      const hypervisorDisks = { ...STORAGE_TYPES[this.getHypervisor()] } || {}
+      const hyper = this.getHypervisor()
+      const hypervisorDisks = { ...STORAGE_TYPES[hyper] } || {}
       let currentTypes = this.capabilityData.storage_types || []
-
       if (!R.isNil(this.sku) && !R.isEmpty(this.sku)) {
         for (let obj in hypervisorDisks) {
           if (hypervisorDisks[obj].skuFamily && !hypervisorDisks[obj].skuFamily.includes(this.sku.instance_type_family)) {
@@ -98,21 +100,21 @@ export default {
         if (opt && !opt.sysUnusable) {
           // 新建ucloud云服务器时，系统盘类型选择普通本地盘或SSD本地盘，其大小只能是系统镜像min_disk大小
           let max = opt.sysMax
-          if (this.getHypervisor() === HYPERVISORS_MAP.ucloud.key && ['LOCAL_NORMAL', 'LOCAL_SSD'].includes(opt.key)) {
+          if (hyper === HYPERVISORS_MAP.ucloud.key && ['LOCAL_NORMAL', 'LOCAL_SSD'].includes(opt.key)) {
             max = this.imageMinDisk
           }
           ret[opt.key] = {
             ...opt,
-            min: Math.max(this.imageMinDisk, DISK_MIN_SIZE),
-            max: max,
+            sysMin: Math.max(this.imageMinDisk, DISK_MIN_SIZE),
+            sysMax: max,
           }
         }
       }
       if (this.isIDC && this.hypervisor !== HYPERVISORS_MAP.kvm.key) {
         ret[STORAGE_AUTO.key] = {
           ...STORAGE_AUTO,
-          min: Math.max(this.imageMinDisk, DISK_MIN_SIZE),
-          max: STORAGE_AUTO.sysMax,
+          sysMin: Math.max(this.imageMinDisk, DISK_MIN_SIZE),
+          sysMax: STORAGE_AUTO.sysMax,
         }
       }
       return ret
@@ -129,8 +131,10 @@ export default {
   },
   watch: {
     typesMap: {
-      handler () {
-        this.setDefaultType()
+      handler (val, oldVal) {
+        if (isFirstSetDefaultSize || !R.equals(val, oldVal)) {
+          this.setDefaultType()
+        }
       },
       deep: true,
       immedate: true,
@@ -138,6 +142,8 @@ export default {
   },
   methods: {
     setDefaultType () {
+      if (R.isNil(this.typesMap) || R.isEmpty(this.typesMap)) return
+      isFirstSetDefaultSize = false
       const keys = Object.keys(this.typesMap)
       const firstKey = keys[0]
       let diskMsg = this.typesMap[firstKey]
@@ -148,14 +154,15 @@ export default {
       })
     },
     getExtraDiskOpt (type) {
+      const hyper = this.getHypervisor()
       // 腾讯云过滤掉local_basic和local_ssd类型的盘
-      if (this.getHypervisor() === HYPERVISORS_MAP.qcloud.key) {
+      if (hyper === HYPERVISORS_MAP.qcloud.key) {
         if (['local_basic', 'local_ssd'].includes(type)) {
           return
         }
       }
       // VMware过滤掉rbd类型的盘
-      if (this.getHypervisor() === HYPERVISORS_MAP.esxi.key) {
+      if (hyper === HYPERVISORS_MAP.esxi.key) {
         if (['rbd'].includes(type)) {
           return
         }

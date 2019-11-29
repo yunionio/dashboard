@@ -1,0 +1,376 @@
+<template>
+  <div>
+    <page-header title="新建公有云服务器" />
+    <a-form
+      class="mt-3"
+      :form="form.fc"
+      @submit="submit">
+      <a-divider orientation="left">基础配置</a-divider>
+      <a-form-item label="指定项目" class="mb-0" v-bind="formItemLayout">
+        <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
+      </a-form-item>
+      <a-form-item label="名称" v-bind="formItemLayout" extra="名称支持序号占位符‘#’，用法如下。 名称：host## 数量：2、实例为：host01、host02">
+        <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverName')" />
+      </a-form-item>
+      <a-form-item class="mb-0" label="计费方式" v-bind="formItemLayout">
+        <bill :decorators="decorators.bill" />
+      </a-form-item>
+      <a-form-item label="数量" v-bind="formItemLayout">
+        <a-input-number v-decorator="decorators.count" :min="1" :max="10" />
+      </a-form-item>
+      <!-- <a-form-item class="mb-0" label="资源池" v-bind="formItemLayout">
+        <resource :decorator="decorators.resourceType" />
+      </a-form-item> -->
+      <a-form-item v-if="hypervisor === 'kvm'" v-bind="formItemLayout" label="是否配置GPU" extra="目前只有KVM支持GPU云服务器">
+        <gpu :decorators="decorators.gpu" :gpu-options="gpuOptions" />
+      </a-form-item>
+      <a-form-item label="CPU核数" v-bind="formItemLayout" class="mb-0">
+        <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" @change="cpuChange" />
+      </a-form-item>
+      <a-form-item label="内存" v-bind="formItemLayout" class="mb-0">
+        <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" />
+      </a-form-item>
+      <area-selects
+        v-if="form.fd.domain"
+        v-bind="formItemLayout"
+        :cityParams="cityParams"
+        :providerParams="providerParams"
+        :cloudregionParams="cloudregionParams"
+        :zoneParams="zoneParams"
+        @providerFetchSuccess="providerFetchSuccess"
+        @cloudregionFetchSuccess="cloudregionFetchSuccess"
+        @zoneFetchSuccess="zoneFetchSuccess" />
+      <a-form-item label="套餐" v-bind="formItemLayout">
+        <sku
+          v-decorator="decorators.sku"
+          :type="type"
+          :sku-params="skuParam"
+          :hypervisor="hypervisor" />
+      </a-form-item>
+      <a-form-item v-bind="formItemLayout" label="操作系统" extra="操作系统会根据选择的虚拟化平台和可用区域的变化而变化公共镜像的维护请联系管理员">
+        <os-select
+          :type="type"
+          :hypervisor="hypervisor"
+          :image-params="imageParams"
+          :decorator="decorators.imageOS"
+          :cacheImageParams="cacheImageParams" />
+      </a-form-item>
+      <a-form-item label="系统磁盘" v-bind="formItemLayout" class="mb-0">
+        <system-disk
+          v-if="form.fd.sku"
+          :decorator="decorators.systemDisk"
+          :type="type"
+          :hypervisor="hypervisor"
+          :sku="form.fd.sku"
+          :capability-data="form.fi.capability"
+          :image="form.fi.imageMsg" />
+      </a-form-item>
+      <a-form-item label="数据盘" v-bind="formItemLayout">
+        <data-disk
+          v-if="form.fd.sku"
+          :decorator="decorators.dataDisk"
+          :type="type"
+          :hypervisor="hypervisor"
+          :sku="form.fd.sku"
+          :capability-data="form.fi.capability"
+          :image="form.fi.imageMsg" />
+      </a-form-item>
+      <a-form-item label="管理员密码" v-bind="formItemLayout">
+        <server-password :decorator="decorators.loginConfig" :loginTypes="loginTypes" />
+      </a-form-item>
+      <a-form-item label="网络" v-bind="formItemLayout">
+        <server-network
+          :decorator="decorators.network"
+          :network-list-params="networkParam"
+          :schedtag-params="params.schedtag" />
+      </a-form-item>
+      <a-divider orientation="left">高级配置</a-divider>
+      <a-form-item label="弹性公网IP" v-bind="formItemLayout">
+        <eip-config
+          :decorators="decorators.eip"
+          :eip-params="eipParams"
+          :hypervisor="hypervisor" />
+      </a-form-item>
+      <a-form-item label="安全组" v-bind="formItemLayout">
+        <secgroup-config
+          :decorators="decorators.secgroup"
+          :secgroup-params="secgroupParams"
+          :hypervisor="hypervisor" />
+      </a-form-item>
+      <a-form-item label="调度策略" v-bind="formItemLayout" class="mb-0">
+        <sched-policy
+          :server-type="form.fi.createType"
+          :disabled-host="policyHostDisabled"
+          :policy-host-params="policyHostParams"
+          :decorators="decorators.schedPolicy"
+          :schedtag-params="params.schedtag"
+          :policy-schedtag-params="params.policySchedtag" />
+      </a-form-item>
+      <bottom-bar
+        :loading="submiting"
+        :form="form"
+        :errors.sync="errors"
+        :type="type"
+        :resourceType="form.fd.resourceType"
+        :dataDiskSizes="dataDiskSizes" />
+    </a-form>
+  </div>
+</template>
+<script>
+import * as R from 'ramda'
+import Bill from '@Compute/sections/Bill'
+import { RESOURCE_TYPES_MAP, LOGIN_TYPES_MAP } from '@Compute/constants'
+import EipConfig from '@Compute/sections/EipConfig'
+import SecgroupConfig from '@Compute/sections/SecgroupConfig'
+import mixin from './mixin'
+import { resolveValueChangeField } from '@/utils/common/ant'
+import { PROVIDER_MAP, HYPERVISORS_MAP } from '@/constants'
+import AreaSelects from '@/sections/AreaSelects'
+
+export default {
+  name: 'PublicCreate',
+  components: {
+    Bill,
+    AreaSelects,
+    EipConfig,
+    SecgroupConfig,
+  },
+  mixins: [mixin],
+  data () {
+    return {
+      instanceSpecParams: {
+        public_cloud: true,
+        usable: true,
+        enabled: true,
+      },
+    }
+  },
+  computed: {
+    skuCloudregionZone () {
+      const skuCloudregionZone = {}
+      if (R.is(Object, this.form.fd.sku)) {
+        const { zone_id: zoneId, cloudregion_id: cloudregionId } = this.form.fd.sku
+        skuCloudregionZone.zone = zoneId
+        skuCloudregionZone.cloudregion = cloudregionId
+      }
+      return skuCloudregionZone
+    },
+    networkParam () {
+      return {
+        scope: this.$store.getters.scope,
+        filter: 'server_type.notin(ipmi, pxe)',
+        usable: true,
+        zone: this.skuCloudregionZone.zone,
+        cloudregion: this.skuCloudregionZone.cloudregion,
+      }
+    },
+    cityParams () {
+      return {
+        usable: true,
+        public_cloud: true,
+        project_domain: this.form.fd.domain ? this.form.fd.domain.key : this.$store.userInfo.projectDomainId,
+      }
+    },
+    providerParams () {
+      return {
+        usable: true,
+        project_domain: this.form.fd.domain ? this.form.fd.domain.key : this.$store.userInfo.projectDomainId,
+      }
+    },
+    cloudregionParams () {
+      return {
+        cloud_env: 'public',
+        usable: true,
+        show_emulated: true,
+        project_domain: this.form.fd.domain ? this.form.fd.domain.key : this.$store.userInfo.projectDomainId,
+      }
+    },
+    zoneParams () {
+      return {
+        cloud_env: 'public',
+        usable: true,
+        show_emulated: true,
+        order_by: 'created_at',
+        order: 'asc',
+        project_domain: this.form.fd.domain ? this.form.fd.domain.key : this.$store.userInfo.projectDomainId,
+      }
+    },
+    imageParams () {
+      return {
+        limit: 0,
+        scope: this.$store.getters.scope,
+        details: true,
+        status: 'active',
+      }
+    },
+    cacheImageParams () {
+      const params = {
+        details: false,
+        order_by: 'ref_count',
+        order: 'desc',
+        image_type: 'system', // 选择的镜像类型为公有云/私有云镜像
+      }
+      if (R.is(Object, this.form.fd.sku)) {
+        if (this.skuCloudregionZone.zone) {
+          params.zone = this.skuCloudregionZone.zone
+        } else if (this.skuCloudregionZone.cloudregion) {
+          params.cloudregion = this.skuCloudregionZone.cloudregion
+        }
+      }
+      return params
+    },
+    eipParams () {
+      return {
+        project: this.project,
+        region: this.skuCloudregionZone.cloudregion,
+      }
+    },
+    secgroupParams () {
+      return {
+        tenant: this.project,
+      }
+    },
+    skuParam () {
+      const params = {
+        public_cloud: true,
+        limit: 0,
+        cpu_core_count: this.form.fd.vcpu || this.decorators.vcpu[1].initialValue,
+        memory_size_mb: this.form.fd.vmem,
+        usable: true,
+        enabled: true,
+        project_domain: this.form.fd.domain.key,
+        city: this.form.fd.city,
+      }
+      if (this.form.fd.cloudregion) params.cloudregion = this.form.fd.cloudregion
+      if (this.form.fd.zone) params.zone_id = this.form.fd.zone
+      const { provider } = this.form.fd
+      if (provider) {
+        params.provider = PROVIDER_MAP[provider] ? PROVIDER_MAP[provider].hypervisor : provider
+      } else {
+        const { providerList } = this.form.fi
+        if (providerList && providerList.length) {
+          const providers = providerList.map(item => item.name)
+          params.filter = `provider.in(${providers.join(',')})`
+        }
+      }
+      if (this.form.fd.billType === 'quantity') {
+        params['postpaid_status'] = 'available'
+      } else if (this.form.fd.billType === 'package') {
+        params['prepaid_status'] = 'available'
+      }
+      return params
+    },
+    policyHostParams () {
+      const params = {
+        show_emulated: true,
+        resource_type: 'shared',
+        enabled: 1,
+        usable: true,
+        limit: 0,
+      }
+      if (this.skuCloudregionZone.zone) {
+        params.zone = this.skuCloudregionZone.zone
+        if (this.form.fd.resourceType !== RESOURCE_TYPES_MAP.prepaid.key) {
+          if (!params.zone) {
+            params.cloudregion = this.skuCloudregionZone.cloudregion
+          }
+        }
+      }
+      if (!params.zone && !params.cloudregion) {
+        return // 此时将不请求接口
+      }
+      return params
+    },
+    hypervisor () {
+      if (R.is(Object, this.form.fd.sku)) {
+        const { provider } = this.form.fd.sku
+        if (provider) {
+          return PROVIDER_MAP[provider].hypervisor
+        }
+      }
+      return ''
+    },
+    loginTypes () {
+      const loginTypes = { ...LOGIN_TYPES_MAP }
+      const hypervisor = this.hypervisor
+      if (HYPERVISORS_MAP.ucloud.key === hypervisor) {
+        delete loginTypes[LOGIN_TYPES_MAP.image.key]
+        delete loginTypes[LOGIN_TYPES_MAP.keypair.key]
+      }
+      if (HYPERVISORS_MAP.aws.key === hypervisor) {
+        delete loginTypes[LOGIN_TYPES_MAP.random.key]
+        delete loginTypes[LOGIN_TYPES_MAP.password.key]
+      }
+      if (HYPERVISORS_MAP.azure.key === hypervisor) {
+        delete loginTypes[LOGIN_TYPES_MAP.image.key]
+      }
+      if (this.form.fi.imageMsg.os_type === 'Windows') {
+        // 以下平台在选择 windows 镜像时禁用关联密钥
+        const disableKeypairHyper = [
+          HYPERVISORS_MAP.azure.key,
+          HYPERVISORS_MAP.aliyun.key,
+          HYPERVISORS_MAP.qcloud.key,
+          HYPERVISORS_MAP.esxi.key,
+        ]
+        if (disableKeypairHyper.includes(hypervisor)) {
+          delete loginTypes[LOGIN_TYPES_MAP.keypair.value]
+        }
+      }
+      return Object.keys(loginTypes)
+    },
+  },
+  created () {
+    this.$bus.$on('VMInstanceCreateUpdateFi', this.updateFi, this)
+    this.fetchInstanceSpeces()
+    this.baywatch(['form.fd.resourceType', 'form.fd.sku'], (val, oldVal) => {
+      if (val && !R.equals(val, oldVal)) {
+        this.fetchCapability()
+      }
+    })
+  },
+  methods: {
+    zoneFetchSuccess () {},
+    cloudregionFetchSuccess () {},
+    providerFetchSuccess (providerList) {
+      this.form.fi.providerList = providerList
+    },
+    onValuesChange (vm, changedFields) {
+      this.$nextTick(() => {
+        const formValue = this.form.fc.getFieldsValue()
+        const newField = resolveValueChangeField(changedFields)
+        this._setNewFieldToFd(newField, formValue)
+      })
+    },
+    fetchCapability () {
+      const params = {
+        show_emulated: true,
+        project_domain: this.form.fc.getFieldValue('domain'),
+        resource_type: this.form.fc.getFieldValue('resourceType'),
+      }
+      const { sku } = this.form.fd
+      if (!R.is(Object, sku)) return
+      const { zone_id: zoneId, cloudregion_id: cloudregionId } = sku
+      let id = ''
+      if (this.form.fd.resourceType === RESOURCE_TYPES_MAP.shared.value && !zoneId) {
+        id = cloudregionId
+      } else {
+        id = zoneId
+      }
+      if (!id) return
+      this.zoneM.getSpecific({ id, spec: 'capability', params })
+        .then(({ data }) => {
+          this.form.fi.capability = data
+        })
+    },
+    fetchInstanceSpeces () {
+      this.serverskusM.get({ id: 'instance-specs', params: this.instanceSpecParams })
+        .then(({ data }) => {
+          this.form.fi.cpuMem = data
+          const vcpuDecorator = this.decorators.vcpu
+          const vcpuInit = vcpuDecorator[1].initialValue
+          this.cpuChange(vcpuInit)
+        })
+    },
+  },
+}
+</script>

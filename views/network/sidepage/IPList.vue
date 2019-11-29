@@ -56,7 +56,6 @@ export default {
           field: 'ip_addr',
           title: 'IP地址',
           sortable: true,
-          filters: [{ label: 'test', value: '1' }],
         },
         {
           field: 'mac_addr',
@@ -66,15 +65,13 @@ export default {
         {
           field: 'owner_type',
           title: '资源类型',
-          // filterMultiple: true,
-          // sortable: true,
+          sortable: true,
           slots: {
             default: ({ row }) => {
               console.log(row)
               return IP_TYPES[row.owner_type]
             },
           },
-          filters: [{ label: 'test', value: '1' }],
         },
         {
           field: 'owner',

@@ -1,8 +1,8 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="IP子网"
-    icon="res-network"
+    title="二层网络"
+    icon="res-wire"
     :res-name="data.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"
@@ -16,41 +16,32 @@
 </template>
 
 <script>
-import NetworkDetail from './Detail'
-import HostMachineip from './HostMachineIp'
-import HostIp from './HostIp'
-import ReservedIp from './ReservedIp'
-import LbIp from './LbIp'
-import FlexIp from './FlexIp'
-import IPList from './IPList'
+import WireDetail from './Detail'
+import BaremetalsList from './Baremetals'
+import HostsList from './Hosts'
+import Dashboard from './Dashboard'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
 
 export default {
-  name: 'NetworkSidePage',
+  name: 'WireSidePage',
   components: {
-    NetworkDetail,
-    HostMachineip,
-    HostIp,
-    ReservedIp,
-    LbIp,
-    FlexIp,
+    WireDetail,
+    BaremetalsList,
+    HostsList,
+    Dashboard,
     Actions,
-    IPList,
   },
   mixins: [SidePageMixin, WindowsMixin],
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'network-detail' },
-        { label: 'IP使用情况', key: 'i-p-list' },
-        // { label: '宿主机IP', key: 'host-machineip' },
-        // { label: '主机IP', key: 'host-ip' },
-        // { label: '预留IP', key: 'reserved-ip' },
-        // { label: '负载均衡IP', key: 'lb-ip' },
-        // { label: '弹性网卡IP', key: 'flex-ip' },
-        // { label: '操作日志', key: 'event-drawer' },
+        { label: '详情', key: 'wire-detail' },
+        { label: '物理机', key: 'baremetals-list' },
+        { label: '宿主机', key: 'hosts-list' },
+        { label: '资源统计', key: 'dashboard' },
+        { label: '操作日志', key: 'event-drawer' },
       ],
     }
   },

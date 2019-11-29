@@ -7,7 +7,7 @@
       </a-select>
     </a-form-item>
     <a-form-item class="mx-1">
-      <a-tooltip :content="tooltip" placement="top">
+      <a-tooltip :title="tooltip" placement="top">
         <a-input-number
           v-decorator="decorator.size"
           :step="10"
@@ -65,7 +65,6 @@ export default {
     },
     hypervisor: {
       type: String,
-      required: true,
     },
     min: {
       type: Number,
