@@ -352,8 +352,9 @@ export default {
       this.form.fd.vmem = conf[1] * 1024
       this.form.fd.datadisks = conf[2]
       this.beforeDataDisks = [ ...this.form.fd.datadisks ]
+
       this.form.fd.datadisks.forEach((v) => {
-        this.$refs.dataDiskRef.add({ size: v.value, diskType: v.type, ...v })
+        this.$refs.dataDiskRef.add({ size: v.value, diskType: v.type, disabled: true, ...v })
       })
       this.$nextTick(() => {
         this.form.fc.setFieldsValue({ vcpu: this.form.fd.vcpu_count, vmem: this.form.fd.vmem })
