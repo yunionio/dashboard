@@ -63,6 +63,7 @@ export const getBrandTableColumn = ({ field = 'brand', title = '平台' } = {}) 
     title,
     slots: {
       default: ({ row }, h) => {
+        if (!row[field]) return '-'
         return [
           <BrandIcon name={ row[field] } />,
         ]
