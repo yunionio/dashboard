@@ -2,7 +2,7 @@
   <div class="disk-wrapper d-flex w-auto">
     <a-form-item>
       <a-tag color="blue" v-if="diskTypeLabel">{{ diskTypeLabel }}</a-tag>
-      <a-select v-else v-decorator="decorator.type" labelInValue style="width: 180px;">
+      <a-select v-else v-decorator="decorator.type" labelInValue style="width: 180px;" :disabled="disabled">
         <a-select-option v-for="(item, key) of typesMap" :key="key" :value="key">{{ item.label }}</a-select-option>
       </a-select>
     </a-form-item>
@@ -14,11 +14,12 @@
           :min="min"
           :max="max"
           :formatter="format"
-          :parser="format" />
+          :parser="format"
+          :disabled="disabled" />
       </a-tooltip>
     </a-form-item>
     <!-- 快照和挂载点不能共存 -->
-    <template v-if="!showMountpoint && has('mount-point')">
+    <template v-if="!showMountpoint && has('mount-point') && !disabled">
       <a-button class="mt-1" v-if="!showSnapshot" type="link" @click="() => showSnapshot = true">快照建磁盘</a-button>
       <a-form-item v-else class="mx-1">
         <base-select
@@ -28,16 +29,16 @@
           :select-props="{ placeholder: '请选择快照' }" />
       </a-form-item>
     </template>
-    <template v-if="!showSnapshot && has('snapshot')">
+    <template v-if="!showSnapshot && has('snapshot') && !disabled">
       <a-button class="mt-1" v-if="!showMountpoint" type="link" @click="() => showMountpoint = true">设置挂载点</a-button>
       <disk-mountpoint
         class="mx-1"
         v-else
         :decorators="{ filetype: decorator.filetype, mountPath: decorator.mountPath }" />
     </template>
-    <template>
+    <template v-if="has('schedtag')">
       <schedtag-policy v-if="showSchedtag" :decorators="{ schedtag: decorator.schedtag, policy: decorator.policy }" :schedtag-params="schedtagParams" />
-      <a-button class="mt-1" type="link" @click="() => showSchedtag = !showSchedtag">{{ showSchedtag ? '取消' : '设置' }}调度标签</a-button>
+      <a-button v-if="!disabled" class="mt-1" type="link" @click="() => showSchedtag = !showSchedtag">{{ showSchedtag ? '取消' : '设置' }}调度标签</a-button>
     </template>
   </div>
 </template>
@@ -82,6 +83,10 @@ export default {
       type: String,
       default: '',
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
@@ -98,6 +103,7 @@ export default {
         cloud_env: 'onpremise',
         limit: 0,
         project_domain: 'default',
+        disk_type: 'data',
       },
       showSchedtag: false,
       showMountpoint: false,
