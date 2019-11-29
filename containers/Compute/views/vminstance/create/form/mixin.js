@@ -23,6 +23,7 @@ import CloudregionZone from '@/sections/CloudregionZone'
 import HypervisorRadio from '@/sections/HypervisorRadio'
 import DomainProject from '@/sections/DomainProject'
 import { getInitialValue } from '@/utils/common/ant'
+import { IMAGES_TYPE_MAP } from '@/constants/compute'
 
 export default {
   name: 'IDCCreate',
@@ -142,6 +143,9 @@ export default {
     },
     isOpenWorkflow () {
       return this.checkWorkflowEnabled(WORKFLOW_TYPES.APPLY_MACHINE)
+    },
+    isSnapshotImageType () { // 镜像类型为主机快照
+      return this.form.fd.imageType === IMAGES_TYPE_MAP.snapshot.key
     },
   },
   created () {
