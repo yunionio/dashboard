@@ -13,7 +13,7 @@
   </div>
 </template>
 <script>
-import { ACCOUNT_PRIVILEGES } from '../constants'
+import { RDS_ACCOUNT_PRIVILEGES } from '@DB/constants'
 export default {
   inject: ['form'],
   props: {
@@ -58,7 +58,7 @@ export default {
         if (status === 200 && data.total > 0) {
           const retList = data.data
           this.dbList = retList
-            .filter(({ status }) => status === 'running')
+            .filter(({ status, name }) => status === 'running')
             .map(item => {
               item['title'] = item.name
               this.dbIdItemObj[item.id] = item
@@ -82,7 +82,7 @@ export default {
       const { id } = item
       const { getFieldDecorator } = this.form.fc
       const renderRadios = ['rw', 'r'].map(v => {
-        return <a-radio value={v}>{ACCOUNT_PRIVILEGES[v]}</a-radio>
+        return <a-radio value={v}>{RDS_ACCOUNT_PRIVILEGES[v]}</a-radio>
       })
       const _handleChange = () => {
         this.$nextTick(() => {

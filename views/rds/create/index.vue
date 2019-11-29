@@ -13,6 +13,7 @@
       <clearing-radios v-bind="formItemLayout" />
       <!-- 区域 -->
       <area-selects
+        :cityParams="{cloud_env: 'public'}"
         :names="['city', 'provider', 'cloudregion']"
         v-bind="formItemLayout"
         @providerFetchSuccess="providerFetchSuccess" />
@@ -22,7 +23,7 @@
        <a-form-item label="管理员密码" v-bind="formItemLayout">
          <server-password :loginTypes="['random', 'password']" :decorator="decorators.loginConfig" />
        </a-form-item>
-      <network-selects ref="NETWORK" :vpcParams="getVpcParams" :networkParams="getNetworkParams" v-bind="formItemLayout" />
+      <network-selects lable="VPC" ref="NETWORK" :vpcParams="getVpcParams" :networkParams="getNetworkParams" v-bind="formItemLayout" />
     </a-form>
     <bottom-bar :values="form.getFieldsValue()" />
   </div>
@@ -49,7 +50,28 @@ export default {
     NetworkSelects,
   },
   data () {
+    const { projectId, projectDomainId } = this.$store.getters.userInfo
     return {
+      defaultProjectDomain: {
+        project: [
+          'project',
+          {
+            initialValue: projectId,
+            rules: [
+              { required: true, message: '请选择项目' },
+            ],
+          },
+        ],
+        domain: [
+          'domain',
+          {
+            initialValue: projectDomainId,
+            rules: [
+              { required: true, message: '请选择域' },
+            ],
+          },
+        ],
+      },
       decorators: DECORATORS,
       formItemLayout: {
         wrapperCol: { span: CreateServerForm.wrapperCol },
@@ -120,6 +142,7 @@ export default {
       if (values && values.cloudregion) {
         const { cloudregion } = values
         // 获取sku筛选项
+        // console.log(values.cloudregion)
         this.fetchSku(cloudregion.value)
         this.fetchVpc()
       }

@@ -24,14 +24,14 @@
 
 <script>
 import { CreateServerForm } from '@Compute/constants'
+import { RDS_ACCOUNT_PRIVILEGES } from '@DB/constants'
 import AccountPrivileges from '../components/AccountPrivileges'
-import { ACCOUNT_PRIVILEGES } from '../constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import validateForm, { passwordValidator } from '@/utils/validate'
 
 export default {
-  name: 'RDSAccountDialog',
+  name: 'RDSAccountCreateDialog',
   components: {
     AccountPrivileges,
   },
@@ -39,7 +39,7 @@ export default {
   data () {
     return {
       loading: false,
-      privileges: ACCOUNT_PRIVILEGES,
+      privileges: RDS_ACCOUNT_PRIVILEGES,
       form: {
         fc: this.$form.createForm(this),
       },

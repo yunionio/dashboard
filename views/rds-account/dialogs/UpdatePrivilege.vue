@@ -22,7 +22,7 @@ import WindowsMixin from '@/mixins/windows'
 import validateForm, { passwordValidator } from '@/utils/validate'
 
 export default {
-  name: 'RDSAccountListUpdatePrivilegeDialog',
+  name: 'RDSAccountUpdatePrivilegeDialog',
   components: {
     AccountPrivileges,
   },

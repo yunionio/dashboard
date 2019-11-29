@@ -82,12 +82,18 @@ export default {
         const { data = {} } = await manager.list({ params: PARAMS })
         this.cpus = data['cpus']
         this.cpu_mems_mb = data['cpu_mems_mb']
-        this.initCpu()
-        const { zones } = data
-        if (zones) {
-          this.zones = zones.zones || {}
-        }
-        this.initZone()
+        this.form.setFieldsValue({
+          vcpu_count: undefined,
+          vmem_size_mb: undefined,
+          zones: undefined,
+        }, () => {
+          this.initCpu()
+          const { zones } = data
+          if (zones) {
+            this.zones = zones.zones || {}
+          }
+          this.initZone()
+        })
         return data
       } catch (err) {}
     },

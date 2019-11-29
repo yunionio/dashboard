@@ -1,13 +1,17 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="RDS备份"
+    title="RDS备份管理"
     icon="res-rds-backup"
     :res-name="data.name"
     :actions="params.actions"
     :tabs="detailTabs"
-    :current-tab="params.windowData.currentTab">
-    <component :is="params.windowData.currentTab" :data="data" :list="params.list" />
+    :current-tab="params.windowData.currentTab"
+    @tab-change="handleTabChange">
+    <template v-slot:actions>
+      <actions :options="params.singleActions" :row="data" button-type="link" button-size="small" />
+    </template>
+    <component :is="params.windowData.currentTab" :data="data" :list="params.list" :params="getParams" :res-id="getParams.resId" />
   </base-side-page>
 </template>
 
@@ -26,10 +30,17 @@ export default {
     return {
       detailTabs: [
         { label: '详情', key: 'rds-backup-detail' },
+        { label: '操作日志', key: 'event-drawer' },
       ],
     }
   },
   computed: {
+    getParams () {
+      return {
+        resId: this.params.resId,
+        details: true,
+      }
+    },
     data () {
       return this.params.list.data[this.params.resId].data
     },

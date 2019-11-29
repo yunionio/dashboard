@@ -26,8 +26,8 @@
 
 <script>
 import { CreateServerForm } from '@Compute/constants'
+import { RDS_ACCOUNT_PRIVILEGES } from '@DB/constants'
 import DatabasePrivileges from '../components/DatabasePrivileges'
-import { ACCOUNT_PRIVILEGES } from '../constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import validateForm from '@/utils/validate'
@@ -43,7 +43,7 @@ export default {
     return {
       loading: false,
       CHARACTER_SET,
-      privileges: ACCOUNT_PRIVILEGES,
+      privileges: RDS_ACCOUNT_PRIVILEGES,
       form: {
         fc: this.$form.createForm(this),
       },

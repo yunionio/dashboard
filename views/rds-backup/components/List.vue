@@ -147,10 +147,10 @@ export default {
           action: (obj) => {
             this.createDialog('DeleteResDialog', {
               title: '删除',
+              name: '备份',
               data: [obj],
               columns: this.columns,
               list: this.list,
-              name: '备份',
             })
           },
         },
