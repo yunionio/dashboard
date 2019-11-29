@@ -237,7 +237,7 @@ export const keySecretFields = {
   ucloud: {
     k: 'access_key_id',
     s: 'access_key_secret',
-    text: 'Ucloud',
+    text: 'UCloud',
     placeholder: {
       k: '请输入PublicKey',
       s: '请输入PrivateKey',
