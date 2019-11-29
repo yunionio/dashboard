@@ -223,6 +223,12 @@ export default {
                 },
               },
               {
+                label: '私有云',
+                action: () => {
+                  this.createServer('private')
+                },
+              },
+              {
                 label: '公有云',
                 action: () => {
                   this.createServer('public')
@@ -409,6 +415,33 @@ export default {
                       if (commonUnabled(obj)) return ret
                       ret.validate = cloudEnabled('rebuildRoot', obj)
                       ret.tooltip = cloudUnabledTip('rebuildRoot', obj)
+                      return ret
+                    },
+                  },
+                  {
+                    label: '调整配置',
+                    permission: 'server_perform_change_config',
+                    action: () => {
+                      this.createDialog('VmAdjustConfigDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      if (commonUnabled(obj)) return ret
+                      if (obj.billing_type === 'prepaid') {
+                        ret.tooltip = this.isAdminMode ? '包年包月机器，不支持此操作' : '包年包月资源池的资源不支持此操作'
+                      }
+                      if (obj.backup_host_id) {
+                        ret.tooltip = '高可用机器，不支持此操作'
+                      }
+                      ret.validate = cloudEnabled('adjustConfig', obj)
+                      ret.tooltip = cloudUnabledTip('adjustConfig', obj)
                       return ret
                     },
                   },
