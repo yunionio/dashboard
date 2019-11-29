@@ -7,7 +7,7 @@
     </a-form-item>
     <a-form-item label="数据库版本" v-bind="formItemLayout">
       <a-radio-group v-decorator="['engine_version']" :disabled="!!disableds.engine_version" @change="getCategory">
-        <a-radio-button :key="key" :value="key" v-for="key in engine_versions"> {{form.getFieldValue('engine') === 'SQLServer' ? versionCn(key) : key }}</a-radio-button>
+        <a-radio-button :key="key" :value="key" v-for="key in engine_versions"> {{versionCn(key)}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
     <a-form-item label="实例类型" v-bind="formItemLayout">
@@ -24,8 +24,12 @@
 </template>
 <script>
 import * as R from 'ramda'
-import { DBINSTANCE_CATEGORY, DBINSTANCE_STORAGE_TYPE, ENGINR_VERSION } from '@DB/views/rds/constants'
+import { DBINSTANCE_CATEGORY, DBINSTANCE_STORAGE_TYPE, ENGINR_VERSION_POSTGRE_KYES, ENGINR_VERSION_SERVER_ALIYUN_KYES, ENGINR_VERSION_SERVER_HUAWEI_KYES, ENGINR_VERSION } from '@DB/views/rds/constants'
 
+const VERSION_SORT = {
+  PostgreSQL: ENGINR_VERSION_POSTGRE_KYES,
+  SQLServer: ENGINR_VERSION_SERVER_ALIYUN_KYES,
+}
 export default {
   name: 'rdsSkuFilter',
   inject: ['form', 'formItemLayout', 'disableds'],
@@ -83,7 +87,16 @@ export default {
     getVersion (e) {
       const target = (e && e.target) ? e.target : {}
       const _engine = target.value || this.form.getFieldValue('engine')
-      this.engine_versions = Object.keys(this.dbInstance[_engine]).sort((a, b) => a - b)
+      const provider = this.form.getFieldValue('provider')
+      let versions = Object.keys(this.dbInstance[_engine]).sort((a, b) => a - b)
+      if (provider === 'Huawei' && _engine === 'SQLServer') {
+        versions = ENGINR_VERSION_SERVER_HUAWEI_KYES.filter(k => versions.indexOf(k) > -1)
+      } else if (VERSION_SORT[_engine]) {
+        versions = VERSION_SORT[_engine].filter(k => {
+          return versions.indexOf(k) > -1
+        })
+      }
+      this.engine_versions = versions
       this.setInitValue('engine_version', this.getCategory)
     },
     getCategory (e) {
