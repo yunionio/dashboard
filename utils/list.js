@@ -275,8 +275,6 @@ class CreateList {
       this.checkSteadyStatus()
       if (total) {
         this.total = total
-      } else {
-        this.total = data.length
       }
       if (responseLimit > 0) {
         this.offset = responseOffset

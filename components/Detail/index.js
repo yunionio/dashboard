@@ -8,14 +8,14 @@ const DEFAULT_LAST_BASE_INFO = [
     field: 'created_at',
     title: '创建时间',
     formatter: ({ row }) => {
-      return moment(row.created_at).format()
+      return (row.created_at && moment(row.created_at).format()) || '-'
     },
   },
   {
     field: 'updated_at',
     title: '更新时间',
     formatter: ({ row }) => {
-      return moment(row.updated_at).format()
+      return (row.updated_at && moment(row.updated_at).format()) || '-'
     },
   },
 ]
@@ -90,6 +90,12 @@ export default {
     statusKey: {
       type: String,
       default: 'status',
+    },
+    nameProps: {
+      type: Object,
+    },
+    descProps: {
+      type: Object,
     },
   },
   computed: {
@@ -175,6 +181,7 @@ export default {
             list: this.list,
             formRules: this.nameRules,
             titleClass: 'h4',
+            ...this.nameProps,
           },
           class: ['m-0'],
         }),
@@ -189,6 +196,7 @@ export default {
               row: this.data,
               list: this.list,
               field: 'description',
+              ...this.descProps,
             },
             style: { color: '#999' },
             class: ['mb-0 ml-2'],
