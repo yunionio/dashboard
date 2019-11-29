@@ -45,12 +45,12 @@ export default {
       detailTabs: [
         { label: '详情', key: 'network-detail' },
         { label: 'IP使用情况', key: 'i-p-list' },
-        { label: '宿主机IP', key: 'host-machineip' },
-        { label: '主机IP', key: 'host-ip' },
-        { label: '预留IP', key: 'reserved-ip' },
-        { label: '负载均衡IP', key: 'lb-ip' },
-        { label: '弹性网卡IP', key: 'flex-ip' },
-        { label: '操作日志', key: 'event-drawer' },
+        // { label: '宿主机IP', key: 'host-machineip' },
+        // { label: '主机IP', key: 'host-ip' },
+        // { label: '预留IP', key: 'reserved-ip' },
+        // { label: '负载均衡IP', key: 'lb-ip' },
+        // { label: '弹性网卡IP', key: 'flex-ip' },
+        // { label: '操作日志', key: 'event-drawer' },
       ],
     }
   },
