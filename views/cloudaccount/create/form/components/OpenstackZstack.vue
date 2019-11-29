@@ -104,6 +104,7 @@ export default {
         domain: [
           'domain',
           {
+            initialValue: this.$store.getters.userInfo.projectDomainId,
             rules: [
               { validator: isRequired(), message: '请选择域', trigger: 'change' },
             ],
@@ -112,6 +113,7 @@ export default {
         project: [
           'project',
           {
+            initialValue: this.$store.getters.userInfo.projectId,
             rules: [
               { validator: isRequired(), message: '请选择项目', trigger: 'change' },
             ],
