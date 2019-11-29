@@ -12,6 +12,9 @@
       <a-form-item label="名称" v-bind="formItemLayout" extra="名称支持序号占位符‘#’，用法如下。 名称：host## 数量：2、实例为：host01、host02">
         <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverName')" />
       </a-form-item>
+      <a-form-item label="申请原因" v-bind="formItemLayout" v-if="isOpenWorkflow">
+        <a-input v-decorator="decorators.reason" placeholder="请输入主机申请原因" />
+      </a-form-item>
       <a-form-item class="mb-0" label="计费方式" v-bind="formItemLayout">
         <bill :decorators="decorators.bill" />
       </a-form-item>
@@ -37,9 +40,8 @@
         :providerParams="providerParams"
         :cloudregionParams="cloudregionParams"
         :zoneParams="zoneParams"
-        @providerFetchSuccess="providerFetchSuccess"
-        @cloudregionFetchSuccess="cloudregionFetchSuccess"
-        @zoneFetchSuccess="zoneFetchSuccess" />
+        :defaultActiveFirstOption="['city']"
+        @providerFetchSuccess="providerFetchSuccess" />
       <a-form-item label="套餐" v-bind="formItemLayout">
         <sku
           v-decorator="decorators.sku"
@@ -112,7 +114,8 @@
         :errors.sync="errors"
         :type="type"
         :resourceType="form.fd.resourceType"
-        :dataDiskSizes="dataDiskSizes" />
+        :dataDiskSizes="dataDiskSizes"
+        :isOpenWorkflow="isOpenWorkflow" />
     </a-form>
   </div>
 </template>
@@ -168,13 +171,13 @@ export default {
       return {
         usable: true,
         public_cloud: true,
-        project_domain: this.project_domain,
+        ...this.scopeParams,
       }
     },
     providerParams () {
       return {
         usable: true,
-        project_domain: this.project_domain,
+        ...this.scopeParams,
       }
     },
     cloudregionParams () {
@@ -182,7 +185,7 @@ export default {
         cloud_env: 'public',
         usable: true,
         show_emulated: true,
-        project_domain: this.project_domain,
+        ...this.scopeParams,
       }
     },
     zoneParams () {
@@ -192,7 +195,7 @@ export default {
         show_emulated: true,
         order_by: 'created_at',
         order: 'asc',
-        project_domain: this.project_domain,
+        ...this.scopeParams,
       }
     },
     imageParams () {
@@ -233,7 +236,7 @@ export default {
         memory_size_mb: this.form.fd.vmem,
         usable: true,
         enabled: true,
-        project_domain: this.project_domain,
+        ...this.scopeParams,
         city: this.form.fd.city,
       }
       if (this.form.fd.cloudregion) params.cloudregion = this.form.fd.cloudregion
@@ -324,8 +327,6 @@ export default {
     })
   },
   methods: {
-    zoneFetchSuccess () {},
-    cloudregionFetchSuccess () {},
     providerFetchSuccess (providerList) {
       this.form.fi.providerList = providerList
     },
@@ -339,7 +340,7 @@ export default {
     fetchCapability () {
       const params = {
         show_emulated: true,
-        project_domain: this.project_domain,
+        ...this.scopeParams,
         resource_type: this.form.fc.getFieldValue('resourceType'),
       }
       const { sku } = this.form.fd
