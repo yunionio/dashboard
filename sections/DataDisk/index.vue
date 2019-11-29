@@ -131,7 +131,15 @@ export default {
       return ret
     },
     currentTypeObj () {
-      return this.typesMap[_.get(this.form, 'fd.systemDiskType.key')] || {}
+      const systemDisk = _.get(this.form, 'fd.systemDiskType.key')
+      if (systemDisk) {
+        return this.typesMap[systemDisk]
+      }
+      if (!R.isNil(this.typesMap) && !R.isEmpty(this.typesMap)) {
+        const firstKey = Object.keys(this.typesMap)[0]
+        return this.typesMap[firstKey]
+      }
+      return {}
     },
     max () {
       return this.currentTypeObj.max || 0
@@ -165,16 +173,48 @@ export default {
         }
       })
     },
-    add (size) {
+    add ({ size, type, policy, schedtag, snapshot, filetype, mountPath }) {
       const key = uuid()
       this.dataDisks.push({
         key,
       })
       this.$nextTick(() => {
-        console.log(size, 'size')
-        this.form.fc.setFieldsValue({
+        const value = {
           [`dataDiskSizes[${key}]`]: R.is(Number, size) ? size : this.min,
-        })
+        }
+        if (!this.diskTypeLabel) { // 表单中无系统盘，需要 set 磁盘类型默认值
+          const typeObj = this.typesMap[type]
+          if (type && R.is(Object, typeObj)) {
+            value[`dataDiskTypes[${key}]`] = {
+              key: typeObj.key,
+              label: typeObj.label,
+            }
+          } else {
+            value[`dataDiskTypes[${key}]`] = {
+              key: this.currentTypeObj.key,
+              label: this.currentTypeObj.label,
+            }
+          }
+        }
+        if (schedtag) { // 磁盘调度标签
+          value[`dataDiskSchedtags[${key}]`] = schedtag
+        }
+        if (policy) { // 磁盘调度策略
+          value[`dataDiskPolicys[${key}]`] = policy
+        }
+        if (snapshot && (filetype || mountPath)) {
+          console.error('DataDisk组件报错：磁盘的快照和挂载点不能共存')
+        }
+        if (snapshot) { // 磁盘快照
+          value[`dataDiskSnapshots[${key}]`] = snapshot
+        }
+        if (filetype) { // 磁盘文件系统
+          value[`dataDiskFiletypes[${key}]`] = filetype
+        }
+        if (mountPath) { // 磁盘挂载路径
+          value[`dataDiskMountPaths[${key}]`] = mountPath
+        }
+        this.form.fc.setFieldsValue(value)
       })
     },
     getExtraDiskOpt (type) {
@@ -213,7 +253,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../../../../../src/styles/variables';
+@import '../../../../src/styles/variables';
 
 .data-disk {
   .count-tips {

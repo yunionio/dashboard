@@ -70,7 +70,7 @@ export default {
   data () {
     return {
       images: {
-        list: [], // 标准镜像、iso、自定义镜像 list
+        list: [], // 公共镜像、iso、自定义镜像 list
         cacheimagesList: [], // idc: 镜像缓存list，用于对比哪些镜像已缓存，public|private: image-list
         hostimagesList: [], // 主机镜像 list
         instanceSnapshotsList: [], // 主机快照 list
