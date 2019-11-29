@@ -18,6 +18,9 @@
       <a-form-item label="名称" v-bind="formItemLayout" extra="名称支持序号占位符‘#’，用法如下。 名称：host## 数量：2、实例为：host01、host02">
         <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverName')" />
       </a-form-item>
+      <a-form-item label="申请原因" v-bind="formItemLayout" v-if="isOpenWorkflow">
+        <a-input v-decorator="decorators.reason" placeholder="请输入主机申请原因" />
+      </a-form-item>
       <a-form-item label="数量" v-bind="formItemLayout">
         <a-input-number v-decorator="decorators.count" :min="1" :max="10" />
       </a-form-item>
@@ -102,7 +105,7 @@
       <a-form-item v-bind="formItemLayout" v-if="isKvm && isLocalDisk" label="高可用" extra="只有宿主机数量不少于2台时才可以使用该功能">
         <backup
           :decorator="decorators.backup"
-          :disabled="form.fd.systemDiskType === 'gpfs'"
+          :disabled="form.fd.systemDiskType"
           :disabled-items="backupDisableds" />
       </a-form-item>
       <a-form-item v-bind="formItemLayout" label="到期释放">
@@ -111,7 +114,7 @@
       <a-form-item v-bind="formItemLayout" v-if="isKvm" label="主机组" extra="对资源的简单编排策略，组内的机器根据设置分布在不同的宿主机上，从而实现业务的高可用">
         <instance-groups :decorators="decorators.groups" :params="instanceGroupsParams" />
       </a-form-item>
-      <bottom-bar :loading="submiting" :form="form" :type="type" :errors.sync="errors" />
+      <bottom-bar :loading="submiting" :form="form" :type="type" :isOpenWorkflow="isOpenWorkflow" :errors.sync="errors" />
     </a-form>
   </div>
 </template>
@@ -145,7 +148,7 @@ export default {
         cloud_env: 'onpremise',
         usable: true,
         show_emulated: true,
-        project_domain: this.project_domain,
+        ...this.scopeParams,
       }
     },
     zoneParams () {
@@ -154,18 +157,14 @@ export default {
         show_emulated: true,
         order_by: 'created_at',
         order: 'asc',
-        project_domain: this.project_domain,
+        ...this.scopeParams,
       }
     },
     instanceGroupsParams () {
-      const { domain } = this.form.fd
-      if (domain && domain.key) {
-        return {
-          project_domain: domain.key,
-          enabled: true,
-        }
+      return {
+        ...this.scopeParams,
+        enabled: true,
       }
-      return {}
     },
     imageParams () {
       const params = {
@@ -214,7 +213,7 @@ export default {
         cpu_core_count: this.form.fd.vcpu || this.decorators.vcpu[1].initialValue,
         memory_size_mb: this.form.fd.vmem,
         cloudregion: _.get(this.form, 'fd.cloudregion.key'),
-        project_domain: _.get(this.form, 'fd.domain.key'),
+        ...this.scopeParams,
       }
     },
     policyHostParams () {

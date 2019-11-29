@@ -11,7 +11,7 @@
           :hypervisor="hypervisor"
           :types-map="typesMap"
           :elements="elements"
-          :disabled="disabled" />
+          :disabled="getDisabled(item)" />
         <a-button v-if="!disabled" shape="circle" icon="minus" size="small" @click="decrease(item.key)" class="mt-2 ml-2" />
       </div>
       <div class="d-flex align-items-center" v-if="diskRemain > 0 && !disabled">
@@ -28,7 +28,7 @@ import _ from 'lodash'
 import * as R from 'ramda'
 import Disk from '@Compute/sections/Disk'
 import { STORAGE_AUTO } from '@Compute/constants'
-import { STORAGE_TYPES } from '@/constants/compute'
+import { STORAGE_TYPES, IMAGES_TYPE_MAP } from '@/constants/compute'
 import { HYPERVISORS_MAP } from '@/constants'
 import { uuid } from '@/utils/utils'
 
@@ -86,8 +86,12 @@ export default {
     isIDC () {
       return this.type === 'idc'
     },
+    isSnapshotImageType () { // 镜像类型为主机快照
+      return this.form.fd.imageType === IMAGES_TYPE_MAP.snapshot.key
+    },
     elements () {
       let ret = []
+      if (this.isSnapshotImageType) return ret
       if (this.hypervisor === HYPERVISORS_MAP.kvm.key) {
         ret.push('mount-point')
         ret.push('snapshot')
@@ -156,6 +160,10 @@ export default {
     },
   },
   methods: {
+    getDisabled (item) {
+      if (item.disabled) return true
+      return this.disabled
+    },
     genDecorator (uid) {
       const ret = {}
       R.forEachObjIndexed((item, key) => {
@@ -173,10 +181,11 @@ export default {
         }
       })
     },
-    add ({ size, diskType, policy, schedtag, snapshot, filetype, mountPath } = {}) {
+    add ({ size, diskType, policy, schedtag, snapshot, filetype, mountPath, disabled = false } = {}) {
       const key = uuid()
       this.dataDisks.push({
         key,
+        disabled,
       })
       this.$nextTick(() => {
         const value = {
