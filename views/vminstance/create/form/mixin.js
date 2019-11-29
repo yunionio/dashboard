@@ -16,6 +16,8 @@ import InstanceGroups from '@Compute/sections/InstanceGroups'
 import DataDisk from '@Compute/sections/DataDisk'
 import BottomBar from '../components/BottomBar'
 import SystemDisk from '../components/SystemDisk'
+import { WORKFLOW_TYPES } from '@/constants/workflow'
+import workflowMixin from '@/mixins/workflow'
 import { Manager } from '@/utils/manager'
 import CloudregionZone from '@/sections/CloudregionZone'
 import HypervisorRadio from '@/sections/HypervisorRadio'
@@ -44,6 +46,7 @@ export default {
     Duration,
     InstanceGroups,
   },
+  mixins: [workflowMixin],
   props: {
     type: {
       type: String,
@@ -92,6 +95,14 @@ export default {
     project () {
       return this.form.fd.project ? this.form.fd.project.key : this.$store.getters.userInfo.projectId
     },
+    scopeParams () {
+      if (this.$store.getters.isAdminMode) {
+        return {
+          project_domain: this.project_domain,
+        }
+      }
+      return {}
+    },
     gpuOptions () {
       const specs = this.form.fi.capability.specs || {}
       const data = specs.isolated_devices || {}
@@ -128,6 +139,9 @@ export default {
       return {
         tenant: this.project,
       }
+    },
+    isOpenWorkflow () {
+      return this.checkWorkflowEnabled(WORKFLOW_TYPES.APPLY_MACHINE)
     },
   },
   created () {
@@ -167,21 +181,49 @@ export default {
       this.validateForm()
         .then(formData => {
           const genCreateData = new GenCreateData(formData, this.form.fi)
-          const data = genCreateData.all()
-          this.submiting = true
-          this.schedulerM.rpc({ methodname: 'DoForecast', params: data })
-            .then(res => {
-              if (res.data.can_create) {
-                this.createServer(data)
-              } else {
-                this.errors = genCreateData.getForecastErrors(res.data)
-              }
-              this.submiting = false
-            })
-            .catch(err => {
-              this.$message.error(`创建失败: ${err}`)
-              this.submiting = false
-            })
+          if (this.isOpenWorkflow) {
+            this.doCreateWorkflow(genCreateData)
+          } else {
+            this.doForecast(genCreateData)
+          }
+        })
+    },
+    doCreateWorkflow (genCreateData) {
+      const data = genCreateData.all()
+      this.submiting = true
+      const variables = {
+        process_definition_key: WORKFLOW_TYPES.APPLY_MACHINE,
+        initiator: this.$store.getters.userInfo.id,
+        description: this.form.fd.reason,
+        'server-create-paramter': JSON.stringify(data),
+      }
+      this._getProjectDomainInfo(variables)
+      new this.$Manager('process-instances')
+        .create({ variables: variables })
+        .then(() => {
+          this.submiting = false
+          this.$message.success(`主机 ${data.generate_name} 创建请求流程已提交`)
+          this.$router.push('/workflow')
+        })
+        .catch(() => {
+          this.submiting = false
+        })
+    },
+    doForecast (genCreateData) {
+      const data = genCreateData.all()
+      this.submiting = true
+      this.schedulerM.rpc({ methodname: 'DoForecast', params: data })
+        .then(res => {
+          if (res.data.can_create) {
+            this.createServer(data)
+          } else {
+            this.errors = genCreateData.getForecastErrors(res.data)
+            this.submiting = false
+          }
+        })
+        .catch(err => {
+          this.$message.error(`创建失败: ${err}`)
+          this.submiting = false
         })
     },
     createServer (data) {
@@ -215,6 +257,16 @@ export default {
       this.form.fc.setFieldsValue({
         vmem: memOpts[0],
       })
+    },
+    _getProjectDomainInfo (variables) {
+      variables.project = this.form.fd.project.key
+      if (!variables.project) {
+        variables.project = this.$store.getters.userInfo.projectName
+      }
+      variables.project_domian = this.form.fd.domain.key
+      if (!variables.project_domian) {
+        variables.project_domian = this.$store.getters.userInfo.projectDomain
+      }
     },
     _resetDataDisk () { // 重置数据盘
       const formValue = this.form.fc.getFieldsValue()

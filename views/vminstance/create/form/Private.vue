@@ -18,6 +18,9 @@
       <a-form-item label="名称" v-bind="formItemLayout" extra="名称支持序号占位符‘#’，用法如下。 名称：host## 数量：2、实例为：host01、host02">
         <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverName')" />
       </a-form-item>
+      <a-form-item label="申请原因" v-bind="formItemLayout" v-if="isOpenWorkflow">
+        <a-input v-decorator="decorators.reason" placeholder="请输入主机申请原因" />
+      </a-form-item>
       <a-form-item label="数量" v-bind="formItemLayout">
         <a-input-number v-decorator="decorators.count" :min="1" :max="10" />
       </a-form-item>
@@ -89,7 +92,7 @@
       <a-form-item v-bind="formItemLayout" label="到期释放">
         <duration :decorators="decorators.duration" />
       </a-form-item>
-      <bottom-bar :loading="submiting" :form="form" :type="type" :errors.sync="errors" />
+      <bottom-bar :loading="submiting" :form="form" :type="type" :isOpenWorkflow="isOpenWorkflow" :errors.sync="errors" />
     </a-form>
   </div>
 </template>
@@ -112,7 +115,7 @@ export default {
         cloud_env: 'private',
         usable: true,
         show_emulated: true,
-        project_domain: this.project_domain,
+        ...this.scopeParams,
       }
     },
     zoneParams () {
@@ -121,17 +124,14 @@ export default {
         show_emulated: true,
         order_by: 'created_at',
         order: 'asc',
-        project_domain: this.project_domain,
+        ...this.scopeParams,
       }
     },
     instanceGroupsParams () {
-      if (this.project_domain) {
-        return {
-          project_domain: this.project_domain,
-          enabled: true,
-        }
+      return {
+        ...this.scopeParams,
+        enabled: true,
       }
-      return {}
     },
     imageParams () {
       return {
@@ -167,7 +167,7 @@ export default {
         usable: true,
         enabled: true,
         cloudregion: _.get(this.form.fd, 'cloudregion.key'),
-        project_domain: this.project_domain,
+        ...this.scopeParams,
       }
     },
     policyHostParams () {
@@ -187,9 +187,7 @@ export default {
         filter: 'server_type.notin(ipmi, pxe)',
         usable: true,
         zone: _.get(this.form, 'fd.zone.key'),
-      }
-      if (this.$isAdminMode) {
-        params.project_domain = this.project_domain
+        ...this.scopeParams,
       }
       return params
     },
@@ -218,7 +216,7 @@ export default {
       const params = {
         show_emulated: true,
         resource_type: 'shared',
-        project_domain: this.project_domain,
+        ...this.scopeParams,
       }
       const { key } = this.form.fc.getFieldValue('zone')
       this.zoneM.getSpecific({ id: key, spec: 'capability', params })

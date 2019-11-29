@@ -20,7 +20,7 @@
           </div>
         </div>
       </template>
-      <template v-slot:right>
+      <template v-if="hasMeterService" v-slot:right>
         <div class="d-flex align-items-center">
           <div class="mr-4 d-flex align-items-center">
             <div class="text-truncate">费用估算：</div>
@@ -44,7 +44,7 @@
             html-type="submit"
             style="width: 120px;"
             :loading="loading"
-            :disabled="!!errors.length">新建</a-button>
+            :disabled="!!errors.length">{{ isOpenWorkflow ? '提交工单' : '新 建' }}</a-button>
         </div>
         <!-- <div class="btns-wrapper d-flex align-items-center">
           <a-button :loading="loading" type="primary" html-type="submit" class="ml-3">确认</a-button>
@@ -105,6 +105,10 @@ export default {
     dataDiskSizes: { // 数据盘磁盘大小之和
       type: Array,
       default: () => [],
+    },
+    isOpenWorkflow: {
+      type: Boolean,
+      default: false,
     },
   },
   data () {
@@ -208,6 +212,14 @@ export default {
       }
       return null
     },
+    hasMeterService () { // 是否有计费的服务
+      const { services } = this.$store.getters.userInfo
+      const meterService = services.find(val => val.type === 'meter')
+      if (meterService && meterService.status === true) {
+        return true
+      }
+      return false
+    },
   },
   created () {
     this.baywatch([
@@ -245,6 +257,7 @@ export default {
     },
     // 获取总价格
     async getPriceList () {
+      if (!this.hasMeterService) return // 如果没有 meter 服务则取消调用
       if (R.isEmpty(this.fd.sku) || R.isNil(this.fd.sku)) return
       const skuProvider = this.fd.sku.provider
       const brand = PROVIDER_MAP[skuProvider].brand
@@ -340,15 +353,15 @@ export default {
         font-style: italic;
       }
     }
-    .prices {
-      .hour {
-        color: $error-color;
-        font-size: 24px;
-      }
-      .tips {
-        color: #999;
-        font-size: 12px;
-      }
+  }
+  .prices {
+    .hour {
+      color: $error-color;
+      font-size: 24px;
+    }
+    .tips {
+      color: #999;
+      font-size: 12px;
     }
   }
   .btns-wrapper {

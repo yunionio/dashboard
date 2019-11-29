@@ -36,7 +36,7 @@
         v-else
         :decorators="{ filetype: decorator.filetype, mountPath: decorator.mountPath }" />
     </template>
-    <template>
+    <template v-if="has('schedtag')">
       <schedtag-policy v-if="showSchedtag" :decorators="{ schedtag: decorator.schedtag, policy: decorator.policy }" :schedtag-params="schedtagParams" />
       <a-button v-if="!disabled" class="mt-1" type="link" @click="() => showSchedtag = !showSchedtag">{{ showSchedtag ? '取消' : '设置' }}调度标签</a-button>
     </template>
@@ -103,6 +103,7 @@ export default {
         cloud_env: 'onpremise',
         limit: 0,
         project_domain: 'default',
+        disk_type: 'data',
       },
       showSchedtag: false,
       showMountpoint: false,

@@ -223,15 +223,15 @@ export default {
                 },
               },
               {
-                label: '公有云',
-                action: () => {
-                  this.createServer('public')
-                },
-              },
-              {
                 label: '私有云',
                 action: () => {
                   this.createServer('private')
+                },
+              },
+              {
+                label: '公有云',
+                action: () => {
+                  this.createServer('public')
                 },
               },
             ]
