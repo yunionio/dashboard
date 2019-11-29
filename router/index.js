@@ -6,6 +6,7 @@ import Zone from '@Cloudenv/views/zone'
 import Schedtag from '@Cloudenv/views/schedtag'
 import Schedpolicy from '@Cloudenv/views/schedpolicy'
 import Dynamicschedtag from '@Cloudenv/views/dynamicschedtag'
+import Tag from '@Cloudenv/views/tag'
 
 export default {
   index: 7,
@@ -125,6 +126,27 @@ export default {
               name: 'Dynamicschedtag',
               path: '',
               component: Dynamicschedtag,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      meta: {
+        label: '标签',
+      },
+      submenus: [
+        {
+          path: '/tag',
+          meta: {
+            label: '标签',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Tag',
+              path: '',
+              component: Tag,
             },
           ],
         },
