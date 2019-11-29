@@ -98,6 +98,10 @@ export default {
   rds: {
     danger: ['delete_failed', 'restore_failed', 'failed', 'renew_failed', 'create_failed', 'reboot_failed', 'change_config_failed'],
     success: ['running'],
+  },
+  eip: {
+    success: ['ready'],
+    danger: ['allocate_fail', 'deallocate_fail', 'associate_fail', 'dissociate_fail'],
     info: ['unknown'],
   },
 }

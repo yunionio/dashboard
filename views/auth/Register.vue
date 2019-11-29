@@ -16,7 +16,7 @@
         </a-input>
       </a-form-item>
       <a-form-item>
-        <a-input class="material-input" v-decorator="decorator.company" placeholder="请输入密码企业名称">
+        <a-input class="material-input" v-decorator="decorator.company" placeholder="请输入企业名称">
           <a-icon slot="prefix" type="home" style="color: rgba(0, 0, 0, .25)" />
         </a-input>
       </a-form-item>

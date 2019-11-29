@@ -147,16 +147,25 @@ export const getNameDescriptionTableColumn = ({
   }
 }
 
-export const getCopyWithContentTableColumn = ({ field = 'name', title = '名称', sortable } = {}) => {
+export const getCopyWithContentTableColumn = ({
+  field = 'name',
+  title = '名称',
+  hideField,
+  message,
+  sortable,
+  slotCallback,
+} = {}) => {
   return {
     field,
     title,
     sortable,
     slots: {
       default: ({ row }, h) => {
-        if (!row[field]) return '-'
+        const text = message || row[field] || '-'
         return [
-          <list-body-cell-wrap copy field={field} row={row} />,
+          <list-body-cell-wrap copy field={field} row={row} hideField={hideField} message={text}>
+            { slotCallback ? slotCallback(row) : null }
+          </list-body-cell-wrap>,
         ]
       },
     },
@@ -173,7 +182,7 @@ export const getIpsTableColumn = ({ field = 'ips', title = 'IP' } = {}) => {
         let ret = []
         if (row.eip) {
           ret.push(
-            <list-body-cell-wrap row={row} field="eip" copy><span class='ml-2 text-weak'>（弹性）</span></list-body-cell-wrap>
+            <list-body-cell-wrap row={row} field="eip" copy><span class='ml-2 text-weak'>（公网）</span></list-body-cell-wrap>
           )
         }
         if (row.ips) {
@@ -183,6 +192,20 @@ export const getIpsTableColumn = ({ field = 'ips', title = 'IP' } = {}) => {
           ret = ret.concat(ips)
         }
         return ret
+      },
+    },
+  }
+}
+
+export const getSwitchTableColumn = ({ field, title, change }) => {
+  return {
+    field,
+    title,
+    slots: {
+      default: ({ row }, h) => {
+        return [
+          <a-switch checked={ row[field] } checkedChildren='开' unCheckedChildren='关' onChange={ change } />,
+        ]
       },
     },
   }

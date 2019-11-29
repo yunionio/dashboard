@@ -7,7 +7,7 @@
     @search="loadOpts"
     :loading="loading">
     <template>
-      <a-select-option v-for="item of resOpts" :key="item.id" :value="item.id" :disabled="item.__disabled">{{ item.name }}</a-select-option>
+      <a-select-option v-for="item of resOpts" :key="item.id" :value="item.id" :disabled="item.__disabled">{{ getLabel(item) }}</a-select-option>
     </template>
   </a-select>
 </template>
@@ -103,6 +103,12 @@ export default {
           optionFilterProp: 'children',
           showSearch: true,
           filterOption: this.filterOption,
+        }
+      }
+      if (this.remote && this.selectProps.mode !== 'mutiple') {
+        return {
+          filterOption: false,
+          showSearch: true,
         }
       }
       return {
@@ -201,9 +207,6 @@ export default {
       manager.list({ params, ctx: this.ctx })
         .then(({ data: { data = [] } }) => {
           let resOpts = data.map(val => ({ ...val, id: val[this.idKey], name: val[this.nameKey] }))
-          if (this.labelFormat) {
-            resOpts = data.map(val => ({ ...val, id: val[this.idKey], name: this.labelFormat(val) }))
-          }
           if (this.mapper) {
             resOpts = this.mapper(resOpts)
           }
@@ -217,6 +220,12 @@ export default {
           this.loading = false
           throw error
         })
+    },
+    getLabel (item) {
+      if (this.labelFormat) {
+        return this.labelFormat(item)
+      }
+      return item[this.nameKey]
     },
   },
 }

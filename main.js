@@ -32,6 +32,7 @@ Vue.prototype.$log = window.console.log
 Vue.prototype.$appConfig = {
   isPrivate: process.env.VUE_APP_IS_PRIVATE,
   v1Perfix: process.env.VUE_APP_V1_PERFIX,
+  webConsolePath: process.env.VUE_APP_WEB_CONSOLE_PATH,
 }
 
 VXETable.use(VXETablePluginAntd)

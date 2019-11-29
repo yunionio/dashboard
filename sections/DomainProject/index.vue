@@ -21,7 +21,7 @@
         </a-form-item>
       </a-col>
       <a-col :span="(isAdminMode && l3PermissionEnable) ? 12 : 24">
-        <a-form-item>
+        <a-form-item class="mb-0">
           <a-select
             class="w-100"
             :labelInValue="labelInValue"
@@ -170,7 +170,7 @@ export default {
         const params = {
           scope: this.scope,
         }
-        if (domainId) params.domain_id = domainId
+        if (domainId && !this.isDomainMode) params.domain_id = domainId
         const response = await this.pm.list({ params })
         const data = response.data.data
         this.projects = data.map(val => ({ ...val, key: val.id, label: val.name })) || []
@@ -200,10 +200,14 @@ export default {
       this.fc.setFieldsValue({
         project: undefined,
       })
+      this.$emit('update:domain', domainId)
     },
     projectChange (project) {
       this.projectData = project
       this.$emit('update:project', project)
+      if (!this.isAdminMode && !this.isDomainMode) {
+        this.fc.getFieldDecorator('project', { preserve: true, initialValue: project })
+      }
     },
   },
 }
