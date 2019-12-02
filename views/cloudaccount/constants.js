@@ -16,7 +16,6 @@ const cephLogo = require('../../../../src/assets/images/providers/ceph.svg')
 const xskyLogo = require('../../../../src/assets/images/providers/xsky.svg')
 const gcpLogo = require('../../../../src/assets/images/providers/gcp.svg')
 
-console.log(providerMap)
 export const CLOUDACCOUNT_TYPES = {
   public: {
     'aliyun': {
