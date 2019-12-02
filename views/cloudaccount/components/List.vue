@@ -266,7 +266,8 @@ export default {
           label: '更新账号密码',
           permission: 'cloudaccounts_perform_update_credential',
           action: obj => {
-            this.createDialog('CloudaccountUpdateDialog', {
+            const dialog = obj.brand === 'Google' ? 'CloudaccountGcpUpdateDialog' : 'CloudaccountUpdateDialog'
+            this.createDialog(dialog, {
               data: [obj],
               columns: this.columns,
               list: this.list,

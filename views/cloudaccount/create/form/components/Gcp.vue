@@ -1,21 +1,20 @@
 <template>
   <div>
-    <a-form :form="form.fc">
-      <a-form-item v-bind="formLayout" label="名称">
+    <a-form :form="form.fc"  v-bind="formLayout">
+      <a-form-item label="名称">
         <a-input v-decorator="decorators.name" placeholder="请输入名称" />
       </a-form-item>
-      <a-form-item v-bind="formLayout" label="App ID">
-        <a-input v-decorator="decorators.app_id" placeholder="请输入App ID" />
-        <div slot="extra">
-          {{ `如何获取${keySecretField.text}的${keySecretField.label.k }？点击查看帮助` }}
-          <help-link :href="docs[provider.toLowerCase()]"> 详情</help-link>
-        </div>
+      <a-form-item label="project_id">
+        <a-input v-decorator="decorators.project_id" placeholder="请输入project_id" />
       </a-form-item>
-      <a-form-item v-bind="formLayout" :label="keySecretField.label.k">
-        <a-input v-decorator="decorators.username" :placeholder="keySecretField.placeholder.k" />
+      <a-form-item label="private_key_id">
+        <a-input v-decorator="decorators.private_key_id" placeholder="请输入private_key_id" />
       </a-form-item>
-      <a-form-item v-bind="formLayout" :label="keySecretField.label.s">
-        <a-input v-decorator="decorators.password" :placeholder="keySecretField.placeholder.s" />
+      <a-form-item label="private_key">
+        <a-textarea :autosize="{ minRows: 3, maxRows: 7 }" v-decorator="decorators.private_key" placeholder="请输入private_key" />
+      </a-form-item>
+      <a-form-item label="client_email">
+        <a-input v-decorator="decorators.client_email" placeholder="请输入client_email" />
       </a-form-item>
       <a-form-item label="指定项目" class="mb-0" v-bind="formLayout">
         <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain }" />
@@ -33,7 +32,7 @@ import DomainProject from '@/sections/DomainProject'
 import { isRequired } from '@/utils/validate'
 
 export default {
-  name: 'QcloudCreate',
+  name: 'AliyunUcloud',
   components: {
     AutoSync,
     DomainProject,
@@ -55,22 +54,36 @@ export default {
             ],
           },
         ],
-        app_id: [
-          'app_id',
-        ],
-        username: [
-          keySecretField.k,
+        project_id: [
+          'project_id',
           {
             rules: [
-              { required: true, message: keySecretField.placeholder.k },
+              { required: true, message: '请输入project_id' },
             ],
           },
         ],
-        password: [
-          keySecretField.s,
+        private_key_id: [
+          'private_key_id',
           {
             rules: [
-              { required: true, message: keySecretField.placeholder.s },
+              { required: true, message: '请输入private_key_id' },
+            ],
+          },
+        ],
+        private_key: [
+          'private_key',
+          {
+            rules: [
+              { required: true, message: '请输入private_key' },
+            ],
+          },
+        ],
+        client_email: [
+          'client_email',
+          {
+            rules: [
+              { required: true, message: '请输入client_email' },
+              { type: 'email', message: '请输入正确的邮箱地址' },
             ],
           },
         ],

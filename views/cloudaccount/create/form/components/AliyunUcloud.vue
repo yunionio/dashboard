@@ -6,7 +6,10 @@
       </a-form-item>
       <a-form-item v-bind="formLayout" :label="keySecretField.label.k">
         <a-input v-decorator="decorators.username" :placeholder="keySecretField.placeholder.k" />
-        <div class="help-text">{{ `如何获取${keySecretField.text}的${keySecretField.label.k }？点击查看帮助` }} <a target="_blank" :href="docs[provider.toLowerCase()]">详情</a></div>
+        <div slot="extra">
+          {{ `如何获取${keySecretField.text}的${keySecretField.label.k }？点击查看帮助` }}
+          <help-link :href="docs[provider.toLowerCase()]"> 详情</help-link>
+        </div>
       </a-form-item>
       <a-form-item v-bind="formLayout" :label="keySecretField.label.s">
         <a-input v-decorator="decorators.password" :placeholder="keySecretField.placeholder.s" />
