@@ -19,9 +19,9 @@
           </div>
         </a-form-item>
         <a-form-item :label="field.label.k" v-bind="formItemLayout">
-          <a-textarea v-if="params.data[0].brand === 'Google'" :autosize="{ minRows: 3, maxRows: 7 }" v-decorator="decorators.keyId" :placeholder="field.placeholder.k" />
+          <a-textarea v-if="isGoogle" :autosize="{ minRows: 3, maxRows: 7 }" v-decorator="decorators.keyId" :placeholder="field.placeholder.k" />
           <a-input v-else v-decorator="decorators.keyId" :placeholder="field.placeholder.k" />
-          <div slot="extra" class="text-right" v-if="params.data[0].brand !== 'Google'">
+          <div slot="extra" class="text-right" v-if="!isGoogle">
             <help-link :href="doc">如何获取{{ field.text }} {{ field.label.k }} 和 {{ field.label.s }}？</help-link>
           </div>
         </a-form-item>
@@ -138,6 +138,9 @@ export default {
     },
     isOpenStack () {
       return this.provider === HYPERVISORS_MAP.openstack.key
+    },
+    isGoogle () {
+      return this.provider === HYPERVISORS_MAP.google.key
     },
     formItemLayout () {
       const ret = {
