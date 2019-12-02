@@ -616,6 +616,7 @@ export default {
                 submenus: [
                   {
                     label: '开机',
+                    permission: 'server_perform_start',
                     action: () => {
                       this.list.onManager('performAction', {
                         steadyStatus: 'running',
@@ -633,6 +634,7 @@ export default {
                   },
                   {
                     label: '关机',
+                    permission: 'server_perform_stop',
                     action: () => {
                       this.list.onManager('performAction', {
                         steadyStatus: 'ready',
@@ -650,6 +652,7 @@ export default {
                   },
                   {
                     label: '重启',
+                    permission: 'server_perform_restart',
                     action: () => {
                       this.list.onManager('performAction', {
                         steadyStatus: 'running',
@@ -660,6 +663,32 @@ export default {
                       })
                     },
                     meta: () => {
+                      return {
+                        validate: (obj.status === 'running' || obj.status === 'stop_fail') && !commonUnabled(obj),
+                      }
+                    },
+                  },
+                  {
+                    label: '重置',
+                    permission: 'server_perform_reset',
+                    action: () => {
+                      this.list.onManager('performAction', {
+                        steadyStatus: 'running',
+                        id: obj.id,
+                        managerArgs: {
+                          action: 'reset',
+                        },
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
+                        ret.tooltip = '只有OneCloud主机支持此操作'
+                        return ret
+                      }
                       return {
                         validate: (obj.status === 'running' || obj.status === 'stop_fail') && !commonUnabled(obj),
                       }
