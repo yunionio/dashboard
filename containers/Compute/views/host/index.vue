@@ -2,7 +2,7 @@
   <div>
     <page-header title="宿主机" />
     <page-body>
-      <host-list />
+      <host-list :get-params="listParams" />
     </page-body>
   </div>
 </template>
@@ -14,6 +14,14 @@ export default {
   name: 'HostIndex',
   components: {
     HostList,
+  },
+  data () {
+    return {
+      listParams: {
+        details: true,
+        baremetal: false,
+      },
+    }
   },
 }
 </script>

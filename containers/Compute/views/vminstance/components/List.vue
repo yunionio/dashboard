@@ -28,13 +28,17 @@ export default {
   mixins: [WindowsMixin],
   props: {
     id: String,
+    getParams: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data () {
     return {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'servers',
-        getParams: this.getParams,
+        getParams: this.getParam,
         steadyStatus: Object.values(expectStatus.server).flat(),
         filterOptions: {
           name: {
@@ -1433,11 +1437,12 @@ export default {
         },
       })
     },
-    getParams () {
+    getParam () {
       return {
         details: true,
         with_meta: true,
         filter: 'hypervisor.notin(baremetal,container)',
+        ...this.getParams,
       }
     },
   },
