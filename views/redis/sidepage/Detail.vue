@@ -26,10 +26,6 @@ export default {
     return {
       baseInfo: [
         {
-          field: 'name',
-          title: '名称',
-        },
-        {
           field: 'project_domain',
           title: '部门（域）',
         },

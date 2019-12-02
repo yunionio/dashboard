@@ -21,10 +21,6 @@ export default {
     return {
       baseInfo: [
         {
-          field: 'name',
-          title: '名称',
-        },
-        {
           field: 'dbinstanceprivileges',
           title: '已授权的数据库',
           slots: {

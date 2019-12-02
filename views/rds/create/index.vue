@@ -24,6 +24,11 @@
          <server-password :loginTypes="['random', 'password']" :decorator="decorators.loginConfig" />
        </a-form-item>
       <network-selects lable="VPC" ref="NETWORK" :vpcParams="getVpcParams" :networkParams="getNetworkParams" v-bind="formItemLayout" />
+      <!-- 选择安全组 -->
+      <a-form-item v-if="form.getFieldValue('provider') === 'Huawei'" label="安全组" v-bind="formItemLayout">
+        <secgroup-config
+          :decorators="decorators.secgroup" />
+      </a-form-item>
     </a-form>
     <bottom-bar :values="form.getFieldsValue()" />
   </div>
@@ -32,6 +37,7 @@
 import { debounce } from 'lodash'
 import { CreateServerForm } from '@Compute/constants'
 import ServerPassword from '@Compute/sections/ServerPassword'
+import SecgroupConfig from '@Compute/sections/SecgroupConfig'
 import { DECORATORS } from './constants/index'
 import SKU from './components/SKU'
 import BottomBar from './components/BottomBar'
@@ -48,6 +54,7 @@ export default {
     ServerPassword,
     AreaSelects,
     NetworkSelects,
+    SecgroupConfig,
   },
   data () {
     const { projectId, projectDomainId } = this.$store.getters.userInfo

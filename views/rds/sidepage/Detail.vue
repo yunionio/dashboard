@@ -40,10 +40,6 @@ export default {
     return {
       baseInfo: [
         {
-          field: 'name',
-          title: '名称',
-        },
-        {
           field: 'project_domain',
           title: '部门（域）',
         },
@@ -86,7 +82,7 @@ export default {
             },
             {
               field: 'iops',
-              title: '最大IOSP',
+              title: '最大IOPS',
             },
             {
               field: 'category',
@@ -184,6 +180,11 @@ export default {
             {
               field: 'secgroup',
               title: '安全组',
+              slots: {
+                default: ({ row }) => {
+                  return (row.provider === 'Huawei' && row.secgroup) ? row.secgroup : '-'
+                },
+              },
             },
           ],
         },
