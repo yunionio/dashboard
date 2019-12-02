@@ -14,7 +14,7 @@ const zstackLogo = require('../../../../src/assets/images/providers/zstack.svg')
 const s3Logo = require('../../../../src/assets/images/providers/s3.svg')
 const cephLogo = require('../../../../src/assets/images/providers/ceph.svg')
 const xskyLogo = require('../../../../src/assets/images/providers/xsky.svg')
-const gcpLogo = require('../../../../src/assets/images/providers/gcp.svg')
+const GoogleLogo = require('../../../../src/assets/images/providers/gcp.svg')
 
 export const CLOUDACCOUNT_TYPES = {
   public: {
@@ -54,10 +54,10 @@ export const CLOUDACCOUNT_TYPES = {
       component: 'UcloudCreate',
       provider: providerMap.ucloud.key,
     },
-    'gcp': {
+    'Google': {
       name: providerMap.google.label,
-      logo: gcpLogo,
-      component: 'gcpCreate',
+      logo: GoogleLogo,
+      component: 'GoogleCreate',
       provider: providerMap.google.key,
     },
   },

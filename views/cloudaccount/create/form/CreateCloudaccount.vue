@@ -10,7 +10,7 @@ import Qcloud from './components/Qcloud'
 import VMware from './components/VMware'
 import OpenstackZstack from './components/OpenstackZstack'
 import S3CephXsky from './components/S3CephXsky'
-import Gcp from './components/Gcp'
+import Google from './components/Google'
 
 export default {
   name: 'CreateCloudaccount',
@@ -28,7 +28,7 @@ export default {
     S3Create: S3CephXsky,
     CephCreate: S3CephXsky,
     XskyCreate: S3CephXsky,
-    GcpCreate: Gcp,
+    GoogleCreate: Google,
   },
   props: {
     currentItem: {
