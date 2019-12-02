@@ -5,12 +5,13 @@
 <script>
 import IDC from './form/IDC'
 import Public from './form/Public'
-
+import Private from './form/Private'
 export default {
   name: 'ServerCreate',
   components: {
     IDC,
     Public,
+    Private,
   },
   computed: {
     type () {

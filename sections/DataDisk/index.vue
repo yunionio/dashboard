@@ -1,21 +1,25 @@
 <template>
-  <div class="system-disk">
-    <div class="d-flex" v-for="(item, i) in dataDisks" :key="item.key">
-      <disk
-        :max="max"
-        :min="min"
-        :diskTypeLabel="diskTypeLabel"
-        :decorator="genDecorator(item.key)"
-        :hypervisor="hypervisor"
-        :types-map="typesMap"
-        :elements="elements" />
-      <a-button shape="circle" icon="minus" size="small" @click="decrease(i)" class="mt-2 ml-2" />
-    </div>
-    <div class="d-flex align-items-center" v-if="diskRemain > 0">
-      <a-button type="primary" shape="circle" icon="plus" size="small" @click="add" />
-      <a-button type="link" @click="add">添加新磁盘</a-button>
-      <span class="count-tips">您还可以添加 <span class="remain-num">{{ diskRemain }}</span> 块</span>
-    </div>
+  <div class="data-disk">
+    <template v-if="dataDisks.length === 0 && disabled"><span class="warning-color">无数据盘</span></template>
+    <template v-else>
+      <div class="d-flex" v-for="item in dataDisks" :key="item.key">
+        <disk
+          :max="max"
+          :min="min"
+          :diskTypeLabel="diskTypeLabel"
+          :decorator="genDecorator(item.key)"
+          :hypervisor="hypervisor"
+          :types-map="typesMap"
+          :elements="elements"
+          :disabled="getDisabled(item)" />
+        <a-button v-if="!disabled" shape="circle" icon="minus" size="small" @click="decrease(item.key)" class="mt-2 ml-2" />
+      </div>
+      <div class="d-flex align-items-center" v-if="diskRemain > 0 && !disabled">
+        <a-button type="primary" shape="circle" icon="plus" size="small" @click="add" />
+        <a-button type="link" @click="add">添加新磁盘</a-button>
+        <span class="count-tips">您还可以添加 <span class="remain-num">{{ diskRemain }}</span> 块</span>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -54,9 +58,6 @@ export default {
       type: Object,
       required: true,
     },
-    image: {
-      type: Object,
-    },
     decorator: {
       type: Object,
       required: true,
@@ -64,6 +65,14 @@ export default {
         const fields = ['type', 'size', 'schedtag', 'policy', 'snapshot', 'filetype', 'mountPath']
         return fields.every(f => R.is(Function, val[f]))
       },
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+    isSnapshotImageType: {
+      type: Boolean,
+      default: false,
     },
   },
   data () {
@@ -81,15 +90,9 @@ export default {
     isIDC () {
       return this.type === 'idc'
     },
-    imageMinDisk () {
-      const image = this.image
-      if (image.info) {
-        return (image.info.min_disk / 1024) || 0
-      }
-      return (image.min_disk / 1024) || 0
-    },
     elements () {
       let ret = []
+      if (this.isSnapshotImageType) return ret
       if (this.hypervisor === HYPERVISORS_MAP.kvm.key) {
         ret.push('mount-point')
         ret.push('snapshot')
@@ -103,7 +106,6 @@ export default {
       const ret = {}
       const hypervisorDisks = { ...STORAGE_TYPES[this.getHypervisor()] } || {}
       let currentTypes = this.capabilityData.storage_types || []
-
       if (!R.isNil(this.sku) && !R.isEmpty(this.sku)) {
         for (let obj in hypervisorDisks) {
           if (hypervisorDisks[obj].skuFamily && !hypervisorDisks[obj].skuFamily.includes(this.sku.instance_type_family)) {
@@ -118,30 +120,31 @@ export default {
       for (let i = 0, len = currentTypes.length; i < len; i++) {
         const type = currentTypes[i].split('/')[0]
         let opt = hypervisorDisks[type] || this.getExtraDiskOpt(type)
-        if (opt && !opt.sysUnusable) {
-          // 新建ucloud云服务器时，系统盘类型选择普通本地盘或SSD本地盘，其大小只能是系统镜像min_disk大小
-          let max = opt.sysMax
-          if (this.getHypervisor() === HYPERVISORS_MAP.ucloud.key && ['LOCAL_NORMAL', 'LOCAL_SSD'].includes(opt.key)) {
-            max = this.imageMinDisk
-          }
-          ret[opt.key] = {
-            ...opt,
-            min: Math.max(this.imageMinDisk, DISK_MIN_SIZE),
-            max: max,
+        if (opt) {
+          let min = Math.max(DISK_MIN_SIZE, opt.min)
+          if (opt) {
+            ret[opt.key] = {
+              ...opt,
+              min,
+            }
           }
         }
       }
       if (this.isIDC && this.hypervisor !== HYPERVISORS_MAP.kvm.key) {
-        ret[STORAGE_AUTO.key] = {
-          ...STORAGE_AUTO,
-          min: Math.max(this.imageMinDisk, DISK_MIN_SIZE),
-          max: STORAGE_AUTO.sysMax,
-        }
+        ret[STORAGE_AUTO.key] = STORAGE_AUTO
       }
       return ret
     },
     currentTypeObj () {
-      return this.typesMap[_.get(this.form, 'fd.systemDiskType.key')] || {}
+      const systemDisk = _.get(this.form, 'fd.systemDiskType.key')
+      if (systemDisk) {
+        return this.typesMap[systemDisk]
+      }
+      if (!R.isNil(this.typesMap) && !R.isEmpty(this.typesMap)) {
+        const firstKey = Object.keys(this.typesMap)[0]
+        return this.typesMap[firstKey]
+      }
+      return {}
     },
     max () {
       return this.currentTypeObj.max || 0
@@ -158,6 +161,10 @@ export default {
     },
   },
   methods: {
+    getDisabled (item) {
+      if (item.disabled) return true
+      return this.disabled
+    },
     genDecorator (uid) {
       const ret = {}
       R.forEachObjIndexed((item, key) => {
@@ -165,7 +172,8 @@ export default {
       }, this.decorator)
       return ret
     },
-    decrease (index) {
+    decrease (key) {
+      const index = this.dataDisks.findIndex(val => val.key === key)
       this.dataDisks.splice(index, 1)
       this.$nextTick(() => {
         const formValue = this.form.fc.getFieldsValue()
@@ -174,15 +182,54 @@ export default {
         }
       })
     },
-    add () {
+    add ({ size, diskType, policy, schedtag, snapshot, filetype, mountPath, disabled = false } = {}) {
       const key = uuid()
       this.dataDisks.push({
         key,
+        disabled,
       })
       this.$nextTick(() => {
-        this.form.fc.setFieldsValue({
-          [`dataDiskSizes[${key}]`]: this.min,
-        })
+        const value = {
+          [`dataDiskSizes[${key}]`]: R.is(Number, size) ? size : this.min,
+        }
+        if (!this.diskTypeLabel) { // 表单中无系统盘，需要 set 磁盘类型默认值
+          const typeObj = this.typesMap[diskType]
+          if (diskType) {
+            if (R.is(Object, typeObj)) {
+              value[`dataDiskTypes[${key}]`] = {
+                key: typeObj.key,
+                label: typeObj.label,
+              }
+            }
+          } else if (diskType === undefined) { // 新加数据盘
+            const defaultKey = Object.keys(this.typesMap)[0]
+            if (defaultKey) {
+              value[`dataDiskTypes[${key}]`] = {
+                key: this.typesMap[defaultKey].key,
+                label: this.typesMap[defaultKey].label,
+              }
+            }
+          }
+        }
+        if (schedtag) { // 磁盘调度标签
+          value[`dataDiskSchedtags[${key}]`] = schedtag
+        }
+        if (policy) { // 磁盘调度策略
+          value[`dataDiskPolicys[${key}]`] = policy
+        }
+        if (snapshot && (filetype || mountPath)) {
+          console.error('DataDisk组件报错：磁盘的快照和挂载点不能共存')
+        }
+        if (snapshot) { // 磁盘快照
+          value[`dataDiskSnapshots[${key}]`] = snapshot
+        }
+        if (filetype) { // 磁盘文件系统
+          value[`dataDiskFiletypes[${key}]`] = filetype
+        }
+        if (mountPath) { // 磁盘挂载路径
+          value[`dataDiskMountPaths[${key}]`] = mountPath
+        }
+        this.form.fc.setFieldsValue(value)
       })
     },
     getExtraDiskOpt (type) {
@@ -221,9 +268,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../../../../../src/styles/variables';
+@import '../../../../src/styles/variables';
 
-.system-disk {
+.data-disk {
   .count-tips {
     .remain-num {
       color: $primary-color;

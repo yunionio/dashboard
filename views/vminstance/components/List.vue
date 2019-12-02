@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import qs from 'qs'
 import { mapGetters } from 'vuex'
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
@@ -227,6 +228,12 @@ export default {
                 },
               },
               {
+                label: '私有云',
+                action: () => {
+                  this.createServer('private')
+                },
+              },
+              {
                 label: '公有云',
                 action: () => {
                   this.createServer('public')
@@ -237,6 +244,284 @@ export default {
           meta: () => {
             return {
               buttonType: 'primary',
+            }
+          },
+        },
+        {
+          label: '批量操作',
+          actions: () => {
+            return [
+              {
+                label: '修改属性',
+                action: () => {
+                  this.createDialog('VmUpdateDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    list: this.list,
+                  })
+                },
+              },
+              {
+                label: '重置密码',
+                permission: 'server_perform_deploy',
+                action: () => {
+                  this.createDialog('VmResetPasswordDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    list: this.list,
+                  })
+                },
+                meta: () => {
+                  const ret = {
+                    validate: true,
+                    tooltip: null,
+                  }
+                  if (this.list.selectedItems.some(item => item.status !== 'ready')) {
+                    ret.validate = false
+                    ret.tooltip = '仅在云服务器状态为【关机】下可以进行该操作'
+                  }
+                  return ret
+                },
+              },
+              {
+                label: '调整配置',
+                permission: 'server_perform_change_config',
+                action: () => {
+                  this.createDialog('VmAdjustConfigDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    list: this.list,
+                  })
+                },
+                meta: () => {
+                  const ret = {
+                    validate: true,
+                    tooltip: null,
+                  }
+                  if (this.isSameHyper) {
+                    ret.validate = cloudEnabled('adjustConfig', this.list.selectedItems)
+                    ret.tooltip = cloudUnabledTip('adjustConfig', this.list.selectedItems)
+                    return ret
+                  }
+                  ret.validate = false
+                  ret.tooltip = '请选择同一平台下的资源'
+                  return ret
+                },
+              },
+              {
+                label: '更改项目',
+                action: () => {
+                  this.createDialog('ChangeProjectDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    list: this.list,
+                  })
+                },
+                meta: () => {
+                  const ret = {
+                    validate: true,
+                    tooltip: null,
+                  }
+                  const domains = this.list.selectedItems.map(item => item.domain_id)
+                  if (R.uniq(domains).length !== 1) {
+                    ret.validate = false
+                    ret.tooltip = '请选择同一个域下的机器'
+                    return ret
+                  }
+                  return ret
+                },
+              },
+              {
+                label: '同步状态',
+                action: () => {
+                  this.list.onManager('batchPerformAction', {
+                    steadyStatus: ['running', 'ready'],
+                    managerArgs: {
+                      action: 'syncstatus',
+                    },
+                  })
+                },
+              },
+              {
+                label: '设置GPU卡',
+                action: () => {
+                  this.createDialog('VmAttachGpuDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    list: this.list,
+                  })
+                },
+                meta: () => {
+                  const ret = {
+                    validate: true,
+                    tooltip: null,
+                  }
+                  const isAllReady = this.list.selectedItems.every((item) => { return item.status === 'ready' })
+                  const isAllIdc = this.list.selectedItems.every((item) => {
+                    return findPlatform(item.hypervisor) === SERVER_TYPE.idc && this.isAdminMode
+                  })
+                  // 如果是 VMware提示不支持
+                  const isSomeVMware = this.list.selectedItems.some((item) => {
+                    return item.hypervisor === 'esxi'
+                  })
+                  if (!isAllReady) {
+                    ret.validate = false
+                    ret.tooltip = '请选择关机的机器进行操作'
+                    return ret
+                  }
+                  if (!isAllIdc) {
+                    ret.validate = false
+                    ret.tooltip = '请选择本地IDC的机器进行操作'
+                    return ret
+                  }
+                  if (isSomeVMware) {
+                    ret.validate = false
+                    ret.tooltip = 'VMware暂不支持该操作'
+                    return ret
+                  }
+                  return ret
+                },
+              },
+              {
+                label: '关联安全组',
+                permission: 'server_perform_add_secgroup',
+                action: () => {
+                  this.createDialog('VmSetSecgroupDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    list: this.list,
+                  })
+                },
+                meta: () => {
+                  const ret = {
+                    validate: cloudEnabled('assignSecgroup', this.list.selectedItems),
+                    tooltip: cloudUnabledTip('assignSecgroup', this.list.selectedItems),
+                  }
+                  return ret
+                },
+              },
+              {
+                label: '加入资源池',
+                action: () => {
+                  this.createDialog('VmJoinResourceDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    list: this.list,
+                  })
+                },
+                meta: () => {
+                  const ret = {
+                    validate: true,
+                    tooltip: null,
+                  }
+                  const isAllPublic = this.list.selectedItems.every(item => findPlatform(item.hypervisor) === SERVER_TYPE.public)
+                  const isAllPrepaid = this.list.selectedItems.every(item => item.billing_type === 'prepaid')
+                  if (!isAllPublic) {
+                    ret.validate = false
+                    ret.tooltip = '仅公有云支持此操作'
+                  }
+                  if (!isAllPrepaid) {
+                    ret.validate = false
+                    ret.tooltip = '仅包年包月的资源支持此操作'
+                  }
+                  return ret
+                },
+              },
+              {
+                label: '续费',
+                action: () => {
+                  this.createDialog('VmResourceFeeDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    list: this.list,
+                  })
+                },
+                meta: () => {
+                  const ret = {
+                    validate: true,
+                    tooltip: null,
+                  }
+                  const isAllPublic = this.list.selectedItems.every(item => findPlatform(item.hypervisor) === SERVER_TYPE.public)
+                  const isAllPrepaid = this.list.selectedItems.every(item => item.billing_type === 'prepaid')
+                  if (!isAllPublic) {
+                    ret.validate = false
+                    ret.tooltip = '仅公有云支持此操作'
+                  }
+                  if (!isAllPrepaid) {
+                    ret.validate = false
+                    ret.tooltip = '仅包年包月的资源支持此操作'
+                  }
+                  return ret
+                },
+              },
+              {
+                label: '迁移',
+                action: () => {
+                  this.createDialog('VmTransferDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    list: this.list,
+                  })
+                },
+                meta: () => {
+                  const ret = {
+                    validate: true,
+                    tooltip: null,
+                  }
+                  let isOk = this.list.selectedItems.every((item) => {
+                    return ['running', 'ready', 'unknown'].includes(item.status)
+                  })
+                  if (isOk) {
+                    isOk = this.list.selectedItems.every((item) => {
+                      if (item.status === 'running') {
+                        return !item.is_gpu && !item.cdrom
+                      }
+                      return !item.backup_host_id
+                    })
+                  }
+                  if (!isOk) {
+                    ret.validate = false
+                    return ret
+                  }
+                  if (!this.isAdminMode) {
+                    ret.validate = false
+                    return ret
+                  }
+                  if (this.list.selectedItems.some(item => item.hypervisor !== 'kvm')) {
+                    ret.validate = false
+                    return ret
+                  }
+                  return ret
+                },
+              },
+              {
+                label: '删除',
+                permission: 'server_delete',
+                action: () => {
+                  this.createDialog('DeleteResDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    list: this.list,
+                    title: '删除',
+                  })
+                },
+                meta: () => {
+                  const ret = {
+                    validate: true,
+                    tooltip: null,
+                  }
+                  if (this.list.selectedItems.some(item => !item.can_delete)) {
+                    ret.validate = false
+                    return ret
+                  }
+                  return ret
+                },
+              },
+            ]
+          },
+          meta: () => {
+            return {
+              validate: this.list.selected.length,
             }
           },
         },
@@ -413,6 +698,33 @@ export default {
                       if (commonUnabled(obj)) return ret
                       ret.validate = cloudEnabled('rebuildRoot', obj)
                       ret.tooltip = cloudUnabledTip('rebuildRoot', obj)
+                      return ret
+                    },
+                  },
+                  {
+                    label: '调整配置',
+                    permission: 'server_perform_change_config',
+                    action: () => {
+                      this.createDialog('VmAdjustConfigDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      if (commonUnabled(obj)) return ret
+                      if (obj.billing_type === 'prepaid') {
+                        ret.tooltip = this.isAdminMode ? '包年包月机器，不支持此操作' : '包年包月资源池的资源不支持此操作'
+                      }
+                      if (obj.backup_host_id) {
+                        ret.tooltip = '高可用机器，不支持此操作'
+                      }
+                      ret.validate = cloudEnabled('adjustConfig', obj)
+                      ret.tooltip = cloudUnabledTip('adjustConfig', obj)
                       return ret
                     },
                   },
@@ -1081,6 +1393,7 @@ export default {
                 submenus: [
                   {
                     label: '删除',
+                    permission: 'server_delete',
                     action: () => {
                       this.createDialog('DeleteResDialog', {
                         data: [obj],
@@ -1099,7 +1412,17 @@ export default {
       ],
     }
   },
-  computed: mapGetters(['isAdminMode', 'isDomainMode']),
+  computed: {
+    ...mapGetters(['isAdminMode', 'isDomainMode']),
+    isSameHyper () {
+      if (this.list.selectedItems.length > 0) {
+        const arr = this.list.selectedItems.map(v => v.hypervisor)
+        const noRepeatArr = Array.from(new Set(arr))
+        return noRepeatArr.length === 1
+      }
+      return true
+    },
+  },
   created () {
     this.initSidePageTab('vm-instance-detail')
     this.webconsoleManager = new Manager('webconsole', 'v1')

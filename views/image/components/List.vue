@@ -40,8 +40,8 @@ export default {
             label: '镜像类型',
             dropdown: true,
             items: [
-              { label: '标准镜像', key: true },
-              { label: '非标准镜像', key: false },
+              { label: '公共镜像', key: true },
+              { label: '自定义镜像', key: false },
             ],
           },
         },
@@ -83,8 +83,8 @@ export default {
           field: 'is_standard',
           title: '镜像类型',
           formatter: ({ cellValue }) => {
-            if (cellValue) return '标准镜像'
-            return '非标准镜像'
+            if (cellValue) return '公共镜像'
+            return '自定义镜像'
           },
         },
         getStatusTableColumn({ statusModule: 'image' }),

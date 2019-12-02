@@ -1,7 +1,7 @@
 <template>
   <div class="server-password">
     <a-form-item class="mb-0">
-      <a-radio-group v-decorator="decorators.loginType" @change="loginTypeChange">
+      <a-radio-group :disabled="disabled" v-decorator="decorators.loginType" @change="loginTypeChange">
         <a-radio-button v-for="item of loginTypeMap" :value="item.key" :key="item.key">
           {{ item.label }}
           <help-tooltip v-if="['image', 'keypair'].includes(item.key)" :name="`${item.key}Password`" class="ml-2" />
@@ -53,10 +53,18 @@ export default {
       required: true,
       // validator: val => R.is(Array, val.loginType) && R.is(Array, val.keypair) && R.is(Array, val.password),
     },
+    form: {
+      type: Object,
+    },
+    isSnapshotImageType: { // 表单的镜像类型是否是主机快照
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
       vmLoginType: 'random',
+      disabled: false,
     }
   },
   computed: {
@@ -76,6 +84,18 @@ export default {
       return {
         ...DEFAULT_DECORATOR,
         ...this.decorator,
+      }
+    },
+  },
+  watch: {
+    isSnapshotImageType (val) {
+      if (val) {
+        this.disabled = true
+        this.form.fc.setFieldsValue({
+          [this.decorators.loginType[0]]: LOGIN_TYPES_MAP.image.key,
+        })
+      } else {
+        this.disabled = false
       }
     },
   },
