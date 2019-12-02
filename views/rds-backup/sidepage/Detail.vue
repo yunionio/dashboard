@@ -22,10 +22,6 @@ export default {
   data () {
     return {
       baseInfo: [
-        {
-          field: 'name',
-          title: '名称',
-        },
       ],
       extraInfo: [
         {

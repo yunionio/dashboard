@@ -44,4 +44,20 @@ export const DECORATORS = {
       },
     ],
   },
+  secgroup: {
+    type: [
+      'secgroup_type',
+      {
+        initialValue: 'default',
+      },
+    ],
+    secgroup: [
+      'secgroup',
+      {
+        rules: [
+          { required: true, message: '请选择安全组' },
+        ],
+      },
+    ],
+  },
 }
