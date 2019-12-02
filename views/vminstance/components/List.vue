@@ -926,7 +926,11 @@ export default {
                         validate: false,
                         tooltip: null,
                       }
-                      if (!this.isAdminMode && findPlatform(obj.hypervisor) !== SERVER_TYPE.idc) {
+                      if (!this.isAdminMode) {
+                        ret.tooltip = '无权限操作'
+                        return ret
+                      }
+                      if (findPlatform(obj.hypervisor) !== SERVER_TYPE.idc) {
                         ret.tooltip = '仅本地IDC支持此操作'
                         return ret
                       }
