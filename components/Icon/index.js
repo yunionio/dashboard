@@ -64,6 +64,7 @@ function create (options) {
       if (children) {
         content = children
       }
+      if (!content) return null
       const iconProps = mergeProps(extraCommonProps, data, { props: restProps, on: listeners })
       return <AntIcon {...iconProps}>{content}</AntIcon>
     },

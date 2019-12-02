@@ -422,14 +422,20 @@ export const PERMISSION = {
    * 数据库-RDS
    */
   'rds_dbinstances_list': ['compute', 'dbinstances', 'list'],
+  'rds_dbinstances_delete': ['compute', 'dbinstances', 'delete'],
+  'rds_dbinstances_create': ['compute', 'dbinstances', 'create'],
   /**
    * 数据库-RDS备份列表
    */
   'rds_dbinstancebackups_list': ['compute', 'dbinstancebackups', 'list'],
+  'rds_dbinstancebackups_delete': ['compute', 'dbinstancebackups', 'delete'],
+  'rds_dbinstancebackups_create': ['compute', 'dbinstancebackups', 'create'],
   /**
    * 数据库-redis
    */
   'redis_elasticcaches_list': ['compute', 'elasticcaches', 'list'],
+  'redis_elasticcaches_delete': ['compute', 'elasticcaches', 'delete'],
+  'redis_elasticcaches_create': ['compute', 'elasticcaches', 'create'],
 }
 
 // 已声明权限的资源
