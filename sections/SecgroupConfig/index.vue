@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-form-item class="mb-0">
-      <a-radio-group v-decorator="decorators.type" @change="handleTypeChange">
+      <a-radio-group v-decorator="decorators.type" :disabled="disabled" @change="handleTypeChange">
         <a-radio-button
           v-for="item of types"
           :key="item.key"
@@ -43,12 +43,20 @@ export default {
     secgroupParams: {
       type: Object,
     },
+    form: {
+      type: Object,
+    },
+    isSnapshotImageType: { // 表单的镜像类型是否是主机快照
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
       types,
       isBind: this.decorators.type[1].initialValue === types.bind.key,
       loading: false,
+      disabled: false,
     }
   },
   computed: {
@@ -60,6 +68,18 @@ export default {
       return {
         ...defaultSecgroupParams,
         ...this.secgroupParams,
+      }
+    },
+  },
+  watch: {
+    isSnapshotImageType (val) {
+      if (val) {
+        this.disabled = true
+        this.form.fc.setFieldsValue({
+          [this.decorators.type[0]]: types.none.key,
+        })
+      } else {
+        this.disabled = false
       }
     },
   },
