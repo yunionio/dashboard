@@ -125,5 +125,8 @@ export default {
       return this.provider.toLowerCase() === 'openstack'
     },
   },
+  deactivated () {
+    this.form.fc.resetFields()
+  },
 }
 </script>

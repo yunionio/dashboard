@@ -107,5 +107,8 @@ export default {
       },
     }
   },
+  deactivated () {
+    this.form.fc.resetFields()
+  },
 }
 </script>
