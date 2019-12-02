@@ -54,7 +54,7 @@ export const createVmDecorators = type => {
     domain: [
       'domain',
       {
-        initialValue: 'default',
+        initialValue: store.getters.userInfo.projectDomainId,
         rules: [
           { validator: isRequired(), message: '请选择域', trigger: 'change' },
         ],
@@ -79,6 +79,9 @@ export const createVmDecorators = type => {
           { validator: validateForm('serverName') },
         ],
       },
+    ],
+    reason: [
+      'reason',
     ],
     count: [
       'count',
@@ -527,8 +530,9 @@ export const createVmDecorators = type => {
 }
 
 const decoratorGroup = {
-  idc: ['domain', 'project', 'cloudregionZone', 'name', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'gpu', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'schedPolicy', 'bios', 'backup', 'duration', 'groups'],
-  public: ['domain', 'project', 'name', 'count', 'imageOS', 'loginConfig', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'schedPolicy', 'bill', 'eip', 'secgroup', 'resourceType'],
+  idc: ['domain', 'project', 'cloudregionZone', 'name', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'gpu', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'bios', 'backup', 'duration', 'groups'],
+  public: ['domain', 'project', 'name', 'count', 'imageOS', 'reason', 'loginConfig', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'schedPolicy', 'bill', 'eip', 'secgroup', 'resourceType'],
+  private: ['domain', 'project', 'cloudregionZone', 'name', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'duration'],
 }
 
 export class Decorator {

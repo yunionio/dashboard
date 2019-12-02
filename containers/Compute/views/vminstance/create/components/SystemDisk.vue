@@ -6,7 +6,8 @@
       :decorator="decorator"
       :hypervisor="hypervisor"
       :types-map="typesMap"
-      :elements="elements" />
+      :elements="elements"
+      :disabled="disabled" />
   </div>
 </template>
 
@@ -15,12 +16,12 @@ import _ from 'lodash'
 import * as R from 'ramda'
 import Disk from '@Compute/sections/Disk'
 import { STORAGE_AUTO } from '@Compute/constants'
-import { STORAGE_TYPES } from '@/constants/compute'
+import { IMAGES_TYPE_MAP, STORAGE_TYPES } from '@/constants/compute'
 import { HYPERVISORS_MAP } from '@/constants'
 
 // 磁盘最小值
 export const DISK_MIN_SIZE = 10
-let isFirstSetDefaultSize = true
+// let isFirstSetDefaultSize = true
 
 export default {
   name: 'SystemDisk',
@@ -35,8 +36,6 @@ export default {
       validator: val => ['idc', 'private', 'public'].includes(val),
     },
     hypervisor: {
-      type: String,
-      required: true,
     },
     sku: {
       type: Object,
@@ -51,6 +50,10 @@ export default {
     decorator: {
       type: Object,
       required: true,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
   },
   computed: {
@@ -81,6 +84,7 @@ export default {
     typesMap () {
       const ret = {}
       const hyper = this.getHypervisor()
+      if (!hyper) return ret
       const hypervisorDisks = { ...STORAGE_TYPES[hyper] } || {}
       let currentTypes = this.capabilityData.storage_types || []
       if (!R.isNil(this.sku) && !R.isEmpty(this.sku)) {
@@ -117,6 +121,7 @@ export default {
           sysMax: STORAGE_AUTO.sysMax,
         }
       }
+      this.$nextTick(this.setDefaultType)
       return ret
     },
     currentTypeObj () {
@@ -129,21 +134,13 @@ export default {
       return this.currentTypeObj.sysMin || 0
     },
   },
-  watch: {
-    typesMap: {
-      handler (val, oldVal) {
-        if (isFirstSetDefaultSize || !R.equals(val, oldVal)) {
-          this.setDefaultType()
-        }
-      },
-      deep: true,
-      immedate: true,
-    },
+  created () {
+    this.setDefaultType = _.debounce(this.setDefaultType, 300)
   },
   methods: {
     setDefaultType () {
       if (R.isNil(this.typesMap) || R.isEmpty(this.typesMap)) return
-      isFirstSetDefaultSize = false
+      if ([IMAGES_TYPE_MAP.host.key, IMAGES_TYPE_MAP.snapshot.key].includes(this.form.fd.imageType)) return // 主机镜像和主机快照设置默认值交给外层处理
       const keys = Object.keys(this.typesMap)
       const firstKey = keys[0]
       let diskMsg = this.typesMap[firstKey]
