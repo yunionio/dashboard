@@ -1,3 +1,4 @@
+@import "variables";
 #app, .app-container {
   height: 100%;
 }
@@ -30,4 +31,10 @@
 
 .small-text {
   font-size: 14px;
+}
+
+.help-text {
+  font-size: 13px;
+  color: $text-color-help;
+  line-height: 20px;
 }
