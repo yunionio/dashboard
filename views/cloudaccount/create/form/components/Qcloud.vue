@@ -4,17 +4,9 @@
       <a-form-item v-bind="formLayout" label="名称">
         <a-input v-decorator="decorators.name" placeholder="请输入名称" />
       </a-form-item>
-      <a-form-item v-bind="formLayout">
-        <span slot="label">
-          App ID
-          <a-tooltip placement="top">
-            <a-icon type="question-circle" color="grey" />
-            <div slot="title">
-              <a class="link-color" target="_blank" :href="docs[provider.toLowerCase()]">{{ `如何获取${keySecretField.text}的API密钥？点击查看帮助详情` }}</a>
-            </div>
-          </a-tooltip>
-        </span>
+      <a-form-item v-bind="formLayout" label="App ID">
         <a-input v-decorator="decorators.app_id" placeholder="请输入App ID" />
+        <div class="help-text">{{ `如何获取${keySecretField.text}的${keySecretField.label.k }？点击查看帮助` }} <a target="_blank" :href="docs[provider.toLowerCase()]">详情</a></div>
       </a-form-item>
       <a-form-item v-bind="formLayout" :label="keySecretField.label.k">
         <a-input v-decorator="decorators.username" :placeholder="keySecretField.placeholder.k" />

@@ -110,19 +110,19 @@ export const ENV_TITLE = {
 }
 
 export const CLOUDACCOUNT_DOCS = {
-  aliyun: 'https://onecloud-docs.com/docs/user/multiplecloud/account/#新建阿里云账号',
-  azure: 'https://onecloud-docs.com/docs/user/multiplecloud/account/#%E6%96%B0%E5%BB%BAazure%E8%B4%A6%E5%8F%B7',
-  aws: 'https://onecloud-docs.com/docs/user/multiplecloud/account/#%E6%96%B0%E5%BB%BAaws%E8%B4%A6%E5%8F%B7',
-  qcloud: 'https://onecloud-docs.com/docs/user/multiplecloud/account/#%E6%96%B0%E5%BB%BA%E8%85%BE%E8%AE%AF%E4%BA%91%E8%B4%A6%E5%8F%B7',
-  huawei: 'https://onecloud-docs.com/docs/user/multiplecloud/account/#%E6%96%B0%E5%BB%BA%E5%8D%8E%E4%B8%BA%E4%BA%91%E8%B4%A6%E5%8F%B7',
-  ucloud: 'https://onecloud-docs.com/docs/user/multiplecloud/account/#%E6%96%B0%E5%BB%BAucloud%E8%B4%A6%E5%8F%B7',
-  zstack: 'https://onecloud-docs.com/docs/user/multiplecloud/account/#%E6%96%B0%E5%BB%BAzstack-dstack%E8%B4%A6%E5%8F%B7',
-  dstack: 'https://onecloud-docs.com/docs/user/multiplecloud/account/#%E6%96%B0%E5%BB%BAzstack-dstack%E8%B4%A6%E5%8F%B7',
-  openstack: 'https://onecloud-docs.com/docs/user/multiplecloud/account/#%E6%96%B0%E5%BB%BAopenstack%E8%B4%A6%E5%8F%B7',
-  vmware: 'https://onecloud-docs.com/docs/user/multiplecloud/account/#%E6%96%B0%E5%BB%BAvmware%E8%B4%A6%E5%8F%B7',
-  s3: 'https://onecloud-docs.com/docs/user/multiplecloud/account/#%E6%96%B0%E5%BB%BAs3%E8%B4%A6%E5%8F%B7',
-  ceph: 'https://onecloud-docs.com/docs/user/multiplecloud/account/#%E6%96%B0%E5%BB%BAceph%E8%B4%A6%E5%8F%B7',
-  xsky: 'https://onecloud-docs.com/docs/user/multiplecloud/account/#%E6%96%B0%E5%BB%BAceph%E8%B4%A6%E5%8F%B7', // !!! 未接入
+  aliyun: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BA%E9%98%BF%E9%87%8C%E4%BA%91%E8%B4%A6%E5%8F%B7',
+  azure: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BAazure%E8%B4%A6%E5%8F%B7',
+  aws: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BAaws%E8%B4%A6%E5%8F%B7',
+  qcloud: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BA%E8%85%BE%E8%AE%AF%E4%BA%91%E8%B4%A6%E5%8F%B7',
+  huawei: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BA%E5%8D%8E%E4%B8%BA%E4%BA%91%E8%B4%A6%E5%8F%B7',
+  ucloud: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BAucloud%E8%B4%A6%E5%8F%B7',
+  zstack: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BAzstack-dstack%E8%B4%A6%E5%8F%B7',
+  dstack: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BAzstack-dstack%E8%B4%A6%E5%8F%B7',
+  openstack: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BAopenstack%E8%B4%A6%E5%8F%B7',
+  vmware: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BAvmware%E8%B4%A6%E5%8F%B7',
+  s3: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BAs3%E8%B4%A6%E5%8F%B7',
+  ceph: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BAceph%E8%B4%A6%E5%8F%B7',
+  xsky: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BAxsky%E8%B4%A6%E5%8F%B7', // !!! 未接入
 }
 
 export const ACCESS_URL = {
