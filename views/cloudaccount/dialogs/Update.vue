@@ -51,6 +51,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import { keySecretFields, CLOUDACCOUNT_DOCS } from '../constants'
 import { HYPERVISORS_MAP } from '@/constants'
 import DialogMixin from '@/mixins/dialog'
@@ -158,10 +159,18 @@ export default {
     validateForm () {
       return new Promise((resolve, reject) => {
         this.form.fc.validateFields((err, values) => {
-          if (!err) {
-            resolve(values)
-          } else {
+          if (err) {
             reject(err)
+          } else {
+            const params = {}
+            R.forEachObjIndexed((value, key) => {
+              if (R.is(String, value)) {
+                params[key] = value.trim()
+              } else {
+                params[key] = value
+              }
+            }, values)
+            resolve(params)
           }
         })
       })
