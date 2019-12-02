@@ -11,6 +11,7 @@
     <a-form-item class="mb-0" v-if="isBind">
       <base-select
         remote
+        class="w-50 pr-1"
         v-decorator="decorators.secgroup"
         resource="secgroups"
         :params="params"
