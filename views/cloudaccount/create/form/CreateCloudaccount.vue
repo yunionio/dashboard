@@ -1,5 +1,5 @@
 <template>
-  <compontent :is="currentComponent" v-bind="props" ref="createForm" />
+  <component :is="currentComponent" v-bind="props" ref="createForm" />
 </template>
 
 <script>
