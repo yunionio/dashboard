@@ -72,10 +72,11 @@
           :hypervisor="form.fd.hypervisor"
           :sku="form.fd.sku"
           :capability-data="form.fi.capability"
+          :isSnapshotImageType="isSnapshotImageType"
           :disabled="form.fi.dataDiskDisabled" />
       </a-form-item>
       <a-form-item label="管理员密码" v-if="isKvm && !isIso" v-bind="formItemLayout">
-        <server-password :decorator="decorators.loginConfig" />
+        <server-password :form="form" :isSnapshotImageType="isSnapshotImageType" :decorator="decorators.loginConfig" />
       </a-form-item>
       <a-form-item label="网络" v-bind="formItemLayout">
         <server-network
@@ -86,6 +87,8 @@
       <a-divider orientation="left">高级配置</a-divider>
       <a-form-item label="安全组" v-if="isKvm" v-bind="formItemLayout">
         <secgroup-config
+          :form="form"
+          :isSnapshotImageType="isSnapshotImageType"
           :decorators="decorators.secgroup"
           :secgroup-params="secgroupParams"
           :hypervisor="form.fd.hypervisor" />

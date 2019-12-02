@@ -28,7 +28,7 @@ import _ from 'lodash'
 import * as R from 'ramda'
 import Disk from '@Compute/sections/Disk'
 import { STORAGE_AUTO } from '@Compute/constants'
-import { STORAGE_TYPES, IMAGES_TYPE_MAP } from '@/constants/compute'
+import { STORAGE_TYPES } from '@/constants/compute'
 import { HYPERVISORS_MAP } from '@/constants'
 import { uuid } from '@/utils/utils'
 
@@ -70,6 +70,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    isSnapshotImageType: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
@@ -85,9 +89,6 @@ export default {
     },
     isIDC () {
       return this.type === 'idc'
-    },
-    isSnapshotImageType () { // 镜像类型为主机快照
-      return this.form.fd.imageType === IMAGES_TYPE_MAP.snapshot.key
     },
     elements () {
       let ret = []
