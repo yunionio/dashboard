@@ -319,4 +319,17 @@ export const keySecretFields = {
       s: '密码',
     },
   },
+  google: {
+    k: 'private_key',
+    s: 'client_email',
+    text: 'Google',
+    placeholder: {
+      k: '请输入private_key',
+      s: '请输入client_email',
+    },
+    label: {
+      k: 'private_key',
+      s: 'client_email',
+    },
+  },
 }
