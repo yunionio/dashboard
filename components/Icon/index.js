@@ -64,6 +64,7 @@ function create (options) {
       if (children) {
         content = children
       }
+      if (!content) return null
       const iconProps = mergeProps(extraCommonProps, data, { props: restProps, on: listeners })
       return <AntIcon {...iconProps}>{content}</AntIcon>
     },
@@ -72,5 +73,5 @@ function create (options) {
 }
 
 export default create({
-  scriptUrl: '//at.alicdn.com/t/font_1347390_tmktzpqelfe.js',
+  scriptUrl: '//at.alicdn.com/t/font_1347390_ax80750szu.js',
 })

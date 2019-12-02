@@ -36,6 +36,7 @@
       :pager-config="tablePage"
       :customs.sync="customs"
       :sort-method="() => {}"
+      :checkbox-config="checkboxConfig"
       @sort-change="handleSortChange"
       @current-page-change="handleCurrentPageChange"
       @page-size-change="handlePageSizeChange"
@@ -132,6 +133,11 @@ export default {
         pageSize: limit,
       }
     },
+    checkboxConfig () {
+      return {
+        reserve: true,
+      }
+    },
   },
   watch: {
     'list.config.hiddenColumns' (val, oldVal) {
@@ -160,6 +166,7 @@ export default {
     },
     handleCurrentPageChange (currentPage) {
       this.list.changeCurrentPage(currentPage)
+      this.handleClearSelected()
     },
     handlePageSizeChange (pageSize) {
       this.list.changePageSize(pageSize)
