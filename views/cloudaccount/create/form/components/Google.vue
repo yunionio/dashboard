@@ -32,7 +32,7 @@ import DomainProject from '@/sections/DomainProject'
 import { isRequired } from '@/utils/validate'
 
 export default {
-  name: 'AliyunUcloud',
+  name: 'GoogleCreate',
   components: {
     AutoSync,
     DomainProject,

@@ -2,7 +2,9 @@
   <div class="cloudaccount-create">
     <page-header title="新建云账号" />
     <steps class="my-3" v-model="step" />
-    <component :is="currentComponent" :current-item.sync="currentItem" ref="stepRef" :provider="currentItem.provider" /><!-- provider 是为了 VmNetwork 的 prop 不报错 -->
+    <keep-alive>
+      <component :is="currentComponent" :current-item.sync="currentItem" ref="stepRef" :provider="currentItem.provider" /><!-- provider 是为了 VmNetwork 的 prop 不报错 -->
+    </keep-alive>
     <page-footer>
       <div slot="left">
         <div class="d-flex align-items-center">
