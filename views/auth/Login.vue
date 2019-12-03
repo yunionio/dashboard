@@ -80,7 +80,7 @@ import { mapGetters } from 'vuex'
 import Cookies from 'js-cookie'
 import { STORE_SECRET_PERFIX_KEY } from './constants'
 import storage from '@/utils/storage'
-import { getBrowser } from '@/utils/utils'
+import { isChrome } from '@/utils/utils'
 
 export default {
   name: 'Login',
@@ -171,7 +171,7 @@ export default {
       return h
     },
     isChrome () {
-      return getBrowser() === 'Chrome'
+      return isChrome()
     },
   },
   async created () {
