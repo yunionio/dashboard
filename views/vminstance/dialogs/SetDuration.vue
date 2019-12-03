@@ -107,7 +107,7 @@ export default {
   },
   methods: {
     async doUpdateSubmit (data) {
-      const diffHours = data.durationDate.diff(this.expireDate)
+      const diffHours = data.durationDate.diff(this.expireDate, 'hours')
       const params = {
         duration: `${diffHours < 1 ? 1 : diffHours}h`,
       }
