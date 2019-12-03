@@ -11,6 +11,7 @@
       @input="imageInput"
       :imageParams="imageParams"
       :cacheImageParams="cacheImageParams"
+      :osType="osType"
       :form="form" />
   </div>
 </template>
@@ -51,6 +52,9 @@ export default {
     ignoreOptions: {
       type: Array,
       default: () => [],
+    },
+    osType: {
+      type: String,
     },
   },
   inject: ['form'],
