@@ -248,6 +248,72 @@ export default {
           },
         },
         {
+          label: '开机',
+          permission: 'server_perform_start',
+          action: () => {
+            const ids = this.list.selectedItems.map(item => item.id)
+            this.list.onManager('batchPerformAction', {
+              steadyStatus: 'running',
+              id: ids,
+              managerArgs: {
+                action: 'start',
+              },
+            })
+          },
+          meta: () => {
+            const ret = {
+              validate: false,
+              tooltip: null,
+            }
+            ret.validate = this.list.selectedItems.length > 0 && this.list.selectedItems.every(item => item.status === 'ready')
+            return ret
+          },
+        },
+        {
+          label: '关机',
+          permission: 'server_perform_stop',
+          action: () => {
+            const ids = this.list.selectedItems.map(item => item.id)
+            this.list.onManager('batchPerformAction', {
+              steadyStatus: 'running',
+              id: ids,
+              managerArgs: {
+                action: 'stop',
+              },
+            })
+          },
+          meta: () => {
+            const ret = {
+              validate: false,
+              tooltip: null,
+            }
+            ret.validate = this.list.selectedItems.length > 0 && this.list.selectedItems.every(item => item.status === 'running')
+            return ret
+          },
+        },
+        {
+          label: '重启',
+          permission: 'server_perform_restart',
+          action: () => {
+            const ids = this.list.selectedItems.map(item => item.id)
+            this.list.onManager('batchPerformAction', {
+              steadyStatus: 'running',
+              id: ids,
+              managerArgs: {
+                action: 'restart',
+              },
+            })
+          },
+          meta: () => {
+            const ret = {
+              validate: false,
+              tooltip: null,
+            }
+            ret.validate = this.list.selectedItems.length > 0 && this.list.selectedItems.every(item => ['running', 'stop_fail'].includes(item.status))
+            return ret
+          },
+        },
+        {
           label: '批量操作',
           actions: () => {
             return [
