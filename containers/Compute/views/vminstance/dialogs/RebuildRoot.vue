@@ -7,7 +7,7 @@
       <a-form
         :form="form.fc">
         <a-form-item v-bind="formItemLayout" label="操作系统" extra="操作系统会根据选择的虚拟化平台和可用区域的变化而变化，公共镜像的维护请联系管理员">
-          <os-select :type="type" :hypervisor="hypervisor" :image-params="image" :cache-image-params="cacheImageParams" :decorator="decorators.imageOS" />
+          <os-select :type="type" :hypervisor="hypervisor" :image-params="image" :ignoreOptions="ignoreImageOptions" :cache-image-params="cacheImageParams" :decorator="decorators.imageOS" />
         </a-form-item>
         <a-form-item label="管理员密码" v-bind="formItemLayout">
           <server-password :decorator="decorators.loginConfig" />
@@ -61,6 +61,11 @@ export default {
         details: true,
         status: 'active',
       },
+      ignoreImageOptions: [
+        IMAGES_TYPE_MAP.iso.key,
+        IMAGES_TYPE_MAP.host.key,
+        IMAGES_TYPE_MAP.snapshot.key,
+      ],
       formItemLayout: {
         wrapperCol: {
           span: 21,
