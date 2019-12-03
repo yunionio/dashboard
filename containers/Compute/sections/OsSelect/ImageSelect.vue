@@ -66,6 +66,9 @@ export default {
       type: Object,
       required: true,
     },
+    osType: {
+      type: String,
+    },
   },
   data () {
     return {
@@ -298,7 +301,7 @@ export default {
           images = images.filter(item => item.disk_format && item.disk_format !== 'docker')
         }
       }
-      const osOpts = []
+      let osOpts = []
       const imageOptsMap = {}
       let isOther = false
       for (let i = 0, len = images.length; i < len; i++) {
@@ -346,6 +349,15 @@ export default {
       if (isOther) {
         osOpts.push({ label: '其他', key: 'other' })
       }
+      osOpts = osOpts.filter((item) => {
+        if (this.osType) {
+          if (this.osType === 'Windows') {
+            return item.key === 'Windows'
+          }
+          return item.key !== 'Windows'
+        }
+        return true
+      })
       this.imagesInfo = {
         osOpts,
         imageOptsMap,

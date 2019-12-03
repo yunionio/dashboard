@@ -22,9 +22,10 @@
             v-decorator="decorators.durationDate"
             :disabledDate="disabledDate"
             :disabledTime="disabledDateTime"
+            @change="dateChangeHandle"
             showTime>
             <template slot="renderExtraFooter">
-              快速选择：<a-tag color="blue" v-for="v in durationArrs" :key="v.value" @click="chooseDurationHandle(v)">{{v.text}}</a-tag>
+              快速选择：<a-tag color="blue" style="border-radius: 10px;" :class="{ active: currentDuration === v.value }" v-for="v in durationArrs" :key="v.value" @click="chooseDurationHandle(v)">{{v.text}}</a-tag>
             </template>
           </a-date-picker>
         </a-form-item>
@@ -38,6 +39,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import moment from 'moment'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -57,6 +59,7 @@ export default {
           durationDate: expireDate,
         },
       },
+      currentDuration: '',
       expireDate,
       decorators: {
         durationEnable: [
@@ -104,7 +107,7 @@ export default {
   },
   methods: {
     async doUpdateSubmit (data) {
-      const diffHours = data.durationDate.diff(this.expireDate)
+      const diffHours = data.durationDate.diff(this.expireDate, 'hours')
       const params = {
         duration: `${diffHours < 1 ? 1 : diffHours}h`,
       }
@@ -162,42 +165,56 @@ export default {
       return current && current < moment().subtract(1, 'days').endOf('day')
     },
     disabledDateTime (current) {
-      const currentHour = moment().hour()
-      if (current && current < moment().endOf('day')) {
-        return {
-          disabledHours: () => this.range(0, currentHour),
-          disabledMinutes: () => this.range(0, 60),
-          disabledSeconds: () => this.range(0, 60),
-        }
+      let currentHour = moment().hour()
+      if (current && current > moment().endOf('day')) {
+        currentHour = 0
+      }
+      return {
+        disabledHours: () => this.range(0, currentHour),
+        disabledMinutes: () => this.range(0, 60),
+        disabledSeconds: () => this.range(0, 60),
       }
     },
     chooseDurationHandle (v) {
-      let durationDate = this.expireDate
+      this.currentDuration = v.value
+      let durationDate = R.clone(this.expireDate)
       switch (v.value) {
         case '1h':
-          durationDate = this.expireDate.add(1, 'h')
+          durationDate.add(1, 'h')
           break
         case '2h':
-          durationDate = this.expireDate.add(2, 'h')
+          durationDate.add(2, 'h')
           break
         case '3h':
-          durationDate = this.expireDate.add(3, 'h')
+          durationDate.add(3, 'h')
           break
         case '6h':
-          durationDate = this.expireDate.add(6, 'h')
+          durationDate.add(6, 'h')
           break
         case '1d':
-          durationDate = this.expireDate.add(1, 'd')
+          durationDate.add(1, 'd')
           break
         case '2d':
-          durationDate = this.expireDate.add(2, 'd')
+          durationDate.add(2, 'd')
           break
         case '1w':
-          durationDate = this.expireDate.add(1, 'w')
+          durationDate.add(1, 'w')
           break
       }
       this.form.fc.setFieldsValue({ durationDate: durationDate })
     },
+    dateChangeHandle (v) {
+      this.currentDuration = ''
+    },
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.ant-tag-blue {
+  background: none;
+  &.active {
+    background: #e6f7ff;
+  }
+}
+</style>

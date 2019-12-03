@@ -2,14 +2,29 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{action}}</div>
     <div slot="body">
+      <a-alert class="mb-2" type="warning" v-if="tips">
+        <div slot="message">
+          {{ tips }}
+        </div>
+      </a-alert>
       <dialog-selected-tips :count="params.data.length" :action="action" />
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
-        <a-form-item v-bind="formItemLayout" label="操作系统" extra="操作系统会根据选择的虚拟化平台和可用区域的变化而变化，公共镜像的维护请联系管理员">
-          <os-select :type="type" :hypervisor="hypervisor" :image-params="image" :ignoreOptions="ignoreImageOptions" :cache-image-params="cacheImageParams" :decorator="decorators.imageOS" />
+        <a-form-item v-bind="formItemLayout" v-show="!imgHidden" label="操作系统" extra="操作系统会根据选择的虚拟化平台和可用区域的变化而变化，公共镜像的维护请联系管理员">
+          <os-select
+            :type="type"
+            :hypervisor="hypervisor"
+            :image-params="image"
+            :ignoreOptions="ignoreImageOptions"
+            :osType="osType"
+            :cache-image-params="cacheImageParams"
+            :decorator="decorators.imageOS" />
         </a-form-item>
-        <a-form-item label="管理员密码" v-bind="formItemLayout">
+        <a-form-item v-bind="formItemLayout" v-show="imgHidden" label="操作系统">
+          <div>{{ imgHidden.text }}</div>
+        </a-form-item>
+        <a-form-item label="管理员密码" v-bind="formItemLayout" v-if="!isZStack">
           <server-password :decorator="decorators.loginConfig" />
         </a-form-item>
         <a-form-item label="自动启动" v-bind="formItemLayout" extra="重装系统后是否自动启动">
@@ -31,6 +46,7 @@ import { SERVER_TYPE } from '@Compute/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { HYPERVISORS_MAP } from '@/constants'
+import { Manager } from '@/utils/manager'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
 import { isRequired } from '@/utils/validate'
 import { findPlatform } from '@/utils/common/hypervisor'
@@ -74,6 +90,7 @@ export default {
           span: 3,
         },
       },
+      detailData: {},
     }
   },
   computed: {
@@ -172,6 +189,49 @@ export default {
       }
       return params
     },
+    isFreezeImg () {
+      if (this.hypervisor) {
+        return [HYPERVISORS_MAP.openstack.key].includes(this.hypervisor.toLowerCase())
+      }
+      return false
+    },
+    imgHidden () {
+      if (this.hypervisor) {
+        if (this.isFreezeImg) {
+          const pdata = this.detailData[0]
+          if (pdata && pdata.disks_info && pdata.disks_info[0] && pdata.disks_info[0].image) {
+            return {
+              text: pdata.disks_info[0].image,
+              isImage: true,
+            }
+          } else {
+            return {
+              text: '未找到系统盘镜像，无法重装系统',
+              isImage: false,
+            }
+          }
+        } else {
+          return false
+        }
+      }
+      return false
+    },
+    tips () {
+      if (this.hypervisor === HYPERVISORS_MAP.openstack.key) {
+        return '由于OpenStack本身原因，重装系统时可能会出现新密码没有生效现象，建议在重装系统后重置密码或使用原密码登录'
+      }
+      if (this.hypervisor === HYPERVISORS_MAP.zstack.key) {
+        return '由于ZStack/DStack本身不支持重装系统设定新密码，您可以在重装系统完成后在主机列表进行密码重置'
+      }
+      return ''
+    },
+    osType () {
+      return this.params.data[0].os_type
+    },
+  },
+  created () {
+    this.serversManager = new Manager('servers', 'v2')
+    this.fetchData()
   },
   methods: {
     async doRebuildRootSubmit (data) {
@@ -183,12 +243,12 @@ export default {
         image_id: image.key,
       }
       if (this.isZStack) {
-        params.image_id = this.params.data[0].disks_info[0].image_id
+        params.image_id = this.detailData[0].disks_info[0].image_id
       }
       if (loginType === 'keypair') {
         params['keypair'] = loginKeypair.key
         params['reset_password'] = false
-      } else if (loginType === 'reset_password') {
+      } else if (loginType === 'image') {
         params['reset_password'] = false // 如果登录方式为创建后设置, 则增加参数 reset_password = false
       } else if (loginType === 'password') {
         params['password'] = loginPassword
@@ -212,6 +272,21 @@ export default {
       } catch (error) {
         this.loading = false
       }
+    },
+    fetchData () {
+      let ids = []
+      this.params.data.forEach((item) => {
+        ids.push(item.id)
+      })
+      this.fetchdone = false
+      this.serversManager.batchGet({ id: ids })
+        .then((res) => {
+          this.fetchdone = true
+          this.detailData = res.data.data
+        })
+        .catch(() => {
+          this.fetchdone = true
+        })
     },
   },
 }
