@@ -175,6 +175,7 @@ export default {
   },
   methods: {
     async doRebuildRootSubmit (data) {
+      console.log(data)
       const { autoStart, image, loginType, loginKeypair, loginPassword } = data
       const ids = this.params.data.map(item => item.id)
       const params = {
@@ -188,7 +189,7 @@ export default {
       if (loginType === 'keypair') {
         params['keypair'] = loginKeypair.key
         params['reset_password'] = false
-      } else if (loginType === 'reset_password') {
+      } else if (loginType === 'image') {
         params['reset_password'] = false // 如果登录方式为创建后设置, 则增加参数 reset_password = false
       } else if (loginType === 'password') {
         params['password'] = loginPassword
