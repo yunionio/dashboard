@@ -291,7 +291,6 @@ export default {
   },
   methods: {
     onValuesChange (vm, changedFields) {
-      console.log(changedFields, 'changedFields')
       this.$nextTick(() => {
         const formValue = this.form.fc.getFieldsValue()
         const newField = resolveValueChangeField(changedFields)

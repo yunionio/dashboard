@@ -146,7 +146,7 @@ export default {
         details: false,
         order_by: 'ref_count',
         order: 'desc',
-        image_type: 'customized',
+        image_type: 'system',
         zone: _.get(this.form.fd, 'zone.key'),
       }
       return params
@@ -166,7 +166,7 @@ export default {
         memory_size_mb: this.form.fd.vmem,
         usable: true,
         enabled: true,
-        cloudregion: _.get(this.form.fd, 'cloudregion.key'),
+        privider: 'OneCloud',
         ...this.scopeParams,
       }
     },
