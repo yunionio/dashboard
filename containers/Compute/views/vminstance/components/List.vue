@@ -182,7 +182,7 @@ export default {
         {
           field: 'secgroups',
           title: '安全组',
-          formatter: ({ cellValue }) => {
+          formatter: ({ cellValue = [] }) => {
             return cellValue.map(item => item.name).join(',')
           },
         },
