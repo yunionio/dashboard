@@ -22,7 +22,7 @@
             v-decorator="decorators.durationDate"
             :disabledDate="disabledDate"
             :disabledTime="disabledDateTime"
-            @change="DateChangeHandle"
+            @change="dateChangeHandle"
             showTime>
             <template slot="renderExtraFooter">
               快速选择：<a-tag color="blue" style="border-radius: 10px;" :class="{ active: currentDuration === v.value }" v-for="v in durationArrs" :key="v.value" @click="chooseDurationHandle(v)">{{v.text}}</a-tag>
@@ -203,7 +203,7 @@ export default {
       }
       this.form.fc.setFieldsValue({ durationDate: durationDate })
     },
-    DateChangeHandle (v) {
+    dateChangeHandle (v) {
       this.currentDuration = ''
     },
   },
