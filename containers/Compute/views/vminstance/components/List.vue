@@ -16,7 +16,16 @@ import { SERVER_TYPE } from '@Compute/constants'
 import { commonUnabled, cloudEnabled, cloudUnabledTip, commonEnabled, commonTip } from '../utils'
 import { Manager } from '@/utils/manager'
 import { sizestr } from '@/utils/utils'
-import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getBrandTableColumn, getCopyWithContentTableColumn, getIpsTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
+import {
+  getProjectTableColumn,
+  getRegionTableColumn,
+  getStatusTableColumn,
+  getBrandTableColumn,
+  getCopyWithContentTableColumn,
+  getIpsTableColumn,
+  getNameDescriptionTableColumn,
+  getTagTableColumn,
+} from '@/utils/common/tableColumn'
 import { getBrandItems, mapperStatusToItems } from '@/utils/common/tableFilter'
 import SystemIcon from '@/sections/SystemIcon'
 import expectStatus from '@/constants/expectStatus'
@@ -138,6 +147,7 @@ export default {
             )
           },
         }),
+        getTagTableColumn({ vm: this, needExt: true }),
         getIpsTableColumn({ field: 'ip', title: 'IP' }),
         {
           field: 'instance_type',
