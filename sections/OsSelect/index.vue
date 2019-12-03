@@ -48,6 +48,10 @@ export default {
     hypervisor: {
       type: String,
     },
+    ignoreOptions: {
+      type: Array,
+      default: () => [],
+    },
   },
   inject: ['form'],
   data () {
@@ -66,7 +70,7 @@ export default {
       return this.type === 'idc'
     },
     mirrorTypeOptions () {
-      const ret = [IMAGES_TYPE_MAP.standard, IMAGES_TYPE_MAP.customize]
+      let ret = [IMAGES_TYPE_MAP.standard, IMAGES_TYPE_MAP.customize]
       if (this.isIDC && this.hypervisor === HYPERVISORS_MAP.kvm.key) {
         ret.push(IMAGES_TYPE_MAP.iso, IMAGES_TYPE_MAP.host, IMAGES_TYPE_MAP.snapshot)
       } else if (this.isPublic) {
@@ -75,6 +79,9 @@ export default {
       } else if (this.isPrivate) {
         ret.unshift(IMAGES_TYPE_MAP.private)
       }
+      ret = ret.filter((item) => {
+        return !this.ignoreOptions.includes(item.key)
+      })
       return ret
     },
   },
