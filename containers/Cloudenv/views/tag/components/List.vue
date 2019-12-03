@@ -12,10 +12,9 @@
 </template>
 
 <script>
-import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import WindowsMixin from '@/mixins/windows'
-import colorHash from '@/utils/colorHash'
+import { getTagColor, getTagTitle } from '@/utils/common/tag'
 
 export default {
   name: 'TagList',
@@ -87,14 +86,10 @@ export default {
           },
         })
         const data = (reponse.data.data || []).map(item => {
-          let name = R.replace(/(ext:|user:)/, '', item.key)
-          if (item.value) {
-            name += `：${item.value}`
-          }
           return {
             // 前端模拟name
-            name,
-            color: colorHash.hex(`${item.key}${item.value}`),
+            name: getTagTitle(item.key, item.value),
+            color: getTagColor(item.key, item.value),
             ...item,
           }
         })
