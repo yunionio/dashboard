@@ -2,17 +2,29 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{action}}</div>
     <div slot="body">
+      <a-alert class="mb-2" type="warning" v-if="tips">
+        <div slot="message">
+          {{ tips }}
+        </div>
+      </a-alert>
       <dialog-selected-tips :count="params.data.length" :action="action" />
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
         <a-form-item v-bind="formItemLayout" v-show="!imgHidden" label="操作系统" extra="操作系统会根据选择的虚拟化平台和可用区域的变化而变化，公共镜像的维护请联系管理员">
-          <os-select :type="type" :hypervisor="hypervisor" :image-params="image" :ignoreOptions="ignoreImageOptions" :cache-image-params="cacheImageParams" :decorator="decorators.imageOS" />
+          <os-select
+            :type="type"
+            :hypervisor="hypervisor"
+            :image-params="image"
+            :ignoreOptions="ignoreImageOptions"
+            :osType="osType"
+            :cache-image-params="cacheImageParams"
+            :decorator="decorators.imageOS" />
         </a-form-item>
         <a-form-item v-bind="formItemLayout" v-show="imgHidden" label="操作系统">
           <div>{{ imgHidden.text }}</div>
         </a-form-item>
-        <a-form-item label="管理员密码" v-bind="formItemLayout">
+        <a-form-item label="管理员密码" v-bind="formItemLayout" v-if="!isZStack">
           <server-password :decorator="decorators.loginConfig" />
         </a-form-item>
         <a-form-item label="自动启动" v-bind="formItemLayout" extra="重装系统后是否自动启动">
@@ -204,6 +216,18 @@ export default {
       }
       return false
     },
+    tips () {
+      if (this.hypervisor === HYPERVISORS_MAP.openstack.key) {
+        return '由于OpenStack本身原因，重装系统时可能会出现新密码没有生效现象，建议在重装系统后重置密码或使用原密码登录'
+      }
+      if (this.hypervisor === HYPERVISORS_MAP.zstack.key) {
+        return '由于ZStack/DStack本身不支持重装系统设定新密码，您可以在重装系统完成后在主机列表进行密码重置'
+      }
+      return ''
+    },
+    osType () {
+      return this.params.data[0].os_type
+    },
   },
   created () {
     this.serversManager = new Manager('servers', 'v2')
@@ -219,7 +243,7 @@ export default {
         image_id: image.key,
       }
       if (this.isZStack) {
-        params.image_id = this.params.data[0].disks_info[0].image_id
+        params.image_id = this.detailData[0].disks_info[0].image_id
       }
       if (loginType === 'keypair') {
         params['keypair'] = loginKeypair.key
