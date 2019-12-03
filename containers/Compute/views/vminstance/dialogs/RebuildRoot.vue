@@ -6,8 +6,11 @@
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
-        <a-form-item v-bind="formItemLayout" label="操作系统" extra="操作系统会根据选择的虚拟化平台和可用区域的变化而变化，公共镜像的维护请联系管理员">
+        <a-form-item v-bind="formItemLayout" v-show="!imgHidden" label="操作系统" extra="操作系统会根据选择的虚拟化平台和可用区域的变化而变化，公共镜像的维护请联系管理员">
           <os-select :type="type" :hypervisor="hypervisor" :image-params="image" :ignoreOptions="ignoreImageOptions" :cache-image-params="cacheImageParams" :decorator="decorators.imageOS" />
+        </a-form-item>
+        <a-form-item v-bind="formItemLayout" v-show="imgHidden" label="操作系统">
+          <div>{{ imgHidden.text }}</div>
         </a-form-item>
         <a-form-item label="管理员密码" v-bind="formItemLayout">
           <server-password :decorator="decorators.loginConfig" />
@@ -31,6 +34,7 @@ import { SERVER_TYPE } from '@Compute/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { HYPERVISORS_MAP } from '@/constants'
+import { Manager } from '@/utils/manager'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
 import { isRequired } from '@/utils/validate'
 import { findPlatform } from '@/utils/common/hypervisor'
@@ -74,6 +78,7 @@ export default {
           span: 3,
         },
       },
+      detailData: {},
     }
   },
   computed: {
@@ -172,10 +177,40 @@ export default {
       }
       return params
     },
+    isFreezeImg () {
+      if (this.hypervisor) {
+        return [HYPERVISORS_MAP.openstack.key].includes(this.hypervisor.toLowerCase())
+      }
+      return false
+    },
+    imgHidden () {
+      if (this.hypervisor) {
+        if (this.isFreezeImg) {
+          const pdata = this.detailData[0]
+          if (pdata && pdata.disks_info && pdata.disks_info[0] && pdata.disks_info[0].image) {
+            return {
+              text: pdata.disks_info[0].image,
+              isImage: true,
+            }
+          } else {
+            return {
+              text: '未找到系统盘镜像，无法重装系统',
+              isImage: false,
+            }
+          }
+        } else {
+          return false
+        }
+      }
+      return false
+    },
+  },
+  created () {
+    this.serversManager = new Manager('servers', 'v2')
+    this.fetchData()
   },
   methods: {
     async doRebuildRootSubmit (data) {
-      console.log(data)
       const { autoStart, image, loginType, loginKeypair, loginPassword } = data
       const ids = this.params.data.map(item => item.id)
       const params = {
@@ -213,6 +248,21 @@ export default {
       } catch (error) {
         this.loading = false
       }
+    },
+    fetchData () {
+      let ids = []
+      this.params.data.forEach((item) => {
+        ids.push(item.id)
+      })
+      this.fetchdone = false
+      this.serversManager.batchGet({ id: ids })
+        .then((res) => {
+          this.fetchdone = true
+          this.detailData = res.data.data
+        })
+        .catch(() => {
+          this.fetchdone = true
+        })
     },
   },
 }
