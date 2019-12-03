@@ -183,14 +183,11 @@ export default {
       this.loading = true
       try {
         const values = await this.validateForm()
-        const ids = this.params.data.map(item => item.id)
-        await this.params.list.onManager('batchPerformAction', {
-          id: ids,
-          managerArgs: {
-            action: 'update-credential',
-            data: values,
-          },
-        })
+        const params = {
+          ...values,
+          id: this.params.data[0].id,
+        }
+        await this.params.list.singlePerformAction('update-credential', params)
         this.loading = false
         this.cancelDialog()
       } catch (error) {
