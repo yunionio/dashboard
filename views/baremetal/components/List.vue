@@ -11,11 +11,16 @@ import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getC
 
 export default {
   name: 'ImageList',
+  props: {
+    getParams: {
+      type: [Function, Object],
+    },
+  },
   data () {
     return {
       list: this.$list.createList(this, {
         resource: 'servers',
-        getParams: this.getParams,
+        getParams: this.getParam,
         filterOptions: {
           name: {
             label: '实例名称',
@@ -216,9 +221,10 @@ export default {
     createServer () {
       this.$router.push('/baremetal/create')
     },
-    getParams () {
+    getParam () {
       return {
         hypervisor: 'baremetal',
+        ...this.getParams,
       }
     },
   },
