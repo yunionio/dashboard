@@ -34,7 +34,7 @@ function hiddenLoading () {
 function showLoading () {
   hiddenLoading()
   loadingTimer = setTimeout(() => {
-    hiddenLoadingMessage = message.loading('数据加载中，请稍后', 0)
+    hiddenLoadingMessage = message.loading('数据加载中，请稍候', 0)
   }, 1500)
 }
 

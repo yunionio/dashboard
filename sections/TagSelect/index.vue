@@ -6,16 +6,21 @@
     v-model="visible"
     overlayClassName="tag-overlay"
     @visibleChange="handleVisibleChange">
-    <a-button :loading="loading">{{ buttonText }}</a-button>
+    <template v-if="$scopedSlots.trigger">
+      <slot name="trigger" :loading="loading" />
+    </template>
+    <template v-else>
+      <a-button :loading="loading">{{ buttonText }}</a-button>
+    </template>
     <template slot="content">
       <div class="tag-wrap" ref="tag-wrap">
         <ul class="tag-list" v-if="filterWithoutUserMeta">
           <li
             class="tag-item"
-            :class="{ selected: checkedKeys.includes(withoutUserMetaKey) && value[withoutUserMetaKey] === true }"
+            :class="{ checked: checkedKeys.includes(withoutUserMetaKey) && value[withoutUserMetaKey][0] === true }"
             @click="handleKeyClick(withoutUserMetaKey, true)">
             <div class="title d-flex align-items-center">
-              <div class="flex-fill mr-4">无本地标签资源</div>
+              <div class="flex-fill mr-4 text-truncate">无本地标签资源</div>
               <a-icon class="check-icon" type="check" />
             </div>
           </li>
@@ -30,7 +35,7 @@
             @mouseenter="handleKeyMouseenter('userTags', item.key, $event)"
             @click="handleKeyClick(item.key)">
             <div class="title d-flex align-items-center">
-              <div class="flex-fill mr-4">{{ getTagTitle(item.key) }}</div>
+              <div class="flex-fill mr-4 text-truncate">{{ getTagTitle(item.key) }}</div>
               <a-icon class="check-icon" type="check" />
             </div>
           </li>
@@ -45,7 +50,7 @@
             @mouseenter="handleKeyMouseenter('extTags', item.key, $event)"
             @click="handleKeyClick(item.key)">
             <div class="title d-flex align-items-center">
-              <div class="flex-fill mr-4">{{ getTagTitle(item.key) }}</div>
+              <div class="flex-fill mr-4 text-truncate">{{ getTagTitle(item.key) }}</div>
               <a-icon class="check-icon" type="check" />
             </div>
           </li>
@@ -241,7 +246,7 @@ export default {
       this.search = ''
       const tagWrapTop = this.$refs['tag-wrap'].getBoundingClientRect()['top']
       const targetTop = evt.target.getBoundingClientRect()['top']
-      this.valueWrapTop = targetTop - tagWrapTop - 1
+      this.valueWrapTop = targetTop - tagWrapTop + 10
       this.mouseenterKey = key
       this.mouseenterType = type
     },
@@ -296,7 +301,10 @@ export default {
 
 <style lang="scss" scoped>
 .tag-wrap {
-  width: 160px;
+  width: 180px;
+  max-height: 400px;
+  overflow: hidden;
+  overflow-y: auto;
   > ul {
     list-style: none;
     margin: 0;
@@ -330,18 +338,16 @@ export default {
   }
 }
 .values-wrap {
+  max-height: 400px;
+  overflow: hidden;
+  overflow-y: auto;
   background-color: #fff;
   position: absolute;
   left: 159px;
-  right: 0;
+  left: -230px;
   top: 0;
   transition: all .3s ease;
   width: 230px;
-  & {
-    @media screen and (max-width: 1366px) {
-      left: -230px;
-      right: 159px;
-    }
-  }
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 </style>
