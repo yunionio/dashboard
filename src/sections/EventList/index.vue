@@ -194,7 +194,7 @@ export default {
         scope: this.$scope,
       }
       if (this.nextMarker) params.paging_marker = this.nextMarker
-      if (this.objId) params.obj_id = this.objId
+      if (this.objId) params.filter = `obj_id.in(${this.objId})`
       if (this.objType) params.obj_type = this.objType
       if (this.searched && !R.isEmpty(this.searched)) {
         for (let key in this.searched) {
