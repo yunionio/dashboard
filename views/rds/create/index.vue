@@ -8,6 +8,7 @@
       </a-form-item>
       <a-form-item label="名称" v-bind="formItemLayout">
         <a-input :placeholder="$t('validator.serverName')" v-decorator="decorators.name" />
+        <name-repeated v-slot:extra res="dbinstances" :name="form.getFieldValue('name')" />
       </a-form-item>
       <!-- 计费方式 -->
       <clearing-radios v-bind="formItemLayout" />
@@ -38,6 +39,8 @@ import { debounce } from 'lodash'
 import { CreateServerForm } from '@Compute/constants'
 import ServerPassword from '@Compute/sections/ServerPassword'
 import SecgroupConfig from '@Compute/sections/SecgroupConfig'
+// import ServerNetwork from '@Compute/sections/ServerNetwork'
+import NameRepeated from '@DB/sections/NameRepeated'
 import { DECORATORS } from './constants/index'
 import SKU from './components/SKU'
 import BottomBar from './components/BottomBar'
@@ -55,6 +58,8 @@ export default {
     AreaSelects,
     NetworkSelects,
     SecgroupConfig,
+    // ServerNetwork,
+    NameRepeated,
   },
   data () {
     const { projectId, projectDomainId } = this.$store.getters.userInfo

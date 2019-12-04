@@ -12,7 +12,7 @@
     </a-form-item>
     <a-form-item label="实例类型" v-bind="formItemLayout">
       <a-radio-group v-decorator="['category']"  @change="getStorage">
-        <a-radio-button :key="key" :value="key" v-for="(value, key) of categorys">{{formatCategoryLabel(key)}}</a-radio-button>
+        <a-radio-button :key="key" :value="key" v-for="key in categorys">{{formatCategoryLabel(key)}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
     <a-form-item label="存储类型" v-bind="formItemLayout">
@@ -24,7 +24,7 @@
 </template>
 <script>
 import * as R from 'ramda'
-import { DBINSTANCE_CATEGORY, DBINSTANCE_STORAGE_TYPE, ENGINR_VERSION_POSTGRE_KYES, ENGINR_VERSION_SERVER_ALIYUN_KYES, ENGINR_VERSION_SERVER_HUAWEI_KYES, ENGINR_VERSION } from '@DB/views/rds/constants'
+import { DBINSTANCE_CATEGORY, DBINSTANCE_CATEGORY_KEYS, DBINSTANCE_STORAGE_TYPE, DBINSTANCE_STORAGE_TYPE_KEYS, ENGINR_VERSION_POSTGRE_KYES, ENGINR_VERSION_SERVER_ALIYUN_KYES, ENGINR_VERSION_SERVER_HUAWEI_KYES, ENGINR_VERSION } from '@DB/views/rds/constants'
 
 const VERSION_SORT = {
   PostgreSQL: ENGINR_VERSION_POSTGRE_KYES,
@@ -37,8 +37,8 @@ export default {
     return {
       dbInstance: undefined,
       engines: {},
-      engine_versions: {},
-      categorys: {},
+      engine_versions: [],
+      categorys: [],
       storage_types: [],
     }
   },
@@ -105,7 +105,11 @@ export default {
       const { engine, engine_version } = this.form.getFieldsValue(['engine', 'engine_version'])
       // eslint-disable-next-line camelcase
       const version = target.value || engine_version
-      this.categorys = this.dbInstance[engine][version]
+      this.categorys = DBINSTANCE_CATEGORY_KEYS.filter(k => {
+        if (this.dbInstance[engine][version] && this.dbInstance[engine][version][k]) {
+          return true
+        }
+      })
       this.setInitValue('category', this.getStorage)
     },
     getStorage (e) {
@@ -114,7 +118,9 @@ export default {
       const { engine, engine_version, category } = this.form.getFieldsValue(['engine', 'engine_version', 'category'])
       // eslint-disable-next-line camelcase
       const _category = target.value || category
-      this.storage_types = this.dbInstance[engine][engine_version][_category]
+      this.storage_types = DBINSTANCE_STORAGE_TYPE_KEYS.filter(k => {
+        return this.dbInstance[engine][engine_version][_category].indexOf(k) > -1
+      })
       this.setInitValue('storage_type', () => {
         this.$emit('change')
       })

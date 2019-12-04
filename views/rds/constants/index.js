@@ -1,3 +1,4 @@
+export const DBINSTANCE_CATEGORY_KEYS = ['replica', 'basic', 'single', 'high_availability', 'ha', 'finance', 'gr', 'always_on']
 export const DBINSTANCE_CATEGORY = {
   basic: '基础版',
   high_availability: '高可用',
@@ -9,6 +10,7 @@ export const DBINSTANCE_CATEGORY = {
   gr: '金融版',
 }
 
+export const DBINSTANCE_STORAGE_TYPE_KEYS = ['SATA', 'SAS', 'SSD', 'local_ssd', 'cloud_ssd', 'cloud_essd']
 export const DBINSTANCE_STORAGE_TYPE = {
   local_ssd: '本地SSD盘',
   cloud_essd: 'ESSD云盘',

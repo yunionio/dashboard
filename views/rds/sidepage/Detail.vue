@@ -6,9 +6,11 @@
 // import BrandIcon from '@/sections/BrandIcon'
 import { DBINSTANCE_CATEGORY, DBINSTANCE_STORAGE_TYPE } from '../constants'
 import { sizestr } from '@/utils/utils'
+import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'RDSDetail',
+  mixins: [WindowsMixin],
   props: {
     list: {
       type: Object,
@@ -128,6 +130,14 @@ export default {
             {
               field: 'internal_connection_str',
               title: '内网地址',
+              slots: {
+                default: ({ row }) => {
+                  if (row.internal_connection_str) {
+                    return `${row.internal_connection_str}:${row.port}`
+                  }
+                  return '-'
+                },
+              },
             },
             {
               field: 'connection_str',
@@ -139,6 +149,7 @@ export default {
                   const isRunning = row.status === 'running'
                   const notRunninTip = !isRunning ? '仅运行中的实例支持此操作' : null
                   let RenderSwitchBtn = null
+                  // eslint-disable-next-line no-constant-condition
                   if (isRunning) {
                     RenderSwitchBtn = (<a-button type="link" onClick={() => this.handleSwitchPublicAddress(!addr)}>{btnTxt}</a-button>)
                   } else {
@@ -160,10 +171,10 @@ export default {
                 },
               },
             },
-            {
-              field: 'port',
-              title: '数据库端口号',
-            },
+            // {
+            //   field: 'port',
+            //   title: '数据库端口号',
+            // },
             {
               field: 'vpc',
               title: 'VPC',
@@ -206,15 +217,29 @@ export default {
     }
   },
   methods: {
-    async handleSwitchPublicAddress (bool) {
-      this.list.onManager('performAction', {
-        id: this.data.id,
-        steadyStatus: ['runing'],
-        managerArgs: {
-          action: 'public-connection',
-          data: {
-            open: bool,
-          },
+    handleSwitchPublicAddress (bool) {
+      const txts = {
+        'true': {
+          title: '确认开启外网地址？',
+        },
+        'false': {
+          title: '确认关闭外网地址？',
+          content: '关闭外网地址后外网IP将无法访问',
+        },
+      }
+      this.createDialog('ConfirmDialog', {
+        ...txts[`${bool}`],
+        onOk: () => {
+          return this.list.onManager('performAction', {
+            id: this.data.id,
+            steadyStatus: ['runing'],
+            managerArgs: {
+              action: 'public-connection',
+              data: {
+                open: bool,
+              },
+            },
+          })
         },
       })
     },
