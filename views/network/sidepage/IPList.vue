@@ -105,8 +105,8 @@ export default {
       try {
         const manager = new this.$Manager('networks')
         const { data: { addresses } } = await manager.getSpecific({
-          // id: this.resId,
-          id: 'vnet222',
+          id: this.resId,
+          // id: 'vnet222',
           spec: 'addresses',
           params: {
             details: true,
