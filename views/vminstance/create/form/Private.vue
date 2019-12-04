@@ -67,11 +67,15 @@
       <a-form-item label="管理员密码" v-bind="formItemLayout">
         <server-password :decorator="decorators.loginConfig" />
       </a-form-item>
-      <a-form-item label="网络" v-bind="formItemLayout">
+      <a-form-item label="网络" v-bind="formItemLayout" class="mb-0">
         <server-network
           :decorator="decorators.network"
           :network-list-params="networkParam"
           :schedtag-params="params.schedtag" />
+      </a-form-item>
+      <a-form-item label="标签" v-bind="formItemLayout" class="mb-0">
+        <tag
+          v-decorator="decorators.tag" />
       </a-form-item>
       <a-divider orientation="left">高级配置</a-divider>
       <a-form-item label="安全组" v-bind="formItemLayout">

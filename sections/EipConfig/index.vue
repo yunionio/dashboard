@@ -17,19 +17,17 @@
       </a-radio-group>
     </a-form-item>
     <a-form-item class="mb-0" v-if="isNew">
-      <a-row>
-        <a-col :span="20">
+      <div class="d-flex">
+        <div class="flex-fill">
           <a-slider :min="1" :max="maxBindWidth" :step="1" :marks="sliderMarks" v-decorator="decorators.bandwidth" />
-        </a-col>
-        <a-col :span="4">
-          <a-input-number
-            class="ml-2"
-            :min="1"
-            :max="maxBindWidth"
-            :step="1"
-            v-decorator="decorators.bandwidth" />
-        </a-col>
-      </a-row>
+        </div>
+        <a-input-number
+          class="ml-4"
+          :min="1"
+          :max="maxBindWidth"
+          :step="1"
+          v-decorator="decorators.bandwidth" />
+      </div>
     </a-form-item>
     <a-form-item class="mb-0" v-if="isBind">
       <base-select
