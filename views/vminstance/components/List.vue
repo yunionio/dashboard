@@ -16,7 +16,16 @@ import { SERVER_TYPE } from '@Compute/constants'
 import { commonUnabled, cloudEnabled, cloudUnabledTip, commonEnabled, commonTip } from '../utils'
 import { Manager } from '@/utils/manager'
 import { sizestr } from '@/utils/utils'
-import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getBrandTableColumn, getCopyWithContentTableColumn, getIpsTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
+import {
+  getProjectTableColumn,
+  getRegionTableColumn,
+  getStatusTableColumn,
+  getBrandTableColumn,
+  getCopyWithContentTableColumn,
+  getIpsTableColumn,
+  getNameDescriptionTableColumn,
+  getTagTableColumn,
+} from '@/utils/common/tableColumn'
 import { getBrandItems, mapperStatusToItems } from '@/utils/common/tableFilter'
 import SystemIcon from '@/sections/SystemIcon'
 import expectStatus from '@/constants/expectStatus'
@@ -138,6 +147,7 @@ export default {
             )
           },
         }),
+        getTagTableColumn({ vm: this, needExt: true }),
         getIpsTableColumn({ field: 'ip', title: 'IP' }),
         {
           field: 'instance_type',
@@ -182,7 +192,7 @@ export default {
         {
           field: 'secgroups',
           title: '安全组',
-          formatter: ({ cellValue }) => {
+          formatter: ({ cellValue = [] }) => {
             return cellValue.map(item => item.name).join(',')
           },
         },
@@ -245,6 +255,72 @@ export default {
             return {
               buttonType: 'primary',
             }
+          },
+        },
+        {
+          label: '开机',
+          permission: 'server_perform_start',
+          action: () => {
+            const ids = this.list.selectedItems.map(item => item.id)
+            this.list.onManager('batchPerformAction', {
+              steadyStatus: 'running',
+              id: ids,
+              managerArgs: {
+                action: 'start',
+              },
+            })
+          },
+          meta: () => {
+            const ret = {
+              validate: false,
+              tooltip: null,
+            }
+            ret.validate = this.list.selectedItems.length > 0 && this.list.selectedItems.every(item => item.status === 'ready')
+            return ret
+          },
+        },
+        {
+          label: '关机',
+          permission: 'server_perform_stop',
+          action: () => {
+            const ids = this.list.selectedItems.map(item => item.id)
+            this.list.onManager('batchPerformAction', {
+              steadyStatus: 'running',
+              id: ids,
+              managerArgs: {
+                action: 'stop',
+              },
+            })
+          },
+          meta: () => {
+            const ret = {
+              validate: false,
+              tooltip: null,
+            }
+            ret.validate = this.list.selectedItems.length > 0 && this.list.selectedItems.every(item => item.status === 'running')
+            return ret
+          },
+        },
+        {
+          label: '重启',
+          permission: 'server_perform_restart',
+          action: () => {
+            const ids = this.list.selectedItems.map(item => item.id)
+            this.list.onManager('batchPerformAction', {
+              steadyStatus: 'running',
+              id: ids,
+              managerArgs: {
+                action: 'restart',
+              },
+            })
+          },
+          meta: () => {
+            const ret = {
+              validate: false,
+              tooltip: null,
+            }
+            ret.validate = this.list.selectedItems.length > 0 && this.list.selectedItems.every(item => ['running', 'stop_fail'].includes(item.status))
+            return ret
           },
         },
         {
@@ -616,6 +692,7 @@ export default {
                 submenus: [
                   {
                     label: '开机',
+                    permission: 'server_perform_start',
                     action: () => {
                       this.list.onManager('performAction', {
                         steadyStatus: 'running',
@@ -633,6 +710,7 @@ export default {
                   },
                   {
                     label: '关机',
+                    permission: 'server_perform_stop',
                     action: () => {
                       this.list.onManager('performAction', {
                         steadyStatus: 'ready',
@@ -650,6 +728,7 @@ export default {
                   },
                   {
                     label: '重启',
+                    permission: 'server_perform_restart',
                     action: () => {
                       this.list.onManager('performAction', {
                         steadyStatus: 'running',
@@ -660,6 +739,32 @@ export default {
                       })
                     },
                     meta: () => {
+                      return {
+                        validate: (obj.status === 'running' || obj.status === 'stop_fail') && !commonUnabled(obj),
+                      }
+                    },
+                  },
+                  {
+                    label: '重置',
+                    permission: 'server_perform_reset',
+                    action: () => {
+                      this.list.onManager('performAction', {
+                        steadyStatus: 'running',
+                        id: obj.id,
+                        managerArgs: {
+                          action: 'reset',
+                        },
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
+                        ret.tooltip = '只有OneCloud主机支持此操作'
+                        return ret
+                      }
                       return {
                         validate: (obj.status === 'running' || obj.status === 'stop_fail') && !commonUnabled(obj),
                       }
@@ -731,7 +836,7 @@ export default {
                   {
                     label: '更改项目',
                     action: () => {
-                      this.createDialog('ChangeProjectDialog', {
+                      this.createDialog('ChangeOwenrDialog', {
                         data: [obj],
                         columns: this.columns,
                         list: this.list,
@@ -897,7 +1002,11 @@ export default {
                         validate: false,
                         tooltip: null,
                       }
-                      if (!this.isAdminMode && findPlatform(obj.hypervisor) !== SERVER_TYPE.idc) {
+                      if (!this.isAdminMode) {
+                        ret.tooltip = '无权限操作'
+                        return ret
+                      }
+                      if (findPlatform(obj.hypervisor) !== SERVER_TYPE.idc) {
                         ret.tooltip = '仅本地IDC支持此操作'
                         return ret
                       }
