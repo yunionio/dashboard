@@ -1,3 +1,5 @@
+import * as R from 'ramda'
+
 export default {
   props: {
     provider: {
@@ -31,8 +33,15 @@ export default {
           if (err) {
             reject(err)
           } else {
-            console.log('Received values of form: ', values)
-            resolve(values)
+            const params = {}
+            R.forEachObjIndexed((value, key) => {
+              if (R.is(String, value)) {
+                params[key] = value.trim()
+              } else {
+                params[key] = value
+              }
+            }, values)
+            resolve(params)
           }
         })
       })

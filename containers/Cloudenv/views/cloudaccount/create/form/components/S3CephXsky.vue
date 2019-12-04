@@ -7,17 +7,12 @@
       <a-form-item v-bind="formLayout" label="接入地址">
         <a-input v-decorator="decorators.endpoint" placeholder="请输入接入地址" />
       </a-form-item>
-      <a-form-item v-bind="formLayout">
-        <span slot="label">
-          {{ keySecretField.label.k }}
-          <a-tooltip placement="top">
-            <a-icon type="question-circle" color="grey" />
-            <div slot="title">
-              <a class="link-color" target="_blank" :href="docs[provider.toLowerCase()]">{{ `如何获取${keySecretField.text}的${keySecretField.label.k }？点击查看帮助详情` }}</a>
-            </div>
-          </a-tooltip>
-        </span>
+      <a-form-item v-bind="formLayout" :label="keySecretField.label.k">
         <a-input v-decorator="decorators.username" :placeholder="keySecretField.placeholder.k" />
+        <div slot="extra">
+          {{ `如何获取${keySecretField.text}的${keySecretField.label.k }？点击查看帮助` }}
+          <help-link :href="docs[provider.toLowerCase()]"> 详情</help-link>
+        </div>
       </a-form-item>
       <a-form-item v-bind="formLayout" :label="keySecretField.label.s">
         <a-input v-decorator="decorators.password" :placeholder="keySecretField.placeholder.s" />
@@ -106,6 +101,9 @@ export default {
         ],
       },
     }
+  },
+  deactivated () {
+    this.form.fc.resetFields()
   },
 }
 </script>

@@ -198,6 +198,8 @@ export default {
                             this.$message.error(`创建云账号出错：${err}`)
                             errorFn()
                           })
+                      } else {
+                        successFn()
                       }
                     })
                     .catch(errorFn)
