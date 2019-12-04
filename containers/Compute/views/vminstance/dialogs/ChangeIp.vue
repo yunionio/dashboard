@@ -113,24 +113,23 @@ export default {
   methods: {
     async handleConfirm () {
       this.loading = true
-      // let manager = new this.$Manager('servers')
+      let manager = new this.$Manager('servers')
       try {
         const values = await this.form.fc.validateFields()
-        console.log(values)
-        // const data = {
-        //   ip_addr: this.params.data[0]['ip_addr'],
-        //   net_desc: values.ip ? `${values.network}:${values.ip}` : values.network,
-        // }
-        // await manager.performAction({
-        //   id: this.params.resId,
-        //   action: 'change-ipaddr',
-        //   data,
-        // })
-        // this.params.list.refresh()
-        // this.cancelDialog()
+        const data = {
+          ip_addr: this.params.data[0]['ip_addr'],
+          net_desc: values.ip ? `${values.network}:${values.ip}` : values.network,
+        }
+        await manager.performAction({
+          id: this.params.resId,
+          action: 'change-ipaddr',
+          data,
+        })
+        this.params.list.refresh()
+        this.cancelDialog()
       } finally {
         this.loading = false
-        // manager = null
+        manager = null
       }
     },
   },
