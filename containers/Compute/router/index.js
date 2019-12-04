@@ -21,6 +21,7 @@ import GPU from '@Compute/views/gpu'
 import Secgroup from '@Compute/views/secgroup'
 import FlexNetwork from '@Compute/views/flex-network'
 import Wire from '@Compute/views/wire'
+import DiskSnapshot from '@Compute/views/snapshot/DiskSnapshot'
 
 export default {
   index: 2,
@@ -131,6 +132,21 @@ export default {
               name: 'Disk',
               path: '',
               component: Disk,
+            },
+          ],
+        },
+        {
+          path: '/disk-snapshot',
+          meta: {
+            label: '硬盘快照',
+            permission: 'snapshots_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'DiskSnapshot',
+              path: '',
+              component: DiskSnapshot,
             },
           ],
         },
