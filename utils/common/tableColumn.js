@@ -1,5 +1,6 @@
 import * as R from 'ramda'
 import BrandIcon from '@/sections/BrandIcon'
+import TagTableColumn from '@/sections/TagTableColumn'
 
 export const getProjectTableColumn = ({ field = 'tenant', title = '项目', projectsItem = 'tenant', sortable = true } = {}) => {
   return {
@@ -116,15 +117,12 @@ export const getPublicTableColumn = ({ field = 'share_mode', title = '共享模�
 export const getNameDescriptionTableColumn = ({
   slotCallback,
   vm,
-  width,
   addLock,
   hideField,
   showDesc = true,
   sortable = true,
 } = {}) => {
   return {
-    width: width || 'auto',
-    minWidth: 100,
     field: 'name',
     title: '名称',
     sortable,
@@ -206,6 +204,31 @@ export const getSwitchTableColumn = ({ field, title, change }) => {
       default: ({ row }, h) => {
         return [
           <a-switch checked={ row[field] } checkedChildren='开' unCheckedChildren='关' onChange={ change } />,
+        ]
+      },
+    },
+  }
+}
+
+export const getTagTableColumn = ({
+  vm,
+  field = 'metadata',
+  title = '标签',
+  ignoreKeys,
+  needExt,
+} = {}) => {
+  return {
+    field,
+    title,
+    slots: {
+      default: ({ row }, h) => {
+        return [
+          <TagTableColumn
+            vm={ vm }
+            row={ row }
+            metadata={ row[field] || {} }
+            ignoreKeys={ ignoreKeys }
+            needExt={ needExt } />,
         ]
       },
     },
