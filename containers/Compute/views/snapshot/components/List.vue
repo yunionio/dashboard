@@ -35,7 +35,7 @@ export default {
           hideField: true,
           slotCallback: row => {
             return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'DiskSidePage') }>{ row.name }</side-page-trigger>
+              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'SnapshotSidePage') }>{ row.name }</side-page-trigger>
             )
           },
         }),
@@ -154,7 +154,7 @@ export default {
     }
   },
   created () {
-    // this.initSidePageTab('disk-detail')
+    this.initSidePageTab('snapshot-detail')
     this.list.fetchData()
   },
 }
