@@ -144,6 +144,8 @@ class CreateList {
     refreshInterval = 10,
     // 定义的默认隐藏列
     hiddenColumns = [],
+    // 标签的过滤项
+    tagFilter = {},
   }) {
     // 列表唯一标识
     this.id = id ? `LIST_${id}` : undefined
@@ -182,6 +184,8 @@ class CreateList {
     }
     // 列表配置是否已经加载过
     this.configLoaded = false
+    // 标签的过滤项
+    this.tagFilter = tagFilter
   }
   /**
    * @description 获取列表配置，如果没有则创建
@@ -341,6 +345,12 @@ class CreateList {
       ...params,
       ...this.genFilterParams(params),
     }
+    if (!R.isEmpty(this.tagFilter) && !R.isNil(this.tagFilter)) {
+      params = {
+        ...params,
+        ...this.genTagFilterParams(params),
+      }
+    }
     if (this.sortParams) {
       params = {
         ...params,
@@ -485,6 +495,16 @@ class CreateList {
     this.fetchData(0, 0)
   }
   /**
+   * @description 标签过滤条件变更
+   * @param {*} tagFilter
+   * @memberof CreateList
+   */
+  changeTagFilter (tagFilter) {
+    this.tagFilter = tagFilter
+    this.reset()
+    this.fetchData(0, 0)
+  }
+  /**
    * @description 勾选的数据发生改变事件
    *
    * @param {*} selection
@@ -516,6 +536,7 @@ class CreateList {
   genFilterParams (params) {
     const ret = {}
     const filters = []
+    const jointFilters = []
     // 查找已经存在的filter和自定义filter做合并
     for (let key in params) {
       if (key === 'filter') {
@@ -530,7 +551,11 @@ class CreateList {
         val = option.formatter(val)
       }
       if (option.filter) {
-        filters.push(val)
+        if (option.jointFilter) {
+          jointFilters.push(val)
+        } else {
+          filters.push(val)
+        }
       } else {
         ret[key] = val
       }
@@ -538,6 +563,26 @@ class CreateList {
     if (filters.length > 0) {
       ret['filter'] = filters
     }
+    if (jointFilters.length > 0) {
+      ret['joint_filter'] = jointFilters
+    }
+    return ret
+  }
+  /**
+   * @description 生成标签过滤的params
+   *
+   * @param {Object} params
+   * @returns {Object}
+   * @memberof CreateList
+   */
+  genTagFilterParams (params) {
+    const ret = {}
+    let index = 0
+    R.forEachObjIndexed((value, key) => {
+      ret[`tag.${index}.key`] = key
+      ret[`tag.${index}.value`] = value
+      index++
+    }, this.tagFilter)
     return ret
   }
   /**

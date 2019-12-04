@@ -52,7 +52,8 @@
           <tag-select
             button-text="已有标签"
             resource="server"
-            v-model="checked" />
+            v-model="checked"
+            :params="params.params" />
           <a-button class="ml-2" v-if="!showForm" @click="() => showForm = true">新建标签</a-button>
         </div>
         <a-form
@@ -177,10 +178,16 @@ export default {
       this.loading = true
       try {
         const data = {}
+        let num = 0
         R.forEachObjIndexed((value, key) => {
           const _key = R.replace(/(ext:|user:)/, '', key)
           data[_key] = value[0] ? value[0] : null
+          num++
         }, this.checked)
+        if (num > 20) {
+          this.$message.warning('每个资源最多可绑定20个标签，请调整后重试')
+          return
+        }
         const ids = this.params.data.map(item => item.id)
         await this.params.list.onManager('batchPerformAction', {
           id: ids,

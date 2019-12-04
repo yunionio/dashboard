@@ -131,7 +131,8 @@
       "start_convert": "开始转换",
       "start_maintain": "开始维护",
       "maintaining": "维护中",
-      "maintain_fail": "维护失败"
+      "maintain_fail": "维护失败",
+      "prepare": "准备中"
     },
     "image": {
       "init": "初始化",
