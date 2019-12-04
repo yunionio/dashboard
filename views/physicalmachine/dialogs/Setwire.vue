@@ -1,20 +1,18 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">挂载ISO</div>
+    <div slot="header">设置二层网络</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" action="挂载ISO" />
+      <dialog-selected-tips :count="params.data.length" action="设置二层网络" />
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
-      <a-form :form="form.fc" hideRequiredMark>
-        <a-form-item label="ISO镜像" v-bind="formItemLayout">
+      <a-form
+        :form="form.fc">
+        <a-form-item label="二层网络" v-bind="formItemLayout">
           <base-select
-            remote
-            filterable
+            :filterable="true"
+            v-decorator="decorators.wire"
+            resource="wires"
             version="v1"
-            v-decorator="decorators.image_id"
-            resource="images"
-            search-key="search"
-            :params="{ disk_formats: 'iso' }"
-            :select-props="{ placeholder: '请选择ISO镜像' }" />
+            :select-props="{ placeholder: '选择二层网络' }" />
         </a-form-item>
       </a-form>
     </div>
@@ -30,7 +28,7 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'VmMountIsoDialog',
+  name: 'HostSetWireDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
@@ -39,11 +37,11 @@ export default {
         fc: this.$form.createForm(this),
       },
       decorators: {
-        image_id: [
-          'image_id',
+        wire: [
+          'wire',
           {
             rules: [
-              { required: true, message: '请选择ISO镜像' },
+              { required: true },
             ],
           },
         ],
@@ -59,21 +57,27 @@ export default {
     }
   },
   methods: {
+    doUpdate (data) {
+      return new this.$Manager('hosts').performAction({
+        action: 'add-netif',
+        id: this.params.data[0].hostId,
+        data: {
+          ...data,
+          mac: this.params.data[0]['mac'],
+          index: -1,
+        },
+      })
+    },
     async handleConfirm () {
       this.loading = true
       try {
-        const values = await this.form.fc.validateFields()
-        const ids = this.params.data.map(item => item.id)
-        await this.params.list.onManager('batchPerformAction', {
-          id: ids,
-          steadyStatus: ['running', 'ready'],
-          managerArgs: {
-            action: 'insertiso',
-            data: values,
-          },
-        })
+        let values = this.form.fc.validateFields()
+        this.loading = true
+        await this.doUpdate(values)
+        this.loading = false
         this.cancelDialog()
-      } finally {
+        this.params.list.refresh()
+      } catch (error) {
         this.loading = false
       }
     },

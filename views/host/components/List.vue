@@ -395,6 +395,9 @@ export default {
                           tooltip: '已启用的宿主机不可回收',
                         }
                       }
+                      return {
+                        validate: true,
+                      }
                     },
                   },
                   {
