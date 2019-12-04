@@ -92,7 +92,36 @@ export default {
           },
         },
       ],
-      groupActions: [],
+      groupActions: [
+        {
+          label: '删除',
+          permission: 'snapshots_delete',
+          action: () => {
+            this.createDialog('DeleteResDialog', {
+              data: this.list.selectedItems,
+              columns: this.columns,
+              list: this.list,
+              title: '删除',
+            })
+          },
+          meta: () => {
+            const ret = {
+              validate: this.list.selected.length,
+              tooltip: null,
+            }
+            if (this.list.selectedItems.some(item => !item.can_delete)) {
+              ret.validate = false
+              return ret
+            }
+            if (this.list.selectedItems.some(item => item.is_sub_snapshot)) {
+              ret.validate = false
+              ret.tooltip = '此快照为主机快照子快照，不可操作'
+              return ret
+            }
+            return ret
+          },
+        },
+      ],
       singleActions: [
         {
           label: '回滚硬盘',
@@ -108,6 +137,18 @@ export default {
             const brand = obj.brand.toLowerCase()
             return { ...RollbackDiskValidate[brand](obj) }
           },
+        },
+        {
+          label: '删除',
+          action: obj => {
+            this.createDialog('DeleteResDialog', {
+              data: [obj],
+              columns: this.columns,
+              title: '删除',
+              list: this.list,
+            })
+          },
+          meta: obj => this.$getDeleteResult(obj),
         },
       ],
     }
