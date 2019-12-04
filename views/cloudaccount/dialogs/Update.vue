@@ -19,8 +19,9 @@
           </div>
         </a-form-item>
         <a-form-item :label="field.label.k" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.keyId" :placeholder="field.placeholder.k" />
-          <div slot="extra" class="text-right">
+          <a-textarea v-if="isGoogle" :autosize="{ minRows: 3, maxRows: 7 }" v-decorator="decorators.keyId" :placeholder="field.placeholder.k" />
+          <a-input v-else v-decorator="decorators.keyId" :placeholder="field.placeholder.k" />
+          <div slot="extra" class="text-right" v-if="!isGoogle">
             <help-link :href="doc">如何获取{{ field.text }} {{ field.label.k }} 和 {{ field.label.s }}？</help-link>
           </div>
         </a-form-item>
@@ -51,6 +52,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import { keySecretFields, CLOUDACCOUNT_DOCS } from '../constants'
 import { HYPERVISORS_MAP } from '@/constants'
 import DialogMixin from '@/mixins/dialog'
@@ -60,7 +62,7 @@ export default {
   name: 'CloudaccountUpdateDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
-    const provider = this.params.data[0].provider.toLowerCase()
+    const provider = this.params.data[0].brand.toLowerCase()
     return {
       loading: false,
       form: {
@@ -138,6 +140,9 @@ export default {
     isOpenStack () {
       return this.provider === HYPERVISORS_MAP.openstack.key
     },
+    isGoogle () {
+      return this.provider === HYPERVISORS_MAP.google.key
+    },
     formItemLayout () {
       const ret = {
         wrapperCol: {
@@ -158,10 +163,18 @@ export default {
     validateForm () {
       return new Promise((resolve, reject) => {
         this.form.fc.validateFields((err, values) => {
-          if (!err) {
-            resolve(values)
-          } else {
+          if (err) {
             reject(err)
+          } else {
+            const params = {}
+            R.forEachObjIndexed((value, key) => {
+              if (R.is(String, value)) {
+                params[key] = value.trim()
+              } else {
+                params[key] = value
+              }
+            }, values)
+            resolve(params)
           }
         })
       })
