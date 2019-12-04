@@ -86,6 +86,7 @@
 
 <script>
 import * as R from 'ramda'
+import { mapGetters } from 'vuex'
 import DomainProject from '@/sections/DomainProject'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -201,13 +202,19 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['isAdminMode', 'scope', 'userInfo']),
     regionParams () {
       if (this.manager) {
-        return {
+        const params = {
           manager: this.manager,
           usable: true,
           scope: this.$store.getters.scope,
         }
+        if (this.isAdminMode) {
+          params['project_domain'] = this.userInfo.projectDomainId
+          delete params.scope
+        }
+        return params
       }
       return {}
     },
