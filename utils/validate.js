@@ -87,6 +87,17 @@ export const REGEXP = {
     regexp: /^[a-zA-Z][a-zA-Z0-9-]{1,8}$/,
     message: i18n.t('validator.wiresName'),
   },
+  dbName: {
+    // regexp: /^[a-zA-Z][a-zA-Z0-9-]{1,126}(?<!-)$/, // firefox 不支持 后行否定断言
+    func: value => {
+      const regexp = /^(?!_|[0-9])[a-zA-Z0-9_]{4,16}$/
+      if (regexp.test(value) && !value.endsWith('_')) {
+        return true
+      }
+      return false
+    },
+    message: i18n.t('validator.dbName'),
+  },
 }
 
 /**
