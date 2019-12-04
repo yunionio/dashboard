@@ -3,7 +3,7 @@
     <template v-for="item of options">
       <!-- 一组操作，下拉形式展示 -->
       <template v-if="item.actions">
-        <dropmenus :group="group" :key="item.label" :item="item" :row="row" :button-type="buttonType" :button-size="buttonSize" />
+        <dropmenus :group="group" :key="item.label" :item="item" :row="row" :button-type="buttonType" :button-size="buttonSize" :button-style="buttonStyle" />
       </template>
       <!-- 单个操作 -->
       <template v-else>
@@ -14,6 +14,7 @@
           :button-type="buttonType"
           :button-size="buttonSize"
           :class="{ 'ml-2': group }"
+          :button-style="buttonStyle"
           @clear-selected="clearSelected" />
       </template>
     </template>
@@ -44,6 +45,9 @@ export default {
     },
     buttonSize: {
       type: String,
+    },
+    buttonStyle: {
+      type: Object,
     },
     group: {
       type: Boolean,
