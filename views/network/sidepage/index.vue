@@ -22,6 +22,7 @@ import HostIp from './HostIp'
 import ReservedIp from './ReservedIp'
 import LbIp from './LbIp'
 import FlexIp from './FlexIp'
+import IPList from './IPList'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -36,18 +37,20 @@ export default {
     LbIp,
     FlexIp,
     Actions,
+    IPList,
   },
   mixins: [SidePageMixin, WindowsMixin],
   data () {
     return {
       detailTabs: [
         { label: '详情', key: 'network-detail' },
-        { label: '宿主机IP', key: 'host-machineip' },
-        { label: '主机IP', key: 'host-ip' },
-        { label: '预留IP', key: 'reserved-ip' },
-        { label: '负载均衡IP', key: 'lb-ip' },
-        { label: '弹性网卡IP', key: 'flex-ip' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: 'IP使用情况', key: 'i-p-list' },
+        // { label: '宿主机IP', key: 'host-machineip' },
+        // { label: '主机IP', key: 'host-ip' },
+        // { label: '预留IP', key: 'reserved-ip' },
+        // { label: '负载均衡IP', key: 'lb-ip' },
+        // { label: '弹性网卡IP', key: 'flex-ip' },
+        // { label: '操作日志', key: 'event-drawer' },
       ],
     }
   },

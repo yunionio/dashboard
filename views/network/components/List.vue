@@ -411,6 +411,23 @@ export default {
                 },
               },
               {
+                label: '预留IP',
+                // permission: 'networks_delete',
+                action: (obj) => {
+                  this.createDialog('NetworkReversedIPDialog', {
+                    data: [obj],
+                    columns: this.columns,
+                    title: '预留IP',
+                    list: this.list,
+                  })
+                },
+                // meta: () => {
+                //   return {
+                //     validate: this.list.allowDelete(),
+                //   }
+                // },
+              },
+              {
                 label: '删除',
                 permission: 'networks_delete',
                 action: () => {
