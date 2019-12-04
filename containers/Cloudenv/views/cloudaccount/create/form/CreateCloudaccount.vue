@@ -1,5 +1,5 @@
 <template>
-  <compontent :is="currentComponent" v-bind="props" ref="createForm" />
+  <component :is="currentComponent" v-bind="props" ref="createForm" />
 </template>
 
 <script>
@@ -10,6 +10,7 @@ import Qcloud from './components/Qcloud'
 import VMware from './components/VMware'
 import OpenstackZstack from './components/OpenstackZstack'
 import S3CephXsky from './components/S3CephXsky'
+import Google from './components/Google'
 
 export default {
   name: 'CreateCloudaccount',
@@ -27,6 +28,7 @@ export default {
     S3Create: S3CephXsky,
     CephCreate: S3CephXsky,
     XskyCreate: S3CephXsky,
+    GoogleCreate: Google,
   },
   props: {
     currentItem: {

@@ -1,5 +1,6 @@
 <template>
   <page-list
+    show-tag-filter
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
@@ -56,6 +57,14 @@ export default {
             formatter: val => {
               return `name.contains(${val})`
             },
+          },
+          ips: {
+            label: 'IP',
+            filter: true,
+            formatter: val => {
+              return `guestnetworks.guest_id(id).ip_addr.contains(${val})`
+            },
+            jointFilter: true,
           },
           status: {
             label: '状态',
@@ -579,6 +588,9 @@ export default {
                     columns: this.columns,
                     list: this.list,
                     title: '删除',
+                    success: () => {
+                      this.destroySidePages()
+                    },
                   })
                 },
                 meta: () => {
@@ -638,9 +650,11 @@ export default {
                 })
               },
               meta: () => {
-                return {
-                  validate: true,
+                const ret = {
+                  validate: cloudEnabled('vnc', obj),
+                  tooltip: cloudUnabledTip('vnc', obj),
                 }
+                return ret
               },
             })
             const mapIpActions = (ipArr, type) => {
@@ -1241,6 +1255,7 @@ export default {
                         return ret
                       }
                       if (commonUnabled(obj)) return ret
+                      if (findPlatform(obj.hypervisor) === SERVER_TYPE.public) return ret
                       ret.validate = commonEnabled(obj)
                       ret.tooltip = commonTip(obj)
                       return ret

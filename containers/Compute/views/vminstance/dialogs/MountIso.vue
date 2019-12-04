@@ -13,6 +13,7 @@
             v-decorator="decorators.image_id"
             resource="images"
             search-key="search"
+            :params="{ disk_formats: 'iso' }"
             :select-props="{ placeholder: '请选择ISO镜像' }" />
         </a-form-item>
       </a-form>

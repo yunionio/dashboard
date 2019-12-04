@@ -216,6 +216,7 @@ export const getTagTableColumn = ({
   title = '标签',
   ignoreKeys,
   needExt,
+  resource,
 } = {}) => {
   return {
     field,
@@ -228,7 +229,8 @@ export const getTagTableColumn = ({
             row={ row }
             metadata={ row[field] || {} }
             ignoreKeys={ ignoreKeys }
-            needExt={ needExt } />,
+            needExt={ needExt }
+            resource={ resource } />,
         ]
       },
     },

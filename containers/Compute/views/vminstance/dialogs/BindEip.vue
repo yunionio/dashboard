@@ -43,7 +43,7 @@ export default {
           type: [
             'type',
             {
-              initialValue: 'bind',
+              initialValue: 'new',
             },
           ],
           charge_type: [
@@ -54,6 +54,9 @@ export default {
           ],
           bandwidth: [
             'bandwidth',
+            {
+              initialValue: 1,
+            },
           ],
           eip: [
             'eip',

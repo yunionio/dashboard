@@ -2,10 +2,23 @@
   <div>
     <page-toolbar>
       <div class="mb-2 d-flex">
-        <refresh-button :loading="loading" @refresh="refresh" />
-        <template v-if="groupActions">
-          <actions :options="groupActions" @clear-selected="handleClearSelected" button-type="default" group />
-        </template>
+        <div class="d-flex flex-fill">
+          <refresh-button class="flex-shrink-0" :loading="loading" @refresh="refresh" />
+          <template v-if="groupActions">
+            <actions class="flex-shrink-0" :options="groupActions" @clear-selected="handleClearSelected" button-type="default" group />
+          </template>
+          <tag-filter
+            v-if="showTagFilter"
+            :list="list" />
+        </div>
+        <div class="ml-4 d-flex flex-shrink-0 justify-content-end" v-if="exportDataOptions || list.id">
+          <a-tooltip title="导出数据" v-if="exportDataOptions">
+            <a-button icon="download" style="width: 40px;" @click="handleExportData" />
+          </a-tooltip>
+          <a-tooltip title="自定义列" v-if="list.id">
+            <a-button class="ml-2" icon="setting" style="width: 40px;" @click="handleCustomList" />
+          </a-tooltip>
+        </div>
       </div>
       <div class="d-flex">
         <div class="flex-fill">
@@ -15,14 +28,6 @@
             :value="filter"
             :list="list"
             @input="handleFilterChange" />
-        </div>
-        <div class="ml-4" v-if="exportDataOptions || list.id">
-          <a-tooltip title="导出数据" v-if="exportDataOptions">
-            <a-button icon="download" style="height: 38px; width: 40px;" @click="handleExportData" />
-          </a-tooltip>
-          <a-tooltip title="自定义列" v-if="list.id">
-            <a-button class="ml-2" icon="setting" style="height: 38px; width: 40px;" @click="handleCustomList" />
-          </a-tooltip>
         </div>
       </div>
     </page-toolbar>
@@ -53,12 +58,14 @@ import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import Actions from './Actions'
 import RefreshButton from './RefreshButton'
+import TagFilter from './TagFilter'
 
 export default {
   name: 'PageList',
   components: {
     Actions,
     RefreshButton,
+    TagFilter,
   },
   props: {
     // 生成的list实例store
@@ -83,6 +90,8 @@ export default {
     exportDataOptions: {
       type: Object,
     },
+    // 开启标签过滤
+    showTagFilter: Boolean,
   },
   data () {
     return {
@@ -104,21 +113,23 @@ export default {
       return this.list.filter
     },
     tableColumns () {
-      let defaultColumns = []
+      let defaultColumns = this.columns.filter(item => {
+        if (R.is(Function, item.hidden)) return !item.hidden()
+        return !item.hidden
+      })
       if (this.groupActions && this.groupActions.length > 0) {
-        defaultColumns.push({ type: 'checkbox', width: 60 })
+        defaultColumns.unshift({ type: 'checkbox', width: 60 })
       }
-      defaultColumns = defaultColumns.concat(this.columns)
       if (this.singleActions && this.singleActions.length) {
-        defaultColumns = defaultColumns.concat([{
+        defaultColumns.push({
           field: 'action',
           title: '操作',
           slots: {
             default: ({ row }, h) => {
-              return [<Actions options={ this.singleActions } row={ row } button-type='link' button-size='small' />]
+              return [<Actions options={ this.singleActions } row={ row } button-type='link' button-size='small' button-style={{ fontSize: '12px' }} />]
             },
           },
-        }])
+        })
       }
       return defaultColumns
     },

@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import { filterUserTag, getTagColor, getTagTitle } from '@/utils/common/tag'
 
 export default {
@@ -50,6 +51,7 @@ export default {
     },
     ignoreKeys: Array,
     needExt: Boolean,
+    resource: String,
   },
   data () {
     return {
@@ -81,6 +83,18 @@ export default {
     iconClass () {
       return this.tags.length <= 0 ? 'text-color-help' : 'primary-color'
     },
+    params () {
+      const ret = { resources: this.resource }
+      if (this.resource) return ret
+      if (this.vm && this.vm.list && this.vm.list.resource) {
+        if (R.is(String, this.vm.list.resource)) {
+          ret.resources = this.vm.list.resource.substr(0, this.vm.list.resource.length - 1)
+        } else {
+          ret.resources = this.vm.list.resource.resource.substr(0, this.vm.list.resource.resource.length - 1)
+        }
+      }
+      return ret
+    },
   },
   created () {
     this.findDialogByParent(this)
@@ -92,6 +106,7 @@ export default {
         data: [this.row],
         columns: this.vm.columns,
         list: this.vm.list,
+        params: this.params,
       })
     },
     findDialogByParent (vm) {

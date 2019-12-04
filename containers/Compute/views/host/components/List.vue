@@ -219,9 +219,6 @@ export default {
                       }
                     }
                   }
-                  return {
-                    validate: true,
-                  }
                 },
               },
               {
@@ -397,10 +394,9 @@ export default {
                           validate: false,
                           tooltip: '已启用的宿主机不可回收',
                         }
-                      } else {
-                        return {
-                          validate: true,
-                        }
+                      }
+                      return {
+                        validate: true,
                       }
                     },
                   },
