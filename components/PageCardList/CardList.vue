@@ -2,7 +2,7 @@
   <div class="card-list d-flex flex-wrap">
     <div class="card-wrap my-3" v-for="(item, key) in list" :key="key">
       <a-card class="position-relative" hoverable style="width: 240px">
-        <actions slot="extra" :options="getOptions(item, 'singleActions')" :row="item.data" button-type="link" button-size="small" />
+        <actions slot="extra" v-if="showSingleActions(item)" :options="getOptions(item, 'singleActions')" :row="item.data" button-type="link" button-size="small" />
         <img
           :ref="`img${key}`"
           :alt="getData(item.data, 'description')"
@@ -15,6 +15,9 @@
             <template slot="description">
               <div class="mutiline-text-truncate">
                 {{ getData(item.data, 'description') }}
+              </div>
+              <div class="mutiline-text-truncate mt-2" v-if="cardFields['desc']" style="font-size: 12px">
+                {{ getData(item.data, 'desc') }}
               </div>
             </template>
           </a-card-meta>
@@ -82,6 +85,13 @@ export default {
     },
     imgError (item, ref) {
       this.$refs[ref][0].src = this.imageDefault
+    },
+    showSingleActions (item) {
+      const show = this.getOptions(item, 'singleActions')
+      if (R.isEmpty(show) && R.isEmpty(show[0])) {
+        return true
+      }
+      return false
     },
   },
 }

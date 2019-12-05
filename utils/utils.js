@@ -181,3 +181,22 @@ export const maxTextLength = (text, maxLen) => {
     return text
   }
 }
+
+/**
+ * @description 将数组变为对象，[{id: 'name', value: 'xx'}, {id: 'server', value: 'xc'}] => {name: {id: 'name', value: 'xx'}, server:{id: 'server', value: 'xc'}}
+ * @param {Array} arr
+ * @param {String} key
+ * @param {String} itemKey
+ */
+export const arrToObjByKey = (arr, key, itemKey) => {
+  const target = {}
+  arr.reduce((obj, item) => {
+    if (itemKey) {
+      obj[item[key]] = item[itemKey]
+    } else {
+      obj[item[key]] = { data: item }
+    }
+    return obj
+  }, target)
+  return target
+}
