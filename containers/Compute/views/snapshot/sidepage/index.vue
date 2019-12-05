@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     title="硬盘快照"
-    icon="res-snapshot"
+    icon="res-disk-snapshot"
     :res-name="data.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"
