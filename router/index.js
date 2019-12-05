@@ -3,6 +3,7 @@ import VMInstance from '@Compute/views/vminstance'
 import Baremetal from '@Compute/views/baremetal'
 import BaremetalCreate from '@Compute/views/baremetal/create/index'
 import Image from '@Compute/views/image'
+import ImageImport from '@Compute/views/image/image-import/index'
 import VMInstanceCreate from '@Compute/views/vminstance/create/index'
 import Network from '@Compute/views/network'
 import NetworkCreate from '@Compute/views/network/Create'
@@ -143,7 +144,7 @@ export default {
         {
           path: '/image',
           meta: {
-            label: '镜像',
+            label: '系统镜像',
             permission: 'images_list',
           },
           component: Layout,
@@ -152,6 +153,11 @@ export default {
               name: 'Image',
               path: '',
               component: Image,
+            },
+            {
+              name: 'ImageImport',
+              path: 'import',
+              component: ImageImport,
             },
           ],
         },
