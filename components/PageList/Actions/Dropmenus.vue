@@ -6,7 +6,7 @@
     destroyTooltipOnHide
     overlayClassName="page-list-actions-dropmenus-wrap"
     @visibleChange="handleVisibleChange">
-    <action-button :class="{ 'ml-2': group }" :button-size="buttonSize" :row="row" :item="item" :button-type="buttonType" :button-style="buttonStyle" popover-trigger />
+    <action-button :class="{ 'ml-2': group }" :button-size="buttonSize" :row="row" :item="item" :button-type="buttonType" :button-style="buttonStyle" :button-block="buttonBlock" popover-trigger />
     <div slot="content">
       <template v-if="options.length > 0">
         <template v-if="!isSubmenus">
@@ -76,6 +76,9 @@ export default {
       type: Object,
     },
     group: {
+      type: Boolean,
+    },
+    buttonBlock: {
       type: Boolean,
     },
   },

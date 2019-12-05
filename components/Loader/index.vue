@@ -7,10 +7,7 @@
       <div class="loading-description">加载中</div>
     </div>
     <div v-else class="text-center">
-      <div class="empty-image">
-        <img src="../../assets/images/empty.svg" />
-      </div>
-      <div class="empty-description">{{ noDataText }}</div>
+      <a-empty />
     </div>
   </div>
 </template>

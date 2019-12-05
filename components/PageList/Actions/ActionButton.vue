@@ -22,6 +22,10 @@ export default {
     buttonStyle: {
       type: Object,
     },
+    buttonBlock: {
+      type: Boolean,
+      default: false,
+    },
     // 是否作为 popover 的 trigger 渲染
     popoverTrigger: Boolean,
   },
@@ -64,9 +68,9 @@ export default {
     const v = []
     let action
     if (this.popoverTrigger) {
-      action = <a-button style={ this.buttonStyle } size={ this.buttonSize } type={ this.meta.buttonType || this.buttonType } disabled={ this.disabled } onClick={ this.handlePopoverClick }>{ this.label }<a-icon type='down' /></a-button>
+      action = <a-button style={ this.buttonStyle } block={ this.buttonBlock } size={ this.buttonSize } type={ this.meta.buttonType || this.buttonType } disabled={ this.disabled } onClick={ this.handlePopoverClick }>{ this.label }<a-icon type='down' /></a-button>
     } else {
-      action = <a-button style={ this.buttonStyle } size={ this.buttonSize } type={ this.meta.buttonType || this.buttonType } disabled={ this.disabled } onClick={ this.handleClick }>{ this.label }</a-button>
+      action = <a-button style={ this.buttonStyle } block={ this.buttonBlock } size={ this.buttonSize } type={ this.meta.buttonType || this.buttonType } disabled={ this.disabled } onClick={ this.handleClick }>{ this.label }</a-button>
     }
     if (this.tooltip) {
       action = <a-tooltip title={ this.tooltip } placement='left' destroyTooltipOnHide>{ action }</a-tooltip>
