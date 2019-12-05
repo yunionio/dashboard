@@ -8,7 +8,7 @@
         </div>
       </a-alert>
       <dialog-selected-tips :count="params.data.length" :action="action" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <vxe-grid class="mb-2" :data="params.data" :columns="columns" />
       <a-form
         :form="form.fc">
         <a-form-item label="自动启动" v-bind="formItemLayout" extra="回滚硬盘后是否自动启动">
@@ -57,6 +57,12 @@ export default {
       },
     }
   },
+  computed: {
+    columns () {
+      const showFields = ['name', 'brand', 'disk_type']
+      return this.params.columns.filter((item) => { return showFields.includes(item.field) })
+    },
+  },
   watch: {
     'params.data': {
       immediate: true,
@@ -64,10 +70,14 @@ export default {
       handler (val) {
         if (val.some(v => !v.guest)) {
           this.disabled = true
-          this.form.fc.setFieldsValue({ autoStart: false })
+          this.$nextTick(() => {
+            this.form.fc.setFieldsValue({ autoStart: false })
+          })
         } else {
           this.disabled = false
-          this.form.fc.setFieldsValue({ autoStart: true })
+          this.$nextTick(() => {
+            this.form.fc.setFieldsValue({ autoStart: true })
+          })
         }
       },
     },
