@@ -26,6 +26,11 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    type: {
+      type: String,
+      default: 'disk',
+      validator: val => ['disk', 'instance'].includes(val),
+    },
   },
   data () {
     return {
@@ -35,16 +40,19 @@ export default {
           hideField: true,
           slotCallback: row => {
             return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'SnapshotSidePage') }>{ row.name }</side-page-trigger>
+              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'SnapshotSidePage', { type: this.type }) }>{ row.name }</side-page-trigger>
             )
           },
         }),
-        getBrandTableColumn(),
+        getBrandTableColumn({ hidden: this.type === 'instance' }),
         {
           field: 'disk_name',
           title: '硬盘',
           formatter: ({ row }) => {
             return row.disk_name
+          },
+          hidden: () => {
+            return this.type === 'instance'
           },
         },
         {
@@ -53,12 +61,20 @@ export default {
           formatter: ({ row }) => {
             return DISK_TYPES[row.disk_type] || row.disk_type
           },
+          hidden: () => {
+            return this.type === 'instance'
+          },
         },
         {
           field: 'size',
           title: '快照大小',
           formatter: ({ row }) => {
-            return sizestr(row.size, 'M', 1024)
+            if (this.type === 'disk') {
+              return sizestr(row.size, 'M', 1024)
+            } else if (this.type === 'instance') {
+              const size = row.snapshots.reduce((a, b) => a + b.size, 0)
+              return sizestr(size, 'M', 1024)
+            }
           },
         },
         getStatusTableColumn({ statusModule: 'snapshot' }),
@@ -89,6 +105,9 @@ export default {
           title: '存储类型',
           formatter: ({ row }) => {
             return STORAGE_TYPES[row.storage_type] || row.storage_type || '-'
+          },
+          hidden: () => {
+            return this.type === 'instance'
           },
         },
       ],
@@ -134,8 +153,14 @@ export default {
             })
           },
           meta: obj => {
-            const brand = obj.brand.toLowerCase()
-            return { ...RollbackDiskValidate[brand](obj) }
+            const brand = obj.brand && obj.brand.toLowerCase()
+            if (this.isInstanceSnapshot) {
+              return { validate: false, tooltip: '不支持该操作' }
+            }
+            if (brand) {
+              return { ...RollbackDiskValidate[brand](obj) }
+            }
+            return { validate: true }
           },
         },
         {
@@ -152,6 +177,14 @@ export default {
         },
       ],
     }
+  },
+  computed: {
+    isDiskSnapshot () {
+      return this.type === 'disk'
+    },
+    isInstanceSnapshot () {
+      return this.type === 'instance'
+    },
   },
   created () {
     this.initSidePageTab('snapshot-detail')

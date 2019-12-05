@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="硬盘快照"
+    :title="title"
     icon="res-disk-snapshot"
     :res-name="data.name"
     :actions="params.actions"
@@ -11,12 +11,18 @@
     <template v-slot:actions>
       <actions :options="params.singleActions" :row="data" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :data="data" :res-id="params.resId" :list="params.list" />
+    <component
+      :is="params.windowData.currentTab"
+      :data="data"
+      :res-id="params.resId"
+      :list="params.list"
+      :type="params.type" />
   </base-side-page>
 </template>
 
 <script>
 import SnapshotDetail from './Detail'
+import SubSnapshotDetail from './SubSnapshotDetail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -25,20 +31,38 @@ export default {
   name: 'SnapshotSidePage',
   components: {
     SnapshotDetail,
+    SubSnapshotDetail,
     Actions,
   },
   mixins: [SidePageMixin, WindowsMixin],
   data () {
-    return {
-      detailTabs: [
-        { label: '详情', key: 'snapshot-detail' },
-        { label: '操作日志', key: 'event-drawer' },
-      ],
-    }
+    return {}
   },
   computed: {
+    isDiskSnapshot () {
+      return this.params.type === 'disk'
+    },
+    isInstanceSnapshot () {
+      return this.params.type === 'instance'
+    },
+    title () {
+      return this.isDiskSnapshot ? '硬盘快照' : '主机快照'
+    },
     data () {
       return this.params.list.data[this.params.resId].data
+    },
+    detailTabs () {
+      if (this.isDiskSnapshot) {
+        return [
+          { label: '详情', key: 'snapshot-detail' },
+          { label: '操作日志', key: 'event-drawer' },
+        ]
+      }
+      return [
+        { label: '详情', key: 'snapshot-detail' },
+        { label: '子快照', key: 'sub-snapshot-detail' },
+        { label: '操作日志', key: 'event-drawer' },
+      ]
     },
   },
 }
