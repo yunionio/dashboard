@@ -1,4 +1,5 @@
 import * as R from 'ramda'
+import { keySecretFields } from '@Cloudenv/views/cloudaccount/constants'
 
 export default {
   props: {
@@ -12,6 +13,7 @@ export default {
       form: {
         fc: this.$form.createForm(this),
       },
+      keySecretFieldInit: keySecretFields[this.provider.toLowerCase()],
       formLayout: {
         wrapperCol: {
           md: { span: 18 },
@@ -25,6 +27,19 @@ export default {
         },
       },
     }
+  },
+  computed: {
+    keySecretField () {
+      return keySecretFields[this.provider.toLowerCase()]
+    },
+  },
+  watch: {
+    provider (val) {
+      this.decorators = this.getDecorators()
+    },
+  },
+  deactivated () {
+    this.form.fc.resetFields()
   },
   methods: {
     validateForm () {

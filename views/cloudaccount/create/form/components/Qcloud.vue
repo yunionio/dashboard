@@ -48,7 +48,6 @@ export default {
     const keySecretField = keySecretFields[this.provider.toLowerCase()]
     return {
       docs: CLOUDACCOUNT_DOCS,
-      keySecretField,
       decorators: {
         name: [
           'name',
