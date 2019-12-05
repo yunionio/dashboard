@@ -20,6 +20,12 @@ export default {
   },
   data () {
     return {
+      PUBLIC_SCOPE_ZH: {
+        system: '系统',
+        project: '项目',
+        none: '不共享',
+        domain: '域',
+      },
       baseInfo: [
         {
           field: 'guest_cnt',
@@ -32,6 +38,11 @@ export default {
         {
           field: 'public_scope',
           title: '共享范围',
+          slots: {
+            default ({ row }) {
+              return this.PUBLIC_SCOPE_ZH(row.public_scope)
+            },
+          },
         },
       ],
     }
