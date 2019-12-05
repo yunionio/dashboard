@@ -242,18 +242,21 @@ export default {
             return [
               {
                 label: 'IDC',
+                permission: 'server_create',
                 action: () => {
                   this.createServer('idc')
                 },
               },
               {
                 label: '私有云',
+                permission: 'server_create',
                 action: () => {
                   this.createServer('private')
                 },
               },
               {
                 label: '公有云',
+                permission: 'server_create',
                 action: () => {
                   this.createServer('public')
                 },
