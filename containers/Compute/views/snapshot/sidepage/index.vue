@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     :title="title"
-    icon="res-disk-snapshot"
+    :icon="icon"
     :res-name="data.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"
@@ -47,6 +47,9 @@ export default {
     },
     title () {
       return this.isDiskSnapshot ? '硬盘快照' : '主机快照'
+    },
+    icon () {
+      return this.isDiskSnapshot ? 'res-disk-snapshot' : 'res-instance-snapshot'
     },
     data () {
       return this.params.list.data[this.params.resId].data
