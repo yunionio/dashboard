@@ -12,7 +12,8 @@
       </a-form-item>
       <a-form-item v-bind="formLayout" :label="keySecretField.label.k">
         <a-input v-decorator="decorators.username" :placeholder="keySecretField.placeholder.k" />
-        <div slot="extra">
+        <!-- 天翼云暂时还没有帮助文档 -->
+        <div slot="extra" v-if="provider.toLowerCase() !== 'ctyun'">
             {{ `如何获取${keySecretField.text}的${keySecretField.label.k }？点击查看帮助` }}
             <help-link :href="docs[provider.toLowerCase()]"> 详情</help-link>
           </div>
@@ -44,6 +45,7 @@ export default {
   mixins: [createMixin],
   data () {
     const keySecretField = keySecretFields[this.provider.toLowerCase()]
+    console.log(ACCESS_URL, keySecretFields, this.provider)
     const environments = Object.entries(ACCESS_URL[this.provider.toLowerCase()]).map(keyValueArr => ({ key: keyValueArr[0], label: keyValueArr[1] }))
     return {
       docs: CLOUDACCOUNT_DOCS,

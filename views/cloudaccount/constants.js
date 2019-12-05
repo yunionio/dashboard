@@ -14,7 +14,8 @@ const zstackLogo = require('../../../../src/assets/images/providers/zstack.svg')
 const s3Logo = require('../../../../src/assets/images/providers/s3.svg')
 const cephLogo = require('../../../../src/assets/images/providers/ceph.svg')
 const xskyLogo = require('../../../../src/assets/images/providers/xsky.svg')
-const GoogleLogo = require('../../../../src/assets/images/providers/gcp.svg')
+const googleLogo = require('../../../../src/assets/images/providers/gcp.svg')
+const ctyunLogo = require('../../../../src/assets/images/providers/tianyi.svg')
 
 export const CLOUDACCOUNT_TYPES = {
   public: {
@@ -54,11 +55,17 @@ export const CLOUDACCOUNT_TYPES = {
       component: 'UcloudCreate',
       provider: providerMap.ucloud.key,
     },
-    'Google': {
+    'google': {
       name: providerMap.google.label,
-      logo: GoogleLogo,
+      logo: googleLogo,
       component: 'GoogleCreate',
       provider: providerMap.google.key,
+    },
+    'ctyun': {
+      name: providerMap.ctyun.label,
+      logo: ctyunLogo,
+      component: 'CtyunCreate',
+      provider: providerMap.ctyun.key,
     },
   },
   private: {
@@ -146,6 +153,10 @@ export const ACCESS_URL = {
     AzurePublicCloud: '全球区',
     AzureUSGovernmentCloud: '美国政务区',
     AzureGermanCloud: '德国区',
+  },
+  ctyun: {
+    InternationalCloud: '全球区',
+    ChinaCloud: '中国区',
   },
 }
 
@@ -330,6 +341,19 @@ export const keySecretFields = {
     label: {
       k: 'private_key',
       s: 'client_email',
+    },
+  },
+  ctyun: {
+    k: 'access_key_id',
+    s: 'access_key_secret',
+    text: '天翼云',
+    placeholder: {
+      k: '请输入Access Key ID',
+      s: '请输入Access Key Secret',
+    },
+    label: {
+      k: '密钥ID',
+      s: '密码',
     },
   },
 }
