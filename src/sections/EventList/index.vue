@@ -21,7 +21,6 @@
       <vxe-grid
         ref="grid"
         highlight-hover-row
-        show-header-overflow="title"
         :data="data"
         :columns="columns">
         <template v-slot:empty>
@@ -95,6 +94,7 @@ export default {
         {
           title: '#',
           field: 'id',
+          fixed: 'left',
         },
         {
           title: '类型',
@@ -107,10 +107,14 @@ export default {
         {
           title: '操作',
           field: 'action',
+          minWidth: 80,
+          showOverflow: 'ellipsis',
         },
         {
           title: '资源名称',
           field: 'obj_name',
+          minWidth: 80,
+          showOverflow: 'ellipsis',
         },
         {
           title: '执行状态',
@@ -135,14 +139,20 @@ export default {
         {
           field: 'user',
           title: '发起人',
+          minWidth: 60,
+          showOverflow: 'ellipsis',
         },
         {
           field: 'tenant',
           title: '所属项目',
+          minWidth: 60,
+          showOverflow: 'ellipsis',
         },
         {
           field: 'notes',
           title: '备注',
+          width: 50,
+          fixed: 'right',
           slots: {
             default: ({ row, column }) => {
               let text = ''
