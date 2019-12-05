@@ -9,6 +9,7 @@ import { ALL_STORAGE } from '@Compute/constants'
 import { getCopyWithContentTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import { sizestr } from '@/utils/utils'
+import expectStatus from '@/constants/expectStatus'
 
 export default {
   name: 'DiskListForVmInstanceSidepage',
@@ -25,6 +26,8 @@ export default {
       list: this.$list.createList(this, {
         resource: 'disks',
         ctx: [['servers', this.resId]],
+        idKey: 'disk_id',
+        steadyStatus: Object.values(expectStatus.disk).flat(),
         getParams: this.getParams,
         filterOptions: {
           network: {
@@ -40,6 +43,7 @@ export default {
         {
           field: 'index',
           title: '序号',
+          width: 50,
           formatter: ({ row }) => {
             return row.index ? row.index : '0'
           },
@@ -49,6 +53,8 @@ export default {
           field: 'disk_size',
           title: '大小',
           sortable: true,
+          showOverflow: 'ellipsis',
+          minWidth: 60,
           formatter: ({ row }) => {
             return sizestr(row.disk_size, 'M', 1024)
           },
@@ -56,18 +62,21 @@ export default {
         {
           field: 'driver',
           title: '驱动',
+          width: 80,
         },
         {
           field: 'cache_mode',
           title: '缓存模式(cache mode)',
+          width: 150,
           formatter: ({ row }) => {
             return row.cache_mode ? row.cache_mode : '-'
           },
         },
-        getStatusTableColumn({ statusModule: 'status.disk' }),
+        getStatusTableColumn({ statusModule: 'disk' }),
         {
           field: 'storage_type',
           title: '存储类型',
+          width: 80,
           formatter: ({ row }) => {
             if (row.storage_type) {
               if (row.storage_type === 'baremetal') return '裸金属'
@@ -79,6 +88,7 @@ export default {
         {
           field: 'disk_type',
           title: '磁盘类型',
+          width: 80,
           formatter: ({ row }) => {
             const diskType = {
               sys: '系统盘',

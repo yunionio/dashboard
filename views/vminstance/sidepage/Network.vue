@@ -10,6 +10,7 @@ import { SERVER_TYPE } from '@Compute/constants'
 import { getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import { findPlatform } from '@/utils/common/hypervisor'
+import expectStatus from '@/constants/expectStatus'
 
 export default {
   name: 'NetworkListForVmInstanceSidepage',
@@ -29,6 +30,8 @@ export default {
       list: this.$list.createList(this, {
         resource: 'networks',
         ctx: [['servers', this.resId]],
+        idKey: 'network_id',
+        steadyStatus: Object.values(expectStatus.network).flat(),
         getParams: this.getParams,
         filterOptions: {
           network: {
@@ -44,6 +47,7 @@ export default {
         {
           field: 'index',
           title: '序号',
+          width: 50,
           formatter: ({ row }) => {
             return row.index ? row.index : '0'
           },
@@ -55,6 +59,7 @@ export default {
         {
           field: 'bw_limit',
           title: '带宽限制',
+          width: 100,
           formatter: ({ row }) => {
             return `${row.bw_limit}Mbps`
           },
