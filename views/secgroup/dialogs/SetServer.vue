@@ -37,13 +37,13 @@ export default {
   name: 'SetServerDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
-    const validateServers = (rule, value, callback) => {
-      let minError = '最少关联一个'
-      if (!value || value.length < 1) {
-        return callback(minError)
-      }
-      return callback()
-    }
+    // const validateServers = (rule, value, callback) => {
+    //   let minError = '最少关联一个'
+    //   if (!value || value.length < 1) {
+    //     return callback(minError)
+    //   }
+    //   return callback()
+    // }
     return {
       loading: false,
       scope: this.$store.getters.scope,
@@ -56,7 +56,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { validator: validateServers, trigger: 'change' },
+              // { validator: validateServers, trigger: 'change' },
             ],
           },
         ],
@@ -86,7 +86,7 @@ export default {
         // }
         return {
           search: '',
-          limit: 20,
+          limit: 0,
           offset: 0,
           filter: 'hypervisor.notin(container, baremetal, esxi)',
           project_domain: this.userInfo.projectDomain,
@@ -102,7 +102,7 @@ export default {
         // }
         return {
           search: '',
-          limit: 20,
+          limit: 0,
           offset: 0,
           filter: 'hypervisor.notin(container, baremetal, esxi)',
           tenant: this.params.data[0]['tenant_id'],
@@ -128,7 +128,7 @@ export default {
         const params = {
           scope: this.scope,
           filter: 'hypervisor.notin(container, baremetal, esxi)',
-          limit: 10000,
+          limit: 0,
           secgroup: this.params.data[0]['id'],
         }
         if (this.isAdminMode) {
