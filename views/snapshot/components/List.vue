@@ -9,6 +9,7 @@
 <script>
 import { DISK_TYPES, STORAGE_TYPES } from '../constants'
 import { RollbackDiskValidate } from '../validate'
+import BaseDropList from '@/sections/DropList'
 import {
   getNameDescriptionTableColumn,
   getBrandTableColumn,
@@ -63,6 +64,25 @@ export default {
           },
           hidden: () => {
             return this.type === 'instance'
+          },
+        },
+        {
+          field: 'rules',
+          title: '子快照',
+          slots: {
+            default: ({ row }) => {
+              const list = row.snapshots.map(val => ({ value: val.name }))
+              const dropMsg = [
+                {
+                  title: `${list.length}个`,
+                  list,
+                },
+              ]
+              return [<BaseDropList drop-msg={dropMsg} />]
+            },
+          },
+          hidden: () => {
+            return this.type === 'disk'
           },
         },
         {
