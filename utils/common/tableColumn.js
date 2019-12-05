@@ -58,7 +58,7 @@ export const getRegionTableColumn = ({ field = 'region', title = '区域' } = {}
   }
 }
 
-export const getBrandTableColumn = ({ field = 'brand', title = '平台' } = {}) => {
+export const getBrandTableColumn = ({ field = 'brand', title = '平台', hidden = false } = {}) => {
   return {
     field,
     title,
@@ -70,6 +70,7 @@ export const getBrandTableColumn = ({ field = 'brand', title = '平台' } = {}) 
         ]
       },
     },
+    hidden,
   }
 }
 
