@@ -55,11 +55,13 @@ export default {
         {
           field: 'guest_cnt',
           title: '关联实例',
+          width: 70,
         },
         getPublicTableColumn(),
         {
           field: 'rules',
           title: '规则预览(策略，CIDR，协议，端口)',
+          width: 220,
           slots: {
             default: ({ row }, h) => {
               return [

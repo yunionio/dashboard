@@ -12,6 +12,8 @@ import {
   getStatusTableColumn,
   getBrandTableColumn,
   getProjectTableColumn,
+  getCopyWithContentTableColumn,
+  getRegionTableColumn,
 } from '@/utils/common/tableColumn'
 import { findPlatform, typeClouds } from '@/utils/common/hypervisor'
 import WindowsMixin from '@/mixins/windows'
@@ -58,26 +60,26 @@ export default {
         {
           field: 'ip_addr',
           title: '地址',
+          width: 140,
         },
         {
           field: 'bandwidth',
           title: '带宽',
+          width: 80,
           formatter: ({ cellValue }) => {
             return sizestr(cellValue, 'M', 1024)
           },
         },
-        {
+        getCopyWithContentTableColumn({
           field: 'account',
           title: '云账号',
-        },
-        {
-          field: 'region',
-          title: '区域',
-        },
+        }),
+        getRegionTableColumn(),
         getBrandTableColumn(),
         {
           field: 'charge_type',
           title: '计费方式',
+          width: 80,
           formatter: ({ cellValue }) => {
             if (cellValue === 'traffic') {
               return '按流量计费'
@@ -92,6 +94,7 @@ export default {
         {
           field: 'associate_name',
           title: '绑定资源',
+          width: 120,
           formatter: ({ cellValue, row }) => {
             const type = {
               server: '虚拟机',

@@ -8,7 +8,7 @@
 
 <script>
 import expectStatus from '@/constants/expectStatus'
-import { getBrandTableColumn, getStatusTableColumn, getCopyWithContentTableColumn, getProjectTableColumn } from '@/utils/common/tableColumn'
+import { getBrandTableColumn, getStatusTableColumn, getCopyWithContentTableColumn, getProjectTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -32,13 +32,11 @@ export default {
       }),
       columns: [
         getCopyWithContentTableColumn({ field: 'name', title: '名称' }),
-        {
-          field: 'guest',
-          title: '云服务器',
-        },
+        getCopyWithContentTableColumn({ field: 'guest', title: '云服务器' }),
         {
           field: 'disk_type',
           title: '类型',
+          width: 70,
           formatter: ({ cellValue }) => {
             return cellValue === 'sys' ? '系统盘' : '数据盘'
           },
@@ -46,13 +44,7 @@ export default {
         getStatusTableColumn({ statusModule: 'disk' }),
         getProjectTableColumn(),
         getBrandTableColumn(),
-        {
-          field: 'auto_delete_at',
-          title: '自动清除时间',
-          formatter: ({ cellValue }) => {
-            return this.$moment(cellValue).format()
-          },
-        },
+        getTimeTableColumn({ field: 'auto_delete_at', title: '自动清除时间' }),
       ],
       groupActions: [
         {
