@@ -134,6 +134,11 @@ export default {
           scope: this.scope,
           limit: 0,
         }
+        if (this.$isAdminMode) {
+          params['project_domain'] = this.$userInfo.projectDomain
+          delete params.scope
+          delete params.domain_id
+        }
         const response = await this.dm.list({ params })
         const data = response.data.data || []
         this.domains = data.map(val => ({ ...val, key: val.id, label: val.name }))
@@ -171,6 +176,11 @@ export default {
           scope: this.scope,
         }
         if (domainId && !this.isDomainMode) params.domain_id = domainId
+        if (this.isAdminMode) {
+          params['project_domain'] = this.userInfo.projectDomainId
+          delete params.scope
+          delete params.domain_id
+        }
         const response = await this.pm.list({ params })
         const data = response.data.data
         this.projects = data.map(val => ({ ...val, key: val.id, label: val.name })) || []
