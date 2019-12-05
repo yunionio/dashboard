@@ -54,6 +54,7 @@ export default {
         {
           field: 'access_ip',
           title: 'IP',
+          width: 120,
           slots: {
             default: ({ row }) => {
               return [
@@ -62,18 +63,11 @@ export default {
             },
           },
         },
-        {
-          field: 'host_status',
-          title: '服务',
-          slots: {
-            default: ({ row }) => {
-              return [<status statusModule='host_status' status={ row.host_status } />]
-            },
-          },
-        },
+        getStatusTableColumn({ field: 'host_status', title: '服务', statusModule: 'host_status' }),
         {
           field: 'nonsystem_guests',
           title: '#VM',
+          width: 60,
           formatter: ({ cellValue }) => {
             return cellValue || '0'
           },
@@ -81,6 +75,7 @@ export default {
         {
           field: 'cpu_count',
           title: 'CPU',
+          width: 60,
           formatter: ({ cellValue, row }) => {
             if (cellValue) {
               return '' + cellValue + '/' + percentstr(row.cpu_commit_rate)
@@ -92,6 +87,7 @@ export default {
         {
           field: 'mem_size',
           title: '内存',
+          width: 60,
           formatter: ({ cellValue, row }) => {
             if (cellValue) {
               return sizestr(cellValue, 'M', 1024) + '/' + percentstr(row.mem_commit_rate)
@@ -103,6 +99,7 @@ export default {
         {
           field: 'storage_size',
           title: '存储',
+          width: 60,
           formatter: ({ cellValue, row }) => {
             if (cellValue) {
               return sizestr(cellValue, 'M', 1024) + '/' + percentstr(row.storage_commit_rate)
@@ -114,12 +111,15 @@ export default {
         {
           field: 'sn',
           title: 'SN',
+          width: 120,
+          showOverflow: 'ellipsis',
         },
         getBrandTableColumn(),
         getRegionTableColumn(),
         {
           field: 'id',
           title: 'IPMI',
+          width: 60,
           slots: {
             default: ({ cellValue, row }) => {
               if (!row.is_baremetal) {
@@ -133,6 +133,7 @@ export default {
         {
           field: 'server_id',
           title: '初始账号',
+          width: 70,
           slots: {
             default: ({ cellValue, row }) => {
               if (!row.is_baremetal) {

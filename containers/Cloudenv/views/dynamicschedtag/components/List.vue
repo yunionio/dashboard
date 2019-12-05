@@ -8,7 +8,7 @@
 
 <script>
 import WindowsMixin from '@/mixins/windows'
-import { getNameDescriptionTableColumn, getEnabledTableColumn } from '@/utils/common/tableColumn'
+import { getNameDescriptionTableColumn, getEnabledTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 import { ENABLED_OPTS } from '@/constants'
 
 export default {
@@ -46,14 +46,14 @@ export default {
           },
         }),
         getEnabledTableColumn(),
-        {
+        getCopyWithContentTableColumn({
           field: 'schedtag',
           title: '调度标签',
-        },
-        {
+        }),
+        getCopyWithContentTableColumn({
           field: 'condition',
           title: '条件',
-        },
+        }),
       ],
       groupActions: [
         {

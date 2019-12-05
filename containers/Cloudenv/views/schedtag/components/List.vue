@@ -49,6 +49,7 @@ export default {
         {
           field: 'default_strategy',
           title: '偏好',
+          width: 80,
           formatter: ({ row }) => {
             return STRATEGY_CN[row.default_strategy] || '无'
           },
@@ -56,6 +57,7 @@ export default {
         {
           field: 'resource_type',
           title: '资源类型',
+          width: 80,
           formatter: ({ row }) => {
             let table = { hosts: '宿主机', storages: '存储', networks: '网络' }
             return table[row.resource_type] || '无'
@@ -65,6 +67,7 @@ export default {
         {
           field: 'resource_count',
           title: '资源数量',
+          width: 80,
           formatter: ({ row }) => {
             return row.host_count || row.storage_count || row.network_count || '0'
           },
@@ -72,6 +75,7 @@ export default {
         {
           field: 'dynamic_schedtag_count',
           title: '关联动态调度标签',
+          width: 120,
           formatter: ({ row }) => {
             return row.dynamic_schedtag_count || '0'
           },
@@ -79,6 +83,7 @@ export default {
         {
           field: 'schedpolicy_count',
           title: '关联调度策略',
+          width: 120,
           formatter: ({ row }) => {
             return row.schedpolicy_count || '0'
           },

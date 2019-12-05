@@ -15,6 +15,7 @@ import {
   getBrandTableColumn,
   getStatusTableColumn,
   getProjectTableColumn,
+  getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import { sizestr } from '@/utils/utils'
@@ -59,6 +60,7 @@ export default {
         {
           field: 'disk_type',
           title: '磁盘类型',
+          width: 70,
           formatter: ({ row }) => {
             return DISK_TYPES[row.disk_type] || row.disk_type
           },
@@ -88,6 +90,7 @@ export default {
         {
           field: 'size',
           title: '快照大小',
+          width: 70,
           formatter: ({ row }) => {
             if (this.type === 'disk') {
               return sizestr(row.size, 'M', 1024)
@@ -102,10 +105,11 @@ export default {
         {
           field: 'guest',
           title: '虚拟机',
+          minWidth: 70,
           slots: {
             default: ({ row }, h) => {
               return [
-                <div>
+                <div class='text-truncate'>
                   {row.guest}
                   {row.guest_status ? <status status={ row['guest_status'] } statusModule='server'/> : ''}
                 </div>,
@@ -113,16 +117,11 @@ export default {
             },
           },
         },
-        {
-          field: 'created_at',
-          title: '创建时间',
-          formatter: ({ cellValue }) => {
-            return this.$moment(cellValue).format()
-          },
-        },
+        getTimeTableColumn(),
         {
           field: 'storage_type',
           title: '存储类型',
+          width: 80,
           formatter: ({ row }) => {
             return STORAGE_TYPES[row.storage_type] || row.storage_type || '-'
           },

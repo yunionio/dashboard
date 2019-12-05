@@ -109,6 +109,7 @@ export default {
         {
           field: 'ip',
           title: 'IP地址',
+          width: 140,
           slots: {
             default: ({ row }) => {
               return [
@@ -121,6 +122,7 @@ export default {
         {
           field: 'type',
           title: '类型',
+          width: 60,
           formatter: ({ cellValue }) => {
             if (cellValue === 'baremetal') {
               return '物理机'
@@ -144,8 +146,14 @@ export default {
         {
           field: 'ports',
           title: '使用情况',
-          formatter: ({ row }) => {
-            return '总计：' + row.ports + ' 使用：' + row.ports_used
+          minWidth: 100,
+          slots: {
+            default: ({ row }) => {
+              return [
+                <div class='text-truncate'>总计:{ row.ports }</div>,
+                <div class='text-truncate'>使用:{ row.ports_used }</div>,
+              ]
+            },
           },
         },
         getBrandTableColumn(),
@@ -155,6 +163,7 @@ export default {
         {
           field: 'vlan_id',
           title: 'VLAN',
+          width: 60,
         },
         getCopyWithContentTableColumn({ field: 'vpc', title: 'VPC' }),
         getCopyWithContentTableColumn({ field: 'account', title: '云账号' }),

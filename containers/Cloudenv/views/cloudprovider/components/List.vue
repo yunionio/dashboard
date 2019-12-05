@@ -58,6 +58,8 @@ export default {
         {
           field: 'account',
           title: '订阅（Subscription）ID',
+          showOverflow: 'ellipsis',
+          minWidth: 160,
           slots: {
             default: ({ row }) => {
               let subscribeIds = (row.account && row.account.split('/')) || []
@@ -75,6 +77,7 @@ export default {
         {
           field: 'last_auto_sync',
           title: '同步时间',
+          width: 80,
           slots: {
             default: ({ row }) => {
               if (row.sync_status !== 'idle') { // 表示正在同步中
@@ -95,17 +98,12 @@ export default {
             },
           },
         },
-        {
+        getStatusTableColumn({
           field: 'sync_status',
           title: '同步状态',
-          slots: {
-            default: ({ row }) => {
-              return [
-                <status status={ row.sync_status } statusModule='cloudaccountSyncStatus' />,
-              ]
-            },
-          },
-        },
+          minWidth: 100,
+          statusModule: 'cloudaccountSyncStatus',
+        }),
         getProjectTableColumn(),
       ],
       groupActions: [

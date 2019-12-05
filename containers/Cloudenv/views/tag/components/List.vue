@@ -33,6 +33,8 @@ export default {
         {
           field: 'key',
           title: '标签（键：值）',
+          showOverflow: 'ellipsis',
+          minWidth: 100,
           slots: {
             default: ({ row }) => {
               let trigger = <a onClick={ () => this.createSidePageForList('TagSidePage', { resId: row.id, data: row, windowData: this.windowData }) }>{ row.name }</a>
@@ -49,6 +51,7 @@ export default {
         {
           field: 'count',
           title: '绑定资源数量',
+          width: 120,
           formatter: ({ row }) => {
             return `${row.count}`
           },
@@ -56,6 +59,7 @@ export default {
         {
           field: 'color',
           title: '颜色',
+          width: 60,
           slots: {
             default: ({ row }) => {
               return [<span style={{ display: 'inline-block', backgroundColor: row.color, width: '10px', height: '10px' }} />]
