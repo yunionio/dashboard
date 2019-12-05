@@ -687,10 +687,16 @@ export default {
                     })
                   },
                   meta: () => {
-                    return {
-                      tooltip: obj.os_type === 'Windows' ? 'Windows 不支持 SSH 连接' : null,
-                      validate: obj.os_type !== 'Windows',
+                    const ret = {
+                      validate: false,
+                      tooltip: null,
                     }
+                    if (obj.os_type === 'Windows') {
+                      ret.tooltip = 'Windows 不支持 SSH 连接'
+                    }
+                    ret.validate = cloudEnabled(type, obj)
+                    ret.tooltip = cloudUnabledTip(type, obj)
+                    return ret
                   },
                 })
               })
