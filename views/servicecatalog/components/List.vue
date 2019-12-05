@@ -8,6 +8,7 @@
 
 <script>
 import WindowsMixin from '@/mixins/windows'
+import { getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   name: 'ServicecatalogList',
@@ -26,6 +27,18 @@ export default {
         title: 'name',
         description: 'description',
       },
+      columns: [
+        getNameDescriptionTableColumn({
+          vm: this,
+        }),
+        {
+          field: 'created_at',
+          title: '创建时间',
+          formatter: ({ cellValue }) => {
+            return this.$moment(cellValue).format()
+          },
+        },
+      ],
       groupActions: [
         {
           label: '新建',
@@ -77,6 +90,7 @@ export default {
               title: '删除',
               list: this.list,
               name: '服务目录',
+              columns: this.columns,
             })
           },
           meta: obj => this.$getDeleteResult(obj),
