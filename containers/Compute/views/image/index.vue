@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="镜像" />
+    <page-header title="系统镜像" />
     <page-body>
       <image-list />
     </page-body>
