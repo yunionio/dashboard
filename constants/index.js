@@ -151,3 +151,10 @@ export const PROVIDER_FILTER_CN = {
   private: '私有云',
   public: '公有云',
 }
+
+// 共享范围
+export const SHARE_SCOPE = {
+  system: { key: 'system', label: '系统' },
+  domain: { key: 'domain', label: '域' },
+  project: { key: 'project', label: '项目' },
+}
