@@ -18,7 +18,7 @@ import {
   getNameDescriptionTableColumn,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
-import { changeToArr, maxTextLength } from '@/utils/utils'
+import { changeToArr } from '@/utils/utils'
 
 const syncPolicy = (item, ownerDomain) => {
   let tooltip
@@ -97,6 +97,8 @@ export default {
         {
           field: 'access_url',
           title: '服务器地址',
+          minWidth: 100,
+          showOverflow: 'ellipsis',
           slots: {
             default: ({ row }) => {
               if (!row.access_url) return '-'
@@ -108,25 +110,30 @@ export default {
         },
         getEnabledTableColumn(),
         getStatusTableColumn({ statusModule: 'cloudaccount' }),
-        getStatusTableColumn({ statusModule: 'cloudaccountHealthStatus', title: '健康状态', field: 'health_status' }),
+        getStatusTableColumn({ statusModule: 'cloudaccountHealthStatus', title: '健康状态', field: 'health_status', minWidth: 90 }),
         {
           field: 'guest_count',
           title: '虚拟机',
+          width: 60,
         },
         {
           field: 'balance',
           title: '余额',
+          minWidth: 70,
+          showOverflow: 'ellipsis',
         },
         {
           field: 'host_count',
           title: '宿主机',
+          minWidth: 70,
         },
         getCopyWithContentTableColumn({ field: 'account', title: '账号' }),
         getBrandTableColumn(),
-        getEnabledTableColumn({ field: 'enable_auto_sync', title: '自动同步' }),
+        getEnabledTableColumn({ field: 'enable_auto_sync', title: '自动同步', minWidth: 90 }),
         {
           field: 'last_auto_sync',
           title: '同步时间',
+          width: 70,
           slots: {
             default: ({ row }) => {
               if (row.sync_status !== 'idle') { // 表示正在同步中
@@ -151,18 +158,15 @@ export default {
         {
           field: 'projects',
           title: '项目',
+          showOverflow: 'ellipsis',
+          minWidth: 100,
           slots: {
             default: ({ row }) => {
               const projects = row.projects.map(val => val.tenant)
               const projectsText = projects.join('，')
               return [
-                <div>
-                  <div title={projectsText}>
-                    <span class="mr-1">{maxTextLength(projectsText, 24)}</span>
-                    <copy message={projectsText} />
-                  </div>
-                  <div class="text-weak">{row.domain}</div>
-                </div>,
+                <list-body-cell-wrap hide-field copy field="projects" row={ row } message={ projectsText }>{ projectsText }</list-body-cell-wrap>,
+                <list-body-cell-wrap hide-field copy field="projects" row={ row } message={ row.domain }>{ row.domain }</list-body-cell-wrap>,
               ]
             },
           },
