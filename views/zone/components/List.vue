@@ -49,6 +49,7 @@ export default {
         {
           field: 'hosts',
           title: '物理机/可用物理机',
+          width: 140,
           formatter: ({ row }) => {
             return `${row.hosts}/${row.hosts_enabled}`
           },
@@ -56,6 +57,7 @@ export default {
         {
           field: 'baremetals',
           title: '受管物理机/可用受管物理机',
+          width: 180,
           formatter: ({ row }) => {
             return `${row.baremetals}/${row.baremetals_enabled}`
           },
@@ -63,6 +65,7 @@ export default {
         {
           field: 'wires',
           title: '二层网络',
+          width: 70,
         },
       ],
       groupActions: [

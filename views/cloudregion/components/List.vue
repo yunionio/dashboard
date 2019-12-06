@@ -43,14 +43,17 @@ export default {
         {
           field: 'guest_count',
           title: '云服务器',
+          width: 70,
         },
         {
           field: 'vpc_count',
           title: '专有网络(VPC)',
+          width: 100,
         },
         {
           field: 'zone_count',
           title: '可用区',
+          width: 70,
         },
       ],
     }
