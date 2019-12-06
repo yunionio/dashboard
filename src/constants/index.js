@@ -17,6 +17,7 @@ export const HYPERVISORS_MAP = {
   huawei: { key: 'huawei', label: '华为云', provider: 'Huawei', brand: 'Huawei', host_type: 'huawei', hypervisor: 'huawei', env: 'public' },
   ucloud: { key: 'ucloud', label: 'UCloud', provider: 'Ucloud', brand: 'Ucloud', host_type: 'ucloud', hypervisor: 'ucloud', env: 'public' },
   google: { key: 'google', label: 'Google', provider: 'Google', brand: 'Google', host_type: 'google', hypervisor: 'google', env: 'public' },
+  ctyun: { key: 'ctyun', label: '天翼云', provider: 'Ctyun', brand: 'Ctyun', host_type: 'ctyun', hypervisor: 'ctyun', env: 'public' },
 }
 
 export const EXTRA_HYPERVISORS = {
@@ -150,4 +151,11 @@ export const PROVIDER_FILTER_CN = {
   idc: '本地IDC',
   private: '私有云',
   public: '公有云',
+}
+
+// 共享范围
+export const SHARE_SCOPE = {
+  system: { key: 'system', label: '系统' },
+  domain: { key: 'domain', label: '域' },
+  project: { key: 'project', label: '项目' },
 }
