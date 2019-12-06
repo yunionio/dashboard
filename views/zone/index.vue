@@ -17,7 +17,7 @@ export default {
   },
   data () {
     return {
-      getParams: { details: true, with_meta: true, cloud_env: 'private_or_onpremise' },
+      getParams: { details: true, with_meta: true, show_emulated: true, cloud_env: 'private_or_onpremise' },
     }
   },
 }
