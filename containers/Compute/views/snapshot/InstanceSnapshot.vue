@@ -1,8 +1,8 @@
 <template>
   <div>
-    <page-header title="硬盘快照" />
+    <page-header title="主机快照" />
     <page-body>
-      <snapshot-list :list="list" type="disk" />
+      <snapshot-list :list="list" type="instance" />
     </page-body>
   </div>
 </template>
@@ -18,12 +18,10 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
-        id: 'VmDiskSnapshotsList',
-        resource: 'snapshots',
+        id: 'VmInstanceSnapshotsList',
+        resource: 'instance_snapshots',
         getParams: {
           details: true,
-          with_meta: true,
-          is_instance_snapshot: false,
         },
         filterOptions: {
           name: {
