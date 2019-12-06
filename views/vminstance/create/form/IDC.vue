@@ -250,6 +250,13 @@ export default {
         ...this.scopeParams,
       }
     },
+    instanceSpecParmas () {
+      return {
+        usable: true,
+        enabled: true,
+        cloudregion: _.get(this.form.fd, 'cloudregion.key'),
+      }
+    },
   },
   watch: {
     'form.fi.imageMsg': {
@@ -306,15 +313,16 @@ export default {
         const formValue = this.form.fc.getFieldsValue()
         const newField = resolveValueChangeField(changedFields)
         const keys = Object.keys(newField)
+        console.log(keys, 'keys')
         const { zone, cloudregion } = newField
-        if (keys.includes('cloudregion')) {
-          if (!R.equals(cloudregion, this.form.fd.cloudregion)) { // 区域变化
-            this.fetchInstanceSpeces()
-          }
-        }
         if (keys.includes('zone')) {
           if (!R.equals(zone, this.form.fd.zone)) { // 可用区变化
             this.fetchCapability()
+          }
+        }
+        if (keys.includes('cloudregion')) {
+          if (!R.equals(cloudregion, this.form.fd.cloudregion)) { // 区域变化
+            this.$nextTick(this.fetchInstanceSpecs)
           }
         }
         this._setNewFieldToFd(newField, formValue)
@@ -339,9 +347,8 @@ export default {
           })
         })
     },
-    fetchInstanceSpeces () {
-      const { key } = this.form.fc.getFieldValue('cloudregion')
-      this.serverskusM.get({ id: 'instance-specs', params: { cloudregion: key } })
+    fetchInstanceSpecs () {
+      this.serverskusM.get({ id: 'instance-specs', params: this.instanceSpecParmas })
         .then(({ data }) => {
           this.form.fi.cpuMem = data
           const vcpuDecorator = this.decorators.vcpu

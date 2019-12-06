@@ -312,10 +312,17 @@ export default {
       }
       return Object.keys(loginTypes)
     },
+    instanceSpecParmas () {
+      return {
+        usable: true,
+        enabled: true,
+        public_cloud: true,
+      }
+    },
   },
   created () {
     this.$bus.$on('VMInstanceCreateUpdateFi', this.updateFi, this)
-    this.fetchInstanceSpeces()
+    this.fetchInstanceSpecs()
     this.baywatch(['form.fd.resourceType', 'form.fd.sku'], (val, oldVal) => {
       if (val && !R.equals(val, oldVal)) {
         this.fetchCapability()
@@ -354,7 +361,7 @@ export default {
           this.form.fi.capability = data
         })
     },
-    fetchInstanceSpeces () {
+    fetchInstanceSpecs () {
       this.serverskusM.get({ id: 'instance-specs', params: this.instanceSpecParams })
         .then(({ data }) => {
           this.form.fi.cpuMem = data

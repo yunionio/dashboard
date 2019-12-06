@@ -323,7 +323,7 @@ export default {
     this.zonesM2 = new Manager('zones', 'v2')
     this.serverskusM = new Manager('serverskus')
     this.fetchData()
-    this.fetchInstanceSpeces()
+    this.fetchInstanceSpecs()
   },
   methods: {
     fetchData () {
@@ -464,7 +464,7 @@ export default {
         vmem: memOpts[0],
       })
     },
-    fetchInstanceSpeces () {
+    fetchInstanceSpecs () {
       const params = {
         usable: true,
         zone: this.selectedItem.zone_id,
