@@ -12,7 +12,7 @@
           :types-map="typesMap"
           :elements="elements"
           :disabled="getDisabled(item)" />
-        <a-button v-if="!disabled" shape="circle" icon="minus" size="small" @click="decrease(item.key)" class="mt-2 ml-2" />
+        <a-button v-if="!getDisabled(item)" shape="circle" icon="minus" size="small" @click="decrease(item.key)" class="mt-2 ml-2" />
       </div>
       <div class="d-flex align-items-center" v-if="diskRemain > 0 && !disabled">
         <a-button type="primary" shape="circle" icon="plus" size="small" @click="add" />
