@@ -157,7 +157,7 @@ export default {
         }
         if (this.isKvm) {
           updateObj.boot_order = data.boot_order
-          updateObj.bios = data.bios
+          updateObj.bios = data.bios || this.biosOptions[0].key
         }
         this.form.fc.setFieldsValue(updateObj)
       })
