@@ -97,11 +97,11 @@ export default {
     },
     // 选择的镜像类型是否为主机镜像
     isHostImage () {
-      return this.fi.imageType === IMAGES_TYPE_MAP.host.key
+      return this.imageType === IMAGES_TYPE_MAP.host.key
     },
     // 选择的镜像类型是否为主机快照
     isShapshotImage () {
-      return this.fi.imageType === IMAGES_TYPE_MAP.snapshot.key
+      return this.imageType === IMAGES_TYPE_MAP.snapshot.key
     },
     cacheimageIds () {
       return this.images.cacheimagesList.map(item => item.id)
