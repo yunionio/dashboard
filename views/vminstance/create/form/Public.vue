@@ -155,22 +155,12 @@ export default {
     }
   },
   computed: {
-    skuCloudregionZone () {
-      const skuCloudregionZone = {}
-      if (R.is(Object, this.form.fd.sku)) {
-        const { zone_id: zoneId, cloudregion_id: cloudregionId } = this.form.fd.sku
-        skuCloudregionZone.zone = zoneId
-        skuCloudregionZone.cloudregion = cloudregionId
-      }
-      return skuCloudregionZone
-    },
     networkParam () {
       return {
-        scope: this.$store.getters.scope,
         filter: 'server_type.notin(ipmi, pxe)',
         usable: true,
-        zone: this.skuCloudregionZone.zone,
-        cloudregion: this.skuCloudregionZone.cloudregion,
+        ...this.skuCloudregionZone,
+        ...this.scopeParams,
       }
     },
     cityParams () {
@@ -207,9 +197,9 @@ export default {
     imageParams () {
       return {
         limit: 0,
-        scope: this.$store.getters.scope,
         details: true,
         status: 'active',
+        ...this.scopeParams,
       }
     },
     cacheImageParams () {
