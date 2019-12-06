@@ -197,8 +197,8 @@ export default {
           if (diskType) {
             if (R.is(Object, typeObj)) {
               value[`dataDiskTypes[${key}]`] = {
-                key: typeObj.key,
-                label: typeObj.label,
+                key: typeObj.key || diskType,
+                label: typeObj.label || diskType,
               }
             }
           } else if (diskType === undefined) { // 新加数据盘
@@ -257,7 +257,7 @@ export default {
     getHypervisor () {
       let ret = this.hypervisor
       if (this.isPublic) {
-        if (this.sku.provider) {
+        if (this.sku && this.sku.provider) {
           ret = this.sku.provider.toLowerCase()
         }
       }
