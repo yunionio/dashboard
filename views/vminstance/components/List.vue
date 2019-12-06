@@ -1262,6 +1262,9 @@ export default {
                         validate: false,
                         tooltip: null,
                       }
+                      if (findPlatform(obj.hypervisor) === SERVER_TYPE.public) {
+                        return ret
+                      }
                       const noSupportBrand = [
                         typeClouds.hypervisorMap.openstack.brand,
                         typeClouds.hypervisorMap.zstack.brand,
@@ -1320,6 +1323,9 @@ export default {
                       const ret = {
                         validate: false,
                         tooltip: null,
+                      }
+                      if (findPlatform(obj.hypervisor) === SERVER_TYPE.public) {
+                        return ret
                       }
                       if (commonUnabled(obj)) return ret
                       if (!obj.cdrom) {
