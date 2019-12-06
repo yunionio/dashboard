@@ -1,6 +1,6 @@
 <template>
   <a-input-group compact>
-    <a-input class="w-25" :value="num" @change="inputChange" />
+    <a-input class="w-25" :value="num" type="number" @change="inputChange" />
     <a-select :value="time" @change="change">
       <a-select-option v-for="item in durationOptions" :key="item.key" :value="item.key">{{ item.label }}</a-select-option>
     </a-select>
