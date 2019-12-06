@@ -1399,6 +1399,10 @@ export default {
                         tooltip: null,
                       }
                       if (commonUnabled(obj)) return ret
+                      if (obj.eip_mode !== 'elastic_ip') {
+                        ret.tooltip = '未绑定，无法解绑'
+                        return ret
+                      }
                       if (obj.eip_mode === 'public_ip') {
                         ret.tooltip = 'Public IP无法解绑'
                         return ret
