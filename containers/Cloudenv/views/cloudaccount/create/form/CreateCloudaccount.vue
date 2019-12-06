@@ -29,6 +29,7 @@ export default {
     CephCreate: S3CephXsky,
     XskyCreate: S3CephXsky,
     GoogleCreate: Google,
+    CtyunCreate: AwsHuawei,
   },
   props: {
     currentItem: {

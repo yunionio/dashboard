@@ -49,8 +49,21 @@ export default {
     const keySecretField = keySecretFields[this.provider.toLowerCase()]
     return {
       docs: CLOUDACCOUNT_DOCS,
-      keySecretField,
-      decorators: {
+      decorators: this.getDecorators(keySecretField),
+    }
+  },
+  computed: {
+    isOpenstack () {
+      return this.provider.toLowerCase() === 'openstack'
+    },
+  },
+  deactivated () {
+    this.form.fc.resetFields()
+  },
+  methods: {
+    getDecorators (initKeySecretFields) {
+      const keySecretField = this.keySecretField || initKeySecretFields
+      const decorators = {
         name: [
           'name',
           {
@@ -114,16 +127,9 @@ export default {
             ],
           },
         ],
-      },
-    }
-  },
-  computed: {
-    isOpenstack () {
-      return this.provider.toLowerCase() === 'openstack'
+      }
+      return decorators
     },
-  },
-  deactivated () {
-    this.form.fc.resetFields()
   },
 }
 </script>
