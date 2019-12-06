@@ -303,13 +303,10 @@ export default {
           label: '关机',
           permission: 'server_perform_stop',
           action: () => {
-            const ids = this.list.selectedItems.map(item => item.id)
-            this.list.onManager('batchPerformAction', {
-              steadyStatus: 'running',
-              id: ids,
-              managerArgs: {
-                action: 'stop',
-              },
+            this.createDialog('VmShutDownDialog', {
+              data: this.list.selectedItems,
+              columns: this.columns,
+              list: this.list,
             })
           },
           meta: () => {
@@ -325,13 +322,10 @@ export default {
           label: '重启',
           permission: 'server_perform_restart',
           action: () => {
-            const ids = this.list.selectedItems.map(item => item.id)
-            this.list.onManager('batchPerformAction', {
-              steadyStatus: 'running',
-              id: ids,
-              managerArgs: {
-                action: 'restart',
-              },
+            this.createDialog('VmRestartDialog', {
+              data: this.list.selectedItems,
+              columns: this.columns,
+              list: this.list,
             })
           },
           meta: () => {
@@ -743,12 +737,10 @@ export default {
                     label: '关机',
                     permission: 'server_perform_stop',
                     action: () => {
-                      this.list.onManager('performAction', {
-                        steadyStatus: 'ready',
-                        id: obj.id,
-                        managerArgs: {
-                          action: 'stop',
-                        },
+                      this.createDialog('VmShutDownDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
                       })
                     },
                     meta: () => {
@@ -761,12 +753,10 @@ export default {
                     label: '重启',
                     permission: 'server_perform_restart',
                     action: () => {
-                      this.list.onManager('performAction', {
-                        steadyStatus: 'running',
-                        id: obj.id,
-                        managerArgs: {
-                          action: 'restart',
-                        },
+                      this.createDialog('VmRestartDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
                       })
                     },
                     meta: () => {
@@ -779,12 +769,10 @@ export default {
                     label: '重置',
                     permission: 'server_perform_reset',
                     action: () => {
-                      this.list.onManager('performAction', {
-                        steadyStatus: 'running',
-                        id: obj.id,
-                        managerArgs: {
-                          action: 'reset',
-                        },
+                      this.createDialog('VmResetDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
                       })
                     },
                     meta: () => {
