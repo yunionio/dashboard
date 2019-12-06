@@ -24,6 +24,8 @@ import Wire from '@Compute/views/wire'
 import Servertemplate from '@Compute/views/servertemplate'
 import DiskSnapshot from '@Compute/views/snapshot/DiskSnapshot'
 import InstanceSnapshot from '@Compute/views/snapshot/InstanceSnapshot'
+import Servicecatalog from '@Compute/views/servicecatalog'
+import ServicecatalogDeploy from '@Compute/views/servicecatalog/Deploy'
 
 export default {
   index: 2,
@@ -106,6 +108,28 @@ export default {
               path: '',
               meta: {},
               component: Servertemplate,
+            },
+          ],
+        },
+        {
+          path: '/servicecatalog',
+          meta: {
+            label: '服务目录',
+            permission: 'servicecatalogs_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Servicecatalog',
+              path: '',
+              meta: {},
+              component: Servicecatalog,
+            },
+            {
+              name: 'ServicecatalogDeploy',
+              path: 'deploy',
+              meta: {},
+              component: ServicecatalogDeploy,
             },
           ],
         },

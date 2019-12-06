@@ -89,6 +89,8 @@ export default {
         {
           field: 'instance_type',
           title: '配置',
+          showOverflow: 'ellipsis',
+          minWidth: 120,
           slots: {
             default: ({ row }) => {
               let ret = []

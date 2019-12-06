@@ -10,7 +10,6 @@ import { SERVER_TYPE } from '@Compute/constants'
 import { getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import { findPlatform } from '@/utils/common/hypervisor'
-import expectStatus from '@/constants/expectStatus'
 
 export default {
   name: 'NetworkListForVmInstanceSidepage',
@@ -31,7 +30,6 @@ export default {
         resource: 'networks',
         ctx: [['servers', this.resId]],
         idKey: 'network_id',
-        steadyStatus: Object.values(expectStatus.network).flat(),
         getParams: this.getParams,
         filterOptions: {
           network: {
