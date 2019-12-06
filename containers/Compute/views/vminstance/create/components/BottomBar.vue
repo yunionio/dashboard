@@ -44,30 +44,9 @@
             html-type="submit"
             style="width: 120px;"
             :loading="loading"
-            :disabled="!!errors.length">{{ isOpenWorkflow ? '提交工单' : '新 建' }}</a-button>
+            :disabled="!!errors.length">{{ confirmText }}</a-button>
         </div>
-        <!-- <div class="btns-wrapper d-flex align-items-center">
-          <a-button :loading="loading" type="primary" html-type="submit" class="ml-3">确认</a-button>
-        </div> -->
-        <transition>
-          <div v-if="errors.length" class="errors-wrap" v-clickoutside="closeError">
-            <div class="title d-flex align-items-center">
-              <i class="el-icon-error mr-2" />
-              <span>新建主机失败</span>
-            </div>
-            <div class="divider" />
-            <ul class="list">
-              <li
-                v-for="(item, idx) of errors"
-                :key="idx">
-                <div>{{ item.message }}</div>
-                <ul class="list sec-list" v-if="item.children">
-                  <li v-for="(child, childIdx) of item.children" :key="`child-${childIdx}`">{{ child }}</li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-        </transition>
+        <side-errors error-title="创建主机失败" :errors.sync="errors" />
       </template>
     </page-footer>
   </div>
@@ -79,9 +58,13 @@ import _ from 'lodash'
 import { RESOURCE_TYPES_MAP, SERVER_TYPE, BILL_TYPES_MAP } from '@Compute/constants'
 import { sizestrWithUnit } from '@/utils/utils'
 import { HYPERVISORS_MAP, PROVIDER_MAP } from '@/constants'
+import SideErrors from '@/sections/SideErrors'
 
 export default {
   name: 'BottomBar',
+  components: {
+    SideErrors,
+  },
   props: {
     loading: {
       type: Boolean,
@@ -107,6 +90,10 @@ export default {
       default: () => [],
     },
     isOpenWorkflow: {
+      type: Boolean,
+      default: false,
+    },
+    isServertemplate: {
       type: Boolean,
       default: false,
     },
@@ -220,6 +207,10 @@ export default {
       }
       return false
     },
+    confirmText () {
+      if (this.isServertemplate) return '保存模板'
+      return this.isOpenWorkflow ? '提交工单' : '新 建'
+    },
   },
   created () {
     this.baywatch([
@@ -252,14 +243,11 @@ export default {
       }
       props.forEach(iterator, this)
     },
-    closeError () {
-      this.$emit('update:errors', [])
-    },
     // 获取总价格
     async getPriceList () {
       if (!this.hasMeterService) return // 如果没有 meter 服务则取消调用
       if (R.isEmpty(this.fd.sku) || R.isNil(this.fd.sku)) return
-      const skuProvider = this.fd.sku.provider
+      const skuProvider = this.fd.sku.provider || PROVIDER_MAP.OneCloud.key
       const brand = PROVIDER_MAP[skuProvider].brand
       const params = {
         quantity: this.fd.count,
@@ -367,56 +355,6 @@ export default {
   .btns-wrapper {
     position: absolute;
     right: 20px;
-  }
-  .errors-wrap {
-    position: absolute;
-    right: 0;
-    bottom: 100px;
-    width: 300px;
-    padding: 15px;
-    opacity: 1;
-    transform: translateX(0);
-    background-color: #fef0f0;
-    box-shadow: -5px -5px 5px rgba(0, 0, 0, 0.1);
-    border-top-left-radius: 3px;
-    .title {
-      color: $error-color;
-      > i {
-        font-size: 28px;
-      }
-      > span {
-        font-size: 13px;
-        font-weight: bold;
-      }
-    }
-    .divider {
-      margin: 15px 0;
-      background-color: #DCDFE6;
-      height: 1px;
-    }
-    .list {
-      padding: 0 15px;
-      color: $error-color;
-      li {
-        line-height: 1.8;
-        list-style-type: disc;
-      }
-      &.sec-list {
-        li {
-          list-style-type: circle;
-        }
-      }
-    }
-  }
-  .errors-slide-fade-enter-active {
-    transition: all .3s ease;
-  }
-  .errors-slide-fade-leave-active {
-    transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-  }
-  .errors-slide-fade-enter, .errors-slide-fade-leave-to {
-    transform: translateX(300px);
-    opacity: 0;
   }
 }
 </style>
