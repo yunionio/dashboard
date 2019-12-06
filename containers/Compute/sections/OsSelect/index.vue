@@ -2,7 +2,9 @@
   <div class="image-select">
     <a-form-item class="mb-0">
       <a-radio-group v-decorator="decorator.imageType" @change="change">
-        <a-radio-button v-for="item in mirrorTypeOptions" :value="item.key" :key="item.key">{{ item.label }}</a-radio-button>
+        <a-tooltip v-for="item in mirrorTypeOptions" :key="item.key" :title="item.tooltip" :mouseEnterDelay="0.5">
+          <a-radio-button :value="item.key">{{ item.label }}</a-radio-button>
+        </a-tooltip>
       </a-radio-group>
     </a-form-item>
     <image-select
