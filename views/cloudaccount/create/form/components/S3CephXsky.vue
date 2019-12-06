@@ -43,8 +43,16 @@ export default {
     const keySecretField = keySecretFields[this.provider.toLowerCase()]
     return {
       docs: CLOUDACCOUNT_DOCS,
-      keySecretField,
-      decorators: {
+      decorators: this.getDecorators(keySecretField),
+    }
+  },
+  deactivated () {
+    this.form.fc.resetFields()
+  },
+  methods: {
+    getDecorators (initKeySecretFields) {
+      const keySecretField = this.keySecretField || initKeySecretFields
+      const decorators = {
         name: [
           'name',
           {
@@ -99,11 +107,9 @@ export default {
             ],
           },
         ],
-      },
-    }
-  },
-  deactivated () {
-    this.form.fc.resetFields()
+      }
+      return decorators
+    },
   },
 }
 </script>

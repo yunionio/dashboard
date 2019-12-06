@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-form :form="form.fc">
+    <a-form :form="form.fc" v-if="decorators">
       <a-form-item v-bind="formLayout" label="名称">
         <a-input v-decorator="decorators.name" placeholder="请输入名称" />
       </a-form-item>
@@ -14,7 +14,7 @@
       <a-form-item v-bind="formLayout" :label="keySecretField.label.s">
         <a-input v-decorator="decorators.password" :placeholder="keySecretField.placeholder.s" />
       </a-form-item>
-      <a-form-item label="指定项目" class="mb-0" v-bind="formLayout">
+      <a-form-item label="指定项目" v-bind="formLayout">
         <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain }" />
       </a-form-item>
       <auto-sync :fc="form.fc" :form-layout="formLayout" />
@@ -40,8 +40,13 @@ export default {
     const keySecretField = keySecretFields[this.provider.toLowerCase()]
     return {
       docs: CLOUDACCOUNT_DOCS,
-      keySecretField,
-      decorators: {
+      decorators: this.getDecorators(keySecretField),
+    }
+  },
+  methods: {
+    getDecorators (initKeySecretFields) {
+      const keySecretField = this.keySecretField || initKeySecretFields
+      const decorators = {
         name: [
           'name',
           {
@@ -86,11 +91,9 @@ export default {
             ],
           },
         ],
-      },
-    }
-  },
-  deactivated () {
-    this.form.fc.resetFields()
+      }
+      return decorators
+    },
   },
 }
 </script>
