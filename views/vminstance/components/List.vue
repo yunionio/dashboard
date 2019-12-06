@@ -1293,6 +1293,9 @@ export default {
                         validate: false,
                         tooltip: null,
                       }
+                      if (findPlatform(obj.hypervisor) === SERVER_TYPE.public) {
+                        return ret
+                      }
                       if (commonUnabled(obj)) return ret
                       if (obj.cdrom) {
                         ret.tooltip = '该服务器已经挂载ISO镜像'
