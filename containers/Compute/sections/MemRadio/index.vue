@@ -1,18 +1,19 @@
 <template>
   <a-form-item>
     <a-radio-group v-decorator="decorator">
-      <a-radio-button v-for="item in options" :value="item" :key="item" :disabled="disableOptionHandle(item)">{{ item | format }}GB</a-radio-button>
+      <a-radio-button v-for="item in options" :value="item" :key="item" :disabled="disableOptionHandle(item)">{{ item | format }}</a-radio-button>
     </a-radio-group>
   </a-form-item>
 </template>
 
 <script>
+import { sizestrWithUnit } from '@/utils/utils'
+
 export default {
   name: 'MemRadio',
   filters: {
     format (val) {
-      if (val >= 1024) return val / 1024
-      return val
+      return sizestrWithUnit(val, 'M', 1024)
     },
   },
   props: {
