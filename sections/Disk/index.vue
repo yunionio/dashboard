@@ -17,6 +17,7 @@
           :parser="format"
           :disabled="disabled" />
       </a-tooltip>
+      GB
     </a-form-item>
     <!-- 快照和挂载点不能共存 -->
     <template v-if="!showMountpoint && has('mount-point') && !disabled">
