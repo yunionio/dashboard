@@ -154,9 +154,16 @@ export default {
                     list: this.list,
                   })
                 },
-                meta: () => ({
-                  validate: obj.isPower,
-                }),
+                meta: () => {
+                  if (this.$store.getters.isAdminMode && this.$store.getters.isDomainMode) {
+                    return {
+                      validate: this.isPower,
+                    }
+                  }
+                  return {
+                    validate: false,
+                  }
+                },
               },
               {
                 label: '设置为私有',
@@ -170,9 +177,11 @@ export default {
                   })
                 },
                 meta: () => {
-                  if (this.isPower(obj)) {
-                    return {
-                      validate: obj.is_public,
+                  if (this.$store.getters.isAdminMode && this.$store.getters.isDomainMode) {
+                    if (this.isPower(obj)) {
+                      return {
+                        validate: obj.is_public,
+                      }
                     }
                   }
                   return {
@@ -192,9 +201,11 @@ export default {
                   })
                 },
                 meta: () => {
-                  if (this.isPower(obj)) {
-                    return {
-                      validate: !obj.is_public,
+                  if (this.$store.getters.isAdminMode && this.$store.getters.isDomainMode) {
+                    if (this.isPower(obj)) {
+                      return {
+                        validate: !obj.is_public,
+                      }
                     }
                   }
                   return {
