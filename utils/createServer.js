@@ -155,8 +155,10 @@ export const createVmDecorators = type => {
         'loginPassword',
         {
           initialValue: '',
+          validateFirst: true,
           rules: [
             { required: true, message: '请输入密码' },
+            { validator: validateForm('sshPassword') },
           ],
         },
       ],
