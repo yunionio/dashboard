@@ -92,6 +92,7 @@ export default {
       type: Boolean,
       default: false,
     },
+    initLoaded: Boolean, // 首次加载完成
   },
   data () {
     this.loadOpts = debounce(this.loadOpts, 500)
@@ -220,6 +221,7 @@ export default {
           this.disabledOpts()
           this.loading = false
           this.defaultSelect(list)
+          this.$emit('update:initLoaded', true)
         })
         .catch((error) => {
           this.loading = false

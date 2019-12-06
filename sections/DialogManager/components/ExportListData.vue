@@ -85,8 +85,9 @@ export default {
       const keys = []
       const texts = []
       for (let i = 0, len = formValues.selected.length; i < len; i++) {
-        keys.push(this.params.options.items[i]['key'])
-        texts.push(this.params.options.items[i]['label'])
+        const item = R.find(R.propEq('key', formValues.selected[i]))(this.params.options.items)
+        keys.push(item.key)
+        texts.push(item.label)
       }
       let params = {
         export: this.params.options.fileType || 'xls',

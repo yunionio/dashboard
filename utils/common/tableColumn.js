@@ -1,4 +1,5 @@
 import * as R from 'ramda'
+import moment from 'moment'
 import BrandIcon from '@/sections/BrandIcon'
 import TagTableColumn from '@/sections/TagTableColumn'
 import { SHARE_SCOPE } from '@/constants'
@@ -9,6 +10,8 @@ export const getProjectTableColumn = ({ field = 'tenant', title = '项目', proj
     field,
     title,
     sortable,
+    showOverflow: 'ellipsis',
+    minWidth: 100,
     slots: {
       default: ({ row }, h) => {
         const ret = []
@@ -39,6 +42,8 @@ export const getRegionTableColumn = ({ field = 'region', title = '区域' } = {}
   return {
     field,
     title,
+    showOverflow: 'ellipsis',
+    minWidth: 100,
     slots: {
       default: ({ row }, h) => {
         const ret = []
@@ -60,10 +65,11 @@ export const getRegionTableColumn = ({ field = 'region', title = '区域' } = {}
   }
 }
 
-export const getBrandTableColumn = ({ field = 'brand', title = '平台' } = {}) => {
+export const getBrandTableColumn = ({ field = 'brand', title = '平台', hidden = false } = {}) => {
   return {
     field,
     title,
+    width: 50,
     slots: {
       default: ({ row }, h) => {
         if (!row[field]) return '-'
@@ -72,30 +78,36 @@ export const getBrandTableColumn = ({ field = 'brand', title = '平台' } = {}) 
         ]
       },
     },
+    hidden,
   }
 }
 
-export const getStatusTableColumn = ({ field = 'status', title = '状态', statusModule, sortable = true } = {}) => {
+export const getStatusTableColumn = ({ field = 'status', title = '状态', statusModule, sortable = true, minWidth = 80 } = {}) => {
   return {
     field,
     title,
     sortable,
+    showOverflow: 'ellipsis',
+    minWidth,
     slots: {
       default: ({ row }, h) => {
         if (!statusModule) return 'status module undefined'
         return [
-          <status status={ row[field] } statusModule={ statusModule } />,
+          <div class='text-truncate'>
+            <status status={ row[field] } statusModule={ statusModule } />
+          </div>,
         ]
       },
     },
   }
 }
 
-export const getEnabledTableColumn = ({ field = 'enabled', title = '启用' } = {}) => {
+export const getEnabledTableColumn = ({ field = 'enabled', title = '启用', minWidth } = {}) => {
   return getStatusTableColumn({
     field,
     title,
     statusModule: 'enabled',
+    minWidth,
   })
 }
 
@@ -108,6 +120,7 @@ export const getPublicTableColumn = ({ field = 'share_mode', title = '共享模�
   return {
     field,
     title,
+    width: 100,
     slots: {
       default: ({ row }, h) => {
         return shareMode[row[field]]
@@ -128,21 +141,20 @@ export const getNameDescriptionTableColumn = ({
     field: 'name',
     title: '名称',
     sortable,
+    showOverflow: 'ellipsis',
+    minWidth: 100,
+    fixed: 'left',
     slots: {
       default: ({ row }, h) => {
-        let lockSlot = null
-        if (addLock && row.disable_delete) {
-          lockSlot = <a-tooltip title='删除保护，如需解除，请点击【修改属性】'>
-            <a-icon class='ml-1' type='lock' theme='twoTone' twoToneColor='#52c41a' />
-          </a-tooltip>
-        }
-        return [
-          <list-body-cell-wrap copy edit row={row} list={vm.list} hideField={ hideField }>
+        const ret = [
+          <list-body-cell-wrap copy edit row={row} list={vm.list} hideField={ hideField } addLock={ addLock }>
             { slotCallback ? slotCallback(row) : null }
-            { lockSlot }
           </list-body-cell-wrap>,
-          showDesc ? <list-body-cell-wrap edit field="description" row={row} list={vm.list} /> : null,
         ]
+        if (showDesc) {
+          ret.push(<list-body-cell-wrap edit field="description" row={row} list={vm.list} />)
+        }
+        return ret
       },
     },
   }
@@ -160,6 +172,8 @@ export const getCopyWithContentTableColumn = ({
     field,
     title,
     sortable,
+    showOverflow: 'ellipsis',
+    minWidth: 100,
     slots: {
       default: ({ row }, h) => {
         const text = message || row[field] || '-'
@@ -177,18 +191,20 @@ export const getIpsTableColumn = ({ field = 'ips', title = 'IP' } = {}) => {
   return {
     field,
     title,
+    showOverflow: 'ellipsis',
+    width: '120px',
     slots: {
       default: ({ row }, h) => {
         if (!row.eip && !row.ips) return '-'
         let ret = []
         if (row.eip) {
           ret.push(
-            <list-body-cell-wrap row={row} field="eip" copy><span class='ml-2 text-weak'>（公网）</span></list-body-cell-wrap>
+            <list-body-cell-wrap row={row} field="eip" copy />
           )
         }
         if (row.ips) {
           const ips = row.ips.split(',').map(ip => {
-            return <list-body-cell-wrap copy row={{ ip }} hide-field field="ip">{ ip }<span class='ml-2 text-weak'>（内网）</span></list-body-cell-wrap>
+            return <list-body-cell-wrap copy row={{ ip }} hide-field field="ip">{ ip }</list-body-cell-wrap>
           })
           ret = ret.concat(ips)
         }
@@ -223,6 +239,7 @@ export const getTagTableColumn = ({
   return {
     field,
     title,
+    width: 50,
     slots: {
       default: ({ row }, h) => {
         return [
@@ -260,6 +277,19 @@ export const isPublicTableColumn = ({ field = 'is_public', title = '共享范围
         }
       }
       return text
+    },
+  }
+}
+export const getTimeTableColumn = ({
+  field = 'created_at',
+  title = '创建时间',
+} = {}) => {
+  return {
+    field,
+    title,
+    width: 150,
+    formatter: ({ cellValue }) => {
+      return moment(cellValue).format()
     },
   }
 }

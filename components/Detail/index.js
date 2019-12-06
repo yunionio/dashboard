@@ -28,7 +28,11 @@ const getDefaultTopBaseInfo = (h, { idKey, statusKey, statusModule, data, list }
       title: 'ID',
       slots: {
         default: ({ row }) => {
-          return [<list-body-cell-wrap copy row={ data } list={ list } field={ idKey } />]
+          return [
+            <div class='text-truncate'>
+              <list-body-cell-wrap copy row={ data } list={ list } field={ idKey } title={ row[idKey] } />
+            </div>,
+          ]
         },
       },
     },
@@ -126,7 +130,7 @@ export default {
       if (renderTitle) {
         children.push(h('div', { class: 'detail-item-title' }, item.title))
       }
-      children.push(<div class={classNames('detail-item-value', { 'ml-0': !renderTitle })} title={val}>{val}</div>)
+      children.push(<div class={classNames('detail-item-value', { 'ml-0': !renderTitle })}>{val}</div>)
       return h('div', {
         class: 'detail-item mt-2',
       }, children)
