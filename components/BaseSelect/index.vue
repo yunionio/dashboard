@@ -88,6 +88,7 @@ export default {
       type: String,
       default: 'name',
     },
+    initLoaded: Boolean, // 首次加载完成
   },
   data () {
     this.loadOpts = debounce(this.loadOpts, 500)
@@ -215,6 +216,7 @@ export default {
           this.resOpts = resOpts
           this.disabledOpts()
           this.loading = false
+          this.$emit('update:initLoaded', true)
         })
         .catch((error) => {
           this.loading = false
