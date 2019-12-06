@@ -8,7 +8,7 @@
         </div>
       </a-alert>
       <dialog-selected-tips :count="params.data.length" :action="action" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <vxe-grid class="mb-2" :data="params.data" :columns="columns" />
       <a-form
         :form="form.fc">
         <a-form-item label="CPU核数" v-bind="formItemLayout" class="mb-0">
@@ -319,6 +319,10 @@ export default {
     },
     isOpenWorkflow () {
       return this.checkWorkflowEnabled(this.WORKFLOW_TYPES.APPLY_SERVER_CHANGECONFIG)
+    },
+    columns () {
+      const showFields = ['name', 'ip', 'instance_type', 'status']
+      return this.params.columns.filter((item) => { return showFields.includes(item.field) })
     },
   },
   created () {
