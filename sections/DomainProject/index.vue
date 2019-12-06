@@ -21,7 +21,7 @@
         </a-form-item>
       </a-col>
       <a-col :span="(isAdminMode && l3PermissionEnable) ? 12 : 24">
-        <a-form-item class="mb-0">
+        <a-form-item>
           <a-select
             class="w-100"
             :labelInValue="labelInValue"
