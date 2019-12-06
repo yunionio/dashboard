@@ -12,6 +12,7 @@
       resizable
       max-height="400"
       @radio-change="skuChange"
+      @cell-click="skuChange"
       :columns="tableColumn"
       :data="skuResults">
       <template v-slot:empty>
@@ -229,8 +230,8 @@ export default {
     },
     skuResults: {
       handler (val, oldV) {
-        if (!R.equals(val, oldV)) {
-          this.setSku(val && val[0])
+        if (!R.equals(val, oldV) && val.length) {
+          this.setSku(val[0])
         }
       },
       deep: true,
