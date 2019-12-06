@@ -1,7 +1,13 @@
 <template>
-  <div v-on="events">
-    <span v-if="!hideField" :class="{ 'text-weak': field === 'description', [titleClass]: titleClass }">{{ row[field] || '-' }}</span>
-    <slot />
+  <div v-on="events" class="d-flex align-items-center">
+    <span
+      v-if="!hideField"
+      class="text-truncate"
+      :class="{ 'text-weak': field === 'description', [titleClass]: titleClass }">{{ row[field] || '-' }}</span>
+    <div class="text-truncate" v-if="$scopedSlots.default"><slot /></div>
+    <a-tooltip title="删除保护，如需解除，请点击【修改属性】" v-if="addLock && row.disable_delete">
+      <a-icon class="ml-1" type="lock" theme="twoTone" twoToneColor="#52c41a" />
+    </a-tooltip>
     <edit
       slot="edit"
       class="ml-1"
@@ -66,6 +72,7 @@ export default {
       type: Array,
     },
     titleClass: String,
+    addLock: Boolean,
   },
   data () {
     return {

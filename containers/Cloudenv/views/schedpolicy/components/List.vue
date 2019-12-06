@@ -9,7 +9,7 @@
 <script>
 import { STRATEGY_OPT, STRATEGY_CN } from '@Cloudenv/constants/sched'
 import WindowsMixin from '@/mixins/windows'
-import { getNameDescriptionTableColumn, getEnabledTableColumn } from '@/utils/common/tableColumn'
+import { getNameDescriptionTableColumn, getEnabledTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   name: 'SchedpolicyList',
@@ -49,18 +49,19 @@ export default {
         {
           field: 'strategy',
           title: '偏好',
+          width: 80,
           formatter: ({ row }) => {
             return STRATEGY_CN[row.strategy] || '无'
           },
         },
-        {
+        getCopyWithContentTableColumn({
           field: 'schedtag',
           title: '调度标签',
-        },
-        {
+        }),
+        getCopyWithContentTableColumn({
           field: 'condition',
           title: '条件',
-        },
+        }),
       ],
       groupActions: [
         {

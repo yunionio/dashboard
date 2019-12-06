@@ -14,6 +14,9 @@ import {
   getBrandTableColumn,
   getStatusTableColumn,
   getProjectTableColumn,
+  getTimeTableColumn,
+  getCopyWithContentTableColumn,
+  getRegionTableColumn,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import { sizestr } from '@/utils/utils'
@@ -53,6 +56,7 @@ export default {
         {
           field: 'disk_size',
           title: '容量',
+          minWidth: 50,
           formatter: ({ cellValue }) => {
             return sizestr(cellValue, 'M', 1024)
           },
@@ -60,10 +64,12 @@ export default {
         {
           field: 'disk_format',
           title: '格式',
+          width: 70,
         },
         {
           field: 'disk_type',
           title: '磁盘类型',
+          width: 70,
           formatter: ({ cellValue }) => {
             return cellValue === 'sys' ? '系统盘' : '数据盘'
           },
@@ -71,6 +77,7 @@ export default {
         {
           field: 'unused',
           title: '是否挂载',
+          width: 70,
           slots: {
             default: ({ row }, h) => {
               return row.guest_count >= 1 ? [<span class="success-color">已挂载</span>] : [<span class="warning-color">待挂载</span>]
@@ -80,10 +87,12 @@ export default {
         {
           field: 'guest',
           title: '主机',
+          minWidth: 100,
+          showOverflow: 'ellipsis',
           slots: {
             default: ({ row }, h) => {
               return [
-                <div>
+                <div class='text-truncate'>
                   {row.guest}
                   {row.guest_status ? <status status={ row['guest_status'] } statusModule='server'/> : ''}
                 </div>,
@@ -91,27 +100,16 @@ export default {
             },
           },
         },
-        {
-          field: 'storage',
-          title: '主存储',
-        },
-        {
-          field: 'created_at',
-          title: '创建时间',
-          formatter: ({ cellValue }) => {
-            return this.$moment(cellValue).format()
-          },
-        },
+        getCopyWithContentTableColumn({ field: 'storage', title: '主存储' }),
+        getTimeTableColumn(),
         getBrandTableColumn(),
-        {
-          field: 'zone',
-          title: '区域',
-        },
+        getRegionTableColumn(),
         getStatusTableColumn({ statusModule: 'disk' }),
         getProjectTableColumn(),
         {
           field: 'medium_type',
           title: '介质类型',
+          width: 70,
           formatter: ({ cellValue }) => {
             return MEDIUM_MAP[cellValue]
           },

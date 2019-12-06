@@ -12,6 +12,7 @@ import {
   getEnabledTableColumn,
   getStatusTableColumn,
   getProjectTableColumn,
+  getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 
@@ -68,6 +69,7 @@ export default {
         {
           field: 'force_dispersion',
           title: '策略',
+          width: 70,
           formatter: ({ cellValue }) => {
             let ret = '非强制'
             if (cellValue) ret = '强制'
@@ -78,18 +80,16 @@ export default {
         {
           field: 'granularity',
           title: '粒度',
+          width: 70,
         },
         {
           field: 'guest_count',
           title: '绑定主机数量',
+          width: 120,
           formatter: ({ cellValue }) => `${cellValue || 0}`,
         },
         getProjectTableColumn(),
-        {
-          field: 'created_at',
-          title: '创建时间',
-          formatter: ({ cellValue }) => this.$moment(cellValue).format(),
-        },
+        getTimeTableColumn(),
       ],
       groupActions: [
         {

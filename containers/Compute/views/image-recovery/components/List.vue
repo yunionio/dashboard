@@ -38,6 +38,7 @@ export default {
         {
           field: 'os_type',
           title: '操作系统',
+          width: 70,
           slots: {
             default: ({ row }) => {
               if (!row.properties || !row.properties.os_distribution) return
@@ -55,10 +56,12 @@ export default {
         {
           field: 'disk_format',
           title: '格式',
+          width: 100,
         },
         {
           field: 'size',
           title: '镜像大小',
+          width: 100,
           formatter: ({ cellValue }) => {
             return sizestr(cellValue, 'B', 1024)
           },

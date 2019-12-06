@@ -6,7 +6,7 @@
 
 <script>
 import { sizestr } from '@/utils/utils'
-import { getStatusTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
+import { getStatusTableColumn, getNameDescriptionTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import SystemIcon from '@/sections/SystemIcon'
 
 export default {
@@ -51,6 +51,7 @@ export default {
         {
           field: 'disk_format',
           title: '格式',
+          width: 100,
           formatter: ({ cellValue }) => {
             return cellValue && cellValue.toUpperCase()
           },
@@ -58,6 +59,7 @@ export default {
         {
           field: 'os_type',
           title: '系统',
+          width: 60,
           slots: {
             default: ({ row }) => {
               if (!row.properties) return
@@ -75,6 +77,7 @@ export default {
         {
           field: 'size',
           title: '镜像大小',
+          minWidth: 100,
           formatter: ({ cellValue }) => {
             return sizestr(cellValue, 'B', 1024)
           },
@@ -82,19 +85,14 @@ export default {
         {
           field: 'is_standard',
           title: '镜像类型',
+          width: 100,
           formatter: ({ cellValue }) => {
             if (cellValue) return '公共镜像'
             return '自定义镜像'
           },
         },
         getStatusTableColumn({ statusModule: 'image' }),
-        {
-          field: 'created_at',
-          title: '创建时间',
-          formatter: ({ cellValue }) => {
-            return this.$moment(cellValue).format()
-          },
-        },
+        getTimeTableColumn(),
       ],
     }
   },

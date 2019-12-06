@@ -21,7 +21,6 @@
       <vxe-grid
         ref="grid"
         highlight-hover-row
-        show-header-overflow="title"
         :data="data"
         :columns="columns">
         <template v-slot:empty>
@@ -43,6 +42,9 @@ import { Manager } from '@/utils/manager'
 import OBJ_TYPE from '@/constants/actionObjType'
 import RefreshButton from '@/components/PageList/RefreshButton'
 import WindowsMixin from '@/mixins/windows'
+import {
+  getCopyWithContentTableColumn,
+} from '@/utils/common/tableColumn'
 
 export default {
   name: 'EventList',
@@ -95,23 +97,24 @@ export default {
         {
           title: '#',
           field: 'id',
+          fixed: 'left',
+          minWidth: 80,
+          showOverflow: 'ellipsis',
         },
-        {
+        getCopyWithContentTableColumn({
           title: '类型',
           field: 'obj_type',
-          width: 80,
-          formatter: ({ row }) => {
-            return OBJ_TYPE[row.obj_type] || row.obj_type
-          },
-        },
-        {
+          hideField: true,
+          slotCallback: row => OBJ_TYPE[row.obj_type] || row.obj_type,
+        }),
+        getCopyWithContentTableColumn({
           title: '操作',
           field: 'action',
-        },
-        {
+        }),
+        getCopyWithContentTableColumn({
           title: '资源名称',
           field: 'obj_name',
-        },
+        }),
         {
           title: '执行状态',
           field: 'success',
@@ -132,17 +135,19 @@ export default {
             return this.$moment(row.start_time).format('YYYY年MM月DD日 HH:mm:ss')
           },
         },
-        {
+        getCopyWithContentTableColumn({
           field: 'user',
           title: '发起人',
-        },
-        {
+        }),
+        getCopyWithContentTableColumn({
           field: 'tenant',
           title: '所属项目',
-        },
+        }),
         {
           field: 'notes',
           title: '备注',
+          width: 50,
+          fixed: 'right',
           slots: {
             default: ({ row, column }) => {
               let text = ''

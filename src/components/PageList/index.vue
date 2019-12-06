@@ -33,6 +33,7 @@
     </page-toolbar>
     <vxe-grid
       ref="grid"
+      align="left"
       highlight-hover-row
       highlight-current-row
       :data="data"
@@ -118,12 +119,14 @@ export default {
         return !item.hidden
       })
       if (this.groupActions && this.groupActions.length > 0) {
-        defaultColumns.unshift({ type: 'checkbox', width: 60 })
+        defaultColumns.unshift({ type: 'checkbox', width: 40, fixed: 'left' })
       }
       if (this.singleActions && this.singleActions.length) {
         defaultColumns.push({
           field: 'action',
           title: '操作',
+          minWidth: 120,
+          fixed: 'right',
           slots: {
             default: ({ row }, h) => {
               return [<Actions options={ this.singleActions } row={ row } button-type='link' button-size='small' button-style={{ fontSize: '12px' }} />]
