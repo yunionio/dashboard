@@ -162,7 +162,7 @@ export default {
           field: 'instance_type',
           title: '配置',
           showOverflow: 'ellipsis',
-          minWidth: 60,
+          minWidth: 120,
           slots: {
             default: ({ row }) => {
               let ret = []
@@ -214,7 +214,8 @@ export default {
         {
           field: 'billing_type',
           title: '计费方式',
-          width: 120,
+          width: 70,
+          showOverflow: 'ellipsis',
           slots: {
             default: ({ row }) => {
               const ret = []
