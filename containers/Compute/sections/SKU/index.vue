@@ -267,7 +267,7 @@ export default {
       })
     },
     getHypervisor (data) {
-      return PROVIDER_MAP[data.provider]['label']
+      return data.provider ? PROVIDER_MAP[data.provider]['label'] : PROVIDER_MAP.OneCloud.label
     },
     genRateKey (data) {
       const provider = data.provider.toLowerCase()
@@ -278,7 +278,7 @@ export default {
       return ret
     },
     getI18NValue (key, originVal) {
-      if (this.$te(key)) {
+      if (this.$t(key)) {
         return this.$t(key)
       }
       return originVal

@@ -5,8 +5,9 @@
       class="mt-3"
       :form="form.fc"
       @submit="submit">
+      <servertemplate v-if="isServertemplate" :decorators="decorators.servertemplate" :formItemLayout="formItemLayout" />
       <a-divider orientation="left">基础配置</a-divider>
-      <a-form-item label="指定项目" class="mb-0" v-bind="formItemLayout">
+      <a-form-item label="指定项目" v-bind="formItemLayout">
         <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
       </a-form-item>
       <a-form-item label="区域" class="mb-0" v-bind="formItemLayout">
@@ -15,7 +16,7 @@
           :cloudregion-params="cloudregionParams"
           :decorator="decorators.cloudregionZone" />
       </a-form-item>
-      <a-form-item label="名称" v-bind="formItemLayout" extra="名称支持序号占位符‘#’，用法如下。 名称：host## 数量：2、实例为：host01、host02">
+      <a-form-item label="名称" v-if="!isServertemplate" v-bind="formItemLayout" extra="名称支持序号占位符‘#’，用法如下。 名称：host## 数量：2、实例为：host01、host02">
         <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverName')" />
       </a-form-item>
       <a-form-item label="申请原因" v-bind="formItemLayout" v-if="isOpenWorkflow">
@@ -121,7 +122,13 @@
       <a-form-item v-bind="formItemLayout" v-if="isKvm" label="主机组" extra="对资源的简单编排策略，组内的机器根据设置分布在不同的宿主机上，从而实现业务的高可用">
         <instance-groups :decorators="decorators.groups" :params="instanceGroupsParams" />
       </a-form-item>
-      <bottom-bar :loading="submiting" :form="form" :type="type" :isOpenWorkflow="isOpenWorkflow" :errors.sync="errors" />
+      <bottom-bar
+        :loading="submiting"
+        :form="form"
+        :type="type"
+        :isOpenWorkflow="isOpenWorkflow"
+        :errors.sync="errors"
+        :isServertemplate="isServertemplate" />
     </a-form>
   </div>
 </template>

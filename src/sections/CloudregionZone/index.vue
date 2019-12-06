@@ -21,6 +21,7 @@
 
 <script>
 import * as R from 'ramda'
+import { mapGetters } from 'vuex'
 import { Manager } from '@/utils/manager'
 
 export default {
@@ -47,6 +48,7 @@ export default {
       zoneOpts: [],
     }
   },
+  computed: mapGetters(['isAdminMode', 'scope', 'isDomainMode', 'userInfo', 'l3PermissionEnable']),
   watch: {
     cloudregionParams: {
       deep: true,
@@ -74,7 +76,14 @@ export default {
       this.$emit(`update:${emitStr}`, itemObj)
     },
     fetchRegions () {
-      this.cloudregionsM.list({ params: this.cloudregionParams })
+      const params = {
+        ...this.cloudregionParams,
+      }
+      if (this.isAdminMode) {
+        params['project_domain'] = this.userInfo.projectDomainId
+        delete params.scope
+      }
+      this.cloudregionsM.list({ params })
         .then(({ data: { data = [] } }) => {
           this.regionOpts = data
           this.$emit('update:closeregionOpts', this.regionOpts)

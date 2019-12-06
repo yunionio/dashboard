@@ -111,7 +111,7 @@ export default {
             }
             return {
               validate: false,
-              tooltip: '请选择安全组',
+              tooltip: '请选择私有安全组',
             }
           },
         },

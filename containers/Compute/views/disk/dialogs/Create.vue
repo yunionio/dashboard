@@ -123,7 +123,8 @@ export default {
         region: {
           usable: true,
           cloud_env: 'onpremise',
-          scope: 'system',
+          // scope: 'system',
+          project_domain: 'asdasd',
         },
       },
       storageOpts: [],

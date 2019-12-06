@@ -304,6 +304,18 @@ export const PERMISSION = {
   'lb_loadbalancercertificates_delete': ['compute', 'loadbalancercertificates', 'delete'],
   'lb_loadbalancercertificates_get': ['compute', 'loadbalancercertificates', 'get'],
   /**
+   * 主机模板
+   */
+  'servertemplates_create': ['compute', 'servertemplates', 'create'],
+  'servertemplates_delete': ['compute', 'servertemplates', 'delete'],
+  'servertemplates_perform_public': ['compute', 'servertemplates', 'perform', 'public'],
+  /**
+   * 服务目录
+   */
+  'servicecatalogs_create': ['compute', 'servicecatalogs', 'create'],
+  'servicecatalogs_update': ['compute', 'servicecatalogs', 'update'],
+  'servicecatalogs_delete': ['compute', 'servicecatalogs', 'delete'],
+  /**
    * cloudregions 相关操作
    */
   'cloudregions_get': ['compute', 'cloudregions', 'get'],

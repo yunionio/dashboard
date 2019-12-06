@@ -16,9 +16,9 @@
         </div>
       </div>
       <div slot="right">
-        <a-button class="mr-3" @click="cancel">取 消</a-button>
         <a-button class="mr-3" @click="perv" v-if="!isFirstStep">上一步</a-button>
-        <a-button type="primary" @click="next" :loading="loading">{{ nextStepTitle }}</a-button>
+        <a-button class="mr-3" type="primary" @click="next" :loading="loading">{{ nextStepTitle }}</a-button>
+        <a-button @click="cancel">取 消</a-button>
       </div>
     </page-footer>
   </div>

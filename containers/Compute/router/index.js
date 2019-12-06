@@ -21,6 +21,7 @@ import GPU from '@Compute/views/gpu'
 import Secgroup from '@Compute/views/secgroup'
 import FlexNetwork from '@Compute/views/flex-network'
 import Wire from '@Compute/views/wire'
+import Servertemplate from '@Compute/views/servertemplate'
 import DiskSnapshot from '@Compute/views/snapshot/DiskSnapshot'
 import InstanceSnapshot from '@Compute/views/snapshot/InstanceSnapshot'
 
@@ -89,6 +90,22 @@ export default {
               path: '',
               meta: {},
               component: InstanceGroup,
+            },
+          ],
+        },
+        {
+          path: '/servertemplate',
+          meta: {
+            label: '主机模板',
+            permission: 'servertemplates_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Servertemplate',
+              path: '',
+              meta: {},
+              component: Servertemplate,
             },
           ],
         },
