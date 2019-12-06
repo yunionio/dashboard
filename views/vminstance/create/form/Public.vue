@@ -10,7 +10,7 @@
       <a-form-item label="指定项目" v-bind="formItemLayout">
         <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
       </a-form-item>
-      <a-form-item label="名称" v-if="!isServertemplate" v-bind="formItemLayout" extra="名称支持序号占位符‘#’，用法如下。 名称：host## 数量：2、实例为：host01、host02">
+      <a-form-item label="名称" v-if="!isServertemplate" v-bind="formItemLayout" extra="名称支持有序后缀占位符‘#’，用法举例，名称host##，数量2，创建后实例的名称依次为host01、host02，已有同名实例，序号顺延">
         <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverName')" />
       </a-form-item>
       <a-form-item label="申请原因" v-bind="formItemLayout" v-if="isOpenWorkflow">
