@@ -9,6 +9,7 @@
 <script>
 import {
   getNameDescriptionTableColumn,
+  getCopyWithContentTableColumn,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 
@@ -50,10 +51,13 @@ export default {
         {
           field: 'dev_type',
           title: '设备类型',
+          width: 120,
         },
         {
           field: 'model',
           title: '设备型号',
+          minWidth: 120,
+          showOverflow: 'ellipsis',
           slots: {
             default: ({ row }, h) => {
               const device = row.vendor_device_id.split(':')[0]
@@ -61,26 +65,26 @@ export default {
                 return row.model
               }
               return [
-                <span>{ row.model }</span>,
-                <icon type={ DEVICE_MAP[device] } />,
+                <div class='d-flex'>
+                  <span class='text-truncate'>{ row.model }</span>,
+                  <icon type={ DEVICE_MAP[device] } />
+                </div>,
               ]
             },
           },
         },
-        {
+        getCopyWithContentTableColumn({
           field: 'guest',
           title: '关联主机',
-          formatter: function ({ row }) {
-            return row.guest || row.guest_id
-          },
-        },
-        {
+          hideField: true,
+          slotCallback: row => row.guest || row.guest_id,
+        }),
+        getCopyWithContentTableColumn({
           field: 'host',
           title: '所在宿主机',
-          formatter: ({ row }) => {
-            return row.host || row.host_id
-          },
-        },
+          hideField: true,
+          slotCallback: row => row.host || row.host_id,
+        }),
       ],
       groupActions: [
         {

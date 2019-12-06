@@ -9,6 +9,7 @@ import {
   getStatusTableColumn,
   getBrandTableColumn,
   getNameDescriptionTableColumn,
+  getCopyWithContentTableColumn,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 
@@ -40,20 +41,15 @@ export default {
             )
           },
         }),
-        {
-          field: 'mac',
-          title: 'MAC地址',
-        },
+        getCopyWithContentTableColumn({ field: 'mac', title: 'MAC地址' }),
         getStatusTableColumn({ statusModule: 'network' }),
         getBrandTableColumn(),
         {
           field: 'associate_type',
           title: '绑定设备类型(VPC)',
+          width: 140,
         },
-        {
-          field: 'associate_id',
-          title: '绑定设备',
-        },
+        getCopyWithContentTableColumn({ field: 'associate_id', title: '绑定设备' }),
       ],
     }
   },

@@ -1,6 +1,17 @@
 <template>
   <div>
-    <a-form-item extra="每个资源最多可绑定20个标签">
+    <div class="tag-list">
+      <template v-for="item of tags">
+        <span
+          class="tag mb-1 text-truncate d-inline-block"
+          :title="item.title"
+          :key="`${item.key}${item.value}`"
+          :style="{ backgroundColor: item.backgroundColor, color: item.color, borderColor: item.color }">
+          {{ item.title }}<a-icon style="font-size: 12px;" class="ml-1" type="close" @click="removeTag(item)" />
+        </span>
+      </template>
+    </div>
+    <a-form-item extra="每个资源最多可绑定20个标签" class="mt-2">
       <div class="d-flex">
         <div style="line-height: 40px;">
           <tag-select v-model="checked" :params="params" button-text="已有标签" />
@@ -22,17 +33,6 @@
             <a-button @click="() => showForm = false" class="ml-2">取消</a-button>
           </a-form-item>
         </a-form>
-      </div>
-      <div class="tag-list mt-2" v-if="tags && tags.length > 0">
-        <template v-for="item of tags">
-          <span
-            class="tag mb-1 text-truncate d-inline-block"
-            :title="item.title"
-            :key="`${item.key}${item.value}`"
-            :style="{ backgroundColor: item.backgroundColor, color: item.color, borderColor: item.color }">
-            {{ item.title }}<a-icon style="font-size: 12px;" class="ml-1" type="close" @click="removeTag(item)" />
-          </span>
-        </template>
       </div>
     </a-form-item>
   </div>
@@ -149,7 +149,7 @@ export default {
 
 <style lang="scss" scoped>
 .tag-list {
-  min-height: 150px;
+  min-height: 65px;
   border: 2px dashed #ddd;
   padding: 8px;
 }

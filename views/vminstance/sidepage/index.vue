@@ -23,6 +23,7 @@
 
 <script>
 import SecgroupList from '@Compute/views/secgroup/components/List'
+import HostList from '@Compute/views/host/components/List'
 import VmInstanceDetail from './Detail'
 import NetworkListForVmInstanceSidepage from './Network'
 import DiskListForVmInstanceSidepage from './Disk'
@@ -38,6 +39,7 @@ export default {
     NetworkListForVmInstanceSidepage,
     DiskListForVmInstanceSidepage,
     SecgroupList,
+    HostList,
   },
   mixins: [SidePageMixin, WindowsMixin],
   data () {
@@ -45,6 +47,7 @@ export default {
       detailTabs: [
         { label: '详情', key: 'vm-instance-detail' },
         { label: '安全组', key: 'secgroup-list' },
+        { label: '宿主机', key: 'host-list' },
         { label: '网络', key: 'network-list-for-vm-instance-sidepage' },
         { label: '磁盘', key: 'disk-list-for-vm-instance-sidepage' },
         { label: '操作日志', key: 'event-drawer' },
@@ -60,6 +63,12 @@ export default {
         return {
           detail: true,
           server: this.params.resId,
+        }
+      }
+      if (this.params.windowData.currentTab === 'host-list') {
+        return {
+          detail: true,
+          id: this.data.host_id,
         }
       }
       return null

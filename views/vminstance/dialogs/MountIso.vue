@@ -7,6 +7,7 @@
       <a-form :form="form.fc" hideRequiredMark>
         <a-form-item label="ISO镜像" v-bind="formItemLayout">
           <base-select
+            class="w-100"
             remote
             filterable
             version="v1"

@@ -9,6 +9,7 @@
 <script>
 import {
   getNameDescriptionTableColumn,
+  getCopyWithContentTableColumn,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 
@@ -43,14 +44,8 @@ export default {
             )
           },
         }),
-        {
-          field: 'public_key',
-          title: '公钥内容',
-        },
-        {
-          field: 'fingerprint',
-          title: '指纹',
-        },
+        getCopyWithContentTableColumn({ field: 'public_key', title: '公钥内容' }),
+        getCopyWithContentTableColumn({ field: 'fingerprint', title: '指纹' }),
         {
           field: 'scheme',
           title: '类型',
