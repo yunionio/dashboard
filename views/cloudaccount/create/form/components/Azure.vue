@@ -66,7 +66,6 @@ export default {
         wrapperCol: { span: 10 },
       },
       docs: CLOUDACCOUNT_DOCS,
-      keySecretField,
       environments,
       decorators: {
         name: [

@@ -49,9 +49,17 @@ export default {
     const environments = Object.entries(ACCESS_URL[this.provider.toLowerCase()]).map(keyValueArr => ({ key: keyValueArr[0], label: keyValueArr[1] }))
     return {
       docs: CLOUDACCOUNT_DOCS,
-      keySecretField,
+      decorators: this.getDecorators(keySecretField),
       environments,
-      decorators: {
+    }
+  },
+  deactivated () {
+    this.form.fc.resetFields()
+  },
+  methods: {
+    getDecorators (initKeySecretFields) {
+      const keySecretField = this.keySecretField || initKeySecretFields
+      const decorators = {
         name: [
           'name',
           {
@@ -103,11 +111,9 @@ export default {
             ],
           },
         ],
-      },
-    }
-  },
-  deactivated () {
-    this.form.fc.resetFields()
+      }
+      return decorators
+    },
   },
 }
 </script>
