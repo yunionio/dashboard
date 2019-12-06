@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{action}}</div>
     <div slot="body">
-      <a-alert class="mb-2" type="warning">
+      <a-alert class="mb-2" type="warning" v-if="tips">
         <div slot="message">
           {{ tips }}
         </div>
@@ -258,14 +258,17 @@ export default {
         }
       }
     },
+    hypervisor () {
+      return this.selectedItem.hypervisor
+    },
     tips () {
       if (this.hotplug) {
         return '提示：所选云服务器中部分不支持在开机状态下调整CPU和内存'
       }
-      return '提示：开机调整配置时CPU和内存的大小只能往上调整'
-    },
-    hypervisor () {
-      return this.selectedItem.hypervisor
+      if ([HYPERVISORS_MAP.kvm.hypervisor, HYPERVISORS_MAP.azure.hypervisor].includes(this.hypervisor)) {
+        return '提示：开机调整配置时CPU和内存的大小只能往上调整'
+      }
+      return ''
     },
     type () {
       const brand = this.selectedItem.brand
