@@ -1,5 +1,6 @@
 // 此文件用于解析 vue.ant.design 返回的一些数据格式
 import * as R from 'ramda'
+import _ from 'lodash'
 
 /**
  * @description 将 ant.design form 的 onFieldsChange 方法的回调参数解析成 formData
@@ -46,4 +47,20 @@ export const getInitialValue = decorators => {
     return initData
   }, decorators)
   return initData
+}
+
+/**
+ * @description 回填表单数据，将 请求回来的诗句回填表单字段 initialValue eg: { zone: ['zone', { initialValue: '' }], image: ['image'] } -> { zone: ['zone', { initialValue: 'xxx' }], image: ['image', { initialValue: 'xxx' }] }
+ * @param {Object} data 数据
+ * @param {Object} decorators
+ * @param {Object} fieldMap 由 decorators 到 data 的字段映射，默认两个字段一样，既 decorators的zone会取data.zone
+ */
+export const rollupFormData = (data, decorators, fieldMap) => {
+  R.forEachObjIndexed((value, key) => {
+    if (value[1]) {
+      const k = _.get(fieldMap, key) || key
+      _.set(decorators, [key, 1, 'initialValue'], data[k])
+    }
+  }, decorators)
+  return decorators
 }

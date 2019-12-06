@@ -1,6 +1,8 @@
 import * as R from 'ramda'
 import BrandIcon from '@/sections/BrandIcon'
 import TagTableColumn from '@/sections/TagTableColumn'
+import { SHARE_SCOPE } from '@/constants'
+import store from '@/store'
 
 export const getProjectTableColumn = ({ field = 'tenant', title = '项目', projectsItem = 'tenant', sortable = true } = {}) => {
   return {
@@ -233,6 +235,31 @@ export const getTagTableColumn = ({
             resource={ resource } />,
         ]
       },
+    },
+  }
+}
+
+export const isPublicTableColumn = ({ field = 'is_public', title = '共享范围' } = {}) => {
+  return {
+    field,
+    title,
+    visible: store.getters.isAdminMode || store.getters.isDomainMode,
+    formatter: ({ row }) => {
+      let text = ''
+      if (!row.is_public) {
+        text = '私有'
+        if (row.shared_projects) {
+          text = '项目'
+        }
+      } else {
+        const scopeText = (SHARE_SCOPE[row.public_scope] || {})['label'] || row.public_scope
+        if (row.public_scope) {
+          text = scopeText
+        } else {
+          text = '系统'
+        }
+      }
+      return text
     },
   }
 }

@@ -88,6 +88,10 @@ export default {
       type: String,
       default: 'name',
     },
+    isDefaultSelect: { // 是否开启默认选择
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     this.loadOpts = debounce(this.loadOpts, 500)
@@ -174,8 +178,8 @@ export default {
       this.change(initValue)
     },
     change (val) {
-      let syncValue = this.resOpts[val]
-      if (this.options && this.options.length) syncValue = val
+      let syncValue = R.is(String, val) ? this.resOpts[val] : this.resOpts[val.key]
+      if (this.options && this.options.length) syncValue = val // 外面传递 options
       this.$emit('input', val)
       this.$emit('change', val)
       this.$emit('update:item', syncValue)
@@ -206,20 +210,31 @@ export default {
       }
       manager.list({ params, ctx: this.ctx })
         .then(({ data: { data = [] } }) => {
-          let resOpts = data.map(val => ({ ...val, id: val[this.idKey], name: val[this.nameKey] }))
+          let list = data.map(val => ({ ...val, id: val[this.idKey], name: val[this.nameKey] }))
           if (this.mapper) {
-            resOpts = this.mapper(resOpts)
+            list = this.mapper(list)
           }
-          this.$emit('update:options', resOpts)
-          resOpts = arrayToObj(resOpts)
+          this.$emit('update:options', list)
+          const resOpts = arrayToObj(list)
           this.resOpts = resOpts
           this.disabledOpts()
           this.loading = false
+          this.defaultSelect(list)
         })
         .catch((error) => {
           this.loading = false
           throw error
         })
+    },
+    defaultSelect (list) {
+      if (this.isDefaultSelect && list.length > 0 && !this.value) { // 没有初始化值才可以默认选择
+        const defaultItem = list[0]
+        if (this.selectProps && this.selectProps.labelInValue) {
+          this.change({ label: defaultItem.name, value: defaultItem.id })
+        } else {
+          this.change(defaultItem.id)
+        }
+      }
     },
     getLabel (item) {
       if (this.labelFormat) {

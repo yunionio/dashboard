@@ -1,5 +1,6 @@
 import './style.scss'
 import * as R from 'ramda'
+import _ from 'lodash'
 import moment from 'moment'
 import classNames from 'classnames'
 
@@ -119,7 +120,7 @@ export default {
       } else if (item.formatter) {
         val = item.formatter({ row: this.data, cellValue: this.data[item.field] }) || '-'
       } else {
-        val = this.data[item.field] || '-'
+        val = _.get(this.data, item.field) || '-'
       }
       const children = []
       if (renderTitle) {
