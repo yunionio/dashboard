@@ -55,11 +55,13 @@ export default {
         {
           field: 'guest_cnt',
           title: '关联实例',
+          width: 70,
         },
         getPublicTableColumn(),
         {
           field: 'rules',
           title: '规则预览(策略，CIDR，协议，端口)',
+          width: 220,
           slots: {
             default: ({ row }, h) => {
               return [
@@ -154,9 +156,16 @@ export default {
                     list: this.list,
                   })
                 },
-                meta: () => ({
-                  validate: obj.isPower,
-                }),
+                meta: () => {
+                  if (this.$store.getters.isAdminMode && this.$store.getters.isDomainMode) {
+                    return {
+                      validate: this.isPower,
+                    }
+                  }
+                  return {
+                    validate: false,
+                  }
+                },
               },
               {
                 label: '设置为私有',
@@ -170,9 +179,11 @@ export default {
                   })
                 },
                 meta: () => {
-                  if (this.isPower(obj)) {
-                    return {
-                      validate: obj.is_public,
+                  if (this.$store.getters.isAdminMode && this.$store.getters.isDomainMode) {
+                    if (this.isPower(obj)) {
+                      return {
+                        validate: obj.is_public,
+                      }
                     }
                   }
                   return {
@@ -192,9 +203,11 @@ export default {
                   })
                 },
                 meta: () => {
-                  if (this.isPower(obj)) {
-                    return {
-                      validate: !obj.is_public,
+                  if (this.$store.getters.isAdminMode && this.$store.getters.isDomainMode) {
+                    if (this.isPower(obj)) {
+                      return {
+                        validate: !obj.is_public,
+                      }
                     }
                   }
                   return {

@@ -7,7 +7,7 @@
 
 <script>
 import { sizestr } from '@/utils/utils'
-import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getCopyWithContentTableColumn, getIpsTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
+import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getCopyWithContentTableColumn, getIpsTableColumn, getNameDescriptionTableColumn, getBrandTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   name: 'ImageList',
@@ -75,20 +75,24 @@ export default {
         {
           field: 'instance_type',
           title: '配置',
+          showOverflow: 'ellipsis',
+          minWidth: 60,
           slots: {
             default: ({ row }) => {
               let ret = []
               if (row.instance_type) {
-                ret.push(<div style={{ color: '#0A1F44' }}>{ row.instance_type }</div>)
+                ret.push(<div class='text-truncate' style={{ color: '#0A1F44' }}>{ row.instance_type }</div>)
               }
               const config = row.vcpu_count + 'C' + sizestr(row.vmem_size, 'M', 1024) + (row.disk ? sizestr(row.disk, 'M', 1024) : '')
-              return ret.concat(<div style={{ color: '#53627C' }}>{ config }</div>)
+              return ret.concat(<div class='text-truncate' style={{ color: '#53627C' }}>{ config }</div>)
             },
           },
         },
         {
           field: 'secgroups',
           title: '安全组',
+          width: 80,
+          showOverflow: 'ellipsis',
           formatter: ({ cellValue }) => {
             return cellValue.map(item => item.name).join(',')
           },
@@ -96,6 +100,7 @@ export default {
         {
           field: 'billing_type',
           title: '计费方式',
+          width: 120,
           slots: {
             default: ({ row }) => {
               const ret = []
@@ -119,10 +124,7 @@ export default {
         getStatusTableColumn({ statusModule: 'server' }),
         getCopyWithContentTableColumn({ field: 'vpc', title: 'VPC' }),
         getCopyWithContentTableColumn({ field: 'host', title: '宿主机' }),
-        {
-          field: 'brand',
-          title: '平台',
-        },
+        getBrandTableColumn(),
         getProjectTableColumn(),
         getRegionTableColumn(),
       ],

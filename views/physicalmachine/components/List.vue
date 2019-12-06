@@ -9,7 +9,7 @@
 <script>
 import qs from 'qs'
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
-import { getRegionTableColumn, getStatusTableColumn, getEnabledTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
+import { getRegionTableColumn, getStatusTableColumn, getEnabledTableColumn, getNameDescriptionTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -68,6 +68,8 @@ export default {
         {
           field: 'custom_ip',
           title: 'IP',
+          width: 120,
+          showOverflow: 'ellipsis',
           slots: {
             default: ({ row }) => {
               let cellWrap = []
@@ -84,6 +86,8 @@ export default {
         {
           field: 'spec',
           title: '规格',
+          width: 120,
+          showOverflow: 'ellipsis',
           formatter: ({ row }) => {
             if (!row.spec) return '-'
             let g = function (sz, prefix) {
@@ -128,12 +132,13 @@ export default {
         {
           field: 'manufacture',
           title: '品牌',
+          width: 70,
           slots: {
             default ({ cellValue, row }) {
               if (row.sys_info && row.sys_info.oem_name) {
-                const imgSrc = `../assets/${row.sys_info.oem_name}.svg`
+                const imgSrc = require(`../assets/${row.sys_info.oem_name}.svg`)
                 return [
-                  <img src={ imgSrc } />,
+                  <img src={ imgSrc } style='width: 60px;' />,
                 ]
               }
             },
@@ -142,14 +147,14 @@ export default {
         {
           field: 'sn',
           title: 'SN',
+          width: 120,
+          showOverflow: 'ellipsis',
         },
-        {
-          field: 'server',
-          title: '分配',
-        },
+        getCopyWithContentTableColumn({ field: 'server', title: '分配' }),
         {
           field: 'login_ssh',
           title: '初始账号',
+          width: 70,
           slots: {
             default: ({ row }) => {
               return [<PasswordFetcher serverId={ row.id } resourceType='baremetal_ssh' />]
@@ -159,6 +164,7 @@ export default {
         {
           field: 'ipmi',
           title: 'IPMI',
+          width: 70,
           slots: {
             default: ({ row }) => {
               return [<PasswordFetcher serverId={ row.id } resourceType='baremetals' />]
@@ -168,6 +174,7 @@ export default {
         {
           field: 'is_maintenance',
           title: '维护模式',
+          width: 70,
           formatter: ({ row }) => {
             return row.is_maintenance ? '维护模式' : '正常'
           },

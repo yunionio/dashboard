@@ -2,10 +2,11 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">关联安全组</div>
     <div slot="body">
-      <a-alert class="mb-2" type="warning" message="提示信息：安全组最多可关联五个，最少关联一个" />
+      <a-alert class="mb-2" type="warning" :message="message" />
       <dialog-selected-tips :count="params.data.length" action="关联安全组" />
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
-      <a-form :form="form.fc" hideRequiredMark>
+      <loader loading v-if="!(bindedSecgroupsLoaded && secgroupsInitLoaded)" />
+      <a-form :form="form.fc" hideRequiredMark v-show="bindedSecgroupsLoaded && secgroupsInitLoaded">
         <a-form-item label="安全组" v-bind="formItemLayout" v-if="bindedSecgroupsLoaded">
           <base-select
             class="w-100"
@@ -15,6 +16,7 @@
             resource="secgroups"
             :mapper="mapperSecgroups"
             :params="{ limit: 20 }"
+            :init-loaded.sync="secgroupsInitLoaded"
             :select-props="{ allowClear: true, placeholder: '请选择安全组', mode: 'tags' }" />
         </a-form-item>
       </a-form>
@@ -30,19 +32,21 @@
 import * as R from 'ramda'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import { HYPERVISORS_MAP } from '@/constants'
 
 export default {
   name: 'VmSetSecgroupDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
     const validateSecgroups = (rule, value, callback) => {
-      let maxError = '最多关联五个'
+      let maxError = (this.isAzure || this.isUCloud) ? '最多关联一个' : '最多关联五个'
       let minError = '最少关联一个'
-      if (!value || value.length < 1) {
-        return callback(minError)
-      }
-      if (value.length > 5) {
+      let max = (this.isAzure || this.isUCloud) ? 1 : 5
+      if (value.length > max) {
         return callback(maxError)
+      }
+      if (value.length < 1) {
+        return callback(minError)
       }
       return callback()
     }
@@ -71,9 +75,25 @@ export default {
           span: 3,
         },
       },
+      secgroupsInitLoaded: false,
       bindedSecgroups: [],
       bindedSecgroupsLoaded: false,
     }
+  },
+  computed: {
+    isAzure () {
+      return this.params.data[0].provider === HYPERVISORS_MAP.azure.provider
+    },
+    isUCloud () {
+      return this.params.data[0].provider === HYPERVISORS_MAP.ucloud.provider
+    },
+    message () {
+      let str = '提示信息：安全组最多可关联五个'
+      if (this.isAzure) {
+        str = '提示信息：安全组最多可关联一个'
+      }
+      return str
+    },
   },
   created () {
     this.fetchBindedSecgroups()

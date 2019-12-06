@@ -11,6 +11,7 @@ import { BAND_WIDTH_OPTION } from '../../../constants'
 import {
   getNameDescriptionTableColumn,
   getRegionTableColumn,
+  getCopyWithContentTableColumn,
 } from '@/utils/common/tableColumn'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -49,18 +50,17 @@ export default {
         {
           field: 'bandwidth',
           title: '带宽',
+          width: 80,
           formatter: ({ cellValue }) => {
             const item = BAND_WIDTH_OPTION.find(val => val.value === `${cellValue}`)
             return item ? item.label : cellValue
           },
         },
-        {
-          field: 'vpc',
-          title: '专有网络',
-        },
+        getCopyWithContentTableColumn({ field: 'vpc', title: '专有网络' }),
         {
           field: 'networks',
           title: '网络数量',
+          width: 70,
         },
         getRegionTableColumn(),
       ],

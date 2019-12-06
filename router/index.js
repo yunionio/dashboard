@@ -22,6 +22,8 @@ import Secgroup from '@Compute/views/secgroup'
 import FlexNetwork from '@Compute/views/flex-network'
 import Wire from '@Compute/views/wire'
 import Servertemplate from '@Compute/views/servertemplate'
+import DiskSnapshot from '@Compute/views/snapshot/DiskSnapshot'
+import InstanceSnapshot from '@Compute/views/snapshot/InstanceSnapshot'
 
 export default {
   index: 2,
@@ -148,6 +150,36 @@ export default {
               name: 'Disk',
               path: '',
               component: Disk,
+            },
+          ],
+        },
+        {
+          path: '/disk-snapshot',
+          meta: {
+            label: '硬盘快照',
+            permission: 'snapshots_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'DiskSnapshot',
+              path: '',
+              component: DiskSnapshot,
+            },
+          ],
+        },
+        {
+          path: '/instance-snapshot',
+          meta: {
+            label: '主机快照',
+            permission: 'instance_snapshots_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'InstanceSnapshot',
+              path: '',
+              component: InstanceSnapshot,
             },
           ],
         },
