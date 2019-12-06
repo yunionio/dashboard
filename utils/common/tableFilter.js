@@ -3,7 +3,11 @@ import store from '@/store'
 import i18n from '@/locales'
 
 export function getBrandItems (key = 'brands') {
-  return (store.getters.capability[key] || []).map(item => ({ key: item, label: item }))
+  let brands = store.getters.capability[key] || []
+  if (store.getters.capability[`disabled_${key}`]) {
+    brands = brands.concat(store.getters.capability[`disabled_${key}`] || [])
+  }
+  return brands.map(item => ({ key: item, label: item }))
 }
 
 export function mapperStatusToItems (items, statusModule) {
