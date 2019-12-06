@@ -15,6 +15,7 @@ import Duration from '@Compute/sections/Duration'
 import InstanceGroups from '@Compute/sections/InstanceGroups'
 import DataDisk from '@Compute/sections/DataDisk'
 import BottomBar from '../components/BottomBar'
+import Servertemplate from '../components/Servertemplate'
 import SystemDisk from '../components/SystemDisk'
 import Tag from '../components/Tag'
 import { WORKFLOW_TYPES } from '@/constants/workflow'
@@ -48,6 +49,7 @@ export default {
     Duration,
     InstanceGroups,
     Tag,
+    Servertemplate,
   },
   mixins: [workflowMixin],
   props: {
@@ -92,6 +94,9 @@ export default {
     }
   },
   computed: {
+    isServertemplate () { // 主机模板
+      return this.$route.query.source === 'servertemplate'
+    },
     project_domain () {
       return this.form.fd.domain ? this.form.fd.domain.key : this.$store.getters.userInfo.projectDomainId
     },
@@ -144,6 +149,7 @@ export default {
       }
     },
     isOpenWorkflow () {
+      if (this.isServertemplate) return false
       return this.checkWorkflowEnabled(WORKFLOW_TYPES.APPLY_MACHINE)
     },
     isSnapshotImageType () { // 镜像类型为主机快照
@@ -154,6 +160,7 @@ export default {
     this.$bus.$on('VMInstanceCreateUpdateFi', this.updateFi, this)
     this.zoneM = new Manager('zones')
     this.serverM = new Manager('servers')
+    this.servertemplateM = new Manager('servertemplates', 'v2')
     this.serverskusM = new Manager('serverskus')
     this.schedulerM = new Manager('schedulers', 'v1')
   },
@@ -186,12 +193,31 @@ export default {
       e.preventDefault()
       this.validateForm()
         .then(formData => {
-          const genCreateData = new GenCreateData(formData, this.form.fi)
-          if (this.isOpenWorkflow) {
-            this.doCreateWorkflow(genCreateData)
-          } else {
-            this.doForecast(genCreateData)
+          const genCreteData = new GenCreateData(formData, this.form.fi)
+          if (this.isServertemplate) { // 创建主机模板
+            this.doCreateServertemplate(genCreteData)
+          } else if (this.isOpenWorkflow) { // 提交工单
+            this.doCreateWorkflow(genCreteData)
+          } else { // 创建主机
+            this.doForecast(genCreteData)
           }
+        })
+    },
+    doCreateServertemplate (genCreateData) {
+      const data = genCreateData.all()
+      const templateData = {
+        name: this.form.fc.getFieldValue('servertemplate_name'),
+        content: data,
+      }
+      this.submiting = true
+      this.servertemplateM.create({ data: templateData })
+        .then(() => {
+          this.submiting = false
+          this.$message.success('操作成功')
+          this.$router.push('/servertemplate')
+        })
+        .catch(() => {
+          this.submiting = false
         })
     },
     doCreateWorkflow (genCreateData) {
