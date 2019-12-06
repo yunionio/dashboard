@@ -183,8 +183,8 @@ export default {
     imageParams () {
       const params = {
         limit: 0,
-        scope: this.$store.getters.scope,
         details: true,
+        ...this.scopeParams,
       }
       switch (this.form.fd.imageType) {
         case IMAGES_TYPE_MAP.standard.key:
@@ -244,10 +244,10 @@ export default {
     },
     networkParam () {
       return {
-        scope: this.$store.getters.scope,
         filter: 'server_type.notin(ipmi, pxe)',
         usable: true,
-        zone: _.get(this.form, 'fd.zone.key'),
+        ...this.skuCloudregionZone,
+        ...this.scopeParams,
       }
     },
   },
@@ -324,8 +324,8 @@ export default {
       const params = {
         show_emulated: true,
         resource_type: 'shared',
-        scope: this.$store.getters.scope,
         host_type: 'baremetal',
+        ...this.scopeParams,
       }
       const { key } = this.form.fc.getFieldValue('zone')
       this.zoneM.getSpecific({ id: key, spec: 'capability', params })
