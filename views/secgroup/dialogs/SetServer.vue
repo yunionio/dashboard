@@ -5,9 +5,10 @@
       <dialog-selected-tips :count="params.data.length" action="关联云服务器" />
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
-        <a-form-item label="主机" v-bind="formItemLayout" v-if="bindServersLoaded">
+        <a-form-item label="主机" v-bind="formItemLayout">
           <base-select
             class="w-100"
+            @update:options="onServerSucceed"
             filterable
             remote
             v-decorator="decorators.sergroups"
@@ -36,13 +37,13 @@ export default {
   name: 'SetServerDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
-    const validateServers = (rule, value, callback) => {
-      let minError = '最少关联一个'
-      if (!value || value.length < 1) {
-        return callback(minError)
-      }
-      return callback()
-    }
+    // const validateServers = (rule, value, callback) => {
+    //   let minError = '最少关联一个'
+    //   if (!value || value.length < 1) {
+    //     return callback(minError)
+    //   }
+    //   return callback()
+    // }
     return {
       loading: false,
       scope: this.$store.getters.scope,
@@ -55,7 +56,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { validator: validateServers, trigger: 'change' },
+              // { validator: validateServers, trigger: 'change' },
             ],
           },
         ],
@@ -76,6 +77,7 @@ export default {
   computed: {
     ...mapGetters([
       'isAdminMode',
+      'userInfo',
     ]),
     requestParams () {
       if (this.isAdminMode) {
@@ -84,23 +86,23 @@ export default {
         // }
         return {
           search: '',
-          limit: 20,
+          limit: 0,
           offset: 0,
           filter: 'hypervisor.notin(container, baremetal, esxi)',
-          scope: this.scope,
+          project_domain: this.userInfo.projectDomain,
         }
       } else {
-        if (this.requestParams.scope) {
-          return {
-            search: '',
-            limit: 20,
-            offset: 0,
-            filter: 'hypervisor.notin(container, baremetal, esxi)',
-          }
-        }
+        // if (this.requestParams.scope) {
+        //   return {
+        //     search: '',
+        //     limit: 20,
+        //     offset: 0,
+        //     filter: 'hypervisor.notin(container, baremetal, esxi)',
+        //   }
+        // }
         return {
           search: '',
-          limit: 20,
+          limit: 0,
           offset: 0,
           filter: 'hypervisor.notin(container, baremetal, esxi)',
           tenant: this.params.data[0]['tenant_id'],
@@ -109,7 +111,7 @@ export default {
     },
   },
   created () {
-    this.fetchBindedServers()
+    // this.fetchBindedServers()
   },
   methods: {
     mapperServers (data) {
@@ -117,17 +119,23 @@ export default {
       data = R.uniqBy(item => item.id, data)
       return data
     },
+    onServerSucceed () {
+      this.fetchBindedServers()
+    },
     async fetchBindedServers () {
       const manager = new this.$Manager('servers')
       try {
-        const { data: { data = [] } } = await manager.list({
-          params: {
-            scope: this.scope,
-            filter: 'hypervisor.notin(container, baremetal, esxi)',
-            limit: 10000,
-            secgroup: this.params.data[0]['id'],
-          },
-        })
+        const params = {
+          scope: this.scope,
+          filter: 'hypervisor.notin(container, baremetal, esxi)',
+          limit: 0,
+          secgroup: this.params.data[0]['id'],
+        }
+        if (this.isAdminMode) {
+          params['project_domain'] = this.userInfo.projectDomain
+          delete params.scope
+        }
+        const { data: { data = [] } } = await manager.list({ params })
         this.bindServers = data
         this.bindServersLoaded = true
         this.$nextTick(() => {
