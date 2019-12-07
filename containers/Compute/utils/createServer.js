@@ -155,8 +155,10 @@ export const createVmDecorators = type => {
         'loginPassword',
         {
           initialValue: '',
+          validateFirst: true,
           rules: [
             { required: true, message: '请输入密码' },
+            { validator: validateForm('sshPassword') },
           ],
         },
       ],
@@ -323,7 +325,7 @@ export const createVmDecorators = type => {
       networkType: [
         'networkType',
         {
-          initialValue: NETWORK_OPTIONS_MAP.manual.key,
+          initialValue: NETWORK_OPTIONS_MAP.default.key,
         },
       ],
       networkConfig: {
@@ -500,6 +502,9 @@ export const createVmDecorators = type => {
       ],
       bandwidth: [
         'eip_bw',
+        {
+          initialValue: 1,
+        },
       ],
       eip: [
         'eip',
@@ -754,7 +759,7 @@ export class GenCreateData {
     switch (this.fd.loginType) {
       case LOGIN_TYPES_MAP.keypair.key:
         ret.key = 'keypair'
-        ret.value = this.fd.loginKeypair
+        ret.value = this.fd.loginKeypair.key
         break
       case LOGIN_TYPES_MAP.image.key:
         ret.key = 'reset_password'

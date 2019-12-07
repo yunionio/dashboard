@@ -22,7 +22,7 @@ export const REGEXP = {
     message: i18n.t('validator.resourceName'),
   },
   serverName: {
-    regexp: /^[a-zA-Z][a-zA-Z0-9-]{0,127}$/,
+    regexp: /^[a-zA-Z][a-zA-Z0-9-]{0,127}([a-zA-Z0-9-]|#{1,3})$/,
     message: i18n.t('validator.serverName'),
   },
   email: {
@@ -97,6 +97,32 @@ export const REGEXP = {
       return false
     },
     message: i18n.t('validator.dbName'),
+  },
+  sshPassword: {
+    func: value => {
+      const ALL_DIGITS = /\d+/g
+      const ALL_LETTERS = /[a-z]/g
+      const ALL_UPPERS = /[A-Z]/g
+      /* eslint-disable no-useless-escape */
+      const ALL_PUNC = '~`!@#$%^&*()-_=+[]{}|;\':\",./<>?'.split('')
+      let spec = ALL_PUNC.some(v => value.includes(v))
+      if (
+        !(
+          ALL_DIGITS.test(value) &&
+          ALL_LETTERS.test(value) &&
+          ALL_UPPERS.test(value) &&
+          spec &&
+          value.charAt(0) !== '/' &&
+          value.length >= 12 &&
+          value.length <= 30
+        )
+      ) {
+        return false
+      }
+      return true
+    },
+    // json 里面下面的字符串不合法，只能放在js文件里面
+    message: '12~30个字符，必须同时包含三项（大小写字母、数字、特殊符号 ~`!@#$%^&*()-_=+[]{}|:\':\\",./<>?中至少一个），不能以“/”开头',
   },
 }
 
