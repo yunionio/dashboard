@@ -95,7 +95,22 @@
       "attach_disk": "挂载磁盘中",
       "detach_disk": "卸载磁盘中",
       "disk_reset": "磁盘回滚中",
-      "disk_reset_failed": "磁盘回滚失败"
+      "disk_reset_failed": "磁盘回滚失败",
+      "maintain_fail": "维护失败",
+      "io_throttle": "开始磁盘限速",
+      "start_resize_disk": "开始扩容",
+      "start_instance_snapshot": "开始创建主机快照",
+      "probing": "探测中",
+      "probe_fail": "探测失败",
+      "instance_snapshot_failed": "创建主机快照失败",
+      "start_snapshot_reset": "开始回滚主机快照",
+      "snapshot_reset_failed": "主机快照回滚失败",
+      "clone_from_snapshot_failed": "克隆失败",
+      "insert_fail": "插入虚拟光盘失败",
+      "inserting_iso": "正在插入虚拟光盘",
+      "start_eject": "开始退出虚拟光盘",
+      "ejecting_iso": "正在退出虚拟光盘",
+      "eject_fail": "退出虚拟光盘失败"
     },
     "network": {
       "init": "初始化",

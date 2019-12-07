@@ -18,6 +18,7 @@
         <a-form-item label="操作系统" v-bind="formItemLayout" v-if="isPublic">
           <os-select
             :type="type"
+            :osType="osType"
             :hypervisor="firstData.hypervisor"
             :image-params="imageParams"
             :cache-image-params="cacheImageParams"
@@ -177,6 +178,9 @@ export default {
         return params
       }
       return params
+    },
+    osType () {
+      return this.params.data[0].os_type
     },
   },
   destroyed () {

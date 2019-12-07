@@ -25,7 +25,7 @@
           <div>{{ imgHidden.text }}</div>
         </a-form-item>
         <a-form-item label="管理员密码" v-bind="formItemLayout" v-if="!isZStack">
-          <server-password :decorator="decorators.loginConfig" />
+          <server-password :decorator="decorators.loginConfig" :loginTypes="loginTypes" />
         </a-form-item>
         <a-form-item label="自动启动" v-bind="formItemLayout" extra="重装系统后是否自动启动">
           <a-switch v-decorator="decorators.autoStart" />
@@ -42,7 +42,7 @@
 <script>
 import OsSelect from '@Compute/sections/OsSelect'
 import ServerPassword from '@Compute/sections/ServerPassword'
-import { SERVER_TYPE } from '@Compute/constants'
+import { SERVER_TYPE, LOGIN_TYPES_MAP } from '@Compute/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { HYPERVISORS_MAP } from '@/constants'
@@ -227,6 +227,34 @@ export default {
     },
     osType () {
       return this.params.data[0].os_type
+    },
+    loginTypes () {
+      const loginTypes = { ...LOGIN_TYPES_MAP }
+      const hypervisor = this.hypervisor
+      if (HYPERVISORS_MAP.ucloud.key === hypervisor) {
+        delete loginTypes[LOGIN_TYPES_MAP.image.key]
+        delete loginTypes[LOGIN_TYPES_MAP.keypair.key]
+      }
+      if (HYPERVISORS_MAP.aws.key === hypervisor) {
+        delete loginTypes[LOGIN_TYPES_MAP.random.key]
+        delete loginTypes[LOGIN_TYPES_MAP.password.key]
+      }
+      if ([HYPERVISORS_MAP.azure.key, HYPERVISORS_MAP.huawei.key].includes(hypervisor)) {
+        delete loginTypes[LOGIN_TYPES_MAP.image.key]
+      }
+      if (this.osType === 'Windows') {
+        // 以下平台在选择 windows 镜像时禁用关联密钥
+        const disableKeypairHyper = [
+          HYPERVISORS_MAP.azure.key,
+          HYPERVISORS_MAP.aliyun.key,
+          HYPERVISORS_MAP.qcloud.key,
+          HYPERVISORS_MAP.esxi.key,
+        ]
+        if (disableKeypairHyper.includes(hypervisor)) {
+          delete loginTypes[LOGIN_TYPES_MAP.keypair.value]
+        }
+      }
+      return Object.keys(loginTypes)
     },
   },
   created () {
