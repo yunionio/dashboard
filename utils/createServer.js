@@ -469,7 +469,7 @@ export const createVmDecorators = type => {
       duration: [
         'duration',
         {
-          initialValue: '1M',
+          initialValue: '1m',
         },
       ],
       auto_prepaid_recycle: [
