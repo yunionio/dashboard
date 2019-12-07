@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="mb-4 d-flex">
-      <refresh-button :loading="loading" @refresh="refresh" />
+      <refresh-button :loading="loading" @refresh="refresh" v-show="isRefreshed" />
       <template v-if="groupActions">
         <actions :options="groupActions" button-type="default" group />
       </template>
@@ -9,6 +9,7 @@
     <card-list v-if="hasData" :list="list.data" :cardFields="cardFields" :singleActions="singleActions" />
     <loader v-else :loading="loading" />
     <a-pagination
+      v-show="showPageer && list.total !== 0"
       class="my-3 text-center"
       showSizeChanger
       :pageSize.sync="list.limit"
@@ -47,6 +48,14 @@ export default {
     cardFields: {
       type: Object,
       required: true,
+    },
+    showPageer: {
+      type: Boolean,
+      default: true,
+    },
+    isRefreshed: {
+      type: Boolean,
+      default: true,
     },
   },
   data () {

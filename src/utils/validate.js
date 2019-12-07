@@ -124,6 +124,10 @@ export const REGEXP = {
     // json 里面下面的字符串不合法，只能放在js文件里面
     message: '12~30个字符，必须同时包含三项（大小写字母、数字、特殊符号 ~`!@#$%^&*()-_=+[]{}|:\':\\",./<>?中至少一个），不能以“/”开头',
   },
+  imageName: {
+    regexp: /^[a-zA-Z][a-zA-Z0-9._-]{1,127}$/,
+    message: i18n.t('validator.imageName'),
+  },
 }
 
 /**
