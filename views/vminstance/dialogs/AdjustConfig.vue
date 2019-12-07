@@ -2,13 +2,13 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{action}}</div>
     <div slot="body">
-      <a-alert class="mb-2" type="warning">
+      <a-alert class="mb-2" type="warning" v-if="tips">
         <div slot="message">
           {{ tips }}
         </div>
       </a-alert>
       <dialog-selected-tips :count="params.data.length" :action="action" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <vxe-grid class="mb-2" :data="params.data" :columns="columns" />
       <a-form
         :form="form.fc">
         <a-form-item label="CPU核数" v-bind="formItemLayout" class="mb-0">
@@ -26,7 +26,7 @@
         </a-form-item>
         <a-form-item label="数据盘" v-bind="formItemLayout">
           <data-disk
-            v-if="hypervisor"
+            v-if="hypervisor && form.fi.capability.storage_types"
             ref="dataDiskRef"
             :decorator="decorators.dataDisk"
             :type="type"
@@ -258,14 +258,17 @@ export default {
         }
       }
     },
+    hypervisor () {
+      return this.selectedItem.hypervisor
+    },
     tips () {
       if (this.hotplug) {
         return '提示：所选云服务器中部分不支持在开机状态下调整CPU和内存'
       }
-      return '提示：开机调整配置时CPU和内存的大小只能往上调整'
-    },
-    hypervisor () {
-      return this.selectedItem.hypervisor
+      if ([HYPERVISORS_MAP.kvm.hypervisor, HYPERVISORS_MAP.azure.hypervisor].includes(this.hypervisor)) {
+        return '提示：开机调整配置时CPU和内存的大小只能往上调整'
+      }
+      return ''
     },
     type () {
       const brand = this.selectedItem.brand
@@ -299,7 +302,7 @@ export default {
       return params
     },
     disableCpus () {
-      const cpu = this.form.fd.vcpu
+      const cpu = this.selectedItem.vcpu_count
       const cpus = this.form.fi.cpuMem.cpus || []
       if (this.isSomeRunning && cpus.length > 0) {
         return cpus.filter((item) => { return item < cpu })
@@ -307,7 +310,7 @@ export default {
       return []
     },
     disableMems () {
-      const vmem = this.form.fd.vmem
+      const vmem = this.selectedItem.vmem_size
       const mems = this.form.fi.cpuMem.mems_mb || []
       if (this.isSomeRunning && mems.length > 0) {
         return mems.filter((item) => { return item < vmem })
@@ -316,6 +319,10 @@ export default {
     },
     isOpenWorkflow () {
       return this.checkWorkflowEnabled(this.WORKFLOW_TYPES.APPLY_SERVER_CHANGECONFIG)
+    },
+    columns () {
+      const showFields = ['name', 'ip', 'instance_type', 'status']
+      return this.params.columns.filter((item) => { return showFields.includes(item.field) })
     },
   },
   created () {
@@ -353,10 +360,12 @@ export default {
       this.form.fd.datadisks = conf[2]
       this.beforeDataDisks = [ ...this.form.fd.datadisks ]
 
-      this.form.fd.datadisks.forEach((v) => {
-        this.$refs.dataDiskRef.add({ size: v.value, diskType: v.type, disabled: true, ...v })
-      })
       this.$nextTick(() => {
+        setTimeout(() => {
+          this.form.fd.datadisks.forEach((v) => {
+            this.$refs.dataDiskRef.add({ size: v.value, diskType: v.type, disabled: true, ...v })
+          })
+        }, 3000)
         this.form.fc.setFieldsValue({ vcpu: this.form.fd.vcpu_count, vmem: this.form.fd.vmem })
       })
     },
