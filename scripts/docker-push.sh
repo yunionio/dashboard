@@ -14,6 +14,7 @@ TAG=${TAG:-latest}
 
 build_src() {
     yarn install
+    ./setup.sh
     yarn run build
 }
 
