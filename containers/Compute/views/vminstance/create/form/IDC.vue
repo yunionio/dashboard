@@ -313,7 +313,6 @@ export default {
         const formValue = this.form.fc.getFieldsValue()
         const newField = resolveValueChangeField(changedFields)
         const keys = Object.keys(newField)
-        console.log(keys, 'keys')
         const { zone, cloudregion } = newField
         if (keys.includes('zone')) {
           if (!R.equals(zone, this.form.fd.zone)) { // 可用区变化

@@ -1,10 +1,13 @@
 const resourceMode = {
-  networks: (vm, h) => ( // IP子网
-    <div>
-      <span style="float: left">{ vm.getLabel() }</span>
-      <span style="float: right; color: #8492a6; font-size: 13px">可用: { vm.data.ports - vm.data.ports_used }</span>
-    </div>
-  ),
+  networks: (vm, h) => {
+    const text = vm.getLabel()
+    return ( // IP子网
+      <div class='d-flex'>
+        <span class='text-truncate flex-fill mr-2' title={ text }>{ text }</span>
+        <span style="color: #8492a6; font-size: 13px">可用: { vm.data.ports - vm.data.ports_used }</span>
+      </div>
+    )
+  },
 }
 
 export default {
@@ -23,20 +26,22 @@ export default {
     },
     resource: {
       type: String,
-      required: true,
     },
   },
   methods: {
     getLabel () {
+      let text = this.data[this.nameKey]
       if (this.labelFormat) {
-        return this.labelFormat(this.data)
+        text = this.labelFormat(this.data)
       }
-      return this.data[this.nameKey]
+      return (<div>{text}</div>)
     },
   },
   render (h) {
-    if (resourceMode[this.resource]) {
-      return resourceMode[this.resource](this, h)
+    if (this.resource) { // 兼容外传 options 的情况
+      if (resourceMode[this.resource]) {
+        return resourceMode[this.resource](this, h)
+      }
     }
     return this.getLabel()
   },
