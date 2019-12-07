@@ -8,6 +8,8 @@
 </template>
 
 <script>
+import * as R from 'ramda'
+
 export default {
   name: 'DurationInput',
   props: {
@@ -17,7 +19,8 @@ export default {
     },
   },
   data () {
-    const num = this.value.match(/^\d+/)[0]
+    const numMatch = this.value.match(/^\d+/)
+    const num = R.is(Array, numMatch) ? numMatch[0] : undefined
     const time = this.value.match(/[a-z]+$/) ? this.value.match(/[a-z]+$/)[0] : 'h'
     return {
       num,
@@ -32,7 +35,8 @@ export default {
   },
   watch: {
     value () {
-      const num = this.value.match(/^\d+/)[0]
+      const numMatch = this.value.match(/^\d+/)
+      const num = R.is(Array, numMatch) ? numMatch[0] : undefined
       const time = this.value.match(/[a-z]+$/)[0]
       this.num = num
       this.time = time
@@ -44,7 +48,8 @@ export default {
       this.emit()
     },
     inputChange (val) {
-      this.num = val.target.value
+      const v = val.target.value === '0' ? 1 : val.target.value
+      this.num = v || 1
       this.emit()
     },
     emit () {
