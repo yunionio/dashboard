@@ -12,29 +12,29 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'comma-dangle': ['error', 'always-multiline'],
     'import/order': ['error', {
-      'groups': ['builtin', 'external', 'parent', 'sibling', 'index'],
+      groups: ['builtin', 'external', 'parent', 'sibling', 'index'],
     }],
     'vue/html-closing-bracket-newline': ['error', {
-      'multiline': 'never',
+      multiline: 'never',
     }],
     'vue/html-closing-bracket-spacing': ['error', {
-      'startTag': 'never',
-      'endTag': 'never',
-      'selfClosingTag': 'always',
+      startTag: 'never',
+      endTag: 'never',
+      selfClosingTag: 'always',
     }],
     'vue/component-name-in-template-casing': ['error', 'kebab-case'],
     'vue/html-quotes': ['error', 'double'],
     'vue/html-self-closing': ['error', {
-      'html': {
+      html: {
         'void': 'always',
-        'normal': 'always',
-        'component': 'always',
+        normal: 'always',
+        component: 'always',
       },
-      'svg': 'always',
-      'math': 'always',
+      svg: 'always',
+      math: 'always',
     }],
     'vue/order-in-components': ['error', {
-      'order': [
+      order: [
         'el',
         'name',
         'parent',
