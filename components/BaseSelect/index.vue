@@ -7,18 +7,24 @@
     @search="loadOpts"
     :loading="loading">
     <template>
-      <a-select-option v-for="item of resOpts" :key="item.id" :value="item.id" :disabled="item.__disabled">{{ getLabel(item) }}</a-select-option>
+      <a-select-option v-for="item of resOpts" :key="item.id" :value="item.id" :disabled="item.__disabled">
+        <option-label :nameKey="nameKey" :labelFormat="labelFormat" :data="item" :resource="resource" />
+      </a-select-option>
     </template>
   </a-select>
 </template>
 <script>
 import * as R from 'ramda'
 import debounce from 'lodash/debounce'
+import OptionLabel from './OptionLabel'
 import { Manager } from '@/utils/manager'
 import { arrayToObj } from '@/utils/utils'
 
 export default {
   name: 'BaseSelect',
+  components: {
+    OptionLabel,
+  },
   inheritAttrs: false,
   props: {
     value: {
