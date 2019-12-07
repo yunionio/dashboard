@@ -16,7 +16,7 @@ const BACKUP_TYPE = {
   manual: '手动',
 }
 export default {
-  name: 'RDSBackupList',
+  name: 'RDSBAckupList',
   mixins: [WindowsMixin],
   props: {
     params: {
@@ -59,7 +59,7 @@ export default {
         },
         {
           id: 'engine',
-          title: '数据库引擎',
+          title: '数据库类型',
           slots: {
             default: ({ row }) => {
               return `${row.engine || ''} ${row.engine_version || ''}`
@@ -101,7 +101,6 @@ export default {
           action: () => {
             this.createDialog('RDSBackupCreate', {
               list: this.list,
-              rdsItem: this.data,
             })
           },
           meta: () => {
@@ -135,19 +134,12 @@ export default {
               list: this.list,
             })
           },
-          meta: (obj) => {
-            return {
-              validate: obj.status === 'ready',
-              tooltip: obj.status !== 'ready' ? '正常状态下的备份，才可恢复' : '',
-            }
-          },
         },
         {
           label: '删除',
           action: (obj) => {
             this.createDialog('DeleteResDialog', {
               title: '删除',
-              name: '备份',
               data: [obj],
               columns: this.columns,
               list: this.list,
@@ -159,7 +151,6 @@ export default {
   },
   created () {
     this.list.fetchData()
-    this.initSidePageTab('rds-backup-detail')
   },
 }
 </script>

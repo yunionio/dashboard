@@ -2,15 +2,18 @@
   <detail
     :data="data"
     :base-info="baseInfo"
-    :extra-info="extraInfo" />
+    :extra-info="extraInfo"
+    statusModule="redis" />
 </template>
 
 <script>
 // import BrandIcon from '@/sections/BrandIcon'
 import { sizestr } from '@/utils/utils'
+import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'redisDetail',
+  mixins: [WindowsMixin],
   props: {
     list: {
       type: Object,
@@ -24,19 +27,6 @@ export default {
   data () {
     return {
       baseInfo: [
-        {
-          field: 'name',
-          title: '名称',
-        },
-        {
-          field: 'status',
-          title: '状态',
-          slots: {
-            default: ({ row }) => {
-              return <status status={ row.status } statusModule='redis' />
-            },
-          },
-        },
         {
           field: 'project_domain',
           title: '部门（域）',
@@ -76,10 +66,6 @@ export default {
             {
               field: 'instance_type',
               title: '实例规格',
-            },
-            {
-              field: 'instance_type',
-              title: '实例类型',
             },
             {
               field: 'cpu_arch',
@@ -225,9 +211,9 @@ export default {
     }
   },
   methods: {
-    async handleSwitchPublicAddress (bool) {
+    async fetchSwitchPublic (bool) {
       if (bool) {
-        this.list.onManager('performAction', {
+        return this.list.onManager('performAction', {
           steadyStatus: 'running',
           id: this.data.id,
           managerArgs: {
@@ -235,7 +221,7 @@ export default {
           },
         })
       } else {
-        this.list.onManager('performAction', {
+        return this.list.onManager('performAction', {
           steadyStatus: 'running',
           id: this.data.id,
           managerArgs: {
@@ -243,6 +229,24 @@ export default {
           },
         })
       }
+    },
+    handleSwitchPublicAddress (bool) {
+      const txts = {
+        'true': {
+          title: '确认开启外网地址？',
+          content: '开启外网地址后将外网IP设置白名单即可访问',
+        },
+        'false': {
+          title: '确认关闭外网地址？',
+          content: '关闭外网地址后外网IP将无法访问',
+        },
+      }
+      this.createDialog('ConfirmDialog', {
+        ...txts[`${bool}`],
+        onOk: () => {
+          return this.fetchSwitchPublic(bool)
+        },
+      })
     },
   },
 }

@@ -1,21 +1,22 @@
 <template>
-    <base-dialog @cancel="cancelDialog">
-        <div slot="header">创建备份</div>
-        <a-form slot="body" :form="form.fc" class="mt-3">
-            <a-form-item v-bind="formItemLayout" label="名称">
-                <a-input placeholder="以字母开头，由小写字母，数字、下划线组成。长度不超过16个字符" v-decorator="decorators.name" />
-            </a-form-item>
-            <a-form-item v-bind="formItemLayout" label="描述">
-                 <a-textarea placeholder="请输入描述信息"
-                 :autosize="{ minRows: 4, maxRows: 7 }"
-                 v-decorator="decorators.description" />
-            </a-form-item>
-        </a-form>
-         <div slot="footer">
-            <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
-            <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
-         </div>
-    </base-dialog>
+  <base-dialog @cancel="cancelDialog">
+    <div slot="header">创建备份</div>
+    <a-form slot="body" :form="form.fc" class="mt-3">
+      <a-form-item v-bind="formItemLayout" label="名称">
+        <a-input placeholder="以字母开头，由小写字母，数字、下划线组成。长度不超过16个字符" v-decorator="decorators.name" />
+        <name-repeated v-slot:extra res="dbinstancebackups" :name="form.fc.getFieldValue('name')" />
+      </a-form-item>
+      <a-form-item v-bind="formItemLayout" label="描述">
+        <a-textarea placeholder="请输入描述信息"
+        :autosize="{ minRows: 4, maxRows: 7 }"
+        v-decorator="decorators.description" />
+      </a-form-item>
+    </a-form>
+    <div slot="footer">
+      <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
+      <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
+    </div>
+  </base-dialog>
 </template>
 
 <script>

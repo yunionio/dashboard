@@ -3,16 +3,13 @@
         <div slot="header">{{params.title}}</div>
         <a-form slot="body" :form="form.fc" class="mt-3">
             <a-form-item  v-bind="formItemLayout" label="名称">
-                <a-input placeholder="字母开头，数字和字母大小写组合，长度为2-128个字符，不含“.”,“_”,“@”" v-decorator="decorators.name" />
+                <a-input :placeholder="$t('validator.dbName')" v-decorator="decorators.name" />
             </a-form-item>
             <a-form-item v-bind="formItemLayout" label="数据库">
               <account-privileges :rdsItem="params.rdsItem" />
             </a-form-item>
-            <a-form-item v-bind="formItemLayout" label="密码">
-                <a-input-password type="password" placeholder="请输入密码" v-decorator="decorators.password" />
-            </a-form-item>
-             <a-form-item v-bind="formItemLayout" label="确认密码">
-                <a-input-password type="password" placeholder="请再次确认密码" v-decorator="decorators.checkPassword" />
+            <a-form-item label="密码" v-bind="formItemLayout">
+              <server-password :loginTypes="['random', 'password']" :decorator="decorators.loginConfig" />
             </a-form-item>
         </a-form>
          <div slot="footer">
@@ -25,6 +22,7 @@
 <script>
 import { CreateServerForm } from '@Compute/constants'
 import { RDS_ACCOUNT_PRIVILEGES } from '@DB/constants'
+import ServerPassword from '@Compute/sections/ServerPassword'
 import AccountPrivileges from '../components/AccountPrivileges'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -34,6 +32,7 @@ export default {
   name: 'RDSAccountCreateDialog',
   components: {
     AccountPrivileges,
+    ServerPassword,
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
@@ -65,7 +64,7 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: '请输入名称' },
-              { validator: validateForm('resourceName') },
+              { validator: validateForm('dbName') },
             ],
           },
         ],
@@ -96,6 +95,14 @@ export default {
             ],
           },
         ],
+        loginConfig: {
+          loginType: [
+            'loginType',
+            {
+              initialValue: 'random',
+            },
+          ],
+        },
       }
       return decorators
     },

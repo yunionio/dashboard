@@ -37,7 +37,7 @@
 </template>
 <script>
 import { CreateServerForm } from '@Compute/constants'
-import { ENGINE_ARCH, NODE_TYPE } from '@DB/views/redis/constants'
+import { ENGINE_ARCH, ENGINE_KEYS, NODE_TYPE, NODE_KEYS } from '@DB/views/redis/constants'
 import { sizestr } from '@/utils/utils'
 
 export default {
@@ -127,7 +127,7 @@ export default {
         })
         versions = Object.keys(_versions)
       }
-      this.versions = versions
+      this.versions = versions.sort((a, b) => a - b)
       this.$nextTick(() => {
         if (!this.decorators.engine_version) {
           this.FC.setFieldsValue({
@@ -166,7 +166,9 @@ export default {
         })
         archs = Object.keys(_archs)
       }
-      this.archs = archs
+      this.archs = ENGINE_KEYS.filter(key => {
+        return archs.indexOf(key) > -1
+      })
       if (archs.indexOf(category) === -1) {
         this.FC.setFieldsValue({
           local_category: archs && archs.length > 0 ? archs[0] : undefined,
@@ -186,7 +188,9 @@ export default {
       if (this.filterParams[engine] && this.filterParams[engine][version] && this.filterParams[engine][version][category]) {
         nodeTypes = Object.keys(this.filterParams[engine][version][category])
       }
-      this.nodeTypes = nodeTypes
+      this.nodeTypes = NODE_KEYS.filter(k => {
+        return nodeTypes.indexOf(k) > -1
+      })
       if (nodeTypes.indexOf(nodeType) === -1) {
         this.FC.setFieldsValue({
           node_type: nodeTypes && nodeTypes.length > 0 ? nodeTypes[0] : undefined,
@@ -203,7 +207,6 @@ export default {
       const category = this.getFieldValue('local_category')
       const nodeType = target.value || this.getFieldValue('node_type')
       const memory = this.getFieldValue('memory_size_mb')
-
       let memorys = []
       if (this.filterParams[engine] && this.filterParams[engine][version] && this.filterParams[engine][version][category] && this.filterParams[engine][version][category][nodeType]) {
         memorys = Object.keys(this.filterParams[engine][version][category][nodeType])
