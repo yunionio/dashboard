@@ -97,6 +97,15 @@ export default {
     isServertemplate () { // 主机模板
       return this.$route.query.source === 'servertemplate'
     },
+    skuCloudregionZone () {
+      const skuCloudregionZone = {}
+      if (R.is(Object, this.form.fd.sku)) {
+        const { zone_id: zoneId, cloudregion_id: cloudregionId } = this.form.fd.sku
+        skuCloudregionZone.zone = zoneId
+        skuCloudregionZone.cloudregion = cloudregionId
+      }
+      return skuCloudregionZone
+    },
     project_domain () {
       return this.form.fd.domain ? this.form.fd.domain.key : this.$store.getters.userInfo.projectDomainId
     },
@@ -109,7 +118,7 @@ export default {
           project_domain: this.project_domain,
         }
       }
-      return {}
+      return { scope: this.$store.getters.scope }
     },
     gpuOptions () {
       const specs = this.form.fi.capability.specs || {}

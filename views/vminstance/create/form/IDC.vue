@@ -16,7 +16,7 @@
           :cloudregion-params="cloudregionParams"
           :decorator="decorators.cloudregionZone" />
       </a-form-item>
-      <a-form-item label="名称" v-if="!isServertemplate" v-bind="formItemLayout" extra="名称支持序号占位符‘#’，用法如下。 名称：host## 数量：2、实例为：host01、host02">
+      <a-form-item label="名称" v-if="!isServertemplate" v-bind="formItemLayout" extra="名称支持有序后缀占位符‘#’，用法举例，名称host##，数量2，创建后实例的名称依次为host01、host02，已有同名实例，序号顺延">
         <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverName')" />
       </a-form-item>
       <a-form-item label="申请原因" v-bind="formItemLayout" v-if="isOpenWorkflow">
@@ -183,8 +183,8 @@ export default {
     imageParams () {
       const params = {
         limit: 0,
-        scope: this.$store.getters.scope,
         details: true,
+        ...this.scopeParams,
       }
       switch (this.form.fd.imageType) {
         case IMAGES_TYPE_MAP.standard.key:
@@ -244,10 +244,17 @@ export default {
     },
     networkParam () {
       return {
-        scope: this.$store.getters.scope,
         filter: 'server_type.notin(ipmi, pxe)',
         usable: true,
-        zone: _.get(this.form, 'fd.zone.key'),
+        ...this.skuCloudregionZone,
+        ...this.scopeParams,
+      }
+    },
+    instanceSpecParmas () {
+      return {
+        usable: true,
+        enabled: true,
+        cloudregion: _.get(this.form.fd, 'cloudregion.key'),
       }
     },
   },
@@ -307,14 +314,14 @@ export default {
         const newField = resolveValueChangeField(changedFields)
         const keys = Object.keys(newField)
         const { zone, cloudregion } = newField
-        if (keys.includes('cloudregion')) {
-          if (!R.equals(cloudregion, this.form.fd.cloudregion)) { // 区域变化
-            this.fetchInstanceSpeces()
-          }
-        }
         if (keys.includes('zone')) {
           if (!R.equals(zone, this.form.fd.zone)) { // 可用区变化
             this.fetchCapability()
+          }
+        }
+        if (keys.includes('cloudregion')) {
+          if (!R.equals(cloudregion, this.form.fd.cloudregion)) { // 区域变化
+            this.$nextTick(this.fetchInstanceSpecs)
           }
         }
         this._setNewFieldToFd(newField, formValue)
@@ -324,8 +331,8 @@ export default {
       const params = {
         show_emulated: true,
         resource_type: 'shared',
-        scope: this.$store.getters.scope,
         host_type: 'baremetal',
+        ...this.scopeParams,
       }
       const { key } = this.form.fc.getFieldValue('zone')
       this.zoneM.getSpecific({ id: key, spec: 'capability', params })
@@ -339,9 +346,8 @@ export default {
           })
         })
     },
-    fetchInstanceSpeces () {
-      const { key } = this.form.fc.getFieldValue('cloudregion')
-      this.serverskusM.get({ id: 'instance-specs', params: { cloudregion: key } })
+    fetchInstanceSpecs () {
+      this.serverskusM.get({ id: 'instance-specs', params: this.instanceSpecParmas })
         .then(({ data }) => {
           this.form.fi.cpuMem = data
           const vcpuDecorator = this.decorators.vcpu

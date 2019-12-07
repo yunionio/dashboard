@@ -8,7 +8,7 @@
         <a-form-item label="名称" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')"  @change="debounceFetchServers" />
           <template v-slot:extra>
-            <div>名称支持序号占位符‘#’，用法如下。 名称：host## 数量：2、实例为：host01、host02</div>
+            <div>名称支持有序后缀占位符‘#’，用法举例，名称host##，数量2，创建后实例的名称依次为host01、host02，已有同名实例，序号顺延</div>
             <div class="mt-2" v-if="nameRepeated">名称重复，系统默认追加“-1”</div>
           </template>
         </a-form-item>
@@ -18,6 +18,7 @@
         <a-form-item label="操作系统" v-bind="formItemLayout" v-if="isPublic">
           <os-select
             :type="type"
+            :osType="osType"
             :hypervisor="firstData.hypervisor"
             :image-params="imageParams"
             :cache-image-params="cacheImageParams"
@@ -177,6 +178,9 @@ export default {
         return params
       }
       return params
+    },
+    osType () {
+      return this.params.data[0].os_type
     },
   },
   destroyed () {

@@ -2,13 +2,18 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">新建快照</div>
     <div slot="body">
+      <a-alert class="mb-2" type="warning">
+        <div slot="message">
+          1. 状态异常的硬盘不支持创建快照. 2. 私有云仅支持本地硬盘创建快照
+        </div>
+      </a-alert>
       <dialog-selected-tips :count="params.data.length" action="新建快照" />
       <vxe-grid
         class="mb-2"
         :data="params.data"
         :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc">
-        <a-form-item v-bind="formItemLayout" label="快照类别">
+        <a-form-item v-bind="formItemLayout" label="快照类别" v-if="isKvm">
           <a-radio-group
             v-decorator="decorators.snapshotType"
             @change="snapshotTypeChangeHandle">
@@ -62,6 +67,9 @@ import { INPUT_DEBOUNCE_TIMER } from '@/constants/config'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { sizestr } from '@/utils/utils'
+import { typeClouds } from '@/utils/common/hypervisor'
+
+const hypervisorMap = typeClouds.hypervisorMap
 
 export default {
   name: 'VmSnapshotCreateDialog',
@@ -114,6 +122,9 @@ export default {
     }
   },
   computed: {
+    isKvm () {
+      return this.params.data[0].hypervisor === hypervisorMap.kvm.key
+    },
     diskParams () {
       return {
         scope: this.$store.getters.scope,

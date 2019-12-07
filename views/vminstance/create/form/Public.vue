@@ -10,7 +10,7 @@
       <a-form-item label="指定项目" v-bind="formItemLayout">
         <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
       </a-form-item>
-      <a-form-item label="名称" v-if="!isServertemplate" v-bind="formItemLayout" extra="名称支持序号占位符‘#’，用法如下。 名称：host## 数量：2、实例为：host01、host02">
+      <a-form-item label="名称" v-if="!isServertemplate" v-bind="formItemLayout" extra="名称支持有序后缀占位符‘#’，用法举例，名称host##，数量2，创建后实例的名称依次为host01、host02，已有同名实例，序号顺延">
         <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverName')" />
       </a-form-item>
       <a-form-item label="申请原因" v-bind="formItemLayout" v-if="isOpenWorkflow">
@@ -155,22 +155,12 @@ export default {
     }
   },
   computed: {
-    skuCloudregionZone () {
-      const skuCloudregionZone = {}
-      if (R.is(Object, this.form.fd.sku)) {
-        const { zone_id: zoneId, cloudregion_id: cloudregionId } = this.form.fd.sku
-        skuCloudregionZone.zone = zoneId
-        skuCloudregionZone.cloudregion = cloudregionId
-      }
-      return skuCloudregionZone
-    },
     networkParam () {
       return {
-        scope: this.$store.getters.scope,
         filter: 'server_type.notin(ipmi, pxe)',
         usable: true,
-        zone: this.skuCloudregionZone.zone,
-        cloudregion: this.skuCloudregionZone.cloudregion,
+        ...this.skuCloudregionZone,
+        ...this.scopeParams,
       }
     },
     cityParams () {
@@ -207,9 +197,9 @@ export default {
     imageParams () {
       return {
         limit: 0,
-        scope: this.$store.getters.scope,
         details: true,
         status: 'active',
+        ...this.scopeParams,
       }
     },
     cacheImageParams () {
@@ -322,10 +312,17 @@ export default {
       }
       return Object.keys(loginTypes)
     },
+    instanceSpecParmas () {
+      return {
+        usable: true,
+        enabled: true,
+        public_cloud: true,
+      }
+    },
   },
   created () {
     this.$bus.$on('VMInstanceCreateUpdateFi', this.updateFi, this)
-    this.fetchInstanceSpeces()
+    this.fetchInstanceSpecs()
     this.baywatch(['form.fd.resourceType', 'form.fd.sku'], (val, oldVal) => {
       if (val && !R.equals(val, oldVal)) {
         this.fetchCapability()
@@ -364,7 +361,7 @@ export default {
           this.form.fi.capability = data
         })
     },
-    fetchInstanceSpeces () {
+    fetchInstanceSpecs () {
       this.serverskusM.get({ id: 'instance-specs', params: this.instanceSpecParams })
         .then(({ data }) => {
           this.form.fi.cpuMem = data

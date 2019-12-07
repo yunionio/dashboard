@@ -9,6 +9,10 @@
       </a-radio-group>
     </a-form-item>
     <a-form-item class="mb-0" v-if="isBind">
+      <div slot="extra">
+        没有想要的安全组？可以前往
+        <help-link href="/secgroup"> 新建安全组</help-link>
+      </div>
       <base-select
         remote
         class="w-50 pr-1"

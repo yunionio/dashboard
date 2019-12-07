@@ -66,6 +66,9 @@ export default {
       return this.limit - this.networkList.length
     },
   },
+  created () {
+    this.add()
+  },
   methods: {
     ipChange (e, i) {
       this.networkList[i].ip = e.target.value
