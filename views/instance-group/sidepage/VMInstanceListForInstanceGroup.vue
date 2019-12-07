@@ -7,7 +7,7 @@
 
 <script>
 import { sizestr } from '@/utils/utils'
-import { getStatusTableColumn, getCopyWithContentTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
+import { getStatusTableColumn, getCopyWithContentTableColumn, getNameDescriptionTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import SystemIcon from '@/sections/SystemIcon'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
@@ -71,6 +71,7 @@ export default {
         {
           field: 'os_type',
           title: '系统',
+          width: 50,
           slots: {
             default: ({ row }) => {
               let name = (row.metadata && row.metadata.os_distribution) ? row.metadata.os_distribution : row.os_type
@@ -102,11 +103,10 @@ export default {
             },
           },
         },
-        {
+        getTimeTableColumn({
           field: 'attach_time',
           title: '关联时间',
-          formatter: ({ cellValue }) => this.$moment(cellValue).format(),
-        },
+        }),
         getCopyWithContentTableColumn({ field: 'host', title: '宿主机' }),
       ],
       singleActions: [
