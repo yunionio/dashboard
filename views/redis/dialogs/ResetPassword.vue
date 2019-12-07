@@ -5,7 +5,10 @@
       <dialog-selected-tips :count="params.data.length" :action="params.title" />
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" class="mt-3">
-        <a-form-item label="管理员密码" v-bind="formItemLayout">
+        <a-form-item v-if="this.params.data[0].provider === 'Huawei'" label="旧密码" v-bind="formItemLayout">
+           <a-input-password v-decorator="decorators.old_password" />
+        </a-form-item>
+        <a-form-item label="新密码" v-bind="formItemLayout">
             <server-password :loginTypes="['random', 'password']" :decorator="decorators.loginConfig" />
         </a-form-item>
       </a-form>
@@ -20,9 +23,9 @@
 <script>
 import { CreateServerForm } from '@Compute/constants'
 import ServerPassword from '@Compute/sections/ServerPassword'
-import { decorators } from '@DB/views/utils/createElasticcache'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import { passwordValidator } from '@/utils/validate'
 
 export default {
   name: 'RedisResetPassworddialog',
@@ -37,7 +40,6 @@ export default {
   },
   data () {
     return {
-      decorators,
       form: {
         fc: this.$form.createForm(this),
       },
@@ -47,6 +49,31 @@ export default {
       },
       loading: false,
     }
+  },
+  computed: {
+    decorators () {
+      const decorators = {
+        old_password: [
+          'old_password',
+          {
+            validateFirst: true,
+            rules: [
+              { required: true, message: '请输入密码' },
+              { validator: passwordValidator },
+            ],
+          },
+        ],
+        loginConfig: {
+          loginType: [
+            'loginType',
+            {
+              initialValue: 'random',
+            },
+          ],
+        },
+      }
+      return decorators
+    },
   },
   methods: {
     validateForm () {

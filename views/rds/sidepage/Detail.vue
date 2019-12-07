@@ -1,14 +1,16 @@
 <template>
-  <detail :base-info="baseInfo" :data="data" :extra-info="extraInfo" />
+  <detail :base-info="baseInfo" statusModule="rds" :data="data" :extra-info="extraInfo" />
 </template>
 
 <script>
 // import BrandIcon from '@/sections/BrandIcon'
 import { DBINSTANCE_CATEGORY, DBINSTANCE_STORAGE_TYPE } from '../constants'
 import { sizestr } from '@/utils/utils'
+import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'RDSDetail',
+  mixins: [WindowsMixin],
   props: {
     list: {
       type: Object,
@@ -39,19 +41,6 @@ export default {
     }
     return {
       baseInfo: [
-        {
-          field: 'name',
-          title: '名称',
-        },
-        {
-          field: 'status',
-          title: '状态',
-          slots: {
-            default: ({ row }) => {
-              return <status status={row.status} statusModule='rds' />
-            },
-          },
-        },
         {
           field: 'project_domain',
           title: '部门（域）',
@@ -95,7 +84,7 @@ export default {
             },
             {
               field: 'iops',
-              title: '最大IOSP',
+              title: '最大IOPS',
             },
             {
               field: 'category',
@@ -141,6 +130,14 @@ export default {
             {
               field: 'internal_connection_str',
               title: '内网地址',
+              slots: {
+                default: ({ row }) => {
+                  if (row.internal_connection_str) {
+                    return `${row.internal_connection_str}:${row.port}`
+                  }
+                  return '-'
+                },
+              },
             },
             {
               field: 'connection_str',
@@ -152,6 +149,7 @@ export default {
                   const isRunning = row.status === 'running'
                   const notRunninTip = !isRunning ? '仅运行中的实例支持此操作' : null
                   let RenderSwitchBtn = null
+                  // eslint-disable-next-line no-constant-condition
                   if (isRunning) {
                     RenderSwitchBtn = (<a-button type="link" onClick={() => this.handleSwitchPublicAddress(!addr)}>{btnTxt}</a-button>)
                   } else {
@@ -173,10 +171,10 @@ export default {
                 },
               },
             },
-            {
-              field: 'port',
-              title: '数据库端口号',
-            },
+            // {
+            //   field: 'port',
+            //   title: '数据库端口号',
+            // },
             {
               field: 'vpc',
               title: 'VPC',
@@ -193,6 +191,11 @@ export default {
             {
               field: 'secgroup',
               title: '安全组',
+              slots: {
+                default: ({ row }) => {
+                  return (row.provider === 'Huawei' && row.secgroup) ? row.secgroup : '-'
+                },
+              },
             },
           ],
         },
@@ -214,15 +217,29 @@ export default {
     }
   },
   methods: {
-    async handleSwitchPublicAddress (bool) {
-      this.list.onManager('performAction', {
-        id: this.data.id,
-        steadyStatus: ['runing'],
-        managerArgs: {
-          action: 'public-connection',
-          data: {
-            open: bool,
-          },
+    handleSwitchPublicAddress (bool) {
+      const txts = {
+        'true': {
+          title: '确认开启外网地址？',
+        },
+        'false': {
+          title: '确认关闭外网地址？',
+          content: '关闭外网地址后外网IP将无法访问',
+        },
+      }
+      this.createDialog('ConfirmDialog', {
+        ...txts[`${bool}`],
+        onOk: () => {
+          return this.list.onManager('performAction', {
+            id: this.data.id,
+            steadyStatus: ['runing'],
+            managerArgs: {
+              action: 'public-connection',
+              data: {
+                open: bool,
+              },
+            },
+          })
         },
       })
     },

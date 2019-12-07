@@ -1,27 +1,27 @@
 <template>
-    <base-dialog @cancel="cancelDialog" :width="900">
-        <div slot="header">{{params.title}}</div>
-        <a-form slot="body" :form="form.fc" class="mt-3">
-            <a-form-item  v-bind="formItemLayout" label="数据库名称">
-                <a-input placeholder="字母开头，数字和字母大小写组合，长度为2-128个字符，不含“.”,“_”,“@”" v-decorator="decorators.name" />
-            </a-form-item>
-            <a-form-item  v-bind="formItemLayout" label="字符集">
-               <a-select allowClear showSearch placeholder="请选择字符集" v-decorator="decorators.character_set">
-                  <a-select-option
-                    v-for="item in CHARACTER_SET"
-                    :key="item"
-                    :value="item">{{ item }}</a-select-option>
-               </a-select>
-            </a-form-item>
-            <a-form-item v-bind="formItemLayout" label="数据库">
-              <database-privileges :rdsItem="params.rdsItem" />
-            </a-form-item>
-        </a-form>
-         <div slot="footer">
-            <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
-            <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
-         </div>
-    </base-dialog>
+  <base-dialog @cancel="cancelDialog" :width="900">
+    <div slot="header">{{params.title}}</div>
+    <a-form slot="body" :form="form.fc" class="mt-3">
+      <a-form-item  v-bind="formItemLayout" label="数据库名称">
+        <a-input :placeholder="$t('validator.dbName')" v-decorator="decorators.name" />
+      </a-form-item>
+      <a-form-item  v-bind="formItemLayout" label="字符集">
+        <a-select allowClear showSearch placeholder="请选择字符集" v-decorator="decorators.character_set">
+          <a-select-option
+            v-for="item in CHARACTER_SET"
+            :key="item"
+            :value="item">{{ item }}</a-select-option>
+        </a-select>
+      </a-form-item>
+      <a-form-item v-bind="formItemLayout" label="数据库">
+        <database-privileges :rdsItem="params.rdsItem" />
+      </a-form-item>
+    </a-form>
+    <div slot="footer">
+      <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
+      <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
+    </div>
+  </base-dialog>
 </template>
 
 <script>
@@ -69,7 +69,7 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: '请输入名称' },
-              { validator: validateForm('resourceName') },
+              { validator: validateForm('dbName') },
             ],
           },
         ],

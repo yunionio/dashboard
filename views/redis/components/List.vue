@@ -315,7 +315,8 @@ export default {
         {
           label: '更多',
           actions: (obj) => {
-            const isRunning = obj.status.toLowerCase() === 'running'
+            const { provider, status } = obj
+            const isRunning = status.toLowerCase() === 'running'
             const notRunninTip = !isRunning ? '仅运行中的实例支持此操作' : null
             const isAuthModeOn = obj.auth_mode === 'on'
             const setAuthMode = () => {
@@ -464,10 +465,10 @@ export default {
                 },
               },
               {
-                label: '重置密码',
+                label: provider === 'Huawei' ? '修改密码' : '重置密码',
                 action: () => {
                   this.createDialog('RedisResetPassworddialog', {
-                    title: '重置密码',
+                    title: provider === 'Huawei' ? '修改密码' : '重置密码',
                     data: [obj],
                     columns: this.columns,
                     list: this.list,
@@ -495,7 +496,6 @@ export default {
                 meta: () => {
                   let tooltip = ''
                   let seconds = this.$moment(obj.expired_at).diff(new Date()) / 1000
-                  console.log(obj.can_delete, obj)
                   if (obj.disable_delete) {
                     tooltip = '请点击修改属性禁用删除保护后重试'
                   } else if (obj.billing_type === 'prepaid' && seconds > 0) {

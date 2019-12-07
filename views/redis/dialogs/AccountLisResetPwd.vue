@@ -8,11 +8,8 @@
               <a-form-item v-bind="formItemLayout" label="账号名称">
                   {{this.params.data[0].name}}
               </a-form-item>
-              <a-form-item v-bind="formItemLayout" label="新密码">
-                  <a-input type="password" placeholder="请输入新密码" v-decorator="decorators.password" />
-              </a-form-item>
-              <a-form-item v-bind="formItemLayout" label="确认密码">
-                  <a-input type="password" placeholder="请再次确认密码" v-decorator="decorators.checkPassword" />
+              <a-form-item label="新密码" v-bind="formItemLayout">
+                <server-password :loginTypes="['random', 'password']" :decorator="decorators.loginConfig" />
               </a-form-item>
             </a-form>
         </div>
@@ -25,6 +22,7 @@
 
 <script>
 import { CreateServerForm } from '@Compute/constants'
+import ServerPassword from '@Compute/sections/ServerPassword'
 import { ACCOUNT_PRIVILEGES } from '../constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -33,6 +31,9 @@ import { passwordValidator } from '@/utils/validate'
 
 export default {
   name: 'RedisAccountLisResetPwdDialog',
+  components: {
+    ServerPassword,
+  },
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
@@ -70,6 +71,14 @@ export default {
             ],
           },
         ],
+        loginConfig: {
+          loginType: [
+            'loginType',
+            {
+              initialValue: 'random',
+            },
+          ],
+        },
       }
       return decorators
     },

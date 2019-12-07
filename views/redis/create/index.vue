@@ -17,9 +17,11 @@
       <a-form-item label="数量" v-bind="formItemLayout">
         <a-input-number v-decorator="decorators.count" :min="1" :max="10" @blur="handleBlurCount" />
       </a-form-item>
-      <a-form-item label="区域" v-bind="formItemLayout">
-        <item-city-provider-region-selects :selectProviders="['Huawei', 'Aliyun']" :decorators="decorators.cityProviderRegion" />
-       </a-form-item>
+      <!-- 区域 -->
+      <area-selects
+        :cityParams="{cloud_env: 'public'}"
+        v-bind="formItemLayout"
+        @providerFetchSuccess="providerFetchSuccess" />
        <s-k-u ref="REF_SKU" />
        <a-divider orientation="left">高级配置</a-divider>
         <a-form-item label="管理员密码" v-bind="formItemLayout">
@@ -37,24 +39,24 @@
 import { CreateServerForm, SERVER_TYPE } from '@Compute/constants'
 import { ControlParams, decorators } from '@DB/views/utils/createElasticcache'
 import ServerPassword from '@Compute/sections/ServerPassword'
-import ItemCityProviderRegionSelects from '../components/CityProviderRegionSelects'
 import ItemBillingOpts from './components/ItemBillingOpts'
 import ItemVpcOpts from './components/ItemVpcOpts'
 import SKU from './components/SKU'
 import BottomBar from './components/BottomBar'
 import DomainProject from '@/sections/DomainProject'
+import AreaSelects from '@/sections/AreaSelects'
 
 export default {
   name: 'IDCCreate',
   components: {
+    // 区域
+    AreaSelects,
     // SKU
     SKU,
     // 指定项目
     DomainProject,
     // 计费方式
     ItemBillingOpts,
-    // 平台及区域
-    ItemCityProviderRegionSelects,
     // 管理员密码
     ServerPassword,
     // Vpc
@@ -111,6 +113,10 @@ export default {
     this.form.fc.getFieldDecorator('manager', { preserve: true })
   },
   methods: {
+    providerFetchSuccess (list = []) {
+      const needProvider = ['Aliyun', 'Huawei']
+      return list.filter(({ name }) => needProvider.indexOf(name) > -1)
+    },
     _querySkus (changedFields) {
       const skuParamKeys = ['city', 'provider', 'region', 'zone']
       for (let i = 0; i < skuParamKeys.length; i++) {

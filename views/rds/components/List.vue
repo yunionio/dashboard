@@ -174,7 +174,7 @@ export default {
         },
         {
           label: '删除',
-          permission: 'rds_dbinstances_detelt',
+          permission: 'rds_dbinstances_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               title: '删除',
@@ -381,7 +381,7 @@ export default {
               },
               {
                 label: '删除',
-                permission: 'rds_dbinstances_detelt',
+                permission: 'rds_dbinstances_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     title: '删除',

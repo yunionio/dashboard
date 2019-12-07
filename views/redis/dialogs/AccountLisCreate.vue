@@ -3,7 +3,7 @@
         <div slot="header">创建账号</div>
         <a-form slot="body" :form="form.fc" class="mt-3">
             <a-form-item  v-bind="formItemLayout" label="账户名称">
-                <a-input placeholder="以字母开头，由小写字母，数字、下划线组成。长度不超过16个字符" v-decorator="decorators.name" />
+                <a-input :placeholder="$t('validator.dbName')" v-decorator="decorators.name" />
             </a-form-item>
             <a-form-item v-bind="formItemLayout" label="权限设置">
                <a-radio-group v-decorator="decorators.account_privilege">
@@ -12,11 +12,8 @@
                   </a-radio>
               </a-radio-group>
             </a-form-item>
-            <a-form-item v-bind="formItemLayout" label="密码">
-                <a-input-password type="password" placeholder="请输入密码" v-decorator="decorators.password" />
-            </a-form-item>
-             <a-form-item v-bind="formItemLayout" label="确认密码">
-                <a-input-password type="password" placeholder="请再次确认密码" v-decorator="decorators.checkPassword" />
+            <a-form-item label="密码" v-bind="formItemLayout">
+              <server-password :loginTypes="['random', 'password']" :decorator="decorators.loginConfig" />
             </a-form-item>
         </a-form>
          <div slot="footer">
@@ -28,13 +25,17 @@
 
 <script>
 import { CreateServerForm } from '@Compute/constants'
+import ServerPassword from '@Compute/sections/ServerPassword'
 import { ACCOUNT_PRIVILEGES } from '../constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import { passwordValidator } from '@/utils/validate'
+import validateForm, { passwordValidator } from '@/utils/validate'
 
 export default {
   name: 'RedisAccountDialog',
+  components: {
+    ServerPassword,
+  },
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
@@ -52,19 +53,6 @@ export default {
   computed: {
     decorators () {
       const { initialValues = {} } = this.params
-      const validateNmae = (rule, value, _callback) => {
-        const ALL_DIGITS = /\d+/g
-        const ALL_LETTERS = /[a-z]/g
-        const REG = /^[a-z][a-z0-9_]*$/
-        if (value && value.length <= 16 && new RegExp('_').test(value) && REG.test(value) && ALL_DIGITS.test(value) && ALL_LETTERS.test(value)) {
-          if (value[value.length - 1] === '_') {
-            _callback('不可以下划线结尾')
-          }
-          _callback()
-        } else {
-          _callback('以字母开头，由小写字母，数字、下划线组成。长度不超过16个字符')
-        }
-      }
       const decorators = {
         name: [
           'name',
@@ -73,7 +61,7 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: '请输入名称' },
-              { validator: validateNmae },
+              { validator: validateForm('dbName') },
             ],
           },
         ],
@@ -104,6 +92,14 @@ export default {
             ],
           },
         ],
+        loginConfig: {
+          loginType: [
+            'loginType',
+            {
+              initialValue: 'random',
+            },
+          ],
+        },
       }
       return decorators
     },
