@@ -89,9 +89,9 @@ export default {
     showSingleActions (item) {
       const show = this.getOptions(item, 'singleActions')
       if (R.isEmpty(show) && R.isEmpty(show[0])) {
-        return true
+        return false
       }
-      return false
+      return true
     },
   },
 }

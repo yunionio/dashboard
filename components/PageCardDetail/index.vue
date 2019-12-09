@@ -1,6 +1,6 @@
 <template>
   <div class="page-card-detail d-flex border p-4 align-items-center">
-    <div class="img">
+    <div class="img mr-5">
       <img style="height: 200px;" ref="imgRef" @error="getDefaultImg" :src="img" :alt="pageTitle" />
     </div>
     <div class="text-wrap">
