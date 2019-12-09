@@ -439,13 +439,13 @@ export default {
                     list: this.list,
                   })
                 },
-                meta: () => {
-                  const isPrepaid = obj.billing_type === 'prepaid'
-                  return {
-                    validate: isRunning && !isPrepaid,
-                    tooltip: notRunninTip || (isPrepaid ? '仅包年包月的实例，暂不支持此操作' : ''),
-                  }
-                },
+                // meta: () => {
+                //   const isPrepaid = obj.billing_type === 'prepaid'
+                //   return {
+                //     validate: isRunning && !isPrepaid,
+                //     tooltip: notRunninTip || (isPrepaid ? '仅包年包月的实例，暂不支持此操作' : ''),
+                //   }
+                // },
               },
               {
                 label: '清空数据',

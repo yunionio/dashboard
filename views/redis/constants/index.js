@@ -74,3 +74,10 @@ export const NODE_TYPE = {
   'single': '单副本',
   'double': '双副本',
 }
+
+export const PERFORMANCE_TYPE_KEYS = ['standard', 'enhanced']
+// 性能类型
+export const PERFORMANCE_TYPE = {
+  'standard': '标准性能',
+  'enhanced': '增强性能',
+}

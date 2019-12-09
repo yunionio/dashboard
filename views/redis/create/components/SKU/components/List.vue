@@ -28,9 +28,10 @@ export default {
   components: {
     PageListEmpty,
   },
-  props: ['skuList', 'loading'],
   data () {
     return {
+      loading: false,
+      skuList: [],
       skuDecorator: [
         'sku',
         {
@@ -100,6 +101,49 @@ export default {
       this.FC.setFieldsValue({
         sku: row,
       })
+    },
+    skuSort (skuList) {
+      return skuList ? skuList.sort((a, b) => a.memory_size_mb - b.memory_size_mb) : []
+    },
+    skuRepeat (skuList) {
+      const skuObj = {}
+      return skuList.filter(item => {
+        // 20191112不支持华为3.0创建
+        if (item.provider === 'Huawei' && item.engine_version === '3.0') {
+          return false
+        }
+        const key = `${item.name}-${item.provider}-${item.memory_size_mb}`
+        if (!skuObj[key]) {
+          skuObj[key] = true
+          return true
+        }
+      })
+    },
+    async fetchSkus (paramKeys) {
+      const { getFieldsValue } = this.form
+      const params = await new Promise((resolve, reject) => {
+        setTimeout(() => {
+          const values = getFieldsValue(paramKeys)
+          resolve(
+            {
+              ...values,
+              usable: true,
+            }
+          )
+        }, 10)
+      })
+      const manager = await new this.$Manager('elasticcacheskus', 'v2')
+      try {
+        this.loading = true
+        const { data = [] } = await manager.list({ params })
+        const list = data.data
+        console.log(list)
+        this.skuList = this.skuRepeat(this.skuSort(list))
+      } catch (err) {
+        throw err
+      } finally {
+        this.loading = false
+      }
     },
   },
 }
