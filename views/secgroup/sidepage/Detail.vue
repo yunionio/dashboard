@@ -38,10 +38,8 @@ export default {
         {
           field: 'public_scope',
           title: '共享范围',
-          slots: {
-            default ({ row }) {
-              return this.PUBLIC_SCOPE_ZH(row.public_scope)
-            },
+          formatter: ({ cellValue }) => {
+            return this.PUBLIC_SCOPE_ZH[cellValue]
           },
         },
       ],
