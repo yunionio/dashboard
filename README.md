@@ -2,6 +2,9 @@
 
 ## Project setup
 ```
+./setup.sh
+```
+```
 yarn install
 ```
 
