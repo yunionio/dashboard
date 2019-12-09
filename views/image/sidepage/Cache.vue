@@ -13,25 +13,23 @@ import WindowsMixin from '@/mixins/windows'
 export default {
   name: 'systemImageCacheList',
   mixins: [WindowsMixin],
+  props: {
+    resId: String,
+    data: {
+      type: Object,
+      required: true,
+    },
+  },
   data () {
-    const validateAction = function (obj) {
-      if (obj.is_guest_image === true || obj.is_guest_image === 'true') {
-        return false
-      }
-      return true
-    }
-
-    const validateActionTooltip = function (obj) {
-      if (obj.is_guest_image === true || obj.is_guest_image === 'true') {
-        return '主机镜像的子镜像无法操作'
-      }
-      return ''
-    }
     return {
       list: this.$list.createList(this, {
-        resource: 'images',
-        apiVersion: 'v1',
-        getParams: this.getParams,
+        resource: 'storagecachedimages',
+        apiVersion: 'v2',
+        idKey: 'storagecache_id',
+        getParams: {
+          cachedimage_id: this.resId,
+          details: true,
+        },
         filterOptions: {
           name: {
             label: '镜像名称',
@@ -44,25 +42,44 @@ export default {
       }),
       columns: [
         {
-          field: 'name',
+          field: 'host.name',
           title: '名称',
+          width: 150,
         },
-        getStatusTableColumn({ statusModule: 'image' }),
+        getStatusTableColumn({ statusModule: 'imageCache' }),
         getTimeTableColumn(),
-        getTimeTableColumn({ title: '更新时间' }),
-        getBrandTableColumn(),
-        getRegionTableColumn(),
+        getTimeTableColumn({ title: '更新时间', field: 'updated_at' }),
+        getBrandTableColumn({ field: 'host.brand' }),
+        getRegionTableColumn({ field: 'host.region' }),
         {
-          field: 'disk_format',
+          field: 'host.account',
           title: '云账号',
         },
       ],
       groupActions: [
         {
           label: '新建',
-          permission: 'images_create',
-          action: () => {
-            this.$router.push({ name: 'ImageImport' })
+          actions: (obj) => {
+            return [
+              {
+                label: 'IDC',
+                action: () => {
+                  this.createCache('onpremise', obj)
+                },
+              },
+              {
+                label: '私有云',
+                action: () => {
+                  this.createCache('private', obj)
+                },
+              },
+              {
+                label: '公有云',
+                action: () => {
+                  this.createCache('public', obj)
+                },
+              },
+            ]
           },
           meta: () => ({
             buttonType: 'primary',
@@ -72,31 +89,36 @@ export default {
       singleActions: [
         {
           label: '删除',
-          permission: 'images_delete',
           action: (obj) => {
-            this.createDialog('DeleteResDialog', {
+            this.createDialog('DeleteCacheDialog', {
               data: [obj],
               columns: this.columns,
               title: '删除',
               list: this.list,
+              imageId: this.resId,
             })
           },
           meta: (obj) => {
-            if (this.isDomainAdmin && obj.domain_id !== this.userInfo.projectDomainId) {
-              return {
-                validate: false,
-                tooltip: '域管理员只能删除本域下的镜像',
-              }
-            }
-            if (!validateAction(obj)) return { validate: false, tooltip: validateActionTooltip(obj) }
             return this.$getDeleteResult(obj)
           },
         },
       ],
+      ids: '',
     }
   },
   created () {
     this.list.fetchData()
+  },
+  methods: {
+    createCache (title, obj) {
+      this.createDialog('ImageCreateCache', {
+        data: [obj],
+        columns: this.columns,
+        title,
+        list: this.list,
+        imageId: this.resId,
+      })
+    },
   },
 }
 </script>

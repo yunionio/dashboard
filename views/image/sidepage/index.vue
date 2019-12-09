@@ -34,7 +34,7 @@ export default {
     return {
       detailTabs: [
         { label: '详情', key: 'system-image-detail' },
-        // { label: '缓存列表', key: 'cache-list' },
+        { label: '缓存列表', key: 'cache-list' },
         { label: '操作日志', key: 'event-drawer' },
       ],
     }
