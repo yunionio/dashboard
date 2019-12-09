@@ -185,11 +185,14 @@ export default {
       this.change(initValue)
     },
     change (val) {
-      let syncValue = R.is(String, val) ? this.resOpts[val] : this.resOpts[val.key]
-      if (this.options && this.options.length) syncValue = val // 外面传递 options
       this.$emit('input', val)
       this.$emit('change', val)
-      this.$emit('update:item', syncValue)
+      // 同步当前选择项obj
+      if (val) {
+        let syncValue = R.is(String, val) ? this.resOpts[val] : this.resOpts[val.key]
+        if (this.options && this.options.length) syncValue = val // 外面传递 options
+        this.$emit('update:item', syncValue)
+      }
     },
     disabledOpts () {
       if (this.disabledItems && this.disabledItems.length) { // 禁用某些选项

@@ -135,15 +135,15 @@ export default {
           limit: 0,
         }
         if (this.$isAdminMode) {
-          params['project_domain'] = this.$userInfo.projectDomain
+          params['project_domain'] = this.userInfo.projectDomainId
           delete params.scope
           delete params.domain_id
         }
         const response = await this.dm.list({ params })
         const data = response.data.data || []
         this.domains = data.map(val => ({ ...val, key: val.id, label: val.name }))
-        let defaultData = this.domains[0]
-        if (!defaultData) return // 说明列表为空
+        let defaultData = { key: this.userInfo.projectDomainId, label: this.userInfo.projectDomain }
+        if (!this.domains.find(val => val.key === this.userInfo.projectDomainId)) return // 如果下拉列表没有当前域值，return
         const initialValue = _.get(this.decorators, 'domain[1].initialValue')
         if (initialValue) {
           const findInitValue = this.domains.find(val => val.key === (initialValue.key || initialValue))
@@ -177,15 +177,15 @@ export default {
         }
         if (domainId && !this.isDomainMode) params.domain_id = domainId
         if (this.isAdminMode) {
-          params['project_domain'] = this.userInfo.projectDomainId
+          params['project_domain'] = domainId || this.userInfo.projectDomainId
           delete params.scope
           delete params.domain_id
         }
         const response = await this.pm.list({ params })
         const data = response.data.data
         this.projects = data.map(val => ({ ...val, key: val.id, label: val.name })) || []
-        let defaultData = this.projects[0]
-        if (!defaultData) return // 说明列表为空
+        let defaultData = { key: this.userInfo.projectId, label: this.userInfo.projectName }
+        if (!this.projects.find(val => val.key === this.userInfo.projectId)) return // 如果下拉列表没有当前项目值，return
         const initialValue = _.get(this.decorators, 'project[1].initialValue')
         if (initialValue) {
           const findInitValue = this.projects.find(val => val.key === (initialValue.key || initialValue))
