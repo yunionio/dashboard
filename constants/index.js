@@ -816,3 +816,6 @@ export const BAND_WIDTH_OPTION = [
   { label: '40G', value: '40000' },
   { label: '100G', value: '100000' },
 ]
+
+// 记录创建成功后选择的镜像，存储cookie的key suffix
+export const SELECT_IMAGE_KEY_SUFFIX = '__select_image'

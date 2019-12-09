@@ -35,7 +35,7 @@
         <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" />
       </a-form-item>
       <area-selects
-        v-if="form.fd.domain"
+        v-if="isDomainMode || form.fd.domain"
         v-bind="formItemLayout"
         :cityParams="cityParams"
         :providerParams="providerParams"

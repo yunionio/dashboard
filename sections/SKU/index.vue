@@ -279,7 +279,7 @@ export default {
       return ret
     },
     getI18NValue (key, originVal) {
-      if (this.$t(key)) {
+      if (this.$te(key)) {
         return this.$t(key)
       }
       return originVal

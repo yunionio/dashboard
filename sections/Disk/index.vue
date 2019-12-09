@@ -96,6 +96,7 @@ export default {
         with_meta: true,
         cloud_env: 'onpremise',
         resource_type: 'storages',
+        scope: this.$store.getters.scope,
         limit: 0,
       },
       snapshotsParams: {

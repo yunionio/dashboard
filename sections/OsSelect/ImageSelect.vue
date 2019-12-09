@@ -31,8 +31,10 @@
 
 <script>
 import * as R from 'ramda'
+import { SELECT_IMAGE_KEY_SUFFIX } from '@Compute/constants'
 import { Manager } from '@/utils/manager'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
+import storage from '@/utils/storage'
 
 const initData = {
   key: '',
@@ -113,6 +115,21 @@ export default {
     },
     cacheimageIds () {
       return this.images.cacheimagesList.map(item => item.id)
+    },
+    storageSelectImage () {
+      return storage.get(`${this.cloudType}${SELECT_IMAGE_KEY_SUFFIX}`)
+    },
+    storageImage () {
+      if (this.storageSelectImage) {
+        const [os, image] = this.storageSelectImage.split(':')
+        if (os && image) {
+          return {
+            os,
+            image,
+          }
+        }
+      }
+      return false
     },
   },
   watch: {
@@ -375,16 +392,54 @@ export default {
       this.imageOpts = []
       const { osOpts, imageOptsMap } = this.imagesInfo
       if (osOpts && osOpts.length) {
-        const os = osValue || osOpts[0].key
-        this.form.fc.setFieldsValue({ os })
-        const imageOpts = imageOptsMap[os]
-        this.imageOpts = imageOpts
-        if (imageOpts && imageOpts.length) {
-          const image = { key: imageOpts[0].id, label: imageOpts[0].name }
-          this.imageChange(image)
-          this.form.fc.setFieldsValue({ image })
+        if (!osValue && this.storageImage) { // 采用上次选择的镜像（storage）
+          const { os, image } = this.storageImage
+          this.form.fc.setFieldsValue({ os })
+          const imageOpts = imageOptsMap[os]
+          this.imageOpts = this.getImageOpts(imageOpts, os)
+          if (imageOpts && imageOpts.length) {
+            const imageObj = this.imageOpts.find(val => val.id === image)
+            if (R.is(Object, imageObj)) {
+              const image = { key: imageObj.id, label: imageObj.name }
+              this.imageChange(image)
+              this.form.fc.setFieldsValue({ image })
+            }
+          }
+        } else { // 采用默认下拉第一项
+          const os = osValue || osOpts[0].key
+          this.form.fc.setFieldsValue({ os })
+          const imageOpts = imageOptsMap[os]
+          this.imageOpts = this.getImageOpts(imageOpts, os)
+          if (imageOpts && imageOpts.length) {
+            const image = { key: imageOpts[0].id, label: imageOpts[0].name }
+            this.imageChange(image)
+            this.form.fc.setFieldsValue({ image })
+          }
         }
       }
+    },
+    getImageOpts (imageOpts, os) {
+      let images = imageOpts.slice()
+      if (images && images.length > 0) {
+        images = images.filter((item) => {
+          const minRam = (item.info && item.info.min_ram) || item.min_ram
+          if (minRam > 0) {
+            return minRam <= this.fd.vmem
+          }
+          return true
+        })
+      }
+      if (images && images.length > 0) {
+        images.sort((a, b) => {
+          const aVersion = a.info && a.info.properties && a.info.properties.os_version
+          const bVersion = b.info && b.info.properties && b.info.properties.os_version
+          if (aVersion && bVersion) {
+            return aVersion.localeCompare(bVersion)
+          }
+          return 0
+        })
+      }
+      return images || []
     },
   },
 }

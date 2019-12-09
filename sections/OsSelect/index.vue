@@ -8,6 +8,7 @@
       </a-radio-group>
     </a-form-item>
     <image-select
+      :cloud-type="type"
       :image-type="imageType"
       :decorator="decorator"
       @input="imageInput"

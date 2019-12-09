@@ -1,5 +1,5 @@
 import * as R from 'ramda'
-import { CreateServerForm, SCHED_POLICY_OPTIONS_MAP, SERVER_TYPE } from '@Compute/constants'
+import { CreateServerForm, SCHED_POLICY_OPTIONS_MAP, SERVER_TYPE, SELECT_IMAGE_KEY_SUFFIX } from '@Compute/constants'
 import OsSelect from '@Compute/sections/OsSelect'
 import ServerPassword from '@Compute/sections/ServerPassword'
 import CpuRadio from '@Compute/sections/CpuRadio'
@@ -18,6 +18,7 @@ import BottomBar from '../components/BottomBar'
 import Servertemplate from '../components/Servertemplate'
 import SystemDisk from '../components/SystemDisk'
 import Tag from '../components/Tag'
+import storage from '@/utils/storage'
 import { WORKFLOW_TYPES } from '@/constants/workflow'
 import workflowMixin from '@/mixins/workflow'
 import { Manager } from '@/utils/manager'
@@ -83,7 +84,7 @@ export default {
       },
       decorators,
       params: {
-        schedtag: { resource_type: 'networks' },
+        schedtag: { resource_type: 'networks', scope: this.$store.getters.scope },
         policySchedtag: { limit: 0, 'filter.0': 'resource_type.equals(hosts)' },
       },
     }
@@ -163,6 +164,9 @@ export default {
     },
     isSnapshotImageType () { // 镜像类型为主机快照
       return this.form.fd.imageType === IMAGES_TYPE_MAP.snapshot.key
+    },
+    isDomainMode () {
+      return this.$store.getters.isDomainMode
     },
   },
   created () {
@@ -272,7 +276,8 @@ export default {
       delete data['vmem_size']
       this.serverM.create({ data })
         .then(res => {
-          // storage.set(`${state.fi.createType}${SELECT_IMAGE_KEY_SUFFIX}`, state.fd.image)
+          const image = data.disks.find(val => val.disk_type === 'sys').image_id
+          storage.set(`${this.form.fi.createType}${SELECT_IMAGE_KEY_SUFFIX}`, `${this.form.fd.os}:${image}`)
           this.submiting = false
           this.$message.success('操作成功，开始创建')
           this.$router.push('/vminstance')

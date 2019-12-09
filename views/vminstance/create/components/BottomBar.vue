@@ -46,7 +46,7 @@
             :loading="loading"
             :disabled="!!errors.length">{{ confirmText }}</a-button>
         </div>
-        <side-errors error-title="创建主机失败" :errors.sync="errors" />
+        <side-errors error-title="创建主机失败" :errors="errors" @update:errors="changeErrors" />
       </template>
     </page-footer>
   </div>
@@ -229,6 +229,9 @@ export default {
     })
   },
   methods: {
+    changeErrors (errors) {
+      this.$emit('update:errors', [])
+    },
     formatToPrice (val) {
       let ret = `¥ ${val.toFixed(2)}`
       if (this.isPackage) {
