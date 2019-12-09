@@ -10,7 +10,7 @@
       </a-col>
       <a-col :span="12">
         <a-form-item>
-          <a-select label-in-value  v-decorator="decorator.zone" allow-clear @change="handleChange">
+          <a-select label-in-value  v-decorator="decorator.zone" allow-clear @change="emit">
             <a-select-option v-for="item in zoneOpts" :key="item.id">{{ item.name }}</a-select-option>
           </a-select>
         </a-form-item>
@@ -79,11 +79,11 @@ export default {
       const params = {
         ...this.cloudregionParams,
       }
-      if (this.isAdminMode) {
+      if (this.isAdminMode && !params['project_domain']) {
         params['project_domain'] = this.userInfo.projectDomainId
         delete params.scope
       }
-      this.cloudregionsM.list({ params })
+      this.cloudregionsM.list({ params: this.cloudregionParams })
         .then(({ data: { data = [] } }) => {
           this.regionOpts = data
           this.$emit('update:closeregionOpts', this.regionOpts)
@@ -99,7 +99,12 @@ export default {
     },
     fetchZones (cloudregionId) {
       const params = Object.assign({}, this.zoneParams, { cloudregion_id: cloudregionId })
-      this.zoneOpts = [] // 清空可用区
+      // 清空可用区
+      this.zoneOpts = []
+      this.emit({}, 'zone')
+      this.form.fc.setFieldsValue({
+        zone: { key: '', label: '' },
+      })
       this.zonesM.list({ params })
         .then(({ data: { data = [] } }) => {
           this.zoneOpts = data
@@ -113,7 +118,13 @@ export default {
         })
     },
     handleChange (value) {
-      this.emit(value)
+      let cloudregionId
+      if (R.is(String, value)) {
+        cloudregionId = value
+      } else if (R.is(Object, value)) {
+        cloudregionId = value.key
+      }
+      this.fetchZones(cloudregionId)
     },
   },
 }

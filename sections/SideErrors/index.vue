@@ -1,9 +1,9 @@
 <template>
   <transition>
-    <div v-if="errors.length" class="errors-wrap" v-clickoutside="closeError">
+    <div v-if="showError" class="errors-wrap" v-clickoutside="closeError">
       <div class="title d-flex align-items-center">
-        <i class="el-icon-error mr-2" />
-        <span>{{ errorTitle }}</span>
+        <div class="title-text flex-fill">{{ errorTitle }}</div>
+        <div><a-icon @click="closeError" type="close" /></div>
       </div>
       <div class="divider" />
       <ul class="list">
@@ -33,6 +33,11 @@ export default {
       required: true,
     },
   },
+  computed: {
+    showError () {
+      return this.errors.length > 0
+    },
+  },
   methods: {
     closeError () {
       this.$emit('update:errors', [])
@@ -60,7 +65,7 @@ export default {
     > i {
       font-size: 28px;
     }
-    > span {
+    > .title-text {
       font-size: 13px;
       font-weight: bold;
     }

@@ -185,7 +185,9 @@ export default {
         const data = response.data.data
         this.projects = data.map(val => ({ ...val, key: val.id, label: val.name })) || []
         let defaultData = { key: this.userInfo.projectId, label: this.userInfo.projectName }
-        if (!this.projects.find(val => val.key === this.userInfo.projectId)) return // 如果下拉列表没有当前项目值，return
+        if (!this.projects.find(val => val.key === this.userInfo.projectId)) { // 如果下拉列表没有当前项目值，取第一个值
+          defaultData = this.projects[0]
+        }
         const initialValue = _.get(this.decorators, 'project[1].initialValue')
         if (initialValue) {
           const findInitValue = this.projects.find(val => val.key === (initialValue.key || initialValue))
