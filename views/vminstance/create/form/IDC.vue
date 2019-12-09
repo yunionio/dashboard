@@ -103,7 +103,6 @@
           :disabled-host="policyHostDisabled"
           :policy-host-params="policyHostParams"
           :decorators="decorators.schedPolicy"
-          :schedtag-params="params.schedtag"
           :policy-schedtag-params="params.policySchedtag" />
       </a-form-item>
       <a-form-item label="引导方式" v-bind="formItemLayout" class="mb-0" v-if="isKvm">

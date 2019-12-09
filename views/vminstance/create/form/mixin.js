@@ -85,7 +85,7 @@ export default {
       decorators,
       params: {
         schedtag: { resource_type: 'networks', scope: this.$store.getters.scope },
-        policySchedtag: { limit: 0, 'filter.0': 'resource_type.equals(hosts)' },
+        policySchedtag: { limit: 0, 'filter.0': 'resource_type.equals(hosts)', scope: this.$store.getters.scope },
       },
     }
   },
