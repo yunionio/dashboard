@@ -7,25 +7,25 @@
     </a-form-item>
     <a-form-item label="版本" v-bind="formItemLayout">
       <a-radio-group :disabled="!!disableds.engine_version" v-decorator="decorators.engine_version || ['engine_version']" @change="getArcha">
-        <a-radio-button :key="item" :value="item" v-for="item in versions">{{item}}</a-radio-button>
+        <a-radio-button :key="item" :value="item" v-for="item in engine_versions">{{item}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
     <a-form-item label="实例类型" v-bind="formItemLayout">
       <a-radio-group :disabled="!!disableds.local_category" v-decorator="decorators.local_category || ['local_category']" @change="getNodeTypes">
-        <a-radio-button :key="item" :value="item" v-for="item in archs">{{ENGINE_ARCH[item] || item}}</a-radio-button>
+        <a-radio-button :key="item" :value="item" v-for="item in local_categorys">{{ENGINE_ARCH[item] || item}}</a-radio-button>
       </a-radio-group>
       <div style="color:#888;font-size:12px;line-height:30px">
         {{archPoints(getFieldValue('local_category'))}}
       </div>
     </a-form-item>
      <a-form-item label="节点类型" v-bind="formItemLayout">
-      <a-radio-group v-decorator="decorators.nodeType || ['node_type']" @change="getMemorys">
-         <a-radio-button :key="item" :value="item" v-for="item in nodeTypes">{{NODE_TYPE[item]}}</a-radio-button>
+      <a-radio-group v-decorator="decorators.nodeType || ['node_type']" @change="getPerformanceTypes">
+         <a-radio-button :key="item" :value="item" v-for="item in node_types">{{NODE_TYPE[item]}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
      <a-form-item label="性能类型" v-bind="formItemLayout">
       <a-radio-group v-decorator="decorators.performance_type || ['performance_type', { initialValue: 'standard' }]" @change="eimtChange">
-         <a-radio-button :key="item.value" :value="item.value" v-for="item in performanceTypes">{{item.key}}</a-radio-button>
+         <a-radio-button :key="item" :value="item" v-for="item in performance_types">{{PERFORMANCE_TYPE[item]}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
     <a-form-item label="内存" v-bind="formItemLayout" v-if="memorys && memorys.length > 0">
@@ -36,17 +36,14 @@
   </div>
 </template>
 <script>
+import * as R from 'ramda'
 import { CreateServerForm } from '@Compute/constants'
-import { ENGINE_ARCH, ENGINE_KEYS, NODE_TYPE, NODE_KEYS } from '@DB/views/redis/constants'
+import { ENGINE_ARCH, NODE_TYPE, PERFORMANCE_TYPE_KEYS, PERFORMANCE_TYPE, ENGINE_KEYS } from '@DB/views/redis/constants'
 import { sizestr } from '@/utils/utils'
-
 export default {
   name: 'SkuFilters',
   inject: ['form'],
   props: {
-    filterParams: {
-      type: Object,
-    },
     decorators: {
       type: Object,
       default: () => {
@@ -66,27 +63,22 @@ export default {
   },
   data () {
     return {
-      sizestr,
       NODE_TYPE,
       ENGINE_ARCH,
-      versions: [],
-      archs: [],
-      nodeTypes: [],
+      PERFORMANCE_TYPE,
+      PERFORMANCE_TYPE_KEYS,
+      sizestr,
+      engines: [],
+      engine_versions: [],
+      local_categorys: [],
+      node_types: [],
+      performance_types: [],
       memorys: [],
-      performanceTypes: [
-        {
-          key: '标准性能',
-          value: 'standard',
-        },
-        {
-          key: '增强性能',
-          value: 'enhanced',
-        },
-      ],
       formItemLayout: {
         wrapperCol: { span: CreateServerForm.wrapperCol },
         labelCol: { span: CreateServerForm.labelCol },
       },
+      filterItems: {},
     }
   },
   computed: {
@@ -102,125 +94,79 @@ export default {
       }
       return () => null
     },
-    engines () {
-      const engines = Object.keys(this.filterParams)
-      return engines
+  },
+  watch: {
+    filterItems () {
+      this.getEngines()
     },
   },
-  created () {
-    this.getVersion()
-    this.getArcha()
-  },
   methods: {
+    setInitValue (key, callback = () => {}) {
+      const value = this.form.getFieldValue(key)
+      const data = this[`${key}s`]
+      let isNull = true
+      let newVal = ''
+      if (R.type(data) === 'Object') {
+        newVal = Object.keys(data)[0]
+        isNull = !data[value]
+      }
+      if (R.type(data) === 'Array') {
+        newVal = data[0]
+        isNull = data.indexOf(value) === -1
+      }
+      if (!value || isNull) {
+        this.form.setFieldsValue({
+          [key]: newVal,
+        }, callback)
+      } else {
+        callback && callback()
+      }
+    },
+    getEngines () {
+      this.engines = R.keys(this.filterItems)
+      this.setInitValue('engine', () => {
+        this.getVersion()
+      })
+    },
     getVersion (e) {
       const target = (e && e.target) ? e.target : {}
       const engine = target.value || this.getFieldValue('engine')
-      let versions = []
-      if (engine) {
-        versions = Object.keys(this.filterParams[engine])
-      } else {
-        const _versions = {}
-        Object.keys(this.filterParams).forEach(k => {
-          for (let key in this.filterParams[k]) {
-            _versions[key] = key
-          }
-        })
-        versions = Object.keys(_versions)
-      }
-      this.versions = versions.sort((a, b) => a - b)
-      this.$nextTick(() => {
-        if (!this.decorators.engine_version) {
-          this.FC.setFieldsValue({
-            engine_version: (versions && versions.length > 0) ? versions[0] : undefined,
-          })
-        }
+      this.engine_versions = R.keys(this.filterItems[engine]).sort((a, b) => a - b)
+      this.setInitValue('engine_version', () => {
         this.getArcha()
       })
     },
     getArcha (e) {
       const target = (e && e.target) ? e.target : {}
-      const engine = this.getFieldValue('engine')
-      const version = target.value || this.getFieldValue('engine_version')
-      const category = this.getFieldValue('local_category')
-      let archs = []
-      if (engine) {
-        if (version) {
-          archs = Object.keys(this.filterParams[engine][version])
-        } else {
-          const _archs = {}
-          Object.keys(this.filterParams[engine]).forEach(v => {
-            for (let key in this.filterParams[engine][v]) {
-              _archs[key] = key
-            }
-          })
-          archs = Object.keys(_archs)
-        }
-      } else {
-        const _archs = {}
-        Object.keys(this.filterParams).forEach(k => {
-          Object.keys(this.filterParams[k]).forEach(v => {
-            for (let key in this.filterParams[k][v]) {
-              _archs[key] = key
-            }
-          })
-        })
-        archs = Object.keys(_archs)
-      }
-      this.archs = ENGINE_KEYS.filter(key => {
-        return archs.indexOf(key) > -1
+      const keys = ['engine', 'engine_version']
+      const data = this.FC.getFieldsValue(keys)
+      data['engine_version'] = target.value || data.engine_version
+      this.local_categorys = ENGINE_KEYS.filter((k) => {
+        const arr = R.keys(R.pathOr({}, R.values(data), this.filterItems))
+        return arr.indexOf(k) > -1
       })
-      if (archs.indexOf(category) === -1) {
-        this.FC.setFieldsValue({
-          local_category: archs && archs.length > 0 ? archs[0] : undefined,
-        })
-      }
-      this.$nextTick(() => {
+      this.setInitValue('local_category', () => {
         this.getNodeTypes()
       })
     },
     getNodeTypes (e) {
       const target = (e && e.target) ? e.target : {}
-      const engine = this.getFieldValue('engine')
-      const version = this.getFieldValue('engine_version')
-      const category = target.value || this.getFieldValue('local_category')
-      const nodeType = this.getFieldValue('node_type')
-      let nodeTypes = []
-      if (this.filterParams[engine] && this.filterParams[engine][version] && this.filterParams[engine][version][category]) {
-        nodeTypes = Object.keys(this.filterParams[engine][version][category])
-      }
-      this.nodeTypes = NODE_KEYS.filter(k => {
-        return nodeTypes.indexOf(k) > -1
-      })
-      if (nodeTypes.indexOf(nodeType) === -1) {
-        this.FC.setFieldsValue({
-          node_type: nodeTypes && nodeTypes.length > 0 ? nodeTypes[0] : undefined,
-        })
-      }
-      this.$nextTick(() => {
-        this.getMemorys()
+      const keys = ['engine', 'engine_version', 'local_category']
+      const data = this.FC.getFieldsValue(keys)
+      data['local_category'] = target.value || data.local_category
+      this.node_types = R.keys(R.pathOr({}, R.values(data), this.filterItems))
+      this.setInitValue('node_type', () => {
+        this.getPerformanceTypes()
       })
     },
-    getMemorys (e) {
+    getPerformanceTypes (e) {
       const target = (e && e.target) ? e.target : {}
-      const engine = this.getFieldValue('engine')
-      const version = this.getFieldValue('engine_version')
-      const category = this.getFieldValue('local_category')
-      const nodeType = target.value || this.getFieldValue('node_type')
-      const memory = this.getFieldValue('memory_size_mb')
-      let memorys = []
-      if (this.filterParams[engine] && this.filterParams[engine][version] && this.filterParams[engine][version][category] && this.filterParams[engine][version][category][nodeType]) {
-        memorys = Object.keys(this.filterParams[engine][version][category][nodeType])
-        if (memorys && memorys.length > 0) {
-          memorys = memorys.map(numStr => parseInt(numStr))
-        }
-      }
-      this.memorys = memorys
-      if (memorys.indexOf(memory) === -1) {
-        this.FC.setFieldsValue({
-          memory_size_mb: memorys && memorys.length > 0 ? parseInt(memorys[0]) : undefined,
-        })
-      }
-      this.eimtChange()
+      const keys = ['engine', 'engine_version', 'local_category', 'node_type']
+      const data = this.FC.getFieldsValue(keys)
+      data['node_type'] = target.value || data.node_type
+      console.log(R.pathOr({}, R.values(data), this.filterItems), '123123')
+      this.performance_types = R.pathOr({}, R.values(data), this.filterItems)
+      this.setInitValue('performance_type', () => {})
     },
     archPoints (type) {
       // single': '基础版',
@@ -239,6 +185,37 @@ export default {
     },
     eimtChange () {
       this.$emit('change')
+    },
+    async fetchSpecs (paramKeys) {
+      const instanceSpecsManager = new this.$Manager('elasticcacheskus/instance-specs')
+      const params = await new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(this.form.getFieldsValue(paramKeys))
+        }, 10)
+      })
+      try {
+        const { data } = await instanceSpecsManager.batchGet({ params })
+        this.memorys = data['mems_mb']
+        this.$nextTick(() => {
+          if (this.memorys.indexOf(this.memory) === -1) {
+            this.FC.setFieldsValue({
+              memory_size_mb: this.memorys && this.memorys.length > 0 ? parseInt(this.memorys[0]) : undefined,
+            })
+          }
+        })
+      } catch (err) {
+        throw err
+      }
+    },
+    async fetchCapability (paramKeys) {
+      const capabilityManager = new this.$Manager('elasticcacheskus/capability')
+      const params = this.form.getFieldsValue(paramKeys)
+      try {
+        const { data: { redis } } = await capabilityManager.batchGet({ params })
+        this.filterItems = { redis }
+      } catch (err) {
+        throw err
+      }
     },
   },
 }
