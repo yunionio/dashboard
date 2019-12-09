@@ -93,6 +93,7 @@ export default {
     },
     // 开启标签过滤
     showTagFilter: Boolean,
+    showSelection: Boolean,
   },
   data () {
     return {
@@ -118,7 +119,7 @@ export default {
         if (R.is(Function, item.hidden)) return !item.hidden()
         return !item.hidden
       })
-      if (this.groupActions && this.groupActions.length > 0) {
+      if ((this.groupActions && this.groupActions.length > 0) || this.showSelection) {
         defaultColumns.unshift({ type: 'checkbox', width: 40, fixed: 'left' })
       }
       if (this.singleActions && this.singleActions.length) {
