@@ -26,7 +26,7 @@
         <a-input-number v-decorator="decorators.count" :min="1" :max="10" />
       </a-form-item>
       <a-form-item label="平台" v-bind="formItemLayout" extra="根据选择的区域不同，平台的可用类型不同且目前只有KVM支持GPU云服务器、云硬盘">
-        <hypervisor-radio :decorator="decorators.hypervisor" :type="form.fi.createType" :hypervisors="form.fi.capability.hypervisors || []" />
+        <hypervisor-radio :decorator="decorators.hypervisor" :type="form.fi.createType" :hypervisors="hypervisors" />
       </a-form-item>
       <a-form-item v-if="form.fd.hypervisor === 'kvm'" v-bind="formItemLayout" label="是否配置GPU" extra="目前只有KVM支持GPU云服务器">
         <gpu :decorators="decorators.gpu" :gpu-options="gpuOptions" />
@@ -154,6 +154,10 @@ export default {
     },
     isLocalDisk () {
       return _.get(this.form, 'fd.systemDiskType.key') === 'local'
+    },
+    hypervisors () {
+      const { hypervisors = [] } = this.form.fi.capability
+      return hypervisors
     },
     cloudregionParams () {
       return {

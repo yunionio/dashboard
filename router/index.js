@@ -110,6 +110,12 @@ export default {
               meta: {},
               component: Servertemplate,
             },
+            {
+              name: 'ServertemplateCreate',
+              path: 'create',
+              meta: {},
+              component: VMInstanceCreate,
+            },
           ],
         },
         {

@@ -15,8 +15,8 @@
         resource="servertemplates"
         v-decorator="decorators.guest_template" />
     </a-form-item>
-    <a-form-item label="图标" v-bind="formItemLayout">
-      <a-input v-decorator="decorators.icon_url" placeholder="请输入名称" />
+    <a-form-item label="图标URL" v-bind="formItemLayout">
+      <a-input v-decorator="decorators.icon_url" placeholder="请输入URL" />
     </a-form-item>
   </a-form>
 </template>

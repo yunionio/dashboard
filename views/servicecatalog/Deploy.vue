@@ -102,7 +102,7 @@ export default {
       new this.$Manager('servertemplates', 'v2')
         .get({ id })
         .then(({ data }) => {
-          this.serverConfig = data.config_info
+          this.serverConfig = data.content
         })
         .catch(() => {
           this.$message.error('获取主机模板数据失败，无法完成部署')
@@ -129,12 +129,13 @@ export default {
           this.goWorkflow()
         })
     },
-    doForecast () {
+    doForecast (fd) {
       const genCreateData = new GenCreateData()
-      return new this.$Manager('schedulers', 'v1').rpc({ methodname: 'DoForecast', params: this.serverConfig })
+      const params = { ...fd, ...this.serverConfig }
+      return new this.$Manager('schedulers', 'v1').rpc({ methodname: 'DoForecast', params })
         .then(res => {
           if (res.data.can_create) {
-            this.createServer(this.serverConfig)
+            this.createServer(params)
           } else {
             this.errors = genCreateData.getForecastErrors(res.data)
           }
@@ -146,7 +147,7 @@ export default {
     createServer (data) {
       delete data['vcpu_count']
       delete data['vmem_size']
-      this.serverM.create({ data })
+      new this.$Manager('servers', 'v2').create({ data })
         .then(res => {
           this.$message.success('操作成功，开始创建')
           this.goVminstance()
@@ -159,7 +160,7 @@ export default {
         if (this.isOpenWorkflow) {
           await this.doCreateWorkflow(values)
         } else {
-          await this.doForecast()
+          await this.doForecast(values)
         }
         this.loading = false
       } catch (error) {

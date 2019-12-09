@@ -9,7 +9,7 @@
 <script>
 import {
   getNameDescriptionTableColumn,
-  isPublicTableColumn,
+  // isPublicTableColumn,
   getProjectTableColumn,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
@@ -44,7 +44,7 @@ export default {
             )
           },
         }),
-        isPublicTableColumn(),
+        // isPublicTableColumn(),
         getProjectTableColumn(),
         {
           field: 'created_at',
@@ -57,19 +57,45 @@ export default {
       groupActions: [
         {
           label: '新建',
-          permission: 'servertemplates_create',
-          action: () => {
-            this.$router.push({
-              path: '/vminstance/create',
-              query: {
-                type: 'idc',
-                source: 'servertemplate',
+          actions: () => {
+            const createServer = type => {
+              this.$router.push({
+                path: '/servertemplate/create',
+                query: {
+                  type,
+                  source: 'servertemplate',
+                },
+              })
+            }
+            return [
+              {
+                label: 'IDC',
+                permission: 'servertemplates_create',
+                action: () => {
+                  createServer('idc')
+                },
               },
-            })
+              {
+                label: '私有云',
+                permission: 'servertemplates_create',
+                action: () => {
+                  createServer('private')
+                },
+              },
+              {
+                label: '公有云',
+                permission: 'servertemplates_create',
+                action: () => {
+                  createServer('public')
+                },
+              },
+            ]
           },
-          meta: () => ({
-            buttonType: 'primary',
-          }),
+          meta: () => {
+            return {
+              buttonType: 'primary',
+            }
+          },
         },
         {
           label: '删除',
@@ -88,22 +114,22 @@ export default {
             }
           },
         },
-        {
-          label: '设置共享',
-          permission: 'servertemplates_perform_public',
-          action: obj => {
-            this.createDialog('SetPublicDialog', {
-              data: this.list.selectedItems,
-              columns: this.columns,
-              list: this.list,
-            })
-          },
-          meta: () => {
-            return {
-              validate: this.list.selectedItems.length && this.list.selectedItems.every(this.isPower),
-            }
-          },
-        },
+        // {
+        //   label: '设置共享',
+        //   permission: 'servertemplates_perform_public',
+        //   action: obj => {
+        //     this.createDialog('SetPublicDialog', {
+        //       data: this.list.selectedItems,
+        //       columns: this.columns,
+        //       list: this.list,
+        //     })
+        //   },
+        //   meta: () => {
+        //     return {
+        //       validate: this.list.selectedItems.length && this.list.selectedItems.every(this.isPower),
+        //     }
+        //   },
+        // },
       ],
       singleActions: [
         {

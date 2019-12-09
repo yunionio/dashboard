@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">新建服务</div>
+    <div slot="header">新建服务目录</div>
     <div slot="body">
       <servicecatalog-form ref="formRef" :decorators="decorators" :form="form" />
     </div>
