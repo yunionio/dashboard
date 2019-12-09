@@ -19,6 +19,11 @@ export default {
     success: ['active'],
     danger: ['killed'],
   },
+  imageCache: {
+    danger: ['delete_failed'],
+    success: ['ready'],
+    info: ['init'],
+  },
   // 特殊状态，表示启用禁用
   enabled: {
     success: [true],

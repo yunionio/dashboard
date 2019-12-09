@@ -1,4 +1,5 @@
 import * as R from 'ramda'
+import _ from 'lodash'
 import moment from 'moment'
 import BrandIcon from '@/sections/BrandIcon'
 import TagTableColumn from '@/sections/TagTableColumn'
@@ -46,10 +47,11 @@ export const getRegionTableColumn = ({ field = 'region', title = '区域' } = {}
     minWidth: 100,
     slots: {
       default: ({ row }, h) => {
+        const val = _.get(row, field)
         const ret = []
         ret.push(
           <list-body-cell-wrap hide-field copy field={field} row={row}>
-            <span style={{ color: '#0A1F44' }}>{ row[field] }</span>
+            <span style={{ color: '#0A1F44' }}>{ val }</span>
           </list-body-cell-wrap>
         )
         if (row.zone) {
@@ -72,9 +74,10 @@ export const getBrandTableColumn = ({ field = 'brand', title = '平台', hidden 
     width: 50,
     slots: {
       default: ({ row }, h) => {
-        if (!row[field]) return '-'
+        const val = _.get(row, field)
+        if (!val) return '-'
         return [
-          <BrandIcon name={ row[field] } />,
+          <BrandIcon name={ val } />,
         ]
       },
     },

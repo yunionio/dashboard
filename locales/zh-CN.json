@@ -163,6 +163,13 @@
       "converting": "格式转换中",
       "deactivated": "正在删除"
     },
+    "imageCache": {
+      "ready": "正常",
+      "deleting": "删除中",
+      "caching": "缓存中",
+      "delete_failed": "删除失败",
+      "init": "初始化"
+    },
     "cloudaccount": {
       "init": "初始化",
       "connected": "已连接",

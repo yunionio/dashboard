@@ -60,7 +60,6 @@ import { mapGetters } from 'vuex'
 import Actions from './Actions'
 import RefreshButton from './RefreshButton'
 import TagFilter from './TagFilter'
-
 export default {
   name: 'PageList',
   components: {
