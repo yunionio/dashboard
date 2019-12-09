@@ -16,7 +16,12 @@
       <a-col :span="16">
         <a-form-item>
           <a-select label-in-value v-decorator="decorator.image" :loading="loading" @change="imageChange">
-            <a-select-option v-for="item in imageOpts" :key="item.id">{{ item.name }}</a-select-option>
+            <a-select-option v-for="item in imageOpts" :key="item.id">
+              <div class="d-flex">
+                <div class="flex-fill">{{ item.name }}</div>
+                <div><a-tag v-show="item.feData.cached" color="green">已缓存</a-tag></div>
+              </div>
+            </a-select-option>
           </a-select>
         </a-form-item>
       </a-col>
@@ -26,7 +31,6 @@
 
 <script>
 import * as R from 'ramda'
-import { SERVER_TYPE } from '@Compute/constants'
 import { Manager } from '@/utils/manager'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
 
@@ -55,7 +59,6 @@ export default {
     },
     imageParams: {
       type: Object,
-      required: true,
     },
     form: {
       type: Object,
@@ -64,7 +67,6 @@ export default {
     },
     cacheImageParams: {
       type: Object,
-      required: true,
     },
     osType: {
       type: String,
@@ -87,6 +89,12 @@ export default {
     }
   },
   computed: {
+    apiCacheImgParams () {
+      return IMAGES_TYPE_MAP[this.imageType].cacheImgParams || {}
+    },
+    apiImgParams () {
+      return IMAGES_TYPE_MAP[this.imageType].imgParams || {}
+    },
     // 选择的镜像类型是否为公有云镜像
     isPublicImage () {
       return this.imageType === IMAGES_TYPE_MAP.public.key || this.imageType === IMAGES_TYPE_MAP.public_customize.key
@@ -106,35 +114,20 @@ export default {
     cacheimageIds () {
       return this.images.cacheimagesList.map(item => item.id)
     },
-    imageListParams () {
-      if (this.cloudType === SERVER_TYPE.private) { // private
-        return Object.assign({}, this.imageParams, {
-          'filter.0': 'disk_format.notequals(iso)',
-        })
-      }
-      return Object.assign({}, this.imageParams, { // idc
-        is_standard: true,
-        'filter.0': 'disk_format.notequals(iso)',
-      })
-    },
-    customImageParams () { // 自定义镜像参数
-      return Object.assign({}, this.imageParams, {
-        is_standard: false,
-        'filter.0': 'disk_format.notequals(iso)',
-      })
-    },
-    isoImageParams () { // iso 参数
-      return Object.assign({}, this.imageParams, { disk_formats: 'iso' })
-    },
   },
   watch: {
     imageType (val, oldVal) {
       if (R.equals(val, oldVal)) return
       this.fetchData()
+      this.fetchCacheimages()
     },
     cacheImageParams (val, oldVal) {
       if (R.equals(val, oldVal)) return
       this.fetchCacheimages()
+    },
+    imageParams (val, oldVal) {
+      if (R.equals(val, oldVal)) return
+      this.fetchData()
     },
   },
   created () {
@@ -142,31 +135,13 @@ export default {
     this.cachedimagesM = new Manager('cachedimages', 'v2')
     this.guestimagesM = new Manager('guestimages', 'v1')
     this.instanceSnapshots = new Manager('instance_snapshots', 'v2')
-    if (!this.isPublicImage && !this.isPrivateImage) {
-      this.fetchData()
-    }
+    this.fetchData()
     this.fetchCacheimages()
-    this.baywatch(['customImageParams', 'isoImageParams', 'imageParams'], (val, oldVal) => {
-      if (R.equals(val, oldVal)) return
-      this.fetchData()
-    })
   },
   methods: {
-    baywatch (props, watcher) {
-      const iterator = function (prop) {
-        this.$watch(prop, watcher)
-      }
-      props.forEach(iterator, this)
-    },
     fetchData () {
       this.images.list = []
       switch (this.imageType) { // 自定义镜像
-        case IMAGES_TYPE_MAP.customize.key:
-          this.fetchImages(this.customImageParams)
-          break
-        case IMAGES_TYPE_MAP.iso.key: // iso
-          this.fetchImages(this.isoImageParams)
-          break
         case IMAGES_TYPE_MAP.host.key: // 主机镜像
           this.fetchHostImages(this.imageParams)
           break
@@ -174,7 +149,7 @@ export default {
           this.fetchSnapshotImages(this.imageParams)
           break
         default: // image list
-          this.fetchImages(this.imageListParams)
+          this.fetchImages()
           break
       }
     },
@@ -197,7 +172,26 @@ export default {
         this.form.fc.setFieldsValue({ image: { ...initData } })
       }
     },
-    async fetchImages (params) {
+    async fetchImages () {
+      const params = {
+        limit: 0,
+        details: true,
+        status: 'active',
+        scope: this.$store.getters.scope,
+        ...this.imageParams,
+      }
+      if (this.imageType === IMAGES_TYPE_MAP.iso.key) {
+        params.disk_formats = 'iso'
+      } else {
+        params['filter.0'] = 'disk_format.notequals(iso)'
+      }
+      if (this.imageType === IMAGES_TYPE_MAP.customize.key) {
+        params.owner = this.$store.getters.userInfo.projectId
+        params.is_standard = false
+      }
+      if (this.imageType === IMAGES_TYPE_MAP.standard.key) {
+        params.is_standard = true
+      }
       this.loading = true
       this._resetImage()
       try {
@@ -236,8 +230,21 @@ export default {
     async fetchCacheimages () {
       this.images.cacheimagesList = []
       this.loading = true
+      const params = {
+        details: false,
+        order_by: 'ref_count',
+        order: 'desc',
+        image_type: 'customized',
+        ...this.cacheImageParams,
+      }
+      if (
+        this.imageType === IMAGES_TYPE_MAP.public.key ||
+        this.imageType === IMAGES_TYPE_MAP.private.key
+      ) {
+        params.image_type = 'system'
+      }
       try {
-        const { data: { data = [] } } = await this.cachedimagesM.list({ params: this.cacheImageParams })
+        const { data: { data = [] } } = await this.cachedimagesM.list({ params })
         this.loading = false
         this.images.cacheimagesList = data
         if (this.isPublicImage || this.isPrivateImage) {

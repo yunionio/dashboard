@@ -29,7 +29,6 @@
         <os-select
           :type="type"
           :hypervisor="form.fd.hypervisor"
-          :image-params="imageParams"
           :decorator="decorators.imageOS"
           :cacheImageParams="cacheImageParams" />
       </a-form-item>
@@ -139,20 +138,8 @@ export default {
         ...this.scopeParams,
       }
     },
-    imageParams () {
-      return {
-        limit: 0,
-        scope: this.$store.getters.scope,
-        details: true,
-        status: 'active',
-      }
-    },
     cacheImageParams () {
       const params = {
-        details: false,
-        order_by: 'ref_count',
-        order: 'desc',
-        image_type: 'system',
         zone: _.get(this.form.fd, 'zone.key'),
       }
       return params

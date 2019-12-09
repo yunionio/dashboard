@@ -37,11 +37,9 @@ export default {
     },
     imageParams: {
       type: Object,
-      required: true,
     },
     cacheImageParams: {
       type: Object,
-      required: true,
     },
     type: {
       type: String,

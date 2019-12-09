@@ -54,7 +54,6 @@ export const createVmDecorators = type => {
     domain: [
       'domain',
       {
-        initialValue: store.getters.userInfo.projectDomainId,
         rules: [
           { validator: isRequired(), message: '请选择域', trigger: 'change' },
         ],

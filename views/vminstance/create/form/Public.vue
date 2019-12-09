@@ -134,6 +134,7 @@ import SecgroupConfig from '@Compute/sections/SecgroupConfig'
 import mixin from './mixin'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import { PROVIDER_MAP, HYPERVISORS_MAP } from '@/constants'
+import { IMAGES_TYPE_MAP } from '@/constants/compute'
 import AreaSelects from '@/sections/AreaSelects'
 
 export default {
@@ -195,20 +196,23 @@ export default {
       }
     },
     imageParams () {
-      return {
-        limit: 0,
-        details: true,
-        status: 'active',
-        ...this.scopeParams,
+      const params = {}
+      if (this.form.fd.imageType === IMAGES_TYPE_MAP.public_customize.key) {
+        if (R.is(Object, this.form.fd.sku)) {
+          if (this.skuCloudregionZone.zone) {
+            params.zone = this.skuCloudregionZone.zone
+          } else if (this.skuCloudregionZone.cloudregion) {
+            params.cloudregion = this.skuCloudregionZone.cloudregion
+          }
+        }
+        if (!params.zone && !params.region) {
+          return {}
+        }
       }
+      return params
     },
     cacheImageParams () {
-      const params = {
-        details: false,
-        order_by: 'ref_count',
-        order: 'desc',
-        image_type: 'system', // 选择的镜像类型为公有云/私有云镜像
-      }
+      const params = {}
       if (R.is(Object, this.form.fd.sku)) {
         if (this.skuCloudregionZone.zone) {
           params.zone = this.skuCloudregionZone.zone

@@ -35,7 +35,6 @@
         <os-select
           :type="type"
           :hypervisor="form.fd.hypervisor"
-          :image-params="imageParams"
           :decorator="decorators.imageOS"
           :cacheImageParams="cacheImageParams" />
       </a-form-item>
@@ -180,35 +179,8 @@ export default {
         enabled: true,
       }
     },
-    imageParams () {
-      const params = {
-        limit: 0,
-        details: true,
-        ...this.scopeParams,
-      }
-      switch (this.form.fd.imageType) {
-        case IMAGES_TYPE_MAP.standard.key:
-          params.status = 'active'
-          break
-        case IMAGES_TYPE_MAP.customize.key:
-          params.status = 'active'
-          params.owner = this.form.fd.project.key
-          break
-        case IMAGES_TYPE_MAP.host.key:
-          params.status = 'active'
-          params['filter.0'] = 'disk_format.notequals(iso)'
-          params.owner = this.form.fd.project.key
-          params.is_standard = false
-          break
-      }
-      return params
-    },
     cacheImageParams () {
       const params = {
-        details: false,
-        order_by: 'ref_count',
-        order: 'desc',
-        image_type: 'customized',
         zone: _.get(this.form.fd, 'zone.key'),
       }
       return params
