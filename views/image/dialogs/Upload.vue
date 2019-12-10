@@ -37,6 +37,9 @@
             <a-radio-button value="windows">
               Windows Server
             </a-radio-button>
+            <a-radio-button value="other">
+              其它
+            </a-radio-button>
           </a-radio-group>
         </a-form-item>
       </a-form>
