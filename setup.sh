@@ -13,3 +13,4 @@ echo $DEFAULT_GIT_PREFIX
 git clone $DEFAULT_GIT_PREFIX/dashboard-common.git src
 git clone $DEFAULT_GIT_PREFIX/dashboard-module-cloudenv.git containers/Cloudenv
 git clone $DEFAULT_GIT_PREFIX/dashboard-module-compute.git containers/Compute
+git clone $DEFAULT_GIT_PREFIX/dashboard-module-network.git containers/Network
