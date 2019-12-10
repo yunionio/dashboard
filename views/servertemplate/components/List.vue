@@ -132,22 +132,22 @@ export default {
         // },
       ],
       singleActions: [
-        {
-          label: '设置共享',
-          permission: 'servertemplates_perform_public',
-          action: obj => {
-            this.createDialog('SetPublicDialog', {
-              data: [obj],
-              columns: this.columns,
-              list: this.list,
-            })
-          },
-          meta: obj => {
-            return {
-              validate: this.isPower(obj),
-            }
-          },
-        },
+        // {
+        //   label: '设置共享',
+        //   permission: 'servertemplates_perform_public',
+        //   action: obj => {
+        //     this.createDialog('SetPublicDialog', {
+        //       data: [obj],
+        //       columns: this.columns,
+        //       list: this.list,
+        //     })
+        //   },
+        //   meta: obj => {
+        //     return {
+        //       validate: this.isPower(obj),
+        //     }
+        //   },
+        // },
         {
           label: '删除',
           permission: 'servertemplates_delete',
