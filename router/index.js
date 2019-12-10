@@ -5,10 +5,10 @@ import BaremetalCreate from '@Compute/views/baremetal/create/index'
 import Image from '@Compute/views/image'
 import ImageImport from '@Compute/views/image/image-import/index'
 import VMInstanceCreate from '@Compute/views/vminstance/create/index'
-import Network from '@Compute/views/network'
-import NetworkCreate from '@Compute/views/network/Create'
-import EditAttributes from '@Compute/views/network/EditAttributes'
-import Eip from '@Compute/views/eip'
+import Network from '@Network/views/network'
+import NetworkCreate from '@Network/views/network/Create'
+import EditAttributes from '@Network/views/network/EditAttributes'
+import Eip from '@Network/views/eip'
 import Host from '@Compute/views/host'
 import Physicalmachine from '@Compute/views/physicalmachine'
 import ServerRecovery from '@Compute/views/server-recovery'
@@ -20,8 +20,8 @@ import Keypair from '@Compute/views/keypair'
 import Disk from '@Compute/views/disk'
 import GPU from '@Compute/views/gpu'
 import Secgroup from '@Compute/views/secgroup'
-import FlexNetwork from '@Compute/views/flex-network'
-import Wire from '@Compute/views/wire'
+import FlexNetwork from '@Network/views/flex-network'
+import Wire from '@Network/views/wire'
 import Servertemplate from '@Compute/views/servertemplate'
 import DiskSnapshot from '@Compute/views/snapshot/DiskSnapshot'
 import InstanceSnapshot from '@Compute/views/snapshot/InstanceSnapshot'
@@ -242,62 +242,7 @@ export default {
           ],
         },
         {
-          path: '/flexnetwork',
-          meta: {
-            label: '弹性网卡',
-            permission: 'networkcard_list',
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'NetworkcardList',
-              path: '',
-              component: FlexNetwork,
-            },
-          ],
-        },
-        {
-          path: '/wire',
-          meta: {
-            label: '二层网络',
-            permission: 'wires_list',
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'WireList',
-              path: '',
-              component: Wire,
-            },
-          ],
-        },
-        {
-          path: '/network',
-          meta: {
-            label: 'IP子网',
-            permission: 'networks_list',
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'Network',
-              path: '',
-              component: Network,
-            },
-            {
-              name: 'NetworkCreate',
-              path: 'create',
-              component: NetworkCreate,
-            },
-            {
-              name: 'EditAttributes',
-              path: 'edit',
-              component: EditAttributes,
-            },
-          ],
-        },
-        {
-          path: '/eip',
+          path: '/eip2',
           meta: {
             label: '弹性公网IP',
             permission: 'eips_list',
@@ -305,9 +250,64 @@ export default {
           component: Layout,
           children: [
             {
-              name: 'Eip',
+              name: 'Eip2',
               path: '',
               component: Eip,
+            },
+          ],
+        },
+        {
+          path: '/flexnetwork2',
+          meta: {
+            label: '弹性网卡',
+            permission: 'networkcard_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'NetworkcardList2',
+              path: '',
+              component: FlexNetwork,
+            },
+          ],
+        },
+        {
+          path: '/wire2',
+          meta: {
+            label: '二层网络',
+            permission: 'wires_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'WireList2',
+              path: '',
+              component: Wire,
+            },
+          ],
+        },
+        {
+          path: '/network2',
+          meta: {
+            label: 'IP子网',
+            permission: 'networks_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Network2',
+              path: '',
+              component: Network,
+            },
+            {
+              name: 'NetworkCreate2',
+              path: 'create',
+              component: NetworkCreate,
+            },
+            {
+              name: 'EditAttributes2',
+              path: 'edit',
+              component: EditAttributes,
             },
           ],
         },
