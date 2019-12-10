@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import ChildrenImageList from '../../host-image/sidepage/ChildrenImage'
 import SystemImageDetail from './Detail'
 import CacheList from './Cache'
 import SidePageMixin from '@/mixins/sidePage'
@@ -27,17 +28,12 @@ export default {
   components: {
     SystemImageDetail,
     CacheList,
+    ChildrenImageList,
     Actions,
   },
   mixins: [SidePageMixin, WindowsMixin],
   data () {
-    return {
-      detailTabs: [
-        { label: '详情', key: 'system-image-detail' },
-        { label: '缓存列表', key: 'cache-list' },
-        { label: '操作日志', key: 'event-drawer' },
-      ],
-    }
+    return {}
   },
   computed: {
     getParams () {
@@ -45,6 +41,22 @@ export default {
     },
     data () {
       return this.params.list.data[this.params.resId].data
+    },
+    detailTabs () {
+      const isHostImage = this.params.list.data[this.params.resId].data.root_image
+      if (isHostImage) {
+        return [
+          { label: '详情', key: 'system-image-detail' },
+          { label: '子镜像', key: 'children-image-list' },
+          { label: '操作日志', key: 'event-drawer' },
+        ]
+      } else {
+        return [
+          { label: '详情', key: 'system-image-detail' },
+          { label: '缓存列表', key: 'cache-list' },
+          { label: '操作日志', key: 'event-drawer' },
+        ]
+      }
     },
   },
 }

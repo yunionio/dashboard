@@ -10,6 +10,7 @@
 import { sizestr } from '@/utils/utils'
 import { getStatusTableColumn, getNameDescriptionTableColumn, getProjectTableColumn, isPublicTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import SystemIcon from '@/sections/SystemIcon'
+import BaseDropList from '@/sections/DropList'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -34,42 +35,21 @@ export default {
 
     const isOwnerProject = project => project === this.$store.getters.userInfo.projectId || project === this.$store.getters.userInfo.projectName
 
-    const isStandard = status => status === true || status === 'true'
-
     return {
       isAdminMode: this.$store.getters.isAdminMode,
       isDomainMode: this.$store.getters.isDomainMode,
       userInfo: this.$store.getters.userInfo,
       list: this.$list.createList(this, {
-        resource: 'images',
+        resource: 'guestimages',
         apiVersion: 'v1',
         getParams: this.getParams,
         filterOptions: {
           name: {
-            label: '镜像名称',
+            label: '名称',
             filter: true,
             formatter: val => {
               return `name.contains(${val})`
             },
-          },
-          disk_format: {
-            label: '镜像格式',
-            dropdown: true,
-            items: [
-              { label: 'VMDK', key: 'vmdk' },
-              { label: 'RAW', key: 'raw' },
-              { label: 'VHD', key: 'vhd' },
-              { label: 'QCOW2', key: 'qcow2' },
-              { label: 'ISO', key: 'iso' },
-            ],
-          },
-          is_standard: {
-            label: '镜像类型',
-            dropdown: true,
-            items: [
-              { label: '公共镜像', key: true },
-              { label: '自定义镜像', key: false },
-            ],
           },
         },
       }),
@@ -85,6 +65,24 @@ export default {
             )
           },
         }),
+        {
+          field: 'child_image',
+          title: '子镜像',
+          width: 150,
+          slots: {
+            default: ({ row }) => {
+              const list = row.data_images.map(val => ({ value: val.name }))
+              list.push({ value: row.root_image.name })
+              const dropMsg = [
+                {
+                  title: `${list.length}个`,
+                  list,
+                },
+              ]
+              return [<BaseDropList drop-msg={dropMsg} />]
+            },
+          },
+        },
         {
           field: 'disk_format',
           title: '格式',
@@ -134,26 +132,6 @@ export default {
         getTimeTableColumn(),
       ],
       groupActions: [
-        {
-          label: '镜像市场',
-          permission: 'images_create',
-          action: () => {
-            this.$router.push({ name: 'ImageImport' })
-          },
-          meta: () => ({
-            buttonType: 'primary',
-          }),
-        },
-        {
-          label: '上传',
-          permission: 'images_create',
-          action: () => {
-            this.createDialog('ImageUploadDialog', {
-              title: '上传',
-              list: this.list,
-            })
-          },
-        },
         {
           label: '删除',
           permission: 'images_delete',
@@ -206,54 +184,6 @@ export default {
           label: '更多',
           actions: obj => {
             return [
-              {
-                label: '设置为公共镜像',
-                permission: 'images_update',
-                action: () => {
-                  this.updateStandard(true, [obj])
-                },
-                meta: () => {
-                  if (this.isHostImage) {
-                    return {
-                      validate: false,
-                    }
-                  }
-                  if (this.isAdminMode && obj.tenant !== 'system') {
-                    return {
-                      validate: false,
-                      tooltip: '您不可以修改非本系统镜像',
-                    }
-                  }
-                  return {
-                    validate: !isStandard(obj.is_standard) && validateAction(obj),
-                    tooltip: validateActionTooltip(obj),
-                  }
-                },
-              },
-              {
-                label: '设置为自定义镜像',
-                permission: 'images_update',
-                action: () => {
-                  this.updateStandard(false, [obj])
-                },
-                meta: () => {
-                  if (this.isHostImage) {
-                    return {
-                      validate: false,
-                    }
-                  }
-                  if (this.isAdminMode && obj.tenant !== 'system') {
-                    return {
-                      validate: false,
-                      tooltip: '您不可以修改非本系统镜像',
-                    }
-                  }
-                  return {
-                    validate: isStandard(obj.is_standard) && validateAction(obj),
-                    tooltip: validateActionTooltip(obj),
-                  }
-                },
-              },
               {
                 label: '设置共享',
                 permission: 'images_perform_public',
@@ -320,7 +250,6 @@ export default {
     getParams () {
       return {
         details: true,
-        is_guest_image: false,
       }
     },
     updateStandard (isStandard, selectedItems) {

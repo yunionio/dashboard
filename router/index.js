@@ -4,6 +4,7 @@ import Baremetal from '@Compute/views/baremetal'
 import BaremetalCreate from '@Compute/views/baremetal/create/index'
 import Image from '@Compute/views/image'
 import ImageImport from '@Compute/views/image/image-import/index'
+import HostImage from '@Compute/views/host-image'
 import VMInstanceCreate from '@Compute/views/vminstance/create/index'
 import Network from '@Network/views/network'
 import NetworkCreate from '@Network/views/network/Create'
@@ -164,6 +165,21 @@ export default {
               name: 'ImageImport',
               path: 'import',
               component: ImageImport,
+            },
+          ],
+        },
+        {
+          path: '/host_image',
+          meta: {
+            label: '主机镜像',
+            permission: 'guestimages_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'HostImage',
+              path: '',
+              component: HostImage,
             },
           ],
         },

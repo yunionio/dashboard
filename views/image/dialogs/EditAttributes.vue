@@ -205,7 +205,7 @@ export default {
             this.form.fc.setFieldsValue({
               name,
               minDisk: Math.round(minDisk / 1024),
-              protected: res.data.protected,
+              protected: res.data.protected + '',
               osType,
               osDistribution,
               diskDriver: diskDriver || '',
@@ -215,7 +215,7 @@ export default {
         })
     },
     checkTemplateName (rule, value, callback) {
-      return new this.$Manager('images', 'v1').list({ params: {
+      return new this.$Manager(this.isHostImage ? 'guestimages' : 'images', 'v1').list({ params: {
         name: value,
       } }).then(res => {
         const data = res.data.data
