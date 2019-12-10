@@ -379,7 +379,8 @@
       "ready": "可用",
       "deleting": "删除中",
       "unknown": "状态异常",
-      "instance_snapshot_start_delete": "主机快照开始删除"
+      "instance_snapshot_start_delete": "主机快照开始删除",
+      "instance_snapshot_delete_failed": "主机快照删除失败"
     }
   },
   "skuCategoryOptions": {
