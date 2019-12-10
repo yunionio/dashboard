@@ -184,7 +184,9 @@ export default {
       groupActions: [
         {
           label: '添加',
-          action: () => {},
+          action: () => {
+            this.$router.push('/physicalmachine/add')
+          },
           meta: () => {
             return {
               buttonType: 'primary',
