@@ -345,7 +345,7 @@ export default {
               {
                 label: '更改项目',
                 action: () => {
-                  this.createDialog('ChangeProjectDialog', {
+                  this.createDialog('ChangeOwenrDialog', {
                     data: [obj],
                     columns: this.columns,
                     list: this.list,
