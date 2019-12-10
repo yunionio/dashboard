@@ -72,6 +72,7 @@ export default {
         }),
         {
           title: '类型',
+          width: 70,
           slots: {
             default: ({ row }) => {
               return DBINSTANCE_CATEGORY[row.category]
@@ -80,6 +81,7 @@ export default {
         },
         {
           title: '配置',
+          width: 70,
           slots: {
             default: ({ row }) => {
               return `${row.vcpu_count}核 ${sizestr(row.vmem_size_mb, 'M', 1024)}`
@@ -88,6 +90,7 @@ export default {
         },
         {
           title: '数据库引擎',
+          width: 100,
           slots: {
             default: ({ row }) => {
               return `${row.engine} ${row.engine_version}`
@@ -105,7 +108,7 @@ export default {
         // },
         {
           title: '链接地址',
-          width: 200,
+          minWidth: 200,
           slots: {
             default: ({ row }) => {
               const pri = row.internal_connection_str
@@ -123,17 +126,20 @@ export default {
         {
           title: '数据库端口号',
           field: 'port',
+          width: 100,
           slots: {
             default: ({ row }) => row.port || '-',
           },
         },
         {
           field: 'account',
+          minWidth: 100,
           title: '云账号',
         },
         {
           field: 'billing_type',
           title: '计费方式',
+          width: 100,
           slots: {
             default: ({ row }) => {
               const ret = []

@@ -68,6 +68,7 @@ export default {
         {
           field: 'arch_type',
           title: '类型',
+          width: 70,
           slots: {
             default: ({ row }) => {
               const type = row.local_category || row.arch_type
@@ -78,6 +79,7 @@ export default {
         {
           field: 'instance_type',
           title: '配置',
+          width: 50,
           slots: {
             default: ({ row }) => {
               return sizestr(row.capacity_mb, 'M', 1024)
@@ -87,6 +89,7 @@ export default {
         {
           field: 'engine',
           title: '类型版本',
+          width: 70,
           slots: {
             default: ({ row }) => {
               return `${row.engine} ${row.engine_version}`
@@ -96,6 +99,7 @@ export default {
         {
           field: 'password',
           title: '密码',
+          width: 50,
           slots: {
             default: ({ row }) => {
               return [<PasswordFetcher serverId={row.id} resourceType='elasticcaches' />]
@@ -104,7 +108,7 @@ export default {
         },
         {
           title: '链接地址',
-          width: 200,
+          minWidth: 200,
           slots: {
             default: ({ row }) => {
               const pri = row.private_dns || row.private_ip_addr
@@ -121,6 +125,7 @@ export default {
         },
         {
           title: '端口',
+          width: 100,
           slots: {
             default: ({ row }) => {
               if (!row.private_connect_port && !row.public_connect_port) {
@@ -140,6 +145,7 @@ export default {
         {
           field: 'account',
           title: '云账号',
+          minWidth: 100,
           slots: {
             default: ({ row }) => {
               return row.account
@@ -149,6 +155,7 @@ export default {
         {
           field: 'billing_type',
           title: '计费方式',
+          width: 100,
           slots: {
             default: ({ row }) => {
               const ret = []
