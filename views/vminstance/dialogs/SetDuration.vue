@@ -18,16 +18,20 @@
           v-if="form.fd.durationEnable"
           label="释放时间"
           v-bind="formItemLayout">
-          <a-date-picker
-            v-decorator="decorators.durationDate"
-            :disabledDate="disabledDate"
-            :disabledTime="disabledDateTime"
-            @change="dateChangeHandle"
-            showTime>
-            <template slot="renderExtraFooter">
-              快速选择：<a-tag color="blue" style="border-radius: 10px;" :class="{ active: currentDuration === v.value }" v-for="v in durationArrs" :key="v.value" @click="chooseDurationHandle(v)">{{v.text}}</a-tag>
-            </template>
-          </a-date-picker>
+          <div @click="openDatePicker">
+            <a-date-picker
+              v-decorator="decorators.durationDate"
+              :disabledDate="disabledDate"
+              :disabledTime="disabledDateTime"
+              :open="open"
+              @change="dateChangeHandle"
+              showTime>
+              <template slot="renderExtraFooter">
+                快速选择：<a-tag color="blue" style="border-radius: 10px;" :class="{ active: currentDuration === v.value }" v-for="v in durationArrs" :key="v.value" @click="chooseDurationHandle(v)">{{v.text}}</a-tag>
+                <p class="ant-calendar-ok-btn" style="position: absolute; right: 13px; top: 83px; padding: 0 8px; z-index: 999;" @click="closeDatePicker">确定</p>
+              </template>
+            </a-date-picker>
+          </div>
         </a-form-item>
       </a-form>
     </div>
@@ -96,7 +100,13 @@ export default {
         { value: '2d', text: '2天' },
         { value: '1w', text: '1周' },
       ],
+      open: false,
     }
+  },
+  watch: {
+    'form.fd.durationEnable' (val) {
+      this.open = false
+    },
   },
   created () {
     if (this.params.data[0].expired_at !== undefined) {
@@ -205,6 +215,12 @@ export default {
     },
     dateChangeHandle (v) {
       this.currentDuration = ''
+    },
+    openDatePicker () {
+      this.open = true
+    },
+    closeDatePicker () {
+      this.open = false
     },
   },
 }
