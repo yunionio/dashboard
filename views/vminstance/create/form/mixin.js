@@ -1,5 +1,5 @@
 import * as R from 'ramda'
-import { CreateServerForm, SCHED_POLICY_OPTIONS_MAP, SERVER_TYPE, SELECT_IMAGE_KEY_SUFFIX } from '@Compute/constants'
+import { CreateServerForm, SCHED_POLICY_OPTIONS_MAP, SERVER_TYPE, SELECT_IMAGE_KEY_SUFFIX, LOGIN_TYPES_MAP } from '@Compute/constants'
 import OsSelect from '@Compute/sections/OsSelect'
 import ServerPassword from '@Compute/sections/ServerPassword'
 import CpuRadio from '@Compute/sections/CpuRadio'
@@ -97,6 +97,13 @@ export default {
   computed: {
     isServertemplate () { // 主机模板
       return this.$route.query.source === 'servertemplate'
+    },
+    loginTypes () { // 主机模板隐藏手工输入密码
+      const loginTypes = Object.keys(LOGIN_TYPES_MAP)
+      if (this.isServertemplate) {
+        return loginTypes.filter(val => val !== LOGIN_TYPES_MAP.password.key)
+      }
+      return loginTypes
     },
     skuCloudregionZone () {
       const skuCloudregionZone = {}

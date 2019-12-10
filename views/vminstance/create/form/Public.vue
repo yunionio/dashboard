@@ -7,7 +7,7 @@
       @submit="submit">
       <servertemplate v-if="isServertemplate" :decorators="decorators.servertemplate" :formItemLayout="formItemLayout" />
       <a-divider orientation="left">基础配置</a-divider>
-      <a-form-item label="指定项目" v-bind="formItemLayout">
+      <a-form-item v-show="!isServertemplate" label="指定项目" v-bind="formItemLayout">
         <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
       </a-form-item>
       <a-form-item label="名称" v-if="!isServertemplate" v-bind="formItemLayout" extra="名称支持有序后缀占位符‘#’，用法举例，名称host##，数量2，创建后实例的名称依次为host01、host02，已有同名实例，序号顺延">
@@ -19,7 +19,7 @@
       <a-form-item class="mb-0" label="计费方式" v-bind="formItemLayout">
         <bill :decorators="decorators.bill" />
       </a-form-item>
-      <a-form-item label="数量" v-bind="formItemLayout">
+      <a-form-item label="数量" v-show="!isServertemplate" v-bind="formItemLayout">
         <a-input-number v-decorator="decorators.count" :min="1" :max="10" />
       </a-form-item>
       <!-- <a-form-item class="mb-0" label="资源池" v-bind="formItemLayout">
@@ -35,7 +35,7 @@
         <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" />
       </a-form-item>
       <area-selects
-        v-if="isDomainMode || form.fd.domain"
+        v-if="showAreaSelect"
         v-bind="formItemLayout"
         :cityParams="cityParams"
         :providerParams="providerParams"
@@ -104,7 +104,7 @@
           :secgroup-params="secgroupParams"
           :hypervisor="hypervisor" />
       </a-form-item>
-      <a-form-item label="调度策略" v-bind="formItemLayout" class="mb-0">
+      <a-form-item label="调度策略" v-show="!isServertemplate" v-bind="formItemLayout" class="mb-0">
         <sched-policy
           :server-type="form.fi.createType"
           :disabled-host="policyHostDisabled"
@@ -155,6 +155,14 @@ export default {
     }
   },
   computed: {
+    showAreaSelect () {
+      if (this.$store.getters.isAdminMode && this.$store.getters.l3PermissionEnable) {
+        if (this.form.fd.domain && this.form.fd.domain.key) {
+          return true
+        }
+      }
+      return false
+    },
     networkParam () {
       return {
         filter: 'server_type.notin(ipmi, pxe)',
@@ -312,6 +320,9 @@ export default {
         if (disableKeypairHyper.includes(hypervisor)) {
           delete loginTypes[LOGIN_TYPES_MAP.keypair.value]
         }
+      }
+      if (this.isServertemplate) {
+        delete loginTypes[LOGIN_TYPES_MAP.password.key]
       }
       return Object.keys(loginTypes)
     },

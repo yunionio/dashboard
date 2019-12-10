@@ -7,7 +7,7 @@
       @submit="submit">
       <servertemplate v-if="isServertemplate" :decorators="decorators.servertemplate" :formItemLayout="formItemLayout" />
       <a-divider orientation="left">基础配置</a-divider>
-      <a-form-item label="指定项目" v-bind="formItemLayout">
+      <a-form-item v-show="!isServertemplate" label="指定项目" v-bind="formItemLayout">
         <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
       </a-form-item>
       <a-form-item label="区域" class="mb-0" v-bind="formItemLayout">
@@ -22,7 +22,7 @@
       <a-form-item label="申请原因" v-bind="formItemLayout" v-if="isOpenWorkflow">
         <a-input v-decorator="decorators.reason" placeholder="请输入主机申请原因" />
       </a-form-item>
-      <a-form-item label="数量" v-bind="formItemLayout">
+      <a-form-item label="数量" v-show="!isServertemplate" v-bind="formItemLayout">
         <a-input-number v-decorator="decorators.count" :min="1" :max="10" />
       </a-form-item>
       <a-form-item v-bind="formItemLayout" label="操作系统" extra="操作系统会根据选择的虚拟化平台和可用区域的变化而变化，公共镜像的维护请联系管理员">
@@ -65,7 +65,7 @@
           ref="dataDiskRef" />
       </a-form-item>
       <a-form-item label="管理员密码" v-bind="formItemLayout">
-        <server-password :decorator="decorators.loginConfig" />
+        <server-password :decorator="decorators.loginConfig" :login-types="loginTypes" />
       </a-form-item>
       <a-form-item label="网络" v-bind="formItemLayout" class="mb-0">
         <server-network
@@ -84,7 +84,7 @@
           :secgroup-params="secgroupParams"
           :hypervisor="form.fd.hypervisor" />
       </a-form-item>
-      <a-form-item label="调度策略" v-bind="formItemLayout" class="mb-0">
+      <a-form-item label="调度策略" v-show="!isServertemplate" v-bind="formItemLayout" class="mb-0">
         <sched-policy
           :server-type="form.fi.createType"
           :disabled-host="policyHostDisabled"
@@ -92,7 +92,7 @@
           :decorators="decorators.schedPolicy"
           :policy-schedtag-params="params.policySchedtag" />
       </a-form-item>
-      <a-form-item v-bind="formItemLayout" label="到期释放">
+      <a-form-item v-bind="formItemLayout" v-show="!isServertemplate" label="到期释放">
         <duration :decorators="decorators.duration" />
       </a-form-item>
       <bottom-bar

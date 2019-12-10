@@ -140,7 +140,7 @@ export default {
       return ret
     },
     disk () {
-      const diskValueArr = []
+      const diskValueArr = [this.fd.systemDiskSize]
       R.forEachObjIndexed(value => {
         diskValueArr.push(value)
       }, this.fd.dataDiskSizes)

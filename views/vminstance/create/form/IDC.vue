@@ -7,7 +7,7 @@
       @submit="submit">
       <servertemplate v-if="isServertemplate" :decorators="decorators.servertemplate" :formItemLayout="formItemLayout" />
       <a-divider orientation="left">基础配置</a-divider>
-      <a-form-item label="指定项目" v-bind="formItemLayout">
+      <a-form-item v-show="!isServertemplate" label="指定项目" v-bind="formItemLayout">
         <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
       </a-form-item>
       <a-form-item label="区域" class="mb-0" v-bind="formItemLayout">
@@ -22,7 +22,7 @@
       <a-form-item label="申请原因" v-bind="formItemLayout" v-if="isOpenWorkflow">
         <a-input v-decorator="decorators.reason" placeholder="请输入主机申请原因" />
       </a-form-item>
-      <a-form-item label="数量" v-bind="formItemLayout">
+      <a-form-item label="数量" v-show="!isServertemplate" v-bind="formItemLayout">
         <a-input-number v-decorator="decorators.count" :min="1" :max="10" />
       </a-form-item>
       <a-form-item label="平台" v-bind="formItemLayout" extra="根据选择的区域不同，平台的可用类型不同且目前只有KVM支持GPU云服务器、云硬盘">
@@ -76,7 +76,7 @@
           :disabled="form.fi.dataDiskDisabled" />
       </a-form-item>
       <a-form-item label="管理员密码" v-if="isKvm && !isIso" v-bind="formItemLayout">
-        <server-password :form="form" :isSnapshotImageType="isSnapshotImageType" :decorator="decorators.loginConfig" />
+        <server-password :form="form" :login-types="loginTypes" :isSnapshotImageType="isSnapshotImageType" :decorator="decorators.loginConfig" />
       </a-form-item>
       <a-form-item label="网络" v-bind="formItemLayout" class="mb-0">
         <server-network
@@ -97,7 +97,7 @@
           :secgroup-params="secgroupParams"
           :hypervisor="form.fd.hypervisor" />
       </a-form-item>
-      <a-form-item label="调度策略" v-bind="formItemLayout" class="mb-0">
+      <a-form-item v-show="!isServertemplate" label="调度策略" v-bind="formItemLayout" class="mb-0">
         <sched-policy
           :server-type="form.fi.createType"
           :disabled-host="policyHostDisabled"
@@ -108,16 +108,16 @@
       <a-form-item label="引导方式" v-bind="formItemLayout" class="mb-0" v-if="isKvm">
         <bios :decorator="decorators.bios" />
       </a-form-item>
-      <a-form-item v-bind="formItemLayout" v-if="isKvm && isLocalDisk" label="高可用" extra="只有宿主机数量不少于2台时才可以使用该功能">
+      <a-form-item v-bind="formItemLayout" v-show="!isServertemplate" v-if="isKvm && isLocalDisk" label="高可用" extra="只有宿主机数量不少于2台时才可以使用该功能">
         <backup
           :decorator="decorators.backup"
           :disabled="form.fd.systemDiskType"
           :disabled-items="backupDisableds" />
       </a-form-item>
-      <a-form-item v-bind="formItemLayout" label="到期释放">
+      <a-form-item v-bind="formItemLayout" v-show="!isServertemplate" label="到期释放">
         <duration :decorators="decorators.duration" />
       </a-form-item>
-      <a-form-item v-bind="formItemLayout" v-if="isKvm" label="主机组" extra="对资源的简单编排策略，组内的机器根据设置分布在不同的宿主机上，从而实现业务的高可用">
+      <a-form-item v-bind="formItemLayout" v-show="!isServertemplate" v-if="isKvm" label="主机组" extra="对资源的简单编排策略，组内的机器根据设置分布在不同的宿主机上，从而实现业务的高可用">
         <instance-groups :decorators="decorators.groups" :params="instanceGroupsParams" />
       </a-form-item>
       <bottom-bar
