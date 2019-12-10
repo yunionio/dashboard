@@ -39,7 +39,7 @@
           <a-input v-decorator="decorators.reason" placeholder="请输入申请原因" />
         </a-form-item>
         <a-form-item label="自动启动" v-bind="formItemLayout" extra="调整配置后是否自动启动">
-          <a-switch v-decorator="decorators.autoStart" />
+          <a-switch v-decorator="decorators.autoStart" :disabled="isSomeRunning" />
         </a-form-item>
       </a-form>
     </div>
