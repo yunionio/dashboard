@@ -805,3 +805,6 @@ export const BUY_DURATIONS_OPTIONS = [
     unit: 'Y',
   },
 ]
+
+// 记录创建成功后选择的镜像，存储cookie的key suffix
+export const SELECT_IMAGE_KEY_SUFFIX = '__select_image'
