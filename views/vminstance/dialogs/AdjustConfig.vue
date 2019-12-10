@@ -356,7 +356,7 @@ export default {
       }
       let conf = this.maxConfig()
       this.form.fd.vcpu_count = conf[0]
-      this.form.fd.vmem = conf[1] * 1024
+      this.form.fd.vmem = Math.ceil(conf[1]) * 1024
       this.form.fd.datadisks = conf[2]
       this.beforeDataDisks = [ ...this.form.fd.datadisks ]
 
