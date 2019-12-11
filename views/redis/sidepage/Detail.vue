@@ -8,6 +8,7 @@
 
 <script>
 // import BrandIcon from '@/sections/BrandIcon'
+import { NODE_TYPE, PERFORMANCE_TYPE } from '@DB/views/redis/constants'
 import { sizestr } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
 
@@ -49,6 +50,22 @@ export default {
               slots: {
                 default: ({ row }) => {
                   return `${row.engine || ''} ${row.engine_version || ''}`
+                },
+              },
+            },
+            {
+              title: '节点类型',
+              slots: {
+                default: ({ row }) => {
+                  return NODE_TYPE[row.node_type]
+                },
+              },
+            },
+            {
+              title: '性能类型',
+              slots: {
+                default: ({ row }) => {
+                  return PERFORMANCE_TYPE[row.performance_type] || '-'
                 },
               },
             },

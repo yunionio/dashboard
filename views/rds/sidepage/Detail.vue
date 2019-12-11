@@ -73,6 +73,11 @@ export default {
             {
               field: 'engine',
               title: '数据库引擎',
+              slots: {
+                default: ({ row }) => {
+                  return `${row.engine} ${row.engine_version}`
+                },
+              },
             },
             {
               field: 'maintain_time',
@@ -96,20 +101,20 @@ export default {
               },
             },
             {
-              field: 'vcpu_count',
-              title: 'CPU',
-              slots: {
-                default: ({ row }) => {
-                  return `${row.vcpu_count} 核`
-                },
-              },
-            },
-            {
               field: 'storage_type',
               title: '存储类型',
               slots: {
                 default: ({ row }) => {
                   return DBINSTANCE_STORAGE_TYPE[row.storage_type]
+                },
+              },
+            },
+            {
+              field: 'vcpu_count',
+              title: 'CPU',
+              slots: {
+                default: ({ row }) => {
+                  return `${row.vcpu_count} 核`
                 },
               },
             },
@@ -164,7 +169,7 @@ export default {
                   }
                   return (
                     <div>
-                      {addr || '-'}
+                      {addr ? `${addr}:${row.port}` : '-'}
                       {RenderSwitchBtn}
                     </div>
                   )
