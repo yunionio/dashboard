@@ -194,6 +194,7 @@ export default {
         limit: 0,
         details: true,
         status: 'active',
+        is_guest_image: false,
         scope: this.$store.getters.scope,
         ...this.imageParams,
       }
@@ -218,6 +219,7 @@ export default {
         this.getImagesInfo()
       } catch (error) {
         this.loading = false
+        throw error
       }
     },
     async fetchHostImages (params) {
@@ -230,6 +232,7 @@ export default {
         this.getImagesInfo()
       } catch (error) {
         this.loading = false
+        throw error
       }
     },
     async fetchSnapshotImages (params) {
@@ -242,6 +245,7 @@ export default {
         this.getImagesInfo()
       } catch (error) {
         this.loading = false
+        throw error
       }
     },
     async fetchCacheimages () {
@@ -269,6 +273,7 @@ export default {
         }
       } catch (error) {
         this.loading = false
+        throw error
       }
     },
     getProperties (img) {
@@ -392,33 +397,26 @@ export default {
       this.imageOpts = []
       const { osOpts, imageOptsMap } = this.imagesInfo
       if (osOpts && osOpts.length) {
+        let os = osValue || osOpts[0].key
+        let imageOpts = this.getImageOpts(imageOptsMap[os])
+        let image = { key: imageOpts[0].id, label: imageOpts[0].name }
         if (!osValue && this.storageImage) { // 采用上次选择的镜像（storage）
-          const { os, image } = this.storageImage
-          this.form.fc.setFieldsValue({ os })
-          const imageOpts = imageOptsMap[os]
-          this.imageOpts = this.getImageOpts(imageOpts, os)
-          if (imageOpts && imageOpts.length) {
-            const imageObj = this.imageOpts.find(val => val.id === image)
-            if (R.is(Object, imageObj)) {
-              const image = { key: imageObj.id, label: imageObj.name }
-              this.imageChange(image)
-              this.form.fc.setFieldsValue({ image })
-            }
-          }
-        } else { // 采用默认下拉第一项
-          const os = osValue || osOpts[0].key
-          this.form.fc.setFieldsValue({ os })
-          const imageOpts = imageOptsMap[os]
-          this.imageOpts = this.getImageOpts(imageOpts, os)
-          if (imageOpts && imageOpts.length) {
-            const image = { key: imageOpts[0].id, label: imageOpts[0].name }
-            this.imageChange(image)
-            this.form.fc.setFieldsValue({ image })
+          const { os: storageOs, image: storageImage } = this.storageImage
+          const tempImageOpts = imageOptsMap[storageOs] || []
+          const storageImageObj = tempImageOpts.find(val => val.id === storageImage)
+          if (R.is(Object, storageImageObj)) {
+            imageOpts = tempImageOpts
+            os = storageOs
+            image = { key: storageImageObj.id, label: storageImageObj.name }
           }
         }
+        this.imageOpts = imageOpts
+        this.form.fc.setFieldsValue({ os })
+        this.form.fc.setFieldsValue({ image })
+        this.imageChange(image)
       }
     },
-    getImageOpts (imageOpts, os) {
+    getImageOpts (imageOpts) {
       let images = imageOpts.slice()
       if (images && images.length > 0) {
         images = images.filter((item) => {

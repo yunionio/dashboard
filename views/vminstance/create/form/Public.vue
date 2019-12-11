@@ -159,9 +159,11 @@ export default {
       if (this.$store.getters.isAdminMode && this.$store.getters.l3PermissionEnable) {
         if (this.form.fd.domain && this.form.fd.domain.key) {
           return true
+        } else {
+          return false
         }
       }
-      return false
+      return true
     },
     networkParam () {
       return {

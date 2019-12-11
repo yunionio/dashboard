@@ -158,7 +158,7 @@ export default {
         memory_size_mb: this.form.fd.vmem,
         usable: true,
         enabled: true,
-        privider: 'OneCloud',
+        provider: 'OneCloud',
         ...this.scopeParams,
       }
     },
