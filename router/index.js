@@ -28,6 +28,7 @@ import DiskSnapshot from '@Compute/views/snapshot/DiskSnapshot'
 import InstanceSnapshot from '@Compute/views/snapshot/InstanceSnapshot'
 import Servicecatalog from '@Compute/views/servicecatalog'
 import ServicecatalogDeploy from '@Compute/views/servicecatalog/Deploy'
+import SnapshotPolicy from '@Compute/views/snapshotpolicy'
 
 export default {
   index: 2,
@@ -232,6 +233,21 @@ export default {
               name: 'InstanceSnapshot',
               path: '',
               component: InstanceSnapshot,
+            },
+          ],
+        },
+        {
+          path: '/snapshotpolicy',
+          meta: {
+            label: '自动快照策略',
+            permission: 'snapshotpolicy_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'SnapshotPolicy',
+              path: '',
+              component: SnapshotPolicy,
             },
           ],
         },

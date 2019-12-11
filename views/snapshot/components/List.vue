@@ -71,6 +71,7 @@ export default {
         {
           field: 'rules',
           title: '子快照',
+          minWidth: 120,
           slots: {
             default: ({ row }) => {
               const list = row.snapshots.map(val => ({ value: val.name }))
