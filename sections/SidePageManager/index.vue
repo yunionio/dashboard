@@ -14,7 +14,7 @@
 import * as R from 'ramda'
 
 const components = {}
-const requireSidePages = require.context('../../../containers', true, /.\/views\/.*\/sidepage\/index\.(jsx?|vue)$/)
+const requireSidePages = require.context('../../../containers', true, /^((?![\\/]node_modules).)*.\/views\/.*\/sidepage\/index\.(jsx?|vue)$/)
 const commonSidePages = require.context('./components', false, /.\/\w+\.(jsx?|vue)$/)
 
 const registerSidePages = (sidePages) => {
