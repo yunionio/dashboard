@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { getStatusTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
+import { getStatusTableColumn, getNameDescriptionTableColumn, getRegionTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import expectStatus from '@/constants/expectStatus'
 import { sizestr } from '@/utils/utils'
@@ -46,11 +46,13 @@ export default {
         }),
         {
           field: 'dbinstance',
+          minWidth: 100,
           title: '实例名称',
         },
         {
           field: 'backup_mode',
           title: '备份类型',
+          width: 100,
           slots: {
             default: ({ row }) => {
               return BACKUP_TYPE[row.backup_mode]
@@ -60,6 +62,7 @@ export default {
         {
           id: 'engine',
           title: '数据库引擎',
+          width: 100,
           slots: {
             default: ({ row }) => {
               return `${row.engine || ''} ${row.engine_version || ''}`
@@ -69,6 +72,7 @@ export default {
         {
           id: 'backup_size_mb',
           title: '大小',
+          width: 70,
           slots: {
             default: ({ row }) => {
               return sizestr(row.backup_size_mb, 'M', 1024)
@@ -79,21 +83,14 @@ export default {
         // getBrandTableColumn(),
         {
           title: '备份开始/结束时间',
+          minWidth: 150,
           slots: {
             default: ({ row }) => {
               return `${this.$moment(row.start_time).format()} / ${this.$moment(row.end_time).format()}`
             },
           },
         },
-        {
-          id: 'region',
-          title: '区域',
-          slots: {
-            default: ({ row }) => {
-              return row.region
-            },
-          },
-        },
+        getRegionTableColumn(),
       ],
       groupActions: [
         {

@@ -45,17 +45,17 @@ export default {
   methods: {
     async skuFetchs (changedFields) {
       const capabilityParamsKeys = ['city', 'provider', 'cloudregion', 'zone']
-      const instanceSpecsParamsKeys = ['engine', 'engine_version', 'performance_type', 'local_category', 'node_type']
+      const instanceSpecsParamsKeys = ['engine', 'engine_version', 'performance_type', 'local_category', 'node_type', 'performance_type']
       const field = Object.keys(changedFields || {})[0]
       const isUndefined = changedFields === undefined
+      const skuParamsKey = ['memory_size_mb'].concat(capabilityParamsKeys).concat(instanceSpecsParamsKeys)
       try {
         if (capabilityParamsKeys.indexOf(field) > -1 || isUndefined) {
           await this.fetchCapability(capabilityParamsKeys)
         }
         if (instanceSpecsParamsKeys.indexOf(field) > -1 || isUndefined) {
-          await this.fetchSpecs(instanceSpecsParamsKeys)
+          await this.fetchSpecs(capabilityParamsKeys.concat(instanceSpecsParamsKeys))
         }
-        const skuParamsKey = ['memory_size_mb'].concat(capabilityParamsKeys).concat(instanceSpecsParamsKeys)
         if (skuParamsKey.indexOf(field) > -1 || isUndefined) {
           await this.fetchSkus(skuParamsKey)
         }
