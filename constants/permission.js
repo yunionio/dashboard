@@ -417,6 +417,7 @@ export const PERMISSION = {
   'bill_analysises_list': ['meter', 'bill_analysises', 'list'],
   'bill_conditions_list': ['meter', 'bill_conditions', 'list'],
   'bill_resources_list': ['meter', 'bill_resources', 'list'],
+  'bill_associates_list': ['meter', 'associate_bills', 'list'],
   'bill_details_list': ['meter', 'bill_details', 'list'],
   'rates_list': ['meter', 'rates', 'list'],
   'rates_update': ['meter', 'rates', 'post'],
