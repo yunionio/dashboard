@@ -87,21 +87,11 @@ export default {
             this.createDialog('DeleteResDialog', {
               data: this.list.selectedItems,
               columns: this.columns,
-              list: this.list,
               title: '删除',
+              list: this.list,
             })
           },
-          meta: () => {
-            const ret = {
-              validate: this.list.selected.length,
-              tooltip: null,
-            }
-            if (this.list.selectedItems.some(item => !item.can_delete)) {
-              ret.validate = false
-              return ret
-            }
-            return ret
-          },
+          meta: () => this.$getDeleteResult(this.list.selectedItems),
         },
       ],
       singleActions: [
