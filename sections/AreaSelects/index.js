@@ -332,7 +332,7 @@ export default {
       const params = {
         city,
         provider,
-        cloudregion,
+        cloudregion_id: cloudregion,
         ...DEFAULT_PARAMS,
         ...queryParams,
       }
