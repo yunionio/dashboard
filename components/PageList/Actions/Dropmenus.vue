@@ -12,7 +12,7 @@
         <template v-if="!isSubmenus">
           <template v-for="item of options">
             <div :key="item.label" class="menu-item">
-              <action-button button-size="small" :item="item" :row="row" @hidden-popover="hiddenPopover" />
+              <action-button button-size="small" :button-style="{ fontSize: '12px' }" :item="item" :row="row" @hidden-popover="hiddenPopover" />
             </div>
           </template>
         </template>
@@ -35,6 +35,7 @@
                           :item="submenu"
                           :row="row"
                           button-size="small"
+                          :button-style="{ fontSize: '12px' }"
                           @hidden-popover="hiddenPopover" />
                       </a-col>
                     </a-row>
@@ -146,7 +147,7 @@ export default {
   button {
     color: rgba(0, 0, 0, 0.65);
     &:hover {
-      color: #3c73b9;
+      color: #1890ff;
     }
     &:disabled {
       color: rgba(0, 0, 0, 0.25);
@@ -164,7 +165,7 @@ export default {
   button {
     color: rgba(0, 0, 0, 0.65);
     &:hover {
-      color: #3c73b9;
+      color: #1890ff;
     }
     &:disabled {
       color: rgba(0, 0, 0, 0.25);
