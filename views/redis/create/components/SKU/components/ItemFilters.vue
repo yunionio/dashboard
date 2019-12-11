@@ -210,6 +210,7 @@ export default {
     async fetchCapability (paramKeys) {
       const capabilityManager = new this.$Manager('elasticcacheskus/capability')
       const params = this.form.getFieldsValue(paramKeys)
+      params['engine'] = 'redis'
       try {
         const { data: { redis } } = await capabilityManager.batchGet({ params })
         this.filterItems = { redis }
