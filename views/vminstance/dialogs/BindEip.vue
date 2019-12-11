@@ -23,8 +23,10 @@
 
 <script>
 import EipConfig from '@Compute/sections/EipConfig'
+import { SERVER_TYPE } from '@Compute/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import { findPlatform } from '@/utils/common/hypervisor'
 
 export default {
   name: 'VmBindEipDialog',
@@ -33,6 +35,11 @@ export default {
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
+    let typeInitialValue = 'new'
+    const hypervisor = this.params.data[0].hypervisor
+    if (findPlatform(hypervisor) === SERVER_TYPE.private) {
+      typeInitialValue = 'bind'
+    }
     return {
       loading: false,
       form: {
@@ -43,7 +50,7 @@ export default {
           type: [
             'type',
             {
-              initialValue: 'new',
+              initialValue: typeInitialValue,
             },
           ],
           charge_type: [

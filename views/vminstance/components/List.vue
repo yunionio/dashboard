@@ -593,9 +593,6 @@ export default {
                     columns: this.columns,
                     list: this.list,
                     title: '删除',
-                    success: () => {
-                      this.destroySidePages()
-                    },
                   })
                 },
                 meta: () => {
@@ -1542,6 +1539,9 @@ export default {
                         columns: this.columns,
                         list: this.list,
                         title: '删除',
+                        success: () => {
+                          this.destroySidePages()
+                        },
                       })
                     },
                     meta: () => this.$getDeleteResult(obj),

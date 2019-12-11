@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="主机" />
+    <page-header title="虚拟机" />
     <page-body>
       <vm-instance-list :id="listId" />
     </page-body>
