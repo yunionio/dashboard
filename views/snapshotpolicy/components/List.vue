@@ -106,6 +106,22 @@ export default {
       ],
       singleActions: [
         {
+          label: '关联硬盘',
+          action: obj => {
+            this.createDialog('AttachDiskDialog', {
+              data: [obj],
+              columns: this.columns,
+              title: '关联硬盘',
+              list: this.list,
+            })
+          },
+          meta: obj => {
+            return {
+              validate: true,
+            }
+          },
+        },
+        {
           label: '删除',
           action: obj => {
             this.createDialog('DeleteResDialog', {
