@@ -420,6 +420,30 @@ export default {
                 },
               },
               {
+                label: '同步硬件配置',
+                action: () => {
+                  this.list.batchPerformAction('prepare', null, this.list.steadyStatus)
+                },
+                meta: () => {
+                  if (this.list.selectedItems.length <= 0) {
+                    return {
+                      validate: false,
+                    }
+                  }
+                  for (let i = 0; i < this.list.selectedItems.length; i++) {
+                    let obj = this.list.selectedItems[i]
+                    if (!obj.can_prepare) {
+                      return {
+                        validate: false,
+                      }
+                    }
+                  }
+                  return {
+                    validate: true,
+                  }
+                },
+              },
+              {
                 label: '删除',
                 permission: 'hosts_delete',
                 action: () => {

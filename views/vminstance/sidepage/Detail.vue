@@ -35,10 +35,6 @@ export default {
           field: 'keypair',
           title: '关联密钥',
         },
-        {
-          field: 'user',
-          title: '创建人',
-        },
         getBrandTableColumn(),
       ],
     }
