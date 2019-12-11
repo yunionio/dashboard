@@ -2,6 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{ params.title }}</div>
     <div slot="body">
+      <a-alert v-if="alertProps" v-bind="alertProps" class="mb-2" />
       <dialog-selected-tips :count="params.data.length" :action="this.params.title" :name="this.params.name" />
       <vxe-grid v-if="params.columns && params.columns.length" class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
     </div>
@@ -24,6 +25,17 @@ export default {
     return {
       loading: false,
     }
+  },
+  computed: {
+    alertProps () {
+      const { alert } = this.params
+      const data = {
+        'String': { message: alert, type: 'warning' },
+        'Object': alert,
+      }
+      const t = R.type(alert)
+      return data[t] || null
+    },
   },
   methods: {
     async handleConfirm () {

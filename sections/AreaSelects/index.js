@@ -144,6 +144,7 @@ export default {
         this.$emit('change', {
           [key]: undefined,
         })
+        this.FC.resetFields(fetchNames)
         return false
       }
       if (fetchNames && fetchNames.length > 0) {
@@ -171,8 +172,9 @@ export default {
           _list = value
         }
       }
-      const _item = !R.isEmpty(list) ? list[0] : {}
-      if (this.defaultActiveFirstOption) {
+      /** 默认是否选择list的第一条 */
+      const _item = !R.isEmpty(_list) ? _list[0] : null
+      if (this.defaultActiveFirstOption && _item) {
         const df = this.defaultActiveFirstOption
         if (R.type(df) === 'Boolean') {
           this.FC.setFieldsValue({
@@ -184,6 +186,8 @@ export default {
             [name]: _item.id || _item.name,
           })
         }
+      } else {
+        this.defaultActiveFirstOption = false
       }
       this[`${name}List`] = _list
     },
@@ -240,11 +244,9 @@ export default {
     async fetchProvider (queryParams = {}) {
       const { getFieldsValue } = this.FC
       const { city } = getFieldsValue(this.names)
-      const providerParams = R.is(Function, this.providerParams) ? this.providerParams() : this.providerParams
       const params = {
-        ...DEFAULT_PARAMS,
-        ...providerParams,
         city,
+        ...DEFAULT_PARAMS,
         ...queryParams,
       }
       this.providerLoading = true
@@ -281,12 +283,10 @@ export default {
     async fetchCloudregion (queryParams) {
       const { getFieldsValue } = this.FC
       const { city, provider } = getFieldsValue(this.names)
-      const cloudregionParams = R.is(Function, this.cloudregionParams) ? this.cloudregionParams() : this.cloudregionParams
       const params = {
-        ...DEFAULT_PARAMS,
-        ...cloudregionParams,
         city,
         provider,
+        ...DEFAULT_PARAMS,
         ...queryParams,
       }
       this.cloudregionLoading = true
@@ -329,13 +329,11 @@ export default {
     async fetchZone (queryParams = {}) {
       const { getFieldsValue } = this.FC
       const { city, provider, cloudregion } = getFieldsValue(this.names)
-      const zoneParams = R.is(Function, this.zoneParams) ? this.zoneParams() : this.zoneParams
       const params = {
-        ...DEFAULT_PARAMS,
-        ...zoneParams,
         city,
         provider,
         cloudregion,
+        ...DEFAULT_PARAMS,
         ...queryParams,
       }
       this.zoneLoading = true
