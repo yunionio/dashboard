@@ -50,6 +50,7 @@ export default {
         {
           field: 'disk_name',
           title: '硬盘',
+          minWidth: 200,
           formatter: ({ row }) => {
             return row.disk_name
           },
