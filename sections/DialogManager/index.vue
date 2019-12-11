@@ -33,15 +33,5 @@ export default {
       return this.$store.getters.dialogs
     },
   },
-  watch: {
-    // hack fix，antd vue 的 modal 打开时背景还可以滚动
-    dialogs (val) {
-      if (Object.keys(val).length > 0) {
-        document.body.style.overflow = 'hidden'
-      } else {
-        document.body.style.overflow = 'auto'
-      }
-    },
-  },
 }
 </script>
