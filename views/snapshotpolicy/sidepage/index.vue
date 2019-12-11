@@ -18,6 +18,7 @@
 <script>
 import SnapshotPolicyDetail from './Detail'
 import SnapshotPolicyDisk from './Disk'
+import SnapshotPolicyCache from './Cache'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -27,6 +28,7 @@ export default {
   components: {
     SnapshotPolicyDetail,
     SnapshotPolicyDisk,
+    SnapshotPolicyCache,
     Actions,
   },
   mixins: [SidePageMixin, WindowsMixin],
@@ -35,6 +37,7 @@ export default {
       detailTabs: [
         { label: '详情', key: 'snapshot-policy-detail' },
         { label: '关联硬盘', key: 'snapshot-policy-disk' },
+        { label: '缓存列表', key: 'snapshot-policy-cache' },
         { label: '操作日志', key: 'event-drawer' },
       ],
     }
