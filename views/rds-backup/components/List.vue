@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { getStatusTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
+import { getStatusTableColumn, getNameDescriptionTableColumn, getRegionTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import expectStatus from '@/constants/expectStatus'
 import { sizestr } from '@/utils/utils'
@@ -90,16 +90,7 @@ export default {
             },
           },
         },
-        {
-          id: 'region',
-          title: '区域',
-          width: 150,
-          slots: {
-            default: ({ row }) => {
-              return row.region
-            },
-          },
-        },
+        getRegionTableColumn(),
       ],
       groupActions: [
         {
