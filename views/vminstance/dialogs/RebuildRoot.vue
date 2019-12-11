@@ -257,6 +257,18 @@ export default {
       return Object.keys(loginTypes)
     },
   },
+  watch: {
+    type: {
+      handler (val) {
+        if (val === SERVER_TYPE.public) {
+          this.$nextTick(() => {
+            this.form.fc.setFieldsValue({ 'imageType': IMAGES_TYPE_MAP.public.key })
+          })
+        }
+      },
+      immediate: true,
+    },
+  },
   created () {
     this.serversManager = new Manager('servers', 'v2')
     this.fetchData()
