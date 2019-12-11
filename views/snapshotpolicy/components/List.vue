@@ -121,7 +121,7 @@ export default {
     }
   },
   created () {
-    this.initSidePageTab('event-drawer')
+    this.initSidePageTab('snapshot-policy-detail')
     this.list.fetchData()
   },
 }
