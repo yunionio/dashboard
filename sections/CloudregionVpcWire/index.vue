@@ -31,6 +31,7 @@
 
 <script>
 import * as R from 'ramda'
+import { SERVER_TYPE } from '@Compute/constants'
 import { mapGetters } from 'vuex'
 import { Manager } from '@/utils/manager'
 
@@ -80,8 +81,7 @@ export default {
       handler (val) {
         this.$nextTick(() => {
           this.fetchRegions()
-          const platformType = this.form.fc.getFieldValue('platform_type')
-          if (platformType === 'idc') {
+          if (this.platformType() === 'idc') {
             this.show = true
           } else {
             this.show = false
@@ -98,6 +98,9 @@ export default {
     this.fetchRegions()
   },
   methods: {
+    platformType () {
+      return this.form.fc.getFieldValue('platform_type') || SERVER_TYPE.idc
+    },
     regionChange (cloudregion, op) {
       if (op) {
         cloudregion = {
@@ -106,8 +109,7 @@ export default {
         }
       }
       this.fetchVpcs(cloudregion.key)
-      const platformType = this.form.fc.getFieldValue('platform_type')
-      if (platformType !== 'idc') {
+      if (this.platformType() !== 'idc') {
         if (cloudregion.provider !== 'ZStack') {
           this.fetchZones(cloudregion.key)
           this.show = false
@@ -123,8 +125,7 @@ export default {
       this.$emit('regionChange', cloudregion.provider)
     },
     vpcChange (vpc) {
-      const platformType = this.form.fc.getFieldValue('platform_type')
-      if (platformType === 'idc' || (platformType !== 'idc' && this.provider === 'ZStack')) {
+      if (this.platformType() === 'idc' || (this.platformType() !== 'idc' && this.provider === 'ZStack')) {
         this.fetchWires(vpc.key)
       }
       this.form.fc.setFieldsValue({
