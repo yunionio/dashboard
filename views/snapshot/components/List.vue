@@ -178,7 +178,7 @@ export default {
             if (this.isInstanceSnapshot) {
               return { validate: false, tooltip: '不支持该操作' }
             }
-            if (brand) {
+            if (brand && RollbackDiskValidate[brand]) {
               return { ...RollbackDiskValidate[brand](obj) }
             }
             return { validate: true }
