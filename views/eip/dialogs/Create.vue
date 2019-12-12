@@ -4,7 +4,7 @@
     <div slot="body">
       <a-form
         :form="form.fc">
-        <a-form-item label="指定项目" v-bind="formItemLayout">
+        <a-form-item label="指定项目" v-bind="formItemLayout" class="mb-0">
           <domain-project :fc="form.fc" :form-layout="formItemLayout" :decorators="{ project: decorators.project, domain: decorators.domain }" @update:domain="domainChange" />
         </a-form-item>
         <a-form-item label="平台" v-bind="formItemLayout">
@@ -185,20 +185,13 @@ export default {
           span: 3,
         },
       },
-      providerParams: {
-        enabled: 1,
-        details: true,
-        public_cloud: true,
-        scope: this.$store.getters.scope,
-        usable: true,
-        domain_id: 'default',
-      },
       manager: '',
       selectedRegionItem: {},
       showBandwidth: true,
       charge_type: 'traffic',
       selectedPlatform: 'public_cloud',
       providerC: '',
+      domain_id: 'default',
     }
   },
   computed: {
@@ -260,10 +253,20 @@ export default {
       }
       return maxBandwidth
     },
+    providerParams () {
+      return {
+        enabled: 1,
+        details: true,
+        public_cloud: true,
+        scope: this.$store.getters.scope,
+        usable: true,
+        domain_id: this.domain_id,
+      }
+    },
   },
   methods: {
     domainChange (id) {
-      this.providerParams.domain_id = id
+      this.domain_id = id
     },
     platformChange (e) {
       if (R.has('public_cloud', this.providerParams)) {

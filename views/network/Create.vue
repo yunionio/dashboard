@@ -23,6 +23,7 @@
       </a-form-item>
       <a-form-item :label="cloudRegionLabel" class="mb-0" v-bind="formItemLayout" v-if="!show">
         <cloudregion-vpc-wire
+          @regionChange="regionChange"
           :vpc-params="params.vpc"
           :cloudregion-params="params.cloudregion"
           :zone-params="params.zone"
@@ -70,9 +71,10 @@
 <script>
 import * as R from 'ramda'
 import IpSubnets from './components/IpSubnets'
-import { isRequired, isWithinRange, REGEXP } from '@/utils/validate'
+import { isRequired, REGEXP } from '@/utils/validate'
 import CloudregionVpcWire from '@/sections/CloudregionVpcWire'
 import { Manager } from '@/utils/manager'
+import { typeClouds } from '@/utils/common/hypervisor'
 
 const { networkSegment } = REGEXP
 const masks = {
@@ -98,21 +100,6 @@ function validateGateway (rule, value, callback) {
     callback(msg)
   } else {
     callback()
-  }
-}
-
-function checkIpInSegment (key, form) {
-  return (rule, value, callback) => {
-    const fd = form.fc.getFieldsValue()
-    const startip = fd['startip'][key]
-    const endip = fd['endip'][key]
-    const isIn = isWithinRange(value, startip, endip)
-    const msg = '输入的IP不在选择子网网段中'
-    if (isIn) {
-      callback()
-    } else {
-      callback(msg)
-    }
   }
 }
 
@@ -284,7 +271,7 @@ export default {
           netmask: i => [
             `netmask[${i}]`,
             {
-              initialValue: '16',
+              initialValue: '24',
               validateTrigger: ['change', 'blur'],
               rules: [
                 { required: true, message: '请选择子网掩码' },
@@ -301,7 +288,6 @@ export default {
                 { required: true, message: '请输入默认网关' },
                 { validator: this.$validate('IPv4') },
                 { validator: validateGateway },
-                { validator: checkIpInSegment(i, this.form) },
               ],
             },
           ],
@@ -333,6 +319,7 @@ export default {
         },
         vpc: {
           scope: this.$store.getters.scope,
+          show_emulated: true,
           limit: 0,
         },
         wire: {
@@ -340,6 +327,7 @@ export default {
         },
         zone: {
           scope: this.$store.getters.scope,
+          show_emulated: true,
         },
       },
       serverTypeOpts: [
@@ -362,6 +350,7 @@ export default {
       ],
       cloudRegionLabel: '二层网络',
       show: 'true',
+      regionProvider: '',
     }
   },
   provide () {
@@ -370,6 +359,70 @@ export default {
     }
   },
   methods: {
+    regionChange (provider) {
+      this.regionProvider = provider
+      if (provider === typeClouds.providerMap.ZStack.key) {
+        this.decorators.cloudregionVpcZone = {
+          cloudregion: [
+            'cloudregion',
+            {
+              initialValue: { key: '', label: '', provider: '' },
+              rules: [
+                { validator: isRequired(), message: '请选择区域' },
+              ],
+            },
+          ],
+          vpc: [
+            'vpc',
+            {
+              initialValue: { key: '', label: '' },
+              rules: [
+                { validator: isRequired(), message: '请选择VPC' },
+              ],
+            },
+          ],
+          wire: [
+            'wire',
+            {
+              initialValue: { key: '', label: '' },
+              rules: [
+                { validator: isRequired(), message: '请选择二层网络' },
+              ],
+            },
+          ],
+        }
+      } else {
+        this.decorators.cloudregionVpcZone = {
+          cloudregion: [
+            'cloudregion',
+            {
+              initialValue: { key: '', label: '', provider: '' },
+              rules: [
+                { validator: isRequired(), message: '请选择区域' },
+              ],
+            },
+          ],
+          vpc: [
+            'vpc',
+            {
+              initialValue: { key: '', label: '' },
+              rules: [
+                { validator: isRequired(), message: '请选择VPC' },
+              ],
+            },
+          ],
+          zone: [
+            'zone',
+            {
+              initialValue: { key: '', label: '' },
+              rules: [
+                { validator: isRequired(), message: '请选择可用区' },
+              ],
+            },
+          ],
+        }
+      }
+    },
     validatePublicIpPrefix (rule, value, callback) {
       if (!networkSegment.regexp.test(value)) {
         callback(new Error(networkSegment.message))
@@ -405,6 +458,7 @@ export default {
           usable_vpc: true,
           scope: this.$store.getters.scope,
           is_public: true,
+          show_emulated: true,
         }
         this.show = false
         this.cloudRegionLabel = '专有网络和可用区'
@@ -413,6 +467,7 @@ export default {
           scope: this.$store.getters.scope,
           limit: 0,
           is_on_premise: true,
+          show_emulated: true,
         }
         this.show = true
         this.cloudRegionLabel = '二层网络'
@@ -437,6 +492,13 @@ export default {
           data.push(obj)
           return data
         }, values.startip)
+      }
+      if (this.regionProvider === typeClouds.providerMap.ZStack.key) {
+        return {
+          guest_ip_prefix: values.guest_ip_prefix,
+          name: values.name,
+          wire_id: values['wire']['key'],
+        }
       }
       return {
         guest_ip_prefix: values.guest_ip_prefix,

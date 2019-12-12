@@ -15,6 +15,7 @@ import {
   getStatusTableColumn,
   getCopyWithContentTableColumn,
   getNameDescriptionTableColumn,
+  isPublicTableColumn,
 } from '@/utils/common/tableColumn'
 import windows from '@/mixins/windows.js'
 import { PROVIDER_FILTER_CN } from '@/constants'
@@ -120,7 +121,7 @@ export default {
           },
         },
         {
-          field: 'type',
+          field: 'server_type',
           title: '类型',
           width: 60,
           formatter: ({ cellValue }) => {
@@ -156,6 +157,7 @@ export default {
             },
           },
         },
+        isPublicTableColumn(),
         getBrandTableColumn(),
         getProjectTableColumn(),
         getRegionTableColumn(),
@@ -221,32 +223,32 @@ export default {
                   }
                 },
               },
-              {
-                label: '分割IP子网',
-                permission: 'networks_perform_split',
-                action: () => {
-                  this.createDialog('NetworkSplitDialog', {
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    list: this.list,
-                  })
-                },
-                meta: () => {
-                  const f = this.eachValidates((obj) => {
-                    if (this.isPower(obj)) {
-                      if (obj.external_id && obj.external_id.length > 0) { // 是公网 IP
-                        return false
-                      } else {
-                        return true
-                      }
-                    }
-                  })
-                  return {
-                    validate: f,
-                    tooltip: '公网IP不支持该操作',
-                  }
-                },
-              },
+              // {
+              //   label: '分割IP子网',
+              //   permission: 'networks_perform_split',
+              //   action: () => {
+              //     this.createDialog('NetworkSplitDialog', {
+              //       data: this.list.selectedItems,
+              //       columns: this.columns,
+              //       list: this.list,
+              //     })
+              //   },
+              //   meta: () => {
+              //     const f = this.eachValidates((obj) => {
+              //       if (this.isPower(obj)) {
+              //         if (obj.external_id && obj.external_id.length > 0) { // 是公网 IP
+              //           return false
+              //         } else {
+              //           return true
+              //         }
+              //       }
+              //     })
+              //     return {
+              //       validate: f,
+              //       tooltip: '公网IP不支持该操作',
+              //     }
+              //   },
+              // },
               {
                 label: '合并IP子网',
                 permission: 'networks_perform_merge',
