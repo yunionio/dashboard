@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <sidebar :l2-menu-visible.sync="l2MenuVisible" />
-    <div class="position-relative">
+    <div class="position-relative h-100">
       <navbar />
       <div class="app-page px-4 pb-4" :class="{ 'l2-menu-show': l2MenuVisible }">
         <slot />
