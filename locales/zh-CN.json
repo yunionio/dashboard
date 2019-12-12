@@ -381,6 +381,21 @@
       "unknown": "状态异常",
       "instance_snapshot_start_delete": "主机快照开始删除",
       "instance_snapshot_delete_failed": "主机快照删除失败"
+    },
+    "snapshotpolicy": {
+      "init": "初始化",
+      "ready": "正常",
+      "deleteing": "删除中",
+      "delete_failed": "删除失败",
+      "unknown": "未知",
+      "deleting": "删除中"
+    },
+    "snapshotpolcyCache": {
+      "ready": "正常",
+      "deleting": "删除中",
+      "caching": "缓存中",
+      "delete_failed": "删除失败",
+      "init": "初始化"
     }
   },
   "skuCategoryOptions": {

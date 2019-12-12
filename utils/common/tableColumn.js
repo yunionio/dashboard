@@ -297,3 +297,17 @@ export const getTimeTableColumn = ({
     },
   }
 }
+
+export const getAccountTableColumn = ({
+  field = 'account',
+  title = '云账号',
+} = {}) => {
+  return {
+    field,
+    title,
+    width: 150,
+    formatter: ({ cellValue }) => {
+      return cellValue || '-'
+    },
+  }
+}

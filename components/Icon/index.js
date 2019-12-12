@@ -73,5 +73,5 @@ function create (options) {
 }
 
 export default create({
-  scriptUrl: '//at.alicdn.com/t/font_1347390_n8fr9ortt78.js',
+  scriptUrl: '//at.alicdn.com/t/font_1347390_d9gqlqk57l.js',
 })
