@@ -70,6 +70,7 @@ export const RollbackDiskValidate = {
   aliyun (obj) {
     const ret = RollbackDiskValidate.base(obj)
     if (obj.guest && obj.guest_status !== 'ready') {
+      ret.validate = false
       ret.tooltip = `${BRAND_MAP[obj.brand].label}只有硬盘为未挂载或者已挂载但是主机处于关机状态的快照才支持回滚`
     }
     return ret
@@ -77,33 +78,37 @@ export const RollbackDiskValidate = {
   qcloud (obj) {
     const ret = RollbackDiskValidate.base(obj)
     if (obj.guest && obj.guest_status !== 'ready') {
+      ret.validate = false
       ret.tooltip = `${BRAND_MAP[obj.brand].label}只有硬盘为未挂载或者已挂载但是主机处于关机状态的快照才支持回滚`
     }
     return ret
   },
   aws (obj) {
-    const ret = RollbackDiskValidate.base(obj)
+    const ret = { validate: false }
     ret.tooltip = `${BRAND_MAP[obj.brand].label}不支持快照回滚硬盘`
     return ret
   },
   huawei (obj) {
     const ret = RollbackDiskValidate.base(obj)
     if (obj.guest) {
+      ret.validate = false
       ret.tooltip = `${BRAND_MAP[obj.brand].label}请选择未挂载磁盘的快照`
     }
     return ret
   },
   azure (obj) {
-    const ret = RollbackDiskValidate.base(obj)
+    const ret = { validate: false }
     ret.tooltip = `${BRAND_MAP[obj.brand].label}不支持快照回滚硬盘`
   },
   ucloud (obj) {
     const ret = RollbackDiskValidate.base(obj)
     if (obj.guest) {
+      ret.validate = false
       ret.tooltip = `${BRAND_MAP[obj.brand].label}请选择未挂载磁盘的快照`
       return ret
     }
     if (obj.disk_type !== 'data') {
+      ret.validate = false
       ret.tooltip = `${BRAND_MAP[obj.brand].label}请选择硬盘类型为数据盘的快照`
       return ret
     }
