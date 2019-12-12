@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     title="快照策略"
-    icon="res-keypair"
+    icon="res-kuaizhaocelue"
     :res-name="data.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"

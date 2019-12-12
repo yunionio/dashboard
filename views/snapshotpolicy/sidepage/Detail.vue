@@ -2,7 +2,8 @@
   <detail
     :list="list"
     :data="data"
-    :base-info="baseInfo" />
+    :base-info="baseInfo"
+    status-module="snapshotpolicy" />
 </template>
 
 <script>

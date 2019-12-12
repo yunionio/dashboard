@@ -81,6 +81,22 @@ export default {
       ],
       groupActions: [
         {
+          label: '新建',
+          action: () => {
+            this.createDialog('CreateSnapshotPolicyDialog', {
+              data: this.list.selectedItems,
+              columns: this.columns,
+              title: '新建',
+              list: this.list,
+            })
+          },
+          meta: () => {
+            return {
+              buttonType: 'primary',
+            }
+          },
+        },
+        {
           label: '删除',
           permission: 'snapshotpolicies_delete',
           action: () => {
