@@ -192,6 +192,14 @@ export default {
       selectedPlatform: 'public_cloud',
       providerC: '',
       domain_id: 'default',
+      providerParams: {
+        enabled: 1,
+        details: true,
+        public_cloud: true,
+        scope: this.$store.getters.scope,
+        usable: true,
+        domain_id: 'default',
+      },
     }
   },
   computed: {
@@ -254,30 +262,32 @@ export default {
       }
       return maxBandwidth
     },
-    providerParams () {
-      return {
-        enabled: 1,
-        details: true,
-        public_cloud: true,
-        scope: this.$store.getters.scope,
-        usable: true,
-        domain_id: this.domain_id,
-      }
+    updateProviderParams: {
+      get () {
+        return this.providerParams
+      },
+      set (newValue) {
+        this.providerParams = newValue
+      },
     },
   },
   methods: {
     domainChange (id) {
       this.domain_id = id
+      this.updateProviderParams = {
+        ...this.updateProviderParams,
+        domain_id: id,
+      }
     },
     platformChange (e) {
-      if (R.has('public_cloud', this.providerParams)) {
-        Reflect.deleteProperty(this.providerParams, 'public_cloud')
+      if (R.has('public_cloud', this.updateProviderParams)) {
+        Reflect.deleteProperty(this.updateProviderParams, 'public_cloud')
       } else {
-        Reflect.deleteProperty(this.providerParams, 'private_cloud')
+        Reflect.deleteProperty(this.updateProviderParams, 'private_cloud')
       }
       const platform = e.target.value
-      this.providerParams = {
-        ...this.providerParams,
+      this.updateProviderParams = {
+        ...this.updateProviderParams,
         [platform]: true,
       }
       this.selectedPlatform = e.target.value
