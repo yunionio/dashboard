@@ -307,6 +307,21 @@ export default {
       ],
       singleActions: [
         {
+          label: '调整标签',
+          action: (obj) => {
+            this.createDialog('AdjustLabelDialog', {
+              data: [obj],
+              columns: this.columns,
+              list: this.list,
+            })
+          },
+          meta: (obj) => {
+            return {
+              validate: this.isPower(obj),
+            }
+          },
+        },
+        {
           label: '更多',
           actions: obj => {
             return [
@@ -403,21 +418,6 @@ export default {
                       validate: false,
                       tooltip: '权限不足',
                     }
-                  }
-                },
-              },
-              {
-                label: '调整标签',
-                action: () => {
-                  this.createDialog('AdjustLabelDialog', {
-                    data: [obj],
-                    columns: this.columns,
-                    list: this.list,
-                  })
-                },
-                meta: () => {
-                  return {
-                    validate: this.isPower(obj),
                   }
                 },
               },

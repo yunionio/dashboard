@@ -202,9 +202,10 @@ export default {
           manager: this.manager,
           usable: true,
           scope: this.$store.getters.scope,
+          show_emulated: true,
         }
         if (this.isAdminMode) {
-          params['project_domain'] = this.userInfo.projectDomainId
+          params['project_domain'] = this.domain_id
           delete params.scope
         }
         return params
