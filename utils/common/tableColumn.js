@@ -263,6 +263,7 @@ export const isPublicTableColumn = ({ field = 'is_public', title = '共享范围
   return {
     field,
     title,
+    minWidth: 70,
     visible: store.getters.isAdminMode || store.getters.isDomainMode,
     formatter: ({ row }) => {
       let text = ''

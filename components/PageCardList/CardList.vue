@@ -88,7 +88,7 @@ export default {
     },
     showSingleActions (item) {
       const show = this.getOptions(item, 'singleActions')
-      if (R.isEmpty(show) && R.isEmpty(show[0])) {
+      if (show[0].actions().length === 0) {
         return false
       }
       return true

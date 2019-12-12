@@ -11,7 +11,7 @@
       <a-col :span="8">
         <a-form-item>
           <a-select label-in-value  v-decorator="decorator.vpc" allow-clear placeholder="请选择专有网络" @change="vpcChange">
-            <a-select-option v-for="item in vpcOpts" :key="item.id">{{ item.name }}</a-select-option>
+            <a-select-option v-for="item in vpcOpts" :key="item.id">{{ item.name }}{{ item.cidr_block ? `（${item.cidr_block}）` : '' }}</a-select-option>
           </a-select>
         </a-form-item>
       </a-col>
@@ -71,6 +71,7 @@ export default {
       wireLoading: false,
       zoneLoading: false,
       show: true,
+      provider: '',
     }
   },
   computed: mapGetters(['isAdminMode', 'scope', 'isDomainMode', 'userInfo', 'l3PermissionEnable']),
@@ -97,19 +98,33 @@ export default {
     this.fetchRegions()
   },
   methods: {
-    regionChange (cloudregion) {
+    regionChange (cloudregion, op) {
+      if (op) {
+        cloudregion = {
+          ...cloudregion,
+          provider: op.data.attrs.provider,
+        }
+      }
       this.fetchVpcs(cloudregion.key)
       const platformType = this.form.fc.getFieldValue('platform_type')
       if (platformType !== 'idc') {
-        this.fetchZones(cloudregion.key)
+        if (cloudregion.provider !== 'ZStack') {
+          this.fetchZones(cloudregion.key)
+          this.show = false
+        } else {
+          this.show = true
+          this.wireOpts = []
+        }
       }
+      this.provider = cloudregion.provider
       this.form.fc.setFieldsValue({
         cloudregion,
       })
+      this.$emit('regionChange', cloudregion.provider)
     },
     vpcChange (vpc) {
       const platformType = this.form.fc.getFieldValue('platform_type')
-      if (platformType === 'idc') {
+      if (platformType === 'idc' || (platformType !== 'idc' && this.provider === 'ZStack')) {
         this.fetchWires(vpc.key)
       }
       this.form.fc.setFieldsValue({
@@ -149,6 +164,10 @@ export default {
           if (this.vpcOpts.length && this.form && this.form.fc) {
             const firstVpc = this.vpcOpts[0]
             this.vpcChange({ key: firstVpc.id, label: firstVpc.name })
+          } else {
+            this.form.fc.setFieldsValue({
+              vpc: { key: '', label: '' },
+            })
           }
         })
         .catch(() => {
@@ -168,6 +187,10 @@ export default {
             this.form.fc.setFieldsValue({
               wire: { key: firstWire.id, label: firstWire.name },
             })
+          } else {
+            this.form.fc.setFieldsValue({
+              wire: { key: '', label: '' },
+            })
           }
         })
         .catch(() => {
@@ -186,6 +209,10 @@ export default {
             const firstZone = this.zonesOpts[0]
             this.form.fc.setFieldsValue({
               zone: { key: firstZone.id, label: firstZone.name },
+            })
+          } else {
+            this.form.fc.setFieldsValue({
+              zone: { key: '', label: '' },
             })
           }
         })

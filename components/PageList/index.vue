@@ -93,6 +93,12 @@ export default {
     // 开启标签过滤
     showTagFilter: Boolean,
     showSelection: Boolean,
+    pagerLayout: {
+      type: Array,
+      default: () => {
+        return ['PrevJump', 'PrevPage', 'Jump', 'PageCount', 'NextPage', 'NextJump', 'Sizes', 'Total']
+      },
+    },
   },
   data () {
     return {
@@ -144,6 +150,7 @@ export default {
         total: this.list.total,
         currentPage,
         pageSize: limit,
+        layouts: this.pagerLayout,
       }
     },
     checkboxConfig () {
