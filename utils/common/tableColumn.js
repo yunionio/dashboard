@@ -139,6 +139,7 @@ export const getNameDescriptionTableColumn = ({
   hideField,
   showDesc = true,
   sortable = true,
+  addBackup,
 } = {}) => {
   return {
     field: 'name',
@@ -150,7 +151,7 @@ export const getNameDescriptionTableColumn = ({
     slots: {
       default: ({ row }, h) => {
         const ret = [
-          <list-body-cell-wrap copy edit row={row} list={vm.list} hideField={ hideField } addLock={ addLock }>
+          <list-body-cell-wrap copy edit row={row} list={vm.list} hideField={ hideField } addLock={ addLock } addBackup={ addBackup }>
             { slotCallback ? slotCallback(row) : null }
           </list-body-cell-wrap>,
         ]

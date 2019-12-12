@@ -6,7 +6,10 @@
       :class="{ 'text-weak': field === 'description', [titleClass]: titleClass }">{{ row[field] || '-' }}</span>
     <div class="text-truncate" v-if="$scopedSlots.default"><slot /></div>
     <a-tooltip title="删除保护，如需解除，请点击【修改属性】" v-if="addLock && (row.disable_delete || !row.can_delete)">
-      <a-icon class="ml-1" type="lock" theme="twoTone" twoToneColor="#52c41a" />
+      <a-icon class="ml-1" type="lock" />
+    </a-tooltip>
+    <a-tooltip v-if="addBackup && row.backup_host_id" title="高可用云服务器">
+      <icon type="gaokeyong" class="ml-1" />
     </a-tooltip>
     <edit
       slot="edit"
@@ -73,6 +76,7 @@ export default {
     },
     titleClass: String,
     addLock: Boolean,
+    addBackup: Boolean,
   },
   data () {
     return {
