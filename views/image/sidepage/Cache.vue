@@ -43,17 +43,17 @@ export default {
       columns: [
         {
           field: 'host.name',
-          title: '名称',
+          title: '宿主机名称',
           width: 150,
         },
         getStatusTableColumn({ statusModule: 'imageCache' }),
-        getTimeTableColumn(),
         getTimeTableColumn({ title: '更新时间', field: 'updated_at' }),
         getBrandTableColumn({ field: 'host.brand' }),
         getRegionTableColumn({ field: 'host.region' }),
         {
           field: 'host.account',
           title: '云账号',
+          width: 100,
         },
       ],
       groupActions: [

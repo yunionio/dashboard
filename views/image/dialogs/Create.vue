@@ -17,6 +17,7 @@
         <a-form-item label="区域" v-bind="formItemLayout" v-if="params.title !== 'onpremise'">
           <base-select
             :remote="true"
+            class="w-100"
             :needParams="true"
             v-decorator="decorators.region"
             resource="cloudregions"
@@ -28,6 +29,7 @@
         <a-form-item label="云订阅" v-bind="formItemLayout" v-if="params.title !== 'onpremise'">
           <base-select
             :remote="true"
+            class="w-100"
             :needParams="true"
             v-decorator="decorators.manager"
             resource="cloudproviders"
@@ -40,6 +42,7 @@
       <page-list
         :list="list"
         :showSelection="true"
+        :pagerLayout="['PrevPage', 'Jump', 'PageCount', 'NextPage', 'Total']"
         :columns="cacheColumns" />
     </div>
     <div slot="footer">
@@ -86,13 +89,16 @@ export default {
       providerParams: {},
       list: this.$list.createList(this, {
         resource: 'hosts',
+        limit: 5,
         getParams: this.params.title === 'onpremise' ? {
           show_emulated: true,
           cloud_env: this.params.title,
           'filter.0': 'host_type.notequals(baremetal)',
+          usable: true,
         } : {
           show_emulated: true,
           cloud_env: this.params.title,
+          usable: true,
         },
       }),
     }

@@ -76,9 +76,9 @@ export default {
       columns: [
         getNameDescriptionTableColumn({
           width: 200,
-          addLock: true,
           vm: this,
           hideField: true,
+          addLock: true,
           slotCallback: row => {
             return (
               <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'SystemImageSidePage') }>{ row.name }</side-page-trigger>

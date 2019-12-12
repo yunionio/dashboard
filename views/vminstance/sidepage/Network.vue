@@ -31,15 +31,6 @@ export default {
         ctx: [['servers', this.resId]],
         idKey: 'network_id',
         getParams: this.getParams,
-        filterOptions: {
-          network: {
-            label: '名称',
-            filter: true,
-            formatter: val => {
-              return `network.contains(${val})`
-            },
-          },
-        },
       }),
       columns: [
         {

@@ -1,9 +1,17 @@
 <template>
   <div>
-    <a-radio-group v-model="imported" @change="chooseHandle">
-      <a-radio-button :value="false">未导入</a-radio-button>
-      <a-radio-button :value="true">已导入</a-radio-button>
+    <div class="mb-4">
+      <a-radio-group v-model="market" @change="chooseMaket">
+      <a-radio-button value="cloud">云服务</a-radio-button>
+      <a-radio-button value="iso">ISO</a-radio-button>
     </a-radio-group>
+    </div>
+    <div>
+      <a-radio-group v-model="imported" @change="chooseHandle">
+        <a-radio-button :value="false">未导入</a-radio-button>
+        <a-radio-button :value="true">已导入</a-radio-button>
+      </a-radio-group>
+    </div>
     <page-card-list
       :list="list"
       :card-fields="cardFields"
@@ -22,6 +30,7 @@ export default {
   data () {
     return {
       imported: false,
+      market: 'cloud',
       list: {
         limit: 20,
         total: 0,
@@ -75,9 +84,9 @@ export default {
     this.fetchData()
   },
   methods: {
-    fetchData () {
+    fetchData (market) {
       this.list.loading = true
-      new this.$Manager('imageutils/imagesinfo', 'v1').list().then(({ data }) => {
+      new this.$Manager('imageutils/imagesinfo', 'v1').list({ params: { market } }).then(({ data }) => {
         this.list.loading = false
         let osDesc = (image) => {
           return `镜像格式: ${image.format || '-'}
@@ -129,6 +138,13 @@ export default {
     },
     chooseHandle () {
       this.fetchData()
+    },
+    chooseMaket (e) {
+      if (e.target.value === 'iso') {
+        this.fetchData(e.target.value)
+      } else {
+        this.fetchData()
+      }
     },
   },
 }
