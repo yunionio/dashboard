@@ -31,7 +31,7 @@ export default {
     return {
       list: this.$list.createList(this, {
         resource: 'snapshotpolicycaches',
-        steadyStatus: Object.values(expectStatus.snapshotpolicycaches).flat(),
+        steadyStatus: Object.values(expectStatus.snapshotpolcyCache).flat(),
         getParams: this.getParams,
       }),
       columns: [
