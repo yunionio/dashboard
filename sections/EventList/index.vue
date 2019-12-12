@@ -3,6 +3,28 @@
     <div class="mb-2">
       <refresh-button :loading="loading" @refresh="refresh" />
     </div>
+    <div class="d-flex mb-3">
+      <div class="flex-fill d-flex">
+        <a-select
+          style="width: 150px;"
+          :defaultValue="searchDefaultValue"
+          @change="selectChange"
+          label-in-value
+          class="mr-2">
+          <a-select-option v-for="item in searchOptions" :key="item.key" :value="item.key">{{ item.label }}</a-select-option>
+        </a-select>
+        <a-input class="mr-2 w-25" style="min-width: 200px;" @keyup.enter.stop="handleSearch" placeholder="请输入完整内容精准搜索" v-model="searchText" />
+        <a-button @click="handleSearch" :disabled="loading" icon="search" />
+      </div>
+      <div>
+        <a-date-picker
+          v-model="dateTime"
+          format="YYYY-MM-DD HH:mm:ss"
+          placeholder="选择终止时间进行查询"
+          @change="handleDateTimeChange"
+          :showTime="{ defaultValue: $moment('00:00:00', 'HH:mm:ss') }" />
+      </div>
+    </div>
     <div class="mb-3 d-flex align-items-center" v-if="!isEmptySearched">
       <span style="font-size: 12px;">筛选条件：</span>
       <a-tag
@@ -13,7 +35,7 @@
         class="ml-1"
         type="info"
         @close="clearSearch(key)">
-        {{ item.label }}：{{ item.value }}
+        {{ item.label }}：{{ item.key }}
       </a-tag>
       <a style="font-size: 12px; color: #999;" class="ml-2" @click="clearAllSearch">清除</a>
     </div>
@@ -66,30 +88,35 @@ export default {
   },
   data () {
     return {
+      dateTime: null,
       data: [],
       loading: false,
       nextMarker: '',
       search: {
         label: '资源名称',
-        value: 'obj_name',
+        key: 'obj_name',
+      },
+      searchDefaultValue: {
+        label: '资源名称',
+        key: 'obj_name',
       },
       searchText: '',
       searchOptions: [
         {
           label: '资源名称',
-          value: 'obj_name',
+          key: 'obj_name',
         },
         {
           label: '所属项目',
-          value: 'tenant',
+          key: 'tenant',
         },
         {
           label: '发起人',
-          value: 'user',
+          key: 'user',
         },
         {
           label: '操作',
-          value: 'action',
+          key: 'action',
         },
       ],
       searched: {},
@@ -185,13 +212,15 @@ export default {
           },
         } = await this.manager.list({ params })
         this.nextMarker = nextMarker
-        // this.$refs.table.setCurrentRow(this.data[this.data.length - 1])
         this.data = [ ...this.data, ...data ]
       } catch (error) {
         throw error
       } finally {
         this.loading = false
       }
+    },
+    selectChange (val) {
+      this.search = val
     },
     getParams () {
       const params = {
@@ -201,9 +230,10 @@ export default {
       if (this.nextMarker) params.paging_marker = this.nextMarker
       if (this.objId) params.filter = `obj_id.in(${this.objId})`
       if (this.objType) params.obj_type = this.objType
+      if (this.dateTime) params.until = this.$moment.utc(this.dateTime).format()
       if (this.searched && !R.isEmpty(this.searched)) {
         for (let key in this.searched) {
-          params[key] = this.searched[key]['value']
+          params[key] = this.searched[key]['key']
         }
       }
       return params
@@ -212,6 +242,29 @@ export default {
       this.createDialog('EventLogDialog', {
         data: val,
       })
+    },
+    handleDateTimeChange () {
+      // this.$nextTick(() => {
+      //   this.clearAllSearch()
+      // })
+      this.nextMarker = ''
+      this.data = []
+      this.fetchData()
+    },
+    handleSearch () {
+      if (!this.searchText) return
+      const searched = {
+        ...this.searched,
+        [this.search.key]: {
+          label: this.search.label,
+          key: this.searchText,
+        },
+      }
+      this.searched = searched
+      this.searchText = ''
+      this.nextMarker = ''
+      this.data = []
+      this.fetchData()
     },
     clearSearch (key) {
       const searched = { ...this.searched }
