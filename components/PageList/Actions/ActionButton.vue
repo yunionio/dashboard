@@ -68,7 +68,7 @@ export default {
     const v = []
     let action
     if (this.popoverTrigger) {
-      action = <a-button style={ this.buttonStyle } block={ this.buttonBlock } size={ this.buttonSize } type={ this.meta.buttonType || this.buttonType } disabled={ this.disabled } onClick={ this.handlePopoverClick }>{ this.label }<a-icon type='down' /></a-button>
+      action = <a-button style={ this.buttonStyle } block={ this.buttonBlock } size={ this.buttonSize } type={ this.meta.buttonType || this.buttonType } disabled={ this.disabled } onClick={ this.handlePopoverClick }>{ this.label }<a-icon class='ml-1' type='caret-down' /></a-button>
     } else {
       action = <a-button style={ this.buttonStyle } block={ this.buttonBlock } size={ this.buttonSize } type={ this.meta.buttonType || this.buttonType } disabled={ this.disabled } onClick={ this.handleClick }>{ this.label }</a-button>
     }
