@@ -11,7 +11,7 @@
     <a-form-item class="mb-0" v-if="isBind">
       <div slot="extra">
         没有想要的安全组？可以前往
-        <help-link href="/secgroup"> 新建安全组</help-link>
+        <help-link :href="href"> 新建安全组</help-link>
       </div>
       <base-select
         remote
@@ -74,6 +74,10 @@ export default {
         ...defaultSecgroupParams,
         ...this.secgroupParams,
       }
+    },
+    href () {
+      const url = this.$router.resolve('/secgroup')
+      return url.href
     },
   },
   watch: {

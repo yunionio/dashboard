@@ -150,6 +150,7 @@ export default {
           vm: this,
           hideField: true,
           addLock: true,
+          addBackup: true,
           slotCallback: row => {
             return (
               <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'VmInstanceSidePage') }>{ row.name }</side-page-trigger>
