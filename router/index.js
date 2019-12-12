@@ -5,6 +5,7 @@ import EditAttributes from '@Network/views/network/EditAttributes'
 import Eip from '@Network/views/eip'
 import FlexNetwork from '@Network/views/flex-network'
 import Wire from '@Network/views/wire'
+import GolbalVpc from '@Network/views/global-vpc'
 
 export default {
   index: 3,
@@ -18,6 +19,21 @@ export default {
         label: '基础网络',
       },
       submenus: [
+        {
+          path: '/globalvpc',
+          meta: {
+            label: '全局VPC',
+            // permission: 'wires_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'GlobalVpcList',
+              path: '',
+              component: GolbalVpc,
+            },
+          ],
+        },
         {
           path: '/wire',
           meta: {
