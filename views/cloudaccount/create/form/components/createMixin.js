@@ -26,6 +26,7 @@ export default {
           xxl: { span: 2 },
         },
       },
+      domainProjectShow: false,
     }
   },
   computed: {
@@ -38,7 +39,12 @@ export default {
       this.decorators = this.getDecorators()
     },
   },
+  activated () { // 使 DomainProject 组件避免被缓存住
+    this.domainProjectShow = true
+  },
   deactivated () {
+    this.domainProjectShow = false
+    if (this.keepAliveFields) return
     this.form.fc.resetFields()
   },
   methods: {

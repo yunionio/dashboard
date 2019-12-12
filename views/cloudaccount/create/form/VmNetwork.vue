@@ -175,6 +175,7 @@ export default {
           scope: this.$store.getters.scope,
         },
       },
+      keepAliveFields: true,
     }
   },
 }
