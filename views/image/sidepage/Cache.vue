@@ -43,7 +43,7 @@ export default {
       columns: [
         {
           field: 'host.name',
-          title: '宿主机名称',
+          title: '缓存位置',
           width: 150,
         },
         getStatusTableColumn({ statusModule: 'imageCache' }),

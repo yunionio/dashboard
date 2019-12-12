@@ -160,6 +160,7 @@ export default {
         method: 'post',
         processData: false,
         data,
+        timeout: 0,
       })
     },
     doImportUrl (data) {

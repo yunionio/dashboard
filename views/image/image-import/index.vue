@@ -44,6 +44,7 @@ export default {
         description: 'description',
         desc: 'desc',
       },
+      isImported: {},
     }
   },
   computed: {
@@ -69,13 +70,22 @@ export default {
             }
             new this.$Manager('images', 'v1').create({ data })
               .then(() => {
+                this.$set(this.isImported, obj.id, true)
                 this.fetchData()
               })
           },
-          meta: () => ({
-            buttonType: 'primary',
-            validate: !this.imported,
-          }),
+          meta: (obj) => {
+            let validate = true
+            if (!this.imported && this.isImported[obj.id]) {
+              validate = false
+            } else {
+              validate = !this.imported
+            }
+            return {
+              buttonType: 'primary',
+              validate,
+            }
+          },
         },
       ]
     },

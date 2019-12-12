@@ -109,7 +109,7 @@ export default {
         return [
           {
             field: 'name',
-            title: '名称',
+            title: '缓存位置',
           },
           {
             field: 'access_ip',
