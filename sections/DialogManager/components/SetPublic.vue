@@ -94,7 +94,7 @@ export default {
       if (this.$store.getters.l3PermissionEnable) {
         ret.splice(1, 0, { label: '当前域', value: 'domain' })
       }
-      if (this.$store.getters.isDomainAdmin) {
+      if (this.$store.getters.isDomainMode) {
         ret.shift()
       }
       return ret
