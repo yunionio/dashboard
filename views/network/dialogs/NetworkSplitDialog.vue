@@ -86,6 +86,7 @@ export default {
         await this.doSplit(values)
         this.loading = false
         this.cancelDialog()
+        this.params.list.refresh()
       } catch (error) {
         this.loading = false
       }

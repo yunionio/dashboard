@@ -490,8 +490,8 @@ export default {
             wire_id: values['wire']['key'],
           }
           data.push(obj)
-          return data
         }, values.startip)
+        return data
       }
       if (this.regionProvider === typeClouds.providerMap.ZStack.key) {
         return {
@@ -530,8 +530,9 @@ export default {
             }
             await manager.create({ data: bodyData })
           }
+        } else {
+          await manager.create({ data })
         }
-        await manager.create({ data })
         this.$router.push({ name: 'NetworkList' })
       } finally {
         this.submiting = false

@@ -37,12 +37,13 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        this.loading = true
         await this.doConcat()
         this.loading = false
         this.cancelDialog()
+        this.params.list.refresh()
       } catch (error) {
         this.loading = false
+        throw error
       }
     },
   },
