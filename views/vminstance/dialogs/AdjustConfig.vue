@@ -278,7 +278,7 @@ export default {
       let params = {
         limit: 0,
         usable: true,
-        enable: true,
+        enabled: true,
         cpu_core_count: this.form.fd.vcpu || this.decorators.vcpu[1].initialValue,
         memory_size_mb: this.form.fd.vmem,
       }
