@@ -101,6 +101,7 @@ export default {
       try {
         const values = await this.form.fc.getFieldsValue()
         await this.doRollbackDiskSubmit(values)
+        this.params.list.refresh()
         this.loading = false
         this.cancelDialog()
       } catch (error) {
