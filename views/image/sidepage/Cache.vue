@@ -104,10 +104,19 @@ export default {
         },
       ],
       ids: '',
+      timer: '',
     }
   },
   created () {
     this.list.fetchData()
+  },
+  mounted () {
+    this.timer = setInterval(() => {
+      this.list.refresh()
+    }, 10000)
+  },
+  destroyed () {
+    clearInterval(this.timer)
   },
   methods: {
     createCache (title, obj) {

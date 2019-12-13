@@ -5,7 +5,7 @@
       <a-form
         :form="form.fc">
         <a-form-item label="平台" v-bind="formItemLayout">
-          <a-select v-decorator="decorators.platform" @change="handlePlatformChange">
+          <a-select v-decorator="decorators.platform" @change="handlePlatformChange" placeholder="请选择">
             <a-select-option
               v-for="(item, index) in platformOptions"
               :key="index"
@@ -211,6 +211,15 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
+        if (this.list.selectedItems.length === 0) {
+          this.$message.info('请选择可用区')
+          this.loading = false
+          return
+        } else if (this.list.selectedItems.length > 1) {
+          this.$message.info('目前不支持批量操作')
+          this.loading = false
+          return
+        }
         await this.doSave()
         this.loading = false
         this.cancelDialog()
