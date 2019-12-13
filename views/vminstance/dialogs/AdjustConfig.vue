@@ -281,13 +281,10 @@ export default {
         enable: true,
         cpu_core_count: this.form.fd.vcpu || this.decorators.vcpu[1].initialValue,
         memory_size_mb: this.form.fd.vmem,
-        cloudregion: this.selectedItem.region_id,
-
       }
       if (this.type === SERVER_TYPE.private) {
         params.provider = HYPERVISORS_MAP.kvm.provider
-        params.public_cloud = true
-        params.zone_id = this.selectedItem.zone_id
+        params.public_cloud = false
         params['postpaid_status'] = 'available'
       }
       if (this.type === SERVER_TYPE.public) {
