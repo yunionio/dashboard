@@ -198,7 +198,6 @@ export default {
         public_cloud: true,
         scope: this.$store.getters.scope,
         usable: true,
-        domain_id: 'default',
       },
     }
   },

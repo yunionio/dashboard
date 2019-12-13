@@ -423,7 +423,6 @@ export default {
               },
               {
                 label: '预留IP',
-                // permission: 'networks_delete',
                 action: (obj) => {
                   this.createDialog('NetworkReversedIPDialog', {
                     data: [obj],
@@ -432,11 +431,17 @@ export default {
                     list: this.list,
                   })
                 },
-                // meta: () => {
-                //   return {
-                //     validate: this.list.allowDelete(),
-                //   }
-                // },
+                meta: () => {
+                  if (this.isDomainMode) {
+                    return {
+                      validate: false,
+                      tooltip: '权限不足',
+                    }
+                  }
+                  return {
+                    validate: true,
+                  }
+                },
               },
               {
                 label: '删除',

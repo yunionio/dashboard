@@ -26,12 +26,10 @@ export default {
   },
   methods: {
     doConcat () {
-      return this.params.list.onManager('performAction', {
+      return new this.$Manager('networks').performAction({
         id: this.params.itemData.nameFrom,
-        managerArgs: {
-          action: 'merge',
-          data: { target: this.params.itemData.nameTo },
-        },
+        action: 'merge',
+        data: { target: this.params.itemData.nameTo },
       })
     },
     async handleConfirm () {

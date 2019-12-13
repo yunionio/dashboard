@@ -74,7 +74,7 @@ export default {
       try {
         let values = await this.form.fc.validateFields()
         values = {
-          ...this.values,
+          ...values,
           id: this.params.data[0].id,
         }
         this.loading = true
