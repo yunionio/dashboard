@@ -14,18 +14,6 @@
             </a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item label="区域" v-bind="formItemLayout" v-if="params.title !== 'onpremise'">
-          <base-select
-            :remote="true"
-            class="w-100"
-            :needParams="true"
-            v-decorator="decorators.region"
-            resource="cloudregions"
-            :params="regionParams"
-            :remote-fn="q => ({ search: q })"
-            @change="handleRegionChange"
-            :select-props="{ placeholder: '请选择' }" />
-        </a-form-item>
         <a-form-item label="云订阅" v-bind="formItemLayout" v-if="params.title !== 'onpremise'">
           <base-select
             :remote="true"
@@ -36,6 +24,18 @@
             :params="providerParams"
             :remote-fn="q => ({ filter: `name.contains(${q})` })"
             @change="handleManagerChange"
+            :select-props="{ placeholder: '请选择' }" />
+        </a-form-item>
+        <a-form-item label="区域" v-bind="formItemLayout" v-if="params.title !== 'onpremise'">
+          <base-select
+            :remote="true"
+            class="w-100"
+            :needParams="true"
+            v-decorator="decorators.region"
+            resource="cloudregions"
+            :params="regionParams"
+            :remote-fn="q => ({ search: q })"
+            @change="handleRegionChange"
             :select-props="{ placeholder: '请选择' }" />
         </a-form-item>
       </a-form>
@@ -116,28 +116,20 @@ export default {
             title: 'IP',
           },
           {
-            field: 'zone',
-            title: '可用区',
+            field: 'brand',
+            title: '平台',
           },
           {
             field: 'region',
             title: '区域',
           },
           {
-            field: 'brand',
-            title: '平台',
+            field: 'zone',
+            title: '可用区',
           },
         ]
       } else {
         return [
-          {
-            field: 'zone',
-            title: '可用区',
-          },
-          {
-            field: 'region',
-            title: '区域',
-          },
           {
             field: 'brand',
             title: '平台',
@@ -149,6 +141,14 @@ export default {
           {
             field: 'manager',
             title: '云订阅',
+          },
+          {
+            field: 'region',
+            title: '区域',
+          },
+          {
+            field: 'zone',
+            title: '可用区',
           },
         ]
       }

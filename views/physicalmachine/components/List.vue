@@ -134,11 +134,11 @@ export default {
           title: '品牌',
           width: 70,
           slots: {
-            default ({ cellValue, row }) {
+            default: ({ row }) => {
               if (row.sys_info && row.sys_info.oem_name) {
                 const imgSrc = require(`../assets/${row.sys_info.oem_name}.svg`)
                 return [
-                  <img src={ imgSrc } style='width: 60px;' />,
+                  <img src={ imgSrc } style='width: 25px;' />,
                 ]
               }
             },
