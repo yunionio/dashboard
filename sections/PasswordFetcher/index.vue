@@ -149,7 +149,7 @@ export default {
     handleDialogConfirm () {
       if (R.isNil(this.dialog.value) || R.isEmpty(this.dialog.value)) return
       try {
-        this.dialog.password = passwordDecrypt(this.loginInfos.password.loginKey, this.dialog.value)
+        this.dialog.password = passwordDecrypt(this.loginInfos.password.loginKey, this.dialog.value) || '暂无'
       } catch (error) {
         this.$message.error('获取密码失败')
         throw error
