@@ -142,7 +142,7 @@ http.interceptors.request.use(
   }
 )
 
-function needLogout (error) {
+export const needLogout = error => {
   const isAuth = error.config.url.startsWith('/api/v1/auth')
   const isNoToken = error.response.data && error.response.data.details && error.response.data.details.includes('No token in header')
   return isAuth || isNoToken

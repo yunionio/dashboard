@@ -200,3 +200,46 @@ export const arrToObjByKey = (arr, key, itemKey) => {
   }, target)
   return target
 }
+
+/**
+ * 解析 influxdb 数据，主要把 series.values 的数据单位缩进
+ * @param {Object} series 结构如下：
+ * @param {Array} series.columns 列
+ * @param {String} series.name 名称
+ * @param {Array} series.values 二维数组，表示每列的数据
+ */
+export const autoComputeUnit = (series, sourceUnit = 'bps', base = 1000) => { // 单位自动缩进
+  let { values } = series
+  let unit = 'b'
+  const deleteTimeValues = values.map(arr => arr.slice(1))
+  let valueArr = deleteTimeValues.reduce((a, b) => a.concat(b))
+  valueArr = valueArr.filter(val => val) // 过滤掉 0
+  const maxValue = Math.max.apply(null, valueArr)
+  if (maxValue >= 1000 && valueArr && valueArr.length > 0) {
+    const maxValueStr = sizestr(maxValue, 'B', base)
+    unit = maxValueStr.slice(-1) // 'B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'
+    let scaleIndex = UNITS.findIndex(val => val === unit.charAt(0))
+    scaleIndex = scaleIndex || UNITS[UNITS.length - 1]
+    scaleIndex = scaleIndex < 0 ? 0 : scaleIndex
+    const scale = Math.pow(base, scaleIndex)
+    values = values.map(arr => {
+      return arr.map((item, i) => {
+        if (i === 0) { // time
+          return item
+        }
+        return item / scale
+      })
+    })
+  }
+  if (unit.toLowerCase() === 'b') {
+    unit = 'b'
+  } else {
+    unit += 'b'
+  }
+  if (sourceUnit === 'bps') unit += '/s'
+  return { // 主要作用是 改变 values(单位缩进), 加入当前单位 unit
+    ...series,
+    values,
+    unit,
+  }
+}
