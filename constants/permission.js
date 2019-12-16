@@ -337,7 +337,7 @@ export const PERMISSION = {
   'networks_perform_private': ['compute', 'networks', 'perform', 'private'],
   'networks_perform_split': ['compute', 'networks', 'perform', 'split'],
   'networks_perform_merge': ['compute', 'networks', 'perform', 'merge'],
-  'networks_perform_change-owner': ['compute', 'networks', 'perform', 'change-owner'],
+  'networks_perform_change_owner': ['compute', 'networks', 'perform', 'change-owner'],
   /**
    * notices 相关操作
    */
