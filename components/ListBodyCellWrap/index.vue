@@ -30,6 +30,8 @@
 </template>
 
 <script>
+import _ from 'lodash'
+
 export default {
   name: 'ListBodyCellWrap',
   props: {
@@ -89,7 +91,7 @@ export default {
       if (this.message) {
         return this.message
       }
-      return this.row[this.field] || '-'
+      return _.get(this.row, this.field) || '-'
     },
     labelCn () {
       if (this.label) return this.label
