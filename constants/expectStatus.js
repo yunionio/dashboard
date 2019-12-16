@@ -20,7 +20,7 @@ export default {
     danger: ['killed'],
   },
   imageCache: {
-    danger: ['delete_failed'],
+    danger: ['delete_failed', 'cache_fail'],
     success: ['ready'],
     info: ['init'],
   },

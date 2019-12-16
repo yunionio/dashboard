@@ -147,7 +147,8 @@
       "start_maintain": "开始维护",
       "maintaining": "维护中",
       "maintain_fail": "维护失败",
-      "prepare": "准备中"
+      "prepare": "准备中",
+      "probing": "正在检测IPMI配置"
     },
     "image": {
       "init": "初始化",
@@ -168,7 +169,9 @@
       "deleting": "删除中",
       "caching": "缓存中",
       "delete_failed": "删除失败",
-      "init": "初始化"
+      "init": "初始化",
+      "cache_fail": "缓存失败",
+      "saving": "正在保存"
     },
     "cloudaccount": {
       "init": "初始化",
