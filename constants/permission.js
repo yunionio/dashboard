@@ -449,6 +449,11 @@ export const PERMISSION = {
   'redis_elasticcaches_list': ['compute', 'elasticcaches', 'list'],
   'redis_elasticcaches_delete': ['compute', 'elasticcaches', 'delete'],
   'redis_elasticcaches_create': ['compute', 'elasticcaches', 'create'],
+  /**
+   * 预留IP
+   */
+  'reservedips_create': ['compute', 'reservedips', 'create'],
+  'reservedips_delete': ['compute', 'reservedips', 'delete'],
 }
 
 // 已声明权限的资源
