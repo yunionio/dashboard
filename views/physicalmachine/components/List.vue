@@ -144,12 +144,7 @@ export default {
             },
           },
         },
-        {
-          field: 'sn',
-          title: 'SN',
-          width: 120,
-          showOverflow: 'ellipsis',
-        },
+        getCopyWithContentTableColumn({ field: 'sn', title: 'SN' }),
         getCopyWithContentTableColumn({ field: 'server', title: '分配' }),
         {
           field: 'login_ssh',
