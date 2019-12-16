@@ -222,13 +222,13 @@ export default {
             if (this.list.selectedItems.length <= 0) {
               return {
                 validate: false,
-                tooltip: '请选择已经禁用的实例',
+                tooltip: '请选择已经启用的实例',
               }
             }
             if (this.list.selectedItems.some(item => !item.enabled)) {
               return {
                 validate: false,
-                tooltip: '请选择已经禁用的实例',
+                tooltip: '请选择已经启用的实例',
               }
             }
             return {

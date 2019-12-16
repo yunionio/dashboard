@@ -108,14 +108,6 @@ export default {
       if (this.params.title === 'onpremise') {
         return [
           {
-            field: 'name',
-            title: '缓存位置',
-          },
-          {
-            field: 'access_ip',
-            title: 'IP',
-          },
-          {
             field: 'brand',
             title: '平台',
           },
@@ -126,6 +118,14 @@ export default {
           {
             field: 'zone',
             title: '可用区',
+          },
+          {
+            field: 'access_ip',
+            title: 'IP',
+          },
+          {
+            field: 'name',
+            title: '缓存位置',
           },
         ]
       } else {
