@@ -1,3 +1,19 @@
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  box-shadow: inset 0 0 2px rgba(0,0,0,.42);
+  background-color: rgba(0,0,0,.25);
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 2px rgba(0,0,0,.3);
+  border-radius: 10px;
+}
+
 #app, .app-container {
   height: 100%;
 }
