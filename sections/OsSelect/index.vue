@@ -44,7 +44,7 @@ export default {
     },
     type: {
       type: String,
-      validator: val => ['public', 'private', 'idc'].includes(val),
+      validator: val => ['public', 'private', 'idc', 'baremetal'].includes(val),
       required: true,
     },
     hypervisor: {
@@ -73,6 +73,9 @@ export default {
     },
     isIDC () {
       return this.type === 'idc'
+    },
+    isBaremetal () {
+      return this.type === 'baremetal'
     },
     mirrorTypeOptions () {
       let ret = [IMAGES_TYPE_MAP.standard, IMAGES_TYPE_MAP.customize]

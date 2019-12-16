@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import debounce from 'lodash/debounce'
 import { SERVER_TYPE } from '@Compute/constants'
@@ -127,6 +128,7 @@ export default {
       },
       servers: [],
       createParams: {},
+      specificationList: [],
     }
   },
   computed: {
@@ -193,6 +195,9 @@ export default {
       this.fetchServers(e.target.value)
     }, 300)
     this.fetchServerCreateParams()
+    if (this.params.type === 'baremetal') {
+      this.fetchHosts()
+    }
   },
   methods: {
     async fetchServerCreateParams () {
@@ -224,11 +229,38 @@ export default {
         manager = null
       }
     },
+    async fetchHosts () {
+      new this.$Manager('hosts').list({
+        params: {
+          enabled: 1,
+          usable: true,
+          is_empty: true,
+          host_type: 'baremetal',
+          scope: this.$store.getters.scope,
+        },
+      }).then(({ data = {} }) => {
+        if (data.data.length) {
+          this.specificationList = data.data
+        }
+      })
+    },
     async handleConfirm () {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
         const data = this.genCloneData(values)
+        if (this.params.type === 'baremetal') {
+          if (this.specificationList.length) {
+            this.$message.warning('无可用规格，无法创建')
+            return
+          } else {
+            const specificationItem = this.specificationList.filter(item => { return item.id === data.host_id })
+            if (R.isEmpty(specificationItem.spec) || R.isNil(specificationItem.spec)) {
+              this.$message.warning('无相同规格，无法创建')
+              return
+            }
+          }
+        }
         const schedulerManager = new this.$Manager('schedulers', 'v1')
         const schedulerReponse = await schedulerManager.rpc({
           methodname: 'DoForecast',

@@ -9,6 +9,7 @@
       <network-config
         :form="form"
         :decorator="decorator.networkConfig"
+        :isBonding="isBonding"
         :network-params="networkListParams"
         :limit="form.fi.capability.max_nic_count" />
     </a-form-item>
@@ -16,6 +17,7 @@
       <network-schedtag
         :form="form"
         :decorator="decorator.networkSchedtag"
+        :isBonding="isBonding"
         :schedtag-params="schedtagParams"
         :limit="form.fi.capability.max_nic_count" />
     </a-form-item>
@@ -49,6 +51,10 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    isBonding: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
@@ -71,6 +77,9 @@ export default {
         })
         this.networkComponent = ''
       }
+    },
+    'isBonding' () {
+      console.log(132)
     },
   },
   methods: {

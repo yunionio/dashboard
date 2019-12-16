@@ -49,7 +49,7 @@ export default {
     cloudType: {
       type: String,
       default: 'idc',
-      validator: val => ['public', 'private', 'idc'].includes(val),
+      validator: val => ['public', 'private', 'idc', 'baremetal'].includes(val),
     },
     decorator: {
       type: Object,
@@ -193,7 +193,7 @@ export default {
       }
     },
     async fetchImages () {
-      const params = {
+      let params = {
         limit: 0,
         details: true,
         status: 'active',
@@ -203,6 +203,15 @@ export default {
       }
       if (params.project_domain) {
         delete params.scope
+      }
+      if (this.cloudType === 'baremetal') {
+        params = {
+          limit: 0,
+          details: true,
+          status: 'active',
+          scope: this.$store.getters.scope,
+          ...this.imageParams,
+        }
       }
       if (this.imageType === IMAGES_TYPE_MAP.iso.key) {
         params.disk_formats = 'iso'
@@ -222,6 +231,9 @@ export default {
         const { data: { data = [] } } = await this.imagesM.list({ params })
         this.loading = false
         this.images.list = data
+        if (this.cloudType === 'baremetal') {
+          this.images.list = data.filter(item => { return item.properties.os_type === 'Linux' || item.properties.os_type === 'VMWare' })
+        }
         this.getImagesInfo()
       } catch (error) {
         this.loading = false

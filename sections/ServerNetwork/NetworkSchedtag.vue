@@ -1,7 +1,7 @@
 <template>
   <div class="network-schedtag">
     <div class="d-flex align-items-start mb-2" v-for="(item, i) in schedtagList" :key="item.key">
-      <a-tag color="blue" class="mr-1 mt-2">eth{{i}}</a-tag>
+      <a-tag color="blue" class="mr-1 mt-2">{{ isBonding ? 'bond' : 'eth'}}{{i}}</a-tag>
       <schedtag-policy class="w-50" :decorators="genDecorator(item.key)" :schedtag-params="schedtagParams" />
       <a-button shape="circle" icon="minus" size="small" @click="decrease(item.key, i)" class="mt-2" />
     </div>
@@ -41,6 +41,10 @@ export default {
     limit: {
       type: Number,
       default: 8, // 默认支持最多 8 个ip子网
+    },
+    isBonding: {
+      type: Boolean,
+      default: false,
     },
   },
   data () {

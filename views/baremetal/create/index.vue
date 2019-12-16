@@ -3,66 +3,173 @@
     <page-header title="创建裸金属服务器" />
     <a-form
       class="mt-3"
-      :form="form"
-      @submit="submit">
+      :form="form.fc"
+      @submit="handleConfirm">
+      <a-divider orientation="left">基础配置</a-divider>
       <a-form-item label="区域" class="mb-0" v-bind="formItemLayout">
         <cloudregion-zone
           :zone-params="params.zone"
-          :region-params="params.region"
+          :cloudregion-params="params.region"
           :decorator="decorators.regionZone" />
       </a-form-item>
-      <a-form-item label="名称" v-bind="formItemLayout">
+      <a-form-item label="名称" v-bind="formItemLayout" extra="名称支持序号占位符‘#’，用法如下：名称：host## 数量：2,实例为：host01、host02，已有同名实例，序号顺延">
         <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverName')" />
       </a-form-item>
       <a-form-item label="数量" v-bind="formItemLayout">
-        <a-input-number v-decorator="decorators.count" :min="1" :max="10" />
+        <a-input-number v-decorator="decorators.count" :min="1" :max="100" />
       </a-form-item>
-      <a-form-item v-bind="formItemLayout" label="镜像" class="mb-0">
-        <os-select :image-params="params.image" :decorator="decorators.imageOS" />
+      <a-form-item v-bind="formItemLayout" label="操作系统" extra="操作系统会根据选择的虚拟化平台和可用区域的变化而变化，公共镜像的维护请联系管理员">
+        <os-select
+          type="baremetal"
+          hypervisor="baremetal"
+          :image-params="imageParams"
+          @change="handleImageChange"
+          :decorator="decorators.imageOS" />
       </a-form-item>
-      <a-form-item label="规格" v-bind="formItemLayout" class="mb-0">
-        <spec :decorator="decorators.spec" />
+      <a-form-item v-bind="formItemLayout" label="规格">
+        <a-select v-decorator="decorators.specifications">
+          <a-select-option v-for="i in specOptions" :key="i.value" :value="i.value" @change="specificationChange">
+            {{i.text}}
+          </a-select-option>
+        </a-select>
+      </a-form-item>
+      <a-form-item v-bind="formItemLayout" label="硬盘配置">
+        <div class="d-flex flex-wrap">
+          <template v-for="(item, idx) of diskOptionsDate">
+            <div :key="idx" class="disk-option-item">
+              <a-card hoverable>
+                <template slot="title">
+                  <icon type="res-disk" />
+                  {{ item.title }}
+                  <a-tooltip title="磁盘配置分区合法">
+                    <a-icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" v-show="(idx === 0 && item.remainder === 0) || idx !== 0" />
+                  </a-tooltip>
+                  <a-tooltip title="磁盘配置分区非法：请完成剩余磁盘分区设置，若未配置将导致操作失败">
+                    <a-icon type="close-circle" theme="twoTone" twoToneColor="#eb2f96" v-show="idx === 0 && item.remainder > 0" />
+                  </a-tooltip>
+                </template>
+                <a href="javascript:;" slot="extra" @click="handleDiskItemRemove(idx)" v-show="idx === diskOptionsDate.length - 1">删除</a>
+                <div class="d-flex align-items-center">
+                  <ve-pie :data="item.chartData" :settings="chartSettings" :events="chartFun(idx)" width="200px" height="200px" :legend-visible="false" />
+                  <div class="flex-fill ml-2">
+                    <template v-for="k in item.diskInfo">
+                      <div :key="k">
+                        <a-checkbox defaultChecked disabled>
+                          {{k}}
+                        </a-checkbox>
+                      </div>
+                    </template>
+                    <a-tag color="blue">可用容量: {{item.size}}</a-tag>
+                  </div>
+                </div>
+              </a-card>
+            </div>
+          </template>
+        </div>
+      </a-form-item>
+      <a-form-item :wrapper-col="{ span: 20, offset: 3 }">
+        <a-button type="primary" @click="addDisk" :disabled="specOptions.length === 0">
+          新增磁盘
+        </a-button>
       </a-form-item>
       <a-form-item label="管理员密码" v-bind="formItemLayout">
-        <server-password :decorator="decorators.loginConfig" />
+        <server-password :form="form" :login-types="loginTypes" :isSnapshotImageType="false" :decorator="decorators.loginConfig" />
       </a-form-item>
-      <bottom-bar />
+      <a-divider orientation="left">高级配置</a-divider>
+      <a-form-item label="网络" v-bind="formItemLayout" class="mb-0">
+        <server-network
+          :decorator="decorators.network"
+          :isBonding="isBonding"
+          :network-list-params="networkParam"
+          :schedtag-params="params.schedtag" />
+      </a-form-item>
+      <a-form-item :wrapper-col="{ span: 20, offset: 3 }">
+        <a-checkbox v-model="isBonding">启用bonding</a-checkbox>
+      </a-form-item>
+      <a-form-item label="调度策略" v-bind="formItemLayout" class="mb-0">
+        <sched-policy
+          server-type="baremetal"
+          :disabled-host="policyHostDisabled"
+          :policy-host-params="params.policyHostParams"
+          :decorators="decorators.schedPolicy"
+          :policy-schedtag-params="params.policySchedtag" />
+      </a-form-item>
+      <bottom-bar
+        :loading="submiting"
+        :form="form"
+        :selectedSpecItem="selectedSpecItem"
+        type="baremetal"
+        :isOpenWorkflow="false"
+        :errors.sync="errors"
+        :isServertemplate="false"
+        :hasMeterService="hasMeterService" />
     </a-form>
   </div>
 </template>
 <script>
-import _ from 'lodash'
 import * as R from 'ramda'
-import { CreateServerForm } from '@Compute/constants'
-import Spec from '@Compute/sections/Spec'
-import ServerPassword from '@Compute/sections/ServerPassword'
+import _ from 'lodash'
+import { mapGetters } from 'vuex'
+import { CreateServerForm, LOGIN_TYPES_MAP, NETWORK_OPTIONS_MAP, FORECAST_FILTERS_MAP } from '@Compute/constants'
 import OsSelect from '@Compute/sections/OsSelect'
+import ServerPassword from '@Compute/sections/ServerPassword'
+import ServerNetwork from '@Compute/sections/ServerNetwork'
+import SchedPolicy from '@Compute/sections/SchedPolicy'
 import BottomBar from './BottomBar'
 import CloudregionZone from '@/sections/CloudregionZone'
-import { isRequired } from '@/utils/validate'
-import { Manager } from '@/utils/manager'
+import validateForm, { isRequired, isWithinRange } from '@/utils/validate'
+import { IMAGES_TYPE_MAP } from '@/constants/compute'
+import { sizestr } from '@/utils/utils'
+import { WORKFLOW_TYPES } from '@/constants/workflow'
+import workflowMixin from '@/mixins/workflow'
+import WindowsMixin from '@/mixins/windows'
+
+function checkIpInSegment (i, networkData) {
+  return (rule, value, cb) => {
+    const isIn = isWithinRange(value, networkData.guest_ip_start, networkData.guest_ip_end)
+    if (isIn) {
+      cb()
+    } else {
+      cb(new Error('输入的IP不在选择子网网段中'))
+    }
+  }
+}
 
 export default {
   name: 'BaremetalCreate',
   components: {
-    OsSelect,
-    CloudregionZone,
-    Spec,
     BottomBar,
+    CloudregionZone,
+    OsSelect,
     ServerPassword,
+    ServerNetwork,
+    SchedPolicy,
   },
+  mixins: [WindowsMixin, workflowMixin],
   data () {
+    let imageTypeInitValue = IMAGES_TYPE_MAP.standard.key
     return {
-      top: 80,
+      submiting: false,
+      errors: [],
       formItemLayout: {
         wrapperCol: { span: CreateServerForm.wrapperCol },
         labelCol: { span: CreateServerForm.labelCol },
       },
-      form: this.$form.createForm(this, { onFieldsChange: this.onFieldsChange }),
-      fi: { // formInfo 存储着和表单相关的数据
-        capability: {}, // 可用区下的可用资源
-        imageMsg: {}, // 当前选中的 image
-        specs: {}, // 所有 disk 规格的全集
+      form: {
+        fc: this.$form.createForm(this, {
+          onValuesChange: (props, values) => {
+            this.$bus.$emit('updateForm', values)
+            if (values.hasOwnProperty('zone') && values.zone.key) {
+              this.capability(values.zone.key)
+              this.zone = values.zone.key
+            }
+          },
+        }),
+        fi: {
+          capability: {},
+          imageMsg: {},
+          createType: 'baremetal',
+        },
       },
       decorators: {
         name: [
@@ -77,19 +184,13 @@ export default {
             ],
           },
         ],
-        count: [
-          'count',
-          {
-            initialValue: 1,
-          },
-        ],
         regionZone: {
-          region: [
-            'region',
+          cloudregion: [
+            'cloudregion',
             {
               initialValue: { key: '', label: '' },
               rules: [
-                { validator: isRequired(), message: '请选择区域' },
+                { required: true, message: '请选择区域' },
               ],
             },
           ],
@@ -98,11 +199,17 @@ export default {
             {
               initialValue: { key: '', label: '' },
               rules: [
-                { validator: isRequired(), message: '请选择可用区' },
+                { required: true, message: '请选择可用区' },
               ],
             },
           ],
         },
+        count: [
+          'count',
+          {
+            initialValue: 1,
+          },
+        ],
         imageOS: {
           os: [
             'os',
@@ -122,13 +229,18 @@ export default {
               ],
             },
           ],
+          imageType: [
+            'imageType',
+            {
+              initialValue: imageTypeInitValue,
+            },
+          ],
         },
-        spec: [
-          'spec',
+        specifications: [
+          'specifications',
           {
-            initialValue: { key: '', label: '' },
             rules: [
-              { validator: isRequired(), message: '请选择规格' },
+              { required: true, message: '请选择规格' },
             ],
           },
         ],
@@ -140,42 +252,218 @@ export default {
             },
           ],
           keypair: [
-            'keypair',
+            'loginKeypair',
             {
-              initialValue: { key: '', label: '' },
+              initialValue: undefined, // { key: '', label: '' }
               rules: [
                 { validator: isRequired(), message: '请选择关联密钥' },
               ],
             },
           ],
           password: [
-            'password',
+            'loginPassword',
             {
               initialValue: '',
+              validateFirst: true,
               rules: [
                 { required: true, message: '请输入密码' },
+                { validator: validateForm('sshPassword') },
               ],
             },
           ],
         },
+        network: {
+          networkType: [
+            'networkType',
+            {
+              initialValue: NETWORK_OPTIONS_MAP.default.key,
+            },
+          ],
+          networkConfig: {
+            networks: i => [
+              `networks[${i}]`,
+              {
+                validateTrigger: ['change', 'blur'],
+                rules: [{
+                  required: true,
+                  message: '请选择ip子网',
+                }],
+              },
+            ],
+            ips: (i, networkData) => [
+              `networkIps[${i}]`,
+              {
+                validateFirst: true,
+                validateTrigger: ['blur', 'change'],
+                rules: [{
+                  required: true,
+                  message: '请输入ip',
+                }, {
+                  validator: checkIpInSegment(i, networkData),
+                }],
+              },
+            ],
+          },
+          networkSchedtag: {
+            schedtags: i => [
+              `networkSchedtags[${i}]`,
+              {
+                validateTrigger: ['change', 'blur'],
+                rules: [{
+                  required: true,
+                  message: '请选择调度标签',
+                }],
+              },
+            ],
+            policys: (i, networkData) => [
+              `networkPolicys[${i}]`,
+              {
+                validateTrigger: ['blur', 'change'],
+                rules: [{
+                  required: true,
+                  message: '请选择调度标签',
+                }],
+              },
+            ],
+          },
+        },
+        schedPolicy: {
+          schedPolicyType: [
+            'schedPolicyType',
+            {
+              initialValue: 'default',
+            },
+          ],
+          schedPolicyHost: [
+            'schedPolicyHost',
+            {
+              rules: [
+                { required: true, message: '请选择宿主机' },
+              ],
+            },
+          ],
+          policySchedtag: {
+            schedtags: i => [
+              `policySchedtagSchedtags[${i}]`,
+              {
+                validateTrigger: ['change', 'blur'],
+                rules: [{
+                  required: true,
+                  message: '请选择调度标签',
+                }],
+              },
+            ],
+            policys: (i, networkData) => [
+              `policySchedtagPolicys[${i}]`,
+              {
+                validateTrigger: ['blur', 'change'],
+                rules: [{
+                  required: true,
+                  message: '请选择调度标签',
+                }],
+              },
+            ],
+          },
+        },
       },
+      zone: '',
       params: {
         zone: {},
         region: {
           usable: true,
           is_on_premise: true,
-          scope: 'system',
+          scope: this.$store.getters.scope,
         },
-        image: {
-          limit: 0,
-          details: true,
-          status: 'active',
-          scope: 'system',
-          'filter.0': 'disk_format.notequals(iso)',
+        policySchedtag: {
+          limit: 1024,
+          'filter.0': 'resource_type.equals(hosts)',
+        },
+        policyHostParams: {
+          enabled: 1,
+          usable: true,
+          is_empty: true,
+          host_type: 'baremetal',
+          scope: this.$store.getters.scope,
         },
       },
-      diskSpecs: {}, // 当前选中磁盘规格, 未来给 diskconfig 使用
+      selectedImage: {},
+      specOptions: [],
+      selectedSpecItem: {},
+      resourceType: 'shared',
+      loginTypes: Object.keys(LOGIN_TYPES_MAP),
+      policyHostDisabled: [],
+      diskData: {},
+      diskOptionsDate: [],
+      chartSettings: {
+        limitShowNum: 5,
+        radius: 50,
+        selectedMode: 'single',
+        labelLine: {
+          normal: {
+            show: true,
+          },
+        },
+        label: {
+          position: 'inside',
+        },
+        itemStyle: {
+          color: function (params) {
+            const colorList = ['#afa3f5', '#00d488', '#3feed4', '#3bafff', '#f1bb4c', 'rgba(250,250,250,0.5)']
+            if (params.data.name === '剩余') {
+              return '#e3e3e3'
+            } else {
+              return colorList[params.dataIndex]
+            }
+          },
+        },
+        offsetY: 100,
+        dataType: function (v) {
+          return v + ' G'
+        },
+      },
+      isBonding: false,
     }
+  },
+  computed: {
+    ...mapGetters([
+      'isAdminMode',
+    ]),
+    routerQuery () {
+      return this.$route.query
+    },
+    imageParams () {
+      return {
+        status: 'active',
+        details: true,
+        limit: 0,
+        'filter.0': 'disk_format.notequals(iso)',
+        scope: this.$store.getters.scope,
+        is_standard: true,
+      }
+    },
+    networkParam () {
+      return {
+        filter: 'server_type.notin(ipmi, pxe)',
+        usable: true,
+        ...this.scopeParams,
+      }
+    },
+    scopeParams () {
+      if (this.$store.getters.isAdminMode) {
+        return {
+          project_domain: this.project_domain,
+        }
+      }
+      return { scope: this.$store.getters.scope }
+    },
+    hasMeterService () { // 是否有计费的服务
+      const { services } = this.$store.getters.userInfo
+      const meterService = services.find(val => val.type === 'meter')
+      if (meterService && meterService.status === true) {
+        return true
+      }
+      return false
+    },
   },
   provide () {
     return {
@@ -184,37 +472,285 @@ export default {
     }
   },
   created () {
-    this.$bus.$on('VMInstanceCreateUpdateFi', this.updateFi, this)
+    this.zonesM2 = new this.$Manager('zones')
+    this.serverM = new this.$Manager('servers')
+    this.schedulerM = new this.$Manager('schedulers', 'v1')
+    this.$bus.$on('VMInstanceCreateUpdateFi', ({ imageMsg }) => {
+      this.selectedImage = imageMsg
+    })
+    // this.fetchHosts()
   },
   methods: {
-    updateFi (fiItems) { // 子组件更新fi
-      if (R.is(Object, fiItems)) {
-        R.forEachObjIndexed((item, key) => {
-          this.fi[key] = item
-        }, fiItems)
+    // 规格变动
+    specificationChange (value, option) {
+      let str = value.replace(/\//g, ',')
+      let arr = str.split(',')
+      let obj = {}
+      for (var i = 0; i < arr.length; i++) {
+        let arr2 = arr[i].split(':')
+        obj[arr2[0]] = arr2[1]
       }
+      this.selectedSpecItem = obj
+      this.diskData = this.form.fi.capability.specs.hosts[value].disk
     },
-    zoneFetchDoneTodo () {
-      this.fetchCapability()
-    },
-    onFieldsChange (vm, changedFields) {
-      if (_.get(changedFields, 'zone.value.key')) { // 可用区变化
-        this.zoneFetchDoneTodo()
+    capability (v) { // 可用区查询
+      let data = { show_emulated: true, resource_type: this.resourceType, scope: this.$scope, host_type: 'baremetal' }
+      const imageType = this.form.fc.getFieldValue('imageOS') && this.form.fc.getFieldValue('imageOS').imageType
+      if (imageType === 'iso') {
+        data.cdrom_boot = true
       }
-      const specValueKey = _.get(changedFields, 'spec.value.key')
-      if (specValueKey) { // 规格
-        this.diskSpecs = this.fi.specs[specValueKey]
-      }
+      // init 虚拟化平台并默认选择第一项
+      this.zonesM2.get({
+        id: `${v}/capability`,
+        params: data,
+      }).then(({ data = {} }) => {
+        data.hypervisors = Array.from(new Set(data.hypervisors))
+        let specs = data.specs.hosts
+        this.form.fi.capability = {
+          ...data,
+        }
+        if (!R.isNil(specs) && !R.isEmpty(specs)) {
+          this._loadSpecificationOptions(specs)
+        } else {
+          this.specOptions = []
+          // 清空选中规格
+          this.$nextTick(() => {
+            this.form.fc.setFieldsValue({ specifications: '' })
+          })
+        }
+      })
     },
-    submit (e) {
-      e.preventDefault()
-      this.validateForm()
-        .then(formData => {
+    _loadSpecificationOptions (data) {
+      let specs = {}
+      let entries = Object.entries(data)
+      entries = entries.map(item => {
+        let newKey = item[0].replace(/model:.+\//, '')
+        return [newKey, item[1]]
+      })
+      entries.forEach(item => {
+        specs[item[0]] = item[1]
+      })
+      let options = []
+      for (let k in specs) {
+        let spec = {
+          text: this.__getSpecification(specs[k]),
+          value: k,
+        }
+        options.push(spec)
+      }
+      this.form.fi.capability.specs.hosts = specs
+      this.specOptions = this.__ignoreModel(options)
+      if (this.specOptions && this.specOptions.length) {
+        // 规格默认选中第一项
+        this.$nextTick(() => {
+          this.form.fc.setFieldsValue({ specifications: this.specOptions[0].value })
         })
+        // 存储选中规格中的信息
+        this.diskData = this.form.fi.capability.specs.hosts[this.specOptions[0].value].disk
+        let str = this.specOptions[0].value.replace(/\//g, ',')
+        let arr = str.split(',')
+        let obj = {}
+        for (var i = 0; i < arr.length; i++) {
+          let arr2 = arr[i].split(':')
+          obj[arr2[0]] = arr2[1]
+        }
+        this.selectedSpecItem = obj
+      }
+    },
+    __getSpecification (spec) {
+      let cpu = spec.cpu
+      let mem = sizestr(spec.mem, 'M', 1024)
+      // 按类型和容量归并磁盘信息
+      let disksObj = {}
+      _.forEach(spec.disk, function (adapters, driver) {
+        _.forEach(adapters, function (disks, adapter) {
+          _.forEach(disks, function (disk) {
+            disksObj[disk.type] = disksObj[disk.type] || {}
+            disksObj[disk.type][disk.size] = disksObj[disk.type][disk.size] || 0
+            disksObj[disk.type][disk.size] += disk.count
+          })
+        })
+      })
+      // disk string
+      let disks = ''
+      _.forEach(disksObj, function (caps, d) {
+        disks += '_' + d
+        let sizes = []
+        _.forEach(caps, function (num, cap) {
+          sizes.push(sizestr(cap, 'M', 1024) + 'x' + num)
+        })
+        disks += sizes.join('_')
+      })
+      return `${cpu}C${mem}${disks}`
+    },
+    __ignoreModel (options) {
+      options = options.map(item => {
+        return {
+          text: item.text,
+          value: item.value.replace(/model:.+\//, ''),
+        }
+      })
+      return this.uniqueArr(options, 'value')
+    },
+    uniqueArr (arr, field) {
+      if (field) {
+        let obj = {}
+        arr.forEach(item => {
+          if (!obj[item[field]]) {
+            obj[item[field]] = item
+          }
+        })
+        let newArr = Object.values(obj)
+        return Array.from(new Set(newArr))
+      } else {
+        return Array.from(new Set(arr))
+      }
+    },
+    // fetchHosts () {
+    //   new this.$Manager('hosts').list({
+    //     params: {
+    //       enabled: 1,
+    //       usable: true,
+    //       is_empty: true,
+    //       host_type: 'baremetal',
+    //       scope: this.$store.getters.scope,
+    //     },
+    //   }).then(({ data = {} }) => {
+    //     if (data.data.length) {
+    //       this.diskData = data.data[0].spec.disk
+    //       console.log(this.diskData)
+    //     }
+    //   })
+    // },
+    // 添加硬盘配置
+    addDisk () {
+      this.createDialog('BaremetalCreateDiskDialog', {
+        title: '新建',
+        list: this.list,
+        diskData: this.diskData,
+        diskOptionsDate: this.diskOptionsDate,
+        updateData: (data) => {
+          let arr = []
+          data.option.forEach(item => {
+            arr = arr.concat(item.split(':'))
+          })
+          let range = [0]
+          const isRepeat = this.diskOptionsDate.filter(item => item.diskInfo[1] === arr[1])
+          if (isRepeat.length > 0) {
+            const lastIndexRange = isRepeat[isRepeat.length - 1].range
+            let i = lastIndexRange[lastIndexRange.length - 1]
+            let j = 0
+            range = []
+            while (j < data.count) {
+              i++
+              range.push(i)
+              j++
+            }
+          }
+          let option = {
+            title: arr[3] + ' ' + arr[2] + ' X ' + data.count,
+            size: arr[3],
+            chartData: {
+              columns: ['name', 'size'],
+              rows: [],
+            },
+            diskInfo: [arr[0], arr[1], arr[4]],
+            count: data.count,
+            type: arr[2],
+            range,
+          }
+          let sizeNumber = 0
+          if (arr[3].substr(arr[3].length - 1, 1) === 'T') {
+            sizeNumber = Number(arr[3].substr(0, arr[3].length - 1)) * 1024
+          } else {
+            sizeNumber = Number(arr[3].substr(0, arr[3].length - 1))
+          }
+          if (this.diskOptionsDate.length === 0) {
+            const defaultSize = 30
+            const imageDiskSize = this.selectedImage.min_disk / 1024
+            if (imageDiskSize >= defaultSize) {
+              sizeNumber = sizeNumber - imageDiskSize
+              option.chartData.rows.push({ 'name': '/(系统)', 'size': imageDiskSize })
+            } else {
+              sizeNumber = sizeNumber - defaultSize
+              option.chartData.rows.push({ 'name': '/', 'size': defaultSize })
+            }
+          }
+          option.remainder = sizeNumber
+          option.chartData.rows.push({ 'name': '剩余', 'size': sizeNumber })
+          this.diskOptionsDate.push(option)
+        },
+      })
+    },
+    // 监听镜像变化
+    handleImageChange () {
+      console.log(123)
+    },
+    handleDiskItemRemove (idx) {
+      this.diskOptionsDate.splice(idx, 1)
+    },
+    chartFun (idx) {
+      return {
+        click: (e, index) => this.handleChartEvents(e, idx),
+      }
+    },
+    handleChartEvents (e, idx) {
+      const selectedArea = this.diskOptionsDate[idx].chartData.rows.filter(item => item.name === e.name)
+      let nameArr = []
+      this.diskOptionsDate.forEach(item => {
+        nameArr = nameArr.concat(item.chartData.rows)
+      })
+      nameArr = nameArr.filter(item => item.name !== '剩余')
+      this.createDialog('DiskOptionsUpdateDialog', {
+        title: e.name === '剩余' ? '创建新分区' : '更新分区',
+        list: this.list,
+        item: this.diskOptionsDate[idx],
+        nameArr,
+        selectedArea: selectedArea[0],
+        updateData: (values) => {
+          let updateItem = this.diskOptionsDate[idx].chartData.rows
+          if (e.name === '剩余') {
+            // 创建新分区
+            updateItem.unshift({ name: values.name, size: values.size, format: values.format })
+            if (values.size === this.diskOptionsDate[idx].remainder || values.method === 'autoextend') {
+              this.diskOptionsDate[idx].remainder = 0
+              updateItem.pop()
+              return
+            }
+            this.diskOptionsDate[idx].remainder = this.diskOptionsDate[idx].remainder - values.size
+            updateItem[updateItem.length - 1].size = updateItem[updateItem.length - 1].size - values.size
+          } else {
+            // 更新分区
+            let oldSize = 0
+            updateItem.forEach(item => {
+              if (item.name === e.name) {
+                item.name = values.name
+                oldSize = item.size
+                item.size = values.size
+              }
+            })
+            // 如何剩余比更新的大
+            if (this.diskOptionsDate[idx].remainder > values.size) {
+              updateItem[updateItem.length - 1].size = updateItem[updateItem.length - 1].size - values.size
+              this.diskOptionsDate[idx].remainder = this.diskOptionsDate[idx].remainder - values.size
+              updateItem.push({ 'name': '剩余', 'size': this.diskOptionsDate[idx].remainder })
+            } else {
+              if (values.method === 'autoextend') {
+                this.diskOptionsDate[idx].remainder = 0
+                updateItem.pop()
+                return
+              }
+              this.diskOptionsDate[idx].remainder = (oldSize - values.size) + this.diskOptionsDate[idx].remainder
+              if (this.diskOptionsDate[idx].remainder === 0) return
+              updateItem.push({ 'name': '剩余', 'size': this.diskOptionsDate[idx].remainder })
+            }
+          }
+        },
+      })
     },
     validateForm () {
       return new Promise((resolve, reject) => {
-        this.form.validateFields((err, values) => {
+        this.form.fc.validateFields((err, values) => {
           if (!err) {
             resolve(values)
           } else {
@@ -223,20 +759,219 @@ export default {
         })
       })
     },
-    fetchCapability () {
-      const manager = new Manager('zones', 'v2')
-      const params = {
-        show_emulated: true,
-        resource_type: 'shared',
-        scope: 'system',
-        host_type: 'baremetal',
-      }
-      const { key } = this.form.getFieldValue('zone')
-      manager.getSpecific({ id: key, spec: 'capability', params })
-        .then(({ data }) => {
-          this.fi.capability = data
+    async handleConfirm (e) {
+      e.preventDefault()
+      const values = await this.validateForm()
+      const disks = []
+      let diskConfigs = []
+      // 判断数据盘是否合法
+      if (this.diskOptionsDate.length > 0) {
+        this.diskOptionsDate.forEach((item, index) => {
+          if (index === 0 && item.remainder > 0) {
+            this.$message.error('磁盘配置分区非法')
+            throw new Error('磁盘配置分区非法')
+          }
         })
+        // 将系统盘放置首位
+        const systemDisk = this.diskOptionsDate[0].chartData.rows.pop()
+        this.diskOptionsDate[0].chartData.rows.unshift(systemDisk)
+        for (var i = 0; i < this.diskOptionsDate.length; i++) {
+          const rows = this.diskOptionsDate[i].chartData.rows
+          const adapter = Number(this.diskOptionsDate[i].diskInfo[1].charAt(this.diskOptionsDate[i].diskInfo[1].length - 1))
+          let configOption = {
+            conf: this.diskOptionsDate[i].diskInfo[2],
+            driver: this.diskOptionsDate[i].diskInfo[0],
+            count: this.diskOptionsDate[i].count,
+            range: this.diskOptionsDate[i].range,
+            adapter,
+            type: this.diskOptionsDate[i].type === 'HDD' ? 'rotate' : 'SSD',
+          }
+          diskConfigs.push(configOption)
+          for (var j = 0; j < rows.length; j++) {
+            let option = {
+              size: rows[j].size * 1024,
+              fs: rows[j].format,
+              mountpoint: rows[j].name,
+            }
+            if (i === 0 && j === 0) {
+              option = {
+                size: rows[j].size * 1024,
+                image_id: values.image.key,
+              }
+            }
+            if (j === rows.length - 1) {
+              option.size = -1
+              if (!rows[j].format) {
+                Reflect.deleteProperty(option, 'fs')
+              }
+              if (rows[j].name === '剩余') {
+                Reflect.deleteProperty(option, 'mountpoint')
+              }
+            }
+            disks.push(option)
+          }
+        }
+        // 根据adapter排序diskConfigs
+        diskConfigs.sort((a, b) => { return a.adapter - b.adapter })
+      }
+      const netVals = Object.values(values.networks)
+      const nets = []
+      netVals.forEach(item => {
+        // 是否启用bonding
+        if (this.isBonding) {
+          nets.push({ network: item, require_teaming: true })
+        }
+        nets.push({ network: item })
+      })
+      let params = {
+        project_id: this.$store.getters.userInfo.projectId,
+        count: values.count,
+        vmem_size: Number(this.selectedSpecItem.mem.substr(0, this.selectedSpecItem.mem.length - 1)),
+        vcpu_count: Number(this.selectedSpecItem.cpu),
+        generate_name: values.name,
+        hypervisor: 'baremetal',
+        auto_start: true,
+        vdi: 'vnc',
+        disks,
+        diskConfigs,
+        nets,
+        prefer_host: values.schedPolicyHost,
+      }
+      if (this.checkWorkflowEnabled(WORKFLOW_TYPES.APPLY_MACHINE)) { // 提交工单
+        let variables = {
+          process_definition_key: WORKFLOW_TYPES.APPLY_MACHINE,
+          initiator: this.$userInfo.id,
+          paramter: JSON.stringify(params),
+        }
+        this.doCreateWorkflow(variables, params)
+      } else { // 创建裸金属
+        this.doForecast(params)
+      }
+    },
+    // 创建工单
+    doCreateWorkflow (createData, params) {
+      this.submiting = true
+      const variables = {
+        process_definition_key: WORKFLOW_TYPES.APPLY_MACHINE,
+        initiator: this.$store.getters.userInfo.id,
+        'server-create-paramter': JSON.stringify(createData),
+      }
+      new this.$Manager('process-instances')
+        .create({ variables })
+        .then(() => {
+          this.submiting = false
+          this.$message.success(`主机 ${params.name} 创建请求流程已提交`)
+          this.$router.push('/workflow')
+        })
+        .catch(() => {
+          this.submiting = false
+        })
+    },
+    doForecast (params) {
+      this.submiting = true
+      this.schedulerM.rpc({ methodname: 'DoForecast', params })
+        .then(res => {
+          if (res.data.can_create) {
+            this.createBaremetal(params)
+          } else {
+            this.errors = this.getForecastErrors(res.data)
+            this.submiting = false
+          }
+        })
+        .catch(err => {
+          this.$message.error(`创建失败: ${err}`)
+          this.submiting = false
+        })
+    },
+    // 创建裸金属
+    createBaremetal (data) {
+      const { count } = data
+      if (count > 1) {
+        this.serverM.batchCreate({ data, count })
+          .then(res => {
+            this.submiting = false
+            this.$message.success('操作成功，开始创建')
+            this.$router.push('/baremetal')
+          })
+          .catch(() => {
+            this.submiting = false
+          })
+      } else {
+        this.serverM.create({ data })
+          .then(res => {
+            this.submiting = false
+            this.$message.success('操作成功，开始创建')
+            this.$router.push('/baremetal')
+          })
+          .catch(() => {
+            this.submiting = false
+          })
+      }
+    },
+    /**
+     * 获取创建预测的错误信息
+     *
+     * @returns { Array }
+     * @memberof GenCreateData
+     */
+    getForecastErrors (data) {
+      const ret = []
+      const genErrorObj = (item, message) => {
+        const obj = {
+          message,
+        }
+        if (item.messages && item.messages.length) {
+          obj.children = item.messages.map(child => {
+            const msgArr = child.split(':')
+            if (msgArr && msgArr.length > 0) {
+              return msgArr[0]
+            }
+            return null
+          }).filter(child => !!child)
+        }
+        return obj
+      }
+      if (data.filters && data.filters.length > 0) {
+        for (let i = 0, len = data.filters.length; i < len; i++) {
+          const item = data.filters[i]
+          if (item.filter === 'disk_schedtag') {
+            const obj = genErrorObj(item, `${item.count} 台宿主机被 ${item.filter} 标签过滤`)
+            ret.push(obj)
+          } else if (item.filter.startsWith('host')) {
+            const obj = genErrorObj(item, `${item.count} 台 ${FORECAST_FILTERS_MAP[item.filter]}`)
+            ret.push(obj)
+          } else {
+            if (item.count > 0) {
+              const obj = genErrorObj(item, FORECAST_FILTERS_MAP[item.filter] || `${item.count} 台主机被 ${item.filter} 标签过滤`)
+              ret.push(obj)
+            } else {
+              const obj = genErrorObj(item, '被过滤')
+              ret.push(obj)
+            }
+          }
+        }
+      } else if (data.results && data.results.length > 0) {
+        const count = data.results.reduce((total, current) => {
+          return total + parseInt(current.capacity)
+        }, 0)
+        ret.push({
+          message: `最多可以创建 ${count} 台主机`,
+        })
+      } else {
+        ret.push({
+          message: '创建主机参数错误',
+        })
+      }
+      return ret
     },
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.disk-option-item {
+  & + .disk-option-item {
+    margin-left: 15px;
+  }
+}
+</style>

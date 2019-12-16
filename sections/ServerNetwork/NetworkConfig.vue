@@ -1,7 +1,7 @@
 <template>
   <div class="network-config">
     <div class="d-flex align-items-start mb-2" v-for="(item, i) in networkList" :key="item.key">
-      <a-tag color="blue" class="mr-1 mt-2">eth{{i}}</a-tag>
+      <a-tag color="blue" class="mr-1 mt-2">{{ isBonding ? 'bond' : 'eth'}}{{i}}</a-tag>
       <a-form-item
         class="w-50 mb-0 mr-1">
         <base-select
@@ -54,6 +54,10 @@ export default {
       type: Object,
       required: true,
       validator: val => R.is(Function, val.networks) && R.is(Function, val.ips),
+    },
+    isBonding: {
+      type: Boolean,
+      default: false,
     },
   },
   data () {
