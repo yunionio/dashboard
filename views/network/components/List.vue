@@ -424,9 +424,13 @@ export default {
               {
                 label: '预留IP',
 <<<<<<< HEAD
+<<<<<<< HEAD
                 permission: 'reservedips_create',
 =======
 >>>>>>> 修复弹性公网ip新建时域管理后台情况
+=======
+                permission: 'reservedips_create',
+>>>>>>> 添加预留IP权限
                 action: (obj) => {
                   this.createDialog('NetworkReversedIPDialog', {
                     data: [obj],
