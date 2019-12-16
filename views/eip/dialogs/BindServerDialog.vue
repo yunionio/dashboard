@@ -81,6 +81,7 @@ export default {
         await this.doBind(values)
         this.loading = false
         this.cancelDialog()
+        this.params.list.refresh()
       } catch (error) {
         this.loading = false
       }
