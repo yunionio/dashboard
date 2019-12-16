@@ -423,6 +423,7 @@ export default {
               },
               {
                 label: '预留IP',
+                permission: 'reservedips_create',
                 action: (obj) => {
                   this.createDialog('NetworkReversedIPDialog', {
                     data: [obj],
