@@ -157,9 +157,9 @@ export default {
                   })
                 },
                 meta: () => {
-                  if (this.$store.getters.isAdminMode && this.$store.getters.isDomainMode) {
+                  if (this.$store.getters.isAdminMode || this.$store.getters.isDomainMode) {
                     return {
-                      validate: this.isPower,
+                      validate: this.isPower(obj),
                     }
                   }
                   return {
@@ -179,7 +179,7 @@ export default {
                   })
                 },
                 meta: () => {
-                  if (this.$store.getters.isAdminMode && this.$store.getters.isDomainMode) {
+                  if (this.$store.getters.isAdminMode || this.$store.getters.isDomainMode) {
                     if (this.isPower(obj)) {
                       return {
                         validate: obj.is_public,
@@ -203,7 +203,7 @@ export default {
                   })
                 },
                 meta: () => {
-                  if (this.$store.getters.isAdminMode && this.$store.getters.isDomainMode) {
+                  if (this.$store.getters.isAdminMode || this.$store.getters.isDomainMode) {
                     if (this.isPower(obj)) {
                       return {
                         validate: !obj.is_public,
