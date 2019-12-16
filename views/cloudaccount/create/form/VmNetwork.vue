@@ -136,7 +136,7 @@ export default {
           netmask: i => [
             `netmask[${i}]`,
             {
-              initialValue: '16',
+              initialValue: '24',
               validateTrigger: ['change', 'blur'],
               rules: [
                 { required: true, message: '请选择子网掩码' },
