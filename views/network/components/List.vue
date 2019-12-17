@@ -20,6 +20,7 @@ import {
 import windows from '@/mixins/windows.js'
 import { PROVIDER_FILTER_CN } from '@/constants'
 import { findPlatform } from '@/utils/common/hypervisor'
+import { getBrandFilter, getAccountFilter } from '@/utils/common/tableFilter'
 
 const disableAdjustConfig = ['private', 'public']
 const canAdjustConfig = (obj) => {
@@ -65,17 +66,6 @@ export default {
               return `ip.contains(${val})`
             },
           },
-          server_type: {
-            label: '类型',
-            dropdown: true,
-            items: [
-              { label: '物理机', key: 'baremetal' },
-              { label: '容器', key: 'container' },
-              { label: '虚拟机', key: 'guest' },
-              { label: 'PXE', key: 'pxe' },
-              { label: 'IPMI', key: 'ipmi' },
-            ],
-          },
           status: {
             label: '状态',
             dropdown: true,
@@ -95,6 +85,19 @@ export default {
               return `status.in(${val})`
             },
           },
+          server_type: {
+            label: '类型',
+            dropdown: true,
+            items: [
+              { label: '物理机', key: 'baremetal' },
+              { label: '容器', key: 'container' },
+              { label: '虚拟机', key: 'guest' },
+              { label: 'PXE', key: 'pxe' },
+              { label: 'IPMI', key: 'ipmi' },
+            ],
+          },
+          brand: getBrandFilter(),
+          account: getAccountFilter(),
         },
       }),
       columns: [

@@ -23,7 +23,7 @@ export default {
           path: '/globalvpc',
           meta: {
             label: '全局VPC',
-            // permission: 'wires_list',
+            permission: 'network_globalvpcs_list',
           },
           component: Layout,
           children: [

@@ -50,7 +50,7 @@ export default {
         // { label: '预留IP', key: 'reserved-ip' },
         // { label: '负载均衡IP', key: 'lb-ip' },
         // { label: '弹性网卡IP', key: 'flex-ip' },
-        // { label: '操作日志', key: 'event-drawer' },
+        { label: '操作日志', key: 'event-drawer' },
       ],
     }
   },
