@@ -182,7 +182,7 @@ export default {
         {
           field: 'billing_type',
           title: '计费方式',
-          width: 70,
+          width: 100,
           showOverflow: 'ellipsis',
           slots: {
             default: ({ row }) => {
