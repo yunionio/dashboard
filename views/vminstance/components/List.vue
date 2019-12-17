@@ -1216,6 +1216,7 @@ export default {
                         tooltip: null,
                       }
                       if (findPlatform(obj.hypervisor) === SERVER_TYPE.public) {
+                        ret.tooltip = `公有云不支持该操作`
                         return ret
                       }
                       const noSupportBrand = [
@@ -1228,7 +1229,6 @@ export default {
                         return ret
                       }
                       if (commonUnabled(obj)) return ret
-                      if (findPlatform(obj.hypervisor) === SERVER_TYPE.public) return ret
                       ret.validate = commonEnabled(obj)
                       ret.tooltip = commonTip(obj)
                       return ret

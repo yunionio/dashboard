@@ -282,9 +282,12 @@ export default {
         cpu_core_count: this.form.fd.vcpu || this.decorators.vcpu[1].initialValue,
         memory_size_mb: this.form.fd.vmem,
       }
-      if (this.type === SERVER_TYPE.private) {
+      if (this.type === SERVER_TYPE.idc) {
         params.provider = HYPERVISORS_MAP.kvm.provider
-        params.public_cloud = false
+      }
+      if (this.type === SERVER_TYPE.private) {
+        params['provider.0'] = HYPERVISORS_MAP.kvm.provider
+        params['provider.1'] = HYPERVISORS_MAP.OpenStack.provider
         params['postpaid_status'] = 'available'
       }
       if (this.type === SERVER_TYPE.public) {
