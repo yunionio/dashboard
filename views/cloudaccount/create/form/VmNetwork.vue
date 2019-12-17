@@ -29,7 +29,7 @@
 import createMixin from './components/createMixin'
 import IpSubnets from './components/IpSubnets'
 import CloudregionVpcWire from '@/sections/CloudregionVpcWire'
-import { isRequired, isWithinRange } from '@/utils/validate'
+import { isRequired } from '@/utils/validate'
 
 function validateGateway (rule, value, callback) {
   // 只需要查看是否是以 0 结尾
@@ -39,21 +39,6 @@ function validateGateway (rule, value, callback) {
     callback(msg)
   } else {
     callback()
-  }
-}
-
-function checkIpInSegment (key, form) {
-  return (rule, value, callback) => {
-    const fd = form.fc.getFieldsValue()
-    const startip = fd['startip'][key]
-    const endip = fd['endip'][key]
-    const isIn = isWithinRange(value, startip, endip)
-    const msg = '输入的IP不在选择子网网段中'
-    if (isIn) {
-      callback()
-    } else {
-      callback(msg)
-    }
   }
 }
 
@@ -152,7 +137,6 @@ export default {
                 { required: true, message: '请输入默认网关' },
                 { validator: this.$validate('IPv4') },
                 { validator: validateGateway },
-                { validator: checkIpInSegment(i, this.form) },
               ],
             },
           ],

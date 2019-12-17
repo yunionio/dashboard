@@ -320,7 +320,7 @@ export const keySecretFields = {
   xsky: {
     k: 'access_key_id',
     s: 'access_key_secret',
-    text: 'Xsky',
+    text: 'XSKY',
     placeholder: {
       k: '请输入账号',
       s: '请输入密码',
