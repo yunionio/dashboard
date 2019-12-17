@@ -399,6 +399,12 @@
       "caching": "缓存中",
       "delete_failed": "删除失败",
       "init": "初始化"
+    },
+    "ansiblePlaybook": {
+      "succeeded": "执行成功",
+      "failed": "执行失败",
+      "running": "执行中",
+      "canceled": "执行终止"
     }
   },
   "skuCategoryOptions": {

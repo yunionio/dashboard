@@ -123,4 +123,9 @@ export default {
     info: ['unknown', 'init'],
     danger: ['delete_failed'],
   },
+  ansiblePlaybook: {
+    success: ['succeeded'],
+    info: ['unknown', 'init'],
+    danger: ['failed', 'canceled'],
+  },
 }
