@@ -27,7 +27,14 @@ import {
   getNameDescriptionTableColumn,
   getTagTableColumn,
 } from '@/utils/common/tableColumn'
-import { getBrandItems, mapperStatusToItems } from '@/utils/common/tableFilter'
+import {
+  getNameFilter,
+  getBrandFilter,
+  getStatusFilter,
+  getTenantFilter,
+  getAccountFilter,
+  getIpFilter,
+} from '@/utils/common/tableFilter'
 import SystemIcon from '@/sections/SystemIcon'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
@@ -51,37 +58,10 @@ export default {
         getParams: this.getParam,
         steadyStatus: Object.values(expectStatus.server).flat(),
         filterOptions: {
-          name: {
-            label: '名称',
-            filter: true,
-            formatter: val => {
-              return `name.contains(${val})`
-            },
-          },
-          ips: {
-            label: 'IP',
-            filter: true,
-            formatter: val => {
-              return `guestnetworks.guest_id(id).ip_addr.contains(${val})`
-            },
-            jointFilter: true,
-          },
-          status: {
-            label: '状态',
-            dropdown: true,
-            multiple: true,
-            distinctField: {
-              type: 'field',
-              key: 'status',
-            },
-            mapper: data => {
-              return mapperStatusToItems(data, 'status.server')
-            },
-            filter: true,
-            formatter: val => {
-              return `status.in(${val.join(',')})`
-            },
-          },
+          name: getNameFilter(),
+          brand: getBrandFilter('compute_engine_brands'),
+          ips: getIpFilter(),
+          status: getStatusFilter('status.server'),
           os_type: {
             label: '系统类型',
             dropdown: true,
@@ -96,30 +76,16 @@ export default {
               return `os_type.contains(${val})`
             },
           },
-          tenant: {
-            label: '项目',
+          tenant: getTenantFilter(),
+          billing_type: {
+            label: '计费方式',
             dropdown: true,
-            multiple: true,
-            distinctField: {
-              type: 'extra_field',
-              key: 'tenant',
-            },
+            items: [
+              { label: '按量付费', key: 'postpaid' },
+              { label: '包年包月', key: 'prepaid' },
+            ],
           },
-          account: {
-            label: '云账号',
-            dropdown: true,
-            multiple: false,
-            distinctField: {
-              type: 'extra_field',
-              key: 'account',
-            },
-          },
-          brand: {
-            label: '平台',
-            dropdown: true,
-            multiple: true,
-            items: getBrandItems('compute_engine_brands'),
-          },
+          account: getAccountFilter(),
         },
       }),
       exportDataOptions: {
@@ -164,6 +130,7 @@ export default {
           title: '配置',
           showOverflow: 'ellipsis',
           minWidth: 120,
+          sortable: true,
           slots: {
             default: ({ row }) => {
               let ret = []

@@ -38,7 +38,7 @@ export default {
         bandwidth: [
           'bandwidth',
           {
-            initialValue: 0,
+            initialValue: this.params.data[0].bw_limit || 0,
             rules: [
               { required: true, message: '请输入带宽限制' },
             ],

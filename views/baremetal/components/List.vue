@@ -8,6 +8,12 @@
 <script>
 import { sizestr } from '@/utils/utils'
 import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getCopyWithContentTableColumn, getIpsTableColumn, getNameDescriptionTableColumn, getBrandTableColumn } from '@/utils/common/tableColumn'
+import {
+  getNameFilter,
+  getStatusFilter,
+  getTenantFilter,
+  getIpFilter,
+} from '@/utils/common/tableFilter'
 
 export default {
   name: 'ImageList',
@@ -22,37 +28,9 @@ export default {
         resource: 'servers',
         getParams: this.getParam,
         filterOptions: {
-          name: {
-            label: '实例名称',
-            filter: true,
-            formatter: val => {
-              return `name.contains(${val})`
-            },
-          },
-          status: {
-            label: '实例状态',
-            dropdown: true,
-            multiple: true,
-            items: [
-              { label: '运行中', key: 'running' },
-              { label: '关机', key: 'ready' },
-              { label: '未知', key: 'unknown' },
-              { label: '调度失败', key: 'sched_fail' },
-            ],
-            filter: true,
-            formatter: val => {
-              return `status.in(${val.join(',')})`
-            },
-          },
-          brand: {
-            label: '平台',
-            dropdown: true,
-            multiple: true,
-            items: [
-              { label: 'OneCloud', key: 'OneCloud' },
-              { label: 'OpenStack', key: 'OpenStack' },
-            ],
-          },
+          name: getNameFilter(),
+          ips: getIpFilter(),
+          status: getStatusFilter('status.server'),
           os_type: {
             label: '系统类型',
             dropdown: true,
@@ -67,6 +45,7 @@ export default {
               return `os_type.contains(${val})`
             },
           },
+          tenant: getTenantFilter(),
         },
       }),
       columns: [
@@ -77,6 +56,7 @@ export default {
           title: '配置',
           showOverflow: 'ellipsis',
           minWidth: 120,
+          sortable: true,
           slots: {
             default: ({ row }) => {
               let ret = []
@@ -124,7 +104,7 @@ export default {
         },
         getStatusTableColumn({ statusModule: 'server' }),
         getCopyWithContentTableColumn({ field: 'vpc', title: 'VPC' }),
-        getCopyWithContentTableColumn({ field: 'host', title: '宿主机' }),
+        getCopyWithContentTableColumn({ field: 'host', title: '宿主机', sortable: true }),
         getBrandTableColumn(),
         getProjectTableColumn(),
         getRegionTableColumn(),
