@@ -46,6 +46,12 @@ function secgroupValidator (rule, value, callback) {
   if (value.length > 5) {
     return callback(new Error('最多支持选择5个安全组'))
   }
+}
+
+function validateTag (rule, value, callback) {
+  if (Object.keys(value).length > 20) {
+    return callback(new Error('标签不可超过20个'))
+  }
   callback()
 }
 
@@ -537,6 +543,11 @@ export const createVmDecorators = type => {
     },
     tag: [
       'tag',
+      {
+        rules: [
+          { validator: validateTag },
+        ],
+      },
     ],
     servertemplate: {
       servertemplate_name: [
