@@ -28,9 +28,14 @@ export default {
       type: String,
     },
   },
+  computed: {
+    text () {
+      return this.data[this.nameKey]
+    },
+  },
   methods: {
     getLabel () {
-      let text = this.data[this.nameKey]
+      let text = this.text
       if (this.labelFormat) {
         text = this.labelFormat(this.data)
       }

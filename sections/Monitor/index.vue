@@ -1,7 +1,16 @@
 <template>
   <div>
-    <monitor-header :time="time" :timeGroup="timeGroup" @update:time="updateTime" @update:timeGroup="updateTimeGroup" />
-    <monitor-list :single-actions="singleActions" :listData="listData" :loading="loading" class="mt-3" />
+    <monitor-header
+      :time="time"
+      :timeGroup="timeGroup"
+      @update:time="updateTime"
+      @update:timeGroup="updateTimeGroup"
+      @refresh="refresh" />
+    <monitor-list
+      :single-actions="singleActions"
+      :listData="listData"
+      :loading="loading"
+      class="mt-3" />
   </div>
 </template>
 
@@ -34,12 +43,31 @@ export default {
     singleActions: {
       type: Array,
     },
+    /* monitorList 示例：
+      {
+        "title": "CPU使用率",
+        "series": [
+          {
+            "name": "vm_cpu",
+            "columns": ["time", "CPU使用率"],
+            "values": [[1576475100000, 0.020907], [1576475400000, 0.0209034]]
+          }
+        ],
+        "constants": {
+          "name": "cpu",
+          "label": "CPU使用率",
+          "seleteItem": "usage_active",
+          "fromItem": "vm_cpu",
+          "unit": "%",
+          "transfer": 1
+        }
+      }
+    */
     monitorList: {
       type: Array,
     },
     timeFormat: {
       type: String,
-      // default: 'YYYY-MM-DD HH:mm',
     },
     loading: {
       type: Boolean,
@@ -85,6 +113,9 @@ export default {
     },
   },
   methods: {
+    refresh () {
+      this.$emit('refresh')
+    },
     updateTime (time, timeFormat) {
       this.$emit('update:time', time)
       if (!this.timeFormat) {

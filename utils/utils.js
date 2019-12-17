@@ -243,3 +243,31 @@ export const autoComputeUnit = (series, sourceUnit = 'bps', base = 1000) => { //
     unit,
   }
 }
+
+/**
+ * @description 美化作用：把 【133Bps】 这种字符串分离成 【133 Bps】
+ * @param {String} value 要分离单位的字符串，如：11Kbps
+ * @returns {String} 返回分离后的结果，如：11 Kbps
+ */
+export const splitUnit = value => {
+  const reg = /^(\d+\.?\d?)([a-zA-Z]+|%)/
+  value = String(value)
+  const groupsArr = value.match(reg)
+  if (groupsArr && groupsArr.length >= 3) {
+    const num = groupsArr[1]
+    let unit = groupsArr[2]
+    if (num === '0' || num === 0) { // 0M => 0B
+      if (UNITS.includes(unit)) unit = UNITS[0]
+    }
+    return {
+      text: `${num} ${unit}`,
+      value: num,
+      unit,
+    }
+  }
+  return {
+    text: value,
+    value,
+    unit: '',
+  }
+}

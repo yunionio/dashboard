@@ -160,7 +160,7 @@ export default {
   },
   methods: {
     filterOption (input, option) {
-      return option.componentOptions.children[0].text.toLowerCase().includes(input.toLowerCase())
+      return option.componentOptions.children[0].componentInstance.text.toLowerCase().includes(input.toLowerCase())
     },
     paramsChange (val, oldV) {
       if (!R.equals(val, oldV)) {
