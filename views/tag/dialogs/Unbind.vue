@@ -51,6 +51,9 @@ export default {
           },
         })
         await this.params.list.refresh()
+        this.$bus.$emit('TagListUnbindResourceCallback', {
+          tagData: this.params.tagData,
+        })
         this.loading = false
         this.cancelDialog()
       } catch (error) {

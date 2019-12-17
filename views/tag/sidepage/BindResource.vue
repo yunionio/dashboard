@@ -68,12 +68,15 @@ export default {
   },
   computed: {
     getParams () {
-      return {
+      const ret = {
         details: true,
         with_meta: true,
         'tags.0.key': this.data['key'],
-        'tags.0.value': this.data['value'],
       }
+      if (this.data['value']) {
+        ret['tags.0.value'] = this.data['value']
+      }
+      return ret
     },
     columns () {
       return [

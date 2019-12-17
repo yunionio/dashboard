@@ -1,5 +1,6 @@
 <template>
   <vxe-grid
+    ref="grid"
     highlight-hover-row
     highlight-current-row
     show-header-overflow="title"
@@ -12,6 +13,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import WindowsMixin from '@/mixins/windows'
 import { getTagColor, getTagTitle } from '@/utils/common/tag'
@@ -46,7 +48,6 @@ export default {
               ]
             },
           },
-          filters: [{ label: 'Man', value: '1' }, { label: 'Woman', value: '0' }],
         },
         {
           field: 'count',
@@ -77,32 +78,48 @@ export default {
     this.manager = new this.$Manager('metadatas')
     this.initSidePageTab('tag-detail')
     this.fetchData()
+    this.$bus.$on('TagListUnbindResourceCallback', this.unbindResourceCallback, this)
   },
   methods: {
-    async fetchData () {
+    fetchData () {
       this.loading = true
-      try {
-        const reponse = await this.manager.get({
+      return new Promise((resolve, reject) => {
+        this.manager.get({
           id: 'tag-value-pairs',
           params: {
             scope: this.scope,
             ...this.getParams,
           },
+        }).then(response => {
+          const data = (response.data.data || []).map(item => {
+            return {
+              // 前端模拟name
+              name: getTagTitle(item.key, item.value),
+              color: getTagColor(item.key, item.value),
+              ...item,
+            }
+          })
+          data.sort((a, b) => a.key.localeCompare(b.key))
+          this.data = data
+          this.loading = false
+          resolve(response)
+        }).catch(error => {
+          this.loading = false
+          reject(error)
         })
-        const data = (reponse.data.data || []).map(item => {
-          return {
-            // 前端模拟name
-            name: getTagTitle(item.key, item.value),
-            color: getTagColor(item.key, item.value),
-            ...item,
-          }
-        })
-        data.sort((a, b) => a.key.localeCompare(b.key))
-        this.data = data
+      })
+    },
+    async unbindResourceCallback ({ tagData }) {
+      try {
+        await this.fetchData()
+        this.destroySidePages()
+        const data = R.find(R.propEq('key', tagData.key))(this.data)
+        if (data) {
+          this.createSidePageForList('TagSidePage', { resId: data.id, data, windowData: this.windowData })
+          this.$refs.grid.setCurrentRow(data)
+        }
       } catch (error) {
         throw error
-      } finally {
-        this.loading = false
       }
     },
   },
