@@ -213,7 +213,7 @@ export default {
           'autoStart',
           {
             valuePropName: 'checked',
-            initialValue: true,
+            initialValue: false,
           },
         ],
       },
@@ -320,6 +320,16 @@ export default {
     columns () {
       const showFields = ['name', 'ip', 'instance_type', 'status']
       return this.params.columns.filter((item) => { return showFields.includes(item.field) })
+    },
+  },
+  watch: {
+    isSomeRunning: {
+      handler (val) {
+        this.$nextTick(() => {
+          this.form.fc.setFieldsValue({ autoStart: !val })
+        })
+      },
+      immediate: true,
     },
   },
   created () {
