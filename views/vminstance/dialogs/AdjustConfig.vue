@@ -287,7 +287,7 @@ export default {
       }
       if (this.type === SERVER_TYPE.private) {
         params['provider.0'] = HYPERVISORS_MAP.kvm.provider
-        params['provider.1'] = HYPERVISORS_MAP.OpenStack.provider
+        params['provider.1'] = HYPERVISORS_MAP.openstack.provider
         params['postpaid_status'] = 'available'
       }
       if (this.type === SERVER_TYPE.public) {
