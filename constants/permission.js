@@ -457,6 +457,14 @@ export const PERMISSION = {
    */
   'reservedips_create': ['compute', 'reservedips', 'create'],
   'reservedips_delete': ['compute', 'reservedips', 'delete'],
+  /**
+   * 运维工具-模版
+   */
+  'ansible_devtool_templates_list': ['compute', 'devtool_templates', 'list'],
+  /**
+   * 运维工具-任务
+   */
+  'ansible_ansibleplaybooks_list': ['compute', 'ansibleplaybooks', 'list'],
 }
 
 // 已声明权限的资源
