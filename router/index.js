@@ -29,6 +29,9 @@ import InstanceSnapshot from '@Compute/views/snapshot/InstanceSnapshot'
 import Servicecatalog from '@Compute/views/servicecatalog'
 import ServicecatalogDeploy from '@Compute/views/servicecatalog/Deploy'
 import SnapshotPolicy from '@Compute/views/snapshotpolicy'
+import AnsibleTemplate from '@Compute/views/ansible-template'
+import AnsibleTemplateCreate from '@Compute/views/ansible-template/create'
+import AnsiblePlaybook from '@Compute/views/ansible-playbook'
 
 export default {
   index: 2,
@@ -438,6 +441,48 @@ export default {
               name: 'GPU',
               path: '',
               component: GPU,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      meta: {
+        label: '运维工具',
+      },
+      submenus: [
+        {
+          path: '/ansibletemplate',
+          meta: {
+            label: '模版',
+            permission: 'ansible_devtool_templates_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'AnsibleTemplate',
+              path: '',
+              component: AnsibleTemplate,
+            },
+            {
+              name: 'AnsibleTemplateCreate',
+              path: 'create',
+              component: AnsibleTemplateCreate,
+            },
+          ],
+        },
+        {
+          path: '/ansibleplaybook',
+          meta: {
+            label: '任务',
+            permission: 'ansible_ansibleplaybooks_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'AnsiblePlaybook',
+              path: '',
+              component: AnsiblePlaybook,
             },
           ],
         },
