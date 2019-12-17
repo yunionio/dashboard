@@ -23,7 +23,7 @@
               <span>
                 <a-checkbox
                   class="w-100 text-truncate"
-                  :checked="selectValue.includes(item.key)"
+                  :checked="selectValue && selectValue.includes(item.key)"
                   :value="item.key"
                   @change="handleValueChange">{{ item.label }}</a-checkbox>
               </span>
@@ -46,7 +46,7 @@
         </template>
       </ul>
       <div class="actions" v-if="isDropdown">
-        <span @click="handleConfirm($event)" :class="{ disabled: selectValue.length <= 0 }">确定</span>
+        <span @click="handleConfirm($event)" :class="{ disabled: !selectValue || (selectValue && selectValue.length <= 0) }">确定</span>
         <span @click="handleCancel($event)">取消</span>
       </div>
     </div>
@@ -152,7 +152,7 @@ export default {
       if (!this.isDropdown) {
         this.$emit('update-show', false)
       } else {
-        if (this.config.distinctField && !item.items) {
+        if (this.config.distinctField) {
           try {
             const values = await this.fetchDistinctField(item)
             this.$set(item, 'items', values)

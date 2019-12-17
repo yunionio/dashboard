@@ -40,7 +40,7 @@
       :columns="tableColumns"
       :pager-config="tablePage"
       :customs.sync="customs"
-      :sort-method="() => {}"
+      :sort-config="{ sortMethod: () => {} }"
       :checkbox-config="checkboxConfig"
       @sort-change="handleSortChange"
       @current-page-change="handleCurrentPageChange"

@@ -71,7 +71,8 @@ export const getBrandTableColumn = ({ field = 'brand', title = '平台', hidden 
   return {
     field,
     title,
-    width: 50,
+    width: 70,
+    sortable: true,
     slots: {
       default: ({ row }, h) => {
         const val = _.get(row, field)

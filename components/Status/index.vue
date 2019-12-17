@@ -1,10 +1,10 @@
 <template>
-  <div class="status-wrapper d-flex">
-    <div class="status-icon d-flex justify-content-center align-items-center">
+  <div class="status-wrapper d-flex" :title="statusText">
+    <div class="status-icon d-flex justify-content-center align-items-center flex-grow-0 flex-shrink-0">
       <a-icon v-if="!statusClass" type="sync" spin />
       <span v-else class="status-dot" :class="statusClass" />
     </div>
-    <div class="status-text">
+    <div class="status-text flex-fill text-truncate">
       {{ statusText }}
     </div>
   </div>

@@ -1,5 +1,5 @@
 <template>
-  <div v-on="events" class="d-flex align-items-center">
+  <div v-on="events" class="d-flex align-items-center" :title="row[field] || '-'">
     <span
       v-if="!hideField"
       class="text-truncate"
