@@ -164,7 +164,6 @@ export default {
       const keys = ['engine', 'engine_version', 'local_category', 'node_type']
       const data = this.FC.getFieldsValue(keys)
       data['node_type'] = target.value || data.node_type
-      console.log(R.pathOr({}, R.values(data), this.filterItems), '123123')
       this.performance_types = R.pathOr({}, R.values(data), this.filterItems)
       this.setInitValue('performance_type', () => {})
     },
