@@ -727,6 +727,87 @@
   dependencies:
     "@hapi/hoek" "8.x.x"
 
+"@interactjs/actions@1.7.2":
+  version "1.7.2"
+  resolved "https://registry.npm.taobao.org/@interactjs/actions/download/@interactjs/actions-1.7.2.tgz#e1ef3275a001458d980b7ff46df7a922fd58254a"
+  integrity sha1-4e8ydaABRY2YC3/0bfepIv1YJUo=
+
+"@interactjs/auto-scroll@1.7.2":
+  version "1.7.2"
+  resolved "https://registry.npm.taobao.org/@interactjs/auto-scroll/download/@interactjs/auto-scroll-1.7.2.tgz#a9ac6e34987bce7275ef6e4736bb1f2f3a576a1d"
+  integrity sha1-qaxuNJh7znJ1725HNrsfLzpXah0=
+
+"@interactjs/auto-start@1.7.2":
+  version "1.7.2"
+  resolved "https://registry.npm.taobao.org/@interactjs/auto-start/download/@interactjs/auto-start-1.7.2.tgz#647bdb70f558bea5f3e1bd4118b2531f3c42d4e3"
+  integrity sha1-ZHvbcPVYvqXz4b1BGLJTHzxC1OM=
+
+"@interactjs/core@1.7.2":
+  version "1.7.2"
+  resolved "https://registry.npm.taobao.org/@interactjs/core/download/@interactjs/core-1.7.2.tgz#bd0156e90e3e3c6ddd42e18ad295b82ea1572403"
+  integrity sha1-vQFW6Q4+PG3dQuGK0pW4LqFXJAM=
+
+"@interactjs/dev-tools@1.7.2":
+  version "1.7.2"
+  resolved "https://registry.npm.taobao.org/@interactjs/dev-tools/download/@interactjs/dev-tools-1.7.2.tgz#eb2db9d6b66ab969ae921750f68d15df6a87b87a"
+  integrity sha1-6y251rZquWmukhdQ9o0V32qHuHo=
+  dependencies:
+    "@interactjs/utils" "1.7.2"
+
+"@interactjs/inertia@1.7.2":
+  version "1.7.2"
+  resolved "https://registry.npm.taobao.org/@interactjs/inertia/download/@interactjs/inertia-1.7.2.tgz#c5f7b6ea0a9a5308ec4c0f9bb8f096912dc26b1b"
+  integrity sha1-xfe26gqaUwjsTA+buPCWkS3Caxs=
+
+"@interactjs/interact@1.7.2":
+  version "1.7.2"
+  resolved "https://registry.npm.taobao.org/@interactjs/interact/download/@interactjs/interact-1.7.2.tgz#1f5dadabf114867f6c44c136d335caa30d77f993"
+  integrity sha1-H12tq/EUhn9sRME20zXKow13+ZM=
+
+"@interactjs/interactjs@1.7.2":
+  version "1.7.2"
+  resolved "https://registry.npm.taobao.org/@interactjs/interactjs/download/@interactjs/interactjs-1.7.2.tgz#c7a02e7f250fe2768a7ad8365a176b10bde42dcf"
+  integrity sha1-x6AufyUP4naKetg2WhdrEL3kLc8=
+  dependencies:
+    "@interactjs/types" "1.7.2"
+
+"@interactjs/modifiers@1.7.2":
+  version "1.7.2"
+  resolved "https://registry.npm.taobao.org/@interactjs/modifiers/download/@interactjs/modifiers-1.7.2.tgz#861583607cfe600372ee61e7480772097a3cde94"
+  integrity sha1-hhWDYHz+YANy7mHnSAdyCXo83pQ=
+
+"@interactjs/pointer-events@1.7.2":
+  version "1.7.2"
+  resolved "https://registry.npm.taobao.org/@interactjs/pointer-events/download/@interactjs/pointer-events-1.7.2.tgz#9212750f8f93b8d382367e4974d36af870db0d1c"
+  integrity sha1-khJ1D4+TuNOCNn5JdNNq+HDbDRw=
+
+"@interactjs/reflow@1.7.2":
+  version "1.7.2"
+  resolved "https://registry.npm.taobao.org/@interactjs/reflow/download/@interactjs/reflow-1.7.2.tgz#041ddb2a3b9ddc38ba7ff675ab44ea39707e6f06"
+  integrity sha1-BB3bKjud3Di6f/Z1q0TqOXB+bwY=
+
+"@interactjs/types@1.7.2":
+  version "1.7.2"
+  resolved "https://registry.npm.taobao.org/@interactjs/types/download/@interactjs/types-1.7.2.tgz#cc49b4098546e1066ff1bb6337510860c030b59f"
+  integrity sha1-zEm0CYVG4QZv8btjN1EIYMAwtZ8=
+  dependencies:
+    "@interactjs/actions" "1.7.2"
+    "@interactjs/auto-scroll" "1.7.2"
+    "@interactjs/auto-start" "1.7.2"
+    "@interactjs/core" "1.7.2"
+    "@interactjs/dev-tools" "1.7.2"
+    "@interactjs/inertia" "1.7.2"
+    "@interactjs/interact" "1.7.2"
+    "@interactjs/modifiers" "1.7.2"
+    "@interactjs/pointer-events" "1.7.2"
+    "@interactjs/reflow" "1.7.2"
+    "@interactjs/utils" "1.7.2"
+
+"@interactjs/utils@1.7.2":
+  version "1.7.2"
+  resolved "https://registry.npm.taobao.org/@interactjs/utils/download/@interactjs/utils-1.7.2.tgz#439bdb8caf626a9160b3bde32d72cdda5b15b1be"
+  integrity sha1-Q5vbjK9iapFgs73jLXLN2lsVsb4=
+
 "@intervolga/optimize-cssnano-plugin@^1.0.5":
   version "1.0.6"
   resolved "https://registry.npm.taobao.org/@intervolga/optimize-cssnano-plugin/download/@intervolga/optimize-cssnano-plugin-1.0.6.tgz#be7c7846128b88f6a9b1d1261a0ad06eb5c0fdf8"
@@ -1926,6 +2007,11 @@ base@^0.11.1:
     isobject "^3.0.1"
     mixin-deep "^1.2.0"
     pascalcase "^0.1.1"
+
+batch-processor@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npm.taobao.org/batch-processor/download/batch-processor-1.0.0.tgz#75c95c32b748e0850d10c2b168f6bdbe9891ace8"
+  integrity sha1-dclcMrdI4IUNEMKxaPa9vpiRrOg=
 
 batch@0.6.1:
   version "0.6.1"
@@ -3582,6 +3668,13 @@ elegant-spinner@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npm.taobao.org/elegant-spinner/download/elegant-spinner-1.0.1.tgz#db043521c95d7e303fd8f345bedc3349cfb0729e"
   integrity sha1-2wQ1IcldfjA/2PNFvtwzSc+wcp4=
+
+element-resize-detector@^1.1.15:
+  version "1.1.15"
+  resolved "https://registry.npm.taobao.org/element-resize-detector/download/element-resize-detector-1.1.15.tgz#48eba1a2eaa26969a4c998d972171128c971d8d2"
+  integrity sha1-SOuhouqiaWmkyZjZchcRKMlx2NI=
+  dependencies:
+    batch-processor "^1.0.0"
 
 elliptic@^6.0.0:
   version "6.5.0"
@@ -5286,6 +5379,14 @@ inquirer@^6.2.2:
     string-width "^2.1.0"
     strip-ansi "^5.1.0"
     through "^2.3.6"
+
+interactjs@^1.6.3:
+  version "1.7.2"
+  resolved "https://registry.npm.taobao.org/interactjs/download/interactjs-1.7.2.tgz#bee3133cf0b5757f1f1426ba45f8ac7138cae0e1"
+  integrity sha1-vuMTPPC1dX8fFCa6RfiscTjK4OE=
+  dependencies:
+    "@interactjs/interactjs" "1.7.2"
+    "@interactjs/types" "1.7.2"
 
 internal-ip@^4.3.0:
   version "4.3.0"
@@ -10326,6 +10427,14 @@ vue-eslint-parser@^5.0.0:
     esquery "^1.0.1"
     lodash "^4.17.11"
 
+vue-grid-layout@^2.3.7:
+  version "2.3.7"
+  resolved "https://registry.npm.taobao.org/vue-grid-layout/download/vue-grid-layout-2.3.7.tgz#d148f013ef2ca9dc1cb5d5298e7966aa50f54431"
+  integrity sha1-0UjwE+8sqdwctdUpjnlmqlD1RDE=
+  dependencies:
+    element-resize-detector "^1.1.15"
+    interactjs "^1.6.3"
+
 vue-hot-reload-api@^2.3.0:
   version "2.3.3"
   resolved "https://registry.npm.taobao.org/vue-hot-reload-api/download/vue-hot-reload-api-2.3.3.tgz#2756f46cb3258054c5f4723de8ae7e87302a1ccf"
@@ -10409,10 +10518,10 @@ vxe-table-plugin-antd@^1.5.8:
   resolved "https://registry.npm.taobao.org/vxe-table-plugin-antd/download/vxe-table-plugin-antd-1.5.8.tgz#cd9bb5ce1e9c19140bc173136fc38ce3d788cd91"
   integrity sha1-zZu1zh6cGRQLwXMTb8OM49eIzZE=
 
-vxe-table@^2.6.22:
-  version "2.6.22"
-  resolved "https://registry.npm.taobao.org/vxe-table/download/vxe-table-2.6.22.tgz#5c82f8094b0b3d46475197cbf24001ae6cec0cfd"
-  integrity sha1-XIL4CUsLPUZHUZfL8kABrmzsDP0=
+vxe-table@^2.7.2:
+  version "2.7.2"
+  resolved "https://registry.npm.taobao.org/vxe-table/download/vxe-table-2.7.2.tgz#3cb55422ce5fcb39166afd7d5b4f10755f1d39ef"
+  integrity sha1-PLVUIs5fyzkWav19W08QdV8dOe8=
 
 w3c-hr-time@^1.0.1:
   version "1.0.1"
