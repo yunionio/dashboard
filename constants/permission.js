@@ -85,6 +85,8 @@ export const PERMISSION = {
   'vpcs_list': ['compute', 'vpcs', 'list'],
   // 路由表
   'route_tables_list': ['compute', 'route_tables', 'list'],
+  // NAT网关
+  'natgateways_list': ['compute', 'natgateways', 'list'],
   // 虚拟路由器
   'wires_list': ['compute', 'wires', 'list'],
   // IP子网
