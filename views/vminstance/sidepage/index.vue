@@ -28,6 +28,7 @@ import VmInstanceDetail from './Detail'
 import NetworkListForVmInstanceSidepage from './Network'
 import DiskListForVmInstanceSidepage from './Disk'
 import VmInstanceMonitorSidepage from './Monitor'
+import VmInstanceAlertSidepage from './Alert'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -42,6 +43,7 @@ export default {
     SecgroupList,
     HostList,
     VmInstanceMonitorSidepage,
+    VmInstanceAlertSidepage,
   },
   mixins: [SidePageMixin, WindowsMixin],
   data () {
@@ -53,6 +55,7 @@ export default {
         { label: '网络', key: 'network-list-for-vm-instance-sidepage' },
         { label: '磁盘', key: 'disk-list-for-vm-instance-sidepage' },
         { label: '监控', key: 'vm-instance-monitor-sidepage' },
+        { label: '报警', key: 'vm-instance-alert-sidepage' },
         { label: '操作日志', key: 'event-drawer' },
       ],
     }

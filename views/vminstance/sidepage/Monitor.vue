@@ -1,12 +1,11 @@
 <template>
-  <div>
-    <monitor
-      :time.sync="time"
-      :timeGroup.sync="timeGroup"
-      :monitorList="monitorList"
-      :singleActions="singleActions"
-      :loading="loading" />
-  </div>
+  <monitor
+    :time.sync="time"
+    :timeGroup.sync="timeGroup"
+    :monitorList="monitorList"
+    :singleActions="singleActions"
+    :loading="loading"
+    @refresh="fetchData" />
 </template>
 
 <script>
@@ -16,12 +15,14 @@ import influxdb from '@/utils/influxdb'
 import { UNITS, autoComputeUnit } from '@/utils/utils'
 import Monitor from '@/sections/Monitor'
 import { HYPERVISORS_MAP } from '@/constants'
+import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'VminstanceMonitorSidepage',
   components: {
     Monitor,
   },
+  mixins: [WindowsMixin],
   props: {
     data: { // listItemData
       type: Object,
@@ -33,8 +34,34 @@ export default {
       singleActions: [
         {
           label: '设置报警',
-          action: obj => {
-            console.log(obj, 'ooo')
+          action: async obj => {
+            const alertManager = new this.$Manager('nodealerts', 'v1')
+            const { metric } = obj.constants
+            const { data: { data = [] } } = await alertManager.list({
+              params: {
+                type: 'guest',
+                node_id: this.data.id,
+                metric,
+              },
+            })
+            if (data && data.length) {
+              if (data.length === 1) {
+                this.createDialog('UpdateNodeAlert', {
+                  data,
+                  alertType: 'guest',
+                  alertManager,
+                })
+              } else {
+                throw Error('后端返回数据错误，同个指标返回多个数据')
+              }
+            } else { // 新建报警
+              this.createDialog('CreateNodeAlert', {
+                alertType: 'guest',
+                nodeId: this.data.id,
+                metric,
+                alertManager,
+              })
+            }
           },
         },
       ],
@@ -121,6 +148,3 @@ export default {
   },
 }
 </script>
-
-<style>
-</style>

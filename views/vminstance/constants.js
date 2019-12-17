@@ -1,3 +1,5 @@
+import { metricItems } from '@Compute/views/node-alert/constants'
+
 // OneCloud 虚拟机监控数据
 export const ONECLOUD_MONITOR = [
   {
@@ -7,6 +9,7 @@ export const ONECLOUD_MONITOR = [
     fromItem: 'vm_cpu',
     unit: '%',
     transfer: 1,
+    metric: metricItems['vm_cpu.usage_active'].key, // 报警指标
   },
   {
     name: 'netio',
@@ -15,6 +18,7 @@ export const ONECLOUD_MONITOR = [
     fromItem: 'vm_netio',
     unit: 'bps',
     transfer: 1024,
+    metric: metricItems['vm_netio.bps_recv'].key,
   },
   {
     name: 'netio',
@@ -23,6 +27,7 @@ export const ONECLOUD_MONITOR = [
     fromItem: 'vm_netio',
     unit: 'bps',
     transfer: 1024,
+    metric: metricItems['vm_netio.bps_sent'].key,
   },
   {
     name: 'diskio',
@@ -31,6 +36,7 @@ export const ONECLOUD_MONITOR = [
     fromItem: 'vm_diskio',
     unit: 'bps',
     transfer: 1024,
+    metric: metricItems['vm_diskio.read_bps'].key,
   },
   {
     name: 'diskio',
@@ -39,6 +45,7 @@ export const ONECLOUD_MONITOR = [
     fromItem: 'vm_diskio',
     unit: 'bps',
     transfer: 1024,
+    metric: metricItems['vm_diskio.write_bps'].key,
   },
 ]
 
@@ -51,6 +58,7 @@ export const VMWARE_MONITOR = [
     fromItem: 'vm_cpu',
     unit: '%',
     transfer: 1,
+    metric: metricItems['vm_cpu.usage_active'].key,
   },
   {
     name: 'mem',
@@ -59,6 +67,7 @@ export const VMWARE_MONITOR = [
     fromItem: 'vm_mem',
     unit: '%',
     transfer: 1,
+    metric: metricItems['vm_mem.used_percent'].key,
   },
   {
     name: 'netio',
@@ -67,6 +76,7 @@ export const VMWARE_MONITOR = [
     fromItem: 'vm_netio',
     unit: 'bps',
     transfer: 1024,
+    metric: metricItems['vm_netio.bps_recv'].key,
   },
   {
     name: 'netio',
@@ -75,6 +85,7 @@ export const VMWARE_MONITOR = [
     fromItem: 'vm_netio',
     unit: 'bps',
     transfer: 1024,
+    metric: metricItems['vm_netio.bps_sent'].key,
   },
   {
     name: 'diskio',
@@ -83,6 +94,7 @@ export const VMWARE_MONITOR = [
     fromItem: 'vm_diskio',
     unit: 'bps',
     transfer: 1024,
+    metric: metricItems['vm_diskio.read_bps'].key,
   },
   {
     name: 'diskio',
@@ -91,6 +103,7 @@ export const VMWARE_MONITOR = [
     fromItem: 'vm_diskio',
     unit: 'bps',
     transfer: 1024,
+    metric: metricItems['vm_diskio.write_bps'].key,
   },
 ]
 
@@ -103,6 +116,7 @@ export const OTHER_MONITOR = [
     transfer: 1,
     fromItem: 'vm_cpu',
     unit: '%',
+    metric: metricItems['vm_cpu.usage_active'].key,
   },
   {
     name: 'netio',
@@ -111,6 +125,7 @@ export const OTHER_MONITOR = [
     fromItem: 'vm_netio',
     unit: 'bps',
     transfer: 1024,
+    metric: metricItems['vm_netio.bps_recv'].key,
   },
   {
     name: 'netio',
@@ -119,6 +134,7 @@ export const OTHER_MONITOR = [
     fromItem: 'vm_netio',
     unit: 'bps',
     transfer: 1024,
+    metric: metricItems['vm_netio.bps_sent'].key,
   },
   {
     name: 'diskio',
@@ -127,6 +143,7 @@ export const OTHER_MONITOR = [
     fromItem: 'vm_diskio',
     unit: 'bps',
     transfer: 1024,
+    metric: metricItems['vm_diskio.read_bps'].key,
   },
   {
     name: 'diskio',
@@ -135,5 +152,6 @@ export const OTHER_MONITOR = [
     fromItem: 'vm_diskio',
     unit: 'bps',
     transfer: 1024,
+    metric: metricItems['vm_diskio.write_bps'].key,
   },
 ]
