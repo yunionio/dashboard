@@ -465,6 +465,10 @@ export const PERMISSION = {
    * 运维工具-任务
    */
   'ansible_ansibleplaybooks_list': ['compute', 'ansibleplaybooks', 'list'],
+  /**
+   * 网络-全局vpc
+   */
+  'network_globalvpcs_list': ['compute', 'globalvpcs', 'list'],
 }
 
 // 已声明权限的资源

@@ -128,4 +128,8 @@ export default {
     info: ['unknown', 'init'],
     danger: ['failed', 'canceled'],
   },
+  globalVpc: {
+    success: ['available'],
+    info: ['unknown', 'init'],
+  },
 }
