@@ -84,7 +84,7 @@ export default {
       ],
       groupActions: [
         {
-          label: '设置自动同步',
+          label: '设置同步',
           action: () => {
             this.createDialog('cloudproviderregionsSetAutoSyncDialog', {
               data: this.list.selectedItems,
@@ -102,7 +102,7 @@ export default {
       ],
       singleActions: [
         {
-          label: '设置自动同步',
+          label: '设置同步',
           action: obj => {
             this.createDialog('cloudproviderregionsSetAutoSyncDialog', {
               data: [obj],

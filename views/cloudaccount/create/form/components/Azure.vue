@@ -13,12 +13,12 @@
       <a-form-item v-bind="formLayout">
         <span slot="label">
           租户(Tenant)ID
-          <a-tooltip placement="top">
+          <!-- <a-tooltip placement="top">
             <a-icon type="question-circle" color="grey" />
             <div slot="title">
               <a class="link-color" target="_blank" :href="docs[provider.toLowerCase()]">{{ `如何获取${keySecretField.text}的${keySecretField.label.k }？点击查看帮助详情` }}</a>
             </div>
-          </a-tooltip>
+          </a-tooltip> -->
         </span>
         <a-input v-decorator="decorators.directory_id" placeholder="请输入目录ID" />
       </a-form-item>

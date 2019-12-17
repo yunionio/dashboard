@@ -1,13 +1,12 @@
-
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">设置自动同步</div>
+    <div slot="header">设置同步</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" action="设置自动同步" />
+      <dialog-selected-tips :count="params.data.length" action="设置同步" />
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
-        <a-form-item label="自动同步" v-bind="formItemLayout">
+        <a-form-item label="同步" v-bind="formItemLayout">
           <a-switch v-decorator="decorators.enabled" />
         </a-form-item>
       </a-form>
