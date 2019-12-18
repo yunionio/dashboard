@@ -63,6 +63,9 @@ export default {
           'range',
           {
             initialValue: this.$store.getters.isAdminMode ? 'system' : this.$store.getters.l3PermissionEnable ? 'domain' : 'project',
+            rules: [
+              { required: true, message: '请选择共享范围' },
+            ],
           },
         ],
         project: [
