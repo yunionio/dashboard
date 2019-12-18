@@ -340,7 +340,7 @@ export default {
               component: NetworkCreate,
             },
             {
-              name: 'EditAttributes2',
+              name: 'NetworkUpdate2',
               path: 'edit',
               component: EditAttributes,
             },

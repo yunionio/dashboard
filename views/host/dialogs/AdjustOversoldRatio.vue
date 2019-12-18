@@ -41,12 +41,24 @@ export default {
           'cpu_cmtbound',
           {
             initialValue: this.params.data[0].cpu_cmtbound,
+            rules: [
+              {
+                required: true,
+                message: '请填写cpu超售比',
+              },
+            ],
           },
         ],
         mem_cmtbound: [
           'mem_cmtbound',
           {
             initialValue: this.params.data[0].mem_cmtbound,
+            rules: [
+              {
+                required: true,
+                message: '请填写内存超售比',
+              },
+            ],
           },
         ],
       },

@@ -117,6 +117,15 @@ export default {
         {
           field: 'version',
           title: 'host 版本',
+          slots: {
+            default: ({ row, cellValue }) => {
+              return [
+                <div class='text-truncate'>
+                  <list-body-cell-wrap copy row={ row } field="version" title={ cellValue } />
+                </div>,
+              ]
+            },
+          },
         },
         {
           field: 'kvm_module',

@@ -57,7 +57,7 @@ export default {
           title: '关联实例',
           width: 70,
         },
-        getPublicTableColumn(),
+        getPublicTableColumn({ field: 'public_scope' }),
         {
           field: 'rules',
           title: '规则预览(策略，CIDR，协议，端口)',

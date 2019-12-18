@@ -265,22 +265,36 @@ export default {
                   })
                 },
                 meta: () => {
-                  function validate (val, tooltip = validateActionTooltip(obj)) {
-                    return {
-                      validate: val,
-                      tooltip,
-                    }
+                  const ret = {
+                    validate: false,
+                    tooltip: validateActionTooltip(obj),
                   }
-                  if (obj.is_standard) validate(false, '公共镜像不支持设置')
-                  if (!validateAction(obj)) validate(false)
+                  if (obj.is_standard) {
+                    ret.tooltip = '公共镜像不支持设置'
+                    return ret
+                  }
+                  if (!validateAction(obj)) return ret
                   // 1、管理后台视图可以对所有镜像进行操作；
                   // 2、域管理后台视图只能对该域下的镜像进行操作，不能对其他域共享的镜像进行操作；
                   // 3、项目视图只能对该项目下的镜像进行操作，不能对其他域、其他项目共享的镜像进行操作。
-                  if (this.isAdminMode) validate(true)
-                  if (!this.isAdminMode && !this.isDomainAdmin) validate(this.userInfo.projectId === obj.tenant_id)
-                  if (this.isDomainMode) validate(this.userInfo.projectDomainId === obj.domain_id)
+                  if (this.isAdminMode) {
+                    ret.validate = true
+                    ret.tooltip = ''
+                    return ret
+                  }
+                  if (!this.isAdminMode && !this.isDomainAdmin) {
+                    ret.validate = this.userInfo.projectId === obj.tenant_id
+                    ret.tooltip = this.userInfo.projectId === obj.tenant_id ? '' : validateActionTooltip(obj)
+                    return ret
+                  }
+                  if (this.isDomainMode) {
+                    ret.validate = this.userInfo.projectDomainId === obj.domain_id
+                    ret.tooltip = this.userInfo.projectDomainId === obj.domain_id ? '' : validateActionTooltip(obj)
+                    return ret
+                  }
                   return {
                     validate: true,
+                    tooltip: '',
                   }
                 },
               },
@@ -293,6 +307,9 @@ export default {
                     columns: this.columns,
                     title: '删除',
                     list: this.list,
+                    success: () => {
+                      this.destroySidePages()
+                    },
                   })
                 },
                 meta: () => {

@@ -4,7 +4,16 @@
     <div slot="body">
       <a-form
         :form="form.fc">
-        <a-form-item label="平台" v-bind="formItemLayout">
+        <!-- <a-form-item label="名称" v-bind="formItemLayout" v-if="params.title === 'onpremise'">
+          <a-input v-decorator="decorators.name" placeholder="名称" @change="handleChange" />
+        </a-form-item>
+        <a-form-item label="IP" v-bind="formItemLayout" v-if="params.title === 'onpremise'">
+          <a-input v-decorator="decorators.access_ip" placeholder="IP" @change="handleChange" />
+        </a-form-item>
+        <a-form-item label="序列号" v-bind="formItemLayout" v-if="params.title === 'onpremise'">
+          <a-input v-decorator="decorators.sn" placeholder="序列号" @change="handleChange" />
+        </a-form-item> -->
+        <a-form-item label="平台" v-bind="formItemLayout" v-if="params.title !== 'onpremise'">
           <a-select v-decorator="decorators.platform" @change="handlePlatformChange" placeholder="请选择">
             <a-select-option
               v-for="(item, index) in platformOptions"
@@ -66,6 +75,15 @@ export default {
         fc: this.$form.createForm(this),
       },
       decorators: {
+        name: [
+          'name',
+        ],
+        access_ip: [
+          'access_ip',
+        ],
+        sn: [
+          'sn',
+        ],
         platform: [
           'platform',
         ],
@@ -87,6 +105,7 @@ export default {
       platformOptions: [],
       regionParams: {},
       providerParams: {},
+      filters: ['host_type.notequals(baremetal)'],
       list: this.$list.createList(this, {
         resource: 'hosts',
         limit: 5,
@@ -100,7 +119,31 @@ export default {
           cloud_env: this.params.title,
           usable: true,
         },
+        filterOptions: this.params.title === 'onpremise' ? {
+          name: {
+            label: '名称',
+            filter: true,
+            formatter: val => {
+              return `name.contains(${val})`
+            },
+          },
+          access_ip: {
+            label: 'IP',
+            filter: true,
+            formatter: val => {
+              return `access_ip.contains(${val})`
+            },
+          },
+          sn: {
+            label: '序列号',
+            filter: true,
+            formatter: val => {
+              return `sn.contains(${val})`
+            },
+          },
+        } : null,
       }),
+      timeout: null,
     }
   },
   computed: {
@@ -153,12 +196,33 @@ export default {
         ]
       }
     },
+    listOptions () {
+      return {}
+    },
   },
   created () {
     this.fetchPlatform()
     this.list.fetchData()
   },
   methods: {
+    // handleChange (e) {
+    //   if (e.target.value) {
+    //     this.filters.push([e.target.id] + `.contains(${e.target.value})`)
+    //     this.list.getParams = {
+    //       ...this.list.getParams,
+    //       // [e.target.id]: e.target.value,
+    //       // 'filter.1': [e.target.id] + `.contains(${e.target.value})`,
+    //     }
+    //   } else {
+    //     if (Reflect.has(this.list.getParams, e.target.id)) {
+    //       Reflect.deleteProperty(this.list.getParams, e.target.id)
+    //     }
+    //   }
+    //   clearTimeout(this.timeout)
+    //   this.timeout = setTimeout(() => {
+    //     this.list.fetchData()
+    //   }, 4000)
+    // },
     fetchPlatform () {
       return new this.$Manager('rpc/cloudregions/region-providers').list({ params: { usable: true, cloud_env: this.params.title } }).then(({ data }) => {
         this.platformOptions = data

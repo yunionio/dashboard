@@ -131,12 +131,12 @@ export default {
           o['class'] = `fo-${os} os-logo ${image['type'].toLowerCase()}`
           o['title'] = `${image.distribution} ${image.version}`
           o['desc'] = osDesc(image)
-          o['imported'] = image.imported === 'true'
-          o['os'] = os || image.type.toLowerCase()
+          o['imported'] = image.imported
+          o['os'] = image.type.toLowerCase() || os
           o['description'] = image.description
           publicImages.push(o)
         }
-        publicImages = publicImages.filter((item) => { return item.imported === this.imported })
+        publicImages = publicImages.filter((item) => { return item.imported === 'false' })
         publicImages.forEach(item => {
           item['os'] = require(`@/assets/images/system-icons/${item['os']}.svg`)
         })
