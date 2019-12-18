@@ -148,6 +148,7 @@ export default {
         'wire_id': formData.wire.key,
         name: formData.name,
       }
+      let num = 0
       for (const uid in formData.startip) {
         data['guest_ip_start'] = formData.startip[uid]
         data['guest_ip_end'] = formData.endip[uid]
@@ -158,11 +159,14 @@ export default {
         if (formData.vlan[uid]) {
           data['vlan_id'] = formData.vlan[uid]
         }
+        if (num > 0) {
+          data.name = `${data.name}-${num}`
+        }
         try {
-          await this.networksM.create(data)
+          await this.networksM.create({ data })
+          num++
         } catch (error) {
           console.error(error, '<----doCreateNetwork')
-          return false
         }
       }
       return true
