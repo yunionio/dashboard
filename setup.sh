@@ -9,8 +9,13 @@ if [ $DEV_SETUP ]
     read -p "Please enter git prefix: " DEFAULT_GIT_PREFIX
 fi
 echo $DEFAULT_GIT_PREFIX
+if [ ! -d "./src" ]; then
+  git clone $DEFAULT_GIT_PREFIX/dashboard-common.git src
+fi
+if [ ! -d "./containers" ]; then
+  git clone $DEFAULT_GIT_PREFIX/dashboard-module-cloudenv.git containers/Cloudenv
+  git clone $DEFAULT_GIT_PREFIX/dashboard-module-compute.git containers/Compute
+  git clone $DEFAULT_GIT_PREFIX/dashboard-module-network.git containers/Network
+fi
 
-git clone $DEFAULT_GIT_PREFIX/dashboard-common.git src
-git clone $DEFAULT_GIT_PREFIX/dashboard-module-cloudenv.git containers/Cloudenv
-git clone $DEFAULT_GIT_PREFIX/dashboard-module-compute.git containers/Compute
-git clone $DEFAULT_GIT_PREFIX/dashboard-module-network.git containers/Network
+echo "🗃 Done"
