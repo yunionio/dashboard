@@ -46,7 +46,6 @@ export default {
             )
           },
         }),
-        getBrandTableColumn({ hidden: this.type === 'instance' }),
         {
           field: 'disk_name',
           title: '硬盘',
@@ -104,6 +103,7 @@ export default {
         },
         getStatusTableColumn({ statusModule: 'snapshot' }),
         getProjectTableColumn(),
+        getBrandTableColumn({ hidden: this.type === 'instance' }),
         {
           field: 'guest',
           title: '虚拟机',
@@ -185,16 +185,36 @@ export default {
           },
         },
         {
-          label: '删除',
-          action: obj => {
-            this.createDialog('DeleteResDialog', {
-              data: [obj],
-              columns: this.columns,
-              title: '删除',
-              list: this.list,
-            })
+          label: '更多',
+          actions: obj => {
+            return [
+              {
+                label: '新建硬盘',
+                action: obj => {
+                  this.createDialog('DiskCreateDialog', {
+                    data: [obj],
+                    columns: this.columns,
+                    list: this.list,
+                  })
+                },
+                meta: obj => {
+                  return { validate: true }
+                },
+              },
+              {
+                label: '删除',
+                action: obj => {
+                  this.createDialog('DeleteResDialog', {
+                    data: [obj],
+                    columns: this.columns,
+                    title: '删除',
+                    list: this.list,
+                  })
+                },
+                meta: obj => this.$getDeleteResult(obj),
+              },
+            ]
           },
-          meta: obj => this.$getDeleteResult(obj),
         },
       ],
     }
