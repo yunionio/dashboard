@@ -2,7 +2,7 @@
 set -o errexit
 set -o pipefail
 
-pushd $(dirname $(readlink -f "$BASH_SOURCE")) > /dev/null
+pushd $(dirname $(dirname "$BASH_SOURCE")) > /dev/null
 CUR_DIR=$(pwd)
 SRC_DIR=$(cd .. && pwd)
 popd > /dev/null
