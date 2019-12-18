@@ -15,6 +15,7 @@ export default {
   sidePages: state => state.sidePage.sidePages,
   isAdminMode: (state, getters) => getters['auth/isAdminMode'],
   isDomainMode: (state, getters) => getters['auth/isDomainMode'],
+  isProjectMode: (state, getters) => getters['auth/isProjectMode'],
   l3PermissionEnable: (state, getters) => getters['auth/l3PermissionEnable'],
   currentScopeResource: (state, getters) => getters['auth/currentScopeResource'],
 }

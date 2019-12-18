@@ -67,6 +67,10 @@ export default {
     isDomainMode (state, getters) {
       return getters.isDomain && getters.isDomainAdmin
     },
+    // 是否在项目视图下
+    isProjectMode (state, getters) {
+      return !getters.isAdminMode && !getters.isDomainMode
+    },
     l3PermissionEnable (state) {
       return state.info.non_default_domain_projects
     },
