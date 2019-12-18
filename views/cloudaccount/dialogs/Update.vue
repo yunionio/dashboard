@@ -5,36 +5,37 @@
       <dialog-selected-tips :count="params.data.length" action="更新账号密码" />
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
-        :form="form.fc">
-        <a-form-item label="AppID" v-bind="formItemLayout" v-if="isQcloud">
+        :form="form.fc"
+         v-bind="formItemLayout">
+        <a-form-item label="AppID" v-if="isQcloud">
           <a-input v-decorator="decorators.app_id" placeholder="请输入App ID" />
           <div slot="extra" class="text-right">
             <help-link :href="doc">如何获取腾讯云的 App ID 和密钥？</help-link>
           </div>
         </a-form-item>
-        <a-form-item label="租户（Tenant） ID" v-bind="formItemLayout" v-if="isAzure">
+        <a-form-item label="租户（Tenant） ID" v-if="isAzure">
           <a-input v-decorator="decorators.directory_id" placeholder="请输入租户（Tenant）ID" />
           <div slot="extra" class="text-right">
             <help-link :href="doc">如何获取Azure的租户（Tenant） ID ？</help-link>
           </div>
         </a-form-item>
-        <a-form-item :label="field.label.k" v-bind="formItemLayout">
+        <a-form-item :label="field.label.k">
           <a-textarea v-if="isGoogle" :autosize="{ minRows: 3, maxRows: 7 }" v-decorator="decorators.keyId" :placeholder="field.placeholder.k" />
           <a-input v-else v-decorator="decorators.keyId" :placeholder="field.placeholder.k" />
           <div slot="extra" class="text-right" v-if="!isGoogle">
             <help-link :href="doc">如何获取{{ field.text }} {{ field.label.k }} 和 {{ field.label.s }}？</help-link>
           </div>
         </a-form-item>
-        <a-form-item :label="field.label.s" v-bind="formItemLayout">
+        <a-form-item :label="field.label.s">
           <a-input v-decorator="decorators.keySecret" :placeholder="field.placeholder.s" type="password" />
         </a-form-item>
-        <a-form-item label="账单密钥" v-bind="formItemLayout" v-if="isAzure">
+        <a-form-item label="账单密钥" v-if="isAzure">
           <a-textarea v-decorator="decorators.balanceKey" rows="4" />
         </a-form-item>
-        <a-form-item label="项目" v-bind="formItemLayout" v-if="isOpenStack">
+        <a-form-item label="项目" v-if="isOpenStack">
           <a-input v-decorator="decorators.project_name" placeholder="请输入OpenStack的项目，如：admin" />
         </a-form-item>
-        <a-form-item label="端点类型" v-bind="formItemLayout" v-if="isOpenStack">
+        <a-form-item label="端点类型" v-if="isOpenStack">
           <a-select v-decorator="decorators.endpoint_type" placeholder="请选择端点类型">
             <a-select-option
               v-for="item in endpointTypeOpts"
@@ -152,7 +153,7 @@ export default {
           span: 3,
         },
       }
-      if (this.isAzure) {
+      if (this.isAzure || this.isGoogle) {
         ret.wrapperCol.span = 19
         ret.labelCol.span = 5
       }
