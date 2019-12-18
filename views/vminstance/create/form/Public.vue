@@ -25,9 +25,6 @@
       <!-- <a-form-item class="mb-0" label="资源池" v-bind="formItemLayout">
         <resource :decorator="decorators.resourceType" />
       </a-form-item> -->
-      <a-form-item v-if="hypervisor === 'kvm'" v-bind="formItemLayout" label="是否配置GPU" extra="目前只有KVM支持GPU云服务器">
-        <gpu :decorators="decorators.gpu" :gpu-options="gpuOptions" />
-      </a-form-item>
       <a-form-item label="CPU核数" v-bind="formItemLayout" class="mb-0">
         <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" @change="cpuChange" />
       </a-form-item>
@@ -37,6 +34,7 @@
       <area-selects
         v-if="showAreaSelect"
         v-bind="formItemLayout"
+        ref="areaSelectRef"
         :cityParams="cityParams"
         :providerParams="providerParams"
         :cloudregionParams="cloudregionParams"
@@ -127,7 +125,7 @@
 <script>
 import * as R from 'ramda'
 import Bill from '@Compute/sections/Bill'
-import { RESOURCE_TYPES_MAP, LOGIN_TYPES_MAP } from '@Compute/constants'
+import { RESOURCE_TYPES_MAP, LOGIN_TYPES_MAP, BILL_TYPES_MAP } from '@Compute/constants'
 import EipConfig from '@Compute/sections/EipConfig'
 import SecgroupConfig from '@Compute/sections/SecgroupConfig'
 import mixin from './mixin'
@@ -336,18 +334,40 @@ export default {
       }
     },
   },
-  created () {
-    this.$bus.$on('VMInstanceCreateUpdateFi', this.updateFi, this)
-    this.fetchInstanceSpecs()
-    this.baywatch(['form.fd.resourceType', 'form.fd.sku'], (val, oldVal) => {
+  watch: {
+    'form.fd.billType' (val, oldVal) {
+      if (val && !R.equals(val, oldVal)) {
+        this.form.fc.setFieldsValue({
+          provider: undefined,
+        })
+        this.$refs.areaSelectRef.fetchs(['provider'])
+      }
+    },
+    'form.fd.resourceType' (val, oldVal) {
       if (val && !R.equals(val, oldVal)) {
         this.fetchCapability()
       }
-    })
+    },
+    'form.fd.sku' (val, oldVal) {
+      if (val && !R.equals(val, oldVal)) {
+        this.fetchCapability()
+      }
+    },
+  },
+  created () {
+    this.$bus.$on('VMInstanceCreateUpdateFi', this.updateFi, this)
+    this.fetchInstanceSpecs()
   },
   methods: {
-    providerFetchSuccess (providerList) {
-      this.form.fi.providerList = providerList
+    providerFetchSuccess (list) {
+      // 计费方式为包年包月平台不含 azure、aws
+      if (this.form.fd.billType === BILL_TYPES_MAP.package.key) {
+        list = list.filter(item => {
+          return ![HYPERVISORS_MAP.azure.key, HYPERVISORS_MAP.aws.key].includes(item.name.toLowerCase())
+        })
+      }
+      this.form.fi.providerList = list
+      return list
     },
     onValuesChange (vm, changedFields) {
       this.$nextTick(() => {
