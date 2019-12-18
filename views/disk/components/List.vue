@@ -168,7 +168,7 @@ export default {
           label: '删除',
           permission: 'disks_delete',
           action: () => {
-            this.createDialog('DeleteResDialog', {
+            this.createDialog('DeleteDiskDialog', {
               data: this.list.selectedItems,
               columns: this.columns,
               title: '删除',
@@ -365,7 +365,7 @@ export default {
                 label: '删除',
                 permission: 'disks_delete',
                 action: () => {
-                  this.createDialog('DeleteResDialog', {
+                  this.createDialog('DeleteDiskDialog', {
                     data: [obj],
                     columns: this.columns,
                     title: '删除',

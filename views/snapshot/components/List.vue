@@ -143,6 +143,7 @@ export default {
               columns: this.columns,
               list: this.list,
               title: '删除',
+              name: '快照',
             })
           },
           meta: () => {
@@ -219,6 +220,7 @@ export default {
                     columns: this.columns,
                     title: '删除',
                     list: this.list,
+                    name: '快照',
                   })
                 },
                 meta: obj => this.$getDeleteResult(obj),
