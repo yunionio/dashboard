@@ -306,7 +306,15 @@ export default {
     fetchCloudSkuRatesList () { // 公有云套餐价格
       if (!this.hasMeterService) return // 没有 meter 服务
       if (!this.isPublic) return
-      const paramKeys = this.skuList.map(this.genRateKey)
+      let paramKeys = this.skuList.map(item => {
+        const provider = item.provider.toLowerCase()
+        let ret = `${provider}::${item.region_ext_id || 'NA'}::${item.name || 'NA'}`
+        if (provider === HYPERVISORS_MAP.ucloud.key || provider === HYPERVISORS_MAP.azure.key) {
+          ret = `${provider}::${item.region_ext_id}::::instance::${item.name}`
+        }
+        return ret
+      })
+      paramKeys = Array.from(new Set(paramKeys))
       const params = {
         param_keys: paramKeys.join('$'),
       }
