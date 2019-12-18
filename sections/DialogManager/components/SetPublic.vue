@@ -23,6 +23,7 @@
             :params="projectParams"
             version="v1"
             :need-params="true"
+            :mapper="projectMapper"
             :select-props="{ placeholder: '请选择项目' }" />
         </a-form-item>
       </a-form>
@@ -138,6 +139,9 @@ export default {
   methods: {
     switchChange (e) {
       this.isShare = e
+    },
+    projectMapper (list) {
+      return list.filter((item) => { return item.id !== this.params.data[0].tenant_id })
     },
     doUpdate (ids) {
       return this.params.list.onManager('batchPerformAction', {
