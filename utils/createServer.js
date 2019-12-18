@@ -44,11 +44,11 @@ function diskValidator (rule, value, callback) {
 
 export const createVmDecorators = type => {
   let imageTypeInitValue = IMAGES_TYPE_MAP.standard.key
-  if (type === SERVER_TYPE.public) { // 公有云机器默认选择公有云镜像
-    imageTypeInitValue = IMAGES_TYPE_MAP.public.key
+  if (type === SERVER_TYPE.public) {
+    imageTypeInitValue = IMAGES_TYPE_MAP.public.key // 公有云机器默认选择公有云镜像
   }
-  if (type === SERVER_TYPE.private) { // 私有云机器默认选择私有云镜像
-    imageTypeInitValue = IMAGES_TYPE_MAP.private.key
+  if (type === SERVER_TYPE.private) {
+    imageTypeInitValue = IMAGES_TYPE_MAP.private.key // 私有云机器默认选择私有云镜像
   }
   return {
     domain: [
@@ -86,6 +86,9 @@ export const createVmDecorators = type => {
       'count',
       {
         initialValue: 1,
+        rules: [
+          { required: true, message: '请输入数量' },
+        ],
       },
     ],
     cloudregionZone: {
@@ -468,7 +471,7 @@ export const createVmDecorators = type => {
       duration: [
         'duration',
         {
-          initialValue: '1m',
+          initialValue: '1M',
         },
       ],
       auto_prepaid_recycle: [
@@ -832,7 +835,13 @@ export class GenCreateData {
    * @memberof GenCreateData
    */
   getPreferZone () {
-    let ret = this.fd.zone && this.fd.zone.key
+    let ret = ''
+    if (R.is(Object, this.fd.zone)) {
+      ret = this.fd.zone.key
+    }
+    if (R.is(String, this.fd.zone)) { // 字符串形式是公有云 AreaSelect 的 zone
+      ret = this.fd.zone
+    }
     return ret
   }
   /**
@@ -961,6 +970,7 @@ export class GenCreateData {
     if (this.fd.tag) {
       data.metadata = this.fd.tag
     }
+    console.log(data, 'data')
     return data
   }
   /**
