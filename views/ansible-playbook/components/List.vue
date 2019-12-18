@@ -56,6 +56,8 @@ export default {
         getNameDescriptionTableColumn({
           vm: this,
           hideField: true,
+          isNameEdit: false,
+          showDesc: false,
           slotCallback: row => {
             return (
               <side-page-trigger onTrigger={() => this.sidePageTriggerHandle(row.id, 'AnsiblePlaybookSidepage')}>{row.name}</side-page-trigger>

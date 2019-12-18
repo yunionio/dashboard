@@ -35,7 +35,8 @@ export default {
         getNameDescriptionTableColumn({
           vm: this,
           hideField: true,
-          addLock: true,
+          isNameEdit: false,
+          showDesc: false,
           slotCallback: row => {
             return row.name
           },

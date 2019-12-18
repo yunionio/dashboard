@@ -49,7 +49,6 @@ export default {
         line: true,
         mode: 'text/x-yaml',
         theme: 'material',
-        autofocus: true,
       },
       formItemLayout: {
         wrapperCol: { span: CreateServerForm.wrapperCol },
