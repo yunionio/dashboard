@@ -913,7 +913,7 @@ export class GenCreateData {
       data[loginValueKey.key] = loginValueKey.value
     }
     // 安全组
-    if (this.fd.secgroup_type === SECGROUP_OPTIONS_MAP.manual.key) {
+    if (this.fd.secgroup_type === SECGROUP_OPTIONS_MAP.bind.key) {
       data.secgroup = this.fd.secgroup
     }
     // 如果设置了调度策略则拼装调度所需数据

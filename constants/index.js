@@ -346,13 +346,13 @@ export const LOGIN_TYPES_MAP = {
 
 // 安全组配置选项
 export const SECGROUP_OPTIONS_MAP = {
-  default: {
-    label: '默认',
+  none: {
     key: 'default',
+    label: '默认',
   },
-  manual: {
+  bind: {
+    key: 'bind',
     label: '指定安全组',
-    key: 'manual',
   },
 }
 

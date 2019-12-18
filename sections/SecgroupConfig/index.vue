@@ -25,17 +25,7 @@
 </template>
 
 <script>
-
-const types = {
-  none: {
-    key: 'default',
-    label: '默认',
-  },
-  bind: {
-    key: 'bind',
-    label: '指定安全组',
-  },
-}
+import { SECGROUP_OPTIONS_MAP } from '@Compute/constants'
 
 export default {
   name: 'SecgroupConfig',
@@ -58,8 +48,8 @@ export default {
   },
   data () {
     return {
-      types,
-      isBind: this.decorators.type[1].initialValue === types.bind.key,
+      types: SECGROUP_OPTIONS_MAP,
+      isBind: this.decorators.type[1].initialValue === SECGROUP_OPTIONS_MAP.bind.key,
       loading: false,
       disabled: false,
     }
@@ -85,7 +75,7 @@ export default {
       if (val) {
         this.disabled = true
         this.form.fc.setFieldsValue({
-          [this.decorators.type[0]]: types.none.key,
+          [this.decorators.type[0]]: SECGROUP_OPTIONS_MAP.none.key,
         })
       } else {
         this.disabled = false
@@ -94,7 +84,7 @@ export default {
   },
   methods: {
     handleTypeChange (e) {
-      this.isBind = (e.target.value === types.bind.key)
+      this.isBind = (e.target.value === SECGROUP_OPTIONS_MAP.bind.key)
     },
   },
 }
