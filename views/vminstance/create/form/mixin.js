@@ -307,9 +307,11 @@ export default {
     cpuChange (cpu) {
       const memOpts = this.form.fi.cpuMem.cpu_mems_mb[cpu]
       this.form.fi.cpuMem.mems_mb = memOpts
-      this.form.fc.setFieldsValue({
-        vmem: memOpts[0],
-      })
+      if (!this.form.fi.cpuMem.mems_mb.includes(2048)) { // 如果返回值不包括默认内存2G，选择第一项
+        this.form.fc.setFieldsValue({
+          vmem: memOpts[0],
+        })
+      }
     },
     _getProjectDomainInfo (variables) {
       variables.project = this.form.fd.project.key
