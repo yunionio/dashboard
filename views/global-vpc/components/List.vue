@@ -10,7 +10,6 @@
 import {
   getNameDescriptionTableColumn,
   getStatusTableColumn,
-  getEnabledTableColumn,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 
@@ -46,7 +45,6 @@ export default {
           },
         }),
         getStatusTableColumn({ statusModule: 'globalVpc' }),
-        getEnabledTableColumn(),
       ],
       groupActions: [
         {
@@ -73,7 +71,7 @@ export default {
               data: [obj],
               columns: this.columns,
               list: this.list,
-              alert: '提示：请确保存储桶下所有目录和文件已删空，删除后数据不可恢复和访问。',
+              // alert: '提示：请确保存储桶下所有目录和文件已删空，删除后数据不可恢复和访问。',
             })
           },
           meta: obj => {

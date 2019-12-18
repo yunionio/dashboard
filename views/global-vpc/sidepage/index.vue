@@ -17,6 +17,7 @@
 
 <script>
 import Detail from './Detail'
+import VpcList from './VpcList'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -26,19 +27,23 @@ export default {
   components: {
     Detail,
     Actions,
+    VpcList,
   },
   mixins: [SidePageMixin, WindowsMixin],
   data () {
     return {
       detailTabs: [
         { label: '详情', key: 'detail' },
+        { label: 'VPC', key: 'vpc-list' },
         { label: '操作日志', key: 'event-drawer' },
       ],
     }
   },
   computed: {
     getParams () {
-      return null
+      return {
+        globalvpc: this.params.resId,
+      }
     },
     data () {
       return this.params.list.data[this.params.resId].data

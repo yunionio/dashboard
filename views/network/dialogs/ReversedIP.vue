@@ -22,7 +22,7 @@
             @click="decrease(i)"
             class="mt-2 ml-2" />
         </a-form-item>
-        <a-form-item v-bind="formItemLayoutWithOutLabel">
+        <a-form-item v-bind="formItemLayoutWithOutLabel" style="position:relative; top: -14px">
           <div class="d-flex align-items-center" v-if="remain">
             <a-button type="primary" shape="circle" icon="plus" size="small" @click="addIP" />
             <a-button type="link" @click="addIP">添加新IP地址</a-button>
