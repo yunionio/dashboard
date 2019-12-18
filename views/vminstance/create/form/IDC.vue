@@ -126,7 +126,8 @@
         :type="type"
         :isOpenWorkflow="isOpenWorkflow"
         :errors.sync="errors"
-        :isServertemplate="isServertemplate" />
+        :isServertemplate="isServertemplate"
+        :hasMeterService="hasMeterService" />
     </a-form>
   </div>
 </template>

@@ -20,9 +20,9 @@
           </div>
         </div>
       </template>
-      <template v-if="hasMeterService" v-slot:right>
+      <template v-slot:right>
         <div class="d-flex align-items-center">
-          <div class="mr-4 d-flex align-items-center">
+          <div v-if="hasMeterService" class="mr-4 d-flex align-items-center">
             <div class="text-truncate">费用估算：</div>
             <div class="ml-2 prices">
               <div class="hour text-truncate">
@@ -96,6 +96,10 @@ export default {
     isServertemplate: {
       type: Boolean,
       default: false,
+    },
+    hasMeterService: {
+      type: Boolean,
+      default: true,
     },
   },
   data () {
@@ -198,14 +202,6 @@ export default {
         }
       }
       return null
-    },
-    hasMeterService () { // 是否有计费的服务
-      const { services } = this.$store.getters.userInfo
-      const meterService = services.find(val => val.type === 'meter')
-      if (meterService && meterService.status === true) {
-        return true
-      }
-      return false
     },
     confirmText () {
       if (this.isServertemplate) return '保存模板'

@@ -175,6 +175,14 @@ export default {
     isDomainMode () {
       return this.$store.getters.isDomainMode
     },
+    hasMeterService () { // 是否有计费的服务
+      const { services } = this.$store.getters.userInfo
+      const meterService = services.find(val => val.type === 'meter')
+      if (meterService && meterService.status === true) {
+        return true
+      }
+      return false
+    },
   },
   created () {
     this.$bus.$on('VMInstanceCreateUpdateFi', this.updateFi, this)

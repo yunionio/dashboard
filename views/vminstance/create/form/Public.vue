@@ -46,7 +46,8 @@
           v-decorator="decorators.sku"
           :type="type"
           :sku-params="skuParam"
-          :hypervisor="hypervisor" />
+          :hypervisor="hypervisor"
+          :hasMeterService="hasMeterService" />
       </a-form-item>
       <a-form-item v-bind="formItemLayout" label="操作系统" extra="操作系统会根据选择的虚拟化平台和可用区域的变化而变化，公共镜像的维护请联系管理员">
         <os-select
@@ -118,7 +119,8 @@
         :resourceType="form.fd.resourceType"
         :dataDiskSizes="dataDiskSizes"
         :isOpenWorkflow="isOpenWorkflow"
-        :isServertemplate="isServertemplate" />
+        :isServertemplate="isServertemplate"
+        :hasMeterService="hasMeterService" />
     </a-form>
   </div>
 </template>

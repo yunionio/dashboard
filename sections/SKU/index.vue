@@ -72,6 +72,10 @@ export default {
       required: true,
       validator: val => ['idc', 'private', 'public'].includes(val),
     },
+    hasMeterService: {
+      type: Boolean,
+      default: true,
+    },
   },
   data () {
     return {
@@ -113,7 +117,7 @@ export default {
         { field: 'cpu_core_count', title: 'CPU(核)' },
         { field: 'memory_size_mb_compute', title: '内存(GB)' },
       ]
-      if (this.isPublic) {
+      if (this.isPublic && this.hasMeterService) {
         column.push({
           field: 'hour_price',
           title: '价格',
@@ -300,6 +304,7 @@ export default {
         })
     },
     fetchCloudSkuRatesList () { // 公有云套餐价格
+      if (!this.hasMeterService) return // 没有 meter 服务
       if (!this.isPublic) return
       const paramKeys = this.skuList.map(this.genRateKey)
       const params = {
