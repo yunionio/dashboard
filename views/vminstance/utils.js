@@ -25,7 +25,7 @@ const actionEableMap = {
       aliyun: ['ready', 'running'],
       aws: ['ready', 'running'],
       onecloud: ['ready', 'running'],
-      vmware: ['ready', 'running'],
+      vmware: ['ready'],
       baremetal: ['ready'],
       huawei: ['ready', 'rebuild_root_fail'],
       openstack: ['ready'],
