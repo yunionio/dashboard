@@ -528,12 +528,16 @@ export default {
             if (i > 0) {
               bodyData.name = `${bodyData.name}-${i + 1}`
             }
+            await manager.performClassAction({
+              action: 'check-create-data',
+              data: { 'network': bodyData },
+            })
             await manager.create({ data: bodyData })
           }
         } else {
           await manager.create({ data })
         }
-        this.$router.push({ name: 'NetworkList' })
+        this.$router.push({ name: 'Network' })
       } finally {
         this.submiting = false
       }

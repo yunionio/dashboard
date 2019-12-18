@@ -98,7 +98,7 @@ export default {
               component: NetworkCreate,
             },
             {
-              name: 'EditAttributes',
+              name: 'NetworkUpdate',
               path: 'edit',
               component: EditAttributes,
             },
