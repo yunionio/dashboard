@@ -42,6 +42,13 @@ function diskValidator (rule, value, callback) {
   callback()
 }
 
+function secgroupValidator (rule, value, callback) {
+  if (value.length > 5) {
+    return callback(new Error('最多支持选择5个安全组'))
+  }
+  callback()
+}
+
 export const createVmDecorators = type => {
   let imageTypeInitValue = IMAGES_TYPE_MAP.standard.key
   if (type === SERVER_TYPE.public) {
@@ -527,8 +534,10 @@ export const createVmDecorators = type => {
       secgroup: [
         'secgroup',
         {
+          validateFirst: true,
           rules: [
             { required: true, message: '请选择安全组' },
+            { validator: secgroupValidator },
           ],
         },
       ],
