@@ -10,7 +10,7 @@
           <a-input v-decorator="decorators.name" placeholder="字母开头，数字和字母大小写组合，长度为2-128个字符，不含'.','_','@'" />
         </a-form-item>
         <a-form-item label="容量" v-bind="formItemLayout">
-          <a-input-number :min="1" :max="100000" v-decorator="decorators.size" /> GB
+          <a-input-number :min="minDiskSize" :max="100000" v-decorator="decorators.size" /> GB
         </a-form-item>
       </a-form>
     </div>
@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import { BRAND_MAP } from '@/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
@@ -67,12 +68,20 @@ export default {
   },
   computed: {
     selectedItem () {
-      return this.params.data
+      return this.params.data[0]
+    },
+    minDiskSize () {
+      return this.selectedItem.size / 1024
     },
     columns () {
       const showFields = ['name', 'disk_type', 'size']
       return this.params.columns.filter((item) => { return showFields.includes(item.field) })
     },
+  },
+  created () {
+    this.$nextTick(() => {
+      this.form.fc.setFieldsValue({ size: this.minDiskSize })
+    })
   },
   methods: {
     doCreate (values) {
@@ -92,12 +101,15 @@ export default {
           size: values.size * 1024,
           storage_id: this.selectedItem.storage_id,
           prefer_region: this.selectedItem.cloudregion_id,
+          hypervisor: BRAND_MAP[this.selectedItem.brand] && BRAND_MAP[this.selectedItem.brand].hypervisor,
+          project_id: this.selectedItem.tenant_id,
         }
         await this.doCreate(values)
         this.loading = false
         this.cancelDialog()
       } catch (error) {
         this.loading = false
+        throw error
       }
     },
   },

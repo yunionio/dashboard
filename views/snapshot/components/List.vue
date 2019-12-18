@@ -19,6 +19,7 @@ import {
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import { sizestr } from '@/utils/utils'
+import { typeClouds } from '@/utils/common/hypervisor'
 
 export default {
   name: 'SnapshotList',
@@ -198,7 +199,16 @@ export default {
                   })
                 },
                 meta: obj => {
-                  return { validate: true }
+                  const ret = {
+                    validate: false,
+                    tooltip: null,
+                  }
+                  if (obj.brand !== typeClouds.brandMap.OneCloud.key) {
+                    ret.tooltip = '只有OneCloud主机支持此操作'
+                    return ret
+                  }
+                  ret.validate = true
+                  return ret
                 },
               },
               {
