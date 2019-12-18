@@ -333,8 +333,8 @@ export default {
                 label: '修改属性',
                 permission: 'networks_update',
                 action: () => {
-                  const updatePath = window.location.pathname
-                  this.$router.push({ path: updatePath + '/edit', query: { network_id: obj.id } })
+                  const updatePath = this.$router.resolve(this.$route.path)
+                  this.$router.push({ path: updatePath.resolved.path + '/edit', query: { network_id: obj.id } })
                 },
                 meta: () => {
                   let tooltip = ''
