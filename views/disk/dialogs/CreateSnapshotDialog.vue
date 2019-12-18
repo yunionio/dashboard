@@ -13,7 +13,7 @@
       </a-form>
     </div>
     <div slot="footer">
-      <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
+      <a-button type="primary" @click="handleConfirm" :loading="loading" :disabled="confirmDisabled">{{ $t('dialog.ok') }}</a-button>
       <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
     </div>
   </base-dialog>
@@ -58,7 +58,8 @@ export default {
   },
   computed: {
     errorInfo () {
-      if (this.isKvm || this.isHuawei) {
+      if (this.isKvm) {
+        if (this.isCeph) return ''
         if (this.manualSnapshotCount === this.maxManualSnapshotCount) {
           return '友情提示：该硬盘快照额度已满，请先删除后再创建'
         }
@@ -66,11 +67,19 @@ export default {
       }
       return ''
     },
+    confirmDisabled () {
+      if (!this.isKvm) return
+      if (this.isCeph) return
+      return this.manualSnapshotCount === this.maxManualSnapshotCount
+    },
     isKvm () {
       return this.params.data[0].provider === HYPERVISORS_MAP.kvm.provider
     },
     isHuawei () {
       return this.params.data[0].provider === HYPERVISORS_MAP.huawei.provider
+    },
+    isCeph () {
+      return this.params.data[0].storage_type === 'rbd'
     },
     maxManualSnapshotCount () {
       return this.params.data[0].max_manual_snapshot_count || 2

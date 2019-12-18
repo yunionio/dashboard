@@ -9,7 +9,7 @@
 <script>
 import qs from 'qs'
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
-import { getRegionTableColumn, getStatusTableColumn, getEnabledTableColumn, getNameDescriptionTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
+import { getRegionTableColumn, getStatusTableColumn, getEnabledTableColumn, getNameDescriptionTableColumn, getCopyWithContentTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -35,20 +35,25 @@ export default {
               return `name.contains(${val})`
             },
           },
-          status: {
-            label: '状态',
-            dropdown: true,
+          sn: {
+            label: 'SN',
             distinctField: {
-              type: 'field',
-              key: 'status',
+              type: 'extra_field',
+              key: 'sn',
             },
-            items: [
-              { label: '关机', key: 'windows' },
-              { label: '运行中', key: 'ready' },
-            ],
+          },
+          access_ip: {
+            label: '管理IP',
             filter: true,
             formatter: val => {
-              return `status.in(${val.join(',')})`
+              return `access_ip.contains(${val})`
+            },
+          },
+          ipmi_ip: {
+            label: '外带IP',
+            filter: true,
+            formatter: val => {
+              return `ipmi_ip.contains(${val})`
             },
           },
         },
@@ -63,6 +68,7 @@ export default {
             )
           },
         }),
+        getTagTableColumn({ vm: this, needExt: true }),
         getEnabledTableColumn(),
         getStatusTableColumn({ statusModule: 'host' }),
         {

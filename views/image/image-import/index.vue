@@ -45,6 +45,7 @@ export default {
         desc: 'desc',
       },
       isImported: {},
+      type: '',
     }
   },
   computed: {
@@ -132,11 +133,11 @@ export default {
           o['title'] = `${image.distribution} ${image.version}`
           o['desc'] = osDesc(image)
           o['imported'] = image.imported
-          o['os'] = image.type.toLowerCase() || os
+          o['os'] = os || image.type.toLowerCase()
           o['description'] = image.description
           publicImages.push(o)
         }
-        publicImages = publicImages.filter((item) => { return item.imported === 'false' })
+        publicImages = publicImages.filter((item) => { return item.imported === this.imported.toString() })
         publicImages.forEach(item => {
           item['os'] = require(`@/assets/images/system-icons/${item['os']}.svg`)
         })
@@ -147,12 +148,18 @@ export default {
       })
     },
     chooseHandle () {
-      this.fetchData()
+      if (this.type === 'iso') {
+        this.fetchData(this.type)
+      } else {
+        this.fetchData()
+      }
     },
     chooseMaket (e) {
       if (e.target.value === 'iso') {
+        this.type = 'iso'
         this.fetchData(e.target.value)
       } else {
+        this.type = ''
         this.fetchData()
       }
     },

@@ -36,6 +36,10 @@ export default {
           },
           sn: {
             label: 'SN',
+            distinctField: {
+              type: 'extra_field',
+              key: 'account',
+            },
           },
         },
       }),

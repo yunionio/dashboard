@@ -204,7 +204,9 @@ export default {
         .then(({ data: { data } = { data: [] } }) => {
           try {
             this.storageOpts = this._translateStorageOps(data)
-            this.form.fc.setFieldsValue({ storage_id: this.storageOpts[0].value })
+            if (this.storageOpts.length > 0) {
+              this.form.fc.setFieldsValue({ storage_id: this.storageOpts[0].value })
+            }
           } catch (error) {
             throw new Error('存储类型解析出错：' + error)
           }

@@ -50,13 +50,18 @@ export default {
           { label: '子镜像', key: 'children-image-list' },
           { label: '操作日志', key: 'event-drawer' },
         ]
-      } else {
+      }
+      if ((!this.$store.getters.isProjectMode || !this.$store.getters.isDomainMode) && !isHostImage) {
         return [
           { label: '详情', key: 'system-image-detail' },
           { label: '缓存列表', key: 'cache-list' },
           { label: '操作日志', key: 'event-drawer' },
         ]
       }
+      return [
+        { label: '详情', key: 'system-image-detail' },
+        { label: '操作日志', key: 'event-drawer' },
+      ]
     },
   },
 }

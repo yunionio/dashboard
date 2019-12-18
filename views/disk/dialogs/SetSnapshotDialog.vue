@@ -15,12 +15,13 @@
           </a-radio-group>
         </a-form-item>
         <template v-if="enable">
-          <a-form-item label="策略名称" v-bind="formItemLayout">
+          <a-form-item label="策略名称" v-bind="formItemLayout" class="mb-0">
             <a-select v-decorator="decorators.snapshotpolicy">
               <a-select-option v-for="item in snapshotpolicyOptions" :key="item.id">
                 {{getPolicyLabel(item)}}
               </a-select-option>
             </a-select>
+            <a target="_blank" href="/snapshotpolicy" style="color: #409EFF;">创建自定快照策略</a>
           </a-form-item>
           <a-form-item label="备份日期" v-bind="formItemLayout">
             <span class="ant-form-text">
@@ -68,6 +69,11 @@ export default {
             }
             if (values.hasOwnProperty('isOpen')) {
               this.enable = !this.enable
+              if (values.isOpen === 'open' && this.snapshotpolicyOptions.length) {
+                this.$nextTick(function () {
+                  this.form.fc.setFieldsValue({ snapshotpolicy: this.snapshotpolicyOptions[0].id })
+                })
+              }
             }
           },
         }),
@@ -186,9 +192,6 @@ export default {
           return !this.attchedPolices.find(a => a.id === item.id)
         })
         if (data && data.length) this.snapshotpolicyOptions = data
-        if (this.snapshotpolicyOptions.length) {
-          this.form.fc.setFieldsValue({ snapshotpolicy: this.snapshotpolicyOptions[0].id })
-        }
       } catch (error) {}
     },
     assembly (id) {

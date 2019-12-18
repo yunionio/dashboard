@@ -135,10 +135,10 @@ export default {
             },
           },
           sn: {
-            label: '序列号',
-            filter: true,
-            formatter: val => {
-              return `sn.contains(${val})`
+            label: 'SN',
+            distinctField: {
+              type: 'extra_field',
+              key: 'sn',
             },
           },
         } : null,

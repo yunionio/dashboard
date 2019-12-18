@@ -18,6 +18,7 @@ import {
   getCopyWithContentTableColumn,
   getRegionTableColumn,
 } from '@/utils/common/tableColumn'
+import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import { sizestr } from '@/utils/utils'
 
@@ -41,6 +42,10 @@ export default {
               return `name.contains(${val})`
             },
           },
+        },
+        steadyStatus: {
+          status: Object.values(expectStatus.disk).flat(),
+          guest_status: Object.values(expectStatus.server).flat(),
         },
       }),
       columns: [
