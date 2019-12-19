@@ -225,7 +225,7 @@ export default {
     getParams () {
       const params = {
         limit: this.limit,
-        scope: this.$scope,
+        scope: this.$store.getters.scope,
       }
       if (this.nextMarker) params.paging_marker = this.nextMarker
       if (this.objId) params.filter = `obj_id.in(${this.objId})`
