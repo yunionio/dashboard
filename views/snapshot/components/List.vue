@@ -204,6 +204,10 @@ export default {
                     validate: false,
                     tooltip: null,
                   }
+                  if (this.isInstanceSnapshot) {
+                    ret.tooltip = '不支持该操作'
+                    return ret
+                  }
                   if (obj.brand !== typeClouds.brandMap.OneCloud.key) {
                     ret.tooltip = '只有OneCloud主机支持此操作'
                     return ret
