@@ -65,7 +65,7 @@
           ref="dataDiskRef" />
       </a-form-item>
       <a-form-item label="管理员密码" v-bind="formItemLayout">
-        <server-password :decorator="decorators.loginConfig" :login-types="loginTypes" />
+        <server-password :decorator="decorators.loginConfig" :login-types="loginTypes" :form="form" />
       </a-form-item>
       <a-form-item label="网络" v-bind="formItemLayout" class="mb-0">
         <server-network

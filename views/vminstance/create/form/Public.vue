@@ -78,7 +78,7 @@
           ref="dataDiskRef" />
       </a-form-item>
       <a-form-item label="管理员密码" v-bind="formItemLayout">
-        <server-password :decorator="decorators.loginConfig" :loginTypes="loginTypes" />
+        <server-password :decorator="decorators.loginConfig" :loginTypes="loginTypes" :form="form" />
       </a-form-item>
       <a-form-item label="网络" v-bind="formItemLayout" class="mb-0">
         <server-network
@@ -95,7 +95,8 @@
         <eip-config
           :decorators="decorators.eip"
           :eip-params="eipParams"
-          :hypervisor="hypervisor" />
+          :hypervisor="hypervisor"
+          :isServertemplate="isServertemplate" />
       </a-form-item>
       <a-form-item label="安全组" v-bind="formItemLayout">
         <secgroup-config
@@ -323,6 +324,7 @@ export default {
         }
       }
       if (this.isServertemplate) {
+        delete loginTypes[LOGIN_TYPES_MAP.keypair.key]
         delete loginTypes[LOGIN_TYPES_MAP.password.key]
       }
       return Object.keys(loginTypes)

@@ -101,7 +101,7 @@ export default {
     loginTypes () { // 主机模板隐藏手工输入密码
       const loginTypes = Object.keys(LOGIN_TYPES_MAP)
       if (this.isServertemplate) {
-        return loginTypes.filter(val => val !== LOGIN_TYPES_MAP.password.key)
+        return loginTypes.filter(val => val !== LOGIN_TYPES_MAP.password.key || val !== LOGIN_TYPES_MAP.keypair.key)
       }
       return loginTypes
     },

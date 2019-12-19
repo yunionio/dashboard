@@ -29,7 +29,7 @@
 </template>
 
 <script>
-// import * as R from 'ramda'
+import * as R from 'ramda'
 import { LOGIN_TYPES_MAP } from '@Compute/constants'
 import { passwordValidator } from '@/utils/validate'
 
@@ -104,6 +104,23 @@ export default {
         })
       } else {
         this.disabled = false
+      }
+    },
+    loginTypeMap (val) {
+      if (val && !R.isEmpty(val)) {
+        const loginTypeInitailValue = this.decorator.loginType[1].initialValue
+        const keys = Object.keys(val)
+        if (!keys.includes(loginTypeInitailValue)) { // 如果表单中的初始值不在 loginTypeMap 中
+          if (keys.includes(LOGIN_TYPES_MAP.image.key)) { // 如果maps中有"保留镜像设置"，则设置
+            this.form.fc.setFieldsValue({
+              [this.decorators.loginType[0]]: LOGIN_TYPES_MAP.image.key,
+            })
+          } else { // 否则设置第一项
+            this.form.fc.setFieldsValue({
+              [this.decorators.loginType[0]]: keys[0],
+            })
+          }
+        }
       }
     },
   },
