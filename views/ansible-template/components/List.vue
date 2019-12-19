@@ -76,6 +76,19 @@ export default {
             }
           },
         },
+        {
+          label: '删除',
+          permission: 'disks_delete',
+          action: () => {
+            this.createDialog('DeleteResDialog', {
+              data: this.list.selectedItems,
+              columns: this.columns,
+              title: '删除',
+              list: this.list,
+            })
+          },
+          meta: () => this.$getDeleteResult(this.list.selectedItems),
+        },
       ],
       singleActions: [
         {
@@ -148,6 +161,9 @@ export default {
                     list: this.list,
                   })
                 },
+                meta: () => ({
+                  validate: obj.can_delete,
+                }),
               },
             ]
           },

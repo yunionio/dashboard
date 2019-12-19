@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header :title="id ? '更新模版' : '创建模版'" />
+    <page-header :title="id ? '更新模版' : '修改属性'" />
     <a-form class="mt-3" :form="form" v-bind="formItemLayout">
       <a-form-item label="名称">
         <a-input :disabled="!!id" v-decorator="decorators.name" :placeholder="$t('validator.serverName')" />
@@ -18,12 +18,13 @@
         <span slot="extra">创建成功后，会立即执行一次</span>
       </a-form-item>
       <a-form-item label="时间间隔" required>
-        <a-input-number v-decorator="decorators.hour" :min="1" />
+        <a-input-number v-decorator="decorators.hour" :min="1" @blur="handleNumBlur" />
         <span slot="extra">每隔多长时间，执行一次，单位是小时</span>
       </a-form-item>
     </a-form>
     <page-footer>
       <a-button type="primary" @click="handleConfirm" :loading="loading" class="ml-3">确认</a-button>
+      <a-button type="primary" @click="handleCancel" :loading="loading" class="ml-3">取消</a-button>
     </page-footer>
   </div>
 </template>
@@ -250,6 +251,15 @@ export default {
           resolve(params)
         })
       })
+    },
+    handleNumBlur ({ target }) {
+      this.form.setFieldsValue({
+        hour: target.value || 1,
+      })
+    },
+    handleCancel () {
+      this.form.resetFields()
+      this.$router.push('/ansibletemplate')
     },
     async handleConfirm () {
       try {

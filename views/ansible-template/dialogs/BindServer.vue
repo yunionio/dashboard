@@ -63,6 +63,7 @@ export default {
         limit: 0,
         usable: true,
         details: true,
+        scope: this.$store.getters.scope,
       }
       this.queryServerLoading = true
       try {
