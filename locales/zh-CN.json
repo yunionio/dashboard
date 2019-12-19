@@ -386,7 +386,7 @@
       "instance_snapshot_delete_failed": "主机快照删除失败"
     },
     "snapshotpolicy": {
-      "init": "初始化",
+      "init": "正常",
       "ready": "正常",
       "deleteing": "删除中",
       "delete_failed": "删除失败",

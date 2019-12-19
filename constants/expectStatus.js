@@ -114,8 +114,8 @@ export default {
     success: ['ready'],
   },
   snapshotpolicy: {
-    success: ['ready'],
-    info: ['unknown', 'init'],
+    success: ['ready', 'init'],
+    info: ['unknown'],
     danger: ['delete_failed'],
   },
   snapshotpolcyCache: {
