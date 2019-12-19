@@ -80,6 +80,10 @@ export default {
     eipParams: Object,
     hypervisor: String,
     hiddenNoneType: Boolean,
+    isServertemplate: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
@@ -107,6 +111,10 @@ export default {
       // 是否隐藏暂不需要选项
       if (this.hiddenNoneType) {
         delete ret.none
+      }
+      // 主机模板不支持绑定已有EIP
+      if (this.isServertemplate) {
+        delete ret.bind
       }
       return ret
     },
