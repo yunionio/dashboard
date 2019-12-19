@@ -119,7 +119,9 @@ export default {
           [key]: newVal,
         }, callback)
       } else {
-        callback && callback()
+        this.$nextTick(() => {
+          callback && callback()
+        })
       }
     },
     getEngines () {
@@ -131,7 +133,11 @@ export default {
     getVersion (e) {
       const target = (e && e.target) ? e.target : {}
       const engine = target.value || this.getFieldValue('engine')
-      this.engine_versions = R.keys(this.filterItems[engine]).sort((a, b) => a - b)
+      this.engine_versions = R.keys(this.filterItems[engine])
+        .sort((a, b) => a - b)
+        .filter((v) => {
+          return v !== '3.0'
+        })
       this.setInitValue('engine_version', () => {
         this.getArcha()
       })
@@ -213,6 +219,7 @@ export default {
       try {
         const { data: { redis } } = await capabilityManager.batchGet({ params })
         this.filterItems = { redis }
+        console.log(this.filterItems)
       } catch (err) {
         throw err
       }

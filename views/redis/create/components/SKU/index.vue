@@ -44,8 +44,8 @@ export default {
   },
   methods: {
     async skuFetchs (changedFields) {
-      const capabilityParamsKeys = ['city', 'provider', 'cloudregion', 'zone']
-      const instanceSpecsParamsKeys = ['engine', 'engine_version', 'performance_type', 'local_category', 'node_type', 'performance_type']
+      const capabilityParamsKeys = ['billing_type', 'city', 'provider', 'cloudregion', 'zone']
+      const instanceSpecsParamsKeys = ['billing_type', 'engine', 'engine_version', 'performance_type', 'local_category', 'node_type', 'performance_type']
       const field = Object.keys(changedFields || {})[0]
       const isUndefined = changedFields === undefined
       const skuParamsKey = ['memory_size_mb'].concat(capabilityParamsKeys).concat(instanceSpecsParamsKeys)

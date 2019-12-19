@@ -137,7 +137,6 @@ export default {
         this.loading = true
         const { data = [] } = await manager.list({ params })
         const list = data.data
-        console.log(list)
         this.skuList = this.skuRepeat(this.skuSort(list))
       } catch (err) {
         throw err
