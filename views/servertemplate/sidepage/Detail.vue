@@ -104,7 +104,7 @@ export default {
               },
             },
             {
-              field: 'content.password',
+              field: 'content.keypair',
               title: '管理员密码',
             },
             {
@@ -112,7 +112,10 @@ export default {
               title: '网络',
               slots: {
                 default: ({ row }) => {
-                  return row.config_info.nets.map(net => (<div><a-tag>{ `${net.name}（${net.guest_ip_start} - ${net.guest_ip_end}, vlan=${net.vlan_id}）` }</a-tag></div>))
+                  if (row.config_info.nets && row.config_info.nets.length && row.config_info.nets[0].guest_ip_start) {
+                    return row.config_info.nets.map(net => (<div><a-tag>{ `${net.name}（${net.guest_ip_start} - ${net.guest_ip_end}, vlan=${net.vlan_id}）` }</a-tag></div>))
+                  }
+                  return '默认'
                 },
               },
             },
