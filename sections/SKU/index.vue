@@ -267,7 +267,7 @@ export default {
     setSku (skuData) {
       this.selectedSkuData = skuData
       this.$nextTick(() => {
-        this.$refs.tableRef.setRadioRow(skuData)
+        this.$refs.tableRef && this.$refs.tableRef.setRadioRow(skuData)
         this.$emit('change', skuData)
       })
     },
