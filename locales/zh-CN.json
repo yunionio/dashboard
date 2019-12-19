@@ -404,7 +404,8 @@
       "succeeded": "执行成功",
       "failed": "执行失败",
       "running": "执行中",
-      "canceled": "执行终止"
+      "canceled": "执行终止",
+      "init": "初始化"
     },
     "globalVpc": {
       "available": "可用",
