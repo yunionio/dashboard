@@ -28,10 +28,10 @@ export default {
       type: String,
     },
   },
-  computed: {
-    text () {
-      return this.data[this.nameKey]
-    },
+  data () {
+    return {
+      text: this.data[this.nameKey],
+    }
   },
   methods: {
     getLabel () {
