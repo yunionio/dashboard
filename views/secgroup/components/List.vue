@@ -12,7 +12,7 @@ import SecgroupDropList from './SecgroupDropList'
 import {
   getProjectTableColumn,
   getNameDescriptionTableColumn,
-  getPublicTableColumn,
+  isPublicTableColumn,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 
@@ -57,7 +57,7 @@ export default {
           title: '关联实例',
           width: 70,
         },
-        getPublicTableColumn({ field: 'public_scope' }),
+        isPublicTableColumn(),
         {
           field: 'rules',
           title: '规则预览(策略，CIDR，协议，端口)',

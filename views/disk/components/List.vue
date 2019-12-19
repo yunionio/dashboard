@@ -212,15 +212,29 @@ export default {
                   })
                 },
                 meta: () => {
-                  if (obj.cloud_env === 'onpremise' && obj.storage_type === 'local') {
-                    return {
-                      validate: false,
-                      tooltip: '本地硬盘不允许挂载',
+                  const ret = {
+                    validate: false,
+                    tooltip: '',
+                  }
+                  if (obj.cloud_env === 'onpremise' || obj.cloud_env === 'private' || obj.cloud_env === 'public') {
+                    if (obj.storage_type === 'local') {
+                      ret.tooltip = '本地硬盘不允许挂载'
+                      return ret
                     }
+                    ret.validate = !obj.guest && obj.status === 'ready'
+                    if (obj.guest) {
+                      ret.tooltip = '该磁盘已挂载'
+                    } else {
+                      if (obj.status === 'ready') {
+                        ret.tooltip = ''
+                      } else {
+                        ret.tooltip = '磁盘状态为 ready 时才可以挂载'
+                      }
+                    }
+                    return ret
                   }
-                  return {
-                    validate: !obj.guest && obj.status === 'ready',
-                  }
+                  ret.validate = true
+                  return ret
                 },
               },
               {
@@ -243,18 +257,20 @@ export default {
                   if (obj.disk_type === 'sys') {
                     return {
                       validate: false,
-                      tooltip: '本地盘不支持卸载',
+                      tooltip: '系统盘不支持卸载',
                     }
-                  }
-                  if (obj.portable && obj.portable === false) {
-                    return {
-                      validate: false,
-                      tooltip: '该磁盘类型不允许卸载',
+                  } else {
+                    if (obj.portable && obj.portable === false) {
+                      return {
+                        validate: false,
+                        tooltip: '该磁盘类型不允许卸载',
+                      }
+                    } else {
+                      return {
+                        validate: !!obj.guest,
+                        tooltip: '请先挂载',
+                      }
                     }
-                  }
-                  return {
-                    validate: !!obj.guest,
-                    tooltip: '请先挂载',
                   }
                 },
               },
