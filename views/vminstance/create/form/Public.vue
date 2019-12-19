@@ -183,6 +183,7 @@ export default {
     providerParams () {
       return {
         usable: true,
+        public_cloud: true,
         ...this.scopeParams,
       }
     },
@@ -223,10 +224,8 @@ export default {
     cacheImageParams () {
       const params = {}
       if (R.is(Object, this.form.fd.sku)) {
-        if (this.skuCloudregionZone.zone) {
-          params.zone = this.skuCloudregionZone.zone
-        } else if (this.skuCloudregionZone.cloudregion) {
-          params.cloudregion = this.skuCloudregionZone.cloudregion
+        if (this.skuCloudregionZone.cloudregion) {
+          params.region = this.skuCloudregionZone.cloudregion
         }
       }
       return params

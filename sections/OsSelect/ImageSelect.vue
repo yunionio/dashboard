@@ -15,14 +15,7 @@
       </a-col>
       <a-col :span="16">
         <a-form-item>
-          <a-select label-in-value v-decorator="decorator.image" :loading="loading" @change="imageChange">
-            <a-select-option v-for="item in imageOpts" :key="item.id">
-              <div class="d-flex">
-                <div class="flex-fill">{{ item.name }}</div>
-                <div><a-tag v-show="item.feData.cached" color="green">已缓存</a-tag></div>
-              </div>
-            </a-select-option>
-          </a-select>
+          <image-select-template v-decorator="decorator.image" :imageOpts="imageOpts" @imageChange="imageChange" :loading="loading" />
         </a-form-item>
       </a-col>
     </a-row>
@@ -32,6 +25,7 @@
 <script>
 import * as R from 'ramda'
 import { SELECT_IMAGE_KEY_SUFFIX } from '@Compute/constants'
+import ImageSelectTemplate from './ImageSelectTemplate'
 import { Manager } from '@/utils/manager'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
 import storage from '@/utils/storage'
@@ -43,6 +37,9 @@ const initData = {
 
 export default {
   name: 'ImageSelect',
+  components: {
+    ImageSelectTemplate,
+  },
   props: {
     imageType: {
       type: String,
@@ -96,6 +93,12 @@ export default {
     },
     apiImgParams () {
       return IMAGES_TYPE_MAP[this.imageType].imgParams || {}
+    },
+    isPublic () {
+      return this.cloudType === 'public'
+    },
+    isPrivate () {
+      return this.cloudType === 'private'
     },
     // 选择的镜像类型是否为公有云镜像
     isPublicImage () {
@@ -268,9 +271,7 @@ export default {
         const { data: { data = [] } } = await this.cachedimagesM.list({ params })
         this.loading = false
         this.images.cacheimagesList = data
-        if (this.isPublicImage || this.isPrivateImage) {
-          this.getImagesInfo()
-        }
+        this.getImagesInfo()
       } catch (error) {
         this.loading = false
         throw error
@@ -405,7 +406,7 @@ export default {
           const tempImageOpts = imageOptsMap[storageOs] || []
           const storageImageObj = tempImageOpts.find(val => val.id === storageImage)
           if (R.is(Object, storageImageObj)) {
-            imageOpts = tempImageOpts
+            imageOpts = this.getImageOpts(tempImageOpts)
             os = storageOs
             image = { key: storageImageObj.id, label: storageImageObj.name }
           }
@@ -422,7 +423,7 @@ export default {
         images = images.filter((item) => {
           const minRam = (item.info && item.info.min_ram) || item.min_ram
           if (minRam > 0) {
-            return minRam <= this.fd.vmem
+            return minRam <= this.form.fd.vmem
           }
           return true
         })

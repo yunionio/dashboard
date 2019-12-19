@@ -139,8 +139,11 @@ export default {
       }
     },
     cacheImageParams () {
-      const params = {
-        zone: _.get(this.form.fd, 'zone.key'),
+      const params = {}
+      if (R.is(Object, this.form.fd.sku)) {
+        if (this.skuCloudregionZone.cloudregion) {
+          params.region = this.skuCloudregionZone.cloudregion
+        }
       }
       return params
     },
