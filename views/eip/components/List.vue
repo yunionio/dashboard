@@ -16,6 +16,7 @@ import {
   getRegionTableColumn,
 } from '@/utils/common/tableColumn'
 import { findPlatform, typeClouds } from '@/utils/common/hypervisor'
+import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import { sizestr } from '@/utils/utils'
 
@@ -46,6 +47,7 @@ export default {
             },
           },
         },
+        steadyStatus: Object.values(expectStatus.eip).flat(),
       }),
       columns: [
         getNameDescriptionTableColumn({
@@ -161,9 +163,17 @@ export default {
           label: '解绑',
           permission: 'eips_perform_dissociate',
           action: obj => {
-            this.list.singlePerformAction('dissociate', {
+            this.list.onManager('performAction', {
+              steadyStatus: 'ready',
               id: obj.id,
+              managerArgs: {
+                action: 'dissociate',
+              },
             })
+            // this.list.singlePerformAction('dissociate', {
+            //   id: obj.id,
+            //   steadyStatus: 'ready',
+            // })
           },
           meta: obj => {
             if (obj.associate_id) {
