@@ -17,10 +17,6 @@
             :key="item.key">{{ item.label }}</a-radio-button>
         </a-radio-group>
       </a-form-item>
-      <a-form-item>
-        <a-switch v-decorator="decorators.auto_prepaid_recycle"  />
-        <span class="ml-2">自动加入资源池</span>
-      </a-form-item>
     </template>
   </div>
 </template>
@@ -35,7 +31,7 @@ export default {
     decorators: {
       type: Object,
       required: true,
-      validator: val => R.is(Array, val.billType) && R.is(Array, val.duration) && R.is(Array, val.auto_prepaid_recycle),
+      validator: val => R.is(Array, val.billType) && R.is(Array, val.duration),
     },
   },
   data () {
@@ -52,7 +48,3 @@ export default {
   },
 }
 </script>
-
-<style>
-
-</style>

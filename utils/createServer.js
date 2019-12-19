@@ -481,13 +481,6 @@ export const createVmDecorators = type => {
           initialValue: '1M',
         },
       ],
-      auto_prepaid_recycle: [
-        'auto_prepaid_recycle',
-        {
-          valuePropName: 'checked',
-          initialValue: false,
-        },
-      ],
     },
     resourceType: [
       'resourceType',
@@ -918,7 +911,6 @@ export class GenCreateData {
       // 包年包月参数
       if (this.fd.billType === BILL_TYPES_MAP.package.key) {
         data.duration = this.fd.duration
-        data.auto_prepaid_recycle = this.fd.auto_prepaid_recycle
       }
     }
     // gpu
