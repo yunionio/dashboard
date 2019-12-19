@@ -8,6 +8,10 @@
       <loader loading v-if="!(bindedSecgroupsLoaded && secgroupsInitLoaded)" />
       <a-form :form="form.fc" hideRequiredMark v-show="bindedSecgroupsLoaded && secgroupsInitLoaded">
         <a-form-item label="安全组" v-bind="formItemLayout" v-if="bindedSecgroupsLoaded">
+          <div slot="extra">
+            最多支持选择5个安全组。没有想要的安全组？可以前往
+            <help-link :href="href"> 新建安全组</help-link>
+          </div>
           <base-select
             class="w-100"
             filterable
@@ -93,6 +97,10 @@ export default {
         str = '提示信息：安全组最多可关联一个'
       }
       return str
+    },
+    href () {
+      const url = this.$router.resolve('/secgroup')
+      return url.href
     },
   },
   created () {

@@ -10,7 +10,7 @@
     </a-form-item>
     <a-form-item class="mb-0" v-if="isBind">
       <div slot="extra">
-        没有想要的安全组？可以前往
+        最多支持选择5个安全组。没有想要的安全组？可以前往
         <help-link :href="href"> 新建安全组</help-link>
       </div>
       <base-select
