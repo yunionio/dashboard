@@ -260,6 +260,8 @@ export default {
             Object.assign(storageProvider, CommonConstants.STORAGE_TYPES[hypervisor])
           })
         } else {
+          console.log(this.provider)
+          console.log(CommonConstants.STORAGE_TYPES)
           storageProvider = CommonConstants.STORAGE_TYPES[this.provider]
         }
         if (storageProvider[storageType.toLowerCase()]) {

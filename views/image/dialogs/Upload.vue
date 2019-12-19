@@ -72,7 +72,7 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: '请输入镜像名称' },
-              { validator: this.$validate('resourceName') },
+              { validator: this.$validate('imageName') },
               { validator: this.checkTemplateName },
             ],
           },

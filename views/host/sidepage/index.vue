@@ -43,7 +43,7 @@ export default {
         { label: '虚拟机', key: 'vminstance-list' },
         { label: '网络', key: 'network-list' },
         { label: '存储', key: 'storage-list' },
-        { label: 'Gpu卡', key: 'gpu-list' },
+        { label: 'GPU卡', key: 'gpu-list' },
         { label: '操作日志', key: 'event-drawer' },
       ],
     }
