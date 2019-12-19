@@ -61,9 +61,9 @@ export default {
           },
           ip: {
             label: 'IP',
-            filter: true,
-            formatter: val => {
-              return `ip.contains(${val})`
+            distinctField: {
+              type: 'extra_field',
+              key: 'ip',
             },
           },
           status: {
