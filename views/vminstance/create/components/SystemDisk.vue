@@ -147,7 +147,6 @@ export default {
       const keys = Object.keys(this.typesMap)
       const firstKey = keys[0]
       let diskMsg = this.typesMap[firstKey]
-      if (keys.includes(STORAGE_AUTO.key)) diskMsg = STORAGE_AUTO
       this.form.fc.setFieldsValue({
         systemDiskType: { key: diskMsg.key, label: diskMsg.label },
         systemDiskSize: diskMsg.sysMin,
