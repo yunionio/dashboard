@@ -30,7 +30,7 @@
         </div>
       </a-form-item>
       <a-form-item v-bind="formLayout" :label="keySecretField.label.s">
-        <a-input v-decorator="decorators.password" :placeholder="keySecretField.placeholder.s" />
+        <a-input-password v-decorator="decorators.password" :placeholder="keySecretField.placeholder.s" />
       </a-form-item>
       <a-form-item label="指定项目" class="mb-0" v-bind="formLayout">
         <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain }" />

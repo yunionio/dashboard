@@ -27,7 +27,7 @@
           </div>
         </a-form-item>
         <a-form-item :label="field.label.s">
-          <a-input v-decorator="decorators.keySecret" :placeholder="field.placeholder.s" type="password" />
+          <a-input-password v-decorator="decorators.keySecret" :placeholder="field.placeholder.s" type="password" />
         </a-form-item>
         <a-form-item label="账单密钥" v-if="isAzure">
           <a-textarea v-decorator="decorators.balanceKey" rows="4" />

@@ -15,7 +15,7 @@
         </div>
       </a-form-item>
       <a-form-item v-bind="formLayout" :label="keySecretField.label.s">
-        <a-input v-decorator="decorators.password" :placeholder="keySecretField.placeholder.s" />
+        <a-input-password v-decorator="decorators.password" :placeholder="keySecretField.placeholder.s" />
       </a-form-item>
       <a-form-item v-bind="formLayout" label="项目"  v-if="isOpenstack">
         <a-input v-decorator="decorators.project_name" placeholder="请输入OpenStack的项目，如：admin" />
