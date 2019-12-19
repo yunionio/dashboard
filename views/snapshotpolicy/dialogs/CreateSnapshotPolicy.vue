@@ -153,7 +153,7 @@ export default {
   methods: {
     fetchSnapshotpolicies () {
       const params = {
-        scope: this.$scope,
+        scope: this.$store.getters.scope,
         filter: `name.contains(${this.form.fd.generate_name})`,
       }
       this.manager.list({ params }).then(res => {

@@ -127,7 +127,7 @@ export default {
         wrapperCol: { span: 21 },
       },
       snapshotParams: {
-        scope: this.$scope,
+        scope: this.$store.getters.scope,
         usable: true,
         guest_id: this.params.data[0].id,
       },
@@ -226,7 +226,7 @@ export default {
     },
     async fetchSnapshotList () {
       const params = {
-        scope: this.$scope,
+        scope: this.$store.getters.scope,
         guest_id: this.params.data[0].id,
         usable: true,
       }
