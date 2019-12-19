@@ -281,6 +281,12 @@ export const diskCreateSnapshotConfig = {
         tooltip: `若${PROVIDER_MAP[provider].label}磁盘已挂载，仅在主机状态为【${_tran(guestStatus, serverStatus)}】下可以进行该操作`,
       }
     }
+    if (!obj.guest && obj.storage_type === 'local') {
+      return {
+        validate: false,
+        tooltip: '',
+      }
+    }
     return {
       validate: true,
       tooltip: '',

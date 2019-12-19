@@ -51,7 +51,7 @@ export default {
           { label: '操作日志', key: 'event-drawer' },
         ]
       }
-      if ((!this.$store.getters.isProjectMode || !this.$store.getters.isDomainMode) && !isHostImage) {
+      if (this.$store.getters.isAdminMode && !isHostImage) {
         return [
           { label: '详情', key: 'system-image-detail' },
           { label: '缓存列表', key: 'cache-list' },

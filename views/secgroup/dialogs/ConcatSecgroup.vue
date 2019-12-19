@@ -80,7 +80,7 @@ export default {
     doConcat (data) {
       return new this.$Manager('secgroups').performAction({
         id: this.params.data[0].id,
-        action: 'union',
+        action: 'merge',
         data: {
           secgroups: data.name,
         },

@@ -15,13 +15,20 @@
           </a-radio-group>
         </a-form-item>
         <template v-if="enable">
-          <a-form-item label="策略名称" v-bind="formItemLayout" class="mb-0">
-            <a-select v-decorator="decorators.snapshotpolicy">
-              <a-select-option v-for="item in snapshotpolicyOptions" :key="item.id">
-                {{getPolicyLabel(item)}}
-              </a-select-option>
-            </a-select>
-            <a target="_blank" href="/snapshotpolicy" style="color: #409EFF;">创建自定快照策略</a>
+          <a-form-item label="策略名称" v-bind="formItemLayout">
+            <a-row :gutter="8">
+              <a-col :span="12">
+                <a-select v-decorator="decorators.snapshotpolicy">
+                  <a-select-option v-for="item in snapshotpolicyOptions" :key="item.id">
+                    {{getPolicyLabel(item)}}
+                  </a-select-option>
+                </a-select>
+              </a-col>
+              <a-col :span="12">
+                <a-icon type="sync" class="mr-1" @click="refresh" />
+                <a target="_blank" href="/snapshotpolicy" style="color: #409EFF;">创建自定快照策略</a>
+              </a-col>
+            </a-row>
           </a-form-item>
           <a-form-item label="备份日期" v-bind="formItemLayout">
             <span class="ant-form-text">
@@ -95,11 +102,11 @@ export default {
         ],
       },
       formItemLayout: {
-        wrapperCol: {
-          span: 8,
-        },
         labelCol: {
-          span: 3,
+          sm: { span: 3 },
+        },
+        wrapperCol: {
+          sm: { span: 21 },
         },
       },
       snapshotpolicyOptions: [],
@@ -115,6 +122,9 @@ export default {
     this.manager = new this.$Manager('snapshotpolicies')
   },
   methods: {
+    refresh () {
+      this.fetchSnaphotpolicy()
+    },
     validateForm () {
       return new Promise((resolve, reject) => {
         this.form.fc.validateFields((err, values) => {

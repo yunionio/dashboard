@@ -212,6 +212,9 @@ export default {
                 tooltip: '请选择已经禁用的实例',
               }
             }
+            return {
+              validate: true,
+            }
           },
         },
         {
