@@ -68,11 +68,14 @@ export default {
     },
     imageMinDisk () {
       const image = this.image
+      let minSize = 0
       if (!image) return 0
       if (image.info) {
-        return (image.info.min_disk / 1024) || 0
+        minSize = (image.info.min_disk / 1024) || 0
+      } else {
+        minSize = (image.min_disk / 1024) || 0
       }
-      return (image.min_disk / 1024) || 0
+      return Math.ceil(minSize)
     },
     elements () {
       let ret = ['disk-select']
