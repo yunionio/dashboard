@@ -88,7 +88,7 @@
         <tag
           v-decorator="decorators.tag" />
       </a-form-item>
-      <a-divider orientation="left">高级配置</a-divider>
+      <a-divider orientation="left" v-if="showAdvanceConfig">高级配置</a-divider>
       <a-form-item label="安全组" v-if="isKvm" v-bind="formItemLayout">
         <secgroup-config
           :form="form"
@@ -232,6 +232,9 @@ export default {
         enabled: true,
         cloudregion: _.get(this.form.fd, 'cloudregion.key'),
       }
+    },
+    showAdvanceConfig () { // 是否展示高级配置
+      return this.isKvm || !this.isServertemplate
     },
   },
   watch: {
