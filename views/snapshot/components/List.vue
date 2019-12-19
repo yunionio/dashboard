@@ -19,7 +19,6 @@ import {
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import { sizestr } from '@/utils/utils'
-import { typeClouds } from '@/utils/common/hypervisor'
 
 export default {
   name: 'SnapshotList',
@@ -187,50 +186,17 @@ export default {
           },
         },
         {
-          label: '更多',
-          actions: obj => {
-            return [
-              {
-                label: '新建硬盘',
-                action: obj => {
-                  this.createDialog('DiskCreateDialog', {
-                    data: [obj],
-                    columns: this.columns,
-                    list: this.list,
-                  })
-                },
-                meta: obj => {
-                  const ret = {
-                    validate: false,
-                    tooltip: null,
-                  }
-                  if (this.isInstanceSnapshot) {
-                    ret.tooltip = '不支持该操作'
-                    return ret
-                  }
-                  if (obj.brand !== typeClouds.brandMap.OneCloud.key) {
-                    ret.tooltip = '只有OneCloud主机支持此操作'
-                    return ret
-                  }
-                  ret.validate = true
-                  return ret
-                },
-              },
-              {
-                label: '删除',
-                action: obj => {
-                  this.createDialog('DeleteResDialog', {
-                    data: [obj],
-                    columns: this.columns,
-                    title: '删除',
-                    list: this.list,
-                    name: '快照',
-                  })
-                },
-                meta: obj => this.$getDeleteResult(obj),
-              },
-            ]
+          label: '删除',
+          action: obj => {
+            this.createDialog('DeleteResDialog', {
+              data: [obj],
+              columns: this.columns,
+              title: '删除',
+              list: this.list,
+              name: '快照',
+            })
           },
+          meta: obj => this.$getDeleteResult(obj),
         },
       ],
     }
