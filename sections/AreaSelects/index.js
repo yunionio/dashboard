@@ -144,7 +144,7 @@ export default {
         this.$emit('change', {
           [key]: undefined,
         })
-        this.FC.resetFields(fetchNames)
+        this.FC.resetFields(fetchNames || [key])
         return false
       }
       if (fetchNames && fetchNames.length > 0) {
