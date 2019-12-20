@@ -2,7 +2,7 @@
 import Layout from '@Compute/components/Layout'
 import Dashboard from '@Dashboard/views/dashboard'
 import DashboardEdit from '@Dashboard/views/edit'
-import storage from '@/utils/storage'
+import Cookies from 'js-cookie'
 
 export default {
   index: 1,
@@ -19,7 +19,7 @@ export default {
         name: 'Dashboard',
         path: '',
         meta: {
-          v1: storage.get('__oc_dashboard_version__') === 'v1',
+          v1: Cookies.get('__oc_dashboard_version__') === 'v1',
         },
         component: Dashboard,
       },

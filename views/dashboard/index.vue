@@ -62,6 +62,7 @@
 import * as R from 'ramda'
 import VueGridLayout from 'vue-grid-layout'
 import extendsComponents from '@Dashboard/extends'
+import Cookies from 'js-cookie'
 import storage from '@/utils/storage'
 
 export default {
@@ -160,7 +161,7 @@ export default {
       }
     },
     swtchOldDashboard () {
-      storage.set('__oc_dashboard_version__', 'v1')
+      Cookies.set('__oc_dashboard_version__', 'v1')
       window.location.href = `${process.env.VUE_APP_V1_PERFIX}/dashboard`
     },
   },
