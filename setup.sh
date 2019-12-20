@@ -16,6 +16,7 @@ if [ ! -d "./containers" ]; then
   git clone $DEFAULT_GIT_PREFIX/dashboard-module-cloudenv.git containers/Cloudenv
   git clone $DEFAULT_GIT_PREFIX/dashboard-module-compute.git containers/Compute
   git clone $DEFAULT_GIT_PREFIX/dashboard-module-network.git containers/Network
+  git clone $DEFAULT_GIT_PREFIX/dashboard-module-dashboard.git containers/Dashboard
 fi
 
 echo "🗃 Done"
