@@ -14,32 +14,6 @@ export default {
   menus: [
     {
       meta: {
-        label: 'redis',
-      },
-      submenus: [
-        {
-          path: '/redis',
-          meta: {
-            label: '实例列表',
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'Redis',
-              path: '',
-              component: Redis,
-            },
-            {
-              name: 'RedisCreate',
-              path: 'create',
-              component: RedisCreate,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      meta: {
         label: 'RDS',
       },
       submenus: [
@@ -64,6 +38,32 @@ export default {
               name: 'RDSBackup',
               path: 'backup',
               component: RDSBackup,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      meta: {
+        label: 'Redis',
+      },
+      submenus: [
+        {
+          path: '/redis',
+          meta: {
+            label: '实例列表',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Redis',
+              path: '',
+              component: Redis,
+            },
+            {
+              name: 'RedisCreate',
+              path: 'create',
+              component: RedisCreate,
             },
           ],
         },

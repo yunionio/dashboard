@@ -1,6 +1,8 @@
 <template>
   <area-selects
     :cityParams="{cloud_env: 'public'}"
+    :zoneParams="{service: 'elasticcaches'}"
+    :cloudregionParams="{service: 'elasticcaches'}"
     v-bind="formItemLayout"
     :defaultActiveFirstOption="['city']"
     @cityFetchSuccess="cityFetchSuccess"
