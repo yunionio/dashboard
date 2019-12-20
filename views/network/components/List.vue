@@ -18,9 +18,11 @@ import {
   isPublicTableColumn,
 } from '@/utils/common/tableColumn'
 import windows from '@/mixins/windows.js'
-import { PROVIDER_FILTER_CN } from '@/constants'
+import i18n from '@/locales'
 import { findPlatform } from '@/utils/common/hypervisor'
 import { getBrandFilter, getAccountFilter } from '@/utils/common/tableFilter'
+
+const PROVIDER_FILTER_CN = i18n.t('env')
 
 const disableAdjustConfig = ['private', 'public']
 const canAdjustConfig = (obj) => {
