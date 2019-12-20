@@ -5,8 +5,9 @@
     </template>
     <a-row :gutter="8" class="w-100" v-else>
       <a-col :span="12">
-        <a-form-item v-if="isAdminMode && l3PermissionEnable">
+        <a-form-item v-if="isAdminMode && l3PermissionEnable" :wrapperCol="{ span: 24 }">
           <a-select
+            :allowClear="allowClear"
             class="w-100"
             style="width:100%"
             :labelInValue="labelInValue"
@@ -21,8 +22,9 @@
         </a-form-item>
       </a-col>
       <a-col :span="(isAdminMode && l3PermissionEnable) ? 12 : 24">
-        <a-form-item>
+        <a-form-item :wrapperCol="{ span: 24 }">
           <a-select
+            :allowClear="allowClear"
             class="w-100"
             :labelInValue="labelInValue"
             v-decorator="decorators.project"
@@ -60,6 +62,7 @@ export default {
       type: Object,
       required: true,
     },
+    allowClear: Boolean,
   },
   data () {
     return {
@@ -71,7 +74,7 @@ export default {
     }
   },
   computed: mapGetters(['isAdminMode', 'scope', 'isDomainMode', 'userInfo', 'l3PermissionEnable']),
-  created () {
+  mounted () {
     this.dm = new Manager('domains', 'v1')
     this.pm = new Manager('projects', 'v1')
     if (this.isAdminMode && this.l3PermissionEnable) {
@@ -198,11 +201,19 @@ export default {
      */
     domainChange (domain) {
       const domainId = R.is(Object, domain) ? domain.key : domain
-      this.fetchProjects(domainId)
-      this.fc.setFieldsValue({
-        project: undefined,
-      })
-      this.$emit('update:domain', domainId)
+      if (domainId) {
+        this.fetchProjects(domainId)
+        this.fc.setFieldsValue({
+          project: undefined,
+        })
+        this.$emit('update:domain', domainId)
+      } else {
+        this.fc.setFieldsValue({
+          domain: undefined,
+          project: undefined,
+        })
+        this.projects = []
+      }
     },
     projectChange (project) {
       this.projectData = project
