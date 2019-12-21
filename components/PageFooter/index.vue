@@ -26,7 +26,7 @@ export default {
 
 <style lang="scss" scoped>
 .page-footer {
-  z-index: 1;
+  z-index: 10;
   position: fixed;
   bottom: 0;
   left: 224px;
