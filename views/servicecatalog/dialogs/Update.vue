@@ -35,8 +35,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请选择主机模板' },
-              { validator: this.$validate('resourceName') },
+              { required: true, message: '请输入名称' },
             ],
           },
         ],

@@ -49,7 +49,7 @@ export default {
     servertemplateParams () {
       return {
         limit: 0,
-        project: this.$store.getters.userInfo.projectId,
+        scope: this.$store.getters.scope,
       }
     },
   },
@@ -65,7 +65,3 @@ export default {
   },
 }
 </script>
-
-<style>
-
-</style>
