@@ -12,7 +12,7 @@
           </a-radio-group>
         </a-form-item>
         <a-form-item label="名称" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.generate_name" :placeholder="$t('validator.resourceName')" @change="debounceFetchImages" />
+          <a-input v-decorator="decorators.generate_name" :placeholder="$t('validator.imageName')" @change="debounceFetchImages" />
           <template v-if="nameRepeated" v-slot:extra>名称重复，系统默认追加“-1”</template>
         </a-form-item>
         <a-form-item label="自动启动" v-bind="formItemLayout">
@@ -78,7 +78,7 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: '请输入名称' },
-              { validator: this.$validate('resourceName') },
+              { validator: this.$validate('imageName') },
             ],
           },
         ],
