@@ -121,9 +121,9 @@ export default {
         'server-create-paramter': JSON.stringify(params),
         project: values.project_id,
       }
-      this._getProjectDomainInfo(variables) // !!! project_domain 暂时不加，因为后端可以从token里面获取
-      return new this.$Manager('process-instances')
-        .create({ variables })
+      // this._getProjectDomainInfo(variables) // !!! project_domain 暂时不加，因为后端可以从token里面获取
+      return new this.$Manager('process-instances', 'v1')
+        .create({ data: { variables } })
         .then(() => {
           this.$message.success(`主机 ${params.generate_name} 创建请求流程已提交`)
           this.goWorkflow()
@@ -169,7 +169,7 @@ export default {
       }
     },
     goWorkflow () {
-      this.$router.push('/workflow')
+      window.location.href = this.$appConfig.v1Perfix + '/workflow?type=me-process'
     },
     goBack () {
       this.$router.push('/servicecatalog')

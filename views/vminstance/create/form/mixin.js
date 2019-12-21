@@ -169,6 +169,9 @@ export default {
       if (this.isServertemplate) return false
       return this.checkWorkflowEnabled(WORKFLOW_TYPES.APPLY_MACHINE)
     },
+    isHostImageType () { // 镜像类型为主机镜像
+      return this.form.fd.imageType === IMAGES_TYPE_MAP.host.key
+    },
     isSnapshotImageType () { // 镜像类型为主机快照
       return this.form.fd.imageType === IMAGES_TYPE_MAP.snapshot.key
     },
@@ -258,12 +261,12 @@ export default {
         'server-create-paramter': JSON.stringify(data),
       }
       this._getProjectDomainInfo(variables)
-      new this.$Manager('process-instances')
-        .create({ variables: variables })
+      new this.$Manager('process-instances', 'v1')
+        .create({ data: { variables } })
         .then(() => {
           this.submiting = false
           this.$message.success(`主机 ${data.generate_name} 创建请求流程已提交`)
-          this.$router.push('/workflow')
+          window.location.href = this.$appConfig.v1Perfix + '/workflow?type=me-process'
         })
         .catch(() => {
           this.submiting = false
@@ -326,7 +329,7 @@ export default {
       if (!variables.project) {
         variables.project = this.$store.getters.userInfo.projectName
       }
-      variables.project_domian = this.form.fd.domain.key
+      variables.project_domian = this.project_domian
       if (!variables.project_domian) {
         variables.project_domian = this.$store.getters.userInfo.projectDomain
       }
