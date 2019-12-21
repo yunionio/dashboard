@@ -31,12 +31,14 @@ export const PERMISSION = {
   'k8s_kubemachines_list': ['k8s', 'kubemachines', 'list'],
   // 容器集群
   'k8s_kubeclusters_list': ['k8s', 'kubeclusters', 'list'],
-  // 容器部署
+  // 容器无状态
   'k8s_depolyments_list': ['k8s', 'depolyments', 'list'],
-  // 容器有状态副本集
+  // 容器有状态
   'k8s_statefulsets_list': ['k8s', 'statefulsets', 'list'],
   // 容器任务
   'k8s_jobs_list': ['k8s', 'jobs', 'list'],
+  // 容器任务
+  'k8s_cronjobs_list': ['k8s', 'cronjobs', 'list'],
   // 容器组
   'k8s_pods_list': ['k8s', 'pods', 'list'],
   // 容器服务
@@ -45,14 +47,24 @@ export const PERMISSION = {
   'k8s_ingresses_list': ['k8s', 'ingresses', 'list'],
   // 容器配置项
   'k8s_configmaps_list': ['k8s', 'configmaps', 'list'],
-  // 存储卷声明
+  // 存储声明
   'k8s_persistentvolumeclaims_list': ['k8s', 'persistentvolumeclaims', 'list'],
   // 容器字典
   'k8s_secrets_list': ['k8s', 'secrets', 'list'],
-  // 容器应用商店
+  // 容器应用目录
   'k8s_charts_list': ['k8s', 'charts', 'list'],
   // 容器应用编排
   'k8s_releases_list': ['k8s', 'releases', 'list'],
+  // 集群节点(导入)
+  'k8s_k8sNode_list': ['k8s', 'k8s_nodes', 'list'],
+  // 命名空间
+  'k8s_namespace_list': ['k8s', 'namespaces', 'list'],
+  // rbacroles
+  'k8s_rbacroles_list': ['k8s', 'rbacroles', 'list'],
+  // rbacrolebindings
+  'k8s_rbacrolebindings_list': ['k8s', 'rbacrolebindings', 'list'],
+  // rbacroles
+  'k8s_serviceaccounts_list': ['k8s', 'serviceaccounts', 'list'],
   // 负载均衡实例管理
   'lb_loadbalancers_list': ['compute', 'loadbalancers', 'list'],
   // 负载均衡监听
