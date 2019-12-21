@@ -66,9 +66,6 @@ module.exports = {
       warnings: true,
       errors: true,
     },
-    watchOptions: {
-      ignored: ['src/node_modules', 'containers/**/node_modules', 'node_modules'],
-    },
     open: process.platform === 'darwin',
     port: 8080,
     proxy: {

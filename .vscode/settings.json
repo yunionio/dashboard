@@ -1,18 +1,6 @@
 {
   "editor.tabSize": 2,
-  "eslint.validate": [
-    "javascript",
-    {
-      "language": "html",
-      "autoFix": true
-    },
-    {
-      "language": "vue",
-      "autoFix": true
-    }
-  ],
   "files.insertFinalNewline": true,
-  "eslint.autoFixOnSave": true,
   "search.useIgnoreFiles": false,
   "search.exclude": {        
     "**/node_modules": true,
