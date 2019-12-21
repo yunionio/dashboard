@@ -157,7 +157,11 @@ export default {
       let diskMsg = this.typesMap[firstKey]
       this.form.fc.setFieldsValue({
         systemDiskType: { key: diskMsg.key, label: diskMsg.label },
-        systemDiskSize: diskMsg.sysMin,
+      })
+      this.$nextTick(() => { // 解决磁盘大小 inputNumber 第一次点击变为0 的bug
+        this.form.fc.setFieldsValue({
+          systemDiskSize: +diskMsg.sysMin,
+        })
       })
     },
     getExtraDiskOpt (type) {
