@@ -55,6 +55,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    isHostImageType: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     isPublic () {
@@ -70,7 +74,11 @@ export default {
       const image = this.image
       let minSize = 0
       if (!image) return 0
-      if (image.info) {
+      if (this.isHostImageType) {
+        if (image.root_image) {
+          minSize = (image.root_image.min_disk_mb / 1024) || 0
+        }
+      } else if (image.info) {
         minSize = (image.info.min_disk / 1024) || 0
       } else {
         minSize = (image.min_disk / 1024) || 0

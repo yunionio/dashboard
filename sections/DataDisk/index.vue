@@ -5,7 +5,7 @@
       <div class="d-flex" v-for="item in dataDisks" :key="item.key">
         <disk
           :max="max"
-          :min="min"
+          :min="item.min"
           :diskTypeLabel="diskTypeLabel"
           :decorator="genDecorator(item.key)"
           :hypervisor="hypervisor"
@@ -70,6 +70,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    isHostImageType: {
+      type: Boolean,
+      default: false,
+    },
     isSnapshotImageType: {
       type: Boolean,
       default: false,
@@ -93,6 +97,7 @@ export default {
     elements () {
       let ret = []
       if (this.isSnapshotImageType) return ret
+      if (this.isHostImageType) return ['snapshot', 'schedtag']
       if (this.hypervisor === HYPERVISORS_MAP.kvm.key) {
         ret.push('mount-point')
         ret.push('snapshot')
@@ -182,11 +187,12 @@ export default {
         }
       })
     },
-    add ({ size, diskType, policy, schedtag, snapshot, filetype, mountPath, disabled = false } = {}) {
+    add ({ size, diskType, policy, schedtag, snapshot, filetype, mountPath, min, disabled = false } = {}) {
       const key = uuid()
       this.dataDisks.push({
         key,
         disabled,
+        min: min || this.min,
       })
       this.$nextTick(() => {
         const value = {

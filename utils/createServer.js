@@ -965,9 +965,16 @@ export class GenCreateData {
     if (this.fd.imageType === IMAGES_TYPE_MAP.iso.key) {
       data.cdrom = this.fd.image.key
     }
-    // 主机镜像需要guest image id参数
+    // 主机镜像需要guest image id参数，并且把磁盘中的镜像ID回填回去
     if (this.fd.imageType === IMAGES_TYPE_MAP.host.key) {
       data.guest_image_id = this.fd.image.key
+      data.disks.forEach((val, i) => {
+        if (i === 0) { // 系统盘
+          data.disks[i] = { ...val, image_id: this.fi.imageMsg.root_image.id }
+        } else {
+          data.disks[i] = { ...val, image_id: this.fi.imageMsg.data_images[i - 1].id }
+        }
+      })
     }
     // 主机快照需要instance_snapshot_id参数
     if (this.fd.imageType === IMAGES_TYPE_MAP.snapshot.key) {

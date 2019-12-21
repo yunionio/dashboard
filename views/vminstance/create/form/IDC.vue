@@ -60,6 +60,7 @@
           :sku="form.fd.sku"
           :capability-data="form.fi.capability"
           :image="form.fi.imageMsg"
+          :isHostImageType="isHostImageType"
           :disabled="form.fi.sysDiskDisabled" />
       </a-form-item>
       <a-form-item label="数据盘" v-bind="formItemLayout">
@@ -73,6 +74,7 @@
           :sku="form.fd.sku"
           :capability-data="form.fi.capability"
           :isSnapshotImageType="isSnapshotImageType"
+          :isHostImageType="isHostImageType"
           :disabled="form.fi.dataDiskDisabled" />
       </a-form-item>
       <a-form-item label="管理员密码" v-if="isKvm && !isIso" v-bind="formItemLayout">
@@ -185,8 +187,9 @@ export default {
     },
     cacheImageParams () {
       const params = {
-        zone: _.get(this.form.fd, 'zone.key'),
+        cloudregion_id: _.get(this.form.fd, 'cloudregion.key'),
       }
+      if (!params.region) return {}
       return params
     },
     showSku () {
@@ -203,6 +206,7 @@ export default {
         cpu_core_count: this.form.fd.vcpu || this.decorators.vcpu[1].initialValue,
         memory_size_mb: this.form.fd.vmem,
         cloudregion: _.get(this.form, 'fd.cloudregion.key'),
+        provider: 'OneCloud',
         ...this.scopeParams,
       }
     },
@@ -259,7 +263,7 @@ export default {
             // 重置数据盘数据
             this._resetDataDisk()
             dataImages.forEach(val => {
-              this.$refs.dataDiskRef.add({ size: val.min_disk_mb / 1024 })
+              this.$refs.dataDiskRef.add({ size: val.min_disk_mb / 1024, min: val.min_disk_mb / 1024 })
             })
           } else if (this.form.fd.imageType === IMAGES_TYPE_MAP.snapshot.key) {
             // 镜像类型为主机快照的话要回填数据并禁用
@@ -310,7 +314,6 @@ export default {
       const params = {
         show_emulated: true,
         resource_type: 'shared',
-        host_type: 'baremetal',
         ...this.scopeParams,
       }
       const { key } = this.form.fc.getFieldValue('zone')
