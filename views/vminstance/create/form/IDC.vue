@@ -36,6 +36,7 @@
           :type="type"
           :hypervisor="form.fd.hypervisor"
           :decorator="decorators.imageOS"
+          :image-params="scopeParams"
           :cacheImageParams="cacheImageParams" />
       </a-form-item>
       <a-form-item label="CPU核数" v-bind="formItemLayout" class="mb-0">
@@ -223,10 +224,11 @@ export default {
       return {}
     },
     networkParam () {
+      if (this.cloudregionZoneParams.cloudregion) return {}
       return {
         filter: 'server_type.notin(ipmi, pxe)',
         usable: true,
-        ...this.skuCloudregionZone,
+        ...this.cloudregionZoneParams,
         ...this.scopeParams,
       }
     },

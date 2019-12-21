@@ -30,6 +30,7 @@
           :type="type"
           :hypervisor="form.fd.hypervisor"
           :decorator="decorators.imageOS"
+          :image-params="scopeParams"
           :cacheImageParams="cacheImageParams" />
       </a-form-item>
       <a-form-item label="CPU核数" v-bind="formItemLayout" class="mb-0">
@@ -141,10 +142,11 @@ export default {
     cacheImageParams () {
       const params = {}
       if (R.is(Object, this.form.fd.sku)) {
-        if (this.skuCloudregionZone.cloudregion) {
-          params.region = this.skuCloudregionZone.cloudregion
+        if (this.cloudregionZoneParams.cloudregion) {
+          params.cloudregion_id = this.cloudregionZoneParams.cloudregion
         }
       }
+      if (!params.cloudregion_id) return {}
       return params
     },
     showSku () {

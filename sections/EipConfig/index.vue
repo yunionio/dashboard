@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import { typeClouds } from '@/utils/common/hypervisor'
 
@@ -168,6 +169,7 @@ export default {
       return ret
     },
     params () {
+      if (!this.eipParams || R.isEmpty(this.eipParams)) return {}
       return {
         ...{
           usable: true,

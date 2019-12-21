@@ -1,4 +1,5 @@
 import * as R from 'ramda'
+import _ from 'lodash'
 import { CreateServerForm, SCHED_POLICY_OPTIONS_MAP, SERVER_TYPE, SELECT_IMAGE_KEY_SUFFIX, LOGIN_TYPES_MAP } from '@Compute/constants'
 import OsSelect from '@Compute/sections/OsSelect'
 import ServerPassword from '@Compute/sections/ServerPassword'
@@ -105,15 +106,6 @@ export default {
       }
       return loginTypes
     },
-    skuCloudregionZone () {
-      const skuCloudregionZone = {}
-      if (R.is(Object, this.form.fd.sku)) {
-        const { zone_id: zoneId, cloudregion_id: cloudregionId } = this.form.fd.sku
-        skuCloudregionZone.zone = zoneId
-        skuCloudregionZone.cloudregion = cloudregionId
-      }
-      return skuCloudregionZone
-    },
     project_domain () {
       return this.form.fd.domain ? this.form.fd.domain.key : this.$store.getters.userInfo.projectDomainId
     },
@@ -161,9 +153,7 @@ export default {
       return R.is(Object, disk) ? Object.values(disk) : []
     },
     secgroupParams () {
-      return {
-        tenant: this.project,
-      }
+      return this.scopeParams
     },
     isOpenWorkflow () {
       if (this.isServertemplate) return false
@@ -185,6 +175,23 @@ export default {
         return true
       }
       return false
+    },
+    cloudregionZoneParams () {
+      const params = {}
+      if (this.type === 'public') { // 公有云
+        if (R.is(Object, this.form.fd.sku)) {
+          const cloudregion = this.form.fd.sku.cloudregion_id // 取 sku
+          const zone = this.form.fd.zone // 取 areaSelect 组件
+          if (cloudregion) params.cloudregion = cloudregion
+          if (zone) params.zone = zone
+        }
+      } else { // 私有云和IDC取 CloudregionZone 组件
+        const cloudregion = _.get(this.form.fd, 'cloudregion.key')
+        const zone = _.get(this.form.fd, 'zone.key')
+        if (cloudregion) params.cloudregion = cloudregion
+        if (zone) params.zone = zone
+      }
+      return params
     },
   },
   created () {

@@ -53,7 +53,6 @@
         <os-select
           :type="type"
           :hypervisor="hypervisor"
-          :image-params="imageParams"
           :decorator="decorators.imageOS"
           :cacheImageParams="cacheImageParams" />
       </a-form-item>
@@ -134,7 +133,6 @@ import SecgroupConfig from '@Compute/sections/SecgroupConfig'
 import mixin from './mixin'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import { PROVIDER_MAP, HYPERVISORS_MAP } from '@/constants'
-import { IMAGES_TYPE_MAP } from '@/constants/compute'
 import AreaSelects from '@/sections/AreaSelects'
 
 export default {
@@ -167,10 +165,11 @@ export default {
       return true
     },
     networkParam () {
+      if (this.cloudregionZoneParams.cloudregion) return {}
       return {
         filter: 'server_type.notin(ipmi, pxe)',
         usable: true,
-        ...this.skuCloudregionZone,
+        ...this.cloudregionZoneParams,
         ...this.scopeParams,
       }
     },
@@ -206,36 +205,21 @@ export default {
         ...this.scopeParams,
       }
     },
-    imageParams () { // !!! 无用代码
-      const params = {}
-      if (this.form.fd.imageType === IMAGES_TYPE_MAP.public_customize.key) {
-        if (R.is(Object, this.form.fd.sku)) {
-          if (this.skuCloudregionZone.zone) {
-            params.zone = this.skuCloudregionZone.zone
-          } else if (this.skuCloudregionZone.cloudregion) {
-            params.cloudregion = this.skuCloudregionZone.cloudregion
-          }
-        }
-        if (!params.zone && !params.region) {
-          return {}
-        }
-      }
-      return params
-    },
     cacheImageParams () {
       const params = {}
       if (R.is(Object, this.form.fd.sku)) {
-        if (this.skuCloudregionZone.cloudregion) {
-          params.cloudregion_id = this.skuCloudregionZone.cloudregion
+        if (this.cloudregionZoneParams.cloudregion) {
+          params.cloudregion_id = this.cloudregionZoneParams.cloudregion
         }
       }
       if (!params.cloudregion_id) return {}
       return params
     },
     eipParams () {
+      if (this.cloudregionZoneParams.cloudregion) return {}
       return {
         project: this.project,
-        region: this.skuCloudregionZone.cloudregion,
+        region: this.cloudregionZoneParams.cloudregion,
       }
     },
     skuParam () {
@@ -278,10 +262,10 @@ export default {
         usable: true,
         limit: 0,
       }
-      if (this.skuCloudregionZone.zone) {
-        params.zone = this.skuCloudregionZone.zone
+      if (this.cloudregionZoneParams.zone) {
+        params.zone = this.cloudregionZoneParams.zone
         if (!params.zone) {
-          params.cloudregion = this.skuCloudregionZone.cloudregion
+          params.cloudregion = this.cloudregionZoneParams.cloudregion
         }
       }
       if (!params.zone && !params.cloudregion) {

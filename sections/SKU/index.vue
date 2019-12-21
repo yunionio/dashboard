@@ -226,7 +226,7 @@ export default {
   watch: {
     skuParams: {
       handler (val, oldV) {
-        if (!R.equals(val, oldV)) {
+        if (!R.isEmpty(val) && !R.equals(val, oldV)) {
           this.fetchData()
         }
       },
@@ -248,7 +248,7 @@ export default {
   },
   methods: {
     fetchData () {
-      this.fetchSkuList().then(this.fetchCloudSkuRatesList)
+      this.fetchSkuList()
     },
     getFormatPrice (price) {
       if (price) {
@@ -288,24 +288,26 @@ export default {
       }
       return originVal
     },
-    fetchSkuList () {
+    async fetchSkuList () {
+      if (R.isEmpty(this.skuParams)) return
       this.skuLoading = true
-      return this.skusM.list({ params: this.skuParams })
-        .then(({ data: { data = [] } }) => {
-          this.skuList = data
-          this.skuLoading = false
-          if (this.skuList && this.skuList.length) {
-            this.setSku(this.skuResults[0])
-          }
-          return data
-        })
-        .catch(() => {
-          this.skuLoading = false
-        })
+      try {
+        const { data: { data = [] } } = await this.skusM.list({ params: this.skuParams })
+        this.skuList = data
+        this.skuLoading = false
+        if (this.skuList && this.skuList.length) {
+          this.setSku(this.skuResults[0])
+        }
+        return data
+      } catch (error) {
+        this.skuLoading = false
+        throw error
+      }
     },
     fetchCloudSkuRatesList () { // 公有云套餐价格
       if (!this.hasMeterService) return // 没有 meter 服务
       if (!this.isPublic) return
+      if (!this.skuList || !this.skuList.length) return
       let paramKeys = this.skuList.map(item => {
         const provider = item.provider.toLowerCase()
         let ret = `${provider}::${item.region_ext_id || 'NA'}::${item.name || 'NA'}`

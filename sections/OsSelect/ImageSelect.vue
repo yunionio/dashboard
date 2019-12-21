@@ -156,7 +156,7 @@ export default {
     this.guestimagesM = new Manager('guestimages', 'v1')
     this.instanceSnapshots = new Manager('instance_snapshots', 'v2')
     this.fetchData()
-    this.fetchCacheimages()
+    // this.fetchCacheimages()
   },
   methods: {
     fetchData () {
@@ -200,6 +200,9 @@ export default {
         is_guest_image: false,
         scope: this.$store.getters.scope,
         ...this.imageParams,
+      }
+      if (params.project_domain) {
+        delete params.scope
       }
       if (this.imageType === IMAGES_TYPE_MAP.iso.key) {
         params.disk_formats = 'iso'
@@ -252,6 +255,7 @@ export default {
       }
     },
     async fetchCacheimages () {
+      if (R.isNil(this.cacheImageParams) || R.isEmpty(this.cacheImageParams)) return
       this.images.cacheimagesList = []
       this.loading = true
       const params = {
