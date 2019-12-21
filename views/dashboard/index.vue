@@ -161,7 +161,7 @@ export default {
       }
     },
     swtchOldDashboard () {
-      Cookies.set('__oc_dashboard_version__', 'v1')
+      Cookies.set('__oc_dashboard_version__', 'v1', { expires: 365 })
       window.location.href = `${process.env.VUE_APP_V1_PERFIX}/dashboard`
     },
   },
