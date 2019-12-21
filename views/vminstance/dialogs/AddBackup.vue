@@ -5,13 +5,14 @@
       <dialog-selected-tips :count="params.data.length" action="添加备份机" />
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
-        <a-form-item label="密钥对" v-bind="formItemLayout">
+        <a-form-item label="备份机的宿主机" v-bind="formItemLayout">
           <base-select
+            class="w-100"
             v-decorator="decorators.prefer_host_id"
             resource="hosts"
             :params="selectParams"
             :disabled-items="disabledItems"
-            :select-props="{ placeholder: '请选择备份机' }" />
+            :select-props="{ placeholder: '请选择宿主机' }" />
         </a-form-item>
       </a-form>
     </div>
@@ -50,10 +51,10 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 21,
+          span: 20,
         },
         labelCol: {
-          span: 3,
+          span: 4,
         },
       },
     }
