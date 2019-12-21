@@ -128,7 +128,7 @@
 <script>
 import * as R from 'ramda'
 import Bill from '@Compute/sections/Bill'
-import { RESOURCE_TYPES_MAP, LOGIN_TYPES_MAP, BILL_TYPES_MAP } from '@Compute/constants'
+import { LOGIN_TYPES_MAP, BILL_TYPES_MAP } from '@Compute/constants'
 import EipConfig from '@Compute/sections/EipConfig'
 import SecgroupConfig from '@Compute/sections/SecgroupConfig'
 import mixin from './mixin'
@@ -206,7 +206,7 @@ export default {
         ...this.scopeParams,
       }
     },
-    imageParams () {
+    imageParams () { // !!! 无用代码
       const params = {}
       if (this.form.fd.imageType === IMAGES_TYPE_MAP.public_customize.key) {
         if (R.is(Object, this.form.fd.sku)) {
@@ -226,9 +226,10 @@ export default {
       const params = {}
       if (R.is(Object, this.form.fd.sku)) {
         if (this.skuCloudregionZone.cloudregion) {
-          params.region = this.skuCloudregionZone.cloudregion
+          params.cloudregion_id = this.skuCloudregionZone.cloudregion
         }
       }
+      if (!params.cloudregion_id) return {}
       return params
     },
     eipParams () {
@@ -254,10 +255,12 @@ export default {
       if (provider) {
         params.provider = PROVIDER_MAP[provider] ? PROVIDER_MAP[provider].hypervisor : provider
       } else {
-        const { providerList } = this.form.fi
+        const providerList = this.form.fi.providerList
         if (providerList && providerList.length) {
           const providers = providerList.map(item => item.name)
           params.filter = `provider.in(${providers.join(',')})`
+        } else { // 公有云条件下没有 provider 不用请求接口
+          return {} // sku 组件没有参数不会请求数据
         }
       }
       if (this.form.fd.billType === 'quantity') {
@@ -277,10 +280,8 @@ export default {
       }
       if (this.skuCloudregionZone.zone) {
         params.zone = this.skuCloudregionZone.zone
-        if (this.form.fd.resourceType !== RESOURCE_TYPES_MAP.prepaid.key) {
-          if (!params.zone) {
-            params.cloudregion = this.skuCloudregionZone.cloudregion
-          }
+        if (!params.zone) {
+          params.cloudregion = this.skuCloudregionZone.cloudregion
         }
       }
       if (!params.zone && !params.cloudregion) {
@@ -346,11 +347,6 @@ export default {
         this.$refs.areaSelectRef.fetchs(['provider'])
       }
     },
-    'form.fd.resourceType' (val, oldVal) {
-      if (val && !R.equals(val, oldVal)) {
-        this.fetchCapability()
-      }
-    },
     'form.fd.sku' (val, oldVal) {
       if (val && !R.equals(val, oldVal)) {
         this.fetchCapability()
@@ -369,7 +365,7 @@ export default {
           return ![HYPERVISORS_MAP.azure.key, HYPERVISORS_MAP.aws.key].includes(item.name.toLowerCase())
         })
       }
-      this.form.fi.providerList = list
+      this.$set(this.form.fi, 'providerList', list)
       return list
     },
     onValuesChange (vm, changedFields) {
@@ -389,7 +385,7 @@ export default {
       if (!R.is(Object, sku)) return
       const { zone_id: zoneId, cloudregion_id: cloudregionId } = sku
       let id = ''
-      if (this.form.fd.resourceType === RESOURCE_TYPES_MAP.shared.value && !zoneId) {
+      if (!zoneId) {
         id = cloudregionId
       } else {
         id = zoneId
