@@ -12,6 +12,9 @@ export default {
     icon: 'menu-db',
   },
   menus: [
+    /**
+     * RDS
+     */
     {
       meta: {
         label: 'RDS',
@@ -19,30 +22,48 @@ export default {
       submenus: [
         {
           path: '/rds',
+          component: Layout,
           meta: {
             label: '实例列表',
+            permission: 'rds_dbinstances_list',
           },
-          component: Layout,
           children: [
             {
-              name: 'RDS',
+              name: 'RDSIndex',
               path: '',
               component: RDS,
             },
             {
               name: 'RDSCreate',
               path: 'create',
+              meta: {
+                label: '新建实例',
+              },
               component: RDSCreate,
             },
+          ],
+        },
+        {
+          path: '/rdsbackup',
+          component: Layout,
+          meta: {
+            label: '备份管理',
+            permission: 'rds_dbinstancebackups_list',
+          },
+          children: [
             {
-              name: 'RDSBackup',
-              path: 'backup',
+              name: 'RDSBackupIndex',
+              path: '',
+              meta: {},
               component: RDSBackup,
             },
           ],
         },
       ],
     },
+    /**
+     * redis
+     */
     {
       meta: {
         label: 'Redis',
@@ -52,6 +73,7 @@ export default {
           path: '/redis',
           meta: {
             label: '实例列表',
+            permission: 'redis_elasticcaches_list',
           },
           component: Layout,
           children: [
