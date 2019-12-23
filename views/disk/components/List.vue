@@ -18,6 +18,7 @@ import {
   getCopyWithContentTableColumn,
   getRegionTableColumn,
 } from '@/utils/common/tableColumn'
+import { getTenantFilter, getStatusFilter, getBrandFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import { sizestr } from '@/utils/utils'
@@ -41,6 +42,40 @@ export default {
             formatter: val => {
               return `name.contains(${val})`
             },
+          },
+          // storage: {
+          //   label: '主存储',
+          //   filter: true,
+          //   formatter: val => {
+          //     return `storage.contains(${val})`
+          //   },
+          // },
+          status: getStatusFilter('disk'),
+          disk_type: {
+            label: '磁盘类型',
+            dropdown: true,
+            multiple: true,
+            items: [
+              { label: '数据盘', key: 'data' },
+              { label: '系统盘', key: 'sys' },
+            ],
+          },
+          // unused: {
+          //   label: '是否挂载',
+          //   dropdown: true,
+          //   multiple: true,
+          //   items: [
+          //   ],
+          // },
+          brand: getBrandFilter(),
+          tenant: getTenantFilter(),
+          medium_type: {
+            label: '介质类型',
+            dropdown: true,
+            multiple: true,
+            items: Object.keys(MEDIUM_MAP).map((k) => {
+              return { label: MEDIUM_MAP[k], key: k }
+            }),
           },
         },
         steadyStatus: {

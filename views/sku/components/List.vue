@@ -12,6 +12,7 @@ import {
   getNameDescriptionTableColumn,
   getStatusTableColumn,
 } from '@/utils/common/tableColumn'
+import { getStatusFilter, getEnabledFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import { sizestr } from '@/utils/utils'
 
@@ -32,6 +33,36 @@ export default {
             filter: true,
             formatter: val => {
               return `name.contains(${val})`
+            },
+          },
+          status: getStatusFilter('sku'),
+          enabled: getEnabledFilter(),
+          cpu_core_count: {
+            label: '虚拟CPU核数',
+            dropdown: true,
+            multiple: false,
+            distinctField: {
+              type: 'field',
+              key: 'cpu_core_count',
+            },
+            mapper: (data) => {
+              return data.map(({ key }) => {
+                return { label: `${key}核`, key }
+              })
+            },
+          },
+          memory_size_mb: {
+            label: '虚拟内存容量',
+            dropdown: true,
+            multiple: false,
+            distinctField: {
+              type: 'field',
+              key: 'memory_size_mb',
+            },
+            mapper: (data) => {
+              return data.map(({ key }) => {
+                return { label: sizestr(key, 'M', 1024), key }
+              })
             },
           },
         },

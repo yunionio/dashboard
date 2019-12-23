@@ -116,7 +116,7 @@ export default {
                 },
                 meta: () => ({
                   validate: !obj.enabled,
-                  tooltip: obj.enabled ? '请选择已禁用的实例' : '',
+                  tooltip: obj.enabled ? '请选择已禁用的模版' : '',
                 }),
               },
               {
@@ -133,7 +133,7 @@ export default {
                 },
                 meta: () => ({
                   validate: obj.enabled,
-                  tooltip: !obj.enabled ? '请选择已启用的实例' : '',
+                  tooltip: !obj.enabled ? '请选择已启用的模版' : '',
                 }),
               },
               {

@@ -31,7 +31,7 @@ export default {
             },
           },
           status: {
-            label: '实例状态',
+            label: '上一次执行状态',
             dropdown: true,
             multiple: true,
             items: (function (t) {

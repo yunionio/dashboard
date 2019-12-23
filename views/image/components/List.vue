@@ -9,6 +9,7 @@
 <script>
 import { sizestr } from '@/utils/utils'
 import { getStatusTableColumn, getNameDescriptionTableColumn, getProjectTableColumn, isPublicTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
+import { getTenantFilter, getOsTypeFilter, getStatusFilter } from '@/utils/common/tableFilter'
 import SystemIcon from '@/sections/SystemIcon'
 import WindowsMixin from '@/mixins/windows'
 
@@ -52,6 +53,7 @@ export default {
               return `name.contains(${val})`
             },
           },
+          status: getStatusFilter('image'),
           disk_format: {
             label: '镜像格式',
             dropdown: true,
@@ -71,6 +73,8 @@ export default {
               { label: '自定义镜像', key: false },
             ],
           },
+          tenant: getTenantFilter(),
+          os_type: getOsTypeFilter(),
         },
       }),
       columns: [

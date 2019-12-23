@@ -10,6 +10,7 @@
 import qs from 'qs'
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { getRegionTableColumn, getStatusTableColumn, getEnabledTableColumn, getNameDescriptionTableColumn, getCopyWithContentTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
+import { getStatusFilter, getEnabledFilter } from '@/utils/common/tableFilter'
 import { sizestr } from '@/utils/utils'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -35,6 +36,8 @@ export default {
               return `name.contains(${val})`
             },
           },
+          status: getStatusFilter('host'),
+          enabled: getEnabledFilter(),
           sn: {
             label: 'SN',
             distinctField: {
@@ -55,6 +58,14 @@ export default {
             formatter: val => {
               return `ipmi_ip.contains(${val})`
             },
+          },
+          is_maintenance: {
+            label: '维护模式',
+            dropdown: true,
+            items: [
+              { label: '维护模式', key: true },
+              { label: '正常', key: false },
+            ],
           },
         },
       }),

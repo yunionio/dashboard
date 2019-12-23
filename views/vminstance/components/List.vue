@@ -61,7 +61,7 @@ export default {
           name: getNameFilter(),
           brand: getBrandFilter('compute_engine_brands'),
           ips: getIpFilter(),
-          status: getStatusFilter('status.server'),
+          status: getStatusFilter('server'),
           os_type: {
             label: '系统类型',
             dropdown: true,

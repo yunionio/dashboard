@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import { getNameFilter } from '@/utils/common/tableFilter'
 import {
   getNameDescriptionTableColumn,
   getCopyWithContentTableColumn,
@@ -29,11 +30,33 @@ export default {
           details: true,
         },
         filterOptions: {
+          name: getNameFilter(),
+          dev_type: {
+            label: '设备类型',
+            filter: true,
+            formatter: val => {
+              return `dev_type.contains(${val})`
+            },
+          },
           model: {
             label: '设备型号',
             filter: true,
             formatter: val => {
               return `model.contains(${val})`
+            },
+          },
+          guest: {
+            label: '关联主机',
+            filter: true,
+            formatter: val => {
+              return `guest.contains(${val})`
+            },
+          },
+          host: {
+            label: '所在宿主机',
+            filter: true,
+            formatter: val => {
+              return `host.contains(${val})`
             },
           },
         },

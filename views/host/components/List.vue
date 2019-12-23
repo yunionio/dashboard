@@ -11,6 +11,7 @@ import qs from 'qs'
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { sizestr, percentstr } from '@/utils/utils'
 import { getRegionTableColumn, getStatusTableColumn, getBrandTableColumn, getEnabledTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
+import { getStatusFilter, getEnabledFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -34,11 +35,34 @@ export default {
               return `name.contains(${val})`
             },
           },
+          status: getStatusFilter('host'),
+          enabled: getEnabledFilter(),
+          host_status: {
+            label: '服务',
+            dropdown: true,
+            items: Object.keys(this.$t('status.host_status')).map(key => {
+              return { label: this.$t('status.host_status')[key], key }
+            }),
+          },
           sn: {
             label: 'SN',
             distinctField: {
               type: 'extra_field',
               key: 'account',
+            },
+          },
+          access_ip: {
+            label: '管理IP',
+            filter: true,
+            formatter: val => {
+              return `access_ip.contains(${val})`
+            },
+          },
+          ipmi_ip: {
+            label: '外带IP',
+            filter: true,
+            formatter: val => {
+              return `ipmi_ip.contains(${val})`
             },
           },
         },

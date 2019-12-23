@@ -14,6 +14,7 @@ import {
   getProjectTableColumn,
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
+import { getStatusFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -34,6 +35,7 @@ export default {
               return `name.contains(${val})`
             },
           },
+          status: getStatusFilter('instanceGroup'),
           force_dispersion: {
             label: '策略',
             dropdown: true,

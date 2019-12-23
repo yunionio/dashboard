@@ -76,7 +76,7 @@ export default {
         data,
         resId: this.resId,
         columns: this.columns,
-        title: '取消关联',
+        title: '删除',
         list: this.list,
       })
     },

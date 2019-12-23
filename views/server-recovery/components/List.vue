@@ -12,6 +12,7 @@ import SystemIcon from '@/sections/SystemIcon'
 import expectStatus from '@/constants/expectStatus'
 import { getBrandTableColumn, getStatusTableColumn, getCopyWithContentTableColumn, getIpsTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
+import { getNameFilter, getIpFilter, getOsTypeFilter, getBrandFilter, getFilter } from '@/utils/common/tableFilter'
 
 export default {
   name: 'ServerRecoveryList',
@@ -23,15 +24,10 @@ export default {
         getParams: this.getParams,
         steadyStatus: Object.values(expectStatus.server).flat(),
         filterOptions: {
-          name: {
-            label: '实例名称',
-            filter: true,
-            formatter: val => {
-              return `name.contains(${val})`
-            },
-          },
+          name: getNameFilter(),
+          ip: getIpFilter(),
           status: {
-            label: '实例状态',
+            label: '状态',
             dropdown: true,
             multiple: true,
             items: [
@@ -45,29 +41,9 @@ export default {
               return `status.in(${val.join(',')})`
             },
           },
-          brand: {
-            label: '平台',
-            dropdown: true,
-            multiple: true,
-            items: [
-              { label: 'OneCloud', key: 'OneCloud' },
-              { label: 'OpenStack', key: 'OpenStack' },
-            ],
-          },
-          os_type: {
-            label: '系统类型',
-            dropdown: true,
-            multiple: true,
-            items: [
-              { label: 'Windows', key: 'windows' },
-              { label: 'Linux', key: 'linux' },
-              { label: 'VMware', key: 'VMWare' },
-            ],
-            filter: true,
-            formatter: val => {
-              return `os_type.contains(${val})`
-            },
-          },
+          brand: getBrandFilter(),
+          os_type: getOsTypeFilter(),
+          host: getFilter({ field: 'host', title: '宿主机' }),
         },
       }),
       columns: [

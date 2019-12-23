@@ -9,6 +9,7 @@
 
 <script>
 import SnapshotList from './components/List'
+import { getTenantFilter, getStatusFilter } from '@/utils/common/tableFilter'
 
 export default {
   name: 'DiskIndex',
@@ -29,6 +30,17 @@ export default {
             filter: true,
             formatter: val => {
               return `name.contains(${val})`
+            },
+          },
+          status: getStatusFilter(),
+          tenant: getTenantFilter(),
+          guest: {
+            label: '虚拟机',
+            dropdown: true,
+            multiple: true,
+            distinctField: {
+              type: 'field',
+              key: 'guest',
             },
           },
         },

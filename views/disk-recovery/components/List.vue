@@ -8,6 +8,7 @@
 
 <script>
 import expectStatus from '@/constants/expectStatus'
+import { getNameFilter, getStatusFilter, getBrandFilter, getTenantFilter, getFilter } from '@/utils/common/tableFilter'
 import { getBrandTableColumn, getStatusTableColumn, getCopyWithContentTableColumn, getProjectTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 
@@ -21,13 +22,18 @@ export default {
         getParams: this.getParams,
         steadyStatus: Object.values(expectStatus.server).flat(),
         filterOptions: {
-          name: {
-            label: '名称',
-            filter: true,
-            formatter: val => {
-              return `name.contains(${val})`
-            },
-          },
+          name: getNameFilter(),
+          brand: getBrandFilter(),
+          status: getStatusFilter('disk'),
+          tenant: getTenantFilter(),
+          guest: getFilter({ field: 'guest', title: '云服务器' }),
+          disk_type: getFilter({
+            field: 'guest',
+            title: '类型',
+            items: [
+              { label: '系统盘', key: 'sys' },
+              { label: '数据盘', key: 'data' },
+            ] }),
         },
       }),
       columns: [

@@ -2,8 +2,7 @@
   <detail
     :list="list"
     :data="data"
-    :base-info="baseInfo"
-    status-module="disk" />
+    :base-info="baseInfo" />
 </template>
 
 <script>

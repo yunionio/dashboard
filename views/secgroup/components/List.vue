@@ -15,6 +15,7 @@ import {
   isPublicTableColumn,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
+import { getTenantFilter } from '@/utils/common/tableFilter'
 
 export default {
   name: 'SecgroupList',
@@ -40,6 +41,7 @@ export default {
               return `name.contains(${val})`
             },
           },
+          tenant: getTenantFilter(),
         },
       }),
       columns: [

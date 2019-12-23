@@ -8,6 +8,7 @@
 
 <script>
 import expectStatus from '@/constants/expectStatus'
+import { getNameFilter, getStatusFilter, getOsTypeFilter } from '@/utils/common/tableFilter'
 import { getStatusTableColumn, getCopyWithContentTableColumn, getProjectTableColumn } from '@/utils/common/tableColumn'
 import SystemIcon from '@/sections/SystemIcon'
 import WindowsMixin from '@/mixins/windows'
@@ -24,13 +25,9 @@ export default {
         steadyStatus: Object.values(expectStatus.server).flat(),
         apiVersion: 'v1',
         filterOptions: {
-          name: {
-            label: '名称',
-            filter: true,
-            formatter: val => {
-              return `name.contains(${val})`
-            },
-          },
+          name: getNameFilter(),
+          status: getStatusFilter(),
+          os_type: getOsTypeFilter(),
         },
       }),
       columns: [

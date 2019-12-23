@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="主机模板" />
+    <page-header title="主机模版" />
     <page-body>
       <servertemplate-list :id="listId" />
     </page-body>

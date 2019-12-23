@@ -12,6 +12,7 @@ import {
   // isPublicTableColumn,
   getProjectTableColumn,
 } from '@/utils/common/tableColumn'
+import { getTenantFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -32,6 +33,7 @@ export default {
               return `name.contains(${val})`
             },
           },
+          tenant: getTenantFilter(),
         },
       }),
       columns: [
