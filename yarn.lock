@@ -1460,10 +1460,10 @@ ansi-styles@^3.2.0, ansi-styles@^3.2.1:
   dependencies:
     color-convert "^1.9.0"
 
-ant-design-vue@^1.4.9:
-  version "1.4.9"
-  resolved "https://registry.npm.taobao.org/ant-design-vue/download/ant-design-vue-1.4.9.tgz#0dae556853ebbe5c28fe32681c36e170f8ec6441"
-  integrity sha1-Da5VaFPrvlwo/jJoHDbhcPjsZEE=
+ant-design-vue@^1.4.10:
+  version "1.4.10"
+  resolved "https://registry.npm.taobao.org/ant-design-vue/download/ant-design-vue-1.4.10.tgz#26bf3570a3c93d54bae571e98f29457b0fd116d8"
+  integrity sha1-Jr81cKPJPVS65XHpjylFew/RFtg=
   dependencies:
     "@ant-design/icons" "^2.1.1"
     "@ant-design/icons-vue" "^2.0.0"
@@ -10518,10 +10518,10 @@ vxe-table-plugin-antd@^1.5.8:
   resolved "https://registry.npm.taobao.org/vxe-table-plugin-antd/download/vxe-table-plugin-antd-1.5.8.tgz#cd9bb5ce1e9c19140bc173136fc38ce3d788cd91"
   integrity sha1-zZu1zh6cGRQLwXMTb8OM49eIzZE=
 
-vxe-table@^2.7.2:
-  version "2.7.2"
-  resolved "https://registry.npm.taobao.org/vxe-table/download/vxe-table-2.7.2.tgz#3cb55422ce5fcb39166afd7d5b4f10755f1d39ef"
-  integrity sha1-PLVUIs5fyzkWav19W08QdV8dOe8=
+vxe-table@^2.7.10:
+  version "2.7.10"
+  resolved "https://registry.npm.taobao.org/vxe-table/download/vxe-table-2.7.10.tgz#03c72dfa4fbf068d626f68c8000f09e5ff6c86bc"
+  integrity sha1-A8ct+k+/Bo1ib2jIAA8J5f9shrw=
 
 w3c-hr-time@^1.0.1:
   version "1.0.1"
