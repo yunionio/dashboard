@@ -58,7 +58,7 @@ export default {
         type: [
           'type',
           {
-            initialValue: 'all',
+            initialValue: 'custom',
           },
         ],
         selected: [
