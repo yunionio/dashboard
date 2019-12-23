@@ -170,6 +170,16 @@ export default {
             field: 'name',
             title: '缓存位置',
           },
+          {
+            field: 'sn',
+            title: 'SN',
+            formatter: ({ cellValue }) => {
+              if (!cellValue) {
+                return '-'
+              }
+              return cellValue
+            },
+          },
         ]
       } else {
         return [

@@ -240,7 +240,7 @@ export default {
                 },
                 meta: () => {
                   return {
-                    validate: this.isPower,
+                    validate: this.isPower(obj),
                   }
                 },
               },
@@ -255,7 +255,11 @@ export default {
                     list: this.list,
                   })
                 },
-                meta: () => this.$getDeleteResult(obj),
+                meta: () => {
+                  return {
+                    validate: this.isPower(obj) && this.$getDeleteResult(obj).validate,
+                  }
+                },
               },
             ]
           },
