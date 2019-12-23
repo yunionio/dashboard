@@ -14,14 +14,13 @@
           </div>
           <base-select
             class="w-100"
-            filterable
             remote
             v-decorator="decorators.secgroups"
             resource="secgroups"
             :mapper="mapperSecgroups"
             :params="{ limit: 20 }"
             :init-loaded.sync="secgroupsInitLoaded"
-            :select-props="{ allowClear: true, placeholder: '请选择安全组', mode: 'tags' }" />
+            :select-props="{ allowClear: true, placeholder: '请选择安全组', mode: 'multiple' }" />
         </a-form-item>
       </a-form>
     </div>
@@ -108,9 +107,9 @@ export default {
   },
   methods: {
     mapperSecgroups (data) {
-      data = data.concat(this.bindedSecgroups)
-      data = R.uniqBy(item => item.id, data)
-      return data
+      let newData = [...data, ...this.bindedSecgroups]
+      newData = R.uniqBy(item => item.id, newData)
+      return newData
     },
     async fetchBindedSecgroups () {
       const manager = new this.$Manager('secgroups')
