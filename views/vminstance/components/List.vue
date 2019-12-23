@@ -1537,6 +1537,9 @@ export default {
     this.initSidePageTab('vm-instance-detail')
     this.webconsoleManager = new Manager('webconsole', 'v1')
     this.list.fetchData()
+    this.$bus.$on('VMInstanceListSingleUpdate', args => {
+      this.list.singleUpdate(...args)
+    }, this)
   },
   methods: {
     createServer (type) {

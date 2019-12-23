@@ -90,6 +90,7 @@ export default {
             data: values,
           },
         })
+        this.$bus.$emit('VMInstanceListSingleUpdate', [this.params.data[0]['id']])
         this.cancelDialog()
       } finally {
         this.loading = false
