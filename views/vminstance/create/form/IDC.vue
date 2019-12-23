@@ -78,7 +78,7 @@
           :isHostImageType="isHostImageType"
           :disabled="form.fi.dataDiskDisabled" />
       </a-form-item>
-      <a-form-item label="管理员密码" v-if="isKvm && !isIso" v-bind="formItemLayout">
+      <a-form-item label="管理员密码" v-if="!isIso" v-bind="formItemLayout">
         <server-password :form="form" :login-types="loginTypes" :isSnapshotImageType="isSnapshotImageType" :decorator="decorators.loginConfig" />
       </a-form-item>
       <a-form-item label="网络" v-bind="formItemLayout" class="mb-0">
