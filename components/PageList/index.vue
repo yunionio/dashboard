@@ -199,7 +199,7 @@ export default {
     },
     handleClearSelected () {
       this.list.clearSelected()
-      this.$refs.grid.clearSelection()
+      this.$refs.grid.clearCheckboxRow()
     },
     handleExportData () {
       this.$parent.createDialog('ExportListDataDialog', {
