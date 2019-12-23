@@ -513,6 +513,8 @@ export default {
     },
     async handleSubmit () {
       this.submiting = true
+      const ListPath = this.$router.resolve(this.$route.path)
+      console.log(ListPath)
       try {
         const values = await this.form.fc.validateFields()
         if (values.platform_type === 'idc' && (R.isNil(values.startip) || R.isEmpty(values.startip))) {
@@ -537,7 +539,7 @@ export default {
         } else {
           await manager.create({ data })
         }
-        this.$router.push({ name: 'Network' })
+        this.$router.push({ path: ListPath.resolved.matched[0].path })
       } finally {
         this.submiting = false
       }
