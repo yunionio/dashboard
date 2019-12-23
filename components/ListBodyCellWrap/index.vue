@@ -82,6 +82,8 @@ export default {
   },
   data () {
     return {
+      // 是否在弹框里
+      dialogInsided: false,
       showBtn: false,
       editVisible: false, // edit form 的显隐
     }
@@ -110,6 +112,7 @@ export default {
       return false
     },
     showEdit () {
+      if (this.dialogInsided) return false
       if (this.alwaysShowEditBtn) return true
       if (this.editVisible) return true
       if (this.edit && this.showBtn) return true
@@ -133,6 +136,7 @@ export default {
     this.events = {}
     this.events.mouseenter = this.handleMouseenter
     this.events.mouseleave = this.handleMouseleave
+    this.findDialogByParent(this)
   },
   methods: {
     update (formData) {
@@ -148,6 +152,15 @@ export default {
       e.stopPropagation()
       e.preventDefault()
       if (this.showBtn) this.showBtn = false
+    },
+    findDialogByParent (vm) {
+      if (vm.$options.name === 'BaseDialog') {
+        this.dialogInsided = true
+      } else {
+        if (vm.$parent) {
+          this.findDialogByParent(vm.$parent)
+        }
+      }
     },
   },
 }
