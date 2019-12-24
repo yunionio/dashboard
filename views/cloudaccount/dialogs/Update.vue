@@ -3,7 +3,7 @@
     <div slot="header">更新账号密码</div>
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" action="更新账号密码" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <vxe-grid class="mb-4" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc"
          v-bind="formItemLayout">

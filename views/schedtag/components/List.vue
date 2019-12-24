@@ -11,6 +11,7 @@ import { mapGetters } from 'vuex'
 import { STRATEGY_OPT, STRATEGY_CN } from '@Cloudenv/constants/sched'
 import WindowsMixin from '@/mixins/windows'
 import { getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
+const RES_TYPES = { hosts: '宿主机', storages: '存储', networks: '网络' }
 
 export default {
   name: 'SchedtagList',
@@ -33,6 +34,14 @@ export default {
             dropdown: true,
             multiple: true,
             items: STRATEGY_OPT,
+          },
+          resource_type: {
+            label: '资源类型',
+            dropdown: true,
+            multiple: true,
+            items: Object.keys(RES_TYPES).map(key => {
+              return { label: RES_TYPES[key], key }
+            }),
           },
         },
       }),
@@ -59,8 +68,7 @@ export default {
           title: '资源类型',
           width: 80,
           formatter: ({ row }) => {
-            let table = { hosts: '宿主机', storages: '存储', networks: '网络' }
-            return table[row.resource_type] || '无'
+            return RES_TYPES[row.resource_type] || '无'
           },
         },
 

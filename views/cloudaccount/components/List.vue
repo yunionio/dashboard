@@ -17,6 +17,7 @@ import {
   getCopyWithContentTableColumn,
   getNameDescriptionTableColumn,
 } from '@/utils/common/tableColumn'
+import { getNameFilter, getFilter, getEnabledFilter, getStatusFilter, getBrandFilter, getPublicFilter, getTenantFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import { changeToArr } from '@/utils/utils'
 
@@ -75,13 +76,22 @@ export default {
           sync_status: Object.values(expectStatus.cloudaccountSyncStatus).flat(),
         },
         filterOptions: {
-          name: {
-            label: '名称',
-            filter: true,
-            formatter: val => {
-              return `name.contains(${val})`
-            },
-          },
+          name: getNameFilter(),
+          access_url: getFilter({
+            field: 'access_url',
+            title: '服务器地址',
+          }),
+          enabled: getEnabledFilter(),
+          status: getStatusFilter('cloudaccount'),
+          health_status: getStatusFilter({
+            field: 'health_status',
+            statusModule: 'cloudaccountHealthStatus',
+            title: '健康状态',
+          }),
+          brand: getBrandFilter(),
+          enable_auto_sync: getEnabledFilter({ title: '自动同步' }),
+          share_mode: getPublicFilter(),
+          tenant: getTenantFilter(),
         },
       }),
       columns: [

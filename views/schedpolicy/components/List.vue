@@ -10,6 +10,7 @@
 import { STRATEGY_OPT, STRATEGY_CN } from '@Cloudenv/constants/sched'
 import WindowsMixin from '@/mixins/windows'
 import { getNameDescriptionTableColumn, getEnabledTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
+import { getNameFilter, getEnabledFilter, getFilter } from '@/utils/common/tableFilter'
 
 export default {
   name: 'SchedpolicyList',
@@ -20,19 +21,18 @@ export default {
         resource: 'schedpolicies',
         getParams: { details: true },
         filterOptions: {
-          name: {
-            label: '名称',
-            filter: true,
-            formatter: val => {
-              return `name.contains(${val})`
-            },
-          },
+          name: getNameFilter(),
+          enabled: getEnabledFilter(),
           'strategy': {
             label: '偏好',
             dropdown: true,
             multiple: true,
             items: STRATEGY_OPT,
           },
+          schedtag: getFilter({
+            field: 'schedtag',
+            title: '调度标签',
+          }),
         },
       }),
       columns: [

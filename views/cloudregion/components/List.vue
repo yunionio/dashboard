@@ -9,6 +9,7 @@ import {
   getEnabledTableColumn,
   getNameDescriptionTableColumn,
 } from '@/utils/common/tableColumn'
+import { getNameFilter, getEnabledFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -20,13 +21,8 @@ export default {
         resource: 'cloudregions',
         getParams: { cloud_env: 'private_or_onpremise' },
         filterOptions: {
-          name: {
-            label: '名称',
-            filter: true,
-            formatter: val => {
-              return `name.contains(${val})`
-            },
-          },
+          name: getNameFilter(),
+          enabled: getEnabledFilter({ label: '状态' }),
         },
       }),
       columns: [

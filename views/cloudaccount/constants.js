@@ -331,16 +331,16 @@ export const keySecretFields = {
     },
   },
   google: {
-    s: 'private_key_id',
-    k: 'private_key',
+    s: 'private_key',
+    k: 'private_key_id',
     text: 'Google',
     placeholder: {
-      s: '请输入private_key_id',
-      k: '请输入private_key',
+      s: '请输入private_key',
+      k: '请输入private_key_id',
     },
     label: {
-      s: 'private_key_id',
-      k: 'private_key',
+      s: 'private_key',
+      k: 'private_key_id',
     },
   },
   ctyun: {

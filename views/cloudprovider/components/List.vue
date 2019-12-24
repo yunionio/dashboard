@@ -214,6 +214,10 @@ export default {
               tooltip = '请先启用'
               validate = false
             }
+            if (this.data.enable_auto_sync) {
+              tooltip = '请先取消设置自动同步'
+              validate = false
+            }
             return {
               tooltip,
               validate,

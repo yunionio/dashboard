@@ -24,7 +24,7 @@ export default {
           title: '绑定资源数量',
           slots: {
             default: ({ row }) => {
-              return [<a onClick={ () => this.$emit('tab-change', 'bind-resource') }>{ `${row.count}` }</a>]
+              return row.count > 0 ? [<a onClick={ () => this.$emit('tab-change', 'bind-resource') }>{ `${row.count}` }</a>] : 0
             },
           },
         },

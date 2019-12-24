@@ -54,7 +54,7 @@ export default {
           title: '绑定资源数量',
           width: 120,
           formatter: ({ row }) => {
-            return `${row.count}`
+            return `${row.count || 0}`
           },
         },
         {
