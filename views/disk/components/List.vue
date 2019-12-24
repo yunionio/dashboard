@@ -18,7 +18,7 @@ import {
   getCopyWithContentTableColumn,
   getRegionTableColumn,
 } from '@/utils/common/tableColumn'
-import { getTenantFilter, getStatusFilter, getBrandFilter } from '@/utils/common/tableFilter'
+import { getTenantFilter, getStatusFilter, getBrandFilter, getNameFilter, getFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import { sizestr } from '@/utils/utils'
@@ -36,21 +36,16 @@ export default {
           'filter.0': 'disk_type.notin(volume)',
         },
         filterOptions: {
-          name: {
-            label: '名称',
-            filter: true,
-            formatter: val => {
-              return `name.contains(${val})`
-            },
-          },
-          // storage: {
-          //   label: '主存储',
-          //   filter: true,
-          //   formatter: val => {
-          //     return `storage.contains(${val})`
-          //   },
-          // },
+          name: getNameFilter(),
           status: getStatusFilter('disk'),
+          storage: getFilter({
+            field: 'storage',
+            title: '主存储',
+          }),
+          guest: getFilter({
+            field: 'guest',
+            title: '主机',
+          }),
           disk_type: {
             label: '磁盘类型',
             dropdown: true,
