@@ -8,7 +8,7 @@ import ResetSecretQuestion from '@/views/auth/ResetSecretQuestion'
 import NotFoundPage from '@/views/exception/404'
 
 let routes = [
-  { name: 'Home', path: '/', redirect: '/vminstance' },
+  { name: 'Home', path: '/', redirect: '/dashboard' },
   {
     name: 'Auth',
     path: '/auth',
