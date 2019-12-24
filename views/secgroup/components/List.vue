@@ -219,7 +219,7 @@ export default {
               },
               {
                 label: '克隆',
-                permission: 'secgroups_create',
+                // permission: 'secgroups_create',
                 action: () => {
                   this.createDialog('CloneSecgroupDialog', {
                     data: [obj],
@@ -227,6 +227,36 @@ export default {
                     title: '克隆',
                     list: this.list,
                   })
+                },
+                meta: () => {
+                  const pArr = this.$store.getters.permission && this.$store.getters.permission['secgroups_create']
+                  const val = pArr[pArr.length - 1]
+                  if (val === 'deny') {
+                    return {
+                      validate: false,
+                    }
+                  }
+                  if (val === 'guest' || val === 'user' || val === 'allow') {
+                    const isSystemResource = this.$store.getters.scopeResource && this.$store.getters.scopeResource.system.includes(pArr[1])
+                    const isDomainResource = this.$store.getters.scopeResource && this.$store.getters.scopeResource.domain.includes(pArr[1])
+                    if (isSystemResource) {
+                      if (!this.$store.getters.isAdminMode) {
+                        return {
+                          validate: false,
+                        }
+                      }
+                    }
+                    if (isDomainResource) {
+                      if (!this.$store.getters.isDomainMode && !this.$store.getters.isAdminMode) {
+                        return {
+                          validate: false,
+                        }
+                      }
+                    }
+                  }
+                  return {
+                    validate: true,
+                  }
                 },
               },
               {
@@ -260,6 +290,7 @@ export default {
                 meta: () => {
                   return {
                     validate: this.isPower(obj) && this.$getDeleteResult(obj).validate,
+                    tooltip: !this.$getDeleteResult(obj).validate ? this.$getDeleteResult(obj).tooltip : '',
                   }
                 },
               },
