@@ -245,7 +245,7 @@ export default {
     async bindData () {
       const { data } = await this.fetchData()
       this.form.fc.setFieldsValue({
-        name: data.ifname_hint,
+        name: data.name,
         server_type: data.server_type,
         guest_ip_start: data.guest_ip_start,
         guest_ip_end: data.guest_ip_end,
