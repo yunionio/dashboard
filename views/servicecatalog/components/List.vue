@@ -25,7 +25,7 @@ export default {
       cardFields: {
         url: 'icon_url',
         title: 'name',
-        description: 'description',
+        desc: 'description',
       },
       columns: [
         getNameDescriptionTableColumn({
@@ -72,7 +72,7 @@ export default {
           }),
         },
         {
-          label: '更新',
+          label: '修改',
           permission: 'servicecatalogs_update',
           action: obj => {
             this.createDialog('UpdateServicecatalogDialog', {

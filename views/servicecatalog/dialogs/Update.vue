@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">更新服务</div>
+    <div slot="header">修改服务</div>
     <div slot="body">
       <servicecatalog-form v-if="decorators" ref="formRef" :decorators="decorators" :form="form" />
     </div>

@@ -15,7 +15,7 @@
         resource="servertemplates"
         v-decorator="decorators.guest_template" />
     </a-form-item>
-    <a-form-item label="图标URL" v-bind="formItemLayout">
+    <a-form-item label="图标URL" v-bind="formItemLayout" extra="建议使用4:3比例的图标">
       <a-input v-decorator="decorators.icon_url" placeholder="请输入URL" />
     </a-form-item>
   </a-form>
