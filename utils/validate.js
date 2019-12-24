@@ -43,7 +43,7 @@ export const REGEXP = {
   },
   /* eslint-disable no-useless-escape */
   url: {
-    regexp: /^(https?):\/\/(-\.)?([^\s\/?\.#-]+\.?)+(\/[^\s]*)?$/i,
+    regexp: /^(https?):\/\/(-\.)?([^\s\/?\.#]+\.?)+(\/[^\s]*)?$/i,
     message: i18n.t('validator.url'),
   },
   password: {
