@@ -128,7 +128,6 @@ export function getEnabledFilter () {
 }
 
 export function getFilter (params = {}) {
-  console.log(this)
   const { field, title, ...otherParams } = params
   const options = {
     label: title,
