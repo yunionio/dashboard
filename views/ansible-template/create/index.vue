@@ -23,7 +23,7 @@
       </a-form-item>
     </a-form>
     <page-footer>
-      <a-button type="primary" @click="handleConfirm" :loading="loading" class="ml-3">确认</a-button>
+      <a-button type="primary" @click="handleConfirm" :loading="loading" class="ml-3">确定</a-button>
       <a-button type="primary" @click="handleCancel" :loading="loading" class="ml-3">取消</a-button>
     </page-footer>
   </div>
