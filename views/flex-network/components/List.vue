@@ -11,6 +11,7 @@ import {
   getNameDescriptionTableColumn,
   getCopyWithContentTableColumn,
 } from '@/utils/common/tableColumn'
+import { getStatusFilter, getBrandFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -29,6 +30,22 @@ export default {
               return `name.contains(${val})`
             },
           },
+          mac: {
+            label: 'MAC地址',
+            filter: true,
+            formatter: val => {
+              return `mac.contains(${val})`
+            },
+          },
+          status: getStatusFilter('network'),
+          brand: getBrandFilter(),
+          associate_type: {
+            label: '绑定设备类型',
+            filter: true,
+            formatter: val => {
+              return `associate_type.contains(${val})`
+            },
+          },
         },
       }),
       columns: [
@@ -44,11 +61,10 @@ export default {
         getCopyWithContentTableColumn({ field: 'mac', title: 'MAC地址' }),
         getStatusTableColumn({ statusModule: 'network' }),
         getBrandTableColumn(),
-        {
+        getCopyWithContentTableColumn({
           field: 'associate_type',
           title: '绑定设备类型(VPC)',
-          width: 140,
-        },
+        }),
         getCopyWithContentTableColumn({ field: 'associate_id', title: '绑定设备' }),
       ],
     }

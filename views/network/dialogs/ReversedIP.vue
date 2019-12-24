@@ -3,7 +3,7 @@
     <div slot="header">{{params.title}}</div>
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" :action="params.title" name="IP子网" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <vxe-grid class="mb-4" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc">
         <a-form-item
           v-for="(item, i) in ipList"
@@ -35,7 +35,7 @@
         <a-form-item label="预留原因" v-bind="formItemLayout">
           <a-textarea v-decorator="['notes', {
             rules: [{ max: 200, message: '输入的字符长度不能大于200'}],
-          }]" placeholder="请填写预留原因" :rows="4" />
+          }]" placeholder="请填写预留原因" :rows="2" />
         </a-form-item>
       </a-form>
     </div>

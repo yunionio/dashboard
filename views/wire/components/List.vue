@@ -35,6 +35,14 @@ export default {
               return `name.contains(${val})`
             },
           },
+          bandwidth: {
+            label: '宽带',
+            dropdown: true,
+            multiple: true,
+            items: BAND_WIDTH_OPTION.map(({ label, value }) => {
+              return { label, key: value }
+            }),
+          },
         },
       }),
       columns: [

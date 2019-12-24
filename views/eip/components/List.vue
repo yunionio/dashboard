@@ -15,6 +15,7 @@ import {
   getCopyWithContentTableColumn,
   getRegionTableColumn,
 } from '@/utils/common/tableColumn'
+import { getTenantFilter, getStatusFilter, getBrandFilter, getAccountFilter } from '@/utils/common/tableFilter'
 import { findPlatform, typeClouds } from '@/utils/common/hypervisor'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
@@ -39,12 +40,29 @@ export default {
               return `name.contains(${val})`
             },
           },
+          brand: getBrandFilter(),
           ip_addr: {
             label: '地址',
             filter: true,
             formatter: val => {
               return `ip_addr.contains(${val})`
             },
+          },
+          status: getStatusFilter('eip'),
+          tenant: getTenantFilter(),
+          account: getAccountFilter(),
+          charge_type: {
+            label: '计费方式',
+            dropdown: true,
+            multiple: false,
+            // distinctField: {
+            //   type: 'extra_field',
+            //   key: 'charge_type',
+            // },
+            items: [
+              { label: '按流量计费', key: 'traffic' },
+              { label: '按带宽计费', key: 'bandwidth' },
+            ],
           },
         },
         steadyStatus: Object.values(expectStatus.eip).flat(),

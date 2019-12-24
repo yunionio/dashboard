@@ -20,7 +20,7 @@ import {
 import windows from '@/mixins/windows.js'
 import i18n from '@/locales'
 import { findPlatform } from '@/utils/common/hypervisor'
-import { getBrandFilter, getAccountFilter } from '@/utils/common/tableFilter'
+import { getBrandFilter, getAccountFilter, getTenantFilter } from '@/utils/common/tableFilter'
 
 const PROVIDER_FILTER_CN = i18n.t('env')
 
@@ -100,6 +100,30 @@ export default {
           },
           brand: getBrandFilter(),
           account: getAccountFilter(),
+          tenant: getTenantFilter(),
+          region: {
+            label: '区域',
+            dropdown: true,
+            multiple: false,
+            distinctField: {
+              type: 'field',
+              key: 'region',
+            },
+          },
+          vpc: {
+            label: 'VPC',
+            filter: true,
+            formatter: val => {
+              return `vpc.contains(${val})`
+            },
+          },
+          wire: {
+            label: '二层网络',
+            filter: true,
+            formatter: val => {
+              return `wire.contains(${val})`
+            },
+          },
         },
       }),
       columns: [

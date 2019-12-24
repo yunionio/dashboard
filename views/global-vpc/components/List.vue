@@ -7,10 +7,7 @@
 </template>
 
 <script>
-import {
-  getNameDescriptionTableColumn,
-  getStatusTableColumn,
-} from '@/utils/common/tableColumn'
+import { getNameDescriptionTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
