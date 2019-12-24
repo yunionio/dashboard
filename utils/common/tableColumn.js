@@ -106,7 +106,7 @@ export const getStatusTableColumn = ({ field = 'status', title = '状态', statu
   }
 }
 
-export const getEnabledTableColumn = ({ field = 'enabled', title = '启用', minWidth } = {}) => {
+export const getEnabledTableColumn = ({ field = 'enabled', title = '启用状态', minWidth } = {}) => {
   return getStatusTableColumn({
     field,
     title,
