@@ -4,7 +4,8 @@ set -o pipefail
 
 pushd $(dirname $(dirname "$BASH_SOURCE")) > /dev/null
 CUR_DIR=$(pwd)
-SRC_DIR=$(cd .. && pwd)
+SRC_DIR=$CUR_DIR
+#SRC_DIR=$(cd .. && pwd)
 popd > /dev/null
 
 DOCKER_DIR="$SRC_DIR"
