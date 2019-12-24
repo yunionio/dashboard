@@ -62,7 +62,7 @@ export default {
   computed: {
     nextText () {
       if (this.step.currentStep >= this.step.steps.length - 1) {
-        return '确认'
+        return '确定'
       }
       return '下一步'
     },
