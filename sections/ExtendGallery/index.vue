@@ -15,7 +15,7 @@
           <div class="extend-thumb"><img :src="item.thumb" /></div>
           <div class="extend-content ml-4 flex-fill">
             <div class="extend-title">{{ item.label }}</div>
-            <div class="extend-desc">{{ item.desc }}</div>
+            <div class="extend-desc text-color-help mt-1">{{ item.desc }}</div>
           </div>
         </li>
       </ul>
@@ -85,5 +85,8 @@ export default {
     vertical-align: middle;
     text-align: center;
   }
+}
+.extend-desc {
+  font-size: 12px;
 }
 </style>

@@ -32,7 +32,7 @@ export const options = {
   desc: '某项指标的统计数字',
   thumb: require('./assets/thumb.svg'),
   h: 2,
-  w: 6,
+  w: 5,
 }
 
 export default {

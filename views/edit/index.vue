@@ -58,6 +58,7 @@
 
 <script>
 import * as R from 'ramda'
+import { mapGetters } from 'vuex'
 import interact from 'interactjs'
 import VueGridLayout from 'vue-grid-layout'
 import GridShadow from '@Dashboard/components/GridShadow'
@@ -92,6 +93,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['scope']),
     id () {
       return this.$route.query.id
     },
@@ -135,7 +137,7 @@ export default {
   methods: {
     async fetchDashboardOptions () {
       try {
-        const response = await this.pm.get({ id: 'dashboard' })
+        const response = await this.pm.get({ id: `dashboard_${this.scope}` })
         if (response.data && response.data.value) {
           this.dashboardOptions = response.data.value || []
         }
@@ -143,7 +145,7 @@ export default {
         if (error.response && error.response.status === 404) {
           this.pm.create({
             data: {
-              name: 'dashboard',
+              name: `dashboard_${this.scope}`,
               value: [],
             },
           })
@@ -274,7 +276,7 @@ export default {
           options.push({ id, name: this.dashboardName })
         }
         this.pm.update({
-          id: 'dashboard',
+          id: `dashboard_${this.scope}`,
           data: {
             value: options,
           },
@@ -343,7 +345,7 @@ export default {
           response = await this.updateDashboard(id)
         }
         if (response) {
-          storage.set('__oc_dashboard__', { id: response.data.name, name: this.dashboardName })
+          storage.set(`__oc_dashboard_${this.scope}__`, { id: response.data.name, name: this.dashboardName })
         }
         this.$router.push('/dashboard')
       } finally {

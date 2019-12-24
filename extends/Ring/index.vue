@@ -3,8 +3,8 @@
     <div class="ring-card-wrap overflow-hidden d-flex flex-column h-100 w-100">
       <div class="ring-card-header">{{ form.fd.name || '磁贴名称' }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
       <div class="d-flex flex-fill align-items-center ml-4 mr-4">
-        <a-progress type="circle" :percent="percent" :strokeWidth="12" status="normal">
-          <template v-slot:format>{{ percentTips }}</template>
+        <a-progress type="circle" :percent="percent" :strokeWidth="12" :status="status" :strokeColor="percentColor">
+          <template v-slot:format><span class="percent-tips" :style="{ color: percentColor }">{{ percentTips }}</span></template>
         </a-progress>
         <div class="flex-fill ml-4">
           <div class="d-flex">
@@ -13,7 +13,7 @@
           </div>
           <div class="d-flex">
             <div class="flex-shrink-0 flex-grow-0">未使用</div>
-            <div class="ml-2 flex-fill text-right">{{ this.unUsage }}</div>
+            <div class="ml-2 flex-fill text-right">{{ this.displayUnUsage }}</div>
           </div>
           <div class="d-flex">
             <div class="flex-shrink-0 flex-grow-0">总量</div>
@@ -43,11 +43,11 @@ import QuotaConfig from '@Dashboard/sections/QuotaConfig'
 import { USAGE_CONFIG } from '@Dashboard/constants'
 
 export const options = {
-  label: '数字图',
-  desc: '某项指标的统计数字',
+  label: '使用率',
+  desc: '某个资源的使用率',
   thumb: require('./assets/thumb.svg'),
   h: 3,
-  w: 6,
+  w: 5,
 }
 
 export default {
@@ -184,12 +184,24 @@ export default {
       }
       return ret
     },
+    displayUnUsage () {
+      return this.unUsage < 0 ? 0 : this.unUsage
+    },
     percent () {
       if (this.usageNumber === 0 && this.allUsageNumber === 0) return 0
       return parseInt((this.usageNumber / this.allUsageNumber) * 100)
     },
     percentTips () {
       return `${this.percent} %`
+    },
+    percentColor () {
+      if (this.percent < 80) {
+        return '#52c41a'
+      }
+      if (this.percent < 100) {
+        return '#faad14'
+      }
+      return '#f5222d'
     },
     status () {
       let ret = 'normal'
@@ -279,5 +291,8 @@ export default {
   position: absolute;
   right: 10px;
   top: 10px;
+}
+.percent-tips {
+  font-size: 18px;
 }
 </style>

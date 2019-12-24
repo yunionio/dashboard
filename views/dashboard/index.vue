@@ -10,7 +10,10 @@
         </a-dropdown>
         <a-button type="link" icon="plus" @click="() => handleToEdit()">新建</a-button>
         <a-button type="link" icon="edit" @click="() => handleToEdit(currentDashboardOption.id)">编辑</a-button>
-        <a-button type="link" icon="delete" @click="handleRemoveDashboard">删除</a-button>
+        <a-popconfirm @confirm="handleRemoveDashboard">
+          <template v-slot:title>你所选<span class="font-weight-bold ml-2 mr-2">{{currentDashboardOption.name}}</span>将执行<span class="error-color ml-2 mr-2">删除</span>操作操作，是否确认？</template>
+          <a-button type="link" icon="delete">删除</a-button>
+        </a-popconfirm>
       </div>
       <a-button type="link" @click="swtchOldDashboard" v-if="$appConfig.isPrivate">使用旧版</a-button>
     </div>
@@ -60,6 +63,7 @@
 
 <script>
 import * as R from 'ramda'
+import { mapGetters } from 'vuex'
 import VueGridLayout from 'vue-grid-layout'
 import extendsComponents from '@Dashboard/extends'
 import Cookies from 'js-cookie'
@@ -89,6 +93,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['scope']),
     dashboardEmpty () {
       return this.dashboardOptions.length <= 0
     },
@@ -104,12 +109,12 @@ export default {
     async fetchDashboardOptions () {
       this.loading = true
       try {
-        const response = await this.pm.get({ id: 'dashboard' })
+        const response = await this.pm.get({ id: `dashboard_${this.scope}` })
         if (response.data && response.data.value) {
           this.dashboardOptions = response.data.value || []
         }
         if (this.dashboardOptions.length > 0) {
-          this.handleDashboardClick(storage.get('__oc_dashboard__') || this.dashboardOptions[0])
+          this.handleDashboardClick(storage.get(`__oc_dashboard_${this.scope}__`) || this.dashboardOptions[0])
         }
       } catch (error) {
         throw error
@@ -131,7 +136,7 @@ export default {
       }
     },
     handleDashboardClick (item) {
-      storage.set('__oc_dashboard__', item)
+      storage.set(`__oc_dashboard_${this.scope}__`, item)
       this.currentDashboardOption = item
       this.fetchDashboard()
     },
@@ -146,7 +151,7 @@ export default {
           newOptions.splice(index, 1)
         }
         const optionsResponse = await this.pm.update({
-          id: 'dashboard',
+          id: `dashboard_${this.scope}`,
           data: {
             value: newOptions,
           },
