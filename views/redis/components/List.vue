@@ -10,6 +10,7 @@
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { ENGINE_ARCH } from '../constants/index.js'
 import { sizestr } from '@/utils/utils'
+import { getNameFilter, getStatusFilter, getAccountFilter, getTenantFilter, getFilter } from '@/utils/common/tableFilter'
 import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getNameDescriptionTableColumn, getBrandTableColumn } from '@/utils/common/tableColumn'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
@@ -26,23 +27,8 @@ export default {
         },
         steadyStatus: Object.values(expectStatus.redis).flat(),
         filterOptions: {
-          name: {
-            label: '实例名称',
-            filter: true,
-            formatter: val => {
-              return `name.contains(${val})`
-            },
-          },
-          status: {
-            label: '实例状态',
-            dropdown: true,
-            multiple: true,
-            items: this.getSeachStatus(),
-            filter: true,
-            formatter: val => {
-              return `status.in(${val.join(',')})`
-            },
-          },
+          name: getNameFilter(),
+          status: getStatusFilter('redis'),
           brand: {
             label: '平台',
             dropdown: true,
@@ -52,6 +38,41 @@ export default {
               { label: '华为云', key: 'Huawei' },
             ],
           },
+          account: getAccountFilter(),
+          tenant: getTenantFilter(),
+          billing_type: getFilter({
+            field: 'billing_type',
+            title: '计费方式',
+            items: [
+              { label: '按量付费', key: 'postpaid' },
+              { label: '包年包月', key: 'prepaid' },
+            ],
+          }),
+          engine_version: {
+            label: '版本',
+            dropdown: true,
+            multiple: true,
+            distinctField: {
+              type: 'field',
+              key: 'engine_version',
+            },
+          },
+          arch_type: {
+            label: '实例类型',
+            dropdown: true,
+            multiple: true,
+            items: Object.keys(ENGINE_ARCH).map(key => {
+              return { label: ENGINE_ARCH[key], key }
+            }),
+          },
+          internal_connection_str: getFilter({
+            field: 'internal_connection_str',
+            title: '链接地址-内网',
+          }),
+          connection_str: getFilter({
+            field: 'internal_connection_str',
+            title: '链接地址-外网',
+          }),
         },
       }),
       columns: [
@@ -67,7 +88,7 @@ export default {
         }),
         {
           field: 'arch_type',
-          title: '类型',
+          title: '实例类型',
           width: 70,
           slots: {
             default: ({ row }) => {

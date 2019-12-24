@@ -10,6 +10,7 @@
 import { DBINSTANCE_CATEGORY } from '../constants/index.js'
 import { sizestr } from '@/utils/utils'
 import { Manager } from '@/utils/manager'
+import { getNameFilter, getFilter, getAccountFilter, getTenantFilter } from '@/utils/common/tableFilter'
 import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getNameDescriptionTableColumn, getBrandTableColumn } from '@/utils/common/tableColumn'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
@@ -26,16 +27,10 @@ export default {
         },
         steadyStatus: Object.values(expectStatus.rds).flat(),
         filterOptions: {
-          name: {
-            label: '实例名称',
-            filter: true,
-            formatter: val => {
-              return `name.contains(${val})`
-            },
-          },
-          status: {
-            label: '实例状态',
-            dropdown: true,
+          name: getNameFilter(),
+          status: getFilter({
+            title: '状态',
+            field: 'status',
             multiple: true,
             items: [
               { label: '运行中', key: 'running' },
@@ -43,11 +38,7 @@ export default {
               { label: '未知', key: 'unknown' },
               { label: '调度失败', key: 'sched_fail' },
             ],
-            filter: true,
-            formatter: val => {
-              return `status.in(${val.join(',')})`
-            },
-          },
+          }),
           brand: {
             label: '平台',
             dropdown: true,
@@ -57,6 +48,33 @@ export default {
               { label: '华为云', key: 'Huawei' },
             ],
           },
+          account: getAccountFilter(),
+          tennat: getTenantFilter(),
+          billing_type: getFilter({
+            field: 'billing_type',
+            title: '计费方式',
+            items: [
+              { label: '按量付费', key: 'postpaid' },
+              { label: '包年包月', key: 'prepaid' },
+            ],
+          }),
+          engine: getFilter({
+            field: 'engine',
+            title: '数据库引擎',
+            items: [
+              { label: 'MySQL', key: 'MySQL' },
+              { label: 'PostgreSQL', key: 'PostgreSQL' },
+              { label: 'SQLServer', key: 'SQLServer' },
+            ],
+          }),
+          internal_connection_str: getFilter({
+            field: 'internal_connection_str',
+            title: '链接地址-内网',
+          }),
+          connection_str: getFilter({
+            field: 'internal_connection_str',
+            title: '链接地址-外网',
+          }),
         },
       }),
       columns: [
@@ -71,6 +89,7 @@ export default {
           },
         }),
         {
+          field: 'category',
           title: '类型',
           width: 70,
           slots: {
@@ -80,6 +99,7 @@ export default {
           },
         },
         {
+          field: 'vcpu_count',
           title: '配置',
           width: 70,
           slots: {
@@ -89,6 +109,7 @@ export default {
           },
         },
         {
+          field: 'engine',
           title: '数据库引擎',
           width: 100,
           slots: {
@@ -107,8 +128,10 @@ export default {
         //   },
         // },
         {
+          field: 'internal_connection_str',
           title: '链接地址',
           minWidth: 200,
+          showOverflow: 'ellipsis',
           slots: {
             default: ({ row }) => {
               const pri = row.internal_connection_str
@@ -117,7 +140,7 @@ export default {
                 return '-'
               }
               return [
-                <div class='td-ellipsis'>{pri && <a-tooltip placement='topLeft' title={`内网：${pri}`}>内网：{pri}</a-tooltip>}</div>,
+                <div class="text-truncate">{pri && <a-tooltip placement='topLeft' title={`外网：${pri}`}>内网：{pri}</a-tooltip>}</div>,
                 <div class='td-ellipsis'>{pub && <a-tooltip placement='topLeft' title={`外网：${pub}`}>外网：{pub}</a-tooltip>}</div>,
               ]
             },

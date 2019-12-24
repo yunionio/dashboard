@@ -25,7 +25,9 @@
     </a-form-item>
      <a-form-item label="性能类型" v-bind="formItemLayout">
       <a-radio-group v-decorator="decorators.performance_type || ['performance_type', { initialValue: 'standard' }]" @change="eimtChange">
-         <a-radio-button :key="item" :value="item" v-for="item in performance_types">{{PERFORMANCE_TYPE[item]}}</a-radio-button>
+        <template v-for="item in performance_types">
+           <a-radio-button v-if="item" :key="item" :value="item">{{PERFORMANCE_TYPE[item]}}</a-radio-button>
+        </template>
       </a-radio-group>
     </a-form-item>
     <a-form-item label="内存" v-bind="formItemLayout" v-if="memorys && memorys.length > 0">
@@ -38,7 +40,7 @@
 <script>
 import * as R from 'ramda'
 import { CreateServerForm } from '@Compute/constants'
-import { ENGINE_ARCH, NODE_TYPE, PERFORMANCE_TYPE_KEYS, PERFORMANCE_TYPE, ENGINE_KEYS } from '@DB/views/redis/constants'
+import { ENGINE_ARCH, NODE_TYPE, PERFORMANCE_TYPE_KEYS, PERFORMANCE_TYPE, ENGINE_KEYS, NODE_KEYS } from '@DB/views/redis/constants'
 import { sizestr } from '@/utils/utils'
 export default {
   name: 'SkuFilters',
@@ -160,7 +162,10 @@ export default {
       const keys = ['engine', 'engine_version', 'local_category']
       const data = this.FC.getFieldsValue(keys)
       data['local_category'] = target.value || data.local_category
-      this.node_types = R.keys(R.pathOr({}, R.values(data), this.filterItems))
+      this.node_types = NODE_KEYS.filter((k) => {
+        const arr = R.keys(R.pathOr({}, R.values(data), this.filterItems))
+        return arr.indexOf(k) > -1
+      })
       this.setInitValue('node_type', () => {
         this.getPerformanceTypes()
       })
@@ -170,7 +175,10 @@ export default {
       const keys = ['engine', 'engine_version', 'local_category', 'node_type']
       const data = this.FC.getFieldsValue(keys)
       data['node_type'] = target.value || data.node_type
-      this.performance_types = R.pathOr({}, R.values(data), this.filterItems)
+      this.performance_types = PERFORMANCE_TYPE_KEYS.filter(k => {
+        const arr = R.keys(R.pathOr({}, R.values(data), this.filterItems))
+        return arr.indexOf(k) > -1
+      })
       this.setInitValue('performance_type', () => {})
     },
     archPoints (type) {
