@@ -8,6 +8,7 @@
 
 <script>
 import { getStatusTableColumn, getNameDescriptionTableColumn, getRegionTableColumn } from '@/utils/common/tableColumn'
+import { getNameFilter, getFilter, getStatusFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import expectStatus from '@/constants/expectStatus'
 import { sizestr } from '@/utils/utils'
@@ -32,6 +33,31 @@ export default {
         resource: 'dbinstancebackups',
         getParams: this.params,
         steadyStatus: Object.values(expectStatus.rdsBackup).flat(),
+        filterOptions: {
+          name: getNameFilter(),
+          status: getStatusFilter('rdsBackup'),
+          dbinstance: getFilter({
+            field: 'dbinstance',
+            title: '实例名称',
+          }),
+          engine: getFilter({
+            field: 'engine',
+            title: '数据库引擎',
+            multiple: true,
+            items: [
+              { label: 'MySQL', key: 'MySQL' },
+              { label: 'PostgreSQL', key: 'PostgreSQL' },
+              { label: 'SQLServer', key: 'SQLServer' },
+            ],
+          }),
+          backup_mode: getFilter({
+            field: 'backup_mode',
+            title: '备份类型',
+            items: Object.keys(BACKUP_TYPE).map(key => {
+              return { label: BACKUP_TYPE[key], key }
+            }),
+          }),
+        },
       }),
       columns: [
         getNameDescriptionTableColumn({
@@ -48,6 +74,7 @@ export default {
           field: 'dbinstance',
           minWidth: 100,
           title: '实例名称',
+          showOverflow: 'ellipsis',
         },
         {
           field: 'backup_mode',
