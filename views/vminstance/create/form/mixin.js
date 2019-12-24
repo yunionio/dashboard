@@ -240,6 +240,9 @@ export default {
             this.doForecast(genCreteData)
           }
         })
+        .catch(error => {
+          throw error
+        })
     },
     doCreateServertemplate (genCreateData) {
       const data = genCreateData.all()

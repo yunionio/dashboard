@@ -49,7 +49,7 @@ function secgroupValidator (rule, value, callback) {
 }
 
 function validateTag (rule, value, callback) {
-  if (Object.keys(value).length > 20) {
+  if (R.is(Object, value) && Object.keys(value).length > 20) {
     return callback(new Error('标签不可超过20个'))
   }
   callback()
