@@ -33,7 +33,7 @@ export default {
             },
           },
           'enabled': {
-            label: '启用',
+            label: '启用状态',
             dropdown: true,
             multiple: true,
             items: ENABLED_OPTS,

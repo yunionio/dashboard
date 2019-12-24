@@ -564,7 +564,7 @@ export default {
           actions: (obj) => {
             return [
               {
-                label: '禁用',
+                label: '启用/禁用',
                 submenus: [
                   {
                     label: '启用',

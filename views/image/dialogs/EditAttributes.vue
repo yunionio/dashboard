@@ -9,8 +9,8 @@
         </a-form-item>
         <a-form-item label="删除保护" v-bind="formItemLayout">
           <a-radio-group v-decorator="decorators.protected">
-            <a-radio value="true">启用</a-radio>
-            <a-radio value="false">解除</a-radio>
+            <a-radio-button value="true">启用</a-radio-button>
+            <a-radio-button value="false">禁用</a-radio-button>
           </a-radio-group>
         </a-form-item>
         <a-form-item label="操作系统" v-bind="formItemLayout">
