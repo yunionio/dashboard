@@ -11,7 +11,7 @@ export function getBrandItems (key = 'brands') {
 }
 
 export function mapperStatusToItems (items, statusModule) {
-  const status = i18n.t(statusModule)
+  const status = i18n.t(`status.${statusModule}`) || {}
   return items.map(item => {
     let label = item.label
     if (status) {
@@ -97,4 +97,49 @@ export function getIpFilter () {
     },
     jointFilter: true,
   }
+}
+
+export function getOsTypeFilter () {
+  return {
+    label: '系统类型',
+    dropdown: true,
+    multiple: true,
+    items: [
+      { label: 'Windows', key: 'windows' },
+      { label: 'Linux', key: 'linux' },
+      { label: 'VMware', key: 'VMWare' },
+    ],
+    filter: true,
+    formatter: val => {
+      return `os_type.contains(${val})`
+    },
+  }
+}
+
+export function getEnabledFilter () {
+  return {
+    label: '是否启用',
+    dropdown: true,
+    items: [
+      { label: '启用', key: true },
+      { label: '禁用', key: false },
+    ],
+  }
+}
+
+export function getFilter (params = {}) {
+  console.log(this)
+  const { field, title, ...otherParams } = params
+  const options = {
+    label: title,
+    filter: true,
+    formatter: val => {
+      return `${field}.contains(${val})`
+    },
+    ...otherParams,
+  }
+  if (options.items) {
+    options['dropdown'] = true
+  }
+  return options
 }
