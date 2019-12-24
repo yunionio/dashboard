@@ -77,7 +77,9 @@ export default {
           [key]: newVal,
         }, callback)
       } else {
-        callback && callback()
+        this.$nextTick(() => {
+          callback && callback()
+        })
       }
     },
     getEngine () {
