@@ -45,21 +45,32 @@ export function getBrandFilter (key) {
   }
 }
 
-export function getStatusFilter (statusModule) {
+export function getStatusFilter (params) {
+  let label = '状态'
+  let statusModule = ''
+  let field = 'status'
+  if (R.type(params) === 'Object') {
+    label = params['title'] || label
+    statusModule = params['statusModule']
+    field = params['field'] || field
+  }
+  if (R.type(params) === 'String') {
+    statusModule = params
+  }
   return {
-    label: '状态',
+    label,
     dropdown: true,
     multiple: true,
     distinctField: {
       type: 'field',
-      key: 'status',
+      key: field,
     },
     mapper: data => {
       return mapperStatusToItems(data, statusModule)
     },
     filter: true,
     formatter: val => {
-      return `status.in(${val.join(',')})`
+      return `${field}.in(${val.join(',')})`
     },
   }
 }
@@ -116,7 +127,7 @@ export function getOsTypeFilter () {
   }
 }
 
-export function getEnabledFilter () {
+export function getEnabledFilter (params = {}) {
   return {
     label: '启用状态',
     dropdown: true,
@@ -137,8 +148,25 @@ export function getFilter (params = {}) {
     },
     ...otherParams,
   }
-  if (options.items) {
+  if (options.items || options.distinctField) {
     options['dropdown'] = true
   }
   return options
+}
+
+export function getPublicFilter () {
+  return {
+    label: '共享模式',
+    filter: true,
+    dropdown: true,
+    multiple: true,
+    items: [
+      { label: '私有', key: 'account_domain' },
+      { label: '共享云账号', key: 'system' },
+      { label: '共享订阅', key: 'provider_domain' },
+    ],
+    formatter: val => {
+      return `share_mode.contains(${val})`
+    },
+  }
 }

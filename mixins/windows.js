@@ -66,7 +66,7 @@ export default {
     updateWindow (payload) {
       return this._updateWindow({ id: this.windowId, ...payload })
     },
-    createDialog (name, params) {
+    createDialog (name, params = {}) {
       const id = `${name}-${uuid(32)}`
       return this._createDialog({
         id,

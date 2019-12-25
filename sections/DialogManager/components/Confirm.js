@@ -60,7 +60,7 @@ const confirm = {
     }
     const RenderContent = () => {
       if (content) {
-        return <div class="text-colo" style={CONTENT_STYLE}>{content}</div>
+        return <div class="text-color" style={CONTENT_STYLE}>{content}</div>
       }
       return null
     }
