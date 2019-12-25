@@ -1039,10 +1039,6 @@ export default {
                         validate: false,
                         tooltip: null,
                       }
-                      if (findPlatform(obj.hypervisor) === SERVER_TYPE.public) {
-                        ret.tooltip = '公有云不支持此操作'
-                        return ret
-                      }
                       if (obj.billing_type === 'prepaid') {
                         ret.tooltip = '包年包月机器，不支持此操作'
                       }
