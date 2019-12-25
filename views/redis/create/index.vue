@@ -7,7 +7,8 @@
       <a-divider orientation="left">基础配置</a-divider>
       <a-form-item label="指定项目" class="mb-0" v-bind="formItemLayout">
         <domain-project :fc="form.fc"
-          :labelInValue= "false" />
+          :labelInValue= "false"
+          :decorators="{domain, project}" />
       </a-form-item>
       <a-form-item label="名称" v-bind="formItemLayout">
         <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverName')" />
@@ -42,6 +43,7 @@ import ItemArea from './components/ItemArea'
 import SKU from './components/SKU'
 import BottomBar from './components/BottomBar'
 import DomainProject from '@/sections/DomainProject'
+import { isRequired } from '@/utils/validate'
 
 export default {
   name: 'IDCCreate',
@@ -68,6 +70,24 @@ export default {
         labelCol: { span: CreateServerForm.labelCol },
       },
       decorators,
+      domain: [
+        'domain',
+        {
+          initialValue: this.$store.getters.userInfo.projectDomainId,
+          rules: [
+            { validator: isRequired(), message: '请选择域', trigger: 'change' },
+          ],
+        },
+      ],
+      project: [
+        'project',
+        {
+          initialValue: this.$store.getters.userInfo.projectId,
+          rules: [
+            { validator: isRequired(), message: '请选择项目', trigger: 'change' },
+          ],
+        },
+      ],
     }
   },
   computed: {

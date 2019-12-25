@@ -227,7 +227,6 @@ export default {
       try {
         const { data: { redis } } = await capabilityManager.batchGet({ params })
         this.filterItems = { redis }
-        console.log(this.filterItems)
       } catch (err) {
         throw err
       }
