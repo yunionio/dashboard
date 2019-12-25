@@ -165,7 +165,7 @@ export default {
       return true
     },
     networkParam () {
-      if (this.cloudregionZoneParams.cloudregion) return {}
+      if (!this.cloudregionZoneParams.cloudregion) return {}
       return {
         filter: 'server_type.notin(ipmi, pxe)',
         usable: true,
@@ -216,7 +216,7 @@ export default {
       return params
     },
     eipParams () {
-      if (this.cloudregionZoneParams.cloudregion) return {}
+      if (!this.cloudregionZoneParams.cloudregion) return {}
       return {
         project: this.project,
         region: this.cloudregionZoneParams.cloudregion,
