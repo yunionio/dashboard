@@ -5,7 +5,7 @@
       <dialog-selected-tips :count="params.data.length" :action="params.title" />
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc">
-        <s-k-u :disableds="disableds" :decorators="decorators" :filterSkuCallback="filterSkuCallback" />
+        <s-k-u :disableds="disableds" ref="REF_SKU" :decorators="decorators" :filterSkuCallback="filterSkuCallback" />
       </a-form>
     </div>
     <div slot="footer">
@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import { debounce } from 'lodash'
 import SKU from '../create/components/SKU'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -26,11 +27,6 @@ export default {
     SKU,
   },
   mixins: [DialogMixin, WindowsMixin],
-  provide () {
-    return {
-      form: this.form,
-    }
-  },
   data () {
     return {
       loading: false,
@@ -39,12 +35,20 @@ export default {
         engine_version: true,
         local_category: true,
       },
-      form: {
-        fc: this.$form.createForm(this),
-      },
     }
   },
   computed: {
+    form () {
+      const fc = this.$form.createForm(this, { onFieldsChange: debounce((vm, values) => this._debounceFieldsChange(vm, values)) })
+      const { getFieldDecorator, getFieldValue, getFieldsValue, setFieldsValue } = fc
+      return {
+        fc,
+        getFieldDecorator,
+        getFieldValue,
+        getFieldsValue,
+        setFieldsValue,
+      }
+    },
     redisItem () {
       const { data } = this.params
       const redisItem = data && data.length > 0 ? data[0] : {}
@@ -73,12 +77,24 @@ export default {
       }
     },
   },
+  provide () {
+    return {
+      form: this.form,
+      formItemLayout: this.formItemLayout,
+    }
+  },
   created () {
-    this.form.fc.getFieldDecorator('provider', { initialValue: this.redisItem.provider })
-    this.form.fc.getFieldDecorator('region', { initialValue: this.redisItem.cloudregion_id })
-    this.form.fc.getFieldDecorator('zone', { initialValue: this.redisItem.zone_id })
+    this.form.fc.getFieldDecorator('provider', { initialValue: this.redisItem.provider, preserve: true })
+    this.form.fc.getFieldDecorator('cloudregion', { initialValue: this.redisItem.cloudregion_id, preserve: true })
+    this.form.fc.getFieldDecorator('zone', { initialValue: this.redisItem.zone_id, preserve: true })
+    this.$nextTick(() => {
+      this.$refs['REF_SKU'].skuFetchs()
+    })
   },
   methods: {
+    _debounceFieldsChange (vm, changedFields) {
+      this.$refs['REF_SKU'].skuFetchs(changedFields)
+    },
     async handleConfirm () {
       this.loading = true
       try {

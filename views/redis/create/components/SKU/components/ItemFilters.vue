@@ -149,8 +149,8 @@ export default {
       const keys = ['engine', 'engine_version']
       const data = this.FC.getFieldsValue(keys)
       data['engine_version'] = target.value || data.engine_version
+      const arr = R.keys(R.pathOr({}, R.values(data), this.filterItems))
       this.local_categorys = ENGINE_KEYS.filter((k) => {
-        const arr = R.keys(R.pathOr({}, R.values(data), this.filterItems))
         return arr.indexOf(k) > -1
       })
       this.setInitValue('local_category', () => {
@@ -162,8 +162,8 @@ export default {
       const keys = ['engine', 'engine_version', 'local_category']
       const data = this.FC.getFieldsValue(keys)
       data['local_category'] = target.value || data.local_category
+      const arr = R.keys(R.pathOr({}, R.values(data), this.filterItems))
       this.node_types = NODE_KEYS.filter((k) => {
-        const arr = R.keys(R.pathOr({}, R.values(data), this.filterItems))
         return arr.indexOf(k) > -1
       })
       this.setInitValue('node_type', () => {
@@ -175,8 +175,8 @@ export default {
       const keys = ['engine', 'engine_version', 'local_category', 'node_type']
       const data = this.FC.getFieldsValue(keys)
       data['node_type'] = target.value || data.node_type
+      const arr = R.pathOr({}, R.values(data), this.filterItems)
       this.performance_types = PERFORMANCE_TYPE_KEYS.filter(k => {
-        const arr = R.keys(R.pathOr({}, R.values(data), this.filterItems))
         return arr.indexOf(k) > -1
       })
       this.setInitValue('performance_type', () => {})
@@ -227,7 +227,6 @@ export default {
       try {
         const { data: { redis } } = await capabilityManager.batchGet({ params })
         this.filterItems = { redis }
-        console.log(this.filterItems)
       } catch (err) {
         throw err
       }

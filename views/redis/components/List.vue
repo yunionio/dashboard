@@ -12,6 +12,7 @@ import { ENGINE_ARCH } from '../constants/index.js'
 import { sizestr } from '@/utils/utils'
 import { getNameFilter, getStatusFilter, getAccountFilter, getTenantFilter, getFilter } from '@/utils/common/tableFilter'
 import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getNameDescriptionTableColumn, getBrandTableColumn } from '@/utils/common/tableColumn'
+import { disableDeleteAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 
@@ -323,6 +324,7 @@ export default {
                   }
                 },
               },
+              disableDeleteAction(this),
             ]
           },
         },
@@ -510,6 +512,7 @@ export default {
                 },
               },
               setAuthMode(),
+              disableDeleteAction(this),
               {
                 label: '删除',
                 permission: 'redis_elasticcaches_delete',
