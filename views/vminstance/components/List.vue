@@ -35,6 +35,7 @@ import {
   getAccountFilter,
   getIpFilter,
 } from '@/utils/common/tableFilter'
+import { disableDeleteAction } from '@/utils/common/tableActions'
 import SystemIcon from '@/sections/SystemIcon'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
@@ -552,6 +553,7 @@ export default {
                   return ret
                 },
               },
+              disableDeleteAction(this),
               {
                 label: '删除',
                 permission: 'server_delete',
@@ -1491,6 +1493,7 @@ export default {
                   },
                 ],
               },
+              disableDeleteAction(this),
               {
                 label: '删除',
                 submenus: [

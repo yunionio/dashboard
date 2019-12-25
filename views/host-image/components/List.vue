@@ -10,6 +10,7 @@
 import { sizestr } from '@/utils/utils'
 import { getStatusTableColumn, getNameDescriptionTableColumn, getProjectTableColumn, isPublicTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import { getTenantFilter, getOsTypeFilter, getStatusFilter } from '@/utils/common/tableFilter'
+import { disableDeleteAction } from '@/utils/common/tableActions'
 import SystemIcon from '@/sections/SystemIcon'
 import BaseDropList from '@/sections/DropList'
 import WindowsMixin from '@/mixins/windows'
@@ -229,6 +230,7 @@ export default {
                   }
                 },
               },
+              disableDeleteAction(this),
               {
                 label: '删除',
                 permission: 'images_delete',

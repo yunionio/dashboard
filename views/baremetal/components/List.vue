@@ -14,6 +14,7 @@ import {
   getTenantFilter,
   getIpFilter,
 } from '@/utils/common/tableFilter'
+import { disableDeleteAction } from '@/utils/common/tableActions'
 
 export default {
   name: 'ImageList',
@@ -172,6 +173,7 @@ export default {
                   },
                 ],
               },
+              disableDeleteAction(this),
               {
                 label: '删除',
                 submenus: [
