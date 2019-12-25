@@ -139,7 +139,7 @@ export default {
         }
         publicImages = publicImages.filter((item) => { return item.imported === this.imported.toString() })
         publicImages.forEach(item => {
-          item['os'] = require(`@/assets/images/system-icons/${item['os']}.svg`)
+          item['os'] = require(`@/assets/images/os-images/${item['os']}.svg`)
         })
         this.list.data = arrToObjByKey(publicImages, 'id')
       }).catch((e) => {
