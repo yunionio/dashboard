@@ -110,7 +110,7 @@ export default {
     },
     doCreateWorkflow (values) {
       const params = {
-        ...values,
+        ...this.serverConfig,
         generate_name: values.name,
       }
       delete params.reason
