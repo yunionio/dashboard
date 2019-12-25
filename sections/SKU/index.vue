@@ -248,7 +248,7 @@ export default {
   },
   methods: {
     fetchData () {
-      this.fetchSkuList()
+      this.fetchSkuList().then(this.fetchCloudSkuRatesList)
     },
     getFormatPrice (price) {
       if (price) {
