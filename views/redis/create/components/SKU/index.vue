@@ -50,7 +50,6 @@ export default {
       const isUndefined = changedFields === undefined || field === undefined
       const skuParamsKey = ['memory_size_mb'].concat(capabilityParamsKeys).concat(instanceSpecsParamsKeys)
       try {
-        console.log(field, changedFields)
         if (capabilityParamsKeys.indexOf(field) > -1 || isUndefined) {
           await this.fetchCapability(capabilityParamsKeys)
         }
