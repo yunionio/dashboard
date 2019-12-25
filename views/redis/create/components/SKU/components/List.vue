@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import { NODE_TYPE } from '@DB/views/redis/constants'
 import PageListEmpty from '@/components/PageList/Loader'
 import { sizestr } from '@/utils/utils'
@@ -27,6 +28,11 @@ export default {
   inject: ['form'],
   components: {
     PageListEmpty,
+  },
+  props: {
+    filterSkuCallback: {
+      type: Function,
+    },
   },
   data () {
     return {
@@ -138,6 +144,9 @@ export default {
         const { data = [] } = await manager.list({ params })
         const list = data.data
         this.skuList = this.skuRepeat(this.skuSort(list))
+        if (this.filterSkuCallback && R.type(this.filterSkuCallback) === 'Function') {
+          this.skuList = this.skuList.filter(this.filterSkuCallback)
+        }
       } catch (err) {
         throw err
       } finally {
