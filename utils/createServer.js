@@ -987,9 +987,8 @@ export class GenCreateData {
     }
     // 标签
     if (this.fd.tag) {
-      data.metadata = this.fd.tag
+      data.__meta__ = this.fd.tag
     }
-    console.log(data, 'data')
     return data
   }
   /**
