@@ -250,6 +250,11 @@ export default {
         const data = { ...values }
         const tenant = Cookies.get('tenant')
         const scope = Cookies.get('scope')
+        // set region cookie
+        const region = values.region || this.form.fi.regions[0]
+        if (region) {
+          Cookies.set('region', region, { expires: 7 })
+        }
         if (tenant) data.username = `${tenant}/${data.username}`
         if (scope) data.scope = scope
         try {
