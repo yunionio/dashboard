@@ -4,22 +4,75 @@ import _ from 'lodash'
 import moment from 'moment'
 import classNames from 'classnames'
 
-const DEFAULT_LAST_BASE_INFO = [
-  {
-    field: 'created_at',
-    title: '创建时间',
-    formatter: ({ row }) => {
-      return (row.created_at && moment(row.created_at).format()) || '-'
+// 需要添加区域（cloudregion/cloudregion_id), 可用区（zone/zone_id)，云账号(account/account_id)，云订阅（manager/manager_id)的资源
+const appendOutherResources = ['servers', 'hosts', 'disks', 'storages', 'vpcs', 'wires', 'networks', 'snapshots']
+
+const getDefaultLastBaseInfo = (h, { data, list }) => {
+  const outher = [
+    {
+      field: 'cloudregion',
+      title: '区域',
+      slots: {
+        default: ({ row }) => {
+          return [
+            <div class='text-truncate'>
+              <list-body-cell-wrap copy row={ data } list={ list } field='cloudregion' title={ row['cloudregion'] } />
+              <list-body-cell-wrap copy row={ data } list={ list } field='cloudregion_id' title={ row['cloudregion_id'] } />
+            </div>,
+          ]
+        },
+      },
     },
-  },
-  {
-    field: 'updated_at',
-    title: '更新时间',
-    formatter: ({ row }) => {
-      return (row.updated_at && moment(row.updated_at).format()) || '-'
+    {
+      field: 'zone',
+      title: '可用区',
+      slots: {
+        default: ({ row }) => {
+          return [
+            <div class='text-truncate'>
+              <list-body-cell-wrap copy row={ data } list={ list } field='zone' title={ row['zone'] } />
+              <list-body-cell-wrap copy row={ data } list={ list } field='zone_id' title={ row['zone_id'] } />
+            </div>,
+          ]
+        },
+      },
     },
-  },
-]
+    {
+      field: 'account',
+      title: '云账号',
+      slots: {
+        default: ({ row }) => {
+          return [
+            <div class='text-truncate'>
+              <list-body-cell-wrap copy row={ data } list={ list } field='account' title={ row['account'] } />
+              <list-body-cell-wrap copy row={ data } list={ list } field='account_id' title={ row['account_id'] } />
+            </div>,
+          ]
+        },
+      },
+    },
+  ]
+  let ret = [
+    {
+      field: 'created_at',
+      title: '创建时间',
+      formatter: ({ row }) => {
+        return (row.created_at && moment(row.created_at).format()) || '-'
+      },
+    },
+    {
+      field: 'updated_at',
+      title: '更新时间',
+      formatter: ({ row }) => {
+        return (row.updated_at && moment(row.updated_at).format()) || '-'
+      },
+    },
+  ]
+  if (appendOutherResources.includes(list.resource)) {
+    ret = R.insertAll(0, outher, ret)
+  }
+  return ret
+}
 
 const getDefaultTopBaseInfo = (h, { idKey, statusKey, statusModule, data, list }) => {
   return [
@@ -111,7 +164,10 @@ export default {
         statusModule: this.statusModule,
         data: this.data,
         list: this.list,
-      }).concat(this.baseInfo).concat(DEFAULT_LAST_BASE_INFO)
+      }).concat(this.baseInfo).concat(getDefaultLastBaseInfo(this.$createElement, {
+        list: this.list,
+        data: this.data,
+      }))
       baseInfo = R.uniqBy(item => item.field, baseInfo)
       return baseInfo
     },
