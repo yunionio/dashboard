@@ -5,6 +5,7 @@
       :disableds="disableds"
       :decorators="decorators" />
     <sku-list
+      :filterSkuCallback="filterSkuCallback"
       ref="SKU_LIST" />
   </div>
 </template>
@@ -47,10 +48,9 @@ export default {
       const capabilityParamsKeys = ['billing_type', 'city', 'provider', 'cloudregion', 'zone']
       const instanceSpecsParamsKeys = ['billing_type', 'engine', 'engine_version', 'performance_type', 'local_category', 'node_type', 'performance_type']
       const field = Object.keys(changedFields || {})[0]
-      const isUndefined = changedFields === undefined || field === undefined
+      const isUndefined = changedFields === undefined
       const skuParamsKey = ['memory_size_mb'].concat(capabilityParamsKeys).concat(instanceSpecsParamsKeys)
       try {
-        console.log(field, changedFields)
         if (capabilityParamsKeys.indexOf(field) > -1 || isUndefined) {
           await this.fetchCapability(capabilityParamsKeys)
         }

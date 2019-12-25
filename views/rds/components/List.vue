@@ -12,6 +12,7 @@ import { sizestr } from '@/utils/utils'
 import { Manager } from '@/utils/manager'
 import { getNameFilter, getFilter, getAccountFilter, getTenantFilter } from '@/utils/common/tableFilter'
 import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getNameDescriptionTableColumn, getBrandTableColumn } from '@/utils/common/tableColumn'
+import { disableDeleteAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 
@@ -259,23 +260,19 @@ export default {
                   }
                 },
               },
-              {
-                label: '修改属性',
-                action: () => {
-                  this.createDialog('RDSEditAttrDialog', {
-                    title: '修改属性',
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    list: this.list,
-                  })
-                },
-                meta: () => {
-                  return {
-                    validate: selectedLength,
-                    tooltip: notSelectedTooltip,
-                  }
-                },
-              },
+              disableDeleteAction(this),
+              // {
+              //   label: '修改属性',
+              //   action: () => {
+              //     this.createDialog('RDSEditAttrDialog')
+              //   },
+              //   meta: () => {
+              //     return {
+              //       validate: selectedLength,
+              //       tooltip: notSelectedTooltip,
+              //     }
+              //   },
+              // },
               {
                 label: '重启',
                 action: () => {
@@ -320,17 +317,17 @@ export default {
             const isRunning = obj.status.toLowerCase() === 'running'
             const notRunninTip = !isRunning ? '仅运行中的实例支持此操作' : null
             return [
-              {
-                label: '修改属性',
-                action: () => {
-                  this.createDialog('RDSEditAttrDialog', {
-                    title: '修改属性',
-                    data: [obj],
-                    columns: this.columns,
-                    list: this.list,
-                  })
-                },
-              },
+              // {
+              //   label: '修改属性',
+              //   action: () => {
+              //     this.createDialog('RDSEditAttrDialog', {
+              //       title: '修改属性',
+              //       data: [obj],
+              //       columns: this.columns,
+              //       list: this.list,
+              //     })
+              //   },
+              // },
               {
                 label: '更改项目',
                 action: () => {
@@ -408,6 +405,7 @@ export default {
                   }
                 },
               },
+              disableDeleteAction(this),
               {
                 label: '删除',
                 permission: 'rds_dbinstances_delete',
