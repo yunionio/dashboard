@@ -6,14 +6,14 @@
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
-        <a-form-item label="删除保护" v-bind="formItemLayout">
+        <!-- <a-form-item label="删除保护" v-bind="formItemLayout">
           <a-radio-group v-decorator="decorators.disable_delete">
             <a-radio-button
               v-for="item of disableDeleteOptions"
               :key="item.key"
               :value="item.key">{{ item.label }}</a-radio-button>
           </a-radio-group>
-        </a-form-item>
+        </a-form-item> -->
         <template v-if="isKvm">
           <a-form-item label="启动介质" v-bind="formItemLayout">
             <a-radio-group v-decorator="decorators.boot_order">

@@ -7,12 +7,12 @@
         <a-form-item label="名称" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" plcaeholder="镜像名称" />
         </a-form-item>
-        <a-form-item label="删除保护" v-bind="formItemLayout">
+        <!-- <a-form-item label="删除保护" v-bind="formItemLayout">
           <a-radio-group v-decorator="decorators.protected">
             <a-radio-button value="true">启用</a-radio-button>
             <a-radio-button value="false">禁用</a-radio-button>
           </a-radio-group>
-        </a-form-item>
+        </a-form-item> -->
         <a-form-item label="操作系统" v-bind="formItemLayout">
           <a-radio-group @change="osTypeChangeHandle" v-decorator="decorators.osType">
             <a-radio-button value="Linux">
