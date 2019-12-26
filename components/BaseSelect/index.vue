@@ -6,11 +6,9 @@
     @change="change"
     @search="loadOpts"
     :loading="loading">
-    <template>
-      <a-select-option v-for="item of resOpts" :key="item.id" :value="item.id" :disabled="item.__disabled">
-        <option-label :nameKey="nameKey" :labelFormat="labelFormat" :data="item" :resource="resource" />
-      </a-select-option>
-    </template>
+    <a-select-option v-for="item of resOpts" :key="item.id" :value="item.id" :disabled="item.__disabled">
+      <option-label :nameKey="nameKey" :labelFormat="labelFormat" :data="item" :resource="resource" />
+    </a-select-option>
   </a-select>
 </template>
 <script>

@@ -42,7 +42,9 @@ class WaitStatusJob {
    */
   async checkStatus () {
     if (!this.data.list.manager) return
-    const params = this.data.list.getOptionParams()
+    const params = this.data.list.params
+    delete params.offset
+    delete params.limit
     try {
       const { data = {} } = await this.data.list.manager.get({
         id: this.data.id,
