@@ -114,7 +114,23 @@ export default {
       return Object.values(this.list.data).sort((a, b) => a.index - b.index).map(item => item.data)
     },
     filterOptions () {
-      return this.list.filterOptions
+      const { filterOptions } = this.list
+      if (!filterOptions || R.isEmpty(filterOptions)) return {}
+      const filterSortKeys = ['name', 'brand', 'provider', 'ip', 'ips', 'status', 'enabled', 'sn', 'os_type', 'tenant', 'region', 'host', 'billing_type']
+      const _filterOptions = {}
+      filterSortKeys.forEach(k => {
+        const _k = k.toLowerCase()
+        if (filterOptions[_k]) {
+          _filterOptions[_k] = filterOptions[_k]
+        }
+      })
+      Object.keys(filterOptions).forEach(k => {
+        const _k = k.toLowerCase()
+        if (!_filterOptions[_k]) {
+          _filterOptions[_k] = filterOptions[_k]
+        }
+      })
+      return _filterOptions
     },
     filter () {
       return this.list.filter
