@@ -76,6 +76,7 @@ export default {
         scope: '',
         details: true,
         status: 'active',
+        is_standard: true,
       },
       ignoreImageOptions: [
         IMAGES_TYPE_MAP.iso.key,
@@ -94,6 +95,19 @@ export default {
     }
   },
   computed: {
+    type () {
+      const brand = this.params.data[0].brand
+      return findPlatform(brand)
+    },
+    imageType () {
+      if (this.type === SERVER_TYPE.public) {
+        return IMAGES_TYPE_MAP.public.key
+      } else if (this.type === SERVER_TYPE.private) {
+        return IMAGES_TYPE_MAP.private.key
+      } else {
+        return IMAGES_TYPE_MAP.standard.key
+      }
+    },
     hypervisor () {
       return this.params.data[0].hypervisor
     },
@@ -152,7 +166,7 @@ export default {
           imageType: [
             'imageType',
             {
-              initialValue: IMAGES_TYPE_MAP.standard.key,
+              initialValue: this.imageType,
             },
           ],
         },
@@ -192,20 +206,12 @@ export default {
         ],
       }
     },
-    type () {
-      const brand = this.params.data[0].brand
-      return findPlatform(brand)
-    },
     cacheImageParams () {
       let params = {
         details: false,
         order_by: 'ref_count',
         order: 'desc',
-        image_type: 'customized',
         zone: this.params.data[0].zone_id,
-      }
-      if (this.type === SERVER_TYPE.private || this.type === SERVER_TYPE.public) {
-        params.image_type = 'system'
       }
       return params
     },
@@ -277,18 +283,18 @@ export default {
       return Object.keys(loginTypes)
     },
   },
-  watch: {
-    type: {
-      handler (val) {
-        if (val === SERVER_TYPE.public) {
-          this.$nextTick(() => {
-            this.form.fc.setFieldsValue({ 'imageType': IMAGES_TYPE_MAP.public.key })
-          })
-        }
-      },
-      immediate: true,
-    },
-  },
+  // watch: {
+  //   type: {
+  //     handler (val) {
+  //       if (val === SERVER_TYPE.public) {
+  //         this.$nextTick(() => {
+  //           this.form.fc.setFieldsValue({ 'imageType': IMAGES_TYPE_MAP.public.key })
+  //         })
+  //       }
+  //     },
+  //     immediate: true,
+  //   },
+  // },
   created () {
     this.serversManager = new Manager('servers', 'v2')
     this.fetchData()
