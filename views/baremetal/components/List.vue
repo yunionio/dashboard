@@ -93,6 +93,11 @@ export default {
           },
         },
         {
+          field: 'sn',
+          title: 'SN',
+          width: 50,
+        },
+        {
           field: 'metadata',
           title: '系统',
           width: 50,
