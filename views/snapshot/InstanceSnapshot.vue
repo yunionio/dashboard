@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import { steadyStatus } from './constants'
 import SnapshotList from './components/List'
 import { getTenantFilter, getStatusFilter } from '@/utils/common/tableFilter'
 
@@ -24,6 +25,7 @@ export default {
         getParams: {
           details: true,
         },
+        steadyStatus,
         filterOptions: {
           name: {
             label: '名称',

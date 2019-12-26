@@ -195,6 +195,7 @@ export default {
       }
       return this.params.list.onManager('performAction', {
         id: this.params.data[0].id,
+        steadyStatus: ['running', 'ready'],
         managerArgs: {
           action: 'instance-snapshot',
           data: params,
@@ -210,6 +211,7 @@ export default {
           await this.doCreateInstanceSnapshot()
         }
         this.loading = false
+        this.params.list.refresh()
         this.cancelDialog()
       } catch (error) {
         this.loading = false

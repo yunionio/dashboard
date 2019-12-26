@@ -8,7 +8,7 @@
 </template>
 
 <script>
-// import { STORAGE_TYPES } from './constants'
+import { steadyStatus } from './constants'
 import SnapshotList from './components/List'
 import { getTenantFilter, getStatusFilter, getBrandFilter } from '@/utils/common/tableFilter'
 
@@ -27,6 +27,7 @@ export default {
           with_meta: true,
           is_instance_snapshot: false,
         },
+        steadyStatus,
         filterOptions: {
           name: {
             label: '名称',
