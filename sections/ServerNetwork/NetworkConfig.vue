@@ -9,7 +9,6 @@
           v-decorator="decorator.networks(item.key)"
           resource="networks"
           :item.sync="item.network"
-          :label-format="labelFormat"
           :need-params="true"
           :params="networkParams"
           :select-props="{ allowClear: true, placeholder: '请选择IP子网' }" />
@@ -90,9 +89,6 @@ export default {
     },
     decrease (uid, index) {
       this.networkList.splice(index, 1)
-    },
-    labelFormat (item) {
-      return `${item.name}（${item.guest_ip_start} - ${item.guest_ip_end}, vlan=${item.vlan_id}）`
     },
   },
 }

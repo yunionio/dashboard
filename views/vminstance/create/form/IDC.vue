@@ -224,7 +224,7 @@ export default {
       return {}
     },
     networkParam () {
-      if (this.cloudregionZoneParams.cloudregion) return {}
+      if (!this.cloudregionZoneParams.cloudregion) return {}
       return {
         filter: 'server_type.notin(ipmi, pxe)',
         usable: true,
