@@ -134,6 +134,7 @@ export default {
         if (values.type === 'bind') {
           await this.doBindEip(ids, values)
         }
+        this.params.list.refresh()
         this.cancelDialog()
       } finally {
         this.loading = false
