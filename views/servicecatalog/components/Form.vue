@@ -1,7 +1,7 @@
 <template>
   <a-form
     :form="form.fc">
-    <a-form-item label="名称" v-bind="formItemLayout" help="" :extra="$t('validator.resourceName')">
+    <a-form-item label="名称" v-bind="formItemLayout">
       <a-input v-decorator="decorators.name" placeholder="请输入名称" />
     </a-form-item>
     <a-form-item label="描述" v-bind="formItemLayout">

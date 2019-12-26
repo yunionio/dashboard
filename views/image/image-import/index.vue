@@ -2,7 +2,7 @@
   <div>
     <div class="mb-4">
       <a-radio-group v-model="market" @change="chooseMaket">
-      <a-radio-button value="cloud">云服务</a-radio-button>
+      <a-radio-button value="cloud">云服务器</a-radio-button>
       <a-radio-button value="iso">ISO</a-radio-button>
     </a-radio-group>
     </div>
