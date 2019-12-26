@@ -29,7 +29,7 @@ export default {
       list: this.$list.createList(this, {
         resource: 'disks',
         steadyStatus: Object.values(expectStatus.disk).flat(),
-        getParams: { ...this.getParams, 'filter.0': 'disk_type.notin(volume)' },
+        getParams: { ...this.getParams, 'filter.0': 'disk_type.notin(volume)', snapshotpolicy_id: this.resId },
         filterOptions: {
           name: {
             label: '名称',
