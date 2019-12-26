@@ -8,6 +8,7 @@
 
 <script>
 import { getStatusTableColumn, getTimeTableColumn, getBrandTableColumn, getRegionTableColumn } from '@/utils/common/tableColumn'
+import { getBrandFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -31,13 +32,7 @@ export default {
           details: true,
         },
         filterOptions: {
-          name: {
-            label: '镜像名称',
-            filter: true,
-            formatter: val => {
-              return `name.contains(${val})`
-            },
-          },
+          brand: getBrandFilter('compute_engine_brands'),
         },
       }),
       columns: [

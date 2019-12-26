@@ -120,13 +120,13 @@ export default {
           usable: true,
         },
         filterOptions: this.params.title === 'onpremise' ? {
-          name: {
-            label: '名称',
-            filter: true,
-            formatter: val => {
-              return `name.contains(${val})`
-            },
-          },
+          // name: {
+          //   label: '名称',
+          //   filter: true,
+          //   formatter: val => {
+          //     return `name.contains(${val})`
+          //   },
+          // },
           access_ip: {
             label: 'IP',
             filter: true,

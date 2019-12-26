@@ -26,7 +26,7 @@
               </a-col>
               <a-col :span="12">
                 <a-icon type="sync" class="mr-1" @click="refresh" />
-                <a target="_blank" href="/snapshotpolicy" style="color: #409EFF;">创建自定快照策略</a>
+                <router-link target="_blank" :to="{ path: '/snapshotpolicy' }" style="color: #409EFF;">创建自定快照策略</router-link>
               </a-col>
             </a-row>
           </a-form-item>
