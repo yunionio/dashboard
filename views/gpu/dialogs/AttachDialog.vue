@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">关联主机</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" action="关联主机" />
+      <dialog-selected-tips name="GPU" :count="params.data.length" action="关联主机" />
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
