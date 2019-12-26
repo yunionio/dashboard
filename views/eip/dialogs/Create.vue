@@ -47,7 +47,6 @@
             v-decorator="decorators.network"
             resource="networks"
             :params="networkParams"
-            :label-format="genLabel"
             :remote-fn="q => ({ filter: `name.contains(${q})` })"
             @update:item="regionChange"
             :select-props="{ placeholder: '请选择IP子网' }" />
@@ -321,9 +320,6 @@ export default {
     },
     labelFormat (item) {
       return `${item.provider}/${item.cloudaccount}/${item.name}`
-    },
-    genLabel (item) {
-      return `${item.name}（${item.guest_ip_start} - ${item.guest_ip_end}, vlan=${item.vlan_id}）`
     },
     hiddenBrandwidthHandle (selectedProvider) {
       const providers = ['Azure', 'Aws', 'Qcloud']
