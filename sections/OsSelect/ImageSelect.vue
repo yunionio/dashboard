@@ -385,10 +385,11 @@ export default {
             imageType: this.getImageType(item),
           },
         }
+        // !!! 暂时去掉镜像缓存功能，原因是镜像缓存在宿主机01上，但是可能调度到宿主机02上，那么该条镜像就不是已缓存
         // 选择的镜像类型为公有云/私有云平台的标准及自定义镜像才去做缓存标识
-        if ((this.isPublic && !this.isPublicImage) || (this.isPrivate && !this.isPrivateImage)) {
-          newItem.feData.cached = this.getImageCached(item)
-        }
+        // if ((this.isPublic && !this.isPublicImage) || (this.isPrivate && !this.isPrivateImage)) {
+        //   newItem.feData.cached = this.getImageCached(item)
+        // }
         imageOptsMap[osDistribution].push(newItem)
       }
       // make other os the last option
