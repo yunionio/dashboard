@@ -110,7 +110,9 @@
       "inserting_iso": "正在插入虚拟光盘",
       "start_eject": "开始退出虚拟光盘",
       "ejecting_iso": "正在退出虚拟光盘",
-      "eject_fail": "退出虚拟光盘失败"
+      "eject_fail": "退出虚拟光盘失败",
+      "suspend": "挂起",
+      "resuming": "恢复中"
     },
     "network": {
       "init": "初始化",

@@ -2,7 +2,7 @@
 export default {
   server: {
     success: ['running'],
-    info: ['ready', 'deallocated', 'unknown'],
+    info: ['ready', 'deallocated', 'unknown', 'suspend'],
     // danger: [new RegExp('fail')] // 这条会在 base组件 中默认存在
   },
   network: {
