@@ -33,6 +33,14 @@ export default {
             multiple: true,
             items: ENABLED_OPTS,
           },
+          'schedpolicies': {
+            label: '调度标签',
+            filter: true,
+            jointFilter: true,
+            formatter: val => {
+              return `schedtags.id(schedtag_id).name.contains(${val})`
+            },
+          },
         },
       }),
       columns: [

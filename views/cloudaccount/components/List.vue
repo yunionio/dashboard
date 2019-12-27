@@ -17,7 +17,7 @@ import {
   getCopyWithContentTableColumn,
   getNameDescriptionTableColumn,
 } from '@/utils/common/tableColumn'
-import { getNameFilter, getFilter, getEnabledFilter, getStatusFilter, getBrandFilter, getPublicFilter, getTenantFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getFilter, getEnabledFilter, getStatusFilter, getBrandFilter, getPublicFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import { changeToArr } from '@/utils/utils'
 
@@ -91,7 +91,7 @@ export default {
           brand: getBrandFilter(),
           enable_auto_sync: getEnabledFilter({ title: '自动同步' }),
           share_mode: getPublicFilter(),
-          tenant: getTenantFilter(),
+          // tenant: getTenantFilter(),
         },
       }),
       columns: [
