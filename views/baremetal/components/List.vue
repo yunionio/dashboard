@@ -15,6 +15,7 @@ import { commonUnabled, cloudEnabled, cloudUnabledTip } from '../../vminstance/u
 import SystemIcon from '@/sections/SystemIcon'
 import { Manager } from '@/utils/manager'
 import { sizestr } from '@/utils/utils'
+import { disableDeleteAction } from '@/utils/common/tableActions'
 import { getProjectTableColumn, getStatusTableColumn, getCopyWithContentTableColumn, getIpsTableColumn, getNameDescriptionTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import expectStatus from '@/constants/expectStatus'
@@ -222,6 +223,7 @@ export default {
                   })
                 },
               },
+              disableDeleteAction(this),
               {
                 label: '重置密码',
                 permission: 'server_perform_deploy',
@@ -740,6 +742,7 @@ export default {
               {
                 label: '删除',
                 submenus: [
+                  disableDeleteAction(this),
                   {
                     label: '删除',
                     permission: 'server_delete',
