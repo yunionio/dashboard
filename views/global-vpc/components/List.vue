@@ -22,7 +22,7 @@ export default {
         },
         filterOptions: {
           model: {
-            label: '设备型号',
+            label: '名称',
             filter: true,
             formatter: val => {
               return `model.contains(${val})`

@@ -33,8 +33,9 @@ export default {
           mac: {
             label: 'MAC地址',
             filter: true,
+            // jointFilter: true,
             formatter: val => {
-              return `mac.contains(${val})`
+              return `mac.contains('${val}')`
             },
           },
           status: getStatusFilter('network'),

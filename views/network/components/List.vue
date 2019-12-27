@@ -103,19 +103,9 @@ export default {
           tenant: getTenantFilter(),
           region: {
             label: '区域',
-            dropdown: true,
-            multiple: false,
-            distinctField: {
-              type: 'field',
-              key: 'region',
-            },
           },
           vpc: {
             label: 'VPC',
-            filter: true,
-            formatter: val => {
-              return `vpc.contains(${val})`
-            },
           },
           wire: {
             label: '二层网络',
