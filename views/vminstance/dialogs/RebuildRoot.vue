@@ -216,9 +216,9 @@ export default {
       return params
     },
     isFreezeImg () {
-      if (this.hypervisor) {
-        return [HYPERVISORS_MAP.openstack.key].includes(this.hypervisor.toLowerCase())
-      }
+      // if (this.hypervisor) {
+      //   return [HYPERVISORS_MAP.openstack.key].includes(this.hypervisor.toLowerCase())
+      // }
       return false
     },
     imgHidden () {
