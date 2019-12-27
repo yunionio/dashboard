@@ -12,6 +12,7 @@ import EditAttributes from '@Network/views/network/EditAttributes'
 import Eip from '@Network/views/eip'
 import Host from '@Compute/views/host'
 import Physicalmachine from '@Compute/views/physicalmachine'
+import PhysicalmachineAdd from '@Compute/views/physicalmachine/add'
 import ServerRecovery from '@Compute/views/server-recovery'
 import DiskRecovery from '@Compute/views/disk-recovery'
 import ImageRecovery from '@Compute/views/image-recovery'
@@ -426,6 +427,11 @@ export default {
               name: 'Physicalmachine',
               path: '',
               component: Physicalmachine,
+            },
+            {
+              name: 'PhysicalmachineAdd',
+              path: 'add',
+              component: PhysicalmachineAdd,
             },
           ],
         },
