@@ -1,33 +1,35 @@
 <template>
   <div>
-    <page-header title="创建裸金属服务器" />
+    <page-header :title="isInstallOperationSystem ? '安装操作系统' : '创建裸金属服务器'" />
     <a-form
       class="mt-3"
       :form="form.fc"
       @submit="handleConfirm">
       <a-divider orientation="left">基础配置</a-divider>
-      <a-form-item label="区域" class="mb-0" v-bind="formItemLayout">
+      <a-form-item label="区域" class="mb-0" v-bind="formItemLayout" v-if="!isInstallOperationSystem">
         <cloudregion-zone
           :zone-params="params.zone"
           :cloudregion-params="params.region"
           :decorator="decorators.regionZone" />
       </a-form-item>
-      <a-form-item label="名称" v-bind="formItemLayout" extra="名称支持序号占位符‘#’，用法如下：名称：host## 数量：2,实例为：host01、host02，已有同名实例，序号顺延">
+      <a-form-item
+        label="名称"
+        v-bind="formItemLayout"
+        extra="名称支持序号占位符‘#’，用法如下：名称：host## 数量：2,实例为：host01、host02，已有同名实例，序号顺延">
         <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverName')" />
       </a-form-item>
       <a-form-item label="数量" v-bind="formItemLayout">
-        <a-input-number v-decorator="decorators.count" :min="1" :max="100" />
+        <a-input-number v-decorator="decorators.count" :min="1" :max="100" :disabled="isInstallOperationSystem" />
       </a-form-item>
       <a-form-item v-bind="formItemLayout" label="操作系统" extra="操作系统会根据选择的虚拟化平台和可用区域的变化而变化，公共镜像的维护请联系管理员">
         <os-select
           type="baremetal"
           hypervisor="baremetal"
           :image-params="imageParams"
-          @change="handleImageChange"
           :decorator="decorators.imageOS" />
       </a-form-item>
       <a-form-item v-bind="formItemLayout" label="规格">
-        <a-select v-decorator="decorators.specifications">
+        <a-select v-decorator="decorators.specifications" :disabled="isInstallOperationSystem">
           <a-select-option v-for="i in specOptions" :key="i.value" :value="i.value" @change="specificationChange">
             {{i.text}}
           </a-select-option>
@@ -86,13 +88,16 @@
       <a-form-item :wrapper-col="{ span: 20, offset: 3 }">
         <a-checkbox v-model="isBonding">启用bonding</a-checkbox>
       </a-form-item>
-      <a-form-item label="调度策略" v-bind="formItemLayout" class="mb-0">
+      <a-form-item label="调度策略" v-bind="formItemLayout" class="mb-0" v-if="!isInstallOperationSystem">
         <sched-policy
           server-type="baremetal"
           :disabled-host="policyHostDisabled"
           :policy-host-params="params.policyHostParams"
           :decorators="decorators.schedPolicy"
           :policy-schedtag-params="params.policySchedtag" />
+      </a-form-item>
+      <a-form-item label="备注" v-bind="formItemLayout" v-if="isInstallOperationSystem">
+        <a-input v-decorator="decorators.description" />
       </a-form-item>
       <bottom-bar
         :loading="submiting"
@@ -365,6 +370,9 @@ export default {
             ],
           },
         },
+        description: [
+          'description',
+        ],
       },
       zone: '',
       params: {
@@ -442,6 +450,14 @@ export default {
       }
     },
     networkParam () {
+      if (this.isInstallOperationSystem) {
+        return {
+          scope: this.$store.getters.scope,
+          zone: this.$route.query.zone_id,
+          host: this.$route.query.host_id,
+          usable: true,
+        }
+      }
       return {
         filter: 'server_type.notin(ipmi, pxe)',
         usable: true,
@@ -464,6 +480,12 @@ export default {
       }
       return false
     },
+    isInstallOperationSystem () {
+      if (this.$route.query.host_id) {
+        return true
+      }
+      return false
+    },
   },
   provide () {
     return {
@@ -479,6 +501,9 @@ export default {
       this.selectedImage = imageMsg
     })
     // this.fetchHosts()
+    if (this.$route.query.id) {
+      this._fetchSpec()
+    }
   },
   methods: {
     // 规格变动
@@ -492,6 +517,28 @@ export default {
       }
       this.selectedSpecItem = obj
       this.diskData = this.form.fi.capability.specs.hosts[value].disk
+    },
+    // 安装操作系统下获取规格
+    _fetchSpec () {
+      let manager = new this.$Manager('specs')
+      const params = { host_type: 'baremetal', filter: `id.equals(${this.$route.query.id})` }
+      manager.rpc({ methodname: 'GetHostSpecs', params }).then(res => {
+        let specs = res.data
+        this.form.fi.capability = {
+          specs: {
+            hosts: specs,
+          },
+        }
+        if (!R.isNil(specs) && !R.isEmpty(specs)) {
+          this._loadSpecificationOptions(specs)
+        } else {
+          this.specOptions = []
+          // 清空选中规格
+          this.$nextTick(() => {
+            this.form.fc.setFieldsValue({ specifications: '' })
+          })
+        }
+      })
     },
     capability (v) { // 可用区查询
       let data = { show_emulated: true, resource_type: this.resourceType, scope: this.$scope, host_type: 'baremetal' }
@@ -682,10 +729,6 @@ export default {
         },
       })
     },
-    // 监听镜像变化
-    handleImageChange () {
-      console.log(123)
-    },
     handleDiskItemRemove (idx) {
       this.diskOptionsDate.splice(idx, 1)
     },
@@ -761,9 +804,10 @@ export default {
     },
     async handleConfirm (e) {
       e.preventDefault()
+      let diskConfigs = []
       const values = await this.validateForm()
       const disks = []
-      let diskConfigs = []
+      const nets = []
       // 判断数据盘是否合法
       if (this.diskOptionsDate.length > 0) {
         this.diskOptionsDate.forEach((item, index) => {
@@ -814,15 +858,30 @@ export default {
         // 根据adapter排序diskConfigs
         diskConfigs.sort((a, b) => { return a.adapter - b.adapter })
       }
-      const netVals = Object.values(values.networks)
-      const nets = []
-      netVals.forEach(item => {
+      if (values.networks) {
+        const netVals = Object.values(values.networks)
+        netVals.forEach(item => {
+          const option = {
+            network: item,
+          }
+          // 是否启用bonding
+          if (this.isBonding) {
+            option['require_teaming'] = true
+            if (this.isInstallOperationSystem) option['private'] = false
+            nets.push(option)
+          } else {
+            nets.push(option)
+          }
+        })
+      } else {
         // 是否启用bonding
         if (this.isBonding) {
-          nets.push({ network: item, require_teaming: true })
+          nets.push({ exit: false, require_teaming: true })
+        } else {
+          nets.push({ exit: false })
         }
-        nets.push({ network: item })
-      })
+      }
+      // 判断是否是安装操作系统
       let params = {
         project_id: this.$store.getters.userInfo.projectId,
         count: values.count,
@@ -835,17 +894,23 @@ export default {
         disks,
         diskConfigs,
         nets,
-        prefer_host: values.schedPolicyHost,
+        prefer_host: this.isInstallOperationSystem ? this.$route.query.id : values.schedPolicyHost,
+        description: values.description,
       }
-      if (this.checkWorkflowEnabled(WORKFLOW_TYPES.APPLY_MACHINE)) { // 提交工单
-        let variables = {
-          process_definition_key: WORKFLOW_TYPES.APPLY_MACHINE,
-          initiator: this.$userInfo.id,
-          paramter: JSON.stringify(params),
+      if (this.isInstallOperationSystem) {
+        Reflect.deleteProperty(params, 'project_id')
+        this.createBaremetal(params)
+      } else {
+        if (this.checkWorkflowEnabled(WORKFLOW_TYPES.APPLY_MACHINE)) { // 提交工单
+          let variables = {
+            process_definition_key: WORKFLOW_TYPES.APPLY_MACHINE,
+            initiator: this.$userInfo.id,
+            paramter: JSON.stringify(params),
+          }
+          this.doCreateWorkflow(variables, params)
+        } else { // 创建裸金属
+          this.doForecast(params)
         }
-        this.doCreateWorkflow(variables, params)
-      } else { // 创建裸金属
-        this.doForecast(params)
       }
     },
     // 创建工单
@@ -891,7 +956,11 @@ export default {
           .then(res => {
             this.submiting = false
             this.$message.success('操作成功，开始创建')
-            this.$router.push('/baremetal')
+            if (this.isInstallOperationSystem) {
+              this.$router.push('/physicalmachine')
+            } else {
+              this.$router.push('/baremetal')
+            }
           })
           .catch(() => {
             this.submiting = false
@@ -901,7 +970,11 @@ export default {
           .then(res => {
             this.submiting = false
             this.$message.success('操作成功，开始创建')
-            this.$router.push('/baremetal')
+            if (this.isInstallOperationSystem) {
+              this.$router.push('/physicalmachine')
+            } else {
+              this.$router.push('/baremetal')
+            }
           })
           .catch(() => {
             this.submiting = false

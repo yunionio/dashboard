@@ -78,9 +78,6 @@ export default {
         this.networkComponent = ''
       }
     },
-    'isBonding' () {
-      console.log(132)
-    },
   },
   methods: {
     change (e) {

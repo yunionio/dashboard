@@ -633,11 +633,10 @@ export default {
                   {
                     label: '安装操作系统',
                     action: () => {
-                      let installPath = this.$router.resolve({
-                        path: '/physicalmachine/install',
+                      this.$router.push({
+                        path: '/baremetal/create',
                         query: { id: obj.id, type: 'baremetal', zone_id: obj.zone_id, host_id: obj.id },
                       })
-                      window.location.href = installPath.href
                     },
                     meta: () => {
                       if (!obj.is_baremetal) {
