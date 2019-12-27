@@ -52,17 +52,10 @@ export default {
             },
           },
           access_ip: {
-            label: '管理IP',
+            label: 'IP',
             filter: true,
             formatter: val => {
               return `access_ip.contains(${val})`
-            },
-          },
-          ipmi_ip: {
-            label: '外带IP',
-            filter: true,
-            formatter: val => {
-              return `ipmi_ip.contains(${val})`
             },
           },
         },

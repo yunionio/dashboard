@@ -38,10 +38,10 @@ export default {
         filterOptions: {
           name: getNameFilter(),
           status: getStatusFilter('disk'),
-          storage: getFilter({
-            field: 'storage',
-            title: '主存储',
-          }),
+          storage: {
+            label: '主存储',
+            jointFilter: true,
+          },
           guest: getFilter({
             field: 'guest',
             title: '主机',
@@ -55,19 +55,25 @@ export default {
               { label: '系统盘', key: 'sys' },
             ],
           },
-          // unused: {
-          //   label: '是否挂载',
-          //   dropdown: true,
-          //   multiple: true,
-          //   items: [
-          //   ],
-          // },
+          unused: {
+            label: '是否挂载',
+            dropdown: true,
+            items: [
+              { label: '是', key: false },
+              { label: '否', key: true },
+            ],
+          },
           brand: getBrandFilter(),
           tenant: getTenantFilter(),
           medium_type: {
             label: '介质类型',
             dropdown: true,
             multiple: true,
+            jointFilter: true,
+            filter: true,
+            formatter: val => {
+              return `storages.id(storage_id).medium_type.equals(${val})`
+            },
             items: Object.keys(MEDIUM_MAP).map((k) => {
               return { label: MEDIUM_MAP[k], key: k }
             }),

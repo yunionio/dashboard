@@ -26,7 +26,7 @@ export default {
           brand: getBrandFilter(),
           status: getStatusFilter('disk'),
           tenant: getTenantFilter(),
-          guest: getFilter({ field: 'guest', title: '云服务器' }),
+          // guest: getFilter({ field: 'guest', title: '云服务器' }),
           disk_type: getFilter({
             field: 'guest',
             title: '类型',

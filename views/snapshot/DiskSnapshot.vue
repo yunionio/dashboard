@@ -36,39 +36,38 @@ export default {
               return `name.contains(${val})`
             },
           },
-          status: getStatusFilter(),
+          status: getStatusFilter('snapshot'),
           brand: getBrandFilter(),
           tenant: getTenantFilter(),
-          storage_type: {
-            label: '存储类型',
-            dropdown: true,
-            multiple: true,
-            distinctField: {
-              type: 'field',
-              key: 'storage_type',
-            },
-            // items: Object.keys(STORAGE_TYPES).map(k => {
-            //   return { label: STORAGE_TYPES[k], key: k }
-            // }),
-          },
+          // storage_type: {
+          //   label: '存储类型',
+          //   dropdown: true,
+          //   multiple: true,
+          //   distinctField: {
+          //     type: 'field',
+          //     key: 'storage_type',
+          //   },
+          //   // items: Object.keys(STORAGE_TYPES).map(k => {
+          //   //   return { label: STORAGE_TYPES[k], key: k }
+          //   // }),
+          // },
           disk_name: {
             label: '硬盘',
-            dropdown: true,
-            multiple: true,
-            distinctField: {
-              type: 'field',
-              key: 'disk_name',
+            jointFilter: true,
+            filter: true,
+            formatter: val => {
+              return `disks.id(disk_id).name.contains(${val})`
             },
           },
-          guest: {
-            label: '虚拟机',
-            dropdown: true,
-            multiple: true,
-            distinctField: {
-              type: 'field',
-              key: 'guest',
-            },
-          },
+          // guest: {
+          //   label: '虚拟机',
+          //   dropdown: true,
+          //   multiple: true,
+          //   distinctField: {
+          //     type: 'field',
+          //     key: 'guest',
+          //   },
+          // },
           disk_type: {
             label: '磁盘类型',
             dropdown: true,

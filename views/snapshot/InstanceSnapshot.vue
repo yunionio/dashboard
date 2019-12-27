@@ -34,17 +34,17 @@ export default {
               return `name.contains(${val})`
             },
           },
-          status: getStatusFilter(),
+          status: getStatusFilter('snapshot'),
           tenant: getTenantFilter(),
-          guest: {
-            label: '虚拟机',
-            dropdown: true,
-            multiple: true,
-            distinctField: {
-              type: 'field',
-              key: 'guest',
-            },
-          },
+          // guest: {
+          //   label: '虚拟机',
+          //   dropdown: true,
+          //   multiple: true,
+          //   distinctField: {
+          //     type: 'field',
+          //     key: 'guest',
+          //   },
+          // },
         },
       }),
     }

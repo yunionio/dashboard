@@ -10,6 +10,12 @@
           </template>
           <template v-else>
             <div class="mv-2">
+              <div class="d-flex" v-if="loginInfos.ip.value">
+                <div><span v-html="loginInfos.ip.label" /></div>
+                <div><span>{{ loginInfos.ip.value }}</span><copy class="ml-1" :message="loginInfos.ip.value" /></div>
+              </div>
+            </div>
+            <div class="mv-2">
               <div class="d-flex">
                 <div><span v-html="loginInfos.username.label" /></div>
                 <div><span>{{ loginInfos.username.value }}</span><copy class="ml-1" :message="loginInfos.username.value" /></div>
@@ -97,6 +103,10 @@ export default {
         },
       },
       loginInfos: {
+        ip: {
+          label: 'IP：',
+          value: '',
+        },
         username: {
           label: '用户名：',
           value: '',
@@ -123,11 +133,14 @@ export default {
         const manager = new Manager(config.resource)
         this.loading = true
         try {
-          const { data: { password, username, account, keypair, login_key: loginKey } } = await manager.objectRpc({
+          const { data: { password, username, account, keypair, login_key: loginKey, ip } } = await manager.objectRpc({
             methodname: config.methodname,
             objId: this.serverId,
           })
           this.loginInfos.username.value = username || account
+          if (this.resourceType === 'baremetals') {
+            this.loginInfos.ip.value = ip
+          }
           if (keypair) {
             this.loginInfos.password.keypair = keypair
             this.loginInfos.password.loginKey = loginKey

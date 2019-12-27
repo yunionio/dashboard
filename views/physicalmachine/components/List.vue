@@ -53,7 +53,7 @@ export default {
             },
           },
           ipmi_ip: {
-            label: '外带IP',
+            label: '带外IP',
             filter: true,
             formatter: val => {
               return `ipmi_ip.contains(${val})`
@@ -85,16 +85,25 @@ export default {
         {
           field: 'custom_ip',
           title: 'IP',
-          width: 120,
+          width: 160,
           showOverflow: 'ellipsis',
           slots: {
             default: ({ row }) => {
               let cellWrap = []
               if (row.access_ip) {
-                cellWrap.push(<list-body-cell-wrap row={row} field="access_ip" copy />)
+                cellWrap.push(
+                  <div class="d-flex">
+                   管理IP：<list-body-cell-wrap row={row} field="access_ip" copy />
+                  </div>
+                )
               }
               if (row.ipmi_ip) {
-                cellWrap.push(<list-body-cell-wrap row={row} field="ipmi_ip" copy />)
+                cellWrap.push(
+                  <div class="d-flex">
+                   带外IP：
+                    <list-body-cell-wrap row={row} field="ipmi_ip" copy />
+                  </div>
+                )
               }
               return cellWrap
             },

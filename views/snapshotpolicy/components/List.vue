@@ -14,6 +14,7 @@ import {
   getProjectTableColumn,
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
+import { getTenantFilter, getStatusFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 
@@ -37,6 +38,8 @@ export default {
               return `name.contains(${val})`
             },
           },
+          status: getStatusFilter('snapshotpolicy'),
+          tenant: getTenantFilter(),
         },
       }),
       columns: [

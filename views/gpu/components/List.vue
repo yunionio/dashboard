@@ -48,15 +48,17 @@ export default {
           guest: {
             label: '关联主机',
             filter: true,
+            jointFilter: true,
             formatter: val => {
-              return `guest.contains(${val})`
+              return `servers.id(guest_id).name.contains(${val})`
             },
           },
           host: {
             label: '所在宿主机',
             filter: true,
+            jointFilter: true,
             formatter: val => {
-              return `host.contains(${val})`
+              return `hosts.id(host_id).name.contains(${val})`
             },
           },
         },
