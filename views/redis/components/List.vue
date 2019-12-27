@@ -388,17 +388,17 @@ export default {
               }
             }
             return [
-              {
-                label: '修改属性',
-                action: () => {
-                  this.createDialog('RedisEditAttrDialog', {
-                    title: '修改属性',
-                    data: [obj],
-                    columns: this.columns,
-                    list: this.list,
-                  })
-                },
-              },
+              // {
+              //   label: '修改属性',
+              //   action: () => {
+              //     this.createDialog('RedisEditAttrDialog', {
+              //       title: '修改属性',
+              //       data: [obj],
+              //       columns: this.columns,
+              //       list: this.list,
+              //     })
+              //   },
+              // },
               {
                 label: '更改项目',
                 action: () => {

@@ -1,5 +1,6 @@
 <template>
   <detail
+    :list="list"
     :data="data"
     :base-info="baseInfo"
     :extra-info="extraInfo"
