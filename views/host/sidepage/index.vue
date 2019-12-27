@@ -18,6 +18,7 @@
 <script>
 import VminstanceList from '@Compute/views/vminstance/components/List'
 import HostDetail from './Detail'
+import Dashboard from './Dashboard'
 import NetworkList from './Network'
 import StorageList from './Storage'
 import GpuList from './Gpu'
@@ -29,6 +30,7 @@ export default {
   name: 'HostSidePage',
   components: {
     HostDetail,
+    Dashboard,
     VminstanceList,
     NetworkList,
     StorageList,
@@ -40,6 +42,7 @@ export default {
     return {
       detailTabs: [
         { label: '详情', key: 'host-detail' },
+        { label: '资源统计', key: 'dashboard' },
         { label: '虚拟机', key: 'vminstance-list' },
         { label: '网络', key: 'network-list' },
         { label: '存储', key: 'storage-list' },
