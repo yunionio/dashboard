@@ -797,6 +797,54 @@ export default {
                       }
                     },
                   },
+                  {
+                    label: '挂起',
+                    permission: 'server_perform_suspend',
+                    action: () => {
+                      this.createDialog('VmSuspendDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      if (obj.hypervisor !== typeClouds.hypervisorMap.esxi.key) {
+                        ret.tooltip = '只有VMware主机支持此操作'
+                        return ret
+                      }
+                      return {
+                        validate: obj.status === 'running' && obj.hypervisor === typeClouds.hypervisorMap.esxi.key,
+                      }
+                    },
+                  },
+                  {
+                    label: '恢复',
+                    permission: 'server_perform_resume',
+                    action: () => {
+                      this.createDialog('VmResumeDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        list: this.list,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      if (obj.status !== 'suspend') {
+                        ret.tooltip = '只有挂起的主机支持此操作'
+                        return ret
+                      }
+                      return {
+                        validate: obj.hypervisor === typeClouds.hypervisorMap.esxi.key && obj.status === 'suspend',
+                      }
+                    },
+                  },
                 ],
               },
               {
