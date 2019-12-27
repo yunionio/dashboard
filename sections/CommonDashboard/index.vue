@@ -70,8 +70,6 @@ export default {
       const memory = getUsageData('memory', this.resData, usageMap, this.scope)
       const disk = getUsageData('disk', this.resData, usageMap, this.scope)
       const ip = getUsageData('ip', this.resData, usageMap, this.scope)
-      console.log(cpu, memory, disk, ip)
-
       return [
         {
           title: 'CPU',
