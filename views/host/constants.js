@@ -49,3 +49,79 @@ export const GAUGEMSG = [
     },
   },
 ]
+
+export const HOST_TOP5 = {
+  isKvm: [
+    {
+      name: 'cpu',
+      label: 'CPU使用率',
+      seleteItem: 'cpu_usage_pcore',
+      fromItem: 'vm_cpu',
+      unit: '%',
+    },
+    {
+      name: 'netio',
+      label: '网络入流量',
+      seleteItem: 'bps_recv',
+      fromItem: 'vm_netio',
+      unit: 'bps',
+    },
+    {
+      name: 'netio',
+      label: '网络出流量',
+      seleteItem: 'bps_sent',
+      fromItem: 'vm_netio',
+      unit: 'bps',
+    },
+    {
+      name: 'diskio',
+      label: '磁盘读速率',
+      seleteItem: 'read_bps',
+      fromItem: 'vm_diskio',
+      unit: 'bps',
+    },
+    {
+      name: 'diskio',
+      label: '磁盘写速率',
+      seleteItem: 'write_bps',
+      fromItem: 'vm_diskio',
+      unit: 'bps',
+    },
+  ],
+  noKvm: [
+    {
+      name: 'cpu',
+      label: 'CPU使用率',
+      seleteItem: 'usage_active',
+      fromItem: 'vm_cpu',
+    },
+    {
+      name: 'netio',
+      label: '网络入流量',
+      seleteItem: 'bps_recv',
+      fromItem: 'vm_netio',
+      unit: 'bps',
+    },
+    {
+      name: 'netio',
+      label: '网络出流量',
+      seleteItem: 'bps_sent',
+      fromItem: 'vm_netio',
+      unit: 'bps',
+    },
+    {
+      name: 'diskio',
+      label: '磁盘读速率',
+      seleteItem: 'read_bps',
+      fromItem: 'vm_diskio',
+      unit: 'bps',
+    },
+    {
+      name: 'diskio',
+      label: '磁盘写速率',
+      seleteItem: 'write_bps',
+      fromItem: 'vm_diskio',
+      unit: 'bps',
+    },
+  ],
+}
