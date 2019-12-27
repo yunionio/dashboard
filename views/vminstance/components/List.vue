@@ -417,7 +417,7 @@ export default {
                   }
                   const isAllReady = this.list.selectedItems.every((item) => { return item.status === 'ready' })
                   const isAllIdc = this.list.selectedItems.every((item) => {
-                    return findPlatform(item.hypervisor) === SERVER_TYPE.idc && this.isAdminMode
+                    return findPlatform(item.hypervisor, 'hypervisor') === SERVER_TYPE.idc && this.isAdminMode
                   })
                   // 如果是 VMware提示不支持
                   const isSomeVMware = this.list.selectedItems.some((item) => {
@@ -1033,7 +1033,7 @@ export default {
                         ret.tooltip = '无权限操作'
                         return ret
                       }
-                      if (findPlatform(obj.hypervisor) !== SERVER_TYPE.idc) {
+                      if (findPlatform(obj.hypervisor, 'hypervisor') !== SERVER_TYPE.idc) {
                         ret.tooltip = '仅本地IDC支持此操作'
                         return ret
                       }
