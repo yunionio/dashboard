@@ -70,37 +70,39 @@ export default {
       const memory = getUsageData('memory', this.resData, usageMap, this.scope)
       const disk = getUsageData('disk', this.resData, usageMap, this.scope)
       const ip = getUsageData('ip', this.resData, usageMap, this.scope)
+      console.log(cpu, memory, disk, ip)
+
       return [
         {
           title: 'CPU',
+          percent: cpu.used.value / (cpu.total.value || 1),
           msg: {
             current: cpu.used.formatValue,
             total: cpu.total.formatValue,
-            percent: cpu.used.value / cpu.total.value,
           },
         },
         {
           title: '内存',
+          percent: memory.used.value / (memory.total.value || 1),
           msg: {
             current: memory.used.formatValue,
             total: memory.total.formatValue,
-            percent: memory.used.value / memory.total.value,
           },
         },
         {
           title: '磁盘',
+          percent: disk.used.value / (disk.total.value || 1),
           msg: {
             current: disk.used.formatValue,
             total: disk.total.formatValue,
-            percent: disk.used.value / disk.total.value,
           },
         },
         {
           title: '私有IP',
+          percent: ip.used.value / (ip.total.value || 1),
           msg: {
             current: ip.used.formatValue,
             total: ip.total.formatValue,
-            percent: ip.used.value / ip.total.value,
           },
         },
       ]
