@@ -56,7 +56,7 @@ export default {
         const params = {
           name,
           scope: this.$store.getters.scope,
-          filter: `name.contains(${name})`,
+          filter: `name.contains('${name}')`,
         }
         const { data } = await manager.list({ params })
         this.isRepeated = data && data.data.length && data.total

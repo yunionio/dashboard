@@ -25,6 +25,10 @@ export const REGEXP = {
     regexp: /^[a-zA-Z][a-zA-Z0-9-]{0,127}([a-zA-Z0-9-]|#{1,3})$/,
     message: i18n.t('validator.serverName'),
   },
+  serverCreateName: {
+    regexp: /^[a-zA-Z][a-zA-Z0-9-${}]{0,127}([a-zA-Z0-9-${}]|#{1,3})$/,
+    message: i18n.t('validator.serverCreateName'),
+  },
   email: {
     regexp: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/,
     message: i18n.t('validator.email'),
