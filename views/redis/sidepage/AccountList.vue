@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { ACCOUNT_PRIVILEGES } from '../constants'
 import { getStatusTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
@@ -36,16 +37,16 @@ export default {
           title: '名称',
         },
         getStatusTableColumn({ statusModule: 'redisAccount' }),
-        // {
-        //   field: 'password',
-        //   title: '密码',
-        //   width: 50,
-        //   slots: {
-        //     default: ({ row }) => {
-        //       return [<PasswordFetcher serverId={row.id} resourceType='elasticcaches' />]
-        //     },
-        //   },
-        // },
+        {
+          field: 'password',
+          title: '密码',
+          width: 50,
+          slots: {
+            default: ({ row }) => {
+              return [<PasswordFetcher serverId={row.id} resourceType='elasticcacheaccounts' />]
+            },
+          },
+        },
         {
           field: 'account_type',
           title: '账号类型',
