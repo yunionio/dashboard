@@ -24,7 +24,7 @@
 
 <script>
 import { CreateServerForm } from '@Compute/constants'
-import NameRepeated from '@DB/sections/NameRepeated'
+import NameRepeated from '@/sections/NameRepeated'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import validateForm from '@/utils/validate'
