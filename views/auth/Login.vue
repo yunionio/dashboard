@@ -1,7 +1,7 @@
 <template>
   <div class="login-body">
     <div class="login-left" :style="{ height: `${panelHeight}px` }">
-      <h2>OneCloud</h2>
+      <h2>{{ $store.state.app.companyInfo.name }}</h2>
       <a-carousel autoplay :dots="false">
         <div v-for="(item, idx) of tips" :key="idx">
           <h4>{{ item.title }}</h4>
