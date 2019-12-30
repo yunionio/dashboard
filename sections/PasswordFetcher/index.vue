@@ -72,7 +72,7 @@ export default {
     resourceType: {
       type: String,
       required: true,
-      validator: val => ['servers', 'baremetals', 'baremetal_ssh', 'elasticcaches', 'dbinstanceaccounts'].includes(val),
+      validator: val => ['servers', 'baremetals', 'baremetal_ssh', 'elasticcaches', 'dbinstanceaccounts', 'elasticcacheaccounts'].includes(val),
     },
   },
   data () {
@@ -99,6 +99,10 @@ export default {
         },
         dbinstanceaccounts: {
           resource: 'dbinstanceaccounts',
+          methodname: 'GetLoginInfo',
+        },
+        elasticcacheaccounts: {
+          resource: 'elasticcacheaccounts',
           methodname: 'GetLoginInfo',
         },
       },
