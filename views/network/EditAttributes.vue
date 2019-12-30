@@ -282,7 +282,8 @@ export default {
           wire_id: this.wire_id,
         }
         await this.doUpdate(values)
-        this.$router.push({ name: 'Network' })
+        const networkPath = this.$router.resolve(this.$route.path)
+        this.$router.push({ path: networkPath.resolved.matched[0].path })
       } finally {
         this.submiting = false
       }
