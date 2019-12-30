@@ -156,7 +156,7 @@ export default {
     this.guestimagesM = new Manager('guestimages', 'v1')
     this.instanceSnapshots = new Manager('instance_snapshots', 'v2')
     this.fetchData()
-    // this.fetchCacheimages()
+    this.fetchCacheimages()
   },
   methods: {
     fetchData () {

@@ -168,16 +168,7 @@ export default {
         details: false,
         order_by: 'ref_count',
         order: 'desc',
-        zone: this.firstData.zone,
-        image_type: 'customized',
-      }
-      if (this.form.fi.imageType === IMAGES_TYPE_MAP.public.key) {
-        params.image_type = 'system'
-        return params
-      }
-      if (this.form.fi.imageType === IMAGES_TYPE_MAP.public_customize.key) {
-        params.image_type = 'customized'
-        return params
+        zone: this.firstData.zone_id,
       }
       return params
     },
