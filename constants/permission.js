@@ -11,12 +11,16 @@ export const PERMISSION = {
   'servers_list': ['compute', 'servers', 'list'],
   // 镜像
   'images_list': ['image', 'images', 'list'],
+  // 主机镜像
+  'guestimages_list': ['image', 'guestimages', 'list'],
   // 硬盘
   'disks_list': ['compute', 'disks', 'list'],
   // 快照
   'snapshots_list': ['compute', 'snapshots', 'list'],
   // 自动快照策略
   'snapshotpolicy_list': ['compute', 'snapshotpolicies', 'list'],
+  // 主机快照
+  'instance_snapshots_list': ['compute', 'instance_snapshots', 'list'],
   // 安全组
   'secgroups_list': ['compute', 'secgroups', 'list'],
   // 弹性公网IP
@@ -65,6 +69,10 @@ export const PERMISSION = {
   'k8s_rbacrolebindings_list': ['k8s', 'rbacrolebindings', 'list'],
   // rbacroles
   'k8s_serviceaccounts_list': ['k8s', 'serviceaccounts', 'list'],
+  // 主机模板
+  'servertemplates_list': ['compute', 'servertemplates', 'list'],
+  // 服务目录
+  'servicecatalogs_list': ['compute', 'servicecatalogs', 'list'],
   // 负载均衡实例管理
   'lb_loadbalancers_list': ['compute', 'loadbalancers', 'list'],
   // 负载均衡监听
