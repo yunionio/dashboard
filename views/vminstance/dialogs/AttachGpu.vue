@@ -52,7 +52,7 @@ export default {
       form: {
         fc: this.$form.createForm(this, { onValuesChange: this.onValuesChange }),
         fd: {
-          device: '',
+          device: [],
         },
         fi: {
           isOpenGpu: false,
@@ -159,6 +159,7 @@ export default {
         this.cancelDialog()
       } catch (error) {
         this.loading = false
+        throw error
       }
     },
     labelFormat (val) {
@@ -169,15 +170,18 @@ export default {
         if (val.guest_id === this.selectedItems[0].id) {
           this.bindGpus.push(val.id)
           this.bindGpusNames.push(val.model)
-        } else {
-          return false
         }
+        return false
       }
       return true
     },
     onValuesChange (props, values) {
       Object.keys(values).forEach((key) => {
-        this.form.fd[key] = values[key]
+        if (key === 'device') {
+          this.form.fd[key] = [values[key]]
+        } else {
+          this.form.fd[key] = values[key]
+        }
       })
     },
   },
