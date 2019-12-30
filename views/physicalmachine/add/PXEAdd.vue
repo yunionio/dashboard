@@ -17,9 +17,6 @@
       <a-form-item label="管理口IP" extra="会根据输入的IP子网或者IP地址设置物理机的管理口IP，留空则使用DHCP自动分配的IP作为管理口IP">
         <net-select v-decorator="decorators.net" />
       </a-form-item>
-      <a-form-item :wrapper-col="offsetWrapperCol">
-        <a-checkbox v-decorator="decorators.no_prepare">只注册不引导</a-checkbox>
-      </a-form-item>
     </template>
     <template v-if="isFile">
       <file-select
@@ -27,6 +24,9 @@
         :decorators="decorators"
         download-url="/v1/downloads/BatchHostPXERegister" />
     </template>
+    <a-form-item :wrapper-col="offsetWrapperCol">
+      <a-checkbox v-decorator="decorators.no_prepare">只注册不引导</a-checkbox>
+    </a-form-item>
   </div>
 </template>
 
