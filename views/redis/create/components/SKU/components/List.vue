@@ -91,6 +91,26 @@ export default {
           },
         },
         { field: 'max_connections', title: '最大链接数', sortable: true },
+        {
+          field: 'rate',
+          title: '价格',
+          sortable: true,
+          slots: {
+            default: ({ row }) => {
+              // const { getFieldsValue } = this.form
+              // const { billing_type, duration } = getFieldsValue(['billing_type', 'duration'])
+              if (row.rate) {
+                const rate = row.rate
+                // let unit = '小时'
+                return [
+                  <span style="color: rgb(230, 139, 80);">{ rate.hour_price }</span>,
+                  <span> 元 / 小时</span>,
+                ]
+              }
+              return '-'
+            },
+          },
+        },
         { field: 'description', title: '备注' },
       ]
       return column
@@ -125,25 +145,40 @@ export default {
         }
       })
     },
-    // async fetchGetRates (skuList = this.skuList) {
-    //   const managerRates = new this.$Manager('cloud_sku_rates', 'v1')
-    //   const params = []
-    //   skuList.forEach(sku => {
-    //     // eslint-disable-next-line camelcase
-    //     const { provider, cloudregion_id, zone_id, cache = 'cache', instance_spec } = sku
-    //     // eslint-disable-next-line camelcase
-    //     let _arr = [ provider, cloudregion_id, zone_id, cache, instance_spec ]
-    //     params.push(_arr.join('::'))
-    //   })
-    //   // eslint-disable-next-line camelcase
-    //   const param_keys = params.join('$')
-    //   console.log(param_keys)
-    //   const list = await managerRates.list({ params: {
-    //     // param_keys,
-    //     param_keys: 'Aliyun::cn-beijing-d::redis.master.small.default:v2.8',
-    //   } })
-    //   console.log(list, params.join('$'))
-    // },
+    async fetchGetRates (skuList = this.skuList) {
+      const managerRates = new this.$Manager('cloud_sku_rates', 'v1')
+      const params = []
+      skuList.forEach(sku => {
+        // eslint-disable-next-line camelcase
+        const { provider, region_ext_id, zone_ext_id, cache = 'cache', name } = sku
+        // eslint-disable-next-line camelcase
+        let _arr = [ provider.toLowerCase(), region_ext_id, zone_ext_id, cache, name ]
+        let key = _arr.join('::')
+        sku['data_key'] = key
+        params.push(key)
+      })
+      // eslint-disable-next-line camelcase
+      const param_keys = params.join('$')
+      try {
+        const rateData = {}
+        const { data = {} } = await managerRates.list({ params: {
+          param_keys,
+        } })
+        const retList = data.data
+        if (retList && retList.length > 0) {
+          retList.forEach(item => {
+            rateData[item.data_key] = item
+          })
+        }
+        // this.rateData = rateData
+        this.skuList = skuList.map(sku => {
+          sku['rate'] = rateData[sku.data_key]
+          return sku
+        })
+      } catch (err) {
+        throw err
+      }
+    },
     async fetchSkus (paramKeys) {
       const { getFieldsValue } = this.form
       const params = await new Promise((resolve, reject) => {
@@ -166,7 +201,7 @@ export default {
         if (this.filterSkuCallback && R.type(this.filterSkuCallback) === 'Function') {
           this.skuList = this.skuList.filter(this.filterSkuCallback)
         }
-        // this.fetchGetRates()
+        this.fetchGetRates()
       } catch (err) {
         throw err
       } finally {
