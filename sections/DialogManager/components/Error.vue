@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">错误信息</div>
     <div class="error-body" slot="body">
-      <div v-for="(item, i) in details" :key="i">
+      <div v-for="(item, i) in details" :key="i" class="mb-2">
          <div class="d-flex pb-2 " v-if="item.id">
           <div class="label">ID: </div>
           <div class="error-color ml-3">
@@ -12,12 +12,12 @@
         </div>
         <div class="d-flex pb-2">
           <div class="label">错误消息: </div>
-          <div class="error-color ml-3">
+          <div class="error-color ml-3 overflow-auto">
             <div>{{ item.class }}</div>
             <div>{{ item.detail }}</div>
           </div>
         </div>
-        <div class="d-flex pb-2 mt-2 border-bottom">
+        <div class="d-flex pb-2 mt-2 border-bottom overflow-auto">
           <div class="label">错误源信息: </div>
           <pre class="error-color ml-3">{{ item.resource }}</pre>
         </div>

@@ -10,7 +10,7 @@ import axios from 'axios'
 import qs from 'qs'
 import store from '@/store'
 import router from '@/router'
-import { getHttpErrorMessage, getHttpReqMessage } from '@/utils/error'
+import { getHttpErrorMessage, getHttpReqMessage, getErrorBody } from '@/utils/error'
 import { uuid } from '@/utils/utils'
 
 const http = axios.create({
@@ -95,7 +95,13 @@ const showErrorNotify = ({ errorMsg, reqMsg }) => {
 
 const showHttpBatchErrorMessage = response => {
   const errorList = response.data.data.filter(val => val.status !== 200)
-  const errorMsgList = errorList.map(errorData => ({ ...getHttpErrorMessage(errorData.data, true), id: errorData.id }))
+  const errorMsgList = errorList.map(error => {
+    const errorBody = getErrorBody(error.data).error
+    return {
+      ...getHttpErrorMessage(errorBody, true),
+      id: error.id,
+    }
+  })
   if (!errorMsgList || !errorMsgList.length) return
   const reqMsg = getHttpReqMessage(response)
   showErrorNotify({ errorMsg: errorMsgList, reqMsg })
@@ -146,6 +152,21 @@ export const needLogout = error => {
   const isAuth = error.config.url.startsWith('/api/v1/auth')
   const isNoToken = error.response.data && error.response.data.details && error.response.data.details.includes('No token in header')
   return isAuth || isNoToken
+}
+
+/**
+ * @param {Object} res axios 请求的直接返回值，例如主机创建部分的处理
+ * @description 判断请求是否成功，包括批量
+ */
+export const isSuccess = res => {
+  const { data, status } = res
+  if (status === 200) return true
+  if (status === 207) {
+    if (data.data.every(val => val.status === 200)) {
+      return true
+    }
+  }
+  return false
 }
 
 // response interceptor
