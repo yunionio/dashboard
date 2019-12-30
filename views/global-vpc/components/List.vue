@@ -21,11 +21,11 @@ export default {
           details: true,
         },
         filterOptions: {
-          model: {
+          name: {
             label: '名称',
             filter: true,
             formatter: val => {
-              return `model.contains(${val})`
+              return `name.contains(${val})`
             },
           },
         },
@@ -34,7 +34,7 @@ export default {
         getNameDescriptionTableColumn({
           vm: this,
           hideField: true,
-          addLock: true,
+          // addLock: true,
           slotCallback: row => {
             return (
               <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'globalVpcSidePage') }>{ row.name }</side-page-trigger>
