@@ -555,6 +555,62 @@ export default {
               },
               disableDeleteAction(this),
               {
+                label: '挂起',
+                permission: 'server_perform_suspend',
+                action: () => {
+                  this.createDialog('VmSuspendDialog', {
+                    data: [obj],
+                    columns: this.columns,
+                    list: this.list,
+                  })
+                },
+                meta: () => {
+                  const ret = {
+                    validate: false,
+                    tooltip: null,
+                  }
+                  const isAllVMware = this.list.selectedItems.every(item => item.hypervisor === typeClouds.hypervisorMap.esxi.key)
+                  const isAllRunning = this.list.selectedItems.every(item => item.status === 'running')
+                  if (!isAllVMware) {
+                    ret.validate = false
+                    ret.tooltip = '仅VMware支持此操作'
+                  }
+                  if (!isAllRunning) {
+                    ret.validate = false
+                    ret.tooltip = '请选择开机的机器进行操作'
+                  }
+                  return ret
+                },
+              },
+              {
+                label: '恢复',
+                permission: 'server_perform_resume',
+                action: () => {
+                  this.createDialog('VmResumeDialog', {
+                    data: [obj],
+                    columns: this.columns,
+                    list: this.list,
+                  })
+                },
+                meta: () => {
+                  const ret = {
+                    validate: false,
+                    tooltip: null,
+                  }
+                  const isAllVMware = this.list.selectedItems.every(item => item.hypervisor === typeClouds.hypervisorMap.esxi.key)
+                  const isAllSuspend = this.list.selectedItems.every(item => item.status === 'suspend')
+                  if (!isAllVMware) {
+                    ret.validate = false
+                    ret.tooltip = '仅VMware支持此操作'
+                  }
+                  if (!isAllSuspend) {
+                    ret.validate = false
+                    ret.tooltip = '请选择挂起的机器进行操作'
+                  }
+                  return ret
+                },
+              },
+              {
                 label: '删除',
                 permission: 'server_delete',
                 action: () => {
