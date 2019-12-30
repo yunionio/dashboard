@@ -125,6 +125,25 @@ export default {
         }
       })
     },
+    // async fetchGetRates (skuList = this.skuList) {
+    //   const managerRates = new this.$Manager('cloud_sku_rates', 'v1')
+    //   const params = []
+    //   skuList.forEach(sku => {
+    //     // eslint-disable-next-line camelcase
+    //     const { provider, cloudregion_id, zone_id, cache = 'cache', instance_spec } = sku
+    //     // eslint-disable-next-line camelcase
+    //     let _arr = [ provider, cloudregion_id, zone_id, cache, instance_spec ]
+    //     params.push(_arr.join('::'))
+    //   })
+    //   // eslint-disable-next-line camelcase
+    //   const param_keys = params.join('$')
+    //   console.log(param_keys)
+    //   const list = await managerRates.list({ params: {
+    //     // param_keys,
+    //     param_keys: 'Aliyun::cn-beijing-d::redis.master.small.default:v2.8',
+    //   } })
+    //   console.log(list, params.join('$'))
+    // },
     async fetchSkus (paramKeys) {
       const { getFieldsValue } = this.form
       const params = await new Promise((resolve, reject) => {
@@ -138,7 +157,7 @@ export default {
           )
         }, 10)
       })
-      const manager = await new this.$Manager('elasticcacheskus', 'v2')
+      const manager = new this.$Manager('elasticcacheskus', 'v2')
       try {
         this.loading = true
         const { data = [] } = await manager.list({ params })
@@ -147,6 +166,7 @@ export default {
         if (this.filterSkuCallback && R.type(this.filterSkuCallback) === 'Function') {
           this.skuList = this.skuList.filter(this.filterSkuCallback)
         }
+        // this.fetchGetRates()
       } catch (err) {
         throw err
       } finally {

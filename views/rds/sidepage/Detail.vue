@@ -1,5 +1,5 @@
 <template>
-  <detail :base-info="baseInfo" statusModule="rds" :data="data" :extra-info="extraInfo" />
+  <detail :list="list" :base-info="baseInfo" status-module="rds" :data="data" :extra-info="extraInfo" />
 </template>
 
 <script>
