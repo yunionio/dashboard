@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { getEnabledTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
+import { getEnabledTableColumn } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 
 const storageType = {
@@ -52,10 +52,17 @@ export default {
         {
           field: 'rotate',
           title: '类型',
+          formatter: ({ cellValue, row }) => {
+            if (cellValue === true) return '普通硬盘'
+            return 'SSD'
+          },
         },
         {
           field: 'size',
           title: '容量',
+          formatter: ({ cellValue, row }) => {
+            return sizestr(cellValue, 'M', 1024)
+          },
         },
         {
           field: 'slot',
@@ -94,11 +101,6 @@ export default {
           field: 'region',
           title: '区域',
         },
-        {
-          field: 'access_mac',
-          title: 'mac地址',
-        },
-        getStatusTableColumn({ field: 'host_status', statusModule: 'host' }),
         {
           field: 'access_mac',
           title: 'mac地址',
@@ -208,7 +210,7 @@ export default {
           title: '磁盘',
           items: [
             {
-              field: 'storage',
+              field: 'storage_size',
               title: '容量',
               formatter: ({ cellValue, row }) => {
                 return sizestr(cellValue, 'M', 1024)

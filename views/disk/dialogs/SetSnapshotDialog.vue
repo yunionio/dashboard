@@ -89,12 +89,13 @@ export default {
         isOpen: [
           'isOpen',
           {
-            initialValue: 'close',
+            initialValue: this.params.data[0].snapshotpolicies && this.params.data[0].snapshotpolicies.length ? 'open' : 'close',
           },
         ],
         snapshotpolicy: [
           'snapshotpolicy',
           {
+            initialValue: this.params.data[0].snapshotpolicies && this.params.data[0].snapshotpolicies.length ? this.params.data[0].snapshotpolicies[0].id : '',
             rules: [
               { required: true },
             ],
@@ -114,11 +115,15 @@ export default {
       weekTips: '',
       timeTips: '',
       dayTips: '',
-      enable: false,
+      enable: this.params.data[0].snapshotpolicies && this.params.data[0].snapshotpolicies.length,
     }
   },
   created () {
-    this.fetchSnaphotpolicy()
+    this.fetchSnaphotpolicy().then(() => {
+      if (this.params.data[0].snapshotpolicies && this.params.data[0].snapshotpolicies.length) {
+        this.assembly(this.params.data[0].snapshotpolicies[0].id)
+      }
+    })
     this.manager = new this.$Manager('snapshotpolicies')
   },
   methods: {
@@ -198,9 +203,7 @@ export default {
       }
       try {
         const res = await manager.list({ params })
-        const data = (res.data.data || []).filter(item => {
-          return !this.attchedPolices.find(a => a.id === item.id)
-        })
+        const data = res.data.data
         if (data && data.length) this.snapshotpolicyOptions = data
       } catch (error) {}
     },

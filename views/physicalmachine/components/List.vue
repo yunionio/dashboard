@@ -183,6 +183,11 @@ export default {
           },
         },
         {
+          field: 'access_mac',
+          title: 'MAC',
+          width: 120,
+        },
+        {
           field: 'ipmi',
           title: 'IPMI',
           width: 70,
@@ -478,7 +483,10 @@ export default {
                     list: this.list,
                   })
                 },
-                meta: () => this.$getDeleteResult(this.list.selectedItems),
+                meta: () => ({
+                  validate: this.$getDeleteResult(this.list.selectedItems).validate,
+                  tooltip: this.$getDeleteResult(this.list.selectedItems).validate ? '' : '操作对象的当前状态不支持该操作: 物理机没有被禁用',
+                }),
               },
             ]
           },
@@ -870,7 +878,12 @@ export default {
                         title: '删除',
                       })
                     },
-                    meta: () => this.$getDeleteResult(obj),
+                    meta: () => {
+                      return {
+                        validate: this.$getDeleteResult(this.list.selectedItems).validate,
+                        tooltip: this.$getDeleteResult(this.list.selectedItems).validate ? '' : '操作对象的当前状态不支持该操作: 物理机没有被禁用',
+                      }
+                    },
                   },
                 ],
               },

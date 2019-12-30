@@ -694,9 +694,18 @@ export default {
               j++
             }
           }
+          let sizeNumber = 0
+          let n = 0
+          if (arr[3].substr(arr[3].length - 1, 1) === 'T') {
+            n = Number(arr[3].substr(0, arr[3].length - 1)) * 1024
+            sizeNumber = this.raidUtil(n, arr[4], data.count)
+          } else {
+            n = Number(arr[3].substr(0, arr[3].length - 1))
+            sizeNumber = this.raidUtil(n, arr[4], data.count)
+          }
           let option = {
             title: arr[3] + ' ' + arr[2] + ' X ' + data.count,
-            size: arr[3],
+            size: sizestr(sizeNumber, 'G', 1024),
             chartData: {
               columns: ['name', 'size'],
               rows: [],
@@ -705,12 +714,6 @@ export default {
             count: data.count,
             type: arr[2],
             range,
-          }
-          let sizeNumber = 0
-          if (arr[3].substr(arr[3].length - 1, 1) === 'T') {
-            sizeNumber = Number(arr[3].substr(0, arr[3].length - 1)) * 1024
-          } else {
-            sizeNumber = Number(arr[3].substr(0, arr[3].length - 1))
           }
           if (this.diskOptionsDate.length === 0) {
             const defaultSize = 30
@@ -774,9 +777,13 @@ export default {
             })
             // 如何剩余比更新的大
             if (this.diskOptionsDate[idx].remainder > values.size) {
-              updateItem[updateItem.length - 1].size = updateItem[updateItem.length - 1].size - values.size
-              this.diskOptionsDate[idx].remainder = this.diskOptionsDate[idx].remainder - values.size
-              updateItem.push({ 'name': '剩余', 'size': this.diskOptionsDate[idx].remainder })
+              updateItem[updateItem.length - 1].size = updateItem[updateItem.length - 1].size + oldSize - values.size
+              this.diskOptionsDate[idx].remainder = this.diskOptionsDate[idx].remainder + oldSize - values.size
+              if (updateItem[updateItem.length - 1].name === '剩余') {
+                updateItem[updateItem.length - 1].size = this.diskOptionsDate[idx].remainder
+              } else {
+                updateItem.push({ 'name': '剩余', 'size': this.diskOptionsDate[idx].remainder })
+              }
             } else {
               if (values.method === 'autoextend') {
                 this.diskOptionsDate[idx].remainder = 0
@@ -785,7 +792,11 @@ export default {
               }
               this.diskOptionsDate[idx].remainder = (oldSize - values.size) + this.diskOptionsDate[idx].remainder
               if (this.diskOptionsDate[idx].remainder === 0) return
-              updateItem.push({ 'name': '剩余', 'size': this.diskOptionsDate[idx].remainder })
+              if (updateItem[updateItem.length - 1].name === '剩余') {
+                updateItem[updateItem.length - 1].size = this.diskOptionsDate[idx].remainder
+              } else {
+                updateItem.push({ 'name': '剩余', 'size': this.diskOptionsDate[idx].remainder })
+              }
             }
           }
         },
@@ -801,6 +812,25 @@ export default {
           }
         })
       })
+    },
+    // raid计算大小公式
+    raidUtil (n, raid, m) {
+      let size = 0
+      switch (raid) {
+        case 'raid0':
+          size = n * m
+          break
+        case 'raid1':
+          size = n * m / m
+          break
+        case 'raid5':
+          size = n * (m - 1)
+          break
+        case 'raid10':
+          size = n * m / 2
+          break
+      }
+      return size
     },
     async handleConfirm (e) {
       e.preventDefault()

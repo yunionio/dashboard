@@ -212,17 +212,17 @@ export default {
           label: '批量操作',
           actions: () => {
             return [
-              {
-                label: '修改属性',
-                permission: 'server_update',
-                action: () => {
-                  this.createDialog('VmUpdateDialog', {
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    list: this.list,
-                  })
-                },
-              },
+              // {
+              //   label: '修改属性',
+              //   permission: 'server_update',
+              //   action: () => {
+              //     this.createDialog('VmUpdateDialog', {
+              //       data: this.list.selectedItems,
+              //       columns: this.columns,
+              //       list: this.list,
+              //     })
+              //   },
+              // },
               disableDeleteAction(this),
               {
                 label: '重置密码',
@@ -521,16 +521,16 @@ export default {
               {
                 label: '实例设置',
                 submenus: [
-                  {
-                    label: '修改属性',
-                    action: () => {
-                      this.createDialog('VmUpdateDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        list: this.list,
-                      })
-                    },
-                  },
+                  // {
+                  //   label: '修改属性',
+                  //   action: () => {
+                  //     this.createDialog('VmUpdateDialog', {
+                  //       data: [obj],
+                  //       columns: this.columns,
+                  //       list: this.list,
+                  //     })
+                  //   },
+                  // },
                   {
                     label: '重装系统',
                     permission: 'server_perform_rebuild_root',
