@@ -388,6 +388,7 @@ export default {
         if (this.isPxeFileAdd) {
           await this.doPxeFileAdd()
         }
+        this.$router.push('/physicalmachine')
       } finally {
         this.adding = false
       }
