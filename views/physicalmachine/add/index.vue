@@ -395,7 +395,7 @@ export default {
     validateIpAddr (rule, value, callback) {
       if (value) {
         const ret = validate(value, 'IPv4')
-        if (!ret.result) {
+        if (ret !== true) {
           return callback(new Error(ret.msg))
         }
       }

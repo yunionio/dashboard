@@ -34,6 +34,8 @@ import AnsibleTemplate from '@Compute/views/ansible-template'
 import AnsibleTemplateCreate from '@Compute/views/ansible-template/create'
 import AnsiblePlaybook from '@Compute/views/ansible-playbook'
 
+import { hasHypervisorsByEnv } from '@/utils/auth'
+
 export default {
   index: 2,
   meta: {
@@ -51,6 +53,7 @@ export default {
           meta: {
             label: '虚拟机',
             permission: 'servers_list',
+            hidden: () => !hasHypervisorsByEnv(['idc', 'private', 'public']),
           },
           component: Layout,
           children: [
@@ -71,6 +74,7 @@ export default {
           meta: {
             label: '裸金属',
             permission: 'servers_list',
+            hidden: () => !hasHypervisorsByEnv('baremetal'),
           },
           component: Layout,
           children: [
@@ -200,6 +204,7 @@ export default {
           meta: {
             label: '硬盘',
             permission: 'disks_list',
+            hidden: () => !hasHypervisorsByEnv(['idc', 'private', 'public']),
           },
           component: Layout,
           children: [
@@ -215,6 +220,7 @@ export default {
           meta: {
             label: '硬盘快照',
             permission: 'snapshots_list',
+            hidden: () => !hasHypervisorsByEnv(['idc', 'private', 'public']),
           },
           component: Layout,
           children: [
@@ -230,6 +236,7 @@ export default {
           meta: {
             label: '主机快照',
             permission: 'instance_snapshots_list',
+            hidden: () => !hasHypervisorsByEnv(['idc', 'private', 'public']),
           },
           component: Layout,
           children: [
@@ -282,6 +289,7 @@ export default {
           meta: {
             label: '弹性公网IP',
             permission: 'eips_list',
+            hidden: () => !hasHypervisorsByEnv(['private', 'public']),
           },
           component: Layout,
           children: [
