@@ -402,7 +402,7 @@ export default {
       return callback()
     },
     validateNet (rule, value, callback) {
-      if (value.access_ip) {
+      if (value && value.access_ip) {
         if (!isWithinRange(value.access_ip, value.access_net.guest_ip_start, value.access_net.guest_ip_end)) {
           return callback(new Error('输入的IP不在选择子网网段中'))
         }
