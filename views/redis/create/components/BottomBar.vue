@@ -21,6 +21,23 @@
       <!-- <div>费用估算</div> -->
     </template>
     <template v-slot:right>
+      <div class="d-flex align-items-center">
+          <div class="mr-4 d-flex align-items-center">
+            <div class="text-truncate">费用估算：</div>
+            <div class="ml-2 prices" v-if="rate">
+              <div class="hour text-truncate">
+                <template v-if="rate.hour_price">
+                  <m-animated-number :value="rate.hour_price" :formatValue="formatToPrice" />
+                </template>
+                <template v-else>---</template>
+              </div>
+              <div class="tips text-truncate">
+                <template v-if="priceTips">(合&yen;{{ priceTips.day }}/天 &yen;{{ priceTips.month }}/月)</template>
+                <template v-else>---</template>
+              </div>
+            </div>
+          </div>
+      </div>
       <div class="btns-wrapper d-flex align-items-center">
         <a-button @click="doCreate" :loading="loading" type="primary" class="ml-3">新建</a-button>
       </div>
@@ -86,6 +103,22 @@ export default {
       ]
       return ret
     },
+    sku  () {
+      return this.values.sku || null
+    },
+    rate () {
+      const { sku = {} } = this.values
+      return sku.rate
+    },
+    priceTips () {
+      if (this.rate) {
+        return {
+          day: (this.rate.hour_price * 24).toFixed(2),
+          month: (this.rate.month_price * 30).toFixed(2),
+        }
+      }
+      return null
+    },
   },
   methods: {
     validateForm () {
@@ -94,6 +127,14 @@ export default {
         f = err === null
       })
       return f
+    },
+    formatToPrice (val) {
+      let ret = `¥ ${val.toFixed(2)}`
+      if (this.isPackage) {
+        return ret
+      }
+      ret += ' / 时'
+      return ret
     },
     formatParams () {
       const params = {
@@ -220,4 +261,14 @@ export default {
     opacity: 0;
   }
 }
+.prices {
+    .hour {
+      color: $error-color;
+      font-size: 24px;
+    }
+    .tips {
+      color: #999;
+      font-size: 12px;
+    }
+  }
 </style>
