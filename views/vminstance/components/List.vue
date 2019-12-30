@@ -559,7 +559,7 @@ export default {
                 permission: 'server_perform_suspend',
                 action: () => {
                   this.createDialog('VmSuspendDialog', {
-                    data: [obj],
+                    data: this.list.selectedItems,
                     columns: this.columns,
                     list: this.list,
                   })
@@ -587,7 +587,7 @@ export default {
                 permission: 'server_perform_resume',
                 action: () => {
                   this.createDialog('VmResumeDialog', {
-                    data: [obj],
+                    data: this.list.selectedItems,
                     columns: this.columns,
                     list: this.list,
                   })
