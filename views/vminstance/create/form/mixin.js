@@ -23,6 +23,7 @@ import storage from '@/utils/storage'
 import { WORKFLOW_TYPES } from '@/constants/workflow'
 import workflowMixin from '@/mixins/workflow'
 import { Manager } from '@/utils/manager'
+import { isSuccess } from '@/utils/http'
 import NameRepeated from '@/sections/NameRepeated'
 import CloudregionZone from '@/sections/CloudregionZone'
 import HypervisorRadio from '@/sections/HypervisorRadio'
@@ -309,7 +310,9 @@ export default {
           const image = data.disks.find(val => val.disk_type === 'sys').image_id
           storage.set(`${this.form.fi.createType}${SELECT_IMAGE_KEY_SUFFIX}`, `${this.form.fd.os}:${image}`)
           this.submiting = false
-          this.$message.success('操作成功，开始创建')
+          if (isSuccess(res)) {
+            this.$message.success('操作成功，开始创建')
+          }
           this.$router.push('/vminstance')
         })
         .catch(() => {
