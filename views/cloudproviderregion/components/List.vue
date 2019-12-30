@@ -46,7 +46,7 @@ export default {
           field: 'cloudregion',
           title: '名称',
         },
-        getEnabledTableColumn({ title: '启用自动同步' }),
+        getEnabledTableColumn({ title: '启用同步' }),
         {
           field: 'last_auto_sync',
           title: '同步时间',
