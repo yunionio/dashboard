@@ -23,6 +23,7 @@ import storage from '@/utils/storage'
 import { WORKFLOW_TYPES } from '@/constants/workflow'
 import workflowMixin from '@/mixins/workflow'
 import { Manager } from '@/utils/manager'
+import NameRepeated from '@/sections/NameRepeated'
 import CloudregionZone from '@/sections/CloudregionZone'
 import HypervisorRadio from '@/sections/HypervisorRadio'
 import DomainProject from '@/sections/DomainProject'
@@ -52,6 +53,7 @@ export default {
     InstanceGroups,
     Tag,
     Servertemplate,
+    NameRepeated,
   },
   mixins: [workflowMixin],
   props: {

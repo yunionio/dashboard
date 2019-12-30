@@ -16,8 +16,13 @@
           :cloudregion-params="cloudregionParams"
           :decorator="decorators.cloudregionZone" />
       </a-form-item>
-      <a-form-item label="名称" v-if="!isServertemplate" v-bind="formItemLayout" extra="名称支持有序后缀占位符‘#’，用法举例，名称host##，数量2，创建后实例的名称依次为host01、host02，已有同名实例，序号顺延">
+      <a-form-item label="名称" v-if="!isServertemplate" v-bind="formItemLayout">
         <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverName')" />
+        <name-repeated
+          v-slot:extra
+          res="servers"
+          :name="form.fd.name"
+          default-text="名称支持有序后缀占位符‘#’，用法举例，名称host##，数量2，创建后实例的名称依次为host01、host02，已有同名实例，序号顺延" />
       </a-form-item>
       <a-form-item label="申请原因" v-bind="formItemLayout" v-if="isOpenWorkflow">
         <a-input v-decorator="decorators.reason" placeholder="请输入主机申请原因" />

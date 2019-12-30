@@ -84,7 +84,7 @@ export const createVmDecorators = type => {
       'name',
       {
         initialValue: '',
-        validateTrigger: ['change', 'blur'],
+        validateTrigger: 'blur',
         validateFirst: true,
         rules: [
           { required: true, message: '请输入名称' },
