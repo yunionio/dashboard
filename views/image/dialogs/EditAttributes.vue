@@ -261,7 +261,7 @@ export default {
         const { name, osType, osDistribution, osOtherDistribution, minDisk, diskDriver, netDriver } = values
         const params = {
           name,
-          protected: values.protected,
+          // protected: values.protected,
           properties: {
             os_type: osType,
             os_distribution: this.isDisOther ? osOtherDistribution : osDistribution,

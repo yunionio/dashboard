@@ -166,27 +166,52 @@ export default {
           }),
         },
         {
-          label: '上传',
-          permission: 'images_create',
-          action: () => {
-            this.createDialog('ImageUploadDialog', {
-              title: '上传',
-              list: this.list,
-            })
+          label: '更多',
+          actions: obj => {
+            return [
+              {
+                label: '上传',
+                permission: 'images_create',
+                action: () => {
+                  this.createDialog('ImageUploadDialog', {
+                    title: '上传',
+                    list: this.list,
+                  })
+                },
+              },
+              {
+                label: '设置删除保护',
+                action: (row) => {
+                  this.createDialog('ChangeDisableDelete', {
+                    name: '系统镜像',
+                    columns: this.columns,
+                    list: this.list,
+                    data: this.list.selectedItems,
+                  })
+                },
+                meta: () => {
+                  const validate = this.list.selectedItems.length > 0
+                  return {
+                    validate: validate,
+                    tooltip: !validate && `请选择需要操作的系统镜像`,
+                  }
+                },
+              },
+              {
+                label: '删除',
+                permission: 'images_delete',
+                action: () => {
+                  this.createDialog('DeleteResDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    title: '删除镜像',
+                    list: this.list,
+                  })
+                },
+                meta: () => this.$getDeleteResult(this.list.selectedItems),
+              },
+            ]
           },
-        },
-        {
-          label: '删除',
-          permission: 'images_delete',
-          action: () => {
-            this.createDialog('DeleteResDialog', {
-              data: this.list.selectedItems,
-              columns: this.columns,
-              title: '删除镜像',
-              list: this.list,
-            })
-          },
-          meta: () => this.$getDeleteResult(this.list.selectedItems),
         },
       ],
       singleActions: [
@@ -317,6 +342,17 @@ export default {
                     validate: true,
                     tooltip: '',
                   }
+                },
+              },
+              {
+                label: '设置删除保护',
+                action: (row) => {
+                  this.createDialog('ChangeDisableDelete', {
+                    name: '系统镜像',
+                    columns: this.columns,
+                    list: this.list,
+                    data: [row],
+                  })
                 },
               },
               {

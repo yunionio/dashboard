@@ -164,6 +164,24 @@ export default {
       ],
       groupActions: [
         {
+          label: '设置删除保护',
+          action: (row) => {
+            this.createDialog('ChangeDisableDelete', {
+              name: '主机镜像',
+              columns: this.columns,
+              list: this.list,
+              data: this.list.selectedItems,
+            })
+          },
+          meta: () => {
+            const validate = this.list.selectedItems.length > 0
+            return {
+              validate: validate,
+              tooltip: !validate && `请选择需要操作的主机镜像`,
+            }
+          },
+        },
+        {
           label: '删除',
           permission: 'images_delete',
           action: () => {
@@ -243,6 +261,17 @@ export default {
                   return {
                     validate: true,
                   }
+                },
+              },
+              {
+                label: '设置删除保护',
+                action: (row) => {
+                  this.createDialog('ChangeDisableDelete', {
+                    name: '系统镜像',
+                    columns: this.columns,
+                    list: this.list,
+                    data: [row],
+                  })
                 },
               },
               {

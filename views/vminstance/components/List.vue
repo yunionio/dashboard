@@ -34,6 +34,7 @@ import {
   getTenantFilter,
   getAccountFilter,
   getIpFilter,
+  getHostFiler,
 } from '@/utils/common/tableFilter'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import SystemIcon from '@/sections/SystemIcon'
@@ -87,6 +88,7 @@ export default {
             ],
           },
           account: getAccountFilter(),
+          host: getHostFiler(),
         },
       }),
       exportDataOptions: {
