@@ -171,6 +171,7 @@ export default {
           if (val.guest_id === this.selectedItems[0].id) {
             this.bindGpus.push(val.id)
             this.bindGpusNames.push(val.model)
+            return true
           }
           return false
         }
