@@ -339,7 +339,7 @@ export default {
         let id = this.id
         let response
         if (this.isCreate) {
-          id = `dashboard-panel-${this.dashboardOptions.length + 1}`
+          id = `dashboard-${this.scope}-panel-${this.dashboardOptions.length + 1}`
           response = await this.createNewDashboard(id)
         } else {
           response = await this.updateDashboard(id)
