@@ -165,15 +165,17 @@ export default {
     labelFormat (val) {
       return val.model
     },
-    mapper (val) {
-      if (val.guest) {
-        if (val.guest_id === this.selectedItems[0].id) {
-          this.bindGpus.push(val.id)
-          this.bindGpusNames.push(val.model)
+    mapper (list) {
+      return list.filter((val) => {
+        if (val.guest) {
+          if (val.guest_id === this.selectedItems[0].id) {
+            this.bindGpus.push(val.id)
+            this.bindGpusNames.push(val.model)
+          }
+          return false
         }
-        return false
-      }
-      return true
+        return true
+      })
     },
     onValuesChange (props, values) {
       Object.keys(values).forEach((key) => {
