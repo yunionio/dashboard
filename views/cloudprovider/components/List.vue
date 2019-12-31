@@ -194,7 +194,10 @@ export default {
           action: obj => {
             this.list.onManager('performAction', {
               id: obj.id,
-              steadyStatus: this.list.steadyStatus,
+              steadyStatus: {
+                status: this.list.steadyStatus,
+                sync_status: ['idle'],
+              },
               managerArgs: {
                 action: 'sync',
                 params: {
