@@ -127,6 +127,7 @@
       "unavailable": "不可用"
     },
     "host": {
+      "init": "初始化",
       "ready": "关机",
       "start_start": "开始启动",
       "starting": "启动中",
