@@ -26,7 +26,24 @@ export const REGEXP = {
     message: i18n.t('validator.serverName'),
   },
   serverCreateName: {
-    regexp: /^[a-zA-Z][a-zA-Z0-9-${}]{0,127}([a-zA-Z0-9-${}]|#{1,3})$/,
+    func: value => {
+      const regexp = /^[a-zA-Z$][a-zA-Z0-9-${}]{0,127}([a-zA-Z0-9-${}]|#{1,3})$/
+      if (regexp.test(value)) {
+        const supportVars = ['brand', 'charge_type', 'cloud_env', 'cloudregion_id', 'cpu', 'host', 'host_id', 'hypervisor', 'ip_addr', 'mem', 'os_distribution', 'os_type', 'os_version', 'owner_tenant', 'owner_tenant_id', 'provider', 'region', 'region_id', 'res_name', 'template_id', 'zone', 'zone_id']
+        const reg = /^\$\{(.*)\}$/
+        const match = value.match(reg)
+        if (R.is(Array, match)) {
+          const text = match[1]
+          if (supportVars.includes(text)) {
+            return true
+          }
+          return `仅支持以下表达式：${supportVars.join('，')}`
+        } else {
+          return true
+        }
+      }
+      return false
+    },
     message: i18n.t('validator.serverCreateName'),
   },
   email: {
@@ -215,16 +232,19 @@ const validateForm = (rules, isRequired = true, checkMethod = 'every') => {
 export const validate = (value, regexpItem) => {
   const validateItem = REGEXP[regexpItem]
   if (validateItem) {
-    let msg = '输入信息不正确'
+    let msg = validateItem.message || '输入信息不正确'
     let result = true
     if (validateItem.regexp) {
       result = validateItem.regexp.test(value)
     }
     if (result && validateItem.func) {
       result = validateItem.func(value) // 支持自定义函数判断
+      if (R.is(String, result)) {
+        msg = result
+        result = false
+      }
     }
     if (!result) {
-      msg = validateItem.message
       return {
         result,
         msg,
