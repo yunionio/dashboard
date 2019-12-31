@@ -31,7 +31,7 @@ export default {
             label: '名称',
             filter: true,
             formatter: val => {
-              return `name.contains(${val})`
+              return `name.contains("${val}")`
             },
           },
           'default_strategy': {

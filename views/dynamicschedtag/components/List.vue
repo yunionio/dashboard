@@ -29,7 +29,7 @@ export default {
             label: '名称',
             filter: true,
             formatter: val => {
-              return `name.contains(${val})`
+              return `name.contains('${val}')`
             },
           },
           'enabled': {
@@ -43,7 +43,7 @@ export default {
             filter: true,
             jointFilter: true,
             formatter: val => {
-              return `schedtags.id(schedtag_id).name.contains(${val})`
+              return `schedtags.id(schedtag_id).name.contains("${val}")`
             },
           },
         },
