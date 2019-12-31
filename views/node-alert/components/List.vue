@@ -32,6 +32,10 @@ export default {
       required: true,
       validator: val => ['guest', 'host'].includes(val),
     },
+    metricOpts: {
+      type: Array,
+      required: true,
+    },
   },
   data () {
     return {
@@ -111,6 +115,7 @@ export default {
               list: this.list,
               alertType: this.alertType,
               nodeId: this.data.id,
+              metricOpts: this.metricOpts,
             })
           },
           meta: () => {
@@ -167,6 +172,7 @@ export default {
               columns: this.columns,
               list: this.list,
               alertType: this.alertType,
+              metricOpts: this.metricOpts,
             })
           },
         },

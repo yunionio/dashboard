@@ -5,7 +5,7 @@
       <vxe-grid class="mb-2" v-if="params.data && params.columns" :data="params.data" :columns="params.columns.slice(0)" />
       <node-alert-form
         ref="nodeAlertFormRef"
-        :metric-opts="metricOpts"
+        :metric-opts="params.metricOpts"
         :hypervisor="hypervisor"
         :alertType="params.alertType"
         :fd-initail-value="fdInitailValue" />
@@ -19,10 +19,8 @@
 
 <script>
 import NodeAlertForm from '../components/Form'
-import { metricItems } from '../constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import { HYPERVISORS_MAP } from '@/constants'
 
 export default {
   name: 'UpdateNodeAlert',
@@ -39,28 +37,6 @@ export default {
         window: +this.params.data[0].window.replace('m', ''),
       },
     }
-  },
-  computed: {
-    hypervisor () {
-      let hyper = ''
-      if (this.params.data && this.params.data.hypervisor) {
-        hyper = this.params.data.hypervisor
-      }
-      return hyper
-    },
-    hasMemMetric () {
-      if (this.params.alertType === 'guest') {
-        return this.hypervisor === HYPERVISORS_MAP.esxi.key
-      }
-      return true // 宿主机报警有内存指标
-    },
-    metricOpts () {
-      let opts = [metricItems['vm_cpu.usage_active'], metricItems['vm_netio.bps_recv'], metricItems['vm_netio.bps_sent'], metricItems['vm_diskio.read_bps'], metricItems['vm_diskio.write_bps']]
-      if (this.hasMemMetric) {
-        opts.splice(1, 0, metricItems['vm_mem.used_percent'])
-      }
-      return opts
-    },
   },
   methods: {
     async handleConfirm () {

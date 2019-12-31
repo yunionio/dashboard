@@ -5,7 +5,7 @@
       <vxe-grid class="mb-2" v-if="params.data" :data="params.data" :columns="params.columns.slice(0, 2)" />
       <node-alert-form
         ref="nodeAlertFormRef"
-        :metric-opts="metricOpts"
+        :metric-opts="metricOptsEnabled"
         :hypervisor="hypervisor"
         :alertType="params.alertType"
         :monitor-metric="params.metric" />
@@ -19,10 +19,8 @@
 
 <script>
 import NodeAlertForm from '../components/Form'
-import { metricItems } from '../constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import { HYPERVISORS_MAP } from '@/constants'
 
 export default {
   name: 'CreateNodeAlert',
@@ -36,24 +34,8 @@ export default {
     }
   },
   computed: {
-    hypervisor () {
-      let hyper = ''
-      if (this.params.data && this.params.data.hypervisor) {
-        hyper = this.params.data.hypervisor
-      }
-      return hyper
-    },
-    hasMemMetric () {
-      if (this.params.alertType === 'guest') {
-        return this.hypervisor === HYPERVISORS_MAP.esxi.key
-      }
-      return true // 宿主机报警有内存指标
-    },
-    metricOpts () {
-      let opts = [metricItems['vm_cpu.usage_active'], metricItems['vm_netio.bps_recv'], metricItems['vm_netio.bps_sent'], metricItems['vm_diskio.read_bps'], metricItems['vm_diskio.write_bps']]
-      if (this.hasMemMetric) {
-        opts.splice(1, 0, metricItems['vm_mem.used_percent'])
-      }
+    metricOptsEnabled () {
+      let opts = this.metricOpts
       if (this.params.list && this.params.list.data) {
         // 新建时要保证新建的报警不会和已有的重复，下面是过滤掉已有的metric
         let listDataArr = Object.values(this.params.list.data)
