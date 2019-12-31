@@ -62,7 +62,9 @@
         <a-input :placeholder="$t('validator.domain')" v-decorator="decorators.guest_domain" />
       </a-form-item>
       <page-footer>
-        <a-button type="primary" html-type="submit" class="ml-3" :loading="submiting">确定</a-button>
+        <template v-slot:right>
+          <a-button type="primary" html-type="submit" class="ml-3" :loading="submiting" size="large">确定</a-button>
+        </template>
       </page-footer>
     </a-form>
   </div>
