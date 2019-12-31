@@ -20,7 +20,7 @@
             :params="gpuParams"
             :need-params="false"
             :labelFormat="labelFormat"
-            :filterHandle="filterHandle"
+            :mapper="mapper"
             filterable
             multiple
             placeholder="请选择GPU设备"
@@ -165,7 +165,7 @@ export default {
     labelFormat (val) {
       return val.model
     },
-    filterHandle (val) {
+    mapper (val) {
       if (val.guest) {
         if (val.guest_id === this.selectedItems[0].id) {
           this.bindGpus.push(val.id)
