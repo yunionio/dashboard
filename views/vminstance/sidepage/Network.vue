@@ -30,7 +30,10 @@ export default {
         resource: 'networks',
         ctx: [['servers', this.resId]],
         idKey: 'network_id',
-        getParams: this.getParams,
+        getParams: {
+          order_by: 'index',
+          order: 'asc',
+        },
       }),
       columns: [
         {

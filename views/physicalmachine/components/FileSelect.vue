@@ -10,7 +10,8 @@
     <a-upload-dragger
       v-decorator="decorators.file"
       :beforeUpload="beforeUpload"
-      :fileList="fileList">
+      :fileList="fileList"
+      :remove="handleRemove">
       <div class="pt-3 pb-3">
         <p class="ant-upload-drag-icon"><a-icon type="inbox" /></p>
         <p class="ant-upload-text">单击或拖动文件到该区域</p>
@@ -67,6 +68,9 @@ export default {
       this.form.fc.setFieldsValue({
         file: undefined,
       })
+    },
+    handleRemove () {
+      this.handleClearFile()
     },
   },
 }

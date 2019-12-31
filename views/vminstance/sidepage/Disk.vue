@@ -28,7 +28,10 @@ export default {
         ctx: [['servers', this.resId]],
         idKey: 'disk_id',
         steadyStatus: Object.values(expectStatus.disk).flat(),
-        getParams: this.getParams,
+        getParams: {
+          order_by: 'index',
+          order: 'asc',
+        },
         filterOptions: {
           network: {
             label: '名称',
