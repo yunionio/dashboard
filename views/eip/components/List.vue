@@ -42,7 +42,7 @@ export default {
             label: '名称',
             filter: true,
             formatter: val => {
-              return `name.contains(${val})`
+              return `name.contains("${val}")`
             },
           },
           brand: getBrandFilter(),
@@ -50,7 +50,7 @@ export default {
             label: '地址',
             filter: true,
             formatter: val => {
-              return `ip_addr.contains(${val})`
+              return `ip_addr.contains("${val}")`
             },
           },
           status: getStatusFilter('eip'),

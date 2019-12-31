@@ -61,7 +61,7 @@ export default {
             label: '实例名称',
             filter: true,
             formatter: val => {
-              return `name.contains(${val})`
+              return `name.contains("${val}")`
             },
           },
           ip: {
@@ -114,7 +114,7 @@ export default {
             label: '二层网络',
             filter: true,
             formatter: val => {
-              return `wire.contains(${val})`
+              return `wire.contains("${val}")`
             },
           },
         },

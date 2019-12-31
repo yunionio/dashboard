@@ -32,7 +32,7 @@ export default {
             label: '名称',
             filter: true,
             formatter: val => {
-              return `name.contains(${val})`
+              return `name.contains("${val}")`
             },
           },
           mac: {
@@ -40,7 +40,7 @@ export default {
             filter: true,
             // jointFilter: true,
             formatter: val => {
-              return `mac.contains('${val}')`
+              return `mac.contains("${val}")`
             },
           },
           status: getStatusFilter('network'),
@@ -49,7 +49,7 @@ export default {
             label: '绑定设备类型',
             filter: true,
             formatter: val => {
-              return `associate_type.contains(${val})`
+              return `associate_type.contains("${val}")`
             },
           },
         },
