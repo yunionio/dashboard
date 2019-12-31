@@ -2,6 +2,7 @@
   <vc-dialog
     visible
     prefix-cls="side-page"
+    :class="{ 'first-side-page': isFirstSidePage }"
     :mask="false"
     :closable="false">
     <div class="side-page-header">
@@ -115,6 +116,9 @@ export default {
   right: 0;
   bottom: 0;
   top: 60px;
+  .first-side-page {
+    box-shadow: -5px 0 3px rgba(197, 219, 232, .4);
+  }
 }
 .side-page {
   height: 100%;

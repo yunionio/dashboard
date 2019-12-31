@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="side-page-shadow" v-show="hasSidePages" />
+    <!-- <div class="side-page-shadow" v-show="hasSidePages" /> -->
     <component
       v-for="item of sidePages"
       :key="item.id"
@@ -11,8 +11,6 @@
 </template>
 
 <script>
-import * as R from 'ramda'
-
 const components = {}
 const requireSidePages = require.context('../../../containers', true, /^((?![\\/]node_modules).)*.\/views\/.*\/sidepage\/index\.(jsx?|vue)$/)
 const commonSidePages = require.context('./components', false, /.\/\w+\.(jsx?|vue)$/)
@@ -34,9 +32,6 @@ export default {
   computed: {
     sidePages () {
       return this.$store.getters.sidePages
-    },
-    hasSidePages () {
-      return !R.isEmpty(this.sidePages)
     },
   },
 }
