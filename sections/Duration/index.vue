@@ -24,6 +24,9 @@ export default {
       required: true,
       validator: val => !R.isNil(val.durationEnable) && !R.isNil(val.duration),
     },
+    form: {
+      type: Object,
+    },
   },
   data () {
     return {
@@ -33,6 +36,15 @@ export default {
   methods: {
     change (val) {
       this.showDuration = val
+      if (val && this.form && this.form.fc) {
+        let duration = '1h'
+        if (this.decorators.duration[1] && this.decorators.duration[1].initialValue) {
+          duration = this.decorators.duration[1].initialValue
+        }
+        this.form.fc.setFieldsValue({
+          [this.decorators.duration[0]]: duration,
+        })
+      }
     },
   },
 }

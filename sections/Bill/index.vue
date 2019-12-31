@@ -33,6 +33,9 @@ export default {
       required: true,
       validator: val => R.is(Array, val.billType) && R.is(Array, val.duration),
     },
+    form: {
+      type: Object,
+    },
   },
   data () {
     return {
@@ -44,6 +47,15 @@ export default {
   methods: {
     change (val) {
       this.showDuration = val.target.value === BILL_TYPES_MAP.package.key
+      if (this.showDuration && this.form && this.form.fc) {
+        let duration = '1M'
+        if (this.decorators.duration[1] && this.decorators.duration[1].initialValue) {
+          duration = this.decorators.duration[1].initialValue
+        }
+        this.form.fc.setFieldsValue({
+          [this.decorators.duration[0]]: duration,
+        })
+      }
     },
   },
 }

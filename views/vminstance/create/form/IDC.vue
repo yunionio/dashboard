@@ -123,7 +123,7 @@
           :disabled-items="backupDisableds" />
       </a-form-item>
       <a-form-item v-bind="formItemLayout" v-show="!isServertemplate" label="到期释放">
-        <duration :decorators="decorators.duration" />
+        <duration :decorators="decorators.duration" :form="form" />
       </a-form-item>
       <a-form-item v-bind="formItemLayout" v-show="!isServertemplate" v-if="isKvm" label="主机组" extra="对资源的简单编排策略，组内的机器根据设置分布在不同的宿主机上，从而实现业务的高可用">
         <instance-groups :decorators="decorators.groups" :params="instanceGroupsParams" />
