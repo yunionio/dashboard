@@ -2,7 +2,7 @@
   <div>
     <page-header title="调度策略" />
     <page-body>
-      <schedpolicy-list />
+      <schedpolicy-list :id="listId" />
     </page-body>
   </div>
 </template>
@@ -14,6 +14,11 @@ export default {
   name: 'Schedpolicy',
   components: {
     SchedpolicyList,
+  },
+  data () {
+    return {
+      listId: 'SchedpolicyList',
+    }
   },
 }
 </script>

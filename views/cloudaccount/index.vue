@@ -2,7 +2,7 @@
   <div>
     <page-header title="云账号" />
     <page-body>
-      <cloudaccount-list />
+      <cloudaccount-list :id="listId" />
     </page-body>
   </div>
 </template>
@@ -14,6 +14,11 @@ export default {
   name: 'CloudaccountIndex',
   components: {
     CloudaccountList,
+  },
+  data () {
+    return {
+      listId: 'CloudaccountList',
+    }
   },
 }
 </script>

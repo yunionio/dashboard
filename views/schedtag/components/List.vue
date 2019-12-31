@@ -3,7 +3,8 @@
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -16,9 +17,13 @@ const RES_TYPES = { hosts: '宿主机', storages: '存储', networks: '网络' }
 export default {
   name: 'SchedtagList',
   mixins: [WindowsMixin],
+  props: {
+    id: String,
+  },
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'schedtags',
         getParams: { details: true },
         filterOptions: {
@@ -45,6 +50,17 @@ export default {
           },
         },
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '名称', key: 'name' },
+          { label: '偏好', key: 'default_strategy' },
+          { label: '资源类型', key: 'resource_type' },
+          { label: '资源数量', key: 'resource_count' },
+          { label: '关联动态调度标签', key: 'dynamic_schedtag_count' },
+          { label: '关联调度策略', key: 'schedpolicy_count' },
+        ],
+      },
       columns: [
         getNameDescriptionTableColumn({
           vm: this,

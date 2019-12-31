@@ -3,7 +3,8 @@
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -15,9 +16,13 @@ import { getNameFilter, getEnabledFilter, getFilter } from '@/utils/common/table
 export default {
   name: 'SchedpolicyList',
   mixins: [WindowsMixin],
+  props: {
+    id: String,
+  },
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'schedpolicies',
         getParams: { details: true },
         filterOptions: {
@@ -35,6 +40,16 @@ export default {
           }),
         },
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '名称', key: 'name' },
+          { label: '启用状态', key: 'enabled' },
+          { label: '偏好', key: 'strategy' },
+          { label: '调度标签', key: 'schedtag' },
+          { label: '条件', key: 'condition' },
+        ],
+      },
       columns: [
         getNameDescriptionTableColumn({
           vm: this,

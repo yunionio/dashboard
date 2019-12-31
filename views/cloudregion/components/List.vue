@@ -1,7 +1,8 @@
 <template>
   <page-list
     :list="list"
-    :columns="columns" />
+    :columns="columns"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -15,9 +16,13 @@ import WindowsMixin from '@/mixins/windows'
 export default {
   name: 'CloudregionList',
   mixins: [WindowsMixin],
+  props: {
+    id: String,
+  },
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'cloudregions',
         getParams: { cloud_env: 'private_or_onpremise' },
         filterOptions: {
@@ -25,6 +30,17 @@ export default {
           enabled: getEnabledFilter({ label: '状态' }),
         },
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '名称', key: 'name' },
+          { label: '状态', key: 'status' },
+          { label: '云服务器', key: 'guest_count' },
+          { label: '专有网络(VPC)', key: 'vpc_count' },
+          { label: '可用区', key: 'zone_count' },
+          { label: '平台', key: 'provider' },
+        ],
+      },
       columns: [
         getNameDescriptionTableColumn({
           vm: this,

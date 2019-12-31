@@ -2,7 +2,7 @@
   <div>
     <page-header title="动态调度标签" />
     <page-body>
-      <dynamicschedtag-list />
+      <dynamicschedtag-list :id="listId" />
     </page-body>
   </div>
 </template>
@@ -14,6 +14,11 @@ export default {
   name: 'Dynamicschedtag',
   components: {
     DynamicschedtagList,
+  },
+  data () {
+    return {
+      listId: 'DynamicschedtagList',
+    }
   },
 }
 </script>

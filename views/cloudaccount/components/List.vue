@@ -3,7 +3,8 @@
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -67,9 +68,13 @@ const setAutoSyncPolicy = (item, ownerDomain) => {
 export default {
   name: 'CloudaccountList',
   mixins: [WindowsMixin],
+  props: {
+    id: String,
+  },
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'cloudaccounts',
         steadyStatus: {
           status: Object.values(expectStatus.cloudaccount).flat(),
@@ -94,6 +99,23 @@ export default {
           // tenant: getTenantFilter(),
         },
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '名称', key: 'name' },
+          { label: '服务器地址', key: 'access_url' },
+          { label: '启用状态', key: 'enabled' },
+          { label: '状态', key: 'status' },
+          { label: '健康状态', key: 'health_status' },
+          { label: '虚拟机', key: 'guest_count' },
+          { label: '余额', key: 'balance' },
+          { label: '宿主机', key: 'host_count' },
+          { label: '云账号', key: 'account' },
+          { label: '平台', key: 'brand' },
+          { label: '自动同步', key: 'enable_auto_sync' },
+          { label: '同步时间', key: 'last_auto_sync' },
+        ],
+      },
       columns: [
         getNameDescriptionTableColumn({
           vm: this,

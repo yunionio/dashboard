@@ -3,7 +3,8 @@
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -14,9 +15,13 @@ import { ENABLED_OPTS } from '@/constants'
 export default {
   name: 'DynamicschedtagList',
   mixins: [WindowsMixin],
+  props: {
+    id: String,
+  },
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'dynamicschedtags',
         getParams: { details: true },
         filterOptions: {
@@ -43,6 +48,15 @@ export default {
           },
         },
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '名称', key: 'name' },
+          { label: '启用状态', key: 'enabled' },
+          { label: '调度标签', key: 'schedtag' },
+          { label: '条件', key: 'condition' },
+        ],
+      },
       columns: [
         getNameDescriptionTableColumn({
           vm: this,

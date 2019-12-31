@@ -2,7 +2,7 @@
   <div>
     <page-header title="区域" />
     <page-body>
-      <cloudregion-list />
+      <cloudregion-list :id="listId" />
     </page-body>
   </div>
 </template>
@@ -14,6 +14,11 @@ export default {
   name: 'CloudaccountIndex',
   components: {
     CloudregionList,
+  },
+  data () {
+    return {
+      listId: 'CloudregionList',
+    }
   },
 }
 </script>

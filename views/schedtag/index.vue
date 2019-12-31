@@ -2,7 +2,7 @@
   <div>
     <page-header title="调度标签" />
     <page-body>
-      <schedtag-list />
+      <schedtag-list :id="listId" />
     </page-body>
   </div>
 </template>
@@ -14,6 +14,11 @@ export default {
   name: 'Schedtag',
   components: {
     SchedtagList,
+  },
+  data () {
+    return {
+      listId: 'SchedtagList',
+    }
   },
 }
 </script>

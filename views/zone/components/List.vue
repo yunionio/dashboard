@@ -3,7 +3,8 @@
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -16,6 +17,7 @@ export default {
   name: 'ZoneList',
   mixins: [WindowsMixin],
   props: {
+    id: String,
     getParams: {
       type: [Object, Function],
       default: () => ({}),
@@ -24,6 +26,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'zones',
         getParams: this.getParams,
         filterOptions: {
@@ -36,6 +39,17 @@ export default {
           },
         },
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '名称', key: 'name' },
+          { label: '物理机', key: 'hosts' },
+          { label: '可用物理机', key: 'hosts_enabled' },
+          { label: '受管物理机', key: 'baremetals' },
+          { label: '可用受管物理机', key: 'baremetals_enabled' },
+          { label: '二层网络', key: 'wires' },
+        ],
+      },
       columns: [
         getNameDescriptionTableColumn({
           vm: this,
