@@ -103,10 +103,11 @@ export default {
         return {
           title: val.title,
           constants: val.constants,
+          lineConfig: val.lineConfig,
           unit,
           chartData: { // 组成 ve-line 的数据
             columns, // eg: ['time', 'cpu_usage']
-            rows,
+            rows, // [{ time: '2019-09-01', cpu_usage: 0.7 }]
           },
         }
       })

@@ -31,7 +31,9 @@ export default {
   },
   methods: {
     getConfig (item) {
+      const lineConfig = item.lineConfig || {}
       return {
+        ...lineConfig,
         yAxis: {
           axisLabel: {
             formatter: `{value}${item.unit}`,
