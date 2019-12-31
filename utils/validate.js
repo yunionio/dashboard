@@ -132,6 +132,10 @@ export const REGEXP = {
     regexp: /^[a-zA-Z][a-zA-Z0-9._-]{1,127}$/,
     message: i18n.t('validator.imageName'),
   },
+  mac: {
+    regexp: /^[a-fA-F0-9:]{17}|[a-fA-F0-9]{12}$/g,
+    message: i18n.t('validator.mac'),
+  },
 }
 
 /**
