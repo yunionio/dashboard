@@ -47,6 +47,7 @@ export default {
         eip: 'EIP',
         snapshot: '快照',
         dbinstance: 'RDS',
+        host: '物理机',
       },
       resourceCounts,
       currentResource,
