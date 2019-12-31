@@ -82,8 +82,9 @@ export default {
       if (this.isAdminMode && !params['project_domain']) {
         params['project_domain'] = this.userInfo.projectDomainId
         delete params.scope
+        delete params.domain_id
       }
-      this.cloudregionsM.list({ params: this.cloudregionParams })
+      this.cloudregionsM.list({ params })
         .then(({ data: { data = [] } }) => {
           this.regionOpts = data
           this.$emit('update:closeregionOpts', this.regionOpts)

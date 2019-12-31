@@ -52,7 +52,7 @@ export default {
       if (data && data.length === 1) {
         const item = data[0]
         if (item.protected !== undefined) {
-          initialValueDisableDelete = item.protected === 'true'
+          initialValueDisableDelete = item.protected === 'true' || item.protected
         } else {
           initialValueDisableDelete = data[0]['disable_delete']
         }
@@ -74,11 +74,23 @@ export default {
       try {
         this.loading = false
         const isDelete = this.form.fc.getFieldValue('disable_delete')
-        const ids = this.params.data.map(({ id }) => id)
-        await this.params.list.batchUpdate(ids, {
-          disable_delete: isDelete,
-          protected: `${isDelete}`,
-        })
+        if (this.params.data.length === 1) {
+          this.params.list.onManager('update', {
+            id: this.params.data[0].id,
+            managerArgs: {
+              data: {
+                disable_delete: isDelete,
+                protected: isDelete,
+              },
+            },
+          })
+        } else {
+          const ids = this.params.data.map(({ id }) => id)
+          await this.params.list.batchUpdate(ids, {
+            disable_delete: isDelete,
+            protected: isDelete,
+          })
+        }
         this.cancelDialog()
         this.$message.success('操作成功')
       } catch (error) {

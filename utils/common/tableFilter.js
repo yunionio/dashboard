@@ -170,3 +170,14 @@ export function getPublicFilter () {
     },
   }
 }
+
+export function getHostFilter () {
+  return {
+    label: '宿主机',
+    filter: true,
+    jointFilter: true,
+    formatter: val => {
+      return `hosts.id(host_id).name.contains(${val})`
+    },
+  }
+}
