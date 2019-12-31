@@ -6,12 +6,15 @@
       <dialog-selected-tips :count="params.data.length" name="硬盘" :action="this.params.title" />
       <vxe-grid v-if="params.columns && params.columns.length" class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
-        :form="form.fc">
-        <a-form-item label="删除快照" v-bind="formItemLayout">
+        :form="form.fc" v-show="isIDC">
+        <a-form-item label="同时删除快照" v-bind="formItemLayout">
           <a-switch v-decorator="decorators.autoDelete" @change="autoDeleteChangeHandle" />
         </a-form-item>
+        <a-form-item v-if="!form.fd.autoDelete" v-bind="formItemLayoutWithoutLabel">
+          该硬盘快照数量 {{ snapshot.list.length }} 个
+        </a-form-item>
       </a-form>
-      <vxe-grid v-if="form.fd.autoDelete" class="mb-2" :data="snapshot.list" :columns="snapshot.columns" />
+      <vxe-grid v-if="form.fd.autoDelete" max-height="600" class="mb-2" :data="snapshot.list" :columns="snapshot.columns" />
     </div>
     <div slot="footer">
       <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t("dialog.ok") }}</a-button>
@@ -22,10 +25,11 @@
 
 <script>
 import * as R from 'ramda'
-import { DISK_TYPES } from '@Compute/constants'
+import { DISK_TYPES, SERVER_TYPE } from '@Compute/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { sizestr } from '@/utils/utils'
+import { findPlatform } from '@/utils/common/hypervisor'
 
 export default {
   name: 'DeleteDiskDialog',
@@ -85,6 +89,12 @@ export default {
           span: 3,
         },
       },
+      formItemLayoutWithoutLabel: {
+        wrapperCol: {
+          span: 21,
+          offset: 3,
+        },
+      },
     }
   },
   computed: {
@@ -96,6 +106,13 @@ export default {
       }
       const t = R.type(alert)
       return data[t] || null
+    },
+    type () {
+      const brand = this.params.data[0].brand
+      return findPlatform(brand)
+    },
+    isIDC () {
+      return this.type === SERVER_TYPE.idc
     },
   },
   created () {
@@ -113,7 +130,9 @@ export default {
           params = {
             ...params,
             ...this.params.requestParams,
-            delete_snapshots: this.form.fd.autoDelete,
+          }
+          if (this.isIDC) {
+            params.delete_snapshots = this.form.fd.autoDelete
           }
           const response = await this.params.list.onManager('batchDelete', {
             id: ids,
