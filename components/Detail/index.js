@@ -68,7 +68,7 @@ const getDefaultLastBaseInfo = (h, { data, list }) => {
       },
     },
   ]
-  if (appendOutherResources.includes(list.resource)) {
+  if (list && list.resource && appendOutherResources.includes(list.resource)) {
     ret = R.insertAll(0, outher, ret)
   }
   return ret
