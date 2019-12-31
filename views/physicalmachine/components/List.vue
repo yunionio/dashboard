@@ -36,7 +36,6 @@ export default {
           status: Object.values(expectStatus.host).flat(),
         },
         filterOptions: {
-          id: this.id,
           name: {
             label: '名称',
             filter: true,
