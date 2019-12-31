@@ -914,6 +914,6 @@
   "physicalmachineAddModes": {
     "single": "单条录入",
     "batch": "批量录入",
-    "file": "文件导入"
+    "file": "模板导入"
   }
 }
