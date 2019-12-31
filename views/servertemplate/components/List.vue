@@ -3,7 +3,8 @@
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -18,9 +19,13 @@ import WindowsMixin from '@/mixins/windows'
 export default {
   name: 'ServertemplateList',
   mixins: [WindowsMixin],
+  props: {
+    id: String,
+  },
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'servertemplates',
         getParams: {
           details: true,
@@ -36,6 +41,14 @@ export default {
           tenant: getTenantFilter(),
         },
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '名称', key: 'name' },
+          { label: '项目', key: 'tenant' },
+          { label: '创建时间', key: 'created_at' },
+        ],
+      },
       columns: [
         getNameDescriptionTableColumn({
           vm: this,

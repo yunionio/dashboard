@@ -3,7 +3,8 @@
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -15,6 +16,7 @@ export default {
   name: 'AnsibleTemplateList',
   mixins: [WindowsMixin],
   props: {
+    id: String,
     getParams: {
       type: [Function, Object],
     },
@@ -22,6 +24,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'devtool_templates',
         getParams: this.getParams,
         filterOptions: {
@@ -40,6 +43,16 @@ export default {
           },
         },
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '名称', key: 'name' },
+          { label: '启用状态', key: 'enabled' },
+          { label: '时间间隔', key: 'interval' },
+          { label: '项目', key: 'tenant' },
+          { label: '创建时间', key: 'create_at' },
+        ],
+      },
       columns: [
         getNameDescriptionTableColumn({
           vm: this,

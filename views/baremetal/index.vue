@@ -2,7 +2,7 @@
   <div>
     <page-header title="裸金属" />
     <page-body>
-      <baremetal-list />
+      <baremetal-list :id="listId" />
     </page-body>
   </div>
 </template>
@@ -14,6 +14,11 @@ export default {
   name: 'BaremetalIndex',
   components: {
     BaremetalList,
+  },
+  data () {
+    return {
+      listId: 'BaremetalList',
+    }
   },
 }
 </script>

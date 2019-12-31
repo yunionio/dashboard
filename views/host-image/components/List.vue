@@ -3,7 +3,8 @@
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -15,8 +16,11 @@ import BaseDropList from '@/sections/DropList'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'ImageList',
+  name: 'HostImageList',
   mixins: [WindowsMixin],
+  props: {
+    id: String,
+  },
   data () {
     const validateAction = function (obj) {
       if (obj.is_guest_image === true || obj.is_guest_image === 'true') {
@@ -41,6 +45,7 @@ export default {
       isDomainMode: this.$store.getters.isDomainMode,
       userInfo: this.$store.getters.userInfo,
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'guestimages',
         apiVersion: 'v1',
         getParams: this.getParams,
@@ -68,6 +73,17 @@ export default {
           // os_type: getOsTypeFilter(),
         },
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '名称', key: 'name' },
+          { label: '格式', key: 'disk_format' },
+          { label: '镜像大小', key: 'size' },
+          { label: '项目', key: 'tenant' },
+          { label: '镜像类型', key: 'is_standard' },
+          { label: '创建时间', key: 'created_at' },
+        ],
+      },
       columns: [
         getNameDescriptionTableColumn({
           width: 200,

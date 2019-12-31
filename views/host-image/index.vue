@@ -2,18 +2,23 @@
   <div>
     <page-header title="主机镜像" />
     <page-body>
-      <image-list />
+      <host-image-list :id="listId" />
     </page-body>
   </div>
 </template>
 
 <script>
-import ImageList from './components/List'
+import HostImageList from './components/List'
 
 export default {
-  name: 'ImageIndex',
+  name: 'HostImageIndex',
   components: {
-    ImageList,
+    HostImageList,
+  },
+  data () {
+    return {
+      listId: 'HostImageList',
+    }
   },
 }
 </script>

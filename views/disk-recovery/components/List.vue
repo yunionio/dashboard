@@ -3,7 +3,8 @@
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -15,9 +16,13 @@ import WindowsMixin from '@/mixins/windows'
 export default {
   name: 'DiskRecoveryList',
   mixins: [WindowsMixin],
+  props: {
+    id: String,
+  },
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'disks',
         getParams: this.getParams,
         steadyStatus: Object.values(expectStatus.server).flat(),
@@ -36,6 +41,25 @@ export default {
             ] }),
         },
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '名称', key: 'name' },
+          { label: '容量', key: 'disk_size' },
+          { label: '格式', key: 'disk_format' },
+          { label: '磁盘类型', key: 'disk_type' },
+          { label: '是否挂载', key: 'unused' },
+          { label: '主机', key: 'guest' },
+          { label: '主存储', key: 'storage' },
+          { label: '创建时间', key: 'created_at' },
+          { label: '状态', key: 'status' },
+          { label: '项目', key: 'tenant' },
+          { label: '平台', key: 'provider' },
+          { label: '区域', key: 'region' },
+          { label: '可用区', key: 'zone' },
+          { label: '介质类型', key: 'medium_type' },
+        ],
+      },
       columns: [
         getCopyWithContentTableColumn({ field: 'name', title: '名称' }),
         getCopyWithContentTableColumn({ field: 'guest', title: '云服务器' }),

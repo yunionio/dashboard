@@ -2,7 +2,7 @@
   <div>
     <page-header title="宿主机" />
     <page-body>
-      <host-list :get-params="listParams" />
+      <host-list :get-params="listParams" :id="listId" />
     </page-body>
   </div>
 </template>
@@ -17,6 +17,7 @@ export default {
   },
   data () {
     return {
+      listId: 'HostList',
       listParams: {
         details: true,
         baremetal: false,

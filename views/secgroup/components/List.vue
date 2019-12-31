@@ -3,7 +3,8 @@
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -21,6 +22,7 @@ export default {
   name: 'SecgroupList',
   mixins: [WindowsMixin],
   props: {
+    id: String,
     getParams: {
       type: [Function, Object],
       default: () => ({
@@ -31,6 +33,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'secgroups',
         getParams: this.getParams,
         filterOptions: {
@@ -44,6 +47,16 @@ export default {
           tenant: getTenantFilter(),
         },
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '名称', key: 'name' },
+          { label: '关联实例', key: 'guest_cnt' },
+          { label: '共享范围', key: 'public_scope' },
+          { label: '状态', key: 'status' },
+          { label: '项目', key: 'tenant' },
+        ],
+      },
       columns: [
         getNameDescriptionTableColumn({
           vm: this,

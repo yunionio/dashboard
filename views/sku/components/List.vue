@@ -3,7 +3,8 @@
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -19,9 +20,13 @@ import { sizestr } from '@/utils/utils'
 export default {
   name: 'SkuList',
   mixins: [WindowsMixin],
+  props: {
+    id: String,
+  },
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'serverskus',
         getParams: {
           details: true,
@@ -67,6 +72,17 @@ export default {
           },
         },
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '名称', key: 'name' },
+          { label: '虚拟CPU核数', key: 'cpu_core_count' },
+          { label: '虚拟内存容量', key: 'memory_size_mb' },
+          { label: '状态', key: 'status' },
+          { label: '关联主机数量', key: 'total_guest_count' },
+          { label: '启用状态', key: 'enabled' },
+        ],
+      },
       columns: [
         getNameDescriptionTableColumn({
           vm: this,

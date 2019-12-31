@@ -2,7 +2,7 @@
   <div>
     <page-header title="硬盘回收站" />
     <page-body>
-      <disk-recovery-list />
+      <disk-recovery-list :id="listId" />
     </page-body>
   </div>
 </template>
@@ -14,6 +14,11 @@ export default {
   name: 'DiskRecoveryIndex',
   components: {
     DiskRecoveryList,
+  },
+  data () {
+    return {
+      listId: 'DiskRecoveryList',
+    }
   },
 }
 </script>

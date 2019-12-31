@@ -2,7 +2,7 @@
   <div>
     <page-header title="硬盘" />
     <page-body>
-      <disk-list />
+      <disk-list :id="listId" />
     </page-body>
   </div>
 </template>
@@ -14,6 +14,11 @@ export default {
   name: 'DiskIndex',
   components: {
     DiskList,
+  },
+  data () {
+    return {
+      listId: 'DiskList',
+    }
   },
 }
 </script>

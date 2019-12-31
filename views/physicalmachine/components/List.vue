@@ -3,7 +3,8 @@
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -19,6 +20,7 @@ export default {
   name: 'PhysicalmachineList',
   mixins: [DialogMixin, WindowsMixin],
   props: {
+    id: String,
     getParams: {
       type: [Function, Object],
     },
@@ -26,9 +28,11 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'hosts',
         getParams: this.getParams,
         filterOptions: {
+          id: this.id,
           name: {
             label: '名称',
             filter: true,
@@ -69,6 +73,21 @@ export default {
           },
         },
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '名称', key: 'name' },
+          { label: '启用状态', key: 'enabled' },
+          { label: '状态', key: 'status' },
+          { label: '管理IP', key: 'access_ip' },
+          { label: '带外IP', key: 'ipmi_ip' },
+          { label: 'SN', key: 'sn' },
+          { label: '分配', key: 'server' },
+          { label: '维护模式', key: 'is_maintenance' },
+          { label: '区域', key: 'region' },
+          { label: '可用区', key: 'zone' },
+        ],
+      },
       columns: [
         getNameDescriptionTableColumn({
           vm: this,

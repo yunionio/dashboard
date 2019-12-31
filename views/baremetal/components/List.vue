@@ -1,9 +1,11 @@
 <template>
   <page-list
+    :id="id"
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -25,6 +27,7 @@ export default {
   name: 'BaremetalList',
   mixins: [WindowsMixin],
   props: {
+    id: String,
     getParams: {
       type: [Function, Object],
     },
@@ -32,6 +35,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'servers',
         getParams: this.getParam,
         filterOptions: {
@@ -62,6 +66,25 @@ export default {
         },
         steadyStatus: Object.values(expectStatus.server).flat(),
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '名称', key: 'name' },
+          { label: '私网IP', key: 'ips' },
+          { label: 'CPU', key: 'vcpu_count' },
+          { label: '内存(MB)', key: 'vmem_size' },
+          { label: '磁盘(MB)', key: 'disk' },
+          { label: '实例类型', key: 'instance_type' },
+          { label: '操作系统', key: 'os_distribution' },
+          { label: '状态', key: 'status' },
+          { label: '项目', key: 'tenant' },
+          { label: '平台', key: 'hypervisor' },
+          { label: '云账号', key: 'manager' },
+          { label: '区域', key: 'region' },
+          { label: '可用区', key: 'zone' },
+          { label: '用户标签', key: 'user_tags' },
+        ],
+      },
       columns: [
         getNameDescriptionTableColumn({
           vm: this,
@@ -99,7 +122,7 @@ export default {
           width: 50,
         },
         {
-          field: 'metadata',
+          field: 'os_type',
           title: '系统',
           width: 50,
           slots: {

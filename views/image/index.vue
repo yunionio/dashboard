@@ -2,7 +2,7 @@
   <div>
     <page-header title="系统镜像" />
     <page-body>
-      <image-list />
+      <image-list :id="listId" />
     </page-body>
   </div>
 </template>
@@ -14,6 +14,11 @@ export default {
   name: 'ImageIndex',
   components: {
     ImageList,
+  },
+  data () {
+    return {
+      listId: 'ImageList',
+    }
   },
 }
 </script>

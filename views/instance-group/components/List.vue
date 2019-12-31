@@ -3,7 +3,8 @@
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -20,9 +21,13 @@ import WindowsMixin from '@/mixins/windows'
 export default {
   name: 'InstanceGroupList',
   mixins: [WindowsMixin],
+  props: {
+    id: String,
+  },
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'instancegroups',
         getParams: {
           detail: true,
@@ -57,6 +62,18 @@ export default {
           },
         },
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '启用状态', key: 'enabled' },
+          { label: '名称', key: 'name' },
+          { label: '策略', key: 'force_dispersion' },
+          { label: '粒度', key: 'granularity' },
+          { label: '绑定主机数量', key: 'guest_count' },
+          { label: '项目', key: 'tenant' },
+          { label: '创建时间', key: 'created_at' },
+        ],
+      },
       columns: [
         getNameDescriptionTableColumn({
           vm: this,

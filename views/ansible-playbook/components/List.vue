@@ -2,7 +2,8 @@
   <page-list
     :list="list"
     :columns="columns"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -13,6 +14,7 @@ export default {
   name: 'AnsiblePlaybookList',
   mixins: [WindowsMixin],
   props: {
+    id: String,
     getParams: {
       type: [Function, Object],
     },
@@ -20,6 +22,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'ansibleplaybooks',
         getParams: this.getParams,
         filterOptions: {
@@ -52,6 +55,16 @@ export default {
           },
         },
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '名称', key: 'name' },
+          { label: '上一次执行状态', key: 'status' },
+          { label: '开始时间', key: 'start_time' },
+          { label: '结束时间', key: 'end_time' },
+          { label: '项目', key: 'tenant' },
+        ],
+      },
       columns: [
         getNameDescriptionTableColumn({
           vm: this,

@@ -3,7 +3,8 @@
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -17,9 +18,13 @@ import { sizestr } from '@/utils/utils'
 export default {
   name: 'ImageRecoveryList',
   mixins: [WindowsMixin],
+  props: {
+    id: String,
+  },
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'images',
         getParams: this.getParams,
         steadyStatus: Object.values(expectStatus.server).flat(),
@@ -30,6 +35,18 @@ export default {
           os_type: getOsTypeFilter(),
         },
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '名称', key: 'name' },
+          { label: '格式', key: 'disk_format' },
+          { label: '镜像大小', key: 'size' },
+          { label: '项目', key: 'tenant' },
+          { label: '镜像类型', key: 'is_standard' },
+          { label: '创建时间', key: 'created_at' },
+          { label: '检验和', key: 'checksum' },
+        ],
+      },
       columns: [
         getCopyWithContentTableColumn({ field: 'name', title: '名称' }),
         {

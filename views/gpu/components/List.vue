@@ -3,7 +3,8 @@
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -22,9 +23,13 @@ const DEVICE_MAP = {
 export default {
   name: 'GpuList',
   mixins: [WindowsMixin],
+  props: {
+    id: String,
+  },
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'isolated_devices',
         getParams: {
           details: true,
@@ -63,6 +68,15 @@ export default {
           },
         },
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '名称', key: 'name' },
+          { label: '设备型号', key: 'model' },
+          { label: '关联主机', key: 'guest' },
+          { label: '所在宿主机', key: 'host' },
+        ],
+      },
       columns: [
         getNameDescriptionTableColumn({
           vm: this,

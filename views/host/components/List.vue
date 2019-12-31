@@ -3,7 +3,8 @@
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -18,6 +19,7 @@ export default {
   name: 'HostList',
   mixins: [WindowsMixin],
   props: {
+    id: String,
     getParams: {
       type: [Function, Object],
     },
@@ -25,6 +27,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'hosts',
         getParams: this.getParams,
         filterOptions: {
@@ -60,6 +63,25 @@ export default {
           },
         },
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '名称', key: 'name' },
+          { label: '启用状态', key: 'enabled' },
+          { label: '状态', key: 'status' },
+          { label: '管理IP', key: 'access_ip' },
+          { label: '带外IP', key: 'ipmi_ip' },
+          { label: '服务', key: 'host_status' },
+          { label: '#VM', key: 'nonsystem_guests' },
+          { label: 'CPU', key: 'cpu_count' },
+          { label: '内存', key: 'mem_size' },
+          { label: '存储', key: 'storage_size' },
+          { label: 'SN', key: 'sn' },
+          { label: '项目', key: 'tenant' },
+          { label: '区域', key: 'region' },
+          { label: '可用区', key: 'zone' },
+        ],
+      },
       columns: [
         getNameDescriptionTableColumn({
           vm: this,
@@ -73,14 +95,29 @@ export default {
         getEnabledTableColumn(),
         getStatusTableColumn({ statusModule: 'host' }),
         {
-          field: 'access_ip',
+          field: 'custom_ip',
           title: 'IP',
-          width: 120,
+          width: 160,
+          showOverflow: 'ellipsis',
           slots: {
             default: ({ row }) => {
-              return [
-                <list-body-cell-wrap row={row} field="access_ip" copy />,
-              ]
+              let cellWrap = []
+              if (row.access_ip) {
+                cellWrap.push(
+                  <div class="d-flex">
+                   管理IP：<list-body-cell-wrap row={row} field="access_ip" copy />
+                  </div>
+                )
+              }
+              if (row.ipmi_ip) {
+                cellWrap.push(
+                  <div class="d-flex">
+                   带外IP：
+                    <list-body-cell-wrap row={row} field="ipmi_ip" copy />
+                  </div>
+                )
+              }
+              return cellWrap
             },
           },
         },

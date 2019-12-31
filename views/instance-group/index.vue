@@ -2,7 +2,7 @@
   <div>
     <page-header title="主机组" />
     <page-body>
-      <instance-group-list />
+      <instance-group-list :id="listId" />
     </page-body>
   </div>
 </template>
@@ -14,6 +14,11 @@ export default {
   name: 'InstanceGroupIndex',
   components: {
     InstanceGroupList,
+  },
+  data () {
+    return {
+      listId: 'InstanceGroupList',
+    }
   },
 }
 </script>

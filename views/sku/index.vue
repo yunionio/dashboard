@@ -2,7 +2,7 @@
   <div>
     <page-header title="套餐" />
     <page-body>
-      <sku-list />
+      <sku-list :id="listId" />
     </page-body>
   </div>
 </template>
@@ -14,6 +14,11 @@ export default {
   name: 'SKUIndex',
   components: {
     SkuList,
+  },
+  data () {
+    return {
+      listId: 'SkuList',
+    }
   },
 }
 </script>

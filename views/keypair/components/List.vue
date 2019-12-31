@@ -3,7 +3,8 @@
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -16,9 +17,13 @@ import WindowsMixin from '@/mixins/windows'
 export default {
   name: 'KeyPairList',
   mixins: [WindowsMixin],
+  props: {
+    id: String,
+  },
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'keypairs',
         getParams: {
           details: true,
@@ -34,6 +39,16 @@ export default {
           },
         },
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '名称', key: 'name' },
+          { label: '公钥内容', key: 'public_key' },
+          { label: '指纹', key: 'fingerprint' },
+          { label: '类型', key: 'scheme' },
+          { label: '关联主机数', key: 'linked_guest_count' },
+        ],
+      },
       columns: [
         getNameDescriptionTableColumn({
           vm: this,

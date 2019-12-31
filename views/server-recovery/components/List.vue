@@ -3,7 +3,8 @@
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -17,9 +18,13 @@ import { getNameFilter, getIpFilter, getOsTypeFilter, getBrandFilter } from '@/u
 export default {
   name: 'ServerRecoveryList',
   mixins: [WindowsMixin],
+  props: {
+    id: String,
+  },
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'servers',
         getParams: this.getParams,
         steadyStatus: Object.values(expectStatus.server).flat(),
@@ -53,6 +58,29 @@ export default {
           },
         },
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '外部ID', key: 'external_id' },
+          { label: '名称', key: 'name' },
+          { label: '私网IP', key: 'ips' },
+          { label: '外网IP', key: 'eip' },
+          { label: 'CPU', key: 'vcpu_count' },
+          { label: '内存(MB)', key: 'vmem_size' },
+          { label: '磁盘(MB)', key: 'disk' },
+          { label: '实例类型', key: 'instance_type' },
+          { label: '操作系统', key: 'os_distribution' },
+          { label: '状态', key: 'status' },
+          { label: '项目', key: 'tenant' },
+          { label: '平台', key: 'hypervisor' },
+          { label: '宿主机', key: 'host' },
+          { label: '云账号', key: 'manager' },
+          { label: '区域', key: 'region' },
+          { label: '可用区', key: 'zone' },
+          { label: '计费方式', key: 'billing_type' },
+          { label: '用户标签', key: 'user_tags' },
+        ],
+      },
       columns: [
         getCopyWithContentTableColumn({ field: 'name', title: '名称', sortable: true }),
         getIpsTableColumn({ field: 'ips', title: 'IP' }),

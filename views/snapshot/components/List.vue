@@ -3,7 +3,8 @@
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -36,6 +37,23 @@ export default {
   },
   data () {
     return {
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '名称', key: 'name' },
+          { label: '硬盘', key: 'disk_name' },
+          { label: '磁盘类型', key: 'disk_type' },
+          { label: '快照大小', key: 'size' },
+          { label: '状态', key: 'status' },
+          { label: '项目', key: 'tenant' },
+          { label: '平台', key: 'provider' },
+          { label: '虚拟机', key: 'guest' },
+          { label: '创建时间', key: 'create_at' },
+          { label: '区域', key: 'region' },
+          { label: '可用区', key: 'zone' },
+          { label: '存储方式', key: 'storage_type' },
+        ],
+      },
       columns: [
         getNameDescriptionTableColumn({
           vm: this,

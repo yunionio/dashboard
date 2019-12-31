@@ -2,7 +2,7 @@
   <div>
     <page-header title="安全组" />
     <page-body>
-      <secgroup-list />
+      <secgroup-list :id="listId" />
     </page-body>
   </div>
 </template>
@@ -13,6 +13,11 @@ export default {
   name: 'SecgroupIndex',
   components: {
     SecgroupList,
+  },
+  data () {
+    return {
+      listId: 'SecgroupList',
+    }
   },
 }
 </script>

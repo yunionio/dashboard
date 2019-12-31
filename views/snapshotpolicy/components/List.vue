@@ -3,7 +3,8 @@
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -21,10 +22,13 @@ import WindowsMixin from '@/mixins/windows'
 export default {
   name: 'SnapshotPolicyList',
   mixins: [WindowsMixin],
+  props: {
+    id: String,
+  },
   data () {
     return {
       list: this.$list.createList(this, {
-        id: 'VmSnapshotPolicyList',
+        id: this.id,
         resource: 'snapshotpolicies',
         steadyStatus: Object.values(expectStatus.snapshotpolicy).flat(),
         getParams: {
@@ -42,6 +46,17 @@ export default {
           tenant: getTenantFilter(),
         },
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '名称', key: 'name' },
+          { label: '关联硬盘数量', key: 'binding_disk_count' },
+          { label: '策略详情', key: 'repeat_weekdays' },
+          { label: '创建时间', key: 'create_at' },
+          { label: '状态', key: 'status' },
+          { label: '项目', key: 'tenant' },
+        ],
+      },
       columns: [
         getNameDescriptionTableColumn({
           vm: this,

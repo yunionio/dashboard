@@ -2,7 +2,7 @@
   <div>
     <page-header title="任务" />
     <page-body>
-      <list :getParams="getParams" />
+      <list :getParams="getParams" :id="listId" />
     </page-body>
   </div>
 </template>
@@ -11,9 +11,14 @@
 import List from './components/List'
 
 export default {
-  name: 'BaremetalIndex',
+  name: 'AnsiblePlaybookIndex',
   components: {
     List,
+  },
+  data () {
+    return {
+      listId: 'AnsiblePlaybookList',
+    }
   },
   methods: {
     getParams () {

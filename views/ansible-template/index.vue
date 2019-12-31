@@ -2,7 +2,7 @@
   <div>
     <page-header title="模版" />
     <page-body>
-      <list :get-params="listParams" />
+      <list :get-params="listParams" :id="listId" />
     </page-body>
   </div>
 </template>
@@ -17,6 +17,7 @@ export default {
   },
   data () {
     return {
+      listId: 'AnsibleTemplateList',
       listParams: {
         details: true,
         baremetal: false,
