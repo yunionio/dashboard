@@ -32,6 +32,15 @@ export default {
         {
           field: 'account',
           title: '账号',
+          slots: {
+            default: ({ row }) => {
+              return [
+                <div class='text-truncate'>
+                  <list-body-cell-wrap copy row={ row } field='account' title={ row['account'] } />
+                </div>,
+              ]
+            },
+          },
         },
         getEnabledTableColumn(),
         {
