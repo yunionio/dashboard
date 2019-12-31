@@ -17,7 +17,7 @@
             @change="handleCheckAllChange"
             :checked="checkAll">全选</a-checkbox>
           <a-divider />
-          <a-checkbox-group v-decorator="decorators.selected" @change="handleSelectedChange">
+          <a-checkbox-group v-decorator="decorators.selected" @change="handleSelectedChange" class="w-100">
             <a-row>
               <a-col
                 v-for="item of params.options.items"
