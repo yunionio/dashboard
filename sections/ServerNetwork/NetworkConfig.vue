@@ -11,6 +11,7 @@
           :item.sync="item.network"
           :need-params="true"
           :params="networkParams"
+          :mapper="networkResourceMapper"
           :select-props="{ allowClear: true, placeholder: '请选择IP子网' }" />
       </a-form-item>
       <a-form-item class="w-25 mb-0 mr-2" v-if="item.ipShow">
@@ -57,6 +58,10 @@ export default {
     isBonding: {
       type: Boolean,
       default: false,
+    },
+    networkResourceMapper: {
+      type: Function,
+      default: (data) => { return data },
     },
   },
   data () {

@@ -293,7 +293,7 @@ export default {
           actions: (obj) => {
             return [
               {
-                label: '调整标签',
+                label: '调度标签',
                 action: (obj) => {
                   this.createDialog('HostsAdjustLabelDialog', {
                     data: this.list.selectedItems,
@@ -644,7 +644,7 @@ export default {
                 label: '设置',
                 submenus: [
                   {
-                    label: '调整标签',
+                    label: '调度标签',
                     action: () => {
                       this.createDialog('HostsAdjustLabelDialog', {
                         data: [obj],

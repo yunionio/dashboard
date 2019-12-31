@@ -11,6 +11,7 @@
         :decorator="decorator.networkConfig"
         :isBonding="isBonding"
         :network-params="networkListParams"
+        :network-resource-mapper="networkResourceMapper"
         :limit="form.fi.capability.max_nic_count" />
     </a-form-item>
     <a-form-item v-if="networkComponent === 'schedtag'">
@@ -54,6 +55,10 @@ export default {
     isBonding: {
       type: Boolean,
       default: false,
+    },
+    networkResourceMapper: {
+      type: Function,
+      default: (data) => { return data },
     },
   },
   data () {

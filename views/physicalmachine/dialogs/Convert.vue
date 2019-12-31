@@ -79,6 +79,7 @@
           <server-network
             :decorator="decorators.network"
             :isBonding="isBonding"
+            :network-resource-mapper="networkResourceMapper"
             :network-list-params="resourcesParams.network"
             :schedtag-params="resourcesParams.schedtag" />
         </a-form-item>
@@ -327,6 +328,11 @@ export default {
     this.zonesM2 = new this.$Manager('zones')
   },
   methods: {
+    // 过滤network数据
+    networkResourceMapper (data) {
+      data = data.filter((d) => d.server_type !== 'ipmi' && d.server_type !== 'pxe')
+      return data
+    },
     capability () { // 可用区查询
       let data = { show_emulated: true, resource_type: 'shared', scope: this.$store.getters.scope, host_type: 'baremetal' }
       this.zonesM2.get({

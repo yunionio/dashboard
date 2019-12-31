@@ -83,6 +83,7 @@
           :decorator="decorators.network"
           :isBonding="isBonding"
           :network-list-params="networkParam"
+          :network-resource-mapper="networkResourceMapper"
           :schedtag-params="params.schedtag" />
       </a-form-item>
       <a-form-item :wrapper-col="{ span: 20, offset: 3 }">
@@ -459,7 +460,7 @@ export default {
         }
       }
       return {
-        filter: 'server_type.notin(ipmi, pxe)',
+        zone: this.zone,
         usable: true,
         ...this.scopeParams,
       }
@@ -504,8 +505,16 @@ export default {
     if (this.$route.query.id) {
       this._fetchSpec()
     }
+    if (this.$route.query.zone_id) {
+      this.capability(this.$route.query.zone_id)
+    }
   },
   methods: {
+    // 过滤network数据
+    networkResourceMapper (data) {
+      data = data.filter((d) => d.server_type !== 'ipmi' && d.server_type !== 'pxe')
+      return data
+    },
     // 规格变动
     specificationChange (value, option) {
       let str = value.replace(/\//g, ',')
