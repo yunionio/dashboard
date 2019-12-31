@@ -17,6 +17,7 @@
 
 <script>
 import DiskDetail from './Detail'
+import SnapshotList from './snapshot'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -25,6 +26,7 @@ export default {
   name: 'DiskSidePage',
   components: {
     DiskDetail,
+    SnapshotList,
     Actions,
   },
   mixins: [SidePageMixin, WindowsMixin],
@@ -32,6 +34,7 @@ export default {
     return {
       detailTabs: [
         { label: '详情', key: 'disk-detail' },
+        { label: '快照', key: 'snapshot-list' },
         { label: '操作日志', key: 'event-drawer' },
       ],
     }

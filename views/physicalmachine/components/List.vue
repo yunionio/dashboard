@@ -13,6 +13,7 @@ import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { getRegionTableColumn, getStatusTableColumn, getEnabledTableColumn, getNameDescriptionTableColumn, getCopyWithContentTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
 import { getStatusFilter, getEnabledFilter } from '@/utils/common/tableFilter'
 import { sizestr } from '@/utils/utils'
+import expectStatus from '@/constants/expectStatus'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
@@ -31,6 +32,9 @@ export default {
         id: this.id,
         resource: 'hosts',
         getParams: this.getParams,
+        steadyStatus: {
+          status: Object.values(expectStatus.host).flat(),
+        },
         filterOptions: {
           id: this.id,
           name: {

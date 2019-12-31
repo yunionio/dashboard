@@ -490,7 +490,7 @@ export default {
   provide () {
     return {
       form: this.form,
-      fi: this.fi,
+      fi: this.form.fi,
     }
   },
   created () {
@@ -541,7 +541,7 @@ export default {
       })
     },
     capability (v) { // 可用区查询
-      let data = { show_emulated: true, resource_type: this.resourceType, scope: this.$scope, host_type: 'baremetal' }
+      let data = { show_emulated: true, resource_type: this.resourceType, scope: this.$store.getters.scope, host_type: 'baremetal' }
       const imageType = this.form.fc.getFieldValue('imageOS') && this.form.fc.getFieldValue('imageOS').imageType
       if (imageType === 'iso') {
         data.cdrom_boot = true

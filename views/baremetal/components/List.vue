@@ -117,7 +117,7 @@ export default {
           },
         },
         {
-          field: 'sn',
+          field: 'host_sn',
           title: 'SN',
           width: 50,
         },
