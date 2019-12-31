@@ -20,8 +20,8 @@
     </page-body>
     <page-footer>
       <template v-slot:right>
-        <a-button type="primary" size="large" :loading="adding" @click="handleAdd" v-if="!isScriptAdd">添加</a-button>
-        <a-button class="ml-2" size="large" @click="handleBack">返回</a-button>
+        <a-button type="primary" size="large" :loading="adding" @click="handleAdd" v-if="!isScriptAdd">确定</a-button>
+        <a-button class="ml-2" size="large" @click="handleBack">取消</a-button>
       </template>
     </page-footer>
   </div>
@@ -119,8 +119,10 @@ export default {
         mac: [
           'mac',
           {
+            validateFirst: true,
             rules: [
               { required: true, message: '请填写MAC地址' },
+              { validator: validateForm('mac') },
             ],
           },
         ],
