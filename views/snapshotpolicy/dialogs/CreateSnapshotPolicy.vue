@@ -2,7 +2,13 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{action}}</div>
     <div slot="body">
-      <a-alert class="mb-2" type="warning" :message="message" />
+      <a-alert class="mb-2" type="warning">
+        <div slot="message">
+          创建快照会暂时降低存储I/O性能，出现短暂瞬间变慢。建议您避开业务高峰创建快照
+         <br />设定的自动快照时间与实际创建时间可能存在一定差异，快照数据以实际创造时间为准
+         <br />每个硬盘自动快照配额有限，超出配额后最早创建的自动快照会被自动删除
+        </div>
+      </a-alert>
       <a-form :form="form.fc" hideRequiredMark>
         <a-form-item label="策略名称" v-bind="formItemLayout">
           <a-input
@@ -136,11 +142,6 @@ export default {
     }
   },
   computed: {
-    message () {
-      return `创建快照会暂时降低存储I/O性能，出现短暂瞬间变慢。建议您避开业务高峰创建快照
-         设定的自动快照时间与实际创建时间可能存在一定差异，快照数据以实际创造时间为准
-         每个硬盘自动快照配额有限，超出配额后最早创建的自动快照会被自动删除`
-    },
     showRepeatTips () {
       const name = this.form.fd.generate_name || ''
       return !!this.snapshotpolicies.find(item => item.name === name.toLowerCase())
