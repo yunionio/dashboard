@@ -154,7 +154,7 @@ export default {
     fetchSnapshotpolicies () {
       const params = {
         scope: this.$store.getters.scope,
-        filter: `name.contains(${this.form.fd.generate_name})`,
+        filter: `name.contains("${this.form.fd.generate_name}")`,
       }
       this.manager.list({ params }).then(res => {
         const data = res.data.data || []

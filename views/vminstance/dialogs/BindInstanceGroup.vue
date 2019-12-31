@@ -86,7 +86,7 @@ export default {
         scope: this.scope,
         project: this.params.data[0]['tenant_id'],
       }
-      if (query) params.filter = `name.contains(${query})`
+      if (query) params.filter = `name.contains("${query}")`
       try {
         const { data: { data = [] } } = await this.instanceGroupsManager.list({
           params,

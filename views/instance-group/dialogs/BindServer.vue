@@ -105,7 +105,7 @@ export default {
         limit: 20,
         filter: 'hypervisor.notin(baremetal,container)',
       }
-      if (query) params.filter = `name.contains(${query})`
+      if (query) params.filter = `name.contains("${query}")`
       try {
         const { data: { data = [] } } = await this.serversManager.list({
           params,

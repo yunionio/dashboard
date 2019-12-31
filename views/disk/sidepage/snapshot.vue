@@ -41,14 +41,14 @@ export default {
             label: '快照名称',
             filter: true,
             formatter: val => {
-              return `name.contains(${val})`
+              return `name.contains("${val}")`
             },
           },
           disk_name: {
             label: '硬盘',
             filter: true,
             formatter: val => {
-              return `disk_name.contains(${val})`
+              return `disk_name.contains("${val}")`
             },
           },
         },

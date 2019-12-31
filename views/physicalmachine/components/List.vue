@@ -41,7 +41,7 @@ export default {
             label: '名称',
             filter: true,
             formatter: val => {
-              return `name.contains(${val})`
+              return `name.contains("${val}")`
             },
           },
           status: getStatusFilter('host'),
@@ -57,14 +57,14 @@ export default {
             label: '管理IP',
             filter: true,
             formatter: val => {
-              return `access_ip.contains(${val})`
+              return `access_ip.contains("${val}")`
             },
           },
           ipmi_ip: {
             label: '带外IP',
             filter: true,
             formatter: val => {
-              return `ipmi_ip.contains(${val})`
+              return `ipmi_ip.contains("${val}")`
             },
           },
           is_maintenance: {

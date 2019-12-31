@@ -207,7 +207,7 @@ export default {
     async fetchServers (name) {
       let manager = new this.$Manager('servers')
       const params = {
-        filter: `name.contains(${name})`,
+        filter: `name.contains("${name}")`,
       }
       try {
         const response = await manager.list({ params })

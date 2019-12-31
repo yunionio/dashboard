@@ -55,7 +55,7 @@ export default {
             label: '镜像名称',
             filter: true,
             formatter: val => {
-              return `name.contains(${val})`
+              return `name.contains("${val}")`
             },
           },
           // status: getStatusFilter('image'),

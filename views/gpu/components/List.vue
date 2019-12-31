@@ -40,14 +40,14 @@ export default {
             label: '设备类型',
             filter: true,
             formatter: val => {
-              return `dev_type.contains(${val})`
+              return `dev_type.contains("${val}")`
             },
           },
           model: {
             label: '设备型号',
             filter: true,
             formatter: val => {
-              return `model.contains(${val})`
+              return `model.contains("${val}")`
             },
           },
           guest: {
@@ -55,7 +55,7 @@ export default {
             filter: true,
             jointFilter: true,
             formatter: val => {
-              return `servers.id(guest_id).name.contains(${val})`
+              return `servers.id(guest_id).name.contains("${val}")`
             },
           },
           host: {
@@ -63,7 +63,7 @@ export default {
             filter: true,
             jointFilter: true,
             formatter: val => {
-              return `hosts.id(host_id).name.contains(${val})`
+              return `hosts.id(host_id).name.contains("${val}")`
             },
           },
         },

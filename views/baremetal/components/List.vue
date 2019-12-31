@@ -46,14 +46,14 @@ export default {
             label: '名称',
             filter: true,
             formatter: val => {
-              return `name.contains(${val})`
+              return `name.contains("${val}")`
             },
           },
           ips: {
             label: 'IP',
             filter: true,
             formatter: val => {
-              return `guestnetworks.guest_id(id).ip_addr.contains(${val})`
+              return `guestnetworks.guest_id(id).ip_addr.contains("${val}")`
             },
             jointFilter: true,
           },

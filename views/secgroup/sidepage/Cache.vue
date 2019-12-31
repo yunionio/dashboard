@@ -35,7 +35,7 @@ export default {
             label: '安全组名称',
             filter: true,
             formatter: val => {
-              return `name.contains(${val})`
+              return `name.contains("${val}")`
             },
           },
         },

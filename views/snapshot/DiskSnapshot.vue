@@ -33,7 +33,7 @@ export default {
             label: '名称',
             filter: true,
             formatter: val => {
-              return `name.contains(${val})`
+              return `name.contains("${val}")`
             },
           },
           status: getStatusFilter('snapshot'),
@@ -56,7 +56,7 @@ export default {
             jointFilter: true,
             filter: true,
             formatter: val => {
-              return `disks.id(disk_id).name.contains(${val})`
+              return `disks.id(disk_id).name.contains("${val}")`
             },
           },
           // guest: {

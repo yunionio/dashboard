@@ -32,7 +32,7 @@ export default {
             label: '实例名称',
             filter: true,
             formatter: val => {
-              return `name.contains(${val})`
+              return `name.contains("${val}")`
             },
           },
           status: {
@@ -61,7 +61,7 @@ export default {
             ],
             filter: true,
             formatter: val => {
-              return `os_type.contains(${val})`
+              return `os_type.contains("${val}")`
             },
           },
         },

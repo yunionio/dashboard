@@ -35,7 +35,7 @@ export default {
             label: '名称',
             filter: true,
             formatter: val => {
-              return `name.contains(${val})`
+              return `name.contains("${val}")`
             },
           },
           status: getStatusFilter('host'),
@@ -58,7 +58,7 @@ export default {
             label: 'IP',
             filter: true,
             formatter: val => {
-              return `access_ip.contains(${val})`
+              return `access_ip.contains("${val}")`
             },
           },
         },

@@ -131,7 +131,7 @@ export default {
             label: 'IP',
             filter: true,
             formatter: val => {
-              return `access_ip.contains(${val})`
+              return `access_ip.contains("${val}")`
             },
           },
           sn: {
