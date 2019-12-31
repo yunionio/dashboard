@@ -34,7 +34,7 @@ import {
   getTenantFilter,
   getAccountFilter,
   getIpFilter,
-  getHostFiler,
+  getHostFilter,
 } from '@/utils/common/tableFilter'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import SystemIcon from '@/sections/SystemIcon'
@@ -88,7 +88,7 @@ export default {
             ],
           },
           account: getAccountFilter(),
-          host: getHostFiler(),
+          host: getHostFilter(),
         },
       }),
       exportDataOptions: {
@@ -321,6 +321,7 @@ export default {
                     list: this.list,
                   })
                 },
+
               },
               {
                 label: '重置密码',

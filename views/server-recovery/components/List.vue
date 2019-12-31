@@ -13,7 +13,7 @@ import SystemIcon from '@/sections/SystemIcon'
 import expectStatus from '@/constants/expectStatus'
 import { getBrandTableColumn, getStatusTableColumn, getCopyWithContentTableColumn, getIpsTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
-import { getNameFilter, getIpFilter, getOsTypeFilter, getBrandFilter, getHostFiler } from '@/utils/common/tableFilter'
+import { getNameFilter, getIpFilter, getOsTypeFilter, getBrandFilter, getHostFilter } from '@/utils/common/tableFilter'
 
 export default {
   name: 'ServerRecoveryList',
@@ -48,7 +48,7 @@ export default {
           },
           brand: getBrandFilter(),
           os_type: getOsTypeFilter(),
-          host: getHostFiler(),
+          host: getHostFilter(),
         },
       }),
       exportDataOptions: {
