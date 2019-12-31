@@ -84,7 +84,7 @@
           :isBonding="isBonding"
           :network-list-params="networkParam"
           :network-resource-mapper="networkResourceMapper"
-          :schedtag-params="params.schedtag" />
+          :schedtag-params="params.policySchedtag" />
       </a-form-item>
       <a-form-item :wrapper-col="{ span: 20, offset: 3 }">
         <a-checkbox v-model="isBonding">启用bonding</a-checkbox>
@@ -386,6 +386,7 @@ export default {
         policySchedtag: {
           limit: 1024,
           'filter.0': 'resource_type.equals(hosts)',
+          scope: this.$store.getters.scope,
         },
         policyHostParams: {
           enabled: 1,

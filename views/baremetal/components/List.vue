@@ -18,6 +18,9 @@ import SystemIcon from '@/sections/SystemIcon'
 import { Manager } from '@/utils/manager'
 import { sizestr } from '@/utils/utils'
 import { disableDeleteAction } from '@/utils/common/tableActions'
+import {
+  getTenantFilter,
+} from '@/utils/common/tableFilter'
 import { getProjectTableColumn, getStatusTableColumn, getCopyWithContentTableColumn, getIpsTableColumn, getNameDescriptionTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import expectStatus from '@/constants/expectStatus'
@@ -54,15 +57,17 @@ export default {
             },
             jointFilter: true,
           },
-          tenant: {
-            label: '项目',
-            dropdown: true,
-            multiple: true,
-            distinctField: {
-              type: 'extra_field',
-              key: 'tenant',
+          sn: {
+            label: 'SN',
+            filter: true,
+            formatter: val => {
+              return `host_sn.contains(${val})`
             },
           },
+          host: {
+            label: '物理机',
+          },
+          tenant: getTenantFilter(),
         },
         steadyStatus: Object.values(expectStatus.server).flat(),
       }),

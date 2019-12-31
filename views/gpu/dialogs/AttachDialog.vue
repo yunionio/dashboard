@@ -6,7 +6,7 @@
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
-        <a-form-item label="选择主机" v-bind="formItemLayout">
+        <a-form-item label="选择主机" v-bind="formItemLayout" extra="只能选择与GPU卡同一宿主机处于关机状态的虚拟机">
           <a-select v-decorator="decorators.guest">
             <a-select-option v-for="item in guestesOpts" :key="item.id">
               {{item.name}}

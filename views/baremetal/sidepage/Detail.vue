@@ -159,6 +159,7 @@ export default {
                 return row.cdrom.substring(0, idx) || '-'
               },
             }),
+            getCopyWithContentTableColumn({ field: 'host', title: '物理机' }),
           ],
         },
         {

@@ -31,7 +31,7 @@ export default {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'hosts',
-        getParams: this.getParams,
+        getParams: { ...this.getParams, with_meta: true },
         steadyStatus: {
           status: Object.values(expectStatus.host).flat(),
         },
