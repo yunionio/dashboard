@@ -2,7 +2,7 @@
   <div>
     <page-header title="弹性网卡" />
     <page-body>
-      <flex-network-list />
+      <flex-network-list :id="listId" />
     </page-body>
   </div>
 </template>
@@ -14,6 +14,11 @@ export default {
   name: 'FlexNetworkIndex',
   components: {
     FlexNetworkList,
+  },
+  data () {
+    return {
+      listId: 'FlexNetworkList',
+    }
   },
 }
 </script>

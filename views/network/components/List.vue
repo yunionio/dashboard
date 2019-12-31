@@ -3,7 +3,8 @@
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :singleActions="singleActions" />
+    :singleActions="singleActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -44,6 +45,7 @@ export default {
   name: 'NetworkList',
   mixins: [windows],
   props: {
+    id: String,
     getParams: {
       type: [Function, Object],
     },
@@ -51,6 +53,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'networks',
         getParams: this.getParams,
         filterOptions: {
@@ -116,6 +119,25 @@ export default {
           },
         },
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '名称', key: 'name' },
+          { label: '开始IP', key: 'guest_ip_start' },
+          { label: '结束IP', key: 'guest_ip_end' },
+          { label: '类型', key: 'server_type' },
+          { label: '状态', key: 'status' },
+          { label: '使用情况', key: 'ports' },
+          { label: '平台', key: 'brand' },
+          { label: '二层网络', key: 'wire' },
+          { label: 'VLAN', key: 'vlan_id' },
+          { label: 'VPC', key: 'vpc' },
+          { label: '项目', key: 'tenant' },
+          { label: '云账号', key: 'account' },
+          { label: '区域', key: 'region' },
+          { label: '可用区', key: 'zone' },
+        ],
+      },
       columns: [
         getNameDescriptionTableColumn({
           vm: this,

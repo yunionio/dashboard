@@ -2,7 +2,7 @@
   <div>
     <page-header title="弹性公网IP" />
     <page-body>
-      <eip-list />
+      <eip-list :id="listId" />
     </page-body>
   </div>
 </template>
@@ -14,6 +14,11 @@ export default {
   name: 'EipIndex',
   components: {
     EipList,
+  },
+  data () {
+    return {
+      listId: 'EipList',
+    }
   },
 }
 </script>

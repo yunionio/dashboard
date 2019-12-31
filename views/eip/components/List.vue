@@ -3,7 +3,8 @@
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -25,9 +26,13 @@ const noChangeBandwidth = ['azure']
 export default {
   name: 'EipList',
   mixins: [WindowsMixin],
+  props: {
+    id: String,
+  },
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'eips',
         getParams: {
           details: true,
@@ -67,6 +72,22 @@ export default {
         },
         steadyStatus: Object.values(expectStatus.eip).flat(),
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '名称', key: 'name' },
+          { label: '地址', key: 'ip_addr' },
+          { label: '带宽', key: 'bandwidth' },
+          { label: '云账号', key: 'account' },
+          { label: '状态', key: 'status' },
+          { label: '计费方式', key: 'charge_type' },
+          { label: '绑定资源', key: 'associate_name' },
+          { label: '项目', key: 'tenant' },
+          { label: '平台', key: 'provider' },
+          { label: '区域', key: 'region' },
+          { label: '可用区', key: 'zone' },
+        ],
+      },
       columns: [
         getNameDescriptionTableColumn({
           vm: this,
@@ -85,7 +106,8 @@ export default {
         {
           field: 'bandwidth',
           title: '带宽',
-          width: 80,
+          minWidth: 80,
+          showOverflow: 'ellipsis',
           formatter: ({ cellValue }) => {
             return sizestr(cellValue, 'M', 1024)
           },

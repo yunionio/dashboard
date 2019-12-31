@@ -2,7 +2,7 @@
   <div>
     <page-header title="全局VPC" />
     <page-body>
-      <list />
+      <list :id="listId" />
     </page-body>
   </div>
 </template>
@@ -14,6 +14,11 @@ export default {
   name: 'GlobalVpcList',
   components: {
     List,
+  },
+  data () {
+    return {
+      listId: 'GlobalVpcList',
+    }
   },
 }
 </script>

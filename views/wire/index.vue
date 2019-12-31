@@ -2,7 +2,7 @@
   <div>
     <page-header title="二层网络" />
     <page-body>
-      <wire-list />
+      <wire-list :id="listId" />
     </page-body>
   </div>
 </template>
@@ -14,6 +14,11 @@ export default {
   name: 'WireIndex',
   components: {
     WireList,
+  },
+  data () {
+    return {
+      listId: 'WireList',
+    }
   },
 }
 </script>

@@ -3,7 +3,8 @@
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -19,9 +20,13 @@ import WindowsMixin from '@/mixins/windows'
 export default {
   name: 'WireList',
   mixins: [ DialogMixin, WindowsMixin ],
+  props: {
+    id: String,
+  },
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'wires',
         getParams: {
           details: true,
@@ -45,6 +50,18 @@ export default {
           },
         },
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '名称', key: 'name' },
+          { label: '带宽', key: 'bandwidth' },
+          { label: '专有网络', key: 'vpc' },
+          { label: '网络数量', key: 'networks' },
+          { label: '项目', key: 'tenant' },
+          { label: '平台', key: 'provider' },
+          { label: '云账号', key: 'manager' },
+        ],
+      },
       columns: [
         getNameDescriptionTableColumn({
           vm: this,
@@ -58,7 +75,8 @@ export default {
         {
           field: 'bandwidth',
           title: '带宽',
-          width: 80,
+          minWidth: 100,
+          showOverflow: 'ellipsis',
           formatter: ({ cellValue }) => {
             const item = BAND_WIDTH_OPTION.find(val => val.value === `${cellValue}`)
             return item ? item.label : cellValue
