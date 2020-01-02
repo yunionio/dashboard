@@ -39,11 +39,19 @@ export const diskResizeConfig = {
     }
   },
   onecloud (obj) {
+    const diskType = 'data'
+    const provider = obj.provider
     const { validate, tooltip } = diskResizeConfig.base(obj)
     if (!validate) {
       return {
         validate: false,
         tooltip,
+      }
+    }
+    if (obj.disk_type !== diskType) {
+      return {
+        validate: false,
+        tooltip: `${PROVIDER_MAP[provider].label}磁盘仅在磁盘类型为【${DISK_TYPES[diskType]}】下可以进行该操作`,
       }
     }
     return {
