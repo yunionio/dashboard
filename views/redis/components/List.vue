@@ -237,7 +237,7 @@ export default {
               for (let i = 0; i < this.list.selectedItems.length; i++) {
                 let obj = this.list.selectedItems[i]
                 if (obj['disable_delete']) {
-                  tooltip = '请先点击【修改属性】解除删除保护'
+                  tooltip = '删除保护，如需解除，请点击【设置删除保护】'
                   validate = false
                   break
                 }
@@ -256,7 +256,7 @@ export default {
           },
         },
         {
-          label: '更多',
+          label: '批量操作',
           actions: (obj) => {
             const selectedLength = this.list.selectedItems.length
             const notSelectedTooltip = selectedLength <= 0 ? '请选择需要操作的实例' : ''
@@ -528,7 +528,7 @@ export default {
                   let tooltip = ''
                   let seconds = this.$moment(obj.expired_at).diff(new Date()) / 1000
                   if (obj.disable_delete) {
-                    tooltip = '请点击修改属性禁用删除保护后重试'
+                    tooltip = '删除保护，如需解除，请点击【设置删除保护】'
                   } else if (obj.billing_type === 'prepaid' && seconds > 0) {
                     tooltip = '实例未到期不允许删除'
                   }
