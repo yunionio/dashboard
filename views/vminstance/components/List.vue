@@ -1050,7 +1050,6 @@ export default {
                         tooltip: null,
                       }
                       if (!this.isAdminMode && !this.isDomainMode) {
-                        ret.tooltip = '无权限操作'
                         return ret
                       }
                       if (findPlatform(obj.hypervisor) !== SERVER_TYPE.public) {
@@ -1080,7 +1079,6 @@ export default {
                         tooltip: null,
                       }
                       if (!this.isAdminMode && !this.isDomainMode) {
-                        ret.tooltip = '无权限操作'
                         return ret
                       }
                       if (commonUnabled(obj)) return ret
@@ -1141,7 +1139,6 @@ export default {
                         tooltip: null,
                       }
                       if (!this.isAdminMode) {
-                        ret.tooltip = '无权限操作'
                         return ret
                       }
                       if (findPlatform(obj.hypervisor, 'hypervisor') !== SERVER_TYPE.idc) {
@@ -1535,7 +1532,6 @@ export default {
                         tooltip: null,
                       }
                       if (!this.isAdminMode) {
-                        ret.tooltip = '无权限操作'
                         return ret
                       }
                       if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
@@ -1568,7 +1564,6 @@ export default {
                         return ret
                       }
                       if (!this.isAdminMode) {
-                        ret.tooltip = '无权限操作'
                         return ret
                       }
                       if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
@@ -1597,7 +1592,6 @@ export default {
                         return ret
                       }
                       if (!this.isAdminMode) {
-                        ret.tooltip = '无权限操作'
                         return ret
                       }
                       if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
@@ -1631,7 +1625,6 @@ export default {
                         return ret
                       }
                       if (!this.isAdminMode) {
-                        ret.tooltip = '无权限操作'
                         return ret
                       }
                       if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
