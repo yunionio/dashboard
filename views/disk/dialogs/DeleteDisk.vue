@@ -2,7 +2,11 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">删除</div>
     <div slot="body">
-      <a-alert v-if="alertProps" v-bind="alertProps" class="mb-2" />
+      <a-alert class="mb-2" type="warning">
+        <div slot="message">
+          ceph盘有快照不支持单独删除硬盘，删除硬盘需打开同时删除快照
+        </div>
+      </a-alert>
       <dialog-selected-tips :count="params.data.length" name="硬盘" :action="this.params.title" />
       <vxe-grid v-if="params.columns && params.columns.length" class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
