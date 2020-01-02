@@ -10,7 +10,7 @@
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { ENGINE_ARCH } from '../constants/index.js'
 import { sizestr } from '@/utils/utils'
-import { getNameFilter, getStatusFilter, getAccountFilter, getTenantFilter, getFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getStatusFilter, getTenantFilter, getFilter } from '@/utils/common/tableFilter'
 import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getNameDescriptionTableColumn, getBrandTableColumn } from '@/utils/common/tableColumn'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
@@ -39,7 +39,7 @@ export default {
               { label: '华为云', key: 'Huawei' },
             ],
           },
-          account: getAccountFilter(),
+          // account: getAccountFilter(),
           tenant: getTenantFilter(),
           billing_type: getFilter({
             field: 'billing_type',
