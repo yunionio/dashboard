@@ -2,7 +2,7 @@
   <div>
     <page-header title="硬盘" />
     <page-body>
-      <disk-list :id="listId" />
+      <disk-list :id="listId" :getParams="getParams" />
     </page-body>
   </div>
 </template>
@@ -18,6 +18,10 @@ export default {
   data () {
     return {
       listId: 'DiskList',
+      getParams: {
+        details: true,
+        'filter.0': 'disk_type.notin(volume)',
+      },
     }
   },
 }

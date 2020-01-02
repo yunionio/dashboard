@@ -1,3 +1,4 @@
+
 <template>
   <page-list
     :list="list"
@@ -30,16 +31,16 @@ export default {
   mixins: [WindowsMixin],
   props: {
     id: String,
+    getParams: {
+      type: [Function, Object],
+    },
   },
   data () {
     return {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'disks',
-        getParams: {
-          details: true,
-          'filter.0': 'disk_type.notin(volume)',
-        },
+        getParams: this.getParams,
         filterOptions: {
           name: getNameFilter(),
           status: getStatusFilter('disk'),

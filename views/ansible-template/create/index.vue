@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header :title="id ? '更新模版' : '修改属性'" />
+    <page-header :title="id ? '修改属性' : '新建模板'" />
     <a-form class="mt-3" :form="form" v-bind="formItemLayout">
       <a-form-item label="名称">
         <a-input :disabled="!!id" v-decorator="decorators.name" :placeholder="$t('validator.serverName')" />

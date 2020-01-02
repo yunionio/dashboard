@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="模版"
+    title="模板"
     icon="res-servertemplate"
     :res-name="data.name"
     :actions="params.actions"

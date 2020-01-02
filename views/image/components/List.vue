@@ -166,7 +166,7 @@ export default {
           }),
         },
         {
-          label: '更多',
+          label: '批量操作',
           actions: obj => {
             return [
               {

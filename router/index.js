@@ -468,7 +468,7 @@ export default {
         {
           path: '/ansibletemplate',
           meta: {
-            label: '模版',
+            label: '模板',
             permission: 'ansible_devtool_templates_list',
           },
           component: Layout,

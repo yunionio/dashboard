@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="模版" />
+    <page-header title="模板" />
     <page-body>
       <list :get-params="listParams" :id="listId" />
     </page-body>
