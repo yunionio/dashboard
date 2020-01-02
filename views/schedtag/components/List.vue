@@ -130,7 +130,6 @@ export default {
             }
             if (!this.isAdminMode) {
               ret.validate = false
-              ret.tooltip = '无权限操作'
             }
             return ret
           },
@@ -152,7 +151,6 @@ export default {
             }
             if (!this.isAdminMode) {
               ret.validate = false
-              ret.tooltip = '无权限操作'
             }
             return ret
           },
@@ -177,7 +175,6 @@ export default {
             }
             if (!this.isAdminMode) {
               ret.validate = false
-              ret.tooltip = '无权限操作'
             }
             return ret
           },
@@ -199,7 +196,6 @@ export default {
             }
             if (!this.isAdminMode) {
               ret.validate = false
-              ret.tooltip = '无权限操作'
             }
             return ret
           },
@@ -221,7 +217,6 @@ export default {
             }
             if (!this.isAdminMode) {
               ret.validate = false
-              ret.tooltip = '无权限操作'
             }
             return ret
           },

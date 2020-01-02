@@ -112,11 +112,8 @@ export default {
             })
           },
           meta: obj => {
-            let tooltip
-            if (!ownerDomain(this.list)) tooltip = '无权限操作'
             return {
               validate: ownerDomain(this.list),
-              tooltip,
             }
           },
         },

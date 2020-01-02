@@ -113,11 +113,8 @@ export default {
             this.list.batchPerformAction('enable', null)
           },
           meta: () => {
-            let tooltip
-            if (!ownerDomain(this.list)) tooltip = '无权限操作'
             return {
               validate: this.list.selectedItems.length && ownerDomain(this.list),
-              tooltip,
             }
           },
         },
@@ -127,11 +124,8 @@ export default {
             this.list.batchPerformAction('disable', null)
           },
           meta: () => {
-            let tooltip
-            if (!ownerDomain(this.list)) tooltip = '无权限操作'
             return {
               validate: this.list.selectedItems.length && ownerDomain(this.list),
-              tooltip,
             }
           },
         },
@@ -182,7 +176,6 @@ export default {
           meta: obj => {
             let tooltip
             if (!obj.enabled) tooltip = '请先启用'
-            if (!ownerDomain(this.list)) tooltip = '无权限操作'
             return {
               validate: obj.enabled && ownerDomain(this.list),
               tooltip,
@@ -242,11 +235,8 @@ export default {
                   })
                 },
                 meta: () => {
-                  let tooltip
-                  if (!ownerDomain(this.list)) tooltip = '无权限操作'
                   return {
                     validate: !obj.enabled && ownerDomain(this.list),
-                    tooltip,
                   }
                 },
               },
@@ -261,11 +251,8 @@ export default {
                   })
                 },
                 meta: () => {
-                  let tooltip
-                  if (!ownerDomain(this.list)) tooltip = '无权限操作'
                   return {
                     validate: obj.enabled && ownerDomain(this.list),
-                    tooltip,
                   }
                 },
               },

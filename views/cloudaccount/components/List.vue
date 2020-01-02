@@ -40,7 +40,6 @@ const syncPolicy = (item, ownerDomain) => {
     }
     return true
   })
-  if (!ownerDomain) tooltip = '无权限操作'
   return {
     validate: enabledValid && autoSyncValid && ownerDomain,
     tooltip,
@@ -58,7 +57,6 @@ const setAutoSyncPolicy = (item, ownerDomain) => {
     }
     return true
   })
-  if (!ownerDomain) tooltip = '无权限操作'
   return {
     validate: enabledValid && ownerDomain,
     tooltip,
@@ -257,11 +255,8 @@ export default {
                   this.list.batchPerformAction('enable', null)
                 },
                 meta: () => {
-                  let tooltip
-                  if (!ownerDomain) tooltip = '无权限操作'
                   return {
                     validate: this.list.selectedItems.length && ownerDomain,
-                    tooltip,
                   }
                 },
               },
@@ -272,11 +267,8 @@ export default {
                   this.list.batchPerformAction('disable', null)
                 },
                 meta: () => {
-                  let tooltip
-                  if (!ownerDomain) tooltip = '无权限操作'
                   return {
                     validate: this.list.selectedItems.length && ownerDomain,
-                    tooltip,
                   }
                 },
               },
@@ -312,7 +304,6 @@ export default {
             const ownerDomain = this.$store.getters.isAdminMode || obj.domain_id === this.$store.getters.userInfo.projectDomainId
             let tooltip
             if (!obj.enabled) tooltip = '请先启用云账号'
-            if (!ownerDomain) tooltip = '无权限操作'
             return {
               validate: obj.enabled && ownerDomain,
               tooltip,
@@ -369,7 +360,6 @@ export default {
                   let tooltip
                   if (!obj.enabled) tooltip = '请先启用云账号'
                   if (obj.enable_auto_sync) tooltip = '请先取消设置自动同步'
-                  if (!ownerDomain) tooltip = '无权限操作'
                   return {
                     validate: (obj.enabled && !obj.enable_auto_sync) && ownerDomain,
                     tooltip,
@@ -413,11 +403,8 @@ export default {
                   })
                 },
                 meta: () => {
-                  let tooltip
-                  if (!ownerDomain) tooltip = '无权限操作'
                   return {
                     validate: !obj.enabled && ownerDomain,
-                    tooltip,
                   }
                 },
               },
@@ -433,11 +420,8 @@ export default {
                   })
                 },
                 meta: () => {
-                  let tooltip
-                  if (!ownerDomain) tooltip = '无权限操作'
                   return {
                     validate: obj.enabled && ownerDomain,
-                    tooltip,
                   }
                 },
               },
