@@ -10,7 +10,7 @@
 import { DBINSTANCE_CATEGORY } from '../constants/index.js'
 import { sizestr } from '@/utils/utils'
 import { Manager } from '@/utils/manager'
-import { getNameFilter, getFilter, getAccountFilter, getTenantFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getFilter, getTenantFilter } from '@/utils/common/tableFilter'
 import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getNameDescriptionTableColumn, getBrandTableColumn } from '@/utils/common/tableColumn'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
@@ -49,7 +49,7 @@ export default {
               { label: '华为云', key: 'Huawei' },
             ],
           },
-          account: getAccountFilter(),
+          // account: getAccountFilter(),
           tennat: getTenantFilter(),
           billing_type: getFilter({
             field: 'billing_type',
@@ -140,9 +140,22 @@ export default {
               if (!pri && !pub) {
                 return '-'
               }
+              const connection = (title, value) => {
+                if (!value) {
+                  return null
+                }
+                return (
+                  <div class="d-flex align-items-center">
+                    <span class="text-truncate">
+                     内网：{value}
+                    </span>
+                    <copy message={value} />
+                  </div>
+                )
+              }
               return [
-                <div class="text-truncate">{pri && <a-tooltip placement='topLeft' title={`内网：${pri}`}>内网：{pri}</a-tooltip>}</div>,
-                <div class='text-truncate'>{pub && <a-tooltip placement='topLeft' title={`外网：${pub}`}>外网：{pub}</a-tooltip>}</div>,
+                connection('内网', pri),
+                connection('外网', pub),
               ]
             },
           },
