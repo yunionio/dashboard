@@ -237,7 +237,7 @@ export default {
               for (let i = 0; i < this.list.selectedItems.length; i++) {
                 let obj = this.list.selectedItems[i]
                 if (obj['disable_delete']) {
-                  tooltip = '请先点击【修改属性】解除删除保护'
+                  tooltip = '删除保护，如需解除，请点击【设置删除保护】'
                   validate = false
                   break
                 }
