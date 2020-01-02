@@ -1,7 +1,8 @@
 <template>
   <page-list
     :list="list"
-    :columns="columns" />
+    :columns="columns"
+    :single-actions="singleActions" />
 </template>
 
 <script>
@@ -74,6 +75,27 @@ export default {
                 </div>,
               ]
             },
+          },
+        },
+      ],
+      singleActions: [
+        {
+          label: '解绑',
+          action: obj => {
+            this.createDialog('UnbindDisksDialog', {
+              data: [obj],
+              columns: this.columns,
+              title: '解绑',
+              list: this.list,
+              resId: this.resId,
+            })
+          },
+          meta: obj => {
+            const ret = {
+              validate: true,
+              tooltip: null,
+            }
+            return ret
           },
         },
       ],
