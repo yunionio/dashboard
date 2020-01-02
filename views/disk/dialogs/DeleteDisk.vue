@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">删除</div>
     <div slot="body">
-      <a-alert class="mb-2" type="warning">
+      <a-alert class="mb-2" type="warning" v-if="isCeph">
         <div slot="message">
           ceph盘有快照不支持单独删除硬盘，删除硬盘需打开同时删除快照
         </div>
@@ -102,21 +102,18 @@ export default {
     }
   },
   computed: {
-    alertProps () {
-      const { alert } = this.params
-      const data = {
-        'String': { message: alert, type: 'warning' },
-        'Object': alert,
-      }
-      const t = R.type(alert)
-      return data[t] || null
-    },
     type () {
       const brand = this.params.data[0].brand
       return findPlatform(brand)
     },
     isIDC () {
       return this.type === SERVER_TYPE.idc
+    },
+    isCeph () {
+      const isSomeCeph = this.params.data.some((item) => {
+        return item.storage_type === 'rbd'
+      })
+      return isSomeCeph
     },
   },
   created () {
