@@ -27,6 +27,7 @@
           :key-separator="keySeparator"
           :value-separator="valueSeparator"
           :list="list"
+          :default-search-key="defaultSearchKey"
           @focus-input="focusInput"
           @confirm="handleSearch"
           @remove-tag="handleRemoveTag"
@@ -62,6 +63,10 @@ export default {
     list: {
       type: Object,
       required: true,
+    },
+    defaultSearchKey: {
+      type: String,
+      default: 'name',
     },
   },
   data () {

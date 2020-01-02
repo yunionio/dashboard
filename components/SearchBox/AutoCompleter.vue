@@ -6,7 +6,7 @@
       ref="input"
       class="search-input"
       v-input-autowidth="{ maxWidth: '500px', minWidth: '5px', comfortZone: 0 }"
-      @keydown.enter="handleInputEnter"
+      @keydown.13="handleInputEnter"
       @keydown.delete="handleInputDelete"
       @input="handleInput" />
     <div class="auto-completer-wrap" v-show="show">
@@ -87,6 +87,7 @@ export default {
       type: Object,
       required: true,
     },
+    defaultSearchKey: String,
   },
   data () {
     return {
@@ -198,8 +199,18 @@ export default {
      * @description 拼装参数，调用搜索
      */
     handleOk () {
-      if (R.isNil(this.selectKey) || R.isEmpty(this.selectKey)) return
-      if (R.isNil(this.selectValue) || R.isEmpty(this.selectValue)) return
+      const selectKeyEmpty = R.isNil(this.selectKey) || R.isEmpty(this.selectKey)
+      if (selectKeyEmpty) {
+        if (this.options[this.defaultSearchKey] && R.trim(this.search)) {
+          this.selectValue = [this.search]
+          this.selectKey = this.defaultSearchKey
+          this.search = `${this.options[this.defaultSearchKey]['label']}${this.keySeparator}${this.search}`
+        } else {
+          return
+        }
+      }
+      const selectValueEmpty = R.isNil(this.selectValue) || R.isEmpty(this.selectValue)
+      if (selectValueEmpty) return
       let value = this.search.split(this.keySeparator)[1]
       value = value.split(this.valueSeparator)
       if (R.isNil(value) || R.isEmpty(value)) {

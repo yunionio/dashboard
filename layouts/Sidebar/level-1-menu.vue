@@ -116,6 +116,7 @@ export default {
   overflow: hidden;
   border-right: 1px solid #e6e9f0;
   transition: all .15s ease;
+  overflow-y: auto;
 }
 .level-1-item-wrap {
   cursor: pointer;
