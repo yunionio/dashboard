@@ -72,7 +72,11 @@ export default {
             new this.$Manager('images', 'v1').create({ data })
               .then(() => {
                 this.$set(this.isImported, obj.id, true)
-                this.fetchData()
+                if (this.type === 'iso') {
+                  this.fetchData(this.type)
+                } else {
+                  this.fetchData()
+                }
               })
           },
           meta: (obj) => {

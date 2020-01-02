@@ -197,7 +197,7 @@ export default {
               if (!row.is_baremetal) {
                 return '-'
               } else {
-                return [<PasswordFetcher serverId={ row.id } resourceType='baremetal_ssh' />]
+                return [<PasswordFetcher serverId={ row.server_id } resourceType='servers' />]
               }
             },
           },
