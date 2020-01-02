@@ -96,7 +96,8 @@ const showErrorNotify = ({ errorMsg, reqMsg }) => {
 const showHttpBatchErrorMessage = response => {
   const errorList = response.data.data.filter(val => val.status !== 200)
   const errorMsgList = errorList.map(error => {
-    const errorBody = getErrorBody(error.data).error
+    const body = getErrorBody(error.data)
+    const errorBody = body.error || body
     return {
       ...getHttpErrorMessage(errorBody, true),
       id: error.id,
