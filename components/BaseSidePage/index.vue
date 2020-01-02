@@ -14,14 +14,18 @@
       </div>
       <!-- header info -->
       <div class="side-page-header-info d-flex align-items-center">
-        <div class="side-page-header-icon d-flex align-items-center justify-content-center">
+        <div class="side-page-header-icon d-flex align-items-center justify-content-center flex-grow-0 flex-shrink-0">
           <icon :type="icon" style="font-size: 40px; color: #888;" />
         </div>
-        <div class="ml-4">
-          <h5>{{ title }}</h5>
-          <div class="d-flex mt-2">
-            <div>{{ resName }}</div>
-            <div class="ml-3"><slot name="actions" /></div>
+        <div class="w-100">
+          <div class="ml-4">
+            <div class="text-color-help">{{ title }}</div>
+            <div class="d-flex mt-2 w-100 align-items-center">
+              <h5 class="text-truncate mb-0" style="min-width: 0;">{{ resName }}</h5>
+              <div class="ml-3 flex-shrink-0 flex-shrink-0 d-flex pr-2">
+                <div class="pr-4"><slot name="actions" /></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

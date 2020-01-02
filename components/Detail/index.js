@@ -191,12 +191,17 @@ export default {
         class: 'detail-item mt-2',
       }, children)
     },
-    renderItems (h, items) {
+    renderItems (h, items, type) {
+      let children = items.map(item => {
+        return this.renderItem(h, item)
+      })
+      if (type === 'base-info') {
+        children = R.insert(1, this.renderName(h), children)
+        children.push(this.renderDesc(h))
+      }
       return h('div', {
         class: 'detail-items',
-      }, items.map(item => {
-        return this.renderItem(h, item)
-      }))
+      }, children)
     },
     renderTitle (h, icon, title) {
       return h('div', {
@@ -210,19 +215,19 @@ export default {
         h('span', { class: 'ml-2' }, title),
       ])
     },
-    renderContent (h, icon, title, items, item) {
+    renderContent (h, icon, title, items, item, type) {
       return h('div', {
         class: 'detail-content',
       }, [
         this.renderTitle(h, icon, title),
-        items ? this.renderItems(h, items) : this.renderItem(h, item, false),
+        items ? this.renderItems(h, items, type) : this.renderItem(h, item, false),
       ])
     },
     renderBase (h) {
       return h('div', {
         class: 'detail-left',
       }, [
-        this.renderContent(h, 'info', '基本信息', this.commonBaseInfo),
+        this.renderContent(h, 'info', '基本信息', this.commonBaseInfo, null, 'base-info'),
       ])
     },
     renderExtra (h) {
@@ -232,24 +237,10 @@ export default {
         return this.renderContent(h, 'info2', item.title, item.items, item)
       }))
     },
-    renderCommon (h) {
-      return [
-        h('list-body-cell-wrap', {
-          props: {
-            copy: true,
-            edit: true,
-            row: this.data,
-            list: this.list,
-            formRules: this.nameRules,
-            titleClass: 'h4',
-            ...this.nameProps,
-          },
-          class: ['m-0'],
-        }),
-        h('div', {
-          class: 'd-flex mt-2 small-text',
-        }, [
-          h('span', '备注: '),
+    renderDesc (h) {
+      const children = [
+        h('div', { class: 'detail-item-title' }, '描述'),
+        h('div', { class: 'detail-item-value' }, [
           h('list-body-cell-wrap', {
             props: {
               copy: true,
@@ -260,16 +251,37 @@ export default {
               ...this.descProps,
             },
             style: { color: '#999' },
-            class: ['mb-0 ml-2'],
           }),
         ]),
       ]
+      return h('div', {
+        class: 'detail-item mt-2',
+      }, children)
+    },
+    renderName (h) {
+      const children = [
+        h('div', { class: 'detail-item-title' }, '名称'),
+        h('div', { class: 'detail-item-value' }, [
+          h('list-body-cell-wrap', {
+            props: {
+              copy: true,
+              edit: true,
+              row: this.data,
+              list: this.list,
+              formRules: this.nameRules,
+              ...this.nameProps,
+            },
+          }),
+        ]),
+      ]
+      return h('div', {
+        class: 'detail-item mt-2',
+      }, children)
     },
   },
   render (h, ctx) {
     return (
       <div class='detail-wrap'>
-        { this.renderCommon(h) }
         { this.renderBase(h) }
         { this.extraInfo && this.renderExtra(h) }
       </div>
