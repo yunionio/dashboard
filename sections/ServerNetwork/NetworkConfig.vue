@@ -25,7 +25,7 @@
     </div>
     <div class="d-flex align-items-center" v-if="networkCountRemaining > 0">
       <a-button type="primary" shape="circle" icon="plus" size="small" @click="add" />
-      <a-button type="link" @click="add">添加IP子网</a-button>
+      <a-button type="link" @click="add">添加网卡</a-button>
       <span class="network-count-tips">您还可以添加 <span class="remain-num">{{ networkCountRemaining }}</span> 个</span>
     </div>
   </div>

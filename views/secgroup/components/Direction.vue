@@ -44,6 +44,25 @@ export default {
           order_by: 'priority',
           secgroup: this.id,
         },
+        filterOptions: {
+          cidr: {
+            label: '来源',
+            filter: true,
+            formatter: val => {
+              return `cidr.contains("${val}")`
+            },
+          },
+          ports: {
+            label: '端口',
+            filter: true,
+            formatter: val => {
+              if ((val && val.toLowerCase(val)) === 'all') {
+                return 'ports.isnullorempty()'
+              }
+              return `ports.contains("${val}")`
+            },
+          },
+        },
       }),
       columns: [
         {

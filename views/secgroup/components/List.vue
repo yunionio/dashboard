@@ -75,7 +75,7 @@ export default {
         isPublicTableColumn(),
         {
           field: 'rules',
-          title: '规则预览(策略，CIDR，协议，端口)',
+          title: '规则预览(策略，来源，协议，端口)',
           width: 220,
           slots: {
             default: ({ row }, h) => {
