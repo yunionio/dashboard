@@ -82,7 +82,7 @@ export default {
         {
           field: 'resource_type',
           title: '资源类型',
-          width: 80,
+          width: 120,
           formatter: ({ row }) => {
             return RES_TYPES[row.resource_type] || '无'
           },
