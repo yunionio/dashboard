@@ -1,15 +1,18 @@
 <template>
-  <a-select
-    class="base-select"
-    v-bind="{ ...selectProps, ...filterOpts }"
-    :value="value"
-    @change="change"
-    @search="loadOpts"
-    :loading="loading">
-    <a-select-option v-for="item of resOpts" :key="item.id" :value="item.id" :disabled="item.__disabled">
-      <option-label :nameKey="nameKey" :labelFormat="labelFormat" :data="item" :resource="resource" />
-    </a-select-option>
-  </a-select>
+  <div>
+    <a-select
+      class="base-select"
+      v-bind="{ ...selectProps, ...filterOpts }"
+      :value="value"
+      @change="change"
+      @search="loadOpts"
+      :loading="loading">
+      <a-select-option v-for="item of resOpts" :key="item.id" :value="item.id" :disabled="item.__disabled">
+        <option-label :nameKey="nameKey" :labelFormat="labelFormat" :data="item" :resource="resource" />
+      </a-select-option>
+    </a-select>
+    <a-icon v-if="showSync" type="sync" class="ml-2" :spin="loading" @click="loadOpts" :style="{ color: '#1890ff' }" />
+  </div>
 </template>
 <script>
 import * as R from 'ramda'
@@ -98,6 +101,10 @@ export default {
       default: false,
     },
     initLoaded: Boolean, // 首次加载完成
+    showSync: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     this.loadOpts = debounce(this.loadOpts, 500)
