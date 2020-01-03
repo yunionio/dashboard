@@ -78,109 +78,158 @@ export default {
         getTimeTableColumn(),
       ],
       groupActions: [
+        // {
+        //   label: '新建',
+        //   action: () => {
+        //     this.$router.push('/ansibletemplate/create')
+        //   },
+        //   meta: (obj) => {
+        //     return {
+        //       buttonType: 'primary',
+        //     }
+        //   },
+        // },
+        // {
+        //   label: '删除',
+        //   permission: 'disks_delete',
+        //   action: () => {
+        //     this.createDialog('DeleteResDialog', {
+        //       data: this.list.selectedItems,
+        //       columns: this.columns,
+        //       title: '删除',
+        //       list: this.list,
+        //     })
+        //   },
+        //   meta: () => this.$getDeleteResult(this.list.selectedItems),
+        // },
+      ],
+      singleActions: [
+        // {
+        //   label: '修改属性',
+        //   action: (row) => {
+        //     const { id } = row
+        //     this.$router.push(`/ansibletemplate/create?id=${id}`)
+        //   },
+        // },
         {
-          label: '新建',
-          action: () => {
-            this.$router.push('/ansibletemplate/create')
+          label: '启用',
+          action: (obj) => {
+            this.list.onManager('update', {
+              id: obj.id,
+              managerArgs: {
+                data: {
+                  enabled: true,
+                },
+              },
+            })
           },
-          meta: (obj) => {
-            return {
-              buttonType: 'primary',
-            }
-          },
+          meta: (obj) => ({
+            validate: !obj.enabled,
+            tooltip: obj.enabled ? '请选择已禁用的模版' : '',
+          }),
         },
         {
-          label: '删除',
-          permission: 'disks_delete',
-          action: () => {
-            this.createDialog('DeleteResDialog', {
-              data: this.list.selectedItems,
+          label: '禁用',
+          action: (obj) => {
+            this.list.onManager('update', {
+              id: obj.id,
+              managerArgs: {
+                data: {
+                  enabled: false,
+                },
+              },
+            })
+          },
+          meta: (obj) => ({
+            validate: obj.enabled,
+            tooltip: !obj.enabled ? '请选择已启用的模版' : '',
+          }),
+        },
+        {
+          label: '关联主机',
+          action: obj => {
+            this.createDialog('AnsibleTemplateBindServerDialog', {
+              data: [obj],
               columns: this.columns,
-              title: '删除',
+              title: '关联主机',
               list: this.list,
             })
           },
-          meta: () => this.$getDeleteResult(this.list.selectedItems),
+          meta: (obj) => ({
+            validate: obj.enabled,
+            tooltip: !obj.enabled ? '请选择已启用的实例' : '',
+          }),
         },
-      ],
-      singleActions: [
-        {
-          label: '修改属性',
-          action: (row) => {
-            const { id } = row
-            this.$router.push(`/ansibletemplate/create?id=${id}`)
-          },
-        },
-        {
-          label: '更多',
-          actions: (obj) => {
-            return [
-              {
-                label: '启用',
-                action: () => {
-                  this.list.onManager('update', {
-                    id: obj.id,
-                    managerArgs: {
-                      data: {
-                        enabled: true,
-                      },
-                    },
-                  })
-                },
-                meta: () => ({
-                  validate: !obj.enabled,
-                  tooltip: obj.enabled ? '请选择已禁用的模版' : '',
-                }),
-              },
-              {
-                label: '禁用',
-                action: () => {
-                  this.list.onManager('update', {
-                    id: obj.id,
-                    managerArgs: {
-                      data: {
-                        enabled: false,
-                      },
-                    },
-                  })
-                },
-                meta: () => ({
-                  validate: obj.enabled,
-                  tooltip: !obj.enabled ? '请选择已启用的模版' : '',
-                }),
-              },
-              {
-                label: '关联主机',
-                action: data => {
-                  this.createDialog('AnsibleTemplateBindServerDialog', {
-                    data: [data],
-                    columns: this.columns,
-                    title: '关联主机',
-                    list: this.list,
-                  })
-                },
-                meta: () => ({
-                  validate: obj.enabled,
-                  tooltip: !obj.enabled ? '请选择已启用的实例' : '',
-                }),
-              },
-              {
-                label: '删除',
-                action: data => {
-                  this.createDialog('DeleteResDialog', {
-                    data: [data],
-                    columns: this.columns,
-                    title: '关联主机',
-                    list: this.list,
-                  })
-                },
-                meta: () => ({
-                  validate: obj.can_delete,
-                }),
-              },
-            ]
-          },
-        },
+        // {
+        //   label: '更多',
+        //   actions: (obj) => {
+        //     return [
+        //       {
+        //         label: '启用',
+        //         action: () => {
+        //           this.list.onManager('update', {
+        //             id: obj.id,
+        //             managerArgs: {
+        //               data: {
+        //                 enabled: true,
+        //               },
+        //             },
+        //           })
+        //         },
+        //         meta: () => ({
+        //           validate: !obj.enabled,
+        //           tooltip: obj.enabled ? '请选择已禁用的模版' : '',
+        //         }),
+        //       },
+        //       {
+        //         label: '禁用',
+        //         action: () => {
+        //           this.list.onManager('update', {
+        //             id: obj.id,
+        //             managerArgs: {
+        //               data: {
+        //                 enabled: false,
+        //               },
+        //             },
+        //           })
+        //         },
+        //         meta: () => ({
+        //           validate: obj.enabled,
+        //           tooltip: !obj.enabled ? '请选择已启用的模版' : '',
+        //         }),
+        //       },
+        //       {
+        //         label: '关联主机',
+        //         action: data => {
+        //           this.createDialog('AnsibleTemplateBindServerDialog', {
+        //             data: [data],
+        //             columns: this.columns,
+        //             title: '关联主机',
+        //             list: this.list,
+        //           })
+        //         },
+        //         meta: () => ({
+        //           validate: obj.enabled,
+        //           tooltip: !obj.enabled ? '请选择已启用的实例' : '',
+        //         }),
+        //       },
+        //       {
+        //         label: '删除',
+        //         action: data => {
+        //           this.createDialog('DeleteResDialog', {
+        //             data: [data],
+        //             columns: this.columns,
+        //             title: '关联主机',
+        //             list: this.list,
+        //           })
+        //         },
+        //         meta: () => ({
+        //           validate: obj.can_delete,
+        //         }),
+        //       },
+        //     ]
+        //   },
+        // },
       ],
     }
   },
