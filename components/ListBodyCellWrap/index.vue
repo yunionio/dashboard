@@ -5,7 +5,7 @@
       class="text-truncate"
       :class="{ 'text-weak': field === 'description', [titleClass]: titleClass }">{{ row[field] || '-' }}</span>
     <div class="text-truncate" v-if="$scopedSlots.default"><slot /></div>
-    <a-tooltip title="删除保护，如需解除，请点击【设置删除保护】" v-if="addLock && (row.disable_delete || !row.can_delete)">
+    <a-tooltip title="删除保护，如需解除，请点击【设置删除保护】" v-if="showDeleteLock">
       <a-icon class="ml-1" type="lock" />
     </a-tooltip>
     <a-tooltip v-if="addBackup && row.backup_host_id" title="高可用云服务器">
@@ -31,6 +31,7 @@
 
 <script>
 import _ from 'lodash'
+import * as R from 'ramda'
 
 export default {
   name: 'ListBodyCellWrap',
@@ -130,6 +131,17 @@ export default {
         return []
       }
       return null
+    },
+    showDeleteLock () {
+      if (this.addLock) {
+        if (R.is(Boolean, this.row.disable_delete)) {
+          return this.row.disable_delete
+        }
+        if (R.is(Boolean, this.row.can_delete)) {
+          return this.row.can_delete
+        }
+      }
+      return false
     },
   },
   created () {
