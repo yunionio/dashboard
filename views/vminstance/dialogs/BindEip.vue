@@ -63,9 +63,7 @@ export default {
             'bandwidth',
             {
               initialValue: 1,
-              rules: [
-                { required: true, message: '请输入带宽', trigger: 'change' },
-              ],
+              validateFirst: true,
             },
           ],
           eip: [

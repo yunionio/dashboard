@@ -26,6 +26,8 @@
           :min="1"
           :max="maxBindWidth"
           :step="1"
+          :formatter="format"
+          :parse="format"
           v-decorator="decorators.bandwidth" />
       </div>
     </a-form-item>
@@ -186,6 +188,9 @@ export default {
     },
     handleChargeTypeChange (e) {
       this.chargeType = e.target.value
+    },
+    format (val) {
+      return +val || 1
     },
   },
 }
