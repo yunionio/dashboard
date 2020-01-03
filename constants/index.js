@@ -137,6 +137,7 @@ export const CITYS = {
   'Kanchipuram': '印度 甘吉布勒姆',
   'Huhehaote': '呼和浩特',
   'Qingdao': '青岛',
+  'Chongqing': '重庆',
 }
 
 export const CLOUD_PROVIDERS_MAP = {
