@@ -17,6 +17,7 @@
         class="w-50"
         v-decorator="decorators.keypair"
         resource="keypairs"
+        :showSync="true"
         :select-props="{ allowClear: true, labelInValue: true, placeholder: '请选择关联密钥' }" />
     </a-form-item>
     <a-form-item v-if="(loginTypeMap && loginTypeMap.password) && vmLoginType === loginTypeMap.password.key">

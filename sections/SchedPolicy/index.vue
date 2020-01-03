@@ -15,6 +15,7 @@
         :label-format="labelFormat"
         :need-params="true"
         :filterable="true"
+        :showSync="true"
         :select-props="{ placeholder: schedPolicyOptionsMap.host.label }" />
     </a-form-item>
     <a-form-item v-if="schedPolicyComponent === 'schedtag'">

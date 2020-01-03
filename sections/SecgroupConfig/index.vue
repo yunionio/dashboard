@@ -19,6 +19,7 @@
         v-decorator="decorators.secgroup"
         resource="secgroups"
         :params="params"
+        :showSync="true"
         :select-props="{ allowClear: true, placeholder: '请选择安全组', mode: 'multiple' }" />
     </a-form-item>
   </div>

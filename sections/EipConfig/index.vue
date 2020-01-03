@@ -37,6 +37,7 @@
         v-decorator="decorators.eip"
         resource="eips"
         :params="params"
+        :showSync="true"
         :select-props="{ allowClear: true, placeholder: '请选择弹性公网IP' }" />
     </a-form-item>
   </div>
