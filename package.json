@@ -51,6 +51,7 @@
     "lint-staged": "^9.5.0",
     "sass": "^1.23.7",
     "sass-loader": "^8.0.0",
+    "svg-sprite-loader": "^4.1.6",
     "vue-template-compiler": "^2.6.10"
   },
   "gitHooks": {

@@ -49,6 +49,21 @@ module.exports = {
       },
     })
   },
+  chainWebpack: (config) => {
+    const svgRule = config.module.rule('svg')
+    svgRule.uses.clear()
+    svgRule.include.add(resolve('./src/components/Icon'))
+    svgRule
+      .test(/\.svg$/)
+      .use('svg-sprite-loader')
+      .loader('svg-sprite-loader')
+      .options({
+        symbolId: 'oc-[name]',
+      })
+    const imagesRule = config.module.rule('images')
+    imagesRule.exclude.add(resolve('./src/components/Icon'))
+    config.module.rule('images').test(/\.(png|jpe?g|gif|svg)(\?.*)?$/)
+  },
   css: {
     loaderOptions: {
       less: {
