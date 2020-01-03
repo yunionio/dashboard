@@ -73,9 +73,9 @@ export const getDeleteResult = (row, deleteField = 'can_delete', failKey = 'dele
   let tooltip = null
   if (R.is(Array, row)) {
     if (!row.length) return { validate: false }
-    validate = row.every(obj => obj[deleteField])
+    validate = row.every(obj => !!obj[deleteField])
   } else {
-    validate = row[deleteField]
+    validate = !!row[deleteField]
     if (!validate) {
       let deleteFailReason
       if (R.is(String, row[failKey])) {
