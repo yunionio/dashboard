@@ -66,6 +66,7 @@ import RefreshButton from '@/components/PageList/RefreshButton'
 import WindowsMixin from '@/mixins/windows'
 import {
   getCopyWithContentTableColumn,
+  getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -154,14 +155,10 @@ export default {
             },
           },
         },
-        {
+        getTimeTableColumn({
           field: 'start_time',
           title: '操作时间',
-          width: 170,
-          formatter: ({ row }) => {
-            return this.$moment(row.start_time).format('YYYY年MM月DD日 HH:mm:ss')
-          },
-        },
+        }),
         getCopyWithContentTableColumn({
           field: 'user',
           title: '发起人',
@@ -173,7 +170,7 @@ export default {
         {
           field: 'notes',
           title: '备注',
-          width: 50,
+          width: 70,
           fixed: 'right',
           slots: {
             default: ({ row, column }) => {
@@ -183,8 +180,9 @@ export default {
               } catch (e) {
                 text = row.notes
               }
-              if (!row.notes) return ''
-              return [<a-button size='small' type='link' onClick={ () => this.clickHandler(text) }>查看</a-button>]
+              let disabled = false
+              if (!row.notes) disabled = true
+              return [<a-button size='small' type='link' onClick={ () => this.clickHandler(text) } disabled={ disabled }>查看</a-button>]
             },
           },
         },
