@@ -27,22 +27,31 @@ export const REGEXP = {
   },
   serverCreateName: {
     func: value => {
-      const regexp = /^[a-zA-Z$][a-zA-Z0-9-${}]{0,127}([a-zA-Z0-9-${}]|#{1,3})$/
-      if (regexp.test(value)) {
-        const supportVars = ['brand', 'charge_type', 'cloud_env', 'cloudregion_id', 'cpu', 'host', 'host_id', 'hypervisor', 'ip_addr', 'mem', 'os_distribution', 'os_type', 'os_version', 'owner_tenant', 'owner_tenant_id', 'provider', 'region', 'region_id', 'res_name', 'template_id', 'zone', 'zone_id']
-        const reg = /^\$\{(.*)\}$/
-        const match = value.match(reg)
-        if (R.is(Array, match)) {
-          const text = match[1]
-          if (supportVars.includes(text)) {
-            return true
-          }
-          return `仅支持以下表达式：${supportVars.join('，')}`
-        } else {
-          return true
-        }
-      }
-      return false
+      const regexp = /^[a-zA-Z$][a-zA-Z0-9-${}_]{0,127}([a-zA-Z0-9-${}]|#{1,3})$/
+      return regexp.test(value)
+      // if (regexp.test(value)) {
+      //   const supportVars = ['brand', 'charge_type', 'cloud_env', 'cloudregion_id', 'cpu', 'host', 'host_id', 'hypervisor', 'ip_addr', 'mem', 'os_distribution', 'os_type', 'os_version', 'owner_tenant', 'owner_tenant_id', 'provider', 'region', 'region_id', 'res_name', 'template_id', 'zone', 'zone_id']
+      //   const reg = /\$\{([a-zA-Z_]+)\}/g
+      //   const match = value.match(reg)
+      //   if (R.is(Array, match)) {
+      //     const r = /^\$\{([a-zA-Z_]+)\}$/
+      //     const valid = match.every(val => {
+      //       const strMatch = val.match(r)
+      //       if (R.is(Array, strMatch)) {
+      //         const str = strMatch[1]
+      //         return supportVars.includes(str)
+      //       }
+      //       return false
+      //     })
+      //     if (valid) {
+      //       return true
+      //     }
+      //     return `仅支持以下表达式：${supportVars.join('，')}`
+      //   } else {
+      //     return true
+      //   }
+      // }
+      // return false
     },
     message: i18n.t('validator.serverCreateName'),
   },
