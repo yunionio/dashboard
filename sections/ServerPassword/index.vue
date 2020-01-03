@@ -110,17 +110,18 @@ export default {
       if (val && !R.isEmpty(val)) {
         const loginTypeInitailValue = this.decorator.loginType[1].initialValue
         const keys = Object.keys(val)
+        let vmLoginType = loginTypeInitailValue
         if (!keys.includes(loginTypeInitailValue)) { // 如果表单中的初始值不在 loginTypeMap 中
           if (keys.includes(LOGIN_TYPES_MAP.image.key)) { // 如果maps中有"保留镜像设置"，则设置
-            this.form.fc.setFieldsValue({
-              [this.decorators.loginType[0]]: LOGIN_TYPES_MAP.image.key,
-            })
+            vmLoginType = LOGIN_TYPES_MAP.image.key
           } else { // 否则设置第一项
-            this.form.fc.setFieldsValue({
-              [this.decorators.loginType[0]]: keys[0],
-            })
+            vmLoginType = keys[0]
           }
         }
+        this.form.fc.setFieldsValue({
+          [this.decorators.loginType[0]]: vmLoginType,
+        })
+        this.vmLoginType = vmLoginType
       }
     },
   },
