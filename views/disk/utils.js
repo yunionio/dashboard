@@ -48,10 +48,16 @@ export const diskResizeConfig = {
         tooltip,
       }
     }
-    if (obj.disk_type !== diskType) {
+    if (obj.guest_status === 'running' && obj.disk_type !== diskType) {
       return {
         validate: false,
-        tooltip: `${PROVIDER_MAP[provider].label}磁盘仅在磁盘类型为【${DISK_TYPES[diskType]}】下可以进行该操作`,
+        tooltip: `${PROVIDER_MAP[provider].label}系统盘不支持开机扩容`,
+      }
+    }
+    if (obj.guest_status !== 'running' && obj.disk_type === diskType) {
+      return {
+        validate: false,
+        tooltip: `${PROVIDER_MAP[provider].label}数据盘支持开机扩容`,
       }
     }
     return {
