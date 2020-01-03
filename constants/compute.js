@@ -196,7 +196,7 @@ export const STORAGE_TYPES = {
       unCreateCloud: true, // 不支持创建云硬盘
     },
     rbd: {
-      label: 'rbd',
+      label: 'Ceph RBD',
       key: 'rbd',
       min: 1,
       max: 3 * 1024,
