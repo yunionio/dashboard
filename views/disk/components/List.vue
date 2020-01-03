@@ -20,7 +20,7 @@ import {
   getCopyWithContentTableColumn,
   getRegionTableColumn,
 } from '@/utils/common/tableColumn'
-import { getTenantFilter, getStatusFilter, getBrandFilter, getNameFilter, getFilter } from '@/utils/common/tableFilter'
+import { getTenantFilter, getStatusFilter, getBrandFilter, getNameFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import { sizestr } from '@/utils/utils'
@@ -48,10 +48,9 @@ export default {
             label: '主存储',
             jointFilter: true,
           },
-          guest: getFilter({
-            field: 'guest',
-            title: '主机',
-          }),
+          guest: {
+            label: '主机',
+          },
           disk_type: {
             label: '磁盘类型',
             dropdown: true,

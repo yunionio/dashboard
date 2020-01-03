@@ -166,19 +166,19 @@ export default {
           }),
         },
         {
+          label: '上传',
+          permission: 'images_create',
+          action: () => {
+            this.createDialog('ImageUploadDialog', {
+              title: '上传',
+              list: this.list,
+            })
+          },
+        },
+        {
           label: '批量操作',
           actions: obj => {
             return [
-              {
-                label: '上传',
-                permission: 'images_create',
-                action: () => {
-                  this.createDialog('ImageUploadDialog', {
-                    title: '上传',
-                    list: this.list,
-                  })
-                },
-              },
               {
                 label: '设置删除保护',
                 action: (row) => {
