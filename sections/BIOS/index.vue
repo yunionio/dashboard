@@ -1,7 +1,7 @@
 <template>
   <a-form-item>
     <a-radio-group v-decorator="decorator">
-      <a-radio-button value="BIOS">BIOS</a-radio-button>
+      <a-radio-button value="BIOS" :disabled="uefi">BIOS</a-radio-button>
       <a-radio-button value="UEFI">UEFI</a-radio-button>
     </a-radio-group>
   </a-form-item>
@@ -14,6 +14,9 @@ export default {
     decorator: {
       type: Array,
       required: true,
+    },
+    uefi: {
+      type: Boolean,
     },
   },
 }

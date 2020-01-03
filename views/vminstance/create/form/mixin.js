@@ -84,7 +84,7 @@ export default {
           dataDiskDisabled: false, // 数据盘是否禁用
           sysDiskDisabled: false, // 系统盘是否禁用
         },
-        fd: initFd,
+        fd: { ...initFd, os: '' },
       },
       decorators,
       params: {

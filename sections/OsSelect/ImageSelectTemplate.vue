@@ -1,6 +1,6 @@
 <template>
   <a-select label-in-value :value="value" :loading="loading" @change="imageChange">
-    <a-select-option v-for="item in imageOpts" :key="item.id" :value="item.id">
+    <a-select-option v-for="item in imageOptions" :key="item.id" :value="item.id">
       <div class="d-flex align-items-center">
         <span class="flex-fill mr-2">{{ item.name }}</span>
         <a-tag v-show="item.feData.cached" color="green">已缓存</a-tag>
@@ -26,6 +26,11 @@ export default {
     loading: {
       type: Boolean,
       default: false,
+    },
+  },
+  computed: {
+    imageOptions () {
+      return this.imageOpts.filter((item) => { return !item.hidden })
     },
   },
   methods: {

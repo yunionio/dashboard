@@ -9,6 +9,7 @@
     </a-form-item>
     <image-select
       :cloud-type="type"
+      :uefi="uefi"
       :image-type="imageType"
       :decorator="decorator"
       @input="imageInput"
@@ -56,6 +57,10 @@ export default {
     },
     osType: {
       type: String,
+    },
+    uefi: {
+      type: Boolean,
+      required: false,
     },
   },
   inject: ['form'],

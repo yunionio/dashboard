@@ -15,7 +15,7 @@
       </a-col>
       <a-col :span="16">
         <a-form-item>
-          <image-select-template v-decorator="decorator.image" :imageOpts="imageOpts" @imageChange="imageChange" :loading="loading" />
+          <image-select-template v-decorator="decorator.image" :imageOpts="imageOptions" @imageChange="imageChange" :loading="loading" />
         </a-form-item>
       </a-col>
     </a-row>
@@ -70,7 +70,11 @@ export default {
     osType: {
       type: String,
     },
+    uefi: {
+      type: Boolean,
+    },
   },
+  inject: ['form'],
   data () {
     return {
       images: {
@@ -134,6 +138,26 @@ export default {
       }
       return false
     },
+    imageOptions () {
+      const { os } = this.form.fc.getFieldsValue(['os'])
+      if (this.uefi) {
+        let imageOpts = this.imageOpts.map((item) => {
+          if (item.uefi_support !== 'true') {
+            return {
+              ...item,
+              hidden: true,
+            }
+          }
+          return item
+        })
+        let arr = imageOpts.filter((item) => { return !item.hidden })
+        if (arr.length === 0 && os === 'Windows') {
+          this.form.fc.setFieldsValue({ image: {} })
+        }
+        return imageOpts
+      }
+      return this.imageOpts
+    },
   },
   watch: {
     imageType (val, oldVal) {
@@ -173,7 +197,7 @@ export default {
           break
       }
     },
-    imageChange (imageObj) {
+    imageChange (imageObj, callback) {
       let imageMsg = {}
       if (imageObj && R.is(Object, imageObj)) {
         let list = this.images.list

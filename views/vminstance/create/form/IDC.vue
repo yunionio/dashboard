@@ -39,6 +39,7 @@
       <a-form-item v-bind="formItemLayout" label="操作系统" extra="操作系统会根据选择的虚拟化平台和可用区域的变化而变化，公共镜像的维护请联系管理员">
         <os-select
           :type="type"
+          :uefi="uefi"
           :hypervisor="form.fd.hypervisor"
           :decorator="decorators.imageOS"
           :image-params="scopeParams"
@@ -114,7 +115,7 @@
           :policy-schedtag-params="params.policySchedtag" />
       </a-form-item>
       <a-form-item label="引导方式" v-bind="formItemLayout" class="mb-0" v-if="isKvm">
-        <bios :decorator="decorators.bios" />
+        <bios :decorator="decorators.bios" :uefi="uefi" />
       </a-form-item>
       <a-form-item v-bind="formItemLayout" v-show="!isServertemplate" v-if="isKvm && isLocalDisk" label="高可用" extra="只有宿主机数量不少于2台时才可以使用该功能">
         <backup
@@ -247,6 +248,12 @@ export default {
     showAdvanceConfig () { // 是否展示高级配置
       return this.isKvm || !this.isServertemplate
     },
+    uefi () {
+      if (this.isKvm && this.form.fd.gpuEnable && this.form.fd.gpu && this.form.fd.os === 'Windows') {
+        return true
+      }
+      return false
+    },
   },
   watch: {
     'form.fi.imageMsg': {
@@ -295,6 +302,13 @@ export default {
           }
         })
       },
+    },
+    uefi (val, oldVal) {
+      if (val) {
+        this.form.fc.setFieldsValue({ bios: 'UEFI' })
+      } else {
+        this.form.fc.setFieldsValue({ bios: 'BIOS' })
+      }
     },
   },
   methods: {
