@@ -124,7 +124,8 @@ export default {
         {
           field: 'host_sn',
           title: 'SN',
-          width: 50,
+          minWidth: 70,
+          showOverflow: 'ellipsis',
         },
         {
           field: 'os_type',

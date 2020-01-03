@@ -44,11 +44,14 @@ export default {
         {
           field: 'name',
           title: '安全组名称',
+          minWidth: 100,
+          showOverflow: 'ellipsis',
         },
         getStatusTableColumn({ statusModule: 'secgroupCache' }),
         {
           field: 'created_at',
           title: '创建时间',
+          width: 140,
           formatter: ({ cellValue }) => {
             return this.$moment(cellValue).format()
           },
@@ -56,6 +59,7 @@ export default {
         {
           field: 'updated_at',
           title: '更新时间',
+          width: 140,
           formatter: ({ cellValue }) => {
             return this.$moment(cellValue).format()
           },
@@ -63,6 +67,8 @@ export default {
         {
           field: 'vpc',
           title: 'VPC',
+          minWidth: 70,
+          showOverflow: 'ellipsis',
           formatter: ({ cellValue }) => {
             return cellValue || '-'
           },
@@ -72,6 +78,7 @@ export default {
         {
           field: 'account',
           title: '云账号',
+          width: 100,
         },
       ],
       singleActions: [
