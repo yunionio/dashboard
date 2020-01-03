@@ -1112,7 +1112,7 @@ export default {
                         ret.tooltip = '包年包月机器，不支持此操作'
                         return ret
                       }
-                      if (obj.status !== 'ready' || obj.status !== 'running') {
+                      if (obj.status !== 'ready' && obj.status !== 'running') {
                         ret.tooltip = '仅运行中、关机的机器支持此操作'
                         return ret
                       }
