@@ -260,7 +260,7 @@ export default {
                     }
                   }
                   for (let i = 0; i < this.list.selectedItems.length; i++) {
-                    let obj = this.list.selectedItems[0]
+                    let obj = this.list.selectedItems[i]
                     if (obj.host_type !== 'hypervisor') {
                       return {
                         validate: false,
@@ -275,6 +275,11 @@ export default {
                       return {
                         validate: false,
                         tooltip: '已启用的宿主机不可回收',
+                      }
+                    } else if (!obj.is_baremetal) {
+                      return {
+                        validate: false,
+                        tooltip: '',
                       }
                     }
                   }
@@ -453,6 +458,11 @@ export default {
                           validate: false,
                           tooltip: '已启用的宿主机不可回收',
                         }
+                      } else if (!obj.is_baremetal) {
+                        return {
+                          validate: false,
+                          tooltip: '',
+                        }
                       }
                       return {
                         validate: true,
@@ -470,6 +480,10 @@ export default {
                     },
                     meta: () => {
                       if (obj.host_type !== 'hypervisor') {
+                        return {
+                          validate: false,
+                        }
+                      } else if (!obj.is_baremetal) {
                         return {
                           validate: false,
                         }
@@ -491,6 +505,10 @@ export default {
                     },
                     meta: () => {
                       if (obj.host_type !== 'hypervisor') {
+                        return {
+                          validate: false,
+                        }
+                      } else if (!obj.is_baremetal) {
                         return {
                           validate: false,
                         }
