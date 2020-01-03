@@ -576,11 +576,14 @@ export default {
                   if (!isAllVMware) {
                     ret.validate = false
                     ret.tooltip = '仅VMware支持此操作'
+                    return ret
                   }
                   if (!isAllRunning) {
                     ret.validate = false
                     ret.tooltip = '请选择开机的机器进行操作'
+                    return ret
                   }
+                  ret.validate = true
                   return ret
                 },
               },
@@ -604,11 +607,14 @@ export default {
                   if (!isAllVMware) {
                     ret.validate = false
                     ret.tooltip = '仅VMware支持此操作'
+                    return ret
                   }
                   if (!isAllSuspend) {
                     ret.validate = false
                     ret.tooltip = '请选择挂起的机器进行操作'
+                    return ret
                   }
+                  ret.validate = true
                   return ret
                 },
               },
@@ -875,9 +881,13 @@ export default {
                         ret.tooltip = '只有VMware主机支持此操作'
                         return ret
                       }
-                      return {
-                        validate: obj.status === 'running' && obj.hypervisor === typeClouds.hypervisorMap.esxi.key,
+                      if (obj.status !== 'running') {
+                        ret.validate = false
+                        ret.tooltip = '请选择开机的机器进行操作'
+                        return ret
                       }
+                      ret.validate = true
+                      return ret
                     },
                   },
                   {
@@ -895,13 +905,17 @@ export default {
                         validate: false,
                         tooltip: null,
                       }
-                      if (obj.status !== 'suspend') {
-                        ret.tooltip = '只有挂起的主机支持此操作'
+                      if (obj.hypervisor !== typeClouds.hypervisorMap.esxi.key) {
+                        ret.tooltip = '只有VMware主机支持此操作'
                         return ret
                       }
-                      return {
-                        validate: obj.hypervisor === typeClouds.hypervisorMap.esxi.key && obj.status === 'suspend',
+                      if (obj.status !== 'suspend') {
+                        ret.validate = false
+                        ret.tooltip = '请选择挂起的机器进行操作'
+                        return ret
                       }
+                      ret.validate = true
+                      return ret
                     },
                   },
                 ],
