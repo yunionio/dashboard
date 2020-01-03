@@ -6,6 +6,7 @@ import Eip from '@Network/views/eip'
 import FlexNetwork from '@Network/views/flex-network'
 import Wire from '@Network/views/wire'
 import GolbalVpc from '@Network/views/global-vpc'
+import RouteTableList from '@Network/views/route-table'
 
 export default {
   index: 3,
@@ -19,6 +20,21 @@ export default {
         label: '基础网络',
       },
       submenus: [
+        {
+          path: '/routetable',
+          meta: {
+            label: '路由表',
+            permission: 'route_tables_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'RouteTableList',
+              path: '',
+              component: RouteTableList,
+            },
+          ],
+        },
         {
           path: '/globalvpc',
           meta: {
