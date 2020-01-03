@@ -16,7 +16,7 @@ import {
   getCopyWithContentTableColumn,
   getRegionTableColumn,
 } from '@/utils/common/tableColumn'
-import { getTenantFilter, getStatusFilter, getBrandFilter, getAccountFilter } from '@/utils/common/tableFilter'
+import { getStatusFilter, getBrandFilter, getAccountFilter } from '@/utils/common/tableFilter'
 import { findPlatform, typeClouds } from '@/utils/common/hypervisor'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
@@ -54,7 +54,7 @@ export default {
             },
           },
           status: getStatusFilter('eip'),
-          tenant: getTenantFilter(),
+          // tenant: getTenantFilter(), //后台暂时不支持项目筛选
           account: getAccountFilter(),
           charge_type: {
             label: '计费方式',
