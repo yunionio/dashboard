@@ -12,7 +12,7 @@
           :types-map="typesMap"
           :elements="elements"
           :disabled="getDisabled(item)" />
-        <a-button v-if="!getDisabled(item)" shape="circle" icon="minus" size="small" @click="decrease(item.key)" class="mt-2 ml-2" />
+        <a-button v-if="!getDisabled(item, 'minus')" shape="circle" icon="minus" size="small" @click="decrease(item.key)" class="mt-2 ml-2" />
       </div>
       <div class="d-flex align-items-center" v-if="diskRemain > 0 && !disabled">
         <a-button type="primary" shape="circle" icon="plus" size="small" @click="add" />
@@ -166,8 +166,11 @@ export default {
     },
   },
   methods: {
-    getDisabled (item) {
+    getDisabled (item, itemName) {
       if (item.disabled) return true
+      if (itemName && item[`${itemName}Disabled`]) {
+        return true // 这里目前仅针对 minus 按钮
+      }
       return this.disabled
     },
     genDecorator (uid) {
@@ -187,12 +190,13 @@ export default {
         }
       })
     },
-    add ({ size, diskType, policy, schedtag, snapshot, filetype, mountPath, min, disabled = false } = {}) {
+    add ({ size, diskType, policy, schedtag, snapshot, filetype, mountPath, min, disabled = false, ...ret } = {}) {
       const key = uuid()
       this.dataDisks.push({
         key,
         disabled,
         min: min || this.min,
+        ...ret, // 目前仅用于 minus 按钮
       })
       this.$nextTick(() => {
         const value = {

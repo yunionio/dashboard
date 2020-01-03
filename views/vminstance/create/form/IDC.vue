@@ -277,7 +277,7 @@ export default {
             // 重置数据盘数据
             this._resetDataDisk()
             dataImages.forEach(val => {
-              this.$refs.dataDiskRef.add({ size: val.min_disk_mb / 1024, min: val.min_disk_mb / 1024 })
+              this.$refs.dataDiskRef.add({ size: val.min_disk_mb / 1024, min: val.min_disk_mb / 1024, minusDisabled: true })
             })
           } else if (this.form.fd.imageType === IMAGES_TYPE_MAP.snapshot.key) {
             // 镜像类型为主机快照的话要回填数据并禁用
