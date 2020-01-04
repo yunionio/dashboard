@@ -30,11 +30,13 @@ const replaceErrorMessage = (obj, arr) => {
 export const getHttpErrorMessage = (err, isErrorBody = false) => {
   if (!isErrorBody && (!err.response || !err.response.data)) return
   const errorData = isErrorBody ? err : err.response.data
-  const status = err.response.status
-  const method = err.config.method
   let errorBody = getErrorBody(errorData)
-  if (status === 502 && method !== 'get') { // 网关错误需要手动添加 class
-    errorBody = { ...errorBody, class: 'BadGatewayError' }
+  if (!isErrorBody) {
+    const status = err.response.status
+    const method = err.config.method
+    if (status === 502 && method !== 'get') { // 网关错误需要手动添加 class
+      errorBody = { ...errorBody, class: 'BadGatewayError' }
+    }
   }
   if (!errorBody.class) return
   // 默认为错误的元信息
