@@ -108,9 +108,20 @@ export default {
       }
     },
     loginTypeMap (val) {
-      if (val && !R.isEmpty(val)) {
+      this.setLoginType()
+    },
+  },
+  mounted () {
+    this.setLoginType()
+  },
+  methods: {
+    loginTypeChange (e) {
+      this.vmLoginType = e.target.value
+    },
+    setLoginType () {
+      if (this.loginTypeMap && !R.isEmpty(this.loginTypeMap)) {
         const loginTypeInitailValue = this.decorator.loginType[1].initialValue
-        const keys = Object.keys(val)
+        const keys = Object.keys(this.loginTypeMap)
         let vmLoginType = loginTypeInitailValue
         if (!keys.includes(loginTypeInitailValue)) { // 如果表单中的初始值不在 loginTypeMap 中
           if (keys.includes(LOGIN_TYPES_MAP.image.key)) { // 如果maps中有"保留镜像设置"，则设置
@@ -124,11 +135,6 @@ export default {
         })
         this.vmLoginType = vmLoginType
       }
-    },
-  },
-  methods: {
-    loginTypeChange (e) {
-      this.vmLoginType = e.target.value
     },
   },
 }

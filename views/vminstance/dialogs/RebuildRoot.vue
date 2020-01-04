@@ -25,7 +25,7 @@
           <div>{{ imgHidden.text }}</div>
         </a-form-item>
         <a-form-item label="管理员密码" v-bind="formItemLayout" v-if="!isZStack">
-          <server-password :decorator="decorators.loginConfig" :loginTypes="loginTypes" />
+          <server-password :decorator="decorators.loginConfig" :loginTypes="loginTypes" :form="form" />
         </a-form-item>
         <a-form-item label="自动启动" v-bind="formItemLayout" extra="重装系统后是否自动启动">
           <a-switch v-decorator="decorators.autoStart" />
