@@ -49,6 +49,7 @@ export default {
       this.secRulesM.list({
         params: {
           secgroup: this.objId,
+          scope: this.$store.getters.scope,
         },
       }).then(({ data: { data = [] } }) => {
         const inList = []
