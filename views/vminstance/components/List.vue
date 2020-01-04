@@ -306,7 +306,7 @@ export default {
                   })
                 },
                 meta: (row) => {
-                  const isOneCloud = this.list.selectedItems.some(item => item.brand === 'OneCloud')
+                  const isOneCloud = this.list.selectedItems.every(item => item.brand === 'OneCloud')
                   return {
                     validate: isOneCloud,
                     tooltip: !isOneCloud && '只有OneCloud主机支持此操作',
