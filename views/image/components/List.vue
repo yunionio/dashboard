@@ -163,6 +163,7 @@ export default {
           },
           meta: () => ({
             buttonType: 'primary',
+            validate: !this.$appConfig.isPrivate,
           }),
         },
         {
@@ -174,6 +175,9 @@ export default {
               list: this.list,
             })
           },
+          meta: () => ({
+            validate: !this.$appConfig.isPrivate,
+          }),
         },
         {
           label: '批量操作',
