@@ -114,7 +114,7 @@ export default {
       if (this.rate) {
         return {
           day: (this.rate.hour_price * 24).toFixed(2),
-          month: (this.rate.month_price * 30).toFixed(2),
+          month: (this.rate.month_price).toFixed(2),
         }
       }
       return null

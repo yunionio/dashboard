@@ -132,7 +132,11 @@ export default {
           ...values,
           elasticcache: this.params.redisItem.id,
         }
+        if (params.loginType === 'random') {
+          params['reset_password'] = true
+        }
         delete params.checkPassword
+        delete params.loginType
         await this.params.list.onManager('create', {
           managerArgs: {
             data: params,
