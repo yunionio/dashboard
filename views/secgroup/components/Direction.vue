@@ -56,9 +56,9 @@ export default {
             label: '端口',
             filter: true,
             formatter: val => {
-              if ((val && val.toLowerCase(val)) === 'all') {
-                return 'ports.isnullorempty()'
-              }
+              // if ((val && val.toLowerCase(val)) === 'all') {
+              //   return 'ports.isnullorempty()'
+              // }
               return `ports.contains("${val}")`
             },
           },

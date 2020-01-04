@@ -7,8 +7,8 @@
         <a-form-item label="挂载点" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :disabled="isDisabled" />
         </a-form-item>
-        <a-form-item label="分区格式" v-bind="formItemLayout">
-          <a-select v-decorator="decorators.format" placeholder="请选择分区格式" :disabled="isDisabled">
+        <a-form-item label="分区格式" v-bind="formItemLayout" v-if="!isDisabled">
+          <a-select v-decorator="decorators.format" placeholder="请选择分区格式">
             <a-select-option value="ext4">ext4</a-select-option>
             <a-select-option value="xfs">xfs</a-select-option>
             <a-select-option value="ntfs">ntfs</a-select-option>
