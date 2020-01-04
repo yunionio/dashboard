@@ -113,7 +113,6 @@ export default {
       const manager = new this.$Manager('disks')
       this.loading = true
       try {
-        console.log(1)
         const values = await this.form.fc.validateFields()
         const ids = this.params.data.map(item => item.id)
         const data = {}

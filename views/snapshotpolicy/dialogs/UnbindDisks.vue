@@ -33,15 +33,14 @@ export default {
   methods: {
     async doSubmit () {
       const ids = this.params.data.map(item => item.id)
-      const params = {}
-      ids.forEach((item, index) => {
-        params[`disk.${index}`] = item
-      })
+      const params = {
+        snapshotpolicy: this.params.resId,
+      }
       return this.params.list.onManager('batchPerformAction', {
-        id: this.params.resId,
+        id: ids,
         steadyStatus: 'ready',
         managerArgs: {
-          action: 'unbind-disks',
+          action: 'bind-snapshotpolicy',
           data: params,
         },
       })
