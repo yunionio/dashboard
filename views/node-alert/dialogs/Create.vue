@@ -6,7 +6,7 @@
       <node-alert-form
         ref="nodeAlertFormRef"
         :metric-opts="metricOptsEnabled"
-        :hypervisor="hypervisor"
+        :hypervisor="params.hypervisor"
         :alertType="params.alertType"
         :monitor-metric="params.metric" />
     </div>
@@ -35,7 +35,7 @@ export default {
   },
   computed: {
     metricOptsEnabled () {
-      let opts = this.metricOpts
+      let opts = this.params.metricOpts
       if (this.params.list && this.params.list.data) {
         // 新建时要保证新建的报警不会和已有的重复，下面是过滤掉已有的metric
         let listDataArr = Object.values(this.params.list.data)

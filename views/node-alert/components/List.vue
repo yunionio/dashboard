@@ -92,6 +92,7 @@ export default {
           slots: {
             default: ({ row }) => {
               const levelItem = LEVEL_CN[row.level]
+              if (!levelItem) return row.level || '-'
               return [
                 <a-tag color={levelItem.color}>{ levelItem.label }</a-tag>,
               ]
@@ -116,6 +117,7 @@ export default {
               alertType: this.alertType,
               nodeId: this.data.id,
               metricOpts: this.metricOpts,
+              hypervisor: this.data.hypervisor,
             })
           },
           meta: () => {
@@ -173,6 +175,7 @@ export default {
               list: this.list,
               alertType: this.alertType,
               metricOpts: this.metricOpts,
+              hypervisor: this.data.hypervisor,
             })
           },
         },

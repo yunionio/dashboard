@@ -11,6 +11,7 @@
 <script>
 import _ from 'lodash'
 import { ONECLOUD_MONITOR, VMWARE_MONITOR, OTHER_MONITOR } from '@Compute/views/vminstance/constants'
+import { metricItems } from '@Compute/views/node-alert/constants'
 import influxdb from '@/utils/influxdb'
 import { UNITS, autoComputeUnit } from '@/utils/utils'
 import Monitor from '@/sections/Monitor'
@@ -50,6 +51,8 @@ export default {
                   data,
                   alertType: 'guest',
                   alertManager,
+                  hypervisor: this.data.hypervisor,
+                  metricOpts: this.metricOpts,
                 })
               } else {
                 throw Error('后端返回数据错误，同个指标返回多个数据')
@@ -60,6 +63,8 @@ export default {
                 nodeId: this.data.id,
                 metric,
                 alertManager,
+                hypervisor: this.data.hypervisor,
+                metricOpts: this.metricOpts,
               })
             }
           },
@@ -89,6 +94,16 @@ export default {
     },
     sql () {
       return `time > now() - ${this.time} AND "vm_id"='${this.serverId}' GROUP BY time(${this.timeGroup}) FILL(0)`
+    },
+    hasMemMetric () {
+      return this.hypervisor === HYPERVISORS_MAP.esxi.key
+    },
+    metricOpts () {
+      let opts = [metricItems['vm_cpu.usage_active'], metricItems['vm_netio.bps_recv'], metricItems['vm_netio.bps_sent'], metricItems['vm_diskio.read_bps'], metricItems['vm_diskio.write_bps']]
+      if (this.hasMemMetric) {
+        opts.splice(1, 0, metricItems['vm_mem.used_percent'])
+      }
+      return opts
     },
   },
   created () {

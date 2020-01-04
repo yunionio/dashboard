@@ -1,7 +1,7 @@
 <template>
   <a-form :form="form.fc" style="wdith: 400px;">
     <a-form-item label="指标" v-bind="formItemLayout">
-      <a-select v-decorator="decorators.metric" :disabled="metricDisabled" @change="metricChagne">
+      <a-select v-decorator="decorators.metric" :disabled="metricDisabled" @change="metricChange">
         <a-select-option v-for="item in metricOpts" :key="item.key" :value="item.key">
           {{ item.label }}
         </a-select-option>
@@ -213,7 +213,7 @@ export default {
     this.getWindowRules()
   },
   methods: {
-    metricChagne (val) {
+    metricChange (val) {
       this.metric = val
       this.getThresholdRules(val)
       this.$nextTick(() => {

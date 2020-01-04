@@ -6,7 +6,7 @@
       <node-alert-form
         ref="nodeAlertFormRef"
         :metric-opts="params.metricOpts"
-        :hypervisor="hypervisor"
+        :hypervisor="params.hypervisor"
         :alertType="params.alertType"
         :fd-initail-value="fdInitailValue" />
     </div>
@@ -67,6 +67,7 @@ export default {
         }
         this.cancelDialog()
         this.$message.success('操作成功')
+        this.params.list && this.params.list.refresh()
       } catch (error) {
         this.loading = false
         throw error
