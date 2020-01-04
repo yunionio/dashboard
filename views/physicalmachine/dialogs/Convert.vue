@@ -405,7 +405,12 @@ export default {
           data.option.forEach(item => {
             arr = arr.concat(item.split(':'))
           })
-          let range = [0]
+          let range = []
+          let k = 0
+          while (k < data.count) {
+            range.push(k)
+            k++
+          }
           const isRepeat = this.diskOptionsDate.filter(item => item.diskInfo[1] === arr[1])
           if (isRepeat.length > 0) {
             const lastIndexRange = isRepeat[isRepeat.length - 1].range
