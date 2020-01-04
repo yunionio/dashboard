@@ -402,6 +402,18 @@ export default {
               if (!['IP SSH', 'EIP SSH'].includes(type)) throw Error('ssh 类型必须为 IP SSH,EIP SSH 中的一种')
               const options = []
               ipArr.forEach(v => {
+                const meta = () => {
+                  const ret = {
+                    validate: false,
+                    tooltip: null,
+                  }
+                  if (obj.os_type === 'Windows') {
+                    ret.tooltip = 'Windows 不支持 SSH 连接'
+                  }
+                  ret.validate = cloudEnabled(type, obj)
+                  ret.tooltip = cloudUnabledTip(type, obj)
+                  return ret
+                }
                 options.push({
                   label: `SSH ${v}`,
                   action: () => {
@@ -420,18 +432,47 @@ export default {
                       open(href)
                     })
                   },
-                  meta: () => {
-                    const ret = {
-                      validate: false,
-                      tooltip: null,
-                    }
-                    if (obj.os_type === 'Windows') {
-                      ret.tooltip = 'Windows 不支持 SSH 连接'
-                    }
-                    ret.validate = cloudEnabled(type, obj)
-                    ret.tooltip = cloudUnabledTip(type, obj)
-                    return ret
+                  meta,
+                })
+                options.push({
+                  label: `SSH ${v} 自定义端口`,
+                  action: () => {
+                    this.createDialog('SmartFormDialog', {
+                      title: '自定义端口',
+                      data: [obj],
+                      list: this.list,
+                      callback: async (data) => {
+                        await this.webconsoleManager.performAction({
+                          id: 'ssh',
+                          action: v,
+                          data,
+                        })
+                      },
+                      decorators: {
+                        port: [
+                          'port',
+                          {
+                            validateFirst: true,
+                            rules: [
+                              { required: true, message: '请输入端口' },
+                              { validator: (rule, value, _callback) => {
+                                const num = parseFloat(value)
+                                if (!/^\d+$/.test(value) || !num || num > 65535) {
+                                  _callback('端口范围在 0-65535 之间')
+                                }
+                                _callback()
+                              } },
+                            ],
+                          },
+                          {
+                            label: '端口',
+                            placeholder: '请输入端口号',
+                          },
+                        ],
+                      },
+                    })
                   },
+                  meta,
                 })
               })
               return options
