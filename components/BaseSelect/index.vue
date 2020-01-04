@@ -270,9 +270,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.base-select {
-  width: 200px;
-}
-</style>style
