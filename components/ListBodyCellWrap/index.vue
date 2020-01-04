@@ -1,5 +1,5 @@
 <template>
-  <div v-on="events" class="d-flex align-items-center" :title="row[field] || '-'">
+  <div v-on="events" class="d-flex align-items-center" :title="message || row[field] || '-'">
     <span
       v-if="!hideField"
       class="text-truncate"
@@ -47,8 +47,7 @@ export default {
     row: { // 当前行数据
       type: Object,
     },
-    message: { // copy 的内容
-    },
+    message: String,
     field: {
       type: String,
       default: 'name',

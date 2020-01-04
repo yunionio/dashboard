@@ -31,7 +31,7 @@
       </div>
       <!-- header tabs -->
       <div class="side-page-header-tabs">
-        <a-tabs :active-key="currentTab" @change="handleTabChange" :tab-bar-style="{ padding: '0 30px', marginBottom: 0 }">
+        <a-tabs :active-key="currentTab" @change="handleTabChange" :tab-bar-style="{ padding: '0 30px', marginBottom: 0 }" :animated="false">
           <a-tab-pane
             v-for="item of tabs"
             :key="item.key"

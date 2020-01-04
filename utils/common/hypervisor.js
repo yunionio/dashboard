@@ -1,6 +1,8 @@
 import * as R from 'ramda'
 import { HYPERVISORS_MAP, EXTRA_HYPERVISORS } from '@/constants'
 import { changeToArr } from '@/utils/utils'
+import store from '@/store'
+import i18n from '@/locales'
 
 export class TypeClouds {
   hypervisorMap = {}
@@ -81,4 +83,24 @@ export const findPlatform = (provider, type = 'brand') => {
     if (provierItem) return provierItem.env
   }
   return false // 未找到平台
+}
+
+/**
+ * @description 根据实际的brand，计算出cloud env
+ * @param {String} capabilityBrandKey 传入capability中brand标识key
+ * @param {Boolean} ignoreAll 是否需要隐藏全部选项
+ * @returns {Array} 返回含有的cloudenv
+ */
+export const getCloudEnvOptions = (capabilityBrandKey, ignoreAll) => {
+  const orderKeys = ['onpremise', 'private', 'public']
+  let ret = !ignoreAll ? [{ key: '', label: '全部' }] : []
+  const brands = store.getters.capability[capabilityBrandKey] || store.getters.capability['brands']
+  for (let i = 0, len = brands.length; i < len; i++) {
+    const data = R.find(R.propEq('key', typeClouds.brandMap[brands[i]]['cloud_env']))(ret)
+    if (!data) {
+      ret.push({ key: typeClouds.brandMap[brands[i]]['cloud_env'], label: i18n.t(`cloud_env.${typeClouds.brandMap[brands[i]]['cloud_env']}`) })
+    }
+  }
+  ret = ret.sort((a, b) => orderKeys.indexOf(a.key) - orderKeys.indexOf(b.key))
+  return ret
 }

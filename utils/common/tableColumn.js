@@ -172,6 +172,7 @@ export const getCopyWithContentTableColumn = ({
   message,
   sortable,
   slotCallback,
+  hidden,
 } = {}) => {
   return {
     field,
@@ -189,6 +190,7 @@ export const getCopyWithContentTableColumn = ({
         ]
       },
     },
+    hidden,
   }
 }
 

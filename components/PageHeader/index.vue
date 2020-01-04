@@ -4,9 +4,22 @@
     <div class="mini-title mb-2" v-if="miniTitle">
       {{ miniTitle }}
     </div>
-    <div class="ml-4" :class="$slots.default ? ['pt-1', 'pb-3'] : []">
-      <slot />
-    </div>
+    <template v-if="tabs">
+      <div class="ml-4 position-relative h-100">
+        <a-tabs
+          :defaultActiveKey="currentTab"
+          class="page-header-tabs"
+          :animated="false"
+          :tab-bar-style="{ padding: '0 30px', marginBottom: 0 }"
+          size="large"
+          @change="handleTabChange">
+          <template v-for="item of tabs">
+            <a-tab-pane :tab="item.label" :key="item.key" />
+          </template>
+        </a-tabs>
+      </div>
+    </template>
+
   </div>
 </template>
 
@@ -20,6 +33,13 @@ export default {
     miniTitle: {
       type: String,
     },
+    tabs: Array,
+    currentTab: String,
+  },
+  methods: {
+    handleTabChange (val) {
+      this.$emit('update:currentTab', val)
+    },
   },
 }
 </script>
@@ -28,7 +48,7 @@ export default {
 @import '../../../src/styles/antd/index.less';
 
 .page-header {
-  min-height: 60px;
+  height: 60px;
   padding: 0 20px;
   position: relative;
   > h3 {
@@ -51,6 +71,19 @@ export default {
   .mini-title {
     font-size: 12px;
     color: @text-color-secondary;
+  }
+}
+.page-header-tabs {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  ::v-deep {
+    .ant-tabs-bar {
+      border-bottom: 0;
+    }
+    .ant-tabs-nav .ant-tabs-tab {
+      padding: 16px 16px 20px 16px;
+    }
   }
 }
 </style>
