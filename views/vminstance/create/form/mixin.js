@@ -308,16 +308,22 @@ export default {
       delete data['vmem_size']
       this.serverM.create({ data })
         .then(res => {
-          const image = data.disks.find(val => val.disk_type === 'sys').image_id
-          storage.set(`${this.form.fi.createType}${SELECT_IMAGE_KEY_SUFFIX}`, `${this.form.fd.os}:${image}`)
+          if (R.is(Array, data.disks)) {
+            const imageObj = data.disks.find(val => val.disk_type === 'sys')
+            if (R.is(Object, imageObj)) {
+              const image = imageObj.image_id
+              storage.set(`${this.form.fi.createType}${SELECT_IMAGE_KEY_SUFFIX}`, `${this.form.fd.os}:${image}`)
+            }
+          }
           this.submiting = false
           if (isSuccess(res)) {
             this.$message.success('操作成功，开始创建')
           }
           this.$router.push('/vminstance')
         })
-        .catch(() => {
+        .catch(error => {
           this.submiting = false
+          throw error
         })
     },
     validateForm () {
