@@ -765,14 +765,14 @@ export default {
         }
       }
       let option = {
-        title: arr[3] + ' ' + arr[2] + ' X ' + data.count,
+        title: arr[3] + ' ' + arr[2] + ' X ' + `${data.option[2] === 'none' ? 1 : data.count}`,
         size: sizestr(sizeNumber, 'G', 1024),
         chartData: {
           columns: ['name', 'size'],
           rows: [],
         },
         diskInfo: [arr[0], arr[1], arr[4]],
-        count: data.count,
+        count: data.option[2] === 'none' ? 1 : data.count,
         type: arr[2],
         range,
       }
