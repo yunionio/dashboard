@@ -145,6 +145,9 @@ export default {
           [key]: undefined,
         })
         this.FC.resetFields(fetchNames || [key])
+        this.FC.setFieldsValue({
+          [key]: undefined,
+        })
         return false
       }
       if (fetchNames && fetchNames.length > 0) {
