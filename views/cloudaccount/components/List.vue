@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import expectStatus from '@/constants/expectStatus'
 import {
@@ -68,12 +69,18 @@ export default {
   mixins: [WindowsMixin],
   props: {
     id: String,
+    getParams: {
+      type: Object,
+      default: () => ({}),
+    },
+    cloudEnv: String,
   },
   data () {
     return {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'cloudaccounts',
+        getParams: this.getParam,
         steadyStatus: {
           status: Object.values(expectStatus.cloudaccount).flat(),
           sync_status: Object.values(expectStatus.cloudaccountSyncStatus).flat(),
@@ -447,9 +454,25 @@ export default {
   computed: {
     ...mapGetters(['l3PermissionEnable']),
   },
+  watch: {
+    cloudEnv (val) {
+      this.$nextTick(() => {
+        this.list.fetchData(0)
+      })
+    },
+  },
   created () {
     this.initSidePageTab('cloudaccount-detail')
     this.list.fetchData()
+  },
+  methods: {
+    getParam () {
+      const ret = {
+        ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
+      }
+      if (this.cloudEnv) ret.cloud_env = this.cloudEnv
+      return ret
+    },
   },
 }
 </script>
