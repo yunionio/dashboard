@@ -4,8 +4,8 @@
       <a-form-item v-bind="formLayout" label="名称">
         <a-input v-decorator="decorators.name" placeholder="请输入名称" />
       </a-form-item>
-      <a-form-item v-bind="formLayout" label="vCenter地址">
-        <a-input v-decorator="decorators.host" placeholder="请输入域名或者ip" />
+      <a-form-item v-bind="formLayout" label="vCenter地址" extra="请输入ip地址或者域名">
+        <a-input v-decorator="decorators.host" placeholder="请输入ip地址或者域名" />
       </a-form-item>
       <a-form-item v-bind="formLayout" label="端口">
         <a-input v-decorator="decorators.port" />
