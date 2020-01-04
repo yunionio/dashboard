@@ -51,6 +51,7 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    cloudEnv: String,
   },
   data () {
     return {
@@ -217,30 +218,13 @@ export default {
       groupActions: [
         {
           label: '新建',
-          actions: () => {
-            return [
-              {
-                label: 'IDC',
-                permission: 'server_create',
-                action: () => {
-                  this.createServer('idc')
-                },
+          action: () => {
+            this.$router.push({
+              path: '/vminstance/create',
+              query: {
+                type: this.cloudEnv === 'onpremise' ? 'idc' : this.cloudEnv || 'idc',
               },
-              {
-                label: '私有云',
-                permission: 'server_create',
-                action: () => {
-                  this.createServer('private')
-                },
-              },
-              {
-                label: '公有云',
-                permission: 'server_create',
-                action: () => {
-                  this.createServer('public')
-                },
-              },
-            ]
+            })
           },
           meta: () => {
             return {
@@ -1691,6 +1675,13 @@ export default {
       return true
     },
   },
+  watch: {
+    cloudEnv (val) {
+      this.$nextTick(() => {
+        this.list.fetchData(0)
+      })
+    },
+  },
   created () {
     this.initSidePageTab('vm-instance-detail')
     this.webconsoleManager = new Manager('webconsole', 'v1')
@@ -1700,21 +1691,15 @@ export default {
     }, this)
   },
   methods: {
-    createServer (type) {
-      this.$router.push({
-        path: '/vminstance/create',
-        query: {
-          type,
-        },
-      })
-    },
     getParam () {
-      return {
+      const ret = {
         details: true,
         with_meta: true,
         filter: 'hypervisor.notin(baremetal,container)',
         ...this.getParams,
       }
+      if (this.cloudEnv) ret.cloud_env = this.cloudEnv
+      return ret
     },
   },
 }

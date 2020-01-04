@@ -21,15 +21,18 @@ export default {
   mixins: [WindowsMixin],
   props: {
     id: String,
+    getParams: {
+      type: Object,
+      default: () => ({}),
+    },
+    cloudEnv: String,
   },
   data () {
     return {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'servertemplates',
-        getParams: {
-          details: true,
-        },
+        getParams: this.getParam,
         filterOptions: {
           name: {
             label: '名称',
@@ -72,39 +75,15 @@ export default {
       groupActions: [
         {
           label: '新建',
-          actions: () => {
-            const createServer = type => {
-              this.$router.push({
-                path: '/servertemplate/create',
-                query: {
-                  type,
-                  source: 'servertemplate',
-                },
-              })
-            }
-            return [
-              {
-                label: 'IDC',
-                permission: 'servertemplates_create',
-                action: () => {
-                  createServer('idc')
-                },
+          permission: 'servertemplates_create',
+          action: () => {
+            this.$router.push({
+              path: '/servertemplate/create',
+              query: {
+                type: this.cloudEnv === 'onpremise' ? 'idc' : this.cloudEnv || 'idc',
+                source: 'servertemplate',
               },
-              {
-                label: '私有云',
-                permission: 'servertemplates_create',
-                action: () => {
-                  createServer('private')
-                },
-              },
-              {
-                label: '公有云',
-                permission: 'servertemplates_create',
-                action: () => {
-                  createServer('public')
-                },
-              },
-            ]
+            })
           },
           meta: () => {
             return {
@@ -180,6 +159,13 @@ export default {
       ],
     }
   },
+  watch: {
+    cloudEnv (val) {
+      this.$nextTick(() => {
+        this.list.fetchData(0)
+      })
+    },
+  },
   created () {
     this.list.fetchData()
     this.initSidePageTab('servertemplate-detail')
@@ -189,6 +175,14 @@ export default {
       if (this.$store.getters.isAdminMode) return true
       if (this.$store.getters.isDomainMode) return obj.domain_id === this.$store.getters.userInfo.projectDomainId
       return obj.tenant_id === this.$store.getters.userInfo.projectId
+    },
+    getParam () {
+      const ret = {
+        details: true,
+        ...this.getParams,
+      }
+      if (this.cloudEnv) ret.cloud_env = this.cloudEnv
+      return ret
     },
   },
 }

@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import qs from 'qs'
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { sizestr, percentstr } from '@/utils/utils'
@@ -23,13 +24,14 @@ export default {
     getParams: {
       type: [Function, Object],
     },
+    cloudEnv: String,
   },
   data () {
     return {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'hosts',
-        getParams: this.getParams,
+        getParams: this.getParam,
         filterOptions: {
           name: {
             label: '名称',
@@ -543,9 +545,25 @@ export default {
       ],
     }
   },
+  watch: {
+    cloudEnv (val) {
+      this.$nextTick(() => {
+        this.list.fetchData(0)
+      })
+    },
+  },
   created () {
     this.initSidePageTab('host-detail')
     this.list.fetchData()
+  },
+  methods: {
+    getParam () {
+      const ret = {
+        ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
+      }
+      if (this.cloudEnv) ret.cloud_env = this.cloudEnv
+      return ret
+    },
   },
 }
 </script>

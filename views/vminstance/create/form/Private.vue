@@ -1,6 +1,5 @@
 <template>
   <div>
-    <page-header title="新建私有云服务器" />
     <a-form
       class="mt-3"
       :form="form.fc"

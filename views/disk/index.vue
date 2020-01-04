@@ -1,14 +1,15 @@
 <template>
   <div>
-    <page-header title="硬盘" />
+    <page-header title="硬盘" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
     <page-body>
-      <disk-list :id="listId" :getParams="getParams" />
+      <disk-list :id="listId" :getParams="getParams" :cloud-env="cloudEnv" />
     </page-body>
   </div>
 </template>
 
 <script>
 import DiskList from './components/List'
+import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 
 export default {
   name: 'DiskIndex',
@@ -22,6 +23,8 @@ export default {
         details: true,
         'filter.0': 'disk_type.notin(volume)',
       },
+      cloudEnvOptions: getCloudEnvOptions('compute_engine_brands'),
+      cloudEnv: '',
     }
   },
 }

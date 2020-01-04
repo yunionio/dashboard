@@ -34,6 +34,7 @@ export default {
     getParams: {
       type: [Function, Object],
     },
+    cloudEnv: String,
   },
   data () {
     return {
@@ -822,6 +823,13 @@ export default {
       return true
     },
   },
+  watch: {
+    cloudEnv (val) {
+      this.$nextTick(() => {
+        this.list.fetchData(0)
+      })
+    },
+  },
   created () {
     this.initSidePageTab('baremetal-detail')
     this.webconsoleManager = new Manager('webconsole', 'v1')
@@ -829,12 +837,14 @@ export default {
   },
   methods: {
     getParam () {
-      return {
+      const ret = {
         hypervisor: 'baremetal',
         ...this.getParams,
         details: true,
         with_meta: true,
       }
+      if (this.cloudEnv) ret.cloud_env = this.cloudEnv
+      return ret
     },
   },
 }

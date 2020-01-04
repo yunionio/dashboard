@@ -1,8 +1,8 @@
 <template>
   <div>
-    <page-header title="主机快照" />
+    <page-header title="主机快照" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
     <page-body>
-      <snapshot-list :list="list" type="instance" />
+      <snapshot-list :list="list" type="instance" :cloud-env="cloudEnv" />
     </page-body>
   </div>
 </template>
@@ -11,20 +11,21 @@
 import { steadyStatus } from './constants'
 import SnapshotList from './components/List'
 import { getTenantFilter, getStatusFilter } from '@/utils/common/tableFilter'
+import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 
 export default {
-  name: 'DiskIndex',
+  name: 'VmInstanceSnapshotsIndex',
   components: {
     SnapshotList,
   },
   data () {
     return {
+      cloudEnvOptions: getCloudEnvOptions('compute_engine_brands'),
+      cloudEnv: '',
       list: this.$list.createList(this, {
         id: 'VmInstanceSnapshotsList',
         resource: 'instance_snapshots',
-        getParams: {
-          details: true,
-        },
+        getParams: this.getParam,
         steadyStatus,
         filterOptions: {
           name: {
@@ -48,6 +49,22 @@ export default {
         },
       }),
     }
+  },
+  watch: {
+    cloudEnv (val) {
+      this.$nextTick(() => {
+        this.list.fetchData(0)
+      })
+    },
+  },
+  methods: {
+    getParam () {
+      const ret = {
+        details: true,
+      }
+      if (this.cloudEnv) ret.cloud_env = this.cloudEnv
+      return ret
+    },
   },
 }
 </script>

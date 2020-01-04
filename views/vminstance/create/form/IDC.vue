@@ -1,6 +1,5 @@
 <template>
   <div>
-    <page-header title="新建本地IDC服务器" />
     <a-form
       class="mt-3"
       :form="form.fc"

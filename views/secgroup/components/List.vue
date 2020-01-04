@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import SecgroupDropList from './SecgroupDropList'
 import {
@@ -35,7 +36,7 @@ export default {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'secgroups',
-        getParams: this.getParams,
+        getParams: this.getParam,
         filterOptions: {
           name: {
             label: '名称',
@@ -325,6 +326,13 @@ export default {
       if (this.isAdminMode) return true
       if (this.isDomainMode) return obj.domain_id === this.userInfo.projectDomainId
       return obj.tenant_id === this.userInfo.projectId
+    },
+    getParam () {
+      const ret = {
+        ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
+      }
+      if (this.cloudEnv) ret.cloud_env = this.cloudEnv
+      return ret
     },
   },
 }

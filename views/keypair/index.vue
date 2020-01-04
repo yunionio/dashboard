@@ -1,8 +1,8 @@
 <template>
   <div>
-    <page-header title="密钥" />
+    <page-header title="密钥" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
     <page-body>
-      <key-pair-list :id="listId" />
+      <key-pair-list :id="listId" :cloud-env="cloudEnv" />
     </page-body>
   </div>
 </template>
@@ -18,6 +18,11 @@ export default {
   data () {
     return {
       listId: 'KeyPairList',
+      cloudEnvOptions: [
+        { key: '', label: '全部' },
+        { key: 'onpremise', label: this.$t('cloud_env.onpremise') },
+      ],
+      cloudEnv: '',
     }
   },
 }

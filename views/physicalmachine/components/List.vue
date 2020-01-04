@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import qs from 'qs'
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { getRegionTableColumn, getStatusTableColumn, getEnabledTableColumn, getNameDescriptionTableColumn, getCopyWithContentTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
@@ -31,7 +32,7 @@ export default {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'hosts',
-        getParams: { ...this.getParams, with_meta: true },
+        getParams: this.getParam,
         steadyStatus: {
           status: Object.values(expectStatus.host).flat(),
         },
@@ -918,6 +919,16 @@ export default {
   created () {
     this.initSidePageTab('physicalmachine-detail')
     this.list.fetchData()
+  },
+  methods: {
+    getParam () {
+      const ret = {
+        ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
+        with_meta: true,
+      }
+      if (this.cloudEnv) ret.cloud_env = this.cloudEnv
+      return ret
+    },
   },
 }
 </script>

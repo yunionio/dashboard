@@ -19,6 +19,11 @@ export default {
   mixins: [WindowsMixin],
   props: {
     id: String,
+    getParams: {
+      type: Object,
+      default: () => ({}),
+    },
+    cloudEnv: String,
   },
   data () {
     const validateAction = function (obj) {
@@ -49,7 +54,7 @@ export default {
         id: this.id,
         resource: 'images',
         apiVersion: 'v1',
-        getParams: this.getParams,
+        getParams: this.getParam,
         filterOptions: {
           name: {
             label: '镜像名称',
@@ -395,11 +400,13 @@ export default {
     this.list.fetchData()
   },
   methods: {
-    getParams () {
-      return {
+    getParam () {
+      const ret = {
         details: true,
         is_guest_image: false,
       }
+      if (this.cloudEnv) ret.cloud_env = this.cloudEnv
+      return ret
     },
     updateStandard (isStandard, selectedItems) {
       let params = {

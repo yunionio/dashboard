@@ -24,6 +24,10 @@ export default {
   mixins: [WindowsMixin],
   props: {
     id: String,
+    getParams: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data () {
     return {
@@ -31,9 +35,7 @@ export default {
         id: this.id,
         resource: 'snapshotpolicies',
         steadyStatus: Object.values(expectStatus.snapshotpolicy).flat(),
-        getParams: {
-          details: true,
-        },
+        getParams: this.getParam,
         filterOptions: {
           name: {
             label: '名称',
@@ -80,18 +82,25 @@ export default {
           filed: 'repeat_weekdays',
           title: '策略详情',
           minWidth: 180,
-          formatter: ({ row }) => {
-            let text = ''
-            if (row.repeat_weekdays && row.repeat_weekdays.length) {
-              text += '每' + row.repeat_weekdays.map(item => weekOptions[item - 1]).join('、')
-            }
-            if (row.time_points && row.time_points.length) {
-              text += '; ' + row.time_points.map(item => timeOptions[item]).join('、')
-            }
-            if (text) {
-              text += '自动创建快照'
-            }
-            return text
+          showOverflow: 'ellipsis',
+          slots: {
+            default: ({ row }, h) => {
+              let text = ''
+              if (row.repeat_weekdays && row.repeat_weekdays.length) {
+                text += '每' + row.repeat_weekdays.map(item => weekOptions[item - 1]).join('、')
+              }
+              if (row.time_points && row.time_points.length) {
+                text += '; ' + row.time_points.map(item => timeOptions[item]).join('、')
+              }
+              if (text) {
+                text += '自动创建快照'
+              }
+              return [
+                <list-body-cell-wrap copy field='repeat_weekdays' hideField row={row} message={text}>
+                  {{ text }}
+                </list-body-cell-wrap>,
+              ]
+            },
           },
         },
         getTimeTableColumn(),
@@ -166,6 +175,15 @@ export default {
   created () {
     this.initSidePageTab('snapshot-policy-detail')
     this.list.fetchData()
+  },
+  methods: {
+    getParam () {
+      const ret = {
+        details: true,
+      }
+      if (this.cloudEnv) ret.cloud_env = this.cloudEnv
+      return ret
+    },
   },
 }
 </script>

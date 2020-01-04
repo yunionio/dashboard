@@ -1,14 +1,15 @@
 <template>
   <div>
-    <page-header title="主机模版" />
+    <page-header title="主机模版" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
     <page-body>
-      <servertemplate-list :id="listId" />
+      <servertemplate-list :id="listId" :cloud-env="cloudEnv" />
     </page-body>
   </div>
 </template>
 
 <script>
 import ServertemplateList from './components/List'
+import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 
 export default {
   name: 'ServertemplateIndex',
@@ -18,12 +19,9 @@ export default {
   data () {
     return {
       listId: 'ServertemplateList',
+      cloudEnvOptions: getCloudEnvOptions('compute_engine_brands'),
+      cloudEnv: '',
     }
-  },
-  methods: {
-    createServer () {
-      this.$router.push('/vminstance/create')
-    },
   },
 }
 </script>

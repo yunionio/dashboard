@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import { MEDIUM_MAP } from '../../../constants'
 import { diskResizeConfig, diskCreateSnapshotConfig } from '../utils'
 import {
@@ -34,13 +35,14 @@ export default {
     getParams: {
       type: [Function, Object],
     },
+    cloudEnv: String,
   },
   data () {
     return {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'disks',
-        getParams: this.getParams,
+        getParams: this.getParam,
         filterOptions: {
           name: getNameFilter(),
           status: getStatusFilter('disk'),
@@ -456,9 +458,23 @@ export default {
       ],
     }
   },
+  watch: {
+    cloudEnv (val) {
+      this.$nextTick(() => {
+        this.list.fetchData(0)
+      })
+    },
+  },
   created () {
     this.initSidePageTab('disk-detail')
     this.list.fetchData()
+  },
+  methods: {
+    getParam () {
+      const ret = { ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams) }
+      if (this.cloudEnv) ret.cloud_env = this.cloudEnv
+      return ret
+    },
   },
 }
 </script>

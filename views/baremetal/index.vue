@@ -1,8 +1,8 @@
 <template>
   <div>
-    <page-header title="裸金属" />
+    <page-header title="裸金属" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
     <page-body>
-      <baremetal-list :id="listId" />
+      <baremetal-list :id="listId" :cloud-env="cloudEnv" />
     </page-body>
   </div>
 </template>
@@ -18,6 +18,11 @@ export default {
   data () {
     return {
       listId: 'BaremetalList',
+      cloudEnvOptions: [
+        { key: '', label: '全部' },
+        { key: 'onpremise', label: this.$t('cloud_env.onpremise') },
+      ],
+      cloudEnv: '',
     }
   },
 }

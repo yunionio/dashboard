@@ -13,14 +13,19 @@ import { getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 export default {
   name: 'ServicecatalogList',
   mixins: [WindowsMixin],
+  props: {
+    getParams: {
+      type: Object,
+      default: () => ({}),
+    },
+    cloudEnv: String,
+  },
   data () {
     return {
       errors: [],
       list: this.$list.createList(this, {
         resource: 'servicecatalogs',
-        getParams: {
-          details: true,
-        },
+        getParams: this.getParam,
       }),
       cardFields: {
         url: 'icon_url',
@@ -98,8 +103,24 @@ export default {
       ],
     }
   },
+  watch: {
+    cloudEnv (val) {
+      this.$nextTick(() => {
+        this.list.fetchData(0)
+      })
+    },
+  },
   created () {
     this.list.fetchData()
+  },
+  methods: {
+    getParam () {
+      const ret = {
+        details: true,
+      }
+      if (this.cloudEnv) ret.cloud_env = this.cloudEnv
+      return ret
+    },
   },
 }
 </script>
