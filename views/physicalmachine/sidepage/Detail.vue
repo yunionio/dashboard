@@ -44,14 +44,18 @@ export default {
         {
           field: 'driver',
           title: '驱动',
+          width: 80,
         },
         {
           field: 'model',
           title: '型号',
+          showOverflow: 'ellipsis',
+          minWidth: 100,
         },
         {
           field: 'rotate',
           title: '类型',
+          width: 80,
           formatter: ({ cellValue, row }) => {
             if (cellValue === true) return '普通硬盘'
             return 'SSD'
@@ -73,10 +77,13 @@ export default {
         {
           field: 'ip_addr',
           title: 'IP',
+          width: 100,
         },
         {
           field: 'mac',
           title: 'mac地址',
+          showOverflow: 'ellipsis',
+          minWidth: 100,
         },
         {
           field: 'masklen',
