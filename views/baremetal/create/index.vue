@@ -44,10 +44,10 @@
                   <icon type="res-disk" />
                   {{ item.title }}
                   <a-tooltip title="磁盘配置分区合法">
-                    <a-icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" v-show="(idx === 0 && item.remainder === 0) || idx !== 0" />
+                    <a-icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" v-show="(idx === 0 && !isShowFalseIcon) || idx !== 0" />
                   </a-tooltip>
                   <a-tooltip title="磁盘配置分区非法：请完成剩余磁盘分区设置，若未配置将导致操作失败">
-                    <a-icon type="close-circle" theme="twoTone" twoToneColor="#eb2f96" v-show="idx === 0 && item.remainder > 0" />
+                    <a-icon type="close-circle" theme="twoTone" twoToneColor="#eb2f96" v-show="idx === 0 && isShowFalseIcon" />
                   </a-tooltip>
                 </template>
                 <a href="javascript:;" slot="extra" @click="handleDiskItemRemove(idx)" v-show="idx === diskOptionsDate.length - 1">删除</a>
@@ -432,6 +432,7 @@ export default {
         },
       },
       isBonding: false,
+      isShowFalseIcon: false,
     }
   },
   computed: {
@@ -494,6 +495,32 @@ export default {
       form: this.form,
       fi: this.form.fi,
     }
+  },
+  watch: {
+    diskOptionsDate: {
+      handler (val) {
+        let isDistribution = false
+        let isDiff = false // 是否存在不通的raid盘
+        for (var i = 0; i < this.diskOptionsDate.length; i++) {
+          // 每一项是否有分配磁盘
+          if (i > 0) {
+            const rowsLength = this.diskOptionsDate[i].chartData.rows.length
+            if ((rowsLength === 1 && this.diskOptionsDate[i].chartData.rows[0].name !== '剩余') || (rowsLength > 1)) {
+              isDistribution = true
+            }
+          }
+          if (this.diskOptionsDate[0].diskInfo[1] !== this.diskOptionsDate[i].diskInfo[1]) {
+            isDiff = true
+          }
+          if (isDiff && this.diskOptionsDate[0].remainder > 0 && isDistribution) {
+            this.isShowFalseIcon = true
+          } else {
+            this.isShowFalseIcon = false
+          }
+        }
+      },
+      deep: true,
+    },
   },
   created () {
     this.zonesM2 = new this.$Manager('zones')
@@ -850,12 +877,10 @@ export default {
       const nets = []
       // 判断数据盘是否合法
       if (this.diskOptionsDate.length > 0) {
-        this.diskOptionsDate.forEach((item, index) => {
-          if (index === 0 && item.remainder > 0) {
-            this.$message.error('磁盘配置分区非法')
-            throw new Error('磁盘配置分区非法')
-          }
-        })
+        if (this.isShowFalseIcon) {
+          this.$message.error('磁盘配置分区非法')
+          throw new Error('磁盘配置分区非法')
+        }
         // 将系统盘放置首位
         const systemDisk = this.diskOptionsDate[0].chartData.rows.pop()
         this.diskOptionsDate[0].chartData.rows.unshift(systemDisk)
@@ -932,7 +957,7 @@ export default {
         auto_start: true,
         vdi: 'vnc',
         disks,
-        diskConfigs,
+        baremetal_disk_configs: diskConfigs,
         nets,
         prefer_host: this.isInstallOperationSystem ? this.$route.query.id : values.schedPolicyHost,
         description: values.description,
