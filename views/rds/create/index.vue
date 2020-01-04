@@ -142,7 +142,7 @@ export default {
             const zoneArr = zoneStr.split('+')
             if (zoneArr && zoneArr.length > 0) {
               for (let i = 0; i < zoneArr.length; i++) {
-                params[`zone.${i}`] = zoneArr[i]
+                params[`zones.${i}`] = zoneArr[i]
               }
             }
           }
