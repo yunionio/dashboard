@@ -59,7 +59,7 @@ export default {
               return [
                 <div>
                   {row.guest}
-                  {row.guest_status ? <status status={ row['guest_status'] } statusModule='server'/> : ''}
+                  {row.guest_status ? <status status={ row['guest_status'] } statusModule='server'/> : '-'}
                 </div>,
               ]
             },
