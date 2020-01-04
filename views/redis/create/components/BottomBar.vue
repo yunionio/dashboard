@@ -112,9 +112,13 @@ export default {
     },
     priceTips () {
       if (this.rate) {
+        let month = parseFloat(this.rate.hour_price) * 24 * 30
+        if (this.values.billing_type === 'prepaid') {
+          month = this.rate.month_price
+        }
         return {
           day: (this.rate.hour_price * 24).toFixed(2),
-          month: (this.rate.month_price).toFixed(2),
+          month: month.toFixed(2),
         }
       }
       return null
