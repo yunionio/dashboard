@@ -433,6 +433,7 @@ export default {
       },
       isBonding: false,
       isShowFalseIcon: false,
+      count: 1,
     }
   },
   computed: {
@@ -714,65 +715,85 @@ export default {
         diskData: this.diskData,
         diskOptionsDate: this.diskOptionsDate,
         updateData: (data) => {
-          let arr = []
-          data.option.forEach(item => {
-            arr = arr.concat(item.split(':'))
-          })
-          let range = []
-          let k = 0
-          while (k < data.count) {
-            range.push(k)
-            k++
-          }
-          const isRepeat = this.diskOptionsDate.filter(item => item.diskInfo[1] === arr[1])
-          if (isRepeat.length > 0) {
-            const lastIndexRange = isRepeat[isRepeat.length - 1].range
-            let i = lastIndexRange[lastIndexRange.length - 1]
-            let j = 0
-            range = []
-            while (j < data.count) {
-              i++
-              range.push(i)
-              j++
-            }
-          }
-          let sizeNumber = 0
-          let n = 0
-          if (arr[3].substr(arr[3].length - 1, 1) === 'T') {
-            n = Number(arr[3].substr(0, arr[3].length - 1)) * 1024
-            sizeNumber = this.raidUtil(n, arr[4], data.count)
-          } else {
-            n = Number(arr[3].substr(0, arr[3].length - 1))
-            sizeNumber = this.raidUtil(n, arr[4], data.count)
-          }
-          let option = {
-            title: arr[3] + ' ' + arr[2] + ' X ' + data.count,
-            size: sizestr(sizeNumber, 'G', 1024),
-            chartData: {
-              columns: ['name', 'size'],
-              rows: [],
-            },
-            diskInfo: [arr[0], arr[1], arr[4]],
-            count: data.count,
-            type: arr[2],
-            range,
-          }
-          if (this.diskOptionsDate.length === 0) {
-            const defaultSize = 30
-            const imageDiskSize = this.selectedImage.min_disk / 1024
-            if (imageDiskSize >= defaultSize) {
-              sizeNumber = sizeNumber - imageDiskSize
-              option.chartData.rows.push({ 'name': '/(系统)', 'size': imageDiskSize })
-            } else {
-              sizeNumber = sizeNumber - defaultSize
-              option.chartData.rows.push({ 'name': '/', 'size': defaultSize })
-            }
-          }
-          option.remainder = sizeNumber
-          option.chartData.rows.push({ 'name': '剩余', 'size': sizeNumber })
-          this.diskOptionsDate.push(option)
+          this.addDiskCallBack(data)
         },
       })
+    },
+    // 添加硬盘配置后的回调
+    addDiskCallBack (data) {
+      let arr = []
+      data.option.forEach(item => {
+        arr = arr.concat(item.split(':'))
+      })
+      let range = []
+      if (data.option[2] === 'none') {
+        range = [0]
+      } else {
+        let k = 0
+        while (k < data.count) {
+          range.push(k)
+          k++
+        }
+      }
+      const isRepeat = this.diskOptionsDate.filter(item => item.diskInfo[1] === arr[1])
+      if (isRepeat.length > 0) {
+        if (data.option[2] === 'none') {
+          range = [this.count++]
+        } else {
+          const lastIndexRange = isRepeat[isRepeat.length - 1].range
+          let i = lastIndexRange[lastIndexRange.length - 1]
+          let j = 0
+          range = []
+          while (j < data.count) {
+            i++
+            range.push(i)
+            j++
+          }
+        }
+      }
+      let sizeNumber = 0
+      let n = 0
+      if (arr[3].substr(arr[3].length - 1, 1) === 'T') {
+        n = Number(arr[3].substr(0, arr[3].length - 1)) * 1024
+        sizeNumber = this.raidUtil(n, arr[4], data.count)
+      } else {
+        n = Number(arr[3].substr(0, arr[3].length - 1))
+        if (arr[4] === 'none') {
+          sizeNumber = n
+        } else {
+          sizeNumber = this.raidUtil(n, arr[4], data.count)
+        }
+      }
+      let option = {
+        title: arr[3] + ' ' + arr[2] + ' X ' + data.count,
+        size: sizestr(sizeNumber, 'G', 1024),
+        chartData: {
+          columns: ['name', 'size'],
+          rows: [],
+        },
+        diskInfo: [arr[0], arr[1], arr[4]],
+        count: data.count,
+        type: arr[2],
+        range,
+      }
+      if (this.diskOptionsDate.length === 0) {
+        const defaultSize = 30
+        const imageDiskSize = this.selectedImage.min_disk / 1024
+        if (imageDiskSize >= defaultSize) {
+          sizeNumber = sizeNumber - imageDiskSize
+          option.chartData.rows.push({ 'name': '/(系统)', 'size': imageDiskSize })
+        } else {
+          sizeNumber = sizeNumber - defaultSize
+          option.chartData.rows.push({ 'name': '/', 'size': defaultSize })
+        }
+      }
+      option.remainder = sizeNumber
+      option.chartData.rows.push({ 'name': '剩余', 'size': sizeNumber })
+      this.diskOptionsDate.push(option)
+      data.computeCount--
+      if (data.option[2] === 'none' && data.computeCount > 0) {
+        this.addDiskCallBack(data)
+      }
     },
     handleDiskItemRemove (idx) {
       this.diskOptionsDate.splice(idx, 1)

@@ -316,6 +316,7 @@ export default {
     },
     async handleConfirm () {
       const values = await this.validateForm()
+      values['computeCount'] = values.count
       this.params.updateData(values)
       this.cancelDialog()
     },
