@@ -442,18 +442,13 @@ export default {
       let n = 0
       if (arr[3].substr(arr[3].length - 1, 1) === 'T') {
         n = Number(arr[3].substr(0, arr[3].length - 1)) * 1024
-        if (arr[4] === 'none') {
-          sizeNumber = n
-        } else {
-          sizeNumber = this.raidUtil(n, arr[4], data.count)
-        }
       } else {
         n = Number(arr[3].substr(0, arr[3].length - 1))
-        if (arr[4] === 'none') {
-          sizeNumber = n
-        } else {
-          sizeNumber = this.raidUtil(n, arr[4], data.count)
-        }
+      }
+      if (arr[4] === 'none') {
+        sizeNumber = n
+      } else {
+        sizeNumber = this.raidUtil(n, arr[4], data.count)
       }
       let option = {
         title: arr[3] + ' ' + arr[2] + ' X ' + `${data.option[2] === 'none' ? 1 : data.count}`,

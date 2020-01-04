@@ -11,7 +11,7 @@
             </a-col>
             <a-col :span="2">
               <a-tooltip :title="coutTitle">
-                <a-input-number :min="mincount" :max="maxcount" v-decorator="decorators.count" />
+                <a-input-number :min="mincount" :max="maxcount" v-decorator="decorators.count" :step="step" />
               </a-tooltip>
             </a-col>
           </a-row>
@@ -237,6 +237,7 @@ export default {
       mincount: 0,
       diskData: JSON.parse(JSON.stringify(this.params.diskData)), // 拷贝参数
       diskDataKeys: [...Object.keys(this.params.diskData)],
+      step: 1,
     }
   },
   computed: {
@@ -302,6 +303,7 @@ export default {
     cascaderChange (value, selectedOptions) {
       this.maxcount = selectedOptions[2].props.max
       this.mincount = selectedOptions[2].props.min
+      this.step = selectedOptions[2].props.step
     },
     validateForm () {
       return new Promise((resolve, reject) => {
