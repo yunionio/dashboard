@@ -1,5 +1,7 @@
 import * as R from 'ramda'
+import { merge } from 'lodash'
 import i18n from '@/locales'
+const yaml = require('js-yaml')
 
 export const REGEXP = {
   IPv4: {
@@ -297,6 +299,28 @@ export const isWithinRange = (ip, lowerBound, upperBound) => {
   if (ips[0] >= ips[1] && ips[0] <= ips[2]) return true
 
   return false
+}
+
+/**
+ * @description 校验yaml格式是否正确
+ * @param {String} content
+ * @param {Object} opts
+*/
+export const validateYaml = (content, opts) => {
+  const DEFAULT_LINT_OPTION = {
+    schema: 'DEFAULT_SAFE_SCHEMA',
+  }
+  const options = merge({}, DEFAULT_LINT_OPTION, opts)
+  return new Promise((resolve, reject) => {
+    try {
+      yaml.safeLoad(content, {
+        schema: yaml[options.schema],
+      })
+      resolve()
+    } catch (e) {
+      reject(e)
+    }
+  })
 }
 
 export default validateForm

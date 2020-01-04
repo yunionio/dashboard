@@ -115,8 +115,8 @@ export default {
     success: ['ready'],
   },
   snapshotpolicy: {
-    success: ['ready', 'init'],
-    info: ['unknown'],
+    success: ['ready'],
+    info: ['unknown', 'init'],
     danger: ['delete_failed'],
   },
   snapshotpolcyCache: {
@@ -132,5 +132,15 @@ export default {
   globalVpc: {
     success: ['available'],
     info: ['unknown', 'init'],
+  },
+  blockstorage: {
+    info: ['offline', 'disabled'],
+    success: ['online', 'enabled'],
+    danger: ['failed', 'delete_failed'],
+  },
+  bucket: {
+    info: [],
+    success: ['ready'],
+    danger: ['create_fail', 'deleted', 'delete_fail'],
   },
 }
