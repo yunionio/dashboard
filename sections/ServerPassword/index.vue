@@ -130,9 +130,11 @@ export default {
             vmLoginType = keys[0]
           }
         }
-        this.form.fc.setFieldsValue({
-          [this.decorators.loginType[0]]: vmLoginType,
-        })
+        if (this.form && this.form.fc) {
+          this.form.fc.setFieldsValue({
+            [this.decorators.loginType[0]]: vmLoginType,
+          })
+        }
         this.vmLoginType = vmLoginType
       }
     },
