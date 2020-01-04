@@ -28,15 +28,17 @@ export default {
   mixins: [WindowsMixin],
   props: {
     id: String,
+    getParams: {
+      type: Object,
+    },
+    cloudEnv: String,
   },
   data () {
     return {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'eips',
-        getParams: {
-          details: true,
-        },
+        getParams: this.getParam,
         filterOptions: {
           name: {
             label: '名称',
@@ -299,9 +301,26 @@ export default {
       ],
     }
   },
+  watch: {
+    cloudEnv (val) {
+      this.$nextTick(() => {
+        this.list.fetchData(0)
+      })
+    },
+  },
   created () {
     this.initSidePageTab('eip-detail')
     this.list.fetchData()
+  },
+  methods: {
+    getParam () {
+      const ret = {
+        ...this.getParams,
+        details: true,
+      }
+      if (this.cloudEnv) ret.cloud_env = this.cloudEnv
+      return ret
+    },
   },
 }
 </script>

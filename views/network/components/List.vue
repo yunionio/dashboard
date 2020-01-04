@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import {
   getProjectTableColumn,
@@ -49,13 +50,14 @@ export default {
     getParams: {
       type: [Function, Object],
     },
+    cloudEnv: String,
   },
   data () {
     return {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'networks',
-        getParams: this.getParams,
+        getParams: this.getParam,
         filterOptions: {
           name: {
             label: '实例名称',
@@ -522,6 +524,13 @@ export default {
       return false
     },
   },
+  watch: {
+    cloudEnv (val) {
+      this.$nextTick(() => {
+        this.list.fetchData(0)
+      })
+    },
+  },
   created () {
     this.initSidePageTab('network-detail')
     this.list.fetchData()
@@ -588,6 +597,13 @@ export default {
       } else {
         return false
       }
+    },
+    getParam () {
+      const ret = {
+        ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
+      }
+      if (this.cloudEnv) ret.cloud_env = this.cloudEnv
+      return ret
     },
   },
 }

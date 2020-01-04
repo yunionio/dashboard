@@ -1,14 +1,15 @@
 <template>
   <div>
-    <page-header title="IP子网" />
+    <page-header title="IP子网" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
     <page-body>
-      <network-list :id="listId" />
+      <network-list :id="listId" :cloud-env="cloudEnv" />
     </page-body>
   </div>
 </template>
 
 <script>
 import NetworkList from './components/List'
+import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 
 export default {
   name: 'NetworkIndex',
@@ -18,6 +19,8 @@ export default {
   data () {
     return {
       listId: 'NetworkList',
+      cloudEnvOptions: getCloudEnvOptions('network_manage_brands'),
+      cloudEnv: '',
     }
   },
 }
