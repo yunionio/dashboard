@@ -337,8 +337,17 @@ export default {
         resource_type: 'shared',
         ...this.scopeParams,
       }
-      const { key } = this.form.fc.getFieldValue('zone')
-      this.zoneM.getSpecific({ id: key, spec: 'capability', params })
+      let id = this.cloudregionZoneParams.cloudregion
+      let resource = 'cloudregions'
+      if (this.cloudregionZoneParams.zone) {
+        id = this.cloudregionZoneParams.zone
+        resource = 'zones'
+      }
+      const capabilityParams = { id, spec: 'capability', params }
+      if (!id) return
+      if (R.equals(this.capabilityParams, capabilityParams)) return // 和已有的参数一样则不发请求
+      this.capabilityParams = capabilityParams
+      new this.$Manager(resource).getSpecific(this.capabilityParams)
         .then(({ data }) => {
           this.form.fi.capability = {
             ...data,

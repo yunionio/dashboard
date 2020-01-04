@@ -373,17 +373,17 @@ export default {
         ...this.scopeParams,
         resource_type: this.form.fc.getFieldValue('resourceType'),
       }
-      const { sku } = this.form.fd
-      if (!R.is(Object, sku)) return
-      const { zone_id: zoneId, cloudregion_id: cloudregionId } = sku
-      let id = ''
-      if (!zoneId) {
-        id = cloudregionId
-      } else {
-        id = zoneId
+      let id = this.cloudregionZoneParams.cloudregion
+      let resource = 'cloudregions'
+      if (this.cloudregionZoneParams.zone) {
+        id = this.cloudregionZoneParams.zone
+        resource = 'zones'
       }
+      const capabilityParams = { id, spec: 'capability', params }
       if (!id) return
-      this.zoneM.getSpecific({ id, spec: 'capability', params })
+      if (R.equals(this.capabilityParams, capabilityParams)) return // 和已有的参数一样则不发请求
+      this.capabilityParams = capabilityParams
+      new this.$Manager(resource).getSpecific(this.capabilityParams)
         .then(({ data }) => {
           this.form.fi.capability = data
         })

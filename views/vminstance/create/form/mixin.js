@@ -91,6 +91,7 @@ export default {
         schedtag: { resource_type: 'networks', scope: this.$store.getters.scope },
         policySchedtag: { limit: 0, 'filter.0': 'resource_type.equals(hosts)', scope: this.$store.getters.scope },
       },
+      capabilityParams: {}, // 防止 capability 反复调用，这里对当前的接口参数做记录
     }
   },
   provide () {
