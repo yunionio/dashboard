@@ -6,7 +6,7 @@
       :form="form.fc">
       <a-divider orientation="left">基础配置</a-divider>
       <a-form-item label="指定项目" class="mb-0" v-bind="formItemLayout">
-        <domain-project :labelInValue="false" :fc="form.fc" :form-layout="formLayout"
+        <domain-project :labelInValue="false" :fc="form.fc" :form-layout="formItemLayout"
         :decorators="{ project: project, domain: domain }" />
       </a-form-item>
       <a-form-item label="名称" v-bind="formItemLayout">
