@@ -69,8 +69,11 @@ export default {
           title: '时间间隔',
           width: 100,
           slots: {
-            default: ({ row }) => {
-              return row['hour'] + '小时'
+            default: ({ row: { interval } }) => {
+              if (interval) {
+                return `${(parseFloat(interval) / 60 / 60)}小时`
+              }
+              return '-'
             },
           },
         },
