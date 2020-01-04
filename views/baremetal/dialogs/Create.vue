@@ -254,7 +254,7 @@ export default {
       const level1 = this.diskData[this.diskDataKeys[0]]
       this.params.diskOptionsDate.forEach(item => {
         level1[item.diskInfo[1]].forEach(item2 => {
-          if (item2.type === item.type && sizestr(item2.size, 'M', 1024) === item.size) {
+          if (item2.type === item.type && sizestr(item2.size, 'M', 1024) === item.unitSize) {
             item2.count = item2.count - item.count
           }
         })

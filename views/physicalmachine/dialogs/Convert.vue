@@ -453,6 +453,7 @@ export default {
       let option = {
         title: arr[3] + ' ' + arr[2] + ' X ' + `${data.option[2] === 'none' ? 1 : data.count}`,
         size: sizestr(sizeNumber, 'G', 1024),
+        unitSize: sizestr(n, 'G', 1024),
         chartData: {
           columns: ['name', 'size'],
           rows: [],
