@@ -85,7 +85,7 @@ export default {
         format: [
           'format',
           {
-            initialValue: this.params.selectedArea.format ? this.params.selectedArea.format : '',
+            initialValue: this.params.title === '更新分区' ? this.params.selectedArea.format : 'ext4',
             rules: [
               { required: true, message: '请选择分区格式' },
             ],
