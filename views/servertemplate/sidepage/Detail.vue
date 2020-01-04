@@ -7,6 +7,7 @@
 
 <script>
 import * as R from 'ramda'
+import { LOGIN_TYPES_MAP } from '@Compute/constants'
 import { STORAGE_TYPES } from '@/constants/compute'
 import { HYPERVISORS_MAP } from '@/constants'
 import { sizestrWithUnit } from '@/utils/utils'
@@ -104,8 +105,14 @@ export default {
               },
             },
             {
-              field: 'content.keypair',
+              field: 'config_info.reset_password',
               title: '管理员密码',
+              formatter: ({ row }) => {
+                if (row.config_info.reset_password) {
+                  return LOGIN_TYPES_MAP.image.label
+                }
+                return LOGIN_TYPES_MAP.random.label
+              },
             },
             {
               field: 'config_info.network',
