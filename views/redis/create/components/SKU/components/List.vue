@@ -103,7 +103,7 @@ export default {
                 const rate = row.rate
                 // let unit = '小时'
                 return [
-                  <span style="color: rgb(230, 139, 80);">{ rate.hour_price }</span>,
+                  <span style="color: rgb(230, 139, 80);">{ rate.hour_price.toFixed(2) }</span>,
                   <span> 元 / 小时</span>,
                 ]
               }
