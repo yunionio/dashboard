@@ -5,10 +5,10 @@
       <a-form
         :form="form.fc">
         <a-form-item label="挂载点" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.name" />
+          <a-input v-decorator="decorators.name" :disabled="isDisabled" />
         </a-form-item>
         <a-form-item label="分区格式" v-bind="formItemLayout">
-          <a-select v-decorator="decorators.format" placeholder="请选择分区格式">
+          <a-select v-decorator="decorators.format" placeholder="请选择分区格式" :disabled="isDisabled">
             <a-select-option value="ext4">ext4</a-select-option>
             <a-select-option value="xfs">xfs</a-select-option>
             <a-select-option value="ntfs">ntfs</a-select-option>
@@ -125,6 +125,12 @@ export default {
         return `最小:1GB 最大:${this.params.item.remainder + this.params.selectedArea.size}GB`
       }
       return `最小:1GB 最大:${this.params.item.remainder}GB`
+    },
+    isDisabled () {
+      if (this.params.title === '更新分区' && this.params.selectedArea.name === '/(系统)') {
+        return true
+      }
+      return false
     },
   },
   methods: {
