@@ -305,7 +305,14 @@ export default {
                     list: this.list,
                   })
                 },
-
+                meta: (row) => {
+                  const isOneCloud = this.list.selectedItems.some(item => item.brand === 'OneCloud')
+                  console.log(isOneCloud)
+                  return {
+                    validate: isOneCloud,
+                    tooltip: !isOneCloud && '只有OneCloud主机支持此操作',
+                  }
+                },
               },
               {
                 label: '重置密码',
@@ -915,6 +922,13 @@ export default {
                         columns: this.columns,
                         list: this.list,
                       })
+                    },
+                    meta: (row) => {
+                      const isOneCloud = row.brand === 'OneCloud'
+                      return {
+                        validate: isOneCloud,
+                        tooltip: !isOneCloud && '只有OneCloud主机支持此操作',
+                      }
                     },
                   },
                   {
