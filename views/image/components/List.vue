@@ -168,7 +168,7 @@ export default {
           },
           meta: () => ({
             buttonType: 'primary',
-            validate: !this.$appConfig.isPrivate,
+            validate: !!this.$appConfig.isPrivate,
           }),
         },
         {
@@ -181,7 +181,7 @@ export default {
             })
           },
           meta: () => ({
-            validate: !this.$appConfig.isPrivate,
+            validate: !!this.$appConfig.isPrivate,
           }),
         },
         {
