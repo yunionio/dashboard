@@ -1,5 +1,5 @@
 <template>
-  <div class="level-1-menu">
+  <scrollbar class="level-1-menu">
     <div
       v-for="(item, idx) of menus"
       :key="idx"
@@ -13,7 +13,7 @@
       </div>
       <div class="bottom-line" v-if="item.meta.bottomLine" />
     </div>
-  </div>
+  </scrollbar>
 </template>
 
 <script>
@@ -116,7 +116,6 @@ export default {
   overflow: hidden;
   border-right: 1px solid #e6e9f0;
   transition: all .15s ease;
-  overflow-y: auto;
 }
 .level-1-item-wrap {
   cursor: pointer;
