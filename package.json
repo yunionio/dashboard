@@ -25,6 +25,7 @@
     "numerify": "^1.2.9",
     "qs": "^6.8.0",
     "ramda": "^0.26.1",
+    "resize-observer-polyfill": "^1.5.1",
     "v-charts": "^1.19.0",
     "vue": "^2.6.10",
     "vue-grid-layout": "^2.3.7",
