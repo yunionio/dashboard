@@ -123,8 +123,7 @@ export default {
               if (row.ipmi_ip) {
                 cellWrap.push(
                   <div class="d-flex">
-                   带外IP：
-                    <list-body-cell-wrap row={row} field="ipmi_ip" copy />
+                    带外IP：<list-body-cell-wrap row={row} field="ipmi_ip" copy />
                   </div>
                 )
               }
