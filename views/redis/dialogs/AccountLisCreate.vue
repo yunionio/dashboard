@@ -13,7 +13,7 @@
               </a-radio-group>
             </a-form-item>
             <a-form-item label="密码" v-bind="formItemLayout">
-              <server-password :loginTypes="['random', 'password']" :decorator="decorators.loginConfig" />
+              <server-password :loginTypes="loginTypes" :decorator="decorators.loginConfig" :form="form" />
             </a-form-item>
         </a-form>
          <div slot="footer">
@@ -40,6 +40,7 @@ export default {
   data () {
     return {
       loading: false,
+      loginTypes: ['random', 'password'],
       privileges: ACCOUNT_PRIVILEGES,
       form: {
         fc: this.$form.createForm(this),
