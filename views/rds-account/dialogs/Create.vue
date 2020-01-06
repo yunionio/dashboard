@@ -9,7 +9,7 @@
               <account-privileges :rdsItem="params.rdsItem" />
             </a-form-item>
             <a-form-item label="密码" v-bind="formItemLayout">
-              <server-password :loginTypes="['random', 'password']" :decorator="decorators.loginConfig" />
+              <server-password :loginTypes="loginTypes" :decorator="decorators.loginConfig" :form="form" />
             </a-form-item>
         </a-form>
          <div slot="footer">
@@ -37,6 +37,7 @@ export default {
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
+      loginTypes: ['random', 'password'],
       loading: false,
       privileges: RDS_ACCOUNT_PRIVILEGES,
       form: {
