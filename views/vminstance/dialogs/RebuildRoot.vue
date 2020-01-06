@@ -48,7 +48,7 @@ import WindowsMixin from '@/mixins/windows'
 import { HYPERVISORS_MAP } from '@/constants'
 import { Manager } from '@/utils/manager'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
-import { isRequired } from '@/utils/validate'
+import { isRequired, passwordValidator } from '@/utils/validate'
 import { findPlatform } from '@/utils/common/hypervisor'
 
 export default {
@@ -124,25 +124,6 @@ export default {
           }
         }
       }
-      const validatePass = (rule, value, callback) => {
-        value = value.trim()
-        const ALL_DIGITS = /\d+/g
-        const ALL_LETTERS = /[a-z]/g
-        const ALL_UPPERS = /[A-Z]/g
-        /* eslint-disable no-useless-escape */
-        const ALL_PUNC = '~`!@#$%^&*()-_=+[]{}|;\':\",./<>?'.split('')
-        let spec = false
-        ALL_PUNC.forEach(v => {
-          if (value.includes(v)) {
-            spec = true
-          }
-        })
-        if (ALL_DIGITS.test(value) && ALL_LETTERS.test(value) && ALL_UPPERS.test(value) && spec && value.charAt(0) !== '/' && value.length >= 12 && value.length <= 30) {
-          callback()
-        } else {
-          callback(new Error('12~30个字符，必须同时包含三项（大小写字母、数字、特殊符号 ~`!@#$%^&*()-_=+[]{}|:\':\\",./<>?中至少一个），不能以“/”开头'))
-        }
-      }
       return {
         imageOS: {
           os: [
@@ -192,7 +173,7 @@ export default {
               initialValue: '',
               rules: [
                 { required: true, message: '请输入密码' },
-                { validator: validatePass, trigger: 'blur' },
+                { validator: passwordValidator, trigger: 'blur' },
               ],
             },
           ],
