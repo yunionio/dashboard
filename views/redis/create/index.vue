@@ -21,7 +21,7 @@
       <s-k-u ref="REF_SKU" />
       <a-divider orientation="left">高级配置</a-divider>
       <a-form-item label="管理员密码" v-bind="formItemLayout">
-        <server-password :loginTypes="['random', 'password']" :decorator="decorators.loginConfig" />
+        <server-password :loginTypes="loginTypes" :decorator="decorators.loginConfig" :form="form" />
       </a-form-item>
       <a-form-item label="VPC" v-bind="formItemLayout">
         <item-vpc-opts ref="REF_VPC" :decorators="decorators.vpcNetwork" />
@@ -63,6 +63,7 @@ export default {
   },
   data () {
     return {
+      loginTypes: ['random', 'password'],
       formItemLayout: {
         wrapperCol: { span: CreateServerForm.wrapperCol },
         labelCol: { span: CreateServerForm.labelCol },
