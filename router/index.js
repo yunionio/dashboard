@@ -7,6 +7,7 @@ import FlexNetwork from '@Network/views/flex-network'
 import Wire from '@Network/views/wire'
 import GolbalVpc from '@Network/views/global-vpc'
 import RouteTableList from '@Network/views/route-table'
+import NatList from '@Network/views/nats'
 
 export default {
   index: 3,
@@ -32,6 +33,21 @@ export default {
               name: 'RouteTableList',
               path: '',
               component: RouteTableList,
+            },
+          ],
+        },
+        {
+          path: '/nat',
+          meta: {
+            label: 'NAT网关',
+            permission: 'natgateways_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'NatList',
+              path: '',
+              component: NatList,
             },
           ],
         },
