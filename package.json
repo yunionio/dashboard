@@ -7,7 +7,7 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit",
-    "setup:dev": "export DEV_SETUP=true && sh ./setup.dev.sh"
+    "setup:dev": "export DEV_SETUP=true && sh ./scripts/setup.dev.sh"
   },
   "dependencies": {
     "animejs": "^3.1.0",
