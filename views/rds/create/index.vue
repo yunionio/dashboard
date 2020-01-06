@@ -22,8 +22,8 @@
       <s-k-u ref="SKU" />
       <a-divider orientation="left">高级配置</a-divider>
        <a-form-item label="管理员密码" v-bind="formItemLayout">
-         <server-password :loginTypes="['random', 'password']" :decorator="decorators.loginConfig" />
-       </a-form-item>
+         <server-password :loginTypes="loginTypes" :decorator="decorators.loginConfig" :form="form" />
+        </a-form-item>
       <network-selects lable="VPC" ref="NETWORK" :vpcParams="getVpcParams" :networkParams="getNetworkParams" v-bind="formItemLayout" />
       <!-- 选择安全组 -->
       <a-form-item v-if="form.getFieldValue('provider') === 'Huawei'" label="安全组" v-bind="formItemLayout">
@@ -64,6 +64,7 @@ export default {
   data () {
     const { projectId, projectDomainId } = this.$store.getters.userInfo
     return {
+      loginTypes: ['random', 'password'],
       defaultProjectDomain: {
         project: [
           'project',
