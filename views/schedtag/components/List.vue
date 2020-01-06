@@ -12,7 +12,7 @@ import { mapGetters } from 'vuex'
 import { STRATEGY_OPT, STRATEGY_CN } from '@Cloudenv/constants/sched'
 import WindowsMixin from '@/mixins/windows'
 import { getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
-const RES_TYPES = { hosts: '宿主机|物理机', storages: '存储', networks: '网络' }
+const RES_TYPES = { hosts: '宿主机、物理机', storages: '存储', networks: '网络' }
 
 export default {
   name: 'SchedtagList',

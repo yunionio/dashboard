@@ -69,7 +69,7 @@ export default {
         ],
       },
       resourceTypeOpts: [
-        { key: 'hosts', label: '宿主机|物理机' },
+        { key: 'hosts', label: '宿主机、物理机' },
         { key: 'storages', label: '存储' },
         { key: 'networks', label: '网络' },
       ],
