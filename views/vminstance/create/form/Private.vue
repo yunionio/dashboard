@@ -207,14 +207,11 @@ export default {
       this.$nextTick(() => {
         const formValue = this.form.fc.getFieldsValue()
         const newField = resolveValueChangeField(changedFields)
-        const keys = Object.keys(newField)
-        const { zone } = newField
-        if (keys.includes('zone')) {
-          if (!R.equals(zone, this.form.fd.zone)) { // 可用区变化
-            this.fetchCapability()
-          }
-        }
         this._setNewFieldToFd(newField, formValue)
+        const keys = Object.keys(newField)
+        if (keys.includes('zone')) {
+          this.fetchCapability()
+        }
       })
     },
     fetchCapability () {

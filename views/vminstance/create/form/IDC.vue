@@ -315,19 +315,14 @@ export default {
       this.$nextTick(() => {
         const formValue = this.form.fc.getFieldsValue()
         const newField = resolveValueChangeField(changedFields)
+        this._setNewFieldToFd(newField, formValue)
         const keys = Object.keys(newField)
-        const { zone, cloudregion } = newField
-        if (keys.includes('zone')) {
-          if (!R.equals(zone, this.form.fd.zone)) { // 可用区变化
-            this.fetchCapability()
-          }
+        if (keys.includes('zone') || keys.includes('cloudregion')) {
+          this.fetchCapability()
         }
         if (keys.includes('cloudregion')) {
-          if (!R.equals(cloudregion, this.form.fd.cloudregion)) { // 区域变化
-            this.$nextTick(this.fetchInstanceSpecs)
-          }
+          this.$nextTick(this.fetchInstanceSpecs)
         }
-        this._setNewFieldToFd(newField, formValue)
       })
     },
     fetchCapability () {
@@ -358,6 +353,7 @@ export default {
         })
     },
     fetchInstanceSpecs () {
+      if (!this.instanceSpecParmas.cloudregion) return
       this.serverskusM.get({ id: 'instance-specs', params: this.instanceSpecParmas })
         .then(({ data }) => {
           this.form.fi.cpuMem = data
