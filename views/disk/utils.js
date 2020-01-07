@@ -54,12 +54,6 @@ export const diskResizeConfig = {
         tooltip: `${PROVIDER_MAP[provider].label}系统盘不支持开机扩容`,
       }
     }
-    if (obj.guest_status !== 'running' && obj.disk_type === diskType) {
-      return {
-        validate: false,
-        tooltip: `${PROVIDER_MAP[provider].label}数据盘支持开机扩容`,
-      }
-    }
     return {
       validate: true,
       tooltip: '',
