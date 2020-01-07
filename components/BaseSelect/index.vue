@@ -3,7 +3,7 @@
     <a-select
       class="base-select"
       v-bind="{ ...selectProps, ...filterOpts }"
-      :style="{ width: (showSync ? '95%' : '100%') }"
+      :style="{ width: (showSync ? 'calc(100% - 22px)' : '100%'), 'min-width': minWidth }"
       :value="value"
       @change="change"
       @search="loadOpts"
@@ -105,6 +105,10 @@ export default {
     showSync: {
       type: Boolean,
       default: false,
+    },
+    minWidth: {
+      type: String,
+      default: '200px',
     },
   },
   data () {

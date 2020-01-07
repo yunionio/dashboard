@@ -84,6 +84,12 @@ export default {
         delete params.scope
         delete params.domain_id
       }
+      if (this.form) {
+        this.form.fc.setFieldsValue({
+          cloudregion: { key: '', label: '' },
+          zone: { key: '', label: '' },
+        })
+      }
       this.cloudregionsM.list({ params })
         .then(({ data: { data = [] } }) => {
           this.regionOpts = data
@@ -103,9 +109,10 @@ export default {
       // 清空可用区
       this.zoneOpts = []
       this.emit({}, 'zone')
-      this.form.fc.setFieldsValue({
+      this.form && this.form.fc.setFieldsValue({
         zone: { key: '', label: '' },
       })
+      if (!params.cloudregion_id) return
       this.zonesM.list({ params })
         .then(({ data: { data = [] } }) => {
           this.zoneOpts = data
