@@ -26,14 +26,12 @@
             <div class="text-truncate">费用估算：</div>
             <div class="ml-2 prices" v-if="rate">
               <div class="hour text-truncate">
-                <template v-if="rate.hour_price">
-                  <m-animated-number :value="rate.hour_price" :formatValue="formatToPrice" />
+                <template v-if="price">
+                  <m-animated-number :value="price" :formatValue="formatToPrice" />
                 </template>
-                <template v-else>---</template>
               </div>
               <div class="tips text-truncate">
-                <template v-if="priceTips">(合&yen;{{ priceTips.day }}/天 &yen;{{ priceTips.month }}/月)</template>
-                <template v-else>---</template>
+                <span v-html="priceTips" />
               </div>
             </div>
           </div>
@@ -66,7 +64,7 @@
 <script>
 // import * as R from 'ramda'
 // import _ from 'lodash'
-import { ENGINE_ARCH } from '@DB/views/redis/constants'
+import { ENGINE_ARCH, BILL_TYPES_MAP } from '@DB/views/redis/constants'
 import { sizestrWithUnit } from '@/utils/utils'
 import { Manager } from '@/utils/manager'
 
@@ -106,22 +104,39 @@ export default {
     sku  () {
       return this.values.sku || null
     },
+    isPackage () {
+      return this.values.billing_type === BILL_TYPES_MAP.prepaid.key
+    },
     rate () {
       const { sku = {} } = this.values
-      return sku.rate
-    },
-    priceTips () {
-      if (this.rate) {
-        let month = parseFloat(this.rate.hour_price) * 24 * 30
-        if (this.values.billing_type === 'prepaid') {
-          month = this.rate.month_price
-        }
-        return {
-          day: (this.rate.hour_price * 24).toFixed(2),
-          month: month.toFixed(2),
-        }
+      if (sku && sku.rate) {
+        return sku.rate
       }
       return null
+    },
+    price () {
+      const { count } = this.values
+      if (this.rate && count) {
+        if (this.isPackage) {
+          return this.rate.month_price
+        }
+        return this.rate.hour_price
+      }
+      return null
+    },
+    priceTips () {
+      if (this.price) {
+        if (this.isPackage) {
+          const _day = (this.price / 30).toFixed(2)
+          const _hour = (_day / 24).toFixed(2)
+          return `(合¥${_day}/天  ¥${_hour}/小时)`
+        } else {
+          const _day = (this.price * 24).toFixed(2)
+          const _month = (this.price * 24 * 30).toFixed(2)
+          return `(合¥${_day}/天 ¥${_month}/月)`
+        }
+      }
+      return '--'
     },
   },
   methods: {
@@ -134,10 +149,7 @@ export default {
     },
     formatToPrice (val) {
       let ret = `¥ ${val.toFixed(2)}`
-      if (this.isPackage) {
-        return ret
-      }
-      ret += ' / 时'
+      ret += this.isPackage ? '/ 月' : ' / 时'
       return ret
     },
     formatParams () {
