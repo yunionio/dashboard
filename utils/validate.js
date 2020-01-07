@@ -210,7 +210,7 @@ export const passwordValidator = (rule, value, _callback) => {
     return true
   }
   if (ALL_DIGITS.test(value) && ALL_LETTERS.test(value) && ALL_UPPERS.test(value) && spec && value.charAt(0) !== '/' && value.length >= 12 && value.length <= 30) {
-    if (!sensitiveValidator()) {
+    if (sensitiveValidator()) {
       _callback()
     }
   } else {
