@@ -214,8 +214,7 @@ export default {
   },
   computed: {
     groupActions () {
-      // eslint-disable-next-line no-useless-call
-      const _frontGroupActions = this.frontGroupActions ? this.frontGroupActions.call(this) || [] : []
+      const _frontGroupActions = this.frontGroupActions ? this.frontGroupActions.bind(this)() || [] : []
       return _frontGroupActions.concat(
         [
           {
@@ -319,8 +318,7 @@ export default {
       )
     },
     singleActions () {
-      // eslint-disable-next-line no-useless-call
-      const _frontSingleActions = this.frontSingleActions ? this.frontSingleActions.call(this) || [] : []
+      const _frontSingleActions = this.frontSingleActions ? this.frontSingleActions.bind(this)() || [] : []
       return _frontSingleActions.concat([
         {
           label: '远程终端',
