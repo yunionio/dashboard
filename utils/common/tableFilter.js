@@ -128,8 +128,9 @@ export function getOsTypeFilter () {
 }
 
 export function getEnabledFilter (params = {}) {
+  const { label = '启用状态' } = params
   return {
-    label: '启用状态',
+    label,
     dropdown: true,
     items: [
       { label: '启用', key: true },
