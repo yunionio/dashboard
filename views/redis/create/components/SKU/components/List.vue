@@ -15,7 +15,7 @@
 
 <script>
 import * as R from 'ramda'
-import { NODE_TYPE } from '@DB/views/redis/constants'
+import { NODE_TYPE, BILL_TYPES_MAP } from '@DB/views/redis/constants'
 import PageListEmpty from '@/components/PageList/Loader'
 import { sizestr } from '@/utils/utils'
 
@@ -37,6 +37,7 @@ export default {
   data () {
     return {
       loading: false,
+      rateLoading: false,
       skuList: [],
       skuDecorator: [
         'sku',
@@ -96,22 +97,27 @@ export default {
           title: '价格',
           sortable: true,
           slots: {
-            default: ({ row }) => {
-              // const { getFieldsValue } = this.form
-              // const { billing_type, duration } = getFieldsValue(['billing_type', 'duration'])
-              if (row.rate) {
-                const rate = row.rate
-                // let unit = '小时'
+            default: ({ row: { rate } }) => {
+              if (this.rateLoading) {
+                return [<a-icon type="loading" />]
+              }
+              const isPackage = this.form.getFieldValue('billing_type') === BILL_TYPES_MAP.prepaid.key
+              if (rate) {
+                let price = rate.hour_price
+                let unit = '小时'
+                if (isPackage) {
+                  price = rate.month_price
+                  unit = '月'
+                }
                 return [
-                  <span style="color: rgb(230, 139, 80);">{ rate.hour_price.toFixed(2) }</span>,
-                  <span> 元 / 小时</span>,
+                  <span style="color: rgb(230, 139, 80);">{ price.toFixed(2) }</span>,
+                  <span> 元 / {unit}</span>,
                 ]
               }
               return '-'
             },
           },
         },
-        { field: 'description', title: '备注' },
       ]
       return column
     },
@@ -161,6 +167,7 @@ export default {
       const param_keys = params.join('$')
       try {
         const rateData = {}
+        this.rateLoading = true
         const { data = {} } = await managerRates.list({ params: {
           param_keys,
         } })
@@ -177,6 +184,8 @@ export default {
         })
       } catch (err) {
         throw err
+      } finally {
+        this.rateLoading = false
       }
     },
     async fetchSkus (paramKeys) {
