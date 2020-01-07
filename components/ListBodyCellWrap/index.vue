@@ -127,7 +127,9 @@ export default {
         return this.formRules
       }
       if (this.field === 'description') { // 备注不校验规则
-        return []
+        return [
+          { required: true, message: '请输入备注', transform: val => val.trim() },
+        ]
       }
       return null
     },
