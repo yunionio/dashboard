@@ -431,6 +431,16 @@
       "deleting": "删除中",
       "deleted": "已删除",
       "delete_fail": "删除失败"
+    },
+    "nat": {
+      "available": "可用",
+      "allocate": "创建中",
+      "deploying": "配置中",
+      "unknown": "未知状态",
+      "failed": "创建失败",
+      "deleted": "删除",
+      "deleting": "删除中",
+      "delete_failed": "删除失败"
     }
   },
   "skuCategoryOptions": {

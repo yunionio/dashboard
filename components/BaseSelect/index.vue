@@ -3,6 +3,7 @@
     <a-select
       class="base-select"
       v-bind="{ ...selectProps, ...filterOpts }"
+      :style="{ width: (showSync ? '95%' : '100%') }"
       :value="value"
       @change="change"
       @search="loadOpts"

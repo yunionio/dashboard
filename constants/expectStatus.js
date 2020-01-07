@@ -143,4 +143,9 @@ export default {
     success: ['ready'],
     danger: ['create_fail', 'deleted', 'delete_fail'],
   },
+  nat: {
+    info: [],
+    success: ['available'],
+    danger: ['create_fail', 'failed', 'delete_failed'],
+  },
 }
