@@ -80,7 +80,7 @@ export default {
             managerArgs: {
               data: {
                 disable_delete: isDelete,
-                protected: isDelete,
+                protected: !isDelete,
               },
             },
           })
@@ -88,7 +88,7 @@ export default {
           const ids = this.params.data.map(({ id }) => id)
           await this.params.list.batchUpdate(ids, {
             disable_delete: isDelete,
-            protected: isDelete,
+            protected: !isDelete,
           })
         }
         this.cancelDialog()
