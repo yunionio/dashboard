@@ -299,6 +299,16 @@ export default {
                   },
                 },
                 {
+                  label: '调整超售比',
+                  action: () => {
+                    this.createDialog('HostAdjustOversoldRatioDialog', {
+                      data: this.list.selectedItems,
+                      columns: this.columns,
+                      list: this.list,
+                    })
+                  },
+                },
+                {
                   label: '删除',
                   permission: 'hosts_delete',
                   action: () => {
