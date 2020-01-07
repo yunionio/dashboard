@@ -11,7 +11,7 @@
         <a-input-number
           v-decorator="decorator.size"
           :step="10"
-          :min="min"
+          :min="minSize"
           :max="max"
           :formatter="format"
           :parser="format"
@@ -27,6 +27,7 @@
           v-decorator="decorator.snapshot"
           resource="snapshots"
           :params="snapshotsParams"
+          :item.sync="snapshotObj"
           :select-props="{ placeholder: '请选择快照' }" />
       </a-form-item>
     </template>
@@ -45,6 +46,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import { HYPERVISORS_MAP } from '@/constants'
 import SchedtagPolicy from '@/sections/SchedtagPolicy'
 import DiskMountpoint from '@/sections/DiskMountpoint'
@@ -110,11 +112,19 @@ export default {
       showSchedtag: false,
       showMountpoint: false,
       showSnapshot: false,
+      snapshotObj: {},
     }
   },
   computed: {
     tooltip () {
-      return `容量范围 ${this.min} ~ ${this.max}GB`
+      return `容量范围 ${this.minSize} ~ ${this.max}GB`
+    },
+    minSize () {
+      let snapshotSize = this.snapshotObj.size || 0
+      if (R.is(Number, snapshotSize)) {
+        snapshotSize = snapshotSize / 1024
+      }
+      return Math.max(this.min, snapshotSize)
     },
   },
   methods: {
