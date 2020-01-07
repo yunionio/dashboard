@@ -24,13 +24,14 @@
       <a-form-item v-bind="formItemLayout" label="操作系统" extra="操作系统会根据选择的虚拟化平台和可用区域的变化而变化，公共镜像的维护请联系管理员">
         <os-select
           type="baremetal"
+          :is-support-iso="isSupportIso"
           hypervisor="baremetal"
           :image-params="imageParams"
           :decorator="decorators.imageOS" />
       </a-form-item>
       <a-form-item v-bind="formItemLayout" label="规格">
-        <a-select v-decorator="decorators.specifications" :disabled="isInstallOperationSystem">
-          <a-select-option v-for="i in specOptions" :key="i.value" :value="i.value" @change="specificationChange">
+        <a-select v-decorator="decorators.specifications" :disabled="isInstallOperationSystem" @change="specificationChange">
+          <a-select-option v-for="i in specOptions" :key="i.value" :value="i.value">
             {{i.text}}
           </a-select-option>
         </a-select>
@@ -95,7 +96,9 @@
           :disabled-host="policyHostDisabled"
           :policy-host-params="params.policyHostParams"
           :decorators="decorators.schedPolicy"
-          :policy-schedtag-params="params.policySchedtag" />
+          :policy-schedtag-params="params.policySchedtag"
+          @change="hostChange"
+          :hostData="filterHostData" />
       </a-form-item>
       <a-form-item label="备注" v-bind="formItemLayout" v-if="isInstallOperationSystem">
         <a-input v-decorator="decorators.description" />
@@ -434,6 +437,9 @@ export default {
       isBonding: false,
       isShowFalseIcon: false,
       count: 1,
+      hostData: [],
+      filterHostData: [],
+      isSupportIso: false,
     }
   },
   computed: {
@@ -530,13 +536,14 @@ export default {
     this.$bus.$on('VMInstanceCreateUpdateFi', ({ imageMsg }) => {
       this.selectedImage = imageMsg
     })
-    // this.fetchHosts()
     if (this.$route.query.id) {
       this._fetchSpec()
+      this.hostDetail()
     }
     if (this.$route.query.zone_id) {
       this.capability(this.$route.query.zone_id)
     }
+    this.loadHostOpt()
   },
   methods: {
     // 过滤network数据
@@ -544,8 +551,12 @@ export default {
       data = data.filter((d) => d.server_type !== 'ipmi' && d.server_type !== 'pxe')
       return data
     },
+    // 指定物理机改变
+    hostChange (e) {
+      this.hostDetail(e)
+    },
     // 规格变动
-    specificationChange (value, option) {
+    specificationChange (value) {
       let str = value.replace(/\//g, ',')
       let arr = str.split(',')
       let obj = {}
@@ -555,6 +566,37 @@ export default {
       }
       this.selectedSpecItem = obj
       this.diskData = this.form.fi.capability.specs.hosts[value].disk
+      // 过滤包含此规格的物理机
+      this.hostResourceMapper(this.hostData)
+    },
+    // 获取物理机数据
+    loadHostOpt () {
+      let manager = new this.$Manager('hosts')
+      let params = { ...this.params.policyHostParams }
+      manager.list({ params })
+        .then(({ data: { data = [] } }) => {
+          this.hostData = data
+          this.filterHostData = data
+        })
+        .catch((error) => {
+          throw error
+        })
+    },
+    // 如果是安装操作系统--查询物理机详情
+    hostDetail (hostId) {
+      const hostManager = new this.$Manager('hosts')
+      hostManager.get({ id: this.$route.query.id || hostId })
+        .then(({ data }) => {
+          if (data.ipmi_info && data.ipmi_info.cdrom_boot === 'true') {
+            this.isSupportIso = true
+          } else {
+            this.isSupportIso = false
+          }
+        })
+    },
+    // 如果有指定物理机的情况下过滤物理机数据
+    hostResourceMapper (data) {
+      this.filterHostData = data.filter((d) => R.equals(d.spec.disk, this.diskData))
     },
     // 安装操作系统下获取规格
     _fetchSpec () {
@@ -591,17 +633,24 @@ export default {
       }).then(({ data = {} }) => {
         data.hypervisors = Array.from(new Set(data.hypervisors))
         let specs = data.specs.hosts
-        this.form.fi.capability = {
-          ...data,
-        }
-        if (!R.isNil(specs) && !R.isEmpty(specs)) {
-          this._loadSpecificationOptions(specs)
+        // 如果是安装操作系统，只需要拿取public_network_count
+        if (this.isInstallOperationSystem) {
+          this.form.fi.capability = {
+            ...data.public_network_count,
+          }
         } else {
-          this.specOptions = []
-          // 清空选中规格
-          this.$nextTick(() => {
-            this.form.fc.setFieldsValue({ specifications: '' })
-          })
+          this.form.fi.capability = {
+            ...data,
+          }
+          if (!R.isNil(specs) && !R.isEmpty(specs)) {
+            this._loadSpecificationOptions(specs)
+          } else {
+            this.specOptions = []
+            // 清空选中规格
+            this.$nextTick(() => {
+              this.form.fc.setFieldsValue({ specifications: '' })
+            })
+          }
         }
       })
     },
@@ -632,6 +681,7 @@ export default {
         })
         // 存储选中规格中的信息
         this.diskData = this.form.fi.capability.specs.hosts[this.specOptions[0].value].disk
+        this.hostResourceMapper(this.hostData)
         let str = this.specOptions[0].value.replace(/\//g, ',')
         let arr = str.split(',')
         let obj = {}
@@ -691,22 +741,6 @@ export default {
         return Array.from(new Set(arr))
       }
     },
-    // fetchHosts () {
-    //   new this.$Manager('hosts').list({
-    //     params: {
-    //       enabled: 1,
-    //       usable: true,
-    //       is_empty: true,
-    //       host_type: 'baremetal',
-    //       scope: this.$store.getters.scope,
-    //     },
-    //   }).then(({ data = {} }) => {
-    //     if (data.data.length) {
-    //       this.diskData = data.data[0].spec.disk
-    //       console.log(this.diskData)
-    //     }
-    //   })
-    // },
     // 添加硬盘配置
     addDisk () {
       this.createDialog('BaremetalCreateDiskDialog', {
@@ -929,9 +963,16 @@ export default {
               mountpoint: rows[j].name,
             }
             if (i === 0 && j === 0) {
-              option = {
-                size: rows[j].size * 1024,
-                image_id: values.image.key,
+              // 判断是否是iso导入
+              if (this.imageType === 'iso') {
+                option = {
+                  size: rows[j].size * 1024,
+                }
+              } else {
+                option = {
+                  size: rows[j].size * 1024,
+                  image_id: values.image.key,
+                }
               }
             }
             if (j === rows.length - 1) {
@@ -987,6 +1028,13 @@ export default {
         nets,
         prefer_host: this.isInstallOperationSystem ? this.$route.query.id : values.schedPolicyHost,
         description: values.description,
+      }
+      // 判断是否是iso导入
+      if (this.imageType === 'iso') {
+        params = {
+          ...params,
+          cdrom: values.image.key,
+        }
       }
       if (this.isInstallOperationSystem) {
         Reflect.deleteProperty(params, 'project_id')

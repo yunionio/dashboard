@@ -902,8 +902,8 @@ export default {
                     },
                     meta: () => {
                       return {
-                        validate: this.$getDeleteResult(this.list.selectedItems).validate,
-                        tooltip: this.$getDeleteResult(this.list.selectedItems).validate ? '' : '操作对象的当前状态不支持该操作: 物理机没有被禁用',
+                        validate: this.$getDeleteResult(obj).validate,
+                        tooltip: this.$getDeleteResult(obj).validate ? '' : '操作对象的当前状态不支持该操作: 物理机没有被禁用',
                       }
                     },
                   },
