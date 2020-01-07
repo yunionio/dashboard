@@ -362,7 +362,6 @@ export default {
     },
   },
   created () {
-    this.$bus.$on('VMInstanceCreateUpdateFi', this.updateFi, this)
     this.fetchInstanceSpecs()
   },
   methods: {
