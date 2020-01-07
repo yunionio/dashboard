@@ -15,6 +15,7 @@
           <base-select
             class="w-100"
             remote
+            show-sync
             v-decorator="decorators.secgroups"
             resource="secgroups"
             :mapper="mapperSecgroups"
