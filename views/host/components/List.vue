@@ -25,6 +25,12 @@ export default {
       type: [Function, Object],
     },
     cloudEnv: String,
+    frontGroupActions: {
+      type: Function,
+    },
+    frontSingleActions: {
+      type: Function,
+    },
   },
   data () {
     return {
@@ -204,106 +210,116 @@ export default {
           },
         },
       ],
-      groupActions: [
-        {
-          label: '启用',
-          action: () => {
-            this.list.batchPerformAction('enable', null, this.list.steadyStatus)
+    }
+  },
+  computed: {
+    groupActions () {
+      const _frontGroupActions = this.frontGroupActions ? this.frontGroupActions.bind(this)() || [] : []
+      return _frontGroupActions.concat(
+        [
+          {
+            label: '启用',
+            action: () => {
+              this.list.batchPerformAction('enable', null, this.list.steadyStatus)
+            },
+            meta: (obj) => {
+              const validate = this.list.selectedItems.length && this.list.selectedItems.some(item => !item.enabled)
+              return {
+                validate,
+                tooltip: !validate ? '请选择已经禁用的实例' : '',
+              }
+            },
           },
-          meta: (obj) => {
-            const validate = this.list.selectedItems.length && this.list.selectedItems.some(item => !item.enabled)
-            return {
-              validate,
-              tooltip: !validate ? '请选择已经禁用的实例' : '',
-            }
+          {
+            label: '禁用',
+            action: () => {
+              this.list.batchPerformAction('disable', null, this.list.steadyStatus)
+            },
+            meta: (obj) => {
+              const validate = this.list.selectedItems.length && this.list.selectedItems.some(item => item.enabled)
+              return {
+                validate,
+                tooltip: !validate ? '请选择已经启用的实例' : '',
+              }
+            },
           },
-        },
-        {
-          label: '禁用',
-          action: () => {
-            this.list.batchPerformAction('disable', null, this.list.steadyStatus)
-          },
-          meta: (obj) => {
-            const validate = this.list.selectedItems.length && this.list.selectedItems.some(item => item.enabled)
-            return {
-              validate,
-              tooltip: !validate ? '请选择已经启用的实例' : '',
-            }
-          },
-        },
-        {
-          label: '更多',
-          actions: () => {
-            return [
-              {
-                label: '调整标签',
-                action: (obj) => {
-                  this.createDialog('HostsAdjustLabelDialog', {
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    list: this.list,
-                  })
+          {
+            label: '更多',
+            actions: () => {
+              return [
+                {
+                  label: '调整标签',
+                  action: (obj) => {
+                    this.createDialog('HostsAdjustLabelDialog', {
+                      data: this.list.selectedItems,
+                      columns: this.columns,
+                      list: this.list,
+                    })
+                  },
+                  meta: () => ({
+                    validate: this.list.selectedItems.length,
+                  }),
                 },
-                meta: () => ({
-                  validate: this.list.selectedItems.length,
-                }),
-              },
-              {
-                label: '回收为物理机',
-                action: () => {
-                  this.list.batchPerformAction('disable', null)
-                },
-                meta: () => {
-                  if (!this.list.selectedItems.length) {
-                    return {
-                      validate: false,
-                      tooltip: '请选择要操作的数据',
-                    }
-                  }
-                  for (let i = 0; i < this.list.selectedItems.length; i++) {
-                    let obj = this.list.selectedItems[i]
-                    if (obj.host_type !== 'hypervisor') {
+                {
+                  label: '回收为物理机',
+                  action: () => {
+                    this.list.batchPerformAction('disable', null)
+                  },
+                  meta: () => {
+                    if (!this.list.selectedItems.length) {
                       return {
                         validate: false,
-                        tooltip: '必须为KVM类型的宿主机才可回收',
-                      }
-                    } else if (obj.nonsystem_guests > 0) {
-                      return {
-                        validate: false,
-                        tooltip: '虚拟化机器大于0不可回收',
-                      }
-                    } else if (obj.enabled) {
-                      return {
-                        validate: false,
-                        tooltip: '已启用的宿主机不可回收',
-                      }
-                    } else if (!obj.is_baremetal) {
-                      return {
-                        validate: false,
-                        tooltip: '',
+                        tooltip: '请选择要操作的数据',
                       }
                     }
-                  }
+                    for (let i = 0; i < this.list.selectedItems.length; i++) {
+                      let obj = this.list.selectedItems[i]
+                      if (obj.host_type !== 'hypervisor') {
+                        return {
+                          validate: false,
+                          tooltip: '必须为KVM类型的宿主机才可回收',
+                        }
+                      } else if (obj.nonsystem_guests > 0) {
+                        return {
+                          validate: false,
+                          tooltip: '虚拟化机器大于0不可回收',
+                        }
+                      } else if (obj.enabled) {
+                        return {
+                          validate: false,
+                          tooltip: '已启用的宿主机不可回收',
+                        }
+                      } else if (!obj.is_baremetal) {
+                        return {
+                          validate: false,
+                          tooltip: '',
+                        }
+                      }
+                    }
+                  },
                 },
-              },
-              {
-                label: '删除',
-                permission: 'hosts_delete',
-                action: () => {
-                  this.createDialog('DeleteResDialog', {
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    title: '删除',
-                    list: this.list,
-                  })
+                {
+                  label: '删除',
+                  permission: 'hosts_delete',
+                  action: () => {
+                    this.createDialog('DeleteResDialog', {
+                      data: this.list.selectedItems,
+                      columns: this.columns,
+                      title: '删除',
+                      list: this.list,
+                    })
+                  },
+                  meta: () => this.$getDeleteResult(this.list.selectedItems),
                 },
-                meta: () => this.$getDeleteResult(this.list.selectedItems),
-              },
-            ]
+              ]
+            },
           },
-        },
-      ],
-      singleActions: [
+        ]
+      )
+    },
+    singleActions () {
+      const _frontSingleActions = this.frontSingleActions ? this.frontSingleActions.bind(this)() || [] : []
+      return _frontSingleActions.concat([
         {
           label: '远程终端',
           actions: obj => {
@@ -541,8 +557,8 @@ export default {
             ]
           },
         },
-      ],
-    }
+      ])
+    },
   },
   watch: {
     cloudEnv (val) {

@@ -31,9 +31,8 @@
                 </template>
                 <template v-else>---</template>
               </div>
-              <div class="tips text-truncate" v-if="!isPackage">
-                <template v-if="priceTips">(合&yen;{{ priceTips.day }}/天 &yen;{{ priceTips.month }}/月)</template>
-                <template v-else>---</template>
+              <div class="tips text-truncate">
+                <span v-html="priceTips" />
               </div>
             </div>
           </div>
@@ -189,16 +188,24 @@ export default {
       return ret
     },
     price () {
-      if (this.pricesList && this.pricesList.length > 0) {
-        return this.pricesList[0].sum_price
+      const { count } = this.fd
+      if (count && this.pricesList && this.pricesList.length > 0) {
+        const { month_price: month, sum_price: sum } = this.pricesList[0]
+        const _price = this.isPackage ? month : sum
+        return _price * count
       }
       return null
     },
     priceTips () {
       if (this.price) {
-        return {
-          day: (this.price * 24).toFixed(2),
-          month: (this.price * 24 * 30).toFixed(2),
+        if (this.isPackage) {
+          const _day = this.price / 30
+          const _hour = _day / 24
+          return `(合¥${_day.toFixed(2)}/天  &nbsp; ${_hour.toFixed(2)}/小时)`
+        } else {
+          const _day = (this.price * 24).toFixed(2)
+          const _month = (this.price * 24 * 30).toFixed(2)
+          return `(合¥${_day}/天  &nbsp; ${_month}/月)`
         }
       }
       return null
@@ -230,10 +237,7 @@ export default {
     },
     formatToPrice (val) {
       let ret = `¥ ${val.toFixed(2)}`
-      if (this.isPackage) {
-        return ret
-      }
-      ret += ' / 时'
+      ret += this.isPackage ? '/月' : ' / 时'
       return ret
     },
     baywatch (props, watcher) {

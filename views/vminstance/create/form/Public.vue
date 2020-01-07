@@ -48,6 +48,7 @@
       <a-form-item label="套餐" v-bind="formItemLayout">
         <sku
           v-decorator="decorators.sku"
+          :priceUnit="skuPriceUnit"
           :type="type"
           :sku-params="skuParam"
           :hypervisor="hypervisor"
@@ -161,6 +162,10 @@ export default {
     }
   },
   computed: {
+    // 是否为包年包月
+    isPackage () {
+      return this.form.fd.billType === BILL_TYPES_MAP.package.key
+    },
     showAreaSelect () {
       if (this.$store.getters.isAdminMode && this.$store.getters.l3PermissionEnable) {
         if (this.form.fd.domain && this.form.fd.domain.key) {
@@ -227,6 +232,18 @@ export default {
       return {
         project: this.project,
         region: this.cloudregionZoneParams.cloudregion,
+      }
+    },
+    skuPriceUnit () {
+      if (this.isPackage) {
+        return {
+          key: 'month_price',
+          unit: '月',
+        }
+      }
+      return {
+        key: 'hour_price',
+        unit: '小时',
       }
     },
     skuParam () {
