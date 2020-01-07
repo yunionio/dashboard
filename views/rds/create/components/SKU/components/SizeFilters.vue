@@ -45,8 +45,10 @@ export default {
     initZone () {
       const zones = this.form.getFieldValue('zones')
       if (!zones || this.cpus.indexOf(zones) === -1) {
-        this.form.setFieldsValue({
-          zones: Object.keys(this.zones)[0],
+        setTimeout(() => {
+          this.form.setFieldsValue({
+            zones: Object.keys(this.zones)[0],
+          })
         })
       }
     },
@@ -78,22 +80,21 @@ export default {
     async fetchSpecs () {
       const PARAMS = await this.getSpecsParams()
       try {
-        const manager = new this.$Manager('dbinstance_skus/instance-specs', 'v2')
-        const { data = {} } = await manager.list({ params: PARAMS })
-        this.cpus = data['cpus']
-        this.cpu_mems_mb = data['cpu_mems_mb']
         this.form.setFieldsValue({
           vcpu_count: undefined,
           vmem_size_mb: undefined,
           zones: undefined,
-        }, () => {
-          this.initCpu()
-          const { zones } = data
-          if (zones) {
-            this.zones = zones.zones || {}
-          }
-          this.initZone()
         })
+        const manager = new this.$Manager('dbinstance_skus/instance-specs', 'v2')
+        const { data = {} } = await manager.list({ params: PARAMS })
+        this.cpus = data['cpus']
+        this.cpu_mems_mb = data['cpu_mems_mb']
+        const { zones } = data
+        if (zones) {
+          this.zones = zones.zones || {}
+          this.initZone()
+        }
+        this.initCpu()
         return data
       } catch (err) {}
     },
