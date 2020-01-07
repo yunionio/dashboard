@@ -96,7 +96,7 @@ const actionEableMap = {
       vmware: ['ready'],
       baremetal: false,
       huawei: ['ready'],
-      openstack: ['ready'],
+      openstack: ['ready', 'running'],
       zstack: ['ready'],
       dstack: ['ready'],
       ucloud: ['ready'],
