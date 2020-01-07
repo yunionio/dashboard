@@ -239,7 +239,7 @@ export default {
     },
     renderDesc (h) {
       const children = [
-        h('div', { class: 'detail-item-title' }, '描述'),
+        h('div', { class: 'detail-item-title' }, '备注'),
         h('div', { class: 'detail-item-value' }, [
           h('list-body-cell-wrap', {
             props: {
