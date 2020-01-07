@@ -197,7 +197,7 @@ export default {
           break
       }
     },
-    imageChange (imageObj, callback) {
+    imageChange (imageObj) {
       let imageMsg = {}
       if (imageObj && R.is(Object, imageObj)) {
         let list = this.images.list
