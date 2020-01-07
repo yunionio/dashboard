@@ -390,7 +390,7 @@
       "instance_snapshot_delete_failed": "主机快照删除失败"
     },
     "snapshotpolicy": {
-      "init": "正常",
+      "init": "初始化",
       "ready": "正常",
       "deleteing": "删除中",
       "delete_failed": "删除失败",
@@ -414,6 +414,33 @@
     "globalVpc": {
       "available": "可用",
       "unknown": "未知"
+    },
+    "blockstorage": {
+      "enabled": "启用",
+      "disabled": "禁用",
+      "offline": "离线",
+      "online": "在线",
+      "unknown": "未知"
+    },
+    "bucket": {
+      "start_create": "开始创建",
+      "creating": "创建中",
+      "ready": "可用",
+      "create_fail": "创建失败",
+      "start_delete": "开始删除",
+      "deleting": "删除中",
+      "deleted": "已删除",
+      "delete_fail": "删除失败"
+    },
+    "nat": {
+      "available": "可用",
+      "allocate": "创建中",
+      "deploying": "配置中",
+      "unknown": "未知状态",
+      "failed": "创建失败",
+      "deleted": "删除",
+      "deleting": "删除中",
+      "delete_failed": "删除失败"
     }
   },
   "skuCategoryOptions": {
