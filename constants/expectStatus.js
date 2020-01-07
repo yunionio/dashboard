@@ -143,6 +143,11 @@ export default {
     success: ['ready'],
     danger: ['create_fail', 'deleted', 'delete_fail'],
   },
+  hostImageCache: {
+    info: ['init', 'saving', 'caching', 'deleting'],
+    success: ['ready'],
+    danger: ['cache_fail'],
+  },
   nat: {
     info: [],
     success: ['available'],
