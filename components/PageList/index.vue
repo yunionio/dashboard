@@ -31,6 +31,7 @@
         </div>
       </div>
     </page-toolbar>
+    <slot name="table-prepend" />
     <vxe-grid
       ref="grid"
       align="left"
