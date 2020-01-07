@@ -27,7 +27,7 @@
           label="名称">
           <a-input
             v-decorator="decorators.name"
-            :placeholder="$t('validator.resourceName')" />
+            :placeholder="$t('validator.serverCreateName')" />
           <div slot="extra">
             <div v-if="showRepeatTips">名称重复，系统默认追加“-1”</div>
           </div>
