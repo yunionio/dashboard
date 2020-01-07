@@ -239,6 +239,8 @@ export default {
       }
       if (this.imageType === IMAGES_TYPE_MAP.iso.key) {
         params.disk_formats = 'iso'
+        Reflect.deleteProperty(params, 'filter.0')
+        Reflect.deleteProperty(params, 'is_standard')
       } else {
         params['filter.0'] = 'disk_format.notequals(iso)'
       }
@@ -256,7 +258,7 @@ export default {
         this.loading = false
         this.images.list = data
         if (this.cloudType === 'baremetal') {
-          this.images.list = data.filter(item => { return item.properties.os_type === 'Linux' || item.properties.os_type === 'VMWare' })
+          this.images.list = data.filter(item => { return item.properties && (item.properties.os_type === 'Linux' || item.properties.os_type === 'VMWare') })
         }
         this.getImagesInfo()
       } catch (error) {
