@@ -239,8 +239,7 @@ export default {
       }
       if (this.imageType === IMAGES_TYPE_MAP.iso.key) {
         params.disk_formats = 'iso'
-        if (params['filter.0'] && params['filter.0'] === 'disk_format.notequals(iso)')
-        Reflect.deleteProperty(params, 'filter.0')
+        if (params['filter.0'] && params['filter.0'] === 'disk_format.notequals(iso)') Reflect.deleteProperty(params, 'filter.0')
         Reflect.deleteProperty(params, 'is_standard')
       } else {
         params['filter.0'] = 'disk_format.notequals(iso)'
