@@ -6,17 +6,33 @@
       </a-radio-group>
     </a-form-item>
     <a-form-item v-if="schedPolicyComponent === 'host'" class="host-form-item">
-      <base-select
-        class="w-50"
-        resource="hosts"
-        :disabled-items="disabledHost"
-        v-decorator="decorators.schedPolicyHost"
-        :params="policyHostParams"
-        :label-format="labelFormat"
-        :need-params="true"
-        :filterable="true"
-        :showSync="true"
-        :select-props="{ placeholder: schedPolicyOptionsMap.host.label }" />
+      <template v-if="serverType === 'baremetal'">
+        <base-select
+          class="w-50"
+          :options="hostData"
+          :disabled-items="disabledHost"
+          v-decorator="decorators.schedPolicyHost"
+          :params="policyHostParams"
+          :label-format="labelFormat"
+          :need-params="true"
+          :filterable="true"
+          :showSync="true"
+          @change="hostChange"
+          :select-props="{ placeholder: schedPolicyOptionsMap.host.label }" />
+      </template>
+      <template v-else>
+        <base-select
+          class="w-50"
+          resource="hosts"
+          :disabled-items="disabledHost"
+          v-decorator="decorators.schedPolicyHost"
+          :params="policyHostParams"
+          :label-format="labelFormat"
+          :need-params="true"
+          :filterable="true"
+          :showSync="true"
+          :select-props="{ placeholder: schedPolicyOptionsMap.host.label }" />
+      </template>
     </a-form-item>
     <a-form-item v-if="schedPolicyComponent === 'schedtag'">
       <policy-schedtag
@@ -55,6 +71,10 @@ export default {
       default: () => ({}),
     },
     disabledHost: {
+      type: Array,
+      default: () => [],
+    },
+    hostData: {
       type: Array,
       default: () => [],
     },
@@ -105,6 +125,9 @@ export default {
         return `${item.account} / ${item.manager} / ${item.zone}`
       }
       return item.name
+    },
+    hostChange (e) {
+      this.$emit('change', e)
     },
   },
 }
