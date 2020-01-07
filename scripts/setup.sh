@@ -11,7 +11,7 @@ if [ $DEV_SETUP ]
 fi
 echo $DEFAULT_GIT_PREFIX
 if [ ! -d "./src" ]; then
-  git clone $DEFAULT_GIT_PREFIX/dashboard-common.git src
+  git clone -b $BRANCH $DEFAULT_GIT_PREFIX/dashboard-common.git src
 fi
 if [ ! -d "./containers" ]; then
   git clone -b $BRANCH $DEFAULT_GIT_PREFIX/dashboard-module-cloudenv.git containers/Cloudenv
