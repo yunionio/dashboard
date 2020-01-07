@@ -31,7 +31,7 @@ export function getNameFilter () {
     label: '名称',
     filter: true,
     formatter: val => {
-      return `name.contains(${val})`
+      return `name.contains("${val}")`
     },
   }
 }
@@ -104,7 +104,7 @@ export function getIpFilter () {
     label: 'IP',
     filter: true,
     formatter: val => {
-      return `guestnetworks.guest_id(id).ip_addr.contains(${val})`
+      return `guestnetworks.guest_id(id).ip_addr.contains("${val}")`
     },
     jointFilter: true,
   }
@@ -122,7 +122,7 @@ export function getOsTypeFilter () {
     ],
     filter: true,
     formatter: val => {
-      return `os_type.contains(${val})`
+      return `os_type.contains("${val}")`
     },
   }
 }
@@ -144,7 +144,7 @@ export function getFilter (params = {}) {
     label: title,
     filter: true,
     formatter: val => {
-      return `${field}.contains(${val})`
+      return `${field}.contains("${val}")`
     },
     ...otherParams,
   }
@@ -166,7 +166,7 @@ export function getPublicFilter () {
       { label: '共享订阅', key: 'provider_domain' },
     ],
     formatter: val => {
-      return `share_mode.contains(${val})`
+      return `share_mode.contains("${val}")`
     },
   }
 }
@@ -177,7 +177,7 @@ export function getHostFilter () {
     filter: true,
     jointFilter: true,
     formatter: val => {
-      return `hosts.id(host_id).name.contains(${val})`
+      return `hosts.id(host_id).name.contains("${val}")`
     },
   }
 }
