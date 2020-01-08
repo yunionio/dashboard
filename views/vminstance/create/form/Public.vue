@@ -57,6 +57,7 @@
       <a-form-item v-bind="formItemLayout" label="操作系统" extra="操作系统会根据选择的虚拟化平台和可用区域的变化而变化，公共镜像的维护请联系管理员">
         <os-select
           :type="type"
+          :types="osSelectTypes"
           :hypervisor="hypervisor"
           :decorator="decorators.imageOS"
           :cacheImageParams="cacheImageParams" />
@@ -320,6 +321,9 @@ export default {
       if (HYPERVISORS_MAP.azure.key === hypervisor) {
         delete loginTypes[LOGIN_TYPES_MAP.image.key]
       }
+      if (HYPERVISORS_MAP.ctyun.key === hypervisor) {
+        delete loginTypes[LOGIN_TYPES_MAP.keypair.key]
+      }
       if (this.form.fi.imageMsg.os_type === 'Windows') {
         // 以下平台在选择 windows 镜像时禁用关联密钥
         const disableKeypairHyper = [
@@ -344,6 +348,12 @@ export default {
         enabled: true,
         public_cloud: true,
       }
+    },
+    osSelectTypes () {
+      if (HYPERVISORS_MAP.ctyun.key === this.hypervisor) {
+        return ['public', 'public_customize']
+      }
+      return []
     },
   },
   watch: {
