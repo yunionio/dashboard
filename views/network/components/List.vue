@@ -16,7 +16,7 @@ import {
   getBrandTableColumn,
   getStatusTableColumn,
   getCopyWithContentTableColumn,
-  getNameDescriptionTableColumn,
+  // getNameDescriptionTableColumn,
   isPublicTableColumn,
 } from '@/utils/common/tableColumn'
 import windows from '@/mixins/windows.js'
@@ -141,15 +141,34 @@ export default {
         ],
       },
       columns: [
-        getNameDescriptionTableColumn({
-          vm: this,
-          hideField: true,
-          slotCallback: row => {
-            return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'NetworkSidePage') }>{ row.name }</side-page-trigger>
-            )
+        // getNameDescriptionTableColumn({
+        //   vm: this,
+        //   hideField: true,
+        //   slotCallback: row => {
+        //     return (
+        //       <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'NetworkSidePage') }>{ row.name }</side-page-trigger>
+        //     )
+        //   },
+        // }),
+        {
+          field: 'name',
+          title: '名称',
+          sortable: true,
+          showOverflow: 'ellipsis',
+          minWidth: 100,
+          fixed: 'left',
+          slots: {
+            default: ({ row }, h) => {
+              const ret = [
+                <list-body-cell-wrap copy edit={ this.isPower(row) } row={row} list={this.list} hideField={ true }>
+                  <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'NetworkSidePage') }>{ row.name }</side-page-trigger>
+                </list-body-cell-wrap>,
+                <list-body-cell-wrap edit={ this.isPower(row) } field="description" row={row} list={this.list} />,
+              ]
+              return ret
+            },
           },
-        }),
+        },
         {
           field: 'ip',
           title: 'IP地址',
@@ -502,7 +521,24 @@ export default {
                     list: this.list,
                   })
                 },
-                meta: () => this.$getDeleteResult(obj),
+                meta: () => {
+                  if (!this.isPower(obj)) {
+                    return {
+                      validate: false,
+                      tooltip: '权限不足',
+                    }
+                  }
+                  if (!this.$getDeleteResult(obj).validate) {
+                    return {
+                      validate: false,
+                      tooltip: this.$getDeleteResult(obj).tooltip,
+                    }
+                  }
+                  return {
+                    validate: true,
+                    tooltip: '',
+                  }
+                },
               },
             ]
           },
