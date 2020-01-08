@@ -189,6 +189,7 @@ export default {
     },
     price () {
       const { count } = this.fd
+      console.log(count, this.pricesList, this.pricesList.length)
       if (count && this.pricesList && this.pricesList.length > 0) {
         const { month_price: month, sum_price: sum } = this.pricesList[0]
         const _price = this.isPackage ? month : sum
@@ -248,6 +249,7 @@ export default {
     },
     // 获取总价格
     async getPriceList () {
+      console.log(this.hasMeterService)
       if (!this.hasMeterService) return // 如果没有 meter 服务则取消调用
       if (R.isEmpty(this.fd.sku) || R.isNil(this.fd.sku)) return
       const skuProvider = this.fd.sku.provider || PROVIDER_MAP.OneCloud.key

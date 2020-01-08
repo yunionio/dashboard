@@ -46,6 +46,7 @@ function secgroupValidator (rule, value, callback) {
   if (value.length > 5) {
     return callback(new Error('最多支持选择5个安全组'))
   }
+  callback()
 }
 
 function validateTag (rule, value, callback) {

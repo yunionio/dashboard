@@ -109,8 +109,10 @@ export default {
     },
     typesMap () {
       const ret = {}
-      const hypervisorDisks = { ...STORAGE_TYPES[this.getHypervisor()] } || {}
-      let currentTypes = this.capabilityData.storage_types || []
+      const hyper = this.getHypervisor()
+      const hypervisorDisks = { ...STORAGE_TYPES[hyper] } || {}
+      if (!this.capabilityData || !this.capabilityData.data_storage_types2) return ret
+      let currentTypes = this.capabilityData.data_storage_types2[hyper] || []
       if (!R.isNil(this.sku) && !R.isEmpty(this.sku)) {
         for (let obj in hypervisorDisks) {
           if (hypervisorDisks[obj].skuFamily && !hypervisorDisks[obj].skuFamily.includes(this.sku.instance_type_family)) {

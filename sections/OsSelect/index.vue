@@ -13,6 +13,7 @@
       :image-type="imageType"
       :decorator="decorator"
       @input="imageInput"
+      @updateImageMsg="updateImageMsg"
       :imageParams="imageParams"
       :cacheImageParams="cacheImageParams"
       :osType="osType"
@@ -118,6 +119,9 @@ export default {
     },
     change (e) {
       this.imageType = e.target.value
+    },
+    updateImageMsg (...ret) {
+      this.$emit('updateImageMsg', ...ret)
     },
   },
 }
