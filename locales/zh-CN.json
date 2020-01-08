@@ -453,18 +453,6 @@
       "deleted": "删除",
       "deleting": "删除中",
       "delete_failed": "删除失败"
-    },
-    "hostImageCache": {
-      "init": "初始化中",
-      "saving": "保存中",
-      "caching": "缓存中",
-      "ready": "可用",
-      "deleting": "删除中",
-      "cache_fail": "缓存失败",
-      "active": "已缓存",
-      "queued": "排队中",
-      "killed": "缓存失败",
-      "deleted": "缓存异常"
     }
   },
   "skuCategoryOptions": {
