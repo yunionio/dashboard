@@ -11,12 +11,12 @@
       </a-radio-group>
     </a-form-item>
     <a-form-item label="实例类型" v-bind="formItemLayout">
-      <a-radio-group v-decorator="['category']"  @change="getStorage">
+      <a-radio-group v-decorator="['category']"  @change="getStorage" :disabled="!!disableds.category">
         <a-radio-button :key="key" :value="key" v-for="key in categorys">{{formatCategoryLabel(key)}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
     <a-form-item label="存储类型" v-bind="formItemLayout">
-      <a-radio-group v-decorator="['storage_type']">
+      <a-radio-group v-decorator="['storage_type']" :disabled="!!disableds.storage_type">
         <a-radio-button :key="item" :value="item" v-for="item of storage_types">{{formatStorageLabel(item)}}</a-radio-button>
       </a-radio-group>
     </a-form-item>

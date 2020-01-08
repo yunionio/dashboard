@@ -7,7 +7,7 @@
       <a-form
         class="mt-3"
         :form="form.fc">
-        <s-k-u ref="SKU" :disableds="['engine', 'engine_version', 'zones']" :rdsItem="rdsItem">
+        <s-k-u ref="SKU" :disableds="disableds" :rdsItem="rdsItem">
           <a-radio-group disabled slot="zone" :defaultValue="Object.keys(rdsZone)[0]">
             <a-radio-button :key="key" :value="key" v-for="(value, key) in rdsZone">{{value}}</a-radio-button>
           </a-radio-group>
@@ -59,6 +59,13 @@ export default {
       const { data } = this.params
       return data[0]
     },
+    disableds () {
+      const _ = {
+        'Huawei': ['engine', 'engine_version', 'zones', 'category', 'storage_type'],
+        'Aliyun': ['engine', 'engine_version', 'zones'],
+      }
+      return _[this.rdsItem.brand]
+    },
   },
   provide () {
     return {
@@ -68,6 +75,8 @@ export default {
   },
   created () {
     this.form.fc.getFieldDecorator('zones', { preserve: true })
+    this.form.fc.getFieldDecorator('cloudregion_id', { preserve: true })
+    this.form.fc.getFieldDecorator('cloudregion', { preserve: true })
   },
   mounted () {
     this._fetchs()
@@ -101,6 +110,8 @@ export default {
         vcpu_count: this.rdsItem['vcpu_count'],
         vmem_size_mb: this.rdsItem['vmem_size_mb'],
         zones: zoneIds.join('+'),
+        cloudregion_id: this.rdsItem['cloudregion_id'],
+        cloudregion: this.rdsItem['cloudregion_id'],
       }, SKU.linkageValue)
     },
     async _fetchs () {
