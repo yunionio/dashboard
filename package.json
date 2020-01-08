@@ -8,7 +8,8 @@
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit",
     "setup:dev": "export DEV_SETUP=true && sh ./scripts/setup.dev.sh",
-    "sync": "sh ./scripts/sync-modules.sh"
+    "checkout": "chmod +x ./scripts/checkout.sh && sh ./scripts/checkout.sh $@",
+    "sync": "chmod +x ./scripts/sync-modules.sh && sh ./scripts/sync-modules.sh $@"
   },
   "dependencies": {
     "animejs": "^3.1.0",
