@@ -292,9 +292,12 @@ export default {
                     list: this.list,
                     requestData: {
                       override_pending_delete: true,
+<<<<<<< HEAD
                     },
                     requestParams: {
                       pending_delete: true,
+=======
+>>>>>>> fix 主机镜像批量删除增加pending_delete参数
                     },
                   })
                 },
