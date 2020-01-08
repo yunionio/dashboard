@@ -107,8 +107,10 @@ export default {
         this.disabled = false
       }
     },
-    loginTypeMap (val) {
-      this.setLoginType()
+    loginTypeMap (val, oldv) {
+      if (!R.equals(val, oldv)) {
+        this.setLoginType()
+      }
     },
   },
   mounted () {
