@@ -27,7 +27,8 @@
           :is-support-iso="isSupportIso"
           hypervisor="baremetal"
           :image-params="imageParams"
-          :decorator="decorators.imageOS" />
+          :decorator="decorators.imageOS"
+          @updateImageMsg="setSelectedImage" />
       </a-form-item>
       <a-form-item v-bind="formItemLayout" label="规格">
         <a-select v-decorator="decorators.specifications" :disabled="isInstallOperationSystem" @change="specificationChange">
@@ -533,9 +534,6 @@ export default {
     this.zonesM2 = new this.$Manager('zones')
     this.serverM = new this.$Manager('servers')
     this.schedulerM = new this.$Manager('schedulers', 'v1')
-    this.$bus.$on('VMInstanceCreateUpdateFi', ({ imageMsg }) => {
-      this.selectedImage = imageMsg
-    })
     if (this.$route.query.id) {
       this._fetchSpec()
       this.hostDetail()
@@ -546,6 +544,9 @@ export default {
     this.loadHostOpt()
   },
   methods: {
+    setSelectedImage ({ imageMsg }) {
+      this.selectedImage = imageMsg
+    },
     // 过滤network数据
     networkResourceMapper (data) {
       data = data.filter((d) => d.server_type !== 'ipmi' && d.server_type !== 'pxe')

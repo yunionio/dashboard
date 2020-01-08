@@ -204,7 +204,7 @@ export default {
         if (this.isPublicImage || this.isPrivateImage) list = this.images.cacheimagesList
         imageMsg = list.find(image => image.id === imageObj.key)
       }
-      this.$bus.$emit('VMInstanceCreateUpdateFi', { imageMsg }) // 📢将当前 image 的详细信息广播出去
+      this.$emit('updateImageMsg', { imageMsg })
     },
     osChange (osValue) {
       this.defaultSelect(osValue)

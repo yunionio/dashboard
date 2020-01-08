@@ -59,7 +59,8 @@
           :type="type"
           :hypervisor="hypervisor"
           :decorator="decorators.imageOS"
-          :cacheImageParams="cacheImageParams" />
+          :cacheImageParams="cacheImageParams"
+          @updateImageMsg="updateFi" />
       </a-form-item>
       <a-form-item label="系统磁盘" v-bind="formItemLayout" class="mb-0">
         <system-disk
