@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="true">
+  <div>
     <a-form-item label="CPU核数" v-bind="formItemLayout">
       <a-radio-group v-decorator="['vcpu_count']" @change="getMemsMb">
         <a-radio-button :key="cpu" :value="cpu" v-for="cpu in cpus">{{cpu}}核</a-radio-button>
