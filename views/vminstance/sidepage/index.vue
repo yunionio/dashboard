@@ -23,7 +23,7 @@
 
 <script>
 import SecgroupList from '@Compute/views/secgroup/components/List'
-import HostList from '@Compute/views/host/components/List'
+// import HostList from '@Compute/views/host/components/List'
 import VmInstanceDetail from './Detail'
 import NetworkListForVmInstanceSidepage from './Network'
 import DiskListForVmInstanceSidepage from './Disk'
@@ -41,7 +41,7 @@ export default {
     NetworkListForVmInstanceSidepage,
     DiskListForVmInstanceSidepage,
     SecgroupList,
-    HostList,
+    // HostList,
     VmInstanceMonitorSidepage,
     VmInstanceAlertSidepage,
   },
@@ -51,7 +51,7 @@ export default {
       detailTabs: [
         { label: '详情', key: 'vm-instance-detail' },
         { label: '安全组', key: 'secgroup-list' },
-        { label: '宿主机', key: 'host-list' },
+        // { label: '宿主机', key: 'host-list' },
         { label: '网络', key: 'network-list-for-vm-instance-sidepage' },
         { label: '磁盘', key: 'disk-list-for-vm-instance-sidepage' },
         { label: '监控', key: 'vm-instance-monitor-sidepage' },
