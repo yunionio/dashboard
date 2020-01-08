@@ -124,7 +124,7 @@ export const ENV_TITLE = {
 }
 
 export const CLOUDACCOUNT_DOCS = {
-  aliyun: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BA%E9%98%BF%E9%87%8C%E4%BA%91%E8%B4%A6%E5%8F%B7',
+  aliyun: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#新建阿里云账号',
   azure: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BAazure%E8%B4%A6%E5%8F%B7',
   aws: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BAaws%E8%B4%A6%E5%8F%B7',
   qcloud: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BA%E8%85%BE%E8%AE%AF%E4%BA%91%E8%B4%A6%E5%8F%B7',
@@ -136,7 +136,7 @@ export const CLOUDACCOUNT_DOCS = {
   vmware: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BAvmware%E8%B4%A6%E5%8F%B7',
   s3: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BAs3%E8%B4%A6%E5%8F%B7',
   ceph: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BAceph%E8%B4%A6%E5%8F%B7',
-  xsky: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BAxsky%E8%B4%A6%E5%8F%B7', // !!! 未接入
+  xsky: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BAxsky%E8%B4%A6%E5%8F%B7',
 }
 
 export const ACCESS_URL = {
