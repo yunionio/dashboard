@@ -946,6 +946,7 @@ export default {
                         tooltip: null,
                       }
                       if (commonUnabled(obj)) return ret
+                      if (obj.brand === 'Ctyun' && obj.status === 'ready') return ret
                       ret.validate = cloudEnabled('rebuildRoot', obj)
                       ret.tooltip = cloudUnabledTip('rebuildRoot', obj)
                       return ret
