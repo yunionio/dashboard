@@ -22,18 +22,20 @@
             v-decorator="decorators.sku"
             :type="type"
             :sku-params="skuParam"
+            :instance-type="instanceType"
             :hypervisor="hypervisor" />
         </a-form-item>
         <a-form-item label="数据盘" v-bind="formItemLayout">
           <data-disk
-            v-if="hypervisor && form.fi.capability.storage_types && diskShow"
+            v-if="hypervisor && form.fi.capability.storage_types"
             ref="dataDiskRef"
             :decorator="decorators.dataDisk"
             :type="type"
             :hypervisor="hypervisor"
             :capability-data="form.fi.capability"
             :sku="form.fd.sku"
-            :image="form.fi.imageMsg" />
+            :image="form.fi.imageMsg"
+            :disabled="!diskLoaded" />
         </a-form-item>
         <a-form-item label="申请原因" v-bind="formItemLayout" v-if="isOpenWorkflow">
           <a-input v-decorator="decorators.reason" placeholder="请输入申请原因" />
@@ -225,6 +227,7 @@ export default {
           span: 3,
         },
       },
+      diskLoaded: false,
     }
   },
   computed: {
@@ -324,6 +327,9 @@ export default {
       const showFields = ['name', 'ip', 'instance_type', 'status']
       return this.params.columns.filter((item) => { return showFields.includes(item.field) })
     },
+    instanceType () {
+      return this.selectedItem.instance_type
+    },
   },
   watch: {
     isSomeRunning: {
@@ -356,13 +362,10 @@ export default {
     async loadData (data) {
       this.data = data
       if (this.data.length === 1) {
-        this.diskShow = true
         try {
           const { data } = await this.capability(this.data[0].zone_id)
           this.form.fi.capability = data
         } catch (error) {}
-      } else {
-        this.diskShow = false
       }
       let conf = this.maxConfig()
       this.form.fd.vcpu_count = conf[0]
@@ -371,9 +374,12 @@ export default {
       this.beforeDataDisks = [ ...this.form.fd.datadisks ]
 
       this.$nextTick(() => {
-        this.form.fd.datadisks.forEach((v) => {
-          this.$refs.dataDiskRef.add({ size: v.value, diskType: v.type, disabled: true, ...v })
-        })
+        setTimeout(() => {
+          this.form.fd.datadisks.forEach((v) => {
+            this.$refs.dataDiskRef.add({ size: v.value, diskType: v.type, disabled: true, ...v })
+          })
+          this.diskLoaded = true
+        }, 1000)
         this.form.fc.setFieldsValue({ vcpu: this.form.fd.vcpu_count, vmem: this.form.fd.vmem })
       })
     },
