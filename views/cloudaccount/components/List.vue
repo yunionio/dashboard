@@ -18,6 +18,7 @@ import {
   getPublicTableColumn,
   getCopyWithContentTableColumn,
   getNameDescriptionTableColumn,
+  getProjectTableColumn,
 } from '@/utils/common/tableColumn'
 import { getNameFilter, getFilter, getEnabledFilter, getStatusFilter, getBrandFilter, getPublicFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
@@ -192,22 +193,7 @@ export default {
           },
         },
         getPublicTableColumn(),
-        {
-          field: 'projects',
-          title: '项目',
-          showOverflow: 'ellipsis',
-          minWidth: 100,
-          slots: {
-            default: ({ row }) => {
-              const projects = row.projects.map(val => val.tenant)
-              const projectsText = projects.join('，')
-              return [
-                <list-body-cell-wrap hide-field copy field="projects" row={ row } message={ projectsText }>{ projectsText }</list-body-cell-wrap>,
-                <list-body-cell-wrap hide-field copy field="projects" row={ row } message={ row.domain }>{ row.domain }</list-body-cell-wrap>,
-              ]
-            },
-          },
-        },
+        getProjectTableColumn(),
       ],
       groupActions: [
         {
