@@ -4,6 +4,19 @@ export default {
   name: 'NetworkSelects',
   inject: ['form'],
   props: {
+    isRequired: {
+      type: Boolean,
+      default: true,
+    },
+    placeholders: {
+      type: Object,
+      default: () => {
+        return {
+          vpc: '请选择VPC',
+          network: '请选择IP子网',
+        }
+      },
+    },
     label: {
       type: String,
       default: 'IP子网',
@@ -185,7 +198,7 @@ export default {
       }
     },
     RenderNetwork () {
-      const { vpcLoading, filterOption } = this
+      const { networkLoading, filterOption } = this
       const _handleChange = (networkId) => {
         const data = this.getSelectedValue('network', networkId)
         this.$emit('networkChange', data)
@@ -195,7 +208,7 @@ export default {
         return <a-select-option key={id} value={id}>{name}</a-select-option>
       })
       return (
-        <a-select showSearch placeholder="请选择IP子网" onChange={_handleChange} loading={vpcLoading} filterOption={filterOption} >
+        <a-select showSearch placeholder="请选择IP子网" onChange={_handleChange} loading={networkLoading} filterOption={filterOption} >
           {options}
         </a-select>
       )
@@ -205,9 +218,24 @@ export default {
     const { getFieldDecorator } = this.FC
     const RenderCols = this.types.map(name => {
       const sn = this.firstName(name)
+      const options = {}
+      const rules = []
+      if (this.isRequired) {
+        rules.push({
+          required: true,
+          message: this.placeholders[name],
+        })
+        options['rules'] = rules
+      }
       if (this[`Render${sn}`]) {
         const Render = this[`Render${sn}`]()
-        return <a-col span={this.colSpan}> {getFieldDecorator(name)(Render)} </a-col>
+        return (
+          <a-col span={this.colSpan}>
+            <a-form-item>
+              {getFieldDecorator(name, options)(Render)}
+            </a-form-item>
+          </a-col>
+        )
       }
       return null
     })
