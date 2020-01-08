@@ -6,6 +6,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import IDC from './form/IDC'
 import Public from './form/Public'
 import Private from './form/Private'
@@ -19,9 +20,15 @@ export default {
     Private,
   },
   data () {
+    const cloudEnvOptions = getCloudEnvOptions('compute_engine_brands', true)
+    const queryType = this.$route.query.type
+    let cloudEnv = queryType === 'idc' ? 'onpremise' : this.$route.query.type
+    if (!cloudEnvOptions.find(val => val.key === cloudEnv)) {
+      cloudEnv = cloudEnvOptions[0].key
+    }
     return {
-      cloudEnvOptions: getCloudEnvOptions('compute_engine_brands', true),
-      cloudEnv: this.$route.query.type === 'idc' ? 'onpremise' : this.$route.query.type,
+      cloudEnvOptions,
+      cloudEnv,
     }
   },
   computed: {
@@ -73,14 +80,17 @@ export default {
     },
   },
   watch: {
-    cloudEnv (val) {
-      this.$nextTick(() => {
-        const query = this.$router.history.current.query
-        const path = this.$router.history.current.path
-        const newQuery = JSON.parse(JSON.stringify(query))
-        newQuery.type = val === 'onpremise' ? 'idc' : val
-        this.$router.push({ path, query: newQuery })
-      })
+    cloudEnv: {
+      handler (val) {
+        this.$nextTick(() => {
+          const query = this.$router.history.current.query
+          const path = this.$router.history.current.path
+          const newQuery = JSON.parse(JSON.stringify(query))
+          newQuery.type = val === 'onpremise' ? 'idc' : val
+          this.$router.push({ path, query: newQuery })
+        })
+      },
+      immediate: true
     },
   },
 }
