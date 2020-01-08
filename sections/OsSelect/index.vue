@@ -32,6 +32,9 @@ export default {
     ImageSelect,
   },
   props: {
+    types: {
+      type: Array,
+    },
     decorator: {
       type: Object,
       required: true,
@@ -101,6 +104,11 @@ export default {
       ret = ret.filter((item) => {
         return !this.ignoreOptions.includes(item.key)
       })
+      if (this.types && !R.isEmpty(this.types)) {
+        ret = ret.filter(({ key }) => {
+          return this.types.indexOf(key) > -1
+        })
+      }
       return ret
     },
   },

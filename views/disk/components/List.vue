@@ -378,6 +378,12 @@ export default {
                         tooltip: 'VMware暂不支持该操作',
                       }
                     }
+                    if (brand === 'ctyun') {
+                      return {
+                        validate: false,
+                        tooltip: '天翼云暂不支持该操作',
+                      }
+                    }
                     if (brand === 'openstack') {
                       if (obj.storage_type !== 'local' && obj.storage_type !== 'iscsi') {
                         return {
