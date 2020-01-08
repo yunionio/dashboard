@@ -2,7 +2,7 @@
 
 ## Project setup
 ```
-./scripts/setup.sh
+yarn setup:dev
 ```
 ```
 yarn install
