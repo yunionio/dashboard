@@ -132,6 +132,8 @@ export default {
       } else if (R.is(Object, value)) {
         cloudregionId = value.key
       }
+      const selectedRegionOption = this.regionOpts.filter(item => item.id === cloudregionId)[0]
+      this.emit(selectedRegionOption, 'cloudregion')
       this.fetchZones(cloudregionId)
     },
   },
