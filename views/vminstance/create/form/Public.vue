@@ -287,7 +287,7 @@ export default {
         usable: true,
         limit: 0,
       }
-      if (this.cloudregionZoneParams.zone) {
+      if (this.cloudregionZoneParams) {
         params.zone = this.cloudregionZoneParams.zone
         if (!params.zone) {
           params.cloudregion = this.cloudregionZoneParams.cloudregion
