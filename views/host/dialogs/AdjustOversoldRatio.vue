@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">修改属性</div>
+    <div slot="header">调整超售比</div>
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" action="调整超售比" />
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 2)" />
@@ -88,7 +88,7 @@ export default {
         let values = await this.form.fc.validateFields()
         values = {
           ...values,
-          name: this.params.data[0].name,
+          // name: this.params.data[0].name,
         }
         await this.doUpdate(values)
         this.loading = false
