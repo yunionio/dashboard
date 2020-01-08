@@ -194,6 +194,9 @@ export default {
               columns: this.columns,
               title: '删除镜像',
               list: this.list,
+              requestData: {
+                override_pending_delete: true,
+              },
             })
           },
           meta: () => this.$getDeleteResult(this.list.selectedItems),
@@ -287,8 +290,8 @@ export default {
                     columns: this.columns,
                     title: '删除',
                     list: this.list,
-                    requestParams: {
-                      pending_delete: true,
+                    requestData: {
+                      override_pending_delete: true,
                     },
                   })
                 },
