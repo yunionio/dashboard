@@ -293,6 +293,9 @@ export default {
                     requestData: {
                       override_pending_delete: true,
                     },
+                    requestParams: {
+                      pending_delete: true,
+                    },
                   })
                 },
                 meta: () => {
