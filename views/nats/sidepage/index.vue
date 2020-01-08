@@ -15,6 +15,7 @@
 <script>
 import NatDetail from './Detail'
 import Snat from './Snat'
+import Dnat from './Dnat'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -24,6 +25,7 @@ export default {
   components: {
     NatDetail,
     Snat,
+    Dnat,
     Actions,
   },
   mixins: [SidePageMixin, WindowsMixin],
@@ -32,6 +34,7 @@ export default {
       detailTabs: [
         { label: '详情', key: 'nat-detail' },
         { label: 'SNAT', key: 'snat' },
+        { label: 'DNAT', key: 'dnat' },
         { label: '操作日志', key: 'event-drawer' },
       ],
     }

@@ -8,8 +8,8 @@
 
 <script>
 import {
-  getCopyWithContentTableColumn,
   getStatusTableColumn,
+  getCopyWithContentTableColumn,
 } from '@/utils/common/tableColumn'
 import expectStatus from '@/constants/expectStatus'
 import DialogMixin from '@/mixins/dialog'
@@ -31,7 +31,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
-        resource: 'natsentries',
+        resource: 'natdentries',
         getParams: {
           natgateway: this.resId,
         },
@@ -48,16 +48,31 @@ export default {
       }),
       columns: [
         getCopyWithContentTableColumn({
-          field: 'name',
-          title: 'SNAT名称',
+          field: 'real_name',
+          title: 'DNAT名称',
+        }),
+        getCopyWithContentTableColumn({
+          field: 'external_ip',
+          title: '公网IP地址',
         }),
         {
-          field: 'access_ip',
-          title: '公网IP地址',
+          field: 'external_port',
+          title: '公网端口',
+          width: 80,
+        },
+        getCopyWithContentTableColumn({
+          field: 'internal_ip',
+          title: '内网IP地址',
+        }),
+        {
+          field: 'ip_protocol',
+          title: '协议类型',
+          width: 80,
         },
         {
-          field: 'sn',
-          title: 'IP子网',
+          field: 'internal_port',
+          title: '内网端口',
+          width: 80,
         },
         getStatusTableColumn({ statusModule: 'nat' }),
       ],
@@ -66,8 +81,8 @@ export default {
           label: '新建',
           permission: 'server_create',
           action: () => {
-            this.createDialog('CreateSnat', {
-              title: '新建SNAT条目',
+            this.createDialog('CreateDnat', {
+              title: '新建DNAT条目',
               data: this.data,
               columns: this.columns,
               list: this.list,
