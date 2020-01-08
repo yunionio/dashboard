@@ -74,7 +74,6 @@ export default {
   },
   methods: {
     doUpdate (data) {
-      console.log(this.params.data)
       const ids = this.params.data.map(item => item.id)
       return this.params.list.onManager('batchUpdate', {
         id: ids,

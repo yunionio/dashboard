@@ -485,12 +485,13 @@ export default {
                           validate: false,
                           tooltip: '已启用的宿主机不可回收',
                         }
-                      } else if (!obj.is_baremetal) {
-                        return {
-                          validate: false,
-                          tooltip: '',
-                        }
                       }
+                      // else if (!obj.is_baremetal) {
+                      //   return {
+                      //     validate: false,
+                      //     tooltip: '',
+                      //   }
+                      // }
                       return {
                         validate: true,
                       }
@@ -507,10 +508,6 @@ export default {
                     },
                     meta: () => {
                       if (obj.host_type !== 'hypervisor') {
-                        return {
-                          validate: false,
-                        }
-                      } else if (!obj.is_baremetal) {
                         return {
                           validate: false,
                         }
@@ -535,11 +532,12 @@ export default {
                         return {
                           validate: false,
                         }
-                      } else if (!obj.is_baremetal) {
-                        return {
-                          validate: false,
-                        }
                       }
+                      // else if (!obj.is_baremetal) {
+                      //   return {
+                      //     validate: false,
+                      //   }
+                      // }
                       return {
                         validate: ['maintaining', 'maintain_fail'].includes(obj.status),
                       }
