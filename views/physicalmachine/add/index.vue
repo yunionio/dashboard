@@ -304,7 +304,7 @@ export default {
       }
       if (this.form.fd.net) {
         if (this.form.fd.net.access_net && !this.form.fd.net.access_ip) {
-          data.access_net = this.form.fd.net.access_net
+          data.access_net = this.form.fd.net.access_net.id
         }
         if (this.form.fd.net.access_net && this.form.fd.net.access_ip) {
           data.access_ip = this.form.fd.net.access_ip
@@ -339,7 +339,7 @@ export default {
       }
       if (this.form.fd.net) {
         if (this.form.fd.net.access_net && !this.form.fd.net.access_ip) {
-          data.access_net = this.form.fd.net.access_net
+          data.access_net = this.form.fd.net.access_net.id
         }
         if (this.form.fd.net.access_net && this.form.fd.net.access_ip) {
           data.access_ip = this.form.fd.net.access_ip
