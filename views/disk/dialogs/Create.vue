@@ -9,7 +9,8 @@
             :zone-params="par.zone"
             :cloudregion.sync="currentCloudregion"
             :cloudregion-params="par.region"
-            :decorator="decorators.regionZone" />
+            :decorator="decorators.regionZone"
+            @change="zoneChange" />
         </a-form-item>
         <a-form-item label="名称" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" placeholder="字母开头，数字和字母大小写组合，长度为2-128个字符，不含'.','_','@'" />
@@ -192,6 +193,9 @@ export default {
     }
   },
   methods: {
+    zoneChange (option) {
+      console.log(option)
+    },
     fetchStorageList (zoneId) {
       const params = {
         usable: true,
@@ -260,8 +264,6 @@ export default {
             Object.assign(storageProvider, CommonConstants.STORAGE_TYPES[hypervisor])
           })
         } else {
-          console.log(this.provider)
-          console.log(CommonConstants.STORAGE_TYPES)
           storageProvider = CommonConstants.STORAGE_TYPES[this.provider]
         }
         if (storageProvider[storageType.toLowerCase()]) {
