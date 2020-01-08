@@ -288,3 +288,15 @@ export function toObject (arr) {
   }
   return res
 };
+
+// 在 sizestr 上加上 B 结尾
+export function sizestrC (...args) {
+  const res = sizestr(...args)
+  const letterReg = /[A-Z]/g
+  if (res.startsWith('NaN') || res === '0B') return '0 B'
+  if (res.endsWith('B')) return res.slice(0, -1) + ' B'
+  if (!letterReg.test(res)) return `${res} B`
+  const reg = /(\d+\.?\d*)([A-Z])/ // 12T 1.5G
+  const matched = res.match(reg) // ['111T', '111', 'T']
+  return `${matched[1]} ${matched[2]}B`
+}
