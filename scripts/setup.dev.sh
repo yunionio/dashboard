@@ -1,16 +1,13 @@
 #!/bin/bash
 
 # set -x
-if [ $DEV_SETUP ]
-  then
-    read -p "🗃 : 请确保您已经fork了本仓库，并且fork了以下的的仓库(y/n):
-    📦 ssh://git@git.yunion.io/fep/dashboard-module-common
-    📦 ssh://git@git.yunion.io/fep/dashboard-module-cloudenv
-    📦 ssh://git@git.yunion.io/fep/dashboard-module-compute
-    📦 ssh://git@git.yunion.io/fep/dashboard-module-network
-    📦 ssh://git@git.yunion.io/fep/dashboard-module-dashboard
-    " userConfirm
-fi
+read -p "🗃 : 请确保您已经fork了本仓库，并且fork了以下的的仓库(y/n):
+📦 ssh://git@git.yunion.io/fep/dashboard-module-common
+📦 ssh://git@git.yunion.io/fep/dashboard-module-cloudenv
+📦 ssh://git@git.yunion.io/fep/dashboard-module-compute
+📦 ssh://git@git.yunion.io/fep/dashboard-module-network
+📦 ssh://git@git.yunion.io/fep/dashboard-module-dashboard
+" userConfirm
 
 if [ "$userConfirm" == "n" ] 
   then
@@ -21,7 +18,7 @@ fi
 path=$(dirname $0)
 cd $path
 DEFAULT_GIT_PATH=$(git remote -v | grep origin | awk '{print $2}' | head -1)
-DEFAULT_GIT_PREFIX=$(echo $DEFAULT_GIT_PATH | awk -F / '{print $1}')
+DEFAULT_GIT_PREFIX=$(echo $DEFAULT_GIT_PATH | awk -F /dashboard.git '{print $1}')
 cd -
 
 echo 'git remote origin:' $DEFAULT_GIT_PREFIX
