@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">修改属性</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" action="修改属性" />
+      <dialog-selected-tips :count="params.data.length" action="调整超售比" />
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 2)" />
        <a-form
         :form="form.fc">
@@ -74,8 +74,9 @@ export default {
   },
   methods: {
     doUpdate (data) {
+      const ids = this.params.data.map(item => item.id)
       return this.params.list.onManager('batchUpdate', {
-        id: this.params.data[0].id,
+        id: ids,
         managerArgs: {
           data,
         },
