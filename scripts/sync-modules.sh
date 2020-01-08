@@ -2,75 +2,33 @@
 #!/bin/bash
 
 # set -x
-read -p "🗃 : 请确保您已经fork了本仓库，并且fork了以下的的仓库(y/n):
-📦 https://github.com/yunionio/dashboard-module-cloudenv
-📦 https://github.com/yunionio/dashboard-module-compute
-📦 https://github.com/yunionio/dashboard-module-network
-📦 https://github.com/yunionio/dashboard-module-dashboard
-" userConfirm
 
-if [ "$userConfirm" == "n" ] 
-  then
-    echo "请先fork上面👆的仓库之后重试"
-    exit 0
-fi
+# 执行 checkout
+yarn checkout $@
 
-{ # try
-  moduleName='dashboard'
-  git fetch upstream && \
-  git rebase upstream/master && \
-  echo "\033[32m [$moduleName] rebase 完成 \033[0m"
-} || { # catch
-  echo "\033[31m [$moduleName] rebase 发生错误，请手动执行rebase \033[0m"
+branch=$1
+currentPath=$(dirname $0)
+sync(){
+  local moduleName=$1; shift
+  local path=$1; shift
+  { # try
+    echo 
+    cd $currentPath/$path 
+    git fetch origin && \
+    git rebase origin/$branch && \
+    # 不显示输出
+    cd - 2>&1 >/dev/null && \
+    echo "\033[32m [$moduleName] rebase 完成 \033[0m"
+  } || { # catch
+    echo "\033[31m [$moduleName] rebase 发生错误，请手动执行rebase \033[0m"
+  }
 }
 
-{ # try
-  moduleName='dashboard-module-common'
-  cd src
-  git fetch upstream && \
-  git rebase upstream/master && \
-  echo "\033[32m [$moduleName] rebase 完成 \033[0m"
-} || { # catch
-  echo "\033[31m [$moduleName] rebase 发生错误，请手动执行rebase \033[0m"
-}
+sync 'dashboard' ../
+sync 'dashboard-module-common' ../src
+sync 'dashboard-module-cloudenv' ../containers/Cloudenv
+sync 'dashboard-module-compute' ../containers/Compute
+sync 'dashboard-module-dashboard' ../containers/Dashboard
+sync 'dashboard-module-network' ../containers/Network
 
-{ # try
-  moduleName='dashboard-module-cloudenv'
-  cd ../containers/Cloudenv && \
-  git fetch upstream && \
-  git rebase upstream/master && \
-  echo "\033[32m [$moduleName] rebase 完成 \033[0m"
-} || { # catch
-  echo "\033[31m [$moduleName] rebase 发生错误，请手动执行rebase \033[0m"
-}
-
-{ # try
-  moduleName='dashboard-module-compute'
-  cd ../Compute && \
-  git fetch upstream && \
-  git rebase upstream/master && \
-  echo "\033[32m [$moduleName] rebase 完成 \033[0m"
-} || { # catch
-  echo "\033[31m [$moduleName] rebase 发生错误，请手动执行rebase \033[0m"
-}
-
-{ # try
-  moduleName='dashboard-module-dashboard'
-  cd ../Dashboard && \
-  git fetch upstream && \
-  git rebase upstream/master && \
-  echo "\033[32m [$moduleName] rebase 完成 \033[0m"
-} || { # catch
-  echo "\033[31m [$moduleName] rebase 发生错误，请手动执行rebase \033[0m"
-}
-
-{ # try
-  moduleName='dashboard-module-network'
-  cd ../Network && \
-  git fetch upstream && \
-  git rebase upstream/master && \
-  echo "\033[32m [$moduleName] rebase 完成 \033[0m"
-} || { # catch
-  echo "\033[31m [$moduleName] rebase 发生错误，请手动执行rebase \033[0m"
-}
-
+exit 0
