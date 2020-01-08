@@ -3,13 +3,7 @@
 echo "🗃 Initializing git repository..."
 
 DEFAULT_GIT_PREFIX="https://github.com/yunionio"
-
-function currentBranch {
-  br=`git branch | grep "*"`
-  BRANCH=${br/* /}
-}
-
-currentBranch
+BRANCH="release/2.13"
 
 if [ $DEV_SETUP ]
   then
