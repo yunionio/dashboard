@@ -60,7 +60,8 @@
           :types="osSelectTypes"
           :hypervisor="hypervisor"
           :decorator="decorators.imageOS"
-          :cacheImageParams="cacheImageParams" />
+          :cacheImageParams="cacheImageParams"
+          @updateImageMsg="updateFi" />
       </a-form-item>
       <a-form-item label="系统磁盘" v-bind="formItemLayout" class="mb-0">
         <system-disk
@@ -287,7 +288,7 @@ export default {
         usable: true,
         limit: 0,
       }
-      if (this.cloudregionZoneParams.zone) {
+      if (this.cloudregionZoneParams) {
         params.zone = this.cloudregionZoneParams.zone
         if (!params.zone) {
           params.cloudregion = this.cloudregionZoneParams.cloudregion

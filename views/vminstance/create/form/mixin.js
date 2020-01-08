@@ -199,7 +199,6 @@ export default {
     },
   },
   created () {
-    this.$bus.$on('VMInstanceCreateUpdateFi', this.updateFi, this)
     this.zoneM = new Manager('zones')
     this.serverM = new Manager('servers')
     this.servertemplateM = new Manager('servertemplates', 'v2')

@@ -19,9 +19,18 @@ export default {
     Private,
   },
   data () {
+    const cloudEnvOptions = getCloudEnvOptions('compute_engine_brands', true)
+    const queryType = this.$route.query.type
+    let cloudEnv = queryType === 'idc' ? 'onpremise' : this.$route.query.type
+    let routerQuery = this.$route.query.type
+    if (!cloudEnvOptions.find(val => val.key === cloudEnv)) {
+      cloudEnv = cloudEnvOptions[0].key
+      routerQuery = cloudEnv === 'onpremise' ? 'idc' : cloudEnv
+    }
     return {
-      cloudEnvOptions: getCloudEnvOptions('compute_engine_brands', true),
-      cloudEnv: this.$route.query.type === 'idc' ? 'onpremise' : this.$route.query.type,
+      cloudEnvOptions,
+      cloudEnv,
+      routerQuery,
     }
   },
   computed: {
@@ -82,6 +91,16 @@ export default {
         this.$router.push({ path, query: newQuery })
       })
     },
+  },
+  created () {
+    if (this.routerQuery !== this.$route.query.type) {
+      this.$router.push({
+        path: this.$router.history.current.path,
+        query: {
+          type: this.routerQuery,
+        },
+      })
+    }
   },
 }
 </script>

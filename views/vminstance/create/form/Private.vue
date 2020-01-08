@@ -35,7 +35,8 @@
           :hypervisor="form.fd.hypervisor"
           :decorator="decorators.imageOS"
           :image-params="scopeParams"
-          :cacheImageParams="cacheImageParams" />
+          :cacheImageParams="cacheImageParams"
+          @updateImageMsg="updateFi" />
       </a-form-item>
       <a-form-item label="CPU核数" v-bind="formItemLayout" class="mb-0">
         <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" @change="cpuChange" />
