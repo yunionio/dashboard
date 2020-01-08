@@ -164,6 +164,10 @@ export default {
         {
           title: '其他设置',
           items: [
+            {
+              field: 'backup_host_name',
+              title: '备份机的宿主机',
+            },
             getSwitchTableColumn({
               field: 'disable_delete',
               title: '删除保护',
