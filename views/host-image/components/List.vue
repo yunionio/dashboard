@@ -287,6 +287,9 @@ export default {
                     columns: this.columns,
                     title: '删除',
                     list: this.list,
+                    requestParams: {
+                      pending_delete: true,
+                    },
                   })
                 },
                 meta: () => {
