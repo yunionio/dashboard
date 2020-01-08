@@ -153,9 +153,4 @@ export default {
     success: ['available'],
     danger: ['create_fail', 'failed', 'delete_failed'],
   },
-  hostImageCache: {
-    info: ['init', 'saving', 'caching', 'deleting'],
-    success: ['ready'],
-    danger: ['cache_fail'],
-  },
 }
