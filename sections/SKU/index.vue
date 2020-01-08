@@ -76,6 +76,9 @@ export default {
       type: Boolean,
       default: true,
     },
+    instanceType: {
+      type: String,
+    },
   },
   data () {
     return {
@@ -257,18 +260,24 @@ export default {
       return '0'
     },
     skuChange ({ row }) {
-      this.setSku(row)
+      this.setSku(row, true)
     },
     skuTypeChange () {
       if (this.skuResults && this.skuResults.length) {
-        this.setSku(this.skuResults[0])
+        this.setSku(this.skuResults[0], true)
       }
     },
-    setSku (skuData) {
-      this.selectedSkuData = skuData
+    setSku (skuData, isSkuChange) {
+      let chooseSku = skuData
+      if (!isSkuChange && this.instanceType) {
+        const extSku = this.skuList.find(item => item.name === this.instanceType)
+        if (extSku) {
+          chooseSku = extSku
+        }
+      }
       this.$nextTick(() => {
-        this.$refs.tableRef && this.$refs.tableRef.setRadioRow(skuData)
-        this.$emit('change', skuData)
+        this.$refs.tableRef && this.$refs.tableRef.setRadioRow(chooseSku)
+        this.$emit('change', chooseSku)
       })
     },
     getHypervisor (data) {
