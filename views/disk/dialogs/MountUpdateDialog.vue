@@ -57,9 +57,10 @@ export default {
     }
   },
   created () {
-    let params = {
+    const params = {
       details: false,
       disk: this.params.data[0].id,
+      scope: this.$store.getters.scope,
     }
     new this.$Manager('servers').list({ params })
       .then((res) => {
