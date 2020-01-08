@@ -96,10 +96,15 @@ export default {
     },
     async doCreate () {
       if (!this.validateForm()) return false
+      this.loading = true
       const manager = new Manager('dbinstances', 'v2')
-      const { data, status } = await manager.create({ data: this.formatParams() })
-      if (status === 200 && data) {
+      try {
+        await manager.create({ data: this.formatParams() })
         this.$router.push('/rds')
+      } catch (err) {
+        throw err
+      } finally {
+        this.loading = false
       }
     },
   },

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="cpu_mems_mb">
+  <div v-loading="true">
     <a-form-item label="CPU核数" v-bind="formItemLayout">
       <a-radio-group v-decorator="['vcpu_count']" @change="getMemsMb">
         <a-radio-button :key="cpu" :value="cpu" v-for="cpu in cpus">{{cpu}}核</a-radio-button>
@@ -29,7 +29,7 @@ export default {
       cpus: [],
       mems_mbs: [],
       zones: {},
-      cpu_mems_mb: undefined,
+      cpu_mems_mb: {},
     }
   },
   methods: {
@@ -40,15 +40,17 @@ export default {
         this.form.setFieldsValue({
           vcpu_count: this.cpus[0],
         }, this.getMemsMb)
+      } else {
+        this.$nextTick(() => {
+          this.getMemsMb()
+        })
       }
     },
     initZone () {
       const zones = this.form.getFieldValue('zones')
       if (!zones || this.cpus.indexOf(zones) === -1) {
-        setTimeout(() => {
-          this.form.setFieldsValue({
-            zones: Object.keys(this.zones)[0],
-          })
+        this.form.setFieldsValue({
+          zones: Object.keys(this.zones)[0],
         })
       }
     },
@@ -56,15 +58,13 @@ export default {
       const target = e && e.target ? e.target : {}
       const cpu = target.value || this.form.getFieldValue('vcpu_count')
       this.mems_mbs = this['cpu_mems_mb'][cpu] || {}
-      this.$nextTick(() => {
-        const mbCount = this.form.getFieldValue('vmem_size_mb')
-        if (!mbCount || this.mems_mbs.indexOf(mbCount) === -1) {
-          this.form.setFieldsValue({
-            vmem_size_mb: this.mems_mbs[0],
-          })
-        }
-        this.$emit('change')
-      })
+      const mbCount = this.form.getFieldValue('vmem_size_mb')
+      if (!mbCount || this.mems_mbs.indexOf(mbCount) === -1) {
+        this.form.setFieldsValue({
+          vmem_size_mb: this.mems_mbs[0],
+        })
+      }
+      this.$emit('change')
     },
     getSpecsParams () {
       const { getFieldsValue } = this.form
@@ -80,11 +80,11 @@ export default {
     async fetchSpecs () {
       const PARAMS = await this.getSpecsParams()
       try {
-        this.form.setFieldsValue({
-          vcpu_count: undefined,
-          vmem_size_mb: undefined,
-          zones: undefined,
-        })
+        // this.form.setFieldsValue({
+        //   vcpu_count: undefined,
+        //   vmem_size_mb: undefined,
+        //   zones: undefined,
+        // })
         const manager = new this.$Manager('dbinstance_skus/instance-specs', 'v2')
         const { data = {} } = await manager.list({ params: PARAMS })
         this.cpus = data['cpus']
