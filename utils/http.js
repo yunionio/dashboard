@@ -190,8 +190,9 @@ http.interceptors.response.use(
         store.dispatch('auth/logout').then(() => {
           router.push('/auth')
         })
-      }
-      showHttpErrorMessage(error)
+      } else {
+		showHttpErrorMessage(error)
+	  }
     }
     return Promise.reject(error)
   }
