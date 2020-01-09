@@ -4,7 +4,7 @@
     <div slot="body">
       <a-alert class="mb-2" type="warning">
         <div slot="message">
-          开关打开后可绑定一个或多个GPU卡，开关关闭后则取消绑定所有GPU卡
+          开关打开时可关联或解绑多个GPU卡，关闭后则解绑所有GPU卡
         </div>
       </a-alert>
       <dialog-selected-tips :count="params.data.length" :action="action" />
@@ -12,19 +12,20 @@
       <a-form
         :form="form.fc">
         <a-form-item label="是否绑定" v-bind="formItemLayout">
-          <a-switch v-model="form.fi.isOpenGpu" />
+          <a-switch v-model="isOpenGpu" />
         </a-form-item>
-        <a-form-item label="GPU卡" v-bind="formItemLayout" v-show="form.fi.isOpenGpu">
+        <a-form-item label="GPU卡" v-bind="formItemLayout" v-show="isOpenGpu" extra="只能关联与主机处于同一宿主机的GPU卡">
           <base-select
             v-decorator="decorators.device"
             :params="gpuParams"
             :need-params="false"
             :labelFormat="labelFormat"
-            :mapper="mapper"
+            :disabled-items="disabledItems"
             filterable
-            multiple
-            placeholder="请选择GPU设备"
-            resource="isolated_devices" />
+            :options.sync="gpuOpt"
+            :mapper="mapper"
+            resource="isolated_devices"
+            :select-props="{ allowClear: true, placeholder: '请选择GPU设备', mode: 'multiple' }" />
         </a-form-item>
         <a-form-item label="自动启动" v-bind="formItemLayout" extra="设置成功后是否自动启动">
           <a-switch v-decorator="decorators.autoStart" />
@@ -39,6 +40,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
@@ -54,16 +56,13 @@ export default {
         fd: {
           device: [],
         },
-        fi: {
-          isOpenGpu: false,
-        },
       },
       decorators: {
         device: [
           'device',
           {
             rules: [
-              { required: true, message: '请选择GPU设备', trigger: 'change' },
+              { required: true, type: 'array', message: '请选择GPU设备', trigger: 'change' },
             ],
           },
         ],
@@ -83,8 +82,9 @@ export default {
           span: 3,
         },
       },
+      gpuOpt: [],
+      isOpenGpu: false,
       bindGpus: [],
-      bindGpusNames: [],
     }
   },
   computed: {
@@ -103,12 +103,16 @@ export default {
     detachGpu () {
       return this.bindGpus.filter((id) => { return !this.form.fd.device.includes(id) })
     },
+    disabledItems () {
+      return this.gpuOpt.filter(val => { return val.usedCount === val.totalCount }).map(item => { return item.id })
+    },
   },
   watch: {
-    bindGpus (val) {
-      this.form.fc.setFieldsValue({ device: val })
-      if (val && val.length > 0) {
-        this.form.fi.isOpenGpu = true
+    gpuOpt () {
+      this.bindGpus = this.gpuOpt.filter(item => item.usedCount).map(item => { return item.id })
+      if (this.bindGpus.length > 0) {
+        this.form.fc.setFieldsValue({ device: this.bindGpus })
+        this.isOpenGpu = true
       }
     },
   },
@@ -148,7 +152,7 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        if (this.form.fi.isOpenGpu) {
+        if (this.isOpenGpu) {
           const values = await this.form.fc.validateFields()
           await this.doAttachSubmit(values)
         } else {
@@ -162,26 +166,46 @@ export default {
         throw error
       }
     },
+    mapper (data) {
+      const obj = {}
+      for (let i = 0; i < data.length; i++) {
+        const item = data[i]
+        if (!obj[item.model]) {
+          obj[item.model] = {
+            usedCount: item.guest ? 1 : 0,
+            totalCount: 1,
+          }
+          if (!item.guest) {
+            obj[item.model] = {
+              ...obj[item.model],
+              ...item,
+            }
+          }
+        } else {
+          obj[item.model].totalCount += 1
+          if (item.guest) {
+            obj[item.model].usedCount += 1
+          } else {
+            obj[item.model] = {
+              ...obj[item.model],
+              ...item,
+            }
+          }
+        }
+      }
+      const newData = []
+      R.forEachObjIndexed((value, key) => {
+        newData.push(value)
+      }, obj)
+      return newData
+    },
     labelFormat (val) {
       return val.model
-    },
-    mapper (list) {
-      return list.filter((val) => {
-        if (val.guest) {
-          if (val.guest_id === this.selectedItems[0].id) {
-            this.bindGpus.push(val.id)
-            this.bindGpusNames.push(val.model)
-            return true
-          }
-          return false
-        }
-        return true
-      })
     },
     onValuesChange (props, values) {
       Object.keys(values).forEach((key) => {
         if (key === 'device') {
-          this.form.fd[key] = [values[key]]
+          this.form.fd[key] = values[key]
         } else {
           this.form.fd[key] = values[key]
         }

@@ -13,6 +13,9 @@
             </a-select-option>
           </a-select>
         </a-form-item>
+        <a-form-item label="自动启动" v-bind="formItemLayout" extra="设置成功后是否自动启动">
+          <a-switch v-decorator="decorators.autoStart" />
+        </a-form-item>
       </a-form>
     </div>
     <div slot="footer">
@@ -43,6 +46,13 @@ export default {
             rules: [
               { required: true, message: '请选择关联主机' },
             ],
+          },
+        ],
+        autoStart: [
+          'autoStart',
+          {
+            valuePropName: 'checked',
+            initialValue: true,
           },
         ],
       },
@@ -86,7 +96,7 @@ export default {
         id: data.guest,
         action: 'attach-isolated-device',
         data: {
-          auto_start: true,
+          auto_start: data.autoStart,
           device: this.params.data[0].id,
         },
       })

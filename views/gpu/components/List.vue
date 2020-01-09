@@ -12,6 +12,7 @@ import { getNameFilter } from '@/utils/common/tableFilter'
 import {
   getNameDescriptionTableColumn,
   getCopyWithContentTableColumn,
+  getStatusTableColumn,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 
@@ -118,6 +119,7 @@ export default {
           hideField: true,
           slotCallback: row => row.guest || row.guest_id,
         }),
+        getStatusTableColumn({ field: 'guest_status', title: '主机状态', statusModule: 'server' }),
         getCopyWithContentTableColumn({
           field: 'host',
           title: '所在宿主机',
