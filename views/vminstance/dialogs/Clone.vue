@@ -6,7 +6,7 @@
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
         <a-form-item label="名称" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')"  @change="debounceFetchServers" />
+          <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverCreateName')"  @change="debounceFetchServers" />
           <template v-slot:extra>
             <div>名称支持有序后缀占位符‘#’，用法举例，名称host##，数量2，创建后实例的名称依次为host01、host02，已有同名实例，序号顺延</div>
             <div class="mt-2" v-if="nameRepeated">名称重复，系统默认追加“-1”</div>
@@ -80,7 +80,7 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: '请输入名称' },
-              { validator: this.$validate('resourceName') },
+              { validator: this.$validate('serverCreateName') },
             ],
           },
         ],
