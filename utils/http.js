@@ -191,8 +191,8 @@ http.interceptors.response.use(
           router.push('/auth')
         })
       } else {
-		showHttpErrorMessage(error)
-	  }
+        showHttpErrorMessage(error)
+      }
     }
     return Promise.reject(error)
   }
