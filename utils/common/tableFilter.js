@@ -1,13 +1,17 @@
 import * as R from 'ramda'
 import store from '@/store'
 import i18n from '@/locales'
+import { HYPERVISORS_MAP } from '@/constants'
 
 export function getBrandItems (key = 'brands') {
   let brands = store.getters.capability[key] || []
   if (store.getters.capability[`disabled_${key}`]) {
     brands = brands.concat(store.getters.capability[`disabled_${key}`] || [])
   }
-  return brands.map(item => ({ key: item, label: item }))
+  return brands.map(item => {
+    const brandConfig = HYPERVISORS_MAP[item.toLowerCase()] || {}
+    return { key: item, label: brandConfig.label || item }
+  })
 }
 
 export function mapperStatusToItems (items, statusModule) {
@@ -77,7 +81,7 @@ export function getStatusFilter (params) {
 
 export function getTenantFilter () {
   return {
-    label: '项目',
+    label: i18n.t('dictionary.project'),
     dropdown: true,
     multiple: true,
     distinctField: {

@@ -3,10 +3,10 @@ import _ from 'lodash'
 import moment from 'moment'
 import BrandIcon from '@/sections/BrandIcon'
 import TagTableColumn from '@/sections/TagTableColumn'
-import { SHARE_SCOPE } from '@/constants'
 import store from '@/store'
+import i18n from '@/locales'
 
-export const getProjectTableColumn = ({ field = 'tenant', title = '项目', projectsItem = 'tenant', sortable = true } = {}) => {
+export const getProjectTableColumn = ({ field = 'tenant', title = i18n.t('dictionary.project'), projectsItem = 'tenant', sortable = true } = {}) => {
   return {
     field,
     title,
@@ -274,14 +274,14 @@ export const isPublicTableColumn = ({ field = 'is_public', title = '共享范围
       if (!row.is_public) {
         text = '私有'
         if (row.shared_projects) {
-          text = '项目'
+          text = this.$t('shareScope.project')
         }
       } else {
-        const scopeText = (SHARE_SCOPE[row.public_scope] || {})['label'] || row.public_scope
+        const scopeText = i18n.t(`shareScope.${row.public_scope}`)
         if (row.public_scope) {
           text = scopeText
         } else {
-          text = '系统'
+          text = this.$t('shareScope.system')
         }
       }
       return text
@@ -312,6 +312,34 @@ export const getAccountTableColumn = ({
     width: 150,
     formatter: ({ cellValue }) => {
       return cellValue || '-'
+    },
+  }
+}
+
+export const getBillingTypeTableColumn = ({ field = 'billing_type', title = '计费方式', width = '120px' } = {}) => {
+  return {
+    field,
+    title,
+    showOverflow: 'ellipsis',
+    width,
+    slots: {
+      default: ({ row }, h) => {
+        const ret = []
+        if (row[field] === 'postpaid') {
+          ret.push(<div style={{ color: '#0A1F44' }}>按量付费</div>)
+        } else if (row[field] === 'prepaid') {
+          ret.push(<div style={{ color: '#0A1F44' }}>包年包月</div>)
+        }
+        if (row.expired_at) {
+          let dateArr = moment(row.expired_at).fromNow().split(' ')
+          let date = dateArr.join('')
+          let seconds = moment(row.expired_at).diff(new Date()) / 1000
+          let textColor = seconds / 24 / 60 / 60 < 7 ? '#DD2727' : '#53627C'
+          let text = seconds < 0 ? '已过期' : `${date.substring(0, date.length - 1)}后到期`
+          ret.push(<div style={{ color: textColor }}>{ text }</div>)
+        }
+        return ret
+      },
     },
   }
 }

@@ -13,7 +13,7 @@
             :labelInValue="labelInValue"
             v-decorator="decorators.domain"
             :loading="domainLoading"
-            placeholder="请选择域"
+            :placeholder="$t('rules.domain')"
             @change="domainChange"
             :filterOption="filterOption"
             showSearch>
@@ -29,7 +29,7 @@
             :labelInValue="labelInValue"
             v-decorator="decorators.project"
             :loading="projectLoading"
-            placeholder="请选择项目"
+            :placeholder="$t('rules.project')"
             @change="projectChange"
             :filterOption="filterOption"
             showSearch>

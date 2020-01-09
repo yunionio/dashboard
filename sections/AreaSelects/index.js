@@ -1,5 +1,4 @@
 import * as R from 'ramda'
-import { CITYS, CLOUD_PROVIDERS_MAP } from '@/constants'
 
 // const Select = {
 //   name: 'Select',
@@ -235,11 +234,12 @@ export default {
           },
         })
       }
+      const citys = this.$t('citys')
       return (
         <a-select allowClear showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.cityLoading} placeholder="请选择城市">
           {this.cityList.map(city => {
             const { id, name } = city
-            return <a-select-option key={id} value={name}>{CITYS[name] || name}</a-select-option>
+            return <a-select-option key={id} value={name}>{citys[name] || name}</a-select-option>
           })}
         </a-select>
       )
@@ -274,11 +274,12 @@ export default {
           },
         })
       }
+      const cloudProvidersMap = this.$t('CLOUD_PROVIDERS_MAP')
       return (
         <a-select allowClear showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.providerLoading} placeholder="请选择平台">
           {this.providerList.map(provider => {
             const { name } = provider
-            return <a-select-option key={name} value={name}>{CLOUD_PROVIDERS_MAP[name] || name}</a-select-option>
+            return <a-select-option key={name} value={name}>{cloudProvidersMap[name] || name}</a-select-option>
           })}
         </a-select>
       )
