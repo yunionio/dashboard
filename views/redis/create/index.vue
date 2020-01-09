@@ -5,7 +5,7 @@
       class="mt-3"
       :form="form.fc">
       <a-divider orientation="left">基础配置</a-divider>
-      <a-form-item label="指定项目" class="mb-0" v-bind="formItemLayout">
+      <a-form-item :label="`指定${$t('dictionary.project')}`" class="mb-0" v-bind="formItemLayout">
         <domain-project :labelInValue="false" :fc="form.fc" :form-layout="formItemLayout"
         :decorators="{ project: project, domain: domain }" />
       </a-form-item>
@@ -73,7 +73,7 @@ export default {
         'domain',
         {
           rules: [
-            { required: true, message: '请选择域', trigger: 'change' },
+            { required: true, message: this.$t('rules.domain'), trigger: 'change' },
           ],
         },
       ],
@@ -81,7 +81,7 @@ export default {
         'project',
         {
           rules: [
-            { required: true, message: '请选择项目', trigger: 'change' },
+            { required: true, message: this.$t('rules.project'), trigger: 'change' },
           ],
         },
       ],

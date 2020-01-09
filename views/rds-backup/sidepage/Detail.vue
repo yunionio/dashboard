@@ -29,7 +29,7 @@ export default {
           items: [
             {
               field: 'tenant',
-              title: '所属项目',
+              title: `所属${this.$t('dictionary.project')}`,
             },
             {
               field: 'backup_size_mb',

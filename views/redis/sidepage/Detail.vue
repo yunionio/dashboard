@@ -31,11 +31,11 @@ export default {
       baseInfo: [
         {
           field: 'project_domain',
-          title: '部门（域）',
+          title: this.$t('dictionary.domain'),
         },
         {
           field: 'tenant',
-          title: '所属项目',
+          title: `所属${this.$t('dictionary.project')}`,
         },
         {
           field: 'manager',

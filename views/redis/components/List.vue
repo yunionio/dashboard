@@ -400,10 +400,10 @@ export default {
               //   },
               // },
               {
-                label: '更改项目',
+                label: `更改${this.$t('dictionary.project')}`,
                 action: () => {
                   this.createDialog('ChangeOwenrDialog', {
-                    title: '更改项目',
+                    title: `更改${this.$t('dictionary.project')}`,
                     data: [obj],
                     columns: this.columns,
                     list: this.list,

@@ -3,7 +3,7 @@
     <page-header title="新建" />
     <a-form :form="form.fc" class="mt-3">
       <a-divider orientation="left">基础配置</a-divider>
-      <a-form-item label="指定项目" v-bind="formItemLayout">
+      <a-form-item :label="`指定${$t('dictionary.project')}`" v-bind="formItemLayout">
         <domain-project :decorators="decorators.projectDomain" :fc="form.fc" :labelInValue="false" />
       </a-form-item>
       <a-form-item label="名称" v-bind="formItemLayout">
@@ -67,7 +67,7 @@ export default {
           {
             initialValue: projectId,
             rules: [
-              { required: true, message: '请选择项目' },
+              { required: true, message: this.$t('rules.project') },
             ],
           },
         ],
@@ -76,7 +76,7 @@ export default {
           {
             initialValue: projectDomainId,
             rules: [
-              { required: true, message: '请选择域' },
+              { required: true, message: this.$t('rules.domain') },
             ],
           },
         ],
