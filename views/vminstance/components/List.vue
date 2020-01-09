@@ -218,7 +218,7 @@ export default {
           minWidth: 100,
           slots: {
             default: ({ row }) => {
-              if (findPlatform(row.brand) === SERVER_TYPE.public) {
+              if (findPlatform(row.hypervisor, 'hypervisor') === SERVER_TYPE.public) {
                 return '-'
               }
               const text = row['host'] || '-'
