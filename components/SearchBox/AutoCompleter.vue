@@ -278,7 +278,7 @@ export default {
         }).filter(item => !!item)
         if (!this.config.multiple && this.selectValue.length) this.selectValue = this.selectValue[0]
       } else {
-        this.selectValue = value
+        this.selectValue = value || []
       }
     },
   },
