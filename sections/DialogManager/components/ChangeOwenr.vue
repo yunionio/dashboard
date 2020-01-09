@@ -1,12 +1,12 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">更改项目</div>
+    <div slot="header">更改{{ $t('dictionary.project') }}</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" action="更改项目" />
+      <dialog-selected-tips :count="params.data.length" :action="`更改${$t('dictionary.project')}`" />
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
-        <a-form-item label="项目" v-bind="formItemLayout">
+        <a-form-item :label="$t('dictionary.project')" v-bind="formItemLayout">
           <domain-project
             :fc="form.fc"
             :form-layout="formItemLayout"
@@ -46,7 +46,7 @@ export default {
           {
             initialValue: _.get(this.params, 'data[0].domain_id'),
             rules: [
-              { required: true, message: '请选择域', trigger: 'change' },
+              { required: true, message: this.$t('rules.domain'), trigger: 'change' },
             ],
           },
         ],
@@ -55,7 +55,7 @@ export default {
           {
             initialValue: _.get(this.params, 'data[0].tenant_id'),
             rules: [
-              { required: true, message: '请选择项目', trigger: 'change' },
+              { required: true, message: this.$t('rules.project'), trigger: 'change' },
             ],
           },
         ],

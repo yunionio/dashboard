@@ -88,8 +88,8 @@ export default {
   },
   methods: {
     getLabel (meta) {
-      if (meta.i18n) {
-        return this.$t(meta.label)
+      if (meta.t) {
+        return this.$t(meta.t)
       }
       return meta.label
     },

@@ -1,17 +1,17 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">更改项目</div>
+    <div slot="header">更改{{ $t('dictionary.project') }}</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" action="更改项目" />
+      <dialog-selected-tips :count="params.data.length" :action="`更改${$t('dictionary.project')}`" />
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
-        <a-form-item label="项目" v-bind="formItemLayout">
+        <a-form-item :label="$t('dictionary.project')" v-bind="formItemLayout">
           <base-select
             v-decorator="decorators.project"
             :params="projectParams"
             version="v1"
-            :select-props="{ placeholder: '请选择项目' }"
+            :select-props="{ placeholder: this.$t('rules.project') }"
             resource="projects"
             :filterable="true" />
         </a-form-item>
@@ -45,7 +45,7 @@ export default {
           {
             initialValue,
             rules: [
-              { required: true, message: '请选择项目' },
+              { required: true, message: this.$t('rules.project') },
             ],
           },
         ],

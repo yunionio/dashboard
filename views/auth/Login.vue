@@ -28,7 +28,7 @@
           </a-form-item>
            <!--- 如果超过3个 domain，为了后端验证效率，还是在前端选择domain -->
           <a-form-item v-if="form.fi.showDomain">
-            <a-select class="material-input" v-decorator="decorator.domain" placeholder="请选择认证域">
+            <a-select class="material-input" v-decorator="decorator.domain" :placeholder="$t('rules.identity_provider')">
               <a-select-option
                 v-for="item in form.fi.domains"
                 :key="item"

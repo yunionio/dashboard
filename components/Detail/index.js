@@ -3,6 +3,7 @@ import * as R from 'ramda'
 import _ from 'lodash'
 import moment from 'moment'
 import classNames from 'classnames'
+import i18n from '@/locales'
 
 // 需要添加区域（cloudregion/cloudregion_id), 可用区（zone/zone_id)，云账号(account/account_id)，云订阅（manager/manager_id)的资源
 const appendOutherResources = ['servers', 'hosts', 'disks', 'storages', 'vpcs', 'wires', 'networks', 'snapshots']
@@ -103,14 +104,14 @@ const getDefaultTopBaseInfo = (h, { idKey, statusKey, statusModule, data, list }
     },
     {
       field: 'project_domain',
-      title: '域',
+      title: i18n.t('dictionary.domain'),
       formatter: ({ row }) => {
         return row.project_domain || '-'
       },
     },
     {
       field: 'tenant',
-      title: '项目',
+      title: i18n.t('dictionary.project'),
       formatter: ({ row }) => {
         return row.tenant || '-'
       },

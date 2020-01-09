@@ -14,16 +14,16 @@
               :key="item.key">{{ item.label }}</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item label="域" key="domain" v-bind="formItemLayout" v-if="isDomainScope">
+        <a-form-item :label="$t('dictionary.domain')" key="domain" v-bind="formItemLayout" v-if="isDomainScope">
           <base-select
             resource="domains"
             v-decorator="decorators.domain"
             :params="domainParams"
             filterable
             version="v1"
-            :select-props="{ placeholder: '请选择所属范围域' }" />
+            :select-props="{ placeholder: `请选择所属范围${$t('dictionary.domain')}` }" />
         </a-form-item>
-        <a-form-item label="项目" key="project" v-bind="formItemLayout" v-if="isProjectScope">
+        <a-form-item :label="$t('dictionary.project')" key="project" v-bind="formItemLayout" v-if="isProjectScope">
           <base-select
             resource="projects"
             v-decorator="decorators.project"
@@ -31,7 +31,7 @@
             filterable
             version="v1"
             :need-params="true"
-            :select-props="{ placeholder: '请选择所属范围项目' }" />
+            :select-props="{ placeholder: `请选择所属范围${$t('dictionary.project')}` }" />
         </a-form-item>
       </a-form>
     </div>
@@ -88,7 +88,7 @@ export default {
             initialValue: initValue.domain,
             validateTrigger: 'blur',
             rules: [
-              { required: true, message: '请选择域' },
+              { required: true, message: this.$t('rules.domain') },
             ],
           },
         ],
@@ -98,7 +98,7 @@ export default {
             initialValue: initValue.project,
             validateTrigger: 'blur',
             rules: [
-              { required: true, message: '请选择项目' },
+              { required: true, message: this.$t('rules.project') },
             ],
           },
         ],
@@ -137,12 +137,12 @@ export default {
     },
     scopeOptions () {
       let ret = [
-        { label: '项目', key: 'project' },
+        { label: this.$t('shareScope.project'), key: 'project' },
       ]
       if (this.isAdminMode) {
-        ret.splice(0, 0, { label: '系统', key: 'system' })
+        ret.splice(0, 0, { label: this.$t('shareScope.system'), key: 'system' })
         if (this.l3PermissionEnable) {
-          ret.splice(1, 0, { label: '域', key: 'domain' })
+          ret.splice(1, 0, { label: this.$t('shareScope.domain'), key: 'domain' })
         }
       }
       return ret

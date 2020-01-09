@@ -3,10 +3,10 @@ import _ from 'lodash'
 import moment from 'moment'
 import BrandIcon from '@/sections/BrandIcon'
 import TagTableColumn from '@/sections/TagTableColumn'
-import { SHARE_SCOPE } from '@/constants'
 import store from '@/store'
+import i18n from '@/locales'
 
-export const getProjectTableColumn = ({ field = 'tenant', title = '项目', projectsItem = 'tenant', sortable = true } = {}) => {
+export const getProjectTableColumn = ({ field = 'tenant', title = i18n.t('dictionary.project'), projectsItem = 'tenant', sortable = true } = {}) => {
   return {
     field,
     title,
@@ -274,14 +274,14 @@ export const isPublicTableColumn = ({ field = 'is_public', title = '共享范围
       if (!row.is_public) {
         text = '私有'
         if (row.shared_projects) {
-          text = '项目'
+          text = this.$t('shareScope.project')
         }
       } else {
-        const scopeText = (SHARE_SCOPE[row.public_scope] || {})['label'] || row.public_scope
+        const scopeText = i18n.t(`shareScope.${row.public_scope}`)
         if (row.public_scope) {
           text = scopeText
         } else {
-          text = '系统'
+          text = this.$t('shareScope.system')
         }
       }
       return text
