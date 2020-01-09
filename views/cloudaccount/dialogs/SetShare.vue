@@ -65,9 +65,9 @@ export default {
   computed: {
     extra () {
       const shareModeExtra = {
-        'account_domain': '私有：只有所属域/部门下的任意项目可以使用该云账号下的任意订阅创建资源',
-        'system': '共享云账号：所有域/部门下的任意项目可以使用该云账号下的任意订阅创建资源',
-        'provider_domain': '共享订阅：指定域/部门下的任意项目可以使用该云账号下的指定订阅，该类型设置完成后，还需要单独在订阅列表进行 【更改项目】 设置才可生效',
+        'account_domain': `私有：只有所属${this.$t('dictionary.domain')}下的任意${this.$t('dictionary.project')}可以使用该云账号下的任意订阅创建资源`,
+        'system': `共享云账号：所有${this.$t('dictionary.domain')}下的任意${this.$t('dictionary.project')}可以使用该云账号下的任意订阅创建资源`,
+        'provider_domain': `共享订阅：指定${this.$t('dictionary.domain')}下的任意${this.$t('dictionary.project')}可以使用该云账号下的指定订阅，该类型设置完成后，还需要单独在订阅列表进行 【更改${this.$t('dictionary.project')}】 设置才可生效`,
       }
       return shareModeExtra[this.form.fd.share_mode]
     },

@@ -126,7 +126,7 @@ export default {
               },
             },
             tenant: {
-              label: '项目',
+              label: this.$t('dictionary.project'),
               dropdown: true,
               multiple: true,
               distinctField: {

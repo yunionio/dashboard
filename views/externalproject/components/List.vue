@@ -35,11 +35,11 @@ export default {
       columns: [
         {
           field: 'name',
-          title: '云上项目',
+          title: `云上${this.$t('dictionary.project')}`,
         },
         {
           field: 'tenant',
-          title: '本地项目',
+          title: `本地${this.$t('dictionary.project')}`,
         },
         {
           field: 'last_auto_sync',
@@ -49,7 +49,7 @@ export default {
       ],
       groupActions: [
         {
-          label: '更改项目',
+          label: `更改${this.$t('dictionary.project')}`,
           permission: 'externalprojects_update',
           action: obj => {
             this.createDialog('ChangeProjectDialog', {
@@ -67,7 +67,7 @@ export default {
       ],
       singleActions: [
         {
-          label: '更改项目',
+          label: `更改${this.$t('dictionary.project')}`,
           permission: 'externalprojects_update',
           action: obj => {
             this.createDialog('ChangeProjectDialog', {
