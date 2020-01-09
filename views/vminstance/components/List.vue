@@ -210,7 +210,24 @@ export default {
         },
         getStatusTableColumn({ statusModule: 'server' }),
         getCopyWithContentTableColumn({ field: 'vpc', title: 'VPC' }),
-        getCopyWithContentTableColumn({ field: 'host', title: '宿主机', sortable: true }),
+        {
+          field: 'host',
+          title: '宿主机',
+          sortable: true,
+          showOverflow: 'ellipsis',
+          minWidth: 100,
+          slots: {
+            default: ({ row }) => {
+              if (findPlatform(row.brand) === SERVER_TYPE.public) {
+                return '-'
+              }
+              const text = row['host'] || '-'
+              return [
+                <list-body-cell-wrap copy field='host' row={row} message={text}></list-body-cell-wrap>,
+              ]
+            },
+          },
+        },
         getProjectTableColumn(),
         getBrandTableColumn(),
         getRegionTableColumn(),
