@@ -92,8 +92,8 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入快照名称' },
-              { validator: this.$validate('resourceName') },
+              { required: true, message: '请输入主机名称' },
+              { validator: this.$validate('serverCreateName') },
             ],
           },
         ],
