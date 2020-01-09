@@ -4,7 +4,7 @@
     <div slot="body">
       <a-form
         :form="form.fc">
-        <a-form-item label="指定项目" v-bind="formItemLayout" class="mb-0">
+        <a-form-item :label="`指定${$t('dictionary.project')}`" v-bind="formItemLayout" class="mb-0">
           <domain-project :fc="form.fc" :form-layout="formItemLayout" :decorators="{ project: decorators.project, domain: decorators.domain }" @update:domain="domainChange" />
         </a-form-item>
         <a-form-item label="平台" v-bind="formItemLayout">
@@ -111,7 +111,7 @@ export default {
           'domain',
           {
             rules: [
-              { validator: isRequired(), message: '请选择域', trigger: 'change' },
+              { validator: isRequired(), message: this.$t('rules.domain'), trigger: 'change' },
             ],
           },
         ],
@@ -119,7 +119,7 @@ export default {
           'project',
           {
             rules: [
-              { validator: isRequired(), message: '请选择项目', trigger: 'change' },
+              { validator: isRequired(), message: this.$t('dictionary.project'), trigger: 'change' },
             ],
           },
         ],

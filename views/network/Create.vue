@@ -157,7 +157,7 @@ export default {
             {
               initialValue: { key: '', label: '', provider: '' },
               rules: [
-                { validator: isRequired(), message: '请选择区域' },
+                { validator: isRequired(), message: this.$t('rules.domain') },
               ],
             },
           ],

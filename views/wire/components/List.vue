@@ -59,7 +59,7 @@ export default {
           { label: '带宽', key: 'bandwidth' },
           { label: '专有网络', key: 'vpc' },
           { label: '网络数量', key: 'networks' },
-          { label: '项目', key: 'tenant' },
+          { label: this.$t('dictionary.project'), key: 'tenant' },
           { label: '平台', key: 'provider' },
           { label: '云账号', key: 'manager' },
         ],

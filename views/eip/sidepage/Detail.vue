@@ -54,7 +54,7 @@ export default {
         },
         {
           field: 'tenant',
-          title: '所属项目',
+          title: `所属${this.$t('dictionary.project')}`,
         },
       ],
       extraInfo: [

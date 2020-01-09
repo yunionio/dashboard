@@ -134,7 +134,7 @@ export default {
           { label: '二层网络', key: 'wire' },
           { label: 'VLAN', key: 'vlan_id' },
           { label: 'VPC', key: 'vpc' },
-          { label: '项目', key: 'tenant' },
+          { label: this.$t('dictionary.project'), key: 'tenant' },
           { label: '云账号', key: 'account' },
           { label: '区域', key: 'region' },
           { label: '可用区', key: 'zone' },
@@ -251,7 +251,7 @@ export default {
           actions: () => {
             return [
               {
-                label: '更改项目',
+                label: `更改${this.$t('dictionary.project')}`,
                 action: () => {
                   this.createDialog('ChangeOwenrDialog', {
                     data: this.list.selectedItems,
@@ -425,7 +425,7 @@ export default {
                 },
               },
               {
-                label: '更改项目',
+                label: `更改${this.$t('dictionary.project')}`,
                 permission: 'networks_perform_change_owner',
                 action: () => {
                   this.createDialog('ChangeOwenrDialog', {
