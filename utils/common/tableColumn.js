@@ -1,11 +1,9 @@
 import * as R from 'ramda'
 import _ from 'lodash'
 import moment from 'moment'
-import { SERVER_TYPE } from '@Compute/constants'
 import BrandIcon from '@/sections/BrandIcon'
 import TagTableColumn from '@/sections/TagTableColumn'
 import { SHARE_SCOPE } from '@/constants'
-import { findPlatform } from '@/utils/common/hypervisor'
 import store from '@/store'
 
 export const getProjectTableColumn = ({ field = 'tenant', title = '项目', projectsItem = 'tenant', sortable = true } = {}) => {
@@ -184,9 +182,6 @@ export const getCopyWithContentTableColumn = ({
     minWidth: 100,
     slots: {
       default: ({ row }, h) => {
-        if (findPlatform(row.brand) === SERVER_TYPE.public) {
-          return '-'
-        }
         const text = message || row[field] || '-'
         return [
           <list-body-cell-wrap copy field={field} row={row} hideField={hideField} message={text}>
