@@ -15,6 +15,12 @@ export default {
       },
       enabledKeys: [],
     },
+    // 自定义字典
+    dictionary: {
+      id: '',
+      zh: {},
+      en: {},
+    },
   },
   getters: {
     logo (state) {
@@ -40,6 +46,9 @@ export default {
       return Promise.resolve()
     },
     fetchWorkflowEnabledKeys () {
+      return Promise.resolve()
+    },
+    fetchDictionary ({ commit }, payload) {
       return Promise.resolve()
     },
   },
