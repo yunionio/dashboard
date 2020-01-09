@@ -29,12 +29,12 @@
         </div>
         <a-menu slot="overlay" @click="projectChange">
           <a-menu-item scope="project" :key="`${projects[0].id}$$project$$${true}`">
-            <a-radio :checked="scope === 'project'" />普通项目
+            <a-radio :checked="scope === 'project'" />普通{{ $t('dictionary.project') }}
           </a-menu-item>
           <template v-if="systemProject || domainProject">
             <template v-if="!systemProject && domainProject">
               <a-menu-item scope="domain" :key="`${domainProject.id}$$domain`">
-                <a-radio :checked="scope === 'domain'" />域管理后台
+                <a-radio :checked="scope === 'domain'" />{{ $('dictionary.domain') }}管理后台
               </a-menu-item>
             </template>
             <template v-else>
@@ -106,12 +106,12 @@ export default {
       return R.find(R.propEq('domain_capable', true))(this.projects)
     },
     viewLabel () {
-      let ret = '普通项目'
+      let ret = `普通${this.$t('dictionary.project')}`
       if (this.$store.getters['auth/isAdmin']) {
         ret = '管理后台'
       }
       if (this.$store.getters['auth/isDomain']) {
-        ret = '域管理后台'
+        ret = `${this.$t('dictionary.domain')}管理后台`
       }
       return ret
     },
