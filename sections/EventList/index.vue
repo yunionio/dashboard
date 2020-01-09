@@ -61,7 +61,6 @@
 <script>
 import * as R from 'ramda'
 import { Manager } from '@/utils/manager'
-import OBJ_TYPE from '@/constants/actionObjType'
 import RefreshButton from '@/components/PageList/RefreshButton'
 import WindowsMixin from '@/mixins/windows'
 import {
@@ -108,7 +107,7 @@ export default {
           key: 'obj_name',
         },
         {
-          label: '所属项目',
+          label: `所属${this.$t('dictionary.project')}`,
           key: 'tenant',
         },
         {
@@ -133,7 +132,7 @@ export default {
           title: '类型',
           field: 'obj_type',
           hideField: true,
-          slotCallback: row => OBJ_TYPE[row.obj_type] || row.obj_type,
+          slotCallback: row => this.$te(`dictionary.${row.obj_type}`) ? this.$t(`dictionary.${row.obj_type}`) : row.obj_type,
         }),
         getCopyWithContentTableColumn({
           title: '操作',
@@ -165,7 +164,7 @@ export default {
         }),
         getCopyWithContentTableColumn({
           field: 'tenant',
-          title: '所属项目',
+          title: `所属${this.$t('dictionary.project')}`,
         }),
         {
           field: 'notes',

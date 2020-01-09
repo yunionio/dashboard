@@ -95,8 +95,8 @@ export default {
       this.$router.push(path)
     },
     getLabel (meta) {
-      if (meta.i18n) {
-        return this.$t(meta.label)
+      if (meta.t) {
+        return this.$t(meta.t)
       }
       return meta.label
     },

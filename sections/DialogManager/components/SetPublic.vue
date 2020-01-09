@@ -16,7 +16,7 @@
             </a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item label="项目" v-bind="formItemLayout" v-if="isShare && isProjectScope">
+        <a-form-item :label="$t('dictionary.project')" v-bind="formItemLayout" v-if="isShare && isProjectScope">
           <base-select
             resource="projects"
             v-decorator="decorators.project"
@@ -24,7 +24,7 @@
             version="v1"
             :need-params="true"
             :mapper="projectMapper"
-            :select-props="{ placeholder: '请选择项目' }" />
+            :select-props="{ placeholder: $t('rules.project') }" />
         </a-form-item>
       </a-form>
     </div>
@@ -92,11 +92,11 @@ export default {
   computed: {
     scopeOptions () {
       let ret = [
-        { label: '系统', value: 'system' },
-        { label: '项目', value: 'project' },
+        { label: this.$t('shareScope.system'), value: 'system' },
+        { label: this.$t('shareScope.project'), value: 'project' },
       ]
       if (this.$store.getters.l3PermissionEnable) {
-        ret.splice(1, 0, { label: '当前域', value: 'domain' })
+        ret.splice(1, 0, { label: `当前${this.$t('shareScope.domain')}`, value: 'domain' })
       }
       if (this.$store.getters.isDomainMode) {
         ret.shift()

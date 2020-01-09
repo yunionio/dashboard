@@ -81,7 +81,7 @@ export function getStatusFilter (params) {
 
 export function getTenantFilter () {
   return {
-    label: '项目',
+    label: i18n.t('dictionary.project'),
     dropdown: true,
     multiple: true,
     distinctField: {

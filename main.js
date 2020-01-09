@@ -47,6 +47,7 @@ const app = new Vue({
 async function start () {
   try {
     await store.dispatch('app/fetchCompayInfo')
+    await store.dispatch('app/fetchDictionary')
   } finally {
     app.$mount('#app')
   }
