@@ -114,25 +114,38 @@ export default {
       }
       return null
     },
+
+    durationNum () {
+      if (this.isPackage) {
+        const { duration } = this.values
+        let num = parseInt(duration)
+        if (num && duration.endsWith('Y')) {
+          num *= 12
+        }
+        return num
+      }
+      return 0
+    },
     price () {
       const { count } = this.values
       if (this.rate && count) {
-        if (this.isPackage) {
-          return this.rate.month_price
+        const { month_price: month, hour_price: hour } = this.rate
+        if (this.isPackage && this.durationNum) {
+          return parseFloat(month) * parseFloat(count) * this.durationNum
         }
-        return this.rate.hour_price
+        return parseFloat(hour)
       }
       return null
     },
     priceTips () {
       if (this.price) {
-        if (this.isPackage) {
-          const _day = (this.price / 30).toFixed(2)
-          const _hour = (_day / 24).toFixed(2)
+        if (this.isPackage && this.durationNum) {
+          const _day = (this.price / 30 / this.durationNum).toFixed(2)
+          const _hour = (parseFloat(_day) / 24).toFixed(2)
           return `(合¥${_day}/天  ¥${_hour}/小时)`
         } else {
           const _day = (this.price * 24).toFixed(2)
-          const _month = (this.price * 24 * 30).toFixed(2)
+          const _month = (parseFloat(_day) * 30).toFixed(2)
           return `(合¥${_day}/天 ¥${_month}/月)`
         }
       }
@@ -149,7 +162,7 @@ export default {
     },
     formatToPrice (val) {
       let ret = `¥ ${val.toFixed(2)}`
-      ret += this.isPackage ? '/ 月' : ' / 时'
+      ret += !this.isPackage ? ' / 时' : ''
       return ret
     },
     formatParams () {
@@ -175,7 +188,9 @@ export default {
     async doCreate () {
       if (!this.validateForm()) return false
       const manager = new Manager('elasticcaches', 'v2')
+      this.loading = true
       const { data, status } = await manager.create({ data: this.formatParams() })
+      this.loading = false
       if ((status === 200 || status === 207) && data) {
         this.$router.push('/redis')
       }
