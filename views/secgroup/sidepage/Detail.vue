@@ -21,10 +21,10 @@ export default {
   data () {
     return {
       PUBLIC_SCOPE_ZH: {
-        system: '系统',
-        project: '项目',
+        system: this.$t('shareScope.system'),
+        project: this.$t('shareScope.project'),
         none: '不共享',
-        domain: '域',
+        domain: this.$t('shareScope.domain'),
       },
       baseInfo: [
         {

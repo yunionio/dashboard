@@ -46,7 +46,7 @@ export default {
           { label: '磁盘类型', key: 'disk_type' },
           { label: '快照大小', key: 'size' },
           { label: '状态', key: 'status' },
-          { label: '项目', key: 'tenant' },
+          { label: this.$t('dictionary.project'), key: 'tenant' },
           { label: '平台', key: 'provider' },
           { label: '虚拟机', key: 'guest' },
           { label: '创建时间', key: 'create_at' },

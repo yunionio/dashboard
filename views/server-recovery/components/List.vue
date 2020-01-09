@@ -64,7 +64,7 @@ export default {
           { label: '实例类型', key: 'instance_type' },
           { label: '操作系统', key: 'os_distribution' },
           { label: '状态', key: 'status' },
-          { label: '项目', key: 'tenant' },
+          { label: this.$t('dictionary.project'), key: 'tenant' },
           { label: '平台', key: 'hypervisor' },
           { label: '宿主机', key: 'host' },
           { label: '云账号', key: 'manager' },

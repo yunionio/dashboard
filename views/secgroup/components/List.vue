@@ -55,7 +55,7 @@ export default {
           { label: '关联实例', key: 'guest_cnt' },
           { label: '共享范围', key: 'public_scope' },
           { label: '状态', key: 'status' },
-          { label: '项目', key: 'tenant' },
+          { label: this.$t('dictionary.project'), key: 'tenant' },
         ],
       },
       columns: [
@@ -163,7 +163,7 @@ export default {
           actions: obj => {
             return [
               {
-                label: '更改项目',
+                label: `更改${this.$t('dictionary.project')}`,
                 permission: 'secgroups_create',
                 action: () => {
                   this.createDialog('ChangeOwenrDialog', {
