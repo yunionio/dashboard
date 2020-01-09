@@ -19,7 +19,8 @@
             :ignoreOptions="ignoreImageOptions"
             :osType="osType"
             :cache-image-params="cacheImageParams"
-            :decorator="decorators.imageOS" />
+            :decorator="decorators.imageOS"
+            @updateImageMsg="updateImageMsgDebounce" />
         </a-form-item>
         <a-form-item v-bind="formItemLayout" v-show="imgHidden" label="操作系统">
           <div>{{ imgHidden.text }}</div>
@@ -40,6 +41,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import OsSelect from '@Compute/sections/OsSelect'
 import ServerPassword from '@Compute/sections/ServerPassword'
 import { SERVER_TYPE, LOGIN_TYPES_MAP } from '@Compute/constants'
@@ -92,6 +94,7 @@ export default {
         },
       },
       detailData: {},
+      firstLoad: true,
     }
   },
   computed: {
@@ -279,6 +282,7 @@ export default {
   created () {
     this.serversManager = new Manager('servers', 'v2')
     this.fetchData()
+    this.updateImageMsgDebounce = _.debounce(this.updateImageMsg, 600)
   },
   methods: {
     async doRebuildRootSubmit (data) {
@@ -334,6 +338,24 @@ export default {
         .catch(() => {
           this.fetchdone = true
         })
+    },
+    updateImageMsg (imageMsg) {
+      if (this.firstLoad) {
+        const detailData = this.detailData || []
+        const diskInfo = (detailData[0] && detailData[0].disks_info) || []
+        if (diskInfo.length > 0) {
+          const image = diskInfo[0] || {}
+          this.$nextTick(() => {
+            this.form.fc.setFieldsValue({
+              image: {
+                key: image.image_id,
+                label: image.image,
+              },
+            })
+          })
+        }
+        this.firstLoad = false
+      }
     },
   },
 }
