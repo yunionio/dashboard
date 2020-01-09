@@ -187,25 +187,38 @@ export default {
       ]
       return ret
     },
+    durationNum () {
+      if (this.isPackage) {
+        const { duration } = this.fd
+        let num = parseInt(duration)
+        if (num && duration.endsWith('Y')) {
+          num *= 12
+        }
+        return num
+      }
+      return 0
+    },
     price () {
       const { count } = this.fd
-      console.log(count, this.pricesList, this.pricesList.length)
       if (count && this.pricesList && this.pricesList.length > 0) {
         const { month_price: month, sum_price: sum } = this.pricesList[0]
-        const _price = this.isPackage ? month : sum
-        return _price * count
+        let _price = parseFloat(sum)
+        if (this.isPackage && this.durationNum) {
+          _price = parseFloat(month) * this.durationNum
+        }
+        return _price * parseFloat(count)
       }
       return null
     },
     priceTips () {
       if (this.price) {
-        if (this.isPackage) {
-          const _day = (this.price / 30).toFixed(2)
-          const _hour = (_day / 24).toFixed(2)
+        if (this.isPackage && this.durationNum) {
+          const _day = (this.price / 30 / this.durationNum).toFixed(2)
+          const _hour = (parseFloat(_day) / 24).toFixed(2)
           return `(合¥${_day}/天  ¥${_hour}/小时)`
         } else {
           const _day = (this.price * 24).toFixed(2)
-          const _month = (this.price * 24 * 30).toFixed(2)
+          const _month = (parseFloat(_day) * 30).toFixed(2)
           return `(合¥${_day}/天 ¥${_month}/月)`
         }
       }
@@ -238,7 +251,7 @@ export default {
     },
     formatToPrice (val) {
       let ret = `¥ ${val.toFixed(2)}`
-      ret += this.isPackage ? '/月' : ' / 时'
+      ret += !this.isPackage ? ' / 时' : ''
       return ret
     },
     baywatch (props, watcher) {
@@ -249,7 +262,6 @@ export default {
     },
     // 获取总价格
     async getPriceList () {
-      console.log(this.hasMeterService)
       if (!this.hasMeterService) return // 如果没有 meter 服务则取消调用
       if (R.isEmpty(this.fd.sku) || R.isNil(this.fd.sku)) return
       const skuProvider = this.fd.sku.provider || PROVIDER_MAP.OneCloud.key
