@@ -6,7 +6,7 @@
       @submit="submit">
       <servertemplate v-if="isServertemplate" :decorators="decorators.servertemplate" :formItemLayout="formItemLayout" />
       <a-divider orientation="left">基础配置</a-divider>
-      <a-form-item v-show="!isServertemplate" label="指定项目" v-bind="formItemLayout">
+      <a-form-item v-show="!isServertemplate" :label="`指定${$t('dictionary.project')}`" v-bind="formItemLayout">
         <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
       </a-form-item>
       <a-form-item label="区域" class="mb-0" v-bind="formItemLayout">

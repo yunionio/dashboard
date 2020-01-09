@@ -85,7 +85,7 @@ export default {
           { label: '内存', key: 'mem_size' },
           { label: '存储', key: 'storage_size' },
           { label: 'SN', key: 'sn' },
-          { label: '项目', key: 'tenant' },
+          { label: this.$t('dictionary.project'), key: 'tenant' },
           { label: '区域', key: 'region' },
           { label: '可用区', key: 'zone' },
         ],

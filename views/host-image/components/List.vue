@@ -83,7 +83,7 @@ export default {
           { label: '名称', key: 'name' },
           { label: '格式', key: 'disk_format' },
           { label: '镜像大小', key: 'size' },
-          { label: '项目', key: 'tenant' },
+          { label: this.$t('dictionary.project'), key: 'tenant' },
           { label: '镜像类型', key: 'is_standard' },
           { label: '创建时间', key: 'created_at' },
         ],
@@ -227,12 +227,12 @@ export default {
             } else if (this.isDomainMode) {
               return {
                 validate: ownerDomain(this.list),
-                tooltip: '非当前域下面的镜像无法修改属性',
+                tooltip: `非当前${this.$t('dictionary.domain')}下面的镜像无法修改属性`,
               }
             }
             return {
               validate: isOwnerProject(obj.tenant_id),
-              tooltip: !isOwnerProject(obj.tenant_id) ? '非当前项目下面的镜像无法修改属性' : '',
+              tooltip: !isOwnerProject(obj.tenant_id) ? `非当前${this.$t('dictionary.project')}下面的镜像无法修改属性` : '',
             }
           },
         },
@@ -299,7 +299,7 @@ export default {
                   if (this.isDomainAdmin && obj.domain_id !== this.userInfo.projectDomainId) {
                     return {
                       validate: false,
-                      tooltip: '域管理员只能删除本域下的镜像',
+                      tooltip: `${this.$t('dictionary.domain')}管理员只能删除本${this.$t('dictionary.domain')}下的镜像`,
                     }
                   }
                   if (!validateAction(obj)) return { validate: false, tooltip: validateActionTooltip(obj) }

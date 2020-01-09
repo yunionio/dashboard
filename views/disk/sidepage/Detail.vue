@@ -80,7 +80,7 @@ export default {
             },
             {
               field: 'public_scope',
-              title: '项目',
+              title: this.$t('dictionary.domain'),
             },
           ],
         },

@@ -104,7 +104,7 @@ export default {
           { label: '主存储', key: 'storage' },
           { label: '创建时间', key: 'created_at' },
           { label: '状态', key: 'status' },
-          { label: '项目', key: 'tenant' },
+          { label: this.$t('dictionary.project'), key: 'tenant' },
           { label: '平台', key: 'provider' },
           { label: '区域', key: 'region' },
           { label: '可用区', key: 'zone' },
@@ -434,7 +434,7 @@ export default {
                 },
               },
               {
-                label: '更改项目',
+                label: `更改${this.$t('dictionary.project')}`,
                 action: () => {
                   this.createDialog('ChangeOwenrDialog', {
                     data: [obj],
@@ -444,7 +444,7 @@ export default {
                 },
                 meta: () => ({
                   validate: obj.guest_count < 1,
-                  tooltip: obj.guest ? '已挂载的硬盘不可以更改项目，请卸载后重试' : '',
+                  tooltip: obj.guest ? `已挂载的硬盘不可以更改${this.$t('dictionary.project')}，请卸载后重试` : '',
                 }),
               },
               {

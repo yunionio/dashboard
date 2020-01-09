@@ -41,7 +41,7 @@ export default {
           { label: '名称', key: 'name' },
           { label: '格式', key: 'disk_format' },
           { label: '镜像大小', key: 'size' },
-          { label: '项目', key: 'tenant' },
+          { label: this.$t('dictionary.project'), key: 'tenant' },
           { label: '镜像类型', key: 'is_standard' },
           { label: '创建时间', key: 'created_at' },
           { label: '检验和', key: 'checksum' },

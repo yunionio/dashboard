@@ -62,7 +62,7 @@ export default {
           { label: '上一次执行状态', key: 'status' },
           { label: '开始时间', key: 'start_time' },
           { label: '结束时间', key: 'end_time' },
-          { label: '项目', key: 'tenant' },
+          { label: this.$t('dictionary.project'), key: 'tenant' },
         ],
       },
       columns: [

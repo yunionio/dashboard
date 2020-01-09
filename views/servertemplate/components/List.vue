@@ -48,7 +48,7 @@ export default {
         items: [
           { label: 'ID', key: 'id' },
           { label: '名称', key: 'name' },
-          { label: '项目', key: 'tenant' },
+          { label: this.$t('dictionary.project'), key: 'tenant' },
           { label: '创建时间', key: 'created_at' },
         ],
       },

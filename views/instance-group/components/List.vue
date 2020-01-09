@@ -61,7 +61,7 @@ export default {
             ],
           },
           tenant: {
-            label: '项目',
+            label: this.$t('dictionary.project'),
           },
         },
       }),
@@ -73,7 +73,7 @@ export default {
           { label: '策略', key: 'force_dispersion' },
           { label: '粒度', key: 'granularity' },
           { label: '绑定主机数量', key: 'guest_count' },
-          { label: '项目', key: 'tenant' },
+          { label: this.$t('dictionary.project'), key: 'tenant' },
           { label: '创建时间', key: 'created_at' },
         ],
       },

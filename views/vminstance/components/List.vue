@@ -106,7 +106,7 @@ export default {
           { label: '实例类型', key: 'instance_type' },
           { label: '操作系统', key: 'os_distribution' },
           { label: '状态', key: 'status' },
-          { label: '项目', key: 'tenant' },
+          { label: this.$t('dictionary.project'), key: 'tenant' },
           { label: '平台', key: 'hypervisor' },
           { label: '宿主机', key: 'host' },
           { label: '云账号', key: 'manager' },
@@ -355,7 +355,7 @@ export default {
                 },
               },
               {
-                label: '更改项目',
+                label: `更改${this.$t('dictionary.project')}`,
                 action: () => {
                   this.createDialog('ChangeOwenrDialog', {
                     data: this.list.selectedItems,
@@ -371,7 +371,7 @@ export default {
                   const domains = this.list.selectedItems.map(item => item.domain_id)
                   if (R.uniq(domains).length !== 1) {
                     ret.validate = false
-                    ret.tooltip = '请选择同一个域下的机器'
+                    ret.tooltip = `请选择同一个${this.$t('dictionary.domain')}下的机器`
                     return ret
                   }
                   return ret
@@ -974,7 +974,7 @@ export default {
                     },
                   },
                   {
-                    label: '更改项目',
+                    label: `更改${this.$t('dictionary.project')}`,
                     action: () => {
                       this.createDialog('ChangeOwenrDialog', {
                         data: [obj],
