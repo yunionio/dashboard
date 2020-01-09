@@ -50,12 +50,7 @@ export default {
       const { data } = this.params
       let initialValueDisableDelete = true
       if (data && data.length === 1) {
-        const item = data[0]
-        if (item.protected !== undefined) {
-          initialValueDisableDelete = item.protected === 'true' || item.protected
-        } else {
-          initialValueDisableDelete = data[0]['disable_delete']
-        }
+        initialValueDisableDelete = data[0]['disable_delete']
       }
       return {
         disable_delete: [
@@ -80,7 +75,7 @@ export default {
             managerArgs: {
               data: {
                 disable_delete: isDelete,
-                protected: !isDelete,
+                protected: isDelete,
               },
             },
           })
@@ -88,7 +83,7 @@ export default {
           const ids = this.params.data.map(({ id }) => id)
           await this.params.list.batchUpdate(ids, {
             disable_delete: isDelete,
-            protected: !isDelete,
+            protected: isDelete,
           })
         }
         this.cancelDialog()
