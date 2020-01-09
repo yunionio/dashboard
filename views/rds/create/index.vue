@@ -13,11 +13,7 @@
       <!-- 计费方式 -->
       <clearing-radios v-bind="formItemLayout" />
       <!-- 区域 -->
-      <area-selects
-        :cityParams="{cloud_env: 'public'}"
-        :names="['city', 'provider', 'cloudregion']"
-        v-bind="formItemLayout"
-        @providerFetchSuccess="providerFetchSuccess" />
+      <item-area :values="form.fc.getFieldsValue()" :names="['city', 'provider', 'cloudregion']" />
       <!-- 套餐信息 -->
       <s-k-u ref="SKU" />
       <a-divider orientation="left">高级配置</a-divider>
@@ -40,13 +36,13 @@ import { CreateServerForm } from '@Compute/constants'
 import ServerPassword from '@Compute/sections/ServerPassword'
 import SecgroupConfig from '@Compute/sections/SecgroupConfig'
 // import ServerNetwork from '@Compute/sections/ServerNetwork'
+import ItemArea from '@DB/sections/ItemArea'
 import { DECORATORS } from './constants/index'
 import SKU from './components/SKU'
 import BottomBar from './components/BottomBar'
 import NameRepeated from '@/sections/NameRepeated'
 import DomainProject from '@/sections/DomainProject'
 import NetworkSelects from '@/sections/NetworkSelects'
-import AreaSelects from '@/sections/AreaSelects'
 
 export default {
   name: 'RDSCreate',
@@ -55,7 +51,7 @@ export default {
     DomainProject,
     BottomBar,
     ServerPassword,
-    AreaSelects,
+    ItemArea,
     NetworkSelects,
     SecgroupConfig,
     // ServerNetwork,
