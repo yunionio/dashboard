@@ -2,7 +2,7 @@
   <a-form-item class="no-line-height" label="条件" v-bind="formItemLayout">
     <a-input-group compact>
       <a-select v-decorator="decorators.conditionKey">
-        <a-select-option value="projects">项目</a-select-option>
+        <a-select-option value="projects">{{ $t('dictionary.project') }}</a-select-option>
       </a-select>
       <a-form-item class="mb-0 custom-form-item">
         <base-select
@@ -14,7 +14,7 @@
           :params="projectParams"
           remote
           :remote-fn="q => ({ filter: `name.contains(${q})` })"
-          :select-props="{ placeholder: '请选择项目', mode: 'multiple' }" />
+          :select-props="{ placeholder: $t('rules.project'), mode: 'multiple' }" />
       </a-form-item>
     </a-input-group>
   </a-form-item>

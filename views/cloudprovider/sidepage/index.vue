@@ -37,7 +37,7 @@ export default {
       detailTabs: [
         { label: '详情', key: 'cloudaccount-detail' },
         { label: '区域', key: 'cloudproviderregion-list' },
-        { label: '项目', key: 'externalproject-list' },
+        { label: this.$t('dictionary.project'), key: 'externalproject-list' },
         { label: '操作日志', key: 'event-drawer' },
       ],
     }

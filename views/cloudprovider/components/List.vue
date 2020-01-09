@@ -130,7 +130,7 @@ export default {
           },
         },
         {
-          label: '更改项目',
+          label: `更改${this.$t('dictionary.project')}`,
           action: () => {
             if (isAccountDomain(this.data)) {
               this.createDialog('ChangeProjectDialog', {
@@ -156,7 +156,7 @@ export default {
       ],
       singleActions: [
         {
-          label: '更改项目',
+          label: `更改${this.$t('dictionary.project')}`,
           action: obj => {
             if (isAccountDomain(this.data)) {
               this.createDialog('ChangeProjectDialog', {
