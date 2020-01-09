@@ -20,6 +20,7 @@ import {
   getTimeTableColumn,
   getCopyWithContentTableColumn,
   getRegionTableColumn,
+  getBillingTypeTableColumn,
 } from '@/utils/common/tableColumn'
 import { getTenantFilter, getStatusFilter, getBrandFilter, getNameFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
@@ -171,6 +172,7 @@ export default {
         getTimeTableColumn(),
         getBrandTableColumn(),
         getRegionTableColumn(),
+        getBillingTypeTableColumn(),
         getStatusTableColumn({ statusModule: 'disk' }),
         getProjectTableColumn(),
         {
@@ -456,7 +458,17 @@ export default {
                     list: this.list,
                   })
                 },
-                meta: () => this.$getDeleteResult(obj),
+                meta: () => {
+                  const ret = {
+                    validate: false,
+                    tooltip: null,
+                  }
+                  if (obj.billing_type === 'prepaid') {
+                    ret.tooltip = '包年包月硬盘不支持删除'
+                    return ret
+                  }
+                  return this.$getDeleteResult(obj)
+                },
               },
             ]
           },
