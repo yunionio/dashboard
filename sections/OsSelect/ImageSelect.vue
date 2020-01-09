@@ -19,6 +19,7 @@
         </a-form-item>
       </a-col>
     </a-row>
+    <span v-if="uefi" class="error-color">提示：创建windows虚拟机且同时绑定GPU卡时，会过滤不支持UEFI引导的镜像</span>
   </div>
 </template>
 
