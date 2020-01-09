@@ -17,7 +17,7 @@
         <a-input-number v-decorator="decorators.count" :min="1" :max="10" @blur="handleBlurCount" />
       </a-form-item>
       <!-- 区域 -->
-      <item-area />
+      <item-area :defaultActiveFirstOption="['city']" :values="form.fc.getFieldsValue()" />
       <s-k-u ref="REF_SKU" />
       <a-divider orientation="left">高级配置</a-divider>
       <a-form-item label="管理员密码" v-bind="formItemLayout">
@@ -36,9 +36,9 @@ import { CreateServerForm } from '@Compute/constants'
 import { decorators } from '@DB/views/utils/createElasticcache'
 import { debounce } from 'lodash'
 import ServerPassword from '@Compute/sections/ServerPassword'
+import ItemArea from '@DB/sections/ItemArea'
 import ItemBillingOpts from './components/ItemBillingOpts'
 import ItemVpcOpts from './components/ItemVpcOpts'
-import ItemArea from './components/ItemArea'
 import SKU from './components/SKU'
 import BottomBar from './components/BottomBar'
 import DomainProject from '@/sections/DomainProject'
