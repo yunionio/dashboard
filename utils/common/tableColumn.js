@@ -315,3 +315,31 @@ export const getAccountTableColumn = ({
     },
   }
 }
+
+export const getBillingTypeTableColumn = ({ field = 'billing_type', title = '计费方式', width = '120px' } = {}) => {
+  return {
+    field,
+    title,
+    showOverflow: 'ellipsis',
+    width,
+    slots: {
+      default: ({ row }, h) => {
+        const ret = []
+        if (row[field] === 'postpaid') {
+          ret.push(<div style={{ color: '#0A1F44' }}>按量付费</div>)
+        } else if (row[field] === 'prepaid') {
+          ret.push(<div style={{ color: '#0A1F44' }}>包年包月</div>)
+        }
+        if (row.expired_at) {
+          let dateArr = moment(row.expired_at).fromNow().split(' ')
+          let date = dateArr.join('')
+          let seconds = moment(row.expired_at).diff(new Date()) / 1000
+          let textColor = seconds / 24 / 60 / 60 < 7 ? '#DD2727' : '#53627C'
+          let text = seconds < 0 ? '已过期' : `${date.substring(0, date.length - 1)}后到期`
+          ret.push(<div style={{ color: textColor }}>{ text }</div>)
+        }
+        return ret
+      },
+    },
+  }
+}
