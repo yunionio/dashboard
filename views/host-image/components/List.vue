@@ -199,7 +199,7 @@ export default {
               },
             })
           },
-          meta: () => this.$getDeleteResult(this.list.selectedItems),
+          meta: () => this.$getDeleteResult(this.list.selectedItems, 'protected'),
         },
       ],
       singleActions: [
@@ -303,7 +303,7 @@ export default {
                     }
                   }
                   if (!validateAction(obj)) return { validate: false, tooltip: validateActionTooltip(obj) }
-                  return this.$getDeleteResult(obj)
+                  return this.$getDeleteResult(obj, 'protected')
                 },
               },
             ]
