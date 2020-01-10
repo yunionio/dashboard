@@ -100,7 +100,7 @@ export default {
             title: '健康状态',
           }),
           brand: getBrandFilter(),
-          enable_auto_sync: getEnabledFilter({ title: '自动同步' }),
+          enable_auto_sync: getEnabledFilter({ label: '自动同步' }),
           share_mode: getPublicFilter(),
           // tenant: getTenantFilter(),
         },
