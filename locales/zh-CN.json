@@ -262,7 +262,8 @@
       "deleting": "删除中",
       "success": "备份成功",
       "failed": "备份失败",
-      "backuprecovering": "备份恢复中"
+      "backuprecovering": "备份恢复中",
+      "create_failed": "创建失败"
     },
     "sku": {
       "creating": "创建中",
