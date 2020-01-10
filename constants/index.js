@@ -138,6 +138,8 @@ export const CITYS = {
   'Huhehaote': '呼和浩特',
   'Qingdao': '青岛',
   'Chongqing': '重庆',
+  'lanzhou': '兰州',
+  'wulumuqi': '乌鲁木齐',
 }
 
 export const CLOUD_PROVIDERS_MAP = {
