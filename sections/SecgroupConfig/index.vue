@@ -38,6 +38,7 @@ export default {
     },
     secgroupParams: {
       type: Object,
+      default: () => ({}),
     },
     form: {
       type: Object,
@@ -57,14 +58,13 @@ export default {
   },
   computed: {
     params () {
-      const defaultSecgroupParams = {
+      const params = {
         limit: 0,
         scope: this.$store.getters.scope,
-      }
-      return {
-        ...defaultSecgroupParams,
         ...this.secgroupParams,
       }
+      if (this.secgroupParams.project_domain) delete params.scope
+      return params
     },
     href () {
       const url = this.$router.resolve('/secgroup')

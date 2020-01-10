@@ -90,25 +90,17 @@ export default {
       type: Boolean,
       default: false,
     },
+    snapshotsParams: {
+      type: Object,
+      default: () => ({
+        with_meta: true,
+        cloud_env: 'onpremise',
+        limit: 0,
+      }),
+    },
   },
   data () {
     return {
-      schedtagParams: {
-        details: true,
-        with_meta: true,
-        cloud_env: 'onpremise',
-        resource_type: 'storages',
-        scope: this.$store.getters.scope,
-        limit: 0,
-      },
-      snapshotsParams: {
-        details: true,
-        with_meta: true,
-        cloud_env: 'onpremise',
-        limit: 0,
-        project_domain: 'default',
-        disk_type: 'data',
-      },
       showSchedtag: false,
       showMountpoint: false,
       showSnapshot: false,

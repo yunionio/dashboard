@@ -82,7 +82,8 @@
           :capability-data="form.fi.capability"
           :isSnapshotImageType="isSnapshotImageType"
           :isHostImageType="isHostImageType"
-          :disabled="form.fi.dataDiskDisabled" />
+          :disabled="form.fi.dataDiskDisabled"
+          :domain="project_domain" />
       </a-form-item>
       <a-form-item label="管理员密码" v-if="!isIso" v-bind="formItemLayout">
         <server-password :form="form" :login-types="loginTypes" :isSnapshotImageType="isSnapshotImageType" :decorator="decorators.loginConfig" />

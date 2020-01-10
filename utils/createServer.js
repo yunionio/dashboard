@@ -919,6 +919,9 @@ export class GenCreateData {
           data.eip_bw = this.fd.eip_bw
         }
       }
+      if (this.fd.eip_type === EIP_TYPES_MAP.bind.key) {
+        data.eip = this.fd.eip
+      }
       // resource_type
       data.resource_type = this.fd.resourceType
       // 包年包月参数

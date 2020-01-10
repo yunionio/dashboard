@@ -105,7 +105,9 @@
           :decorators="decorators.eip"
           :eip-params="eipParams"
           :hypervisor="hypervisor"
-          :isServertemplate="isServertemplate" />
+          :showBind="form.fd.count === 1"
+          :isServertemplate="isServertemplate"
+          :form="form" />
       </a-form-item>
       <a-form-item label="安全组" v-bind="formItemLayout">
         <secgroup-config
