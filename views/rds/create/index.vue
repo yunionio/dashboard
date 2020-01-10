@@ -13,9 +13,9 @@
       <!-- 计费方式 -->
       <clearing-radios v-bind="formItemLayout" />
       <!-- 区域 -->
-      <item-area :values="form.fc.getFieldsValue()" :names="['city', 'provider', 'cloudregion']" />
+      <item-area :isRequired="true" :values="form.fc.getFieldsValue()" :names="['city', 'provider', 'cloudregion']" />
       <!-- 套餐信息 -->
-      <s-k-u ref="SKU" />
+      <s-k-u ref="SKU" v-show="form.getFieldValue('cloudregion')" />
       <a-divider orientation="left">高级配置</a-divider>
        <a-form-item label="管理员密码" v-bind="formItemLayout">
          <server-password :loginTypes="loginTypes" :decorator="decorators.loginConfig" :form="form" />
@@ -31,7 +31,7 @@
   </div>
 </template>
 <script>
-import { debounce } from 'lodash'
+// import { debounce } from 'lodash'
 import { CreateServerForm } from '@Compute/constants'
 import ServerPassword from '@Compute/sections/ServerPassword'
 import SecgroupConfig from '@Compute/sections/SecgroupConfig'
@@ -86,11 +86,14 @@ export default {
         wrapperCol: { span: CreateServerForm.wrapperCol },
         labelCol: { span: CreateServerForm.labelCol },
       },
+      scopeParams: {
+        scope: this.$store.getters.scope,
+      },
     }
   },
   computed: {
     form () {
-      const fc = this.$form.createForm(this, { onFieldsChange: debounce((f, v) => this._debounceFieldsChange(v), 1) })
+      const fc = this.$form.createForm(this, { onFieldsChange: (f, v) => this._fieldsChange(v) })
       const { getFieldDecorator, getFieldValue, getFieldsValue, setFieldsValue } = fc
       return {
         fc,
@@ -105,6 +108,7 @@ export default {
     return {
       form: this.form,
       formItemLayout: this.formItemLayout,
+      scopeParams: this.scopeParams,
     }
   },
   mounted () {
@@ -148,10 +152,8 @@ export default {
       })
     },
     async regionChange (values) {
-      if (values && values.cloudregion) {
+      if (values && values.cloudregion && values.cloudregion.value) {
         const { cloudregion } = values
-        // 获取sku筛选项
-        // console.log(values.cloudregion)
         await this.fetchSku(cloudregion.value)
         await this.fetchVpc()
       }
@@ -161,7 +163,17 @@ export default {
         this.fetchNetwork()
       }
     },
-    _debounceFieldsChange (values) {
+    domainChange (values) {
+      if (this.$store.getters.isAdminMode) {
+        if (values.domain && values.domain.key) {
+          this.scopeParams['project_domain'] = values.domain.key
+        }
+        this.scopeParams['project_domain'] = this.form.getFieldValue('domain')
+        delete this.scopeParams['scope']
+      }
+    },
+    _fieldsChange (values) {
+      this.domainChange(values)
       this.regionChange(values)
       this.zonesChange(values)
     },

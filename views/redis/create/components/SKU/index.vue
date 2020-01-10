@@ -19,7 +19,7 @@ export default {
     ItemFilters,
     SkuList,
   },
-  inject: ['form'],
+  inject: ['form', 'scopeParams'],
   props: {
     decorators: {
       type: Object,
@@ -44,21 +44,37 @@ export default {
     this.fetchSkus = fetchSkus
   },
   methods: {
+    async getParams (keys) {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          const values = this.form.getFieldsValue(keys)
+          const params = {
+            ...values,
+            usable: true,
+            ...this.scopeParams,
+          }
+          resolve(params)
+        }, 10)
+      })
+    },
     async skuFetchs (changedFields) {
       const capabilityParamsKeys = ['billing_type', 'city', 'provider', 'cloudregion', 'zone']
       const instanceSpecsParamsKeys = ['billing_type', 'engine', 'engine_version', 'performance_type', 'local_category', 'node_type', 'performance_type']
+      const skuParamsKey = ['memory_size_mb'].concat(capabilityParamsKeys).concat(instanceSpecsParamsKeys)
       const field = Object.keys(changedFields || {})[0]
       const isUndefined = changedFields === undefined
-      const skuParamsKey = ['memory_size_mb'].concat(capabilityParamsKeys).concat(instanceSpecsParamsKeys)
       try {
         if (capabilityParamsKeys.indexOf(field) > -1 || isUndefined) {
-          await this.fetchCapability(capabilityParamsKeys)
+          const params = await this.getParams(capabilityParamsKeys)
+          await this.fetchCapability(params)
         }
         if (instanceSpecsParamsKeys.indexOf(field) > -1 || isUndefined) {
-          await this.fetchSpecs(capabilityParamsKeys.concat(instanceSpecsParamsKeys))
+          const params = await this.getParams(instanceSpecsParamsKeys)
+          await this.fetchSpecs(params)
         }
         if (skuParamsKey.indexOf(field) > -1 || isUndefined) {
-          await this.fetchSkus(skuParamsKey)
+          const params = await this.getParams(skuParamsKey)
+          await this.fetchSkus(params)
         }
       } catch (err) {
         throw err

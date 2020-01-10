@@ -79,7 +79,7 @@ export default {
       await this.fetchSkus()
     },
     async fetchs (regionId) {
-      await this.fetchFilters(regionId)
+      await this.fetchFilters()
       await this.fetchSpecs()
       await this.fetchSkus()
     },
