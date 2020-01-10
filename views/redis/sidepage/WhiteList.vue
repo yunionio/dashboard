@@ -8,9 +8,10 @@
 
 <script>
 import * as R from 'ramda'
-import { getStatusTableColumn } from '@/utils/common/tableColumn'
+import { getStatusTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import expectStatus from '@/constants/expectStatus'
+import { getNameFilter, getStatusFilter } from '@/utils/common/tableFilter'
 
 export default {
   name: 'RedisWhiteList',
@@ -29,12 +30,13 @@ export default {
         resource: 'elasticcacheacls',
         getParams: this.params,
         steadyStatus: Object.values(expectStatus.redisACL).flat(),
+        filterOptions: {
+          name: getNameFilter(),
+          status: getStatusFilter('redisACL'),
+        },
       }),
       columns: [
-        {
-          field: 'name',
-          title: '名称',
-        },
+        getCopyWithContentTableColumn(),
         getStatusTableColumn({ statusModule: 'redisACL' }),
         {
           field: 'ip',
