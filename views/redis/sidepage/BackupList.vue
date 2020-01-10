@@ -8,9 +8,10 @@
 
 <script>
 import { sizestr } from '@/utils/utils'
-import { getStatusTableColumn, getRegionTableColumn, getBrandTableColumn } from '@/utils/common/tableColumn'
+import { getStatusTableColumn, getRegionTableColumn, getBrandTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import expectStatus from '@/constants/expectStatus'
+import { getNameFilter, getStatusFilter } from '@/utils/common/tableFilter'
 
 export default {
   name: 'RedisBackupList',
@@ -29,12 +30,31 @@ export default {
         resource: 'elasticcachebackups',
         getParams: this.params,
         steadyStatus: Object.values(expectStatus.redisBackup).flat(),
+        filterOptions: {
+          name: getNameFilter(),
+          status: getStatusFilter('redisBackup'),
+          // brand: {
+          //   label: '平台',
+          //   dropdown: true,
+          //   multiple: true,
+          //   items: [
+          //     { label: '阿里云', key: 'Aliyun' },
+          //     { label: '华为云', key: 'Huawei' },
+          //   ],
+          // },
+          backup_mode: {
+            label: '备份类型',
+            dropdown: true,
+            multiple: true,
+            items: [
+              { label: '手动备份', key: 'manual' },
+              { label: '自动备份', key: 'automated' },
+            ],
+          },
+        },
       }),
       columns: [
-        {
-          field: 'name',
-          title: '名称',
-        },
+        getCopyWithContentTableColumn(),
         {
           field: 'backup_mode',
           title: '备份类型',
