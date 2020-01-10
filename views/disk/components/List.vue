@@ -5,7 +5,9 @@
     :columns="columns"
     :group-actions="groupActions"
     :single-actions="singleActions"
-    :export-data-options="exportDataOptions" />
+    :export-data-options="exportDataOptions"
+    :showSearchbox="showSearchbox"
+    :showGroupActions="showGroupActions" />
 </template>
 
 <script>
@@ -26,11 +28,12 @@ import { getTenantFilter, getStatusFilter, getBrandFilter, getNameFilter } from 
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import { sizestr } from '@/utils/utils'
+import globalSearchMixins from '@/mixins/globalSearch'
 
 const supportShpolcyBrand = ['OneCloud', 'Qcloud', 'Aliyun']
 export default {
   name: 'DiskList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, globalSearchMixins],
   props: {
     id: String,
     getParams: {
@@ -91,6 +94,7 @@ export default {
           status: Object.values(expectStatus.disk).flat(),
           guest_status: [...Object.values(expectStatus.server).flat(), ''],
         },
+        responseData: this.responseData,
       }),
       exportDataOptions: {
         items: [

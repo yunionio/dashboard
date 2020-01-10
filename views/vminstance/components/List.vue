@@ -5,7 +5,9 @@
     :columns="columns"
     :group-actions="groupActions"
     :single-actions="singleActions"
-    :export-data-options="exportDataOptions" />
+    :export-data-options="exportDataOptions"
+    :showSearchbox="showSearchbox"
+    :showGroupActions="showGroupActions" />
 </template>
 
 <script>
@@ -42,10 +44,11 @@ import SystemIcon from '@/sections/SystemIcon'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
+import globalSearchMixins from '@/mixins/globalSearch'
 
 export default {
   name: 'VmInstanceList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, globalSearchMixins],
   props: {
     id: String,
     getParams: {
@@ -92,6 +95,7 @@ export default {
           account: getAccountFilter(),
           host: getHostFilter(),
         },
+        responseData: this.responseData,
       }),
       exportDataOptions: {
         items: [

@@ -4,7 +4,9 @@
     :columns="columns"
     :group-actions="groupActions"
     :single-actions="singleActions"
-    :export-data-options="exportDataOptions" />
+    :export-data-options="exportDataOptions"
+    :showSearchbox="showSearchbox"
+    :showGroupActions="showGroupActions" />
 </template>
 
 <script>
@@ -14,10 +16,11 @@ import expectStatus from '@/constants/expectStatus'
 import { getBrandTableColumn, getStatusTableColumn, getCopyWithContentTableColumn, getIpsTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import { getNameFilter, getIpFilter, getOsTypeFilter, getBrandFilter, getHostFilter } from '@/utils/common/tableFilter'
+import globalSearchMixins from '@/mixins/globalSearch'
 
 export default {
   name: 'ServerRecoveryList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, globalSearchMixins],
   props: {
     id: String,
   },
@@ -50,6 +53,7 @@ export default {
           os_type: getOsTypeFilter(),
           host: getHostFilter(),
         },
+        responseData: this.responseData,
       }),
       exportDataOptions: {
         items: [

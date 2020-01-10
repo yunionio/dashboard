@@ -4,7 +4,9 @@
     :columns="columns"
     :group-actions="groupActions"
     :single-actions="singleActions"
-    :export-data-options="exportDataOptions" />
+    :export-data-options="exportDataOptions"
+    :showSearchbox="showSearchbox"
+    :showGroupActions="showGroupActions" />
 </template>
 
 <script>
@@ -13,10 +15,11 @@ import { getStatusTableColumn, getNameDescriptionTableColumn, getProjectTableCol
 import { getTenantFilter, getStatusFilter } from '@/utils/common/tableFilter'
 import SystemIcon from '@/sections/SystemIcon'
 import WindowsMixin from '@/mixins/windows'
+import globalSearchMixins from '@/mixins/globalSearch'
 
 export default {
   name: 'HostImageList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, globalSearchMixins],
   props: {
     id: String,
     getParams: {
@@ -75,6 +78,7 @@ export default {
           tenant: getTenantFilter(),
           // os_type: getOsTypeFilter(),
         },
+        responseData: this.responseData,
       }),
       exportDataOptions: {
         items: [

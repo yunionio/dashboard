@@ -5,7 +5,9 @@
     :group-actions="groupActions"
     :single-actions="singleActions"
     :export-data-options="exportDataOptions"
-    :expand-config="{ lazy: true, loadMethod: loadRules }" />
+    :expand-config="{ lazy: true, loadMethod: loadRules }"
+    :showSearchbox="showSearchbox"
+    :showGroupActions="showGroupActions" />
 </template>
 
 <script>
@@ -18,10 +20,11 @@ import {
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import { getTenantFilter } from '@/utils/common/tableFilter'
+import globalSearchMixins from '@/mixins/globalSearch'
 
 export default {
   name: 'SecgroupList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, globalSearchMixins],
   props: {
     id: String,
     getParams: {
@@ -47,6 +50,7 @@ export default {
           },
           tenant: getTenantFilter(),
         },
+        responseData: this.responseData,
       }),
       exportDataOptions: {
         items: [
