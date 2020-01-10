@@ -23,7 +23,7 @@ import { sizestr } from '@/utils/utils'
 
 export default {
   name: 'rdsSizeFilter',
-  inject: ['form', 'formItemLayout'],
+  inject: ['form', 'formItemLayout', 'scopeParams'],
   data () {
     return {
       cpus: [],
@@ -73,7 +73,7 @@ export default {
         this.$nextTick(() => {
           const PARASM = getFieldsValue(paramsKeys)
           PARASM['cloudregion_id'] = PARASM['cloudregion']
-          resolve(PARASM)
+          resolve({ ...PARASM, ...this.scopeParams })
         })
       })
     },

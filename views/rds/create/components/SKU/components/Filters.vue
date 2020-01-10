@@ -32,7 +32,7 @@ const VERSION_SORT = {
 }
 export default {
   name: 'rdsSkuFilter',
-  inject: ['form', 'formItemLayout', 'disableds'],
+  inject: ['form', 'formItemLayout', 'disableds', 'scopeParams'],
   data () {
     return {
       dbInstance: undefined,
@@ -127,11 +127,11 @@ export default {
         this.$emit('change')
       })
     },
-    async fetchFilters (cloudregionId) {
+    async fetchFilters (cloudregionId = this.form.getFieldValue('cloudregion')) {
       const params = {
         resource_type: 'shared',
         show_emulated: true,
-        scope: this.$scope,
+        ...this.scopeParams,
       }
       try {
         const { data } = await new this.$Manager('cloudregions', 'v2').getSpecific({ id: cloudregionId, spec: 'capability', params })
@@ -144,6 +144,7 @@ export default {
         }, this.getEngine)
         return await data
       } catch (err) {
+        this.dbInstance = {}
         throw err
       }
     },
