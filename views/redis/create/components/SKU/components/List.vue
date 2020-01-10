@@ -194,19 +194,7 @@ export default {
         this.rateLoading = false
       }
     },
-    async fetchSkus (paramKeys) {
-      const { getFieldsValue } = this.form
-      const params = await new Promise((resolve, reject) => {
-        setTimeout(() => {
-          const values = getFieldsValue(paramKeys)
-          resolve(
-            {
-              ...values,
-              usable: true,
-            }
-          )
-        }, 10)
-      })
+    async fetchSkus (params) {
       const manager = new this.$Manager('elasticcacheskus', 'v2')
       try {
         this.loading = true
