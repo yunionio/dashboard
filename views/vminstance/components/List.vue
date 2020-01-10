@@ -1308,6 +1308,10 @@ export default {
                         validate: false,
                         tooltip: null,
                       }
+                      if (obj.hypervisor === typeClouds.hypervisorMap.openstack.key) {
+                        ret.tooltip = 'OpenStack机器在创建后不支持该操作'
+                        return ret
+                      }
                       const osType = obj.metadata && obj.metadata.os_name
                       if (['aws', 'azure'].includes(obj.hypervisor) && osType === 'Windows') {
                         ret.tooltip = 'Windows操作系统不支持该功能'
