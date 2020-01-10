@@ -3,12 +3,16 @@
     <div slot="header">{{action}}</div>
     <div slot="body">
       <a-alert class="mb-2" type="warning">
-        <div slot="message">
+        <div slot="message" v-if="params.data.length === 0">
           开关打开时可关联或解绑多个GPU卡，关闭后则解绑所有GPU卡
+        </div>
+        <div slot="message" v-else>
+          <p>批量关联只支持同时关联同种型号及同样数量的GPU卡</p>
+          <p>批量取消会同时取消所有实例已关联的GPU卡</p>
         </div>
       </a-alert>
       <dialog-selected-tips :count="params.data.length" :action="action" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <vxe-grid class="mb-2" :data="params.data" :columns="columns" />
       <a-form
         :form="form.fc">
         <a-form-item label="是否绑定" v-bind="formItemLayout">
@@ -85,6 +89,20 @@ export default {
       gpuOpt: [],
       isOpenGpu: false,
       bindGpus: [],
+      columns: [
+        {
+          field: 'name',
+          title: '名称',
+        },
+        {
+          field: 'ip',
+          title: 'IP',
+        },
+        {
+          field: 'gpu',
+          title: 'GPU',
+        },
+      ],
     }
   },
   computed: {
@@ -110,7 +128,7 @@ export default {
   watch: {
     gpuOpt () {
       this.bindGpus = this.gpuOpt.filter(item => item.usedCount).map(item => { return item.id })
-      if (this.bindGpus.length > 0) {
+      if (this.bindGpus.length > 0 && this.params.data.length === 0) {
         this.form.fc.setFieldsValue({ device: this.bindGpus })
         this.isOpenGpu = true
       }
