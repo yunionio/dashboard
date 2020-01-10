@@ -201,7 +201,6 @@ export default {
     },
     async fetchSpecs (params) {
       const instanceSpecsManager = new this.$Manager('elasticcacheskus/instance-specs')
-      console.log(params)
       try {
         const { data } = await instanceSpecsManager.batchGet({ params })
         this.memorys = data['mems_mb']
