@@ -3,28 +3,46 @@
     <div slot="header">{{action}}</div>
     <div slot="body">
       <a-alert class="mb-2" type="warning">
-        <div slot="message">
-          开关打开后可绑定一个或多个GPU卡，开关关闭后则取消绑定所有GPU卡
+        <div slot="message" v-if="params.data.length === 1">
+          开关打开时可关联或解绑多个GPU卡，关闭后则解绑所有GPU卡
+        </div>
+        <div slot="message" v-else>
+          <p>批量关联只支持同时关联同种型号及同样数量的GPU卡</p>
+          <p>批量取消会同时取消所有实例已关联的GPU卡</p>
         </div>
       </a-alert>
       <dialog-selected-tips :count="params.data.length" :action="action" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <vxe-grid class="mb-2" :data="params.data" :columns="columns" />
       <a-form
         :form="form.fc">
         <a-form-item label="是否绑定" v-bind="formItemLayout">
-          <a-switch v-model="form.fi.isOpenGpu" />
+          <a-switch v-model="isOpenGpu" />
         </a-form-item>
-        <a-form-item label="GPU卡" v-bind="formItemLayout" v-show="form.fi.isOpenGpu">
+        <a-form-item label="GPU卡" v-bind="formItemLayout" v-show="isOpenGpu" extra="只能关联与主机处于同一宿主机的GPU卡">
           <base-select
             v-decorator="decorators.device"
             :params="gpuParams"
             :need-params="false"
             :labelFormat="labelFormat"
-            :mapper="mapper"
+            :disabled-items="disabledItems"
             filterable
-            multiple
-            placeholder="请选择GPU设备"
-            resource="isolated_devices" />
+            :options.sync="gpuOpt"
+            :mapper="mapper"
+            resource="isolated_devices"
+            :select-props="{ allowClear: true, placeholder: '请选择GPU设备', mode: 'multiple' }">
+            <template v-slot:optionTemplate>
+              <a-select-option v-for="item in gpuOpt" :key="item.id">
+                <div class="d-flex">
+                  <span class="text-truncate flex-fill mr-2" :title="item.model">{{ item.model }}</span>
+                  <span style="color: #8492a6; font-size: 13px" v-show="item.totalCount > item.usedCount">可用: {{ item.totalCount - item.usedCount }} 个，已使用: {{ item.usedCount }} 个</span>
+                  <span style="color: #8492a6; font-size: 13px" v-show="item.totalCount === item.usedCount">已被使用</span>
+                </div>
+              </a-select-option>
+            </template>
+          </base-select>
+        </a-form-item>
+        <a-form-item label="数量" v-bind="formItemLayout" v-show="isOpenGpu && params.data.length > 1">
+          <a-input-number :min="1" v-decorator="decorators.number" />
         </a-form-item>
         <a-form-item label="自动启动" v-bind="formItemLayout" extra="设置成功后是否自动启动">
           <a-switch v-decorator="decorators.autoStart" />
@@ -39,6 +57,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
@@ -54,16 +73,13 @@ export default {
         fd: {
           device: [],
         },
-        fi: {
-          isOpenGpu: false,
-        },
       },
       decorators: {
         device: [
           'device',
           {
             rules: [
-              { required: true, message: '请选择GPU设备', trigger: 'change' },
+              { required: true, type: 'array', message: '请选择GPU设备', trigger: 'change' },
             ],
           },
         ],
@@ -72,6 +88,12 @@ export default {
           {
             valuePropName: 'checked',
             initialValue: true,
+          },
+        ],
+        number: [
+          'number',
+          {
+            initialValue: 1,
           },
         ],
       },
@@ -83,8 +105,23 @@ export default {
           span: 3,
         },
       },
+      gpuOpt: [],
+      isOpenGpu: false,
       bindGpus: [],
-      bindGpusNames: [],
+      columns: [
+        {
+          field: 'name',
+          title: '名称',
+        },
+        {
+          field: 'ip',
+          title: 'IP',
+        },
+        {
+          field: 'gpu',
+          title: 'GPU',
+        },
+      ],
     }
   },
   computed: {
@@ -92,8 +129,13 @@ export default {
       return this.params.data
     },
     gpuParams () {
-      if (this.selectedItems && this.selectedItems[0]) {
-        return { host: this.selectedItems[0].host_id, limit: 0 }
+      if (this.selectedItems && this.selectedItems.length > 0) {
+        let host = ''
+        this.selectedItems.map(item => {
+          host += item.host_id + ','
+        })
+        host = host.substring(0, host.lastIndexOf(','))
+        return { 'filter.0': `host_id.in(${host})`, limit: 0 }
       }
       return {}
     },
@@ -103,12 +145,16 @@ export default {
     detachGpu () {
       return this.bindGpus.filter((id) => { return !this.form.fd.device.includes(id) })
     },
+    disabledItems () {
+      return this.gpuOpt.filter(val => { return val.usedCount === val.totalCount || val.totalCount - val.usedCount < this.params.data.length }).map(item => { return item.id })
+    },
   },
   watch: {
-    bindGpus (val) {
-      this.form.fc.setFieldsValue({ device: val })
-      if (val && val.length > 0) {
-        this.form.fi.isOpenGpu = true
+    gpuOpt () {
+      this.bindGpus = this.gpuOpt.filter(item => item.usedCount).map(item => { return item.id })
+      if (this.bindGpus.length > 0 && this.params.data.length === 1) {
+        this.form.fc.setFieldsValue({ device: this.bindGpus })
+        this.isOpenGpu = true
       }
     },
   },
@@ -120,6 +166,28 @@ export default {
         auto_start: data.autoStart,
       }
       const ids = this.params.data.map(item => item.id)
+      if (ids.length > 1) {
+        const selectedNum = this.params.data.length
+        const { number: count } = data
+        const gpuItem = this.gpuOpt.filter(item => { return item.id === this.attchGpu[0] })
+        const model = gpuItem[0]['model']
+        const remain = gpuItem[0]['totalCount'] - gpuItem[0]['usedCount']
+        if (selectedNum * count > remain) {
+          this.$message.warning('GPU卡数量不足')
+          throw new Error('数量不足')
+        }
+        return this.params.list.onManager('batchPerformAction', {
+          id: ids,
+          steadyStatus: ['running', 'ready'],
+          managerArgs: {
+            action: 'acctach-isolated-device',
+            data: {
+              model,
+              count,
+            },
+          },
+        })
+      }
       return this.params.list.onManager('batchPerformAction', {
         id: ids,
         steadyStatus: ['running', 'ready'],
@@ -148,7 +216,7 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        if (this.form.fi.isOpenGpu) {
+        if (this.isOpenGpu) {
           const values = await this.form.fc.validateFields()
           await this.doAttachSubmit(values)
         } else {
@@ -162,26 +230,103 @@ export default {
         throw error
       }
     },
-    labelFormat (val) {
-      return val.model
+    mapper (data) {
+      let newData = []
+      if (this.params.data.length === 1) {
+        newData = this.singleMapper(data)
+      } else {
+        newData = this.grpupMapper(data)
+      }
+      return newData
     },
-    mapper (list) {
-      return list.filter((val) => {
-        if (val.guest) {
-          if (val.guest_id === this.selectedItems[0].id) {
-            this.bindGpus.push(val.id)
-            this.bindGpusNames.push(val.model)
+    singleMapper (data) {
+      const obj = {}
+      for (let i = 0; i < data.length; i++) {
+        const item = data[i]
+        if (!obj[item.model]) {
+          obj[item.model] = {
+            usedCount: item.guest ? 1 : 0,
+            totalCount: 1,
+          }
+          if (!item.guest) {
+            obj[item.model] = {
+              ...obj[item.model],
+              ...item,
+            }
+          }
+        } else {
+          obj[item.model].totalCount += 1
+          if (item.guest) {
+            obj[item.model].usedCount += 1
+          } else {
+            obj[item.model] = {
+              ...obj[item.model],
+              ...item,
+            }
+          }
+        }
+      }
+      const newData = []
+      R.forEachObjIndexed((value, key) => {
+        newData.push(value)
+      }, obj)
+      return newData
+    },
+    grpupMapper (data) {
+      const obj = {}
+      for (var i = 0; i < data.length; i++) {
+        const item = data[i]
+        if (!obj[item.host_id]) {
+          obj[item.host_id] = [
+            item,
+          ]
+        } else {
+          obj[item.host_id].push(item)
+        }
+      }
+      for (let key in obj) {
+        obj[key] = this.singleMapper(obj[key])
+      }
+      return this.filterSameModel(obj)
+    },
+    // 获取多个宿主机下共有的GPU型号数据
+    filterSameModel (obj) {
+      // 转成二维数组
+      const arrs = []
+      Object.values(obj).map(item => arrs.push(item))
+      let arr = arrs.shift()
+      for (let i = arrs.length; i--;) {
+        let obj = {}
+        arr = arr.concat(arrs[i]).filter((item, key) => {
+          let objItem = obj[item.model]
+          if (!objItem) {
+            obj[item.model] = item
+            obj[item.model]['inx'] = key
+          }
+          if (objItem && objItem.inx !== key) {
+            const readyRemain = objItem.totalCount - objItem.usedCount
+            const targetRemain = item.totalCount - item.usedCount
+            if (readyRemain > targetRemain) {
+              objItem.totalCount = item.totalCount
+              objItem.usedCount = item.usedCount
+            } else {
+              item.totalCount = objItem.totalCount
+              item.usedCount = objItem.usedCount
+            }
             return true
           }
           return false
-        }
-        return true
-      })
+        })
+      }
+      return arr
+    },
+    labelFormat (val) {
+      return val.model
     },
     onValuesChange (props, values) {
       Object.keys(values).forEach((key) => {
         if (key === 'device') {
-          this.form.fd[key] = [values[key]]
+          this.form.fd[key] = values[key]
         } else {
           this.form.fd[key] = values[key]
         }

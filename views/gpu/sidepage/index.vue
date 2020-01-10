@@ -17,6 +17,7 @@
 
 <script>
 import GpuDetail from './Detail'
+import serversList from './Servers'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -25,6 +26,7 @@ export default {
   name: 'GpuSidePage',
   components: {
     GpuDetail,
+    serversList,
     Actions,
   },
   mixins: [SidePageMixin, WindowsMixin],
@@ -32,6 +34,7 @@ export default {
     return {
       detailTabs: [
         { label: '详情', key: 'gpu-detail' },
+        { label: '关联主机', key: 'servers-list' },
         { label: '操作日志', key: 'event-drawer' },
       ],
     }
