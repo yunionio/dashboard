@@ -92,9 +92,13 @@ export default {
           meta: () => {
             let validate = true
             let tooltip = ''
-            if (this.data.brand === 'Huawei' && this.data.local_category === 'single') {
+            // if (this.data.brand === 'Huawei' && this.data.local_category === 'single') {
+            //   validate = false
+            //   tooltip = '华为云基础版不支持此操作'
+            // }
+            if (this.data.brand === 'Huawei') {
               validate = false
-              tooltip = '华为云基础版不支持此操作'
+              tooltip = '华为云暂时不支持此操作'
             }
             if (this.data.status !== 'running') {
               validate = false
@@ -118,12 +122,16 @@ export default {
               list: this.list,
             })
           },
-          meta: () => {
+          meta: (row) => {
             let validate = true
             let tooltip = ''
             if (this.data.brand === 'Huawei' && this.data.arch_type === 'single') {
               validate = false
               tooltip = '华为云基础版不支持此操作'
+            }
+            if (row.status !== 'running') {
+              validate = false
+              tooltip = '仅正常状态下的备份支持此操作'
             }
             return {
               validate,
