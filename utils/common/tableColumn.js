@@ -274,14 +274,14 @@ export const isPublicTableColumn = ({ field = 'is_public', title = '共享范围
       if (!row.is_public) {
         text = '私有'
         if (row.shared_projects) {
-          text = this.$t('shareScope.project')
+          text = i18n.t('shareScope.project')
         }
       } else {
         const scopeText = i18n.t(`shareScope.${row.public_scope}`)
         if (row.public_scope) {
           text = scopeText
         } else {
-          text = this.$t('shareScope.system')
+          text = i18n.t('shareScope.system')
         }
       }
       return text
