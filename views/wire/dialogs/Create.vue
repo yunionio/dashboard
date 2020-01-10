@@ -37,7 +37,7 @@
           </a-select>
         </a-form-item>
         <a-form-item label="名称" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.name" placeholder="字母开头，数字和字母大小写组合，长度为2-9个字符，不含'.'，'_'，'@'" />
+          <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')"  />
         </a-form-item>
         <a-form-item label="带宽" v-bind="formItemLayout">
           <a-select
@@ -123,7 +123,7 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: '请输入名称' },
-              { validator: this.$validate('wiresName') },
+              { validator: this.$validate('resourceName') },
               { validator: validateName, trigger: ['blur'] },
             ],
           },
