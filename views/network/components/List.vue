@@ -156,7 +156,6 @@ export default {
           sortable: true,
           showOverflow: 'ellipsis',
           minWidth: 100,
-          fixed: 'left',
           slots: {
             default: ({ row }, h) => {
               const ret = [
