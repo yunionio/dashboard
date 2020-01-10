@@ -6,6 +6,7 @@
         <disk
           :max="max"
           :min="item.min"
+          :snapshots-params="getSnapshotsParams(item)"
           :diskTypeLabel="diskTypeLabel"
           :decorator="genDecorator(item.key)"
           :hypervisor="hypervisor"
@@ -77,6 +78,10 @@ export default {
     isSnapshotImageType: {
       type: Boolean,
       default: false,
+    },
+    domain: {
+      type: String,
+      default: 'default',
     },
   },
   data () {
@@ -206,9 +211,10 @@ export default {
         }
         if (!this.diskTypeLabel) { // 表单中无系统盘，需要 set 磁盘类型默认值
           const typeObj = this.typesMap[diskType]
+          let dataDiskTypes = {}
           if (diskType) {
             if (R.is(Object, typeObj)) {
-              value[`dataDiskTypes[${key}]`] = {
+              dataDiskTypes = {
                 key: typeObj.key || diskType,
                 label: typeObj.label || diskType,
               }
@@ -216,12 +222,18 @@ export default {
           } else if (diskType === undefined) { // 新加数据盘
             const defaultKey = Object.keys(this.typesMap)[0]
             if (defaultKey) {
-              value[`dataDiskTypes[${key}]`] = {
+              dataDiskTypes = {
                 key: this.typesMap[defaultKey].key,
                 label: this.typesMap[defaultKey].label,
               }
             }
           }
+          value[`dataDiskTypes[${key}]`] = dataDiskTypes
+          const lastIndex = this.dataDisks.length - 1
+          this.dataDisks.splice(lastIndex, 1, {
+            ...this.dataDisks[lastIndex],
+            diskType: dataDiskTypes,
+          })
         }
         if (schedtag) { // 磁盘调度标签
           value[`dataDiskSchedtags[${key}]`] = schedtag
@@ -274,6 +286,30 @@ export default {
         }
       }
       return ret
+    },
+    getSnapshotsParams (item) {
+      const staticParams = {
+        with_meta: true,
+        cloud_env: 'onpremise',
+        limit: 0,
+        disk_type: 'data',
+      }
+      const modeParams = {}
+      if (this.$store.getters.isAdminMode) {
+        modeParams.project_domain = this.domain
+      } else {
+        modeParams.scope = this.$store.getters.scope
+      }
+      if (this.diskTypeLabel) {
+        staticParams['joint_filter.0'] = `storages.id(storage_id).storage_type.equals(${_.get(this.form, 'fd.systemDiskType.key')})`
+      }
+      if (item.diskType && item.diskType.key) {
+        staticParams['joint_filter.0'] = `storages.id(storage_id).storage_type.equals(${item.diskType.key})`
+      }
+      return {
+        ...staticParams,
+        ...modeParams,
+      }
     },
   },
 }
