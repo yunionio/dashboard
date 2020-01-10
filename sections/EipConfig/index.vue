@@ -74,6 +74,13 @@ export default {
       type: Boolean,
       default: false,
     },
+    showBind: { // 是否显示已绑定
+      type: Boolean,
+      default: true,
+    },
+    form: {
+      type: Object,
+    },
   },
   data () {
     return {
@@ -103,7 +110,7 @@ export default {
         delete ret.none
       }
       // 主机模板不支持绑定已有EIP
-      if (this.isServertemplate) {
+      if (this.isServertemplate || !this.showBind) {
         delete ret.bind
       }
       return ret
@@ -166,6 +173,20 @@ export default {
           limit: 20,
         },
         ...this.eipParams,
+      }
+    },
+  },
+  watch: {
+    types (val) {
+      const values = Object.values(val)
+      if (values.length) {
+        if (this.form && this.form.fc) {
+          const type = values[0].key
+          this.type = type
+          this.form.fc.setFieldsValue({
+            [this.decorators.type[0]]: type,
+          })
+        }
       }
     },
   },
