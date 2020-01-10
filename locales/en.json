@@ -390,7 +390,7 @@
       "instance_snapshot_delete_failed": "主机快照删除失败"
     },
     "snapshotpolicy": {
-      "init": "正常",
+      "init": "初始化",
       "ready": "正常",
       "deleteing": "删除中",
       "delete_failed": "删除失败",
@@ -414,6 +414,45 @@
     "globalVpc": {
       "available": "可用",
       "unknown": "未知"
+    },
+    "blockstorage": {
+      "enabled": "启用",
+      "disabled": "禁用",
+      "offline": "离线",
+      "online": "在线",
+      "unknown": "未知"
+    },
+    "bucket": {
+      "start_create": "开始创建",
+      "creating": "创建中",
+      "ready": "可用",
+      "create_fail": "创建失败",
+      "start_delete": "开始删除",
+      "deleting": "删除中",
+      "deleted": "已删除",
+      "delete_fail": "删除失败"
+    },
+    "hostImageCache": {
+      "init": "初始化中",
+      "saving": "保存中",
+      "caching": "缓存中",
+      "ready": "可用",
+      "deleting": "删除中",
+      "cache_fail": "缓存失败",
+      "active": "已缓存",
+      "queued": "排队中",
+      "killed": "缓存失败",
+      "deleted": "缓存异常"
+    },
+    "nat": {
+      "available": "可用",
+      "allocate": "创建中",
+      "deploying": "配置中",
+      "unknown": "未知状态",
+      "failed": "创建失败",
+      "deleted": "删除",
+      "deleting": "删除中",
+      "delete_failed": "删除失败"
     }
   },
   "skuCategoryOptions": {
@@ -1033,6 +1072,30 @@
   },
   "rules": {
     "domain": "请选择@:dictionary.domain",
-    "project": "请选择@:dictionary.project"
+    "project": "请选择@:dictionary.project",
+    "identity_provider": "请选择@:dictionary.identity_provider"
+  },
+  "storageAclTypes": {
+    "private": "本账号读写",
+    "public-read": "本账号写公开读",
+    "public-read-write": "公开读写"
+  },
+  "globalSetting": {
+    "password_unique_history_check": {
+      "label": "密码不重复次数",
+      "desc": "用于设置密码不重复次数，例如：若设置为3，则新密码不能与之前3次已使用过的历史密码相同"
+    },
+    "password_minimal_length": {
+      "label": "密码最小长度",
+      "desc": "限制密码的最小长度"
+    },
+    "password_error_lock_count": {
+      "label": "连续登录失败锁定用户",
+      "desc": "连续登录失败次数上限。当连续登录失败次数超过设置值，账户将被锁定一段时间。"
+    },
+    "non_default_domain_projects": {
+      "label": "三级权限",
+      "desc": "设置是否开启三级权限"
+    }
   }
 }
