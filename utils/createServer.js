@@ -940,7 +940,7 @@ export class GenCreateData {
     }
     // 安全组
     if (this.fd.secgroup_type === SECGROUP_OPTIONS_MAP.bind.key) {
-      data.secgroup = this.fd.secgroup
+      data.secgroups = this.fd.secgroup
     }
     // 如果设置了调度策略则拼装调度所需数据
     if (this.fd.schedPolicyType !== SCHED_POLICY_OPTIONS_MAP.default.key) {
