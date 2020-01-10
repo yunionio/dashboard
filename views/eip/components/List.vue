@@ -4,7 +4,9 @@
     :columns="columns"
     :group-actions="groupActions"
     :single-actions="singleActions"
-    :export-data-options="exportDataOptions" />
+    :export-data-options="exportDataOptions"
+    :showSearchbox="showSearchbox"
+    :showGroupActions="showGroupActions" />
 </template>
 
 <script>
@@ -21,11 +23,12 @@ import { findPlatform, typeClouds } from '@/utils/common/hypervisor'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import { sizestr } from '@/utils/utils'
+import globalSearchMixins from '@/mixins/globalSearch'
 
 const noChangeBandwidth = ['azure']
 export default {
   name: 'EipList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, globalSearchMixins],
   props: {
     id: String,
     getParams: {
@@ -73,6 +76,7 @@ export default {
           },
         },
         steadyStatus: Object.values(expectStatus.eip).flat(),
+        responseData: this.responseData,
       }),
       exportDataOptions: {
         items: [
