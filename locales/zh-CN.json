@@ -139,6 +139,7 @@
       "start_delete": "开始删除",
       "delete_fail": "删除失败",
       "deleting": "删除中",
+      "delete": "已删除",
       "syncing": "正在同步",
       "syncing_status": "正在同步",
       "sync_config": "同步配置",
