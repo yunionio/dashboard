@@ -456,6 +456,9 @@ export default {
                     columns: this.columns,
                     title: '删除',
                     list: this.list,
+                    success: () => {
+                      this.destroySidePages()
+                    },
                   })
                 },
                 meta: () => {
