@@ -25,6 +25,7 @@
         <os-select
           type="baremetal"
           :is-support-iso="isSupportIso"
+          :is-install-operation-system="isInstallOperationSystem"
           hypervisor="baremetal"
           :image-params="imageParams"
           :decorator="decorators.imageOS"
@@ -172,6 +173,9 @@ export default {
             if (values.hasOwnProperty('zone') && values.zone.key) {
               this.capability(values.zone.key)
               this.zone = values.zone.key
+            }
+            if (values.hasOwnProperty('imageType') && values.imageType === 'iso') {
+              this.capability(this.zone, true)
             }
           },
         }),
@@ -539,6 +543,7 @@ export default {
       this.hostDetail()
     }
     if (this.$route.query.zone_id) {
+      this.zone = this.$route.query.zone_id
       this.capability(this.$route.query.zone_id)
     }
     this.loadHostOpt()
@@ -621,10 +626,9 @@ export default {
         }
       })
     },
-    capability (v) { // 可用区查询
+    capability (v, isIso = false) { // 可用区查询
       let data = { show_emulated: true, resource_type: this.resourceType, scope: this.$store.getters.scope, host_type: 'baremetal' }
-      const imageType = this.form.fc.getFieldValue('imageOS') && this.form.fc.getFieldValue('imageOS').imageType
-      if (imageType === 'iso') {
+      if (isIso) {
         data.cdrom_boot = true
       }
       // init 虚拟化平台并默认选择第一项

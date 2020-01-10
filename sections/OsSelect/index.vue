@@ -70,6 +70,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    isInstallOperationSystem: {
+      type: Boolean,
+      default: false,
+    },
   },
   inject: ['form'],
   data () {
@@ -99,7 +103,9 @@ export default {
         ret.unshift(IMAGES_TYPE_MAP.public)
       } else if (this.isPrivate) {
         ret.unshift(IMAGES_TYPE_MAP.private)
-      } else if (this.isBaremetal && this.isSupportIso) {
+      } else if (this.isBaremetal && !this.isInstallOperationSystem) {
+        ret.push(IMAGES_TYPE_MAP.iso)
+      } else if (this.isInstallOperationSystem && this.isSupportIso) {
         ret.push(IMAGES_TYPE_MAP.iso)
       }
       ret = ret.filter((item) => {
