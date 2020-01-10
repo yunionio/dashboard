@@ -46,22 +46,8 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
+import { EIP_TYPES_MAP as types } from '@Compute/constants'
 import { typeClouds } from '@/utils/common/hypervisor'
-
-const types = {
-  none: {
-    key: 'none',
-    label: '暂不需要',
-  },
-  new: {
-    key: 'new',
-    label: '新建',
-  },
-  bind: {
-    key: 'bind',
-    label: '绑定已有',
-  },
-}
 
 const chargeTypes = {
   traffic: {
