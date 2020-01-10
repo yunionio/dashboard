@@ -183,6 +183,10 @@ export const EIP_TYPES_MAP = {
     label: '新建',
     key: 'new',
   },
+  bind: {
+    label: '绑定已有',
+    key: 'bind',
+  },
 }
 
 // 新建弹性IP配置选项

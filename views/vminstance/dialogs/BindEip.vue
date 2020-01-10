@@ -10,7 +10,8 @@
             hidden-none-type
             :decorators="decorators.eipConfig"
             :eip-params="eipParams"
-            :hypervisor="hypervisor" />
+            :hypervisor="hypervisor"
+            :form="form" />
         </a-form-item>
       </a-form>
     </div>

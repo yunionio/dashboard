@@ -35,7 +35,8 @@
             :capability-data="form.fi.capability"
             :sku="form.fd.sku"
             :image="form.fi.imageMsg"
-            :disabled="!diskLoaded" />
+            :disabled="!diskLoaded"
+            :domain="domain" />
         </a-form-item>
         <a-form-item label="申请原因" v-bind="formItemLayout" v-if="isOpenWorkflow">
           <a-input v-decorator="decorators.reason" placeholder="请输入申请原因" />
@@ -228,6 +229,7 @@ export default {
         },
       },
       diskLoaded: false,
+      domain: itemData.domain_id,
     }
   },
   computed: {
