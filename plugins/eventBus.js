@@ -19,7 +19,6 @@ class EventBus {
     if (vm instanceof this.Vue) this.setEventMapUid(vm._uid, eventName)
   }
   $emit () {
-    // console.log('EventBus emit eventName===', eventName)
     let args = [...arguments]
     let eventName = args[0]
     let params = args.slice(1)
