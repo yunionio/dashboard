@@ -184,13 +184,20 @@ export default {
           slots: {
             default: ({ row }) => {
               if (row.sys_info && row.sys_info.oem_name) {
-                const arr = ['dell', 'hp', 'hpe', 'inspur', 'lenovo']
+                const icons = {
+                  dell: { height: '25px' },
+                  hp: { height: '25px' },
+                  hpe: { height: '30px' },
+                  inspur: { height: '50px' },
+                  lenovo: { height: '10px' },
+                }
+                const arr = Object.keys(icons)
                 if (!arr.includes(row.sys_info.oem_name)) {
                   return row.sys_info.oem_name
                 }
                 const imgSrc = require(`../assets/${row.sys_info.oem_name}.svg`)
                 return [
-                  <img src={ imgSrc } style='width: 25px;' />,
+                  <img src={ imgSrc } style={ icons[row.sys_info.oem_name] } />,
                 ]
               }
             },
