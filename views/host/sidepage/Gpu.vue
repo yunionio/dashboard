@@ -5,7 +5,6 @@
 </template>
 
 <script>
-import SystemIcon from '@/sections/SystemIcon'
 import WindowsMixin from '@/mixins/windows'
 
 const DEVICE_MAP = {
@@ -40,14 +39,14 @@ export default {
           field: 'model',
           title: '设备型号',
           slots: {
-            default ({ cellValue, row }) {
+            default: ({ cellValue, row }, h) => {
               const device = row.vendor_device_id.split(':')[0]
               if (!device) {
                 return cellValue
               }
               return [
-                <span>{cellValue}</span>,
-                <SystemIcon name={ DEVICE_MAP[device] } />,
+                <span>{row.model}</span>,
+                <icon type={ DEVICE_MAP[device] } />,
               ]
             },
           },
