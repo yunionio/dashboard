@@ -22,7 +22,7 @@ import PageListEmpty from '@/components/PageList/Loader'
 
 export default {
   name: 'rdsSkuList',
-  inject: ['form'],
+  inject: ['form', 'scopeParams'],
   components: {
     PageListEmpty,
   },
@@ -124,7 +124,7 @@ export default {
             }
             delete PARAMS.zones
           }
-          resolve(PARAMS)
+          resolve({ ...PARAMS, ...this.scopeParams })
         })
       })
     },
