@@ -124,7 +124,6 @@ export default {
         {
           title: '#',
           field: 'id',
-          fixed: 'left',
           minWidth: 80,
           showOverflow: 'ellipsis',
         },
@@ -170,7 +169,6 @@ export default {
           field: 'notes',
           title: '备注',
           width: 70,
-          fixed: 'right',
           slots: {
             default: ({ row, column }) => {
               let text = ''
