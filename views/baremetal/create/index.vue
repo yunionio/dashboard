@@ -637,7 +637,8 @@ export default {
         // 如果是安装操作系统，只需要拿取public_network_count
         if (this.isInstallOperationSystem) {
           this.form.fi.capability = {
-            ...data.public_network_count,
+            ...this.form.fi.capability,
+            public_network_count: data.public_network_count,
           }
         } else {
           this.form.fi.capability = {
@@ -965,7 +966,7 @@ export default {
             }
             if (i === 0 && j === 0) {
               // 判断是否是iso导入
-              if (this.imageType === 'iso') {
+              if (values.imageType === 'iso') {
                 option = {
                   size: rows[j].size * 1024,
                 }
@@ -1031,7 +1032,7 @@ export default {
         description: values.description,
       }
       // 判断是否是iso导入
-      if (this.imageType === 'iso') {
+      if (values.imageType === 'iso') {
         params = {
           ...params,
           cdrom: values.image.key,
