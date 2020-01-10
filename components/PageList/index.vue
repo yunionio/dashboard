@@ -43,6 +43,7 @@
       :customs.sync="customs"
       :sort-config="{ sortMethod: () => {} }"
       :checkbox-config="checkboxConfig"
+      :expand-config="expandConfig"
       @sort-change="handleSortChange"
       @current-page-change="handleCurrentPageChange"
       @page-size-change="handlePageSizeChange"
@@ -99,6 +100,10 @@ export default {
       default: () => {
         return ['PrevJump', 'PrevPage', 'Jump', 'PageCount', 'NextPage', 'NextJump', 'Sizes', 'Total']
       },
+    },
+    // 展开行配置项
+    expandConfig: {
+      type: Object,
     },
   },
   data () {
