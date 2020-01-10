@@ -49,7 +49,7 @@ export default {
     },
     type: {
       type: String,
-      validator: val => ['public', 'private', 'idc', 'baremetal'].includes(val),
+      validator: val => ['public', 'private', 'idc', 'baremetal', 'installOperationSystem'].includes(val),
       required: true,
     },
     hypervisor: {
@@ -67,10 +67,6 @@ export default {
       required: false,
     },
     isSupportIso: {
-      type: Boolean,
-      default: false,
-    },
-    isInstallOperationSystem: {
       type: Boolean,
       default: false,
     },
@@ -94,6 +90,9 @@ export default {
     isBaremetal () {
       return this.type === 'baremetal'
     },
+    isInstallOperationSystem () {
+      return this.type === 'installOperationSystem'
+    },
     mirrorTypeOptions () {
       let ret = [IMAGES_TYPE_MAP.standard, IMAGES_TYPE_MAP.customize]
       if (this.isIDC && this.hypervisor === HYPERVISORS_MAP.kvm.key) {
@@ -103,9 +102,7 @@ export default {
         ret.unshift(IMAGES_TYPE_MAP.public)
       } else if (this.isPrivate) {
         ret.unshift(IMAGES_TYPE_MAP.private)
-      } else if (this.isBaremetal && !this.isInstallOperationSystem) {
-        ret.push(IMAGES_TYPE_MAP.iso)
-      } else if (this.isInstallOperationSystem && this.isSupportIso) {
+      } else if (this.isBaremetal || (this.isInstallOperationSystem && this.isSupportIso)) {
         ret.push(IMAGES_TYPE_MAP.iso)
       }
       ret = ret.filter((item) => {

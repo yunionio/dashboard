@@ -23,9 +23,8 @@
       </a-form-item>
       <a-form-item v-bind="formItemLayout" label="操作系统" extra="操作系统会根据选择的虚拟化平台和可用区域的变化而变化，公共镜像的维护请联系管理员">
         <os-select
-          type="baremetal"
+          :type="osSelectType"
           :is-support-iso="isSupportIso"
-          :is-install-operation-system="isInstallOperationSystem"
           hypervisor="baremetal"
           :image-params="imageParams"
           :decorator="decorators.imageOS"
@@ -174,8 +173,12 @@ export default {
               this.capability(values.zone.key)
               this.zone = values.zone.key
             }
-            if (values.hasOwnProperty('imageType') && values.imageType === 'iso') {
-              this.capability(this.zone, true)
+            if (values.hasOwnProperty('imageType')) {
+              if (values.imageType === 'iso') {
+                this.capability(this.zone, true)
+              } else {
+                this.capability(this.zone)
+              }
             }
           },
         }),
@@ -495,11 +498,17 @@ export default {
       }
       return false
     },
-    isInstallOperationSystem () {
+    isInstallOperationSystem () { // 是否是安装操作系统
       if (this.$route.query.host_id) {
         return true
       }
       return false
+    },
+    osSelectType () {
+      if (this.$route.query.host_id) {
+        return 'installOperationSystem'
+      }
+      return 'baremetal'
     },
   },
   provide () {
