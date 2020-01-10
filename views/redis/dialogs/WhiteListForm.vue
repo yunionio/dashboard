@@ -98,7 +98,7 @@ export default {
       if (value) {
         const ips = [...this.params.allIPList, ...value.split(',')]
         const ipsLength = ips.length
-        if (ipsLength > this.params.allIPList) {
+        if (ipsLength >= 20) {
           _callback('每个实例最多添加20个IP地址/地址段')
         }
         for (let i = 0; i < ipsLength; i++) {
@@ -110,7 +110,7 @@ export default {
           if (_u && !REG_NUM.test(_u)) {
             _callback(`地址段${_u}只能是数字`)
           }
-          if (ips.indexOf(_item, (i + 1)) > -1) {
+          if (ips && ips.indexOf(_item, (i + 1)) > -1) {
             return _callback(`实例中不允许出现重复IP“${_item}”`)
           }
         }

@@ -11,6 +11,7 @@ import { RDS_ACCOUNT_PRIVILEGES } from '@DB/constants'
 import { getStatusTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import expectStatus from '@/constants/expectStatus'
+import { getNameFilter, getStatusFilter } from '@/utils/common/tableFilter'
 
 export default {
   name: 'RDSDatabaseList',
@@ -29,6 +30,10 @@ export default {
         resource: 'dbinstancedatabases',
         getParams: this.params,
         steadyStatus: Object.values(expectStatus.redisAccount).flat(),
+        filterOptions: {
+          name: getNameFilter(),
+          status: getStatusFilter('rdsDatabase'),
+        },
       }),
       columns: [
         getNameDescriptionTableColumn({
