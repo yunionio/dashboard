@@ -6,7 +6,7 @@
       :form="form.fc">
       <a-divider orientation="left">基础配置</a-divider>
       <a-form-item label="指定项目" class="mb-0" v-bind="formItemLayout">
-        <domain-project :labelInValue="false" :fc="form.fc" :form-layout="formItemLayout"
+        <domain-project @update:domain="handleDomainChange" :labelInValue="false" :fc="form.fc" :form-layout="formItemLayout"
         :decorators="{ project: project, domain: domain }" />
       </a-form-item>
       <a-form-item label="名称" v-bind="formItemLayout">
@@ -114,7 +114,7 @@ export default {
     this.form.fc.getFieldDecorator('manager', { preserve: true })
   },
   methods: {
-    domainChange (values) {
+    _domainChange (values) {
       if (this.$store.getters.isAdminMode) {
         if (values.domain && values.domain.key) {
           this.scopeParams['project_domain'] = values.domain.key
@@ -123,17 +123,20 @@ export default {
         delete this.scopeParams['scope']
       }
     },
+    _queryNetworks (changedFields) {
+      if ((changedFields['sku'] && changedFields['sku'].value)) {
+        this.$refs['REF_VPC'].fetchQueryVpcs()
+      }
+    },
     _fieldsChange (vm, changedFields) {
       if (this.$refs['REF_SKU']) {
         this.$refs['REF_SKU'].skuFetchs(changedFields)
       }
-      this.domainChange(changedFields)
+      this._domainChange(changedFields)
       this._queryNetworks(changedFields)
     },
-    _queryNetworks (changedFields) {
-      if (changedFields['sku'] && changedFields['sku'].value) {
-        this.$refs['REF_VPC'].fetchQueryVpcs()
-      }
+    handleDomainChange () {
+      this.$refs['REF_VPC'].fetchQueryVpcs(true)
     },
     handleBlurCount (count, d) {
       if (!this.form.fc.getFieldValue('count')) {
