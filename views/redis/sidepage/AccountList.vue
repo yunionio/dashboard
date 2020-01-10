@@ -49,6 +49,16 @@ export default {
           },
         },
         {
+          field: 'password',
+          title: '密码',
+          width: 50,
+          slots: {
+            default: ({ row }) => {
+              return [<PasswordFetcher serverId={row.id} resourceType='elasticcacheaccounts' />]
+            },
+          },
+        },
+        {
           field: 'account_type',
           title: '账号类型',
           slots: {
