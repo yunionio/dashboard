@@ -53,7 +53,7 @@ export default {
           { label: '主存储', key: 'storage' },
           { label: '创建时间', key: 'created_at' },
           { label: '状态', key: 'status' },
-          { label: '项目', key: 'tenant' },
+          { label: this.$t('dictionary.project'), key: 'tenant' },
           { label: '平台', key: 'provider' },
           { label: '区域', key: 'region' },
           { label: '可用区', key: 'zone' },

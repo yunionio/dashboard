@@ -2,6 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">解绑密钥</div>
     <div slot="body">
+      <a-alert class="mb-2" v-if="isOpenStack" message="OpenStack机器在解绑密钥后需手动重置密码" type="warning" />
       <dialog-selected-tips :count="params.data.length" action="解绑密钥" />
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
@@ -61,6 +62,11 @@ export default {
         },
       },
     }
+  },
+  computed: {
+    isOpenStack () {
+      return this.params.data[0].hypervisor === hypervisorMap.openstack.key
+    },
   },
   methods: {
     async handleConfirm () {

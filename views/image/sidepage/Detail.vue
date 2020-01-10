@@ -33,7 +33,7 @@ export default {
         },
         {
           field: 'tenant',
-          title: '项目',
+          title: this.$t('dictionary.project'),
         },
         {
           field: 'type',

@@ -17,6 +17,7 @@ import { IMAGES_TYPE_MAP } from '@/constants/compute'
 import { HYPERVISORS_MAP } from '@/constants'
 import validateForm, { isRequired, isWithinRange } from '@/utils/validate'
 import store from '@/store'
+import i18n from '@/locales'
 
 function checkIpInSegment (i, networkData) {
   return (rule, value, cb) => {
@@ -69,7 +70,7 @@ export const createVmDecorators = type => {
       'domain',
       {
         rules: [
-          { validator: isRequired(), message: '请选择域', trigger: 'change' },
+          { validator: isRequired(), message: i18n.t('rules.domain'), trigger: 'change' },
         ],
       },
     ],
@@ -77,7 +78,7 @@ export const createVmDecorators = type => {
       'project',
       {
         rules: [
-          { validator: isRequired(), message: '请选择项目', trigger: 'change' },
+          { validator: isRequired(), message: i18n.t('rules.project'), trigger: 'change' },
         ],
       },
     ],
