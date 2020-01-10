@@ -955,5 +955,10 @@
     "single": "单条录入",
     "batch": "批量录入",
     "file": "模板导入"
+  },
+  "storageAclTypes": {
+    "private": "本账号读写",
+    "public-read": "本账号写公开读",
+    "public-read-write": "公开读写"
   }
 }
