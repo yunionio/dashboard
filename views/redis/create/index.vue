@@ -34,7 +34,7 @@
 // import * as R from 'ramda'
 import { CreateServerForm } from '@Compute/constants'
 import { decorators } from '@DB/views/utils/createElasticcache'
-import { debounce } from 'lodash'
+// import { debounce } from 'lodash'
 import ServerPassword from '@Compute/sections/ServerPassword'
 import ItemArea from '@DB/sections/ItemArea'
 import ItemBillingOpts from './components/ItemBillingOpts'
@@ -85,11 +85,14 @@ export default {
           ],
         },
       ],
+      scopeParams: {
+        scope: this.$store.getters.scope,
+      },
     }
   },
   computed: {
     form () {
-      const fc = this.$form.createForm(this, { onFieldsChange: debounce((vm, values) => this._debounceFieldsChange(vm, values)) })
+      const fc = this.$form.createForm(this, { onFieldsChange: (vm, values) => this._fieldsChange(vm, values) })
       const { getFieldDecorator, getFieldValue, getFieldsValue, setFieldsValue } = fc
       return {
         fc,
@@ -103,6 +106,7 @@ export default {
   provide () {
     return {
       form: this.form,
+      scopeParams: this.scopeParams,
       formItemLayout: this.formItemLayout,
     }
   },
@@ -110,8 +114,20 @@ export default {
     this.form.fc.getFieldDecorator('manager', { preserve: true })
   },
   methods: {
-    _debounceFieldsChange (vm, changedFields) {
-      this.$refs['REF_SKU'].skuFetchs(changedFields)
+    domainChange (values) {
+      if (this.$store.getters.isAdminMode) {
+        if (values.domain && values.domain.key) {
+          this.scopeParams['project_domain'] = values.domain.key
+        }
+        this.scopeParams['project_domain'] = this.form.getFieldValue('domain')
+        delete this.scopeParams['scope']
+      }
+    },
+    _fieldsChange (vm, changedFields) {
+      if (this.$refs['REF_SKU']) {
+        this.$refs['REF_SKU'].skuFetchs(changedFields)
+      }
+      this.domainChange(changedFields)
       this._queryNetworks(changedFields)
     },
     _queryNetworks (changedFields) {

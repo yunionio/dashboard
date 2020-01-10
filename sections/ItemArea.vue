@@ -3,6 +3,7 @@
     <area-selects
      v-bind="formItemLayout"
     :names="names"
+    :isRequired="isRequired"
     :defaultActiveFirstOption="defaultActiveFirstOption"
     :cityParams="{cloud_env: 'public', ...scopeParams}"
     :zoneParams="{service: 'elasticcaches', ...scopeParams}"
@@ -30,18 +31,11 @@ export default {
     values: {
       type: Object,
     },
-  },
-  inject: ['form', 'formItemLayout'],
-  computed: {
-    scopeParams () {
-      if (this.$store.getters.isAdminMode) {
-        return {
-          project_domain: this.values.domain || this.$store.getters.userInfo.projectDomainId,
-        }
-      }
-      return { scope: this.$store.getters.scope }
+    isRequired: {
+      type: Boolean,
     },
   },
+  inject: ['form', 'formItemLayout', 'scopeParams'],
   methods: {
     providerFetchSuccess (list = []) {
       const needProvider = ['Aliyun', 'Huawei']

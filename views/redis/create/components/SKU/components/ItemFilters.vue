@@ -199,13 +199,9 @@ export default {
     eimtChange () {
       this.$emit('change')
     },
-    async fetchSpecs (paramKeys) {
+    async fetchSpecs (params) {
       const instanceSpecsManager = new this.$Manager('elasticcacheskus/instance-specs')
-      const params = await new Promise((resolve, reject) => {
-        setTimeout(() => {
-          resolve(this.form.getFieldsValue(paramKeys))
-        }, 10)
-      })
+      console.log(params)
       try {
         const { data } = await instanceSpecsManager.batchGet({ params })
         this.memorys = data['mems_mb']
@@ -220,9 +216,8 @@ export default {
         throw err
       }
     },
-    async fetchCapability (paramKeys) {
+    async fetchCapability (params) {
       const capabilityManager = new this.$Manager('elasticcacheskus/capability')
-      const params = this.form.getFieldsValue(paramKeys)
       params['engine'] = 'redis'
       try {
         const { data: { redis } } = await capabilityManager.batchGet({ params })
