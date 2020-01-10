@@ -1,7 +1,7 @@
 <template>
   <div>
     <page-toolbar>
-      <div class="mb-2 d-flex">
+      <div class="mb-2 d-flex" v-if="showGroupActions">
         <div class="d-flex flex-fill">
           <refresh-button class="flex-shrink-0" :loading="loading" @refresh="refresh" />
           <template v-if="groupActions">
@@ -20,7 +20,7 @@
           </a-tooltip>
         </div>
       </div>
-      <div class="d-flex">
+      <div class="d-flex" v-if="showSearchbox">
         <div class="flex-fill">
           <search-box
             v-if="filterOptions"
@@ -104,6 +104,14 @@ export default {
     // 展开行配置项
     expandConfig: {
       type: Object,
+    },
+    showGroupActions: {
+      type: Boolean,
+      default: true,
+    },
+    showSearchbox: {
+      type: Boolean,
+      default: true,
     },
   },
   data () {

@@ -148,6 +148,8 @@ class CreateList {
     hiddenColumns = [],
     // 标签的过滤项
     tagFilter = {},
+    // 外传responseData
+    responseData = {},
   }) {
     // 列表唯一标识
     this.id = id ? `LIST_${id}` : undefined
@@ -188,6 +190,8 @@ class CreateList {
     this.configLoaded = false
     // 标签的过滤项
     this.tagFilter = tagFilter
+    // 外传responseData
+    this.responseData = responseData
   }
   /**
    * @description 获取列表配置，如果没有则创建
@@ -259,7 +263,9 @@ class CreateList {
         await this.fetchConfig()
       }
       let response
-      if (R.is(String, this.resource)) {
+      if (this.responseData && this.responseData.data) {
+        response = { data: this.responseData }
+      } else if (R.is(String, this.resource)) {
         response = await this.manager.list({
           params: this.params,
           ctx: this.ctx,
