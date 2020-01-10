@@ -11,19 +11,6 @@ const resourceMode = {
     },
     labelFormat: item => `${item.name}（${item.guest_ip_start} - ${item.guest_ip_end}, vlan=${item.vlan_id}）`,
   },
-  isolated_devices: {
-    vnode: (vm, h) => {
-      const text = vm.getLabel()
-      return ( // GPU卡
-        <div class='d-flex'>
-          <span class='text-truncate flex-fill mr-2' title={ text }>{ text }</span>
-          <span style="color: #8492a6; font-size: 13px" v-show={ vm.data.totalCount > vm.data.usedCount }>可用: { vm.data.totalCount - vm.data.usedCount } 个，已使用: { vm.data.usedCount } 个</span>
-          <span style="color: #8492a6; font-size: 13px" v-show={ vm.data.totalCount === vm.data.usedCount }>已被使用</span>
-        </div>
-      )
-    },
-    labelFormat: item => `${item.name}`,
-  },
 }
 
 export default {

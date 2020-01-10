@@ -8,9 +8,11 @@
       @change="change"
       @search="loadOpts"
       :loading="loading">
-      <a-select-option v-for="item of resOpts" :key="item.id" :value="item.id" :disabled="item.__disabled">
-        <option-label :nameKey="nameKey" :labelFormat="labelFormat" :data="item" :resource="resource" />
-      </a-select-option>
+      <slot name="optionTemplate">
+        <a-select-option v-for="item of resOpts" :key="item.id" :value="item.id" :disabled="item.__disabled">
+          <option-label :nameKey="nameKey" :labelFormat="labelFormat" :data="item" :resource="resource" />
+        </a-select-option>
+      </slot>
     </a-select>
     <a-icon v-if="showSync" type="sync" class="ml-2" :spin="loading" @click="loadOpts" :style="{ color: '#1890ff' }" />
   </div>
