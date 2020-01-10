@@ -9,10 +9,10 @@
 <script>
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { ACCOUNT_PRIVILEGES } from '../constants'
-import { getStatusTableColumn } from '@/utils/common/tableColumn'
+import { getStatusTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import expectStatus from '@/constants/expectStatus'
-
+import { getNameFilter, getStatusFilter } from '@/utils/common/tableFilter'
 export default {
   name: 'RedisAccountList',
   mixins: [WindowsMixin],
@@ -30,13 +30,24 @@ export default {
         resource: 'elasticcacheaccounts',
         getParams: this.params,
         steadyStatus: Object.values(expectStatus.redisAccount).flat(),
+        filterOptions: {
+          name: getNameFilter(),
+          status: getStatusFilter('redisAccount'),
+        },
       }),
       columns: [
-        {
-          field: 'name',
-          title: '名称',
-        },
+        getCopyWithContentTableColumn(),
         getStatusTableColumn({ statusModule: 'redisAccount' }),
+        {
+          field: 'password',
+          title: '密码',
+          width: 50,
+          slots: {
+            default: ({ row }) => {
+              return [<PasswordFetcher serverId={row.id} resourceType='elasticcacheaccounts' />]
+            },
+          },
+        },
         {
           field: 'password',
           title: '密码',
