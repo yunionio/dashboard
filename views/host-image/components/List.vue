@@ -12,7 +12,6 @@ import { sizestr } from '@/utils/utils'
 import { getStatusTableColumn, getNameDescriptionTableColumn, getProjectTableColumn, isPublicTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import { getTenantFilter, getStatusFilter } from '@/utils/common/tableFilter'
 import SystemIcon from '@/sections/SystemIcon'
-import BaseDropList from '@/sections/DropList'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -104,17 +103,16 @@ export default {
           field: 'child_image',
           title: '子镜像',
           width: 150,
+          type: 'expand',
           slots: {
-            default: ({ row }) => {
-              const list = row.data_images.map(val => ({ value: val.name }))
-              list.push({ value: row.root_image.name })
-              const dropMsg = [
-                {
-                  title: `${list.length}个`,
-                  list,
-                },
-              ]
-              return [<BaseDropList drop-msg={dropMsg} />]
+            content: ({ row }) => {
+              const list = row.data_images.map(val => (
+                <a-tag class='mb-2'>{ val.name }</a-tag>
+              ))
+              list.push(
+                <a-tag class='mb-2'>{ row.root_image.name }</a-tag>
+              )
+              return list
             },
           },
         },
