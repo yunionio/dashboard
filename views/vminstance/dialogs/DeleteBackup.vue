@@ -3,10 +3,10 @@
     <div slot="header">删除备份机</div>
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" action="删除备份机" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <vxe-grid class="mb-2" :data="params.data" :columns="columns" />
       <a-form :form="form.fc" hideRequiredMark>
         <a-form-item label="强制清除" v-bind="formItemLayout" extra="强制清除备份机记录（适用于备份机宿主机离线的情况下）">
-          <a-switch v-decorator="decorators.purge" />
+          <a-switch :disabled="disableAutoPurge" v-decorator="decorators.purge" />
         </a-form-item>
       </a-form>
     </div>
@@ -34,7 +34,7 @@ export default {
         purge: [
           'purge',
           {
-            initialValue: true,
+            initialValue: false,
             valuePropName: 'checked',
           },
         ],
@@ -47,6 +47,34 @@ export default {
           span: 3,
         },
       },
+    }
+  },
+  computed: {
+    columns () {
+      const col = this.params.columns.slice(0, 3)
+      col.push({
+        field: 'backup_host_status',
+        title: '备份机的宿主机',
+        width: 120,
+        showOverflow: 'ellipsis',
+        slots: {
+          default: ({ row }) => {
+            return [<status status={ row['backup_host_status'] } statusModule='host_status'/>]
+          },
+        },
+      })
+      return col
+    },
+    disableAutoPurge () {
+      return this.params.data.some((obj) => { return obj.backup_host_status === 'online' })
+    },
+  },
+  mounted () {
+    const isOnline = this.params.data.some((obj) => { return obj.backup_host_status === 'online' })
+    if (!isOnline) {
+      this.form.fc.setFieldsValue({
+        purge: true,
+      })
     }
   },
   methods: {
