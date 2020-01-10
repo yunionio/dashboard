@@ -142,14 +142,13 @@ export default {
         return !item.hidden
       })
       if ((this.groupActions && this.groupActions.length > 0) || this.showSelection) {
-        defaultColumns.unshift({ type: 'checkbox', width: 40, fixed: 'left' })
+        defaultColumns.unshift({ type: 'checkbox', width: 40 })
       }
       if (this.singleActions && this.singleActions.length) {
         defaultColumns.push({
           field: 'action',
           title: '操作',
           minWidth: 120,
-          fixed: 'right',
           slots: {
             default: ({ row }, h) => {
               return [<Actions options={ this.singleActions } row={ row } button-type='link' button-size='small' button-style={{ fontSize: '12px' }} />]
