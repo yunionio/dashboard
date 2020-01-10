@@ -1597,6 +1597,10 @@ export default {
                       if (!obj.backup_host_id) {
                         return ret
                       }
+                      if (obj.backup_host_status !== 'online') {
+                        ret.tooltip = '备份机的宿主机离线不允许切换'
+                        return ret
+                      }
                       if (!this.isAdminMode) {
                         return ret
                       }
