@@ -1074,5 +1074,10 @@
     "domain": "请选择@:dictionary.domain",
     "project": "请选择@:dictionary.project",
     "identity_provider": "请选择@:dictionary.identity_provider"
+  },
+  "storageAclTypes": {
+    "private": "本账号读写",
+    "public-read": "本账号写公开读",
+    "public-read-write": "公开读写"
   }
 }

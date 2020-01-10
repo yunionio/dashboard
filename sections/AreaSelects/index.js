@@ -27,6 +27,21 @@ export default {
   name: 'AreaSelects',
   inject: ['form'],
   props: {
+    isRequired: {
+      type: Boolean,
+      default: false,
+    },
+    placeholders: {
+      type: Object,
+      default: () => {
+        return {
+          'city': '请选择城市',
+          'provider': '请选择平台',
+          'cloudregion': '请选择区域',
+          'zone': '请选择可用区',
+        }
+      },
+    },
     label: {
       type: String,
       default: '区域',
@@ -112,6 +127,24 @@ export default {
     },
   },
   methods: {
+    resetSelect (names = this.names, callback) {
+      const _F = () => {}
+      let _resolve = _F
+      const promise = new Promise((resolve) => {
+        _resolve = resolve
+      })
+      const _ = {}
+      if (names && !R.isEmpty(names)) {
+        names.forEach(k => {
+          _[k] = undefined
+        })
+        this.FC.setFieldsValue(_, () => {
+          _resolve(names)
+          callback && callback()
+        })
+      }
+      return promise
+    },
     filterOption (input, option) {
       return (
         option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -188,12 +221,11 @@ export default {
             [name]: _item.id || _item.name,
           })
         }
-      } else {
-        this.defaultActiveFirstOption = false
       }
       this[`${name}List`] = _list
     },
     async fetchs (fetchNames = this.names) {
+      await this.resetSelect(fetchNames)
       if (fetchNames && fetchNames.length > 0) {
         for (let i = 0; i < fetchNames.length; i++) {
           const name = fetchNames[i]
@@ -383,14 +415,23 @@ export default {
     const { names } = this
     const RenderCols = names.map(name => {
       const sn = this.firstName(name)
-      let fieldDecorator = getFieldDecorator(name)
+      const options = {}
+      if (this.isRequired && options) {
+        const requiredRule = [{ required: true, message: this.placeholders[name] }]
+        if (options.rules && options.rules.length > 0) {
+          options['rules'] = requiredRule.concat(options.rules)
+        } else {
+          options['rules'] = requiredRule
+        }
+      }
+      let fieldDecorator = getFieldDecorator(name, options)
       if (this.decorators && this.decorators[name]) {
-        const { id, options } = this.decorators[name]
+        const { id, options = {} } = this.decorators[name]
         fieldDecorator = getFieldDecorator(id, options)
       }
       if (this[`Render${sn}`]) {
         const Render = this[`Render${sn}`]()
-        return <a-col span={this.colSpan}> {fieldDecorator(Render)} </a-col>
+        return <a-col span={this.colSpan}> <a-form-item> {fieldDecorator(Render)}</a-form-item> </a-col>
       }
       return null
     })
