@@ -20,7 +20,7 @@
 import { Manager } from '@/utils/manager'
 
 export default {
-  inject: ['form'],
+  inject: ['form', 'scopeParams'],
   props: {
     decorators: {
       type: Object,
@@ -75,15 +75,16 @@ export default {
         }
       }
     },
-    async fetchQueryVpcs () {
+    async fetchQueryVpcs (isUpdate) {
       const sku = this.getFieldValue('sku')
       const params = {
         limit: 0,
         usable: true,
         cloudregion_id: this.getFieldValue('region'),
+        ...this.scopeParams,
       }
       if (sku) {
-        if (sku.cloudregion_id === this.cloudregion) {
+        if ((sku.cloudregion_id === this.cloudregion) && !isUpdate) {
           return false
         }
         params['cloudregion_id'] = sku.cloudregion_id
@@ -115,6 +116,7 @@ export default {
         limit: 0,
         usable: true,
         vpc: vpc || this.getFieldValue('vpc'),
+        ...this.scopeParams,
       }
       const sku = this.getFieldValue('sku')
       if (sku && sku.provider === 'Aliyun') {

@@ -66,12 +66,12 @@ export default {
               return { label: ENGINE_ARCH[key], key }
             }),
           },
-          internal_connection_str: getFilter({
-            field: 'internal_connection_str',
+          private_dns: getFilter({
+            field: 'private_dns',
             title: '链接地址-内网',
           }),
-          connection_str: getFilter({
-            field: 'internal_connection_str',
+          public_dns: getFilter({
+            field: 'public_dns',
             title: '链接地址-外网',
           }),
         },
@@ -131,6 +131,7 @@ export default {
         {
           title: '链接地址',
           minWidth: 200,
+          showOverflow: 'ellipsis',
           slots: {
             default: ({ row }) => {
               const pri = row.private_dns || row.private_ip_addr
@@ -138,9 +139,22 @@ export default {
               if (!pri && !pub) {
                 return '-'
               }
+              const connection = (title, value) => {
+                if (!value) {
+                  return null
+                }
+                return (
+                  <div class="d-flex align-items-center">
+                    <span class="text-truncate">
+                      {title}：{value}
+                    </span>
+                    <copy message={value} />
+                  </div>
+                )
+              }
               return [
-                <div class='td-ellipsis'>{pri && <a-tooltip placement='topLeft' title={`内网：${pri}`}>内网：{pri}</a-tooltip> }</div>,
-                <div class='td-ellipsis'>{pub && <a-tooltip placement='topLeft' title={`外网：${pub}`}>外网：{pub}</a-tooltip> }</div>,
+                connection('内网', pri),
+                connection('外网', pub),
               ]
             },
           },

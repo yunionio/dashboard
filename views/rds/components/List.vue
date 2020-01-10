@@ -73,7 +73,7 @@ export default {
             title: '链接地址-内网',
           }),
           connection_str: getFilter({
-            field: 'internal_connection_str',
+            field: 'connection_str',
             title: '链接地址-外网',
           }),
         },
@@ -147,7 +147,7 @@ export default {
                 return (
                   <div class="d-flex align-items-center">
                     <span class="text-truncate">
-                     内网：{value}
+                      {title}：{value}
                     </span>
                     <copy message={value} />
                   </div>

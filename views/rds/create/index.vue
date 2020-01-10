@@ -20,7 +20,13 @@
        <a-form-item label="管理员密码" v-bind="formItemLayout">
          <server-password :loginTypes="loginTypes" :decorator="decorators.loginConfig" :form="form" />
         </a-form-item>
-      <network-selects lable="VPC" ref="NETWORK" :vpcParams="getVpcParams" :networkParams="getNetworkParams" v-bind="formItemLayout" />
+      <network-selects
+        ref="NETWORK"
+        v-show="form.getFieldValue('cloudregion')"
+        label="VPC"
+        :vpcParams="getVpcParams"
+        :networkParams="getNetworkParams"
+        v-bind="formItemLayout" />
       <!-- 选择安全组 -->
       <a-form-item v-if="form.getFieldValue('provider') === 'Huawei'" label="安全组" v-bind="formItemLayout">
         <secgroup-config
@@ -128,6 +134,7 @@ export default {
         this.$nextTick(() => {
           resolve({
             cloudregion_id: this.form.getFieldValue('cloudregion'),
+            ...this.scopeParams,
           })
         })
       })
@@ -138,6 +145,7 @@ export default {
           const zoneStr = this.form.getFieldValue('zones')
           const params = {
             cloudregion_id: this.form.getFieldValue('region'),
+            ...this.scopeParams,
           }
           if (zoneStr) {
             const zoneArr = zoneStr.split('+')
