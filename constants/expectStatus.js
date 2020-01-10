@@ -12,8 +12,8 @@ export default {
   },
   host: {
     success: ['online', 'running'],
-    info: ['offline', 'init'],
-    danger: ['ready'],
+    info: ['offline', 'init', 'ready'],
+    // danger: ['ready'],
   },
   image: {
     info: ['ready', 'pending_delete'],
