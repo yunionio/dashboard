@@ -293,9 +293,9 @@ export default {
         auto_start: autoStart,
         image_id: image.key,
       }
-      if (this.isZStack) {
-        params.image_id = this.detailData[0].disks_info[0].image_id
-      }
+      // if (this.isZStack) {
+      //   params.image_id = this.detailData[0].disks_info[0].image_id
+      // }
       if (loginType === 'keypair') {
         params['keypair'] = loginKeypair.key
         params['reset_password'] = false
