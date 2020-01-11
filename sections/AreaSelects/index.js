@@ -425,7 +425,7 @@ export default {
       }
       let fieldDecorator = getFieldDecorator(name, options)
       if (this.decorators && this.decorators[name]) {
-        const { id, options = {} } = this.decorators[name]
+        const [id, options = {}] = this.decorators[name]
         fieldDecorator = getFieldDecorator(id, options)
       }
       if (this[`Render${sn}`]) {
