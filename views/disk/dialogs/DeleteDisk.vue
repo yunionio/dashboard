@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">删除</div>
     <div slot="body">
-      <a-alert class="mb-2" type="warning" v-if="isCeph">
+      <a-alert class="mb-4" type="warning" v-if="isCeph">
         <div slot="message">
           ceph盘有快照不支持单独删除硬盘，删除硬盘需打开同时删除快照
         </div>

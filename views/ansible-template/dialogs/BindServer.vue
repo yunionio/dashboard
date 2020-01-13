@@ -6,7 +6,7 @@
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form class="mt-3" :form="form" v-bind="formItemLayout">
         <a-form-item label="主机">
-          <a-select v-decorator="decorators.server_id" :loading="queryServerLoading" style="width: 100%" placeholder="请选择主机">
+          <a-select v-decorator="decorators.server_id"  mode="multiple" :loading="queryServerLoading" style="width: 100%" placeholder="请选择主机">
             <a-select-option :key="item.id" v-for="item in serverList" :value="item.id">{{item.name}}</a-select-option>
           </a-select>
         </a-form-item>

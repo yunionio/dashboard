@@ -29,21 +29,12 @@ export default {
       const manager = new this.$Manager('devtool_templates')
       this.loading = true
       try {
-        if (this.params.data.length > 1) {
-          await manager.batchPerformAction({
-            ids: this.params.data.map(item => item.id),
-            action: `${this.params.resId}/unbind`,
-          })
-        } else {
-          await manager.performAction({
-            id: this.params.resId,
-            action: 'unbind',
-            data: {
-              id: this.params.data[0].server_id,
-              server_id: this.params.data[0].server_id,
-            },
-          })
-        }
+        await manager.batchPerformAction({
+          action: `${this.params.resId}/unbind`,
+          data: {
+            server_id: this.params.data.map(item => item.id),
+          },
+        })
         this.cancelDialog()
         this.params.list.fetchData()
       } catch (error) {
