@@ -24,7 +24,7 @@
       <a-form-item v-bind="formItemLayout" label="操作系统" extra="操作系统会根据选择的虚拟化平台和可用区域的变化而变化，公共镜像的维护请联系管理员">
         <os-select
           type="baremetal"
-          :is-support-iso="isSupportIso"
+          :types="osSelectTypes"
           hypervisor="baremetal"
           :image-params="imageParams"
           :decorator="decorators.imageOS"
@@ -172,6 +172,13 @@ export default {
             if (values.hasOwnProperty('zone') && values.zone.key) {
               this.capability(values.zone.key)
               this.zone = values.zone.key
+            }
+            if (values.hasOwnProperty('imageType')) {
+              if (values.imageType === 'iso') {
+                this.capability(this.zone, true)
+              } else {
+                this.capability(this.zone)
+              }
             }
           },
         }),
@@ -491,11 +498,21 @@ export default {
       }
       return false
     },
-    isInstallOperationSystem () {
+    isInstallOperationSystem () { // 是否是安装操作系统
       if (this.$route.query.host_id) {
         return true
       }
       return false
+    },
+    osSelectTypes () {
+      let types = ['standard', 'customize']
+      if (this.isInstallOperationSystem && this.isSupportIso) {
+        types.push('iso')
+      }
+      if (!this.isInstallOperationSystem) {
+        types.push('iso')
+      }
+      return types
     },
   },
   provide () {
@@ -539,6 +556,7 @@ export default {
       this.hostDetail()
     }
     if (this.$route.query.zone_id) {
+      this.zone = this.$route.query.zone_id
       this.capability(this.$route.query.zone_id)
     }
     this.loadHostOpt()
@@ -621,10 +639,9 @@ export default {
         }
       })
     },
-    capability (v) { // 可用区查询
+    capability (v, isIso = false) { // 可用区查询
       let data = { show_emulated: true, resource_type: this.resourceType, scope: this.$store.getters.scope, host_type: 'baremetal' }
-      const imageType = this.form.fc.getFieldValue('imageOS') && this.form.fc.getFieldValue('imageOS').imageType
-      if (imageType === 'iso') {
+      if (isIso) {
         data.cdrom_boot = true
       }
       // init 虚拟化平台并默认选择第一项
