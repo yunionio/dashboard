@@ -3,7 +3,9 @@
     :columns="columns"
     :group-actions="groupActions"
     :list="list"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :showSearchbox="showSearchbox"
+    :showGroupActions="showGroupActions" />
 </template>
 
 <script>
@@ -15,10 +17,11 @@ import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getN
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
+import globalSearchMixins from '@/mixins/globalSearch'
 
 export default {
   name: 'RedisList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, globalSearchMixins],
   data () {
     return {
       list: this.$list.createList(this, {
@@ -75,6 +78,7 @@ export default {
             title: '链接地址-外网',
           }),
         },
+        responseData: this.responseData,
       }),
       columns: [
         getNameDescriptionTableColumn({

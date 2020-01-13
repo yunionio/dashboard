@@ -14,7 +14,6 @@
 </template>
 <script>
 import AreaSelects from '@/sections/AreaSelects'
-import { CITYS } from '@/constants'
 export default {
   name: 'ItemArea',
   components: {
@@ -53,7 +52,7 @@ export default {
               validator: (rule, value, _callback) => {
                 const city = this.form.getFieldValue('city')
                 if (!this.providerList || this.providerList.length === 0) {
-                  return _callback(new Error(`${this.$t('citys')[city] || CITYS[city] || city}暂无任何可用平台`))
+                  return _callback(new Error(`${this.$t('citys')[city] || this.$t('citys')[city] || city}暂无任何可用平台`))
                 }
                 _callback()
               },
