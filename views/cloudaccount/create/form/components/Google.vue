@@ -16,7 +16,7 @@
       <a-form-item label="client_email">
         <a-input v-decorator="decorators.client_email" placeholder="请输入client_email" />
       </a-form-item>
-      <a-form-item :label="`指定${$t(dictionary.project)}`" class="mb-0" v-bind="formLayout">
+      <a-form-item :label="`指定${$t('dictionary.project')}`" class="mb-0" v-bind="formLayout">
         <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain }" />
       </a-form-item>
       <auto-sync :fc="form.fc" :form-layout="formLayout" />
