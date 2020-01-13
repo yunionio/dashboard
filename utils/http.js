@@ -190,7 +190,8 @@ http.interceptors.response.use(
         store.dispatch('auth/logout').then(() => {
           router.push('/auth')
         })
-      } else {
+      }
+      if (error.response.data && error.response.data.details && !error.response.data.details.includes('No token in header')) {
         showHttpErrorMessage(error)
       }
     }
