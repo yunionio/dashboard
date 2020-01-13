@@ -18,16 +18,18 @@
       </a-form-item>
       <!-- 区域 -->
       <item-area :defaultActiveFirstOption="['city']" :values="form.fc.getFieldsValue()" />
-      <s-k-u ref="REF_SKU" />
-      <a-divider orientation="left">高级配置</a-divider>
-      <a-form-item label="管理员密码" v-bind="formItemLayout">
-        <server-password :loginTypes="loginTypes" :decorator="decorators.loginConfig" :form="form" />
-      </a-form-item>
-      <a-form-item label="VPC" v-bind="formItemLayout">
-        <item-vpc-opts ref="REF_VPC" :decorators="decorators.vpcNetwork" />
-      </a-form-item>
+      <div v-show="!form.fc.getFieldError('provider')">
+        <s-k-u ref="REF_SKU" />
+        <a-divider orientation="left">高级配置</a-divider>
+        <a-form-item label="管理员密码" v-bind="formItemLayout">
+          <server-password :loginTypes="loginTypes" :decorator="decorators.loginConfig" :form="form" />
+        </a-form-item>
+        <a-form-item label="VPC" v-bind="formItemLayout">
+          <item-vpc-opts ref="REF_VPC" :decorators="decorators.vpcNetwork" />
+        </a-form-item>
+        <bottom-bar :values="form.fc.getFieldsValue()" />
+       </div>
     </a-form>
-    <bottom-bar :values="form.fc.getFieldsValue()" />
   </div>
 </template>
 <script>
@@ -92,7 +94,7 @@ export default {
   },
   computed: {
     form () {
-      const fc = this.$form.createForm(this, { onFieldsChange: (vm, values) => this._fieldsChange(vm, values) })
+      const fc = this.$form.createForm(this, { onValuesChange: (vm, values) => this._valuesChange(vm, values) })
       const { getFieldDecorator, getFieldValue, getFieldsValue, setFieldsValue } = fc
       return {
         fc,
@@ -116,24 +118,23 @@ export default {
   methods: {
     _domainChange (values) {
       if (this.$store.getters.isAdminMode) {
-        if (values.domain && values.domain.key) {
-          this.scopeParams['project_domain'] = values.domain.key
-        }
-        this.scopeParams['project_domain'] = this.form.getFieldValue('domain')
+        this.scopeParams['project_domain'] = values.domain || this.form.getFieldValue('domain')
         delete this.scopeParams['scope']
       }
     },
     _queryNetworks (changedFields) {
-      if ((changedFields['sku'] && changedFields['sku'].value)) {
+      if ((changedFields['sku'] && changedFields['sku'])) {
         this.$refs['REF_VPC'].fetchQueryVpcs()
       }
     },
-    _fieldsChange (vm, changedFields) {
-      if (this.$refs['REF_SKU']) {
-        this.$refs['REF_SKU'].skuFetchs(changedFields)
+    _valuesChange (vm, changedFields) {
+      if (!this.form.fc.getFieldError('provider')) {
+        if (this.$refs['REF_SKU']) {
+          this.$refs['REF_SKU'].skuFetchs(changedFields)
+        }
+        this._domainChange(changedFields)
+        this._queryNetworks(changedFields)
       }
-      this._domainChange(changedFields)
-      this._queryNetworks(changedFields)
     },
     handleDomainChange () {
       this.$refs['REF_VPC'].fetchQueryVpcs(true)
