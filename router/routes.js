@@ -6,9 +6,11 @@ import BindSecret from '@/views/auth/BindSecret'
 import SetSecretQuestion from '@/views/auth/SetSecretQuestion'
 import ResetSecretQuestion from '@/views/auth/ResetSecretQuestion'
 import NotFoundPage from '@/views/exception/404'
+import GlobalSearchResult from '@/views/global-search-result'
 
 let routes = [
   { name: 'Home', path: '/', redirect: '/dashboard' },
+  { name: 'GlobalSearchResult', path: '/global-search-result', component: GlobalSearchResult },
   {
     name: 'Auth',
     path: '/auth',

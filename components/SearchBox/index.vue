@@ -34,7 +34,7 @@
           @update-show="handleUpdateShow" />
       </li>
       <li class="mb-1 mt-1">
-        <div class="text-weak help-tips">关键字用“|”分隔，过滤标签用回车键分隔</div>
+        <div class="text-weak help-tips">{{ placeholder }}</div>
       </li>
     </ul>
   </div>
@@ -62,11 +62,15 @@ export default {
     },
     list: {
       type: Object,
-      required: true,
+      // required: true,
     },
     defaultSearchKey: {
       type: String,
       default: 'name',
+    },
+    placeholder: {
+      type: String,
+      default: '关键字用“|”分隔，过滤标签用回车键分隔',
     },
   },
   data () {

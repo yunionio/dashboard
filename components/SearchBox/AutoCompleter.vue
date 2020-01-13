@@ -85,7 +85,7 @@ export default {
     },
     list: {
       type: Object,
-      required: true,
+      // required: true,
     },
     defaultSearchKey: String,
   },
