@@ -4,7 +4,9 @@
     :columns="columns"
     :group-actions="groupActions"
     :singleActions="singleActions"
-    :export-data-options="exportDataOptions" />
+    :export-data-options="exportDataOptions"
+    :showSearchbox="showSearchbox"
+    :showGroupActions="showGroupActions" />
 </template>
 
 <script>
@@ -23,6 +25,7 @@ import windows from '@/mixins/windows.js'
 import i18n from '@/locales'
 import { findPlatform } from '@/utils/common/hypervisor'
 import { getBrandFilter, getAccountFilter, getTenantFilter } from '@/utils/common/tableFilter'
+import globalSearchMixins from '@/mixins/globalSearch'
 
 const PROVIDER_FILTER_CN = i18n.t('env')
 
@@ -44,7 +47,7 @@ const canAdjustConfig = (obj) => {
 
 export default {
   name: 'NetworkList',
-  mixins: [windows],
+  mixins: [windows, globalSearchMixins],
   props: {
     id: String,
     getParams: {
@@ -120,6 +123,7 @@ export default {
             },
           },
         },
+        responseData: this.responseData,
       }),
       exportDataOptions: {
         items: [

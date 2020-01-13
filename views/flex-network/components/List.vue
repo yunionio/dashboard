@@ -2,7 +2,9 @@
   <page-list
     :list="list"
     :columns="columns"
-    :export-data-options="exportDataOptions" />
+    :export-data-options="exportDataOptions"
+    :showSearchbox="showSearchbox"
+    :showGroupActions="showGroupActions" />
 </template>
 
 <script>
@@ -14,10 +16,11 @@ import {
 } from '@/utils/common/tableColumn'
 import { getStatusFilter, getBrandFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
+import globalSearchMixins from '@/mixins/globalSearch'
 
 export default {
   name: 'FlexNetworkList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, globalSearchMixins],
   props: {
     id: String,
     getParams: {
@@ -57,6 +60,7 @@ export default {
             },
           },
         },
+        responseData: this.responseData,
       }),
       exportDataOptions: {
         items: [
