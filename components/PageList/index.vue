@@ -164,7 +164,8 @@ export default {
       return defaultColumns
     },
     tablePage () {
-      const limit = this.list.getLimit()
+      const listLimit = this.list.limit
+      const limit = this.list.getLimit() || listLimit
       if (this.list.total <= 0) return null
       const currentPage = limit ? Math.floor(this.list.offset / limit) + 1 : 1
       return {
