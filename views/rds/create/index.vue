@@ -15,25 +15,26 @@
       <!-- 区域 -->
       <item-area :isRequired="true" :values="form.fc.getFieldsValue()" :names="['city', 'provider', 'cloudregion']" />
       <!-- 套餐信息 -->
-      <s-k-u ref="SKU" v-show="form.getFieldValue('cloudregion')" />
-      <a-divider orientation="left">高级配置</a-divider>
-       <a-form-item label="管理员密码" v-bind="formItemLayout">
-         <server-password :loginTypes="loginTypes" :decorator="decorators.loginConfig" :form="form" />
+      <div v-show="form.getFieldValue('cloudregion')">
+        <s-k-u ref="SKU" />
+        <a-divider orientation="left">高级配置</a-divider>
+        <a-form-item label="管理员密码" v-bind="formItemLayout">
+          <server-password :loginTypes="loginTypes" :decorator="decorators.loginConfig" :form="form" />
+          </a-form-item>
+        <network-selects
+          ref="NETWORK"
+          label="VPC"
+          :vpcParams="getVpcParams"
+          :networkParams="getNetworkParams"
+          v-bind="formItemLayout" />
+        <!-- 选择安全组 -->
+        <a-form-item v-if="form.getFieldValue('provider') === 'Huawei'" label="安全组" v-bind="formItemLayout">
+          <secgroup-config
+            :decorators="decorators.secgroup" />
         </a-form-item>
-      <network-selects
-        ref="NETWORK"
-        v-show="form.getFieldValue('cloudregion')"
-        label="VPC"
-        :vpcParams="getVpcParams"
-        :networkParams="getNetworkParams"
-        v-bind="formItemLayout" />
-      <!-- 选择安全组 -->
-      <a-form-item v-if="form.getFieldValue('provider') === 'Huawei'" label="安全组" v-bind="formItemLayout">
-        <secgroup-config
-          :decorators="decorators.secgroup" />
-      </a-form-item>
+        <bottom-bar :values="form.getFieldsValue()" />
+      </div>
     </a-form>
-    <bottom-bar :values="form.getFieldsValue()" />
   </div>
 </template>
 <script>
@@ -99,7 +100,7 @@ export default {
   },
   computed: {
     form () {
-      const fc = this.$form.createForm(this, { onFieldsChange: (f, v) => this._fieldsChange(v) })
+      const fc = this.$form.createForm(this, { onValuesChange: (f, v) => this._valuesChange(v) })
       const { getFieldDecorator, getFieldValue, getFieldsValue, setFieldsValue } = fc
       return {
         fc,
@@ -160,9 +161,9 @@ export default {
       })
     },
     async regionChange (values) {
-      if (values && values.cloudregion && values.cloudregion.value) {
+      if (values && values.cloudregion && values.cloudregion) {
         const { cloudregion } = values
-        await this.fetchSku(cloudregion.value)
+        await this.fetchSku(cloudregion)
         await this.fetchVpc()
       }
     },
@@ -173,17 +174,16 @@ export default {
     },
     domainChange (values) {
       if (this.$store.getters.isAdminMode) {
-        if (values.domain && values.domain.key) {
-          this.scopeParams['project_domain'] = values.domain.key
-        }
-        this.scopeParams['project_domain'] = this.form.getFieldValue('domain')
+        this.scopeParams['project_domain'] = values.domain || this.form.getFieldValue('domain')
         delete this.scopeParams['scope']
       }
     },
-    _fieldsChange (values) {
+    _valuesChange (values) {
       this.domainChange(values)
-      this.regionChange(values)
-      this.zonesChange(values)
+      if (this.form.getFieldValue('cloudregion')) {
+        this.regionChange(values)
+        this.zonesChange(values)
+      }
     },
   },
 }

@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <area-selects
-     v-bind="formItemLayout"
+  <area-selects
+    :decorators="decorators"
+    v-bind="formItemLayout"
     :names="names"
     :isRequired="isRequired"
     :defaultActiveFirstOption="defaultActiveFirstOption"
@@ -11,10 +11,10 @@
     :cloudregionParams="{service: 'elasticcaches', ...scopeParams}"
     @cityFetchSuccess="cityFetchSuccess"
     @providerFetchSuccess="providerFetchSuccess" />
-  </div>
 </template>
 <script>
 import AreaSelects from '@/sections/AreaSelects'
+import { CITYS } from '@/constants'
 export default {
   name: 'ItemArea',
   components: {
@@ -35,11 +35,46 @@ export default {
       type: Boolean,
     },
   },
+  data () {
+    return {
+      providerList: [],
+    }
+  },
+  computed: {
+    decorators () {
+      return {
+        provider: ['provider', {
+          validateFirst: true,
+          rules: [
+            {
+              required: this.isRequired, message: '请选择平台',
+            },
+            {
+              validator: (rule, value, _callback) => {
+                const city = this.form.getFieldValue('city')
+                if (!this.providerList || this.providerList.length === 0) {
+                  return _callback(new Error(`${this.$t('citys')[city] || CITYS[city] || city}暂无任何可用平台`))
+                }
+                _callback()
+              },
+            }],
+        }],
+      }
+    },
+  },
   inject: ['form', 'formItemLayout', 'scopeParams'],
   methods: {
     providerFetchSuccess (list = []) {
       const needProvider = ['Aliyun', 'Huawei']
-      return list.filter(({ name }) => needProvider.indexOf(name) > -1)
+      const _list = list.filter(({ name }) => needProvider.indexOf(name) > -1)
+      this.providerList = _list
+      this.form.fc.validateFields(['provider'])
+      if (this.providerList.length === 0) {
+        this.form.setFieldsValue({
+          sku: undefined,
+        })
+      }
+      return _list
     },
     cityFetchSuccess (names) {
       this.$emit('cityFetchSuccess', names)
