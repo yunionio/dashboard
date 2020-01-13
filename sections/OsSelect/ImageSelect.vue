@@ -50,7 +50,7 @@ export default {
     cloudType: {
       type: String,
       default: 'idc',
-      validator: val => ['public', 'private', 'idc', 'baremetal', 'installOperationSystem'].includes(val),
+      validator: val => ['public', 'private', 'idc', 'baremetal'].includes(val),
     },
     decorator: {
       type: Object,
@@ -229,7 +229,7 @@ export default {
       if (params.project_domain) {
         delete params.scope
       }
-      if (this.cloudType === 'baremetal' || this.cloudType === 'installOperationSystem') {
+      if (this.cloudType === 'baremetal') {
         params = {
           limit: 0,
           details: true,
@@ -258,7 +258,7 @@ export default {
         const { data: { data = [] } } = await this.imagesM.list({ params })
         this.loading = false
         this.images.list = data
-        if (this.cloudType === 'baremetal' || this.cloudType === 'installOperationSystem') {
+        if (this.cloudType === 'baremetal') {
           this.images.list = data.filter(item => { return item.properties && (item.properties.os_type === 'Linux' || item.properties.os_type === 'VMWare') })
         }
         this.getImagesInfo()
