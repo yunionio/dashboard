@@ -66,10 +66,6 @@ export default {
       type: Boolean,
       required: false,
     },
-    isSupportIso: {
-      type: Boolean,
-      default: false,
-    },
   },
   inject: ['form'],
   data () {
@@ -99,7 +95,7 @@ export default {
         ret.unshift(IMAGES_TYPE_MAP.public)
       } else if (this.isPrivate) {
         ret.unshift(IMAGES_TYPE_MAP.private)
-      } else if (this.isBaremetal && this.isSupportIso) {
+      } else if (this.isBaremetal) {
         ret.push(IMAGES_TYPE_MAP.iso)
       }
       ret = ret.filter((item) => {
