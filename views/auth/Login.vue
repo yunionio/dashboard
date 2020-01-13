@@ -214,6 +214,11 @@ export default {
         if (domains) this.form.fi.domains = domains
         if (idps) this.form.fi.idps = idps
         if (captcha) this.form.fi.showCaptcha = true
+        // 如果cookie中的region不在regions列表中，则清除cookie中的region
+        const regionCookie = Cookies.get('region')
+        if (regionCookie && !this.form.fi.regions.includes(regionCookie)) {
+          Cookies.remove('region')
+        }
       } finally {
         this.loading = false
       }
