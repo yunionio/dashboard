@@ -50,9 +50,8 @@ export default {
             },
             {
               validator: (rule, value, _callback) => {
-                const city = this.form.getFieldValue('city')
                 if (!this.providerList || this.providerList.length === 0) {
-                  return _callback(new Error(`${this.$t('citys')[city] || this.$t('citys')[city] || city}暂无任何可用平台`))
+                  return _callback(new Error(`该项目下没有可用平台`))
                 }
                 _callback()
               },
