@@ -68,10 +68,6 @@ export default {
             return sizestr(cellValue, 'M', 1024)
           },
         },
-        {
-          field: 'slot',
-          title: '插槽序号',
-        },
       ],
       hostColumns: [
         {
