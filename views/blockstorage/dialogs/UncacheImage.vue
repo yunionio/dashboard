@@ -1,0 +1,50 @@
+<template>
+  <base-dialog @cancel="cancelDialog">
+    <div slot="header">{{this.params.title}}</div>
+    <div slot="body">
+      <dialog-selected-tips :count="params.data.length" :action="this.params.title" name="镜像" />
+      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+    </div>
+    <div slot="footer">
+      <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t("dialog.ok") }}</a-button>
+      <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
+    </div>
+  </base-dialog>
+</template>
+
+<script>
+import DialogMixin from '@/mixins/dialog'
+import WindowsMixin from '@/mixins/windows'
+
+export default {
+  name: 'UncacheImageDialog',
+  mixins: [DialogMixin, WindowsMixin],
+  data () {
+    return {
+      loading: false,
+    }
+  },
+  methods: {
+    async handleConfirm () {
+      this.loading = true
+      try {
+        const manager = new this.$Manager('storages')
+        await manager.performAction({
+          id: this.params.resId,
+          action: 'uncache-image',
+          data: {
+            image: this.params.data[0].cachedimage_id,
+            is_force: true,
+          },
+        })
+        this.cancelDialog()
+        this.params.list.fetchData()
+        this.loading = false
+      } catch (error) {
+        this.loading = false
+        throw error
+      }
+    },
+  },
+}
+</script>

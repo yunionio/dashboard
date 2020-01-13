@@ -1,0 +1,161 @@
+<template>
+  <base-dialog @cancel="cancelDialog">
+    <div slot="header">{{this.params.title}}</div>
+    <div slot="body">
+      <a-form :form="form.fc" v-bind="formItemLayout">
+        <a-form-item label="名称">
+          <a-input placeholder="请输入名称" v-decorator="decorators.name" />
+        </a-form-item>
+        <a-form-item label="区域">
+          <cloudregion-zone
+            :cloudregionParams="{cloud_env: 'onpremise'}"
+            :decorator="decorators.regionZone" />
+        </a-form-item>
+        <a-form-item label="介质类型">
+          <a-radio-group v-decorator="decorators.medium_type" buttonStyle="solid">
+            <a-radio-button v-for="(v, k) in MEDIUM_TYPES" :key="v" :value="k">{{v}}</a-radio-button>
+          </a-radio-group>
+        </a-form-item>
+        <a-form-item label="存储类型">
+          <a-radio-group v-decorator="decorators.storage_type" buttonStyle="solid">
+            <template v-for="(v, k) in STORAGE_TYPES">
+              <a-radio-button v-if="storage_keys.indexOf(k) > -1" :key="k"  :value="k">{{v}}</a-radio-button>
+            </template>
+          </a-radio-group>
+        </a-form-item>
+        <form-items :storage_type="getFieldValue('storage_type')" />
+      </a-form>
+    </div>
+    <div slot="footer">
+      <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t("dialog.ok") }}</a-button>
+      <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
+    </div>
+  </base-dialog>
+</template>
+
+<script>
+import { MEDIUM_TYPES, STORAGE_TYPES, formItemLayout } from '@Storage/constants/index.js'
+import FormItems from '@Storage/views/blockstorage/components/FormItems'
+import DialogMixin from '@/mixins/dialog'
+import WindowsMixin from '@/mixins/windows'
+import CloudregionZone from '@/sections/CloudregionZone'
+
+export default {
+  name: 'BlockStorageCreateDialog',
+  components: {
+    CloudregionZone,
+    FormItems,
+  },
+  mixins: [DialogMixin, WindowsMixin],
+  provide () {
+    return {
+      form: this.form,
+    }
+  },
+  data () {
+    return {
+      MEDIUM_TYPES,
+      STORAGE_TYPES,
+      storage_keys: ['rbd', 'nfs', 'gpfs'],
+      loading: false,
+      form: {
+        fc: this.$form.createForm(this),
+      },
+      formItemLayout,
+    }
+  },
+  computed: {
+    getFieldValue () {
+      return this.form.fc.getFieldValue
+    },
+    decorators () {
+      return {
+        name: [
+          'name',
+          {
+            validateFirst: true,
+            rules: [
+              { required: true, message: '请输入名称' },
+              { validator: this.$validate('snapshotName') },
+            ],
+          },
+        ],
+        regionZone: {
+          cloudregion: [
+            'cloudregion',
+            {
+              initialValue: { key: '', label: '' },
+              rules: [
+                { required: true, message: '请选择区域' },
+              ],
+            },
+          ],
+          zone: [
+            'zone',
+            {
+              initialValue: { key: '', label: '' },
+              rules: [
+                { required: true, message: '请选择可用区' },
+              ],
+            },
+          ],
+        },
+        medium_type: [
+          'medium_type',
+          {
+            initialValue: 'rotate',
+          },
+        ],
+        storage_type: [
+          'storage_type',
+          {
+            initialValue: 'rbd',
+          },
+        ],
+      }
+    },
+  },
+  methods: {
+    validateForm () {
+      return new Promise((resolve, reject) => {
+        this.form.fc.validateFields((err, values) => {
+          if (err) return reject(err)
+          // eslint-disable-next-line camelcase
+          const { storage_type, zone, cloudregion } = values
+          const deleteRbdKeys = ['nfs_host', 'nfs_shared_dir']
+          const deleteNfsKeys = ['rbd_mon_host', 'rbd_key', 'rbd_pool']
+          const deleteKeys = {
+            rbd: deleteRbdKeys,
+            nfs: deleteNfsKeys,
+            gpfs: [ ...deleteRbdKeys, ...deleteNfsKeys ],
+          }
+          if (zone) {
+            values['zone'] = zone.key
+          }
+          if (cloudregion) {
+            values['area'] = cloudregion.key
+            delete values.cloudregion
+          }
+          deleteKeys[storage_type].forEach(key => {
+            delete values[key]
+          })
+          resolve(Object.assign({}, { capacity: 0 }, values))
+        })
+      })
+    },
+    async handleConfirm () {
+      this.loading = true
+      try {
+        const values = await this.validateForm()
+        const manager = new this.$Manager('storages', 'v2')
+        await manager.create({ data: values })
+        this.cancelDialog()
+        this.params.list.fetchData()
+      } catch (error) {
+        this.loading = false
+        throw error
+      }
+    },
+  },
+}
+</script>
