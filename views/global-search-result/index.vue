@@ -41,13 +41,11 @@ import RedisList from '@DB/views/redis/components/List'
 import ServerRecoveryList from '@Compute/views/server-recovery/components/List'
 import DiskRecoveryList from '@Compute/views/disk-recovery/components/List'
 import ImageRecoveryList from '@Compute/views/image-recovery/components/List'
-import Loader from '@/components/PageList/Loader'
 import { getSearchMaps } from '@/constants/globalSearch'
 
 export default {
   name: 'GlobalSearchResult',
   components: {
-    Loader,
     VmInstanceList,
     BaremetalList,
     ImageList,
@@ -88,12 +86,12 @@ export default {
     '$route.query' () {
       const query = window.location.search.replace('?', '')
       this.searchRes = qs.parse(query)
-      this.fetchData()
+      if (!R.isEmpty(this.searchRes)) this.fetchData()
     },
   },
   created () {
     this.searchMaps = getSearchMaps()
-    this.fetchData()
+    if (!R.isEmpty(this.searchRes)) this.fetchData()
   },
   methods: {
     getTotal (item) {

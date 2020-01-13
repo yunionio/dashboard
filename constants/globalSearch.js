@@ -1,6 +1,7 @@
 import * as R from 'ramda'
 import store from '@/store'
 import { hasPermission } from '@/utils/auth'
+import { changeToArr } from '@/utils/utils'
 
 export const getSearchMaps = (searchRes = {}) => {
   const commonSearchQuery = {
@@ -8,21 +9,40 @@ export const getSearchMaps = (searchRes = {}) => {
     limit: 20,
     details: true,
   }
-  let getFilter = searchType => {
+  const getFilter = (searchType, symbol = '"') => {
     const res = searchRes[searchType]
     if (!res) return ''
     let filter = ''
     if (R.is(Array, res)) {
       res.forEach((val, i, arr) => {
         if (i === arr.length - 1) {
-          filter += `"${val}"`
+          filter += `${symbol}${val}${symbol}`
         } else {
-          filter += `"${val}",`
+          filter += `${symbol}${val}${symbol},`
         }
       })
     }
     return filter
   }
+
+  const getParams = itemParams => {
+    let params = { ...itemParams.common }
+    const searchTypes = Object.keys(searchRes)
+    const surportType = searchTypes.every(type => !!itemParams[type])
+    searchTypes.forEach(type => {
+      const typeParams = itemParams[type]
+      if (R.is(Object, typeParams)) {
+        if (params.filter && typeParams.filter) {
+          const paramsFilter = changeToArr(params.filter)
+          params.filter = paramsFilter.concat(typeParams.filter)
+          delete typeParams.filter // 因为上面代码已经合并过了，这里删除防止被覆盖
+        }
+        params = Object.assign(params, typeParams)
+      }
+    })
+    return { params, surportType }
+  }
+
   const maps = {
     servers: {
       res_name: 'servers',
@@ -30,12 +50,18 @@ export const getSearchMaps = (searchRes = {}) => {
       id: 'servers',
       component: 'VmInstanceList',
       hasPermission: hasPermission({ key: 'servers_list' }),
-      showIp: true, // 展示IP
       params: {
-        ...commonSearchQuery,
-        with_meta: true,
-        filter: ['hypervisor.notin(baremetal,container)', `name.contains(${getFilter('name')})`],
-        joint_filter: `guestnetworks.guest_id(id).ip_addr.contains(${getFilter('ip')})`,
+        common: {
+          ...commonSearchQuery,
+          with_meta: true,
+          filter: 'hypervisor.notin(baremetal,container)',
+        },
+        name: {
+          filter: `name.contains(${getFilter('name')})`,
+        },
+        ip: {
+          joint_filter: `guestnetworks.guest_id(id).ip_addr.contains(${getFilter('ip')})`,
+        },
       },
       resData: {}, // 查询结果
     },
@@ -45,13 +71,18 @@ export const getSearchMaps = (searchRes = {}) => {
       id: 'baremetals',
       component: 'BaremetalList',
       hasPermission: hasPermission({ key: 'servers_list' }),
-      showIp: true, // 展示IP
       params: {
-        ...commonSearchQuery,
-        hypervisor: 'baremetal',
-        with_meta: true,
-        filter: `name.contains(${getFilter('name')})`,
-        joint_filter: `guestnetworks.guest_id(id).ip_addr.contains(${getFilter('ip')})`,
+        common: {
+          ...commonSearchQuery,
+          hypervisor: 'baremetal',
+          with_meta: true,
+        },
+        name: {
+          filter: `name.contains(${getFilter('name')})`,
+        },
+        ip: {
+          joint_filter: `guestnetworks.guest_id(id).ip_addr.contains(${getFilter('ip')})`,
+        },
       },
       resData: {},
     },
@@ -62,9 +93,13 @@ export const getSearchMaps = (searchRes = {}) => {
       component: 'ImageList',
       hasPermission: hasPermission({ key: 'images_list' }),
       params: {
-        ...commonSearchQuery,
-        is_guest_image: false,
-        filter: `name.contains(${getFilter('name')})`,
+        common: {
+          ...commonSearchQuery,
+          is_guest_image: false,
+        },
+        name: {
+          filter: `name.contains(${getFilter('name')})`,
+        },
       },
       resData: {},
     },
@@ -75,9 +110,13 @@ export const getSearchMaps = (searchRes = {}) => {
       component: 'HostImageList',
       hasPermission: hasPermission({ key: 'guestimages_list' }),
       params: {
-        ...commonSearchQuery,
-        is_guest_image: true,
-        filter: `name.contains(${getFilter('name')})`,
+        common: {
+          ...commonSearchQuery,
+          is_guest_image: true,
+        },
+        name: {
+          filter: `name.contains(${getFilter('name')})`,
+        },
       },
       resData: {},
     },
@@ -88,9 +127,14 @@ export const getSearchMaps = (searchRes = {}) => {
       component: 'DiskList',
       hasPermission: hasPermission({ key: 'disks_list' }),
       params: {
-        ...commonSearchQuery,
-        is_guest_image: true,
-        filter: ['disk_type.notin(volume)', `name.contains(${getFilter('name')})`],
+        common: {
+          ...commonSearchQuery,
+          is_guest_image: true,
+          filter: 'disk_type.notin(volume)',
+        },
+        name: {
+          filter: `name.contains(${getFilter('name')})`,
+        },
       },
       resData: {},
     },
@@ -101,10 +145,14 @@ export const getSearchMaps = (searchRes = {}) => {
       component: 'VmDiskSnapshotsIndex',
       hasPermission: hasPermission({ key: 'snapshots_list' }),
       params: {
-        ...commonSearchQuery,
-        with_meta: true,
-        is_instance_snapshot: false,
-        filter: `name.contains(${getFilter('name')})`,
+        common: {
+          ...commonSearchQuery,
+          with_meta: true,
+          is_instance_snapshot: false,
+        },
+        name: {
+          filter: `name.contains(${getFilter('name')})`,
+        },
       },
       resData: {},
     },
@@ -115,8 +163,12 @@ export const getSearchMaps = (searchRes = {}) => {
       component: 'VmInstanceSnapshotsIndex',
       hasPermission: hasPermission({ key: 'instance_snapshots_list' }),
       params: {
-        ...commonSearchQuery,
-        filter: `name.contains(${getFilter('name')})`,
+        common: {
+          ...commonSearchQuery,
+        },
+        name: {
+          filter: `name.contains(${getFilter('name')})`,
+        },
       },
       resData: {},
     },
@@ -127,8 +179,12 @@ export const getSearchMaps = (searchRes = {}) => {
       component: 'SecgroupList',
       hasPermission: hasPermission({ key: 'secgroups_list' }),
       params: {
-        ...commonSearchQuery,
-        filter: `name.contains(${getFilter('name')})`,
+        common: {
+          ...commonSearchQuery,
+        },
+        name: {
+          filter: `name.contains(${getFilter('name')})`,
+        },
       },
       resData: {},
     },
@@ -138,11 +194,15 @@ export const getSearchMaps = (searchRes = {}) => {
       id: 'eips',
       component: 'EipList',
       hasPermission: hasPermission({ key: 'eips_list' }),
-      showIp: true, // 展示IP
       params: {
-        name: {
+        common: {
           ...commonSearchQuery,
-          filter: [`name.contains(${getFilter('name')})`, `ip_addr.contains(${getFilter('ip')})`],
+        },
+        name: {
+          filter: `name.contains(${getFilter('name')})`,
+        },
+        ip: {
+          filter: `ip_addr.contains(${getFilter('ip')})`,
         },
       },
       resData: {},
@@ -153,10 +213,13 @@ export const getSearchMaps = (searchRes = {}) => {
       id: 'networkinterfaces',
       component: 'FlexNetworkList',
       hasPermission: hasPermission({ key: 'networkcard_list' }),
-      showIp: true, // 展示IP
       params: {
-        ...commonSearchQuery,
-        filter: `name.contains(${getFilter('name')})`,
+        common: {
+          ...commonSearchQuery,
+        },
+        name: {
+          filter: `name.contains(${getFilter('name')})`,
+        },
       },
       resData: {},
     },
@@ -166,11 +229,16 @@ export const getSearchMaps = (searchRes = {}) => {
       id: 'networks',
       component: 'NetworkList',
       hasPermission: hasPermission({ key: 'networks_list' }),
-      showIp: true, // 展示IP
       params: {
-        ...commonSearchQuery,
-        filter: `name.contains(${getFilter('name')})`,
-        ip: getFilter('ip'),
+        common: {
+          ...commonSearchQuery,
+        },
+        name: {
+          filter: `name.contains(${getFilter('name')})`,
+        },
+        ip: {
+          ip: getFilter('ip', ''),
+        },
       },
       resData: {},
     },
@@ -180,11 +248,17 @@ export const getSearchMaps = (searchRes = {}) => {
       id: 'hosts',
       component: 'HostList',
       hasPermission: hasPermission({ key: 'hosts_list' }),
-      showIp: true, // 展示IP
       params: {
-        ...commonSearchQuery,
-        baremetal: false,
-        filter: [`name.contains(${getFilter('name')})`, `access_ip.contains(${getFilter('ip')})`],
+        common: {
+          ...commonSearchQuery,
+          baremetal: false,
+        },
+        name: {
+          filter: `name.contains(${getFilter('name')})`,
+        },
+        ip: {
+          filter: `access_ip.contains(${getFilter('ip')})`,
+        },
       },
       resData: {},
     },
@@ -194,13 +268,19 @@ export const getSearchMaps = (searchRes = {}) => {
       id: 'physicalmachines',
       component: 'PhysicalmachineList',
       hasPermission: hasPermission({ key: 'hosts_list' }),
-      showIp: true, // 展示IP
       params: {
-        ...commonSearchQuery,
-        baremetal: true,
-        host_type: 'baremetal',
-        with_meta: true,
-        filter: [`name.contains(${getFilter('name')})`, `access_ip.contains(${getFilter('ip')})`],
+        common: {
+          ...commonSearchQuery,
+          baremetal: true,
+          host_type: 'baremetal',
+          with_meta: true,
+        },
+        name: {
+          filter: `name.contains(${getFilter('name')})`,
+        },
+        ip: {
+          filter: `access_ip.contains(${getFilter('ip')})`,
+        },
       },
       resData: {},
     },
@@ -211,8 +291,15 @@ export const getSearchMaps = (searchRes = {}) => {
       component: 'RDSList',
       hasPermission: hasPermission({ key: 'rds_dbinstances_list' }),
       params: {
-        ...commonSearchQuery,
-        filter: `name.contains(${getFilter('name')})`,
+        common: {
+          ...commonSearchQuery,
+        },
+        name: {
+          filter: `name.contains(${getFilter('name')})`,
+        },
+        ip: {
+          filter: `internal_connection_str.contains(${getFilter('ip')})`,
+        },
       },
       resData: {},
     },
@@ -223,8 +310,15 @@ export const getSearchMaps = (searchRes = {}) => {
       component: 'RedisList',
       hasPermission: hasPermission({ key: 'redis_elasticcaches_list' }),
       params: {
-        ...commonSearchQuery,
-        filter: `name.contains(${getFilter('name')})`,
+        common: {
+          ...commonSearchQuery,
+        },
+        name: {
+          filter: `name.contains(${getFilter('name')})`,
+        },
+        ip: {
+          filter: `internal_connection_str.contains(${getFilter('ip')})`,
+        },
       },
       resData: {},
     },
@@ -235,10 +329,14 @@ export const getSearchMaps = (searchRes = {}) => {
       component: 'ServerRecoveryList',
       hasPermission: hasPermission({ key: 'servers_list' }),
       params: {
-        ...commonSearchQuery,
-        with_meta: true,
-        pending_delete: true,
-        filter: `name.contains(${getFilter('name')})`,
+        common: {
+          ...commonSearchQuery,
+          with_meta: true,
+          pending_delete: true,
+        },
+        name: {
+          filter: `name.contains(${getFilter('name')})`,
+        },
       },
       resData: {},
     },
@@ -249,10 +347,14 @@ export const getSearchMaps = (searchRes = {}) => {
       component: 'DiskRecoveryList',
       hasPermission: hasPermission({ key: 'disks_list' }),
       params: {
-        ...commonSearchQuery,
-        with_meta: true,
-        pending_delete: true,
-        filter: `name.contains(${getFilter('name')})`,
+        common: {
+          ...commonSearchQuery,
+          with_meta: true,
+          pending_delete: true,
+        },
+        name: {
+          filter: `name.contains(${getFilter('name')})`,
+        },
       },
       resData: {},
     },
@@ -263,21 +365,24 @@ export const getSearchMaps = (searchRes = {}) => {
       component: 'ImageRecoveryList',
       hasPermission: hasPermission({ key: 'images_list' }),
       params: {
-        ...commonSearchQuery,
-        is_guest_image: false,
-        pending_delete: true,
-        filter: `name.contains(${getFilter('name')})`,
+        common: {
+          ...commonSearchQuery,
+          is_guest_image: false,
+          pending_delete: true,
+        },
+        name: {
+          filter: `name.contains(${getFilter('name')})`,
+        },
       },
       resData: {},
     },
   }
-  const validMaps = R.filter(val => {
+
+  const validMaps = R.filter((val, key) => {
+    const { params, surportType } = getParams(val.params)
     if (val.hasPermission !== false) { // 权限通过
-      if (searchRes.ip) {
-        return val.showIp
-      } else {
-        return true
-      }
+      val.params = params
+      return surportType
     }
   }, maps)
   return validMaps
