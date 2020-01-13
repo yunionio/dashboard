@@ -47,5 +47,8 @@ export default {
       return this.params.list.data[this.params.resId].data
     },
   },
+  created () {
+    if (this.params.tab === 'servers-list') this.handleTabChange(this.params.tab)
+  },
 }
 </script>

@@ -12,7 +12,7 @@ import { getNameFilter } from '@/utils/common/tableFilter'
 import {
   getNameDescriptionTableColumn,
   getCopyWithContentTableColumn,
-  getStatusTableColumn,
+  // getStatusTableColumn,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 
@@ -106,20 +106,31 @@ export default {
               }
               return [
                 <div class='d-flex'>
-                  <span class='text-truncate'>{ row.model }</span>,
-                  <icon type={ DEVICE_MAP[device] } />
+                  <span class='text-truncate'>{ row.model }</span>
+                  <icon style="line-height: 20px" type={ DEVICE_MAP[device] } />
                 </div>,
               ]
             },
           },
         },
-        getCopyWithContentTableColumn({
+        {
           field: 'guest',
-          title: '关联主机',
-          hideField: true,
-          slotCallback: row => row.guest || row.guest_id,
-        }),
-        getStatusTableColumn({ field: 'guest_status', title: '主机状态', statusModule: 'server' }),
+          title: '主机',
+          minWidth: 100,
+          showOverflow: 'ellipsis',
+          slots: {
+            default: ({ row }, h) => {
+              return [
+                <div class='text-truncate'>
+                  <list-body-cell-wrap copy={true} row={row} list={this.list} hideField={ true }>
+                    <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'GpuSidePage', { tab: 'servers-list' }) }>{ row.guest }</side-page-trigger>
+                  </list-body-cell-wrap>
+                  {row.guest_status ? <status status={ row['guest_status'] } statusModule='server'/> : ''}
+                </div>,
+              ]
+            },
+          },
+        },
         getCopyWithContentTableColumn({
           field: 'host',
           title: '所在宿主机',

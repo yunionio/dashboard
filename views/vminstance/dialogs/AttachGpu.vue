@@ -16,7 +16,11 @@
       <a-form
         :form="form.fc">
         <a-form-item label="是否绑定" v-bind="formItemLayout">
-          <a-switch v-model="isOpenGpu" />
+          <a-radio-group name="radioGroup" :defaultValue="true" v-if="params.data.length > 1" v-model="isOpenGpu">
+            <a-radio :value="true">绑定</a-radio>
+            <a-radio :value="false">解绑</a-radio>
+          </a-radio-group>
+          <a-switch v-model="isOpenGpu" v-else />
         </a-form-item>
         <a-form-item label="GPU卡" v-bind="formItemLayout" v-show="isOpenGpu" extra="只能关联与主机处于同一宿主机的GPU卡">
           <base-select
@@ -29,12 +33,12 @@
             :options.sync="gpuOpt"
             :mapper="mapper"
             resource="isolated_devices"
-            :select-props="{ allowClear: true, placeholder: '请选择GPU设备', mode: 'multiple' }">
+            :select-props="{ allowClear: true, placeholder: '请选择GPU设备', mode: params.data.length > 1 ? 'default' : 'multiple' }">
             <template v-slot:optionTemplate>
-              <a-select-option v-for="item in gpuOpt" :key="item.id">
+              <a-select-option v-for="item in gpuOpt" :key="item.id" :value="item.id" :disabled="item.__disabled">
                 <div class="d-flex">
                   <span class="text-truncate flex-fill mr-2" :title="item.model">{{ item.model }}</span>
-                  <span style="color: #8492a6; font-size: 13px" v-show="item.totalCount > item.usedCount">可用: {{ item.totalCount - item.usedCount }} 个，已使用: {{ item.usedCount }} 个</span>
+                  <span style="color: #8492a6; font-size: 13px" v-show="item.totalCount > item.usedCount">可用: {{ item.totalCount - item.usedCount }} 个，总量: {{ item.totalCount }} 个</span>
                   <span style="color: #8492a6; font-size: 13px" v-show="item.totalCount === item.usedCount">已被使用</span>
                 </div>
               </a-select-option>
@@ -79,7 +83,7 @@ export default {
           'device',
           {
             rules: [
-              { required: true, type: 'array', message: '请选择GPU设备', trigger: 'change' },
+              { required: true, type: this.params.data.length > 1 ? 'string' : 'array', message: '请选择GPU设备', trigger: 'change' },
             ],
           },
         ],
@@ -120,6 +124,17 @@ export default {
         {
           field: 'gpu',
           title: 'GPU',
+          slots: {
+            default: ({ row }) => {
+              let ret = []
+              if (row.isolated_devices) {
+                row.isolated_devices.map(item => {
+                  ret.push(<span>{item.model}</span>)
+                })
+              }
+              return ret
+            },
+          },
         },
       ],
     }
@@ -146,7 +161,14 @@ export default {
       return this.bindGpus.filter((id) => { return !this.form.fd.device.includes(id) })
     },
     disabledItems () {
-      return this.gpuOpt.filter(val => { return val.usedCount === val.totalCount || val.totalCount - val.usedCount < this.params.data.length }).map(item => { return item.id })
+      return this.gpuOpt.filter(val => {
+        if (val.usedCount === val.totalCount) {
+          return true
+        } else if (val.totalCount - val.usedCount < this.params.data.length) {
+          return true
+        }
+        return false
+      }).map(item => { return item.id })
     },
   },
   watch: {
@@ -155,6 +177,17 @@ export default {
       if (this.bindGpus.length > 0 && this.params.data.length === 1) {
         this.form.fc.setFieldsValue({ device: this.bindGpus })
         this.isOpenGpu = true
+      }
+    },
+    disabledItems () {
+      if (this.disabledItems && this.disabledItems.length) { // 禁用某些选项
+        this.disabledItems.forEach(disabledId => {
+          this.gpuOpt.forEach(item => {
+            if (disabledId === item.id) {
+              item['__disabled'] = true
+            }
+          })
+        })
       }
     },
   },
@@ -198,17 +231,27 @@ export default {
       })
     },
     async doDetachSubmit (data) {
-      const params = {
-        add_devices: [],
-        del_devices: this.bindGpus,
-        auto_start: data.autoStart,
+      // 批量解除绑定
+      let params = {}
+      if (this.selectedItems.length > 1) {
+        params = {
+          detach_all: true,
+          auto_start: data.autoStart,
+        }
+      } else {
+        params = {
+          add_devices: [],
+          del_devices: this.bindGpus,
+          auto_start: data.autoStart,
+        }
       }
       const ids = this.params.data.map(item => item.id)
+
       return this.params.list.onManager('batchPerformAction', {
         id: ids,
         steadyStatus: ['running', 'ready'],
         managerArgs: {
-          action: 'set-isolated-device',
+          action: this.selectedItems.length > 1 ? 'detach-isolated-device' : 'set-isolated-device',
           data: params,
         },
       })
@@ -318,6 +361,11 @@ export default {
           return false
         })
       }
+      this.selectedItems.map(item => {
+        if (!obj[item.host_id]) {
+          arr = []
+        }
+      })
       return arr
     },
     labelFormat (val) {
