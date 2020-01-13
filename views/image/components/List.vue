@@ -217,7 +217,7 @@ export default {
                     list: this.list,
                   })
                 },
-                meta: () => this.$getDeleteResult(this.list.selectedItems, 'protected'),
+                meta: () => this.$getDeleteResult(this.list.selectedItems),
               },
             ]
           },
@@ -386,7 +386,7 @@ export default {
                     }
                   }
                   if (!validateAction(obj)) return { validate: false, tooltip: validateActionTooltip(obj) }
-                  return this.$getDeleteResult(obj, 'protected')
+                  return this.$getDeleteResult(obj)
                 },
               },
             ]
