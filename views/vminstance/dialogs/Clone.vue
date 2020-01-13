@@ -289,6 +289,7 @@ export default {
         name: fd.name,
         generate_name: fd.name,
       }
+      delete server.eip
       if (this.isPublic) {
         server.disks[0].image_id = fd.image.key
         server.imageType = fd.imageType
