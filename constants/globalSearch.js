@@ -13,14 +13,15 @@ export const getSearchMaps = (searchRes = {}) => {
     if (!res) return ''
     let filter = ''
     if (R.is(Array, res)) {
-      res.forEach(val => {
-        filter += `"${val},"`
+      res.forEach((val, i, arr) => {
+        if (i === arr.length - 1) {
+          filter += `"${val}"`
+        } else {
+          filter += `"${val}",`
+        }
       })
     }
-    if (filter) {
-      filter = filter.slice(0, -1) // 去掉结尾,
-    }
-    return res
+    return filter
   }
   const maps = {
     servers: {
@@ -141,7 +142,7 @@ export const getSearchMaps = (searchRes = {}) => {
       params: {
         name: {
           ...commonSearchQuery,
-          filter: [`name.contains(${getFilter('name')})`, `ip_addr.contains("${getFilter('ip')}")`],
+          filter: [`name.contains(${getFilter('name')})`, `ip_addr.contains(${getFilter('ip')})`],
         },
       },
       resData: {},
@@ -183,7 +184,7 @@ export const getSearchMaps = (searchRes = {}) => {
       params: {
         ...commonSearchQuery,
         baremetal: false,
-        filter: [`name.contains(${getFilter('name')})`, `access_ip.contains("${getFilter('ip')}")`],
+        filter: [`name.contains(${getFilter('name')})`, `access_ip.contains(${getFilter('ip')})`],
       },
       resData: {},
     },
@@ -199,7 +200,7 @@ export const getSearchMaps = (searchRes = {}) => {
         baremetal: true,
         host_type: 'baremetal',
         with_meta: true,
-        filter: [`name.contains(${getFilter('name')})`, `access_ip.contains("${getFilter('ip')}")`],
+        filter: [`name.contains(${getFilter('name')})`, `access_ip.contains(${getFilter('ip')})`],
       },
       resData: {},
     },
