@@ -5,7 +5,9 @@
     :columns="columns"
     :group-actions="groupActions"
     :single-actions="singleActions"
-    :export-data-options="exportDataOptions" />
+    :export-data-options="exportDataOptions"
+    :showSearchbox="showSearchbox"
+    :showGroupActions="showGroupActions" />
 </template>
 
 <script>
@@ -25,10 +27,11 @@ import { getProjectTableColumn, getStatusTableColumn, getCopyWithContentTableCol
 import WindowsMixin from '@/mixins/windows'
 import expectStatus from '@/constants/expectStatus'
 import { typeClouds } from '@/utils/common/hypervisor'
+import globalSearchMixins from '@/mixins/globalSearch'
 
 export default {
   name: 'BaremetalList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, globalSearchMixins],
   props: {
     id: String,
     getParams: {
@@ -71,6 +74,7 @@ export default {
           tenant: getTenantFilter(),
         },
         steadyStatus: Object.values(expectStatus.server).flat(),
+        responseData: this.responseData,
       }),
       exportDataOptions: {
         items: [

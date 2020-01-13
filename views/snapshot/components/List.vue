@@ -4,7 +4,9 @@
     :columns="columns"
     :group-actions="groupActions"
     :single-actions="singleActions"
-    :export-data-options="exportDataOptions" />
+    :export-data-options="exportDataOptions"
+    :showSearchbox="showSearchbox"
+    :showGroupActions="showGroupActions" />
 </template>
 
 <script>
@@ -20,10 +22,11 @@ import {
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import { sizestr } from '@/utils/utils'
+import globalSearchMixins from '@/mixins/globalSearch'
 
 export default {
   name: 'SnapshotList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, globalSearchMixins],
   props: {
     list: {
       type: Object,

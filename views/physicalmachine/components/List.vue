@@ -4,7 +4,9 @@
     :columns="columns"
     :group-actions="groupActions"
     :single-actions="singleActions"
-    :export-data-options="exportDataOptions" />
+    :export-data-options="exportDataOptions"
+    :showSearchbox="showSearchbox"
+    :showGroupActions="showGroupActions" />
 </template>
 
 <script>
@@ -17,10 +19,11 @@ import { sizestr } from '@/utils/utils'
 import expectStatus from '@/constants/expectStatus'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import globalSearchMixins from '@/mixins/globalSearch'
 
 export default {
   name: 'PhysicalmachineList',
-  mixins: [DialogMixin, WindowsMixin],
+  mixins: [DialogMixin, WindowsMixin, globalSearchMixins],
   props: {
     id: String,
     getParams: {
@@ -76,6 +79,7 @@ export default {
             ],
           },
         },
+        responseData: this.responseData,
       }),
       exportDataOptions: {
         items: [

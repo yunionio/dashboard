@@ -1,9 +1,14 @@
 <template>
   <div>
-    <page-header title="硬盘快照" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
-    <page-body>
-      <snapshot-list :list="list" type="disk" :cloud-env="cloudEnv" />
-    </page-body>
+    <template v-if="isGlobalSearch">
+      <snapshot-list :list="list" type="disk" v-bind="$props" />
+    </template>
+    <template v-else>
+      <page-header title="硬盘快照" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
+      <page-body>
+        <snapshot-list :list="list" type="disk" :cloud-env="cloudEnv" />
+      </page-body>
+    </template>
   </div>
 </template>
 
@@ -12,12 +17,14 @@ import { steadyStatus } from './constants'
 import SnapshotList from './components/List'
 import { getTenantFilter, getStatusFilter, getBrandFilter } from '@/utils/common/tableFilter'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
+import globalSearchMixins from '@/mixins/globalSearch'
 
 export default {
   name: 'VmDiskSnapshotsIndex',
   components: {
     SnapshotList,
   },
+  mixins: [globalSearchMixins],
   data () {
     return {
       cloudEnvOptions: getCloudEnvOptions('compute_engine_brands'),
@@ -77,8 +84,14 @@ export default {
             ],
           },
         },
+        responseData: this.responseData,
       }),
     }
+  },
+  computed: {
+    isGlobalSearch () {
+      return this.responseData && this.showGroupActions === false && this.showSearchbox === false
+    },
   },
   watch: {
     cloudEnv (val) {

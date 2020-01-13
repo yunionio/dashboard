@@ -4,7 +4,9 @@
     :columns="columns"
     :group-actions="groupActions"
     :single-actions="singleActions"
-    :export-data-options="exportDataOptions" />
+    :export-data-options="exportDataOptions"
+    :showSearchbox="showSearchbox"
+    :showGroupActions="showGroupActions" />
 </template>
 
 <script>
@@ -14,10 +16,11 @@ import { getStatusTableColumn, getCopyWithContentTableColumn, getProjectTableCol
 import SystemIcon from '@/sections/SystemIcon'
 import WindowsMixin from '@/mixins/windows'
 import { sizestr } from '@/utils/utils'
+import globalSearchMixins from '@/mixins/globalSearch'
 
 export default {
   name: 'ImageRecoveryList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, globalSearchMixins],
   props: {
     id: String,
   },
@@ -34,6 +37,7 @@ export default {
           status: getStatusFilter(),
           os_type: getOsTypeFilter(),
         },
+        responseData: this.responseData,
       }),
       exportDataOptions: {
         items: [
