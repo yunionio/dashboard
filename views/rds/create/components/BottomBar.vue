@@ -31,7 +31,7 @@
 // import * as R from 'ramda'
 // import _ from 'lodash'
 // import { ENGINE_ARCH } from '@DB/views/redis/constants'
-import { sizestrWithUnit } from '@/utils/utils'
+import { sizestr } from '@/utils/utils'
 import { Manager } from '@/utils/manager'
 
 export default {
@@ -56,7 +56,7 @@ export default {
           { label: '区域', labelClass: 'label-w-50', value: sku.region },
         ],
         [
-          { label: '配置', labelClass: 'label-w-80', value: `${sizestrWithUnit(sku.memory_size_mb, 'M', 1024)}内存` },
+          { label: '配置', labelClass: 'label-w-80', value: `${sizestr(sku.vmem_size_mb, 'M', 1024)}内存` },
           { label: '系列', labelClass: 'label-w-50', value: sku.name },
         ],
         [
@@ -69,7 +69,7 @@ export default {
   methods: {
     validateForm () {
       let f = false
-      this.form.fc.validateFields((err, values) => {
+      this.form.fc.validateFieldsAndScroll((err, values) => {
         f = err === null
       })
       return f
@@ -91,6 +91,7 @@ export default {
       if (params.sku) {
         const { sku } = params
         params['instance_type'] = sku['name']
+        delete params.sku
       }
       return params
     },
