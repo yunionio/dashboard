@@ -26,7 +26,6 @@ export default {
       type: Object,
       default: () => ({}),
     },
-    cloudEnv: String,
   },
   data () {
     return {
@@ -247,13 +246,6 @@ export default {
       ],
     }
   },
-  watch: {
-    cloudEnv (val) {
-      this.$nextTick(() => {
-        this.list.fetchData(0)
-      })
-    },
-  },
   created () {
     this.initSidePageTab('sku-detail')
     this.list.fetchData()
@@ -265,7 +257,6 @@ export default {
         with_meta: true,
         ...this.getParams,
       }
-      if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
     },
   },
