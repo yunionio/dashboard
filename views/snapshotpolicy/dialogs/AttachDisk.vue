@@ -114,14 +114,14 @@ export default {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
-        const ids = this.params.data.map(item => item.id)
-        const data = {}
-        values.disks.forEach((id, idx) => {
-          data[`disk.${idx}`] = id
-        })
+        const ids = values.disks
+        const data = {
+          snapshotpolicy: this.params.data[0].id,
+        }
+        console.log(ids)
         await manager.batchPerformAction({
           ids,
-          action: 'bind-disks',
+          action: 'bind-snapshotpolicy',
           data,
         })
         this.cancelDialog()

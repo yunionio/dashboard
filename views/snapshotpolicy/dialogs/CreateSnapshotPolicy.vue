@@ -72,6 +72,7 @@ import debounce from 'lodash/debounce'
 import { weekOptions, timeOptions } from '../constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import validateForm from '@/utils/validate'
 
 export default {
   name: 'CreateSnapshotPolicyDialog',
@@ -94,8 +95,10 @@ export default {
         'generate_name': [
           'generate_name',
           {
+            validateFirst: true,
             rules: [
               { required: true, message: "字母开头，数字和字母大小写组合，长度为2-128个字符，不含'.','_','@'" },
+              { validator: validateForm('serverName') },
             ],
           },
         ],
