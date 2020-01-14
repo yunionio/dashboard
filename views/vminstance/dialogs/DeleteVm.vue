@@ -25,6 +25,7 @@
 <script>
 import * as R from 'ramda'
 import { DISK_TYPES, SERVER_TYPE } from '@Compute/constants'
+import { mapGetters } from 'vuex'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { findPlatform } from '@/utils/common/hypervisor'
@@ -97,6 +98,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['isAdminMode']),
     type () {
       const brand = this.params.data[0].brand
       return findPlatform(brand)
@@ -168,7 +170,7 @@ export default {
         joint_filter: `guestdisks.disk_id(disk_id).guest_id.equals(${id})`,
         is_instance_snapshot: false,
       }
-      if (this.$isAdminMode) { params.admin = true }
+      if (this.isAdminMode) { params.admin = true }
       return snapshotManager.list({ params })
     },
     fetchInstanceSnapshotData (id) {

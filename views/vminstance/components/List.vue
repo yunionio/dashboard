@@ -611,7 +611,7 @@ export default {
                 label: '删除',
                 permission: 'server_delete',
                 action: () => {
-                  this.createDialog('DeleteResDialog', {
+                  this.createDialog('DeleteVmDialog', {
                     data: this.list.selectedItems,
                     columns: this.columns,
                     list: this.list,
