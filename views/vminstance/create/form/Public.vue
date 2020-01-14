@@ -21,7 +21,7 @@
         <a-input v-decorator="decorators.reason" placeholder="请输入主机申请原因" />
       </a-form-item>
       <a-form-item class="mb-0" label="计费方式" v-bind="formItemLayout">
-        <bill :decorators="decorators.bill" :form="form" />
+        <bill :decorators="decorators.bill" :form="form" :provider="hypervisor" />
       </a-form-item>
       <a-form-item label="数量" v-show="!isServertemplate" v-bind="formItemLayout">
         <a-input-number v-decorator="decorators.count" :min="1" :max="10" />

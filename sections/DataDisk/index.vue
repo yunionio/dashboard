@@ -2,17 +2,18 @@
   <div class="data-disk">
     <template v-if="dataDisks.length === 0 && disabled"><span class="warning-color">无数据盘</span></template>
     <template v-else>
-      <div class="d-flex" v-for="item in dataDisks" :key="item.key">
+      <div class="d-flex" v-for="(item, i) in dataDisks" :key="item.key">
         <disk
           :max="max"
           :min="item.min"
           :snapshots-params="getSnapshotsParams(item)"
-          :diskTypeLabel="diskTypeLabel"
+          :diskTypeLabel="i === 0 ? '' : diskTypeLabel"
           :decorator="genDecorator(item.key)"
           :hypervisor="hypervisor"
           :types-map="typesMap"
           :elements="elements"
-          :disabled="getDisabled(item)" />
+          :disabled="getDisabled(item)"
+          @diskTypeChange="val => diskTypeChange(val, item, i)" />
         <a-button v-if="!getDisabled(item, 'minus')" shape="circle" icon="minus" size="small" @click="decrease(item.key)" class="mt-2" />
       </div>
       <div class="d-flex align-items-center" v-if="diskRemain > 0 && !disabled">
@@ -164,12 +165,20 @@ export default {
     min () {
       return this.currentTypeObj.min || 0
     },
-    diskTypeLabel () {
-      return _.get(this.form, 'fd.systemDiskType.label')
-    },
     diskRemain () {
       const remain = this.capabilityData.max_data_disk_count - this.dataDisks.length
       return Math.max(remain, 0)
+    },
+    diskTypeLabel () {
+      return _.get(this.dataDisks, '[0].diskType.label')
+      // if (this.dataDisks.length) {
+      //   if (this.dataDisks[0]) {
+      //     if (this.dataDisks[0].diskType) {
+      //       return this.dataDisks[0].diskType.label || ''
+      //     }
+      //   }
+      // }
+      // return ''
     },
   },
   methods: {
@@ -197,7 +206,7 @@ export default {
         }
       })
     },
-    add ({ size, diskType, policy, schedtag, snapshot, filetype, mountPath, min, disabled = false, ...ret } = {}) {
+    add ({ size, diskType, index, policy, schedtag, snapshot, filetype, mountPath, min, disabled = false, ...ret } = {}) {
       const key = uuid()
       this.dataDisks.push({
         key,
@@ -209,32 +218,31 @@ export default {
         const value = {
           [`dataDiskSizes[${key}]`]: R.is(Number, size) ? size : this.min,
         }
-        if (!this.diskTypeLabel) { // 表单中无系统盘，需要 set 磁盘类型默认值
-          const typeObj = this.typesMap[diskType]
-          let dataDiskTypes = {}
-          if (diskType) {
-            if (R.is(Object, typeObj)) {
-              dataDiskTypes = {
-                key: typeObj.key || diskType,
-                label: typeObj.label || diskType,
-              }
-            }
-          } else if (diskType === undefined) { // 新加数据盘
-            const defaultKey = Object.keys(this.typesMap)[0]
-            if (defaultKey) {
-              dataDiskTypes = {
-                key: this.typesMap[defaultKey].key,
-                label: this.typesMap[defaultKey].label,
-              }
+        const typeObj = this.typesMap[diskType]
+        let dataDiskTypes = {
+          key: _.get(this.dataDisks, '[0].diskType.key'),
+          label: _.get(this.dataDisks, '[0].diskType.label'),
+        }
+        if (R.is(Object, typeObj)) { // 传入diskType，回填
+          dataDiskTypes = {
+            key: typeObj.key || diskType,
+            label: typeObj.label || diskType,
+          }
+        } else if (!diskType && !_.get(this.dataDisks, '[0].diskType')) { // 表单中数据盘无第一项，需要 set 磁盘类型默认值
+          const defaultKey = Object.keys(this.typesMap)[0]
+          if (defaultKey) {
+            dataDiskTypes = {
+              key: this.typesMap[defaultKey].key,
+              label: this.typesMap[defaultKey].label,
             }
           }
-          value[`dataDiskTypes[${key}]`] = dataDiskTypes
-          const lastIndex = this.dataDisks.length - 1
-          this.dataDisks.splice(lastIndex, 1, {
-            ...this.dataDisks[lastIndex],
-            diskType: dataDiskTypes,
-          })
         }
+        value[`dataDiskTypes[${key}]`] = dataDiskTypes
+        const lastIndex = R.is(Number, index) ? index : (this.dataDisks.length - 1)
+        this.dataDisks.splice(lastIndex, 1, {
+          ...this.dataDisks[lastIndex],
+          diskType: dataDiskTypes,
+        })
         if (schedtag) { // 磁盘调度标签
           value[`dataDiskSchedtags[${key}]`] = schedtag
         }
@@ -310,6 +318,12 @@ export default {
         ...staticParams,
         ...modeParams,
       }
+    },
+    diskTypeChange (val, item, index) {
+      this.$set(this.dataDisks, index, {
+        ...item,
+        diskType: val,
+      })
     },
   },
 }
