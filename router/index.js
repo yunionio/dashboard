@@ -8,6 +8,7 @@ import Wire from '@Network/views/wire'
 import GolbalVpc from '@Network/views/global-vpc'
 import RouteTableList from '@Network/views/route-table'
 import NatList from '@Network/views/nats'
+import ReservedIpList from '@Network/views/reserved-id'
 
 export default {
   index: 3,
@@ -133,6 +134,21 @@ export default {
               name: 'NetworkUpdate',
               path: 'edit',
               component: EditAttributes,
+            },
+          ],
+        },
+        {
+          path: '/reservedip',
+          meta: {
+            label: '预留IP',
+            permission: 'reservedips_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'ReservedIpList',
+              path: '',
+              component: ReservedIpList,
             },
           ],
         },
