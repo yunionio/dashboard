@@ -40,7 +40,7 @@ export default {
     }
     const formItem = (decorator) => {
       const [name, options, inputParams] = decorator
-      const { label, placeholder = '', render } = inputParams
+      const { label, placeholder = '', render, extra } = inputParams
       const RenderFormVal = () => {
         if (render && R.type(render) === 'Function') {
           return render(this.form)
@@ -53,6 +53,9 @@ export default {
             getFieldDecorator(name, options)(
               <RenderFormVal/>
             )
+          }
+          {
+            extra ? <div slot="extra">{extra()}</div> : null
           }
         </a-form-item>
       )
