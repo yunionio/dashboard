@@ -103,15 +103,13 @@ export default {
               title: 'GPU',
               formatter: ({ row }) => {
                 if (!row.isolated_devices) return '-'
-                let gpuArr = row.isolated_devices.split(/\n/g)
-                if (!gpuArr) return '-'
-                gpuArr = gpuArr.filter(v => !!v)
+                let gpuArr = row.isolated_devices
                 let obj = {}
                 gpuArr.forEach(val => {
-                  if (!obj[val]) {
-                    obj[val] = 1
+                  if (!obj[val.model]) {
+                    obj[val.model] = 1
                   } else {
-                    obj[val] += 1
+                    obj[val.model] += 1
                   }
                 })
                 let str = ''

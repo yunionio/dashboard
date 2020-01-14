@@ -14,6 +14,7 @@ import {
   getCopyWithContentTableColumn,
   // getStatusTableColumn,
 } from '@/utils/common/tableColumn'
+import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 
 const DEVICE_MAP = {
@@ -68,6 +69,7 @@ export default {
             },
           },
         },
+        steadyStatus: Object.values(expectStatus.server).flat(),
       }),
       exportDataOptions: {
         items: [
@@ -115,7 +117,7 @@ export default {
         },
         {
           field: 'guest',
-          title: '主机',
+          title: '关联主机',
           minWidth: 100,
           showOverflow: 'ellipsis',
           slots: {
@@ -158,8 +160,8 @@ export default {
               }
             }
             return {
-              validate: item.every(item => item.guest_id),
-              tooltip: '请选择已绑定的GPU卡',
+              validate: item.every(item => item.guest_id && item.guest_status === 'ready'),
+              tooltip: '请选择已绑定关机状态的GPU卡',
             }
           },
         },
@@ -190,8 +192,20 @@ export default {
             })
           },
           meta: obj => {
+            if (!obj.guest_id) {
+              return {
+                validate: false,
+                tooltip: '请选择已绑定GPU卡的主机',
+              }
+            }
+            if (obj.guest_status !== 'ready') {
+              return {
+                validate: false,
+                tooltip: '请选择关机状态的主机',
+              }
+            }
             return {
-              validate: !!obj.guest_id,
+              validate: true,
             }
           },
         },
