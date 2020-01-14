@@ -254,7 +254,8 @@ export default {
         this.loading = true
         const data = { ...values }
         const tenant = Cookies.get('tenant')
-        const scope = Cookies.get('scope')
+        let scope = Cookies.get('scope')
+        if (storage.get('INIT_SETUP')) scope = 'system'
         // set region cookie
         const region = values.region || this.form.fi.regions[0]
         if (region) {
