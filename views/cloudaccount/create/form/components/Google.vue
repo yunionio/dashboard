@@ -4,21 +4,23 @@
       <a-form-item label="名称">
         <a-input v-decorator="decorators.name" placeholder="请输入名称" />
       </a-form-item>
-      <a-form-item label="project_id">
-        <a-input v-decorator="decorators.project_id" placeholder="请输入project_id" />
-      </a-form-item>
-      <a-form-item label="private_key_id">
-        <a-input v-decorator="decorators.private_key_id" placeholder="请输入private_key_id" />
-      </a-form-item>
-      <a-form-item label="private_key">
-        <a-textarea :autosize="{ minRows: 3, maxRows: 7 }" v-decorator="decorators.private_key" placeholder="请输入private_key" />
-      </a-form-item>
-      <a-form-item label="client_email">
-        <a-input v-decorator="decorators.client_email" placeholder="请输入client_email" />
-      </a-form-item>
-      <a-form-item label="指定项目" class="mb-0" v-bind="formLayout">
+       <a-form-item label="指定项目" class="mb-0" v-bind="formLayout">
         <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain }" />
       </a-form-item>
+      <upload-json-file :fc="form.fc">
+        <a-form-item label="project_id">
+          <a-input v-decorator="decorators.project_id" placeholder="请输入project_id" />
+        </a-form-item>
+        <a-form-item label="private_key_id">
+          <a-input v-decorator="decorators.private_key_id" placeholder="请输入private_key_id" />
+        </a-form-item>
+        <a-form-item label="private_key">
+          <a-textarea :autosize="{ minRows: 3, maxRows: 7 }" v-decorator="decorators.private_key" placeholder="请输入private_key" />
+        </a-form-item>
+        <a-form-item label="client_email">
+          <a-input v-decorator="decorators.client_email" placeholder="请输入client_email" />
+        </a-form-item>
+      </upload-json-file>
       <auto-sync :fc="form.fc" :form-layout="formLayout" />
     </a-form>
   </div>
@@ -26,6 +28,7 @@
 
 <script>
 import AutoSync from '@Cloudenv/views/cloudaccount/components/AutoSync'
+import UploadJsonFile from '@Cloudenv/views/cloudaccount/components/UploadJsonFile'
 import { CLOUDACCOUNT_DOCS, keySecretFields } from '@Cloudenv/views/cloudaccount/constants'
 import createMixin from './createMixin'
 import DomainProject from '@/sections/DomainProject'
@@ -36,6 +39,7 @@ export default {
   components: {
     AutoSync,
     DomainProject,
+    UploadJsonFile,
   },
   mixins: [createMixin],
   data () {
