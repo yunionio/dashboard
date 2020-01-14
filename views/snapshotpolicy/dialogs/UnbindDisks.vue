@@ -40,7 +40,7 @@ export default {
         id: ids,
         steadyStatus: 'ready',
         managerArgs: {
-          action: 'bind-snapshotpolicy',
+          action: 'unbind-snapshotpolicy',
           data: params,
         },
       })
