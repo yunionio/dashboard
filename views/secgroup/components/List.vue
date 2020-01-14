@@ -33,6 +33,9 @@ export default {
         details: true,
       }),
     },
+    frontGroupActions: {
+      type: Function,
+    },
   },
   data () {
     return {
@@ -130,63 +133,6 @@ export default {
           },
         },
         getProjectTableColumn(),
-      ],
-      groupActions: [
-        {
-          label: '新建',
-          permission: 'secgroups_create',
-          action: () => {
-            this.createDialog('CreateSecgroupDialog', {
-              title: '新建',
-              list: this.list,
-            })
-          },
-          meta: () => ({
-            buttonType: 'primary',
-          }),
-        },
-        {
-          label: '批量追加规则',
-          permission: 'secgroups_performAction',
-          action: () => {
-            this.createDialog('AddRulesDialog', {
-              data: this.list.selectedItems,
-              columns: this.columns,
-              title: '批量追加规则',
-              list: this.list,
-            })
-          },
-          meta: () => {
-            if (this.list.selectedItems.length > 0) {
-              if (this.isAdminMode) {
-                return {
-                  validate: true,
-                }
-              } else {
-                return {
-                  validate: this.list.selectedItems.every(val => !val.is_public),
-                }
-              }
-            }
-            return {
-              validate: false,
-              tooltip: '请选择私有安全组',
-            }
-          },
-        },
-        {
-          label: '删除',
-          permission: 'secgroups_delete',
-          action: () => {
-            this.createDialog('DeleteResDialog', {
-              data: this.list.selectedItems,
-              columns: this.columns,
-              title: '删除',
-              list: this.list,
-            })
-          },
-          meta: (obj) => this.$getDeleteResult(this.list.selectedItems),
-        },
       ],
       singleActions: [
         {
@@ -359,6 +305,70 @@ export default {
   },
   computed: {
     ...mapGetters(['isAdminMode', 'isDomainMode', 'userInfo']),
+    groupActions () {
+      const _frontGroupActions = this.frontGroupActions ? this.frontGroupActions.bind(this)() || [] : []
+      return _frontGroupActions.concat(
+        [
+          { index: 0,
+            label: '新建',
+            permission: 'secgroups_create',
+            action: () => {
+              this.createDialog('CreateSecgroupDialog', {
+                title: '新建',
+                list: this.list,
+              })
+            },
+            meta: () => ({
+              buttonType: 'primary',
+            }),
+          },
+          {
+            index: 2,
+            label: '批量追加规则',
+            permission: 'secgroups_performAction',
+            action: () => {
+              this.createDialog('AddRulesDialog', {
+                data: this.list.selectedItems,
+                columns: this.columns,
+                title: '批量追加规则',
+                list: this.list,
+              })
+            },
+            meta: () => {
+              if (this.list.selectedItems.length > 0) {
+                if (this.isAdminMode) {
+                  return {
+                    validate: true,
+                  }
+                } else {
+                  return {
+                    validate: this.list.selectedItems.every(val => !val.is_public),
+                  }
+                }
+              }
+              return {
+                validate: false,
+                tooltip: '请选择私有安全组',
+              }
+            },
+          },
+          {
+            index: 3,
+            label: '删除',
+            permission: 'secgroups_delete',
+            action: () => {
+              this.createDialog('DeleteResDialog', {
+                data: this.list.selectedItems,
+                columns: this.columns,
+                title: '删除',
+                list: this.list,
+              })
+            },
+            meta: (obj) => this.$getDeleteResult(this.list.selectedItems),
+          },
+        ]
+      ).sort((a, b) => a.index - b.index)
+    },
   },
   created () {
     this.initSidePageTab('secgroup-detail')

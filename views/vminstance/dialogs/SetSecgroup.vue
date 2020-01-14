@@ -143,6 +143,7 @@ export default {
             data,
           },
         })
+        this.params.callback && this.params.callback()
         this.cancelDialog()
       } finally {
         this.loading = false

@@ -19,7 +19,7 @@ import validateForm, { isRequired, isWithinRange } from '@/utils/validate'
 import store from '@/store'
 import i18n from '@/locales'
 
-function checkIpInSegment (i, networkData) {
+export function checkIpInSegment (i, networkData) {
   return (rule, value, cb) => {
     const isIn = isWithinRange(value, networkData.guest_ip_start, networkData.guest_ip_end)
     if (isIn) {
