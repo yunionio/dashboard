@@ -8,6 +8,13 @@
       "online": "在线",
       "offline": "离线"
     },
+    "sync": {
+      "queuing": "准备同步",
+      "queued": "开始同步",
+      "syncing": "同步中",
+      "idle": "空闲",
+      "error": "同步失败"
+    },
     "server": {
       "init": "初始化",
       "schedule": "调度中",
@@ -453,6 +460,10 @@
       "deleted": "删除",
       "deleting": "删除中",
       "delete_failed": "删除失败"
+    },
+    "idp": {
+      "connected": "已连接",
+      "disconnected": "连接断开"
     }
   },
   "skuCategoryOptions": {

@@ -35,6 +35,11 @@ export default {
     success: ['online'],
     info: ['offline'],
   },
+  // 特殊状态，标识同步状态
+  sync: {
+    info: ['idle'],
+    danger: ['error'],
+  },
   cloudaccount: {
     success: ['connected'],
     danger: ['disconnected'],
@@ -152,5 +157,9 @@ export default {
     info: [],
     success: ['available'],
     danger: ['create_fail', 'failed', 'delete_failed'],
+  },
+  idp: {
+    danger: ['disconnected'],
+    success: ['connected'],
   },
 }
