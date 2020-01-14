@@ -24,6 +24,7 @@
 <script>
 import * as R from 'ramda'
 import { BILL_TYPES_MAP, BUY_DURATION_OPTIONS } from '@Compute/constants'
+import { HYPERVISORS_MAP } from '@/constants'
 
 export default {
   name: 'VmPublicCreateBill',
@@ -36,13 +37,28 @@ export default {
     form: {
       type: Object,
     },
+    provider: {
+      type: String,
+    },
   },
   data () {
     return {
       billTypesMap: BILL_TYPES_MAP,
-      buyDurationOptions: BUY_DURATION_OPTIONS,
       showDuration: this.decorators.billType === BILL_TYPES_MAP.package.key,
     }
+  },
+  computed: {
+    buyDurationOptions () {
+      const options = BUY_DURATION_OPTIONS
+      if (this.provider && this.provider.toLowerCase() === HYPERVISORS_MAP.aliyun.key) {
+        options.unshift({
+          label: '1周',
+          key: '1W',
+          unit: 'W',
+        },)
+      }
+      return options
+    },
   },
   methods: {
     change (val) {
