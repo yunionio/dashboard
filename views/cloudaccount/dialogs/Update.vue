@@ -19,16 +19,25 @@
             <help-link :href="doc">如何获取Azure的租户（Tenant） ID ？</help-link>
           </div>
         </a-form-item>
-        <a-form-item :label="field.label.k">
-          <a-textarea v-if="isGoogle" :autosize="{ minRows: 3, maxRows: 7 }" v-decorator="decorators.keyId" :placeholder="field.placeholder.k" />
-          <a-input v-else v-decorator="decorators.keyId" :placeholder="field.placeholder.k" />
-          <div slot="extra" class="text-right" v-if="!isGoogle">
-            <help-link :href="doc">如何获取{{ field.text }} {{ field.label.k }} 和 {{ field.label.s }}？</help-link>
-          </div>
-        </a-form-item>
-        <a-form-item :label="field.label.s">
-          <a-input-password v-decorator="decorators.keySecret" :placeholder="field.placeholder.s" type="password" />
-        </a-form-item>
+        <upload-json-file :fc="form.fc" v-if="isGoogle">
+          <a-form-item :label="field.label.k">
+            <a-textarea v-if="isGoogle" :autosize="{ minRows: 3, maxRows: 7 }" v-decorator="decorators.keyId" :placeholder="field.placeholder.k" />
+          </a-form-item>
+          <a-form-item :label="field.label.s">
+            <a-input-password v-decorator="decorators.keySecret" :placeholder="field.placeholder.s" type="password" />
+          </a-form-item>
+        </upload-json-file>
+        <div v-else>
+          <a-form-item :label="field.label.k">
+            <a-input v-decorator="decorators.keyId" :placeholder="field.placeholder.k" />
+            <div slot="extra" class="text-right">
+              <help-link :href="doc">如何获取{{ field.text }} {{ field.label.k }} 和 {{ field.label.s }}？</help-link>
+            </div>
+          </a-form-item>
+          <a-form-item :label="field.label.s">
+            <a-input-password v-decorator="decorators.keySecret" :placeholder="field.placeholder.s" type="password" />
+          </a-form-item>
+         </div>
         <a-form-item label="账单密钥" v-if="isAzure">
           <a-textarea v-decorator="decorators.balanceKey" rows="4" />
         </a-form-item>
@@ -54,6 +63,7 @@
 
 <script>
 import * as R from 'ramda'
+import UploadJsonFile from '@Cloudenv/views/cloudaccount/components/UploadJsonFile'
 import { keySecretFields, CLOUDACCOUNT_DOCS } from '../constants'
 import { HYPERVISORS_MAP } from '@/constants'
 import DialogMixin from '@/mixins/dialog'
@@ -61,6 +71,7 @@ import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'CloudaccountUpdateDialog',
+  components: { UploadJsonFile },
   mixins: [DialogMixin, WindowsMixin],
   data () {
     const provider = this.params.data[0].brand.toLowerCase()
