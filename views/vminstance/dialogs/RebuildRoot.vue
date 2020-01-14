@@ -345,6 +345,7 @@ export default {
         const diskInfo = (detailData[0] && detailData[0].disks_info) || []
         if (diskInfo.length > 0) {
           const image = diskInfo[0] || {}
+          if (imageMsg.name !== image.image) return
           this.$nextTick(() => {
             this.form.fc.setFieldsValue({
               image: {
