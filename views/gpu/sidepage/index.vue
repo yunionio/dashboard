@@ -16,8 +16,8 @@
 </template>
 
 <script>
+import serversList from '../../vminstance/components/List'
 import GpuDetail from './Detail'
-import serversList from './Servers'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -41,6 +41,11 @@ export default {
   },
   computed: {
     getParams () {
+      if (this.params.windowData.currentTab === 'servers-list') {
+        return {
+          'filter': `id.equals(${this.data.guest_id})`,
+        }
+      }
       return null
     },
     data () {
@@ -48,7 +53,7 @@ export default {
     },
   },
   created () {
-    if (this.params.tab === 'servers-list') this.handleTabChange(this.params.tab)
+    if (this.params.tab) this.handleTabChange(this.params.tab)
   },
 }
 </script>

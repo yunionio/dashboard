@@ -16,14 +16,16 @@
       <a-form
         :form="form.fc">
         <a-form-item label="是否绑定" v-bind="formItemLayout">
-          <a-radio-group name="radioGroup" :defaultValue="true" v-if="params.data.length > 1" v-model="isOpenGpu">
+          <a-radio-group name="radioGroup" :defaultValue="true" v-if="isGroupAction" v-model="isOpenGpu">
             <a-radio :value="true">绑定</a-radio>
             <a-radio :value="false">解绑</a-radio>
           </a-radio-group>
           <a-switch v-model="isOpenGpu" v-else />
         </a-form-item>
         <a-form-item label="GPU卡" v-bind="formItemLayout" v-show="isOpenGpu" extra="只能关联与主机处于同一宿主机的GPU卡">
+          <!-- 批量设置 -->
           <base-select
+            v-if="isGroupAction"
             v-decorator="decorators.device"
             :params="gpuParams"
             :need-params="false"
@@ -33,7 +35,7 @@
             :options.sync="gpuOpt"
             :mapper="mapper"
             resource="isolated_devices"
-            :select-props="{ allowClear: true, placeholder: '请选择GPU设备', mode: params.data.length > 1 ? 'default' : 'multiple' }">
+            :select-props="{ allowClear: true, placeholder: '请选择GPU设备', mode: 'default' }">
             <template v-slot:optionTemplate>
               <a-select-option v-for="item in gpuOpt" :key="item.id" :value="item.id" :disabled="item.__disabled">
                 <div class="d-flex">
@@ -44,8 +46,20 @@
               </a-select-option>
             </template>
           </base-select>
+          <!-- 单条操作 -->
+          <base-select
+            v-else
+            v-decorator="decorators.device"
+            :params="gpuParams"
+            :need-params="false"
+            :labelFormat="labelFormat"
+            :disabled-items="disabledItems"
+            filterable
+            :options.sync="gpuOpt"
+            resource="isolated_devices"
+            :select-props="{ allowClear: true, placeholder: '请选择GPU设备', mode: 'multiple' }" />
         </a-form-item>
-        <a-form-item label="数量" v-bind="formItemLayout" v-show="isOpenGpu && params.data.length > 1">
+        <a-form-item label="数量" v-bind="formItemLayout" v-show="isOpenGpu && isGroupAction">
           <a-input-number :min="1" v-decorator="decorators.number" />
         </a-form-item>
         <a-form-item label="自动启动" v-bind="formItemLayout" extra="设置成功后是否自动启动">
@@ -62,6 +76,9 @@
 
 <script>
 import * as R from 'ramda'
+import {
+  getIpsTableColumn,
+} from '@/utils/common/tableColumn'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
@@ -117,10 +134,7 @@ export default {
           field: 'name',
           title: '名称',
         },
-        {
-          field: 'ip',
-          title: 'IP',
-        },
+        getIpsTableColumn({ field: 'ip', title: 'IP' }),
         {
           field: 'gpu',
           title: 'GPU',
@@ -161,26 +175,36 @@ export default {
       return this.bindGpus.filter((id) => { return !this.form.fd.device.includes(id) })
     },
     disabledItems () {
-      return this.gpuOpt.filter(val => {
-        if (val.usedCount === val.totalCount) {
-          return true
-        } else if (val.totalCount - val.usedCount < this.params.data.length) {
-          return true
-        }
-        return false
-      }).map(item => { return item.id })
+      if (this.isGroupAction) {
+        return this.gpuOpt.filter(val => {
+          if (val.usedCount === val.totalCount) {
+            return true
+          } else if (val.totalCount - val.usedCount < this.params.data.length) {
+            return true
+          }
+          return false
+        }).map(item => { return item.id })
+      } else {
+        return this.gpuOpt.filter(val => { return val.guest_id }).map(item => { return item.id })
+      }
+    },
+    isGroupAction () { // 是否是批量操作
+      if (this.params.groupAction) return true
+      return false
     },
   },
   watch: {
     gpuOpt () {
-      this.bindGpus = this.gpuOpt.filter(item => item.usedCount).map(item => { return item.id })
-      if (this.bindGpus.length > 0 && this.params.data.length === 1) {
-        this.form.fc.setFieldsValue({ device: this.bindGpus })
-        this.isOpenGpu = true
+      if (!this.isGroupAction) {
+        this.bindGpus = this.gpuOpt.filter(item => item.guest_id === this.params.data[0].id).map(item => { return item.id })
+        if (this.bindGpus.length > 0) {
+          this.form.fc.setFieldsValue({ device: this.bindGpus })
+          this.isOpenGpu = true
+        }
       }
     },
     disabledItems () {
-      if (this.disabledItems && this.disabledItems.length) { // 禁用某些选项
+      if (this.disabledItems && this.disabledItems.length && this.isGroupAction) { // 禁用某些选项
         this.disabledItems.forEach(disabledId => {
           this.gpuOpt.forEach(item => {
             if (disabledId === item.id) {
@@ -275,14 +299,11 @@ export default {
     },
     mapper (data) {
       let newData = []
-      if (this.params.data.length === 1) {
-        newData = this.singleMapper(data)
-      } else {
-        newData = this.grpupMapper(data)
-      }
+      newData = this.grpupMapper(data)
       return newData
     },
-    singleMapper (data) {
+    // 格式化基本数据
+    genResourceData (data) {
       const obj = {}
       for (let i = 0; i < data.length; i++) {
         const item = data[i]
@@ -292,6 +313,13 @@ export default {
             totalCount: 1,
           }
           if (!item.guest) {
+            obj[item.model] = {
+              ...obj[item.model],
+              ...item,
+            }
+          }
+          // 兼容如果某个型号第一个就是已使用情况
+          if (item.guest && !obj[item.model]['id']) {
             obj[item.model] = {
               ...obj[item.model],
               ...item,
@@ -328,7 +356,7 @@ export default {
         }
       }
       for (let key in obj) {
-        obj[key] = this.singleMapper(obj[key])
+        obj[key] = this.genResourceData(obj[key])
       }
       return this.filterSameModel(obj)
     },
