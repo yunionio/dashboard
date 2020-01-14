@@ -56,6 +56,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import * as R from 'ramda'
+import _ from 'lodash'
 import CpuRadio from '@Compute/sections/CpuRadio'
 import MemRadio from '@Compute/sections/MemRadio'
 import DataDisk from '@Compute/sections/DataDisk'
@@ -377,8 +378,8 @@ export default {
 
       this.$nextTick(() => {
         setTimeout(() => {
-          this.form.fd.datadisks.forEach((v) => {
-            this.$refs.dataDiskRef.add({ size: v.value, diskType: v.type, disabled: true, ...v })
+          this.form.fd.datadisks.forEach((v, i) => {
+            this.$refs.dataDiskRef.add({ size: v.value, index: i, diskType: v.type, disabled: true, ...v })
           })
           this.diskLoaded = true
         }, 1000)
@@ -531,6 +532,7 @@ export default {
     genDiskData (values) {
       const dataDisk = []
       let index = 0
+      const dataDisks = this.$refs.dataDiskRef.dataDisks
       R.forEachObjIndexed((value, key) => {
         const diskObj = {
           disk_type: 'data',
@@ -539,8 +541,14 @@ export default {
         if (values.dataDiskSizes && values.dataDiskSizes[key]) {
           diskObj.size = values.dataDiskSizes[key] * 1024
         }
-        if (values.dataDiskTypes && values.dataDiskTypes[key]) {
-          diskObj.backend = values.dataDiskTypes[key].key
+        if (values.dataDiskTypes) {
+          if (values.dataDiskTypes[key]) {
+            diskObj.backend = values.dataDiskTypes[key].key
+          } else {
+            if (_.get(dataDisks, '[0].diskType.key')) {
+              diskObj.backend = _.get(dataDisks, '[0].diskType.key') // 默认添加的盘和第一块保持一致
+            }
+          }
         }
         if (values.dataDiskFiletypes && values.dataDiskFiletypes[key]) {
           diskObj.filetype = values.dataDiskFiletypes[key]

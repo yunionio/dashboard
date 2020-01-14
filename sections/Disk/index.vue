@@ -1,8 +1,8 @@
 <template>
   <div class="disk-wrapper d-flex w-auto">
     <a-form-item>
-      <a-tag color="blue" v-if="diskTypeLabel">{{ diskTypeLabel }}</a-tag>
-      <a-select v-else v-decorator="decorator.type" labelInValue style="width: 180px;" :disabled="disabled">
+      <a-tag color="blue" v-if="diskTypeLabel && !disabled">{{ diskTypeLabel }}</a-tag>
+      <a-select v-else v-decorator="decorator.type" labelInValue style="width: 180px;" @change="typeChange" :disabled="disabled">
         <a-select-option v-for="(item, key) of typesMap" :key="key" :value="key">{{ item.label }}</a-select-option>
       </a-select>
     </a-form-item>
@@ -129,6 +129,9 @@ export default {
         num = Math.floor(num / 10) * 10
       }
       return n
+    },
+    typeChange (val) {
+      this.$emit('diskTypeChange', val)
     },
   },
 }
