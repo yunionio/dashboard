@@ -306,7 +306,7 @@ export default {
           },
         })
       }
-      const cloudProvidersMap = this.$t('CLOUD_PROVIDERS_MAP')
+      const cloudProvidersMap = this.$t('cloudPrvidersMap')
       return (
         <a-select allowClear showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.providerLoading} placeholder="请选择平台">
           {this.providerList.map(provider => {
