@@ -53,7 +53,7 @@ export default {
             title: '快照类型',
             minWidth: 200,
             formatter: ({ row }) => {
-              return row.is_disk ? '硬盘' : '主机'
+              return row.is_disk ? '硬盘快照' : '主机快照'
             },
           },
           {
