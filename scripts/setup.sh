@@ -18,6 +18,7 @@ if [ ! -d "./containers" ]; then
   git clone -b $BRANCH $DEFAULT_GIT_PREFIX/dashboard-module-compute.git containers/Compute
   git clone -b $BRANCH $DEFAULT_GIT_PREFIX/dashboard-module-network.git containers/Network
   git clone -b $BRANCH $DEFAULT_GIT_PREFIX/dashboard-module-dashboard.git containers/Dashboard
+  git clone -b $BRANCH $DEFAULT_GIT_PREFIX/dashboard-module-storage.git containers/Storage
 fi
 
 echo "🗃 Done"

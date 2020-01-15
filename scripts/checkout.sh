@@ -7,6 +7,7 @@ read -p "🗃 : 请确保您已经fork了本仓库，并且fork了以下的的�
 📦 ssh://git@git.yunion.io/fep/dashboard-module-compute
 📦 ssh://git@git.yunion.io/fep/dashboard-module-network
 📦 ssh://git@git.yunion.io/fep/dashboard-module-dashboard
+📦 ssh://git@git.yunion.io/fep/dashboard-module-storage
 " userConfirm
 
 if [ "$userConfirm" == "n" ] 
@@ -40,5 +41,6 @@ checkout 'dashboard-module-cloudenv' ../containers/Cloudenv
 checkout 'dashboard-module-compute' ../containers/Compute
 checkout 'dashboard-module-dashboard' ../containers/Dashboard
 checkout 'dashboard-module-network' ../containers/Network
+checkout 'dashboard-module-storage' ../containers/Storage
 
 exit 0
