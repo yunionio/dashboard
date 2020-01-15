@@ -25,6 +25,7 @@ import Secgroup from '@Compute/views/secgroup'
 import FlexNetwork from '@Network/views/flex-network'
 import Wire from '@Network/views/wire'
 import Servertemplate from '@Compute/views/servertemplate'
+import ServertemplateCreateServer from '@Compute/views/servertemplate/CreateServer'
 import DiskSnapshot from '@Compute/views/snapshot/DiskSnapshot'
 import InstanceSnapshot from '@Compute/views/snapshot/InstanceSnapshot'
 import Servicecatalog from '@Compute/views/servicecatalog'
@@ -125,6 +126,12 @@ export default {
               path: 'create',
               meta: {},
               component: VMInstanceCreate,
+            },
+            {
+              name: 'ServertemplateCreateServer',
+              path: 'create-server',
+              meta: {},
+              component: ServertemplateCreateServer,
             },
           ],
         },
