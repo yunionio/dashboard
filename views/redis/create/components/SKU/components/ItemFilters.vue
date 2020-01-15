@@ -218,7 +218,7 @@ export default {
             this.FC.setFieldsValue({
               memory_size_mb: index > -1 ? this.memorys[index + 1] : this.memorys[index],
             })
-          } else if (this.memorys && this.memorys.length > 0) {
+          } else if (this.memorys && this.memorys.length > 0 && this.memorys.indexOf(this.getFieldValue('memory_size_mb')) === -1) {
             this.FC.setFieldsValue({
               memory_size_mb: this.memorys[0],
             })
