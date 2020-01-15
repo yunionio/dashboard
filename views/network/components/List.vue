@@ -254,7 +254,7 @@ export default {
           },
         },
         {
-          label: '更多',
+          label: this.$t('common.batchAction'),
           actions: () => {
             return [
               {
