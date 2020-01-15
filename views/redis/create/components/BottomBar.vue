@@ -138,14 +138,13 @@ export default {
       return null
     },
     priceTips () {
-      const { count } = this.values
       if (this.price) {
         if (this.isPackage && this.durationNum) {
           const _day = (this.price / 30 / this.durationNum).toFixed(2)
           const _hour = (parseFloat(_day) / 24).toFixed(2)
           return `(合¥${_day}/天  ¥${_hour}/小时)`
         } else {
-          const _day = (this.price * 24 / parseFloat(count)).toFixed(2)
+          const _day = (this.price * 24).toFixed(2)
           const _month = (parseFloat(_day) * 30).toFixed(2)
           return `(合¥${_day}/天 ¥${_month}/月)`
         }
