@@ -7,6 +7,7 @@ read -p "🗃 : 请确保您已经fork了本仓库，并且fork了以下的的�
 📦 ssh://git@git.yunion.io/fep/dashboard-module-compute
 📦 ssh://git@git.yunion.io/fep/dashboard-module-network
 📦 ssh://git@git.yunion.io/fep/dashboard-module-dashboard
+📦 ssh://git@git.yunion.io/fep/dashboard-module-storage
 " userConfirm
 
 if [ "$userConfirm" == "n" ] 
@@ -41,6 +42,10 @@ fi
 
 if [ ! -d "./containers/Dashboard" ]; then
   git clone $DEFAULT_GIT_PREFIX/dashboard-module-dashboard.git containers/Dashboard
+fi
+
+if [ ! -d "./containers/Storage" ]; then
+  git clone $DEFAULT_GIT_PREFIX/dashboard-module-storage.git containers/Storage
 fi
 
 echo "🗃 Done"

@@ -30,5 +30,6 @@ sync 'dashboard-module-cloudenv' ../containers/Cloudenv
 sync 'dashboard-module-compute' ../containers/Compute
 sync 'dashboard-module-dashboard' ../containers/Dashboard
 sync 'dashboard-module-network' ../containers/Network
+sync 'dashboard-module-storage' ../containers/Storage
 
 exit 0
