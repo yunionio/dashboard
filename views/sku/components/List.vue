@@ -255,6 +255,7 @@ export default {
       const ret = {
         details: true,
         with_meta: true,
+        cloud_env: 'onpremise',
         ...this.getParams,
       }
       return ret
