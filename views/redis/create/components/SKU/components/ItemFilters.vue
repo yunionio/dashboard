@@ -32,7 +32,7 @@
     </a-form-item>
     <a-form-item label="内存" v-bind="formItemLayout" v-if="memorys && memorys.length > 0">
       <a-radio-group v-decorator="decorators.memory_size_mb || ['memory_size_mb']" @change="eimtChange">
-        <a-radio-button :key="size" :value="size" v-for="size in memorys">{{sizestr(size, 'M', 1024)}}</a-radio-button>
+        <a-radio-button :key="size" :disabled="getIsMemoryDisabled(size)" :value="size" v-for="size in memorys">{{sizestr(size, 'M', 1024)}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
   </div>
@@ -44,7 +44,7 @@ import { ENGINE_ARCH, NODE_TYPE, PERFORMANCE_TYPE_KEYS, PERFORMANCE_TYPE, ENGINE
 import { sizestr } from '@/utils/utils'
 export default {
   name: 'SkuFilters',
-  inject: ['form'],
+  inject: ['form', 'redisItem'],
   props: {
     decorators: {
       type: Object,
@@ -103,6 +103,13 @@ export default {
     },
   },
   methods: {
+    getIsMemoryDisabled (size) {
+      if (this.redisItem && this.redisItem.capacity_mb) {
+        const redisMb = this.redisItem.capacity_mb
+        return redisMb >= size
+      }
+      return false
+    },
     setInitValue (key, callback = () => {}) {
       const value = this.form.getFieldValue(key)
       const data = this[`${key}s`]
@@ -205,9 +212,15 @@ export default {
         const { data } = await instanceSpecsManager.batchGet({ params })
         this.memorys = data['mems_mb']
         this.$nextTick(() => {
-          if (this.memorys.indexOf(this.memory) === -1) {
+          if (this.memorys && this.redisItem && this.redisItem.capacity_mb) {
+            const redisMb = this.redisItem.capacity_mb
+            const index = this.memorys.indexOf(redisMb)
             this.FC.setFieldsValue({
-              memory_size_mb: this.memorys && this.memorys.length > 0 ? parseInt(this.memorys[0]) : undefined,
+              memory_size_mb: index > -1 ? this.memorys[index + 1] : this.memorys[index],
+            })
+          } else if (this.memorys && this.memorys.length > 0) {
+            this.FC.setFieldsValue({
+              memory_size_mb: this.memorys[0],
             })
           }
         })
