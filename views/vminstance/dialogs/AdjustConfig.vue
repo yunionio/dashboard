@@ -234,7 +234,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['scope', 'userInfo']),
+    ...mapGetters(['isAdminMode', 'scope', 'userInfo']),
     selectedItems () {
       return this.params.data
     },
@@ -525,7 +525,7 @@ export default {
         show_emulated: true,
       }
       if (this.isAdminMode) {
-        params.scope = this.scope
+        params.project_domain = this.selectedItem.manager_domain_id
       }
       return this.zonesM2.get({ id: `${v}/capability`, params })
     },
