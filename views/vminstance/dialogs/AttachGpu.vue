@@ -402,7 +402,11 @@ export default {
     onValuesChange (props, values) {
       Object.keys(values).forEach((key) => {
         if (key === 'device') {
-          this.form.fd[key].push(values[key])
+          if (this.isGroupAction) {
+            this.form.fd[key] = [values[key]]
+          } else {
+            this.form.fd[key] = values[key]
+          }
         } else {
           this.form.fd[key] = values[key]
         }
