@@ -161,7 +161,7 @@ export default {
             }
             return {
               validate: item.every(item => item.guest_id && item.guest_status === 'ready'),
-              tooltip: '请选择已绑定关机状态的GPU卡',
+              tooltip: '取消关联主机在【关机】的状态下支持该操作',
             }
           },
         },
@@ -195,13 +195,13 @@ export default {
             if (!obj.guest_id) {
               return {
                 validate: false,
-                tooltip: '请选择已绑定GPU卡的主机',
+                tooltip: '请选择已关联主机的GPU卡',
               }
             }
             if (obj.guest_status !== 'ready') {
               return {
                 validate: false,
-                tooltip: '请选择关机状态的主机',
+                tooltip: '关联主机在【关机】的状态下支持该操作',
               }
             }
             return {

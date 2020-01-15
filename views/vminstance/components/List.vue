@@ -399,7 +399,6 @@ export default {
                     data: this.list.selectedItems,
                     columns: this.columns,
                     list: this.list,
-                    groupAction: true,
                   })
                 },
                 meta: () => {

@@ -22,7 +22,7 @@
           </a-radio-group>
           <a-switch v-model="isOpenGpu" v-else />
         </a-form-item>
-        <a-form-item label="GPU卡" v-bind="formItemLayout" v-show="isOpenGpu" extra="只能关联与主机处于同一宿主机的GPU卡">
+        <a-form-item label="GPU卡" v-bind="formItemLayout" v-show="isOpenGpu" extra="只能关联与主机处于同一宿主机的GPU卡,且已被使用的GPU不可选择">
           <!-- 批量设置 -->
           <base-select
             v-if="isGroupAction"
@@ -100,7 +100,7 @@ export default {
           'device',
           {
             rules: [
-              { required: true, type: this.params.data.length > 1 ? 'string' : 'array', message: '请选择GPU设备', trigger: 'change' },
+              { required: true, type: 'any', message: '请选择GPU设备', trigger: 'change' },
             ],
           },
         ],
@@ -185,11 +185,11 @@ export default {
           return false
         }).map(item => { return item.id })
       } else {
-        return this.gpuOpt.filter(val => { return val.guest_id }).map(item => { return item.id })
+        return this.gpuOpt.filter(val => { return val.guest_id && val.guest_id !== this.selectedItems[0].id }).map(item => { return item.id })
       }
     },
     isGroupAction () { // 是否是批量操作
-      if (this.params.groupAction) return true
+      if (this.params.data.length > 1) return true
       return false
     },
   },
@@ -237,7 +237,7 @@ export default {
           id: ids,
           steadyStatus: ['running', 'ready'],
           managerArgs: {
-            action: 'acctach-isolated-device',
+            action: 'attach-isolated-device',
             data: {
               model,
               count,
@@ -257,7 +257,7 @@ export default {
     async doDetachSubmit (data) {
       // 批量解除绑定
       let params = {}
-      if (this.selectedItems.length > 1) {
+      if (this.isGroupAction) {
         params = {
           detach_all: true,
           auto_start: data.autoStart,
@@ -275,7 +275,7 @@ export default {
         id: ids,
         steadyStatus: ['running', 'ready'],
         managerArgs: {
-          action: this.selectedItems.length > 1 ? 'detach-isolated-device' : 'set-isolated-device',
+          action: this.isGroupAction ? 'detach-isolated-device' : 'set-isolated-device',
           data: params,
         },
       })
@@ -402,7 +402,7 @@ export default {
     onValuesChange (props, values) {
       Object.keys(values).forEach((key) => {
         if (key === 'device') {
-          this.form.fd[key] = values[key]
+          this.form.fd[key].push(values[key])
         } else {
           this.form.fd[key] = values[key]
         }
