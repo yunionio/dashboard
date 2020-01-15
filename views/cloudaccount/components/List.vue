@@ -371,15 +371,12 @@ export default {
                 meta: () => {
                   let tooltip = ''
                   if (!this.l3PermissionEnable) {
-                    tooltip = '无操作权限'
-                  }
-                  if (!obj.is_public) {
-                    if (!ownerDomain) {
-                      tooltip = '无操作权限'
-                    }
+                    tooltip = '未开启三级权限，无法操作'
+                  } else if (!this.$store.getters.isAdminMode) {
+                    tooltip = '仅系统管理后台下可以操作'
                   }
                   return {
-                    validate: this.l3PermissionEnable && !obj.is_public && ownerDomain,
+                    validate: this.l3PermissionEnable && this.$store.getters.isAdminMode,
                     tooltip,
                   }
                 },
