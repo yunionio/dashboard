@@ -29,10 +29,10 @@
       <a-form-item label="数量" v-show="!isServertemplate" v-bind="formItemLayout">
         <a-input-number v-decorator="decorators.count" :min="1" :max="10" />
       </a-form-item>
-      <a-form-item label="平台" v-bind="formItemLayout" extra="根据选择的区域不同，平台的可用类型不同且目前只有KVM支持GPU云服务器、云硬盘">
+      <a-form-item label="平台" v-bind="formItemLayout" extra="根据选择的区域不同，平台的可用类型不同且目前只有OneCloud支持GPU云服务器、云硬盘">
         <hypervisor-radio :decorator="decorators.hypervisor" :type="form.fi.createType" :hypervisors="hypervisors" />
       </a-form-item>
-      <a-form-item v-if="form.fd.hypervisor === 'kvm'" v-bind="formItemLayout" label="是否配置GPU" extra="目前只有KVM支持GPU云服务器">
+      <a-form-item v-if="form.fd.hypervisor === 'kvm'" v-bind="formItemLayout" label="是否配置GPU" extra="目前只有OneCloud支持GPU云服务器">
         <gpu :decorators="decorators.gpu" :gpu-options="gpuOptions" />
       </a-form-item>
       <a-form-item v-bind="formItemLayout" label="操作系统" extra="操作系统会根据选择的虚拟化平台和可用区域的变化而变化，公共镜像的维护请联系管理员">
@@ -127,7 +127,7 @@
       <a-form-item v-bind="formItemLayout" v-show="!isServertemplate" label="到期释放">
         <duration :decorators="decorators.duration" :form="form" />
       </a-form-item>
-      <a-form-item v-bind="formItemLayout" v-show="!isServertemplate" v-if="isKvm" label="主机组" extra="对资源的简单编排策略，组内的机器根据设置分布在不同的宿主机上，从而实现业务的高可用">
+      <a-form-item v-bind="formItemLayout" v-show="!isServertemplate" v-if="isKvm" label="主机组" extra="对资源的简单调度策略，组内的机器根据设置分布在不同的宿主机上，从而实现业务的高可用">
         <instance-groups :decorators="decorators.groups" :params="instanceGroupsParams" />
       </a-form-item>
       <bottom-bar
