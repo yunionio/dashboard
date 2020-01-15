@@ -14,6 +14,8 @@
 </template>
 
 <script>
+import * as R from 'ramda'
+
 export default {
   name: 'EditForm',
   props: {
@@ -71,8 +73,13 @@ export default {
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values)
-          this.$emit('submit', values)
+          const trimValue = R.map(value => {
+            if (R.is(String, value)) {
+              return value.trim()
+            }
+            return value
+          }, values)
+          this.$emit('submit', trimValue)
         }
       })
     },
