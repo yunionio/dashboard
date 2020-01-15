@@ -102,10 +102,16 @@ export default {
           field: 'schedtag',
           title: '调度标签',
           width: 120,
+          type: 'expand',
           slots: {
-            default: ({ row }) => {
+            content: ({ row }) => {
               let tags = _.sortBy(row.schedtags, ['default', 'name'])
-              return tags.map(tag => <a-tag color="blue">{tag.name}</a-tag>)
+              if (tags.length > 0) {
+                return tags.map(tag => <a-tag class='mb-2' color='blue'>{tag.name}</a-tag>)
+              }
+              return [
+                <div class='text-color-help'>无调度标签</div>,
+              ]
             },
           },
         },

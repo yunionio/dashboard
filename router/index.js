@@ -45,7 +45,7 @@ export default {
           component: Layout,
           children: [
             {
-              name: 'bucket',
+              name: 'Bucket',
               path: '',
               component: Bucket,
             },
