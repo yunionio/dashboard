@@ -263,9 +263,9 @@ export default {
       const ret = {
         details: true,
         with_meta: true,
+        cloud_env: 'onpremise',
         ...this.getParams,
       }
-      if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
     },
   },
