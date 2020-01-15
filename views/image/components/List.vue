@@ -159,70 +159,6 @@ export default {
         },
         getTimeTableColumn(),
       ],
-      groupActions: [
-        {
-          label: '镜像市场',
-          permission: 'images_create',
-          action: () => {
-            this.$router.push({ name: 'ImageImport' })
-          },
-          meta: () => ({
-            buttonType: 'primary',
-            validate: !!this.$appConfig.isPrivate,
-          }),
-        },
-        {
-          label: '上传',
-          permission: 'images_create',
-          action: () => {
-            this.createDialog('ImageUploadDialog', {
-              title: '上传',
-              list: this.list,
-            })
-          },
-          meta: () => ({
-            validate: !!this.$appConfig.isPrivate,
-          }),
-        },
-        {
-          label: '批量操作',
-          actions: obj => {
-            return [
-              {
-                label: '设置删除保护',
-                action: (row) => {
-                  this.createDialog('ChangeDisableDelete', {
-                    name: '系统镜像',
-                    columns: this.columns,
-                    list: this.list,
-                    data: this.list.selectedItems,
-                  })
-                },
-                meta: () => {
-                  const validate = this.list.selectedItems.length > 0
-                  return {
-                    validate: validate,
-                    tooltip: !validate && `请选择需要操作的系统镜像`,
-                  }
-                },
-              },
-              {
-                label: '删除',
-                permission: 'images_delete',
-                action: () => {
-                  this.createDialog('DeleteResDialog', {
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    title: '删除镜像',
-                    list: this.list,
-                  })
-                },
-                meta: () => this.$getDeleteResult(this.list.selectedItems),
-              },
-            ]
-          },
-        },
-      ],
       singleActions: [
         {
           label: '修改属性',
@@ -394,6 +330,76 @@ export default {
         },
       ],
     }
+  },
+  computed: {
+    groupActions () {
+      const ImageImport = {
+        label: '镜像市场',
+        permission: 'images_create',
+        action: () => {
+          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+          this.$router.push({ name: 'ImageImport' })
+        },
+        meta: () => ({
+          buttonType: 'primary',
+        }),
+      }
+      const ImageUpload = {
+        label: '上传',
+        permission: 'images_create',
+        action: () => {
+          this.createDialog('ImageUploadDialog', {
+            title: '上传',
+            list: this.list,
+          })
+        },
+      }
+      const batchActions = [
+        {
+          label: '批量操作',
+          actions: obj => {
+            return [
+              {
+                label: '设置删除保护',
+                action: (row) => {
+                  this.createDialog('ChangeDisableDelete', {
+                    name: '系统镜像',
+                    columns: this.columns,
+                    list: this.list,
+                    data: this.list.selectedItems,
+                  })
+                },
+                meta: () => {
+                  const validate = this.list.selectedItems.length > 0
+                  return {
+                    validate: validate,
+                    tooltip: !validate && `请选择需要操作的系统镜像`,
+                  }
+                },
+              },
+              {
+                label: '删除',
+                permission: 'images_delete',
+                action: () => {
+                  this.createDialog('DeleteResDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    title: '删除镜像',
+                    list: this.list,
+                  })
+                },
+                meta: () => this.$getDeleteResult(this.list.selectedItems),
+              },
+            ]
+          },
+        },
+      ]
+      if (this.$appConfig.isPrivate) {
+        batchActions.unshift(ImageImport)
+        batchActions.unshift(ImageUpload)
+      }
+      return batchActions
+    },
   },
   created () {
     this.initSidePageTab('system-image-detail')
