@@ -31,7 +31,7 @@
                 </template>
                 <template v-else>---</template>
               </div>
-              <div class="tips text-truncate">
+              <div v-if="priceTips" class="tips text-truncate">
                 <span v-html="priceTips" />
               </div>
             </div>
@@ -192,7 +192,9 @@ export default {
         const { duration } = this.fd
         let num = parseInt(duration)
         if (num && duration.endsWith('Y')) {
-          num *= 12
+          num *= 12 // 1年=12月
+        } else if (num && duration.endsWith('W')) {
+          num *= 0.25 // 1周=0.25月
         }
         return num
       }
@@ -211,6 +213,7 @@ export default {
       return null
     },
     priceTips () {
+      if (this.fd.duration.endsWith('W')) return ''
       if (this.price) {
         if (this.isPackage && this.durationNum) {
           const _day = (this.price / 30 / this.durationNum).toFixed(2)
