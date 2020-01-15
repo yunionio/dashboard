@@ -79,6 +79,9 @@ export default {
             field: 'connection_str',
             title: '链接地址-外网',
           }),
+          region: {
+            label: '区域',
+          },
         },
         responseData: this.responseData,
       }),
