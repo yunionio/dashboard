@@ -87,7 +87,7 @@ export default {
           title: '存储架构',
           slots: {
             default: ({ row }) => {
-              const gb = row.disk_size_gb ? <span class='warning-color'>（{sizestr(row.disk_size_gb, 'M', 1024)}）</span> : null
+              const gb = row.disk_size_gb ? <span class='warning-color'>（{`${row.disk_size_gb}G`}）</span> : null
               return [
                 <div class="d-flex">
                   {ELASTIC_CACHE_STORAGE_TYPE[row.storage_type]}
