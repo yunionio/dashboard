@@ -18,7 +18,6 @@
       @update="update"
       :label="labelCn"
       :formRules="formRulesComputer"
-      :input-rules="inputRules"
       :visible.sync="editVisible"
       :defaultValue="row[field]" />
     <copy
@@ -118,19 +117,11 @@ export default {
       if (this.edit && this.showBtn) return true
       return false
     },
-    inputRules () {
-      if (this.field === 'description') return []
-      return null
-    },
     formRulesComputer () {
       if (this.formRules && this.formRules.length) {
         return this.formRules
       }
-      if (this.field === 'description') { // 备注不校验规则
-        return [
-          { required: true, message: '请输入备注', transform: val => val.trim() },
-        ]
-      }
+      if (this.field === 'description') return []
       return null
     },
     showDeleteLock () {
