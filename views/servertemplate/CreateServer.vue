@@ -1,12 +1,6 @@
 <template>
   <div>
-    <page-header title="部署服务" />
-    <page-card-detail
-      class="mt-3"
-      v-if="catalogData.name"
-      :img="catalogData.icon_url"
-      :page-title="catalogData.name"
-      :description="catalogData.description" />
+    <page-header :title="`新建${this.$t('dictionary.server')}`" />
     <a-form :form="form.fc" class="mt-3">
       <a-form-item label="主机名称" v-bind="formItemLayout" extra="名称支持序号占位符‘#’，用法如下。 名称：host## 数量：2、实例为：host01、host02">
         <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverCreateName')" />
@@ -39,7 +33,7 @@ import { WORKFLOW_TYPES } from '@/constants/workflow'
 import SideErrors from '@/sections/SideErrors'
 
 export default {
-  name: 'ServicecatalogDeploy',
+  name: 'ServertemplateCreateServer',
   components: {
     SideErrors,
   },
@@ -84,23 +78,12 @@ export default {
     },
   },
   created () {
-    this.fetchServicecatalog()
+    this.fetchServerConfig()
   },
   methods: {
-    fetchServicecatalog () {
-      new this.$Manager('servicecatalogs', 'v2')
-        .get({ id: this.$route.query.id })
-        .then(({ data }) => {
-          this.catalogData = data
-          this.fetchServerConfig(data.guest_template_id)
-        })
-        .catch(() => {
-          this.$message.error('获取主机模板数据失败，无法完成部署')
-        })
-    },
     fetchServerConfig (id) {
       new this.$Manager('servertemplates', 'v2')
-        .get({ id })
+        .get({ id: this.$route.query.id })
         .then(({ data }) => {
           this.serverConfig = data.content
         })
