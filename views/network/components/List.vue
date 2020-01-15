@@ -67,7 +67,7 @@ export default {
         getParams: this.getParam,
         filterOptions: {
           name: {
-            label: '实例名称',
+            label: '名称',
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
@@ -526,6 +526,9 @@ export default {
                     columns: this.columns,
                     title: '删除',
                     list: this.list,
+                    success: () => {
+                      this.destroySidePages()
+                    },
                   })
                 },
                 meta: () => {
