@@ -71,6 +71,7 @@ export default {
     return {
       form: this.form,
       formItemLayout: this.formItemLayout,
+      scopeParams: {},
     }
   },
   created () {

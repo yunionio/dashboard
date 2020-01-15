@@ -81,6 +81,8 @@ export default {
     return {
       form: this.form,
       formItemLayout: this.formItemLayout,
+      scopeParams: {},
+      redisItem: this.redisItem,
     }
   },
   created () {
@@ -98,7 +100,6 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        this.loading = false
         const sku = this.form.fc.getFieldValue('sku') || {}
         await this.params.list.onManager('performAction', {
           id: this.params.data[0].id,
