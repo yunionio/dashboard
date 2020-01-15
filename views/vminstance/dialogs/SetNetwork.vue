@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{params.data.title}}</div>
+    <div slot="header">{{params.title}}</div>
     <div slot="body">
       <!-- <a-alert class="mb-2" type="warning" :message="message" /> -->
       <dialog-selected-tips :count="params.data.length" action="添加网卡" />
@@ -74,7 +74,7 @@ export default {
   },
   computed: {
     networkParams () {
-      const { data } = this.params.data[0]
+      const { data } = this.params
       const resItem = data && data.length > 0 ? data[0] : {}
       return {
         filter: 'server_type.notin(ipmi, pxe)',
@@ -109,7 +109,7 @@ export default {
         const manager = new this.$Manager('servers')
         await manager.performAction({
           id: this.params.data[0].id,
-          action: 'attach-network',
+          action: 'attachnetwork',
           data: {
             nets,
           },
