@@ -260,7 +260,7 @@ export default {
           },
         },
         {
-          label: '更多',
+          label: this.$t('common.batchAction'),
           actions: (obj) => {
             const selectedLength = this.list.selectedItems.length
             const notSelectedTooltip = selectedLength <= 0 ? '请选择需要操作的实例' : ''
