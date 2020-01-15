@@ -7,7 +7,6 @@
       </a-radio-group>
    </a-form-item>
    <a-form-item label="选择文件" v-if="type === 1" class="google-account-file">
-    <span slot="extra">获取JSON文件路径：请登录 Google Cloud 控制台 - IAM 和管理（IAM & admin） - 服务账号（Service accounts） 获取 JSON 密钥文件</span>
     <a-upload-dragger
       v-bind="uploadDraggerConfig"
       :beforeUpload="handleBeforeUpload"
@@ -17,9 +16,9 @@
         <p class="ant-upload-drag-icon">
         <a-icon type="inbox" />
       </p>
-        <p class="ant-upload-text">可将多个文件拖拽到此处，或直接上传</p>
+        <p class="ant-upload-text">可将JSON文件拖拽到此处，或直接上传</p>
         <p class="ant-upload-hint">
-          只能上传json文件，并且文件大小不超过2MB
+          获取JSON文件路径：请登录 Google Cloud 控制台 - IAM 和管理（IAM & admin） - 服务账号（Service accounts） 获取 JSON 密钥文件
         </p>
       </div>
     </a-upload-dragger>
