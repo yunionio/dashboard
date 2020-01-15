@@ -360,10 +360,13 @@ export default {
     },
   },
   watch: {
-    'form.fd.billType' (val, oldVal) {
-      if (val && !R.equals(val, oldVal)) {
+    'form.fd.billType' (val) {
+      // 计费方式为包年包月平台不含 azure、aws，这里统一做清空处理
+      if (val === BILL_TYPES_MAP.package.key) {
         this.form.fc.setFieldsValue({
           provider: undefined,
+          cloudregion: undefined,
+          zone: undefined,
         })
         this.$refs.areaSelectRef.fetchs(['provider'])
       }
