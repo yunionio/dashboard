@@ -2,6 +2,7 @@
   <page-list
     :list="list"
     :columns="columns"
+    :group-actions="groupActions"
     :single-actions="singleActions" />
 </template>
 
@@ -19,6 +20,9 @@ export default {
     data: {
       type: Object,
       required: true,
+    },
+    serverColumns: {
+      type: Array,
     },
   },
   data () {
@@ -101,6 +105,22 @@ export default {
             ret.validate = true
             return ret
           },
+        },
+      ],
+      groupActions: [
+        {
+          label: '添加网卡',
+          action: () => {
+            this.createDialog('VmSetNetworkDialog', {
+              title: '添加网卡',
+              list: this.list,
+              data: [this.data],
+              columns: this.serverColumns,
+            })
+          },
+          meta: () => ({
+            buttonType: 'primary',
+          }),
         },
       ],
     }

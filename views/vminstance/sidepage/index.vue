@@ -12,9 +12,11 @@
       <actions :options="params.singleActions" :row="data" button-type="link" button-size="small" />
     </template>
     <component
+      v-bind="listActives"
       :is="params.windowData.currentTab"
       :data="data"
       :list="params.list"
+      :serverColumns="params.columns"
       :res-id="params.resId"
       :getParams="getParams"
       @tab-change="handleTabChange" />
@@ -78,6 +80,37 @@ export default {
         }
       }
       return null
+    },
+    secgroupListActives () {
+      const me = this
+      const _ = {
+        frontGroupActions: function () {
+          return [
+            {
+              index: 1,
+              label: '关联安全组',
+              permission: 'server_perform_add_secgroup',
+              action: () => {
+                this.createDialog('VmSetSecgroupDialog', {
+                  data: [me.data],
+                  columns: me.params.columns,
+                  list: me.params.list,
+                  callback: () => {
+                    this.list.fetchData()
+                  },
+                })
+              },
+            },
+          ]
+        },
+      }
+      return _
+    },
+    listActives () {
+      const _ = {
+        'secgroup-list': this.secgroupListActives,
+      }
+      return _[this.params.windowData.currentTab] || {}
     },
   },
 }
