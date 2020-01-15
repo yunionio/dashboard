@@ -209,6 +209,7 @@ export default {
             },
           },
         },
+        getCopyWithContentTableColumn({ field: 'account', title: '云账号' }),
         getProjectTableColumn(),
         getBrandTableColumn(),
         getRegionTableColumn(),
