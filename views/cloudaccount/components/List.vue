@@ -209,7 +209,7 @@ export default {
           },
         },
         {
-          label: '更多',
+          label: this.$t('common.batchAction'),
           actions: () => {
             const ownerDomain = this.$store.getters.isAdminMode || this.list.selectedItems.every(obj => obj.domain_id === this.$store.getters.userInfo.projectDomainId)
             return [
