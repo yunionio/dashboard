@@ -23,6 +23,7 @@ import Dashboard from './Dashboard'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
+import { findPlatform } from '@/utils/common/hypervisor'
 
 export default {
   name: 'CloudaccountSidePage',
@@ -35,14 +36,23 @@ export default {
   },
   mixins: [SidePageMixin, WindowsMixin],
   data () {
+    const data = this.params.list.data[this.params.resId].data
+    let platform = 'idc'
+    if (data.provider) {
+      platform = findPlatform(data.provider.toLowerCase(), 'provider')
+    }
+    const detailTabs = [
+      { label: '详情', key: 'cloudaccount-detail' },
+      { label: '订阅', key: 'cloudprovider-list' },
+      // { label: '资源统计', key: 'dashboard' }, // 暂时去掉
+      { label: '操作日志', key: 'event-drawer' },
+    ]
+    if (platform === 'idc' || platform === 'private') {
+      detailTabs.splice(1, 0, { label: '宿主机', key: 'host-list' })
+    }
     return {
-      detailTabs: [
-        { label: '详情', key: 'cloudaccount-detail' },
-        { label: '订阅', key: 'cloudprovider-list' },
-        { label: '宿主机', key: 'host-list' },
-        { label: '资源统计', key: 'dashboard' },
-        { label: '操作日志', key: 'event-drawer' },
-      ],
+      data,
+      detailTabs,
     }
   },
   computed: {
@@ -60,9 +70,6 @@ export default {
         }
       }
       return null
-    },
-    data () {
-      return this.params.list.data[this.params.resId].data
     },
   },
 }
