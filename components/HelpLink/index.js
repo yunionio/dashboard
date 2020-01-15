@@ -16,8 +16,8 @@ export default {
     const target = blank ? '_blank' : '_self'
     const slots = ctx.slots()
     return (
-      <a href={ href } target={ target }>
-        { slots.default ? h('span', slots.default) : null }
+      <a href={ href } target={ target } title={ href }>
+        { slots.default ? h('span', slots.default) : href }
         { blank ? <icon class='ml-1' type='blank' /> : null }
       </a>
     )
