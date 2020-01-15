@@ -53,6 +53,10 @@ export default {
     cloudEnv: String,
   },
   data () {
+    const brandFilter = getBrandFilter('network_manage_brands')
+    if (!R.find(R.propEq('key', 'OneCloud'))(brandFilter.items)) {
+      brandFilter.items.push({ key: 'OneCloud', label: 'OneCloud' })
+    }
     return {
       list: this.$list.createList(this, {
         id: this.id,
@@ -103,7 +107,7 @@ export default {
               { label: 'IPMI', key: 'ipmi' },
             ],
           },
-          brand: getBrandFilter(),
+          brand: brandFilter,
           account: getAccountFilter(),
           tenant: getTenantFilter(),
           region: {
