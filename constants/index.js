@@ -292,6 +292,12 @@ export const BILL_TYPES_MAP = {
 // 包年包月购买时长选项配置
 export const BUY_DURATION_OPTIONS = [
   {
+    label: '1周',
+    key: '1W',
+    unit: 'W',
+    includes: [HYPERVISORS_MAP.aliyun.key], // 仅阿里云支持
+  },
+  {
     label: '1个月',
     key: '1M',
     unit: 'M',

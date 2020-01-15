@@ -9,10 +9,11 @@
       </a-radio-group>
     </a-form-item>
     <template v-if="showDuration">
-      <a-form-item>
-        <a-radio-group v-decorator="decorators.duration">
+      <a-form-item :extra="duration === '1W' ? '目前只有阿里云支持创建一周的包年包月机器，因此系统会自动选择阿里云平台' : ''">
+        <a-radio-group v-decorator="decorators.duration" @change="durationChange">
           <a-radio-button
             v-for="item in buyDurationOptions"
+            :disabled="item.disabled"
             :value="item.key"
             :key="item.key">{{ item.label }}</a-radio-button>
         </a-radio-group>
@@ -24,7 +25,6 @@
 <script>
 import * as R from 'ramda'
 import { BILL_TYPES_MAP, BUY_DURATION_OPTIONS } from '@Compute/constants'
-import { HYPERVISORS_MAP } from '@/constants'
 
 export default {
   name: 'VmPublicCreateBill',
@@ -37,30 +37,51 @@ export default {
     form: {
       type: Object,
     },
-    provider: {
-      type: String,
+    providerList: {
+      type: Array,
     },
   },
   data () {
     return {
+      duration: this.decorators.duration[1] ? this.decorators.duration[1].initialValue : '1M',
       billTypesMap: BILL_TYPES_MAP,
+      buyDurationOptions: BUY_DURATION_OPTIONS,
       showDuration: this.decorators.billType === BILL_TYPES_MAP.package.key,
     }
   },
-  computed: {
-    buyDurationOptions () {
-      const options = BUY_DURATION_OPTIONS
-      if (this.provider && this.provider.toLowerCase() === HYPERVISORS_MAP.aliyun.key) {
-        options.unshift({
-          label: '1周',
-          key: '1W',
-          unit: 'W',
-        },)
+  watch: {
+    providerList (providerList, oldV) {
+      if (!R.equals(providerList, oldV)) {
+        const list = providerList.map(val => val.name.toLowerCase())
+        this.buyDurationOptions = this.buyDurationOptions.map(item => {
+          let disabled = false
+          if (R.is(Array, item.includes)) {
+            if (item.includes.every(provider => list.includes(provider))) { // 如果有provider的限制，必须每项都满足
+              disabled = false
+            } else {
+              disabled = true
+            }
+          }
+          return {
+            ...item,
+            disabled,
+          }
+        })
       }
-      return options
     },
   },
   methods: {
+    durationDisabled (item) {
+      // 比如一周的包年包月仅阿里云支持
+      if (this.providerList && this.providerList.length) {
+        const list = this.providerList.map(val => val.name.toLowerCase())
+        if (R.is(Array, item.includes)) {
+          console.log(list, item, 'list')
+          return item.includes.some(provider => list.includes(provider))
+        }
+      }
+      return false
+    },
     change (val) {
       this.showDuration = val.target.value === BILL_TYPES_MAP.package.key
       if (this.showDuration && this.form && this.form.fc) {
@@ -72,6 +93,9 @@ export default {
           [this.decorators.duration[0]]: duration,
         })
       }
+    },
+    durationChange (val) {
+      this.duration = val.target.value
     },
   },
 }

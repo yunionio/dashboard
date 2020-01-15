@@ -21,7 +21,7 @@
         <a-input v-decorator="decorators.reason" placeholder="请输入主机申请原因" />
       </a-form-item>
       <a-form-item class="mb-0" label="计费方式" v-bind="formItemLayout">
-        <bill :decorators="decorators.bill" :form="form" :provider="hypervisor" />
+        <bill :decorators="decorators.bill" :form="form" :provider-list="form.fi.providerList" />
       </a-form-item>
       <a-form-item label="数量" v-show="!isServertemplate" v-bind="formItemLayout">
         <a-input-number v-decorator="decorators.count" :min="1" :max="10" />
@@ -376,6 +376,18 @@ export default {
         this.fetchCapability()
       }
     },
+    'form.fd.duration' (val, oldVal) {
+      if (this.form.fd.billType === BILL_TYPES_MAP.package.key) {
+        if (val === '1W' || oldVal === '1W') {
+          this.form.fc.setFieldsValue({
+            provider: undefined,
+            cloudregion: undefined,
+            zone: undefined,
+          })
+          this.$refs.areaSelectRef.fetchs(['provider'])
+        }
+      }
+    },
   },
   created () {
     this.fetchInstanceSpecs()
@@ -384,9 +396,16 @@ export default {
     providerFetchSuccess (list) {
       // 计费方式为包年包月平台不含 azure、aws
       if (this.form.fd.billType === BILL_TYPES_MAP.package.key) {
-        list = list.filter(item => {
-          return ![HYPERVISORS_MAP.azure.key, HYPERVISORS_MAP.aws.key].includes(item.name.toLowerCase())
-        })
+        if (this.form.fd.duration === '1W') {
+          list = list.filter(item => HYPERVISORS_MAP.aliyun.key === item.name.toLowerCase())
+          this.form.fc.setFieldsValue({
+            provider: HYPERVISORS_MAP.aliyun.provider,
+          })
+        } else {
+          list = list.filter(item => {
+            return ![HYPERVISORS_MAP.azure.key, HYPERVISORS_MAP.aws.key].includes(item.name.toLowerCase())
+          })
+        }
       }
       this.$set(this.form.fi, 'providerList', list)
       return list
