@@ -43,13 +43,6 @@ function diskValidator (rule, value, callback) {
   callback()
 }
 
-function secgroupValidator (rule, value, callback) {
-  if (value.length > 5) {
-    return callback(new Error('最多支持选择5个安全组'))
-  }
-  callback()
-}
-
 function validateTag (rule, value, callback) {
   if (R.is(Object, value) && Object.keys(value).length > 20) {
     return callback(new Error('标签不可超过20个'))
@@ -538,7 +531,7 @@ export const createVmDecorators = type => {
           validateFirst: true,
           rules: [
             { required: true, message: '请选择安全组' },
-            { validator: secgroupValidator },
+            // { validator: secgroupValidator }, // Azure和Ucloud的安全组最大关联一个，动态效验放在组件内部
           ],
         },
       ],
