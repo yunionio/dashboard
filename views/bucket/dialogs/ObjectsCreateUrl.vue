@@ -3,7 +3,7 @@
     <div slot="header">{{this.params.title}}</div>
     <div slot="body">
       <a-form :form="form.fc" v-bind="formItemLayout">
-        <a-form-item label="链接有效时间">
+        <a-form-item label="链接有效时间" v-if="isPrivate">
           <a-input class="w-50" @change="getUrl" v-decorator="decorators.expire_seconds" placeholder="请输入整数">
             <span slot="addonAfter">秒</span>
           </a-input>
@@ -16,7 +16,7 @@
       </a-form>
     </div>
     <div slot="footer">
-      <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t("dialog.ok") }}</a-button>
+      <a-button type="primary" @click="cancelDialog" :loading="loading">{{ $t("dialog.ok") }}</a-button>
       <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
     </div>
   </base-dialog>
@@ -59,6 +59,9 @@ export default {
         } ],
       }
     },
+    isPrivate () {
+      return this.params.data[0].acl === 'private'
+    },
   },
   mounted () {
     this.getUrl()
@@ -71,14 +74,16 @@ export default {
         if (e && e.target) {
           seconds = parseInt(e.target.value) || 0
         }
-        const { data, resName } = this.params
+        const { data, resName, accessUrl } = this.params
         const row = data && data.length > 0 ? data[0] : {}
-        const url = await objectsModel.getUrl(Object.assign({}, row, { expire_seconds: seconds }), resName)
+        const url = await objectsModel.getUrl(Object.assign({}, row, { expire_seconds: seconds }), resName, accessUrl)
         this.url = url
       } catch (err) {
         throw err
       }
     },
+    // handleConfirm () {
+    // },
   },
 }
 </script>

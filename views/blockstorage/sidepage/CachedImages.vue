@@ -56,7 +56,23 @@ export default {
         },
       ],
       groupActions: [
-
+        {
+          label: '释放缓存',
+          action: row => {
+            this.createDialog('UncacheImageDialog', {
+              data: this.list.selectedItems,
+              columns: this.columns,
+              title: '释放缓存',
+              list: this.list,
+              resId: this.data.id,
+            })
+          },
+          meta: () => {
+            return {
+              validate: !!this.list.selectedItems.length,
+            }
+          },
+        },
       ],
       singleActions: [
         {
