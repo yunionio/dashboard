@@ -489,6 +489,8 @@ export const PERMISSION = {
    * 网络-全局vpc
    */
   'network_globalvpcs_list': ['compute', 'globalvpcs', 'list'],
+  // 公有云日志
+  'cloudevents_list': ['log', 'cloudevents', 'list'],
 }
 
 // 已声明权限的资源
