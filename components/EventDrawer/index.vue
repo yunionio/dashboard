@@ -16,13 +16,10 @@ export default {
   props: {
     resId: {
       type: String,
-      required: true,
     },
     resType: {
       type: String,
     },
-  },
-  methods: {
   },
 }
 </script>
