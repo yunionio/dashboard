@@ -171,6 +171,7 @@ class CreateList {
     this.offset = 0
     this.limit = limit
     this.total = 0
+    this.nextMarker = ''
     // 选择数据
     this.selectedItems = []
     this.selected = []
@@ -250,6 +251,7 @@ class CreateList {
     // 复位分页信息
     this.total = 0
     this.offset = 0
+    this.nextMarker = ''
     // 重置数据
     this.data = {}
     this.clearSelected()
@@ -283,7 +285,12 @@ class CreateList {
         },
       } = response
       this.clearWaitJob()
-      this.data = this.wrapData(data)
+      this.nextMarker = response.data.next_marker || ''
+      if (this.nextMarker) {
+        this.data = Object.assign({}, this.wrapData(data), this.data)
+      } else {
+        this.data = this.wrapData(data)
+      }
       this.checkSteadyStatus()
       if (total) {
         this.total = total
@@ -365,6 +372,12 @@ class CreateList {
         ...this.sortParams,
       }
     }
+    // 加载更多类型分页的列表
+    if (this.nextMarker) {
+      params['paging_marker'] = this.nextMarker
+      delete params.limit
+      delete params.offset
+    }
     return params
   }
   /**
@@ -398,9 +411,13 @@ class CreateList {
    */
   wrapData (arr) {
     const data = {}
+    let dataLength = 0
+    if (this.nextMarker && !R.isEmpty(this.data)) {
+      dataLength = Object.keys(this.data).length
+    }
     for (let i = 0, len = arr.length; i < len; i++) {
       const item = arr[i]
-      data[item[this.idKey]] = new DataWrap(this, item, this.idKey, i)
+      data[item[this.idKey]] = new DataWrap(this, item, this.idKey, i + dataLength)
     }
     return data
   }
@@ -491,6 +508,12 @@ class CreateList {
     const offset = Math.floor(this.offset / pageSize) * pageSize
     this.limit = pageSize
     this.fetchData(offset, pageSize)
+  }
+  /**
+   * @description nextMarker加载更多
+   */
+  changeNextMarker () {
+    this.fetchData()
   }
   /**
    * @description 过滤条件变更
