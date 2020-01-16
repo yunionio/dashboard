@@ -47,8 +47,6 @@ export default {
 
     const isOwnerProject = project => project === this.$store.getters.userInfo.projectId || project === this.$store.getters.userInfo.projectName
 
-    const isStandard = status => status === true || status === 'true'
-
     return {
       isAdminMode: this.$store.getters.isAdminMode,
       isDomainMode: this.$store.getters.isDomainMode,
@@ -208,21 +206,30 @@ export default {
                   this.updateStandard(true, [obj])
                 },
                 meta: () => {
-                  if (this.isHostImage) {
-                    return {
-                      validate: false,
-                    }
+                  let ret = {
+                    validate: false,
+                    tooltip: '',
                   }
-                  if (this.isAdminMode && obj.tenant !== 'system') {
-                    return {
-                      validate: false,
-                      tooltip: '您不可以修改非本系统镜像',
-                    }
-                  }
-                  return {
-                    validate: !isStandard(obj.is_standard) && validateAction(obj),
-                    tooltip: validateActionTooltip(obj),
-                  }
+                  const actions = new Map([
+                    ['admin', () => {
+                      if (obj.is_standard) {
+                        ret.tooltip = '公共镜像不支持该操作'
+                      }
+                      return ret
+                    }],
+                    ['domain', () => {
+                      ret.tooltip = '只有系统管理员支持该操作'
+                      return ret
+                    }],
+                    ['user', () => {
+                      ret.tooltip = '只有系统管理员支持该操作'
+                      return ret
+                    }],
+                  ])
+                  let action = actions.get(this.isAdminMode ? 'admin' : '') || actions.get(this.isDomainMode ? 'domain' : 'user')
+                  ret = action.call(this)
+                  if (ret.tooltip) return ret
+                  return { validate: true, tooltip: '' }
                 },
               },
               {
@@ -232,21 +239,30 @@ export default {
                   this.updateStandard(false, [obj])
                 },
                 meta: () => {
-                  if (this.isHostImage) {
-                    return {
-                      validate: false,
-                    }
+                  let ret = {
+                    validate: false,
+                    tooltip: '',
                   }
-                  if (this.isAdminMode && obj.tenant !== 'system') {
-                    return {
-                      validate: false,
-                      tooltip: '您不可以修改非本系统镜像',
-                    }
-                  }
-                  return {
-                    validate: isStandard(obj.is_standard) && validateAction(obj),
-                    tooltip: validateActionTooltip(obj),
-                  }
+                  const actions = new Map([
+                    ['admin', () => {
+                      if (!obj.is_standard) {
+                        ret.tooltip = '自定义镜像不支持该操作'
+                      }
+                      return ret
+                    }],
+                    ['domain', () => {
+                      ret.tooltip = '只有系统管理员支持该操作'
+                      return ret
+                    }],
+                    ['user', () => {
+                      ret.tooltip = '只有系统管理员支持该操作'
+                      return ret
+                    }],
+                  ])
+                  let action = actions.get(this.isAdminMode ? 'admin' : '') || actions.get(this.isDomainMode ? 'domain' : 'user')
+                  ret = action.call(this)
+                  if (ret.tooltip) return ret
+                  return { validate: true, tooltip: '' }
                 },
               },
               {
@@ -260,37 +276,41 @@ export default {
                   })
                 },
                 meta: () => {
-                  const ret = {
+                  let ret = {
                     validate: false,
-                    tooltip: validateActionTooltip(obj),
-                  }
-                  if (obj.is_standard) {
-                    ret.tooltip = '公共镜像不支持设置'
-                    return ret
-                  }
-                  if (!validateAction(obj)) return ret
-                  // 1、管理后台视图可以对所有镜像进行操作；
-                  // 2、域管理后台视图只能对该域下的镜像进行操作，不能对其他域共享的镜像进行操作；
-                  // 3、项目视图只能对该项目下的镜像进行操作，不能对其他域、其他项目共享的镜像进行操作。
-                  if (this.isAdminMode) {
-                    ret.validate = true
-                    ret.tooltip = ''
-                    return ret
-                  }
-                  if (!this.isAdminMode && !this.isDomainAdmin) {
-                    ret.validate = this.userInfo.projectId === obj.tenant_id
-                    ret.tooltip = this.userInfo.projectId === obj.tenant_id ? '' : validateActionTooltip(obj)
-                    return ret
-                  }
-                  if (this.isDomainMode) {
-                    ret.validate = this.userInfo.projectDomainId === obj.domain_id
-                    ret.tooltip = this.userInfo.projectDomainId === obj.domain_id ? '' : validateActionTooltip(obj)
-                    return ret
-                  }
-                  return {
-                    validate: true,
                     tooltip: '',
                   }
+                  const actions = new Map([
+                    ['admin', () => {
+                      if (obj.is_standard) {
+                        ret.tooltip = '公共镜像不支持该操作'
+                      }
+                      return ret
+                    }],
+                    ['domain', () => {
+                      if (obj.is_standard) {
+                        ret.tooltip = '公共镜像不支持该操作'
+                        return ret
+                      }
+                      if (obj.public_scope === 'system') {
+                        ret.tooltip = '系统共享镜像不支持该操作'
+                        return ret
+                      }
+                      return ret
+                    }],
+                    ['user', () => {
+                      ret.tooltip = '只有管理员支持该操作'
+                      if (!obj.is_standard && obj.public_scope === 'system') {
+                        ret.tooltip = '只有系统管理员支持该操作'
+                        return ret
+                      }
+                      return ret
+                    }],
+                  ])
+                  let action = actions.get(this.isAdminMode ? 'admin' : '') || actions.get(this.isDomainMode ? 'domain' : 'user')
+                  ret = action.call(this)
+                  if (ret.tooltip) return ret
+                  return { validate: true, tooltip: '' }
                 },
               },
               {
@@ -319,13 +339,88 @@ export default {
                   })
                 },
                 meta: () => {
-                  if (this.isDomainAdmin && obj.domain_id !== this.userInfo.projectDomainId) {
-                    return {
-                      validate: false,
-                      tooltip: `${this.$t('dictionary.domain')}管理员只能删除本${this.$t('dictionary.domain')}下的镜像`,
-                    }
+                  let ret = {
+                    validate: false,
+                    tooltip: '',
                   }
-                  if (!validateAction(obj)) return { validate: false, tooltip: validateActionTooltip(obj) }
+                  const actions = new Map([
+                    ['admin', () => {
+                      if (obj.is_standard) {
+                        ret.tooltip = '公共镜像禁止删除，请切换为自定义镜像后重试'
+                        if (obj.is_public && obj.public_scope === 'system') {
+                          ret.tooltip = '公共镜像禁止删除，请切换为自定义镜像且取消共享后重试'
+                          return ret
+                        }
+                        return ret
+                      } else {
+                        if (obj.shared_projects) {
+                          ret.tooltip = '共享镜像禁止删除，请取消共享后重试'
+                          return ret
+                        }
+                      }
+                      if (obj.is_public) {
+                        ret.tooltip = '共享镜像禁止删除，请取消共享后重试'
+                        return ret
+                      }
+                      if (obj.disable_delete && obj.protected) {
+                        ret.tooltip = '删除保护，如需解除，请点击【设置删除保护】'
+                        return ret
+                      }
+                      return ret
+                    }],
+                    ['domain', () => {
+                      if (obj.is_standard) {
+                        ret.tooltip = '公共镜像禁止删除'
+                        return ret
+                      } else {
+                        if (obj.shared_projects) {
+                          ret.tooltip = '共享镜像禁止删除，请取消共享后重试'
+                          return ret
+                        }
+                      }
+                      if (obj.is_public) {
+                        if (obj.public_scope === 'domain') {
+                          ret.tooltip = '共享镜像禁止删除，请取消共享后重试'
+                        } else {
+                          ret.tooltip = '系统共享镜像禁止删除'
+                        }
+                        return ret
+                      } else {
+                        if (obj.shared_projects) {
+                          ret.tooltip = '共享镜像禁止删除，请取消共享后重试'
+                          return ret
+                        }
+                      }
+                      if (obj.disable_delete && obj.protected) {
+                        ret.tooltip = '删除保护，如需解除，请点击【设置删除保护】'
+                        return ret
+                      }
+                      return ret
+                    }],
+                    ['user', () => {
+                      if (obj.is_standard) {
+                        ret.tooltip = '公共镜像禁止删除'
+                        return ret
+                      } else {
+                        if (obj.shared_projects) {
+                          ret.tooltip = '共享镜像禁止删除'
+                          return ret
+                        }
+                      }
+                      if (obj.is_public) {
+                        ret.tooltip = '共享镜像禁止删除'
+                        return ret
+                      }
+                      if (obj.disable_delete && obj.protected) {
+                        ret.tooltip = '删除保护，如需解除，请点击【设置删除保护】'
+                        return ret
+                      }
+                      return ret
+                    }],
+                  ])
+                  let action = actions.get(this.isAdminMode ? 'admin' : '') || actions.get(this.isDomainMode ? 'domain' : 'user')
+                  ret = action.call(this)
+                  if (ret.tooltip) return ret
                   return this.$getDeleteResult(obj)
                 },
               },
@@ -392,7 +487,9 @@ export default {
                     list: this.list,
                   })
                 },
-                meta: () => this.$getDeleteResult(this.list.selectedItems),
+                meta: () => {
+                  return this.$getDeleteResult(this.list.selectedItems)
+                },
               },
             ]
           },
