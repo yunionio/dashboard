@@ -160,7 +160,8 @@
       "maintain_fail": "维护失败",
       "prepare": "准备中",
       "probing": "正在检测IPMI配置",
-      "converting": "转换中"
+      "converting": "转换中",
+      "probe_fail": "检测IPMI配置失败"
     },
     "image": {
       "init": "初始化",
