@@ -53,6 +53,9 @@
         <loader :loading="loading" />
       </template>
     </vxe-grid>
+    <div  v-if="data.length > 0 && nextMarker" class="text-center mt-4">
+      <a-button :loading="loading" type="link" @click="handleNextMarkerChange">{{ loading ? '加载中' : '加载更多' }}</a-button>
+    </div>
   </div>
 </template>
 
@@ -171,6 +174,9 @@ export default {
       }
       return defaultColumns
     },
+    nextMarker () {
+      return this.list.nextMarker
+    },
     tablePage () {
       const listLimit = this.list.limit
       const limit = this.list.getLimit() || listLimit
@@ -217,6 +223,9 @@ export default {
     handleCurrentPageChange (currentPage) {
       this.list.changeCurrentPage(currentPage)
       this.handleClearSelected()
+    },
+    handleNextMarkerChange () {
+      this.list.changeNextMarker()
     },
     handlePageSizeChange (pageSize) {
       this.list.changePageSize(pageSize)
