@@ -30,7 +30,7 @@ const BillingType = {
 }
 
 export default {
-  name: '',
+  name: 'NatList',
   mixins: [WindowsMixin],
   props: {
     id: String,

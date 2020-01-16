@@ -43,7 +43,7 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'CreateSnat',
+  name: 'SNatCreateDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {

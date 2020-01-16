@@ -11,7 +11,7 @@
 import ReservedIpList from './components/List'
 
 export default {
-  name: 'ReservedIndex',
+  name: 'ReservedIPIndex',
   components: {
     ReservedIpList,
   },

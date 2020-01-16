@@ -9,7 +9,7 @@ import GolbalVpc from '@Network/views/global-vpc'
 import Vpc from '@Network/views/vpc'
 import RouteTableList from '@Network/views/route-table'
 import NatList from '@Network/views/nats'
-import ReservedIpList from '@Network/views/reserved-id'
+import ReservedIpList from '@Network/views/reserved-ip'
 
 export default {
   index: 3,

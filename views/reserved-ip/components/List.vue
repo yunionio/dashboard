@@ -11,7 +11,7 @@ import { getCopyWithContentTableColumn, getTimeTableColumn } from '@/utils/commo
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: '',
+  name: 'ReservedIPList',
   mixins: [WindowsMixin],
   data () {
     return {
@@ -68,7 +68,7 @@ export default {
           label: '释放',
           permission: 'reservedips_delete',
           action: () => {
-            this.createDialog('freedDialog', {
+            this.createDialog('ReservedIPFreedDialog', {
               title: '释放',
               list: this.list,
               columns: this.columns,
@@ -86,7 +86,7 @@ export default {
         {
           label: '释放',
           action: (obj) => {
-            this.createDialog('freedDialog', {
+            this.createDialog('ReservedIPFreedDialog', {
               title: '释放',
               data: [obj],
               columns: this.columns,

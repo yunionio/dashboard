@@ -16,7 +16,7 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'SnatList',
+  name: 'SNatList',
   mixins: [ DialogMixin, WindowsMixin ],
   props: {
     resId: {
@@ -66,7 +66,7 @@ export default {
           label: '新建',
           permission: 'server_create',
           action: () => {
-            this.createDialog('CreateSnat', {
+            this.createDialog('SNatCreateDialog', {
               title: '新建SNAT条目',
               data: this.data,
               columns: this.columns,

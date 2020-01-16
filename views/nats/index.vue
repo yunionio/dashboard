@@ -10,7 +10,7 @@
 <script>
 import NatList from './components/List'
 export default {
-  name: 'natsIndex',
+  name: 'NatIndex',
   components: {
     NatList,
   },

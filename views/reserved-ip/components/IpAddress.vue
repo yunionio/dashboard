@@ -21,7 +21,7 @@
 import { uuid } from '@/utils/utils'
 
 export default {
-  name: 'IPAddress',
+  name: 'ReservedIPAddress',
   props: {
     decorators: {
       type: Object,

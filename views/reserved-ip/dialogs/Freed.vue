@@ -2,6 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{ params.title }}</div>
     <div slot="body">
+      <dialog-selected-tips :count="params.data.length" :action="this.params.title" :name="this.params.name" />
       <vxe-grid v-if="params.columns && params.columns.length" class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
     </div>
     <div slot="footer">
@@ -16,7 +17,7 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'freedDialog',
+  name: 'ReservedIPFreedDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {

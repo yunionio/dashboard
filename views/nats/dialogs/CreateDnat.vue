@@ -59,7 +59,7 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'CreateDnat',
+  name: 'DNatCreateDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
