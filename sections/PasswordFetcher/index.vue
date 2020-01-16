@@ -6,7 +6,10 @@
         <template v-else>
           <template v-if="error">
             <a-icon type="close-circle" theme="twoTone" twoToneColor="#f5222d" />
-            <span class="ml-2" style="color: #f5222d;">获取失败</span>
+            <span class="ml-2" style="color: #f5222d;">
+              <template v-if="error.response && error.response.status === 404">无密钥信息</template>
+              <template v-else>获取失败</template>
+            </span>
           </template>
           <template v-else>
             <div class="mv-2">
