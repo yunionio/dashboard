@@ -194,6 +194,9 @@ export default {
             if (this.isInstanceSnapshot) {
               return { validate: false, tooltip: '不支持该操作' }
             }
+            if (!obj.disk_name) {
+              return { validate: false }
+            }
             if (brand && RollbackDiskValidate[brand]) {
               return { ...RollbackDiskValidate[brand](obj) }
             }
