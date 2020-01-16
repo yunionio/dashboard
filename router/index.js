@@ -510,7 +510,7 @@ export default {
           path: '/serverrecovery',
           meta: {
             label: '主机',
-            permission: 'servers_list',
+            permission: 'servers_list,server_delete',
           },
           component: Layout,
           children: [
@@ -525,7 +525,7 @@ export default {
           path: '/diskrecovery',
           meta: {
             label: '硬盘',
-            permission: 'disks_list',
+            permission: 'disks_list,disks_delete',
           },
           component: Layout,
           children: [
@@ -540,7 +540,7 @@ export default {
           path: '/imagerecovery',
           meta: {
             label: '镜像',
-            permission: 'images_list',
+            permission: 'images_list,images_delete',
           },
           component: Layout,
           children: [
