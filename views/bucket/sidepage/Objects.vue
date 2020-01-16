@@ -48,6 +48,9 @@ export default {
         filterOptions: {
           prefix: {
             label: '文件名称',
+            formatter: val => {
+              return `${this.prefix}${val}`
+            },
           },
         },
       }),
@@ -61,13 +64,14 @@ export default {
               if (this.nextFetchListLoading && this.prefix === key) {
                 return [<a-icon type="loading" />]
               }
+              const rkey = key.replace(this.prefix, '')
               if (this.isDir(key)) {
                 return [
-                  <a-button style="padding: 0" type="link" onClick={() => this.nextPage(key)}><a-icon type="folder" theme="filled" style="color: rgb(245,200, 61)" />{ key.replace(this.prefix, '') }</a-button>,
+                  <a-button style="padding: 0" type="link" onClick={() => this.nextPage(key)}><a-icon type="folder" theme="filled" style="color: rgb(245,200, 61)" />{ rkey }</a-button>,
                 ]
               }
               return [
-                <div><a-icon theme="filled" type="file" /> { key.replace(this.prefix, '') }</div>,
+                <div><a-icon theme="filled" type="file" /> { rkey } <copy message={rkey} /></div>,
               ]
             },
           },
@@ -81,10 +85,25 @@ export default {
           },
         },
         {
-          id: 'size_bytes',
+          field: 'size_bytes',
           title: '大小',
           formatter: ({ row }) => {
             return row.size_bytes ? sizestrWithUnit(row.size_bytes, 'B', 1024) : '-'
+          },
+        },
+        {
+          field: 'storage_class',
+          title: '存储类型',
+          width: 120,
+          formatter: ({ row }) => {
+            return row.storage_class || '-'
+          },
+        },
+        {
+          field: 'last_modified',
+          title: '更新时间',
+          formatter: ({ row }) => {
+            return row.last_modified ? this.$moment(row.last_modified).fromNow() : '-'
           },
         },
       ],
@@ -232,6 +251,7 @@ export default {
                     title: '生成URL',
                     data: [row],
                     resName: this.resName,
+                    accessUrl: this.accessUrl,
                     columns: this.columns,
                     list: this.list,
                   })
