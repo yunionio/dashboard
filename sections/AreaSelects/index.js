@@ -436,13 +436,11 @@ export default {
       return null
     })
     return (
-      <div>
-        <a-form-item labelCol={this.labelCol} wrapperCol={this.wrapperCol} label={this.label}>
-          <a-row gutter={8}>
-            {RenderCols}
-          </a-row>
-        </a-form-item>
-      </div>
+      <a-form-item labelCol={this.labelCol} wrapperCol={this.wrapperCol} label={this.label}>
+        <a-row gutter={8}>
+          {RenderCols}
+        </a-row>
+      </a-form-item>
     )
   },
 }
