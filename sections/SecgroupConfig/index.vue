@@ -10,13 +10,13 @@
     </a-form-item>
     <a-form-item class="mb-0" v-if="isBind">
       <div slot="extra">
-        最多支持选择5个安全组。没有想要的安全组？可以前往
+        {{ `最多支持选择${ (isAzure || isUCloud) ? 1 : 5 }个安全组。没有想要的安全组？可以前往` }}
         <help-link :href="href"> 新建安全组</help-link>
       </div>
       <base-select
         remote
         class="w-50 pr-1"
-        v-decorator="decorators.secgroup"
+        v-decorator="secgroupDecorator"
         resource="secgroups"
         :params="params"
         :showSync="true"
@@ -26,7 +26,9 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import { SECGROUP_OPTIONS_MAP } from '@Compute/constants'
+import { HYPERVISORS_MAP } from '@/constants'
 
 export default {
   name: 'SecgroupConfig',
@@ -47,13 +49,38 @@ export default {
       type: Boolean,
       default: false,
     },
+    provider: {
+      type: String,
+      default: 'OneCloud',
+    },
   },
   data () {
+    const validateSecgroups = (rule, value, callback) => {
+      let maxError = (this.isAzure || this.isUCloud) ? 'Azure和Ucloud最多关联一个安全组' : '最多关联五个安全组'
+      let minError = '最少关联一个'
+      let max = (this.isAzure || this.isUCloud) ? 1 : 5
+      if (value.length > max) {
+        return callback(maxError)
+      }
+      if (value.length < 1) {
+        return callback(minError)
+      }
+      return callback()
+    }
+    let concatRules = (k, l, r) => k === 'rules' ? R.concat(l, r) : r
+    const secgroupDecMsg = R.mergeDeepWithKey(concatRules,
+      (this.decorators.secgroup[1] || {}),
+      { rules: [{ validator: validateSecgroups }] }
+    )
     return {
       types: SECGROUP_OPTIONS_MAP,
       isBind: this.decorators.type[1].initialValue === SECGROUP_OPTIONS_MAP.bind.key,
       loading: false,
       disabled: false,
+      secgroupDecorator: [
+        this.decorators.secgroup[0],
+        secgroupDecMsg,
+      ],
     }
   },
   computed: {
@@ -70,6 +97,12 @@ export default {
       const url = this.$router.resolve('/secgroup')
       return url.href
     },
+    isAzure () {
+      return this.provider.toLowerCase() === HYPERVISORS_MAP.azure.provider.toLowerCase()
+    },
+    isUCloud () {
+      return this.provider.toLowerCase() === HYPERVISORS_MAP.ucloud.provider.toLowerCase()
+    },
   },
   watch: {
     isSnapshotImageType (val) {
@@ -80,6 +113,11 @@ export default {
         })
       } else {
         this.disabled = false
+      }
+    },
+    provider () {
+      if (this.form && this.form.fc) {
+        this.form.fc.validateFields([this.decorators.secgroup[0]])
       }
     },
   },
