@@ -17,13 +17,15 @@
         </a-form-item>
         <a-form-item label="公网IP地址" v-bind="formItemLayout">
           <template #extra>
-            没有我想要的,可以前往 <router-link :to="{ name: 'Eip' }" target="_blank">弹性公网ip</router-link>
+            没有我想要的,可以前往 <router-link :to="{ name: 'Eip' }" target="_blank">{{$t('dictionary.eip')}}</router-link>
           </template>
           <base-select
             v-decorator="decorators.ip"
             :params="eipParams"
             :select-props="{ placeholder: '请选择公网IP地址' }"
             resource="eips"
+            :labelFormat="labelFormat"
+            :options.sync="eipOptions"
             :showSync="true" />
         </a-form-item>
       </a-form>
@@ -36,6 +38,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
@@ -107,9 +110,13 @@ export default {
         provider: this.params.data.provider,
         region: this.params.data.region_id,
       },
+      eipOptions: [],
     }
   },
   methods: {
+    labelFormat (val) {
+      return `${val.name}(${val.ip_addr})`
+    },
     doCreate (data) {
       return this.params.list.onManager('create', {
         managerArgs: {
@@ -121,16 +128,18 @@ export default {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
+        const eipObj = R.indexBy(R.prop('id'), this.eipOptions)
         const params = {
           name: values.name,
           natgateway_id: this.params.data.id,
           network_id: values.network,
-          ip: values.ip,
+          ip: eipObj[values.ip]['ip_addr'],
           external_ip_id: values.ip,
           source_cidr: '',
         }
         await this.doCreate(params)
         this.loading = false
+        this.params.list.refresh()
         this.cancelDialog()
       } catch (error) {
         this.loading = false

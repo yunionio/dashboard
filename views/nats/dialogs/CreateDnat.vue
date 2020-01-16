@@ -9,7 +9,7 @@
         </a-form-item>
         <a-form-item label="公网IP地址" v-bind="formItemLayout">
           <template #extra>
-            没有我想要的,可以前往 <router-link :to="{ name: 'Eip' }" target="_blank">弹性公网ip</router-link>
+            没有我想要的,可以前往 <router-link :to="{ name: 'Eip' }" target="_blank">{{$t('dictionary.eip')}}</router-link>
           </template>
           <base-select
             v-decorator="decorators.ip"
@@ -17,6 +17,8 @@
             :select-props="{ placeholder: '请选择公网IP地址' }"
             resource="eips"
             :showSync="true"
+            :labelFormat="eiplabelFormat"
+            :options.sync="eipOptions"
             :mapper="eipsMapper" />
         </a-form-item>
         <a-form-item label="云服务器" v-bind="formItemLayout">
@@ -26,6 +28,8 @@
             :select-props="{ placeholder: '请选择云服务器' }"
             resource="servers"
             :filterable="true"
+            :labelFormat="serverlabelFormat"
+            :options.sync="serverOptions"
             :mapper="serversMapper" />
         </a-form-item>
         <a-form-item label="公网端口" v-bind="formItemLayout" extra="取值范围：1~65535">
@@ -50,6 +54,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
@@ -150,12 +155,20 @@ export default {
         region: this.params.data.region_id,
       },
       snatEips: [],
+      serverOptions: [],
+      eipOptions: [],
     }
   },
   created () {
     this.querySnatResources()
   },
   methods: {
+    eiplabelFormat (val) {
+      return `${val.name}(${val.ip_addr})`
+    },
+    serverlabelFormat (val) {
+      return `${val.name}(${val.ips})`
+    },
     eipsMapper (data) {
       data = data.filter((item) => { return !this.snatEips.includes(item.ip_addr) })
       return data
@@ -182,18 +195,21 @@ export default {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
+        const eipObj = R.indexBy(R.prop('id'), this.eipOptions)
+        const serverObj = R.indexBy(R.prop('id'), this.serverOptions)
         const params = {
           name: values.name,
           natgateway_id: this.params.data.id,
-          internal_ip: values.server.ips,
-          internal_port: values.internalPort,
-          external_ip: values.ip.ip_addr,
-          external_ip_id: values.ip.id,
-          external_port: values.externalPort,
+          internal_ip: serverObj[values.server]['ips'],
+          internal_port: Number(values.internalPort),
+          external_ip: eipObj[values.ip]['ip_addr'],
+          external_ip_id: eipObj[values.ip]['id'],
+          external_port: Number(values.externalPort),
           ip_protocol: values.protocol,
         }
         await this.doCreate(params)
         this.loading = false
+        this.params.list.refresh()
         this.cancelDialog()
       } catch (error) {
         this.loading = false
