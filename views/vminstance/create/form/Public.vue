@@ -111,6 +111,8 @@
       </a-form-item>
       <a-form-item label="安全组" v-bind="formItemLayout">
         <secgroup-config
+          :provider="hypervisor"
+          :form="form"
           :decorators="decorators.secgroup"
           :secgroup-params="secgroupParams"
           :hypervisor="hypervisor" />
