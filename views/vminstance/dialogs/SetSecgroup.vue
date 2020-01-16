@@ -9,7 +9,7 @@
       <a-form :form="form.fc" hideRequiredMark v-show="bindedSecgroupsLoaded && secgroupsInitLoaded">
         <a-form-item label="安全组" v-bind="formItemLayout" v-if="bindedSecgroupsLoaded">
           <div slot="extra">
-            最多支持选择5个安全组。没有想要的安全组？可以前往
+            最多支持选择{{max}}个安全组。没有想要的安全组？可以前往
             <help-link :href="href"> 新建安全组</help-link>
           </div>
           <base-select
@@ -93,7 +93,7 @@ export default {
     },
     message () {
       let str = '提示信息：安全组最多可关联五个'
-      if (this.isAzure) {
+      if (this.isAzure || this.isUCloud) {
         str = '提示信息：安全组最多可关联一个'
       }
       return str
@@ -101,6 +101,12 @@ export default {
     href () {
       const url = this.$router.resolve('/secgroup')
       return url.href
+    },
+    max () {
+      if (this.isAzure || this.isUCloud) {
+        return 1
+      }
+      return 5
     },
   },
   created () {
