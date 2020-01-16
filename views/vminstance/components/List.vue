@@ -694,6 +694,7 @@ export default {
                   }
                   if (obj.os_type === 'Windows') {
                     ret.tooltip = 'Windows 不支持 SSH 连接'
+                    return ret
                   }
                   ret.validate = cloudEnabled(type, obj)
                   ret.tooltip = cloudUnabledTip(type, obj)
