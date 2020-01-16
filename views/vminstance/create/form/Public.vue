@@ -26,16 +26,8 @@
       <a-form-item label="数量" v-show="!isServertemplate" v-bind="formItemLayout">
         <a-input-number v-decorator="decorators.count" :min="1" :max="10" />
       </a-form-item>
-      <!-- <a-form-item class="mb-0" label="资源池" v-bind="formItemLayout">
-        <resource :decorator="decorators.resourceType" />
-      </a-form-item> -->
-      <a-form-item label="CPU核数" v-bind="formItemLayout" class="mb-0">
-        <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" @change="cpuChange" />
-      </a-form-item>
-      <a-form-item label="内存" v-bind="formItemLayout" class="mb-0">
-        <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" />
-      </a-form-item>
       <area-selects
+        class="mb-0"
         v-if="showAreaSelect"
         v-bind="formItemLayout"
         ref="areaSelectRef"
@@ -45,6 +37,15 @@
         :zoneParams="zoneParams"
         :defaultActiveFirstOption="['city']"
         @providerFetchSuccess="providerFetchSuccess" />
+      <!-- <a-form-item class="mb-0" label="资源池" v-bind="formItemLayout">
+        <resource :decorator="decorators.resourceType" />
+      </a-form-item> -->
+      <a-form-item label="CPU核数" v-bind="formItemLayout" class="mb-0">
+        <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" @change="cpuChange" />
+      </a-form-item>
+      <a-form-item label="内存" v-bind="formItemLayout" class="mb-0">
+        <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" />
+      </a-form-item>
       <a-form-item label="套餐" v-bind="formItemLayout">
         <sku
           v-decorator="decorators.sku"
@@ -156,15 +157,6 @@ export default {
     SecgroupConfig,
   },
   mixins: [mixin],
-  data () {
-    return {
-      instanceSpecParams: {
-        public_cloud: true,
-        usable: true,
-        enabled: true,
-      },
-    }
-  },
   computed: {
     // 是否为包年包月
     isPackage () {
@@ -358,6 +350,19 @@ export default {
       }
       return []
     },
+    instanceSpecParams () {
+      const params = {
+        public_cloud: true,
+        usable: true,
+        enabled: true,
+      }
+      const { city, provider, cloudregion, zone } = this.form.fd
+      if (city) params.city = city
+      if (provider) params.provider = provider
+      if (cloudregion) params.cloudregion = cloudregion
+      if (zone) params.zone = zone
+      return params
+    },
   },
   watch: {
     'form.fd.billType' (val) {
@@ -390,7 +395,7 @@ export default {
     },
   },
   created () {
-    this.fetchInstanceSpecs()
+    this.baywatch(['form.fd.city', 'form.fd.provider', 'form.fd.cloudregion', 'form.fd.zone'], this.fetchInstanceSpecs)
   },
   methods: {
     providerFetchSuccess (list) {

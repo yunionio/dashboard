@@ -31,7 +31,7 @@
                 </template>
                 <template v-else>---</template>
               </div>
-              <div v-if="priceTips" class="tips text-truncate">
+              <div class="tips text-truncate">
                 <span v-html="priceTips" />
               </div>
             </div>
@@ -213,7 +213,6 @@ export default {
       return null
     },
     priceTips () {
-      if (this.fd.duration.endsWith('W')) return ''
       if (this.price) {
         if (this.isPackage && this.durationNum) {
           const _day = (this.price / 30 / this.durationNum).toFixed(2)
