@@ -45,7 +45,7 @@ export default {
   methods: {
     ipChange (e, i) {
       this.networkList[i].ip = e.target.value
-      this.$emit('change', e.target.value)
+      // this.$emit('change', e.target.value)
     },
     add () {
       const uid = uuid()

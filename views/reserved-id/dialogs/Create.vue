@@ -61,15 +61,6 @@ export default {
             ],
           },
         ],
-        ip: [
-          'ip',
-          {
-            validateFirst: true,
-            rules: [
-              { validator: this.IPValidator(), trigger: 'blur' },
-            ],
-          },
-        ],
         networkConfig: {
           ips: (i, networkData) => [
             `networkIps[${i}]`,
@@ -80,9 +71,9 @@ export default {
                 required: true,
                 message: '请输入ip',
               }, {
-                validator: this.IPValidator(i, networkData),
+                validator: this.IPValidator,
               }, {
-                validator: this.checkIp(i, networkData),
+                validator: this.checkIp,
               }],
             },
           ],
@@ -115,33 +106,27 @@ export default {
     },
   },
   methods: {
-    IPValidator () {
-      console.log(456)
-      return function (rule, value, callback) {
-        if (validate(value, 'IPv4') === false || validate(value, 'IPv4').result === false) {
-          callback(new Error(validate(value, 'IPv4').msg))
-        } else {
-          callback()
-        }
+    IPValidator (rule, value, callback) {
+      if (validate(value, 'IPv4') === false || validate(value, 'IPv4').result === false) {
+        callback(new Error(validate(value, 'IPv4').msg))
+      } else {
+        callback()
       }
     },
-    checkIp () {
-      console.log(123)
-      return async (rule, value, callback) => {
-        const params = {
-          search: value,
-        }
-        const data = await new this.$Manager('reservedips').list({ params })
-        if (data.data.data.length >= 1) {
-          callback(new Error('该IP已被预留,请勿重复添加'))
+    async checkIp (rule, value, callback) {
+      const params = {
+        search: value,
+      }
+      const data = await new this.$Manager('reservedips').list({ params })
+      if (data.data.data.length >= 1) {
+        callback(new Error('该IP已被预留,请勿重复添加'))
+      } else {
+        const ips = Object.values(this.form.fc.getFieldValue('networkIps'))
+        const ipsRepreat = Array.from(new Set(ips))
+        if (ipsRepreat.length === ips.length) {
+          callback()
         } else {
-          const ips = Object.values(this.form.fc.getFieldValue('networkIps'))
-          const ipsRepreat = Array.from(new Set(ips))
-          if (ipsRepreat.length === ips.length) {
-            callback()
-          } else {
-            callback(new Error('请勿重复添加相同IP'))
-          }
+          callback(new Error('请勿重复添加相同IP'))
         }
       }
     },
