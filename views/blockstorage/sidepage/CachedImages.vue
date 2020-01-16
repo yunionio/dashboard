@@ -64,12 +64,13 @@ export default {
               columns: this.columns,
               title: '释放缓存',
               list: this.list,
-              resId: this.data.id,
+              resItem: this.data,
             })
           },
           meta: () => {
+            const isReference = this.list.selectedItems.every(row => !row.reference)
             return {
-              validate: !!this.list.selectedItems.length,
+              validate: !!this.list.selectedItems.length && isReference,
             }
           },
         },
@@ -83,11 +84,11 @@ export default {
               columns: this.columns,
               title: '释放缓存',
               list: this.list,
-              resId: this.data.id,
+              resItem: this.data,
             })
           },
           meta: row => {
-            const isValidate = row.reference === 0
+            const isValidate = !row.reference
             return {
               validate: isValidate,
               tooltip: !isValidate && '如需清除，请先删除当前宿主机上引用这个镜像的虚拟主机',

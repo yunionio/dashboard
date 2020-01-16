@@ -28,12 +28,12 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        const manager = new this.$Manager('storages')
-        await manager.performAction({
-          id: this.params.resId,
+        const manager = new this.$Manager('cachedimages')
+        await manager.batchPerformAction({
           action: 'uncache-image',
+          ids: this.params.data.map(item => item.cachedimage_id),
           data: {
-            image: this.params.data[0].cachedimage_id,
+            storagecache_id: this.params.resItem.storagecache_id,
             is_force: true,
           },
         })
