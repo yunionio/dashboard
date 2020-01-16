@@ -25,7 +25,6 @@ import { ACL_TYPE } from '@Storage/constants/index.js'
 import { objectsModel } from '@Storage/views/bucket/utils/controller.js'
 import WindowsMixin from '@/mixins/windows'
 import { sizestrWithUnit } from '@/utils/utils'
-import { getNameFilter } from '@/utils/common/tableFilter'
 
 export default {
   name: 'BucketStorageObjectList',
@@ -47,7 +46,9 @@ export default {
         ctx: [['buckets', this.data.name]],
         idKey: 'key',
         filterOptions: {
-          name: getNameFilter(),
+          prefix: {
+            label: '文件名称',
+          },
         },
       }),
       columns: [
@@ -209,7 +210,7 @@ export default {
         {
           label: '下载',
           action: (row) => {
-            objectsModel.getUrl(row, this.data.name).then((url) => {
+            objectsModel.getUrl(row, this.data.name, this.accessUrl).then((url) => {
               url && window.open(url)
             })
           },
@@ -274,6 +275,18 @@ export default {
   computed: {
     resName () {
       return this.data.name
+    },
+    accessUrl () {
+      if (this.data.access_urls && this.data.access_urls.length > 0) {
+        const accessUrls = this.data.access_urls
+        for (let i = 0; i < accessUrls.length; i++) {
+          if (accessUrls[i]['primary']) {
+            return accessUrls[i]['url']
+          }
+        }
+        return accessUrls[0].url
+      }
+      return ''
     },
     breadcrumbs () {
       const _ = {}

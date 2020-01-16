@@ -1,1 +1,1 @@
-# dashboard-module-network
+# dashboard-module-storage
