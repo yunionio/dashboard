@@ -7,6 +7,7 @@ import Schedtag from '@Cloudenv/views/schedtag'
 import Schedpolicy from '@Cloudenv/views/schedpolicy'
 import Dynamicschedtag from '@Cloudenv/views/dynamicschedtag'
 import Tag from '@Cloudenv/views/tag'
+import Cloudevent from '@Cloudenv/views/cloudevent'
 
 export default {
   index: 7,
@@ -74,6 +75,22 @@ export default {
               name: 'CloudaccountCreate',
               path: 'create',
               component: CloudaccountCreate,
+            },
+          ],
+        },
+        {
+          path: '/cloudevent',
+          meta: {
+            label: '操作日志',
+            permission: 'cloudevents_list',
+            t: 'dictionary.cloudevents',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Cloudevent',
+              path: '',
+              component: Cloudevent,
             },
           ],
         },
