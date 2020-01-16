@@ -99,6 +99,7 @@ export const RollbackDiskValidate = {
   azure (obj) {
     const ret = { validate: false }
     ret.tooltip = `${BRAND_MAP[obj.brand].label}不支持快照回滚硬盘`
+    return ret
   },
   ucloud (obj) {
     const ret = RollbackDiskValidate.base(obj)
