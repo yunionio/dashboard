@@ -321,16 +321,17 @@ export default {
       if (HYPERVISORS_MAP.ctyun.key === hypervisor) {
         delete loginTypes[LOGIN_TYPES_MAP.keypair.key]
       }
-      if (this.form.fi.imageMsg.os_type === 'Windows') {
+      if (this.form.fd.os === 'Windows') {
         // 以下平台在选择 windows 镜像时禁用关联密钥
         const disableKeypairHyper = [
           HYPERVISORS_MAP.azure.key,
           HYPERVISORS_MAP.aliyun.key,
           HYPERVISORS_MAP.qcloud.key,
+          HYPERVISORS_MAP.ucloud.key,
           HYPERVISORS_MAP.esxi.key,
         ]
         if (disableKeypairHyper.includes(hypervisor)) {
-          delete loginTypes[LOGIN_TYPES_MAP.keypair.value]
+          delete loginTypes[LOGIN_TYPES_MAP.keypair.key]
         }
       }
       if (this.isServertemplate) {
