@@ -6,6 +6,7 @@ import Eip from '@Network/views/eip'
 import FlexNetwork from '@Network/views/flex-network'
 import Wire from '@Network/views/wire'
 import GolbalVpc from '@Network/views/global-vpc'
+import Vpc from '@Network/views/vpc'
 import RouteTableList from '@Network/views/route-table'
 import NatList from '@Network/views/nats'
 import ReservedIpList from '@Network/views/reserved-id'
@@ -22,6 +23,36 @@ export default {
         label: '基础网络',
       },
       submenus: [
+        {
+          path: '/globalvpc',
+          meta: {
+            label: '全局VPC',
+            permission: 'network_globalvpcs_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'GlobalVpcList',
+              path: '',
+              component: GolbalVpc,
+            },
+          ],
+        },
+        {
+          path: '/vpc',
+          meta: {
+            label: 'VPC',
+            permission: 'vpcs_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'VpcList',
+              path: '',
+              component: Vpc,
+            },
+          ],
+        },
         {
           path: '/routetable',
           meta: {
@@ -49,21 +80,6 @@ export default {
               name: 'NatList',
               path: '',
               component: NatList,
-            },
-          ],
-        },
-        {
-          path: '/globalvpc',
-          meta: {
-            label: '全局VPC',
-            permission: 'network_globalvpcs_list',
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'GlobalVpcList',
-              path: '',
-              component: GolbalVpc,
             },
           ],
         },
