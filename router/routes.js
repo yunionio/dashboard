@@ -7,6 +7,7 @@ import SetSecretQuestion from '@/views/auth/SetSecretQuestion'
 import ResetSecretQuestion from '@/views/auth/ResetSecretQuestion'
 import NotFoundPage from '@/views/exception/404'
 import GlobalSearchResult from '@/views/global-search-result'
+import EmailVerify from '@/views/email-verify'
 
 let routes = [
   { name: 'Home', path: '/', redirect: '/dashboard' },
@@ -54,6 +55,14 @@ let routes = [
         meta: { layout: 'full-screen' },
       },
     ],
+  },
+  {
+    path: '/email-verification/id/:id/token/:token',
+    name: 'EmailVerification',
+    meta: {
+      layout: 'full-screen',
+    },
+    component: EmailVerify,
   },
   { name: '404', path: '/404', component: NotFoundPage, meta: { layout: 'full-screen' } },
   { name: 'NotFound', path: '*', component: NotFoundPage, meta: { layout: 'full-screen' } },

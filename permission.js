@@ -20,6 +20,7 @@ const loginPageRouteName = [
 const whiteList = loginPageRouteName.concat([
   '404',
   'NotFound',
+  'EmailVerification',
 ])
 
 router.beforeEach(async (to, from, next) => {
