@@ -5,11 +5,14 @@
         <a-icon type="sync" spin v-if="loading" />
         <template v-else>
           <template v-if="error">
-            <a-icon type="close-circle" theme="twoTone" twoToneColor="#f5222d" />
-            <span class="ml-2" style="color: #f5222d;">
-              <template v-if="error.response && error.response.status === 404">无密钥信息</template>
-              <template v-else>获取失败</template>
-            </span>
+            <template v-if="error.response && error.response.status === 404">
+              <a-icon type="exclamation-circle" theme="twoTone" twoToneColor="#faad14" />
+              <span class="ml-2" style="color: #faad14;">无密钥信息</span>
+            </template>
+            <template v-else>
+              <a-icon type="close-circle" theme="twoTone" twoToneColor="#f5222d" />
+              <span class="ml-2" style="color: #f5222d;">获取失败</span>
+            </template>
           </template>
           <template v-else>
             <div class="mv-2">
