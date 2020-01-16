@@ -20,11 +20,16 @@ export const diskResizeConfig = {
   vmware (obj) {
     const diskType = 'data'
     const provider = obj.provider
-    const { validate, tooltip } = diskResizeConfig.base(obj)
-    if (!validate) {
+    // const { validate, tooltip } = diskResizeConfig.base(obj)
+    // if (!validate) {
+    //   return {
+    //     validate: false,
+    //     tooltip,
+    //   }
+    // }
+    if (obj.guest_status === 'running') {
       return {
         validate: false,
-        tooltip,
       }
     }
     if (obj.disk_type !== diskType) {
