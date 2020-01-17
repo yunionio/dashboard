@@ -610,14 +610,18 @@ class CreateList {
     const ret = {}
     let index = 0
     R.forEachObjIndexed((value, key) => {
-      ret[`tags.${index}.key`] = []
-      let len = 1
-      if (value && value.length) len = value.length
-      for (let i = 0; i < len; i++) {
-        ret[`tags.${index}.key`].push(key)
+      if (key === 'without_user_meta' && (value && value[0] === true)) {
+        ret.without_user_meta = true
+      } else {
+        ret[`tags.${index}.key`] = []
+        let len = 1
+        if (value && value.length) len = value.length
+        for (let i = 0; i < len; i++) {
+          ret[`tags.${index}.key`].push(key)
+        }
+        ret[`tags.${index}.value`] = value
+        index++
       }
-      ret[`tags.${index}.value`] = value
-      index++
     }, this.tagFilter)
     return ret
   }
