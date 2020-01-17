@@ -22,9 +22,10 @@
             v-decorator="decorators.project"
             :params="projectParams"
             version="v1"
+            :options.sync="projectOptions"
             :need-params="true"
             :mapper="projectMapper"
-            :select-props="{ placeholder: '请选择项目' }" />
+            :select-props="{ placeholder: '请选择项目', mode: 'multiple' }" />
         </a-form-item>
       </a-form>
     </div>
@@ -87,6 +88,7 @@ export default {
         },
       },
       isShare: true,
+      projectOptions: [],
     }
   },
   computed: {
@@ -135,6 +137,12 @@ export default {
       },
       immediate: true,
     },
+    projectOptions (newValue, oldValue) {
+      if (this.params.data.length === 1 && this.params.data[0].shared_projects) {
+        const projectId = this.params.data[0].shared_projects.map(item => { return item.id })
+        this.form.fc.getFieldDecorator('project', { preserve: true, initialValue: projectId })
+      }
+    },
   },
   methods: {
     switchChange (e) {
@@ -166,15 +174,13 @@ export default {
       try {
         const values = await this.form.fc.validateFields()
         const ids = this.params.data.map(item => item.id)
-        let newValue = []
-        newValue.push(values.project)
         if (!this.isShare) {
           await this.doUpdate(ids)
         } else {
           if (values.range === 'project') {
             const data = {
               scope: values.range,
-              shared_projects: newValue,
+              shared_projects: values.project,
             }
             await this.setPublic(ids, data)
           } else {
