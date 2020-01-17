@@ -40,7 +40,6 @@
       :data="data"
       :columns="tableColumns"
       :pager-config="tablePage"
-      :customs.sync="customs"
       :sort-config="{ sortMethod: () => {} }"
       :checkbox-config="checkboxConfig"
       :expand-config="expandConfig"
@@ -119,7 +118,7 @@ export default {
   },
   data () {
     return {
-      customs: this.list.config.hiddenColumns.map(item => ({ field: item, visible: false })),
+      tableColumns: [],
     }
   },
   computed: {
@@ -152,28 +151,6 @@ export default {
     filter () {
       return this.list.filter
     },
-    tableColumns () {
-      let defaultColumns = this.columns.filter(item => {
-        if (R.is(Function, item.hidden)) return !item.hidden()
-        return !item.hidden
-      })
-      if ((this.groupActions && this.groupActions.length > 0) || this.showSelection) {
-        defaultColumns.unshift({ type: 'checkbox', width: 40 })
-      }
-      if (this.singleActions && this.singleActions.length) {
-        defaultColumns.push({
-          field: 'action',
-          title: '操作',
-          minWidth: 120,
-          slots: {
-            default: ({ row }, h) => {
-              return [<Actions options={ this.singleActions } row={ row } button-type='link' button-size='small' button-style={{ fontSize: '12px' }} />]
-            },
-          },
-        })
-      }
-      return defaultColumns
-    },
     nextMarker () {
       return this.list.nextMarker
     },
@@ -198,20 +175,21 @@ export default {
   watch: {
     'list.config.hiddenColumns' (val, oldVal) {
       if (!R.equals(val, oldVal)) {
-        for (let i = 0, len = this.customs.length; i < len; i++) {
-          const item = this.customs[i]
-          if (item.type !== 'checkbox' && item.property !== 'action' && val.includes(item.property)) {
-            this.customs[i]['visible'] = false
-          } else {
-            this.customs[i]['visible'] = true
-          }
+        for (let i = 0, len = this.tableColumns.length; i < len; i++) {
+          this.tableColumns[i].visible = !val.includes(this.tableColumns[i].property)
         }
-        this.$refs.grid.reloadCustoms(this.customs)
+        this.$refs.grid.refreshColumn()
       }
     },
   },
   beforeDestroy () {
     this.list.clearWaitJob()
+  },
+  created () {
+    this.tableColumns = this.genTableColumns()
+    this.$nextTick(() => {
+      this.tableColumns = this.$refs.grid.getColumns()
+    })
   },
   methods: {
     refresh () {
@@ -251,11 +229,33 @@ export default {
       this.$parent.createDialog('CustomListDialog', {
         title: '自定义列表',
         list: this.list,
-        customs: this.customs,
+        customs: this.tableColumns,
       })
     },
     handleSortChange ({ property, order }) {
       this.list.doSort(property, order)
+    },
+    genTableColumns () {
+      let defaultColumns = this.columns.filter(item => {
+        if (R.is(Function, item.hidden)) return !item.hidden()
+        return !item.hidden
+      })
+      if ((this.groupActions && this.groupActions.length > 0) || this.showSelection) {
+        defaultColumns.unshift({ type: 'checkbox', width: 40 })
+      }
+      if (this.singleActions && this.singleActions.length) {
+        defaultColumns.push({
+          field: 'action',
+          title: '操作',
+          minWidth: 120,
+          slots: {
+            default: ({ row }, h) => {
+              return [<Actions options={ this.singleActions } row={ row } button-type='link' button-size='small' button-style={{ fontSize: '12px' }} />]
+            },
+          },
+        })
+      }
+      return defaultColumns
     },
   },
 }
