@@ -1,78 +1,29 @@
 <template>
-  <div>
-    <div class="mb-2">
-      <refresh-button :loading="loading" @refresh="refresh" />
-    </div>
-    <div class="d-flex mb-3">
-      <div class="flex-fill d-flex">
-        <a-select
-          style="width: 150px;"
-          :defaultValue="searchDefaultValue"
-          @change="selectChange"
-          label-in-value
-          class="mr-2">
-          <a-select-option v-for="item in searchOptions" :key="item.key" :value="item.key">{{ item.label }}</a-select-option>
-        </a-select>
-        <a-input class="mr-2 w-25" style="min-width: 200px;" @keyup.enter.stop="handleSearch" placeholder="请输入完整内容精准搜索" v-model="searchText" />
-        <a-button @click="handleSearch" :disabled="loading" icon="search" />
-      </div>
-      <div>
-        <a-date-picker
-          v-model="dateTime"
-          format="YYYY-MM-DD HH:mm:ss"
-          placeholder="选择终止时间进行查询"
-          @change="handleDateTimeChange"
-          :showTime="{ defaultValue: $moment('00:00:00', 'HH:mm:ss') }" />
-      </div>
-    </div>
-    <div class="mb-3 d-flex align-items-center" v-if="!isEmptySearched">
-      <span style="font-size: 12px;">筛选条件：</span>
-      <a-tag
-        v-for="(item, key) of searched"
-        :key="key"
-        closable
-        size="small"
-        class="ml-1"
-        type="info"
-        @close="clearSearch(key)">
-        {{ item.label }}：{{ item.key }}
-      </a-tag>
-      <a style="font-size: 12px; color: #999;" class="ml-2" @click="clearAllSearch">清除</a>
-    </div>
-    <div>
-      <vxe-grid
-        ref="grid"
-        highlight-hover-row
-        :data="data"
-        :columns="columns">
-        <template v-slot:empty>
-          <loader :loading="loading" />
-        </template>
-      </vxe-grid>
-      <div v-if="data.length > 0 && nextMarker" class="action-wrap">
-        <div class="text-center" v-if="nextMarker">
-          <a-button :loading="loading" type="link" @click="fetchData">{{ loading ? '加载中' : '加载更多' }}</a-button>
+  <div class="event-list">
+    <page-list
+      :list="list"
+      :columns="columns" />
+     <div class="mb-3 search-date">
+          <a-date-picker
+            v-model="dateTime"
+            style="width: 300px"
+            format="YYYY-MM-DD HH:mm:ss"
+            placeholder="选择终止时间进行查询"
+            @change="handleDateTimeChange"
+            :showTime="{ defaultValue: $moment('00:00:00', 'HH:mm:ss') }" />
         </div>
-      </div>
-    </div>
   </div>
 </template>
 
 <script>
-import * as R from 'ramda'
-import { Manager } from '@/utils/manager'
-import RefreshButton from '@/components/PageList/RefreshButton'
-import WindowsMixin from '@/mixins/windows'
 import {
   getCopyWithContentTableColumn,
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
+import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'EventList',
-  components: {
-    RefreshButton,
-  },
   mixins: [WindowsMixin],
   props: {
     objId: {
@@ -81,45 +32,34 @@ export default {
     objType: {
       type: String,
     },
-    limit: {
-      type: Number,
-      default: 20,
-    },
   },
   data () {
     return {
       dateTime: null,
-      data: [],
-      loading: false,
-      nextMarker: '',
-      search: {
-        label: '资源名称',
-        key: 'obj_name',
-      },
-      searchDefaultValue: {
-        label: '资源名称',
-        key: 'obj_name',
-      },
-      searchText: '',
-      searchOptions: [
-        {
-          label: '资源名称',
-          key: 'obj_name',
+      list: this.$list.createList(this, {
+        resource: 'actions',
+        apiVersion: 'v1',
+        idKey: 'start_time',
+        getParams: this.getParam,
+        filterOptions: {
+          obj_name: {
+            label: '资源名称',
+          },
+          tenant: {
+            label: `所属${this.$t('dictionary.project')}`,
+          },
+          user: {
+            label: '发起人',
+            filter: true,
+            formatter: val => {
+              return `user.contains("${val}")`
+            },
+          },
+          action: {
+            label: '操作',
+          },
         },
-        {
-          label: `所属${this.$t('dictionary.project')}`,
-          key: 'tenant',
-        },
-        {
-          label: '发起人',
-          key: 'user',
-        },
-        {
-          label: '操作',
-          key: 'action',
-        },
-      ],
-      searched: {},
+      }),
       columns: [
         {
           title: '#',
@@ -186,131 +126,45 @@ export default {
       ],
     }
   },
-  computed: {
-    isEmptySearched () {
-      return !this.searched || R.isEmpty(this.searched)
-    },
-  },
   created () {
-    this.manager = new Manager('actions', 'v1')
-    this.fetchData()
+    this.initSidePageTab('cloudregion-detail')
+    this.list.fetchData()
   },
   methods: {
-    async fetchData () {
-      const params = this.getParams()
-      this.loading = true
-      try {
-        const {
-          data: {
-            data = [],
-            next_marker: nextMarker,
-          },
-        } = await this.manager.list({ params })
-        this.nextMarker = nextMarker
-        this.data = [ ...this.data, ...data ]
-      } catch (error) {
-        throw error
-      } finally {
-        this.loading = false
-      }
-    },
-    selectChange (val) {
-      this.search = val
-    },
-    getParams () {
-      const params = {
-        limit: this.limit,
-        scope: this.$store.getters.scope,
-      }
-      if (this.nextMarker) params.paging_marker = this.nextMarker
-      if (this.objId) params.filter = `obj_id.in(${this.objId})`
-      if (this.objType) params.obj_type = this.objType
-      if (this.dateTime) params.until = this.$moment.utc(this.dateTime).format()
-      if (this.searched && !R.isEmpty(this.searched)) {
-        for (let key in this.searched) {
-          params[key] = this.searched[key]['key']
-        }
-      }
-      return params
-    },
     clickHandler (val) {
       this.createDialog('EventLogDialog', {
         data: val,
       })
     },
-    handleDateTimeChange () {
-      // this.$nextTick(() => {
-      //   this.clearAllSearch()
-      // })
-      this.nextMarker = ''
-      this.data = []
-      this.fetchData()
-    },
-    handleSearch () {
-      if (!this.searchText) return
-      const searched = {
-        ...this.searched,
-        [this.search.key]: {
-          label: this.search.label,
-          key: this.searchText,
-        },
+    getParam () {
+      const param = {}
+      if (this.objId) {
+        param['filter'] = `obj_id.in(${this.objId})`
       }
-      this.searched = searched
-      this.searchText = ''
-      this.nextMarker = ''
-      this.data = []
-      this.fetchData()
+      if (this.objType) {
+        param['obj_type'] = this.objType
+      }
+      if (this.dateTime) {
+        param['until'] = this.$moment.utc(this.dateTime).format()
+      } else {
+        delete param.until
+      }
+      return param
     },
-    clearSearch (key) {
-      const searched = { ...this.searched }
-      delete searched[key]
-      this.searched = searched
-      this.nextMarker = ''
-      this.data = []
-      this.fetchData()
-    },
-    clearAllSearch () {
-      this.nextMarker = ''
-      this.searched = {}
-      this.data = []
-      this.fetchData()
-    },
-    refresh () {
-      this.nextMarker = ''
-      this.data = []
-      this.fetchData()
+    handleDateTimeChange () {
+      this.list.reset()
+      this.list.fetchData()
     },
   },
 }
 </script>
-
-<style lang="scss" scope>
-.action-wrap {
-  font-size: 14px;
-  height: 30px;
-}
-.action-table {
-  .vxe-body--row {
-    &:hover {
-      background-color: #f5f7fa;
+<style lang="scss" scoped>
+  .event-list{
+    position: relative;
+    .search-date {
+      position: absolute;
+      right: 0;
+      top: 0;
     }
   }
-}
-.CodeMirror {
-  height: 500px!important;
-}
-.dialog-wrapper {
-  .el-dialog {
-    .el-dialog__body {
-      padding: 10px 20px 4px;
-    }
-    .el-dialog__footer {
-      width: 100%;
-    }
-    .copy-icon {
-      color: #409EFF;
-      cursor: pointer;
-    }
-  }
-}
 </style>
