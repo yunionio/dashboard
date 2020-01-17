@@ -182,7 +182,7 @@ export default {
       const keys = ['engine', 'engine_version', 'local_category', 'node_type']
       const data = this.FC.getFieldsValue(keys)
       data['node_type'] = target.value || data.node_type
-      const arr = R.pathOr({}, R.values(data), this.filterItems)
+      const arr = R.pathOr([], R.values(data), this.filterItems)
       this.performance_types = PERFORMANCE_TYPE_KEYS.filter(k => {
         return arr.indexOf(k) > -1
       })
