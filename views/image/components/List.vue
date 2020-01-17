@@ -496,7 +496,9 @@ export default {
         },
       ]
       if (this.$appConfig.isPrivate) {
-        batchActions.unshift(ImageImport)
+        if (this.$store.getters.scope !== 'project') {
+          batchActions.unshift(ImageImport)
+        }
         batchActions.unshift(ImageUpload)
       }
       return batchActions
