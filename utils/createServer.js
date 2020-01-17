@@ -18,7 +18,7 @@ import { HYPERVISORS_MAP } from '@/constants'
 import validateForm, { isRequired, isWithinRange } from '@/utils/validate'
 import store from '@/store'
 
-function checkIpInSegment (i, networkData) {
+export function checkIpInSegment (i, networkData) {
   return (rule, value, cb) => {
     const isIn = isWithinRange(value, networkData.guest_ip_start, networkData.guest_ip_end)
     if (isIn) {
@@ -636,10 +636,19 @@ export class GenCreateData {
     }
     return ret
   }
+  _getDataDiskType (dataDiskTypes) {
+    if (!R.isNil(dataDiskTypes) && !R.isEmpty(dataDiskTypes)) {
+      const firstKey = Object.keys(dataDiskTypes)[0]
+      if (firstKey && dataDiskTypes[firstKey]) {
+        return dataDiskTypes[firstKey].key
+      }
+    }
+  }
   _genDisksArr () {
-    const diskType = this.fd.systemDiskType.key
+    const sysDiskType = this.fd.systemDiskType.key
+    const dataDiskType = this._getDataDiskType(this.fd.dataDiskTypes)
     const systemDisk = {
-      type: diskType,
+      type: sysDiskType,
       size: this.fd.systemDiskSize,
     }
     if (this.fd.systemDiskSchedtag) {
@@ -654,7 +663,7 @@ export class GenCreateData {
     R.forEachObjIndexed((value, key) => {
       const diskObj = {
         size: value,
-        type: diskType,
+        type: dataDiskType,
       }
       if (this.fd.dataDiskFiletypes && this.fd.dataDiskFiletypes[key]) {
         diskObj.filetype = this.fd.dataDiskFiletypes[key]

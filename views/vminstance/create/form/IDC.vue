@@ -296,7 +296,7 @@ export default {
             // 重置数据盘数据
             this._resetDataDisk()
             dataDisks.forEach(val => {
-              this.$refs.dataDiskRef.add({ size: val.size / 1024 })
+              this.$refs.dataDiskRef.add({ size: val.size / 1024, sizeDisabled: true })
             })
             this.form.fi.dataDiskDisabled = true
             this.form.fi.sysDiskDisabled = true
