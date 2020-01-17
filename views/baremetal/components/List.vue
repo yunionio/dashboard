@@ -1,5 +1,6 @@
 <template>
   <page-list
+    show-tag-filter
     :id="id"
     :list="list"
     :columns="columns"
