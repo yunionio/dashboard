@@ -1,7 +1,18 @@
 <template>
-  <page-list
-    :list="list"
-    :columns="columns" />
+  <div class="event-list">
+    <page-list
+      :list="list"
+      :columns="columns" />
+    <div class="mb-3 search-date">
+        <a-date-picker
+          v-model="dateTime"
+          style="width: 300px"
+          format="YYYY-MM-DD HH:mm:ss"
+          placeholder="选择终止时间进行查询"
+          @change="handleDateTimeChange"
+          :showTime="{ defaultValue: $moment('00:00:00', 'HH:mm:ss') }" />
+      </div>
+  </div>
 </template>
 
 <script>
@@ -21,8 +32,10 @@ export default {
   },
   data () {
     return {
+      dateTime: null,
       list: this.$list.createList(this, {
         id: this.id,
+        getParams: this.getParam,
         resource: 'cloudevents',
         apiVersion: 'v1',
         idKey: 'created_at',
@@ -114,6 +127,29 @@ export default {
         data: val,
       })
     },
+    handleDateTimeChange () {
+      this.list.reset()
+      this.list.fetchData()
+    },
+    getParam () {
+      const param = {}
+      if (this.dateTime) {
+        param['until'] = this.$moment.utc(this.dateTime).format()
+      } else {
+        delete param.until
+      }
+      return param
+    },
   },
 }
 </script>
+<style lang="scss" scoped>
+  .event-list{
+    position: relative;
+    .search-date {
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+  }
+</style>
