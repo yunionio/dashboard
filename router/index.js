@@ -6,7 +6,10 @@ import Eip from '@Network/views/eip'
 import FlexNetwork from '@Network/views/flex-network'
 import Wire from '@Network/views/wire'
 import GolbalVpc from '@Network/views/global-vpc'
+import Vpc from '@Network/views/vpc'
 import RouteTableList from '@Network/views/route-table'
+import NatList from '@Network/views/nats'
+import ReservedIpList from '@Network/views/reserved-ip'
 
 export default {
   index: 3,
@@ -20,6 +23,36 @@ export default {
         label: '基础网络',
       },
       submenus: [
+        {
+          path: '/globalvpc',
+          meta: {
+            label: '全局VPC',
+            permission: 'network_globalvpcs_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'GlobalVpcList',
+              path: '',
+              component: GolbalVpc,
+            },
+          ],
+        },
+        {
+          path: '/vpc',
+          meta: {
+            label: 'VPC',
+            permission: 'vpcs_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'VpcList',
+              path: '',
+              component: Vpc,
+            },
+          ],
+        },
         {
           path: '/routetable',
           meta: {
@@ -36,17 +69,17 @@ export default {
           ],
         },
         {
-          path: '/globalvpc',
+          path: '/nat',
           meta: {
-            label: '全局VPC',
-            permission: 'network_globalvpcs_list',
+            label: 'NAT网关',
+            permission: 'natgateways_list',
           },
           component: Layout,
           children: [
             {
-              name: 'GlobalVpcList',
+              name: 'NatList',
               path: '',
-              component: GolbalVpc,
+              component: NatList,
             },
           ],
         },
@@ -117,6 +150,21 @@ export default {
               name: 'NetworkUpdate',
               path: 'edit',
               component: EditAttributes,
+            },
+          ],
+        },
+        {
+          path: '/reservedip',
+          meta: {
+            label: '预留IP',
+            permission: 'reservedips_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'ReservedIpList',
+              path: '',
+              component: ReservedIpList,
             },
           ],
         },
