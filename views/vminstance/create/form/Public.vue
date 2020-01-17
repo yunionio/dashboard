@@ -371,8 +371,8 @@ export default {
           cloudregion: undefined,
           zone: undefined,
         })
-        this.$refs.areaSelectRef.fetchs(['provider'])
       }
+      this.$refs.areaSelectRef.fetchs(['provider'])
     },
     'form.fd.sku' (val, oldVal) {
       if (val && !R.equals(val, oldVal)) {
