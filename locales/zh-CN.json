@@ -160,8 +160,7 @@
       "maintain_fail": "维护失败",
       "prepare": "准备中",
       "probing": "正在检测IPMI配置",
-      "converting": "转换中",
-      "probe_fail": "检测IPMI配置失败"
+      "converting": "转换中"
     },
     "image": {
       "init": "初始化",
@@ -425,6 +424,17 @@
       "available": "可用",
       "unknown": "未知"
     },
+    "vpc": {
+      "available": "正常",
+      "init": "初始化",
+      "pending": "正在创建",
+      "delete_failed": "删除失败",
+      "start_delete": "开始删除",
+      "deleting": "删除中",
+      "failed": "创建失败",
+      "unknown": "未知",
+      "unavailable": "不可用"
+    },
     "blockstorage": {
       "enabled": "启用",
       "disabled": "禁用",
@@ -607,7 +617,9 @@
     "wiresName": "字母开头，数字和字母大小写组合，长度为2-9个字符，不含\".\",\"_\",\"@\"",
     "dbName": "字母开头，小写字母、数字或下划线组合，长度为4到16个字符之间，不能以下划线结尾",
     "imageName": "字母开头，数字和字母大小写组合，长度为2-128个字符，可含\".\",\"-\",\"_\"",
-    "mac": "请输入合法的MAC地址"
+    "mac": "请输入合法的MAC地址",
+    "broadName": "字母开头，数字和字母大小写组合，长度为2-20个字符，可含\"-\",\"_\"",
+    "CIDR": "请输入合法CIDR"
   },
   "dialog": {
     "ok": "确定",
@@ -1013,9 +1025,7 @@
     "Kanchipuram": "印度 甘吉布勒姆",
     "Huhehaote": "呼和浩特",
     "Qingdao": "青岛",
-    "Chongqing": "重庆",
-    "Lanzhou": "兰州",
-    "Wulumuqi": "乌鲁木齐"
+    "Chongqing": "重庆"
   },
   "cloudPrvidersMap": {
     "Aliyun": "阿里云",
@@ -1047,7 +1057,7 @@
     "role_assignment": "项目",
     "service": "服务",
     "region": "区域",
-    "endpoint": "常用系统",
+    "endpoint": "接入端",
     "role": "角色",
     "servicetree": "服务树",
     "notify": "通知服务",
@@ -1079,10 +1089,7 @@
     "dnsrecord": "域名服务",
     "hostwire": "二层网络",
     "baremetalnetwork": "物理机网络",
-    "snapshotpolicy": "自动快照策略",
-    "mail_config": "邮件短信",
-    "actions": "操作日志",
-    "cloudevents": "操作日志"
+    "snapshotpolicy": "自动快照策略"
   },
   "shareScope": {
     "system": "系统",
@@ -1116,10 +1123,5 @@
       "label": "三级权限",
       "desc": "设置是否开启三级权限"
     }
-  },
-  "common": {
-    "batchAction": "批量操作",
-    "ok": "确定",
-    "cancel": "取消"
   }
 }
