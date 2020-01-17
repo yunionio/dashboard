@@ -128,13 +128,14 @@ export default {
       }
     },
     _valuesChange (vm, changedFields) {
+      // 选中平台的select出现报错信息则不请求sku信息和网络信息
       if (!this.form.fc.getFieldError('provider')) {
         if (this.$refs['REF_SKU']) {
           this.$refs['REF_SKU'].skuFetchs(changedFields)
         }
-        this._domainChange(changedFields)
         this._queryNetworks(changedFields)
       }
+      this._domainChange(changedFields)
     },
     handleDomainChange () {
       this.$refs['REF_VPC'].fetchQueryVpcs(true)
