@@ -32,7 +32,7 @@ export default {
           component: Layout,
           children: [
             {
-              name: 'GlobalVpcList',
+              name: 'GlobalVPC',
               path: '',
               component: GolbalVpc,
             },
@@ -47,7 +47,7 @@ export default {
           component: Layout,
           children: [
             {
-              name: 'VpcList',
+              name: 'VPC',
               path: '',
               component: Vpc,
             },
@@ -62,7 +62,7 @@ export default {
           component: Layout,
           children: [
             {
-              name: 'RouteTableList',
+              name: 'RouteTable',
               path: '',
               component: RouteTableList,
             },
@@ -77,7 +77,7 @@ export default {
           component: Layout,
           children: [
             {
-              name: 'NatList',
+              name: 'Nat',
               path: '',
               component: NatList,
             },
@@ -162,7 +162,7 @@ export default {
           component: Layout,
           children: [
             {
-              name: 'ReservedIpList',
+              name: 'ReservedIP',
               path: '',
               component: ReservedIpList,
             },
