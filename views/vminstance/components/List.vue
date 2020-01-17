@@ -1204,6 +1204,7 @@ export default {
                       }
                       if (obj.billing_type === 'prepaid') {
                         ret.tooltip = '包年包月机器，不支持此操作'
+                        return ret
                       }
                       ret.validate = true
                       return ret
