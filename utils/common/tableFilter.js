@@ -7,6 +7,7 @@ export function getBrandItems (key = 'brands') {
   let brands = store.getters.capability[key] || []
   if (store.getters.capability[`disabled_${key}`]) {
     brands = brands.concat(store.getters.capability[`disabled_${key}`] || [])
+    brands = R.uniq(brands)
   }
   return brands.map(item => {
     const brandConfig = HYPERVISORS_MAP[item.toLowerCase()] || {}
