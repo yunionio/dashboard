@@ -15,7 +15,7 @@
           :max="max"
           :formatter="format"
           :parser="format"
-          :disabled="disabled" />
+          :disabled="sizeDisabled" />
       </a-tooltip>
       GB
     </a-form-item>
@@ -87,6 +87,10 @@ export default {
       default: '',
     },
     disabled: {
+      type: Boolean,
+      default: false,
+    },
+    sizeDisabled: { // 磁盘大小的限制
       type: Boolean,
       default: false,
     },
