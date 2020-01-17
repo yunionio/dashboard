@@ -16,7 +16,11 @@ import {
 } from '@/utils/common/tableColumn'
 
 export default {
+<<<<<<< HEAD
   name: 'NatDetail',
+=======
+  name: 'VPCDetail',
+>>>>>>> 迁移vpc详情页
   props: {
     data: {
       type: Object,
