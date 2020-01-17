@@ -164,6 +164,14 @@ export const REGEXP = {
     regexp: /^[a-fA-F0-9:]{17}|[a-fA-F0-9]{12}$/g,
     message: i18n.t('validator.mac'),
   },
+  broadName: {
+    regexp: /^[a-zA-Z][a-zA-Z0-9_-]{1,20}$/,
+    message: i18n.t('validator.broadName'),
+  },
+  CIDR: {
+    regexp: /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(\/\d{1,2})?$/,
+    message: i18n.t('validator.CIDR'),
+  },
 }
 
 /**
