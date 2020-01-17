@@ -607,6 +607,68 @@ export default {
                   return ret
                 },
               },
+              {
+                label: '重装系统',
+                permission: 'server_perform_rebuild_root',
+                action: () => {
+                  this.createDialog('VmRebuildRootDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    list: this.list,
+                  })
+                },
+                meta: () => {
+                  const ret = {
+                    validate: false,
+                    tooltip: null,
+                  }
+                  if (this.isSameHyper) {
+                    ret.validate = cloudEnabled('rebuildRoot', this.list.selectedItems)
+                    ret.tooltip = cloudUnabledTip('rebuildRoot', this.list.selectedItems)
+                    return ret
+                  }
+                  ret.validate = false
+                  ret.tooltip = '请选择同一平台下的资源'
+                  return ret
+                },
+              },
+              {
+                label: '到期释放',
+                action: () => {
+                  this.createDialog('VmSetDurationDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    list: this.list,
+                  })
+                },
+                meta: () => {
+                  const ret = {
+                    validate: false,
+                    tooltip: null,
+                  }
+                  // 包年包月机器，不支持此操作
+                  let isSomePrepaid = this.list.selectedItems.some((item) => {
+                    return item.billing_type === 'prepaid'
+                  })
+                  if (isSomePrepaid) {
+                    ret.tooltip = '包年包月机器，不支持此操作'
+                    return ret
+                  }
+                  // 暂只支持同时操作已设置到期或未设置到期释放的机器
+                  let isSomeExpired = this.list.selectedItems.some((item) => {
+                    return item.expired_at
+                  })
+                  let isSomeNotExpired = this.list.selectedItems.some((item) => {
+                    return !item.expired_at
+                  })
+                  if (isSomeExpired && isSomeNotExpired) {
+                    ret.tooltip = '暂只支持同时操作已设置到期释放'
+                    return ret
+                  }
+                  ret.validate = true
+                  return ret
+                },
+              },
               disableDeleteAction(this),
               {
                 label: '删除',
