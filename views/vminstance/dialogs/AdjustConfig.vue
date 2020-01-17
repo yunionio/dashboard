@@ -377,8 +377,8 @@ export default {
 
       this.$nextTick(() => {
         setTimeout(() => {
-          this.form.fd.datadisks.forEach((v) => {
-            this.$refs.dataDiskRef.add({ size: v.value, diskType: v.type, disabled: true, ...v })
+          this.form.fd.datadisks.forEach((v, i) => {
+            this.$refs.dataDiskRef.add({ size: v.value, min: v.value, diskType: v.type, disabled: true, ...v })
           })
           this.diskLoaded = true
         }, 1000)
