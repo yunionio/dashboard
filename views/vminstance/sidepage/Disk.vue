@@ -32,15 +32,6 @@ export default {
           order_by: 'index',
           order: 'asc',
         },
-        filterOptions: {
-          disk: {
-            label: '名称',
-            filter: true,
-            formatter: val => {
-              return `disk.contains("${val}")`
-            },
-          },
-        },
       }),
       columns: [
         {
