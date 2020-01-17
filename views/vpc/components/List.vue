@@ -49,7 +49,7 @@ export default {
           hideField: true,
           slotCallback: row => {
             return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, '') }>{ row.name }</side-page-trigger>
+              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'VpcSidePage') }>{ row.name }</side-page-trigger>
             )
           },
         }),
@@ -134,7 +134,7 @@ export default {
     },
   },
   created () {
-    this.initSidePageTab('detail')
+    this.initSidePageTab('vpc-detail')
     this.list.fetchData()
   },
   methods: {
