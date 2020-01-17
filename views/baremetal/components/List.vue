@@ -20,9 +20,7 @@ import SystemIcon from '@/sections/SystemIcon'
 import { Manager } from '@/utils/manager'
 import { sizestr } from '@/utils/utils'
 import { disableDeleteAction } from '@/utils/common/tableActions'
-import {
-  getTenantFilter,
-} from '@/utils/common/tableFilter'
+import { getTenantFilter, getStatusFilter, getOsTypeFilter } from '@/utils/common/tableFilter'
 import { getProjectTableColumn, getStatusTableColumn, getCopyWithContentTableColumn, getIpsTableColumn, getNameDescriptionTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import expectStatus from '@/constants/expectStatus'
@@ -72,6 +70,8 @@ export default {
             label: '物理机',
           },
           tenant: getTenantFilter(),
+          status: getStatusFilter({ statusModule: 'server' }),
+          os_type: getOsTypeFilter(),
         },
         steadyStatus: Object.values(expectStatus.server).flat(),
         responseData: this.responseData,

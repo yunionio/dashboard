@@ -15,7 +15,7 @@ import qs from 'qs'
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { sizestr, percentstr } from '@/utils/utils'
 import { getRegionTableColumn, getStatusTableColumn, getBrandTableColumn, getEnabledTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
-import { getStatusFilter, getEnabledFilter } from '@/utils/common/tableFilter'
+import { getStatusFilter, getEnabledFilter, getBrandFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import globalSearchMixins from '@/mixins/globalSearch'
 
@@ -72,6 +72,7 @@ export default {
               return `access_ip.contains("${val}")`
             },
           },
+          brand: getBrandFilter(),
         },
         responseData: this.responseData,
       }),
