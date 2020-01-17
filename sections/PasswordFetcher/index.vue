@@ -1,6 +1,6 @@
 <template>
   <div class="wrap">
-    <a-popover v-model="visible" trigger="click">
+    <a-popover v-model="visible" trigger="click" @visibleChange="handlePopoverVisibleChange">
       <template v-slot:content>
         <a-icon type="sync" spin v-if="loading" />
         <template v-else>
@@ -168,11 +168,12 @@ export default {
     handleDecryptSecret () {
       this.visible = false
       this.dialog.visible = true
+      this.login_key = this.loginInfos.password.loginKey
     },
     handleDialogConfirm () {
       if (R.isNil(this.dialog.value) || R.isEmpty(this.dialog.value)) return
       try {
-        this.dialog.password = passwordDecrypt(this.loginInfos.password.loginKey, this.dialog.value) || '暂无'
+        this.dialog.password = passwordDecrypt(this.login_key, this.dialog.value) || '暂无'
       } catch (error) {
         this.$message.error('获取密码失败')
         throw error
@@ -182,6 +183,17 @@ export default {
       this.dialog.visible = false
       this.dialog.value = ''
       this.dialog.password = ''
+    },
+    handlePopoverVisibleChange (val) {
+      if (!val) {
+        // 清空信息
+        this.error = null
+        this.loginInfos.ip.value = ''
+        this.loginInfos.username.value = ''
+        this.loginInfos.password.value = ''
+        this.loginInfos.password.keypair = ''
+        this.loginInfos.password.loginKey = ''
+      }
     },
   },
 }
@@ -202,3 +214,4 @@ export default {
   }
 }
 </style>
+
