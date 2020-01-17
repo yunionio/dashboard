@@ -10625,7 +10625,7 @@ vxe-table-plugin-antd@^1.5.8:
   resolved "https://registry.npm.taobao.org/vxe-table-plugin-antd/download/vxe-table-plugin-antd-1.5.10.tgz#e9d3ea55b97e8b65d9446c24cbff74c3cea22f83"
   integrity sha1-6dPqVbl+i2XZRGwky/90w86iL4M=
 
-vxe-table@^2.7.10:
+vxe-table@^2.7.24:
   version "2.7.24"
   resolved "https://registry.npm.taobao.org/vxe-table/download/vxe-table-2.7.24.tgz#12e97c43223012f336bbf10b725ff6d8b25dbc4f"
   integrity sha1-Eul8QyIwEvM2u/ELcl/22LJdvE8=
@@ -10971,7 +10971,7 @@ ws@^7.0.0:
   resolved "https://registry.npm.taobao.org/ws/download/ws-7.2.1.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fws%2Fdownload%2Fws-7.2.1.tgz#03ed52423cd744084b2cf42ed197c8b65a936b8e"
   integrity sha1-A+1SQjzXRAhLLPQu0ZfItlqTa44=
 
-xe-utils@^2.2.14:
+xe-utils@^2.3.0:
   version "2.3.0"
   resolved "https://registry.npm.taobao.org/xe-utils/download/xe-utils-2.3.0.tgz#5db56893c39b6e65c267997a607acbac887c9e96"
   integrity sha1-XbVok8ObbmXCZ5l6YHrLrIh8npY=
