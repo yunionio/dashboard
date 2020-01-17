@@ -19,7 +19,7 @@ import {
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'vpcList',
+  name: 'VPCList',
   mixins: [WindowsMixin],
   props: {
     id: String,
@@ -76,8 +76,9 @@ export default {
         {
           label: '新建',
           action: () => {
-            this.createDialog('', {
-              title: '',
+            this.createDialog('VpcCreateDialog', {
+              title: '新建',
+              data: this.list.selectedItems,
               list: this.list,
             })
           },
