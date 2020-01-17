@@ -7,7 +7,8 @@
       :hypervisor="hypervisor"
       :types-map="typesMap"
       :elements="elements"
-      :disabled="disabled" />
+      :disabled="disabled"
+      :size-disabled="disabled" />
   </div>
 </template>
 
