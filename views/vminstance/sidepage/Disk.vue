@@ -33,11 +33,11 @@ export default {
           order: 'asc',
         },
         filterOptions: {
-          network: {
+          disk: {
             label: '名称',
             filter: true,
             formatter: val => {
-              return `network.contains("${val}")`
+              return `disk.contains("${val}")`
             },
           },
         },
