@@ -100,6 +100,13 @@ export default {
             title: '健康状态',
           }),
           brand: getBrandFilter(),
+          account: {
+            label: '账号',
+            filter: true,
+            formatter: val => {
+              return `account.contains("${val}")`
+            },
+          },
           enable_auto_sync: getEnabledFilter({ label: '自动同步' }),
           share_mode: getPublicFilter(),
           // tenant: getTenantFilter(),
