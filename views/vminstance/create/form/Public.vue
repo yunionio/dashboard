@@ -320,6 +320,11 @@ export default {
       }
       if (HYPERVISORS_MAP.ctyun.key === hypervisor) {
         delete loginTypes[LOGIN_TYPES_MAP.keypair.key]
+        delete loginTypes[LOGIN_TYPES_MAP.image.key]
+      }
+      if (HYPERVISORS_MAP.google.key === hypervisor) {
+        delete loginTypes[LOGIN_TYPES_MAP.keypair.key]
+        delete loginTypes[LOGIN_TYPES_MAP.image.key]
       }
       if (this.form.fd.os === 'Windows') {
         // 以下平台在选择 windows 镜像时禁用关联密钥
@@ -402,7 +407,7 @@ export default {
   },
   methods: {
     providerFetchSuccess (list) {
-      // 计费方式为包年包月平台不含 azure、aws
+      // 计费方式为包年包月平台不含 azure、aws、google
       if (this.form.fd.billType === BILL_TYPES_MAP.package.key) {
         if (this.form.fd.duration === '1W') {
           list = list.filter(item => HYPERVISORS_MAP.aliyun.key === item.name.toLowerCase())
@@ -411,7 +416,7 @@ export default {
           })
         } else {
           list = list.filter(item => {
-            return ![HYPERVISORS_MAP.azure.key, HYPERVISORS_MAP.aws.key].includes(item.name.toLowerCase())
+            return ![HYPERVISORS_MAP.azure.key, HYPERVISORS_MAP.aws.key, HYPERVISORS_MAP.google.key].includes(item.name.toLowerCase())
           })
         }
       }

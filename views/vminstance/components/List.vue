@@ -1008,7 +1008,6 @@ export default {
                         tooltip: null,
                       }
                       if (commonUnabled(obj)) return ret
-                      if (obj.brand === 'Ctyun' && obj.status === 'ready') return ret
                       ret.validate = cloudEnabled('rebuildRoot', obj)
                       ret.tooltip = cloudUnabledTip('rebuildRoot', obj)
                       return ret
@@ -1382,7 +1381,7 @@ export default {
                         return ret
                       }
                       const osType = obj.metadata && obj.metadata.os_name
-                      if (['aws', 'azure'].includes(obj.hypervisor) && osType === 'Windows') {
+                      if (['aws', 'azure', 'google'].includes(obj.hypervisor) && osType === 'Windows') {
                         ret.tooltip = 'Windows操作系统不支持该功能'
                         return ret
                       }
