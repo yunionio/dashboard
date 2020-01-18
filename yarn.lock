@@ -3183,6 +3183,11 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
+cropperjs@^1.5.6:
+  version "1.5.6"
+  resolved "https://registry.npm.taobao.org/cropperjs/download/cropperjs-1.5.6.tgz#82faf432bec709d828f2f7a96d1179198edaf0e2"
+  integrity sha1-gvr0Mr7HCdgo8vepbRF5GY7a8OI=
+
 cross-spawn@^5.0.1:
   version "5.1.0"
   resolved "https://registry.npm.taobao.org/cross-spawn/download/cross-spawn-5.1.0.tgz#e8bd0efee58fcff6f8f94510a0a554bbfa235449"
@@ -10521,6 +10526,13 @@ vm-browserify@^1.0.1:
   version "1.1.2"
   resolved "https://registry.npm.taobao.org/vm-browserify/download/vm-browserify-1.1.2.tgz#78641c488b8e6ca91a75f511e7a3b32a86e5dda0"
   integrity sha1-eGQcSIuObKkadfUR56OzKobl3aA=
+
+vue-cropperjs@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.npm.taobao.org/vue-cropperjs/download/vue-cropperjs-4.0.1.tgz#1d4cd2f7b5292ffe83de780c76e4a2dec2b66118"
+  integrity sha1-HUzS97UpL/6D3ngMduSi3sK2YRg=
+  dependencies:
+    cropperjs "^1.5.6"
 
 vue-eslint-parser@^5.0.0:
   version "5.0.0"
