@@ -138,6 +138,11 @@ export default {
     success: ['available'],
     info: ['unknown', 'init'],
   },
+  vpc: {
+    success: ['available'],
+    info: ['init', 'unavailable'],
+    danger: ['failed'],
+  },
   blockstorage: {
     info: ['offline', 'disabled'],
     success: ['online', 'enabled'],
