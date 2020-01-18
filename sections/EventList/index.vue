@@ -39,7 +39,6 @@ export default {
       list: this.$list.createList(this, {
         resource: 'actions',
         apiVersion: 'v1',
-        idKey: 'start_time',
         getParams: this.getParam,
         filterOptions: {
           obj_name: {
