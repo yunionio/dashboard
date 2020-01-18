@@ -1089,7 +1089,10 @@
     "dnsrecord": "域名服务",
     "hostwire": "二层网络",
     "baremetalnetwork": "物理机网络",
-    "snapshotpolicy": "自动快照策略"
+    "snapshotpolicy": "自动快照策略",
+    "mail_config": "邮件短信",
+    "actions": "操作日志",
+    "cloudevents": "操作日志"
   },
   "shareScope": {
     "system": "系统",
@@ -1123,5 +1126,10 @@
       "label": "三级权限",
       "desc": "设置是否开启三级权限"
     }
+  },
+  "common": {
+    "batchAction": "批量操作",
+    "ok": "确定",
+    "cancel": "取消"
   }
 }
