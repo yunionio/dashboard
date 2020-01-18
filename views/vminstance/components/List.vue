@@ -77,7 +77,7 @@ export default {
             ],
             filter: true,
             formatter: val => {
-              return `os_type.contains("${val}")`
+              return `os_type.in(${val})`
             },
           },
           tenant: getTenantFilter(),
