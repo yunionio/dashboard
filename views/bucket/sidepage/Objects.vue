@@ -244,7 +244,7 @@ export default {
           actions: () => {
             return [
               {
-                label: '生成URL',
+                label: '生成临时URL',
                 action: async (row) => {
                   // await curl = controller.getUrl(row, this.data.name)
                   this.createDialog('ObjectsCreateUrlDialog', {
