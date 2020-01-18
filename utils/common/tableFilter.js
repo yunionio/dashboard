@@ -84,7 +84,6 @@ export function getTenantFilter () {
   return {
     label: i18n.t('dictionary.project'),
     dropdown: true,
-    multiple: true,
     distinctField: {
       type: 'extra_field',
       key: 'tenant',
