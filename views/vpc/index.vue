@@ -12,7 +12,7 @@ import List from './components/List'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 
 export default {
-  name: 'VpcList',
+  name: 'VPCIndex',
   components: {
     List,
   },
