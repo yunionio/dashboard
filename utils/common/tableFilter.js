@@ -84,7 +84,6 @@ export function getTenantFilter () {
   return {
     label: '项目',
     dropdown: true,
-    multiple: true,
     distinctField: {
       type: 'extra_field',
       key: 'tenant',
