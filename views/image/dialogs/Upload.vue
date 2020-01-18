@@ -31,7 +31,7 @@
         </a-form-item>
         <a-form-item label="操作系统" v-bind="formItemLayout" v-if="!show">
           <a-radio-group v-decorator="decorators.os_type">
-            <a-radio-button value="linux">
+            <a-radio-button value="Linux">
               Linux
             </a-radio-button>
             <a-radio-button value="windows">
@@ -96,7 +96,7 @@ export default {
         os_type: [
           'os_type',
           {
-            initialValue: 'linux',
+            initialValue: 'Linux',
           },
         ],
       },
