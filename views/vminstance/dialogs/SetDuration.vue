@@ -153,6 +153,7 @@ export default {
           await this.doCancelExpireSubmit()
         }
         this.loading = false
+        this.params.list.refresh()
         this.cancelDialog()
       } catch (error) {
         this.loading = false
