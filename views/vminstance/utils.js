@@ -32,6 +32,8 @@ const actionEableMap = {
       zstack: ['ready'],
       dstack: ['ready'],
       ucloud: ['ready'],
+      ctyun: ['ready'],
+      google: ['ready'],
     },
   },
   'resetPassword': {
@@ -49,6 +51,8 @@ const actionEableMap = {
       zstack: ['running'],
       dstack: ['running'],
       ucloud: ['ready'],
+      ctyun: ['ready'],
+      google: ['ready'],
     },
   },
   'bindKeyPair': {
@@ -66,6 +70,8 @@ const actionEableMap = {
       zstack: ['running'],
       dstack: ['running'],
       ucloud: false,
+      ctyun: false,
+      google: ['ready'],
     },
   },
   'unBindKeyPair': {
@@ -83,6 +89,8 @@ const actionEableMap = {
       zstack: ['running'],
       dstack: ['running'],
       ucloud: false,
+      ctyun: false,
+      google: ['ready'],
     },
   },
   'adjustConfig': {
@@ -100,6 +108,8 @@ const actionEableMap = {
       zstack: ['ready'],
       dstack: ['ready'],
       ucloud: ['ready'],
+      ctyun: ['ready'],
+      google: ['ready', 'running'],
     },
   },
   'vnc': {
@@ -117,6 +127,8 @@ const actionEableMap = {
       zstack: ['running'],
       dstack: ['running'],
       ucloud: false,
+      ctyun: false,
+      google: false,
     },
   },
   'EIP SSH': {
@@ -134,6 +146,8 @@ const actionEableMap = {
       zstack: ['running'],
       dstack: ['running'],
       ucloud: ['running'],
+      ctyun: ['running'],
+      google: ['running'],
     },
   },
   'IP SSH': {
@@ -151,6 +165,8 @@ const actionEableMap = {
       zstack: false,
       dstack: false,
       ucloud: false,
+      ctyun: false,
+      google: false,
     },
   },
   'createSnapshot': {
@@ -168,6 +184,8 @@ const actionEableMap = {
       zstack: ['running', 'ready'],
       dstack: ['running', 'ready'],
       ucloud: false,
+      ctyun: ['running', 'ready'],
+      google: ['running', 'ready'],
     },
   },
   'transfer': {
@@ -185,6 +203,8 @@ const actionEableMap = {
       zstack: false,
       dstack: false,
       ucloud: false,
+      ctyun: false,
+      google: false,
     },
   },
   'assignSecgroup': {
@@ -202,6 +222,8 @@ const actionEableMap = {
       zstack: true,
       dstack: true,
       ucloud: true,
+      ctyun: true,
+      google: true,
     },
   },
   'insertiso': {
@@ -219,6 +241,8 @@ const actionEableMap = {
       zstack: false,
       dstack: false,
       ucloud: false,
+      ctyun: false,
+      google: false,
     },
   },
   'ejectiso': {
@@ -236,6 +260,8 @@ const actionEableMap = {
       zstack: false,
       dstack: false,
       ucloud: false,
+      ctyun: false,
+      google: false,
     },
   },
   'bindEip': {
@@ -253,6 +279,8 @@ const actionEableMap = {
       zstack: ['running', 'ready'],
       dstack: ['running', 'ready'],
       ucloud: ['running', 'ready'],
+      ctyun: ['running', 'ready'],
+      google: ['running', 'ready'],
     },
   },
   'unbindEip': {
@@ -270,6 +298,8 @@ const actionEableMap = {
       zstack: ['running', 'ready'],
       dstack: ['running', 'ready'],
       ucloud: ['running', 'ready'],
+      ctyun: ['running', 'ready'],
+      google: ['running', 'ready'],
     },
   },
   'acttachGpu': {
