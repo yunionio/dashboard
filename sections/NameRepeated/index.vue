@@ -1,5 +1,11 @@
 <template>
-  <div class="ant-form-extra" v-if="show">{{ text }}</div>
+  <div class="ant-form-extra">
+    <span v-if="show">{{ text }}</span>
+    <span v-else-if="loading && !defaultText">
+      <a-icon type="sync" class="mr-1" spin />
+      <span>正在验证名称是否重复</span>
+    </span>
+  </div>
 </template>
 <script>
 import _ from 'lodash'
@@ -17,10 +23,15 @@ export default {
     defaultText: {
       type: String,
     },
+    version: {
+      type: String,
+      default: 'v1',
+    },
   },
   data () {
     return {
       isRepeated: false,
+      loading: false,
     }
   },
   computed: {
@@ -39,19 +50,22 @@ export default {
   },
   watch: {
     name (newValue) {
-      if (!newValue) {
-        this.isRepeated = false
-        return true
+      this.isRepeated = false
+      if (newValue) {
+        this.debouncedFetchQueryList(newValue)
       }
-      this.debouncedFetchQueryList(newValue)
     },
   },
   created () {
-    this.debouncedFetchQueryList = _.debounce(this.fetchQueryList, 500)
+    this.debouncedFetchQueryList = _.debounce(this.fetchQueryList, 300)
+  },
+  destroyed () {
+    this.debouncedFetchQueryList = null
   },
   methods: {
     async fetchQueryList (name) {
-      const manager = new this.$Manager(this.res)
+      this.loading = true
+      const manager = new this.$Manager(this.res, this.version)
       try {
         const params = {
           name,
@@ -59,8 +73,11 @@ export default {
           filter: `name.contains('${name}')`,
         }
         const { data } = await manager.list({ params })
+        this.loading = false
         this.isRepeated = data && data.data.length && data.total
       } catch (error) {
+        this.isRepeated = false
+        this.loading = false
         throw error
       }
     },
