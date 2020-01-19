@@ -231,6 +231,16 @@ export default {
       return this.isOpenWorkflow ? '提交工单' : '新 建'
     },
   },
+  watch: {
+    priceTips: {
+      handler (val) {
+        let ret = `¥ ${this.price && this.price.toFixed(2)}`
+        ret += !this.isPackage ? ' / 时' : ''
+        this.$bus.$emit('VMGetPrice', `${ret} ${val}`)
+      },
+      immediate: true,
+    },
+  },
   created () {
     this.baywatch([
       'fd.sku.id',
