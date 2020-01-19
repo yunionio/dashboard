@@ -10,7 +10,7 @@
 import { SERVER_TYPE } from '@Compute/constants'
 import { getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
-import { findPlatform } from '@/utils/common/hypervisor'
+import { findPlatform, typeClouds } from '@/utils/common/hypervisor'
 
 export default {
   name: 'NetworkListForVmInstanceSidepage',
@@ -33,7 +33,7 @@ export default {
       list: this.$list.createList(this, {
         resource: 'networks',
         ctx: [['servers', this.resId]],
-        idKey: 'network_id',
+        idKey: 'index',
         getParams: {
           order_by: 'index',
           order: 'asc',
@@ -118,9 +118,14 @@ export default {
               columns: this.serverColumns,
             })
           },
-          meta: () => ({
-            buttonType: 'primary',
-          }),
+          meta: () => {
+            const isOneCloud = this.data.hypervisor === typeClouds.hypervisorMap.kvm.key
+            return {
+              buttonType: 'primary',
+              validate: isOneCloud,
+              tooltip: !isOneCloud && '只有OneCloud主机支持此操作',
+            }
+          },
         },
       ],
     }

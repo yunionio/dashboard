@@ -114,6 +114,8 @@ export default {
             nets,
           },
         })
+        this.$bus.$emit('VMInstanceListSingleRefresh', [this.params.data[0]['id']])
+        this.params.list.fetchData()
         this.cancelDialog()
       } finally {
         this.loading = false
