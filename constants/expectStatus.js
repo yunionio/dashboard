@@ -167,4 +167,12 @@ export default {
     danger: ['disconnected'],
     success: ['connected'],
   },
+  notification: {
+    info: ['unknown'],
+    success: ['received', 'sent', 'sent_ok'],
+  },
+  contact: {
+    danger: ['init'],
+    success: ['verified'],
+  },
 }
