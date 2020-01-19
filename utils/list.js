@@ -680,6 +680,28 @@ class CreateList {
     })
   }
   /**
+   *
+   * 刷新单条数据
+   * @param {String} id
+   * @param {Array} steadyStatus 所期望的状态，以便定时更新
+   * @returns Promise
+   */
+  singleRefresh (id, steadyStatus) {
+    const params = { ...this.params }
+    delete params.offset
+    delete params.limit
+    return this.manager.get({
+      id,
+      params,
+    }).then(response => {
+      this.update(id, response.data)
+      if (steadyStatus) {
+        this.waitStatus(id, steadyStatus)
+      }
+      return response
+    })
+  }
+  /**
    * @description 对应 manager 里面的 update 方法
    *
    * @param {String} id
