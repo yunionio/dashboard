@@ -92,6 +92,7 @@ export default {
         policySchedtag: { limit: 0, 'filter.0': 'resource_type.equals(hosts)', scope: this.$store.getters.scope },
       },
       capabilityParams: {}, // 防止 capability 反复调用，这里对当前的接口参数做记录
+      price: null,
     }
   },
   provide () {
@@ -204,6 +205,9 @@ export default {
     this.servertemplateM = new Manager('servertemplates', 'v2')
     this.serverskusM = new Manager('serverskus')
     this.schedulerM = new Manager('schedulers', 'v1')
+    this.$bus.$on('VMGetPrice', (price) => {
+      this.price = price
+    })
   },
   watch: {
     'form.fi.imageMsg': {
@@ -272,6 +276,7 @@ export default {
         initiator: this.$store.getters.userInfo.id,
         description: this.form.fd.reason,
         'server-create-paramter': JSON.stringify(data),
+        price: this.price,
       }
       this._getProjectDomainInfo(variables)
       new this.$Manager('process-instances', 'v1')
