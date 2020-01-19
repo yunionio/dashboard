@@ -477,6 +477,19 @@
     "idp": {
       "connected": "已连接",
       "disconnected": "连接断开"
+    },
+    "notification": {
+      "received": "已接收",
+      "sent": "已发送",
+      "sent_ok": "发送成功",
+      "sent_fail": "发送失败",
+      "unknown": "未知",
+      "syncing": "同步中"
+    },
+    "contact": {
+      "init": "未验证",
+      "verifying": "验证中",
+      "verified": "已验证"
     }
   },
   "skuCategoryOptions": {
@@ -1093,7 +1106,9 @@
     "mail_config": "邮件短信",
     "actions": "操作日志",
     "cloudevents": "操作日志",
-    "companyinfo": "企业信息"
+    "companyinfo": "企业信息",
+    "notification": "消息中心",
+    "contact": "联系方式"
   },
   "shareScope": {
     "system": "系统",
@@ -1103,7 +1118,8 @@
   "rules": {
     "domain": "请选择@:dictionary.domain",
     "project": "请选择@:dictionary.project",
-    "identity_provider": "请选择@:dictionary.identity_provider"
+    "identity_provider": "请选择@:dictionary.identity_provider",
+    "user": "请选择@:dictionary.user"
   },
   "storageAclTypes": {
     "private": "本账号读写",
@@ -1127,6 +1143,12 @@
       "label": "三级权限",
       "desc": "设置是否开启三级权限"
     }
+  },
+  "notificationPriority": {
+    "normal": "一般",
+    "important": "重要",
+    "fatal": "严重",
+    "silence": "轻微"
   },
   "common": {
     "batchAction": "批量操作",
