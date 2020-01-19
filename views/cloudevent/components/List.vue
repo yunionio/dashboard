@@ -38,7 +38,7 @@ export default {
         getParams: this.getParam,
         resource: 'cloudevents',
         apiVersion: 'v1',
-        idKey: 'created_at',
+        idKey: 'event_id',
         filterOptions: {
           name: getNameFilter(),
           brand: getBrandFilter(),
