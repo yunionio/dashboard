@@ -59,6 +59,9 @@ export default {
   created () {
     this.debouncedFetchQueryList = _.debounce(this.fetchQueryList, 300)
   },
+  destroyed () {
+    this.debouncedFetchQueryList = null
+  },
   methods: {
     async fetchQueryList (name) {
       this.loading = true
