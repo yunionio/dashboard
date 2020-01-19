@@ -6,11 +6,12 @@
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
         <a-form-item label="名称" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverCreateName')"  @change="debounceFetchServers" />
-          <template v-slot:extra>
-            <div>名称支持有序后缀占位符‘#’，用法举例，名称host##，数量2，创建后实例的名称依次为host01、host02，已有同名实例，序号顺延</div>
-            <div class="mt-2" v-if="nameRepeated">名称重复，系统默认追加“-1”</div>
-          </template>
+          <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverCreateName')"  @change="e => { form.fi.generate_name = e.target.value }" />
+          <name-repeated
+            v-slot:extra
+            res="servers"
+            :name="form.fi.generate_name"
+            default-text="名称支持有序后缀占位符‘#’，用法举例，名称host##，数量2，创建后实例的名称依次为host01、host02，已有同名实例，序号顺延" />
         </a-form-item>
         <a-form-item label="数量" v-bind="formItemLayout">
           <a-input-number v-decorator="decorators.__count__" :min="1" :max="10" :step="1" :parser="Math.round" />
@@ -36,7 +37,6 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import debounce from 'lodash/debounce'
 import { SERVER_TYPE } from '@Compute/constants'
 import OsSelect from '@Compute/sections/OsSelect'
 import DialogMixin from '@/mixins/dialog'
@@ -44,11 +44,13 @@ import WindowsMixin from '@/mixins/windows'
 import WorkflowMixin from '@/mixins/workflow'
 import { findPlatform } from '@/utils/common/hypervisor'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
+import NameRepeated from '@/sections/NameRepeated'
 
 export default {
   name: 'VmCloneDialog',
   components: {
     OsSelect,
+    NameRepeated,
   },
   mixins: [DialogMixin, WindowsMixin, WorkflowMixin],
   provide () {
@@ -136,9 +138,6 @@ export default {
     firstData () {
       return this.params.data[0]
     },
-    nameRepeated () {
-      return !!this.servers.find(item => item.name === this.form.fi.generate_name)
-    },
     type () {
       return findPlatform(this.firstData.hypervisor)
     },
@@ -176,15 +175,8 @@ export default {
       return this.params.data[0].os_type
     },
   },
-  destroyed () {
-    this.debounceFetchServers = null
-  },
   created () {
     this.manager = new this.$Manager('servers')
-    this.debounceFetchServers = debounce(e => {
-      this.form.fi.generate_name = e.target.value
-      this.fetchServers(e.target.value)
-    }, 300)
     this.fetchServerCreateParams()
     if (this.params.type === 'baremetal') {
       this.fetchHosts()
@@ -202,22 +194,6 @@ export default {
         this.createParams = data
       } catch (error) {
         throw error
-      }
-    },
-    async fetchServers (name) {
-      let manager = new this.$Manager('servers')
-      const params = {
-        filter: `name.contains("${name}")`,
-      }
-      try {
-        const response = await manager.list({ params })
-        const data = response.data.data || []
-        this.servers = data
-      } catch (error) {
-        this.servers = []
-        throw error
-      } finally {
-        manager = null
       }
     },
     async fetchHosts () {

@@ -12,8 +12,12 @@
           </a-radio-group>
         </a-form-item>
         <a-form-item label="名称" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.generate_name" :placeholder="$t('validator.imageName')" @change="debounceFetchImages" />
-          <template v-if="nameRepeated" v-slot:extra>名称重复，系统默认追加“-1”</template>
+          <a-input v-decorator="decorators.generate_name" :placeholder="$t('validator.imageName')" @change="e => {form.fi.generate_name = e.target.value}" />
+          <name-repeated
+            v-slot:extra
+            res="images"
+            version="v1"
+            :name="form.fi.generate_name" />
         </a-form-item>
         <a-form-item label="自动启动" v-bind="formItemLayout">
           <a-switch v-decorator="decorators.auto_start" />
@@ -32,15 +36,18 @@
 </template>
 
 <script>
-import debounce from 'lodash/debounce'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { typeClouds } from '@/utils/common/hypervisor'
+import NameRepeated from '@/sections/NameRepeated'
 
 const hypervisorMap = typeClouds.hypervisorMap
 
 export default {
   name: 'VmSaveImageDialog',
+  components: {
+    NameRepeated,
+  },
   mixins: [DialogMixin, WindowsMixin],
   data () {
     const types = {
@@ -104,39 +111,11 @@ export default {
     isKvm () {
       return this.params.data[0].hypervisor === hypervisorMap.kvm.key
     },
-    nameRepeated () {
-      return !!this.images.find(item => item.name === this.form.fi.generate_name)
-    },
     diskCount () {
       return this.params.data[0].disk_count
     },
   },
-  destroyed () {
-    this.debounceFetchImages = null
-  },
-  created () {
-    this.debounceFetchImages = debounce(e => {
-      this.form.fi.generate_name = e.target.value
-      this.fetchImages(e.target.value)
-    }, 300)
-  },
   methods: {
-    async fetchImages (name) {
-      let manager = new this.$Manager(this.form.fi.type === this.types.system.key ? 'images' : 'guestimages', 'v1')
-      const params = {
-        name,
-      }
-      try {
-        const response = await manager.list({ params })
-        const data = response.data.data || []
-        this.images = data
-      } catch (error) {
-        this.images = []
-        throw error
-      } finally {
-        manager = null
-      }
-    },
     async handleConfirm () {
       this.loading = true
       try {
@@ -162,9 +141,6 @@ export default {
     },
     handleTypeChange (e) {
       this.form.fi.type = e.target.value
-      if (this.form.fi.generate_name) {
-        this.fetchImages(this.form.fi.generate_name)
-      }
     },
   },
 }

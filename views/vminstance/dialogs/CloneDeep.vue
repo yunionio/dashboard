@@ -28,9 +28,11 @@
           <a-input
             v-decorator="decorators.name"
             :placeholder="$t('validator.serverCreateName')" />
-          <div slot="extra">
-            <div v-if="showRepeatTips">名称重复，系统默认追加“-1”</div>
-          </div>
+          <name-repeated
+            v-slot:extra
+            res="servers"
+            :name="form.fd.name"
+            default-text="名称支持有序后缀占位符‘#’，用法举例，名称host##，数量2，创建后实例的名称依次为host01、host02，已有同名实例，序号顺延" />
         </a-form-item>
         <a-form-item label="数量" v-bind="formItemLayout">
           <a-input-number v-decorator="decorators.count" :max="5" :min="1" :step="1" step-strictly />
@@ -56,19 +58,19 @@
 </template>
 
 <script>
-import debounce from 'lodash/debounce'
-import * as R from 'ramda'
-import { INPUT_DEBOUNCE_TIMER } from '@/constants/config'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import NameRepeated from '@/sections/NameRepeated'
 
 export default {
   name: 'VmCloneDeepDialog',
+  components: {
+    NameRepeated,
+  },
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
       loading: false,
-      showRepeatTips: false,
       action: '主机克隆',
       form: {
         fc: this.$form.createForm(this, {
@@ -148,34 +150,10 @@ export default {
       return this.snapshotOptions.length === 0
     },
   },
-  watch: {
-    'form.fd.name' (val) {
-      this.debounceCheckTemplateName()
-    },
-  },
   created () {
-    this.debounceCheckTemplateName = debounce(() => {
-      this.checkTemplateName()
-    }, INPUT_DEBOUNCE_TIMER)
     this.fetchSnapshotList()
   },
   methods: {
-    checkTemplateName () {
-      const name = this.form.fd.name
-      if (!R.isNil(name) && !R.isEmpty(name)) {
-        this.manager.get({ id: name })
-          .then(res => {
-            const data = res.data
-            if (!R.isNil(data) && !R.isEmpty(data)) {
-              this.showRepeatTips = true // 重复名字
-            }
-          }).catch(() => {
-            this.showRepeatTips = false
-          })
-      } else {
-        this.showRepeatTips = false
-      }
-    },
     async doCreateByNewSnapshot () {
       const values = await this.form.fc.validateFields()
       const params = {
