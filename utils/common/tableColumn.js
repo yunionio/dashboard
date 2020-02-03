@@ -134,6 +134,7 @@ export const getPublicTableColumn = ({ field = 'share_mode', title = '共享模�
 }
 
 export const getNameDescriptionTableColumn = ({
+  title = '名称',
   slotCallback,
   vm,
   addLock,
@@ -144,7 +145,7 @@ export const getNameDescriptionTableColumn = ({
 } = {}) => {
   return {
     field: 'name',
-    title: '名称',
+    title,
     sortable,
     showOverflow: 'ellipsis',
     minWidth: 100,
