@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     title="域名服务"
-    icon="res-eip"
+    icon="res-dns"
     :res-name="data.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"
