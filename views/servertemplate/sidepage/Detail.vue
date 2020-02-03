@@ -108,10 +108,13 @@ export default {
               field: 'config_info.reset_password',
               title: '管理员密码',
               formatter: ({ row }) => {
-                if (row.config_info.reset_password) {
+                if (row.config_info.reset_password === true) {
+                  return LOGIN_TYPES_MAP.random.label
+                }
+                if (row.config_info.reset_password === false) {
                   return LOGIN_TYPES_MAP.image.label
                 }
-                return LOGIN_TYPES_MAP.random.label
+                return '-'
               },
             },
             {
