@@ -4,6 +4,7 @@
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" action="删除" />
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <a-checkbox v-model="checked">强制删除</a-checkbox>
     </div>
     <div slot="footer">
       <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
@@ -22,16 +23,19 @@ export default {
   data () {
     return {
       loading: false,
+      checked: false,
     }
   },
   methods: {
     doDelete (data) {
+      let params = {
+        image: this.params.imageId,
+      }
+      if (this.checked) params.is_force = true
       return new this.$Manager('storagecaches').performAction({
         id: this.params.data[0].storagecache_id,
         action: 'uncache-image',
-        data: {
-          image: this.params.imageId,
-        },
+        data: params,
       })
     },
     async handleConfirm () {
