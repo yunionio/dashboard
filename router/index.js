@@ -10,6 +10,7 @@ import Vpc from '@Network/views/vpc'
 import RouteTableList from '@Network/views/route-table'
 import NatList from '@Network/views/nats'
 import ReservedIpList from '@Network/views/reserved-ip'
+import DNSList from '@Network/views/dns'
 
 export default {
   index: 3,
@@ -165,6 +166,21 @@ export default {
               name: 'ReservedIP',
               path: '',
               component: ReservedIpList,
+            },
+          ],
+        },
+        {
+          path: '/dns',
+          meta: {
+            label: '域名服务',
+            permission: 'dnsrecords_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'DNS',
+              path: '',
+              component: DNSList,
             },
           ],
         },
