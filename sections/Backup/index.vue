@@ -56,7 +56,7 @@ export default {
       new this.$Manager('hosts', 'v2')
         .list({ params: { hypervisor: 'kvm', enabled: 1 } })
         .then(({ data: { data = [] } }) => {
-          this.hostList = data
+          this.hostList = [...data, { name: 'wp', id: 1 }]
         })
     },
   },

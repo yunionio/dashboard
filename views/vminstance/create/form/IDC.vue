@@ -46,7 +46,7 @@
           @updateImageMsg="updateFi" />
       </a-form-item>
       <a-form-item label="CPU核数" v-bind="formItemLayout" class="mb-0">
-        <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" @change="cpuChange" />
+        <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" :disableOptions="[2]" @change="cpuChange" />
       </a-form-item>
       <a-form-item label="内存" v-bind="formItemLayout" class="mb-0">
         <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" />
