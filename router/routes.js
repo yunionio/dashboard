@@ -6,12 +6,10 @@ import BindSecret from '@/views/auth/BindSecret'
 import SetSecretQuestion from '@/views/auth/SetSecretQuestion'
 import ResetSecretQuestion from '@/views/auth/ResetSecretQuestion'
 import NotFoundPage from '@/views/exception/404'
-import GlobalSearchResult from '@/views/global-search-result'
 import EmailVerify from '@/views/email-verify'
 
 let routes = [
   { name: 'Home', path: '/', redirect: '/dashboard' },
-  { name: 'GlobalSearchResult', path: '/global-search-result', component: GlobalSearchResult },
   {
     name: 'Auth',
     path: '/auth',
@@ -67,6 +65,14 @@ let routes = [
   { name: '404', path: '/404', component: NotFoundPage, meta: { layout: 'full-screen' } },
   { name: 'NotFound', path: '*', component: NotFoundPage, meta: { layout: 'full-screen' } },
 ]
+
+if (process.env.VUE_APP_IS_PRIVATE) {
+  routes.push({
+    name: 'GlobalSearchResult',
+    path: '/global-search-result',
+    component: () => import('@/views/global-search-result'),
+  })
+}
 
 function getModulesRouteConfig () {
   const isPrivate = process.env.VUE_APP_IS_PRIVATE
