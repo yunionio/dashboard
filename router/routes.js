@@ -66,14 +66,6 @@ let routes = [
   { name: 'NotFound', path: '*', component: NotFoundPage, meta: { layout: 'full-screen' } },
 ]
 
-if (process.env.VUE_APP_IS_PRIVATE) {
-  routes.push({
-    name: 'GlobalSearchResult',
-    path: '/global-search-result',
-    component: () => import('@/views/global-search-result'),
-  })
-}
-
 function getModulesRouteConfig () {
   const isPrivate = process.env.VUE_APP_IS_PRIVATE
   let ret = []
