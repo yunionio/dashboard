@@ -2,9 +2,9 @@
   <a-form-item :wrapper-col="offsetWrapperCol">
     <a-alert type="warning" class="mb-2">
       <template v-slot:message>
-        <p>上传文件格式支持xlsx，大小不超过2MB</p>
-        <p>物理机注册 会按照预定模板扫描上传的文件，并导入数据<a-button type="link" @click="handleDownloadTemplate">下载模板</a-button></p>
-        <p>请将所有的物理机记录信息放在同一个sheet页</p>
+        <div>上传文件格式支持xlsx，大小不超过2MB</div>
+        <div>物理机注册 会按照预定模板扫描上传的文件，并导入数据<a-button type="link" @click="handleDownloadTemplate">下载模板</a-button></div>
+        <div>请将所有的物理机记录信息放在同一个sheet页</div>
       </template>
     </a-alert>
     <a-upload-dragger

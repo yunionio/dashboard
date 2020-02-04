@@ -22,15 +22,15 @@
       <a-form-item :wrapper-col="offsetWrapperCol">
         <a-alert type="warning">
           <template v-slot:message>
-            <p>通过本功能可以提前设置预上架物理机的信息（物理机MAC地址为唯一标识），包括物理机的名称、IPMI地址等，录入的信息</p>
-            <p>格式规范如下：</p>
-            <p>一行一条物理机记录，一次最多支持100条</p>
-            <p>格式为：MAC地址,名称,IPMI地址,IPMI用户名,IPMI密码</p>
-            <p>中间以英文状态的逗号（","）分隔，若密码中含有英文状态的逗号（","），请将该记录摘除并使用【单条录入】功能进行注册</p>
-            <p>例如：ee:b3:f4:48:1c:f5,gpuhost01,192.168.1.1,root,admin123</p>
-            <p>其中，MAC地址、名称为必填选项，其他为选填，选填字段值可直接省略</p>
-            <p>例如：ee:b3:f4:48:1c:f5,gpuhost01,,, --省略了IPMI地址、IPMI用户名和IPMI密码</p>
-            <p>选填字段为空时，依次表示默认自动分配IP、默认使用用户名root、默认使用密码YunionDev@123；不为空时，则使用用户输入的信息</p>
+            <div>通过本功能可以提前设置预上架物理机的信息（物理机MAC地址为唯一标识），包括物理机的名称、IPMI地址等，录入的信息</div>
+            <div>格式规范如下：</div>
+            <div>一行一条物理机记录，一次最多支持100条</div>
+            <div>格式为：MAC地址,名称,IPMI地址,IPMI用户名,IPMI密码</div>
+            <div>中间以英文状态的逗号（","）分隔，若密码中含有英文状态的逗号（","），请将该记录摘除并使用【单条录入】功能进行注册</div>
+            <div>例如：ee:b3:f4:48:1c:f5,gpuhost01,192.168.1.1,root,admin123</div>
+            <div>其中，MAC地址、名称为必填选项，其他为选填，选填字段值可直接省略</div>
+            <div>例如：ee:b3:f4:48:1c:f5,gpuhost01,,, --省略了IPMI地址、IPMI用户名和IPMI密码</div>
+            <div>选填字段为空时，依次表示默认自动分配IP、默认使用用户名root、默认使用密码YunionDev@123；不为空时，则使用用户输入的信息</div>
           </template>
         </a-alert>
       </a-form-item>
