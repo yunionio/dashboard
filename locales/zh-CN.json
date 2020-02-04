@@ -1119,7 +1119,8 @@
     "domain": "请选择@:dictionary.domain",
     "project": "请选择@:dictionary.project",
     "identity_provider": "请选择@:dictionary.identity_provider",
-    "user": "请选择@:dictionary.user"
+    "user": "请选择@:dictionary.user",
+    "role": "请选择@:dictionary.role"
   },
   "storageAclTypes": {
     "private": "本账号读写",
