@@ -28,7 +28,7 @@ import { mapGetters } from 'vuex'
 import { Manager } from '@/utils/manager'
 
 export default {
-  name: 'CloudregionVpcWire',
+  name: 'CloudregionVpc',
   props: {
     decorator: {
       type: Object,
