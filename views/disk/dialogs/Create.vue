@@ -15,14 +15,14 @@
           <a-input v-decorator="decorators.name" placeholder="字母开头，数字和字母大小写组合，长度为2-128个字符，不含'.','_','@'" />
         </a-form-item>
         <a-form-item :label="storageLabel" v-bind="formItemLayout">
-          <a-select v-decorator="decorators.storage_id">
+          <a-select v-decorator="decorators.storage_id" @change="__storageChange">
             <a-select-option v-for="item in storageOpts" :key="item.value">
               {{item.label}}
             </a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item label="容量" v-bind="formItemLayout">
-          <a-input-number :min="1" :max="100000" v-decorator="decorators.size" /> GB
+          <a-input-number :min="minDiskData" :max="maxDiskData" :step="step" v-decorator="decorators.size" /> GB
         </a-form-item>
       </a-form>
     </div>
@@ -130,6 +130,10 @@ export default {
         },
       },
       storageOpts: [],
+      storageItem: {},
+      maxDiskData: 2048,
+      minDiskData: 1,
+      step: 10,
     }
   },
   computed: {
@@ -206,6 +210,7 @@ export default {
             this.storageOpts = this._translateStorageOps(data)
             if (this.storageOpts.length > 0) {
               this.form.fc.setFieldsValue({ storage_id: this.storageOpts[0].value })
+              this.__storageChange(this.storageOpts[0].value)
             }
           } catch (error) {
             throw new Error('存储类型解析出错：' + error)
@@ -303,6 +308,30 @@ export default {
           ...v,
         }
       })
+    },
+    __storageChange (storageId) {
+      const item = this.storageOpts.find(v => v.value === storageId)
+      this.storageItem = item
+      const provider = item.provider.toLowerCase()
+      try {
+        const storageItem = CommonConstants.STORAGE_TYPES[provider]
+        if (storageItem && storageItem[item.storage_type]) {
+          this.minDiskData = CommonConstants.STORAGE_TYPES[provider][item.storage_type].min
+          this.maxDiskData = CommonConstants.STORAGE_TYPES[provider][item.storage_type].max
+        } else {
+          this.minDiskData = 1
+          this.maxDiskData = 2048
+        }
+      } catch (error) {
+        console.warn(`没有找到 ${CommonConstants.STORAGE_TYPES[provider]} 下面的 ${item.storage_type}`)
+      }
+      this.form.fc.setFieldsValue({ 'size': 10 })
+      const size = this.form.fc.getFieldValue('size')
+      if (size > this.maxDiskData) { // 如果当前容量大于当前集群的最大值，那么取最大值
+        this.form.fc.setFieldsValue({ 'size': this.maxDiskData })
+      } else if (size < this.minDiskData) { // 如果当前容量小于当前集群的最大值，那么取最小值
+        this.form.fc.setFieldsValue({ 'size': this.minDiskData })
+      }
     },
   },
 }
