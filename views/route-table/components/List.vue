@@ -6,6 +6,7 @@
 
 <script>
 import { getCopyWithContentTableColumn, getRegionTableColumn, getAccountTableColumn } from '@/utils/common/tableColumn'
+import { getAccountFilter } from '@/utils/common/tableFilter'
 import windows from '@/mixins/windows'
 
 const routeType = {
@@ -28,9 +29,13 @@ const nextHopType = {
 export default {
   name: 'RouteTableList',
   mixins: [windows],
+  props: {
+    id: String,
+  },
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'route_tables',
         getParams: { details: true },
         filterOptions: {
@@ -38,9 +43,10 @@ export default {
             label: '名称',
             filter: true,
             formatter: val => {
-              return `name.contains(val)`
+              return `name.contains("${val}")`
             },
           },
+          account: getAccountFilter(),
         },
       }),
       columns: [
@@ -55,7 +61,7 @@ export default {
         getAccountTableColumn(),
         {
           field: 'routes',
-          title: '条目（路由表类型 目标网段 下一条）',
+          title: '条目（路由表类型 目标网段 下一跳）',
           minWidth: 100,
           slots: {
             default: ({ row }, h) => {
