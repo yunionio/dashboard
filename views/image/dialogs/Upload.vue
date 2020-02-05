@@ -187,10 +187,15 @@ export default {
         if (values.uploadType === 'file') {
           formData.append('name', values.name)
           formData.append('os_version', '')
-          formData.append('image_size', fileList[0].size)
-          fileList.forEach(file => {
-            formData.append('image', file)
-          })
+          if (fileList.length > 0) {
+            formData.append('image_size', fileList[0].size)
+            fileList.forEach(file => {
+              formData.append('image', file)
+            })
+          } else {
+            this.$message.error('请先选中要上传的镜像文件!')
+            return false
+          }
           await this.handleUpload(formData)
         } else {
           await this.doImportUrl(values)
