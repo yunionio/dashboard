@@ -41,10 +41,10 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
+        const ids = this.params.data.map(item => item.id)
         if (this.params.ok) {
-          await this.params.ok()
+          await this.params.ok(ids)
         } else {
-          const ids = this.params.data.map(item => item.id)
           let params = {}
           params = {
             ...params,
