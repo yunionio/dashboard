@@ -10,7 +10,7 @@ describe('CpuRadio', () => {
   ]
   const options = [1, 2, 4]
 
-  it('check showMore', () => {
+  it('check show ...', () => {
     const max = 2
     const wrapper = shallowMount(CpuRadio, {
       propsData: { decorator, options, max },
@@ -18,7 +18,7 @@ describe('CpuRadio', () => {
     expect(wrapper.html()).toContain('...')
   })
 
-  it('check disabled', () => {
+  it('check cpu item2 is disabled', () => {
     const disableOptions = [2]
     const wrapper = shallowMount(CpuRadio, {
       propsData: { decorator, options, disableOptions },
