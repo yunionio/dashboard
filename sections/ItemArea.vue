@@ -5,10 +5,10 @@
     :names="names"
     :isRequired="isRequired"
     :defaultActiveFirstOption="defaultActiveFirstOption"
-    :cityParams="{cloud_env: 'public', ...scopeParams}"
-    :zoneParams="{service: 'elasticcaches', ...scopeParams}"
+    :cityParams="cityParams"
+    :zoneParams="zoneParams"
     :providerParams="scopeParams"
-    :cloudregionParams="{service: 'elasticcaches', ...scopeParams}"
+    :cloudregionParams="cloudregionParams"
     @cityFetchSuccess="cityFetchSuccess"
     @providerFetchSuccess="providerFetchSuccess" />
 </template>
@@ -40,6 +40,12 @@ export default {
     }
   },
   computed: {
+    isRds () {
+      return this.$route.path.indexOf('rds') > -1
+    },
+    service () {
+      return this.isRds ? 'dbinstances' : 'elasticcaches'
+    },
     decorators () {
       return {
         provider: ['provider', {
@@ -57,6 +63,21 @@ export default {
               },
             }],
         }],
+      }
+    },
+    cityParams () {
+      return { cloud_env: 'public', ...this.scopeParams }
+    },
+    zoneParams () {
+      return {
+        service: this.service,
+        ...this.scopeParams,
+      }
+    },
+    cloudregionParams () {
+      return {
+        service: this.service,
+        ...this.scopeParams,
       }
     },
   },
