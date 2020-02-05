@@ -11,15 +11,28 @@
           <a-radio-group v-decorator="decorators.platform">
             <a-radio-button value="public_cloud">公有云</a-radio-button>
             <a-radio-button value="private_cloud">私有云</a-radio-button>
+            <a-radio-button value="idc">本地IDC</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item label="区域" v-bind="formItemLayout">
+        <a-form-item label="区域" v-bind="formItemLayout" v-if="platform !== 'idc'">
           <cloudprovider-region
            :decorator="decorators"
            :cloudproviderParams="cloudproviderParams" />
         </a-form-item>
-        <a-form-item label="目标网段" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.cidr_block" placeholder="请输入IP段，例如：192.168.0.0/16" />
+        <a-form-item label="区域" v-bind="formItemLayout" v-else>
+          <base-select
+            resource="cloudregions"
+            v-decorator="decorators.idcRegion"
+            :selectProps="{ 'placeholder': '请选择区域' }"
+            :params="idcCloudRegionParams" />
+        </a-form-item>
+        <a-form-item label="目标网段" v-bind="formItemLayout" :extra="platform !== 'idc' ? '一旦创建成功，网段不能修改。支持使用 192.168.0.0/16、172.16.0.0/12、10.0.0.0/8 及其子网作为专有网络地址段。' : '一旦创建成功，网段不能修改。'">
+          <a-input v-decorator="decorators.cidr_block" placeholder="请输入IP段，例如：192.168.0.0/16" v-if="platform !== 'idc'" />
+          <a-select v-decorator="decorators.cidr_block" v-else>
+            <a-select-option value="192.168.0.0/16">192.168.0.0/16</a-select-option>
+            <a-select-option value="172.16.0.0/12">172.16.0.0/12</a-select-option>
+            <a-select-option value="10.0.0.0/8">10.0.0.0/8</a-select-option>
+          </a-select>
         </a-form-item>
       </a-form>
     </div>
@@ -88,6 +101,14 @@ export default {
             ],
           },
         ],
+        idcRegion: [
+          'idcRegion',
+          {
+            rules: [
+              { required: true, message: '请输入区域' },
+            ],
+          },
+        ],
         cidr_block: [
           'cidr_block',
           {
@@ -109,6 +130,12 @@ export default {
         },
       },
       platform: 'public_cloud',
+      idcCloudRegionParams: {
+        cloud_env: 'onpremise',
+        usable: true,
+        show_emulated: true,
+        project_domain: 'default',
+      },
     }
   },
   computed: {
@@ -164,11 +191,20 @@ export default {
       this.loading = true
       try {
         let values = await this.form.fc.validateFields()
-        const params = {
-          cidr_block: values.cidr_block,
-          cloudregion_id: values.region.key,
-          manager: values.cloudprovider.key,
-          name: values.name,
+        let params = {}
+        if (values.region) {
+          params = {
+            cidr_block: values.cidr_block,
+            cloudregion_id: values.region.key,
+            manager: values.cloudprovider.key,
+            name: values.name,
+          }
+        } else {
+          params = {
+            cidr_block: values.cidr_block,
+            cloudregion_id: values.idcRegion,
+            name: values.name,
+          }
         }
         await this.doCreate(params)
         this.loading = false
