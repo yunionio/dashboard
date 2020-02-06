@@ -1,12 +1,12 @@
 <template>
   <div>
     <template v-if="isGlobalSearch">
-      <snapshot-list :list="list" type="disk" v-bind="$props" />
+      <snapshot-list :list="list" v-bind="$props" />
     </template>
     <template v-else>
-      <page-header title="硬盘快照" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
+      <page-header title="硬盘快照" />
       <page-body>
-        <snapshot-list :list="list" type="disk" :cloud-env="cloudEnv" />
+        <snapshot-list :list="list" />
       </page-body>
     </template>
   </div>
