@@ -32,7 +32,7 @@ export default {
         filterOptions: {
           name: getNameFilter(),
           enabled: getEnabledFilter(),
-          status: getStatusFilter({ statusModule: 'blockStorage' }),
+          status: getStatusFilter({ statusModule: 'blockstorage' }),
           storage_type: {
             label: '存储类型',
             dropdown: true,
@@ -99,6 +99,14 @@ export default {
         },
         getBrandTableColumn(),
         {
+          field: 'medium_type',
+          title: '介质类型',
+          width: 120,
+          formatter: ({ row }) => {
+            return MEDIUM_TYPES[row.medium_type] || row.medium_type
+          },
+        },
+        {
           field: 'schedtag',
           title: '调度标签',
           width: 120,
@@ -132,22 +140,47 @@ export default {
           },
         },
         {
-          label: '启用',
-          permission: 'storages_perform_enable',
-          action: (row) => {
-            this.list.batchPerformAction('enable', null, '')
-          },
-          meta: () => {
-            return {
-              validate: !!this.list.selectedItems.length,
-            }
-          },
-        },
-        {
-          label: '禁用',
-          permission: 'storages_perform_disable',
-          action: (row) => {
-            this.list.batchPerformAction('disable', null, '')
+          label: '批量操作',
+          actions: () => {
+            return [
+              {
+                label: '启用',
+                permission: 'storages_perform_enable',
+                action: (row) => {
+                  this.list.batchPerformAction('enable', null, '')
+                },
+                meta: () => {
+                  return {
+                    validate: this.list.selectedItems.some(item => !item.enabled),
+                  }
+                },
+              },
+              {
+                label: '禁用',
+                permission: 'storages_perform_disable',
+                action: (row) => {
+                  this.list.batchPerformAction('disable', null, '')
+                },
+                meta: () => {
+                  return {
+                    validate: this.list.selectedItems.some(item => item.enabled),
+                  }
+                },
+              },
+              {
+                label: '删除',
+                permission: 'storages_delete',
+                action: row => {
+                  this.createDialog('DeleteResDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    title: '删除',
+                    list: this.list,
+                  })
+                },
+                meta: () => this.$getDeleteResult(this.list.selectedItems),
+              },
+            ]
           },
           meta: () => {
             return {
@@ -197,8 +230,10 @@ export default {
                   })
                 },
                 meta: row => {
+                  const validate = ['rbd', 'nfs', 'gpfs'].includes(row.storage_type)
                   return {
-                    validate: true,
+                    validate,
+                    tooltip: !validate && 'Ceph、GPFS或NFS类型的存储支持该操作',
                   }
                 },
               },
@@ -237,11 +272,7 @@ export default {
                     list: this.list,
                   })
                 },
-                meta: row => {
-                  return {
-                    validate: row.can_delete,
-                  }
-                },
+                meta: (row) => this.$getDeleteResult(row),
               },
             ]
           },
