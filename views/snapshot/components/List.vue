@@ -58,7 +58,7 @@ export default {
           hideField: true,
           slotCallback: row => {
             return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'SnapshotSidePage', { type: this.type }) }>{ row.name }</side-page-trigger>
+              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'SnapshotSidePage', { type: 'disk' }) }>{ row.name }</side-page-trigger>
             )
           },
         }),
@@ -79,12 +79,7 @@ export default {
           title: '快照大小',
           width: 70,
           formatter: ({ row }) => {
-            if (this.type === 'disk') {
-              return sizestr(row.size, 'M', 1024)
-            } else if (this.type === 'instance') {
-              const size = row.snapshots.reduce((a, b) => a + b.size, 0)
-              return sizestr(size, 'M', 1024)
-            }
+            return sizestr(row.size, 'M', 1024)
           },
         },
         getStatusTableColumn({ statusModule: 'snapshot' }),
