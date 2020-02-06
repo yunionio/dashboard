@@ -10,15 +10,11 @@
 </template>
 
 <script>
-import { DISK_TYPES, STORAGE_TYPES } from '../constants'
-import { RollbackDiskValidate } from '../validate'
 import {
   getNameDescriptionTableColumn,
-  getBrandTableColumn,
   getStatusTableColumn,
   getProjectTableColumn,
   getTimeTableColumn,
-  getCopyWithContentTableColumn,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import { sizestr } from '@/utils/utils'
@@ -62,16 +58,18 @@ export default {
             )
           },
         }),
-        getCopyWithContentTableColumn({
-          field: 'disk_name',
-          title: '硬盘',
-        }),
         {
-          field: 'disk_type',
-          title: '磁盘类型',
-          width: 70,
-          formatter: ({ row }) => {
-            return DISK_TYPES[row.disk_type] || row.disk_type
+          field: 'rules',
+          title: '子快照',
+          minWidth: 220,
+          type: 'expand',
+          slots: {
+            content: ({ row }) => {
+              const list = row.snapshots.map(val => (
+                <a-tag class='mb-2'>{ val.name }</a-tag>
+              ))
+              return list
+            },
           },
         },
         {
@@ -89,7 +87,6 @@ export default {
         },
         getStatusTableColumn({ statusModule: 'snapshot' }),
         getProjectTableColumn(),
-        getBrandTableColumn(),
         {
           field: 'guest',
           title: '虚拟机',
@@ -107,14 +104,6 @@ export default {
           },
         },
         getTimeTableColumn(),
-        {
-          field: 'storage_type',
-          title: '存储类型',
-          width: 80,
-          formatter: ({ row }) => {
-            return STORAGE_TYPES[row.storage_type] || row.storage_type || '-'
-          },
-        },
       ],
       groupActions: [
         {
@@ -148,27 +137,6 @@ export default {
         },
       ],
       singleActions: [
-        {
-          label: '回滚硬盘',
-          permission: 'disks_perform_disk_reset',
-          action: obj => {
-            this.createDialog('RollbackDiskDialog', {
-              data: [obj],
-              columns: this.columns,
-              list: this.list,
-            })
-          },
-          meta: obj => {
-            const brand = obj.brand && obj.brand.toLowerCase()
-            if (!obj.disk_name) {
-              return { validate: false }
-            }
-            if (brand && RollbackDiskValidate[brand]) {
-              return { ...RollbackDiskValidate[brand](obj) }
-            }
-            return { validate: true }
-          },
-        },
         {
           label: '删除',
           action: obj => {

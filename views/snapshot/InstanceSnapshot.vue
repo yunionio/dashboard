@@ -1,12 +1,12 @@
 <template>
   <div>
     <template v-if="isGlobalSearch">
-      <snapshot-list :list="list" type="instance" v-bind="$props" />
+      <snapshot-list :list="list" v-bind="$props" />
     </template>
     <template v-else>
-      <page-header title="主机快照" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
+      <page-header title="主机快照" />
       <page-body>
-        <snapshot-list :list="list" type="instance" :cloud-env="cloudEnv" v-bind="$props" />
+        <snapshot-list :list="list" v-bind="$props" />
       </page-body>
     </template>
   </div>
@@ -14,7 +14,7 @@
 
 <script>
 import { steadyStatus } from './constants'
-import SnapshotList from './components/List'
+import SnapshotList from './components/InstanceList'
 import { getTenantFilter, getStatusFilter } from '@/utils/common/tableFilter'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 import globalSearchMixins from '@/mixins/globalSearch'
