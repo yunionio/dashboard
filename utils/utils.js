@@ -300,3 +300,22 @@ export function sizestrC (...args) {
   const matched = res.match(reg) // ['111T', '111', 'T']
   return `${matched[1]} ${matched[2]}B`
 }
+
+/**
+ * @description 找到数组某一项并提前到第一项
+ * @param {Array} arr
+ * @param {Function} condition 满足找到目标值的条件函数
+ */
+export const findAndUnshift = (arr, condition) => {
+  if (!condition || !R.is(Function, condition)) return arr
+  let firstValue = arr[0]
+  for (var i = 0; i < arr.length; i++) {
+    if (condition(arr[i])) {
+      firstValue = arr[i]
+      arr.splice(i, 1)
+      break
+    }
+  }
+  arr.unshift(firstValue)
+  return arr
+}
