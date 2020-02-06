@@ -50,17 +50,16 @@ export default {
             label: '名称',
             filter: true,
             formatter: val => {
-              return `name.contains(val)`
+              return `name.contains("${val}")`
             },
           },
-          brand: getBrandFilter('object_storage_brands'),
+          brand: getBrandFilter('network_manage_brands'),
         },
       }),
       columns: [
         getNameDescriptionTableColumn({
           vm: this,
           hideField: true,
-          addLock: true,
           slotCallback: row => {
             return (
               <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'NatSidePage') }>{ row.name }</side-page-trigger>
