@@ -142,6 +142,7 @@ export const getNameDescriptionTableColumn = ({
   showDesc = true,
   sortable = true,
   addBackup,
+  formRules,
 } = {}) => {
   return {
     field: 'name',
@@ -152,12 +153,12 @@ export const getNameDescriptionTableColumn = ({
     slots: {
       default: ({ row }, h) => {
         const ret = [
-          <list-body-cell-wrap copy edit row={row} list={vm.list} hideField={ hideField } addLock={ addLock } addBackup={ addBackup }>
+          <list-body-cell-wrap copy edit row={row} list={vm.list} hideField={ hideField } addLock={ addLock } addBackup={ addBackup } formRules={formRules}>
             { slotCallback ? slotCallback(row) : null }
           </list-body-cell-wrap>,
         ]
         if (showDesc) {
-          ret.push(<list-body-cell-wrap edit field="description" row={row} list={vm.list} />)
+          ret.push(<list-body-cell-wrap edit field="description" row={row} list={vm.list} formRules={formRules} />)
         }
         return ret
       },
