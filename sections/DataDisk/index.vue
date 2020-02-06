@@ -33,8 +33,7 @@ import Disk from '@Compute/sections/Disk'
 import { STORAGE_AUTO } from '@Compute/constants'
 import { STORAGE_TYPES } from '@/constants/compute'
 import { HYPERVISORS_MAP } from '@/constants'
-import { uuid } from '@/utils/utils'
-import { findAndUnshift } from '@/utils/utils'
+import { uuid, findAndUnshift } from '@/utils/utils'
 
 // 磁盘最小值
 const DISK_MIN_SIZE = 10
