@@ -6,10 +6,12 @@
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" v-bind="formItemLayout">
         <a-form-item label="宿主机">
-          <!-- <a-input placeholder="请输入名称" v-decorator="decorators.name" /> -->
           <a-select :loading="hostsLoading" allowClear showSearch :filterOption="filterOption" mode="multiple" v-decorator="decorators.host" placeholder="请选择宿主机（可多选）">
             <a-select-option v-for="item in hosts" :key="item.id" :value="item.id">{{item.name}}</a-select-option>
           </a-select>
+        </a-form-item>
+        <a-form-item label="挂载点" v-if="!isHiddenDir">
+          <a-input v-decorator="decorators.dir"  placeholder="挂载点不能为空，格式如: /data" />
         </a-form-item>
       </a-form>
     </div>
@@ -48,11 +50,22 @@ export default {
           'host',
           {
             rules: [
-              { required: true, message: '请a选择宿主机' },
+              { required: true, message: '宿主机不能为空' },
+            ],
+          },
+        ],
+        dir: [
+          'dir',
+          {
+            rules: [
+              { required: true, message: '挂载点不能为空，格式如: /data' },
             ],
           },
         ],
       }
+    },
+    isHiddenDir () {
+      return ['rbd'].includes(this.params.data[0].storage_type)
     },
   },
   created () {
@@ -69,7 +82,7 @@ export default {
       const manager = new this.$Manager('hosts', 'v2')
       this.hostsLoading = true
       try {
-        const { data = {} } = await manager.list({ data: params })
+        const { data = {} } = await manager.list({ params })
         this.hosts = data.data || []
       } catch (err) {
         throw err
@@ -77,25 +90,19 @@ export default {
         this.hostsLoading = false
       }
     },
-    validateForm () {
-      return new Promise((resolve, reject) => {
-        this.form.fc.validateFields((err, values) => {
-          if (err) return reject(err)
-          resolve(values)
-        })
-      })
-    },
     async handleConfirm () {
       this.loading = true
       try {
-        const values = this.validateForm()
-        const manager = new this.$Manager('storages', 'v2')
+        const values = await this.form.fc.validateFields()
+        const manager = new this.$Manager('hosts', 'v2')
+        if (!this.isHiddenDir) {
+          values['mount_point'] = values.dir
+        }
         await manager.batchPerformAction({
-          ids: values.hosts,
-          managerArgs: {
-            action: 'host',
-            // data: ,
-          },
+          ids: values.host,
+          action: '',
+          data: values,
+          ctx: [['storages', this.params.data[0].id]],
         })
         this.cancelDialog()
         this.params.list.fetchData()

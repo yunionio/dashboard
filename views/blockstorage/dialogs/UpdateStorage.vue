@@ -56,7 +56,7 @@ export default {
         commit_bound: [
           'commit_bound',
           {
-            initialValue: 0,
+            initialValue: this.params.data.commit_bound || 1,
             rules: [
               { required: true, message: '请设置超售比' },
             ],
