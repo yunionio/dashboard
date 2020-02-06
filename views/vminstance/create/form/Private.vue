@@ -51,7 +51,7 @@
           :sku-params="skuParam"
           :hypervisor="form.fd.hypervisor" />
       </a-form-item>
-      <a-form-item label="系统磁盘" v-bind="formItemLayout" class="mb-0">
+      <a-form-item label="系统盘" v-bind="formItemLayout" class="mb-0">
         <system-disk
           :decorator="decorators.systemDisk"
           :type="type"
