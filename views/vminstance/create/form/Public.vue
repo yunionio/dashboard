@@ -64,7 +64,7 @@
           :cacheImageParams="cacheImageParams"
           @updateImageMsg="updateFi" />
       </a-form-item>
-      <a-form-item label="系统磁盘" v-bind="formItemLayout" class="mb-0">
+      <a-form-item label="系统盘" v-bind="formItemLayout" class="mb-0">
         <system-disk
           v-if="form.fd.sku"
           :decorator="decorators.systemDisk"
