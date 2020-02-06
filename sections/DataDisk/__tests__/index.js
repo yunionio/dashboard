@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils'
 import { diskValidator } from '@Compute/utils/createServer'
 import * as R from 'ramda'
+import Disk from '@Compute/sections/Disk'
 import DataDisk from '../index'
 import { isRequired } from '@/utils/validate'
 
@@ -258,8 +259,26 @@ describe('DataDisk kvm', () => {
     const firstKey = wrapper.vm.dataDisks[0].key
     const secondKey = wrapper.vm.dataDisks[1].key
     wrapper.vm.decrease(firstKey)
-    console.log(wrapper.vm.typesMap)
-
     expect(wrapper.vm.dataDisks[0].key).toBe(secondKey)
+  })
+
+  it('check diskTypeChange', () => {
+    wrapper.vm.add()
+    wrapper.vm.add()
+    wrapper.find(Disk).vm.$emit('diskTypeChange', {
+      key: 'rbd',
+      label: 'Ceph RBD',
+    })
+    wrapper.vm.$nextTick(() => {
+      expect(wrapper.vm.dataDisks[0].diskType.key).toBe('rbd')
+      expect(wrapper.vm.$el).toMatchSnapshot()
+    })
+  })
+
+  // 如果磁盘类别里面有本地磁盘，优先本地磁盘作为第一项
+  it('check add once, diskType is local', () => {
+    if (wrapper.vm.typesMap.local) {
+      expect(Object.keys(wrapper.vm.typesMap)[0]).toBe('local')
+    }
   })
 })
