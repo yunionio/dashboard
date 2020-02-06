@@ -34,6 +34,7 @@ import { STORAGE_AUTO } from '@Compute/constants'
 import { STORAGE_TYPES } from '@/constants/compute'
 import { HYPERVISORS_MAP } from '@/constants'
 import { uuid } from '@/utils/utils'
+import { findAndUnshift } from '@/utils/utils'
 
 // 磁盘最小值
 const DISK_MIN_SIZE = 10
@@ -120,6 +121,9 @@ export default {
       const hypervisorDisks = { ...STORAGE_TYPES[hyper] } || {}
       if (!this.capabilityData || !this.capabilityData.data_storage_types2) return ret
       let currentTypes = this.capabilityData.data_storage_types2[hyper] || []
+      if (currentTypes.find(val => val.includes('local'))) {
+        currentTypes = findAndUnshift(currentTypes, item => item.includes('local'))
+      }
       if (!R.isNil(this.sku) && !R.isEmpty(this.sku)) {
         for (let obj in hypervisorDisks) {
           if (hypervisorDisks[obj].skuFamily && !hypervisorDisks[obj].skuFamily.includes(this.sku.instance_type_family)) {
