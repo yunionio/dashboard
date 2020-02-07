@@ -1,4 +1,5 @@
 import * as R from 'ramda'
+import i18n from '@/locales'
 
 export const UNITS = ['B', 'K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y']
 
@@ -319,4 +320,21 @@ export const findAndUnshift = (arr, condition) => {
   }
   ret.unshift(firstValue)
   return ret
+}
+
+export const i18nSetProperty = ({
+  obj,
+  key,
+  i18nKey,
+  props,
+  perfix = '',
+  suffix = '',
+}) => {
+  Object.defineProperty(obj, key, {
+    ...props,
+    enumerable: true,
+    get () {
+      return `${perfix}${i18n.t(i18nKey)}${suffix}`
+    },
+  })
 }
