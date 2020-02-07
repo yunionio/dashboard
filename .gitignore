@@ -21,3 +21,9 @@ yarn-error.log*
 
 # local dev server config files
 dev.server.config.js
+
+# snapshots
+**/__snapshots__
+
+# coverage
+**/coverage
