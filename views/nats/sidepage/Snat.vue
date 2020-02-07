@@ -52,12 +52,18 @@ export default {
           title: 'SNAT名称',
         }),
         {
-          field: 'access_ip',
+          field: 'ip',
           title: '公网IP地址',
         },
         {
           field: 'sn',
           title: 'IP子网',
+          formatter: ({ row }) => {
+            if (row.network) {
+              return `${row.network.name} (起:${row.network.guest_ip_start} 止:${row.network.guest_ip_end})`
+            }
+            return '-'
+          },
         },
         getStatusTableColumn({ statusModule: 'nat' }),
       ],
@@ -83,8 +89,10 @@ export default {
             this.createDialog('DeleteResDialog', {
               data: this.list.selectedItems,
               columns: this.columns,
-              title: '删除',
+              title: '删除SNAT条目',
               list: this.list,
+              name: 'SNAT条目',
+              alert: '提示：请在删除前确认数据已备份，删除后数据无法找回',
             })
           },
           meta: () => {
@@ -99,10 +107,12 @@ export default {
           label: '删除',
           action: (obj) => {
             this.createDialog('DeleteResDialog', {
-              title: '删除',
+              title: '删除SNAT条目',
               data: [obj],
               columns: this.columns,
               list: this.list,
+              name: 'SNAT条目',
+              alert: '提示：请在删除前确认数据已备份，删除后数据无法找回',
             })
           },
         },
