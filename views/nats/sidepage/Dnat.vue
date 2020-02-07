@@ -98,8 +98,10 @@ export default {
             this.createDialog('DeleteResDialog', {
               data: this.list.selectedItems,
               columns: this.columns,
-              title: '删除',
+              title: '删除DNAT条目',
               list: this.list,
+              name: 'DNAT条目',
+              alert: '提示：请在删除前确认数据已备份，删除后数据无法找回',
             })
           },
           meta: () => {
@@ -114,10 +116,12 @@ export default {
           label: '删除',
           action: (obj) => {
             this.createDialog('DeleteResDialog', {
-              title: '删除',
+              title: '删除DNAT条目',
               data: [obj],
               columns: this.columns,
               list: this.list,
+              name: 'DNAT条目',
+              alert: '提示：请在删除前确认数据已备份，删除后数据无法找回',
             })
           },
         },

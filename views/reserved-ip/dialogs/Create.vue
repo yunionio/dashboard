@@ -95,6 +95,7 @@ export default {
           span: 3,
         },
       },
+      timer: null,
     }
   },
   computed: {
@@ -117,18 +118,25 @@ export default {
       const params = {
         search: value,
       }
-      const data = await new this.$Manager('reservedips').list({ params })
-      if (data.data.data.length >= 1) {
-        callback(new Error('该IP已被预留,请勿重复添加'))
-      } else {
-        const ips = Object.values(this.form.fc.getFieldValue('networkIps'))
-        const ipsRepreat = Array.from(new Set(ips))
-        if (ipsRepreat.length === ips.length) {
-          callback()
-        } else {
-          callback(new Error('请勿重复添加相同IP'))
-        }
+      if (this.timer) {
+        clearTimeout(this.timer)
       }
+      this.timer = setTimeout(() => {
+        new this.$Manager('reservedips').list({ params })
+          .then(data => {
+            if (data.data.data.length >= 1) {
+              callback(new Error('该IP已被预留,请勿重复添加'))
+            } else {
+              const ips = Object.values(this.form.fc.getFieldValue('networkIps'))
+              const ipsRepreat = Array.from(new Set(ips))
+              if (ipsRepreat.length === ips.length) {
+                callback()
+              } else {
+                callback(new Error('请勿重复添加相同IP'))
+              }
+            }
+          })
+      })
     },
     doCreate (data) {
       return new this.$Manager('networks').performAction({

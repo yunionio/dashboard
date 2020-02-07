@@ -24,10 +24,10 @@
         </a-radio-group>
       </a-form-item>
       <a-form-item label="起始IP" v-bind="formItemLayout">
-        <a-input v-decorator="decorators.guest_ip_start" />
+        <a-input v-decorator="decorators.guest_ip_start" :disabled="isIdcVpc" />
       </a-form-item>
       <a-form-item label="结束IP" v-bind="formItemLayout">
-        <a-input v-decorator="decorators.guest_ip_end" />
+        <a-input v-decorator="decorators.guest_ip_end" :disabled="isIdcVpc" />
       </a-form-item>
       <a-form-item label="子网掩码" v-bind="formItemLayout">
         <a-select v-decorator="decorators.guest_ip_mask">
@@ -230,7 +230,17 @@ export default {
         { label: '30', value: '30' },
       ],
       wire_id: '',
+      cloudEnv: '',
+      vpcId: '',
     }
+  },
+  computed: {
+    isIdcVpc () {
+      if (this.cloudEnv === 'onpremise' && this.vpcId !== 'default') {
+        return true
+      }
+      return false
+    },
   },
   provide () {
     return {
@@ -259,6 +269,8 @@ export default {
         guest_domain: data.guest_domain || '',
       })
       this.wire_id = data.wire_id
+      this.cloudEnv = data.cloud_env
+      this.vpcId = data.vpc_id
     },
     validateGateway (rule, value, callback) {
       // 只需要查看是否是以 0 结尾
