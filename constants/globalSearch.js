@@ -327,7 +327,7 @@ export const getSearchMaps = (searchRes = {}) => {
       label: '主机（回收站）',
       id: 'deleteServers',
       component: 'ServerRecoveryList',
-      hasPermission: hasPermission({ key: 'servers_list' }),
+      hasPermission: hasPermission({ key: 'servers_list' }) && !store.getters.isProjectMode,
       params: {
         common: {
           ...commonSearchQuery,
@@ -345,7 +345,7 @@ export const getSearchMaps = (searchRes = {}) => {
       label: '硬盘（回收站）',
       id: 'deleteDisks',
       component: 'DiskRecoveryList',
-      hasPermission: hasPermission({ key: 'disks_list' }),
+      hasPermission: hasPermission({ key: 'disks_list' }) && !store.getters.isProjectMode,
       params: {
         common: {
           ...commonSearchQuery,
@@ -363,7 +363,7 @@ export const getSearchMaps = (searchRes = {}) => {
       label: '镜像（回收站）',
       id: 'deleteImages',
       component: 'ImageRecoveryList',
-      hasPermission: hasPermission({ key: 'images_list' }),
+      hasPermission: hasPermission({ key: 'images_list' }) && !store.getters.isProjectMode,
       params: {
         common: {
           ...commonSearchQuery,
