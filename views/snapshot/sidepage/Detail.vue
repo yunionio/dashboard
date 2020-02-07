@@ -57,7 +57,7 @@ export default {
           field: 'resource',
           title: '快照类别',
           formatter: ({ cellValue }) => {
-            return '硬盘快照'
+            return isInstanceSnapshot ? '主机快照' : '硬盘快照'
           },
         },
         {
