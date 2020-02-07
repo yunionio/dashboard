@@ -21,6 +21,7 @@ export default {
       zh: {},
       en: {},
     },
+    oem: {},
   },
   getters: {
     logo (state) {
@@ -49,6 +50,9 @@ export default {
       return Promise.resolve()
     },
     fetchDictionary ({ commit }, payload) {
+      return Promise.resolve()
+    },
+    fetchOEM ({ commit }, payload) {
       return Promise.resolve()
     },
   },
