@@ -236,7 +236,7 @@ export default {
         if (this.remoteFn) {
           params = { ...params, ...this.remoteFn(query) }
         } else {
-          params[this.searchKey] = query
+          params.filter = `${this.searchKey}.contains(${query})`
         }
       }
       manager.list({ params, ctx: this.ctx })
