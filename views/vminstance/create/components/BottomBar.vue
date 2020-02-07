@@ -164,7 +164,7 @@ export default {
         ret.push(`${vcpu}核CPU`)
         ret.push(`${sizestrWithUnit(vmem, 'M', 1024)}内存`)
       }
-      ret.push(`${this.disk}GB磁盘（${_.get(this.fd, 'systemDiskType.label') || '-'}）`)
+      ret.push(`${this.disk || 0}GB磁盘（${_.get(this.fd, 'systemDiskType.label') || '-'}）`)
       return ret.join('、')
     },
     image () {
