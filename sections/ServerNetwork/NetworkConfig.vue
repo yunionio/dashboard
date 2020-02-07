@@ -8,6 +8,7 @@
           class="w-100"
           v-decorator="decorator.networks(item.key)"
           resource="networks"
+          remote
           :item.sync="item.network"
           :need-params="true"
           :params="networkParams"
