@@ -274,6 +274,19 @@ export const diskResizeConfig = {
       tooltip: '',
     }
   },
+  google (obj) {
+    const { validate, tooltip } = diskResizeConfig.base(obj)
+    if (!validate) {
+      return {
+        validate: false,
+        tooltip,
+      }
+    }
+    return {
+      validate: true,
+      tooltip: '',
+    }
+  },
 }
 
 // 磁盘新建快照的逻辑梳理
@@ -401,6 +414,12 @@ export const diskCreateSnapshotConfig = {
         tooltip: `${PROVIDER_MAP[provider].label}磁盘仅在磁盘类型为【${DISK_TYPES[obj.disk_type]}】下可以进行该操作`,
       }
     }
+    return {
+      validate: true,
+      tooltip: '',
+    }
+  },
+  google () {
     return {
       validate: true,
       tooltip: '',
