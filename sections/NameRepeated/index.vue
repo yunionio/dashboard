@@ -25,7 +25,7 @@ export default {
     },
     version: {
       type: String,
-      default: 'v1',
+      default: 'v2',
     },
   },
   data () {
