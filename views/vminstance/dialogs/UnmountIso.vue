@@ -31,11 +31,11 @@ export default {
         const ids = this.params.data.map(item => item.id)
         await this.params.list.onManager('batchPerformAction', {
           id: ids,
-          steadyStatus: ['running', 'ready'],
           managerArgs: {
             action: 'ejectiso',
           },
         })
+        this.params.list.refresh()
         this.cancelDialog()
       } finally {
         this.loading = false
