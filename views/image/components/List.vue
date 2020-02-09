@@ -11,6 +11,7 @@
 import { sizestr } from '@/utils/utils'
 import { getStatusTableColumn, getNameDescriptionTableColumn, getProjectTableColumn, isPublicTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 // import { getTenantFilter, getOsTypeFilter, getStatusFilter } from '@/utils/common/tableFilter'
+import expectStatus from '@/constants/expectStatus'
 import SystemIcon from '@/sections/SystemIcon'
 import WindowsMixin from '@/mixins/windows'
 
@@ -53,6 +54,7 @@ export default {
         resource: 'images',
         apiVersion: 'v1',
         getParams: this.getParam,
+        steadyStatus: Object.values(expectStatus.image).flat(),
         filterOptions: {
           name: {
             label: '镜像名称',
