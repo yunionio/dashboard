@@ -84,8 +84,8 @@ export default {
               title: '操作系统',
               formatter: ({ row }) => {
                 const distribution = (row.metadata && row.metadata.os_distribution) ? row.metadata.os_distribution : row.os_type
-                const { os_version: version = '' } = row.metadata || {}
-                return distribution + version
+                const { os_version: version = '' } = row.metadata['os_version']
+                return distribution + (version === '-' ? '' : version)
               },
             },
             getCopyWithContentTableColumn({ field: 'ips', title: 'IP' }),
@@ -95,6 +95,7 @@ export default {
               hideField: true,
               message: this.diskInfos.image,
               slotCallback: row => {
+                if (!this.diskInfos.image) return '-'
                 return [<span>{ this.diskInfos.image }</span>]
               },
             }),

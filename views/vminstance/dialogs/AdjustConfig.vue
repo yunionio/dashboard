@@ -397,11 +397,13 @@ export default {
         if (mem < this.data[i].vmem_size) {
           mem = this.data[i].vmem_size
         }
-        this.data[i].disks_info.forEach((item) => {
-          if (item.disk_type !== 'sys' && item.index !== 0) {
-            datadisks.push({ value: item.size / 1024, type: item.storage_type })
-          }
-        })
+        if (this.data[i].disks_info) {
+          this.data[i].disks_info.forEach((item) => {
+            if (item.disk_type !== 'sys' && item.index !== 0) {
+              datadisks.push({ value: item.size / 1024, type: item.storage_type })
+            }
+          })
+        }
       }
       return [cpu, mem / 1024, datadisks]
     },

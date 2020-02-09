@@ -12,8 +12,8 @@
 
 <script>
 import * as R from 'ramda'
+import { diskResizeConfig, diskCreateSnapshotConfig } from '@Compute/views/disk/utils'
 import { MEDIUM_MAP } from '../../../constants'
-import { diskResizeConfig, diskCreateSnapshotConfig } from '../utils'
 import {
   getNameDescriptionTableColumn,
   getBrandTableColumn,
@@ -31,6 +31,7 @@ import { sizestr } from '@/utils/utils'
 import globalSearchMixins from '@/mixins/globalSearch'
 
 const supportShpolcyBrand = ['OneCloud', 'Qcloud', 'Aliyun']
+
 export default {
   name: 'DiskList',
   mixins: [WindowsMixin, globalSearchMixins],
