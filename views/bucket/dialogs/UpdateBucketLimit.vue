@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{this.params.title}}</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" :action="this.params.title" name="块存储" />
+      <dialog-selected-tips :count="params.data.length" :action="this.params.title" name="存储桶" />
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" v-bind="formItemLayout">
         <a-form-item label="容量上限">

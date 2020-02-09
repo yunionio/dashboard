@@ -70,13 +70,17 @@ export default {
       try {
         const { acl } = await this.validateForm()
         const { resName, data } = this.params
+        const key = data.map(({ key }) => key).filter((t) => !!t)
+        const params = {
+          acl,
+        }
+        if (key && key.length > 0) {
+          params['key'] = key
+        }
         await new this.$Manager('buckets', 'v2').performAction({
           id: resName,
           action: 'acl',
-          data: {
-            acl,
-            key: data.map(({ key }) => key),
-          },
+          data: params,
         })
         this.params.list.fetchData()
         this.cancelDialog()
