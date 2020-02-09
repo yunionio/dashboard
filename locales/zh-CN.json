@@ -450,7 +450,7 @@
       "start_delete": "开始删除",
       "deleting": "删除中",
       "deleted": "已删除",
-      "delete_fail": "删除失败"
+      "delete_failed": "删除失败"
     },
     "hostImageCache": {
       "init": "初始化中",
