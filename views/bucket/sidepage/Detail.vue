@@ -25,6 +25,10 @@ export default {
       type: Object,
       required: true,
     },
+    columns: {
+      type: Array,
+      required: true,
+    },
   },
   data () {
     return {
@@ -126,7 +130,10 @@ export default {
               title: '读写权限',
               slots: {
                 default: ({ row }) => {
-                  return ACL_TYPE[row.acl] || row.acl
+                  return [
+                    ACL_TYPE[row.acl] || row.acl,
+                    <a-button onClick={() => this.handleSetAcl(row)} type="link">设置</a-button>,
+                  ]
                 },
               },
             },
@@ -134,6 +141,17 @@ export default {
         },
       ],
     }
+  },
+  methods: {
+    handleSetAcl (row) {
+      this.createDialog('ObjectsUpdateAclDialog', {
+        title: '设置读写权限',
+        data: [row],
+        resName: row.name,
+        columns: this.list.templateContext.columns,
+        list: this.list,
+      })
+    },
   },
 }
 </script>

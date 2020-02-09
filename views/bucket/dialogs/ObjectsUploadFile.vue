@@ -8,13 +8,14 @@
         </a-form-item>
         <a-form-item label="选择文件">
           <a-upload-dragger
+            v-decorator="decorators.files"
             v-bind="uploadDraggerConfig"
             :fileList="fileList">
             <div style="padding: 10px; min-width: 600px">
               <p class="ant-upload-drag-icon">
               <a-icon type="inbox" />
             </p>
-             <p class="ant-upload-text">可将多个文件拖拽到此处，或直接上传</p>
+             <p class="ant-upload-text">可将多个文件拖拽到此处，或点击 <a>直接上传</a></p>
               <p class="ant-upload-hint">
                 最多支持 <span class="warning-color">4</span> 个文件同时上传
               </p>
@@ -25,7 +26,7 @@
     </div>
     <div slot="footer">
       <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t("dialog.ok") }}</a-button>
-      <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
+      <a-button :disabled="loading" @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
     </div>
   </base-dialog>
 </template>
@@ -45,6 +46,13 @@ export default {
       fileList: [],
       form: {
         fc: this.$form.createForm(this),
+      },
+      decorators: {
+        files: ['files', {
+          rules: [
+            { required: true, message: '请选择上传文件' },
+          ],
+        }],
       },
     }
   },

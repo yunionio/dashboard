@@ -157,6 +157,7 @@ export default {
               data: [row],
               columns: this.columns,
               list: this.list,
+              name: '存储桶',
             })
           },
         },
