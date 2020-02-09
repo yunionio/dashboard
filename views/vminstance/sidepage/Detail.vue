@@ -84,7 +84,7 @@ export default {
               title: '操作系统',
               formatter: ({ row }) => {
                 const distribution = (row.metadata && row.metadata.os_distribution) ? row.metadata.os_distribution : row.os_type
-                const { os_version: version = '' } = row.metadata['os_version']
+                const { os_version: version = '' } = row.metadata || {}
                 return distribution + (version === '-' ? '' : version)
               },
             },
