@@ -30,7 +30,7 @@ export function checkIpInSegment (i, networkData) {
   }
 }
 
-function diskValidator (rule, value, callback) {
+export function diskValidator (rule, value, callback) {
   if (R.isNil(value) || R.isEmpty(value)) {
     return callback(new Error('请填写合法的路径'))
   }

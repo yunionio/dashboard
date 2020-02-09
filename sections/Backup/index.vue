@@ -15,6 +15,7 @@
 
 <script>
 import * as R from 'ramda'
+import { Manager } from '@/utils/manager'
 
 export default {
   name: 'Backup',
@@ -53,7 +54,7 @@ export default {
       this.backupEnable = val
     },
     getBackupHosts () {
-      new this.$Manager('hosts', 'v2')
+      new Manager('hosts', 'v2')
         .list({ params: { hypervisor: 'kvm', enabled: 1 } })
         .then(({ data: { data = [] } }) => {
           this.hostList = data

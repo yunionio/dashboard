@@ -176,14 +176,6 @@ export default {
     },
     diskTypeLabel () {
       return _.get(this.dataDisks, '[0].diskType.label')
-      // if (this.dataDisks.length) {
-      //   if (this.dataDisks[0]) {
-      //     if (this.dataDisks[0].diskType) {
-      //       return this.dataDisks[0].diskType.label || ''
-      //     }
-      //   }
-      // }
-      // return ''
     },
   },
   methods: {
@@ -245,7 +237,6 @@ export default {
           }
         }
       }
-      console.log(sizeDisabled, 'sizeDisabled')
       const dataDiskItem = {
         key,
         disabled,
@@ -340,7 +331,6 @@ export default {
     },
     diskTypeChange (item, val) {
       // 仅有第一块盘可以更改磁盘类型
-      console.log(item, 'item')
       this.$nextTick(() => {
         const dataDiskItem = {
           ...item,
@@ -349,22 +339,8 @@ export default {
         if (item.min) {
           dataDiskItem.min = Math.max(item.min, this.min)
         }
-        console.log(dataDiskItem, 'dataDiskItem')
         this.$set(this.dataDisks, 0, dataDiskItem)
       })
-      // this.dataDisks.forEach((disk, i) => {
-      //   console.log(i, {
-      //     ...item,
-      //     min: Math.max(item.min || DISK_MIN_SIZE, this.min),
-      //     diskType: val,
-      //   })
-      //   this.$set(this.dataDisks, i, {
-      //     ...item,
-      //     min: Math.max(item.min || DISK_MIN_SIZE, this.min),
-      //     diskType: val,
-      //   })
-      // })
-      // 将
     },
   },
 }
