@@ -69,18 +69,20 @@ export const typeClouds = new TypeClouds()
  * @returns {String|false} 返回对应的平台
  */
 export const findPlatform = (provider, type = 'brand') => {
-  provider = provider.toLowerCase()
-  if (type === 'provider') {
-    const provierItem = typeClouds.providerlowcaseMap[provider]
-    if (provierItem) return provierItem.env
-  }
-  if (type === 'hypervisor') {
-    const provierItem = typeClouds.hypervisorMap[provider]
-    if (provierItem) return provierItem.env
-  }
-  if (type === 'brand') {
-    const provierItem = typeClouds.brandlowcaseMap[provider]
-    if (provierItem) return provierItem.env
+  if (provider) {
+    provider = provider.toLowerCase()
+    if (type === 'provider') {
+      const provierItem = typeClouds.providerlowcaseMap[provider]
+      if (provierItem) return provierItem.env
+    }
+    if (type === 'hypervisor') {
+      const provierItem = typeClouds.hypervisorMap[provider]
+      if (provierItem) return provierItem.env
+    }
+    if (type === 'brand') {
+      const provierItem = typeClouds.brandlowcaseMap[provider]
+      if (provierItem) return provierItem.env
+    }
   }
   return false // 未找到平台
 }
