@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">更改{{ $t('dictionary.project') }}</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" :action="`更改${$t('dictionary.project')}`" />
+      <dialog-selected-tips :count="params.data.length" :action="`更改${$t('dictionary.project')}`" :name="name" />
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
@@ -73,6 +73,9 @@ export default {
         delete params.domain_id
       }
       return params
+    },
+    name () {
+      return this.params.name || '实例'
     },
   },
   methods: {
