@@ -26,6 +26,19 @@ import { objectsModel } from '@Storage/views/bucket/utils/controller.js'
 import WindowsMixin from '@/mixins/windows'
 import { sizestrWithUnit } from '@/utils/utils'
 
+const validDirName = (rule, value, callback) => {
+  if (value === '') {
+    callback(new Error('请输入文件夹名称'))
+  } else if (value.startsWith('/')) {
+    callback(new Error('不能以 / 开头作为文件夹名称'))
+  } else if (value.includes('//')) {
+    callback(new Error('不允许文件夹名称里包含连续的//'))
+  } else if (value === '..') {
+    callback(new Error('不允许以 .. 作为文件夹名称'))
+  } else {
+    callback()
+  }
+}
 export default {
   name: 'BucketStorageObjectList',
   mixins: [WindowsMixin],
@@ -58,6 +71,7 @@ export default {
         {
           field: 'name',
           title: '文件名称',
+          minWidth: 120,
           slots: {
             default: ({ row }) => {
               const { key } = row
@@ -87,6 +101,7 @@ export default {
         {
           field: 'size_bytes',
           title: '大小',
+          minWidth: 100,
           formatter: ({ row }) => {
             return row.size_bytes ? sizestrWithUnit(row.size_bytes, 'B', 1024) : '-'
           },
@@ -102,6 +117,7 @@ export default {
         {
           field: 'last_modified',
           title: '更新时间',
+          width: 100,
           formatter: ({ row }) => {
             return row.last_modified ? this.$moment(row.last_modified).fromNow() : '-'
           },
@@ -143,6 +159,8 @@ export default {
                 key: ['key', {
                   rules: [
                     { required: true, message: '请输入文件名称' },
+                    { type: 'string', min: 1, max: 254, message: '1~254 个字符，可用数字、中英文和常见字符的组合', trigger: 'blur' },
+                    { validator: validDirName, trigger: 'blur' },
                   ],
                 },
                 {
@@ -176,6 +194,7 @@ export default {
                     title: '删除',
                     resName: this.resName,
                     list: this.list,
+                    name: '文件',
                   })
                 },
               },
@@ -190,6 +209,11 @@ export default {
                     list: this.list,
                   })
                 },
+                meta: row => {
+                  return {
+                    validate: this.list.selectedItems.every(row => !this.isDir(row.key)),
+                  }
+                },
               },
               {
                 label: '设置读写权限',
@@ -201,6 +225,11 @@ export default {
                     columns: this.columns,
                     list: this.list,
                   })
+                },
+                meta: row => {
+                  return {
+                    validate: this.list.selectedItems.every(row => !this.isDir(row.key)),
+                  }
                 },
               },
             ]
@@ -223,6 +252,7 @@ export default {
               title: '删除',
               resName: this.resName,
               list: this.list,
+              name: '文件',
             })
           },
         },
