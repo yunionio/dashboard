@@ -180,12 +180,26 @@ export default {
   },
   methods: {
     validatePorts (rule, value, callback) {
-      if (value === 'ALL') {
-        callback()
-      } else {
-        if (validate(value, 'ports') === false || validate(value, 'ports').result === false) {
-          callback(new Error(validate(value, 'ports').message))
+      let ports = value.indexOf(',') !== -1 ? value.split(',') : value.split('-')
+      if (ports.length > 1) {
+        let pass = ports.every(function (item, index) {
+          return +item && item >= 0 && item <= 65535
+        })
+        if (!pass) {
+          if (validate(value, 'ports') === false || validate(value, 'ports').result === false) {
+            callback(new Error(validate(value, 'ports').msg))
+          }
+          callback()
         } else {
+          callback()
+        }
+      } else {
+        if (value === 'ALL') {
+          callback()
+        } else {
+          if (validate(value, 'ports') === false || validate(value, 'ports').result === false) {
+            callback(new Error(validate(value, 'ports').msg))
+          }
           callback()
         }
       }
