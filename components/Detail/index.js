@@ -159,17 +159,27 @@ export default {
   },
   computed: {
     commonBaseInfo () {
-      let baseInfo = getDefaultTopBaseInfo(this.$createElement, {
+      const defaultTopBaseInfo = getDefaultTopBaseInfo(this.$createElement, {
         idKey: this.idKey,
         statusKey: this.statusKey,
         statusModule: this.statusModule,
         data: this.data,
         list: this.list,
-      }).concat(this.baseInfo).concat(getDefaultLastBaseInfo(this.$createElement, {
+      })
+      const defaultLastBaseInfo = getDefaultLastBaseInfo(this.$createElement, {
         list: this.list,
         data: this.data,
-      }))
-      baseInfo = R.uniqBy(item => item.field, baseInfo)
+      })
+      // 与传递进来的baseInfo比较，去除在baseInfo中已有字段
+      for (let i = 0; i < this.baseInfo.length; i++) {
+        for (let j = 0; j < defaultTopBaseInfo.length; j++) {
+          if (this.baseInfo[i].field === defaultTopBaseInfo[j].field || this.baseInfo[i].title === defaultTopBaseInfo[j].title) {
+            defaultTopBaseInfo.splice(j, 1)
+          }
+        }
+      }
+      let baseInfo = defaultTopBaseInfo.concat(this.baseInfo).concat(defaultLastBaseInfo)
+      baseInfo = R.uniqBy(item => item.field && item.title, baseInfo)
       return baseInfo
     },
   },
