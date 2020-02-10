@@ -11,6 +11,24 @@ import Public from './form/Public'
 import Private from './form/Private'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 
+var detectBack = {
+  initialize: function () {
+    // 监听 hashchange 事件
+    window.addEventListener('hashchange', function () {
+      // 为当前导航页附加一个 tag
+      this.history.replaceState('hasHash', '', '')
+    }, false)
+
+    window.addEventListener('popstate', function (e) {
+      if (e.state) {
+        // 侦测是用户触发的后退操作, dosomething
+        // 这里刷新当前 url
+        this.location.reload()
+      }
+    }, false)
+  },
+}
+
 export default {
   name: 'ServerCreate',
   components: {
@@ -101,6 +119,12 @@ export default {
         },
       })
     }
+  },
+  mounted () {
+    detectBack.initialize()
+  },
+  beforeDestroy () {
+    window.removeEventListener('popstate')
   },
 }
 </script>
