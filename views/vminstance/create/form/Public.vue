@@ -345,12 +345,18 @@ export default {
       }
       return Object.keys(loginTypes)
     },
-    instanceSpecParmas () {
-      return {
+    instanceSpecParams () {
+      const params = {
+        public_cloud: true,
         usable: true,
         enabled: true,
-        public_cloud: true,
       }
+      const { city, provider, cloudregion, zone } = this.form.fd
+      if (city) params.city = city
+      if (provider) params.provider = provider
+      if (cloudregion) params.cloudregion = cloudregion
+      if (zone) params.zone = zone
+      return params
     },
     osSelectTypes () {
       if (HYPERVISORS_MAP.ctyun.key === this.hypervisor) {
@@ -457,7 +463,8 @@ export default {
           this.form.fi.cpuMem = data
           const vcpuDecorator = this.decorators.vcpu
           const vcpuInit = vcpuDecorator[1].initialValue
-          this.cpuChange(vcpuInit)
+          const cpu = this.form.fd.vcpu || vcpuInit
+          this.cpuChange(cpu)
         })
     },
   },
