@@ -137,6 +137,9 @@ export default {
           sysMax: STORAGE_AUTO.sysMax,
         }
       }
+      if (this.hypervisor === HYPERVISORS_MAP.google.key) {
+        delete ret['local-ssd']
+      }
       this.$nextTick(this.setDefaultType)
       return ret
     },

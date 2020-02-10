@@ -212,16 +212,26 @@ export default {
       }
       return null
     },
+    currency () {
+      const currencys = {
+        USD: '$',
+        CNY: '¥',
+      }
+      if (this.pricesList && this.pricesList.length > 0) {
+        return currencys[this.pricesList[0].currency]
+      }
+      return '¥'
+    },
     priceTips () {
       if (this.price) {
         if (this.isPackage && this.durationNum) {
           const _day = (this.price / 30 / this.durationNum).toFixed(2)
           const _hour = (parseFloat(_day) / 24).toFixed(2)
-          return `(合¥${_day}/天  ¥${_hour}/小时)`
+          return `(合${this.currency}${_day}/天  ${this.currency}${_hour}/小时)`
         } else {
           const _day = (this.price * 24).toFixed(2)
           const _month = (parseFloat(_day) * 30).toFixed(2)
-          return `(合¥${_day}/天 ¥${_month}/月)`
+          return `(合${this.currency}${_day}/天 ${this.currency}${_month}/月)`
         }
       }
       return '--'
@@ -234,7 +244,7 @@ export default {
   watch: {
     priceTips: {
       handler (val) {
-        let ret = `¥ ${this.price && this.price.toFixed(2)}`
+        let ret = `${this.currency} ${this.price && this.price.toFixed(2)}`
         ret += !this.isPackage ? ' / 时' : ''
         this.$bus.$emit('VMGetPrice', `${ret} ${val}`)
       },
@@ -262,7 +272,7 @@ export default {
       this.$emit('update:errors', [])
     },
     formatToPrice (val) {
-      let ret = `¥ ${val.toFixed(2)}`
+      let ret = `${this.currency} ${val.toFixed(2)}`
       ret += !this.isPackage ? ' / 时' : ''
       return ret
     },
