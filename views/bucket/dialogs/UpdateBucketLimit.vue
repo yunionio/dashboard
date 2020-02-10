@@ -6,7 +6,7 @@
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" v-bind="formItemLayout">
         <a-form-item label="容量上限">
-          <a-input class="w-50" v-decorator="decorators.size_bytes">
+          <a-input class="w-50" v-decorator="decorators.size_bytes" @blur="handelBlur">
             <a-select slot="addonAfter" style="width: 80px" v-decorator="decorators.size_bytes_unit">
               <a-select-option v-for="item in sizeUnitOpts" :key="item.value" :value="item.value">{{item.label}}</a-select-option>
             </a-select>
@@ -14,7 +14,7 @@
            <span slot="extra">0代表无限制</span>
         </a-form-item>
          <a-form-item label="对象上限">
-          <a-input class="w-50" v-decorator="decorators.object_count">
+          <a-input class="w-50" v-decorator="decorators.object_count" @blur="handelBlur">
             <a-select slot="addonAfter" type="number" style="width: 80px" v-decorator="decorators.object_count_unit">
               <a-select-option v-for="item in unitOpts" :key="item.value" :value="item.value">{{item.label}}</a-select-option>
             </a-select>
@@ -81,7 +81,6 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: '请设置容量上限' },
-              { type: 'integer', message: '请输入整数', transform: (v) => parseFloat(v) },
             ],
           },
         ],
@@ -95,7 +94,6 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: '请设置对象上限' },
-              { type: 'integer', message: '请输入整数', transform: (v) => parseFloat(v) },
             ],
           },
         ],
@@ -132,6 +130,12 @@ export default {
       } catch (error) {
         this.loading = false
         throw error
+      }
+    },
+    handelBlur ({ target }) {
+      const val = target.value
+      if (!/^\d+$/.test(val)) {
+        target.value = 0
       }
     },
   },
