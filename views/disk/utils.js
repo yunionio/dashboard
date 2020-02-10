@@ -287,6 +287,19 @@ export const diskResizeConfig = {
       tooltip: '',
     }
   },
+  ctyun (obj) {
+    const { validate, tooltip } = diskResizeConfig.base(obj)
+    if (!validate) {
+      return {
+        validate: false,
+        tooltip,
+      }
+    }
+    return {
+      validate: true,
+      tooltip: '',
+    }
+  },
 }
 
 // 磁盘新建快照的逻辑梳理
@@ -420,6 +433,12 @@ export const diskCreateSnapshotConfig = {
     }
   },
   google () {
+    return {
+      validate: true,
+      tooltip: '',
+    }
+  },
+  ctyun () {
     return {
       validate: true,
       tooltip: '',

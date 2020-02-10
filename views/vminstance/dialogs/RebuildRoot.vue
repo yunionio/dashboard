@@ -14,6 +14,7 @@
         <a-form-item v-bind="formItemLayout" v-show="!imgHidden" label="操作系统" extra="操作系统会根据选择的虚拟化平台和可用区域的变化而变化，公共镜像的维护请联系管理员">
           <os-select
             :type="type"
+            :types="osSelectTypes"
             :hypervisor="hypervisor"
             :image-params="image"
             :ignoreOptions="ignoreImageOptions"
@@ -101,6 +102,12 @@ export default {
     type () {
       const brand = this.params.data[0].brand
       return findPlatform(brand)
+    },
+    osSelectTypes () {
+      if (HYPERVISORS_MAP.ctyun.key === this.params.data[0].hypervisor) {
+        return ['public', 'public_customize']
+      }
+      return []
     },
     imageType () {
       if (this.type === SERVER_TYPE.public) {
@@ -250,6 +257,14 @@ export default {
         delete loginTypes[LOGIN_TYPES_MAP.password.key]
       }
       if ([HYPERVISORS_MAP.azure.key, HYPERVISORS_MAP.huawei.key].includes(hypervisor)) {
+        delete loginTypes[LOGIN_TYPES_MAP.image.key]
+      }
+      if (HYPERVISORS_MAP.ctyun.key === hypervisor) {
+        delete loginTypes[LOGIN_TYPES_MAP.keypair.key]
+        delete loginTypes[LOGIN_TYPES_MAP.image.key]
+      }
+      if (HYPERVISORS_MAP.google.key === hypervisor) {
+        delete loginTypes[LOGIN_TYPES_MAP.keypair.key]
         delete loginTypes[LOGIN_TYPES_MAP.image.key]
       }
       if (this.osType === 'Windows') {
