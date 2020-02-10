@@ -12,7 +12,7 @@
 
 <script>
 import * as R from 'ramda'
-import { diskResizeConfig, diskCreateSnapshotConfig } from '@Compute/views/disk/utils'
+import { diskResizeConfig, diskCreateSnapshotConfig } from '@Compute/views/disk/utils.js'
 import { MEDIUM_MAP } from '../../../constants'
 import {
   getNameDescriptionTableColumn,

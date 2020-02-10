@@ -6,7 +6,7 @@
       <dialog-selected-tips :count="params.data.length" action="添加网卡" />
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc">
-        <network-config :form="form.fc" :decorator="networkConfig" :networkParams="networkParams" :limit= "networkLimit" />
+        <network-config :form="form.fc" :count="params.list.total" :decorator="networkConfig" :networkParams="networkParams" :limit="networkLimit" />
       </a-form>
     </div>
     <div slot="footer">
