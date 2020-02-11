@@ -77,7 +77,6 @@ export default {
           span: 20, offset: 4,
         },
       },
-      timer: null,
     }
   },
   computed: {
@@ -94,23 +93,17 @@ export default {
         return _callback('请勿重复添加相同IP')
       }
       const manager = new this.$Manager('reservedips', 'v2')
-      if (this.timer) {
-        clearTimeout(this.timer)
-      }
-      this.timer = setTimeout(() => {
-        manager.list({
+      try {
+        const { data } = await manager.list({
           params: {
             search: value,
             network: this.params.data[0].id,
           },
         })
-          .then(({ data }) => {
-            if (data && data.length > 0) {
-              return _callback('该IP已被预留,请勿重复添加')
-            }
-          })
-      }, 1000)
-      _callback()
+        if (data && data.length > 0) return _callback('该IP已被预留,请勿重复添加')
+      } catch {
+        _callback()
+      }
     },
     ipDecorator (item, i) {
       const { key } = item
