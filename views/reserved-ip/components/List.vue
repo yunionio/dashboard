@@ -91,6 +91,7 @@ export default {
               data: [obj],
               columns: this.columns,
               list: this.list,
+              name: '预留IP',
             })
           },
           meta: (obj) => {
