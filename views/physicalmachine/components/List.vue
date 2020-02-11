@@ -12,6 +12,7 @@
 
 <script>
 import * as R from 'ramda'
+import { Base64 } from 'js-base64'
 import qs from 'qs'
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { getRegionTableColumn, getStatusTableColumn, getEnabledTableColumn, getNameDescriptionTableColumn, getCopyWithContentTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
@@ -971,6 +972,10 @@ export default {
       if (!connectParams.access_token) {
         connectParams = {
           data: data.connect_params,
+        }
+      } else {
+        connectParams = {
+          data: Base64.encode(data.connect_params),
         }
       }
       const query = {

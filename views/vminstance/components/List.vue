@@ -12,6 +12,7 @@
 
 <script>
 import * as R from 'ramda'
+import { Base64 } from 'js-base64'
 import qs from 'qs'
 import { mapGetters } from 'vuex'
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
@@ -1778,6 +1779,10 @@ export default {
       if (!connectParams.access_token) {
         connectParams = {
           data: data.connect_params,
+        }
+      } else {
+        connectParams = {
+          data: Base64.encode(data.connect_params),
         }
       }
       const query = {
