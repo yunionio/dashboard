@@ -270,6 +270,7 @@ export default {
           if (error.response.status === 409) {
             this.form.fi.showDomain = true
           }
+          this.fetchCaptcha()
           this.loading = false
         }
       })
