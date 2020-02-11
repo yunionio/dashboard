@@ -202,6 +202,22 @@ export default {
           actions: obj => {
             return [
               {
+                label: '镜像创建机器',
+                action: obj => {
+                  this.createDialog('ImageCreateServerDialog', {
+                    data: [obj],
+                    columns: this.columns,
+                    list: this.list,
+                  })
+                },
+                meta: obj => {
+                  return {
+                    validate: true,
+                    tooltip: '',
+                  }
+                },
+              },
+              {
                 label: '设置为公共镜像',
                 permission: 'images_update',
                 action: () => {
