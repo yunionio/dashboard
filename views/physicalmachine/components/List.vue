@@ -541,18 +541,10 @@ export default {
                 label: 'SOL远程终端',
                 action: () => {
                   webconsoleM.objectRpc({ methodname: 'DoBaremetalConnect', objId: obj.id }).then((res) => {
-                    const connectParams = qs.parse(res.data.connect_params)
-                    const query = {
-                      ...connectParams,
-                      session: res.data.session,
-                      hypervisor: obj.host_type,
-                    }
-                    const href = `${this.$appConfig.webConsolePath}?${qs.stringify(query)}`
-                    open(href)
+                    this.openWebConsole(obj, res.data)
+                  }).catch((err) => {
+                    throw err
                   })
-                    .catch((err) => {
-                      console.error(err)
-                    })
                 },
                 meta: () => ({
                   validate: obj.status === 'running',
@@ -570,14 +562,7 @@ export default {
                   data: sshData,
                   id: 'ssh',
                 }).then(({ data }) => {
-                  const connectParams = qs.parse(data.connect_params)
-                  const query = {
-                    ...connectParams,
-                    session: data.session,
-                    hypervisor: obj.host_type,
-                  }
-                  const href = `${this.$appConfig.webConsolePath}?${qs.stringify(query)}`
-                  open(href)
+                  this.openWebConsole(obj, data)
                 })
               }
             }
@@ -943,6 +928,22 @@ export default {
       }
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
+    },
+    openWebConsole (obj, data) {
+      let connectParams = qs.parse(data.connect_params)
+      if (!connectParams.access_token) {
+        connectParams = {
+          data: data.connect_params,
+        }
+      }
+      const query = {
+        ...connectParams,
+        session: data.session,
+        hypervisor: obj.hypervisor,
+        os_type: obj.os_type,
+      }
+      const href = `${this.$appConfig.webConsolePath}?${qs.stringify(query)}`
+      window.open(href)
     },
   },
 }
