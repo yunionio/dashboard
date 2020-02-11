@@ -725,15 +725,7 @@ export default {
                   if (isValidURL(data.connect_params)) {
                     open(data.connect_params)
                   } else {
-                    const connectParams = qs.parse(data.connect_params)
-                    const query = {
-                      ...connectParams,
-                      session: data.session,
-                      hypervisor: obj.hypervisor,
-                      os_type: obj.os_type,
-                    }
-                    const href = `${this.$appConfig.webConsolePath}?${qs.stringify(query)}`
-                    open(href)
+                    this.openWebConsole(obj, data)
                   }
                 })
               },
@@ -769,15 +761,7 @@ export default {
                       id: 'ssh',
                       action: v,
                     }).then(({ data }) => {
-                      const connectParams = qs.parse(data.connect_params)
-                      const query = {
-                        ...connectParams,
-                        session: data.session,
-                        hypervisor: obj.hypervisor,
-                        os_type: obj.os_type,
-                      }
-                      const href = `${this.$appConfig.webConsolePath}?${qs.stringify(query)}`
-                      open(href)
+                      this.openWebConsole(obj, data)
                     })
                   },
                   meta,
@@ -790,11 +774,12 @@ export default {
                       data: [obj],
                       list: this.list,
                       callback: async (data) => {
-                        await this.webconsoleManager.performAction({
+                        const response = await this.webconsoleManager.performAction({
                           id: 'ssh',
                           action: v,
                           data,
                         })
+                        this.openWebConsole(obj, response.data)
                       },
                       decorators: {
                         port: [
@@ -1787,6 +1772,22 @@ export default {
       }
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
+    },
+    openWebConsole (obj, data) {
+      let connectParams = qs.parse(data.connect_params)
+      if (!connectParams.access_token) {
+        connectParams = {
+          data: data.connect_params,
+        }
+      }
+      const query = {
+        ...connectParams,
+        session: data.session,
+        hypervisor: obj.hypervisor,
+        os_type: obj.os_type,
+      }
+      const href = `${this.$appConfig.webConsolePath}?${qs.stringify(query)}`
+      window.open(href)
     },
   },
 }
