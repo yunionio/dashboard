@@ -13,6 +13,7 @@
 import * as R from 'ramda'
 import qs from 'qs'
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
+import { Manager } from '@/utils/manager'
 import { sizestr, percentstr } from '@/utils/utils'
 import { getRegionTableColumn, getStatusTableColumn, getBrandTableColumn, getEnabledTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 import { getStatusFilter, getEnabledFilter, getBrandFilter } from '@/utils/common/tableFilter'
@@ -339,12 +340,11 @@ export default {
           label: '远程终端',
           actions: obj => {
             const ret = []
-            const webconsoleM = new this.$Manager('webconsole', 'v1')
             if (obj.host_type === 'baremetal') {
               ret.push({
                 label: 'SOL远程终端',
                 action: () => {
-                  webconsoleM.objectRpc({ methodname: 'DoBaremetalConnect', objId: obj.id }).then((res) => {
+                  this.webconsoleManager.objectRpc({ methodname: 'DoBaremetalConnect', objId: obj.id }).then((res) => {
                     this.openWebConsole(obj, res.data)
                   }).catch((err) => {
                     throw err
@@ -361,7 +361,7 @@ export default {
             }
             const actionGenerator = ip => {
               return (sshData) => {
-                webconsoleM.performAction({
+                this.webconsoleManager.performAction({
                   action: ip,
                   data: sshData,
                   id: 'ssh',
@@ -379,7 +379,43 @@ export default {
               })
               ret.push({
                 label: `SSH ${ip} 自定义端口`,
-                action: () => {},
+                action: () => {
+                  this.createDialog('SmartFormDialog', {
+                    title: '自定义端口',
+                    data: [obj],
+                    list: this.list,
+                    callback: async (data) => {
+                      const response = await this.webconsoleManager.performAction({
+                        id: 'ssh',
+                        action: ip,
+                        data,
+                      })
+                      this.openWebConsole(obj, response.data)
+                    },
+                    decorators: {
+                      port: [
+                        'port',
+                        {
+                          validateFirst: true,
+                          rules: [
+                            { required: true, message: '请输入端口' },
+                            { validator: (rule, value, _callback) => {
+                              const num = parseFloat(value)
+                              if (!/^\d+$/.test(value) || !num || num > 65535) {
+                                _callback('端口范围在 0-65535 之间')
+                              }
+                              _callback()
+                            } },
+                          ],
+                        },
+                        {
+                          label: '端口',
+                          placeholder: '请输入端口号',
+                        },
+                      ],
+                    },
+                  })
+                },
                 meta,
               })
             })
@@ -567,6 +603,7 @@ export default {
   },
   created () {
     this.initSidePageTab('host-detail')
+    this.webconsoleManager = new Manager('webconsole', 'v1')
     this.list.fetchData()
   },
   methods: {
