@@ -436,7 +436,7 @@ export default {
         osOpts,
         imageOptsMap,
       }
-      this.defaultSelect()
+      this.fillImageOpts()
     },
     defaultSelect (osValue) {
       this.imageOpts = []
@@ -444,6 +444,7 @@ export default {
       if (osOpts && osOpts.length) {
         let os = osValue || osOpts[0].key
         let imageOpts = this.getImageOpts(imageOptsMap[os])
+        if (!imageOpts || !imageOpts.length) return
         let image = { key: imageOpts[0].id, label: imageOpts[0].name }
         if (!osValue && this.storageImage) { // 采用上次选择的镜像（storage）
           const { os: storageOs, image: storageImage } = this.storageImage
@@ -461,7 +462,7 @@ export default {
         this.imageChange(image)
       }
     },
-    getImageOpts (imageOpts) {
+    getImageOpts (imageOpts = []) {
       let images = imageOpts.slice()
       if (images && images.length > 0) {
         images = images.filter((item) => {
@@ -483,6 +484,23 @@ export default {
         })
       }
       return images || []
+    },
+    fillImageOpts () {
+      const { imageOs, imageId } = this.$route.query
+      if (imageOs) {
+        const os = imageOs.replace(imageOs[0], imageOs[0].toUpperCase())
+        this.form.fc.setFieldsValue({ os })
+        const images = this.imagesInfo.imageOptsMap[os] || []
+        let image = images.find((item) => { return item.id === imageId })
+        this.defaultSelect(os)
+        if (image) {
+          image = { key: image.id, label: image.name }
+          this.form.fc.setFieldsValue({ image })
+          this.imageChange(image)
+        }
+      } else {
+        this.defaultSelect()
+      }
     },
   },
 }
