@@ -109,6 +109,13 @@ export default {
       return ret
     },
   },
+  mounted () {
+    const { imageType } = this.$route.query
+    if (imageType) {
+      this.form.fc.setFieldsValue({ imageType })
+      this.imageType = imageType
+    }
+  },
   methods: {
     imageInput (image) {
       this.$emit('change', image)

@@ -17,6 +17,7 @@ import expectStatus from '@/constants/expectStatus'
 import SystemIcon from '@/sections/SystemIcon'
 import WindowsMixin from '@/mixins/windows'
 import globalSearchMixins from '@/mixins/globalSearch'
+// import { IMAGES_TYPE_MAP } from '@/constants/compute'
 
 export default {
   name: 'ImageList',
@@ -194,6 +195,36 @@ export default {
             return {
               validate: isOwnerProject(obj.tenant_id),
               tooltip: !isOwnerProject(obj.tenant_id) ? `非当前${this.$t('dictionary.project')}下面的镜像无法修改属性` : '',
+            }
+          },
+        },
+        {
+          label: '镜像创建机器',
+          action: obj => {
+            this.createDialog('ImageCreateServerDialog', {
+              data: [obj],
+              columns: this.columns,
+              list: this.list,
+            })
+            // let os = obj.properties.os_type
+            // let type = IMAGES_TYPE_MAP.standard.key
+            // if (obj.properties.os_distribution) {
+            //   os = obj.properties.os_distribution.split(' ')[0]
+            // }
+            // if (obj.disk_format === IMAGES_TYPE_MAP.iso.key) {
+            //   type = obj.disk_format
+            // } else {
+            //   type = obj.is_standard ? IMAGES_TYPE_MAP.standard.key : IMAGES_TYPE_MAP.customize.key
+            // }
+            // this.$router.push({
+            //   path: '/vminstance/create',
+            //   query: { type: 'idc', imageId: obj.id, imageType: type, imageOs: os },
+            // })
+          },
+          meta: obj => {
+            return {
+              validate: true,
+              tooltip: '',
             }
           },
         },
