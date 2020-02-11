@@ -59,7 +59,7 @@
             resource="isolated_devices"
             :select-props="{ allowClear: true, placeholder: '请选择GPU设备', mode: 'multiple' }" />
         </a-form-item>
-        <a-form-item label="数量" v-bind="formItemLayout" v-show="isOpenGpu && isGroupAction">
+        <a-form-item label="数量" v-bind="formItemLayout" v-show="isOpenGpu && isGroupAction" extra="数量为每台机器要绑定GPU卡数量">
           <a-input-number :min="1" v-decorator="decorators.number" />
         </a-form-item>
         <a-form-item label="自动启动" v-bind="formItemLayout" extra="设置成功后是否自动启动">
@@ -241,6 +241,7 @@ export default {
             data: {
               model,
               count,
+              auto_start: data.autoStart,
             },
           },
         })
