@@ -390,8 +390,11 @@ export default {
         } else {
           isOther = true
         }
-        if (osVal.includes('Windows')) {
+        if (osVal.toLowerCase().includes('windows')) {
           osVal = 'Windows'
+        }
+        if (osVal.toLowerCase().includes('linux')) {
+          osVal = 'Linux'
         }
         // const osDistribution = osVal && osVal.toLowerCase()
         const osDistribution = osVal
