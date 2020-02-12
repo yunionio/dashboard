@@ -4,14 +4,14 @@
       :list="list"
       :columns="columns" />
      <div class="mb-3 search-date">
-          <a-date-picker
-            v-model="dateTime"
-            style="width: 300px"
-            format="YYYY-MM-DD HH:mm:ss"
-            placeholder="选择终止时间进行查询"
-            @change="handleDateTimeChange"
-            :showTime="{ defaultValue: $moment('00:00:00', 'HH:mm:ss') }" />
-        </div>
+      <a-date-picker
+        v-model="dateTime"
+        style="width: 300px"
+        format="YYYY-MM-DD HH:mm:ss"
+        placeholder="选择终止时间进行查询"
+        @change="handleDateTimeChange"
+        :showTime="{ defaultValue: $moment('00:00:00', 'HH:mm:ss') }" />
+    </div>
   </div>
 </template>
 
@@ -138,7 +138,7 @@ export default {
     getParam () {
       const param = {}
       if (this.objId) {
-        param['filter'] = `obj_id.in(${this.objId})`
+        param['filter'] = `obj_id.in('${this.objId}')`
       }
       if (this.objType) {
         param['obj_type'] = this.objType
