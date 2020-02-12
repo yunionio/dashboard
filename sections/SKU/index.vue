@@ -127,14 +127,17 @@ export default {
           slots: {
             default: ({ row }) => {
               const price = this.getFormatPrice(row.hour_price)
-              let ret = [<a-icon type="loading" />]
-              if (!this.rateLoading) {
-                ret = [
-                  <span style="color: rgb(230, 139, 80);">{ price }</span>,
-                  <span> 元 / { this.priceUnit.unit }</span>,
-                ]
+              if (price > 0) {
+                let ret = [<a-icon type="loading" />]
+                if (!this.rateLoading) {
+                  ret = [
+                    <span style="color: rgb(230, 139, 80);">{ price }</span>,
+                    <span> {this.$t(`currencys.${row.currency}`)} / { this.priceUnit.unit }</span>,
+                  ]
+                }
+                return ret
               }
-              return ret
+              return [<span style="color: rgb(230, 139, 80);">--</span>]
             },
           },
         })
@@ -194,6 +197,7 @@ export default {
           item.rate_key = this.genRateKey(item)
           if (this.ratesMap[item.rate_key]) {
             item.hour_price = this.ratesMap[item.rate_key][this.priceUnit['key']]
+            item.currency = this.ratesMap[item.rate_key]['currency']
           }
         }
         skuOptions[key].push(item)

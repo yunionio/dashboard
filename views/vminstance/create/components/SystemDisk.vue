@@ -128,6 +128,9 @@ export default {
             sysMin: Math.max(this.imageMinDisk, DISK_MIN_SIZE),
             sysMax: max,
           }
+          if (this.hypervisor === HYPERVISORS_MAP.google.key) {
+            ret[opt.key]['sysMin'] = opt.sysMin
+          }
         }
       }
       if (this.isIDC && this.hypervisor !== HYPERVISORS_MAP.kvm.key) {
