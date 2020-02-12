@@ -26,8 +26,8 @@
 <script>
 import SecgroupList from '@Compute/views/secgroup/components/List'
 // import HostList from '@Compute/views/host/components/List'
+import NetworkListForVmInstanceSidepage from '@Compute/views/networks/components/List'
 import VmInstanceDetail from './Detail'
-import NetworkListForVmInstanceSidepage from './Network'
 import DiskListForVmInstanceSidepage from './Disk'
 import VmInstanceMonitorSidepage from './Monitor'
 import VmInstanceAlertSidepage from './Alert'
