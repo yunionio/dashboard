@@ -4,9 +4,9 @@ import { HYPERVISORS_MAP } from '@/constants'
 export const IMAGES_TYPE_MAP = {
   standard: { key: 'standard', label: '公共镜像', tooltip: 'OneCloud平台提供的公共镜像，可以适配所有平台使用' },
   customize: { key: 'customize', label: '自定义镜像', tooltip: '用户在OneCloud平台上传的自定义镜像' },
-  iso: { key: 'iso', label: '从ISO启动' },
-  host: { key: 'host', label: '主机镜像' },
-  snapshot: { key: 'snapshot', label: '主机快照' },
+  iso: { key: 'iso', label: '从ISO启动', tooltip: 'OneCloud平台上的所有ISO格式镜像' },
+  host: { key: 'host', label: '主机镜像', tooltip: '用户在OneCloud平台保存某一台主机所有磁盘的镜像组合，磁盘数量及容量最低要求与原主机一致' },
+  snapshot: { key: 'snapshot', label: '主机快照', tooltip: '用户在OneCloud平台保存某一台主机所有磁盘且同一时刻的快照组合，磁盘数量、容量和介质类型均需与原主机一致' },
   public: { key: 'public', label: '公有云镜像', tooltip: '公有云平台提供的标准镜像' },
   'public_customize': { key: 'public_customize', label: '公有云自定义镜像', tooltip: '用户在公有云平台上传的镜像' },
   private: { key: 'private', label: '私有云镜像', tooltip: '私有云平台提供的镜像' },
