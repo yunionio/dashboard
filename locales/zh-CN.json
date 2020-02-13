@@ -1143,6 +1143,11 @@
     "role": "请选择@:dictionary.role",
     "group": "请选择@:dictionary.group"
   },
+  "policyScopeLabel": {
+    "system": "管理后台",
+    "domain": "@:dictionary.domain管理后台",
+    "project": "无管理后台"
+  },
   "storageAclTypes": {
     "private": "本账号读写",
     "public-read": "本账号写公开读",

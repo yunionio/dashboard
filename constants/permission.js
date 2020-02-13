@@ -491,6 +491,29 @@ export const PERMISSION = {
   'network_globalvpcs_list': ['compute', 'globalvpcs', 'list'],
   // 公有云日志
   'cloudevents_list': ['log', 'cloudevents', 'list'],
+  /**
+   * 配额更新
+   */
+  'quota_create': ['compute', 'quotas', 'create'],
+  'quota_delete': ['compute', 'quotas', 'delete'],
+  'quota_update': ['compute', 'quotas', 'update'],
+  'quota_list': ['compute', 'quotas', 'list'],
+  'project_quota_create': ['compute', 'project_quotas', 'create'],
+  'project_quota_delete': ['compute', 'project_quotas', 'delete'],
+  'project_quota_update': ['compute', 'project_quotas', 'update'],
+  'project_quota_list': ['compute', 'project_quotas', 'list'],
+  'region_quota_create': ['compute', 'region_quotas', 'create'],
+  'region_quota_delete': ['compute', 'region_quotas', 'delete'],
+  'region_quota_update': ['compute', 'region_quotas', 'update'],
+  'region_quota_list': ['compute', 'region_quotas', 'list'],
+  'zone_quota_create': ['compute', 'zone_quotas', 'create'],
+  'zone_quota_delete': ['compute', 'zone_quotas', 'delete'],
+  'zone_quota_update': ['compute', 'zone_quotas', 'update'],
+  'zone_quota_list': ['compute', 'zone_quotas', 'list'],
+  'image_quota_create': ['image', 'image_quotas', 'create'],
+  'image_quota_delete': ['image', 'image_quotas', 'delete'],
+  'image_quota_update': ['image', 'image_quotas', 'update'],
+  'image_quota_list': ['image', 'image_quotas', 'list'],
 }
 
 // 已声明权限的资源
