@@ -3,7 +3,7 @@
 echo "🗃 Initializing git repository..."
 
 DEFAULT_GIT_PREFIX="https://github.com/yunionio"
-BRANCH="release/3.1"
+BRANCH="master"
 
 if [ $DEV_SETUP ]
   then
