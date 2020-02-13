@@ -15,7 +15,6 @@ function show_br_commit(){
   )
 }
 
-
 echo "🗃 Initializing git repository..."
 
 DEFAULT_GIT_PREFIX="https://github.com/yunionio"
