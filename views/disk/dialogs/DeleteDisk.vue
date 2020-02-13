@@ -117,7 +117,10 @@ export default {
     },
   },
   created () {
-    this.fetchSnapshotsByDiskId(this.params.data[0].id)
+    if (this.isIDC) {
+      const ids = this.params.data.map((item) => { return item.id })
+      this.fetchSnapshotsByDiskId(ids.join(','))
+    }
   },
   methods: {
     async handleConfirm () {
@@ -154,7 +157,7 @@ export default {
     },
     async fetchSnapshotsByDiskId (diskId) {
       const manager = new this.$Manager('snapshots')
-      const params = { disk_id: diskId, is_instance_snapshot: false }
+      const params = { filter: `disk_id.in(${diskId})`, is_instance_snapshot: false }
       const res = await manager.list({ params })
       this.snapshot.list = res.data.data
     },
