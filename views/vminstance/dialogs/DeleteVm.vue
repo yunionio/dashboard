@@ -109,7 +109,8 @@ export default {
   },
   created () {
     if (this.isIDC) {
-      this.fetchSnapshotsByVmId(this.params.data[0].id)
+      const ids = this.params.data.map((item) => { return item.id })
+      this.fetchSnapshotsByVmId(ids.join(','))
     }
   },
   methods: {
@@ -167,7 +168,7 @@ export default {
     fetchSnapshotData (id) {
       const snapshotManager = new this.$Manager('snapshots')
       const params = {
-        joint_filter: `guestdisks.disk_id(disk_id).guest_id.equals(${id})`,
+        joint_filter: `guestdisks.disk_id(disk_id).guest_id.in(${id})`,
         is_instance_snapshot: false,
       }
       if (this.isAdminMode) { params.admin = true }
@@ -175,7 +176,7 @@ export default {
     },
     fetchInstanceSnapshotData (id) {
       const instanceSnapshotManager = new this.$Manager('instance_snapshots')
-      const params = { guest_id: id }
+      const params = { filter: `guest_id.in(${id})` }
       return instanceSnapshotManager.list({ params })
     },
   },

@@ -14,6 +14,7 @@
           :elements="elements"
           :disabled="getDisabled(item)"
           :size-disabled="item.sizeDisabled"
+          @snapshotChange="val => snapshotChange(item, val, i)"
           @diskTypeChange="val => diskTypeChange(item, val)" />
         <a-button v-if="!getDisabled(item, 'minus')" shape="circle" icon="minus" size="small" @click="decrease(item.key)" class="mt-2" />
       </div>
@@ -340,6 +341,11 @@ export default {
           dataDiskItem.min = Math.max(item.min, this.min)
         }
         this.$set(this.dataDisks, 0, dataDiskItem)
+      })
+    },
+    snapshotChange (item, val, i) {
+      this.form.fc.setFieldsValue({
+        [`dataDiskSizes[${item.key}]`]: val,
       })
     },
   },
