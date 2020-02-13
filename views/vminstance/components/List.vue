@@ -320,12 +320,8 @@ export default {
                 },
                 meta: () => {
                   const ret = {
-                    validate: true,
-                    tooltip: null,
-                  }
-                  if (this.list.selectedItems.some(item => item.status !== 'ready')) {
-                    ret.validate = false
-                    ret.tooltip = '仅在云服务器状态为【关机】下可以进行该操作'
+                    validate: cloudEnabled('resetPassword', this.list.selectedItems),
+                    tooltip: cloudUnabledTip('resetPassword', this.list.selectedItems),
                   }
                   return ret
                 },
