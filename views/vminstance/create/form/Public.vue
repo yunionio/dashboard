@@ -5,7 +5,7 @@
       :form="form.fc"
       @submit="submit">
       <servertemplate v-if="isServertemplate" :decorators="decorators.servertemplate" :formItemLayout="formItemLayout" />
-      <a-divider orientation="left">基础配置</a-divider>
+      <!-- <a-divider orientation="left">基础配置</a-divider> -->
       <a-form-item v-show="!isServertemplate" :label="`指定${$t('dictionary.project')}`" v-bind="formItemLayout">
         <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
       </a-form-item>
@@ -97,35 +97,39 @@
         <tag
           v-decorator="decorators.tag" />
       </a-form-item>
-      <a-divider orientation="left">高级配置</a-divider>
-      <a-form-item v-bind="formItemLayout" v-if="form.fd.billType === 'quantity' && !isServertemplate" label="到期释放">
-        <duration :decorators="decorators.duration" :form="form" />
-      </a-form-item>
-      <a-form-item label="弹性公网IP" v-bind="formItemLayout">
-        <eip-config
-          :decorators="decorators.eip"
-          :eip-params="eipParams"
-          :hypervisor="hypervisor"
-          :showBind="form.fd.count === 1"
-          :isServertemplate="isServertemplate"
-          :form="form" />
-      </a-form-item>
-      <a-form-item label="安全组" v-bind="formItemLayout">
-        <secgroup-config
-          :provider="hypervisor"
-          :form="form"
-          :decorators="decorators.secgroup"
-          :secgroup-params="secgroupParams"
-          :hypervisor="hypervisor" />
-      </a-form-item>
-      <a-form-item label="调度策略" v-show="!isServertemplate" v-bind="formItemLayout" class="mb-0">
-        <sched-policy
-          :server-type="form.fi.createType"
-          :disabled-host="policyHostDisabled"
-          :policy-host-params="policyHostParams"
-          :decorators="decorators.schedPolicy"
-          :policy-schedtag-params="params.policySchedtag" />
-      </a-form-item>
+      <!-- <a-divider orientation="left">高级配置</a-divider> -->
+      <a-collapse :bordered="false">
+        <a-collapse-panel header="高级配置" key="1">
+          <a-form-item v-bind="formItemLayout" v-if="form.fd.billType === 'quantity' && !isServertemplate" label="到期释放">
+            <duration :decorators="decorators.duration" :form="form" />
+          </a-form-item>
+          <a-form-item label="弹性公网IP" v-bind="formItemLayout">
+            <eip-config
+              :decorators="decorators.eip"
+              :eip-params="eipParams"
+              :hypervisor="hypervisor"
+              :showBind="form.fd.count === 1"
+              :isServertemplate="isServertemplate"
+              :form="form" />
+          </a-form-item>
+          <a-form-item label="安全组" v-bind="formItemLayout">
+            <secgroup-config
+              :provider="hypervisor"
+              :form="form"
+              :decorators="decorators.secgroup"
+              :secgroup-params="secgroupParams"
+              :hypervisor="hypervisor" />
+          </a-form-item>
+          <a-form-item label="调度策略" v-show="!isServertemplate" v-bind="formItemLayout" class="mb-0">
+            <sched-policy
+              :server-type="form.fi.createType"
+              :disabled-host="policyHostDisabled"
+              :policy-host-params="policyHostParams"
+              :decorators="decorators.schedPolicy"
+              :policy-schedtag-params="params.policySchedtag" />
+          </a-form-item>
+        </a-collapse-panel>
+      </a-collapse>
       <bottom-bar
         :loading="submiting"
         :form="form"
