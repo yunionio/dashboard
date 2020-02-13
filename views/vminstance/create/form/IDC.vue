@@ -5,7 +5,7 @@
       :form="form.fc"
       @submit="submit">
       <servertemplate v-if="isServertemplate" :decorators="decorators.servertemplate" :formItemLayout="formItemLayout" />
-      <a-divider orientation="left">基础配置</a-divider>
+      <!-- <a-divider orientation="left">基础配置</a-divider> -->
       <a-form-item v-show="!isServertemplate" :label="`指定${$t('dictionary.project')}`" v-bind="formItemLayout">
         <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
       </a-form-item>
@@ -98,38 +98,42 @@
         <tag
           v-decorator="decorators.tag" />
       </a-form-item>
-      <a-divider orientation="left" v-if="showAdvanceConfig">高级配置</a-divider>
-      <a-form-item label="安全组" v-if="isKvm" v-bind="formItemLayout">
-        <secgroup-config
-          :form="form"
-          :isSnapshotImageType="isSnapshotImageType"
-          :decorators="decorators.secgroup"
-          :secgroup-params="secgroupParams"
-          :hypervisor="form.fd.hypervisor" />
-      </a-form-item>
-      <a-form-item v-show="!isServertemplate" label="调度策略" v-bind="formItemLayout" class="mb-0">
-        <sched-policy
-          :server-type="form.fi.createType"
-          :disabled-host="policyHostDisabled"
-          :policy-host-params="policyHostParams"
-          :decorators="decorators.schedPolicy"
-          :policy-schedtag-params="params.policySchedtag" />
-      </a-form-item>
-      <a-form-item label="引导方式" v-bind="formItemLayout" class="mb-0" v-if="isKvm">
-        <bios :decorator="decorators.bios" :uefi="uefi" />
-      </a-form-item>
-      <a-form-item v-bind="formItemLayout" v-show="!isServertemplate" v-if="isKvm && isLocalDisk" label="高可用" extra="只有宿主机数量不少于2台时才可以使用该功能">
-        <backup
-          :decorator="decorators.backup"
-          :disabled="form.fd.systemDiskType"
-          :disabled-items="backupDisableds" />
-      </a-form-item>
-      <a-form-item v-bind="formItemLayout" v-show="!isServertemplate" label="到期释放">
-        <duration :decorators="decorators.duration" :form="form" />
-      </a-form-item>
-      <a-form-item v-bind="formItemLayout" v-show="!isServertemplate" v-if="isKvm" label="主机组" extra="对资源的简单调度策略，组内的机器根据设置分布在不同的宿主机上，从而实现业务的高可用">
-        <instance-groups :decorators="decorators.groups" :params="instanceGroupsParams" />
-      </a-form-item>
+      <!-- <a-divider orientation="left" v-if="showAdvanceConfig">高级配置</a-divider> -->
+      <a-collapse :bordered="false">
+        <a-collapse-panel header="高级配置" key="1">
+          <a-form-item label="安全组" v-if="isKvm" v-bind="formItemLayout">
+            <secgroup-config
+              :form="form"
+              :isSnapshotImageType="isSnapshotImageType"
+              :decorators="decorators.secgroup"
+              :secgroup-params="secgroupParams"
+              :hypervisor="form.fd.hypervisor" />
+          </a-form-item>
+          <a-form-item v-show="!isServertemplate" label="调度策略" v-bind="formItemLayout" class="mb-0">
+            <sched-policy
+              :server-type="form.fi.createType"
+              :disabled-host="policyHostDisabled"
+              :policy-host-params="policyHostParams"
+              :decorators="decorators.schedPolicy"
+              :policy-schedtag-params="params.policySchedtag" />
+          </a-form-item>
+          <a-form-item label="引导方式" v-bind="formItemLayout" class="mb-0" v-if="isKvm">
+            <bios :decorator="decorators.bios" :uefi="uefi" />
+          </a-form-item>
+          <a-form-item v-bind="formItemLayout" v-show="!isServertemplate" v-if="isKvm && isLocalDisk" label="高可用" extra="只有宿主机数量不少于2台时才可以使用该功能">
+            <backup
+              :decorator="decorators.backup"
+              :disabled="form.fd.systemDiskType"
+              :disabled-items="backupDisableds" />
+          </a-form-item>
+          <a-form-item v-bind="formItemLayout" v-show="!isServertemplate" label="到期释放">
+            <duration :decorators="decorators.duration" :form="form" />
+          </a-form-item>
+          <a-form-item v-bind="formItemLayout" v-show="!isServertemplate" v-if="isKvm" label="主机组" extra="对资源的简单调度策略，组内的机器根据设置分布在不同的宿主机上，从而实现业务的高可用">
+            <instance-groups :decorators="decorators.groups" :params="instanceGroupsParams" />
+          </a-form-item>
+        </a-collapse-panel>
+      </a-collapse>
       <bottom-bar
         :loading="submiting"
         :form="form"
