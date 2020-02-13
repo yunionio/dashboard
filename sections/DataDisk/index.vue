@@ -14,6 +14,7 @@
           :elements="elements"
           :disabled="getDisabled(item)"
           :size-disabled="item.sizeDisabled"
+          @snapshotChange="val => snapshotChange(item, val, i)"
           @diskTypeChange="val => diskTypeChange(item, val)" />
         <a-button v-if="!getDisabled(item, 'minus')" shape="circle" icon="minus" size="small" @click="decrease(item.key)" class="mt-2" />
       </div>
@@ -245,7 +246,6 @@ export default {
           }
         }
       }
-      console.log(sizeDisabled, 'sizeDisabled')
       const dataDiskItem = {
         key,
         disabled,
@@ -340,7 +340,6 @@ export default {
     },
     diskTypeChange (item, val) {
       // 仅有第一块盘可以更改磁盘类型
-      console.log(item, 'item')
       this.$nextTick(() => {
         const dataDiskItem = {
           ...item,
@@ -349,22 +348,13 @@ export default {
         if (item.min) {
           dataDiskItem.min = Math.max(item.min, this.min)
         }
-        console.log(dataDiskItem, 'dataDiskItem')
         this.$set(this.dataDisks, 0, dataDiskItem)
       })
-      // this.dataDisks.forEach((disk, i) => {
-      //   console.log(i, {
-      //     ...item,
-      //     min: Math.max(item.min || DISK_MIN_SIZE, this.min),
-      //     diskType: val,
-      //   })
-      //   this.$set(this.dataDisks, i, {
-      //     ...item,
-      //     min: Math.max(item.min || DISK_MIN_SIZE, this.min),
-      //     diskType: val,
-      //   })
-      // })
-      // 将
+    },
+    snapshotChange (item, val, i) {
+      this.form.fc.setFieldsValue({
+        [`dataDiskSizes[${item.key}]`]: val,
+      })
     },
   },
 }

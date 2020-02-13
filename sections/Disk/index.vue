@@ -123,6 +123,14 @@ export default {
       return Math.max(this.min, snapshotSize)
     },
   },
+  watch: {
+    'snapshotObj.size' (val) {
+      if (val) {
+        const size = val / 1024
+        this.$emit('snapshotChange', size)
+      }
+    },
+  },
   methods: {
     has (element) {
       return this.elements.includes(element)
