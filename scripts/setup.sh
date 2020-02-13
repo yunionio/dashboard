@@ -1,5 +1,20 @@
 #!/bin/bash
 
+function show_br_commit(){
+  local path="$1"; shift
+  local branch
+  local commit
+  local repo
+  (
+    cd $path
+    path=$(readlink -f $path 2>/dev/null || pwd)
+    repo=$(basename -s .git `git config --get remote.origin.url`)
+    commit=$(git rev-parse --verify HEAD |cut -c 1-8)
+    branch=$(git rev-parse --abbrev-ref HEAD)
+    echo "repo: $repo; branch: $branch; commit: $commit; path: $path"
+  )
+}
+
 echo "🗃 Initializing git repository..."
 
 DEFAULT_GIT_PREFIX="https://github.com/yunionio"
@@ -20,5 +35,13 @@ if [ ! -d "./containers" ]; then
   git clone -b $BRANCH $DEFAULT_GIT_PREFIX/dashboard-module-dashboard.git containers/Dashboard
   git clone -b $BRANCH $DEFAULT_GIT_PREFIX/dashboard-module-storage.git containers/Storage
 fi
+
+echo
+echo "show branch infor under Dashboard... "
+for repo in src containers/*
+do
+  show_br_commit $repo
+done
+echo
 
 echo "🗃 Done"
