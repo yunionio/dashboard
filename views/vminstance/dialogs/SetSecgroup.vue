@@ -43,9 +43,9 @@ export default {
   mixins: [DialogMixin, WindowsMixin],
   data () {
     const validateSecgroups = (rule, value, callback) => {
-      let maxError = (this.isAzure || this.isUCloud) ? '最多关联一个' : '最多关联五个'
+      let maxError = this.isBindOne ? '最多关联一个' : '最多关联五个'
       let minError = '最少关联一个'
-      let max = (this.isAzure || this.isUCloud) ? 1 : 5
+      let max = this.isBindOne ? 1 : 5
       if (value.length > max) {
         return callback(maxError)
       }
@@ -91,9 +91,15 @@ export default {
     isUCloud () {
       return this.params.data[0].provider === HYPERVISORS_MAP.ucloud.provider
     },
+    isZStack () {
+      return this.params.data[0].provider === HYPERVISORS_MAP.zstack.provider
+    },
+    isBindOne () {
+      return this.isAzure || this.isUCloud || this.isZStack
+    },
     message () {
       let str = '提示信息：安全组最多可关联五个'
-      if (this.isAzure || this.isUCloud) {
+      if (this.isBindOne) {
         str = '提示信息：安全组最多可关联一个'
       }
       return str
@@ -103,7 +109,7 @@ export default {
       return url.href
     },
     max () {
-      if (this.isAzure || this.isUCloud) {
+      if (this.isBindOne) {
         return 1
       }
       return 5
