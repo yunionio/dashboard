@@ -11,6 +11,8 @@
         :decorator="decorator.networkConfig"
         :isBonding="isBonding"
         :network-params="networkListParams"
+        :vpc-params="networkVpcParams"
+        :vpc-resource="vpcResource"
         :network-resource-mapper="networkResourceMapper"
         :limit="form.fi.capability.max_nic_count" />
     </a-form-item>
@@ -47,6 +49,13 @@ export default {
     networkListParams: {
       type: Object,
       default: () => ({}),
+    },
+    networkVpcParams: {
+      type: Object,
+      default: () => ({}),
+    },
+    vpcResource: {
+      type: String,
     },
     schedtagParams: {
       type: Object,
