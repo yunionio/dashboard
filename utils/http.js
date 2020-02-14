@@ -40,7 +40,14 @@ function showLoading () {
 
 // 统一处理重复请求，进行cancel
 const requestMap = {}
-const getRquestKey = config => `$${config.url}$$${config.method}`
+const getRquestKey = config => {
+  let ret = `$${config.url}$$${config.method}`
+  if (config.params && config.params.$t) {
+    ret += `$$${config.params.$t}`
+    delete config.params.$t
+  }
+  return ret
+}
 const cancelRquest = requestKey => {
   const request = requestMap[requestKey]
   if (request) {
