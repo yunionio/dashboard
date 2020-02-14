@@ -194,6 +194,7 @@ export default {
             })
           } else {
             this.$message.error('请先选中要上传的镜像文件!')
+            this.loading = false
             return false
           }
           await this.handleUpload(formData)
