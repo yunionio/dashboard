@@ -156,6 +156,10 @@ export default {
     descProps: {
       type: Object,
     },
+    showDesc: {
+      type: Boolean,
+      default: true,
+    },
   },
   computed: {
     commonBaseInfo () {
@@ -208,7 +212,9 @@ export default {
       })
       if (type === 'base-info') {
         children = R.insert(1, this.renderName(h), children)
-        children.push(this.renderDesc(h))
+        if (this.showDesc) {
+          children.push(this.renderDesc(h))
+        }
       }
       return h('div', {
         class: 'detail-items',
