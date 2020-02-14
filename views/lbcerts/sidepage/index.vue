@@ -1,0 +1,57 @@
+<template>
+  <base-side-page
+    @cancel="cancelSidePage"
+    title="证书"
+    icon="res-lbcert"
+    :res-name="data.name"
+    :actions="params.actions"
+    :current-tab="params.windowData.currentTab"
+    :tabs="detailTabs"
+    @tab-change="handleTabChange">
+    <template v-slot:actions>
+      <actions :options="params.singleActions" :row="data" button-type="link" button-size="small" />
+    </template>
+    <component :is="params.windowData.currentTab" :res-id="params.resId" :data="data" :list="params.list" :getParams="getParams" />
+  </base-side-page>
+</template>
+
+<script>
+import LbcertDetail from './Detail'
+import LbcertCacheList from './Cache'
+import SidePageMixin from '@/mixins/sidePage'
+import WindowsMixin from '@/mixins/windows'
+import Actions from '@/components/PageList/Actions'
+
+export default {
+  name: 'LbcertSidePage',
+  components: {
+    LbcertDetail,
+    LbcertCacheList,
+    Actions,
+  },
+  mixins: [SidePageMixin, WindowsMixin],
+  data () {
+    return {
+      detailTabs: [
+        { label: '详情', key: 'lbcert-detail' },
+        { label: '缓存列表', key: 'lbcert-cache-list' },
+        { label: '操作日志', key: 'event-drawer' },
+      ],
+    }
+  },
+  computed: {
+    getParams () {
+      if (this.params.windowData.currentTab === 'lbcert-cache-list') {
+        return {
+          details: true,
+          certificate_id: this.params.resId,
+        }
+      }
+      return null
+    },
+    data () {
+      return this.params.list.data[this.params.resId].data
+    },
+  },
+}
+</script>

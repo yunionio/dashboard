@@ -12,6 +12,7 @@ import NatList from '@Network/views/nats'
 import ReservedIpList from '@Network/views/reserved-ip'
 import DNSList from '@Network/views/dns'
 import LbaclsList from '@Network/views/lbacls'
+import LbcertsList from '@Network/views/lbcerts'
 
 export default {
   index: 3,
@@ -204,6 +205,21 @@ export default {
               name: 'LbaclsList',
               path: '',
               component: LbaclsList,
+            },
+          ],
+        },
+        {
+          path: '/lbcert',
+          meta: {
+            label: '证书',
+            permission: 'lb_loadbalancercertificates_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'LbcertsList',
+              path: '',
+              component: LbcertsList,
             },
           ],
         },
