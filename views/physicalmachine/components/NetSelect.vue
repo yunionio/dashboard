@@ -31,6 +31,7 @@ export default {
       networkParams: {
         is_on_premise: true,
         usable: true,
+        vpc: 'default',
       },
     }
   },
