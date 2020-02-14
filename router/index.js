@@ -11,6 +11,7 @@ import RouteTableList from '@Network/views/route-table'
 import NatList from '@Network/views/nats'
 import ReservedIpList from '@Network/views/reserved-ip'
 import DNSList from '@Network/views/dns'
+import LbaclsList from '@Network/views/lbacls'
 
 export default {
   index: 3,
@@ -181,6 +182,28 @@ export default {
               name: 'DNS',
               path: '',
               component: DNSList,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      meta: {
+        label: '负载均衡',
+      },
+      submenus: [
+        {
+          path: '/lbacl',
+          meta: {
+            label: '访问控制',
+            permission: 'lb_loadbalanceracls_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'LbaclsList',
+              path: '',
+              component: LbaclsList,
             },
           ],
         },
