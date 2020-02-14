@@ -343,6 +343,21 @@ export default {
     },
     cpuChange (cpu) {
       const memOpts = this.form.fi.cpuMem.cpu_mems_mb[cpu]
+      if (!memOpts || !memOpts.length) { // 没有内存Opts，则内存为0
+        let vcpu = cpu
+        if (!this.form.fi.cpuMem.cpus.includes(cpu)) { // CPU的Opts不包括cpu的话
+          if (this.form.fi.cpuMem.cpus && this.form.fi.cpuMem.cpus.length) { // 如果CPU的Opts有值
+            vcpu = this.form.fi.cpuMem.cpus[0]
+          } else { // 否则为0
+            vcpu = 0
+          }
+        }
+        this.form.fc.setFieldsValue({
+          vcpu,
+          vmem: 0,
+        })
+        return
+      }
       this.form.fi.cpuMem.mems_mb = memOpts
       if (!this.form.fi.cpuMem.mems_mb.includes(2048)) { // 如果返回值不包括默认内存2G，选择第一项
         this.form.fc.setFieldsValue({
