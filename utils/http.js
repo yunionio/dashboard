@@ -40,7 +40,7 @@ function showLoading () {
 
 // 统一处理重复请求，进行cancel
 const requestMap = {}
-const getRquestKey = config => {
+const getRequestKey = config => {
   let ret = `$${config.url}$$${config.method}`
   if (config.params && config.params.$t) {
     ret += `$$${config.params.$t}`
@@ -133,7 +133,7 @@ const showHttpErrorMessage = (error) => {
 // request interceptor
 http.interceptors.request.use(
   (config) => {
-    const requestKey = getRquestKey(config)
+    const requestKey = getRequestKey(config)
     cancelRquest(requestKey)
     pendingCount++
     config.method === 'get' && pendingCount === 1 && showLoading()
