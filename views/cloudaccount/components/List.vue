@@ -304,6 +304,23 @@ export default {
           },
         },
         {
+          label: '更新账单文件',
+          permission: 'cloudaccounts_perform_update_credential',
+          action: obj => {
+            this.$router.push({
+              name: 'CloudaccountUpdateBill',
+              query: {
+                id: obj.id,
+              },
+            })
+          },
+          meta: obj => {
+            return {
+              validate: ['Aws', 'Aliyun', 'Google'].indexOf(obj.brand) > -1,
+            }
+          },
+        },
+        {
           label: '更多',
           actions: obj => {
             const ownerDomain = this.$store.getters.isAdminMode || obj.domain_id === this.$store.getters.userInfo.projectDomainId
