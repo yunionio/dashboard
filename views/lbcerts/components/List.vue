@@ -16,7 +16,7 @@ import {
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'LbaclsList',
+  name: 'LbcertList',
   mixins: [WindowsMixin],
   props: {
     id: String,

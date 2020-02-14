@@ -9,7 +9,7 @@
 <script>
 
 export default {
-  name: 'LbaclDetail',
+  name: 'LbcertDetail',
   props: {
     data: {
       type: Object,
