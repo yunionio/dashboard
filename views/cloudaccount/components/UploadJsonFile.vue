@@ -70,6 +70,9 @@ export default {
       })
     },
   },
+  created () {
+    this.fileList = []
+  },
   methods: {
     setValues (jsonStr) {
       if (!jsonStr || jsonStr === '') return false
