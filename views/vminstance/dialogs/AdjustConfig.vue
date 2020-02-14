@@ -364,7 +364,7 @@ export default {
     },
     async loadData (data) {
       this.data = data
-      if (this.data.length === 1) {
+      if (this.data.length > 0) {
         try {
           const { data } = await this.capability(this.data[0].zone_id)
           this.form.fi.capability = data
@@ -397,8 +397,8 @@ export default {
         if (mem < this.data[i].vmem_size) {
           mem = this.data[i].vmem_size
         }
-        if (this.data[i].disks_info) {
-          this.data[i].disks_info.forEach((item) => {
+        if (this.data[i].disk_info) {
+          this.data[i].disk_info.forEach((item) => {
             if (item.disk_type !== 'sys' && item.index !== 0) {
               datadisks.push({ value: item.size / 1024, type: item.storage_type })
             }
