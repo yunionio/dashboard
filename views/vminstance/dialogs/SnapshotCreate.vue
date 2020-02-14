@@ -156,7 +156,7 @@ export default {
     checkTemplateName () {
       const snapshotName = this.form.fd.snapshotName
       if (!R.isNil(snapshotName) && !R.isEmpty(snapshotName)) {
-        this.manager.get({ id: snapshotName })
+        this.manager.get({ id: snapshotName, params: { scope: this.$store.getters.scope } })
           .then(res => {
             const data = res.data
             if (!R.isNil(data) && !R.isEmpty(data)) {
