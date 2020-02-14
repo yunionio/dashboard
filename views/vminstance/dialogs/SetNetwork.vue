@@ -6,7 +6,15 @@
       <dialog-selected-tips :count="params.data.length" action="添加网卡" />
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc">
-        <network-config :form="form.fc" :count="params.list.total" :decorator="networkConfig" :networkParams="networkParams" :limit="networkLimit" />
+        <network-config
+          :form="form.fc"
+          :count="params.list.total"
+          :decorator="networkConfig"
+          :networkParams="networkParams"
+          :limit="networkLimit"
+          :networkLimit="networkLimit"
+          :vpcParams="vpcParams"
+          :vpcResource="vpcResource" />
       </a-form>
     </div>
     <div slot="footer">
@@ -46,6 +54,16 @@ export default {
       bindedSecgroups: [],
       bindedSecgroupsLoaded: false,
       networkConfig: {
+        vpcs: i => [
+          `vpcs[${i}]`,
+          {
+            validateTrigger: ['change', 'blur'],
+            rules: [{
+              required: true,
+              message: '请选择VPC',
+            }],
+          },
+        ],
         networks: i => [
           `networks[${i}]`,
           {
@@ -85,6 +103,17 @@ export default {
     },
     networkLimit () {
       return 8 - (this.params.list.total || 0)
+    },
+    vpcParams () {
+      const params = {
+        usable: true,
+        scope: this.$store.getters.scope,
+        limit: 0,
+      }
+      return params
+    },
+    vpcResource () {
+      return `cloudregions/${this.params.data[0].cloudregion_id}/vpcs`
     },
   },
   methods: {

@@ -81,7 +81,9 @@
             :isBonding="isBonding"
             :network-resource-mapper="networkResourceMapper"
             :network-list-params="resourcesParams.network"
-            :schedtag-params="resourcesParams.schedtag" />
+            :schedtag-params="resourcesParams.schedtag"
+            :networkVpcParams="resourcesParams.vpcParams"
+            :vpcResource="vpcResource" />
         </a-form-item>
         <a-form-item :wrapper-col="{ span: 18, offset: 4 }" v-if="isShowImages">
           <a-checkbox v-model="isBonding">启用bonding</a-checkbox>
@@ -163,6 +165,16 @@ export default {
             },
           ],
           networkConfig: {
+            vpcs: i => [
+              `vpcs[${i}]`,
+              {
+                validateTrigger: ['change', 'blur'],
+                rules: [{
+                  required: true,
+                  message: '请选择VPC',
+                }],
+              },
+            ],
             networks: i => [
               `networks[${i}]`,
               {
@@ -267,6 +279,11 @@ export default {
           limit: 1024,
           'filter.0': 'resource_type.equals(networks)',
         },
+        vpcParams: {
+          usable: true,
+          scope: this.$store.getters.scope,
+          limit: 0,
+        },
       },
       isShowFalseIcon: false,
       count: 1,
@@ -309,6 +326,9 @@ export default {
         { text: 'RAID-0 (无冗余)', value: 'raid0' },
         { text: '自定义配置', value: 'custom' },
       ]
+    },
+    vpcResource () {
+      return `cloudregions/${this.params.data[0].cloudregion_id}/vpcs`
     },
   },
   watch: {
