@@ -339,6 +339,16 @@ export const createVmDecorators = type => {
         },
       ],
       networkConfig: {
+        vpcs: i => [
+          `vpcs[${i}]`,
+          {
+            validateTrigger: ['change', 'blur'],
+            rules: [{
+              required: true,
+              message: '请选择VPC',
+            }],
+          },
+        ],
         networks: i => [
           `networks[${i}]`,
           {

@@ -198,6 +198,17 @@ export default {
       }
       return params
     },
+    networkVpcParams () {
+      const params = {
+        usable: true,
+        scope: this.$store.getters.scope,
+        limit: 0,
+      }
+      return params
+    },
+    vpcResource () {
+      return `cloudregions/${this.cloudregionZoneParams.cloudregion}/vpcs`
+    },
   },
   created () {
     this.zoneM = new Manager('zones')
