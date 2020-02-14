@@ -173,6 +173,10 @@ export const REGEXP = {
     regexp: /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(\/\d{1,2})?$/,
     message: i18n.t('validator.CIDR'),
   },
+  certName: {
+    regexp: /^[a-zA-Z][a-zA-Z0-9-]{0,127}([a-zA-Z0-9-]|#{1,3})$/,
+    message: i18n.t('validator.certName'),
+  },
 }
 
 /**
