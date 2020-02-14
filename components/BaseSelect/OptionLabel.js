@@ -11,6 +11,20 @@ const resourceMode = {
     },
     labelFormat: item => `${item.name}（${item.guest_ip_start} - ${item.guest_ip_end}, vlan=${item.vlan_id}）`,
   },
+  vpcs: {
+    vnode: (vm, h) => {
+      const text = vm.getLabel()
+      return (
+        <div class="d-flex">
+          <span class='text-truncate flex-fill' title={ text }>{ text }</span>
+        </div>
+      )
+    },
+    labelFormat: item => {
+      if (!item.cidr_block) return item.name
+      return `${item.name}（${item.cidr_block}）`
+    },
+  },
 }
 
 export default {
