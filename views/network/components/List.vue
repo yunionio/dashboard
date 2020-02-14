@@ -412,6 +412,12 @@ export default {
                   }
                   if (this.isPower(obj)) {
                     const { hasbrand, canUpdate } = canAdjustConfig(obj)
+                    if (obj.cloud_env === 'onpremise' && obj.vpc_id === 'default') {
+                      return {
+                        validate: false,
+                        tooltip: '本地IDC的VPC下新建的IP子网不支持该操作',
+                      }
+                    }
                     if (!hasbrand) {
                       return {
                         validate: true,

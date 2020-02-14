@@ -13,6 +13,7 @@ import ReservedIpList from '@Network/views/reserved-ip'
 import DNSList from '@Network/views/dns'
 import LbaclsList from '@Network/views/lbacls'
 import LbcertsList from '@Network/views/lbcerts'
+import LoadbalancerclusterList from '@Network/views/loadbalancercluster'
 
 export default {
   index: 3,
@@ -220,6 +221,28 @@ export default {
               name: 'LbcertsList',
               path: '',
               component: LbcertsList,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      meta: {
+        label: '负载均衡集群',
+      },
+      submenus: [
+        {
+          path: '/cluster',
+          meta: {
+            label: '集群',
+            permission: 'lb_loadbalancerclusters_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'LoadbalancerclusterList',
+              path: '',
+              component: LoadbalancerclusterList,
             },
           ],
         },
