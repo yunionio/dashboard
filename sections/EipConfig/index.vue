@@ -70,16 +70,12 @@ export default {
     eipParams: Object,
     hypervisor: String,
     hiddenNoneType: Boolean,
-    isServertemplate: {
-      type: Boolean,
-      default: false,
-    },
-    showBind: { // 是否显示已绑定
-      type: Boolean,
-      default: true,
-    },
     form: {
       type: Object,
+    },
+    showBind: {
+      type: Boolean,
+      default: true,
     },
   },
   data () {
@@ -101,6 +97,9 @@ export default {
     },
     types () {
       const ret = { ...types }
+      if (!this.showBind) { // 主机创建不支持绑定已有EIP
+        delete ret.bind
+      }
       // 私有云不支持新建
       if (this.isPrivateEnv) {
         delete ret.new
@@ -108,10 +107,6 @@ export default {
       // 是否隐藏暂不需要选项
       if (this.hiddenNoneType) {
         delete ret.none
-      }
-      // 主机模板不支持绑定已有EIP
-      if (this.isServertemplate || !this.showBind) {
-        delete ret.bind
       }
       return ret
     },
