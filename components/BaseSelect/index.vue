@@ -14,7 +14,7 @@
         </a-select-option>
       </slot>
     </a-select>
-    <a-icon v-if="showSync" type="sync" class="ml-2" :spin="loading" @click="loadOpts" :style="{ color: '#1890ff' }" />
+    <a-icon v-if="showSync" type="sync" class="ml-2" :spin="loading" @click="e => loadOpts()" :style="{ color: '#1890ff' }" />
   </div>
 </template>
 <script>
