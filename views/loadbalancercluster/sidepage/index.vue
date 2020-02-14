@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     title="集群"
-    icon="res-lbcert"
+    icon="res-cluster"
     :res-name="data.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"
