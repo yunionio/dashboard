@@ -14,6 +14,7 @@
           :item.sync="item.vpc"
           :need-params="true"
           :params="vpcParams"
+          :mapper="vpcResourceMapper"
           :select-props="{ allowClear: true, placeholder: '请选择VPC' }" />
         <a-tag v-else color="blue" class="w-100 mr-1">{{ getVpcTag(networkList[0].vpc) }}</a-tag>
       </a-form-item>
@@ -30,7 +31,7 @@
           :mapper="networkResourceMapper"
           :select-props="{ allowClear: true, placeholder: '请选择IP子网' }" />
       </a-form-item>
-      <a-form-item class="w-25 mb-0 mr-2" v-if="item.ipShow">
+      <a-form-item class="mb-0 mr-2" v-if="item.ipShow">
         <a-input
           placeholder="请输入子网内的IP地址"
           @change="e => ipChange(e, i)"
@@ -90,6 +91,10 @@ export default {
     vpcResource: {
       type: String,
       default: 'vpcs', // 还可能是这样的resource cloudregions/{region_id}/vpcs
+    },
+    vpcResourceMapper: {
+      type: Function,
+      default: data => { return data },
     },
   },
   data () {

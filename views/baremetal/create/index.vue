@@ -88,7 +88,8 @@
           :network-resource-mapper="networkResourceMapper"
           :schedtag-params="params.policySchedtag"
           :networkVpcParams="params.vpcParams"
-          :vpcResource="vpcResource" />
+          :vpcResource="vpcResource"
+          :vpcResourceMapper="vpcResourceMapper" />
       </a-form-item>
       <a-form-item :wrapper-col="{ span: 20, offset: 3 }">
         <a-checkbox v-model="isBonding">启用bonding</a-checkbox>
@@ -587,6 +588,9 @@ export default {
     this.loadHostOpt()
   },
   methods: {
+    vpcResourceMapper (list) {
+      return list.filter(val => val.id !== 'default' && val.cloud_env !== 'onpremise')
+    },
     setSelectedImage ({ imageMsg }) {
       this.selectedImage = imageMsg
     },
