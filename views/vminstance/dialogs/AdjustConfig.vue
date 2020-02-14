@@ -364,7 +364,7 @@ export default {
     },
     async loadData (data) {
       this.data = data
-      if (this.data.length === 1) {
+      if (this.data.length > 0) {
         try {
           const { data } = await this.capability(this.data[0].zone_id)
           this.form.fi.capability = data
