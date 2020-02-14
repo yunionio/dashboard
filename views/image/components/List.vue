@@ -202,7 +202,7 @@ export default {
           actions: obj => {
             return [
               {
-                label: '镜像创建机器',
+                label: '新建虚拟机',
                 action: obj => {
                   this.createDialog('ImageCreateServerDialog', {
                     data: [obj],
