@@ -1,0 +1,44 @@
+<template>
+  <detail
+    :list="list"
+    :data="data"
+    :base-info="baseInfo"
+    :extra-info="extraInfo" />
+</template>
+
+<script>
+
+export default {
+  name: 'LoadbalancerclusterDetail',
+  props: {
+    data: {
+      type: Object,
+      required: true,
+    },
+    list: {
+      type: Object,
+      required: true,
+    },
+  },
+  data () {
+    return {
+      baseInfo: [
+        {
+          field: 'zone',
+          title: '可用区',
+          formatter: ({ row }) => {
+            return `${row.region} ${row.zone}`
+          },
+        },
+      ],
+      extraInfo: [
+        {
+          title: '其他信息',
+          items: [
+          ],
+        },
+      ],
+    }
+  },
+}
+</script>

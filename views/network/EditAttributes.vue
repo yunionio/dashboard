@@ -24,10 +24,10 @@
         </a-radio-group>
       </a-form-item>
       <a-form-item label="起始IP" v-bind="formItemLayout">
-        <a-input v-decorator="decorators.guest_ip_start" :disabled="isIdcVpc" />
+        <a-input v-decorator="decorators.guest_ip_start" />
       </a-form-item>
       <a-form-item label="结束IP" v-bind="formItemLayout">
-        <a-input v-decorator="decorators.guest_ip_end" :disabled="isIdcVpc" />
+        <a-input v-decorator="decorators.guest_ip_end" />
       </a-form-item>
       <a-form-item label="子网掩码" v-bind="formItemLayout">
         <a-select v-decorator="decorators.guest_ip_mask">
@@ -233,14 +233,6 @@ export default {
       cloudEnv: '',
       vpcId: '',
     }
-  },
-  computed: {
-    isIdcVpc () {
-      if (this.cloudEnv === 'onpremise' && this.vpcId !== 'default') {
-        return true
-      }
-      return false
-    },
   },
   provide () {
     return {
