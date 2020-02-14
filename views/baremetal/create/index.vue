@@ -86,7 +86,10 @@
           :isBonding="isBonding"
           :network-list-params="networkParam"
           :network-resource-mapper="networkResourceMapper"
-          :schedtag-params="params.policySchedtag" />
+          :schedtag-params="params.policySchedtag"
+          :networkVpcParams="params.vpcParams"
+          :vpcResource="vpcResource"
+          :vpcResourceMapper="vpcResourceMapper" />
       </a-form-item>
       <a-form-item :wrapper-col="{ span: 20, offset: 3 }">
         <a-checkbox v-model="isBonding">启用bonding</a-checkbox>
@@ -169,6 +172,10 @@ export default {
         fc: this.$form.createForm(this, {
           onValuesChange: (props, values) => {
             this.$bus.$emit('updateForm', values)
+            if (values.hasOwnProperty('cloudregion') && values.cloudregion.key) {
+              this.capability(values.cloudregion.key)
+              this.cloudregion = values.cloudregion.key
+            }
             if (values.hasOwnProperty('zone') && values.zone.key) {
               this.capability(values.zone.key)
               this.zone = values.zone.key
@@ -297,6 +304,16 @@ export default {
             },
           ],
           networkConfig: {
+            vpcs: i => [
+              `vpcs[${i}]`,
+              {
+                validateTrigger: ['change', 'blur'],
+                rules: [{
+                  required: true,
+                  message: '请选择VPC',
+                }],
+              },
+            ],
             networks: i => [
               `networks[${i}]`,
               {
@@ -387,6 +404,7 @@ export default {
         ],
       },
       zone: '',
+      cloudregion: '',
       params: {
         zone: {},
         region: {
@@ -405,6 +423,11 @@ export default {
           is_empty: true,
           host_type: 'baremetal',
           scope: this.$store.getters.scope,
+        },
+        vpcParams: {
+          usable: true,
+          scope: this.$store.getters.scope,
+          limit: 0,
         },
       },
       selectedImage: {},
@@ -481,6 +504,9 @@ export default {
         usable: true,
         ...this.scopeParams,
       }
+    },
+    vpcResource () {
+      return `cloudregions/${this.cloudregion}/vpcs`
     },
     scopeParams () {
       if (this.$store.getters.isAdminMode) {
@@ -562,6 +588,9 @@ export default {
     this.loadHostOpt()
   },
   methods: {
+    vpcResourceMapper (list) {
+      return list.filter(val => val.id !== 'default' && val.cloud_env !== 'onpremise')
+    },
     setSelectedImage ({ imageMsg }) {
       this.selectedImage = imageMsg
     },

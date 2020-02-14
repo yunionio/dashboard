@@ -14,6 +14,7 @@
         :vpc-params="networkVpcParams"
         :vpc-resource="vpcResource"
         :network-resource-mapper="networkResourceMapper"
+        :vpc-resource-mapper="vpcResourceMapper"
         :limit="form.fi.capability.max_nic_count" />
     </a-form-item>
     <a-form-item v-if="networkComponent === 'schedtag'">
@@ -67,7 +68,11 @@ export default {
     },
     networkResourceMapper: {
       type: Function,
-      default: (data) => { return data },
+      default: data => data,
+    },
+    vpcResourceMapper: {
+      type: Function,
+      default: data => data,
     },
   },
   data () {
