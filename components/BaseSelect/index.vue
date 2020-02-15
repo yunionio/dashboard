@@ -147,6 +147,9 @@ export default {
     ctx (val, oldV) {
       this.paramsChange(val, oldV)
     },
+    resource (val, oldV) {
+      this.paramsChange(val, oldV)
+    },
     options: {
       handler (val) {
         if (val && val.length) {
