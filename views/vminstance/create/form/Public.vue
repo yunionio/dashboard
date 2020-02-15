@@ -91,7 +91,9 @@
         <server-network
           :decorator="decorators.network"
           :network-list-params="networkParam"
-          :schedtag-params="params.schedtag" />
+          :schedtag-params="params.schedtag"
+          :networkVpcParams="networkVpcParams"
+          :vpcResource="vpcResource" />
       </a-form-item>
       <a-form-item label="标签" v-bind="formItemLayout" class="mb-0">
         <tag
