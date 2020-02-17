@@ -27,6 +27,7 @@
 import * as R from 'ramda'
 import NetworkConfig from '@Compute/sections/ServerNetwork/NetworkConfig'
 import { checkIpInSegment } from '@Compute/utils/createServer'
+import expectStatus from '@/constants/expectStatus'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
@@ -143,8 +144,8 @@ export default {
             nets,
           },
         })
-        this.$bus.$emit('VMInstanceListSingleRefresh', [this.params.data[0]['id']])
         this.params.list.fetchData()
+        this.$bus.$emit('VMInstanceListSingleRefresh', [this.params.resId, Object.values(expectStatus.server).flat()])
         this.cancelDialog()
       } finally {
         this.loading = false

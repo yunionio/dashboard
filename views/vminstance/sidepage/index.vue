@@ -64,7 +64,9 @@ export default {
   },
   computed: {
     data () {
-      return this.params.list.data[this.params.resId].data
+      const _data = this.params.list.data[this.params.resId].data || {}
+      _data['cloudregion'] = _data['region']
+      return _data
     },
     getParams () {
       if (this.params.windowData.currentTab === 'secgroup-list') {

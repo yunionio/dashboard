@@ -127,6 +127,7 @@ export default {
               list: this.list,
               data: [this.data],
               columns: this.serverColumns,
+              resId: this.resId,
             })
           },
           meta: () => {
