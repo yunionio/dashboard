@@ -3,6 +3,7 @@
     <div class="d-flex align-items-start mb-2" v-for="(item, i) in networkList" :key="item.key">
       <a-tag color="blue" class="mr-1" style="margin-top: 10px;">{{ isBonding ? 'bond' : '网卡'}}{{i + count}}</a-tag>
       <a-form-item
+        style="min-width: 200px;"
         class="w-25 mb-0 mr-1">
         <base-select
           v-if="i === 0"
@@ -19,6 +20,7 @@
         <a-tag v-else color="blue" class="w-100 mr-1">{{ getVpcTag(networkList[0].vpc) }}</a-tag>
       </a-form-item>
       <a-form-item
+        style="min-width: 200px;"
         class="w-25 mb-0 mr-1">
         <base-select
           class="w-100"
@@ -37,7 +39,7 @@
           @change="e => ipChange(e, i)"
           v-decorator="decorator.ips(item.key, item.network)" />
       </a-form-item>
-      <a-button v-else type="link" class="w-25 mr-1 mt-1" @click="showIp(item)">手动配置IP</a-button>
+      <a-button v-else type="link" class="mr-1 mt-1" @click="showIp(item)">手动配置IP</a-button>
       <a-button shape="circle" icon="minus" size="small" @click="decrease(item.key, i)" class="mt-2" />
     </div>
     <div class="d-flex align-items-center" v-if="networkCountRemaining > 0">
