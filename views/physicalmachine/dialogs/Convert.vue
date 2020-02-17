@@ -83,7 +83,8 @@
             :network-list-params="resourcesParams.network"
             :schedtag-params="resourcesParams.schedtag"
             :networkVpcParams="resourcesParams.vpcParams"
-            :vpcResource="vpcResource" />
+            :vpcResource="vpcResource"
+            :vpcResourceMapper="vpcResourceMapper" />
         </a-form-item>
         <a-form-item :wrapper-col="{ span: 18, offset: 4 }" v-if="isShowImages">
           <a-checkbox v-model="isBonding">启用bonding</a-checkbox>
@@ -374,6 +375,9 @@ export default {
     this.zonesM2 = new this.$Manager('zones')
   },
   methods: {
+    vpcResourceMapper (list) {
+      return list.filter(val => val.id === 'default')
+    },
     // 过滤network数据
     networkResourceMapper (data) {
       data = data.filter((d) => d.server_type !== 'ipmi' && d.server_type !== 'pxe')
