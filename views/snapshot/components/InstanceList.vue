@@ -64,6 +64,10 @@ export default {
           minWidth: 220,
           type: 'expand',
           slots: {
+            default: ({ row }) => {
+              const len = (row.snapshots && row.snapshots.length) || 0
+              return len
+            },
             content: ({ row }) => {
               const list = row.snapshots.map(val => (
                 <a-tag class='mb-2'>{ val.name }</a-tag>
