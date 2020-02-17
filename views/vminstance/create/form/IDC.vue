@@ -26,6 +26,9 @@
       <a-form-item label="申请原因" v-bind="formItemLayout" v-if="isOpenWorkflow">
         <a-input v-decorator="decorators.reason" placeholder="请输入主机申请原因" />
       </a-form-item>
+      <a-form-item v-bind="formItemLayout" v-show="!isServertemplate" label="到期释放">
+        <duration :decorators="decorators.duration" :form="form" />
+      </a-form-item>
       <a-form-item label="数量" v-show="!isServertemplate" v-bind="formItemLayout">
         <a-input-number v-decorator="decorators.count" :min="1" :max="10" />
       </a-form-item>
@@ -127,9 +130,6 @@
               :decorator="decorators.backup"
               :disabled="form.fd.systemDiskType"
               :disabled-items="backupDisableds" />
-          </a-form-item>
-          <a-form-item v-bind="formItemLayout" v-show="!isServertemplate" label="到期释放">
-            <duration :decorators="decorators.duration" :form="form" />
           </a-form-item>
           <a-form-item v-bind="formItemLayout" v-show="!isServertemplate" v-if="isKvm" label="主机组" extra="对资源的简单调度策略，组内的机器根据设置分布在不同的宿主机上，从而实现业务的高可用">
             <instance-groups :decorators="decorators.groups" :params="instanceGroupsParams" />

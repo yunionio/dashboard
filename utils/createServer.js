@@ -453,11 +453,10 @@ export const createVmDecorators = type => {
       ],
     },
     duration: {
-      durationEnable: [
-        'durationEnable',
+      durationStandard: [
+        'durationStandard',
         {
-          valuePropName: 'checked',
-          initialValue: false,
+          initialValue: 'none',
         },
       ],
       duration: [
@@ -974,8 +973,12 @@ export class GenCreateData {
       data['bios'] = this.fd.bios
     }
     // 到期释放
-    if (this.fd.durationEnable) {
-      data['duration'] = this.fd.duration
+    if (this.fd.durationStandard !== 'none') {
+      if (this.fd.durationStandard === 'custom') {
+        data['duration'] = this.fd.duration
+      } else {
+        data['duration'] = this.fd.durationStandard
+      }
       data['billing_type'] = 'postpaid'
     }
     // 镜像类型为 iso 需要加参数 cdrom
