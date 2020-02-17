@@ -10,8 +10,10 @@
         </a-radio-group>
       </a-form-item>
       <a-form-item label="付款云账号" v-if="billingType === 2" extra="一般来说，账单文件的存储桶等信息是付款账号设置的，我们需要使用付款账号的访问信息去获取这些账单文件进行分析">
-        <a-select :loading="cloudAccountLoading" v-decorator="decorators.billing_bucket_account">
-          <a-select-option v-for="item in cloudAccounts" :key="item.id" :value="item.id">{{item.name}}</a-select-option>
+        <a-select :filterOption="filterOption" showSearch :loading="cloudAccountLoading" v-decorator="decorators.billing_bucket_account">
+         <template v-for="item in cloudAccounts">
+          <a-select-option  v-if="id !== item.id" :key="item.id" :value="item.id">{{item.name}}</a-select-option>
+         </template>
         </a-select>
       </a-form-item>
       <a-form-item label="存储桶URL" extra="请正确输入账单文件所在存储桶的URL，例如：https://bucket-name.oss-cn-beijing.aliyuncs.com">
@@ -44,6 +46,9 @@ export default {
     provider: {
       type: String,
     },
+    account: {
+      type: Object,
+    },
   },
   data () {
     return {
@@ -70,6 +75,9 @@ export default {
     }
   },
   computed: {
+    id () {
+      return (this.account && this.account.id) || (this.cloudAccount && this.cloudAccount.id)
+    },
     isGoogle () {
       return this.provider === 'Google' || (this.cloudAccount && this.cloudAccount.provider === 'Google')
     },
@@ -117,14 +125,25 @@ export default {
   },
   created () {
     this.manager = new this.$Manager('cloudaccounts')
-    this.fetchCloudAccounts()
-    this.fetchCloudAccount()
+    this.fetchs()
   },
   methods: {
+    async fetchs () {
+      await this.fetchCloudAccount()
+      await this.fetchCloudAccounts()
+    },
+    filterOption (input, option) {
+      return (
+        option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      )
+    },
     async fetchCloudAccounts () {
       this.cloudAccountLoading = true
       try {
-        const params = { scope: this.$store.getters.scope }
+        const params = {
+          scope: this.$store.getters.scope,
+          brand: this.provider || this.cloudAccount.brand,
+        }
         const { data } = await this.manager.list({ params })
         this.cloudAccounts = data.data || []
       } catch (err) {
@@ -147,6 +166,7 @@ export default {
         if (data && data.options && data.options['billing_bucket_account']) {
           this.billingType = 2
         }
+        return data
       } catch (err) {
         throw err
       }
