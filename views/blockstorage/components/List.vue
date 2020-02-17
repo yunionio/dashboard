@@ -270,6 +270,7 @@ export default {
                     columns: this.columns,
                     title: '删除',
                     list: this.list,
+                    name: '块存储',
                   })
                 },
                 meta: (row) => this.$getDeleteResult(row),
@@ -283,6 +284,9 @@ export default {
   created () {
     this.list.fetchData()
     this.initSidePageTab('detail')
+    this.$bus.$on('BlockStorageListSingleUpdate', args => {
+      this.list.singleUpdate(...args)
+    }, this)
   },
 }
 </script>

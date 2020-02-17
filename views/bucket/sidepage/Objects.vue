@@ -142,13 +142,13 @@ export default {
           },
         },
         {
-          label: '新建文件',
+          label: '新建文件夹',
           action: (row) => {
             this.createDialog('SmartFormDialog', {
               title: '新建文件夹',
               data: [row],
               list: this.list,
-              width: 500,
+              width: 600,
               callback: async (data) => {
                 const manager = new this.$Manager(`buckets/${this.resName}/makedir`, 'v2')
                 data['key'] = `${this.prefix}${data.key}/`
@@ -158,13 +158,13 @@ export default {
               decorators: {
                 key: ['key', {
                   rules: [
-                    { required: true, message: '请输入文件名称' },
+                    { required: true, message: '请输入文件夹名称' },
                     { type: 'string', min: 1, max: 254, message: '1~254 个字符，可用数字、中英文和常见字符的组合', trigger: 'blur' },
                     { validator: validDirName, trigger: 'blur' },
                   ],
                 },
                 {
-                  label: '文件名称',
+                  label: '文件夹名称',
                   placeholder: '请输入文件名称',
                   extra: () => {
                     return <div>
@@ -252,7 +252,7 @@ export default {
               title: '删除',
               resName: this.resName,
               list: this.list,
-              name: '文件',
+              name: this.isDir(row.key) ? '文件夹' : '文件',
             })
           },
         },
