@@ -11,24 +11,6 @@ import Public from './form/Public'
 import Private from './form/Private'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 
-var detectBack = {
-  initialize: function () {
-    // 监听 hashchange 事件
-    window.addEventListener('hashchange', function () {
-      // 为当前导航页附加一个 tag
-      this.history.replaceState('hasHash', '', '')
-    }, false)
-
-    window.addEventListener('popstate', function (e) {
-      if (e.state) {
-        // 侦测是用户触发的后退操作, dosomething
-        // 这里刷新当前 url
-        this.location.reload()
-      }
-    }, false)
-  },
-}
-
 export default {
   name: 'ServerCreate',
   components: {
@@ -49,6 +31,7 @@ export default {
       cloudEnvOptions,
       cloudEnv,
       routerQuery,
+
     }
   },
   computed: {
@@ -121,10 +104,22 @@ export default {
     }
   },
   mounted () {
-    detectBack.initialize()
+    this.detectBack() // 在用户点击 back 的时候，表单的处理方案
   },
   beforeDestroy () {
-    window.removeEventListener('popstate')
+    window.removeEventListener('popstate', this.popstate)
+  },
+  methods: {
+    detectBack () {
+      window.addEventListener('popstate', this.popstate, false)
+    },
+    popstate (e) {
+      if (e.state) {
+        // 侦测是用户触发的后退操作, dosomething
+        // 这里刷新当前 url
+        window.location.reload()
+      }
+    },
   },
 }
 </script>
