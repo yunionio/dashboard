@@ -84,6 +84,11 @@ export default {
           this.fileList.push(file)
           return false
         },
+        remove: (file) => {
+          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+          this.fileList = this.fileList.filter(({ uid }) => uid !== file.uid)
+          return true
+        },
       }
     },
   },
