@@ -78,6 +78,8 @@ export default {
   .list {
     padding: 0 15px;
     color: $error-color;
+    overflow-y: scroll;
+    max-height: 800px;
     li {
       line-height: 1.8;
       list-style-type: disc;
