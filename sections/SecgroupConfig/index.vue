@@ -49,14 +49,14 @@ export default {
       type: Boolean,
       default: false,
     },
-    provider: {
+    hypervisor: {
       type: String,
-      default: 'OneCloud',
+      default: 'kvm',
     },
   },
   data () {
     const validateSecgroups = (rule, value, callback) => {
-      let maxError = (this.isAzure || this.isUCloud || this.isZstack) ? 'Azure和Ucloud最多关联一个安全组' : '最多关联五个安全组'
+      let maxError = (this.isAzure || this.isUCloud || this.isZstack) ? '最多关联一个安全组' : '最多关联五个安全组'
       let minError = '最少关联一个'
       let max = (this.isAzure || this.isUCloud || this.isZstack) ? 1 : 5
       if (value.length > max) {
@@ -98,13 +98,13 @@ export default {
       return url.href
     },
     isAzure () {
-      return this.provider.toLowerCase() === HYPERVISORS_MAP.azure.provider.toLowerCase()
+      return this.hypervisor.toLowerCase() === HYPERVISORS_MAP.azure.hypervisor.toLowerCase()
     },
     isUCloud () {
-      return this.provider.toLowerCase() === HYPERVISORS_MAP.ucloud.provider.toLowerCase()
+      return this.hypervisor.toLowerCase() === HYPERVISORS_MAP.ucloud.hypervisor.toLowerCase()
     },
     isZstack () {
-      return this.provider.toLowerCase() === HYPERVISORS_MAP.zstack.provider.toLowerCase()
+      return this.hypervisor.toLowerCase() === HYPERVISORS_MAP.zstack.hypervisor.toLowerCase()
     },
   },
   watch: {
@@ -118,7 +118,7 @@ export default {
         this.disabled = false
       }
     },
-    provider () {
+    hypervisor () {
       if (this.form && this.form.fc) {
         this.form.fc.validateFields([this.decorators.secgroup[0]])
       }
