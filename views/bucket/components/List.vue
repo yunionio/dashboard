@@ -150,10 +150,10 @@ export default {
           },
         },
         {
-          label: '更改项目',
+          label: `更改${this.$t('dictionary.project')}`,
           permission: 'buckets_perform_change_owner',
           action: row => {
-            this.createDialog('ChangeProjectDialog', {
+            this.createDialog('ChangeOwenrDialog', {
               data: [row],
               columns: this.columns,
               list: this.list,
@@ -186,6 +186,7 @@ export default {
                     columns: this.columns,
                     title: '删除',
                     list: this.list,
+                    name: '存储桶',
                   })
                 },
                 meta: (row) => this.$getDeleteResult(row),

@@ -35,6 +35,7 @@ export default {
             ctx: [['storages', this.params.resId]],
           },
         })
+        this.$bus.$emit('BlockStorageListSingleUpdate', [this.params.resId])
         this.cancelDialog()
         this.loading = false
       } catch (error) {
