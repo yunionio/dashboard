@@ -428,6 +428,7 @@ export default {
           usable: true,
           scope: this.$store.getters.scope,
           limit: 0,
+          show_emulated: true,
         },
       },
       selectedImage: {},
