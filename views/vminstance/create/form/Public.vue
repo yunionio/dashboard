@@ -110,7 +110,7 @@
               :decorators="decorators.eip"
               :eip-params="eipParams"
               :hypervisor="hypervisor"
-              :showBind="form.fd.count === 1"
+              :showBind="false"
               :isServertemplate="isServertemplate"
               :form="form" />
           </a-form-item>
