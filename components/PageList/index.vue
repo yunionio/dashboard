@@ -252,6 +252,11 @@ export default {
             default: ({ row }, h) => {
               return [<Actions options={ this.singleActions } row={ row } button-type='link' button-size='small' button-style={{ fontSize: '12px' }} />]
             },
+            header: ({ column }, h) => {
+              return [
+                <span style={{ paddingLeft: '7px' }}>操作</span>,
+              ]
+            },
           },
         })
       }
