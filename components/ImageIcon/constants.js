@@ -39,4 +39,8 @@ export const IMAGE_MSG = {
     label: 'Windows',
     position: '0px 2px',
   },
+  redhat: {
+    label: 'RedHat',
+    position: '0px -34px',
+  },
 }
