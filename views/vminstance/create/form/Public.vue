@@ -20,6 +20,9 @@
       <a-form-item label="申请原因" v-bind="formItemLayout" v-if="isOpenWorkflow">
         <a-input v-decorator="decorators.reason" placeholder="请输入主机申请原因" />
       </a-form-item>
+      <a-form-item v-bind="formItemLayout" v-if="form.fd.billType === 'quantity' && !isServertemplate" label="到期释放">
+        <duration :decorators="decorators.duration" :form="form" />
+      </a-form-item>
       <a-form-item class="mb-0" label="计费方式" v-bind="formItemLayout">
         <bill :decorators="decorators.bill" :form="form" :provider-list="form.fi.providerList" />
       </a-form-item>
@@ -102,9 +105,6 @@
       <!-- <a-divider orientation="left">高级配置</a-divider> -->
       <a-collapse :bordered="false">
         <a-collapse-panel header="高级配置" key="1">
-          <a-form-item v-bind="formItemLayout" v-if="form.fd.billType === 'quantity' && !isServertemplate" label="到期释放">
-            <duration :decorators="decorators.duration" :form="form" />
-          </a-form-item>
           <a-form-item label="弹性公网IP" v-bind="formItemLayout">
             <eip-config
               :decorators="decorators.eip"

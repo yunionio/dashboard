@@ -26,6 +26,9 @@
       <a-form-item label="申请原因" v-bind="formItemLayout" v-if="isOpenWorkflow">
         <a-input v-decorator="decorators.reason" placeholder="请输入主机申请原因" />
       </a-form-item>
+      <a-form-item v-bind="formItemLayout" v-show="!isServertemplate" label="到期释放">
+        <duration :decorators="decorators.duration" />
+      </a-form-item>
       <a-form-item label="数量" v-show="!isServertemplate" v-bind="formItemLayout">
         <a-input-number v-decorator="decorators.count" :min="1" :max="10" />
       </a-form-item>
@@ -101,9 +104,6 @@
               :policy-host-params="policyHostParams"
               :decorators="decorators.schedPolicy"
               :policy-schedtag-params="params.policySchedtag" />
-          </a-form-item>
-          <a-form-item v-bind="formItemLayout" v-show="!isServertemplate" label="到期释放">
-            <duration :decorators="decorators.duration" />
           </a-form-item>
         </a-collapse-panel>
       </a-collapse>
