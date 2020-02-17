@@ -111,6 +111,11 @@ export default {
           width: 150,
           type: 'expand',
           slots: {
+            default: ({ row }) => {
+              const arr = [...(row.data_images || [])]
+              arr.push(row.root_image.name)
+              return arr.length
+            },
             content: ({ row }) => {
               const list = row.data_images.map(val => (
                 <a-tag class='mb-2'>{ val.name }</a-tag>
