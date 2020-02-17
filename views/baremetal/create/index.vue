@@ -589,7 +589,7 @@ export default {
   },
   methods: {
     vpcResourceMapper (list) {
-      return list.filter(val => val.id !== 'default' && val.cloud_env !== 'onpremise')
+      return list.filter(val => val.id === 'default')
     },
     setSelectedImage ({ imageMsg }) {
       this.selectedImage = imageMsg
