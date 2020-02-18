@@ -3,7 +3,7 @@ import { sizestrWithUnit } from '@/utils/utils'
 // 不定单位使用formatter，固定单位使用unit
 export const USAGE_CONFIG = {
   'all.bucket_bytes': {
-    formatter: val => sizestrWithUnit(val, 'M', 1024),
+    formatter: val => sizestrWithUnit(val, 'B', 1024),
   },
   'all.bucket_objects': {
     unit: '个',
@@ -210,7 +210,7 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'bucket_bytes': {
-    formatter: val => sizestrWithUnit(val, 'M', 1024),
+    formatter: val => sizestrWithUnit(val, 'B', 1024),
   },
   'bucket_objects': {
     unit: '个',
