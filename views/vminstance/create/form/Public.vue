@@ -20,11 +20,11 @@
       <a-form-item label="申请原因" v-bind="formItemLayout" v-if="isOpenWorkflow">
         <a-input v-decorator="decorators.reason" placeholder="请输入主机申请原因" />
       </a-form-item>
-      <a-form-item v-bind="formItemLayout" v-if="form.fd.billType === 'quantity' && !isServertemplate" label="到期释放">
-        <duration :decorators="decorators.duration" :form="form" />
-      </a-form-item>
       <a-form-item class="mb-0" label="计费方式" v-bind="formItemLayout">
         <bill :decorators="decorators.bill" :form="form" :provider-list="form.fi.providerList" />
+      </a-form-item>
+      <a-form-item v-bind="formItemLayout" v-if="form.fd.billType === 'quantity' && !isServertemplate" label="到期释放">
+        <duration :decorators="decorators.duration" :form="form" />
       </a-form-item>
       <a-form-item label="数量" v-show="!isServertemplate" v-bind="formItemLayout">
         <a-input-number v-decorator="decorators.count" :min="1" :max="10" />
