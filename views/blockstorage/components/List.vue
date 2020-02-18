@@ -10,7 +10,7 @@
 import { STORAGE_TYPES, MEDIUM_TYPES } from '@Storage/constants/index.js'
 import _ from 'lodash'
 import { getNameDescriptionTableColumn, getEnabledTableColumn, getStatusTableColumn, getBrandTableColumn } from '@/utils/common/tableColumn'
-import { getNameFilter, getEnabledFilter, getStatusFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getEnabledFilter, getStatusFilter, getBrandFilter } from '@/utils/common/tableFilter'
 import { sizestr } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
 
@@ -33,6 +33,7 @@ export default {
           name: getNameFilter(),
           enabled: getEnabledFilter(),
           status: getStatusFilter({ statusModule: 'blockstorage' }),
+          brand: getBrandFilter(),
           storage_type: {
             label: '存储类型',
             dropdown: true,
@@ -234,6 +235,23 @@ export default {
                   return {
                     validate,
                     tooltip: !validate && 'Ceph、GPFS或NFS类型的存储支持该操作',
+                  }
+                },
+              },
+              {
+                label: '调整容量',
+                permission: 'storages_update_capacity',
+                action: row => {
+                  this.createDialog('BlockStorageUpdateCapacityDialog', {
+                    data: [row],
+                    columns: this.columns,
+                    title: '调整容量',
+                    list: this.list,
+                  })
+                },
+                meta: row => {
+                  return {
+                    validate: row.provider === 'OpenStack',
                   }
                 },
               },

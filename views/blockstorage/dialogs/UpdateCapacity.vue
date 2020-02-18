@@ -5,9 +5,12 @@
       <dialog-selected-tips :count="params.data.length" :action="this.params.title" name="块存储" />
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" v-bind="formItemLayout">
-        <form-items :storage_type="storage_type" />
-         <a-form-item label="超售比">
-          <a-input-number :step="0.1" v-decorator="decorators.commit_bound" :min="0" />
+       <a-form-item label="容量上限">
+          <a-input style="width: 150px" name="capacity" v-decorator="decorators.capacity" @blur="handelBlur">
+            <span slot="addonAfter">
+              GB
+            </span>
+          </a-input>
         </a-form-item>
       </a-form>
     </div>
@@ -20,15 +23,11 @@
 
 <script>
 import { formItemLayout } from '@Storage/constants/index.js'
-import FormItems from '@Storage/views/blockstorage/components/FormItems'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'BlockStorageUpdateStorageDialog',
-  components: {
-    FormItems,
-  },
+  name: 'BlockStorageUpdateCapacityDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
@@ -45,41 +44,44 @@ export default {
     }
   },
   computed: {
-    storage_type () {
-      if (this.params.data && this.params.data.length > 0) {
-        return this.params.data[0].storage_type
+    initCapacity () {
+      const { data = [] } = this.params
+      if (data.length > 0) {
+        return Math.round(parseFloat(data[0].capacity / 1024))
       }
-      return undefined
+      return 0
     },
     decorators () {
       return {
-        commit_bound: [
-          'commit_bound',
+        capacity: [
+          'capacity',
           {
-            initialValue: this.params.data.commit_bound || 1,
-            rules: [
-              { required: true, message: '请设置超售比' },
-            ],
+            initialValue: this.initCapacity,
           },
         ],
       }
     },
   },
   methods: {
-    validateForm () {
-      return new Promise((resolve, reject) => {
-        this.form.fc.validateFields((err, values) => {
-          if (err) return reject(err)
-          resolve(values)
+    handelBlur ({ target }) {
+      const { value, name } = target
+      if (!/^\d+$/.test(value)) {
+        this.form.fc.setFieldsValue({
+          [name]: this.initCapacity,
         })
-      })
+      }
     },
     async handleConfirm () {
       this.loading = true
       try {
-        const values = await this.validateForm()
+        const { capacity } = await this.form.fc.validateFields()
         const manager = new this.$Manager('storages', 'v2')
-        await manager.update({ id: this.params.data[0].id, data: values })
+        await manager.update({
+          id: this.params.data[0].id,
+          data: {
+            capacity: parseFloat(capacity) * 1024,
+          },
+        })
         this.cancelDialog()
         this.params.list.fetchData()
         this.loading = false
