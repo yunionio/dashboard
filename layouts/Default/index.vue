@@ -1,9 +1,9 @@
 <template>
   <div class="app-container">
-    <sidebar :l2-menu-visible.sync="l2MenuVisible" />
-    <div class="position-relative h-100">
-      <navbar />
-      <div class="app-page px-4 pb-4" :class="{ 'l2-menu-show': l2MenuVisible }">
+    <navbar />
+    <div class="app-content position-relative h-100">
+      <sidebar :l2-menu-visible.sync="l2MenuVisible" />
+      <div id="app-page" class="app-page" :class="{ 'l2-menu-show': l2MenuVisible }">
         <slot />
       </div>
     </div>
@@ -50,12 +50,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.app-content {
+  padding-top: 60px;
+}
 .app-page {
-  padding-top: 80px;
-  margin-left: 80px;
+  margin-left: 60px;
   margin-bottom: 74px;
+  // 整体最小宽度为1280px（1280 - 菜单栏64 = 1216)
+  min-width: 1216px;
+  padding: 15px;
   &.l2-menu-show {
+    // 整体最小宽度为1280px（1280 - 菜单栏224 = 1056)
     margin-left: 224px;
+    min-width: 1056px;
   }
 }
 </style>

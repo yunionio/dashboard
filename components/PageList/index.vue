@@ -116,6 +116,12 @@ export default {
       default: true,
     },
   },
+  inject: {
+    // 是否处于SidePage中
+    inBaseSidePage: {
+      default: false,
+    },
+  },
   data () {
     return {
       tableColumns: [],
@@ -182,8 +188,12 @@ export default {
       }
     },
   },
+  updated () {
+    this.setWrapMinWidth()
+  },
   beforeDestroy () {
     this.list.clearWaitJob()
+    this.clearWrapMinWidth()
   },
   created () {
     this.tableColumns = this.genTableColumns()
@@ -261,6 +271,34 @@ export default {
         })
       }
       return defaultColumns
+    },
+    setWrapMinWidth () {
+      const gridEl = this.$refs.grid.$el
+      const tableBody = gridEl.querySelector('.vxe-table--body-wrapper .vxe-table--body')
+      const tableBodyWidth = tableBody.getBoundingClientRect().width
+      if (tableBodyWidth) {
+        let container
+        let padding = 0
+        if (this.inBaseSidePage) {
+          padding = 60
+          container = document.getElementById('side-page-container')
+        } else {
+          padding = 30
+          container = document.getElementById('app-page')
+        }
+        container.style.minWidth = `${tableBodyWidth + padding}px`
+        container = null
+      }
+    },
+    clearWrapMinWidth () {
+      let container
+      if (this.inBaseSidePage) {
+        container = document.getElementById('side-page-container')
+      } else {
+        container = document.getElementById('app-page')
+      }
+      container.style = ''
+      container = null
     },
   },
 }
