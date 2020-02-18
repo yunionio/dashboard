@@ -11,7 +11,7 @@
     <template v-slot:actions>
       <actions :options="params.singleActions" :row="data" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :data="data" :res-id="params.resId" :list="params.list" :getParams="getParams" />
+    <component :is="params.windowData.currentTab" :data="data" :res-id="params.resId" :cloudaccount-list="params.list" :getParams="getParams" />
   </base-side-page>
 </template>
 
