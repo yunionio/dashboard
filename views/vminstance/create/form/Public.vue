@@ -329,7 +329,6 @@ export default {
         delete loginTypes[LOGIN_TYPES_MAP.image.key]
       }
       if (HYPERVISORS_MAP.google.key === hypervisor) {
-        delete loginTypes[LOGIN_TYPES_MAP.keypair.key]
         delete loginTypes[LOGIN_TYPES_MAP.image.key]
       }
       if (this.form.fd.os === 'Windows') {
