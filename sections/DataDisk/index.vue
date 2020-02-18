@@ -34,7 +34,7 @@ import Disk from '@Compute/sections/Disk'
 import { STORAGE_AUTO } from '@Compute/constants'
 import { STORAGE_TYPES } from '@/constants/compute'
 import { HYPERVISORS_MAP } from '@/constants'
-import { uuid, findAndUnshift } from '@/utils/utils'
+import { uuid, findAndUnshift, findAndPush } from '@/utils/utils'
 
 // 磁盘最小值
 const DISK_MIN_SIZE = 10
@@ -125,8 +125,13 @@ export default {
       if (!this.capabilityData || !this.capabilityData.data_storage_types2) return ret
       let currentTypes = this.capabilityData.data_storage_types2[hyper] || []
       if (currentTypes.find(val => val.includes('local'))) {
-        currentTypes = findAndUnshift(currentTypes, item => item.includes('local'))
+        if (this.hypervisor === HYPERVISORS_MAP.google.key) {
+          currentTypes = findAndPush(currentTypes, item => item.includes('local'))
+        } else {
+          currentTypes = findAndUnshift(currentTypes, item => item.includes('local'))
+        }
       }
+      // console.log(currentTypes, this.capabilityData.data_storage_types2, this.hypervisor, HYPERVISORS_MAP.google.key)
       if (!R.isNil(this.sku) && !R.isEmpty(this.sku)) {
         for (let obj in hypervisorDisks) {
           if (hypervisorDisks[obj].skuFamily && !hypervisorDisks[obj].skuFamily.includes(this.sku.instance_type_family)) {
