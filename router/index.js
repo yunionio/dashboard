@@ -14,6 +14,9 @@ import DNSList from '@Network/views/dns'
 import LbaclsList from '@Network/views/lbacls'
 import LbcertsList from '@Network/views/lbcerts'
 import LoadbalancerclusterList from '@Network/views/loadbalancercluster'
+import AgentList from '@Network/views/agent'
+import AgentCreate from '@Network/views/agent/create'
+import AgentAsbook from '@Network/views/agent/asbook'
 
 export default {
   index: 3,
@@ -243,6 +246,31 @@ export default {
               name: 'LoadbalancerclusterList',
               path: '',
               component: LoadbalancerclusterList,
+            },
+          ],
+        },
+        {
+          path: '/lbagent',
+          meta: {
+            label: '节点',
+            permission: 'lb_loadbalanceragents_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'AgentList',
+              path: '',
+              component: AgentList,
+            },
+            {
+              name: 'AgentCreate',
+              path: 'create',
+              component: AgentCreate,
+            },
+            {
+              name: 'AgentAsbook',
+              path: 'asbook',
+              component: AgentAsbook,
             },
           ],
         },
