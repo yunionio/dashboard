@@ -3,7 +3,7 @@ import { sizestrWithUnit } from '@/utils/utils'
 // 不定单位使用formatter，固定单位使用unit
 export const USAGE_CONFIG = {
   'all.bucket_bytes': {
-    formatter: val => sizestrWithUnit(val),
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'all.bucket_objects': {
     unit: '个',
@@ -16,7 +16,7 @@ export const USAGE_CONFIG = {
   'all.containers.memory': {},
   'all.cpu_commit_rate.running': {},
   'all.disks': {
-    formatter: val => sizestrWithUnit(val),
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'all.disks.any_pool': {},
   'all.disks.any_pool.attached': {},
@@ -26,10 +26,10 @@ export const USAGE_CONFIG = {
   'all.disks.detached': {},
   'all.disks.prepaid_pool': {},
   'all.disks.prepaid_pool.attached': {
-    formatter: val => sizestrWithUnit(val),
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'all.disks.prepaid_pool.detached': {
-    formatter: val => sizestrWithUnit(val),
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'all.disks.prepaid_pool.unready': {},
   'all.disks.unready': {},
@@ -65,7 +65,7 @@ export const USAGE_CONFIG = {
     unit: '核',
   },
   'all.pending_delete_servers.disk': {
-    formatter: val => sizestrWithUnit(val),
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'all.pending_delete_servers.ha': {},
   'all.pending_delete_servers.ha.cpu': {},
@@ -75,7 +75,7 @@ export const USAGE_CONFIG = {
     unit: '块',
   },
   'all.pending_delete_servers.memory': {
-    formatter: val => sizestrWithUnit(val),
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'all.pending_delete_servers.prepaid_pool': {},
   'all.pending_delete_servers.prepaid_pool.cpu': {},
@@ -102,7 +102,7 @@ export const USAGE_CONFIG = {
     unit: '个',
   },
   'all.ready_servers.disk': {
-    formatter: val => sizestrWithUnit(val),
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'all.ready_servers.ha': {},
   'all.ready_servers.ha.cpu': {},
@@ -112,7 +112,7 @@ export const USAGE_CONFIG = {
     unit: '块',
   },
   'all.ready_servers.memory': {
-    formatter: val => sizestrWithUnit(val),
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'all.ready_servers.prepaid_pool': {},
   'all.ready_servers.prepaid_pool.cpu': {},
@@ -139,7 +139,7 @@ export const USAGE_CONFIG = {
     unit: '核',
   },
   'all.running_servers.disk': {
-    formatter: val => sizestrWithUnit(val),
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'all.running_servers.ha': {},
   'all.running_servers.ha.cpu': {},
@@ -149,7 +149,7 @@ export const USAGE_CONFIG = {
     unit: '块',
   },
   'all.running_servers.memory': {
-    formatter: val => sizestrWithUnit(val),
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'all.running_servers.prepaid_pool': {},
   'all.running_servers.prepaid_pool.cpu': {},
@@ -176,7 +176,7 @@ export const USAGE_CONFIG = {
     unit: '核',
   },
   'all.servers.disk': {
-    formatter: val => sizestrWithUnit(val),
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'all.servers.ha': {},
   'all.servers.ha.cpu': {},
@@ -186,7 +186,7 @@ export const USAGE_CONFIG = {
     unit: '块',
   },
   'all.servers.memory': {
-    formatter: val => sizestrWithUnit(val),
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'all.servers.prepaid_pool': {},
   'all.servers.prepaid_pool.cpu': {},
@@ -207,10 +207,10 @@ export const USAGE_CONFIG = {
     unit: '核',
   },
   'baremetals.memory': {
-    formatter: val => sizestrWithUnit(val),
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'bucket_bytes': {
-    formatter: val => sizestrWithUnit(val),
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'bucket_objects': {
     unit: '个',
@@ -222,13 +222,13 @@ export const USAGE_CONFIG = {
   'containers.cpu': {},
   'containers.memory': {},
   'disks': {
-    formatter: val => sizestrWithUnit(val),
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'disks.attached': {
-    formatter: val => sizestrWithUnit(val),
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'disks.detached': {
-    formatter: val => sizestrWithUnit(val),
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'disks.unready': {},
   'eip': {
@@ -325,7 +325,7 @@ export const USAGE_CONFIG = {
     unit: '核',
   },
   'ready_servers.disk': {
-    formatter: val => sizestrWithUnit(val),
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'ready_servers.ha': {},
   'ready_servers.ha.cpu': {},
@@ -335,7 +335,7 @@ export const USAGE_CONFIG = {
     unit: '块',
   },
   'ready_servers.memory': {
-    formatter: val => sizestrWithUnit(val),
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'ready_servers.prepaid_pool': {},
   'ready_servers.prepaid_pool.cpu': {},
@@ -365,7 +365,7 @@ export const USAGE_CONFIG = {
     unit: '核',
   },
   'running_servers.disk': {
-    formatter: val => sizestrWithUnit(val),
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'running_servers.ha': {},
   'running_servers.ha.cpu': {},
@@ -375,7 +375,7 @@ export const USAGE_CONFIG = {
     unit: '块',
   },
   'running_servers.memory': {
-    formatter: val => sizestrWithUnit(val),
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'running_servers.prepaid_pool': {},
   'running_servers.prepaid_pool.cpu': {},
@@ -402,7 +402,7 @@ export const USAGE_CONFIG = {
     unit: '核',
   },
   'servers.disk': {
-    formatter: val => sizestrWithUnit(val),
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'servers.ha': {},
   'servers.ha.cpu': {},
@@ -412,7 +412,7 @@ export const USAGE_CONFIG = {
     unit: '块',
   },
   'servers.memory': {
-    formatter: val => sizestrWithUnit(val),
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'servers.prepaid_pool': {},
   'servers.prepaid_pool.cpu': {},
@@ -427,7 +427,7 @@ export const USAGE_CONFIG = {
     unit: '个',
   },
   'storages': {
-    formatter: val => sizestrWithUnit(val),
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'storages.any_pool': {},
   'storages.any_pool.commit_rate': {},
