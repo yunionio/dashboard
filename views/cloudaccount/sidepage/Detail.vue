@@ -1,6 +1,6 @@
 <template>
   <detail
-    :list="list"
+    :list="cloudaccountList"
     :data="data"
     :base-info="baseInfo"
     :extra-info="extraInfo"
@@ -13,7 +13,7 @@ import { getBrandTableColumn, getEnabledTableColumn, getStatusTableColumn } from
 export default {
   name: 'CloudaccountDetail',
   props: {
-    list: {
+    cloudaccountList: {
       type: Object,
       required: true,
     },
