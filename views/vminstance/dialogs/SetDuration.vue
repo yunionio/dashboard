@@ -17,7 +17,8 @@
         <a-form-item
           v-if="form.fd.durationEnable"
           label="释放时间"
-          v-bind="formItemLayout">
+          v-bind="formItemLayout"
+          :help="help">
           <div @click="openDatePicker">
             <a-date-picker
               v-decorator="decorators.durationDate"
@@ -52,7 +53,11 @@ export default {
   name: 'VmSetDurationDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
-    const expireDate = this.params.data[0].expired_at ? moment(this.params.data[0].expired_at) : moment()
+    const expiredAtSort = R.sortWith([
+      R.descend(R.prop('expired_at')),
+    ])
+    const datas = expiredAtSort(this.params.data)
+    const expireDate = datas[0].expired_at ? moment(datas[0].expired_at) : moment()
     return {
       loading: false,
       action: '到期释放',
@@ -102,6 +107,11 @@ export default {
       ],
       open: false,
     }
+  },
+  computed: {
+    help () {
+      return '释放时间设置只支持延后，暂不支持提前'
+    },
   },
   watch: {
     'form.fd.durationEnable' (val) {
@@ -173,7 +183,7 @@ export default {
     },
     disabledDate (current) {
       // can not select days before today
-      return current && current < moment().subtract(1, 'days').endOf('day')
+      return current && current < moment(this.expireDate)
     },
     disabledDateTime (current) {
       let currentHour = moment().hour()
