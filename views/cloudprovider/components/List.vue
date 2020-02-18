@@ -89,9 +89,6 @@ export default {
                 ]
               } else {
                 let time = this.$moment(row.last_sync)
-                if (row.enable_auto_sync) {
-                  time = this.$moment(row.last_auto_sync)
-                }
                 if (time) {
                   return time.fromNow()
                 } else {
