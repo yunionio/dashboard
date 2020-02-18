@@ -121,6 +121,9 @@ export default {
       const hypervisorDisks = { ...STORAGE_TYPES[hyper] } || {}
       if (!this.capabilityData || !this.capabilityData.data_storage_types2) return ret
       let currentTypes = this.capabilityData.data_storage_types2[hyper] || []
+      if (hyper === HYPERVISORS_MAP.openstack.key) { // 前端特殊处理：openstack 不支持 nova
+        currentTypes = currentTypes.filter(val => !val.includes('nova'))
+      }
       if (currentTypes.find(val => val.includes('local'))) {
         currentTypes = findAndUnshift(currentTypes, item => item.includes('local'))
       }
