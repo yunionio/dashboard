@@ -26,6 +26,9 @@ export default {
     data: {
       type: Object,
     },
+    cloudaccountList: {
+      type: Object,
+    },
   },
   data () {
     const ownerDomain = list => this.$store.getters.isAdminMode || list.selectedItems.every(obj => obj.domain_id === this.$store.getters.userInfo.projectDomainId)
@@ -86,9 +89,6 @@ export default {
                 ]
               } else {
                 let time = this.$moment(row.last_sync)
-                if (row.enable_auto_sync) {
-                  time = this.$moment(row.last_auto_sync)
-                }
                 if (time) {
                   return time.fromNow()
                 } else {
@@ -197,6 +197,10 @@ export default {
                   full_sync: true,
                 },
               },
+            }).then(() => {
+              // 不能写成 then(this.cloudaccountList.fetchData)，因为在 list 类中有 this 引用问题
+              // 订阅同步后，云账号也要同步
+              this.cloudaccountList.fetchData()
             })
           },
           meta: obj => {
