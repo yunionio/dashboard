@@ -25,7 +25,7 @@
             :instance-type="instanceType"
             :hypervisor="hypervisor" />
         </a-form-item>
-        <a-form-item label="数据盘" v-bind="formItemLayout">
+        <a-form-item label="数据盘" v-bind="formItemLayout" v-show="selectedItems.length === 1">
           <data-disk
             v-if="hypervisor && form.fi.capability.storage_types"
             ref="dataDiskRef"
@@ -379,7 +379,7 @@ export default {
       this.$nextTick(() => {
         setTimeout(() => {
           this.form.fd.datadisks.forEach((v, i) => {
-            this.$refs.dataDiskRef.add({ size: v.value, min: v.value, diskType: v.type, disabled: true, ...v })
+            this.$refs.dataDiskRef.add({ size: v.value, min: v.value, diskType: v.type, disabled: true, notMountPoint: true, ...v })
           })
           this.diskLoaded = true
         }, 1000)
