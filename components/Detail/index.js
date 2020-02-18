@@ -95,7 +95,7 @@ const getDefaultTopBaseInfo = (h, { idKey, statusKey, statusModule, data, list }
       title: '状态',
       slots: {
         default: ({ row }) => {
-          if (statusModule) {
+          if (statusModule && row[statusKey]) {
             return [<status status={ row[statusKey] } statusModule={ statusModule } />]
           }
           return '-'
