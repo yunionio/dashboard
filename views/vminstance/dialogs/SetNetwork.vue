@@ -7,14 +7,15 @@
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc">
         <network-config
-          :form="form.fc"
+          :form="form"
           :count="params.list.total"
           :decorator="networkConfig"
           :networkParams="networkParams"
           :limit="networkLimit"
           :networkLimit="networkLimit"
           :vpcParams="vpcParams"
-          :vpcResource="vpcResource" />
+          :vpcResource="vpcResource"
+          :vpcObj="vpcObj" />
       </a-form>
     </div>
     <div slot="footer">
@@ -88,6 +89,10 @@ export default {
             }],
           },
         ],
+      },
+      vpcObj: {
+        id: this.params.data[0].vpc_id,
+        name: this.params.data[0].vpc,
       },
     }
   },

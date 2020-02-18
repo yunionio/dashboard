@@ -16,7 +16,7 @@
           :need-params="true"
           :params="vpcParams"
           :mapper="vpcResourceMapper"
-          :select-props="{ allowClear: true, placeholder: '请选择VPC' }" />
+          :select-props="{ allowClear: true, placeholder: '请选择VPC', disabled: vpcObj && !!vpcObj.id }" />
         <a-tag v-else color="blue" class="w-100 mr-1">{{ getVpcTag(networkList[0].vpc) }}</a-tag>
       </a-form-item>
       <a-form-item
@@ -98,6 +98,10 @@ export default {
       type: Function,
       default: data => { return data },
     },
+    vpcObj: {
+      type: Object,
+      validator: val => val.id && val.name,
+    },
   },
   data () {
     return {
@@ -132,11 +136,22 @@ export default {
     },
     add () {
       const uid = uuid()
-      this.networkList.push({
+      const data = {
         network: {},
         vpc: {},
         ipShow: false,
         key: uid,
+      }
+      if (this.vpcObj) {
+        data.vpc = this.vpcObj
+      }
+      this.networkList.push(data)
+      this.$nextTick(() => {
+        if (this.vpcObj) {
+          this.form.fc.setFieldsValue({
+            [this.decorator.vpcs(uid)[0]]: this.vpcObj.id,
+          })
+        }
       })
     },
     showIp (item, i) {
