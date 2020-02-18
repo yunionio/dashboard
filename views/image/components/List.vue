@@ -165,35 +165,18 @@ export default {
       ],
       singleActions: [
         {
-          label: '修改属性',
-          permission: 'images_update',
+          label: '新建虚拟机',
           action: obj => {
-            this.createDialog('ImageEditAttributesDialog', {
+            this.createDialog('ImageCreateServerDialog', {
               data: [obj],
               columns: this.columns,
               list: this.list,
             })
           },
           meta: obj => {
-            if (!validateAction(obj)) {
-              return {
-                validate: false,
-                tooltip: validateActionTooltip(obj),
-              }
-            }
-            if (this.isAdminMode) {
-              return {
-                validate: true,
-              }
-            } else if (this.isDomainMode) {
-              return {
-                validate: ownerDomain(this.list),
-                tooltip: '非当前域下面的镜像无法修改属性',
-              }
-            }
             return {
-              validate: isOwnerProject(obj.tenant_id),
-              tooltip: !isOwnerProject(obj.tenant_id) ? `非当前${this.$t('dictionary.project')}下面的镜像无法修改属性` : '',
+              validate: true,
+              tooltip: '',
             }
           },
         },
@@ -202,18 +185,35 @@ export default {
           actions: obj => {
             return [
               {
-                label: '新建虚拟机',
+                label: '修改属性',
+                permission: 'images_update',
                 action: obj => {
-                  this.createDialog('ImageCreateServerDialog', {
+                  this.createDialog('ImageEditAttributesDialog', {
                     data: [obj],
                     columns: this.columns,
                     list: this.list,
                   })
                 },
                 meta: obj => {
+                  if (!validateAction(obj)) {
+                    return {
+                      validate: false,
+                      tooltip: validateActionTooltip(obj),
+                    }
+                  }
+                  if (this.isAdminMode) {
+                    return {
+                      validate: true,
+                    }
+                  } else if (this.isDomainMode) {
+                    return {
+                      validate: ownerDomain(this.list),
+                      tooltip: '非当前域下面的镜像无法修改属性',
+                    }
+                  }
                   return {
-                    validate: true,
-                    tooltip: '',
+                    validate: isOwnerProject(obj.tenant_id),
+                    tooltip: !isOwnerProject(obj.tenant_id) ? `非当前${this.$t('dictionary.project')}下面的镜像无法修改属性` : '',
                   }
                 },
               },
