@@ -25,7 +25,7 @@
             :instance-type="instanceType"
             :hypervisor="hypervisor" />
         </a-form-item>
-        <a-form-item label="数据盘" v-bind="formItemLayout">
+        <a-form-item label="数据盘" v-bind="formItemLayout" v-show="selectedItems.length === 1">
           <data-disk
             v-if="hypervisor && form.fi.capability.storage_types"
             ref="dataDiskRef"
