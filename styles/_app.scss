@@ -42,3 +42,8 @@
   /*设置显示的行数，多出的部分会显示为...*/
   -webkit-line-clamp: 3;
 }
+
+// 兼容 safari 浏览器
+.create-server-result-wrap {
+  height: 74px;
+}
