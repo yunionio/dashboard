@@ -66,7 +66,7 @@ export default {
           slots: {
             default: ({ row }) => {
               const len = (row.snapshots && row.snapshots.length) || 0
-              return len
+              return `${len}个`
             },
             content: ({ row }) => {
               const list = row.snapshots.map(val => (
