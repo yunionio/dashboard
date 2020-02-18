@@ -102,6 +102,7 @@ export default {
     networkParams () {
       return {
         scope: this.$store.getters.scope,
+        limit: 20,
       }
     },
   },
