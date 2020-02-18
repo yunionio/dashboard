@@ -90,7 +90,7 @@ export default {
   data () {
     return {
       dataDisks: [],
-      isShoudMountPoint: true,
+      isShouldMountPoint: true,
     }
   },
   computed: {
@@ -108,7 +108,7 @@ export default {
       if (this.isSnapshotImageType) return ret
       if (this.isHostImageType) return ['snapshot', 'schedtag']
       if (this.hypervisor === HYPERVISORS_MAP.kvm.key) {
-        if (this.isShoudMountPoint) {
+        if (this.isShouldMountPoint) {
           ret.push('mount-point')
         }
         ret.push('snapshot')
@@ -193,7 +193,7 @@ export default {
   watch: {
     dataDisks (val = []) {
       const notMountPoint = val.some((item) => { return item.notMountPoint })
-      this.isShoudMountPoint = !notMountPoint
+      this.isShouldMountPoint = !notMountPoint
     },
   },
   methods: {
