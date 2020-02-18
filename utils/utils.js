@@ -322,6 +322,26 @@ export const findAndUnshift = (arr, condition) => {
   return ret
 }
 
+/**
+ * @description 找到数组某一项并提前到最后一项
+ * @param {Array} arr
+ * @param {Function} condition 满足找到目标值的条件函数
+ */
+export const findAndPush = (arr, condition) => {
+  const ret = arr.slice(0)
+  if (!condition || !R.is(Function, condition)) return ret
+  let firstValue = ret[0]
+  for (var i = 0; i < ret.length; i++) {
+    if (condition(ret[i])) {
+      firstValue = ret[i]
+      ret.splice(i, 1)
+      break
+    }
+  }
+  ret.push(firstValue)
+  return ret
+}
+
 export const i18nSetProperty = ({
   obj,
   key,
