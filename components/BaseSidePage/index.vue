@@ -40,7 +40,9 @@
       </div>
     </div>
     <div class="side-page-inner-content">
-      <slot />
+      <div class="side-page-container" id="side-page-container">
+        <slot />
+      </div>
     </div>
   </vc-dialog>
 </template>
@@ -78,6 +80,9 @@ export default {
       type: Array,
       required: true,
     },
+  },
+  provide: {
+    inBaseSidePage: true,
   },
   computed: {
     windowId () {
@@ -185,11 +190,15 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  overflow-x: hidden;
-  padding: 20px 30px;
+  overflow: auto;
 }
 .side-page-header-tabs {
   height: 44px;
   overflow: hidden;
+}
+.side-page-container {
+  height: 100%;
+  width: 100%;
+  padding: 20px 30px;
 }
 </style>
