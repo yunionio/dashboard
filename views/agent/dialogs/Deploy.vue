@@ -214,6 +214,9 @@ export default {
         ],
         repo_sslverify: [
           'repo_sslverify',
+          {
+            valuePropName: 'checked',
+          },
         ],
       },
       formItemLayout: {
@@ -299,11 +302,10 @@ export default {
                   preserve: true,
                   initialValue: vars.repo_base_url,
                 })
-                this.form.fc.getFieldDecorator('repo_sslverify', {
-                  preserve: true,
-                  initialValue: !!parseInt(vars.repo_sslverify),
-                })
                 this.deployMethod = vars.repo_base_url ? 'yum' : 'copy'
+                this.$nextTick(() => {
+                  this.form.fc.setFieldsValue({ 'repo_sslverify': !!parseInt(vars.repo_sslverify) })
+                })
               }
             }
             // 是否为部署中

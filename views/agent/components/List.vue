@@ -15,7 +15,7 @@ import {
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'LoadbalancerclusterList',
+  name: 'AgentList',
   mixins: [WindowsMixin],
   props: {
     id: String,
@@ -46,7 +46,7 @@ export default {
           title: '名称',
           slotCallback: row => {
             return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'LoadbalancerclusterSidePage') }>{ row.name }</side-page-trigger>
+              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'AgentSidePage') }>{ row.name }</side-page-trigger>
             )
           },
         }),
@@ -89,11 +89,7 @@ export default {
           label: '新建',
           permission: 'lb_loadbalancers_create',
           action: () => {
-            this.createDialog('', {
-              title: '新建',
-              data: this.list.selectedItems,
-              list: this.list,
-            })
+            this.$router.push({ name: 'AgentCreate' })
           },
           meta: () => {
             return {
@@ -117,15 +113,35 @@ export default {
         {
           label: '下线',
           action: (obj) => {
-            this.createDialog('', {
+            this.createDialog('DisableDialog', {
               title: '下线',
-              data: [obj],
               columns: this.columns,
-              list: this.list,
+              data: [obj],
+              alert: '提示：下线操作会把节点配置从部署主机中删除',
+              ok: async () => {
+                try {
+                  const response = await new this.$Manager('loadbalanceragents').performAction({
+                    id: obj.id,
+                    action: 'undeploy',
+                    data: {
+                      'state': 'suspend',
+                      'process-key': obj.key,
+                    },
+                  })
+                  if (response.data && response.data.deployment) {
+                    this.$router.push({
+                      path: `/lbagent/asbook?ansiblePlaybookId=${response.data.deployment.ansible_playbook}`,
+                    })
+                  }
+                  return response
+                } catch (error) {
+                  throw error
+                }
+              },
             })
           },
           meta: (obj) => {
-            if (!obj.deployment && !obj.deployment.host) {
+            if (!obj.deployment || !obj.deployment.host) {
               return {
                 validate: false,
               }
@@ -143,6 +159,7 @@ export default {
               data: [obj],
               columns: this.columns,
               list: this.list,
+              alert: '提示：删除操作仅涉及数据库记录，实际节点的下线计划需要管理员计划实施',
               success: () => {
                 this.destroySidePages()
               },
@@ -156,7 +173,7 @@ export default {
     ...mapGetters(['isAdminMode']),
   },
   created () {
-    this.initSidePageTab('Loadbalancercluster-detail')
+    this.initSidePageTab('agent-detail')
     this.list.fetchData()
   },
   methods: {

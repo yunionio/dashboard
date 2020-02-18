@@ -107,10 +107,8 @@ export default {
           regionId: data.cloudregion.key,
         },
       }
-      return this.params.list.onManager('create', {
-        managerArgs: {
-          data: params,
-        },
+      return new this.$Manager('loadbalancerclusters').create({
+        data: params,
       })
     },
     async handleConfirm () {
@@ -120,7 +118,9 @@ export default {
         await this.doCreate(values)
         this.loading = false
         this.cancelDialog()
-        this.params.list.refresh()
+        if (this.params.list) {
+          this.params.list.refresh()
+        }
       } catch (error) {
         this.loading = false
       }
