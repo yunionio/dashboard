@@ -58,8 +58,17 @@ export default {
     }
   },
   computed: {
+    isISO () {
+      return this.params.data.some((item) => {
+        return item.disk_format === IMAGES_TYPE_MAP.iso.key
+      })
+    },
     cloudEnvOpts () {
-      return this.cloudEnvOptions.map((item) => {
+      let cloudEnvOptions = this.cloudEnvOptions
+      if (this.isISO) {
+        cloudEnvOptions = cloudEnvOptions.filter((item) => { return item.key === 'onpremise' })
+      }
+      return cloudEnvOptions.map((item) => {
         if (item.key === 'onpremise') {
           return {
             ...item,
