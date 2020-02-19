@@ -116,6 +116,9 @@ export default {
       default: true,
     },
   },
+  provide: {
+    inList: true,
+  },
   inject: {
     // 是否处于SidePage中
     inBaseSidePage: {
