@@ -166,6 +166,12 @@ export default {
           title: '余额',
           minWidth: 70,
           showOverflow: 'ellipsis',
+          formatter: ({ row }) => {
+            if (R.isNil(row.balance)) {
+              return '-'
+            }
+            return row.balance
+          },
         },
         {
           field: 'host_count',
