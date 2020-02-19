@@ -12,7 +12,7 @@
       <a-form
         :form="form.fc">
         <a-form-item label="自动启动" v-bind="formItemLayout" extra="回滚硬盘后是否自动启动">
-          <a-switch v-decorator="decorators.autoStart" :disabled="disabled" />
+          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.autoStart" :disabled="disabled" />
         </a-form-item>
       </a-form>
     </div>

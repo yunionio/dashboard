@@ -38,7 +38,7 @@
           <a-input-number v-decorator="decorators.count" :max="5" :min="1" :step="1" step-strictly />
         </a-form-item>
         <a-form-item label="自动删除" v-bind="formItemLayout" extra="克隆完成后删除本次克隆生成的主机快照" v-if="isNewSnapshotClone">
-          <a-switch v-decorator="decorators.auto_delete_instance_snapshot" />
+          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.auto_delete_instance_snapshot" />
         </a-form-item>
         <a-form-item label="主机快照" v-bind="formItemLayout" v-else>
           <base-select

@@ -17,10 +17,10 @@
             :select-props="{ allowClear: true, placeholder: '请选择宿主机' }" />
         </a-form-item>
         <a-form-item label="强制迁移" v-bind="formItemLayout" v-if="isSingle">
-          <a-switch v-decorator="decorators.rescue_mode" />
+          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.rescue_mode" />
         </a-form-item>
         <a-form-item label="自动启动" v-bind="formItemLayout" v-if="isSingle && firstData.status === 'ready'" extra="迁移成功后是否自动启动">
-          <a-switch v-decorator="decorators.auto_start" />
+          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.auto_start" />
         </a-form-item>
       </a-form>
     </div>

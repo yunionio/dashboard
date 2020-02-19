@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-form-item class="mb-0">
-      <a-switch v-decorator="decorator.backupEnable" @change="change" :disabled="switchDisabled" />
+      <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorator.backupEnable" @change="change" :disabled="switchDisabled" />
     </a-form-item>
     <a-form-item class="mt-2" v-if="backupEnable && $store.getters.isAdminMode">
       <base-select

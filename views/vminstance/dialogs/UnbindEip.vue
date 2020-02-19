@@ -6,7 +6,7 @@
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
         <a-form-item label="是否释放" v-bind="formItemLayout" extra="取消绑定之后，立即释放弹性公网IP">
-          <a-switch v-decorator="decorators.auto_delete" />
+          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.auto_delete" />
         </a-form-item>
       </a-form>
     </div>

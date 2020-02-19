@@ -7,7 +7,7 @@
       <a-form
         :form="form.fc">
         <a-form-item label="是否限速" v-bind="formItemLayout">
-          <a-switch v-model="form.fi.isSetSpeed" />
+          <a-switch checkedChildren="开" unCheckedChildren="关" v-model="form.fi.isSetSpeed" />
         </a-form-item>
         <a-form-item label="最大IOPS" v-bind="formItemLayout" v-show="form.fi.isSetSpeed">
           <a-input-number :max="2048" :min="1" :step="50" v-decorator="decorators.bps" />

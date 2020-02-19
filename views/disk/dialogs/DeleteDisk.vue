@@ -12,7 +12,7 @@
       <a-form
         :form="form.fc" v-show="isIDC">
         <a-form-item label="同时删除快照" v-bind="formItemLayout">
-          <a-switch v-decorator="decorators.autoDelete" @change="autoDeleteChangeHandle" />
+          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.autoDelete" @change="autoDeleteChangeHandle" />
         </a-form-item>
         <a-form-item v-if="!form.fd.autoDelete" v-bind="formItemLayoutWithoutLabel">
           该硬盘快照数量 {{ snapshot.list.length }} 个
