@@ -7,7 +7,7 @@
       <a-form
         :form="form.fc">
         <a-form-item label="同步" v-bind="formItemLayout">
-          <a-switch v-decorator="decorators.enabled" />
+          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.enabled" />
         </a-form-item>
       </a-form>
     </div>

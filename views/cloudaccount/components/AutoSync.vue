@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-form-item label="自动同步" v-bind="formLayout">
-      <a-switch v-decorator="decorators.enable_auto_sync" @change="change" />
+      <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.enable_auto_sync" @change="change" />
     </a-form-item>
     <a-form-item label="时间间隔" v-bind="formLayout" v-if="showSecond">
       <a-input-number v-decorator="decorators.sync_interval_seconds" />
