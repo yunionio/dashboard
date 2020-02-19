@@ -5,7 +5,7 @@
     <template slot="title">
       <div class="d-flex align-items-center">
         <div class="flex-fill">已绑定标签</div>
-        <a class="font-weight-normal" @click="handleEdit" v-if="!dialogInsided">编辑标签</a>
+        <a class="font-weight-normal" @click="handleEdit" v-if="!inBaseDialog">编辑标签</a>
       </div>
     </template>
     <template slot="content">
@@ -53,10 +53,11 @@ export default {
     needExt: Boolean,
     resource: String,
   },
-  data () {
-    return {
-      dialogInsided: false,
-    }
+  inject: {
+    // 是否处于BaseDialog中
+    inBaseDialog: {
+      default: false,
+    },
   },
   computed: {
     data () {
@@ -96,9 +97,6 @@ export default {
       return ret
     },
   },
-  created () {
-    this.findDialogByParent(this)
-  },
   methods: {
     handleEdit (e) {
       e.stopPropagation()
@@ -108,15 +106,6 @@ export default {
         list: this.vm.list,
         params: this.params,
       })
-    },
-    findDialogByParent (vm) {
-      if (vm.$options.name === 'BaseDialog') {
-        this.dialogInsided = true
-      } else {
-        if (vm.$parent) {
-          this.findDialogByParent(vm.$parent)
-        }
-      }
     },
   },
 }
