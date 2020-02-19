@@ -271,7 +271,8 @@ export default {
         <a-select allowClear showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.cityLoading} placeholder="请选择城市">
           {this.cityList.map(city => {
             const { id, name } = city
-            return <a-select-option key={id} value={name}>{citys[name] || name}</a-select-option>
+            const lowercaseName = name.toLowerCase()
+            return <a-select-option key={id} value={name}>{citys[lowercaseName] || name}</a-select-option>
           })}
         </a-select>
       )
