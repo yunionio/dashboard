@@ -3,7 +3,7 @@
     <a-form class="mt-3" :form="form.fc">
       <a-divider orientation="left">基础配置</a-divider>
       <a-form-item label="配置IP子网" v-bind="formLayout">
-        <a-switch v-model="configNetwork" />
+        <a-switch checkedChildren="开" unCheckedChildren="关" v-model="configNetwork" />
       </a-form-item>
       <template v-if="configNetwork">
         <a-form-item label="子网名称" v-bind="formLayout">
