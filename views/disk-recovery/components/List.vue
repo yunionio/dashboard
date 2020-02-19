@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import expectStatus from '@/constants/expectStatus'
 import { getNameFilter, getStatusFilter, getBrandFilter, getTenantFilter, getFilter } from '@/utils/common/tableFilter'
 import { getBrandTableColumn, getStatusTableColumn, getCopyWithContentTableColumn, getProjectTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
@@ -21,13 +22,19 @@ export default {
   mixins: [WindowsMixin, globalSearchMixins],
   props: {
     id: String,
+    getParams: {
+      type: [Function, Object],
+    },
+    getColumns: {
+      type: [Function, Array],
+    },
   },
   data () {
     return {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'disks',
-        getParams: this.getParams,
+        getParams: this.getParam,
         steadyStatus: Object.values(expectStatus.server).flat(),
         filterOptions: {
           name: getNameFilter(),
@@ -42,6 +49,10 @@ export default {
               { label: '系统盘', key: 'sys' },
               { label: '数据盘', key: 'data' },
             ] }),
+          storage: {
+            label: '存储',
+            jointFilter: true,
+          },
         },
         responseData: this.responseData,
       }),
@@ -64,22 +75,7 @@ export default {
           { label: '介质类型', key: 'medium_type' },
         ],
       },
-      columns: [
-        getCopyWithContentTableColumn({ field: 'name', title: '名称' }),
-        getCopyWithContentTableColumn({ field: 'guest', title: '云服务器' }),
-        {
-          field: 'disk_type',
-          title: '类型',
-          width: 70,
-          formatter: ({ cellValue }) => {
-            return cellValue === 'sys' ? '系统盘' : '数据盘'
-          },
-        },
-        getStatusTableColumn({ statusModule: 'disk' }),
-        getProjectTableColumn(),
-        getBrandTableColumn(),
-        getTimeTableColumn({ field: 'auto_delete_at', title: '自动清除时间' }),
-      ],
+      columns: this.getColumn(),
       groupActions: [
         {
           label: '清除',
@@ -159,12 +155,42 @@ export default {
     this.list.fetchData()
   },
   methods: {
-    getParams () {
+    getParam () {
       return {
+        ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
         details: true,
         with_meta: true,
         pending_delete: true,
       }
+    },
+    getColumn () {
+      let column = []
+      if (R.is(Function, this.getColumns)) {
+        column = this.getColumns()
+        return column
+      }
+      if (R.is(Array, this.getColumns) && this.getColumns.length > 0) {
+        column = this.getColumns
+        return column
+      }
+      column = [
+        getCopyWithContentTableColumn({ field: 'name', title: '名称' }),
+        getCopyWithContentTableColumn({ field: 'storage', title: '存储' }),
+        getCopyWithContentTableColumn({ field: 'guest', title: '云服务器' }),
+        {
+          field: 'disk_type',
+          title: '类型',
+          width: 70,
+          formatter: ({ cellValue }) => {
+            return cellValue === 'sys' ? '系统盘' : '数据盘'
+          },
+        },
+        getStatusTableColumn({ statusModule: 'disk' }),
+        getProjectTableColumn(),
+        getBrandTableColumn(),
+        getTimeTableColumn({ field: 'auto_delete_at', title: '自动清除时间' }),
+      ]
+      return column
     },
   },
 }

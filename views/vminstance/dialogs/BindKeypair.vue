@@ -12,7 +12,7 @@
             :select-props="{ allowClear: true, placeholder: '请选择关密钥对' }" />
         </a-form-item>
         <a-form-item label="自动启动" v-bind="formItemLayout" extra="绑定密钥成功后自动启动">
-          <a-switch v-decorator="decorators.auto_start" :disabled="form.fi.disableAutoStart" />
+          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.auto_start" :disabled="form.fi.disableAutoStart" />
         </a-form-item>
       </a-form>
     </div>

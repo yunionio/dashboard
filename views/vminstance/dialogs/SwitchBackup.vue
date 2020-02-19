@@ -6,7 +6,7 @@
       <vxe-grid class="mb-2" :data="params.data" :columns="columns" />
       <a-form :form="form.fc" hideRequiredMark>
         <a-form-item label="删除备份机" v-bind="formItemLayout" extra="同时删除备份机（如果当前宿主机离线，则会强制清除数据库记录）">
-          <a-switch v-decorator="decorators.delete_backup" />
+          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.delete_backup" />
         </a-form-item>
       </a-form>
     </div>

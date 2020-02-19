@@ -20,7 +20,7 @@
             <a-radio :value="true">绑定</a-radio>
             <a-radio :value="false">解绑</a-radio>
           </a-radio-group>
-          <a-switch v-model="isOpenGpu" v-else />
+          <a-switch checkedChildren="开" unCheckedChildren="关" v-model="isOpenGpu" v-else />
         </a-form-item>
         <a-form-item label="GPU卡" v-bind="formItemLayout" v-show="isOpenGpu" extra="只能关联与主机处于同一宿主机的GPU卡,且已被使用的GPU不可选择">
           <!-- 批量设置 -->
@@ -63,7 +63,7 @@
           <a-input-number :min="1" v-decorator="decorators.number" />
         </a-form-item>
         <a-form-item label="自动启动" v-bind="formItemLayout" extra="设置成功后是否自动启动">
-          <a-switch v-decorator="decorators.autoStart" />
+          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.autoStart" />
         </a-form-item>
       </a-form>
     </div>
