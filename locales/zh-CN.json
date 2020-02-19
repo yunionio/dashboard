@@ -1059,7 +1059,8 @@
     "south carolina": "南卡罗来纳",
     "taipei": "台北",
     "taiwan": "台湾",
-    "zurich": "苏黎世"
+    "zurich": "苏黎世",
+    "other": "其他"
   },
   "cloudPrvidersMap": {
     "Aliyun": "阿里云",
