@@ -12,8 +12,7 @@
       </a-form-item>
       <a-form-item v-bind="formLayout" :label="keySecretField.label.k">
         <a-input v-decorator="decorators.username" :placeholder="keySecretField.placeholder.k" />
-        <!-- 天翼云暂时还没有帮助文档 -->
-        <div slot="extra" v-if="provider.toLowerCase() !== 'ctyun'">
+        <div slot="extra">
             {{ `如何获取${keySecretField.text}的${keySecretField.label.k }？点击查看帮助` }}
             <help-link :href="docs[provider.toLowerCase()]"> 详情</help-link>
           </div>
