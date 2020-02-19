@@ -1,10 +1,10 @@
 <template>
   <div>
     <a-tooltip v-if="isGpuEmpty" title="当前可用区未接入GPU云服务器">
-      <span><a-switch :value="gpuEnable" :disabled="true" /></span>
+      <span><a-switch checkedChildren="开" unCheckedChildren="关" :value="gpuEnable" :disabled="true" /></span>
     </a-tooltip>
     <a-form-item class="mb-0" v-else>
-      <a-switch v-decorator="decorators.gpuEnable" @change="change" />
+      <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.gpuEnable" @change="change" />
     </a-form-item>
     <template v-if="gpuEnable">
       <a-form-item>

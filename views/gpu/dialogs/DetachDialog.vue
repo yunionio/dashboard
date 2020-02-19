@@ -7,7 +7,7 @@
       <a-form
         :form="form.fc">
         <a-form-item label="自动启动" v-bind="formItemLayout" extra="设置成功后是否自动启动">
-          <a-switch v-decorator="decorators.autoStart" />
+          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.autoStart" />
         </a-form-item>
       </a-form>
     </div>

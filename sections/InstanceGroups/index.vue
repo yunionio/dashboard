@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-form-item class="mb-0">
-      <a-switch v-decorator="decorators.groupsEnable" @change="change" />
+      <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.groupsEnable" @change="change" />
     </a-form-item>
     <a-form-item v-if="showGroups">
       <base-select

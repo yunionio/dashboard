@@ -30,7 +30,7 @@
           <server-password :decorator="decorators.loginConfig" :loginTypes="loginTypes" :form="form" />
         </a-form-item>
         <a-form-item label="自动启动" v-bind="formItemLayout" extra="重装系统后是否自动启动">
-          <a-switch v-decorator="decorators.autoStart" />
+          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.autoStart" />
         </a-form-item>
       </a-form>
     </div>

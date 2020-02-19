@@ -20,7 +20,7 @@
             :name="form.fi.generate_name" />
         </a-form-item>
         <a-form-item label="自动启动" v-bind="formItemLayout">
-          <a-switch v-decorator="decorators.auto_start" />
+          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.auto_start" />
           <template v-slot:extra>
             <div>保存镜像成功后是否自动启动</div>
             <div v-if="form.fi.type === types.host.key" class="mt-2">友情提示：该主机镜像占用镜像配额 {{ diskCount }} 个</div>

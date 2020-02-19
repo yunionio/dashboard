@@ -12,7 +12,7 @@
       <a-form
         :form="form.fc">
         <a-form-item label="到期释放" v-bind="formItemLayout">
-          <a-switch v-decorator="decorators.durationEnable" />
+          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.durationEnable" />
         </a-form-item>
         <a-form-item
           v-if="form.fd.durationEnable"
