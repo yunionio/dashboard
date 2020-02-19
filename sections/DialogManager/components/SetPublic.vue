@@ -7,7 +7,7 @@
       <a-form
         :form="form.fc">
         <a-form-item label="是否共享" v-bind="formItemLayout">
-          <a-switch v-decorator="decorators.isPublic" @change="switchChange" :checked="isShare" />
+          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.isPublic" @change="switchChange" :checked="isShare" />
         </a-form-item>
         <a-form-item v-bind="formItemLayout" label="共享范围" v-show="isShare">
           <a-radio-group v-decorator="decorators.range">
