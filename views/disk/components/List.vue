@@ -93,7 +93,7 @@ export default {
         },
         steadyStatus: {
           status: Object.values(expectStatus.disk).flat(),
-          guest_status: [...Object.values(expectStatus.server).flat(), ''],
+          guest_status: [...Object.values(expectStatus.server).flat(), '', undefined],
         },
         responseData: this.responseData,
       }),
