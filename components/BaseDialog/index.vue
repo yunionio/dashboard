@@ -34,6 +34,9 @@ export default {
       default: 800,
     },
   },
+  provide: {
+    inBaseDialog: true,
+  },
   methods: {
     cancel () {
       this.$emit('cancel')
