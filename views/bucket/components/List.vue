@@ -85,13 +85,14 @@ export default {
           actions: () => {
             return [
               {
-                label: '更改项目',
+                label: `更改${this.$t('dictionary.project')}`,
                 permission: 'buckets_perform_change_owner',
                 action: row => {
-                  this.createDialog('ChangeProjectDialog', {
+                  this.createDialog('ChangeOwenrDialog', {
                     data: this.list.selectedItems,
                     columns: this.columns,
                     list: this.list,
+                    name: '存储桶',
                   })
                 },
               },
