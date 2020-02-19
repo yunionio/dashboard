@@ -1,4 +1,5 @@
 import * as R from 'ramda'
+import { findAndPush } from '@/utils/utils'
 
 // const Select = {
 //   name: 'Select',
@@ -269,7 +270,7 @@ export default {
       const citys = this.$t('citys')
       return (
         <a-select allowClear showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.cityLoading} placeholder="请选择城市">
-          {this.cityList.map(city => {
+          {findAndPush(this.cityList, ({ name }) => name === 'Other').map(city => {
             const { id, name } = city
             const lowercaseName = name.toLowerCase()
             return <a-select-option key={id} value={name}>{citys[lowercaseName] || name}</a-select-option>
