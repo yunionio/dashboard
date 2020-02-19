@@ -3,13 +3,13 @@
     <a-alert :showIcon="false" message="正确录入账单文件访问信息，在OneCloud系统才可以看到账单、费用等相关的信息" banner />
     <a-form class="pt-3" :form="form.fc" v-bind="formLayout">
       <a-divider orientation="left">账单文件/Billing export</a-divider>
-      <a-form-item label="云账号详情">
+      <a-form-item label="云账号类型">
         <a-radio-group  v-model="billingType">
-          <a-radio-button :value="1">即是使用账号又是付款账号</a-radio-button>
-          <a-radio-button :value="2">是使用账号不是付款账号，付款账号已录入本系统</a-radio-button>
+          <a-radio-button :value="1">该账号为主账号</a-radio-button>
+          <a-radio-button v-if="!isHuawei" :value="2">该账号为关联账号</a-radio-button>
         </a-radio-group>
       </a-form-item>
-      <a-form-item label="付款云账号" v-if="billingType === 2" extra="一般来说，账单文件的存储桶等信息是付款账号设置的，我们需要使用付款账号的访问信息去获取这些账单文件进行分析">
+      <a-form-item label="主账号" v-if="billingType === 2" extra="一般来说，账单文件的存储桶等信息是主账号设置的，我们需要使用主账号的访问信息去获取这些账单文件进行分析">
         <a-select :filterOption="filterOption" showSearch :loading="cloudAccountLoading" v-decorator="decorators.billing_bucket_account">
          <template v-for="item in cloudAccounts">
           <a-select-option  v-if="id !== item.id" :key="item.id" :value="item.id">{{item.name}}</a-select-option>
@@ -19,7 +19,7 @@
       <a-form-item label="存储桶URL" extra="请正确输入账单文件所在存储桶的URL，例如：https://bucket-name.oss-cn-beijing.aliyuncs.com">
         <a-input v-decorator="decorators.billing_report_bucket" />
       </a-form-item>
-       <a-form-item label="文件前缀"  extra="一般为公有云的账户ID，用于筛选存储桶的账单文件。上述Bucket里面只有账单文件时，不需要关注该字段。">
+       <a-form-item v-if="!isHuawei" label="文件前缀"  extra="一般为公有云的账户ID，用于筛选存储桶的账单文件。上述Bucket里面只有账单文件时，不需要关注该字段。">
         <a-input v-decorator="decorators.billing_file_prefix" />
       </a-form-item>
       <!-- google -->
@@ -80,6 +80,9 @@ export default {
     },
     isGoogle () {
       return this.provider === 'Google' || (this.cloudAccount && this.cloudAccount.provider === 'Google')
+    },
+    isHuawei () {
+      return this.provider === 'Huawei' || (this.cloudAccount && this.cloudAccount.provider === 'Huawei')
     },
     decorators () {
       const { options = {} } = this.cloudAccount
