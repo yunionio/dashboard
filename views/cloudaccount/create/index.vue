@@ -74,7 +74,7 @@ export default {
       return this.step.steps[this.step.currentStep].key
     },
     isBill () {
-      return ['Aws', 'Aliyun', 'Google'].indexOf(this.currentItem.provider) > -1
+      return ['Aws', 'Aliyun', 'Google', 'Huawei'].indexOf(this.currentItem.provider) > -1
     },
   },
   watch: {
