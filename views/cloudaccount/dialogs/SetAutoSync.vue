@@ -7,7 +7,7 @@
       <a-form
         :form="form.fc">
         <a-form-item label="自动同步" v-bind="formItemLayout">
-          <a-switch v-decorator="decorators.enable_auto_sync" @change="enableChange" />
+          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.enable_auto_sync" @change="enableChange" />
         </a-form-item>
         <a-form-item label="时间间隔" v-bind="formItemLayout" v-if="showTime">
           <a-input-number
