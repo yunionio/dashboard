@@ -11,15 +11,17 @@
     <template v-slot:actions>
       <actions :options="params.singleActions" :row="data" button-type="link" button-size="small" />
     </template>
-    <component v-bind="hostListActions" :is="params.windowData.currentTab" :data="data" :list="params.list" :getParams="getParams" :res-id="getParams.storage" />
+    <component v-bind="hostListActions" :is="params.windowData.currentTab" :data="data" :list="params.list" :getParams="getParams" :getColumns="getColumns" :res-id="getParams.storage" />
   </base-side-page>
 </template>
 
 <script>
 import DiskList from '@Compute/views/disk/components/List'
 import HostList from '@Compute/views/host/components/List'
+import DiskRecoveryList from '@Compute/views/disk-recovery/components/List'
 import CachedImages from '@Storage/views/blockstorage/sidepage/CachedImages'
 import Detail from './Detail'
+import { getStatusTableColumn, getCopyWithContentTableColumn, getProjectTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -30,6 +32,7 @@ export default {
     Actions,
     Detail,
     DiskList,
+    DiskRecoveryList,
     HostList,
     CachedImages,
   },
@@ -40,6 +43,7 @@ export default {
         { label: '详情', key: 'detail' },
         { label: '宿主机', key: 'host-list' },
         { label: '硬盘', key: 'disk-list' },
+        { label: '回收站', key: 'disk-recovery-list' },
         { label: '镜像缓存', key: 'cached-images' },
         { label: '操作日志', key: 'event-drawer' },
       ],
@@ -51,6 +55,26 @@ export default {
         storage: this.params.resId,
         details: true,
       }
+    },
+    getColumns () {
+      if (this.params.windowData.currentTab === 'disk-recovery-list') {
+        return [
+          getCopyWithContentTableColumn({ field: 'name', title: '名称' }),
+          getCopyWithContentTableColumn({ field: 'guest', title: '云服务器' }),
+          {
+            field: 'disk_type',
+            title: '类型',
+            width: 70,
+            formatter: ({ cellValue }) => {
+              return cellValue === 'sys' ? '系统盘' : '数据盘'
+            },
+          },
+          getStatusTableColumn({ statusModule: 'disk' }),
+          getProjectTableColumn(),
+          getTimeTableColumn({ field: 'auto_delete_at', title: '自动清除时间' }),
+        ]
+      }
+      return null
     },
     data () {
       return this.params.list.data[this.params.resId].data
