@@ -34,7 +34,7 @@ export default {
   data () {
     return {
       loading: false,
-      action: '镜像创建机器',
+      action: '新建虚拟机',
       cloudEnvOptions: getCloudEnvOptions('compute_engine_brands'),
       form: {
         fc: this.$form.createForm(this),
