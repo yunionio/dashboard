@@ -26,7 +26,7 @@
     </div>
     <div slot="footer">
       <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t("dialog.ok") }}</a-button>
-      <a-button :disabled="loading" @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
+      <a-button @click="handleCancel">{{ $t('dialog.cancel') }}</a-button>
     </div>
   </base-dialog>
 </template>
@@ -35,6 +35,7 @@
 import { formItemLayout } from '@Storage/constants/index.js'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import { getRequestKey, cancelRquest } from '@/utils/http'
 
 export default {
   name: 'ObjectsUploadFileDialog',
@@ -64,8 +65,15 @@ export default {
   computed: {
     uploadTo () {
       const { resItem, prefix } = this.params
-      console.log(prefix)
       return `oss://${resItem.name}/${prefix}`
+    },
+    uploadConfig () {
+      return {
+        timeout: 0,
+        url: '/v1/s3uploads',
+        method: 'post',
+        processData: false,
+      }
     },
     uploadDraggerConfig () {
       return {
@@ -95,11 +103,8 @@ export default {
   methods: {
     postUpload (formData) {
       return this.$http({
-        url: '/v1/s3uploads',
-        method: 'post',
-        processData: false,
         data: formData,
-        timeout: 0,
+        ...this.uploadConfig,
       })
     },
     validateForm () {
@@ -123,6 +128,11 @@ export default {
           resolve(formDatas)
         })
       })
+    },
+    handleCancel () {
+      const key = getRequestKey(this.uploadConfig)
+      cancelRquest(key)
+      this.cancelDialog()
     },
     async handleConfirm () {
       this.loading = true
