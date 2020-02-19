@@ -147,7 +147,8 @@ export default {
         {
           field: 'cpu_count',
           title: 'CPU',
-          width: 60,
+          minWidth: 60,
+          showOverflow: 'title',
           formatter: ({ cellValue, row }) => {
             if (cellValue) {
               return '' + cellValue + '/' + percentstr(row.cpu_commit_rate)
@@ -159,7 +160,8 @@ export default {
         {
           field: 'mem_size',
           title: '内存',
-          width: 60,
+          minWidth: 60,
+          showOverflow: 'title',
           formatter: ({ cellValue, row }) => {
             if (cellValue) {
               return sizestr(cellValue, 'M', 1024) + '/' + percentstr(row.mem_commit_rate)
@@ -171,7 +173,8 @@ export default {
         {
           field: 'storage_size',
           title: '存储',
-          width: 60,
+          minWidth: 60,
+          showOverflow: 'title',
           formatter: ({ cellValue, row }) => {
             if (cellValue) {
               return sizestr(cellValue, 'M', 1024) + '/' + percentstr(row.storage_commit_rate)
@@ -183,8 +186,8 @@ export default {
         {
           field: 'sn',
           title: 'SN',
-          width: 120,
-          showOverflow: 'ellipsis',
+          width: 100,
+          showOverflow: 'title',
         },
         getBrandTableColumn(),
         getRegionTableColumn(),
