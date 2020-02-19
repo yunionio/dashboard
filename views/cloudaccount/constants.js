@@ -137,6 +137,8 @@ export const CLOUDACCOUNT_DOCS = {
   s3: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BAs3%E8%B4%A6%E5%8F%B7',
   ceph: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BAceph%E8%B4%A6%E5%8F%B7',
   xsky: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BAxsky%E8%B4%A6%E5%8F%B7',
+  google: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BAgoogle%E8%B4%A6%E5%8F%B7',
+  ctyun: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BA%E5%A4%A9%E7%BF%BC%E4%BA%91%E8%B4%A6%E5%8F%B7',
 }
 
 export const ACCESS_URL = {

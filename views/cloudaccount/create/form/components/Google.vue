@@ -10,6 +10,10 @@
       <upload-json-file :fc="form.fc">
         <a-form-item label="project_id">
           <a-input v-decorator="decorators.project_id" placeholder="请输入project_id" />
+          <div slot="extra">
+            {{ `如何获取Google云project_id？点击查看帮助` }}
+            <help-link :href="docs['google']"> 详情</help-link>
+          </div>
         </a-form-item>
         <a-form-item label="private_key_id">
           <a-input v-decorator="decorators.private_key_id" placeholder="请输入private_key_id" />
