@@ -69,7 +69,9 @@ export default {
             },
           },
         },
-        steadyStatus: Object.values(expectStatus.server).flat(),
+        steadyStatus: {
+          guest_status: [...Object.values(expectStatus.server).flat(), '', undefined],
+        },
       }),
       exportDataOptions: {
         items: [
@@ -159,9 +161,22 @@ export default {
                 tooltip: '请先选择要解绑的GPU卡',
               }
             }
+            const validateGuestStatus = item.every(item => item.guest_id && item.guest_status === 'ready')
+            const validateGuestId = item.every(item => item.guest_id)
+            if (!validateGuestId) {
+              return {
+                validate: false,
+                tooltip: '请选择已关联主机的GPU卡',
+              }
+            }
+            if (!validateGuestStatus) {
+              return {
+                validate: false,
+                tooltip: '关联主机在【关机】的状态下支持该操作',
+              }
+            }
             return {
-              validate: item.every(item => item.guest_id && item.guest_status === 'ready'),
-              tooltip: '取消关联主机在【关机】的状态下支持该操作',
+              validate: true,
             }
           },
         },
