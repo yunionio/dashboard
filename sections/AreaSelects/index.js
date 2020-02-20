@@ -271,9 +271,9 @@ export default {
       return (
         <a-select allowClear showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.cityLoading} placeholder="请选择城市">
           {findAndPush(this.cityList, ({ name }) => name === 'Other').map(city => {
-            const { id, name } = city
+            const { name } = city
             const lowercaseName = name.toLowerCase()
-            return <a-select-option key={id} value={name}>{citys[lowercaseName] || name}</a-select-option>
+            return <a-select-option key={name} value={name}>{citys[lowercaseName] || name}</a-select-option>
           })}
         </a-select>
       )
