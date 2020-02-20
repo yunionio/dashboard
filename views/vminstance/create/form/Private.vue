@@ -80,7 +80,7 @@
         <server-network
           :decorator="decorators.network"
           :network-list-params="networkParam"
-          :schedtag-params="params.schedtag"
+          :schedtag-params="schedtagParams"
           :networkVpcParams="networkVpcParams"
           :vpcResource="vpcResource" />
       </a-form-item>
@@ -103,7 +103,7 @@
               :disabled-host="policyHostDisabled"
               :policy-host-params="policyHostParams"
               :decorators="decorators.schedPolicy"
-              :policy-schedtag-params="params.policySchedtag" />
+              :policy-schedtag-params="policySchedtagParams" />
           </a-form-item>
         </a-collapse-panel>
       </a-collapse>

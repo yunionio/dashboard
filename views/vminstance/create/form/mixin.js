@@ -87,10 +87,6 @@ export default {
         fd: { ...initFd, os: '' },
       },
       decorators,
-      params: {
-        schedtag: { resource_type: 'networks', scope: this.$store.getters.scope },
-        policySchedtag: { limit: 0, 'filter.0': 'resource_type.equals(hosts)', scope: this.$store.getters.scope },
-      },
       capabilityParams: {}, // 防止 capability 反复调用，这里对当前的接口参数做记录
       price: null,
     }
@@ -209,6 +205,20 @@ export default {
     },
     vpcResource () {
       return `cloudregions/${this.cloudregionZoneParams.cloudregion}/vpcs`
+    },
+    schedtagParams () { // 网络里指定调度标签
+      return {
+        limit: 0,
+        resource_type: 'networks',
+        ...this.scopeParams,
+      }
+    },
+    policySchedtagParams () { // 高级配置里面调度策略选择 指定调度标签
+      return {
+        limit: 0,
+        'filter.0': 'resource_type.equals(hosts)',
+        ...this.scopeParams,
+      }
     },
   },
   created () {
