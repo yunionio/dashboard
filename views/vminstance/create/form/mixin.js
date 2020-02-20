@@ -201,9 +201,9 @@ export default {
     networkVpcParams () {
       const params = {
         usable: true,
-        scope: this.$store.getters.scope,
         limit: 0,
         show_emulated: true,
+        ...this.scopeParams,
       }
       return params
     },
