@@ -1060,6 +1060,9 @@
     "taipei": "台北",
     "taiwan": "台湾",
     "zurich": "苏黎世",
+    "lanzhou": "兰州",
+    "wulumuqi": "乌鲁木齐",
+    "wuhu": "芜湖",
     "other": "其他"
   },
   "cloudPrvidersMap": {
