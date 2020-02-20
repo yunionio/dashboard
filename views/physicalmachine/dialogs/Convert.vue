@@ -283,8 +283,9 @@ export default {
         vpcParams: {
           usable: true,
           scope: this.$store.getters.scope,
-          limit: 0,
-          show_emulated: true,
+          // limit: 0,
+          // show_emulated: true,
+          filter: 'id.equals("default")',
         },
       },
       isShowFalseIcon: false,
