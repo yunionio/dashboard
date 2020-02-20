@@ -111,11 +111,17 @@ export default {
       return 8 - (this.params.list.total || 0)
     },
     vpcParams () {
+      const scopeParams = {}
+      if (this.$store.getters.isAdminMode) {
+        scopeParams.project_domain = this.params.data[0].domain_id
+      } else {
+        scopeParams.scope = this.$store.getters.scope
+      }
       const params = {
         usable: true,
-        scope: this.$store.getters.scope,
         limit: 0,
         show_emulated: true,
+        ...scopeParams,
       }
       return params
     },
