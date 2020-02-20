@@ -18,6 +18,18 @@ const getDefaultLastBaseInfo = (h, { data, list }) => {
           return [
             <div class='text-truncate'>
               <list-body-cell-wrap copy row={ data } list={ list } field='cloudregion' title={ row['cloudregion'] } />
+            </div>,
+          ]
+        },
+      },
+    },
+    {
+      field: 'cloudregion_id',
+      title: '区域ID',
+      slots: {
+        default: ({ row }) => {
+          return [
+            <div class='text-truncate'>
               <list-body-cell-wrap copy row={ data } list={ list } field='cloudregion_id' title={ row['cloudregion_id'] } />
             </div>,
           ]
@@ -32,6 +44,18 @@ const getDefaultLastBaseInfo = (h, { data, list }) => {
           return [
             <div class='text-truncate'>
               <list-body-cell-wrap copy row={ data } list={ list } field='zone' title={ row['zone'] } />
+            </div>,
+          ]
+        },
+      },
+    },
+    {
+      field: 'zone_id',
+      title: '可用区ID',
+      slots: {
+        default: ({ row }) => {
+          return [
+            <div class='text-truncate'>
               <list-body-cell-wrap copy row={ data } list={ list } field='zone_id' title={ row['zone_id'] } />
             </div>,
           ]
@@ -46,6 +70,18 @@ const getDefaultLastBaseInfo = (h, { data, list }) => {
           return [
             <div class='text-truncate'>
               <list-body-cell-wrap copy row={ data } list={ list } field='account' title={ row['account'] } />
+            </div>,
+          ]
+        },
+      },
+    },
+    {
+      field: 'account_id',
+      title: '云账号ID',
+      slots: {
+        default: ({ row }) => {
+          return [
+            <div class='text-truncate'>
               <list-body-cell-wrap copy row={ data } list={ list } field='account_id' title={ row['account_id'] } />
             </div>,
           ]
