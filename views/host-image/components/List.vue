@@ -114,7 +114,7 @@ export default {
             default: ({ row }) => {
               const arr = [...(row.data_images || [])]
               arr.push(row.root_image.name)
-              return arr.length
+              return `${arr.length}个`
             },
             content: ({ row }) => {
               const list = row.data_images.map(val => (
