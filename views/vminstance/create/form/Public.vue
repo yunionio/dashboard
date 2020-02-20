@@ -90,7 +90,7 @@
         <server-network
           :decorator="decorators.network"
           :network-list-params="networkParam"
-          :schedtag-params="params.schedtag" />
+          :schedtag-params="schedtagParams" />
       </a-form-item>
       <a-form-item label="标签" v-bind="formItemLayout" class="mb-0">
         <tag
@@ -122,7 +122,7 @@
           :disabled-host="policyHostDisabled"
           :policy-host-params="policyHostParams"
           :decorators="decorators.schedPolicy"
-          :policy-schedtag-params="params.policySchedtag" />
+          :policy-schedtag-params="policySchedtagParams" />
       </a-form-item>
       <bottom-bar
         :loading="submiting"
