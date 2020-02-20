@@ -54,6 +54,14 @@ export default {
       type: [Function, Object],
     },
     cloudEnv: String,
+    showGroupActions: {
+      type: Boolean,
+      default: true,
+    },
+    showSearchbox: {
+      type: Boolean,
+      default: true,
+    },
   },
   data () {
     const brandFilter = getBrandFilter('network_manage_brands')
