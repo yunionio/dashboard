@@ -73,6 +73,7 @@ export default {
               list: this.list,
               columns: this.columns,
               data: this.list.selectedItems,
+              name: '预留IP',
             })
           },
           meta: () => {

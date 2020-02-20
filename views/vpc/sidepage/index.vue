@@ -8,7 +8,7 @@
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
     @tab-change="handleTabChange">
-    <component :is="params.windowData.currentTab" :res-id="params.resId" :data="data" :list="params.list" :getParams="getParams" />
+    <component :is="params.windowData.currentTab" :res-id="params.resId" :showGroupActions="showGroupActions" :showSearchbox="showSearchbox" :data="data" :list="params.list" :getParams="getParams" />
   </base-side-page>
 </template>
 
@@ -46,6 +46,18 @@ export default {
         }
       }
       return null
+    },
+    showGroupActions () {
+      if (this.params.windowData.currentTab === 'network-list') {
+        return false
+      }
+      return true
+    },
+    showSearchbox () {
+      if (this.params.windowData.currentTab === 'network-list') {
+        return false
+      }
+      return true
     },
     data () {
       return this.params.list.data[this.params.resId].data
