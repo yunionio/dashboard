@@ -427,8 +427,9 @@ export default {
         vpcParams: {
           usable: true,
           scope: this.$store.getters.scope,
-          limit: 0,
-          show_emulated: true,
+          // limit: 0,
+          // show_emulated: true,
+          filter: 'id.equals("default")',
         },
       },
       selectedImage: {},
@@ -507,6 +508,9 @@ export default {
       }
     },
     vpcResource () {
+      if (this.isInstallOperationSystem) {
+        return 'vpcs'
+      }
       return `cloudregions/${this.cloudregion}/vpcs`
     },
     scopeParams () {
