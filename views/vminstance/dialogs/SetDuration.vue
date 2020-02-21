@@ -127,9 +127,9 @@ export default {
   },
   methods: {
     async doUpdateSubmit (data) {
-      const diffHours = data.durationDate.diff(this.expireDate, 'hours')
+      const time = this.$moment.utc(data.durationDate).format()
       const params = {
-        duration: `${diffHours < 1 ? 1 : diffHours}h`,
+        expire_time: time,
       }
       const ids = this.params.data.map(item => item.id)
       return this.params.list.onManager('batchPerformAction', {
