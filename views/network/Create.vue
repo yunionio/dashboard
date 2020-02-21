@@ -44,8 +44,8 @@
       </a-form-item>
       <a-form-item label="子网网段" v-bind="formItemLayout" :validate-status="ipSubnetsValidateStatus" :help="ipSubnetsHelp" required v-if="show">
         <template slot="extra">
-          <p>1.VLAN ID用于网络物理隔离，默认1，相同VLAN ID的IP子网互通，不同VLAN ID的IP子网不通。</p>
-          <p>2.创建多个IP子网时，系统自动分配名称，例如：名称为net，增加3个IP子网，名称依次为net0、net1、net。</p>
+          <div>1.VLAN ID用于网络物理隔离，默认1，相同VLAN ID的IP子网互通，不同VLAN ID的IP子网不通。</div>
+          <div>2.创建多个IP子网时，系统自动分配名称，例如：名称为net，增加3个IP子网，名称依次为net0、net1、net。</div>
         </template>
         <ip-subnets :decorator="decorators.ipSubnets" @clear-error="clearIpSubnetsError" />
       </a-form-item>
@@ -54,8 +54,8 @@
       </a-form-item>
       <a-form-item label="子网网段" v-bind="formItemLayout" :validate-status="guestIpPrefixValidateStatus" :help="guestIpPrefixHelp" required v-if="isGroupGuestIpPrefix">
         <template slot="extra">
-          <p>子网的 CIDR 必须是所在 VPC CIDR 的一部分，且不能和该 VPC 下已有子网的 CIDR 重叠。</p>
-          <p>创建多个IP子网时，系统自动分配名称，例如：名称为net，增加3个IP子网，名称依次为net0、net1、net。</p>
+          <div>子网的 CIDR 必须是所在 VPC CIDR 的一部分，且不能和该 VPC 下已有子网的 CIDR 重叠。</div>
+          <div>创建多个IP子网时，系统自动分配名称，例如：名称为net，增加3个IP子网，名称依次为net0、net1、net。</div>
         </template>
         <div class="d-flex" v-for="(item, i) in guestIpPrefix" :key="item.key">
           <a-form-item>
@@ -85,10 +85,10 @@
       <a-form-item v-bind="formItemLayout" v-if="show">
         <span slot="label">主机域名后缀<help-tooltip class="ml-1" name="networkDomain" /></span>
         <template slot="extra">
-          <p>系统为主机分配IP时，会同时创建一条指向该IP的域名记录，域名由主机名称+主机域名后缀组成。例如：</p>
-          <p>主机名称为vm01，主机ip为192.168.1.1</p>
-          <p>主机域名后缀为gh.baidu.com</p>
-          <p>主机创建成功后，ping vm01.gh.baidu.com就会得到vm01的ip</p>
+          <div>系统为主机分配IP时，会同时创建一条指向该IP的域名记录，域名由主机名称+主机域名后缀组成。例如：</div>
+          <div>主机名称为vm01，主机ip为192.168.1.1</div>
+          <div>主机域名后缀为gh.baidu.com</div>
+          <div>主机创建成功后，ping vm01.gh.baidu.com就会得到vm01的ip</div>
         </template>
         <a-input :placeholder="$t('validator.domain')" v-decorator="decorators.guest_domain" />
       </a-form-item>
