@@ -349,6 +349,22 @@ export default {
                   if (this.isSameHyper) {
                     ret.validate = cloudEnabled('adjustConfig', this.list.selectedItems)
                     ret.tooltip = cloudUnabledTip('adjustConfig', this.list.selectedItems)
+                    const googleItems = this.list.selectedItems.filter(val => val.brand === typeClouds.brandMap.Google.key)
+                    if (googleItems && googleItems.length) { // 谷歌云 windows 仅支持关机下操作，linux 支持 开关机
+                      ret.validate = googleItems.every(val => {
+                        const os = val.os_type.toLowerCase()
+                        if (os.includes('windows')) {
+                          return val.status === 'ready'
+                        }
+                        if (os.includes('linux')) {
+                          return val.status === 'ready' || val.status === 'running'
+                        }
+                        return true
+                      })
+                      if (!ret.validate) {
+                        ret.tooltip = '谷歌云Windows虚拟机仅支持关机下操作，Linux虚拟机支持开机和关机下操作'
+                      }
+                    }
                     return ret
                   }
                   ret.validate = false
@@ -1019,6 +1035,23 @@ export default {
                       }
                       ret.validate = cloudEnabled('adjustConfig', obj)
                       ret.tooltip = cloudUnabledTip('adjustConfig', obj)
+                      const isGoogle = obj.brand === typeClouds.brandMap.Google.key
+                      if (isGoogle) { // 谷歌云 windows 仅支持关机下操作，linux 支持 开关机
+                        const getGoogleValid = val => {
+                          const os = val.os_type.toLowerCase()
+                          if (os.includes('windows')) {
+                            return val.status === 'ready'
+                          }
+                          if (os.includes('linux')) {
+                            return val.status === 'ready' || val.status === 'running'
+                          }
+                          return true
+                        }
+                        ret.validate = getGoogleValid(obj)
+                        if (!ret.validate) {
+                          ret.tooltip = '谷歌云Windows虚拟机仅支持关机下操作，Linux虚拟机支持开机和关机下操作'
+                        }
+                      }
                       return ret
                     },
                   },
