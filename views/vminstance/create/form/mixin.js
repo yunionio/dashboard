@@ -214,6 +214,7 @@ export default {
     this.servertemplateM = new Manager('servertemplates', 'v2')
     this.serverskusM = new Manager('serverskus')
     this.schedulerM = new Manager('schedulers', 'v1')
+    this.$store.dispatch('app/fetchWorkflowEnabledKeys')
   },
   watch: {
     'form.fi.imageMsg': {
