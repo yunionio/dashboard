@@ -230,6 +230,7 @@ export default {
     this.$bus.$on('VMGetPrice', (price) => {
       this.price = price
     })
+    this.$store.dispatch('app/fetchWorkflowEnabledKeys')
   },
   watch: {
     'form.fi.imageMsg': {
