@@ -8,7 +8,7 @@
 
 <script>
 import { SERVER_TYPE } from '@Compute/constants'
-import { getCopyWithContentTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
+import { getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import { findPlatform, typeClouds } from '@/utils/common/hypervisor'
 
@@ -48,17 +48,6 @@ export default {
             return row.index ? row.index : '0'
           },
         },
-        getNameDescriptionTableColumn({
-          vm: this,
-          hideField: true,
-          isNameEdit: false,
-          showDesc: false,
-          slotCallback: row => {
-            return (
-              <side-page-trigger onTrigger={() => this.sidePageTriggerHandle(row.index, 'NetwrokSidepage')}>{row.network}</side-page-trigger>
-            )
-          },
-        }),
         getCopyWithContentTableColumn({ field: 'network', title: '网卡名称', sortable: true }),
         getCopyWithContentTableColumn({ field: 'mac_addr', title: 'MAC地址', sortable: true }),
         getCopyWithContentTableColumn({ field: 'ip_addr', title: 'IP地址', sortable: true }),
