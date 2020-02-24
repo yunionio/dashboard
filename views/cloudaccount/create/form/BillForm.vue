@@ -5,8 +5,8 @@
       <a-divider orientation="left">账单文件/Billing export</a-divider>
       <a-form-item label="云账号类型">
         <a-radio-group  v-model="billingType">
-          <a-radio-button :value="1">该账号为主账号</a-radio-button>
-          <a-radio-button v-if="!isHuawei" :value="2">该账号为关联账号</a-radio-button>
+          <a-radio-button :value="1">主账号</a-radio-button>
+          <a-radio-button v-if="!isHuawei" :value="2">关联账号</a-radio-button>
         </a-radio-group>
       </a-form-item>
       <a-form-item label="主账号" v-if="billingType === 2" extra="一般来说，账单文件的存储桶等信息是主账号设置的，我们需要使用主账号的访问信息去获取这些账单文件进行分析">
@@ -24,8 +24,8 @@
       </a-form-item>
       <!-- google -->
       <template v-if="isGoogle">
-        <a-divider class="mt-5" orientation="left">账单文件/Billing export</a-divider>
-        <a-form-item label="存储桶URL" extra="请正确输入账单文件所在存储桶的URL，例如：https://bucket-name.oss-cn-beijing.aliyuncs.com">
+        <a-divider class="mt-5" orientation="left">使用量文件/Usage export</a-divider>
+        <a-form-item label="存储桶URL" extra="请正确输入使用量所在存储桶的URL，例如：https://bucket-name.oss-cn-beijing.aliyuncs.com">
           <a-input v-decorator="decorators.usage_report_bucket" />
         </a-form-item>
         <a-form-item label="文件前缀" extra="一般为公有云的账户ID，用于筛选存储桶的账单文件。上述Bucket里面只有账单文件时，不需要关注该字段。">
