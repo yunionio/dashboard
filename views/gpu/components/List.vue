@@ -111,7 +111,7 @@ export default {
               return [
                 <div class='d-flex'>
                   <span class='text-truncate'>{ row.model }</span>
-                  <icon class="ml-1" style="line-height: 20px" type={ DEVICE_MAP[device] } />
+                  <icon class="ml-1" style="line-height: 24px" type={ DEVICE_MAP[device] } />
                 </div>,
               ]
             },
