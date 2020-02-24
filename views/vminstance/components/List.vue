@@ -422,12 +422,20 @@ export default {
                   }
                   const isAllReady = this.list.selectedItems.every((item) => { return item.status === 'ready' })
                   const isAllIdc = this.list.selectedItems.every((item) => {
-                    return findPlatform(item.hypervisor, 'hypervisor') === SERVER_TYPE.idc && this.isAdminMode
+                    return findPlatform(item.hypervisor, 'hypervisor') === SERVER_TYPE.idc
+                  })
+                  const isAllAdmin = this.list.selectedItems.every((item) => {
+                    return this.isAdminMode
                   })
                   // 如果是 VMware提示不支持
                   const isSomeVMware = this.list.selectedItems.some((item) => {
                     return item.hypervisor === 'esxi'
                   })
+                  if (!isAllAdmin) {
+                    ret.validate = false
+                    ret.tooltip = '暂只有系统管理员支持该操作'
+                    return ret
+                  }
                   if (!isAllReady) {
                     ret.validate = false
                     ret.tooltip = '请选择关机的机器进行操作'

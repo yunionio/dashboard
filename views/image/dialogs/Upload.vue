@@ -129,8 +129,8 @@ export default {
         this.show = true
       }
     },
-    handleUploadChange (e) {
-      console.log(e)
+    handleUploadChange ({ file, fileList }) {
+      this.fileList = fileList
     },
     checkTemplateName (rule, value, callback) {
       if (!value) {
@@ -197,7 +197,7 @@ export default {
             this.loading = false
             return false
           }
-          await this.handleUpload(formData)
+          this.handleUpload(formData)
         } else {
           await this.doImportUrl(values)
         }
