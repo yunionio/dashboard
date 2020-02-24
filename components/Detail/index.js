@@ -142,7 +142,7 @@ const getDefaultTopBaseInfo = (h, { idKey, statusKey, statusModule, data, list }
       field: 'project_domain',
       title: i18n.t('dictionary.domain'),
       formatter: ({ row }) => {
-        return row.project_domain || '-'
+        return row.project_domain || row.domain || '-'
       },
     },
     {
