@@ -72,7 +72,7 @@ export default {
           {
             initialValue: 443,
             rules: [
-              { type: 'number', min: 0, max: 65535, message: '端口范围在 0-65535 之间', trigger: 'blur' },
+              { type: 'number', min: 0, max: 65535, message: '端口范围在 0-65535 之间', trigger: 'blur', transform: (v) => parseFloat(v) },
             ],
           },
         ],
