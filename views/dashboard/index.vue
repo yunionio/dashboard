@@ -21,12 +21,17 @@
       <div class="d-flex align-items-center justify-content-center h-100" v-if="loading">
         <a-spin />
       </div>
-      <div class="d-flex align-items-center justify-content-center h-100" v-if="dashboardEmpty && !loading">
-        <a-empty>
-          <template v-slot:description>
-            <div>暂无控制面板，点击<a-button type="link" icon="plus" @click="() => handleToEdit()" />进行新建</div>
-          </template>
-        </a-empty>
+      <div class="d-flex flex-column h-100" v-if="dashboardEmpty && !loading">
+        <div class="text-right flex-grow-0 flex-shrink-0">
+          <a-button type="link" @click="swtchOldDashboard" v-if="$appConfig.isPrivate">使用旧版</a-button>
+        </div>
+        <div class="flex-fill d-flex align-items-center justify-content-center">
+          <a-empty>
+            <template v-slot:description>
+              <div>暂无控制面板，点击<a-button type="link" icon="plus" @click="() => handleToEdit()" />进行新建</div>
+            </template>
+          </a-empty>
+        </div>
       </div>
       <div v-if="!dashboardEmpty" class="layout-wrap">
         <grid-layout
