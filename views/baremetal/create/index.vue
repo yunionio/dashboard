@@ -1082,6 +1082,8 @@ export default {
         prefer_host: this.isInstallOperationSystem ? this.$route.query.id : values.schedPolicyHost,
         description: values.description,
       }
+      if (values.password) params.password = values.password
+      if (values.keypair) params.keypair = values.keypair
       // 判断是否是iso导入
       if (values.imageType === 'iso') {
         params = {
