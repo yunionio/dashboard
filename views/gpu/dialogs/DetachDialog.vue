@@ -94,7 +94,7 @@ export default {
         auto_start: values.autoStart,
       }
       let selectedIds = this.params.data.map((item) => {
-        return item.id
+        return item.guest_id
       })
       return new this.$Manager('servers').batchPerformAction({
         ids: selectedIds,
