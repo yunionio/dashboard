@@ -155,7 +155,7 @@ export default {
       window.location.href = this.$appConfig.v1Perfix + '/workflow?type=me-process'
     },
     goBack () {
-      this.$router.push('/servicecatalog')
+      this.$router.push('/servertemplate')
     },
     goVminstance () {
       this.$router.push('/vminstance')
