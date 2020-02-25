@@ -337,6 +337,9 @@ export const getSearchMaps = (searchRes = {}) => {
         name: {
           filter: `name.contains(${getFilter('name')})`,
         },
+        ip: {
+          joint_filter: `guestnetworks.guest_id(id).ip_addr.contains(${getFilter('ip')})`,
+        },
       },
       resData: {},
     },

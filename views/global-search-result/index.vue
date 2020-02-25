@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-tabs v-model="currentTab">
-      <a-tab-pane :key="item.id" v-for="item in searchMaps" :disabled="item.resData.status && item.resData.status !== 200">
+      <a-tab-pane :key="item.id" v-for="item in searchMapsObj" :disabled="item.resData.status && item.resData.status !== 200">
         <span slot="tab" :class="{ 'text-color-help': getTotal(item) === 0 }">{{ item.label }}({{ getTotal(item) }})</span>
       </a-tab-pane>
     </a-tabs>
@@ -23,6 +23,7 @@
 
 <script>
 import * as R from 'ramda'
+import _ from 'lodash'
 import qs from 'qs'
 import VmInstanceList from '@Compute/views/vminstance/components/List'
 import BaremetalList from '@Compute/views/baremetal/components/List'
@@ -80,6 +81,12 @@ export default {
   computed: {
     currentTabMsg () {
       return this.searchMaps[this.currentTab]
+    },
+    searchMapsObj () {
+      return R.filter((value, key) => {
+        const listData = _.get(value, 'resData.data.data')
+        return listData && listData.length
+      }, this.searchMaps)
     },
   },
   watch: {
