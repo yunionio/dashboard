@@ -79,7 +79,7 @@ export default {
     padding: 0 15px;
     color: $error-color;
     overflow-y: scroll;
-    max-height: 800px;
+    max-height: 600px;
     li {
       line-height: 1.8;
       list-style-type: disc;
