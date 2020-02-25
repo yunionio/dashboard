@@ -105,6 +105,7 @@ export default {
         usable: true,
         cloudregion: resItem.cloudregion_id,
         zone: resItem.zone_id,
+        host: resItem.host,
       }
     },
     networkLimit () {
