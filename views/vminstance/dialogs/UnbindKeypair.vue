@@ -75,7 +75,7 @@ export default {
         const values = await this.form.fc.validateFields()
         const ids = this.params.data.map(item => item.id)
         values.__delete_keypair__ = true
-        await this.params.list.onManager('batchPerformAction', {
+        await this.params.onManager('batchPerformAction', {
           id: ids,
           steadyStatus: ['running', 'ready'],
           managerArgs: {

@@ -162,7 +162,7 @@ export default {
         count: values.count,
         auto_delete_instance_snapshot: values.auto_delete_instance_snapshot,
       }
-      return this.params.list.onManager('performAction', {
+      return this.params.onManager('performAction', {
         id: this.params.data[0].id,
         steadyStatus: ['running', 'ready'],
         managerArgs: {
@@ -189,7 +189,7 @@ export default {
           await this.doCreateByNewSnapshot()
         } else {
           await this.doCreateByOldSnapshot()
-          this.params.list.refresh()
+          this.params.refresh()
         }
         this.loading = false
         this.cancelDialog()

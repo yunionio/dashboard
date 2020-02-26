@@ -97,7 +97,7 @@ export default {
         if (values.loginType === LOGIN_TYPES_MAP.password.key) {
           data.password = values.password
         }
-        await this.params.list.onManager('batchPerformAction', {
+        await this.params.onManager('batchPerformAction', {
           id: ids,
           steadyStatus: ['running', 'ready'],
           managerArgs: {

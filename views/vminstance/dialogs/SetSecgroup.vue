@@ -148,7 +148,7 @@ export default {
         values.secgroups.forEach((id, idx) => {
           data[`secgrp.${idx}`] = id
         })
-        await this.params.list.onManager('batchPerformAction', {
+        await this.params.onManager('batchPerformAction', {
           id: ids,
           managerArgs: {
             action: 'set-secgroup',

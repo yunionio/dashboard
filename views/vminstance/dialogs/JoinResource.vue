@@ -67,7 +67,7 @@ export default {
     },
     doJoinResourceSubmit (data) {
       const selectedIds = this.params.data.map(item => item.id)
-      return this.params.list.onManager('batchPerformAction', {
+      return this.params.onManager('batchPerformAction', {
         id: selectedIds,
         managerArgs: {
           action: 'prepaid-recycle',

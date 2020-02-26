@@ -172,7 +172,7 @@ export default {
           os_version: '',
         },
       }
-      return this.params.list.onManager('create', {
+      return this.params.onManager('create', {
         managerArgs: {
           data: params,
         },
@@ -203,7 +203,7 @@ export default {
         }
         this.loading = false
         this.cancelDialog()
-        this.params.list.refresh()
+        this.params.refresh()
       } catch (error) {
         this.loading = false
       }

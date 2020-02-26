@@ -3,20 +3,32 @@
     @cancel="cancelSidePage"
     title="镜像"
     icon="res-image"
-    :res-name="data.name"
-    :actions="params.actions"
+    :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
+    :loaded="loaded"
     @tab-change="handleTabChange">
     <template v-slot:actions>
-      <actions :options="params.singleActions" :row="data" button-type="link" button-size="small" />
+      <actions
+        :options="singleActions"
+        :row="detailData"
+        button-type="link"
+        button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :res-id="params.resId" :data="data" :list="params.list" :getParams="getParams" />
+    <component
+      :is="params.windowData.currentTab"
+      :res-id="data.id"
+      :data="detailData"
+      :resource="resource"
+      :on-manager="onManager"
+      @refresh="refresh" />
   </base-side-page>
 </template>
 
 <script>
 import ChildrenImageList from '../../host-image/sidepage/ChildrenImage'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 import SystemImageDetail from './Detail'
 import CacheList from './Cache'
 import SidePageMixin from '@/mixins/sidePage'
@@ -31,19 +43,10 @@ export default {
     ChildrenImageList,
     Actions,
   },
-  mixins: [SidePageMixin, WindowsMixin],
-  data () {
-    return {}
-  },
+  mixins: [SidePageMixin, WindowsMixin, SingleActionsMixin, ColumnsMixin],
   computed: {
-    getParams () {
-      return null
-    },
-    data () {
-      return this.params.list.data[this.params.resId].data
-    },
     detailTabs () {
-      const isHostImage = this.params.list.data[this.params.resId].data.root_image
+      const isHostImage = this.data.root_image
       if (isHostImage) {
         return [
           { label: '详情', key: 'system-image-detail' },

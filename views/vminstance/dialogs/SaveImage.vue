@@ -126,7 +126,7 @@ export default {
         values.is_public = false
         values.name = values.generate_name
         delete values.type
-        await this.params.list.onManager('batchPerformAction', {
+        await this.params.onManager('batchPerformAction', {
           id: ids,
           steadyStatus: ['running', 'ready'],
           managerArgs: {

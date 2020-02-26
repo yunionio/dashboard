@@ -65,14 +65,14 @@ export default {
       try {
         const values = await this.form.fc.validateFields()
         const ids = this.params.data.map(item => item.id)
-        await this.params.list.onManager('batchPerformAction', {
+        await this.params.onManager('batchPerformAction', {
           id: ids,
           managerArgs: {
             action: 'insertiso',
             data: values,
           },
         })
-        this.params.list.refresh()
+        this.params.refresh()
         this.cancelDialog()
       } finally {
         this.loading = false

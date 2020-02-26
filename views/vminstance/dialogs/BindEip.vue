@@ -101,7 +101,7 @@ export default {
   },
   methods: {
     doCreateEip (ids, values) {
-      return this.params.list.onManager('batchPerformAction', {
+      return this.params.onManager('batchPerformAction', {
         id: ids,
         managerArgs: {
           action: 'create-eip',
@@ -114,7 +114,7 @@ export default {
       })
     },
     doBindEip (ids, values) {
-      return this.params.list.onManager('batchPerformAction', {
+      return this.params.onManager('batchPerformAction', {
         id: ids,
         managerArgs: {
           action: 'associate-eip',
@@ -136,7 +136,7 @@ export default {
         if (values.type === 'bind') {
           await this.doBindEip(ids, values)
         }
-        this.params.list.refresh()
+        this.params.refresh()
         this.cancelDialog()
       } finally {
         this.loading = false

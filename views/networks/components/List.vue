@@ -79,6 +79,7 @@ export default {
               data: [obj],
               columns: this.columns,
               list: this.list,
+              refresh: this.refresh,
             })
           },
         },
@@ -91,6 +92,7 @@ export default {
               list: this.list,
               zone: this.data.zone_id,
               resId: this.resId,
+              refresh: this.refresh,
             })
           },
           meta: (obj) => {
@@ -117,6 +119,8 @@ export default {
               data: [this.data],
               columns: this.serverColumns,
               resId: this.resId,
+              refresh: this.refresh,
+              total: this.list.total,
             })
           },
           meta: () => {

@@ -34,7 +34,7 @@ export default {
   methods: {
     async doResetSubmit () {
       const ids = this.params.data.map(item => item.id)
-      return this.params.list.onManager('batchPerformAction', {
+      return this.params.onManager('batchPerformAction', {
         id: ids,
         steadyStatus: 'running',
         managerArgs: {

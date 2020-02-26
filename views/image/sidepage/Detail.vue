@@ -1,9 +1,10 @@
 <template>
   <detail
-    :list="list"
     :data="data"
     :base-info="baseInfo"
     :extra-info="extraInfo"
+    :on-manager="onManager"
+    :resource="resource"
     status-module="image" />
 </template>
 
@@ -19,10 +20,11 @@ export default {
       type: Object,
       required: true,
     },
-    list: {
-      type: Object,
+    onManager: {
+      type: Function,
       required: true,
     },
+    resource: String,
   },
   data () {
     return {
@@ -117,7 +119,7 @@ export default {
               field: 'protected',
               title: '删除保护',
               change: val => {
-                this.list.onManager('update', {
+                this.onManager('update', {
                   id: this.data.id,
                   managerArgs: {
                     data: { protected: val },
@@ -157,10 +159,9 @@ export default {
       new this.$Manager('images', 'v1').getSpecific({
         id: this.data.id,
         spec: 'subformats',
+      }).then(({ data }) => {
+        this.imgSubformat = data
       })
-        .then(({ data }) => {
-          this.imgSubformat = data
-        })
     },
   },
 }

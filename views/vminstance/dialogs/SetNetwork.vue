@@ -8,7 +8,7 @@
       <a-form :form="form.fc">
         <network-config
           :form="form"
-          :count="params.list.total"
+          :count="params.total"
           :decorator="networkConfig"
           :networkParams="networkParams"
           :limit="networkLimit"
@@ -109,7 +109,7 @@ export default {
       }
     },
     networkLimit () {
-      return 8 - (this.params.list.total || 0)
+      return 8 - (this.params.total || 0)
     },
     vpcParams () {
       const scopeParams = {}
@@ -157,7 +157,7 @@ export default {
             nets,
           },
         })
-        this.params.list.fetchData()
+        this.params.refresh()
         this.$bus.$emit('VMInstanceListSingleRefresh', [this.params.resId, Object.values(expectStatus.server).flat()])
         this.cancelDialog()
       } finally {

@@ -125,7 +125,7 @@ export default {
           action: 'change-ipaddr',
           data,
         })
-        this.params.list.refresh()
+        this.params.refresh()
         this.$bus.$emit('VMInstanceListSingleUpdate', [this.params.resId])
         this.cancelDialog()
       } finally {

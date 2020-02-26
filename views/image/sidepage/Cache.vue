@@ -10,10 +10,11 @@
 import { getStatusTableColumn, getTimeTableColumn, getBrandTableColumn, getRegionTableColumn } from '@/utils/common/tableColumn'
 import { getBrandFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
+import ListMixin from '@/mixins/list'
 
 export default {
   name: 'systemImageCacheList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ListMixin],
   props: {
     resId: String,
     data: {
@@ -89,8 +90,9 @@ export default {
               data: [obj],
               columns: this.columns,
               title: '删除',
-              list: this.list,
+              onManager: this.onManager,
               imageId: this.resId,
+              refresh: this.refresh,
             })
           },
           meta: (obj) => {
@@ -119,8 +121,9 @@ export default {
         data: [obj],
         columns: this.columns,
         title,
-        list: this.list,
+        onManager: this.onManager,
         imageId: this.resId,
+        refresh: this.refresh,
       })
     },
   },

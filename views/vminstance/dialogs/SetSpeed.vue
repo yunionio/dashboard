@@ -69,7 +69,7 @@ export default {
         bps: this.form.fi.isSetSpeed ? data.bps : 0,
       }
       const ids = this.params.data.map(item => item.id)
-      return this.params.list.onManager('batchPerformAction', {
+      return this.params.onManager('batchPerformAction', {
         id: ids,
         steadyStatus: ['running', 'ready'],
         managerArgs: {

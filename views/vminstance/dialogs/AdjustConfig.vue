@@ -461,7 +461,7 @@ export default {
       }
       params.disks = this.genDiskData(values)
       const ids = this.params.data.map(item => item.id)
-      return this.params.list.onManager('batchPerformAction', {
+      return this.params.onManager('batchPerformAction', {
         id: ids,
         steadyStatus: ['running', 'ready'],
         managerArgs: {
