@@ -136,7 +136,7 @@ export const getPublicTableColumn = ({ field = 'share_mode', title = '共享模�
 export const getNameDescriptionTableColumn = ({
   title = '名称',
   slotCallback,
-  vm,
+  onManager,
   addLock,
   hideField,
   showDesc = true,
@@ -153,12 +153,29 @@ export const getNameDescriptionTableColumn = ({
     slots: {
       default: ({ row }, h) => {
         const ret = [
-          <list-body-cell-wrap copy edit row={row} list={vm.list} hideField={ hideField } addLock={ addLock } addBackup={ addBackup } formRules={formRules}>
-            { slotCallback ? slotCallback(row) : null }
-          </list-body-cell-wrap>,
+          h('list-body-cell-wrap', {
+            props: {
+              copy: true,
+              edit: true,
+              row,
+              onManager,
+              hideField,
+              addLock,
+              addBackup,
+              formRules,
+            },
+          }, [ slotCallback ? slotCallback(row, h) : null ]),
         ]
         if (showDesc) {
-          ret.push(<list-body-cell-wrap edit field="description" row={row} list={vm.list} formRules={formRules} />)
+          ret.push(h('list-body-cell-wrap', {
+            props: {
+              edit: true,
+              field: 'description',
+              row,
+              onManager,
+              formRules,
+            },
+          }))
         }
         return ret
       },
@@ -228,8 +245,13 @@ export const getSwitchTableColumn = ({ field, title, change }) => {
     title,
     slots: {
       default: ({ row }, h) => {
+        let checked = row[field]
+        if (R.is(String, checked)) {
+          if (checked === 'true') checked = true
+          if (checked === 'false') checked = false
+        }
         return [
-          <a-switch checked={ row[field] } checkedChildren='开' unCheckedChildren='关' onChange={ change } />,
+          <a-switch checked={ checked } checkedChildren='开' unCheckedChildren='关' onChange={ change } />,
         ]
       },
     },

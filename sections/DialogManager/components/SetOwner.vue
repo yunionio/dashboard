@@ -172,7 +172,14 @@ export default {
         data.domain = ''
         data.project = ''
       }
-      return this.params.list.singlePerformAction('set-scope', data)
+      return this.params.onManager('performAction', {
+        id: this.params.data[0].id,
+        managerArgs: {
+          id: this.params.data[0].id,
+          action: 'set-scope',
+          data,
+        },
+      })
     },
     async handleConfirm () {
       this.loading = true

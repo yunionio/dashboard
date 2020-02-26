@@ -13,12 +13,12 @@
         </div>
       </div>
       <!-- header info -->
-      <div class="side-page-header-info d-flex align-items-center">
+      <div class="side-page-header-info d-flex">
         <div class="side-page-header-icon d-flex align-items-center justify-content-center flex-grow-0 flex-shrink-0">
           <icon :type="icon" style="font-size: 40px; color: #888;" />
         </div>
         <div class="w-100">
-          <div class="ml-4">
+          <div class="side-page-header-content ml-4">
             <div class="text-color-help">{{ title }}</div>
             <div class="d-flex mt-2 w-100 align-items-center">
               <h5 class="text-truncate mb-0" style="min-width: 0;">{{ resName }}</h5>
@@ -41,7 +41,12 @@
     </div>
     <div class="side-page-inner-content">
       <div class="side-page-container" id="side-page-container">
-        <slot />
+        <template v-if="!loaded">
+          <loading-block :layout="loadingLayout" />
+        </template>
+        <template v-else>
+          <slot />
+        </template>
       </div>
     </div>
   </vc-dialog>
@@ -71,6 +76,7 @@ export default {
     resName: {
       type: String,
       required: true,
+      default: '',
     },
     currentTab: {
       type: String,
@@ -80,6 +86,20 @@ export default {
       type: Array,
       required: true,
     },
+    loaded: Boolean,
+  },
+  data () {
+    return {
+      loadingLayout: [
+        [10],
+        [8, 9],
+        [2, 4, 7, 5],
+        [13, 9],
+        [4, 3, 8],
+        [8, 6, 8],
+        [13, 9],
+      ],
+    }
   },
   provide: {
     inBaseSidePage: true,
@@ -183,6 +203,10 @@ export default {
   height: 60px;
   border: 1px solid #ccc;
   border-radius: 40%;
+  margin-top: 10px;
+}
+.side-page-header-content {
+  margin-top: 13px;
 }
 .side-page-inner-content {
   position: absolute;

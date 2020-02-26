@@ -46,8 +46,8 @@
       @sort-change="handleSortChange"
       @current-page-change="handleCurrentPageChange"
       @page-size-change="handlePageSizeChange"
-      @select-change="handleSelectChange"
-      @select-all="handleSelectChange">
+      @checkbox-change="handleCheckboxChange"
+      @checkbox-all="handleCheckboxChange">
       <template v-slot:empty>
         <loader :loading="loading" />
       </template>
@@ -224,7 +224,7 @@ export default {
     handleFilterChange (filter) {
       this.list.changeFilter(filter)
     },
-    handleSelectChange ({ selection }) {
+    handleCheckboxChange ({ selection }) {
       this.list.changeSelected(selection)
     },
     handleClearSelected () {

@@ -91,7 +91,7 @@ export default {
       })
     },
     async doChangeProject (values, ids) {
-      return this.params.list.onManager('batchPerformAction', {
+      return this.params.onManager('batchPerformAction', {
         id: ids,
         steadyStatus: this.params.steadyStatus || ['running', 'ready'],
         managerArgs: {

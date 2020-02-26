@@ -189,7 +189,7 @@ export default {
           return
         }
         const ids = this.params.data.map(item => item.id)
-        await this.params.list.onManager('batchPerformAction', {
+        await this.params.onManager('batchPerformAction', {
           id: ids,
           managerArgs: {
             action: 'set-user-metadata',

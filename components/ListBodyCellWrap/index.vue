@@ -57,8 +57,8 @@ export default {
     steadyStatus: {
       type: Array,
     },
-    list: {
-      type: Object,
+    onManager: {
+      type: Function,
     },
     copy: {
       type: Boolean,
@@ -148,8 +148,17 @@ export default {
   },
   methods: {
     update (formData) {
-      const steadyStatus = this.steadyStatus || this.list.steadyStatus
-      this.list && this.list.singleUpdate(this.row.id, { [this.field]: formData.input }, steadyStatus)
+      if (this.onManager) {
+        this.onManager('update', {
+          id: this.row.id,
+          steadyStatus: this.steadyStatus,
+          managerArgs: {
+            data: {
+              [this.field]: formData.input,
+            },
+          },
+        })
+      }
     },
     handleMouseenter (e) {
       e.stopPropagation()
