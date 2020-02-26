@@ -323,6 +323,7 @@ export default {
           scope: this.$store.getters.scope,
           show_emulated: true,
           limit: 0,
+          usable: true,
         },
         wire: {
           scope: this.$store.getters.scope,
