@@ -164,6 +164,9 @@ export default {
                   columns: this.columns,
                   title: '删除',
                   onManager: this.onManager,
+                  success: () => {
+                    this.destroySidePages()
+                  },
                 })
               },
               meta: () => {

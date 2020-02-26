@@ -14,7 +14,7 @@
     </template>
     <component
       :is="params.windowData.currentTab"
-      :res-id="data.resId"
+      :res-id="data.id"
       :data="detailData"
       :list="params.list"
       :getParams="getParams"
@@ -46,7 +46,7 @@ export default {
     InDirection,
     CacheList,
   },
-  mixins: [SidePageMixin, WindowsMixin, SingleActionsMixin, ColumnsMixin],
+  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
