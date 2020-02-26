@@ -50,6 +50,12 @@ export default {
               return { label, key: value }
             }),
           },
+          vpc: {
+            label: '专有网络',
+          },
+          region: {
+            label: '区域',
+          },
         },
       }),
       exportDataOptions: {
@@ -78,17 +84,19 @@ export default {
           field: 'bandwidth',
           title: '带宽',
           minWidth: 100,
+          sortable: true,
           showOverflow: 'ellipsis',
           formatter: ({ cellValue }) => {
             const item = BAND_WIDTH_OPTION.find(val => val.value === `${cellValue}`)
             return item ? item.label : cellValue
           },
         },
-        getCopyWithContentTableColumn({ field: 'vpc', title: '专有网络' }),
+        getCopyWithContentTableColumn({ field: 'vpc', title: '专有网络', sortable: true }),
         {
           field: 'networks',
           title: '网络数量',
           width: 70,
+          sortable: true,
         },
         getRegionTableColumn(),
       ],
