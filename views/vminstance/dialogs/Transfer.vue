@@ -120,7 +120,7 @@ export default {
         action = 'migrate'
         data.rescue_mode = true
       }
-      return this.params.list.onManager('performAction', {
+      return this.params.onManager('performAction', {
         id: this.firstData.id,
         steadyStatus: ['running', 'ready'],
         managerArgs: {
@@ -134,7 +134,7 @@ export default {
         guest_ids: ids,
         prefer_host: values.host,
       }
-      return this.params.list.onManager('performClassAction', {
+      return this.params.onManager('performClassAction', {
         id: ids,
         steadyStatus: ['running', 'ready'],
         managerArgs: {

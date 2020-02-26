@@ -782,6 +782,7 @@ export default {
                         data: [obj],
                         columns: this.columns,
                         list: this.list,
+                        refresh: this.refresh,
                       })
                     },
                     meta: () => {
@@ -798,6 +799,7 @@ export default {
                         data: [obj],
                         columns: this.columns,
                         list: this.list,
+                        refresh: this.refresh,
                       })
                     },
                     meta: () => {

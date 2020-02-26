@@ -102,7 +102,7 @@ export default {
       for (let i = 0, len = ids.length; i < len; i++) {
         data[`group.${i}`] = ids[i]
       }
-      return this.params.list.onManager('performAction', {
+      return this.params.onManager('performAction', {
         id: this.params.data[0]['id'],
         managerArgs: {
           action,
@@ -125,7 +125,7 @@ export default {
         if (bindIds && bindIds.length) {
           await this.doUpdateBindInstanceGroups('bind-groups', bindIds)
         }
-        this.params.list.refresh()
+        this.params.refresh()
         this.cancelDialog()
       } finally {
         this.loading = false

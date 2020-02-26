@@ -132,7 +132,7 @@ export default {
         expire_time: time,
       }
       const ids = this.params.data.map(item => item.id)
-      return this.params.list.onManager('batchPerformAction', {
+      return this.params.onManager('batchPerformAction', {
         id: ids,
         steadyStatus: ['running', 'ready'],
         managerArgs: {
@@ -144,7 +144,7 @@ export default {
     async doCancelExpireSubmit () {
       const params = {}
       const ids = this.params.data.map(item => item.id)
-      return this.params.list.onManager('batchPerformAction', {
+      return this.params.onManager('batchPerformAction', {
         id: ids,
         steadyStatus: ['running', 'ready'],
         managerArgs: {
@@ -163,7 +163,7 @@ export default {
           await this.doCancelExpireSubmit()
         }
         this.loading = false
-        this.params.list.refresh()
+        this.params.refresh()
         this.cancelDialog()
       } catch (error) {
         this.loading = false

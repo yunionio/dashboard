@@ -3,22 +3,30 @@
     @cancel="cancelSidePage"
     title="虚拟机"
     icon="res-vminstance"
-    :res-name="data.name"
-    :actions="params.actions"
+    :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
+    :loaded="loaded"
     @tab-change="handleTabChange">
     <template v-slot:actions>
-      <actions :options="params.singleActions" :row="data" button-type="link" button-size="small" />
+      <actions
+        :options="singleActions"
+        :row="detailData"
+        button-type="link"
+        button-size="small" />
     </template>
     <component
       v-bind="listActives"
       :is="params.windowData.currentTab"
-      :data="data"
-      :list="params.list"
+      :data="detailData"
       :serverColumns="params.columns"
-      :res-id="params.resId"
-      :getParams="getParams"
+      :res-id="data.id"
+      :getParams="componentParams"
+      :on-manager="onManager"
+      @side-page-trigger-handle="sidePageTriggerHandle"
+      @init-side-page-tab="initSidePageTab"
+      @refresh="refresh"
+      @single-refresh="singleRefresh"
       @tab-change="handleTabChange" />
   </base-side-page>
 </template>
@@ -27,6 +35,8 @@
 import SecgroupList from '@Compute/views/secgroup/components/List'
 // import HostList from '@Compute/views/host/components/List'
 import NetworkListForVmInstanceSidepage from '@Compute/views/networks/components/List'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 import VmInstanceDetail from './Detail'
 import DiskListForVmInstanceSidepage from './Disk'
 import VmInstanceMonitorSidepage from './Monitor'
@@ -47,7 +57,7 @@ export default {
     VmInstanceMonitorSidepage,
     VmInstanceAlertSidepage,
   },
-  mixins: [SidePageMixin, WindowsMixin],
+  mixins: [SidePageMixin, WindowsMixin, SingleActionsMixin, ColumnsMixin],
   data () {
     return {
       detailTabs: [
@@ -63,12 +73,7 @@ export default {
     }
   },
   computed: {
-    data () {
-      const _data = this.params.list.data[this.params.resId].data || {}
-      _data['cloudregion'] = _data['region']
-      return _data
-    },
-    getParams () {
+    componentParams () {
       if (this.params.windowData.currentTab === 'secgroup-list') {
         return {
           detail: true,
@@ -94,11 +99,11 @@ export default {
               permission: 'server_perform_add_secgroup',
               action: () => {
                 this.createDialog('VmSetSecgroupDialog', {
-                  data: [me.data],
-                  columns: me.params.columns,
-                  list: me.params.list,
+                  data: [me.detailData],
+                  columns: me.columns,
+                  onManager: me.onManager,
                   callback: () => {
-                    this.list.fetchData()
+                    this.refresh()
                   },
                 })
               },

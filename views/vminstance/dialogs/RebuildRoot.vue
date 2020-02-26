@@ -319,7 +319,7 @@ export default {
       } else if (loginType === 'password') {
         params['password'] = loginPassword
       }
-      return this.params.list.onManager('batchPerformAction', {
+      return this.params.onManager('batchPerformAction', {
         steadyStatus: ['running', 'ready'],
         id: ids,
         managerArgs: {

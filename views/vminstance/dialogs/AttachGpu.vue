@@ -233,7 +233,7 @@ export default {
           this.$message.warning('GPU卡数量不足')
           throw new Error('数量不足')
         }
-        return this.params.list.onManager('batchPerformAction', {
+        return this.params.onManager('batchPerformAction', {
           id: ids,
           steadyStatus: ['running', 'ready'],
           managerArgs: {
@@ -246,7 +246,7 @@ export default {
           },
         })
       }
-      return this.params.list.onManager('batchPerformAction', {
+      return this.params.onManager('batchPerformAction', {
         id: ids,
         steadyStatus: ['running', 'ready'],
         managerArgs: {
@@ -272,7 +272,7 @@ export default {
       }
       const ids = this.params.data.map(item => item.id)
 
-      return this.params.list.onManager('batchPerformAction', {
+      return this.params.onManager('batchPerformAction', {
         id: ids,
         steadyStatus: ['running', 'ready'],
         managerArgs: {

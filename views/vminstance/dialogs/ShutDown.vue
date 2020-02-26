@@ -34,7 +34,7 @@ export default {
   methods: {
     async doShutDownSubmit () {
       const ids = this.params.data.map(item => item.id)
-      return this.params.list.onManager('batchPerformAction', {
+      return this.params.onManager('batchPerformAction', {
         id: ids,
         steadyStatus: 'ready',
         managerArgs: {

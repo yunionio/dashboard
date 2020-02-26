@@ -98,7 +98,7 @@ export default {
         const ids = this.params.data.map(item => item.id)
         const purgeBackup = values.delete_backup ? this.purge_backup : false
         const data = { delete_backup: values.delete_backup, purge_backup: purgeBackup }
-        await this.params.list.onManager('batchPerformAction', {
+        await this.params.onManager('batchPerformAction', {
           id: ids,
           steadyStatus: ['running', 'ready'],
           managerArgs: {

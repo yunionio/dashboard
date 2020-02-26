@@ -193,7 +193,7 @@ export default {
       const params = {
         generate_name: values.snapshotName,
       }
-      return this.params.list.onManager('performAction', {
+      return this.params.onManager('performAction', {
         id: this.params.data[0].id,
         steadyStatus: ['running', 'ready'],
         managerArgs: {
@@ -211,7 +211,7 @@ export default {
           await this.doCreateInstanceSnapshot()
         }
         this.loading = false
-        this.params.list.refresh()
+        this.params.refresh()
         this.cancelDialog()
       } catch (error) {
         this.loading = false

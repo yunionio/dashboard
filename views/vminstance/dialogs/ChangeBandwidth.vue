@@ -71,7 +71,7 @@ export default {
           action: 'change-bandwidth',
           data,
         })
-        this.params.list.refresh()
+        this.params.refresh()
         this.cancelDialog()
       } finally {
         this.loading = false

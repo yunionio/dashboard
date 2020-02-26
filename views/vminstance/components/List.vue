@@ -12,25 +12,12 @@
 
 <script>
 import * as R from 'ramda'
-import { Base64 } from 'js-base64'
-import qs from 'qs'
 import { mapGetters } from 'vuex'
-import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { SERVER_TYPE } from '@Compute/constants'
-import { commonUnabled, cloudEnabled, cloudUnabledTip, commonEnabled, commonTip } from '../utils'
-import { Manager } from '@/utils/manager'
-import { sizestr } from '@/utils/utils'
-import {
-  getProjectTableColumn,
-  getRegionTableColumn,
-  getStatusTableColumn,
-  getBrandTableColumn,
-  getCopyWithContentTableColumn,
-  getIpsTableColumn,
-  getNameDescriptionTableColumn,
-  getTagTableColumn,
-  getBillingTypeTableColumn,
-} from '@/utils/common/tableColumn'
+import { cloudEnabled, cloudUnabledTip } from '../utils'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
+import ListMixin from '@/mixins/list'
 import {
   getNameFilter,
   getBrandFilter,
@@ -41,15 +28,14 @@ import {
   getHostFilter,
 } from '@/utils/common/tableFilter'
 import { disableDeleteAction } from '@/utils/common/tableActions'
-import SystemIcon from '@/sections/SystemIcon'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
-import globalSearchMixins from '@/mixins/globalSearch'
+import GlobalSearchMixin from '@/mixins/globalSearch'
 
 export default {
   name: 'VmInstanceList',
-  mixins: [WindowsMixin, globalSearchMixins],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
@@ -121,100 +107,6 @@ export default {
           { label: '用户标签', key: 'user_tags' },
         ],
       },
-      columns: [
-        getNameDescriptionTableColumn({
-          vm: this,
-          hideField: true,
-          addLock: true,
-          addBackup: true,
-          slotCallback: row => {
-            return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'VmInstanceSidePage', { columns: this.columns }) }>{ row.name }</side-page-trigger>
-            )
-          },
-        }),
-        getTagTableColumn({ vm: this, needExt: true }),
-        getIpsTableColumn({ field: 'ip', title: 'IP' }),
-        {
-          field: 'instance_type',
-          title: '配置',
-          showOverflow: 'ellipsis',
-          minWidth: 120,
-          sortable: true,
-          slots: {
-            default: ({ row }) => {
-              let ret = []
-              if (row.instance_type) {
-                ret.push(<div class='text-truncate' style={{ color: '#0A1F44' }}>{ row.instance_type }</div>)
-              }
-              const config = row.vcpu_count + 'C' + sizestr(row.vmem_size, 'M', 1024) + (row.disk ? sizestr(row.disk, 'M', 1024) : '')
-              return ret.concat(<div class='text-truncate' style={{ color: '#53627C' }}>{ config }</div>)
-            },
-          },
-        },
-        {
-          field: 'os_type',
-          title: '系统',
-          width: 50,
-          slots: {
-            default: ({ row }) => {
-              let name = (row.metadata && row.metadata.os_distribution) ? row.metadata.os_distribution : row.os_type || ''
-              if (name.includes('Windows') || name.includes('windows')) {
-                name = 'Windows'
-              }
-              const version = (row.metadata && row.metadata.os_version) ? `${row.metadata.os_version}` : ''
-              const tooltip = (version.includes(name) ? version : `${name} ${version}`) || '未知' // 去重
-              return [
-                <SystemIcon tooltip={ tooltip } name={ name } />,
-              ]
-            },
-          },
-        },
-        {
-          field: 'password',
-          title: '密码',
-          width: 50,
-          slots: {
-            default: ({ row }) => {
-              return [<PasswordFetcher serverId={ row.id } resourceType='servers' />]
-            },
-          },
-        },
-        {
-          field: 'secgroups',
-          title: '安全组',
-          width: 80,
-          showOverflow: 'ellipsis',
-          formatter: ({ cellValue = [] }) => {
-            return cellValue.map(item => item.name).join(',')
-          },
-        },
-        getBillingTypeTableColumn(),
-        getStatusTableColumn({ statusModule: 'server' }),
-        getCopyWithContentTableColumn({ field: 'vpc', title: 'VPC' }),
-        {
-          field: 'host',
-          title: '宿主机',
-          sortable: true,
-          showOverflow: 'ellipsis',
-          minWidth: 100,
-          slots: {
-            default: ({ row }) => {
-              if (findPlatform(row.hypervisor, 'hypervisor') === SERVER_TYPE.public) {
-                return '-'
-              }
-              const text = row['host'] || '-'
-              return [
-                <list-body-cell-wrap copy field='host' row={row} message={text}></list-body-cell-wrap>,
-              ]
-            },
-          },
-        },
-        getCopyWithContentTableColumn({ field: 'account', title: '云账号' }),
-        getProjectTableColumn(),
-        getBrandTableColumn(),
-        getRegionTableColumn(),
-      ],
       groupActions: [
         {
           label: '新建',
@@ -261,7 +153,7 @@ export default {
             this.createDialog('VmShutDownDialog', {
               data: this.list.selectedItems,
               columns: this.columns,
-              list: this.list,
+              onManager: this.onManager,
             })
           },
           meta: () => {
@@ -280,7 +172,7 @@ export default {
             this.createDialog('VmRestartDialog', {
               data: this.list.selectedItems,
               columns: this.columns,
-              list: this.list,
+              onManager: this.onManager,
             })
           },
           meta: () => {
@@ -302,7 +194,7 @@ export default {
                   this.createDialog('VmUpdateDialog', {
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    list: this.list,
+                    onManager: this.onManager,
                   })
                 },
                 meta: (row) => {
@@ -320,7 +212,7 @@ export default {
                   this.createDialog('VmResetPasswordDialog', {
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    list: this.list,
+                    onManager: this.onManager,
                   })
                 },
                 meta: () => {
@@ -338,7 +230,7 @@ export default {
                   this.createDialog('VmAdjustConfigDialog', {
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    list: this.list,
+                    onManager: this.onManager,
                   })
                 },
                 meta: () => {
@@ -378,7 +270,7 @@ export default {
                   this.createDialog('ChangeOwenrDialog', {
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    list: this.list,
+                    onManager: this.onManager,
                   })
                 },
                 meta: () => {
@@ -398,7 +290,7 @@ export default {
               {
                 label: '同步状态',
                 action: () => {
-                  this.list.onManager('batchPerformAction', {
+                  this.onManager('batchPerformAction', {
                     steadyStatus: ['running', 'ready'],
                     managerArgs: {
                       action: 'syncstatus',
@@ -412,7 +304,7 @@ export default {
                   this.createDialog('VmAttachGpuDialog', {
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    list: this.list,
+                    onManager: this.onManager,
                   })
                 },
                 meta: () => {
@@ -461,7 +353,7 @@ export default {
                   this.createDialog('VmSetSecgroupDialog', {
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    list: this.list,
+                    onManager: this.onManager,
                   })
                 },
                 meta: () => {
@@ -478,7 +370,7 @@ export default {
                   this.createDialog('VmJoinResourceDialog', {
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    list: this.list,
+                    onManager: this.onManager,
                   })
                 },
                 meta: () => {
@@ -505,7 +397,7 @@ export default {
                   this.createDialog('VmResourceFeeDialog', {
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    list: this.list,
+                    onManager: this.onManager,
                   })
                 },
                 meta: () => {
@@ -532,7 +424,7 @@ export default {
                   this.createDialog('VmTransferDialog', {
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    list: this.list,
+                    onManager: this.onManager,
                   })
                 },
                 meta: () => {
@@ -573,7 +465,7 @@ export default {
                   this.createDialog('VmSuspendDialog', {
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    list: this.list,
+                    onManager: this.onManager,
                   })
                 },
                 meta: () => {
@@ -604,7 +496,7 @@ export default {
                   this.createDialog('VmResumeDialog', {
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    list: this.list,
+                    onManager: this.onManager,
                   })
                 },
                 meta: () => {
@@ -635,7 +527,7 @@ export default {
                   this.createDialog('VmRebuildRootDialog', {
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    list: this.list,
+                    onManager: this.onManager,
                   })
                 },
                 meta: () => {
@@ -659,7 +551,8 @@ export default {
                   this.createDialog('VmSetDurationDialog', {
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    list: this.list,
+                    onManager: this.onManager,
+                    refresh: this.refresh,
                   })
                 },
                 meta: () => {
@@ -698,7 +591,7 @@ export default {
                   this.createDialog('DeleteVmDialog', {
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    list: this.list,
+                    onManager: this.onManager,
                     title: '删除',
                   })
                 },
@@ -723,1056 +616,10 @@ export default {
           },
         },
       ],
-      singleActions: [
-        {
-          label: '远程控制',
-          actions: obj => {
-            let ret = []
-            ret.push({
-              label: 'VNC 远程终端',
-              action: () => {
-                const isValidURL = str => {
-                  let regex = /(\w+):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!-/]))?/
-                  if (!regex.test(str)) {
-                    return false
-                  } else {
-                    return true
-                  }
-                }
-                this.webconsoleManager.performAction({
-                  id: 'server',
-                  action: obj.id,
-                }).then(({ data }) => {
-                  if (isValidURL(data.connect_params)) {
-                    open(data.connect_params)
-                  } else {
-                    this.openWebConsole(obj, data)
-                  }
-                })
-              },
-              meta: () => {
-                const ret = {
-                  validate: cloudEnabled('vnc', obj),
-                  tooltip: cloudUnabledTip('vnc', obj),
-                }
-                return ret
-              },
-            })
-            const mapIpActions = (ipArr, type) => {
-              if (!['IP SSH', 'EIP SSH'].includes(type)) throw Error('ssh 类型必须为 IP SSH,EIP SSH 中的一种')
-              const options = []
-              ipArr.forEach(v => {
-                const meta = () => {
-                  const ret = {
-                    validate: false,
-                    tooltip: null,
-                  }
-                  if (obj.os_type === 'Windows') {
-                    ret.tooltip = 'Windows 不支持 SSH 连接'
-                    return ret
-                  }
-                  ret.validate = cloudEnabled(type, obj)
-                  ret.tooltip = cloudUnabledTip(type, obj)
-                  return ret
-                }
-                options.push({
-                  label: `SSH ${v}`,
-                  action: () => {
-                    this.webconsoleManager.performAction({
-                      id: 'ssh',
-                      action: v,
-                    }).then(({ data }) => {
-                      this.openWebConsole(obj, data)
-                    })
-                  },
-                  meta,
-                })
-                options.push({
-                  label: `SSH ${v} 自定义端口`,
-                  action: () => {
-                    this.createDialog('SmartFormDialog', {
-                      title: '自定义端口',
-                      data: [obj],
-                      list: this.list,
-                      callback: async (data) => {
-                        const response = await this.webconsoleManager.performAction({
-                          id: 'ssh',
-                          action: v,
-                          data,
-                        })
-                        this.openWebConsole(obj, response.data)
-                      },
-                      decorators: {
-                        port: [
-                          'port',
-                          {
-                            validateFirst: true,
-                            rules: [
-                              { required: true, message: '请输入端口' },
-                              { validator: (rule, value, _callback) => {
-                                const num = parseFloat(value)
-                                if (!/^\d+$/.test(value) || !num || num > 65535) {
-                                  _callback('端口范围在 0-65535 之间')
-                                }
-                                _callback()
-                              } },
-                            ],
-                          },
-                          {
-                            label: '端口',
-                            placeholder: '请输入端口号',
-                          },
-                        ],
-                      },
-                    })
-                  },
-                  meta,
-                })
-              })
-              return options
-            }
-            let eips = (obj.eip || '').split(',').filter(item => !!item)
-            let ips = (obj.ips || '').split(',').filter(item => !!item)
-            eips = eips.length ? mapIpActions(eips, 'EIP SSH') : []
-            ips = ips.length ? mapIpActions(ips, 'IP SSH') : []
-            ret = ret.concat(eips).concat(ips)
-            return ret
-          },
-        },
-        {
-          label: '更多',
-          actions: (obj) => {
-            return [
-              {
-                label: '实例状态',
-                submenus: [
-                  {
-                    label: '开机',
-                    permission: 'server_perform_start',
-                    action: () => {
-                      this.list.onManager('performAction', {
-                        steadyStatus: 'running',
-                        id: obj.id,
-                        managerArgs: {
-                          action: 'start',
-                        },
-                      })
-                    },
-                    meta: () => {
-                      return {
-                        validate: obj.status === 'ready' && !commonUnabled(obj),
-                      }
-                    },
-                  },
-                  {
-                    label: '关机',
-                    permission: 'server_perform_stop',
-                    action: () => {
-                      this.createDialog('VmShutDownDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        list: this.list,
-                      })
-                    },
-                    meta: () => {
-                      return {
-                        validate: obj.status === 'running' && !commonUnabled(obj),
-                      }
-                    },
-                  },
-                  {
-                    label: '重启',
-                    permission: 'server_perform_restart',
-                    action: () => {
-                      this.createDialog('VmRestartDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        list: this.list,
-                      })
-                    },
-                    meta: () => {
-                      return {
-                        validate: (obj.status === 'running' || obj.status === 'stop_fail') && !commonUnabled(obj),
-                      }
-                    },
-                  },
-                  {
-                    label: '重置',
-                    permission: 'server_perform_reset',
-                    action: () => {
-                      this.createDialog('VmResetDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        list: this.list,
-                      })
-                    },
-                    meta: () => {
-                      const ret = {
-                        validate: false,
-                        tooltip: null,
-                      }
-                      if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
-                        ret.tooltip = '只有OneCloud主机支持此操作'
-                        return ret
-                      }
-                      return {
-                        validate: (obj.status === 'running' || obj.status === 'stop_fail') && !commonUnabled(obj),
-                      }
-                    },
-                  },
-                  {
-                    label: '挂起',
-                    permission: 'server_perform_suspend',
-                    action: () => {
-                      this.createDialog('VmSuspendDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        list: this.list,
-                      })
-                    },
-                    meta: () => {
-                      const ret = {
-                        validate: false,
-                        tooltip: null,
-                      }
-                      if (obj.hypervisor !== typeClouds.hypervisorMap.esxi.key) {
-                        ret.tooltip = '只有VMware主机支持此操作'
-                        return ret
-                      }
-                      if (obj.status !== 'running') {
-                        ret.validate = false
-                        ret.tooltip = '请选择开机的机器进行操作'
-                        return ret
-                      }
-                      ret.validate = true
-                      return ret
-                    },
-                  },
-                  {
-                    label: '恢复',
-                    permission: 'server_perform_resume',
-                    action: () => {
-                      this.createDialog('VmResumeDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        list: this.list,
-                      })
-                    },
-                    meta: () => {
-                      const ret = {
-                        validate: false,
-                        tooltip: null,
-                      }
-                      if (obj.hypervisor !== typeClouds.hypervisorMap.esxi.key) {
-                        ret.tooltip = '只有VMware主机支持此操作'
-                        return ret
-                      }
-                      if (obj.status !== 'suspend') {
-                        ret.validate = false
-                        ret.tooltip = '请选择挂起的机器进行操作'
-                        return ret
-                      }
-                      ret.validate = true
-                      return ret
-                    },
-                  },
-                ],
-              },
-              {
-                label: '实例设置',
-                submenus: [
-                  {
-                    label: '修改属性',
-                    action: () => {
-                      this.createDialog('VmUpdateDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        list: this.list,
-                      })
-                    },
-                    meta: (row) => {
-                      const isOneCloud = row.brand === 'OneCloud'
-                      return {
-                        validate: isOneCloud,
-                        tooltip: !isOneCloud && '只有OneCloud主机支持此操作',
-                      }
-                    },
-                  },
-                  {
-                    label: '重装系统',
-                    permission: 'server_perform_rebuild_root',
-                    action: () => {
-                      this.createDialog('VmRebuildRootDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        list: this.list,
-                      })
-                    },
-                    meta: () => {
-                      const ret = {
-                        validate: false,
-                        tooltip: null,
-                      }
-                      if (commonUnabled(obj)) return ret
-                      ret.validate = cloudEnabled('rebuildRoot', obj)
-                      ret.tooltip = cloudUnabledTip('rebuildRoot', obj)
-                      return ret
-                    },
-                  },
-                  {
-                    label: '调整配置',
-                    permission: 'server_perform_change_config',
-                    action: () => {
-                      this.createDialog('VmAdjustConfigDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        list: this.list,
-                      })
-                    },
-                    meta: () => {
-                      const ret = {
-                        validate: false,
-                        tooltip: null,
-                      }
-                      if (commonUnabled(obj)) return ret
-                      if (obj.billing_type === 'prepaid') {
-                        ret.tooltip = this.isAdminMode ? '包年包月机器，不支持此操作' : '包年包月资源池的资源不支持此操作'
-                      }
-                      if (obj.backup_host_id) {
-                        ret.tooltip = '高可用机器，不支持此操作'
-                      }
-                      ret.validate = cloudEnabled('adjustConfig', obj)
-                      ret.tooltip = cloudUnabledTip('adjustConfig', obj)
-                      const isGoogle = obj.brand === typeClouds.brandMap.Google.key
-                      if (isGoogle) { // 谷歌云 windows 仅支持关机下操作，linux 支持 开关机
-                        const getGoogleValid = val => {
-                          const os = val.os_type.toLowerCase()
-                          if (os.includes('windows')) {
-                            return val.status === 'ready'
-                          }
-                          if (os.includes('linux')) {
-                            return val.status === 'ready' || val.status === 'running'
-                          }
-                          return true
-                        }
-                        ret.validate = getGoogleValid(obj)
-                        if (!ret.validate) {
-                          ret.tooltip = '谷歌云Windows虚拟机仅支持关机下操作，Linux虚拟机支持开机和关机下操作'
-                        }
-                      }
-                      return ret
-                    },
-                  },
-                  {
-                    label: `更改${this.$t('dictionary.project')}`,
-                    action: () => {
-                      this.createDialog('ChangeOwenrDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        list: this.list,
-                      })
-                    },
-                    meta: () => {
-                      const ret = {
-                        validate: false,
-                        tooltip: null,
-                      }
-                      if (commonUnabled(obj)) return ret
-                      ret.validate = true
-                      return ret
-                    },
-                  },
-                  {
-                    label: '同步状态',
-                    action: () => {
-                      this.list.onManager('performAction', {
-                        steadyStatus: ['running', 'ready'],
-                        id: obj.id,
-                        managerArgs: {
-                          action: 'syncstatus',
-                        },
-                      })
-                    },
-                    meta: () => {
-                      const ret = {
-                        validate: false,
-                        tooltip: null,
-                      }
-                      if (commonUnabled(obj)) return ret
-                      ret.validate = true
-                      return ret
-                    },
-                  },
-                  {
-                    label: '创建快照',
-                    action: () => {
-                      this.createDialog('VmSnapshotCreateDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        list: this.list,
-                      })
-                    },
-                    meta: () => {
-                      const ret = {
-                        validate: false,
-                        tooltip: null,
-                      }
-                      if (obj.is_prepaid_recycle) {
-                        ret.tooltip = '包年包月机器，不支持此操作'
-                        return ret
-                      }
-                      if (obj.backup_host_id) {
-                        ret.tooltip = '高可用的机器不支持创建快照'
-                        return ret
-                      }
-                      if (commonUnabled(obj)) return ret
-                      ret.validate = cloudEnabled('createSnapshot', obj)
-                      ret.tooltip = cloudUnabledTip('createSnapshot', obj)
-                      return ret
-                    },
-                  },
-                  {
-                    label: '续费',
-                    action: () => {
-                      this.createDialog('VmResourceFeeDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        list: this.list,
-                      })
-                    },
-                    meta: () => {
-                      const ret = {
-                        validate: false,
-                        tooltip: null,
-                      }
-                      if (!this.isAdminMode && !this.isDomainMode) {
-                        return ret
-                      }
-                      if (findPlatform(obj.hypervisor) !== SERVER_TYPE.public) {
-                        ret.tooltip = '仅公有云支持此操作'
-                        return ret
-                      }
-                      if (obj.billing_type !== 'prepaid') {
-                        ret.tooltip = '仅包年包月的资源支持此操作'
-                        return ret
-                      }
-                      ret.validate = true
-                      return ret
-                    },
-                  },
-                  {
-                    label: '加入资源池',
-                    action: () => {
-                      this.createDialog('VmJoinResourceDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        list: this.list,
-                      })
-                    },
-                    meta: () => {
-                      const ret = {
-                        validate: false,
-                        tooltip: null,
-                      }
-                      if (!this.isAdminMode && !this.isDomainMode) {
-                        return ret
-                      }
-                      if (commonUnabled(obj)) return ret
-                      if (findPlatform(obj.hypervisor) !== SERVER_TYPE.public) {
-                        ret.tooltip = '仅公有云支持此操作'
-                        return ret
-                      }
-                      if (obj.billing_type !== 'prepaid') {
-                        ret.tooltip = '仅包年包月的资源支持此操作'
-                        return ret
-                      }
-                      ret.validate = true
-                      return ret
-                    },
-                  },
-                  {
-                    label: '创建相同配置',
-                    action: () => {
-                      this.createDialog('VmCloneDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        list: this.list,
-                      })
-                    },
-                    meta: () => {
-                      const ret = {
-                        validate: false,
-                        tooltip: null,
-                      }
-                      if (obj.is_prepaid_recycle) {
-                        ret.tooltip = '包年包月机器，不支持此操作'
-                        return ret
-                      }
-                      if (obj.status !== 'ready' && obj.status !== 'running') {
-                        ret.tooltip = '仅运行中、关机的机器支持此操作'
-                        return ret
-                      }
-                      if (obj.hypervisor !== 'kvm' && findPlatform(obj.hypervisor) !== SERVER_TYPE.public) {
-                        ret.tooltip = '仅公有云、OneCloud支持此操作'
-                        return ret
-                      }
-                      ret.validate = true
-                      return ret
-                    },
-                  },
-                  {
-                    label: '设置GPU卡',
-                    action: () => {
-                      this.createDialog('VmAttachGpuDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        list: this.list,
-                      })
-                    },
-                    meta: () => {
-                      const ret = {
-                        validate: false,
-                        tooltip: null,
-                      }
-                      if (!this.isAdminMode) {
-                        return ret
-                      }
-                      if (findPlatform(obj.hypervisor, 'hypervisor') !== SERVER_TYPE.idc) {
-                        ret.tooltip = '仅本地IDC支持此操作'
-                        return ret
-                      }
-                      ret.validate = cloudEnabled('acttachGpu', obj)
-                      ret.tooltip = cloudUnabledTip('acttachGpu', obj)
-                      return ret
-                    },
-                  },
-                  {
-                    label: '设置磁盘速度',
-                    action: () => {
-                      this.createDialog('VmSetSpeedDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        list: this.list,
-                      })
-                    },
-                    meta: () => {
-                      const ret = {
-                        validate: false,
-                        tooltip: null,
-                      }
-                      if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
-                        ret.tooltip = '只有OneCloud主机支持此操作'
-                        return ret
-                      }
-                      if (obj.status !== 'running') {
-                        ret.tooltip = '仅在运行中状态下支持此操作'
-                        return ret
-                      }
-                      ret.validate = true
-                      return ret
-                    },
-                  },
-                  {
-                    label: '到期释放',
-                    action: () => {
-                      this.createDialog('VmSetDurationDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        list: this.list,
-                      })
-                    },
-                    meta: () => {
-                      const ret = {
-                        validate: false,
-                        tooltip: null,
-                      }
-                      if (obj.billing_type === 'prepaid') {
-                        ret.tooltip = '包年包月机器，不支持此操作'
-                        return ret
-                      }
-                      ret.validate = true
-                      return ret
-                    },
-                  },
-                  {
-                    label: '主机克隆',
-                    action: () => {
-                      this.createDialog('VmCloneDeepDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        list: this.list,
-                      })
-                    },
-                    meta: () => {
-                      const ret = {
-                        validate: false,
-                        tooltip: null,
-                      }
-                      if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
-                        ret.tooltip = '只有OneCloud主机支持此操作'
-                        return ret
-                      }
-                      if (!['running', 'ready'].includes(obj.status)) {
-                        ret.tooltip = '只有运行中或关机状态的主机支持此操作'
-                        return ret
-                      }
-                      if (obj.backup_host_id) {
-                        ret.tooltip = '高可用的主机不支持此操作'
-                        return ret
-                      }
-                      ret.validate = true
-                      return ret
-                    },
-                  },
-                  {
-                    label: '加入主机组',
-                    action: () => {
-                      this.createDialog('VmBindInstanceGroupDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        list: this.list,
-                      })
-                    },
-                    meta: () => {
-                      const ret = {
-                        validate: false,
-                        tooltip: null,
-                      }
-                      if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
-                        ret.tooltip = '只有OneCloud主机支持此操作'
-                        return ret
-                      }
-                      if (!['running', 'ready'].includes(obj.status)) {
-                        ret.tooltip = '只有运行中或关机状态的主机支持此操作'
-                        return ret
-                      }
-                      if (obj.backup_host_id) {
-                        ret.tooltip = '高可用的主机不支持此操作'
-                        return ret
-                      }
-                      ret.validate = true
-                      return ret
-                    },
-                  },
-                ],
-              },
-              {
-                label: '密码密钥',
-                submenus: [
-                  {
-                    label: '重置密码',
-                    permission: 'server_perform_deploy',
-                    action: () => {
-                      this.createDialog('VmResetPasswordDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        list: this.list,
-                      })
-                    },
-                    meta: () => {
-                      const ret = {
-                        validate: false,
-                        tooltip: null,
-                      }
-                      if (commonUnabled(obj)) return ret
-                      if (obj.keypair_id && obj.keypair_id.toLowerCase() !== 'none') {
-                        ret.tooltip = '已绑定密钥的云服务器无法重置密码'
-                        return ret
-                      }
-                      ret.validate = cloudEnabled('resetPassword', obj)
-                      ret.tooltip = cloudUnabledTip('resetPassword', obj)
-                      return ret
-                    },
-                  },
-                  {
-                    label: '绑定密钥',
-                    permission: 'server_perform_deploy',
-                    action: () => {
-                      this.createDialog('VmBindKeypairDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        list: this.list,
-                      })
-                    },
-                    meta: () => {
-                      const ret = {
-                        validate: false,
-                        tooltip: null,
-                      }
-                      if (obj.hypervisor === typeClouds.hypervisorMap.openstack.key) {
-                        ret.tooltip = 'OpenStack机器在创建后不支持该操作'
-                        return ret
-                      }
-                      const osType = obj.metadata && obj.metadata.os_name
-                      if (['aws', 'azure', 'google'].includes(obj.hypervisor) && osType === 'Windows') {
-                        ret.tooltip = 'Windows操作系统不支持该功能'
-                        return ret
-                      }
-                      if (commonUnabled(obj)) return ret
-                      if (obj.keypair) {
-                        ret.tooltip = '该服务器已关联密钥'
-                        return ret
-                      }
-                      ret.validate = cloudEnabled('bindKeyPair', obj)
-                      ret.tooltip = cloudUnabledTip('bindKeyPair', obj)
-                      return ret
-                    },
-                  },
-                  {
-                    label: '解绑密钥',
-                    permission: 'server_perform_deploy',
-                    action: () => {
-                      this.createDialog('VmUnbindKeypairDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        list: this.list,
-                      })
-                    },
-                    meta: () => {
-                      const ret = {
-                        validate: false,
-                        tooltip: null,
-                      }
-                      if (commonUnabled(obj)) return ret
-                      if (!obj.keypair) {
-                        ret.tooltip = '该服务器未关联密钥'
-                        return ret
-                      }
-                      ret.validate = cloudEnabled('unBindKeyPair', obj)
-                      ret.tooltip = cloudUnabledTip('unBindKeyPair', obj)
-                      return ret
-                    },
-                  },
-                ],
-              },
-              {
-                label: '镜像',
-                submenus: [
-                  {
-                    label: '保存镜像',
-                    permission: 'server_perform_save_image',
-                    action: () => {
-                      this.createDialog('VmSaveImageDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        list: this.list,
-                      })
-                    },
-                    meta: () => {
-                      const ret = {
-                        validate: false,
-                        tooltip: null,
-                      }
-                      if (findPlatform(obj.hypervisor) === SERVER_TYPE.public) {
-                        ret.tooltip = `公有云不支持该操作`
-                        return ret
-                      }
-                      const noSupportBrand = [
-                        typeClouds.hypervisorMap.openstack.brand,
-                        typeClouds.hypervisorMap.zstack.brand,
-                        typeClouds.hypervisorMap.dstack.brand,
-                      ]
-                      if (noSupportBrand.includes(obj.brand)) {
-                        ret.tooltip = `${obj.brand}暂不支持该操作`
-                        return ret
-                      }
-                      if (commonUnabled(obj)) return ret
-                      ret.validate = commonEnabled(obj)
-                      ret.tooltip = commonTip(obj)
-                      return ret
-                    },
-                  },
-                  {
-                    label: '挂载ISO',
-                    permission: 'server_perform_insertiso',
-                    action: () => {
-                      this.createDialog('VmMountIsoDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        list: this.list,
-                      })
-                    },
-                    meta: () => {
-                      const ret = {
-                        validate: false,
-                        tooltip: null,
-                      }
-                      if (findPlatform(obj.hypervisor) === SERVER_TYPE.public) {
-                        return ret
-                      }
-                      if (commonUnabled(obj)) return ret
-                      if (obj.cdrom) {
-                        ret.tooltip = '该服务器已经挂载ISO镜像'
-                        return ret
-                      }
-                      ret.validate = cloudEnabled('insertiso', obj)
-                      ret.tooltip = cloudUnabledTip('insertiso', obj)
-                      return ret
-                    },
-                  },
-                  {
-                    label: '卸载ISO',
-                    permission: 'server_perform_ejectiso',
-                    action: () => {
-                      this.createDialog('VmUnmountIsoDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        list: this.list,
-                      })
-                    },
-                    meta: () => {
-                      const ret = {
-                        validate: false,
-                        tooltip: null,
-                      }
-                      if (findPlatform(obj.hypervisor) === SERVER_TYPE.public) {
-                        return ret
-                      }
-                      if (commonUnabled(obj)) return ret
-                      if (!obj.cdrom) {
-                        ret.tooltip = '该服务器未挂载ISO镜像'
-                        return ret
-                      }
-                      ret.validate = cloudEnabled('ejectiso', obj)
-                      ret.tooltip = cloudUnabledTip('ejectiso', obj)
-                      return ret
-                    },
-                  },
-                ],
-              },
-              {
-                label: '网络安全',
-                submenus: [
-                  {
-                    label: '关联安全组',
-                    permission: 'server_perform_add_secgroup',
-                    action: () => {
-                      this.createDialog('VmSetSecgroupDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        list: this.list,
-                      })
-                    },
-                    meta: () => {
-                      const ret = {
-                        validate: cloudEnabled('assignSecgroup', obj),
-                        tooltip: cloudUnabledTip('assignSecgroup', obj),
-                      }
-                      return ret
-                    },
-                  },
-                  {
-                    label: '绑定弹性公网IP',
-                    action: () => {
-                      this.createDialog('VmBindEipDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        list: this.list,
-                      })
-                    },
-                    meta: () => {
-                      const ret = {
-                        validate: false,
-                        tooltip: null,
-                      }
-                      if (commonUnabled(obj)) return ret
-                      if (obj.eip && obj.eip_mode !== 'public_ip') {
-                        ret.tooltip = '已绑定，解绑后重试'
-                        return ret
-                      }
-                      ret.validate = cloudEnabled('bindEip', obj)
-                      ret.tooltip = cloudUnabledTip('bindEip', obj)
-                      return ret
-                    },
-                  },
-                  {
-                    label: '解绑弹性公网IP',
-                    action: () => {
-                      this.createDialog('VmUnbindEipDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        list: this.list,
-                      })
-                    },
-                    meta: () => {
-                      const ret = {
-                        validate: false,
-                        tooltip: null,
-                      }
-                      if (commonUnabled(obj)) return ret
-                      if (obj.eip_mode !== 'elastic_ip') {
-                        ret.tooltip = '未绑定，无法解绑'
-                        return ret
-                      }
-                      if (obj.eip_mode === 'public_ip') {
-                        ret.tooltip = 'Public IP无法解绑'
-                        return ret
-                      }
-                      ret.validate = cloudEnabled('unbindEip', obj)
-                      ret.tooltip = cloudUnabledTip('unbindEip', obj)
-                      return ret
-                    },
-                  },
-                ],
-              },
-              {
-                label: '高可用',
-                submenus: [
-                  {
-                    label: '添加备份机',
-                    action: () => {
-                      this.createDialog('VmAddBackupDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        list: this.list,
-                      })
-                    },
-                    meta: () => {
-                      const ret = {
-                        validate: false,
-                        tooltip: null,
-                      }
-                      if (!this.isAdminMode) {
-                        return ret
-                      }
-                      if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
-                        ret.tooltip = '只有OneCloud主机支持此操作'
-                        return ret
-                      }
-                      if (obj.backup_host_id) {
-                        ret.tooltip = '已经添加备份机'
-                        return ret
-                      }
-                      ret.validate = true
-                      return ret
-                    },
-                  },
-                  {
-                    label: '删除备份机',
-                    action: () => {
-                      this.createDialog('VmDeleteBackupDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        list: this.list,
-                      })
-                    },
-                    meta: () => {
-                      const ret = {
-                        validate: false,
-                        tooltip: null,
-                      }
-                      if (!obj.backup_host_id) {
-                        return ret
-                      }
-                      if (!this.isAdminMode) {
-                        return ret
-                      }
-                      if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
-                        ret.tooltip = '只有OneCloud主机支持此操作'
-                        return ret
-                      }
-                      ret.validate = true
-                      return ret
-                    },
-                  },
-                  {
-                    label: '切换',
-                    action: () => {
-                      this.createDialog('VmSwitchBackupDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        list: this.list,
-                      })
-                    },
-                    meta: () => {
-                      const ret = {
-                        validate: false,
-                        tooltip: null,
-                      }
-                      if (!obj.backup_host_id) {
-                        return ret
-                      }
-                      if (obj.backup_host_status !== 'online') {
-                        ret.tooltip = '备份机的宿主机离线不允许切换'
-                        return ret
-                      }
-                      if (!this.isAdminMode) {
-                        return ret
-                      }
-                      if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
-                        ret.tooltip = '只有OneCloud主机支持此操作'
-                        return ret
-                      }
-                      ret.validate = true
-                      return ret
-                    },
-                  },
-                  {
-                    label: '迁移',
-                    action: () => {
-                      this.createDialog('VmTransferDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        list: this.list,
-                      })
-                    },
-                    meta: () => {
-                      const ret = {
-                        validate: false,
-                        tooltip: null,
-                      }
-                      if (obj.backup_host_id) {
-                        ret.tooltip = '高可用机器不允许迁移'
-                        return ret
-                      }
-                      if (obj.is_gpu) {
-                        ret.tooltip = '仅通用型云服务器支持该操作'
-                        return ret
-                      }
-                      if (!this.isAdminMode) {
-                        return ret
-                      }
-                      if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
-                        ret.tooltip = '只有OneCloud主机支持此操作'
-                        return ret
-                      }
-                      ret.validate = true
-                      ret.tooltip = cloudUnabledTip('transfer', obj)
-                      return ret
-                    },
-                  },
-                ],
-              },
-              {
-                label: '删除',
-                submenus: [
-                  disableDeleteAction(this),
-                  {
-                    label: '删除',
-                    permission: 'server_delete',
-                    action: () => {
-                      this.createDialog('DeleteVmDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        list: this.list,
-                        title: '删除',
-                        success: () => {
-                          this.destroySidePages()
-                        },
-                      })
-                    },
-                    meta: () => this.$getDeleteResult(obj),
-                  },
-                ],
-              },
-            ]
-          },
-        },
-      ],
     }
   },
   computed: {
-    ...mapGetters(['isAdminMode', 'isDomainMode']),
+    ...mapGetters(['isAdminMode']),
     isSameHyper () {
       if (this.list.selectedItems.length > 0) {
         const arr = this.list.selectedItems.map(v => v.hypervisor)
@@ -1791,7 +638,6 @@ export default {
   },
   created () {
     this.initSidePageTab('vm-instance-detail')
-    this.webconsoleManager = new Manager('webconsole', 'v1')
     this.list.fetchData()
     this.$bus.$on('VMInstanceListSingleUpdate', args => {
       this.list.singleUpdate(...args)
@@ -1811,25 +657,15 @@ export default {
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
     },
-    openWebConsole (obj, data) {
-      let connectParams = qs.parse(data.connect_params)
-      if (!connectParams.access_token) {
-        connectParams = {
-          data: data.connect_params,
-        }
-      } else {
-        connectParams = {
-          data: Base64.encode(data.connect_params),
-        }
-      }
-      const query = {
-        ...connectParams,
-        session: data.session,
-        hypervisor: obj.hypervisor,
-        os_type: obj.os_type,
-      }
-      const href = `${this.$appConfig.webConsolePath}?${qs.stringify(query)}`
-      window.open(href)
+    handleOpenSidepage (row) {
+      this.sidePageTriggerHandle(this, 'VmInstanceSidePage', {
+        id: row.id,
+        resource: 'servers',
+        getParams: this.getParam,
+        steadyStatus: Object.values(expectStatus.image).flat(),
+      }, {
+        list: this.list,
+      })
     },
   },
 }
