@@ -1,7 +1,7 @@
 <template>
   <detail
-    :list="list"
     :data="data"
+    :onManager="onManager"
     :base-info="baseInfo"
     :extra-info="extraInfo" />
 </template>
@@ -10,8 +10,8 @@
 export default {
   name: 'ZoneDetail',
   props: {
-    list: {
-      type: Object,
+    onManager: {
+      type: Function,
       required: true,
     },
     data: {

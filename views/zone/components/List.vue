@@ -8,14 +8,14 @@
 </template>
 
 <script>
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
-import {
-  getNameDescriptionTableColumn,
-} from '@/utils/common/tableColumn'
+import ListMixin from '@/mixins/list'
 
 export default {
   name: 'ZoneList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
@@ -50,38 +50,6 @@ export default {
           { label: '二层网络', key: 'wires' },
         ],
       },
-      columns: [
-        getNameDescriptionTableColumn({
-          vm: this,
-          hideField: true,
-          slotCallback: row => {
-            return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'ZoneSidePage') }>{ row.name_cn ? `${row.name}(${row.name_cn})` : row.name }</side-page-trigger>
-            )
-          },
-        }),
-        {
-          field: 'hosts',
-          title: '物理机/可用物理机',
-          width: 140,
-          formatter: ({ row }) => {
-            return `${row.hosts}/${row.hosts_enabled}`
-          },
-        },
-        {
-          field: 'baremetals',
-          title: '受管物理机/可用受管物理机',
-          width: 180,
-          formatter: ({ row }) => {
-            return `${row.baremetals}/${row.baremetals_enabled}`
-          },
-        },
-        {
-          field: 'wires',
-          title: '二层网络',
-          width: 70,
-        },
-      ],
       groupActions: [
         {
           label: '新建',
@@ -98,29 +66,22 @@ export default {
           },
         },
       ],
-      singleActions: [
-        {
-          label: '删除',
-          action: obj => {
-            this.createDialog('DeleteResDialog', {
-              data: [obj],
-              columns: this.columns,
-              title: '删除可用区',
-              list: this.list,
-            })
-          },
-          meta: obj => {
-            return {
-              validate: obj.can_delete,
-            }
-          },
-        },
-      ],
     }
   },
   created () {
     this.initSidePageTab('zone-detail')
     this.list.fetchData()
+  },
+  methods: {
+    handleOpenSidepage (row) {
+      this.sidePageTriggerHandle(this, 'ZoneSidePage', {
+        id: row.id,
+        resource: 'zones',
+        getParams: this.getParams,
+      }, {
+        list: this.list,
+      })
+    },
   },
 }
 </script>
