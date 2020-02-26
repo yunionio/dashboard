@@ -161,7 +161,7 @@ export default {
     // vm 实例
     this.templateContext = this.params.templateContext
     this.resource = resource
-    this.getParams = getParams
+    this.getDetailParams = getParams
     if (R.is(String, resource)) {
       this.manager = new this.$Manager(resource, apiVersion)
     }
@@ -239,10 +239,10 @@ export default {
      * @description 获取api资源相关的参数
      */
     getOptionParams () {
-      if (R.is(Function, this.getParams)) {
-        return this.getParams() || {}
+      if (R.is(Function, this.getDetailParams)) {
+        return this.getDetailParams() || {}
       }
-      return this.getParams || {}
+      return this.getDetailParams || {}
     },
     /**
      * @description 生成所有的请求参数
