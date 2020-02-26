@@ -16,6 +16,7 @@ import {
   getBrandTableColumn,
   getAccountTableColumn,
 } from '@/utils/common/tableColumn'
+import { getStatusFilter, getBrandFilter, getAccountFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -41,6 +42,12 @@ export default {
               return `name.contains("${val}")`
             },
           },
+          status: getStatusFilter('vpc'),
+          account: getAccountFilter(),
+          brand: getBrandFilter(''),
+          cidr_block: {
+            label: '目标网段',
+          },
         },
       }),
       columns: [
@@ -56,6 +63,7 @@ export default {
         getCopyWithContentTableColumn({
           field: 'cidr_block',
           title: '目标网段',
+          sortable: true,
         }),
         getRegionTableColumn(),
         getBrandTableColumn(),
@@ -65,11 +73,13 @@ export default {
           field: 'wire_count',
           title: '二层网络',
           width: 70,
+          sortable: true,
         },
         {
           field: 'network_count',
           title: 'IP子网数量',
           width: 80,
+          sortable: true,
         },
       ],
       groupActions: [

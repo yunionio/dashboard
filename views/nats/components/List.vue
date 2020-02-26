@@ -14,7 +14,7 @@ import {
   getAccountTableColumn,
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
-import { getBrandFilter } from '@/utils/common/tableFilter'
+import { getStatusFilter, getBrandFilter, getAccountFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 
 const NatSpec = {
@@ -53,7 +53,29 @@ export default {
               return `name.contains("${val}")`
             },
           },
+          status: getStatusFilter('nat'),
+          account: getAccountFilter(),
           brand: getBrandFilter('network_manage_brands'),
+          vpc: {
+            label: '所属专有网络',
+          },
+          region: {
+            label: '区域',
+          },
+          nat_spec: {
+            label: '型号',
+          },
+          billing_type: {
+            label: '付费类型',
+            dropdown: true,
+            multiple: true,
+            items: Object.keys(BillingType).map((k) => {
+              return {
+                label: BillingType[k],
+                key: k,
+              }
+            }),
+          },
         },
       }),
       columns: [

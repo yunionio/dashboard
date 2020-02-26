@@ -47,6 +47,12 @@ export default {
             },
           },
           account: getAccountFilter(),
+          vpc: {
+            label: '所属专有网络',
+          },
+          region: {
+            label: '区域',
+          },
         },
       }),
       columns: [
