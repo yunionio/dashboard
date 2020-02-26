@@ -459,8 +459,10 @@ export default {
         sku: values.sku.name,
         auto_start: values.autoStart,
       }
-      params.disks = this.genDiskData(values)
       const ids = this.params.data.map(item => item.id)
+      if (ids.length === 1) {
+        params.disks = this.genDiskData(values)
+      }
       return this.params.onManager('batchPerformAction', {
         id: ids,
         steadyStatus: ['running', 'ready'],
