@@ -3,25 +3,31 @@
     @cancel="cancelSidePage"
     title="裸金属"
     icon="res-baremetal"
-    :res-name="data.name"
-    :actions="params.actions"
+    :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
+    :loaded="loaded"
     @tab-change="handleTabChange">
     <template v-slot:actions>
-      <actions :options="params.singleActions" :row="data" button-type="link" button-size="small" />
+      <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
     <component
       :is="params.windowData.currentTab"
-      :data="data"
-      :list="params.list"
-      :res-id="params.resId"
+      :data="detailData"
+      :res-id="data.id"
       :getParams="getParams"
+      :on-manager="onManager"
+      @side-page-trigger-handle="sidePageTriggerHandle"
+      @init-side-page-tab="initSidePageTab"
+      @refresh="refresh"
+      @single-refresh="singleRefresh"
       @tab-change="handleTabChange" />
   </base-side-page>
 </template>
 
 <script>
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 import BaremetalDetail from './Detail'
 import NetworkListForBaremetalSidepage from './Network'
 import DiskListForBaremetalSidepage from './Disk'
@@ -41,7 +47,7 @@ export default {
     BaremetalAlertSidepage,
     BaremetalMonitorSidepage,
   },
-  mixins: [SidePageMixin, WindowsMixin],
+  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
@@ -55,9 +61,6 @@ export default {
     }
   },
   computed: {
-    data () {
-      return this.params.list.data[this.params.resId].data
-    },
     getParams () {
       if (this.params.windowData.currentTab === 'network-list-for-baremetal-sidepage') {
         return {

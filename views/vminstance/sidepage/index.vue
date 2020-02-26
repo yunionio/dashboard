@@ -57,7 +57,7 @@ export default {
     VmInstanceMonitorSidepage,
     VmInstanceAlertSidepage,
   },
-  mixins: [SidePageMixin, WindowsMixin, SingleActionsMixin, ColumnsMixin],
+  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [

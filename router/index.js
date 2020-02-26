@@ -1,4 +1,3 @@
-import Layout from '@Compute/components/Layout'
 import VMInstance from '@Compute/views/vminstance'
 import Baremetal from '@Compute/views/baremetal'
 import BaremetalCreate from '@Compute/views/baremetal/create/index'
@@ -34,6 +33,7 @@ import SnapshotPolicy from '@Compute/views/snapshotpolicy'
 import AnsibleTemplate from '@Compute/views/ansible-template'
 import AnsibleTemplateCreate from '@Compute/views/ansible-template/create'
 import AnsiblePlaybook from '@Compute/views/ansible-playbook'
+import Layout from '@/layouts/RouterView'
 
 import { hasHypervisorsByEnv } from '@/utils/auth'
 
