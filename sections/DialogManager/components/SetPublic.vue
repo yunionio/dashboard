@@ -152,16 +152,15 @@ export default {
       return list.filter((item) => { return item.id !== this.params.data[0].tenant_id })
     },
     doUpdate (ids) {
-      return this.params.list.onManager('batchPerformAction', {
+      return this.params.onManager('batchPerformAction', {
         id: ids,
-        steadyStatus: this.params.list.steadyStatus,
         managerArgs: {
           action: 'private',
         },
       })
     },
     setPublic (ids, data) {
-      return this.params.list.onManager('batchPerformAction', {
+      return this.params.onManager('batchPerformAction', {
         id: ids,
         managerArgs: {
           action: 'public',
@@ -192,7 +191,7 @@ export default {
         }
         this.loading = false
         this.cancelDialog()
-        this.params.list.refresh()
+        this.params.refresh()
       } catch (error) {
         this.loading = false
       }

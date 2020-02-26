@@ -87,7 +87,7 @@ export default {
       try {
         const values = await this.validateForm()
         const ids = this.params.data.map(item => item.id)
-        await this.params.list.onManager('batchPerformAction', {
+        await this.params.onManager('batchPerformAction', {
           id: ids,
           steadyStatus: this.params.steadyStatus || ['running', 'ready'],
           managerArgs: {

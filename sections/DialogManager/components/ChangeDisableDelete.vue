@@ -70,7 +70,7 @@ export default {
         this.loading = false
         const isDelete = this.form.fc.getFieldValue('disable_delete')
         if (this.params.data.length === 1) {
-          this.params.list.onManager('update', {
+          this.params.onManager('update', {
             id: this.params.data[0].id,
             managerArgs: {
               data: {
@@ -81,9 +81,14 @@ export default {
           })
         } else {
           const ids = this.params.data.map(({ id }) => id)
-          await this.params.list.batchUpdate(ids, {
-            disable_delete: isDelete,
-            protected: isDelete,
+          await this.params.onManager('batchUpdate', {
+            id: ids,
+            managerArgs: {
+              data: {
+                disable_delete: isDelete,
+                protected: isDelete,
+              },
+            },
           })
         }
         this.cancelDialog()

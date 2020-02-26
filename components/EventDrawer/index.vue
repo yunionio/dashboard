@@ -4,7 +4,6 @@
 
 <script>
 import EventList from '@/sections/EventList'
-import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -12,7 +11,7 @@ export default {
   components: {
     EventList,
   },
-  mixins: [SidePageMixin, WindowsMixin],
+  mixins: [WindowsMixin],
   props: {
     resId: {
       type: String,

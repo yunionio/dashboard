@@ -8,7 +8,7 @@ import i18n from '@/locales'
 // 需要添加区域（cloudregion/cloudregion_id), 可用区（zone/zone_id)，云账号(account/account_id)，云订阅（manager/manager_id)的资源
 const appendOutherResources = ['servers', 'hosts', 'disks', 'storages', 'vpcs', 'wires', 'networks', 'snapshots']
 
-const getDefaultLastBaseInfo = (h, { data, list }) => {
+const getDefaultLastBaseInfo = (h, { data, onManager, resource }) => {
   const outher = [
     {
       field: 'cloudregion',
@@ -17,20 +17,8 @@ const getDefaultLastBaseInfo = (h, { data, list }) => {
         default: ({ row }) => {
           return [
             <div class='text-truncate'>
-              <list-body-cell-wrap copy row={ data } list={ list } field='cloudregion' title={ row['cloudregion'] } />
-            </div>,
-          ]
-        },
-      },
-    },
-    {
-      field: 'cloudregion_id',
-      title: '区域ID',
-      slots: {
-        default: ({ row }) => {
-          return [
-            <div class='text-truncate'>
-              <list-body-cell-wrap copy row={ data } list={ list } field='cloudregion_id' title={ row['cloudregion_id'] } />
+              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='cloudregion' title={ row['cloudregion'] } />
+              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='cloudregion_id' title={ row['cloudregion_id'] } />
             </div>,
           ]
         },
@@ -43,20 +31,8 @@ const getDefaultLastBaseInfo = (h, { data, list }) => {
         default: ({ row }) => {
           return [
             <div class='text-truncate'>
-              <list-body-cell-wrap copy row={ data } list={ list } field='zone' title={ row['zone'] } />
-            </div>,
-          ]
-        },
-      },
-    },
-    {
-      field: 'zone_id',
-      title: '可用区ID',
-      slots: {
-        default: ({ row }) => {
-          return [
-            <div class='text-truncate'>
-              <list-body-cell-wrap copy row={ data } list={ list } field='zone_id' title={ row['zone_id'] } />
+              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='zone' title={ row['zone'] } />
+              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='zone_id' title={ row['zone_id'] } />
             </div>,
           ]
         },
@@ -69,20 +45,8 @@ const getDefaultLastBaseInfo = (h, { data, list }) => {
         default: ({ row }) => {
           return [
             <div class='text-truncate'>
-              <list-body-cell-wrap copy row={ data } list={ list } field='account' title={ row['account'] } />
-            </div>,
-          ]
-        },
-      },
-    },
-    {
-      field: 'account_id',
-      title: '云账号ID',
-      slots: {
-        default: ({ row }) => {
-          return [
-            <div class='text-truncate'>
-              <list-body-cell-wrap copy row={ data } list={ list } field='account_id' title={ row['account_id'] } />
+              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='account' title={ row['account'] } />
+              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='account_id' title={ row['account_id'] } />
             </div>,
           ]
         },
@@ -105,13 +69,13 @@ const getDefaultLastBaseInfo = (h, { data, list }) => {
       },
     },
   ]
-  if (list && list.resource && appendOutherResources.includes(list.resource)) {
+  if (resource && appendOutherResources.includes(resource)) {
     ret = R.insertAll(0, outher, ret)
   }
   return ret
 }
 
-const getDefaultTopBaseInfo = (h, { idKey, statusKey, statusModule, data, list }) => {
+const getDefaultTopBaseInfo = (h, { idKey, statusKey, statusModule, data, onManager }) => {
   return [
     {
       field: idKey,
@@ -120,7 +84,7 @@ const getDefaultTopBaseInfo = (h, { idKey, statusKey, statusModule, data, list }
         default: ({ row }) => {
           return [
             <div class='text-truncate'>
-              <list-body-cell-wrap copy row={ data } list={ list } field={ idKey } title={ row[idKey] } />
+              <list-body-cell-wrap copy row={ data } onManager={ onManager } field={ idKey } title={ row[idKey] } />
             </div>,
           ]
         },
@@ -169,8 +133,8 @@ export default {
     extraInfo: {
       type: Array,
     },
-    list: {
-      type: Object,
+    onManager: {
+      type: Function,
     },
     nameRules: {
       type: Array,
@@ -196,6 +160,7 @@ export default {
       type: Boolean,
       default: true,
     },
+    resource: String,
   },
   computed: {
     commonBaseInfo () {
@@ -204,11 +169,12 @@ export default {
         statusKey: this.statusKey,
         statusModule: this.statusModule,
         data: this.data,
-        list: this.list,
+        onManager: this.onManager,
       })
       const defaultLastBaseInfo = getDefaultLastBaseInfo(this.$createElement, {
-        list: this.list,
+        onManager: this.onManager,
         data: this.data,
+        resource: this.resource,
       })
       // 与传递进来的baseInfo比较，去除在baseInfo中已有字段
       for (let i = 0; i < this.baseInfo.length; i++) {
@@ -299,7 +265,7 @@ export default {
               copy: true,
               edit: true,
               row: this.data,
-              list: this.list,
+              onManager: this.onManager,
               field: 'description',
               ...this.descProps,
             },
@@ -320,7 +286,7 @@ export default {
               copy: true,
               edit: true,
               row: this.data,
-              list: this.list,
+              onManager: this.onManager,
               formRules: this.nameRules,
               ...this.nameProps,
             },

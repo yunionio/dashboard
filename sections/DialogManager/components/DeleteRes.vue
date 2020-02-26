@@ -50,7 +50,7 @@ export default {
             ...params,
             ...this.params.requestParams,
           }
-          const response = await this.params.list.onManager('batchDelete', {
+          const response = await this.params.onManager('batchDelete', {
             id: ids,
             managerArgs: { params, data: this.params.requestData },
           })
