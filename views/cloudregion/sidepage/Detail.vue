@@ -1,7 +1,7 @@
 <template>
   <detail
-    :list="list"
     :data="data"
+    :onManager="onManager"
     :base-info="baseInfo"
     :extra-info="extraInfo" />
 </template>
@@ -14,8 +14,8 @@ export default {
       type: Object,
       required: true,
     },
-    list: {
-      type: Object,
+    onManager: {
+      type: Function,
       required: true,
     },
   },

@@ -3,11 +3,12 @@
     @cancel="cancelSidePage"
     title="区域"
     icon="res-region"
-    :res-name="data.name"
+    :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
+    :loaded="loaded"
     :tabs="detailTabs"
     @tab-change="handleTabChange">
-    <component :is="params.windowData.currentTab" :res-id="params.resId" :data="data" :list="params.list" :getParams="getParams" />
+    <component :is="params.windowData.currentTab" :res-id="data.id" :data="detailData" :on-manager="onManager" :getParams="getParams" />
   </base-side-page>
 </template>
 
@@ -43,13 +44,10 @@ export default {
           details: true,
           with_meta: true,
           cloud_env: 'private_or_onpremise',
-          cloudregion_id: this.params.resId,
+          cloudregion_id: this.data.id,
         }
       }
       return null
-    },
-    data () {
-      return this.params.list.data[this.params.resId].data
     },
   },
 }
