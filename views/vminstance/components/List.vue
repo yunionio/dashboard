@@ -1235,6 +1235,7 @@ export default {
                         tooltip: null,
                       }
                       if (!this.isAdminMode) {
+                        ret.tooltip = '暂只有系统管理员支持该操作'
                         return ret
                       }
                       if (findPlatform(obj.hypervisor, 'hypervisor') !== SERVER_TYPE.idc) {
