@@ -4,7 +4,7 @@
       message="提示：安全组未设置任何自定义放行规则，会导致无法访问云服务器端口，若需访问请添加安全组规则放行对应的端口"
       type="warning"
       style="margin-bottom: 20px" />
-    <direction-list :type="this.getParams.type" :id="this.getParams.id" />
+    <direction-list :type="getParams.type" :id="getParams.id" />
   </div>
 </template>
 

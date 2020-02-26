@@ -110,7 +110,8 @@ export default {
               data: [obj],
               title: 'edit',
               columns: this.columns,
-              list: this.list,
+              onManager: this.onManager,
+              refresh: this.refresh,
               type: this.type,
             })
           },
@@ -122,7 +123,8 @@ export default {
               data: [obj],
               title: 'clone',
               columns: this.columns,
-              list: this.list,
+              onManager: this.onManager,
+              refresh: this.refresh,
               type: this.type,
               secgroup: this.id,
             })
@@ -135,7 +137,8 @@ export default {
               data: [obj],
               columns: this.columns,
               title: '删除',
-              list: this.list,
+              onManager: this.onManager,
+              refresh: this.refresh,
             })
           },
         },
@@ -147,7 +150,8 @@ export default {
             this.createDialog('EditRulesDialog', {
               title: 'create',
               data: [{}],
-              list: this.list,
+              onManager: this.onManager,
+              refresh: this.refresh,
               type: this.type,
               secgroup: this.id,
             })
@@ -163,7 +167,7 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               title: '删除',
-              list: this.list,
+              onManager: this.onManager,
             })
           },
           meta: (obj) => this.$getDeleteResult(this.list.selectedItems),

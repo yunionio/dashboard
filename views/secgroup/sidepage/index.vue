@@ -3,19 +3,32 @@
     @cancel="cancelSidePage"
     title="安全组"
     icon="res-secgroup"
-    :res-name="data.name"
+    :res-name="detailData.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
+    :loaded="loaded"
     @tab-change="handleTabChange">
     <template v-slot:actions>
-      <actions :options="params.singleActions" :row="data" button-type="link" button-size="small" />
+      <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :res-id="params.resId" :data="data" :list="params.list" :getParams="getParams" res-type="secgroup" />
+    <component
+      :is="params.windowData.currentTab"
+      :res-id="data.id"
+      :data="detailData"
+      :list="params.list"
+      :getParams="getParams"
+      res-type="secgroup"
+      :on-manager="onManager"
+      @refresh="refresh"
+      @single-refresh="singleRefresh"
+      @tab-change="handleTabChange" />
   </base-side-page>
 </template>
 
 <script>
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 import SecgroupDetail from './Detail'
 import InDirection from './InDirection'
 import OutDirection from './OutDirection'
@@ -33,7 +46,7 @@ export default {
     InDirection,
     CacheList,
   },
-  mixins: [SidePageMixin, WindowsMixin],
+  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
@@ -50,22 +63,19 @@ export default {
       if (this.params.windowData.currentTab === 'in-direction') {
         return {
           type: 'in',
-          id: this.params.resId,
+          id: this.data.id,
         }
       } else if (this.params.windowData.currentTab === 'out-direction') {
         return {
           type: 'out',
-          id: this.params.resId,
+          id: this.data.id,
         }
       } else if (this.params.windowData.currentTab === 'cache-list') {
         return {
-          id: this.params.resId,
+          id: this.data.id,
         }
       }
       return null
-    },
-    data () {
-      return this.params.list.data[this.params.resId].data
     },
   },
 }
