@@ -9,14 +9,19 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { STRATEGY_OPT, STRATEGY_CN } from '@Cloudenv/constants/sched'
+import { STRATEGY_OPT } from '@Cloudenv/constants/sched'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
-import { getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
+import ListMixin from '@/mixins/list'
+
 const RES_TYPES = { hosts: '宿主机、物理机', storages: '存储', networks: '网络' }
+
+const getParams = { details: true }
 
 export default {
   name: 'SchedtagList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
   },
@@ -25,7 +30,7 @@ export default {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'schedtags',
-        getParams: { details: true },
+        getParams,
         filterOptions: {
           name: {
             label: '名称',
@@ -61,58 +66,6 @@ export default {
           { label: '关联调度策略', key: 'schedpolicy_count' },
         ],
       },
-      columns: [
-        getNameDescriptionTableColumn({
-          vm: this,
-          hideField: true,
-          slotCallback: row => {
-            return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'SchedtagSidePage') }>{ row.name }</side-page-trigger>
-            )
-          },
-        }),
-        {
-          field: 'default_strategy',
-          title: '偏好',
-          width: 80,
-          formatter: ({ row }) => {
-            return STRATEGY_CN[row.default_strategy] || '无'
-          },
-        },
-        {
-          field: 'resource_type',
-          title: '资源类型',
-          width: 120,
-          formatter: ({ row }) => {
-            return RES_TYPES[row.resource_type] || '无'
-          },
-        },
-
-        {
-          field: 'resource_count',
-          title: '资源数量',
-          width: 80,
-          formatter: ({ row }) => {
-            return row.host_count || row.storage_count || row.network_count || '0'
-          },
-        },
-        {
-          field: 'dynamic_schedtag_count',
-          title: '关联动态调度标签',
-          width: 120,
-          formatter: ({ row }) => {
-            return row.dynamic_schedtag_count || '0'
-          },
-        },
-        {
-          field: 'schedpolicy_count',
-          title: '关联调度策略',
-          width: 120,
-          formatter: ({ row }) => {
-            return row.schedpolicy_count || '0'
-          },
-        },
-      ],
       groupActions: [
         {
           label: '新建',
@@ -156,78 +109,23 @@ export default {
           },
         },
       ],
-      singleActions: [
-        {
-          label: '更改所属',
-          action: obj => {
-            this.createDialog('SetOwnerDialog', {
-              data: [obj],
-              columns: this.columns,
-              title: '更改所属',
-              list: this.list,
-              tipName: '调度标签',
-            })
-          },
-          meta: () => {
-            const ret = {
-              validate: true,
-              tooltip: null,
-            }
-            if (!this.isAdminMode) {
-              ret.validate = false
-            }
-            return ret
-          },
-        },
-        {
-          label: '偏好设置',
-          action: obj => {
-            this.createDialog('SetStrategyDialog', {
-              data: [obj],
-              columns: this.columns,
-              title: '偏好设置',
-              list: this.list,
-            })
-          },
-          meta: () => {
-            const ret = {
-              validate: true,
-              tooltip: null,
-            }
-            if (!this.isAdminMode) {
-              ret.validate = false
-            }
-            return ret
-          },
-        },
-        {
-          label: '删除',
-          action: obj => {
-            this.createDialog('DeleteResDialog', {
-              data: [obj],
-              columns: this.columns,
-              title: '删除调度标签',
-              list: this.list,
-            })
-          },
-          meta: obj => {
-            const ret = {
-              validate: obj.can_delete,
-              tooltip: null,
-            }
-            if (!this.isAdminMode) {
-              ret.validate = false
-            }
-            return ret
-          },
-        },
-      ],
     }
   },
   computed: mapGetters(['isAdminMode']),
   created () {
     this.initSidePageTab('schedtag-detail')
     this.list.fetchData()
+  },
+  methods: {
+    handleOpenSidepage (row) {
+      this.sidePageTriggerHandle(this, 'SchedtagSidePage', {
+        id: row.id,
+        resource: 'schedtags',
+        getParams,
+      }, {
+        list: this.list,
+      })
+    },
   },
 }
 </script>

@@ -10,7 +10,7 @@
     :tabs="detailTabs"
     @tab-change="handleTabChange">
     <template v-slot:actions>
-      <actions :options="params.singleActions" :row="data" button-type="link" button-size="small" />
+      <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
     <component :is="params.windowData.currentTab" :res-id="data.id" :data="detailData" :on-manager="onManager" :getParams="getParams" />
   </base-side-page>
@@ -18,6 +18,8 @@
 
 <script>
 import HostList from '@Compute/views/host/components/List'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 import ZoneDetail from './Detail'
 import Dashboard from './Dashboard'
 import SidePageMixin from '@/mixins/sidePage'
@@ -32,7 +34,7 @@ export default {
     HostList,
     Dashboard,
   },
-  mixins: [SidePageMixin, WindowsMixin],
+  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [

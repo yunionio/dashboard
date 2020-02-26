@@ -3,21 +3,24 @@
     @cancel="cancelSidePage"
     title="调度标签"
     icon="res-schedtag"
-    :res-name="data.name"
+    :res-name="detailData.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"
+    :loaded="loaded"
     :tabs="detailTabs"
     @tab-change="handleTabChange">
     <template v-slot:actions>
-      <actions :options="params.singleActions" :row="data" button-type="link" button-size="small" />
+      <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :data="data" :res-id="params.resId" :list="params.list" :getParams="getParams" />
+    <component :is="params.windowData.currentTab" :data="detailData" :on-manager="onManager" :res-id="data.id" :getParams="getParams" />
   </base-side-page>
 </template>
 
 <script>
 import HostList from '@Compute/views/host/components/List'
 import PhysicalmachineList from '@Compute/views/physicalmachine/components/List'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 import SchedtagDetail from './Detail'
 import Dashboard from './Dashboard'
 import SidePageMixin from '@/mixins/sidePage'
@@ -33,7 +36,7 @@ export default {
     Dashboard,
     PhysicalmachineList,
   },
-  mixins: [SidePageMixin, WindowsMixin],
+  mixins: [SidePageMixin, WindowsMixin, SingleActionsMixin, ColumnsMixin],
   data () {
     return {
       detailTabs: [
@@ -50,20 +53,17 @@ export default {
       if (this.params.windowData.currentTab === 'physicalmachine-list') {
         return {
           details: true,
-          schedtag: this.params.resId,
+          schedtag: this.data.id,
           baremetal: true,
         }
       } else if (this.params.windowData.currentTab === 'host-list') {
         return {
           detail: true,
-          schedtag: this.params.resId,
+          schedtag: this.data.id,
           baremetal: false,
         }
       }
       return null
-    },
-    data () {
-      return this.params.list.data[this.params.resId].data
     },
   },
 }

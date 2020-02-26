@@ -14,6 +14,7 @@
 
 <script>
 import ZoneList from '@Cloudenv/views/zone/components/List'
+import ColumnsMixin from '../mixins/columns'
 import CloudregionDetail from './Detail'
 import Dashboard from './Dashboard'
 import SidePageMixin from '@/mixins/sidePage'
@@ -26,7 +27,7 @@ export default {
     ZoneList,
     Dashboard,
   },
-  mixins: [SidePageMixin, WindowsMixin],
+  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin],
   data () {
     return {
       detailTabs: [
