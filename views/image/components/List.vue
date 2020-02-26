@@ -19,7 +19,7 @@ import GlobalSearchMixin from '@/mixins/globalSearch'
 
 export default {
   name: 'ImageList',
-  mixins: [WindowsMixin, GlobalSearchMixin, SingleActionsMixin, ColumnsMixin, ListMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
