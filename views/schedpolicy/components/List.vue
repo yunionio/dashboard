@@ -8,14 +8,18 @@
 </template>
 
 <script>
-import { STRATEGY_OPT, STRATEGY_CN } from '@Cloudenv/constants/sched'
+import { STRATEGY_OPT } from '@Cloudenv/constants/sched'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
+import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
-import { getNameDescriptionTableColumn, getEnabledTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 import { getNameFilter, getEnabledFilter, getFilter } from '@/utils/common/tableFilter'
+
+const getParams = { details: true }
 
 export default {
   name: 'SchedpolicyList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
   },
@@ -24,7 +28,7 @@ export default {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'schedpolicies',
-        getParams: { details: true },
+        getParams,
         filterOptions: {
           name: getNameFilter(),
           enabled: getEnabledFilter(),
@@ -50,34 +54,6 @@ export default {
           { label: '条件', key: 'condition' },
         ],
       },
-      columns: [
-        getNameDescriptionTableColumn({
-          vm: this,
-          hideField: true,
-          slotCallback: row => {
-            return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'SchedpolicySidePage') }>{ row.name }</side-page-trigger>
-            )
-          },
-        }),
-        getEnabledTableColumn(),
-        {
-          field: 'strategy',
-          title: '偏好',
-          width: 80,
-          formatter: ({ row }) => {
-            return STRATEGY_CN[row.strategy] || '无'
-          },
-        },
-        getCopyWithContentTableColumn({
-          field: 'schedtag',
-          title: '调度标签',
-        }),
-        getCopyWithContentTableColumn({
-          field: 'condition',
-          title: '条件',
-        }),
-      ],
       groupActions: [
         {
           label: '新建',
@@ -110,69 +86,22 @@ export default {
           },
         },
       ],
-      singleActions: [
-        {
-          label: '启用',
-          action: obj => {
-            this.list.singleUpdate(obj.id, { enabled: true })
-          },
-          meta: obj => {
-            return {
-              validate: !obj.enabled,
-            }
-          },
-        },
-        {
-          label: '禁用',
-          action: obj => {
-            this.list.singleUpdate(obj.id, { enabled: false })
-          },
-          meta: obj => {
-            return {
-              validate: obj.enabled,
-            }
-          },
-        },
-        {
-          label: '更多',
-          actions: obj => {
-            return [
-              {
-                label: '调整策略',
-                action: () => {
-                  this.createDialog('UpdateSchedpolicyDialog', {
-                    data: [obj],
-                    columns: this.columns,
-                    title: '调整策略',
-                    list: this.list,
-                  })
-                },
-              },
-              {
-                label: '删除',
-                action: () => {
-                  this.createDialog('DeleteResDialog', {
-                    data: [obj],
-                    columns: this.columns,
-                    title: '删除调度策略',
-                    list: this.list,
-                  })
-                },
-                meta: () => {
-                  return {
-                    validate: obj.can_delete,
-                  }
-                },
-              },
-            ]
-          },
-        },
-      ],
     }
   },
   created () {
     this.initSidePageTab('schedpolicy-detail')
     this.list.fetchData()
+  },
+  methods: {
+    handleOpenSidepage (row) {
+      this.sidePageTriggerHandle(this, 'SchedpolicySidePage', {
+        id: row.id,
+        resource: 'schedpolicies',
+        getParams,
+      }, {
+        list: this.list,
+      })
+    },
   },
 }
 </script>

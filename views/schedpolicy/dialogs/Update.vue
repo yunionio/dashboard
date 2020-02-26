@@ -29,7 +29,12 @@ export default {
   },
   methods: {
     doCreate (data) {
-      return this.params.list.singleUpdate(this.params.data[0].id, data)
+      this.params.onManager('update', {
+        id: this.params.data[0].id,
+        managerArgs: {
+          data,
+        },
+      })
     },
     async handleConfirm () {
       this.loading = true
@@ -42,6 +47,7 @@ export default {
         this.$message.success('操作成功')
       } catch (error) {
         this.loading = false
+        throw error
       }
     },
   },
