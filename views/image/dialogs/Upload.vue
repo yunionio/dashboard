@@ -117,7 +117,14 @@ export default {
       return { 'Authorization': `Bearer ${this.$store.getters.userInfo.session}` }
     },
   },
+  destroyed () {
+    this.clearTimer()
+  },
   methods: {
+    clearTimer () {
+      clearTimeout(this.timer)
+      this.timer = null
+    },
     beforeUpload (file) {
       this.fileList = [file]
       return false
@@ -190,7 +197,7 @@ export default {
           if (fileList.length > 0) {
             formData.append('image_size', fileList[0].size)
             fileList.forEach(file => {
-              formData.append('image', file)
+              formData.append('image', file.originFileObj)
             })
           } else {
             this.$message.error('请先选中要上传的镜像文件!')
@@ -198,6 +205,12 @@ export default {
             return false
           }
           this.handleUpload(formData)
+          this.clearTimer()
+          this.timer = setTimeout(() => {
+            this.cancelDialog()
+            this.params.list.refresh()
+          }, 6000)
+          return
         } else {
           await this.doImportUrl(values)
         }
