@@ -155,6 +155,7 @@ export default {
         }
         batchActions.unshift(ImageUpload)
       }
+      batchActions.unshift(ImageUpload)
       return batchActions
     },
   },
