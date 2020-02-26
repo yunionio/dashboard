@@ -96,7 +96,7 @@ export default {
       })
     },
     doCreate (data) {
-      return this.params.list.onManager('create', {
+      return this.params.onManager('create', {
         managerArgs: {
           data,
         },

@@ -1,4 +1,3 @@
-import Layout from '@Compute/components/Layout'
 import Cloudaccount from '@Cloudenv/views/cloudaccount'
 import CloudaccountCreate from '@Cloudenv/views/cloudaccount/create'
 import CloudaccountUpdateBill from '@Cloudenv/views/cloudaccount/create/BillFileIndex'
@@ -9,6 +8,7 @@ import Schedpolicy from '@Cloudenv/views/schedpolicy'
 import Dynamicschedtag from '@Cloudenv/views/dynamicschedtag'
 import Tag from '@Cloudenv/views/tag'
 import Cloudevent from '@Cloudenv/views/cloudevent'
+import Layout from '@/layouts/RouterView'
 
 export default {
   index: 7,

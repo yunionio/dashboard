@@ -66,7 +66,12 @@ export default {
       })
     },
     doSubmit (values) {
-      return this.params.list.singleUpdate(this.params.data[0].id, values)
+      this.params.onManager('update', {
+        id: this.params.data[0].id,
+        managerArgs: {
+          data: values,
+        },
+      })
     },
     async handleConfirm () {
       this.loading = true
