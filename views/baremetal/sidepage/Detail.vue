@@ -1,10 +1,10 @@
 <template>
   <detail
-    :list="list"
     :data="data"
     :extra-info="extraInfo"
     :base-info="baseInfo"
-    status-module="server" />
+    status-module="server"
+    :on-manager="onManager" />
 </template>
 
 <script>
@@ -14,12 +14,13 @@ import {
   getBrandTableColumn,
   getSwitchTableColumn,
 } from '@/utils/common/tableColumn'
+import expectStatus from '@/constants/expectStatus'
 
 export default {
   name: 'BaremetalDetail',
   props: {
-    list: {
-      type: Object,
+    onManager: {
+      type: Function,
       required: true,
     },
     data: {
@@ -29,7 +30,6 @@ export default {
   },
   data () {
     return {
-      serverDetail: {},
       baseInfo: [
         {
           field: 'keypair',
@@ -41,11 +41,12 @@ export default {
   },
   computed: {
     diskInfos () {
-      const disksInfo = this.serverDetail.disks_info
+      const disksInfo = this.data.disks_info
       if (!disksInfo) return {}
       const dataDisk = {}
       const sysDisk = {}
       let image = '-'
+      let imageId
       let sysDisks = disksInfo.filter(v => v.disk_type === 'sys')
       if (sysDisks && sysDisks.length === 0) {
         sysDisks = disksInfo.filter(v => v.index === 0)
@@ -54,6 +55,7 @@ export default {
       if (sysDisks && sysDisks.length > 0) {
         const sysKey = sysDisks[0].storage_type
         image = sysDisks[0].image || '-'
+        imageId = sysDisks[0].image_id
         sysDisk[sysKey] = this._dealSize(sysDisks)
       }
       if (dataDisks && dataDisks.length > 0) {
@@ -67,11 +69,13 @@ export default {
       }
       if (this.data.cdrom && dataDisks.length > 0) {
         image = dataDisks[0].image
+        imageId = dataDisks[0].image_id
       }
       return {
         sysDisk: this._diskStringify(sysDisk) || '-',
         dataDisk: this._diskStringify(dataDisk) || '-',
         image,
+        imageId,
       }
     },
     extraInfo () {
@@ -95,7 +99,7 @@ export default {
               hideField: true,
               message: this.diskInfos.image,
               slotCallback: row => {
-                return [<span>{ this.diskInfos.image }</span>]
+                return [<side-page-trigger onTrigger={ () => this.handleOpenSystemImageDetail(this.diskInfos.imageId) }>{ this.diskInfos.image }</side-page-trigger>]
               },
             }),
             {
@@ -169,7 +173,7 @@ export default {
               field: 'disable_delete',
               title: '删除保护',
               change: val => {
-                this.list.onManager('update', {
+                this.onManager('update', {
                   id: this.data.id,
                   managerArgs: {
                     data: { disable_delete: val },
@@ -181,12 +185,6 @@ export default {
         },
       ]
     },
-  },
-  created () {
-    const manager = new this.$Manager('servers')
-    manager.get({ id: this.data.id }).then(res => {
-      this.serverDetail = res.data || {}
-    })
   },
   methods: {
     _diskStringify (diskObj) {
@@ -208,6 +206,19 @@ export default {
       })
       return sameType1.reduce((a, b) => {
         return a + b
+      })
+    },
+    handleOpenSystemImageDetail (id) {
+      this.$emit('init-side-page-tab', 'system-image-detail')
+      this.$emit('side-page-trigger-handle', this, 'SystemImageSidePage', {
+        id,
+        resource: 'images',
+        apiVersion: 'v1',
+        steadyStatus: Object.values(expectStatus.image).flat(),
+      }, {
+        cancel: () => {
+          this.$emit('single-refresh', this.data.id)
+        },
       })
     },
   },
