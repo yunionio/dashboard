@@ -87,7 +87,7 @@ export default {
         await this.doCreate(values)
         this.loading = false
         this.cancelDialog()
-        this.params.list.refresh()
+        this.refresh()
       } catch (error) {
         this.loading = false
       }

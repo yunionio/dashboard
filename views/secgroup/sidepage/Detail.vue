@@ -1,6 +1,6 @@
 <template>
   <detail
-    :list="list"
+    :on-manager="onManager"
     :data="data"
     :base-info="baseInfo" />
 </template>
@@ -9,11 +9,11 @@
 export default {
   name: 'SecgroupDetail',
   props: {
-    data: {
-      type: Object,
+    onManager: {
+      type: Function,
       required: true,
     },
-    list: {
+    data: {
       type: Object,
       required: true,
     },

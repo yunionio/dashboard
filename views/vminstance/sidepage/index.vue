@@ -77,7 +77,7 @@ export default {
       if (this.params.windowData.currentTab === 'secgroup-list') {
         return {
           detail: true,
-          server: this.params.resId,
+          server: this.data.id,
         }
       }
       if (this.params.windowData.currentTab === 'host-list') {
