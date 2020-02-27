@@ -474,6 +474,9 @@ export default {
   created () {
     this.initSidePageTab('cloudaccount-detail')
     this.list.fetchData()
+    this.$bus.$on('CloudAccountListSingleRefresh', args => {
+      this.list.singleRefresh(...args)
+    }, this)
   },
   methods: {
     getParam () {
