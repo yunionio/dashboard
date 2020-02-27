@@ -3,16 +3,28 @@
     @cancel="cancelSidePage"
     title="NAT网关"
     icon="res-nat"
-    :res-name="data.name"
+    :res-name="detailData.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
+    :loaded="loaded"
     @tab-change="handleTabChange">
-    <component :is="params.windowData.currentTab" :res-id="params.resId" :data="data" :list="params.list" :getParams="getParams" />
+    <component
+      :is="params.windowData.currentTab"
+      :res-id="detailData.id"
+      :data="detailData"
+      :getParams="getParams"
+      :on-manager="onManager"
+      @side-page-trigger-handle="sidePageTriggerHandle"
+      @init-side-page-tab="initSidePageTab"
+      @refresh="refresh"
+      @single-refresh="singleRefresh"
+      @tab-change="handleTabChange" />
   </base-side-page>
 </template>
 
 <script>
+import ColumnsMixin from '../mixins/columns'
 import NatDetail from './Detail'
 import Snat from './Snat'
 import Dnat from './Dnat'
@@ -28,7 +40,7 @@ export default {
     Dnat,
     Actions,
   },
-  mixins: [SidePageMixin, WindowsMixin],
+  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin],
   data () {
     return {
       detailTabs: [
@@ -42,9 +54,6 @@ export default {
   computed: {
     getParams () {
       return null
-    },
-    data () {
-      return this.params.list.data[this.params.resId].data
     },
   },
 }

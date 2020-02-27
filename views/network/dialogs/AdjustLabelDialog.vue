@@ -78,7 +78,7 @@ export default {
         })
     },
     doBindSchedTags (data) {
-      return this.params.list.onManager('batchPerformAction', {
+      return this.params.onManager('batchPerformAction', {
         id: this.params.data[0].id,
         managerArgs: {
           action: 'set-schedtag',

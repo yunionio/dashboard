@@ -131,9 +131,8 @@ export default {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
-        await this.params.list.onManager('performAction', {
+        await this.params.onManager('performAction', {
           id: this.params.data[0].id,
-          steadyStatus: this.params.list.steadyStatus,
           managerArgs: {
             action: 'reserve-ip',
             data: {

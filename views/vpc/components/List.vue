@@ -8,20 +8,15 @@
 
 <script>
 import * as R from 'ramda'
-import {
-  getNameDescriptionTableColumn,
-  getStatusTableColumn,
-  getCopyWithContentTableColumn,
-  getRegionTableColumn,
-  getBrandTableColumn,
-  getAccountTableColumn,
-} from '@/utils/common/tableColumn'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
+import ListMixin from '@/mixins/list'
 import { getStatusFilter, getBrandFilter, getAccountFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'VPCList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
@@ -50,38 +45,6 @@ export default {
           },
         },
       }),
-      columns: [
-        getNameDescriptionTableColumn({
-          vm: this,
-          hideField: true,
-          slotCallback: row => {
-            return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'VpcSidePage') }>{ row.name }</side-page-trigger>
-            )
-          },
-        }),
-        getCopyWithContentTableColumn({
-          field: 'cidr_block',
-          title: '目标网段',
-          sortable: true,
-        }),
-        getRegionTableColumn(),
-        getBrandTableColumn(),
-        getAccountTableColumn(),
-        getStatusTableColumn({ statusModule: 'vpc' }),
-        {
-          field: 'wire_count',
-          title: '二层网络',
-          width: 70,
-          sortable: true,
-        },
-        {
-          field: 'network_count',
-          title: 'IP子网数量',
-          width: 80,
-          sortable: true,
-        },
-      ],
       groupActions: [
         {
           label: '新建',
@@ -89,7 +52,8 @@ export default {
             this.createDialog('VpcCreateDialog', {
               title: '新建',
               data: this.list.selectedItems,
-              list: this.list,
+              onManager: this.onManager,
+              refresh: this.refresh,
             })
           },
           meta: () => {
@@ -106,7 +70,7 @@ export default {
               title: '删除',
               data: this.list.selectedItems,
               columns: this.columns,
-              list: this.list,
+              onManager: this.onManager,
             })
           },
           meta: () => {
@@ -114,24 +78,6 @@ export default {
               validate: this.list.allowDelete(),
             }
           },
-        },
-      ],
-      singleActions: [
-        {
-          label: '删除',
-          permission: 'vpcs_delete',
-          action: (obj) => {
-            this.createDialog('DeleteResDialog', {
-              title: '删除',
-              data: [obj],
-              columns: this.columns,
-              list: this.list,
-              success: () => {
-                this.destroySidePages()
-              },
-            })
-          },
-          meta: (obj) => this.$getDeleteResult(obj),
         },
       ],
     }
@@ -154,6 +100,15 @@ export default {
       }
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
+    },
+    handleOpenSidepage (row) {
+      this.sidePageTriggerHandle(this, 'VpcSidePage', {
+        id: row.id,
+        resource: 'vpcs',
+        getParams: this.getParam,
+      }, {
+        list: this.list,
+      })
     },
   },
 }

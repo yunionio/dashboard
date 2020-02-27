@@ -12,42 +12,16 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import {
-  getProjectTableColumn,
-  getRegionTableColumn,
-  getBrandTableColumn,
-  getStatusTableColumn,
-  getCopyWithContentTableColumn,
-  // getNameDescriptionTableColumn,
-  isPublicTableColumn,
-} from '@/utils/common/tableColumn'
-import windows from '@/mixins/windows.js'
-import i18n from '@/locales'
-import { findPlatform } from '@/utils/common/hypervisor'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
+import WindowsMixin from '@/mixins/windows.js'
 import { getBrandFilter, getAccountFilter, getTenantFilter } from '@/utils/common/tableFilter'
-import globalSearchMixins from '@/mixins/globalSearch'
-
-const PROVIDER_FILTER_CN = i18n.t('env')
-
-const disableAdjustConfig = ['private', 'public']
-const canAdjustConfig = (obj) => {
-  const config = {
-    hasbrand: true,
-    canUpdate: true,
-    brand: '',
-  }
-  let brand = obj.brand || obj.provider
-  config.brand = brand
-  if (!brand) config.hasbrand = false
-  brand = brand.toLowerCase()
-  const platform = findPlatform(brand)
-  if (disableAdjustConfig.includes(platform)) config.canUpdate = false
-  return config
-}
+import ListMixin from '@/mixins/list'
+import GlobalSearchMixin from '@/mixins/globalSearch'
 
 export default {
   name: 'NetworkList',
-  mixins: [windows, globalSearchMixins],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
@@ -156,97 +130,6 @@ export default {
           { label: '可用区', key: 'zone' },
         ],
       },
-      columns: [
-        // getNameDescriptionTableColumn({
-        //   vm: this,
-        //   hideField: true,
-        //   slotCallback: row => {
-        //     return (
-        //       <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'NetworkSidePage') }>{ row.name }</side-page-trigger>
-        //     )
-        //   },
-        // }),
-        {
-          field: 'name',
-          title: '名称',
-          sortable: true,
-          showOverflow: 'ellipsis',
-          minWidth: 100,
-          slots: {
-            default: ({ row }, h) => {
-              const ret = [
-                <list-body-cell-wrap copy edit={ this.isPower(row) } row={row} list={this.list} hideField={ true }>
-                  <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'NetworkSidePage') }>{ row.name }</side-page-trigger>
-                </list-body-cell-wrap>,
-                <list-body-cell-wrap edit={ this.isPower(row) } field="description" row={row} list={this.list} />,
-              ]
-              return ret
-            },
-          },
-        },
-        {
-          field: 'ip',
-          title: 'IP地址',
-          width: 140,
-          slots: {
-            default: ({ row }) => {
-              return [
-                <div>起：{ row.guest_ip_start }</div>,
-                <div>止：{ row.guest_ip_end }</div>,
-              ]
-            },
-          },
-        },
-        {
-          field: 'server_type',
-          title: '类型',
-          width: 60,
-          formatter: ({ cellValue }) => {
-            if (cellValue === 'baremetal') {
-              return '物理机'
-            }
-            if (cellValue === 'container') {
-              return '容器'
-            }
-            if (cellValue === 'guest') {
-              return '虚拟机'
-            }
-            if (cellValue === 'pxe') {
-              return 'PXE'
-            }
-            if (cellValue === 'ipmi') {
-              return 'IPMI'
-            }
-            return '未知'
-          },
-        },
-        getStatusTableColumn({ statusModule: 'network' }),
-        {
-          field: 'ports',
-          title: '使用情况',
-          minWidth: 100,
-          slots: {
-            default: ({ row }) => {
-              return [
-                <div class='text-truncate'>总计:{ row.ports }</div>,
-                <div class='text-truncate'>使用:{ row.ports_used }</div>,
-              ]
-            },
-          },
-        },
-        isPublicTableColumn(),
-        getBrandTableColumn(),
-        getProjectTableColumn(),
-        getRegionTableColumn(),
-        getCopyWithContentTableColumn({ field: 'wire', title: '二层网络' }),
-        {
-          field: 'vlan_id',
-          title: 'VLAN',
-          width: 60,
-        },
-        getCopyWithContentTableColumn({ field: 'vpc', title: 'VPC' }),
-        getCopyWithContentTableColumn({ field: 'account', title: '云账号' }),
-      ],
       groupActions: [
         {
           label: '新建',
@@ -271,7 +154,7 @@ export default {
                   this.createDialog('ChangeOwenrDialog', {
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    list: this.list,
+                    onManager: this.onManager,
                   })
                 },
                 meta: () => {
@@ -290,7 +173,7 @@ export default {
                   this.createDialog('SetPublicDialog', {
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    list: this.list,
+                    onManager: this.onManager,
                   })
                 },
                 meta: () => {
@@ -335,7 +218,8 @@ export default {
                   this.createDialog('NetworkConcatDialog', {
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    list: this.list,
+                    onManager: this.onManager,
+                    refresh: this.refresh,
                     itemData: {
                       IPfrom: this.IPfromObj.IPfrom,
                       nameFrom: this.IPfromObj.name,
@@ -371,201 +255,12 @@ export default {
                     data: this.list.selectedItems,
                     columns: this.columns,
                     title: '删除',
-                    list: this.list,
+                    onManager: this.onManager,
                   })
                 },
                 meta: () => {
                   return {
                     validate: this.list.allowDelete(),
-                  }
-                },
-              },
-            ]
-          },
-        },
-      ],
-      singleActions: [
-        {
-          label: '调整标签',
-          action: (obj) => {
-            this.createDialog('AdjustLabelDialog', {
-              data: [obj],
-              columns: this.columns,
-              list: this.list,
-            })
-          },
-          meta: (obj) => {
-            return {
-              validate: this.isPower(obj),
-            }
-          },
-        },
-        {
-          label: '更多',
-          actions: obj => {
-            return [
-              {
-                label: '修改属性',
-                permission: 'networks_update',
-                action: () => {
-                  const updatePath = this.$router.resolve(this.$route.path)
-                  this.$router.push({ path: updatePath.resolved.path + '/edit', query: { network_id: obj.id } })
-                },
-                meta: () => {
-                  let tooltip = ''
-                  const { brand, canUpdate } = canAdjustConfig(obj)
-                  const platform = findPlatform(brand)
-                  if (!canUpdate) {
-                    tooltip = `${PROVIDER_FILTER_CN[platform]}的IP子网不能修改属性`
-                  }
-                  if (this.isPower(obj)) {
-                    const { hasbrand, canUpdate } = canAdjustConfig(obj)
-                    if (obj.cloud_env === 'onpremise' && obj.vpc_id !== 'default') {
-                      return {
-                        validate: false,
-                        tooltip: '本地IDC的VPC下新建的IP子网不支持该操作',
-                      }
-                    }
-                    if (!hasbrand) {
-                      return {
-                        validate: true,
-                        tooltip,
-                      }
-                    }
-                    return {
-                      validate: canUpdate,
-                      tooltip,
-                    }
-                  } else {
-                    tooltip = '权限不足'
-                    return {
-                      validate: false,
-                      tooltip,
-                    }
-                  }
-                },
-              },
-              {
-                label: `更改${this.$t('dictionary.project')}`,
-                permission: 'networks_perform_change_owner',
-                action: () => {
-                  this.createDialog('ChangeOwenrDialog', {
-                    data: [obj],
-                    columns: this.columns,
-                    list: this.list,
-                  })
-                },
-                meta: () => {
-                  return {
-                    validate: this.isPower(obj),
-                  }
-                },
-              },
-              {
-                label: '设置为共享',
-                permission: 'networks_perform_public',
-                action: () => {
-                  this.createDialog('SetPublicDialog', {
-                    data: [obj],
-                    title: '设置为共享',
-                    columns: this.columns,
-                    list: this.list,
-                  })
-                },
-                meta: () => {
-                  return {
-                    validate: this.isPower(obj),
-                  }
-                },
-              },
-              {
-                label: '分割IP子网',
-                permission: 'networks_perform_split',
-                action: () => {
-                  this.createDialog('NetworkSplitDialog', {
-                    data: [obj],
-                    columns: this.columns,
-                    list: this.list,
-                  })
-                },
-                meta: () => {
-                  if (this.isPower(obj)) {
-                    if (obj.external_id && obj.external_id.length > 0) { // 是公网 IP
-                      return {
-                        validate: false,
-                        tooltip: '公网 IP 不支持该操作',
-                      }
-                    } else if (obj.cloud_env === 'onpremise' && obj.vpc_id !== 'default') {
-                      return {
-                        validate: false,
-                        tooltip: '本地IDC的VPC下新建的IP子网不支持该操作',
-                      }
-                    } else {
-                      return {
-                        validate: true,
-                      }
-                    }
-                  } else {
-                    return {
-                      validate: false,
-                      tooltip: '权限不足',
-                    }
-                  }
-                },
-              },
-              {
-                label: '预留IP',
-                permission: 'reservedips_create',
-                action: (obj) => {
-                  this.createDialog('NetworkReversedIPDialog', {
-                    data: [obj],
-                    columns: this.columns,
-                    title: '预留IP',
-                    list: this.list,
-                  })
-                },
-                meta: () => {
-                  if (this.isDomainMode) {
-                    return {
-                      validate: false,
-                      tooltip: '权限不足',
-                    }
-                  }
-                  return {
-                    validate: true,
-                  }
-                },
-              },
-              {
-                label: '删除',
-                permission: 'networks_delete',
-                action: () => {
-                  this.createDialog('DeleteResDialog', {
-                    data: [obj],
-                    columns: this.columns,
-                    title: '删除',
-                    list: this.list,
-                    success: () => {
-                      this.destroySidePages()
-                    },
-                  })
-                },
-                meta: () => {
-                  if (!this.isPower(obj)) {
-                    return {
-                      validate: false,
-                      tooltip: '权限不足',
-                    }
-                  }
-                  if (!this.$getDeleteResult(obj).validate) {
-                    return {
-                      validate: false,
-                      tooltip: this.$getDeleteResult(obj).tooltip,
-                    }
-                  }
-                  return {
-                    validate: true,
-                    tooltip: '',
                   }
                 },
               },
@@ -669,6 +364,15 @@ export default {
       }
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
+    },
+    handleOpenSidepage (row) {
+      this.sidePageTriggerHandle(this, 'NetworkSidePage', {
+        id: row.id,
+        resource: 'networks',
+        getParams: this.getParam,
+      }, {
+        list: this.list,
+      })
     },
   },
 }

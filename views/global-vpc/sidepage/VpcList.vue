@@ -15,7 +15,6 @@ export default {
   name: 'GloblaVpcSunVpcList',
   props: ['getParams'],
   data () {
-    console.log(this)
     return {
       list: this.$list.createList(this, {
         resource: 'vpcs',

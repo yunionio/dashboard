@@ -2,7 +2,7 @@
   <div>
    <page-header title="预留IP" />
    <page-body>
-     <reserved-ip-list />
+     <reserved-ip-list :id="listId" />
    </page-body>
   </div>
 </template>
@@ -14,6 +14,11 @@ export default {
   name: 'ReservedIPIndex',
   components: {
     ReservedIpList,
+  },
+  data () {
+    return {
+      listId: 'ReservedIPList',
+    }
   },
 }
 </script>

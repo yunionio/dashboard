@@ -68,7 +68,6 @@ export default {
           sortable: true,
           slots: {
             default: ({ row }) => {
-              console.log(row)
               return IP_TYPES[row.owner_type]
             },
           },
@@ -100,7 +99,6 @@ export default {
   },
   methods: {
     async fetchQueryAddresses () {
-      console.log(this.params)
       this.loading = true
       try {
         const manager = new this.$Manager('networks')

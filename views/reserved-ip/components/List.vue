@@ -7,17 +7,27 @@
 </template>
 
 <script>
-import { getCopyWithContentTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
+import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'ReservedIPList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
+  props: {
+    id: String,
+    getParams: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'reservedips',
-        getParams: { details: true, with_meta: true },
+        getParams: this.getParam,
         filterOptions: {
           name: {
             label: 'IP子网',
@@ -29,33 +39,14 @@ export default {
           },
         },
       }),
-      columns: [
-        getCopyWithContentTableColumn({
-          field: 'network',
-          title: 'IP子网',
-        }),
-        getCopyWithContentTableColumn({
-          field: 'ip_addr',
-          title: 'IP地址',
-        }),
-        {
-          field: 'notes',
-          title: '备注',
-          slots: {
-            default: ({ row }, h) => {
-              return [<list-body-cell-wrap edit field="notes" row={row} list={this.list} />]
-            },
-          },
-        },
-        getTimeTableColumn(),
-      ],
       groupActions: [
         {
           label: '新建',
           action: () => {
             this.createDialog('ReservedIpCreateDialog', {
               title: '新建',
-              list: this.list,
+              onManager: this.onManager,
+              refresh: this.refresh,
             })
           },
           meta: () => {
@@ -70,7 +61,8 @@ export default {
           action: () => {
             this.createDialog('ReservedIPFreedDialog', {
               title: '释放',
-              list: this.list,
+              onManager: this.onManager,
+              refresh: this.refresh,
               columns: this.columns,
               data: this.list.selectedItems,
               name: '预留IP',
@@ -83,28 +75,21 @@ export default {
           },
         },
       ],
-      singleActions: [
-        {
-          label: '释放',
-          action: (obj) => {
-            this.createDialog('ReservedIPFreedDialog', {
-              title: '释放',
-              data: [obj],
-              columns: this.columns,
-              list: this.list,
-              name: '预留IP',
-            })
-          },
-          meta: (obj) => {
-            return this.$getDeleteResult(obj)
-          },
-        },
-      ],
     }
   },
   created () {
     this.initSidePageTab('detail')
     this.list.fetchData()
+  },
+  methods: {
+    getParam () {
+      const ret = {
+        details: true,
+        with_meta: true,
+        ...this.getParams,
+      }
+      return ret
+    },
   },
 }
 </script>

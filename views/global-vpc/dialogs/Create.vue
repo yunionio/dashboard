@@ -69,7 +69,7 @@ export default {
       this.loading = true
       try {
         const values = await this.validateForm()
-        await this.params.list.onManager('create', {
+        await this.params.onManager('create', {
           managerArgs: {
             data: values,
           },
