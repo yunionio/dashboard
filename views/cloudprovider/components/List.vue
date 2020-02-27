@@ -110,7 +110,9 @@ export default {
         {
           label: '启用',
           action: () => {
-            this.list.batchPerformAction('enable', null)
+            this.list.batchPerformAction('disable', null).then(() => {
+              this.$bus.$emit('CloudAccountListSingleRefresh', [this.data.id])
+            })
           },
           meta: () => {
             return {
@@ -121,7 +123,9 @@ export default {
         {
           label: '禁用',
           action: () => {
-            this.list.batchPerformAction('disable', null)
+            this.list.batchPerformAction('disable', null).then(() => {
+              this.$bus.$emit('CloudAccountListSingleRefresh', [this.data.id])
+            })
           },
           meta: () => {
             return {
