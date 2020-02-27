@@ -479,6 +479,7 @@ export default {
           await this.doChangeSettingsByWorkflowSubmit(values)
         } else {
           await this.doChangeSettingsSubmit(values)
+          this.$message.success('操作成功')
         }
         this.cancel()
       } catch (error) {
