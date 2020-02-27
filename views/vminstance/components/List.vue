@@ -325,10 +325,19 @@ export default {
                 },
                 meta: () => {
                   const ret = {
+                    validate: true,
+                    tooltip: null,
+                  }
+                  const isBindKeypair = this.list.selectedItems.some((item) => { return item.keypair_id && item.keypair_id.toLowerCase() !== 'none' })
+                  if (isBindKeypair) {
+                    ret.validate = false
+                    ret.tooltip = '已绑定密钥的云服务器无法重置密码'
+                    return ret
+                  }
+                  return {
                     validate: cloudEnabled('resetPassword', this.list.selectedItems),
                     tooltip: cloudUnabledTip('resetPassword', this.list.selectedItems),
                   }
-                  return ret
                 },
               },
               {
