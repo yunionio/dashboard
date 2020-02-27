@@ -19,6 +19,7 @@
         <a-form-item label="操作系统" v-bind="formItemLayout" v-if="isPublic">
           <os-select
             :type="type"
+            :types="osTypes"
             :osType="osType"
             :hypervisor="firstData.hypervisor"
             :image-params="imageParams"
@@ -45,6 +46,7 @@ import WorkflowMixin from '@/mixins/workflow'
 import { findPlatform } from '@/utils/common/hypervisor'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
 import NameRepeated from '@/sections/NameRepeated'
+import { HYPERVISORS_MAP } from '@/constants'
 
 export default {
   name: 'VmCloneDialog',
@@ -173,6 +175,12 @@ export default {
     },
     osType () {
       return this.params.data[0].os_type
+    },
+    osTypes () {
+      if (HYPERVISORS_MAP.ctyun.key === this.firstData.hypervisor) {
+        return ['public', 'public_customize']
+      }
+      return []
     },
   },
   created () {
