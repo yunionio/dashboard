@@ -90,9 +90,9 @@ export default {
       const isUpdate = this.params.data.some(item => item.enable_auto_sync !== data.enable_auto_sync)
       if (!isUpdate) return Promise.resolve()
       const action = data.enable_auto_sync ? 'enable-auto-sync' : 'disable-auto-sync'
-      return this.params.list.onManager('batchPerformAction', {
+      return this.params.onManager('batchPerformAction', {
         id: ids,
-        steadyStatus: this.params.list.steadyStatus,
+        steadyStatus: this.params.steadyStatus,
         managerArgs: {
           action,
         },
@@ -103,9 +103,9 @@ export default {
       // 是否需要更新
       const isUpdate = this.params.data.some(item => item.sync_interval_seconds !== data.sync_interval_seconds)
       if (!isUpdate) return Promise.resolve()
-      return this.params.list.onManager('batchUpdate', {
+      return this.params.onManager('batchUpdate', {
         id: ids,
-        steadyStatus: this.params.list.steadyStatus,
+        steadyStatus: this.params.steadyStatus,
         managerArgs: {
           data: {
             sync_interval_seconds: data.sync_interval_seconds * 60,

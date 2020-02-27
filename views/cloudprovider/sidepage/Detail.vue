@@ -1,7 +1,7 @@
 <template>
   <detail
-    :list="list"
     :data="data"
+    :onManager="onManager"
     :base-info="baseInfo"
     :extra-info="extraInfo"
     status-module="cloudaccount" />
@@ -16,8 +16,8 @@ import {
 export default {
   name: 'CloudproviderDetail',
   props: {
-    list: {
-      type: Object,
+    onManager: {
+      type: Function,
       required: true,
     },
     data: {

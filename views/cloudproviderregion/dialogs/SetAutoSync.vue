@@ -91,7 +91,7 @@ export default {
         await this.updateAutoSyncStatus(values, ids)
         this.loading = false
         this.cancelDialog()
-        this.params.list.refresh()
+        this.params.refresh()
       } catch (error) {
         this.loading = false
       }
