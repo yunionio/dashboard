@@ -58,7 +58,13 @@ export default {
   },
   methods: {
     doUpdate (data) {
-      return this.params.list.singlePerformAction('change-bandwidth', data)
+      return this.params.onManager('performAction', {
+        id: data.id,
+        managerArgs: {
+          action: 'change-bandwidth',
+          data,
+        },
+      })
     },
     async handleConfirm () {
       this.loading = true
