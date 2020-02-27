@@ -8,13 +8,15 @@
 </template>
 
 <script>
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
-import { getNameDescriptionTableColumn, getEnabledTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 import { ENABLED_OPTS } from '@/constants'
+import ListMixin from '@/mixins/list'
 
 export default {
   name: 'DynamicschedtagList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
   },
@@ -57,33 +59,13 @@ export default {
           { label: '条件', key: 'condition' },
         ],
       },
-      columns: [
-        getNameDescriptionTableColumn({
-          vm: this,
-          hideField: true,
-          slotCallback: row => {
-            return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'DynamicschedtagSidePage') }>{ row.name }</side-page-trigger>
-            )
-          },
-        }),
-        getEnabledTableColumn(),
-        getCopyWithContentTableColumn({
-          field: 'schedtag',
-          title: '调度标签',
-        }),
-        getCopyWithContentTableColumn({
-          field: 'condition',
-          title: '条件',
-        }),
-      ],
       groupActions: [
         {
           label: '新建',
           action: () => {
             this.createDialog('CreateDynamicschedtagDialog', {
               title: '创建动态调度标签',
-              list: this.list,
+              onManager: this.onManager,
             })
           },
           meta: () => {
@@ -99,7 +81,7 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               title: '删除动态调度标签',
-              list: this.list,
+              onManager: this.onManager,
             })
           },
           meta: () => {
@@ -109,69 +91,21 @@ export default {
           },
         },
       ],
-      singleActions: [
-        {
-          label: '启用',
-          action: obj => {
-            this.list.singleUpdate(obj.id, { enabled: true })
-          },
-          meta: obj => {
-            return {
-              validate: !obj.enabled,
-            }
-          },
-        },
-        {
-          label: '禁用',
-          action: obj => {
-            this.list.singleUpdate(obj.id, { enabled: false })
-          },
-          meta: obj => {
-            return {
-              validate: obj.enabled,
-            }
-          },
-        },
-        {
-          label: '更多',
-          actions: obj => {
-            return [
-              {
-                label: '调整策略',
-                action: () => {
-                  this.createDialog('UpdateDynamicschedtagDialog', {
-                    data: [obj],
-                    columns: this.columns,
-                    title: '调整策略',
-                    list: this.list,
-                  })
-                },
-              },
-              {
-                label: '删除',
-                action: () => {
-                  this.createDialog('DeleteResDialog', {
-                    data: [obj],
-                    columns: this.columns,
-                    title: '删除动态调度标签',
-                    list: this.list,
-                  })
-                },
-                meta: () => {
-                  return {
-                    validate: obj.can_delete,
-                  }
-                },
-              },
-            ]
-          },
-        },
-      ],
     }
   },
   created () {
     this.initSidePageTab('dynamicschedtag-detail')
     this.list.fetchData()
+  },
+  methods: {
+    handleOpenSidepage (row) {
+      this.sidePageTriggerHandle(this, 'DynamicschedtagSidePage', {
+        id: row.id,
+        resource: 'dynamicschedtags',
+      }, {
+        list: this.list,
+      })
+    },
   },
 }
 </script>

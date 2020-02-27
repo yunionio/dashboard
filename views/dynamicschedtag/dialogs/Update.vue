@@ -29,7 +29,8 @@ export default {
   },
   methods: {
     doCreate (data) {
-      return this.params.list.onManager('create', {
+      return this.params.onManager('update', {
+        id: this.params.data[0].id,
         managerArgs: {
           data,
         },
