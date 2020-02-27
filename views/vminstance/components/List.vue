@@ -335,10 +335,11 @@ export default {
                 label: '调整配置',
                 permission: 'server_perform_change_config',
                 action: () => {
-                  this.createDialog('VmAdjustConfigDialog', {
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    list: this.list,
+                  this.$router.push({
+                    name: 'VMInstanceAdjustConfig',
+                    query: {
+                      id: this.list.selectedItems.map((item) => { return item.id }),
+                    },
                   })
                 },
                 meta: () => {
@@ -1023,10 +1024,11 @@ export default {
                     label: '调整配置',
                     permission: 'server_perform_change_config',
                     action: () => {
-                      this.createDialog('VmAdjustConfigDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        list: this.list,
+                      this.$router.push({
+                        name: 'VMInstanceAdjustConfig',
+                        query: {
+                          id: obj.id,
+                        },
                       })
                     },
                     meta: () => {
