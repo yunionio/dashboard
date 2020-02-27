@@ -310,7 +310,7 @@ export default {
         }
         await this.saveEdit(values)
         this.loading = false
-        this.refresh()
+        this.params.refresh()
         this.cancelDialog()
       } catch (e) {
         this.loading = false

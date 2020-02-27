@@ -93,7 +93,7 @@ export default {
         await this.doConcat(values)
         this.loading = false
         this.cancelDialog()
-        this.refresh()
+        this.params.refresh()
       } catch (error) {
         this.loading = false
       }
