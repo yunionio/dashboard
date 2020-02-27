@@ -18,7 +18,7 @@
       <a-form
         :form="form.fc">
         <a-form-item label="容量" v-bind="formItemLayout">
-          <a-input-number :min="1" :max="100000" step="10" v-decorator="decorators.size" /> GB
+          <a-input-number :min="(params.data[0].disk_size / 1024) || 1" :max="100000" step="10" v-decorator="decorators.size" /> GB
         </a-form-item>
       </a-form>
     </div>
