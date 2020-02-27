@@ -19,10 +19,11 @@ import { getStatusTableColumn, getBrandTableColumn, getNameDescriptionTableColum
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import { getBrandItems, mapperStatusToItems } from '@/utils/common/tableFilter'
+import ListMixin from '@/mixins/list'
 
 export default {
   name: 'BindResource',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ListMixin],
   props: {
     resId: {
       type: String,
@@ -59,8 +60,9 @@ export default {
             this.createDialog('TagUnbindDialog', {
               columns: this.columns,
               data: [obj],
-              list: this.list,
+              onManager: this.onManager,
               tagData: this.data,
+              refresh: this.refresh,
             })
           },
         },
@@ -81,7 +83,7 @@ export default {
     },
     columns () {
       return [
-        getNameDescriptionTableColumn({ addLock: true, vm: this }),
+        getNameDescriptionTableColumn({ addLock: true, onManager: this.onManager }),
         getStatusTableColumn({ statusModule: this.currentResource }),
         getBrandTableColumn(),
         getProjectTableColumn(),

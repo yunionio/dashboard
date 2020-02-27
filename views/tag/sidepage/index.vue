@@ -3,20 +3,22 @@
     @cancel="cancelSidePage"
     title="标签"
     icon="res-tag"
-    :res-name="data.name"
+    :res-name="detailData.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
+    :loaded="loaded"
     @tab-change="handleTabChange">
     <component
       :is="params.windowData.currentTab"
-      :res-id="params.resId"
-      :data="data"
+      :res-id="data.id"
+      :data="detailData"
       @tab-change="handleTabChange" />
   </base-side-page>
 </template>
 
 <script>
+import ColumnsMixin from '../mixins/columns'
 import TagDetail from './Detail'
 import BindResource from './BindResource'
 import SidePageMixin from '@/mixins/sidePage'
@@ -28,7 +30,7 @@ export default {
     TagDetail,
     BindResource,
   },
-  mixins: [SidePageMixin, WindowsMixin],
+  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin],
   data () {
     return {
       detailTabs: [
@@ -36,11 +38,6 @@ export default {
         { label: '绑定资源', key: 'bind-resource' },
       ],
     }
-  },
-  computed: {
-    data () {
-      return this.params.data
-    },
   },
 }
 </script>

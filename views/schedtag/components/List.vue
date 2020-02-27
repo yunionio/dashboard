@@ -72,7 +72,7 @@ export default {
           action: () => {
             this.createDialog('CreateSchedtagDialog', {
               title: '创建调度标签',
-              list: this.list,
+              onManager: this.onManager,
             })
           },
           meta: () => {
@@ -94,7 +94,7 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               title: '删除调度标签',
-              list: this.list,
+              onManager: this.onManager,
             })
           },
           meta: () => {
