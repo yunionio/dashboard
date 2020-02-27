@@ -1,5 +1,6 @@
 <template>
   <div>
+    <page-header title="调整配置" style="margin-bottom: 7px;" />
     <a-alert class="mb-2" type="warning" v-if="tips">
       <div slot="message">
         {{ tips }}
@@ -225,9 +226,15 @@ export default {
       formItemLayout: {
         wrapperCol: {
           span: 21,
+          xxl: {
+            span: 23,
+          },
         },
         labelCol: {
           span: 3,
+          xxl: {
+            span: 1,
+          },
         },
       },
       diskLoaded: false,
@@ -479,6 +486,7 @@ export default {
           await this.doChangeSettingsByWorkflowSubmit(values)
         } else {
           await this.doChangeSettingsSubmit(values)
+          this.$message.success('操作成功')
         }
         this.cancel()
       } catch (error) {
