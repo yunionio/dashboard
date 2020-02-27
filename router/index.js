@@ -5,6 +5,7 @@ import Image from '@Compute/views/image'
 import ImageImport from '@Compute/views/image/image-import/index'
 import HostImage from '@Compute/views/host-image'
 import VMInstanceCreate from '@Compute/views/vminstance/create/index'
+import VMInstanceAdjustConfig from '@Compute/views/vminstance/adjustConfig'
 import Network from '@Network/views/network'
 import NetworkCreate from '@Network/views/network/Create'
 import EditAttributes from '@Network/views/network/EditAttributes'
@@ -67,6 +68,11 @@ export default {
               name: 'VMInstanceCreate',
               path: 'create',
               component: VMInstanceCreate,
+            },
+            {
+              name: 'VMInstanceAdjustConfig',
+              path: 'adjust-config',
+              component: VMInstanceAdjustConfig,
             },
           ],
         },
