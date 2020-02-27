@@ -85,7 +85,7 @@ export default {
   watch: {
     cloudEnv (val) {
       this.$nextTick(() => {
-        const query = this.$router.history.current.query
+        const query = this.getQuery(this.$router.history.current.query)
         const path = this.$router.history.current.path
         const newQuery = JSON.parse(JSON.stringify(query))
         newQuery.type = val === 'onpremise' ? 'idc' : val
@@ -119,6 +119,12 @@ export default {
         // 这里刷新当前 url
         window.location.reload()
       }
+    },
+    getQuery (query) {
+      if (query.sence === 'image') {
+        return { type: query.type }
+      }
+      return query
     },
   },
 }
