@@ -124,8 +124,16 @@ export default {
       this.loading = true
       try {
         const values = await this.validateForm()
-        const { list, data } = this.params
-        await list.batchPerformAction('limit', values, list.steadyStatus, data.map(({ id }) => id))
+        const { data } = this.params
+        await this.params.onManager('batchPerformAction', {
+          id: data.map(item => item.id),
+          steadyStatus: ['ready', 'create_fail', 'deleted', 'delete_fail'],
+          managerArgs: {
+            action: 'limit',
+            data: values,
+          },
+        })
+        this.params.refresh()
         this.cancelDialog()
       } catch (error) {
         this.loading = false

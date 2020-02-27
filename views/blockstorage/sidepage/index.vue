@@ -3,15 +3,29 @@
     @cancel="cancelSidePage"
     title="块存储"
     icon="res-blockstorage"
-    :res-name="data.name"
-    :actions="params.actions"
+    :res-name="detailData.name"
     :tabs="detailTabs"
     :current-tab="params.windowData.currentTab"
+    :loaded="loaded"
     @tab-change="handleTabChange">
     <template v-slot:actions>
-      <actions :options="params.singleActions" :row="data" button-type="link" button-size="small" />
+      <actions
+        :options="singleActions"
+        :row="detailData"
+        button-type="link"
+        button-size="small" />
     </template>
-    <component v-bind="hostListActions" :is="params.windowData.currentTab" :data="data" :list="params.list" :getParams="getParams" :getColumns="getColumns" :res-id="getParams.storage" />
+    <component
+      v-bind="hostListActions"
+      :is="params.windowData.currentTab"
+      :data="detailData"
+      :resource="resource"
+      :on-manager="onManager"
+      @refresh="refresh"
+      :list="params.list"
+      :getParams="getParams"
+      :getColumns="getColumns"
+      :res-id="getParams.storage" />
   </base-side-page>
 </template>
 
@@ -20,6 +34,8 @@ import DiskList from '@Compute/views/disk/components/List'
 import HostList from '@Compute/views/host/components/List'
 import DiskRecoveryList from '@Compute/views/disk-recovery/components/List'
 import CachedImages from '@Storage/views/blockstorage/sidepage/CachedImages'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 import Detail from './Detail'
 import { getStatusTableColumn, getCopyWithContentTableColumn, getProjectTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import SidePageMixin from '@/mixins/sidePage'
@@ -36,7 +52,7 @@ export default {
     HostList,
     CachedImages,
   },
-  mixins: [SidePageMixin, WindowsMixin],
+  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
@@ -52,7 +68,7 @@ export default {
   computed: {
     getParams () {
       return {
-        storage: this.params.resId,
+        storage: this.data.id,
         details: true,
       }
     },
@@ -75,9 +91,6 @@ export default {
         ]
       }
       return null
-    },
-    data () {
-      return this.params.list.data[this.params.resId].data
     },
     isBlockStorage () {
       return ['rbd', 'nfs', 'gpfs'].includes(this.data.storage_type)

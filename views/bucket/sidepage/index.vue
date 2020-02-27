@@ -1,21 +1,24 @@
 <template>
   <base-side-page
-    @cancel="cancelSidePage"
-    title="存储"
+   @cancel="cancelSidePage"
+    title="存储桶"
     icon="res-bucket"
-    :res-name="data.name"
-    :actions="params.actions"
+    :res-name="detailData.name"
     :tabs="detailTabs"
     :current-tab="params.windowData.currentTab"
+    :loaded="loaded"
     @tab-change="handleTabChange">
     <template v-slot:actions>
-      <actions :options="params.singleActions" :row="data" button-type="link" button-size="small" />
+      <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :data="data" :list="params.list" :getParams="getParams" :params="getParams" :res-id="getParams.storage" />
+    <component :is="params.windowData.currentTab" :data="detailData" :list="params.list" :getParams="getParams" :params="getParams" :res-id="getParams.storage" />
   </base-side-page>
 </template>
 
 <script>
+
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 import Detail from './Detail'
 import Objects from './Objects'
 import SidePageMixin from '@/mixins/sidePage'
@@ -29,7 +32,7 @@ export default {
     Detail,
     Objects,
   },
-  mixins: [SidePageMixin, WindowsMixin],
+  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
@@ -42,12 +45,9 @@ export default {
   computed: {
     getParams () {
       return {
-        storage: this.params.resId,
+        storage: this.data.id,
         details: true,
       }
-    },
-    data () {
-      return this.params.list.data[this.params.resId].data
     },
   },
 }
