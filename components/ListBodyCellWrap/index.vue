@@ -150,9 +150,10 @@ export default {
     update (formData) {
       if (this.onManager) {
         this.onManager('update', {
-          id: this.row.id,
           steadyStatus: this.steadyStatus,
+          id: this.row.id,
           managerArgs: {
+            id: this.row.id,
             data: {
               [this.field]: formData.input,
             },
