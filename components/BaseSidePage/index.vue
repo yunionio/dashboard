@@ -22,9 +22,11 @@
             <div class="text-color-help">{{ title }}</div>
             <div class="d-flex mt-2 w-100 align-items-center">
               <h5 class="text-truncate mb-0" style="min-width: 0;">{{ resName }}</h5>
-              <div class="ml-3 flex-shrink-0 flex-shrink-0 d-flex pr-2">
-                <div class="pr-4"><slot name="actions" /></div>
-              </div>
+              <template v-if="loaded">
+                <div class="ml-3 flex-shrink-0 flex-shrink-0 d-flex pr-2">
+                  <div class="pr-4"><slot name="actions" /></div>
+                </div>
+              </template>
             </div>
           </div>
         </div>
