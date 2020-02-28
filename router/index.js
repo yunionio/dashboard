@@ -1,7 +1,7 @@
 
-import Layout from '@Compute/components/Layout'
 import Dashboard from '@Dashboard/views/dashboard'
 import DashboardEdit from '@Dashboard/views/edit'
+import Layout from '@/layouts/RouterView'
 
 export default {
   index: 1,
