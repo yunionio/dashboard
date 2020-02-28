@@ -71,21 +71,31 @@ export default {
           },
         },
         {
-          field: 'virtual_capacity',
+          field: 'vcapacity',
           title: '虚拟容量',
           width: 100,
           formatter: ({ row }) => {
-            if (!row.virtual_capacity) return '-'
-            return sizestr(row.virtual_capacity, 'M', 1024)
+            if (!row.vcapacity) return '-'
+            return sizestr(row.vcapacity, 'M', 1024)
+          },
+          slots: {
+            header: ({ column }) => {
+              return [
+                <a-tooltip title='虚拟容量 = 实际容量 * 超售比'>
+                  <span class='mr-1'>{ column.title }</span>
+                  <icon type="question" />
+                </a-tooltip>,
+              ]
+            },
           },
         },
         {
-          field: 'used_capacity',
+          field: 'used',
           title: '分配',
           width: 100,
           formatter: ({ row }) => {
-            if (!row.used_capacity) return '-'
-            return sizestr(row.used_capacity, 'M', 1024)
+            if (!row.used) return '-'
+            return sizestr(row.used, 'M', 1024)
           },
         },
         getEnabledTableColumn(),

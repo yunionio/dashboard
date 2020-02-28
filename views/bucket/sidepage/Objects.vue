@@ -72,6 +72,7 @@ export default {
           field: 'name',
           title: '文件名称',
           minWidth: 120,
+          showOverflow: 'ellipsis',
           slots: {
             default: ({ row }) => {
               const { key } = row
@@ -81,7 +82,7 @@ export default {
               const rkey = key.replace(this.prefix, '')
               if (this.isDir(key)) {
                 return [
-                  <a-button style="padding: 0" type="link" onClick={() => this.nextPage(key)}><a-icon type="folder" theme="filled" style="color: rgb(245,200, 61)" />{ rkey }</a-button>,
+                  <a style="padding: 0" type="link" onClick={() => this.nextPage(key)}><a-icon type="folder" theme="filled" style="color: rgb(245,200, 61)" />{ rkey }</a>,
                 ]
               }
               return [
