@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="server-create-index">
     <page-header :title="headerTitle" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
     <component :is="component" :type="type" />
   </div>
@@ -129,3 +129,11 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.server-create-index {
+  ::v-deep .ant-form.ant-form-horizontal .ant-form-item .ant-form-item-label{
+    padding-left: 20px;
+  }
+}
+</style>

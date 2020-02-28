@@ -1,6 +1,6 @@
 import * as R from 'ramda'
 import _ from 'lodash'
-import { CreateServerForm, SCHED_POLICY_OPTIONS_MAP, SERVER_TYPE, SELECT_IMAGE_KEY_SUFFIX, LOGIN_TYPES_MAP } from '@Compute/constants'
+import { SCHED_POLICY_OPTIONS_MAP, SERVER_TYPE, SELECT_IMAGE_KEY_SUFFIX, LOGIN_TYPES_MAP } from '@Compute/constants'
 import OsSelect from '@Compute/sections/OsSelect'
 import ServerPassword from '@Compute/sections/ServerPassword'
 import CpuRadio from '@Compute/sections/CpuRadio'
@@ -30,6 +30,19 @@ import HypervisorRadio from '@/sections/HypervisorRadio'
 import DomainProject from '@/sections/DomainProject'
 import { getInitialValue } from '@/utils/common/ant'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
+
+const CreateServerForm = {
+  wrapperCol: {
+    md: { span: 18 },
+    xl: { span: 21 },
+    xxl: { span: 22 },
+  },
+  labelCol: {
+    md: { span: 6 },
+    xl: { span: 3 },
+    xxl: { span: 2 },
+  },
+}
 
 export default {
   name: 'IDCCreate',
@@ -71,8 +84,8 @@ export default {
       submiting: false,
       errors: [],
       formItemLayout: {
-        wrapperCol: { span: CreateServerForm.wrapperCol },
-        labelCol: { span: CreateServerForm.labelCol },
+        wrapperCol: CreateServerForm.wrapperCol,
+        labelCol: CreateServerForm.labelCol,
       },
       form: {
         fc: this.$form.createForm(this, { onValuesChange: this.onValuesChange }),
