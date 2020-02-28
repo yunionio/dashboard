@@ -6,7 +6,7 @@
         <div><a-icon @click="closeError" type="close" /></div>
       </div>
       <div class="divider" />
-      <ul class="list">
+      <ul class="list list-wrapper">
         <li
           v-for="(item, idx) of errors"
           :key="idx">
@@ -75,11 +75,13 @@ export default {
     background-color: #DCDFE6;
     height: 1px;
   }
+  .list-wrapper {
+    max-height: 400px;
+  }
   .list {
     padding: 0 15px;
     color: $error-color;
     overflow-y: scroll;
-    max-height: 600px;
     li {
       line-height: 1.8;
       list-style-type: disc;
