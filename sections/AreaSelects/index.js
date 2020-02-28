@@ -433,7 +433,7 @@ export default {
       }
       if (this[`Render${sn}`]) {
         const Render = this[`Render${sn}`]()
-        return <a-col span={this.colSpan}> <a-form-item> {fieldDecorator(Render)}</a-form-item> </a-col>
+        return <a-col span={this.colSpan}> <a-form-item wrapperCol={{ span: 24 }}> {fieldDecorator(Render)}</a-form-item> </a-col>
       }
       return null
     })

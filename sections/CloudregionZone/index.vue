@@ -2,14 +2,14 @@
   <div class="cloudregion-zone-select-wrapper">
     <a-row :gutter="8">
       <a-col :span="12">
-        <a-form-item>
+        <a-form-item :wrapperCol="{ span: 24 }">
           <a-select label-in-value v-decorator="decorator.cloudregion" @change="handleChange">
             <a-select-option v-for="item in regionOpts" :key="item.id">{{ item.name }}</a-select-option>
           </a-select>
         </a-form-item>
       </a-col>
       <a-col :span="12">
-        <a-form-item>
+        <a-form-item :wrapperCol="{ span: 24 }">
           <a-select label-in-value  v-decorator="decorator.zone" allow-clear @change="emit">
             <a-select-option v-for="item in zoneOpts" :key="item.id">{{ item.name }}</a-select-option>
           </a-select>
