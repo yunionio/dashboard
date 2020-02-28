@@ -177,10 +177,10 @@ export default {
       return {}
     },
     max () {
-      return this.currentTypeObj.max || DISK_MIN_SIZE
+      return this.currentTypeObj ? (this.currentTypeObj.max || DISK_MIN_SIZE) : DISK_MIN_SIZE
     },
     min () {
-      return this.currentTypeObj.min || DISK_MIN_SIZE
+      return this.currentTypeObj ? (this.currentTypeObj.min || DISK_MIN_SIZE) : DISK_MIN_SIZE
     },
     diskRemain () {
       const remain = this.capabilityData.max_data_disk_count - this.dataDisks.length
@@ -202,6 +202,13 @@ export default {
     dataDisks (val = []) {
       const notMountPoint = val.some((item) => { return item.notMountPoint })
       this.isShouldMountPoint = !notMountPoint
+    },
+    typesMap (v, oldV) {
+      if (!R.equals(v, oldV)) {
+        if (this.dataDisks && this.dataDisks.length) {
+          this.dataDisks.forEach(disk => this.decrease(disk.key))
+        }
+      }
     },
   },
   methods: {
