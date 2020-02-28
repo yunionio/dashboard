@@ -1,6 +1,7 @@
 <template>
   <div class="d-flex">
     <a-form-item
+      :wrapperCol="{ span: 24 }"
       class="mb-0 mr-1 w-50">
       <base-select
         class="w-100"
@@ -10,7 +11,7 @@
         :params="schedtagParams"
         :select-props="{ allowClear: true, placeholder: '请选择调度标签' }" />
     </a-form-item>
-    <a-form-item class="mb-0 w-50">
+    <a-form-item class="mb-0 w-50" :wrapperCol="{ span: 24 }">
       <base-select
         class="w-100"
         v-decorator="decorators.policy"
