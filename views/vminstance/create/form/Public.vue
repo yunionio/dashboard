@@ -345,6 +345,9 @@ export default {
         if (disableKeypairHyper.includes(hypervisor)) {
           delete loginTypes[LOGIN_TYPES_MAP.keypair.key]
         }
+        if (HYPERVISORS_MAP.google.key === hypervisor) {
+          delete loginTypes[LOGIN_TYPES_MAP.keypair.key]
+        }
       }
       if (this.isServertemplate) {
         delete loginTypes[LOGIN_TYPES_MAP.keypair.key]
