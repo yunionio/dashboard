@@ -973,7 +973,7 @@ export class GenCreateData {
       data['bios'] = this.fd.bios
     }
     // 到期释放
-    if (this.fd.durationStandard !== 'none') {
+    if (this.fd.billType !== BILL_TYPES_MAP.package.key && this.fd.durationStandard !== 'none') {
       if (this.fd.durationStandard === 'custom') {
         data['duration'] = this.fd.duration
       } else {
