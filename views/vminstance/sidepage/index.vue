@@ -19,7 +19,7 @@
       v-bind="listActives"
       :is="params.windowData.currentTab"
       :data="detailData"
-      :serverColumns="params.columns"
+      :serverColumns="columns"
       :res-id="data.id"
       :getParams="componentParams"
       :on-manager="onManager"
@@ -74,7 +74,6 @@ export default {
   },
   computed: {
     componentParams () {
-      console.log(this.detailData)
       if (this.params.windowData.currentTab === 'secgroup-list') {
         return {
           detail: true,

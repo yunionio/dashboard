@@ -208,7 +208,7 @@ export default {
           this.clearTimer()
           this.timer = setTimeout(() => {
             this.cancelDialog()
-            this.params.list.refresh()
+            this.params.refresh()
           }, 6000)
           return
         } else {

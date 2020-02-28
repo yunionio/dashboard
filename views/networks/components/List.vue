@@ -7,14 +7,15 @@
 </template>
 
 <script>
-import { SERVER_TYPE } from '@Compute/constants'
-import { getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
-import { findPlatform, typeClouds } from '@/utils/common/hypervisor'
+import { typeClouds } from '@/utils/common/hypervisor'
+import ListMixin from '@/mixins/list'
 
 export default {
   name: 'NetworkList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     resId: String,
     data: {
@@ -23,12 +24,10 @@ export default {
     },
     serverColumns: {
       type: Array,
+      default: () => ([]),
     },
   },
   data () {
-    const type = findPlatform(this.data.hypervisor)
-    const isPublic = type === SERVER_TYPE.private
-    const isPrivate = type === SERVER_TYPE.public
     return {
       list: this.$list.createList(this, {
         resource: 'networks',
@@ -39,83 +38,12 @@ export default {
           order: 'asc',
         },
       }),
-      columns: [
-        {
-          field: 'index',
-          title: '序号',
-          width: 50,
-          formatter: ({ row }) => {
-            return row.index ? row.index : '0'
-          },
-        },
-        getCopyWithContentTableColumn({ field: 'network', title: '网卡名称', sortable: true }),
-        getCopyWithContentTableColumn({ field: 'mac_addr', title: 'MAC地址', sortable: true }),
-        getCopyWithContentTableColumn({ field: 'ip_addr', title: 'IP地址', sortable: true }),
-        getCopyWithContentTableColumn({ field: 'driver', title: '驱动' }),
-        {
-          field: 'bw_limit',
-          title: '带宽限制',
-          width: 100,
-          formatter: ({ row }) => {
-            return `${row.bw_limit}Mbps`
-          },
-          slots: {
-            header: ({ column }) => {
-              return [
-                <a-tooltip title='"0"代表带宽没有限制'>
-                  <span class='mr-1'>{ column.title }</span>
-                  <icon type="question" />
-                </a-tooltip>,
-              ]
-            },
-          },
-        },
-      ],
-      singleActions: [
-        {
-          label: '修改带宽',
-          action: (obj) => {
-            this.createDialog('VmChangeBandwidthDialog', {
-              data: [obj],
-              columns: this.columns,
-              list: this.list,
-              refresh: this.refresh,
-            })
-          },
-        },
-        {
-          label: '更换IP',
-          action: (obj) => {
-            this.createDialog('VmChangeIpDialog', {
-              data: [obj],
-              columns: this.columns,
-              list: this.list,
-              zone: this.data.zone_id,
-              resId: this.resId,
-              refresh: this.refresh,
-            })
-          },
-          meta: (obj) => {
-            const ret = {
-              validate: false,
-              tooltip: null,
-            }
-            if (isPrivate || isPublic) {
-              ret.tooltip = '私有云、公有云不支持此操作'
-              return ret
-            }
-            ret.validate = true
-            return ret
-          },
-        },
-      ],
       groupActions: [
         {
           label: '添加网卡',
           action: () => {
             this.createDialog('VmSetNetworkDialog', {
               title: '添加网卡',
-              list: this.list,
               data: [this.data],
               columns: this.serverColumns,
               resId: this.resId,
