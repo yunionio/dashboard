@@ -1,6 +1,6 @@
-import Layout from '@Compute/components/Layout'
 import BlockStorage from '@Storage/views/blockstorage'
 import Bucket from '@Storage/views/bucket'
+import Layout from '@/layouts/RouterView'
 
 export default {
   index: 4,
