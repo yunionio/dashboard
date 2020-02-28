@@ -12,7 +12,14 @@
     <template v-slot:actions>
       <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :data="detailData" :res-id="data.id" :onManager="onManager" />
+    <component
+      :is="params.windowData.currentTab"
+      :data="detailData"
+      :res-id="data.id"
+      :onManager="onManager"
+      @side-page-trigger-handle="sidePageTriggerHandle"
+      @init-side-page-tab="initSidePageTab"
+      @single-refresh="singleRefresh" />
   </base-side-page>
 </template>
 

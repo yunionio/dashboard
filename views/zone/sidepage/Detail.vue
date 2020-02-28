@@ -7,6 +7,8 @@
 </template>
 
 <script>
+import { getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
+
 export default {
   name: 'ZoneDetail',
   props: {
@@ -22,10 +24,15 @@ export default {
   data () {
     return {
       baseInfo: [
-        {
+        getCopyWithContentTableColumn({
           field: 'cloudregion',
           title: '区域',
-        },
+          hideField: true,
+          slotCallback: row => {
+            if (!row.cloudregion) return '-'
+            return [<side-page-trigger onTrigger={ () => this.handleOpenCloudregionDetail(row.cloudregion_id) }>{ row.cloudregion }</side-page-trigger>]
+          },
+        }),
         {
           field: 'baremetals',
           title: '物理机(数量)',
@@ -67,6 +74,20 @@ export default {
         },
       ],
     }
+  },
+  methods: {
+    handleOpenCloudregionDetail (id) {
+      this.$emit('init-side-page-tab', 'CloudregionDetail')
+      this.$emit('side-page-trigger-handle', this, 'CloudregionSidePage', {
+        id,
+        resource: 'cloudregions',
+        apiVersion: 'v2',
+      }, {
+        cancel: () => {
+          this.$emit('single-refresh', this.data.id)
+        },
+      })
+    },
   },
 }
 </script>

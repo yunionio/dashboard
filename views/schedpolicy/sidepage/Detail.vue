@@ -7,7 +7,7 @@
 
 <script>
 import { STRATEGY_CN } from '@Cloudenv/constants/sched'
-import { getEnabledTableColumn } from '@/utils/common/tableColumn'
+import { getEnabledTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   name: 'SchedpolicyDetail',
@@ -29,10 +29,15 @@ export default {
           field: 'resource_type',
           title: '资源类型',
         },
-        {
+        getCopyWithContentTableColumn({
           field: 'schedtag',
           title: '标签(调度标签)',
-        },
+          hideField: true,
+          slotCallback: row => {
+            if (!row.schedtag) return '-'
+            return [<side-page-trigger onTrigger={ () => this.handleOpenSchedtagDetail(row.schedtag_id) }>{ row.schedtag }</side-page-trigger>]
+          },
+        }),
         {
           field: 'strategy',
           title: '偏好',
@@ -44,6 +49,20 @@ export default {
         },
       ],
     }
+  },
+  methods: {
+    handleOpenSchedtagDetail (id) {
+      this.$emit('init-side-page-tab', 'schedtag-detail')
+      this.$emit('side-page-trigger-handle', this, 'SchedtagSidePage', {
+        id,
+        resource: 'schedtags',
+        apiVersion: 'v2',
+      }, {
+        cancel: () => {
+          this.$emit('single-refresh', this.data.id)
+        },
+      })
+    },
   },
 }
 </script>

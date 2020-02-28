@@ -12,7 +12,14 @@
     <template v-slot:actions>
       <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :data="detailData" :res-id="data.id" :on-manager="onManager" />
+    <component
+      :is="params.windowData.currentTab"
+      :data="detailData"
+      :res-id="data.id"
+      :on-manager="onManager"
+      @side-page-trigger-handle="sidePageTriggerHandle"
+      @init-side-page-tab="initSidePageTab"
+      @single-refresh="singleRefresh" />
   </base-side-page>
 </template>
 
@@ -30,7 +37,7 @@ export default {
     Actions,
     SchedpolicyDetail,
   },
-  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, SidePageMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
