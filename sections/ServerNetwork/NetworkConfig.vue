@@ -3,6 +3,7 @@
     <div class="d-flex align-items-start mb-2" v-for="(item, i) in networkList" :key="item.key">
       <a-tag color="blue" class="mr-1" style="margin-top: 10px;">{{ isBonding ? 'bond' : '网卡'}}{{i + count}}</a-tag>
       <a-form-item
+        :wrapperCol="{ span: 24 }"
         style="min-width: 200px;"
         class="w-25 mb-0 mr-1">
         <base-select
@@ -20,6 +21,7 @@
         <a-tag v-else color="blue" class="w-100 mr-1">{{ getVpcTag(networkList[0].vpc) }}</a-tag>
       </a-form-item>
       <a-form-item
+        :wrapperCol="{ span: 24 }"
         style="min-width: 200px;"
         class="w-25 mb-0 mr-1">
         <base-select
@@ -33,7 +35,7 @@
           :mapper="networkResourceMapper"
           :select-props="{ allowClear: true, placeholder: '请选择IP子网' }" />
       </a-form-item>
-      <a-form-item class="mb-0 mr-2" v-if="item.ipShow">
+      <a-form-item class="mb-0 mr-2" v-if="item.ipShow" :wrapperCol="{ span: 24 }">
         <a-input
           placeholder="请输入子网内的IP地址"
           @change="e => ipChange(e, i)"

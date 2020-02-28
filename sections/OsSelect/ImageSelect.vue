@@ -2,7 +2,7 @@
   <div class="os-image-select-wrapper">
     <a-row :gutter="8">
       <a-col :span="8">
-        <a-form-item>
+        <a-form-item :wrapperCol="{ span: 24 }">
           <a-select v-decorator="decorator.os" :loading="loading" @change="osChange">
             <a-select-option v-for="item in imagesInfo.osOpts" :key="item.key">
               <div :key="item.key" class="d-flex align-items-center">
@@ -14,7 +14,7 @@
         </a-form-item>
       </a-col>
       <a-col :span="16">
-        <a-form-item>
+        <a-form-item :wrapperCol="{ span: 24 }">
           <image-select-template v-decorator="decorator.image" :imageOpts="imageOptions" @imageChange="imageChange" :loading="loading" />
         </a-form-item>
       </a-col>
