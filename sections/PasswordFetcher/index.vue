@@ -54,6 +54,9 @@
       @cancel="handleDialogCacel"
       @ok="handleDialogConfirm">
       <div>
+        <div class="mb-2">
+          <a-alert type="warning" message="仅支持 OpenSSL's PEM 格式" />
+        </div>
         <a-textarea v-model="dialog.value" :rows="7" />
         <template v-if="dialog.password">
           <div class="mt-2"><span>密码：</span><span>{{ dialog.password }}</span><copy class="ml-1" :message="dialog.password" /></div>
