@@ -152,7 +152,7 @@ export default {
   },
   methods: {
     doCreate (data) {
-      return this.params.list.onManager('create', {
+      return this.params.onManager('create', {
         managerArgs: {
           data: {
             name: data.name,
@@ -162,7 +162,7 @@ export default {
       })
     },
     doUpdate (data) {
-      return this.params.list.onManager('update', {
+      return this.params.onManager('update', {
         id: this.params.data[0].id,
         managerArgs: {
           data: {
@@ -183,7 +183,6 @@ export default {
         }
         this.loading = false
         this.cancelDialog()
-        this.params.list.refresh()
       } catch (error) {
         this.loading = false
       }
