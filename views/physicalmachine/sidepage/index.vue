@@ -3,15 +3,20 @@
     @cancel="cancelSidePage"
     title="物理机"
     icon="res-host"
-    :res-name="data.name"
-    :actions="params.actions"
+    :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
+    :loaded="loaded"
     @tab-change="handleTabChange">
     <template v-slot:actions>
-      <actions :options="params.singleActions" :row="data" button-type="link" button-size="small" />
+      <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :res-id="params.resId" :data="data" :list="params.list" :getParams="getParams" />
+    <component
+      :is="params.windowData.currentTab"
+      :res-id="data.id"
+      :data="detailData"
+      :on-manager="onManager"
+      :getParams="getParams" />
   </base-side-page>
 </template>
 
@@ -19,6 +24,8 @@
 import BaremetalList from '../../baremetal/components/List'
 import StorageList from '../../host/sidepage/Storage'
 import GpuList from '../../host/sidepage/Gpu'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 import PhysicalmachineDetail from './Detail'
 import NetworkList from './Network'
 import BmcLog from './BMCLog'
@@ -37,7 +44,7 @@ export default {
     BmcLog,
     Actions,
   },
-  mixins: [SidePageMixin, WindowsMixin],
+  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
@@ -55,7 +62,7 @@ export default {
     getParams () {
       if (this.params.windowData.currentTab === 'baremetal-list') {
         return {
-          host: this.params.resId,
+          host: this.data.id,
         }
       } else if (this.params.windowData.currentTab === 'storage-list') {
         return {
@@ -65,13 +72,10 @@ export default {
         }
       } else if (this.params.windowData.currentTab === 'bmc-log') {
         return {
-          host_id: this.params.resId,
+          host_id: this.data.id,
         }
       }
       return null
-    },
-    data () {
-      return this.params.list.data[this.params.resId].data
     },
   },
 }

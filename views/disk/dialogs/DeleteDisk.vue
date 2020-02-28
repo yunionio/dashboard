@@ -36,7 +36,7 @@ import { sizestr } from '@/utils/utils'
 import { findPlatform } from '@/utils/common/hypervisor'
 
 export default {
-  name: 'DeleteDiskDialog',
+  name: 'DiskDeleteDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
@@ -138,7 +138,7 @@ export default {
           if (this.isIDC) {
             params.delete_snapshots = this.form.fd.autoDelete
           }
-          const response = await this.params.list.onManager('batchDelete', {
+          const response = await this.params.onManager('batchDelete', {
             id: ids,
             managerArgs: { params },
           })

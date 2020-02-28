@@ -3,19 +3,22 @@
     @cancel="cancelSidePage"
     title="密钥"
     icon="res-keypair"
-    :res-name="data.name"
+    :res-name="detailData.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
+    :loaded="loaded"
     @tab-change="handleTabChange">
     <template v-slot:actions>
-      <actions :options="params.singleActions" :row="data" button-type="link" button-size="small" />
+      <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :data="data" :res-id="params.resId" :list="params.list" />
+    <component :is="params.windowData.currentTab" :data="detailData" :res-id="data.id" :on-manager="onManager" />
   </base-side-page>
 </template>
 
 <script>
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 import KeyPairDetail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
@@ -27,7 +30,7 @@ export default {
     Actions,
     KeyPairDetail,
   },
-  mixins: [SidePageMixin, WindowsMixin],
+  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
@@ -35,11 +38,6 @@ export default {
         { label: '操作日志', key: 'event-drawer' },
       ],
     }
-  },
-  computed: {
-    data () {
-      return this.params.list.data[this.params.resId].data
-    },
   },
 }
 </script>

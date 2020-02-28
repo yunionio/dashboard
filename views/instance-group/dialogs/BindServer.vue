@@ -122,7 +122,7 @@ export default {
       for (let i = 0, len = ids.length; i < len; i++) {
         data[`guest.${i}`] = ids[i]
       }
-      return this.params.list.onManager('performAction', {
+      return this.params.onManager('performAction', {
         id: this.params.data[0]['id'],
         managerArgs: {
           action,
@@ -145,7 +145,7 @@ export default {
         if (bindIds && bindIds.length) {
           await this.doUpdateBindServers('bind-guests', bindIds)
         }
-        this.params.list.refresh()
+        this.params.refresh()
         this.$bus.$emit('VMInstanceListForInstanceGroupRefreshList')
         this.cancelDialog()
       } finally {

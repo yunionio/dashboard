@@ -28,7 +28,7 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'RollbackDiskDialog',
+  name: 'DiskRollbackDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
@@ -101,7 +101,7 @@ export default {
       try {
         const values = await this.form.fc.getFieldsValue()
         await this.doRollbackDiskSubmit(values)
-        this.params.list.refresh()
+        this.params.refresh()
         this.loading = false
         this.cancelDialog()
       } catch (error) {

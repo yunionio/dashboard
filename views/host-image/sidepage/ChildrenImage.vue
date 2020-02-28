@@ -8,7 +8,7 @@ import { sizestr } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'childrenImageList',
+  name: 'ImageChildrenImageList',
   mixins: [WindowsMixin],
   props: {
     resId: String,

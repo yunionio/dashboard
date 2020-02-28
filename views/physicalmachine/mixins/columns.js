@@ -1,0 +1,156 @@
+import PasswordFetcher from '@Compute/sections/PasswordFetcher'
+import { getRegionTableColumn, getStatusTableColumn, getEnabledTableColumn, getNameDescriptionTableColumn, getCopyWithContentTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
+import { sizestr } from '@/utils/utils'
+
+export default {
+  created () {
+    this.columns = [
+      getNameDescriptionTableColumn({
+        onManager: this.onManager,
+        hideField: true,
+        slotCallback: row => {
+          return (
+            <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
+          )
+        },
+      }),
+      getTagTableColumn({ vm: this, needExt: true }),
+      getEnabledTableColumn(),
+      getStatusTableColumn({ statusModule: 'host' }),
+      {
+        field: 'custom_ip',
+        title: 'IP',
+        width: 160,
+        showOverflow: 'ellipsis',
+        slots: {
+          default: ({ row }) => {
+            let cellWrap = []
+            if (row.access_ip) {
+              cellWrap.push(
+                <div class="d-flex">
+                 管理IP：<list-body-cell-wrap row={row} field="access_ip" copy />
+                </div>
+              )
+            }
+            if (row.ipmi_ip) {
+              cellWrap.push(
+                <div class="d-flex">
+                  带外IP：<list-body-cell-wrap row={row} field="ipmi_ip" copy />
+                </div>
+              )
+            }
+            return cellWrap
+          },
+        },
+      },
+      {
+        field: 'spec',
+        title: '规格',
+        width: 120,
+        showOverflow: 'ellipsis',
+        formatter: ({ row }) => {
+          if (!row.spec) return '-'
+          let g = function (sz, prefix) {
+            if (!prefix || prefix.length === 0) {
+              prefix = ''
+            }
+            if (sz && sz > 0) {
+              return `${prefix}${sizestr(sz, 'M', 1024)}`
+            } else {
+              return ''
+            }
+          }
+          let spec = row.spec
+          let cpu = ''
+          if (spec.cpu && spec.cpu > 0) {
+            cpu = `${spec.cpu}C`
+          }
+          let mem = g(spec.mem)
+          let ssd = ''
+          let hdd = ''
+          if (spec.disk) {
+            if (spec.disk.SSD) {
+              ssd = 'SSD'
+              for (let key in spec.disk.SSD) {
+                ssd += `${g(spec.disk.SSD[key])}x${spec.disk.SSD[key]}`
+              }
+            }
+            if (spec.disk.HDD) {
+              hdd = 'HDD'
+              for (let key in spec.disk.HDD) {
+                hdd += `${g(key)}x${spec.disk.HDD[key]}`
+              }
+            }
+          }
+          let driver = ''
+          if (spec && spec.driver && spec.driver !== 'Linux') {
+            driver = 'RAID'
+          }
+          return `${cpu}${mem}${hdd}${ssd}${driver}`
+        },
+      },
+      {
+        field: 'manufacture',
+        title: '品牌',
+        width: 70,
+        slots: {
+          default: ({ row }) => {
+            if (row.sys_info && row.sys_info.oem_name) {
+              const icons = {
+                dell: { height: '25px' },
+                hp: { height: '25px' },
+                hpe: { height: '30px' },
+                inspur: { height: '50px' },
+                lenovo: { height: '10px' },
+              }
+              const arr = Object.keys(icons)
+              if (!arr.includes(row.sys_info.oem_name)) {
+                return row.sys_info.oem_name
+              }
+              const imgSrc = require(`../assets/${row.sys_info.oem_name}.svg`)
+              return [
+                <img src={ imgSrc } style={ icons[row.sys_info.oem_name] } />,
+              ]
+            }
+          },
+        },
+      },
+      getCopyWithContentTableColumn({ field: 'sn', title: 'SN' }),
+      getCopyWithContentTableColumn({ field: 'server', title: '分配' }),
+      {
+        field: 'login_ssh',
+        title: '初始账号',
+        width: 70,
+        slots: {
+          default: ({ row }) => {
+            return [<PasswordFetcher serverId={ row.id } resourceType='baremetal_ssh' />]
+          },
+        },
+      },
+      {
+        field: 'access_mac',
+        title: 'MAC',
+        width: 120,
+      },
+      {
+        field: 'ipmi',
+        title: 'IPMI',
+        width: 70,
+        slots: {
+          default: ({ row }) => {
+            return [<PasswordFetcher serverId={ row.id } resourceType='baremetals' />]
+          },
+        },
+      },
+      {
+        field: 'is_maintenance',
+        title: '维护模式',
+        width: 70,
+        formatter: ({ row }) => {
+          return row.is_maintenance ? '维护模式' : '正常'
+        },
+      },
+      getRegionTableColumn(),
+    ]
+  },
+}

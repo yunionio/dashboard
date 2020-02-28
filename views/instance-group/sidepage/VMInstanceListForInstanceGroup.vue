@@ -11,10 +11,11 @@ import { getStatusTableColumn, getCopyWithContentTableColumn, getNameDescription
 import SystemIcon from '@/sections/SystemIcon'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
+import ListMixin from '@/mixins/list'
 
 export default {
   name: 'VMInstanceListForInstanceGroup',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ListMixin],
   props: {
     resId: {
       type: String,
@@ -117,7 +118,8 @@ export default {
               instanceGroupId: this.resId,
               columns: this.columns,
               data: [obj],
-              list: this.list,
+              onManager: this.onManager,
+              refresh: this.refresh,
             })
           },
         },

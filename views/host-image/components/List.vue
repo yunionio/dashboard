@@ -10,17 +10,17 @@
 </template>
 
 <script>
-import { sizestr } from '@/utils/utils'
-import { getStatusTableColumn, getNameDescriptionTableColumn, getProjectTableColumn, isPublicTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
+import ListMixin from '@/mixins/list'
 import { getTenantFilter, getStatusFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
-import SystemIcon from '@/sections/SystemIcon'
 import WindowsMixin from '@/mixins/windows'
-import globalSearchMixins from '@/mixins/globalSearch'
+import GlobalSearchMixin from '@/mixins/globalSearch'
 
 export default {
   name: 'HostImageList',
-  mixins: [WindowsMixin, globalSearchMixins],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
@@ -29,28 +29,7 @@ export default {
     },
   },
   data () {
-    const validateAction = function (obj) {
-      if (obj.is_guest_image === true || obj.is_guest_image === 'true') {
-        return false
-      }
-      return true
-    }
-
-    const validateActionTooltip = function (obj) {
-      if (obj.is_guest_image === true || obj.is_guest_image === 'true') {
-        return '主机镜像的子镜像无法操作'
-      }
-      return ''
-    }
-
-    const ownerDomain = list => this.$store.getters.isAdminMode || this.list.selectedItems.every(obj => obj.domain_id === this.$store.getters.userInfo.projectDomainId)
-
-    const isOwnerProject = project => project === this.$store.getters.userInfo.projectId || project === this.$store.getters.userInfo.projectName
-
     return {
-      isAdminMode: this.$store.getters.isAdminMode,
-      isDomainMode: this.$store.getters.isDomainMode,
-      userInfo: this.$store.getters.userInfo,
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'guestimages',
@@ -66,19 +45,7 @@ export default {
             },
           },
           status: getStatusFilter('image'),
-          // disk_format: {
-          //   label: '镜像格式',
-          //   dropdown: true,
-          //   items: [
-          //     { label: 'VMDK', key: 'vmdk' },
-          //     { label: 'RAW', key: 'raw' },
-          //     { label: 'VHD', key: 'vhd' },
-          //     { label: 'QCOW2', key: 'qcow2' },
-          //     { label: 'ISO', key: 'iso' },
-          //   ],
-          // },
           tenant: getTenantFilter(),
-          // os_type: getOsTypeFilter(),
         },
         responseData: this.responseData,
       }),
@@ -93,88 +60,6 @@ export default {
           { label: '创建时间', key: 'created_at' },
         ],
       },
-      columns: [
-        getNameDescriptionTableColumn({
-          width: 200,
-          addLock: true,
-          vm: this,
-          hideField: true,
-          slotCallback: row => {
-            return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'SystemImageSidePage') }>{ row.name }</side-page-trigger>
-            )
-          },
-        }),
-        {
-          field: 'child_image',
-          title: '子镜像',
-          width: 150,
-          type: 'expand',
-          slots: {
-            default: ({ row }) => {
-              const arr = [...(row.data_images || [])]
-              arr.push(row.root_image.name)
-              return `${arr.length}个`
-            },
-            content: ({ row }) => {
-              const list = row.data_images.map(val => (
-                <a-tag class='mb-2'>{ val.name }</a-tag>
-              ))
-              list.push(
-                <a-tag class='mb-2'>{ row.root_image.name }</a-tag>
-              )
-              return list
-            },
-          },
-        },
-        {
-          field: 'disk_format',
-          title: '格式',
-          width: 100,
-          formatter: ({ cellValue }) => {
-            return cellValue && cellValue.toUpperCase()
-          },
-        },
-        {
-          field: 'os_type',
-          title: '系统',
-          width: 60,
-          slots: {
-            default: ({ row }) => {
-              if (!row.properties) return
-              let name = row.properties.os_distribution ? decodeURI(row.properties.os_distribution) : row.properties.os_type || ''
-              if (name.includes('Windows') || name.includes('windows')) {
-                name = 'Windows'
-              }
-              const tooltip = (row.properties.os_version ? `${name} ${row.properties.os_version}` : name) || '未知'
-              return [
-                <SystemIcon tooltip={ tooltip } name={ name } />,
-              ]
-            },
-          },
-        },
-        {
-          field: 'size',
-          title: '镜像大小',
-          minWidth: 100,
-          formatter: ({ cellValue }) => {
-            return sizestr(cellValue, 'B', 1024)
-          },
-        },
-        getStatusTableColumn({ statusModule: 'image' }),
-        getProjectTableColumn(),
-        isPublicTableColumn(),
-        {
-          field: 'is_standard',
-          title: '镜像类型',
-          width: 100,
-          formatter: ({ cellValue }) => {
-            if (cellValue) return '公共镜像'
-            return '自定义镜像'
-          },
-        },
-        getTimeTableColumn(),
-      ],
       groupActions: [
         {
           label: '设置删除保护',
@@ -182,7 +67,7 @@ export default {
             this.createDialog('ChangeDisableDelete', {
               name: '主机镜像',
               columns: this.columns,
-              list: this.list,
+              onManager: this.onManager,
               data: this.list.selectedItems,
             })
           },
@@ -202,121 +87,13 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               title: '删除镜像',
-              list: this.list,
+              onManager: this.onManager,
               requestData: {
                 override_pending_delete: true,
               },
             })
           },
           meta: () => this.$getDeleteResult(this.list.selectedItems),
-        },
-      ],
-      singleActions: [
-        {
-          label: '修改属性',
-          permission: 'images_update',
-          action: obj => {
-            this.createDialog('ImageEditAttributesDialog', {
-              data: [obj],
-              columns: this.columns,
-              list: this.list,
-            })
-          },
-          meta: obj => {
-            if (!validateAction(obj)) {
-              return {
-                validate: false,
-                tooltip: validateActionTooltip(obj),
-              }
-            }
-            if (this.isAdminMode) {
-              return {
-                validate: true,
-              }
-            } else if (this.isDomainMode) {
-              return {
-                validate: ownerDomain(this.list),
-                tooltip: `非当前${this.$t('dictionary.domain')}下面的镜像无法修改属性`,
-              }
-            }
-            return {
-              validate: isOwnerProject(obj.tenant_id),
-              tooltip: !isOwnerProject(obj.tenant_id) ? `非当前${this.$t('dictionary.project')}下面的镜像无法修改属性` : '',
-            }
-          },
-        },
-        {
-          label: '更多',
-          actions: obj => {
-            return [
-              {
-                label: '设置共享',
-                permission: 'images_perform_public',
-                action: () => {
-                  this.createDialog('SetPublicDialog', {
-                    data: [obj],
-                    columns: this.columns,
-                    list: this.list,
-                  })
-                },
-                meta: () => {
-                  function validate (val, tooltip = validateActionTooltip(obj)) {
-                    return {
-                      validate: val,
-                      tooltip,
-                    }
-                  }
-                  if (obj.is_standard) validate(false, '公共镜像不支持设置')
-                  if (!validateAction(obj)) validate(false)
-                  // 1、管理后台视图可以对所有镜像进行操作；
-                  // 2、域管理后台视图只能对该域下的镜像进行操作，不能对其他域共享的镜像进行操作；
-                  // 3、项目视图只能对该项目下的镜像进行操作，不能对其他域、其他项目共享的镜像进行操作。
-                  if (this.isAdminMode) validate(true)
-                  if (!this.isAdminMode && !this.isDomainAdmin) validate(this.userInfo.projectId === obj.tenant_id)
-                  if (this.isDomainMode) validate(this.userInfo.projectDomainId === obj.domain_id)
-                  return {
-                    validate: true,
-                  }
-                },
-              },
-              {
-                label: '设置删除保护',
-                action: (row) => {
-                  this.createDialog('ChangeDisableDelete', {
-                    name: '系统镜像',
-                    columns: this.columns,
-                    list: this.list,
-                    data: [row],
-                  })
-                },
-              },
-              {
-                label: '删除',
-                permission: 'images_delete',
-                action: () => {
-                  this.createDialog('DeleteResDialog', {
-                    data: [obj],
-                    columns: this.columns,
-                    title: '删除',
-                    list: this.list,
-                    requestData: {
-                      override_pending_delete: true,
-                    },
-                  })
-                },
-                meta: () => {
-                  if (this.isDomainAdmin && obj.domain_id !== this.userInfo.projectDomainId) {
-                    return {
-                      validate: false,
-                      tooltip: `${this.$t('dictionary.domain')}管理员只能删除本${this.$t('dictionary.domain')}下的镜像`,
-                    }
-                  }
-                  if (!validateAction(obj)) return { validate: false, tooltip: validateActionTooltip(obj) }
-                  return this.$getDeleteResult(obj)
-                },
-              },
-            ]
-          },
         },
       ],
     }
@@ -333,16 +110,16 @@ export default {
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
     },
-    updateStandard (isStandard, selectedItems) {
-      let params = {
-        is_standard: isStandard,
-      }
-      if (selectedItems.length > 1) {
-        this.list.batchPerformAction('mark-standard', params, this.list.steadyStatus)
-      } else {
-        params.id = selectedItems[0].id
-        this.list.singlePerformAction('mark-standard', params)
-      }
+    handleOpenSidepage (row) {
+      this.sidePageTriggerHandle(this, 'SystemImageSidePage', {
+        id: row.id,
+        resource: 'guestimages',
+        apiVersion: 'v1',
+        getParams: this.getParam,
+        steadyStatus: Object.values(expectStatus.image).flat(),
+      }, {
+        list: this.list,
+      })
     },
   },
 }

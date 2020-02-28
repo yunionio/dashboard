@@ -10,17 +10,17 @@
 </template>
 
 <script>
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 import expectStatus from '@/constants/expectStatus'
 import { getNameFilter, getStatusFilter, getOsTypeFilter } from '@/utils/common/tableFilter'
-import { getStatusTableColumn, getCopyWithContentTableColumn, getProjectTableColumn } from '@/utils/common/tableColumn'
-import SystemIcon from '@/sections/SystemIcon'
 import WindowsMixin from '@/mixins/windows'
-import { sizestr } from '@/utils/utils'
-import globalSearchMixins from '@/mixins/globalSearch'
+import GlobalSearchMixin from '@/mixins/globalSearch'
+import ListMixin from '@/mixins/list'
 
 export default {
   name: 'ImageRecoveryList',
-  mixins: [WindowsMixin, globalSearchMixins],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
   },
@@ -51,42 +51,6 @@ export default {
           { label: '检验和', key: 'checksum' },
         ],
       },
-      columns: [
-        getCopyWithContentTableColumn({ field: 'name', title: '名称' }),
-        {
-          field: 'os_type',
-          title: '操作系统',
-          width: 70,
-          slots: {
-            default: ({ row }) => {
-              if (!row.properties || !row.properties.os_distribution) return
-              let name = !row.properties.os_distribution ? row.properties.os_type : decodeURI(row.properties.os_distribution || '')
-              if (name.includes('Windows') || name.includes('windows')) {
-                name = 'Windows'
-              }
-              const tooltip = row.properties.os_version ? `${name} ${row.properties.os_version}` : name
-              return [
-                <SystemIcon tooltip={ tooltip } name={ name } />,
-              ]
-            },
-          },
-        },
-        {
-          field: 'disk_format',
-          title: '格式',
-          width: 100,
-        },
-        {
-          field: 'size',
-          title: '镜像大小',
-          width: 100,
-          formatter: ({ cellValue }) => {
-            return sizestr(cellValue, 'B', 1024)
-          },
-        },
-        getStatusTableColumn({ statusModule: 'image' }),
-        getProjectTableColumn(),
-      ],
       groupActions: [
         {
           label: '清除',
@@ -96,8 +60,8 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               title: '清除',
-              list: this.list,
               requestParams: { override_pending_delete: true },
+              onManager: this.onManager,
             })
           },
           meta: () => {
@@ -114,7 +78,7 @@ export default {
               title: '恢复',
               data: this.list.selectedItems,
               columns: this.columns,
-              list: this.list,
+              refresh: this.refresh,
             })
           },
           meta: () => {
@@ -125,38 +89,6 @@ export default {
             }
             return {
               validate: false,
-            }
-          },
-        },
-      ],
-      singleActions: [
-        {
-          label: '清除',
-          permission: 'images_delete',
-          action: obj => {
-            this.createDialog('DeleteResDialog', {
-              data: [obj],
-              columns: this.columns,
-              title: '清除',
-              list: this.list,
-              requestParams: { override_pending_delete: true },
-            })
-          },
-          meta: obj => this.$getDeleteResult(obj),
-        },
-        {
-          label: '恢复',
-          permission: 'images_perform_cancel_delete',
-          action: (obj) => {
-            this.createDialog('ImageRestoreDialog', {
-              data: [obj],
-              columns: this.columns,
-              list: this.list,
-            })
-          },
-          meta: obj => {
-            return {
-              validate: obj.status !== 'deleting',
             }
           },
         },

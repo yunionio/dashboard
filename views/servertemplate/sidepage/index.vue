@@ -3,19 +3,30 @@
     @cancel="cancelSidePage"
     title="主机模板"
     icon="res-servertemplate"
-    :res-name="data.name"
-    :actions="params.actions"
+    :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
+    :loaded="loaded"
     @tab-change="handleTabChange">
     <template v-slot:actions>
-      <actions :options="params.singleActions" :row="data" button-type="link" button-size="small" />
+      <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :res-id="params.resId" :data="data" :list="params.list"  res-type="servertemplate" />
+    <component
+      :is="params.windowData.currentTab"
+      :res-id="data.id"
+      :data="detailData"
+      res-type="servertemplate"
+      :on-manager="onManager"
+      @side-page-trigger-handle="sidePageTriggerHandle"
+      @init-side-page-tab="initSidePageTab"
+      @refresh="refresh"
+      @single-refresh="singleRefresh" />
   </base-side-page>
 </template>
 
 <script>
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 import ServertemplateDetail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
@@ -27,7 +38,7 @@ export default {
     ServertemplateDetail,
     Actions,
   },
-  mixins: [SidePageMixin, WindowsMixin],
+  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
@@ -35,11 +46,6 @@ export default {
         { label: '操作日志', key: 'event-drawer' },
       ],
     }
-  },
-  computed: {
-    data () {
-      return this.params.list.data[this.params.resId].data
-    },
   },
 }
 </script>

@@ -36,7 +36,7 @@ export default {
           },
         })
         this.cancelDialog()
-        this.params.list.fetchData()
+        this.params.refresh()
       } catch (error) {
         throw error
       } finally {

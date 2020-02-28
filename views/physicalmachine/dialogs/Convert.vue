@@ -528,7 +528,6 @@ export default {
       nameArr = nameArr.filter(item => item.name !== '剩余')
       this.createDialog('DiskOptionsUpdateDialog', {
         title: e.name === '剩余' ? '创建新分区' : '更新分区',
-        list: this.list,
         item: this.diskOptionsDate[idx],
         nameArr,
         selectedArea: selectedArea[0],
@@ -612,7 +611,7 @@ export default {
       })
     },
     doConvert (data) {
-      return this.params.list.onManager('performAction', {
+      return this.params.onManager('performAction', {
         id: this.params.data[0].id,
         managerArgs: {
           action: 'convert-hypervisor',

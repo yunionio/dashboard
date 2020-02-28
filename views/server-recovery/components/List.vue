@@ -10,17 +10,17 @@
 </template>
 
 <script>
-import { sizestr } from '@/utils/utils'
-import SystemIcon from '@/sections/SystemIcon'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 import expectStatus from '@/constants/expectStatus'
-import { getBrandTableColumn, getStatusTableColumn, getCopyWithContentTableColumn, getIpsTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import { getNameFilter, getIpFilter, getOsTypeFilter, getBrandFilter, getHostFilter } from '@/utils/common/tableFilter'
-import globalSearchMixins from '@/mixins/globalSearch'
+import ListMixin from '@/mixins/list'
+import GlobalSearchMixin from '@/mixins/globalSearch'
 
 export default {
   name: 'ServerRecoveryList',
-  mixins: [WindowsMixin, globalSearchMixins],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
   },
@@ -78,48 +78,6 @@ export default {
           { label: '用户标签', key: 'user_tags' },
         ],
       },
-      columns: [
-        getCopyWithContentTableColumn({ field: 'name', title: '名称', sortable: true }),
-        getIpsTableColumn({ field: 'ips', title: 'IP' }),
-        {
-          field: 'instance_type',
-          title: '配置',
-          minWidth: 120,
-          showOverflow: 'ellipsis',
-          slots: {
-            default: ({ row }) => {
-              let ret = []
-              if (row.instance_type) {
-                ret.push(<div class='text-truncate' style={{ color: '#0A1F44' }}>{ row.instance_type }</div>)
-              }
-              const config = row.vcpu_count + 'C' + sizestr(row.vmem_size, 'M', 1024) + (row.disk ? sizestr(row.disk, 'M', 1024) : '')
-              return ret.concat(<div class='text-truncate' style={{ color: '#53627C' }}>{ config }</div>)
-            },
-          },
-        },
-        {
-          field: 'os_type',
-          title: '系统',
-          width: 60,
-          slots: {
-            default: ({ row }) => {
-              let name = (row.metadata && row.metadata.os_distribution) ? row.metadata.os_distribution : row.os_type || ''
-              if (name.includes('Windows') || name.includes('windows')) {
-                name = 'Windows'
-              }
-              const version = (row.metadata && row.metadata.os_version) ? `${row.metadata.os_version}` : ''
-              const tooltip = (version.includes(name) ? version : `${name} ${version}`) || '未知' // 去重
-              return [
-                <SystemIcon tooltip={ tooltip } name={ name } />,
-              ]
-            },
-          },
-        },
-        getStatusTableColumn({ statusModule: 'server' }),
-        getCopyWithContentTableColumn({ field: 'host', title: '宿主机' }),
-        getBrandTableColumn(),
-        getTimeTableColumn({ field: 'auto_delete_at', title: '自动清除时间' }),
-      ],
       groupActions: [
         {
           label: '清除',
@@ -129,8 +87,8 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               title: '清除',
-              list: this.list,
               requestParams: { override_pending_delete: true },
+              onManager: this.onManager,
             })
           },
           meta: () => {
@@ -147,7 +105,7 @@ export default {
               title: '恢复',
               data: this.list.selectedItems,
               columns: this.columns,
-              list: this.list,
+              refresh: this.refresh,
             })
           },
           meta: () => {
@@ -159,32 +117,6 @@ export default {
             return {
               validate: false,
             }
-          },
-        },
-      ],
-      singleActions: [
-        {
-          label: '清除',
-          permission: 'server_delete',
-          action: (obj) => {
-            this.createDialog('DeleteResDialog', {
-              data: [obj],
-              columns: this.columns,
-              title: '清除',
-              list: this.list,
-              requestParams: { override_pending_delete: true },
-            })
-          },
-        },
-        {
-          label: '恢复',
-          permission: 'server_perform_cancel_delete',
-          action: (obj) => {
-            this.createDialog('ServerRestoreDialog', {
-              data: [obj],
-              columns: this.columns,
-              list: this.list,
-            })
           },
         },
       ],

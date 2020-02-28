@@ -34,7 +34,7 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'CapacityUpdateDialog',
+  name: 'DiskCapacityUpdateDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
@@ -93,7 +93,7 @@ export default {
         this.loading = true
         await this.doCreate(values)
         this.loading = false
-        this.params.list.refresh()
+        this.params.refresh()
         this.cancelDialog()
       } catch (error) {
         this.loading = false

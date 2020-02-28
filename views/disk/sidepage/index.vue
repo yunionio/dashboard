@@ -3,19 +3,26 @@
     @cancel="cancelSidePage"
     title="硬盘"
     icon="res-disk"
-    :res-name="data.name"
-    :actions="params.actions"
+    :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
+    :loaded="loaded"
     @tab-change="handleTabChange">
     <template v-slot:actions>
-      <actions :options="params.singleActions" :row="data" button-type="link" button-size="small" />
+      <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :res-id="params.resId" :data="data" :list="params.list" :getParams="getParams" />
+    <component
+      :is="params.windowData.currentTab"
+      :res-id="data.id"
+      :data="detailData"
+      :getParams="getParams"
+      :on-manager="onManager" />
   </base-side-page>
 </template>
 
 <script>
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 import DiskDetail from './Detail'
 import SnapshotList from './snapshot'
 import SidePageMixin from '@/mixins/sidePage'
@@ -29,7 +36,7 @@ export default {
     SnapshotList,
     Actions,
   },
-  mixins: [SidePageMixin, WindowsMixin],
+  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
@@ -42,9 +49,6 @@ export default {
   computed: {
     getParams () {
       return null
-    },
-    data () {
-      return this.params.list.data[this.params.resId].data
     },
   },
 }
