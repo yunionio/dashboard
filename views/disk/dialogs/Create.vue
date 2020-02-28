@@ -12,7 +12,7 @@
             :decorator="decorators.regionZone" />
         </a-form-item>
         <a-form-item label="名称" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.name" placeholder="字母开头，数字和字母大小写组合，长度为2-128个字符，不含'.','_','@'" />
+          <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverCreateName')" />
         </a-form-item>
         <a-form-item :label="storageLabel" v-bind="formItemLayout">
           <a-select v-decorator="decorators.storage_id" @change="__storageChange">
@@ -65,9 +65,10 @@ export default {
         name: [
           'name',
           {
+            validateFirst: true,
             rules: [
-              { required: true, message: '字母开头，数字和字母大小写组合，长度为2-128个字符，不含".","_","@"' },
-              { validator: this.$validate('snapshotName') },
+              { required: true, message: '请输入名称' },
+              { validator: this.$validate('serverCreateName') },
             ],
           },
         ],
