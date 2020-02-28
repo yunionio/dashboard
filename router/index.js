@@ -1,4 +1,3 @@
-import Layout from '@Compute/components/Layout'
 import Network from '@Network/views/network'
 import NetworkCreate from '@Network/views/network/Create'
 import EditAttributes from '@Network/views/network/EditAttributes'
@@ -17,6 +16,7 @@ import LoadbalancerclusterList from '@Network/views/loadbalancercluster'
 import AgentList from '@Network/views/agent'
 import AgentCreate from '@Network/views/agent/create'
 import AgentAsbook from '@Network/views/agent/asbook'
+import Layout from '@/layouts/RouterView'
 
 export default {
   index: 3,
