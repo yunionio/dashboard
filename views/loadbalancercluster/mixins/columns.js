@@ -7,7 +7,7 @@ export default {
   created () {
     this.columns = [
       getNameDescriptionTableColumn({
-        vm: this,
+        onManager: this.onManager,
         hideField: true,
         title: '名称',
         slotCallback: row => {
