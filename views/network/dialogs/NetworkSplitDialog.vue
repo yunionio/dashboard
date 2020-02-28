@@ -66,7 +66,7 @@ export default {
   },
   methods: {
     doSplit (data) {
-      return this.params.list.onManager('performAction', {
+      return this.params.onManager('performAction', {
         id: this.params.data[0].id,
         managerArgs: {
           action: 'split',
@@ -86,7 +86,7 @@ export default {
         await this.doSplit(values)
         this.loading = false
         this.cancelDialog()
-        this.params.list.refresh()
+        this.params.refresh()
       } catch (error) {
         this.loading = false
       }

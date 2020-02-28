@@ -1,6 +1,6 @@
 <template>
   <detail
-    :list="list"
+    :on-manager="onManager"
     :data="data"
     :base-info="baseInfo"
     :extra-info="extraInfo" />
@@ -13,11 +13,11 @@ import { sizestr } from '@/utils/utils'
 export default {
   name: 'EipDetail',
   props: {
-    data: {
-      type: Object,
+    onManager: {
+      type: Function,
       required: true,
     },
-    list: {
+    data: {
       type: Object,
       required: true,
     },

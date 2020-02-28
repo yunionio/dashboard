@@ -335,7 +335,7 @@ export default {
       }
     },
     doCreate (data) {
-      return this.params.list.onManager('create', {
+      return this.params.onManager('create', {
         managerArgs: {
           data,
         },
@@ -358,7 +358,7 @@ export default {
         await this.doCreate(values)
         this.loading = false
         this.cancelDialog()
-        this.params.list.refresh()
+        this.params.refresh()
       } catch (error) {
         this.loading = false
       }

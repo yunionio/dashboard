@@ -3,16 +3,31 @@
     @cancel="cancelSidePage"
     title="VPC"
     icon="res-vpc"
-    :res-name="data.name"
+    :res-name="detailData.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
+    :loaded="loaded"
     @tab-change="handleTabChange">
-    <component :is="params.windowData.currentTab" :res-id="params.resId" :showGroupActions="showGroupActions" :showSearchbox="showSearchbox" :data="data" :list="params.list" :getParams="getParams" />
+    <component
+      :is="params.windowData.currentTab"
+      :res-id="detailData.id"
+      :showGroupActions="showGroupActions"
+      :showSearchbox="showSearchbox"
+      :data="detailData"
+      :getParams="getParams"
+      :on-manager="onManager"
+      @side-page-trigger-handle="sidePageTriggerHandle"
+      @init-side-page-tab="initSidePageTab"
+      @refresh="refresh"
+      @single-refresh="singleRefresh"
+      @tab-change="handleTabChange" />
   </base-side-page>
 </template>
 
 <script>
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 import NetworkList from '../../network/components/List'
 import VpcDetail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
@@ -26,7 +41,7 @@ export default {
     NetworkList,
     Actions,
   },
-  mixins: [SidePageMixin, WindowsMixin],
+  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
@@ -41,7 +56,7 @@ export default {
       if (this.params.windowData.currentTab === 'network-list') {
         return {
           width_meta: true,
-          vpc: this.params.resId,
+          vpc: this.detailData.id,
           details: true,
         }
       }
@@ -58,9 +73,6 @@ export default {
         return false
       }
       return true
-    },
-    data () {
-      return this.params.list.data[this.params.resId].data
     },
   },
 }

@@ -9,17 +9,14 @@
 
 <script>
 import { BAND_WIDTH_OPTION } from '../../../constants'
-import {
-  getNameDescriptionTableColumn,
-  getRegionTableColumn,
-  getCopyWithContentTableColumn,
-} from '@/utils/common/tableColumn'
-import DialogMixin from '@/mixins/dialog'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
+import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'WireList',
-  mixins: [ DialogMixin, WindowsMixin ],
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
@@ -70,43 +67,13 @@ export default {
           { label: '云账号', key: 'manager' },
         ],
       },
-      columns: [
-        getNameDescriptionTableColumn({
-          vm: this,
-          hideField: true,
-          slotCallback: row => {
-            return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'WireSidePage') }>{ row.name }</side-page-trigger>
-            )
-          },
-        }),
-        {
-          field: 'bandwidth',
-          title: '带宽',
-          minWidth: 100,
-          sortable: true,
-          showOverflow: 'ellipsis',
-          formatter: ({ cellValue }) => {
-            const item = BAND_WIDTH_OPTION.find(val => val.value === `${cellValue}`)
-            return item ? item.label : cellValue
-          },
-        },
-        getCopyWithContentTableColumn({ field: 'vpc', title: '专有网络', sortable: true }),
-        {
-          field: 'networks',
-          title: '网络数量',
-          width: 70,
-          sortable: true,
-        },
-        getRegionTableColumn(),
-      ],
       groupActions: [
         {
           label: '新建',
           action: () => {
             this.createDialog('WireCreateDialog', {
               title: '新建',
-              list: this.list,
+              onManager: this.onManager,
             })
           },
           meta: () => ({
@@ -121,7 +88,7 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               title: '删除',
-              list: this.list,
+              onManager: this.onManager,
             })
           },
           meta: () => {
@@ -129,31 +96,6 @@ export default {
               validate: this.list.allowDelete(),
             }
           },
-        },
-      ],
-      singleActions: [
-        {
-          label: '修改属性',
-          action: obj => {
-            this.createDialog('WireUpdateDialog', {
-              data: [obj],
-              columns: this.columns,
-              list: this.list,
-            })
-          },
-        },
-        {
-          label: '删除',
-          permission: 'wires_delete',
-          action: (obj) => {
-            this.createDialog('DeleteResDialog', {
-              data: [obj],
-              columns: this.columns,
-              title: '删除',
-              list: this.list,
-            })
-          },
-          meta: (obj) => this.$getDeleteResult(obj),
         },
       ],
     }
@@ -178,6 +120,15 @@ export default {
       }
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
+    },
+    handleOpenSidepage (row) {
+      this.sidePageTriggerHandle(this, 'WireSidePage', {
+        id: row.id,
+        resource: 'wires',
+        getParams: this.getParam,
+      }, {
+        list: this.list,
+      })
     },
   },
 }

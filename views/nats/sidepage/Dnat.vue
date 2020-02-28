@@ -12,12 +12,13 @@ import {
   getCopyWithContentTableColumn,
 } from '@/utils/common/tableColumn'
 import expectStatus from '@/constants/expectStatus'
+import ListMixin from '@/mixins/list'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'DNatList',
-  mixins: [ DialogMixin, WindowsMixin ],
+  mixins: [ DialogMixin, WindowsMixin, ListMixin ],
   props: {
     resId: {
       type: String,
@@ -85,7 +86,7 @@ export default {
               title: '新建DNAT条目',
               data: this.data,
               columns: this.columns,
-              list: this.list,
+              onManager: this.onManager,
             })
           },
           meta: () => ({
@@ -99,7 +100,7 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               title: '删除DNAT条目',
-              list: this.list,
+              onManager: this.onManager,
               name: 'DNAT条目',
               alert: '提示：请在删除前确认数据已备份，删除后数据无法找回',
             })
@@ -119,7 +120,7 @@ export default {
               title: '删除DNAT条目',
               data: [obj],
               columns: this.columns,
-              list: this.list,
+              onManager: this.onManager,
               name: 'DNAT条目',
               alert: '提示：请在删除前确认数据已备份，删除后数据无法找回',
             })

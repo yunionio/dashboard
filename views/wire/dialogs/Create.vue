@@ -212,7 +212,7 @@ export default {
         vpc_id: data.vpc,
         bandwidth: data.bandwidth,
       }
-      return this.params.list.onManager('create', {
+      return this.params.onManager('create', {
         managerArgs: {
           data: params,
         },

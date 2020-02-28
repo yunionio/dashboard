@@ -3,19 +3,32 @@
     @cancel="cancelSidePage"
     title="全局VPC"
     icon="res-gpu"
-    :res-name="data.name"
+    :res-name="detailData.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
+    :loaded="loaded"
     @tab-change="handleTabChange">
     <template v-slot:actions>
-      <actions :options="params.singleActions" :row="data" button-type="link" button-size="small" />
+      <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :res-id="params.resId" :data="data" :list="params.list" :getParams="getParams" />
+    <component
+      :is="params.windowData.currentTab"
+      :res-id="detailData.id"
+      :data="detailData"
+      :getParams="getParams"
+      :on-manager="onManager"
+      @side-page-trigger-handle="sidePageTriggerHandle"
+      @init-side-page-tab="initSidePageTab"
+      @refresh="refresh"
+      @single-refresh="singleRefresh"
+      @tab-change="handleTabChange" />
   </base-side-page>
 </template>
 
 <script>
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 import Detail from './Detail'
 import VpcList from './VpcList'
 import SidePageMixin from '@/mixins/sidePage'
@@ -29,7 +42,7 @@ export default {
     Actions,
     VpcList,
   },
-  mixins: [SidePageMixin, WindowsMixin],
+  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
@@ -41,9 +54,12 @@ export default {
   },
   computed: {
     getParams () {
-      return {
-        globalvpc: this.params.resId,
+      if (this.params.windowData.currentTab === 'vpc-list') {
+        return {
+          globalvpc: this.detailData.id,
+        }
       }
+      return null
     },
     data () {
       return this.params.list.data[this.params.resId].data

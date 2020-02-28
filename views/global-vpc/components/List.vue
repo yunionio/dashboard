@@ -8,24 +8,27 @@
 </template>
 
 <script>
-import { getNameDescriptionTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
+import ListMixin from '@/mixins/list'
 import { getStatusFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'globalVpcList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
+    getParams: {
+      type: Object,
+    },
   },
   data () {
     return {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'globalvpcs',
-        getParams: {
-          details: true,
-        },
+        getParams: this.getParam,
         filterOptions: {
           name: {
             label: '名称',
@@ -44,26 +47,13 @@ export default {
           { label: '状态', key: 'status' },
         ],
       },
-      columns: [
-        getNameDescriptionTableColumn({
-          vm: this,
-          hideField: true,
-          // addLock: true,
-          slotCallback: row => {
-            return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'globalVpcSidePage') }>{ row.name }</side-page-trigger>
-            )
-          },
-        }),
-        getStatusTableColumn({ statusModule: 'globalVpc' }),
-      ],
       groupActions: [
         {
           label: '新建',
           action: () => {
             this.createDialog('GlobalVpcCreateDialog', {
               title: '新建全局VPC',
-              list: this.list,
+              onManager: this.onManager,
             })
           },
           meta: () => {
@@ -73,31 +63,29 @@ export default {
           },
         },
       ],
-      singleActions: [
-        {
-          label: '删除',
-          action: (obj) => {
-            this.createDialog('DeleteResDialog', {
-              title: '删除',
-              data: [obj],
-              columns: this.columns,
-              list: this.list,
-              // alert: '提示：请确保存储桶下所有目录和文件已删空，删除后数据不可恢复和访问。',
-            })
-          },
-          meta: obj => {
-            return {
-              validate: obj.can_delete,
-              tooltip: obj.delete_fail_reason,
-            }
-          },
-        },
-      ],
     }
   },
   created () {
     this.initSidePageTab('detail')
     this.list.fetchData()
+  },
+  methods: {
+    getParam () {
+      const ret = {
+        ...this.getParams,
+        details: true,
+      }
+      return ret
+    },
+    handleOpenSidepage (row) {
+      this.sidePageTriggerHandle(this, 'globalVpcSidePage', {
+        id: row.id,
+        resource: 'globalvpcs',
+        getParams: this.getParam,
+      }, {
+        list: this.list,
+      })
+    },
   },
 }
 </script>

@@ -8,19 +8,15 @@
 </template>
 
 <script>
-import {
-  getStatusTableColumn,
-  getBrandTableColumn,
-  getNameDescriptionTableColumn,
-  getCopyWithContentTableColumn,
-} from '@/utils/common/tableColumn'
+import ColumnsMixin from '../mixins/columns'
+import ListMixin from '@/mixins/list'
 import { getStatusFilter, getBrandFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
-import globalSearchMixins from '@/mixins/globalSearch'
+import GlobalSearchMixin from '@/mixins/globalSearch'
 
 export default {
   name: 'FlexNetworkList',
-  mixins: [WindowsMixin, globalSearchMixins],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin],
   props: {
     id: String,
     getParams: {
@@ -77,25 +73,6 @@ export default {
           { label: '可用区', key: 'zone' },
         ],
       },
-      columns: [
-        getNameDescriptionTableColumn({
-          vm: this,
-          hideField: true,
-          slotCallback: row => {
-            return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'FlexNetworkSidePage') }>{ row.name }</side-page-trigger>
-            )
-          },
-        }),
-        getCopyWithContentTableColumn({ field: 'mac', title: 'MAC地址' }),
-        getStatusTableColumn({ statusModule: 'network' }),
-        getBrandTableColumn(),
-        getCopyWithContentTableColumn({
-          field: 'associate_type',
-          title: '绑定设备类型(VPC)',
-        }),
-        getCopyWithContentTableColumn({ field: 'associate_id', title: '绑定设备' }),
-      ],
     }
   },
   watch: {
@@ -117,6 +94,15 @@ export default {
       }
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
+    },
+    handleOpenSidepage (row) {
+      this.sidePageTriggerHandle(this, 'FlexNetworkSidePage', {
+        id: row.id,
+        resource: 'networkinterfaces',
+        getParams: this.getParam,
+      }, {
+        list: this.list,
+      })
     },
   },
 }

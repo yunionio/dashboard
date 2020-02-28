@@ -6,23 +6,10 @@
 
 <script>
 import * as R from 'ramda'
-import {
-  getNameDescriptionTableColumn,
-  getStatusTableColumn,
-  getCopyWithContentTableColumn,
-  getBrandTableColumn,
-  getAccountTableColumn,
-  getTimeTableColumn,
-} from '@/utils/common/tableColumn'
+import ColumnsMixin from '../mixins/columns'
+import ListMixin from '@/mixins/list'
 import { getStatusFilter, getBrandFilter, getAccountFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
-
-const NatSpec = {
-  'small': '小型',
-  'medium': '中型',
-  'large': '大型',
-  'x-large': '超大型',
-}
 
 const BillingType = {
   'postpaid': '后付费',
@@ -31,7 +18,7 @@ const BillingType = {
 
 export default {
   name: 'NatList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin],
   props: {
     id: String,
     getParams: {
@@ -78,42 +65,6 @@ export default {
           },
         },
       }),
-      columns: [
-        getNameDescriptionTableColumn({
-          vm: this,
-          hideField: true,
-          slotCallback: row => {
-            return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'NatSidePage') }>{ row.name }</side-page-trigger>
-            )
-          },
-        }),
-        {
-          field: 'nat_spec',
-          title: '型号',
-          formatter: ({ cellValue }) => {
-            const spec = cellValue && cellValue.toLowerCase()
-            return NatSpec[spec] || spec
-          },
-        },
-        getCopyWithContentTableColumn({ field: 'vpc', title: '所属专有网络' }),
-        getBrandTableColumn(),
-        {
-          field: 'region',
-          title: '区域',
-          width: 150,
-        },
-        getStatusTableColumn({ statusModule: 'nat' }),
-        getAccountTableColumn(),
-        {
-          field: 'billing_type',
-          title: '付费类型',
-          formatter: ({ cellValue }) => {
-            return BillingType[cellValue]
-          },
-        },
-        getTimeTableColumn(),
-      ],
     }
   },
   watch: {
@@ -135,6 +86,15 @@ export default {
       }
       if (this.cloudEnv) ret[this.cloudEnv] = true
       return ret
+    },
+    handleOpenSidepage (row) {
+      this.sidePageTriggerHandle(this, 'NatSidePage', {
+        id: row.id,
+        resource: 'natgateways',
+        getParams: this.getParam,
+      }, {
+        list: this.list,
+      })
     },
   },
 }

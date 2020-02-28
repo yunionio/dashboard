@@ -67,7 +67,13 @@ export default {
   },
   methods: {
     doBind (data) {
-      return this.params.list.singlePerformAction('associate', data)
+      return this.params.onManager('performAction', {
+        id: data.id,
+        managerArgs: {
+          action: 'associate',
+          data,
+        },
+      })
     },
     async handleConfirm () {
       this.loading = true
@@ -81,7 +87,7 @@ export default {
         await this.doBind(values)
         this.loading = false
         this.cancelDialog()
-        this.params.list.refresh()
+        this.params.refresh()
       } catch (error) {
         this.loading = false
       }
