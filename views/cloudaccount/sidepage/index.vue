@@ -3,21 +3,24 @@
     @cancel="cancelSidePage"
     title="云账号"
     icon="res-cloudaccount"
-    :res-name="data.name"
+    :res-name="detailData.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
+    :loaded="loaded"
     @tab-change="handleTabChange">
     <template v-slot:actions>
-      <actions :options="params.singleActions" :row="data" button-type="link" button-size="small" />
+      <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :data="data" :res-id="params.resId" :cloudaccount-list="params.list" :getParams="getParams" />
+    <component :is="params.windowData.currentTab" :data="detailData" :on-manager="onManager" :res-id="data.id" :cloudaccount-list-refresh="params.options.refresh" :getParams="getParams" />
   </base-side-page>
 </template>
 
 <script>
 import CloudproviderList from '@Cloudenv/views/cloudprovider/components/List'
 import HostList from '@Compute/views/host/components/List'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 import CloudaccountDetail from './Detail'
 import Dashboard from './Dashboard'
 import SidePageMixin from '@/mixins/sidePage'
@@ -34,38 +37,35 @@ export default {
     HostList,
     Dashboard,
   },
-  mixins: [SidePageMixin, WindowsMixin],
-  data () {
-    const data = this.params.list.data[this.params.resId].data
-    let platform = 'idc'
-    if (data.provider) {
-      platform = findPlatform(data.provider.toLowerCase(), 'provider')
-    }
-    const detailTabs = [
-      { label: '详情', key: 'cloudaccount-detail' },
-      { label: '订阅', key: 'cloudprovider-list' },
-      // { label: '资源统计', key: 'dashboard' }, // 暂时去掉
-      { label: '操作日志', key: 'event-drawer' },
-    ]
-    if (platform === 'idc' || platform === 'private') {
-      detailTabs.splice(1, 0, { label: '宿主机', key: 'host-list' })
-    }
-    return {
-      data,
-      detailTabs,
-    }
-  },
+  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   computed: {
+    detailTabs () {
+      const data = this.detailData
+      let platform = 'idc'
+      if (data.provider) {
+        platform = findPlatform(data.provider.toLowerCase(), 'provider')
+      }
+      const detailTabs = [
+        { label: '详情', key: 'cloudaccount-detail' },
+        { label: '订阅', key: 'cloudprovider-list' },
+        // { label: '资源统计', key: 'dashboard' }, // 暂时去掉
+        { label: '操作日志', key: 'event-drawer' },
+      ]
+      if (platform === 'idc' || platform === 'private') {
+        detailTabs.splice(1, 0, { label: '宿主机', key: 'host-list' })
+      }
+      return detailTabs
+    },
     getParams () {
       if (this.params.windowData.currentTab === 'cloudprovider-list') {
         return {
           detail: true,
-          cloudaccount_id: this.params.resId,
+          cloudaccount_id: this.data.id,
         }
       } else if (this.params.windowData.currentTab === 'host-list') {
         return {
           detail: true,
-          account: this.params.resId,
+          account: this.data.id,
           baremetal: false,
         }
       }

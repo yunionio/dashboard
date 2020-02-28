@@ -75,7 +75,7 @@ export default {
   methods: {
     async doSetShareSubmit (data) {
       const id = this.params.data[0].id
-      return this.params.list.onManager('performAction', {
+      return this.params.onManager('performAction', {
         id,
         managerArgs: {
           action: 'share-mode',

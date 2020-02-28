@@ -43,14 +43,14 @@ export default {
       try {
         this.loading = true
         const ids = this.params.data.map(item => item.id)
-        await this.params.list.onManager('batchPerformAction', {
+        await this.params.onManager('batchPerformAction', {
           id: ids,
           managerArgs: {
             action: 'set-user-metadata',
             data,
           },
         })
-        await this.params.list.refresh()
+        await this.params.refresh()
         this.$bus.$emit('TagListUnbindResourceCallback', {
           tagData: this.params.tagData,
         })

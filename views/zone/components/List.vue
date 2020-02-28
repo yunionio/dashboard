@@ -56,7 +56,7 @@ export default {
           action: () => {
             this.createDialog('CreateZoneDialog', {
               title: '创建可用区',
-              list: this.list,
+              onManager: this.onManager,
             })
           },
           meta: () => {

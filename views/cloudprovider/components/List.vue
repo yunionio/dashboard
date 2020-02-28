@@ -7,18 +7,15 @@
 </template>
 
 <script>
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 import expectStatus from '@/constants/expectStatus'
-import {
-  getProjectTableColumn,
-  getStatusTableColumn,
-  getEnabledTableColumn,
-  getNameDescriptionTableColumn,
-} from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
+import ListMixin from '@/mixins/list'
 
 export default {
   name: 'CloudproviderList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     getParams: {
       type: [Function, Object],
@@ -26,8 +23,8 @@ export default {
     data: {
       type: Object,
     },
-    cloudaccountList: {
-      type: Object,
+    cloudaccountListRefresh: {
+      type: Function,
     },
   },
   data () {
@@ -48,64 +45,6 @@ export default {
           },
         },
       }),
-      columns: [
-        getNameDescriptionTableColumn({
-          vm: this,
-          hideField: true,
-          slotCallback: row => {
-            return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'CloudproviderSidePage') }>{ row.name }</side-page-trigger>
-            )
-          },
-        }),
-        {
-          field: 'account',
-          title: '订阅（Subscription）ID',
-          showOverflow: 'ellipsis',
-          minWidth: 160,
-          slots: {
-            default: ({ row }) => {
-              let subscribeIds = (row.account && row.account.split('/')) || []
-              const text = subscribeIds.length > 1 ? subscribeIds[1] : subscribeIds[0]
-              return [
-                <list-body-cell-wrap message={text} copy hideField={true}>
-                  <span>{text}</span>
-                </list-body-cell-wrap>,
-              ]
-            },
-          },
-        },
-        getEnabledTableColumn(),
-        getStatusTableColumn({ statusModule: 'cloudaccount' }),
-        {
-          field: 'last_auto_sync',
-          title: '同步时间',
-          width: 80,
-          slots: {
-            default: ({ row }) => {
-              if (row.sync_status !== 'idle') { // 表示正在同步中
-                return [
-                  <status status={ row.sync_status } statusModule='cloudaccountSyncStatus' />,
-                ]
-              } else {
-                let time = this.$moment(row.last_sync)
-                if (time) {
-                  return time.fromNow()
-                } else {
-                  return '-'
-                }
-              }
-            },
-          },
-        },
-        getStatusTableColumn({
-          field: 'sync_status',
-          title: '同步状态',
-          minWidth: 100,
-          statusModule: 'cloudaccountSyncStatus',
-        }),
-        getProjectTableColumn(),
-      ],
       groupActions: [
         {
           label: '启用',
@@ -140,13 +79,13 @@ export default {
               this.createDialog('ChangeProjectDialog', {
                 data: this.list.selectedItems,
                 columns: this.columns,
-                list: this.list,
+                onManager: this.onManager,
               })
             } else {
               this.createDialog('ChangeOwenrDialog', {
                 data: this.list.selectedItems,
                 columns: this.columns,
-                list: this.list,
+                onManager: this.onManager,
                 action: 'change-project',
               })
             }
@@ -158,121 +97,22 @@ export default {
           },
         },
       ],
-      singleActions: [
-        {
-          label: `更改${this.$t('dictionary.project')}`,
-          action: obj => {
-            if (isAccountDomain(this.data)) {
-              this.createDialog('ChangeProjectDialog', {
-                data: [obj],
-                columns: this.columns,
-                list: this.list,
-              })
-            } else {
-              this.createDialog('ChangeOwenrDialog', {
-                data: [obj],
-                columns: this.columns,
-                list: this.list,
-                action: 'change-project',
-              })
-            }
-          },
-          meta: obj => {
-            let tooltip
-            if (!obj.enabled) tooltip = '请先启用'
-            return {
-              validate: obj.enabled && ownerDomain(this.list),
-              tooltip,
-            }
-          },
-        },
-        {
-          label: '全量同步',
-          action: obj => {
-            this.list.onManager('performAction', {
-              id: obj.id,
-              steadyStatus: {
-                status: this.list.steadyStatus,
-                sync_status: ['idle'],
-              },
-              managerArgs: {
-                action: 'sync',
-                params: {
-                  full_sync: true,
-                },
-              },
-            }).then(() => {
-              // 不能写成 then(this.cloudaccountList.fetchData)，因为在 list 类中有 this 引用问题
-              // 订阅同步后，云账号也要同步
-              this.cloudaccountList.fetchData()
-            })
-          },
-          meta: obj => {
-            let tooltip
-            let validate = true
-            if (!ownerDomain(this.list)) {
-              tooltip = '权限不足'
-              validate = false
-            }
-            if (!obj.enabled) {
-              tooltip = '请先启用'
-              validate = false
-            }
-            if (this.data.enable_auto_sync) {
-              tooltip = '请先取消设置自动同步'
-              validate = false
-            }
-            return {
-              tooltip,
-              validate,
-            }
-          },
-        },
-        {
-          label: '更多',
-          actions: obj => {
-            return [
-              {
-                label: '启用',
-                action: () => {
-                  this.list.onManager('performAction', {
-                    id: obj.id,
-                    managerArgs: {
-                      action: 'enable',
-                    },
-                  })
-                },
-                meta: () => {
-                  return {
-                    validate: !obj.enabled && ownerDomain(this.list),
-                  }
-                },
-              },
-              {
-                label: '禁用',
-                action: () => {
-                  this.list.onManager('performAction', {
-                    id: obj.id,
-                    managerArgs: {
-                      action: 'disable',
-                    },
-                  })
-                },
-                meta: () => {
-                  return {
-                    validate: obj.enabled && ownerDomain(this.list),
-                  }
-                },
-              },
-            ]
-          },
-        },
-      ],
     }
   },
   created () {
     this.initSidePageTab('cloudaccount-detail')
     this.list.fetchData()
+  },
+  methods: {
+    handleOpenSidepage (row) {
+      this.sidePageTriggerHandle(this, 'CloudproviderSidePage', {
+        id: row.id,
+        resource: 'cloudproviders',
+        getParams: this.getParams,
+      }, {
+        list: this.list,
+      })
+    },
   },
 }
 </script>

@@ -195,11 +195,14 @@ export default {
       this.loading = true
       try {
         const values = await this.validateForm()
-        const params = {
-          ...values,
+        const params = values
+        await this.params.onManager('performAction', {
           id: this.params.data[0].id,
-        }
-        await this.params.list.singlePerformAction('update-credential', params)
+          managerArgs: {
+            action: 'update-credential',
+            data: params,
+          },
+        })
         this.loading = false
         this.cancelDialog()
       } catch (error) {

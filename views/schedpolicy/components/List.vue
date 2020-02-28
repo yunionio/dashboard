@@ -60,7 +60,7 @@ export default {
           action: () => {
             this.createDialog('CreateSchedpolicyDialog', {
               title: '创建调度策略',
-              list: this.list,
+              onManager: this.onManager,
             })
           },
           meta: () => {
@@ -76,7 +76,7 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               title: '删除调度策略',
-              list: this.list,
+              onManager: this.onManager,
             })
           },
           meta: () => {

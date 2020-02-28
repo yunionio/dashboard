@@ -3,21 +3,24 @@
     @cancel="cancelSidePage"
     title="订阅"
     icon="onecloud"
-    :res-name="data.name"
+    :res-name="detailData.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
+    :loaded="loaded"
     @tab-change="handleTabChange">
     <template v-slot:actions>
-      <actions :options="params.singleActions" :row="data" button-type="link" button-size="small" />
+      <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :res-id="params.resId" :data="data" :list="params.list" :cloudprovider-id="params.resId" :getParams="getParams" />
+    <component :is="params.windowData.currentTab" :res-id="data.id" :cloudprovider-id="data.id" :data="detailData" :onManager="onManager" :getParams="getParams" />
   </base-side-page>
 </template>
 
 <script>
 import CloudproviderregionList from '@Cloudenv/views/cloudproviderregion/components/List'
 import ExternalprojectList from '@Cloudenv/views/externalproject/components/List'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 import CloudaccountDetail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
@@ -31,7 +34,7 @@ export default {
     CloudproviderregionList,
     ExternalprojectList,
   },
-  mixins: [SidePageMixin, WindowsMixin],
+  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
@@ -47,21 +50,18 @@ export default {
       if (this.params.windowData.currentTab === 'cloudproviderregion-list') {
         return () => {
           return {
-            cloudprovider_id: this.params.resId,
+            cloudprovider_id: this.data.id,
             details: true,
           }
         }
       } else if (this.params.windowData.currentTab === 'externalproject-list') {
         return () => {
           return {
-            manager_id: this.params.resId,
+            manager_id: this.data.id,
           }
         }
       }
       return null
-    },
-    data () {
-      return this.params.list.data[this.params.resId].data
     },
   },
 }

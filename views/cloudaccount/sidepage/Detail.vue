@@ -1,7 +1,7 @@
 <template>
   <detail
-    :list="cloudaccountList"
     :data="data"
+    :onManager="onManager"
     :base-info="baseInfo"
     :extra-info="extraInfo"
     status-module="cloudaccount" />
@@ -13,8 +13,8 @@ import { getBrandTableColumn, getEnabledTableColumn, getStatusTableColumn } from
 export default {
   name: 'CloudaccountDetail',
   props: {
-    cloudaccountList: {
-      type: Object,
+    onManager: {
+      type: Function,
       required: true,
     },
     data: {

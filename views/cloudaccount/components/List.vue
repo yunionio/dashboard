@@ -9,65 +9,16 @@
 
 <script>
 import * as R from 'ramda'
-import { mapGetters } from 'vuex'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 import expectStatus from '@/constants/expectStatus'
-import {
-  getBrandTableColumn,
-  getStatusTableColumn,
-  getEnabledTableColumn,
-  getPublicTableColumn,
-  getCopyWithContentTableColumn,
-  getNameDescriptionTableColumn,
-  getProjectTableColumn,
-} from '@/utils/common/tableColumn'
 import { getNameFilter, getFilter, getEnabledFilter, getStatusFilter, getBrandFilter, getPublicFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
-import { changeToArr } from '@/utils/utils'
-
-const syncPolicy = (item, ownerDomain) => {
-  let tooltip
-  const items = changeToArr(item)
-  if (!items.length) return { validate: false }
-  const enabledValid = items.every(obj => {
-    if (!obj.enabled) {
-      tooltip = '请先启用云账号'
-      return false
-    }
-    return true
-  })
-  const autoSyncValid = items.every(obj => {
-    if (obj.enable_auto_sync) {
-      tooltip = '请先取消设置自动同步'
-      return false
-    }
-    return true
-  })
-  return {
-    validate: enabledValid && autoSyncValid && ownerDomain,
-    tooltip,
-  }
-}
-
-const setAutoSyncPolicy = (item, ownerDomain) => {
-  let tooltip
-  const items = changeToArr(item)
-  if (!items.length) return { validate: false }
-  const enabledValid = items.every(obj => {
-    if (!obj.enabled) {
-      tooltip = '请先启用云账号'
-      return false
-    }
-    return true
-  })
-  return {
-    validate: enabledValid && ownerDomain,
-    tooltip,
-  }
-}
+import ListMixin from '@/mixins/list'
 
 export default {
   name: 'CloudaccountList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
@@ -81,7 +32,7 @@ export default {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'cloudaccounts',
-        getParams: this.getParam,
+        getParams: this.getParams,
         steadyStatus: {
           status: Object.values(expectStatus.cloudaccount).flat(),
           sync_status: Object.values(expectStatus.cloudaccountSyncStatus).flat(),
@@ -129,82 +80,6 @@ export default {
           { label: '同步时间', key: 'last_auto_sync' },
         ],
       },
-      columns: [
-        getNameDescriptionTableColumn({
-          vm: this,
-          hideField: true,
-          slotCallback: row => {
-            return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'CloudaccountSidePage') }>{ row.name }</side-page-trigger>
-            )
-          },
-        }),
-        {
-          field: 'access_url',
-          title: '服务器地址',
-          minWidth: 100,
-          showOverflow: 'ellipsis',
-          slots: {
-            default: ({ row }) => {
-              if (!row.access_url) return '-'
-              return [
-                <a class="link-color" href={ row.access_url }>{ row.access_url }</a>,
-              ]
-            },
-          },
-        },
-        getEnabledTableColumn(),
-        getStatusTableColumn({ statusModule: 'cloudaccount' }),
-        getStatusTableColumn({ statusModule: 'cloudaccountHealthStatus', title: '健康状态', field: 'health_status', minWidth: 90 }),
-        {
-          field: 'guest_count',
-          title: '虚拟机',
-          width: 60,
-        },
-        {
-          field: 'balance',
-          title: '余额',
-          minWidth: 70,
-          showOverflow: 'ellipsis',
-          formatter: ({ row }) => {
-            if (R.isNil(row.balance)) {
-              return '-'
-            }
-            return row.balance
-          },
-        },
-        {
-          field: 'host_count',
-          title: '宿主机',
-          minWidth: 70,
-        },
-        getCopyWithContentTableColumn({ field: 'account', title: '账号' }),
-        getBrandTableColumn(),
-        getEnabledTableColumn({ field: 'enable_auto_sync', title: '自动同步', minWidth: 90 }),
-        {
-          field: 'last_auto_sync',
-          title: '同步时间',
-          width: 70,
-          slots: {
-            default: ({ row }) => {
-              if (row.sync_status !== 'idle') { // 表示正在同步中
-                return [
-                  <status status={ row.sync_status } statusModule='cloudaccountSyncStatus' />,
-                ]
-              } else {
-                let time = this.$moment(row.last_sync)
-                if (time) {
-                  return time.fromNow()
-                } else {
-                  return '-'
-                }
-              }
-            },
-          },
-        },
-        getPublicTableColumn(),
-        getProjectTableColumn(),
-      ],
       groupActions: [
         {
           label: '新建',
@@ -229,7 +104,7 @@ export default {
                 action: () => {
                   this.list.batchPerformAction('sync', { full_sync: true }, this.list.steadyStatus)
                 },
-                meta: () => syncPolicy(this.list.selectedItems, ownerDomain),
+                meta: () => this.syncPolicy(this.list.selectedItems, ownerDomain),
               },
               {
                 label: '设置自动同步',
@@ -238,10 +113,11 @@ export default {
                   this.createDialog('CloudaccountSetAutoSyncDialog', {
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    list: this.list,
+                    onManager: this.onManager,
+                    steadyStatus: this.list.steadyStatus,
                   })
                 },
-                meta: () => setAutoSyncPolicy(this.list.selectedItems, ownerDomain),
+                meta: () => this.setAutoSyncPolicy(this.list.selectedItems, ownerDomain),
               },
               {
                 label: '连接测试',
@@ -249,7 +125,7 @@ export default {
                 action: () => {
                   this.list.batchPerformAction('sync', null, this.list.steadyStatus)
                 },
-                meta: () => syncPolicy(this.list.selectedItems, ownerDomain), // 和【全量同步】同逻辑
+                meta: () => this.syncPolicy(this.list.selectedItems, ownerDomain), // 和【全量同步】同逻辑
               },
               {
                 label: '启用',
@@ -283,7 +159,7 @@ export default {
                     data: this.list.selectedItems,
                     columns: this.columns,
                     title: '删除云账号',
-                    list: this.list,
+                    onManager: this.onManager,
                   })
                 },
                 meta: () => this.$getDeleteResult(this.list.selectedItems),
@@ -292,177 +168,7 @@ export default {
           },
         },
       ],
-      singleActions: [
-        {
-          label: '更新账号密码',
-          permission: 'cloudaccounts_perform_update_credential',
-          action: obj => {
-            this.createDialog('CloudaccountUpdateDialog', {
-              data: [obj],
-              columns: this.columns,
-              list: this.list,
-            })
-          },
-          meta: obj => {
-            const ownerDomain = this.$store.getters.isAdminMode || obj.domain_id === this.$store.getters.userInfo.projectDomainId
-            let tooltip
-            if (!obj.enabled) tooltip = '请先启用云账号'
-            return {
-              validate: obj.enabled && ownerDomain,
-              tooltip,
-            }
-          },
-        },
-        {
-          label: '更新账单文件',
-          permission: 'cloudaccounts_perform_update_credential',
-          action: obj => {
-            this.$router.push({
-              name: 'CloudaccountUpdateBill',
-              query: {
-                id: obj.id,
-              },
-            })
-          },
-          meta: obj => {
-            return {
-              validate: ['Aws', 'Aliyun', 'Google', 'Huawei'].indexOf(obj.brand) > -1,
-            }
-          },
-        },
-        {
-          label: '更多',
-          actions: obj => {
-            const ownerDomain = this.$store.getters.isAdminMode || obj.domain_id === this.$store.getters.userInfo.projectDomainId
-            return [
-              {
-                label: '全量同步',
-                permission: 'cloudaccounts_perform_sync',
-                action: () => {
-                  this.list.onManager('performAction', {
-                    id: obj.id,
-                    steadyStatus: this.list.steadyStatus,
-                    managerArgs: {
-                      action: 'sync',
-                      data: {
-                        full_sync: true,
-                      },
-                    },
-                  })
-                },
-                meta: () => syncPolicy(obj, ownerDomain),
-              },
-              {
-                label: '设置自动同步',
-                permission: 'cloudaccounts_perform_enable_auto_sync,cloudaccounts_perform_disable_auto_sync',
-                action: () => {
-                  this.createDialog('CloudaccountSetAutoSyncDialog', {
-                    data: [obj],
-                    columns: this.columns,
-                    list: this.list,
-                  })
-                },
-                meta: () => setAutoSyncPolicy(obj, ownerDomain),
-              },
-              {
-                label: '连接测试',
-                permission: 'cloudaccounts_perform_sync',
-                action: () => {
-                  this.list.onManager('performAction', {
-                    id: obj.id,
-                    steadyStatus: this.list.steadyStatus,
-                    managerArgs: {
-                      action: 'sync',
-                    },
-                  })
-                },
-                meta: () => {
-                  let tooltip
-                  if (!obj.enabled) tooltip = '请先启用云账号'
-                  if (obj.enable_auto_sync) tooltip = '请先取消设置自动同步'
-                  return {
-                    validate: (obj.enabled && !obj.enable_auto_sync) && ownerDomain,
-                    tooltip,
-                  }
-                },
-              },
-              {
-                label: '设置共享',
-                action: () => {
-                  this.createDialog('CloudaccountSetShareDialog', {
-                    data: [obj],
-                    columns: this.columns,
-                    list: this.list,
-                  })
-                },
-                meta: () => {
-                  let tooltip = ''
-                  if (!this.l3PermissionEnable) {
-                    tooltip = '未开启三级权限，无法操作'
-                  } else if (!this.$store.getters.isAdminMode) {
-                    tooltip = '仅系统管理后台下可以操作'
-                  }
-                  return {
-                    validate: this.l3PermissionEnable && this.$store.getters.isAdminMode,
-                    tooltip,
-                  }
-                },
-              },
-              {
-                label: '启用',
-                permission: 'cloudaccounts_perform_enable',
-                action: () => {
-                  this.list.onManager('performAction', {
-                    id: obj.id,
-                    managerArgs: {
-                      action: 'enable',
-                    },
-                  })
-                },
-                meta: () => {
-                  return {
-                    validate: !obj.enabled && ownerDomain,
-                  }
-                },
-              },
-              {
-                label: '禁用',
-                permission: 'cloudaccounts_perform_disable',
-                action: () => {
-                  this.list.onManager('performAction', {
-                    id: obj.id,
-                    managerArgs: {
-                      action: 'disable',
-                    },
-                  })
-                },
-                meta: () => {
-                  return {
-                    validate: obj.enabled && ownerDomain,
-                  }
-                },
-              },
-              {
-                label: '删除',
-                permission: 'cloudaccounts_delete',
-                action: () => {
-                  this.createDialog('DeleteResDialog', {
-                    data: [obj],
-                    columns: this.columns,
-                    title: '删除云账号',
-                    list: this.list,
-                  })
-                },
-                meta: () => this.$getDeleteResult(obj),
-              },
-            ]
-          },
-        },
-      ],
     }
-  },
-  computed: {
-    ...mapGetters(['l3PermissionEnable']),
   },
   watch: {
     cloudEnv (val) {
@@ -485,6 +191,16 @@ export default {
       }
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
+    },
+    handleOpenSidepage (row) {
+      this.sidePageTriggerHandle(this, 'CloudaccountSidePage', {
+        id: row.id,
+        resource: 'cloudaccounts',
+        getParams: this.getParams,
+        refresh: this.refresh,
+      }, {
+        list: this.list,
+      })
     },
   },
 }

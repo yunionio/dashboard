@@ -55,7 +55,7 @@ export default {
             this.createDialog('ChangeProjectDialog', {
               data: this.list.selectedItems,
               columns: this.columns,
-              list: this.list,
+              onManager: this.onManager,
             })
           },
           meta: () => {
@@ -73,7 +73,7 @@ export default {
             this.createDialog('ChangeProjectDialog', {
               data: [obj],
               columns: this.columns,
-              list: this.list,
+              onManager: this.onManager,
             })
           },
         },

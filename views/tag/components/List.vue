@@ -15,12 +15,13 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
+import ColumnsMixin from '../mixins/columns'
 import WindowsMixin from '@/mixins/windows'
 import { getTagColor, getTagTitle } from '@/utils/common/tag'
 
 export default {
   name: 'TagList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ColumnsMixin],
   props: {
     getParams: {
       type: [Object, Function],
@@ -31,43 +32,6 @@ export default {
     return {
       loading: false,
       data: [],
-      columns: [
-        {
-          field: 'key',
-          title: '标签（键：值）',
-          showOverflow: 'ellipsis',
-          minWidth: 100,
-          slots: {
-            default: ({ row }) => {
-              let trigger = <a onClick={ () => this.createSidePageForList('TagSidePage', { resId: row.id, data: row, windowData: this.windowData }) }>{ row.name }</a>
-              if (this.$options.name !== 'TagList') {
-                trigger = <span>{ row.name }</span>
-              }
-              return [
-                <list-body-cell-wrap copy field='name' row={row} hideField>{ trigger }</list-body-cell-wrap>,
-              ]
-            },
-          },
-        },
-        {
-          field: 'count',
-          title: '绑定资源数量',
-          width: 120,
-          formatter: ({ row }) => {
-            return `${row.count || 0}`
-          },
-        },
-        {
-          field: 'color',
-          title: '颜色',
-          width: 60,
-          slots: {
-            default: ({ row }) => {
-              return [<span style={{ display: 'inline-block', backgroundColor: row.color, width: '10px', height: '10px' }} />]
-            },
-          },
-        },
-      ],
     }
   },
   computed: mapGetters(['scope']),
@@ -121,6 +85,29 @@ export default {
       } catch (error) {
         throw error
       }
+    },
+    handleOpenSidepage (row) {
+      this.sidePageTriggerHandle(this, 'TagSidePage', {
+        id: row.key,
+        resource: async params => {
+          try {
+            const response = await this.manager.get({
+              id: 'tag-value-pairs',
+              params: {
+                ...params,
+                key: row.key,
+                value: row.value,
+              },
+            })
+            return { data: response.data.data[0] }
+          } catch (error) {
+            throw error
+          }
+        },
+        getParams: this.getParams,
+      }, {
+        list: this.list,
+      })
     },
   },
 }
