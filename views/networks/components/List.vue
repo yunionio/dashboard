@@ -67,5 +67,14 @@ export default {
     this.initSidePageTab('event-drawer')
     this.list.fetchData()
   },
+  methods: {
+    handleOpenNetworkDetail (id) {
+      this.initSidePageTab('network-detail')
+      this.sidePageTriggerHandle(this, 'NetworkSidePage', {
+        id,
+        resource: 'networks',
+      })
+    },
+  },
 }
 </script>

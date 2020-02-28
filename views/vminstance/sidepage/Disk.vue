@@ -6,7 +6,7 @@
 
 <script>
 import { ALL_STORAGE } from '@Compute/constants'
-import { getCopyWithContentTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
+import { getStatusTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import { sizestr } from '@/utils/utils'
 import expectStatus from '@/constants/expectStatus'
@@ -42,7 +42,23 @@ export default {
             return row.index ? row.index : '0'
           },
         },
-        getCopyWithContentTableColumn({ field: 'disk', title: '磁盘' }),
+        {
+          field: 'disk',
+          title: '磁盘',
+          sortable: true,
+          showOverflow: 'ellipsis',
+          minWidth: 100,
+          slots: {
+            default: ({ row }, h) => {
+              const ret = [
+                <list-body-cell-wrap copy row={row} hideField={ true }>
+                  <side-page-trigger onTrigger={ () => this.handleOpenDiskDetail(row.disk_id) }>{ row.disk }</side-page-trigger>
+                </list-body-cell-wrap>,
+              ]
+              return ret
+            },
+          },
+        },
         {
           field: 'disk_size',
           title: '大小',
@@ -99,6 +115,19 @@ export default {
   },
   created () {
     this.list.fetchData()
+  },
+  methods: {
+    handleOpenDiskDetail (id) {
+      this.initSidePageTab('disk-detail')
+      this.sidePageTriggerHandle(this, 'DiskSidePage', {
+        id,
+        resource: 'disks',
+        steadyStatus: {
+          status: Object.values(expectStatus.disk).flat(),
+          guest_status: [...Object.values(expectStatus.server).flat(), '', undefined],
+        },
+      })
+    },
   },
 }
 </script>

@@ -226,10 +226,6 @@ export default {
         resource: 'images',
         apiVersion: 'v1',
         steadyStatus: Object.values(expectStatus.image).flat(),
-      }, {
-        cancel: () => {
-          this.$emit('single-refresh', this.data.id)
-        },
       })
     },
   },
