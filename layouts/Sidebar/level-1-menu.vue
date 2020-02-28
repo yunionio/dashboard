@@ -116,6 +116,11 @@ export default {
   overflow: hidden;
   border-right: 1px solid #e6e9f0;
   transition: all .15s ease;
+  ::v-deep {
+    .scrollbar-wrap {
+      overflow-x: hidden;
+    }
+  }
 }
 .level-1-item-wrap {
   cursor: pointer;
