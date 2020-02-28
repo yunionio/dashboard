@@ -82,7 +82,7 @@ export default {
               const rkey = key.replace(this.prefix, '')
               if (this.isDir(key)) {
                 return [
-                  <a style="padding: 0" type="link" onClick={() => this.nextPage(key)}><a-icon type="folder" theme="filled" style="color: rgb(245,200, 61)" />{ rkey }</a>,
+                  <a style="padding: 0" onClick={() => this.nextPage(key)}><a-icon type="folder" theme="filled" style="color: rgb(245,200, 61)" />{ rkey }</a>,
                 ]
               }
               return [
