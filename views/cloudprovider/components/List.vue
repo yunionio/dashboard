@@ -110,7 +110,7 @@ export default {
         {
           label: '启用',
           action: () => {
-            this.list.batchPerformAction('disable', null).then(() => {
+            this.list.batchPerformAction('enable', null).then(() => {
               this.$bus.$emit('CloudAccountListSingleRefresh', [this.data.id])
             })
           },
