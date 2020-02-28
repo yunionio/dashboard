@@ -109,7 +109,7 @@ const actionEableMap = {
       dstack: ['ready'],
       ucloud: ['ready'],
       ctyun: ['ready'],
-      google: ['ready', 'running'],
+      google: ['ready'],
     },
   },
   'vnc': {
