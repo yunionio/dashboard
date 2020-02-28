@@ -120,6 +120,10 @@ export default {
         getNameDescriptionTableColumn({
           vm: this,
           hideField: true,
+          formRules: [
+            { required: true, message: '请输入名称' },
+            { validator: this.$validate('serverCreateName') },
+          ],
           slotCallback: row => {
             return (
               <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'DiskSidePage') }>{ row.name }</side-page-trigger>
