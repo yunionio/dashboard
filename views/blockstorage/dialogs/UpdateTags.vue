@@ -108,7 +108,14 @@ export default {
             params[`schedtag.${i}`] = id
           })
         }
-        await this.params.list.batchPerformAction('set-schedtag', params, [], this.params.data.map(({ id }) => id))
+        const ids = this.params.data.map(item => item.id)
+        await this.params.onManager({
+          id: ids,
+          managerArgs: {
+            action: 'set-schedtag',
+            data: params,
+          },
+        })
         this.cancelDialog()
         this.loading = false
       } catch (error) {

@@ -84,13 +84,13 @@ export default {
       this.loading = true
       try {
         const values = await this.validateForm()
-        await this.params.list.onManager('create', {
+        await this.params.onManager('create', {
           managerArgs: {
             data: values,
           },
         })
         this.cancelDialog()
-        this.params.list.fetchData()
+        this.params.refresh()
       } catch (error) {
         this.loading = false
         throw error

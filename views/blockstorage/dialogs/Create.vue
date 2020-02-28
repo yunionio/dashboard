@@ -150,7 +150,7 @@ export default {
         const manager = new this.$Manager('storages', 'v2')
         await manager.create({ data: values })
         this.cancelDialog()
-        this.params.list.fetchData()
+        this.params.refresh()
       } catch (error) {
         this.loading = false
         throw error

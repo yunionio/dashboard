@@ -105,7 +105,7 @@ export default {
           ctx: [['storages', this.params.data[0].id]],
         })
         this.cancelDialog()
-        this.params.list.fetchData()
+        this.params.refresh()
         this.loading = false
       } catch (error) {
         this.loading = false

@@ -7,14 +7,15 @@
 </template>
 
 <script>
-import { ACL_TYPE } from '@Storage/constants/index.js'
-import { getNameDescriptionTableColumn, getStatusTableColumn, getBrandTableColumn, getRegionTableColumn, getAccountTableColumn, getProjectTableColumn } from '@/utils/common/tableColumn'
-import { getNameFilter, getTenantFilter, getBrandFilter } from '@/utils/common/tableFilter'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
+import ListMixin from '@/mixins/list'
+import { getNameFilter, getTenantFilter, getBrandFilter } from '@/utils/common/tableFilter'
 
 export default {
   name: 'BucketStorageList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
@@ -33,45 +34,14 @@ export default {
           tenant: getTenantFilter(),
         },
       }),
-      columns: [
-        getNameDescriptionTableColumn({
-          vm: this,
-          hideField: true,
-          slotCallback: row => {
-            return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'BucketStorageSidePage') }>{ row.name_cn ? `${row.name}(${row.name_cn})` : row.name }</side-page-trigger>
-            )
-          },
-        }),
-        {
-          field: 'acl',
-          title: '读写权限',
-          width: 120,
-          formatter: ({ row }) => {
-            return ACL_TYPE[row.acl] || row.acl || '-'
-          },
-        },
-        {
-          field: 'storage_class',
-          title: '存储类型',
-          width: 120,
-          formatter: ({ row }) => {
-            return row.storage_class || '-'
-          },
-        },
-        getStatusTableColumn({ statusModule: 'bucket' }),
-        getRegionTableColumn(),
-        getBrandTableColumn(),
-        getAccountTableColumn(),
-        getProjectTableColumn(),
-      ],
       groupActions: [
         {
           label: '新建',
           action: () => {
             this.createDialog('BucketCreateDialog', {
               title: '新建',
-              list: this.list,
+              onManager: this.onManager,
+              refresh: this.refresh,
             })
           },
           meta: () => {
@@ -89,10 +59,11 @@ export default {
                 permission: 'buckets_perform_change_owner',
                 action: row => {
                   this.createDialog('ChangeOwenrDialog', {
+                    name: '存储桶',
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    list: this.list,
-                    name: '存储桶',
+                    onManager: this.onManager,
+                    refresh: this.refresh,
                   })
                 },
               },
@@ -104,16 +75,24 @@ export default {
                     title: '设置上限',
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    list: this.list,
+                    onManager: this.onManager,
+                    refresh: this.refresh,
                   })
                 },
               },
               {
                 label: '同步状态',
-                permission: 'buckets_perform_limit',
                 action: row => {
                   const { steadyStatus, selectedItems } = this.list
-                  this.list.batchPerformAction('sync', {}, steadyStatus, selectedItems.map(({ id }) => id))
+                  this.onManager('batchPerformAction', {
+                    id: selectedItems.map(({ id }) => id),
+                    managerArgs: {
+                      steadyStatus,
+                      action: 'sync',
+                    },
+                  }).then(() => {
+                    this.$message.success('操作成功')
+                  })
                 },
               },
               {
@@ -124,7 +103,8 @@ export default {
                     data: this.list.selectedItems,
                     columns: this.columns,
                     title: '删除',
-                    list: this.list,
+                    onManager: this.onManager,
+                    refresh: this.refresh,
                   })
                 },
                 meta: () => this.$getDeleteResult(this.list.selectedItems),
@@ -138,64 +118,6 @@ export default {
           },
         },
       ],
-      singleActions: [
-        {
-          label: '同步状态',
-          permission: 'server_perform_syncstatus',
-          action: (row) => {
-            this.list.singlePerformAction('sync', {
-              id: row.id,
-            }, this.list.steadyStatus).then(() => {
-              this.$message.success('操作成功')
-            })
-          },
-        },
-        {
-          label: `更改${this.$t('dictionary.project')}`,
-          permission: 'buckets_perform_change_owner',
-          action: row => {
-            this.createDialog('ChangeOwenrDialog', {
-              data: [row],
-              columns: this.columns,
-              list: this.list,
-              name: '存储桶',
-            })
-          },
-        },
-        {
-          label: '更多',
-          actions: row => {
-            return [
-              {
-                label: '设置上限',
-                permission: 'buckets_perform_limit',
-                action: obj => {
-                  this.createDialog('BucketUpdateBucketLimitDialog', {
-                    title: '设置上限',
-                    data: [row],
-                    columns: this.columns,
-                    list: this.list,
-                  })
-                },
-              },
-              {
-                label: '删除',
-                permission: 'buckets_delete',
-                action: row => {
-                  this.createDialog('DeleteResDialog', {
-                    data: [row],
-                    columns: this.columns,
-                    title: '删除',
-                    list: this.list,
-                    name: '存储桶',
-                  })
-                },
-                meta: (row) => this.$getDeleteResult(row),
-              },
-            ]
-          },
-        },
-      ],
     }
   },
   created () {
@@ -203,7 +125,15 @@ export default {
     this.initSidePageTab('objects')
   },
   methods: {
-
+    handleOpenSidepage (row) {
+      this.sidePageTriggerHandle(this, 'BucketStorageSidePage', {
+        id: row.id,
+        resource: 'buckets',
+        getParams: this.getParams,
+      }, {
+        list: this.list,
+      })
+    },
   },
 }
 </script>
