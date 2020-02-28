@@ -16,6 +16,23 @@ export default {
       getCopyWithContentTableColumn({ field: 'ip_addr', title: 'IP地址', sortable: true }),
       getCopyWithContentTableColumn({ field: 'driver', title: '驱动' }),
       {
+        field: 'guest_id',
+        title: '网络',
+        sortable: true,
+        showOverflow: 'ellipsis',
+        minWidth: 100,
+        slots: {
+          default: ({ row }, h) => {
+            const ret = [
+              <list-body-cell-wrap copy row={row} hideField={ true }>
+                <side-page-trigger onTrigger={ () => this.handleOpenNetworkDetail(row.network_id) }>{ row.network }</side-page-trigger>
+              </list-body-cell-wrap>,
+            ]
+            return ret
+          },
+        },
+      },
+      {
         field: 'bw_limit',
         title: '带宽限制',
         width: 100,
