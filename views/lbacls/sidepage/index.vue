@@ -3,19 +3,31 @@
     @cancel="cancelSidePage"
     title="访问控制"
     icon="res-lbacl"
-    :res-name="data.name"
-    :actions="params.actions"
+    :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
+    :loaded="loaded"
     @tab-change="handleTabChange">
     <template v-slot:actions>
-      <actions :options="params.singleActions" :row="data" button-type="link" button-size="small" />
+      <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :res-id="params.resId" :data="data" :list="params.list" :getParams="getParams" />
+    <component
+      :is="params.windowData.currentTab"
+      :res-id="detailData.id"
+      :data="detailData"
+      :getParams="getParams"
+      :on-manager="onManager"
+      @side-page-trigger-handle="sidePageTriggerHandle"
+      @init-side-page-tab="initSidePageTab"
+      @refresh="refresh"
+      @single-refresh="singleRefresh"
+      @tab-change="handleTabChange" />
   </base-side-page>
 </template>
 
 <script>
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 import LbaclDetail from './Detail'
 import LbaclCacheList from './Cache'
 import SidePageMixin from '@/mixins/sidePage'
@@ -29,7 +41,7 @@ export default {
     LbaclCacheList,
     Actions,
   },
-  mixins: [SidePageMixin, WindowsMixin],
+  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
@@ -44,13 +56,10 @@ export default {
       if (this.params.windowData.currentTab === 'lbacl-cache-list') {
         return {
           details: true,
-          acl_id: this.params.resId,
+          acl_id: this.detailData.id,
         }
       }
       return null
-    },
-    data () {
-      return this.params.list.data[this.params.resId].data
     },
   },
 }

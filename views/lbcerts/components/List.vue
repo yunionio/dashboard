@@ -9,15 +9,14 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import {
-  getNameDescriptionTableColumn,
-  getProjectTableColumn,
-} from '@/utils/common/tableColumn'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
+import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'LbcertList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
@@ -40,43 +39,6 @@ export default {
           },
         },
       }),
-      columns: [
-        getNameDescriptionTableColumn({
-          vm: this,
-          hideField: true,
-          title: '证书名称',
-          slotCallback: row => {
-            return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'LbcertSidePage') }>{ row.name }</side-page-trigger>
-            )
-          },
-        }),
-        {
-          field: 'common_name',
-          title: '证书域名',
-          width: 150,
-          formatter: ({ cellValue }) => {
-            return cellValue || '-'
-          },
-        },
-        {
-          field: 'not_after',
-          title: '过期时间',
-          width: 150,
-          formatter: ({ cellValue }) => {
-            return cellValue ? this.$moment(cellValue).format('YYYY年MM月DD日 HH:mm:ss') : '-'
-          },
-        },
-        {
-          field: 'subject_alternative_names',
-          title: '关联扩展域名',
-          width: 150,
-          formatter: ({ cellValue }) => {
-            return cellValue || '-'
-          },
-        },
-        getProjectTableColumn(),
-      ],
       groupActions: [
         {
           label: '新建',
@@ -85,7 +47,7 @@ export default {
             this.createDialog('LbcertsCreateDialog', {
               title: '新建',
               data: this.list.selectedItems,
-              list: this.list,
+              onManager: this.onManager,
             })
           },
           meta: () => {
@@ -103,7 +65,7 @@ export default {
               title: '删除',
               data: this.list.selectedItems,
               columns: this.columns,
-              list: this.list,
+              onManager: this.onManager,
             })
           },
           meta: () => {
@@ -111,24 +73,6 @@ export default {
               validate: this.list.allowDelete(),
             }
           },
-        },
-      ],
-      singleActions: [
-        {
-          label: '删除',
-          permission: 'lb_loadbalancercertificates_delete',
-          action: (obj) => {
-            this.createDialog('DeleteResDialog', {
-              title: '删除',
-              data: [obj],
-              columns: this.columns,
-              list: this.list,
-              success: () => {
-                this.destroySidePages()
-              },
-            })
-          },
-          meta: (obj) => this.$getDeleteResult(obj),
         },
       ],
     }
@@ -163,6 +107,15 @@ export default {
         }
       }
       return false
+    },
+    handleOpenSidepage (row) {
+      this.sidePageTriggerHandle(this, 'LbcertSidePage', {
+        id: row.id,
+        resource: 'loadbalancercertificates',
+        getParams: this.getParam,
+      }, {
+        list: this.list,
+      })
     },
   },
 }

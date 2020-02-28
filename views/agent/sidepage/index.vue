@@ -3,19 +3,32 @@
     @cancel="cancelSidePage"
     title="节点"
     icon="res-cluster"
-    :res-name="data.name"
+    :res-name="detailData.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
+    :loaded="loaded"
     @tab-change="handleTabChange">
     <template v-slot:actions>
-      <actions :options="params.singleActions" :row="data" button-type="link" button-size="small" />
+      <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :res-id="params.resId" :data="data" :list="params.list" :getParams="getParams" />
+    <component
+      :is="params.windowData.currentTab"
+      :res-id="detailData.id"
+      :data="detailData"
+      :getParams="getParams"
+      :on-manager="onManager"
+      @side-page-trigger-handle="sidePageTriggerHandle"
+      @init-side-page-tab="initSidePageTab"
+      @refresh="refresh"
+      @single-refresh="singleRefresh"
+      @tab-change="handleTabChange" />
   </base-side-page>
 </template>
 
 <script>
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 import AgentDetail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
@@ -27,7 +40,7 @@ export default {
     AgentDetail,
     Actions,
   },
-  mixins: [SidePageMixin, WindowsMixin],
+  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
@@ -39,9 +52,6 @@ export default {
   computed: {
     getParams () {
       return null
-    },
-    data () {
-      return this.params.list.data[this.params.resId].data
     },
   },
 }

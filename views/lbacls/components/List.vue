@@ -9,16 +9,14 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import {
-  getNameDescriptionTableColumn,
-  getTimeTableColumn,
-  getProjectTableColumn,
-} from '@/utils/common/tableColumn'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
+import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'LbaclsList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
@@ -41,62 +39,6 @@ export default {
           },
         },
       }),
-      columns: [
-        getNameDescriptionTableColumn({
-          vm: this,
-          hideField: true,
-          title: '策略组名称',
-          slotCallback: row => {
-            return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'LbaclSidePage') }>{ row.name }</side-page-trigger>
-            )
-          },
-        }),
-        {
-          field: 'acl_entries',
-          title: '源地址 | 备注',
-          width: 150,
-          type: 'expand',
-          slots: {
-            content: ({ row }, h) => {
-              const arr = []
-              row.acl_entries.forEach(obj => {
-                let text = obj.cidr
-                if (obj.comment) {
-                  text += ` | ${obj.comment}`
-                }
-                arr.push({
-                  value: text,
-                })
-              })
-              const ret = []
-              if (arr.length > 0) {
-                ret.push(
-                  <div class='mb-2'>
-                    { arr.map(item => <a-tag>{ item.value }</a-tag>) }
-                  </div>
-                )
-              }
-              if (ret.length <= 0) {
-                ret.push(
-                  <div>暂无源地址 | 备注</div>
-                )
-              }
-              return ret
-            },
-          },
-        },
-        getTimeTableColumn(),
-        {
-          field: 'updated_at',
-          title: '更新时间',
-          width: 150,
-          formatter: ({ cellValue }) => {
-            return this.$moment(cellValue).format()
-          },
-        },
-        getProjectTableColumn(),
-      ],
       groupActions: [
         {
           label: '新建',
@@ -105,7 +47,7 @@ export default {
             this.createDialog('LbaclsCreateDialog', {
               title: '新建',
               data: this.list.selectedItems,
-              list: this.list,
+              onManager: this.onManager,
               type: 'create',
             })
           },
@@ -124,7 +66,7 @@ export default {
               title: '删除',
               data: this.list.selectedItems,
               columns: this.columns,
-              list: this.list,
+              onManager: this.onManager,
             })
           },
           meta: () => {
@@ -132,37 +74,6 @@ export default {
               validate: this.list.allowDelete(),
             }
           },
-        },
-      ],
-      singleActions: [
-        {
-          label: '修改',
-          permission: 'lb_loadbalanceracls_update',
-          action: (obj) => {
-            this.createDialog('LbaclsCreateDialog', {
-              title: '修改',
-              data: [obj],
-              columns: this.columns,
-              list: this.list,
-              type: 'update',
-            })
-          },
-        },
-        {
-          label: '删除',
-          permission: 'lb_loadbalancerlisteners_delete',
-          action: (obj) => {
-            this.createDialog('DeleteResDialog', {
-              title: '删除',
-              data: [obj],
-              columns: this.columns,
-              list: this.list,
-              success: () => {
-                this.destroySidePages()
-              },
-            })
-          },
-          meta: (obj) => this.$getDeleteResult(obj),
         },
       ],
     }
@@ -197,6 +108,15 @@ export default {
         }
       }
       return false
+    },
+    handleOpenSidepage (row) {
+      this.sidePageTriggerHandle(this, 'LbaclSidePage', {
+        id: row.id,
+        resource: 'loadbalanceracls',
+        getParams: this.getParam,
+      }, {
+        list: this.list,
+      })
     },
   },
 }

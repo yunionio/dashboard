@@ -9,15 +9,14 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import {
-  getNameDescriptionTableColumn,
-  getRegionTableColumn,
-} from '@/utils/common/tableColumn'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
+import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'LoadbalancerclusterList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
@@ -40,19 +39,6 @@ export default {
           },
         },
       }),
-      columns: [
-        getNameDescriptionTableColumn({
-          vm: this,
-          hideField: true,
-          title: '名称',
-          slotCallback: row => {
-            return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'LoadbalancerclusterSidePage') }>{ row.name }</side-page-trigger>
-            )
-          },
-        }),
-        getRegionTableColumn(),
-      ],
       groupActions: [
         {
           label: '新建',
@@ -61,42 +47,14 @@ export default {
             this.createDialog('LoadbalancerclusterCreateDialog', {
               title: '新建',
               data: this.list.selectedItems,
-              list: this.list,
+              onManager: this.onManager,
+              refresh: this.refresh,
             })
           },
           meta: () => {
             return {
               buttonType: 'primary',
               validate: this.$isAdminMode,
-            }
-          },
-        },
-      ],
-      singleActions: [
-        {
-          label: '删除',
-          permission: 'lb_loadbalancercertificates_delete',
-          action: (obj) => {
-            this.createDialog('DeleteResDialog', {
-              title: '删除',
-              data: [obj],
-              columns: this.columns,
-              list: this.list,
-              success: () => {
-                this.destroySidePages()
-              },
-            })
-          },
-          meta: (obj) => {
-            if (!obj.can_delete) {
-              return {
-                validate: false,
-                tooltip: '无法删除，请确保集群中的节点已被删除',
-              }
-            }
-            return {
-              validate: true,
-              tooltip: '',
             }
           },
         },
@@ -133,6 +91,15 @@ export default {
         }
       }
       return false
+    },
+    handleOpenSidepage (row) {
+      this.sidePageTriggerHandle(this, 'LoadbalancerclusterSidePage', {
+        id: row.id,
+        resource: 'loadbalancerclusters',
+        getParams: this.getParam,
+      }, {
+        list: this.list,
+      })
     },
   },
 }
