@@ -1,0 +1,36 @@
+export default {
+  created () {
+    this.singleActions = [
+      {
+        label: '关联硬盘',
+        action: obj => {
+          this.createDialog('AttachDiskDialog', {
+            data: [obj],
+            columns: this.columns,
+            title: '关联硬盘',
+          })
+        },
+        meta: obj => {
+          return {
+            validate: true,
+          }
+        },
+      },
+      {
+        label: '删除',
+        action: obj => {
+          this.createDialog('DeleteResDialog', {
+            data: [obj],
+            columns: this.columns,
+            title: '删除',
+            onManager: this.onManager,
+            success: () => {
+              this.destroySidePages()
+            },
+          })
+        },
+        meta: obj => this.$getDeleteResult(obj),
+      },
+    ]
+  },
+}

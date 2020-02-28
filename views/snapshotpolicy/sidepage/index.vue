@@ -3,19 +3,25 @@
     @cancel="cancelSidePage"
     title="快照策略"
     icon="res-kuaizhaocelue"
-    :res-name="data.name"
-    :actions="params.actions"
+    :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
+    :loaded="loaded"
     @tab-change="handleTabChange">
     <template v-slot:actions>
-      <actions :options="params.singleActions" :row="data" button-type="link" button-size="small" />
+      <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :data="data" :res-id="params.resId" :list="params.list" />
+    <component
+      :is="params.windowData.currentTab"
+      :data="detailData"
+      :on-manager="onManager"
+      :res-id="data.id" />
   </base-side-page>
 </template>
 
 <script>
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 import SnapshotPolicyDetail from './Detail'
 import SnapshotPolicyDisk from './Disk'
 import SnapshotPolicyCache from './Cache'
@@ -31,7 +37,7 @@ export default {
     SnapshotPolicyCache,
     Actions,
   },
-  mixins: [SidePageMixin, WindowsMixin],
+  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
@@ -41,11 +47,6 @@ export default {
         { label: '操作日志', key: 'event-drawer' },
       ],
     }
-  },
-  computed: {
-    data () {
-      return this.params.list.data[this.params.resId].data
-    },
   },
 }
 </script>

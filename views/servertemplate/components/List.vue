@@ -8,17 +8,15 @@
 </template>
 
 <script>
-import {
-  getNameDescriptionTableColumn,
-  // isPublicTableColumn,
-  getProjectTableColumn,
-} from '@/utils/common/tableColumn'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 import { getTenantFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
+import ListMixin from '@/mixins/list'
 
 export default {
   name: 'ServertemplateList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
@@ -52,26 +50,6 @@ export default {
           { label: '创建时间', key: 'created_at' },
         ],
       },
-      columns: [
-        getNameDescriptionTableColumn({
-          vm: this,
-          hideField: true,
-          slotCallback: row => {
-            return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'ServertemplateSidePage') }>{ row.name }</side-page-trigger>
-            )
-          },
-        }),
-        // isPublicTableColumn(),
-        getProjectTableColumn(),
-        {
-          field: 'created_at',
-          title: '创建时间',
-          formatter: ({ cellValue }) => {
-            return this.$moment(cellValue).format()
-          },
-        },
-      ],
       groupActions: [
         {
           label: '新建',
@@ -99,7 +77,7 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               title: '删除',
-              list: this.list,
+              onManager: this.onManager,
             })
           },
           meta: () => {
@@ -107,66 +85,6 @@ export default {
               validate: this.list.allowDelete(),
             }
           },
-        },
-        // {
-        //   label: '设置共享',
-        //   permission: 'servertemplates_perform_public',
-        //   action: obj => {
-        //     this.createDialog('SetPublicDialog', {
-        //       data: this.list.selectedItems,
-        //       columns: this.columns,
-        //       list: this.list,
-        //     })
-        //   },
-        //   meta: () => {
-        //     return {
-        //       validate: this.list.selectedItems.length && this.list.selectedItems.every(this.isPower),
-        //     }
-        //   },
-        // },
-      ],
-      singleActions: [
-        // {
-        //   label: '设置共享',
-        //   permission: 'servertemplates_perform_public',
-        //   action: obj => {
-        //     this.createDialog('SetPublicDialog', {
-        //       data: [obj],
-        //       columns: this.columns,
-        //       list: this.list,
-        //     })
-        //   },
-        //   meta: obj => {
-        //     return {
-        //       validate: this.isPower(obj),
-        //     }
-        //   },
-        // },
-        {
-          label: `新建${this.$t('dictionary.server')}`,
-          permission: 'server_create',
-          action: obj => {
-            this.$router.push({
-              path: '/servertemplate/create-server',
-              query: {
-                id: obj.id,
-              },
-            })
-          },
-        },
-        {
-          label: '删除',
-          permission: 'servertemplates_delete',
-          action: obj => {
-            this.createDialog('DeleteResDialog', {
-              data: [obj],
-              columns: this.columns,
-              title: '删除',
-              list: this.list,
-              name: '主机模板',
-            })
-          },
-          meta: obj => this.$getDeleteResult(obj),
         },
       ],
     }
@@ -183,11 +101,6 @@ export default {
     this.initSidePageTab('servertemplate-detail')
   },
   methods: {
-    isPower (obj) {
-      if (this.$store.getters.isAdminMode) return true
-      if (this.$store.getters.isDomainMode) return obj.domain_id === this.$store.getters.userInfo.projectDomainId
-      return obj.tenant_id === this.$store.getters.userInfo.projectId
-    },
     getParam () {
       const ret = {
         details: true,
@@ -195,6 +108,15 @@ export default {
       }
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
+    },
+    handleOpenSidepage (row) {
+      this.sidePageTriggerHandle(this, 'ServertemplateSidePage', {
+        id: row.id,
+        resource: 'servertemplates',
+        getParams: this.getParam,
+      }, {
+        list: this.list,
+      })
     },
   },
 }

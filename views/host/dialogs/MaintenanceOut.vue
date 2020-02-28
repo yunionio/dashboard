@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     doMaintenance () {
-      return this.params.list.onManager('batchPerformAction', {
+      return this.params.onManager('batchPerformAction', {
         id: this.params.data.map(item => item.id),
         managerArgs: {
           action: 'host-exit-maintenance',
@@ -39,7 +39,7 @@ export default {
         await this.doMaintenance()
         this.loading = false
         this.cancelDialog()
-        this.params.list.refresh()
+        this.params.refresh()
       } catch (error) {
         this.loading = false
       }

@@ -76,7 +76,7 @@ export default {
         await this.doUpdate(values)
         this.loading = false
         this.cancelDialog()
-        this.params.list.refresh()
+        this.params.refresh()
       } catch (error) {
         this.loading = false
       }

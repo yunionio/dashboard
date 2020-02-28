@@ -62,7 +62,7 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'SetSnapshotDialog',
+  name: 'DiskSetSnapshotDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
@@ -172,7 +172,7 @@ export default {
           }
         }
         this.loading = false
-        this.params.list.refresh()
+        this.params.refresh()
         this.cancelDialog()
       } catch (error) {
         this.loading = false

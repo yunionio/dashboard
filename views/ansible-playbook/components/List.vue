@@ -7,12 +7,14 @@
 </template>
 
 <script>
-import { getStatusTableColumn, getNameDescriptionTableColumn, getProjectTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
+import ListMixin from '@/mixins/list'
 
 export default {
   name: 'AnsiblePlaybookList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
@@ -65,75 +67,22 @@ export default {
           { label: this.$t('dictionary.project'), key: 'tenant' },
         ],
       },
-      columns: [
-        getNameDescriptionTableColumn({
-          vm: this,
-          hideField: true,
-          isNameEdit: false,
-          showDesc: false,
-          slotCallback: row => {
-            return (
-              <side-page-trigger onTrigger={() => this.sidePageTriggerHandle(row.id, 'AnsiblePlaybookSidepage')}>{row.name}</side-page-trigger>
-            )
-          },
-        }),
-        getStatusTableColumn({ statusModule: 'ansiblePlaybook', title: '上一次执行状态' }),
-        getTimeTableColumn({
-          field: 'start_time',
-          title: '开始时间',
-        }),
-        getTimeTableColumn({
-          field: 'end_time',
-          title: '结束时间',
-        }),
-        getProjectTableColumn(),
-      ],
-      singleActions: [
-        {
-          label: '重新执行',
-          action: (obj) => {
-            this.list.onManager('performAction', {
-              steadyStatus: ['succeeded', 'failed'],
-              id: obj.id,
-              managerArgs: {
-                action: 'run',
-              },
-            })
-          },
-          meta: obj => {
-            const { status } = obj
-            const isRun = status === 'running'
-            return {
-              validate: !isRun,
-              tooltip: isRun && '执行中状态下不支持此操作',
-            }
-          },
-        },
-        {
-          label: '终止执行',
-          action: (obj) => {
-            this.createDialog('AnsiblePlayBookStopDialog', {
-              title: '终止执行',
-              data: [obj],
-              list: this.list,
-              columns: this.columns,
-            })
-          },
-          meta: obj => {
-            const { status } = obj
-            const isRun = status === 'running'
-            return {
-              validate: isRun,
-              tooltip: !isRun && '仅在执行中状态下支持此操作',
-            }
-          },
-        },
-      ],
     }
   },
   created () {
     this.initSidePageTab('detail')
     this.list.fetchData()
+  },
+  methods: {
+    handleOpenSidepage (row) {
+      this.sidePageTriggerHandle(this, 'AnsiblePlaybookSidepage', {
+        id: row.id,
+        resource: 'ansibleplaybooks',
+        getParams: this.getParams,
+      }, {
+        list: this.list,
+      })
+    },
   },
 }
 </script>

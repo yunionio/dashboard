@@ -17,14 +17,14 @@ import { steadyStatus } from './constants'
 import SnapshotList from './components/InstanceList'
 import { getTenantFilter, getStatusFilter } from '@/utils/common/tableFilter'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
-import globalSearchMixins from '@/mixins/globalSearch'
+import GlobalSearchMixin from '@/mixins/globalSearch'
 
 export default {
   name: 'VmInstanceSnapshotsIndex',
   components: {
     SnapshotList,
   },
-  mixins: [globalSearchMixins],
+  mixins: [GlobalSearchMixin],
   data () {
     return {
       cloudEnvOptions: getCloudEnvOptions('compute_engine_brands'),
@@ -44,15 +44,6 @@ export default {
           },
           status: getStatusFilter('snapshot'),
           tenant: getTenantFilter(),
-          // guest: {
-          //   label: '虚拟机',
-          //   dropdown: true,
-          //   multiple: true,
-          //   distinctField: {
-          //     type: 'field',
-          //     key: 'guest',
-          //   },
-          // },
         },
         responseData: this.responseData,
       }),

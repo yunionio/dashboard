@@ -8,20 +8,16 @@
 </template>
 
 <script>
-import { weekOptions, timeOptions } from '../constants'
-import {
-  getNameDescriptionTableColumn,
-  getStatusTableColumn,
-  getProjectTableColumn,
-  getTimeTableColumn,
-} from '@/utils/common/tableColumn'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 import { getTenantFilter, getStatusFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
+import ListMixin from '@/mixins/list'
 
 export default {
   name: 'SnapshotPolicyList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
@@ -59,53 +55,6 @@ export default {
           { label: this.$t('dictionary.project'), key: 'tenant' },
         ],
       },
-      columns: [
-        getNameDescriptionTableColumn({
-          vm: this,
-          hideField: true,
-          slotCallback: row => {
-            return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'SnapshotPolicySidePage', { type: this.type }) }>{ row.name }</side-page-trigger>
-            )
-          },
-        }),
-        getStatusTableColumn({ statusModule: 'snapshotpolicy' }),
-        {
-          filed: 'binding_disk_count',
-          title: '关联硬盘数量',
-          width: 120,
-          formatter: ({ row }) => {
-            return row.binding_disk_count
-          },
-        },
-        {
-          filed: 'repeat_weekdays',
-          title: '策略详情',
-          minWidth: 180,
-          showOverflow: 'ellipsis',
-          slots: {
-            default: ({ row }, h) => {
-              let text = ''
-              if (row.repeat_weekdays && row.repeat_weekdays.length) {
-                text += '每' + row.repeat_weekdays.map(item => weekOptions[item - 1]).join('、')
-              }
-              if (row.time_points && row.time_points.length) {
-                text += '; ' + row.time_points.map(item => timeOptions[item]).join('、')
-              }
-              if (text) {
-                text += '自动创建快照'
-              }
-              return [
-                <list-body-cell-wrap copy field='repeat_weekdays' hideField row={row} message={text}>
-                  {{ text }}
-                </list-body-cell-wrap>,
-              ]
-            },
-          },
-        },
-        getTimeTableColumn(),
-        getProjectTableColumn(),
-      ],
       groupActions: [
         {
           label: '新建',
@@ -114,7 +63,7 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               title: '新建',
-              list: this.list,
+              refresh: this.refresh,
             })
           },
           meta: () => {
@@ -131,43 +80,10 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               title: '删除',
-              list: this.list,
+              onManager: this.onManager,
             })
           },
           meta: () => this.$getDeleteResult(this.list.selectedItems),
-        },
-      ],
-      singleActions: [
-        {
-          label: '关联硬盘',
-          action: obj => {
-            this.createDialog('AttachDiskDialog', {
-              data: [obj],
-              columns: this.columns,
-              title: '关联硬盘',
-              list: this.list,
-            })
-          },
-          meta: obj => {
-            return {
-              validate: true,
-            }
-          },
-        },
-        {
-          label: '删除',
-          action: obj => {
-            this.createDialog('DeleteResDialog', {
-              data: [obj],
-              columns: this.columns,
-              title: '删除',
-              list: this.list,
-              success: () => {
-                this.destroySidePages()
-              },
-            })
-          },
-          meta: obj => this.$getDeleteResult(obj),
         },
       ],
     }
@@ -183,6 +99,17 @@ export default {
       }
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
+    },
+    handleOpenSidepage (row) {
+      this.sidePageTriggerHandle(this, 'SnapshotPolicySidePage', {
+        id: row.id,
+        resource: 'snapshotpolicies',
+        getParams: this.getParam,
+        steadyStatus: Object.values(expectStatus.snapshotpolicy).flat(),
+      }, {
+        list: this.list,
+        type: this.type,
+      })
     },
   },
 }

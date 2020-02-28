@@ -34,7 +34,7 @@ export default {
           action: 'unbind-guests',
           data: { 'guest.0': this.params.data[0].id },
         })
-        this.params.list.refresh()
+        this.params.refresh()
         this.cancelDialog()
         this.$bus.$emit('InstanceGroupListRefresh')
       } finally {

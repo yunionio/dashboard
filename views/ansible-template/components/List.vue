@@ -8,13 +8,15 @@
 </template>
 
 <script>
-import { getEnabledTableColumn, getNameDescriptionTableColumn, getProjectTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
 import { ENABLED_OPTS } from '@/constants'
+import ListMixin from '@/mixins/list'
 
 export default {
   name: 'AnsibleTemplateList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
@@ -53,33 +55,6 @@ export default {
           { label: '创建时间', key: 'create_at' },
         ],
       },
-      columns: [
-        getNameDescriptionTableColumn({
-          vm: this,
-          hideField: true,
-          slotCallback: row => {
-            return (
-              <side-page-trigger onTrigger={() => this.sidePageTriggerHandle(row.id, 'AnsibleTemplateSidepage')}>{row.name}</side-page-trigger>
-            )
-          },
-        }),
-        getEnabledTableColumn(),
-        {
-          filed: 'interval',
-          title: '时间间隔',
-          width: 100,
-          slots: {
-            default: ({ row: { interval } }) => {
-              if (interval) {
-                return `${(parseFloat(interval) / 60 / 60)}小时`
-              }
-              return '-'
-            },
-          },
-        },
-        getProjectTableColumn(),
-        getTimeTableColumn(),
-      ],
       groupActions: [
         // {
         //   label: '新建',
@@ -100,138 +75,10 @@ export default {
         //       data: this.list.selectedItems,
         //       columns: this.columns,
         //       title: '删除',
-        //       list: this.list,
+        //       onManager: this.onManager,
         //     })
         //   },
         //   meta: () => this.$getDeleteResult(this.list.selectedItems),
-        // },
-      ],
-      singleActions: [
-        // {
-        //   label: '修改属性',
-        //   action: (row) => {
-        //     const { id } = row
-        //     this.$router.push(`/ansibletemplate/create?id=${id}`)
-        //   },
-        // },
-        {
-          label: '启用',
-          action: (obj) => {
-            this.list.onManager('update', {
-              id: obj.id,
-              managerArgs: {
-                data: {
-                  enabled: true,
-                },
-              },
-            })
-          },
-          meta: (obj) => ({
-            validate: !obj.enabled,
-            tooltip: obj.enabled ? '请选择已禁用的模版' : '',
-          }),
-        },
-        {
-          label: '禁用',
-          action: (obj) => {
-            this.list.onManager('update', {
-              id: obj.id,
-              managerArgs: {
-                data: {
-                  enabled: false,
-                },
-              },
-            })
-          },
-          meta: (obj) => ({
-            validate: obj.enabled,
-            tooltip: !obj.enabled ? '请选择已启用的模版' : '',
-          }),
-        },
-        {
-          label: '关联主机',
-          action: obj => {
-            this.createDialog('AnsibleTemplateBindServerDialog', {
-              data: [obj],
-              columns: this.columns,
-              title: '关联主机',
-              list: this.list,
-            })
-          },
-          meta: (obj) => ({
-            validate: obj.enabled,
-            tooltip: !obj.enabled ? '请选择已启用的实例' : '',
-          }),
-        },
-        // {
-        //   label: '更多',
-        //   actions: (obj) => {
-        //     return [
-        //       {
-        //         label: '启用',
-        //         action: () => {
-        //           this.list.onManager('update', {
-        //             id: obj.id,
-        //             managerArgs: {
-        //               data: {
-        //                 enabled: true,
-        //               },
-        //             },
-        //           })
-        //         },
-        //         meta: () => ({
-        //           validate: !obj.enabled,
-        //           tooltip: obj.enabled ? '请选择已禁用的模版' : '',
-        //         }),
-        //       },
-        //       {
-        //         label: '禁用',
-        //         action: () => {
-        //           this.list.onManager('update', {
-        //             id: obj.id,
-        //             managerArgs: {
-        //               data: {
-        //                 enabled: false,
-        //               },
-        //             },
-        //           })
-        //         },
-        //         meta: () => ({
-        //           validate: obj.enabled,
-        //           tooltip: !obj.enabled ? '请选择已启用的模版' : '',
-        //         }),
-        //       },
-        //       {
-        //         label: '关联主机',
-        //         action: data => {
-        //           this.createDialog('AnsibleTemplateBindServerDialog', {
-        //             data: [data],
-        //             columns: this.columns,
-        //             title: '关联主机',
-        //             list: this.list,
-        //           })
-        //         },
-        //         meta: () => ({
-        //           validate: obj.enabled,
-        //           tooltip: !obj.enabled ? '请选择已启用的实例' : '',
-        //         }),
-        //       },
-        //       {
-        //         label: '删除',
-        //         action: data => {
-        //           this.createDialog('DeleteResDialog', {
-        //             data: [data],
-        //             columns: this.columns,
-        //             title: '关联主机',
-        //             list: this.list,
-        //           })
-        //         },
-        //         meta: () => ({
-        //           validate: obj.can_delete,
-        //         }),
-        //       },
-        //     ]
-        //   },
         // },
       ],
     }
@@ -239,6 +86,17 @@ export default {
   created () {
     this.initSidePageTab('detail')
     this.list.fetchData()
+  },
+  methods: {
+    handleOpenSidepage (row) {
+      this.sidePageTriggerHandle(this, 'AnsibleTemplateSidepage', {
+        id: row.id,
+        resource: 'devtool_templates',
+        getParams: this.getParams,
+      }, {
+        list: this.list,
+      })
+    },
   },
 }
 </script>

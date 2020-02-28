@@ -10,19 +10,15 @@
 </template>
 
 <script>
-import {
-  getNameDescriptionTableColumn,
-  getStatusTableColumn,
-  getProjectTableColumn,
-  getTimeTableColumn,
-} from '@/utils/common/tableColumn'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
-import { sizestr } from '@/utils/utils'
-import globalSearchMixins from '@/mixins/globalSearch'
+import GlobalSearchMixin from '@/mixins/globalSearch'
+import ListMixin from '@/mixins/list'
 
 export default {
   name: 'SnapshotList',
-  mixins: [WindowsMixin, globalSearchMixins],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     list: {
       type: Object,
@@ -31,6 +27,7 @@ export default {
   },
   data () {
     return {
+      mixinType: 'instance',
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
@@ -48,63 +45,6 @@ export default {
           { label: '存储方式', key: 'storage_type' },
         ],
       },
-      columns: [
-        getNameDescriptionTableColumn({
-          vm: this,
-          hideField: true,
-          slotCallback: row => {
-            return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'SnapshotSidePage', { type: 'instance' }) }>{ row.name }</side-page-trigger>
-            )
-          },
-        }),
-        {
-          field: 'rules',
-          title: '子快照',
-          minWidth: 220,
-          type: 'expand',
-          slots: {
-            default: ({ row }) => {
-              const len = (row.snapshots && row.snapshots.length) || 0
-              return `${len}个`
-            },
-            content: ({ row }) => {
-              const list = row.snapshots.map(val => (
-                <a-tag class='mb-2'>{ val.name }</a-tag>
-              ))
-              return list
-            },
-          },
-        },
-        {
-          field: 'size',
-          title: '快照大小',
-          width: 70,
-          formatter: ({ row }) => {
-            const size = row.snapshots.reduce((a, b) => a + b.size, 0)
-            return sizestr(size, 'M', 1024)
-          },
-        },
-        getStatusTableColumn({ statusModule: 'snapshot' }),
-        getProjectTableColumn(),
-        {
-          field: 'guest',
-          title: '虚拟机',
-          minWidth: 70,
-          showOverflow: 'ellipsis',
-          slots: {
-            default: ({ row }, h) => {
-              return [
-                <div class='text-truncate'>
-                  {row.guest ? <list-body-cell-wrap copy field='guest' row={row} /> : '-'}
-                  {row.guest_status ? <status status={ row['guest_status'] } statusModule='server'/> : ''}
-                </div>,
-              ]
-            },
-          },
-        },
-        getTimeTableColumn(),
-      ],
       groupActions: [
         {
           label: '删除',
@@ -113,7 +53,7 @@ export default {
             this.createDialog('DeleteResDialog', {
               data: this.list.selectedItems,
               columns: this.columns,
-              list: this.list,
+              onManager: this.onManager,
               title: '删除',
               name: '快照',
             })
@@ -136,26 +76,24 @@ export default {
           },
         },
       ],
-      singleActions: [
-        {
-          label: '删除',
-          action: obj => {
-            this.createDialog('DeleteResDialog', {
-              data: [obj],
-              columns: this.columns,
-              title: '删除',
-              list: this.list,
-              name: '快照',
-            })
-          },
-          meta: obj => this.$getDeleteResult(obj),
-        },
-      ],
     }
   },
   created () {
     this.initSidePageTab('snapshot-detail')
     this.list.fetchData()
+  },
+  methods: {
+    handleOpenSidepage (row) {
+      this.sidePageTriggerHandle(this, 'SnapshotSidePage', {
+        id: row.id,
+        resource: 'instance_snapshots',
+        getParams: this.list.params,
+        steadyStatus: this.list.steadyStatus,
+      }, {
+        list: this.list,
+        type: 'instance',
+      })
+    },
   },
 }
 </script>

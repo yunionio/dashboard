@@ -36,7 +36,7 @@ export default {
       const params = {
         snapshotpolicy: this.params.resId,
       }
-      return this.params.list.onManager('batchPerformAction', {
+      return this.params.onManager('batchPerformAction', {
         id: ids,
         steadyStatus: 'ready',
         managerArgs: {

@@ -28,7 +28,7 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        await this.params.list.onManager('performAction', {
+        await this.params.onManager('performAction', {
           steadyStatus: ['succeeded', 'failed', 'canceled'],
           id: this.params.data[0].id,
           managerArgs: {

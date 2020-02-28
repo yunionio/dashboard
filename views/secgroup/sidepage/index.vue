@@ -16,7 +16,6 @@
       :is="params.windowData.currentTab"
       :res-id="data.id"
       :data="detailData"
-      :list="params.list"
       :getParams="getParams"
       res-type="secgroup"
       :on-manager="onManager"

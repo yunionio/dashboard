@@ -3,24 +3,26 @@
     @cancel="cancelSidePage"
     :title="title"
     :icon="icon"
-    :res-name="data.name"
-    :actions="params.actions"
+    :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
+    :loaded="loaded"
     @tab-change="handleTabChange">
     <template v-slot:actions>
-      <actions :options="params.singleActions" :row="data" button-type="link" button-size="small" />
+      <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
     <component
       :is="params.windowData.currentTab"
-      :data="data"
-      :res-id="params.resId"
-      :list="params.list"
+      :data="detailData"
+      :res-id="data.id"
+      :on-manager="onManager"
       :type="params.type" />
   </base-side-page>
 </template>
 
 <script>
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 import SnapshotDetail from './Detail'
 import SubSnapshotDetail from './SubSnapshotDetail'
 import SidePageMixin from '@/mixins/sidePage'
@@ -34,9 +36,11 @@ export default {
     SubSnapshotDetail,
     Actions,
   },
-  mixins: [SidePageMixin, WindowsMixin],
+  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
-    return {}
+    return {
+      mixinType: this.params.type,
+    }
   },
   computed: {
     isDiskSnapshot () {
@@ -50,9 +54,6 @@ export default {
     },
     icon () {
       return this.isDiskSnapshot ? 'res-disk-snapshot' : 'res-instance-snapshot'
-    },
-    data () {
-      return this.params.list.data[this.params.resId].data
     },
     detailTabs () {
       if (this.isDiskSnapshot) {

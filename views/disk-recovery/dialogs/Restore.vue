@@ -40,7 +40,7 @@ export default {
         this.loading = true
         await this.doUpdate()
         this.loading = false
-        this.params.list.refresh()
+        this.params.refresh()
         this.cancelDialog()
       } catch (error) {
         this.loading = false

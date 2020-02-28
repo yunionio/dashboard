@@ -11,10 +11,6 @@ export default {
       type: Object,
       required: true,
     },
-    list: {
-      type: Object,
-      required: true,
-    },
   },
   data () {
     return {

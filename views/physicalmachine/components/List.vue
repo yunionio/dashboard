@@ -12,21 +12,17 @@
 
 <script>
 import * as R from 'ramda'
-import { Base64 } from 'js-base64'
-import qs from 'qs'
-import PasswordFetcher from '@Compute/sections/PasswordFetcher'
-import { getRegionTableColumn, getStatusTableColumn, getEnabledTableColumn, getNameDescriptionTableColumn, getCopyWithContentTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 import { getStatusFilter, getEnabledFilter } from '@/utils/common/tableFilter'
-import { Manager } from '@/utils/manager'
-import { sizestr } from '@/utils/utils'
 import expectStatus from '@/constants/expectStatus'
-import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import globalSearchMixins from '@/mixins/globalSearch'
+import GlobalSearchMixin from '@/mixins/globalSearch'
+import ListMixin from '@/mixins/list'
 
 export default {
   name: 'PhysicalmachineList',
-  mixins: [DialogMixin, WindowsMixin, globalSearchMixins],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
@@ -99,154 +95,6 @@ export default {
           { label: '可用区', key: 'zone' },
         ],
       },
-      columns: [
-        getNameDescriptionTableColumn({
-          vm: this,
-          hideField: true,
-          slotCallback: row => {
-            return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'PhysicalmachineSidePage') }>{ row.name }</side-page-trigger>
-            )
-          },
-        }),
-        getTagTableColumn({ vm: this, needExt: true }),
-        getEnabledTableColumn(),
-        getStatusTableColumn({ statusModule: 'host' }),
-        {
-          field: 'custom_ip',
-          title: 'IP',
-          width: 160,
-          showOverflow: 'ellipsis',
-          slots: {
-            default: ({ row }) => {
-              let cellWrap = []
-              if (row.access_ip) {
-                cellWrap.push(
-                  <div class="d-flex">
-                   管理IP：<list-body-cell-wrap row={row} field="access_ip" copy />
-                  </div>
-                )
-              }
-              if (row.ipmi_ip) {
-                cellWrap.push(
-                  <div class="d-flex">
-                    带外IP：<list-body-cell-wrap row={row} field="ipmi_ip" copy />
-                  </div>
-                )
-              }
-              return cellWrap
-            },
-          },
-        },
-        {
-          field: 'spec',
-          title: '规格',
-          width: 120,
-          showOverflow: 'ellipsis',
-          formatter: ({ row }) => {
-            if (!row.spec) return '-'
-            let g = function (sz, prefix) {
-              if (!prefix || prefix.length === 0) {
-                prefix = ''
-              }
-              if (sz && sz > 0) {
-                return `${prefix}${sizestr(sz, 'M', 1024)}`
-              } else {
-                return ''
-              }
-            }
-            let spec = row.spec
-            let cpu = ''
-            if (spec.cpu && spec.cpu > 0) {
-              cpu = `${spec.cpu}C`
-            }
-            let mem = g(spec.mem)
-            let ssd = ''
-            let hdd = ''
-            if (spec.disk) {
-              if (spec.disk.SSD) {
-                ssd = 'SSD'
-                for (let key in spec.disk.SSD) {
-                  ssd += `${g(spec.disk.SSD[key])}x${spec.disk.SSD[key]}`
-                }
-              }
-              if (spec.disk.HDD) {
-                hdd = 'HDD'
-                for (let key in spec.disk.HDD) {
-                  hdd += `${g(key)}x${spec.disk.HDD[key]}`
-                }
-              }
-            }
-            let driver = ''
-            if (spec && spec.driver && spec.driver !== 'Linux') {
-              driver = 'RAID'
-            }
-            return `${cpu}${mem}${hdd}${ssd}${driver}`
-          },
-        },
-        {
-          field: 'manufacture',
-          title: '品牌',
-          width: 70,
-          slots: {
-            default: ({ row }) => {
-              if (row.sys_info && row.sys_info.oem_name) {
-                const icons = {
-                  dell: { height: '25px' },
-                  hp: { height: '25px' },
-                  hpe: { height: '30px' },
-                  inspur: { height: '50px' },
-                  lenovo: { height: '10px' },
-                }
-                const arr = Object.keys(icons)
-                if (!arr.includes(row.sys_info.oem_name)) {
-                  return row.sys_info.oem_name
-                }
-                const imgSrc = require(`../assets/${row.sys_info.oem_name}.svg`)
-                return [
-                  <img src={ imgSrc } style={ icons[row.sys_info.oem_name] } />,
-                ]
-              }
-            },
-          },
-        },
-        getCopyWithContentTableColumn({ field: 'sn', title: 'SN' }),
-        getCopyWithContentTableColumn({ field: 'server', title: '分配' }),
-        {
-          field: 'login_ssh',
-          title: '初始账号',
-          width: 70,
-          slots: {
-            default: ({ row }) => {
-              return [<PasswordFetcher serverId={ row.id } resourceType='baremetal_ssh' />]
-            },
-          },
-        },
-        {
-          field: 'access_mac',
-          title: 'MAC',
-          width: 120,
-        },
-        {
-          field: 'ipmi',
-          title: 'IPMI',
-          width: 70,
-          slots: {
-            default: ({ row }) => {
-              return [<PasswordFetcher serverId={ row.id } resourceType='baremetals' />]
-            },
-          },
-        },
-        {
-          field: 'is_maintenance',
-          title: '维护模式',
-          width: 70,
-          formatter: ({ row }) => {
-            return row.is_maintenance ? '维护模式' : '正常'
-          },
-        },
-        getRegionTableColumn(),
-      ],
       groupActions: [
         {
           label: '添加',
@@ -315,7 +163,6 @@ export default {
                   this.createDialog('HostsAdjustLabelDialog', {
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    list: this.list,
                   })
                 },
                 meta: () => ({
@@ -520,7 +367,7 @@ export default {
                     data: this.list.selectedItems,
                     columns: this.columns,
                     title: '删除',
-                    list: this.list,
+                    onManager: this.onManager,
                   })
                 },
                 meta: () => ({
@@ -532,430 +379,10 @@ export default {
           },
         },
       ],
-      singleActions: [
-        {
-          label: '远程终端',
-          actions: obj => {
-            const ret = []
-            if (obj.host_type === 'baremetal') {
-              ret.push({
-                label: 'SOL远程终端',
-                action: () => {
-                  this.webconsoleManager.objectRpc({ methodname: 'DoBaremetalConnect', objId: obj.id }).then((res) => {
-                    this.openWebConsole(obj, res.data)
-                  }).catch((err) => {
-                    throw err
-                  })
-                },
-                meta: () => ({
-                  validate: obj.status === 'running',
-                }),
-              })
-            }
-            let ips = (obj.server_ips || '').split(',').filter(item => !!item)
-            if (obj.access_ip) {
-              ips = [obj.access_ip, ...ips]
-            }
-            const actionGenerator = ip => {
-              return (sshData) => {
-                this.webconsoleManager.performAction({
-                  action: ip,
-                  data: sshData,
-                  id: 'ssh',
-                }).then(({ data }) => {
-                  this.openWebConsole(obj, data)
-                })
-              }
-            }
-            ips.forEach(ip => {
-              const meta = () => ({ validate: obj.status === 'running' })
-              ret.push({
-                label: `SSH ${ip}`,
-                action: actionGenerator(ip),
-                meta,
-              })
-              ret.push({
-                label: `SSH ${ip} 自定义端口`,
-                action: () => {
-                  this.createDialog('SmartFormDialog', {
-                    title: '自定义端口',
-                    data: [obj],
-                    list: this.list,
-                    callback: async (data) => {
-                      const response = await this.webconsoleManager.performAction({
-                        id: 'ssh',
-                        action: ip,
-                        data,
-                      })
-                      this.openWebConsole(obj, response.data)
-                    },
-                    decorators: {
-                      port: [
-                        'port',
-                        {
-                          validateFirst: true,
-                          rules: [
-                            { required: true, message: '请输入端口' },
-                            { validator: (rule, value, _callback) => {
-                              const num = parseFloat(value)
-                              if (!/^\d+$/.test(value) || !num || num > 65535) {
-                                _callback('端口范围在 0-65535 之间')
-                              }
-                              _callback()
-                            } },
-                          ],
-                        },
-                        {
-                          label: '端口',
-                          placeholder: '请输入端口号',
-                        },
-                      ],
-                    },
-                  })
-                },
-                meta,
-              })
-            })
-            ret.push({
-              label: 'Java控制台',
-              action: () => {
-                return new this.$Manager('hosts').getSpecific({ id: obj.id, spec: 'jnlp' }).then(res => {
-                  let blob = new Blob([res.data.jnlp], { type: 'application/x-java-jnlp-file' })
-                  let url = window.URL.createObjectURL(blob)
-                  let fileName = `${obj.name}.jnlp`
-                  let linkDom = document.createElement('a')
-                  linkDom.href = url
-                  linkDom.setAttribute('download', fileName)
-                  document.body.appendChild(linkDom)
-                  linkDom.click()
-                  document.body.removeChild(linkDom)
-                  window.URL.revokeObjectURL(url)
-                })
-              },
-            })
-            return ret
-          },
-        },
-        {
-          label: '更多',
-          actions: (obj) => {
-            return [
-              {
-                label: '启用/禁用',
-                submenus: [
-                  {
-                    label: '启用',
-                    action: () => {
-                      this.list.onManager('performAction', {
-                        steadyStatus: 'running',
-                        id: obj.id,
-                        managerArgs: {
-                          action: 'enable',
-                        },
-                      })
-                    },
-                    meta: () => ({
-                      validate: !obj.enabled,
-                      tooltip: obj.enabled ? '请选择已禁用的实例' : '',
-                    }),
-                  },
-                  {
-                    label: '禁用',
-                    action: () => {
-                      this.list.onManager('performAction', {
-                        steadyStatus: 'ready',
-                        id: obj.id,
-                        managerArgs: {
-                          action: 'disable',
-                        },
-                      })
-                    },
-                    meta: () => ({
-                      validate: obj.enabled,
-                      tooltip: !obj.enabled ? '请选择已启用的实例' : '',
-                    }),
-                  },
-                ],
-              },
-              {
-                label: '设置',
-                submenus: [
-                  {
-                    label: '调度标签',
-                    action: () => {
-                      this.createDialog('HostsAdjustLabelDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        list: this.list,
-                      })
-                    },
-                  },
-                  {
-                    label: '同步状态',
-                    action: () => {
-                      this.list.batchPerformAction('syncstatus', null, this.list.steadyStatus, [obj.id])
-                    },
-                    meta: () => {
-                      if (obj.status === 'ready') {
-                        return {
-                          validate: false,
-                          tooltip: '处于关机状态的物理机不支持该操作',
-                        }
-                      }
-                      return {
-                        validate: true,
-                      }
-                    },
-                  },
-                  {
-                    label: '安装操作系统',
-                    action: () => {
-                      this.$router.push({
-                        path: '/baremetal/create',
-                        query: { id: obj.id, type: 'baremetal', zone_id: obj.zone_id, host_id: obj.id },
-                      })
-                    },
-                    meta: () => {
-                      if (!obj.is_baremetal) {
-                        return {
-                          validate: false,
-                        }
-                      }
-                      if (obj.host_type !== 'baremetal') {
-                        return {
-                          validate: false,
-                        }
-                      }
-                      if (obj.server_id) {
-                        return {
-                          validate: false,
-                        }
-                      }
-                      if (!obj.enabled) {
-                        return {
-                          validate: false,
-                          tooltip: '请启用物理机后重试',
-                        }
-                      }
-                      if (['running', 'ready'].indexOf(obj.status) < 0) {
-                        return {
-                          validate: false,
-                          tooltip: '处于关机或开机状态下的物理机支持该操作',
-                        }
-                      }
-                      return {
-                        validate: true,
-                      }
-                    },
-                  },
-                  {
-                    label: '转换为宿主机',
-                    action: () => {
-                      this.createDialog('HostsConvertDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        list: this.list,
-                      })
-                    },
-                    meta: () => {
-                      if (!obj.is_baremetal) {
-                        return {
-                          validate: false,
-                        }
-                      }
-                      if (obj.host_type !== 'baremetal') {
-                        return {
-                          validate: false,
-                        }
-                      }
-                      if (obj.server_id) {
-                        return {
-                          validate: false,
-                        }
-                      }
-                      if (!obj.enabled) {
-                        return {
-                          validate: false,
-                          tooltip: '请启用物理机后重试',
-                        }
-                      }
-                      if (['running', 'ready'].indexOf(obj.status) < 0) {
-                        return {
-                          validate: false,
-                          tooltip: '处于关机或开机状态下的物理机支持该操作',
-                        }
-                      }
-                      return {
-                        validate: true,
-                      }
-                    },
-                  },
-                  {
-                    label: '同步硬件配置',
-                    action: () => {
-                      this.list.singlePerformAction('prepare', { id: obj.id }, this.list.steadyStatus)
-                    },
-                    meta: () => ({ validate: obj.can_prepare }),
-                  },
-                ],
-              },
-              {
-                label: '状态',
-                submenus: [
-                  {
-                    label: '开机',
-                    action: () => {
-                      this.list.singlePerformAction('start', { id: obj.id }, this.list.steadyStatus)
-                    },
-                    meta: () => {
-                      if (obj.server_id && obj.host_type === 'baremetal') {
-                        return {
-                          validate: false,
-                        }
-                      }
-                      return {
-                        validate: obj.status === 'ready',
-                      }
-                    },
-                  },
-                  {
-                    label: '关机',
-                    action: () => {
-                      this.list.singlePerformAction('stop', { id: obj.id }, this.list.steadyStatus)
-                    },
-                    meta: () => {
-                      if (!obj.is_baremetal) {
-                        return {
-                          validate: false,
-                        }
-                      }
-                      if (obj.server_id && obj.host_type === 'baremetal') {
-                        return {
-                          validate: false,
-                        }
-                      }
-                      if (obj.status !== 'running') {
-                        return {
-                          validate: false,
-                        }
-                      }
-                      return {
-                        validate: true,
-                      }
-                    },
-                  },
-                ],
-              },
-              {
-                label: 'PXE',
-                submenus: [
-                  {
-                    label: '进入维护模式',
-                    action: () => {
-                      this.list.singlePerformAction('maintenance', { id: obj.id }, this.list.steadyStatus)
-                    },
-                    meta: () => {
-                      if (obj.server) {
-                        return {
-                          validate: false,
-                        }
-                      }
-                      if (!obj.is_baremetal) {
-                        return {
-                          validate: false,
-                        }
-                      }
-                      if (!obj.server_id) {
-                        return {
-                          validate: false,
-                        }
-                      }
-                      if (obj.is_maintenance) {
-                        return {
-                          validate: false,
-                        }
-                      }
-                      if (['running', 'ready'].indexOf(obj.status) < 0) {
-                        return {
-                          validate: false,
-                          tooltip: '处于开机或关机状态物理机支持该操作',
-                        }
-                      }
-                      return {
-                        validate: true,
-                      }
-                    },
-                  },
-                  {
-                    label: '退出维护模式',
-                    action: () => {
-                      this.list.singlePerformAction('unmaintenance', { id: obj.id }, this.list.steadyStatus)
-                    },
-                    meta: () => {
-                      if (obj.server) {
-                        return {
-                          validate: false,
-                        }
-                      }
-                      if (!obj.is_baremetal) {
-                        return {
-                          validate: false,
-                        }
-                      }
-                      if (!obj.server_id) {
-                        return {
-                          validate: false,
-                        }
-                      }
-                      if (!obj.is_maintenance) {
-                        return {
-                          validate: false,
-                        }
-                      }
-                      if (['running', 'ready'].indexOf(obj.status) < 0) {
-                        return {
-                          validate: false,
-                          tooltip: '处于开机或关机状态物理机支持该操作',
-                        }
-                      }
-                      return {
-                        validate: true,
-                      }
-                    },
-                  },
-                ],
-              },
-              {
-                label: '删除',
-                submenus: [
-                  {
-                    label: '删除',
-                    action: () => {
-                      this.createDialog('DeleteResDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        list: this.list,
-                        title: '删除',
-                      })
-                    },
-                    meta: () => {
-                      return {
-                        validate: this.$getDeleteResult(obj).validate,
-                        tooltip: this.$getDeleteResult(obj).validate ? '' : '操作对象的当前状态不支持该操作: 物理机没有被禁用',
-                      }
-                    },
-                  },
-                ],
-              },
-            ]
-          },
-        },
-      ],
     }
   },
   created () {
     this.initSidePageTab('physicalmachine-detail')
-    this.webconsoleManager = new Manager('webconsole', 'v1')
     this.list.fetchData()
   },
   methods: {
@@ -967,25 +394,17 @@ export default {
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
     },
-    openWebConsole (obj, data) {
-      let connectParams = qs.parse(data.connect_params)
-      if (!connectParams.access_token) {
-        connectParams = {
-          data: data.connect_params,
-        }
-      } else {
-        connectParams = {
-          data: Base64.encode(data.connect_params),
-        }
-      }
-      const query = {
-        ...connectParams,
-        session: data.session,
-        hypervisor: obj.hypervisor,
-        os_type: obj.os_type,
-      }
-      const href = `${this.$appConfig.webConsolePath}?${qs.stringify(query)}`
-      window.open(href)
+    handleOpenSidepage (row) {
+      this.sidePageTriggerHandle(this, 'PhysicalmachineSidePage', {
+        id: row.id,
+        resource: 'hosts',
+        getParams: this.getParam,
+        steadyStatus: {
+          status: Object.values(expectStatus.host).flat(),
+        },
+      }, {
+        list: this.list,
+      })
     },
   },
 }

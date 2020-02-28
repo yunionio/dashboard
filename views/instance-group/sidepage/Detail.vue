@@ -1,6 +1,6 @@
 <template>
   <detail
-    :list="list"
+    :on-manager="onManager"
     :data="data"
     :base-info="baseInfo"
     status-module="instanceGroup" />
@@ -12,8 +12,8 @@ import { getEnabledTableColumn } from '@/utils/common/tableColumn'
 export default {
   name: 'InstanceGroupDetail',
   props: {
-    list: {
-      type: Object,
+    onManager: {
+      type: Function,
       required: true,
     },
     data: {

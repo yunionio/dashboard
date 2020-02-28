@@ -8,19 +8,15 @@
 </template>
 
 <script>
-import {
-  getNameDescriptionTableColumn,
-  getEnabledTableColumn,
-  getStatusTableColumn,
-  getProjectTableColumn,
-  getTimeTableColumn,
-} from '@/utils/common/tableColumn'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 import { getStatusFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
+import ListMixin from '@/mixins/list'
 
 export default {
   name: 'InstanceGroupList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
@@ -77,48 +73,13 @@ export default {
           { label: '创建时间', key: 'created_at' },
         ],
       },
-      columns: [
-        getNameDescriptionTableColumn({
-          vm: this,
-          hideField: true,
-          slotCallback: row => {
-            return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'InstanceGroupSidePage') }>{ row.name }</side-page-trigger>
-            )
-          },
-        }),
-        getEnabledTableColumn(),
-        {
-          field: 'force_dispersion',
-          title: '策略',
-          width: 70,
-          formatter: ({ cellValue }) => {
-            let ret = '非强制'
-            if (cellValue) ret = '强制'
-            return ret
-          },
-        },
-        getStatusTableColumn({ statusModule: 'instanceGroup' }),
-        {
-          field: 'granularity',
-          title: '粒度',
-          width: 70,
-        },
-        {
-          field: 'guest_count',
-          title: '绑定主机数量',
-          width: 120,
-          formatter: ({ cellValue }) => `${cellValue || 0}`,
-        },
-        getProjectTableColumn(),
-        getTimeTableColumn(),
-      ],
       groupActions: [
         {
           label: '新建',
           action: () => {
             this.createDialog('InstanceGroupCreateDialog', {
-              list: this.list,
+              onManager: this.onManager,
+              refresh: this.refresh,
             })
           },
           meta: () => {
@@ -134,74 +95,10 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               title: '删除主机组',
-              list: this.list,
+              onManager: this.onManager,
             })
           },
           meta: () => this.$getDeleteResult(this.list.selectedItems),
-        },
-      ],
-      singleActions: [
-        {
-          label: '绑定主机',
-          action: (obj) => {
-            this.createDialog('InstanceGroupBindServerDialog', {
-              columns: this.columns,
-              data: [obj],
-              list: this.list,
-            })
-          },
-          meta: (obj) => ({
-            validate: obj.enabled,
-            tooltip: !obj.enabled ? '启用后重试' : null,
-          }),
-        },
-        {
-          label: '更多',
-          actions: obj => {
-            return [
-              {
-                label: '启用',
-                action: () => {
-                  this.list.onManager('performAction', {
-                    id: obj.id,
-                    managerArgs: {
-                      action: 'enable',
-                    },
-                  })
-                },
-                meta: () => ({
-                  validate: !obj.enabled,
-                }),
-              },
-              {
-                label: '禁用',
-                action: () => {
-                  this.list.onManager('performAction', {
-                    id: obj.id,
-                    managerArgs: {
-                      action: 'disable',
-                    },
-                  })
-                },
-                meta: () => ({
-                  validate: obj.enabled,
-                }),
-              },
-              {
-                label: '删除',
-                action: () => {
-                  this.createDialog('DeleteResDialog', {
-                    data: [obj],
-                    columns: this.columns,
-                    title: '删除主机组',
-                    list: this.list,
-                    success: () => this.destroySidePages(),
-                  })
-                },
-                meta: () => this.$getDeleteResult(obj),
-              },
-            ]
-          },
         },
       ],
     }
@@ -228,6 +125,15 @@ export default {
       }
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
+    },
+    handleOpenSidepage (row) {
+      this.sidePageTriggerHandle(this, 'InstanceGroupSidePage', {
+        id: row.id,
+        resource: 'instancegroups',
+        getParams: this.getParam,
+      }, {
+        list: this.list,
+      })
     },
   },
 }

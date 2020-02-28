@@ -3,20 +3,22 @@
     @cancel="cancelSidePage"
     title="宿主机"
     icon="res-host"
-    :res-name="data.name"
-    :actions="params.actions"
+    :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
+    :loaded="loaded"
     @tab-change="handleTabChange">
     <template v-slot:actions>
-      <actions :options="params.singleActions" :row="data" button-type="link" button-size="small" />
+      <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :res-id="params.resId" :data="data" :list="params.list" :getParams="getParams" />
+    <component :is="params.windowData.currentTab" :res-id="data.id" :data="detailData" :on-manager="onManager" :getParams="getParams" />
   </base-side-page>
 </template>
 
 <script>
 import VminstanceList from '@Compute/views/vminstance/components/List'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 import HostDetail from './Detail'
 import Dashboard from './Dashboard'
 // import Alert from './Alert'
@@ -41,7 +43,7 @@ export default {
     Actions,
     Monitor,
   },
-  mixins: [SidePageMixin, WindowsMixin],
+  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
@@ -61,7 +63,7 @@ export default {
     getParams () {
       if (this.params.windowData.currentTab === 'vminstance-list') {
         return {
-          host: this.params.resId,
+          host: this.data.id,
         }
       } else if (this.params.windowData.currentTab === 'storage-list') {
         return {
@@ -71,9 +73,6 @@ export default {
         }
       }
       return null
-    },
-    data () {
-      return this.params.list.data[this.params.resId].data
     },
   },
 }

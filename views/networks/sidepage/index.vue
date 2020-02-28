@@ -3,19 +3,26 @@
     @cancel="cancelSidePage"
     title="任务"
     icon="res-servicecatalog"
-    :res-name="data.name"
-    :actions="params.actions"
+    :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
+    :loaded="loaded"
     @tab-change="handleTabChange">
     <template v-slot:actions>
-      <actions :options="params.singleActions" :row="data" button-type="link" button-size="small" />
+      <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :res-id="params.list.data[this.params.resId].data.network_id" :data="data" :list="params.list" :getParams="getParams" />
+    <component
+      :is="params.windowData.currentTab"
+      :res-id="detailData.network_id"
+      :data="detailData"
+      :on-manager="onManager"
+      :getParams="getParams" />
   </base-side-page>
 </template>
 
 <script>
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -25,7 +32,7 @@ export default {
   components: {
     Actions,
   },
-  mixins: [SidePageMixin, WindowsMixin],
+  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
@@ -36,15 +43,9 @@ export default {
   computed: {
     getParams () {
       return {
-        host: this.params.resId,
+        host: this.data.id,
       }
     },
-    data () {
-      return this.params.list.data[this.params.resId].data
-    },
-  },
-  created () {
-    console.log(this.params.list.data)
   },
 }
 </script>

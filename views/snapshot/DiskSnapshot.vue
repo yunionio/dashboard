@@ -17,14 +17,14 @@ import { steadyStatus } from './constants'
 import SnapshotList from './components/List'
 import { getTenantFilter, getStatusFilter, getBrandFilter } from '@/utils/common/tableFilter'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
-import globalSearchMixins from '@/mixins/globalSearch'
+import GlobalSearchMixin from '@/mixins/globalSearch'
 
 export default {
   name: 'VmDiskSnapshotsIndex',
   components: {
     SnapshotList,
   },
-  mixins: [globalSearchMixins],
+  mixins: [GlobalSearchMixin],
   data () {
     return {
       cloudEnvOptions: getCloudEnvOptions('compute_engine_brands'),
@@ -45,18 +45,6 @@ export default {
           status: getStatusFilter('snapshot'),
           brand: getBrandFilter(),
           tenant: getTenantFilter(),
-          // storage_type: {
-          //   label: '存储类型',
-          //   dropdown: true,
-          //   multiple: true,
-          //   distinctField: {
-          //     type: 'field',
-          //     key: 'storage_type',
-          //   },
-          //   // items: Object.keys(STORAGE_TYPES).map(k => {
-          //   //   return { label: STORAGE_TYPES[k], key: k }
-          //   // }),
-          // },
           disk_name: {
             label: '硬盘',
             jointFilter: true,
@@ -65,15 +53,6 @@ export default {
               return `disks.id(disk_id).name.contains("${val}")`
             },
           },
-          // guest: {
-          //   label: '虚拟机',
-          //   dropdown: true,
-          //   multiple: true,
-          //   distinctField: {
-          //     type: 'field',
-          //     key: 'guest',
-          //   },
-          // },
           disk_type: {
             label: '磁盘类型',
             dropdown: true,

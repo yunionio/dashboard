@@ -51,7 +51,7 @@ export default {
               data: [obj],
               columns: this.columns,
               title: '删除',
-              list: this.list,
+              onManager: this.list.onManager,
             })
           },
           meta: obj => this.$getDeleteResult(obj),

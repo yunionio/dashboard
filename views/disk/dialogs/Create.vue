@@ -41,7 +41,7 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'CreateDialog',
+  name: 'DiskCreateDialog',
   components: {
     CloudregionZone,
   },
@@ -229,7 +229,7 @@ export default {
       })
     },
     doCreate (data) {
-      return this.params.list.onManager('create', {
+      return this.params.onManager('create', {
         managerArgs: {
           data,
         },

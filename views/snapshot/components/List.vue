@@ -10,23 +10,15 @@
 </template>
 
 <script>
-import { DISK_TYPES, STORAGE_TYPES } from '../constants'
-import { RollbackDiskValidate } from '../validate'
-import {
-  getNameDescriptionTableColumn,
-  getBrandTableColumn,
-  getStatusTableColumn,
-  getProjectTableColumn,
-  getTimeTableColumn,
-  getCopyWithContentTableColumn,
-} from '@/utils/common/tableColumn'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
-import { sizestr } from '@/utils/utils'
-import globalSearchMixins from '@/mixins/globalSearch'
+import GlobalSearchMixin from '@/mixins/globalSearch'
+import ListMixin from '@/mixins/list'
 
 export default {
   name: 'SnapshotList',
-  mixins: [WindowsMixin, globalSearchMixins],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     list: {
       type: Object,
@@ -35,6 +27,7 @@ export default {
   },
   data () {
     return {
+      mixinType: 'disk',
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
@@ -52,65 +45,6 @@ export default {
           { label: '存储方式', key: 'storage_type' },
         ],
       },
-      columns: [
-        getNameDescriptionTableColumn({
-          vm: this,
-          hideField: true,
-          slotCallback: row => {
-            return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'SnapshotSidePage', { type: 'disk' }) }>{ row.name }</side-page-trigger>
-            )
-          },
-        }),
-        getCopyWithContentTableColumn({
-          field: 'disk_name',
-          title: '硬盘',
-        }),
-        {
-          field: 'disk_type',
-          title: '磁盘类型',
-          width: 70,
-          formatter: ({ row }) => {
-            return DISK_TYPES[row.disk_type] || row.disk_type
-          },
-        },
-        {
-          field: 'size',
-          title: '快照大小',
-          width: 70,
-          formatter: ({ row }) => {
-            return sizestr(row.size, 'M', 1024)
-          },
-        },
-        getStatusTableColumn({ statusModule: 'snapshot' }),
-        getProjectTableColumn(),
-        getBrandTableColumn(),
-        {
-          field: 'guest',
-          title: '虚拟机',
-          minWidth: 70,
-          showOverflow: 'ellipsis',
-          slots: {
-            default: ({ row }, h) => {
-              return [
-                <div class='text-truncate'>
-                  {row.guest ? <list-body-cell-wrap copy field='guest' row={row} /> : '-'}
-                  {row.guest_status ? <status status={ row['guest_status'] } statusModule='server'/> : ''}
-                </div>,
-              ]
-            },
-          },
-        },
-        getTimeTableColumn(),
-        {
-          field: 'storage_type',
-          title: '存储类型',
-          width: 80,
-          formatter: ({ row }) => {
-            return STORAGE_TYPES[row.storage_type] || row.storage_type || '-'
-          },
-        },
-      ],
       groupActions: [
         {
           label: '删除',
@@ -119,7 +53,7 @@ export default {
             this.createDialog('DeleteResDialog', {
               data: this.list.selectedItems,
               columns: this.columns,
-              list: this.list,
+              onManager: this.onManager,
               title: '删除',
               name: '快照',
             })
@@ -142,47 +76,24 @@ export default {
           },
         },
       ],
-      singleActions: [
-        {
-          label: '回滚硬盘',
-          permission: 'disks_perform_disk_reset',
-          action: obj => {
-            this.createDialog('RollbackDiskDialog', {
-              data: [obj],
-              columns: this.columns,
-              list: this.list,
-            })
-          },
-          meta: obj => {
-            const brand = obj.brand && obj.brand.toLowerCase()
-            if (!obj.disk_name) {
-              return { validate: false }
-            }
-            if (brand && RollbackDiskValidate[brand]) {
-              return { ...RollbackDiskValidate[brand](obj) }
-            }
-            return { validate: true }
-          },
-        },
-        {
-          label: '删除',
-          action: obj => {
-            this.createDialog('DeleteResDialog', {
-              data: [obj],
-              columns: this.columns,
-              title: '删除',
-              list: this.list,
-              name: '快照',
-            })
-          },
-          meta: obj => this.$getDeleteResult(obj),
-        },
-      ],
     }
   },
   created () {
     this.initSidePageTab('snapshot-detail')
     this.list.fetchData()
+  },
+  methods: {
+    handleOpenSidepage (row) {
+      this.sidePageTriggerHandle(this, 'SnapshotSidePage', {
+        id: row.id,
+        resource: 'snapshots',
+        getParams: this.list.params,
+        steadyStatus: this.list.steadyStatus,
+      }, {
+        list: this.list,
+        type: 'disk',
+      })
+    },
   },
 }
 </script>

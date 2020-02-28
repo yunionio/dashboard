@@ -672,7 +672,7 @@ export default {
         id: row.id,
         resource: 'servers',
         getParams: this.getParam,
-        steadyStatus: Object.values(expectStatus.image).flat(),
+        steadyStatus: Object.values(expectStatus.server).flat(),
       }, {
         list: this.list,
       })

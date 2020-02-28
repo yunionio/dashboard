@@ -75,7 +75,7 @@ export default {
   methods: {
     doUpdate (data) {
       const ids = this.params.data.map(item => item.id)
-      return this.params.list.onManager('batchUpdate', {
+      return this.params.onManager('batchUpdate', {
         id: ids,
         managerArgs: {
           data,
@@ -93,7 +93,7 @@ export default {
         await this.doUpdate(values)
         this.loading = false
         this.cancelDialog()
-        this.params.list.refresh()
+        this.params.refresh()
       } catch (error) {
         this.loading = false
       }

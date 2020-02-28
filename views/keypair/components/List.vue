@@ -8,15 +8,14 @@
 </template>
 
 <script>
-import {
-  getNameDescriptionTableColumn,
-  getCopyWithContentTableColumn,
-} from '@/utils/common/tableColumn'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
+import ListMixin from '@/mixins/list'
 
 export default {
   name: 'KeyPairList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
@@ -51,34 +50,13 @@ export default {
           { label: '关联主机数', key: 'linked_guest_count' },
         ],
       },
-      columns: [
-        getNameDescriptionTableColumn({
-          vm: this,
-          hideField: true,
-          slotCallback: row => {
-            return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'KeyPairSidePage') }>{ row.name }</side-page-trigger>
-            )
-          },
-        }),
-        getCopyWithContentTableColumn({ field: 'public_key', title: '公钥内容' }),
-        getCopyWithContentTableColumn({ field: 'fingerprint', title: '指纹' }),
-        {
-          field: 'scheme',
-          title: '类型',
-        },
-        {
-          field: 'linked_guest_count',
-          title: '关联主机数',
-        },
-      ],
       groupActions: [
         {
           label: '新建',
           action: () => {
             this.createDialog('CreateKeyPairDialog', {
               title: '新建',
-              list: this.list,
+              onManager: this.onManager,
             })
           },
           meta: () => ({
@@ -92,7 +70,7 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               title: '删除',
-              list: this.list,
+              onManager: this.onManager,
             })
           },
           meta: () => {
@@ -100,20 +78,6 @@ export default {
               validate: this.list.allowDelete(),
             }
           },
-        },
-      ],
-      singleActions: [
-        {
-          label: '删除',
-          action: obj => {
-            this.createDialog('DeleteResDialog', {
-              data: [obj],
-              columns: this.columns,
-              title: '删除',
-              list: this.list,
-            })
-          },
-          meta: obj => this.$getDeleteResult(obj),
         },
       ],
     }
@@ -138,6 +102,15 @@ export default {
       }
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
+    },
+    handleOpenSidepage (row) {
+      this.sidePageTriggerHandle(this, 'KeyPairSidePage', {
+        id: row.id,
+        resource: 'keypairs',
+        getParams: this.getParam,
+      }, {
+        list: this.list,
+      })
     },
   },
 }

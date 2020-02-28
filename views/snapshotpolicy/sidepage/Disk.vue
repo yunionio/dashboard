@@ -86,8 +86,8 @@ export default {
               data: [obj],
               columns: this.columns,
               title: '解绑',
-              list: this.list,
               resId: this.resId,
+              onManager: this.onManager,
             })
           },
           meta: obj => {

@@ -11,22 +11,21 @@
 
 <script>
 import * as R from 'ramda'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 import expectStatus from '@/constants/expectStatus'
 import { getNameFilter, getStatusFilter, getBrandFilter, getTenantFilter, getFilter } from '@/utils/common/tableFilter'
-import { getBrandTableColumn, getStatusTableColumn, getCopyWithContentTableColumn, getProjectTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
-import globalSearchMixins from '@/mixins/globalSearch'
+import ListMixin from '@/mixins/list'
+import GlobalSearchMixin from '@/mixins/globalSearch'
 
 export default {
   name: 'DiskRecoveryList',
-  mixins: [WindowsMixin, globalSearchMixins],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
       type: [Function, Object],
-    },
-    getColumns: {
-      type: [Function, Array],
     },
   },
   data () {
@@ -75,7 +74,6 @@ export default {
           { label: '介质类型', key: 'medium_type' },
         ],
       },
-      columns: this.getColumn(),
       groupActions: [
         {
           label: '清除',
@@ -85,8 +83,8 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               title: '清除',
-              list: this.list,
               requestParams: { override_pending_delete: true },
+              onManager: this.onManager,
             })
           },
           meta: () => {
@@ -103,48 +101,12 @@ export default {
               title: '恢复',
               data: this.list.selectedItems,
               columns: this.columns,
-              list: this.list,
+              refresh: this.refresh,
             })
           },
           meta: () => {
             return {
               validate: this.list.selectedItems.length > 0,
-            }
-          },
-        },
-      ],
-      singleActions: [
-        {
-          label: '清除',
-          permission: 'disks_delete',
-          action: obj => {
-            this.createDialog('DeleteResDialog', {
-              data: [obj],
-              columns: this.columns,
-              title: '清除',
-              list: this.list,
-              requestParams: { override_pending_delete: true },
-            })
-          },
-          meta: obj => {
-            return {
-              validate: obj.can_delete,
-            }
-          },
-        },
-        {
-          label: '恢复',
-          permission: 'disks_perform_cancel_delete',
-          action: (obj) => {
-            this.createDialog('DiskRestoreDialog', {
-              data: [obj],
-              columns: this.columns,
-              list: this.list,
-            })
-          },
-          meta: obj => {
-            return {
-              validate: obj.status !== 'deleting',
             }
           },
         },
@@ -162,35 +124,6 @@ export default {
         with_meta: true,
         pending_delete: true,
       }
-    },
-    getColumn () {
-      let column = []
-      if (R.is(Function, this.getColumns)) {
-        column = this.getColumns()
-        return column
-      }
-      if (R.is(Array, this.getColumns) && this.getColumns.length > 0) {
-        column = this.getColumns
-        return column
-      }
-      column = [
-        getCopyWithContentTableColumn({ field: 'name', title: '名称' }),
-        getCopyWithContentTableColumn({ field: 'storage', title: '存储' }),
-        getCopyWithContentTableColumn({ field: 'guest', title: '云服务器' }),
-        {
-          field: 'disk_type',
-          title: '类型',
-          width: 70,
-          formatter: ({ cellValue }) => {
-            return cellValue === 'sys' ? '系统盘' : '数据盘'
-          },
-        },
-        getStatusTableColumn({ statusModule: 'disk' }),
-        getProjectTableColumn(),
-        getBrandTableColumn(),
-        getTimeTableColumn({ field: 'auto_delete_at', title: '自动清除时间' }),
-      ]
-      return column
     },
   },
 }

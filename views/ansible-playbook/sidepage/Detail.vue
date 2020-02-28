@@ -1,6 +1,6 @@
 <template>
   <detail
-    :list="list"
+    :on-manager="onManager"
     :data="data"
     :base-info="baseInfo"
     statusModule="ansiblePlaybook"
@@ -18,8 +18,8 @@ export default {
       type: Object,
       required: true,
     },
-    list: {
-      type: Object,
+    onManager: {
+      type: Function,
       required: true,
     },
   },

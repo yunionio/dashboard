@@ -46,7 +46,7 @@ export default {
   mixins: [SidePageMixin, WindowsMixin, SingleActionsMixin, ColumnsMixin],
   computed: {
     detailTabs () {
-      const isHostImage = this.data.root_image
+      const isHostImage = this.detailData.root_image
       if (isHostImage) {
         return [
           { label: '详情', key: 'system-image-detail' },

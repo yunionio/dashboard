@@ -3,20 +3,28 @@
     @cancel="cancelSidePage"
     title="透传设备"
     icon="res-gpu"
-    :res-name="data.name"
+    :res-name="detailData.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
+    :loaded="loaded"
     @tab-change="handleTabChange">
     <template v-slot:actions>
-      <actions :options="params.singleActions" :row="data" button-type="link" button-size="small" />
+      <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :res-id="params.resId" :data="data" :list="params.list" :getParams="getParams" />
+    <component
+      :is="params.windowData.currentTab"
+      :res-id="data.resId"
+      :data="detailData"
+      :on-manager="onManager"
+      :getParams="getParams" />
   </base-side-page>
 </template>
 
 <script>
 import serversList from '../../vminstance/components/List'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 import GpuDetail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
@@ -29,7 +37,7 @@ export default {
     serversList,
     Actions,
   },
-  mixins: [SidePageMixin, WindowsMixin],
+  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
@@ -43,13 +51,10 @@ export default {
     getParams () {
       if (this.params.windowData.currentTab === 'servers-list') {
         return {
-          'filter': `id.equals(${this.data.guest_id})`,
+          'filter': `id.equals(${this.detailData.guest_id})`,
         }
       }
       return null
-    },
-    data () {
-      return this.params.list.data[this.params.resId].data
     },
   },
   created () {
