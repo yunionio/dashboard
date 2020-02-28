@@ -2,6 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">新建</div>
     <div slot="body">
+      {{form.fc.getFieldValue('cloudprovider')}}
       <a-form
         :form="form.fc">
         <a-form-item label="名称" v-bind="formItemLayout">
@@ -16,6 +17,7 @@
         </a-form-item>
         <a-form-item label="区域" v-bind="formItemLayout" v-if="platform !== 'idc'">
           <cloudprovider-region
+           @update:cloudprovider="handleCloudProvider"
            :decorator="decorators"
            :cloudproviderParams="cloudproviderParams" />
         </a-form-item>
@@ -26,7 +28,7 @@
             :selectProps="{ 'placeholder': '请选择区域' }"
             :params="idcCloudRegionParams" />
         </a-form-item>
-        <a-form-item label="目标网段" v-bind="formItemLayout" :extra="platform !== 'idc' ? '一旦创建成功，网段不能修改。支持使用 192.168.0.0/16、172.16.0.0/12、10.0.0.0/8 及其子网作为专有网络地址段。' : '一旦创建成功，网段不能修改。'">
+        <a-form-item v-if="isGoogle" label="目标网段" v-bind="formItemLayout" :extra="platform !== 'idc' ? '一旦创建成功，网段不能修改。支持使用 192.168.0.0/16、172.16.0.0/12、10.0.0.0/8 及其子网作为专有网络地址段。' : '一旦创建成功，网段不能修改。'">
           <a-input v-decorator="decorators.cidr_block" placeholder="请输入IP段，例如：192.168.0.0/16" v-if="platform !== 'idc'" />
           <a-select v-decorator="decorators.cidr_block" v-else>
             <a-select-option value="192.168.0.0/16">192.168.0.0/16</a-select-option>
@@ -58,6 +60,7 @@ export default {
   data () {
     return {
       loading: false,
+      isGoogle: false,
       form: {
         fc: this.$form.createForm(this, {
           onValuesChange: (props, values) => {
@@ -163,6 +166,9 @@ export default {
     }
   },
   methods: {
+    handleCloudProvider ({ brand }) {
+      this.isGoogle = brand.toLowerCase() === 'google'
+    },
     async checkIp (rule, value, callback) {
       const params = {
         search: value,
@@ -194,17 +200,18 @@ export default {
         let params = {}
         if (values.region) {
           params = {
-            cidr_block: values.cidr_block,
             cloudregion_id: values.region.key,
             manager: values.cloudprovider.key,
             name: values.name,
           }
         } else {
           params = {
-            cidr_block: values.cidr_block,
             cloudregion_id: values.idcRegion,
             name: values.name,
           }
+        }
+        if (!this.isGoogle) {
+          params['cidr_block'] = values.cidr_block
         }
         await this.doCreate(params)
         this.loading = false
