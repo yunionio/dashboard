@@ -185,7 +185,7 @@ export default {
         }
         this.loading = false
         this.cancelDialog()
-        this.refresh()
+        this.params.refresh()
       } finally {
         this.loading = false
       }

@@ -77,7 +77,8 @@ export default {
             action: () => {
               this.createDialog('CreateSecgroupDialog', {
                 title: '新建',
-                list: this.list,
+                onManager: this.onManager,
+                refresh: this.refresh,
               })
             },
             meta: () => ({
@@ -93,7 +94,8 @@ export default {
                 data: this.list.selectedItems,
                 columns: this.columns,
                 title: '批量追加规则',
-                list: this.list,
+                onManager: this.onManager,
+                refresh: this.refresh,
               })
             },
             meta: () => {
@@ -123,7 +125,7 @@ export default {
                 data: this.list.selectedItems,
                 columns: this.columns,
                 title: '删除',
-                list: this.list,
+                onManager: this.onManager,
               })
             },
             meta: (obj) => this.$getDeleteResult(this.list.selectedItems),

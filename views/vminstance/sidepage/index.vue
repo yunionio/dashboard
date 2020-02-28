@@ -74,16 +74,17 @@ export default {
   },
   computed: {
     componentParams () {
+      console.log(this.detailData)
       if (this.params.windowData.currentTab === 'secgroup-list') {
         return {
           detail: true,
-          server: this.data.id,
+          server: this.detailData.id,
         }
       }
       if (this.params.windowData.currentTab === 'host-list') {
         return {
           detail: true,
-          id: this.data.host_id,
+          id: this.detailData.host_id,
         }
       }
       return null

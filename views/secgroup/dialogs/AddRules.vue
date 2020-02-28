@@ -295,7 +295,7 @@ export default {
         values.description = description
         await this.doAdd(values)
         this.loading = false
-        this.params.list.refresh()
+        this.params.refresh()
         this.cancelDialog()
       } finally {
         this.loading = false
