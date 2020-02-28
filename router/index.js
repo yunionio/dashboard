@@ -1,9 +1,9 @@
-import Layout from '@Compute/components/Layout'
 import Redis from '@DB/views/redis'
 import RedisCreate from '@DB/views/redis/create'
 import RDS from '@DB/views/rds'
 import RDSCreate from '@DB/views/rds/create'
 import RDSBackup from '@DB/views/rds-backup'
+import Layout from '@/layouts/RouterView'
 
 export default {
   index: 6,
