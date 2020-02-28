@@ -3,13 +3,14 @@
     <a-form
       class="mt-3"
       :form="form.fc"
+      v-bind="formItemLayout"
       @submit="submit">
-      <servertemplate v-if="isServertemplate" :decorators="decorators.servertemplate" :formItemLayout="formItemLayout" />
+      <servertemplate v-if="isServertemplate" :decorators="decorators.servertemplate" />
       <!-- <a-divider orientation="left">基础配置</a-divider> -->
-      <a-form-item v-show="!isServertemplate" :label="`指定${$t('dictionary.project')}`" v-bind="formItemLayout">
+      <a-form-item v-show="!isServertemplate" :label="`指定${$t('dictionary.project')}`">
         <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
       </a-form-item>
-      <a-form-item label="名称" v-if="!isServertemplate" v-bind="formItemLayout">
+      <a-form-item label="名称" v-if="!isServertemplate">
         <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverCreateName')" />
         <name-repeated
           v-slot:extra
@@ -17,22 +18,23 @@
           :name="form.fd.name"
           default-text="名称支持有序后缀占位符‘#’，用法举例，名称host##，数量2，创建后实例的名称依次为host01、host02，已有同名实例，序号顺延" />
       </a-form-item>
-      <a-form-item label="申请原因" v-bind="formItemLayout" v-if="isOpenWorkflow">
+      <a-form-item label="申请原因" v-if="isOpenWorkflow">
         <a-input v-decorator="decorators.reason" placeholder="请输入主机申请原因" />
       </a-form-item>
-      <a-form-item class="mb-0" label="计费方式" v-bind="formItemLayout">
+      <a-form-item class="mb-0" label="计费方式">
         <bill :decorators="decorators.bill" :form="form" :provider-list="form.fi.providerList" />
       </a-form-item>
-      <a-form-item v-bind="formItemLayout" v-if="form.fd.billType === 'quantity' && !isServertemplate" label="到期释放">
+      <a-form-item v-if="form.fd.billType === 'quantity' && !isServertemplate" label="到期释放">
         <duration :decorators="decorators.duration" :form="form" />
       </a-form-item>
-      <a-form-item label="数量" v-show="!isServertemplate" v-bind="formItemLayout">
+      <a-form-item label="数量" v-show="!isServertemplate">
         <a-input-number v-decorator="decorators.count" :min="1" :max="10" />
       </a-form-item>
       <area-selects
         class="mb-0"
         v-if="showAreaSelect"
-        v-bind="formItemLayout"
+        :wrapperCol="formItemLayout.wrapperCol"
+        :labelCol="formItemLayout.labelCol"
         ref="areaSelectRef"
         :cityParams="cityParams"
         :providerParams="providerParams"
@@ -40,16 +42,16 @@
         :zoneParams="zoneParams"
         :defaultActiveFirstOption="['city']"
         @providerFetchSuccess="providerFetchSuccess" />
-      <!-- <a-form-item class="mb-0" label="资源池" v-bind="formItemLayout">
+      <!-- <a-form-item class="mb-0" label="资源池">
         <resource :decorator="decorators.resourceType" />
       </a-form-item> -->
-      <a-form-item label="CPU核数" v-bind="formItemLayout" class="mb-0">
+      <a-form-item label="CPU核数" class="mb-0">
         <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" @change="cpuChange" />
       </a-form-item>
-      <a-form-item label="内存" v-bind="formItemLayout" class="mb-0">
+      <a-form-item label="内存" class="mb-0">
         <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" />
       </a-form-item>
-      <a-form-item label="套餐" v-bind="formItemLayout">
+      <a-form-item label="套餐">
         <sku
           v-decorator="decorators.sku"
           :priceUnit="skuPriceUnit"
@@ -58,7 +60,7 @@
           :hypervisor="hypervisor"
           :hasMeterService="hasMeterService" />
       </a-form-item>
-      <a-form-item v-bind="formItemLayout" label="操作系统" extra="操作系统会根据选择的虚拟化平台和可用区域的变化而变化，公共镜像的维护请联系管理员">
+      <a-form-item label="操作系统" extra="操作系统会根据选择的虚拟化平台和可用区域的变化而变化，公共镜像的维护请联系管理员">
         <os-select
           :type="type"
           :types="osSelectTypes"
@@ -67,7 +69,7 @@
           :cacheImageParams="cacheImageParams"
           @updateImageMsg="updateFi" />
       </a-form-item>
-      <a-form-item label="系统盘" v-bind="formItemLayout" class="mb-0">
+      <a-form-item label="系统盘" class="mb-0">
         <system-disk
           v-if="form.fd.sku"
           :decorator="decorators.systemDisk"
@@ -77,7 +79,7 @@
           :capability-data="form.fi.capability"
           :image="form.fi.imageMsg" />
       </a-form-item>
-      <a-form-item label="数据盘" v-bind="formItemLayout">
+      <a-form-item label="数据盘">
         <data-disk
           v-if="form.fd.sku"
           :decorator="decorators.dataDisk"
@@ -87,10 +89,10 @@
           :capability-data="form.fi.capability"
           ref="dataDiskRef" />
       </a-form-item>
-      <a-form-item label="管理员密码" v-bind="formItemLayout">
+      <a-form-item label="管理员密码">
         <server-password :decorator="decorators.loginConfig" :loginTypes="loginTypes" :form="form" />
       </a-form-item>
-      <a-form-item label="网络" v-bind="formItemLayout" class="mb-0">
+      <a-form-item label="网络" class="mb-0">
         <server-network
           :decorator="decorators.network"
           :network-list-params="networkParam"
@@ -98,14 +100,14 @@
           :networkVpcParams="networkVpcParams"
           :vpcResource="vpcResource" />
       </a-form-item>
-      <a-form-item label="标签" v-bind="formItemLayout" class="mb-0">
+      <a-form-item label="标签" class="mb-0">
         <tag
           v-decorator="decorators.tag" />
       </a-form-item>
       <!-- <a-divider orientation="left">高级配置</a-divider> -->
       <a-collapse :bordered="false">
         <a-collapse-panel header="高级配置" key="1">
-          <a-form-item label="弹性公网IP" v-bind="formItemLayout">
+          <a-form-item label="弹性公网IP">
             <eip-config
               :decorators="decorators.eip"
               :eip-params="eipParams"
@@ -114,7 +116,7 @@
               :isServertemplate="isServertemplate"
               :form="form" />
           </a-form-item>
-          <a-form-item label="安全组" v-bind="formItemLayout">
+          <a-form-item label="安全组">
             <secgroup-config
               :provider="hypervisor"
               :form="form"
@@ -122,7 +124,7 @@
               :secgroup-params="secgroupParams"
               :hypervisor="hypervisor" />
           </a-form-item>
-          <a-form-item label="调度策略" v-show="!isServertemplate" v-bind="formItemLayout" class="mb-0">
+          <a-form-item label="调度策略" v-show="!isServertemplate" class="mb-0">
             <sched-policy
               :server-type="form.fi.createType"
               :disabled-host="policyHostDisabled"

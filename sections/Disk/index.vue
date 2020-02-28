@@ -1,12 +1,12 @@
 <template>
   <div class="disk-wrapper d-flex w-auto">
-    <a-form-item>
+    <a-form-item :wrapperCol="{ span: 24 }">
       <a-tag color="blue" v-if="diskTypeLabel && !disabled">{{ diskTypeLabel }}</a-tag>
       <a-select v-else v-decorator="decorator.type" labelInValue style="width: 180px;" @change="typeChange" :disabled="disabled">
         <a-select-option v-for="(item, key) of typesMap" :key="key" :value="key">{{ item.label }}</a-select-option>
       </a-select>
     </a-form-item>
-    <a-form-item class="mx-1">
+    <a-form-item class="mx-1" :wrapperCol="{ span: 24 }">
       <a-tooltip :title="tooltip" placement="top">
         <a-input-number
           v-decorator="decorator.size"
@@ -22,7 +22,7 @@
     <!-- 快照和挂载点不能共存 -->
     <template v-if="!showMountpoint && has('mount-point') && !disabled">
       <a-button class="mt-1" v-if="!showSnapshot" type="link" @click="() => showSnapshot = true">快照建磁盘</a-button>
-      <a-form-item v-else class="mx-1">
+      <a-form-item v-else class="mx-1" :wrapperCol="{ span: 24 }">
         <base-select
           v-decorator="decorator.snapshot"
           resource="snapshots"

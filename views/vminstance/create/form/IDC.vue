@@ -3,19 +3,20 @@
     <a-form
       class="mt-3"
       :form="form.fc"
+      v-bind="formItemLayout"
       @submit="submit">
-      <servertemplate v-if="isServertemplate" :decorators="decorators.servertemplate" :formItemLayout="formItemLayout" />
+      <servertemplate v-if="isServertemplate" :decorators="decorators.servertemplate" />
       <!-- <a-divider orientation="left">基础配置</a-divider> -->
-      <a-form-item v-show="!isServertemplate" :label="`指定${$t('dictionary.project')}`" v-bind="formItemLayout">
+      <a-form-item v-show="!isServertemplate" :label="`指定${$t('dictionary.project')}`">
         <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
       </a-form-item>
-      <a-form-item label="区域" class="mb-0" v-bind="formItemLayout">
+      <a-form-item label="区域" class="mb-0">
         <cloudregion-zone
           :zone-params="zoneParams"
           :cloudregion-params="cloudregionParams"
           :decorator="decorators.cloudregionZone" />
       </a-form-item>
-      <a-form-item label="名称" v-if="!isServertemplate" v-bind="formItemLayout">
+      <a-form-item label="名称" v-if="!isServertemplate">
         <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverCreateName')" />
         <name-repeated
           v-slot:extra
@@ -23,22 +24,22 @@
           :name="form.fd.name"
           default-text="名称支持有序后缀占位符‘#’，用法举例，名称host##，数量2，创建后实例的名称依次为host01、host02，已有同名实例，序号顺延" />
       </a-form-item>
-      <a-form-item label="申请原因" v-bind="formItemLayout" v-if="isOpenWorkflow">
+      <a-form-item label="申请原因" v-if="isOpenWorkflow">
         <a-input v-decorator="decorators.reason" placeholder="请输入主机申请原因" />
       </a-form-item>
-      <a-form-item v-bind="formItemLayout" v-show="!isServertemplate" label="到期释放">
+      <a-form-item v-show="!isServertemplate" label="到期释放">
         <duration :decorators="decorators.duration" :form="form" />
       </a-form-item>
-      <a-form-item label="数量" v-show="!isServertemplate" v-bind="formItemLayout">
+      <a-form-item label="数量" v-show="!isServertemplate">
         <a-input-number v-decorator="decorators.count" :min="1" :max="10" />
       </a-form-item>
-      <a-form-item label="平台" v-bind="formItemLayout" extra="根据选择的区域不同，平台的可用类型不同且目前只有OneCloud支持GPU云服务器、云硬盘">
+      <a-form-item label="平台" extra="根据选择的区域不同，平台的可用类型不同且目前只有OneCloud支持GPU云服务器、云硬盘">
         <hypervisor-radio :decorator="decorators.hypervisor" :type="form.fi.createType" :hypervisors="hypervisors" />
       </a-form-item>
-      <a-form-item v-if="form.fd.hypervisor === 'kvm'" v-bind="formItemLayout" label="是否配置GPU" extra="目前只有OneCloud支持GPU云服务器">
+      <a-form-item v-if="form.fd.hypervisor === 'kvm'" label="是否配置GPU" extra="目前只有OneCloud支持GPU云服务器">
         <gpu :decorators="decorators.gpu" :gpu-options="gpuOptions" />
       </a-form-item>
-      <a-form-item v-bind="formItemLayout" label="操作系统" extra="操作系统会根据选择的虚拟化平台和可用区域的变化而变化，公共镜像的维护请联系管理员">
+      <a-form-item label="操作系统" extra="操作系统会根据选择的虚拟化平台和可用区域的变化而变化，公共镜像的维护请联系管理员">
         <os-select
           :type="type"
           :uefi="uefi"
@@ -48,20 +49,20 @@
           :cacheImageParams="cacheImageParams"
           @updateImageMsg="updateFi" />
       </a-form-item>
-      <a-form-item label="CPU核数" v-bind="formItemLayout" class="mb-0">
+      <a-form-item label="CPU核数" class="mb-0">
         <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" @change="cpuChange" />
       </a-form-item>
-      <a-form-item label="内存" v-bind="formItemLayout" class="mb-0">
+      <a-form-item label="内存" class="mb-0">
         <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" />
       </a-form-item>
-      <a-form-item label="套餐" v-bind="formItemLayout" v-if="showSku">
+      <a-form-item label="套餐" v-if="showSku">
         <sku
           v-decorator="decorators.sku"
           :type="type"
           :sku-params="skuParam"
           :hypervisor="form.fd.hypervisor" />
       </a-form-item>
-      <a-form-item label="系统盘" v-bind="formItemLayout" class="mb-0">
+      <a-form-item label="系统盘" class="mb-0">
         <system-disk
           v-if="form.fd.hypervisor"
           :decorator="decorators.systemDisk"
@@ -73,7 +74,7 @@
           :isHostImageType="isHostImageType"
           :disabled="form.fi.sysDiskDisabled" />
       </a-form-item>
-      <a-form-item label="数据盘" v-bind="formItemLayout">
+      <a-form-item label="数据盘">
         <data-disk
           v-if="form.fd.hypervisor"
           ref="dataDiskRef"
@@ -88,10 +89,10 @@
           :disabled="form.fi.dataDiskDisabled"
           :domain="project_domain" />
       </a-form-item>
-      <a-form-item label="管理员密码" v-if="!isIso" v-bind="formItemLayout">
+      <a-form-item label="管理员密码" v-if="!isIso">
         <server-password :form="form" :login-types="loginTypes" :isSnapshotImageType="isSnapshotImageType" :decorator="decorators.loginConfig" />
       </a-form-item>
-      <a-form-item label="网络" v-bind="formItemLayout" class="mb-0">
+      <a-form-item label="网络" class="mb-0">
         <server-network
           :decorator="decorators.network"
           :network-list-params="networkParam"
@@ -99,14 +100,14 @@
           :networkVpcParams="networkVpcParams"
           :vpcResource="vpcResource" />
       </a-form-item>
-      <a-form-item label="标签" v-bind="formItemLayout" class="mb-0">
+      <a-form-item label="标签" class="mb-0">
         <tag
           v-decorator="decorators.tag" />
       </a-form-item>
       <!-- <a-divider orientation="left" v-if="showAdvanceConfig">高级配置</a-divider> -->
       <a-collapse :bordered="false">
         <a-collapse-panel header="高级配置" key="1">
-          <a-form-item label="安全组" v-if="isKvm" v-bind="formItemLayout">
+          <a-form-item label="安全组" v-if="isKvm">
             <secgroup-config
               :form="form"
               :isSnapshotImageType="isSnapshotImageType"
@@ -114,7 +115,7 @@
               :secgroup-params="secgroupParams"
               :hypervisor="form.fd.hypervisor" />
           </a-form-item>
-          <a-form-item v-show="!isServertemplate" label="调度策略" v-bind="formItemLayout" class="mb-0">
+          <a-form-item v-show="!isServertemplate" label="调度策略" class="mb-0">
             <sched-policy
               :server-type="form.fi.createType"
               :disabled-host="policyHostDisabled"
@@ -122,16 +123,16 @@
               :decorators="decorators.schedPolicy"
               :policy-schedtag-params="policySchedtagParams" />
           </a-form-item>
-          <a-form-item label="引导方式" v-bind="formItemLayout" class="mb-0" v-if="isKvm">
+          <a-form-item label="引导方式" class="mb-0" v-if="isKvm">
             <bios :decorator="decorators.bios" :uefi="uefi" />
           </a-form-item>
-          <a-form-item v-bind="formItemLayout" v-show="!isServertemplate" v-if="isKvm && isLocalDisk" label="高可用" extra="只有宿主机数量不少于2台时才可以使用该功能">
+          <a-form-item v-show="!isServertemplate" v-if="isKvm && isLocalDisk" label="高可用" extra="只有宿主机数量不少于2台时才可以使用该功能">
             <backup
               :decorator="decorators.backup"
               :disabled="form.fd.systemDiskType"
               :disabled-items="backupDisableds" />
           </a-form-item>
-          <a-form-item v-bind="formItemLayout" v-show="!isServertemplate" v-if="isKvm" label="主机组" extra="对资源的简单调度策略，组内的机器根据设置分布在不同的宿主机上，从而实现业务的高可用">
+          <a-form-item v-show="!isServertemplate" v-if="isKvm" label="主机组" extra="对资源的简单调度策略，组内的机器根据设置分布在不同的宿主机上，从而实现业务的高可用">
             <instance-groups :decorators="decorators.groups" :params="instanceGroupsParams" />
           </a-form-item>
         </a-collapse-panel>
