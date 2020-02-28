@@ -331,6 +331,7 @@ export const findAndPush = (arr, condition) => {
   const ret = arr.slice(0)
   if (!condition || !R.is(Function, condition)) return ret
   let firstValue = ret[0]
+  if (!firstValue) return ret
   for (var i = 0; i < ret.length; i++) {
     if (condition(ret[i])) {
       firstValue = ret[i]
