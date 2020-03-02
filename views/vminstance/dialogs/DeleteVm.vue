@@ -28,11 +28,12 @@ import { DISK_TYPES, SERVER_TYPE } from '@Compute/constants'
 import { mapGetters } from 'vuex'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import WorkflowMixin from '@/mixins/workflow'
 import { findPlatform } from '@/utils/common/hypervisor'
 
 export default {
   name: 'DeleteVmDialog',
-  mixins: [DialogMixin, WindowsMixin],
+  mixins: [DialogMixin, WindowsMixin, WorkflowMixin],
   data () {
     return {
       loading: false,
@@ -98,13 +99,16 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isAdminMode']),
+    ...mapGetters(['isAdminMode', 'userInfo']),
     type () {
       const brand = this.params.data[0].brand
       return findPlatform(brand)
     },
     isIDC () {
       return this.type === SERVER_TYPE.idc
+    },
+    isOpenWorkflow () {
+      return this.checkWorkflowEnabled(this.WORKFLOW_TYPES.APPLY_SERVER_DELETE)
     },
   },
   created () {
@@ -117,31 +121,51 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        if (this.params.ok) {
-          await this.params.ok()
+        if (this.isOpenWorkflow) {
+          await this.handleDeleteByWorkflowSubmit()
         } else {
-          const ids = this.params.data.map(item => item.id)
-          let params = {}
-          params = {
-            ...params,
-            ...this.params.requestParams,
-          }
-          if (this.isIDC) {
-            params.delete_snapshots = this.form.fd.autoDelete
-          }
-          const response = await this.params.onManager('batchDelete', {
-            id: ids,
-            managerArgs: { params },
-          })
-          if (this.params.success && R.is(Function, this.params.success)) {
-            this.params.success(response)
-          }
+          await this.handleDelete()
         }
-        this.cancelDialog()
-        this.$message.success('操作成功')
-      } finally {
         this.loading = false
+        this.cancelDialog()
+      } catch (error) {
+        this.loading = false
+        throw error
       }
+    },
+    async handleDeleteByWorkflowSubmit () {
+      const ids = this.params.data.map(item => item.id)
+      const variables = {
+        process_definition_key: this.WORKFLOW_TYPES.APPLY_SERVER_DELETE,
+        initiator: this.userInfo.id,
+        ids: ids.join(','),
+      }
+      await this.createWorkflow(variables)
+      this.$message.success('主机删除流程已提交')
+      this.$router.push('/workflow?type=me-process')
+    },
+    async handleDelete () {
+      if (this.params.ok) {
+        await this.params.ok()
+      } else {
+        const ids = this.params.data.map(item => item.id)
+        let params = {}
+        params = {
+          ...params,
+          ...this.params.requestParams,
+        }
+        if (this.isIDC) {
+          params.delete_snapshots = this.form.fd.autoDelete
+        }
+        const response = await this.params.onManager('batchDelete', {
+          id: ids,
+          managerArgs: { params },
+        })
+        if (this.params.success && R.is(Function, this.params.success)) {
+          this.params.success(response)
+        }
+      }
+      this.$message.success('操作成功')
     },
     autoDeleteChangeHandle (val) {
       this.form.fd.autoDelete = val
