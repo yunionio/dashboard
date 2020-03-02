@@ -2,7 +2,6 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">新建</div>
     <div slot="body">
-      {{form.fc.getFieldValue('cloudprovider')}}
       <a-form
         :form="form.fc">
         <a-form-item label="名称" v-bind="formItemLayout">
