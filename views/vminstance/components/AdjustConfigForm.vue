@@ -460,7 +460,7 @@ export default {
       }
       await this.createWorkflow(variables)
       this.$message.success('主机调整配置请求流程已提交')
-      this.$router.push('/workflow?type=me-process')
+      window.location.href = this.$appConfig.v1Perfix + '/workflow?type=me-process'
     },
     async doChangeSettingsSubmit (values) {
       const params = {
@@ -482,13 +482,13 @@ export default {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
-        if (this.isOpenWorkflow) {
+        if (!this.isOpenWorkflow) {
           await this.doChangeSettingsByWorkflowSubmit(values)
         } else {
           await this.doChangeSettingsSubmit(values)
           this.$message.success('操作成功')
+          this.cancel()
         }
-        this.cancel()
       } catch (error) {
         throw error
       } finally {
@@ -586,7 +586,7 @@ export default {
       return dataDisk
     },
     cancel () {
-      this.$router.go(-1)
+      this.$router.push({ name: 'VMInstance' })
     },
   },
 }
