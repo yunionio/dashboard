@@ -7,13 +7,11 @@
 <script>
 import { ALL_STORAGE } from '@Compute/constants'
 import { getStatusTableColumn } from '@/utils/common/tableColumn'
-import WindowsMixin from '@/mixins/windows'
 import { sizestr } from '@/utils/utils'
 import expectStatus from '@/constants/expectStatus'
 
 export default {
   name: 'DiskListForVmInstanceSidepage',
-  mixins: [WindowsMixin],
   props: {
     resId: String,
     data: {

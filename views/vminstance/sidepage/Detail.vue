@@ -4,7 +4,8 @@
     :data="data"
     :extra-info="extraInfo"
     :base-info="baseInfo"
-    status-module="server" />
+    status-module="server"
+    resource="servers" />
 </template>
 
 <script>
@@ -15,9 +16,11 @@ import {
   getSwitchTableColumn,
 } from '@/utils/common/tableColumn'
 import expectStatus from '@/constants/expectStatus'
+import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'VmInstanceDetail',
+  mixins: [WindowsMixin],
   props: {
     onManager: {
       type: Function,
@@ -220,8 +223,8 @@ export default {
       })
     },
     handleOpenSystemImageDetail (id) {
-      this.$emit('init-side-page-tab', 'system-image-detail')
-      this.$emit('side-page-trigger-handle', this, 'SystemImageSidePage', {
+      this.initSidePageTab('system-image-detail')
+      this.sidePageTriggerHandle(this, 'SystemImageSidePage', {
         id,
         resource: 'images',
         apiVersion: 'v1',

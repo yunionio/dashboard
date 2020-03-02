@@ -4,6 +4,7 @@
     :data="itemData"
     :base-info="baseInfo"
     :extra-info="extraInfo"
+    resource="hosts"
     status-module="host" />
 </template>
 
