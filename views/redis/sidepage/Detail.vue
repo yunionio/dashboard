@@ -1,6 +1,6 @@
 <template>
   <detail
-    :list="list"
+    :on-manager="onManager"
     :data="data"
     :base-info="baseInfo"
     :extra-info="extraInfo"
@@ -17,8 +17,8 @@ export default {
   name: 'redisDetail',
   mixins: [WindowsMixin],
   props: {
-    list: {
-      type: Object,
+    onManager: {
+      type: Function,
       required: true,
     },
     data: {

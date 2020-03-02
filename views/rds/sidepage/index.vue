@@ -3,15 +3,15 @@
     @cancel="cancelSidePage"
     title="RDS"
     icon="res-rds"
-    :res-name="data.name"
-    :actions="params.actions"
+    :res-name="detailData.name"
     :tabs="detailTabs"
     :current-tab="params.windowData.currentTab"
+    :loaded="loaded"
     @tab-change="handleTabChange">
     <template v-slot:actions>
-      <actions :options="params.singleActions" :row="data" button-type="link" button-size="small" />
+      <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :data="data" :list="params.list" :params="getParams" :res-id="getParams.dbinstance" />
+    <component :is="params.windowData.currentTab" :data="detailData" :on-manager="onManager" :params="getParams" :res-id="getParams.dbinstance" />
   </base-side-page>
 </template>
 
@@ -19,6 +19,8 @@
 import BackupList from '@DB/views/rds-backup/components/List'
 import AccountList from '@DB/views/rds-account/components/List'
 import DatabaseList from '@DB/views/rds-database/components/List'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 import Detail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
@@ -33,7 +35,7 @@ export default {
     DatabaseList,
     BackupList,
   },
-  mixins: [SidePageMixin, WindowsMixin],
+  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
@@ -48,12 +50,9 @@ export default {
   computed: {
     getParams () {
       return {
-        dbinstance: this.params.resId,
+        dbinstance: this.detailData.id,
         details: true,
       }
-    },
-    data () {
-      return this.params.list.data[this.params.resId].data
     },
   },
 }

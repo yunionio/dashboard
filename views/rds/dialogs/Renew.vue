@@ -67,7 +67,7 @@ export default {
       try {
         const values = await this.validateForm()
         const ids = this.params.data.map(item => item.id)
-        await this.params.list.onManager('batchUpdate', {
+        await this.params.onManager('batchUpdate', {
           id: ids,
           steadyStatus: ['running'],
           managerArgs: {
@@ -77,6 +77,7 @@ export default {
         this.loading = false
         this.$message.success('操作成功')
         this.cancelDialog()
+        this.params.refresh()
       } catch (error) {
         this.loading = false
       }

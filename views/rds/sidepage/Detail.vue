@@ -1,5 +1,5 @@
 <template>
-  <detail :list="list" :base-info="baseInfo" status-module="rds" :data="data" :extra-info="extraInfo" />
+  <detail :on-manager="onManager" :base-info="baseInfo" status-module="rds" :data="data" :extra-info="extraInfo" />
 </template>
 
 <script>
@@ -12,8 +12,8 @@ export default {
   name: 'RDSDetail',
   mixins: [WindowsMixin],
   props: {
-    list: {
-      type: Object,
+    onManager: {
+      type: Function,
       required: true,
     },
     data: {
@@ -235,7 +235,7 @@ export default {
       this.createDialog('ConfirmDialog', {
         ...txts[`${bool}`],
         onOk: () => {
-          return this.list.onManager('performAction', {
+          return this.onManager('performAction', {
             id: this.data.id,
             steadyStatus: ['runing'],
             managerArgs: {

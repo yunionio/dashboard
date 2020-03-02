@@ -65,9 +65,14 @@ export default {
       try {
         this.loading = false
         const ids = this.params.data.map(({ id }) => id)
-        await this.params.list.batchUpdate(ids, {
+        await this.params.onManager('batchUpdate', {
+          id: ids,
           steadyStatus: 'running',
-          disable_delete: this.form.fc.getFieldValue('disable_delete'),
+          managerArgs: {
+            data: {
+              disable_delete: this.form.fc.getFieldValue('disable_delete'),
+            },
+          },
         })
         this.cancelDialog()
         this.$message.success('操作成功')

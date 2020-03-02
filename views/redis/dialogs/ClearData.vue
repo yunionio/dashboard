@@ -30,9 +30,15 @@ export default {
       try {
         this.loading = false
         if (this.params.data && this.params.data.length > 1) {
-          await this.params.list.batchPerformAction('flush-instance', null, 'ready')
+          await this.params.onManager('batchPerformAction', {
+            id: this.params.data.map(({ id }) => id),
+            steadyStatus: 'running',
+            managerArgs: {
+              action: 'flush-instance',
+            },
+          })
         } else {
-          await this.params.list.onManager('performAction', {
+          await this.params.onManager('performAction', {
             id: this.params.data[0].id,
             steadyStatus: 'running',
             managerArgs: {
@@ -41,6 +47,7 @@ export default {
           })
         }
         this.cancelDialog()
+        this.params.refresh()
         this.$message.success('操作成功')
       } catch (error) {
         this.loading = false

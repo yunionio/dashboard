@@ -95,7 +95,7 @@ export default {
         if (values.loginType === 'random') {
           values['reset_password'] = true
         }
-        await this.params.list.onManager('performAction', {
+        await this.params.onManager('performAction', {
           id: this.params.data[0].id,
           steadyStatus: 'running',
           managerArgs: {
@@ -106,6 +106,7 @@ export default {
           },
         })
         this.cancelDialog()
+        this.params.refresh()
         this.$message.success('操作成功')
       } catch (error) {
         this.loading = false

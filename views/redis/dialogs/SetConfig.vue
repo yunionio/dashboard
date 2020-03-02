@@ -101,7 +101,7 @@ export default {
       this.loading = true
       try {
         const sku = this.form.fc.getFieldValue('sku') || {}
-        await this.params.list.onManager('performAction', {
+        await this.params.onManager('performAction', {
           id: this.params.data[0].id,
           steadyStatus: 'running',
           managerArgs: {
@@ -111,6 +111,7 @@ export default {
             },
           },
         })
+        this.params.refresh()
         this.cancelDialog()
       } catch (error) {
         this.loading = false
