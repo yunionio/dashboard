@@ -22,11 +22,6 @@ export default {
       type: Function,
       required: true,
     },
-    type: {
-      type: String,
-      default: 'disk',
-      validator: val => ['disk', 'instance'].includes(val),
-    },
   },
   data () {
     return {

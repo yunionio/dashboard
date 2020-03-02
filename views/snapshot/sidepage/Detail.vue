@@ -22,28 +22,15 @@ export default {
       type: Function,
       required: true,
     },
-    type: {
-      type: String,
-      default: 'disk',
-      validator: val => ['disk', 'instance'].includes(val),
-    },
   },
   data () {
-    const isInstanceSnapshot = this.type === 'instance'
-    const detailData = {
+    return {
       baseInfo: [
         {
           field: 'size',
           title: '容量',
           formatter: ({ cellValue, row }) => {
-            if (isInstanceSnapshot) {
-              const size = row.snapshots.reduce((a, b) => {
-                return a.size + b.size
-              }, { size: 0 })
-              return sizestr(size, 'M', 1024)
-            } else {
-              return sizestr(cellValue, 'M', 1024)
-            }
+            return sizestr(cellValue, 'M', 1024)
           },
         },
         {
@@ -57,7 +44,7 @@ export default {
           field: 'resource',
           title: '快照类别',
           formatter: ({ cellValue }) => {
-            return isInstanceSnapshot ? '主机快照' : '硬盘快照'
+            return '硬盘快照'
           },
         },
         {
@@ -83,7 +70,6 @@ export default {
           formatter: ({ cellValue }) => {
             return cellValue === 'sys' ? '系统盘' : '数据盘'
           },
-          hidden: isInstanceSnapshot,
         },
         {
           field: 'disk',
@@ -101,7 +87,6 @@ export default {
               return [<div>-</div>]
             },
           },
-          hidden: isInstanceSnapshot,
         },
       ],
       extraInfo: [
@@ -116,11 +101,6 @@ export default {
         },
       ],
     }
-    if (isInstanceSnapshot) {
-      const hiddenFields = ['disk_type', 'disk']
-      detailData.baseInfo = detailData.baseInfo.filter((item) => { return !hiddenFields.includes(item.field) })
-    }
-    return detailData
   },
 }
 </script>

@@ -15,8 +15,7 @@
       :is="params.windowData.currentTab"
       :data="detailData"
       :res-id="data.id"
-      :on-manager="onManager"
-      :type="params.type" />
+      :on-manager="onManager" />
   </base-side-page>
 </template>
 
