@@ -6,6 +6,7 @@
         <disk
           :max="max"
           :min="item.min || min"
+          :schedtagParams="getSchedtagParams()"
           :snapshots-params="getSnapshotsParams(item)"
           :diskTypeLabel="i === 0 ? '' : diskTypeLabel"
           :decorator="genDecorator(item.key)"
@@ -345,11 +346,11 @@ export default {
         limit: 0,
         disk_type: 'data',
       }
-      const modeParams = {}
+      const scopeParams = {}
       if (this.$store.getters.isAdminMode) {
-        modeParams.project_domain = this.domain
+        scopeParams.project_domain = this.domain
       } else {
-        modeParams.scope = this.$store.getters.scope
+        scopeParams.scope = this.$store.getters.scope
       }
       if (this.diskTypeLabel) {
         staticParams['joint_filter.0'] = `storages.id(storage_id).storage_type.equals(${_.get(this.form, 'fd.systemDiskType.key')})`
@@ -359,7 +360,25 @@ export default {
       }
       return {
         ...staticParams,
-        ...modeParams,
+        ...scopeParams,
+      }
+    },
+    getSchedtagParams () {
+      const params = {
+        with_meta: true,
+        cloud_env: 'onpremise',
+        resource_type: 'storages',
+        limit: 0,
+      }
+      const scopeParams = {}
+      if (this.$store.getters.isAdminMode) {
+        scopeParams.project_domain = this.domain
+      } else {
+        scopeParams.scope = this.$store.getters.scope
+      }
+      return {
+        ...params,
+        ...scopeParams,
       }
     },
     diskTypeChange (item, val) {
