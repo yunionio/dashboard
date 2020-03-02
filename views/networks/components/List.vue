@@ -91,6 +91,7 @@ export default {
               list: this.list,
               zone: this.data.zone_id,
               resId: this.resId,
+              hypervisor: this.data.hypervisor,
             })
           },
           meta: (obj) => {
