@@ -98,7 +98,8 @@
           :network-list-params="networkParam"
           :schedtag-params="schedtagParams"
           :networkVpcParams="networkVpcParams"
-          :vpcResource="vpcResource" />
+          :vpcResource="vpcResource"
+          :vpcResourceMapper="vpcResourceMapper" />
       </a-form-item>
       <a-form-item label="标签" class="mb-0">
         <tag
@@ -320,6 +321,12 @@ export default {
     },
   },
   methods: {
+    vpcResourceMapper (list) {
+      if (this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key) {
+        return list.filter(val => val.id === 'default')
+      }
+      return list
+    },
     onValuesChange (vm, changedFields) {
       this.$nextTick(() => {
         const formValue = this.form.fc.getFieldsValue()
