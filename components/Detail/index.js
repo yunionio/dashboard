@@ -4,21 +4,66 @@ import _ from 'lodash'
 import moment from 'moment'
 import classNames from 'classnames'
 import i18n from '@/locales'
+import WindowsMixin from '@/mixins/windows'
+
+const handleOpenRegionDetail = (vm, row) => {
+  vm.initSidePageTab('cloudregion-detail')
+  vm.sidePageTriggerHandle(vm, 'CloudregionSidePage', {
+    id: row.region_id,
+    resource: 'cloudregions',
+  })
+}
+
+const handleOpenZoneDetail = (vm, row) => {
+  vm.initSidePageTab('zone-detail')
+  vm.sidePageTriggerHandle(vm, 'ZoneSidePage', {
+    id: row.zone_id,
+    resource: 'zones',
+  })
+}
+
+const handleOpenAccountDetail = (vm, row) => {
+  vm.initSidePageTab('cloudaccount-detail')
+  vm.sidePageTriggerHandle(vm, 'CloudaccountSidePage', {
+    id: row.account_id,
+    resource: 'cloudaccounts',
+  })
+}
+
+const handleOpenProjectDetail = (vm, row) => {
+  vm.initSidePageTab('project-detail')
+  vm.sidePageTriggerHandle(vm, 'ProjectSidePage', {
+    id: row.tenant_id,
+    resource: 'projects',
+    apiVersion: 'v1',
+  })
+}
+
+const handleOpenDomainDetail = (vm, row) => {
+  vm.initSidePageTab('detail')
+  vm.sidePageTriggerHandle(vm, 'DomainSidePage', {
+    id: row.domain_id,
+    resource: 'domains',
+    apiVersion: 'v1',
+  })
+}
 
 // 需要添加区域（cloudregion/cloudregion_id), 可用区（zone/zone_id)，云账号(account/account_id)，云订阅（manager/manager_id)的资源
 const appendOutherResources = ['servers', 'hosts', 'disks', 'storages', 'vpcs', 'wires', 'networks', 'snapshots']
 
-const getDefaultLastBaseInfo = (h, { data, onManager, resource }) => {
+const getDefaultLastBaseInfo = (vm, h, { data, onManager, resource }) => {
   const outher = [
     {
-      field: 'cloudregion',
+      field: 'region',
       title: '区域',
       slots: {
         default: ({ row }) => {
+          if (!row.region_id) return row.region || '-'
           return [
             <div class='text-truncate'>
-              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='cloudregion' title={ row['cloudregion'] } />
-              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='cloudregion_id' title={ row['cloudregion_id'] } />
+              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='region' title={ row['region'] } hideField={ true }>
+                <side-page-trigger onTrigger={ () => handleOpenRegionDetail(vm, row) }>{ row.region }</side-page-trigger>
+              </list-body-cell-wrap>
             </div>,
           ]
         },
@@ -29,10 +74,12 @@ const getDefaultLastBaseInfo = (h, { data, onManager, resource }) => {
       title: '可用区',
       slots: {
         default: ({ row }) => {
+          if (!row.zone_id) return row.zone || '-'
           return [
             <div class='text-truncate'>
-              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='zone' title={ row['zone'] } />
-              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='zone_id' title={ row['zone_id'] } />
+              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='zone' title={ row['zone'] } hideField={ true }>
+                <side-page-trigger onTrigger={ () => handleOpenZoneDetail(vm, row) }>{ row.zone }</side-page-trigger>
+              </list-body-cell-wrap>
             </div>,
           ]
         },
@@ -43,10 +90,12 @@ const getDefaultLastBaseInfo = (h, { data, onManager, resource }) => {
       title: '云账号',
       slots: {
         default: ({ row }) => {
+          if (!row.account_id) return row.account || '-'
           return [
             <div class='text-truncate'>
-              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='account' title={ row['account'] } />
-              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='account_id' title={ row['account_id'] } />
+              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='account' title={ row['account'] } hideField={ true }>
+                <side-page-trigger onTrigger={ () => handleOpenAccountDetail(vm, row) }>{ row.account }</side-page-trigger>
+              </list-body-cell-wrap>
             </div>,
           ]
         },
@@ -75,7 +124,7 @@ const getDefaultLastBaseInfo = (h, { data, onManager, resource }) => {
   return ret
 }
 
-const getDefaultTopBaseInfo = (h, { idKey, statusKey, statusModule, data, onManager }) => {
+const getDefaultTopBaseInfo = (vm, h, { idKey, statusKey, statusModule, data, onManager }) => {
   return [
     {
       field: idKey,
@@ -105,8 +154,18 @@ const getDefaultTopBaseInfo = (h, { idKey, statusKey, statusModule, data, onMana
     {
       field: 'project_domain',
       title: i18n.t('dictionary.domain'),
-      formatter: ({ row }) => {
-        return row.project_domain || row.domain || '-'
+      slots: {
+        default: ({ row }) => {
+          const domain = row.project_domain || row.domain
+          if (!row.domain_id) return domain || '-'
+          return [
+            <div class='text-truncate'>
+              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='project_domain' title={ row['project_domain'] } message={domain} hideField={ true }>
+                <side-page-trigger onTrigger={ () => handleOpenDomainDetail(vm, row) }>{ domain }</side-page-trigger>
+              </list-body-cell-wrap>
+            </div>,
+          ]
+        },
       },
     },
     {
@@ -115,12 +174,25 @@ const getDefaultTopBaseInfo = (h, { idKey, statusKey, statusModule, data, onMana
       formatter: ({ row }) => {
         return row.tenant || '-'
       },
+      slots: {
+        default: ({ row }) => {
+          if (!row.tenant_id) return row.tenant || '-'
+          return [
+            <div class='text-truncate'>
+              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='tenant' title={ row['tenant'] } hideField={ true }>
+                <side-page-trigger onTrigger={ () => handleOpenProjectDetail(vm, row) }>{ row.tenant }</side-page-trigger>
+              </list-body-cell-wrap>
+            </div>,
+          ]
+        },
+      },
     },
   ]
 }
 
 export default {
   name: 'Detail',
+  mixins: [WindowsMixin],
   props: {
     data: {
       type: Object,
@@ -164,14 +236,14 @@ export default {
   },
   computed: {
     commonBaseInfo () {
-      const defaultTopBaseInfo = getDefaultTopBaseInfo(this.$createElement, {
+      const defaultTopBaseInfo = getDefaultTopBaseInfo(this, this.$createElement, {
         idKey: this.idKey,
         statusKey: this.statusKey,
         statusModule: this.statusModule,
         data: this.data,
         onManager: this.onManager,
       })
-      const defaultLastBaseInfo = getDefaultLastBaseInfo(this.$createElement, {
+      const defaultLastBaseInfo = getDefaultLastBaseInfo(this, this.$createElement, {
         onManager: this.onManager,
         data: this.data,
         resource: this.resource,
