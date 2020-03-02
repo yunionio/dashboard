@@ -23,8 +23,6 @@
       :res-id="data.id"
       :getParams="componentParams"
       :on-manager="onManager"
-      @side-page-trigger-handle="sidePageTriggerHandle"
-      @init-side-page-tab="initSidePageTab"
       @refresh="refresh"
       @single-refresh="singleRefresh"
       @tab-change="handleTabChange" />
