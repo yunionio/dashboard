@@ -79,7 +79,7 @@ export default {
         this.destroySidePages()
         const data = R.find(R.propEq('key', tagData.key))(this.data)
         if (data) {
-          this.createSidePageForList('TagSidePage', { resId: data.id, data, windowData: this.windowData })
+          this.replaceSidePage('TagSidePage', { resId: data.id, data, windowData: this.windowData })
           this.$refs.grid.setCurrentRow(data)
         }
       } catch (error) {
