@@ -16,7 +16,7 @@
             :mapper="hostsMapper"
             :select-props="{ allowClear: true, placeholder: '请选择宿主机' }" />
         </a-form-item>
-        <a-form-item label="强制迁移" v-bind="formItemLayout" v-if="isSingle">
+        <a-form-item label="强制迁移" v-bind="formItemLayout" v-if="isSingle" extra="若宿主机宕机且虚拟机使用共享存储，可打开“强制迁移”">
           <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.rescue_mode" />
         </a-form-item>
         <a-form-item label="自动启动" v-bind="formItemLayout" v-if="isSingle && firstData.status === 'ready'" extra="迁移成功后是否自动启动">
