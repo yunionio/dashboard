@@ -1,12 +1,9 @@
-import { DISK_TYPES, STORAGE_TYPES } from '../constants'
 import { sizestr } from '@/utils/utils'
 import {
   getNameDescriptionTableColumn,
-  getBrandTableColumn,
   getStatusTableColumn,
   getProjectTableColumn,
   getTimeTableColumn,
-  getCopyWithContentTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -21,16 +18,22 @@ export default {
           )
         },
       }),
-      getCopyWithContentTableColumn({
-        field: 'disk_name',
-        title: '硬盘',
-      }),
       {
-        field: 'disk_type',
-        title: '磁盘类型',
-        width: 70,
-        formatter: ({ row }) => {
-          return DISK_TYPES[row.disk_type] || row.disk_type
+        field: 'rules',
+        title: '子快照',
+        minWidth: 220,
+        type: 'expand',
+        slots: {
+          default: ({ row }) => {
+            const len = (row.snapshots && row.snapshots.length) || 0
+            return `${len}个`
+          },
+          content: ({ row }) => {
+            const list = row.snapshots.map(val => (
+              <a-tag class='mb-2'>{ val.name }</a-tag>
+            ))
+            return list
+          },
         },
       },
       {
@@ -38,12 +41,12 @@ export default {
         title: '快照大小',
         width: 70,
         formatter: ({ row }) => {
-          return sizestr(row.size, 'M', 1024)
+          const size = row.snapshots.reduce((a, b) => a + b.size, 0)
+          return sizestr(size, 'M', 1024)
         },
       },
       getStatusTableColumn({ statusModule: 'snapshot' }),
       getProjectTableColumn(),
-      getBrandTableColumn(),
       {
         field: 'guest',
         title: '虚拟机',
@@ -61,14 +64,6 @@ export default {
         },
       },
       getTimeTableColumn(),
-      {
-        field: 'storage_type',
-        title: '存储类型',
-        width: 80,
-        formatter: ({ row }) => {
-          return STORAGE_TYPES[row.storage_type] || row.storage_type || '-'
-        },
-      },
     ]
   },
 }

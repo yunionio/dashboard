@@ -84,7 +84,7 @@ export default {
   },
   methods: {
     handleOpenSidepage (row) {
-      this.sidePageTriggerHandle(this, 'SnapshotSidePage', {
+      this.sidePageTriggerHandle(this, 'SnapshotInstanceSidePage', {
         id: row.id,
         resource: 'instance_snapshots',
         getParams: this.list.params,

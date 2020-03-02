@@ -4,7 +4,7 @@
 
 <script>
 import { DISK_TYPES, STORAGE_TYPES } from '../constants'
-import { getCopyWithContentTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
+import { getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import { sizestr } from '@/utils/utils'
 
@@ -43,7 +43,7 @@ export default {
             return STORAGE_TYPES[row.storage_type] || row.storage_type || '-'
           },
         },
-        getStatusTableColumn({ statusModule: 'snapshot' }),
+        // getStatusTableColumn({ statusModule: 'snapshot' }),
         {
           field: 'created_at',
           title: '创建时间',
