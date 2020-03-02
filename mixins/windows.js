@@ -117,14 +117,14 @@ export default {
       if (!sidepageName) {
         throw Error('请填入要打开的抽屉名称')
       }
-      this.createSidePageForList(sidepageName, {
+      this.replaceSidePage(sidepageName, {
         templateContext,
         windowData: this.windowData,
         options,
         ...params,
       })
     },
-    async createSidePageForList (name, params) {
+    async replaceSidePage (name, params) {
       await this.destroySidePages()
       return this.createSidePage(name, params)
     },
