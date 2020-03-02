@@ -14,7 +14,7 @@
 
 <script>
 import { steadyStatus } from './constants'
-import SnapshotList from './components/InstanceList'
+import SnapshotList from './components/List'
 import { getTenantFilter, getStatusFilter } from '@/utils/common/tableFilter'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 import GlobalSearchMixin from '@/mixins/globalSearch'
