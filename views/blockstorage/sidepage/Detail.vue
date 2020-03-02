@@ -4,6 +4,7 @@
     :data="data"
     :base-info="baseInfo"
     :extra-info="extraInfo"
+    resource="storages"
     statusModule="blockstorage" />
 </template>
 
