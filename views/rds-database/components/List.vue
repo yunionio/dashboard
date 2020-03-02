@@ -7,15 +7,16 @@
 </template>
 
 <script>
-import { RDS_ACCOUNT_PRIVILEGES } from '@DB/constants'
-import { getStatusTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
+import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import expectStatus from '@/constants/expectStatus'
 import { getNameFilter, getStatusFilter } from '@/utils/common/tableFilter'
 
 export default {
   name: 'RDSDatabaseList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     params: {
       type: Object,
@@ -35,40 +36,15 @@ export default {
           status: getStatusFilter('rdsDatabase'),
         },
       }),
-      columns: [
-        getNameDescriptionTableColumn({
-          vm: this,
-          hideField: true,
-          addLock: true,
-          slotCallback: row => {
-            return (
-              <side-page-trigger onTrigger={() => this.sidePageTriggerHandle(row.id, 'RDSDatabaseSidePage')}>{row.name}</side-page-trigger>
-            )
-          },
-        }),
-        getStatusTableColumn({ statusModule: 'rdsDatabase' }),
-        {
-          field: 'dbinstanceprivileges',
-          title: '已授权的账户',
-          slots: {
-            default: ({ row }) => {
-              if (row.dbinstanceprivileges && row.dbinstanceprivileges.length > 0) {
-                return row.dbinstanceprivileges.map(({ account, privileges }) => {
-                  return <div>{account} <span style="color:#666;margin:0 0 0 3px">({RDS_ACCOUNT_PRIVILEGES[privileges]})</span></div>
-                })
-              }
-            },
-          },
-        },
-      ],
       groupActions: [
         {
           label: '新建',
           action: () => {
             this.createDialog('RDSDatabaseCreateDialog', {
-              list: this.list,
               title: '新建数据库',
               rdsItem: this.data,
+              onManager: this.onManager,
+              refresh: this.refresh,
             })
           },
           meta: () => {
@@ -76,19 +52,6 @@ export default {
               buttonType: 'primary',
               ...this.commonMeta,
             }
-          },
-        },
-      ],
-      singleActions: [
-        {
-          label: '删除',
-          action: (obj) => {
-            this.createDialog('DeleteResDialog', {
-              data: [obj],
-              columns: this.columns,
-              title: '删除',
-              list: this.list,
-            })
           },
         },
       ],
@@ -110,6 +73,18 @@ export default {
   created () {
     this.list.fetchData()
     this.initSidePageTab('detail')
+  },
+  methods: {
+    handleOpenSidepage (row) {
+      this.sidePageTriggerHandle(this, 'RDSDatabaseSidePage', {
+        id: row.id,
+        resource: 'dbinstancedatabases',
+        getParams: this.params,
+        steadyStatus: Object.values(expectStatus.rdsDatabase).flat(),
+      }, {
+        list: this.list,
+      })
+    },
   },
 }
 </script>

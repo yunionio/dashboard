@@ -74,21 +74,10 @@ export default {
     },
   },
   methods: {
-    validateForm () {
-      return new Promise((resolve, reject) => {
-        this.form.fc.validateFields((err, values) => {
-          if (!err) {
-            resolve(values)
-          } else {
-            reject(err)
-          }
-        })
-      })
-    },
     async handleConfirm () {
       this.loading = true
       try {
-        await this.params.list.onManager('performAction', {
+        await this.params.onManager('performAction', {
           steadyStatus: 'running',
           id: this.params.data[0].id,
           managerArgs: {

@@ -3,19 +3,21 @@
     @cancel="cancelSidePage"
     title="RDS备份管理"
     icon="res-rds-backup"
-    :res-name="data.name"
-    :actions="params.actions"
+    :res-name="detailData.name"
     :tabs="detailTabs"
     :current-tab="params.windowData.currentTab"
+    :loaded="loaded"
     @tab-change="handleTabChange">
     <template v-slot:actions>
-      <actions :options="params.singleActions" :row="data" button-type="link" button-size="small" />
+      <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :data="data" :list="params.list" :params="getParams" :res-id="getParams.resId" />
+    <component :is="params.windowData.currentTab" :data="detailData" :on-manager="onManager" :params="getParams" :res-id="getParams.resId" />
   </base-side-page>
 </template>
 
 <script>
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 import RdsBackupDetail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
@@ -25,7 +27,7 @@ export default {
   components: {
     RdsBackupDetail,
   },
-  mixins: [SidePageMixin, WindowsMixin],
+  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
@@ -37,12 +39,9 @@ export default {
   computed: {
     getParams () {
       return {
-        resId: this.params.resId,
+        resId: this.detailData.id,
         details: true,
       }
-    },
-    data () {
-      return this.params.list.data[this.params.resId].data
     },
   },
 }

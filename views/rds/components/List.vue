@@ -9,19 +9,18 @@
 </template>
 
 <script>
-import { DBINSTANCE_CATEGORY } from '../constants/index.js'
-import { sizestr } from '@/utils/utils'
-import { Manager } from '@/utils/manager'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
+import ListMixin from '@/mixins/list'
 import { getNameFilter, getFilter, getTenantFilter } from '@/utils/common/tableFilter'
-import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getNameDescriptionTableColumn, getBrandTableColumn } from '@/utils/common/tableColumn'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import globalSearchMixins from '@/mixins/globalSearch'
 
 export default {
-  name: 'RedisList',
-  mixins: [WindowsMixin, globalSearchMixins],
+  name: 'RDSList',
+  mixins: [WindowsMixin, ListMixin, globalSearchMixins, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       list: this.$list.createList(this, {
@@ -85,130 +84,6 @@ export default {
         },
         responseData: this.responseData,
       }),
-      columns: [
-        getNameDescriptionTableColumn({
-          vm: this,
-          hideField: true,
-          addLock: true,
-          slotCallback: row => {
-            return (
-              <side-page-trigger onTrigger={() => this.sidePageTriggerHandle(row.id, 'RDSSidePage')}>{row.name}</side-page-trigger>
-            )
-          },
-        }),
-        {
-          field: 'category',
-          title: '类型',
-          width: 70,
-          slots: {
-            default: ({ row }) => {
-              return DBINSTANCE_CATEGORY[row.category]
-            },
-          },
-        },
-        {
-          field: 'vcpu_count',
-          title: '配置',
-          width: 70,
-          slots: {
-            default: ({ row }) => {
-              return `${row.vcpu_count}核 ${sizestr(row.vmem_size_mb, 'M', 1024)}`
-            },
-          },
-        },
-        {
-          field: 'engine',
-          title: '数据库引擎',
-          width: 100,
-          slots: {
-            default: ({ row }) => {
-              return `${row.engine} ${row.engine_version}`
-            },
-          },
-        },
-        // {
-        //   field: 'password',
-        //   title: '密码',
-        //   slots: {
-        //     default: ({ row }) => {
-        //       return [<PasswordFetcher serverId={row.id} resourceType='elasticcaches' />]
-        //     },
-        //   },
-        // },
-        {
-          field: 'internal_connection_str',
-          title: '链接地址',
-          minWidth: 200,
-          showOverflow: 'ellipsis',
-          slots: {
-            default: ({ row }) => {
-              const pri = row.internal_connection_str
-              const pub = row.connection_str
-              if (!pri && !pub) {
-                return '-'
-              }
-              const connection = (title, value) => {
-                if (!value) {
-                  return null
-                }
-                return (
-                  <div class="d-flex align-items-center">
-                    <span class="text-truncate">
-                      {title}：{value}
-                    </span>
-                    <copy message={value} />
-                  </div>
-                )
-              }
-              return [
-                connection('内网', pri),
-                connection('外网', pub),
-              ]
-            },
-          },
-        },
-        {
-          title: '数据库端口号',
-          field: 'port',
-          width: 100,
-          slots: {
-            default: ({ row }) => row.port || '-',
-          },
-        },
-        {
-          field: 'account',
-          minWidth: 100,
-          title: '云账号',
-        },
-        {
-          field: 'billing_type',
-          title: '计费方式',
-          width: 100,
-          slots: {
-            default: ({ row }) => {
-              const ret = []
-              if (row.billing_type === 'postpaid') {
-                ret.push(<div style={{ color: '#0A1F44' }}>按量付费</div>)
-              } else if (row.billing_type === 'prepaid') {
-                ret.push(<div style={{ color: '#0A1F44' }}>包年包月</div>)
-              }
-              if (row.expired_at) {
-                let dateArr = this.$moment(row.expired_at).fromNow().split(' ')
-                let date = dateArr.join('')
-                let seconds = this.$moment(row.expired_at).diff(new Date()) / 1000
-                let textColor = seconds / 24 / 60 / 60 < 7 ? '#DD2727' : '#53627C'
-                let text = seconds < 0 ? '已过期' : `${date.substring(0, date.length - 1)}后到期`
-                ret.push(<div style={{ color: textColor }}>{text}</div>)
-              }
-              return ret
-            },
-          },
-        },
-        getStatusTableColumn({ statusModule: 'rds' }),
-        getProjectTableColumn(),
-        getBrandTableColumn(),
-        getRegionTableColumn(),
-      ],
       groupActions: [
         {
           label: '新建',
@@ -230,7 +105,8 @@ export default {
               title: '删除',
               data: this.list.selectedItems,
               columns: this.columns,
-              list: this.list,
+              onManager: this.onManager,
+              refresh: this.refresh,
             })
           },
           meta: () => {
@@ -271,7 +147,12 @@ export default {
               {
                 label: '同步状态',
                 action: (obj) => {
-                  this.list.batchPerformAction('sync-status', null)
+                  this.onManager('batchPerformAction', {
+                    id: this.list.selectedItems.map(item => item.id),
+                    managerArgs: {
+                      action: 'sync-status',
+                    },
+                  })
                 },
                 meta: () => {
                   return {
@@ -281,18 +162,6 @@ export default {
                 },
               },
               disableDeleteAction(this),
-              // {
-              //   label: '修改属性',
-              //   action: () => {
-              //     this.createDialog('RDSEditAttrDialog')
-              //   },
-              //   meta: () => {
-              //     return {
-              //       validate: selectedLength,
-              //       tooltip: notSelectedTooltip,
-              //     }
-              //   },
-              // },
               {
                 label: '重启',
                 action: () => {
@@ -300,154 +169,14 @@ export default {
                     title: '重启',
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    list: this.list,
+                    onManager: this.onManager,
+                    refresh: this.refresh,
                   })
                 },
                 meta: () => {
                   return {
                     validate: selectedLength,
                     tooltip: notSelectedTooltip,
-                  }
-                },
-              },
-            ]
-          },
-        },
-      ],
-      singleActions: [
-        {
-          label: '同步状态',
-          action: (obj) => {
-            this.list.onManager('performAction', {
-              steadyStatus: 'running',
-              id: obj.id,
-              managerArgs: {
-                action: 'sync-status',
-              },
-            }).then(ret => {
-              if (ret.status === 200) {
-                this.$message.success('操作成功')
-              }
-            })
-          },
-        },
-        {
-          label: '更多',
-          actions: (obj) => {
-            const isRunning = obj.status.toLowerCase() === 'running'
-            const notRunninTip = !isRunning ? '仅运行中的实例支持此操作' : null
-            return [
-              // {
-              //   label: '修改属性',
-              //   action: () => {
-              //     this.createDialog('RDSEditAttrDialog', {
-              //       title: '修改属性',
-              //       data: [obj],
-              //       columns: this.columns,
-              //       list: this.list,
-              //     })
-              //   },
-              // },
-              {
-                label: `更改${this.$t('dictionary.project')}`,
-                action: () => {
-                  this.createDialog('ChangeOwenrDialog', {
-                    title: `更改${this.$t('dictionary.project')}`,
-                    data: [obj],
-                    columns: this.columns,
-                    list: this.list,
-                  })
-                },
-                meta: () => {
-                  return {
-                    // validate: selectedLength,
-                    // tooltip: notSelectedTooltip,
-                  }
-                },
-              },
-              {
-                label: '重启',
-                action: () => {
-                  this.createDialog('RDSRestartdialog', {
-                    title: '重启',
-                    data: [obj],
-                    columns: this.columns,
-                    list: this.list,
-                  })
-                  // this.list.onManager('performAction', {
-                  //   steadyStatus: 'running',
-                  //   id: obj.id,
-                  //   managerArgs: {
-                  //     action: 'restart',
-                  //   },
-                  // })
-                },
-                meta: () => {
-                  return {
-                    validate: isRunning,
-                    tooltip: notRunninTip,
-                  }
-                },
-              },
-              {
-                label: '续费',
-                action: () => {
-                  this.createDialog('RedisRenewDialog', {
-                    title: '续费',
-                    data: [obj],
-                    columns: this.columns,
-                    list: this.list,
-                  })
-                },
-                meta: () => {
-                  const isPrepaid = obj.billing_type === 'prepaid'
-                  const validate = (isRunning && isPrepaid)
-                  return {
-                    validate: validate,
-                    tooltip: notRunninTip || (!isPrepaid ? '仅包年包月的实例支持此操作' : null),
-                  }
-                },
-              },
-              {
-                label: '调整配置',
-                action: () => {
-                  this.createDialog('RSDSetConfig', {
-                    title: '调整配置',
-                    data: [obj],
-                    columns: this.columns,
-                    list: this.list,
-                  })
-                },
-                meta: () => {
-                  return {
-                    validate: isRunning,
-                    tooltip: notRunninTip,
-                  }
-                },
-              },
-              disableDeleteAction(this),
-              {
-                label: '删除',
-                permission: 'rds_dbinstances_delete',
-                action: () => {
-                  this.createDialog('DeleteResDialog', {
-                    title: '删除',
-                    data: [obj],
-                    columns: this.columns,
-                    list: this.list,
-                  })
-                },
-                meta: () => {
-                  let tooltip = ''
-                  let seconds = this.$moment(obj.expired_at).diff(new Date()) / 1000
-                  if (obj.disable_delete) {
-                    tooltip = '请点击修改属性禁用删除保护后重试'
-                  } else if (obj.billing_type === 'prepaid' && seconds > 0) {
-                    tooltip = '实例未到期不允许删除'
-                  }
-                  return {
-                    validate: !tooltip,
-                    tooltip: tooltip,
                   }
                 },
               },
@@ -458,9 +187,23 @@ export default {
     }
   },
   created () {
-    this.webconsoleManager = new Manager('webconsole', 'v1')
+    this.webconsoleManager = new this.$Manager('webconsole', 'v1')
     this.list.fetchData()
     this.initSidePageTab('detail')
+  },
+  methods: {
+    handleOpenSidepage (row) {
+      this.sidePageTriggerHandle(this, 'RDSSidePage', {
+        id: row.id,
+        resource: 'dbinstances',
+        getParams: {
+          details: true,
+        },
+        steadyStatus: Object.values(expectStatus.rds).flat(),
+      }, {
+        list: this.list,
+      })
+    },
   },
 }
 </script>

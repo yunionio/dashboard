@@ -31,9 +31,15 @@ export default {
         this.loading = false
         if (this.params.data && this.params.data.length > 1) {
           const ids = this.params.data.map(({ id }) => id)
-          await this.params.list.batchPerformAction('restart', { ids })
+          await this.params.onManager('batchPerformAction', {
+            id: ids,
+            steadyStatus: 'running',
+            managerArgs: {
+              action: 'restart',
+            },
+          })
         } else {
-          await this.params.list.onManager('performAction', {
+          await this.params.onManager('performAction', {
             id: this.params.data[0].id,
             steadyStatus: 'running',
             managerArgs: {
@@ -42,6 +48,7 @@ export default {
           })
         }
         this.cancelDialog()
+        this.params.refresh()
         this.$message.success('操作成功')
       } catch (error) {
         this.loading = false

@@ -3,19 +3,21 @@
     @cancel="cancelSidePage"
     title="Redis"
     icon="res-redis"
-    :res-name="data.name"
-    :actions="params.actions"
+    :res-name="detailData.name"
     :tabs="detailTabs"
     :current-tab="params.windowData.currentTab"
+    :loaded="loaded"
     @tab-change="handleTabChange">
     <template v-slot:actions>
-      <actions :options="params.singleActions" :row="data" button-type="link" button-size="small" />
+      <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :data="data" :list="params.list" :params="getParams" :res-id="getParams.elasticcache_id" />
+    <component :is="params.windowData.currentTab" :data="detailData" :on-manager="onManager" :params="getParams" :res-id="getParams.elasticcache_id" />
   </base-side-page>
 </template>
 
 <script>
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 import RedisDetail from './Detail'
 import RedisWhiteList from './WhiteList'
 import RedisAccountList from './AccountList'
@@ -33,7 +35,7 @@ export default {
     RedisAccountList,
     RedisBackupList,
   },
-  mixins: [SidePageMixin, WindowsMixin],
+  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
@@ -48,12 +50,9 @@ export default {
   computed: {
     getParams () {
       return {
-        elasticcache_id: this.params.resId,
+        elasticcache_id: this.detailData.id,
         details: true,
       }
-    },
-    data () {
-      return this.params.list.data[this.params.resId].data
     },
   },
 }

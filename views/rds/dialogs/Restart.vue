@@ -30,9 +30,15 @@ export default {
       try {
         if (this.params.data && this.params.data.length > 1) {
           const ids = this.params.data.map(({ id }) => id)
-          await this.params.list.batchPerformAction('reboot', { ids })
+          await this.params.onManager('batchPerformAction', {
+            id: ids,
+            steadyStatus: ['running'],
+            managerArgs: {
+              action: 'reboot',
+            },
+          })
         } else {
-          await this.params.list.onManager('performAction', {
+          await this.params.onManager('performAction', {
             id: this.params.data[0].id,
             steadyStatus: ['running'],
             managerArgs: {
@@ -41,6 +47,7 @@ export default {
           })
         }
         this.cancelDialog()
+        this.params.refresh()
       } catch (error) {
         throw error
       } finally {

@@ -147,7 +147,7 @@ export default {
       this.loading = true
       try {
         const values = await this.validateForm()
-        await this.params.list.onManager('performAction', {
+        await this.params.onManager('performAction', {
           id: this.params.data[0].id,
           steadyStatus: ['running'],
           managerArgs: {
@@ -156,6 +156,7 @@ export default {
           },
         })
         this.cancelDialog()
+        this.params.refresh()
       } finally {
         this.loading = false
       }
