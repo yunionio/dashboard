@@ -9,7 +9,7 @@ export default {
         slots: {
           default: ({ row }) => {
             let trigger = <a onClick={() => this.handleOpenSidepage(row)}>{ row.name }</a>
-            // let trigger = <a onClick={ () => this.createSidePageForList('TagSidePage', { resId: row.id, data: row, windowData: this.windowData }) }>{ row.name }</a>
+            // let trigger = <a onClick={ () => this.replaceSidePage('TagSidePage', { resId: row.id, data: row, windowData: this.windowData }) }>{ row.name }</a>
             if (this.$options.name !== 'TagList') {
               trigger = <span>{ row.name }</span>
             }
