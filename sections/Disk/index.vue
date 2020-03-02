@@ -102,6 +102,15 @@ export default {
         limit: 0,
       }),
     },
+    schedtagParams: {
+      type: Object,
+      default: () => ({
+        with_meta: true,
+        cloud_env: 'onpremise',
+        resource_type: 'storages',
+        limit: 0,
+      }),
+    },
   },
   data () {
     return {
