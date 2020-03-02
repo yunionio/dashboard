@@ -121,6 +121,7 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
+        console.log(this.$appConfig)
         if (this.isOpenWorkflow) {
           await this.handleDeleteByWorkflowSubmit()
         } else {
@@ -142,7 +143,7 @@ export default {
       }
       await this.createWorkflow(variables)
       this.$message.success('主机删除流程已提交')
-      this.$router.push('/workflow?type=me-process')
+      window.location.href = this.$appConfig.v1Perfix + '/workflow?type=me-process'
     },
     async handleDelete () {
       if (this.params.ok) {
