@@ -3,7 +3,7 @@
     <page-header :title="`新建${this.$t('dictionary.server')}`" />
     <a-form :form="form.fc" class="mt-3">
       <a-form-item label="主机名称" v-bind="formItemLayout" extra="名称支持序号占位符‘#’，用法如下。 名称：host## 数量：2、实例为：host01、host02">
-        <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverCreateName')" />
+        <a-input v-decorator="decorators.generate_name" :placeholder="$t('validator.serverCreateName')" />
       </a-form-item>
       <a-form-item label="申请原因" v-bind="formItemLayout" v-if="isOpenWorkflow">
         <a-input v-decorator="decorators.reason" placeholder="请输入主机申请原因" />
@@ -48,8 +48,8 @@ export default {
         fc: this.$form.createForm(this),
       },
       decorators: {
-        name: [
-          'name',
+        generate_name: [
+          'generate_name',
           {
             validateFirst: true,
             rules: [
@@ -94,7 +94,7 @@ export default {
     doCreateWorkflow (values) {
       const params = {
         ...this.serverConfig,
-        generate_name: values.name,
+        generate_name: values.generate_name,
       }
       delete params.reason
       const variables = {
@@ -114,7 +114,7 @@ export default {
     },
     doForecast (fd) {
       const genCreateData = new GenCreateData()
-      const params = { ...fd, ...this.serverConfig }
+      const params = { generate_name: fd.generate_name, ...this.serverConfig }
       return new this.$Manager('schedulers', 'v1').rpc({ methodname: 'DoForecast', params })
         .then(res => {
           if (res.data.can_create) {
