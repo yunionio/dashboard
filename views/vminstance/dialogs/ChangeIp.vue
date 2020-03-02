@@ -46,6 +46,7 @@ import { mapGetters } from 'vuex'
 import { isWithinRange } from '@/utils/validate'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import { HYPERVISORS_MAP } from '@/constants'
 
 export default {
   name: 'VmChangeIpDialog',
@@ -104,10 +105,14 @@ export default {
   computed: {
     ...mapGetters(['scope']),
     networkParams () {
-      return {
+      const params = {
         zone: this.params.zone,
         scope: this.scope,
       }
+      if (this.params.hypervisor === HYPERVISORS_MAP.esxi.key) {
+        params.vpc_id = 'default'
+      }
+      return params
     },
   },
   methods: {

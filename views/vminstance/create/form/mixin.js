@@ -406,7 +406,7 @@ export default {
       if (!variables.project) {
         variables.project = this.$store.getters.userInfo.projectName
       }
-      variables.project_domian = this.form.fd.domain.label
+      variables.project_domian = _.get(this.form.fd, 'domain.label')
       if (!variables.project_domian) {
         variables.project_domian = this.$store.getters.userInfo.projectDomain
       }
