@@ -59,7 +59,7 @@ export default {
       } else if (resourceItem && resourceItem.labelFormat) {
         text = resourceItem.labelFormat(this.data)
       }
-      return (<div>{text}</div>)
+      return text
     },
   },
   render (h) {
@@ -69,6 +69,7 @@ export default {
         return resourceItem.vnode(this, h)
       }
     }
-    return this.getLabel()
+    const text = this.getLabel()
+    return (<div title={text}>{ text }</div>)
   },
 }
