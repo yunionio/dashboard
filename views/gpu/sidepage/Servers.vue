@@ -20,6 +20,7 @@ import {
 } from '@/utils/common/tableColumn'
 import SystemIcon from '@/sections/SystemIcon'
 import WindowsMixin from '@/mixins/windows'
+import ListMixin from '@/mixins/list'
 
 const commonUnabled = (value, statusArr = ['sched_fail', 'net_fail', 'disk_fail']) => {
   return statusArr.includes(value.status)
@@ -27,7 +28,7 @@ const commonUnabled = (value, statusArr = ['sched_fail', 'net_fail', 'disk_fail'
 
 export default {
   name: '',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ListMixin],
   props: {
     data: {
       type: Object,
@@ -63,7 +64,7 @@ export default {
             )
           },
         }),
-        getTagTableColumn({ vm: this, needExt: true }),
+        getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'server', columns: () => this.columns }),
         getIpsTableColumn({ field: 'ip', title: 'IP' }),
         {
           field: 'instance_type',

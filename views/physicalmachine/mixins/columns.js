@@ -14,7 +14,7 @@ export default {
           )
         },
       }),
-      getTagTableColumn({ vm: this, needExt: true }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'host', columns: () => this.columns }),
       getEnabledTableColumn(),
       getStatusTableColumn({ statusModule: 'host' }),
       {
