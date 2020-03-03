@@ -349,7 +349,8 @@ export default {
             name: icon,
           },
         }),
-        h('span', { class: 'ml-2' }, title),
+        <span class='ml-2'>{title}</span>,
+        // h('span', { class: 'ml-2' }, title),
       ])
     },
     renderContent (h, icon, title, items, item, type) {
