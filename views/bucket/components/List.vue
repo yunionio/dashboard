@@ -28,7 +28,6 @@ export default {
     return {
       list: this.$list.createList(this, {
         resource: 'buckets',
-        // getParams: this.getParams,
         filterOptions: {
           name: getNameFilter(),
           brand: getBrandFilter(),
