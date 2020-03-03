@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import { ACL_TYPE } from '@Storage/constants/index.js'
 import { getNameDescriptionTableColumn, getStatusTableColumn, getBrandTableColumn, getRegionTableColumn, getAccountTableColumn, getProjectTableColumn } from '@/utils/common/tableColumn'
 import { getNameFilter, getTenantFilter, getBrandFilter } from '@/utils/common/tableFilter'
@@ -94,6 +95,14 @@ export default {
                     list: this.list,
                     name: '存储桶',
                   })
+                },
+                meta: row => {
+                  const domainIds = this.list.selectedItems.map(item => item.domain_id)
+                  const validate = R.uniq(domainIds).length === 1
+                  return {
+                    validate,
+                    tooltip: !validate && `请选择同一个${this.$t('dictionary.domain')}下的存储桶`,
+                  }
                 },
               },
               {

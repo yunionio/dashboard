@@ -149,6 +149,7 @@ export default {
         this.cancelDialog()
       } catch (error) {
         this.loading = false
+        this.fileList = []
         throw error
       }
     },
