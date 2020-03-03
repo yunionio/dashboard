@@ -259,12 +259,13 @@ export const getSwitchTableColumn = ({ field, title, change }) => {
 }
 
 export const getTagTableColumn = ({
-  vm,
   field = 'metadata',
   title = '标签',
   ignoreKeys,
   needExt,
   resource,
+  onManager,
+  columns,
 } = {}) => {
   return {
     field,
@@ -273,13 +274,17 @@ export const getTagTableColumn = ({
     slots: {
       default: ({ row }, h) => {
         return [
-          <TagTableColumn
-            vm={ vm }
-            row={ row }
-            metadata={ row[field] || {} }
-            ignoreKeys={ ignoreKeys }
-            needExt={ needExt }
-            resource={ resource } />,
+          h(TagTableColumn, {
+            props: {
+              row,
+              onManager,
+              metadata: row[field] || {},
+              ignoreKeys,
+              needExt,
+              resource,
+              columns,
+            },
+          }),
         ]
       },
     },

@@ -514,6 +514,10 @@ export const PERMISSION = {
   'image_quota_delete': ['image', 'image_quotas', 'delete'],
   'image_quota_update': ['image', 'image_quotas', 'update'],
   'image_quota_list': ['image', 'image_quotas', 'list'],
+  // 域
+  'domains_get': ['identity', 'domains', 'get'],
+  // 项目
+  'projects_get': ['identity', 'projects', 'get'],
 }
 
 // 已声明权限的资源

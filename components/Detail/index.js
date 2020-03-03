@@ -5,6 +5,7 @@ import moment from 'moment'
 import classNames from 'classnames'
 import i18n from '@/locales'
 import WindowsMixin from '@/mixins/windows'
+import { hasPermission } from '@/utils/auth'
 
 const handleOpenRegionDetail = (vm, row) => {
   vm.initSidePageTab('cloudregion-detail')
@@ -59,12 +60,21 @@ const getDefaultLastBaseInfo = (vm, h, { data, onManager, resource }) => {
       slots: {
         default: ({ row }) => {
           if (!row.region_id) return row.region || '-'
-          return [
-            <div class='text-truncate'>
+          const p = hasPermission({ key: 'cloudregions_get' })
+          let node
+          if (p) {
+            node = (
               <list-body-cell-wrap copy row={ data } onManager={ onManager } field='region' title={ row['region'] } hideField={ true }>
                 <side-page-trigger onTrigger={ () => handleOpenRegionDetail(vm, row) }>{ row.region }</side-page-trigger>
               </list-body-cell-wrap>
-            </div>,
+            )
+          } else {
+            node = (
+              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='region' title={ row['region'] } />
+            )
+          }
+          return [
+            <div class='text-truncate'>{ node }</div>,
           ]
         },
       },
@@ -75,12 +85,21 @@ const getDefaultLastBaseInfo = (vm, h, { data, onManager, resource }) => {
       slots: {
         default: ({ row }) => {
           if (!row.zone_id) return row.zone || '-'
-          return [
-            <div class='text-truncate'>
+          const p = hasPermission({ key: 'zones_get' })
+          let node
+          if (p) {
+            node = (
               <list-body-cell-wrap copy row={ data } onManager={ onManager } field='zone' title={ row['zone'] } hideField={ true }>
                 <side-page-trigger onTrigger={ () => handleOpenZoneDetail(vm, row) }>{ row.zone }</side-page-trigger>
               </list-body-cell-wrap>
-            </div>,
+            )
+          } else {
+            node = (
+              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='zone' title={ row['zone'] } />
+            )
+          }
+          return [
+            <div class='text-truncate'>{ node }</div>,
           ]
         },
       },
@@ -91,12 +110,21 @@ const getDefaultLastBaseInfo = (vm, h, { data, onManager, resource }) => {
       slots: {
         default: ({ row }) => {
           if (!row.account_id) return row.account || '-'
-          return [
-            <div class='text-truncate'>
+          const p = hasPermission({ key: 'cloudaccounts_get' })
+          let node
+          if (p) {
+            node = (
               <list-body-cell-wrap copy row={ data } onManager={ onManager } field='account' title={ row['account'] } hideField={ true }>
                 <side-page-trigger onTrigger={ () => handleOpenAccountDetail(vm, row) }>{ row.account }</side-page-trigger>
               </list-body-cell-wrap>
-            </div>,
+            )
+          } else {
+            node = (
+              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='account' title={ row['account'] } />
+            )
+          }
+          return [
+            <div class='text-truncate'>{ node }</div>,
           ]
         },
       },
@@ -158,12 +186,21 @@ const getDefaultTopBaseInfo = (vm, h, { idKey, statusKey, statusModule, data, on
         default: ({ row }) => {
           const domain = row.project_domain || row.domain
           if (!row.domain_id) return domain || '-'
-          return [
-            <div class='text-truncate'>
+          const p = hasPermission({ key: 'domains_get' })
+          let node
+          if (p) {
+            node = (
               <list-body-cell-wrap copy row={ data } onManager={ onManager } field='project_domain' title={ row['project_domain'] } message={domain} hideField={ true }>
                 <side-page-trigger onTrigger={ () => handleOpenDomainDetail(vm, row) }>{ domain }</side-page-trigger>
               </list-body-cell-wrap>
-            </div>,
+            )
+          } else {
+            node = (
+              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='project_domain' title={ row['project_domain'] } message={domain} />
+            )
+          }
+          return [
+            <div class='text-truncate'>{ node }</div>,
           ]
         },
       },
@@ -177,12 +214,21 @@ const getDefaultTopBaseInfo = (vm, h, { idKey, statusKey, statusModule, data, on
       slots: {
         default: ({ row }) => {
           if (!row.tenant_id) return row.tenant || '-'
-          return [
-            <div class='text-truncate'>
+          const p = hasPermission({ key: 'projects_get' })
+          let node
+          if (p) {
+            node = (
               <list-body-cell-wrap copy row={ data } onManager={ onManager } field='tenant' title={ row['tenant'] } hideField={ true }>
                 <side-page-trigger onTrigger={ () => handleOpenProjectDetail(vm, row) }>{ row.tenant }</side-page-trigger>
               </list-body-cell-wrap>
-            </div>,
+            )
+          } else {
+            node = (
+              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='tenant' title={ row['tenant'] } />
+            )
+          }
+          return [
+            <div class='text-truncate'>{ node }</div>,
           ]
         },
       },

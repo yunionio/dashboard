@@ -3,7 +3,9 @@
     <div slot="header">编辑标签</div>
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" action="编辑标签" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <template v-if="params.columns">
+        <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      </template>
       <div class="tag-wrap">
         <a-divider orientation="left">
           <div class="font-weight-normal" style="font-size: 14px;">以下标签为公有云同步的标签，不可更改</div>
@@ -199,6 +201,7 @@ export default {
         this.cancelDialog()
       } catch (error) {
         this.loading = false
+        throw error
       }
     },
     genTag (item) {
