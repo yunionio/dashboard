@@ -32,7 +32,7 @@ export default {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'cloudaccounts',
-        getParams: this.getParams,
+        getParams: this.getParam,
         steadyStatus: {
           status: Object.values(expectStatus.cloudaccount).flat(),
           sync_status: Object.values(expectStatus.cloudaccountSyncStatus).flat(),
