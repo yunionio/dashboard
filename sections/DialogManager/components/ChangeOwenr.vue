@@ -3,7 +3,7 @@
     <div slot="header">更改{{ $t('dictionary.project') }}</div>
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" :action="`更改${$t('dictionary.project')}`" :name="params.name || '实例'" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <vxe-grid class="mb-2" :data="params.data" :columns="columns" />
       <a-form
         :form="form.fc">
         <a-form-item :label="$t('dictionary.project')" v-bind="formItemLayout">
@@ -69,6 +69,17 @@ export default {
         },
       },
     }
+  },
+  computed: {
+    columns () {
+      if (this.params.columns && this.params.columns.length >= 2) {
+        const keys = ['name', 'tenant']
+        return this.params.columns.filter(({ field }) => {
+          return keys.indexOf(field) > -1
+        })
+      }
+      return this.params.columns
+    },
   },
   methods: {
     validateForm () {
