@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
@@ -65,6 +66,14 @@ export default {
                     onManager: this.onManager,
                     refresh: this.refresh,
                   })
+                },
+                meta: row => {
+                  const domainIds = this.list.selectedItems.map(item => item.domain_id)
+                  const validate = R.uniq(domainIds).length === 1
+                  return {
+                    validate,
+                    tooltip: !validate && `请选择同一个${this.$t('dictionary.domain')}下的存储桶`,
+                  }
                 },
               },
               {

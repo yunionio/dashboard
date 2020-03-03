@@ -134,7 +134,7 @@ export default {
         this.sidePageTriggerHandle(this, 'BlockStorageSidePage', {
           id: row.id,
           resource: 'storages',
-          getParams: this.getParam,
+          getParams: this.getParams,
         }, {
           list: this.list,
         })

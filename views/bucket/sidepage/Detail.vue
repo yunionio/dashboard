@@ -31,6 +31,9 @@ export default {
     },
   },
   data () {
+    const RenderSizeTitle = () => {
+      return <div>用量统计 <a onClick={this.fetchSync}><a-icon type="redo" /></a></div>
+    }
     return {
       baseInfo: [
         {
@@ -77,7 +80,7 @@ export default {
           },
         },
         {
-          title: '用量统计',
+          title: <RenderSizeTitle />,
           items: [
             {
               field: 'size_bytes',
@@ -143,6 +146,20 @@ export default {
     }
   },
   methods: {
+    async fetchSync () {
+      const manager = new this.$Manager('buckets')
+      try {
+        await manager.performAction({
+          id: this.data.id,
+          action: 'sync',
+          data: {
+            stats_only: true,
+          },
+        })
+      } catch (err) {
+        throw err
+      }
+    },
     handleSetAcl (row) {
       this.createDialog('ObjectsUpdateAclDialog', {
         title: '设置读写权限',
