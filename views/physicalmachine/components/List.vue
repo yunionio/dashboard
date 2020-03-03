@@ -525,7 +525,7 @@ export default {
                 },
                 meta: () => ({
                   validate: this.$getDeleteResult(this.list.selectedItems).validate,
-                  tooltip: this.$getDeleteResult(this.list.selectedItems).validate ? '' : '操作对象的当前状态不支持该操作: 物理机没有被禁用',
+                  tooltip: this.$getDeleteResult(this.list.selectedItems).validate ? '' : '操作对象的当前状态不支持该操作: 物理机没有被禁用或未删除分配的裸金属服务器',
                 }),
               },
             ]
