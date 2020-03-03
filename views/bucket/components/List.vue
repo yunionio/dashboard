@@ -8,14 +8,8 @@
 
 <script>
 import * as R from 'ramda'
-<<<<<<< HEAD
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-=======
-import { ACL_TYPE } from '@Storage/constants/index.js'
-import { getNameDescriptionTableColumn, getStatusTableColumn, getBrandTableColumn, getRegionTableColumn, getAccountTableColumn, getProjectTableColumn } from '@/utils/common/tableColumn'
-import { getNameFilter, getTenantFilter, getBrandFilter } from '@/utils/common/tableFilter'
->>>>>>> c7c9bef12b011e73ea552922cdf657a37da8ba15
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { getNameFilter, getTenantFilter, getBrandFilter } from '@/utils/common/tableFilter'
@@ -34,7 +28,6 @@ export default {
     return {
       list: this.$list.createList(this, {
         resource: 'buckets',
-        // getParams: this.getParams,
         filterOptions: {
           name: getNameFilter(),
           brand: getBrandFilter(),
