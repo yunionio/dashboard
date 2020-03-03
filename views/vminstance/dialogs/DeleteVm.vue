@@ -121,7 +121,6 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        console.log(this.$appConfig)
         if (this.isOpenWorkflow) {
           await this.handleDeleteByWorkflowSubmit()
         } else {
