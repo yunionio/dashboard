@@ -1,7 +1,7 @@
 export function disableDeleteAction (params = {}, dialogParams = {}) {
   const { name = '实例' } = dialogParams
-  const { onManager, columns, createDialog, ...optionParams } = params
-  const getData = (row) => [row]
+  const { list, onManager, columns, createDialog, ...optionParams } = params
+  const getData = (row) => row ? [row] : list.selectedItems
   const options = {
     label: '设置删除保护',
     action: (row) => {

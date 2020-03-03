@@ -44,8 +44,7 @@
       :checkbox-config="checkboxConfig"
       :expand-config="expandConfig"
       @sort-change="handleSortChange"
-      @current-page-change="handleCurrentPageChange"
-      @page-size-change="handlePageSizeChange"
+      @page-change="handlePageChange"
       @checkbox-change="handleCheckboxChange"
       @checkbox-all="handleCheckboxChange">
       <template v-slot:empty>
@@ -211,15 +210,17 @@ export default {
     reset () {
       this.list.reset()
     },
-    handleCurrentPageChange (currentPage) {
-      this.list.changeCurrentPage(currentPage)
-      this.handleClearSelected()
-    },
     handleNextMarkerChange () {
       this.list.changeNextMarker()
     },
-    handlePageSizeChange (pageSize) {
-      this.list.changePageSize(pageSize)
+    handlePageChange ({ type, currentPage, pageSize }) {
+      if (type === 'current-change') {
+        this.list.changeCurrentPage(currentPage)
+        this.handleClearSelected()
+      }
+      if (type === 'size-change') {
+        this.list.changePageSize(pageSize)
+      }
     },
     handleFilterChange (filter) {
       this.list.changeFilter(filter)

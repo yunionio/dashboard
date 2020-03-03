@@ -33,15 +33,13 @@
 <script>
 import * as R from 'ramda'
 import { filterUserTag, getTagColor, getTagTitle } from '@/utils/common/tag'
+import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'TagTableColumn',
+  mixins: [WindowsMixin],
   props: {
     row: {
-      type: Object,
-      required: true,
-    },
-    vm: {
       type: Object,
       required: true,
     },
@@ -51,7 +49,15 @@ export default {
     },
     ignoreKeys: Array,
     needExt: Boolean,
-    resource: String,
+    resource: {
+      type: String,
+      required: true,
+    },
+    onManager: {
+      type: Function,
+      required: true,
+    },
+    columns: [Array, Function],
   },
   inject: {
     // 是否处于BaseDialog中
@@ -85,25 +91,20 @@ export default {
       return this.tags.length <= 0 ? 'text-color-help' : 'primary-color'
     },
     params () {
-      const ret = { resources: this.resource }
-      if (this.resource) return ret
-      if (this.vm && this.vm.list && this.vm.list.resource) {
-        if (R.is(String, this.vm.list.resource)) {
-          ret.resources = this.vm.list.resource.substr(0, this.vm.list.resource.length - 1)
-        } else {
-          ret.resources = this.vm.list.resource.resource.substr(0, this.vm.list.resource.resource.length - 1)
-        }
-      }
-      return ret
+      return { resources: this.resource }
     },
   },
   methods: {
     handleEdit (e) {
       e.stopPropagation()
-      this.vm.createDialog('SetTagDialog', {
+      let columns
+      if (this.columns) {
+        columns = R.is(Function, this.columns) ? this.columns() : this.columns
+      }
+      this.createDialog('SetTagDialog', {
         data: [this.row],
-        columns: this.vm.columns,
-        list: this.vm.list,
+        columns,
+        onManager: this.onManager,
         params: this.params,
       })
     },
