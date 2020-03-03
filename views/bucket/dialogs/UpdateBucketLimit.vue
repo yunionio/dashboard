@@ -3,7 +3,7 @@
     <div slot="header">{{this.params.title}}</div>
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" :action="this.params.title" name="存储桶" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <vxe-grid class="mb-2" :data="params.data" :columns="columns" />
       <a-form :form="form.fc" v-bind="formItemLayout">
         <a-form-item label="容量上限">
           <a-input class="w-50" name="size_bytes" v-decorator="decorators.size_bytes" @blur="handelBlur">
@@ -32,6 +32,7 @@
 
 <script>
 import { formItemLayout } from '@Storage/constants/index.js'
+import { sizestrC } from '@/utils/utils'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
@@ -68,6 +69,27 @@ export default {
     }
   },
   computed: {
+    columns () {
+      return [
+        this.params.columns[0],
+        {
+          field: 'size_bytes_limit',
+          title: '容量上线',
+          width: 120,
+          formatter: ({ row }) => {
+            return sizestrC(row.size_bytes_limit, 'B', 1024)
+          },
+        },
+        {
+          field: 'object_cnt_limit',
+          title: '文件数量上限',
+          width: 120,
+          formatter: ({ row }) => {
+            return row.object_cnt_limit
+          },
+        },
+      ]
+    },
     decorators () {
       const { data } = this.params
       // eslint-disable-next-line camelcase
