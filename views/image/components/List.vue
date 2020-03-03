@@ -114,6 +114,10 @@ export default {
               <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'SystemImageSidePage') }>{ row.name }</side-page-trigger>
             )
           },
+          formRules: [
+            { required: true, message: '请输入名称' },
+            { validator: this.$validate('imageName') },
+          ],
         }),
         {
           field: 'disk_format',
