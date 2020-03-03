@@ -482,7 +482,7 @@ export default {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
-        if (this.isOpenWorkflow) {
+        if (!this.isOpenWorkflow) {
           await this.doChangeSettingsByWorkflowSubmit(values)
         } else {
           await this.doChangeSettingsSubmit(values)
