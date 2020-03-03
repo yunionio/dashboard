@@ -33,7 +33,7 @@ export default {
           )
         },
       }),
-      getTagTableColumn({ vm: this, needExt: true }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'server', columns: () => this.columns }),
       getIpsTableColumn({ field: 'ip', title: 'IP' }),
       {
         field: 'instance_type',
