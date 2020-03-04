@@ -111,7 +111,7 @@ export default {
         ret.push('mount-point')
         ret.push('snapshot')
       }
-      if (!this.isPublic) {
+      if (this.isIDC) {
         ret.push('schedtag')
       }
       return ret
