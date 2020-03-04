@@ -3,7 +3,8 @@
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -52,6 +53,21 @@ export default {
           },
         },
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '名称', key: 'name' },
+          { label: '状态', key: 'status' },
+          { label: '实际容量', key: 'capacity' },
+          { label: '虚拟容量', key: 'virtual_capacity' },
+          { label: '分配', key: 'used_capacity' },
+          { label: '存储类型', key: 'storage_type' },
+          { label: '介质类型', key: 'medium_type' },
+          { label: '调度标签', key: 'schedtag' },
+          { label: '平台', key: 'provider' },
+          { label: '区域', key: 'region' },
+        ],
+      },
       groupActions: [
         {
           label: '新建',
