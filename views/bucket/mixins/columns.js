@@ -1,4 +1,6 @@
+
 import { ACL_TYPE } from '@Storage/constants/index.js'
+import AccessInfo from './AccessInfo'
 import { getNameDescriptionTableColumn, getStatusTableColumn, getBrandTableColumn, getRegionTableColumn, getAccountTableColumn, getProjectTableColumn } from '@/utils/common/tableColumn'
 
 export default {
@@ -13,6 +15,15 @@ export default {
           )
         },
       }),
+      getStatusTableColumn({ statusModule: 'bucket' }),
+      {
+        field: 'storage_class',
+        title: '存储类型',
+        width: 120,
+        formatter: ({ row }) => {
+          return row.storage_class || '-'
+        },
+      },
       {
         field: 'acl',
         title: '读写权限',
@@ -22,17 +33,20 @@ export default {
         },
       },
       {
-        field: 'storage_class',
-        title: '存储类型',
+        field: 'access-info',
+        title: '后端访问信息',
         width: 120,
-        formatter: ({ row }) => {
-          return row.storage_class || '-'
+        slots: {
+          default: ({ row }) => {
+            return [
+              <AccessInfo row={row}/>,
+            ]
+          },
         },
       },
-      getStatusTableColumn({ statusModule: 'bucket' }),
-      getRegionTableColumn(),
       getBrandTableColumn(),
       getAccountTableColumn(),
+      getRegionTableColumn(),
       getProjectTableColumn(),
     ]
   },
