@@ -10,6 +10,7 @@
 <script>
 // import BrandIcon from '@/sections/BrandIcon'
 import { ACL_TYPE } from '@Storage/constants/index.js'
+import { getRegionTableColumn } from '@/utils/common/tableColumn'
 import { sizestrWithUnit } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
 
@@ -44,6 +45,7 @@ export default {
           field: 'account',
           title: '云账号',
         },
+        getRegionTableColumn(),
       ],
       extraInfo: [
         {
@@ -84,7 +86,7 @@ export default {
           items: [
             {
               field: 'size_bytes',
-              title: '容量上限',
+              title: '存储用量',
               formatter: ({ row }) => {
                 return sizestrWithUnit(row.size_bytes, 'B', 1024)
               },
