@@ -143,6 +143,7 @@ export const getNameDescriptionTableColumn = ({
   sortable = true,
   addBackup,
   formRules,
+  descriptionRules = [],
 } = {}) => {
   return {
     field: 'name',
@@ -173,7 +174,7 @@ export const getNameDescriptionTableColumn = ({
               field: 'description',
               row,
               onManager,
-              formRules,
+              formRules: descriptionRules,
             },
           }))
         }
