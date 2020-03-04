@@ -317,7 +317,7 @@ export const getSearchMaps = (searchRes = {}) => {
           filter: `name.contains(${getFilter('name')})`,
         },
         ip: {
-          filter: `internal_connection_str.contains(${getFilter('ip')})`,
+          filter: `private_ip_addr.contains(${getFilter('ip')})`,
         },
       },
       resData: {},
