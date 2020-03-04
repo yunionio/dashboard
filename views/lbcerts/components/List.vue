@@ -3,7 +3,8 @@
     :list="list"
     :columns="columns"
     :single-actions="singleActions"
-    :group-actions="groupActions" />
+    :group-actions="groupActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -39,6 +40,16 @@ export default {
           },
         },
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '证书名称', key: 'name' },
+          { label: '证书域名', key: 'common_name' },
+          { label: '过期时间', key: 'not_after' },
+          { label: '关联扩展域名', key: 'subject_alternative_names' },
+          { label: this.$t('dictionary.project'), key: 'tenant' },
+        ],
+      },
       groupActions: [
         {
           label: '新建',

@@ -3,7 +3,8 @@
     :list="list"
     :columns="columns"
     :single-actions="singleActions"
-    :group-actions="groupActions" />
+    :group-actions="groupActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -39,6 +40,14 @@ export default {
           },
         },
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: 'IP子网', key: 'network' },
+          { label: 'IP地址', key: 'ip_addr' },
+          { label: '备注', key: 'notes' },
+        ],
+      },
       groupActions: [
         {
           label: '新建',
