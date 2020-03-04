@@ -65,10 +65,6 @@ export default {
             },
           },
         },
-        {
-          field: 'id',
-          title: '存储',
-        },
       ],
       extraInfo: [
         {
