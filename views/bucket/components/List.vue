@@ -9,6 +9,7 @@
 <script>
 import * as R from 'ramda'
 import { ACL_TYPE } from '@Storage/constants/index.js'
+import AccessInfo from './AccessInfo'
 import { getNameDescriptionTableColumn, getStatusTableColumn, getBrandTableColumn, getRegionTableColumn, getAccountTableColumn, getProjectTableColumn } from '@/utils/common/tableColumn'
 import { getNameFilter, getTenantFilter, getBrandFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
@@ -25,12 +26,13 @@ export default {
   },
   data () {
     return {
+      infoVisible: false,
       list: this.$list.createList(this, {
         resource: 'buckets',
         // getParams: this.getParams,
         filterOptions: {
           name: getNameFilter(),
-          brand: getBrandFilter(),
+          brand: getBrandFilter('object_storage_brands'),
           tenant: getTenantFilter(),
         },
       }),
@@ -44,6 +46,15 @@ export default {
             )
           },
         }),
+        getStatusTableColumn({ statusModule: 'bucket' }),
+        {
+          field: 'storage_class',
+          title: '存储类型',
+          width: 120,
+          formatter: ({ row }) => {
+            return row.storage_class || '-'
+          },
+        },
         {
           field: 'acl',
           title: '读写权限',
@@ -53,17 +64,20 @@ export default {
           },
         },
         {
-          field: 'storage_class',
-          title: '存储类型',
+          field: 'access-info',
+          title: '后端访问信息',
           width: 120,
-          formatter: ({ row }) => {
-            return row.storage_class || '-'
+          slots: {
+            default: ({ row }) => {
+              return [
+                <AccessInfo row={row}/>,
+              ]
+            },
           },
         },
-        getStatusTableColumn({ statusModule: 'bucket' }),
-        getRegionTableColumn(),
         getBrandTableColumn(),
         getAccountTableColumn(),
+        getRegionTableColumn(),
         getProjectTableColumn(),
       ],
       groupActions: [
@@ -210,9 +224,6 @@ export default {
   created () {
     this.list.fetchData()
     this.initSidePageTab('objects')
-  },
-  methods: {
-
   },
 }
 </script>
