@@ -114,7 +114,7 @@ export default {
           ret.push('snapshot')
         }
       }
-      if (!this.isPublic) {
+      if (this.isIDC) {
         ret.push('schedtag')
       }
       return ret
