@@ -143,6 +143,7 @@ export const getNameDescriptionTableColumn = ({
   sortable = true,
   addBackup,
   formRules,
+  descriptionRules = [],
 } = {}) => {
   return {
     field: 'name',
@@ -158,7 +159,7 @@ export const getNameDescriptionTableColumn = ({
           </list-body-cell-wrap>,
         ]
         if (showDesc) {
-          ret.push(<list-body-cell-wrap edit field="description" row={row} list={vm.list} formRules={formRules} />)
+          ret.push(<list-body-cell-wrap edit field="description" row={row} list={vm.list} formRules={descriptionRules} />)
         }
         return ret
       },
