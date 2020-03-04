@@ -8,6 +8,7 @@
       :types-map="typesMap"
       :elements="elements"
       :disabled="disabled"
+      :schedtagParams="getSchedtagParams()"
       :size-disabled="disabled" />
   </div>
 </template>
@@ -59,6 +60,10 @@ export default {
     isHostImageType: {
       type: Boolean,
       default: false,
+    },
+    domain: {
+      type: String,
+      default: 'default',
     },
   },
   computed: {
@@ -199,6 +204,29 @@ export default {
         max: 3 * 1024,
         sysMin: 10,
         sysMax: 500,
+      }
+    },
+    getSchedtagParams () {
+      const params = {
+        with_meta: true,
+        cloud_env: 'onpremise',
+        resource_type: 'storages',
+        limit: 0,
+      }
+      const scopeParams = {}
+      if (this.$store.getters.isAdminMode) {
+        scopeParams.project_domain = this.domain
+      } else {
+        scopeParams.scope = this.$store.getters.scope
+      }
+      console.log({
+        ...params,
+        ...scopeParams,
+      }, 123)
+
+      return {
+        ...params,
+        ...scopeParams,
       }
     },
     getHypervisor () {
