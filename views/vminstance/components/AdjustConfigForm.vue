@@ -422,10 +422,12 @@ export default {
       }
       const ids = this.params.data.map(item => item.id)
       params.disks = this.genDiskData(values)
-      const datadisks = this.form.fd.datadisks.map((item) => { return item.value })
+      const datadisks = this.form.fc.getFieldValue('dataDiskSizes')
       let diskSize = 0
-      if (datadisks && datadisks.length > 0) {
-        diskSize = datadisks.reduce((sum, size) => { return sum + size })
+      if (datadisks) {
+        R.forEachObjIndexed((value, key) => {
+          diskSize += value
+        }, datadisks)
       }
       const beforeDataDisks = this.beforeDataDisks.map((item) => { return item.value })
       let beforeDiskSize = 0
