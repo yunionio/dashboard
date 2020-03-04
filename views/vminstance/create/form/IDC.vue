@@ -72,7 +72,8 @@
           :capability-data="form.fi.capability"
           :image="form.fi.imageMsg"
           :isHostImageType="isHostImageType"
-          :disabled="form.fi.sysDiskDisabled" />
+          :disabled="form.fi.sysDiskDisabled"
+          :domain="project_domain" />
       </a-form-item>
       <a-form-item label="数据盘">
         <data-disk
