@@ -93,7 +93,7 @@ export default {
     },
     elements () {
       let ret = ['disk-select']
-      if (!this.isPublic) {
+      if (this.isIDC) {
         ret.push('schedtag')
       }
       return ret
