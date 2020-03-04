@@ -1,13 +1,15 @@
 <template>
   <div class="login-body">
-    <div class="login-left" :style="{ height: `${panelHeight}px` }">
-      <h2>{{ $store.state.app.companyInfo.name }}</h2>
-      <a-carousel autoplay :dots="false">
-        <div v-for="(item, idx) of tips" :key="idx">
-          <h4>{{ item.title }}</h4>
-          <p v-for="(msg, idx) of item.messages" :key="idx">{{ msg }}</p>
-        </div>
-      </a-carousel>
+    <div class="login-left d-flex flex-column" :style="{ height: `${panelHeight}px` }">
+      <h2 class="flex-shrink-0 flex-grow-0">{{ $store.state.app.companyInfo.name }}</h2>
+      <div class="flex-fill position-relative">
+        <a-carousel class="position-absolute w-100 h-100 carousel">
+          <div v-for="(item, idx) of tips" :key="idx">
+            <h4>{{ item.title }}</h4>
+            <p v-for="(msg, idx) of item.messages" :key="idx">{{ msg }}</p>
+          </div>
+        </a-carousel>
+      </div>
     </div>
     <div class="login-right" :style="{ height: `${panelHeight}px` }">
       <div class="logo">
@@ -400,5 +402,14 @@ export default {
 .captcha-img {
   height: 28px;
   width: 98px;
+}
+.carousel {
+  top: 0;
+  left: 0;
+  ::v-deep {
+    .slick-slider {
+      height: 100%;
+    }
+  }
 }
 </style>
