@@ -3,7 +3,8 @@
     :list="list"
     :columns="columns"
     :single-actions="singleActions"
-    :group-actions="groupActions" />
+    :group-actions="groupActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -45,6 +46,19 @@ export default {
           },
         },
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '名称', key: 'name' },
+          { label: '状态', key: 'status' },
+          { label: '目标网段', key: 'cidr_block' },
+          { label: '区域', key: 'region' },
+          { label: '平台', key: 'provider' },
+          { label: '云账号', key: 'manager' },
+          { label: '二层网络', key: 'wire_count' },
+          { label: 'IP子网数量', key: 'network_count' },
+        ],
+      },
       groupActions: [
         {
           label: '新建',

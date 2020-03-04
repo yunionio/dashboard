@@ -3,7 +3,8 @@
     :list="list"
     :columns="columns"
     :single-actions="singleActions"
-    :group-actions="groupActions" />
+    :group-actions="groupActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -29,6 +30,15 @@ export default {
           },
         },
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '名称', key: 'name' },
+          { label: '记录值', key: 'records' },
+          { label: 'TTL', key: 'ttl' },
+          { label: '启用状态', key: 'enabled' },
+        ],
+      },
       groupActions: [
         {
           label: '新建',

@@ -3,7 +3,8 @@
     :list="list"
     :columns="columns"
     :single-actions="singleActions"
-    :group-actions="groupActions" />
+    :group-actions="groupActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -39,6 +40,16 @@ export default {
           },
         },
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '策略组名称', key: 'name' },
+          { label: '源地址 | 备注', key: 'acl_entries' },
+          { label: '创建时间', key: 'created_at' },
+          { label: '更新时间', key: 'updated_at' },
+          { label: this.$t('dictionary.project'), key: 'tenant' },
+        ],
+      },
       groupActions: [
         {
           label: '新建',

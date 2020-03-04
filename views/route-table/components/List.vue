@@ -1,7 +1,8 @@
 <template>
   <page-list
     :list="list"
-    :columns="columns" />
+    :columns="columns"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -39,6 +40,16 @@ export default {
           },
         },
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '名称', key: 'name' },
+          { label: '所属专有网络', key: 'vpc' },
+          { label: '区域', key: 'region' },
+          { label: '云账号', key: 'manager' },
+          { label: '条目（路由表类型 目标网段 下一跳）', key: 'routes' },
+        ],
+      },
     }
   },
   created () {

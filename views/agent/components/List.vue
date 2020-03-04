@@ -3,7 +3,8 @@
     :list="list"
     :columns="columns"
     :single-actions="singleActions"
-    :group-actions="groupActions" />
+    :group-actions="groupActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -39,6 +40,18 @@ export default {
           },
         },
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '名称', key: 'name' },
+          { label: '集群', key: 'cluster' },
+          { label: '主备', key: 'ha_state' },
+          { label: 'IP', key: 'ip' },
+          { label: '上一次心跳', key: 'hb_last_seen' },
+          { label: '可用区', key: 'zone' },
+          { label: '软件版本', key: 'version' },
+        ],
+      },
       groupActions: [
         {
           label: '新建',
