@@ -24,10 +24,11 @@
           <base-select
             resource="cloudregions"
             v-decorator="decorators.idcRegion"
+            @update:item="handleRegionProvider"
             :selectProps="{ 'placeholder': '请选择区域' }"
             :params="idcCloudRegionParams" />
         </a-form-item>
-        <a-form-item v-if="isGoogle" label="目标网段" v-bind="formItemLayout" :extra="platform !== 'idc' ? '一旦创建成功，网段不能修改。支持使用 192.168.0.0/16、172.16.0.0/12、10.0.0.0/8 及其子网作为专有网络地址段。' : '一旦创建成功，网段不能修改。'">
+        <a-form-item v-if="!isGoogle" label="目标网段" v-bind="formItemLayout" :extra="platform !== 'idc' ? '一旦创建成功，网段不能修改。支持使用 192.168.0.0/16、172.16.0.0/12、10.0.0.0/8 及其子网作为专有网络地址段。' : '一旦创建成功，网段不能修改。'">
           <a-input v-decorator="decorators.cidr_block" placeholder="请输入IP段，例如：192.168.0.0/16" v-if="platform !== 'idc'" />
           <a-select v-decorator="decorators.cidr_block" v-else>
             <a-select-option value="192.168.0.0/16">192.168.0.0/16</a-select-option>
@@ -167,6 +168,9 @@ export default {
   methods: {
     handleCloudProvider ({ brand }) {
       this.isGoogle = brand.toLowerCase() === 'google'
+    },
+    handleRegionProvider ({ provider }) {
+      this.isGoogle = provider.toLowerCase() === 'google'
     },
     async checkIp (rule, value, callback) {
       const params = {
