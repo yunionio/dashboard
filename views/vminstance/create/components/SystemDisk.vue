@@ -133,7 +133,7 @@ export default {
           }
           ret[opt.key] = {
             ...opt,
-            sysMin: Math.max(this.imageMinDisk, DISK_MIN_SIZE),
+            sysMin: Math.max(this.imageMinDisk, opt.sysMin, DISK_MIN_SIZE),
             sysMax: max,
           }
         }
