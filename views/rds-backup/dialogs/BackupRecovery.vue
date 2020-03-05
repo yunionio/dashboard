@@ -3,7 +3,7 @@
     <div slot="header">新建备份</div>
     <a-form :form="form.fc" class="mt-3" slot="body">
       <dialog-selected-tips :count="params.data.length" :action="params.title" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form-item label="恢复到" v-bind="formItemLayout">
         <a-radio-group v-model="recoveryType">
           <a-radio-button :value="0">当前实例</a-radio-button>
