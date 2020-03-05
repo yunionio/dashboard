@@ -24,7 +24,7 @@
         <bill :decorators="decorators.bill" :form="form" />
       </a-form-item>
       <a-form-item label="数量" v-show="!isServertemplate" v-bind="formItemLayout">
-        <a-input-number v-decorator="decorators.count" :min="1" :max="10" />
+        <a-input-number v-decorator="decorators.count" :min="1" :max="100" />
       </a-form-item>
       <!-- <a-form-item class="mb-0" label="资源池" v-bind="formItemLayout">
         <resource :decorator="decorators.resourceType" />
