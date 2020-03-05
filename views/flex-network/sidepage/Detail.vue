@@ -64,7 +64,7 @@ export default {
           slots: {
             default: ({ row }, h) => {
               return [
-                <dialog-table data={ row.networks } columns={ this.columns } />,
+                <vxe-grid class="mb-2" data={ row.networks } columns={ this.columns } />,
               ]
             },
           },
