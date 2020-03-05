@@ -84,7 +84,9 @@
           :isSnapshotImageType="isSnapshotImageType"
           :isHostImageType="isHostImageType"
           :disabled="form.fi.dataDiskDisabled"
-          :domain="project_domain" />
+          :domain="project_domain"
+          :isWindows="isWindows"
+          :enableMointpoint="true" />
       </a-form-item>
       <a-form-item label="管理员密码" v-if="!isIso" v-bind="formItemLayout">
         <server-password :form="form" :login-types="loginTypes" :isSnapshotImageType="isSnapshotImageType" :decorator="decorators.loginConfig" />
@@ -250,8 +252,15 @@ export default {
     showAdvanceConfig () { // 是否展示高级配置
       return this.isKvm || !this.isServertemplate
     },
+    isWindows () {
+      let isWindows = false
+      if (this.form.fd.os && this.form.fd.os.toLowerCase() === 'windows') {
+        isWindows = true
+      }
+      return isWindows
+    },
     uefi () {
-      if (this.isKvm && this.form.fd.gpuEnable && this.form.fd.gpu && this.form.fd.os === 'Windows') {
+      if (this.isKvm && this.form.fd.gpuEnable && this.form.fd.gpu && this.isWindows) {
         return true
       }
       return false
