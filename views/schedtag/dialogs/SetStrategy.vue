@@ -3,7 +3,7 @@
     <div slot="header">偏好设置</div>
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" action="偏好设置" name="调度标签" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
         <a-form-item label="偏好" v-bind="formItemLayout">
