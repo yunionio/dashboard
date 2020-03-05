@@ -8,7 +8,7 @@
         </div>
       </a-alert>
       <dialog-selected-tips :count="params.data.length" action="加入资源池" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
         <a-form-item v-bind="formItemLayout">

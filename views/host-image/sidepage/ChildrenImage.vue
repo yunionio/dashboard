@@ -1,5 +1,5 @@
 <template>
-  <vxe-grid :data="resourceData" :columns="columns" />
+  <dialog-table :data="resourceData" :columns="columns" />
 </template>
 
 <script>

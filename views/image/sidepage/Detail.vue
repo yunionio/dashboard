@@ -105,7 +105,7 @@ export default {
           slots: {
             default: ({ row }, h) => {
               return [
-                <vxe-grid class="mb-2" data={ this.imgSubformat } columns={ this.imageColumns } />,
+                <dialog-table data={ this.imgSubformat } columns={ this.imageColumns } />,
               ]
             },
           },

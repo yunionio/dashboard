@@ -1,5 +1,5 @@
 <template>
-    <vxe-grid class="mb-2" :data="data.nic_info" :columns="columns" />
+    <dialog-table :data="data.nic_info" :columns="columns" />
 </template>
 
 <script>

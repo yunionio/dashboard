@@ -3,7 +3,7 @@
     <div slot="header">更换IP</div>
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" action="更换IP" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
         <a-form-item label="IP子网" v-bind="formItemLayout" class="mb-0">
           <a-row :gutter="20">

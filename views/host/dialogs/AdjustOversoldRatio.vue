@@ -3,7 +3,7 @@
     <div slot="header">调整超售比</div>
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" action="调整超售比" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 2)" />
+      <dialog-table :data="params.data" :columns="params.columns.slice(0, 2)" />
        <a-form
         :form="form.fc">
         <a-form-item label="CPU超售比" v-bind="formItemLayout">

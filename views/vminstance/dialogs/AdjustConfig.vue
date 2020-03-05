@@ -8,7 +8,7 @@
         </div>
       </a-alert>
       <dialog-selected-tips :count="params.data.length" :action="action" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="columns" />
+      <dialog-table :data="params.data" :columns="columns" />
       <a-form
         :form="form.fc">
         <a-form-item label="CPU核数" v-bind="formItemLayout" class="mb-0">
