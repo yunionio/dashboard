@@ -3,7 +3,7 @@
     <div slot="header">设置自动同步</div>
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" action="设置自动同步" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
         <a-form-item label="自动同步" v-bind="formItemLayout">
