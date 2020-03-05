@@ -3,7 +3,7 @@
     <div slot="header">分割IP子网</div>
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" action="分割IP子网" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
         <a-form-item label="新IP子网名称" v-bind="formItemLayout">

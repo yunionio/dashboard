@@ -3,7 +3,7 @@
     <div slot="header">{{params.title}}</div>
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" action="部署" name="节点" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 2)" />
+      <dialog-table :data="params.data" :columns="params.columns.slice(0, 2)" />
       <a-divider orientation="left">指定系统用户</a-divider>
       <a-form
         :form="form.fc">
