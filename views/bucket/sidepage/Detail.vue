@@ -76,7 +76,7 @@ export default {
                 },
               ]
               return [
-                <dialog-table data={ this.data.access_urls || [] } columns={ columns } />,
+                <vxe-grid class="mb-2" data={ this.data.access_urls || [] } columns={ columns } />,
               ]
             },
           },
