@@ -1,6 +1,7 @@
+import FileProcess from '@Compute/views/image/components/FileProcess'
 import { sizestr } from '@/utils/utils'
 import SystemIcon from '@/sections/SystemIcon'
-import { getStatusTableColumn, getNameDescriptionTableColumn, getProjectTableColumn, isPublicTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
+import { getNameDescriptionTableColumn, getProjectTableColumn, isPublicTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   created () {
@@ -50,11 +51,28 @@ export default {
         field: 'size',
         title: '镜像大小',
         minWidth: 100,
-        formatter: ({ cellValue }) => {
+        formatter: ({ cellValue, row }) => {
           return sizestr(cellValue, 'B', 1024)
         },
       },
-      getStatusTableColumn({ statusModule: 'image' }),
+      {
+        field: 'status',
+        title: '状态',
+        sortable: true,
+        showOverflow: 'ellipsis',
+        minWidth: 80,
+        slots: {
+          default: ({ row }, h) => {
+            const fileProcess = row.status === 'saving' ? <FileProcess size={ row.size }></FileProcess> : null
+            return [
+              <div class='text-truncate'>
+                <status status={ row['status'] } statusModule={ 'image' } />
+                { fileProcess }
+              </div>,
+            ]
+          },
+        },
+      },
       getProjectTableColumn(),
       isPublicTableColumn(),
       {
