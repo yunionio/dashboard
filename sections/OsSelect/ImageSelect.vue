@@ -463,6 +463,8 @@ export default {
         this.form.fc.setFieldsValue({ os })
         this.form.fc.setFieldsValue({ image })
         this.imageChange(image)
+      } else {
+        this.form.fc.setFieldsValue({ os: '', image: { ...initData } })
       }
     },
     getImageOpts (imageOpts = []) {
