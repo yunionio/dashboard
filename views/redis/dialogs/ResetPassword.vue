@@ -3,7 +3,7 @@
     <div slot="header">{{this.params.title}}</div>
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" :action="params.title" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" class="mt-3">
         <a-form-item v-if="this.params.data[0].provider === 'Huawei'" label="旧密码" v-bind="formItemLayout">
            <a-input-password v-decorator="decorators.old_password" />
