@@ -374,10 +374,18 @@ export default {
         with_meta: true,
         cloud_env: 'onpremise',
         resource_type: 'storages',
-        scope: this.$store.getters.scope,
         limit: 0,
       }
-      return params
+      const scopeParams = {}
+      if (this.$store.getters.isAdminMode) {
+        scopeParams.project_domain = this.domain
+      } else {
+        scopeParams.scope = this.$store.getters.scope
+      }
+      return {
+        ...params,
+        ...scopeParams,
+      }
     },
     diskTypeChange (item, val) {
       // 仅有第一块盘可以更改磁盘类型
