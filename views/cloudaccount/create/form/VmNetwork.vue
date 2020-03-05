@@ -14,6 +14,7 @@
             :vpc-params="params.vpc"
             :cloudregion-params="params.cloudregion"
             :wire-params="params.wire"
+            :vpcMapper="vpcMapper"
             :decorator="decorators.cloudregionVpcWire" />
         </a-form-item>
         <a-form-item v-bind="formLayout">
@@ -161,6 +162,11 @@ export default {
       },
       keepAliveFields: true,
     }
+  },
+  methods: {
+    vpcMapper (list) {
+      return list.filter(val => val.id === 'default')
+    },
   },
 }
 </script>
