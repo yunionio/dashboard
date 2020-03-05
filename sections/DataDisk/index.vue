@@ -87,6 +87,14 @@ export default {
       type: String,
       default: 'default',
     },
+    isWindows: {
+      type: Boolean,
+      default: false,
+    },
+    enableMointpoint: { // 允许支持挂载点(目前仅新建vmware和oncloud支持)
+      type: Boolean,
+      default: false, // 默认不支持挂载点
+    },
   },
   data () {
     return {
@@ -107,8 +115,14 @@ export default {
       let ret = []
       if (this.isSnapshotImageType) return ret
       if (this.isHostImageType) return ['snapshot', 'schedtag']
+      if (this.enableMointpoint) {
+        if (!this.isWindows) {
+          if (this.hypervisor === HYPERVISORS_MAP.kvm.key || this.hypervisor === HYPERVISORS_MAP.esxi.key) {
+            ret.push('mount-point')
+          }
+        }
+      }
       if (this.hypervisor === HYPERVISORS_MAP.kvm.key) {
-        ret.push('mount-point')
         ret.push('snapshot')
       }
       if (this.isIDC) {
@@ -356,18 +370,10 @@ export default {
         with_meta: true,
         cloud_env: 'onpremise',
         resource_type: 'storages',
+        scope: this.$store.getters.scope,
         limit: 0,
       }
-      const scopeParams = {}
-      if (this.$store.getters.isAdminMode) {
-        scopeParams.project_domain = this.domain
-      } else {
-        scopeParams.scope = this.$store.getters.scope
-      }
-      return {
-        ...params,
-        ...scopeParams,
-      }
+      return params
     },
     diskTypeChange (item, val) {
       // 仅有第一块盘可以更改磁盘类型
