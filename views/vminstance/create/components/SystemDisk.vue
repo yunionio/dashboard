@@ -213,11 +213,6 @@ export default {
       } else {
         scopeParams.scope = this.$store.getters.scope
       }
-      console.log({
-        ...params,
-        ...scopeParams,
-      }, 123)
-
       return {
         ...params,
         ...scopeParams,
