@@ -3,7 +3,7 @@
     <div slot="header">{{this.params.title}}</div>
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" :action="this.params.title" name="块存储" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" v-bind="formItemLayout">
         <form-items :storage_type="storage_type" />
          <a-form-item label="超售比">
