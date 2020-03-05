@@ -3,7 +3,8 @@
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -34,6 +35,19 @@ export default {
           tenant: getTenantFilter(),
         },
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '名称', key: 'name' },
+          { label: '状态', key: 'status' },
+          { label: '存储类型', key: 'storage_class' },
+          { label: '读写权限', key: 'acl' },
+          { label: '平台', key: 'provider' },
+          { label: '云账号', key: 'manager' },
+          { label: '区域', key: 'region' },
+          { label: this.$t('dictionary.project'), key: 'tenant' },
+        ],
+      },
       groupActions: [
         {
           label: '新建',
