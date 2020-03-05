@@ -4,7 +4,7 @@
     <div slot="body">
       <a-alert class="mb-2" type="warning" message="提示信息：宿主机为空时，系统会自动选择宿主机" />
       <dialog-selected-tips :count="params.data.length" action="迁移" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
         <a-form-item label="宿主机" v-bind="formItemLayout">
           <base-select

@@ -3,7 +3,7 @@
     <div slot="header">创建相同配置</div>
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" action="创建相同配置" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
         <a-form-item label="名称" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverCreateName')"  @change="e => { form.fi.generate_name = e.target.value }" />

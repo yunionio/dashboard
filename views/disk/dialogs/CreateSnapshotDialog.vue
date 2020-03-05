@@ -4,7 +4,7 @@
     <div slot="body">
       <a-alert :message="errorInfo" banner v-if="errorInfo !== ''" />
       <dialog-selected-tips :count="params.data.length" action="新建快照" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
         <a-form-item label="快照名称" v-bind="formItemLayout">

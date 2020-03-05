@@ -3,7 +3,7 @@
     <div slot="header">删除备份机</div>
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" action="删除备份机" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="columns" />
+      <dialog-table :data="params.data" :columns="columns" />
       <a-form :form="form.fc" hideRequiredMark>
         <a-form-item label="强制清除" v-bind="formItemLayout" extra="强制清除备份机记录（适用于备份机宿主机离线的情况下）">
           <a-switch checkedChildren="开" unCheckedChildren="关" :disabled="disableAutoPurge" v-decorator="decorators.purge" />

@@ -8,7 +8,7 @@
         </div>
       </a-alert>
       <dialog-selected-tips :count="params.data.length" :action="action" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
         <a-form-item v-bind="formItemLayout" v-show="!imgHidden" label="操作系统" extra="操作系统会根据选择的虚拟化平台和可用区域的变化而变化，公共镜像的维护请联系管理员">

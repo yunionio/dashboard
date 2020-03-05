@@ -9,7 +9,7 @@
         </template>
       </a-alert>
       <dialog-selected-tips :count="params.data.length" :action="action" name="主机组" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-select
         v-if="instanceGroupsLoaded"
         class="w-100"

@@ -4,7 +4,7 @@
     <div slot="body">
       <a-alert message="提示：如果是 Linux 主机，您应该先在主机里对磁盘执行 umount 命令，命令执行成功后再进入控制台从云服务器上'卸载'该磁盘。" banner />
       <dialog-selected-tips :count="params.data.length" action="卸载" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
     </div>
     <div slot="footer">
       <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>

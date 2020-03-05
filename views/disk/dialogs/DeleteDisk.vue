@@ -8,7 +8,7 @@
         </div>
       </a-alert>
       <dialog-selected-tips :count="params.data.length" name="硬盘" :action="this.params.title" />
-      <vxe-grid v-if="params.columns && params.columns.length" class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-table v-if="params.columns && params.columns.length" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc" v-show="isIDC">
         <a-form-item label="同时删除快照" v-bind="formItemLayout">
@@ -18,7 +18,7 @@
           该硬盘快照数量 {{ snapshot.list.length }} 个
         </a-form-item>
       </a-form>
-      <vxe-grid v-if="form.fd.autoDelete" max-height="600" class="mb-2" :data="snapshot.list" :columns="snapshot.columns" />
+      <dialog-table v-if="form.fd.autoDelete" :data="snapshot.list" :columns="snapshot.columns" />
     </div>
     <div slot="footer">
       <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t("dialog.ok") }}</a-button>

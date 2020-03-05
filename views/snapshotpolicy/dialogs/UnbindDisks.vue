@@ -3,7 +3,7 @@
     <div slot="header">{{action}}</div>
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" :action="action" name="硬盘" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="columns" />
+      <dialog-table :data="params.data" :columns="columns" />
     </div>
     <div slot="footer">
       <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>

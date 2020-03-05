@@ -3,7 +3,7 @@
     <div slot="header">挂载ISO</div>
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" action="挂载ISO" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
         <a-form-item label="ISO镜像" v-bind="formItemLayout">
           <base-select

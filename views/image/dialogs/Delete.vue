@@ -3,7 +3,7 @@
     <div slot="header">删除</div>
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" action="删除" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-checkbox v-model="checked">强制删除</a-checkbox>
     </div>
     <div slot="footer">

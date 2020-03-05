@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">更新报警</div>
     <div slot="body">
-      <vxe-grid class="mb-2" v-if="params.data && params.columns" :data="params.data" :columns="params.columns.slice(0)" />
+      <dialog-table v-if="params.data && params.columns" :data="params.data" :columns="params.columns.slice(0)" />
       <node-alert-form
         ref="nodeAlertFormRef"
         :metric-opts="params.metricOpts"
