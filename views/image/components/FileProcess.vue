@@ -10,6 +10,7 @@ export default {
   props: {
     size: {
       type: [String, Number],
+      required: true,
     },
   },
   data () {
@@ -17,7 +18,10 @@ export default {
   },
   computed: {
     process () {
-      const size = sizestrWithUnit(this.size, 'B', 1024)
+      let size = sizestrWithUnit(this.size, 'B', 1024)
+      if (!parseInt(size)) {
+        size = '0 MB'
+      }
       return ` (已上传${size})`
     },
   },
