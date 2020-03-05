@@ -4,7 +4,7 @@
     <div slot="body">
       <template v-if="params.type !== 'create'">
         <dialog-selected-tips :count="params.data.length" :action="params.type === 'update' ? '修改' : '克隆'" />
-        <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 4)" />
+        <dialog-table :data="params.data" :columns="params.columns.slice(0, 4)" />
       </template>
       <a-form
         :form="form.fc">
