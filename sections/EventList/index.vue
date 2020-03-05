@@ -180,9 +180,7 @@ export default {
               } catch (e) {
                 text = row.notes
               }
-              let disabled = false
-              if (!row.notes) disabled = true
-              return [<a-button size='small' type='link' onClick={ () => this.clickHandler(text) } disabled={ disabled }>查看</a-button>]
+              return [<a-button size='small' type='link' onClick={ () => this.clickHandler(text) }>查看</a-button>]
             },
           },
         },
