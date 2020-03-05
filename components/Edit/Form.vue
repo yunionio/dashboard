@@ -7,8 +7,8 @@
       <a-input v-decorator="decorators.input" :placeholder="placeholder" allowClear />
     </a-form-item>
     <div class="d-flex flex-row-reverse">
-      <a-button class="ml-3" type="primary" html-type="submit">确定</a-button>
-      <a-button @click="cancel">取消</a-button>
+      <a-button class="ml-3" @click="cancel">取消</a-button>
+      <a-button type="primary" html-type="submit">确定</a-button>
     </div>
   </a-form>
 </template>
