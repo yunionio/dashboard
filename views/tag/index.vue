@@ -19,7 +19,6 @@ export default {
     return {
       getParams: {
         with_user_meta: true,
-        with_cloud_meta: true,
       },
     }
   },
