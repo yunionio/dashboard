@@ -1,8 +1,13 @@
 <template>
   <div class="h-100 position-relative">
-    <div class="ring-card-wrap overflow-hidden d-flex flex-column h-100 w-100">
-      <div class="ring-card-header">{{ form.fd.name || '磁贴名称' }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
-      <div class="d-flex flex-fill align-items-center ml-4 mr-4">
+    <div class="dashboard-card-wrap">
+      <div class="dashboard-card-header">
+        <div class="dashboard-card-header-left">{{ form.fd.name || '磁贴名称' }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
+        <div class="dashboard-card-header-right">
+          <slot name="actions" :handle-edit="handleEdit" />
+        </div>
+      </div>
+      <div class="dashboard-card-body align-items-center">
         <a-progress type="circle" :percent="percent" :strokeWidth="12" :status="status" :strokeColor="percentColor">
           <template v-slot:format><span class="percent-tips" :style="{ color: percentColor }">{{ percentTips }}</span></template>
         </a-progress>
@@ -22,7 +27,6 @@
         </div>
       </div>
     </div>
-    <div class="ring-card-action"><slot name="actions" :handle-edit="handleEdit" /></div>
     <base-drawer :visible.sync="visible" title="配置磁贴" @ok="handleSubmit">
       <a-form
         hideRequiredMark
@@ -237,7 +241,7 @@ export default {
     genUsageParams () {
       const params = {
         scope: this.$store.getters.scope,
-        t: +new Date(),
+        $t: +new Date(),
       }
       const fd = this.form.fd
       if (fd.cloud_env) params.cloud_env = fd.cloud_env
@@ -280,18 +284,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.ring-card-wrap {
-  background-color: #fff;
-  padding: 15px;
-}
-.ring-card-header {
-  font-size: 14px;
-}
-.ring-card-action {
-  position: absolute;
-  right: 10px;
-  top: 10px;
-}
 .percent-tips {
   font-size: 18px;
 }

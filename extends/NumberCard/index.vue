@@ -1,13 +1,15 @@
 <template>
   <div class="h-100 position-relative">
-    <div class="number-card-wrap overflow-hidden d-flex flex-column h-100 w-100">
-      <div class="number-card-header">{{ form.fd.name || '磁贴名称' }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
-      <div class="number-card-body primary-color d-flex flex-fill align-items-center">
+    <div class="dashboard-card-wrap">
+      <div class="dashboard-card-header">
+        <div class="dashboard-card-header-left">{{ form.fd.name || '磁贴名称' }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
+        <div class="dashboard-card-header-right"><slot name="actions" :handle-edit="handleEdit" /></div>
+      </div>
+      <div class="dashboard-card-body align-items-center">
         <div class="number-card-number mr-2">{{ this.usage.usage }}</div>
         <div class="number-card-unit">{{ this.usage.unit }}</div>
       </div>
     </div>
-    <div class="number-card-action"><slot name="actions" :handle-edit="handleEdit" /></div>
     <base-drawer :visible.sync="visible" title="配置磁贴" @ok="handleSubmit">
       <a-form
         hideRequiredMark
@@ -155,7 +157,7 @@ export default {
     genUsageParams () {
       const params = {
         scope: this.$store.getters.scope,
-        t: +new Date(),
+        $t: +new Date(),
       }
       const fd = this.form.fd
       if (fd.cloud_env) params.cloud_env = fd.cloud_env
@@ -198,19 +200,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.number-card-wrap {
-  background-color: #fff;
-  padding: 15px;
-}
-.number-card-header {
-  font-size: 14px;
-}
-.number-card-body {
+.number-card-number, .number-card-unit {
   font-size: 36px;
-}
-.number-card-action {
-  position: absolute;
-  right: 10px;
-  top: 10px;
+  color: #1890ff;
 }
 </style>
