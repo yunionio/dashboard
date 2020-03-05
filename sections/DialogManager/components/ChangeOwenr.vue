@@ -3,7 +3,7 @@
     <div slot="header">更改{{ $t('dictionary.project') }}</div>
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" :action="`更改${$t('dictionary.project')}`" :name="params.name || '实例'" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="columns" />
+      <dialog-table :data="params.data" :columns="columns" />
       <a-form
         :form="form.fc">
         <a-form-item :label="$t('dictionary.project')" v-bind="formItemLayout">

@@ -4,7 +4,7 @@
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" action="编辑标签" />
       <template v-if="params.columns">
-        <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+        <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       </template>
       <div class="tag-wrap">
         <a-divider orientation="left">
