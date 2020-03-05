@@ -59,6 +59,9 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    vpcMapper: {
+      type: Function,
+    },
   },
   inject: ['form'],
   data () {
@@ -162,7 +165,7 @@ export default {
       this.cloudregionsM.getSpecific({ id: cloudregionId, spec: 'vpcs', params })
         .then(({ data: { data = [] } }) => {
           this.vpcLoading = false
-          this.vpcOpts = data
+          this.vpcOpts = R.is(Function, this.vpcMapper) ? this.vpcMapper(data) : data
           if (this.vpcOpts.length && this.form && this.form.fc) {
             const firstVpc = this.vpcOpts[0]
             this.vpcChange({ key: firstVpc.id, label: firstVpc.name })
