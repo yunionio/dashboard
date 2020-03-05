@@ -4,7 +4,7 @@
     <div slot="body">
       <a-alert class="mb-2" v-if="isOpenStack" message="OpenStack机器在解绑密钥后需手动重置密码" type="warning" />
       <dialog-selected-tips :count="params.data.length" action="解绑密钥" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
         <a-form-item label="自动启动" v-bind="formItemLayout" extra="解绑密钥成功后是否自动启动">
           <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.auto_start" :disabled="form.fi.disableAutoStart" />

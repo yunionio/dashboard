@@ -3,7 +3,7 @@
     <div slot="header">回收为物理机</div>
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" action="回收为物理机" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 2)" />
+      <dialog-table :data="params.data" :columns="params.columns.slice(0, 2)" />
     </div>
     <div slot="footer">
       <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>

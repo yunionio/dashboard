@@ -3,7 +3,7 @@
     <div slot="header">关联主机</div>
     <div slot="body">
       <dialog-selected-tips name="GPU" :count="params.data.length" action="关联主机" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
         <a-form-item label="选择主机" v-bind="formItemLayout" extra="只能选择与GPU卡同一宿主机处于关机状态的虚拟机">

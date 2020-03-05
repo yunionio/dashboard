@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">新建报警</div>
     <div slot="body">
-      <vxe-grid class="mb-2" v-if="params.data" :data="params.data" :columns="params.columns.slice(0, 2)" />
+      <dialog-table v-if="params.data" :data="params.data" :columns="params.columns.slice(0, 2)" />
       <node-alert-form
         ref="nodeAlertFormRef"
         :metric-opts="metricOptsEnabled"

@@ -3,7 +3,7 @@
     <div slot="header">{{params.title}}</div>
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" :action="params.title" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form class="mt-3" :form="form" v-bind="formItemLayout">
         <a-form-item label="主机">
           <a-select v-decorator="decorators.server_id"  mode="multiple" :loading="queryServerLoading" style="width: 100%" placeholder="请选择主机">

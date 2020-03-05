@@ -3,7 +3,7 @@
     <div slot="header">{{action}}</div>
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" name="快照" :action="action" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="columns" />
+      <dialog-table :data="params.data" :columns="columns" />
       <a-form
         :form="form.fc">
         <a-form-item label="名称" v-bind="formItemLayout">

@@ -3,7 +3,7 @@
     <div slot="header">保存镜像</div>
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" action="保存镜像" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
         <a-form-item label="镜像类别" v-bind="formItemLayout" v-if="isKvm">
           <a-radio-group v-decorator="decorators.type" @change="handleTypeChange">

@@ -3,7 +3,7 @@
     <div slot="header">退出维护模式</div>
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" action="进入维护模式" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 2)" />
+      <dialog-table :data="params.data" :columns="params.columns.slice(0, 2)" />
     </div>
     <div slot="footer">
       <a-button type="primary" @click="handleConfirm" :loading="loading" :disabled="disabled">{{ $t('dialog.ok') }}</a-button>

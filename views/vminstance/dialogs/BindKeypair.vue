@@ -3,7 +3,7 @@
     <div slot="header">绑定密钥</div>
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" action="绑定密钥" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
         <a-form-item label="密钥对" v-bind="formItemLayout">
           <base-select

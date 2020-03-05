@@ -4,7 +4,7 @@
     <div slot="body">
       <a-alert class="mb-2" type="warning" :message="message" />
       <dialog-selected-tips :count="params.data.length" action="关联安全组" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <loader loading v-if="!(bindedSecgroupsLoaded && secgroupsInitLoaded)" />
       <a-form :form="form.fc" hideRequiredMark v-show="bindedSecgroupsLoaded && secgroupsInitLoaded">
         <a-form-item label="安全组" v-bind="formItemLayout" v-if="bindedSecgroupsLoaded">

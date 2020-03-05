@@ -4,7 +4,7 @@
     <div slot="body">
       <!-- <a-alert class="mb-2" type="warning" :message="message" /> -->
       <dialog-selected-tips :count="params.data.length" action="添加网卡" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc">
         <network-config
           :form="form"

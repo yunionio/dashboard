@@ -3,7 +3,7 @@
     <div slot="header">转换为宿主机</div>
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" action="转换为宿主机" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 2)" />
+      <dialog-table :data="params.data" :columns="params.columns.slice(0, 2)" />
        <a-form
         :form="form.fc">
         <a-form-item label="宿主机名称" v-bind="formItemLayout">

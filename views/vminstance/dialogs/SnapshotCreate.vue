@@ -8,8 +8,7 @@
         </div>
       </a-alert>
       <dialog-selected-tips :count="params.data.length" action="新建快照" />
-      <vxe-grid
-        class="mb-2"
+      <dialog-table
         :data="params.data"
         :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc">

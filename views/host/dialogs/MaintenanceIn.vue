@@ -8,11 +8,11 @@
         description="宿主机进入维护模式后，宿主机上的虚拟机将会自动迁移到其它宿主机上。若宿主机未成功进入维护模式，需要用户手动将宿主机上的虚拟机关机，待虚拟机关机后再次尝试进入维护模式。"
         type="warning" />
       <dialog-selected-tips :count="params.data.length" action="进入维护模式" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 2)" />
+      <dialog-table :data="params.data" :columns="params.columns.slice(0, 2)" />
       <div class="mb-2">
         <span>宿主机上的虚拟机列表（ {{servers.length}} 台）</span>
       </div>
-      <vxe-grid class="mb-2" :data="this.servers" :columns="columns" height="200" />
+      <dialog-table :data="this.servers" :columns="columns" />
       <p style="color: #f56c6c; font-size: 12px;" v-if="disabled">提示: {{error}}</p>
     </div>
     <div slot="footer">

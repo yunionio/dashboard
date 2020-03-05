@@ -8,7 +8,7 @@
         </div>
       </a-alert>
       <dialog-selected-tips :count="params.data.length" :action="action" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="columns" />
+      <dialog-table :data="params.data" :columns="columns" />
       <a-form
         :form="form.fc">
         <a-form-item label="自动启动" v-bind="formItemLayout" extra="回滚硬盘后是否自动启动">
