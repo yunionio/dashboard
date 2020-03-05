@@ -243,7 +243,7 @@ export default {
               slots: {
                 default: ({ row }, h) => {
                   return [
-                    <dialog-table data={ row.storage_info } columns={ this.diskColumns } />,
+                    <vxe-grid class="mb-2" data={ row.storage_info } columns={ this.diskColumns } />,
                   ]
                 },
               },
@@ -256,7 +256,7 @@ export default {
           slots: {
             default: ({ row }, h) => {
               return [
-                <dialog-table data={ row.nic_info } columns={ this.hostColumns } />,
+                <vxe-grid class="mb-2" data={ row.nic_info } columns={ this.hostColumns } />,
               ]
             },
           },
