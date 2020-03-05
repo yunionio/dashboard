@@ -4,7 +4,7 @@
     <div slot="body">
      <a-alert :message="params.alert" class="mb-2" type="warning" />
       <dialog-selected-tips :count="params.data.length" :action="this.params.title" :name="this.params.name" />
-      <vxe-grid v-if="params.columns && params.columns.length" class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-table v-if="params.columns && params.columns.length" :data="params.data" :columns="params.columns.slice(0, 3)" />
     </div>
     <div slot="footer">
       <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t("dialog.ok") }}</a-button>

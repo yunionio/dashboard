@@ -3,7 +3,7 @@
     <div slot="header">{{this.params.title}}</div>
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" :action="this.params.title" name="存储桶" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="columns" />
+      <dialog-table :data="params.data" :columns="columns" />
       <a-form :form="form.fc" v-bind="formItemLayout">
         <a-form-item label="容量上限">
           <a-input class="w-50" name="size_bytes" v-decorator="decorators.size_bytes" @blur="handelBlur">
