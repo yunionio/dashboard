@@ -22,32 +22,34 @@
                 ref="grid-layout"
                 :layout.sync="layout"
                 :col-num="colNum"
-                :max-rows="maxRows"
                 :row-height="rowHeight"
-                :margin="colMargin"
+                :max-rows="maxRows"
                 :vertical-compact="false"
                 :is-draggable="true"
                 :is-resizable="true"
-                :is-mirrored="false">
-                <grid-item
-                  class="edit-grid-item"
-                  v-for="item in layout"
-                  :x="item.x"
-                  :y="item.y"
-                  :w="item.w"
-                  :h="item.h"
-                  :i="item.i"
-                  :key="item.i"
-                  :is-draggable="!item.isTemplate"
-                  :is-resizable="!item.isTemplate"
-                  :style="{ outline: item.isTemplate ? '2px dashed darkmagenta' : '' }">
-                  <component :is="item.component" :options="item" :params="dashboardParams[item.i]" @update="handleUpdateDashboardParams">
-                    <template v-slot:actions="{ handleEdit }">
-                      <a-button type="link" icon="delete" @click="handleRemove(item)" />
-                      <a-button type="link" icon="setting" @click="handleEdit" />
-                    </template>
-                  </component>
-                </grid-item>
+                :is-mirrored="false"
+                :margin="colMargin"
+                :use-css-transforms="true">
+                <template v-for="item in layout">
+                  <grid-item
+                    class="edit-grid-item"
+                    :x="item.x"
+                    :y="item.y"
+                    :w="item.w"
+                    :h="item.h"
+                    :i="item.i"
+                    :key="item.i"
+                    :is-draggable="!item.isTemplate"
+                    :is-resizable="!item.isTemplate"
+                    :style="{ outline: item.isTemplate ? '2px dashed darkmagenta' : '' }">
+                    <component :is="item.component" :options="item" :params="dashboardParams[item.i]" @update="handleUpdateDashboardParams">
+                      <template v-slot:actions="{ handleEdit }">
+                        <a-button class="p-0 h-auto" type="link" icon="delete" @click="handleRemove(item)" />
+                        <a-button class="p-0 h-auto ml-2" type="link" icon="setting" @click="handleEdit" />
+                      </template>
+                    </component>
+                  </grid-item>
+                </template>
               </grid-layout>
           </grid-shadow>
         </div>
@@ -64,6 +66,7 @@ import VueGridLayout from 'vue-grid-layout'
 import GridShadow from '@Dashboard/components/GridShadow'
 import ExtendGallery from '@Dashboard/sections/ExtendGallery'
 import extendsComponents from '@Dashboard/extends'
+import debounce from 'lodash/debounce'
 import { uuid } from '@/utils/utils'
 import storage from '@/utils/storage'
 
@@ -111,6 +114,7 @@ export default {
   },
   destroyed () {
     this.pm = null
+    this.debounceUpdateGridItem = null
   },
   created () {
     this.pm = new this.$Manager('parameters', 'v1')
@@ -127,12 +131,13 @@ export default {
     this.dropzoneY = this.dropzoneRect.y
     this.dropzoneX = this.dropzoneRect.x
     this.position = { x: 0, y: 0 }
-    this.entered = false
     this.x = 0
     this.y = 0
     this.copy = null
+    this.entered = false
     this.initItemInteract()
     this.initDropzoneInteract()
+    this.debounceUpdateGridItem = debounce(this.updateGridItem, 500)
   },
   methods: {
     async fetchDashboardOptions () {
@@ -163,6 +168,17 @@ export default {
         throw error
       }
     },
+    updateGridItem (_x, _y) {
+      this.$refs['grid-layout'].eventBus.$emit(
+        'dragEvent',
+        'dragend',
+        this.tempId,
+        _x,
+        _y,
+        this.currentOption.w,
+        this.currentOption.h,
+      )
+    },
     initItemInteract () {
       interact('.extend-gallery-item').draggable({
         inertia: true,
@@ -180,22 +196,15 @@ export default {
             this.position.y += event.dy
             this.copy.style.transform = `translate(${this.position.x}px, ${this.position.y}px)`
             this.copy.style.outline = '1px dashed darkmagenta'
-            let { x: _x, y: _y } = (this.calcXY(this.position.y + this.movingGridDeltaY - this.dropzoneY, this.position.x - this.dropzoneX))
+            const editContainerScrollTop = document.querySelector('.grid-shadow-wrap').scrollTop
+            let { x: _x, y: _y } = (this.calcXY(this.position.y + (this.movingGridDeltaY - 60 + editContainerScrollTop) - this.dropzoneY, this.position.x - this.dropzoneX))
             this.x = _x
             this.y = _y
             if (this.entered) {
               let currentDragGridData = this.layout[this.layout.length - 1]
               currentDragGridData.x = _x
               currentDragGridData.y = _y
-              this.$refs['grid-layout'].eventBus.$emit(
-                'dragEvent',
-                'dragmove',
-                this.tempId,
-                _x,
-                _y,
-                this.currentOption.w,
-                this.currentOption.h,
-              )
+              this.debounceUpdateGridItem(_x, _y)
             }
           },
           end: event => {
@@ -218,7 +227,7 @@ export default {
         ondragenter: event => {
           this.entered = true
           this.layout.push({
-            x: this.x,
+            x: 9999,
             y: this.y,
             w: this.currentOption.w,
             h: this.currentOption.h,
@@ -388,6 +397,10 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+@import url('../../styles/index.scss');
+</style>
 
 <style lang="scss" scoped>
 .edit-wrap {
