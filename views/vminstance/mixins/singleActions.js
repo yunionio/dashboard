@@ -436,36 +436,36 @@ export default {
                     return ret
                   },
                 },
-                {
-                  label: '加入资源池',
-                  action: () => {
-                    this.createDialog('VmJoinResourceDialog', {
-                      data: [obj],
-                      columns: this.columns,
-                      onManager: this.onManager,
-                    })
-                  },
-                  meta: () => {
-                    const ret = {
-                      validate: false,
-                      tooltip: null,
-                    }
-                    if (!this.isAdminMode && !this.isDomainMode) {
-                      return ret
-                    }
-                    if (commonUnabled(obj)) return ret
-                    if (findPlatform(obj.hypervisor) !== SERVER_TYPE.public) {
-                      ret.tooltip = '仅公有云支持此操作'
-                      return ret
-                    }
-                    if (obj.billing_type !== 'prepaid') {
-                      ret.tooltip = '仅包年包月的资源支持此操作'
-                      return ret
-                    }
-                    ret.validate = true
-                    return ret
-                  },
-                },
+                // {
+                //   label: '加入资源池',
+                //   action: () => {
+                //     this.createDialog('VmJoinResourceDialog', {
+                //       data: [obj],
+                //       columns: this.columns,
+                //       onManager: this.onManager,
+                //     })
+                //   },
+                //   meta: () => {
+                //     const ret = {
+                //       validate: false,
+                //       tooltip: null,
+                //     }
+                //     if (!this.isAdminMode && !this.isDomainMode) {
+                //       return ret
+                //     }
+                //     if (commonUnabled(obj)) return ret
+                //     if (findPlatform(obj.hypervisor) !== SERVER_TYPE.public) {
+                //       ret.tooltip = '仅公有云支持此操作'
+                //       return ret
+                //     }
+                //     if (obj.billing_type !== 'prepaid') {
+                //       ret.tooltip = '仅包年包月的资源支持此操作'
+                //       return ret
+                //     }
+                //     ret.validate = true
+                //     return ret
+                //   },
+                // },
                 {
                   label: '创建相同配置',
                   action: () => {
