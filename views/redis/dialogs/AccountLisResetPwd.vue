@@ -3,7 +3,7 @@
         <div slot="header">重置密码</div>
         <div slot="body">
              <dialog-selected-tips :count="params.data.length" action="重置密码" />
-            <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+            <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
             <a-form slot="body" :form="form.fc" class="mt-3">
               <a-form-item v-bind="formItemLayout" label="账号名称">
                   {{this.params.data[0].name}}

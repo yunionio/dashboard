@@ -3,7 +3,7 @@
     <div slot="header">修改属性</div>
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" :action="params.title" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         class="mt-3"
         :form="form.fc">

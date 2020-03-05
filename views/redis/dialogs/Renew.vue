@@ -3,7 +3,7 @@
     <div slot="header">{{params.title}}</div>
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" :action="params.title" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc">
         <a-form-item label="计费方式" v-bind="formItemLayout">
           <a-radio-group v-decorator="['duration', {initialValue: (params.data && params.data.length > 0) ? (params.data[0].duration || '1M') : '1M' }]">
