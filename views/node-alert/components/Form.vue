@@ -21,7 +21,7 @@
       <a-input type="number" v-decorator="[
           'threshold',
           {
-            initialValue: 1,
+            initialValue: fdInitailValue.threshold,
             normalize: value => Number(value),
             rules: [
               { required: true, message: '请输入阈值' },
@@ -92,6 +92,7 @@ export default {
           comparator: '>=',
           level: 'normal',
           channel: 'email',
+          threshold: 1,
         }
       },
     },
