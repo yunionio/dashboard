@@ -7,8 +7,8 @@
         <domain-project :decorators="decorators.projectDomain" :fc="form.fc" :labelInValue="false" />
       </a-form-item>
       <a-form-item label="名称" v-bind="formItemLayout">
-        <a-input :placeholder="$t('validator.serverName')" v-decorator="decorators.name" />
-        <name-repeated v-slot:extra res="dbinstances" :name="form.getFieldValue('name')" />
+        <a-input :placeholder="$t('validator.serverName')" v-decorator="decorators.generate_name" />
+        <name-repeated v-slot:extra res="dbinstances" :name="form.getFieldValue('generate_name')" />
       </a-form-item>
       <!-- 计费方式 -->
       <clearing-radios v-bind="formItemLayout" />
@@ -95,6 +95,7 @@ export default {
       },
       scopeParams: {
         scope: this.$store.getters.scope,
+        project_domain: '',
       },
     }
   },
@@ -176,6 +177,8 @@ export default {
       if (this.$store.getters.isAdminMode) {
         this.scopeParams['project_domain'] = values.domain || this.form.getFieldValue('domain')
         delete this.scopeParams['scope']
+      } else {
+        delete this.scopeParams['project_domain']
       }
     },
     _valuesChange (values) {

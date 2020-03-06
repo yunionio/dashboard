@@ -66,12 +66,23 @@ export default {
       }
       return _[this.rdsItem.brand]
     },
+    scopeParams () {
+      if (this.$store.getters.isAdminMode) {
+        return {
+          project_domain: this.rdsItem.domain_id,
+        }
+      } else {
+        return {
+          scope: this.$store.getters.scope,
+        }
+      }
+    },
   },
   provide () {
     return {
       form: this.form,
       formItemLayout: this.formItemLayout,
-      scopeParams: {},
+      scopeParams: this.scopeParams,
     }
   },
   created () {

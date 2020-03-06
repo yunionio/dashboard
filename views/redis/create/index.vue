@@ -89,6 +89,7 @@ export default {
       ],
       scopeParams: {
         scope: this.$store.getters.scope,
+        project_domain: '',
       },
     }
   },
@@ -120,6 +121,8 @@ export default {
       if (this.$store.getters.isAdminMode) {
         this.scopeParams['project_domain'] = values.domain || this.form.getFieldValue('domain')
         delete this.scopeParams['scope']
+      } else {
+        delete this.scopeParams['project_domain']
       }
     },
     _queryNetworks (changedFields) {

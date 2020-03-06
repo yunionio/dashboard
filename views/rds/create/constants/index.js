@@ -15,8 +15,8 @@ export const DECORATORS = {
       },
     ],
   },
-  name: [
-    'name',
+  generate_name: [
+    'generate_name',
     {
       initialValue: '',
       validateTrigger: ['change', 'blur'],

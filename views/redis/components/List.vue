@@ -287,29 +287,6 @@ export default {
                 action: (obj) => {
                   this.list.batchPerformAction('Sync', null)
                 },
-                meta: () => {
-                  return {
-                    validate: selectedLength,
-                    tooltip: notSelectedTooltip,
-                  }
-                },
-              },
-              {
-                label: '修改属性',
-                action: () => {
-                  this.createDialog('RedisEditAttrDialog', {
-                    title: '修改属性',
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    list: this.list,
-                  })
-                },
-                meta: () => {
-                  return {
-                    validate: selectedLength,
-                    tooltip: notSelectedTooltip,
-                  }
-                },
               },
               {
                 label: '清空数据',
@@ -347,6 +324,14 @@ export default {
               },
               disableDeleteAction(this),
             ]
+          },
+          meta: () => {
+            const selectedLength = this.list.selectedItems.length
+            const notSelectedTooltip = selectedLength <= 0 ? '请选择需要操作的实例' : ''
+            return {
+              validate: selectedLength,
+              tooltip: notSelectedTooltip,
+            }
           },
         },
       ],
