@@ -145,6 +145,7 @@ export default {
               {
                 label: '同步状态',
                 action: (obj) => {
+<<<<<<< HEAD
                   this.onManager('batchPerformAction', {
                     id: this.list.selectedItems.map(item => item.id),
                     managerArgs: {
@@ -157,6 +158,9 @@ export default {
                     validate: selectedLength,
                     tooltip: notSelectedTooltip,
                   }
+=======
+                  this.list.batchPerformAction('Sync', null)
+>>>>>>> c637d8308999d04a1765f8511dfa613def7b81ab
                 },
               },
               {
@@ -197,6 +201,14 @@ export default {
               },
               disableDeleteAction(this),
             ]
+          },
+          meta: () => {
+            const selectedLength = this.list.selectedItems.length
+            const notSelectedTooltip = selectedLength <= 0 ? '请选择需要操作的实例' : ''
+            return {
+              validate: selectedLength,
+              tooltip: notSelectedTooltip,
+            }
           },
         },
       ],

@@ -10,7 +10,8 @@
         :decorators="{ project: project, domain: domain }" />
       </a-form-item>
       <a-form-item label="名称" v-bind="formItemLayout">
-        <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverName')" />
+        <a-input v-decorator="decorators.generate_name" :placeholder="$t('validator.serverName')" />
+        <name-repeated v-slot:extra res="elasticcaches" :name="form.getFieldValue('generate_name')" />
       </a-form-item>
       <item-billing-opts />
       <a-form-item label="数量" v-bind="formItemLayout">
@@ -44,6 +45,7 @@ import ItemVpcOpts from './components/ItemVpcOpts'
 import SKU from './components/SKU'
 import BottomBar from './components/BottomBar'
 import DomainProject from '@/sections/DomainProject'
+import NameRepeated from '@/sections/NameRepeated'
 
 export default {
   name: 'IDCCreate',
@@ -62,6 +64,7 @@ export default {
     ItemVpcOpts,
     // 表单提交
     BottomBar,
+    NameRepeated,
   },
   data () {
     return {
@@ -89,6 +92,7 @@ export default {
       ],
       scopeParams: {
         scope: this.$store.getters.scope,
+        project_domain: '',
       },
     }
   },
@@ -120,6 +124,8 @@ export default {
       if (this.$store.getters.isAdminMode) {
         this.scopeParams['project_domain'] = values.domain || this.form.getFieldValue('domain')
         delete this.scopeParams['scope']
+      } else {
+        delete this.scopeParams['project_domain']
       }
     },
     _queryNetworks (changedFields) {

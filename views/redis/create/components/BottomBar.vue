@@ -83,11 +83,12 @@ export default {
   },
   computed: {
     tips () {
-      const { name, count, sku = {} } = this.values
+      console.log(this.values)
+      const { count, sku = {} } = this.values
       const category = sku.local_category
       const ret = [
         [
-          { label: '名称', labelClass: 'label-w-50', value: name, valueClass: 'name-value' },
+          { label: '名称', labelClass: 'label-w-50', value: this.values.generate_name, valueClass: 'name-value' },
           { label: '数量', labelClass: 'label-w-50', value: count },
         ],
         [
