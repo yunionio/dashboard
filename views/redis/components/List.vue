@@ -145,7 +145,6 @@ export default {
               {
                 label: '同步状态',
                 action: (obj) => {
-<<<<<<< HEAD
                   this.onManager('batchPerformAction', {
                     id: this.list.selectedItems.map(item => item.id),
                     managerArgs: {
@@ -158,9 +157,6 @@ export default {
                     validate: selectedLength,
                     tooltip: notSelectedTooltip,
                   }
-=======
-                  this.list.batchPerformAction('Sync', null)
->>>>>>> c637d8308999d04a1765f8511dfa613def7b81ab
                 },
               },
               {
