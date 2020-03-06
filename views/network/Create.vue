@@ -503,7 +503,7 @@ export default {
               guest_ip_end: values['endip'][key],
               guest_ip_mask: values['netmask'][key],
               guest_ip_start: values['startip'][key],
-              vlan_id: values['vlan'][key],
+              vlan_id: values['vlan'][key] === '' ? '1' : values['vlan'][key],
               name: values.name,
               server_type: values.server_type,
               wire_id: values['wire'],
