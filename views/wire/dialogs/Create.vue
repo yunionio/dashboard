@@ -175,9 +175,11 @@ export default {
         cloudregion_id: area,
       } }).then((res) => {
         this.vpcs = res.data.data.map((item) => {
-          return {
-            label: item.name,
-            value: item.id,
+          if (item.id === 'default') {
+            return {
+              label: item.name,
+              value: item.id,
+            }
           }
         })
       })
