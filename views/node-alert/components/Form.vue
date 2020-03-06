@@ -183,11 +183,11 @@ export default {
   },
   computed: {
     domainParams () {
-      if (this.$store.getters.isAdminMode) {
-        return {}
-      }
+      // if (this.$store.getters.isAdminMode) {
+      //   return {}
+      // }
       return {
-        domain_id: this.$store.getters.userInfo.projectDomainId,
+        scope: this.$store.getters.scope,
       }
     },
     metricDisabled () {
