@@ -14,6 +14,40 @@ import { getRegionTableColumn } from '@/utils/common/tableColumn'
 import { sizestrWithUnit } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
 
+let RenderSizeTitle = {
+  props: ['data'],
+  data () {
+    return {
+      loading: false,
+    }
+  },
+  methods: {
+    async fetchSync () {
+      const manager = new this.$Manager('buckets')
+      this.loading = true
+      try {
+        const { data } = await manager.performAction({
+          id: this.data.id,
+          action: 'sync',
+          data: {
+            stats_only: true,
+          },
+        })
+        this.data['size_bytes'] = data.size_bytes
+        this.data['object_cnt'] = data.object_cnt
+      } catch (err) {
+        throw err
+      } finally {
+        this.loading = false
+      }
+    },
+  },
+  render () {
+    return (
+      <div>用量统计 <a onClick={this.fetchSync}><a-icon type="sync" spin={this.loading} /></a></div>
+    )
+  },
+}
 export default {
   name: 'BucketDetail',
   mixins: [WindowsMixin],
@@ -32,10 +66,8 @@ export default {
     },
   },
   data () {
-    const RenderSizeTitle = () => {
-      return <div>用量统计 <a onClick={this.fetchSync}><a-icon type="redo" /></a></div>
-    }
     return {
+      syncLoading: false,
       baseInfo: [
         {
           field: 'storage_class',
@@ -82,7 +114,7 @@ export default {
           },
         },
         {
-          title: <RenderSizeTitle />,
+          title: <RenderSizeTitle data={this.data} />,
           items: [
             {
               field: 'size_bytes',
@@ -147,21 +179,10 @@ export default {
       ],
     }
   },
+  beforeDestroy () {
+    RenderSizeTitle = null
+  },
   methods: {
-    async fetchSync () {
-      const manager = new this.$Manager('buckets')
-      try {
-        await manager.performAction({
-          id: this.data.id,
-          action: 'sync',
-          data: {
-            stats_only: true,
-          },
-        })
-      } catch (err) {
-        throw err
-      }
-    },
     handleSetAcl (row) {
       this.createDialog('ObjectsUpdateAclDialog', {
         title: '设置读写权限',
