@@ -91,7 +91,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    enableMointpoint: { // 允许支持挂载点(目前仅新建vmware和oncloud支持)
+    enableMointpoint: { // 允许支持挂载点(目前仅新建oncloud支持)
       type: Boolean,
       default: false, // 默认不支持挂载点
     },
@@ -117,7 +117,7 @@ export default {
       if (this.isHostImageType) return ['snapshot', 'schedtag']
       if (this.enableMointpoint) {
         if (!this.isWindows) {
-          if (this.hypervisor === HYPERVISORS_MAP.kvm.key || this.hypervisor === HYPERVISORS_MAP.esxi.key) {
+          if (this.hypervisor === HYPERVISORS_MAP.kvm.key) {
             ret.push('mount-point')
           }
         }
