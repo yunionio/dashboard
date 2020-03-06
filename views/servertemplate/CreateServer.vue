@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="severtemplate-create-server">
     <page-header :title="`新建${this.$t('dictionary.server')}`" />
     <a-form :form="form.fc" class="mt-3">
       <a-form-item label="主机名称" v-bind="formItemLayout" extra="名称支持序号占位符‘#’，用法如下。 名称：host## 数量：2、实例为：host01、host02">
@@ -64,10 +64,14 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 20,
+          md: { span: 18 },
+          xl: { span: 21 },
+          xxl: { span: 22 },
         },
         labelCol: {
-          span: 4,
+          md: { span: 6 },
+          xl: { span: 3 },
+          xxl: { span: 2 },
         },
       },
     }
@@ -163,3 +167,11 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.severtemplate-create-server {
+  ::v-deep .ant-form.ant-form-horizontal .ant-form-item .ant-form-item-label{
+    padding-left: 20px;
+  }
+}
+</style>
