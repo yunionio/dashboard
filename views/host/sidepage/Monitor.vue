@@ -156,7 +156,7 @@ export default {
         const isSizestrUnit = UNITS.includes(unit)
         let series = result.series
         if (!series) series = []
-        if (fromItem === 'disk' || fromItem === 'diskio') { // 这里会把不同路径下的磁盘监控信息都返回，在这里整理一下
+        if (series.length && (fromItem === 'disk' || fromItem === 'diskio')) { // 这里会把不同路径下的磁盘监控信息都返回，在这里整理一下
           let tag = 'name'
           let label = ''
           if (fromItem === 'disk') {
