@@ -198,6 +198,14 @@ export default {
               disableDeleteAction(this),
             ]
           },
+          meta: () => {
+            const selectedLength = this.list.selectedItems.length
+            const notSelectedTooltip = selectedLength <= 0 ? '请选择需要操作的实例' : ''
+            return {
+              validate: selectedLength,
+              tooltip: notSelectedTooltip,
+            }
+          },
         },
       ],
     }

@@ -20,8 +20,8 @@ import validateForm, { isRequired } from '@/utils/validate'
 import store from '@/store'
 
 export const decorators = {
-  name: [
-    'name',
+  generate_name: [
+    'generate_name',
     {
       initialValue: '',
       validateTrigger: ['change', 'blur'],
