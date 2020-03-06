@@ -82,11 +82,21 @@ export default {
               const rkey = key.replace(this.prefix, '')
               if (this.isDir(key)) {
                 return [
-                  <a style="padding: 0" onClick={() => this.nextPage(key)}><a-icon type="folder" theme="filled" style="color: rgb(245,200, 61)" />{ rkey }</a>,
+                  <div class="d-flex align-items-center">
+                    <a-icon type="folder" theme="filled" style="color: rgb(245,200, 61)" />
+                    <a class="text-truncate" style="margin-right: 3px" onClick={() => this.nextPage(key)}>{ rkey }</a>
+                    <copy message={rkey} />
+                  </div>,
                 ]
               }
               return [
-                <div><a-icon theme="filled" type="file" /> { rkey } <copy message={rkey} /></div>,
+                <div class="d-flex align-items-center">
+                  <a-icon theme="filled" type="file" />
+                  <span class="text-truncate">
+                    {rkey}
+                  </span>
+                  <copy message={rkey} />
+                </div>,
               ]
             },
           },
