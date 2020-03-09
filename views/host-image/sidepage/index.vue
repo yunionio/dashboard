@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="镜像"
+    title="主机镜像"
     icon="res-image"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"

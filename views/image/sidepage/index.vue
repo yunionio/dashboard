@@ -46,15 +46,7 @@ export default {
   mixins: [SidePageMixin, WindowsMixin, SingleActionsMixin, ColumnsMixin],
   computed: {
     detailTabs () {
-      const isHostImage = this.detailData.root_image
-      if (isHostImage) {
-        return [
-          { label: '详情', key: 'system-image-detail' },
-          { label: '子镜像', key: 'children-image-list' },
-          { label: '操作日志', key: 'event-drawer' },
-        ]
-      }
-      if (this.$store.getters.isAdminMode && !isHostImage) {
+      if (this.$store.getters.isAdminMode) {
         return [
           { label: '详情', key: 'system-image-detail' },
           { label: '缓存列表', key: 'cache-list' },
