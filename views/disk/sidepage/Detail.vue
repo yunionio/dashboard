@@ -10,7 +10,9 @@
 
 <script>
 import { MEDIUM_MAP } from '../../../constants'
+import { getUnusedTableColumn } from '../utils/columns'
 import { sizestr } from '@/utils/utils'
+import { getBrandTableColumn, getBillingTypeTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   name: 'DiskDetail',
@@ -27,6 +29,8 @@ export default {
   data () {
     return {
       baseInfo: [
+        getBrandTableColumn(),
+        getBillingTypeTableColumn(),
         {
           field: 'disk_size',
           title: '容量',
@@ -41,6 +45,7 @@ export default {
             return cellValue === 'sys' ? '系统盘' : '数据盘'
           },
         },
+        getUnusedTableColumn(),
         {
           field: 'disk_format',
           title: '格式',
@@ -67,21 +72,7 @@ export default {
           },
         },
       ],
-      extraInfo: [
-        {
-          title: '其他信息',
-          items: [
-            {
-              field: 'zone',
-              title: '区域',
-            },
-            {
-              field: 'public_scope',
-              title: this.$t('dictionary.domain'),
-            },
-          ],
-        },
-      ],
+      extraInfo: [],
     }
   },
 }

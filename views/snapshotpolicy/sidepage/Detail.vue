@@ -3,11 +3,13 @@
     :on-manager="onManager"
     :data="data"
     :base-info="baseInfo"
+    :extra-info="extraInfo"
     status-module="snapshotpolicy" />
 </template>
 
 <script>
 import { weekOptions, timeOptions } from '../constants'
+import { getBindingDiskCountColumn } from '../utils/columns'
 
 export default {
   name: 'SnapshotPolicyDetail',
@@ -24,6 +26,7 @@ export default {
   data () {
     const detailData = {
       baseInfo: [
+        getBindingDiskCountColumn(),
         {
           field: 'time_points',
           title: '备份时间',
@@ -57,6 +60,7 @@ export default {
           },
         },
       ],
+      extraInfo: [],
     }
     return detailData
   },

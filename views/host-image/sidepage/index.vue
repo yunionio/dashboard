@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="系统镜像"
+    title="主机镜像"
     icon="res-image"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
@@ -29,32 +29,24 @@
 import ChildrenImageList from '../../host-image/sidepage/ChildrenImage'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
-import SystemImageDetail from './Detail'
-import CacheList from './Cache'
+import HostImageDetail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
 
 export default {
-  name: 'SystemImageSidePage',
+  name: 'HostImageSidePage',
   components: {
-    SystemImageDetail,
-    CacheList,
+    HostImageDetail,
     ChildrenImageList,
     Actions,
   },
   mixins: [SidePageMixin, WindowsMixin, SingleActionsMixin, ColumnsMixin],
   computed: {
     detailTabs () {
-      if (this.$store.getters.isAdminMode) {
-        return [
-          { label: '详情', key: 'system-image-detail' },
-          { label: '缓存列表', key: 'cache-list' },
-          { label: '操作日志', key: 'event-drawer' },
-        ]
-      }
       return [
-        { label: '详情', key: 'system-image-detail' },
+        { label: '详情', key: 'host-image-detail' },
+        { label: '子镜像', key: 'children-image-list' },
         { label: '操作日志', key: 'event-drawer' },
       ]
     },

@@ -10,13 +10,16 @@
 
 <script>
 import { ALL_STORAGE } from '@Compute/constants/index'
+import { SERVER_TYPE } from '@Compute/constants'
 import {
   getCopyWithContentTableColumn,
   getBrandTableColumn,
   getSwitchTableColumn,
+  getBillingTypeTableColumn,
 } from '@/utils/common/tableColumn'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
+import { findPlatform } from '@/utils/common/hypervisor'
 
 export default {
   name: 'VmInstanceDetail',
@@ -40,6 +43,7 @@ export default {
           title: '关联密钥',
         },
         getBrandTableColumn(),
+        getBillingTypeTableColumn(),
       ],
     }
   },
@@ -108,6 +112,62 @@ export default {
               },
             }),
             {
+              field: 'host',
+              title: '宿主机',
+              sortable: true,
+              showOverflow: 'ellipsis',
+              minWidth: 100,
+              slots: {
+                default: ({ row }) => {
+                  if (findPlatform(row.hypervisor, 'hypervisor') === SERVER_TYPE.public) {
+                    return '-'
+                  }
+                  const text = row['host'] || '-'
+                  return [
+                    <list-body-cell-wrap copy field='host' row={row} message={text}></list-body-cell-wrap>,
+                  ]
+                },
+              },
+            },
+            getCopyWithContentTableColumn({ field: 'vpc', title: 'VPC' }),
+            {
+              field: 'vcpu_count',
+              title: 'CPU',
+              formatter: ({ row }) => {
+                return row.vcpu_count + '核'
+              },
+            },
+            {
+              field: 'vmem_size',
+              title: '内存',
+              formatter: ({ row }) => {
+                return (row.vmem_size / 1024) + 'GB'
+              },
+            },
+            {
+              field: 'sysDisk',
+              title: '系统盘',
+              formatter: ({ row }) => {
+                return this.diskInfos.sysDisk
+              },
+            },
+            {
+              field: 'dataDisk',
+              title: '数据盘',
+              formatter: ({ row }) => {
+                return this.diskInfos.dataDisk
+              },
+            },
+            getCopyWithContentTableColumn({
+              field: 'cdrom',
+              title: 'ISO',
+              hideField: true,
+              slotCallback: row => {
+                const idx = row.cdrom.indexOf('(')
+                return row.cdrom.substring(0, idx) || '-'
+              },
+            }),
+            {
               field: 'isolated_devices',
               title: 'GPU',
               formatter: ({ row }) => {
@@ -130,51 +190,14 @@ export default {
               },
             },
             {
-              field: 'vcpu_count',
-              title: 'CPU',
-              formatter: ({ row }) => {
-                return row.vcpu_count + '核'
-              },
+              field: 'backup_host_name',
+              title: '备份机的宿主机',
             },
-            {
-              field: 'vmem_size',
-              title: '内存',
-              formatter: ({ row }) => {
-                return (row.vmem_size / 1024) + 'GB'
-              },
-            },
-            {
-              field: 'dataDisk',
-              title: '数据盘',
-              formatter: ({ row }) => {
-                return this.diskInfos.dataDisk
-              },
-            },
-            {
-              field: 'sysDisk',
-              title: '系统盘',
-              formatter: ({ row }) => {
-                return this.diskInfos.sysDisk
-              },
-            },
-            getCopyWithContentTableColumn({
-              field: 'cdrom',
-              title: 'ISO',
-              hideField: true,
-              slotCallback: row => {
-                const idx = row.cdrom.indexOf('(')
-                return row.cdrom.substring(0, idx) || '-'
-              },
-            }),
           ],
         },
         {
           title: '其他设置',
           items: [
-            {
-              field: 'backup_host_name',
-              title: '备份机的宿主机',
-            },
             getSwitchTableColumn({
               field: 'disable_delete',
               title: '删除保护',

@@ -99,7 +99,7 @@ export default {
     }
   },
   created () {
-    this.initSidePageTab('system-image-detail')
+    this.initSidePageTab('host-image-detail')
     this.list.fetchData()
   },
   methods: {
@@ -111,7 +111,7 @@ export default {
       return ret
     },
     handleOpenSidepage (row) {
-      this.sidePageTriggerHandle(this, 'SystemImageSidePage', {
+      this.sidePageTriggerHandle(this, 'HostImageSidePage', {
         id: row.id,
         resource: 'guestimages',
         apiVersion: 'v1',

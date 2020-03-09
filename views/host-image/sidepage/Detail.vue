@@ -14,7 +14,7 @@ import { getStatusTableColumn, getCopyWithContentTableColumn, getSwitchTableColu
 
 const isStandard = status => status === true || status === 'true'
 export default {
-  name: 'SystemImageDetail',
+  name: 'HostImageDetail',
   props: {
     data: {
       type: Object,
@@ -43,6 +43,18 @@ export default {
           title: '类型',
           formatter: ({ cellValue, row }) => {
             return isStandard(row.is_standard) ? '公共镜像' : '自定义镜像'
+          },
+        },
+        {
+          field: 'child_image',
+          title: '子镜像',
+          width: 150,
+          slots: {
+            default: ({ row }) => {
+              const arr = [...(row.data_images || [])]
+              arr.push(row.root_image.name)
+              return `${arr.length}个`
+            },
           },
         },
         {
@@ -153,7 +165,7 @@ export default {
     }
   },
   created () {
-    this.updateDetailData()
+    // this.updateDetailData()
   },
   methods: {
     updateDetailData () {

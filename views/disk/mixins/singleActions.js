@@ -1,4 +1,4 @@
-import { diskResizeConfig, diskCreateSnapshotConfig } from '@Compute/views/disk/utils.js'
+import { diskResizeConfig, diskCreateSnapshotConfig } from '@Compute/views/disk/utils'
 const supportShpolcyBrand = ['OneCloud', 'Qcloud', 'Aliyun']
 
 export default {

@@ -4,6 +4,7 @@
     :data="data"
     :base-info="baseInfo"
     :extra-info="extraInfo"
+    resource="instance_snapshots"
     status-module="snapshot" />
 </template>
 
@@ -66,17 +67,7 @@ export default {
           },
         },
       ],
-      extraInfo: [
-        {
-          title: '其他信息',
-          items: [
-            {
-              field: 'region',
-              title: '区域',
-            },
-          ],
-        },
-      ],
+      extraInfo: [],
     }
   },
 }
