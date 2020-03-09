@@ -119,7 +119,7 @@ export default {
         ...this.scopeParams,
       }
       const sku = this.getFieldValue('sku')
-      if (sku && sku.provider === 'Aliyun') {
+      if (sku) {
         params['zone'] = sku.zone_id
       }
       this.FC.setFieldsValue({
