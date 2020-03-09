@@ -1,4 +1,5 @@
 import { MEDIUM_MAP } from '../../../constants'
+import { getUnusedTableColumn } from '../utils/columns'
 import {
   getNameDescriptionTableColumn,
   getBrandTableColumn,
@@ -48,16 +49,7 @@ export default {
           return cellValue === 'sys' ? '系统盘' : '数据盘'
         },
       },
-      {
-        field: 'unused',
-        title: '是否挂载',
-        width: 70,
-        slots: {
-          default: ({ row }, h) => {
-            return row.guest_count >= 1 ? [<span class="success-color">已挂载</span>] : [<span class="warning-color">待挂载</span>]
-          },
-        },
-      },
+      getUnusedTableColumn(),
       {
         field: 'guest',
         title: '主机',

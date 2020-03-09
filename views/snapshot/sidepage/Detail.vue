@@ -10,7 +10,9 @@
 
 <script>
 import { CREATE_METHODS } from '../constants'
+import { getStorageTypeTableColumn } from '../utils/columns'
 import { sizestr } from '@/utils/utils'
+import { getBrandTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   name: 'SnapshotDetail',
@@ -27,6 +29,7 @@ export default {
   data () {
     return {
       baseInfo: [
+        getBrandTableColumn(),
         {
           field: 'size',
           title: '容量',
@@ -89,16 +92,12 @@ export default {
             },
           },
         },
+        getStorageTypeTableColumn(),
       ],
       extraInfo: [
         {
           title: '其他信息',
-          items: [
-            {
-              field: 'region',
-              title: '区域',
-            },
-          ],
+          items: [],
         },
       ],
     }

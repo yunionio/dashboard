@@ -1,4 +1,4 @@
-import { DISK_TYPES, ALL_STORAGE_LABEL } from '../../constants'
+import { DISK_TYPES, ALL_STORAGE_LABEL } from '../../../constants'
 import status from '@/locales/zh-CN'
 import { PROVIDER_MAP } from '@/constants'
 const { disk: diskStatus, server: serverStatus } = status.status
