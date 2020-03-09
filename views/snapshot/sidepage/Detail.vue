@@ -37,9 +37,7 @@ export default {
           title: '容量',
           formatter: ({ cellValue, row }) => {
             if (isInstanceSnapshot) {
-              const size = row.snapshots.reduce((a, b) => {
-                return a.size + b.size
-              }, { size: 0 })
+              const size = row.snapshots.reduce((a, b) => a + b.size, 0)
               return sizestr(size, 'M', 1024)
             } else {
               return sizestr(cellValue, 'M', 1024)
