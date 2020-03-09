@@ -164,6 +164,7 @@ export default {
               },
             }),
             getCopyWithContentTableColumn({ field: 'host', title: '物理机' }),
+            getCopyWithContentTableColumn({ field: 'host_sn', title: 'SN' }),
           ],
         },
         {
