@@ -129,7 +129,7 @@ export default {
       }
     },
     _queryNetworks (changedFields) {
-      if ((changedFields['sku'] && changedFields['sku'])) {
+      if (changedFields && changedFields['sku']) {
         this.$refs['REF_VPC'].fetchQueryVpcs()
       }
     },

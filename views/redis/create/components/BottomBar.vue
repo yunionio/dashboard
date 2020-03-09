@@ -83,7 +83,6 @@ export default {
   },
   computed: {
     tips () {
-      console.log(this.values)
       const { count, sku = {} } = this.values
       const category = sku.local_category
       const ret = [

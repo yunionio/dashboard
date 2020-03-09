@@ -50,7 +50,6 @@ export default {
   computed: {
     tips () {
       const { sku = {} } = this.values
-      console.log(sku)
       const ret = [
         [
           { label: '名称', labelClass: 'label-w-50', value: this.values.generate_name, valueClass: 'name-value' },
