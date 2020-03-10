@@ -11,7 +11,7 @@ import * as R from 'ramda'
 import { ACL_TYPE } from '@Storage/constants/index.js'
 import AccessInfo from './AccessInfo'
 import { getNameDescriptionTableColumn, getStatusTableColumn, getBrandTableColumn, getRegionTableColumn, getAccountTableColumn, getProjectTableColumn } from '@/utils/common/tableColumn'
-import { getNameFilter, getTenantFilter, getBrandFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getTenantFilter, getBrandFilter, getStatusFilter, getAccountFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -34,6 +34,21 @@ export default {
           name: getNameFilter(),
           brand: getBrandFilter('object_storage_brands'),
           tenant: getTenantFilter(),
+          status: getStatusFilter({ statusModule: 'bucket' }),
+          account: getAccountFilter(),
+          // region: {
+          //   label: '区域',
+          // },
+          storage_class: {
+            label: '存储类型',
+          },
+          acl: {
+            label: '读写权限',
+            dropdown: true,
+            items: Object.keys(ACL_TYPE).map(k => {
+              return { label: ACL_TYPE[k], key: k }
+            }),
+          },
         },
       }),
       columns: [
