@@ -143,12 +143,15 @@ export default {
               list: this.list,
               resId: this.data.id,
               resItem: this.data,
+              resName: this.resName,
               prefix: this.prefix,
             })
           },
           meta: () => {
             return {
               buttonType: 'primary',
+              validate: this.prefix,
+              tooltip: !this.prefix && '根目录不允许上传文件',
             }
           },
         },
