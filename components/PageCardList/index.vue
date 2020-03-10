@@ -6,7 +6,7 @@
         <actions :options="groupActions" button-type="default" group />
       </template>
     </div>
-    <card-list v-if="hasData" :list="list.data" :cardFields="cardFields" :singleActions="singleActions" />
+    <card-list v-if="hasData" :list="list.data" :cardFields="cardFields" :singleActions="singleActions" :layoutDirection="layoutDirection" />
     <loader v-else :loading="loading" />
     <a-pagination
       v-show="showPageer && list.total !== 0"
@@ -56,6 +56,11 @@ export default {
     isRefreshed: {
       type: Boolean,
       default: true,
+    },
+    layoutDirection: {
+      type: String,
+      default: 'horizontal',
+      validator: val => ['horizontal', 'longitudinal'].includes(val),
     },
   },
   data () {
