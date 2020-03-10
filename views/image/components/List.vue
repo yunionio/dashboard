@@ -178,10 +178,15 @@ export default {
             })
           },
           meta: obj => {
-            return {
+            const ret = {
               validate: true,
               tooltip: '',
             }
+            if (obj.status !== 'active') {
+              ret.validate = false
+              ret.tooltip = '只有状态为可用的镜像才支持该操作'
+            }
+            return ret
           },
         },
         {
