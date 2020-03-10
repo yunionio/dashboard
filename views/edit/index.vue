@@ -184,10 +184,13 @@ export default {
         inertia: true,
         listeners: {
           start: event => {
+            event.target.parentNode.parentNode.classList.add('overflow-hidden')
             const component = event.target.dataset['component']
             this.setCurrentOption(component)
             this.copy = event.target.cloneNode(true)
-            event.target.appendChild(this.copy)
+            this.copy.classList.add('drag')
+            this.copy.style.top = `${event.target.offsetTop}px`
+            event.target.parentNode.appendChild(this.copy)
             this.movingGridDeltaY = event.target.getBoundingClientRect().y
             this.tempId = `dashboard-item-${uuid(32)}`
           },
@@ -208,7 +211,8 @@ export default {
             }
           },
           end: event => {
-            event.target.removeChild(this.copy)
+            event.target.parentNode.removeChild(this.copy)
+            event.target.parentNode.parentNode.classList.remove('overflow-hidden')
             this.copy = null
             this.movingGridDeltaY = 0
             this.position = { x: 0, y: 0 }
