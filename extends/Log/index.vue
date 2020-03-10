@@ -44,6 +44,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
+import { getRequestT } from '@/utils/utils'
 
 export const options = {
   label: '审计日志',
@@ -144,7 +145,7 @@ export default {
           params: {
             scope: this.scope,
             limit: this.form.fd.limit,
-            $t: +new Date(),
+            $t: getRequestT(),
           },
         })
         this.data = response.data.data || []

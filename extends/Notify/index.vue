@@ -35,6 +35,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
+import { getRequestT } from '@/utils/utils'
 
 export const options = {
   label: '公告',
@@ -141,7 +142,7 @@ export default {
         const response = await this.nm.list({
           params: {
             scope: this.scope,
-            $t: +new Date(),
+            $t: getRequestT(),
           },
         })
         this.data = response.data.data || []
@@ -154,7 +155,7 @@ export default {
         const response = await this.rm.list({
           params: {
             notice_id: this.data[0]['id'],
-            $t: +new Date(),
+            $t: getRequestT(),
           },
         })
         this.readmarkData = response.data
