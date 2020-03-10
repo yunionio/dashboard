@@ -84,6 +84,7 @@ import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import { usageConfig } from './constants'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
+import { getRequestT } from '@/utils/utils'
 
 export const options = {
   label: 'TOP5',
@@ -294,7 +295,7 @@ export default {
           url: '/query',
           method: 'GET',
           params: {
-            $t: +new Date(),
+            $t: getRequestT(),
             db: 'telegraf',
             epoch: 'ms',
             q: this.genSQLQuery(),

@@ -45,6 +45,7 @@
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import QuotaConfig from '@Dashboard/sections/QuotaConfig'
 import { USAGE_CONFIG } from '@Dashboard/constants'
+import { getRequestT } from '@/utils/utils'
 
 export const options = {
   label: '使用率',
@@ -242,7 +243,7 @@ export default {
     genUsageParams () {
       const params = {
         scope: this.$store.getters.scope,
-        $t: +new Date(),
+        $t: getRequestT(),
       }
       const fd = this.form.fd
       if (fd.cloud_env) params.cloud_env = fd.cloud_env
