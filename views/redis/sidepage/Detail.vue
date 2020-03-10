@@ -4,12 +4,17 @@
     :data="data"
     :base-info="baseInfo"
     :extra-info="extraInfo"
+    resource="elasticcaches"
     statusModule="redis" />
 </template>
 
 <script>
-// import BrandIcon from '@/sections/BrandIcon'
 import { NODE_TYPE, PERFORMANCE_TYPE } from '@DB/views/redis/constants'
+import {
+  getBrandTableColumn,
+  getSwitchTableColumn,
+  getBillingTypeTableColumn,
+} from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
 
@@ -29,14 +34,8 @@ export default {
   data () {
     return {
       baseInfo: [
-        {
-          field: 'project_domain',
-          title: this.$t('dictionary.domain'),
-        },
-        {
-          field: 'tenant',
-          title: `所属${this.$t('dictionary.project')}`,
-        },
+        getBrandTableColumn(),
+        getBillingTypeTableColumn(),
         {
           field: 'manager',
           title: '云账号',
@@ -186,45 +185,23 @@ export default {
             },
           ],
         },
-        // {
-        //   title: '其他信息',
-        //   items: [
-        //     {
-        //       field: 'created_at',
-        //       title: '创建时间',
-        //       slots: {
-        //         default: ({ row }) => {
-        //           return this.$moment(row.created_at).format()
-        //         },
-        //       },
-        //     },
-        //     {
-        //       field: 'updated_at',
-        //       title: '更新时间',
-        //       slots: {
-        //         default: ({ row }) => {
-        //           return this.$moment(row.updated_at).format()
-        //         },
-        //       },
-        //     },
-        //     {
-        //       title: '删除保护',
-        //       slots: {
-        //         default: (row, h) => {
-        //           const handleChange = ({ target }) => {
-        //             console.log(target.value)
-        //           }
-        //           return (
-        //             <a-radio-group onChange={handleChange}>
-        //               <a-radio-button value={true}>开启</a-radio-button>
-        //               <a-radio-button value={false}>关闭</a-radio-button>
-        //             </a-radio-group>
-        //           )
-        //         },
-        //       },
-        //     },
-        //   ],
-        // },
+        {
+          title: '其他信息',
+          items: [
+            getSwitchTableColumn({
+              field: 'disable_delete',
+              title: '删除保护',
+              change: val => {
+                this.onManager('update', {
+                  id: this.data.id,
+                  managerArgs: {
+                    data: { disable_delete: val },
+                  },
+                })
+              },
+            }),
+          ],
+        },
       ],
     }
   },
