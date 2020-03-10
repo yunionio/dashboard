@@ -91,6 +91,14 @@ export default {
           },
           account: getAccountFilter(),
           host: getHostFilter(),
+          gpu: {
+            label: '类型',
+            dropdown: true,
+            items: [
+              { label: '通用云服务器', key: false },
+              { label: 'GPU云服务器', key: true },
+            ],
+          },
         },
       }),
       exportDataOptions: {
@@ -128,6 +136,26 @@ export default {
             )
           },
         }),
+        {
+          field: 'is_gpu',
+          title: '类型',
+          width: 50,
+          slots: {
+            default: ({ row }) => {
+              let tooltip = '通用云服务器'
+              let icontype = 'cpu'
+              if (row.is_gpu) {
+                tooltip = 'GPU云服务器'
+                icontype = 'gpu'
+              }
+              return [
+                <a-tooltip placement="top" title={tooltip}>
+                  <icon type={icontype} style={{ fontSize: '16px' }} />
+                </a-tooltip>,
+              ]
+            },
+          },
+        },
         getTagTableColumn({ vm: this, needExt: true }),
         getIpsTableColumn({ field: 'ip', title: 'IP' }),
         {
