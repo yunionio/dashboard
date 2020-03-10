@@ -5,13 +5,13 @@
       <div>2个磁贴</div>
       <div class="flex-fill text-right">可将任意磁贴拖动到仪表盘</div>
     </div>
-    <div class="flex-fill extend-list">
+    <div class="flex-fill extend-list overflow-auto position-relative">
       <ul>
         <li
           class="extend-gallery-item d-flex align-items-center"
-          v-for="(item, key) in extendsOptions"
-          :key="key"
-          :data-component="key">
+          v-for="item in sortExtendsOptions"
+          :key="item.component"
+          :data-component="item.component">
           <div class="extend-thumb"><img :src="item.thumb" /></div>
           <div class="extend-content ml-4 flex-fill">
             <div class="extend-title">{{ item.label }}</div>
@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import { extendsOptions } from '@Dashboard/extends'
 
 export default {
@@ -33,6 +34,19 @@ export default {
       extendsOptions,
     }
   },
+  computed: {
+    sortExtendsOptions () {
+      const ret = []
+      R.forEachObjIndexed((value, key) => {
+        ret.push({
+          ...value,
+          component: key,
+        })
+      }, this.extendsOptions)
+      ret.sort((a, b) => a.sort - b.sort)
+      return ret
+    },
+  },
 }
 </script>
 
@@ -41,6 +55,12 @@ export default {
   background-color: #fff;
   width: 300px;
   min-width: 300px;
+}
+.extend-gallery-item {
+  &.drag {
+    position: absolute;
+    top: 0;
+  }
 }
 .extend-gallery-title {
   padding: 15px;
