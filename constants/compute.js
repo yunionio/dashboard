@@ -8,8 +8,9 @@ export const IMAGES_TYPE_MAP = {
   host: { key: 'host', label: '主机镜像', tooltip: '用户在OneCloud平台保存某一台主机所有磁盘的镜像组合，磁盘数量及容量最低要求与原主机一致' },
   snapshot: { key: 'snapshot', label: '主机快照', tooltip: '用户在OneCloud平台保存某一台主机所有磁盘且同一时刻的快照组合，磁盘数量、容量和介质类型均需与原主机一致' },
   public: { key: 'public', label: '公有云镜像', tooltip: '公有云平台提供的标准镜像' },
-  'public_customize': { key: 'public_customize', label: '公有云自定义镜像', tooltip: '用户在公有云平台上传的镜像' },
-  private: { key: 'private', label: '私有云镜像', tooltip: '私有云平台提供的镜像' },
+  'public_customize': { key: 'public_customize', label: '公有云自定义镜像', tooltip: '用户在公有云平台上传的镜像', enable_cloudaccount: true },
+  private: { key: 'private', label: '私有云镜像', tooltip: '私有云平台提供的镜像', enable_cloudaccount: true },
+  vmware: { key: 'vmware', label: 'VMware平台镜像', tooltip: 'VMware平台提供的镜像', enable_cloudaccount: true },
 }
 
 // 镜像图标
