@@ -51,6 +51,7 @@ export const options = {
   thumb: require('./assets/thumb.svg'),
   h: 5,
   w: 4,
+  sort: 5,
 }
 
 export default {
