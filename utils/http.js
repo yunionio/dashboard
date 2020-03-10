@@ -42,8 +42,9 @@ function showLoading () {
 const requestMap = {}
 export const getRequestKey = config => {
   let ret = `$${config.url}$$${config.method}`
-  if (config.params && config.params.$t) {
-    ret += `$$${config.params.$t}`
+  const t = config.params && config.params.$t
+  if (t) {
+    ret += `$$${t}`
     delete config.params.$t
   }
   return ret
