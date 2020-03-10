@@ -6,7 +6,8 @@
     :keyboard="false"
     :width="width"
     :mask-closable="false"
-    @cancel="cancel">
+    @cancel="cancel"
+    v-bind="modalProps">
     <template v-slot:title>
       <div class="base-dialog-header">
         <slot name="header">Dialog default header</slot>
@@ -32,6 +33,10 @@ export default {
     width: {
       type: [Number, String],
       default: 800,
+    },
+    modalProps: {
+      type: Object,
+      default: () => ({}),
     },
   },
   provide: {
