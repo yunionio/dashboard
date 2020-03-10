@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { getEnabledTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
+import { getEnabledTableColumn, getBrandTableColumn } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 
 const storageType = {
@@ -37,7 +37,7 @@ export default {
         host_status: 'ready',
         enabled: true,
       },
-      diskColumns: [
+      storageColumns: [
         {
           field: 'adapter',
           title: '适配器',
@@ -100,20 +100,17 @@ export default {
         },
       ],
       baseInfo: [
+        getBrandTableColumn(),
         getEnabledTableColumn(),
         {
           field: 'access_ip',
           title: 'IP',
         },
         {
-          field: 'region',
-          title: '区域',
-        },
-        {
           field: 'access_mac',
           title: 'mac地址',
         },
-        getStatusTableColumn({ field: 'host_status', statusModule: 'host' }),
+        // getStatusTableColumn({ field: 'host_status', statusModule: 'host' }),
         {
           field: 'access_mac',
           title: 'mac地址',
@@ -229,7 +226,7 @@ export default {
           ],
         },
         {
-          title: '磁盘',
+          title: '存储',
           items: [
             {
               field: 'storage',
@@ -262,7 +259,7 @@ export default {
               slots: {
                 default: ({ row }, h) => {
                   return [
-                    <vxe-grid class="mb-2" data={ row.storage_info } columns={ this.diskColumns } />,
+                    <vxe-grid class="mb-2" data={ row.storage_info } columns={ this.storageColumns } />,
                   ]
                 },
               },

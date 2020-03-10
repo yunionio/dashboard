@@ -1,4 +1,5 @@
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
+import { getMaintenanceTableColumn } from '../utils/columns'
 import { getRegionTableColumn, getStatusTableColumn, getEnabledTableColumn, getNameDescriptionTableColumn, getCopyWithContentTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 
@@ -142,14 +143,7 @@ export default {
           },
         },
       },
-      {
-        field: 'is_maintenance',
-        title: '维护模式',
-        width: 70,
-        formatter: ({ row }) => {
-          return row.is_maintenance ? '维护模式' : '正常'
-        },
-      },
+      getMaintenanceTableColumn(),
       getRegionTableColumn(),
     ]
   },
