@@ -1,10 +1,20 @@
 <template>
-  <detail :on-manager="onManager" :base-info="baseInfo" status-module="rds" :data="data" :extra-info="extraInfo" />
+  <detail
+    :on-manager="onManager"
+    :base-info="baseInfo"
+    status-module="rds"
+    :data="data"
+    resource="dbinstances"
+    :extra-info="extraInfo" />
 </template>
 
 <script>
 // import BrandIcon from '@/sections/BrandIcon'
 import { DBINSTANCE_CATEGORY, DBINSTANCE_STORAGE_TYPE } from '../constants'
+import {
+  getBrandTableColumn,
+  getSwitchTableColumn,
+} from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
 
@@ -41,14 +51,7 @@ export default {
     }
     return {
       baseInfo: [
-        {
-          field: 'project_domain',
-          title: this.$t('dictionary.domain'),
-        },
-        {
-          field: 'tenant',
-          title: `所属${this.$t('dictionary.project')}`,
-        },
+        getBrandTableColumn(),
         {
           title: '计费方式',
           slots: {
@@ -56,14 +59,6 @@ export default {
               return formatPostpaid(row)
             },
           },
-        },
-        {
-          field: 'region',
-          title: '区域',
-        },
-        {
-          field: 'brand',
-          title: '平台',
         },
       ],
       extraInfo: [
@@ -216,6 +211,23 @@ export default {
                 },
               },
             },
+          ],
+        },
+        {
+          title: '其他信息',
+          items: [
+            getSwitchTableColumn({
+              field: 'disable_delete',
+              title: '删除保护',
+              change: val => {
+                this.onManager('update', {
+                  id: this.data.id,
+                  managerArgs: {
+                    data: { disable_delete: val },
+                  },
+                })
+              },
+            }),
           ],
         },
       ],
