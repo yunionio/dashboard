@@ -13,7 +13,7 @@ import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
-import { getNameFilter, getTenantFilter, getBrandFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getTenantFilter, getBrandFilter, getStatusFilter, getAccountFilter } from '@/utils/common/tableFilter'
 
 export default {
   name: 'BucketStorageList',
@@ -33,6 +33,21 @@ export default {
           name: getNameFilter(),
           brand: getBrandFilter(),
           tenant: getTenantFilter(),
+          status: getStatusFilter({ statusModule: 'bucket' }),
+          account: getAccountFilter(),
+          // region: {
+          //   label: '区域',
+          // },
+          storage_class: {
+            label: '存储类型',
+          },
+          acl: {
+            label: '读写权限',
+            dropdown: true,
+            items: Object.keys(ACL_TYPE).map(k => {
+              return { label: ACL_TYPE[k], key: k }
+            }),
+          },
         },
       }),
       exportDataOptions: {
