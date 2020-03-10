@@ -81,6 +81,14 @@ export default {
           },
           account: getAccountFilter(),
           host: getHostFilter(),
+          gpu: {
+            label: '类型',
+            dropdown: true,
+            items: [
+              { label: '通用云服务器', key: false },
+              { label: 'GPU云服务器', key: true },
+            ],
+          },
         },
         responseData: this.responseData,
       }),

@@ -188,12 +188,13 @@ export default {
           await this.doCreateByNewSnapshot()
         } else {
           await this.doCreateByOldSnapshot()
-          this.params.refresh()
         }
+        this.params.refresh()
         this.loading = false
         this.cancelDialog()
       } catch (error) {
         this.loading = false
+        throw error
       }
     },
     onValuesChange (props, values) {

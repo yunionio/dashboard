@@ -33,6 +33,26 @@ export default {
           )
         },
       }),
+      {
+        field: 'is_gpu',
+        title: '类型',
+        width: 50,
+        slots: {
+          default: ({ row }) => {
+            let tooltip = '通用云服务器'
+            let icontype = 'cpu'
+            if (row.is_gpu) {
+              tooltip = 'GPU云服务器'
+              icontype = 'gpu'
+            }
+            return [
+              <a-tooltip placement="top" title={tooltip}>
+                <icon type={icontype} style={{ fontSize: '16px' }} />
+              </a-tooltip>,
+            ]
+          },
+        },
+      },
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'server', columns: () => this.columns }),
       getIpsTableColumn({ field: 'ip', title: 'IP' }),
       {
