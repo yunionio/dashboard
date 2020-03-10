@@ -1,32 +1,24 @@
 <template>
-  <base-dialog @cancel="cancelDialog">
+  <base-dialog @cancel="handleCancel" :modalProps="{footer: null}">
     <div slot="header">{{this.params.title}}</div>
     <div slot="body">
       <a-form :form="form.fc" v-bind="formItemLayout">
         <a-form-item label="上传至">
           {{uploadTo}}
         </a-form-item>
-        <a-form-item label="选择文件">
+        <a-form-item label="选择文件" class="upload-file-item pb-3">
           <a-upload-dragger
             v-decorator="decorators.files"
-            v-bind="uploadDraggerConfig"
-            :fileList="fileList">
+            v-bind="uploadDraggerConfig">
             <div style="padding: 10px; min-width: 600px">
               <p class="ant-upload-drag-icon">
               <a-icon type="inbox" />
             </p>
              <p class="ant-upload-text">可将多个文件拖拽到此处，或点击 <a>直接上传</a></p>
-              <p class="ant-upload-hint">
-                最多支持 <span class="warning-color">4</span> 个文件同时上传
-              </p>
             </div>
           </a-upload-dragger>
         </a-form-item>
       </a-form>
-    </div>
-    <div slot="footer">
-      <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t("dialog.ok") }}</a-button>
-      <a-button @click="handleCancel">{{ $t('dialog.cancel') }}</a-button>
     </div>
   </base-dialog>
 </template>
@@ -35,7 +27,6 @@
 import { formItemLayout } from '@Storage/constants/index.js'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import { getRequestKey, cancelRquest } from '@/utils/http'
 
 export default {
   name: 'ObjectsUploadFileDialog',
@@ -45,6 +36,9 @@ export default {
       loading: false,
       formItemLayout,
       fileList: [],
+      modalProps: {
+        footer: null,
+      },
       form: {
         fc: this.$form.createForm(this),
       },
@@ -76,83 +70,74 @@ export default {
       }
     },
     uploadDraggerConfig () {
+      const { resId, prefix } = this.params
       return {
         name: 'file',
+        action: '/api/v1/s3uploads',
         multiple: true,
-        // action: '/api/v1/s3uploads',
-        headers: {
-          'Authorization': `Bearer ${this.$store.getters.userInfo.session}`,
-        },
-        beforeUpload: (file, fileList) => {
-          if (this.fileList.length >= 4) {
-            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-            this.fileList.shift()
+        data: (file) => {
+          const { name, size } = file
+          return {
+            bucket_id: resId,
+            fileName: name,
+            key: `${prefix}${name}`,
+            content_length: size,
+            acl: 'private',
           }
-          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-          this.fileList.push(file)
-          return false
         },
-        remove: (file) => {
-          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-          this.fileList = this.fileList.filter(({ uid }) => uid !== file.uid)
-          return true
+        headers: {
+          'Authorization': `Bearer ${this.$store.getters.auth.auth.session}`,
         },
       }
     },
   },
   methods: {
-    postUpload (formData) {
-      return this.$http({
-        data: formData,
-        ...this.uploadConfig,
-      })
-    },
-    validateForm () {
-      return new Promise((resolve, reject) => {
-        this.form.fc.validateFields((err, values) => {
-          if (err) return reject(err)
-          const { resId, prefix } = this.params
-          const formDatas = []
-          this.fileList.map(file => {
-            const { name, size } = file
-            const _ = {
-              bucket_id: resId,
-              fileName: name,
-              key: `${prefix}${name}`,
-              content_length: size,
-              acl: 'private',
-              file,
-            }
-            formDatas.push(_)
-          })
-          resolve(formDatas)
+    async fetchRemoveFile (key) {
+      try {
+        const { resName } = this.params
+        const manager = new this.$Manager('buckets', 'v2')
+        await manager.performAction({
+          id: resName,
+          action: 'delete',
+          data: {
+            keys: [key],
+          },
         })
-      })
+      } catch (err) {
+        throw err
+      }
     },
     handleCancel () {
-      const key = getRequestKey(this.uploadConfig)
-      cancelRquest(key)
-      this.cancelDialog()
-    },
-    async handleConfirm () {
-      this.loading = true
-      try {
-        const formDatas = await this.validateForm()
-        for (let i = 0; i < formDatas.length; i++) {
-          const formData = new FormData()
-          Object.keys(formDatas[i]).forEach(k => {
-            formData.append(k, formDatas[i][k])
-          })
-          await this.postUpload(formData)
-        }
-        this.params.list.fetchData()
+      if (document.getElementsByClassName('ant-upload-list-item-uploading').length) {
+        this.$confirm({
+          title: '列表中还有未完成上传的文件。',
+          width: '550px',
+          content: '关闭对话框会取消所有未上传成功的文件，是否继续？',
+          okText: '继续',
+          cancelText: '取消',
+          onOk: () => {
+            this.cancelDialog()
+            this.params.list.fetchData()
+          },
+        })
+      } else {
         this.cancelDialog()
-      } catch (error) {
-        this.loading = false
-        this.fileList = []
-        throw error
+        this.params.list.fetchData()
       }
     },
   },
 }
 </script>
+<style lang="scss">
+  .upload-file-item .ant-upload-list-item-done .anticon-close {
+    display: none;
+  }
+  .upload-file-item .ant-upload-list-item  .anticon-close {
+    opacity: 1;
+    color: rgba(0, 0, 0, 0.7);
+    z-index: 0;
+  }
+  :root .ant-upload-list-item .anticon-close {
+    font-size: 14px;
+  }
+</style>
