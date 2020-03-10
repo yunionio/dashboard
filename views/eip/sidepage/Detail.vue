@@ -2,12 +2,15 @@
   <detail
     :on-manager="onManager"
     :data="data"
+    resource="eips"
+    statusModule="eip"
     :base-info="baseInfo"
     :extra-info="extraInfo" />
 </template>
 
 <script>
-import { getStatusTableColumn, getBrandTableColumn } from '@/utils/common/tableColumn'
+import { getAssociateNameTableColumn } from '../utils/columns'
+import { getBrandTableColumn } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 
 export default {
@@ -25,11 +28,8 @@ export default {
   data () {
     return {
       baseInfo: [
-        {
-          field: 'name',
-          title: '名称',
-        },
-        getStatusTableColumn({ statusModule: 'eip' }),
+        getBrandTableColumn(),
+        getAssociateNameTableColumn(),
         {
           field: 'ip_addr',
           title: 'IP地址',
@@ -52,34 +52,8 @@ export default {
             return type[cellValue]
           },
         },
-        {
-          field: 'tenant',
-          title: `所属${this.$t('dictionary.project')}`,
-        },
       ],
-      extraInfo: [
-        {
-          title: '其他信息',
-          items: [
-            {
-              field: 'account',
-              title: '云账号',
-              // formatter: ({ row }) => {
-              //   return this.$moment(row.last_sync).format()
-              // },
-            },
-            {
-              field: 'region',
-              title: '区域',
-            },
-            {
-              field: 'region_ext_id',
-              title: '可用区',
-            },
-            getBrandTableColumn(),
-          ],
-        },
-      ],
+      extraInfo: [],
     }
   },
 }

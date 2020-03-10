@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import { getBandwidthTableColumn } from '../utils/columns'
 import { getBrandTableColumn } from '@/utils/common/tableColumn'
 
 export default {
@@ -25,10 +26,8 @@ export default {
   data () {
     return {
       baseInfo: [
-        {
-          field: 'bandwidth',
-          title: '带宽',
-        },
+        getBrandTableColumn(),
+        getBandwidthTableColumn(),
         {
           field: 'vpc',
           title: '专有网络',
@@ -41,14 +40,8 @@ export default {
           field: 'region',
           title: '区域',
         },
-        getBrandTableColumn(),
       ],
-      extraInfo: [
-        {
-          title: '其他信息',
-          items: [],
-        },
-      ],
+      extraInfo: [],
     }
   },
 }

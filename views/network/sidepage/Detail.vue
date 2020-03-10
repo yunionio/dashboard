@@ -9,6 +9,8 @@
 </template>
 
 <script>
+import { getBrandTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
+
 export default {
   name: 'NetworkDetail',
   props: {
@@ -24,6 +26,7 @@ export default {
   data () {
     return {
       baseInfo: [
+        getBrandTableColumn(),
         {
           field: 'guest_ip_start',
           title: 'IP范围',
@@ -49,8 +52,9 @@ export default {
       ],
       extraInfo: [
         {
-          title: '其他信息',
+          title: '配置信息',
           items: [
+            getCopyWithContentTableColumn({ field: 'vpc', title: 'VPC' }),
             {
               field: 'dns',
               title: '域名服务器',
@@ -85,13 +89,6 @@ export default {
             {
               field: 'vlan_id',
               title: 'VLAN ID',
-              formatter: ({ cellValue }) => {
-                return cellValue || '-'
-              },
-            },
-            {
-              field: 'user',
-              title: '创建人',
               formatter: ({ cellValue }) => {
                 return cellValue || '-'
               },

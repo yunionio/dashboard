@@ -8,6 +8,8 @@
 </template>
 
 <script>
+import { getBrandTableColumn } from '@/utils/common/tableColumn'
+
 export default {
   name: 'FlexNetworkDetail',
   props: {
@@ -23,6 +25,7 @@ export default {
   data () {
     return {
       baseInfo: [
+        getBrandTableColumn(),
         {
           field: 'mac',
           title: 'MAC地址',

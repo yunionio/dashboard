@@ -1,4 +1,4 @@
-import { BAND_WIDTH_OPTION } from '../../../constants'
+import { getBandwidthTableColumn } from '../utils/columns'
 import {
   getNameDescriptionTableColumn,
   getRegionTableColumn,
@@ -17,17 +17,7 @@ export default {
           )
         },
       }),
-      {
-        field: 'bandwidth',
-        title: '带宽',
-        minWidth: 100,
-        sortable: true,
-        showOverflow: 'ellipsis',
-        formatter: ({ cellValue }) => {
-          const item = BAND_WIDTH_OPTION.find(val => val.value === `${cellValue}`)
-          return item ? item.label : cellValue
-        },
-      },
+      getBandwidthTableColumn(),
       getCopyWithContentTableColumn({ field: 'vpc', title: '专有网络', sortable: true }),
       {
         field: 'networks',
