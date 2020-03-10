@@ -8,7 +8,13 @@
 </template>
 
 <script>
-import { getBrandTableColumn, getEnabledTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
+import {
+  getAccessUrlTableColumn,
+  getBalanceTableColumn,
+  getGuestCountTableColumn,
+  getHostCountTableColumn,
+} from '../utils/columns'
+import { getBrandTableColumn, getEnabledTableColumn, getStatusTableColumn, getPublicTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   name: 'CloudaccountDetail',
@@ -26,6 +32,7 @@ export default {
     return {
       baseInfo: [
         getBrandTableColumn(),
+        getPublicTableColumn(),
         {
           field: 'account',
           title: '账号',
@@ -50,9 +57,13 @@ export default {
       ],
       extraInfo: [
         {
-          title: '其他信息',
+          title: '账号信息',
           items: [
+            getAccessUrlTableColumn(),
             getStatusTableColumn({ statusModule: 'cloudaccountHealthStatus', title: '健康状态', field: 'health_status' }),
+            getBalanceTableColumn(),
+            getGuestCountTableColumn(),
+            getHostCountTableColumn(),
           ],
         },
       ],
