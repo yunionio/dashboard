@@ -14,7 +14,7 @@
         v-if="instanceGroupsLoaded"
         class="w-100"
         mode="multiple"
-        placeholder="请选择要绑定的主机"
+        placeholder="请选择要绑定的主机组"
         :defaultValue="defaultSelected"
         :loading="instanceGroupsLoading"
         @search="debounceFetchInstanceGroups"
