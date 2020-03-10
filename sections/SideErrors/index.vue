@@ -76,12 +76,12 @@ export default {
     height: 1px;
   }
   .list-wrapper {
-    max-height: 400px;
+    max-height: 360px;
+    overflow-y: scroll;
   }
   .list {
     padding: 0 15px;
     color: $error-color;
-    overflow-y: scroll;
     li {
       line-height: 1.8;
       list-style-type: disc;
