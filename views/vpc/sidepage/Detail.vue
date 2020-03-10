@@ -10,10 +10,7 @@
 
 <script>
 import {
-  getCopyWithContentTableColumn,
   getBrandTableColumn,
-  getRegionTableColumn,
-  getAccountTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -31,13 +28,11 @@ export default {
   data () {
     return {
       baseInfo: [
-        getCopyWithContentTableColumn({ field: 'name', title: '名称' }),
+        getBrandTableColumn(),
         {
           field: 'cidr_block',
           title: '目标网段',
         },
-        getBrandTableColumn(),
-        getRegionTableColumn(),
         {
           field: 'wire_count',
           title: '二层网络数量',
@@ -55,18 +50,7 @@ export default {
           title: 'nat网关数量',
         },
       ],
-      extraInfo: [
-        {
-          title: '其他信息',
-          items: [
-            getAccountTableColumn(),
-            {
-              field: 'manager',
-              title: '子账号（订阅）',
-            },
-          ],
-        },
-      ],
+      extraInfo: [],
     }
   },
 }
