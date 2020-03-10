@@ -189,7 +189,7 @@ export default {
         } else {
           await this.doCreateByOldSnapshot()
         }
-        this.params.list.refresh()
+        this.params.refresh()
         this.loading = false
         this.cancelDialog()
       } catch (error) {
