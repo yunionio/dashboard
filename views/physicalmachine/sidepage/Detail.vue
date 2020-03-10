@@ -4,11 +4,13 @@
     :data="itemData"
     :base-info="baseInfo"
     :extra-info="extraInfo"
+    resource="hosts"
     status-module="host" />
 </template>
 
 <script>
-import { getEnabledTableColumn } from '@/utils/common/tableColumn'
+import { getMaintenanceTableColumn } from '../utils/columns'
+import { getEnabledTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 
 const storageType = {
@@ -36,7 +38,7 @@ export default {
         host_status: 'ready',
         enabled: true,
       },
-      diskColumns: [
+      storageColumns: [
         {
           field: 'adapter',
           title: '适配器',
@@ -96,14 +98,12 @@ export default {
       ],
       baseInfo: [
         getEnabledTableColumn(),
+        getMaintenanceTableColumn(),
         {
           field: 'access_ip',
           title: 'IP',
         },
-        {
-          field: 'region',
-          title: '区域',
-        },
+        getCopyWithContentTableColumn({ field: 'server', title: '分配' }),
         {
           field: 'access_mac',
           title: 'mac地址',
@@ -210,7 +210,7 @@ export default {
           ],
         },
         {
-          title: '磁盘',
+          title: '存储',
           items: [
             {
               field: 'storage_size',
@@ -243,7 +243,7 @@ export default {
               slots: {
                 default: ({ row }, h) => {
                   return [
-                    <vxe-grid class="mb-2" data={ row.storage_info } columns={ this.diskColumns } />,
+                    <vxe-grid class="mb-2" data={ row.storage_info } columns={ this.storageColumns } />,
                   ]
                 },
               },
