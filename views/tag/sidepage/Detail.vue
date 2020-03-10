@@ -28,23 +28,17 @@ export default {
             },
           },
         },
-      ],
-      extraInfo: [
         {
-          title: '其他信息',
-          items: [
-            {
-              field: 'color',
-              title: '颜色',
-              slots: {
-                default: ({ row }) => {
-                  return [<span style={{ display: 'inline-block', backgroundColor: row.color, width: '10px', height: '10px' }} />]
-                },
-              },
+          field: 'color',
+          title: '颜色',
+          slots: {
+            default: ({ row }) => {
+              return [<span style={{ display: 'inline-block', backgroundColor: row.color, width: '10px', height: '10px' }} />]
             },
-          ],
+          },
         },
       ],
+      extraInfo: [],
     }
   },
 }

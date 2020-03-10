@@ -6,4 +6,6 @@ export const STRATEGY_CN = {
   '': '无',
 }
 
+export const RES_TYPES = { hosts: '宿主机、物理机', storages: '存储', networks: '网络' }
+
 export const STRATEGY_OPT = (() => Object.entries(STRATEGY_CN).map(val => ({ label: val[1], key: val[0] })))()
