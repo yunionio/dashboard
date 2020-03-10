@@ -1,18 +1,20 @@
+import { sizestrWithUnit } from '@/utils/utils'
+
 export const usageConfig = {
   'usage_active,vm_cpu': {
     formatter: val => `${parseInt(val)}%`,
   },
   'read_bps,vm_diskio': {
-    formatter: val => `${parseInt(val)}%`,
+    formatter: val => `${sizestrWithUnit(val, 'B', 1024)}bps`,
   },
   'write_bps,vm_diskio': {
-    formatter: val => `${parseInt(val)}%`,
+    formatter: val => `${sizestrWithUnit(val, 'B', 1024)}bps`,
   },
   'bps_recv,vm_netio': {
-    formatter: val => `${parseInt(val)}%`,
+    formatter: val => `${sizestrWithUnit(val, 'B', 1024)}bps`,
   },
   'bps_sent,vm_netio': {
-    formatter: val => `${parseInt(val)}%`,
+    formatter: val => `${sizestrWithUnit(val, 'B', 1024)}bps`,
   },
   'usage_active,cpu': {
     formatter: val => `${parseInt(val)}%`,
@@ -21,9 +23,9 @@ export const usageConfig = {
     formatter: val => `${parseInt(val)}%`,
   },
   'bps_recv,net': {
-    formatter: val => `${parseInt(val)}%`,
+    formatter: val => `${sizestrWithUnit(val, 'B', 1024)}bps`,
   },
   'bps_sent,net': {
-    formatter: val => `${parseInt(val)}%`,
+    formatter: val => `${sizestrWithUnit(val, 'B', 1024)}bps`,
   },
 }
