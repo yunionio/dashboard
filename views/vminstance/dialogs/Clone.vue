@@ -98,6 +98,14 @@ export default {
           },
         ],
         imageOS: {
+          preferManager: [
+            'preferManager',
+            {
+              rules: [
+                { required: true, message: '请选择云账号' },
+              ],
+            },
+          ],
           os: [
             'os',
             {
@@ -277,6 +285,7 @@ export default {
       if (this.isPublic) {
         server.disks[0].image_id = fd.image.key
         server.imageType = fd.imageType
+        server.preferManager = fd.preferManager
       }
       return server
     },

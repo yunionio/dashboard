@@ -18,7 +18,7 @@
           :filterable="true"
           :showSync="true"
           @change="hostChange"
-          :select-props="{ placeholder: schedPolicyOptionsMap.host.label }" />
+          :select-props="{ placeholder: lodash.get(schedPolicyOptionsMap, 'host.label') || ''  }" />
       </template>
       <template v-else>
         <base-select
@@ -31,7 +31,7 @@
           :need-params="true"
           :filterable="true"
           :showSync="true"
-          :select-props="{ placeholder: schedPolicyOptionsMap.host.label }" />
+          :select-props="{ placeholder: lodash.get(schedPolicyOptionsMap, 'host.label') || '' }" />
       </template>
     </a-form-item>
     <a-form-item v-if="schedPolicyComponent === 'schedtag'">
@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import lodash from 'lodash'
 import { SERVER_TYPE, SCHED_POLICY_OPTIONS_MAP } from '@Compute/constants'
 import PolicySchedtag from './PolicySchedtag'
 
@@ -78,10 +79,19 @@ export default {
       type: Array,
       default: () => [],
     },
+    form: {
+      type: Object,
+      validator: val => !val || val.fc, // 不传 或者 传就有fc
+    },
+    hideCloudaccountSched: { // 隐藏 指定云账号
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
       schedPolicyComponent: '',
+      lodash,
     }
   },
   computed: {
@@ -103,12 +113,32 @@ export default {
       if (!this.$store.getters.isAdminMode && !this.$store.getters.isDomainMode) {
         delete ret['host']
       }
+      if (this.hideCloudaccountSched) {
+        delete ret['host']
+      }
       return ret
+    },
+  },
+  watch: {
+    schedPolicyOptionsMap (val) {
+      this.$nextTick(() => {
+        const keys = Object.keys(val)
+        if (keys.length) {
+          if (this.form && this.form.fc) {
+            const schedPolicyType = this.schedPolicyOptionsMap[keys[0]].key
+            this.form.fc.setFieldsValue({
+              [this.decorators.schedPolicyType[0]]: schedPolicyType,
+            })
+            this.change(schedPolicyType)
+          }
+        }
+      })
     },
   },
   methods: {
     change (e) {
-      switch (e.target.value) {
+      const schedPolicyType = lodash.isString(e) ? e : e.target.value
+      switch (schedPolicyType) {
         case this.schedPolicyOptionsMap.default.key:
           this.schedPolicyComponent = ''
           break

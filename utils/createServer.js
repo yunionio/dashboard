@@ -120,6 +120,14 @@ export const createVmDecorators = type => {
       ],
     },
     imageOS: {
+      preferManager: [
+        'preferManager',
+        {
+          rules: [
+            { required: true, message: '请选择云账号' },
+          ],
+        },
+      ],
       os: [
         'os',
         {
@@ -815,6 +823,11 @@ export class GenCreateData {
       ret.key = 'prefer_host'
       ret.value = this.fd.schedPolicyHost
     }
+    // 如果是通过云账号过滤镜像
+    if (this.showPreferManager()) {
+      ret.key = 'preferManager'
+      ret.value = this.fd.preferManager
+    }
     // 调度策略选择为 调度标签
     if (this.fd.schedPolicyType === SCHED_POLICY_OPTIONS_MAP.schedtag.key) {
       ret.key = 'schedtags'
@@ -841,6 +854,16 @@ export class GenCreateData {
       if (provider) ret = provider.toLowerCase()
     }
     return ret
+  }
+  /**
+   * 是否是通过云账号过滤后选择的镜像
+   *
+   * @returns { String }
+   * @memberof GenCreateData
+   */
+  showPreferManager () {
+    const imageMsg = IMAGES_TYPE_MAP[this.fd.imageType]
+    return imageMsg && imageMsg.enable_cloudaccount
   }
   /**
    * 获取Region
@@ -953,8 +976,8 @@ export class GenCreateData {
     if (this.fd.secgroup_type === SECGROUP_OPTIONS_MAP.bind.key) {
       data.secgroups = this.fd.secgroup
     }
-    // 如果设置了调度策略则拼装调度所需数据
-    if (this.fd.schedPolicyType !== SCHED_POLICY_OPTIONS_MAP.default.key) {
+    // 如果设置了调度策略则拼装调度所需数据 或者 通过云账号过滤镜像
+    if ((this.fd.schedPolicyType !== SCHED_POLICY_OPTIONS_MAP.default.key) || this.showPreferManager()) {
       const schedPolicyValueKey = this.getSchedPolicyValueKey()
       data[schedPolicyValueKey.key] = schedPolicyValueKey.value
     }

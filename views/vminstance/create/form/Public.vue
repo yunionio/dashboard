@@ -67,6 +67,7 @@
           :hypervisor="hypervisor"
           :decorator="decorators.imageOS"
           :cacheImageParams="cacheImageParams"
+          :cloudaccountParamsExtra="cloudaccountParamsExtra"
           @updateImageMsg="updateFi" />
       </a-form-item>
       <a-form-item label="系统盘" class="mb-0">
@@ -126,10 +127,12 @@
           </a-form-item>
           <a-form-item label="调度策略" v-show="!isServertemplate" class="mb-0">
             <sched-policy
+              :form="form"
               :server-type="form.fi.createType"
               :disabled-host="policyHostDisabled"
               :policy-host-params="policyHostParams"
               :decorators="decorators.schedPolicy"
+              :hideCloudaccountSched="hideCloudaccountSched"
               :policy-schedtag-params="policySchedtagParams" />
           </a-form-item>
         </a-collapse-panel>
@@ -373,6 +376,16 @@ export default {
       if (cloudregion) params.cloudregion = cloudregion
       if (zone) params.zone = zone
       return params
+    },
+    cloudaccountParamsExtra () {
+      const params = {}
+      if (this.form.fd.sku && this.form.fd.sku.provider) {
+        params.provider = this.form.fd.sku.provider
+      }
+      return params
+    },
+    hideCloudaccountSched () {
+      return !!this.form.fd.preferManager
     },
   },
   watch: {
