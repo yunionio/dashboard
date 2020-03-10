@@ -1,6 +1,8 @@
 import * as R from 'ramda'
 import i18n from '@/locales'
 
+let tIndex = 0
+
 export const UNITS = ['B', 'K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y']
 
 export function camel2Words (camel) {
@@ -358,4 +360,8 @@ export const i18nSetProperty = ({
       return `${perfix}${i18n.t(i18nKey)}${suffix}`
     },
   })
+}
+
+export const getRequestT = () => {
+  return ++tIndex
 }
