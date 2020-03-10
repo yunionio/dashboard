@@ -17,6 +17,9 @@
       :imageParams="imageParams"
       :cacheImageParams="cacheImageParams"
       :osType="osType"
+      :cloudaccountParamsExtra="cloudaccountParamsExtra"
+      :cloudaccountId="cloudaccountId"
+      :imageCloudaccountDisabled="imageCloudaccountDisabled"
       :form="form" />
   </div>
 </template>
@@ -66,6 +69,17 @@ export default {
       type: Boolean,
       required: false,
     },
+    cloudaccountParamsExtra: {
+      type: Object,
+      default: () => ({}),
+    },
+    imageCloudaccountDisabled: {
+      type: Boolean,
+      default: false,
+    },
+    cloudaccountId: {
+      type: String,
+    },
   },
   inject: ['form'],
   data () {
@@ -90,6 +104,8 @@ export default {
       let ret = [IMAGES_TYPE_MAP.standard, IMAGES_TYPE_MAP.customize]
       if (this.isIDC && this.hypervisor === HYPERVISORS_MAP.kvm.key) {
         ret.push(IMAGES_TYPE_MAP.iso, IMAGES_TYPE_MAP.host, IMAGES_TYPE_MAP.snapshot)
+      } else if (this.hypervisor === HYPERVISORS_MAP.esxi.key) {
+        ret.unshift(IMAGES_TYPE_MAP.vmware)
       } else if (this.isPublic) {
         ret.unshift(IMAGES_TYPE_MAP.public_customize)
         ret.unshift(IMAGES_TYPE_MAP.public)

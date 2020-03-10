@@ -1,7 +1,18 @@
 <template>
   <div class="os-image-select-wrapper">
     <a-row :gutter="8">
-      <a-col :span="8">
+      <a-col :span="8" v-if="showCloudaccount">
+        <a-form-item :wrapperCol="{ span: 24 }">
+          <base-select
+            v-decorator="decorator.preferManager"
+            resource="cloudaccounts"
+            @change="cloudaccountChange"
+            :params="cloudaccountParams"
+            :isDefaultSelect="true"
+            :select-props="{ placeholder: '请选择云账号', disabled: imageCloudaccountDisabled }" />
+        </a-form-item>
+      </a-col>
+      <a-col :span="4">
         <a-form-item :wrapperCol="{ span: 24 }">
           <a-select v-decorator="decorator.os" :loading="loading" @change="osChange">
             <a-select-option v-for="item in imagesInfo.osOpts" :key="item.key">
@@ -13,7 +24,7 @@
           </a-select>
         </a-form-item>
       </a-col>
-      <a-col :span="16">
+      <a-col :span="12">
         <a-form-item :wrapperCol="{ span: 24 }">
           <image-select-template v-decorator="decorator.image" :imageOpts="imageOptions" @imageChange="imageChange" :loading="loading" />
         </a-form-item>
@@ -74,6 +85,14 @@ export default {
     uefi: {
       type: Boolean,
     },
+    cloudaccountParamsExtra: {
+      type: Object,
+      default: () => ({}),
+    },
+    imageCloudaccountDisabled: {
+      type: Boolean,
+      default: false,
+    },
   },
   inject: ['form'],
   data () {
@@ -90,6 +109,7 @@ export default {
       },
       loading: false,
       imageOpts: [],
+      cloudaccount_id: '',
     }
   },
   computed: {
@@ -126,6 +146,18 @@ export default {
     },
     storageSelectImage () {
       return storage.get(`${this.cloudType}${SELECT_IMAGE_KEY_SUFFIX}`)
+    },
+    showCloudaccount () {
+      if (!this.decorator.preferManager) return false
+      const imageMsg = IMAGES_TYPE_MAP[this.imageType]
+      return imageMsg && imageMsg.enable_cloudaccount
+    },
+    cloudaccountParams () {
+      return {
+        limit: 0,
+        scope: this.$store.getters.scope,
+        ...this.cloudaccountParamsExtra,
+      }
     },
     storageImage () {
       if (this.storageSelectImage) {
@@ -173,6 +205,13 @@ export default {
     imageParams (val, oldVal) {
       if (R.equals(val, oldVal)) return
       this.fetchData()
+    },
+    showCloudaccount (val) { // 如果不显示云账号，清空 fd 中的 preferManager
+      if (!val) {
+        if (this.form && this.form.fd && this.form.fd.preferManager) {
+          this.form.fd.preferManager = ''
+        }
+      }
     },
   },
   created () {
@@ -296,7 +335,6 @@ export default {
     async fetchCacheimages () {
       if (R.isNil(this.cacheImageParams) || R.isEmpty(this.cacheImageParams)) return
       this.images.cacheimagesList = []
-      this.loading = true
       const params = {
         details: false,
         order_by: 'ref_count',
@@ -304,12 +342,20 @@ export default {
         image_type: 'customized',
         ...this.cacheImageParams,
       }
+      if (this.showCloudaccount) {
+        if (this.cloudaccount_id) {
+          params.account = this.cloudaccount_id
+        } else {
+          return
+        }
+      }
       if (
         this.imageType === IMAGES_TYPE_MAP.public.key ||
         this.imageType === IMAGES_TYPE_MAP.private.key
       ) {
         params.image_type = 'system'
       }
+      this.loading = true
       try {
         const { data: { data = [] } } = await this.cachedimagesM.list({ params })
         this.loading = false
@@ -319,6 +365,10 @@ export default {
         this.loading = false
         throw error
       }
+    },
+    cloudaccountChange (val) {
+      this.cloudaccount_id = val
+      this.fetchCacheimages()
     },
     getProperties (img) {
       if (this.isPublicImage || this.isPrivateImage) {

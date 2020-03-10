@@ -14,6 +14,7 @@
         <a-form-item v-bind="formItemLayout" v-show="!imgHidden" label="操作系统" extra="操作系统会根据选择的虚拟化平台和可用区域的变化而变化，公共镜像的维护请联系管理员">
           <os-select
             :type="type"
+            :form="form"
             :types="osSelectTypes"
             :hypervisor="hypervisor"
             :image-params="image"
@@ -21,6 +22,7 @@
             :osType="osType"
             :cache-image-params="cacheImageParams"
             :decorator="decorators.imageOS"
+            :imageCloudaccountDisabled="true"
             @updateImageMsg="updateImageMsgDebounce" />
         </a-form-item>
         <a-form-item v-bind="formItemLayout" v-show="imgHidden" label="操作系统">
@@ -136,6 +138,15 @@ export default {
       }
       return {
         imageOS: {
+          preferManager: [
+            'preferManager',
+            {
+              initialValue: _.get(this.params, 'data[0].account_id') || '',
+              rules: [
+                { required: true, message: '请选择云账号' },
+              ],
+            },
+          ],
           os: [
             'os',
             {
@@ -361,11 +372,12 @@ export default {
         if (diskInfo.length > 0) {
           const image = diskInfo[0] || {}
           if (imageMsg.name !== image.image) return
+          if (!image.image_id) return
           this.$nextTick(() => {
             this.form.fc.setFieldsValue({
               image: {
                 key: image.image_id,
-                label: image.image,
+                label: image.image || '',
               },
             })
           })
