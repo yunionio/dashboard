@@ -3,7 +3,7 @@
     <page-header title="新建云账号" />
     <steps class="my-3" v-model="step" />
     <keep-alive>
-      <component :is="currentComponent" :current-item.sync="currentItem" ref="stepRef" :provider="currentItem.provider" /><!-- provider 是为了 VmNetwork 的 prop 不报错 -->
+      <component :is="currentComponent" :current-item.sync="currentItem" :account="newAccountInfo" ref="stepRef" :provider="currentItem.provider" /><!-- provider 是为了 VmNetwork 的 prop 不报错 -->
     </keep-alive>
     <page-footer>
       <div slot="left">
@@ -28,6 +28,7 @@
 import { CLOUDACCOUNT_TYPES } from '@Cloudenv/views/cloudaccount/constants'
 import SelectCloudaccount from './form/SelectCloudaccount'
 import CreateCloudaccount from './form/CreateCloudaccount'
+import BillForm from './form/BillForm'
 import VmNetwork from './form/VmNetwork'
 import step from '@/mixins/step'
 import { Manager } from '@/utils/manager'
@@ -37,11 +38,13 @@ export default {
   components: {
     SelectCloudaccount,
     CreateCloudaccount,
+    BillForm,
     VmNetwork,
   },
   mixins: [step],
   data () {
     return {
+      newAccountInfo: {},
       isAdminMode: this.$store.getters.isAdminMode,
       isDomainMode: this.$store.getters.isDomainMode,
       l3PermissionEnable: this.$store.getters.l3PermissionEnable,
@@ -54,6 +57,7 @@ export default {
         steps: [
           { title: '选择云平台', key: 'platform' },
           { title: '配置云账号', key: 'cloudaccount' },
+          { title: '账单文件访问信息（可选）', key: 'billConfig' },
         ],
         currentStep: 0,
       },
@@ -66,6 +70,12 @@ export default {
       }
       return '下一步'
     },
+    stepKey () {
+      return this.step.steps[this.step.currentStep].key
+    },
+    isBill () {
+      return ['Aws', 'Aliyun', 'Google', 'Huawei'].indexOf(this.currentItem.provider) > -1
+    },
   },
   watch: {
     'step.currentStep' (step) {
@@ -74,15 +84,21 @@ export default {
       } else if (step === 1) {
         this.currentComponent = 'CreateCloudaccount'
       } else {
-        this.currentComponent = 'VmNetwork'
+        this.currentComponent = this.isBill ? 'BillForm' : 'VmNetwork'
       }
     },
     currentItem (val) {
-      if (val.name === 'VMware') {
+      if (val.provider === 'VMware') {
         this.step.steps = [
           { title: '选择云平台', key: 'platform' },
           { title: '配置云账号', key: 'cloudaccount' },
           { title: '配置IP子网', key: 'network' },
+        ]
+      } else if (this.isBill) {
+        this.step.steps = [
+          { title: '选择云平台', key: 'platform' },
+          { title: '配置云账号', key: 'cloudaccount' },
+          { title: '账单文件访问信息（可选）', key: 'billConfig' },
         ]
       } else {
         this.step.steps = [
@@ -182,7 +198,12 @@ export default {
       }
       const brand = this.currentItem.provider.toLowerCase()
       let createForm = this.$refs.stepRef.$refs.createForm
-      if (this.step.currentStep === 2) createForm = this.$refs.stepRef // VmNetwork 组件
+      if (this.step.currentStep === 2) {
+        if (this.isBill) {
+          return this.fetchBillSubmit()
+        }
+        createForm = this.$refs.stepRef // VmNetwork 组件
+      }
       return new Promise((resolve, reject) => {
         if (createForm && createForm.validateForm) {
           createForm.validateForm()
@@ -212,7 +233,15 @@ export default {
               } else {
                 this.loading = true
                 return this.doCreateCloudaccount(values)
-                  .then(successFn)
+                  .then(({ data }) => {
+                    if (this.isBill) {
+                      this.step.currentStep = 2
+                      this.newAccountInfo = data
+                    } else {
+                      successFn()
+                    }
+                    this.loading = false
+                  })
                   .catch(errorFn)
               }
             }).catch(err => {
@@ -222,6 +251,17 @@ export default {
           resolve()
         }
       })
+    },
+    async fetchBillSubmit () {
+      const BILL_FORM = this.$refs.stepRef
+      this.loading = true
+      try {
+        await BILL_FORM.doSubmit(this.newAccountInfo)
+      } catch (err) {
+        throw err
+      } finally {
+        this.loading = false
+      }
     },
     next () {
       const { currentStep } = this.step
