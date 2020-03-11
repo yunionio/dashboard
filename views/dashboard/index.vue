@@ -10,6 +10,8 @@
         </a-dropdown>
         <a-button type="link" icon="plus" @click="() => handleToEdit()">新建</a-button>
         <a-button type="link" icon="edit" @click="() => handleToEdit(currentDashboardOption.id)">编辑</a-button>
+        <a-button type="link" icon="download" @click="handleDownloadConfig" :disabled="disableDownloadConfig">导出</a-button>
+        <a-button type="link" icon="file" @click="handleImportConfig">导入</a-button>
         <a-popconfirm @confirm="handleRemoveDashboard">
           <template v-slot:title>你所选<span class="font-weight-bold ml-2 mr-2">{{currentDashboardOption.name}}</span>将执行<span class="error-color ml-2 mr-2">删除</span>操作操作，是否确认？</template>
           <a-button type="link" icon="delete">删除</a-button>
@@ -28,7 +30,7 @@
         <div class="flex-fill d-flex align-items-center justify-content-center">
           <a-empty>
             <template v-slot:description>
-              <div>暂无控制面板，点击<a-button type="link" icon="plus" @click="() => handleToEdit()" />进行新建</div>
+              <div>暂无控制面板，点击<a-button type="link" icon="plus" @click="() => handleToEdit()" />新建或<a-button type="link" icon="file" @click="handleImportConfig" />导入</div>
             </template>
           </a-empty>
         </div>
@@ -72,7 +74,10 @@ import { mapGetters } from 'vuex'
 import VueGridLayout from 'vue-grid-layout'
 import extendsComponents from '@Dashboard/extends'
 import Cookies from 'js-cookie'
+import { Base64 } from 'js-base64'
 import storage from '@/utils/storage'
+import { download } from '@/utils/utils'
+import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'Dashboard',
@@ -81,6 +86,7 @@ export default {
     GridItem: VueGridLayout.GridItem,
     ...extendsComponents,
   },
+  mixins: [WindowsMixin],
   data () {
     return {
       loading: false,
@@ -101,6 +107,9 @@ export default {
     ...mapGetters(['scope']),
     dashboardEmpty () {
       return this.dashboardOptions.length <= 0
+    },
+    disableDownloadConfig () {
+      return R.isNil(this.dashboardOptions) || R.isEmpty(this.dashboardOptions)
     },
   },
   destroyed () {
@@ -173,6 +182,24 @@ export default {
     swtchOldDashboard () {
       Cookies.set('__oc_dashboard_version__', 'v1', { expires: 365 })
       window.location.href = `${process.env.VUE_APP_V1_PERFIX}/dashboard`
+    },
+    handleDownloadConfig () {
+      const ret = {
+        scope: this.scope,
+        items: [],
+      }
+      R.forEachObjIndexed((value, key) => {
+        ret.items.push(value)
+      }, this.dashboard)
+      const data = Base64.encode(JSON.stringify(ret))
+      const name = `${this.$t(`policyScopeLabel.${this.scope}`)}_${this.currentDashboardOption.name}.ocdb`
+      download(data, name)
+    },
+    handleImportConfig () {
+      this.createDialog('DashboardImport', {
+        dashboardOptions: this.dashboardOptions,
+        fetchDashboardOptions: () => this.fetchDashboardOptions(),
+      })
     },
   },
 }
