@@ -308,7 +308,10 @@ export default {
         },
         {
           label: '更新账单文件',
+<<<<<<< HEAD
           permission: 'cloudaccounts_perform_update_credential',
+=======
+>>>>>>> db3ccd63bd005f5381bcb4f0a02603fe6f2fe239
           action: obj => {
             this.$router.push({
               name: 'CloudaccountUpdateBill',
