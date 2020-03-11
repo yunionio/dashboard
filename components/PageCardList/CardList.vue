@@ -8,13 +8,13 @@
 
 <script>
 import HorizontalCard from './HorizontalCard'
-import LongitudinalCard from './LongitudinalCard'
+import VerticalCard from './VerticalCard'
 
 export default {
   name: 'CardList',
   components: {
     HorizontalCard,
-    LongitudinalCard,
+    VerticalCard,
   },
   props: {
     list: {
@@ -32,14 +32,14 @@ export default {
     layoutDirection: {
       type: String,
       required: true,
-      default: 'horizontal',
-      validator: val => ['horizontal', 'longitudinal'].includes(val),
+      default: 'vertical',
+      validator: val => ['horizontal', 'vertical'].includes(val),
     },
   },
   computed: {
     cardType () {
-      if (this.layoutDirection === 'longitudinal') {
-        return 'longitudinal-card'
+      if (this.layoutDirection === 'vertical') {
+        return 'vertical-card'
       }
       return 'horizontal-card'
     },

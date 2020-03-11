@@ -59,8 +59,8 @@ export default {
     },
     layoutDirection: {
       type: String,
-      default: 'horizontal',
-      validator: val => ['horizontal', 'longitudinal'].includes(val),
+      default: 'vertical',
+      validator: val => ['horizontal', 'vertical'].includes(val),
     },
   },
   data () {

@@ -1,32 +1,35 @@
 <template>
   <div>
-    <a-card class="position-relative" hoverable style="width: 240px">
-        <actions slot="extra" v-if="showSingleActions(item)" :options="getOptions(item, 'singleActions')" :row="item.data" button-type="link" button-size="small" />
-        <div class="p-2" style="height: 180px;">
-          <img
-            :ref="`img${listKey}`"
-            class="w-100 h-100"
-            :alt="getData(item.data, 'description')"
-            :src="getData(item.data, 'url')"
-            @error="imgError(item, `img${listKey}`)"
-            slot="cover" />
-        </div>
-        <div class="text-wrap position-relative">
-          <a-card-meta :title="getData(item.data, 'title')">
-            <template slot="description">
-              <div class="mutiline-text-truncate mb-2" :title="getData(item.data, 'description')">
-                {{ getData(item.data, 'description') }}
-              </div>
-              <div class="mutiline-text-truncate mb-2" :title="getData(item.data, 'desc')" v-if="cardFields['desc']" style="font-size: 12px">
-                {{ getData(item.data, 'desc') }}
-              </div>
-            </template>
-          </a-card-meta>
-          <div class="primary-btn-wrap position-absolute mb-2">
-            <actions slot="extra" :options="getOptions(item, 'primaryActions')" :row="item.data" :button-block="true" />
+    <a-card class="position-relative card-wrap" hoverable style="width: 340px">
+      <actions slot="extra" v-if="showSingleActions(item)" :options="getOptions(item, 'singleActions')" :row="item.data" button-type="link" button-size="small" />
+      <a-row>
+        <a-col :span="8">
+          <div class="ml-2" style="height: 100px;width: 100px;margin-top: 24px;">
+            <img
+              :ref="`img${listKey}`"
+              class="w-100 h-100 border"
+              :alt="getData(item.data, 'description')"
+              :src="getData(item.data, 'url')"
+              @error="imgError(item, `img${listKey}`)"
+              slot="cover" />
           </div>
-        </div>
-      </a-card>
+        </a-col>
+        <a-col :span="16">
+          <div class="text-wrap position-relative">
+            <a-card-meta :title="getData(item.data, 'title')">
+              <template slot="description" v-if="cardFields['content']">
+                <div class="mutiline-text-truncate mb-2" style="font-size: 12px" v-for="value in getData(item.data, 'content')" :key="value.field">
+                  <span>{{value.title}}</span>：<slot-dom :dom="getDom(value, item.data)" />
+                </div>
+              </template>
+            </a-card-meta>
+            <div class="primary-btn-wrap position-absolute mb-2">
+              <actions slot="extra" :options="getOptions(item, 'primaryActions')" :row="item.data" :button-block="true" />
+            </div>
+          </div>
+        </a-col>
+      </a-row>
+    </a-card>
   </div>
 </template>
 
@@ -38,6 +41,12 @@ export default {
   name: 'HorizontalCard',
   components: {
     Actions,
+    SlotDom: {
+      props: ['dom'],
+      render () {
+        return this.dom
+      },
+    },
   },
   mixins: [CardMixin],
   props: {
@@ -64,40 +73,46 @@ export default {
       item: this.listItem,
     }
   },
+  methods: {
+    getDom (value, data) {
+      if (value.slots) {
+        return value.slots(data)
+      }
+      const text = value.value
+      return (<span>
+        {{ text }}
+      </span>)
+    },
+  },
 }
 </script>
 <style lang="scss" scoped>
 @import '../../../src/styles/variables';
 
-.text-wrap {
-  height: 200px;
-  padding: 24px;
-  background-color: #efefefa1;
-  color: $text-color-help;
-  .primary-btn-wrap {
-    bottom: 8px;
-    left: 24px;
-    right: 24px;
+.card-wrap {
+  .text-wrap {
+    height: 200px;
+    padding: 24px;
+    color: $text-color-help;
+    .primary-btn-wrap {
+      bottom: 8px;
+      left: 24px;
+      right: 24px;
+    }
   }
-}
-::v-deep {
-  .ant-card-head {
-    border-bottom: 0;
-  }
-  .ant-card-body {
-    padding: 0;
-  }
-  .ant-card-head {
-    position: absolute;
-    padding: 0;
-    right: 0;
-  }
-  .ant-card-meta-title {
-    text-align: center;
-    color: $primary-color;
-  }
-  .ant-card-meta-description {
-    text-align: center;
+  ::v-deep {
+    .ant-card-head {
+      border-bottom: 0;
+      z-index: 99;
+    }
+    .ant-card-body {
+      padding: 0;
+    }
+    .ant-card-head {
+      position: absolute;
+      padding: 0;
+      right: 0;
+    }
   }
 }
 </style>
