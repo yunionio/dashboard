@@ -122,10 +122,17 @@ export default {
           },
           meta: () => {
             const isOneCloud = this.data.hypervisor === typeClouds.hypervisorMap.kvm.key
+            let tooltip = null
+            if (!isOneCloud) {
+              tooltip = '只有OneCloud主机支持此操作'
+            }
+            if (this.list.total >= 8) {
+              tooltip = '网卡最对支持添加8个'
+            }
             return {
               buttonType: 'primary',
-              validate: isOneCloud,
-              tooltip: !isOneCloud && '只有OneCloud主机支持此操作',
+              validate: isOneCloud && this.list.total < 8,
+              tooltip,
             }
           },
         },
