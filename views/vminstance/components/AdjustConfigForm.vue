@@ -487,9 +487,12 @@ export default {
         if (this.isOpenWorkflow) {
           await this.doChangeSettingsByWorkflowSubmit(values)
         } else {
-          await this.doChangeSettingsSubmit(values)
-          this.$message.success('操作成功')
-          this.cancel()
+          const res = await this.doChangeSettingsSubmit(values)
+          const isOk = res.data.data.every(item => item.status === 200)
+          if (isOk) {
+            this.$message.success('操作成功')
+            this.cancel()
+          }
         }
       } catch (error) {
         throw error
