@@ -128,7 +128,12 @@ export default {
           this.dashboardOptions = response.data.value || []
         }
         if (this.dashboardOptions.length > 0) {
-          this.handleDashboardClick(storage.get(`__oc_dashboard_${this.scope}__`) || this.dashboardOptions[0])
+          let item = storage.get(`__oc_dashboard_${this.scope}__`)
+          const matched = this.dashboardOptions.find(obj => obj.id === item.id)
+          if (!matched) {
+            item = this.dashboardOptions[0]
+          }
+          this.handleDashboardClick(item)
         }
       } catch (error) {
         throw error
