@@ -111,7 +111,7 @@ export default {
         },
       },
       snapshotpolicyOptions: [],
-      attchedPolices: this.params.data[0].snapshotpolicies,
+      attchedPolices: this.params.data[0].snapshotpolicies && this.params.data[0].snapshotpolicies.length ? this.params.data[0].snapshotpolicies : [],
       weekTips: '',
       timeTips: '',
       dayTips: '',
@@ -130,17 +130,6 @@ export default {
     refresh () {
       this.fetchSnaphotpolicy()
     },
-    validateForm () {
-      return new Promise((resolve, reject) => {
-        this.form.fc.validateFields((err, values) => {
-          if (!err) {
-            resolve(values)
-          } else {
-            reject(err)
-          }
-        })
-      })
-    },
     detachPolicy (id) {
       return this.manager.delete({
         id,
@@ -156,7 +145,7 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        let values = await this.validateForm()
+        let values = await this.form.fc.validateFields()
         this.loading = true
         if (this.enable) {
           await this.detachPolices()
@@ -176,6 +165,7 @@ export default {
         this.cancelDialog()
       } catch (error) {
         this.loading = false
+        throw error
       }
     },
     getPolicyLabel (item) {
@@ -200,6 +190,7 @@ export default {
       const manager = new this.$Manager('snapshotpolicies')
       let params = {
         scope: this.scope,
+        project: this.params.data[0].project_id,
       }
       try {
         const res = await manager.list({ params })
