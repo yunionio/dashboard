@@ -37,19 +37,25 @@ export default {
           brand: getBrandFilter(),
           storage_type: {
             label: '存储类型',
+            filter: true,
             dropdown: true,
-            multiple: true,
             items: Object.keys(STORAGE_TYPES).map(key => {
               return { label: STORAGE_TYPES[key], key }
             }),
+            formatter: val => {
+              return `storage_type.contains("${val}")`
+            },
           },
           medium_type: {
             label: '介质类型',
+            filter: true,
             dropdown: true,
-            multiple: true,
             items: Object.keys(MEDIUM_TYPES).map(key => {
-              return { label: STORAGE_TYPES[key], key }
+              return { label: MEDIUM_TYPES[key], key }
             }),
+            formatter: val => {
+              return `medium_type.contains("${val}")`
+            },
           },
         },
       }),
