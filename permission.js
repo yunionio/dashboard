@@ -40,7 +40,7 @@ router.beforeEach(async (to, from, next) => {
       const hasRoles = !!store.getters.userInfo.roles
       const hasPermission = !!store.getters.permission
       const hasScopeResource = !!store.getters.scopeResource
-      if (hasRoles && hasPermission) {
+      if (hasRoles && hasPermission && hasScopeResource) {
         next()
       } else {
         try {
