@@ -52,4 +52,6 @@ async function start () {
   }
 }
 
+window.app = app
+
 start()
