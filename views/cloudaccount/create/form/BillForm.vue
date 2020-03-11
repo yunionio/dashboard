@@ -32,6 +32,9 @@
           <a-input v-decorator="decorators.usage_file_prefix" />
         </a-form-item>
       </template>
+      <a-form-item v-bind="offsetFormLayout">
+        <a v-if="step.currentStep === 1" @click="handleTest">连接测试</a>
+      </a-form-item>
     </a-form>
   </div>
 </template>
@@ -70,6 +73,13 @@ export default {
           md: { span: 6 },
           xl: { span: 3 },
           xxl: { span: 2 },
+        },
+      },
+      offsetFormLayout: {
+        wrapperCol: {
+          md: { span: 18, offset: 6 },
+          xl: { span: 20, offset: 3 },
+          xxl: { span: 22, offset: 2 },
         },
       },
     }
@@ -185,6 +195,22 @@ export default {
         }
         await this.manager.update(params)
         this.$router.push('/cloudaccount')
+      } catch (err) {
+        throw err
+      }
+    },
+    async handleTest () {
+      try {
+        const values = await this.form.fc.validateFields()
+        values['cloudaccount_id'] = this.id
+        await new this.$Manager('bucket_options').performClassAction({
+          action: 'bucket_options/verify',
+          data: values,
+        })
+        this.$notification.success({
+          message: '连接成功',
+          description: '请点击确定继续',
+        })
       } catch (err) {
         throw err
       }
