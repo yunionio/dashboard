@@ -15,7 +15,7 @@ export default {
         hideField: true,
         slotCallback: row => {
           return (
-            <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
+            <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row, 'gpu-detail') }>{ row.name }</side-page-trigger>
           )
         },
       }),
@@ -54,7 +54,7 @@ export default {
             return [
               <div class='text-truncate'>
                 <list-body-cell-wrap copy={true} row={row} onManager={this.onManager} hideField={ true }>
-                  <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'GpuSidePage', { tab: 'servers-list' }) }>{ row.guest }</side-page-trigger>
+                  <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row, 'servers-list') }>{ row.guest }</side-page-trigger>
                 </list-body-cell-wrap>
                 {row.guest_status ? <status status={ row['guest_status'] } statusModule='server'/> : ''}
               </div>,

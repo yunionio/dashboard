@@ -117,14 +117,15 @@ export default {
     }
   },
   created () {
-    this.initSidePageTab('gpu-detail')
     this.list.fetchData()
   },
   methods: {
-    handleOpenSidepage (row) {
+    handleOpenSidepage (row, tab) {
+      this.initSidePageTab(tab)
       this.sidePageTriggerHandle(this, 'GpuSidePage', {
         id: row.id,
         resource: 'isolated_devices',
+        currentTab: 'servers-list',
       }, {
         list: this.list,
       })
