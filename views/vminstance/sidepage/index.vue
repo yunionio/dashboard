@@ -32,11 +32,11 @@
 <script>
 import SecgroupList from '@Compute/views/secgroup/components/List'
 // import HostList from '@Compute/views/host/components/List'
+import DiskListForVmInstanceSidepage from '@Compute/views/disk/components/List'
 import NetworkListForVmInstanceSidepage from '@Compute/views/networks/components/List'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import VmInstanceDetail from './Detail'
-import DiskListForVmInstanceSidepage from './Disk'
 import VmInstanceMonitorSidepage from './Monitor'
 import VmInstanceAlertSidepage from './Alert'
 import SidePageMixin from '@/mixins/sidePage'
@@ -72,7 +72,8 @@ export default {
   },
   computed: {
     componentParams () {
-      if (this.params.windowData.currentTab === 'secgroup-list') {
+      const tabs = ['secgroup-list', 'disk-list-for-vm-instance-sidepage']
+      if (tabs.includes(this.params.windowData.currentTab)) {
         return {
           detail: true,
           server: this.detailData.id,
