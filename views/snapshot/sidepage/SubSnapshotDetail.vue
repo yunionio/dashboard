@@ -48,7 +48,10 @@ export default {
           field: 'created_at',
           title: '创建时间',
           formatter: ({ cellValue }) => {
-            return this.$moment(cellValue).format()
+            if (cellValue) {
+              return this.$moment(cellValue).format()
+            }
+            return '-'
           },
         },
       ],

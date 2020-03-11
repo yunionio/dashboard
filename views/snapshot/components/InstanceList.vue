@@ -146,6 +146,9 @@ export default {
               title: '删除',
               list: this.list,
               name: '快照',
+              success: () => {
+                this.destroySidePages()
+              },
             })
           },
           meta: obj => this.$getDeleteResult(obj),
