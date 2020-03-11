@@ -36,10 +36,6 @@ export default {
       baseInfo: [
         getBrandTableColumn(),
         getBillingTypeTableColumn(),
-        {
-          field: 'manager',
-          title: '云账号',
-        },
       ],
       extraInfo: [
         {
