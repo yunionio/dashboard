@@ -9,6 +9,7 @@
 
 <script>
 import * as R from 'ramda'
+import { ACL_TYPE } from '@Storage/constants/index.js'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
