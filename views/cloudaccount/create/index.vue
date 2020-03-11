@@ -5,6 +5,9 @@
     <keep-alive>
       <component :is="currentComponent" :current-item.sync="currentItem" :account="newAccountInfo" ref="stepRef" :provider="currentItem.provider" /><!-- provider 是为了 VmNetwork 的 prop 不报错 -->
     </keep-alive>
+    <a-form-item v-if="step.currentStep === 1" v-bind="offsetFormLayout">
+      <a @click="handleTest">连接测试</a>
+    </a-form-item>
     <page-footer>
       <div slot="left">
         <div class="d-flex align-items-center">
@@ -60,6 +63,13 @@ export default {
           { title: '账单文件访问信息（可选）', key: 'billConfig' },
         ],
         currentStep: 0,
+      },
+      offsetFormLayout: {
+        wrapperCol: {
+          md: { span: 18, offset: 5 },
+          xl: { span: 20, offset: 3 },
+          xxl: { span: 22, offset: 2 },
+        },
       },
     }
   },
@@ -272,6 +282,22 @@ export default {
       const { currentStep } = this.step
       const prev = currentStep - 1
       this.setStep(prev)
+    },
+    async handleTest () {
+      let createForm = this.$refs.stepRef.$refs.createForm
+      try {
+        const values = await createForm.validateForm()
+        await this.cloudaccountsM.performClassAction({
+          action: 'check-create-data',
+          data: values,
+        })
+        this.$notification.success({
+          message: '连接成功',
+          description: '请点击确定继续',
+        })
+      } catch (err) {
+        throw err
+      }
     },
   },
 }
