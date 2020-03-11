@@ -1,6 +1,7 @@
 import Layout from '@Compute/components/Layout'
 import Cloudaccount from '@Cloudenv/views/cloudaccount'
 import CloudaccountCreate from '@Cloudenv/views/cloudaccount/create'
+import CloudaccountUpdateBill from '@Cloudenv/views/cloudaccount/create/BillFileIndex'
 import Cloudregion from '@Cloudenv/views/cloudregion'
 import Zone from '@Cloudenv/views/zone'
 import Schedtag from '@Cloudenv/views/schedtag'
@@ -74,6 +75,11 @@ export default {
               name: 'CloudaccountCreate',
               path: 'create',
               component: CloudaccountCreate,
+            },
+            {
+              name: 'CloudaccountUpdateBill',
+              path: 'updatebill',
+              component: CloudaccountUpdateBill,
             },
           ],
         },
