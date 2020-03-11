@@ -49,7 +49,11 @@ export default {
           },
         },
       ],
-      extraInfo: [
+    }
+  },
+  computed: {
+    extraInfo () {
+      const _extraInfo = [
         {
           title: '用量统计',
           items: [
@@ -100,8 +104,28 @@ export default {
             },
           ],
         },
-      ],
-    }
+      ]
+      if (this.data.storage_type === 'rbd') {
+        return _extraInfo.concat({
+          title: '配置信息',
+          items: [
+            {
+              field: 'storage_conf.mon_host',
+              title: 'Ceph Mon Host',
+            },
+            {
+              field: 'storage_conf.key',
+              title: 'Ceph Key',
+            },
+            {
+              field: 'storage_conf.pool',
+              title: 'Ceph Pool',
+            },
+          ],
+        })
+      }
+      return _extraInfo
+    },
   },
   methods: {
     _sizestr (value) {
