@@ -10,6 +10,9 @@ export default {
             title: '删除',
             onManager: this.onManager,
             name: '快照',
+            success: () => {
+              this.destroySidePages()
+            },
           })
         },
         meta: obj => this.$getDeleteResult(obj),
