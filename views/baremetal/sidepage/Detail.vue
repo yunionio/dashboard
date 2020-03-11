@@ -103,6 +103,43 @@ export default {
               },
             }),
             {
+              field: 'vcpu_count',
+              title: 'CPU',
+              formatter: ({ row }) => {
+                return row.vcpu_count + '核'
+              },
+            },
+            {
+              field: 'vmem_size',
+              title: '内存',
+              formatter: ({ row }) => {
+                return (row.vmem_size / 1024) + 'GB'
+              },
+            },
+            {
+              field: 'sysDisk',
+              title: '系统盘',
+              formatter: ({ row }) => {
+                return this.diskInfos.sysDisk
+              },
+            },
+            {
+              field: 'dataDisk',
+              title: '数据盘',
+              formatter: ({ row }) => {
+                return this.diskInfos.dataDisk
+              },
+            },
+            getCopyWithContentTableColumn({
+              field: 'cdrom',
+              title: 'ISO',
+              hideField: true,
+              slotCallback: row => {
+                const idx = row.cdrom.indexOf('(')
+                return row.cdrom.substring(0, idx) || '-'
+              },
+            }),
+            {
               field: 'isolated_devices',
               title: 'GPU',
               formatter: ({ row }) => {
@@ -126,43 +163,6 @@ export default {
                 return str.slice(1)
               },
             },
-            {
-              field: 'vcpu_count',
-              title: 'CPU',
-              formatter: ({ row }) => {
-                return row.vcpu_count + '核'
-              },
-            },
-            {
-              field: 'vmem_size',
-              title: '内存',
-              formatter: ({ row }) => {
-                return (row.vmem_size / 1024) + 'GB'
-              },
-            },
-            {
-              field: 'dataDisk',
-              title: '数据盘',
-              formatter: ({ row }) => {
-                return this.diskInfos.dataDisk
-              },
-            },
-            {
-              field: 'sysDisk',
-              title: '系统盘',
-              formatter: ({ row }) => {
-                return this.diskInfos.sysDisk
-              },
-            },
-            getCopyWithContentTableColumn({
-              field: 'cdrom',
-              title: 'ISO',
-              hideField: true,
-              slotCallback: row => {
-                const idx = row.cdrom.indexOf('(')
-                return row.cdrom.substring(0, idx) || '-'
-              },
-            }),
             getCopyWithContentTableColumn({ field: 'host', title: '物理机' }),
             getCopyWithContentTableColumn({ field: 'host_sn', title: 'SN' }),
           ],
