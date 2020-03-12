@@ -108,6 +108,7 @@ export default {
       this.loading = true
       try {
         const values = await this.validateForm()
+        values['cmtbound'] = values.commit_bound
         const manager = new this.$Manager('storages', 'v2')
         await manager.update({ id: this.params.data[0].id, data: values })
         this.cancelDialog()
