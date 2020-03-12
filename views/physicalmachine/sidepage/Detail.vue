@@ -278,10 +278,10 @@ export default {
                 return ((row.sys_info || {}).model) || '-'
               },
             },
-            {
+            getCopyWithContentTableColumn({
               field: 'sn',
               title: '序列号',
-            },
+            }),
           ],
         },
       ],

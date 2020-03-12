@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { getEnabledTableColumn, getBrandTableColumn } from '@/utils/common/tableColumn'
+import { getEnabledTableColumn, getBrandTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 
 const storageType = {
@@ -294,10 +294,10 @@ export default {
                 return ((row.sys_info || {}).model) || '-'
               },
             },
-            {
+            getCopyWithContentTableColumn({
               field: 'sn',
               title: '序列号',
-            },
+            }),
           ],
         },
       ],
