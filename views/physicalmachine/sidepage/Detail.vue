@@ -215,8 +215,15 @@ export default {
             {
               field: 'storage_size',
               title: '容量',
-              formatter: ({ cellValue, row }) => {
-                return sizestr(cellValue, 'M', 1024)
+              // formatter: ({ cellValue, row }) => {
+              //   return sizestr(cellValue, 'M', 1024)
+              // },
+              slots: {
+                default: ({ row }, h) => {
+                  return [
+                    <p>{ sizestr(row.storage_size, 'M', 1024) }<span style={{ color: '#aaa' }}>（物理机总容量）</span></p>,
+                  ]
+                },
               },
             },
             {
