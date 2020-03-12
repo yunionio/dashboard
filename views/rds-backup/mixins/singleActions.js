@@ -21,6 +21,21 @@ export default {
         },
       },
       {
+        label: '同步状态',
+        action: obj => {
+          this.onManager('performAction', {
+            steadyStatus: ['running', 'ready'],
+            id: obj.id,
+            managerArgs: {
+              action: 'syncstatus',
+            },
+          })
+        },
+        meta: () => ({
+          validate: true,
+        }),
+      },
+      {
         label: '删除',
         action: (obj) => {
           this.createDialog('RDSBackupSidePage', {

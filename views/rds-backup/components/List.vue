@@ -77,18 +77,41 @@ export default {
           },
         },
         {
-          label: '删除',
-          action: () => {
-            this.createDialog('DeleteResDialog', {
-              name: '备份',
-              title: '删除备份',
-              data: this.list.selectedItems,
-              columns: this.columns,
-              onManager: this.onManager,
-              refresh: this.refresh,
-            })
+          label: '批量操作',
+          actions: () => {
+            return [
+              {
+                label: '同步状态',
+                action: () => {
+                  this.onManager('batchPerformAction', {
+                    steadyStatus: ['running', 'ready'],
+                    managerArgs: {
+                      action: 'syncstatus',
+                    },
+                  })
+                },
+              },
+              {
+                label: '删除',
+                action: () => {
+                  this.createDialog('DeleteResDialog', {
+                    name: '备份',
+                    title: '删除备份',
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    refresh: this.refresh,
+                  })
+                },
+                meta: () => this.$getDeleteResult(this.list.selectedItems),
+              },
+            ]
           },
-          meta: () => this.$getDeleteResult(this.list.selectedItems),
+          meta: () => {
+            return {
+              validate: this.list.selected.length,
+            }
+          },
         },
       ],
     }
