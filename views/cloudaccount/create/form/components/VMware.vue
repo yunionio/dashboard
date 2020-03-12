@@ -13,6 +13,7 @@
       <a-form-item v-bind="formLayout" :label="keySecretField.label.k">
         <a-input v-decorator="decorators.username" :placeholder="keySecretField.placeholder.k" />
         <div slot="extra">
+           <span class="mr-3">提示：VMware账号添加后暂不支持修改</span>
           {{ `如何获取${keySecretField.text}的${keySecretField.label.k }？点击查看帮助` }}
           <help-link :href="docs[provider.toLowerCase()]"> 详情</help-link>
         </div>
