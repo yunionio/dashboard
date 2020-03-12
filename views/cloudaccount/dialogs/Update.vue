@@ -29,9 +29,12 @@
         </upload-json-file>
         <div v-else>
           <a-form-item :label="field.label.k">
-            <a-input v-decorator="decorators.keyId" :placeholder="field.placeholder.k" />
-            <div slot="extra" class="text-right">
-              <help-link :href="doc">如何获取{{ field.text }} {{ field.label.k }} 和 {{ field.label.s }}？</help-link>
+            <a-input v-decorator="decorators.keyId" :disabled="isVMware" :placeholder="field.placeholder.k" />
+            <div slot="extra" class="text-right d-flex">
+              <span v-if="isVMware">VMware平台暂不支持更新账号</span>
+              <div class="flex-grow-1">
+                <help-link :href="doc">如何获取{{ field.text }} {{ field.label.k }} 和 {{ field.label.s }}？</help-link>
+              </div>
             </div>
           </a-form-item>
           <a-form-item :label="field.label.s">
@@ -86,7 +89,7 @@ export default {
           keySecretFields[provider].k,
           {
             rules: [
-              { required: true, message: '请输入密钥ID' },
+              { required: provider !== HYPERVISORS_MAP.esxi.provider.toLowerCase(), message: '请输入密钥ID' },
             ],
           },
         ],
@@ -154,6 +157,9 @@ export default {
     },
     isGoogle () {
       return this.provider === HYPERVISORS_MAP.google.key
+    },
+    isVMware () {
+      return this.provider === HYPERVISORS_MAP.esxi.provider.toLowerCase()
     },
     formItemLayout () {
       const ret = {
