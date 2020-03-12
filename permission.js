@@ -5,6 +5,7 @@
  */
 import router from './router'
 import store from './store'
+import { isLogged } from '@/utils/auth'
 
 // 登录相关的路由名称
 const loginPageRouteName = [
@@ -35,7 +36,14 @@ router.beforeEach(async (to, from, next) => {
   const hasToken = !!store.getters.auth.token
   if (hasToken) {
     if (loginPageRouteName.includes(to.name)) {
-      next()
+      if (to.name === 'Login') {
+        const logged = isLogged()
+        if (logged) {
+          next('/')
+        }
+      } else {
+        next()
+      }
     } else {
       const hasRoles = !!store.getters.userInfo.roles
       const hasPermission = !!store.getters.permission
