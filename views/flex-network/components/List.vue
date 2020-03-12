@@ -4,11 +4,14 @@
     :columns="columns"
     :export-data-options="exportDataOptions"
     :showSearchbox="showSearchbox"
-    :showGroupActions="showGroupActions" />
+    :showGroupActions="showGroupActions"
+    :group-actions="groupActions"
+    :single-actions="singleActions" />
 </template>
 
 <script>
 import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import { getStatusFilter, getBrandFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
@@ -16,7 +19,7 @@ import GlobalSearchMixin from '@/mixins/globalSearch'
 
 export default {
   name: 'FlexNetworkList',
-  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
@@ -73,6 +76,22 @@ export default {
           { label: '可用区', key: 'zone' },
         ],
       },
+      groupActions: [
+        {
+          label: '同步状态',
+          action: () => {
+            this.onManager('batchPerformAction', {
+              steadyStatus: ['running', 'ready'],
+              managerArgs: {
+                action: 'syncstatus',
+              },
+            })
+          },
+          meta: () => ({
+            validate: this.list.selected.length,
+          }),
+        },
+      ],
     }
   },
   watch: {
