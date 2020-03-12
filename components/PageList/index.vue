@@ -301,8 +301,10 @@ export default {
       } else {
         container = document.getElementById('app-page')
       }
-      container.style = ''
-      container = null
+      if (container) {
+        container.style = ''
+        container = null
+      }
     },
   },
 }
