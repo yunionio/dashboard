@@ -251,6 +251,7 @@ export default {
     genParams () {
       let params = {
         scope: this.$store.getters.scope,
+        show_fail_reason: true,
         ...this.getOptionParams(),
       }
       return params

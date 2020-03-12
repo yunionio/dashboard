@@ -1,59 +1,11 @@
-import AuthLayout from '@/layouts/Auth'
-import Login from '@/views/auth/Login'
-import Register from '@/views/auth/Register'
-import SecretVerify from '@/views/auth/SecretVerify'
-import BindSecret from '@/views/auth/BindSecret'
-import SetSecretQuestion from '@/views/auth/SetSecretQuestion'
-import ResetSecretQuestion from '@/views/auth/ResetSecretQuestion'
 import NotFoundPage from '@/views/exception/404'
 import EmailVerify from '@/views/email-verify'
 
+export const menusConfig = getModulesRouteConfig()
+
 let routes = [
-  { name: 'Home', path: '/', redirect: '/dashboard' },
-  {
-    name: 'Auth',
-    path: '/auth',
-    component: AuthLayout,
-    redirect: '/auth/login',
-    children: [
-      {
-        name: 'Login',
-        path: 'login',
-        component: Login,
-        meta: { layout: 'full-screen' },
-      },
-      {
-        name: 'Register',
-        path: 'register',
-        component: Register,
-        meta: { layout: 'full-screen' },
-      },
-      {
-        name: 'SecretVerify',
-        path: 'secretverify',
-        component: SecretVerify,
-        meta: { layout: 'full-screen' },
-      },
-      {
-        name: 'BindSecret',
-        path: 'bindsecret',
-        component: BindSecret,
-        meta: { layout: 'full-screen' },
-      },
-      {
-        name: 'SetSecretQuestion',
-        path: 'setsecretquestion',
-        component: SetSecretQuestion,
-        meta: { layout: 'full-screen' },
-      },
-      {
-        name: 'ResetSecretQuestion',
-        path: 'resetsecretquestion',
-        component: ResetSecretQuestion,
-        meta: { layout: 'full-screen' },
-      },
-    ],
-  },
+  ...getScopeRoutes(),
+  ...generateRoutesFromMenu(menusConfig),
   {
     path: '/email-verification/id/:id/token/:token',
     name: 'EmailVerification',
@@ -65,6 +17,16 @@ let routes = [
   { name: '404', path: '/404', component: NotFoundPage, meta: { layout: 'full-screen' } },
   { name: 'NotFound', path: '*', component: NotFoundPage, meta: { layout: 'full-screen' } },
 ]
+
+function getScopeRoutes () {
+  const r = require.context('../../scope', true, /.\/router\/routes.js/)
+  const keys = r.keys()
+  let ret = []
+  if (keys && keys.length) {
+    ret = r(keys[0]).default
+  }
+  return ret
+}
 
 function getModulesRouteConfig () {
   const isPrivate = process.env.VUE_APP_IS_PRIVATE
@@ -122,13 +84,6 @@ function generateRoutesFromMenu (menugroups = [], routes = []) {
     }
   }
   return routes
-}
-
-export const menusConfig = getModulesRouteConfig()
-
-if (menusConfig && menusConfig.length > 0) {
-  const moduleRoutes = generateRoutesFromMenu(menusConfig)
-  routes = routes.concat(moduleRoutes)
 }
 
 export default routes

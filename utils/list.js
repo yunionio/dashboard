@@ -348,6 +348,7 @@ class CreateList {
   genParams (offset, limit) {
     let params = {
       scope: this.templateContext.$store.getters.scope,
+      show_fail_reason: true,
       ...this.getOptionParams(),
     }
     if (limit) {
