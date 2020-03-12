@@ -150,17 +150,40 @@ export default {
           }),
         },
         {
-          label: '删除',
-          permission: 'disks_delete',
-          action: () => {
-            this.createDialog('DiskDeleteDialog', {
-              data: this.list.selectedItems,
-              columns: this.columns,
-              title: '删除',
-              onManger: this.onManger,
-            })
+          label: '批量操作',
+          actions: () => {
+            return [
+              {
+                label: '同步状态',
+                action: () => {
+                  this.onManager('batchPerformAction', {
+                    steadyStatus: ['running', 'ready'],
+                    managerArgs: {
+                      action: 'syncstatus',
+                    },
+                  })
+                },
+              },
+              {
+                label: '删除',
+                permission: 'disks_delete',
+                action: () => {
+                  this.createDialog('DiskDeleteDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    title: '删除',
+                    onManger: this.onManger,
+                  })
+                },
+                meta: () => this.$getDeleteResult(this.list.selectedItems),
+              },
+            ]
           },
-          meta: () => this.$getDeleteResult(this.list.selectedItems),
+          meta: () => {
+            return {
+              validate: this.list.selected.length,
+            }
+          },
         },
       ],
     }
