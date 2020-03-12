@@ -10,13 +10,11 @@
             class="w-100"
             @update:options="onServerSucceed"
             filterable
-            remote
             v-decorator="decorators.sergroups"
-            searchKey="search"
             resource="servers"
             :mapper="mapperServers"
             :params="requestParams"
-            :select-props="{ allowClear: true, placeholder: '请选择主机', mode: 'tags', defaultValue }" />
+            :select-props="{ allowClear: true, placeholder: '请选择主机', mode: 'multiple', defaultValue }" />
         </a-form-item>
       </a-form>
     </div>
@@ -85,7 +83,6 @@ export default {
         //   delete this.requestParams.tenant
         // }
         return {
-          search: '',
           limit: 0,
           offset: 0,
           filter: 'hypervisor.notin(container, baremetal, esxi)',
@@ -101,7 +98,6 @@ export default {
         //   }
         // }
         return {
-          search: '',
           limit: 0,
           offset: 0,
           filter: 'hypervisor.notin(container, baremetal, esxi)',
