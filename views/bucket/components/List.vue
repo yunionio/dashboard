@@ -134,6 +134,17 @@ export default {
                 },
               },
               {
+                label: '同步状态',
+                action: () => {
+                  this.onManager('batchPerformAction', {
+                    steadyStatus: ['running', 'ready'],
+                    managerArgs: {
+                      action: 'syncstatus',
+                    },
+                  })
+                },
+              },
+              {
                 label: '删除',
                 permission: 'buckets_delete',
                 action: obj => {
