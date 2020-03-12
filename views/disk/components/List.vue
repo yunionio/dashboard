@@ -50,7 +50,7 @@ export default {
           disk_type: {
             label: '磁盘类型',
             dropdown: true,
-            multiple: true,
+            // multiple: true,
             items: [
               { label: '数据盘', key: 'data' },
               { label: '系统盘', key: 'sys' },
