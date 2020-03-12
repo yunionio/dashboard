@@ -47,8 +47,13 @@ export default {
         field: 'nonsystem_guests',
         title: '#VM',
         width: 60,
-        formatter: ({ cellValue }) => {
-          return cellValue || '0'
+        slots: {
+          default: ({ row }, h) => {
+            const ret = [
+              <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row, 'vminstance-list') }>{ row.nonsystem_guests || '0' }</side-page-trigger>,
+            ]
+            return ret
+          },
         },
       },
       {
