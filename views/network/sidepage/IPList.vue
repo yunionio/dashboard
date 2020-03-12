@@ -10,14 +10,14 @@
     </template>
   </vxe-toolbar>
   <vxe-grid
-      :data="list"
-      :stripe="true"
-      :max-height="600"
-      :columns="columns">
-      <template v-slot:empty>
-        <loader :loading="loading" />
-      </template>
-    </vxe-grid>
+    :data="list"
+    :stripe="true"
+    :max-height="600"
+    :columns="columns">
+    <template v-slot:empty>
+      <loader :loading="loading" />
+    </template>
+  </vxe-grid>
     <!-- <vxe-table
       border
       highlight-hover-row
@@ -29,6 +29,8 @@
 </template>
 
 <script>
+import WindowsMixin from '@/mixins/windows.js'
+
 // eslint-disable-next-line no-unused-vars
 const IP_TYPES = {
   'reservedips': '预留IP',
@@ -39,6 +41,7 @@ const IP_TYPES = {
 }
 export default {
   name: 'IPList',
+  mixins: [WindowsMixin],
   props: {
     data: {
       type: Object,
@@ -76,6 +79,18 @@ export default {
           field: 'owner',
           title: '资源名称',
         },
+        {
+          field: 'action',
+          title: '操作',
+          slots: {
+            default: ({ row }, h) => {
+              if (IP_TYPES[row.owner_type] !== '预留IP') {
+                return [<span>-</span>]
+              }
+              return [<a onClick = {() => this.freed(row)}>释放</a>]
+            },
+          },
+        },
       ],
     }
   },
@@ -98,6 +113,17 @@ export default {
     this.fetchQueryAddresses()
   },
   methods: {
+    freed (obj) {
+      this.createDialog('ReservedIPFreedDialog', {
+        title: '释放',
+        data: [obj],
+        columns: this.columns,
+        onManager: this.onManager,
+        refresh: () => {
+          this.refresh()
+        },
+      })
+    },
     async fetchQueryAddresses () {
       this.loading = true
       try {
