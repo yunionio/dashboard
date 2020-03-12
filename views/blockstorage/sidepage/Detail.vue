@@ -35,7 +35,7 @@ export default {
           title: '存储类型',
           slots: {
             default: ({ row }) => {
-              return STORAGE_TYPES[row.storage_type]
+              return STORAGE_TYPES[row.storage_type] || '-'
             },
           },
         },
@@ -44,7 +44,7 @@ export default {
           title: '介质类型 ',
           slots: {
             default: ({ row }) => {
-              return MEDIUM_TYPES[row.medium_type]
+              return MEDIUM_TYPES[row.medium_type] || '-'
             },
           },
         },
