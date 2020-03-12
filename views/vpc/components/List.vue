@@ -77,19 +77,42 @@ export default {
           },
         },
         {
-          label: '删除',
-          permission: 'vpcs_delete',
-          action: () => {
-            this.createDialog('DeleteResDialog', {
-              title: '删除',
-              data: this.list.selectedItems,
-              columns: this.columns,
-              onManager: this.onManager,
-            })
+          label: '批量操作',
+          actions: () => {
+            return [
+              {
+                label: '同步状态',
+                action: () => {
+                  this.onManager('batchPerformAction', {
+                    steadyStatus: ['running', 'ready'],
+                    managerArgs: {
+                      action: 'syncstatus',
+                    },
+                  })
+                },
+              },
+              {
+                label: '删除',
+                permission: 'vpcs_delete',
+                action: () => {
+                  this.createDialog('DeleteResDialog', {
+                    title: '删除',
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                  })
+                },
+                meta: () => {
+                  return {
+                    validate: this.list.allowDelete(),
+                  }
+                },
+              },
+            ]
           },
           meta: () => {
             return {
-              validate: this.list.allowDelete(),
+              validate: this.list.selected.length,
             }
           },
         },

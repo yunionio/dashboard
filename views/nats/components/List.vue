@@ -2,12 +2,15 @@
   <page-list
     :list="list"
     :columns="columns"
-    :export-data-options="exportDataOptions" />
+    :export-data-options="exportDataOptions"
+    :group-actions="groupActions"
+    :single-actions="singleActions" />
 </template>
 
 <script>
 import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import { getStatusFilter, getBrandFilter, getAccountFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
@@ -19,7 +22,7 @@ const BillingType = {
 
 export default {
   name: 'NatList',
-  mixins: [WindowsMixin, ListMixin, ColumnsMixin],
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
@@ -80,6 +83,22 @@ export default {
           { label: '创建时间', key: 'created_at' },
         ],
       },
+      groupActions: [
+        {
+          label: '同步状态',
+          action: () => {
+            this.onManager('batchPerformAction', {
+              steadyStatus: ['running', 'ready'],
+              managerArgs: {
+                action: 'syncstatus',
+              },
+            })
+          },
+          meta: () => ({
+            validate: this.list.selected.length,
+          }),
+        },
+      ],
     }
   },
   watch: {
