@@ -75,7 +75,7 @@ export default {
               title: '区域',
             },
             {
-              field: 'public_scope',
+              field: 'tenant',
               title: this.$t('dictionary.domain'),
             },
           ],
