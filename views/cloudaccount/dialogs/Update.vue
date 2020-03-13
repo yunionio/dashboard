@@ -55,6 +55,9 @@
               :value="item.key">{{ item.label }}</a-select-option>
           </a-select>
         </a-form-item>
+        <a-form-item v-bind="offsetFormLayout">
+          <a @click="handleTest">连接测试</a>
+        </a-form-item>
       </a-form>
     </div>
     <div slot="footer">
@@ -176,6 +179,19 @@ export default {
       }
       return ret
     },
+    offsetFormLayout () {
+      const ret = {
+        wrapperCol: {
+          span: 21,
+          offset: 3,
+        },
+      }
+      if (this.isAzure || this.isGoogle) {
+        ret.wrapperCol.span = 19
+        ret.wrapperCol.offset = 5
+      }
+      return ret
+    },
   },
   methods: {
     validateForm () {
@@ -213,6 +229,24 @@ export default {
         this.cancelDialog()
       } catch (error) {
         this.loading = false
+      }
+    },
+    async handleTest () {
+      try {
+        const values = await this.validateForm()
+        await this.params.onManager('performAction', {
+          id: this.params.data[0].id,
+          managerArgs: {
+            action: 'test-connectivity',
+            data: values,
+          },
+        })
+        this.$notification.success({
+          message: '连接成功',
+          description: '请点击确定继续',
+        })
+      } catch (err) {
+        throw err
       }
     },
   },

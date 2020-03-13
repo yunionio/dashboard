@@ -33,7 +33,7 @@
         </a-form-item>
       </template>
       <a-form-item v-bind="offsetFormLayout">
-        <a v-if="step.currentStep === 1" @click="handleTest">连接测试</a>
+        <a @click="handleTest">连接测试</a>
       </a-form-item>
     </a-form>
   </div>
