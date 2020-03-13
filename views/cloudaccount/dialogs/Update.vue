@@ -78,6 +78,7 @@ export default {
   mixins: [DialogMixin, WindowsMixin],
   data () {
     const provider = this.params.data[0].brand.toLowerCase()
+    const isVMware = provider === HYPERVISORS_MAP.esxi.provider.toLowerCase()
     return {
       loading: false,
       form: {
@@ -88,8 +89,9 @@ export default {
         keyId: [
           keySecretFields[provider].k,
           {
+            initialValue: isVMware ? this.params.data[0].account : undefined,
             rules: [
-              { required: provider !== HYPERVISORS_MAP.esxi.provider.toLowerCase(), message: '请输入密钥ID' },
+              { required: true, message: '请输入密钥ID' },
             ],
           },
         ],
