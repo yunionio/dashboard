@@ -21,6 +21,7 @@ import './components'
 import './directives'
 import './plugins'
 import './permission'
+import './filters'
 
 Vue.config.productionTip = false
 
