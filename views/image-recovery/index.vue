@@ -18,7 +18,7 @@ export default {
   data () {
     return {
       listId: 'ImageRecoveryList',
-      cloudEnvOptions: [{ key: 'images', label: '系统' }, { key: 'guestimages', label: '主机' }],
+      cloudEnvOptions: [{ key: 'images', label: '系统镜像' }, { key: 'guestimages', label: '主机镜像' }],
       cloudEnv: 'images',
     }
   },
