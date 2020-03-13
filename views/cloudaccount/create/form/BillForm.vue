@@ -33,7 +33,7 @@
         </a-form-item>
       </template>
       <a-form-item v-bind="offsetFormLayout">
-        <a @click="handleTest">连接测试</a>
+        <a-button :loading="testLoding" style="padding: 0" type="link" @click="handleTest">连接测试</a-button>
       </a-form-item>
     </a-form>
   </div>
@@ -56,6 +56,7 @@ export default {
   data () {
     return {
       loading: false,
+      testLoding: false,
       cloudAccounts: [],
       cloudAccountLoading: false,
       cloudAccount: {},
@@ -200,11 +201,12 @@ export default {
       }
     },
     async handleTest () {
+      this.testLoding = true
       try {
         const values = await this.form.fc.validateFields()
         values['cloudaccount_id'] = this.id
         await new this.$Manager('bucket_options').performClassAction({
-          action: 'bucket_options/verify',
+          action: 'verify',
           data: values,
         })
         this.$notification.success({
@@ -213,6 +215,8 @@ export default {
         })
       } catch (err) {
         throw err
+      } finally {
+        this.testLoding = false
       }
     },
   },

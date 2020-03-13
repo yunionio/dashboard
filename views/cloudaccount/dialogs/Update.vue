@@ -56,7 +56,7 @@
           </a-select>
         </a-form-item>
         <a-form-item v-bind="offsetFormLayout">
-          <a @click="handleTest">连接测试</a>
+          <a-button :loading="testLoding" style="padding: 0" type="link" @click="handleTest">连接测试</a-button>
         </a-form-item>
       </a-form>
     </div>
@@ -84,6 +84,7 @@ export default {
     const isVMware = provider === HYPERVISORS_MAP.esxi.provider.toLowerCase()
     return {
       loading: false,
+      testLoding: false,
       form: {
         fc: this.$form.createForm(this),
       },
@@ -234,6 +235,7 @@ export default {
       }
     },
     async handleTest () {
+      this.testLoding = true
       try {
         const values = await this.validateForm()
         await this.params.onManager('performAction', {
@@ -249,6 +251,8 @@ export default {
         })
       } catch (err) {
         throw err
+      } finally {
+        this.testLoding = false
       }
     },
   },
