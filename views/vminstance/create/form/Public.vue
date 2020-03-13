@@ -67,7 +67,7 @@
           :hypervisor="hypervisor"
           :decorator="decorators.imageOS"
           :cacheImageParams="cacheImageParams"
-          :cloudaccountParamsExtra="cloudaccountParamsExtra"
+          :cloudproviderParamsExtra="cloudproviderParamsExtra"
           @updateImageMsg="updateFi" />
       </a-form-item>
       <a-form-item label="系统盘" class="mb-0">
@@ -377,7 +377,7 @@ export default {
       if (zone) params.zone = zone
       return params
     },
-    cloudaccountParamsExtra () {
+    cloudproviderParamsExtra () {
       const params = {}
       if (this.form.fd.sku && this.form.fd.sku.provider) {
         params.provider = this.form.fd.sku.provider
