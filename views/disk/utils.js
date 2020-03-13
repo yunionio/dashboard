@@ -74,6 +74,12 @@ export const diskResizeConfig = {
         tooltip,
       }
     }
+    if (obj.guest_status === 'running') {
+      return {
+        validate: false,
+        tooltip: `${PROVIDER_MAP[provider].label}不支持开机扩容`,
+      }
+    }
     if (obj.disk_type !== diskType) {
       return {
         validate: false,
