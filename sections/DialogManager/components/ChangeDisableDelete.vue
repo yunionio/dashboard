@@ -23,7 +23,6 @@
 </template>
 
 <script>
-import { CreateServerForm } from '@Compute/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
@@ -37,8 +36,8 @@ export default {
         fc: this.$form.createForm(this, { onFieldsChange: this.onFieldsChange }),
       },
       formItemLayout: {
-        wrapperCol: { span: CreateServerForm.wrapperCol },
-        labelCol: { span: CreateServerForm.labelCol },
+        wrapperCol: { span: 21 },
+        labelCol: { span: 3 },
       },
     }
   },
