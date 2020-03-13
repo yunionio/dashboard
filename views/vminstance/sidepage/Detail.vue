@@ -36,7 +36,6 @@ export default {
   },
   data () {
     return {
-      serverDetail: {},
       baseInfo: [
         {
           field: 'keypair',
@@ -49,7 +48,7 @@ export default {
   },
   computed: {
     diskInfos () {
-      const disksInfo = this.serverDetail.disks_info
+      const disksInfo = this.data.disks_info
       if (!disksInfo) return {}
       const dataDisk = {}
       const sysDisk = {}
@@ -214,12 +213,6 @@ export default {
         },
       ]
     },
-  },
-  created () {
-    const manager = new this.$Manager('servers')
-    manager.get({ id: this.data.id }).then(res => {
-      this.serverDetail = res.data || {}
-    })
   },
   methods: {
     _diskStringify (diskObj) {
