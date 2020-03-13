@@ -12,7 +12,7 @@ export default {
         width: 70,
         slots: {
           default: ({ row }) => {
-            if (!row.properties || !row.properties.os_distribution) return
+            if (!row.properties) return
             let name = !row.properties.os_distribution ? row.properties.os_type : decodeURI(row.properties.os_distribution || '')
             if (name.includes('Windows') || name.includes('windows')) {
               name = 'Windows'
