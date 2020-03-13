@@ -13,6 +13,7 @@
       :is="params.windowData.currentTab"
       :res-id="data.id"
       :data="detailData"
+      :on-manager="onManager"
       @tab-change="handleTabChange" />
   </base-side-page>
 </template>
