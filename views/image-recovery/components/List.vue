@@ -23,14 +23,15 @@ export default {
   mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
+    cloudEnv: String,
   },
   data () {
     return {
       list: this.$list.createList(this, {
         id: this.id,
-        resource: 'images',
+        resource: this.imagesFetcher,
         getParams: this.getParams,
-        steadyStatus: Object.values(expectStatus.server).flat(),
+        steadyStatus: Object.values(expectStatus.image).flat(),
         apiVersion: 'v1',
         filterOptions: {
           name: getNameFilter(),
@@ -95,16 +96,38 @@ export default {
       ],
     }
   },
+  watch: {
+    cloudEnv (val) {
+      this.$nextTick(() => {
+        this.list.resource = this[`${val}Fetcher`]
+        this.list.fetchData(0)
+      })
+    },
+  },
   created () {
+    this.sm = new this.$Manager('images', 'v1')
+    this.vm = new this.$Manager('guestimages', 'v1')
     this.list.fetchData()
   },
   methods: {
     getParams () {
+      if (this.cloudEnv === 'images') {
+        return {
+          details: true,
+          pending_delete: true,
+          is_guest_image: false,
+        }
+      }
       return {
         details: true,
         pending_delete: true,
-        is_guest_image: false,
       }
+    },
+    imagesFetcher (params) {
+      return this.sm.list({ params })
+    },
+    guestimagesFetcher (params) {
+      return this.vm.list({ params })
     },
   },
 }
