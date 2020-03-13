@@ -22,7 +22,7 @@
             <div class="text-color-help">{{ title }}</div>
             <div class="d-flex mt-2 w-100 align-items-center">
               <h5 class="text-truncate mb-0" style="min-width: 0;">{{ resName }}</h5>
-              <template v-if="loaded">
+              <template v-if="loaded && !hasError">
                 <div class="ml-3 flex-shrink-0 flex-shrink-0 d-flex pr-2">
                   <div class="pr-4"><slot name="actions" /></div>
                 </div>
@@ -37,7 +37,8 @@
           <a-tab-pane
             v-for="item of tabs"
             :key="item.key"
-            :tab="item.label" />
+            :tab="item.label"
+            :disabled="hasError" />
         </a-tabs>
       </div>
     </div>
@@ -47,7 +48,10 @@
           <loading-block :layout="loadingLayout" />
         </template>
         <template v-else>
-          <slot />
+          <template v-if="hasError">
+            <a-empty :description="errorInfo.details" />
+          </template>
+          <template v-else><slot /></template>
         </template>
       </div>
     </div>
@@ -55,8 +59,10 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import VcDialog from 'ant-design-vue/lib/vc-dialog'
 import Clickoutside from '@/directives/clickoutside'
+// import { getHttpErrorMessage } from '@/utils/error'
 
 export default {
   name: 'BaseSidePage',
@@ -66,6 +72,7 @@ export default {
   components: {
     VcDialog,
   },
+  inject: ['requestError'],
   props: {
     title: {
       type: String,
@@ -107,6 +114,13 @@ export default {
     inBaseSidePage: true,
   },
   computed: {
+    errorInfo () {
+      // return this.requestError.error && getHttpErrorMessage(this.requestError.error)
+      return this.requestError.error && this.requestError.error.response && this.requestError.error.response.data
+    },
+    hasError () {
+      return !R.isNil(this.errorInfo) && !R.isEmpty(this.errorInfo)
+    },
     windowId () {
       return this.$parent.windowId
     },

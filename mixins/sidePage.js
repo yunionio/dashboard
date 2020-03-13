@@ -123,6 +123,15 @@ export default {
       data: {},
       loading: false,
       loaded: false,
+      // 声明为可监听的对象，方便inject到的error属性是响应式的
+      requestError: {
+        error: null,
+      },
+    }
+  },
+  provide () {
+    return {
+      requestError: this.requestError,
     }
   },
   computed: {
@@ -210,11 +219,12 @@ export default {
         this.clearWaitJob()
         this.data = this.wrapData(data)
         this.checkSteadyStatus()
-        this.loaded = true
         return response
       } catch (error) {
+        this.requestError.error = error
         throw error
       } finally {
+        this.loaded = true
         this.loading = false
       }
     },
