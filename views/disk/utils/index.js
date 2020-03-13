@@ -77,11 +77,6 @@ export const diskResizeConfig = {
     if (obj.guest_status === 'running') {
       return {
         validate: false,
-      }
-    }
-    if (obj.guest_status === 'running') {
-      return {
-        validate: false,
         tooltip: `${PROVIDER_MAP[provider].label}不支持开机扩容`,
       }
     }

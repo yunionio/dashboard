@@ -74,6 +74,12 @@ export default {
                 })
               },
               meta: () => {
+                if (!obj.guest) {
+                  return {
+                    validate: !!obj.guest,
+                    tooltip: '请先挂载',
+                  }
+                }
                 if (obj.cloud_env === 'onpremise' && obj.storage_type === 'local') {
                   return {
                     validate: false,
@@ -91,12 +97,11 @@ export default {
                       validate: false,
                       tooltip: '该磁盘类型不允许卸载',
                     }
-                  } else {
-                    return {
-                      validate: !!obj.guest,
-                      tooltip: '请先挂载',
-                    }
                   }
+                }
+                return {
+                  validate: true,
+                  tooltip: '',
                 }
               },
             },
