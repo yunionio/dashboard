@@ -205,7 +205,7 @@ export default {
       try {
         const values = await this.form.fc.validateFields()
         values['cloudaccount_id'] = this.id
-        await new this.$Manager('bucket_options').performClassAction({
+        await new this.$Manager('bucket_options', 'v1').performClassAction({
           action: 'verify',
           data: values,
         })
