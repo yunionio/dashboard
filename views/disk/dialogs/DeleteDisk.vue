@@ -138,16 +138,19 @@ export default {
           if (this.isIDC) {
             params.delete_snapshots = this.form.fd.autoDelete
           }
-          const response = await this.params.list.onManager('batchDelete', {
+          const res = await this.params.list.onManager('batchDelete', {
             id: ids,
             managerArgs: { params },
           })
-          if (this.params.success && R.is(Function, this.params.success)) {
-            this.params.success(response)
+          const isOk = res.data.data.every(item => item.status === 200)
+          if (isOk) {
+            if (this.params.success && R.is(Function, this.params.success)) {
+              this.params.success(res)
+            }
+            this.$message.success('操作成功')
           }
+          this.cancelDialog()
         }
-        this.cancelDialog()
-        this.$message.success('操作成功')
       } finally {
         this.loading = false
       }
