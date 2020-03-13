@@ -110,12 +110,8 @@ export default {
           field: 'access_mac',
           title: 'mac地址',
         },
-<<<<<<< HEAD
-        // getStatusTableColumn({ field: 'host_status', statusModule: 'host' }),
-=======
         getStatusTableColumn({ statusModule: 'host' }),
         getStatusTableColumn({ field: 'host_status', statusModule: 'host_status', title: '服务' }),
->>>>>>> fa5c2893b4952292987ada8146b39147d4fb5ee2
         {
           field: 'access_mac',
           title: 'mac地址',
