@@ -6,7 +6,7 @@
       <component :is="currentComponent" :current-item.sync="currentItem" :account="newAccountInfo" ref="stepRef" :provider="currentItem.provider" /><!-- provider 是为了 VmNetwork 的 prop 不报错 -->
     </keep-alive>
     <a-form-item v-if="step.currentStep === 1" v-bind="offsetFormLayout">
-      <a @click="handleTest">连接测试</a>
+      <a-button :loading="testLoding" style="padding: 0" type="link" @click="handleTest">连接测试</a-button>
     </a-form-item>
     <page-footer>
       <div slot="left">
@@ -47,6 +47,7 @@ export default {
   mixins: [step],
   data () {
     return {
+      testLoding: false,
       newAccountInfo: {},
       isAdminMode: this.$store.getters.isAdminMode,
       isDomainMode: this.$store.getters.isDomainMode,
@@ -66,7 +67,7 @@ export default {
       },
       offsetFormLayout: {
         wrapperCol: {
-          md: { span: 18, offset: 5 },
+          md: { span: 18, offset: 6 },
           xl: { span: 20, offset: 3 },
           xxl: { span: 22, offset: 2 },
         },
@@ -285,11 +286,21 @@ export default {
     },
     async handleTest () {
       let createForm = this.$refs.stepRef.$refs.createForm
+      this.testLoding = true
       try {
-        const values = await createForm.validateForm()
+        const formData = await createForm.validateForm()
+        const data = {
+          ...formData,
+          enabled: true,
+          provider: this.currentItem.provider,
+        }
+        if (formData.sync_interval_seconds) {
+          data.sync_interval_seconds = formData.sync_interval_seconds * 60 // 转换为秒
+        }
+        this._addDomainProject(data)
         await this.cloudaccountsM.performClassAction({
           action: 'check-create-data',
-          data: values,
+          data: data,
         })
         this.$notification.success({
           message: '连接成功',
@@ -297,6 +308,8 @@ export default {
         })
       } catch (err) {
         throw err
+      } finally {
+        this.testLoding = false
       }
     },
   },
