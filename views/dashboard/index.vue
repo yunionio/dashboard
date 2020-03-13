@@ -12,10 +12,16 @@
         <a-button type="link" icon="edit" @click="() => handleToEdit(currentDashboardOption.id)">编辑</a-button>
         <a-button type="link" icon="download" @click="handleDownloadConfig" :disabled="disableDownloadConfig">导出</a-button>
         <a-button type="link" icon="file" @click="handleImportConfig">导入</a-button>
-        <a-popconfirm @confirm="handleRemoveDashboard">
-          <template v-slot:title>你所选<span class="font-weight-bold ml-2 mr-2">{{currentDashboardOption.name}}</span>将执行<span class="error-color ml-2 mr-2">删除</span>操作操作，是否确认？</template>
+        <a-popover trigger="click" v-model="deletePopoverVisible">
+          <template v-slot:content>
+            <div><a-icon type="exclamation-circle" class="warning-color mr-1" />你所选<span class="font-weight-bold ml-2 mr-2">{{currentDashboardOption.name}}</span>将执行<span class="error-color ml-2 mr-2">删除</span>操作操作，是否确认？</div>
+            <div class="text-right mt-2">
+              <a-button size="small" type="primary" @click="handleRemoveDashboard">确定</a-button>
+              <a-button size="small" @click="deletePopoverVisible = false" class="ml-2">取消</a-button>
+            </div>
+          </template>
           <a-button type="link" icon="delete">删除</a-button>
-        </a-popconfirm>
+        </a-popover>
       </div>
       <a-button type="link" @click="swtchOldDashboard" v-if="$appConfig.isPrivate">使用旧版</a-button>
     </div>
@@ -101,6 +107,7 @@ export default {
       maxRows: 34,
       defaultGridW: 2,
       defaultGridH: 2,
+      deletePopoverVisible: false,
     }
   },
   computed: {
