@@ -34,7 +34,14 @@ export default {
         },
         {
           field: 'networks',
-          title: '网络数量（IP子网数量）',
+          title: '网络数量',
+          slots: {
+            default: ({ row }, h) => {
+              return [
+                <p>{ row.networks }<span style={{ color: '#aaa' }}>（IP子网数量）</span></p>,
+              ]
+            },
+          },
         },
         {
           field: 'region',
