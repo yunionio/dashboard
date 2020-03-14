@@ -40,7 +40,7 @@
           :decorator="decorators.imageOS"
           :image-params="scopeParams"
           :cacheImageParams="cacheImageParams"
-          :cloudaccountParamsExtra="cloudaccountParamsExtra"
+          :cloudproviderParamsExtra="cloudproviderParamsExtra"
           @updateImageMsg="updateFi" />
       </a-form-item>
       <a-form-item label="CPU核数" class="mb-0">
@@ -210,8 +210,10 @@ export default {
         'provider.1': this.form.fd.hypervisor,
       }
     },
-    cloudaccountParamsExtra () {
-      const params = {}
+    cloudproviderParamsExtra () {
+      const params = {
+        image_type: 'system',
+      }
       if (this.form.fd.hypervisor && this.form.fd.hypervisor) {
         params.provider = HYPERVISORS_MAP[this.form.fd.hypervisor].provider
       }

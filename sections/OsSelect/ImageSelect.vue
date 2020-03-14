@@ -5,11 +5,11 @@
         <a-form-item :wrapperCol="{ span: 24 }">
           <base-select
             v-decorator="decorator.preferManager"
-            resource="cloudaccounts"
-            @change="cloudaccountChange"
-            :params="cloudaccountParams"
+            resource="cloudproviders"
+            @change="cloudproviderChange"
+            :params="cloudproviderParams"
             :isDefaultSelect="true"
-            :select-props="{ placeholder: '请选择云账号', disabled: imageCloudaccountDisabled }" />
+            :select-props="{ placeholder: '请选择云账号', disabled: imageCloudproviderDisabled }" />
         </a-form-item>
       </a-col>
       <a-col :span="4">
@@ -85,11 +85,11 @@ export default {
     uefi: {
       type: Boolean,
     },
-    cloudaccountParamsExtra: {
+    cloudproviderParamsExtra: {
       type: Object,
       default: () => ({}),
     },
-    imageCloudaccountDisabled: {
+    imageCloudproviderDisabled: {
       type: Boolean,
       default: false,
     },
@@ -109,7 +109,7 @@ export default {
       },
       loading: false,
       imageOpts: [],
-      cloudaccount_id: '',
+      cloudprovider: '',
     }
   },
   computed: {
@@ -152,11 +152,11 @@ export default {
       const imageMsg = IMAGES_TYPE_MAP[this.imageType]
       return imageMsg && imageMsg.enable_cloudaccount
     },
-    cloudaccountParams () {
+    cloudproviderParams () {
       return {
         limit: 0,
         scope: this.$store.getters.scope,
-        ...this.cloudaccountParamsExtra,
+        ...this.cloudproviderParamsExtra,
       }
     },
     storageImage () {
@@ -190,6 +190,9 @@ export default {
         return imageOpts
       }
       return this.imageOpts
+    },
+    isVMware () {
+      return this.imageType === IMAGES_TYPE_MAP.vmware.key
     },
   },
   watch: {
@@ -333,7 +336,7 @@ export default {
       }
     },
     async fetchCacheimages () {
-      if (R.isNil(this.cacheImageParams) || R.isEmpty(this.cacheImageParams)) return
+      if (!this.isVMware && (R.isNil(this.cacheImageParams) || R.isEmpty(this.cacheImageParams))) return
       this.images.cacheimagesList = []
       const params = {
         details: false,
@@ -343,8 +346,8 @@ export default {
         ...this.cacheImageParams,
       }
       if (this.showCloudaccount) {
-        if (this.cloudaccount_id) {
-          params.account = this.cloudaccount_id
+        if (this.cloudprovider) {
+          params.cloudprovider = this.cloudprovider
         } else {
           return
         }
@@ -366,8 +369,8 @@ export default {
         throw error
       }
     },
-    cloudaccountChange (val) {
-      this.cloudaccount_id = val
+    cloudproviderChange (val) {
+      this.cloudprovider = val
       this.fetchCacheimages()
     },
     getProperties (img) {
@@ -417,7 +420,7 @@ export default {
       let images = this.images.list
       // 如果选择的是公有云镜像类型，则取cache image list
       // 其他类型再进行过滤一次
-      if (this.isPublicImage || this.isPrivateImage) {
+      if (this.isPublicImage || this.isPrivateImage || this.isVMware) {
         images = this.images.cacheimagesList
       } else {
         if (this.imageType !== IMAGES_TYPE_MAP.snapshot.key) {

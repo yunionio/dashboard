@@ -17,9 +17,9 @@
       :imageParams="imageParams"
       :cacheImageParams="cacheImageParams"
       :osType="osType"
-      :cloudaccountParamsExtra="cloudaccountParamsExtra"
+      :cloudproviderParamsExtra="cloudproviderParamsExtra"
       :cloudaccountId="cloudaccountId"
-      :imageCloudaccountDisabled="imageCloudaccountDisabled"
+      :imageCloudproviderDisabled="imageCloudproviderDisabled"
       :form="form" />
   </div>
 </template>
@@ -69,11 +69,11 @@ export default {
       type: Boolean,
       required: false,
     },
-    cloudaccountParamsExtra: {
+    cloudproviderParamsExtra: {
       type: Object,
       default: () => ({}),
     },
-    imageCloudaccountDisabled: {
+    imageCloudproviderDisabled: {
       type: Boolean,
       default: false,
     },
