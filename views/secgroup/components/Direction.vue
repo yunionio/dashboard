@@ -97,8 +97,20 @@ export default {
         {
           field: 'description',
           title: '备注',
-          formatter: ({ cellValue }) => {
-            return cellValue || '-'
+          slots: {
+            default: ({ row }, h) => {
+              const ret = [
+                <list-body-cell-wrap
+                  edit
+                  copy
+                  field="description"
+                  row={row}
+                  list={this.list}
+                  formRules={[]}
+                />,
+              ]
+              return ret
+            },
           },
         },
       ],
