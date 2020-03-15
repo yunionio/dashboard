@@ -342,6 +342,11 @@ export default {
                         tooltip: '请选择处于关机状态的物理机',
                       }
                     }
+                    if (obj.server_id && obj.host_type === 'baremetal') {
+                      return {
+                        validate: false,
+                      }
+                    }
                     if (obj.status !== 'ready') {
                       return {
                         validate: false,
@@ -374,6 +379,11 @@ export default {
                         tooltip: '请选择处于运行中状态的物理机',
                       }
                     }
+                    if (obj.server_id && obj.host_type === 'baremetal') {
+                      return {
+                        validate: false,
+                      }
+                    }
                     if (obj.status !== 'running') {
                       return {
                         validate: false,
@@ -399,6 +409,11 @@ export default {
                   }
                   for (let i = 0; i < this.list.selectedItems.length; i++) {
                     let obj = this.list.selectedItems[i]
+                    if (obj.server) {
+                      return {
+                        validate: false,
+                      }
+                    }
                     if (!obj.is_baremetal) {
                       return {
                         validate: false,
@@ -438,6 +453,11 @@ export default {
                   }
                   for (let i = 0; i < this.list.selectedItems.length; i++) {
                     let obj = this.list.selectedItems[i]
+                    if (obj.server) {
+                      return {
+                        validate: false,
+                      }
+                    }
                     if (!obj.is_baremetal) {
                       return {
                         validate: false,
