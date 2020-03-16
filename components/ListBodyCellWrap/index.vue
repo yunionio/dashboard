@@ -19,7 +19,8 @@
       :label="labelCn"
       :formRules="formRulesComputer"
       :visible.sync="editVisible"
-      :defaultValue="row[field]" />
+      :defaultValue="row[field]"
+      :showSuccessMessage="showSuccessMessage" />
     <copy
       slot="copy"
       class="ml-1"
@@ -78,6 +79,13 @@ export default {
     titleClass: String,
     addLock: Boolean,
     addBackup: Boolean,
+    // 自定义确定事件，如果传递了此事件，则不会执行默认的确定事件
+    ok: Function,
+    // 是否需要显示成功信息
+    showSuccessMessage: {
+      type: Boolean,
+      default: true,
+    },
   },
   inject: {
     // 是否处于BaseDialog中
@@ -148,17 +156,21 @@ export default {
   },
   methods: {
     update (formData) {
-      if (this.onManager) {
-        this.onManager('update', {
-          steadyStatus: this.steadyStatus,
-          id: this.row.id,
-          managerArgs: {
+      if (this.ok) {
+        this.ok(formData.input)
+      } else {
+        if (this.onManager) {
+          this.onManager('update', {
+            steadyStatus: this.steadyStatus,
             id: this.row.id,
-            data: {
-              [this.field]: formData.input,
+            managerArgs: {
+              id: this.row.id,
+              data: {
+                [this.field]: formData.input,
+              },
             },
-          },
-        })
+          })
+        }
       }
     },
     handleMouseenter (e) {
