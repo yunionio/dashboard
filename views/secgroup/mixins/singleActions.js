@@ -7,13 +7,13 @@ export default {
   created () {
     this.singleActions = [
       {
-        label: '关联云服务器',
+        label: `关联${this.$t('dictionary.server')}`,
         permission: 'server_perform_assign_secgroup',
         action: (obj) => {
           this.createDialog('SetServerDialog', {
             data: [obj],
             columns: this.columns,
-            title: '关联云服务器',
+            title: `关联${this.$t('dictionary.server')}`,
             onManager: this.onManager,
             refresh: this.refresh,
           })

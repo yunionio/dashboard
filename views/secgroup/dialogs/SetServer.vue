@@ -1,11 +1,11 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">关联云服务器</div>
+    <div slot="header">{{params.title}}</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" action="关联云服务器" />
+      <dialog-selected-tips :count="params.data.length" :action="params.title" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
-        <a-form-item label="主机" v-bind="formItemLayout">
+        <a-form-item :label="$t('dictionary.server')" v-bind="formItemLayout">
           <base-select
             class="w-100"
             @update:options="onServerSucceed"
@@ -14,7 +14,7 @@
             resource="servers"
             :mapper="mapperServers"
             :params="requestParams"
-            :select-props="{ allowClear: true, placeholder: '请选择主机', mode: 'multiple', defaultValue }" />
+            :select-props="{ allowClear: true, placeholder: `请选择${$t('dictionary.server')}`, mode: 'multiple', defaultValue }" />
         </a-form-item>
       </a-form>
     </div>

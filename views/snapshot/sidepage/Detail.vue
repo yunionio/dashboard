@@ -32,7 +32,7 @@ export default {
         getBrandTableColumn(),
         {
           field: 'size',
-          title: '容量',
+          title: '快照大小',
           formatter: ({ cellValue, row }) => {
             return sizestr(cellValue, 'M', 1024)
           },
@@ -53,7 +53,7 @@ export default {
         },
         {
           field: 'guest',
-          title: '主机',
+          title: this.$t('dictionary.server'),
           slots: {
             default: ({ row }, h) => {
               if (row.guest) {

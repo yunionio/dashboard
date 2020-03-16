@@ -23,7 +23,7 @@ export default {
       },
       {
         field: 'linked_guest_count',
-        title: '关联主机数',
+        title: `关联${this.$t('dictionary.server')}数量`,
       },
     ]
   },

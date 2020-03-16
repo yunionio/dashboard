@@ -36,8 +36,8 @@ export default {
       getStatusTableColumn({ statusModule: 'sku' }),
       {
         field: 'total_guest_count',
-        title: '关联主机数量',
-        width: 100,
+        title: `关联${this.$t('dictionary.server')}数量`,
+        width: 120,
       },
       getEnabledTableColumn(),
     ]

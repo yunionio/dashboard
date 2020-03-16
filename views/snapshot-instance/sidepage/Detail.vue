@@ -29,7 +29,7 @@ export default {
       baseInfo: [
         {
           field: 'size',
-          title: '容量',
+          title: '快照大小',
           formatter: ({ cellValue, row }) => {
             const size = row.snapshots.reduce((a, b) => a + b.size, 0)
             return sizestr(size, 'M', 1024)
@@ -51,7 +51,7 @@ export default {
         },
         {
           field: 'guest',
-          title: '主机',
+          title: this.$t('dictionary.server'),
           slots: {
             default: ({ row }, h) => {
               if (row.guest) {

@@ -47,7 +47,7 @@ export default {
           { label: '公钥内容', key: 'public_key' },
           { label: '指纹', key: 'fingerprint' },
           { label: '类型', key: 'scheme' },
-          { label: '关联主机数', key: 'linked_guest_count' },
+          { label: `关联${this.$t('dictionary.server')}数量`, key: 'linked_guest_count' },
         ],
       },
       groupActions: [

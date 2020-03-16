@@ -35,6 +35,7 @@ import AnsibleTemplate from '@Compute/views/ansible-template'
 import AnsibleTemplateCreate from '@Compute/views/ansible-template/create'
 import AnsiblePlaybook from '@Compute/views/ansible-playbook'
 import Layout from '@/layouts/RouterView'
+import i18n from '@/locales'
 
 import { hasHypervisorsByEnv } from '@/utils/auth'
 
@@ -522,7 +523,7 @@ export default {
         {
           path: '/serverrecovery',
           meta: {
-            label: '主机',
+            label: i18n.t('dictionary.server'),
             permission: 'servers_list,server_delete',
           },
           component: Layout,
