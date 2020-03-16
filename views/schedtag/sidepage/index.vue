@@ -19,6 +19,8 @@
 <script>
 import HostList from '@Compute/views/host/components/List'
 import PhysicalmachineList from '@Compute/views/physicalmachine/components/List'
+import storageList from '@Storage/views/blockstorage/components/List'
+import networkList from '@Network/views/network/components/List'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import SchedtagDetail from './Detail'
@@ -35,6 +37,8 @@ export default {
     HostList,
     Dashboard,
     PhysicalmachineList,
+    storageList,
+    networkList,
   },
   mixins: [SidePageMixin, WindowsMixin, SingleActionsMixin, ColumnsMixin],
   data () {
@@ -43,6 +47,8 @@ export default {
         { label: '详情', key: 'schedtag-detail' },
         { label: '物理机', key: 'physicalmachine-list' },
         { label: '宿主机', key: 'host-list' },
+        { label: '存储', key: 'storage-list' },
+        { label: '网络', key: 'network-list' },
         { label: '资源统计', key: 'dashboard' },
         { label: '操作日志', key: 'event-drawer' },
       ],
@@ -50,20 +56,22 @@ export default {
   },
   computed: {
     getParams () {
-      if (this.params.windowData.currentTab === 'physicalmachine-list') {
-        return {
+      const params = {
+        'physicalmachine-list': {
           details: true,
           schedtag: this.data.id,
           baremetal: true,
-        }
-      } else if (this.params.windowData.currentTab === 'host-list') {
-        return {
+        },
+        'host-list': {
           detail: true,
           schedtag: this.data.id,
           baremetal: false,
-        }
+        },
       }
-      return null
+      return params[this.params.windowData.currentTab] || {
+        details: true,
+        schedtag: this.data.id,
+      }
     },
   },
 }
