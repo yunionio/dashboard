@@ -371,6 +371,7 @@ export default {
         cloud_env: 'onpremise',
         resource_type: 'storages',
         limit: 0,
+        is_instance_snapshot: false,
       }
       const scopeParams = {}
       if (this.$store.getters.isAdminMode) {
