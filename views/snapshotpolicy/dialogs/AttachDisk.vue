@@ -3,7 +3,7 @@
     <div slot="header">关联硬盘</div>
     <div slot="body">
       <a-alert class="mb-2" type="warning" :message="message" />
-      <dialog-selected-tips :count="params.data.length" action="关联硬盘" />
+      <dialog-selected-tips :count="params.data.length" action="关联硬盘" name="策略" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <loader loading v-if="!(bindedDisksLoaded && disksInitLoaded)" />
       <a-form :form="form.fc" hideRequiredMark v-show="bindedDisksLoaded && disksInitLoaded">
