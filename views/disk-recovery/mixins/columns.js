@@ -26,7 +26,7 @@ export default {
       column = [
         getCopyWithContentTableColumn({ field: 'name', title: '名称' }),
         getCopyWithContentTableColumn({ field: 'storage', title: '存储' }),
-        getCopyWithContentTableColumn({ field: 'guest', title: '云服务器' }),
+        getCopyWithContentTableColumn({ field: 'guest', title: this.$t('dictionary.server') }),
         {
           field: 'disk_type',
           title: '类型',
