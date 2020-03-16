@@ -1,13 +1,13 @@
 <template>
   <a-popover title="后端访问信息" trigger="hover" @visibleChange="handleVisibleChange" placement="right">
-    <div slot="content" style="width: 600px;">
+    <div slot="content" style="width: 700px;">
       <a-spin :spinning="loading" />
       <template v-if="!loading">
         <a-row v-for="(value, key) in infoData" :key="key" class="pb-2">
           <a-col :span="7">
             {{key}}：
           </a-col>
-          <a-col :span="16">
+          <a-col :span="16" style="word-break:break-all;">
             {{value}}
             <copy :message="value" />
           </a-col>
