@@ -14,6 +14,10 @@ export default {
     formRules: {
       type: Array,
     },
+    showSuccessMessage: {
+      type: Boolean,
+      default: true,
+    },
   },
   data () {
     return {
@@ -30,7 +34,9 @@ export default {
       this.hideForm()
       if (!this.$slots.default) { // 没有自定义表单slot
         this.$emit('update', values)
-        this.$message.success('操作成功')
+        if (this.showSuccessMessage) {
+          this.$message.success('操作成功')
+        }
       }
     },
     hideForm () {

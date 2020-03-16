@@ -4,11 +4,11 @@
     :style="{ width: `${width}px` }"
     @submit="handleSubmit">
     <a-form-item :label="label" v-bind="formLayout">
-      <a-input v-decorator="decorators.input" :placeholder="placeholder" allowClear />
+      <a-input class="w-100" v-decorator="decorators.input" :placeholder="placeholder" allowClear />
     </a-form-item>
-    <div class="d-flex flex-row-reverse">
-      <a-button class="ml-3" @click="cancel">取消</a-button>
+    <div class="text-right">
       <a-button type="primary" html-type="submit">确定</a-button>
+      <a-button class="ml-3" @click="cancel">取消</a-button>
     </div>
   </a-form>
 </template>
