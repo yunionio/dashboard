@@ -18,7 +18,7 @@ export default {
       getEnabledTableColumn({ title: '状态' }),
       {
         field: 'guest_count',
-        title: '云服务器',
+        title: this.$t('dictionary.server'),
         width: 70,
       },
       {
