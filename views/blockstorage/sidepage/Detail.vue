@@ -67,20 +67,20 @@ export default {
               },
             },
             {
-              field: 'vcapacity',
+              field: 'virtual_capacity',
               title: '虚拟容量',
               slots: {
                 default: ({ row }) => {
-                  return this._sizestr(row.vcapacity)
+                  return this._sizestr(row.virtual_capacity)
                 },
               },
             },
             {
-              field: 'used',
+              field: 'used_capacity',
               title: '分配',
               slots: {
                 default: ({ row }) => {
-                  return this._sizestr(row.used)
+                  return this._sizestr(row.used_capacity)
                 },
               },
             },
@@ -94,11 +94,11 @@ export default {
               },
             },
             {
-              field: 'wasted',
+              field: 'waste_capacity',
               title: '浪费',
               slots: {
                 default: ({ row }) => {
-                  return this._sizestr(row.wasted)
+                  return this._sizestr(row.waste_capacity)
                 },
               },
             },
