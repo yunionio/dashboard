@@ -23,13 +23,17 @@ export default {
   mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
+    getParams: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data () {
     return {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'servers',
-        getParams: this.getParams,
+        getParams: this.getParam,
         steadyStatus: Object.values(expectStatus.server).flat(),
         filterOptions: {
           name: getNameFilter(),
@@ -126,11 +130,12 @@ export default {
     this.list.fetchData()
   },
   methods: {
-    getParams () {
+    getParam () {
       return {
         details: true,
         with_meta: true,
         pending_delete: true,
+        ...this.getParams,
       }
     },
   },

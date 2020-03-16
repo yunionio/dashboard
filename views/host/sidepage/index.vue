@@ -17,6 +17,7 @@
 
 <script>
 import VminstanceList from '@Compute/views/vminstance/components/List'
+import ServerRecovery from '@Compute/views/server-recovery/components/List'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import HostDetail from './Detail'
@@ -40,6 +41,7 @@ export default {
     NetworkList,
     StorageList,
     GpuList,
+    ServerRecovery,
     Actions,
     Monitor,
   },
@@ -53,6 +55,7 @@ export default {
         { label: '网络', key: 'network-list' },
         { label: '存储', key: 'storage-list' },
         { label: 'GPU卡', key: 'gpu-list' },
+        { label: '回收站', key: 'server-recovery' },
         { label: '监控', key: 'monitor' },
         // { label: '报警', key: 'alert' },
         { label: '操作日志', key: 'event-drawer' },
@@ -70,6 +73,10 @@ export default {
           details: true,
           with_meta: true,
           limit: 20,
+        }
+      } else if (this.params.windowData.currentTab === 'server-recovery') {
+        return {
+          host: this.data.id,
         }
       }
       return null
