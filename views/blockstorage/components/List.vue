@@ -29,7 +29,7 @@ export default {
     return {
       list: this.$list.createList(this, {
         resource: 'storages',
-        // getParams: this.getParams,
+        getParams: this.getParams,
         filterOptions: {
           name: getNameFilter(),
           enabled: getEnabledFilter(),
