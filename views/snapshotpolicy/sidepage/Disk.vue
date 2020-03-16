@@ -63,7 +63,7 @@ export default {
         getRegionTableColumn(),
         {
           field: 'guest',
-          title: '主机',
+          title: this.$t('dictionary.server'),
           minWidth: 100,
           showOverflow: 'ellipsis',
           slots: {

@@ -1,12 +1,12 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">关联主机</div>
+    <div slot="header">{{params.title}}</div>
     <div slot="body">
-      <dialog-selected-tips name="GPU" :count="params.data.length" action="关联主机" />
+      <dialog-selected-tips name="GPU" :count="params.data.length" :action="params.title" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
-        <a-form-item label="选择主机" v-bind="formItemLayout" extra="只能选择与GPU卡同一宿主机处于关机状态的虚拟机">
+        <a-form-item :label="`选择${this.$t('dictionary.server')}`" v-bind="formItemLayout" extra="只能选择与GPU卡同一宿主机处于关机状态的虚拟机">
           <a-select v-decorator="decorators.guest">
             <a-select-option v-for="item in guestesOpts" :key="item.id">
               {{item.name}}
@@ -44,7 +44,7 @@ export default {
           'guest',
           {
             rules: [
-              { required: true, message: '请选择关联主机' },
+              { required: true, message: `请选择关联${this.$t('dictionary.server')}` },
             ],
           },
         ],

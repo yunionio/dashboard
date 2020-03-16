@@ -222,7 +222,7 @@ export default {
         const current = obj.running_guests || 0
         const total = obj.guests || 0
         return {
-          title: '云服务器',
+          title: this.$t('dictionary.server'),
           percent: total ? (current / total) : 0,
           msg: {
             current,

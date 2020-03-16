@@ -2,7 +2,7 @@ export default {
   created () {
     this.singleActions = [
       {
-        label: '绑定主机',
+        label: `绑定${this.$t('dictionary.server')}`,
         action: (obj) => {
           this.createDialog('InstanceGroupBindServerDialog', {
             columns: this.columns,

@@ -68,7 +68,7 @@ export default {
           { label: '名称', key: 'name' },
           { label: '策略', key: 'force_dispersion' },
           { label: '粒度', key: 'granularity' },
-          { label: '绑定主机数量', key: 'guest_count' },
+          { label: `绑定${this.$t('dictionary.server')}数量`, key: 'guest_count' },
           { label: this.$t('dictionary.project'), key: 'tenant' },
           { label: '创建时间', key: 'created_at' },
         ],

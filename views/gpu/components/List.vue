@@ -46,7 +46,7 @@ export default {
             },
           },
           guest: {
-            label: '关联主机',
+            label: `关联${this.$t('dictionary.server')}`,
             filter: true,
             jointFilter: true,
             formatter: val => {
@@ -71,18 +71,18 @@ export default {
           { label: 'ID', key: 'id' },
           { label: '名称', key: 'name' },
           { label: '设备型号', key: 'model' },
-          { label: '关联主机', key: 'guest' },
+          { label: `关联${this.$t('dictionary.server')}`, key: 'guest' },
           { label: '所在宿主机', key: 'host' },
         ],
       },
       groupActions: [
         {
-          label: '取消关联主机',
+          label: `取消关联${this.$t('dictionary.server')}`,
           action: () => {
             this.createDialog('DetachGpuDialog', {
               data: this.list.selectedItems,
               columns: this.columns,
-              title: '取消关联主机',
+              title: `取消关联${this.$t('dictionary.server')}`,
               refresh: this.refresh,
             })
           },
@@ -99,13 +99,13 @@ export default {
             if (!validateGuestId) {
               return {
                 validate: false,
-                tooltip: '请选择已关联主机的GPU卡',
+                tooltip: `请选择已关联${this.$t('dictionary.server')}的GPU卡`,
               }
             }
             if (!validateGuestStatus) {
               return {
                 validate: false,
-                tooltip: '关联主机在【关机】的状态下支持该操作',
+                tooltip: `关联${this.$t('dictionary.server')}在【关机】的状态下支持该操作`,
               }
             }
             return {

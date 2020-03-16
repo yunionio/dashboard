@@ -1,8 +1,8 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">取消关联主机</div>
+    <div slot="header">{{params.title}}</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" action="取消关联主机" />
+      <dialog-selected-tips :count="params.data.length" :action="params.title" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">

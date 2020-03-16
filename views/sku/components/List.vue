@@ -78,7 +78,7 @@ export default {
           { label: '虚拟CPU核数', key: 'cpu_core_count' },
           { label: '虚拟内存容量', key: 'memory_size_mb' },
           { label: '状态', key: 'status' },
-          { label: '关联主机数量', key: 'total_guest_count' },
+          { label: `关联${this.$t('dictionary.server')}数量`, key: 'total_guest_count' },
           { label: '启用状态', key: 'enabled' },
         ],
       },

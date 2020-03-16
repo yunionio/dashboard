@@ -37,7 +37,7 @@ export default {
       },
       {
         field: 'guest_count',
-        title: '绑定主机数量',
+        title: `绑定${this.$t('dictionary.server')}数量`,
         width: 120,
         formatter: ({ cellValue }) => `${cellValue || 0}`,
       },

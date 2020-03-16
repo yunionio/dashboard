@@ -46,7 +46,7 @@ export default {
       },
       {
         field: 'guest',
-        title: '关联主机',
+        title: `关联${this.$t('dictionary.server')}`,
         minWidth: 100,
         showOverflow: 'ellipsis',
         slots: {

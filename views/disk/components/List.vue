@@ -45,7 +45,7 @@ export default {
             jointFilter: true,
           },
           guest: {
-            label: '主机',
+            label: this.$t('dictionary.server'),
           },
           disk_type: {
             label: '磁盘类型',

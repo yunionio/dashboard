@@ -59,7 +59,7 @@ export default {
         },
         {
           field: 'guest',
-          title: '主机',
+          title: this.$t('dictionary.server'),
           slots: {
             default: ({ row }, h) => {
               return [

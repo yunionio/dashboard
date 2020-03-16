@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">绑定主机</div>
+    <div slot="header">绑定{{this.$t('dictionary.server')}}</div>
     <div slot="body">
       <a-alert class="mb-2" type="warning">
         <template v-slot:message>
@@ -8,13 +8,13 @@
           <div class="mt-2">已创建的虚拟机加入主机组后虚拟机所属宿主机不会变化。</div>
         </template>
       </a-alert>
-      <dialog-selected-tips :count="params.data.length" action="绑定主机" name="主机组" />
+      <dialog-selected-tips :count="params.data.length" :action="`绑定${this.$t('dictionary.server')}`" name="主机组" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-select
         v-if="serversLoaded"
         class="w-100"
         mode="multiple"
-        placeholder="请选择要绑定的主机"
+        :placeholder="`请选择要绑定的${this.$t('dictionary.server')}`"
         :defaultValue="defaultSelected"
         :loading="serversLoading"
         @search="debounceFetchServers"
