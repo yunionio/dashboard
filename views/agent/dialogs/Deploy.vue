@@ -239,7 +239,7 @@ export default {
         system: true,
       },
       nameServers: [
-        { label: '云主机', value: 'server' },
+        { label: this.$t('dictionary.server'), value: 'server' },
         { label: '宿主机', value: 'host' },
         { label: '外部机器', value: '' },
       ],
