@@ -132,6 +132,7 @@ export default {
                 label: '同步状态',
                 action: () => {
                   this.onManager('batchPerformAction', {
+                    id: this.list.selectedItems.map(item => item.id),
                     steadyStatus: ['running', 'ready'],
                     managerArgs: {
                       action: 'syncstatus',
