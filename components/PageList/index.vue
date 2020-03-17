@@ -32,25 +32,28 @@
       </div>
     </page-toolbar>
     <slot name="table-prepend" />
-    <vxe-grid
-      ref="grid"
-      align="left"
-      highlight-hover-row
-      highlight-current-row
-      :data="data"
-      :columns="tableColumns"
-      :pager-config="tablePage"
-      :sort-config="{ sortMethod: () => {} }"
-      :checkbox-config="checkboxConfig"
-      :expand-config="expandConfig"
-      @sort-change="handleSortChange"
-      @page-change="handlePageChange"
-      @checkbox-change="handleCheckboxChange"
-      @checkbox-all="handleCheckboxChange">
-      <template v-slot:empty>
-        <loader :loading="loading" />
-      </template>
-    </vxe-grid>
+    <floating-scroll>
+      <vxe-grid
+        ref="grid"
+        align="left"
+        highlight-hover-row
+        highlight-current-row
+        :data="data"
+        :style="{ width: gridWidth}"
+        :columns="tableColumns"
+        :pager-config="tablePage"
+        :sort-config="{ sortMethod: () => {} }"
+        :checkbox-config="checkboxConfig"
+        :expand-config="expandConfig"
+        @sort-change="handleSortChange"
+        @page-change="handlePageChange"
+        @checkbox-change="handleCheckboxChange"
+        @checkbox-all="handleCheckboxChange">
+        <template v-slot:empty>
+          <loader :loading="loading" />
+        </template>
+      </vxe-grid>
+    </floating-scroll>
     <div  v-if="data.length > 0 && nextMarker" class="text-center mt-4">
       <a-button :loading="loading" type="link" @click="handleNextMarkerChange">{{ loading ? '加载中' : '加载更多' }}</a-button>
     </div>
@@ -127,6 +130,7 @@ export default {
   data () {
     return {
       tableColumns: [],
+      gridWidth: 'auto',
     }
   },
   computed: {
@@ -191,11 +195,18 @@ export default {
     },
   },
   updated () {
-    this.setWrapMinWidth()
+    const gridEl = this.$refs.grid.$el
+    const tableBody = gridEl.querySelector('.vxe-table--body-wrapper .vxe-table--body')
+    const tableBodyWidth = tableBody.getBoundingClientRect().width
+    if (tableBodyWidth) this.gridWidth = `${tableBodyWidth}px`
+    this.$nextTick(() => {
+      this.$bus.$emit('FloatingScrollUpdate', {
+        sourceElement: this.$refs.grid.$el,
+      })
+    })
   },
   beforeDestroy () {
     this.list.clearWaitJob()
-    this.clearWrapMinWidth()
   },
   created () {
     this.tableColumns = this.genTableColumns()
@@ -275,36 +286,6 @@ export default {
         })
       }
       return defaultColumns
-    },
-    setWrapMinWidth () {
-      const gridEl = this.$refs.grid.$el
-      const tableBody = gridEl.querySelector('.vxe-table--body-wrapper .vxe-table--body')
-      const tableBodyWidth = tableBody.getBoundingClientRect().width
-      if (tableBodyWidth) {
-        let container
-        let padding = 0
-        if (this.inBaseSidePage) {
-          padding = 60
-          container = document.getElementById('side-page-container')
-        } else {
-          padding = 30
-          container = document.getElementById('app-page')
-        }
-        container.style.minWidth = `${tableBodyWidth + padding}px`
-        container = null
-      }
-    },
-    clearWrapMinWidth () {
-      let container
-      if (this.inBaseSidePage) {
-        container = document.getElementById('side-page-container')
-      } else {
-        container = document.getElementById('app-page')
-      }
-      if (container) {
-        container.style = ''
-        container = null
-      }
     },
   },
 }
