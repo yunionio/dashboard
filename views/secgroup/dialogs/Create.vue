@@ -87,18 +87,22 @@ export default {
         {
           dataIndex: 'cidr',
           title: '来源',
+          width: 100,
         },
         {
           dataIndex: 'protocol',
           title: '协议类型',
+          width: 150,
         },
         {
           dataIndex: 'ports',
           title: '端口',
+          width: 100,
         },
         {
           dataIndex: 'action',
           title: '策略',
+          width: 100,
         },
         {
           dataIndex: 'description',

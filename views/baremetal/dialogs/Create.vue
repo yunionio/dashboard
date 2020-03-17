@@ -301,9 +301,11 @@ export default {
     },
     // 监听联动改变回调
     cascaderChange (value, selectedOptions) {
-      this.maxcount = selectedOptions[2].props.max
-      this.mincount = selectedOptions[2].props.min
-      this.step = selectedOptions[2].props.step
+      if (selectedOptions) {
+        this.maxcount = selectedOptions[2].props.max
+        this.mincount = selectedOptions[2].props.min
+        this.step = selectedOptions[2].props.step
+      }
     },
     validateForm () {
       return new Promise((resolve, reject) => {
