@@ -56,13 +56,9 @@ export default {
 .app-page {
   margin-left: 60px;
   margin-bottom: 74px;
-  // 整体最小宽度为1280px（1280 - 菜单栏64 = 1216)
-  min-width: 1216px;
   padding: 15px;
   &.l2-menu-show {
-    // 整体最小宽度为1280px（1280 - 菜单栏224 = 1056)
     margin-left: 224px;
-    min-width: 1056px;
   }
 }
 </style>
