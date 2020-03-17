@@ -34,7 +34,7 @@
           <template v-if="systemProject || domainProject">
             <template v-if="!systemProject && domainProject">
               <a-menu-item scope="domain" :key="`${domainProject.id}$$domain`">
-                <a-radio :checked="scope === 'domain'" />{{ $('dictionary.domain') }}管理后台
+                <a-radio :checked="scope === 'domain'" />{{ $t('dictionary.domain') }}管理后台
               </a-menu-item>
             </template>
             <template v-else>
