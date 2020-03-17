@@ -36,7 +36,7 @@ export default {
         },
         {
           field: 'guest',
-          title: '关联主机',
+          title: `关联${this.$t('dictionary.server')}`,
           formatter: function ({ row }) {
             return row.guest || row.guest_id
           },

@@ -36,7 +36,7 @@ export default {
         },
         {
           field: 'total_guest_count',
-          title: '关联主机数量',
+          title: `关联${this.$t('dictionary.server')}数量`,
         },
         {
           field: 'brand',
