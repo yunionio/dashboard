@@ -42,7 +42,7 @@ export default {
     return {
       detailTabs: [
         { label: '详情', key: 'gpu-detail' },
-        { label: '关联主机', key: 'servers-list' },
+        { label: `关联${this.$t('dictionary.server')}`, key: 'servers-list' },
         { label: '操作日志', key: 'event-drawer' },
       ],
     }

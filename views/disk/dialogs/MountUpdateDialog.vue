@@ -6,7 +6,7 @@
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
-        <a-form-item label="云服务器" v-bind="formItemLayout">
+        <a-form-item :label="$t('dictionary.server')" v-bind="formItemLayout">
           <a-select v-decorator="decorators.server">
             <a-select-option v-for="item in serversOpts" :key="item.id">
               {{item.name}}
