@@ -6,46 +6,41 @@ export default {
   created () {
     this.singleActions = [
       {
-        label: '绑定',
-        permission: 'eips_perform_associate',
-        action: obj => {
-          this.createDialog('EipBindServerDialog', {
+        label: '修改带宽',
+        permission: 'eips_perform_change_bandwidth',
+        action: (obj) => {
+          this.createDialog('EipUpdateDialog', {
             data: [obj],
             columns: this.columns,
             onManager: this.onManager,
-            refresh: this.refresh,
           })
         },
-        meta: obj => {
-          return {
-            validate: !obj.associate_id && obj.status === 'ready',
-          }
-        },
-      },
-      {
-        label: '解绑',
-        permission: 'eips_perform_dissociate',
-        action: obj => {
-          this.onManager('performAction', {
-            steadyStatus: 'ready',
-            id: obj.id,
-            managerArgs: {
-              action: 'dissociate',
-            },
-          })
-          // this.list.singlePerformAction('dissociate', {
-          //   id: obj.id,
-          //   steadyStatus: 'ready',
-          // })
-        },
-        meta: obj => {
-          if (obj.associate_id) {
+        meta: (obj) => {
+          if (!obj.associate_name) {
             return {
-              validate: true,
+              validate: false,
+              tooltip: '请您先绑定机器',
+            }
+          }
+          let { brand } = obj
+          if (brand) {
+            brand = brand.toLowerCase()
+            if (noChangeBandwidth.includes(brand)) {
+              return {
+                validate: false,
+                tooltip: `${typeClouds.getHosttype().brand.label}无法修改带宽`,
+              }
+            }
+            const plaform = findPlatform(brand)
+            if (plaform && plaform !== 'public') {
+              return {
+                validate: false,
+                tooltip: '仅公有云eip支持修改带宽',
+              }
             }
           }
           return {
-            validate: false,
+            validate: true,
           }
         },
       },
@@ -54,53 +49,47 @@ export default {
         actions: obj => {
           return [
             {
-              label: '修改带宽',
-              permission: 'eips_perform_change_bandwidth',
+              label: '绑定',
+              permission: 'eips_perform_associate',
               action: () => {
-                this.createDialog('EipUpdateDialog', {
+                this.createDialog('EipBindServerDialog', {
                   data: [obj],
                   columns: this.columns,
                   onManager: this.onManager,
+                  refresh: this.refresh,
                 })
               },
               meta: () => {
-                if (!obj.associate_name) {
-                  return {
-                    validate: false,
-                    tooltip: '请您先绑定机器',
-                  }
-                }
-                let { brand } = obj
-                if (brand) {
-                  brand = brand.toLowerCase()
-                  if (noChangeBandwidth.includes(brand)) {
-                    return {
-                      validate: false,
-                      tooltip: `${typeClouds.getHosttype().brand.label}无法修改带宽`,
-                    }
-                  }
-                  const plaform = findPlatform(brand)
-                  if (plaform && plaform !== 'public') {
-                    return {
-                      validate: false,
-                      tooltip: '仅公有云eip支持修改带宽',
-                    }
-                  }
-                }
                 return {
-                  validate: true,
+                  validate: !obj.associate_id && obj.status === 'ready',
                 }
               },
             },
             {
-              label: `更改${this.$t('dictionary.project')}`,
-              permission: 'eips_perform_change_owner',
+              label: '解绑',
+              permission: 'eips_perform_dissociate',
               action: () => {
-                this.createDialog('ChangeOwenrDialog', {
-                  data: [obj],
-                  columns: this.columns,
-                  onManager: this.onManager,
+                this.onManager('performAction', {
+                  steadyStatus: 'ready',
+                  id: obj.id,
+                  managerArgs: {
+                    action: 'dissociate',
+                  },
                 })
+                // this.list.singlePerformAction('dissociate', {
+                //   id: obj.id,
+                //   steadyStatus: 'ready',
+                // })
+              },
+              meta: () => {
+                if (obj.associate_id) {
+                  return {
+                    validate: true,
+                  }
+                }
+                return {
+                  validate: false,
+                }
               },
             },
             {
@@ -117,6 +106,17 @@ export default {
               meta: () => ({
                 validate: true,
               }),
+            },
+            {
+              label: `更改${this.$t('dictionary.project')}`,
+              permission: 'eips_perform_change_owner',
+              action: () => {
+                this.createDialog('ChangeOwenrDialog', {
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                })
+              },
             },
             {
               label: '删除',

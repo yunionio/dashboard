@@ -2,31 +2,19 @@ export default {
   created () {
     this.singleActions = [
       {
-        label: '启用',
+        label: '修改',
         action: (obj) => {
-          this.onManager('performAction', {
-            id: obj.id,
-            managerArgs: {
-              action: 'enable',
-            },
+          this.createDialog('DnsCreateDialog', {
+            title: '修改',
+            data: [obj],
+            columns: this.columns,
+            onManager: this.onManager,
+            refresh: this.refresh,
+            type: 'update',
           })
         },
         meta: (obj) => ({
-          validate: !obj.enabled,
-        }),
-      },
-      {
-        label: '禁用',
-        action: (obj) => {
-          this.onManager('performAction', {
-            id: obj.id,
-            managerArgs: {
-              action: 'disable',
-            },
-          })
-        },
-        meta: (obj) => ({
-          validate: obj.enabled,
+          validate: obj.can_update,
         }),
       },
       {
@@ -34,19 +22,31 @@ export default {
         actions: obj => {
           return [
             {
-              label: '修改',
+              label: '启用',
               action: () => {
-                this.createDialog('DnsCreateDialog', {
-                  title: '修改',
-                  data: [obj],
-                  columns: this.columns,
-                  onManager: this.onManager,
-                  refresh: this.refresh,
-                  type: 'update',
+                this.onManager('performAction', {
+                  id: obj.id,
+                  managerArgs: {
+                    action: 'enable',
+                  },
                 })
               },
-              meta: (obj) => ({
-                validate: obj.can_update,
+              meta: () => ({
+                validate: !obj.enabled,
+              }),
+            },
+            {
+              label: '禁用',
+              action: () => {
+                this.onManager('performAction', {
+                  id: obj.id,
+                  managerArgs: {
+                    action: 'disable',
+                  },
+                })
+              },
+              meta: () => ({
+                validate: obj.enabled,
               }),
             },
             {
