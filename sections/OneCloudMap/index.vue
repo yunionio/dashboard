@@ -40,7 +40,7 @@
     </template>
     <!-- 未匹配到搜索结果 -->
     <template v-if="search && !maps.length">
-      <div class="map-not-found-tips d-flex align-items-center">未找到与<a-tag color="red" class="ml-1 mr-1">{{ search }}</a-tag>相关的产品</div>
+      <div class="map-not-found-tips d-flex align-items-center mt-4">未找到与<a-tag color="red" class="ml-1 mr-1">{{ search }}</a-tag>相关的产品</div>
     </template>
   </div>
 </template>
@@ -125,7 +125,8 @@ export default {
         if (menu.meta.t) {
           label = this.getLabel(menu.meta)
         }
-        return label.includes(this.search)
+        label = label.toLowerCase()
+        return label.includes(this.search.toLowerCase())
       }
       return true
     },
