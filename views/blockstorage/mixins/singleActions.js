@@ -2,43 +2,56 @@ export default {
   created () {
     this.singleActions = [
       {
-        label: '启用',
-        permission: 'storages_perform_enable',
-        action: (row) => {
-          this.onManager('performAction', {
-            id: row.id,
-            managerArgs: {
-              action: 'enable',
-            },
+        label: '修改属性',
+        permission: 'storages_update',
+        action: row => {
+          this.createDialog('BlockStorageUpdateStorageDialog', {
+            data: [row],
+            columns: this.columns,
+            title: '修改属性',
+            onManager: this.onManager,
+            refresh: this.refresh,
           })
-        },
-        meta: ({ enabled }) => {
-          return {
-            validate: !enabled,
-          }
-        },
-      },
-      {
-        label: '禁用',
-        permission: 'storages_perform_disable',
-        action: (row) => {
-          this.onManager('performAction', {
-            id: row.id,
-            managerArgs: {
-              action: 'disable',
-            },
-          })
-        },
-        meta: ({ enabled }) => {
-          return {
-            validate: enabled,
-          }
         },
       },
       {
         label: '更多',
         actions: (row) => {
           return [
+            {
+              label: '启用',
+              permission: 'storages_perform_enable',
+              action: (row) => {
+                this.onManager('performAction', {
+                  id: row.id,
+                  managerArgs: {
+                    action: 'enable',
+                  },
+                })
+              },
+              meta: ({ enabled }) => {
+                return {
+                  validate: !enabled,
+                }
+              },
+            },
+            {
+              label: '禁用',
+              permission: 'storages_perform_disable',
+              action: (row) => {
+                this.onManager('performAction', {
+                  id: row.id,
+                  managerArgs: {
+                    action: 'disable',
+                  },
+                })
+              },
+              meta: ({ enabled }) => {
+                return {
+                  validate: enabled,
+                }
+              },
+            },
             {
               label: '关联宿主机',
               permission: 'storages_perform_storages',
@@ -75,19 +88,6 @@ export default {
                 return {
                   validate: row.provider === 'OpenStack',
                 }
-              },
-            },
-            {
-              label: '修改属性',
-              permission: 'storages_update',
-              action: row => {
-                this.createDialog('BlockStorageUpdateStorageDialog', {
-                  data: [row],
-                  columns: this.columns,
-                  title: '修改属性',
-                  onManager: this.onManager,
-                  refresh: this.refresh,
-                })
               },
             },
             {
