@@ -17,6 +17,7 @@
             :key="sidx"
             class="menu-item"
             :to="sitem.path"
+            @click.native="() => setRecentMenus(sitem)"
             tag="a"
             active-class="active">
             {{ getLabel(sitem.meta) }}
@@ -92,6 +93,9 @@ export default {
         return this.$t(meta.t)
       }
       return meta.label
+    },
+    setRecentMenus (item) {
+      this.$store.dispatch('common/setRecentMenus', item)
     },
   },
 }

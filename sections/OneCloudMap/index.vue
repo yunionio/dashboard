@@ -1,0 +1,197 @@
+<template>
+  <div class="onecloud-map-wrap">
+    <div class="mb-2 onecloud-map-header">
+      <a-input v-model="search" class="w-100" placeholder="请输入关键词">
+        <template v-slot:prefix>
+          <a-icon type="search" />
+        </template>
+      </a-input>
+    </div>
+    <!-- 最近访问 -->
+    <template v-if="recentMaps && recentMaps.length">
+      <div class="mb-4 mt-4 onecloud-map-recent-wrap">
+        <div class="font-weight-bold mb-2 map-recent-label">最近访问</div>
+        <div class="onecloud-map-recent-list">
+          <template v-for="item of recentMaps">
+            <div class="onecloud-map-recent-item" :key="item.path">
+              <div>
+                <router-link :to="item.path" class="recent-link" @click.native="() => handleClick(item)">{{ getLabel(item.meta) }}</router-link>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+    </template>
+    <!-- 全部菜单 -->
+    <template v-if="maps && maps.length">
+      <div class="onecloud-map-body">
+        <template v-for="(item, idx) of maps">
+          <div class="onecloud-map-sub-wrap mb-4" :key="idx">
+            <sub-map
+              :sub="item"
+              :search="search"
+              :show-menu="showMenu"
+              :get-label="getLabel"
+              :get-search-match="getSearchMatch"
+              @click="handleClick" />
+          </div>
+        </template>
+      </div>
+    </template>
+    <!-- 未匹配到搜索结果 -->
+    <template v-if="search && !maps.length">
+      <div class="map-not-found-tips d-flex align-items-center">未找到与<a-tag color="red" class="ml-1 mr-1">{{ search }}</a-tag>相关的产品</div>
+    </template>
+  </div>
+</template>
+
+<script>
+import * as R from 'ramda'
+import { mapState } from 'vuex'
+import SubMap from './SubMap'
+import { menusConfig } from '@/router/routes'
+import { hasPermission } from '@/utils/auth'
+
+export default {
+  name: 'OneCloudMap',
+  components: {
+    SubMap,
+  },
+  data () {
+    return {
+      maps: this.genMaps(),
+      search: '',
+    }
+  },
+  computed: {
+    ...mapState('common', {
+      recentMenus: state => state.recentMenus,
+    }),
+    recentMaps () {
+      const ret = []
+      R.forEach(item => {
+        if (this.showMenu(item)) {
+          ret.push(item)
+        }
+      }, this.recentMenus)
+      return ret
+    },
+  },
+  watch: {
+    search (val) {
+      this.$nextTick(() => {
+        this.maps = this.genMaps()
+      })
+    },
+  },
+  methods: {
+    genMaps () {
+      const ret = []
+      R.forEach(l1 => {
+        // 含有menus的进入筛选
+        if (l1.menus) {
+          R.forEach(l2 => {
+            // 是否要显示的标识
+            let show = false
+            // 含有submenus的进入筛选
+            if (l2.submenus) {
+              R.forEach(l3 => {
+                // 当有一个3级菜单符合条件时，则显示2级菜单
+                // 搜索字符包含2级菜单或3级菜单信息则显示2级菜单
+                if (this.showMenu(l3)) {
+                  if (this.getSearchMatch(l2) || this.getSearchMatch(l3)) {
+                    show = true
+                  }
+                }
+              }, l2.submenus)
+            }
+            if (show) {
+              ret.push(l2)
+            }
+          }, l1.menus)
+        }
+      }, menusConfig)
+      return ret
+    },
+    getLabel (meta) {
+      if (meta.t) {
+        return this.$t(meta.t)
+      }
+      return meta.label
+    },
+    getSearchMatch (menu) {
+      if (this.search) {
+        let label = menu.meta.label
+        if (menu.meta.t) {
+          label = this.getLabel(menu.meta)
+        }
+        return label.includes(this.search)
+      }
+      return true
+    },
+    getMenuHidden (menu) {
+      if (menu.meta.hidden) {
+        if (R.is(Function, menu.meta.hidden)) {
+          return !menu.meta.hidden(this.userInfo)
+        }
+        return false
+      }
+      return true
+    },
+    showMenu (item) {
+      const hidden = this.getMenuHidden(item)
+      if (R.isNil(item.meta.permission) || R.isEmpty(item.meta.permission)) {
+        return hidden && true
+      }
+      return hidden && hasPermission({ key: item.meta.permission })
+    },
+    handleClick (item) {
+      this.$emit('click')
+      this.$nextTick(() => {
+        this.$store.dispatch('common/setRecentMenus', item)
+      })
+    },
+  },
+}
+</script>
+
+<style lang="scss" scoped>
+@import "../../styles/variables";
+
+.onecloud-map-header {
+  padding: 20px 30px 0;
+}
+.onecloud-map-body {
+  column-count: 4;
+  column-gap: 10px;
+  padding: 20px 25px;
+}
+.onecloud-map-sub-wrap {
+  break-inside: avoid;
+}
+.onecloud-map-recent-list {
+  column-count: 4;
+  column-gap: 10px;
+  padding: 0 25px;
+}
+.onecloud-map-recent-item {
+  break-inside: avoid;
+}
+.map-recent-label {
+  padding: 0px 30px;
+}
+.recent-link {
+  padding: 5px 5px;
+  display: block;
+  font-size: 13px;
+  color: $text-color-secondary;
+  text-decoration: none;
+  transition: all 300ms ease 0s;
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+}
+.map-not-found-tips {
+  padding: 0 30px;
+}
+</style>
