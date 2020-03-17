@@ -13,7 +13,7 @@
           </div>
         </template>
       </a-alert>
-      <dialog-selected-tips :count="params.data.length" action="扩容" />
+      <dialog-selected-tips :count="params.data.length" action="扩容" name="硬盘" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
