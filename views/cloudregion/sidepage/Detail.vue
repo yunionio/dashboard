@@ -36,7 +36,7 @@ export default {
         },
         {
           field: 'guest_count',
-          title: '云服务器（数量）',
+          title: `${this.$t('dictionary.server')}(数量)`,
         },
       ],
       extraInfo: [
