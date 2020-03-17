@@ -343,6 +343,7 @@ export default {
         cloud_env: 'onpremise',
         limit: 0,
         disk_type: 'data',
+        is_instance_snapshot: false,
       }
       const scopeParams = {}
       if (this.$store.getters.isAdminMode) {
@@ -367,7 +368,6 @@ export default {
         cloud_env: 'onpremise',
         resource_type: 'storages',
         limit: 0,
-        is_instance_snapshot: false,
       }
       const scopeParams = {}
       if (this.$store.getters.isAdminMode) {
