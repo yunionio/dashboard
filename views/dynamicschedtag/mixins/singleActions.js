@@ -2,35 +2,14 @@ export default {
   created () {
     this.singleActions = [
       {
-        label: '启用',
-        action: obj => {
-          this.onManager('update', {
-            id: obj.id,
-            managerArgs: {
-              data: { enabled: true },
-            },
+        label: '调整策略',
+        action: (obj) => {
+          this.createDialog('UpdateDynamicschedtagDialog', {
+            data: [obj],
+            columns: this.columns,
+            title: '调整策略',
+            onManager: this.onManager,
           })
-        },
-        meta: obj => {
-          return {
-            validate: !obj.enabled,
-          }
-        },
-      },
-      {
-        label: '禁用',
-        action: obj => {
-          this.onManager('update', {
-            id: obj.id,
-            managerArgs: {
-              data: { enabled: false },
-            },
-          })
-        },
-        meta: obj => {
-          return {
-            validate: obj.enabled,
-          }
         },
       },
       {
@@ -38,14 +17,35 @@ export default {
         actions: obj => {
           return [
             {
-              label: '调整策略',
-              action: () => {
-                this.createDialog('UpdateDynamicschedtagDialog', {
-                  data: [obj],
-                  columns: this.columns,
-                  title: '调整策略',
-                  onManager: this.onManager,
+              label: '启用',
+              action: obj => {
+                this.onManager('update', {
+                  id: obj.id,
+                  managerArgs: {
+                    data: { enabled: true },
+                  },
                 })
+              },
+              meta: obj => {
+                return {
+                  validate: !obj.enabled,
+                }
+              },
+            },
+            {
+              label: '禁用',
+              action: obj => {
+                this.onManager('update', {
+                  id: obj.id,
+                  managerArgs: {
+                    data: { enabled: false },
+                  },
+                })
+              },
+              meta: obj => {
+                return {
+                  validate: obj.enabled,
+                }
               },
             },
             {
