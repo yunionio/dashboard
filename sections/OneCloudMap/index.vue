@@ -142,9 +142,6 @@ export default {
       return true
     },
     getMenuHidden (menu) {
-      if (menu.meta.label === '全局设置') {
-        console.log(menu)
-      }
       if (menu.meta.hidden) {
         if (R.is(Function, menu.meta.hidden)) {
           return !menu.meta.hidden(this.userInfo)
