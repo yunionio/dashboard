@@ -181,6 +181,7 @@ export default {
     checkboxConfig () {
       return {
         reserve: true,
+        highlight: true,
       }
     },
   },
