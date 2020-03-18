@@ -6,7 +6,8 @@
       <template v-if="params.columns">
         <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       </template>
-      <div class="tag-wrap">
+      <!-- 共有云标签 -->
+      <div class="tag-wrap" v-if="!isBatch">
         <a-divider orientation="left">
           <div class="font-weight-normal" style="font-size: 14px;">以下标签为公有云同步的标签，不可更改</div>
         </a-divider>
@@ -27,9 +28,10 @@
           </template>
         </div>
       </div>
+      <!-- 用户标签 -->
       <div class="tag-wrap">
         <a-divider orientation="left">
-          <div class="font-weight-normal" style="font-size: 14px;">以下标签为用户自定义标签</div>
+          <div class="font-weight-normal" style="font-size: 14px;">{{ userTagTitle }}</div>
         </a-divider>
         <div class="tag-list">
           <template v-if="userTags.length <= 0">
@@ -103,11 +105,14 @@ export default {
     })
     let extTags = data.arr.filter(item => item.key.startsWith('ext:')).map(item => this.genTag(item))
     const checked = {}
-    R.forEachObjIndexed((value, key) => {
-      if (!key.startsWith('ext:')) {
-        checked[key] = value
-      }
-    }, data.obj)
+    // when single
+    if (this.params.data.length === 1) {
+      R.forEachObjIndexed((value, key) => {
+        if (!key.startsWith('ext:')) {
+          checked[key] = value
+        }
+      }, data.obj)
+    }
     return {
       loading: false,
       form: {
@@ -132,6 +137,21 @@ export default {
     }
   },
   computed: {
+    isBatch () {
+      return this.params.data.length > 1
+    },
+    mode () {
+      return this.params.mode || 'default'
+    },
+    isDefaultMode () {
+      return this.mode === 'default'
+    },
+    isBatchAddMode () {
+      return this.isBatch && this.mode === 'add'
+    },
+    userTagTitle () {
+      return this.isBatchAddMode ? '新增标签' : '以下标签为用户自定义标签'
+    },
     userTags () {
       let ret = []
       R.forEachObjIndexed((value, key) => {
@@ -183,7 +203,7 @@ export default {
         let num = 0
         R.forEachObjIndexed((value, key) => {
           const _key = R.replace(/(ext:|user:)/, '', key)
-          data[_key] = value[0] ? value[0] : null
+          data[_key] = value[0] ? value[0] : ''
           num++
         }, this.checked)
         if (num > 20) {
@@ -191,10 +211,11 @@ export default {
           return
         }
         const ids = this.params.data.map(item => item.id)
+        const action = this.isBatchAddMode ? 'user-metadata' : 'set-user-metadata'
         await this.params.onManager('batchPerformAction', {
           id: ids,
           managerArgs: {
-            action: 'set-user-metadata',
+            action,
             data,
           },
         })
