@@ -59,46 +59,51 @@ export default {
   },
   data () {
     return {
-      maps: this.genMaps(),
+      maps: [],
       search: '',
+      recentMaps: [],
     }
   },
   computed: {
     ...mapState('common', {
       recentMenus: state => state.recentMenus,
     }),
-    recentMaps () {
-      const ret = []
-      R.forEach(item => {
-        if (this.showMenu(item)) {
-          ret.push(item)
-        }
-      }, this.recentMenus)
-      return ret
-    },
   },
   watch: {
     search (val) {
       this.$nextTick(() => {
-        this.maps = this.genMaps()
+        this.genMaps()
+      })
+    },
+    recentMenus (val) {
+      this.$nextTick(() => {
+        this.genMaps()
       })
     },
   },
+  created () {
+    this.genMaps()
+  },
   methods: {
     genMaps () {
-      const ret = []
+      const maps = []
+      const recentMaps = []
       R.forEach(l1 => {
         // 含有menus的进入筛选
-        if (l1.menus) {
+        if (l1.menus && this.showMenu(l1)) {
           R.forEach(l2 => {
             // 是否要显示的标识
             let show = false
             // 含有submenus的进入筛选
-            if (l2.submenus) {
+            if (l2.submenus && this.showMenu(l2)) {
               R.forEach(l3 => {
                 // 当有一个3级菜单符合条件时，则显示2级菜单
                 // 搜索字符包含2级菜单或3级菜单信息则显示2级菜单
                 if (this.showMenu(l3)) {
+                  const recentItem = R.find(R.propEq('path', l3.path))(this.recentMenus)
+                  if (recentItem) {
+                    recentMaps.push(recentItem)
+                  }
                   if (this.getSearchMatch(l2) || this.getSearchMatch(l3)) {
                     show = true
                   }
@@ -106,12 +111,18 @@ export default {
               }, l2.submenus)
             }
             if (show) {
-              ret.push(l2)
+              maps.push(l2)
             }
           }, l1.menus)
         }
       }, menusConfig)
-      return ret
+      recentMaps.sort((a, b) => {
+        const aIndex = R.findIndex(R.propEq('path', a.path))(this.recentMenus)
+        const bIndex = R.findIndex(R.propEq('path', b.path))(this.recentMenus)
+        return aIndex - bIndex
+      })
+      this.maps = maps
+      this.recentMaps = recentMaps
     },
     getLabel (meta) {
       if (meta.t) {
@@ -131,6 +142,9 @@ export default {
       return true
     },
     getMenuHidden (menu) {
+      if (menu.meta.label === '全局设置') {
+        console.log(menu)
+      }
       if (menu.meta.hidden) {
         if (R.is(Function, menu.meta.hidden)) {
           return !menu.meta.hidden(this.userInfo)
