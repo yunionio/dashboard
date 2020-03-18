@@ -15,7 +15,7 @@
           <template v-for="item of recentMaps">
             <div class="onecloud-map-recent-item" :key="item.path">
               <div>
-                <router-link :to="item.path" class="recent-link" @click.native="() => handleClick(item)">{{ getLabel(item.meta) }}</router-link>
+                <router-link :to="item.path" class="recent-link text-truncate" :title="getLabel(item.meta)" @click.native="() => handleClick(item)">{{ getLabel(item.meta) }}</router-link>
               </div>
             </div>
           </template>

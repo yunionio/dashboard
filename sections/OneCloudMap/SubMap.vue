@@ -4,7 +4,7 @@
     <ul class="list-unstyled">
       <template v-for="item of menus">
         <li :key="item.path">
-          <router-link :to="item.path" class="map-link" @click.native="() => handleClick(item)">{{ getLabel(item.meta) }}</router-link>
+          <router-link :to="item.path" class="map-link text-truncate" :title="getLabel(item.meta)" @click.native="() => handleClick(item)">{{ getLabel(item.meta) }}</router-link>
         </li>
       </template>
     </ul>
