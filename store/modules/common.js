@@ -29,10 +29,9 @@ export default {
       }
       const index = R.findIndex(R.propEq('path', newRecent.path))(menus)
       if (index !== -1) {
-        menus = R.move(index, 0, menus)
-      } else {
-        menus = R.prepend(newRecent, menus)
+        menus = R.remove(index, 1, menus)
       }
+      menus = R.prepend(newRecent, menus)
       if (menus.length > 8) {
         menus = R.slice(0, 8, menus)
       }
