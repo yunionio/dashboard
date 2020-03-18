@@ -84,10 +84,6 @@ export default {
     resourceType: { // 资源池类型
       type: String,
     },
-    dataDiskSizes: { // 数据盘磁盘大小之和
-      type: Array,
-      default: () => [],
-    },
     isOpenWorkflow: {
       type: Boolean,
       default: false,
@@ -100,9 +96,13 @@ export default {
       type: Boolean,
       default: true,
     },
+    dataDiskSizes: {
+      type: Array,
+      default: () => [],
+    },
   },
   data () {
-    this.getPriceList = _.debounce(this.getPriceList, 500)
+    this.getPriceList = _.debounce(this._getPriceList, 500)
     return {
       pricesList: [],
     }
@@ -240,6 +240,29 @@ export default {
       if (this.isServertemplate) return '保存模板'
       return this.isOpenWorkflow ? '提交工单' : '新 建'
     },
+    dataDiskType () {
+      if (R.is(Object, this.fd.dataDiskTypes)) {
+        const keys = Object.keys(this.fd.dataDiskTypes)
+        if (keys && keys.length) {
+          return this.fd.dataDiskTypes[keys[0]].key
+        }
+      }
+      if (R.is(Object, this.fd.dataDiskSizes)) {
+        const keys = Object.keys(this.fd.dataDiskSizes)
+        if (keys && keys.length) {
+          const disk = this.fd[`dataDiskTypes[${keys[0]}]`]
+          return disk ? disk.key : ''
+        }
+      }
+      return ''
+    },
+  },
+  watch: {
+    dataDiskType (val, oldV) {
+      if (val !== oldV && this.isPublic) {
+        this.getPriceList()
+      }
+    },
   },
   watch: {
     priceTips: {
@@ -283,7 +306,7 @@ export default {
       props.forEach(iterator, this)
     },
     // 获取总价格
-    async getPriceList () {
+    async _getPriceList () {
       if (!this.hasMeterService) return // 如果没有 meter 服务则取消调用
       if (R.isEmpty(this.fd.sku) || R.isNil(this.fd.sku)) return
       const skuProvider = this.fd.sku.provider || PROVIDER_MAP.OneCloud.key
@@ -295,10 +318,7 @@ export default {
       const { systemDiskSize, systemDiskType } = this.fd
       if (R.isNil(systemDiskSize)) return
       if (this.fi.createType !== SERVER_TYPE.public) {
-        let diskSize = Number(systemDiskSize) || 0
-        R.forEach((value, key) => {
-          diskSize += Number(value) || 0
-        }, this.dataDiskSizes)
+        let diskSize = this.disk || 0
         // params.provider = 'kvm'
         params.spec = `cpu=${this.fd.vcpu}core;mem=${sizestrWithUnit(this.fd.vmem, 'M', 1024)};disk=${diskSize}GB`
       } else {
@@ -325,11 +345,12 @@ export default {
         }
         let dataDiskSpec = []
         const isUcloudAzure = (provider === HYPERVISORS_MAP.ucloud.key || provider === HYPERVISORS_MAP.azure.key)
+        // if (this.dataDiskSizes && this.dataDiskSizes.length && !this.dataDiskType) return
         R.forEach((value) => {
           if (isUcloudAzure) {
-            dataDiskSpec.push(`${value}:${provider}::${regionExtId}::::disk::${systemDiskType.key}`)
+            dataDiskSpec.push(`${value}:${provider}::${regionExtId}::::disk::${this.dataDiskType}`)
           } else {
-            dataDiskSpec.push(`${value}:${systemDiskType.key}`)
+            dataDiskSpec.push(`${value}:${this.dataDiskType}`)
           }
         }, this.dataDiskSizes)
         if (dataDiskSpec && dataDiskSpec.length > 0) {
