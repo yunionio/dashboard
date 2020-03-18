@@ -30,17 +30,9 @@ export default {
         filterOptions: {
           key: {
             label: '键',
-            filter: true,
-            formatter: val => {
-              return `key.contains(${val})`
-            },
           },
           value: {
             label: '值',
-            filter: true,
-            formatter: val => {
-              return `value.contains(${val})`
-            },
           },
         },
       }),
