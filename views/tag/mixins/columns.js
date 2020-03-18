@@ -22,7 +22,7 @@ export default {
       {
         field: 'count',
         title: '绑定资源数量',
-        width: 120,
+        minWidth: 60,
         formatter: ({ row }) => {
           return `${row.count || 0}`
         },

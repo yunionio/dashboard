@@ -1,28 +1,21 @@
 <template>
-  <vxe-grid
-    ref="grid"
-    highlight-hover-row
-    highlight-current-row
-    show-header-overflow="title"
-    :data="data"
-    :columns="columns">
-    <template v-slot:empty>
-      <loader :loading="loading" />
-    </template>
-  </vxe-grid>
+  <page-list
+    :list="list"
+    :columns="columns"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
-import * as R from 'ramda'
-import { mapGetters } from 'vuex'
 import ColumnsMixin from '../mixins/columns'
-import WindowsMixin from '@/mixins/windows'
 import { getTagColor, getTagTitle } from '@/utils/common/tag'
+import WindowsMixin from '@/mixins/windows'
+import ListMixin from '@/mixins/list'
 
 export default {
   name: 'TagList',
-  mixins: [WindowsMixin, ColumnsMixin],
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin],
   props: {
+    id: String,
     getParams: {
       type: [Object, Function],
       default: () => ({}),
@@ -30,58 +23,95 @@ export default {
   },
   data () {
     return {
-      loading: false,
-      data: [],
+      list: this.$list.createList(this, {
+        id: this.id,
+        resource: params => this.listResource(params),
+        getParams: this.getParams,
+        filterOptions: {
+          key: {
+            label: '键',
+            filter: true,
+            formatter: val => {
+              return `key.contains(${val})`
+            },
+          },
+          value: {
+            label: '值',
+            filter: true,
+            formatter: val => {
+              return `value.contains(${val})`
+            },
+          },
+        },
+      }),
+      exportDataOptions: {
+        items: [
+          { label: '键', key: 'key' },
+          { label: '值', key: 'value' },
+        ],
+      },
     }
   },
-  computed: mapGetters(['scope']),
   destroyed () {
     this.manager = null
   },
   created () {
     this.manager = new this.$Manager('metadatas')
     this.initSidePageTab('tag-detail')
-    this.fetchData()
+    this.list.fetchData()
     this.$bus.$on('TagListUnbindResourceCallback', this.unbindResourceCallback, this)
   },
   methods: {
-    fetchData () {
-      this.loading = true
-      return new Promise((resolve, reject) => {
-        this.manager.get({
+    async listResource (params) {
+      try {
+        const response = await this.manager.get({
+          id: 'tag-value-pairs',
+          params,
+        })
+        const data = (response.data.data || []).map(item => {
+          return {
+            // 前端模拟id
+            id: `${item.key}$$${item.value}`,
+            // 前端模拟name
+            name: getTagTitle(item.key, item.value),
+            color: getTagColor(item.key, item.value),
+            ...item,
+          }
+        })
+        response.data.data = data
+        return response
+      } catch (error) {
+        throw error
+      }
+    },
+    async detailResource (params, row) {
+      try {
+        const response = await this.manager.get({
           id: 'tag-value-pairs',
           params: {
-            scope: this.scope,
-            ...this.getParams,
+            ...params,
+            key: row.key,
+            value: row.value,
           },
-        }).then(response => {
-          const data = (response.data.data || []).map(item => {
-            return {
-              // 前端模拟name
-              name: getTagTitle(item.key, item.value),
-              color: getTagColor(item.key, item.value),
-              ...item,
-            }
-          })
-          data.sort((a, b) => a.key.localeCompare(b.key))
-          this.data = data
-          this.loading = false
-          resolve(response)
-        }).catch(error => {
-          this.loading = false
-          reject(error)
         })
-      })
+        let item = response.data && response.data.data && response.data.data.length && response.data.data[0]
+        if (!item) return { data: {} }
+        item = {
+          id: `${item.key}$$${item.value}`,
+          // 前端模拟name
+          name: getTagTitle(item.key, item.value),
+          color: getTagColor(item.key, item.value),
+          ...item,
+        }
+        return { data: item }
+      } catch (error) {
+        throw error
+      }
     },
     async unbindResourceCallback ({ tagData }) {
       try {
-        await this.fetchData()
+        await this.refresh()
         this.destroySidePages()
-        const data = R.find(R.propEq('key', tagData.key))(this.data)
-        if (data) {
-          this.replaceSidePage('TagSidePage', { resId: data.id, data, windowData: this.windowData })
-          this.$refs.grid.setCurrentRow(data)
-        }
       } catch (error) {
         throw error
       }
@@ -89,21 +119,7 @@ export default {
     handleOpenSidepage (row) {
       this.sidePageTriggerHandle(this, 'TagSidePage', {
         id: row.key,
-        resource: async params => {
-          try {
-            const response = await this.manager.get({
-              id: 'tag-value-pairs',
-              params: {
-                ...params,
-                key: row.key,
-                value: row.value,
-              },
-            })
-            return { data: response.data.data[0] }
-          } catch (error) {
-            throw error
-          }
-        },
+        resource: params => this.detailResource(params, row),
         getParams: this.getParams,
       }, {
         list: this.list,

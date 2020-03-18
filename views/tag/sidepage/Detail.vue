@@ -1,5 +1,6 @@
 <template>
   <detail
+    :onManager="onManager"
     :data="data"
     :extra-info="extraInfo"
     :base-info="baseInfo"
