@@ -173,7 +173,6 @@ export default {
           label: '批量操作',
           actions: () => {
             return [
-              disableDeleteAction(this),
               {
                 label: '重置密码',
                 permission: 'server_perform_deploy',
@@ -247,9 +246,14 @@ export default {
                     data: this.list.selectedItems,
                     columns: this.columns,
                     onManager: this.onManager,
+                    mode: 'add',
+                    params: {
+                      resources: 'server',
+                    },
                   })
                 },
               },
+              disableDeleteAction(this),
               {
                 label: '删除',
                 permission: 'server_delete',
