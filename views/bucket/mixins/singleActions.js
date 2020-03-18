@@ -5,26 +5,12 @@ export default {
         label: '同步状态',
         permission: 'server_perform_syncstatus',
         action: (row) => {
-          this.onManager('batchPerformAction', {
+          this.onManager('performAction', {
+            steadyStatus: ['running', 'ready'],
             id: row.id,
             managerArgs: {
-              action: 'sync',
+              action: 'syncstatus',
             },
-          }).then(() => {
-            this.$message.success('操作成功')
-          })
-        },
-      },
-      {
-        label: `更改${this.$t('dictionary.project')}`,
-        permission: 'buckets_perform_change_owner',
-        action: row => {
-          this.createDialog('ChangeOwenrDialog', {
-            name: '存储桶',
-            data: [row],
-            columns: this.columns,
-            onManager: this.onManager,
-            refresh: this.refresh,
           })
         },
       },
@@ -38,6 +24,19 @@ export default {
               action: obj => {
                 this.createDialog('BucketUpdateBucketLimitDialog', {
                   title: '设置上限',
+                  data: [row],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                  refresh: this.refresh,
+                })
+              },
+            },
+            {
+              label: `更改${this.$t('dictionary.project')}`,
+              permission: 'buckets_perform_change_owner',
+              action: row => {
+                this.createDialog('ChangeOwenrDialog', {
+                  name: '存储桶',
                   data: [row],
                   columns: this.columns,
                   onManager: this.onManager,
