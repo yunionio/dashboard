@@ -56,7 +56,7 @@
           </a-select>
         </a-form-item>
         <a-form-item v-bind="offsetFormLayout">
-          <a-button :loading="testLoding" style="padding: 0" type="link" @click="handleTest">连接测试</a-button>
+          <test-button :post="testPost" />
         </a-form-item>
       </a-form>
     </div>
@@ -71,20 +71,20 @@
 import * as R from 'ramda'
 import UploadJsonFile from '@Cloudenv/views/cloudaccount/components/UploadJsonFile'
 import { keySecretFields, CLOUDACCOUNT_DOCS } from '../constants'
+import TestButton from '@/sections/TestButton'
 import { HYPERVISORS_MAP } from '@/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'CloudaccountUpdateDialog',
-  components: { UploadJsonFile },
+  components: { UploadJsonFile, TestButton },
   mixins: [DialogMixin, WindowsMixin],
   data () {
     const provider = this.params.data[0].brand.toLowerCase()
     const isVMware = provider === HYPERVISORS_MAP.esxi.provider.toLowerCase()
     return {
       loading: false,
-      testLoding: false,
       form: {
         fc: this.$form.createForm(this),
       },
@@ -234,26 +234,15 @@ export default {
         this.loading = false
       }
     },
-    async handleTest () {
-      this.testLoding = true
-      try {
-        const values = await this.validateForm()
-        await this.params.onManager('performAction', {
-          id: this.params.data[0].id,
-          managerArgs: {
-            action: 'test-connectivity',
-            data: values,
-          },
-        })
-        this.$notification.success({
-          message: '连接成功',
-          description: '请点击确定继续',
-        })
-      } catch (err) {
-        throw err
-      } finally {
-        this.testLoding = false
-      }
+    async testPost () {
+      const values = await this.validateForm()
+      await this.params.onManager('performAction', {
+        id: this.params.data[0].id,
+        managerArgs: {
+          action: 'test-connectivity',
+          data: values,
+        },
+      })
     },
   },
 }
