@@ -258,13 +258,6 @@ export default {
     },
   },
   watch: {
-    dataDiskType (val, oldV) {
-      if (val !== oldV && this.isPublic) {
-        this.getPriceList()
-      }
-    },
-  },
-  watch: {
     priceTips: {
       handler (val) {
         let ret = `${this.currency} ${this.price && this.price.toFixed(2)}`
@@ -272,6 +265,11 @@ export default {
         this.$bus.$emit('VMGetPrice', `${ret} ${val}`)
       },
       immediate: true,
+    },
+    dataDiskType (val, oldV) {
+      if (val !== oldV && this.isPublic) {
+        this.getPriceList()
+      }
     },
   },
   created () {
