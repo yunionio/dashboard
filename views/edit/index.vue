@@ -3,8 +3,8 @@
     <!-- header -->
     <div class="edit-topbar position-relative d-flex justify-content-center align-items-center flex-grow-0 flex-shrink-0">
       <div class="mr-2">添加、 固定、 移动并调整磁贴大小</div>
-      <a-button size="small" type="primary" @click="handleConfirm" :loading="submiting">完成自定义</a-button>
-      <a-button size="small" @click="handleBack" class="ml-2">返回</a-button>
+      <a-button size="small" type="primary" @click="handleConfirm" :loading="submiting">{{ $t('dialog.ok') }}</a-button>
+      <a-button size="small" @click="handleBack" class="ml-2">{{ $t('dialog.cancel') }}</a-button>
     </div>
     <!-- main -->
     <div class="edit-main position-relative flex-fill flex-nowrap align-items-stretch d-flex">
