@@ -101,6 +101,7 @@
 import * as R from 'ramda'
 import _ from 'lodash'
 import { mapGetters } from 'vuex'
+import { USAGE_CONFIG } from '@Dashboard/constants'
 import { typeClouds } from '@/utils/common/hypervisor'
 
 export default {
@@ -143,11 +144,10 @@ export default {
     },
     usages () {
       const ret = []
-      const usageObj = this.$t('usage')
-      for (let key in usageObj) {
+      for (let key in USAGE_CONFIG) {
         ret.push({
           key,
-          label: usageObj[key],
+          label: this.$te(`usage.${key}`) ? this.$t(`usage.${key}`) : key,
         })
       }
       return ret
