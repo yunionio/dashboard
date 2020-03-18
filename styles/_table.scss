@@ -1,5 +1,7 @@
 @import 'vxe-table/styles/variable.scss';
 $vxe-font-size: 12px;
+$vxe-table-row-cheched-background-color: $vxe-table-row-hover-background-color;
+$vxe-table-row-hover-cheched-background-color: $vxe-table-row-hover-background-color;
 @import 'vxe-table/styles/default.scss';
 
 .vxe-table.t--border .vxe-header--column:last-child,
