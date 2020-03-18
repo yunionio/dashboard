@@ -132,6 +132,7 @@ export default {
       accountLoading: false,
       regions: [],
       regionLoading: false,
+      translateUsage: this.$t('usage'),
     }
   },
   computed: {
@@ -147,7 +148,7 @@ export default {
       for (let key in USAGE_CONFIG) {
         ret.push({
           key,
-          label: this.$te(`usage.${key}`) ? this.$t(`usage.${key}`) : key,
+          label: this.translateUsage[key] ? this.translateUsage[key] : key,
         })
       }
       return ret
