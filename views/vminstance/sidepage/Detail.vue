@@ -95,6 +95,7 @@ export default {
               hideField: true,
               message: this.diskInfos.image,
               slotCallback: row => {
+                if (!this.diskInfos.image) return '-'
                 return [<span>{ this.diskInfos.image }</span>]
               },
             }),
