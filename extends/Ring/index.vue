@@ -175,12 +175,16 @@ export default {
       return ret
     },
     unUsage () {
-      let ret = this.allUsageNumber - this.usageNumber
+      const ret = this.allUsageNumber - this.usageNumber
+      return ret < 0 ? 0 : ret
+    },
+    displayUnUsage () {
+      let ret = this.unUsage
       if (
         (this.allUsageConfig && this.allUsageConfig.formatter) &&
         (this.usageConfig && this.usageConfig.formatter)
       ) {
-        ret = this.usageConfig.formatter(ret)
+        ret = this.usageConfig.formatter(this.unUsage)
       }
       if (
         (this.allUsageConfig && this.allUsageConfig.unit) &&
@@ -189,9 +193,6 @@ export default {
         ret = `${ret}${this.usageConfig.unit}`
       }
       return ret
-    },
-    displayUnUsage () {
-      return this.unUsage < 0 ? 0 : this.unUsage
     },
     percent () {
       if (this.usageNumber === 0 && this.allUsageNumber === 0) return 0
