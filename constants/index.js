@@ -252,7 +252,7 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'isolated_devices': {
-    unit: '个',
+    unit: '块',
   },
   'networks': {
     unit: '个',
@@ -288,7 +288,7 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'pending_delete_servers.isolated_devices': {
-    unit: '个',
+    unit: '块',
   },
   'pending_delete_servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
