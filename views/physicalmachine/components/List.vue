@@ -158,18 +158,6 @@ export default {
           actions: (obj) => {
             return [
               {
-                label: '调度标签',
-                action: (obj) => {
-                  this.createDialog('HostsAdjustLabelDialog', {
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                  })
-                },
-                meta: () => ({
-                  validate: this.list.selectedItems.length,
-                }),
-              },
-              {
                 label: '开机',
                 action: (obj) => {
                   this.list.batchPerformAction('start', null, this.list.steadyStatus)
@@ -380,6 +368,32 @@ export default {
                 },
               },
               {
+                label: '调度标签',
+                action: (obj) => {
+                  this.createDialog('HostsAdjustLabelDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                  })
+                },
+                meta: () => ({
+                  validate: this.list.selectedItems.length,
+                }),
+              },
+              {
+                label: '编辑标签',
+                action: () => {
+                  this.createDialog('SetTagDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    params: {
+                      resources: 'host',
+                    },
+                    mode: 'add',
+                  })
+                },
+              },
+              {
                 label: '删除',
                 permission: 'hosts_delete',
                 action: () => {
@@ -396,6 +410,11 @@ export default {
                 }),
               },
             ]
+          },
+          meta: () => {
+            return {
+              validate: this.list.selected.length,
+            }
           },
         },
       ],

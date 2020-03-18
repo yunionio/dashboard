@@ -382,6 +382,20 @@ export default {
                   return ret
                 },
               },
+              {
+                label: '编辑标签',
+                action: () => {
+                  this.createDialog('SetTagDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    params: {
+                      resources: 'server',
+                    },
+                    mode: 'add',
+                  })
+                },
+              },
               // {
               //   label: '加入资源池',
               //   action: () => {
