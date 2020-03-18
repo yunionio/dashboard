@@ -136,7 +136,7 @@ export default {
         }
         if (this.dashboardOptions.length > 0) {
           let item = storage.get(`__oc_dashboard_${this.scope}__`)
-          const matched = this.dashboardOptions.find(obj => obj.id === item.id)
+          const matched = item && this.dashboardOptions.find(obj => obj.id === item.id)
           if (!matched) {
             item = this.dashboardOptions[0]
           }
