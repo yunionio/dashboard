@@ -33,17 +33,21 @@
         </a-form-item>
       </template>
       <a-form-item v-bind="offsetFormLayout">
-        <a-button :loading="testLoding" style="padding: 0" type="link" @click="handleTest">连接测试</a-button>
+         <test-button :post="testPost" />
       </a-form-item>
     </a-form>
   </div>
 </template>
 <script>
+import TestButton from '@/sections/TestButton'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'BillConfig',
+  components: {
+    TestButton,
+  },
   mixins: [DialogMixin, WindowsMixin],
   props: {
     provider: {
@@ -56,7 +60,6 @@ export default {
   data () {
     return {
       loading: false,
-      testLoding: false,
       cloudAccounts: [],
       cloudAccountLoading: false,
       cloudAccount: {},
@@ -200,24 +203,13 @@ export default {
         throw err
       }
     },
-    async handleTest () {
-      this.testLoding = true
-      try {
-        const values = await this.form.fc.validateFields()
-        values['cloudaccount_id'] = this.id
-        await new this.$Manager('bucket_options', 'v1').performClassAction({
-          action: 'verify',
-          data: values,
-        })
-        this.$notification.success({
-          message: '连接成功',
-          description: '请点击确定继续',
-        })
-      } catch (err) {
-        throw err
-      } finally {
-        this.testLoding = false
-      }
+    async testPost () {
+      const values = await this.form.fc.validateFields()
+      values['cloudaccount_id'] = this.id
+      await new this.$Manager('bucket_options', 'v1').performClassAction({
+        action: 'verify',
+        data: values,
+      })
     },
   },
 }
