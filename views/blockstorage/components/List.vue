@@ -77,12 +77,12 @@ export default {
           },
         },
         {
-          field: 'vcapacity',
+          field: 'virtual_capacity',
           title: '虚拟容量',
           width: 100,
           formatter: ({ row }) => {
-            if (!row.vcapacity) return '-'
-            return sizestr(row.vcapacity, 'M', 1024)
+            if (!row.virtual_capacity) return '-'
+            return sizestr(row.virtual_capacity, 'M', 1024)
           },
           slots: {
             header: ({ column }) => {
@@ -96,12 +96,12 @@ export default {
           },
         },
         {
-          field: 'used',
+          field: 'used_capacity',
           title: '分配',
           width: 100,
           formatter: ({ row }) => {
             if (!row.used) return '-'
-            return sizestr(row.used, 'M', 1024)
+            return sizestr(row.used_capacity, 'M', 1024)
           },
         },
         getEnabledTableColumn(),
