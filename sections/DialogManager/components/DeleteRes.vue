@@ -36,12 +36,15 @@ export default {
       const t = R.type(alert)
       return data[t] || null
     },
+    idKey () {
+      return this.params.idKey || 'id'
+    },
   },
   methods: {
     async handleConfirm () {
       this.loading = true
       try {
-        const ids = this.params.data.map(item => item.id)
+        const ids = this.params.data.map(item => item[this.idKey])
         if (this.params.ok) {
           await this.params.ok(ids)
         } else {
