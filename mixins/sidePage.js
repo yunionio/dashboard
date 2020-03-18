@@ -147,7 +147,7 @@ export default {
     },
     listRowData () {
       if (!this.isList) return {}
-      return this.params.list.data[this.id].data
+      return (this.params.list.data[this.id] && this.params.list.data[this.id].data) || {}
     },
   },
   destroyed () {
