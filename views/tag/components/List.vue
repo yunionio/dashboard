@@ -28,11 +28,8 @@ export default {
         resource: params => this.listResource(params),
         getParams: this.getParams,
         filterOptions: {
-          key: {
-            label: '键',
-          },
-          value: {
-            label: '值',
+          search: {
+            label: '关键词',
           },
         },
       }),
