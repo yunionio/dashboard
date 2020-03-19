@@ -33,6 +33,13 @@ export default {
         {
           field: 'host',
           title: '所在宿主机',
+          slots: {
+            default: ({ row }) => {
+              return [
+                <side-page-trigger name='HostSidePage' id={row.host_id} vm={this}>{ row.host }</side-page-trigger>,
+              ]
+            },
+          },
         },
         {
           field: 'guest',

@@ -112,6 +112,20 @@ export default {
         },
         getStatusTableColumn({ field: 'host_status', statusModule: 'host_status', title: '服务' }),
         {
+          field: 'nonsystem_guests',
+          title: '#VM',
+          width: 60,
+          slots: {
+            default: ({ row }, h) => {
+              if (row.nonsystem_guests <= 0) return row.nonsystem_guests
+              const ret = [
+                <a onClick={ () => this.$emit('tab-change', 'vminstance-list') }>{row.nonsystem_guests}</a>,
+              ]
+              return ret
+            },
+          },
+        },
+        {
           field: 'access_mac',
           title: 'mac地址',
         },

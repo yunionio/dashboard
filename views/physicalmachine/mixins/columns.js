@@ -11,7 +11,7 @@ export default {
         hideField: true,
         slotCallback: row => {
           return (
-            <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
+            <side-page-trigger name='PhysicalmachineSidePage' id={row.id} list={this.list} vm={this}>{ row.server }</side-page-trigger>
           )
         },
       }),
@@ -117,7 +117,17 @@ export default {
         },
       },
       getCopyWithContentTableColumn({ field: 'sn', title: 'SN' }),
-      getCopyWithContentTableColumn({ field: 'server', title: '分配' }),
+      getCopyWithContentTableColumn({
+        field: 'server',
+        title: '分配',
+        hideField: true,
+        slotCallback: row => {
+          if (!row.server) return '-'
+          return [
+            <side-page-trigger name='PhysicalmachineSidePage' id={row.id} list={this.list} tab='baremetal-list' vm={this}>{ row.server }</side-page-trigger>,
+          ]
+        },
+      }),
       {
         field: 'login_ssh',
         title: '初始账号',

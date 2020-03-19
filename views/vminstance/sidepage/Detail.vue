@@ -17,7 +17,6 @@ import {
   getSwitchTableColumn,
   getBillingTypeTableColumn,
 } from '@/utils/common/tableColumn'
-import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import { findPlatform } from '@/utils/common/hypervisor'
 
@@ -79,8 +78,8 @@ export default {
         imageId = dataDisks[0].image_id
       }
       return {
-        sysDisk: this._diskStringify(sysDisk) || '-',
-        dataDisk: this._diskStringify(dataDisk) || '-',
+        sysDisk: this._diskStringify(sysDisk) || '',
+        dataDisk: this._diskStringify(dataDisk) || '',
         image,
         imageId,
       }
@@ -99,15 +98,26 @@ export default {
                 return distribution + (version === '-' ? '' : version)
               },
             },
-            getCopyWithContentTableColumn({ field: 'ips', title: 'IP' }),
+            getCopyWithContentTableColumn({
+              field: 'ips',
+              title: 'IP',
+              hideField: true,
+              slotCallback: row => {
+                return [
+                  <a onClick={ () => this.$emit('tab-change', 'network-list-for-vm-instance-sidepage') }>{row.ips}</a>,
+                ]
+              },
+            }),
             getCopyWithContentTableColumn({
               field: 'image',
               title: '系统镜像',
               hideField: true,
               message: this.diskInfos.image,
               slotCallback: row => {
-                if (!this.diskInfos.image) return '-'
-                return [<side-page-trigger onTrigger={ () => this.handleOpenSystemImageDetail(this.diskInfos.imageId) }>{ this.diskInfos.image }</side-page-trigger>]
+                if (!this.diskInfos.image || this.diskInfos.image === '-') return '-'
+                return [
+                  <side-page-trigger permission='images_get' name='SystemImageSidePage' id={this.diskInfos.imageId} vm={this}>{ this.diskInfos.image }</side-page-trigger>,
+                ]
               },
             }),
             {
@@ -123,12 +133,24 @@ export default {
                   }
                   const text = row['host'] || '-'
                   return [
-                    <list-body-cell-wrap copy field='host' row={row} message={text}></list-body-cell-wrap>,
+                    <list-body-cell-wrap copy hideField={true} field='host' row={row} message={text}>
+                      <side-page-trigger permission='hosts_get' name='HostSidePage' id={row.host_id} vm={this}>{row.host}</side-page-trigger>
+                    </list-body-cell-wrap>,
                   ]
                 },
               },
             },
-            getCopyWithContentTableColumn({ field: 'vpc', title: 'VPC' }),
+            getCopyWithContentTableColumn({
+              field: 'vpc',
+              title: 'VPC',
+              hideField: true,
+              slotCallback: row => {
+                if (!row.vpc) return '-'
+                return [
+                  <side-page-trigger permission='vpcs_get' name='VpcSidePage' id={row.vpc_id} vm={this}>{ row.vpc }</side-page-trigger>,
+                ]
+              },
+            }),
             {
               field: 'vcpu_count',
               title: 'CPU',
@@ -147,14 +169,16 @@ export default {
               field: 'sysDisk',
               title: '系统盘',
               formatter: ({ row }) => {
-                return this.diskInfos.sysDisk
+                if (!this.diskInfos.sysDisk) return '-'
+                return <a onClick={ () => this.$emit('tab-change', 'disk-list-for-vm-instance-sidepage') }>{this.diskInfos.sysDisk}</a>
               },
             },
             {
               field: 'dataDisk',
               title: '数据盘',
               formatter: ({ row }) => {
-                return this.diskInfos.dataDisk
+                if (!this.diskInfos.dataDisk) return '-'
+                return <a onClick={ () => this.$emit('tab-change', 'disk-list-for-vm-instance-sidepage') }>{this.diskInfos.dataDisk}</a>
               },
             },
             getCopyWithContentTableColumn({
@@ -163,7 +187,10 @@ export default {
               hideField: true,
               slotCallback: row => {
                 const idx = row.cdrom.indexOf('(')
-                return row.cdrom.substring(0, idx) || '-'
+                const id = row.cdrom.substring(idx + 1, row.cdrom.indexOf('/'))
+                return [
+                  <side-page-trigger permission='images_get' name='SystemImageSidePage' id={id} vm={this}>{ row.cdrom.substring(0, idx) || '-' }</side-page-trigger>,
+                ]
               },
             }),
             {
@@ -173,24 +200,30 @@ export default {
                 if (!row.isolated_devices) return '-'
                 let gpuArr = row.isolated_devices
                 let obj = {}
+                const ids = {}
                 gpuArr.forEach(val => {
                   if (!obj[val.model]) {
                     obj[val.model] = 1
                   } else {
                     obj[val.model] += 1
                   }
+                  ids[val.model] = val.id
                 })
-                let str = ''
-                for (const k in obj) {
-                  const n = obj[k]
-                  str += `、${n}颗（${k}）`
-                }
-                return str.slice(1)
+                return Object.keys(obj).map(k => {
+                  return <side-page-trigger permission='isolated_devices_get' name='GpuSidePage' id={ids[k]} vm={this}>{`${obj[k]}颗 （${k}）`}</side-page-trigger>
+                })
               },
             },
             {
               field: 'backup_host_name',
               title: '备份机的宿主机',
+              slots: {
+                default: ({ row }) => {
+                  return [
+                    <side-page-trigger permission='hosts_get' name='HostSidePage' id={row.host_id} vm={this}>{row.backup_host_name}</side-page-trigger>,
+                  ]
+                },
+              },
             },
           ],
         },
@@ -236,15 +269,6 @@ export default {
       })
       return sameType1.reduce((a, b) => {
         return a + b
-      })
-    },
-    handleOpenSystemImageDetail (id) {
-      this.initSidePageTab('system-image-detail')
-      this.sidePageTriggerHandle(this, 'SystemImageSidePage', {
-        id,
-        resource: 'images',
-        apiVersion: 'v1',
-        steadyStatus: Object.values(expectStatus.image).flat(),
       })
     },
   },

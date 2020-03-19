@@ -42,7 +42,14 @@ export default {
         },
       }),
       columns: [
-        getCopyWithContentTableColumn({ field: 'name', title: '名称' }),
+        getCopyWithContentTableColumn({
+          field: 'name',
+          title: '名称',
+          hideField: true,
+          slotCallback: row => {
+            return [<side-page-trigger permission="disks_get" name="DiskSidePage" id={row.id} vm={this}>{ row.name }</side-page-trigger>]
+          },
+        }),
         {
           field: 'disk_size',
           title: '容量',

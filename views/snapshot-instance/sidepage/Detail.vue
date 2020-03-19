@@ -57,7 +57,7 @@ export default {
               if (row.guest) {
                 return [
                   <div>
-                    {row.guest}
+                    <side-page-trigger permission="server_get" name="VmInstanceSidePage" id={row.guest_id} vm={this}>{row.guest}</side-page-trigger>
                     {row.guest_status ? <status status={ row['guest_status'] } statusModule='server'/> : ''}
                   </div>,
                 ]

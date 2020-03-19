@@ -16,7 +16,8 @@
       :res-id="data.id"
       :data="detailData"
       :on-manager="onManager"
-      :getParams="getParams" />
+      :getParams="getParams"
+      @tab-change="handleTabChange" />
   </base-side-page>
 </template>
 
