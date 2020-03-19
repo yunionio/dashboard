@@ -99,7 +99,14 @@ export default {
                 return distribution + (version === '-' ? '' : version)
               },
             },
-            getCopyWithContentTableColumn({ field: 'ips', title: 'IP' }),
+            {
+              field: 'ips',
+              title: 'IP',
+              formatter: ({ row }) => {
+                const ips = row.ips.split(',')
+                return ips.join('，')
+              },
+            },
             getCopyWithContentTableColumn({
               field: 'image',
               title: '系统镜像',
