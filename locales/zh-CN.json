@@ -882,7 +882,8 @@
     "Aws": "AWS",
     "Huawei": "华为云",
     "Qcloud": "腾讯云",
-    "Azure": "微软云"
+    "Azure": "微软云",
+    "Ctyun": "天翼云"
   },
   "dictionary": {
     "identity_provider": "认证源",
