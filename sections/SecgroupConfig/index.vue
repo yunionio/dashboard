@@ -51,7 +51,7 @@ export default {
     },
     hypervisor: {
       type: String,
-      default: 'kvm',
+      default: HYPERVISORS_MAP.kvm.key,
     },
   },
   data () {
