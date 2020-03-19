@@ -175,4 +175,7 @@ export default {
     danger: ['init'],
     success: ['verified'],
   },
+  workflowBiz: {
+    success: ['success'],
+  },
 }

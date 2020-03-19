@@ -491,6 +491,11 @@
       "init": "未验证",
       "verifying": "验证中",
       "verified": "已验证"
+    },
+    "workflowBiz": {
+      "success": "成功",
+      "fail": "失败",
+      "operating": "执行中"
     }
   },
   "skuCategoryOptions": {
