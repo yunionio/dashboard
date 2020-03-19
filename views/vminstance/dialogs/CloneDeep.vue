@@ -159,6 +159,7 @@ export default {
         generate_name: values.name,
         name: values.name,
         count: values.count,
+        auto_start: true,
         auto_delete_instance_snapshot: values.auto_delete_instance_snapshot,
       }
       return this.params.list.onManager('performAction', {
@@ -177,6 +178,7 @@ export default {
         generate_name: values.name,
         name: values.name,
         count: values.count,
+        auto_start: true,
         auto_delete_instance_snapshot: false,
       }
       return this.manager.create({ data: params })
