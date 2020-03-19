@@ -29,10 +29,10 @@ export default {
     async handleConfirm () {
       const bindedTags = {}
       R.forEachObjIndexed((value, key) => {
-        if (key.startsWith('ext:') || key.startsWith('ext:')) {
+        if (key.startsWith('user:')) {
           bindedTags[key] = value
         }
-      }, this.params.data.metadata)
+      }, this.params.data[0].metadata)
       delete bindedTags[this.params.tagData.key]
       const data = {}
       R.forEachObjIndexed((value, key) => {
