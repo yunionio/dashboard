@@ -37,7 +37,7 @@ export default {
       detailTabs: [
         { label: '详情', key: 'tag-detail' },
         { label: '绑定资源', key: 'bind-resource' },
-        { label: '操作日志', key: 'event-drawer' },
+        // { label: '操作日志', key: 'event-drawer' },
       ],
     }
   },

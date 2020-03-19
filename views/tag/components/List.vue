@@ -108,7 +108,7 @@ export default {
     handleOpenSidepage (row) {
       this.sidePageTriggerHandle(this, 'TagSidePage', {
         id: row.key,
-        resource: params => this.detailResource(params, row),
+        resource: params => this.detailResource({ ...params, details: true }, row),
         getParams: this.getParams,
       }, {
         list: this.list,
