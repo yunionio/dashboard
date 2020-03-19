@@ -5,6 +5,8 @@
         <router-view />
       </component>
       <dialog-manager />
+      <side-page-manager />
+      <window-resize-listener />
     </div>
   </a-locale-provider>
 </template>
@@ -14,6 +16,8 @@ import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN'
 import DefaultLayout from '@/layouts/Default'
 import FullScreenLayout from '@/layouts/FullScreen'
 import DialogManager from '@/sections/DialogManager'
+import SidePageManager from '@/sections/SidePageManager'
+import WindowResizeListener from '@/sections/WindowResizeListener'
 
 export default {
   name: 'App',
@@ -21,6 +25,8 @@ export default {
     DefaultLayout,
     FullScreenLayout,
     DialogManager,
+    SidePageManager,
+    WindowResizeListener,
   },
   data () {
     return {

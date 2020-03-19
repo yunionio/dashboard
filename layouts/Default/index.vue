@@ -7,14 +7,12 @@
         <slot />
       </div>
     </div>
-    <side-page-manager />
   </div>
 </template>
 
 <script>
 import Navbar from '@scope/layouts/Navbar'
 import Sidebar from '../Sidebar'
-import SidePageManager from '@/sections/SidePageManager'
 import notificationListener from '@/utils/notificationListener'
 
 export default {
@@ -22,7 +20,6 @@ export default {
   components: {
     Sidebar,
     Navbar,
-    SidePageManager,
   },
   data () {
     return {
