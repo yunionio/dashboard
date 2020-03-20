@@ -15,12 +15,13 @@ const components = {}
 const requireSidePages = require.context('../../../containers', true, /^((?![\\/]node_modules).)*.\/views\/.*\/sidepage\/index\.(jsx?|vue)$/)
 const scopeSidePages = require.context('../../../scope', true, /^((?![\\/]node_modules).)*.\/views\/.*\/sidepage\/index\.(jsx?|vue)$/)
 const commonSidePages = require.context('./components', false, /.\/\w+\.(jsx?|vue)$/)
-
+const sidePageNames = []
 const registerSidePages = (sidePages) => {
   const keys = sidePages.keys()
   for (let i = 0, len = keys.length; i < len; i++) {
     const componentConfig = sidePages(keys[i])
     components[componentConfig.default.name] = componentConfig.default
+    sidePageNames.push(componentConfig.default.name)
   }
 }
 
@@ -35,6 +36,14 @@ export default {
     sidePages () {
       return this.$store.getters.sidePages
     },
+  },
+  beforeCreate () {
+    this.$store.dispatch('common/updateObject', {
+      name: 'globalSidePages',
+      data: {
+        names: sidePageNames,
+      },
+    })
   },
 }
 </script>

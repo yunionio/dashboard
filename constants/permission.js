@@ -89,10 +89,14 @@ export const PERMISSION = {
   'lb_loadbalanceragents_list': ['compute', 'loadbalanceragents', 'list'],
   // 区域
   'areas_list': ['compute', 'cloudregions', 'list'],
+  // 区域
+  'areas_get': ['compute', 'cloudregions', 'get'],
   // 可用区
   'zones_list': ['compute', 'zones', 'list'],
   // 服务器
   'hosts_list': ['compute', 'hosts', 'list'],
+  // 服务器详情
+  'hosts_get': ['compute', 'hosts', 'get'],
   // 调度标签
   'schedtags_list': ['compute', 'schedtags', 'list'],
   // 动态调度标签
@@ -101,14 +105,20 @@ export const PERMISSION = {
   'schedpolicies_list': ['compute', 'schedpolicies', 'list'],
   // GPU透传
   'isolated_devices_list': ['compute', 'isolated-devices', 'list'],
+  // GPU透传详情
+  'isolated_devices_get': ['compute', 'isolated-devices', 'get'],
   // VPC
   'vpcs_list': ['compute', 'vpcs', 'list'],
+  // VPC详情
+  'vpcs_get': ['compute', 'vpcs', 'get'],
   // 路由表
   'route_tables_list': ['compute', 'route_tables', 'list'],
   // NAT网关
   'natgateways_list': ['compute', 'natgateways', 'list'],
   // 虚拟路由器
   'wires_list': ['compute', 'wires', 'list'],
+  // 虚拟路由器详情
+  'wires_get': ['compute', 'wires', 'get'],
   // IP子网
   'networks_list': ['compute', 'networks', 'list'],
   // 预留IP
@@ -123,6 +133,8 @@ export const PERMISSION = {
   'cloudaccounts_list': ['compute', 'cloudaccounts', 'list'],
   // 域
   'domains_list': ['identity', 'domains', 'list'],
+  // 域详情
+  'domains_get': ['identity', 'domains', 'get'],
   // 组
   'groups_list': ['identity', 'groups', 'list'],
   // 用户
@@ -131,6 +143,8 @@ export const PERMISSION = {
   'contacts_list': ['notify', 'contacts', 'list'],
   // 项目
   'projects_list': ['identity', 'projects', 'list'],
+  // 项目详情
+  'projects_get': ['identity', 'projects', 'get'],
   // 角色
   'roles_list': ['identity', 'roles', 'list'],
   // 策略权限
@@ -514,10 +528,6 @@ export const PERMISSION = {
   'image_quota_delete': ['image', 'image_quotas', 'delete'],
   'image_quota_update': ['image', 'image_quotas', 'update'],
   'image_quota_list': ['image', 'image_quotas', 'list'],
-  // 域
-  'domains_get': ['identity', 'domains', 'get'],
-  // 项目
-  'projects_get': ['identity', 'projects', 'get'],
 }
 
 // 已声明权限的资源

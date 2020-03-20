@@ -7,48 +7,6 @@ import i18n from '@/locales'
 import WindowsMixin from '@/mixins/windows'
 import { hasPermission } from '@/utils/auth'
 
-const handleOpenRegionDetail = (vm, row) => {
-  vm.initSidePageTab('cloudregion-detail')
-  vm.sidePageTriggerHandle(vm, 'CloudregionSidePage', {
-    id: row.region_id,
-    resource: 'cloudregions',
-  })
-}
-
-const handleOpenZoneDetail = (vm, row) => {
-  vm.initSidePageTab('zone-detail')
-  vm.sidePageTriggerHandle(vm, 'ZoneSidePage', {
-    id: row.zone_id,
-    resource: 'zones',
-  })
-}
-
-const handleOpenAccountDetail = (vm, row) => {
-  vm.initSidePageTab('cloudaccount-detail')
-  vm.sidePageTriggerHandle(vm, 'CloudaccountSidePage', {
-    id: row.account_id,
-    resource: 'cloudaccounts',
-  })
-}
-
-const handleOpenProjectDetail = (vm, row) => {
-  vm.initSidePageTab('project-detail')
-  vm.sidePageTriggerHandle(vm, 'ProjectSidePage', {
-    id: row.tenant_id,
-    resource: 'projects',
-    apiVersion: 'v1',
-  })
-}
-
-const handleOpenDomainDetail = (vm, row) => {
-  vm.initSidePageTab('detail')
-  vm.sidePageTriggerHandle(vm, 'DomainSidePage', {
-    id: row.domain_id,
-    resource: 'domains',
-    apiVersion: 'v1',
-  })
-}
-
 // 需要添加区域（cloudregion/cloudregion_id), 可用区（zone/zone_id)，云账号(account/account_id)，云订阅（manager/manager_id)的资源
 const appendOutherResources = ['servers', 'hosts', 'disks', 'storages', 'vpcs', 'wires', 'networks', 'snapshots', 'eips', 'dbinstances', 'elasticcaches']
 
@@ -65,7 +23,7 @@ const getDefaultLastBaseInfo = (vm, h, { data, onManager, resource }) => {
           if (p) {
             node = (
               <list-body-cell-wrap copy row={ data } onManager={ onManager } field='region' title={ row['region'] } hideField={ true }>
-                <side-page-trigger onTrigger={ () => handleOpenRegionDetail(vm, row) }>{ row.region }</side-page-trigger>
+                <side-page-trigger permission='areas_get' name='CloudregionSidePage' id={row.region_id} vm={vm}>{ row.region }</side-page-trigger>
               </list-body-cell-wrap>
             )
           } else {
@@ -90,7 +48,7 @@ const getDefaultLastBaseInfo = (vm, h, { data, onManager, resource }) => {
           if (p) {
             node = (
               <list-body-cell-wrap copy row={ data } onManager={ onManager } field='zone' title={ row['zone'] } hideField={ true }>
-                <side-page-trigger onTrigger={ () => handleOpenZoneDetail(vm, row) }>{ row.zone }</side-page-trigger>
+                <side-page-trigger permission='zones_get' name='ZoneSidePage' id={row.zone_id} vm={vm}>{ row.region }</side-page-trigger>
               </list-body-cell-wrap>
             )
           } else {
@@ -115,7 +73,7 @@ const getDefaultLastBaseInfo = (vm, h, { data, onManager, resource }) => {
           if (p) {
             node = (
               <list-body-cell-wrap copy row={ data } onManager={ onManager } field='account' title={ row['account'] } hideField={ true }>
-                <side-page-trigger onTrigger={ () => handleOpenAccountDetail(vm, row) }>{ row.account }</side-page-trigger>
+                <side-page-trigger permission='cloudaccounts_get' name='CloudaccountSidePage' id={row.account_id} vm={vm}>{ row.account }</side-page-trigger>
               </list-body-cell-wrap>
             )
           } else {
@@ -191,7 +149,7 @@ const getDefaultTopBaseInfo = (vm, h, { idKey, statusKey, statusModule, data, on
           if (p) {
             node = (
               <list-body-cell-wrap copy row={ data } onManager={ onManager } field='project_domain' title={ row['project_domain'] } message={domain} hideField={ true }>
-                <side-page-trigger onTrigger={ () => handleOpenDomainDetail(vm, row) }>{ domain }</side-page-trigger>
+                <side-page-trigger permission='domains_get' name='DomainSidePage' id={row.project_domain} vm={vm}>{ domain }</side-page-trigger>
               </list-body-cell-wrap>
             )
           } else {
@@ -219,7 +177,7 @@ const getDefaultTopBaseInfo = (vm, h, { idKey, statusKey, statusModule, data, on
           if (p) {
             node = (
               <list-body-cell-wrap copy row={ data } onManager={ onManager } field='tenant' title={ row['tenant'] } hideField={ true }>
-                <side-page-trigger onTrigger={ () => handleOpenProjectDetail(vm, row) }>{ row.tenant }</side-page-trigger>
+                <side-page-trigger permission='projects_get' name='ProjectSidePage' id={row.tenant_id} vm={vm}>{ row.tenant }</side-page-trigger>
               </list-body-cell-wrap>
             )
           } else {
