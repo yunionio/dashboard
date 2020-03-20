@@ -144,6 +144,7 @@ export const getNameDescriptionTableColumn = ({
   addBackup,
   formRules,
   descriptionRules = [],
+  cellWrapSlots,
 } = {}) => {
   return {
     field: 'name',
@@ -165,7 +166,11 @@ export const getNameDescriptionTableColumn = ({
               addBackup,
               formRules,
             },
-          }, [ slotCallback ? slotCallback(row, h) : null ]),
+            scopedSlots: {
+              default: () => slotCallback ? slotCallback(row, h) : null,
+              ...(cellWrapSlots && R.is(Function, cellWrapSlots) ? cellWrapSlots(row) : {}),
+            },
+          }),
         ]
         if (showDesc) {
           ret.push(h('list-body-cell-wrap', {
