@@ -2,11 +2,10 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">迁移</div>
     <div slot="body">
-      <a-alert class="mb-2" type="warning" message="提示信息：宿主机为空时，系统会自动选择宿主机" />
       <dialog-selected-tips :count="params.data.length" action="迁移" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
-        <a-form-item label="宿主机" v-bind="formItemLayout">
+        <a-form-item label="宿主机" v-bind="formItemLayout" extra="提示信息：宿主机为空时，系统会自动选择宿主机">
           <base-select
             v-decorator="decorators.host"
             resource="hosts"
@@ -50,7 +49,7 @@ export default {
           'host',
           {
             rules: [
-              { required: true, message: '请选择宿主机', trigger: 'change' },
+              { required: false, message: '请选择宿主机', trigger: 'change' },
             ],
           },
         ],
