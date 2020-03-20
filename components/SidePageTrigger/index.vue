@@ -38,8 +38,8 @@ export default {
   },
   computed: {
     isLink () {
-      const { sidePage } = this.$store.state.common
-      return hasPermission({ key: this.permission }) && (sidePage.names.indexOf(this.name) > -1 || !this.name)
+      const { globalSidePages } = this.$store.state.common
+      return hasPermission({ key: this.permission }) && (globalSidePages.names.indexOf(this.name) > -1 || !this.name)
     },
   },
   methods: {
