@@ -59,7 +59,7 @@ export default {
               if (row.guest) {
                 return [
                   <div>
-                    {row.guest}
+                    <side-page-trigger permission="server_get" name="VmInstanceSidePage" id={row.guest_id} vm={this}>{row.guest}</side-page-trigger>
                     {row.guest_status ? <status status={ row['guest_status'] } statusModule='server'/> : ''}
                   </div>,
                 ]
@@ -83,7 +83,7 @@ export default {
               if (row.disk_status) {
                 return [
                   <div>
-                    {row.disk_name}
+                    <side-page-trigger permission="disks_get" name="DiskSidePage" id={row.disk_id} vm={this}>{ row.disk_name }</side-page-trigger>
                     {row.disk_status ? <status status={ row['disk_status'] } statusModule='disk'/> : ''}
                   </div>,
                 ]

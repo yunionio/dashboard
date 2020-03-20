@@ -9,7 +9,6 @@
 
 <script>
 import { weekOptions, timeOptions } from '../constants'
-import { getBindingDiskCountColumn } from '../utils/columns'
 
 export default {
   name: 'SnapshotPolicyDetail',
@@ -26,7 +25,17 @@ export default {
   data () {
     const detailData = {
       baseInfo: [
-        getBindingDiskCountColumn(),
+        {
+          filed: 'binding_disk_count',
+          title: '关联硬盘数量',
+          width: 120,
+          slots: {
+            default: ({ row }) => {
+              if (row.binding_disk_count <= 0) return row.binding_disk_count
+              return [<a onClick={ () => this.$emit('tab-change', 'snapshot-policy-disk') }>{row.binding_disk_count}</a>]
+            },
+          },
+        },
         {
           field: 'time_points',
           title: '备份时间',

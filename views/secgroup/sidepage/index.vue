@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import VminstanceList from '@Compute/views/vminstance/components/List'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import SecgroupDetail from './Detail'
@@ -44,12 +45,14 @@ export default {
     OutDirection,
     InDirection,
     CacheList,
+    VminstanceList,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
         { label: '详情', key: 'secgroup-detail' },
+        { label: '关联虚拟机', key: 'vminstance-list' },
         { label: '入方向', key: 'in-direction' },
         { label: '出方向', key: 'out-direction' },
         { label: '缓存列表', key: 'cache-list' },
@@ -72,6 +75,10 @@ export default {
       } else if (this.params.windowData.currentTab === 'cache-list') {
         return {
           id: this.data.id,
+        }
+      } else if (this.params.windowData.currentTab === 'vminstance-list') {
+        return {
+          secgroup: this.detailData.id,
         }
       }
       return null

@@ -11,11 +11,12 @@
     <template v-slot:actions>
       <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :res-id="data.id" :data="detailData" :on-manager="onManager" :getParams="getParams" />
+    <component :is="params.windowData.currentTab" :res-id="data.id" :data="detailData" :on-manager="onManager" :getParams="getParams" @tab-change="handleTabChange" />
   </base-side-page>
 </template>
 
 <script>
+import VminstanceList from '@Compute/views/vminstance/components/List'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import SkuDetail from './Detail'
@@ -27,6 +28,7 @@ export default {
   name: 'SkuSidePage',
   components: {
     SkuDetail,
+    VminstanceList,
     Actions,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
@@ -34,13 +36,16 @@ export default {
     return {
       detailTabs: [
         { label: '详情', key: 'sku-detail' },
+        { label: '关联虚拟机', key: 'vminstance-list' },
         { label: '操作日志', key: 'event-drawer' },
       ],
     }
   },
   computed: {
     getParams () {
-      return null
+      return {
+        instance_type: this.detailData.name,
+      }
     },
   },
 }

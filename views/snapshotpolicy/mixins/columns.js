@@ -1,5 +1,4 @@
 import { weekOptions, timeOptions } from '../constants'
-import { getBindingDiskCountColumn } from '../utils/columns'
 import {
   getNameDescriptionTableColumn,
   getStatusTableColumn,
@@ -20,7 +19,19 @@ export default {
         },
       }),
       getStatusTableColumn({ statusModule: 'snapshotpolicy' }),
-      getBindingDiskCountColumn(),
+      {
+        filed: 'binding_disk_count',
+        title: '关联硬盘数量',
+        width: 120,
+        slots: {
+          default: ({ row }) => {
+            if (row.binding_disk_count <= 0) return row.binding_disk_count
+            return [
+              <side-page-trigger name='SnapshotPolicySidePage' id={row.id} tab='snapshot-policy-disk' vm={this}>{row.binding_disk_count}</side-page-trigger>,
+            ]
+          },
+        },
+      },
       {
         filed: 'repeat_weekdays',
         title: '策略详情',

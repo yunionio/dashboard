@@ -38,6 +38,12 @@ export default {
         field: 'total_guest_count',
         title: `关联${this.$t('dictionary.server')}数量`,
         width: 120,
+        slots: {
+          default: ({ row }) => {
+            if (row.total_guest_count <= 0) return row.total_guest_count
+            return [<side-page-trigger name='SkuSidePage' id={row.id} tab='vminstance-list' vm={this}>{ row.total_guest_count }</side-page-trigger>]
+          },
+        },
       },
       getEnabledTableColumn(),
     ]

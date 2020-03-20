@@ -33,10 +33,19 @@ export default {
         {
           field: 'memory_size_mb',
           title: '内存容量',
+          formatter: ({ cellValue }) => {
+            return this.PUBLIC_SCOPE_ZH[cellValue]
+          },
         },
         {
           field: 'total_guest_count',
           title: `关联${this.$t('dictionary.server')}数量`,
+          slots: {
+            default: ({ row }) => {
+              if (row.total_guest_count <= 0) return row.total_guest_count
+              return [<a onClick={ () => this.$emit('tab-change', 'vminstance-list') }>{ `${row.total_guest_count}` }</a>]
+            },
+          },
         },
         {
           field: 'brand',

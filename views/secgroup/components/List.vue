@@ -57,7 +57,7 @@ export default {
         items: [
           { label: 'ID', key: 'id' },
           { label: '名称', key: 'name' },
-          { label: '关联实例', key: 'guest_cnt' },
+          { label: '关联虚拟机', key: 'guest_cnt' },
           { label: '共享范围', key: 'public_scope' },
           { label: '状态', key: 'status' },
           { label: this.$t('dictionary.project'), key: 'tenant' },

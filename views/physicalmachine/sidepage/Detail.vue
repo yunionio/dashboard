@@ -103,6 +103,17 @@ export default {
           field: 'access_ip',
           title: 'IP',
         },
+        getCopyWithContentTableColumn({
+          field: 'server',
+          title: '分配',
+          hideField: true,
+          slotCallback: row => {
+            if (!row.server) return '-'
+            return [
+              <a onClick={ () => this.$emit('tab-change', 'baremetal-list') }>{row.server}</a>,
+            ]
+          },
+        }),
         getCopyWithContentTableColumn({ field: 'server', title: '分配' }),
         {
           field: 'access_mac',
