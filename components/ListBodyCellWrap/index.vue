@@ -11,6 +11,7 @@
     <a-tooltip v-if="addBackup && row.backup_host_id" title="高可用云服务器">
       <icon type="gaokeyong" class="ml-1" />
     </a-tooltip>
+    <slot name="append" />
     <edit
       slot="edit"
       class="ml-1"
