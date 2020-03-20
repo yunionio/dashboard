@@ -101,7 +101,7 @@ export default {
           },
           cellWrapSlots: row => {
             return {
-              extraContent: () => row.is_baremetal ? (<a-tooltip title="有IPMI信息，可转换为物理机"><icon class='ml-2' type='res-host' style={{ 'color': '#1890ff' }} /></a-tooltip>) : null,
+              append: () => row.is_baremetal ? (<a-tooltip title="有IPMI信息，可转换为物理机"><icon class='ml-2' type='res-host' style={{ 'color': '#1890ff' }} /></a-tooltip>) : null,
             }
           },
         }),
