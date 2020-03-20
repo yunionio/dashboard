@@ -5,7 +5,7 @@
       <dialog-selected-tips :count="params.data.length" action="添加备份机" />
       <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
-        <a-form-item label="备份机的宿主机" v-bind="formItemLayout">
+        <a-form-item label="备份机的宿主机" v-bind="formItemLayout" extra="提示信息：宿主机为空时，系统会自动选择宿主机">
           <base-select
             class="w-100"
             v-decorator="decorators.prefer_host_id"
@@ -44,7 +44,7 @@ export default {
           'prefer_host_id',
           {
             rules: [
-              { required: true, message: '请选择备份机', trigger: 'blur' },
+              { required: false, message: '请选择备份机', trigger: 'blur' },
             ],
           },
         ],
