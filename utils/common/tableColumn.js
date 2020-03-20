@@ -144,6 +144,7 @@ export const getNameDescriptionTableColumn = ({
   addBackup,
   formRules,
   descriptionRules = [],
+  cellWrapSlots,
 } = {}) => {
   return {
     field: 'name',
@@ -154,9 +155,22 @@ export const getNameDescriptionTableColumn = ({
     slots: {
       default: ({ row }, h) => {
         const ret = [
-          <list-body-cell-wrap copy edit row={row} list={vm.list} hideField={ hideField } addLock={ addLock } addBackup={ addBackup } formRules={formRules}>
-            { slotCallback ? slotCallback(row) : null }
-          </list-body-cell-wrap>,
+          h('list-body-cell-wrap', {
+            props: {
+              copy: true,
+              edit: true,
+              row,
+              list: vm.list,
+              hideField,
+              addLock,
+              addBackup,
+              formRules,
+            },
+            scopedSlots: {
+              default: () => slotCallback ? slotCallback(row, h) : null,
+              ...(cellWrapSlots && R.is(Function, cellWrapSlots) ? cellWrapSlots(row) : {}),
+            },
+          }),
         ]
         if (showDesc) {
           ret.push(<list-body-cell-wrap edit field="description" row={row} list={vm.list} formRules={descriptionRules} />)
