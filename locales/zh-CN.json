@@ -131,7 +131,8 @@
       "deleted": "已删除",
       "delete_failed": "删除失败",
       "unknown": "未知",
-      "unavailable": "不可用"
+      "unavailable": "不可用",
+      "syncing": "同步中"
     },
     "host": {
       "init": "初始化",
@@ -308,7 +309,8 @@
       "backup_alloc_failed": "备份磁盘创建失败",
       "schedule": "调度中",
       "apply_snapshot_failed": "绑定快照策略失败",
-      "cancel_snapshot_failed": "解绑快照策略失败"
+      "cancel_snapshot_failed": "解绑快照策略失败",
+      "syncing": "同步中"
     },
     "secgroupCache": {
       "ready": "正常",
@@ -349,7 +351,8 @@
       "failed": "异常",
       "unknown": "未知",
       "create_failed": "创建失败",
-      "delete_failed": "删除失败"
+      "delete_failed": "删除失败",
+      "syncing": "同步中"
     },
     "rds": {
       "failed": "操作失败",
@@ -372,7 +375,8 @@
       "reboot_failed": "重启失败",
       "create_failed": "创建失败",
       "restore_failed": "恢复失败",
-      "delete_failed": "删除失败"
+      "delete_failed": "删除失败",
+      "syncing": "同步中"
     },
     "eip": {
       "ready": "可用",
@@ -386,7 +390,8 @@
       "dissociate": "开始解绑",
       "dissociate_fail": "解绑失败",
       "change_bandwidth": "修改带宽",
-      "init": "初始化"
+      "init": "初始化",
+      "syncing": "同步中"
     },
     "snapshot": {
       "init": "初始化",
@@ -396,7 +401,8 @@
       "deleting": "删除中",
       "unknown": "状态异常",
       "instance_snapshot_start_delete": "主机快照开始删除",
-      "instance_snapshot_delete_failed": "主机快照删除失败"
+      "instance_snapshot_delete_failed": "主机快照删除失败",
+      "syncing": "同步中"
     },
     "snapshotpolicy": {
       "init": "初始化",
@@ -433,7 +439,8 @@
       "deleting": "删除中",
       "failed": "创建失败",
       "unknown": "未知",
-      "unavailable": "不可用"
+      "unavailable": "不可用",
+      "syncing": "同步中"
     },
     "blockstorage": {
       "enabled": "启用",
@@ -450,7 +457,8 @@
       "start_delete": "开始删除",
       "deleting": "删除中",
       "deleted": "已删除",
-      "delete_failed": "删除失败"
+      "delete_failed": "删除失败",
+      "snying": "同步中"
     },
     "hostImageCache": {
       "init": "初始化中",
@@ -472,7 +480,8 @@
       "failed": "创建失败",
       "deleted": "删除",
       "deleting": "删除中",
-      "delete_failed": "删除失败"
+      "delete_failed": "删除失败",
+      "syncing": "同步中"
     },
     "idp": {
       "connected": "已连接",
@@ -946,7 +955,7 @@
     "hostwire": "二层网络",
     "baremetalnetwork": "物理机网络",
     "snapshotpolicy": "自动快照策略",
-    "mail_config": "邮件短信",
+    "mail_config": "通知渠道",
     "actions": "操作日志",
     "cloudevents": "操作日志",
     "companyinfo": "企业信息",
