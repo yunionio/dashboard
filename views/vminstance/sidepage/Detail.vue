@@ -98,6 +98,7 @@ export default {
                 return distribution + (version === '-' ? '' : version)
               },
             },
+<<<<<<< HEAD
             getCopyWithContentTableColumn({
               field: 'ips',
               title: 'IP',
@@ -108,6 +109,16 @@ export default {
                 ]
               },
             }),
+=======
+            {
+              field: 'ips',
+              title: 'IP',
+              formatter: ({ row }) => {
+                const ips = row.ips.split(',')
+                return ips.join('，')
+              },
+            },
+>>>>>>> 2de8c832dddf5916341019c49c974aebf8b86470
             getCopyWithContentTableColumn({
               field: 'image',
               title: '系统镜像',
