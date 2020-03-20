@@ -2,9 +2,7 @@
   <page-list
     :list="list"
     :columns="columns"
-    :export-data-options="exportDataOptions"
-    :group-actions="groupActions"
-    :single-actions="singleActions" />
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -53,22 +51,22 @@ export default {
           { label: '条目（路由表类型 目标网段 下一跳）', key: 'routes' },
         ],
       },
-      groupActions: [
-        {
-          label: '同步状态',
-          action: () => {
-            this.onManager('batchPerformAction', {
-              steadyStatus: ['running', 'ready'],
-              managerArgs: {
-                action: 'syncstatus',
-              },
-            })
-          },
-          meta: () => ({
-            validate: this.list.selected.length,
-          }),
-        },
-      ],
+      // groupActions: [
+      //   {
+      //     label: '同步状态',
+      //     action: () => {
+      //       this.onManager('batchPerformAction', {
+      //         steadyStatus: ['running', 'ready'],
+      //         managerArgs: {
+      //           action: 'syncstatus',
+      //         },
+      //       })
+      //     },
+      //     meta: () => ({
+      //       validate: this.list.selected.length,
+      //     }),
+      //   },
+      // ],
     }
   },
   created () {

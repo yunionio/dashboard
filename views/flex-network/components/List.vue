@@ -77,20 +77,20 @@ export default {
         ],
       },
       groupActions: [
-        {
-          label: '同步状态',
-          action: () => {
-            this.onManager('batchPerformAction', {
-              steadyStatus: ['running', 'ready'],
-              managerArgs: {
-                action: 'syncstatus',
-              },
-            })
-          },
-          meta: () => ({
-            validate: this.list.selected.length,
-          }),
-        },
+        // {
+        //   label: '同步状态',
+        //   action: () => {
+        //     this.onManager('batchPerformAction', {
+        //       steadyStatus: ['running', 'ready'],
+        //       managerArgs: {
+        //         action: 'syncstatus',
+        //       },
+        //     })
+        //   },
+        //   meta: () => ({
+        //     validate: this.list.selected.length,
+        //   }),
+        // },
       ],
     }
   },

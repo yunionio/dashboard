@@ -35,7 +35,7 @@ import WindowsMixin from '@/mixins/windows.js'
 const IP_TYPES = {
   'reservedips': '预留IP',
   'loadbalancers': '负载均衡IP',
-  'servers': '主机IP',
+  'servers': '虚拟机IP',
   'networkinterfaces': '弹性网卡',
   'hosts': '宿主机IP',
 }
