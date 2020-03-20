@@ -96,8 +96,13 @@ export default {
           hideField: true,
           slotCallback: row => {
             return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'HostSidePage') }>{ row.name }</side-page-trigger>
+              <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
             )
+          },
+          cellWrapSlots: row => {
+            return {
+              append: () => row.is_baremetal ? (<a-tooltip title="有IPMI信息，可转换为物理机"><icon class='ml-2' type='res-host' style={{ 'color': '#1890ff' }} /></a-tooltip>) : null,
+            }
           },
         }),
         getEnabledTableColumn(),
