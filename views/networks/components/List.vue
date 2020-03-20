@@ -127,7 +127,7 @@ export default {
               tooltip = '只有OneCloud主机支持此操作'
             }
             if (this.list.total >= 8) {
-              tooltip = '网卡最对支持添加8个'
+              tooltip = '网卡最多支持添加8个'
             }
             return {
               buttonType: 'primary',
