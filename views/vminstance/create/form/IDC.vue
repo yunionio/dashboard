@@ -369,12 +369,17 @@ export default {
       this.capabilityParams = capabilityParams
       new this.$Manager(resource).getSpecific(this.capabilityParams)
         .then(({ data }) => {
+          let hypervisors = R.is(Object, data) ? (data.hypervisors || []) : []
+          if (hypervisors.includes(HYPERVISORS_MAP.kvm.key)) { // kvm 排序为第一个
+            hypervisors = [HYPERVISORS_MAP.kvm.key].concat(hypervisors).filter(val => val !== 'baremetal')
+          }
+          hypervisors = Array.from(new Set(hypervisors))
           this.form.fi.capability = {
             ...data,
-            hypervisors: data.hypervisors.filter(val => val !== 'baremetal'),
+            hypervisors,
           }
           this.form.fc.setFieldsValue({
-            hypervisor: this.form.fi.capability.hypervisors[0], // 赋值默认第一个平台
+            hypervisor: hypervisors[0], // 赋值默认第一个平台
           })
         })
     },
