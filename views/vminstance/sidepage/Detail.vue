@@ -78,8 +78,8 @@ export default {
         imageId = dataDisks[0].image_id
       }
       return {
-        sysDisk: this._diskStringify(sysDisk) || '',
-        dataDisk: this._diskStringify(dataDisk) || '',
+        sysDisk: this._diskStringify(sysDisk),
+        dataDisk: this._diskStringify(dataDisk),
         image,
         imageId,
       }
