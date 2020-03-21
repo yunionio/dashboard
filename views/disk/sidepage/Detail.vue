@@ -65,6 +65,16 @@ export default {
             },
           },
         },
+        {
+          field: 'snapshotpolicies',
+          title: '快照策略',
+          formatter: ({ row }, h) => {
+            if (row.snapshotpolicies && row.snapshotpolicies.length > 0) {
+              return row.snapshotpolicies.map(item => item.name).join('、')
+            }
+            return '-'
+          },
+        },
       ],
       extraInfo: [
         {
