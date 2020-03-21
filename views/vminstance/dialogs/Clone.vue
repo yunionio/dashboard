@@ -261,7 +261,7 @@ export default {
           }
           await this.createWorkflow(variables)
           this.$message.success(`主机 ${data.name} 创建请求流程已提交`)
-          window.location.href = this.$appConfig.v1Perfix + '/workflow?type=me-process'
+          this.$router.push('/workflow')
         } else {
           await this.params.onManager('create', {
             managerArgs: {

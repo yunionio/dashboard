@@ -169,7 +169,7 @@ export default {
       }
     },
     goWorkflow () {
-      window.location.href = this.$appConfig.v1Perfix + '/workflow?type=me-process'
+      this.$router.push('/workflow')
     },
     goBack () {
       this.$router.push('/servicecatalog')

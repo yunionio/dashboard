@@ -320,7 +320,7 @@ export default {
         .then(() => {
           this.submiting = false
           this.$message.success(`主机 ${data.generate_name} 创建请求流程已提交`)
-          window.location.href = this.$appConfig.v1Perfix + '/workflow?type=me-process'
+          this.$router.push('/workflow')
         })
         .catch(() => {
           this.submiting = false
