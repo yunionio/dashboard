@@ -179,9 +179,6 @@ export default {
       ],
     }
   },
-  beforeDestroy () {
-    RenderSizeTitle = null
-  },
   methods: {
     handleSetAcl (row) {
       this.createDialog('ObjectsUpdateAclDialog', {
