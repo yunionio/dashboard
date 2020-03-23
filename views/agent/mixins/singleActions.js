@@ -58,14 +58,12 @@ export default {
         label: '删除',
         action: (obj) => {
           this.createDialog('DeleteResDialog', {
+            vm: this,
             title: '删除',
             data: [obj],
             columns: this.columns,
             onManager: this.onManager,
             alert: '提示：删除操作仅涉及数据库记录，实际节点的下线计划需要管理员计划实施',
-            success: () => {
-              this.destroySidePages()
-            },
           })
         },
       },
