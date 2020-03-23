@@ -145,6 +145,7 @@ export default {
                 permission: 'storages_delete',
                 action: row => {
                   this.createDialog('DeleteResDialog', {
+                    vm: this,
                     title: '删除',
                     name: '块存储',
                     data: this.list.selectedItems,
