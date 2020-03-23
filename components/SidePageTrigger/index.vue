@@ -6,11 +6,9 @@
 <script>
 import config from './config/index.js'
 import { hasPermission } from '@/utils/auth'
-import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'SidePageTrigger',
-  mixins: [WindowsMixin],
   props: {
     vm: {
       type: Object,
@@ -52,7 +50,7 @@ export default {
       }
       if (this.name && this.id && this.vm) {
         const { name, id, vm, options, list, tab, params } = this
-        this.sidePageTriggerHandle(vm, name, {
+        vm.sidePageTriggerHandle(vm, name, {
           id,
           ...config[name],
           ...options,
@@ -61,7 +59,7 @@ export default {
           ...params,
         })
         if (tab) {
-          this.initSidePageTab(tab)
+          vm.initSidePageTab(tab)
         }
       }
     },
