@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
@@ -55,15 +56,22 @@ export default {
           span: 3,
         },
       },
-      instanceParams: {
+    }
+  },
+  computed: {
+    ...mapGetters(['isAdminMode', 'isDomainMode', 'scope']),
+    instanceParams () {
+      const params = {
         usable_server_for_eip: this.params.data[0].id,
         filter: 'status.in(ready, running)',
         without_eip: true,
         details: true,
         with_meta: true,
-        scope: this.$store.getters.scope,
-      },
-    }
+        scope: this.scope,
+      }
+      if (this.isAdminMode || this.isDomainMode) params['project_id'] = this.params.data[0].project_id
+      return params
+    },
   },
   methods: {
     doBind (data) {
