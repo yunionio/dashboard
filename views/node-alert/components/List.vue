@@ -140,10 +140,10 @@ export default {
           label: '删除',
           action: () => {
             this.createDialog('DeleteResDialog', {
+              vm: this,
               data: this.list.selectedItems,
               columns: this.columns,
               title: '删除报警',
-              list: this.list,
             })
           },
           meta: () => {
@@ -158,10 +158,10 @@ export default {
           label: '删除',
           action: obj => {
             this.createDialog('DeleteResDialog', {
+              vm: this,
               data: [obj],
               columns: this.columns,
               title: '删除报警',
-              list: this.list,
             })
           },
           // meta: obj => this.$getDeleteResult(obj),

@@ -247,6 +247,7 @@ export default {
                     label: '删除',
                     action: () => {
                       this.createDialog('DeleteResDialog', {
+                        vm: this,
                         data: [obj],
                         columns: this.columns,
                         title: '删除',

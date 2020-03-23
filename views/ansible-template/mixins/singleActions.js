@@ -112,6 +112,7 @@ export default {
       //         label: '删除',
       //         action: data => {
       //           this.createDialog('DeleteResDialog', {
+      //             vm: this,
       //             data: [data],
       //             columns: this.columns,
       //             title: '关联主机',

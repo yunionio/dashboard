@@ -58,6 +58,7 @@ export default {
           permission: 'images_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
+              vm: this,
               data: this.list.selectedItems,
               columns: this.columns,
               title: '清除',

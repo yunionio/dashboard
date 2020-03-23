@@ -18,6 +18,7 @@ export default {
         permission: 'servertemplates_delete',
         action: obj => {
           this.createDialog('DeleteResDialog', {
+            vm: this,
             data: [obj],
             columns: this.columns,
             title: '删除',

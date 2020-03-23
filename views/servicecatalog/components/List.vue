@@ -91,9 +91,9 @@ export default {
           permission: 'servicecatalogs_delete',
           action: obj => {
             this.createDialog('DeleteResDialog', {
+              vm: this,
               data: [obj],
               title: '删除',
-              list: this.list,
               name: '服务目录',
               columns: this.columns,
             })

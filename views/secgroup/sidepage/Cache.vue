@@ -87,10 +87,10 @@ export default {
           permission: 'server_perform_assign_secgroup',
           action: obj => {
             this.createDialog('DeleteResDialog', {
+              vm: this,
               data: [obj],
               columns: this.columns,
               title: '删除',
-              list: this.list,
             })
           },
           meta: (obj) => this.$getDeleteResult(obj),

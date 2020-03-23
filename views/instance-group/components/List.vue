@@ -92,6 +92,7 @@ export default {
           label: '删除',
           action: () => {
             this.createDialog('DeleteResDialog', {
+              vm: this,
               data: this.list.selectedItems,
               columns: this.columns,
               title: '删除主机组',

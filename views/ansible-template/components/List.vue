@@ -72,6 +72,7 @@ export default {
         //   permission: 'disks_delete',
         //   action: () => {
         //     this.createDialog('DeleteResDialog', {
+        //       vm: this,
         //       data: this.list.selectedItems,
         //       columns: this.columns,
         //       title: '删除',

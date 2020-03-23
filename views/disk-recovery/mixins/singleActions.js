@@ -6,6 +6,7 @@ export default {
         permission: 'disks_delete',
         action: obj => {
           this.createDialog('DeleteResDialog', {
+            vm: this,
             data: [obj],
             columns: this.columns,
             title: '清除',
