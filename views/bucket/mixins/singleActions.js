@@ -49,6 +49,7 @@ export default {
               permission: 'buckets_delete',
               action: row => {
                 this.createDialog('DeleteResDialog', {
+                  vm: this,
                   data: [row],
                   columns: this.columns,
                   title: '删除',
