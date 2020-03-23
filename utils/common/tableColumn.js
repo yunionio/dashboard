@@ -331,7 +331,7 @@ export const getTimeTableColumn = ({
     title,
     width: 150,
     formatter: ({ cellValue }) => {
-      return moment(cellValue).format()
+      return cellValue ? moment(cellValue).format() : '-'
     },
   }
 }
