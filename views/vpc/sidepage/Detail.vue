@@ -44,6 +44,12 @@ export default {
         {
           field: 'network_count',
           title: 'IP子网数量',
+          slots: {
+            default: ({ row }) => {
+              if (!row.network_count) return '-'
+              return [<a onClick={ () => this.$emit('tab-change', 'network-list') }>{row.network_count}</a>]
+            },
+          },
         },
         {
           field: 'natgateway_count',

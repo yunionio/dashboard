@@ -39,6 +39,14 @@ export default {
         title: 'IP子网数量',
         width: 80,
         sortable: true,
+        slots: {
+          default: ({ row }) => {
+            if (row.network_count <= 0) return row.network_count
+            return [
+              <side-page-trigger name='VpcSidePage' id={row.id} tab='network-list' vm={this}>{row.network_count}</side-page-trigger>,
+            ]
+          },
+        },
       },
     ]
   },
