@@ -245,6 +245,9 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               list: this.list,
+              success: () => {
+                this.destroySidePages()
+              },
             })
           },
           meta: () => {
@@ -528,6 +531,9 @@ export default {
                     data: [obj],
                     columns: this.columns,
                     list: this.list,
+                    success: () => {
+                      this.destroySidePages()
+                    },
                   })
                 },
                 meta: () => {
