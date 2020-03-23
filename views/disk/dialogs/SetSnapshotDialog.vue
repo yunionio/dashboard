@@ -190,12 +190,16 @@ export default {
       const manager = new this.$Manager('snapshotpolicies')
       let params = {
         scope: this.scope,
-        project: this.params.data[0].project_id,
+        tenant: this.params.data[0].tenant_id,
       }
       try {
         const res = await manager.list({ params })
         const data = res.data.data
-        if (data && data.length) this.snapshotpolicyOptions = data
+        if (data && data.length) {
+          this.snapshotpolicyOptions = data.filter((item) => {
+            return item.status === 'ready'
+          })
+        }
       } catch (error) {}
     },
     assembly (id) {

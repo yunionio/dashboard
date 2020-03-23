@@ -230,7 +230,8 @@ export default {
       this.images.list = []
       switch (this.imageType) { // 自定义镜像
         case IMAGES_TYPE_MAP.host.key: // 主机镜像
-          this.fetchHostImages(this.imageParams)
+          const params = { ...this.imageParams, status: 'active' }
+          this.fetchHostImages(params)
           break
         case IMAGES_TYPE_MAP.snapshot.key: // 主机快照
           this.fetchSnapshotImages(this.imageParams)
