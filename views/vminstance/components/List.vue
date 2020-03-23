@@ -1,6 +1,7 @@
 <template>
   <page-list
     show-tag-filter
+    show-tag-columns
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
