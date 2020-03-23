@@ -3,15 +3,21 @@ export const getAssociateNameTableColumn = () => {
     field: 'associate_name',
     title: '绑定资源',
     width: 120,
-    formatter: ({ cellValue, row }) => {
-      const type = {
-        server: '虚拟机',
-        natgateway: 'NAT网关',
-        lb: '负载均衡实例',
-      }
-      if (cellValue) {
-        return `${cellValue}(${type[row.associate_type] || '-'})`
-      }
+    slots: {
+      default: ({ row }) => {
+        const type = {
+          server: '虚拟机',
+          natgateway: 'NAT网关',
+          lb: '负载均衡实例',
+        }
+        if (!row.associate_name) return '-'
+        const text = `${row.associate_name}(${type[row.associate_type] || '-'})`
+        return [
+          <list-body-cell-wrap copy hideField={true} field='associate_name' row={row} message={text}>
+            <side-page-trigger permission='server_get' name='VmInstanceSidePage' id={row.associate_id} vm={this}>{text}</side-page-trigger>
+          </list-body-cell-wrap>,
+        ]
+      },
     },
   }
 }

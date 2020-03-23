@@ -45,8 +45,14 @@ export default {
         {
           field: 'ports',
           title: '使用情况',
-          formatter: ({ cellValue, row }) => {
-            return `总量${cellValue}，已用${row.ports_used}（含预留IP ${row.reserve_vnics}）`
+          slots: {
+            default: ({ row }) => {
+              return [
+                <div>
+                  总量{row.ports}，已用{row.ports_used <= 0 ? 0 : <a onClick={ () => this.$emit('tab-change', 'i-p-list') }>{row.ports_used}</a> }（含预留IP {row.reserve_vnics}）
+                </div>,
+              ]
+            },
           },
         },
       ],
@@ -54,7 +60,17 @@ export default {
         {
           title: '配置信息',
           items: [
-            getCopyWithContentTableColumn({ field: 'vpc', title: 'VPC' }),
+            getCopyWithContentTableColumn({
+              field: 'vpc',
+              title: 'VPC',
+              hideField: true,
+              slotCallback: row => {
+                if (!row.vpc) return '-'
+                return [
+                  <side-page-trigger permission='vpcs_get' name='VpcSidePage' id={row.vpc_id} vm={this}>{ row.vpc }</side-page-trigger>,
+                ]
+              },
+            }),
             {
               field: 'dns',
               title: '域名服务器',
@@ -69,6 +85,13 @@ export default {
             {
               field: 'wire',
               title: '二层网络',
+              slots: {
+                default: ({ row }) => {
+                  return [
+                    <side-page-trigger permission='wires_get' name='WireSidePage' id={row.wire_id} vm={this}>{ row.wire }</side-page-trigger>,
+                  ]
+                },
+              },
             },
             {
               field: 'server_type',
