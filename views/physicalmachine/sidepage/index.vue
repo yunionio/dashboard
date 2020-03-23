@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     title="物理机"
-    icon="res-host"
+    icon="res-physicalmachine"
     :res-name="data.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"
