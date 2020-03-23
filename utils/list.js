@@ -195,6 +195,8 @@ class CreateList {
     this.tagFilter = tagFilter
     // 外传responseData
     this.responseData = responseData
+    // 初始化 params
+    this.params = {}
   }
   /**
    * @description 获取列表配置，如果没有则创建

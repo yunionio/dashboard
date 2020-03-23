@@ -960,7 +960,9 @@
     "cloudevents": "操作日志",
     "companyinfo": "企业信息",
     "notification": "消息中心",
-    "contact": "联系方式"
+    "contact": "联系方式",
+    "gpu": "GPU卡",
+    "baremetal": "裸金属服务器"
   },
   "shareScope": {
     "system": "系统",

@@ -7,6 +7,7 @@
           <template v-if="groupActions">
             <actions class="flex-shrink-0" :options="groupActions" @clear-selected="handleClearSelected" button-type="default" group />
           </template>
+          <slot name="group-actions-append" />
           <tag-filter
             v-if="showTagFilter"
             :list="list" />
