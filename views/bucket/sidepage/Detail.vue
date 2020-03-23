@@ -1,16 +1,16 @@
 <template>
   <detail
-    :list="list"
+    :on-manager="onManager"
     :data="data"
     :base-info="baseInfo"
     :extra-info="extraInfo"
-    statusModule="bucket" />
+    statusModule="bucket"
+    resource="buckets" />
 </template>
 
 <script>
 // import BrandIcon from '@/sections/BrandIcon'
 import { ACL_TYPE } from '@Storage/constants/index.js'
-import { getRegionTableColumn } from '@/utils/common/tableColumn'
 import { sizestrWithUnit } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
 
@@ -52,8 +52,8 @@ export default {
   name: 'BucketDetail',
   mixins: [WindowsMixin],
   props: {
-    list: {
-      type: Object,
+    onManager: {
+      type: Function,
       required: true,
     },
     data: {
@@ -62,7 +62,6 @@ export default {
     },
     columns: {
       type: Array,
-      required: true,
     },
   },
   data () {
@@ -73,11 +72,6 @@ export default {
           field: 'storage_class',
           title: '存储类型',
         },
-        {
-          field: 'account',
-          title: '云账号',
-        },
-        getRegionTableColumn(),
       ],
       extraInfo: [
         {
