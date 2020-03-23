@@ -14,6 +14,11 @@ export default {
             <side-page-trigger name='PhysicalmachineSidePage' id={row.id} list={this.list} vm={this}>{ row.server }</side-page-trigger>
           )
         },
+        cellWrapSlots: row => {
+          return {
+            append: () => row.is_import ? (<a-tooltip title="托管的物理机，不可转化为宿主机"><icon class='ml-2' type='res-physicalmachine' style={{ 'color': '#1890ff' }} /></a-tooltip>) : null,
+          }
+        },
       }),
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'host', columns: () => this.columns }),
       getEnabledTableColumn(),
