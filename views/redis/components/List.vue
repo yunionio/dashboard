@@ -100,14 +100,12 @@ export default {
           label: '删除',
           action: () => {
             this.createDialog('DeleteResDialog', {
+              vm: this,
               title: '删除',
               data: this.list.selectedItems,
               columns: this.columns,
               onManager: this.onManager,
               refresh: this.refresh,
-              success: () => {
-                this.destroySidePages()
-              },
             })
           },
           meta: () => {
