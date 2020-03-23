@@ -1,16 +1,24 @@
 import * as R from 'ramda'
+import i18n from '@/locales'
 
 export const getAccessUrlTableColumn = () => {
   return {
     field: 'access_url',
-    title: '服务器地址',
+    title: '环境',
     minWidth: 100,
     showOverflow: 'ellipsis',
     slots: {
       default: ({ row }, h) => {
         if (!row.access_url) return '-'
-        return [
-          <a class="link-color" href={ row.access_url }>{ row.access_url }</a>,
+        let txt
+        Object.keys(i18n.t('cloudAccountAccessType')).forEach(k => {
+          if (row.access_url.indexOf(k) > -1) {
+            txt = i18n.t('cloudAccountAccessType')[k]
+          }
+        })
+        return txt ||
+        [
+          <a class="link-color" target="_blank" href={ row.access_url }>{ row.access_url }</a>,
         ]
       },
     },
