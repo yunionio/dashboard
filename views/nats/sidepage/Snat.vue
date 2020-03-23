@@ -88,6 +88,7 @@ export default {
           label: '删除',
           action: () => {
             this.createDialog('DeleteResDialog', {
+              vm: this,
               data: this.list.selectedItems,
               columns: this.columns,
               title: '删除SNAT条目',
@@ -108,6 +109,7 @@ export default {
           label: '删除',
           action: (obj) => {
             this.createDialog('DeleteResDialog', {
+              vm: this,
               title: '删除SNAT条目',
               data: [obj],
               columns: this.columns,

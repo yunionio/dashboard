@@ -67,13 +67,11 @@ export default {
               permission: 'dnsrecords_delete',
               action: () => {
                 this.createDialog('DeleteResDialog', {
+                  vm: this,
                   title: '删除',
                   data: [obj],
                   columns: this.columns,
                   onManager: this.onManager,
-                  success: () => {
-                    this.destroySidePages()
-                  },
                 })
               },
               meta: () => this.$getDeleteResult(obj),

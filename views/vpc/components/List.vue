@@ -96,6 +96,7 @@ export default {
                 permission: 'vpcs_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
+                    vm: this,
                     title: '删除',
                     data: this.list.selectedItems,
                     columns: this.columns,

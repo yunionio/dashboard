@@ -73,6 +73,7 @@ export default {
           permission: 'lb_loadbalancercertificates_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
+              vm: this,
               title: '删除',
               data: this.list.selectedItems,
               columns: this.columns,
