@@ -1018,5 +1018,12 @@
     "CNY": "元",
     "HKD": "港元",
     "USD": "美元"
+  },
+  "cloudAccountAccessType": {
+    "China": "中国区",
+    "German": "德国区",
+    "AzureUSGovernmentCloud": "美国政务区",
+    "Public": "国际区",
+    "Internation": "国际区"
   }
 }
