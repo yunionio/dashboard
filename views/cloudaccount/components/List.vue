@@ -41,7 +41,7 @@ export default {
           name: getNameFilter(),
           access_url: getFilter({
             field: 'access_url',
-            title: '服务器地址',
+            title: '环境',
           }),
           enabled: getEnabledFilter(),
           status: getStatusFilter('cloudaccount'),
@@ -67,7 +67,7 @@ export default {
         items: [
           { label: 'ID', key: 'id' },
           { label: '名称', key: 'name' },
-          { label: '服务器地址', key: 'access_url' },
+          { label: '环境', key: 'access_url' },
           { label: '启用状态', key: 'enabled' },
           { label: '状态', key: 'status' },
           { label: '健康状态', key: 'health_status' },
