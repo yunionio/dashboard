@@ -102,6 +102,11 @@ export default {
               <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'PhysicalmachineSidePage') }>{ row.name }</side-page-trigger>
             )
           },
+          cellWrapSlots: row => {
+            return {
+              append: () => row.is_import ? (<a-tooltip title="托管的物理机，不可转化为宿主机"><icon class='ml-2' type='res-physicalmachine' style={{ 'color': '#1890ff' }} /></a-tooltip>) : null,
+            }
+          },
         }),
         getTagTableColumn({ vm: this, needExt: true }),
         getEnabledTableColumn(),
