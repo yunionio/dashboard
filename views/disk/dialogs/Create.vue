@@ -54,7 +54,7 @@ export default {
         fc: this.$form.createForm(this, {
           onValuesChange: (props, values) => {
             if (values.hasOwnProperty('zone')) {
-              if (values.zone.key) {
+              if (values.zone && values.zone.key) {
                 this.fetchStorageList(values.zone.key)
               }
             }
