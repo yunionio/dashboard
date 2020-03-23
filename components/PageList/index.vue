@@ -207,7 +207,7 @@ export default {
     'list.config.showTagKeys' (val, oldVal) {
       if (!R.equals(val, oldVal)) {
         this.$nextTick(() => {
-          this.updateShowTagKes()
+          this.updateTagKeyColumns()
         })
       }
     },
@@ -320,7 +320,7 @@ export default {
         sourceElement: gridEl,
       })
     },
-    updateShowTagKes () {
+    updateTagKeyColumns () {
       let tableColumns = this.genTableColumns()
       const showTagKeys = this.list.config.showTagKeys || []
       const tagsColumns = showTagKeys.map(item => {
