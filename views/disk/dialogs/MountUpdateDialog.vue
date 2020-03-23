@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
@@ -56,12 +57,16 @@ export default {
       serversOpts: [],
     }
   },
+  computed: {
+    ...mapGetters(['isAdminMode', 'isDomainMode']),
+  },
   created () {
     const params = {
       details: false,
       disk: this.params.data[0].id,
       scope: this.$store.getters.scope,
     }
+    if (this.isAdminMode || this.isDomainMode) params['project_id'] = this.params.data[0].project_id
     new this.$Manager('servers').list({ params })
       .then((res) => {
         this.serversOpts = res.data.data

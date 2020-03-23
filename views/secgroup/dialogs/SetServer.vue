@@ -75,10 +75,11 @@ export default {
   computed: {
     ...mapGetters([
       'isAdminMode',
+      'isDomainMode',
       'userInfo',
     ]),
     requestParams () {
-      if (this.isAdminMode) {
+      if (this.isAdminMode || this.isDomainMode) {
         // if (this.requestParams.tenant) {
         //   delete this.requestParams.tenant
         // }
@@ -87,6 +88,7 @@ export default {
           offset: 0,
           filter: 'hypervisor.notin(container, baremetal, esxi)',
           project_domain: this.userInfo.projectDomain,
+          project_id: this.params.data[0].project_id,
         }
       } else {
         // if (this.requestParams.scope) {
