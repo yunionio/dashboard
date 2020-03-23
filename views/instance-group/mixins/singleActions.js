@@ -52,11 +52,11 @@ export default {
               label: '删除',
               action: () => {
                 this.createDialog('DeleteResDialog', {
+                  vm: this,
                   data: [obj],
                   columns: this.columns,
                   title: '删除主机组',
                   onManager: this.onManager,
-                  success: () => this.destroySidePages(),
                 })
               },
               meta: () => this.$getDeleteResult(obj),
