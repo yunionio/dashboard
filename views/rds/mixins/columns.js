@@ -29,7 +29,7 @@ export default {
       {
         field: 'vcpu_count',
         title: '配置',
-        width: 70,
+        width: 100,
         slots: {
           default: ({ row }) => {
             return `${row.vcpu_count}核 ${sizestr(row.vmem_size_mb, 'M', 1024)}`

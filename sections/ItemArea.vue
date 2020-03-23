@@ -1,5 +1,6 @@
 <template>
   <area-selects
+    ref="areaSelects"
     :decorators="decorators"
     v-bind="formItemLayout"
     :names="names"
@@ -10,7 +11,8 @@
     :providerParams="scopeParams"
     :cloudregionParams="cloudregionParams"
     @cityFetchSuccess="cityFetchSuccess"
-    @providerFetchSuccess="providerFetchSuccess" />
+    @providerFetchSuccess="providerFetchSuccess"
+    @cloudregionFetchSuccess="cloudregionFetchSuccess" />
 </template>
 <script>
 import AreaSelects from '@/sections/AreaSelects'
@@ -32,6 +34,10 @@ export default {
     },
     isRequired: {
       type: Boolean,
+    },
+    providers: {
+      type: Array,
+      default: () => ['Aliyun', 'Huawei'],
     },
   },
   data () {
@@ -66,7 +72,7 @@ export default {
       }
     },
     cityParams () {
-      return { cloud_env: 'public', ...this.scopeParams }
+      return { service: this.service, cloud_env: 'public', ...this.scopeParams }
     },
     zoneParams () {
       return {
@@ -81,11 +87,15 @@ export default {
       }
     },
   },
+  watch: {
+    'values.billing_type' (val) {
+      this.$refs['areaSelects'].fetchs(['provider', 'cloudregion'])
+    },
+  },
   inject: ['form', 'formItemLayout', 'scopeParams'],
   methods: {
     providerFetchSuccess (list = []) {
-      const needProvider = ['Aliyun', 'Huawei']
-      const _list = list.filter(({ name }) => needProvider.indexOf(name) > -1)
+      const _list = list.filter(({ name }) => this.providers.indexOf(name) > -1)
       this.providerList = _list
       this.form.fc.validateFields(['provider'])
       if (this.providerList.length === 0) {
@@ -94,6 +104,12 @@ export default {
         })
       }
       return _list
+    },
+    cloudregionFetchSuccess (list = []) {
+      if (this.providerList.length === 0) {
+        return []
+      }
+      return list.filter(({ provider }) => this.providers.indexOf(provider) > -1)
     },
     cityFetchSuccess (names) {
       this.$emit('cityFetchSuccess', names)
