@@ -95,6 +95,7 @@ export default {
                 label: '删除',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
+                    vm: this,
                     name: '备份',
                     title: '删除备份',
                     data: this.list.selectedItems,

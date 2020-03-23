@@ -155,14 +155,12 @@ export default {
               permission: 'redis_elasticcaches_delete',
               action: () => {
                 this.createDialog('DeleteResDialog', {
+                  vm: this,
                   title: '删除',
                   data: [obj],
                   columns: this.columns,
                   onManager: this.onManager,
                   refresh: this.refresh,
-                  success: () => {
-                    this.destroySidePages()
-                  },
                 })
               },
               meta: () => {
