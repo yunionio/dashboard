@@ -34,6 +34,7 @@
     <slot name="table-prepend" />
     <floating-scroll>
       <vxe-grid
+        class="page-list-grid"
         ref="grid"
         align="left"
         highlight-hover-row
@@ -63,9 +64,13 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
+import debounce from 'lodash/debounce'
 import Actions from './Actions'
 import RefreshButton from './RefreshButton'
 import TagFilter from './TagFilter'
+import { getTagTitle, isUserTag } from '@/utils/common/tag'
+import { addResizeListener, removeResizeListener } from '@/utils/resizeEvent'
+
 export default {
   name: 'PageList',
   components: {
@@ -98,6 +103,8 @@ export default {
     },
     // 开启标签过滤
     showTagFilter: Boolean,
+    // 开启标签列
+    showTagColumns: Boolean,
     showSelection: Boolean,
     pagerLayout: {
       type: Array,
@@ -184,27 +191,26 @@ export default {
         highlight: true,
       }
     },
+    // 是否渲染
+    showCheckbox () {
+      return (this.groupActions && this.groupActions.length > 0) || this.showSelection
+    },
   },
   watch: {
     'list.config.hiddenColumns' (val, oldVal) {
       if (!R.equals(val, oldVal)) {
-        for (let i = 0, len = this.tableColumns.length; i < len; i++) {
-          this.tableColumns[i].visible = !val.includes(this.tableColumns[i].property)
-        }
-        this.$refs.grid.refreshColumn()
+        this.$nextTick(() => {
+          this.updateHiddenColumns()
+        })
       }
     },
-  },
-  updated () {
-    const gridEl = this.$refs.grid.$el
-    const tableBody = gridEl.querySelector('.vxe-table--body-wrapper .vxe-table--body')
-    const tableBodyWidth = tableBody.getBoundingClientRect().width
-    if (tableBodyWidth) this.gridWidth = `${tableBodyWidth}px`
-    this.$nextTick(() => {
-      this.$bus.$emit('FloatingScrollUpdate', {
-        sourceElement: this.$refs.grid.$el,
-      })
-    })
+    'list.config.showTagKeys' (val, oldVal) {
+      if (!R.equals(val, oldVal)) {
+        this.$nextTick(() => {
+          this.updateShowTagKes()
+        })
+      }
+    },
   },
   beforeDestroy () {
     this.list.clearWaitJob()
@@ -214,6 +220,9 @@ export default {
     this.$nextTick(() => {
       this.tableColumns = this.$refs.grid.getColumns()
     })
+  },
+  mounted () {
+    this.initFloatingScrollListener()
   },
   methods: {
     refresh () {
@@ -249,6 +258,7 @@ export default {
         title: '导出数据',
         list: this.list,
         options: this.exportDataOptions,
+        showTagColumns: this.showTagColumns,
       })
     },
     handleCustomList () {
@@ -256,6 +266,7 @@ export default {
         title: '自定义列表',
         list: this.list,
         customs: this.tableColumns,
+        showTagColumns: this.showTagColumns,
       })
     },
     handleSortChange ({ property, order }) {
@@ -266,7 +277,7 @@ export default {
         if (R.is(Function, item.hidden)) return !item.hidden()
         return !item.hidden
       })
-      if ((this.groupActions && this.groupActions.length > 0) || this.showSelection) {
+      if (this.showCheckbox) {
         defaultColumns.unshift({ type: 'checkbox', width: 40 })
       }
       if (this.singleActions && this.singleActions.length) {
@@ -288,6 +299,74 @@ export default {
       }
       return defaultColumns
     },
+    // 初始化tbody监听器，发生变化更新虚拟滚动条，以保证宽度是正确的
+    initFloatingScrollListener () {
+      const gridEl = this.$refs.grid.$el
+      const tableBodyEl = gridEl.querySelector('.vxe-table--body-wrapper .vxe-table--body')
+      const debounceUpdateFloatingScroll = debounce(this.updateFloatingScroll, 500)
+      addResizeListener(tableBodyEl, debounceUpdateFloatingScroll)
+      this.$once('hook:beforeDestroy', () => {
+        removeResizeListener(tableBodyEl, debounceUpdateFloatingScroll)
+      })
+    },
+    // 更新虚拟滚动条
+    updateFloatingScroll () {
+      const gridEl = this.$refs.grid && this.$refs.grid.$el
+      if (!gridEl) return
+      const tableBodyEl = gridEl.querySelector('.vxe-table--body-wrapper .vxe-table--body')
+      const tableBodyWidth = tableBodyEl.getBoundingClientRect().width
+      if (tableBodyWidth) this.gridWidth = `${tableBodyWidth}px`
+      gridEl && this.$bus.$emit('FloatingScrollUpdate', {
+        sourceElement: gridEl,
+      })
+    },
+    updateShowTagKes () {
+      let tableColumns = this.genTableColumns()
+      const showTagKeys = this.list.config.showTagKeys || []
+      const tagsColumns = showTagKeys.map(item => {
+        return {
+          field: item,
+          title: getTagTitle(item),
+          showOverflow: 'title',
+          minWidth: 70,
+          sortable: true,
+          slots: {
+            default: ({ row }) => {
+              const message = row.metadata && row.metadata[item]
+              return [
+                <list-body-cell-wrap copy field={item} row={row} message={message} hideField>{ message }</list-body-cell-wrap>,
+              ]
+            },
+          },
+        }
+      })
+      const insertIndex = this.showCheckbox ? 2 : 1
+      tableColumns = R.insertAll(insertIndex, tagsColumns, tableColumns)
+      this.$refs.grid.loadColumn(tableColumns)
+      this.$nextTick(() => {
+        this.tableColumns = this.$refs.grid.getColumns()
+        this.updateHiddenColumns()
+      })
+    },
+    updateHiddenColumns () {
+      const hiddenColumns = this.list.config.hiddenColumns || []
+      R.forEach(item => {
+        if (item.property && (item.type !== 'checkbox' || item.property !== 'action') && !isUserTag(item.property)) {
+          item.visible = !hiddenColumns.includes(item.property)
+        }
+      }, this.tableColumns)
+      this.$refs.grid.refreshColumn()
+    },
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.page-list-grid {
+  ::v-deep {
+    > .vxe-table > .vxe-table--main-wrapper > .vxe-table--body-wrapper {
+      overflow: hidden;
+    }
+  }
+}
+</style>

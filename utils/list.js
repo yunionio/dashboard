@@ -7,6 +7,7 @@ import * as R from 'ramda'
 import _ from 'lodash'
 import { Manager } from '@/utils/manager'
 import storage from '@/utils/storage'
+import { isUserTag } from '@/utils/common/tag'
 
 const STORAGE_LIST_LIMIT_KEY = '__oc_list_limit__'
 
@@ -186,6 +187,7 @@ class CreateList {
     // 用于存放自定义列表的配置
     this.config = {
       hiddenColumns: hiddenColumns,
+      showTagKeys: [],
     }
     // 列表配置是否已经加载过
     this.configLoaded = false
@@ -317,15 +319,23 @@ class CreateList {
    * @param {String} order 排序方式
    */
   doSort (property, order) {
+    this.sortParams = null
     if (!order) {
-      this.sortParams = null
       this.refresh()
       return
     }
-    this.sortParams = {
-      order_by: property,
-      order,
+    let params
+    if (isUserTag(property)) {
+      params = {
+        order_by_tag: `${property}:${order.toUpperCase()}`,
+      }
+    } else {
+      params = {
+        order_by: property,
+        order,
+      }
     }
+    this.sortParams = params
     this.refresh()
   }
   /**

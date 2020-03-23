@@ -20,7 +20,7 @@
           <a-checkbox-group v-decorator="decorators.selected" @change="handleSelectedChange" class="w-100">
             <a-row>
               <a-col
-                v-for="item of params.options.items"
+                v-for="item of exportOptionItems"
                 :span="6"
                 :key="item.key"
                 class="mb-2">
@@ -43,14 +43,29 @@ import * as R from 'ramda'
 import { download } from '@/utils/utils'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import { getTagTitle } from '@/utils/common/tag'
 
 export default {
   name: 'ExportListDataDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
-    const allExportKeys = this.params.options.items.map(item => item.key)
+    let exportOptionItems = [...this.params.options.items]
+    let allExportKeys = exportOptionItems.map(item => item.key)
+    const exportTags = (this.params.showTagColumns && this.params.list.config.showTagKeys) || []
+    if (exportTags && exportTags.length) {
+      allExportKeys = R.insertAll(0, exportTags.map(item => {
+        return `tag:${item}`
+      }), allExportKeys)
+      exportOptionItems = R.insertAll(0, exportTags.map(item => {
+        return {
+          label: getTagTitle(item),
+          key: `tag:${item}`,
+        }
+      }), exportOptionItems)
+    }
     return {
       loading: false,
+      exportOptionItems,
       form: {
         fc: this.$form.createForm(this),
       },
@@ -85,7 +100,7 @@ export default {
       const keys = []
       const texts = []
       for (let i = 0, len = formValues.selected.length; i < len; i++) {
-        const item = R.find(R.propEq('key', formValues.selected[i]))(this.params.options.items)
+        const item = R.find(R.propEq('key', formValues.selected[i]))(this.exportOptionItems)
         keys.push(item.key)
         texts.push(item.label)
       }
