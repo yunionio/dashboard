@@ -7,7 +7,10 @@
       <a-form-item label="恢复到" v-bind="formItemLayout">
         <a-radio-group v-model="recoveryType">
           <a-radio-button :value="0">当前实例</a-radio-button>
-          <a-radio-button :value="1">已有实例</a-radio-button>
+          <a-tooltip  v-if="isGoogle" title="谷歌云不支持此操作">
+             <a-radio-button :disabled="true" :value="1">已有实例</a-radio-button>
+          </a-tooltip>
+           <a-radio-button v-else :value="1">已有实例</a-radio-button>
         </a-radio-group>
         <div style="width:100%">
           <rds-list :backupItem="backupItem" v-if="!!recoveryType" />
@@ -47,6 +50,9 @@ export default {
   computed: {
     backupItem () {
       return this.params.data ? this.params.data[0] : {}
+    },
+    isGoogle () {
+      return this.backupItem.provider === 'Aliyun'
     },
   },
   watch: {

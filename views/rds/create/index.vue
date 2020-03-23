@@ -3,17 +3,26 @@
     <page-header title="新建" />
     <a-form :form="form.fc" class="mt-3">
       <a-divider orientation="left">基础配置</a-divider>
-      <a-form-item :label="`指定${$t('dictionary.project')}`" v-bind="formItemLayout">
+      <a-form-item class="mb-0" :label="`指定${$t('dictionary.project')}`" v-bind="formItemLayout">
         <domain-project :decorators="decorators.projectDomain" :fc="form.fc" :labelInValue="false" />
       </a-form-item>
       <a-form-item label="名称" v-bind="formItemLayout">
-        <a-input :placeholder="$t('validator.serverName')" v-decorator="decorators.generate_name" />
-        <name-repeated v-slot:extra res="dbinstances" :name="form.getFieldValue('generate_name')" />
+        <a-input :placeholder="$t('validator.serverCreateName')" v-decorator="decorators.generate_name" />
+        <name-repeated
+          v-slot:extra
+          res="dbinstances"
+          :name="form.getFieldValue('generate_name')"
+          default-text="名称支持有序后缀占位符‘#’，用法举例，名称host##，数量2，创建后实例的名称依次为host01、host02，已有同名实例，序号顺延"  />
       </a-form-item>
       <!-- 计费方式 -->
       <clearing-radios v-bind="formItemLayout" />
       <!-- 区域 -->
-      <item-area :isRequired="true" :values="form.fc.getFieldsValue()" :names="['city', 'provider', 'cloudregion']" />
+      <item-area
+        class="mb-0"
+        :isRequired="true"
+        :values="form.fc.getFieldsValue()"
+        :providers="providers"
+        :names="['city', 'provider', 'cloudregion']" />
       <!-- 套餐信息 -->
       <div v-show="form.getFieldValue('cloudregion')">
         <s-k-u ref="SKU" />
@@ -29,8 +38,7 @@
           v-bind="formItemLayout" />
         <!-- 选择安全组 -->
         <a-form-item v-if="form.getFieldValue('provider') === 'Huawei'" label="安全组" v-bind="formItemLayout">
-          <secgroup-config
-            :decorators="decorators.secgroup" />
+          <secgroup-config :decorators="decorators.secgroup" />
         </a-form-item>
         <bottom-bar :values="form.getFieldsValue()" />
       </div>
@@ -68,6 +76,16 @@ export default {
     const { projectId, projectDomainId } = this.$store.getters.userInfo
     return {
       loginTypes: ['random', 'password'],
+      decorators: DECORATORS,
+      formData: {},
+      formItemLayout: {
+        wrapperCol: { span: CreateServerForm.wrapperCol },
+        labelCol: { span: CreateServerForm.labelCol },
+      },
+      scopeParams: {
+        scope: this.$store.getters.scope,
+        project_domain: '',
+      },
       defaultProjectDomain: {
         project: [
           'project',
@@ -88,15 +106,6 @@ export default {
           },
         ],
       },
-      decorators: DECORATORS,
-      formItemLayout: {
-        wrapperCol: { span: CreateServerForm.wrapperCol },
-        labelCol: { span: CreateServerForm.labelCol },
-      },
-      scopeParams: {
-        scope: this.$store.getters.scope,
-        project_domain: '',
-      },
     }
   },
   computed: {
@@ -110,6 +119,12 @@ export default {
         getFieldsValue,
         setFieldsValue,
       }
+    },
+    providers () {
+      if (this.formData.billing_type === 'prepaid') {
+        return ['Aliyun', 'Huawei']
+      }
+      return ['Aliyun', 'Huawei', 'Google']
     },
   },
   provide () {
@@ -127,9 +142,8 @@ export default {
     this.fetchNetwork = fetchNetwork
   },
   methods: {
-    providerFetchSuccess (list = []) {
-      const needProvider = ['Aliyun', 'Huawei']
-      return list.filter(({ name }) => needProvider.indexOf(name) > -1)
+    handleNameRepeatedChange (is) {
+      console.log(is)
     },
     getVpcParams () {
       return new Promise((resolve, reject) => {
@@ -187,6 +201,9 @@ export default {
         this.regionChange(values)
         this.zonesChange(values)
       }
+      this.$nextTick(() => {
+        this.formData = this.form.getFieldsValue()
+      })
     },
   },
 }
