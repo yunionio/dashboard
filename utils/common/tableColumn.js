@@ -6,13 +6,13 @@ import TagTableColumn from '@/sections/TagTableColumn'
 import store from '@/store'
 import i18n from '@/locales'
 
-export const getProjectTableColumn = ({ field = 'tenant', title = i18n.t('dictionary.project'), projectsItem = 'tenant', sortable = true } = {}) => {
+export const getProjectTableColumn = ({ field = 'tenant', title = i18n.t('dictionary.project'), projectsItem = 'tenant', sortable = true, hidden = false, minWidth = 100 } = {}) => {
   return {
     field,
     title,
     sortable,
     showOverflow: 'ellipsis',
-    minWidth: 100,
+    minWidth,
     slots: {
       default: ({ row }, h) => {
         const ret = []
@@ -36,6 +36,7 @@ export const getProjectTableColumn = ({ field = 'tenant', title = i18n.t('dictio
         return ret
       },
     },
+    hidden,
   }
 }
 
@@ -145,6 +146,7 @@ export const getNameDescriptionTableColumn = ({
   formRules,
   descriptionRules = [],
   cellWrapSlots,
+  edit = true,
 } = {}) => {
   return {
     field: 'name',
@@ -158,7 +160,7 @@ export const getNameDescriptionTableColumn = ({
           h('list-body-cell-wrap', {
             props: {
               copy: true,
-              edit: true,
+              edit,
               row,
               onManager,
               hideField,

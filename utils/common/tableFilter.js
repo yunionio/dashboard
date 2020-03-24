@@ -31,12 +31,12 @@ export function mapperStatusToItems (items, statusModule) {
   })
 }
 
-export function getNameFilter () {
+export function getNameFilter ({ name = 'name', label = '名称' } = {}) {
   return {
-    label: '名称',
+    label,
     filter: true,
     formatter: val => {
-      return `name.contains(${val})`
+      return `${name}.contains(${val})`
     },
   }
 }
@@ -183,6 +183,28 @@ export function getHostFilter () {
     jointFilter: true,
     formatter: val => {
       return `hosts.id(host_id).name.contains("${val}")`
+    },
+  }
+}
+
+export function getProjectFilter () {
+  return {
+    label: i18n.t('dictionary.project'),
+    dropdown: true,
+    distinctField: {
+      type: 'field',
+      key: 'project',
+    },
+  }
+}
+
+export function getDomainFilter () {
+  return {
+    label: i18n.t('dictionary.domain'),
+    dropdown: true,
+    distinctField: {
+      type: 'field',
+      key: 'domain',
     },
   }
 }

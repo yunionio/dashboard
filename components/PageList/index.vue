@@ -7,6 +7,7 @@
           <template v-if="groupActions">
             <actions class="flex-shrink-0" :options="groupActions" @clear-selected="handleClearSelected" button-type="default" group />
           </template>
+          <slot name="group-actions-append" />
           <tag-filter
             v-if="showTagFilter"
             :list="list" />
@@ -356,6 +357,14 @@ export default {
         }
       }, this.tableColumns)
       this.$refs.grid.refreshColumn()
+    },
+    updateColumns () { // 对于动态columns时，请在外部调用 this.refs.pagelist.updateColumns()
+      const tableColumns = this.genTableColumns()
+      this.$refs.grid.loadColumn(tableColumns)
+      this.$nextTick(() => {
+        this.tableColumns = this.$refs.grid.getColumns()
+        this.updateHiddenColumns()
+      })
     },
   },
 }

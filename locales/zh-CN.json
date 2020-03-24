@@ -505,6 +505,12 @@
       "success": "成功",
       "fail": "失败",
       "operating": "执行中"
+    },
+    "billrate": {
+      "is_effective": "已生效",
+      "is_not_effective": "未生效",
+      "is_expire": "已过期",
+      "unknown": "未知"
     }
   },
   "skuCategoryOptions": {
@@ -960,7 +966,9 @@
     "cloudevents": "操作日志",
     "companyinfo": "企业信息",
     "notification": "消息中心",
-    "contact": "联系方式"
+    "contact": "联系方式",
+    "gpu": "GPU卡",
+    "baremetal": "裸金属服务器"
   },
   "shareScope": {
     "system": "系统",

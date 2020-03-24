@@ -110,6 +110,8 @@ export default {
     },
     filterWithoutUserMeta: Boolean,
     multiple: Boolean,
+    resources: String,
+    managerInstance: Object,
   },
   data () {
     return {
@@ -135,7 +137,7 @@ export default {
         scope: this.scope,
         with_user_meta: true,
       }
-      if (this.resource) ret.resources = this.resource
+      if (this.resources) ret.resources = this.resources
       if (this.params) {
         ret = Object.assign({}, ret, this.params)
       }
@@ -181,7 +183,7 @@ export default {
     this.manager = null
   },
   created () {
-    this.manager = new this.$Manager('metadatas')
+    this.manager = this.managerInstance || new this.$Manager('metadatas')
     this.debounceHandleSearchInput = debounce(this.handleSearchInput, 500)
   },
   methods: {
@@ -193,7 +195,13 @@ export default {
     async fetchTags () {
       this.loading = true
       try {
-        const response = await this.manager.get({ id: 'tag-value-pairs', params: this.getParams })
+        let promise
+        if (this.managerInstance) {
+          promise = this.manager.list({ params: this.getParams })
+        } else {
+          promise = this.manager.get({ id: 'tag-value-pairs', params: this.getParams })
+        }
+        const response = await promise
         const data = response.data.data || []
         this.genTags(data)
       } finally {
