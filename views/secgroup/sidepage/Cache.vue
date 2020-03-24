@@ -51,7 +51,7 @@ export default {
         {
           field: 'created_at',
           title: '创建时间',
-          width: 140,
+          width: 150,
           formatter: ({ cellValue }) => {
             return this.$moment(cellValue).format()
           },
@@ -59,7 +59,7 @@ export default {
         {
           field: 'updated_at',
           title: '更新时间',
-          width: 140,
+          width: 150,
           formatter: ({ cellValue }) => {
             return this.$moment(cellValue).format()
           },

@@ -19,7 +19,7 @@ export default {
       {
         field: 'guest_cnt',
         title: '关联虚拟机',
-        width: 70,
+        width: 80,
       },
       isPublicTableColumn(),
       {

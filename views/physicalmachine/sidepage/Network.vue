@@ -35,6 +35,7 @@ export default {
         {
           field: 'nic_type',
           title: '网卡类型',
+          width: 80,
           formatter: ({ row }) => {
             if (row.nic_type === 'admin') {
               return '管理口'
