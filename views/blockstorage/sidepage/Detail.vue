@@ -1,6 +1,6 @@
 <template>
   <detail
-    :list="list"
+    :onManager="onManager"
     :data="data"
     :base-info="baseInfo"
     :extra-info="extraInfo"
@@ -18,12 +18,12 @@ export default {
   name: 'BlockStorageDetail',
   mixins: [WindowsMixin],
   props: {
-    list: {
+    data: {
       type: Object,
       required: true,
     },
-    data: {
-      type: Object,
+    onManager: {
+      type: Function,
       required: true,
     },
   },
