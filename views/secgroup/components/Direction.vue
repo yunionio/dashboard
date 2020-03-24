@@ -68,6 +68,8 @@ export default {
         {
           field: 'cidr',
           title: '来源',
+          minWidth: 70,
+          showOverflow: 'ellipsis',
         },
         {
           field: 'protocol',

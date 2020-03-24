@@ -30,10 +30,14 @@ export default {
         {
           field: 'storage',
           title: '名称',
+          showOverflow: 'ellipsis',
+          minWidth: 120,
         },
         {
           field: 'capacity',
           title: '容量',
+          showOverflow: 'ellipsis',
+          minWidth: 70,
           formatter: ({ cellValue }) => {
             return sizestr(cellValue, 'M', 1024)
           },
@@ -41,6 +45,8 @@ export default {
         {
           field: 'used_capacity',
           title: '分配',
+          showOverflow: 'ellipsis',
+          minWidth: 70,
           formatter: ({ cellValue }) => {
             return sizestr(cellValue, 'M', 1024)
           },
@@ -48,6 +54,8 @@ export default {
         {
           field: 'waste_capacity',
           title: '浪费',
+          showOverflow: 'ellipsis',
+          minWidth: 70,
           formatter: ({ cellValue }) => {
             return sizestr(cellValue, 'M', 1024)
           },
@@ -55,6 +63,8 @@ export default {
         {
           field: 'storage_type',
           title: '存储类型',
+          showOverflow: 'ellipsis',
+          minWidth: 100,
           formatter: ({ cellValue }) => {
             switch (cellValue) {
               case 'local':
@@ -74,6 +84,8 @@ export default {
         {
           field: 'mount_point',
           title: '挂载点',
+          showOverflow: 'ellipsis',
+          minWidth: 120,
         },
       ],
     }
