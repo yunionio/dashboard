@@ -31,13 +31,13 @@ export default {
       {
         field: 'wire_count',
         title: '二层网络',
-        width: 70,
+        width: 100,
         sortable: true,
       },
       {
         field: 'network_count',
         title: 'IP子网数量',
-        width: 80,
+        width: 100,
         sortable: true,
         slots: {
           default: ({ row }) => {

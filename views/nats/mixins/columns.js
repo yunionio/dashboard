@@ -33,6 +33,8 @@ export default {
       {
         field: 'nat_spec',
         title: '型号',
+        showOverflow: 'ellipsis',
+        minWidth: 100,
         formatter: ({ cellValue }) => {
           const spec = cellValue && cellValue.toLowerCase()
           return NatSpec[spec] || spec
@@ -50,6 +52,8 @@ export default {
       {
         field: 'billing_type',
         title: '付费类型',
+        showOverflow: 'ellipsis',
+        minWidth: 100,
         formatter: ({ cellValue }) => {
           return BillingType[cellValue]
         },

@@ -46,17 +46,23 @@ export default {
         {
           field: 'name',
           title: '名称',
+          minWidth: 100,
+          showOverflow: 'ellipsis',
         },
         getEnabledTableColumn(),
         getStatusTableColumn({ statusModule: 'server' }),
         {
           field: 'access_ip',
           title: 'IP',
+          minWidth: 100,
+          showOverflow: 'ellipsis',
         },
         getStatusTableColumn({ statusModule: 'host' }),
         {
           field: 'guests',
           title: '#VM',
+          minWidth: 70,
+          showOverflow: 'ellipsis',
           formatter: ({ cellValue, row }) => {
             if (typeof row.nonsystem_guests !== 'undefined') {
               return '' + row.nonsystem_guests
@@ -69,6 +75,8 @@ export default {
         {
           field: 'cpu_count',
           title: 'CPU',
+          minWidth: 80,
+          showOverflow: 'ellipsis',
           formatter: ({ cellValue, row }) => {
             if (cellValue) {
               return '' + cellValue + '/' + percentstr(row.cpu_commit_rate)
@@ -80,6 +88,8 @@ export default {
         {
           field: 'mem_size',
           title: '内存',
+          minWidth: 100,
+          showOverflow: 'ellipsis',
           formatter: ({ cellValue, row }) => {
             if (cellValue) {
               return sizestr(cellValue, 'M', 1024) + '/' + percentstr(row.mem_commit_rate)
@@ -91,6 +101,8 @@ export default {
         {
           field: 'storage_size',
           title: '存储',
+          minWidth: 70,
+          showOverflow: 'ellipsis',
           formatter: ({ cellValue, row }) => {
             if (cellValue) {
               return sizestr(cellValue, 'M', 1024)
@@ -102,10 +114,14 @@ export default {
         {
           field: 'sn',
           title: 'SN',
+          minWidth: 100,
+          showOverflow: 'ellipsis',
         },
         {
           field: 'id',
           title: 'IPMI',
+          minWidth: 70,
+          showOverflow: 'ellipsis',
           slots: {
             default: ({ cellValue, row }) => {
               if (!row.is_baremetal) {
@@ -119,6 +135,8 @@ export default {
         {
           field: 'server_id',
           title: '初始账号',
+          minWidth: 70,
+          showOverflow: 'ellipsis',
           slots: {
             default: ({ cellValue, row }) => {
               if (!row.is_baremetal) {
