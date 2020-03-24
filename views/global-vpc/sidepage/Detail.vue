@@ -3,6 +3,7 @@
     :on-manager="onManager"
     :data="data"
     :base-info="baseInfo"
+    resource="globalvpcs"
     statusModule="globalVpc" />
 </template>
 

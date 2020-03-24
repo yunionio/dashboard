@@ -61,9 +61,6 @@ export default {
       }
       return null
     },
-    data () {
-      return this.params.list.data[this.params.resId].data
-    },
   },
 }
 </script>
