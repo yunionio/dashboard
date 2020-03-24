@@ -37,7 +37,7 @@ export default {
         label: '更多',
         actions: obj => {
           const ownerDomain = this.$store.getters.isAdminMode || obj.domain_id === this.$store.getters.userInfo.projectDomainId
-          return [
+          const privateBillAction = this.$appConfig.isPrivate ? [
             {
               label: '更新账单文件',
               permission: 'cloudaccounts_perform_update_credential',
@@ -55,6 +55,8 @@ export default {
                 }
               },
             },
+          ] : []
+          return privateBillAction.concat([
             {
               label: '全量同步',
               permission: 'cloudaccounts_perform_sync',
@@ -176,7 +178,7 @@ export default {
               },
               meta: () => this.$getDeleteResult(obj),
             },
-          ]
+          ])
         },
       },
     ]

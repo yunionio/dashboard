@@ -59,9 +59,6 @@ export default {
       loading: false,
       step: {
         steps: [
-          { title: '选择云平台', key: 'platform' },
-          { title: '配置云账号', key: 'cloudaccount' },
-          { title: '账单文件访问信息（可选）', key: 'billConfig' },
         ],
         currentStep: 0,
       },
@@ -85,7 +82,7 @@ export default {
       return this.step.steps[this.step.currentStep].key
     },
     isBill () {
-      return ['Aws', 'Aliyun', 'Google', 'Huawei'].indexOf(this.currentItem.provider) > -1
+      return ['Aws', 'Aliyun', 'Google', 'Huawei'].indexOf(this.currentItem.provider) > -1 && this.$appConfig.isPrivate
     },
   },
   watch: {
@@ -99,7 +96,17 @@ export default {
       }
     },
     currentItem (val) {
-      if (val.provider === 'VMware') {
+      this.changeSteps(val)
+    },
+  },
+  created () {
+    this.cloudaccountsM = new Manager('cloudaccounts', 'v2')
+    this.networksM = new Manager('networks', 'v2')
+    this.changeSteps()
+  },
+  methods: {
+    changeSteps (val) {
+      if (val && val.provider === 'VMware') {
         this.step.steps = [
           { title: '选择云平台', key: 'platform' },
           { title: '配置云账号', key: 'cloudaccount' },
@@ -118,12 +125,6 @@ export default {
         ]
       }
     },
-  },
-  created () {
-    this.cloudaccountsM = new Manager('cloudaccounts', 'v2')
-    this.networksM = new Manager('networks', 'v2')
-  },
-  methods: {
     cancel () {
       this.$router.push('/cloudaccount')
     },
