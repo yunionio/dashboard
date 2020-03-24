@@ -358,6 +358,14 @@ export default {
       }, this.tableColumns)
       this.$refs.grid.refreshColumn()
     },
+    updateColumns () { // 对于动态columns时，请在外部调用 this.refs.pagelist.updateColumns()
+      const tableColumns = this.genTableColumns()
+      this.$refs.grid.loadColumn(tableColumns)
+      this.$nextTick(() => {
+        this.tableColumns = this.$refs.grid.getColumns()
+        this.updateHiddenColumns()
+      })
+    },
   },
 }
 </script>
