@@ -40,7 +40,8 @@ export default {
         {
           field: 'host.name',
           title: '缓存位置',
-          width: 150,
+          minWidth: 150,
+          showOverflow: 'title',
         },
         getStatusTableColumn({ statusModule: 'imageCache' }),
         getTimeTableColumn({ title: '更新时间', field: 'updated_at' }),
