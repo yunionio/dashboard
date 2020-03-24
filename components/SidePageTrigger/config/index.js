@@ -88,4 +88,8 @@ export default {
     resource: 'identity_providers',
     apiVersion: 'v1',
   },
+  // 弹性伸缩组
+  ScalingGroupSidePage: {
+    resource: 'scalinggroups',
+  },
 }

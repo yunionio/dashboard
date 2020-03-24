@@ -231,7 +231,7 @@ export default {
         const Render = this[`Render${sn}`]()
         return (
           <a-col span={this.colSpan}>
-            <a-form-item>
+            <a-form-item wrapperCol={{ span: 24 }}>
               {getFieldDecorator(name, options)(Render)}
             </a-form-item>
           </a-col>
@@ -240,7 +240,7 @@ export default {
       return null
     })
     return (
-      <a-form-item labelCol={this.labelCol} wrapperCol={this.wrapperCol} label={this.label}>
+      <a-form-item required={this.isRequired} labelCol={this.labelCol} wrapperCol={this.wrapperCol} label={this.label}>
         <a-row gutter={8}>
           {RenderCols}
         </a-row>

@@ -183,4 +183,19 @@ export default {
     info: ['is_expire'],
     danger: ['is_not_effective'],
   },
+  scalinggroup: {
+    success: ['ready'],
+    danger: ['delete_failed', 'deleted'],
+    info: ['init', 'unavailable', 'unknown'],
+  },
+  scalingpolicie: {
+    success: ['ready'],
+    danger: ['delete_failed', 'deleted'],
+    info: ['init', 'unavailable', 'unknown'],
+  },
+  scalingactivitie: {
+    success: ['part_succeed', 'succeed'],
+    danger: ['failed', 'delete_failed', 'deleted'],
+    info: ['init', 'unavailable', 'unknown'],
+  },
 }
