@@ -11,9 +11,11 @@
 <script>
 import { CREATE_METHODS } from '../constants'
 import { sizestr } from '@/utils/utils'
+import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'SnapshotDetail',
+  mixins: [WindowsMixin],
   props: {
     data: {
       type: Object,

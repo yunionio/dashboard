@@ -11,10 +11,12 @@
 <script>
 import { sizestr } from '@/utils/utils'
 import { getStatusTableColumn, getCopyWithContentTableColumn, getSwitchTableColumn, isPublicTableColumn } from '@/utils/common/tableColumn'
+import WindowsMixin from '@/mixins/windows'
 
 const isStandard = status => status === true || status === 'true'
 export default {
   name: 'SystemImageDetail',
+  mixins: [WindowsMixin],
   props: {
     data: {
       type: Object,
