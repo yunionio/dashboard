@@ -15,7 +15,7 @@
             v-decorator="decorators.disks"
             resource="disks"
             :mapper="mapperDisks"
-            :params="{ limit: 20 }"
+            :params="{ limit: 20, }"
             :init-loaded.sync="disksInitLoaded"
             :select-props="{ allowClear: true, placeholder: '请选择磁盘', mode: 'tags' }" />
         </a-form-item>
@@ -92,6 +92,7 @@ export default {
     mapperDisks (data) {
       data = data.concat(this.bindedDisks)
       data = R.uniqBy(item => item.id, data)
+      data = data.filter((item) => { return ['OneCloud', 'Qcloud', 'Aliyun'].includes(item.brand) })
       return data
     },
     async fetchBindedDisks () {
@@ -118,7 +119,6 @@ export default {
         const data = {
           snapshotpolicy: this.params.data[0].id,
         }
-        console.log(ids)
         await manager.batchPerformAction({
           ids,
           action: 'bind-snapshotpolicy',
