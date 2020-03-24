@@ -1,5 +1,5 @@
 <template>
-  <detail :base-info="baseInfo" :data="data"  statusModule="rdsBackup" :extra-info="extraInfo" />
+  <detail :base-info="baseInfo" :data="data"  statusModule="rdsBackup" :extra-info="extraInfo" :onManager="onManager" />
 </template>
 <script>
 // import { sizestr } from '@/utils/utils'
@@ -10,8 +10,8 @@
 export default {
   name: 'RdsBackupSidepageDetail',
   props: {
-    list: {
-      type: Object,
+    onManager: {
+      type: Function,
       required: true,
     },
     data: {
