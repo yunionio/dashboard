@@ -26,15 +26,17 @@
           <a-form-item>
             <a-divider orientation="left">资源标签键</a-divider>
             <a-checkbox-group v-decorator="decorators.tagsSelected" class="w-100">
-              <a-row>
-                <a-col
-                  v-for="item of tagFields"
-                  :span="6"
-                  :key="item.property"
-                  class="mb-2">
-                  <a-checkbox :value="item.property">{{ item.title }}</a-checkbox>
-                </a-col>
-              </a-row>
+              <div class="tag-fields-wrap">
+                <a-row>
+                  <a-col
+                    v-for="item of tagFields"
+                    :span="6"
+                    :key="item.property"
+                    class="mb-2">
+                    <a-checkbox :value="item.property">{{ item.title }}</a-checkbox>
+                  </a-col>
+                </a-row>
+              </div>
             </a-checkbox-group>
           </a-form-item>
         </template>
@@ -194,3 +196,10 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.tag-fields-wrap {
+  max-height: 100px;
+  overflow: auto;
+}
+</style>
