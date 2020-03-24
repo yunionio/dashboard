@@ -505,6 +505,12 @@
       "success": "成功",
       "fail": "失败",
       "operating": "执行中"
+    },
+    "billrate": {
+      "is_effective": "已生效",
+      "is_not_effective": "未生效",
+      "is_expire": "已过期",
+      "unknown": "未知"
     }
   },
   "skuCategoryOptions": {

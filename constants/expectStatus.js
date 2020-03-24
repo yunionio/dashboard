@@ -178,4 +178,9 @@ export default {
   workflowBiz: {
     success: ['success'],
   },
+  billrate: {
+    success: ['is_effective'],
+    info: ['is_expire'],
+    danger: ['is_not_effective'],
+  },
 }
