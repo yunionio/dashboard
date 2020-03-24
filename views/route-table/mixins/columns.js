@@ -37,6 +37,7 @@ export default {
         field: 'routes',
         title: '条目（路由表类型 目标网段 下一跳）',
         minWidth: 100,
+        showOverflow: 'ellipsis',
         slots: {
           default: ({ row }, h) => {
             return [

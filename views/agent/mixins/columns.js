@@ -18,7 +18,8 @@ export default {
       {
         field: 'cluster',
         title: '集群',
-        width: 220,
+        showOverflow: 'ellipsis',
+        minWidth: 100,
       },
       {
         field: 'ha_state',
