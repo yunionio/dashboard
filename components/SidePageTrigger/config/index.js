@@ -83,4 +83,9 @@ export default {
   CloudaccountSidePage: {
     resource: 'cloudaccounts',
   },
+  // 认证源
+  IDPSidePage: {
+    resource: 'identity_providers',
+    apiVersion: 'v1',
+  },
 }
