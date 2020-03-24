@@ -39,7 +39,8 @@ export default {
       {
         field: 'last_auto_sync',
         title: '同步时间',
-        width: 70,
+        minWidth: 70,
+        showOverflow: 'title',
         slots: {
           default: ({ row }) => {
             if (row.sync_status !== 'idle') { // 表示正在同步中

@@ -24,7 +24,8 @@ export default {
       {
         field: 'vpc_count',
         title: '专有网络(VPC)',
-        width: 100,
+        minWidth: 120,
+        showOverflow: 'title',
       },
       {
         field: 'zone_count',
