@@ -10,9 +10,11 @@
 
 <script>
 import { getBrandTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
+import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'NetworkDetail',
+  mixins: [WindowsMixin],
   props: {
     data: {
       type: Object,
