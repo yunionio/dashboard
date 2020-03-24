@@ -49,6 +49,7 @@
 
 <script>
 import * as R from 'ramda'
+import { mapGetters } from 'vuex'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { getTagTitle, isUserTag } from '@/utils/common/tag'
@@ -98,10 +99,12 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['scope']),
     tagParams () {
       const ret = {
         with_user_meta: true,
         limit: 0,
+        scope: this.scope,
       }
       if (R.is(String, this.params.list.resource)) {
         ret.resources = this.params.list.resource.substr(0, this.params.list.resource.length - 1)
