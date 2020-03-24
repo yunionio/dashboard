@@ -49,7 +49,7 @@
         </template>
         <template v-else>
           <template v-if="hasError">
-            <a-empty :description="errorInfo.details" />
+            <a-empty :description="errorInfo.detail" />
           </template>
           <template v-else><slot /></template>
         </template>
@@ -62,7 +62,7 @@
 import * as R from 'ramda'
 import VcDialog from 'ant-design-vue/lib/vc-dialog'
 import Clickoutside from '@/directives/clickoutside'
-// import { getHttpErrorMessage } from '@/utils/error'
+import { getHttpErrorMessage } from '@/utils/error'
 
 export default {
   name: 'BaseSidePage',
@@ -114,8 +114,7 @@ export default {
   },
   computed: {
     errorInfo () {
-      // return this.requestError.error && getHttpErrorMessage(this.requestError.error)
-      return this.requestError.error && this.requestError.error.response && this.requestError.error.response.data
+      return this.requestError.error && getHttpErrorMessage(this.requestError.error)
     },
     hasError () {
       return !R.isNil(this.errorInfo) && !R.isEmpty(this.errorInfo)
