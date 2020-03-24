@@ -13,9 +13,11 @@ import { MEDIUM_MAP } from '../../../constants'
 import { getUnusedTableColumn } from '../utils/columns'
 import { sizestr } from '@/utils/utils'
 import { getBrandTableColumn, getBillingTypeTableColumn } from '@/utils/common/tableColumn'
+import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'DiskDetail',
+  mixins: [WindowsMixin],
   props: {
     data: {
       type: Object,
