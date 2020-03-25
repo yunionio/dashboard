@@ -268,12 +268,25 @@ export default {
   methods: {
     renderItem (h, item, renderTitle = true) {
       let val
-      if (item.slots && item.slots.default) {
-        val = item.slots.default({ row: this.data }, h)
-      } else if (item.formatter) {
-        val = item.formatter({ row: this.data, cellValue: this.data[item.field] }) || '-'
-      } else {
-        val = _.get(this.data, item.field) || '-'
+      // try catch 主要针对后端字段异常且前端没有特别严谨断言的情况下，避免详情白屏
+      try {
+        if (item.slots && item.slots.default) {
+          val = item.slots.default({ row: this.data }, h)
+          // 内容为空则直接渲染-
+          if (val && val.length[0] && val[0].elm) {
+            if (!R.trim(val[0].elm.innerText)) {
+              val = '-'
+            }
+          }
+        } else if (item.formatter) {
+          val = item.formatter({ row: this.data, cellValue: this.data[item.field] }) || '-'
+        } else {
+          val = _.get(this.data, item.field) || '-'
+        }
+      } catch (error) {
+        val = '-'
+        console.warn(`Get field ${item.field} faied`)
+        throw error
       }
       const children = []
       if (renderTitle && item.title) {
