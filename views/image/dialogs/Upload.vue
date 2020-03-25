@@ -209,7 +209,7 @@ export default {
           this.timer = setTimeout(() => {
             this.cancelDialog()
             this.params.refresh()
-          }, 6000)
+          }, 3000)
           return
         } else {
           await this.doImportUrl(values)
