@@ -66,7 +66,6 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        this.loading = false
         const isDelete = this.form.fc.getFieldValue('disable_delete')
         if (this.params.data.length === 1) {
           this.params.onManager('update', {

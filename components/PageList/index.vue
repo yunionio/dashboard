@@ -372,6 +372,7 @@ export default {
 
 <style lang="scss" scoped>
 .page-list-grid {
+  min-width: 100%;
   ::v-deep {
     > .vxe-table > .vxe-table--main-wrapper > .vxe-table--body-wrapper {
       overflow: hidden;
