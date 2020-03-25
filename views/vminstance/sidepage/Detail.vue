@@ -92,8 +92,11 @@ export default {
               field: 'ips',
               title: 'IP',
               formatter: ({ row }) => {
-                const ips = row.ips.split(',')
-                return ips.join('，')
+                if (row.ips && row.ips.length > 0) {
+                  const ips = row.ips.split(',')
+                  return ips.join('，')
+                }
+                return '-'
               },
             },
             getCopyWithContentTableColumn({
@@ -161,8 +164,11 @@ export default {
               title: 'ISO',
               hideField: true,
               slotCallback: row => {
-                const idx = row.cdrom.indexOf('(')
-                return row.cdrom.substring(0, idx) || '-'
+                if (row.cdrom) {
+                  const idx = row.cdrom.indexOf('(')
+                  return row.cdrom.substring(0, idx)
+                }
+                return '-'
               },
             }),
           ],
