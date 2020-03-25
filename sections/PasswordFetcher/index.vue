@@ -41,10 +41,21 @@
           </template>
         </template>
       </template>
-      <span @click.stop="fetchLoginInfo">
+      <span @click.stop="fetchLoginInfo" v-if="!disabled">
         <icon class="keypair-icon" type="keypairs" fill="#555" />
       </span>
     </a-popover>
+    <a-tooltip placement="top" v-if="promptText && disabled">
+      <template slot="title">
+        <span>{{promptText}}</span>
+      </template>
+      <span>
+        <icon class="keypair-icon-disabled" type="keypairs" />
+      </span>
+    </a-tooltip>
+    <span v-if="!promptText && disabled">
+      <icon class="keypair-icon-disabled" type="keypairs" />
+    </span>
     <a-modal
       :visible="dialog.visible"
       :closable="false"
@@ -82,6 +93,13 @@ export default {
       type: String,
       required: true,
       validator: val => ['servers', 'baremetals', 'baremetal_ssh', 'elasticcaches', 'dbinstanceaccounts', 'elasticcacheaccounts'].includes(val),
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+    promptText: {
+      type: String,
     },
   },
   data () {
@@ -213,6 +231,12 @@ export default {
       &:hover {
         fill: $primary-color;
       }
+    }
+  }
+  .keypair-icon-disabled {
+    font-size: 18px;
+    svg {
+      fill: $disabled-color;
     }
   }
 }
