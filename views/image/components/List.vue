@@ -161,7 +161,7 @@ export default {
           title: '镜像类型',
           width: 100,
           formatter: ({ cellValue }) => {
-            if (cellValue) return '公共镜像'
+            if (cellValue === true || cellValue === 'true') return '公共镜像'
             return '自定义镜像'
           },
         },
