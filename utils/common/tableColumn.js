@@ -284,7 +284,7 @@ export const isPublicTableColumn = ({ field = 'is_public', title = '共享范围
     visible: store.getters.isAdminMode || store.getters.isDomainMode,
     formatter: ({ row }) => {
       let text = ''
-      if (!row.is_public) {
+      if (row.is_public === false || row.is_public === 'false') {
         text = '私有'
         if (row.shared_projects) {
           text = '项目'
