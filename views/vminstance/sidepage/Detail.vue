@@ -186,6 +186,7 @@ export default {
               title: 'ISO',
               hideField: true,
               slotCallback: row => {
+                if (!row.cdrom) return '-'
                 const idx = row.cdrom.indexOf('(')
                 const id = row.cdrom.substring(idx + 1, row.cdrom.indexOf('/'))
                 return [
