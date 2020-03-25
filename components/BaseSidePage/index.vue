@@ -89,6 +89,7 @@ export default {
     },
     currentTab: {
       type: String,
+      // required: true,
     },
     tabs: {
       type: Array,

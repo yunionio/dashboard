@@ -511,6 +511,29 @@
       "is_not_effective": "未生效",
       "is_expire": "已过期",
       "unknown": "未知"
+    },
+    "scalinggroup": {
+      "init": "初始化",
+      "ready": "正常",
+      "deleting": "删除中",
+      "wait_activity_over": "正在等待伸缩活动完毕",
+      "destroy_instance": "毁伸缩实例中",
+      "delete_failed": "删除失败",
+      "deleted": "删除"
+    },
+    "scalingpolicie": {
+      "init": "初始化",
+      "ready": "正常",
+      "deleting": "删除中",
+      "deleted": "删除"
+    },
+    "scalingactivitie": {
+      "init": "初始化",
+      "wait": "等待中",
+      "execution": "执行中",
+      "succeed": "成功",
+      "part_succeed": "部分成功",
+      "failed": "失败"
     }
   },
   "skuCategoryOptions": {
@@ -1033,5 +1056,52 @@
     "AzureUSGovernmentCloud": "美国政务区",
     "Public": "国际区",
     "Internation": "国际区"
+  },
+  "flexGroupCycles": {
+    "300": "5分钟",
+    "600": "10分钟",
+    "900": "15分钟",
+    "1800": "30分钟",
+    "3600": "1小时",
+    "10800": "3小时"
+  },
+  "flexGrouPprinciple": {
+    "earliest": "优先移除最早创建的实例",
+    "latest": "优先移除最晚创建的实例"
+  },
+  "flexGrouTriggerType": {
+    "alarm": "告警策略",
+    "timing": "定时策略",
+    "cycle": "周期策略"
+  },
+  "flexGroupIndicator": {
+    "cpu": "CPU平均使用率",
+    "flow_into": "网络入流量",
+    "flow_out": "网络出流量",
+    "disk_read": "磁盘读速率",
+    "disk_write": "磁盘写速率"
+  },
+  "flexGroupRuleAction": {
+    "add": "增加",
+    "remove": "减少",
+    "set": "调整为"
+  },
+  "flexGroupCycleType": {
+    "day": "天",
+    "week": "周",
+    "month": "月"
+  },
+  "flexGroupSubCycleTypeWeek": {
+    "1": "星期一",
+    "2": "星期二",
+    "3": "星期三",
+    "4": "星期四",
+    "5": "星期五",
+    "6": "星期六",
+    "7": "星期日"
+  },
+  "flexGroupHealthCheckMode": {
+    "normal": "虚拟机健康检查",
+    "loadbalancer": "负载均衡健康检查"
   }
 }
