@@ -1,10 +1,10 @@
 <template>
-  <div v-on="events" class="d-flex align-items-center" :title="message || row[field] || '-'">
+  <div v-on="events" class="d-flex align-items-center list-body-cell-wrap" :title="message || row[field] || '-'">
     <span
       v-if="!hideField"
       class="text-truncate"
       :class="{ 'text-weak': field === 'description', [titleClass]: titleClass }">{{ row[field] || '-' }}</span>
-    <div class="text-truncate w-100" v-if="$scopedSlots.default"><slot /></div>
+    <div class="text-truncate slot-wrap" v-if="$scopedSlots.default"><slot /></div>
     <a-tooltip title="删除保护，如需解除，请点击【设置删除保护】" v-if="showDeleteLock">
       <a-icon class="ml-1" type="lock" />
     </a-tooltip>
