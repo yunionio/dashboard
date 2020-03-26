@@ -69,7 +69,7 @@
           <a-input-number :min="1" :max="100" v-decorator="decorators.priority" />
         </a-form-item>
       </a-form>
-      <dialog-selected-tips :count="params.data.length" action="批量追加规则" />
+      <dialog-selected-tips :name="$t('dictionary.secgroup')" :count="params.data.length" action="批量追加规则" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
     </div>
     <div slot="footer">

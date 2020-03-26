@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">更改带宽</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" action="更改带宽" />
+      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" action="更改带宽" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
         <a-form-item label="带宽" v-bind="formItemLayout" extra="Mbps，请输入0~10000的整数">

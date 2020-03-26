@@ -7,7 +7,7 @@
           1. 状态异常的硬盘不支持创建快照. 2. 私有云仅支持本地硬盘创建快照
         </div>
       </a-alert>
-      <dialog-selected-tips :count="params.data.length" action="新建快照" />
+      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" action="新建快照" />
       <dialog-table
         :data="params.data"
         :columns="params.columns.slice(0, 3)" />

@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">转换为宿主机</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" action="转换为宿主机" />
+      <dialog-selected-tips :name="$t('dictionary.physicalmachine')" :count="params.data.length" action="转换为宿主机" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 2)" />
        <a-form
         :form="form.fc">

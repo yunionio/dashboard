@@ -7,7 +7,7 @@
           {{ tips }}
         </div>
       </a-alert>
-      <dialog-selected-tips :count="params.data.length" :action="action" />
+      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="action" />
       <dialog-table :data="params.data" :columns="columns" />
       <a-form
         :form="form.fc">

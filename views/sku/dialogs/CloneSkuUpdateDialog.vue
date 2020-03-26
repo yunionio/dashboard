@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">克隆</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" action="克隆" />
+      <dialog-selected-tips :name="$t('dictionary.sku')" :count="params.data.length" action="克隆" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">

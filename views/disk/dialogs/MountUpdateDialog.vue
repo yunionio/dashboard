@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">挂载</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" action="挂载" />
+      <dialog-selected-tips :count="params.data.length" action="挂载" :name="$t('dictionary.disk')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">

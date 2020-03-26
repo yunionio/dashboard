@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">设置二层网络</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" action="设置二层网络" />
+      <dialog-selected-tips :name="$t('dictionary.physicalmachine')" :count="params.data.length" action="设置二层网络" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">

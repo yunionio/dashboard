@@ -3,7 +3,7 @@
     <div slot="header">解绑密钥</div>
     <div slot="body">
       <a-alert class="mb-2" v-if="isOpenStack" message="OpenStack机器在解绑密钥后需手动重置密码" type="warning" />
-      <dialog-selected-tips :count="params.data.length" action="解绑密钥" />
+      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" action="解绑密钥" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
         <a-form-item label="自动启动" v-bind="formItemLayout" extra="解绑密钥成功后是否自动启动">

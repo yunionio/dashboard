@@ -9,7 +9,7 @@
           主机克隆会先生成一个主机快照，快照占用配额资源，建议及时清除无用快照<br />
         </div>
       </a-alert>
-      <dialog-selected-tips :count="params.data.length" :action="action" />
+      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="action" />
       <dialog-table
         :data="params.data"
         :columns="params.columns.slice(0, 3)" />

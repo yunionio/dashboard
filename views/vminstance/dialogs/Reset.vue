@@ -8,7 +8,7 @@
           <div class="mt-2">VNC会断；重置为虚拟机系统(OS)级别的重启，VNC不会断。</div>
         </template>
       </a-alert>
-      <dialog-selected-tips :count="params.data.length" :action="action" />
+      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="action" />
       <dialog-table :data="params.data" :columns="columns" />
     </div>
     <div slot="footer">

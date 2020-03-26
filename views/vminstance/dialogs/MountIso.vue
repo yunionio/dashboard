@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">挂载ISO</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" action="挂载ISO" />
+      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" action="挂载ISO" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
         <a-form-item label="ISO镜像" v-bind="formItemLayout">
