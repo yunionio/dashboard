@@ -269,11 +269,12 @@ export default {
     renderItem (h, item, renderTitle = true) {
       let val
       // try catch 主要针对后端字段异常且前端没有特别严谨断言的情况下，避免详情白屏
+      console.log(item)
       try {
         if (item.slots && item.slots.default) {
           val = item.slots.default({ row: this.data }, h)
           // 内容为空则直接渲染-
-          if (val && val.length[0] && val[0].elm) {
+          if (val && val.length && val[0].elm) {
             if (!R.trim(val[0].elm.innerText)) {
               val = '-'
             }
