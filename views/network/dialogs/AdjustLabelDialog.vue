@@ -12,7 +12,7 @@
           </a-select>
         </a-form-item>
       </a-form>
-      <dialog-selected-tips :count="params.data.length" action="调整调度标签" />
+      <dialog-selected-tips :name="$t('dictionary.network')" :count="params.data.length" action="调整调度标签" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
     </div>
     <div slot="footer">

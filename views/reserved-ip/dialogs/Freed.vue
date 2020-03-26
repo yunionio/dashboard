@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{ params.title }}</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" :action="this.params.title" :name="this.params.name" />
+      <dialog-selected-tips :name="$t('dictionary.reserved-ip')" :count="params.data.length" :action="this.params.title" />
       <dialog-table v-if="params.columns && params.columns.length" :data="params.data" :columns="params.columns.slice(0, 3)" />
     </div>
     <div slot="footer">

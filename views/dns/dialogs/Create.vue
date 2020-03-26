@@ -3,7 +3,7 @@
     <div slot="header">{{params.title}}</div>
     <div slot="body">
       <template v-if="params.type !== 'create'">
-        <dialog-selected-tips :count="params.data.length" :action="params.type === 'update' ? '修改' : '克隆'" />
+        <dialog-selected-tips :name="$t('dictionary.dns')" :count="params.data.length" :action="params.type === 'update' ? '修改' : '克隆'" />
         <dialog-table :data="params.data" :columns="params.columns.slice(0, 4)" />
       </template>
       <a-form

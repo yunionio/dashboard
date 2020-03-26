@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{params.title}}</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" action="部署" name="节点" />
+      <dialog-selected-tips :name="$t('dictionary.loadbalanceragent')" :count="params.data.length" action="部署" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 2)" />
       <a-divider orientation="left">指定系统用户</a-divider>
       <a-form
