@@ -7,7 +7,7 @@
           ceph盘有快照不支持单独删除硬盘，删除硬盘需打开同时删除快照
         </div>
       </a-alert>
-      <dialog-selected-tips :count="params.data.length" name="硬盘" :action="this.params.title" />
+      <dialog-selected-tips :count="params.data.length" :name="$t('dictionary.disk')" :action="this.params.title" />
       <dialog-table v-if="params.columns && params.columns.length" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc" v-show="isIDC">

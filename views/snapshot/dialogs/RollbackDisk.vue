@@ -7,7 +7,7 @@
           系统盘上该时刻之后的数据将被清除。请谨慎操作! 只有已停止的实例和当前磁盘没有创建中的快照才可以回滚磁盘。
         </div>
       </a-alert>
-      <dialog-selected-tips :count="params.data.length" :action="action" />
+      <dialog-selected-tips :name="$t('dictionary.snapshot')" :count="params.data.length" :action="action" />
       <dialog-table :data="params.data" :columns="columns" />
       <a-form
         :form="form.fc">

@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">解绑弹性公网IP</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" action="解绑弹性公网IP" />
+      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" action="解绑弹性公网IP" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
         <a-form-item label="是否释放" v-bind="formItemLayout" extra="取消绑定之后，立即释放弹性公网IP">

@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">删除备份机</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" action="删除备份机" />
+      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" action="删除备份机" />
       <dialog-table :data="params.data" :columns="columns" />
       <a-form :form="form.fc" hideRequiredMark>
         <a-form-item label="强制清除" v-bind="formItemLayout" extra="强制清除备份机记录（适用于备份机宿主机离线的情况下）">

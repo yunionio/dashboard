@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{action}}</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" :action="action" name="硬盘" />
+      <dialog-selected-tips :count="params.data.length" :action="action" :name="$t('dictionary.snapshotpolicy')" />
       <dialog-table :data="params.data" :columns="columns" />
     </div>
     <div slot="footer">

@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">绑定密钥</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" action="绑定密钥" />
+      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" action="绑定密钥" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
         <a-form-item label="密钥对" v-bind="formItemLayout">

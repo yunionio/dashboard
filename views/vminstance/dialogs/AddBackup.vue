@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">添加备份机</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" action="添加备份机" />
+      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" action="添加备份机" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
         <a-form-item label="备份机的宿主机" v-bind="formItemLayout" extra="提示信息：宿主机为空时，系统会自动选择宿主机">

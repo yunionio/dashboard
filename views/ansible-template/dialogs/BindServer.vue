@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{params.title}}</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" :action="params.title" />
+      <dialog-selected-tips :name="$t('dictionary.ansibletemplate')" :count="params.data.length" :action="params.title" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form class="mt-3" :form="form" v-bind="formItemLayout">
         <a-form-item label="主机">

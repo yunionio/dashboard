@@ -7,7 +7,7 @@
           <div>强制重启模式，会导致服务器实例当前未保存的数据丢失</div>
         </template>
       </a-alert>
-      <dialog-selected-tips :count="params.data.length" :action="action" />
+      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="action" />
       <vxe-grid class="mb-2" :data="params.data" :columns="columns" />
       <a-form :form="form.fc" hideRequiredMark>
         <a-form-item label="强制重启" v-bind="formItemLayout">

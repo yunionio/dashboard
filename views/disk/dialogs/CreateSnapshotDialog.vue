@@ -3,7 +3,7 @@
     <div slot="header">新建快照</div>
     <div slot="body">
       <a-alert :message="errorInfo" banner v-if="errorInfo !== ''" />
-      <dialog-selected-tips :count="params.data.length" action="新建快照" />
+      <dialog-selected-tips :count="params.data.length" action="新建快照" :name="$t('dictionary.disk')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
