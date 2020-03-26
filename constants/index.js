@@ -171,6 +171,10 @@ export const SCHED_POLICY_OPTIONS_MAP = {
     label: '指定调度标签',
     key: 'schedtag',
   },
+  cloudprovider: {
+    label: '指定云账号',
+    key: 'cloudprovider',
+  },
 }
 
 // 弹性IP配置选项

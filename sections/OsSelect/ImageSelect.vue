@@ -41,6 +41,7 @@ import ImageSelectTemplate from './ImageSelectTemplate'
 import { Manager } from '@/utils/manager'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
 import storage from '@/utils/storage'
+import { uuid } from '@/utils/utils'
 
 const initData = {
   key: '',
@@ -153,11 +154,17 @@ export default {
       return imageMsg && imageMsg.enable_cloudaccount
     },
     cloudproviderParams () {
-      return {
+      const params = {
         limit: 0,
-        scope: this.$store.getters.scope,
+        enabled: true,
+        'filter.0': 'status.equals("connected")',
+        'filter.1': 'health_status.equals("normal")',
         ...this.cloudproviderParamsExtra,
       }
+      if (!params.scope && !params.project_domain) {
+        params.scope = this.$store.getters.scope
+      }
+      return params
     },
     storageImage () {
       if (this.storageSelectImage) {
@@ -344,6 +351,7 @@ export default {
         order_by: 'ref_count',
         order: 'desc',
         image_type: 'customized',
+        $t: uuid(),
         ...this.cacheImageParams,
       }
       if (this.showCloudaccount) {

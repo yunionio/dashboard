@@ -415,7 +415,7 @@ export const createVmDecorators = type => {
         'schedPolicyHost',
         {
           rules: [
-            { required: true, message: '请选择宿主机' },
+            { required: true, message: '请选择' },
           ],
         },
       ],
@@ -441,6 +441,14 @@ export const createVmDecorators = type => {
           },
         ],
       },
+      cloudprovider: [ // 传给后端的字段是 preferManager
+        'cloudprovider',
+        {
+          rules: [
+            { required: true, message: '请选择云账号' },
+          ],
+        },
+      ],
     },
     bios: [
       'bios',
@@ -827,6 +835,12 @@ export class GenCreateData {
     if (this.showPreferManager()) {
       ret.key = 'preferManager'
       ret.value = this.fd.preferManager
+    }
+    // 调度策略选择为 云账号
+    if (this.fd.schedPolicyType === SCHED_POLICY_OPTIONS_MAP.cloudprovider.key) {
+      ret.key = 'preferManager'
+      console.log(this.fd.cloudprovider, 'this.fd.cloudprovider')
+      ret.value = this.fd.cloudprovider
     }
     // 调度策略选择为 调度标签
     if (this.fd.schedPolicyType === SCHED_POLICY_OPTIONS_MAP.schedtag.key) {

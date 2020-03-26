@@ -378,7 +378,9 @@ export default {
       return params
     },
     cloudproviderParamsExtra () {
-      const params = {}
+      const params = {
+        ...this.scopeParams,
+      }
       if (this.form.fd.sku && this.form.fd.sku.provider) {
         params.provider = this.form.fd.sku.provider
       }
