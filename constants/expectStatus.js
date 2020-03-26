@@ -198,4 +198,8 @@ export default {
     danger: ['failed', 'delete_failed', 'deleted'],
     info: ['init', 'unavailable', 'unknown'],
   },
+  servertemplate: {
+    success: ['ready'],
+    info: ['init', 'unavailable', 'unknown'],
+  },
 }

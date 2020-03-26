@@ -514,7 +514,7 @@
     },
     "scalinggroup": {
       "init": "初始化",
-      "ready": "正常",
+      "ready": "可用",
       "deleting": "删除中",
       "wait_activity_over": "正在等待伸缩活动完毕",
       "destroy_instance": "毁伸缩实例中",
@@ -534,6 +534,11 @@
       "succeed": "成功",
       "part_succeed": "部分成功",
       "failed": "失败"
+    },
+    "servertemplate": {
+      "ready": "可用",
+      "init": "初始化",
+      "unknown": "未知"
     }
   },
   "skuCategoryOptions": {
@@ -1117,5 +1122,9 @@
   "flexGroupHealthCheckMode": {
     "normal": "虚拟机健康检查",
     "loadbalancer": "负载均衡健康检查"
+  },
+  "billingType": {
+    "postpaid": "按量付费",
+    "prepaid": "包年包月"
   }
 }
