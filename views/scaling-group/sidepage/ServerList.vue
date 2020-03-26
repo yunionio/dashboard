@@ -103,9 +103,23 @@ export default {
         {
           field: 'host',
           title: '宿主机',
+          width: 120,
         },
       ],
       singleActions: [
+        {
+          label: '移除',
+          action: (row) => {
+            this.createDialog('ScalingGroupServerRemoveDialog', {
+              title: '移除',
+              data: [row],
+              resId: this.getParams['scaling_group'],
+              columns: this.columns,
+              refresh: this.refresh,
+              onManager: this.onManager,
+            })
+          },
+        },
       ],
       groupActions: [
       ],
