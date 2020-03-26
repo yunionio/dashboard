@@ -28,7 +28,7 @@ export default {
             if (noChangeBandwidth.includes(brand)) {
               return {
                 validate: false,
-                tooltip: `${typeClouds.getHosttype().brand.label}无法修改带宽`,
+                tooltip: `${typeClouds.getHosttype()[brand].label}无法修改带宽`,
               }
             }
             const plaform = findPlatform(brand)

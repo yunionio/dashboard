@@ -4,7 +4,7 @@ export const getAssociateNameTableColumn = () => {
     title: '绑定资源',
     width: 120,
     slots: {
-      default: ({ row }) => {
+      default: ({ row }, h) => {
         const type = {
           server: '虚拟机',
           natgateway: 'NAT网关',
