@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{this.params.title}}</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" :action="this.params.title" name="镜像" />
+      <dialog-selected-tips :count="params.data.length" :action="this.params.title" :name="$t('dictionary.image')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
     </div>
     <div slot="footer">
