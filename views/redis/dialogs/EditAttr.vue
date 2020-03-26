@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">修改属性</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" :action="params.title" />
+      <dialog-selected-tips :name="$t('dictionary.elasticcaches')" :count="params.data.length" :action="params.title" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         class="mt-3"

@@ -5,7 +5,7 @@
       <div class="mb-3">
         <a-alert :showIcon="false" :message="alertMsg" banner />
       </div>
-      <dialog-selected-tips :count="params.data.length" :action="params.title" />
+      <dialog-selected-tips :name="$t('dictionary.elasticcaches')" :count="params.data.length" :action="params.title" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <!-- <a-form :form="form.fc">
         <a-form-item label="计费方式" v-bind="formItemLayout">

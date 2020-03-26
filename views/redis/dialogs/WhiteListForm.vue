@@ -3,7 +3,7 @@
         <div slot="header">{{params.title}}</div>
         <a-form slot="body" :form="form.fc" class="mt-3">
           <template v-if="params.data && params.data.length > 0">
-            <dialog-selected-tips :count="params.data.length" :action="params.title" />
+            <dialog-selected-tips :name="$t('dictionary.elasticcaches')" :count="params.data.length" :action="params.title" />
             <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
           </template>
           <a-form-item v-bind="formItemLayout" label="名称">
