@@ -9,7 +9,8 @@
       :elements="elements"
       :disabled="disabled"
       :schedtagParams="getSchedtagParams()"
-      :size-disabled="disabled" />
+      :size-disabled="disabled"
+      :storage-status-map="storageStatusMap" />
   </div>
 </template>
 
@@ -162,6 +163,34 @@ export default {
     },
     min () {
       return this.currentTypeObj.sysMin || 0
+    },
+    storageStatusMap () {
+      var statusMap = {
+        type: '',
+        tooltip: '',
+        isError: false,
+      }
+      if (this.capabilityData.storage_types3 && this.hypervisor && !this.isPublic) {
+        const storageTypes3 = this.capabilityData.storage_types3[this.hypervisor]
+        const allStorageTypes = []
+        Object.keys(storageTypes3).forEach((item) => {
+          const key = Array.isArray(item.split('/')) ? item.split('/')[0] : ''
+          const storages = storageTypes3[item] || []
+          const isAllEmpty = storages.every((item) => { return item.capacity === 0 })
+          allStorageTypes.push(...storages)
+          if (isAllEmpty && key === this.currentTypeObj.key) {
+            statusMap = { type: 'error', tooltip: `${key}存储的容量没有设置，无法创建虚拟机`, isError: true }
+          }
+        })
+        if (!statusMap.type) {
+          const isSomeNotEmpty = allStorageTypes.some((item) => { return item.capacity === 0 })
+          if (isSomeNotEmpty) {
+            statusMap = { type: 'warning', tooltip: '存储容量不足' }
+          }
+        }
+      }
+      this.$bus.$emit('VMCreateDisabled', statusMap.isError)
+      return statusMap
     },
   },
   created () {

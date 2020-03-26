@@ -43,7 +43,7 @@
             html-type="submit"
             style="width: 120px;"
             :loading="loading"
-            :disabled="!!errors.length">{{ confirmText }}</a-button>
+            :disabled="disabled || !!errors.length">{{ confirmText }}</a-button>
         </div>
         <side-errors error-title="创建主机失败" :errors="errors" @update:errors="changeErrors" />
       </template>
@@ -105,6 +105,7 @@ export default {
     this.getPriceList = _.debounce(this._getPriceList, 500)
     return {
       pricesList: [],
+      disabled: false,
     }
   },
   computed: {
@@ -286,6 +287,9 @@ export default {
       if (val) {
         this.getPriceList()
       }
+    })
+    this.$bus.$on('VMCreateDisabled', (val) => {
+      this.disabled = val
     })
   },
   methods: {
