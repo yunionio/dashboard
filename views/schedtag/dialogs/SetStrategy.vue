@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">偏好设置</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" action="偏好设置" name="调度标签" />
+      <dialog-selected-tips :name="$t('dictionary.schedtag')" :count="params.data.length" action="偏好设置" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
