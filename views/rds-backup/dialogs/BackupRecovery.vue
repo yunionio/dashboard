@@ -2,7 +2,7 @@
   <base-dialog :width="900" @cancel="cancelDialog">
     <div slot="header">新建备份</div>
     <a-form :form="form.fc" class="mt-3" slot="body">
-      <dialog-selected-tips :count="params.data.length" :action="params.title" />
+      <dialog-selected-tips :name="$t('dictionary.dbinstancebackups')" :count="params.data.length" :action="params.title" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form-item label="恢复到" v-bind="formItemLayout">
         <a-radio-group v-model="recoveryType">
