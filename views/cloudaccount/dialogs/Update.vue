@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">更新账号密码</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" action="更新账号密码" />
+      <dialog-selected-tips :name="$t('dictionary.cloudaccount')" :count="params.data.length" action="更新账号密码" />
       <dialog-table class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc"

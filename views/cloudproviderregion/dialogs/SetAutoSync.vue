@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">设置同步</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" action="设置同步" />
+      <dialog-selected-tips :name="$t('dictionary.region')" :count="params.data.length" action="设置同步" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
