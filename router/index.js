@@ -34,6 +34,8 @@ import SnapshotPolicy from '@Compute/views/snapshotpolicy'
 import AnsibleTemplate from '@Compute/views/ansible-template'
 import AnsibleTemplateCreate from '@Compute/views/ansible-template/create'
 import AnsiblePlaybook from '@Compute/views/ansible-playbook'
+import ScalingGroup from '@Compute/views/scaling-group'
+import ScalingGroupCreate from '@Compute/views/scaling-group/create'
 import Layout from '@/layouts/RouterView'
 import i18n from '@/locales'
 
@@ -161,6 +163,28 @@ export default {
               path: 'deploy',
               meta: {},
               component: ServicecatalogDeploy,
+            },
+          ],
+        },
+        {
+          path: '/scalinggroup',
+          meta: {
+            label: '弹性伸缩组',
+            // permission: 'servertemplates_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'ScalingGroup',
+              path: '',
+              meta: {},
+              component: ScalingGroup,
+            },
+            {
+              name: 'ScalingGroupCreate',
+              path: 'create',
+              meta: {},
+              component: ScalingGroupCreate,
             },
           ],
         },

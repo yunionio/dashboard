@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">迁移</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" action="迁移" />
+      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" action="迁移" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
         <a-form-item label="宿主机" v-bind="formItemLayout" extra="提示信息：宿主机为空时，系统会自动选择宿主机">

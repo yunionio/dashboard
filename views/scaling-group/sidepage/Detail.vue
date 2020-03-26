@@ -1,0 +1,103 @@
+<template>
+  <detail
+    :on-manager="onManager"
+    :data="data"
+    :base-info="baseInfo"
+    :extra-info="extraInfo"
+    status-module="scalinggroup" />
+</template>
+
+<script>
+// import { sizestr } from '@/utils/utils'
+import { getBrandTableColumn, getEnabledTableColumn } from '@/utils/common/tableColumn'
+
+export default {
+  name: 'ScalingGroupDetailSidpage',
+  props: {
+    data: {
+      type: Object,
+      required: true,
+    },
+    onManager: {
+      type: Function,
+      required: true,
+    },
+  },
+  data () {
+    return {
+      baseInfo: [
+        getEnabledTableColumn(),
+        getBrandTableColumn(),
+        {
+          field: 'instance_number',
+          title: '当前实例数',
+          width: 100,
+        },
+        {
+          field: '',
+          title: '伸缩策略 待添加',
+        },
+        {
+          field: 'guest_template',
+          title: '主机模板',
+        },
+      ],
+      extraInfo: [
+        {
+          title: '伸缩组信息',
+          items: [
+            {
+              field: 'desire_instance_number',
+              title: '期望实例数',
+            },
+            {
+              field: 'min_instance_number',
+              title: '最小实例数',
+            },
+            {
+              field: 'max_instance_number',
+              title: '最大实例数',
+            },
+            {
+              field: 'shrink_principle',
+              title: '移除策略',
+              formatter: ({ row }) => {
+                return this.$t('flexGrouPprinciple')[row.shrink_principle]
+              },
+            },
+            {
+              field: 'vpc',
+              title: 'VPC',
+            },
+            {
+              field: '',
+              title: '负载均衡',
+            },
+            {
+              field: 'health_check_mode',
+              title: '健康检查方式',
+              formatter: ({ row }) => {
+                return this.$t('flexGroupHealthCheckMode')[row.health_check_mode]
+              },
+            },
+            {
+              field: 'health_check_cycle',
+              title: '检查周期',
+              formatter: ({ row }) => {
+                return this.$t('flexGroupCycles')[row.health_check_cycle]
+              },
+            },
+            {
+              field: 'health_check_gov',
+              title: '健康状态检查宽限期',
+              formatter: ({ row }) => {
+                return `${row['health_check_gov']}s`
+              },
+            },
+          ],
+        },
+      ],
+    }
+  },
+}
+</script>

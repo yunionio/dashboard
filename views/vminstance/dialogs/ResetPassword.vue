@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">重置密码</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" action="重置密码" />
+      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" action="重置密码" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc">
         <a-form-item label="管理员密码" v-bind="formItemLayout">

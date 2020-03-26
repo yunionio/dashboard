@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">恢复</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" action="恢复" />
+      <dialog-selected-tips :count="params.data.length" action="恢复" :name="$t('dictionary.disk')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
     </div>
     <div slot="footer">

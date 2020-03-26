@@ -7,7 +7,7 @@
           1. 释放时间目前支持最小单位为1小时，不足1小时按1小时设置 <br /> 2. 实际释放时间与设置时间存在一定误差，具体释放时间以实际为准
         </div>
       </a-alert>
-      <dialog-selected-tips :count="params.data.length" :action="action" />
+      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="action" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">

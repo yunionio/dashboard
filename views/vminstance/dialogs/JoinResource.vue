@@ -7,7 +7,7 @@
           提示：加入资源池的公有云服务器可至基础设施-》服务器-》包年包月查询
         </div>
       </a-alert>
-      <dialog-selected-tips :count="params.data.length" action="加入资源池" />
+      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" action="加入资源池" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
