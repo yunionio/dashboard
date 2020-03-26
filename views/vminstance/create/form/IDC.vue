@@ -122,11 +122,14 @@
           </a-form-item>
           <a-form-item v-show="!isServertemplate" label="调度策略" class="mb-0">
             <sched-policy
+              :form="form"
               :server-type="form.fi.createType"
               :disabled-host="policyHostDisabled"
               :policy-host-params="policyHostParams"
               :decorators="decorators.schedPolicy"
-              :policy-schedtag-params="policySchedtagParams" />
+              :policy-schedtag-params="policySchedtagParams"
+              :showSchedCloudprovider="showSchedCloudprovider"
+              :cloudproviderParamsExtra="cloudproviderParamsExtra" />
           </a-form-item>
           <a-form-item label="引导方式" class="mb-0" v-if="isKvm">
             <bios :decorator="decorators.bios" :uefi="uefi" />
@@ -277,11 +280,21 @@ export default {
     cloudproviderParamsExtra () {
       const params = {
         image_type: 'system',
+        ...this.scopeParams,
       }
       if (this.form.fd.hypervisor && this.form.fd.hypervisor) {
         params.provider = HYPERVISORS_MAP[this.form.fd.hypervisor].provider
       }
       return params
+    },
+    showSchedCloudprovider () { // 创建VMware机器时，镜像类型不是 VMware 平台镜像时调度策略可以选择知道云账号
+      let show = false
+      if (this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key) {
+        if (this.form.fd.imageType !== IMAGES_TYPE_MAP.vmware.key) {
+          show = true
+        }
+      }
+      return show
     },
   },
   watch: {

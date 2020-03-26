@@ -39,6 +39,16 @@
         :decorators="decorators.policySchedtag"
         :schedtag-params="policySchedtagParams" />
     </a-form-item>
+    <a-form-item v-if="schedPolicyComponent === 'cloudprovider'">
+      <base-select
+        class="w-50"
+        v-decorator="decorators.cloudprovider"
+        resource="cloudproviders"
+        :params="cloudproviderParams"
+        :isDefaultSelect="true"
+        :showSync="true"
+        :select-props="{ placeholder: '请选择云账号' }" />
+    </a-form-item>
   </div>
 </template>
 
@@ -83,9 +93,17 @@ export default {
       type: Object,
       validator: val => !val || val.fc, // 不传 或者 传就有fc
     },
-    hideCloudaccountSched: { // 隐藏 指定云账号
+    hideCloudaccountSched: { // 隐藏 指定云账号(hosts接口)
       type: Boolean,
       default: false,
+    },
+    showSchedCloudprovider: { // 指定显示云账号(cloudprovider接口)
+      type: Boolean,
+      default: false,
+    },
+    cloudproviderParamsExtra: {
+      type: Object,
+      default: () => ({}),
     },
   },
   data () {
@@ -116,7 +134,23 @@ export default {
       if (this.hideCloudaccountSched) {
         delete ret['host']
       }
+      if (!this.showSchedCloudprovider) {
+        delete ret.cloudprovider
+      }
       return ret
+    },
+    cloudproviderParams () {
+      const params = {
+        limit: 0,
+        enabled: true,
+        'filter.0': 'status.equals("connected")',
+        'filter.1': 'health_status.equals("normal")',
+        ...this.cloudproviderParamsExtra,
+      }
+      if (!params.scope && !params.project_domain) {
+        params.scope = this.$store.getters.scope
+      }
+      return params
     },
   },
   watch: {
@@ -147,6 +181,9 @@ export default {
           break
         case this.schedPolicyOptionsMap.schedtag.key:
           this.schedPolicyComponent = 'schedtag'
+          break
+        case this.schedPolicyOptionsMap.cloudprovider.key:
+          this.schedPolicyComponent = 'cloudprovider'
           break
       }
     },
