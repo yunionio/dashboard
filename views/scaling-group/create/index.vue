@@ -60,7 +60,9 @@
       </a-form-item>
       <a-form-item label="健康检查方式">
          <a-select v-decorator="decorators.health_check_mode">
-            <a-select-option v-for="(v, k) in $t('flexGroupHealthCheckMode')" :key="k" :value="k">{{v}}</a-select-option>
+           <template v-for="(v, k) in $t('flexGroupHealthCheckMode')">
+             <a-select-option v-if="k !== 'loadbalancer' || (isLoadbalancer && k === 'loadbalancer')" :key="k" :value="k">{{v}}</a-select-option>
+           </template>
           </a-select>
       </a-form-item>
        <a-form-item label="检查周期">
@@ -78,7 +80,7 @@
     <page-footer>
       <div slot="right">
         <a-button class="mr-3" type="primary" @click="handleConfirm" :loading="loading">确 定</a-button>
-        <a-button>取 消</a-button>
+        <a-button @click="handleCancel">取 消</a-button>
       </div>
     </page-footer>
   </div>
@@ -109,6 +111,7 @@ export default {
       isLoadbalancer: false,
       serverTemplateListLoading: false,
       serverTemplateList: [],
+      healthCheckModeList: [],
       form: {
         fc: this.$form.createForm(this, {
           onValuesChange: this.handleValuesChange,
@@ -226,6 +229,11 @@ export default {
       }
       return values
     },
+    handleCancel () {
+      this.$router.push({
+        name: 'ScalingGroup',
+      })
+    },
     async handleConfirm () {
       const { validateFields } = this.form.fc
       const manager = new this.$Manager('scalinggroups', 'v1')
@@ -239,9 +247,7 @@ export default {
         await manager.create({
           data: Object.assign({}, defaultParams, this.formatValues(values)),
         })
-        this.$router.push({
-          name: 'ScalingGroup',
-        })
+        this.handleCancel()
       } catch (err) {
         throw err
       } finally {

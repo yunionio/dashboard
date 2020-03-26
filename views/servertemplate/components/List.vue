@@ -10,7 +10,7 @@
 <script>
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import { getTenantFilter } from '@/utils/common/tableFilter'
+import { getTenantFilter, getStatusFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 
@@ -40,6 +40,37 @@ export default {
             },
           },
           tenant: getTenantFilter(),
+          status: getStatusFilter('servertemplate'),
+          os_type: {
+            label: '系统类型',
+            dropdown: true,
+            multiple: true,
+            items: [
+              { label: 'Windows', key: 'windows' },
+              { label: 'Linux', key: 'linux' },
+              { label: 'VMware', key: 'VMWare' },
+            ],
+            filter: true,
+            formatter: val => {
+              return `os_type.in(${val})`
+            },
+          },
+          vpc: {
+            label: 'VPC',
+          },
+          region: {
+            label: '区域',
+          },
+          billing_type: {
+            label: '计费类型',
+            dropdown: true,
+            items: Object.keys(this.$t('billingType')).map((k) => {
+              return {
+                label: this.$t('billingType')[k],
+                key: k,
+              }
+            }),
+          },
         },
       }),
       exportDataOptions: {

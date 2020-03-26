@@ -1,6 +1,7 @@
 <template>
   <detail
     :on-manager="onManager"
+    resource="servertemplates"
     :data="data"
     :extra-info="extraInfo" />
 </template>
@@ -11,9 +12,16 @@ import { LOGIN_TYPES_MAP } from '@Compute/constants'
 import { STORAGE_TYPES } from '@/constants/compute'
 import { HYPERVISORS_MAP } from '@/constants'
 import { sizestrWithUnit } from '@/utils/utils'
+import {
+  getBrandTableColumn,
+  getBillingTypeTableColumn,
+  getCopyWithContentTableColumn,
+} from '@/utils/common/tableColumn'
+import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'ServertemplateDetail',
+  mixins: [WindowsMixin],
   props: {
     data: {
       type: Object,
@@ -35,18 +43,21 @@ export default {
       return `${sizestrWithUnit(size, 'M', 1024)}${diskType}`
     }
     return {
+      baseInfo: [
+        {
+          field: 'keypair',
+          title: '关联密钥',
+          formatter: ({ row }) => {
+            return row.config_info.keypair || '-'
+          },
+        },
+        getBrandTableColumn(),
+        getBillingTypeTableColumn(),
+      ],
       extraInfo: [
         {
           title: '其他信息',
           items: [
-            {
-              field: 'config_info.region',
-              title: '区域',
-            },
-            {
-              field: 'config_info.zone',
-              title: '可用区',
-            },
             {
               field: 'config_info.hypervisor',
               title: '平台',
@@ -73,7 +84,7 @@ export default {
               },
             },
             {
-              field: 'config_info.os_type',
+              field: 'os_type',
               title: '操作系统',
             },
             {
@@ -117,6 +128,17 @@ export default {
                 return '-'
               },
             },
+            getCopyWithContentTableColumn({
+              field: 'vpc',
+              title: 'VPC',
+              hideField: true,
+              slotCallback: row => {
+                if (!row.vpc) return '-'
+                return [
+                  <side-page-trigger permission='vpcs_get' name='VpcSidePage' id={row.vpc_id} vm={this}>{ row.vpc }</side-page-trigger>,
+                ]
+              },
+            }),
             {
               field: 'config_info.network',
               title: '网络',

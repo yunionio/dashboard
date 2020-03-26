@@ -35,7 +35,7 @@ export default {
         },
         {
           field: '',
-          title: '伸缩策略 待添加',
+          title: '伸缩策略',
         },
         {
           field: 'guest_template',
@@ -49,6 +49,9 @@ export default {
             {
               field: 'desire_instance_number',
               title: '期望实例数',
+              formatter: ({ row }) => {
+                return row['desire_instance_number']
+              },
             },
             {
               field: 'min_instance_number',
