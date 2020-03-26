@@ -41,6 +41,12 @@ export default {
             onManager: this.onManager,
           })
         },
+        meta: (obj) => {
+          return {
+            validate: !obj.enabled,
+            tooltip: obj.enabled && '请先禁用弹性伸缩组',
+          }
+        },
       },
     ]
   },

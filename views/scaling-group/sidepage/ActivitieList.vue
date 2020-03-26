@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { getStatusTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
+import { getStatusTableColumn, getTimeTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 import { getStatusFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
@@ -36,6 +36,10 @@ export default {
         },
       }),
       columns: [
+        getCopyWithContentTableColumn({
+          field: 'id',
+          title: 'ID',
+        }),
         getStatusTableColumn({ statusModule: 'scalingactivitie', minWidth: 150 }),
         {
           field: 'trigger_desc',

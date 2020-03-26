@@ -24,7 +24,7 @@
               </a-select>
               <a-input-number v-decorator="decorators.value" :min="0" :max="1000" />
               <span style="margin:5px 0 0 5px">
-                {{form.fc.getFieldValue('indicator') === 'cpu' ? '%' : 'b/s'}}
+                {{ form.fc.getFieldValue('alarm.indicator') && form.fc.getFieldValue('alarm.indicator') !== 'cpu' ? 'b/s' : '%' }}
               </span>
             </a-input-group>
           </a-form-item>
