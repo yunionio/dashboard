@@ -446,8 +446,8 @@ export const diskCreateSnapshotConfig = {
   },
   ctyun () {
     return {
-      validate: true,
-      tooltip: '',
+      validate: false,
+      tooltip: '天翼云暂不支持此操作',
     }
   },
 }

@@ -184,7 +184,7 @@ const actionEableMap = {
       zstack: ['running', 'ready'],
       dstack: ['running', 'ready'],
       ucloud: false,
-      ctyun: ['running', 'ready'],
+      ctyun: false,
       google: ['running', 'ready'],
     },
   },
