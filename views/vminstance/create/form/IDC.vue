@@ -4,7 +4,8 @@
       class="mt-3"
       :form="form.fc"
       v-bind="formItemLayout"
-      @submit="submit">
+      @submit="submit"
+      hideRequiredMark>
       <servertemplate v-if="isServertemplate" :decorators="decorators.servertemplate" />
       <!-- <a-divider orientation="left">基础配置</a-divider> -->
       <a-form-item v-show="!isServertemplate" :label="`指定${$t('dictionary.project')}`">

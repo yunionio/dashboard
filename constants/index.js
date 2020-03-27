@@ -167,13 +167,13 @@ export const SCHED_POLICY_OPTIONS_MAP = {
     },
     key: 'host',
   },
-  schedtag: {
-    label: '指定调度标签',
-    key: 'schedtag',
-  },
   cloudprovider: {
     label: '指定云账号',
     key: 'cloudprovider',
+  },
+  schedtag: {
+    label: '指定调度标签',
+    key: 'schedtag',
   },
 }
 
