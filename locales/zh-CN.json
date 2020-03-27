@@ -119,7 +119,8 @@
       "ejecting_iso": "正在退出虚拟光盘",
       "eject_fail": "退出虚拟光盘失败",
       "suspend": "挂起",
-      "resuming": "恢复中"
+      "resuming": "恢复中",
+      "sync_status": "同步状态"
     },
     "network": {
       "init": "初始化",
