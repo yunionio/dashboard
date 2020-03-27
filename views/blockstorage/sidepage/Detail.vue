@@ -58,6 +58,14 @@ export default {
           title: '用量统计',
           items: [
             {
+              field: 'commit_bound',
+              title: '超售比',
+            },
+            {
+              field: 'commit_rate',
+              title: '分配率',
+            },
+            {
               field: 'capacity',
               title: '实际容量',
               slots: {
