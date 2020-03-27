@@ -368,7 +368,7 @@ export default {
     },
     validateForm () {
       return new Promise((resolve, reject) => {
-        this.form.fc.validateFieldsAndScroll({ scroll: { alignWithTop: true } }, (err, values) => {
+        this.form.fc.validateFieldsAndScroll({ scroll: { alignWithTop: true, offsetTop: 100 } }, (err, values) => {
           if (!err) {
             resolve(values)
           } else {
