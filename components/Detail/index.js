@@ -269,7 +269,6 @@ export default {
     renderItem (h, item, renderTitle = true) {
       let val
       // try catch 主要针对后端字段异常且前端没有特别严谨断言的情况下，避免详情白屏
-      console.log(item)
       try {
         if (item.slots && item.slots.default) {
           val = item.slots.default({ row: this.data }, h)
