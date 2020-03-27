@@ -47,6 +47,7 @@
           <a-form-item label="触发时间">
             <a-date-picker
               :disabledDate="disabledDate"
+              :disabledTime="disabledDateTime"
               v-decorator="decorators.execTime"
               :showTime="{ defaultValue: $moment('00:00:00', 'HH:mm:ss') }"
               format="YYYY-MM-DD hh:mm:ss" />
@@ -245,7 +246,7 @@ export default {
             ],
           },
         ],
-        // 小时：分钟
+        // 有效时间
         startEndTime: [
           'startEndTime',
           {
@@ -268,7 +269,29 @@ export default {
   },
   methods: {
     disabledDate (current) {
-      return current && current < this.$moment().endOf('day')
+      return current && current < this.$moment().subtract(1, 'days')
+    },
+    range (start, end) {
+      const result = []
+      for (let i = start; i < end; i++) {
+        result.push(i)
+      }
+      return result
+    },
+    disabledDateTime (_ = this.$moment(), type) {
+      let disabledHours = []
+      const dayDiff = _.diff(this.$moment(), 'days', true)
+      if (dayDiff < -1) {
+        disabledHours = this.range(0, 24)
+      }
+      // 当天
+      if (dayDiff > -1 && dayDiff < 0) {
+        const _hour = this.$moment().hour()
+        disabledHours = this.range(0, _hour + 1)
+      }
+      return {
+        disabledHours: () => disabledHours,
+      }
     },
     formatValues (values) {
       if (values.hourMinute) {

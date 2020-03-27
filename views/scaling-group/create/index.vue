@@ -33,16 +33,22 @@
         v-bind="formItemLayout"
         :vpcParams="scopeParams" />
       <a-form-item label="最大实例数">
-          <a-input-number v-decorator="decorators.max_instance_number" :min="1" :max="1000" />
+        <a-tooltip placement="top" title="范围在 1 ～ 1000">
+           <a-input-number v-decorator="decorators.max_instance_number" :min="1" :max="1000" />
+        </a-tooltip>
       </a-form-item>
       <a-form-item label="期望实例数">
-          <a-input-number v-decorator="decorators.desire_instance_number" :min="form.fd.min_instance_number" :max="form.fd.max_instance_number" />
-          <div slot="extra">
-            该弹性伸缩组中期望运行的虚拟机个数，当新建完成后会自动创建与期望值相同的虚拟机
-          </div>
+        <a-tooltip placement="top" title="范围在 0 ～ 最大实例数">
+          <a-input-number v-decorator="decorators.desire_instance_number" :min="0" :max="form.fd.max_instance_number" />
+        </a-tooltip>
+        <div slot="extra">
+          该弹性伸缩组中期望运行的虚拟机个数，当新建完成后会自动创建与期望值相同的虚拟机
+        </div>
       </a-form-item>
       <a-form-item label="最小实例数">
-          <a-input-number onChange="handleMinNumberChange" v-decorator="decorators.min_instance_number" :min="0" :max="999" />
+        <a-tooltip placement="top" :title="`范围在 0 ~ 期望实例数`">
+          <a-input-number onChange="handleMinNumberChange" v-decorator="decorators.min_instance_number" :min="0" :max="form.fd.desire_instance_number"  />
+        </a-tooltip>
       </a-form-item>
       <a-form-item label="实例移除策略">
           <a-select v-decorator="decorators.shrink_principle">
@@ -54,7 +60,7 @@
             <a-radio-button :value="false">暂不绑定</a-radio-button>
             <a-radio-button :value="true">绑定</a-radio-button>
           </a-radio-group>
-          <div v-if="isLoadbalancer">
+          <div v-if="isLoadbalancer" style="max-width: 920px">
             <bind-lb :fc="form.fc" ref="BIND_LB" />
           </div>
       </a-form-item>
@@ -164,14 +170,17 @@ export default {
         this.$refs['BIND_LB'].fetchQueryLbs(vpcId)
       }
     },
-    numberChange (v) {
-      const { fd, fc } = this.form
-      if (fd.min_instance_number >= fd.max_instance_number) {
-        fc.setFieldsValue({
-          max_instance_number: fd.min_instance_number + 1,
-        })
-      }
-    },
+    // numberChange (v) {
+    //   const { fd, fc } = this.form
+    //   if (fd.min_instance_number >= fd.max_instance_number) {
+    //     fc.setFields({
+    //       min_instance_number: {
+    //         value: fd.min_instance_number,
+    //         errors: [new Error('最小实例数要小于等于期望是例数、最大实例数')],
+    //       },
+    //     })
+    //   }
+    // },
     handleValuesChange (vm, changedFields) {
       this.form.fd = {
         ...this.form.fd,
@@ -185,7 +194,7 @@ export default {
           this.vpcChange()
         }
         if (changedFields.min_instance_number || changedFields.max_instance_number) {
-          this.numberChange()
+          // this.numberChange()
         }
       })
     },

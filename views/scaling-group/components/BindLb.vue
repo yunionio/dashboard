@@ -1,37 +1,37 @@
 <template>
   <a-input-group compact>
-    <a-form-item style="width: 30%" :wrapperCol="{ span: 24 }">
+    <a-form-item style="width: 28%" :wrapperCol="{ span: 24 }">
       <a-select class="w-100" v-decorator="decorators.loadbalancer_id" placeholder="请选择负载均衡实例">
         <a-select-option v-for="item in loadbalancerList" :key="item.id" :value="item.id">{{item.name}}</a-select-option>
       </a-select>
     </a-form-item>
-    <a-form-item style="width: 30%" :wrapperCol="{ span: 24 }">
+    <a-form-item style="width: 28%" :wrapperCol="{ span: 24 }">
       <a-select  class="w-100" v-decorator="decorators.lb_backend_group" placeholder="请选择后台服务器组">
         <a-select-option v-for="item in groupList" :key="item.id" :value="item.id">{{item.name}}</a-select-option>
       </a-select>
     </a-form-item>
-    <a-form-item style="width: 25%" :wrapperCol="{ span: 24 }">
-      <a-row class="w-100">
-        <a-col :span="11" style="text-align: right;">
-          <span>服务器组端口： </span>
-        </a-col>
-        <a-col :span="12">
-        <a-input-number class="w-100" v-decorator="decorators.loadbalancer_backend_port" />
-        </a-col>
-      </a-row>
-    </a-form-item>
-    <a-form-item style="width: 15%" :wrapperCol="{ span: 24 }">
-      <a-row>
-        <a-col :span="10" style="text-align: right;">
-          <span>权重： </span>
-        </a-col>
-        <a-col :span="14">
+    <a-row style="width: 28%">
+      <a-col :span="11" style="text-align: right;">
+        <span class="ant-form-item-label">服务器组端口： </span>
+      </a-col>
+      <a-col :span="12">
+        <a-form-item :wrapperCol="{ span: 24 }">
+          <a-input-number class="w-100" v-decorator="decorators.loadbalancer_backend_port" />
+        </a-form-item>
+      </a-col>
+    </a-row>
+    <a-row style="width: 15%">
+      <a-col :span="10" style="text-align: right;">
+        <span class="ant-form-item-label">权重： </span>
+      </a-col>
+      <a-col :span="14">
+        <a-form-item :wrapperCol="{ span: 24 }">
           <a-tooltip title="权重范围在 1～256 之间" placement="top">
             <a-input-number class="w-100" :min="1" :max="256" v-decorator="decorators.loadbalancer_backend_weight" />
           </a-tooltip>
-        </a-col>
-      </a-row>
-    </a-form-item>
+        </a-form-item>
+      </a-col>
+    </a-row>
   </a-input-group>
 </template>
 

@@ -121,7 +121,7 @@ export const DECORATORS = {
   loadbalancer_backend_weight: [
     'loadbalancer_backend_weight',
     {
-      initialValue: 5,
+      initialValue: 50,
       rules: [
         { required: true, message: '请输入权重' },
       ],
