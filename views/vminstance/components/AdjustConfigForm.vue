@@ -22,6 +22,16 @@
           :instance-type="instanceType"
           :hypervisor="hypervisor" />
       </a-form-item>
+      <a-form-item label="系统盘" v-bind="formItemLayout" v-show="selectedItems.length === 1">
+        <system-disk
+          v-if="hypervisor && form.fi.capability.storage_types"
+          :decorator="decorators.systemDisk"
+          :type="type"
+          :hypervisor="hypervisor"
+          :sku="form.fd.sku"
+          :capability-data="form.fi.capability"
+          :disabled="true" />
+      </a-form-item>
       <a-form-item label="数据盘" v-bind="formItemLayout" v-show="selectedItems.length === 1">
         <data-disk
           v-if="hypervisor && form.fi.capability.storage_types"
@@ -32,7 +42,6 @@
           :capability-data="form.fi.capability"
           :sku="form.fd.sku"
           :image="form.fi.imageMsg"
-          :disabled="!diskLoaded"
           :domain="domain" />
       </a-form-item>
       <a-form-item label="申请原因" v-bind="formItemLayout" v-if="isOpenWorkflow">
@@ -58,6 +67,7 @@ import _ from 'lodash'
 import CpuRadio from '@Compute/sections/CpuRadio'
 import MemRadio from '@Compute/sections/MemRadio'
 import DataDisk from '@Compute/sections/DataDisk'
+import SystemDisk from '@Compute/views/vminstance/create/components/SystemDisk'
 import sku from '@Compute/sections/SKU'
 import { SERVER_TYPE } from '@Compute/constants'
 import { Manager } from '@/utils/manager'
@@ -66,6 +76,7 @@ import WorkflowMixin from '@/mixins/workflow'
 import { HYPERVISORS_MAP } from '@/constants'
 import { findPlatform } from '@/utils/common/hypervisor'
 import { isRequired } from '@/utils/validate'
+import { STORAGE_TYPES } from '@/constants/compute'
 
 export default {
   name: 'AdjustConfig',
@@ -74,6 +85,7 @@ export default {
     MemRadio,
     sku,
     DataDisk,
+    SystemDisk,
   },
   mixins: [WindowsMixin, WorkflowMixin],
   provide () {
@@ -139,6 +151,44 @@ export default {
             ],
           },
         ],
+        systemDisk: {
+          type: [
+            'systemDiskType',
+            {
+              rules: [
+                { validator: isRequired(), message: '请选择磁盘类型' },
+              ],
+            },
+          ],
+          size: [
+            'systemDiskSize',
+            {
+              rules: [
+                { required: true, message: '请输入磁盘大小' },
+              ],
+            },
+          ],
+          schedtag: [
+            'systemDiskSchedtag',
+            {
+              validateTrigger: ['change', 'blur'],
+              rules: [{
+                required: true,
+                message: '请选择调度标签',
+              }],
+            },
+          ],
+          policy: [
+            'systemDiskPolicy',
+            {
+              validateTrigger: ['blur', 'change'],
+              rules: [{
+                required: true,
+                message: '请选择调度标签',
+              }],
+            },
+          ],
+        },
         dataDisk: {
           type: i => [
             `dataDiskTypes[${i}]`,
@@ -356,20 +406,10 @@ export default {
     this.serversManager = new Manager('servers', 'v2')
     this.zonesM2 = new Manager('zones', 'v2')
     this.serverskusM = new Manager('serverskus')
-    this.fetchData()
+    this.loadData(this.params.data)
     this.fetchInstanceSpecs()
   },
   methods: {
-    fetchData () {
-      let ids = []
-      this.selectedItems.forEach((item) => {
-        ids.push(item.id)
-      })
-      this.serversManager.batchGet({ id: ids })
-        .then((res) => {
-          this.loadData(res.data.data)
-        })
-    },
     async loadData (data) {
       this.data = data
       if (this.data.length > 0) {
@@ -382,8 +422,16 @@ export default {
       this.form.fd.vcpu_count = conf[0]
       this.form.fd.vmem = Math.ceil(conf[1]) * 1024
       this.form.fd.datadisks = conf[2]
+      this.form.fd.sysdisks = conf[3]
       this.beforeDataDisks = [ ...this.form.fd.datadisks ]
-
+      if (this.form.fd.sysdisks && this.form.fd.sysdisks.length === 1) {
+        const sysdisk = this.form.fd.sysdisks[0]
+        const storageItem = STORAGE_TYPES[this.selectedItem.hypervisor]
+        this.form.fc.setFieldsValue({
+          [this.decorators.systemDisk.type[0]]: { key: sysdisk.type, label: R.is(Object, storageItem) ? (_.get(storageItem, '[sysdisk.type].key') || sysdisk.type) : sysdisk.type },
+          [this.decorators.systemDisk.size[0]]: sysdisk.value,
+        })
+      }
       this.$nextTick(() => {
         setTimeout(() => {
           this.form.fd.datadisks.forEach((v, i) => {
@@ -398,6 +446,7 @@ export default {
       let cpu = 0
       let mem = 0
       let datadisks = []
+      let sysdisks = []
       for (let i = 0; i < this.data.length; i++) {
         if (cpu < this.data[i].vcpu_count) {
           cpu = this.data[i].vcpu_count
@@ -407,13 +456,15 @@ export default {
         }
         if (this.data[i].disks_info) {
           this.data[i].disks_info.forEach((item) => {
-            if (item.disk_type !== 'sys' && item.index !== 0) {
+            if (item.disk_type !== 'sys') { // 数据盘
               datadisks.push({ value: item.size / 1024, type: item.storage_type })
+            } else { // 系统盘
+              sysdisks.push({ value: item.size / 1024, type: item.storage_type })
             }
           })
         }
       }
-      return [cpu, mem / 1024, datadisks]
+      return [cpu, mem / 1024, datadisks, sysdisks]
     },
     async doChangeSettingsByWorkflowSubmit (values) {
       const params = {
