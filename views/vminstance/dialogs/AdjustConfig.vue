@@ -1,5 +1,5 @@
 <template>
-  <base-dialog @cancel="cancelDialog" :width="1045">
+  <base-dialog @cancel="cancelDialog" width="86%">
     <div slot="header">{{action}}</div>
     <div slot="body">
       <a-alert class="mb-2" type="warning" v-if="tips">
@@ -449,7 +449,7 @@ export default {
       }
       await this.createWorkflow(variables)
       this.$message.success('主机调整配置请求流程已提交')
-      this.$router.push('/workflow?type=me-process')
+      window.location.href = this.$appConfig.v1Perfix + '/workflow?type=me-process'
     },
     async doChangeSettingsSubmit (values) {
       const params = {
