@@ -175,9 +175,9 @@ export default {
         const allStorageTypes = []
         Object.keys(storageTypes3).forEach((item) => {
           const key = Array.isArray(item.split('/')) ? item.split('/')[0] : ''
-          const storages = storageTypes3[item] || []
-          const isAllEmpty = storages.every((item) => { return item.capacity === 0 })
-          allStorageTypes.push(...storages)
+          const storages = storageTypes3[item] || {}
+          const isAllEmpty = storages.capacity === 0
+          allStorageTypes.push(storages)
           if (isAllEmpty && key === this.currentTypeObj.key) {
             statusMap = { type: 'error', tooltip: `${key}存储的容量没有设置，无法创建虚拟机`, isError: true }
           }
