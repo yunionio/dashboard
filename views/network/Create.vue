@@ -560,7 +560,7 @@ export default {
             }
             await manager.performClassAction({
               action: 'check-create-data',
-              data: { 'network': bodyData },
+              data: bodyData,
             })
             await manager.create({ data: bodyData })
           }
