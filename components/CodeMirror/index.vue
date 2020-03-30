@@ -102,6 +102,7 @@ export default {
         this.content = cm.getValue()
         if (this.$emit) {
           this.$emit('input', this.content)
+          this.$emit('change', this.content)
         }
       })
       // 所有有效事件（驼峰命名）+ 去重

@@ -540,6 +540,16 @@
       "ready": "可用",
       "init": "初始化",
       "unknown": "未知"
+    },
+    "kubecluster": {
+      "init": "待部署",
+      "deploying": "部署中",
+      "running": "运行中",
+      "error": "错误",
+      "deleting": "正在删除",
+      "creating": "创建中",
+      "create_fail": "创建失败",
+      "delete_fail": "删除失败"
     }
   },
   "skuCategoryOptions": {

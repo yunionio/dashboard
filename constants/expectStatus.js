@@ -202,4 +202,9 @@ export default {
     success: ['ready'],
     info: ['init', 'unavailable', 'unknown'],
   },
+  kubecluster: {
+    success: ['running'],
+    danger: ['error', 'create_fail', 'delete_fail'],
+    info: ['init', 'unknown'],
+  },
 }
