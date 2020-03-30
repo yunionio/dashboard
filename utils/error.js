@@ -41,7 +41,7 @@ export const getHttpErrorMessage = (err, isErrorBody = false) => {
   if (!errorBody.class) {
     // 如果为499则前端生成一个临时class
     if (status === 499) {
-      errorBody = { ...errorBody, class: 'Outher' }
+      errorBody = { ...errorBody, class: 'Other' }
     } else {
       return
     }
