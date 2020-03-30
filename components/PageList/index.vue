@@ -377,6 +377,9 @@ export default {
     > .vxe-table > .vxe-table--main-wrapper > .vxe-table--body-wrapper {
       overflow: hidden;
     }
+    .vxe-table.is--empty .vxe-table--empty-block, .vxe-table.is--empty .vxe-table--empty-placeholder {
+      height: auto !important;
+    }
   }
 }
 </style>
