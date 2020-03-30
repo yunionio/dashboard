@@ -47,6 +47,10 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    capability: {
+      type: String,
+      default: 'network',
+    },
   },
   inject: ['form'],
   data () {
@@ -121,7 +125,7 @@ export default {
         })
     },
     fetchRegions (cloudproviderId) {
-      const params = Object.assign({}, this.regionParamsExtra, { manager: cloudproviderId, limit: 0, scope: this.scope })
+      const params = Object.assign({}, this.regionParamsExtra, { manager: cloudproviderId, limit: 0, scope: this.scope, capability: this.capability })
       // 清空可用区
       this.regionOpts = []
       this.emit({}, 'region')
