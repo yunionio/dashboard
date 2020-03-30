@@ -31,14 +31,21 @@ export const getHttpErrorMessage = (err, isErrorBody = false) => {
   if (!isErrorBody && (!err.response || !err.response.data)) return
   const errorData = isErrorBody ? err : err.response.data
   let errorBody = getErrorBody(errorData)
+  const status = err.response.status
   if (!isErrorBody) {
-    const status = err.response.status
     const method = err.config.method
     if (status === 502 && method !== 'get') { // 网关错误需要手动添加 class
       errorBody = { ...errorBody, class: 'BadGatewayError' }
     }
   }
-  if (!errorBody.class) return
+  if (!errorBody.class) {
+    // 如果为499则前端生成一个临时class
+    if (status === 499) {
+      errorBody = { ...errorBody, class: 'Outher' }
+    } else {
+      return
+    }
+  }
   // 默认为错误的元信息
   let ret = errorBody.details
   // 查到对应的class翻译信息
