@@ -21,11 +21,10 @@
       <item-area :defaultActiveFirstOption="['city']" :values="form.fc.getFieldsValue()" />
       <div v-show="!form.fc.getFieldError('provider')">
         <s-k-u ref="REF_SKU" />
-        <a-divider orientation="left">高级配置</a-divider>
         <a-form-item label="管理员密码" v-bind="formItemLayout">
           <server-password :loginTypes="loginTypes" :decorator="decorators.loginConfig" :form="form" />
         </a-form-item>
-        <a-form-item label="VPC" v-bind="formItemLayout">
+        <a-form-item label="网络" v-bind="formItemLayout">
           <item-vpc-opts ref="REF_VPC" :decorators="decorators.vpcNetwork" />
         </a-form-item>
         <bottom-bar :values="form.fc.getFieldsValue()" />
