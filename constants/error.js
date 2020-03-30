@@ -3643,5 +3643,8 @@ export default {
         }
       }
     }
+  },
+  "Other": {
+    "zh-CN": "服务异常"
   }
 }
