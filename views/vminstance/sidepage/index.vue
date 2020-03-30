@@ -36,6 +36,7 @@ import DiskListForVmInstanceSidepage from '@Compute/views/disk/components/List'
 import NetworkListForVmInstanceSidepage from '@Compute/views/networks/components/List'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
+import { cloudEnabled, cloudUnabledTip } from '../utils'
 import VmInstanceDetail from './Detail'
 import VmInstanceMonitorSidepage from './Monitor'
 import VmInstanceAlertSidepage from './Alert'
@@ -105,6 +106,13 @@ export default {
                     this.refresh()
                   },
                 })
+              },
+              meta: () => {
+                const ret = {
+                  validate: cloudEnabled('assignSecgroup', me.detailData),
+                  tooltip: cloudUnabledTip('assignSecgroup', me.detailData),
+                }
+                return ret
               },
             },
           ]
