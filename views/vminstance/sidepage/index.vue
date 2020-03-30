@@ -27,6 +27,7 @@
 import SecgroupList from '@Compute/views/secgroup/components/List'
 // import HostList from '@Compute/views/host/components/List'
 import NetworkListForVmInstanceSidepage from '@Compute/views/networks/components/List'
+import { cloudEnabled, cloudUnabledTip } from '../utils'
 import VmInstanceDetail from './Detail'
 import DiskListForVmInstanceSidepage from './Disk'
 import VmInstanceMonitorSidepage from './Monitor'
@@ -101,6 +102,13 @@ export default {
                     this.list.fetchData()
                   },
                 })
+              },
+              meta: () => {
+                const ret = {
+                  validate: cloudEnabled('assignSecgroup', me.data),
+                  tooltip: cloudUnabledTip('assignSecgroup', me.data),
+                }
+                return ret
               },
             },
           ]
