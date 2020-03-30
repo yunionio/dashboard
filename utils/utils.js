@@ -332,8 +332,8 @@ export const findAndUnshift = (arr, condition) => {
 export const findAndPush = (arr, condition) => {
   const ret = arr.slice(0)
   if (!condition || !R.is(Function, condition)) return ret
-  let firstValue = ret[0]
-  if (!firstValue) return ret
+  if (!ret || R.type(arr) !== 'Array' || ret.length === 0) return ret
+  let firstValue
   for (var i = 0; i < ret.length; i++) {
     if (condition(ret[i])) {
       firstValue = ret[i]
@@ -341,7 +341,9 @@ export const findAndPush = (arr, condition) => {
       break
     }
   }
-  ret.push(firstValue)
+  if (firstValue) {
+    ret.push(firstValue)
+  }
   return ret
 }
 
