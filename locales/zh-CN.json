@@ -1062,6 +1062,14 @@
     "non_default_domain_projects": {
       "label": "三级权限开关",
       "desc": "设置是否开启三级权限。默认为关闭，设置为开启后将无法关闭。"
+    },
+    "show_captcha": {
+      "label": "验证码开关",
+      "desc": "云管用户登录时，是否需要输入验证码"
+    },
+    "enable_totp": {
+      "label": "双因子认证",
+      "desc": "云管用户登陆系统时，是否需要进行二次认证"
     }
   },
   "notificationPriority": {
