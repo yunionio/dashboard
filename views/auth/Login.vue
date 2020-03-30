@@ -1,79 +1,86 @@
 <template>
-  <div class="login-body">
-    <div class="login-left d-flex flex-column" :style="{ height: `${panelHeight}px` }">
-      <h2 class="flex-shrink-0 flex-grow-0">{{ $store.state.app.companyInfo.name }}</h2>
-      <div class="flex-fill position-relative">
-        <a-carousel class="position-absolute w-100 h-100 carousel">
-          <div v-for="(item, idx) of tips" :key="idx">
-            <h4>{{ item.title }}</h4>
-            <p v-for="(msg, idx) of item.messages" :key="idx">{{ msg }}</p>
+  <div>
+    <template v-if="isTicketLogin">
+      <div class="text-white">登录中，请稍后</div>
+    </template>
+    <template v-else>
+      <div class="login-body">
+        <div class="login-left d-flex flex-column" :style="{ height: `${panelHeight}px` }">
+          <h2 class="flex-shrink-0 flex-grow-0">{{ $store.state.app.companyInfo.name }}</h2>
+          <div class="flex-fill position-relative">
+            <a-carousel class="position-absolute w-100 h-100 carousel">
+              <div v-for="(item, idx) of tips" :key="idx">
+                <h4>{{ item.title }}</h4>
+                <p v-for="(msg, idx) of item.messages" :key="idx">{{ msg }}</p>
+              </div>
+            </a-carousel>
           </div>
-        </a-carousel>
-      </div>
-    </div>
-    <div class="login-right" :style="{ height: `${panelHeight}px` }">
-      <div class="logo">
-        <img :src="loginLogo" />
-      </div>
-      <div class="login">
-        <h4>用户登录</h4>
-        <a-form :form="form.fc" @submit="handleSubmit">
-          <a-form-item>
-            <a-input class="material-input" v-decorator="decorator.username" placeholder="请输入用户名">
-              <a-icon slot="prefix" type="user" style="color: rgba(0, 0, 0, .25)" />
-            </a-input>
-          </a-form-item>
-          <a-form-item>
-            <a-input class="material-input" v-decorator="decorator.password" type="password" placeholder="请输入密码">
-              <a-icon slot="prefix" type="lock" style="color: rgba(0, 0, 0, .25)" />
-            </a-input>
-          </a-form-item>
-           <!--- 如果超过3个 domain，为了后端验证效率，还是在前端选择domain -->
-          <a-form-item v-if="form.fi.showDomain">
-            <a-select class="material-input" v-decorator="decorator.domain" :placeholder="$t('rules.identity_provider')">
-              <a-select-option
-                v-for="item in form.fi.domains"
-                :key="item"
-                :value="item">{{ item }}</a-select-option>
-            </a-select>
-          </a-form-item>
-          <a-form-item v-if="showRegion">
-            <a-select class="material-input" v-decorator="decorator.region" placeholder="请选择区域">
-              <a-select-option
-                v-for="item in form.fi.regions"
-                :key="item"
-                :value="item">{{ item }}</a-select-option>
-            </a-select>
-          </a-form-item>
-          <a-form-item v-if="form.fi.showCaptcha">
-            <a-input class="material-input" v-decorator="decorator.captcha" placeholder="验证码">
-              <a-icon slot="prefix" type="lock" style="color: rgba(0, 0, 0, .25)" />
-              <template>
-                <a-icon v-show="form.fi.captchaLoading" slot="suffix" type="loading" style="color: rgba(0, 0, 0, .25)" />
-                <img v-show="!form.fi.captchaLoading" class="captcha-img" slot="suffix" :src="form.fi.captchaImg" @load="captchaLoadHandle" @error="captchaErrorHandle" @click="fetchCaptcha" />
-              </template>
-            </a-input>
-          </a-form-item>
-          <a-form-item>
-            <a-button type="primary" html-type="submit" :loading="loading" block>登录</a-button>
-          </a-form-item>
-        </a-form>
-      </div>
-      <div class="sso-login" v-if="casServerUrl">
-        <div class="sso-login-title d-flex justify-content-center align-items-center"><span class="mr-2" />其他登录<span class="ml-2" /></div>
-        <div class="sso-login-items mt-2 mb-2">
-          <a class="sso-login-item d-flex align-items-center justify-content-center ml-2 mr-2" :href="casServerUrl">
-            <a-tooltip placement="top">
-              <template slot="title">
-                <span>CAS登录</span>
-              </template>
-              <img src="./assets/cas.png" />
-            </a-tooltip>
-          </a>
         </div>
+        <div class="login-right" :style="{ height: `${panelHeight}px` }">
+          <div class="logo">
+            <img :src="loginLogo" />
+          </div>
+          <div class="login">
+            <h4>用户登录</h4>
+            <a-form :form="form.fc" @submit="handleSubmit">
+              <a-form-item>
+                <a-input class="material-input" v-decorator="decorator.username" placeholder="请输入用户名">
+                  <a-icon slot="prefix" type="user" style="color: rgba(0, 0, 0, .25)" />
+                </a-input>
+              </a-form-item>
+              <a-form-item>
+                <a-input class="material-input" v-decorator="decorator.password" type="password" placeholder="请输入密码">
+                  <a-icon slot="prefix" type="lock" style="color: rgba(0, 0, 0, .25)" />
+                </a-input>
+              </a-form-item>
+              <!--- 如果超过3个 domain，为了后端验证效率，还是在前端选择domain -->
+              <a-form-item v-if="form.fi.showDomain">
+                <a-select class="material-input" v-decorator="decorator.domain" :placeholder="$t('rules.identity_provider')">
+                  <a-select-option
+                    v-for="item in form.fi.domains"
+                    :key="item"
+                    :value="item">{{ item }}</a-select-option>
+                </a-select>
+              </a-form-item>
+              <a-form-item v-if="showRegion">
+                <a-select class="material-input" v-decorator="decorator.region" placeholder="请选择区域">
+                  <a-select-option
+                    v-for="item in form.fi.regions"
+                    :key="item"
+                    :value="item">{{ item }}</a-select-option>
+                </a-select>
+              </a-form-item>
+              <a-form-item v-if="form.fi.showCaptcha">
+                <a-input class="material-input" v-decorator="decorator.captcha" placeholder="验证码">
+                  <a-icon slot="prefix" type="lock" style="color: rgba(0, 0, 0, .25)" />
+                  <template>
+                    <a-icon v-show="form.fi.captchaLoading" slot="suffix" type="loading" style="color: rgba(0, 0, 0, .25)" />
+                    <img v-show="!form.fi.captchaLoading" class="captcha-img" slot="suffix" :src="form.fi.captchaImg" @load="captchaLoadHandle" @error="captchaErrorHandle" @click="fetchCaptcha" />
+                  </template>
+                </a-input>
+              </a-form-item>
+              <a-form-item>
+                <a-button type="primary" html-type="submit" :loading="loading" block>登录</a-button>
+              </a-form-item>
+            </a-form>
+          </div>
+          <div class="sso-login" v-if="casServerUrl">
+            <div class="sso-login-title d-flex justify-content-center align-items-center"><span class="mr-2" />其他登录<span class="ml-2" /></div>
+            <div class="sso-login-items mt-2 mb-2">
+              <a class="sso-login-item d-flex align-items-center justify-content-center ml-2 mr-2" :href="casServerUrl">
+                <a-tooltip placement="top">
+                  <template slot="title">
+                    <span>CAS登录</span>
+                  </template>
+                  <img src="./assets/cas.png" />
+                </a-tooltip>
+              </a>
+            </div>
+          </div>
+        </div>
+        <p class="browser-update" v-if="!isChrome">为了获取更好的产品体验，请使用 Chrome 最新版本的浏览器</p>
       </div>
-    </div>
-    <p class="browser-update" v-if="!isChrome">为了获取更好的产品体验，请使用 Chrome 最新版本的浏览器</p>
+    </template>
   </div>
 </template>
 
@@ -151,6 +158,7 @@ export default {
         { title: '安全', messages: ['基于项目的多租户隔离', '统一账户权限管理体系', '统一登陆入口、降低跨云账户安全隐患'] },
         { title: '开放', messages: ['所有功能通过REST API开放，提供多语言SDK', '扩展性好，易于和第三方系统集成', '通过“开源+商业支持服务”的方式，向企业级客户交付更好用的多云管理平台'] },
       ],
+      isTicketLogin: false,
     }
   },
   computed: {
@@ -177,9 +185,16 @@ export default {
     },
   },
   async created () {
+    console.log(this.$route.query.ticket, 'ticket')
     if (this.$route.query.ticket) {
+      this.isTicketLogin = true
       this.ssoLogin()
     } else {
+      this.fetchLoginInfos()
+    }
+  },
+  methods: {
+    async fetchLoginInfos () {
       this.loading = true
       try {
         let isRegister = true
@@ -195,9 +210,7 @@ export default {
       } catch (error) {
         this.loading = false
       }
-    }
-  },
-  methods: {
+    },
     async fetchRegisterStatus () {
       this.loading = true
       try {
@@ -247,6 +260,8 @@ export default {
         this.onTotpLogin(loginResponse)
       } catch (error) {
         this.loading = false
+        this.isTicketLogin = false
+        this.fetchLoginInfos()
       }
     },
     handleSubmit (e) {
