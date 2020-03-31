@@ -34,8 +34,15 @@ export default {
           width: 100,
         },
         {
-          field: '',
+          field: 'scaling_policy_number',
           title: '伸缩策略',
+          slots: {
+            default: ({ row }) => {
+              return [
+                <a onClick={ () => this.$emit('tab-change', 'rule-list') }>{row.scaling_policy_number}</a>,
+              ]
+            },
+          },
         },
         {
           field: 'guest_template',

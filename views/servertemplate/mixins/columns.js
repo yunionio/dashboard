@@ -72,22 +72,9 @@ export default {
         title: '系统镜像',
         width: 160,
       },
-      // {
-      //   field: 'secgroups',
-      //   title: '安全组',
-      //   width: 80,
-      //   showOverflow: 'ellipsis',
-      //   formatter: ({ cellValue = [] }) => {
-      //     return cellValue.map(item => item.name).join(',')
-      //   },
-      // },
       getBillingTypeTableColumn(),
       getStatusTableColumn({ statusModule: 'servertemplate' }),
       getCopyWithContentTableColumn({ field: 'vpc', title: 'VPC' }),
-      {
-        field: 'vpc',
-        title: 'VPC',
-      },
       getProjectTableColumn(),
       getBrandTableColumn(),
       getRegionTableColumn(),

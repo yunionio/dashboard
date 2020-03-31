@@ -48,11 +48,12 @@ export default {
           ids,
           action: 'detach-scaling-group',
           data: {
-            scaling_group: this.resId,
+            scaling_group: this.params.resId,
             delete_server: this.isDelete,
           },
         })
         this.cancelDialog()
+        this.params.refresh()
       } catch (err) {
         throw err
       } finally {

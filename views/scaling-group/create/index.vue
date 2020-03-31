@@ -1,7 +1,7 @@
 <template>
   <div>
     <page-header title="新建弹性伸缩组" />
-    <a-form :form="form.fc" class="mt-3" v-bind="formItemLayout">
+    <a-form :form="form.fc" class="mt-3" v-bind="formItemLayout" style="padding:0 20px">
       <a-form-item class="mb-0" :label="`指定${$t('dictionary.project')}`">
         <domain-project :decorators="decorators.projectDomain" :fc="form.fc" :labelInValue="false" />
       </a-form-item>
