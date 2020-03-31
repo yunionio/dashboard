@@ -113,7 +113,7 @@ export default {
             this.createDialog('ScalingGroupServerRemoveDialog', {
               title: '移除',
               data: [row],
-              resId: this.getParams['scaling_group'],
+              resId: this.getParams.scaling_group,
               columns: this.columns,
               refresh: this.refresh,
               onManager: this.onManager,

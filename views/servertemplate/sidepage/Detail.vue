@@ -2,7 +2,9 @@
   <detail
     :on-manager="onManager"
     resource="servertemplates"
+    status-module="servertemplate"
     :data="data"
+    :base-info="baseInfo"
     :extra-info="extraInfo" />
 </template>
 
@@ -10,7 +12,7 @@
 import * as R from 'ramda'
 import { LOGIN_TYPES_MAP } from '@Compute/constants'
 import { STORAGE_TYPES } from '@/constants/compute'
-import { HYPERVISORS_MAP } from '@/constants'
+// import { HYPERVISORS_MAP } from '@/constants'
 import { sizestrWithUnit } from '@/utils/utils'
 import {
   getBrandTableColumn,
@@ -56,50 +58,42 @@ export default {
       ],
       extraInfo: [
         {
-          title: '其他信息',
+          title: '配置信息',
           items: [
-            {
-              field: 'config_info.hypervisor',
-              title: '平台',
-              formatter: ({ row }) => {
-                return HYPERVISORS_MAP[row.config_info.hypervisor].label || row.config_info.hypervisor
-              },
-            },
-            {
-              field: 'config_info.isolated_device_config',
-              title: 'GPU型号',
-              formatter: ({ row }) => {
-                const gpu = row.isolated_device_config
-                if (R.is(Object, gpu)) {
-                  return `${gpu.vendor}/${gpu.model}`
-                }
-                return '-'
-              },
-            },
-            {
-              field: 'config_info.gcounts',
-              title: 'GPU数量',
-              formatter: ({ row }) => {
-                return `${row.config_info.gcounts || 0}块`
-              },
-            },
             {
               field: 'os_type',
               title: '操作系统',
             },
             {
               field: 'config_info.image',
-              title: '镜像',
+              title: '系统镜像',
+            },
+            getCopyWithContentTableColumn({
+              field: 'vpc',
+              title: 'VPC',
+              hideField: true,
+              slotCallback: row => {
+                if (!row.vpc) return '-'
+                return [
+                  <side-page-trigger permission='vpcs_get' name='VpcSidePage' id={row.vpc_id} vm={this}>{ row.vpc }</side-page-trigger>,
+                ]
+              },
+            }),
+            {
+              field: 'config_info.network',
+              title: 'IP子网',
+              slots: {
+                default: ({ row }) => {
+                  if (row.config_info.nets && row.config_info.nets.length && row.config_info.nets[0].guest_ip_start) {
+                    return row.config_info.nets.map(net => (<div><a-tag>{ `${net.name}（${net.guest_ip_start} - ${net.guest_ip_end}, vlan=${net.vlan_id}）` }</a-tag></div>))
+                  }
+                  return '默认'
+                },
+              },
             },
             {
-              field: 'config_info.spec',
-              title: '规格',
-              formatter: ({ row }) => {
-                const { hypervisor, sku } = row.config_info
-                if (R.is(String, sku)) return sku
-                const category = this.getI18NValue(`skuCategoryOptions['${hypervisor}']['${sku.instance_type_category}']`, sku.instance_type_category)
-                return `${sku.name} (${category} ${sku.cpu_core_count}核 ${sizestrWithUnit(sku.memory_size_mb, 'M', 1024)})`
-              },
+              field: 'config_info.secgroup',
+              title: '安全组',
             },
             {
               field: 'config_info.sys',
@@ -116,6 +110,56 @@ export default {
               },
             },
             {
+              field: 'config_info.cpu_core_count',
+              title: 'CPU',
+              formatter: ({ row }) => {
+                const { sku } = row.config_info
+                if (R.is(Object, sku)) {
+                  return `${sku.cpu_core_count || 0}核`
+                }
+                return '-'
+              },
+            },
+            {
+              field: 'config_info.memory_size_mb',
+              title: '内存',
+              formatter: ({ row }) => {
+                const { sku } = row.config_info
+                if (R.is(Object, sku)) {
+                  return sizestrWithUnit(sku.memory_size_mb, 'M', 1024)
+                }
+                return '-'
+              },
+            },
+            {
+              field: 'config_info.isolated_device_config',
+              title: 'GPU',
+              formatter: ({ row }) => {
+                const gpu = row.isolated_device_config
+                if (R.is(Object, gpu)) {
+                  return `${gpu.vendor}/${gpu.model}`
+                }
+                return '-'
+              },
+            },
+            {
+              field: 'config_info.gcounts',
+              title: 'GPU数量',
+              formatter: ({ row }) => {
+                return `${row.config_info.gcounts || 0}块`
+              },
+            },
+            // {
+            //   field: 'config_info.spec',
+            //   title: '规格',
+            //   formatter: ({ row }) => {
+            //     const { hypervisor, sku } = row.config_info
+            //     if (R.is(String, sku)) return sku
+            //     const category = this.getI18NValue(`skuCategoryOptions['${hypervisor}']['${sku.instance_type_category}']`, sku.instance_type_category)
+            //     return `${sku.name} (${category} ${sku.cpu_core_count}核 ${sizestrWithUnit(sku.memory_size_mb, 'M', 1024)})`
+            //   },
+            // },
+            {
               field: 'config_info.reset_password',
               title: '管理员密码',
               formatter: ({ row }) => {
@@ -127,33 +171,6 @@ export default {
                 }
                 return '-'
               },
-            },
-            getCopyWithContentTableColumn({
-              field: 'vpc',
-              title: 'VPC',
-              hideField: true,
-              slotCallback: row => {
-                if (!row.vpc) return '-'
-                return [
-                  <side-page-trigger permission='vpcs_get' name='VpcSidePage' id={row.vpc_id} vm={this}>{ row.vpc }</side-page-trigger>,
-                ]
-              },
-            }),
-            {
-              field: 'config_info.network',
-              title: '网络',
-              slots: {
-                default: ({ row }) => {
-                  if (row.config_info.nets && row.config_info.nets.length && row.config_info.nets[0].guest_ip_start) {
-                    return row.config_info.nets.map(net => (<div><a-tag>{ `${net.name}（${net.guest_ip_start} - ${net.guest_ip_end}, vlan=${net.vlan_id}）` }</a-tag></div>))
-                  }
-                  return '默认'
-                },
-              },
-            },
-            {
-              field: 'config_info.secgroup',
-              title: '安全组',
             },
           ],
         },

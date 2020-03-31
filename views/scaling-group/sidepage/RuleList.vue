@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import numerify from 'numerify'
 import { getNameDescriptionTableColumn, getTimeTableColumn, getStatusTableColumn, getEnabledTableColumn } from '@/utils/common/tableColumn'
 import { getStatusFilter, getEnabledFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
@@ -219,7 +220,7 @@ export default {
           max: '<',
         }
         const unit = indicator === 'cpu' ? '%' : 'b/s'
-        const cumulateTxt = `连线满足${cumulate}次后触发`
+        const cumulateTxt = `连续满足${cumulate}次后触发`
         return `${this.$t('flexGroupIndicator')[indicator]} ${wrapperType[wrapper]} ${value} ${unit}，${cumulateTxt}`
       }
       // 定时策略
@@ -232,8 +233,6 @@ export default {
         const timer = row['cycle_timer']
         const { hour, minute } = timer
         const typeTxt = this.$t('flexGroupCycleType')[timer['cycle_type']]
-        // const startTime = this.$moment(timer['start_time']).format()
-        // const endTime = this.$moment(timer['end_time']).format()
         let itemsTxt = ''
         // 周
         if (timer['cycle_type'] === 'week' && timer['week_day'].length > 0) {
@@ -247,7 +246,7 @@ export default {
             return `${v}号`
           }).join('|') + '】'
         }
-        return `每${typeTxt}${itemsTxt}${`${hour}:${minute}`}触发`
+        return `每${typeTxt}${itemsTxt}${`${numerify(hour, '00')}:${numerify(minute, '00')}`}触发`
       }
       return '-'
     },
