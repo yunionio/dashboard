@@ -324,6 +324,7 @@ export default {
       const params = {
         city,
         provider,
+        capability: 'compute',
         ...DEFAULT_PARAMS,
         ...queryParams,
       }
