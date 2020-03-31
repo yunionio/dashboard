@@ -28,6 +28,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'vpcs',
         getParams: this.getParam,
         filterOptions: {
