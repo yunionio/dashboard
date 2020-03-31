@@ -55,7 +55,6 @@ export default {
       groupActions: [
         {
           label: '新建',
-          permission: 'skus_create',
           action: () => {
             this.$router.push({
               name: 'ScalingGroupCreate',
@@ -71,7 +70,6 @@ export default {
             return [
               {
                 label: '启用',
-                permission: 'skus_update',
                 action: () => {
                   this.list.batchPerformAction('enable', null)
                 },
@@ -81,7 +79,6 @@ export default {
               },
               {
                 label: '禁用',
-                permission: 'skus_update',
                 action: () => {
                   this.list.batchPerformAction('disable', null)
                 },
@@ -91,7 +88,6 @@ export default {
               },
               {
                 label: '删除',
-                permission: 'skus_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     data: this.list.selectedItems,
