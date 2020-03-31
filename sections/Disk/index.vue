@@ -44,7 +44,7 @@
       <a-button v-if="!disabled" class="mt-1" type="link" @click="() => showSchedtag = !showSchedtag">{{ showSchedtag ? '取消' : '设置' }}调度标签</a-button>
     </template>
     <!-- 磁盘容量预警信息提示 -->
-    <a-tooltip v-if="storageStatusMap.isError">
+    <a-tooltip v-if="storageStatusMap.tooltip">
       <template slot="title">
         <div slot="help">{{ storageStatusMap.tooltip }}，<router-link target="_blank" :to="{ path: '/blockstorage' }">去设置</router-link></div>
       </template>

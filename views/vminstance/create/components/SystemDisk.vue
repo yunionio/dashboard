@@ -181,9 +181,14 @@ export default {
           if (isAllEmpty && key === this.currentTypeObj.key) {
             statusMap = { type: 'error', tooltip: `${key}存储的容量没有设置，无法创建虚拟机`, isError: true }
           }
+          if (key === this.currentTypeObj.key && storages.capacity) {
+            if (storages.capacity / 1024 < this.form.fd.systemDiskSize) {
+              statusMap = { type: 'error', tooltip: `${key}存储的容量不足，无法创建虚拟机`, isError: true }
+            }
+          }
         })
         if (!statusMap.type) {
-          const isSomeNotEmpty = allStorageTypes.some((item) => { return item.capacity === 0 })
+          const isSomeNotEmpty = allStorageTypes.some((item) => { return item.capacity === 0 || item.capacity / 1024 < 100 })
           if (isSomeNotEmpty) {
             statusMap = { type: 'warning', tooltip: '存储容量不足' }
           }
