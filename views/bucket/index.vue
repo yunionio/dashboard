@@ -2,7 +2,7 @@
   <div>
     <page-header title="存储桶" />
     <page-body>
-      <list />
+      <list :id="listId" />
     </page-body>
   </div>
 </template>
@@ -14,6 +14,11 @@ export default {
   name: 'BucketStorage',
   components: {
     List,
+  },
+  data () {
+    return {
+      listId: 'BucketList',
+    }
   },
 }
 </script>
