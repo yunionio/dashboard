@@ -16,9 +16,13 @@ import WindowsMixin from '@/mixins/windows'
 export default {
   name: 'DNSList',
   mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
+  props: {
+    id: String,
+  },
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'dnsrecords',
         filterOptions: {
           name: {
