@@ -64,10 +64,18 @@ export default {
               field: 'os_type',
               title: '操作系统',
             },
-            {
-              field: 'config_info.image',
+            getCopyWithContentTableColumn({
+              field: 'image',
               title: '系统镜像',
-            },
+              hideField: true,
+              slotCallback: row => {
+                if (!row.config_info || !row.config_info.image) return '-'
+                return row.config_info.image
+                // return [
+                //   <side-page-trigger permission='images_get' name='SystemImageSidePage' id={this.diskInfos.imageId} vm={this}>{ row.config_info.image }</side-page-trigger>,
+                // ]
+              },
+            }),
             getCopyWithContentTableColumn({
               field: 'vpc',
               title: 'VPC',

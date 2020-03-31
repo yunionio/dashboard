@@ -70,7 +70,8 @@ export default {
       {
         field: 'config_info.image',
         title: '系统镜像',
-        width: 160,
+        showOverflow: 'ellipsis',
+        minWidth: 190,
       },
       getBillingTypeTableColumn(),
       getStatusTableColumn({ statusModule: 'servertemplate' }),

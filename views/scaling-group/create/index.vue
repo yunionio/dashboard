@@ -77,7 +77,7 @@
           </a-select>
       </a-form-item>
       <a-form-item label="健康状态检查宽限期">
-          <a-input-number :min="1"  v-decorator="decorators.health_check_gov" /> S
+          <a-input-number :min="1"  v-decorator="decorators.health_check_gov" /> 秒
           <div slot="extra">
             实例创建成功后，伸缩组会在健康状况检查宽限期结束后才开始进行健康检查
           </div>
