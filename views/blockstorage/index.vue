@@ -2,7 +2,7 @@
   <div>
     <page-header title="块存储" />
     <page-body>
-      <list />
+      <list :id="listId" />
     </page-body>
   </div>
 </template>
@@ -14,6 +14,11 @@ export default {
   name: 'BlockAtorage',
   components: {
     List,
+  },
+  data () {
+    return {
+      listId: 'BlockStorageList',
+    }
   },
 }
 </script>

@@ -29,6 +29,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'buckets',
         filterOptions: {
           name: getNameFilter(),
