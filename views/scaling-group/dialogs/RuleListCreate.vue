@@ -96,10 +96,10 @@
             <a-input-number v-decorator="decorators.cooling_time" :min="0" :max="1000" />
           </a-tooltip>
           <span style="margin:5px 0 0 5px">
-             S
+             秒
           </span>
           <div slot="extra">
-           一个伸缩活动执行完成后的 {{form.fc.getFieldValue('cooling_time')}} 内，该伸缩组不执行其它的伸缩活动(仅针对告警策略有效)
+           一个伸缩活动执行完成后的 {{form.fc.getFieldValue('cooling_time') || 180}}秒 内，该伸缩组不执行其它的伸缩活动(仅针对告警策略有效)
           </div>
         </a-form-item>
       </a-form>
