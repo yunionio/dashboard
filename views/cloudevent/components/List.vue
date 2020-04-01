@@ -2,16 +2,20 @@
   <div class="event-list">
     <page-list
       :list="list"
-      :columns="columns" />
-    <div class="mb-3 search-date">
-        <a-date-picker
-          v-model="dateTime"
-          style="width: 300px"
-          format="YYYY-MM-DD HH:mm:ss"
-          placeholder="选择终止时间进行查询"
-          @change="handleDateTimeChange"
-          :showTime="{ defaultValue: $moment('00:00:00', 'HH:mm:ss') }" />
-      </div>
+      :columns="columns"
+      :export-data-options="exportDataOptions"
+      :showGroupActions="true">
+      <template v-slot:group-actions-append2>
+          <a-date-picker
+            class="mr-2"
+            v-model="dateTime"
+            style="width: 300px"
+            format="YYYY-MM-DD HH:mm:ss"
+            placeholder="选择终止时间进行查询"
+            @change="handleDateTimeChange"
+            :showTime="{ defaultValue: $moment('00:00:00', 'HH:mm:ss') }" />
+      </template>
+    </page-list>
   </div>
 </template>
 
@@ -115,6 +119,20 @@ export default {
           },
         },
       ],
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '资源名称', key: 'name' },
+          { label: '服务类型', key: 'service' },
+          { label: '操作类型', key: 'action' },
+          { label: '执行状态', key: 'success' },
+          { label: '操作时间', key: 'created_at' },
+          { label: '平台', key: 'provider' },
+          { label: '账号', key: 'account' },
+          { label: '订阅', key: 'manager' },
+          { label: '备注', key: 'notes' },
+        ],
+      },
     }
   },
   created () {
