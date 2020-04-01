@@ -31,7 +31,7 @@ export const getHttpErrorMessage = (err, isErrorBody = false) => {
   if (!isErrorBody && (!err.response || !err.response.data)) return
   const errorData = isErrorBody ? err : err.response.data
   let errorBody = getErrorBody(errorData)
-  const status = err.response.status
+  const status = isErrorBody ? err.code : (err.response && err.response.status)
   if (!isErrorBody) {
     const method = err.config.method
     if (status === 502 && method !== 'get') { // 网关错误需要手动添加 class
