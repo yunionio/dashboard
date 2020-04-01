@@ -13,6 +13,7 @@
             :list="list" />
         </div>
         <div class="ml-4 d-flex flex-shrink-0 justify-content-end" v-if="exportDataOptions || list.id">
+          <slot name="group-actions-append2" />
           <a-tooltip title="导出数据" v-if="exportDataOptions">
             <a-button icon="download" style="width: 40px;" @click="handleExportData" />
           </a-tooltip>

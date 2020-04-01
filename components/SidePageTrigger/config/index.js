@@ -92,4 +92,8 @@ export default {
   ScalingGroupSidePage: {
     resource: 'scalinggroups',
   },
+  // 安全组
+  SecGroupSidePage: {
+    resource: 'secgroups',
+  },
 }
