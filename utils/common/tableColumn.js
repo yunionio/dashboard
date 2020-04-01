@@ -327,11 +327,13 @@ export const isPublicTableColumn = ({ field = 'is_public', title = '共享范围
 export const getTimeTableColumn = ({
   field = 'created_at',
   title = '创建时间',
+  sortable = false,
 } = {}) => {
   return {
     field,
     title,
     width: 160,
+    sortable,
     formatter: ({ cellValue }) => {
       return cellValue ? moment(cellValue).format() : '-'
     },

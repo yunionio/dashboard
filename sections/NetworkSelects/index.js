@@ -86,9 +86,15 @@ export default {
       return name.replace(/^\S/, s => s.toUpperCase())
     },
     filterOption (input, option) {
-      return (
-        option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
-      )
+      const subChild = option.componentOptions.children[0]
+      if (subChild.text) {
+        return (
+          subChild.text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        )
+      }
+      if (subChild.children[0]) {
+        return subChild.children[0].data.attrs.title.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      }
     },
     async fetchs () {
       if (this.types.indexOf('vpc') > -1) {
@@ -205,7 +211,13 @@ export default {
       }
       const options = this.networkList.map((item) => {
         const { id, name } = item
-        return <a-select-option key={id} value={id}>{name}</a-select-option>
+        const text = `${name} (${item.guest_ip_start} - ${item.guest_ip_end}）`
+        return <a-select-option key={id} value={id}>
+          <div class='d-flex'>
+            <span class='text-truncate flex-fill mr-2' title={ text }>{ text }</span>
+            <span style="color: #8492a6; font-size: 13px">可用: { item.ports - item.ports_used }</span>
+          </div>
+        </a-select-option>
       })
       return (
         <a-select showSearch placeholder="请选择IP子网" onChange={_handleChange} loading={networkLoading} filterOption={filterOption} >

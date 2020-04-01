@@ -459,7 +459,9 @@
       "deleting": "删除中",
       "deleted": "已删除",
       "delete_failed": "删除失败",
-      "snying": "同步中"
+      "snying": "同步中",
+      "unknown": "未知状态",
+      "sync_status": "同步状态中"
     },
     "hostImageCache": {
       "init": "初始化中",
@@ -515,12 +517,15 @@
     },
     "scalinggroup": {
       "init": "初始化",
-      "ready": "可用",
+      "ready": "正常",
       "deleting": "删除中",
       "wait_activity_over": "正在等待伸缩活动完毕",
       "destroy_instance": "毁伸缩实例中",
       "delete_failed": "删除失败",
-      "deleted": "删除"
+      "deleted": "删除",
+      "joining": "加入中",
+      "removing": "移除中",
+      "remove_failed": "移除失败"
     },
     "scalingpolicie": {
       "init": "初始化",
@@ -1129,10 +1134,10 @@
   },
   "flexGroupIndicator": {
     "cpu": "CPU平均使用率",
-    "flow_into": "网络入流量",
-    "flow_out": "网络出流量",
-    "disk_read": "磁盘读速率",
-    "disk_write": "磁盘写速率"
+    "flow_into": "平均网络入流量",
+    "flow_out": "平均网络出流量",
+    "disk_read": "平均磁盘读速率",
+    "disk_write": "平均磁盘写速率"
   },
   "flexGroupRuleAction": {
     "add": "增加",
@@ -1140,9 +1145,9 @@
     "set": "调整为"
   },
   "flexGroupCycleType": {
-    "day": "天",
-    "week": "周",
-    "month": "月"
+    "day": "每天",
+    "week": "每周",
+    "month": "每月"
   },
   "flexGroupSubCycleTypeWeek": {
     "1": "星期一",

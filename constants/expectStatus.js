@@ -149,7 +149,7 @@ export default {
     danger: ['failed', 'delete_failed'],
   },
   bucket: {
-    info: [],
+    info: ['unknown'],
     success: ['ready'],
     danger: ['create_fail', 'deleted', 'delete_fail'],
   },
@@ -190,7 +190,7 @@ export default {
   },
   scalingpolicie: {
     success: ['ready'],
-    danger: ['delete_failed', 'deleted'],
+    danger: ['delete_failed', 'deleted', 'remove_failed'],
     info: ['init', 'unavailable', 'unknown'],
   },
   scalingactivitie: {
