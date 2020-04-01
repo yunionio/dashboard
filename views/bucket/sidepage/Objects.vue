@@ -148,10 +148,11 @@ export default {
             })
           },
           meta: () => {
+            const isValidate = !(this.data.brand === 'Azure' && !this.prefix)
             return {
               buttonType: 'primary',
-              validate: this.prefix,
-              tooltip: !this.prefix && '根目录不允许上传文件',
+              validate: isValidate,
+              tooltip: !isValidate && 'Azure平台根目录不允许上传文件',
             }
           },
         },
@@ -257,20 +258,6 @@ export default {
       ],
       singleActions: [
         {
-          label: '删除',
-          action: (row) => {
-            this.createDialog('ObjectsDeleteDialog', {
-              alert: '提示：删除操作会同时删除目录下所有文件，删除后数据不可恢复和访问。',
-              data: [row],
-              columns: this.columns,
-              title: '删除',
-              resName: this.resName,
-              list: this.list,
-              name: this.isDir(row.key) ? '文件夹' : '文件',
-            })
-          },
-        },
-        {
           label: '下载',
           action: (row) => {
             objectsModel.getUrl(row, this.data.name, this.accessUrl).then((url) => {
@@ -322,6 +309,20 @@ export default {
                     resName: this.resName,
                     columns: this.columns,
                     list: this.list,
+                  })
+                },
+              },
+              {
+                label: '删除',
+                action: (row) => {
+                  this.createDialog('ObjectsDeleteDialog', {
+                    alert: '提示：删除操作会同时删除目录下所有文件，删除后数据不可恢复和访问。',
+                    data: [row],
+                    columns: this.columns,
+                    title: '删除',
+                    resName: this.resName,
+                    list: this.list,
+                    name: this.isDir(row.key) ? '文件夹' : '文件',
                   })
                 },
               },

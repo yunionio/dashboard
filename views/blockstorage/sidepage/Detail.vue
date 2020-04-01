@@ -58,14 +58,6 @@ export default {
           title: '用量统计',
           items: [
             {
-              field: 'commit_bound',
-              title: '超售比',
-            },
-            {
-              field: 'commit_rate',
-              title: '分配率',
-            },
-            {
               field: 'capacity',
               title: '实际容量',
               slots: {
@@ -75,6 +67,10 @@ export default {
               },
             },
             {
+              field: 'commit_bound',
+              title: '超售比',
+            },
+            {
               field: 'virtual_capacity',
               title: '虚拟容量',
               slots: {
@@ -82,6 +78,10 @@ export default {
                   return this._sizestr(row.virtual_capacity)
                 },
               },
+            },
+            {
+              field: 'commit_rate',
+              title: '分配率',
             },
             {
               field: 'used_capacity',

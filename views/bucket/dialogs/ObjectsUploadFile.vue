@@ -9,6 +9,7 @@
         <a-form-item label="选择文件" class="upload-file-item pb-3">
           <a-upload-dragger
             v-decorator="decorators.files"
+            @change="hanldeFileChange"
             v-bind="uploadDraggerConfig">
             <div style="padding: 10px; min-width: 600px">
               <p class="ant-upload-drag-icon">
@@ -19,6 +20,13 @@
           </a-upload-dragger>
         </a-form-item>
       </a-form>
+      <div style="text-align: center;margin-top:10px;font-size: 12px;" v-if="statusNums">
+        <span>正在上传：{{statusNums.uploading}}</span>
+        <a-divider type="vertical" />
+        <span>已经完成：{{statusNums.done}}</span>
+        <a-divider type="vertical" />
+        <span>无法上传：{{statusNums.error}}</span>
+      </div>
     </div>
   </base-dialog>
 </template>
@@ -36,6 +44,7 @@ export default {
       loading: false,
       formItemLayout,
       fileList: [],
+      statusNums: undefined,
       modalProps: {
         footer: null,
       },
@@ -107,6 +116,18 @@ export default {
         throw err
       }
     },
+    hanldeFileChange ({ fileList }) {
+      if (!fileList || !fileList.length) return false
+      const _statusNums = {
+        uploading: 0,
+        error: 0,
+        done: 0,
+      }
+      fileList.forEach(({ status }) => {
+        _statusNums[status] += 1
+      })
+      this.statusNums = _statusNums
+    },
     handleCancel () {
       if (document.getElementsByClassName('ant-upload-list-item-uploading').length) {
         this.$confirm({
@@ -139,5 +160,10 @@ export default {
   }
   :root .ant-upload-list-item .anticon-close {
     font-size: 14px;
+  }
+  .upload-file-item .ant-upload-list {
+    max-height: 300px;
+    overflow: auto;
+    padding-right: 20px;
   }
 </style>

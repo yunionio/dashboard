@@ -13,6 +13,11 @@ export default {
             },
           })
         },
+        meta: row => {
+          return {
+            validate: row.status !== 'sync_status',
+          }
+        },
       },
       {
         label: '更多',
