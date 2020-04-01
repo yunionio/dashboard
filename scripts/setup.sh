@@ -26,6 +26,7 @@ if [ $DEV_SETUP ]
     read -p "Please enter git prefix: " DEFAULT_GIT_PREFIX
 fi
 echo $DEFAULT_GIT_PREFIX
+echo $BRANCH
 if [ ! -d "./src" ]; then
   git clone -b $BRANCH $DEFAULT_GIT_PREFIX/dashboard-common.git src
 fi
