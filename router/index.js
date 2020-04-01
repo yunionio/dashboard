@@ -1,6 +1,7 @@
 import Kubeclusters from '@K8S/views/cluster'
-import KubeclustersImport from '@K8S/views/cluster/import'
 import KubeclustersCreate from '@K8S/views/cluster/create'
+import Deployment from '@K8S/views/deployment'
+import K8sDeploymentCreate from '@K8S/views/deployment/create'
 import Layout from '@/layouts/RouterView'
 
 export default {
@@ -10,6 +11,38 @@ export default {
     icon: 'menu-k8s',
   },
   menus: [
+    {
+      meta: {
+        label: '应用',
+      },
+      submenus: [
+        {
+          path: '/k8s-cluster',
+          meta: {
+            label: '无状态',
+            permission: 'k8s_depolyments_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'K8sDeploymentList',
+              path: '',
+              component: Deployment,
+            },
+            // {
+            //   name: 'KubeclustersImport',
+            //   path: 'import',
+            //   component: KubeclustersImport,
+            // },
+            {
+              name: 'K8sDeploymentCreate',
+              path: 'create',
+              component: K8sDeploymentCreate,
+            },
+          ],
+        },
+      ],
+    },
     {
       meta: {
         label: '集群',
@@ -28,11 +61,11 @@ export default {
               path: '',
               component: Kubeclusters,
             },
-            {
-              name: 'KubeclustersImport',
-              path: 'import',
-              component: KubeclustersImport,
-            },
+            // {
+            //   name: 'KubeclustersImport',
+            //   path: 'import',
+            //   component: KubeclustersImport,
+            // },
             {
               name: 'KubeclustersCreate',
               path: 'create',
