@@ -550,6 +550,21 @@
       "creating": "创建中",
       "create_fail": "创建失败",
       "delete_fail": "删除失败"
+    },
+    "kubemachines": {
+      "init": "初始化",
+      "ready": "待部署",
+      "deploying": "部署中",
+      "running": "运行中",
+      "error": "错误",
+      "deleting": "正在删除",
+      "creating": "创建中",
+      "create_fail": "创建失败",
+      "prepare": "准备中",
+      "prepare_fail": "准备失败",
+      "delete_fail": "删除失败",
+      "terminating": "销毁中",
+      "terminate_fail": "销毁失败"
     }
   },
   "skuCategoryOptions": {
