@@ -1,5 +1,6 @@
 <template>
   <div>
+    <a-alert v-if="isOpenstack" class="my-2" message="OpenStack账号导入成功后，你需要到存储–块存储列表设置本次导入存储的容量，否则新建虚拟机会失败" banner />
     <a-form :form="form.fc">
       <a-form-item v-bind="formLayout" label="名称">
         <a-input v-decorator="decorators.name" placeholder="请输入名称" />
