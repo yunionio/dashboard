@@ -58,7 +58,7 @@ export default {
               label: '删除',
               permission: 'k8s_kubeclusters_delete',
               action: () => {
-                this.createDialog('DiskDeleteDialog', {
+                this.createDialog('DeleteResDialog', {
                   data: [obj],
                   columns: this.columns,
                   title: '删除',

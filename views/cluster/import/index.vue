@@ -106,7 +106,7 @@ export default {
       }
     },
     cancel () {
-      this.$router.push('/k8s-deployment')
+      this.$router.push('/k8s-cluster')
     },
   },
 }
