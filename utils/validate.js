@@ -177,6 +177,14 @@ export const REGEXP = {
     regexp: /^[a-zA-Z][a-zA-Z0-9-]{0,127}([a-zA-Z0-9-]|#{1,3})$/,
     message: i18n.t('validator.certName'),
   },
+  idCard: {
+    regexp: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/,
+    message: i18n.t('validator.idCard'),
+  },
+  postCode: {
+    regexp: /^[1-9][0-9]{5}$/,
+    message: i18n.t('validator.postCode'),
+  },
 }
 
 /**

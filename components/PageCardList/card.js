@@ -42,6 +42,11 @@ export default {
         })
         return arr
       }
+      if (R.is(Object, field)) {
+        if (field.formatter) {
+          return field.formatter(data)
+        }
+      }
       return data[field] || ''
     },
     imgError (item, ref) {
