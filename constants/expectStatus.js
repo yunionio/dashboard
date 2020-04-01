@@ -207,4 +207,9 @@ export default {
     danger: ['error', 'create_fail', 'delete_fail'],
     info: ['init', 'unknown'],
   },
+  kubemachines: {
+    info: ['ready', 'init'],
+    success: ['running'],
+    danger: ['error', 'create_fail', 'prepare_fail', 'delete_fail', 'terminate_fail'],
+  },
 }
