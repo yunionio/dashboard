@@ -48,7 +48,7 @@ export default {
           label: '新建',
           permission: 'k8s_kubeclusters_create',
           action: () => {
-            this.$router.push({ path: '/k8s-deployment/create' })
+            this.$router.push({ path: '/k8s-cluster/create' })
           },
           meta: () => ({
             buttonType: 'primary',
@@ -58,31 +58,27 @@ export default {
           label: '导入',
           permission: 'k8s_kubeclusters_create',
           action: () => {
-            this.$router.push({ path: '/k8s-deployment/import' })
+            this.$router.push({ path: '/k8s-cluster/import' })
           },
         },
       ],
     }
   },
   created () {
-    this.initSidePageTab('disk-detail')
+    this.initSidePageTab('kube-machine-list')
     this.list.fetchData()
   },
   methods: {
     getParam () {
       const ret = { ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams) }
-      if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
     },
     handleOpenSidepage (row) {
-      this.sidePageTriggerHandle(this, 'DiskSidePage', {
+      this.sidePageTriggerHandle(this, 'K8SClusterSidePage', {
         id: row.id,
-        resource: 'disks',
+        resource: 'kubeclusters',
+        apiVersion: 'v1',
         getParams: this.getParam,
-        steadyStatus: {
-          status: Object.values(expectStatus.disk).flat(),
-          guest_status: [...Object.values(expectStatus.server).flat(), '', undefined],
-        },
       }, {
         list: this.list,
       })
