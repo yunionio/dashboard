@@ -195,7 +195,7 @@ export default {
       return ret
     },
     percent () {
-      if (this.usageNumber === 0 && this.allUsageNumber === 0) return 0
+      if (this.usageNumber === 0 || this.allUsageNumber === 0) return 0
       return parseInt((this.usageNumber / this.allUsageNumber) * 100)
     },
     percentTips () {
