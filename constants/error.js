@@ -989,7 +989,13 @@ export default {
           "fields": {},
           "message": "需要添加【控制节点】"
         }
-      }
+      },
+      "wrong captcha": {
+        "zh-CN": {
+          "fields": {},
+          "message": "验证码错误"
+        }
+      },
     }
   },
   "SpecNotFoundError": {
