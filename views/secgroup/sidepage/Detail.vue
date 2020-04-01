@@ -2,6 +2,7 @@
   <detail
     :on-manager="onManager"
     :data="data"
+    resource="secgroups"
     :base-info="baseInfo" />
 </template>
 
