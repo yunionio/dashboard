@@ -1,5 +1,4 @@
 import Kubeclusters from '@K8S/views/cluster'
-import KubeclustersImport from '@K8S/views/cluster/import'
 import KubeclustersCreate from '@K8S/views/cluster/create'
 import Deployment from '@K8S/views/deployment'
 import K8sDeploymentCreate from '@K8S/views/deployment/create'
@@ -31,6 +30,14 @@ export default {
               path: '',
               component: Deployment,
             },
+<<<<<<< HEAD
+=======
+            // {
+            //   name: 'KubeclustersImport',
+            //   path: 'import',
+            //   component: KubeclustersImport,
+            // },
+>>>>>>> feat [3.2] K8S 新建无状态未完成,封装一部分公共业务组件
             {
               name: 'K8sDeploymentCreate',
               path: 'create',
@@ -58,11 +65,11 @@ export default {
               path: '',
               component: Kubeclusters,
             },
-            {
-              name: 'KubeclustersImport',
-              path: 'import',
-              component: KubeclustersImport,
-            },
+            // {
+            //   name: 'KubeclustersImport',
+            //   path: 'import',
+            //   component: KubeclustersImport,
+            // },
             {
               name: 'KubeclustersCreate',
               path: 'create',
