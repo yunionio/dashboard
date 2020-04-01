@@ -11,7 +11,7 @@ export default {
         hideField: true,
         slotCallback: row => {
           return (
-            <side-page-trigger name='PhysicalmachineSidePage' id={row.id} list={this.list} vm={this}>{ row.server }</side-page-trigger>
+            <side-page-trigger name='PhysicalmachineSidePage' id={row.id} list={this.list} vm={this}>{ row.name }</side-page-trigger>
           )
         },
         cellWrapSlots: row => {

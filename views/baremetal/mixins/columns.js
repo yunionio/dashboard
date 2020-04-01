@@ -72,7 +72,15 @@ export default {
       },
       getStatusTableColumn({ statusModule: 'server' }),
       getProjectTableColumn(),
-      getCopyWithContentTableColumn({ field: 'host', title: '物理机' }),
+      getCopyWithContentTableColumn({
+        field: 'host',
+        title: '物理机',
+        hideField: true,
+        slotCallback: row => {
+          if (!row.host) return '-'
+          return [<side-page-trigger name='PhysicalmachineSidePage' id={row.host_id} list={this.list} tab='physicalmachine-detail' vm={this} >{ row.host }</side-page-trigger>]
+        },
+      }),
     ]
   },
 }
