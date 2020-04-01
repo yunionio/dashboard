@@ -35,6 +35,7 @@
     <slot name="table-prepend" />
     <floating-scroll>
       <vxe-grid
+        :row-id="rowId"
         class="page-list-grid"
         ref="grid"
         align="left"
@@ -148,6 +149,9 @@ export default {
     },
     data () {
       return Object.values(this.list.data).sort((a, b) => a.index - b.index).map(item => item.data)
+    },
+    rowId () {
+      return this.list.idKey
     },
     filterOptions () {
       const { filterOptions } = this.list
