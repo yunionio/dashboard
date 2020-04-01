@@ -1085,6 +1085,22 @@
     "enable_totp": {
       "label": "双因子认证",
       "desc": "云管用户登陆系统时，是否需要进行二次认证"
+    },
+    "enable_pending_delete": {
+      "label": "回收站",
+      "desc": "主机(硬盘)删除后，相应资源是否保存在回收站"
+    },
+    "pending_delete_expire_seconds": {
+      "label": "回收站保存时长",
+      "desc": "主机(硬盘)在回收站内保存时间，单位为秒"
+    },
+    "api_server": {
+      "label": "控制台地址",
+      "desc": "设置WEB控制台访问地址"
+    },
+    "verify_email_url_path": {
+      "label": "邮箱验证地址",
+      "desc": "设置验证邮箱的URL"
     }
   },
   "notificationPriority": {
