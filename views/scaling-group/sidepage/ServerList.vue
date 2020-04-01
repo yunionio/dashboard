@@ -9,7 +9,8 @@
 </template>
 
 <script>
-import { getNameDescriptionTableColumn, getTimeTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
+import PasswordFetcher from '@Compute/sections/PasswordFetcher'
+import { getNameDescriptionTableColumn, getTimeTableColumn, getStatusTableColumn, getIpsTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 import { getStatusFilter, getEnabledFilter } from '@/utils/common/tableFilter'
 import { sizestr } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
@@ -63,6 +64,7 @@ export default {
             )
           },
         }),
+        getIpsTableColumn({ field: 'ip', title: 'IP' }),
         {
           field: 'os_type',
           title: '系统',
@@ -78,6 +80,16 @@ export default {
               return [
                 <SystemIcon tooltip={ tooltip } name={ name } />,
               ]
+            },
+          },
+        },
+        {
+          field: 'password',
+          title: '密码',
+          width: 50,
+          slots: {
+            default: ({ row }) => {
+              return [<PasswordFetcher serverId={ row.id } resourceType='servers' />]
             },
           },
         },
@@ -105,6 +117,7 @@ export default {
           title: '宿主机',
           width: 120,
         },
+        getCopyWithContentTableColumn({ field: 'account', title: '云账号' }),
       ],
       singleActions: [
         {

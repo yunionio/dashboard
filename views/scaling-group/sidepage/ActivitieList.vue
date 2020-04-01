@@ -2,6 +2,7 @@
   <page-list
     :list="list"
     :columns="columns"
+    :single-actions="singleActions"
     :showSearchbox="showSearchbox" />
 </template>
 
@@ -32,7 +33,7 @@ export default {
         apiVersion: 'v1',
         getParams: this.getParams,
         filterOptions: {
-          status: getStatusFilter('host'),
+          status: getStatusFilter('scalingactivitie'),
         },
       }),
       columns: [
@@ -54,11 +55,23 @@ export default {
         getTimeTableColumn({
           field: 'start_time',
           title: '开始时间',
+          sortable: true,
         }),
         getTimeTableColumn({
           field: 'end_time',
           title: '结束时间',
+          sortable: true,
         }),
+      ],
+      singleActions: [
+        {
+          label: '查看',
+          action: (row) => {
+            this.createDialog('EventLogDialog', {
+              data: row.reason,
+            })
+          },
+        },
       ],
     }
   },

@@ -246,7 +246,7 @@ export default {
             return `${v}号`
           }).join('|') + '】'
         }
-        return `每${typeTxt}${itemsTxt}${`${numerify(hour, '00')}:${numerify(minute, '00')}`}触发`
+        return `${typeTxt}${itemsTxt}${`${numerify(hour, '00')}:${numerify(minute, '00')}`}触发`
       }
       return '-'
     },
