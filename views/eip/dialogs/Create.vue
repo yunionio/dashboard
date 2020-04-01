@@ -212,6 +212,7 @@ export default {
           usable: true,
           scope: this.$store.getters.scope,
           show_emulated: true,
+          capability: 'compute',
         }
         if (this.isAdminMode) {
           params['project_domain'] = this.domain_id
