@@ -6,7 +6,7 @@
       :group-actions="groupActions"
       :single-actions="singleActions"
       :columns="columns" />
-    <a-alert message="非自建类型的集群暂不支持节点管理" banner />
+    <a-alert v-else message="非自建类型的集群暂不支持节点管理" banner />
   </div>
 </template>
 

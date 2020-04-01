@@ -25,7 +25,7 @@ export default {
       },
       {
         field: 'role',
-        title: this.$t('dictionary.role'),
+        title: '角色',
         minWidth: 50,
         slots: {
           default: ({ row }, h) => {
