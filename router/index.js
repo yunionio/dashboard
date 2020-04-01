@@ -16,7 +16,7 @@ export default {
       },
       submenus: [
         {
-          path: '/k8s-deployment',
+          path: '/k8s-cluster',
           meta: {
             label: '集群',
             permission: 'k8s_kubeclusters_list',

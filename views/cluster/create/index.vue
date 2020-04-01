@@ -15,7 +15,7 @@
       <a-form-item
         label="平台"
         v-bind="formItemLayout">
-        <a-radio-group v-decorator="decorators.hypervisor">
+        <a-radio-group v-decorator="decorators.hypervisor" @change="hypervisorChange">
           <a-radio-button v-for="item in hypervisorsC" :key="item.value" :value="item.value">
             {{ item.label }}
           </a-radio-button>
@@ -33,7 +33,30 @@
         <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverName')" />
       </a-form-item>
       <a-form-item label="机器配置" v-bind="formItemLayout">
-        <server-config :decorator="decorators.serverConfig" />
+        <server-config :decorator="decorators.serverConfig" :network-params="params.network" />
+      </a-form-item>
+      <a-form-item label="版本" v-bind="formItemLayout">
+        <base-select
+          v-decorator="decorators.k8s_version"
+          :options="k8sVersionOps"
+          :filterable="true"
+          :select-props="{ placeholder: '输入关键词搜索' }" />
+      </a-form-item>
+      <a-form-item label="设置为公有" v-bind="formItemLayout" v-if="isAdminMode">
+        <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.is_public" />
+      </a-form-item>
+      <a-form-item label="镜像仓库" v-bind="formItemLayout">
+        <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.isConfigImage" @change="isConfigImageChange" />
+      </a-form-item>
+      <a-form-item
+        v-if="isConfigImage"
+        label="镜像仓库地址"
+        v-bind="formItemLayout"
+        extra="比如: registry.hub.docker.com/yunion">
+        <a-input v-decorator="decorators.image_repository_url" placeholder="请输入镜像仓库的地址" />
+      </a-form-item>
+      <a-form-item v-if="isConfigImage" :wrapper-col="{ span: 20, offset: 3 }">
+        <a-checkbox v-decorator="decorators.image_repository_insecure">是否为不安全</a-checkbox>
       </a-form-item>
       <a-form-item :wrapper-col="{ span: 20, offset: 3 }">
         <a-button class="mr-2" type="primary" @click="handleConfirm" :loading="loading">{{$t('dialog.ok')}}</a-button>
@@ -46,8 +69,21 @@
 <script>
 import { mapGetters } from 'vuex'
 import ServerConfig from '@K8S/sections/serverConfig'
-import { hyperOpts } from '../constants'
+import { hyperOpts, KUBE_PROVIDER } from '../constants'
 import CloudregionZone from '@/sections/CloudregionZone'
+import { isWithinRange } from '@/utils/validate'
+import { findPlatform } from '@/utils/common/hypervisor'
+
+function checkIpInSegment (i, networkData) {
+  return (rule, value, _callback) => {
+    const isIn = isWithinRange(value, networkData.guest_ip_start, networkData.guest_ip_end)
+    if (isIn) {
+      _callback()
+    } else {
+      _callback('输入的IP不在选择子网网段中')
+    }
+  }
+}
 
 export default {
   name: 'ClusterCreate',
@@ -59,7 +95,17 @@ export default {
     return {
       loading: false,
       form: {
-        fc: this.$form.createForm(this),
+        fc: this.$form.createForm(this, {
+          onValuesChange: (props, values) => {
+            if (values.zone && values.zone.key) {
+              this.params.network = {
+                zone: values.zone.key,
+                filter: 'server_type.notin(ipmi, pxe)',
+                scope: this.scope,
+              }
+            }
+          },
+        }),
       },
       decorators: {
         hypervisor: [
@@ -101,8 +147,8 @@ export default {
           },
         ],
         serverConfig: {
-          vcpu_count: [
-            'vcpu_count',
+          vcpu_count: i => [
+            `vcpu_count[${i}]`,
             {
               initialValue: 4,
               rules: [
@@ -111,8 +157,8 @@ export default {
               ],
             },
           ],
-          vmem_size: [
-            'vmem_size',
+          vmem_size: i => [
+            `vmem_size[${i}]`,
             {
               initialValue: 4,
               rules: [
@@ -121,8 +167,8 @@ export default {
               ],
             },
           ],
-          disk: [
-            'disk',
+          disk: i => [
+            `disk[${i}]`,
             {
               initialValue: 100,
               rules: [
@@ -131,20 +177,98 @@ export default {
               ],
             },
           ],
+          network: i => [
+            `network[${i}]`,
+            {
+              rules: [
+                { required: true, message: '请选择IP子网' },
+              ],
+            },
+          ],
+          ip: (i, networkData) => [
+            `ip[${i}]`,
+            {
+              validateFirst: true,
+              validateTrigger: ['blur', 'change'],
+              rules: [{
+                required: true,
+                message: '请输入ip',
+              }, {
+                validator: checkIpInSegment(i, networkData),
+              }],
+            },
+          ],
+          num: i => [
+            `num[${i}]`,
+            {
+              initialValue: 1,
+            },
+          ],
+          role: i => [
+            `role[${i}]`,
+            {
+              initialValue: 'controlplane',
+            },
+          ],
         },
+        k8s_version: [
+          'k8s_version',
+        ],
+        is_public: [
+          'is_public',
+          {
+            valuePropName: 'checked',
+            initialValue: false,
+          },
+        ],
+        isConfigImage: [
+          'isConfigImage',
+          {
+            valuePropName: 'checked',
+            initialValue: false,
+          },
+        ],
+        image_repository_url: [
+          'image_repository_url',
+          {
+            rules: [
+              { required: true, message: '请输入镜像仓库地址' },
+            ],
+          },
+        ],
+        image_repository_insecure: [
+          'image_repository_insecure',
+          {
+            valuePropName: 'checked',
+            initialValue: true,
+          },
+        ],
       },
+      isConfigImage: false,
       formItemLayout: {
         wrapperCol: { span: 20 },
         labelCol: { span: 3 },
       },
       params: {
-        zone: {},
+        zone: {
+          usable: true,
+          show_emulated: true,
+          order_by: 'created_at',
+          order: 'asc',
+          scope: this.scope,
+        },
         region: {
           usable: true,
-          is_on_premise: true,
-          scope: this.$store.getters.scope,
+          scope: this.scope,
+          cloud_env: 'onpremise',
+        },
+        network: {},
+        k8sVersions: {
+          provider: KUBE_PROVIDER,
+          resource_type: 'guest',
         },
       },
+      k8sVersionOps: [],
     }
   },
   provide () {
@@ -153,7 +277,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['userInfo']),
+    ...mapGetters(['userInfo', 'scope', 'isAdminMode']),
     hypervisorsC () {
       const opts = hyperOpts.filter(item => {
         return this.userInfo.hypervisors.find(val => val === item.value.toLowerCase() || item.external)
@@ -168,8 +292,43 @@ export default {
   created () {
     this.form.fc.getFieldDecorator('cloudregion', { preserve: true })
     this.form.fc.getFieldDecorator('zone', { preserve: true })
+    this.fetchK8sVersions()
   },
   methods: {
+    hypervisorChange (e) {
+      const type = findPlatform(e.target.value, 'hypervisor') || 'idc'
+      let param = {}
+      switch (type) {
+        case 'idc':
+          param = { 'cloud_env': 'onpremise' }
+          break
+        case 'public':
+          param = { 'cloud_env': 'public' }
+          break
+        case 'private':
+          param = { 'cloud_env': 'private', show_emulated: true }
+          break
+        default :
+          param = { is_on_premise: true }
+      }
+      this.params.region = {
+        ...this.params.region,
+        ...param,
+      }
+    },
+    fetchK8sVersions () {
+      new this.$Manager('kubeclusters/k8s-versions', 'v1').list({
+        params: this.params.k8sVersions,
+      }).then(({ data }) => {
+        data.map((item, index) => {
+          this.k8sVersionOps.push({ key: item, label: item })
+        })
+        this.form.fc.setFieldsValue({ 'k8s_version': data[0] })
+      })
+    },
+    isConfigImageChange (val) {
+      this.isConfigImage = val
+    },
     validator (type) {
       return (rule, value, _callback) => {
         if (type === 'vcpu_count') {
@@ -188,8 +347,76 @@ export default {
         return _callback()
       }
     },
-    handleConfirm () {},
-    cancel () {},
+    k8sVersionsLabelFormat (val) {
+      return val.model
+    },
+    doCreate (data) {
+      return new this.$Manager('kubeclusters', 'v1').create({
+        data,
+      })
+    },
+    genData (data) {
+      const { hypervisor, is_public: isPublic, k8s_version: k8sVersion, name, zone, cloudregion } = data
+      const values = {
+        hypervisor,
+        is_public: isPublic,
+        k8s_version: k8sVersion,
+        machines: [],
+        name,
+        resource_type: 'guest',
+        zone: {
+          id: zone.key,
+          name: zone.name,
+          regionId: cloudregion.key,
+        },
+      }
+      if (data.image_repository_url) {
+        values.image_repository = {}
+        values.image_repository['url'] = data.image_repository_url
+      }
+      if (data.image_repository_insecure) values.image_repository['insecure'] = data.image_repository_insecure
+      data.vcpu_count.map((item, index) => {
+        const machinesItem = {
+          vm: {
+            vcpu_count: item,
+            vmem_size: data.vmem_size[index] * 1024,
+            hypervisor,
+            disk: [{ index: 0, size: data.disk[index] * 1024 }],
+            nets: [{ network: data.network[index] }],
+          },
+        }
+        if (data.ip && data.ip.length > 0) machinesItem.vm.nets[0]['address'] = data.ip[index]
+        if (data.num[index] > 1) {
+          for (let i = 0; i < data.num[index]; i++) {
+            values.machines.push({ config: machinesItem, role: data.role[index], resource_type: 'vm' })
+          }
+        } else {
+          values.machines.push({ config: machinesItem, role: data.role[index], resource_type: 'vm' })
+        }
+      })
+      return values
+    },
+    async handleConfirm () {
+      this.loading = true
+      try {
+        const values = await this.form.fc.validateFields()
+        const genValues = this.genData(values)
+        const hasControl = genValues.machines.some(val => val.role === 'controlplane')
+        if (!hasControl) {
+          this.$message.warning('新建集群中最少有一台机器是控制节点')
+          return
+        }
+        await this.doCreate(genValues)
+        this.loading = false
+        this.$router.push('/k8s-cluster')
+      } catch (error) {
+        console.log(error)
+        this.loading = false
+      }
+    },
+    cancel () {
+      this.$router.push('/k8s-cluster')
+    },
   },
 }
 </script>
