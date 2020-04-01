@@ -50,7 +50,7 @@
               :disabledTime="disabledDateTime"
               v-decorator="decorators.execTime"
               :showTime="{ defaultValue: $moment('00:00:00', 'HH:mm:ss') }"
-              format="YYYY-MM-DD hh:mm:ss" />
+              format="YYYY-MM-DD HH:mm:ss" />
           </a-form-item>
         </template>
         <!-- 周期策略 -->
@@ -71,7 +71,7 @@
             </a-select>
           </a-form-item>
           <a-form-item label="触发时间">
-            <a-time-picker v-decorator="decorators.hourMinute" format="hh:mm a" />
+            <a-time-picker v-decorator="decorators.hourMinute" format="HH:mm" />
           </a-form-item>
           <a-form-item label="有效时间">
             <a-range-picker
