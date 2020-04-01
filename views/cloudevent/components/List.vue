@@ -5,7 +5,7 @@
       :columns="columns"
       :export-data-options="exportDataOptions"
       :showGroupActions="true">
-      <template v-slot:group-actions-append2>
+      <template v-slot:right-tools-prepend>
           <a-date-picker
             class="mr-2"
             v-model="dateTime"
