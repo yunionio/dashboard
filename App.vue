@@ -1,5 +1,5 @@
 <template>
-  <a-locale-provider :locale="locale">
+  <a-config-provider :locale="locale">
     <div id="app">
       <component :is="layout">
         <router-view />
@@ -8,11 +8,11 @@
       <side-page-manager />
       <window-resize-listener />
     </div>
-  </a-locale-provider>
+  </a-config-provider>
 </template>
 
 <script>
-import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN'
+import zhCN from 'ant-design-vue/es/locale/zh_CN'
 import DefaultLayout from '@/layouts/Default'
 import FullScreenLayout from '@/layouts/FullScreen'
 import DialogManager from '@/sections/DialogManager'
