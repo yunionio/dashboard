@@ -191,7 +191,13 @@ export default {
         } else {
           await this.doCreateByOldSnapshot()
         }
+<<<<<<< HEAD
         this.params.refresh()
+=======
+        setTimeout(() => { // 后端异步任务，需要延迟2s调用 @万垚奇
+          this.params.list.refresh()
+        }, 2000)
+>>>>>>> baa74adb2139c02ffc2c7ea03529ea38876dc0b0
         this.loading = false
         this.cancelDialog()
       } catch (error) {
