@@ -160,7 +160,7 @@ export const getNameDescriptionTableColumn = ({
           h('list-body-cell-wrap', {
             props: {
               copy: true,
-              edit,
+              edit: (R.type(edit) === 'Function' && edit(row)) || edit === true,
               row,
               onManager,
               hideField,
@@ -174,7 +174,7 @@ export const getNameDescriptionTableColumn = ({
             },
           }),
         ]
-        if (showDesc) {
+        if ((R.type(showDesc) === 'Function' && showDesc(row)) || showDesc === true) {
           ret.push(h('list-body-cell-wrap', {
             props: {
               edit: true,

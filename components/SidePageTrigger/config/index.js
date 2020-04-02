@@ -96,4 +96,8 @@ export default {
   SecGroupSidePage: {
     resource: 'secgroups',
   },
+  // 代理
+  ProxysettingSidePage: {
+    resource: 'proxysettings',
+  },
 }
