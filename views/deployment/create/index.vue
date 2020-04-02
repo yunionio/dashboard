@@ -2,11 +2,12 @@
   <div>
     <page-header title="新建无状态(Deployment)" />
     <page-body>
-      <a-tabs v-model="activeTab">
+      <!-- <a-tabs v-model="activeTab">
         <a-tab-pane v-for="item in tabs" :tab="item.label" :key="item.component">
           <component :is="activeTab" resource="deployments" :ref="`${activeTab}Ref`" />
         </a-tab-pane>
-      </a-tabs>
+      </a-tabs> -->
+      <form-create ref="FormCreateRef" />
     </page-body>
     <page-footer>
       <div slot="right">
@@ -46,11 +47,9 @@ export default {
     }
   },
   methods: {
-    confirm () {
-      console.log(this.$refs)
-      this.$refs[`${this.activeTab}Ref`][0].doCreate()
-      // this.$refs.FormCreateRef.doCreate()
-      // this.cancel()
+    async confirm () {
+      await this.$refs.FormCreateRef.doCreate()
+      this.cancel()
     },
     cancel () {
       this.$router.push('/k8s-deployment')

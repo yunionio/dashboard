@@ -7,7 +7,7 @@
       v-for="item in options"
       :value="item.name"
       :key="item.name">
-      {{ item.name }}
+      {{ item.label || item.name }}
     </a-select-option>
   </a-select>
 </template>

@@ -2,77 +2,49 @@ export default {
   created () {
     this.singleActions = [
       {
-        label: '查看 kubeconfig',
-        permission: 'k8s_kubeclusters_get_kubeconfig',
+        label: '设置镜像/副本数',
+        permission: 'k8s_depolyments_update',
         action: obj => {
-          this.createDialog('ClusterShowKubeConfigDialog', {
+          this.createDialog('K8SSetLimitDialog', {
             data: [obj],
+            columns: this.columns,
             onManager: this.onManager,
             refresh: this.refresh,
           })
         },
       },
       {
-        label: '更多',
-        actions: obj => {
-          return [
-            {
-              label: '设置为私有',
-              permission: 'k8s_kubeclusters_perform_private',
-              action: () => {
-                this.onManager('performAction', {
-                  id: obj.id,
-                  managerArgs: {
-                    action: 'private',
-                  },
-                }).then(() => {
-                  this.$message.success(`设置为私有仅当前${this.$t('dictionary.project')}可见`)
-                })
-              },
-              meta: (obj) => {
-                return {
-                  validate: obj.is_public,
-                }
-              },
+        label: '查看/编辑',
+        permission: 'k8s_depolyments_update',
+        action: obj => {
+          this.createDialog('K8SEditYamlDialog', {
+            data: [obj],
+            resource: '_raw/deployments',
+            refresh: this.refresh,
+          })
+        },
+      },
+      {
+        label: '删除',
+        permission: 'k8s_depolyments_delete',
+        action: (obj) => {
+          const requestParams = {
+            cluster: obj.clusterID,
+          }
+          if (obj.namespace) {
+            requestParams.namespace = obj.namespace
+          }
+          this.createDialog('DeleteResDialog', {
+            data: [obj],
+            columns: this.columns,
+            title: '删除',
+            onManager: this.onManager,
+            idKey: 'name',
+            requestParams,
+            success: () => {
+              this.destroySidePages()
             },
-            {
-              label: '设置为公有',
-              permission: 'k8s_kubeclusters_perform_public',
-              action: () => {
-                this.onManager('performAction', {
-                  id: obj.id,
-                  managerArgs: {
-                    action: 'public',
-                  },
-                }).then(() => {
-                  this.$message.success(`设置为公有将全部${this.$t('dictionary.project')}可见`)
-                })
-              },
-              meta: (obj) => {
-                return {
-                  validate: !obj.is_public,
-                }
-              },
-            },
-            {
-              label: '删除',
-              permission: 'k8s_kubeclusters_delete',
-              action: () => {
-                this.createDialog('DiskDeleteDialog', {
-                  data: [obj],
-                  columns: this.columns,
-                  title: '删除',
-                  onManager: this.onManager,
-                  success: () => {
-                    this.destroySidePages()
-                  },
-                })
-              },
-              meta: () => {
-                return this.$getDeleteResult(obj)
-              },
-            },
-          ]
+          })
         },
       },
     ]

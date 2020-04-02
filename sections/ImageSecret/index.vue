@@ -10,7 +10,7 @@
     <a-form-item v-if="secretType === 'select'">
       <base-select
         v-decorator="decorators.imagePullSecrets"
-        resource="registrysecrets"
+        resource="secrets"
         version="v1"
         idKey="name"
         :params="params"
@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import { SECRET_DEFAULT_TYPE } from '@K8S/constants'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -43,6 +44,7 @@ export default {
     params () {
       if (this.cluster && this.namespace) {
         return {
+          type: SECRET_DEFAULT_TYPE,
           cluster: this.cluster,
           namespace: this.namespace,
         }
@@ -55,7 +57,7 @@ export default {
       this.secretType = e.target.value
     },
     createImageSecret () {
-      this.createDialog('ImageSecretCreateDialog', {
+      this.createDialog('K8SImageSecretCreateDialog', {
         title: '新建镜像密钥',
         cluster: this.cluster,
         namespace: this.namespace,

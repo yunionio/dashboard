@@ -15,7 +15,6 @@
 import ClusterNamespace from '@K8S/sections/ClusterNamespace'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import { getNameFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
@@ -42,7 +41,9 @@ export default {
         getParams: this.getParams,
         idKey: 'name',
         filterOptions: {
-          name: getNameFilter(),
+          name: {
+            label: '名称',
+          },
         },
         steadyStatus: {
           status: Object.values(expectStatus.deployment).flat(),

@@ -46,7 +46,7 @@ export default {
       {
         field: 'creationTimestamp',
         title: '创建于',
-        width: 70,
+        width: 80,
         formatter: ({ row }) => {
           return this.$moment(row.creationTimestamp).fromNow()
         },

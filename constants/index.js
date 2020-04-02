@@ -14,3 +14,5 @@ export const RESTART_POLICY_OPTS = {
     { key: 'Always', label: 'Always' },
   ],
 }
+
+export const SECRET_DEFAULT_TYPE = 'kubernetes.io/dockerconfigjson'

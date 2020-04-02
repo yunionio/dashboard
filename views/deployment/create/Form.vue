@@ -36,11 +36,14 @@
             <labels :decorators="decorators.labels" />
           </a-form-item>
           <a-form-item label="备注">
-            <labels :decorators="decorators.labels" title="备注" />
+            <labels :decorators="decorators.annotations" title="备注" />
           </a-form-item>
         </a-collapse-panel>
       </a-collapse>
       <spec-container
+        :form="form"
+        :panes.sync="containerPanes"
+        :errPanes="errPanes"
         :decorators="decorators.containers"
         :namespace="namespaceObj.name"
         :cluster="clusterObj.id" />
@@ -49,6 +52,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import { RESTART_POLICY_OPTS } from '@K8S/constants'
 import ClusterSelect from '@K8S/sections/ClusterSelect'
 import NamespaceSelect from '@K8S/sections/NamespaceSelect'
@@ -57,6 +61,7 @@ import PortMapping from '@K8S/sections/PortMapping'
 import RestartPolicySelect from '@K8S/sections/RestartPolicySelect'
 import Labels from '@K8S/sections/Labels'
 import SpecContainer from '@K8S/sections/SpecContainer'
+import { getSpecContainerParams, getLabels } from '@K8S/utils'
 
 const validateValidPath = (rule, value, callback) => {
   if (value.startsWith('/')) {
@@ -85,14 +90,13 @@ export default {
     return {
       form: {
         fc: this.$form.createForm(this),
-        onValueChange (v) {
-          console.log(v, 'v')
-        },
       },
       formItemLayout: {
         labelCol: { span: 4 },
         wrapperCol: { span: 20 },
       },
+      errPanes: [], // 表单校验错误的tabs
+      containerPanes: [], // 子组件同步的tabs
       decorators: {
         name: [
           'name',
@@ -244,19 +248,9 @@ export default {
           ],
           cpu: i => [
             `containerCpus[${i}]`,
-            {
-              rules: [
-                { required: true, message: '请输入CPU' },
-              ],
-            },
           ],
           memory: i => [
             `containerMemorys[${i}]`,
-            {
-              rules: [
-                { required: true, message: '请输入内存' },
-              ],
-            },
           ],
           command: i => [
             `containerCommands[${i}]`,
@@ -305,6 +299,7 @@ export default {
             `containerPrivilegeds[${i}]`,
             {
               valuePropName: 'checked',
+              initialValue: false,
             },
           ],
         },
@@ -322,14 +317,70 @@ export default {
     },
   },
   methods: {
+    validateForm () {
+      return new Promise((resolve, reject) => {
+        this.form.fc.validateFieldsAndScroll({ scroll: { alignWithTop: true, offsetTop: 100 } }, (err, values) => {
+          if (!err) {
+            resolve(values)
+          } else {
+            this.setErrorPane(err)
+            reject(err)
+          }
+        })
+      })
+    },
+    setErrorPane (err) {
+      const keys = Object.keys(err).filter(v => v.startsWith('container'))
+      const containerErrValues = keys.map(k => err[k])
+      const errPanes = containerErrValues.map(v => Object.keys(v)).flat()
+      this.errPanes = Array.from(new Set(errPanes))
+    },
+    async _doCreate (data) {
+      await new this.$Manager('deployments', 'v1').create({ data })
+    },
     async doCreate () {
-      const values = await this.form.fc.validateFields()
-      console.log(values, 'vv')
+      try {
+        const values = await this.validateForm()
+        const spec = getSpecContainerParams(values, this.containerPanes)
+        const labels = getLabels(values, 'labelKeys', 'labelValues')
+        const annotations = getLabels(values, 'annotationsKeys', 'annotationsValues')
+        const service = {}
+        if (values.serviceType !== 'none') {
+          service.isExternal = (values.serviceType === 'external')
+          const portMappings = Object.keys(values.ports).map(key => {
+            return {
+              port: +values.ports[key],
+              targetPort: +values.targetPorts[key],
+              protocol: values.protocols[key],
+            }
+          })
+          service.portMappings = portMappings
+        }
+        const template = {
+          spec: {
+            volumes: spec.volumes,
+            containers: spec.containers,
+            imagePullSecrets: values.imagePullSecrets,
+            restartPolicy: values.restartPolicy,
+          },
+        }
+        const params = {
+          name: values.name,
+          cluster: values.cluster,
+          namespace: values.namespace,
+          replicas: values.replicas,
+          labels,
+          annotations,
+          template,
+        }
+        if (!R.isEmpty(service)) params.service = service
+        console.log(values, 'values')
+        await this._doCreate(params)
+        this.$message.success('操作成功')
+      } catch (error) {
+        throw error
+      }
     },
   },
 }
 </script>
-
-<style>
-
-</style>
