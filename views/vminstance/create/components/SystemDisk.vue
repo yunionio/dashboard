@@ -181,8 +181,8 @@ export default {
           if (isAllEmpty && key === this.currentTypeObj.key) {
             statusMap = { type: 'error', tooltip: `${key}存储的容量没有设置，无法创建虚拟机`, isError: true, text: '去设置' }
           }
-          if (key === this.currentTypeObj.key && storages.capacity) {
-            if (storages.free_capacity === 0 || storages.capacity / 1024 < this.form.fd.systemDiskSize) {
+          if (key === this.currentTypeObj.key && storages.free_capacity) {
+            if (storages.free_capacity === 0 || storages.free_capacity / 1024 < this.form.fd.systemDiskSize) {
               statusMap = { type: 'error', tooltip: `${key}存储的容量不足，无法创建虚拟机`, isError: true, text: '去查看' }
             }
           }
@@ -192,15 +192,15 @@ export default {
           if (emptyStorageArr.length > 0) {
             const storageNames = (emptyStorageArr.map((v) => { return v.storages })).flat()
             const names = (storageNames.map((v) => { return v.name })).join(',')
-            statusMap = { type: 'warning', tooltip: `${names}存储的部分容量没有设置，但不影响本次创建，建议您在创建完成后进行检查或现在`, text: '去设置' }
+            statusMap = { type: 'warning', tooltip: `${names}存储的部分容量没有设置，但不影响本次创建，建议您在创建完成后进行检查，也可以现在`, text: '去设置' }
           }
         }
         if (!statusMap.type) {
-          const freeStorageArr = allStorageTypes.filter((item) => { return item.free_capacity === 0 })
+          const freeStorageArr = allStorageTypes.filter((item) => { return item.free_capacity === 0 || item.free_capacity / 1024 < 100 })
           if (freeStorageArr.length > 0) {
             const storageNames = (freeStorageArr.map((v) => { return v.storages })).flat()
             const names = (storageNames.map((v) => { return v.name })).join(',')
-            statusMap = { type: 'warning', tooltip: `${names}存储的部分容量不足，但不影响本次创建，建议您在创建完成后进行检查或现在`, text: '去查看' }
+            statusMap = { type: 'warning', tooltip: `${names}存储的部分容量不足，但不影响本次创建，建议您在创建完成后进行检查，也可以现在`, text: '去查看' }
           }
         }
       }
