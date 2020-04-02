@@ -1,0 +1,68 @@
+<template>
+  <base-dialog @cancel="cancelDialog">
+    <div slot="header">{{params.title}}</div>
+    <div slot="body">
+      <dialog-selected-tips :name="$t('dictionary.cloudaccount')" :count="params.data.length" :action="params.title" />
+      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <a-form
+        v-bind="formItemLayout"
+        :form="form.fc">
+        <proxy-setting :initialValue="params.data[0].proxy_setting_id" />
+      </a-form>
+    </div>
+    <div slot="footer">
+      <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
+      <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
+    </div>
+  </base-dialog>
+</template>
+
+<script>
+import ProxySetting from '../components/ProxySetting'
+import DialogMixin from '@/mixins/dialog'
+import WindowsMixin from '@/mixins/windows'
+
+export default {
+  name: 'UpdateProxySettingDialog',
+  components: {
+    ProxySetting,
+  },
+  mixins: [DialogMixin, WindowsMixin],
+  data () {
+    return {
+      loading: false,
+      form: {
+        fc: this.$form.createForm(this),
+      },
+      formItemLayout: {
+        wrapperCol: {
+          span: 21,
+        },
+        labelCol: {
+          span: 3,
+        },
+      },
+    }
+  },
+  methods: {
+    async handleConfirm () {
+      this.loading = true
+      try {
+        const values = await this.form.fc.validateFields()
+        await this.params.onManager('update', {
+          id: this.params.data[0].id,
+          managerArgs: {
+            data: values,
+          },
+        })
+        this.cancelDialog()
+        this.params.refresh()
+      } catch (error) {
+        throw error
+      } finally {
+        this.loading = false
+      }
+    },
+  },
+}
+</script>

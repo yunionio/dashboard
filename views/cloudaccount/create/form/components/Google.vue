@@ -25,6 +25,7 @@
           <a-input v-decorator="decorators.client_email" placeholder="请输入client_email" />
         </a-form-item>
       </upload-json-file>
+      <proxy-setting :fc="form.fc" />
       <auto-sync :fc="form.fc" :form-layout="formLayout" />
     </a-form>
   </div>
@@ -32,6 +33,7 @@
 
 <script>
 import AutoSync from '@Cloudenv/views/cloudaccount/components/AutoSync'
+import ProxySetting from '@Cloudenv/views/cloudaccount/components/ProxySetting'
 import UploadJsonFile from '@Cloudenv/views/cloudaccount/components/UploadJsonFile'
 import { CLOUDACCOUNT_DOCS, keySecretFields } from '@Cloudenv/views/cloudaccount/constants'
 import createMixin from './createMixin'
@@ -44,6 +46,7 @@ export default {
     AutoSync,
     DomainProject,
     UploadJsonFile,
+    ProxySetting,
   },
   mixins: [createMixin],
   data () {

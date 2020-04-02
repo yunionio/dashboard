@@ -132,6 +132,17 @@ export default {
               },
             },
             {
+              label: '设置代理',
+              action: () => {
+                this.createDialog('UpdateProxySettingDialog', {
+                  title: '设置代理',
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                })
+              },
+            },
+            {
               label: '启用',
               permission: 'cloudaccounts_perform_enable',
               action: () => {
