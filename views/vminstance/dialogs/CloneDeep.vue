@@ -191,7 +191,9 @@ export default {
         } else {
           await this.doCreateByOldSnapshot()
         }
-        this.params.refresh()
+        setTimeout(() => { // 后端异步任务，需要延迟2s调用 @万垚奇
+          this.params.refresh()
+        }, 2000)
         this.loading = false
         this.cancelDialog()
       } catch (error) {
