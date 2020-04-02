@@ -1,28 +1,29 @@
 <template>
   <div>
-    <a-form :form="form.fc">
-      <a-form-item v-bind="formLayout" label="名称">
+    <a-form :form="form.fc" v-bind="formLayout">
+      <a-form-item label="名称">
         <a-input v-decorator="decorators.name" placeholder="请输入名称" />
       </a-form-item>
-      <a-form-item v-bind="formLayout" label="区域">
+      <a-form-item label="区域">
         <base-select
           :options="environments"
           v-decorator="decorators.environment"
           :selectProps="{ placeholder: '请选择区域' }" />
       </a-form-item>
-      <a-form-item v-bind="formLayout" :label="keySecretField.label.k">
+      <a-form-item :label="keySecretField.label.k">
         <a-input v-decorator="decorators.username" :placeholder="keySecretField.placeholder.k" />
         <div slot="extra">
             {{ `如何获取${keySecretField.text}的${keySecretField.label.k }？点击查看帮助` }}
             <help-link :href="docs[provider.toLowerCase()]"> 详情</help-link>
           </div>
       </a-form-item>
-      <a-form-item v-bind="formLayout" :label="keySecretField.label.s">
+      <a-form-item :label="keySecretField.label.s">
         <a-input-password v-decorator="decorators.password" :placeholder="keySecretField.placeholder.s" />
       </a-form-item>
-      <a-form-item :label="`指定${$t('dictionary.project')}`" class="mb-0" v-bind="formLayout" v-if="domainProjectShow">
+      <a-form-item :label="`指定${$t('dictionary.project')}`" class="mb-0" v-if="domainProjectShow">
         <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain }" />
       </a-form-item>
+      <proxy-setting :fc="form.fc" />
       <auto-sync :fc="form.fc" :form-layout="formLayout" />
     </a-form>
   </div>
@@ -30,6 +31,7 @@
 
 <script>
 import AutoSync from '@Cloudenv/views/cloudaccount/components/AutoSync'
+import ProxySetting from '@Cloudenv/views/cloudaccount/components/ProxySetting'
 import { CLOUDACCOUNT_DOCS, keySecretFields, ACCESS_URL } from '@Cloudenv/views/cloudaccount/constants'
 import createMixin from './createMixin'
 import DomainProject from '@/sections/DomainProject'
@@ -40,6 +42,7 @@ export default {
   components: {
     AutoSync,
     DomainProject,
+    ProxySetting,
   },
   mixins: [createMixin],
   data () {

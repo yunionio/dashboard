@@ -8,6 +8,7 @@ import Schedpolicy from '@Cloudenv/views/schedpolicy'
 import Dynamicschedtag from '@Cloudenv/views/dynamicschedtag'
 import Tag from '@Cloudenv/views/tag'
 import Cloudevent from '@Cloudenv/views/cloudevent'
+import Proxysetting from '@Cloudenv/views/proxysetting'
 import Layout from '@/layouts/RouterView'
 
 export default {
@@ -81,6 +82,21 @@ export default {
               name: 'CloudaccountUpdateBill',
               path: 'updatebill',
               component: CloudaccountUpdateBill,
+            },
+          ],
+        },
+        {
+          path: '/proxysetting',
+          meta: {
+            label: '代理',
+            permission: 'proxysettings_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Proxysetting',
+              path: '',
+              component: Proxysetting,
             },
           ],
         },

@@ -1,32 +1,33 @@
 <template>
   <div>
     <a-alert v-if="isOpenstack" class="my-2" message="OpenStack账号导入成功后，你需要到存储–块存储列表设置本次导入存储的容量，否则新建虚拟机会失败" banner />
-    <a-form :form="form.fc">
-      <a-form-item v-bind="formLayout" label="名称">
+    <a-form :form="form.fc" v-bind="formLayout">
+      <a-form-item label="名称">
         <a-input v-decorator="decorators.name" placeholder="请输入名称" />
       </a-form-item>
-      <a-form-item v-bind="formLayout" label="认证地址">
+      <a-form-item label="认证地址">
         <a-input v-decorator="decorators.auth_url" placeholder="请输入域名或者ip" />
       </a-form-item>
-      <a-form-item v-bind="formLayout" :label="keySecretField.label.k">
+      <a-form-item :label="keySecretField.label.k">
         <a-input v-decorator="decorators.username" :placeholder="keySecretField.placeholder.k" />
         <div slot="extra">
           {{ `如何获取${keySecretField.text}的${keySecretField.label.k }？点击查看帮助` }}
           <help-link :href="docs[provider.toLowerCase()]"> 详情</help-link>
         </div>
       </a-form-item>
-      <a-form-item v-bind="formLayout" :label="keySecretField.label.s">
+      <a-form-item :label="keySecretField.label.s">
         <a-input-password v-decorator="decorators.password" :placeholder="keySecretField.placeholder.s" />
       </a-form-item>
-      <a-form-item v-bind="formLayout" label="项目"  v-if="isOpenstack">
+      <a-form-item label="项目"  v-if="isOpenstack">
         <a-input v-decorator="decorators.project_name" placeholder="请输入OpenStack的项目，如：admin" />
       </a-form-item>
-      <a-form-item v-bind="formLayout" label="Domain Name"  v-if="isOpenstack">
+      <a-form-item label="Domain Name"  v-if="isOpenstack">
         <a-input v-decorator="decorators.domain_name" />
       </a-form-item>
-      <a-form-item :label="`指定${$t('dictionary.project')}`" class="mb-0" v-bind="formLayout" v-if="domainProjectShow">
+      <a-form-item :label="`指定${$t('dictionary.project')}`" class="mb-0" v-if="domainProjectShow">
         <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain }" />
       </a-form-item>
+      <proxy-setting :fc="form.fc" />
       <auto-sync :fc="form.fc" :form-layout="formLayout" />
     </a-form>
   </div>
@@ -34,6 +35,7 @@
 
 <script>
 import AutoSync from '@Cloudenv/views/cloudaccount/components/AutoSync'
+import ProxySetting from '@Cloudenv/views/cloudaccount/components/ProxySetting'
 import { CLOUDACCOUNT_DOCS, keySecretFields } from '@Cloudenv/views/cloudaccount/constants'
 import createMixin from './createMixin'
 import DomainProject from '@/sections/DomainProject'
@@ -44,6 +46,7 @@ export default {
   components: {
     AutoSync,
     DomainProject,
+    ProxySetting,
   },
   mixins: [createMixin],
   data () {
