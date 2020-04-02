@@ -727,10 +727,10 @@ class CreateList {
             let rec = res.data.data[i]
             if (rec.status < 400) {
               // success
-              this.update(rec.id, rec.data)
+              this.update(rec[this.idKey], rec.data)
             } else {
               // failure
-              this.setError(rec.id, res)
+              this.setError(rec[this.idKey], res)
             }
           }
         } else {
