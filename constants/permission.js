@@ -131,6 +131,8 @@ export const PERMISSION = {
   'buckets_list': ['compute', 'buckets', 'list'],
   // 云账号
   'cloudaccounts_list': ['compute', 'cloudaccounts', 'list'],
+  // 代理
+  'proxysettings_list': ['compute', 'proxysettings', 'list'],
   // 域
   'domains_list': ['identity', 'domains', 'list'],
   // 域详情
@@ -442,6 +444,12 @@ export const PERMISSION = {
   'cloudaccounts_perform_enable_auto_sync': ['compute', 'cloudaccounts', 'perform', 'enable_auto_sync'],
   'cloudaccounts_perform_disable_auto_sync': ['compute', 'cloudaccounts', 'perform', 'disable_auto_sync'],
   'externalprojects_update': ['compute', 'externalprojects', 'update'], // 云账号子订阅项目 -> 更改项目
+  /**
+   * proxysettings 代理操作
+   */
+  'proxysettings_create': ['compute', 'proxysettings', 'create'],
+  'proxysettings_update': ['compute', 'proxysettings', 'update'],
+  'proxysettings_delete': ['compute', 'proxysettings', 'delete'],
   /**
    * eips 相关操作
    */
