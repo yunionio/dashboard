@@ -407,35 +407,6 @@ export default {
                     return ret
                   },
                 },
-                {
-                  label: '续费',
-                  action: () => {
-                    this.createDialog('VmResourceFeeDialog', {
-                      data: [obj],
-                      columns: this.columns,
-                      onManager: this.onManager,
-                    })
-                  },
-                  meta: () => {
-                    const ret = {
-                      validate: false,
-                      tooltip: null,
-                    }
-                    if (!this.isAdminMode && !this.isDomainMode) {
-                      return ret
-                    }
-                    if (findPlatform(obj.hypervisor) !== SERVER_TYPE.public) {
-                      ret.tooltip = '仅公有云支持此操作'
-                      return ret
-                    }
-                    if (obj.billing_type !== 'prepaid') {
-                      ret.tooltip = '仅包年包月的资源支持此操作'
-                      return ret
-                    }
-                    ret.validate = true
-                    return ret
-                  },
-                },
                 // {
                 //   label: '加入资源池',
                 //   action: () => {
@@ -624,6 +595,64 @@ export default {
                     }
                     if (obj.backup_host_id) {
                       ret.tooltip = '高可用的主机不支持此操作'
+                      return ret
+                    }
+                    ret.validate = true
+                    return ret
+                  },
+                },
+                {
+                  label: '续费',
+                  action: () => {
+                    this.createDialog('VmResourceFeeDialog', {
+                      data: [obj],
+                      columns: this.columns,
+                      onManager: this.onManager,
+                    })
+                  },
+                  meta: () => {
+                    const ret = {
+                      validate: false,
+                      tooltip: null,
+                    }
+                    if (!this.isAdminMode && !this.isDomainMode) {
+                      return ret
+                    }
+                    if (findPlatform(obj.hypervisor) !== SERVER_TYPE.public) {
+                      ret.tooltip = '仅公有云支持此操作'
+                      return ret
+                    }
+                    if (obj.billing_type !== 'prepaid') {
+                      ret.tooltip = '仅包年包月的资源支持此操作'
+                      return ret
+                    }
+                    ret.validate = true
+                    return ret
+                  },
+                },
+                {
+                  label: '自动续费设置',
+                  action: () => {
+                    this.createDialog('VmResourceRenewFeeDialog', {
+                      data: [obj],
+                      columns: this.columns,
+                      onManager: this.onManager,
+                    })
+                  },
+                  meta: () => {
+                    const ret = {
+                      validate: false,
+                      tooltip: null,
+                    }
+                    if (!this.isAdminMode && !this.isDomainMode) {
+                      return ret
+                    }
+                    if (findPlatform(obj.hypervisor) !== SERVER_TYPE.public) {
+                      ret.tooltip = '仅公有云支持此操作'
+                      return ret
+                    }
+                    if (obj.billing_type !== 'prepaid') {
+                      ret.tooltip = '仅包年包月的资源支持此操作'
                       return ret
                     }
                     ret.validate = true

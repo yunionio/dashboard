@@ -507,6 +507,12 @@ export const createVmDecorators = type => {
           initialValue: '1M',
         },
       ],
+      autoRenew: [
+        'autoRenew',
+        {
+          valuePropName: 'checked',
+        },
+      ],
     },
     resourceType: [
       'resourceType',
@@ -975,6 +981,8 @@ export class GenCreateData {
       // 包年包月参数
       if (this.fd.billType === BILL_TYPES_MAP.package.key) {
         data.duration = this.fd.duration
+        // 自动续费
+        data.auto_renew = this.fd.autoRenew
       }
     }
     // gpu
