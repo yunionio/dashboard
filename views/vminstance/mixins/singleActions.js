@@ -407,35 +407,6 @@ export default {
                     return ret
                   },
                 },
-                {
-                  label: '续费',
-                  action: () => {
-                    this.createDialog('VmResourceFeeDialog', {
-                      data: [obj],
-                      columns: this.columns,
-                      onManager: this.onManager,
-                    })
-                  },
-                  meta: () => {
-                    const ret = {
-                      validate: false,
-                      tooltip: null,
-                    }
-                    if (!this.isAdminMode && !this.isDomainMode) {
-                      return ret
-                    }
-                    if (findPlatform(obj.hypervisor) !== SERVER_TYPE.public) {
-                      ret.tooltip = '仅公有云支持此操作'
-                      return ret
-                    }
-                    if (obj.billing_type !== 'prepaid') {
-                      ret.tooltip = '仅包年包月的资源支持此操作'
-                      return ret
-                    }
-                    ret.validate = true
-                    return ret
-                  },
-                },
                 // {
                 //   label: '加入资源池',
                 //   action: () => {
@@ -624,6 +595,64 @@ export default {
                     }
                     if (obj.backup_host_id) {
                       ret.tooltip = '高可用的主机不支持此操作'
+                      return ret
+                    }
+                    ret.validate = true
+                    return ret
+                  },
+                },
+                {
+                  label: '续费',
+                  action: () => {
+                    this.createDialog('VmResourceFeeDialog', {
+                      data: [obj],
+                      columns: this.columns,
+                      onManager: this.onManager,
+                    })
+                  },
+                  meta: () => {
+                    const ret = {
+                      validate: false,
+                      tooltip: null,
+                    }
+                    if (!this.isAdminMode && !this.isDomainMode) {
+                      return ret
+                    }
+                    if (findPlatform(obj.hypervisor) !== SERVER_TYPE.public) {
+                      ret.tooltip = '仅公有云支持此操作'
+                      return ret
+                    }
+                    if (obj.billing_type !== 'prepaid') {
+                      ret.tooltip = '仅包年包月的资源支持此操作'
+                      return ret
+                    }
+                    ret.validate = true
+                    return ret
+                  },
+                },
+                {
+                  label: '自动续费设置',
+                  action: () => {
+                    this.createDialog('VmResourceRenewFeeDialog', {
+                      data: [obj],
+                      columns: this.columns,
+                      onManager: this.onManager,
+                    })
+                  },
+                  meta: () => {
+                    const ret = {
+                      validate: false,
+                      tooltip: null,
+                    }
+                    if (!this.isAdminMode && !this.isDomainMode) {
+                      return ret
+                    }
+                    if (findPlatform(obj.hypervisor) !== SERVER_TYPE.public) {
+                      ret.tooltip = '仅公有云支持此操作'
+                      return ret
+                    }
+                    if (obj.billing_type !== 'prepaid') {
+                      ret.tooltip = '仅包年包月的资源支持此操作'
                       return ret
                     }
                     ret.validate = true
@@ -889,6 +918,33 @@ export default {
                     }
                     ret.validate = cloudEnabled('unbindEip', obj)
                     ret.tooltip = cloudUnabledTip('unbindEip', obj)
+                    return ret
+                  },
+                },
+                {
+                  label: '公网IP转EIP',
+                  action: () => {
+                    this.createDialog('VmPublicIpToEipDialog', {
+                      data: [obj],
+                      columns: this.columns,
+                      onManager: this.onManager,
+                    })
+                  },
+                  meta: () => {
+                    const ret = {
+                      validate: false,
+                      tooltip: null,
+                    }
+                    if (obj.eip) {
+                      ret.tooltip = '已绑定弹性公网IP的虚拟机不支持该操作'
+                      return ret
+                    }
+                    if (obj.eip_mode !== 'public_ip') {
+                      ret.tooltip = '只有已分配公网IP的虚拟机支持该操作'
+                      return ret
+                    }
+                    ret.validate = cloudEnabled('publicIpToEip', obj)
+                    ret.tooltip = cloudUnabledTip('publicIpToEip', obj)
                     return ret
                   },
                 },

@@ -309,6 +309,13 @@ const actionEableMap = {
       vmware: false,
     },
   },
+  'publicIpToEip': {
+    cn: '公有IP转EIP',
+    brand: {
+      qcloud: ['running', 'ready'],
+      aliyun: ['running', 'ready'],
+    },
+  },
 }
 
 export const commonEnabled = (value, statusArr = ['ready']) => {
