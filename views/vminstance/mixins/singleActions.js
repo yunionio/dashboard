@@ -921,6 +921,33 @@ export default {
                     return ret
                   },
                 },
+                {
+                  label: '公网IP转EIP',
+                  action: () => {
+                    this.createDialog('VmPublicIpToEipDialog', {
+                      data: [obj],
+                      columns: this.columns,
+                      onManager: this.onManager,
+                    })
+                  },
+                  meta: () => {
+                    const ret = {
+                      validate: false,
+                      tooltip: null,
+                    }
+                    if (obj.eip) {
+                      ret.tooltip = '已绑定弹性公网IP的虚拟机不支持该操作'
+                      return ret
+                    }
+                    if (obj.eip_mode !== 'public_ip') {
+                      ret.tooltip = '只有已分配公网IP的虚拟机支持该操作'
+                      return ret
+                    }
+                    ret.validate = cloudEnabled('publicIpToEip', obj)
+                    ret.tooltip = cloudUnabledTip('publicIpToEip', obj)
+                    return ret
+                  },
+                },
               ],
             },
             {
