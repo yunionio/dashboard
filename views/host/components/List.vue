@@ -103,7 +103,7 @@ export default {
           hideField: true,
           slotCallback: row => {
             return (
-              <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
+              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'HostSidePage') }>{ row.name }</side-page-trigger>
             )
           },
           cellWrapSlots: row => {
