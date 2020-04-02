@@ -367,3 +367,75 @@ export const i18nSetProperty = ({
 export const getRequestT = () => {
   return ++tIndex
 }
+
+export const formatSeconds = value => {
+  let theTime = parseInt(value) // 需要转换的时间秒
+  let theTime1 = 0 // 分
+  let theTime2 = 0 // 小时
+  let theTime3 = 0 // 天
+  let theTime4 = 0 // 月
+  let theTime5 = 0 // 年
+  if (theTime > 60) {
+    theTime1 = parseInt(theTime / 60)
+    theTime = parseInt(theTime % 60)
+    if (theTime1 > 60) {
+      theTime2 = parseInt(theTime1 / 60)
+      theTime1 = parseInt(theTime1 % 60)
+      if (theTime2 > 24) {
+        // 大于24小时
+        theTime3 = parseInt(theTime2 / 24)
+        theTime2 = parseInt(theTime2 % 24)
+        // 大于30天
+        if (theTime3 > 30) {
+          theTime4 = parseInt(theTime3 / 30)
+          theTime3 = parseInt(theTime3 % 30)
+          // 大于12月
+          if (theTime4 > 12) {
+            theTime5 = parseInt(theTime4 / 12)
+            theTime4 = parseInt(theTime4 % 12)
+          }
+        }
+      }
+    }
+  }
+  let str = ''
+  const obj = {
+    seconds: theTime,
+    minutes: theTime1,
+    hours: theTime2,
+    days: theTime3,
+    months: theTime4,
+    years: theTime5,
+  }
+  const arr = [
+    [theTime5, 'years'],
+    [theTime4, 'months'],
+    [theTime3, 'days'],
+    [theTime2, 'hours'],
+    [theTime1, 'minutes'],
+    [theTime, 'seconds'],
+  ]
+  if (theTime > 0) {
+    str = '' + parseInt(theTime) + '秒'
+  }
+  if (theTime1 > 0) {
+    str = '' + parseInt(theTime1) + '分' + str
+  }
+  if (theTime2 > 0) {
+    str = '' + parseInt(theTime2) + '小时' + str
+  }
+  if (theTime3 > 0) {
+    str = '' + parseInt(theTime3) + '天' + str
+  }
+  if (theTime4 > 0) {
+    str = '' + parseInt(theTime4) + '月' + str
+  }
+  if (theTime5 > 0) {
+    str = '' + parseInt(theTime5) + '年' + str
+  }
+  return {
+    str,
+    obj,
+    arr,
+  }
+}
