@@ -17,6 +17,9 @@
             :value="item.key"
             :key="item.key">{{ item.label }}</a-radio-button>
         </a-radio-group>
+        <a-checkbox class="ml-4" v-decorator="decorators.autoRenew">
+        到期自动续费
+        </a-checkbox>
       </a-form-item>
     </template>
   </div>

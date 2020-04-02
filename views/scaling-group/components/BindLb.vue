@@ -61,6 +61,7 @@ export default {
           params: {
             limit: 0,
             vpc,
+            status: 'enabled',
           },
         })
         this.loadbalancerList = data.data || []

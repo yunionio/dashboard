@@ -44,9 +44,9 @@ export default {
           status: getStatusFilter('scalinggroup'),
           enabled: getEnabledFilter(),
           brand: getBrandFilter(),
-          region: {
-            label: '区域',
-          },
+          // region: {
+          //   label: '区域',
+          // },
           guest_template: {
             label: '主机模版',
           },

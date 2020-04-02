@@ -7,10 +7,10 @@
       </a-form-item>
       <a-form-item label="名称">
         <a-input :placeholder="$t('validator.serverCreateName')" v-decorator="decorators.generate_name" />
-        <name-repeated
+        <!-- <name-repeated
           v-slot:extra
           res="scalinggroups"
-          default-text="名称支持有序后缀占位符‘#’，用法举例，名称host##，数量2，创建后实例的名称依次为host01、host02，已有同名实例，序号顺延"  />
+          default-text="名称支持有序后缀占位符‘#’，用法举例，名称host##，数量2，创建后实例的名称依次为host01、host02，已有同名实例，序号顺延"  /> -->
       </a-form-item>
       <a-form-item label="平台">
          <a-radio-group v-decorator="decorators.brand">
@@ -18,7 +18,7 @@
          </a-radio-group>
       </a-form-item>
       <a-form-item label="主机模版">
-        <a-select @change="handleServerTemplateChange" v-decorator="decorators.guest_template_id" :loading="serverTemplateListLoading">
+        <a-select :filterOption="filterOption" showSearch @change="handleServerTemplateChange" v-decorator="decorators.guest_template_id" :loading="serverTemplateListLoading">
           <a-select-option v-for="item in serverTemplateList" :row="item" :key="item.id" :value="item.id">{{item.name}}</a-select-option>
         </a-select>
         <div slot="extra">
@@ -31,7 +31,7 @@
         label="网络"
         :form="form"
         v-bind="formItemLayout"
-        :vpcParams="scopeParams" />
+        :vpcParams="vpcParams" />
       <a-form-item label="最大实例数">
         <a-tooltip placement="top" title="范围在 1 ～ 1000">
            <a-input-number v-decorator="decorators.max_instance_number" :min="1" :max="1000" />
@@ -42,7 +42,7 @@
           <a-input-number v-decorator="decorators.desire_instance_number" :min="0" :max="form.fd.max_instance_number" />
         </a-tooltip>
         <div slot="extra">
-          该弹性伸缩组中期望运行的虚拟机个数，当新建完成后会自动创建与期望值相同的虚拟机
+          该弹性伸缩组中期望运行的虚拟机个数，当新建完成后会自动创建与期望值相同数量的虚拟机
         </div>
       </a-form-item>
       <a-form-item label="最小实例数">
@@ -96,7 +96,7 @@
 import BindLb from '../components/BindLb'
 import { DECORATORS, BRANDS } from '../constants'
 import DomainProject from '@/sections/DomainProject'
-import NameRepeated from '@/sections/NameRepeated'
+// import NameRepeated from '@/sections/NameRepeated'
 import NetworkSelects from '@/sections/NetworkSelects'
 import { getInitialValue } from '@/utils/common/ant'
 
@@ -105,7 +105,7 @@ export default {
   components: {
     BindLb,
     DomainProject,
-    NameRepeated,
+    // NameRepeated,
     NetworkSelects,
   },
   data () {
@@ -161,6 +161,11 @@ export default {
     }
   },
   methods: {
+    filterOption (input, option) {
+      return (
+        option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      )
+    },
     domainChange () {
       this.fetchQueryTs()
       this.$refs['NETWORK'].fetchs()
@@ -168,6 +173,13 @@ export default {
     vpcChange (vpcId) {
       if (this.isLoadbalancer) {
         this.$refs['BIND_LB'].fetchQueryLbs(vpcId)
+      }
+    },
+    vpcParams () {
+      const { brand } = this.form.fd
+      return {
+        brand,
+        ...this.scopeParams,
       }
     },
     // numberChange (v) {
@@ -212,11 +224,14 @@ export default {
     },
     async fetchQueryTs () {
       const manager = new this.$Manager('servertemplates')
+      // console.log(this.form.fd)
+      const { brand } = this.form.fd
       this.serverTemplateListLoading = true
       try {
         const { data } = await manager.list({
           params: {
             limit: 0,
+            brand,
             ...this.scopeParams,
           },
         })
