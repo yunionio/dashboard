@@ -1069,45 +1069,53 @@
     "public-read-write": "公开读写"
   },
   "globalSetting": {
-    "password_unique_history_check": {
+    "identity$password_unique_history_check": {
       "label": "密码不重复次数",
       "desc": "云管用户设置密码不重复的次数限制，例如：若设置为3，则新密码不能与之前3次已使用过的历史密码相同。默认为空，代表没有限制。"
     },
-    "password_minimal_length": {
+    "identity$password_minimal_length": {
       "label": "密码最小长度",
       "desc": "云管用户设置密码的最小长度限制。默认为6位。"
     },
-    "password_error_lock_count": {
+    "identity$password_error_lock_count": {
       "label": "连续登录失败次数",
       "desc": "连续登录失败次数的上限。当连续登录失败次数超过设置值时，该用户将被锁定。锁定后的用户需要管理员手动启用用户。默认值为空，代表没有限制。"
     },
-    "non_default_domain_projects": {
+    "common$non_default_domain_projects": {
       "label": "三级权限开关",
       "desc": "设置是否开启三级权限。默认为关闭，设置为开启后将无法关闭。"
     },
-    "show_captcha": {
+    "yunionapi$show_captcha": {
       "label": "验证码开关",
       "desc": "云管用户登录时，是否需要输入验证码"
     },
-    "enable_totp": {
+    "yunionapi$enable_totp": {
       "label": "双因子认证",
       "desc": "云管用户登陆系统时，是否需要进行二次认证"
     },
-    "enable_pending_delete": {
-      "label": "回收站",
-      "desc": "主机(硬盘)删除后，相应资源是否保存在回收站"
+    "compute$enable_pending_delete": {
+      "label": "主机、硬盘回收站",
+      "desc": "主机、硬盘删除后，相应资源是否保存在回收站"
     },
-    "pending_delete_expire_seconds": {
-      "label": "回收站保存时长",
-      "desc": "主机(硬盘)在回收站内保存时间，单位为秒"
+    "compute$pending_delete_expire_seconds": {
+      "label": "主机、硬盘回收站保存时长",
+      "desc": "主机、硬盘在回收站内保存时间，单位为秒"
     },
-    "api_server": {
+    "common$api_server": {
       "label": "控制台地址",
       "desc": "设置WEB控制台访问地址"
     },
-    "verify_email_url_path": {
+    "notify$verify_email_url_path": {
       "label": "邮箱验证地址",
       "desc": "设置验证邮箱的URL"
+    },
+    "image$enable_pending_delete": {
+      "label": "镜像回收站",
+      "desc": "镜像删除后，相应资源是否保存在回收站"
+    },
+    "image$pending_delete_expire_seconds": {
+      "label": "镜像回收站保存时长",
+      "desc": "镜像在回收站内保存时间，单位为秒"
     }
   },
   "notificationPriority": {
