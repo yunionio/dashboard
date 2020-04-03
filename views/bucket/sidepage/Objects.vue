@@ -200,20 +200,6 @@ export default {
           actions: (row) => {
             return [
               {
-                label: '删除',
-                action: (row) => {
-                  this.createDialog('ObjectsDeleteDialog', {
-                    alert: '提示：删除操作会同时删除目录下所有文件，删除后数据不可恢复和访问。',
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    title: '删除',
-                    resName: this.resName,
-                    list: this.list,
-                    name: '文件',
-                  })
-                },
-              },
-              {
                 label: '设置HTTP头',
                 action: async (row) => {
                   this.createDialog('ObjectsUpdateHttpDialog', {
@@ -245,6 +231,20 @@ export default {
                   return {
                     validate: this.list.selectedItems.every(row => !this.isDir(row.key)),
                   }
+                },
+              },
+              {
+                label: '删除',
+                action: (row) => {
+                  this.createDialog('ObjectsDeleteDialog', {
+                    alert: '提示：删除操作会同时删除目录下所有文件，删除后数据不可恢复和访问。',
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    title: '删除',
+                    resName: this.resName,
+                    list: this.list,
+                    name: '文件',
+                  })
                 },
               },
             ]
