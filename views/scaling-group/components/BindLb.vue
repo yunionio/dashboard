@@ -16,8 +16,8 @@
       </a-col>
       <a-col :span="12">
         <a-form-item :wrapperCol="{ span: 24 }">
-          <a-tooltip title="端口范围在 0～65535 之间" placement="top">
-            <a-input-number class="w-100" :min="0" :max="65535" v-decorator="decorators.loadbalancer_backend_port" />
+          <a-tooltip title="端口范围在 1～65535 之间" placement="top">
+            <a-input-number class="w-100" :min="1" :max="65535" v-decorator="decorators.loadbalancer_backend_port" />
           </a-tooltip>
         </a-form-item>
       </a-col>

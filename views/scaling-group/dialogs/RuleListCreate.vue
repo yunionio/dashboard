@@ -18,9 +18,9 @@
               <a-select style="width: 50%" v-decorator="decorators.indicator">
                 <a-select-option  v-for="(v, k) in $t('flexGroupIndicator')" :key="k" :value="k">{{v}}</a-select-option>
               </a-select>
-              <a-select style="width: 25%" v-decorator="decorators.wrapper">
-                <a-select-option value="min">小于</a-select-option>
-                <a-select-option value="max">大于</a-select-option>
+              <a-select style="width: 25%" v-decorator="decorators.operator">
+                <a-select-option value="lt">小于</a-select-option>
+                <a-select-option value="gt">大于</a-select-option>
               </a-select>
               <a-input-number v-decorator="decorators.value" :min="0" :max="1000" />
               <span style="margin:5px 0 0 5px">
@@ -161,10 +161,10 @@ export default {
             ],
           },
         ],
-        wrapper: [
-          'alarm.wrapper',
+        operator: [
+          'alarm.operator',
           {
-            initialValue: 'min',
+            initialValue: 'lt',
           },
         ],
         value: [
@@ -303,6 +303,9 @@ export default {
         values.cycleTimer['startTime'] = values.startEndTime[0]
         values.cycleTimer['endTime'] = values.startEndTime[1]
         delete values.startEndTime
+      }
+      if (values.alarm) {
+        values['alarm']['wrapper'] = 'average'
       }
       return values
     },
