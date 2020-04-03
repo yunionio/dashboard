@@ -173,7 +173,7 @@ class CreateList {
     this.total = 0
     this.nextMarker = ''
     // 选择数据
-    this._selectedItems = []
+    this.selectedItems = []
     this.selected = []
     // 指定作为id的属性key值
     this.idKey = idKey
@@ -193,18 +193,6 @@ class CreateList {
     this.tagFilter = tagFilter
     // 外传responseData
     this.responseData = responseData
-  }
-  // 重写selectedItems getter和setter
-  get selectedItems () {
-    const items = []
-    R.forEach(id => {
-      items.push(this.data[id]['data'])
-    }, this.selected)
-    this._selectedItems = items
-    return items
-  }
-  set selectedItems (items) {
-    this._selectedItems = items
   }
   /**
    * @description 获取列表配置，如果没有则创建
