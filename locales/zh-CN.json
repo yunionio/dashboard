@@ -574,6 +574,13 @@
       "delete_fail": "删除失败",
       "terminating": "销毁中",
       "terminate_fail": "销毁失败"
+    },
+    "tenant": {
+      "certified": "已认证",
+      "certificating": "审核中",
+      "denied": "认证未通过",
+      "uncertified": "未认证",
+      "unknown": "未知"
     }
   },
   "skuCategoryOptions": {
