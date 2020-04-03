@@ -6,13 +6,13 @@
     destroyTooltipOnHide
     overlayClassName="page-list-actions-dropmenus-wrap"
     @visibleChange="handleVisibleChange">
-    <action-button :class="{ 'ml-2': group }" :button-size="buttonSize" :row="row" :item="item" :button-type="buttonType" :button-style="buttonStyle" :button-block="buttonBlock" popover-trigger />
+    <action-button :class="{ 'ml-2': group }" :button-size="buttonSize" :row="row" :item="item" :button-type="buttonType" :button-style="buttonStyle" :button-block="buttonBlock" popover-trigger @clear-selected="clearSelected" />
     <div slot="content">
       <template v-if="options.length > 0">
         <template v-if="!isSubmenus">
           <template v-for="item of options">
             <div :key="item.label" class="menu-item">
-              <action-button button-size="small" :button-style="{ fontSize: '12px' }" :item="item" :row="row" @hidden-popover="hiddenPopover" />
+              <action-button button-size="small" :button-style="{ fontSize: '12px' }" :item="item" :row="row" @hidden-popover="hiddenPopover" @clear-selected="clearSelected" />
             </div>
           </template>
         </template>
@@ -36,7 +36,8 @@
                           :row="row"
                           button-size="small"
                           :button-style="{ fontSize: '12px' }"
-                          @hidden-popover="hiddenPopover" />
+                          @hidden-popover="hiddenPopover"
+                          @clear-selected="clearSelected" />
                       </a-col>
                     </a-row>
                   </a-col>
@@ -109,6 +110,9 @@ export default {
     },
     hiddenPopover () {
       this.visible = false
+    },
+    clearSelected () {
+      this.$emit('clear-selected')
     },
   },
 }

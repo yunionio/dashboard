@@ -5,7 +5,7 @@
         <div class="d-flex flex-fill">
           <refresh-button class="flex-shrink-0" :loading="loading" @refresh="refresh" />
           <template v-if="groupActions">
-            <actions class="flex-shrink-0" :options="groupActions" @clear-selected="handleClearSelected" button-type="default" group />
+            <actions class="flex-shrink-0" :options="groupActions" button-type="default" @clear-selected="handleClearSelected" group />
           </template>
           <slot name="group-actions-append" />
           <tag-filter
@@ -235,6 +235,7 @@ export default {
   methods: {
     refresh () {
       this.list.refresh()
+      this.handleClearSelected()
     },
     reset () {
       this.list.reset()
@@ -243,23 +244,25 @@ export default {
       this.list.changeNextMarker()
     },
     handlePageChange ({ type, currentPage, pageSize }) {
-      if (type === 'current-change') {
+      if (type === 'current') {
         this.list.changeCurrentPage(currentPage)
         this.handleClearSelected()
       }
-      if (type === 'size-change') {
+      if (type === 'size') {
         this.list.changePageSize(pageSize)
       }
     },
     handleFilterChange (filter) {
+      this.handleClearSelected()
       this.list.changeFilter(filter)
     },
     handleCheckboxChange ({ selection }) {
       this.list.changeSelected(selection)
     },
-    handleClearSelected () {
+    async handleClearSelected () {
       this.list.clearSelected()
-      this.$refs.grid.clearCheckboxRow()
+      await this.$refs.grid.clearCheckboxReserve()
+      await this.$refs.grid.clearCheckboxRow()
     },
     handleExportData () {
       this.$parent.createDialog('ExportListDataDialog', {
@@ -278,6 +281,7 @@ export default {
       })
     },
     handleSortChange ({ property, order }) {
+      this.handleClearSelected()
       this.list.doSort(property, order)
     },
     genTableColumns () {

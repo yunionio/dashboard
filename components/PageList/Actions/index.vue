@@ -3,7 +3,7 @@
     <template v-for="item of options">
       <!-- 一组操作，下拉形式展示 -->
       <template v-if="item.actions">
-        <dropmenus :group="group" :key="item.label" :item="item" :row="row" :button-type="buttonType" :button-size="buttonSize" :button-style="buttonStyle" :button-block="buttonBlock" />
+        <dropmenus :group="group" :key="item.label" :item="item" :row="row" :button-type="buttonType" :button-size="buttonSize" :button-style="buttonStyle" :button-block="buttonBlock" @clear-selected="clearSelected" />
       </template>
       <!-- 单个操作 -->
       <template v-else>

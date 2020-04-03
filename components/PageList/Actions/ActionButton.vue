@@ -58,7 +58,7 @@ export default {
       if (this.disabled) return
       this.$emit('hidden-popover', e)
       this.item.action(this.row)
-      this.$emit('clear-selected')
+      // this.$emit('clear-selected')
     },
     handlePopoverClick (e) {
       this.$emit('click', e)
