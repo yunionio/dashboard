@@ -243,15 +243,16 @@ export default {
       this.list.changeNextMarker()
     },
     handlePageChange ({ type, currentPage, pageSize }) {
-      if (type === 'current-change') {
+      if (type === 'current') {
         this.list.changeCurrentPage(currentPage)
         this.handleClearSelected()
       }
-      if (type === 'size-change') {
+      if (type === 'size') {
         this.list.changePageSize(pageSize)
       }
     },
     handleFilterChange (filter) {
+      this.handleClearSelected()
       this.list.changeFilter(filter)
     },
     handleCheckboxChange ({ selection }) {
@@ -259,7 +260,7 @@ export default {
     },
     handleClearSelected () {
       this.list.clearSelected()
-      this.$refs.grid.clearCheckboxRow()
+      this.$refs.grid.clearCheckboxReserve()
     },
     handleExportData () {
       this.$parent.createDialog('ExportListDataDialog', {
@@ -278,6 +279,7 @@ export default {
       })
     },
     handleSortChange ({ property, order }) {
+      this.handleClearSelected()
       this.list.doSort(property, order)
     },
     genTableColumns () {
