@@ -3,7 +3,7 @@
     <template v-for="item of options">
       <!-- 一组操作，下拉形式展示 -->
       <template v-if="item.actions">
-        <dropmenus :group="group" :key="item.label" :item="item" :row="row" :button-type="buttonType" :button-size="buttonSize" :button-style="buttonStyle" :button-block="buttonBlock" />
+        <dropmenus :group="group" :key="item.label" :item="item" :row="row" :button-type="buttonType" :button-size="buttonSize" :button-style="buttonStyle" :button-block="buttonBlock" @clear-selected="clearSelected" />
       </template>
       <!-- 单个操作 -->
       <template v-else>
@@ -15,7 +15,8 @@
           :button-size="buttonSize"
           :button-block="buttonBlock"
           :class="{ 'ml-2': group }"
-          :button-style="buttonStyle" />
+          :button-style="buttonStyle"
+          @clear-selected="clearSelected" />
       </template>
     </template>
   </div>
@@ -54,6 +55,12 @@ export default {
     },
     buttonBlock: {
       type: Boolean,
+    },
+  },
+  methods: {
+    // 清除已选项
+    clearSelected () {
+      this.$emit('clear-selected')
     },
   },
 }
