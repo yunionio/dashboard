@@ -637,6 +637,7 @@ export default {
                       data: [obj],
                       columns: this.columns,
                       onManager: this.onManager,
+                      refresh: this.refresh,
                     })
                   },
                   meta: () => {

@@ -700,6 +700,14 @@ export default {
         list: this.list,
       })
     },
+    openVmSetDurationDialog (obj) {
+      this.createDialog('VmSetDurationDialog', {
+        data: [obj],
+        columns: this.columns,
+        onManager: this.onManager,
+        refresh: this.refresh,
+      })
+    },
   },
 }
 </script>

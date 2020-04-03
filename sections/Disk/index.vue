@@ -2,10 +2,9 @@
   <div class="disk-wrapper d-flex w-auto">
     <a-form-item :wrapperCol="{ span: 24 }" :validate-status="storageStatusMap.type">
       <a-tag color="blue" v-if="diskTypeLabel && !disabled">{{ diskTypeLabel }}</a-tag>
-      <a-select v-else v-decorator="decorator.type" labelInValue :style="{width: storageStatusMap.isError ? '100%' : '180px'}" @change="typeChange" :disabled="disabled">
+      <a-select v-else v-decorator="decorator.type" labelInValue :style="{minWidth: '180px'}" @change="typeChange" :disabled="disabled">
         <a-select-option v-for="(item, key) of typesMap" :key="key" :value="key">{{ item.label }}</a-select-option>
       </a-select>
-      <div slot="help" v-if="storageStatusMap.isError">{{ storageStatusMap.tooltip }} <router-link target="_blank" :to="{ path: '/blockstorage' }">{{ storageStatusMap.text }}</router-link></div>
     </a-form-item>
     <a-form-item class="mx-1" :wrapperCol="{ span: 24 }">
       <a-tooltip :title="tooltip" placement="top">
@@ -46,7 +45,7 @@
     <!-- 磁盘容量预警信息提示 -->
     <a-tooltip v-if="storageStatusMap.tooltip">
       <template slot="title">
-        <div slot="help">{{ storageStatusMap.tooltip }} <router-link target="_blank" :to="{ path: '/blockstorage' }">{{ storageStatusMap.text }}</router-link></div>
+        <div slot="help">{{ storageStatusMap.tooltip }}</div>
       </template>
       <a-icon type="exclamation-circle" class="storage-icon" :class="storageClass" />
     </a-tooltip>
