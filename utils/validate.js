@@ -162,7 +162,7 @@ export const REGEXP = {
     message: i18n.t('validator.imageName'),
   },
   mac: {
-    regexp: /^[a-fA-F0-9:]{17}|[a-fA-F0-9]{12}$/g,
+    regexp: /^([0-9a-fA-F]{2})(([/\s:][0-9a-fA-F]{2}){5})$/,
     message: i18n.t('validator.mac'),
   },
 }
