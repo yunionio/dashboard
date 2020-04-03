@@ -56,6 +56,10 @@ export default {
       return this.params.columns.filter((item) => { return showFields.includes(item.field) })
     },
   },
+  mounted () {
+    const autoRenew = this.params.data[0].auto_renew
+    this.form.fc.setFieldsValue({ autoRenew })
+  },
   methods: {
     validateForm () {
       return new Promise((resolve, reject) => {
@@ -70,7 +74,7 @@ export default {
     },
     doResourceRenewFeeSubmit (data) {
       const selectedIds = this.params.data.map(item => item.id)
-      return new this.$Manager('hosts', 'v2').batchPerformAction({
+      return new this.$Manager('servers', 'v2').batchPerformAction({
         ids: selectedIds,
         action: 'set-auto-renew',
         data: {
@@ -84,6 +88,7 @@ export default {
         const values = await this.validateForm()
         await this.doResourceRenewFeeSubmit(values)
         this.loading = false
+        this.params.refresh()
         this.cancelDialog()
       } catch (error) {
         this.loading = false
