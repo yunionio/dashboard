@@ -3,6 +3,8 @@ import KubeclustersCreate from '@K8S/views/cluster/create'
 import Deployment from '@K8S/views/deployment'
 import K8sDeploymentCreate from '@K8S/views/deployment/create'
 import K8SNode from '@K8S/views/nodes'
+import Statefulset from '@K8S/views/statefulset'
+import K8sStatefulsetCreate from '@K8S/views/statefulset/create'
 import Layout from '@/layouts/RouterView'
 
 export default {
@@ -31,6 +33,7 @@ export default {
               component: Deployment,
             },
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
             // {
             //   name: 'KubeclustersImport',
@@ -38,10 +41,32 @@ export default {
             //   component: KubeclustersImport,
             // },
 >>>>>>> feat [3.2] K8S 新建无状态未完成,封装一部分公共业务组件
+=======
+>>>>>>> feat [3.2] 有状态完成(除)抽屉
             {
               name: 'K8sDeploymentCreate',
               path: 'create',
               component: K8sDeploymentCreate,
+            },
+          ],
+        },
+        {
+          path: '/k8s-statefulset',
+          meta: {
+            label: '有状态',
+            permission: 'k8s_statefulsets_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'K8sStatefulsetList',
+              path: '',
+              component: Statefulset,
+            },
+            {
+              name: 'K8sStatefulsetCreate',
+              path: 'create',
+              component: K8sStatefulsetCreate,
             },
           ],
         },

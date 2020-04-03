@@ -20,7 +20,7 @@ import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 
 export default {
-  name: 'K8SDeploymentList',
+  name: 'K8SStatefulsetList',
   components: {
     ClusterNamespace,
   },
@@ -36,7 +36,7 @@ export default {
     return {
       list: this.$list.createList(this, {
         id: this.id,
-        resource: 'deployments',
+        resource: 'statefulsets',
         apiVersion: 'v1',
         getParams: this.getParams,
         idKey: 'name',
@@ -52,9 +52,9 @@ export default {
       groupActions: [
         {
           label: '新建',
-          permission: 'k8s_depolyments_create',
+          permission: 'k8s_statefulsets_create',
           action: () => {
-            this.$router.push({ path: '/k8s-deployment/create' })
+            this.$router.push({ path: '/k8s-statefulset/create' })
           },
           meta: () => ({
             buttonType: 'primary',
@@ -62,7 +62,7 @@ export default {
         },
         {
           label: '删除',
-          permission: 'k8s_depolyments_delete',
+          permission: 'k8s_statefulsets_delete',
           action: () => {
             const data = this.list.selectedItems
             const requestData = {
@@ -115,9 +115,9 @@ export default {
       }
     },
     handleOpenSidepage (row) {
-      this.sidePageTriggerHandle(this, 'K8SDeploymentSidePage', {
+      this.sidePageTriggerHandle(this, 'K8SStatefulsetSidePage', {
         id: row.name,
-        resource: 'deployments',
+        resource: 'statefulsets',
         getParams: this.list.getParams,
         idKey: 'name',
         apiVersion: 'v1',

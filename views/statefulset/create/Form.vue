@@ -1,5 +1,5 @@
 <template>
-  <div class="k8s-deployment-create w-75">
+  <div class="w-75">
     <a-form :form="form.fc" v-bind="formItemLayout">
       <a-form-item label="名称">
         <a-input placeholder="请输入名称" v-decorator="decorators.name" />
@@ -28,7 +28,7 @@
       <a-form-item label="重启策略">
         <restart-policy-select
           :decorator="decorators.restartPolicy"
-          type="deployment" />
+          type="statefulset" />
       </a-form-item>
       <a-collapse :bordered="false" class="mb-3">
         <a-collapse-panel header="高级配置" key="1">
@@ -63,7 +63,7 @@ import SpecContainer from '@K8S/sections/SpecContainer'
 import { getSpecContainerParams, getLabels, getCreateDecorators } from '@K8S/utils'
 
 export default {
-  name: 'K8sDeploymentCreate',
+  name: 'K8sStatefulsetCreate',
   components: {
     ClusterSelect,
     NamespaceSelect,
@@ -84,7 +84,7 @@ export default {
       },
       errPanes: [], // 表单校验错误的tabs
       containerPanes: [], // 子组件同步的tabs
-      decorators: getCreateDecorators.call(this, 'deployment'),
+      decorators: getCreateDecorators.call(this, 'statefulset'),
       clusterObj: {},
       namespaceObj: {},
     }
@@ -117,7 +117,7 @@ export default {
       this.errPanes = Array.from(new Set(errPanes))
     },
     async _doCreate (data) {
-      await new this.$Manager('deployments', 'v1').create({ data })
+      await new this.$Manager('statefulsets', 'v1').create({ data })
     },
     async doCreate () {
       try {

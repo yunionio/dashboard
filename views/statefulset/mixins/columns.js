@@ -1,4 +1,4 @@
-import { k8sStatusColumn } from '@K8S/utils/tableColumns'
+import { k8sStatusColumn, k8sLabelColumn } from '@K8S/utils/tableColumns'
 import { getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 
 export default {
@@ -20,6 +20,7 @@ export default {
         title: '命名空间',
       },
       k8sStatusColumn(),
+      k8sLabelColumn(),
       {
         field: 'podsInfo',
         title: '容器组',

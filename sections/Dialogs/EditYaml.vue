@@ -1,8 +1,8 @@
 <template>
   <base-dialog @cancel="cancelDialog">
     <div slot="header">查看/更新</div>
-    <div class="k8s-edit-yaml-dialog" slot="body">
-      <code-mirror v-if="configText" v-model="configText" :options="cmOptions" />
+    <div class="k8s-edit-yaml-dialog w-100" v-if="configText" slot="body">
+      <code-mirror v-model="configText" :options="cmOptions" />
     </div>
     <div slot="footer">
       <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
@@ -23,31 +23,20 @@ export default {
     return {
       loading: false,
       scope: this.$store.getters.scope,
-      configText: '',
+      configText: this.params.configText,
       data: this.params.data[0],
       cmOptions: {
-        tabSize: 2,
+        tabSize: 4,
         styleActiveLine: true,
         lineNumbers: true,
         line: true,
         mode: 'text/x-yaml',
         lineWrapping: true,
-        readOnly: true,
         theme: 'material',
-        coverGutterNextToScrollbar: true,
       },
     }
   },
-  created () {
-    this.manager = new this.$Manager(this.params.resource, 'v1')
-    this.fetchData()
-  },
   methods: {
-    async fetchData (query) {
-      const { cluster, namespace } = this.data
-      const { data } = await this.manager.getSpecific({ id: this.data.name, spec: 'yaml', params: { cluster, namespace } })
-      this.configText = data
-    },
     async handleConfirm () {
       const { clusterID, name, namespace } = this.data
       let qs = `${name}?cluster=${clusterID}`
@@ -59,7 +48,7 @@ export default {
         this.$message.error('解析yaml出错，请填写正确的yaml配置')
         throw error
       }
-      await this.manager.update({
+      await this.params.manager.update({
         id: qs,
         data,
       })
@@ -74,7 +63,7 @@ export default {
 <style lang="scss" scoped>
 .k8s-edit-yaml-dialog {
   ::v-deep .CodeMirror {
-    height: auto;
+    height: 600px;
   }
 }
 </style>

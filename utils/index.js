@@ -1,4 +1,17 @@
 import * as R from 'ramda'
+import { RESTART_POLICY_OPTS } from '@K8S/constants'
+
+const validateValidPath = (rule, value, callback) => {
+  if (value.startsWith('/')) {
+    if (value === '/') {
+      callback(new Error('挂载点不能为 /'))
+    } else {
+      callback()
+    }
+  } else {
+    callback(new Error('挂载点以 / 开头'))
+  }
+}
 
 export const getSpecContainerParams = (fd, tabs) => {
   const tabKeys = tabs.map(val => val.key)
@@ -63,4 +76,214 @@ export const getLabels = (fd, key, value) => {
     })
   }
   return obj
+}
+
+export function getCreateDecorators (resource) {
+  return {
+    name: [
+      'name',
+      {
+        validateFirst: true,
+        rules: [
+          { required: true, message: '请输入名称' },
+          { min: 2, max: 24, message: '长度在 2 到 24 个字符', trigger: 'blur' },
+          { validator: this.$validate('resourceName') },
+        ],
+      },
+    ],
+    cluster: [
+      'cluster',
+      {
+        rules: [
+          { required: true, message: '请选择集群', trigger: 'blur' },
+        ],
+      },
+    ],
+    namespace: [
+      'namespace',
+      {
+        rules: [
+          { required: true, message: '请选择命名空间', trigger: 'blur' },
+        ],
+      },
+    ],
+    replicas: [
+      'replicas',
+      {
+        initialValue: 1,
+      },
+    ],
+    imageSecrets: {
+      secretType: [
+        'secretType',
+        {
+          initialValue: 'new',
+        },
+      ],
+      imagePullSecrets: [
+        'imagePullSecrets',
+      ],
+    },
+    portMappings: {
+      serviceType: [
+        'serviceType',
+        {
+          initialValue: 'none',
+        },
+      ],
+      loadBalancerNetwork: [
+        'loadBalancerNetwork',
+        {
+          rules: [
+            { required: true, message: '请输入服务端口' },
+          ],
+        },
+      ],
+      ports: {
+        port: i => [
+          `ports[${i}]`,
+          {
+            initialValue: 1,
+            rules: [
+              { required: true, message: '请输入服务端口' },
+            ],
+          },
+        ],
+        targetPort: i => [
+          `targetPorts[${i}]`,
+          {
+            initialValue: 1,
+            rules: [
+              { required: true, message: '请输入目标端口' },
+            ],
+          },
+        ],
+        protocol: i => [
+          `protocols[${i}]`,
+          {
+            initialValue: 'TCP',
+            rules: [
+              { required: true, message: '请选择协议' },
+            ],
+          },
+        ],
+      },
+    },
+    restartPolicy: [
+      'restartPolicy',
+      {
+        initialValue: RESTART_POLICY_OPTS[resource][0].key,
+      },
+    ],
+    labels: {
+      key: i => [
+        `labelKeys[${i}]`,
+        {
+          rules: [
+            { required: true, message: '请输入键' },
+          ],
+        },
+      ],
+      value: i => [
+        `labelValues[${i}]`,
+        {
+          rules: [
+            { required: true, message: '请输入值' },
+          ],
+        },
+      ],
+    },
+    annotations: {
+      key: i => [
+        `annotationsKeys[${i}]`,
+        {
+          rules: [
+            { required: true, message: '请输入键' },
+          ],
+        },
+      ],
+      value: i => [
+        `annotationsValues[${i}]`,
+        {
+          rules: [
+            { required: true, message: '请输入值' },
+          ],
+        },
+      ],
+    },
+    containers: {
+      name: i => [
+        `containerNames[${i}]`,
+        {
+          rules: [
+            { required: true, message: '请输入名称' },
+          ],
+        },
+      ],
+      image: i => [
+        `containerimages[${i}]`,
+        {
+          rules: [
+            { required: true, message: '请输入镜像' },
+          ],
+        },
+      ],
+      cpu: i => [
+        `containerCpus[${i}]`,
+      ],
+      memory: i => [
+        `containerMemorys[${i}]`,
+      ],
+      command: i => [
+        `containerCommands[${i}]`,
+      ],
+      arg: i => [
+        `containerArgs[${i}]`,
+      ],
+      volumeMount: i => ({
+        key: k => [
+          `containerVolumeMountNames[${i}][${k}]`,
+          {
+            rules: [
+              { required: true, message: '请选择' },
+            ],
+          },
+        ],
+        value: k => [
+          `containerVolumeMountPaths[${i}][${k}]`,
+          {
+            rules: [
+              { required: true, message: '请输入' },
+              { validator: validateValidPath, trigger: 'blur' },
+            ],
+          },
+        ],
+      }),
+      env: i => ({
+        key: k => [
+          `containerEnvNames[${i}][${k}]`,
+          {
+            rules: [
+              { required: true, message: '请输入' },
+            ],
+          },
+        ],
+        value: k => [
+          `containerEnvValues[${i}][${k}]`,
+          {
+            rules: [
+              { required: true, message: '请输入' },
+            ],
+          },
+        ],
+      }),
+      privileged: i => [
+        `containerPrivilegeds[${i}]`,
+        {
+          valuePropName: 'checked',
+          initialValue: false,
+        },
+      ],
+    },
+  }
 }
