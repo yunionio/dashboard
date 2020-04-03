@@ -15,8 +15,7 @@
           :button-size="buttonSize"
           :button-block="buttonBlock"
           :class="{ 'ml-2': group }"
-          :button-style="buttonStyle"
-          @clear-selected="clearSelected" />
+          :button-style="buttonStyle" />
       </template>
     </template>
   </div>
@@ -55,12 +54,6 @@ export default {
     },
     buttonBlock: {
       type: Boolean,
-    },
-  },
-  methods: {
-    // 清除已选项
-    clearSelected () {
-      this.$emit('clear-selected')
     },
   },
 }

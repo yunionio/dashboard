@@ -5,7 +5,7 @@
         <div class="d-flex flex-fill">
           <refresh-button class="flex-shrink-0" :loading="loading" @refresh="refresh" />
           <template v-if="groupActions">
-            <actions class="flex-shrink-0" :options="groupActions" @clear-selected="handleClearSelected" button-type="default" group />
+            <actions class="flex-shrink-0" :options="groupActions" button-type="default" group />
           </template>
           <slot name="group-actions-append" />
           <tag-filter
