@@ -216,4 +216,9 @@ export default {
     success: ['Running', 'Succeeded'],
     danger: ['Failed'],
   },
+  tenant: {
+    info: ['certificating', 'uncertified', 'unknown'],
+    success: ['certified'],
+    danger: ['denied'],
+  },
 }
