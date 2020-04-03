@@ -225,19 +225,19 @@ export const getIpsTableColumn = ({ field = 'ips', title = 'IP' } = {}) => {
     field,
     title,
     showOverflow: 'ellipsis',
-    width: '120px',
+    width: '180px',
     slots: {
       default: ({ row }, h) => {
         if (!row.eip && !row.ips) return '-'
         let ret = []
         if (row.eip) {
           ret.push(
-            <list-body-cell-wrap row={row} field="eip" copy />
+            <list-body-cell-wrap row={row} field="eip" copy><span class="text-color-help">({ row.eip_mode === 'elastic_ip' ? '弹性' : '公有' })</span></list-body-cell-wrap>
           )
         }
         if (row.ips) {
           const ips = row.ips.split(',').map(ip => {
-            return <list-body-cell-wrap copy row={{ ip }} hide-field field="ip">{ ip }</list-body-cell-wrap>
+            return <list-body-cell-wrap copy row={{ ip }} hide-field field="ip">{ ip }<span class="text-color-help">(私有)</span></list-body-cell-wrap>
           })
           ret = ret.concat(ips)
         }
