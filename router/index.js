@@ -35,17 +35,11 @@ export default {
               path: '',
               component: Deployment,
             },
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
             // {
             //   name: 'KubeclustersImport',
             //   path: 'import',
             //   component: KubeclustersImport,
             // },
->>>>>>> feat [3.2] K8S 新建无状态未完成,封装一部分公共业务组件
-=======
->>>>>>> feat [3.2] 有状态完成(除)抽屉
             {
               name: 'K8sDeploymentCreate',
               path: 'create',

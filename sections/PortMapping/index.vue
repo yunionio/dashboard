@@ -27,7 +27,7 @@ import LbNetwork from './LbNetwork'
 import { uuid } from '@/utils/utils'
 
 export default {
-  name: 'PortMapping',
+  name: 'K8SPortMapping',
   components: {
     Port,
     LbNetwork,

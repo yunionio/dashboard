@@ -5,7 +5,7 @@
 <script>
 
 export default {
-  name: 'StatusSidepage',
+  name: 'K8SStatusSidepage',
   props: {
     data: {
       type: Object,

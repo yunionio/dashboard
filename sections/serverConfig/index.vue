@@ -72,7 +72,7 @@ import { NODE_ROLE_MAP } from '../../views/cluster/constants'
 import { uuid } from '@/utils/utils'
 
 export default {
-  name: 'ServerConfig',
+  name: 'K8SClusterServerConfig',
   props: {
     decorator: {
       type: Object,

@@ -24,7 +24,7 @@ import ClusterSelect from '@K8S/sections/ClusterSelect'
 import NamespaceSelect from '@K8S/sections/NamespaceSelect'
 
 export default {
-  name: 'ClusterNamespace',
+  name: 'K8SClusterNamespace',
   components: {
     ClusterSelect,
     NamespaceSelect,

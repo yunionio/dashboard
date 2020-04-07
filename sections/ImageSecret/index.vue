@@ -25,7 +25,7 @@ import { SECRET_DEFAULT_TYPE } from '@K8S/constants'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'ImageSecrets',
+  name: 'K8SImageSecrets',
   mixins: [WindowsMixin],
   props: {
     decorators: {
