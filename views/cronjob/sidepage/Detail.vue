@@ -9,10 +9,8 @@
 </template>
 
 <script>
-import { k8sStatusColumn, k8sLabelColumn } from '@K8S/utils/tableColumns'
-
 export default {
-  name: 'K8sPodDetail',
+  name: 'K8sCronJobDetail',
   props: {
     data: {
       type: Object,
@@ -39,8 +37,6 @@ export default {
             },
           },
         },
-        k8sStatusColumn('warnings'),
-        k8sLabelColumn(),
         {
           field: 'cluster',
           title: '集群',
@@ -48,22 +44,6 @@ export default {
         {
           field: 'namespace',
           title: '命名空间',
-        },
-        {
-          field: 'podIP',
-          title: 'IP',
-        },
-        {
-          field: 'restartCount',
-          title: '重启次数',
-        },
-        {
-          field: 'nodeName',
-          title: '节点',
-        },
-        {
-          field: 'qosClass',
-          title: 'QoS 等级',
         },
         {
           field: 'creationTimestamp',

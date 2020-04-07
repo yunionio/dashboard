@@ -8,6 +8,8 @@ import K8sStatefulsetCreate from '@K8S/views/statefulset/create'
 import Pod from '@K8S/views/pod'
 import Job from '@K8S/views/job'
 import K8sJobCreate from '@K8S/views/job/create'
+import CronJob from '@K8S/views/cronjob'
+import K8sCronJobCreate from '@K8S/views/cronjob/create'
 import Layout from '@/layouts/RouterView'
 
 export default {
@@ -84,6 +86,26 @@ export default {
               name: 'K8sJobCreate',
               path: 'create',
               component: K8sJobCreate,
+            },
+          ],
+        },
+        {
+          path: '/k8s-cronjob',
+          meta: {
+            label: '定时任务',
+            permission: 'k8s_cronjobs_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'K8sCronJobList',
+              path: '',
+              component: CronJob,
+            },
+            {
+              name: 'K8sCronJobCreate',
+              path: 'create',
+              component: K8sCronJobCreate,
             },
           ],
         },

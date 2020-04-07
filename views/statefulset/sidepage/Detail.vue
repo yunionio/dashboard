@@ -12,7 +12,7 @@
 import { k8sStatusColumn, k8sLabelColumn, k8sImageColumn } from '@K8S/utils/tableColumns'
 
 export default {
-  name: 'K8sDeploymentDetail',
+  name: 'K8sStatefulsetDetail',
   props: {
     data: {
       type: Object,

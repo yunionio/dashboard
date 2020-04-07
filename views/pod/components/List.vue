@@ -66,6 +66,7 @@ export default {
               data,
               columns: this.columns,
               title: '删除',
+              name: '容器组',
               onManager: this.onManager,
               idKey: 'name',
               requestData,
@@ -75,7 +76,7 @@ export default {
             let validate = true
             let tooltip = ''
             if (this.list.selectedItems.length > 0) {
-              let namespaces = this.pagedata.selectedItems.map(v => v.namespace)
+              let namespaces = this.list.selectedItems.map(v => v.namespace)
               let unique = Array.from(new Set(namespaces))
               if (unique.length > 1) {
                 validate = false

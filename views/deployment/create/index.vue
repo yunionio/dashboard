@@ -22,7 +22,7 @@
 import FormCreate from './Form'
 
 export default {
-  name: 'DeploymentCreate',
+  name: 'K8SDeploymentCreate',
   components: {
     FormCreate,
   },
