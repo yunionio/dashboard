@@ -190,7 +190,7 @@ export default {
   },
   scalingpolicie: {
     success: ['ready'],
-    danger: ['delete_failed', 'deleted', 'remove_failed'],
+    danger: ['delete_failed', 'deleted', 'remove_failed', 'create_failed'],
     info: ['init', 'unavailable', 'unknown'],
   },
   scalingactivitie: {

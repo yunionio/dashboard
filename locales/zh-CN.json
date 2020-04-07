@@ -535,7 +535,9 @@
       "init": "初始化",
       "ready": "正常",
       "deleting": "删除中",
-      "deleted": "删除"
+      "deleted": "删除",
+      "create_failed": "创建失败",
+      "delete_failed": "删除失败"
     },
     "scalingactivitie": {
       "init": "初始化",
@@ -1202,5 +1204,26 @@
   "billingType": {
     "postpaid": "按量付费",
     "prepaid": "包年包月"
+  },
+  "isoChannelOptions": {
+    "import": "从镜像市场导入",
+    "upload": "文件上传 / URL上传"
+  },
+  "osTypes": {
+    "Linux": "Linux",
+    "Windows": "Windows",
+    "macOS": "macOS",
+    "Android": "Android",
+    "VMware": "VMWare",
+    "": "其他"
+  },
+  "archTypes": {
+    "": "无限制",
+    "x86_64": "x86 64位",
+    "x86": "x86 32位"
+  },
+  "isoUploadTypes": {
+    "file": "上传镜像文件",
+    "url": "输入镜像URL"
   }
 }
