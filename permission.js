@@ -49,8 +49,6 @@ router.beforeEach(async (to, from, next) => {
           !hasScopeResource && await store.dispatch('auth/getScopeResource')
           next()
         } catch (error) {
-          await store.dispatch('auth/logout')
-          next({ name: 'Auth' })
           throw error
         }
       }
