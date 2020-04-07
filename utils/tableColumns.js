@@ -55,3 +55,39 @@ export const k8sLabelColumn = () => {
     },
   }
 }
+
+export const k8sImageColumn = ({ field = 'containerImages', title = '镜像', itemField = 'image' } = {}) => {
+  return {
+    field,
+    title,
+    minWidth: 200,
+    slots: {
+      default: ({ row }, h) => {
+        return row[field].map(v => {
+          return (<a-tag class="d-block text-truncate mb-1" style="max-width: 400px;" title={v[itemField]}>{ v[itemField] }</a-tag>)
+        })
+      },
+    },
+  }
+}
+
+export const k8sEnvColumn = ({ field = 'env', title = '环境变量' } = {}) => {
+  return {
+    field,
+    title,
+    slots: {
+      default: ({ row }, h) => {
+        if (!row[field] || !R.is(Array, row[field])) return '-'
+        return [
+          <div>
+            {
+              row[field].map((val, i) => {
+                return (<div class="mb-1" title={`${val.name}：${val.value || '-'}`}><a-tag class="d-block text-truncate">{ `${val.name}：${val.value || '-'}` }</a-tag></div>)
+              })
+            }
+          </div>,
+        ]
+      },
+    },
+  }
+}

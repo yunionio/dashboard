@@ -100,7 +100,6 @@ export default {
       })
     },
     setErrorPane (err) {
-      console.log(err, 'err')
       const keys = Object.keys(err).filter(v => v.startsWith('container'))
       const containerErrValues = keys.map(k => err[k])
       const errPanes = containerErrValues.map(v => Object.keys(v)).flat()
@@ -112,7 +111,6 @@ export default {
     async doCreate () {
       try {
         const values = await this.validateForm()
-        console.log(values, 'values')
         const spec = getSpecContainerParams(values, this.containerPanes)
         const labels = getLabels(values, 'labelKeys', 'labelValues')
         const annotations = getLabels(values, 'annotationsKeys', 'annotationsValues')
@@ -146,7 +144,6 @@ export default {
           template,
         }
         if (!R.isEmpty(service)) params.service = service
-        console.log(values, 'values')
         await this._doCreate(params)
         this.$message.success('操作成功')
       } catch (error) {

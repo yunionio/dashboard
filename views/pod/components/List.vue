@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import ClusterNamespace from '@K8S/sections/ClusterNamespace'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
@@ -108,7 +109,14 @@ export default {
       this.sidePageTriggerHandle(this, 'K8SPodSidePage', {
         id: row.name,
         resource: 'pods',
-        getParams: this.list.getParams,
+        getParams: () => {
+          const params = R.clone(this.list.getParams)
+          if (row.namespace) {
+            params.namespace = row.namespace
+            if (params.all_namespace) delete params.all_namespace
+          }
+          return params
+        },
         idKey: 'name',
         apiVersion: 'v1',
         steadyStatus: {

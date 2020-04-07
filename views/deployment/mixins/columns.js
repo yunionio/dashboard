@@ -1,4 +1,4 @@
-import { k8sStatusColumn } from '@K8S/utils/tableColumns'
+import { k8sStatusColumn, k8sImageColumn } from '@K8S/utils/tableColumns'
 import { getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 
 export default {
@@ -29,18 +29,7 @@ export default {
           return row.podsInfo.running + ' / ' + row.podsInfo.current
         },
       },
-      {
-        field: 'containerImages',
-        title: '镜像',
-        minWidth: 200,
-        slots: {
-          default: ({ row }, h) => {
-            return row.containerImages.map(v => {
-              return (<a-tag class="d-block text-truncate" title={v.image}>{ v.image }</a-tag>)
-            })
-          },
-        },
-      },
+      k8sImageColumn(),
       {
         field: 'creationTimestamp',
         title: '创建于',

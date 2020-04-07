@@ -155,7 +155,6 @@ export default {
           template,
         }
         if (!R.isEmpty(service)) params.service = service
-        console.log(values, 'values')
         await this._doCreate(params)
         this.$message.success('操作成功')
       } catch (error) {

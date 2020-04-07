@@ -3,7 +3,7 @@ export default {
     this.singleActions = [
       {
         label: '设置镜像/副本数',
-        permission: 'k8s_statefulsets_update',
+        permission: 'k8s_jobs_update',
         action: obj => {
           this.createDialog('K8SSetLimitDialog', {
             data: [obj],
@@ -16,7 +16,7 @@ export default {
       },
       {
         label: '查看/编辑',
-        permission: 'k8s_statefulsets_update',
+        permission: 'k8s_jobs_update',
         action: async obj => {
           const manager = new this.$Manager(`_raw/${this.list.resource}`, 'v1')
           async function fetchData () {
@@ -35,7 +35,7 @@ export default {
       },
       {
         label: '删除',
-        permission: 'k8s_statefulsets_delete',
+        permission: 'k8s_jobs_delete',
         action: (obj) => {
           const requestParams = {
             cluster: obj.clusterID,
@@ -47,7 +47,7 @@ export default {
             data: [obj],
             columns: this.columns,
             title: '删除',
-            name: '有状态',
+            name: '任务',
             onManager: this.onManager,
             idKey: 'name',
             requestParams,
