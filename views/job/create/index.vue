@@ -17,7 +17,7 @@
 import FormCreate from './Form'
 
 export default {
-  name: 'JobCreate',
+  name: 'K8SJobCreate',
   components: {
     FormCreate,
   },

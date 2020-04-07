@@ -175,6 +175,14 @@ export function getCreateDecorators (resource) {
         initialValue: RESTART_POLICY_OPTS[resource][0].key,
       },
     ],
+    schedule: [
+      'schedule',
+      {
+        rules: [
+          { required: true, message: '请输入调度策略，例如：*/1 * * * *' },
+        ],
+      },
+    ],
     labels: {
       key: i => [
         `labelKeys[${i}]`,

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="新建有状态(Statefulset)" />
+    <page-header title="新建任务(Job)" />
     <page-body>
       <form-create ref="FormCreateRef" />
     </page-body>
@@ -17,7 +17,7 @@
 import FormCreate from './Form'
 
 export default {
-  name: 'K8SStatefulsetCreate',
+  name: 'K8SCronJobCreate',
   components: {
     FormCreate,
   },
@@ -39,7 +39,7 @@ export default {
       }
     },
     cancel () {
-      this.$router.push('/k8s-statefulset')
+      this.$router.push('/k8s-cronjob')
     },
   },
 }

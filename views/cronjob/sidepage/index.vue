@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="任务(Job)"
+    title="定时任务(CronJob)"
     icon="res-group"
     :res-name="detailData.name"
     :actions="params.actions"
@@ -12,7 +12,7 @@
     <template v-slot:actions>
       <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :res-id="data.id" :data="detailData" :onManager="onManager" resource="jobs" />
+    <component :is="params.windowData.currentTab" :res-id="data.id" :data="detailData" :onManager="onManager" resource="cronjobs" />
   </base-side-page>
 </template>
 
@@ -27,7 +27,7 @@ import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
 
 export default {
-  name: 'K8SJobsSidePage',
+  name: 'K8SCronJobsSidePage',
   components: {
     Actions,
     Detail,

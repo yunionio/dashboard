@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import ClusterNamespace from '@K8S/sections/ClusterNamespace'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
@@ -75,6 +76,7 @@ export default {
               data,
               columns: this.columns,
               title: '删除',
+              name: '任务',
               onManager: this.onManager,
               idKey: 'name',
               requestData,
@@ -84,7 +86,7 @@ export default {
             let validate = true
             let tooltip = ''
             if (this.list.selectedItems.length > 0) {
-              let namespaces = this.pagedata.selectedItems.map(v => v.namespace)
+              let namespaces = this.list.selectedItems.map(v => v.namespace)
               let unique = Array.from(new Set(namespaces))
               if (unique.length > 1) {
                 validate = false
@@ -118,7 +120,14 @@ export default {
       this.sidePageTriggerHandle(this, 'K8SJobsSidePage', {
         id: row.name,
         resource: 'jobs',
-        getParams: this.list.getParams,
+        getParams: () => {
+          const params = R.clone(this.list.getParams)
+          if (row.namespace) {
+            params.namespace = row.namespace
+            if (params.all_namespace) delete params.all_namespace
+          }
+          return params
+        },
         idKey: 'name',
         apiVersion: 'v1',
         steadyStatus: {

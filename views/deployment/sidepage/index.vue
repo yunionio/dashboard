@@ -12,11 +12,13 @@
     <template v-slot:actions>
       <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :res-id="data.id" :data="detailData" :onManager="onManager" :getParams="getParams" />
+    <component :is="params.windowData.currentTab" :res-id="data.id" :data="detailData" :onManager="onManager" :getParams="getParams" resource="deployments" />
   </base-side-page>
 </template>
 
 <script>
+import EventsSidepage from '@K8S/sections/EventsSidepage'
+import SourceInformationSidepage from '@K8S/sections/SourceInformationSidepage'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import Detail from './Detail'
@@ -29,12 +31,16 @@ export default {
   components: {
     Actions,
     Detail,
+    EventsSidepage,
+    SourceInformationSidepage,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
         { label: '详情', key: 'detail' },
+        { label: '事件', key: 'events-sidepage' },
+        { label: '源信息', key: 'source-information-sidepage' },
       ],
     }
   },

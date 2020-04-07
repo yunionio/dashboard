@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import ClusterNamespace from '@K8S/sections/ClusterNamespace'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
@@ -20,7 +21,7 @@ import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 
 export default {
-  name: 'K8SStatefulsetList',
+  name: 'K8SJobList',
   components: {
     ClusterNamespace,
   },
@@ -36,7 +37,7 @@ export default {
     return {
       list: this.$list.createList(this, {
         id: this.id,
-        resource: 'statefulsets',
+        resource: 'cronjobs',
         apiVersion: 'v1',
         getParams: this.getParams,
         idKey: 'name',
@@ -52,9 +53,9 @@ export default {
       groupActions: [
         {
           label: '新建',
-          permission: 'k8s_statefulsets_create',
+          permission: 'k8s_cronjobs_create',
           action: () => {
-            this.$router.push({ path: '/k8s-statefulset/create' })
+            this.$router.push({ path: '/k8s-cronjob/create' })
           },
           meta: () => ({
             buttonType: 'primary',
@@ -62,7 +63,7 @@ export default {
         },
         {
           label: '删除',
-          permission: 'k8s_statefulsets_delete',
+          permission: 'k8s_cronjobs_delete',
           action: () => {
             const data = this.list.selectedItems
             const requestData = {
@@ -75,7 +76,7 @@ export default {
               data,
               columns: this.columns,
               title: '删除',
-              name: '有状态',
+              name: '定时任务',
               onManager: this.onManager,
               idKey: 'name',
               requestData,
@@ -116,10 +117,17 @@ export default {
       }
     },
     handleOpenSidepage (row) {
-      this.sidePageTriggerHandle(this, 'K8SStatefulsetSidePage', {
+      this.sidePageTriggerHandle(this, 'K8SCronJobsSidePage', {
         id: row.name,
-        resource: 'statefulsets',
-        getParams: this.list.getParams,
+        resource: 'cronjobs',
+        getParams: () => {
+          const params = R.clone(this.list.getParams)
+          if (row.namespace) {
+            params.namespace = row.namespace
+            if (params.all_namespace) delete params.all_namespace
+          }
+          return params
+        },
         idKey: 'name',
         apiVersion: 'v1',
         steadyStatus: {

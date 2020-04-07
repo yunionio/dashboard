@@ -9,10 +9,10 @@
 </template>
 
 <script>
-import { k8sStatusColumn, k8sLabelColumn } from '@K8S/utils/tableColumns'
+import { k8sStatusColumn, k8sLabelColumn, k8sImageColumn } from '@K8S/utils/tableColumns'
 
 export default {
-  name: 'K8sDeploymentDetail',
+  name: 'K8sStatefulsetDetail',
   props: {
     data: {
       type: Object,
@@ -49,17 +49,7 @@ export default {
           field: 'namespace',
           title: '命名空间',
         },
-        {
-          field: 'containerImages',
-          title: '镜像',
-          slots: {
-            default: ({ row }, h) => {
-              return row.containerImages.map(v => {
-                return (<a-tag class="d-block text-truncate" style="max-width: 400px;" title={v.image}>{ v.image }</a-tag>)
-              })
-            },
-          },
-        },
+        k8sImageColumn(),
         {
           field: 'creationTimestamp',
           title: '创建时间',

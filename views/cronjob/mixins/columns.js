@@ -1,4 +1,4 @@
-import { k8sStatusColumn, k8sLabelColumn, k8sImageColumn } from '@K8S/utils/tableColumns'
+import { k8sLabelColumn } from '@K8S/utils/tableColumns'
 import { getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 
 export default {
@@ -16,21 +16,16 @@ export default {
         },
       }),
       {
+        field: 'schedule',
+        title: '调度策略',
+        width: 100,
+      },
+      {
         field: 'namespace',
         title: '命名空间',
         width: 120,
       },
-      k8sStatusColumn(),
       k8sLabelColumn(),
-      {
-        field: 'podsInfo',
-        title: '容器组',
-        width: 70,
-        formatter: ({ row }) => {
-          return row.podsInfo.running + ' / ' + row.podsInfo.current
-        },
-      },
-      k8sImageColumn(),
       {
         field: 'creationTimestamp',
         title: '创建于',

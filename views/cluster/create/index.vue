@@ -410,8 +410,8 @@ export default {
         this.loading = false
         this.$router.push('/k8s-cluster')
       } catch (error) {
-        console.log(error)
         this.loading = false
+        throw error
       }
     },
     cancel () {

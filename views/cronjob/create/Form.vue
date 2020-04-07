@@ -1,5 +1,5 @@
 <template>
-  <div class="k8s-deployment-create w-75">
+  <div class="w-75">
     <a-form :form="form.fc" v-bind="formItemLayout">
       <a-form-item label="名称">
         <a-input placeholder="请输入名称" v-decorator="decorators.name" />
@@ -10,25 +10,19 @@
       <a-form-item label="命名空间">
         <namespace-select v-decorator="decorators.namespace" :cluster="clusterObj.id" :namespaceObj.sync="namespaceObj" />
       </a-form-item>
-      <a-form-item label="容器组个数">
-        <a-input-number v-decorator="decorators.replicas" :min="1" :max="10" />
-      </a-form-item>
       <a-form-item label="镜像密钥" class="mb-0">
         <image-secret
           :decorators="decorators.imageSecrets"
           :namespace="namespaceObj.name"
           :cluster="clusterObj.id" />
       </a-form-item>
-      <a-form-item label="服务">
-        <port-mapping
-          :form="form"
-          :decorators="decorators.portMappings"
-          :network-disabled="networkDisabled" />
-      </a-form-item>
       <a-form-item label="重启策略">
         <restart-policy-select
           :decorator="decorators.restartPolicy"
-          type="deployment" />
+          type="cronjob" />
+      </a-form-item>
+      <a-form-item label="调度策略">
+        <a-input placeholder="请输入调度策略，例如：*/1 * * * *" v-decorator="decorators.schedule" />
       </a-form-item>
       <a-collapse :bordered="false" class="mb-3">
         <a-collapse-panel header="高级配置" key="1">
@@ -56,19 +50,17 @@ import * as R from 'ramda'
 import ClusterSelect from '@K8S/sections/ClusterSelect'
 import NamespaceSelect from '@K8S/sections/NamespaceSelect'
 import ImageSecret from '@K8S/sections/ImageSecret'
-import PortMapping from '@K8S/sections/PortMapping'
 import RestartPolicySelect from '@K8S/sections/RestartPolicySelect'
 import Labels from '@K8S/sections/Labels'
 import SpecContainer from '@K8S/sections/SpecContainer'
 import { getSpecContainerParams, getLabels, getCreateDecorators } from '@K8S/utils'
 
 export default {
-  name: 'K8sDeploymentCreate',
+  name: 'K8sCronJobCreate',
   components: {
     ClusterSelect,
     NamespaceSelect,
     ImageSecret,
-    PortMapping,
     RestartPolicySelect,
     Labels,
     SpecContainer,
@@ -84,7 +76,7 @@ export default {
       },
       errPanes: [], // 表单校验错误的tabs
       containerPanes: [], // 子组件同步的tabs
-      decorators: getCreateDecorators.call(this, 'deployment'),
+      decorators: getCreateDecorators.call(this, 'cronjob'),
       clusterObj: {},
       namespaceObj: {},
     }
@@ -117,7 +109,7 @@ export default {
       this.errPanes = Array.from(new Set(errPanes))
     },
     async _doCreate (data) {
-      await new this.$Manager('deployments', 'v1').create({ data })
+      await new this.$Manager('cronjobs', 'v1').create({ data })
     },
     async doCreate () {
       try {
@@ -126,7 +118,7 @@ export default {
         const labels = getLabels(values, 'labelKeys', 'labelValues')
         const annotations = getLabels(values, 'annotationsKeys', 'annotationsValues')
         const service = {}
-        if (values.serviceType !== 'none') {
+        if (values.serviceType !== 'none' && values.ports) {
           service.isExternal = (values.serviceType === 'external')
           const portMappings = Object.keys(values.ports).map(key => {
             return {
@@ -149,10 +141,15 @@ export default {
           name: values.name,
           cluster: values.cluster,
           namespace: values.namespace,
+          schedule: values.schedule,
           replicas: values.replicas,
           labels,
           annotations,
-          template,
+          jobTemplate: {
+            spec: {
+              template,
+            },
+          },
         }
         if (!R.isEmpty(service)) params.service = service
         await this._doCreate(params)
