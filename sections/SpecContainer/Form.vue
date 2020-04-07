@@ -7,10 +7,10 @@
       <a-input placeholder="请输入容器镜像" v-decorator="decorators.image" />
     </a-form-item>
     <a-form-item label="CPU">
-      <a-input placeholder="请输入CPU核数" v-decorator="decorators.cpu" addonAfter="核" />
+      <a-input placeholder="请输入CPU核数" type="number" v-decorator="decorators.cpu" addonAfter="核" :min="1" />
     </a-form-item>
     <a-form-item label="内存">
-      <a-input placeholder="请输入内存" v-decorator="decorators.memory" addonAfter="G" />
+      <a-input placeholder="请输入内存" type="number" v-decorator="decorators.memory" addonAfter="G" :min="1" />
     </a-form-item>
     <a-form-item label="容器命令">
       <a-input placeholder="容器命令，选填" v-decorator="decorators.command" />
@@ -30,6 +30,9 @@
     </a-form-item>
     <a-form-item label="环境变量">
       <labels :decorators="decorators.env" title="变量" keyLabel="变量" />
+    </a-form-item>
+    <a-form-item label="消费预警">
+      <a-checkbox v-decorator="decorators.privileged">以特权模式运行</a-checkbox>
     </a-form-item>
   </div>
 </template>
@@ -71,7 +74,3 @@ export default {
   },
 }
 </script>
-
-<style>
-
-</style>

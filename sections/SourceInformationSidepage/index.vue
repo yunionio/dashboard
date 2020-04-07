@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="K8S-source-information-sidepage mb-5 mt-2">
     <code-mirror v-model="text" :options="cmOptions" />
     <a-button
       class="mt-2 mr-2"
@@ -17,7 +17,7 @@ import 'codemirror/theme/material.css'
 const jsYaml = require('js-yaml')
 
 export default {
-  name: 'SourceInformationSidepage',
+  name: 'K8SSourceInformationSidepage',
   props: {
     resource: {
       type: String,
@@ -75,3 +75,11 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.K8S-source-information-sidepage {
+  ::v-deep .CodeMirror {
+    height: 500px;
+  }
+}
+</style>

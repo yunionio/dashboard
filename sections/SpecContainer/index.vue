@@ -1,8 +1,13 @@
 <template>
   <div>
     <a-tabs hideAdd v-model="active" type="editable-card" @edit="onEdit">
-      <a-tab-pane v-for="(pane, i) in panes" :tab="`容器${i + 1}`" :key="pane.key" :closable="panes.length > 1">
-        <spec-container-form :decorators="getDecorators(pane)" :cluster="cluster" :namespace="namespace" />
+      <a-tab-pane v-for="(pane, i) in panes" :key="pane.key" :closable="panes.length > 1">
+        <template v-slot:tab>
+          <a-badge :dot="showBadge(pane)" :offset="[(panes.length > 1 ? 24 : 10), -5]">
+            <span>{{ `容器${i + 1}` }}</span>
+          </a-badge>
+        </template>
+        <spec-container-form :decorators="getDecorators(pane.key)" :cluster="cluster" :namespace="namespace" />
       </a-tab-pane>
       <template v-slot:tabBarExtraContent>
         <a-button type="link" @click="add">添加容器</a-button>
@@ -28,6 +33,14 @@ export default {
     },
     cluster: String,
     namespace: String,
+    form: {
+      type: Object,
+      validator: v => v.fc,
+    },
+    errPanes: {
+      type: Array,
+      default: () => [],
+    },
   },
   data () {
     const key = uuid()
@@ -38,26 +51,39 @@ export default {
       ],
     }
   },
+  created () {
+    this.syncPanes()
+  },
   methods: {
+    syncPanes () {
+      this.$emit('update:panes', this.panes)
+    },
+    showBadge (pane) {
+      return this.errPanes.includes(pane.key)
+    },
     add () {
+      const key = uuid()
       this.panes.push({
-        key: uuid(),
+        key,
       })
+      this.active = key
+      this.syncPanes()
     },
     onEdit (targetKey, action) {
       if (action === 'remove') {
         const index = this.panes.findIndex(val => val.key === targetKey)
-        if (index === 0) {
-          this.active = this.panes[1].key
-        }
         this.panes.splice(index, 1)
+        if (this.active === targetKey) {
+          this.active = this.panes[0].key
+        }
+        this.syncPanes()
       }
     },
-    getDecorators (val) {
+    getDecorators (k) {
       const ret = {}
       R.forEachObjIndexed((item, key) => {
         if (R.is(Function, item)) {
-          ret[key] = item(val.key)
+          ret[key] = item(k)
         }
       }, this.decorators)
       return ret

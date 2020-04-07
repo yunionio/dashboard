@@ -15,13 +15,12 @@
 import ClusterNamespace from '@K8S/sections/ClusterNamespace'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import { getNameFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 
 export default {
-  name: 'KubeclusterList',
+  name: 'K8SDeploymentList',
   components: {
     ClusterNamespace,
   },
@@ -42,10 +41,12 @@ export default {
         getParams: this.getParams,
         idKey: 'name',
         filterOptions: {
-          name: getNameFilter(),
+          name: {
+            label: '名称',
+          },
         },
         steadyStatus: {
-          status: Object.values(expectStatus.deployment).flat(),
+          status: Object.values(expectStatus.k8s_resource).flat(),
         },
       }),
       groupActions: [
@@ -114,12 +115,14 @@ export default {
       }
     },
     handleOpenSidepage (row) {
-      this.sidePageTriggerHandle(this, 'K8sDeploymentSidePage', {
-        id: row.id,
+      this.sidePageTriggerHandle(this, 'K8SDeploymentSidePage', {
+        id: row.name,
         resource: 'deployments',
-        getParams: this.getParams,
+        getParams: this.list.getParams,
+        idKey: 'name',
+        apiVersion: 'v1',
         steadyStatus: {
-          status: Object.values(expectStatus.deployment).flat(),
+          status: Object.values(expectStatus.k8s_resource).flat(),
         },
       }, {
         list: this.list,

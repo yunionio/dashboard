@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  name: 'K8sClusterSelect',
+  name: 'K8SClusterSelect',
   props: {
     value: {
       required: true,

@@ -11,7 +11,7 @@ import * as R from 'ramda'
 import { RESTART_POLICY_OPTS } from '@K8S/constants/index.js'
 
 export default {
-  name: 'restartPolicySelect',
+  name: 'K8SrestartPolicySelect',
   props: {
     decorator: {
       type: Array,
@@ -30,7 +30,3 @@ export default {
   },
 }
 </script>
-
-<style>
-
-</style>

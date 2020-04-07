@@ -1,7 +1,5 @@
-import {
-  getNameDescriptionTableColumn,
-  getStatusTableColumn,
-} from '@/utils/common/tableColumn'
+import { k8sStatusColumn } from '@K8S/utils/tableColumns'
+import { getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   created () {
@@ -20,9 +18,9 @@ export default {
       {
         field: 'namespace',
         title: '命名空间',
-        // minWidth: 80,
+        width: 120,
       },
-      getStatusTableColumn({ statusModule: 'deployment' }),
+      k8sStatusColumn(),
       {
         field: 'podsInfo',
         title: '容器组',
@@ -46,7 +44,7 @@ export default {
       {
         field: 'creationTimestamp',
         title: '创建于',
-        width: 70,
+        width: 80,
         formatter: ({ row }) => {
           return this.$moment(row.creationTimestamp).fromNow()
         },

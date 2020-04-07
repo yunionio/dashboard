@@ -35,11 +35,12 @@
 <script>
 import ClusterSelect from '@K8S/sections/ClusterSelect'
 import NamespaceSelect from '@K8S/sections/NamespaceSelect'
+import { SECRET_DEFAULT_TYPE } from '@K8S/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'ImageSecretCreateDialog',
+  name: 'K8SImageSecretCreateDialog',
   components: {
     ClusterSelect,
     NamespaceSelect,
@@ -117,7 +118,7 @@ export default {
     }
   },
   created () {
-    this.secretsM = new this.$Manager('registrysecrets', 'v1')
+    this.secretsM = new this.$Manager('secrets', 'v1')
   },
   methods: {
     validateForm () {
@@ -131,9 +132,20 @@ export default {
         })
       })
     },
-    async doCreate (data) {
+    async doCreate (values) {
+      const data = {
+        cluster: values.cluster,
+        dockerConfigJson: {
+          email: values.email,
+          password: values.password,
+          user: values.user,
+        },
+        name: values.name,
+        namespace: values.namespace,
+        type: SECRET_DEFAULT_TYPE,
+      }
       try {
-        await this.secretsM.create(data)
+        await this.secretsM.create({ data })
       } catch (error) {
         throw error
       }
