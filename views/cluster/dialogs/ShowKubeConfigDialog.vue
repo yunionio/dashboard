@@ -35,6 +35,7 @@ export default {
         lineWrapping: true,
         readOnly: true,
         theme: 'material',
+        coverGutterNextToScrollbar: true,
       },
     }
   },
