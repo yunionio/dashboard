@@ -12,7 +12,7 @@
             <a-input v-decorator="decorators.image(i)" placeholder="请输入镜像" :addonBefore="item.name" />
           </a-form-item>
         </a-form-item>
-        <a-form-item label="副本数">
+        <a-form-item label="副本数" v-if="!params.hideReplicas">
           <a-input v-decorator="decorators.replicas" placeholder="请输入副本数" addonAfter="个" />
         </a-form-item>
       </a-form>
@@ -111,6 +111,7 @@ export default {
         namespace: this.data.namespace,
         containers,
       }
+      if (params.hideReplicas) delete data.replicas
       try {
         await this.params.onManager('update', {
           id: this.data.name,

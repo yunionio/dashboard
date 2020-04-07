@@ -18,6 +18,7 @@ export default {
       {
         field: 'namespace',
         title: '命名空间',
+        width: 120,
       },
       k8sStatusColumn(),
       {

@@ -23,7 +23,7 @@ export default {
       {
         field: 'namespace',
         title: '命名空间',
-        minWidth: '100px',
+        width: 120,
       },
       k8sStatusColumn('warnings'),
       {
