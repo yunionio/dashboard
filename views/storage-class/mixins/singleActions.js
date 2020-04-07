@@ -2,44 +2,44 @@ export default {
   created () {
     this.singleActions = [
       {
-        label: '设置为可调度',
-        permission: 'k8s_nodes_perform_uncordon',
+        label: '设置为默认',
+        permission: 'k8s_storageclasses_perform_set_default',
         action: obj => {
-          new this.$Manager('k8s_nodes', 'v1').performAction({
+          new this.$Manager('storageclasses', 'v1').performAction({
             id: obj.name,
-            action: 'uncordon',
+            action: 'set-default',
             data: { cluster: obj.cluster },
           }).then(() => {
             this.refresh()
           })
-        },
-        meta: obj => {
-          return {
-            validate: obj.unschedulable,
-          }
         },
       },
       {
-        label: '设置为不可调度',
-        permission: 'k8s_nodes_perform_cordon',
-        action: obj => {
-          new this.$Manager('k8s_nodes', 'v1').performAction({
-            id: obj.name,
-            action: 'cordon',
-            data: { cluster: obj.cluster },
-          }).then(() => {
-            this.refresh()
+        label: '删除',
+        permission: 'k8s_storageclasses_update',
+        action: (obj) => {
+          this.createDialog('DeleteResDialog', {
+            vm: this,
+            data: [obj],
+            columns: this.columns,
+            title: '删除存储类',
+            name: '存储类',
+            onManager: this.onManager,
+            requestData: {
+              cluster: obj.cluster,
+            },
+            requestParams: {
+              id: obj.name,
+            },
+            success: () => {
+              this.destroySidePages()
+            },
           })
-        },
-        meta: obj => {
-          return {
-            validate: !obj.unschedulable,
-          }
         },
       },
       {
         label: '查看/编辑',
-        permission: 'k8s_nodes_update',
+        permission: 'k8s_storageclasses_update',
         action: async obj => {
           const manager = new this.$Manager(`_raw/${this.list.resource}`, 'v1')
           async function fetchData () {

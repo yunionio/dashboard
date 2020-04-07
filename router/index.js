@@ -1,8 +1,11 @@
 import Kubeclusters from '@K8S/views/cluster'
 import KubeclustersCreate from '@K8S/views/cluster/create'
+import KubeclustersImport from '@K8S/views/cluster/import'
 import Deployment from '@K8S/views/deployment'
 import K8sDeploymentCreate from '@K8S/views/deployment/create'
 import K8SNode from '@K8S/views/nodes'
+import K8sStorageclasses from '@K8S/views/storage-class'
+import K8sStorageclassesCreate from '@K8S/views/storage-class/create'
 import Statefulset from '@K8S/views/statefulset'
 import K8sStatefulsetCreate from '@K8S/views/statefulset/create'
 import Pod from '@K8S/views/pod'
@@ -37,11 +40,6 @@ export default {
               path: '',
               component: Deployment,
             },
-            // {
-            //   name: 'KubeclustersImport',
-            //   path: 'import',
-            //   component: KubeclustersImport,
-            // },
             {
               name: 'K8sDeploymentCreate',
               path: 'create',
@@ -144,11 +142,11 @@ export default {
               path: '',
               component: Kubeclusters,
             },
-            // {
-            //   name: 'KubeclustersImport',
-            //   path: 'import',
-            //   component: KubeclustersImport,
-            // },
+            {
+              name: 'KubeclustersImport',
+              path: 'import',
+              component: KubeclustersImport,
+            },
             {
               name: 'KubeclustersCreate',
               path: 'create',
@@ -168,6 +166,26 @@ export default {
               name: 'K8SNode',
               path: '',
               component: K8SNode,
+            },
+          ],
+        },
+        {
+          path: '/k8s-storageclass',
+          meta: {
+            label: '存储类',
+            permission: 'k8s_storageclasses_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'K8sStorageclasses',
+              path: '',
+              component: K8sStorageclasses,
+            },
+            {
+              name: 'K8sStorageclassesCreate',
+              path: 'create',
+              component: K8sStorageclassesCreate,
             },
           ],
         },
