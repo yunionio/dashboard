@@ -1,13 +1,14 @@
 import * as R from 'ramda'
+import _ from 'lodash'
 
-export const k8sStatusColumn = () => {
+export const k8sStatusColumn = (path = 'podsInfo.warnings') => {
   return {
     field: 'status',
     title: '状态',
     minWidth: 200,
     slots: {
       default: ({ row }, h) => {
-        const warnings = row.podsInfo.warnings.map(v => v.message)
+        const warnings = _.get(row, path).map(v => v.message)
         let warnTooltip = null
         if (warnings && warnings.length) {
           warnTooltip = (
@@ -45,7 +46,7 @@ export const k8sLabelColumn = () => {
           <div>
             {
               labels.map((val, i) => {
-                return (<div><a-tag color={ colors[i % colors.length] }>{ `${val.key}：${val.value}` }</a-tag></div>)
+                return (<div class="mb-1"><a-tag color={ colors[i % colors.length] }>{ `${val.key}：${val.value}` }</a-tag></div>)
               })
             }
           </div>,

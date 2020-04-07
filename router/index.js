@@ -5,6 +5,7 @@ import K8sDeploymentCreate from '@K8S/views/deployment/create'
 import K8SNode from '@K8S/views/nodes'
 import Statefulset from '@K8S/views/statefulset'
 import K8sStatefulsetCreate from '@K8S/views/statefulset/create'
+import Pod from '@K8S/views/pod'
 import Layout from '@/layouts/RouterView'
 
 export default {
@@ -67,6 +68,21 @@ export default {
               name: 'K8sStatefulsetCreate',
               path: 'create',
               component: K8sStatefulsetCreate,
+            },
+          ],
+        },
+        {
+          path: '/k8s-pod',
+          meta: {
+            label: '容器组',
+            permission: 'k8s_pods_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'K8sPodList',
+              path: '',
+              component: Pod,
             },
           ],
         },
