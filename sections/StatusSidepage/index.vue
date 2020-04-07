@@ -1,0 +1,54 @@
+<template>
+  <vxe-grid :data="data.conditions || []" :columns="columns" />
+</template>
+
+<script>
+
+export default {
+  name: 'StatusSidepage',
+  props: {
+    data: {
+      type: Object,
+      required: true,
+    },
+  },
+  data () {
+    return {
+      columns: [
+        {
+          field: 'type',
+          title: 'Type',
+          minWidth: 100,
+          showOverflow: 'ellipsis',
+        },
+        {
+          field: 'status',
+          title: 'Status',
+          width: 75,
+        },
+        {
+          field: 'lastTransitionTime',
+          title: 'LastTransitionTime',
+          minWidth: 100,
+          showOverflow: 'ellipsis',
+          formatter: ({ cellValue }) => {
+            return this.$moment(cellValue).format('YYYY年MM月DD日 HH:mm:ss')
+          },
+        },
+        {
+          field: 'reason',
+          title: 'Reason',
+          minWidth: 70,
+          showOverflow: 'ellipsis',
+        },
+        {
+          field: 'message',
+          title: 'Message',
+          minWidth: 70,
+          showOverflow: 'ellipsis',
+        },
+      ],
+    }
+  },
+}
+</script>

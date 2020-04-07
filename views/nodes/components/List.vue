@@ -56,10 +56,10 @@ export default {
     },
     handleOpenSidepage (row) {
       this.sidePageTriggerHandle(this, 'K8SNodeSidePage', {
-        id: row.id,
+        id: row.name,
         resource: 'k8s_nodes',
         apiVersion: 'v1',
-        getParams: this.getParam,
+        getParams: this.list.getParams,
       }, {
         list: this.list,
       })
