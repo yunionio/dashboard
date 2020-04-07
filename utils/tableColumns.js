@@ -8,7 +8,7 @@ export const k8sStatusColumn = (path = 'podsInfo.warnings') => {
     width: 100,
     slots: {
       default: ({ row }, h) => {
-        const warnings = _.get(row, path).map(v => v.message)
+        const warnings = (_.get(row, path) || []).map(v => v.message)
         let warnTooltip = null
         if (warnings && warnings.length) {
           warnTooltip = (
@@ -32,16 +32,16 @@ export const k8sStatusColumn = (path = 'podsInfo.warnings') => {
   }
 }
 
-export const k8sLabelColumn = () => {
+export const k8sLabelColumn = ({ field = 'labels', title = '标签' } = {}) => {
   return {
-    field: 'labels',
-    title: '标签',
+    field,
+    title,
     minWidth: 200,
     slots: {
       default: ({ row }, h) => {
-        if (!row.labels || !R.is(Object, row.labels)) return '-'
+        if (!row[field] || !R.is(Object, row[field])) return '-'
         const colors = ['pink', 'orange', 'green', 'cyan', 'blue', 'purple', 'red']
-        const labels = Object.entries(row.labels).map(arr => ({ key: arr[0], value: arr[1] }))
+        const labels = Object.entries(row[field]).map(arr => ({ key: arr[0], value: arr[1] }))
         return [
           <div>
             {

@@ -21,6 +21,8 @@ import Job from '@K8S/views/job'
 import K8sJobCreate from '@K8S/views/job/create'
 import CronJob from '@K8S/views/cronjob'
 import K8sCronJobCreate from '@K8S/views/cronjob/create'
+import Persistentvolumeclaim from '@K8S/views/persistentvolumeclaim'
+import K8sPersistentvolumeclaimCreate from '@K8S/views/persistentvolumeclaim/create'
 import Layout from '@/layouts/RouterView'
 
 export default {
@@ -127,6 +129,26 @@ export default {
               name: 'K8sPodList',
               path: '',
               component: Pod,
+            },
+          ],
+        },
+        {
+          path: '/k8s-persistentvolumeclaim',
+          meta: {
+            label: '存储声明',
+            permission: 'k8s_persistentvolumeclaims_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'K8sPersistentvolumeclaimList',
+              path: '',
+              component: Persistentvolumeclaim,
+            },
+            {
+              name: 'K8sPersistentvolumeclaimCreate',
+              path: 'create',
+              component: K8sPersistentvolumeclaimCreate,
             },
           ],
         },
