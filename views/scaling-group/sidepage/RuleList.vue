@@ -212,16 +212,19 @@ export default {
   methods: {
     formatTriggerType (row) {
       const type = row['trigger_type']
+      if (row.status === 'create_failed' || row.status === 'init') {
+        return '-'
+      }
       // 告警策略
       if (type === 'alarm' && row['alarm']) {
-        const { indicator, wrapper, value, cumulate } = row['alarm']
+        const { indicator, operator, value, cumulate } = row['alarm']
         const wrapperType = {
-          min: '>',
-          max: '<',
+          gt: '>',
+          lt: '<',
         }
         const unit = indicator === 'cpu' ? '%' : 'b/s'
         const cumulateTxt = `连续满足${cumulate}次后触发`
-        return `${this.$t('flexGroupIndicator')[indicator]} ${wrapperType[wrapper]} ${value} ${unit}，${cumulateTxt}`
+        return `${this.$t('flexGroupIndicator')[indicator]} ${wrapperType[operator]} ${value} ${unit}，${cumulateTxt}`
       }
       // 定时策略
       if (type === 'timing' && row['timer']) {
@@ -235,14 +238,14 @@ export default {
         const typeTxt = this.$t('flexGroupCycleType')[timer['cycle_type']]
         let itemsTxt = ''
         // 周
-        if (timer['cycle_type'] === 'week' && timer['week_day'].length > 0) {
-          itemsTxt = '【' + timer['week_day'].map(v => {
+        if (timer['cycle_type'] === 'week' && timer['week_days'].length > 0) {
+          itemsTxt = '【' + timer['week_days'].map(v => {
             return this.$t('flexGroupSubCycleTypeWeek')[v]
           }).join('|') + '】'
         }
         // 月
         if (timer['cycle_type'] === 'month') {
-          itemsTxt = '【' + timer['month_day'].map(v => {
+          itemsTxt = '【' + timer['month_days'].map(v => {
             return `${v}号`
           }).join('|') + '】'
         }
