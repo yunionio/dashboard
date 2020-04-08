@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="d-flex" v-for="item in labelList" :key="item.key">
+    <div class="d-flex" v-for="(item) in labelList" :key="item.key">
       <a-form-item :wrapperCol="{ span: 24 }">
         <a-input-group compact v-if="keyBaseSelectProps">
           <div class="d-flex">
@@ -14,7 +14,7 @@
       <a-form-item :wrapperCol="{ span: 24 }">
         <a-input :addonBefore="valueLabel" v-decorator="decorators.value(item.key)" :placeholder="valuePlaceholder" />
       </a-form-item>
-      <a-button type="danger" shape="circle" icon="delete" @click="del(item)" class="mt-1 ml-3" />
+      <a-button v-if="firstCanDelete || labelList.length > 1" type="danger" shape="circle" icon="delete" @click="del(item)" class="mt-1 ml-3" />
     </div>
     <a-button type="primary" icon="plus" @click="add">添加{{ title }}</a-button>
   </div>
@@ -53,6 +53,10 @@ export default {
     },
     keyBaseSelectProps: {
       type: Object,
+    },
+    firstCanDelete: {
+      type: Boolean,
+      default: true,
     },
   },
   data () {

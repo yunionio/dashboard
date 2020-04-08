@@ -20,7 +20,7 @@ import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 
 export default {
-  name: 'K8SIngressList',
+  name: 'K8SConfigmapList',
   components: {
     ClusterNamespace,
   },
@@ -36,7 +36,7 @@ export default {
     return {
       list: this.$list.createList(this, {
         id: this.id,
-        resource: 'ingresses',
+        resource: 'configmaps',
         apiVersion: 'v1',
         getParams: this.getParams,
         idKey: 'name',
@@ -49,9 +49,9 @@ export default {
       groupActions: [
         {
           label: '新建',
-          permission: 'k8s_ingresses_create',
+          permission: 'k8s_configmaps_create',
           action: () => {
-            this.$router.push({ path: '/k8s-ingress/create' })
+            this.$router.push({ path: '/k8s-configmap/create' })
           },
           meta: () => ({
             buttonType: 'primary',
@@ -59,7 +59,7 @@ export default {
         },
         {
           label: '删除',
-          permission: 'k8s_ingresses_delete',
+          permission: 'k8s_configmaps_delete',
           action: () => {
             const data = this.list.selectedItems
             const requestData = {
@@ -72,7 +72,7 @@ export default {
               data,
               columns: this.columns,
               title: '删除',
-              name: '定时任务',
+              name: '配置项',
               onManager: this.onManager,
               idKey: 'name',
               requestData,
@@ -113,9 +113,9 @@ export default {
       }
     },
     handleOpenSidepage (row) {
-      this.sidePageTriggerHandle(this, 'K8SIngressSidePage', {
+      this.sidePageTriggerHandle(this, 'K8SConfigmapSidePage', {
         id: row.name,
-        resource: 'ingresses',
+        resource: 'configmaps',
         getParams: () => {
           const params = R.clone(this.list.getParams)
           if (row.namespace) {

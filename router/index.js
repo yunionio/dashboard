@@ -27,6 +27,8 @@ import Service from '@K8S/views/service'
 import K8sServiceCreate from '@K8S/views/service/create'
 import Ingress from '@K8S/views/ingress'
 import K8sIngressCreate from '@K8S/views/ingress/create'
+import Configmap from '@K8S/views/configmap'
+import K8sConfigmapCreate from '@K8S/views/configmap/create'
 import Layout from '@/layouts/RouterView'
 
 export default {
@@ -200,6 +202,33 @@ export default {
               name: 'K8sIngressCreate',
               path: 'create',
               component: K8sIngressCreate,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      meta: {
+        label: '应用配置',
+      },
+      submenus: [
+        {
+          path: '/k8s-configmap',
+          meta: {
+            label: '配置项',
+            permission: 'k8s_configmaps_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'K8sConfigmapList',
+              path: '',
+              component: Configmap,
+            },
+            {
+              name: 'K8sConfigmapCreate',
+              path: 'create',
+              component: K8sConfigmapCreate,
             },
           ],
         },
