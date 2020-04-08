@@ -6,6 +6,9 @@ import K8sDeploymentCreate from '@K8S/views/deployment/create'
 import K8SNode from '@K8S/views/nodes'
 import K8sStorageclasses from '@K8S/views/storage-class'
 import K8sStorageclassesCreate from '@K8S/views/storage-class/create'
+import K8sNamespace from '@K8S/views/namespace'
+import K8sNamespaceCreate from '@K8S/views/namespace/create'
+import K8sRbacrole from '@K8S/views/rbacrole'
 import Statefulset from '@K8S/views/statefulset'
 import K8sStatefulsetCreate from '@K8S/views/statefulset/create'
 import Pod from '@K8S/views/pod'
@@ -186,6 +189,41 @@ export default {
               name: 'K8sStorageclassesCreate',
               path: 'create',
               component: K8sStorageclassesCreate,
+            },
+          ],
+        },
+        {
+          path: '/k8s-namespace',
+          meta: {
+            label: '命名空间',
+            permission: 'k8s_namespace_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'K8sNamespace',
+              path: '',
+              component: K8sNamespace,
+            },
+            {
+              name: 'K8sNamespaceCreate',
+              path: 'create',
+              component: K8sNamespaceCreate,
+            },
+          ],
+        },
+        {
+          path: '/k8s-rbacrole',
+          meta: {
+            label: '角色',
+            permission: 'k8s_rbacroles_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'K8sRbacrole',
+              path: '',
+              component: K8sRbacrole,
             },
           ],
         },

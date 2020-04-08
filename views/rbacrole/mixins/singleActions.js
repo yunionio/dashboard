@@ -2,46 +2,40 @@ export default {
   created () {
     this.singleActions = [
       {
-        label: '设置为默认',
-        permission: 'k8s_storageclasses_perform_set_default',
-        action: obj => {
-          new this.$Manager('storageclasses', 'v1').performAction({
-            id: obj.name,
-            action: 'set-default',
-            data: { cluster: obj.cluster },
-          }).then(() => {
-            this.refresh()
-          })
-        },
-      },
-      {
         label: '删除',
-        permission: 'k8s_storageclasses_update',
+        permission: 'k8s_rbacroles_delete',
         action: (obj) => {
           this.createDialog('DeleteResDialog', {
             vm: this,
             data: [obj],
             columns: this.columns,
-            title: '删除存储类',
-            name: '存储类',
+            title: '删除角色',
+            name: '角色',
             onManager: this.onManager,
-            requestData: {
-              cluster: obj.clusterID,
-            },
-            requestParams: {
-              id: obj.name,
-            },
-            success: () => {
-              this.destroySidePages()
+            idKey: 'name',
+            ok: (ids, data) => {
+              return new this.$Manager(`${data[0]['type']}s`, 'v1').batchDelete({
+                ids,
+                data: {
+                  cluster: data[0].clusterID,
+                  namespace: data[0].namespace,
+                },
+              }).then(() => {
+                this.destroySidePages()
+                this.refresh()
+                return true
+              }).catch(error => {
+                throw error
+              })
             },
           })
         },
       },
       {
         label: '查看/编辑',
-        permission: 'k8s_storageclasses_update',
+        permission: 'k8s_rbacroles_update',
         action: async obj => {
-          const manager = new this.$Manager('_raw/storageclasses', 'v1')
+          const manager = new this.$Manager('_raw/roles', 'v1')
           async function fetchData () {
             const { cluster, namespace } = obj
             const { data } = await manager.getSpecific({ id: obj.name, spec: 'yaml', params: { cluster, namespace } })

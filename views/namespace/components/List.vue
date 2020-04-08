@@ -20,7 +20,7 @@ import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 
 export default {
-  name: 'K8SNodeList',
+  name: 'K8SNamespaceList',
   components: {
     ClusterNamespace,
   },
@@ -36,7 +36,7 @@ export default {
     return {
       list: this.$list.createList(this, {
         id: this.id,
-        resource: 'storageclasses',
+        resource: 'namespaces',
         apiVersion: 'v1',
         getParams: this.getParams,
         idKey: 'name',
@@ -47,9 +47,9 @@ export default {
       groupActions: [
         {
           label: '新建',
-          permission: 'k8s_kubeclusters_create',
+          permission: 'k8s_namespaces_create',
           action: () => {
-            this.$router.push({ path: '/k8s-storageclass/create' })
+            this.$router.push({ path: '/k8s-namespace/create' })
           },
           meta: () => ({
             buttonType: 'primary',
@@ -57,14 +57,14 @@ export default {
         },
         {
           label: '删除',
-          permission: 'k8s_storageclasses_delete',
+          permission: 'k8s_namespaces_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,
               data: this.list.selectedItems,
               columns: this.columns,
-              title: '删除存储类',
-              name: '存储类',
+              title: '删除命名空间',
+              name: '命名空间',
               onManager: this.onManager,
               requestData: {
                 cluster: this.list.selectedItems[0]['clusterID'],
@@ -109,9 +109,9 @@ export default {
       }
     },
     handleOpenSidepage (row) {
-      this.sidePageTriggerHandle(this, 'K8SStorageclassSidePage', {
+      this.sidePageTriggerHandle(this, 'K8SNamespaceSidePage', {
         id: row.name,
-        resource: 'storageclasses',
+        resource: 'namespaces',
         apiVersion: 'v1',
         getParams: this.list.getParams,
       }, {

@@ -4,7 +4,7 @@
     :on-manager="onManager"
     :data="data"
     :base-info="baseInfo"
-    resource="storageclasses" />
+    resource="rbacroles" />
   </div>
 
 </template>
@@ -13,7 +13,7 @@
 import { getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 
 export default {
-  name: 'K8sStorageclassDetail',
+  name: 'K8sRbacRoleDetail',
   props: {
     data: {
       type: Object,
@@ -29,23 +29,14 @@ export default {
       baseInfo: [
         getCopyWithContentTableColumn({ field: 'cluster', title: '集群' }),
         {
-          field: 'isDefault',
-          title: '默认',
-          formatter: ({ cellValue }) => {
-            return cellValue ? '是' : '否'
-          },
-        },
-        {
-          field: 'provisioner',
-          title: '供应者',
-        },
-        {
           field: 'creationTimestamp',
           title: '创建时间',
           formatter: ({ cellValue }) => {
             return this.$moment(cellValue).format()
           },
         },
+        { field: 'type', title: '类型' },
+        { field: 'namespace', title: '命名空间' },
       ],
     }
   },

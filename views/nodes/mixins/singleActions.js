@@ -41,7 +41,7 @@ export default {
         label: '查看/编辑',
         permission: 'k8s_nodes_update',
         action: async obj => {
-          const manager = new this.$Manager(`_raw/${this.list.resource}`, 'v1')
+          const manager = new this.$Manager('_raw/k8s_nodes', 'v1')
           async function fetchData () {
             const { cluster, namespace } = obj
             const { data } = await manager.getSpecific({ id: obj.name, spec: 'yaml', params: { cluster, namespace } })

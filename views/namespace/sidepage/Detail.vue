@@ -4,7 +4,7 @@
     :on-manager="onManager"
     :data="data"
     :base-info="baseInfo"
-    resource="storageclasses" />
+    resource="namespaces" />
   </div>
 
 </template>
@@ -13,7 +13,7 @@
 import { getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 
 export default {
-  name: 'K8sStorageclassDetail',
+  name: 'K8sNamespaceDetail',
   props: {
     data: {
       type: Object,
@@ -29,15 +29,15 @@ export default {
       baseInfo: [
         getCopyWithContentTableColumn({ field: 'cluster', title: '集群' }),
         {
-          field: 'isDefault',
-          title: '默认',
-          formatter: ({ cellValue }) => {
-            return cellValue ? '是' : '否'
+          field: 'status',
+          title: '状态',
+          width: 200,
+          slots: {
+            default: ({ row }, h) => {
+              const ret = [<span style={{ color: row.status === 'Active' ? '#67C23A' : '#F56C6C' }}>{ row.status }</span>]
+              return ret
+            },
           },
-        },
-        {
-          field: 'provisioner',
-          title: '供应者',
         },
         {
           field: 'creationTimestamp',
