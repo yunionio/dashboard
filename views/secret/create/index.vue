@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="新建配置项(Configmap)" />
+    <page-header title="新建保密字典(Secret)" />
     <page-body>
       <form-create ref="FormCreateRef" />
     </page-body>
@@ -17,7 +17,7 @@
 import FormCreate from './Form'
 
 export default {
-  name: 'K8SConfigmapCreate',
+  name: 'K8SSecretCreate',
   components: {
     FormCreate,
   },
@@ -29,17 +29,17 @@ export default {
   methods: {
     async confirm () {
       try {
-        this.loading = true
+        // this.loading = true
         await this.$refs.FormCreateRef.doCreate()
-        this.loading = false
+        // this.loading = false
         this.cancel()
       } catch (error) {
-        this.loading = false
+        // this.loading = false
         throw error
       }
     },
     cancel () {
-      this.$router.push('/k8s-configmap')
+      this.$router.push('/k8s-secret')
     },
   },
 }

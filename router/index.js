@@ -29,6 +29,8 @@ import Ingress from '@K8S/views/ingress'
 import K8sIngressCreate from '@K8S/views/ingress/create'
 import Configmap from '@K8S/views/configmap'
 import K8sConfigmapCreate from '@K8S/views/configmap/create'
+import Secret from '@K8S/views/secret'
+import K8sSecretCreate from '@K8S/views/secret/create'
 import Layout from '@/layouts/RouterView'
 
 export default {
@@ -229,6 +231,26 @@ export default {
               name: 'K8sConfigmapCreate',
               path: 'create',
               component: K8sConfigmapCreate,
+            },
+          ],
+        },
+        {
+          path: '/k8s-secret',
+          meta: {
+            label: '保密字典',
+            permission: 'k8s_secrets_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'K8sSecretList',
+              path: '',
+              component: Secret,
+            },
+            {
+              name: 'K8sSecretCreate',
+              path: 'create',
+              component: K8sSecretCreate,
             },
           ],
         },
