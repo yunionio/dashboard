@@ -46,7 +46,7 @@ export default {
       try {
         const ids = this.params.data.map(item => item[this.idKey])
         if (this.params.ok) {
-          await this.params.ok(ids)
+          await this.params.ok(ids, this.params.data)
         } else {
           let params = {}
           params = {
@@ -65,7 +65,7 @@ export default {
           }
         }
         this.cancelDialog()
-        this.$message.success('操作成功')
+        // this.$message.success('操作成功')
       } finally {
         this.loading = false
       }
