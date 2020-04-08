@@ -63,9 +63,9 @@ export default {
           if (this.params.success && R.is(Function, this.params.success)) {
             this.params.success(response)
           }
+          this.$message.success('操作成功')
         }
         this.cancelDialog()
-        // this.$message.success('操作成功')
       } finally {
         this.loading = false
       }
