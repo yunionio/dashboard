@@ -201,7 +201,7 @@ export default {
       groupActions: [
         {
           label: '新建',
-          permisssion: 'cloudaccounts_create',
+          permission: 'cloudaccounts_create',
           action: () => {
             this.$router.push({ name: 'CloudaccountCreate' })
           },
