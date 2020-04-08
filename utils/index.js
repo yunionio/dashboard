@@ -249,16 +249,16 @@ export function getCreateDecorators (resource) {
         `containerArgs[${i}]`,
       ],
       volumeMount: i => ({
-        key: k => [
-          `containerVolumeMountNames[${i}][${k}]`,
+        key: j => [
+          `containerVolumeMountNames[${i}][${j}]`,
           {
             rules: [
               { required: true, message: '请选择' },
             ],
           },
         ],
-        value: k => [
-          `containerVolumeMountPaths[${i}][${k}]`,
+        value: j => [
+          `containerVolumeMountPaths[${i}][${j}]`,
           {
             rules: [
               { required: true, message: '请输入' },
@@ -268,16 +268,16 @@ export function getCreateDecorators (resource) {
         ],
       }),
       env: i => ({
-        key: k => [
-          `containerEnvNames[${i}][${k}]`,
+        key: j => [
+          `containerEnvNames[${i}][${j}]`,
           {
             rules: [
               { required: true, message: '请输入' },
             ],
           },
         ],
-        value: k => [
-          `containerEnvValues[${i}][${k}]`,
+        value: j => [
+          `containerEnvValues[${i}][${j}]`,
           {
             rules: [
               { required: true, message: '请输入' },

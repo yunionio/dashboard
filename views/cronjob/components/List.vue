@@ -16,7 +16,6 @@ import * as R from 'ramda'
 import ClusterNamespace from '@K8S/sections/ClusterNamespace'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 
@@ -45,9 +44,6 @@ export default {
           name: {
             label: '名称',
           },
-        },
-        steadyStatus: {
-          status: Object.values(expectStatus.k8s_resource).flat(),
         },
       }),
       groupActions: [
@@ -130,9 +126,6 @@ export default {
         },
         idKey: 'name',
         apiVersion: 'v1',
-        steadyStatus: {
-          status: Object.values(expectStatus.k8s_resource).flat(),
-        },
       }, {
         list: this.list,
       })

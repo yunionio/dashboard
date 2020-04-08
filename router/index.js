@@ -23,6 +23,10 @@ import CronJob from '@K8S/views/cronjob'
 import K8sCronJobCreate from '@K8S/views/cronjob/create'
 import Persistentvolumeclaim from '@K8S/views/persistentvolumeclaim'
 import K8sPersistentvolumeclaimCreate from '@K8S/views/persistentvolumeclaim/create'
+import Service from '@K8S/views/service'
+import K8sServiceCreate from '@K8S/views/service/create'
+import Ingress from '@K8S/views/ingress'
+import K8sIngressCreate from '@K8S/views/ingress/create'
 import Layout from '@/layouts/RouterView'
 
 export default {
@@ -149,6 +153,53 @@ export default {
               name: 'K8sPersistentvolumeclaimCreate',
               path: 'create',
               component: K8sPersistentvolumeclaimCreate,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      meta: {
+        label: '服务与负载均衡',
+      },
+      submenus: [
+        {
+          path: '/k8s-service',
+          meta: {
+            label: '服务',
+            permission: 'k8s_services_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'K8sServiceList',
+              path: '',
+              component: Service,
+            },
+            {
+              name: 'K8sServiceCreate',
+              path: 'create',
+              component: K8sServiceCreate,
+            },
+          ],
+        },
+        {
+          path: '/k8s-ingress',
+          meta: {
+            label: '路由',
+            permission: 'k8s_ingresses_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'K8sIngressList',
+              path: '',
+              component: Ingress,
+            },
+            {
+              name: 'K8sIngressCreate',
+              path: 'create',
+              component: K8sIngressCreate,
             },
           ],
         },

@@ -16,12 +16,11 @@ import * as R from 'ramda'
 import ClusterNamespace from '@K8S/sections/ClusterNamespace'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 
 export default {
-  name: 'K8SPersistentvolumeclaimList',
+  name: 'K8SJobList',
   components: {
     ClusterNamespace,
   },
@@ -37,7 +36,7 @@ export default {
     return {
       list: this.$list.createList(this, {
         id: this.id,
-        resource: 'persistentvolumeclaims',
+        resource: 'ingresses',
         apiVersion: 'v1',
         getParams: this.getParams,
         idKey: 'name',
@@ -46,16 +45,13 @@ export default {
             label: '名称',
           },
         },
-        steadyStatus: {
-          status: Object.values(expectStatus.k8s_resource).flat(),
-        },
       }),
       groupActions: [
         {
           label: '新建',
-          permission: 'k8s_persistentvolumeclaims_create',
+          permission: 'k8s_ingresses_create',
           action: () => {
-            this.$router.push({ path: '/k8s-persistentvolumeclaim/create' })
+            this.$router.push({ path: '/k8s-ingress/create' })
           },
           meta: () => ({
             buttonType: 'primary',
@@ -63,7 +59,7 @@ export default {
         },
         {
           label: '删除',
-          permission: 'k8s_persistentvolumeclaims_delete',
+          permission: 'k8s_ingresses_delete',
           action: () => {
             const data = this.list.selectedItems
             const requestData = {
@@ -76,7 +72,7 @@ export default {
               data,
               columns: this.columns,
               title: '删除',
-              name: '存储声明',
+              name: '定时任务',
               onManager: this.onManager,
               idKey: 'name',
               requestData,
@@ -91,10 +87,6 @@ export default {
               if (unique.length > 1) {
                 validate = false
                 tooltip = '请选择同一个命名空间下的资源'
-              }
-              if (this.list.selectedItems.some(item => item.mountedBy && item.mountedBy.length !== 0)) {
-                validate = false
-                tooltip = '请选择【未被使用】的存储卷'
               }
             } else {
               validate = false
@@ -121,9 +113,9 @@ export default {
       }
     },
     handleOpenSidepage (row) {
-      this.sidePageTriggerHandle(this, 'K8SPersistentvolumeclaimSidePage', {
+      this.sidePageTriggerHandle(this, 'K8SIngressSidePage', {
         id: row.name,
-        resource: 'persistentvolumeclaims',
+        resource: 'ingresses',
         getParams: () => {
           const params = R.clone(this.list.getParams)
           if (row.namespace) {
@@ -134,9 +126,6 @@ export default {
         },
         idKey: 'name',
         apiVersion: 'v1',
-        steadyStatus: {
-          status: Object.values(expectStatus.k8s_resource).flat(),
-        },
       }, {
         list: this.list,
       })

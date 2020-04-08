@@ -2,7 +2,7 @@
   <div class="port-mapping">
     <a-form-item class="mb-0" :extra="(!showNetwork && form.fc.getFieldValue(decorators.serviceType[0]) === 'external') ? '导入的集群无法选择网络' : ''">
       <a-radio-group v-decorator="decorators.serviceType">
-        <a-radio-button value="none">无</a-radio-button>
+        <a-radio-button v-if="!ignoreNone" value="none">无</a-radio-button>
         <a-radio-button value="internal">内部</a-radio-button>
         <a-radio-button value="external">外部</a-radio-button>
       </a-radio-group>
@@ -43,6 +43,10 @@ export default {
       validator: val => val.fc,
     },
     showNetwork: {
+      type: Boolean,
+      default: false,
+    },
+    ignoreNone: {
       type: Boolean,
       default: false,
     },

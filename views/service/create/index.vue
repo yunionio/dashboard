@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="新建定时任务(CronJob)" />
+    <page-header title="新建路由(Ingress)" />
     <page-body>
       <form-create ref="FormCreateRef" />
     </page-body>
@@ -17,7 +17,7 @@
 import FormCreate from './Form'
 
 export default {
-  name: 'K8SCronJobCreate',
+  name: 'K8SIngressCreate',
   components: {
     FormCreate,
   },
@@ -39,7 +39,7 @@ export default {
       }
     },
     cancel () {
-      this.$router.push('/k8s-cronjob')
+      this.$router.push('/k8s-ingress')
     },
   },
 }
