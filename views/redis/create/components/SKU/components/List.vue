@@ -1,6 +1,6 @@
 <template>
   <div>
-    <vxe-grid :loading="loading" max-height="500" :columns="tableColumn" :data="skuList" @radio-change="handleSkuChange" ref="tableRef">
+    <vxe-grid :loading="loading" max-height="500" :columns="tableColumn" :data="skuList" @radio-change="handleSkuChange" ref="tableRef" :radio-config="{ reserve: true }">
       <template v-slot:empty>
         <page-list-empty :loading="loading" />
       </template>

@@ -37,6 +37,7 @@ export default {
   computed: {
     radioConfig () {
       return {
+        reserve: true,
         checkMethod: ({ row }) => this.isAvailable(row),
       }
     },
