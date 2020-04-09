@@ -17,6 +17,17 @@ export default {
       type: Number,
       required: true,
     },
+    durationOptions: {
+      type: Array,
+      default: () => [
+        { label: '秒', key: 'seconds' },
+        { label: '分', key: 'minutes' },
+        { label: '小时', key: 'hours' },
+        { label: '天', key: 'days' },
+        { label: '月', key: 'months' },
+        { label: '年', key: 'years' },
+      ],
+    },
   },
   data () {
     // 将传入的秒进行和控件单位转换，显示为最大值（如：传入3600，应该显示60分）
@@ -32,14 +43,6 @@ export default {
     return {
       num: ret[0],
       time: ret[1],
-      durationOptions: [
-        { label: '秒', key: 'seconds' },
-        { label: '分', key: 'minutes' },
-        { label: '小时', key: 'hours' },
-        { label: '天', key: 'days' },
-        { label: '月', key: 'months' },
-        { label: '年', key: 'years' },
-      ],
     }
   },
   methods: {
@@ -53,9 +56,10 @@ export default {
       this.emit()
     },
     emit () {
-      let sec = this.$moment.duration(this.num, this.time)
+      let sec = this.$moment.duration(+this.num, this.time)
       sec = sec.asSeconds()
       this.$emit('change', sec)
+      this.$emit('input', sec)
     },
   },
 }
