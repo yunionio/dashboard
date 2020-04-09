@@ -15,7 +15,8 @@
       @radio-change="skuChange"
       @cell-click="skuChange"
       :columns="tableColumn"
-      :data="skuResults">
+      :data="skuResults"
+      :radio-config="{ reserve: true }">
       <template v-slot:empty>
         <loader :loading="skuLoading" />
       </template>
