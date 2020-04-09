@@ -37,9 +37,9 @@
       </a-form-item>
       <proxy-setting :fc="form.fc" />
       <auto-sync :fc="form.fc" :form-layout="formLayout" />
-      <a-form-item label="账单密钥">
+      <!-- <a-form-item label="账单密钥">
         <a-input v-decorator="decorators.balanceKey" type="textarea" rows="4" />
-      </a-form-item>
+      </a-form-item> -->
     </a-form>
   </div>
 </template>

@@ -51,7 +51,7 @@ export default {
               },
               meta: obj => {
                 return {
-                  validate: ['Aws', 'Aliyun', 'Google', 'Huawei'].indexOf(obj.brand) > -1,
+                  validate: ['Aws', 'Aliyun', 'Google', 'Huawei', 'Azure'].indexOf(obj.brand) > -1,
                 }
               },
             },
