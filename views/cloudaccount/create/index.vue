@@ -21,7 +21,7 @@
       <div slot="right">
         <a-button class="mr-3" @click="perv" v-if="!isFirstStep">上一步</a-button>
         <a-button class="mr-3" type="primary" @click="next" :loading="loading">{{ nextStepTitle }}</a-button>
-        <a-button @click="cancel">取 消</a-button>
+        <a-button @click="cancel">{{currentComponent === 'BillForm' ? '跳 过': '取 消'}}</a-button>
       </div>
     </page-footer>
   </div>
@@ -82,7 +82,7 @@ export default {
       return this.step.steps[this.step.currentStep].key
     },
     isBill () {
-      return ['Aws', 'Aliyun', 'Google', 'Huawei'].indexOf(this.currentItem.provider) > -1 && this.$appConfig.isPrivate
+      return ['Aws', 'Aliyun', 'Google', 'Huawei', 'Azure'].indexOf(this.currentItem.provider) > -1 && this.$appConfig.isPrivate
     },
   },
   watch: {

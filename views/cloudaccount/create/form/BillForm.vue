@@ -2,38 +2,55 @@
   <div>
     <a-alert :showIcon="false" message="正确录入账单文件访问信息，在OneCloud系统才可以看到账单、费用等相关的信息" banner />
     <a-form class="pt-3" :form="form.fc" v-bind="formLayout">
-      <a-divider orientation="left">账单文件/Billing export</a-divider>
-      <a-form-item label="云账号类型">
-        <a-radio-group  v-model="billingType">
-          <a-radio-button :value="1">主账号</a-radio-button>
-          <a-radio-button v-if="!isHuawei" :value="2">关联账号</a-radio-button>
-        </a-radio-group>
-      </a-form-item>
-      <a-form-item label="主账号" v-if="billingType === 2" extra="一般来说，账单文件的存储桶等信息是主账号设置的，我们需要使用主账号的访问信息去获取这些账单文件进行分析">
-        <a-select :filterOption="filterOption" showSearch :loading="cloudAccountLoading" v-decorator="decorators.billing_bucket_account">
-         <template v-for="item in cloudAccounts">
-          <a-select-option  v-if="id !== item.id" :key="item.id" :value="item.id">{{item.name}}</a-select-option>
-         </template>
-        </a-select>
-      </a-form-item>
-      <a-form-item label="存储桶URL" extra="请正确输入账单文件所在存储桶的URL，例如：https://bucket-name.oss-cn-beijing.aliyuncs.com">
-        <a-input v-decorator="decorators.billing_report_bucket" />
-      </a-form-item>
-       <a-form-item v-if="!isHuawei" label="文件前缀"  extra="一般为公有云的账户ID，用于筛选存储桶的账单文件。上述Bucket里面只有账单文件时，不需要关注该字段。">
-        <a-input v-decorator="decorators.billing_file_prefix" />
-      </a-form-item>
-      <!-- google -->
-      <template v-if="isGoogle">
-        <a-divider class="mt-5" orientation="left">使用量文件/Usage export</a-divider>
-        <a-form-item label="存储桶URL" extra="请正确输入使用量所在存储桶的URL，例如：https://bucket-name.oss-cn-beijing.aliyuncs.com">
-          <a-input v-decorator="decorators.usage_report_bucket" />
+      <template v-if="isAzure">
+        <a-form-item label="合约编号">
+          <a-input v-decorator="decorators.enrollment_number" />
+          <span slot="extra">
+            EA（Enterprise Agreement）账户请提供合约编号（Enrollment Number）和账单密钥，
+            Azure官网未提供非EA账户的账单获取API，OneCloud暂不支持对非EA账户的账单拉取及分析功能，非EA账户请直接点击取消结束创建任务。
+          </span>
         </a-form-item>
-        <a-form-item label="文件前缀" extra="一般为公有云的账户ID，用于筛选存储桶的账单文件。上述Bucket里面只有账单文件时，不需要关注该字段。">
-          <a-input v-decorator="decorators.usage_file_prefix" />
+        <a-form-item label="密钥">
+          <a-input v-decorator="decorators.balance_key" type="textarea" rows="4" />
         </a-form-item>
       </template>
-      <a-form-item v-bind="offsetFormLayout">
-         <test-button :post="testPost" />
+      <template v-else>
+        <a-divider orientation="left">账单文件/Billing export</a-divider>
+        <a-form-item label="云账号类型">
+          <a-radio-group  v-model="billingType">
+            <a-radio-button :value="1">主账号</a-radio-button>
+            <a-radio-button v-if="!isHuawei" :value="2">关联账号</a-radio-button>
+          </a-radio-group>
+        </a-form-item>
+        <a-form-item label="主账号" v-if="billingType === 2" extra="一般来说，账单文件的存储桶等信息是主账号设置的，我们需要使用主账号的访问信息去获取这些账单文件进行分析">
+          <a-select :filterOption="filterOption" showSearch :loading="cloudAccountLoading" v-decorator="decorators.billing_bucket_account">
+          <template v-for="item in cloudAccounts">
+            <a-select-option  v-if="id !== item.id" :key="item.id" :value="item.id">{{item.name}}</a-select-option>
+          </template>
+          </a-select>
+        </a-form-item>
+        <a-form-item label="存储桶URL" extra="请正确输入账单文件所在存储桶的URL，例如：https://bucket-name.oss-cn-beijing.aliyuncs.com">
+          <a-input v-decorator="decorators.billing_report_bucket" />
+        </a-form-item>
+        <a-form-item v-if="!isHuawei" label="文件前缀"  extra="一般为公有云的账户ID，用于筛选存储桶的账单文件。上述Bucket里面只有账单文件时，不需要关注该字段。">
+          <a-input v-decorator="decorators.billing_file_prefix" />
+        </a-form-item>
+        <!-- google -->
+        <template v-if="isGoogle">
+          <a-divider class="mt-5" orientation="left">使用量文件/Usage export</a-divider>
+          <a-form-item label="存储桶URL" extra="请正确输入使用量所在存储桶的URL，例如：https://bucket-name.oss-cn-beijing.aliyuncs.com">
+            <a-input v-decorator="decorators.usage_report_bucket" />
+          </a-form-item>
+          <a-form-item label="文件前缀" extra="一般为公有云的账户ID，用于筛选存储桶的账单文件。上述Bucket里面只有账单文件时，不需要关注该字段。">
+            <a-input v-decorator="decorators.usage_file_prefix" />
+          </a-form-item>
+        </template>
+        <a-form-item v-bind="offsetFormLayout">
+          <test-button :post="testPost" />
+        </a-form-item>
+      </template>
+      <a-form-item label="立即采集账单"  extra="开启立即采集账单，在账单文件访问信息配置完成后，立即采集当月账单。关闭立即采集账单，系统会在每天4:00自动采集账单">
+        <a-switch v-decorator="decorators.sync_info" />
       </a-form-item>
     </a-form>
   </div>
@@ -98,6 +115,9 @@ export default {
     isHuawei () {
       return this.provider === 'Huawei' || (this.cloudAccount && this.cloudAccount.provider === 'Huawei')
     },
+    isAzure () {
+      return this.provider === 'Azure' || (this.cloudAccount && this.cloudAccount.provider === 'Azure')
+    },
     decorators () {
       const { options = {} } = this.cloudAccount
       return {
@@ -135,6 +155,28 @@ export default {
           'usage_file_prefix',
           {
             initialValue: options.usage_file_prefix,
+          },
+        ],
+        sync_info: [
+          'sync_info',
+          {
+            initialValue: true,
+          },
+        ],
+        enrollment_number: [
+          'enrollment_number',
+          {
+            rules: [
+              { required: true, message: '请输入合同编号' },
+            ],
+          },
+        ],
+        balance_key: [
+          'balance_key',
+          {
+            rules: [
+              { required: true, message: '请输入密钥' },
+            ],
           },
         ],
       }
@@ -188,9 +230,29 @@ export default {
         throw err
       }
     },
-    async doSubmit ({ id } = this.cloudAccount) {
+    async postBillTasks (id, values) {
+      const manager = new this.$Manager('bill_tasks', 'v1')
+      try {
+        const data = {
+          sync_info: true,
+          cloudaccount_id: id,
+          start_day: parseFloat(this.$moment().subtract(2, 'd').format('YYYYMMDD')),
+          end_day: parseFloat(this.$moment().subtract(1, 'd').format('YYYYMMDD')),
+        }
+        await manager.create({
+          data: data,
+        })
+      } catch (err) {
+        throw err
+      }
+    },
+    async doSubmit ({ id } = this.cloudAccount, isGoCloudaccount = true) {
       try {
         const values = await this.form.fc.validateFields()
+        if (values.sync_info) {
+          await this.postBillTasks(id, values)
+        }
+        delete values.sync_info
         const params = {
           id,
           data: {
@@ -198,7 +260,9 @@ export default {
           },
         }
         await this.manager.update(params)
-        this.$router.push('/cloudaccount')
+        if (isGoCloudaccount) {
+          this.$router.push('/cloudaccount')
+        }
       } catch (err) {
         throw err
       }
