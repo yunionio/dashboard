@@ -583,6 +583,11 @@
       "denied": "认证未通过",
       "uncertified": "未认证",
       "unknown": "未知"
+    },
+    "policydefinition": {
+      "sync_status": "同步状态中",
+      "ready": "正常",
+      "unknown": "未知"
     }
   },
   "skuCategoryOptions": {

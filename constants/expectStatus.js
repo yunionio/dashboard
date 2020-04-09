@@ -221,4 +221,8 @@ export default {
     success: ['certified'],
     danger: ['denied'],
   },
+  policydefinition: {
+    success: ['ready'],
+    info: ['init', 'unknown'],
+  },
 }
