@@ -1,8 +1,10 @@
 import * as R from 'ramda'
+import _ from 'lodash'
 
 export default {
   methods: {
     getOptions (item, type) {
+      if (!this.singleActions) return []
       if (type === 'primaryActions') {
         return this.singleActions.filter(val => {
           return R.is(Function, val.meta) && val.meta(item).buttonType === 'primary'
@@ -47,14 +49,14 @@ export default {
           return field.formatter(data)
         }
       }
-      return data[field] || ''
+      return _.get(data, field) || ''
     },
     imgError (item, ref) {
-      this.$refs[ref][0].src = this.imageDefault
+      if (this.$refs[ref] && this.$refs[ref][0]) this.$refs[ref][0].src = this.imageDefault
     },
     showSingleActions (item) {
       const show = this.getOptions(item, 'singleActions')
-      if (show[0].actions().length === 0) {
+      if (show && show.length && show[0].actions().length === 0) {
         return false
       }
       return true

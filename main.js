@@ -6,6 +6,7 @@ import VXETablePluginAntd from 'vxe-table-plugin-antd'
 
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/theme/material.css'
+import 'codemirror/mode/yaml/yaml.js'
 import 'vxe-table/lib/index.css'
 import 'vxe-table-plugin-antd/dist/style.css'
 import '@/styles/antd/index.less'

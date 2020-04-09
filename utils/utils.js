@@ -375,22 +375,22 @@ export const formatSeconds = value => {
   let theTime3 = 0 // 天
   let theTime4 = 0 // 月
   let theTime5 = 0 // 年
-  if (theTime > 60) {
+  if (theTime >= 60) {
     theTime1 = parseInt(theTime / 60)
     theTime = parseInt(theTime % 60)
-    if (theTime1 > 60) {
+    if (theTime1 >= 60) {
       theTime2 = parseInt(theTime1 / 60)
       theTime1 = parseInt(theTime1 % 60)
-      if (theTime2 > 24) {
+      if (theTime2 >= 24) {
         // 大于24小时
         theTime3 = parseInt(theTime2 / 24)
         theTime2 = parseInt(theTime2 % 24)
         // 大于30天
-        if (theTime3 > 30) {
+        if (theTime3 >= 30) {
           theTime4 = parseInt(theTime3 / 30)
           theTime3 = parseInt(theTime3 % 30)
           // 大于12月
-          if (theTime4 > 12) {
+          if (theTime4 >= 12) {
             theTime5 = parseInt(theTime4 / 12)
             theTime4 = parseInt(theTime4 % 12)
           }
