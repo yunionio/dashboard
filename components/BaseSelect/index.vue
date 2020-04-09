@@ -213,7 +213,7 @@ export default {
       this.$emit('change', changeValue)
       // 同步当前选择项obj
       if (changeValue) {
-        let syncValue = R.is(String, changeValue) ? this.resOpts[changeValue] : this.resOpts[changeValue.key]
+        let syncValue = R.is(Object, changeValue) ? this.resOpts[changeValue.key] : this.resOpts[changeValue]
         if (this.options && this.options.length) syncValue = changeValue // 外面传递 options
         this.$emit('update:item', syncValue)
       }
@@ -265,9 +265,9 @@ export default {
       if (this.isDefaultSelect && list.length > 0 && !this.value) { // 没有初始化值才可以默认选择
         const defaultItem = list[0]
         if (this.selectProps && this.selectProps.labelInValue) {
-          this.change({ label: defaultItem.name, value: defaultItem.id })
+          this.change({ label: defaultItem[this.nameKey], value: defaultItem[this.idKey] })
         } else {
-          this.change(defaultItem.id)
+          this.change(defaultItem[this.idKey])
         }
       }
     },
