@@ -3652,5 +3652,8 @@ export default {
   },
   "Other": {
     "zh-CN": "服务异常"
+  },
+  "PolicyDefinitionError": {
+    "zh-CN": "策略错误",
   }
 }
