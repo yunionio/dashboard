@@ -58,7 +58,7 @@ export const DECORATORS = {
   desire_instance_number: [
     'desire_instance_number',
     {
-      initialValue: 1,
+      initialValue: 0,
       rules: [
         { required: true, message: '请输入期望实例数' },
       ],

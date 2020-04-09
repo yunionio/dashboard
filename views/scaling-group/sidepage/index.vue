@@ -11,7 +11,15 @@
     <template v-slot:actions>
       <actions :options="singleActions" :row="detailData" :data="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :res-id="detailData.id" :data="detailData" :on-manager="onManager" :getParams="getParams"  @tab-change="handleTabChange" />
+    <component
+      :is="params.windowData.currentTab"
+      :res-id="detailData.id"
+      :data="detailData"
+      :on-manager="onManager"
+      :getParams="getParams"
+      @tab-change="handleTabChange"
+      :show-group-actions="showActions"
+      :show-single-actions="showActions" />
   </base-side-page>
 </template>
 
@@ -51,6 +59,9 @@ export default {
     }
   },
   computed: {
+    showActions () {
+      return this.params.windowData.currentTab !== 'server-template-list'
+    },
     getParams () {
       if (this.params.windowData.currentTab === 'server-template-list') {
         return {

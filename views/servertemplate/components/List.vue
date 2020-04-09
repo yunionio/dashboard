@@ -4,13 +4,16 @@
     :columns="columns"
     :group-actions="groupActions"
     :single-actions="singleActions"
+    :show-group-actions="showGroupActions"
+    :show-single-actions="showSingleActions"
     :export-data-options="exportDataOptions" />
 </template>
 
 <script>
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import { getTenantFilter, getStatusFilter } from '@/utils/common/tableFilter'
+import expectStatus from '@/constants/expectStatus'
+import { getTenantFilter, getStatusFilter, getBrandFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 
@@ -24,6 +27,14 @@ export default {
       default: () => ({}),
     },
     cloudEnv: String,
+    showGroupActions: {
+      type: Boolean,
+      default: () => (true),
+    },
+    showSingleActions: {
+      type: Boolean,
+      default: () => (true),
+    },
   },
   data () {
     return {
@@ -31,6 +42,7 @@ export default {
         id: this.id,
         resource: 'servertemplates',
         getParams: this.getParam,
+        steadyStatus: Object.values(expectStatus.scalinggroup).flat(),
         filterOptions: {
           name: {
             label: '名称',
@@ -41,6 +53,7 @@ export default {
           },
           tenant: getTenantFilter(),
           status: getStatusFilter('servertemplate'),
+          brand: getBrandFilter(),
           os_type: {
             label: '系统类型',
             dropdown: true,

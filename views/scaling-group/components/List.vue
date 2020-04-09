@@ -55,6 +55,7 @@ export default {
       groupActions: [
         {
           label: '新建',
+          permission: 'scalinggroups_create',
           action: () => {
             this.$router.push({
               name: 'ScalingGroupCreate',
@@ -70,6 +71,7 @@ export default {
             return [
               {
                 label: '启用',
+                permission: 'scalinggroups_perform_enable',
                 action: () => {
                   this.list.batchPerformAction('enable', null)
                 },
@@ -79,6 +81,7 @@ export default {
               },
               {
                 label: '禁用',
+                permission: 'scalinggroups_perform_disable',
                 action: () => {
                   this.list.batchPerformAction('disable', null)
                 },
@@ -88,6 +91,7 @@ export default {
               },
               {
                 label: '删除',
+                permission: 'servicecatalogs_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     data: this.list.selectedItems,

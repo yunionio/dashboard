@@ -93,15 +93,24 @@ export default {
             this.createDialog('FlexRuleStartDialog', {
               data: [obj],
               columns: this.columns,
-              title: '删除',
+              title: '立即执行',
               onManager: this.onManager,
               refresh: this.refresh,
             })
           },
-          meta: (obj) => ({
-            validate: obj.enabled,
-            tooltip: !obj.enabled && '仅启用状态下支持此操作',
-          }),
+          meta: (obj) => {
+            let tooltip = ''
+            if (!this.data.enabled) {
+              tooltip = '弹性伸缩组禁用状态下不支持该操作'
+            }
+            if (!obj.enabled) {
+              tooltip = '仅启用状态下支持此操作'
+            }
+            return {
+              validate: obj.enabled && this.data.enabled,
+              tooltip,
+            }
+          },
         },
         {
           label: '更多',
@@ -145,6 +154,12 @@ export default {
                     onManager: this.onManager,
                     refresh: this.refresh,
                   })
+                },
+                meta: (obj) => {
+                  return {
+                    validate: !obj.enabled,
+                    tooltip: obj.enabled && '仅禁用状态下支持此操作',
+                  }
                 },
               },
             ]
@@ -194,11 +209,22 @@ export default {
                   this.createDialog('DeleteResDialog', {
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    title: '删除账号',
+                    title: '删除',
                     onManager: this.onManager,
                   })
                 },
-                meta: () => this.$getDeleteResult(this.list.selectedItems),
+                meta: (obj) => {
+                  const { selectedItems } = this.list
+                  if (!selectedItems.every(item => item.enabled)) {
+                    return {
+                      validate: false,
+                      tooltip: '仅禁用状态下支持此操作',
+                    }
+                  }
+                  return {
+                    validate: true,
+                  }
+                },
               },
             ]
           },
@@ -212,15 +238,16 @@ export default {
   methods: {
     formatTriggerType (row) {
       const type = row['trigger_type']
-      if (row.status === 'create_failed' || row.status === 'init') {
+      const initStatus = ['creating', 'create_failed', 'init']
+      if (initStatus.indexOf(row.status) > -1) {
         return '-'
       }
       // 告警策略
       if (type === 'alarm' && row['alarm']) {
         const { indicator, operator, value, cumulate } = row['alarm']
         const wrapperType = {
-          gt: '>',
-          lt: '<',
+          gt: '<',
+          lt: '>',
         }
         const unit = indicator === 'cpu' ? '%' : 'b/s'
         const cumulateTxt = `连续满足${cumulate}次后触发`

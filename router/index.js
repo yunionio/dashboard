@@ -170,7 +170,7 @@ export default {
           path: '/scalinggroup',
           meta: {
             label: '弹性伸缩组',
-            // permission: 'servertemplates_list',
+            permission: 'scalinggroups_list',
           },
           component: Layout,
           children: [
