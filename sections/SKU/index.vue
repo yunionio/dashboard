@@ -8,6 +8,7 @@
         :disabled="item.disabled">{{ item.label }}</a-radio-button>
     </a-radio-group>
     <vxe-grid
+      row-id="id"
       ref="tableRef"
       resizable
       max-height="400"
@@ -280,6 +281,7 @@ export default {
         }
       }
       this.$nextTick(() => {
+        this.selectedSkuData = chooseSku
         this.$refs.tableRef && this.$refs.tableRef.setRadioRow(chooseSku)
         this.$emit('change', chooseSku)
       })
