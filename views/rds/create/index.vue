@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="server-create-index">
     <page-header title="新建" />
     <a-form :form="form.fc" class="mt-3">
       <a-divider orientation="left">基础配置</a-divider>
@@ -26,13 +26,12 @@
       <!-- 套餐信息 -->
       <div v-show="form.getFieldValue('cloudregion')">
         <s-k-u ref="SKU" />
-        <a-divider orientation="left">高级配置</a-divider>
         <a-form-item label="管理员密码" v-bind="formItemLayout">
           <server-password :loginTypes="loginTypes" :decorator="decorators.loginConfig" :form="form" />
           </a-form-item>
         <network-selects
           ref="NETWORK"
-          label="VPC"
+          label="网络"
           :vpcParams="getVpcParams"
           :networkParams="getNetworkParams"
           v-bind="formItemLayout" />
@@ -208,3 +207,11 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.server-create-index {
+  ::v-deep .ant-form.ant-form-horizontal .ant-form-item .ant-form-item-label{
+    padding-left: 20px;
+  }
+}
+</style>

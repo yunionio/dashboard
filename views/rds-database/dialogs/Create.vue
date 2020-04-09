@@ -13,7 +13,7 @@
             :value="item">{{ item }}</a-select-option>
         </a-select>
       </a-form-item>
-      <a-form-item v-bind="formItemLayout" label="数据库">
+      <a-form-item v-bind="formItemLayout" label="账号" v-if="this.params.rdsItem.brand !== 'Google'">
         <database-privileges :rdsItem="params.rdsItem" />
       </a-form-item>
     </a-form>
