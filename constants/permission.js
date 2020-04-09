@@ -536,6 +536,18 @@ export const PERMISSION = {
   'image_quota_delete': ['image', 'image_quotas', 'delete'],
   'image_quota_update': ['image', 'image_quotas', 'update'],
   'image_quota_list': ['image', 'image_quotas', 'list'],
+  'domain_quota_create': ['compute', 'domain_quotas', 'create'],
+  'domain_quota_delete': ['compute', 'domain_quotas', 'delete'],
+  'domain_quota_update': ['compute', 'domain_quotas', 'update'],
+  'domain_quota_list': ['compute', 'domain_quotas', 'list'],
+  'identity_quota_create': ['identity', 'identity_quotas', 'create'],
+  'identity_quota_delete': ['identity', 'identity_quotas', 'delete'],
+  'identity_quota_update': ['identity', 'identity_quotas', 'update'],
+  'identity_quota_list': ['identity', 'identity_quotas', 'list'],
+  'infras_quota_create': ['compute', 'infras_quotas', 'create'],
+  'infras_quota_delete': ['compute', 'infras_quotas', 'delete'],
+  'infras_quota_update': ['compute', 'infras_quotas', 'update'],
+  'infras_quota_list': ['compute', 'infras_quotas', 'list'],
 }
 
 // 已声明权限的资源
