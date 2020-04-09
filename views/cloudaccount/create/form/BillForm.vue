@@ -176,12 +176,13 @@ export default {
         sync_info: [
           'sync_info',
           {
-            initialValue: true,
+            initialValue: false,
           },
         ],
         enrollment_number: [
           'enrollment_number',
           {
+            initialValue: options.enrollment_number,
             rules: [
               { required: true, message: '请输入合同编号' },
             ],
@@ -190,6 +191,7 @@ export default {
         balance_key: [
           'balance_key',
           {
+            initialValue: options.balance_key,
             rules: [
               { required: true, message: '请输入密钥' },
             ],
