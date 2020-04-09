@@ -12,7 +12,7 @@ export const DBINSTANCE_CATEGORY = {
   FIRST_GEN: '第一代',
 }
 
-export const DBINSTANCE_STORAGE_TYPE_KEYS = ['SATA', 'SAS', 'SSD', 'local_ssd', 'cloud_ssd', 'cloud_essd', 'PD_SSD', 'PD_HDD']
+export const DBINSTANCE_STORAGE_TYPE_KEYS = ['SATA', 'SAS', 'SSD', 'local_ssd', 'cloud_ssd', 'cloud_essd', 'PD_SSD', 'PD_HDD', 'HIGH', 'ULTRAHIGH', 'ULTRAHIGHPRO', 'COMMON']
 export const DBINSTANCE_STORAGE_TYPE = {
   local_ssd: '本地SSD盘',
   cloud_essd: 'ESSD云盘',
@@ -22,6 +22,10 @@ export const DBINSTANCE_STORAGE_TYPE = {
   SATA: '普通IO云硬盘',
   PD_SSD: 'SSD',
   PD_HDD: 'HDD',
+  ULTRAHIGH: '超高IO',
+  HIGH: '高IO',
+  ULTRAHIGHPRO: '超高IO（尊享版）',
+  COMMON: 'COMMON',
 }
 
 export const ACCOUNT_PRIVILEGES = {
