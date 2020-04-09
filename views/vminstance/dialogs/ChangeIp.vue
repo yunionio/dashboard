@@ -2,8 +2,13 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">更换IP</div>
     <div slot="body">
+      <a-alert class="mb-2" type="warning">
+        <template v-slot:message>
+          <div>更换IP后，重启网络或重启机器后生效</div>
+        </template>
+      </a-alert>
       <dialog-selected-tips :count="params.data.length" action="更换IP" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <vxe-grid class="mb-2" :data="params.data" :columns="columns" />
       <a-form :form="form.fc" hideRequiredMark>
         <a-form-item label="IP子网" v-bind="formItemLayout" class="mb-0">
           <a-row :gutter="20">
@@ -108,6 +113,10 @@ export default {
         zone: this.params.zone,
         scope: this.scope,
       }
+    },
+    columns () {
+      const showFields = ['network', 'ip_addr', 'mac_addr']
+      return this.params.columns.filter((item) => { return showFields.includes(item.field) })
     },
   },
   methods: {
