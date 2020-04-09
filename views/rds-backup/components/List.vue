@@ -3,7 +3,8 @@
     :columns="columns"
     :group-actions="groupActions"
     :list="list"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -60,6 +61,20 @@ export default {
           }),
         },
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '名称', key: 'name' },
+          { label: '实例名称', key: 'dbinstance' },
+          { label: '备份类型', key: 'backup_mode' },
+          { label: '数据库引擎', key: 'engine' },
+          { label: '大小', key: 'backup_size_mb' },
+          { label: '状态', key: 'status' },
+          { label: '备份开始时间', key: 'start_time' },
+          { label: '备份结束时间', key: 'end_time' },
+          { label: '区域', key: 'region' },
+        ],
+      },
       groupActions: [
         {
           label: '新建',
