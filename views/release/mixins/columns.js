@@ -16,20 +16,22 @@ export default {
         },
       }),
       {
-        field: 'podIP',
-        title: 'IP',
-        minWidth: '100px',
-      },
-      {
         field: 'namespace',
         title: '命名空间',
-        width: 120,
       },
-      k8sStatusColumn({ path: 'warnings' }),
       {
-        field: 'restartCount',
-        title: '重启次数',
-        minWidth: '80px',
+        field: 'metadata',
+        title: '应用',
+        formatter: ({ row }) => `${row.chart.metadata.name}/${row.chart.metadata.version || ''}`,
+      },
+      k8sStatusColumn({ statusModule: 'release' }),
+      {
+        field: 'last_deployed',
+        title: '更新日期',
+        width: 80,
+        formatter: ({ row }) => {
+          return this.$moment(row.last_deployed).fromNow()
+        },
       },
       {
         field: 'creationTimestamp',

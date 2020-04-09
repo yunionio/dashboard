@@ -1,7 +1,7 @@
 import * as R from 'ramda'
 import _ from 'lodash'
 
-export const k8sStatusColumn = (path = 'podsInfo.warnings') => {
+export const k8sStatusColumn = ({ path = 'podsInfo.warnings', statusModule = 'k8s_resource' } = {}) => {
   return {
     field: 'status',
     title: '状态',
@@ -20,9 +20,10 @@ export const k8sStatusColumn = (path = 'podsInfo.warnings') => {
             </a-tooltip>
           )
         }
+        console.log(statusModule, 'statusModule')
         return [
           <div class='text-truncate'>
-            <status status={ row.status } statusModule='k8s_resource'>
+            <status status={ row.status } statusModule={ statusModule }>
               { warnTooltip }
             </status>
           </div>,

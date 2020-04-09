@@ -31,6 +31,8 @@ import Configmap from '@K8S/views/configmap'
 import K8sConfigmapCreate from '@K8S/views/configmap/create'
 import Secret from '@K8S/views/secret'
 import K8sSecretCreate from '@K8S/views/secret/create'
+import Release from '@K8S/views/release'
+import K8sReleaseCreate from '@K8S/views/release/create'
 import Layout from '@/layouts/RouterView'
 
 export default {
@@ -157,6 +159,26 @@ export default {
               name: 'K8sPersistentvolumeclaimCreate',
               path: 'create',
               component: K8sPersistentvolumeclaimCreate,
+            },
+          ],
+        },
+        {
+          path: '/k8s-release',
+          meta: {
+            label: '发布',
+            permission: 'k8s_releases_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'K8sReleaseList',
+              path: '',
+              component: Release,
+            },
+            {
+              name: 'K8sReleaseCreate',
+              path: 'create',
+              component: K8sReleaseCreate,
             },
           ],
         },

@@ -16,11 +16,12 @@ import * as R from 'ramda'
 import ClusterNamespace from '@K8S/sections/ClusterNamespace'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
+import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 
 export default {
-  name: 'K8SConfigmapList',
+  name: 'K8SReleaseList',
   components: {
     ClusterNamespace,
   },
@@ -31,16 +32,12 @@ export default {
       type: Object,
       default: () => ({}),
     },
-    responseData: {
-      type: Object,
-      validator: val => R.is(Array, val.data),
-    },
   },
   data () {
     return {
       list: this.$list.createList(this, {
         id: this.id,
-        resource: 'configmaps',
+        resource: 'releases',
         apiVersion: 'v1',
         getParams: this.getParams,
         idKey: 'name',
@@ -49,14 +46,16 @@ export default {
             label: '名称',
           },
         },
-        responseData: this.responseData,
+        steadyStatus: {
+          status: Object.values(expectStatus.release).flat(),
+        },
       }),
       groupActions: [
         {
-          label: '新建',
-          permission: 'k8s_configmaps_create',
+          label: '应用目录',
+          permission: 'k8s_releases_create',
           action: () => {
-            this.$router.push({ path: '/k8s-configmap/create' })
+            this.$router.push({ path: '/k8s-chart' })
           },
           meta: () => ({
             buttonType: 'primary',
@@ -64,7 +63,7 @@ export default {
         },
         {
           label: '删除',
-          permission: 'k8s_configmaps_delete',
+          permission: 'k8s_releases_delete',
           action: () => {
             const data = this.list.selectedItems
             const requestData = {
@@ -77,7 +76,7 @@ export default {
               data,
               columns: this.columns,
               title: '删除',
-              name: '配置项',
+              name: '存储声明',
               onManager: this.onManager,
               idKey: 'name',
               requestData,
@@ -118,9 +117,9 @@ export default {
       }
     },
     handleOpenSidepage (row) {
-      this.sidePageTriggerHandle(this, 'K8SConfigmapSidePage', {
+      this.sidePageTriggerHandle(this, 'K8SReleaseSidePage', {
         id: row.name,
-        resource: 'configmaps',
+        resource: 'releases',
         getParams: () => {
           const params = R.clone(this.list.getParams)
           if (row.namespace) {
@@ -131,6 +130,9 @@ export default {
         },
         idKey: 'name',
         apiVersion: 'v1',
+        steadyStatus: {
+          status: Object.values(expectStatus.k8s_resource).flat(),
+        },
       }, {
         list: this.list,
       })
