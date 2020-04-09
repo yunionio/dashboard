@@ -29,8 +29,15 @@
           </template>
           </a-select>
         </a-form-item>
-        <a-form-item label="存储桶URL" extra="请正确输入账单文件所在存储桶的URL，例如：https://bucket-name.oss-cn-beijing.aliyuncs.com">
+        <a-form-item label="存储桶URL">
           <a-input v-decorator="decorators.billing_report_bucket" />
+          <span slot="extra" v-if="bucketUrl">
+            如何获取存储桶的URL，请参考
+            <help-link :href="bucketUrl">新建{{brandCn}}账号</help-link>
+          </span>
+          <span v-else>
+            请正确输入账单文件所在存储桶的URL，例如：https://bucket-name.oss-cn-beijing.aliyuncs.com
+          </span>
         </a-form-item>
         <a-form-item v-if="!isHuawei" label="文件前缀"  extra="一般为公有云的账户ID，用于筛选存储桶的账单文件。上述Bucket里面只有账单文件时，不需要关注该字段。">
           <a-input v-decorator="decorators.billing_file_prefix" />
@@ -56,6 +63,7 @@
   </div>
 </template>
 <script>
+import { keySecretFields, BILL_BUCKET_URL_DOCS } from '../../constants'
 import TestButton from '@/sections/TestButton'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -117,6 +125,14 @@ export default {
     },
     isAzure () {
       return this.provider === 'Azure' || (this.cloudAccount && this.cloudAccount.provider === 'Azure')
+    },
+    brandCn () {
+      const { brand } = this.cloudAccount
+      return brand ? keySecretFields[brand.toLowerCase()].text : ''
+    },
+    bucketUrl () {
+      const { brand } = this.cloudAccount
+      return brand ? BILL_BUCKET_URL_DOCS[brand.toLowerCase()] : ''
     },
     decorators () {
       const { options = {} } = this.cloudAccount
@@ -213,7 +229,10 @@ export default {
     },
     async fetchCloudAccount () {
       const { id } = this.$route.query
-      if (!id) return false
+      if (!id) {
+        this.cloudAccount = this.action
+        return false
+      }
       try {
         const { data } = await this.manager.get({
           id,

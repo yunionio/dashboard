@@ -359,3 +359,10 @@ export const keySecretFields = {
     },
   },
 }
+
+export const BILL_BUCKET_URL_DOCS = {
+  aliyun: 'https://docs.yunion.cn/docs/user/multiplecloud/cloudaccount/cloudaccount/#%E6%96%B0%E5%BB%BA%E9%98%BF%E9%87%8C%E4%BA%91%E8%B4%A6%E5%8F%B7  ',
+  aws: 'https://docs.yunion.cn/docs/user/multiplecloud/cloudaccount/cloudaccount/#%E6%96%B0%E5%BB%BAaws%E8%B4%A6%E5%8F%B7',
+  huawei: 'https://docs.yunion.cn/docs/user/multiplecloud/cloudaccount/cloudaccount/#%E6%96%B0%E5%BB%BA%E5%8D%8E%E4%B8%BA%E4%BA%91%E8%B4%A6%E5%8F%B7',
+  google: 'https://docs.yunion.cn/docs/user/multiplecloud/cloudaccount/cloudaccount/#%E6%96%B0%E5%BB%BAgoogle%E8%B4%A6%E5%8F%B7',
+}

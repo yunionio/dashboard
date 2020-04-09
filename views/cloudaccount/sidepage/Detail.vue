@@ -15,9 +15,11 @@ import {
   getHostCountTableColumn,
 } from '../utils/columns'
 import { getBrandTableColumn, getEnabledTableColumn, getStatusTableColumn, getPublicTableColumn } from '@/utils/common/tableColumn'
+import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'CloudaccountDetail',
+  mixins: [WindowsMixin],
   props: {
     onManager: {
       type: Function,
@@ -43,6 +45,23 @@ export default {
                   <list-body-cell-wrap copy row={ row } field='account' title={ row['account'] } />
                 </div>,
               ]
+            },
+          },
+        },
+        {
+          field: 'proxy_setting.name',
+          title: '代理',
+          slots: {
+            default: ({ row }) => {
+              if (row.proxy_setting) {
+                const { id, name } = row.proxy_setting
+                return [
+                  <div class='text-truncate'>
+                    <side-page-trigger name="ProxysettingSidePage" id={id} list={this.list} vm={this}>{name}</side-page-trigger>
+                  </div>,
+                ]
+              }
+              return '-'
             },
           },
         },
