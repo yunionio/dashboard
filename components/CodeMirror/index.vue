@@ -1,14 +1,15 @@
 <template>
-  <div :style="style" :class="{ merge }">
+  <div class="vue-codemirror" :class="{ merge }">
     <div ref="mergeview" v-if="merge" />
-    <textarea ref="textarea" :placeholder="placeholder" v-else />
+    <textarea ref="textarea" :name="name" :placeholder="placeholder" v-else />
   </div>
 </template>
 
 <script>
+// lib
 import _CodeMirror from 'codemirror'
 const CodeMirror = window.CodeMirror || _CodeMirror
-
+// export
 export default {
   name: 'CodeMirror',
   props: {
@@ -16,6 +17,10 @@ export default {
     value: String,
     marker: Function,
     unseenLines: Array,
+    name: {
+      type: String,
+      default: 'codemirror',
+    },
     placeholder: {
       type: String,
       default: '',
@@ -40,12 +45,6 @@ export default {
       type: Array,
       default: () => ([]),
     },
-    viewHeight: {
-      type: String,
-    },
-    isScroll: {
-      type: Boolean,
-    },
   },
   data () {
     return {
@@ -54,31 +53,23 @@ export default {
       cminstance: null,
     }
   },
-  computed: {
-    style () {
-      const style = {}
-      if (this.viewHeight) style.height = this.viewHeight || 'auto'
-      if (this.isScroll) style['overflow-y'] = 'scroll'
-      return style
-    },
-  },
   watch: {
     options: {
       deep: true,
-      handler (options, oldOptions) {
+      handler (options) {
         for (const key in options) {
           this.cminstance.setOption(key, options[key])
         }
       },
     },
-    merge (newVal) {
+    merge () {
       this.$nextTick(this.switchMerge)
     },
-    code (newVal, oldVal) {
-      this.handerCodeChange(newVal, oldVal)
+    code (newVal) {
+      this.handerCodeChange(newVal)
     },
-    value (newVal, oldVal) {
-      this.handerCodeChange(newVal, oldVal)
+    value (newVal) {
+      this.handerCodeChange(newVal)
     },
   },
   mounted () {
@@ -102,7 +93,6 @@ export default {
         this.content = cm.getValue()
         if (this.$emit) {
           this.$emit('input', this.content)
-          this.$emit('change', this.content)
         }
       })
       // 所有有效事件（驼峰命名）+ 去重
@@ -156,7 +146,7 @@ export default {
       const element = this.cminstance.doc.cm.getWrapperElement()
       element && element.remove && element.remove()
     },
-    handerCodeChange (newVal, oldVal) {
+    handerCodeChange (newVal) {
       const cmValue = this.cminstance.getValue()
       if (newVal !== cmValue) {
         const scrollInfo = this.cminstance.getScrollInfo()
