@@ -14,8 +14,9 @@
       showSizeChanger
       :pageSize.sync="list.limit"
       :total="list.total"
+      @change="pageChange"
       @showSizeChange="sizeChange"
-      v-model="currentPage" />
+      :defaultCurrent="1" />
   </div>
 </template>
 
@@ -90,6 +91,9 @@ export default {
       this.list.offset = (current - 1) * this.list.limit
       this.list.limit = limit
       this.refresh()
+    },
+    pageChange (page) {
+      this.currentPage = page
     },
   },
 }
