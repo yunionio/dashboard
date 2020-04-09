@@ -269,7 +269,7 @@ export default {
       try {
         const values = await this.form.fc.validateFields()
         if (values.sync_info) {
-          await this.postBillTasks(id, values)
+          this.postBillTasks(id, values)
         }
         delete values.sync_info
         const params = {

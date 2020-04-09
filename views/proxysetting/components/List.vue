@@ -31,15 +31,15 @@ export default {
         getParams: this.getParams,
         filterOptions: {
           name: getNameFilter(),
-          https_proxy: {
-            label: 'https代理',
-          },
-          http_proxy: {
-            label: 'http代理',
-          },
-          no_proxy: {
-            label: '不走代理地址',
-          },
+          // https_proxy: {
+          //   label: 'https代理',
+          // },
+          // http_proxy: {
+          //   label: 'http代理',
+          // },
+          // no_proxy: {
+          //   label: '不走代理地址',
+          // },
         },
       }),
       exportDataOptions: {
