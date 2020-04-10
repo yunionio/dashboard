@@ -102,7 +102,16 @@ export default {
               title: '实例类型',
               slots: {
                 default: ({ row }) => {
-                  return DBINSTANCE_CATEGORY[row.category]
+                  return DBINSTANCE_CATEGORY[row.category] || row.category || '-'
+                },
+              },
+            },
+            {
+              field: 'storage_type',
+              title: '存储类型',
+              slots: {
+                default: ({ row }) => {
+                  return DBINSTANCE_STORAGE_TYPE[row.storage_type] || row.storage_type || '-'
                 },
               },
             },
@@ -112,15 +121,6 @@ export default {
               slots: {
                 default: ({ row }) => {
                   return `${row.vcpu_count} 核`
-                },
-              },
-            },
-            {
-              field: 'storage_type',
-              title: '存储类型',
-              slots: {
-                default: ({ row }) => {
-                  return DBINSTANCE_STORAGE_TYPE[row.storage_type]
                 },
               },
             },
