@@ -4,6 +4,7 @@ import {
   getAccountTableColumn,
   getPublicScopeTableColumn,
   getProjectDomainTableColumn,
+  getBrandTableColumn,
 } from '@/utils/common/tableColumn'
 
 const routeType = {
@@ -33,6 +34,7 @@ export default {
         minWidth: 120,
         showOverflow: 'ellipsis',
       },
+      getBrandTableColumn(),
       getPublicScopeTableColumn(),
       getProjectDomainTableColumn(),
       getRegionTableColumn(),

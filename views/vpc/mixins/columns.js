@@ -21,17 +21,6 @@ export default {
           )
         },
       }),
-      getCopyWithContentTableColumn({
-        field: 'cidr_block',
-        title: '目标网段',
-        sortable: true,
-      }),
-      getPublicScopeTableColumn(),
-      getProjectDomainTableColumn(),
-      getRegionTableColumn(),
-      getBrandTableColumn(),
-      getAccountTableColumn(),
-      getStatusTableColumn({ statusModule: 'vpc' }),
       {
         field: 'wire_count',
         title: '二层网络',
@@ -52,6 +41,17 @@ export default {
           },
         },
       },
+      getBrandTableColumn(),
+      getPublicScopeTableColumn(),
+      getProjectDomainTableColumn(),
+      getAccountTableColumn(),
+      getCopyWithContentTableColumn({
+        field: 'cidr_block',
+        title: '目标网段',
+        sortable: true,
+      }),
+      getRegionTableColumn(),
+      getStatusTableColumn({ statusModule: 'vpc' }),
     ]
   },
 }
