@@ -17,9 +17,7 @@
       <a-form-item :label="keySecretField.label.s">
         <a-input-password v-decorator="decorators.password" :placeholder="keySecretField.placeholder.s" />
       </a-form-item>
-      <a-form-item :label="`指定${$t('dictionary.project')}`" class="mb-0" v-if="domainProjectShow">
-        <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain }" />
-      </a-form-item>
+      <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" />
       <proxy-setting :fc="form.fc" />
       <auto-sync :fc="form.fc" :form-layout="formLayout" />
     </a-form>
@@ -108,6 +106,12 @@ export default {
             rules: [
               { validator: isRequired(), message: this.$t('rules.project'), trigger: 'change' },
             ],
+          },
+        ],
+        auto_create_project: [
+          'auto_create_project',
+          {
+            valuePropName: 'checked',
           },
         ],
       }

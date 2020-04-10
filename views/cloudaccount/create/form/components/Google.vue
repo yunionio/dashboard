@@ -4,9 +4,7 @@
       <a-form-item label="名称">
         <a-input v-decorator="decorators.name" placeholder="请输入名称" />
       </a-form-item>
-      <a-form-item :label="`指定${$t('dictionary.project')}`" class="mb-0" v-bind="formLayout">
-        <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain }" />
-      </a-form-item>
+      <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" />
       <upload-json-file :fc="form.fc">
         <a-form-item label="project_id">
           <a-input v-decorator="decorators.project_id" placeholder="请输入project_id" />
@@ -114,6 +112,12 @@ export default {
             rules: [
               { validator: isRequired(), message: this.$t('rules.project'), trigger: 'change' },
             ],
+          },
+        ],
+        auto_create_project: [
+          'auto_create_project',
+          {
+            valuePropName: 'checked',
           },
         ],
       },

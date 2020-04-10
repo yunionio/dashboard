@@ -167,6 +167,11 @@ export default {
               },
             ]
           },
+          meta: () => {
+            return {
+              validate: this.list.selectedItems && this.list.selectedItems.length > 0,
+            }
+          },
         },
       ],
     }
