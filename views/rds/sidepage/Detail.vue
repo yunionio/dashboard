@@ -91,7 +91,7 @@ export default {
               title: '实例类型',
               slots: {
                 default: ({ row }) => {
-                  return DBINSTANCE_CATEGORY[row.category]
+                  return DBINSTANCE_CATEGORY[row.category] || row.category || '-'
                 },
               },
             },
@@ -100,7 +100,7 @@ export default {
               title: '存储类型',
               slots: {
                 default: ({ row }) => {
-                  return DBINSTANCE_STORAGE_TYPE[row.storage_type]
+                  return DBINSTANCE_STORAGE_TYPE[row.storage_type] || row.storage_type || '-'
                 },
               },
             },

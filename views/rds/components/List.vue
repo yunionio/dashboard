@@ -5,8 +5,9 @@
     :list="list"
     :single-actions="singleActions"
     :showSearchbox="showSearchbox"
-    :showGroupActions="showGroupActions" />
-</template>
+    :showGroupActions="showGroupActions"
+    :export-data-options="exportDataOptions" />
+ </template>
 
 <script>
 import ColumnsMixin from '../mixins/columns'
@@ -84,6 +85,26 @@ export default {
         },
         responseData: this.responseData,
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '名称', key: 'name' },
+          { label: '类型', key: 'category' },
+          { label: 'CPU', key: 'vcpu_count' },
+          { label: '内存(MB)', key: 'vmem_size_mb' },
+          { label: '数据库引擎', key: 'engine' },
+          { label: '数据库版本', key: 'engine_version' },
+          { label: '数据库端口号', key: 'port' },
+          { label: '内网链接地址', key: 'internal_connection_str' },
+          { label: '外网链接地址', key: 'connection_str' },
+          { label: '云账号', key: 'account' },
+          { label: '计费方式', key: 'billing_type' },
+          { label: '状态', key: 'status' },
+          { label: this.$t('dictionary.project'), key: 'tenant' },
+          { label: '平台', key: 'hypervisor' },
+          { label: '区域', key: 'region' },
+        ],
+      },
       groupActions: [
         {
           label: '新建',

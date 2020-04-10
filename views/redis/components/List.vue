@@ -5,7 +5,8 @@
     :list="list"
     :single-actions="singleActions"
     :showSearchbox="showSearchbox"
-    :showGroupActions="showGroupActions" />
+    :showGroupActions="showGroupActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -83,6 +84,25 @@ export default {
         },
         responseData: this.responseData,
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '名称', key: 'name' },
+          { label: '实例类型', key: 'arch_type' },
+          { label: '配置', key: 'instance_type' },
+          { label: '类型版本', key: 'engine' },
+          { label: '内网链接地址', key: 'private_dns' },
+          { label: '内网链接地址端口', key: 'private_connect_port' },
+          { label: '外网链接地址', key: 'public_dns' },
+          { label: '外网链接地址端口', key: 'public_connect_port' },
+          { label: '云账号', key: 'account' },
+          { label: '计费方式', key: 'billing_type' },
+          { label: '状态', key: 'status' },
+          { label: this.$t('dictionary.project'), key: 'tenant' },
+          { label: '平台', key: 'hypervisor' },
+          { label: '区域', key: 'region' },
+        ],
+      },
       groupActions: [
         {
           label: '新建',
