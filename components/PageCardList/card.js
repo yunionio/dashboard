@@ -59,5 +59,14 @@ export default {
       }
       return true
     },
+    getDom (value, data) {
+      if (value.slots) {
+        return value.slots(data)
+      }
+      const text = value.value
+      return (<span>
+        {{ text }}
+      </span>)
+    },
   },
 }

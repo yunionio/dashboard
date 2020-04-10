@@ -73,17 +73,6 @@ export default {
       item: this.listItem,
     }
   },
-  methods: {
-    getDom (value, data) {
-      if (value.slots) {
-        return value.slots(data)
-      }
-      const text = value.value
-      return (<span>
-        {{ text }}
-      </span>)
-    },
-  },
 }
 </script>
 <style lang="scss" scoped>

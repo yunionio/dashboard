@@ -13,7 +13,12 @@
         </div>
         <div class="text-wrap position-relative">
           <a-card-meta :title="getData(item.data, 'title')">
-            <template slot="description">
+            <template slot="description" v-if="cardFields['content']">
+              <div class="mutiline-text-truncate mb-2" style="font-size: 12px" v-for="value in getData(item.data, 'content')" :key="value.field">
+                <span>{{value.title}}</span>：<slot-dom :dom="getDom(value, item.data)" />
+              </div>
+            </template>
+            <template slot="description" v-else>
               <div class="mutiline-text-truncate mb-2" :title="getData(item.data, 'description')">
                 {{ getData(item.data, 'description') }}
               </div>
@@ -38,6 +43,12 @@ export default {
   name: 'VerticalCard',
   components: {
     Actions,
+    SlotDom: {
+      props: ['dom'],
+      render () {
+        return this.dom
+      },
+    },
   },
   mixins: [CardMixin],
   props: {
