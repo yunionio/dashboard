@@ -5,13 +5,16 @@
       <a-form
         v-bind="formLayout"
         :form="form.fc">
-        <a-form-item :label="`指定${$t('dictionary.project')}`" class="mb-0" v-bind="formLayout">
-          <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain }" />
+        <a-form-item :label="`指定${$t('dictionary.domain')}`" v-bind="formLayout">
+          <domain-select v-decorator="decorators.project_domain" />
         </a-form-item>
         <a-form-item label="名称">
           <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
         </a-form-item>
         <common-form-items />
+        <a-form-item v-bind="offsetFormLayout">
+          <test-button :post="testPost" />
+        </a-form-item>
       </a-form>
     </div>
     <div slot="footer">
@@ -23,21 +26,25 @@
 
 <script>
 import CommonFormItems from '../components/CommonFormItems'
-import DomainProject from '@/sections/DomainProject'
+import DomainSelect from '@/sections/DomainSelect'
 import { isRequired } from '@/utils/validate'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import TestButton from '@/sections/TestButton'
 
 export default {
   name: 'ProxysettingCreateDialog',
   components: {
     CommonFormItems,
-    DomainProject,
+    DomainSelect,
+    TestButton,
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
+    const projectDomainInitialValue = this.$store.getters.userInfo.projectDomainId
     return {
       loading: false,
+      projectDomainInitialValue,
       form: {
         fc: this.$form.createForm(this),
       },
@@ -50,6 +57,12 @@ export default {
               { required: true, message: '请输入名称' },
               { validator: this.$validate('resourceName') },
             ],
+          },
+        ],
+        project_domain: [
+          'project_domain',
+          {
+            initialValue: this.projectDomainInitialValue,
           },
         ],
         domain: [
@@ -79,6 +92,12 @@ export default {
           span: 3,
         },
       },
+      offsetFormLayout: {
+        wrapperCol: {
+          span: 21,
+          offset: 3,
+        },
+      },
     }
   },
   methods: {
@@ -88,6 +107,22 @@ export default {
           data,
         },
       })
+    },
+    async testPost () {
+      try {
+        const values = await this.form.fc.validateFields(['http_proxy', 'https_proxy'])
+        await this.params.onManager('performClassAction', {
+          managerArgs: {
+            action: 'test',
+            data: {
+              http_proxy: values.http_proxy,
+              https_proxy: values.https_proxy,
+            },
+          },
+        })
+      } catch (err) {
+        throw err
+      }
     },
     async handleConfirm () {
       this.loading = true
