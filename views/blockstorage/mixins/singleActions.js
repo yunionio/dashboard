@@ -1,3 +1,5 @@
+import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
+
 export default {
   created () {
     this.singleActions = [
@@ -103,6 +105,14 @@ export default {
                 })
               },
             },
+            getDomainChangeOwnerAction(this, {
+              name: this.$t('dictionary.storages'),
+              resource: 'storages',
+            }),
+            getSetPublicAction(this, {
+              name: this.$t('dictionary.storages'),
+              scope: 'domain',
+            }),
             // {
             //   label: '同步状态',
             //   action: obj => {

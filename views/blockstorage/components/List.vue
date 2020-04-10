@@ -14,6 +14,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { getNameFilter, getEnabledFilter, getStatusFilter, getBrandFilter } from '@/utils/common/tableFilter'
+import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
 
 export default {
   name: 'BlockStorageList',
@@ -129,6 +130,14 @@ export default {
                   }
                 },
               },
+              getDomainChangeOwnerAction(this, {
+                name: this.$t('dictionary.storages'),
+                resource: 'storages',
+              }),
+              getSetPublicAction(this, {
+                name: this.$t('dictionary.storages'),
+                scope: 'domain',
+              }),
               // {
               //   label: '同步状态',
               //   action: () => {

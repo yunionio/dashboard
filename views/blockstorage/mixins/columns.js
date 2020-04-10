@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import { STORAGE_TYPES, MEDIUM_TYPES } from '@Storage/constants/index.js'
 import { sizestr } from '@/utils/utils'
-import { getNameDescriptionTableColumn, getEnabledTableColumn, getStatusTableColumn, getBrandTableColumn } from '@/utils/common/tableColumn'
+import { getNameDescriptionTableColumn, getEnabledTableColumn, getStatusTableColumn, getBrandTableColumn, getPublicScopeTableColumn, getProjectDomainTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   created () {
@@ -51,6 +51,8 @@ export default {
           return STORAGE_TYPES[row.storage_type] || row.storage_type
         },
       },
+      getPublicScopeTableColumn(),
+      getProjectDomainTableColumn(),
       getBrandTableColumn(),
       {
         field: 'medium_type',
