@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="宿主机" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
+    <page-header :title="$t('dictionary.host')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
     <page-body>
       <host-list :get-params="listParams" :id="listId" :cloud-env="cloudEnv" />
     </page-body>

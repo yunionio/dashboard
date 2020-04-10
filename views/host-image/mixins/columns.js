@@ -1,6 +1,6 @@
 import { sizestr } from '@/utils/utils'
 import SystemIcon from '@/sections/SystemIcon'
-import { getStatusTableColumn, getNameDescriptionTableColumn, getProjectTableColumn, isPublicTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
+import { getStatusTableColumn, getNameDescriptionTableColumn, getProjectTableColumn, getPublicScopeTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   created () {
@@ -74,7 +74,7 @@ export default {
       },
       getStatusTableColumn({ statusModule: 'image' }),
       getProjectTableColumn(),
-      isPublicTableColumn(),
+      getPublicScopeTableColumn(),
       {
         field: 'is_standard',
         title: '镜像类型',
