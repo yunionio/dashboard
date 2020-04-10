@@ -547,7 +547,7 @@ export default {
         {
           path: '/serverrecovery',
           meta: {
-            label: i18n.t('dictionary.server'),
+            label: i18n.t('dictionary.serverrecovery'),
             permission: 'servers_list,server_delete',
           },
           component: Layout,
