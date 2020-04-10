@@ -13,6 +13,7 @@ import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
+import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
 
 export default {
   name: 'WireList',
@@ -81,20 +82,40 @@ export default {
           }),
         },
         {
-          label: '删除',
-          permission: 'wires_delete',
-          action: () => {
-            this.createDialog('DeleteResDialog', {
-              vm: this,
-              data: this.list.selectedItems,
-              columns: this.columns,
-              title: '删除',
-              onManager: this.onManager,
-            })
+          label: this.$t('common.batchAction'),
+          actions: () => {
+            return [
+              getDomainChangeOwnerAction(this, {
+                name: this.$t('dictionary.wire'),
+                resource: 'wires',
+              }),
+              getSetPublicAction(this, {
+                name: this.$t('dictionary.wire'),
+                scope: 'domain',
+              }),
+              {
+                label: '删除',
+                permission: 'wires_delete',
+                action: () => {
+                  this.createDialog('DeleteResDialog', {
+                    vm: this,
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    title: '删除',
+                    onManager: this.onManager,
+                  })
+                },
+                meta: () => {
+                  return {
+                    validate: this.list.allowDelete(),
+                  }
+                },
+              },
+            ]
           },
           meta: () => {
             return {
-              validate: this.list.allowDelete(),
+              validate: this.list.selectedItems && this.list.selectedItems.length,
             }
           },
         },

@@ -1,3 +1,5 @@
+import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
+
 export default {
   created () {
     this.singleActions = [
@@ -17,18 +19,33 @@ export default {
         }),
       },
       {
-        label: '删除',
-        permission: 'vpcs_delete',
-        action: (obj) => {
-          this.createDialog('DeleteResDialog', {
-            vm: this,
-            title: '删除',
-            data: [obj],
-            columns: this.columns,
-            onManager: this.onManager,
-          })
+        label: '更多',
+        actions: obj => {
+          return [
+            getDomainChangeOwnerAction(this, {
+              name: this.$t('dictionary.vpc'),
+              resource: 'vpcs',
+            }),
+            getSetPublicAction(this, {
+              name: this.$t('dictionary.vpc'),
+              scope: 'domain',
+            }),
+            {
+              label: '删除',
+              permission: 'vpcs_delete',
+              action: () => {
+                this.createDialog('DeleteResDialog', {
+                  vm: this,
+                  title: '删除',
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                })
+              },
+              meta: () => this.$getDeleteResult(obj),
+            },
+          ]
         },
-        meta: (obj) => this.$getDeleteResult(obj),
       },
     ]
   },

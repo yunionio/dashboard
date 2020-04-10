@@ -3,6 +3,9 @@ import {
   getNameDescriptionTableColumn,
   getRegionTableColumn,
   getCopyWithContentTableColumn,
+  getPublicScopeTableColumn,
+  getProjectDomainTableColumn,
+  getBrandTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -22,9 +25,12 @@ export default {
       {
         field: 'networks',
         title: '网络数量',
-        width: 70,
+        width: 100,
         sortable: true,
       },
+      getBrandTableColumn(),
+      getPublicScopeTableColumn(),
+      getProjectDomainTableColumn(),
       getRegionTableColumn(),
     ]
   },

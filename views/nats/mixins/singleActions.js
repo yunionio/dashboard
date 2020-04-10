@@ -1,3 +1,5 @@
+import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
+
 export default {
   created () {
     this.singleActions = [
@@ -16,6 +18,14 @@ export default {
           validate: true,
         }),
       },
+      getDomainChangeOwnerAction(this, {
+        name: this.$t('dictionary.nat'),
+        resource: 'natgateways',
+      }),
+      getSetPublicAction(this, {
+        name: this.$t('dictionary.nat'),
+        scope: 'domain',
+      }),
     ]
   },
 }

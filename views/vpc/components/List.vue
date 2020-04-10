@@ -14,6 +14,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import { getStatusFilter, getBrandFilter, getAccountFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
+import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
 
 export default {
   name: 'VPCList',
@@ -92,6 +93,14 @@ export default {
                   })
                 },
               },
+              getDomainChangeOwnerAction(this, {
+                name: this.$t('dictionary.vpc'),
+                resource: 'vpcs',
+              }),
+              getSetPublicAction(this, {
+                name: this.$t('dictionary.vpc'),
+                scope: 'domain',
+              }),
               {
                 label: '删除',
                 permission: 'vpcs_delete',

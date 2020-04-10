@@ -1,3 +1,4 @@
+import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
 
 export default {
   created () {
@@ -14,18 +15,33 @@ export default {
         },
       },
       {
-        label: '删除',
-        permission: 'wires_delete',
-        action: (obj) => {
-          this.createDialog('DeleteResDialog', {
-            vm: this,
-            data: [obj],
-            columns: this.columns,
-            title: '删除',
-            onManager: this.onManager,
-          })
+        label: '更多',
+        actions: obj => {
+          return [
+            getDomainChangeOwnerAction(this, {
+              name: this.$t('dictionary.wire'),
+              resource: 'wires',
+            }),
+            getSetPublicAction(this, {
+              name: this.$t('dictionary.wire'),
+              scope: 'domain',
+            }),
+            {
+              label: '删除',
+              permission: 'wires_delete',
+              action: () => {
+                this.createDialog('DeleteResDialog', {
+                  vm: this,
+                  data: [obj],
+                  columns: this.columns,
+                  title: '删除',
+                  onManager: this.onManager,
+                })
+              },
+              meta: () => this.$getDeleteResult(obj),
+            },
+          ]
         },
-        meta: (obj) => this.$getDeleteResult(obj),
       },
     ]
   },

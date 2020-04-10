@@ -5,6 +5,8 @@ import {
   getRegionTableColumn,
   getBrandTableColumn,
   getAccountTableColumn,
+  getPublicScopeTableColumn,
+  getProjectDomainTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -24,6 +26,8 @@ export default {
         title: '目标网段',
         sortable: true,
       }),
+      getPublicScopeTableColumn(),
+      getProjectDomainTableColumn(),
       getRegionTableColumn(),
       getBrandTableColumn(),
       getAccountTableColumn(),

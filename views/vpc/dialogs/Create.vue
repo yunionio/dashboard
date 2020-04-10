@@ -7,6 +7,9 @@
         <a-form-item label="名称" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" placeholder="字母开头，数字和字母大小写组合，长度为2-20个字符，可含'-','_'" />
         </a-form-item>
+        <a-form-item v-bind="formItemLayout" :label="`指定${$t('dictionary.domain')}`" v-if="$store.getters.isAdminMode">
+          <domain-select v-decorator="decorators.project_domain" />
+        </a-form-item>
         <a-form-item label="平台" v-bind="formItemLayout">
           <a-radio-group v-decorator="decorators.platform">
             <a-radio-button value="public_cloud">公有云</a-radio-button>
@@ -49,11 +52,13 @@ import { mapGetters } from 'vuex'
 import CloudproviderRegion from '@/sections/CloudproviderRegion'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import DomainSelect from '@/sections/DomainSelect'
 
 export default {
   name: 'VpcCreateDialog',
   components: {
     CloudproviderRegion,
+    DomainSelect,
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
@@ -120,6 +125,12 @@ export default {
               { required: true, message: '目标网段不能为空' },
               { validator: this.$validate('CIDR') },
             ],
+          },
+        ],
+        project_domain: [
+          'project_domain',
+          {
+            initialValue: this.$store.getters.userInfo.projectDomainId,
           },
         ],
       },
@@ -214,6 +225,9 @@ export default {
         }
         if (!this.isGoogle) {
           params['cidr_block'] = values.cidr_block
+        }
+        if (values.project_domain) {
+          params.project_domain = values.project_domain
         }
         await this.doCreate(params)
         this.loading = false

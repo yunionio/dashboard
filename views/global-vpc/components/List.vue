@@ -13,6 +13,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import { getStatusFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
+import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
 
 export default {
   name: 'globalVpcList',
@@ -59,6 +60,44 @@ export default {
           meta: () => {
             return {
               buttonType: 'primary',
+            }
+          },
+        },
+        {
+          label: this.$t('common.batchAction'),
+          actions: () => {
+            return [
+              getDomainChangeOwnerAction(this, {
+                name: this.$t('dictionary.globalvpc'),
+                resource: 'globalvpcs',
+              }),
+              getSetPublicAction(this, {
+                name: this.$t('dictionary.globalvpc'),
+                scope: 'domain',
+              }),
+              {
+                label: '删除',
+                action: () => {
+                  this.createDialog('DeleteResDialog', {
+                    vm: this,
+                    name: this.$t('dictionary.globalvpc'),
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    title: '删除',
+                    onManager: this.onManager,
+                  })
+                },
+                meta: () => {
+                  return {
+                    validate: this.list.allowDelete(),
+                  }
+                },
+              },
+            ]
+          },
+          meta: () => {
+            return {
+              validate: this.list.selectedItems && this.list.selectedItems.length,
             }
           },
         },

@@ -2,7 +2,9 @@
   <page-list
     :list="list"
     :columns="columns"
-    :export-data-options="exportDataOptions" />
+    :export-data-options="exportDataOptions"
+    :group-actions="groupActions"
+    :single-actions="singleActions" />
 </template>
 
 <script>
@@ -11,6 +13,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import { getAccountFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
+import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
 
 export default {
   name: 'RouteTableList',
@@ -51,22 +54,30 @@ export default {
           { label: '条目（路由表类型 目标网段 下一跳）', key: 'routes' },
         ],
       },
-      // groupActions: [
-      //   {
-      //     label: '同步状态',
-      //     action: () => {
-      //       this.onManager('batchPerformAction', {
-      //         steadyStatus: ['running', 'ready'],
-      //         managerArgs: {
-      //           action: 'syncstatus',
-      //         },
-      //       })
-      //     },
-      //     meta: () => ({
-      //       validate: this.list.selected.length,
-      //     }),
-      //   },
-      // ],
+      groupActions: [
+        // {
+        //   label: '同步状态',
+        //   action: () => {
+        //     this.onManager('batchPerformAction', {
+        //       steadyStatus: ['running', 'ready'],
+        //       managerArgs: {
+        //         action: 'syncstatus',
+        //       },
+        //     })
+        //   },
+        //   meta: () => ({
+        //     validate: this.list.selected.length,
+        //   }),
+        // },
+        getDomainChangeOwnerAction(this, {
+          name: this.$t('dictionary.route_table'),
+          resource: 'route_tables',
+        }),
+        getSetPublicAction(this, {
+          name: this.$t('dictionary.route_table'),
+          scope: 'domain',
+        }),
+      ],
     }
   },
   created () {

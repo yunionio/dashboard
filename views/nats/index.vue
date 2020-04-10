@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="NAT网关" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
+    <page-header :title="this.$t('dictionary.nat')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
     <page-body>
       <nat-list :id="listId" :cloud-env="cloudEnv" />
     </page-body>
