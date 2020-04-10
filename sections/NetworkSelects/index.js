@@ -4,6 +4,10 @@ export default {
   name: 'NetworkSelects',
   inject: ['form'],
   props: {
+    disabled: {
+      type: [Boolean, Array],
+      default: false,
+    },
     isRequired: {
       type: Boolean,
       default: true,
@@ -57,6 +61,10 @@ export default {
           span: 24,
         }
       },
+    },
+    defaultActiveFirstOption: {
+      type: Boolean,
+      default: true,
     },
   },
   created () {
@@ -134,12 +142,13 @@ export default {
         const { data = {} } = await MANAGER.list({ params: PARAMS })
         this.vpcList = data.data || []
         this.vpcLoading = false
-        if (this.vpcFetchChange) {
-          await this.vpcFetchChange(this.vpcList)
-        } else {
-          await this.FC.setFieldsValue({
+        if (this.defaultActiveFirstOption) {
+          this.FC.setFieldsValue({
             vpc: !R.isEmpty(this.vpcList) ? this.vpcList[0].id : undefined,
           }, this.fetchNetwork)
+        }
+        if (this.vpcFetchChange) {
+          await this.vpcFetchChange(this.vpcList)
         }
       } catch (err) {
         this.vpcLoading = false
@@ -147,7 +156,7 @@ export default {
       }
     },
     RenderVpc () {
-      const { vpcLoading, filterOption } = this
+      const { vpcLoading, filterOption, disabled } = this
       const _handleChange = (vpcId) => {
         const data = this.getSelectedValue('vpc', vpcId)
         this.$emit('vpcChange', data)
@@ -160,7 +169,7 @@ export default {
         return <a-select-option key={id} value={id}>{name}</a-select-option>
       })
       return (
-        <a-select onChange={_handleChange} showSearch placeholder="请选择VPC" loading={vpcLoading} filterOption={filterOption} >
+        <a-select disabled={disabled} onChange={_handleChange} showSearch placeholder="请选择VPC" loading={vpcLoading} filterOption={filterOption} >
           {options}
         </a-select>
       )
@@ -204,7 +213,7 @@ export default {
       }
     },
     RenderNetwork () {
-      const { networkLoading, filterOption } = this
+      const { networkLoading, filterOption, disabled } = this
       const _handleChange = (networkId) => {
         const data = this.getSelectedValue('network', networkId)
         this.$emit('networkChange', data)
@@ -220,7 +229,7 @@ export default {
         </a-select-option>
       })
       return (
-        <a-select showSearch placeholder="请选择IP子网" onChange={_handleChange} loading={networkLoading} filterOption={filterOption} >
+        <a-select disabled={disabled} showSearch placeholder="请选择IP子网" onChange={_handleChange} loading={networkLoading} filterOption={filterOption} >
           {options}
         </a-select>
       )

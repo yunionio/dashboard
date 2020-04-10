@@ -48,8 +48,8 @@ export class Manager {
     return Vue.http.get(`${this.contextPath(ctx)}${this.resource}`, { params, cancelToken })
   }
 
-  create ({ data, ctx = [] } = {}) {
-    return Vue.http.post(`${this.contextPath(ctx)}${this.resource}`, data)
+  create ({ data, ctx = [], params } = {}) {
+    return Vue.http.post(`${this.contextPath(ctx)}${this.resource}`, data, { params })
   }
 
   batchCreate ({ data, count, ctx = [] } = {}) {
