@@ -125,6 +125,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    showSingleActions: {
+      type: Boolean,
+      default: true,
+    },
     showSearchbox: {
       type: Boolean,
       default: true,
@@ -292,7 +296,7 @@ export default {
       if (this.showCheckbox) {
         defaultColumns.unshift({ type: 'checkbox', width: 40 })
       }
-      if (this.singleActions && this.singleActions.length) {
+      if (this.showSingleActions && this.singleActions && this.singleActions.length) {
         defaultColumns.push({
           field: 'action',
           title: '操作',

@@ -71,6 +71,8 @@ export const PERMISSION = {
   'k8s_serviceaccounts_list': ['k8s', 'serviceaccounts', 'list'],
   // 主机模板
   'servertemplates_list': ['compute', 'servertemplates', 'list'],
+  // 弹性伸缩组
+  'scalinggroups_list': ['compute', 'scalinggroups', 'list'],
   // 服务目录
   'servicecatalogs_list': ['compute', 'servicecatalogs', 'list'],
   // 负载均衡实例管理
@@ -353,6 +355,13 @@ export const PERMISSION = {
   'servicecatalogs_create': ['compute', 'servicecatalogs', 'create'],
   'servicecatalogs_update': ['compute', 'servicecatalogs', 'update'],
   'servicecatalogs_delete': ['compute', 'servicecatalogs', 'delete'],
+  /**
+   * 弹性伸缩组
+   */
+  'scalinggroups_create': ['compute', 'scalinggroups', 'create'],
+  'scalinggroups_delete': ['compute', 'scalinggroups', 'delete'],
+  'scalinggroups_perform_enable': ['compute', 'scalinggroups', 'perform', 'enable'],
+  'scalinggroups_perform_disable': ['compute', 'scalinggroups', 'perform', 'disable'],
   /**
    * cloudregions 相关操作
    */

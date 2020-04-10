@@ -14,13 +14,13 @@ export default {
   },
   data () {
     return {
-      loding: false,
+      loading: false,
     }
   },
   computed: {
     config () {
       return {
-        loding: this.loding,
+        loading: this.loading,
         type: 'link',
         style: 'padding: 0',
       }
@@ -29,17 +29,17 @@ export default {
   methods: {
     async handleTest () {
       if (!this.post || R.type(this.post) !== 'Function') return false
-      this.loding = true
+      this.loading = true
       try {
         await this.post()
         this.$notification.success({
-          message: '连接成功',
+          message: '测试连接成功',
           description: '请点击确定继续',
         })
       } catch (err) {
         throw err
       } finally {
-        this.loding = false
+        this.loading = false
       }
     },
   },
