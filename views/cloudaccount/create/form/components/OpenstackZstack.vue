@@ -24,9 +24,7 @@
       <a-form-item label="Domain Name"  v-if="isOpenstack">
         <a-input v-decorator="decorators.domain_name" />
       </a-form-item>
-      <a-form-item :label="`指定${$t('dictionary.project')}`" class="mb-0" v-if="domainProjectShow">
-        <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain }" />
-      </a-form-item>
+      <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" />
       <proxy-setting :fc="form.fc" />
       <auto-sync :fc="form.fc" :form-layout="formLayout" />
     </a-form>
@@ -129,6 +127,12 @@ export default {
             rules: [
               { validator: isRequired(), message: this.$t('rules.project'), trigger: 'change' },
             ],
+          },
+        ],
+        auto_create_project: [
+          'auto_create_project',
+          {
+            valuePropName: 'checked',
           },
         ],
       }

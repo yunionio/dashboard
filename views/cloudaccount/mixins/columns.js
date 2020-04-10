@@ -8,10 +8,9 @@ import {
   getBrandTableColumn,
   getStatusTableColumn,
   getEnabledTableColumn,
-  getPublicTableColumn,
   getCopyWithContentTableColumn,
   getNameDescriptionTableColumn,
-  getProjectTableColumn,
+  getProjectDomainTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -58,8 +57,21 @@ export default {
           },
         },
       },
-      getPublicTableColumn(),
-      getProjectTableColumn(),
+      {
+        field: 'share_mode',
+        title: '共享范围',
+        width: 100,
+        showOverflow: 'title',
+        formatter: ({ cellValue }) => {
+          const i18nKey = `cloudAccountShareMode.${cellValue}`
+          return this.$te(i18nKey) ? this.$t(i18nKey) : cellValue
+        },
+      },
+      getProjectDomainTableColumn(),
+      getCopyWithContentTableColumn({
+        title: `归属${this.$t('dictionary.project')}`,
+        field: 'tenant',
+      }),
     ]
   },
 }
