@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import { getTagColor, getTagTitle } from '@/utils/common/tag'
 import WindowsMixin from '@/mixins/windows'
@@ -20,13 +21,14 @@ export default {
       type: [Object, Function],
       default: () => ({}),
     },
+    cloudEnv: String,
   },
   data () {
     return {
       list: this.$list.createList(this, {
         id: this.id,
         resource: params => this.listResource(params),
-        getParams: this.getParams,
+        getParams: this.getParam,
         filterOptions: {
           search: {
             label: '关键词',
@@ -40,6 +42,13 @@ export default {
         ],
       },
     }
+  },
+  watch: {
+    cloudEnv (val) {
+      this.$nextTick(() => {
+        this.list.fetchData(0)
+      })
+    },
   },
   destroyed () {
     this.manager = null
@@ -109,10 +118,17 @@ export default {
       this.sidePageTriggerHandle(this, 'TagSidePage', {
         id: row.key,
         resource: params => this.detailResource({ ...params, details: true }, row),
-        getParams: this.getParams,
+        getParams: this.getParam,
       }, {
         list: this.list,
       })
+    },
+    getParam () {
+      const ret = {
+        [this.cloudEnv]: true,
+        ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
+      }
+      return ret
     },
   },
 }

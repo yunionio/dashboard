@@ -8,6 +8,9 @@
 
 <script>
 import WindowsMixin from '@/mixins/windows'
+import {
+  getTimeTableColumn,
+} from '@/utils/common/tableColumn'
 
 export default {
   name: 'ExternalprojectList',
@@ -34,18 +37,24 @@ export default {
       }),
       columns: [
         {
+          field: 'tenant',
+          title: `本地${this.$t('dictionary.project')}`,
+          slots: {
+            default: ({ row }) => {
+              return [
+                <side-page-trigger permission='projects_get' name='ProjectSidePage' id={row.manager_project_id} vm={this}>{row.tenant}</side-page-trigger>,
+              ]
+            },
+          },
+        },
+        {
           field: 'name',
           title: `云上${this.$t('dictionary.project')}`,
         },
-        {
-          field: 'tenant',
-          title: `本地${this.$t('dictionary.project')}`,
-        },
-        {
-          field: 'last_auto_sync',
+        getTimeTableColumn({
+          field: 'created_at',
           title: '同步时间',
-          formatter: obj => this.$moment(obj.Created_at).format('YYYY年MM月DD HH:mm:ss'),
-        },
+        }),
       ],
       groupActions: [
         {
