@@ -16,7 +16,7 @@
       </a-radio-group>
     </a-form-item>
     <a-form-item label="存储类型" v-bind="formItemLayout">
-      <a-radio-group v-decorator="['storage_type']" :disabled="!!disableds.storage_type">
+      <a-radio-group v-decorator="['storage_type']" @change="handleStorage">
         <a-radio-button :key="item" :value="item" v-for="item of storage_types">{{formatStorageLabel(item)}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
@@ -127,7 +127,10 @@ export default {
         this.$emit('change')
       })
     },
-    async fetchFilters (cloudregionId = this.form.getFieldValue('cloudregion')) {
+    handleStorage () {
+      this.$emit('change')
+    },
+    async fetchFilters (cloudregionId) {
       const params = {
         resource_type: 'shared',
         show_emulated: true,
