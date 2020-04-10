@@ -9,6 +9,7 @@ import Dynamicschedtag from '@Cloudenv/views/dynamicschedtag'
 import Tag from '@Cloudenv/views/tag'
 import Cloudevent from '@Cloudenv/views/cloudevent'
 import Proxysetting from '@Cloudenv/views/proxysetting'
+import Policydefinition from '@Cloudenv/views/policydefinition'
 import Layout from '@/layouts/RouterView'
 
 export default {
@@ -186,6 +187,27 @@ export default {
               name: 'Tag',
               path: '',
               component: Tag,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      meta: {
+        label: '策略',
+      },
+      submenus: [
+        {
+          path: '/policydefinition',
+          meta: {
+            label: '策略',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Policydefinition',
+              path: '',
+              component: Policydefinition,
             },
           ],
         },
