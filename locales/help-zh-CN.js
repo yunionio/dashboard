@@ -40,5 +40,8 @@ export default {
     cloudaccountSetAutoSyncTime: `
       <div>最少时间间隔为30分钟</div>
     `,
+    cloudaccountAutoCreateProject: `
+      <div>若云账号上面已设置项目信息，我们会自动创建与云上项目名称相同的项目（若与本地项目重名，系统默认追加“-1）</div>
+    `,
   },
 }

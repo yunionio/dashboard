@@ -57,6 +57,10 @@ export function getDomainChangeOwnerAction (vm, dialogParams = {}) {
         tooltip: null,
       }
       if (!store.getters.l3PermissionEnable || !store.getters.isAdminMode) ret.validate = false
+      if (data.some(item => item.public_scope !== 'none')) {
+        ret.validate = false
+        ret.tooltip = '只支持设置为共享的数据'
+      }
       return ret
     },
   }

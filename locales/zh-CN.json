@@ -1242,7 +1242,7 @@
   "publicScope": {
     "none": "不共享",
     "project": "@:dictionary.project间共享",
-    "domain": "@:dictionary.domain内共享",
+    "domain": "@:dictionary.domain间共享",
     "system": "全局共享"
   },
   "cloudAccountShareMode": {
