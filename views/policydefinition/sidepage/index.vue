@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     title="策略"
-    icon="res-schedpolicy"
+    icon="res-policydefinition"
     :res-name="detailData.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"
