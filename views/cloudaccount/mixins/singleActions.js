@@ -46,6 +46,7 @@ export default {
                   name: 'CloudaccountUpdateBill',
                   query: {
                     id: obj.id,
+                    provider: obj.provider,
                   },
                 })
               },
