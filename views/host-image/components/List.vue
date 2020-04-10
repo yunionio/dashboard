@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
@@ -17,6 +18,7 @@ import { getTenantFilter, getStatusFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
+import { getSetPublicAction } from '@/utils/common/tableActions'
 
 export default {
   name: 'HostImageList',
@@ -29,6 +31,12 @@ export default {
     },
   },
   data () {
+    const validateAction = function (obj) {
+      if (obj.is_guest_image === true || obj.is_guest_image === 'true') {
+        return false
+      }
+      return true
+    }
     return {
       list: this.$list.createList(this, {
         id: this.id,
@@ -61,6 +69,50 @@ export default {
         ],
       },
       groupActions: [
+        getSetPublicAction(this, {
+          name: this.$t('dictionary.guestimage'),
+          scope: 'project',
+        }, {
+          permission: 'images_perform_public',
+          meta: () => {
+            if (this.list.selectedItems.some(item => item.is_standard)) {
+              return {
+                validate: false,
+                tooltip: '公共镜像不支持设置',
+              }
+            }
+            if (this.list.selectedItems.some(item => !validateAction(item))) {
+              return {
+                validate: false,
+              }
+            }
+            // 1、管理后台视图可以对所有镜像进行操作；
+            // 2、域管理后台视图只能对该域下的镜像进行操作，不能对其他域共享的镜像进行操作；
+            // 3、项目视图只能对该项目下的镜像进行操作，不能对其他域、其他项目共享的镜像进行操作。
+            if (this.isAdminMode) {
+              return {
+                validate: true,
+              }
+            }
+            if (!this.isAdminMode && !this.isDomainAdmin) {
+              if (this.list.selectedItems.some(item => this.userInfo.projectId !== item.tenant_id)) {
+                return {
+                  validate: false,
+                }
+              }
+            }
+            if (this.isDomainAdmin) {
+              if (this.list.selectedItems.some(item => this.userInfo.projectDomainId !== item.domain_id)) {
+                return {
+                  validate: false,
+                }
+              }
+            }
+            return {
+              validate: true,
+            }
+          },
+        }),
         {
           label: '设置删除保护',
           action: (row) => {
@@ -98,6 +150,9 @@ export default {
         },
       ],
     }
+  },
+  compute: {
+    ...mapGetters(['userInfo']),
   },
   created () {
     this.initSidePageTab('host-image-detail')

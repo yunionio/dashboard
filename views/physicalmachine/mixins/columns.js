@@ -1,6 +1,6 @@
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { getMaintenanceTableColumn } from '../utils/columns'
-import { getRegionTableColumn, getStatusTableColumn, getEnabledTableColumn, getNameDescriptionTableColumn, getCopyWithContentTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
+import { getRegionTableColumn, getStatusTableColumn, getEnabledTableColumn, getNameDescriptionTableColumn, getCopyWithContentTableColumn, getTagTableColumn, getPublicScopeTableColumn, getProjectDomainTableColumn } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 
 export default {
@@ -26,7 +26,7 @@ export default {
       {
         field: 'custom_ip',
         title: 'IP',
-        width: 160,
+        width: 180,
         showOverflow: 'ellipsis',
         slots: {
           default: ({ row }) => {
@@ -146,7 +146,7 @@ export default {
       {
         field: 'access_mac',
         title: 'MAC',
-        width: 120,
+        width: 130,
       },
       {
         field: 'ipmi',
@@ -159,6 +159,8 @@ export default {
         },
       },
       getMaintenanceTableColumn(),
+      getPublicScopeTableColumn(),
+      getProjectDomainTableColumn(),
       getRegionTableColumn(),
     ]
   },

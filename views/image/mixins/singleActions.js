@@ -1,5 +1,6 @@
 import { mapGetters } from 'vuex'
 import * as R from 'ramda'
+import { getSetPublicAction } from '@/utils/common/tableActions'
 
 export default {
   computed: {
@@ -148,16 +149,10 @@ export default {
                 return { validate: true, tooltip: '' }
               },
             },
-            {
-              label: '设置共享',
-              permission: 'images_perform_public',
-              action: () => {
-                this.createDialog('SetPublicDialog', {
-                  data: [obj],
-                  columns: this.columns,
-                  onManager: this.onManager,
-                })
-              },
+            getSetPublicAction(this, {
+              name: this.$t('dictionary.image'),
+              scope: 'project',
+            }, {
               meta: () => {
                 let ret = {
                   validate: false,
@@ -195,7 +190,55 @@ export default {
                 if (ret.tooltip) return ret
                 return { validate: true, tooltip: '' }
               },
-            },
+            }),
+            // {
+            //   label: '设置共享',
+            //   permission: 'images_perform_public',
+            //   action: () => {
+            //     this.createDialog('SetPublicDialog', {
+            //       data: [obj],
+            //       columns: this.columns,
+            //       onManager: this.onManager,
+            //     })
+            //   },
+            //   meta: () => {
+            //     let ret = {
+            //       validate: false,
+            //       tooltip: '',
+            //     }
+            //     const actions = new Map([
+            //       ['admin', () => {
+            //         if (this.booleanTransfer(obj.is_standard)) {
+            //           ret.tooltip = '公共镜像不支持该操作'
+            //         }
+            //         return ret
+            //       }],
+            //       ['domain', () => {
+            //         if (this.booleanTransfer(obj.is_standard)) {
+            //           ret.tooltip = '公共镜像不支持该操作'
+            //           return ret
+            //         }
+            //         if (obj.public_scope === 'system') {
+            //           ret.tooltip = '系统共享镜像不支持该操作'
+            //           return ret
+            //         }
+            //         return ret
+            //       }],
+            //       ['user', () => {
+            //         ret.tooltip = '只有管理员支持该操作'
+            //         if (!this.booleanTransfer(obj.is_standard) && obj.public_scope === 'system') {
+            //           ret.tooltip = '只有系统管理员支持该操作'
+            //           return ret
+            //         }
+            //         return ret
+            //       }],
+            //     ])
+            //     let action = actions.get(this.isAdminMode ? 'admin' : '') || actions.get(this.isDomainMode ? 'domain' : 'user')
+            //     ret = action.call(this)
+            //     if (ret.tooltip) return ret
+            //     return { validate: true, tooltip: '' }
+            //   },
+            // },
             {
               label: '设置删除保护',
               action: (row) => {

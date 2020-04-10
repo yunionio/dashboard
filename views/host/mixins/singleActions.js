@@ -1,5 +1,6 @@
 import { Base64 } from 'js-base64'
 import qs from 'qs'
+import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
 
 export default {
   destroyed () {
@@ -163,6 +164,14 @@ export default {
                       })
                     },
                   },
+                  getDomainChangeOwnerAction(this, {
+                    name: this.$t('dictionary.host'),
+                    resource: 'hosts',
+                  }),
+                  getSetPublicAction(this, {
+                    name: this.$t('dictionary.host'),
+                    scope: 'domain',
+                  }),
                   {
                     label: '回收为物理机',
                     action: () => {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="主机镜像" />
+    <page-header :title="`${$t('dictionary.guestimage')}`" />
     <page-body>
       <host-image-list :id="listId" />
     </page-body>

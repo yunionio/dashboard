@@ -1,5 +1,5 @@
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
-import { getRegionTableColumn, getStatusTableColumn, getBrandTableColumn, getEnabledTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
+import { getRegionTableColumn, getStatusTableColumn, getBrandTableColumn, getEnabledTableColumn, getNameDescriptionTableColumn, getPublicScopeTableColumn, getProjectDomainTableColumn } from '@/utils/common/tableColumn'
 import { sizestr, percentstr } from '@/utils/utils'
 
 export default {
@@ -108,6 +108,8 @@ export default {
         showOverflow: 'title',
       },
       getBrandTableColumn(),
+      getPublicScopeTableColumn(),
+      getProjectDomainTableColumn(),
       getRegionTableColumn(),
       {
         field: 'id',

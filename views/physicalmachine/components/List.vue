@@ -20,6 +20,7 @@ import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ListMixin from '@/mixins/list'
+import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
 
 export default {
   name: 'PhysicalmachineList',
@@ -344,6 +345,14 @@ export default {
                   }
                 },
               },
+              getDomainChangeOwnerAction(this, {
+                name: this.$t('dictionary.host'),
+                resource: 'hosts',
+              }),
+              getSetPublicAction(this, {
+                name: this.$t('dictionary.host'),
+                scope: 'domain',
+              }),
               {
                 label: '同步硬件配置',
                 action: () => {

@@ -10,6 +10,9 @@
             </template>
           </a-radio-group>
         </a-form-item>
+        <a-form-item :label="`指定${$t('dictionary.domain')}`" v-if="isAdminMode && !isScriptAdd">
+          <domain-select v-decorator="decorators.project_domain" />
+        </a-form-item>
         <component
           :is="form.fd.type"
           :decorators="decorators"
@@ -29,12 +32,14 @@
 
 <script>
 import * as R from 'ramda'
+import { mapGetters } from 'vuex'
 import ScriptAdd from './ScriptAdd'
 import PreAdd from './PreAdd'
 import ISOAdd from './ISOAdd'
 import PXEAdd from './PXEAdd'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import validateForm, { isWithinRange, validate } from '@/utils/validate'
+import DomainSelect from '@/sections/DomainSelect'
 
 export default {
   name: 'PhysicalmachineAdd',
@@ -43,6 +48,7 @@ export default {
     PreAdd,
     IsoAdd: ISOAdd,
     PxeAdd: PXEAdd,
+    DomainSelect,
   },
   provide () {
     return {
@@ -52,6 +58,7 @@ export default {
   data () {
     const typeInitialValue = 'scriptAdd'
     const modeInitialValue = 'single'
+    const projectDomainInitialValue = this.$store.getters.userInfo.projectDomainId
     return {
       adding: false,
       form: {
@@ -68,11 +75,13 @@ export default {
         fd: {
           type: typeInitialValue,
           mode: modeInitialValue,
+          project_domain: projectDomainInitialValue,
         },
       },
       types: this.$t('physicalmachineAddTypes'),
       typeInitialValue,
       modeInitialValue,
+      projectDomainInitialValue,
       ipmi_ip_addr_required: false,
       ipmi_username_required: false,
       ipmi_password_required: false,
@@ -102,12 +111,19 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['isAdminMode']),
     decorators () {
       return {
         type: [
           'type',
           {
             initialValue: this.typeInitialValue,
+          },
+        ],
+        project_domain: [
+          'project_domain',
+          {
+            initialValue: this.projectDomainInitialValue,
           },
         ],
         mode: [
@@ -192,6 +208,9 @@ export default {
         ],
         no_prepare: [
           'no_prepare',
+          {
+            valuePropName: 'checked',
+          },
         ],
       }
     },
@@ -261,6 +280,9 @@ export default {
         this.form.fd.ipmi_username,
         this.form.fd.ipmi_password,
       ]
+      if (this.form.fd.project_domain && this.isAdminMode) {
+        data.push(this.form.fd.project_domain)
+      }
       return this.hm.rpc({
         methodname: 'DoBatchRegister',
         params: {
@@ -285,6 +307,9 @@ export default {
       fd.append('action', 'BatchHostRegister')
       fd.append('hosts', this.form.fd.file.file)
       fd.append('no_probe', true)
+      if (this.form.fd.project_domain && this.isAdminMode) {
+        fd.append('project_domain', this.form.fd.project_domain)
+      }
       return this.um.create({
         data: fd,
       }).catch(error => {
@@ -301,6 +326,9 @@ export default {
         ipmi_password: this.form.fd.ipmi_password,
         enable_pxe_boot: false,
         no_prepare: this.form.fd.no_prepare || false,
+      }
+      if (this.form.fd.project_domain && this.isAdminMode) {
+        data.project_domain = this.form.fd.project_domain
       }
       if (this.form.fd.net) {
         if (this.form.fd.net.access_net && !this.form.fd.net.access_ip) {
@@ -320,6 +348,9 @@ export default {
       fd.append('action', 'BatchHostRegister')
       fd.append('hosts', this.form.fd.file.file)
       fd.append('no_prepare', this.form.fd.no_prepare || false)
+      if (this.form.fd.project_domain && this.isAdminMode) {
+        fd.append('project_domain', this.form.fd.project_domain)
+      }
       return this.um.create({
         data: fd,
       }).catch(error => {
@@ -336,6 +367,9 @@ export default {
         ipmi_password: this.form.fd.ipmi_password,
         enable_pxe_boot: true,
         no_prepare: this.form.fd.no_prepare || false,
+      }
+      if (this.form.fd.project_domain && this.isAdminMode) {
+        data.project_domain = this.form.fd.project_domain
       }
       if (this.form.fd.net) {
         if (this.form.fd.net.access_net && !this.form.fd.net.access_ip) {
@@ -355,6 +389,9 @@ export default {
       fd.append('action', 'BatchHostRegister')
       fd.append('hosts', this.form.fd.file.file)
       fd.append('no_prepare', this.form.fd.no_prepare || false)
+      if (this.form.fd.project_domain && this.isAdminMode) {
+        fd.append('project_domain', this.form.fd.project_domain)
+      }
       return this.um.create({
         data: fd,
       }).catch(error => {

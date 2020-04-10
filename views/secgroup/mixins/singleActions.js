@@ -1,4 +1,5 @@
 import { mapGetters } from 'vuex'
+import { getSetPublicAction } from '@/utils/common/tableActions'
 
 export default {
   computed: {
@@ -45,55 +46,61 @@ export default {
                 }
               },
             },
-            {
-              label: '设置为私有',
-              permission: 'secgroups_create',
-              action: () => {
-                this.onManager('performAction', {
-                  id: obj.id,
-                  managerArgs: {
-                    action: 'private',
-                  },
-                })
-              },
-              meta: () => {
-                if (this.$store.getters.isAdminMode || this.$store.getters.isDomainMode) {
-                  if (this.isPower(obj)) {
-                    return {
-                      validate: obj.is_public,
-                    }
-                  }
-                }
-                return {
-                  validate: false,
-                }
-              },
-            },
-            {
-              label: '设置为共享',
-              permission: 'secgroups_create',
-              action: () => {
-                this.createDialog('SetPublicDialog', {
-                  data: [obj],
-                  title: '设置为共享',
-                  columns: this.columns,
-                  onManager: this.onManager,
-                  refresh: this.refresh,
-                })
-              },
-              meta: () => {
-                if (this.$store.getters.isAdminMode || this.$store.getters.isDomainMode) {
-                  if (this.isPower(obj)) {
-                    return {
-                      validate: !obj.is_public,
-                    }
-                  }
-                }
-                return {
-                  validate: false,
-                }
-              },
-            },
+            getSetPublicAction(this, {
+              name: this.$t('dictionary.secgroup'),
+              scope: 'project',
+            }, {
+              permission: 'secgroups_performAction',
+            }),
+            // {
+            //   label: '设置为私有',
+            //   permission: 'secgroups_create',
+            //   action: () => {
+            //     this.onManager('performAction', {
+            //       id: obj.id,
+            //       managerArgs: {
+            //         action: 'private',
+            //       },
+            //     })
+            //   },
+            //   meta: () => {
+            //     if (this.$store.getters.isAdminMode || this.$store.getters.isDomainMode) {
+            //       if (this.isPower(obj)) {
+            //         return {
+            //           validate: obj.is_public,
+            //         }
+            //       }
+            //     }
+            //     return {
+            //       validate: false,
+            //     }
+            //   },
+            // },
+            // {
+            //   label: '设置为共享',
+            //   permission: 'secgroups_create',
+            //   action: () => {
+            //     this.createDialog('SetPublicDialog', {
+            //       data: [obj],
+            //       title: '设置为共享',
+            //       columns: this.columns,
+            //       onManager: this.onManager,
+            //       refresh: this.refresh,
+            //     })
+            //   },
+            //   meta: () => {
+            //     if (this.$store.getters.isAdminMode || this.$store.getters.isDomainMode) {
+            //       if (this.isPower(obj)) {
+            //         return {
+            //           validate: !obj.is_public,
+            //         }
+            //       }
+            //     }
+            //     return {
+            //       validate: false,
+            //     }
+            //   },
+            // },
             {
               label: '克隆',
               // permission: 'secgroups_create',

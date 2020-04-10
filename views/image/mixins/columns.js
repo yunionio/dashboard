@@ -1,7 +1,7 @@
 import FileProcess from '@Compute/views/image/components/FileProcess'
 import { sizestr } from '@/utils/utils'
 import SystemIcon from '@/sections/SystemIcon'
-import { getNameDescriptionTableColumn, getProjectTableColumn, isPublicTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
+import { getNameDescriptionTableColumn, getProjectTableColumn, getTimeTableColumn, getPublicScopeTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   created () {
@@ -74,7 +74,8 @@ export default {
         },
       },
       getProjectTableColumn(),
-      isPublicTableColumn(),
+      // isPublicTableColumn(),
+      getPublicScopeTableColumn(),
       {
         field: 'is_standard',
         title: '镜像类型',
