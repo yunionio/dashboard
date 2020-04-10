@@ -6,6 +6,9 @@
         <a-form-item label="名称">
           <a-input placeholder="请输入名称" v-decorator="decorators.name" />
         </a-form-item>
+        <a-form-item :label="`指定${$t('dictionary.domain')}`" v-if="isAdminMode">
+          <domain-select v-decorator="decorators.project_domain" />
+        </a-form-item>
         <a-form-item label="区域">
           <cloudregion-zone
             :cloudregionParams="{cloud_env: 'onpremise'}"
@@ -34,17 +37,20 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { MEDIUM_TYPES, STORAGE_TYPES, formItemLayout } from '@Storage/constants/index.js'
 import FormItems from '@Storage/views/blockstorage/components/FormItems'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import CloudregionZone from '@/sections/CloudregionZone'
+import DomainSelect from '@/sections/DomainSelect'
 
 export default {
   name: 'BlockStorageCreateDialog',
   components: {
     CloudregionZone,
     FormItems,
+    DomainSelect,
   },
   mixins: [DialogMixin, WindowsMixin],
   provide () {
@@ -65,6 +71,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['isAdminMode', 'userInfo']),
     getFieldValue () {
       return this.form.fc.getFieldValue
     },
@@ -110,6 +117,12 @@ export default {
           'storage_type',
           {
             initialValue: 'rbd',
+          },
+        ],
+        project_domain: [
+          'project_domain',
+          {
+            initialValue: this.userInfo.projectDomainId,
           },
         ],
       }

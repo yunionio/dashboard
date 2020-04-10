@@ -40,20 +40,22 @@ export default {
         {
           field: 'size',
           title: '文件大小',
+          minWidth: 80,
           formatter: ({ row }) => {
             return sizestr(row.size, 'B', 1024)
           },
         },
         getStatusTableColumn({ statusModule: 'hostImageCache' }),
-        {
+        getCopyWithContentTableColumn({
           field: 'path',
           title: '路径',
-          width: 200,
-        },
-        {
-          id: 'reference',
+          minWidth: 200,
+        }),
+        getCopyWithContentTableColumn({
+          field: 'reference',
           title: '引用',
-        },
+          minWidth: 80,
+        }),
       ],
       groupActions: [
         {
