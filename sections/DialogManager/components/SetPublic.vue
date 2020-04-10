@@ -26,7 +26,8 @@
                 :filterOption="false"
                 @search="fetchProjects"
                 @select="val => handleHasAllSelect(val, 'shared_projects')"
-                @deselect="val => handleDeselect(val, 'shared_projects')">
+                @deselect="val => handleDeselect(val, 'shared_projects')"
+                :placeholder="$t('rules.project')">
                 <template v-for="item of projects">
                   <a-select-option :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
                 </template>
@@ -47,7 +48,8 @@
                 :filterOption="false"
                 @search="fetchDomains"
                 @select="val => handleHasAllSelect(val, 'shared_domains')"
-                @deselect="val => handleDeselect(val, 'shared_domains')">
+                @deselect="val => handleDeselect(val, 'shared_domains')"
+                :placeholder="$t('rules.domain')">
                 <template v-for="item of domains">
                   <a-select-option :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
                 </template>
@@ -97,8 +99,18 @@ export default {
           sharedDomainsInitialValue = sharedDomains.map(item => item.id)
         }
       }
-      // 当项目共享时
+      // 为域共享时
       if (publicScope === 'domain') {
+        typeInitialValue = 'domain'
+        if (R.isNil(sharedDomains) || R.isEmpty(sharedDomains)) {
+          typeInitialValue = 'project'
+          sharedProjectsInitialValue = ['all']
+        } else {
+          sharedDomainsInitialValue = sharedDomains.map(item => item.id)
+        }
+      }
+      // 为项目共享时
+      if (publicScope === 'project') {
         typeInitialValue = 'project'
         if (R.isNil(sharedProjects) || R.isEmpty(sharedProjects)) {
           sharedProjectsInitialValue = ['all']
