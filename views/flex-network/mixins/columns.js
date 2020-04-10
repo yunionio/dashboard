@@ -3,6 +3,8 @@ import {
   getBrandTableColumn,
   getNameDescriptionTableColumn,
   getCopyWithContentTableColumn,
+  getPublicScopeTableColumn,
+  getProjectDomainTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -19,10 +21,13 @@ export default {
       }),
       getCopyWithContentTableColumn({ field: 'mac', title: 'MAC地址' }),
       getStatusTableColumn({ statusModule: 'network' }),
+      getPublicScopeTableColumn(),
+      getProjectDomainTableColumn(),
       getBrandTableColumn(),
       getCopyWithContentTableColumn({
         field: 'associate_type',
         title: '绑定设备类型(VPC)',
+        minWidth: 160,
       }),
       getCopyWithContentTableColumn({ field: 'associate_id', title: '绑定设备' }),
     ]

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="路由表" />
+    <page-header :title="$t('dictionary.route_table')" />
     <page-body>
       <route-list :id="listId" />
     </page-body>

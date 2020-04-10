@@ -1,6 +1,16 @@
+import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
+
 export default {
   created () {
     this.singleActions = [
+      getDomainChangeOwnerAction(this, {
+        name: this.$t('dictionary.networkinterface'),
+        resource: 'networkinterfaces',
+      }),
+      getSetPublicAction(this, {
+        name: this.$t('dictionary.networkinterface'),
+        scope: 'domain',
+      }),
       // {
       //   label: '同步状态',
       //   action: obj => {

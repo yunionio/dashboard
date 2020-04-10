@@ -5,7 +5,8 @@ import {
   getBrandTableColumn,
   getStatusTableColumn,
   getCopyWithContentTableColumn,
-  isPublicTableColumn,
+  // getNameDescriptionTableColumn,
+  getPublicScopeTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -47,7 +48,7 @@ export default {
       {
         field: 'ip',
         title: 'IP地址',
-        width: 140,
+        width: 160,
         slots: {
           default: ({ row }) => {
             return [
@@ -94,7 +95,7 @@ export default {
           },
         },
       },
-      isPublicTableColumn(),
+      getPublicScopeTableColumn(),
       getBrandTableColumn(),
       getProjectTableColumn(),
       getRegionTableColumn(),

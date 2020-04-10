@@ -1,16 +1,19 @@
 <template>
-    <base-dialog @cancel="cancelDialog">
-        <div slot="header">{{params.title}}</div>
-        <a-form slot="body" :form="form.fc" class="mt-3" v-bind="formItemLayout">
-          <a-form-item label="名称">
-            <a-input v-decorator="decorators.name" placeholder="请输入名称" />
-           </a-form-item>
-        </a-form>
-         <div slot="footer">
-            <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
-            <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
-         </div>
-    </base-dialog>
+  <base-dialog @cancel="cancelDialog">
+    <div slot="header">{{params.title}}</div>
+    <a-form slot="body" :form="form.fc" class="mt-3" v-bind="formItemLayout">
+      <a-form-item v-bind="formItemLayout" :label="`指定${$t('dictionary.domain')}`" v-if="$store.getters.isAdminMode">
+        <domain-select v-decorator="decorators.project_domain" />
+      </a-form-item>
+      <a-form-item label="名称">
+        <a-input v-decorator="decorators.name" placeholder="请输入名称" />
+      </a-form-item>
+    </a-form>
+    <div slot="footer">
+      <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
+      <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
+    </div>
+  </base-dialog>
 </template>
 
 <script>
@@ -18,9 +21,13 @@ import { CreateServerForm } from '@Compute/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import validateForm from '@/utils/validate'
+import DomainSelect from '@/sections/DomainSelect'
 
 export default {
   name: 'GlobalVpcCreateDialog',
+  components: {
+    DomainSelect,
+  },
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
@@ -47,6 +54,12 @@ export default {
               { required: true, message: '请输入名称' },
               { validator: validateForm('resourceName') },
             ],
+          },
+        ],
+        project_domain: [
+          'project_domain',
+          {
+            initialValue: this.$store.getters.userInfo.projectDomainId,
           },
         ],
       }

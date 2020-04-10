@@ -1,6 +1,8 @@
 import {
   getNameDescriptionTableColumn,
   getStatusTableColumn,
+  getPublicScopeTableColumn,
+  getProjectDomainTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -16,6 +18,8 @@ export default {
           )
         },
       }),
+      getPublicScopeTableColumn(),
+      getProjectDomainTableColumn(),
       getStatusTableColumn({ statusModule: 'globalVpc' }),
     ]
   },

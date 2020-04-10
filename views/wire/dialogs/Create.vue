@@ -4,6 +4,9 @@
     <div slot="body">
       <a-form
         :form="form.fc">
+        <a-form-item v-bind="formItemLayout" :label="`指定${$t('dictionary.domain')}`" v-if="$store.getters.isAdminMode">
+          <domain-select v-decorator="decorators.project_domain" />
+        </a-form-item>
         <a-form-item label="专有网络" v-bind="formItemLayout" :validateStatus="vpcValidateStatus" :help="vpcHelp" :required="true">
           <a-row :gutter="8">
             <a-col :span="12">
@@ -61,8 +64,13 @@
 import { BAND_WIDTH_OPTION } from '../../../constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import DomainSelect from '@/sections/DomainSelect'
+
 export default {
   name: 'WireCreateDialog',
+  components: {
+    DomainSelect,
+  },
   mixins: [DialogMixin, WindowsMixin],
   data () {
     // 自定义校验名称重复
@@ -134,6 +142,12 @@ export default {
             rules: [
               { required: true, message: '请选择带宽' },
             ],
+          },
+        ],
+        project_domain: [
+          'project_domain',
+          {
+            initialValue: this.$store.getters.userInfo.projectDomainId,
           },
         ],
       },

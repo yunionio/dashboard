@@ -1,6 +1,7 @@
 import { mapGetters } from 'vuex'
 import i18n from '@/locales'
 import { findPlatform } from '@/utils/common/hypervisor'
+import { getSetPublicAction } from '@/utils/common/tableActions'
 
 const PROVIDER_FILTER_CN = i18n.t('env')
 const disableAdjustConfig = ['private', 'public']
@@ -98,23 +99,27 @@ export default {
                 }
               },
             },
-            {
-              label: '设置为共享',
-              permission: 'networks_perform_public',
-              action: () => {
-                this.createDialog('SetPublicDialog', {
-                  data: [obj],
-                  title: '设置为共享',
-                  columns: this.columns,
-                  onManager: this.onManager,
-                })
-              },
-              meta: () => {
-                return {
-                  validate: this.isPower(obj),
-                }
-              },
-            },
+            getSetPublicAction(this, {
+              name: this.$t('dictionary.network'),
+              scope: 'project',
+            }),
+            // {
+            //   label: '设置为共享',
+            //   permission: 'networks_perform_public',
+            //   action: () => {
+            //     this.createDialog('SetPublicDialog', {
+            //       data: [obj],
+            //       title: '设置为共享',
+            //       columns: this.columns,
+            //       onManager: this.onManager,
+            //     })
+            //   },
+            //   meta: () => {
+            //     return {
+            //       validate: this.isPower(obj),
+            //     }
+            //   },
+            // },
             {
               label: '分割IP子网',
               permission: 'networks_perform_split',

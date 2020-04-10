@@ -5,6 +5,8 @@ import {
   getBrandTableColumn,
   getAccountTableColumn,
   getTimeTableColumn,
+  getPublicScopeTableColumn,
+  getProjectDomainTableColumn,
 } from '@/utils/common/tableColumn'
 
 const NatSpec = {
@@ -42,6 +44,8 @@ export default {
       },
       getCopyWithContentTableColumn({ field: 'vpc', title: '所属专有网络' }),
       getBrandTableColumn(),
+      getPublicScopeTableColumn(),
+      getProjectDomainTableColumn(),
       {
         field: 'region',
         title: '区域',

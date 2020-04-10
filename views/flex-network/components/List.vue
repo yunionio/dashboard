@@ -16,6 +16,7 @@ import ListMixin from '@/mixins/list'
 import { getStatusFilter, getBrandFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
+import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
 
 export default {
   name: 'FlexNetworkList',
@@ -91,6 +92,14 @@ export default {
         //     validate: this.list.selected.length,
         //   }),
         // },
+        getDomainChangeOwnerAction(this, {
+          name: this.$t('dictionary.networkinterface'),
+          resource: 'networkinterfaces',
+        }),
+        getSetPublicAction(this, {
+          name: this.$t('dictionary.networkinterface'),
+          scope: 'domain',
+        }),
       ],
     }
   },

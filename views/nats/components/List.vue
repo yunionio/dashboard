@@ -14,6 +14,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import { getStatusFilter, getBrandFilter, getAccountFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
+import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
 
 const BillingType = {
   'postpaid': '后付费',
@@ -98,6 +99,14 @@ export default {
             validate: this.list.selected.length,
           }),
         },
+        getDomainChangeOwnerAction(this, {
+          name: this.$t('dictionary.nat'),
+          resource: 'natgateways',
+        }),
+        getSetPublicAction(this, {
+          name: this.$t('dictionary.nat'),
+          scope: 'domain',
+        }),
       ],
     }
   },

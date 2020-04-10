@@ -1,11 +1,22 @@
+import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
+
 export default {
   created () {
     this.singleActions = [
+      getDomainChangeOwnerAction(this, {
+        name: this.$t('dictionary.globalvpc'),
+        resource: 'globalvpcs',
+      }),
+      getSetPublicAction(this, {
+        name: this.$t('dictionary.globalvpc'),
+        scope: 'domain',
+      }),
       {
         label: '删除',
         action: (obj) => {
           this.createDialog('DeleteResDialog', {
             vm: this,
+            name: this.$t('dictionary.globalvpc'),
             title: '删除',
             data: [obj],
             columns: this.columns,

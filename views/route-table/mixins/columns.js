@@ -2,6 +2,8 @@ import {
   getCopyWithContentTableColumn,
   getRegionTableColumn,
   getAccountTableColumn,
+  getPublicScopeTableColumn,
+  getProjectDomainTableColumn,
 } from '@/utils/common/tableColumn'
 
 const routeType = {
@@ -28,16 +30,18 @@ export default {
       {
         field: 'vpc',
         title: '所属专有网络',
-        minWidth: 70,
+        minWidth: 120,
         showOverflow: 'ellipsis',
       },
+      getPublicScopeTableColumn(),
+      getProjectDomainTableColumn(),
       getRegionTableColumn(),
       getAccountTableColumn(),
       {
         field: 'routes',
         title: '条目（路由表类型 目标网段 下一跳）',
-        minWidth: 100,
-        showOverflow: 'ellipsis',
+        minWidth: 220,
+        showOverflow: 'title',
         slots: {
           default: ({ row }, h) => {
             return [
@@ -48,6 +52,7 @@ export default {
                 if (cidr) routeItem += ` ${cidr}`
                 if (next) routeItem += ` ${nextHopType[next.toLowerCase()] || next}`
                 return h('a-tag', {
+                  class: 'text-truncate',
                   style: {
                     display: 'block',
                   },
