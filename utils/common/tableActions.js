@@ -1,3 +1,10 @@
+import i18n from '@/locales'
+import store from '@/store'
+
+function getSelectedData (row, vm) {
+  return row ? [row] : (vm.list && vm.list.selectedItems) || []
+}
+
 export function disableDeleteAction (params = {}, dialogParams = {}) {
   const { name = '实例' } = dialogParams
   const { list, onManager, columns, createDialog, ...optionParams } = params
@@ -20,6 +27,73 @@ export function disableDeleteAction (params = {}, dialogParams = {}) {
       }
     },
     ...optionParams,
+  }
+  return options
+}
+
+// 更改域
+export function getDomainChangeOwnerAction (vm, dialogParams = {}) {
+  if (!vm) {
+    throw Error('not found vm instance')
+  }
+  const { name = '实例', resource } = dialogParams
+  const options = {
+    label: `更改${i18n.t('dictionary.domain')}`,
+    action: row => {
+      vm.createDialog('DomainChangeOwenrDialog', {
+        vm,
+        name,
+        data: getSelectedData(row, vm),
+        onManager: vm.onManager,
+        columns: vm.columns,
+        refresh: vm.refresh,
+        resource,
+      })
+    },
+    meta: row => {
+      const data = getSelectedData(row, vm)
+      const ret = {
+        validate: data && data.length > 0,
+        tooltip: null,
+      }
+      if (!store.getters.l3PermissionEnable || !store.getters.isAdminMode) ret.validate = false
+      return ret
+    },
+  }
+  return options
+}
+
+// 设置域资源共享
+export function getSetPublicAction (vm, dialogParams = {}, params = {}) {
+  if (!vm) {
+    throw Error('not found vm instance')
+  }
+  const { name = '实例', scope } = dialogParams
+  const options = {
+    label: '设置共享',
+    action: row => {
+      vm.createDialog('SetPublicDialog', {
+        vm,
+        name,
+        data: getSelectedData(row, vm),
+        onManager: vm.onManager,
+        refresh: vm.refresh,
+        columns: vm.columns,
+        scope,
+      })
+    },
+    meta: row => {
+      if (params.meta) {
+        return params.meta(row)
+      }
+      const data = getSelectedData(row, vm)
+      const ret = {
+        validate: data && data.length > 0,
+        tooltip: null,
+      }
+      if (!store.getters.l3PermissionEnable || !store.getters.isAdminMode) ret.validate = false
+      return ret
+    },
   }
   return options
 }
