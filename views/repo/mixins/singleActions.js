@@ -52,7 +52,7 @@ export default {
           },
           {
             label: '删除',
-            permission: 'k8s_persistentvolumeclaims_delete',
+            permission: 'k8s_repos_delete',
             action: () => {
               const requestParams = {
                 cluster: obj.clusterID,
