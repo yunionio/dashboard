@@ -5,22 +5,12 @@ import {
   getBrandTableColumn,
   getStatusTableColumn,
   getCopyWithContentTableColumn,
-  // getNameDescriptionTableColumn,
   isPublicTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
   created () {
     this.columns = [
-      // getNameDescriptionTableColumn({
-      //   vm: this,
-      //   hideField: true,
-      //   slotCallback: row => {
-      //     return (
-      //       <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(row.id, 'NetworkSidePage') }>{ row.name }</side-page-trigger>
-      //     )
-      //   },
-      // }),
       {
         field: 'name',
         title: '名称',
@@ -29,12 +19,27 @@ export default {
         minWidth: 100,
         slots: {
           default: ({ row }, h) => {
-            const ret = [
-              <list-body-cell-wrap copy edit={ this.isPower(row) } row={row} list={this.list} hideField={ true }>
-                <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
-              </list-body-cell-wrap>,
-              <list-body-cell-wrap edit={ this.isPower(row) } field="description" row={row} list={this.list} />,
-            ]
+            const ret = []
+            ret.push(h('list-body-cell-wrap', {
+              props: {
+                copy: true,
+                edit: this.isPower(row),
+                row,
+                hideField: true,
+                onManager: this.onManager,
+              },
+              scopedSlots: {
+                default: () => { return (<side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>) },
+              },
+            }))
+            ret.push(h('list-body-cell-wrap', {
+              props: {
+                edit: this.isPower(row),
+                field: 'description',
+                row,
+                onManager: this.onManager,
+              },
+            }))
             return ret
           },
         },
