@@ -11,7 +11,7 @@
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
-import { getAccountFilter } from '@/utils/common/tableFilter'
+import { getAccountFilter, getBrandFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
 
@@ -42,6 +42,7 @@ export default {
           region: {
             label: '区域',
           },
+          brand: getBrandFilter(),
         },
       }),
       exportDataOptions: {
