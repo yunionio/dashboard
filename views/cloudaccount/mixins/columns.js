@@ -69,7 +69,7 @@ export default {
       },
       getProjectDomainTableColumn(),
       getCopyWithContentTableColumn({
-        title: `归属${this.$t('dictionary.project')}`,
+        title: `资源归属${this.$t('dictionary.project')}`,
         field: 'tenant',
       }),
     ]
