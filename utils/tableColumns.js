@@ -20,7 +20,6 @@ export const k8sStatusColumn = ({ path = 'podsInfo.warnings', statusModule = 'k8
             </a-tooltip>
           )
         }
-        console.log(statusModule, 'statusModule')
         return [
           <div class='text-truncate'>
             <status status={ row.status } statusModule={ statusModule }>

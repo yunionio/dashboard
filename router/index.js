@@ -33,6 +33,10 @@ import Secret from '@K8S/views/secret'
 import K8sSecretCreate from '@K8S/views/secret/create'
 import Release from '@K8S/views/release'
 import K8sReleaseCreate from '@K8S/views/release/create'
+import K8sReleaseUpdate from '@K8S/views/release/update'
+import Chart from '@K8S/views/chart'
+import K8sChartCreate from '@K8S/views/chart/create'
+import Repo from '@K8S/views/repo'
 import Layout from '@/layouts/RouterView'
 
 export default {
@@ -180,6 +184,11 @@ export default {
               path: 'create',
               component: K8sReleaseCreate,
             },
+            {
+              name: 'K8sReleaseUpdate',
+              path: 'update/:name',
+              component: K8sReleaseUpdate,
+            },
           ],
         },
       ],
@@ -273,6 +282,48 @@ export default {
               name: 'K8sSecretCreate',
               path: 'create',
               component: K8sSecretCreate,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      meta: {
+        label: '市场',
+      },
+      submenus: [
+        {
+          path: '/k8s-chart',
+          meta: {
+            label: '应用目录',
+            permission: 'k8s_charts_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'K8sChartList',
+              path: '',
+              component: Chart,
+            },
+            {
+              name: 'K8sChartCreate',
+              path: 'create',
+              component: K8sChartCreate,
+            },
+          ],
+        },
+        {
+          path: '/k8s-repo',
+          meta: {
+            label: 'Helm仓库地址',
+            permission: 'k8s_repos_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'K8sRepoList',
+              path: '',
+              component: Repo,
             },
           ],
         },

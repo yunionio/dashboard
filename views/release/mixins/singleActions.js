@@ -6,10 +6,11 @@ export default {
         permission: 'k8s_releases_update',
         action: async obj => {
           this.$router.push({
-            path: `/k8s-release/update/${obj.name}/${obj.chart.metadata.name}`,
+            path: `/k8s-release/update/${obj.name}`,
             query: {
               cluster: obj.clusterID,
               namespace: obj.namespace,
+              chart: obj.chart.metadata.name,
             },
           })
         },
