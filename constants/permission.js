@@ -557,6 +557,10 @@ export const PERMISSION = {
   'infras_quota_delete': ['compute', 'infras_quotas', 'delete'],
   'infras_quota_update': ['compute', 'infras_quotas', 'update'],
   'infras_quota_list': ['compute', 'infras_quotas', 'list'],
+  /**
+   * 策略
+   */
+  'policydefinitions_list': ['compute', 'policydefinitions', 'list'],
 }
 
 // 已声明权限的资源
