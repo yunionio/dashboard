@@ -989,8 +989,9 @@
     "identity_provider": "认证源",
     "policy": "权限",
     "server": "虚拟机",
-    "host": "服务器",
-    "image": "镜像",
+    "host": "宿主机",
+    "image": "系统镜像",
+    "guestimage": "主机镜像",
     "disk": "硬盘",
     "zone": "可用区",
     "wire": "二层网络",
@@ -1063,7 +1064,12 @@
     "elasticcaches": "Redis-实例",
     "globalsetting": "全局属性",
     "workflowconfig": "配置工单",
-    "serverrecovery": "主机"
+    "serverrecovery": "主机",
+    "storages": "块存储",
+    "vpc": "VPC",
+    "globalvpc": "全局VPC",
+    "nat": "NAT网关",
+    "networkinterface": "弹性网卡"
   },
   "shareScope": {
     "system": "系统",
@@ -1232,5 +1238,16 @@
   "isoUploadTypes": {
     "file": "上传镜像文件",
     "url": "输入镜像URL"
+  },
+  "publicScope": {
+    "none": "不共享",
+    "project": "@:dictionary.project间共享",
+    "domain": "@:dictionary.domain内共享",
+    "system": "全局共享"
+  },
+  "cloudAccountShareMode": {
+    "account_domain": "不共享",
+    "provider_domain": "共享云订阅",
+    "system": "全局共享"
   }
 }

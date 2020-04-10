@@ -199,13 +199,14 @@ export const getCopyWithContentTableColumn = ({
   sortable,
   slotCallback,
   hidden,
+  minWidth = 100,
 } = {}) => {
   return {
     field,
     title,
     sortable,
     showOverflow: 'ellipsis',
-    minWidth: 100,
+    minWidth,
     slots: {
       default: ({ row }, h) => {
         const text = message || row[field] || '-'
@@ -379,5 +380,33 @@ export const getBillingTypeTableColumn = ({ field = 'billing_type', title = '计
         return ret
       },
     },
+  }
+}
+
+export const getPublicScopeTableColumn = ({
+  field = 'public_scope',
+  title = '共享范围',
+} = {}) => {
+  return {
+    title,
+    field,
+    showOverflow: 'title',
+    width: 110,
+    formatter: ({ cellValue }) => {
+      const i18nKey = `publicScope.${cellValue}`
+      return i18n.te(i18nKey) ? i18n.t(i18nKey) : cellValue
+    },
+  }
+}
+
+export const getProjectDomainTableColumn = ({
+  field = 'project_domain',
+  title = `所属${i18n.t('dictionary.domain')}`,
+} = {}) => {
+  return {
+    title,
+    field,
+    showOverflow: 'title',
+    minWidth: 100,
   }
 }

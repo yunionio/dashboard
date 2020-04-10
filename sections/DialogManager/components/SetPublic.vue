@@ -2,32 +2,63 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">设置共享</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" action="设置共享" />
-      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
-      <a-form
-        :form="form.fc">
-        <a-form-item label="是否共享" v-bind="formItemLayout">
-          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.isPublic" @change="switchChange" :checked="isShare" />
-        </a-form-item>
-        <a-form-item v-bind="formItemLayout" label="共享范围" v-show="isShare">
-          <a-radio-group v-decorator="decorators.range">
-            <a-radio-button v-for="item in scopeOptions" :value="item.value" :key="item.value">
-              {{item.label}}
-            </a-radio-button>
+      <dialog-selected-tips :count="params.data.length" :name="params.name || '实例'" action="设置共享" />
+      <dialog-table :data="params.data" :columns="columns" />
+      <a-form-model
+        ref="form"
+        :model="fd"
+        :rules="rules"
+        v-bind="formItemLayout">
+        <a-form-model-item label="共享范围" prop="type">
+          <a-radio-group v-model="fd.type">
+            <template v-for="item of typeOptions">
+              <a-radio-button :key="item.key" :value="item.key">{{ item.label }}</a-radio-button>
+            </template>
           </a-radio-group>
-        </a-form-item>
-        <a-form-item :label="$t('dictionary.project')" v-bind="formItemLayout" v-if="isShare && isProjectScope">
-          <base-select
-            resource="projects"
-            v-decorator="decorators.project"
-            :params="projectParams"
-            version="v1"
-            :options.sync="projectOptions"
-            :need-params="true"
-            :mapper="projectMapper"
-            :select-props="{ placeholder: $t('rules.project'), mode: 'multiple' }" />
-        </a-form-item>
-      </a-form>
+        </a-form-model-item>
+        <!-- 项目选择 -->
+        <template v-if="shareProjectMode">
+          <a-form-model-item :label="$t('dictionary.project')" prop="shared_projects">
+            <template v-if="projectLoaded">
+              <a-select
+                v-model="fd.shared_projects"
+                mode="multiple"
+                :filterOption="false"
+                @search="fetchProjects"
+                @select="val => handleHasAllSelect(val, 'shared_projects')"
+                @deselect="val => handleDeselect(val, 'shared_projects')">
+                <template v-for="item of projects">
+                  <a-select-option :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
+                </template>
+              </a-select>
+            </template>
+            <template v-else>
+              <a-spin />
+            </template>
+          </a-form-model-item>
+        </template>
+        <!-- 域选择 -->
+        <template v-if="shareDomainMode">
+          <a-form-model-item :label="$t('dictionary.domain')" prop="shared_domains">
+            <template v-if="domainLoaded">
+              <a-select
+                v-model="fd.shared_domains"
+                mode="multiple"
+                :filterOption="false"
+                @search="fetchDomains"
+                @select="val => handleHasAllSelect(val, 'shared_domains')"
+                @deselect="val => handleDeselect(val, 'shared_domains')">
+                <template v-for="item of domains">
+                  <a-select-option :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
+                </template>
+              </a-select>
+            </template>
+            <template v-else>
+              <a-spin />
+            </template>
+          </a-form-model-item>
+        </template>
+      </a-form-model>
     </div>
     <div slot="footer">
       <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
@@ -37,6 +68,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import * as R from 'ramda'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -45,113 +77,188 @@ export default {
   name: 'SetPublicDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
+    const isBatch = this.params.data.length >= 2
+    const { scope: resScope } = this.params
+    let typeInitialValue = 'none'
+    let sharedDomainsInitialValue = []
+    let sharedProjectsInitialValue = []
+    // 只有单项操作时，才进行反显
+    if (!isBatch) {
+      const firstData = this.params.data[0]
+      const { public_scope: publicScope, shared_domains: sharedDomains, shared_projects: sharedProjects } = firstData
+      // 初始化值
+      // 当为部门共享时
+      if (publicScope === 'system') {
+        typeInitialValue = 'domain'
+        // 域为空时，为全局共享
+        if (R.isNil(sharedDomains) || R.isEmpty(sharedDomains)) {
+          sharedDomainsInitialValue = ['all']
+        } else {
+          sharedDomainsInitialValue = sharedDomains.map(item => item.id)
+        }
+      }
+      // 当项目共享时
+      if (publicScope === 'domain') {
+        typeInitialValue = 'project'
+        if (R.isNil(sharedProjects) || R.isEmpty(sharedProjects)) {
+          sharedProjectsInitialValue = ['all']
+        } else {
+          sharedProjectsInitialValue = sharedProjects.map(item => item.id)
+        }
+      }
+    }
     return {
       loading: false,
-      range: 'system',
-      form: {
-        fc: this.$form.createForm(this, {
-          onValuesChange: (props, values) => {
-            if (R.has('range', values)) {
-              this.range = values.range
-            }
-          },
-        }),
+      fd: {
+        type: typeInitialValue,
+        shared_domains: sharedDomainsInitialValue,
+        shared_projects: sharedProjectsInitialValue,
       },
-      decorators: {
-        isPublic: [
-          'isPublic',
+      rules: {
+        type: [
+          { required: true, message: '请选择共享范围' },
         ],
-        range: [
-          'range',
-          {
-            initialValue: this.$store.getters.isAdminMode ? 'system' : this.$store.getters.l3PermissionEnable ? 'domain' : 'project',
-            rules: [
-              { required: true, message: '请选择共享范围' },
-            ],
-          },
+        shared_domains: [
+          { required: true, message: this.$t('rules.domain') },
         ],
-        project: [
-          'project',
-          {
-            rules: [
-              { required: true, message: '请填写名称' },
-            ],
-          },
+        shared_projects: [
+          { required: true, message: this.$t('rules.project') },
         ],
       },
       formItemLayout: {
         wrapperCol: {
-          span: 8,
+          span: 21,
         },
         labelCol: {
           span: 3,
         },
       },
-      isShare: true,
-      projectOptions: [],
+      domainLoaded: false,
+      domains: [],
+      projectLoaded: false,
+      projects: [],
+      // 是否为批量操作
+      isBatch,
+      resScope,
     }
   },
   computed: {
-    scopeOptions () {
-      let ret = [
-        { label: this.$t('shareScope.system'), value: 'system' },
-        { label: this.$t('shareScope.project'), value: 'project' },
-      ]
-      if (this.$store.getters.l3PermissionEnable) {
-        ret.splice(1, 0, { label: `当前${this.$t('shareScope.domain')}`, value: 'domain' })
+    ...mapGetters(['scope', 'l3PermissionEnable', 'isAdminMode']),
+    columns () {
+      if (this.params.columns && this.params.columns.length >= 2) {
+        const keys = ['name', 'public_scope', ['shared_domains']]
+        return this.params.columns.filter(({ field }) => {
+          return keys.indexOf(field) > -1
+        })
       }
-      if (this.$store.getters.isDomainMode) {
-        ret.shift()
-      }
-      return ret
+      return this.params.columns
     },
-    projectParams () {
-      let params = {
-        limit: 0,
-        project_domain: this.params.data[0].domain_id,
+    typeOptions () {
+      const none = { key: 'none', label: '不共享' }
+      const project = { key: 'project', label: `${this.$t('dictionary.project')}共享` }
+      const domain = { key: 'domain', label: `${this.$t('dictionary.domain')}共享` }
+      if (this.resScope === 'domain') {
+        return [none, domain]
       }
-      return params
+      if (this.resScope === 'project') {
+        if (this.l3PermissionEnable && this.isAdminMode) {
+          return [none, project, domain]
+        }
+        return [none, project]
+      }
+      return [none]
     },
-    isProjectScope () {
-      return this.range === 'project'
+    noShareMode () {
+      return this.fd.type === 'none'
+    },
+    shareDomainMode () {
+      return this.fd.type === 'domain'
+    },
+    shareProjectMode () {
+      return this.fd.type === 'project'
     },
   },
   watch: {
-    'params.data': {
-      handler (newValue, oldValue) {
-        if (!newValue[0].is_public && !newValue[0].shared_projects) {
-          this.isShare = false
-        } else {
-          this.isShare = true
-        }
-        if (newValue[0]['public_scope']) {
+    shareDomainMode: {
+      handler (val) {
+        if (val) {
           this.$nextTick(() => {
-            this.form.fc.setFieldsValue({ 'range': newValue[0]['public_scope'] })
-          })
-        }
-        if (!this.$store.getters.l3PermissionEnable && this.$store.getters.isDomainAdmin) {
-          this.$nextTick(() => {
-            this.form.fc.setFieldsValue({ 'range': 'project' })
+            this.fetchDomains()
           })
         }
       },
       immediate: true,
     },
-    projectOptions (newValue, oldValue) {
-      if (this.params.data.length === 1 && this.params.data[0].shared_projects) {
-        const projectId = this.params.data[0].shared_projects.map(item => { return item.id })
-        this.form.fc.getFieldDecorator('project', { preserve: true, initialValue: projectId })
-      }
+    shareProjectMode: {
+      handler (val) {
+        if (val) {
+          this.$nextTick(() => {
+            this.fetchProjects()
+          })
+        }
+      },
+      immediate: true,
     },
   },
+  beforeDestroy () {
+    this.dm = null
+    this.pm = null
+  },
+  created () {
+    this.dm = new this.$Manager('domains', 'v1')
+    this.pm = new this.$Manager('projects', 'v1')
+  },
   methods: {
-    switchChange (e) {
-      this.isShare = e
+    async fetchDomains (query) {
+      const params = {
+        details: true,
+        scope: this.scope,
+        limit: 20,
+      }
+      if (query) {
+        params.search = query
+      }
+      try {
+        const response = await this.dm.list({
+          params,
+        })
+        let data = response.data.data || []
+        if (!this.isBatch && this.params.data[0].shared_domains && this.params.data[0].shared_domains.length) {
+          data = this.mergeSharedRes(data, this.params.data[0].shared_domains)
+        }
+        data.unshift({ id: 'all', name: '全部' })
+        this.domains = data
+        this.domainLoaded = true
+      } catch (error) {
+        throw error
+      }
     },
-    projectMapper (list) {
-      return list.filter((item) => { return item.id !== this.params.data[0].tenant_id })
+    async fetchProjects (query) {
+      const params = {
+        details: true,
+        scope: this.scope,
+        limit: 20,
+        domain_id: this.params.data[0]['domain_id'],
+      }
+      if (query) {
+        params.search = query
+      }
+      try {
+        const response = await this.pm.list({
+          params,
+        })
+        let data = response.data.data || []
+        if (!this.isBatch && this.params.data[0].shared_projects && this.params.data[0].shared_projects.length) {
+          data = this.mergeSharedRes(data, this.params.data[0].shared_projects)
+        }
+        data.unshift({ id: 'all', name: '全部' })
+        this.projects = data
+        this.projectLoaded = true
+      } catch (error) {
+        throw error
+      }
     },
-    doUpdate (ids) {
+    setPrivate (ids) {
       return this.params.onManager('batchPerformAction', {
         id: ids,
         managerArgs: {
@@ -168,30 +275,87 @@ export default {
         },
       })
     },
+    // 全部与选择项互斥交互
+    handleHasAllSelect (val, field) {
+      if (val === 'all') {
+        this.fd[field] = ['all']
+        return
+      }
+      const newVal = [...this.fd[field]]
+      const allIndex = newVal.indexOf('all')
+      const valIndex = newVal.indexOf(val)
+      if (valIndex === -1) {
+        newVal.push(val)
+      }
+      if (allIndex !== -1) {
+        newVal.splice(allIndex, 1)
+      }
+      this.fd[field] = newVal
+    },
+    // 取消选中
+    handleDeselect (val, field) {
+      const newVal = [...this.fd[field]]
+      const valIndex = newVal.indexOf(val)
+      if (valIndex !== -1) {
+        newVal.splice(valIndex, 1)
+      }
+      this.fd[field] = newVal
+    },
+    genShareDomainsData (domains) {
+      const ret = {
+        scope: 'domain',
+      }
+      if (domains[0] === 'all') {
+        ret.scope = 'system'
+      } else {
+        ret.shared_domains = domains
+      }
+      return ret
+    },
+    genShareProjectsData (projects) {
+      const ret = {
+        scope: 'project',
+      }
+      if (projects[0] === 'all') {
+        ret.scope = 'domain'
+      } else {
+        ret.shared_projects = projects
+      }
+      return ret
+    },
+    // 合并已共享的资源，这样可以实现name的反显，不会有先显示id的问题
+    mergeSharedRes (data, sharedData) {
+      const ret = [...data]
+      if (sharedData && sharedData.length > 0) {
+        R.forEach(value => {
+          const obj = R.find(R.propEq('id', value.id))(ret)
+          if (!obj) {
+            ret.push(obj)
+          }
+        })
+      }
+      return ret
+    },
     async handleConfirm () {
       this.loading = true
       try {
-        const values = await this.form.fc.validateFields()
+        await this.$refs.form.validate()
         const ids = this.params.data.map(item => item.id)
-        if (!this.isShare) {
-          await this.doUpdate(ids)
-        } else {
-          if (values.range === 'project') {
-            const data = {
-              scope: values.range,
-              shared_projects: values.project,
-            }
-            await this.setPublic(ids, data)
-          } else {
-            const data = {
-              scope: values.range,
-            }
-            await this.setPublic(ids, data)
-          }
+        // 设置私有
+        if (this.noShareMode) {
+          await this.setPrivate(ids)
+        }
+        // 设置域共享
+        if (this.shareDomainMode) {
+          await this.setPublic(ids, this.genShareDomainsData(this.fd.shared_domains))
+        }
+        // 设置项目共享
+        if (this.shareProjectMode) {
+          await this.setPublic(ids, this.genShareProjectsData(this.fd.shared_projects))
         }
         this.loading = false
-        this.cancelDialog()
         this.params.refresh()
+        this.cancelDialog()
       } catch (error) {
         this.loading = false
       }
