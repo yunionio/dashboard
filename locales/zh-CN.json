@@ -1057,7 +1057,8 @@
     "dbinstancebackups": "RDS-备份",
     "elasticcaches": "Redis-实例",
     "globalsetting": "全局属性",
-    "workflowconfig": "配置工单"
+    "workflowconfig": "配置工单",
+    "serverrecovery": "主机"
   },
   "shareScope": {
     "system": "系统",
