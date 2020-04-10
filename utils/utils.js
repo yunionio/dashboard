@@ -1,4 +1,5 @@
 import * as R from 'ramda'
+import _ from 'lodash'
 import i18n from '@/locales'
 
 let tIndex = 0
@@ -437,5 +438,33 @@ export const formatSeconds = value => {
     str,
     obj,
     arr,
+  }
+}
+
+/**
+ * @description 配合 <el-autocomplete /> 使用
+ * @param {Object} obj e.g. { a: { a1: { b: 'bbb', c: 'ccc' } } }
+ * @param {String} path e.g. a.a1
+ * @returns e.g. ['a.a1.b', 'a.a1.c']
+ */
+export const objAutoComplete = (obj, path) => {
+  if (R.isEmpty(obj) || !path) return []
+  const _genObjKeys = (resObj, objKeyPath, prefixPath = '') => {
+    const keys = Object.keys(resObj).map(val => prefixPath + val)
+    const opts = keys.filter(val => val.toLowerCase().includes(objKeyPath.toLowerCase()))
+    return opts
+  }
+  const objKeys = path.split('.')
+  if (objKeys.length === 1) {
+    return _genObjKeys(obj, path)
+  } else if (objKeys.length > 1) {
+    const dropLastArr = R.dropLast(1, objKeys)
+    const lastPath = R.last(objKeys)
+    const readyPath = dropLastArr.join('.')
+    const readyValue = _.get(obj, readyPath)
+    if (readyValue && R.is(Object, readyValue)) {
+      return _genObjKeys(readyValue, lastPath, `${readyPath}.`)
+    }
+    return []
   }
 }
