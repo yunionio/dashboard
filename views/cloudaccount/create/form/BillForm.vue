@@ -116,7 +116,7 @@ export default {
     },
     provider () {
       const { provider } = this.$route.query
-      return provider || this.cloudAccount.provider
+      return provider || (this.cloudAccount && this.cloudAccount.id)
     },
     isGoogle () {
       return this.provider === 'Google'
