@@ -201,6 +201,7 @@ export default {
           path: '/policydefinition',
           meta: {
             label: '策略',
+            permission: 'policydefinitions_list',
           },
           component: Layout,
           children: [
