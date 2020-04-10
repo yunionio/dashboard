@@ -31,8 +31,8 @@
 import AutoSync from '@Cloudenv/views/cloudaccount/components/AutoSync'
 import ProxySetting from '@Cloudenv/views/cloudaccount/components/ProxySetting'
 import { CLOUDACCOUNT_DOCS, keySecretFields, ACCESS_URL } from '@Cloudenv/views/cloudaccount/constants'
+import DomainProject from '../../../components/DomainProject'
 import createMixin from './createMixin'
-import DomainProject from '@/sections/DomainProject'
 import { isRequired } from '@/utils/validate'
 
 export default {
