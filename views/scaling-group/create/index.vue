@@ -27,6 +27,8 @@
       </a-form-item>
       <network-selects
         isRequired
+        :defaultActiveFirstOption="false"
+        :disabled="networlDisabled"
         ref="NETWORK"
         label="网络"
         :form="form"
@@ -38,8 +40,8 @@
         </a-tooltip>
       </a-form-item>
       <a-form-item label="期望实例数">
-        <a-tooltip placement="top" title="范围在 0 ～ 最大实例数">
-          <a-input-number v-decorator="decorators.desire_instance_number" :min="0" :max="form.fd.max_instance_number" />
+        <a-tooltip placement="top" title="范围在 最小实例数～最大实例数">
+          <a-input-number v-decorator="decorators.desire_instance_number" :min="form.fd.min_instance_number" :max="form.fd.max_instance_number" />
         </a-tooltip>
         <div slot="extra">
           该弹性伸缩组中期望运行的虚拟机个数，当新建完成后会自动创建与期望值相同数量的虚拟机
@@ -118,6 +120,7 @@ export default {
       serverTemplateListLoading: false,
       serverTemplateList: [],
       healthCheckModeList: [],
+      networlDisabled: false,
       form: {
         fc: this.$form.createForm(this, {
           onValuesChange: this.handleValuesChange,
@@ -128,6 +131,11 @@ export default {
         labelCol: { span: 3 },
         wrapperCol: { span: 20 },
       },
+    }
+  },
+  provide () {
+    return {
+      form: this.form,
     }
   },
   computed: {
@@ -182,17 +190,6 @@ export default {
         ...this.scopeParams,
       }
     },
-    // numberChange (v) {
-    //   const { fd, fc } = this.form
-    //   if (fd.min_instance_number >= fd.max_instance_number) {
-    //     fc.setFields({
-    //       min_instance_number: {
-    //         value: fd.min_instance_number,
-    //         errors: [new Error('最小实例数要小于等于期望是例数、最大实例数')],
-    //       },
-    //     })
-    //   }
-    // },
     handleValuesChange (vm, changedFields) {
       this.form.fd = {
         ...this.form.fd,
@@ -210,17 +207,29 @@ export default {
         }
       })
     },
-    handleServerTemplateChange (e, { data }) {
-      const { row } = data.attrs
+    setNetworkValues (row) {
+      console.log('---========', row)
       if (row.config_info && row.config_info.nets && row.config_info.nets.length > 0) {
         const net = row.config_info.nets[0]
         if (net.vpc_id && net.id) {
           this.form.fc.setFieldsValue({
             vpc: net.vpc_id,
-            network: net.id,
+          }, () => {
+            this.$refs['NETWORK'].fetchNetwork()
           })
+          this.networlDisabled = true
+          return true
         }
       }
+      this.form.fc.setFieldsValue({
+        vpc: undefined,
+        network: undefined,
+      })
+      this.networlDisabled = false
+    },
+    handleServerTemplateChange (e, { data }) {
+      const { row } = data.attrs
+      this.setNetworkValues(row)
     },
     async fetchQueryTs () {
       const manager = new this.$Manager('servertemplates')
@@ -232,10 +241,17 @@ export default {
           params: {
             limit: 0,
             brand,
+            filter: 'status.in(ready)',
             ...this.scopeParams,
           },
         })
-        this.serverTemplateList = data.data || []
+        if (data.data && data.data.length > 0) {
+          const list = data.data
+          this.serverTemplateList = list.filter(t => {
+            return t.provider === 'OneCloud'
+          })
+          this.setNetworkValues(list[0])
+        }
       } catch (err) {
         throw err
       } finally {

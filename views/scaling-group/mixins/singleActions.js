@@ -42,9 +42,16 @@ export default {
           })
         },
         meta: (obj) => {
+          let tooltip = ''
+          if (obj.enabled) {
+            tooltip = '请先禁用弹性伸缩组'
+          }
+          if (obj.instance_number) {
+            tooltip = '伸缩组内虚拟机不为空，请删除后重试'
+          }
           return {
-            validate: !obj.enabled,
-            tooltip: obj.enabled && '请先禁用弹性伸缩组',
+            validate: !obj.enabled && !obj.instance_number,
+            tooltip,
           }
         },
       },

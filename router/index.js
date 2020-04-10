@@ -170,7 +170,7 @@ export default {
           path: '/scalinggroup',
           meta: {
             label: '弹性伸缩组',
-            // permission: 'servertemplates_list',
+            permission: 'scalinggroups_list',
           },
           component: Layout,
           children: [
@@ -547,7 +547,7 @@ export default {
         {
           path: '/serverrecovery',
           meta: {
-            label: i18n.t('dictionary.server'),
+            label: i18n.t('dictionary.serverrecovery'),
             permission: 'servers_list,server_delete',
           },
           component: Layout,

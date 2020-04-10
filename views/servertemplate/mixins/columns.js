@@ -16,7 +16,7 @@ export default {
       getNameDescriptionTableColumn({
         onManager: this.onManager,
         hideField: true,
-        addLock: true,
+        // addLock: true,
         addBackup: true,
         formRules: [
           { required: true, message: '请输入名称' },
