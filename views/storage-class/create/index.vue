@@ -223,7 +223,7 @@ export default {
     },
     createCephCSI () {
       this.$router.push({
-        path: '/kube-component/create',
+        path: '/k8s-kubecomponent/create',
         query: {
           kubeComponent: 'cephCSI',
           cluster: this.clusterObj.id,

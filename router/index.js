@@ -9,6 +9,11 @@ import K8sStorageclassesCreate from '@K8S/views/storage-class/create'
 import K8sNamespace from '@K8S/views/namespace'
 import K8sNamespaceCreate from '@K8S/views/namespace/create'
 import K8sRbacrole from '@K8S/views/rbacrole'
+import K8sRbacrolebind from '@K8S/views/rbacrolebind'
+import K8sServiceAccount from '@K8S/views/service-account'
+import K8sKubeComponent from '@K8S/views/kube-component'
+import K8sKubeComponentCreate from '@K8S/views/kube-component/create'
+import K8sKubeComponentUpdate from '@K8S/views/kube-component/update'
 import Statefulset from '@K8S/views/statefulset'
 import K8sStatefulsetCreate from '@K8S/views/statefulset/create'
 import Pod from '@K8S/views/pod'
@@ -224,6 +229,60 @@ export default {
               name: 'K8sRbacrole',
               path: '',
               component: K8sRbacrole,
+            },
+          ],
+        },
+        {
+          path: '/k8s-rbacrolebind',
+          meta: {
+            label: '角色绑定',
+            permission: 'k8s_rbacrolebindings_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'K8sRbacrolebind',
+              path: '',
+              component: K8sRbacrolebind,
+            },
+          ],
+        },
+        {
+          path: '/k8s-serviceaccount',
+          meta: {
+            label: '服务账户',
+            permission: 'k8s_serviceaccounts_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'K8sServiceAccount',
+              path: '',
+              component: K8sServiceAccount,
+            },
+          ],
+        },
+        {
+          path: '/k8s-kubecomponent',
+          meta: {
+            label: '服务组件',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'K8sKubeComponent',
+              path: '',
+              component: K8sKubeComponent,
+            },
+            {
+              name: 'K8sKubeComponentCreate',
+              path: 'create',
+              component: K8sKubeComponentCreate,
+            },
+            {
+              name: 'K8sKubeComponentUpdate',
+              path: 'update',
+              component: K8sKubeComponentUpdate,
             },
           ],
         },

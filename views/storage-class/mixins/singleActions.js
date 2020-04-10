@@ -16,7 +16,7 @@ export default {
       },
       {
         label: '删除',
-        permission: 'k8s_storageclasses_update',
+        permission: 'k8s_storageclasses_delete',
         action: (obj) => {
           this.createDialog('DeleteResDialog', {
             vm: this,

@@ -6,9 +6,9 @@
     :group-actions="groupActions"
     :single-actions="singleActions">
     <template v-slot:group-actions-append>
-      <cluster-namespace :getParams.sync="list.getParams" :ignoreNamespace="true" @refresh="fetchData" class="ml-3" />
+      <cluster-namespace :getParams.sync="list.getParams" @refresh="fetchData" class="ml-3" />
     </template>
-    </page-list>
+  </page-list>
 </template>
 
 <script>
@@ -20,7 +20,7 @@ import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 
 export default {
-  name: 'K8SNodeList',
+  name: 'K8SRbacRoleBindList',
   components: {
     ClusterNamespace,
   },
@@ -36,7 +36,7 @@ export default {
     return {
       list: this.$list.createList(this, {
         id: this.id,
-        resource: 'storageclasses',
+        resource: 'rbacrolebindings',
         apiVersion: 'v1',
         getParams: this.getParams,
         idKey: 'name',
@@ -44,33 +44,33 @@ export default {
           name: getNameFilter(),
         },
       }),
+      deleteGroupOpsValid: arr => arr.every(item => item.type === arr[0].type),
       groupActions: [
         {
-          label: '新建',
-          permission: 'k8s_storageclasses_create',
-          action: () => {
-            this.$router.push({ path: '/k8s-storageclass/create' })
-          },
-          meta: () => ({
-            buttonType: 'primary',
-          }),
-        },
-        {
           label: '删除',
-          permission: 'k8s_storageclasses_delete',
+          permission: 'k8s_rbacroles_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,
               data: this.list.selectedItems,
               columns: this.columns,
-              title: '删除存储类',
-              name: '存储类',
+              title: '删除角色',
+              name: '角色',
               onManager: this.onManager,
-              requestData: {
-                cluster: this.list.selectedItems[0]['clusterID'],
-              },
-              requestParams: {
-                id: this.list.selectedItems.map(item => { return item.name }),
+              idKey: 'name',
+              ok: (ids, data) => {
+                return new this.$Manager(`${data[0]['type']}s`, 'v1').batchDelete({
+                  ids,
+                  data: {
+                    cluster: data[0].clusterID,
+                    namespace: data[0].namespace,
+                  },
+                }).then(() => {
+                  this.refresh()
+                  return true
+                }).catch(error => {
+                  throw error
+                })
               },
             })
           },
@@ -78,15 +78,15 @@ export default {
             if (this.list.selectedItems.length > 0) {
               let namespaces = this.list.selectedItems.map(v => v.namespace)
               let unique = Array.from(new Set(namespaces))
-              if (unique.length > 1) {
+              if (unique.length === 1) {
                 return {
-                  validate: false,
-                  tooltip: '请选择同一个命名空间下的资源',
+                  validate: true,
                 }
-              }
-              return {
-                validate: true,
-                tooltip: '',
+              } else {
+                return {
+                  validate: this.deleteGroupOpsValid(this.list.selectedItems),
+                  tooltip: !this.deleteGroupOpsValid(this.list.selectedItems) ? '请选择统一命名空间下的资源' : '',
+                }
               }
             } else {
               return {
@@ -109,9 +109,9 @@ export default {
       }
     },
     handleOpenSidepage (row) {
-      this.sidePageTriggerHandle(this, 'K8SStorageclassSidePage', {
+      this.sidePageTriggerHandle(this, 'K8SRbacRoleBindSidePage', {
         id: row.name,
-        resource: 'storageclasses',
+        resource: 'rbacrolebindings',
         apiVersion: 'v1',
         getParams: this.list.getParams,
       }, {

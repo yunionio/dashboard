@@ -78,13 +78,15 @@ export default {
             if (this.list.selectedItems.length > 0) {
               let namespaces = this.list.selectedItems.map(v => v.namespace)
               let unique = Array.from(new Set(namespaces))
-              if (this.deleteGroupOpsValid) {
+              if (unique.length === 1) {
                 return {
-                  validate: (unique.length === 1 && this.deleteGroupOpsValid(this.list.selectedItems)),
+                  validate: true,
                 }
-              }
-              return {
-                validate: unique.length === 1,
+              } else {
+                return {
+                  validate: this.deleteGroupOpsValid(this.list.selectedItems),
+                  tooltip: !this.deleteGroupOpsValid(this.list.selectedItems) ? '请选择统一命名空间下的资源' : '',
+                }
               }
             } else {
               return {
