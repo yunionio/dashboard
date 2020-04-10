@@ -65,7 +65,7 @@ export default {
       {
         field: 'cpu_count',
         title: '物理CPU',
-        minWidth: 60,
+        minWidth: 80,
         showOverflow: 'title',
         formatter: ({ cellValue, row }) => {
           if (cellValue) {
@@ -78,7 +78,7 @@ export default {
       {
         field: 'mem_size',
         title: '物理内存',
-        minWidth: 60,
+        minWidth: 80,
         showOverflow: 'title',
         formatter: ({ cellValue, row }) => {
           if (cellValue) {
@@ -91,7 +91,7 @@ export default {
       {
         field: 'storage_size',
         title: '物理存储',
-        minWidth: 60,
+        minWidth: 80,
         showOverflow: 'title',
         formatter: ({ cellValue, row }) => {
           if (cellValue) {

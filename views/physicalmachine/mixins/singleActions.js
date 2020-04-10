@@ -1,6 +1,7 @@
 import { Base64 } from 'js-base64'
 import qs from 'qs'
 import expectStatus from '@/constants/expectStatus'
+import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
 
 export default {
   destroyed () {
@@ -188,6 +189,14 @@ export default {
                     }
                   },
                 },
+                getDomainChangeOwnerAction(this, {
+                  name: this.$t('dictionary.host'),
+                  resource: 'hosts',
+                }),
+                getSetPublicAction(this, {
+                  name: this.$t('dictionary.host'),
+                  scope: 'domain',
+                }),
                 {
                   label: '安装操作系统',
                   action: () => {
