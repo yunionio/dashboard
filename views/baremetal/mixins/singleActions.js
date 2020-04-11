@@ -4,6 +4,7 @@ import qs from 'qs'
 import { commonUnabled, cloudEnabled, cloudUnabledTip } from '../../vminstance/utils'
 import { typeClouds } from '@/utils/common/hypervisor'
 import { disableDeleteAction } from '@/utils/common/tableActions'
+import expectStatus from '@/constants/expectStatus'
 
 export default {
   computed: {
@@ -253,7 +254,7 @@ export default {
                   permission: 'server_perform_syncstatus',
                   action: () => {
                     this.onManager('performAction', {
-                      steadyStatus: ['running', 'ready'],
+                      steadyStatus: Object.values(expectStatus.server).flat(),
                       id: obj.id,
                       managerArgs: {
                         action: 'syncstatus',
