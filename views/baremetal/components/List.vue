@@ -233,7 +233,7 @@ export default {
                 permission: 'server_perform_syncstatus',
                 action: () => {
                   this.onManager('batchPerformAction', {
-                    steadyStatus: ['running', 'ready'],
+                    steadyStatus: Object.values(expectStatus.server).flat(),
                     managerArgs: {
                       action: 'syncstatus',
                     },
