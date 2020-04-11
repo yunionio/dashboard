@@ -19,7 +19,7 @@ export const getConditionTableColumn = () => {
     minWidth: 70,
     showOverflow: 'title',
     formatter: ({ row }) => {
-      return ConditionMap[row.condition] || '-'
+      return `要求${ConditionMap[row.condition]}` || '-'
     },
   }
 }
