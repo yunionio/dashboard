@@ -24,7 +24,10 @@ export default {
     return {
       list: this.$list.createList(this, {
         resource: 'policy_assignments',
-        getParams: { details: true },
+        getParams: {
+          policydefinition: this.resId,
+          details: true,
+        },
         filterOptions: {},
       }),
       columns: [
