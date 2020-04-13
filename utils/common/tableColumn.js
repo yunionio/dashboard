@@ -329,6 +329,7 @@ export const getTimeTableColumn = ({
   field = 'created_at',
   title = '创建时间',
   sortable = false,
+  fromNow = false,
 } = {}) => {
   return {
     field,
@@ -336,6 +337,7 @@ export const getTimeTableColumn = ({
     width: 160,
     sortable,
     formatter: ({ cellValue }) => {
+      if (fromNow) return cellValue ? moment(cellValue).fromNow() : '-'
       return cellValue ? moment(cellValue).format() : '-'
     },
   }
