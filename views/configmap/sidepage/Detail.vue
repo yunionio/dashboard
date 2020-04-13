@@ -5,12 +5,15 @@
     :hiddenKeys="['project_domain', 'tenant', 'created_at', 'updated_at']"
     :onManager="onManager"
     :data="data"
-    :base-info="baseInfo" />
+    :base-info="baseInfo"
+    :extra-info="extraInfo" />
 </template>
 
 <script>
+import DataView from '@K8S/sections/DataView'
+
 export default {
-  name: 'K8sIngressDetail',
+  name: 'K8sConfigmapDetail',
   props: {
     data: {
       type: Object,
@@ -50,6 +53,19 @@ export default {
           title: '创建时间',
           formatter: ({ row }) => {
             return (row.creationTimestamp && this.$moment(row.creationTimestamp).format()) || '-'
+          },
+        },
+      ],
+      extraInfo: [
+        {
+          title: '数据',
+          field: 'data',
+          slots: {
+            default: ({ row }) => {
+              return [
+                <DataView manager={ this.onManager } data={ row } />,
+              ]
+            },
           },
         },
       ],

@@ -5,16 +5,14 @@
     :hiddenKeys="['project_domain', 'tenant', 'created_at', 'updated_at']"
     :onManager="onManager"
     :data="data"
-    :base-info="baseInfo"
-    :extra-info="extraInfo" />
+    :base-info="baseInfo" />
 </template>
 
 <script>
-import CodePreview from '@K8S/sections/CodePreview'
-import { k8sLabelColumn } from '@K8S/utils/tableColumns'
+import { k8sStatusColumn, k8sImageColumn } from '@K8S/utils/tableColumns'
 
 export default {
-  name: 'K8sIngressDetail',
+  name: 'K8sDaemonsetDetail',
   props: {
     data: {
       type: Object,
@@ -41,6 +39,7 @@ export default {
             },
           },
         },
+        k8sStatusColumn(),
         {
           field: 'cluster',
           title: '集群',
@@ -49,25 +48,12 @@ export default {
           field: 'namespace',
           title: '命名空间',
         },
-        k8sLabelColumn({ field: 'annotations', title: '注释' }),
+        k8sImageColumn(),
         {
           field: 'creationTimestamp',
           title: '创建时间',
           formatter: ({ row }) => {
             return (row.creationTimestamp && this.$moment(row.creationTimestamp).format()) || '-'
-          },
-        },
-      ],
-      extraInfo: [
-        {
-          title: '数据',
-          field: 'data',
-          slots: {
-            default: ({ row }) => {
-              return [
-                <CodePreview data={ row } />,
-              ]
-            },
           },
         },
       ],

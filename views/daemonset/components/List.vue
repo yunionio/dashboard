@@ -22,7 +22,7 @@ import ListMixin from '@/mixins/list'
 import { getNameFilter } from '@/utils/common/tableFilter'
 
 export default {
-  name: 'K8SDeploymentList',
+  name: 'K8SDaemonsetList',
   components: {
     ClusterNamespace,
   },
@@ -42,7 +42,7 @@ export default {
     return {
       list: this.$list.createList(this, {
         id: this.id,
-        resource: 'deployments',
+        resource: 'daemonsets',
         apiVersion: 'v1',
         getParams: this.getParams,
         idKey: 'name',
@@ -57,9 +57,9 @@ export default {
       groupActions: [
         {
           label: '新建',
-          permission: 'k8s_deployments_create',
+          permission: 'k8s_daemonsets_create',
           action: () => {
-            this.$router.push({ path: '/k8s-deployment/create' })
+            this.$router.push({ path: '/k8s-daemonset/create' })
           },
           meta: () => ({
             buttonType: 'primary',
@@ -67,7 +67,7 @@ export default {
         },
         {
           label: '删除',
-          permission: 'k8s_deployments_delete',
+          permission: 'k8s_daemonsets_delete',
           action: () => {
             const data = this.list.selectedItems
             const requestData = {
@@ -121,9 +121,9 @@ export default {
       }
     },
     handleOpenSidepage (row) {
-      this.sidePageTriggerHandle(this, 'K8SDeploymentSidePage', {
+      this.sidePageTriggerHandle(this, 'K8SDaemonsetSidePage', {
         id: row.name,
-        resource: 'deployments',
+        resource: 'daemonsets',
         getParams: () => {
           const params = R.clone(this.list.getParams)
           if (row.namespace) {

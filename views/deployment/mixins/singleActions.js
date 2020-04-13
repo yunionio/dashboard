@@ -3,7 +3,7 @@ export default {
     this.singleActions = [
       {
         label: '设置镜像',
-        permission: 'k8s_depolyments_update',
+        permission: 'k8s_deployments_update',
         action: obj => {
           this.createDialog('K8SSetImageDialog', {
             data: [obj],
@@ -15,7 +15,7 @@ export default {
       },
       {
         label: '设置副本数',
-        permission: 'k8s_depolyments_update',
+        permission: 'k8s_deployments_update',
         action: obj => {
           this.createDialog('K8SSetLimitDialog', {
             data: [obj],
@@ -30,7 +30,7 @@ export default {
         actions: obj => [
           {
             label: '查看/编辑',
-            permission: 'k8s_depolyments_update',
+            permission: 'k8s_deployments_update',
             action: async () => {
               const manager = new this.$Manager(`_raw/${this.list.resource}`, 'v1')
               async function fetchData () {
@@ -49,7 +49,7 @@ export default {
           },
           {
             label: '删除',
-            permission: 'k8s_depolyments_delete',
+            permission: 'k8s_deployments_delete',
             action: () => {
               const requestParams = {
                 cluster: obj.clusterID,
