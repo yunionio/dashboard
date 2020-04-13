@@ -20,7 +20,7 @@ export default {
         minWidth: '200px',
       },
       isPublicTableColumn(),
-      getTimeTableColumn({ field: 'creationTimestamp', fromNow: true }),
+      getTimeTableColumn({ field: 'creationTimestamp', fromNow: true, sortable: true }),
     ]
   },
 }

@@ -63,8 +63,9 @@ export const k8sImageColumn = ({ field = 'containerImages', title = '镜像', it
     minWidth: 200,
     slots: {
       default: ({ row }, h) => {
+        if (!row[field] || !row[field].length) return '-'
         return row[field].map(v => {
-          return (<a-tag class="d-block text-truncate mb-1" style="max-width: 400px;" title={v[itemField]}>{ v[itemField] }</a-tag>)
+          return (<a-tag class="d-block text-truncate mb-1" style="max-width: 400px;" title={v[itemField]}>{v.name}: { v[itemField] }</a-tag>)
         })
       },
     },

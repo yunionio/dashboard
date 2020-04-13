@@ -18,6 +18,7 @@ export default {
         field: 'namespace',
         title: '命名空间',
         width: 120,
+        sortable: true,
       },
       {
         field: 'endpoints',
@@ -33,7 +34,7 @@ export default {
           },
         },
       },
-      getTimeTableColumn({ field: 'creationTimestamp', fromNow: true }),
+      getTimeTableColumn({ field: 'creationTimestamp', fromNow: true, sortable: true }),
     ]
   },
 }

@@ -19,6 +19,7 @@ export default {
         field: 'namespace',
         title: '命名空间',
         width: 120,
+        sortable: true,
       },
       k8sStatusColumn(),
       k8sLabelColumn(),
@@ -31,7 +32,7 @@ export default {
         },
       },
       k8sImageColumn(),
-      getTimeTableColumn({ field: 'creationTimestamp', fromNow: true }),
+      getTimeTableColumn({ field: 'creationTimestamp', fromNow: true, sortable: true }),
     ]
   },
 }

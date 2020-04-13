@@ -46,7 +46,7 @@ export default {
           title: 'URL地址',
         },
         isPublicTableColumn(),
-        getTimeTableColumn({ field: 'creationTimestamp', fromNow: true }),
+        getTimeTableColumn({ field: 'creationTimestamp', fromNow: true, sortable: true }),
       ],
     }
   },

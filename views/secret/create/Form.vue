@@ -93,7 +93,6 @@ export default {
             ],
           },
         ],
-
         server: [
           'server',
           {
@@ -168,6 +167,7 @@ export default {
             email: values.email,
             password: values.password,
             user: values.user,
+            server: values.server,
           }
         } else {
           params.type = 'yunion.io/ceph-csi'

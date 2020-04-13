@@ -16,6 +16,7 @@ export default {
         field: 'namespace',
         title: '命名空间',
         width: 200,
+        sortable: true,
       },
       {
         field: 'creationTimestamp',

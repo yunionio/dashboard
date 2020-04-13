@@ -47,6 +47,7 @@ export default {
         idKey: 'name',
         filterOptions: {
           name: getNameFilter(),
+          type: getNameFilter({ field: 'type', label: '类型' }),
         },
         responseData: this.responseData,
       }),
