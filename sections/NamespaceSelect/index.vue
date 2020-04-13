@@ -59,6 +59,7 @@ export default {
       const params = {
         cluster: this.cluster,
         limit: 0,
+        scope: this.$store.getters.scope,
       }
       if (!this.$store.getters.isAdminMode) {
         params.project = this.$store.getters.userInfo.projectId
