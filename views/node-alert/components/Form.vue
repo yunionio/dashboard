@@ -18,7 +18,7 @@
       </a-select>
     </a-form-item>
     <a-form-item label="阈值" v-bind="formItemLayout">
-      <a-input type="number" v-decorator="[
+      <a-input type="number" :min="0" v-decorator="[
           'threshold',
           {
             initialValue: fdInitailValue.threshold,
