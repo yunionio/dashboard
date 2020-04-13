@@ -213,7 +213,7 @@ export default {
       const params = {
         cloudregion_id: _.get(this.form.fd, 'cloudregion.key'),
       }
-      if (!params.region) return {}
+      if (!params.cloudregion_id) return {}
       return params
     },
     showSku () {
