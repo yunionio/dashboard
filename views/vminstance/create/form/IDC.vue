@@ -214,6 +214,7 @@ export default {
         cloudregion_id: _.get(this.form.fd, 'cloudregion.key'),
       }
       if (!params.cloudregion_id) return {}
+      if (this.form.fd.imageType === 'vmware') params.image_type = 'system'
       return params
     },
     showSku () {
