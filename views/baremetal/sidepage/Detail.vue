@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { ALL_STORAGE } from '@Compute/constants/index'
+// import { ALL_STORAGE } from '@Compute/constants/index'
 import {
   getCopyWithContentTableColumn,
   getBrandTableColumn,
@@ -41,11 +41,12 @@ export default {
   },
   computed: {
     diskInfos () {
-      const disksInfo = this.serverDetail.disks_info
+      const disksInfo = this.data.disks_info
       if (!disksInfo) return {}
       const dataDisk = {}
       const sysDisk = {}
       let image = '-'
+      let imageId
       let sysDisks = disksInfo.filter(v => v.disk_type === 'sys')
       if (sysDisks && sysDisks.length === 0) {
         sysDisks = disksInfo.filter(v => v.index === 0)
@@ -54,24 +55,29 @@ export default {
       if (sysDisks && sysDisks.length > 0) {
         const sysKey = sysDisks[0].storage_type
         image = sysDisks[0].image || '-'
+        imageId = sysDisks[0].image_id
         sysDisk[sysKey] = this._dealSize(sysDisks)
       }
       if (dataDisks && dataDisks.length > 0) {
-        for (const k in ALL_STORAGE) {
-          const e = ALL_STORAGE[k]
-          const sameType = dataDisks.filter(v => v.storage_type === e.value)
-          if (sameType && sameType.length) {
-            dataDisk[k] = this._dealSize(sameType)
-          }
-        }
+        const dataKey = dataDisks[0].storage_type
+        dataDisk[dataKey] = this._dealSize(dataDisks)
+        // for (let k in ALL_STORAGE) {
+        //   const e = ALL_STORAGE[k]
+        //   const sameType = dataDisks.filter(v => v.storage_type === e.value)
+        //   if (sameType && sameType.length) {
+        //     dataDisk[k] = this._dealSize(sameType)
+        //   }
+        // }
       }
       if (this.data.cdrom && dataDisks.length > 0) {
         image = dataDisks[0].image
+        imageId = dataDisks[0].image_id
       }
       return {
         sysDisk: this._diskStringify(sysDisk) || '-',
         dataDisk: this._diskStringify(dataDisk) || '-',
         image,
+        imageId,
       }
     },
     extraInfo () {
@@ -191,12 +197,17 @@ export default {
   methods: {
     _diskStringify (diskObj) {
       let str = ''
-      const storageArr = Object.values(ALL_STORAGE)
+      // const storageArr = Object.values(ALL_STORAGE)
       for (const k in diskObj) {
         const num = diskObj[k]
-        const disk = storageArr.find(v => v.value === k)
-        if (disk) {
-          str += `、${parseInt(num / 1024)}GB（${disk.label}）`
+        // const disk = storageArr.find(v => v.value === k)
+        // if (disk) {
+        //   str += `、${parseInt(num / 1024)}GB（裸金属}）`
+        // }
+        if (num < 0) {
+          str += `、全盘使用（裸金属）`
+        } else {
+          str += `、${parseInt(num / 1024)}GB（裸金属）`
         }
       }
       return str.slice(1)
