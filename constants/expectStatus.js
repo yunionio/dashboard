@@ -213,7 +213,7 @@ export default {
     danger: ['error', 'create_fail', 'prepare_fail', 'delete_fail', 'terminate_fail'],
   },
   k8s_resource: {
-    success: ['Running', 'Succeeded', 'Complete', 'Bound', 'complated'],
+    success: ['Running', 'Succeeded', 'Complete', 'Bound', 'complated', 'Completed'],
     danger: ['Failed', 'unBound'],
   },
   release: {
