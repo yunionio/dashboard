@@ -433,7 +433,13 @@ export default {
         images = this.images.cacheimagesList
       } else {
         if (this.imageType !== IMAGES_TYPE_MAP.snapshot.key) {
-          images = images.filter(item => item.disk_format && item.disk_format !== 'docker')
+          images = images.filter(item => {
+            let diskFormat = item.disk_format
+            if (!diskFormat && item.info.disk_format) {
+              diskFormat = item.info.disk_format
+            }
+            return diskFormat && diskFormat !== 'docker'
+          })
         }
       }
       let osOpts = []
