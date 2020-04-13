@@ -61,6 +61,8 @@ export const PERMISSION = {
   'k8s_releases_list': ['k8s', 'releases', 'list'],
   // 集群节点(导入)
   'k8s_k8sNode_list': ['k8s', 'k8s_nodes', 'list'],
+  // 存储类
+  'k8s_storageclasses_list': ['k8s', 'storageclasses', 'list'],
   // 命名空间
   'k8s_namespace_list': ['k8s', 'namespaces', 'list'],
   // rbacroles
@@ -309,6 +311,24 @@ export const PERMISSION = {
   'k8s_kubeclusters_perform_add_machines': ['k8s', 'kubeclusters', 'perform', 'add-machines'],
   'k8s_kubeclusters_get_kubeconfig': ['k8s', 'kubeclusters', 'get', 'kubeconfig'],
   'k8s_kubeclusters_delete': ['k8s', 'kubeclusters', 'delete'],
+  'k8s_nodes_perform_uncordon': ['k8s', 'nodes', 'perform', 'uncordon'],
+  'k8s_nodes_perform_cordon': ['k8s', 'nodes', 'perform', 'cordon'],
+  'k8s_nodes_update': ['k8s', 'nodes', 'update'],
+  'k8s_storageclasses_perform_set_default': ['k8s', 'storageclasses', 'perform', 'set-default'],
+  'k8s_storageclasses_update': ['k8s', 'storageclasses', 'update'],
+  'k8s_storageclasses_create': ['k8s', 'storageclasses', 'create'],
+  'k8s_storageclasses_delete': ['k8s', 'storageclasses', 'delete'],
+  'k8s_namespaces_update': ['k8s', 'namespaces', 'update'],
+  'k8s_namespaces_create': ['k8s', 'namespaces', 'create'],
+  'k8s_namespaces_delete': ['k8s', 'namespaces', 'delete'],
+  'k8s_rbacroles_update': ['k8s', 'rbacroles', 'update'],
+  'k8s_rbacroles_delete': ['k8s', 'rbacroles', 'delete'],
+  'k8s_rbacrolebindings_update': ['k8s', 'rbacrolebindings', 'update'],
+  'k8s_rbacrolebindings_delete': ['k8s', 'rbacrolebindings', 'delete'],
+  'k8s_serviceaccounts_update': ['k8s', 'serviceaccounts', 'update'],
+  'k8s_serviceaccounts_delete': ['k8s', 'serviceaccounts', 'delete'],
+  'k8s_kubecomponent_update': ['k8s', 'kubecomponent', 'update'],
+  'k8s_kubecomponent_create': ['k8s', 'kubecomponent', 'create'],
   'k8s_kubemachines_delete': ['k8s', 'kubemachines', 'delete'],
   /**
    * 负责均衡 相关操作
