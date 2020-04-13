@@ -109,6 +109,14 @@ export default {
       return ret
     },
   },
+  watch: {
+    hypervisor () {
+      this.imageType = this.mirrorTypeOptions[0].key
+      this.form.fc.setFieldsValue({
+        [this.decorator.imageType[0]]: this.mirrorTypeOptions[0].key,
+      })
+    },
+  },
   methods: {
     imageInput (image) {
       this.$emit('change', image)
