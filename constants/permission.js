@@ -561,6 +561,9 @@ export const PERMISSION = {
    * 策略
    */
   'policydefinitions_list': ['compute', 'policydefinitions', 'list'],
+  /** 优化建议 */
+  'suggestsysalerts_list': ['computed', 'suggestsysalerts', 'list'],
+  'suggestsysrules_list': ['computed', 'suggestsysrules', 'list'],
 }
 
 // 已声明权限的资源
