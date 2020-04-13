@@ -8,7 +8,7 @@
       </template>
       <a-form
         :form="form.fc">
-        <a-form-item label="域名" v-bind="formItemLayout" v-if="enableType('A/AAAA', 'CNAME', 'SRV')">
+        <a-form-item label="域名" v-bind="formItemLayout" v-if="enableType('A/AAAA', 'CNAME', 'SRV')" extra="请输入完整域名，否则该创建可能会无效">
           <a-input v-decorator="decorators.name" placeholder="请输入域名" />
         </a-form-item>
         <a-form-item label="域名" v-bind="formItemLayout" v-if="enableType('PTR')">
