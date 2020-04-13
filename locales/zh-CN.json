@@ -546,7 +546,8 @@
       "execution": "执行中",
       "succeed": "成功",
       "part_succeed": "部分成功",
-      "failed": "失败"
+      "failed": "失败",
+      "reject": "拒绝"
     },
     "servertemplate": {
       "ready": "可用",

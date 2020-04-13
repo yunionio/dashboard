@@ -66,9 +66,15 @@ export default {
       type: Boolean,
       default: true,
     },
+    isDefaultFetch: {
+      type: Boolean,
+      default: true,
+    },
   },
   created () {
-    this.fetchs()
+    if (this.isDefaultFetch) {
+      this.fetchs()
+    }
   },
   data () {
     return {
@@ -194,22 +200,31 @@ export default {
     },
     async fetchNetwork () {
       const PARAMS = await this.getNetworkParams()
+      if (this.types.indexOf('vpc') > -1 && !PARAMS.vpc) {
+        this.networkList = []
+        return false
+      }
       const MANAGER = new this.$Manager('networks', 'v2')
       this.networkLoading = true
       try {
         const { data = {} } = await MANAGER.list({ params: PARAMS })
-        this.networkList = data.data || []
-        this.networkLoading = false
-        if (this.vpcFetchChange) {
-          await this.vpcFetchChange(this.vpcList)
+        if (this.networkFetchChange) {
+          this.networkList = await this.networkFetchChange(data.data)
         } else {
+          this.networkList = (data.data || [])
+        }
+        if (this.defaultActiveFirstOption) {
           this.FC.setFieldsValue({
             network: !R.isEmpty(this.networkList) ? this.networkList[0].id : undefined,
           })
         }
+        if (this.networkFetchChange) {
+          await this.networkFetchChange(this.networkList)
+        }
       } catch (err) {
-        this.networkLoading = false
         throw err
+      } finally {
+        this.networkLoading = false
       }
     },
     RenderNetwork () {

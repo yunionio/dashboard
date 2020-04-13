@@ -13,6 +13,9 @@ export default {
     vm: {
       type: Object,
     },
+    list: {
+      type: Object,
+    },
     name: {
       type: String,
     },
