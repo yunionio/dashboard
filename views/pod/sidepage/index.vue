@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     title="容器组(Pod)"
-    icon="res-group"
+    icon="res-k8s-pod"
     :res-name="detailData.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"

@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     title="有状态(Statefulset)"
-    icon="res-group"
+    icon="res-k8s-statefulset"
     :res-name="detailData.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"
@@ -12,11 +12,14 @@
     <template v-slot:actions>
       <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :res-id="data.id" :data="detailData" :onManager="onManager" :getParams="getParams" />
+    <component :is="params.windowData.currentTab" :res-id="data.id" :data="detailData" :onManager="onManager" resource="statefulsets" :responseData="podResponseData" />
   </base-side-page>
 </template>
 
 <script>
+import SourceInformationSidepage from '@K8S/sections/SourceInformationSidepage'
+import EventsSidepage from '@K8S/sections/EventsSidepage'
+import PodList from '@K8S/views/pod/components/List'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import Detail from './Detail'
@@ -29,18 +32,28 @@ export default {
   components: {
     Actions,
     Detail,
+    SourceInformationSidepage,
+    EventsSidepage,
+    PodList,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
         { label: '详情', key: 'detail' },
+        { label: '容器组', key: 'pod-list' },
+        { label: '事件', key: 'events-sidepage' },
+        { label: '源信息', key: 'source-information-sidepage' },
       ],
     }
   },
   computed: {
-    getParams () {
-      return null
+    podResponseData () {
+      const data = this.detailData.pods || []
+      return {
+        data,
+        total: data.length,
+      }
     },
   },
 }

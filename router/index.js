@@ -21,6 +21,21 @@ import Job from '@K8S/views/job'
 import K8sJobCreate from '@K8S/views/job/create'
 import CronJob from '@K8S/views/cronjob'
 import K8sCronJobCreate from '@K8S/views/cronjob/create'
+import Persistentvolumeclaim from '@K8S/views/persistentvolumeclaim'
+import K8sPersistentvolumeclaimCreate from '@K8S/views/persistentvolumeclaim/create'
+import Service from '@K8S/views/service'
+import K8sServiceCreate from '@K8S/views/service/create'
+import Ingress from '@K8S/views/ingress'
+import K8sIngressCreate from '@K8S/views/ingress/create'
+import Configmap from '@K8S/views/configmap'
+import K8sConfigmapCreate from '@K8S/views/configmap/create'
+import Secret from '@K8S/views/secret'
+import K8sSecretCreate from '@K8S/views/secret/create'
+import Release from '@K8S/views/release'
+import K8sReleaseUpdate from '@K8S/views/release/update'
+import Chart from '@K8S/views/chart'
+import K8sChartCreate from '@K8S/views/chart/create'
+import Repo from '@K8S/views/repo'
 import Layout from '@/layouts/RouterView'
 
 export default {
@@ -127,6 +142,182 @@ export default {
               name: 'K8sPodList',
               path: '',
               component: Pod,
+            },
+          ],
+        },
+        {
+          path: '/k8s-persistentvolumeclaim',
+          meta: {
+            label: '存储声明',
+            permission: 'k8s_persistentvolumeclaims_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'K8sPersistentvolumeclaimList',
+              path: '',
+              component: Persistentvolumeclaim,
+            },
+            {
+              name: 'K8sPersistentvolumeclaimCreate',
+              path: 'create',
+              component: K8sPersistentvolumeclaimCreate,
+            },
+          ],
+        },
+        {
+          path: '/k8s-release',
+          meta: {
+            label: '发布',
+            permission: 'k8s_releases_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'K8sReleaseList',
+              path: '',
+              component: Release,
+            },
+            {
+              name: 'K8sReleaseUpdate',
+              path: 'update/:name',
+              component: K8sReleaseUpdate,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      meta: {
+        label: '服务与负载均衡',
+      },
+      submenus: [
+        {
+          path: '/k8s-service',
+          meta: {
+            label: '服务',
+            permission: 'k8s_services_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'K8sServiceList',
+              path: '',
+              component: Service,
+            },
+            {
+              name: 'K8sServiceCreate',
+              path: 'create',
+              component: K8sServiceCreate,
+            },
+          ],
+        },
+        {
+          path: '/k8s-ingress',
+          meta: {
+            label: '路由',
+            permission: 'k8s_ingresses_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'K8sIngressList',
+              path: '',
+              component: Ingress,
+            },
+            {
+              name: 'K8sIngressCreate',
+              path: 'create',
+              component: K8sIngressCreate,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      meta: {
+        label: '应用配置',
+      },
+      submenus: [
+        {
+          path: '/k8s-configmap',
+          meta: {
+            label: '配置项',
+            permission: 'k8s_configmaps_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'K8sConfigmapList',
+              path: '',
+              component: Configmap,
+            },
+            {
+              name: 'K8sConfigmapCreate',
+              path: 'create',
+              component: K8sConfigmapCreate,
+            },
+          ],
+        },
+        {
+          path: '/k8s-secret',
+          meta: {
+            label: '保密字典',
+            permission: 'k8s_secrets_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'K8sSecretList',
+              path: '',
+              component: Secret,
+            },
+            {
+              name: 'K8sSecretCreate',
+              path: 'create',
+              component: K8sSecretCreate,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      meta: {
+        label: '市场',
+      },
+      submenus: [
+        {
+          path: '/k8s-chart',
+          meta: {
+            label: '应用目录',
+            permission: 'k8s_charts_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'K8sChartList',
+              path: '',
+              component: Chart,
+            },
+            {
+              name: 'K8sChartCreate',
+              path: 'create',
+              component: K8sChartCreate,
+            },
+          ],
+        },
+        {
+          path: '/k8s-repo',
+          meta: {
+            label: 'Helm仓库地址',
+            permission: 'k8s_repos_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'K8sRepoList',
+              path: '',
+              component: Repo,
             },
           ],
         },

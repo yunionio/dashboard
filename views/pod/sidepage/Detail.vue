@@ -39,7 +39,7 @@ export default {
             },
           },
         },
-        k8sStatusColumn('warnings'),
+        k8sStatusColumn({ path: 'warnings' }),
         k8sLabelColumn(),
         {
           field: 'cluster',

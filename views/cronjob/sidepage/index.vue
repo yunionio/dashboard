@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     title="定时任务(CronJob)"
-    icon="res-group"
+    icon="res-k8s-cronjob"
     :res-name="detailData.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"

@@ -1,5 +1,5 @@
 import { k8sStatusColumn, k8sImageColumn } from '@K8S/utils/tableColumns'
-import { getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
+import { getNameDescriptionTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   created () {
@@ -30,14 +30,7 @@ export default {
         },
       },
       k8sImageColumn(),
-      {
-        field: 'creationTimestamp',
-        title: '创建于',
-        width: 80,
-        formatter: ({ row }) => {
-          return this.$moment(row.creationTimestamp).fromNow()
-        },
-      },
+      getTimeTableColumn({ field: 'creationTimestamp', fromNow: true }),
     ]
   },
 }

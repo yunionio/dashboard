@@ -19,6 +19,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import { getNameFilter } from '@/utils/common/tableFilter'
 
 export default {
   name: 'K8SDeploymentList',
@@ -32,6 +33,10 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    responseData: {
+      type: Object,
+      validator: val => R.is(Array, val.data),
+    },
   },
   data () {
     return {
@@ -42,13 +47,12 @@ export default {
         getParams: this.getParams,
         idKey: 'name',
         filterOptions: {
-          name: {
-            label: '名称',
-          },
+          name: getNameFilter(),
         },
         steadyStatus: {
           status: Object.values(expectStatus.k8s_resource).flat(),
         },
+        responseData: this.responseData,
       }),
       groupActions: [
         {

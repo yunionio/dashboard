@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="新建任务(Job)" />
+    <page-header title="新建定时任务(CronJob)" />
     <page-body>
       <form-create ref="FormCreateRef" />
     </page-body>
