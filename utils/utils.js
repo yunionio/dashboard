@@ -1,4 +1,5 @@
 import * as R from 'ramda'
+import _ from 'lodash'
 import i18n from '@/locales'
 
 let tIndex = 0
@@ -375,22 +376,22 @@ export const formatSeconds = value => {
   let theTime3 = 0 // 天
   let theTime4 = 0 // 月
   let theTime5 = 0 // 年
-  if (theTime > 60) {
+  if (theTime >= 60) {
     theTime1 = parseInt(theTime / 60)
     theTime = parseInt(theTime % 60)
-    if (theTime1 > 60) {
+    if (theTime1 >= 60) {
       theTime2 = parseInt(theTime1 / 60)
       theTime1 = parseInt(theTime1 % 60)
-      if (theTime2 > 24) {
+      if (theTime2 >= 24) {
         // 大于24小时
         theTime3 = parseInt(theTime2 / 24)
         theTime2 = parseInt(theTime2 % 24)
         // 大于30天
-        if (theTime3 > 30) {
+        if (theTime3 >= 30) {
           theTime4 = parseInt(theTime3 / 30)
           theTime3 = parseInt(theTime3 % 30)
           // 大于12月
-          if (theTime4 > 12) {
+          if (theTime4 >= 12) {
             theTime5 = parseInt(theTime4 / 12)
             theTime4 = parseInt(theTime4 % 12)
           }
@@ -437,5 +438,33 @@ export const formatSeconds = value => {
     str,
     obj,
     arr,
+  }
+}
+
+/**
+ * @description 配合 <el-autocomplete /> 使用
+ * @param {Object} obj e.g. { a: { a1: { b: 'bbb', c: 'ccc' } } }
+ * @param {String} path e.g. a.a1
+ * @returns e.g. ['a.a1.b', 'a.a1.c']
+ */
+export const objAutoComplete = (obj, path) => {
+  if (R.isEmpty(obj) || !path) return []
+  const _genObjKeys = (resObj, objKeyPath, prefixPath = '') => {
+    const keys = Object.keys(resObj).map(val => prefixPath + val)
+    const opts = keys.filter(val => val.toLowerCase().includes(objKeyPath.toLowerCase()))
+    return opts
+  }
+  const objKeys = path.split('.')
+  if (objKeys.length === 1) {
+    return _genObjKeys(obj, path)
+  } else if (objKeys.length > 1) {
+    const dropLastArr = R.dropLast(1, objKeys)
+    const lastPath = R.last(objKeys)
+    const readyPath = dropLastArr.join('.')
+    const readyValue = _.get(obj, readyPath)
+    if (readyValue && R.is(Object, readyValue)) {
+      return _genObjKeys(readyValue, lastPath, `${readyPath}.`)
+    }
+    return []
   }
 }

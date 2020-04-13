@@ -236,6 +236,13 @@ export default {
       type: Boolean,
       default: true,
     },
+    showName: {
+      type: Boolean,
+      default: true,
+    },
+    hiddenKeys: {
+      type: Array,
+    },
     resource: String,
   },
   computed: {
@@ -262,6 +269,18 @@ export default {
       }
       let baseInfo = defaultTopBaseInfo.concat(this.baseInfo).concat(defaultLastBaseInfo)
       baseInfo = R.uniqBy(item => item.field && item.title, baseInfo)
+        .filter(child => {
+          if (this.hiddenKeys && this.hiddenKeys.length) {
+            return !this.hiddenKeys.includes(child.field)
+          } else {
+            if (!R.isNil(child.hidden)) {
+              if (R.is(Function, child.hidden)) {
+                return child.hidden(this.data)
+              }
+            }
+            return !child.hidden
+          }
+        })
       return baseInfo
     },
   },
@@ -303,7 +322,7 @@ export default {
       let children = items.map(item => {
         return this.renderItem(h, item)
       })
-      if (type === 'base-info') {
+      if (type === 'base-info' && this.showName) {
         children = R.insert(1, this.renderName(h), children)
         if (this.showDesc) {
           children.push(this.renderDesc(h))

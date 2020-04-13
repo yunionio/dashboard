@@ -212,9 +212,14 @@ export default {
     success: ['running'],
     danger: ['error', 'create_fail', 'prepare_fail', 'delete_fail', 'terminate_fail'],
   },
-  deployment: {
-    success: ['Running', 'Succeeded'],
-    danger: ['Failed'],
+  k8s_resource: {
+    success: ['Running', 'Succeeded', 'Complete', 'Bound', 'complated'],
+    danger: ['Failed', 'unBound'],
+  },
+  release: {
+    success: ['deployed'],
+    info: ['superseded'],
+    danger: ['uninstalled', 'failed'],
   },
   tenant: {
     info: ['certificating', 'uncertified', 'unknown'],
