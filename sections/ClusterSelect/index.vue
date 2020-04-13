@@ -50,7 +50,7 @@ export default {
         params: {
           limit: 0,
           'filter.0': 'status.equals(running)',
-          scope: this.$store.getter.scope,
+          scope: this.$store.getters.scope,
         },
       }).then(({ data: { data = [] } }) => {
         data = data.sort((a, b) => b.update_version - a.update_version)
