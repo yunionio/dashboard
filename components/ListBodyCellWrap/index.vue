@@ -75,7 +75,7 @@ export default {
       default: false,
     },
     formRules: {
-      type: Array,
+      type: [Array, Function],
     },
     titleClass: String,
     addLock: Boolean,
@@ -132,6 +132,9 @@ export default {
       return false
     },
     formRulesComputer () {
+      if (R.is(Function, this.formRules)) {
+        return this.formRules(this.row)
+      }
       if (this.formRules && this.formRules.length) {
         return this.formRules
       }
