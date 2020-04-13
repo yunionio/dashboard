@@ -31,6 +31,7 @@
             :params="userParams"
             :mapper="userMapper"
             :label-format="labelFormat"
+            idKey="name"
             :select-props="{ placeholder: '需要选择有管理员权限的用户' }"
             style="width: 320px" />
         </a-form-item>
@@ -247,6 +248,7 @@ export default {
       deploymentHost: '',
       deployMethod: '',
       ansiblePlaybookId: '',
+      userData: [],
     }
   },
   computed: {
@@ -258,6 +260,7 @@ export default {
   methods: {
     userMapper (data) {
       data = data.filter(item => item.is_system_account)
+      this.userData = data
       return data
     },
     labelFormat (item) {
@@ -358,9 +361,17 @@ export default {
         let values = await this.form.fc.validateFields()
         values['repo_sslverify'] = values['repo_sslverify'] ? 1 : 0
         const { hostName, ip, host, proj, pass, server, user } = values
+        let name = ''
+        if (hostName && hostName === 'host') {
+          name = `${hostName}:${host}`
+        } else if (hostName && hostName === 'server') {
+          name = `${hostName}:${server}`
+        } else {
+          name = ip
+        }
         const params = {
           host: {
-            name: hostName ? `${hostName}:${host}` : ip,
+            name,
             vars: {
               host: host,
               pass,
