@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import ClusterSelect from '@K8S/sections/ClusterSelect'
 import NamespaceSelect from '@K8S/sections/NamespaceSelect'
 
@@ -57,6 +58,7 @@ export default {
   methods: {
     paramsChange () {
       const params = {
+        ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
         details: true,
         cluster: this.cluster,
       }

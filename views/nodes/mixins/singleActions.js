@@ -37,6 +37,25 @@ export default {
           }
         },
       },
+      {
+        label: '查看/编辑',
+        permission: 'k8s_nodes_update',
+        action: async obj => {
+          const manager = new this.$Manager('_raw/k8s_nodes', 'v1')
+          async function fetchData () {
+            const { cluster, namespace } = obj
+            const { data } = await manager.getSpecific({ id: obj.name, spec: 'yaml', params: { cluster, namespace } })
+            return data
+          }
+          const configText = await fetchData()
+          this.createDialog('K8SEditYamlDialog', {
+            data: [obj],
+            manager,
+            refresh: this.refresh,
+            configText,
+          })
+        },
+      },
     ]
   },
 }

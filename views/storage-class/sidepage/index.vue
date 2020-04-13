@@ -1,8 +1,8 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="节点"
-    icon="res-k8s-node"
+    title="存储类(Storageclasses)"
+    icon="res-k8s-storageclass"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
@@ -18,7 +18,7 @@
     <component
       :is="params.windowData.currentTab"
       :data="detailData"
-      resource="k8s_nodes"
+      resource="storageclasses"
       :serverColumns="columns"
       :res-id="data.name"
       :getParams="getParams"
@@ -30,22 +30,20 @@
 </template>
 
 <script>
-import StatusSidepage from '@K8S/sections/StatusSidepage'
 import EventsSidepage from '@K8S/sections/EventsSidepage'
 import SourceInformationSidepage from '@K8S/sections/SourceInformationSidepage'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
-import K8sNodeDetail from './Detail'
+import K8sStorageclassDetail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
 
 export default {
-  name: 'K8SNodeSidePage',
+  name: 'K8SStorageclassSidePage',
   components: {
     Actions,
-    K8sNodeDetail,
-    StatusSidepage,
+    K8sStorageclassDetail,
     EventsSidepage,
     SourceInformationSidepage,
   },
@@ -53,8 +51,7 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'k8s-node-detail' },
-        { label: '状态', key: 'status-sidepage' },
+        { label: '详情', key: 'k8s-storageclass-detail' },
         { label: '事件', key: 'events-sidepage' },
         { label: '源信息', key: 'source-information-sidepage' },
       ],
