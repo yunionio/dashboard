@@ -3,30 +3,10 @@ import SecretVerify from '@scope/views/auth/SecretVerify'
 import BindSecret from '@scope/views/auth/BindSecret'
 import SetSecretQuestion from '@scope/views/auth/SetSecretQuestion'
 import ResetSecretQuestion from '@scope/views/auth/ResetSecretQuestion'
-import Guide from '@scope/views/guide'
-import GuideCreate from '@scope/views/guide/create'
 import AuthLayout from '@/layouts/Auth'
-import Layout from '@/layouts/RouterView'
 
 const routes = [
   { name: 'Home', path: '/', redirect: '/dashboard' },
-  {
-    name: 'Guide',
-    path: '/guide',
-    component: Layout,
-    children: [
-      {
-        path: '',
-        name: 'Guide',
-        component: Guide,
-      },
-      {
-        path: 'create',
-        name: 'GuideCreate',
-        component: GuideCreate,
-      },
-    ],
-  },
   {
     name: 'Auth',
     path: '/auth',
