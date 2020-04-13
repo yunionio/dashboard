@@ -34,14 +34,14 @@ export default {
             if (row.access_ip) {
               cellWrap.push(
                 <div class="d-flex">
-                 管理IP：<list-body-cell-wrap row={row} field="access_ip" copy />
+                  <list-body-cell-wrap row={row} field="access_ip" copy />(管理)
                 </div>
               )
             }
             if (row.ipmi_ip) {
               cellWrap.push(
                 <div class="d-flex">
-                  带外IP：<list-body-cell-wrap row={row} field="ipmi_ip" copy />
+                  <list-body-cell-wrap row={row} field="ipmi_ip" copy />(带外)
                 </div>
               )
             }
