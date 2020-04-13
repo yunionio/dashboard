@@ -49,12 +49,22 @@ export default {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
-        await this.params.onManager('update', {
-          id: this.params.data[0].id,
-          managerArgs: {
-            data: values,
-          },
-        })
+        const ids = this.params.data.map(item => item.id)
+        if (ids.length > 1) {
+          await this.params.onManager('batchUpdate', {
+            ids,
+            managerArgs: {
+              data: values,
+            },
+          })
+        } else {
+          await this.params.onManager('update', {
+            id: ids[0],
+            managerArgs: {
+              data: values,
+            },
+          })
+        }
         this.cancelDialog()
         this.params.refresh()
       } catch (error) {

@@ -134,6 +134,7 @@ export default {
             },
             {
               label: '设置代理',
+              permission: 'proxysettings_update',
               action: () => {
                 this.createDialog('UpdateProxySettingDialog', {
                   title: '设置代理',

@@ -29,7 +29,7 @@ export default {
   computed: {
     decorator () {
       return [
-        'proxy_setting',
+        'proxy_setting_id',
         {
           initialValue: this.initialValue,
         },
@@ -49,7 +49,7 @@ export default {
       const manager = new this.$Manager('proxysettings')
       const params = {
         limit: 0,
-        usable: true,
+        scope: this.$store.getters.scope,
       }
       this.loading = true
       try {

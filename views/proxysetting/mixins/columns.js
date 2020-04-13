@@ -1,7 +1,7 @@
 import {
   getNameDescriptionTableColumn,
   getCopyWithContentTableColumn,
-  getProjectTableColumn,
+  getProjectDomainTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -34,7 +34,7 @@ export default {
         field: 'no_proxy',
         title: '不走代理地址',
       }),
-      getProjectTableColumn(),
+      getProjectDomainTableColumn(),
     ]
   },
 }

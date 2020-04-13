@@ -1,8 +1,8 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">更新</div>
+    <div slot="header">修改属性</div>
     <div slot="body">
-      <dialog-selected-tips name="代理" :count="params.data.length" action="更新代理" />
+      <dialog-selected-tips name="代理" :count="params.data.length" action="修改属性" />
       <dialog-table class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc"
@@ -64,8 +64,9 @@ export default {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
-        await this.params.onManager('update', {
-          id: this.params.data[0].id,
+        const ids = this.params.data.map(item => item.id)
+        await this.params.onManager('batchUpdate', {
+          ids,
           managerArgs: {
             data: values,
           },
@@ -73,8 +74,9 @@ export default {
         this.cancelDialog()
       } catch (err) {
         throw err
+      } finally {
+        this.loading = false
       }
-      this.loading = false
     },
   },
 }
