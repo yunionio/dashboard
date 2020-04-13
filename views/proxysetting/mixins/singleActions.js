@@ -21,7 +21,8 @@ export default {
           this.createDialog('DeleteResDialog', {
             data: [row],
             columns: this.columns,
-            title: '删除代理',
+            title: '删除',
+            name: '代理',
             onManager: this.onManager,
           })
         },

@@ -27,7 +27,6 @@
 <script>
 import CommonFormItems from '../components/CommonFormItems'
 import DomainSelect from '@/sections/DomainSelect'
-import { isRequired } from '@/utils/validate'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import TestButton from '@/sections/TestButton'
@@ -63,23 +62,8 @@ export default {
           'project_domain',
           {
             initialValue: this.projectDomainInitialValue,
-          },
-        ],
-        domain: [
-          'domain',
-          {
-            initialValue: this.$store.getters.userInfo.projectDomainId,
             rules: [
-              { validator: isRequired(), message: this.$t('rules.domain'), trigger: 'change' },
-            ],
-          },
-        ],
-        project: [
-          'project',
-          {
-            initialValue: this.$store.getters.userInfo.projectId,
-            rules: [
-              { validator: isRequired(), message: this.$t('rules.project'), trigger: 'change' },
+              { required: true, message: `请选择${this.$t('dictionary.domain')}` },
             ],
           },
         ],
