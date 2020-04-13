@@ -24,7 +24,7 @@ import ClusterSelect from '@K8S/sections/ClusterSelect'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'ServicecatalogList',
+  name: 'KubeComponentList',
   components: {
     ClusterSelect,
   },

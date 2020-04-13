@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     title="节点"
-    icon="res-vminstance"
+    icon="res-k8s-node"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"

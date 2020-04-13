@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     title="角色(RbacRole)"
-    icon="res-vminstance"
+    icon="res-k8s-rbacrole"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"

@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     title="存储类(Storageclasses)"
-    icon="res-vminstance"
+    icon="res-k8s-storageclass"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"

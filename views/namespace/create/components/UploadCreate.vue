@@ -37,7 +37,7 @@ import 'codemirror/theme/material.css'
 import ClusterSelect from '@K8S/sections/ClusterSelect'
 
 export default {
-  name: 'FormCreate',
+  name: 'UpdateCreate',
   components: {
     ClusterSelect,
   },

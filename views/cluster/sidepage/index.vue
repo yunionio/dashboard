@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     title="集群"
-    icon="res-vminstance"
+    icon="res-k8s-kubecluster"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"

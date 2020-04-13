@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     title="角色绑定(RbacRoleBinding)"
-    icon="res-vminstance"
+    icon="res-k8s-serviceaccount"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"

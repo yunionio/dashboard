@@ -11,7 +11,7 @@
 import K8sServiceAccountList from './components/List'
 
 export default {
-  name: 'K8SRbacRoleIndex',
+  name: 'K8sServiceAccountIndex',
   components: {
     K8sServiceAccountList,
   },

@@ -20,7 +20,7 @@ import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 
 export default {
-  name: 'K8SNodeList',
+  name: 'K8sStorageclassesList',
   components: {
     ClusterNamespace,
   },

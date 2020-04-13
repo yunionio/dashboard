@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     title="命名空间(Namespace)"
-    icon="res-vminstance"
+    icon="res-k8s-namespace"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
