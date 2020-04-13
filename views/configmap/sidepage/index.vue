@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     title="配置项(Configmap)"
-    icon="res-group"
+    icon="res-k8s-configmap"
     :res-name="detailData.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"

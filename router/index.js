@@ -32,7 +32,6 @@ import K8sConfigmapCreate from '@K8S/views/configmap/create'
 import Secret from '@K8S/views/secret'
 import K8sSecretCreate from '@K8S/views/secret/create'
 import Release from '@K8S/views/release'
-import K8sReleaseCreate from '@K8S/views/release/create'
 import K8sReleaseUpdate from '@K8S/views/release/update'
 import Chart from '@K8S/views/chart'
 import K8sChartCreate from '@K8S/views/chart/create'
@@ -178,11 +177,6 @@ export default {
               name: 'K8sReleaseList',
               path: '',
               component: Release,
-            },
-            {
-              name: 'K8sReleaseCreate',
-              path: 'create',
-              component: K8sReleaseCreate,
             },
             {
               name: 'K8sReleaseUpdate',

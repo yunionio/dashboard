@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     title="无状态(Deployment)"
-    icon="res-group"
+    icon="res-k8s-deployment"
     :res-name="detailData.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"

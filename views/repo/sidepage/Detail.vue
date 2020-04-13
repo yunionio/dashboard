@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { isPublicTableColumn } from '@/utils/common/tableColumn'
+import { isPublicTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -46,14 +46,7 @@ export default {
           title: 'URL地址',
         },
         isPublicTableColumn(),
-        {
-          field: 'created_at',
-          title: '创建于',
-          width: 80,
-          formatter: ({ row }) => {
-            return this.$moment(row.creationTimestamp).fromNow()
-          },
-        },
+        getTimeTableColumn({ field: 'creationTimestamp', fromNow: true }),
       ],
     }
   },

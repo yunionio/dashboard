@@ -1,4 +1,4 @@
-import { getNameDescriptionTableColumn, isPublicTableColumn } from '@/utils/common/tableColumn'
+import { getNameDescriptionTableColumn, isPublicTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   created () {
@@ -20,14 +20,7 @@ export default {
         minWidth: '200px',
       },
       isPublicTableColumn(),
-      {
-        field: 'created_at',
-        title: '创建于',
-        width: 80,
-        formatter: ({ row }) => {
-          return this.$moment(row.creationTimestamp).fromNow()
-        },
-      },
+      getTimeTableColumn({ field: 'creationTimestamp', fromNow: true }),
     ]
   },
 }

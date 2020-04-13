@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     title="发布(Release)"
-    icon="res-group"
+    icon="res-k8s-release"
     :res-name="detailData.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"

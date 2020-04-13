@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     title="保密字典(Secret)"
-    icon="res-group"
+    icon="res-k8s-secret"
     :res-name="detailData.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"

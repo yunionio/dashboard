@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     title="任务(Job)"
-    icon="res-group"
+    icon="res-k8s-job"
     :res-name="detailData.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"

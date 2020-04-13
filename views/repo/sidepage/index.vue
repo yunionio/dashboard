@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     title="存储声明(Persistentvolumeclaim)"
-    icon="res-group"
+    icon="res-k8s-repo"
     :res-name="detailData.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"

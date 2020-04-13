@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     title="路由(Ingress)"
-    icon="res-group"
+    icon="res-k8s-ingress"
     :res-name="detailData.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"

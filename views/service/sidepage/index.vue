@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     title="服务(Service)"
-    icon="res-group"
+    icon="res-k8s-service"
     :res-name="detailData.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"
