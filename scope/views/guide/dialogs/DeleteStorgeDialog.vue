@@ -1,0 +1,46 @@
+<template>
+  <base-dialog @cancel="cancelDialog">
+    <div slot="header">{{ params.title }}</div>
+    <div slot="body">
+      <dialog-selected-tips :count="params.data.length" :action="this.params.title" :name="this.params.name" />
+      <dialog-table v-if="params.columns && params.columns.length" :data="params.data" :columns="params.columns.slice(0, 3)" />
+    </div>
+    <div slot="footer">
+      <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t("dialog.ok") }}</a-button>
+      <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
+    </div>
+  </base-dialog>
+</template>
+
+<script>
+import DialogMixin from '@/mixins/dialog'
+import WindowsMixin from '@/mixins/windows'
+
+export default {
+  name: 'GuideDeleteStorageDialog',
+  mixins: [DialogMixin, WindowsMixin],
+  data () {
+    return {
+      loading: false,
+    }
+  },
+  computed: {
+  },
+  methods: {
+    async handleConfirm () {
+      this.loading = true
+      const { manager, data, success } = this.params
+      try {
+        await manager.delete({
+          id: data[0].id,
+        })
+        success && success()
+        this.cancelDialog()
+        this.$message.success('操作成功')
+      } finally {
+        this.loading = false
+      }
+    },
+  },
+}
+</script>
