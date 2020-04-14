@@ -3655,5 +3655,16 @@ export default {
   },
   "PolicyDefinitionError": {
     "zh-CN": "策略错误",
+  },
+  "TooManyFailedAttempts": {
+    "zh-CN": "失败次数过多",
+    "details": {
+      "authUserByIdentityV3: Authenticate: user locked: TooManyFailedAttempts": {
+        "zh-CN": {
+          "fields": {},
+          "message": "账号已被锁定，请联系管理员"
+        }
+      }
+    }
   }
 }
