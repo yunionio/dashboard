@@ -209,7 +209,8 @@ export default {
         await this.form.fc.validateFields()
         await this.doCreateSnapshotPolicySubmit()
         this.loading = false
-        this.params.refresh()
+        this.params.refresh && this.params.refresh()
+        this.params.success && this.params.success()
         this.cancelDialog()
       } catch (error) {
         this.loading = false

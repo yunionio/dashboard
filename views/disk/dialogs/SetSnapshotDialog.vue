@@ -21,7 +21,8 @@
               </a-col>
               <a-col :span="12">
                 <a-icon type="sync" class="mr-1" @click="refresh" />
-                <router-link target="_blank" :to="{ path: '/snapshotpolicy' }" style="color: #409EFF;">创建自定快照策略</router-link>
+                <!-- <router-link target="_blank" :to="{ path: '/snapshotpolicy' }" style="color: #409EFF;">创建自定快照策略</router-link> -->
+                <dialog-trigger :vm="params.vm" name="创建自定义快照策略" value="CreateSnapshotPolicyDialog" resource="snapshotpolicies" @success="successCallback" />
               </a-col>
             </a-row>
           </a-form-item>
@@ -216,6 +217,10 @@ export default {
         ret = `${selectItem.retention_days}天`
       }
       this.dayTips = ret
+    },
+    async successCallback () {
+      await this.fetchSnaphotpolicy()
+      this.form.fc.setFieldsValue({ snapshotpolicy: this.snapshotpolicyOptions[0].id })
     },
   },
 }
