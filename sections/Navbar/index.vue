@@ -92,7 +92,7 @@
     <!-- 帮助 -->
     <help-popover class="navbar-item" />
     <!-- 用户 -->
-    <user-popover class="navbar-item" />
+    <slot name="userPopover" />
     <license-status class="licenseStatus" />
     <!-- 全局导航 -->
     <a-drawer
@@ -116,7 +116,6 @@ import { Base64 } from 'js-base64'
 import { mapGetters } from 'vuex'
 import LicenseStatus from '../LicenseStatus'
 import OneCloudMap from '../OneCloudMap'
-import UserPopover from '../../../scope/views/components/UserPopover'
 import NotifyPopover from './components/NotifyPopover'
 import WorkOrderPopover from './components/WorkOrderPopover'
 import HelpPopover from './components/HelpPopover'
@@ -129,7 +128,6 @@ export default {
     NotifyPopover,
     WorkOrderPopover,
     HelpPopover,
-    UserPopover,
     LicenseStatus,
     GlobalSearch,
     OneCloudMap,
