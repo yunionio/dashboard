@@ -32,10 +32,6 @@ export default {
       type: Object,
       default: () => ({}),
     },
-    responseData: {
-      type: Object,
-      validator: val => R.is(Array, val.data),
-    },
   },
   data () {
     return {
@@ -48,7 +44,6 @@ export default {
         filterOptions: {
           name: getNameFilter(),
         },
-        responseData: this.responseData,
       }),
       groupActions: [
         {

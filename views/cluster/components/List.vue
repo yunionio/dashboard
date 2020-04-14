@@ -41,7 +41,6 @@ export default {
         steadyStatus: {
           status: Object.values(expectStatus.kubecluster).flat(),
         },
-        responseData: this.responseData,
       }),
       groupActions: [
         {
