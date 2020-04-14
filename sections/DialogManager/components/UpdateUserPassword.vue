@@ -100,7 +100,7 @@ export default {
     this.manager = null
   },
   created () {
-    this.manager = new this.$Manager('user', 'v1')
+    this.manager = new this.$Manager('auth', 'v1')
   },
   methods: {
     validateForm () {
@@ -115,7 +115,7 @@ export default {
       })
     },
     doUpdatePassword (values) {
-      return this.manager.performAction({
+      return this.manager.performClassAction({
         action: 'password',
         data: values,
       })
