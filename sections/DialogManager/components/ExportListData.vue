@@ -23,8 +23,8 @@
                 v-for="item of exportOptionItems"
                 :span="6"
                 :key="item.key"
-                class="mb-2">
-                <a-checkbox :value="item.key">{{ item.label }}</a-checkbox>
+                class="mb-2 checkbox-item">
+                <a-checkbox :value="item.key"><span :title="item.label">{{ item.label }}</span></a-checkbox>
               </a-col>
             </a-row>
           </a-checkbox-group>
@@ -200,3 +200,23 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.checkbox-item {
+  ::v-deep {
+    .ant-checkbox-wrapper {
+      display: flex;
+      align-items: center;
+      .ant-checkbox {
+        margin-top: 3px;
+        & + span {
+          flex: 1;
+          overflow: hidden;
+          text-overflow:ellipsis;
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+}
+</style>

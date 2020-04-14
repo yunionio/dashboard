@@ -394,9 +394,10 @@ export const getPublicScopeTableColumn = ({
     field,
     showOverflow: 'title',
     width: 110,
-    formatter: ({ cellValue }) => {
-      const i18nKey = `publicScope.${cellValue}`
-      return i18n.te(i18nKey) ? i18n.t(i18nKey) : cellValue
+    formatter: ({ row }) => {
+      if (!row.is_public) return '不共享'
+      const i18nKey = `publicScope.${row.public_scope}`
+      return i18n.te(i18nKey) ? i18n.t(i18nKey) : row.public_scope
     },
   }
 }
