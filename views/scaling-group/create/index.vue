@@ -62,7 +62,10 @@
       <a-form-item required label="负载均衡">
           <a-radio-group v-model="isLoadbalancer">
             <a-radio-button :value="false">暂不绑定</a-radio-button>
-            <a-radio-button :value="true">绑定</a-radio-button>
+            <a-tooltip v-if="form.fd.brand === 'Azure'" placement="top" title="Azure平台暂不支持此操作">
+              <a-radio-button :disabled="true" :value="true">绑定</a-radio-button>
+            </a-tooltip>
+             <a-radio-button v-else :value="true">绑定</a-radio-button>
           </a-radio-group>
           <div v-if="isLoadbalancer" style="max-width: 920px">
             <bind-lb :fc="form.fc" ref="BIND_LB" />
@@ -206,6 +209,10 @@ export default {
       }
     },
     brandChange () {
+      const { brand } = this.form.fd
+      if (brand === 'Azure') {
+        this.isLoadbalancer = false
+      }
       this.fetchQueryTs()
     },
     templateChange () {
