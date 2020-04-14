@@ -1261,5 +1261,9 @@
     "account_domain": "不共享",
     "provider_domain": "共享云订阅",
     "system": "全局共享"
+  },
+  "proxysettings": {
+    "http_proxy": "Http代理",
+    "https_proxy": "Https代理"
   }
 }
