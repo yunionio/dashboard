@@ -2,7 +2,7 @@
   <div>
     <page-header title="实例列表" />
     <page-body>
-      <redis-list />
+      <redis-list :id="listId" />
     </page-body>
   </div>
 </template>
@@ -14,6 +14,11 @@ export default {
   name: 'VmInstanceIndex',
   components: {
     RedisList,
+  },
+  data () {
+    return {
+      listId: 'RedisList',
+    }
   },
   methods: {
     createServer () {

@@ -23,9 +23,13 @@ import globalSearchMixins from '@/mixins/globalSearch'
 export default {
   name: 'RedisList',
   mixins: [WindowsMixin, globalSearchMixins, ListMixin, ColumnsMixin, SingleActionsMixin],
+  props: {
+    id: String,
+  },
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'elasticcaches',
         getParams: {
           details: true,
