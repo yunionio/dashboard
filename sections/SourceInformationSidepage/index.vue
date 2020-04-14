@@ -13,8 +13,9 @@
 <script>
 import 'codemirror/mode/yaml/yaml.js'
 import 'codemirror/theme/material.css'
-
-const jsYaml = require('js-yaml')
+import jsYaml from 'js-yaml'
+import * as R from 'ramda'
+import json2yaml from '@/utils/json2yaml.js'
 
 export default {
   name: 'K8SSourceInformationSidepage',
@@ -51,22 +52,22 @@ export default {
       const params = {}
       if (this.data.cluster) params['cluster'] = this.data.cluster
       if (this.data.namespace) params['namespace'] = this.data.namespace
-      new this.$Manager(`_raw/${this.resource}`, 'v1').getSpecific({
+      new this.$Manager(this.resource, 'v1').getSpecific({
         id: this.data.name,
-        spec: 'yaml',
+        spec: 'rawdata',
         params,
       }).then(({ data }) => {
-        this.text = data
+        this.text = R.is(Object) ? json2yaml(data) : data
       })
     },
     update () {
-      const resource = `_raw/${this.resource}`
+      const resource = this.resource
       let params = '?'
       if (this.data.cluster) params += `cluster=${this.data.cluster}`
       if (this.data.namespace) params = params.charAt(params.length - 1) === '?' ? params + `namespace=${this.data.namespace}` : params + '&namespace=' + this.data.namespace
       const data = jsYaml.safeLoad(this.text)
       new this.$Manager(resource, 'v1').update({
-        id: this.data.name + params,
+        id: `${this.data.name}/rawdata` + params,
         data,
       }).then(({ data }) => {
         this.$message.success(`修改 ${this.data.name} YAML配置文件成功`)

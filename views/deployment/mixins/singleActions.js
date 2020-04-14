@@ -32,10 +32,10 @@ export default {
             label: '查看/编辑',
             permission: 'k8s_deployments_update',
             action: async () => {
-              const manager = new this.$Manager(`_raw/${this.list.resource}`, 'v1')
+              const manager = new this.$Manager('deployments', 'v1')
               async function fetchData () {
                 const { cluster, namespace } = obj
-                const { data } = await manager.getSpecific({ id: obj.name, spec: 'yaml', params: { cluster, namespace } })
+                const { data } = await manager.getSpecific({ id: obj.name, spec: 'rawdata', params: { cluster, namespace } })
                 return data
               }
               const configText = await fetchData()

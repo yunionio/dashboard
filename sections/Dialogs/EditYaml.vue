@@ -12,9 +12,11 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import jsYaml from 'js-yaml'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import json2yaml from '@/utils/json2yaml'
 
 export default {
   name: 'K8SEditYamlDialog',
@@ -23,7 +25,7 @@ export default {
     return {
       loading: false,
       scope: this.$store.getters.scope,
-      configText: this.params.configText,
+      configText: R.is(Object, this.params.configText) ? json2yaml(this.params.configText) : this.params.configText,
       data: this.params.data[0],
       cmOptions: {
         tabSize: 4,

@@ -3,7 +3,7 @@ export default {
     this.singleActions = [
       {
         label: '设置镜像',
-        permission: 'k8s_deployments_update',
+        permission: 'k8s_daemonsets_update',
         action: obj => {
           this.createDialog('K8SSetImageDialog', {
             data: [obj],
@@ -15,12 +15,12 @@ export default {
       },
       {
         label: '查看/编辑',
-        permission: 'k8s_deployments_update',
+        permission: 'k8s_daemonsets_update',
         action: async obj => {
-          const manager = new this.$Manager(`_raw/${this.list.resource}`, 'v1')
+          const manager = new this.$Manager('daemonsets', 'v1')
           async function fetchData () {
             const { cluster, namespace } = obj
-            const { data } = await manager.getSpecific({ id: obj.name, spec: 'yaml', params: { cluster, namespace } })
+            const { data } = await manager.getSpecific({ id: obj.name, spec: 'rawdata', params: { cluster, namespace } })
             return data
           }
           const configText = await fetchData()
@@ -34,7 +34,7 @@ export default {
       },
       {
         label: '删除',
-        permission: 'k8s_deployments_delete',
+        permission: 'k8s_daemonsets_delete',
         action: obj => {
           const requestParams = {
             cluster: obj.clusterID,
