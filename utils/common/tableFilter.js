@@ -208,3 +208,14 @@ export function getDomainFilter () {
     },
   }
 }
+
+export function getProjectDomainFilter () {
+  return {
+    label: i18n.t('dictionary.domain'),
+    dropdown: true,
+    distinctField: {
+      type: 'extra_field',
+      key: 'domain',
+    },
+  }
+}
