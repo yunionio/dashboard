@@ -546,7 +546,8 @@
       "execution": "执行中",
       "succeed": "成功",
       "part_succeed": "部分成功",
-      "failed": "失败"
+      "failed": "失败",
+      "reject": "拒绝"
     },
     "servertemplate": {
       "ready": "可用",
@@ -1260,5 +1261,9 @@
     "account_domain": "不共享",
     "provider_domain": "共享云订阅",
     "system": "全局共享"
+  },
+  "proxysettings": {
+    "http_proxy": "Http代理",
+    "https_proxy": "Https代理"
   }
 }

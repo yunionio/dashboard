@@ -11,6 +11,14 @@ export default {
       type: Function,
       required: true,
     },
+    disabled: {
+      type: Boolean,
+      default: true,
+    },
+    isSuccessAlert: {
+      type: Boolean,
+      default: true,
+    },
   },
   data () {
     return {
@@ -21,6 +29,7 @@ export default {
     config () {
       return {
         loading: this.loading,
+        disabled: this.disabled,
         type: 'link',
         style: 'padding: 0',
       }
@@ -32,10 +41,12 @@ export default {
       this.loading = true
       try {
         await this.post()
-        this.$notification.success({
-          message: '测试连接成功',
-          description: '请点击确定继续',
-        })
+        if (this.isSuccessAlert) {
+          this.$notification.success({
+            message: '测试连接成功',
+            description: '请点击确定继续',
+          })
+        }
       } catch (err) {
         throw err
       } finally {

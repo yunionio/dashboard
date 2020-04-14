@@ -195,7 +195,7 @@ export default {
   },
   scalingactivitie: {
     success: ['part_succeed', 'succeed'],
-    danger: ['failed', 'delete_failed', 'deleted'],
+    danger: ['failed', 'delete_failed', 'deleted', 'reject'],
     info: ['init', 'unavailable', 'unknown'],
   },
   servertemplate: {
