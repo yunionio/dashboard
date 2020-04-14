@@ -242,7 +242,7 @@ export default {
                   data: [obj],
                   columns: this.columns,
                   title: '删除',
-                  onManger: this.onManger,
+                  onManager: this.onManager,
                   success: () => {
                     this.destroySidePages()
                   },
