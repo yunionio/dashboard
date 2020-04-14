@@ -39,13 +39,16 @@
           </template>
           <template v-else>
             <template v-for="item of userTags">
-              <span
-                class="tag mb-1 text-truncate d-inline-block"
+              <div
+                class="tag mb-1 d-inline-block"
                 :title="item.title"
                 :key="`${item.key}${item.value}`"
                 :style="{ backgroundColor: item.backgroundColor, color: item.color, borderColor: item.color }">
-                {{ item.title }}<a-icon class="ml-1 remove-tag" type="close" @click="removeTag(item)" />
-              </span>
+                <div class="d-flex align-items-center">
+                  <span class="flex-fill text-truncate">{{ item.title }}</span>
+                  <a-icon class="ml-1 remove-tag flex-grow-0 flex-shrink-0" type="close" @click="removeTag(item)" />
+                </div>
+              </div>
             </template>
           </template>
         </div>
