@@ -13,7 +13,7 @@ export default {
     },
     disabled: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     isSuccessAlert: {
       type: Boolean,
