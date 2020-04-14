@@ -31,12 +31,12 @@ export function mapperStatusToItems (items, statusModule) {
   })
 }
 
-export function getNameFilter ({ name = 'name', label = '名称' } = {}) {
+export function getNameFilter ({ field = 'name', label = '名称' } = {}) {
   return {
     label,
     filter: true,
     formatter: val => {
-      return `${name}.contains(${val})`
+      return `${field}.contains(${val})`
     },
   }
 }

@@ -36,9 +36,11 @@ export const PERMISSION = {
   // 容器集群
   'k8s_kubeclusters_list': ['k8s', 'kubeclusters', 'list'],
   // 容器无状态
-  'k8s_depolyments_list': ['k8s', 'depolyments', 'list'],
+  'k8s_deployments_list': ['k8s', 'deployments', 'list'],
   // 容器有状态
   'k8s_statefulsets_list': ['k8s', 'statefulsets', 'list'],
+  // 守护进程
+  'k8s_daemonsets_list': ['k8s', 'daemonsets', 'list'],
   // 容器任务
   'k8s_jobs_list': ['k8s', 'jobs', 'list'],
   // 容器任务
@@ -266,10 +268,14 @@ export const PERMISSION = {
   /**
    * k8s 相关操作
    */
-  'k8s_depolyments_create': ['k8s', 'depolyments', 'create'],
-  'k8s_depolyments_update': ['k8s', 'depolyments', 'update'],
-  'k8s_depolyments_delete': ['k8s', 'depolyments', 'delete'],
-  'k8s_depolyments_get': ['k8s', 'depolyments', 'get'],
+  'k8s_deployments_create': ['k8s', 'deployments', 'create'],
+  'k8s_deployments_update': ['k8s', 'deployments', 'update'],
+  'k8s_deployments_delete': ['k8s', 'deployments', 'delete'],
+  'k8s_deployments_get': ['k8s', 'deployments', 'get'],
+  'k8s_daemonsets_create': ['k8s', 'daemonsets', 'create'],
+  'k8s_daemonsets_update': ['k8s', 'daemonsets', 'update'],
+  'k8s_daemonsets_delete': ['k8s', 'daemonsets', 'delete'],
+  'k8s_daemonsets_get': ['k8s', 'daemonsets', 'get'],
   'k8s_statefulsets_create': ['k8s', 'statefulsets', 'create'],
   'k8s_statefulsets_update': ['k8s', 'statefulsets', 'update'],
   'k8s_statefulsets_delete': ['k8s', 'statefulsets', 'delete'],
