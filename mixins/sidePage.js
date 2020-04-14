@@ -181,7 +181,9 @@ export default {
     this.fetchData()
     if (this.isList) {
       this.$watch('listRowData', (val, oldVal) => {
-        this.data.data = { ...this.data.data, ...val }
+        if (!R.equals(val, oldVal)) {
+          this.data.data = { ...val }
+        }
       })
     }
   },
