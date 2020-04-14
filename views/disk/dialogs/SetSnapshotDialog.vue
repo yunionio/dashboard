@@ -2,17 +2,12 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">设置自动快照</div>
     <div slot="body">
+      <dialog-selected-tips :count="params.data.length" :name="$t('dictionary.disk')" action="设置自动快照" />
+      <dialog-table v-if="params.columns && params.columns.length" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
         <a-form-item label="自动快照" v-bind="formItemLayout">
-          <a-radio-group v-decorator="decorators.isOpen">
-            <a-radio value="open">
-              开启
-            </a-radio>
-            <a-radio value="close">
-              关闭
-            </a-radio>
-          </a-radio-group>
+          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.isOpen" />
         </a-form-item>
         <template v-if="enable">
           <a-form-item label="策略名称" v-bind="formItemLayout">
@@ -76,7 +71,7 @@ export default {
             }
             if (values.hasOwnProperty('isOpen')) {
               this.enable = !this.enable
-              if (values.isOpen === 'open' && this.snapshotpolicyOptions.length) {
+              if (values.isOpen === true && this.snapshotpolicyOptions.length) {
                 this.$nextTick(function () {
                   this.form.fc.setFieldsValue({ snapshotpolicy: this.snapshotpolicyOptions[0].id })
                 })
@@ -89,7 +84,8 @@ export default {
         isOpen: [
           'isOpen',
           {
-            initialValue: this.params.data[0].snapshotpolicies && this.params.data[0].snapshotpolicies.length ? 'open' : 'close',
+            valuePropName: 'checked',
+            initialValue: this.params.data[0].snapshotpolicies && this.params.data[0].snapshotpolicies.length > 0,
           },
         ],
         snapshotpolicy: [
