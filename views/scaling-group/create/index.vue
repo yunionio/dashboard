@@ -50,7 +50,8 @@
       </a-form-item>
       <a-form-item label="最小实例数">
         <a-tooltip placement="top" :title="`范围在 0 ~ 期望实例数`">
-          <a-input-number v-decorator="decorators.min_instance_number" :min="0" :max="form.fd.desire_instance_number"  />
+          <a-input-number @blur="handleMinBlur" v-model="min" :min="0" :max="form.fd.desire_instance_number"  />
+          <a-input v-show="false" v-decorator="decorators.min_instance_number" />
         </a-tooltip>
       </a-form-item>
       <a-form-item label="实例移除策略">
@@ -61,7 +62,10 @@
       <a-form-item required label="负载均衡">
           <a-radio-group v-model="isLoadbalancer">
             <a-radio-button :value="false">暂不绑定</a-radio-button>
-            <a-radio-button :value="true">绑定</a-radio-button>
+            <a-tooltip v-if="form.fd.brand === 'Azure'" placement="top" title="Azure平台暂不支持此操作">
+              <a-radio-button :disabled="true" :value="true">绑定</a-radio-button>
+            </a-tooltip>
+             <a-radio-button v-else :value="true">绑定</a-radio-button>
           </a-radio-group>
           <div v-if="isLoadbalancer" style="max-width: 920px">
             <bind-lb :fc="form.fc" ref="BIND_LB" />
@@ -114,6 +118,7 @@ export default {
   data () {
     const initFd = getInitialValue(DECORATORS)
     return {
+      min: 0,
       BRANDS,
       decorators: DECORATORS,
       loading: false,
@@ -179,6 +184,14 @@ export default {
         option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
       )
     },
+    async handleMinBlur ({ target }) {
+      const val = parseInt(target.value || 0)
+      const { setFieldsValue } = this.form.fc
+      await this.$nextTick()
+      setFieldsValue({
+        min_instance_number: val || undefined,
+      })
+    },
     // domainChange () {
     //   this.fetchQueryTs()
     //   this.$refs['NETWORK'].fetchs()
@@ -196,6 +209,10 @@ export default {
       }
     },
     brandChange () {
+      const { brand } = this.form.fd
+      if (brand === 'Azure') {
+        this.isLoadbalancer = false
+      }
       this.fetchQueryTs()
     },
     templateChange () {
@@ -216,9 +233,6 @@ export default {
       if (changedFields.guest_template_id) {
         this.templateChange()
       }
-      // if (changedFields.vpc) {
-      //   this.vpcChange()
-      // }
     },
     vpcParams () {
       const { brand } = this.form.fd

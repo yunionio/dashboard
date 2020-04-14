@@ -102,7 +102,7 @@ export default {
               },
             }),
             {
-              field: '',
+              field: 'loadbalancer',
               title: '负载均衡',
             },
             {

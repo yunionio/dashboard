@@ -1,6 +1,6 @@
 import validateForm from '@/utils/validate'
 
-export const BRANDS = ['OneCloud']
+export const BRANDS = ['OneCloud', 'Azure']
 
 export const DECORATORS = {
   projectDomain: {
