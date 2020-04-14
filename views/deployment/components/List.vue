@@ -4,7 +4,9 @@
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions">
+    :single-actions="singleActions"
+    :showSearchbox="showSearchbox"
+    :showGroupActions="showGroupActions">
     <template v-slot:group-actions-append>
       <cluster-namespace :getParams.sync="list.getParams" @refresh="fetchData" class="ml-3" />
     </template>
@@ -33,6 +35,18 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    showSearchbox: {
+      type: Boolean,
+      default: true,
+    },
+    showGroupActions: {
+      type: Boolean,
+      default: true,
+    },
+    responseData: {
+      type: Object,
+      validator: val => val.data,
+    },
   },
   data () {
     return {
@@ -48,6 +62,7 @@ export default {
         steadyStatus: {
           status: Object.values(expectStatus.k8s_resource).flat(),
         },
+        responseData: this.responseData,
       }),
       groupActions: [
         {
