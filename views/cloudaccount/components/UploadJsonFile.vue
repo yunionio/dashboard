@@ -1,7 +1,7 @@
 <template>
  <div>
    <a-form-item label="密钥匙录入方式">
-    <a-radio-group v-model="type">
+    <a-radio-group @change="handleTypeChange" v-model="type">
         <a-radio-button :value="1">JSON文件导入</a-radio-button>
         <a-radio-button :value="2">手动表单录入</a-radio-button>
       </a-radio-group>
@@ -54,7 +54,7 @@ export default {
     uploadDraggerConfig () {
       return {
         name: 'file',
-        accept: ['.json'],
+        accept: '.json',
         headers: {
           'Authorization': `Bearer ${this.$store.getters.userInfo.session}`,
         },
@@ -74,6 +74,9 @@ export default {
     this.fileList = []
   },
   methods: {
+    handleTypeChange () {
+      this.fileList = []
+    },
     setValues (jsonStr) {
       if (!jsonStr || jsonStr === '') return false
       const json = JSON.parse(jsonStr)

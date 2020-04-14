@@ -146,9 +146,6 @@ export default {
       if (data.project && data.project.key) data.tenant = data.project.key
       delete data.domain
       delete data.project
-      if (data.auto_create_project) {
-        delete data.tenant
-      }
       if (!this.isAdminMode || !this.l3PermissionEnable) delete data.domain_id
     },
     _providerDiff (data) {
