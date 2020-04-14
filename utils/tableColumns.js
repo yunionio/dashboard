@@ -46,7 +46,11 @@ export const k8sLabelColumn = ({ field = 'labels', title = '标签' } = {}) => {
           <div>
             {
               labels.map((val, i) => {
-                return (<div class="mb-1"><a-tag class="d-block text-truncate" color={ colors[i % colors.length] }>{ `${val.key}：${val.value}` }</a-tag></div>)
+                return (
+                  <a-tooltip title={ `${val.key}：${val.value}` }>
+                    <div class="mb-1"><a-tag class="d-block text-truncate" color={ colors[i % colors.length] }>{ `${val.key}：${val.value}` }</a-tag></div>
+                  </a-tooltip>
+                )
               })
             }
           </div>,
@@ -65,7 +69,11 @@ export const k8sImageColumn = ({ field = 'containerImages', title = '镜像', it
       default: ({ row }, h) => {
         if (!row[field] || !row[field].length) return '-'
         return row[field].map(v => {
-          return (<a-tag class="d-block text-truncate mb-1" style="max-width: 400px;" title={v[itemField]}>{v.name}: { v[itemField] }</a-tag>)
+          return (
+            <a-tooltip title={`${v.name}: ${v[itemField]}`}>
+              <a-tag class="d-block text-truncate mb-1" style="max-width: 400px;">{v.name}: { v[itemField] }</a-tag>
+            </a-tooltip>
+          )
         })
       },
     },
@@ -83,7 +91,11 @@ export const k8sEnvColumn = ({ field = 'env', title = '环境变量' } = {}) => 
           <div>
             {
               row[field].map((val, i) => {
-                return (<div class="mb-1" title={`${val.name}：${val.value || '-'}`}><a-tag class="d-block text-truncate">{ `${val.name}：${val.value || '-'}` }</a-tag></div>)
+                return (
+                  <a-tooltip title={ `${val.name}：${val.value || '-'}` }>
+                    <div class="mb-1" title={`${val.name}：${val.value || '-'}`}><a-tag class="d-block text-truncate">{ `${val.name}：${val.value || '-'}` }</a-tag></div>
+                  </a-tooltip>
+                )
               })
             }
           </div>,

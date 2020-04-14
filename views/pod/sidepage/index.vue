@@ -12,7 +12,7 @@
     <template v-slot:actions>
       <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :res-id="data.id" :data="detailData" :onManager="onManager" resource="pods" :field="field" />
+    <component :is="params.windowData.currentTab" :res-id="data.id" :data="detailData" :onManager="onManager" resource="pods" :field="field" :getParams="getParams" />
   </base-side-page>
 </template>
 
@@ -65,6 +65,14 @@ export default {
       if (this.params.windowData.currentTab === 'container-sidepage') return 'containers'
       if (this.params.windowData.currentTab === 'init-container-sidepage') return 'initContainers'
       return ''
+    },
+    getParams () {
+      return {
+        owner_kind: this.detailData.kind,
+        owner_name: this.detailData.name,
+        namespace: this.detailData.namespace,
+        cluster: this.detailData.clusterID,
+      }
     },
   },
 }

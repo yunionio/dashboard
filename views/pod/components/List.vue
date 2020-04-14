@@ -4,7 +4,9 @@
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions">
+    :single-actions="singleActions"
+    :showSearchbox="showSearchbox"
+    :showGroupActions="showGroupActions">
     <template v-slot:group-actions-append>
       <cluster-namespace :getParams.sync="list.getParams" @refresh="fetchData" class="ml-3" />
     </template>
@@ -32,6 +34,14 @@ export default {
     getParams: {
       type: Object,
       default: () => ({}),
+    },
+    showSearchbox: {
+      type: Boolean,
+      default: true,
+    },
+    showGroupActions: {
+      type: Boolean,
+      default: true,
     },
   },
   data () {

@@ -1,19 +1,30 @@
 <template>
-  <vxe-grid :data="data.events || []" :columns="columns" />
+  <page-list
+    :list="list"
+    :columns="columns" />
 </template>
 
 <script>
+import WindowsMixin from '@/mixins/windows'
+import ListMixin from '@/mixins/list'
 
 export default {
-  name: 'K8SEventSidepage',
+  name: 'K8SEventList',
+  mixins: [WindowsMixin, ListMixin],
   props: {
-    data: {
+    id: String,
+    getParams: {
       type: Object,
-      required: true,
     },
   },
   data () {
     return {
+      list: this.$list.createList(this, {
+        id: this.id,
+        resource: 'k8s_events',
+        getParams: this.getParams,
+        apiVersion: 'v1',
+      }),
       columns: [
         {
           field: 'message',
@@ -38,12 +49,15 @@ export default {
           minWidth: 100,
           showOverflow: 'ellipsis',
           formatter: ({ row }) => {
-            const value = row.objectMeta.creationTimestamp
+            const value = row.creationTimestamp
             return this.$moment(value).fromNow()
           },
         },
       ],
     }
+  },
+  created () {
+    this.list.fetchData()
   },
 }
 </script>

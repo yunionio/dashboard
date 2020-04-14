@@ -62,7 +62,12 @@ export default {
   },
   computed: {
     getParams () {
-      return null
+      return {
+        owner_kind: this.detailData.kind,
+        owner_name: this.detailData.name,
+        namespace: this.detailData.namespace,
+        cluster: this.detailData.clusterID,
+      }
     },
   },
 }

@@ -40,7 +40,7 @@ export default {
   methods: {
     async handleConfirm () {
       const { clusterID, name, namespace } = this.data
-      let qs = `${name}?cluster=${clusterID}`
+      let qs = `${name}/rawdata?cluster=${clusterID}`
       if (namespace) qs += `&namespace=${namespace}`
       let data = null
       try {

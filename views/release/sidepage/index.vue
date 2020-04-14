@@ -17,7 +17,11 @@
       :res-id="data.id"
       :data="detailData"
       :onManager="onManager"
-      resource="releases" />
+      resource="releases"
+      :getParams="getParams"
+      :responseData="responseData"
+      :showSearchbox="false"
+      :showGroupActions="false" />
   </base-side-page>
 </template>
 
@@ -58,8 +62,8 @@ export default {
       const detailTabs = [{ label: '详情', key: 'detail' }]
       if (!this.detailData.resources) return detailTabs
       const allResourceArr = [
-        { label: '有状态', key: 'statefulset' },
         { label: '无状态', key: 'deployment' },
+        { label: '有状态', key: 'statefulset' },
         { label: '配置项', key: 'configmap' },
         { label: '保密字典', key: 'secret' },
         { label: '守护进程', key: 'daemonset' },
@@ -76,25 +80,19 @@ export default {
       return detailTabs
     },
     responseData () {
-      const data = {}
-      const tab = this.params.windowData.currentTab
-      switch (tab) {
-        case 'statefulset-list':
-          data.data = this.detailData.resources.statefulset
-          break
-        case 'deployment-list':
-          data.data = this.detailData.resources.deployment
-          break
-        case 'configmap-list':
-          data.data = this.detailData.resources.configmap
-          break
-        case 'secret-list':
-          data.data = this.detailData.resources.secret
-          break
-        default:
-          data.data = []
+      const data = {
+        data: [],
+      }
+      if (this.detailData.resources && this.params.windowData.currentTab) {
+        data.data = this.detailData.resources[this.params.windowData.currentTab]
       }
       return data
+    },
+    getParams () {
+      return {
+        namespace: this.detailData.namespace,
+        cluster: this.detailData.clusterID,
+      }
     },
   },
 }
