@@ -84,6 +84,24 @@ export default {
             return `${acn}${row.number}个实例`
           },
         },
+        {
+          field: 'startTimeAndendTime',
+          title: '有效时间',
+          width: 160,
+          slots: {
+            default: ({ row }) => {
+              const { start_time: startTime, end_time: endTime } = row.cycle_timer
+              if (startTime && endTime) {
+                return [
+                  <div>
+                    {this.$moment(startTime).format()} <br/>
+                    {this.$moment(endTime).format()}
+                  </div>,
+                ]
+              }
+            },
+          },
+        },
         getTimeTableColumn(),
       ],
       singleActions: [
@@ -214,20 +232,16 @@ export default {
                   })
                 },
                 meta: (obj) => {
-                  const { selectedItems } = this.list
-                  if (!selectedItems.every(item => item.enabled)) {
-                    return {
-                      validate: false,
-                      tooltip: '仅禁用状态下支持此操作',
-                    }
-                  }
                   return {
-                    validate: true,
+                    validate: this.list.selectedItems.length && this.list.selectedItems.every(val => !val.enabled),
                   }
                 },
               },
             ]
           },
+          meta: () => ({
+            validate: this.list.selectedItems.length,
+          }),
         },
       ],
     }
