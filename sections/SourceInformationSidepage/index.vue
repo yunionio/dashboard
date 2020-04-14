@@ -14,8 +14,6 @@
 import 'codemirror/mode/yaml/yaml.js'
 import 'codemirror/theme/material.css'
 import jsYaml from 'js-yaml'
-import * as R from 'ramda'
-import json2yaml from '@/utils/json2yaml.js'
 
 export default {
   name: 'K8SSourceInformationSidepage',
@@ -38,7 +36,6 @@ export default {
         line: true,
         mode: 'text/x-yaml',
         lineWrapping: true,
-        readOnly: true,
         theme: 'material',
       },
       text: '',
@@ -57,7 +54,7 @@ export default {
         spec: 'rawdata',
         params,
       }).then(({ data }) => {
-        this.text = R.is(Object) ? json2yaml(data) : data
+        this.text = jsYaml.safeDump(data)
       })
     },
     update () {
@@ -66,6 +63,7 @@ export default {
       if (this.data.cluster) params += `cluster=${this.data.cluster}`
       if (this.data.namespace) params = params.charAt(params.length - 1) === '?' ? params + `namespace=${this.data.namespace}` : params + '&namespace=' + this.data.namespace
       const data = jsYaml.safeLoad(this.text)
+      console.log(data, 'data')
       new this.$Manager(resource, 'v1').update({
         id: `${this.data.name}/rawdata` + params,
         data,

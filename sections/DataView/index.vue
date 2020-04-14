@@ -20,7 +20,7 @@ export default {
       type: Object,
       required: true,
     },
-    manager: {
+    onManager: {
       type: Function,
       required: true,
     },
@@ -61,7 +61,7 @@ export default {
         })
         const { name, cluster, namespace } = this.data
         this.loading = true
-        await this.manager('update', {
+        await this.onManager('update', {
           id: `${name}/rawdata?namespace=${namespace}&cluster=${cluster}`,
           managerArgs: {
             data,

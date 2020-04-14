@@ -2,15 +2,18 @@
   <div class="code-preview">
     <div class="code-preview-item mt-3" v-for="item in dataList" :key="item.title">
       <div class="code-preview-item_title mb-1">
-        {{ item.title }}
+        <a-icon class="mr-1" :type="item.showContent ? 'eye-invisible' : 'eye'" @click="() => item.showContent = !item.showContent" theme="twoTone" twoToneColor="#1890ff" />
+        <span>{{ item.title }}</span>
         <a-button
           type="link"
           v-clipboard:copy="item.content"
           v-clipboard:success="_ => $message.success('已复制')"
           v-clipboard:error="_ => $message.error('复制失败')"><a-icon type="copy" />复制内容</a-button>
       </div>
-      <pre class="code-preview-item_content" v-if="item.key === 'ca.crt'">{{ item.content }}</pre>
-      <div class="code-preview-item_content" v-else style="white-space: pre-wrap; word-break: break-all;">{{ item.content }}</div>
+      <template v-if="item.showContent">
+        <pre class="code-preview-item_content" v-if="item.key === 'ca.crt'">{{ item.content }}</pre>
+        <div class="code-preview-item_content" v-else style="white-space: pre-wrap; word-break: break-all;">{{ item.content }}</div>
+      </template>
     </div>
   </div>
 </template>
@@ -34,6 +37,7 @@ export default {
         dataList.push({
           title: key,
           content: Base64.decode(value),
+          showContent: false,
         })
       }, this.data.data)
     }

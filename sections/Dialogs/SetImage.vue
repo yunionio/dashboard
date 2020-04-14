@@ -8,14 +8,14 @@
         v-bind="formItemLayout"
         :form="form.fc">
         <a-alert message="该资源既无镜像也无初始化镜像" banner v-if="!containerImages.length && !initContainerImages.length" />
-        <a-form-item label="镜像" v-if="containerImages.length">
-          <a-form-item v-for="(item, i) in containerImages" :key="i">
-            <a-input v-decorator="decorators.image(i)" placeholder="请输入镜像" :addonBefore="item.name" />
-          </a-form-item>
-        </a-form-item>
         <a-form-item label="初始化镜像" v-if="initContainerImages.length">
           <a-form-item v-for="(item, i) in initContainerImages" :key="i">
             <a-input v-decorator="decorators.initImage(i)" placeholder="请输入镜像" :addonBefore="item.name" />
+          </a-form-item>
+        </a-form-item>
+        <a-form-item label="镜像" v-if="containerImages.length">
+          <a-form-item v-for="(item, i) in containerImages" :key="i">
+            <a-input v-decorator="decorators.image(i)" placeholder="请输入镜像" :addonBefore="item.name" />
           </a-form-item>
         </a-form-item>
       </a-form>

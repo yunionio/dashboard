@@ -61,10 +61,13 @@ export default {
           title: '数据',
           field: 'data',
           slots: {
-            default: ({ row }) => {
-              return [
-                <DataView manager={ this.onManager } data={ row } />,
-              ]
+            default: ({ row }, h) => {
+              return h(DataView, {
+                props: {
+                  onManager: this.onManager,
+                  data: row,
+                },
+              })
             },
           },
         },

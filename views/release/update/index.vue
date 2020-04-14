@@ -50,8 +50,8 @@ import * as R from 'ramda'
 import marked from 'marked'
 import { Base64 } from 'js-base64'
 import TemplatePreview from '@K8S/sections/TemplatePreview'
+import jsYaml from 'js-yaml'
 import { validateYaml } from '@/utils/validate'
-import json2yaml from '@/utils/json2yaml.js'
 
 export default {
   name: 'K8SChartCreate',
@@ -179,7 +179,7 @@ export default {
         this.chartDetail = this.releaseDetail.chart
         this.form.fc.setFieldsValue({
           [this.decorators.release_name[0]]: this.releaseDetail.name,
-          [this.decorators.yaml[0]]: json2yaml(this.releaseDetail.config || {}),
+          [this.decorators.yaml[0]]: jsYaml.safeDump(this.releaseDetail.config || {}),
         })
         this.getChartVersion()
       }
