@@ -45,6 +45,16 @@ export default {
           },
           status: getStatusFilter('scalingpolicie'),
           enabled: getEnabledFilter(),
+          trigger_type: {
+            label: '策略类型',
+            dropdown: true,
+            items: Object.keys(this.$t('flexGrouTriggerType')).map(k => {
+              return {
+                label: this.$t('flexGrouTriggerType')[k],
+                key: k,
+              }
+            }),
+          },
         },
       }),
       columns: [
@@ -68,7 +78,7 @@ export default {
           },
         },
         {
-          field: 'trigger_type',
+          field: 'cycle',
           title: '触发条件',
           width: 300,
           formatter: ({ row }) => {
