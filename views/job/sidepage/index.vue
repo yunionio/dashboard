@@ -12,7 +12,7 @@
     <template v-slot:actions>
       <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :res-id="data.id" :data="detailData" :onManager="onManager" resource="jobs" />
+    <component :is="params.windowData.currentTab" :res-id="data.id" :data="detailData" :onManager="onManager" resource="jobs" :getParams="getParams" :showSearchbox="false" :showGroupActions="false" />
   </base-side-page>
 </template>
 
@@ -46,6 +46,16 @@ export default {
         { label: '源信息', key: 'source-information-sidepage' },
       ],
     }
+  },
+  computed: {
+    getParams () {
+      return {
+        owner_kind: this.detailData.kind,
+        owner_name: this.detailData.name,
+        namespace: this.detailData.namespace,
+        cluster: this.detailData.clusterID,
+      }
+    },
   },
 }
 </script>

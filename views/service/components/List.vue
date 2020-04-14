@@ -114,7 +114,7 @@ export default {
     handleOpenSidepage (row) {
       this.sidePageTriggerHandle(this, 'K8SServiceSidePage', {
         id: row.name,
-        resource: 'services',
+        resource: 'k8s_services',
         getParams: () => {
           const params = R.clone(this.list.getParams)
           if (row.namespace) {
