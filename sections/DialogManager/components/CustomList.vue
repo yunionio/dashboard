@@ -15,8 +15,8 @@
                 v-for="item of columnFields"
                 :span="6"
                 :key="item.property"
-                class="mb-2">
-                <a-checkbox :value="item.property">{{ item.title }}</a-checkbox>
+                class="mb-2 checkbox-item">
+                <a-checkbox :value="item.property"><span :title="item.title">{{ item.title }}</span></a-checkbox>
               </a-col>
             </a-row>
           </a-checkbox-group>
@@ -32,8 +32,8 @@
                     v-for="item of tagFields"
                     :span="6"
                     :key="item.property"
-                    class="mb-2">
-                    <a-checkbox :value="item.property">{{ item.title }}</a-checkbox>
+                    class="mb-2 checkbox-item">
+                    <a-checkbox :value="item.property"><span :title="item.title">{{ item.title }}</span></a-checkbox>
                   </a-col>
                 </a-row>
               </div>
@@ -201,5 +201,22 @@ export default {
 .tag-fields-wrap {
   max-height: 100px;
   overflow: auto;
+}
+.checkbox-item {
+  ::v-deep {
+    .ant-checkbox-wrapper {
+      display: flex;
+      align-items: center;
+      .ant-checkbox {
+        margin-top: 3px;
+        & + span {
+          flex: 1;
+          overflow: hidden;
+          text-overflow:ellipsis;
+          white-space: nowrap;
+        }
+      }
+    }
+  }
 }
 </style>
