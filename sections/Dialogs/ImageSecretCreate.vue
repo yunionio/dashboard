@@ -14,6 +14,9 @@
         <a-form-item label="命名空间">
           <namespace-select v-decorator="decorators.namespace" :cluster="params.cluster" :setDefault="false" :disabled="true" />
         </a-form-item>
+        <a-form-item label="镜像仓库地址" prop="server">
+          <a-input v-decorator="decorators.server" placeholder="请输入镜像仓库地址" />
+        </a-form-item>
         <a-form-item label="用户名">
           <a-input v-decorator="decorators.user" placeholder="请输入用户名" />
         </a-form-item>
@@ -82,6 +85,14 @@ export default {
             ],
           },
         ],
+        server: [
+          'server',
+          {
+            rules: [
+              { required: true, message: '请输入镜像仓库地址', trigger: 'blur' },
+            ],
+          },
+        ],
         user: [
           'user',
           {
@@ -109,10 +120,10 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 21,
+          span: 20,
         },
         labelCol: {
-          span: 3,
+          span: 4,
         },
       },
     }
@@ -139,6 +150,7 @@ export default {
           email: values.email,
           password: values.password,
           user: values.user,
+          server: values.server,
         },
         name: values.name,
         namespace: values.namespace,

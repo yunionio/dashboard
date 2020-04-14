@@ -44,6 +44,14 @@ export default {
         idKey: 'name',
         filterOptions: {
           name: getNameFilter(),
+          unused: {
+            label: '使用情况',
+            dropdown: true,
+            items: [
+              { label: '被使用', key: false },
+              { label: '未被使用', key: true },
+            ],
+          },
         },
         steadyStatus: {
           status: Object.values(expectStatus.k8s_resource).flat(),

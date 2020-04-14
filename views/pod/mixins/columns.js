@@ -1,4 +1,4 @@
-import { k8sStatusColumn } from '@K8S/utils/tableColumns'
+import { k8sStatusColumn, k8sLabelColumn } from '@K8S/utils/tableColumns'
 import { getNameDescriptionTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 
 export default {
@@ -24,14 +24,16 @@ export default {
         field: 'namespace',
         title: '命名空间',
         width: 120,
+        sortable: true,
       },
       k8sStatusColumn({ path: 'warnings' }),
+      k8sLabelColumn(),
       {
         field: 'restartCount',
         title: '重启次数',
         minWidth: '80px',
       },
-      getTimeTableColumn({ field: 'creationTimestamp', fromNow: true }),
+      getTimeTableColumn({ field: 'creationTimestamp', fromNow: true, sortable: true }),
     ]
   },
 }

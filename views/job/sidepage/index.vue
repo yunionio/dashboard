@@ -12,7 +12,7 @@
     <template v-slot:actions>
       <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :res-id="data.id" :data="detailData" :onManager="onManager" :responseData="podResponseData" resource="jobs" />
+    <component :is="params.windowData.currentTab" :res-id="data.id" :data="detailData" :onManager="onManager" resource="jobs" />
   </base-side-page>
 </template>
 
@@ -46,15 +46,6 @@ export default {
         { label: '源信息', key: 'source-information-sidepage' },
       ],
     }
-  },
-  computed: {
-    podResponseData () {
-      const data = this.detailData.pods || []
-      return {
-        data,
-        total: data.length,
-      }
-    },
   },
 }
 </script>

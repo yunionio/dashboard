@@ -17,16 +17,20 @@
       :res-id="data.id"
       :data="detailData"
       :onManager="onManager"
-      resource="releases"
-      :responseData="responseData" />
+      resource="releases" />
   </base-side-page>
 </template>
 
 <script>
-import StatefulsetList from '@K8S/views/statefulset/components/List'
-import DeploymentList from '@K8S/views/deployment/components/List'
-import SecretList from '@K8S/views/secret/components/List'
-import ConfigmapList from '@K8S/views/configmap/components/List'
+import Statefulset from '@K8S/views/statefulset/components/List'
+import Deployment from '@K8S/views/deployment/components/List'
+import Secret from '@K8S/views/secret/components/List'
+import Configmap from '@K8S/views/configmap/components/List'
+import Daemonset from '@K8S/views/daemonset/components/List'
+import Clusterrole from '@K8S/views/rbacrole/components/List'
+import Clusterrolebinding from '@K8S/views/rbacrolebind/components/List'
+import Serviceaccount from '@K8S/views/service-account/components/List'
+import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import Detail from './Detail'
@@ -39,39 +43,53 @@ export default {
   components: {
     Actions,
     Detail,
-    StatefulsetList,
-    DeploymentList,
-    SecretList,
-    ConfigmapList,
+    Statefulset,
+    Deployment,
+    Secret,
+    Configmap,
+    Daemonset,
+    Clusterrole,
+    Clusterrolebinding,
+    Serviceaccount,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
-  data () {
-    return {
-      detailTabs: [
-        { label: '详情', key: 'detail' },
-        { label: '有状态', key: 'statefulset-list' },
-        { label: '无状态', key: 'deployment-list' },
-        { label: '配置项', key: 'configmap-list' },
-        { label: '保密字典', key: 'secret-list' },
-      ],
-    }
-  },
   computed: {
+    detailTabs () {
+      const detailTabs = [{ label: '详情', key: 'detail' }]
+      if (!this.detailData.resources) return detailTabs
+      const allResourceArr = [
+        { label: '有状态', key: 'statefulset' },
+        { label: '无状态', key: 'deployment' },
+        { label: '配置项', key: 'configmap' },
+        { label: '保密字典', key: 'secret' },
+        { label: '守护进程', key: 'daemonset' },
+        { label: '角色', key: 'clusterrole' },
+        { label: '角色绑定', key: 'clusterrolebinding' },
+        { label: '服务账户', key: 'serviceaccount' },
+      ]
+      allResourceArr.forEach(item => {
+        const resource = item.key
+        if (R.is(Array, this.detailData.resources[resource])) {
+          detailTabs.push(item)
+        }
+      })
+      return detailTabs
+    },
     responseData () {
       const data = {}
       const tab = this.params.windowData.currentTab
       switch (tab) {
         case 'statefulset-list':
-          data.data = this.detailData.resources.statefulsets
+          data.data = this.detailData.resources.statefulset
           break
         case 'deployment-list':
-          data.data = this.detailData.resources.deployments
+          data.data = this.detailData.resources.deployment
           break
         case 'configmap-list':
-          data.data = this.detailData.resources.configmaps
+          data.data = this.detailData.resources.configmap
           break
         case 'secret-list':
-          data.data = this.detailData.resources.secrets
+          data.data = this.detailData.resources.secret
           break
         default:
           data.data = []

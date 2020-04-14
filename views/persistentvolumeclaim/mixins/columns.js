@@ -1,4 +1,4 @@
-import { k8sStatusColumn } from '@K8S/utils/tableColumns'
+import { k8sStatusColumn, k8sLabelColumn } from '@K8S/utils/tableColumns'
 import { getNameDescriptionTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 
 export default {
@@ -18,8 +18,10 @@ export default {
       {
         field: 'namespace',
         title: '命名空间',
+        sortable: true,
       },
       k8sStatusColumn(),
+      k8sLabelColumn(),
       {
         field: 'volume',
         title: '存储卷',
@@ -57,7 +59,7 @@ export default {
           },
         },
       },
-      getTimeTableColumn({ field: 'creationTimestamp', fromNow: true }),
+      getTimeTableColumn({ field: 'creationTimestamp', fromNow: true, sortable: true }),
     ]
   },
 }

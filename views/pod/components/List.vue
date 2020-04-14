@@ -33,10 +33,6 @@ export default {
       type: Object,
       default: () => ({}),
     },
-    responseData: {
-      type: Object,
-      validator: val => R.is(Array, val.data),
-    },
   },
   data () {
     return {
@@ -52,7 +48,6 @@ export default {
         steadyStatus: {
           status: Object.values(expectStatus.k8s_resource).flat(),
         },
-        responseData: this.responseData,
       }),
       groupActions: [
         {

@@ -1,5 +1,5 @@
 <template>
-  <vxe-grid :data="data.containers || []" :columns="columns" />
+  <vxe-grid :data="data[field] || []" :columns="columns" />
 </template>
 
 <script>
@@ -11,6 +11,10 @@ export default {
     data: {
       type: Object,
       required: true,
+    },
+    field: {
+      type: String,
+      default: 'containers',
     },
   },
   data () {

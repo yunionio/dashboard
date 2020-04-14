@@ -32,10 +32,6 @@ export default {
       type: Object,
       default: () => ({}),
     },
-    responseData: {
-      type: Object,
-      validator: val => R.is(Array, val.data),
-    },
   },
   data () {
     return {
@@ -47,8 +43,8 @@ export default {
         idKey: 'name',
         filterOptions: {
           name: getNameFilter(),
+          type: getNameFilter({ field: 'type', label: '类型' }),
         },
-        responseData: this.responseData,
       }),
       groupActions: [
         {

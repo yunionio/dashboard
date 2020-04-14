@@ -3,6 +3,8 @@ import KubeclustersCreate from '@K8S/views/cluster/create'
 import KubeclustersImport from '@K8S/views/cluster/import'
 import Deployment from '@K8S/views/deployment'
 import K8sDeploymentCreate from '@K8S/views/deployment/create'
+import Daemonset from '@K8S/views/daemonset'
+import K8sDaemonsetCreate from '@K8S/views/daemonset/create'
 import K8SNode from '@K8S/views/nodes'
 import K8sStorageclasses from '@K8S/views/storage-class'
 import K8sStorageclassesCreate from '@K8S/views/storage-class/create'
@@ -54,7 +56,7 @@ export default {
           path: '/k8s-deployment',
           meta: {
             label: '无状态',
-            permission: 'k8s_depolyments_list',
+            permission: 'k8s_deployments_list',
           },
           component: Layout,
           children: [
@@ -87,6 +89,26 @@ export default {
               name: 'K8sStatefulsetCreate',
               path: 'create',
               component: K8sStatefulsetCreate,
+            },
+          ],
+        },
+        {
+          path: '/k8s-daemonset',
+          meta: {
+            label: '守护进程',
+            permission: 'k8s_daemonsets_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'K8sDaemonsetList',
+              path: '',
+              component: Daemonset,
+            },
+            {
+              name: 'K8sDaemonsetCreate',
+              path: 'create',
+              component: K8sDaemonsetCreate,
             },
           ],
         },

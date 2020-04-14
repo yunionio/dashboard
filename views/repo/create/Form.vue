@@ -16,7 +16,7 @@
       <a-form-item label="存储类">
         <div slot="extra">
           没有想要的？可以前往
-          <help-link href="/k8s-storageclass/create"> 新建存储类</help-link>
+          <help-link href="/v2/k8s-storageclass/create"> 新建存储类</help-link>
         </div>
         <base-select
           v-decorator="decorators.storageClass"

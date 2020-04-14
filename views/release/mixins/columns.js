@@ -18,6 +18,7 @@ export default {
       {
         field: 'namespace',
         title: '命名空间',
+        sortable: true,
       },
       {
         field: 'metadata',
@@ -33,7 +34,7 @@ export default {
           return this.$moment(row.last_deployed).fromNow()
         },
       },
-      getTimeTableColumn({ field: 'creationTimestamp', fromNow: true }),
+      getTimeTableColumn({ field: 'creationTimestamp', fromNow: true, sortable: true }),
     ]
   },
 }

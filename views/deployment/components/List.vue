@@ -33,10 +33,6 @@ export default {
       type: Object,
       default: () => ({}),
     },
-    responseData: {
-      type: Object,
-      validator: val => R.is(Array, val.data),
-    },
   },
   data () {
     return {
@@ -52,12 +48,11 @@ export default {
         steadyStatus: {
           status: Object.values(expectStatus.k8s_resource).flat(),
         },
-        responseData: this.responseData,
       }),
       groupActions: [
         {
           label: '新建',
-          permission: 'k8s_depolyments_create',
+          permission: 'k8s_deployments_create',
           action: () => {
             this.$router.push({ path: '/k8s-deployment/create' })
           },
@@ -67,7 +62,7 @@ export default {
         },
         {
           label: '删除',
-          permission: 'k8s_depolyments_delete',
+          permission: 'k8s_deployments_delete',
           action: () => {
             const data = this.list.selectedItems
             const requestData = {
