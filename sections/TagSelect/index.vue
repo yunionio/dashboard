@@ -265,7 +265,12 @@ export default {
           if (newValue[key]) {
             const index = R.indexOf(val, newValue[key])
             if (index !== -1) {
-              newValue[key].splice(index, 1)
+              if (key === this.withoutUserMetaKey) {
+                // 当选择无标签资源时
+                delete newValue[key]
+              } else {
+                newValue[key].splice(index, 1)
+              }
             } else {
               newValue[key].push(val)
             }

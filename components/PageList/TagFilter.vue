@@ -121,7 +121,7 @@ export default {
   width: 100%;
   background-color: #fff;
   position: static;
-  z-index: 1;
+  z-index: 99;
   overflow-y: auto;
   overflow-x: hidden;
   white-space: nowrap;
