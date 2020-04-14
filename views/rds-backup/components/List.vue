@@ -22,6 +22,7 @@ export default {
   name: 'RDSBackupList',
   mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
+    id: String,
     params: {
       type: Object,
     },
@@ -32,6 +33,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'dbinstancebackups',
         getParams: this.params,
         steadyStatus: Object.values(expectStatus.rdsBackup).flat(),

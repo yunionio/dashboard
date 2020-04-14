@@ -22,9 +22,13 @@ import globalSearchMixins from '@/mixins/globalSearch'
 export default {
   name: 'RDSList',
   mixins: [WindowsMixin, ListMixin, globalSearchMixins, ColumnsMixin, SingleActionsMixin],
+  props: {
+    id: String,
+  },
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'dbinstances',
         getParams: {
           details: true,
