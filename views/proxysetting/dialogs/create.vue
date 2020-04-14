@@ -13,7 +13,10 @@
         </a-form-item>
         <common-form-items />
         <a-form-item v-bind="offsetFormLayout">
-          <test-button :post="testPost" />
+          <test-button
+            :disabled="!form.fc.getFieldValue('http_proxy') && !form.fc.getFieldValue('https_proxy')"
+            :post="testPost"
+            :isSuccessAlert="false" />
         </a-form-item>
       </a-form>
     </div>
@@ -25,6 +28,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import CommonFormItems from '../components/CommonFormItems'
 import DomainSelect from '@/sections/DomainSelect'
 import DialogMixin from '@/mixins/dialog'
@@ -93,16 +97,32 @@ export default {
       })
     },
     async testPost () {
+      const manager = new this.$Manager('proxysettings')
       try {
+        const keys = ['http_proxy', 'https_proxy']
         const values = await this.form.fc.validateFields(['http_proxy', 'https_proxy'])
-        await this.params.onManager('performClassAction', {
-          managerArgs: {
-            action: 'test',
-            data: {
-              http_proxy: values.http_proxy,
-              https_proxy: values.https_proxy,
-            },
+        const { data } = await manager.performClassAction({
+          action: 'test',
+          data: {
+            http_proxy: values.http_proxy,
+            https_proxy: values.https_proxy,
           },
+        })
+        keys.forEach(k => {
+          if (!data[k] || !values[k] || R.type(data[k]) !== 'Object') return false
+          const { ok, reason } = data[k]
+          console.log(ok)
+          if (ok) {
+            this.$notification.success({
+              message: `${this.$t('proxysettings')[k]}测试连接成功`,
+              description: '请点击确定继续',
+            })
+          } else {
+            this.$notification.error({
+              message: `${this.$t('proxysettings')[k]}测试连接失败`,
+              description: reason,
+            })
+          }
         })
       } catch (err) {
         throw err
