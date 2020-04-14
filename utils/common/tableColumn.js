@@ -406,10 +406,10 @@ export const getProjectDomainTableColumn = ({
   field = 'project_domain',
   title = `所属${i18n.t('dictionary.domain')}`,
 } = {}) => {
-  return {
+  return getCopyWithContentTableColumn({
     title,
     field,
-    showOverflow: 'title',
-    minWidth: 100,
-  }
+    sortable: true,
+    hidden: !store.getters.isAdminMode,
+  })
 }
