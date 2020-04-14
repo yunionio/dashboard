@@ -29,7 +29,7 @@ export default {
     return {
       list: this.$list.createList(this, {
         id: this.id,
-        resource: this.imagesFetcher,
+        resource: 'images',
         getParams: this.getParams,
         steadyStatus: Object.values(expectStatus.image).flat(),
         apiVersion: 'v1',
@@ -106,8 +106,6 @@ export default {
     },
   },
   created () {
-    this.sm = new this.$Manager('images', 'v1')
-    this.vm = new this.$Manager('guestimages', 'v1')
     this.list.fetchData()
   },
   methods: {
@@ -123,12 +121,6 @@ export default {
         details: true,
         pending_delete: true,
       }
-    },
-    imagesFetcher (params) {
-      return this.sm.list({ params })
-    },
-    guestimagesFetcher (params) {
-      return this.vm.list({ params })
     },
   },
 }
