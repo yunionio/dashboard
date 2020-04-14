@@ -113,7 +113,7 @@ export default {
     },
     provider () {
       const { provider } = this.$route.query
-      return provider || (this.cloudAccount && this.cloudAccount.id)
+      return provider || (this.cloudAccount && this.cloudAccount.provider)
     },
     isGoogle () {
       return this.provider === 'Google'
