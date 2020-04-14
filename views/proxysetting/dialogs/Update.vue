@@ -65,8 +65,8 @@ export default {
       try {
         const values = await this.form.fc.validateFields()
         const ids = this.params.data.map(item => item.id)
-        await this.params.onManager('batchUpdate', {
-          ids,
+        await this.params.onManager('update', {
+          id: ids[0],
           managerArgs: {
             data: values,
           },
