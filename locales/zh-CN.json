@@ -1137,7 +1137,7 @@
     },
     "compute$pending_delete_expire_seconds": {
       "label": "主机、硬盘回收站保存时长",
-      "desc": "主机、硬盘在回收站内保存时间，单位为秒"
+      "desc": "主机、硬盘在回收站内保存时间"
     },
     "common$api_server": {
       "label": "控制台地址",
@@ -1153,7 +1153,7 @@
     },
     "image$pending_delete_expire_seconds": {
       "label": "镜像回收站保存时长",
-      "desc": "镜像在回收站内保存时间，单位为秒"
+      "desc": "镜像在回收站内保存时间"
     }
   },
   "notificationPriority": {

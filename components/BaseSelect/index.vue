@@ -8,7 +8,7 @@
       @change="change"
       @search="loadOpts"
       :loading="loading">
-      <slot name="optionTemplate">
+      <slot name="optionTemplate" v-bind:options="resOpts">
         <a-select-option v-for="item of resOpts" :key="item.id" :value="item.id" :disabled="item.__disabled">
           <option-label :nameKey="nameKey" :labelFormat="labelFormat" :data="item" :resource="resource" />
         </a-select-option>
