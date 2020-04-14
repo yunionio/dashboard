@@ -48,7 +48,7 @@ export default {
       const detailTabs = [
         { label: '详情', key: 'cloudaccount-detail' },
         { label: '订阅', key: 'cloudprovider-list' },
-        // { label: '资源统计', key: 'dashboard' }, // 暂时去掉
+        { label: '资源统计', key: 'dashboard' }, // 暂时去掉
         { label: '操作日志', key: 'event-drawer' },
       ]
       if (platform === 'idc' || platform === 'private') {

@@ -22,6 +22,7 @@ import ExternalprojectList from '@Cloudenv/views/externalproject/components/List
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import CloudaccountDetail from './Detail'
+import Dashboard from './Dashboard'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -33,6 +34,7 @@ export default {
     CloudaccountDetail,
     CloudproviderregionList,
     ExternalprojectList,
+    Dashboard,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
@@ -41,6 +43,7 @@ export default {
         { label: '详情', key: 'cloudaccount-detail' },
         { label: '区域', key: 'cloudproviderregion-list' },
         { label: this.$t('dictionary.project'), key: 'externalproject-list' },
+        { label: '资源统计', key: 'dashboard' }, // 暂时去掉
         { label: '操作日志', key: 'event-drawer' },
       ],
     }
