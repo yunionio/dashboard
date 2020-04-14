@@ -14,7 +14,7 @@
       </a-form-item>
       <a-form-item label="平台">
          <a-radio-group v-decorator="decorators.brand">
-           <a-radio-button v-for="item in BRANDS" :key="item" :value="item">{{item}}</a-radio-button>
+           <a-radio-button v-for="item in brands" :key="item" :value="item">{{item}}</a-radio-button>
          </a-radio-group>
       </a-form-item>
       <a-form-item label="主机模版">
@@ -27,6 +27,7 @@
       </a-form-item>
       <network-selects
         isRequired
+        :isDefaultFetch="false"
         :defaultActiveFirstOption="false"
         :disabled="networlDisabled"
         ref="NETWORK"
@@ -49,7 +50,7 @@
       </a-form-item>
       <a-form-item label="最小实例数">
         <a-tooltip placement="top" :title="`范围在 0 ~ 期望实例数`">
-          <a-input-number onChange="handleMinNumberChange" v-decorator="decorators.min_instance_number" :min="0" :max="form.fd.desire_instance_number"  />
+          <a-input-number v-decorator="decorators.min_instance_number" :min="0" :max="form.fd.desire_instance_number"  />
         </a-tooltip>
       </a-form-item>
       <a-form-item label="实例移除策略">
@@ -139,6 +140,14 @@ export default {
     }
   },
   computed: {
+    capabilityBrands () {
+      return this.$store.getters.capability.brands
+    },
+    brands () {
+      return BRANDS.filter(brand => {
+        return this.capabilityBrands.indexOf(brand) > -1
+      })
+    },
     project_domain () {
       return this.form.fd.domain ? this.form.fd.domain : this.$store.getters.userInfo.projectDomainId
     },
@@ -149,6 +158,7 @@ export default {
       if (this.$store.getters.isAdminMode) {
         return {
           project_domain: this.project_domain,
+          tenant: this.form.fd.project,
         }
       }
       return { scope: this.$store.getters.scope }
@@ -163,25 +173,52 @@ export default {
       }
     },
   },
-  created () {
-    if (!this.$store.getters.isAdminMode) {
-      this.fetchQueryTs()
-    }
-  },
   methods: {
     filterOption (input, option) {
       return (
         option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
       )
     },
-    domainChange () {
-      this.fetchQueryTs()
-      this.$refs['NETWORK'].fetchs()
+    // domainChange () {
+    //   this.fetchQueryTs()
+    //   this.$refs['NETWORK'].fetchs()
+    // },
+    projectChange () {
+      if (this.brands && this.brands.length > 0) {
+        this.form.fc.setFieldsValue({
+          brand: this.brands[0],
+        })
+      }
     },
     vpcChange (vpcId) {
       if (this.isLoadbalancer) {
         this.$refs['BIND_LB'].fetchQueryLbs(vpcId)
       }
+    },
+    brandChange () {
+      this.fetchQueryTs()
+    },
+    templateChange () {
+      this.$refs['NETWORK'].fetchs()
+    },
+    async handleValuesChange (vm, changedFields) {
+      this.form.fd = {
+        ...this.form.fd,
+        ...changedFields,
+      }
+      await this.$nextTick()
+      if (changedFields.project) {
+        this.projectChange()
+      }
+      if (changedFields.brand) {
+        this.brandChange()
+      }
+      if (changedFields.guest_template_id) {
+        this.templateChange()
+      }
+      // if (changedFields.vpc) {
+      //   this.vpcChange()
+      // }
     },
     vpcParams () {
       const { brand } = this.form.fd
@@ -190,32 +227,13 @@ export default {
         ...this.scopeParams,
       }
     },
-    handleValuesChange (vm, changedFields) {
-      this.form.fd = {
-        ...this.form.fd,
-        ...changedFields,
-      }
-      this.$nextTick(() => {
-        if (changedFields.domain) {
-          this.domainChange()
-        }
-        if (changedFields.vpc) {
-          this.vpcChange()
-        }
-        if (changedFields.min_instance_number || changedFields.max_instance_number) {
-          // this.numberChange()
-        }
-      })
-    },
     setNetworkValues (row) {
-      console.log('---========', row)
       if (row.config_info && row.config_info.nets && row.config_info.nets.length > 0) {
         const net = row.config_info.nets[0]
         if (net.vpc_id && net.id) {
           this.form.fc.setFieldsValue({
             vpc: net.vpc_id,
-          }, () => {
-            this.$refs['NETWORK'].fetchNetwork()
+            network: net.id,
           })
           this.networlDisabled = true
           return true
@@ -248,7 +266,8 @@ export default {
         if (data.data && data.data.length > 0) {
           const list = data.data
           this.serverTemplateList = list.filter(t => {
-            return t.provider === 'OneCloud'
+            const isNats = t.config_info && t.config_info.nets && t.config_info.nets.length === 1
+            return t.provider === 'OneCloud' && isNats
           })
           this.setNetworkValues(list[0])
         }

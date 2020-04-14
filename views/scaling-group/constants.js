@@ -67,7 +67,9 @@ export const DECORATORS = {
   brand: [
     'brand',
     {
-      initialValue: BRANDS[0],
+      rules: [
+        { required: true, message: '暂无平台不可新建' },
+      ],
     },
   ],
   servertemplate: [
