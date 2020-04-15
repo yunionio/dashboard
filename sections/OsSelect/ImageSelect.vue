@@ -94,6 +94,9 @@ export default {
       type: Boolean,
       default: false,
     },
+    sysDiskSize: {
+      type: Number,
+    },
   },
   inject: ['form'],
   data () {
@@ -180,8 +183,13 @@ export default {
     },
     imageOptions () {
       const { os } = this.form.fc.getFieldsValue(['os'])
+      let imageOptions = this.imageOpts
+      // 所选镜像容量最小磁盘要求需小于虚拟机系统盘大小
+      if (this.sysDiskSize) {
+        imageOptions = this.imageOpts.filter((item) => { return item.info.min_disk <= this.sysDiskSize })
+      }
       if (this.uefi) {
-        let imageOpts = this.imageOpts.map((item) => {
+        let imageOpts = imageOptions.map((item) => {
           if (item.uefi_support !== 'true') {
             return {
               ...item,
@@ -196,7 +204,7 @@ export default {
         }
         return imageOpts
       }
-      return this.imageOpts
+      return imageOptions
     },
     isVMware () {
       return this.imageType === IMAGES_TYPE_MAP.vmware.key
