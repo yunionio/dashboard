@@ -33,6 +33,9 @@ export default {
     onManager: {
       type: Object,
     },
+    extParams: {
+      type: Object,
+    },
   },
   methods: {
     clickHandle () {
@@ -45,6 +48,7 @@ export default {
         data: this.data,
         columns: this.columns,
         onManager: manager,
+        extParams: this.extParams,
         success: () => {
           this.$emit('success')
         },

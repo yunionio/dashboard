@@ -6,7 +6,7 @@
       :style="{ width: (showSync ? 'calc(100% - 22px)' : '100%'), 'min-width': minWidth }"
       :value="value"
       @change="change"
-      @search="loadOpts"
+      @search="loadOptsDebounce"
       :loading="loading">
       <slot name="optionTemplate" v-bind:options="resOpts">
         <a-select-option v-for="item of resOpts" :key="item.id" :value="item.id" :disabled="item.__disabled">
@@ -14,7 +14,7 @@
         </a-select-option>
       </slot>
     </a-select>
-    <a-icon v-if="showSync" type="sync" class="ml-2" :spin="loading" @click="e => loadOpts()" :style="{ color: '#1890ff' }" />
+    <a-icon v-if="showSync" type="sync" class="ml-2" :spin="loading" @click="e => loadOptsDebounce()" :style="{ color: '#1890ff' }" />
   </div>
 </template>
 <script>
@@ -114,7 +114,7 @@ export default {
     },
   },
   data () {
-    this.loadOpts = debounce(this.loadOpts, 500)
+    this.loadOptsDebounce = debounce(this.loadOpts, 500)
     return {
       resOpts: {},
       loading: false,
@@ -172,7 +172,7 @@ export default {
     },
   },
   mounted () {
-    if (this._valid()) this.loadOpts()
+    if (this._valid()) this.loadOptsDebounce()
   },
   methods: {
     filterOption (input, option) {
@@ -182,7 +182,7 @@ export default {
       if (!R.equals(val, oldV)) {
         const isInitLoad = R.is(Object, oldV) && R.isEmpty(oldV) // 如果oldV是{}，认为是第一次参数变化，则无需 clearSelect
         if (!isInitLoad) this.clearSelect()
-        if (this._valid()) this.loadOpts()
+        if (this._valid()) this.loadOptsDebounce()
       }
     },
     _valid () {
@@ -231,7 +231,7 @@ export default {
         })
       }
     },
-    loadOpts (query) {
+    async loadOpts (query) {
       if (!R.isNil(query) && this.filterable) return // 如果开启本地搜索，远程搜索将取消
       this.loading = true
       let manager = new Manager(this.resource, this.version)
@@ -243,24 +243,23 @@ export default {
           params.filter = `${this.searchKey}.contains(${query})`
         }
       }
-      manager.list({ params, ctx: this.ctx })
-        .then(({ data: { data = [] } }) => {
-          let list = data.map(val => ({ ...val, id: val[this.idKey], name: val[this.nameKey] }))
-          if (this.mapper) {
-            list = this.mapper(list)
-          }
-          this.$emit('update:options', list)
-          const resOpts = arrayToObj(list)
-          this.resOpts = resOpts
-          this.disabledOpts()
-          this.loading = false
-          this.defaultSelect(list)
-          this.$emit('update:initLoaded', true)
-        })
-        .catch((error) => {
-          this.loading = false
-          throw error
-        })
+      try {
+        const { data: { data = [] } } = await manager.list({ params, ctx: this.ctx })
+        let list = data.map(val => ({ ...val, id: val[this.idKey], name: val[this.nameKey] }))
+        if (this.mapper) {
+          list = this.mapper(list)
+        }
+        this.$emit('update:options', list)
+        const resOpts = arrayToObj(list)
+        this.resOpts = resOpts
+        this.disabledOpts()
+        this.loading = false
+        this.defaultSelect(list)
+        this.$emit('update:initLoaded', true)
+      } catch (error) {
+        this.loading = false
+        throw error
+      }
     },
     defaultSelect (list) {
       if (this.isDefaultSelect && list.length > 0 && !this.value) { // 没有初始化值才可以默认选择
