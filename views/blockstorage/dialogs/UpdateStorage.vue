@@ -6,7 +6,7 @@
       <dialog-table :data="params.data" :columns="columns" />
       <a-form :form="form.fc" v-bind="formItemLayout">
         <form-items :storage_type="storage_type" />
-         <a-form-item label="超售比">
+         <a-form-item label="超售比" v-if="params.data[0].brand.toLowerCase() !== 'zstack'">
           <a-input-number :step="0.1" v-decorator="decorators.commit_bound" :min="0" />
         </a-form-item>
         <a-form-item label="介质类型">
@@ -108,7 +108,10 @@ export default {
       this.loading = true
       try {
         const values = await this.validateForm()
-        values['cmtbound'] = values.commit_bound
+        if (values.commit_bound) {
+          values['cmtbound'] = values.commit_bound
+          Reflect.deleteProperty(values, 'commit_bound')
+        }
         const manager = new this.$Manager('storages', 'v2')
         await manager.update({ id: this.params.data[0].id, data: values })
         this.cancelDialog()
