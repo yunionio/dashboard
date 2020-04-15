@@ -92,9 +92,16 @@ export default {
         {
           label: '禁用',
           action: obj => {
-            this.createDialog('UpdateServicecatalogDialog', {
-              data: [obj],
-              list: this.list,
+            return new this.$Manager('kubeclusters', 'v1').performAction({
+              id: this.cluster,
+              action: 'disable-component',
+              data: {
+                type: obj.name,
+              },
+            }).then(() => {
+              this.fetchData()
+            }).catch(error => {
+              throw error
             })
           },
           meta: (obj) => ({
@@ -104,9 +111,16 @@ export default {
         {
           label: '启用',
           action: obj => {
-            this.createDialog('UpdateServicecatalogDialog', {
-              data: [obj],
-              list: this.list,
+            return new this.$Manager('kubeclusters', 'v1').performAction({
+              id: this.cluster,
+              action: 'enable-component',
+              data: {
+                type: obj.name,
+              },
+            }).then(() => {
+              this.fetchData()
+            }).catch(error => {
+              throw error
             })
           },
           meta: (obj) => ({
