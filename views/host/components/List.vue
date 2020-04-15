@@ -313,7 +313,7 @@ export default {
                     })
                   },
                   meta: () => ({
-                    validate: this.list.selectedItems.every(item => { item.brand.toLowerCase() !== 'zstack' }),
+                    validate: this.list.selectedItems.every(item => { return item.brand.toLowerCase() !== 'zstack' }),
                   }),
                 },
                 {
