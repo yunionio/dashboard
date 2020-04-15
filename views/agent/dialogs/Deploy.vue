@@ -113,9 +113,16 @@
           <a-checkbox v-decorator="decorators.repo_sslverify">Yum源TLS校验</a-checkbox>
         </a-form-item>
       </a-form>
+      <a-alert v-if="isRunning">
+        <div slot="message">
+          提示：
+          检测到该任务正在执行中，点击
+          <router-link :to="`/lbagent/asbook?ansiblePlaybookId=${ansiblePlaybookId}`">详情</router-link>
+        </div>
+      </a-alert>
     </div>
     <div slot="footer">
-      <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
+      <a-button type="primary" @click="handleConfirm" :loading="loading" :disabled="isRunning">{{ $t('dialog.ok') }}</a-button>
       <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
     </div>
   </base-dialog>
@@ -384,9 +391,14 @@ export default {
           },
           deploy_method: values.deploy_method,
         }
-        await this.doCreate(params)
+        const { data } = await this.doCreate(params)
         this.loading = false
         this.cancelDialog()
+        if (data) {
+          this.$router.push({
+            path: `/lbagent/asbook?ansiblePlaybookId=${data.deployment.ansible_playbook || this.ansiblePlaybookId}`,
+          })
+        }
         this.params.refresh()
       } catch (error) {
         this.loading = false
