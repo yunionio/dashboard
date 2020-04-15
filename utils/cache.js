@@ -87,6 +87,3 @@ class Loader {
     }
   }
 }
-
-window._queue = _queue
-window._cache = _cache
