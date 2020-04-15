@@ -4,6 +4,7 @@
     :visible="true"
     :destroy-on-close="true"
     :keyboard="false"
+    :zIndex="zIndex"
     :width="width"
     :mask-closable="false"
     @cancel="cancel"
@@ -37,6 +38,10 @@ export default {
     modalProps: {
       type: Object,
       default: () => ({}),
+    },
+    zIndex: {
+      type: Number,
+      default: 1000,
     },
   },
   provide: {
