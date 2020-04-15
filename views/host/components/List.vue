@@ -201,6 +201,9 @@ export default {
                       refresh: this.refresh,
                     })
                   },
+                  meta: () => ({
+                    validate: this.list.selectedItems.every(item => { return item.brand.toLowerCase() !== 'zstack' }),
+                  }),
                 },
                 {
                   label: '删除',
