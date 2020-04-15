@@ -15,6 +15,7 @@
 
 <script>
 import ClusterNamespace from '@K8S/sections/ClusterNamespace'
+import releaseMixin from '@K8S/mixins/releaseSidepage'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import { getNameFilter } from '@/utils/common/tableFilter'
@@ -26,24 +27,12 @@ export default {
   components: {
     ClusterNamespace,
   },
-  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin, releaseMixin],
   props: {
     id: String,
     getParams: {
       type: Object,
       default: () => ({}),
-    },
-    showSearchbox: {
-      type: Boolean,
-      default: true,
-    },
-    showGroupActions: {
-      type: Boolean,
-      default: true,
-    },
-    responseData: {
-      type: Object,
-      validator: val => val.data,
     },
   },
   data () {

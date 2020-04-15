@@ -1,4 +1,4 @@
-import { k8sStatusColumn, k8sImageColumn, k8sLabelColumn } from '@K8S/utils/tableColumns'
+import { k8sStatusColumn, k8sImageColumn } from '@K8S/utils/tableColumns'
 import { getNameDescriptionTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 
 export default {
@@ -22,7 +22,6 @@ export default {
         sortable: true,
       },
       k8sStatusColumn(),
-      k8sLabelColumn(),
       {
         field: 'podsInfo',
         title: '容器组',

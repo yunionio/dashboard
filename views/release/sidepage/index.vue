@@ -21,7 +21,8 @@
       :getParams="getParams"
       :responseData="responseData"
       :showSearchbox="false"
-      :showGroupActions="false" />
+      :showGroupActions="false"
+      :getResponseData="fetchData" />
   </base-side-page>
 </template>
 
@@ -92,6 +93,13 @@ export default {
       return {
         namespace: this.detailData.namespace,
         cluster: this.detailData.clusterID,
+      }
+    },
+  },
+  watch: {
+    detailTabs (val) {
+      if (!val.find(v => v.key === this.params.windowData.currentTab)) {
+        this.params.windowData.currentTab = this.detailTabs.length ? this.detailTabs[0].key : ''
       }
     },
   },

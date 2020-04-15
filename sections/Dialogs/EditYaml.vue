@@ -56,6 +56,7 @@ export default {
       this.$message.success('操作成功')
       this.params.refresh()
       this.cancelDialog()
+      if (R.is(Function, this.params.success)) this.params.success()
     },
   },
 }

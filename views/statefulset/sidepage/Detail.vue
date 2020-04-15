@@ -49,7 +49,16 @@ export default {
           field: 'namespace',
           title: '命名空间',
         },
+        {
+          field: 'podsInfo',
+          title: '容器组',
+          width: 70,
+          formatter: ({ row }) => {
+            return row.podsInfo.running + ' / ' + row.podsInfo.current
+          },
+        },
         k8sImageColumn(),
+        k8sImageColumn({ field: 'initContainerImages', title: '初始化镜像' }),
         {
           field: 'creationTimestamp',
           title: '创建时间',

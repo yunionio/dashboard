@@ -76,7 +76,7 @@ export default {
               data,
               columns: this.columns,
               title: '删除',
-              name: '存储声明',
+              name: '发布',
               onManager: this.onManager,
               idKey: 'name',
               requestData,

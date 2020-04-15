@@ -10,6 +10,9 @@ export default {
             columns: this.columns,
             onManager: this.onManager,
             refresh: this.refresh,
+            success: () => {
+              if (this.getResponseData) this.getResponseData()
+            },
           })
         },
       },
@@ -29,6 +32,9 @@ export default {
             manager,
             refresh: this.refresh,
             configText,
+            success: () => {
+              if (this.getResponseData) this.getResponseData()
+            },
           })
         },
       },
@@ -51,6 +57,7 @@ export default {
             idKey: 'name',
             requestParams,
             success: () => {
+              if (this.getResponseData) this.getResponseData()
               this.destroySidePages()
             },
           })

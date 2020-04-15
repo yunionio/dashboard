@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { k8sStatusColumn, k8sImageColumn } from '@K8S/utils/tableColumns'
+import { k8sStatusColumn, k8sImageColumn, k8sLabelColumn } from '@K8S/utils/tableColumns'
 
 export default {
   name: 'K8sDeploymentDetail',
@@ -48,7 +48,17 @@ export default {
           field: 'namespace',
           title: '命名空间',
         },
+        {
+          field: 'podsInfo',
+          title: '容器组',
+          width: 70,
+          formatter: ({ row }) => {
+            return row.podsInfo.running + ' / ' + row.podsInfo.current
+          },
+        },
         k8sImageColumn(),
+        k8sImageColumn({ field: 'initContainerImages', title: '初始化镜像' }),
+        k8sLabelColumn(),
         {
           field: 'creationTimestamp',
           title: '创建时间',
