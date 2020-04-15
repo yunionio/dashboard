@@ -61,13 +61,6 @@ export default {
             },
             jointFilter: true,
           },
-          // sn: {
-          //   label: 'SN',
-          //   filter: true,
-          //   formatter: val => {
-          //     return `host_sn.contains(${val})`
-          //   },
-          // },
           host_sn: {
             label: 'SN',
             distinctField: {
