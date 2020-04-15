@@ -295,7 +295,7 @@ class CreateList {
       const {
         data: {
           data = [],
-          total,
+          total = 0,
           limit: responseLimit,
           offset: responseOffset = 0,
         },
@@ -308,9 +308,7 @@ class CreateList {
         this.data = this.wrapData(data)
       }
       this.checkSteadyStatus()
-      if (total) {
-        this.total = total
-      }
+      this.total = total
       if (responseLimit > 0) {
         this.offset = responseOffset
       } else {
