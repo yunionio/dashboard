@@ -10,6 +10,7 @@ export const STORAGE_TYPES = {
   'gpfs': 'GPFS',
   'localstorage': '本地云盘',
   'ceph': '共享云盘',
+  'iscsi': 'iscsi',
 }
 
 export const MEDIUM_TYPES = {

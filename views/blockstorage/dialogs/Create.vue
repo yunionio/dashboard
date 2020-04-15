@@ -22,7 +22,7 @@
         <a-form-item label="存储类型">
           <a-radio-group v-decorator="decorators.storage_type" buttonStyle="solid">
             <template v-for="(v, k) in STORAGE_TYPES">
-              <a-radio-button v-if="storage_keys.indexOf(k) > -1" :key="k"  :value="k">{{v}}</a-radio-button>
+              <a-radio-button v-if="storageTypes.indexOf(k) > -1" :key="k"  :value="k">{{v}}</a-radio-button>
             </template>
           </a-radio-group>
         </a-form-item>
@@ -62,7 +62,6 @@ export default {
     return {
       MEDIUM_TYPES,
       STORAGE_TYPES,
-      storage_keys: ['rbd', 'nfs', 'gpfs'],
       loading: false,
       form: {
         fc: this.$form.createForm(this),
@@ -72,6 +71,9 @@ export default {
   },
   computed: {
     ...mapGetters(['isAdminMode', 'userInfo']),
+    storageTypes () {
+      return this.params.storageTypes || ['rbd', 'nfs', 'gpfs']
+    },
     getFieldValue () {
       return this.form.fc.getFieldValue
     },
