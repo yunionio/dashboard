@@ -1,9 +1,12 @@
 <template>
   <a-input-group compact>
     <a-form-item style="width: 28%" :wrapperCol="{ span: 24 }">
-      <a-select class="w-100" v-decorator="decorators.loadbalancer_id" placeholder="请选择负载均衡实例">
+      <a-select class="w-100" @change="handleLbChange" v-decorator="decorators.loadbalancer_id" placeholder="请选择负载均衡实例">
         <a-select-option v-for="item in loadbalancerList" :key="item.id" :value="item.id">{{item.name}}</a-select-option>
       </a-select>
+      <div slot="extra" style="white-space:nowrap;">
+        负载均衡VPC需与该弹性伸缩组一致
+      </div>
     </a-form-item>
     <a-form-item style="width: 28%" :wrapperCol="{ span: 24 }">
       <a-select  class="w-100" v-decorator="decorators.lb_backend_group" placeholder="请选择后台服务器组">
@@ -53,7 +56,19 @@ export default {
     }
   },
   methods: {
+    handleLbChange (id) {
+      this.fetchQueyrGroups(id)
+    },
     async fetchQueryLbs (vpc) {
+      if (!vpc) {
+        this.loadbalancerList = []
+        this.groupList = []
+        this.fc.setFieldsValue({
+          loadbalancer_id: undefined,
+          lb_backend_group: undefined,
+        })
+        return false
+      }
       const manager = new this.$Manager('loadbalancers')
       this.loadbalancerListLoading = true
       try {
