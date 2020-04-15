@@ -26,7 +26,7 @@ export default {
       this.$store.dispatch('auth/setRecovery', data).then(() => {
         this.loading = false
         this.$message.success('设置安全问题成功')
-        this.$router.push({
+        this.$router.replace({
           name: 'BindSecret',
         })
       }).catch(() => {

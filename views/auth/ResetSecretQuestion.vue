@@ -50,7 +50,7 @@ export default {
         this.loading = false
         storage.set(`${STORE_SECRET_PERFIX_KEY}${this.auth.inputUsername}`, res.data.qrcode)
         this.$message.success('重置秘钥成功，请重新扫码绑定')
-        this.$router.push({
+        this.$router.replace({
           name: 'BindSecret',
         })
       }).catch(() => {

@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import { updateLastLoginUserName } from '@/utils/auth'
+
 export default {
   name: 'SecretVerify',
   data () {
@@ -43,8 +45,9 @@ export default {
         await this.$store.dispatch('auth/validPasscode', {
           passcode: this.securityCode,
         })
+        await updateLastLoginUserName()
         this.loading = false
-        this.$router.push('/')
+        this.$router.replace('/')
       } catch (error) {
         this.error = true
         this.loading = false
@@ -55,7 +58,7 @@ export default {
       this.$refs['security-code'].focusInput(1)
     },
     resetSecret () {
-      this.$router.push({
+      this.$router.replace({
         name: 'ResetSecretQuestion',
       })
     },

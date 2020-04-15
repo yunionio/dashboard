@@ -60,7 +60,7 @@
                 </a-input>
               </a-form-item>
               <a-form-item>
-                <a-button type="primary" html-type="submit" :loading="loading" block>登录</a-button>
+                <a-button type="primary" html-type="submit" :loading="submting" block :disabled="loading">登录</a-button>
               </a-form-item>
             </a-form>
           </div>
@@ -78,7 +78,7 @@
             </div>
           </div>
         </div>
-        <p class="browser-update" v-if="!isChrome">为了获取更好的产品体验，请使用 Chrome 最新版本的浏览器</p>
+        <p class="browser-update" v-if="isChrome">为了获取更好的产品体验，请使用 Chrome 最新版本的浏览器</p>
       </div>
     </template>
   </div>
@@ -90,6 +90,7 @@ import Cookies from 'js-cookie'
 import { STORE_SECRET_PERFIX_KEY } from './constants'
 import storage from '@/utils/storage'
 import { isChrome } from '@/utils/utils'
+import { updateLastLoginUserName } from '@/utils/auth'
 
 export default {
   name: 'Login',
@@ -113,6 +114,7 @@ export default {
     }
     return {
       loading: false,
+      submting: false,
       form: {
         fc: this.$form.createForm(this),
         fi: {
@@ -197,27 +199,28 @@ export default {
     async fetchLoginInfos () {
       this.loading = true
       try {
-        let isRegister = true
-        if (this.$appConfig.isPrivate) {
-          isRegister = await this.fetchRegisterStatus()
-        }
+        await this.fetchRegions()
+        let isRegister = await this.fetchRegisterStatus()
         if (!isRegister) {
-          this.$router.push({ name: 'Register' })
+          this.$router.replace({ name: 'Register' })
         } else {
           this.fetchCaptcha()
-          this.fetchRegions()
         }
+        this.loading = false
       } catch (error) {
         this.loading = false
+        throw error
       }
     },
     async fetchRegisterStatus () {
       this.loading = true
       try {
         const { data } = await this.$http.get('/v1/registers/status')
+        this.loading = false
         if (data.status === 'true') return true
         return false
       } catch (error) {
+        this.loading = false
         throw error
       }
     },
@@ -231,11 +234,13 @@ export default {
         if (captcha) this.form.fi.showCaptcha = true
         // 如果cookie中的region不在regions列表中，则清除cookie中的region
         const regionCookie = Cookies.get('region')
-        if (regionCookie && !this.form.fi.regions.includes(regionCookie)) {
-          Cookies.remove('region')
+        if ((regionCookie && !this.form.fi.regions.includes(regionCookie)) || !regionCookie) {
+          Cookies.set('region', regions[0], { expires: 7 })
         }
-      } finally {
         this.loading = false
+      } catch (error) {
+        this.loading = false
+        throw error
       }
     },
     fetchCaptcha () {
@@ -251,24 +256,32 @@ export default {
     captchaErrorHandle () {
       this.form.fi.captchaLoading = false
     },
-    async ssoLogin (ticket) {
+    ssoLogin () {
+      console.log('cas login')
       this.loading = true
-      try {
-        const loginResponse = await this.$store.dispatch('auth/login', {
-          cas_ticket: this.$route.query.ticket,
-        })
-        this.onTotpLogin(loginResponse)
-      } catch (error) {
-        this.loading = false
-        this.isTicketLogin = false
-        this.fetchLoginInfos()
-      }
+      this.submting = true
+      Cookies.remove('region')
+      this.$store.dispatch('auth/login', {
+        cas_ticket: this.$route.query.ticket,
+      }).then(async loginResponse => {
+        try {
+          await updateLastLoginUserName()
+          await this.onTotpLogin(loginResponse)
+          this.submting = false
+          this.loading = false
+        } catch (error) {
+          throw error
+        }
+      }).catch(async () => {
+        await this.fetchRegions()
+        window.location.href = this.casServerUrl
+      })
     },
-    handleSubmit (e) {
+    async handleSubmit (e) {
       e.preventDefault()
-      this.form.fc.validateFields(async (err, values) => {
-        if (err) return
-        this.loading = true
+      this.submting = true
+      try {
+        const values = await this.form.fc.validateFields()
         const data = { ...values }
         const tenant = Cookies.get('tenant')
         let scope = Cookies.get('scope')
@@ -280,19 +293,19 @@ export default {
         }
         if (tenant) data.username = `${tenant}/${data.username}`
         if (scope) data.scope = scope
-        try {
-          const loginResponse = await this.$store.dispatch('auth/login', data)
-          this.onTotpLogin(loginResponse)
-        } catch (error) {
-          if (error.response.status === 409) {
-            this.form.fi.showDomain = true
-          }
-          this.fetchCaptcha()
-          this.loading = false
+        const loginResponse = await this.$store.dispatch('auth/login', data)
+        await this.onTotpLogin(loginResponse)
+        this.submting = false
+      } catch (error) {
+        if (error.response.status === 409) {
+          this.form.fi.showDomain = true
         }
-      })
+        this.fetchCaptcha()
+        this.submting = false
+      }
     },
     async onTotpLogin (res) {
+      this.submting = true
       // 如果 data 不为空，则是 server 返回的首次绑定秘钥的二维码，存入 storage，以免刷新后重新登录丢失的问题
       if (res.data) storage.set(`${STORE_SECRET_PERFIX_KEY}${this.userInfo.name}`, res.data)
       // 如果获取到有效的二维码则进入首次初始化页面
@@ -300,27 +313,31 @@ export default {
         // 获取密码问题，如果设置过则直接进入绑定秘钥页面，没有跳转至设置密码问题页面
         try {
           const recoveryRes = await this.$store.dispatch('auth/getRecovery')
-          this.loading = false
           if (recoveryRes.data) {
-            this.$router.push({ name: 'BindSecret' })
+            this.$router.replace({ name: 'BindSecret' })
           }
+          this.submting = false
         } catch (error) {
-          this.loading = false
           if (error.response.status === 404) {
-            this.$router.push({ name: 'SetSecretQuestion' })
+            this.$router.replace({ name: 'SetSecretQuestion' })
           }
+          this.submting = false
+          throw error
         }
       } else if (this.auth.auth.totp_on) {
-        this.loading = false
         // 如果开启了认证则进入输入秘钥页面
-        this.$router.push({ name: 'SecretVerify' })
+        this.submting = false
+        this.$router.replace({ name: 'SecretVerify' })
       } else {
+        await updateLastLoginUserName()
+        this.submting = false
         // 否则直接登录
-        if (this.$appConfig.isPrivate) {
-          window.location.href = this.$appConfig.v1Perfix
-        } else {
-          this.$router.push('/')
+        const lastPath = this.$route.query.lastPath
+        let path = '/'
+        if (lastPath && lastPath.startsWith('/')) {
+          path = lastPath
         }
+        this.$router.replace(path)
       }
     },
   },
@@ -328,7 +345,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../styles/variables";
+@import "../../../src/styles/variables";
 
 .login-body {
   width: 810px;

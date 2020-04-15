@@ -99,7 +99,7 @@ export default {
         try {
           await this.$http.post('/v1/registers', values)
           storage.set(INIT_SETUP, true)
-          this.$router.push({ name: 'Login' })
+          this.$router.replace({ name: 'Login' })
         } finally {
           this.loading = false
         }
@@ -110,7 +110,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../styles/variables";
+@import "../../../src/styles/variables";
 .logo {
   text-align: right;
   img {

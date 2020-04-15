@@ -51,6 +51,7 @@
 import { mapGetters } from 'vuex'
 import { STORE_SECRET_PERFIX_KEY } from './constants'
 import storage from '@/utils/storage'
+import { updateLastLoginUserName } from '@/utils/auth'
 
 export default {
   name: 'BindSecret',
@@ -85,9 +86,10 @@ export default {
         await this.$store.dispatch('auth/validPasscode', {
           passcode: this.securityCode,
         })
+        await updateLastLoginUserName()
         storage.remove(`${STORE_SECRET_PERFIX_KEY}${this.auth.inputUsername}`)
         this.loading = false
-        this.$router.push('/')
+        this.$router.replace('/')
       } catch (error) {
         this.error = true
         this.loading = false
