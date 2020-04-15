@@ -21,7 +21,8 @@
       @init-side-page-tab="initSidePageTab"
       @refresh="refresh"
       @single-refresh="singleRefresh"
-      @tab-change="handleTabChange" />
+      @tab-change="handleTabChange"
+      @updateDetail="handleUpdateDetail" />
   </base-side-page>
 </template>
 
@@ -69,6 +70,11 @@ export default {
   computed: {
     getParams () {
       return null
+    },
+  },
+  methods: {
+    handleUpdateDetail () {
+      this.fetchData()
     },
   },
 }
