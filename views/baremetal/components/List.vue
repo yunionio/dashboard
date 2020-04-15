@@ -59,11 +59,11 @@ export default {
             },
             jointFilter: true,
           },
-          sn: {
+          host_sn: {
             label: 'SN',
-            filter: true,
-            formatter: val => {
-              return `host_sn.contains(${val})`
+            distinctField: {
+              type: 'extra_field',
+              key: 'account',
             },
           },
           host: {
