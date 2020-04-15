@@ -479,34 +479,34 @@ export default {
                 },
               },
               {
-                  label: '公网IP转EIP',
-                  action: () => {
-                    this.createDialog('VmPublicIpToEipDialog', {
-                      data: [obj],
-                      columns: this.columns,
-                      onManager: this.onManager,
-                    })
-                  },
-                  meta: () => {
-                    const ret = {
-                      validate: false,
-                      tooltip: null,
-                    }
-                    const isSomeBindEip = this.list.selectedItems.some((item) => { return item.eip && item.eip_mode === 'elastic_ip' })
-                    const isAllBindPublicIp = this.list.selectedItems.every((item) => { return item.eip_mode === 'public_ip' })
-                    if (isSomeBindEip) {
-                      ret.tooltip = '已绑定弹性公网IP的虚拟机不支持该操作'
-                      return ret
-                    }
-                    if (!isAllBindPublicIp) {
-                      ret.tooltip = '只有已分配公网IP的虚拟机支持该操作'
-                      return ret
-                    }
-                    ret.validate = cloudEnabled('publicIpToEip', this.list.selectedItems)
-                    ret.tooltip = cloudUnabledTip('publicIpToEip', this.list.selectedItems)
-                    return ret
-                  },
+                label: '公网IP转EIP',
+                action: () => {
+                  this.createDialog('VmPublicIpToEipDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                  })
                 },
+                meta: () => {
+                  const ret = {
+                    validate: false,
+                    tooltip: null,
+                  }
+                  const isSomeBindEip = this.list.selectedItems.some((item) => { return item.eip && item.eip_mode === 'elastic_ip' })
+                  const isAllBindPublicIp = this.list.selectedItems.every((item) => { return item.eip_mode === 'public_ip' })
+                  if (isSomeBindEip) {
+                    ret.tooltip = '已绑定弹性公网IP的虚拟机不支持该操作'
+                    return ret
+                  }
+                  if (!isAllBindPublicIp) {
+                    ret.tooltip = '只有已分配公网IP的虚拟机支持该操作'
+                    return ret
+                  }
+                  ret.validate = cloudEnabled('publicIpToEip', this.list.selectedItems)
+                  ret.tooltip = cloudUnabledTip('publicIpToEip', this.list.selectedItems)
+                  return ret
+                },
+              },
               {
                 label: '迁移',
                 action: () => {
