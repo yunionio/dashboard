@@ -58,7 +58,7 @@ export default {
             managerArgs: { params, data: this.params.requestData },
           })
           if (this.params.vm && this.params.vm.destroySidePages) {
-            this.params.vm.destroySidePages()
+            this.params.vm.destroySidePage(this.params.vm.windowId)
           }
           if (this.params.success && R.is(Function, this.params.success)) {
             this.params.success(response)
