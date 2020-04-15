@@ -22,7 +22,7 @@
               <a-col :span="12">
                 <a-icon type="sync" class="mr-1" @click="refresh" />
                 <!-- <router-link target="_blank" :to="{ path: '/snapshotpolicy' }" style="color: #409EFF;">创建自定快照策略</router-link> -->
-                <dialog-trigger :vm="params.vm" name="创建自定义快照策略" value="CreateSnapshotPolicyDialog" resource="snapshotpolicies" @success="successCallback" />
+                <dialog-trigger :vm="params.vm" :extParams="{ tenant, domain }" name="创建自定义快照策略" value="CreateSnapshotPolicyDialog" resource="snapshotpolicies" @success="successCallback" />
               </a-col>
             </a-row>
           </a-form-item>
@@ -114,6 +114,14 @@ export default {
       dayTips: '',
       enable: this.params.data[0].snapshotpolicies && this.params.data[0].snapshotpolicies.length,
     }
+  },
+  computed: {
+    domain () {
+      return this.params.data[0].domain_id
+    },
+    tenant () {
+      return this.params.data[0].tenant_id
+    },
   },
   created () {
     this.fetchSnaphotpolicy().then(() => {

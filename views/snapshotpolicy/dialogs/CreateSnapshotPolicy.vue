@@ -85,6 +85,8 @@ export default {
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
+    const tenant = this.params.extParams && this.params.extParams.tenant
+    const domain = this.params.extParams && this.params.extParams.domain
     return {
       loading: false,
       action: '新建策略',
@@ -140,7 +142,7 @@ export default {
         domain: [
           'domain',
           {
-            initialValue: this.$store.getters.userInfo.projectDomainId,
+            initialValue: domain || this.$store.getters.userInfo.projectDomainId,
             rules: [
               { validator: isRequired(), message: this.$t('rules.domain'), trigger: 'change' },
             ],
@@ -149,7 +151,7 @@ export default {
         project: [
           'project',
           {
-            initialValue: this.$store.getters.userInfo.projectId,
+            initialValue: tenant || this.$store.getters.userInfo.projectId,
             rules: [
               { validator: isRequired(), message: this.$t('rules.project'), trigger: 'change' },
             ],
