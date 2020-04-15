@@ -121,6 +121,7 @@ export default {
         onManager: this.onManager,
         refresh: () => {
           this.refresh()
+          this.$emit('updateDetail')
         },
       })
     },

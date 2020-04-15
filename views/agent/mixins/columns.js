@@ -9,6 +9,7 @@ export default {
         vm: this,
         hideField: true,
         title: '名称',
+        onManager: this.onManager,
         slotCallback: row => {
           return (
             <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
