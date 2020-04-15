@@ -99,10 +99,8 @@ export default {
   },
   watch: {
     cloudEnv (val) {
-      this.$nextTick(() => {
-        this.list.resource = this[`${val}Fetcher`]
-        this.list.fetchData(0)
-      })
+      this.list.resource = this[`${val}Fetcher`]
+      this.list.fetchData(0)
     },
   },
   created () {
