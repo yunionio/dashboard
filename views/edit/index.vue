@@ -68,6 +68,7 @@ import GridShadow from '@Dashboard/components/GridShadow'
 import ExtendGallery from '@Dashboard/sections/ExtendGallery'
 import extendsComponents from '@Dashboard/extends'
 import debounce from 'lodash/debounce'
+import { clear as clearCache } from '@Dashboard/utils/cache'
 import { uuid } from '@/utils/utils'
 import storage from '@/utils/storage'
 
@@ -116,6 +117,7 @@ export default {
   destroyed () {
     this.pm = null
     this.debounceUpdateGridItem = null
+    clearCache()
   },
   created () {
     this.pm = new this.$Manager('parameters', 'v1')

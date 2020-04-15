@@ -81,6 +81,7 @@
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
+import { load } from '@Dashboard/utils/cache'
 import { usageConfig } from './constants'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
@@ -290,18 +291,23 @@ export default {
       if (!this.form.fd.brand) return
       this.loading = true
       try {
-        const response = await this.$http({
-          baseURL: '',
-          url: '/query',
-          method: 'GET',
-          params: {
-            $t: getRequestT(),
-            db: 'telegraf',
-            epoch: 'ms',
-            q: this.genSQLQuery(),
+        const data = await load({
+          res: 'query',
+          actionArgs: {
+            baseURL: '',
+            url: '/query',
+            method: 'GET',
+            params: {
+              $t: getRequestT(),
+              db: 'telegraf',
+              epoch: 'ms',
+              q: this.genSQLQuery(),
+            },
           },
+          useManager: false,
+          resPath: 'data.results[0].series',
         })
-        this.seriesData = this.seriesDataMapper(response.data.results[0].series)
+        this.seriesData = this.seriesDataMapper(data)
       } finally {
         this.loading = false
       }

@@ -81,6 +81,7 @@ import VueGridLayout from 'vue-grid-layout'
 import extendsComponents from '@Dashboard/extends'
 import Cookies from 'js-cookie'
 import { Base64 } from 'js-base64'
+import { clear as clearCache } from '@Dashboard/utils/cache'
 import storage from '@/utils/storage'
 import { download } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
@@ -121,6 +122,7 @@ export default {
   },
   destroyed () {
     this.pm = null
+    clearCache()
   },
   created () {
     this.pm = new this.$Manager('parameters', 'v1')
