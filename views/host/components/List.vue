@@ -312,6 +312,9 @@ export default {
                       list: this.list,
                     })
                   },
+                  meta: () => ({
+                    validate: this.list.selectedItems.every(item => { item.brand !== 'zstack' }),
+                  }),
                 },
                 {
                   label: '删除',
@@ -464,6 +467,9 @@ export default {
                         list: this.list,
                       })
                     },
+                    meta: () => ({
+                      validate: obj.brand.toLowerCase() !== 'zstack',
+                    }),
                   },
                   {
                     label: '回收为物理机',
