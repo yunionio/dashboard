@@ -32,11 +32,11 @@ export default {
         getParams: this.getParams,
         idKey: 'cloudregion_id',
         filterOptions: {
-          name: {
+          joint_filter: {
             label: '名称',
-            filter: true,
+            jointFilter: true,
             formatter: val => {
-              return `name.contains("${val}")`
+              return `cloudregions.id(cloudregion_id).name.contains('${val}')`
             },
           },
         },
