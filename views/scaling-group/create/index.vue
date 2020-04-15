@@ -203,9 +203,9 @@ export default {
         })
       }
     },
-    vpcChange (vpcId) {
+    vpcChange () {
       if (this.isLoadbalancer) {
-        this.$refs['BIND_LB'].fetchQueryLbs(vpcId)
+        this.$refs['BIND_LB'].fetchQueryLbs(this.form.fd.vpc)
       }
     },
     brandChange () {
@@ -232,6 +232,9 @@ export default {
       }
       if (changedFields.guest_template_id) {
         this.templateChange()
+      }
+      if (changedFields.vpc || Object.keys(changedFields).indexOf('vpc') > -1) {
+        this.vpcChange()
       }
     },
     vpcParams () {
