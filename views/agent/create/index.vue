@@ -33,10 +33,10 @@
         <a-form-item label="VRRP通告间隔" extra="VRRP广播通告间隔，关系到故障时自动切换的灵敏度">
           <a-input v-decorator="decorators.advert_int" type="number" addonAfter="秒" />
         </a-form-item>
-        <a-form-item label="InfluxDB地址" extra="请输入InfluxDB的IP地址，例如： https://192.168.222.171:8086 ，用于收集负载均衡的监控数据。选填，为空系统则会根据后端服务自动获取">
+        <a-form-item label="InfluxDB地址" extra="请输入InfluxDB的IP地址，例如： https://192.168.222.171:30086 ，用于收集负载均衡的监控数据。选填，为空系统则会根据后端服务自动获取">
           <a-row :gutter="8">
             <a-col :span="12">
-              <a-input v-decorator="decorators.influx_db_output_url" placeholder="例如：https://192.168.222.171:8086" />
+              <a-input v-decorator="decorators.influx_db_output_url" placeholder="例如：https://192.168.222.171:30086" />
             </a-col>
             <a-col :span="12">
               <a-checkbox class="ml-4" v-decorator="decorators.influx_db_output_unsafe_ssl">忽略https证书校验</a-checkbox>

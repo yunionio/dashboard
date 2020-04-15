@@ -3,6 +3,9 @@
     <page-header title="新建IP子网" />
     <a-form class="mt-3" :form="form.fc" @submit.prevent="handleSubmit">
       <a-divider orientation="left">基础配置</a-divider>
+      <a-form-item :label="`指定${$t('dictionary.project')}`" v-bind="formItemLayout">
+        <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
+      </a-form-item>
       <a-form-item label="名称" v-bind="formItemLayout">
         <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
       </a-form-item>
@@ -109,6 +112,8 @@ import CloudregionVpc from '@/sections/CloudregionVpc'
 import { Manager } from '@/utils/manager'
 import { uuid } from '@/utils/utils'
 import { typeClouds } from '@/utils/common/hypervisor'
+import DomainProject from '@/sections/DomainProject'
+import i18n from '@/locales'
 
 const { networkSegment } = REGEXP
 const masks = {
@@ -142,12 +147,22 @@ export default {
   components: {
     CloudregionVpc,
     IpSubnets,
+    DomainProject,
   },
   data () {
     return {
       submiting: false,
       form: {
-        fc: this.$form.createForm(this),
+        fc: this.$form.createForm(this, {
+          onValuesChange: (props, values) => {
+            if (values.domain) {
+              this.params.cloudregion = {
+                ...this.params.cloudregion,
+                project_domain: values.domain.key,
+              }
+            }
+          },
+        }),
       },
       ipSubnetsValidateStatus: '',
       guestIpPrefixValidateStatus: '',
@@ -166,6 +181,22 @@ export default {
         },
       },
       decorators: {
+        domain: [
+          'domain',
+          {
+            rules: [
+              { validator: isRequired(), message: i18n.t('rules.domain'), trigger: 'change' },
+            ],
+          },
+        ],
+        project: [
+          'project',
+          {
+            rules: [
+              { validator: isRequired(), message: i18n.t('rules.project'), trigger: 'change' },
+            ],
+          },
+        ],
         name: [
           'name',
           {
@@ -490,6 +521,7 @@ export default {
               name: values.name,
               vpc: values['vpc']['key'],
               zone: values['zone'],
+              project_id: values['project']['key'],
             }
             data.push(obj)
           }, values.guest_ip_prefix)
@@ -505,6 +537,7 @@ export default {
               guest_ip_start: values['startip'][key],
               vlan_id: values['vlan'][key] === '' ? '1' : values['vlan'][key],
               name: values.name,
+              project_id: values['project']['key'],
               server_type: values.server_type,
               wire_id: values['wire'],
             }
@@ -515,12 +548,14 @@ export default {
       }
       if (this.regionProvider === typeClouds.providerMap.ZStack.key) {
         return {
+          project_id: values['project']['key'],
           guest_ip_prefix: values.guest_ip_prefix[0],
           name: values.name,
           wire_id: values['wire'],
         }
       }
       return {
+        project_id: values.project,
         guest_ip_prefix: values.guest_ip_prefix[0],
         name: values.name,
         vpc: values['vpc']['key'],
