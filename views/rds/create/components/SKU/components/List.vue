@@ -1,10 +1,12 @@
 <template>
-  <div style="margin-bottom: 20px" v-if="skuList">
+  <div style="margin-bottom: 20px;" v-if="skuList">
     <vxe-grid
+      row-id="id"
       :radio-config="radioConfig"
       :columns="tableColumn"
       :data="skuList"
       :loading="loading"
+      @cell-click="handleSkuChange"
       @radio-change="handleSkuChange"
       max-height="500"
       ref="tableRef">
@@ -118,7 +120,6 @@ export default {
   watch: {
     skuList (netSkuList) {
       if (netSkuList && netSkuList.length > 0) {
-        this.$refs['tableRef'].setRadioRow(this.skuList[0])
         this.handleSkuChange({ row: this.skuList[0] })
       }
     },
@@ -130,45 +131,50 @@ export default {
     isAvailable (row) {
       return row.status === 'available'
     },
-    handleSkuChange ({ row }) {
+    async handleSkuChange ({ row }) {
       this.form.setFieldsValue({
         sku: row,
       })
       this.selectedSku = row
-      /* 组件sku change */
+      await this.$nextTick()
+      this.$refs['tableRef'].setRadioRow(row)
       this.$emit('change', row)
     },
     getSkuParams () {
       const { getFieldsValue } = this.form
       const paramsKeys = ['engine', 'engine_version', 'category', 'storage_type', 'vcpu_count', 'vmem_size_mb', 'cloudregion', 'zones']
-      return new Promise((resolve, reject) => {
-        this.$nextTick(() => {
-          const PARAMS = getFieldsValue(paramsKeys)
-          PARAMS['cloudregion_id'] = PARAMS.cloudregion
-          if (PARAMS.zones) {
-            const zoneArr = PARAMS.zones.split('+')
-            if (zoneArr && zoneArr.length > 0) {
-              for (let i = 0; i < zoneArr.length; i++) {
-                PARAMS[`zone${i + 1}`] = zoneArr[i]
-              }
-            }
-            delete PARAMS.zones
+      const PARAMS = getFieldsValue(paramsKeys)
+      PARAMS['cloudregion_id'] = PARAMS.cloudregion
+      if (PARAMS.zones) {
+        const zoneArr = PARAMS.zones.split('+')
+        if (zoneArr && zoneArr.length > 0) {
+          for (let i = 0; i < zoneArr.length; i++) {
+            PARAMS[`zone${i + 1}`] = zoneArr[i]
           }
-          resolve({ ...PARAMS, ...this.scopeParams })
-        })
-      })
+        }
+      }
+      for (let i = 0; i < paramsKeys.length; i++) {
+        let k = paramsKeys[i]
+        if (!PARAMS[k]) {
+          return null
+        }
+      }
+      delete PARAMS.zones
+      return { ...PARAMS, ...this.scopeParams }
     },
     async fetchSkus () {
-      this.manager = new this.$Manager('dbinstance_skus', 'v2')
       const PARAMS = await this.getSkuParams()
+      if (!PARAMS) return false
       this.loading = true
       this.selectedSku = undefined
+      const manager = new this.$Manager('dbinstance_skus', 'v2')
       try {
-        const { data } = await this.manager.list({ params: PARAMS })
+        const { data } = await manager.list({ params: PARAMS })
         this.skuList = (data && data.data.length > 0) ? data.data : []
         return await data
       } catch (err) {
         this.skuList = []
+        throw err
       } finally {
         this.loading = false
       }

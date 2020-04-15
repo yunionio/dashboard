@@ -1,7 +1,7 @@
 <template>
   <div>
-    <filters ref="FILTERS" @change="handleFilterChange" />
-    <size-filters ref="SIZE_FILTER" @change="handleSpecsChange">
+    <filters ref="FILTERS" />
+    <size-filters ref="SIZE_FILTER">
       <div v-if="$slots.zone" slot="zone">
         <slot name="zone" />
       </div>
@@ -62,7 +62,7 @@ export default {
     const { fetchFilters, getVersion } = this.$refs['FILTERS']
     const { fetchSpecs } = this.$refs['SIZE_FILTER']
     const { fetchSkus } = this.$refs['LIST']
-    this.fetchFilters = fetchFilters
+    this.fetchCapability = fetchFilters
     this.fetchSpecs = fetchSpecs
     this.fetchSkus = fetchSkus
     this.linkageValue = getVersion
@@ -70,18 +70,6 @@ export default {
   methods: {
     handleSkuChange (sku) {
       this.selectedSku = sku
-    },
-    async handleSpecsChange () {
-      await this.fetchSkus()
-    },
-    async handleFilterChange () {
-      await this.fetchSpecs()
-      await this.fetchSkus()
-    },
-    async fetchs (regionId) {
-      await this.fetchFilters()
-      await this.fetchSpecs()
-      await this.fetchSkus()
     },
   },
 }
