@@ -442,7 +442,7 @@ export const formatSeconds = value => {
 }
 
 /**
- * @description 配合 <el-autocomplete /> 使用
+ * @description 配合 <a-auto-complete /> 使用
  * @param {Object} obj e.g. { a: { a1: { b: 'bbb', c: 'ccc' } } }
  * @param {String} path e.g. a.a1
  * @returns e.g. ['a.a1.b', 'a.a1.c']

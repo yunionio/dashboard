@@ -68,11 +68,11 @@ export const getRegionTableColumn = ({ field = 'region', title = '区域' } = {}
   }
 }
 
-export const getBrandTableColumn = ({ field = 'brand', title = '平台', hidden = false } = {}) => {
+export const getBrandTableColumn = ({ field = 'brand', title = '平台', hidden = false, width = 70 } = {}) => {
   return {
     field,
     title,
-    width: 70,
+    width,
     sortable: true,
     slots: {
       default: ({ row }, h) => {
