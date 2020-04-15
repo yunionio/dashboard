@@ -24,6 +24,7 @@ export default {
         resource: 'k8s_events',
         getParams: this.getParams,
         apiVersion: 'v1',
+        idKey: 'name',
       }),
       columns: [
         {

@@ -8,7 +8,7 @@
         v-bind="formItemLayout"
         :form="form.fc">
         <a-form-item label="副本数" v-if="!params.hideReplicas">
-          <a-input v-decorator="decorators.replicas" placeholder="请输入副本数" addonAfter="个" />
+          <a-input v-decorator="decorators.replicas" type="number" placeholder="请输入副本数" addonAfter="个" />
         </a-form-item>
       </a-form>
     </div>
@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
@@ -99,6 +100,7 @@ export default {
         await this.doUpdate(values)
         this.loading = false
         this.cancelDialog()
+        if (R.is(Function, this.params.success)) this.params.success()
       } catch (error) {
         this.loading = false
         throw error

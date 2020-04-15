@@ -21,8 +21,12 @@ export default {
                   namespace: data[0].namespace,
                 },
               }).then(() => {
-                this.destroySidePages()
-                this.refresh()
+                if (this.getResponseData) {
+                  this.getResponseData()
+                } else {
+                  this.destroySidePages()
+                  this.refresh()
+                }
                 return true
               }).catch(error => {
                 throw error
@@ -47,6 +51,9 @@ export default {
             manager,
             refresh: this.refresh,
             configText,
+            success: () => {
+              if (this.getResponseData) this.getResponseData()
+            },
           })
         },
       },

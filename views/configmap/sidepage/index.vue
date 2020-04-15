@@ -19,6 +19,7 @@
 <script>
 import SourceInformationSidepage from '@K8S/sections/SourceInformationSidepage'
 import PodList from '@K8S/views/pod/components/List'
+import EventsSidepage from '@K8S/sections/EventsSidepage'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import Detail from './Detail'
@@ -33,6 +34,7 @@ export default {
     Detail,
     SourceInformationSidepage,
     PodList,
+    EventsSidepage,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
@@ -40,6 +42,7 @@ export default {
       detailTabs: [
         { label: '详情', key: 'detail' },
         { label: '容器组', key: 'pod-list' },
+        { label: '事件', key: 'events-sidepage' },
         { label: '源信息', key: 'source-information-sidepage' },
       ],
     }

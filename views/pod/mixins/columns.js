@@ -1,4 +1,4 @@
-import { k8sStatusColumn, k8sLabelColumn } from '@K8S/utils/tableColumns'
+import { k8sStatusColumn } from '@K8S/utils/tableColumns'
 import { getNameDescriptionTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 
 export default {
@@ -27,7 +27,6 @@ export default {
         sortable: true,
       },
       k8sStatusColumn({ path: 'warnings' }),
-      k8sLabelColumn(),
       {
         field: 'restartCount',
         title: '重启次数',

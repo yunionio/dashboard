@@ -21,7 +21,6 @@ export default {
                   namespace: data[0].namespace,
                 },
               }).then(() => {
-                this.destroySidePages()
                 this.refresh()
                 return true
               }).catch(error => {

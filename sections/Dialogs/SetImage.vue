@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
@@ -106,10 +107,12 @@ export default {
         Object.keys(params).forEach(key => {
           if (key.startsWith('images')) {
             const i = key.replace('images', '')
-            field.push({
-              name: this[detailField][i].name,
-              image: params[key],
-            })
+            if (this[detailField][i] && this[detailField][i].name) {
+              field.push({
+                name: this[detailField][i].name,
+                image: params[key],
+              })
+            }
           }
         })
         return field
@@ -120,8 +123,6 @@ export default {
         containers: getImages(containers, 'images', 'containerImages'),
         initContainers: getImages(initContainers, 'initImages', 'initContainerImages'),
       }
-      console.log(data)
-
       try {
         await this.params.onManager('update', {
           id: this.data.name,
@@ -140,6 +141,7 @@ export default {
         await this.doUpdate(values)
         this.loading = false
         this.cancelDialog()
+        if (R.is(Function, this.params.success)) this.params.success()
       } catch (error) {
         this.loading = false
         throw error

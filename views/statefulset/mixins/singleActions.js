@@ -10,6 +10,9 @@ export default {
             columns: this.columns,
             onManager: this.onManager,
             refresh: this.refresh,
+            success: () => {
+              if (this.getResponseData) this.getResponseData()
+            },
           })
         },
       },
@@ -22,6 +25,9 @@ export default {
             columns: this.columns,
             onManager: this.onManager,
             refresh: this.refresh,
+            success: () => {
+              if (this.getResponseData) this.getResponseData()
+            },
           })
         },
       },
@@ -44,6 +50,9 @@ export default {
                 manager,
                 refresh: this.refresh,
                 configText,
+                success: () => {
+                  if (this.getResponseData) this.getResponseData()
+                },
               })
             },
           },
@@ -58,6 +67,7 @@ export default {
                 requestParams.namespace = obj.namespace
               }
               this.createDialog('DeleteResDialog', {
+                vm: this,
                 data: [obj],
                 columns: this.columns,
                 title: '删除',
@@ -66,7 +76,7 @@ export default {
                 idKey: 'name',
                 requestParams,
                 success: () => {
-                  this.destroySidePages()
+                  if (this.getResponseData) this.getResponseData()
                 },
               })
             },

@@ -47,9 +47,7 @@ export const k8sLabelColumn = ({ field = 'labels', title = '标签' } = {}) => {
             {
               labels.map((val, i) => {
                 return (
-                  <a-tooltip title={ `${val.key}：${val.value}` }>
-                    <div class="mb-1"><a-tag class="d-block text-truncate" color={ colors[i % colors.length] }>{ `${val.key}：${val.value}` }</a-tag></div>
-                  </a-tooltip>
+                  <div class="mb-1"><a-tag class="d-block text-truncate" color={ colors[i % colors.length] }>{ `${val.key}：${val.value}` }</a-tag></div>
                 )
               })
             }

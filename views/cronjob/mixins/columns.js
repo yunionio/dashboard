@@ -1,4 +1,3 @@
-import { k8sLabelColumn } from '@K8S/utils/tableColumns'
 import { getNameDescriptionTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 
 export default {
@@ -26,7 +25,6 @@ export default {
         width: 120,
         sortable: true,
       },
-      k8sLabelColumn(),
       getTimeTableColumn({ field: 'creationTimestamp', fromNow: true, sortable: true }),
     ]
   },

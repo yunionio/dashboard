@@ -31,9 +31,6 @@ export default {
             requestParams: {
               id: obj.name,
             },
-            success: () => {
-              this.destroySidePages()
-            },
           })
         },
       },

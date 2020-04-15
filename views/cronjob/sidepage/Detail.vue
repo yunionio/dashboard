@@ -9,6 +9,8 @@
 </template>
 
 <script>
+import { k8sLabelColumn } from '@K8S/utils/tableColumns'
+
 export default {
   name: 'K8sCronJobDetail',
   props: {
@@ -45,6 +47,7 @@ export default {
           field: 'namespace',
           title: '命名空间',
         },
+        k8sLabelColumn(),
         {
           field: 'creationTimestamp',
           title: '创建时间',

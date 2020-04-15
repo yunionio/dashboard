@@ -31,6 +31,7 @@ export default {
             requestParams.namespace = obj.namespace
           }
           this.createDialog('DeleteResDialog', {
+            vm: this,
             data: [obj],
             columns: this.columns,
             title: '删除',
@@ -38,9 +39,6 @@ export default {
             onManager: this.onManager,
             idKey: 'name',
             requestParams,
-            success: () => {
-              this.destroySidePages()
-            },
           })
         },
       },
