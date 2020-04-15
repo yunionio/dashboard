@@ -35,6 +35,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
+import { load } from '@Dashboard/utils/cache'
 import { getRequestT } from '@/utils/utils'
 
 export const options = {
@@ -124,11 +125,9 @@ export default {
     },
   },
   destroyed () {
-    this.nm = null
     this.rm = null
   },
   created () {
-    this.nm = new this.$Manager('notices', 'v1')
     this.rm = new this.$Manager('readmarks', 'v1')
     this.fetchNotices()
     this.$emit('update', this.options.i, {
@@ -139,13 +138,19 @@ export default {
     async fetchNotices () {
       this.loading = true
       try {
-        const response = await this.nm.list({
-          params: {
-            scope: this.scope,
-            $t: getRequestT(),
+        const data = await load({
+          res: 'notices',
+          apiVersion: 'v1',
+          action: 'list',
+          actionArgs: {
+            params: {
+              scope: this.scope,
+              $t: getRequestT(),
+            },
           },
+          resPath: 'data.data',
         })
-        this.data = response.data.data || []
+        this.data = data
       } finally {
         this.loading = false
       }

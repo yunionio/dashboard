@@ -44,6 +44,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
+import { load } from '@Dashboard/utils/cache'
 import { getRequestT } from '@/utils/utils'
 
 export const options = {
@@ -131,7 +132,6 @@ export default {
     this.manager = null
   },
   created () {
-    this.manager = new this.$Manager('actions', 'v1')
     this.fetchLogs()
     this.$emit('update', this.options.i, {
       ...this.form.fd,
@@ -141,14 +141,20 @@ export default {
     async fetchLogs () {
       this.loading = true
       try {
-        const response = await this.manager.list({
-          params: {
-            scope: this.scope,
-            limit: this.form.fd.limit,
-            $t: getRequestT(),
+        const data = await load({
+          res: 'actions',
+          apiVersion: 'v1',
+          action: 'list',
+          actionArgs: {
+            params: {
+              scope: this.scope,
+              limit: this.form.fd.limit,
+              $t: getRequestT(),
+            },
           },
+          resPath: 'data.data',
         })
-        this.data = response.data.data || []
+        this.data = data
       } finally {
         this.loading = false
       }

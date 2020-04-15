@@ -28,6 +28,7 @@
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import QuotaConfig from '@Dashboard/sections/QuotaConfig'
 import { USAGE_CONFIG } from '@Dashboard/constants'
+import { load } from '@Dashboard/utils/cache'
 import { getRequestT } from '@/utils/utils'
 
 export const options = {
@@ -146,11 +147,7 @@ export default {
       }
     },
   },
-  destroyed () {
-    this.um = null
-  },
   created () {
-    this.um = new this.$Manager('usages')
     if (this.params) {
       this.form.fd = this.params
     }
@@ -175,11 +172,16 @@ export default {
       this.loading = true
       try {
         const params = this.genUsageParams()
-        const response = await this.um.rpc({
-          methodname: 'getGeneralUsage',
-          params,
+        const data = await load({
+          res: 'usages',
+          action: 'rpc',
+          actionArgs: {
+            methodname: 'getGeneralUsage',
+            params,
+          },
+          resPath: 'data',
         })
-        this.data = response.data
+        this.data = data
       } finally {
         this.loading = false
       }
