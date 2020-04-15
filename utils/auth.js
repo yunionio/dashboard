@@ -4,6 +4,8 @@ import { Base64 } from 'js-base64'
 import store from '@/store'
 import router from '@/router'
 import { typeClouds } from '@/utils/common/hypervisor'
+import http from '@/utils/http'
+import storage from '@/utils/storage'
 
 const ONECLOUD_AUTH_KEY = 'yunionauth'
 
@@ -143,4 +145,22 @@ export function hasBrandsByEnv (envs) {
   if (R.is(Array, envs)) {
     return envs.some(t => hasBrands(envsMap[t]))
   }
+}
+
+export function updateLastLoginUserName () {
+  return new Promise((resolve, reject) => {
+    const storeKey = '__LAST_LOGIN_USERNAME__'
+    const lastLoginUserName = storage.get(storeKey)
+    http.get('/v1/auth/user').then(res => {
+      const data = res.data.data || {}
+      if (lastLoginUserName !== data.name) {
+        Cookies.remove('tenant')
+        Cookies.remove('scope')
+      }
+      storage.set(storeKey, data.name)
+      resolve()
+    }).catch(() => {
+      resolve()
+    })
+  })
 }

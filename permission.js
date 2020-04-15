@@ -57,7 +57,7 @@ router.beforeEach(async (to, from, next) => {
     if (whiteList.includes(to.name)) {
       next()
     } else {
-      next({ name: 'Auth' })
+      next({ name: 'Auth', query: { lastPath: to.path } })
     }
   }
 })
