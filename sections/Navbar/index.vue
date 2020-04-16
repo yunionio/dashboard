@@ -94,6 +94,8 @@
     <!-- 用户 -->
     <slot name="userPopover" />
     <license-status class="licenseStatus" />
+    <!-- 系统提示 -->
+    <slot name="alert" />
     <!-- 全局导航 -->
     <a-drawer
       width="50%"
