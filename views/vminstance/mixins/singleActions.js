@@ -936,7 +936,7 @@ export default {
                       validate: false,
                       tooltip: null,
                     }
-                    if (obj.eip) {
+                    if (obj.eip && obj.eip_mode === 'elastic_ip') {
                       ret.tooltip = '已绑定弹性公网IP的虚拟机不支持该操作'
                       return ret
                     }
