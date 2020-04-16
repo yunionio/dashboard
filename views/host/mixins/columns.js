@@ -33,14 +33,14 @@ export default {
             if (row.access_ip) {
               cellWrap.push(
                 <div class="d-flex">
-                  <list-body-cell-wrap row={row} field="access_ip" copy />(管理)
+                  <list-body-cell-wrap row={row} field="access_ip" copy><span class="text-color-help">(管理)</span></list-body-cell-wrap>
                 </div>
               )
             }
             if (row.ipmi_ip) {
               cellWrap.push(
                 <div class="d-flex">
-                  <list-body-cell-wrap row={row} field="ipmi_ip" copy />(带外)
+                  <list-body-cell-wrap row={row} field="ipmi_ip" copy><span class="text-color-help">(带外)</span></list-body-cell-wrap>
                 </div>
               )
             }
