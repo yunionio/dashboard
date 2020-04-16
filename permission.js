@@ -5,23 +5,7 @@
  */
 import router from './router'
 import store from './store'
-
-// 登录相关的路由名称
-const loginPageRouteName = [
-  'Auth',
-  'Login',
-  'Register',
-  'SecretVerify',
-  'BindSecret',
-  'SetSecretQuestion',
-  'ResetSecretQuestion',
-]
-// 白名单路由名称，不需要登录认证
-const whiteList = loginPageRouteName.concat([
-  '404',
-  'NotFound',
-  'EmailVerification',
-])
+import { authRoutesName, whiteRoutesName } from '@/constants'
 
 router.beforeEach(async (to, from, next) => {
   if (process.env.VUE_APP_IS_PRIVATE && to.meta && to.meta.v1) {
@@ -34,7 +18,7 @@ router.beforeEach(async (to, from, next) => {
   }
   const hasToken = !!store.getters.auth.token
   if (hasToken) {
-    if (loginPageRouteName.includes(to.name)) {
+    if (authRoutesName.includes(to.name)) {
       next()
     } else {
       const hasRoles = !!store.getters.userInfo.roles
@@ -54,10 +38,10 @@ router.beforeEach(async (to, from, next) => {
       }
     }
   } else {
-    if (whiteList.includes(to.name)) {
+    if (whiteRoutesName.includes(to.name)) {
       next()
     } else {
-      next({ name: 'Auth', query: { lastPath: to.path } })
+      next({ name: 'Auth' })
     }
   }
 })
