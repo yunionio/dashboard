@@ -106,3 +106,20 @@ export const ENABLE_USER_CUSTOM_DICTIONARY = [
   'role',
   'policy',
 ]
+
+// 登录相关的路由名称
+export const authRoutesName = [
+  'Auth',
+  'Login',
+  'Register',
+  'SecretVerify',
+  'BindSecret',
+  'SetSecretQuestion',
+  'ResetSecretQuestion',
+]
+// 白名单路由名称，不需要登录认证
+export const whiteRoutesName = authRoutesName.concat([
+  '404',
+  'NotFound',
+  'EmailVerification',
+])

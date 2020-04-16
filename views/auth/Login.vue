@@ -85,12 +85,14 @@
 </template>
 
 <script>
+// import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import Cookies from 'js-cookie'
 import { STORE_SECRET_PERFIX_KEY } from './constants'
 import storage from '@/utils/storage'
 import { isChrome } from '@/utils/utils'
 import { updateLastLoginUserName } from '@/utils/auth'
+// import { whiteRoutesName } from '@/constants'
 
 export default {
   name: 'Login',
@@ -332,12 +334,22 @@ export default {
         await updateLastLoginUserName()
         this.submting = false
         // 否则直接登录
-        const lastPath = this.$route.query.lastPath
-        let path = '/'
-        if (lastPath && lastPath.startsWith('/')) {
-          path = lastPath
-        }
-        this.$router.replace(path)
+        // const lastPath = this.$route.query.lastPath
+        // const homeRoute = this.$router.resolve('/')
+        // let pathName = homeRoute.resolved.name
+        // if (!R.isNil(lastPath) && !R.isEmpty(lastPath)) {
+        //   const lastRoute = this.$router.resolve(lastPath)
+        //   if (
+        //     !R.isNil(lastRoute.resolved) &&
+        //     !R.isEmpty(lastRoute.resolved) &&
+        //     lastRoute.resolved.name &&
+        //     !whiteRoutesName.includes(lastRoute.resolved.name)
+        //   ) {
+        //     pathName = lastRoute.resolved.name
+        //   }
+        // }
+        // console.log(pathName)
+        this.$router.replace('/')
       }
     },
   },
