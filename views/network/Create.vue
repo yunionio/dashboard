@@ -555,7 +555,7 @@ export default {
         }
       }
       return {
-        project_id: values.project,
+        project_id: values['project']['key'],
         guest_ip_prefix: values.guest_ip_prefix[0],
         name: values.name,
         vpc: values['vpc']['key'],
