@@ -602,6 +602,29 @@ export default {
         const disks = []
         const nets = []
         let params = {}
+        if (values.networks) {
+          const netVals = Object.values(values.networks)
+          netVals.forEach(item => {
+            const option = {
+              network: item,
+              private: false,
+            }
+            // 是否启用bonding
+            if (this.isBonding) {
+              option['require_teaming'] = true
+              nets.push(option)
+            } else {
+              nets.push(option)
+            }
+          })
+        } else {
+          // 是否启用bonding
+          if (this.isBonding) {
+            nets.push({ exit: false, require_teaming: true })
+          } else {
+            nets.push({ exit: false })
+          }
+        }
         if (this.isShowImages) {
           // 判断数据盘是否合法
           if (this.diskOptionsDate.length > 0) {
@@ -650,48 +673,22 @@ export default {
             }
             // 根据adapter排序diskConfigs
             diskConfigs.sort((a, b) => { return a.adapter - b.adapter })
+            params = {
+              name: values.name,
+              host_type: values.host_type,
+              disks,
+              baremetal_disk_configs: diskConfigs,
+              nets,
+            }
           } else {
             this.$message.error('请新增自定义磁盘配置')
             throw new Error('请新增自定义磁盘配置')
           }
-        }
-        if (values.networks) {
-          const netVals = Object.values(values.networks)
-          netVals.forEach(item => {
-            const option = {
-              network: item,
-              private: false,
-            }
-            // 是否启用bonding
-            if (this.isBonding) {
-              option['require_teaming'] = true
-              nets.push(option)
-            } else {
-              nets.push(option)
-            }
-          })
-        } else {
-          // 是否启用bonding
-          if (this.isBonding) {
-            nets.push({ exit: false, require_teaming: true })
-          } else {
-            nets.push({ exit: false })
-          }
-        }
-
-        if (this.isShowImages) {
-          params = {
-            name: values.name,
-            host_type: values.host_type,
-            disks,
-            baremetal_disk_configs: diskConfigs,
-            nets,
-          }
         } else {
           params = {
             name: values.name,
             host_type: values.host_type,
-            raid: '',
+            raid: values.raid,
           }
         }
         await this.doConvert(params)
