@@ -609,6 +609,11 @@
       "pending-install": "部署中",
       "penging-upgrade": "升级中",
       "penging-rollback": "回滚中"
+    },
+    "licence": {
+      "prohibited": "禁用",
+      "exceeded": "警告",
+      "success": "正常"
     }
   },
   "skuCategoryOptions": {

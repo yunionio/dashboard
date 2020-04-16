@@ -235,4 +235,9 @@ export default {
     info: ['init', 'unknown'],
     danger: ['remove_failed'],
   },
+  licence: {
+    success: ['success'],
+    danger: ['prohibited'],
+    warning: ['exceeded'],
+  },
 }

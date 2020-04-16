@@ -506,6 +506,11 @@
       "sync_status": "同步状态中",
       "ready": "正常",
       "unknown": "未知"
+    },
+    "licence": {
+      "prohibited": "禁用",
+      "exceeded": "警告",
+      "success": "正常"
     }
   },
   "skuCategoryOptions": {

@@ -2,7 +2,7 @@
   <a-alert
     v-if="showTips"
     type="warning"
-    closable
+    :closable="closable"
     showIcon
     @close="handleCloseAlert">
     <template v-slot:message>
@@ -61,9 +61,10 @@ export default {
         }
       }
       // 超过配额
-      if (this.computeStatus.exceeded) {
+      if (this.computeStatus.prohibited) {
         return {
           message: `您的授权CPU配额已到达上限，如您需要升级到其它版本或更新许可证，请将您的服务器识别码和升级需求发送电子邮件至 ${this.email}，我们将尽快与您联系！`,
+          to: 'licenses',
         }
       }
       // 即将过期
@@ -73,9 +74,10 @@ export default {
         }
       }
       // 即将超出配额
-      if ((this.computeStatus.usage / this.computeStatus.limit) > 0.9) {
+      if (this.computeStatus.exceeded) {
         return {
           message: `您的授权CPU配额即将到达上限，如您需要升级到其它版本或更新许可证，请将您的服务器识别码和升级需求发送电子邮件至 ${this.email}，我们将尽快与您联系！`,
+          to: 'licenses',
         }
       }
       // 发现未被授权的服务器
@@ -94,6 +96,9 @@ export default {
       const lastTipTime = Cookies.get('lastTipTime')
       const now = new Date().getTime()
       return lastTipTime ? now - lastTipTime > 3600 * 24 * 1000 : true
+    },
+    closable () {
+      return this.computeStatus.prohibited || this.computeStatus.exceeded
     },
   },
   methods: {
