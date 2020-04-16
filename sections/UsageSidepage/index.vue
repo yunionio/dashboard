@@ -39,7 +39,7 @@ export default {
         field: key,
         title: item.zh_cn || key,
         formatter: ({ row }) => {
-          return R.is(Function, item.formatter) ? item.formatter(row) : `${row[key] || 0} ${item.unit}`
+          return R.is(Function, item.formatter) ? item.formatter(row[key]) : `${row[key] || 0} ${item.unit}`
         },
       })
     })
