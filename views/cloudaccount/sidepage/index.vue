@@ -12,17 +12,17 @@
     <template v-slot:actions>
       <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :data="detailData" :on-manager="onManager" :res-id="data.id" :cloudaccount-list-refresh="params.options.refresh" :getParams="getParams" />
+    <component :is="params.windowData.currentTab" :data="detailData" :on-manager="onManager" :res-id="data.id" resource="cloudaccounts" :cloudaccount-list-refresh="params.options.refresh" :getParams="getParams" />
   </base-side-page>
 </template>
 
 <script>
 import CloudproviderList from '@Cloudenv/views/cloudprovider/components/List'
 import HostList from '@Compute/views/host/components/List'
+import Usage from '@Cloudenv/sections/UsageSidepage'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import CloudaccountDetail from './Detail'
-import Dashboard from './Dashboard'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -35,7 +35,7 @@ export default {
     CloudaccountDetail,
     CloudproviderList,
     HostList,
-    Dashboard,
+    Usage,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   computed: {
@@ -48,7 +48,7 @@ export default {
       const detailTabs = [
         { label: '详情', key: 'cloudaccount-detail' },
         { label: '订阅', key: 'cloudprovider-list' },
-        // { label: '资源统计', key: 'dashboard' }, // 暂时去掉
+        { label: '资源统计', key: 'usage' },
         { label: '操作日志', key: 'event-drawer' },
       ]
       if (platform === 'idc' || platform === 'private') {
