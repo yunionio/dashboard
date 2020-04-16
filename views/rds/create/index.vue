@@ -18,18 +18,20 @@
       <clearing-radios v-bind="formItemLayout" />
       <!-- 区域 -->
       <item-area
+        v-if="form.fd.project"
         class="mb-0"
         :isRequired="true"
         :values="form.fc.getFieldsValue()"
         :providers="providers"
         :names="['city', 'provider', 'cloudregion']" />
       <!-- 套餐信息 -->
-      <div v-show="form.getFieldValue('cloudregion')">
+      <div>
         <s-k-u ref="SKU" />
         <a-form-item label="管理员密码" v-bind="formItemLayout">
           <server-password :loginTypes="loginTypes" :decorator="decorators.loginConfig" :form="form" />
-          </a-form-item>
+        </a-form-item>
         <network-selects
+          :isDefaultFetch="false"
           ref="NETWORK"
           label="网络"
           :vpcParams="getVpcParams"
@@ -45,18 +47,18 @@
   </div>
 </template>
 <script>
-// import { debounce } from 'lodash'
 import { CreateServerForm } from '@Compute/constants'
 import ServerPassword from '@Compute/sections/ServerPassword'
 import SecgroupConfig from '@Compute/sections/SecgroupConfig'
-// import ServerNetwork from '@Compute/sections/ServerNetwork'
 import ItemArea from '@DB/sections/ItemArea'
 import { DECORATORS } from './constants/index'
 import SKU from './components/SKU'
 import BottomBar from './components/BottomBar'
+import changeMinxin from './changeMinxin'
 import NameRepeated from '@/sections/NameRepeated'
 import DomainProject from '@/sections/DomainProject'
 import NetworkSelects from '@/sections/NetworkSelects'
+import { getInitialValue } from '@/utils/common/ant'
 
 export default {
   name: 'RDSCreate',
@@ -68,15 +70,13 @@ export default {
     ItemArea,
     NetworkSelects,
     SecgroupConfig,
-    // ServerNetwork,
     NameRepeated,
   },
+  mixins: [changeMinxin],
   data () {
-    const { projectId, projectDomainId } = this.$store.getters.userInfo
     return {
       loginTypes: ['random', 'password'],
       decorators: DECORATORS,
-      formData: {},
       formItemLayout: {
         wrapperCol: { span: CreateServerForm.wrapperCol },
         labelCol: { span: CreateServerForm.labelCol },
@@ -85,34 +85,16 @@ export default {
         scope: this.$store.getters.scope,
         project_domain: '',
       },
-      defaultProjectDomain: {
-        project: [
-          'project',
-          {
-            initialValue: projectId,
-            rules: [
-              { required: true, message: this.$t('rules.project') },
-            ],
-          },
-        ],
-        domain: [
-          'domain',
-          {
-            initialValue: projectDomainId,
-            rules: [
-              { required: true, message: this.$t('rules.domain') },
-            ],
-          },
-        ],
-      },
     }
   },
   computed: {
     form () {
-      const fc = this.$form.createForm(this, { onValuesChange: (f, v) => this._valuesChange(v) })
+      const fc = this.$form.createForm(this, { onValuesChange: this.handleValuesChange })
+      const initFd = getInitialValue(DECORATORS)
       const { getFieldDecorator, getFieldValue, getFieldsValue, setFieldsValue } = fc
       return {
         fc,
+        fd: initFd,
         getFieldDecorator,
         getFieldValue,
         getFieldsValue,
@@ -120,7 +102,7 @@ export default {
       }
     },
     providers () {
-      if (this.formData.billing_type === 'prepaid') {
+      if (this.form.fd.billing_type === 'prepaid') {
         return ['Aliyun', 'Huawei']
       }
       return ['Aliyun', 'Huawei', 'Google']
@@ -133,76 +115,28 @@ export default {
       scopeParams: this.scopeParams,
     }
   },
-  mounted () {
-    const { fetchs } = this.$refs['SKU']
-    this.fetchSku = fetchs
-    const { fetchVpc, fetchNetwork } = this.$refs['NETWORK']
-    this.fetchVpc = fetchVpc
-    this.fetchNetwork = fetchNetwork
-  },
   methods: {
-    handleNameRepeatedChange (is) {
-      console.log(is)
-    },
     getVpcParams () {
-      return new Promise((resolve, reject) => {
-        this.$nextTick(() => {
-          resolve({
-            cloudregion_id: this.form.getFieldValue('cloudregion'),
-            ...this.scopeParams,
-          })
-        })
-      })
+      return {
+        cloudregion_id: this.form.getFieldValue('cloudregion'),
+        ...this.scopeParams,
+      }
     },
     getNetworkParams () {
-      return new Promise((resolve, reject) => {
-        this.$nextTick(() => {
-          const zoneStr = this.form.getFieldValue('zones')
-          const params = {
-            cloudregion_id: this.form.getFieldValue('region'),
-            ...this.scopeParams,
+      const params = {
+        cloudregion_id: this.form.getFieldValue('cloudregion'),
+        ...this.scopeParams,
+      }
+      const zoneStr = this.form.getFieldValue('zones')
+      if (zoneStr) {
+        const zoneArr = zoneStr.split('+')
+        if (zoneArr && zoneArr.length > 0) {
+          for (let i = 0; i < zoneArr.length; i++) {
+            params[`zones.${i}`] = zoneArr[i]
           }
-          if (zoneStr) {
-            const zoneArr = zoneStr.split('+')
-            if (zoneArr && zoneArr.length > 0) {
-              for (let i = 0; i < zoneArr.length; i++) {
-                params[`zones.${i}`] = zoneArr[i]
-              }
-            }
-          }
-          resolve(params)
-        })
-      })
-    },
-    async regionChange (values) {
-      if (values && values.cloudregion && values.cloudregion) {
-        const { cloudregion } = values
-        await this.fetchSku(cloudregion)
-        await this.fetchVpc()
+        }
       }
-    },
-    zonesChange (values) {
-      if (values && values.zones) {
-        this.fetchNetwork()
-      }
-    },
-    domainChange (values) {
-      if (this.$store.getters.isAdminMode) {
-        this.scopeParams['project_domain'] = values.domain || this.form.getFieldValue('domain')
-        delete this.scopeParams['scope']
-      } else {
-        delete this.scopeParams['project_domain']
-      }
-    },
-    _valuesChange (values) {
-      this.domainChange(values)
-      if (this.form.getFieldValue('cloudregion')) {
-        this.regionChange(values)
-        this.zonesChange(values)
-      }
-      this.$nextTick(() => {
-        this.formData = this.form.getFieldsValue()
-      })
+      return params
     },
   },
 }
@@ -210,7 +144,7 @@ export default {
 
 <style lang="scss" scoped>
 .server-create-index {
-  ::v-deep .ant-form.ant-form-horizontal .ant-form-item .ant-form-item-label{
+  ::v-deep .ant-form{
     padding-left: 20px;
   }
 }

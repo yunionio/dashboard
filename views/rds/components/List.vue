@@ -54,6 +54,7 @@ export default {
             items: [
               { label: '阿里云', key: 'Aliyun' },
               { label: '华为云', key: 'Huawei' },
+              { label: 'Google', key: 'Google' },
             ],
           },
           // account: getAccountFilter(),

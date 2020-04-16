@@ -51,6 +51,7 @@ export default {
         {
           field: 'password',
           title: '密码',
+          minWidth: 100,
           slots: {
             default: ({ row }) => {
               return [<PasswordFetcher serverId={row.id} resourceType='dbinstanceaccounts' />]
@@ -59,6 +60,7 @@ export default {
         },
         {
           field: '已授权的数据库',
+          minWidth: 200,
           title: '权限',
           slots: {
             default: ({ row }) => {

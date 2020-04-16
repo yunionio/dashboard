@@ -17,6 +17,7 @@ export default {
       {
         field: 'dbinstanceprivileges',
         title: '已授权的账户',
+        minWidth: 200,
         slots: {
           default: ({ row }) => {
             if (row.dbinstanceprivileges && row.dbinstanceprivileges.length > 0) {

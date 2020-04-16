@@ -113,11 +113,6 @@ export default {
           return true
         }
       })
-      for (let key in categorys) {
-        if (this.categorys.indexOf(key)) {
-          this.categorys.push(key)
-        }
-      }
       this.setInitValue('category', this.getStorage)
     },
     getStorage (e) {
