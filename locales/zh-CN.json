@@ -1278,5 +1278,13 @@
   "proxysettings": {
     "http_proxy": "Http代理",
     "https_proxy": "Https代理"
+  },
+  "policyDefaultActions": {
+    "list": "列表",
+    "get": "详情",
+    "update": "更新",
+    "create": "创建",
+    "delete": "删除",
+    "perform": "执行操作"
   }
 }

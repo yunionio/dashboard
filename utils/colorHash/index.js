@@ -61,7 +61,7 @@ function isArray (o) {
  *
  * @class
  */
-const ColorHash = function (options) {
+export const ColorHash = function (options) {
   options = options || {}
 
   const LS = [options.lightness, options.saturation].map(function (param) {
