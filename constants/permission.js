@@ -600,6 +600,8 @@ export const PERMISSION = {
   /** 优化建议 */
   'suggestsysalerts_list': ['computed', 'suggestsysalerts', 'list'],
   'suggestsysrules_list': ['computed', 'suggestsysrules', 'list'],
+  // 权限
+  'policies_get': ['identity', 'policies', 'get'],
 }
 
 // 已声明权限的资源

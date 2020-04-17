@@ -100,4 +100,9 @@ export default {
   ProxysettingSidePage: {
     resource: 'proxysettings',
   },
+  // 权限
+  PolicySidePage: {
+    resource: 'policies',
+    apiVersion: 'v1',
+  },
 }
