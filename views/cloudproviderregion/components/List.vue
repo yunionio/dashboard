@@ -59,27 +59,6 @@ export default {
           },
         },
       ],
-<<<<<<< HEAD
-=======
-      singleActions: [
-        {
-          label: '设置同步',
-          action: obj => {
-            this.createDialog('cloudproviderregionsSetAutoSyncDialog', {
-              data: [obj],
-              columns: this.columns,
-              list: this.list,
-              cloudproviderId: this.cloudproviderId,
-            })
-          },
-          // meta: obj => {
-          //   return {
-          //     validate: ownerDomain(this.list),
-          //   }
-          // },
-        },
-      ],
->>>>>>> 35e3f8d65500ac068d864aba5ed2386327527f70
     }
   },
   created () {
