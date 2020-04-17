@@ -122,7 +122,7 @@ import NotifyPopover from './components/NotifyPopover'
 import WorkOrderPopover from './components/WorkOrderPopover'
 import HelpPopover from './components/HelpPopover'
 import GlobalSearch from './components/GlobalSearch'
-import storage from '@/utils/storage'
+import Cookies from 'js-cookie'
 
 export default {
   name: 'Navbar',
@@ -189,7 +189,7 @@ export default {
   watch: {
     'userInfo' (val, oldVal) {
       if (val.id !== oldVal.id) {
-        if (storage.get('INIT_SETUP') && val.roles && val.roles.includes('admin')) {
+        if (Cookies.get('INIT_SETUP') && val.roles && val.roles.includes('admin')) {
           this.$router.push('/guide')
         }
       }
