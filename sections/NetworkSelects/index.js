@@ -4,6 +4,10 @@ export default {
   name: 'NetworkSelects',
   inject: ['form'],
   props: {
+    disabled: {
+      type: [Boolean, Array],
+      default: false,
+    },
     isRequired: {
       type: Boolean,
       default: true,
@@ -36,10 +40,16 @@ export default {
     vpcFetchChange: {
       type: Function,
     },
+    vpcFormat: {
+      type: Function,
+    },
     networkParams: {
       type: [Object, Function],
     },
     networkFetchChange: {
+      type: Function,
+    },
+    networkFormat: {
       type: Function,
     },
     labelCol: {
@@ -58,9 +68,19 @@ export default {
         }
       },
     },
+    defaultActiveFirstOption: {
+      type: Boolean,
+      default: true,
+    },
+    isDefaultFetch: {
+      type: Boolean,
+      default: true,
+    },
   },
   created () {
-    this.fetchs()
+    if (this.isDefaultFetch) {
+      this.fetchs()
+    }
   },
   data () {
     return {
@@ -86,9 +106,15 @@ export default {
       return name.replace(/^\S/, s => s.toUpperCase())
     },
     filterOption (input, option) {
-      return (
-        option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
-      )
+      const subChild = option.componentOptions.children[0]
+      if (subChild.text) {
+        return (
+          subChild.text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        )
+      }
+      if (subChild.children[0]) {
+        return subChild.children[0].data.attrs.title.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      }
     },
     async fetchs () {
       if (this.types.indexOf('vpc') > -1) {
@@ -128,12 +154,13 @@ export default {
         const { data = {} } = await MANAGER.list({ params: PARAMS })
         this.vpcList = data.data || []
         this.vpcLoading = false
-        if (this.vpcFetchChange) {
-          await this.vpcFetchChange(this.vpcList)
-        } else {
-          await this.FC.setFieldsValue({
+        if (this.defaultActiveFirstOption) {
+          this.FC.setFieldsValue({
             vpc: !R.isEmpty(this.vpcList) ? this.vpcList[0].id : undefined,
           }, this.fetchNetwork)
+        }
+        if (this.vpcFetchChange) {
+          await this.vpcFetchChange(this.vpcList)
         }
       } catch (err) {
         this.vpcLoading = false
@@ -141,7 +168,7 @@ export default {
       }
     },
     RenderVpc () {
-      const { vpcLoading, filterOption } = this
+      const { vpcLoading, filterOption, disabled } = this
       const _handleChange = (vpcId) => {
         const data = this.getSelectedValue('vpc', vpcId)
         this.$emit('vpcChange', data)
@@ -151,10 +178,10 @@ export default {
       }
       const options = this.vpcList.map((item) => {
         const { id, name } = item
-        return <a-select-option key={id} value={id}>{name}</a-select-option>
+        return <a-select-option key={id} value={id}>{this.vpcFormat ? this.vpcFormat(item) : name }</a-select-option>
       })
       return (
-        <a-select onChange={_handleChange} showSearch placeholder="请选择VPC" loading={vpcLoading} filterOption={filterOption} >
+        <a-select disabled={disabled} onChange={_handleChange} showSearch placeholder="请选择VPC" loading={vpcLoading} filterOption={filterOption} >
           {options}
         </a-select>
       )
@@ -179,36 +206,56 @@ export default {
     },
     async fetchNetwork () {
       const PARAMS = await this.getNetworkParams()
+      if (this.types.indexOf('vpc') > -1 && !PARAMS.vpc) {
+        this.networkList = []
+        return false
+      }
       const MANAGER = new this.$Manager('networks', 'v2')
       this.networkLoading = true
       try {
         const { data = {} } = await MANAGER.list({ params: PARAMS })
-        this.networkList = data.data || []
-        this.networkLoading = false
-        if (this.vpcFetchChange) {
-          await this.vpcFetchChange(this.vpcList)
+        if (this.networkFetchChange) {
+          this.networkList = await this.networkFetchChange(data.data)
         } else {
+          this.networkList = (data.data || [])
+        }
+        if (this.defaultActiveFirstOption) {
           this.FC.setFieldsValue({
             network: !R.isEmpty(this.networkList) ? this.networkList[0].id : undefined,
           })
         }
+        if (this.networkFetchChange) {
+          await this.networkFetchChange(this.networkList)
+        }
       } catch (err) {
-        this.networkLoading = false
         throw err
+      } finally {
+        this.networkLoading = false
       }
     },
     RenderNetwork () {
-      const { networkLoading, filterOption } = this
+      const { networkLoading, filterOption, disabled } = this
       const _handleChange = (networkId) => {
         const data = this.getSelectedValue('network', networkId)
         this.$emit('networkChange', data)
       }
       const options = this.networkList.map((item) => {
         const { id, name } = item
-        return <a-select-option key={id} value={id}>{name}</a-select-option>
+        const text = `${name} (${item.guest_ip_start} - ${item.guest_ip_end}）`
+        return <a-select-option key={id} value={id}>
+          {this.networkFormat
+            ? this.networkFormat(item)
+            : (
+              <div class='d-flex'>
+                <span class='text-truncate flex-fill mr-2' title={ text }>{ text }</span>
+                <span style="color: #8492a6; font-size: 13px">可用: { item.ports - item.ports_used }</span>
+              </div>
+            )
+          }
+        </a-select-option>
       })
       return (
-        <a-select showSearch placeholder="请选择IP子网" onChange={_handleChange} loading={networkLoading} filterOption={filterOption} >
+        <a-select disabled={disabled} showSearch placeholder="请选择IP子网" onChange={_handleChange} loading={networkLoading} filterOption={filterOption} >
           {options}
         </a-select>
       )
@@ -231,7 +278,7 @@ export default {
         const Render = this[`Render${sn}`]()
         return (
           <a-col span={this.colSpan}>
-            <a-form-item>
+            <a-form-item wrapperCol={{ span: 24 }}>
               {getFieldDecorator(name, options)(Render)}
             </a-form-item>
           </a-col>
@@ -240,7 +287,7 @@ export default {
       return null
     })
     return (
-      <a-form-item labelCol={this.labelCol} wrapperCol={this.wrapperCol} label={this.label}>
+      <a-form-item required={this.isRequired} labelCol={this.labelCol} wrapperCol={this.wrapperCol} label={this.label}>
         <a-row gutter={8}>
           {RenderCols}
         </a-row>
