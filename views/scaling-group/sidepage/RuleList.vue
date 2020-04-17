@@ -270,8 +270,8 @@ export default {
       if (type === 'alarm' && row['alarm']) {
         const { indicator, operator, value, cumulate } = row['alarm']
         const wrapperType = {
-          gt: '<',
-          lt: '>',
+          lt: '<',
+          gt: '>',
         }
         const unit = indicator === 'cpu' ? '%' : 'b/s'
         const cumulateTxt = `连续满足${cumulate}次后触发`

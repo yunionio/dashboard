@@ -298,7 +298,7 @@ export default {
       }
     },
     disabledDate (current) {
-      return current && current < this.$moment().subtract(1, 'days')
+      return current && current < this.$moment().subtract(1, 'd').endOf('day')
     },
     range (start, end) {
       const result = []
@@ -309,17 +309,25 @@ export default {
     },
     disabledDateTime (_ = this.$moment(), type) {
       let disabledHours = []
+      let disabledMinutes = []
+      let disabledSeconds = []
       const dayDiff = _.diff(this.$moment(), 'days', true)
-      if (dayDiff < -1) {
-        disabledHours = this.range(0, 24)
-      }
+      const hourDiff = _.diff(this.$moment(), 'hours', true)
+      const minutesDiff = _.diff(this.$moment(), 'minutes', true)
       // 当天
       if (dayDiff > -1 && dayDiff < 0) {
-        const _hour = this.$moment().hour()
-        disabledHours = this.range(0, _hour)
+        disabledHours = this.range(0, this.$moment().hour())
+        if (hourDiff > -1 && hourDiff < 0) {
+          disabledMinutes = this.range(0, this.$moment().minute())
+          if (minutesDiff > -1 && minutesDiff < 0) {
+            disabledSeconds = this.range(0, this.$moment().second())
+          }
+        }
       }
       return {
         disabledHours: () => disabledHours,
+        disabledMinutes: () => disabledMinutes,
+        disabledSeconds: () => disabledSeconds,
       }
     },
     formatValues (values) {
