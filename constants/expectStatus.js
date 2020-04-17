@@ -240,4 +240,9 @@ export default {
     danger: ['prohibited'],
     warning: ['exceeded'],
   },
+  lb: {
+    info: [],
+    success: ['enabled'],
+    danger: ['disabled'],
+  },
 }

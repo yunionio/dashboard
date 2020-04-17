@@ -614,6 +614,22 @@
       "prohibited": "禁用",
       "exceeded": "警告",
       "success": "正常"
+    },
+    "lb": {
+      "enabled": "已启用",
+      "disabled": "已禁用",
+      "init": "初始化",
+      "creating": "创建中",
+      "create_failed": "创建失败",
+      "sync_conf": "同步配置",
+      "sync_conf_failed": "同步配置失败",
+      "sync_status": "同步状态",
+      "sync_status_failed": "同步状态失败",
+      "deleting": "删除中",
+      "delete_failed": "删除失败",
+      "start_failed": "启动失败",
+      "stop_failed": "关闭失败",
+      "unknown": "未知"
     }
   },
   "skuCategoryOptions": {
