@@ -49,10 +49,10 @@ export default {
   },
   computed: {
     tips () {
-      const { name, sku = {} } = this.values
+      const { sku = {} } = this.values
       const ret = [
         [
-          { label: '名称', labelClass: 'label-w-50', value: name, valueClass: 'name-value' },
+          { label: '名称', labelClass: 'label-w-50', value: this.values.generate_name, valueClass: 'name-value' },
           { label: '区域', labelClass: 'label-w-50', value: sku.region },
         ],
         [
@@ -70,7 +70,8 @@ export default {
     validateForm () {
       let f = false
       this.form.fc.validateFieldsAndScroll((err, values) => {
-        f = err === null
+        const { sku } = values
+        f = (err === null) && (sku && sku.name)
       })
       return f
     },

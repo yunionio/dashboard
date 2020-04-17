@@ -2,12 +2,15 @@
   <base-dialog :width="900" @cancel="cancelDialog">
     <div slot="header">新建备份</div>
     <a-form :form="form.fc" class="mt-3" slot="body">
-      <dialog-selected-tips :count="params.data.length" :action="params.title" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-selected-tips :name="$t('dictionary.dbinstancebackups')" :count="params.data.length" :action="params.title" />
+      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form-item label="恢复到" v-bind="formItemLayout">
         <a-radio-group v-model="recoveryType">
           <a-radio-button :value="0">当前实例</a-radio-button>
-          <a-radio-button :value="1">已有实例</a-radio-button>
+          <a-tooltip  v-if="isGoogle" title="谷歌云不支持此操作">
+             <a-radio-button :disabled="true" :value="1">已有实例</a-radio-button>
+          </a-tooltip>
+           <a-radio-button v-else :value="1">已有实例</a-radio-button>
         </a-radio-group>
         <div style="width:100%">
           <rds-list :backupItem="backupItem" v-if="!!recoveryType" />
@@ -47,6 +50,9 @@ export default {
   computed: {
     backupItem () {
       return this.params.data ? this.params.data[0] : {}
+    },
+    isGoogle () {
+      return this.backupItem.provider === 'Aliyun'
     },
   },
   watch: {

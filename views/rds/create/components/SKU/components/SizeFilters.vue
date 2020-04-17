@@ -69,22 +69,20 @@ export default {
     getSpecsParams () {
       const { getFieldsValue } = this.form
       const paramsKeys = ['provider', 'cloudregion', 'engine', 'engine_version', 'category', 'storage_type']
-      return new Promise((resolve, reject) => {
-        this.$nextTick(() => {
-          const PARASM = getFieldsValue(paramsKeys)
-          PARASM['cloudregion_id'] = PARASM['cloudregion']
-          resolve({ ...PARASM, ...this.scopeParams })
-        })
-      })
+      const PARASM = getFieldsValue(paramsKeys)
+      PARASM['cloudregion_id'] = PARASM['cloudregion']
+      for (let i = 0; i < paramsKeys.length; i++) {
+        let k = paramsKeys[i]
+        if (!PARASM[k]) {
+          return null
+        }
+      }
+      return { ...PARASM, ...this.scopeParams }
     },
     async fetchSpecs () {
-      const PARAMS = await this.getSpecsParams()
+      const PARAMS = this.getSpecsParams()
+      if (!PARAMS) return false
       try {
-        // this.form.setFieldsValue({
-        //   vcpu_count: undefined,
-        //   vmem_size_mb: undefined,
-        //   zones: undefined,
-        // })
         const manager = new this.$Manager('dbinstance_skus/instance-specs', 'v2')
         const { data = {} } = await manager.list({ params: PARAMS })
         this.cpus = data['cpus']
