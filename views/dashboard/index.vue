@@ -9,7 +9,7 @@
           </a-menu>
         </a-dropdown>
         <a-button type="link" icon="plus" @click="() => handleToEdit()">新建</a-button>
-        <a-button type="link" icon="edit" @click="() => handleToEdit(currentDashboardOption.id)">编辑</a-button>
+        <a-button type="link" icon="edit" @click="() => handleToEdit(currentDashboardOption.id)" :disabled="isDefaultDashboard">编辑</a-button>
         <a-button type="link" icon="download" @click="handleDownloadConfig" :disabled="disableDownloadConfig">导出</a-button>
         <a-button type="link" icon="file" @click="handleImportConfig">导入</a-button>
         <a-popover trigger="click" v-model="deletePopoverVisible">
@@ -20,19 +20,15 @@
               <a-button size="small" @click="deletePopoverVisible = false" class="ml-2">取消</a-button>
             </div>
           </template>
-          <a-button type="link" icon="delete">删除</a-button>
+          <a-button type="link" icon="delete" :disabled="isDefaultDashboard">删除</a-button>
         </a-popover>
       </div>
-      <a-button type="link" @click="swtchOldDashboard" v-if="$appConfig.isPrivate">使用旧版</a-button>
     </div>
     <div class="dashboard-body flex-fill">
       <div class="d-flex align-items-center justify-content-center h-100" v-if="loading">
         <a-spin />
       </div>
       <div class="d-flex flex-column h-100" v-if="dashboardEmpty && !loading">
-        <div class="text-right flex-grow-0 flex-shrink-0">
-          <a-button type="link" @click="swtchOldDashboard" v-if="$appConfig.isPrivate">使用旧版</a-button>
-        </div>
         <div class="flex-fill d-flex align-items-center justify-content-center">
           <a-empty>
             <template v-slot:description>
@@ -79,9 +75,9 @@ import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import VueGridLayout from 'vue-grid-layout'
 import extendsComponents from '@Dashboard/extends'
-import Cookies from 'js-cookie'
 import { Base64 } from 'js-base64'
 import { clear as clearCache } from '@Dashboard/utils/cache'
+import defaultConfig from './config/default'
 import storage from '@/utils/storage'
 import { download } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
@@ -109,6 +105,7 @@ export default {
       defaultGridW: 2,
       defaultGridH: 2,
       deletePopoverVisible: false,
+      currentDashboardKey: '',
     }
   },
   computed: {
@@ -119,12 +116,16 @@ export default {
     disableDownloadConfig () {
       return R.isNil(this.dashboardOptions) || R.isEmpty(this.dashboardOptions)
     },
+    isDefaultDashboard () {
+      return this.currentDashboardKey.includes('default')
+    },
   },
   destroyed () {
     this.pm = null
     clearCache()
   },
   created () {
+    this.dashboardOptions = defaultConfig[this.scope]['options']
     this.pm = new this.$Manager('parameters', 'v1')
     this.fetchDashboardOptions()
   },
@@ -134,7 +135,7 @@ export default {
       try {
         const response = await this.pm.get({ id: `dashboard_${this.scope}` })
         if (response.data && response.data.value) {
-          this.dashboardOptions = response.data.value || []
+          this.dashboardOptions = R.concat(this.dashboardOptions, response.data.value || [])
         }
         if (this.dashboardOptions.length > 0) {
           let item = storage.get(`__oc_dashboard_${this.scope}__`)
@@ -164,9 +165,15 @@ export default {
       }
     },
     handleDashboardClick (item) {
+      // 是否为默认面板
+      this.currentDashboardKey = item.id
       storage.set(`__oc_dashboard_${this.scope}__`, item)
       this.currentDashboardOption = item
-      this.fetchDashboard()
+      if (this.isDefaultDashboard) {
+        this.dashboard = defaultConfig[this.scope][item.id]
+      } else {
+        this.fetchDashboard()
+      }
     },
     handleToEdit (id) {
       this.$router.push({ name: 'DashboardEdit', query: { id } })
@@ -192,10 +199,6 @@ export default {
       } catch (error) {
         throw error
       }
-    },
-    swtchOldDashboard () {
-      Cookies.set('__oc_dashboard_version__', 'v1', { expires: 365 })
-      window.location.href = `${process.env.VUE_APP_V1_PERFIX}/dashboard`
     },
     handleDownloadConfig () {
       const ret = {

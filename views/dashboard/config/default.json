@@ -1,0 +1,290 @@
+{
+  "system": {
+    "options": [
+      { "id": "dashboard-system-default", "name": "默认面板" }
+    ],
+    "dashboard-system-default": [
+      {
+        "layout": {
+          "component": "NumberCard",
+          "h": 2,
+          "w": 5,
+          "x": 0,
+          "y": 2
+        },
+        "params": {
+          "brand": "OneCloud",
+          "cloud_env": "onpremise",
+          "name": "CPU使用量",
+          "region": "default",
+          "usage_key": "all.servers.cpu"
+        }
+      },
+      {
+        "layout": {
+          "component": "NumberCard",
+          "h": 2,
+          "w": 5,
+          "x": 10,
+          "y": 2
+        },
+        "params": {
+          "brand": "OneCloud",
+          "cloud_env": "onpremise",
+          "name": "存储使用量",
+          "region": "default",
+          "usage_key": "all.servers.disk"
+        }
+      },
+      {
+        "layout": {
+          "component": "Notify",
+          "h": 4,
+          "w": 5,
+          "x": 15,
+          "y": 0
+        },
+        "params": {
+          "name": "公告"
+        }
+      },
+      {
+        "layout": {
+          "component": "Top5",
+          "h": 5,
+          "w": 5,
+          "x": 10,
+          "y": 7
+        },
+        "params": {
+          "brand": "OneCloud",
+          "limit": 5,
+          "name": "磁盘写入速度TOP5",
+          "order": "TOP",
+          "resType": "server",
+          "time": 18000,
+          "usage": "write_bps,vm_diskio"
+        }
+      },
+      {
+        "layout": {
+          "component": "Top5",
+          "h": 5,
+          "w": 5,
+          "x": 0,
+          "y": 7
+        },
+        "params": {
+          "brand": "OneCloud",
+          "limit": 5,
+          "name": "CPU使用率TOP5",
+          "order": "TOP",
+          "resType": "server",
+          "time": 18000,
+          "usage": "usage_active,vm_cpu"
+        }
+      },
+      {
+        "layout": {
+          "component": "NumberCard",
+          "h": 2,
+          "w": 5,
+          "x": 5,
+          "y": 2
+        },
+        "params": {
+          "brand": "OneCloud",
+          "cloud_env": "onpremise",
+          "name": "内存使用量",
+          "region": "default",
+          "usage_key": "all.servers.memory"
+        }
+      },
+      {
+        "layout": {
+          "component": "Ring",
+          "h": 3,
+          "w": 5,
+          "x": 10,
+          "y": 4
+        },
+        "params": {
+          "all_usage_key": "storages",
+          "brand": "OneCloud",
+          "cloud_env": "onpremise",
+          "name": "存储使用率",
+          "region": "default",
+          "usage_key": "all.servers.disk"
+        }
+      },
+      {
+        "layout": {
+          "component": "Ring",
+          "h": 3,
+          "w": 5,
+          "x": 15,
+          "y": 4
+        },
+        "params": {
+          "all_usage_key": "isolated_devices",
+          "brand": "OneCloud",
+          "cloud_env": "onpremise",
+          "name": "私网IP使用率",
+          "region": "default",
+          "usage_key": "all.servers.isolated_devices"
+        }
+      },
+      {
+        "layout": {
+          "component": "NumberCard",
+          "h": 2,
+          "w": 5,
+          "x": 0,
+          "y": 0
+        },
+        "params": {
+          "brand": "OneCloud",
+          "cloud_env": "onpremise",
+          "name": "虚拟机数量",
+          "region": "default",
+          "usage_key": "all.servers"
+        }
+      },
+      {
+        "layout": {
+          "component": "Log",
+          "h": 5,
+          "w": 5,
+          "x": 15,
+          "y": 7
+        },
+        "params": {
+          "limit": 5,
+          "name": "审计日志"
+        }
+      },
+      {
+        "layout": {
+          "component": "Ring",
+          "h": 3,
+          "w": 5,
+          "x": 5,
+          "y": 4
+        },
+        "params": {
+          "all_usage_key": "hosts.memory",
+          "brand": "OneCloud",
+          "cloud_env": "onpremise",
+          "name": "内存使用率",
+          "region": "default",
+          "usage_key": "all.servers.memory"
+        }
+      },
+      {
+        "layout": {
+          "component": "Top5",
+          "h": 5,
+          "w": 5,
+          "x": 5,
+          "y": 7
+        },
+        "params": {
+          "brand": "OneCloud",
+          "limit": 5,
+          "name": "磁盘读取速度TOP5",
+          "order": "TOP",
+          "resType": "server",
+          "time": 18000,
+          "usage": "read_bps,vm_diskio"
+        }
+      },
+      {
+        "layout": {
+          "component": "NumberCard",
+          "h": 2,
+          "w": 5,
+          "x": 10,
+          "y": 0
+        },
+        "params": {
+          "brand": "OneCloud",
+          "cloud_env": "onpremise",
+          "name": "物理机数量",
+          "region": "default",
+          "usage_key": "baremetals"
+        }
+      },
+      {
+        "layout": {
+          "component": "Ring",
+          "h": 3,
+          "w": 5,
+          "x": 0,
+          "y": 4
+        },
+        "params": {
+          "all_usage_key": "hosts.cpu",
+          "brand": "OneCloud",
+          "cloud_env": "onpremise",
+          "name": "cpu使用率",
+          "region": "default",
+          "usage_key": "all.servers.cpu"
+        }
+      },
+      {
+        "layout": {
+          "component": "NumberCard",
+          "h": 2,
+          "w": 5,
+          "x": 5,
+          "y": 0
+        },
+        "params": {
+          "brand": "OneCloud",
+          "cloud_env": "onpremise",
+          "name": "宿主机数量",
+          "region": "default",
+          "usage_key": "hosts"
+        }
+      }
+    ]
+  },
+  "domain": {
+    "options": [
+      { "id": "dashboard-domain-default", "name": "默认面板" }
+    ],
+    "dashboard-domain-default": [
+      {
+        "layout": {
+          "component": "Notify",
+          "h": 4,
+          "w": 5,
+          "x": 0,
+          "y": 0
+        },
+        "params": {
+          "name": "公告"
+        }
+      }
+    ]
+  },
+  "project": {
+    "options": [
+      { "id": "dashboard-project-default", "name": "默认面板" }
+    ],
+    "dashboard-project-default": [
+      {
+        "layout": {
+          "component": "Notify",
+          "h": 4,
+          "w": 5,
+          "x": 0,
+          "y": 0
+        },
+        "params": {
+          "name": "公告"
+        }
+      }
+    ]
+  }
+}
