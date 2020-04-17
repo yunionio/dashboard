@@ -146,8 +146,9 @@ export default {
                   this.list.batchPerformAction('enable', null)
                 },
                 meta: () => {
+                  const isDisable = !!this.list.selectedItems.find(item => !item.enabled)
                   return {
-                    validate: this.list.selectedItems.length && ownerDomain,
+                    validate: this.list.selectedItems.length && ownerDomain && isDisable,
                   }
                 },
               },
@@ -158,8 +159,9 @@ export default {
                   this.list.batchPerformAction('disable', null)
                 },
                 meta: () => {
+                  const isEnable = !!this.list.selectedItems.find(item => item.enabled)
                   return {
-                    validate: this.list.selectedItems.length && ownerDomain,
+                    validate: this.list.selectedItems.length && ownerDomain && isEnable,
                   }
                 },
               },

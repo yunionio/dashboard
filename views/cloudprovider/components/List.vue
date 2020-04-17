@@ -54,8 +54,9 @@ export default {
             })
           },
           meta: () => {
+            const isDisable = !!this.list.selectedItems.find(item => !item.enabled)
             return {
-              validate: this.list.selectedItems.length && ownerDomain(this.list),
+              validate: this.list.selectedItems.length && ownerDomain(this.list) && isDisable,
             }
           },
         },
@@ -67,8 +68,9 @@ export default {
             })
           },
           meta: () => {
+            const isEnable = !!this.list.selectedItems.find(item => item.enabled)
             return {
-              validate: this.list.selectedItems.length && ownerDomain(this.list),
+              validate: this.list.selectedItems.length && ownerDomain(this.list) && isEnable,
             }
           },
         },
