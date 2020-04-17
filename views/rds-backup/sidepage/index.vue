@@ -21,11 +21,13 @@ import ColumnsMixin from '../mixins/columns'
 import RdsBackupDetail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
+import Actions from '@/components/PageList/Actions'
 
 export default {
   name: 'RDSBackupSidePage',
   components: {
     RdsBackupDetail,
+    Actions,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {

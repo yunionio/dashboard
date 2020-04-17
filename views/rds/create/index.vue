@@ -18,11 +18,10 @@
       <clearing-radios v-bind="formItemLayout" />
       <!-- 区域 -->
       <item-area
+        :billingType="form.fd.billing_type"
         v-if="form.fd.project"
         class="mb-0"
         :isRequired="true"
-        :values="form.fc.getFieldsValue()"
-        :providers="providers"
         :names="['city', 'provider', 'cloudregion']" />
       <!-- 套餐信息 -->
       <div>
@@ -31,9 +30,10 @@
           <server-password :loginTypes="loginTypes" :decorator="decorators.loginConfig" :form="form" />
         </a-form-item>
         <network-selects
-          :isDefaultFetch="false"
           ref="NETWORK"
           label="网络"
+          :isDefaultFetch="false"
+          :vpcFormat="vpcFormat"
           :vpcParams="getVpcParams"
           :networkParams="getNetworkParams"
           v-bind="formItemLayout" />
@@ -116,6 +116,15 @@ export default {
     }
   },
   methods: {
+    vpcFormat (vpc) {
+      const { name, account } = vpc
+      return (
+        <div class='d-flex'>
+          <span class='text-truncate flex-fill mr-2' title={ name }>{ name }</span>
+          <span style="color: #8492a6; font-size: 13px">云账号: { account }</span>
+        </div>
+      )
+    },
     getVpcParams () {
       return {
         cloudregion_id: this.form.getFieldValue('cloudregion'),

@@ -16,6 +16,10 @@
 </template>
 <script>
 import AreaSelects from '@/sections/AreaSelects'
+const PROVIDERS = {
+  postpaid: ['Aliyun', 'Huawei', 'Google'],
+  prepaid: ['Aliyun', 'Huawei'],
+}
 export default {
   name: 'ItemArea',
   components: {
@@ -29,9 +33,6 @@ export default {
     defaultActiveFirstOption: {
       type: Array,
     },
-    values: {
-      type: Object,
-    },
     isRequired: {
       type: Boolean,
     },
@@ -43,6 +44,7 @@ export default {
   data () {
     return {
       providerList: [],
+      providers: ['Aliyun', 'Huawei'],
     }
   },
   computed: {
@@ -93,7 +95,21 @@ export default {
     },
   },
   inject: ['form', 'formItemLayout', 'scopeParams'],
+  watch: {
+    billingType (type) {
+      this.doFetchs(type)
+    },
+  },
+  created () {
+    if (this.isRds) {
+      this.providers = PROVIDERS['postpaid']
+    }
+  },
   methods: {
+    doFetchs (billingType) {
+      this.providers = PROVIDERS[billingType]
+      this.$refs['areaSelects'].fetchs(['provider', 'cloudregion'])
+    },
     providerFetchSuccess (list = []) {
       const _list = list.filter(({ name }) => this.providers.indexOf(name) > -1)
       this.providerList = _list

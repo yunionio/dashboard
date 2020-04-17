@@ -14,9 +14,17 @@
         <page-list-empty :loading="loading" />
       </div>
     </vxe-grid>
-    <p v-if="selectedSku" style="margin-top:10px">
-        已选择: {{formatSku}}
+    <a-form-item
+      class="mt-1"
+      :validate-status="formatSku ? 'success' : 'error'">
+      <p slot="help">
+        {{
+          formatSku
+          ? `已选择: ${formatSku}`
+          : '请选择套餐'
+        }}
       </p>
+    </a-form-item>
   </div>
 </template>
 <script>
@@ -118,9 +126,10 @@ export default {
     },
   },
   watch: {
-    skuList (netSkuList) {
-      if (netSkuList && netSkuList.length > 0) {
-        this.handleSkuChange({ row: this.skuList[0] })
+    skuList (skuList) {
+      if (skuList && skuList.length > 0) {
+        const row = skuList.find(item => this.isAvailable(item))
+        this.handleSkuChange({ row })
       }
     },
   },
@@ -132,13 +141,14 @@ export default {
       return row.status === 'available'
     },
     async handleSkuChange ({ row }) {
+      let _row = (row && this.isAvailable(row)) ? row : undefined
       this.form.setFieldsValue({
-        sku: row,
+        sku: _row,
       })
-      this.selectedSku = row
+      this.selectedSku = _row
       await this.$nextTick()
-      this.$refs['tableRef'].setRadioRow(row)
-      this.$emit('change', row)
+      this.$refs['tableRef'].setRadioRow(_row)
+      this.$emit('change', _row)
     },
     getSkuParams () {
       const { getFieldsValue } = this.form
