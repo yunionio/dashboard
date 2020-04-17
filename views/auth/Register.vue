@@ -39,7 +39,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import storage from '@/utils/storage'
+import Cookies from 'js-cookie'
 
 const INIT_SETUP = 'INIT_SETUP'
 
@@ -98,7 +98,7 @@ export default {
         this.loading = true
         try {
           await this.$http.post('/v1/registers', values)
-          storage.set(INIT_SETUP, true)
+          Cookies.set(INIT_SETUP, true)
           this.$router.replace({ name: 'Login' })
         } finally {
           this.loading = false
