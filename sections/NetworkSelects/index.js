@@ -40,10 +40,16 @@ export default {
     vpcFetchChange: {
       type: Function,
     },
+    vpcFormat: {
+      type: Function,
+    },
     networkParams: {
       type: [Object, Function],
     },
     networkFetchChange: {
+      type: Function,
+    },
+    networkFormat: {
       type: Function,
     },
     labelCol: {
@@ -172,7 +178,7 @@ export default {
       }
       const options = this.vpcList.map((item) => {
         const { id, name } = item
-        return <a-select-option key={id} value={id}>{name}</a-select-option>
+        return <a-select-option key={id} value={id}>{this.vpcFormat ? this.vpcFormat(item) : name }</a-select-option>
       })
       return (
         <a-select disabled={disabled} onChange={_handleChange} showSearch placeholder="请选择VPC" loading={vpcLoading} filterOption={filterOption} >
@@ -237,10 +243,15 @@ export default {
         const { id, name } = item
         const text = `${name} (${item.guest_ip_start} - ${item.guest_ip_end}）`
         return <a-select-option key={id} value={id}>
-          <div class='d-flex'>
-            <span class='text-truncate flex-fill mr-2' title={ text }>{ text }</span>
-            <span style="color: #8492a6; font-size: 13px">可用: { item.ports - item.ports_used }</span>
-          </div>
+          {this.networkFormat
+            ? this.networkFormat(item)
+            : (
+              <div class='d-flex'>
+                <span class='text-truncate flex-fill mr-2' title={ text }>{ text }</span>
+                <span style="color: #8492a6; font-size: 13px">可用: { item.ports - item.ports_used }</span>
+              </div>
+            )
+          }
         </a-select-option>
       })
       return (
