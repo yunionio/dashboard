@@ -114,6 +114,7 @@ export const authRoutesName = [
   'Auth',
   'Login',
   'Register',
+  'RegisterResult',
   'SecretVerify',
   'BindSecret',
   'SetSecretQuestion',
