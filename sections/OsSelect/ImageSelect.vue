@@ -98,7 +98,6 @@ export default {
       type: Number,
     },
   },
-  inject: ['form'],
   data () {
     return {
       images: {
@@ -229,6 +228,12 @@ export default {
         if (this.form && this.form.fd && this.form.fd.preferManager) {
           this.form.fd.preferManager = ''
         }
+      }
+    },
+    'form.fd.vmem' (val) {
+      if (this.imagesInfo.osOpts && this.imagesInfo.osOpts.length) {
+        const { os } = this.form.fc.getFieldsValue([this.decorator.os[0]])
+        this.osChange(os)
       }
     },
   },
@@ -523,22 +528,25 @@ export default {
       if (osOpts && osOpts.length) {
         let os = osValue || osOpts[0].key
         let imageOpts = this.getImageOpts(imageOptsMap[os])
-        if (!imageOpts || !imageOpts.length) return
-        let image = { key: imageOpts[0].id, label: imageOpts[0].name }
-        if (!osValue && this.storageImage) { // 采用上次选择的镜像（storage）
-          const { os: storageOs, image: storageImage } = this.storageImage
-          const tempImageOpts = imageOptsMap[storageOs] || []
-          const storageImageObj = tempImageOpts.find(val => val.id === storageImage)
-          if (R.is(Object, storageImageObj)) {
-            imageOpts = this.getImageOpts(tempImageOpts)
-            os = storageOs
-            image = { key: storageImageObj.id, label: storageImageObj.name }
+        if (!imageOpts || !imageOpts.length) {
+          this.form.fc.setFieldsValue({ image: { ...initData } })
+        } else {
+          let image = { key: imageOpts[0].id, label: imageOpts[0].name }
+          if (!osValue && this.storageImage) { // 采用上次选择的镜像（storage）
+            const { os: storageOs, image: storageImage } = this.storageImage
+            const tempImageOpts = imageOptsMap[storageOs] || []
+            const storageImageObj = tempImageOpts.find(val => val.id === storageImage)
+            if (R.is(Object, storageImageObj)) {
+              imageOpts = this.getImageOpts(tempImageOpts)
+              os = storageOs
+              image = { key: storageImageObj.id, label: storageImageObj.name }
+            }
           }
+          this.imageOpts = imageOpts
+          this.form.fc.setFieldsValue({ image })
+          this.imageChange(image)
         }
-        this.imageOpts = imageOpts
         this.form.fc.setFieldsValue({ os })
-        this.form.fc.setFieldsValue({ image })
-        this.imageChange(image)
       } else {
         this.form.fc.setFieldsValue({ os: '', image: { ...initData } })
       }

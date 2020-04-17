@@ -64,6 +64,7 @@
       <a-form-item label="操作系统" extra="操作系统会根据选择的虚拟化平台和可用区域的变化而变化，公共镜像的维护请联系管理员">
         <os-select
           :type="type"
+          :form="form"
           :types="osSelectTypes"
           :hypervisor="hypervisor"
           :decorator="decorators.imageOS"

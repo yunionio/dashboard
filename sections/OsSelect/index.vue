@@ -81,11 +81,14 @@ export default {
     cloudaccountId: {
       type: String,
     },
+    form: {
+      type: Object,
+      required: true,
+    },
     sysDiskSize: {
       type: Number,
     },
   },
-  inject: ['form'],
   data () {
     return {
       imageType: this.decorator.imageType[1].initialValue,
