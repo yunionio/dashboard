@@ -122,7 +122,6 @@ import NotifyPopover from './components/NotifyPopover'
 import WorkOrderPopover from './components/WorkOrderPopover'
 import HelpPopover from './components/HelpPopover'
 import GlobalSearch from './components/GlobalSearch'
-import Cookies from 'js-cookie'
 
 export default {
   name: 'Navbar',
