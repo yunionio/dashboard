@@ -407,7 +407,7 @@
       "unknown": "状态异常",
       "instance_snapshot_start_delete": "主机快照开始删除",
       "instance_snapshot_delete_failed": "主机快照删除失败",
-      "syncing": "同步中"
+      "sync_status": "同步状态"
     },
     "snapshotpolicy": {
       "init": "初始化",
