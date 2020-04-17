@@ -29,7 +29,7 @@ export default {
   computed: {
     decorator () {
       return [
-        'proxy_setting_id',
+        'proxy_setting',
         {
           initialValue: this.initialValue,
         },
