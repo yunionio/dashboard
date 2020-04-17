@@ -14,4 +14,5 @@ export default (store, options) => {
     store,
     options,
   })
+  socket.start()
 }
