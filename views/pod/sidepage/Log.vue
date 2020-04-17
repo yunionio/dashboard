@@ -10,7 +10,7 @@
         <a-switch v-model="form.showTime" />
       </a-form-model-item>
       <a-form-model-item label="近期时间" v-if="form.showTime">
-        <duration-input v-model="form.time" :durationOptions="durationOptions" />
+        <duration-second-input v-model="form.time" :durationOptions="durationOptions" />
       </a-form-model-item>
     </a-form-model>
     <xterm :connectParams="connectParams" />
