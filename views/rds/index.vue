@@ -2,7 +2,7 @@
   <div>
     <page-header title="实例列表" />
     <page-body>
-      <rds-list />
+      <rds-list :id="listId" />
     </page-body>
   </div>
 </template>
@@ -14,6 +14,11 @@ export default {
   name: 'RDSIndex',
   components: {
     rdsList,
+  },
+  data () {
+    return {
+      listId: 'RDSList',
+    }
   },
   methods: {
     createServer () {

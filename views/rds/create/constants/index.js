@@ -15,15 +15,15 @@ export const DECORATORS = {
       },
     ],
   },
-  name: [
-    'name',
+  generate_name: [
+    'generate_name',
     {
       initialValue: '',
       validateTrigger: ['change', 'blur'],
       validateFirst: true,
       rules: [
         { required: true, message: '请输入名称' },
-        { validator: validateForm('serverName') },
+        { validator: validateForm('serverCreateName') },
       ],
     },
   ],

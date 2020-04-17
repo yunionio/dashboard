@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { RDS_ACCOUNT_PRIVILEGES } from '@DB/constants'
 import { getStatusTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
@@ -14,7 +15,7 @@ import expectStatus from '@/constants/expectStatus'
 import { getNameFilter, getStatusFilter } from '@/utils/common/tableFilter'
 
 export default {
-  name: 'RDSDatabaseList',
+  name: 'RDSAccountList',
   mixins: [WindowsMixin],
   props: {
     params: {
@@ -27,12 +28,12 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
-        resource: 'dbinstancedatabases',
+        resource: 'dbinstanceaccounts',
         getParams: this.params,
         steadyStatus: Object.values(expectStatus.redisAccount).flat(),
         filterOptions: {
           name: getNameFilter(),
-          status: getStatusFilter('rdsDatabase'),
+          status: getStatusFilter('rdsAccount'),
         },
       }),
       columns: [
@@ -42,19 +43,28 @@ export default {
           addLock: true,
           slotCallback: row => {
             return (
-              <side-page-trigger onTrigger={() => this.sidePageTriggerHandle(row.id, 'RDSDatabaseSidePage')}>{row.name}</side-page-trigger>
+              <side-page-trigger onTrigger={() => this.sidePageTriggerHandle(row.id, 'RDSAcountSidePage')}>{row.name}</side-page-trigger>
             )
           },
         }),
-        getStatusTableColumn({ statusModule: 'rdsDatabase' }),
+        getStatusTableColumn({ statusModule: 'rdsAccount' }),
         {
-          field: 'dbinstanceprivileges',
-          title: '已授权的账户',
+          field: 'password',
+          title: '密码',
+          slots: {
+            default: ({ row }) => {
+              return [<PasswordFetcher serverId={row.id} resourceType='dbinstanceaccounts' />]
+            },
+          },
+        },
+        {
+          field: '已授权的数据库',
+          title: '权限',
           slots: {
             default: ({ row }) => {
               if (row.dbinstanceprivileges && row.dbinstanceprivileges.length > 0) {
-                return row.dbinstanceprivileges.map(({ account, privileges }) => {
-                  return <div>{account} <span style="color:#666;margin:0 0 0 3px">({RDS_ACCOUNT_PRIVILEGES[privileges]})</span></div>
+                return row.dbinstanceprivileges.map(({ database, privileges }) => {
+                  return <div>{database} <span style="color:#666;margin:0 0 0 3px">({RDS_ACCOUNT_PRIVILEGES[privileges]})</span></div>
                 })
               }
             },
@@ -65,30 +75,97 @@ export default {
         {
           label: '新建',
           action: () => {
-            this.createDialog('RDSDatabaseCreateDialog', {
+            this.createDialog('RDSAccountCreateDialog', {
               list: this.list,
-              title: '新建数据库',
+              title: '新建账号',
               rdsItem: this.data,
             })
           },
           meta: () => {
+            const { engine, provider } = this.data
+            const { isRunning } = this.commonMeta
+            const _meta = () => {
+              if (!isRunning) {
+                return {
+                  validate: false,
+                  tooltip: '仅在运行中状态下支持新建操作',
+                }
+              }
+              if (engine === 'SQLServer' && provider === 'Huawei') {
+                return {
+                  validate: false,
+                  tooltip: 'SQLServer数据库引擎，暂不支持此操作',
+                }
+              }
+              if (engine === 'PostgreSQL' && provider === 'Huawei') {
+                return {
+                  validate: false,
+                  tooltip: '华为云PostgreSQL数据库引擎，暂不支持此操作',
+                }
+              }
+              return {
+                validate: true,
+                tooltip: '',
+              }
+            }
             return {
               buttonType: 'primary',
-              ...this.commonMeta,
+              ..._meta(),
             }
           },
         },
       ],
       singleActions: [
         {
+          label: '重置密码',
+          action: (obj) => {
+            this.createDialog('RedisAccountLisResetPwdDialog', {
+              data: [obj],
+              list: this.list,
+              columns: this.columns,
+              redisItem: this.data,
+            })
+          },
+          meta: () => this.commonMeta,
+        },
+        {
+          label: '修改权限',
+          action: (obj) => {
+            this.createDialog('RDSAccountUpdatePrivilegeDialog', {
+              title: '修改权限',
+              initialValues: {
+                account_privilege: obj['account_privilege'],
+              },
+              data: [obj],
+              list: this.list,
+              columns: this.columns,
+              rdsItem: this.data,
+            })
+          },
+          meta: (obj) => {
+            const { isHuawei } = this.commonMeta
+            return {
+              validate: !(isHuawei && obj.name === 'root'),
+              tooltip: (isHuawei && obj.name === 'root') ? '华为云主账号不支持此操作' : '',
+            }
+          },
+        },
+        {
           label: '删除',
           action: (obj) => {
-            this.createDialog('DeleteResDialog', {
+            this.createDialog('RedisWhiteListDeleteDialog', {
               data: [obj],
               columns: this.columns,
-              title: '删除',
+              title: '删除账号',
               list: this.list,
             })
+          },
+          meta: (obj) => {
+            const { tooltip } = this.commonMeta
+            return {
+              validate: obj.name !== 'root',
+              tooltip,
+            }
           },
         },
       ],
@@ -96,14 +173,19 @@ export default {
   },
   computed: {
     commonMeta () {
-      const isRun = this.data.status === 'running'
+      const isRunning = this.data.status === 'running'
+      const isHuawei = this.data.brand === 'Huawei'
+      const isAliyun = this.data.brand === 'Aliyun'
       let tooltip = ''
-      if (!isRun) {
+      if (!isRunning) {
         tooltip = '仅在运行中状态下支持新建操作'
       }
       return {
-        validate: isRun,
-        tooltip: tooltip,
+        isRunning,
+        isHuawei,
+        isAliyun,
+        tooltip,
+        validate: isRunning,
       }
     },
   },

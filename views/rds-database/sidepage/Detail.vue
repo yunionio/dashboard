@@ -8,10 +8,6 @@ import { RDS_ACCOUNT_PRIVILEGES } from '@DB/constants'
 export default {
   name: 'RDSDetail',
   props: {
-    list: {
-      type: Object,
-      required: true,
-    },
     data: {
       type: Object,
       required: true,
@@ -30,6 +26,7 @@ export default {
                   return <div>{account} <span style="color:#666;margin:0 0 0 3px">({RDS_ACCOUNT_PRIVILEGES[privileges]})</span></div>
                 })
               }
+              return '-'
             },
           },
         },
