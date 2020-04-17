@@ -2,8 +2,8 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{this.params.title}}</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" :action="params.title" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-selected-tips :name="$t('dictionary.dbinstances')" :count="params.data.length" :action="params.title" />
+      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         class="mt-3"
         :form="form.fc">
@@ -45,7 +45,7 @@ export default {
   },
   computed: {
     form () {
-      const fc = this.$form.createForm(this)
+      const fc = this.$form.createForm(this, { onValuesChange: this.handleValuesChange })
       const { getFieldDecorator, getFieldValue, getFieldsValue, setFieldsValue } = fc
       return {
         fc,
@@ -66,26 +66,45 @@ export default {
       }
       return _[this.rdsItem.brand]
     },
+    scopeParams () {
+      if (this.$store.getters.isAdminMode) {
+        return {
+          project_domain: this.rdsItem.domain_id,
+        }
+      } else {
+        return {
+          scope: this.$store.getters.scope,
+        }
+      }
+    },
   },
   provide () {
     return {
       form: this.form,
       formItemLayout: this.formItemLayout,
-      scopeParams: {},
+      scopeParams: this.scopeParams,
     }
   },
-  created () {
+  async created () {
+    this.form.fc.getFieldDecorator('provider', { preserve: true })
     this.form.fc.getFieldDecorator('zones', { preserve: true })
     this.form.fc.getFieldDecorator('cloudregion_id', { preserve: true })
     this.form.fc.getFieldDecorator('cloudregion', { preserve: true })
-  },
-  mounted () {
-    this._fetchs()
+    const capability = ['engine', 'engine_version', 'category', 'storage_type']
+    const specs = ['vcpu_count', 'vmem_size_mb', 'zones']
+    this.keysChange = {
+      capability,
+      specs,
+    }
+    await this.$nextTick()
+    this.skuRef = this.$refs['SKU']
+    await this.skuRef.fetchCapability(this.rdsItem['cloudregion_id'])
+    await this.setValues()
   },
   methods: {
     setValues () {
       const SKU = this.$refs['SKU']
-      const { engine } = this.rdsItem
+      const { engine, provider } = this.rdsItem
       const zoneIds = []
       const zoneNames = []
       let i = 0
@@ -104,6 +123,7 @@ export default {
         [zoneIds.join('+')]: zoneNames.join('+'),
       }
       this.form.setFieldsValue({
+        provider,
         engine,
         engine_version: this.rdsItem['engine_version'],
         category: this.rdsItem['category'],
@@ -115,12 +135,28 @@ export default {
         cloudregion: this.rdsItem['cloudregion_id'],
       }, SKU.linkageValue)
     },
-    async _fetchs () {
-      const SKU = this.$refs['SKU']
-      await SKU.fetchFilters(this.rdsItem['cloudregion_id'])
-      await this.setValues()
-      await SKU.fetchSpecs()
-      await SKU.fetchSkus()
+    // 获取CPU核数、内存、可用区
+    capability_change () {
+      this.skuRef.fetchSpecs()
+    },
+    specs_change () {
+      this.skuRef.fetchSkus()
+    },
+    async handleValuesChange (fc, changedFields) {
+      await this.$nextTick()
+      Object.keys(changedFields).forEach(field => {
+        if (changedFields[field] === undefined) return false
+        let _field = field
+        for (let k in this.keysChange) {
+          if (this.keysChange[k].indexOf(_field) > -1) {
+            _field = k
+          }
+        }
+        const handleChange = this[`${_field}_change`]
+        if (this[`${_field}_change`]) {
+          return handleChange()
+        }
+      })
     },
     validateForm () {
       return new Promise((resolve, reject) => {
@@ -147,7 +183,7 @@ export default {
       this.loading = true
       try {
         const values = await this.validateForm()
-        await this.params.list.onManager('performAction', {
+        await this.params.onManager('performAction', {
           id: this.params.data[0].id,
           steadyStatus: ['running'],
           managerArgs: {
@@ -156,6 +192,7 @@ export default {
           },
         })
         this.cancelDialog()
+        this.params.refresh()
       } finally {
         this.loading = false
       }

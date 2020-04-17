@@ -3,8 +3,8 @@
     <div slot="header">{{params.title}}</div>
 
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" :action="params.title" />
-      <vxe-grid class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-selected-tips :name="$t('dictionary.dbinstances')" :count="params.data.length" :action="params.title" />
+      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         class="mt-3"
         :form="form.fc">
