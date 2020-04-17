@@ -530,7 +530,8 @@
       "joining": "加入中",
       "removing": "移除中",
       "remove_failed": "移除失败",
-      "creating": "创建中"
+      "creating": "创建中",
+      "create_failed": "创建失败"
     },
     "scalingpolicie": {
       "init": "初始化",
@@ -538,7 +539,8 @@
       "deleting": "删除中",
       "deleted": "删除",
       "create_failed": "创建失败",
-      "delete_failed": "删除失败"
+      "delete_failed": "删除失败",
+      "creating": "创建中"
     },
     "scalingactivitie": {
       "init": "初始化",
@@ -548,6 +550,12 @@
       "part_succeed": "部分成功",
       "failed": "失败",
       "reject": "拒绝"
+    },
+    "scalingserver": {
+      "joining": "加入中",
+	    "ready": "正常",
+	    "removing": "移除中",
+	    "remove_failed": "移除失败"
     },
     "servertemplate": {
       "ready": "可用",

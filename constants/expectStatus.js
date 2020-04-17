@@ -230,4 +230,9 @@ export default {
     success: ['ready'],
     info: ['init', 'unknown'],
   },
+  scalingserver: {
+    success: ['ready'],
+    info: ['init', 'unknown'],
+    danger: ['remove_failed'],
+  },
 }
