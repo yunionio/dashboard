@@ -21,6 +21,7 @@ class Client {
       query: {
         session,
       },
+      transports: ['websocket'],
       reconnection: true,
       autoConnect: false,
     })
