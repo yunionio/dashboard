@@ -786,7 +786,7 @@ export class GenCreateData {
    */
   genDevices () {
     const ret = []
-    for (let i = 0, len = this.fd.gpu.count; i < len; i++) {
+    for (let i = 0, len = this.fd.gpuCount; i < len; i++) {
       const regexp = /vendor=(.+):(.+)/
       const matched = this.fd.gpu.match(regexp)
       const model = matched[1]
