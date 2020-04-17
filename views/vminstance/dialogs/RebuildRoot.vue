@@ -11,7 +11,10 @@
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
-        <a-form-item v-bind="formItemLayout" v-show="!imgHidden" label="操作系统" extra="操作系统会根据选择的虚拟化平台和可用区域的变化而变化，公共镜像的维护请联系管理员">
+        <a-form-item v-bind="formItemLayout" v-show="!imgHidden" label="操作系统">
+          <div slot="help">
+            <div class="help-color">操作系统会根据选择的虚拟化平台和可用区域的变化而变化，公共镜像的维护请联系管理员</div>
+          </div>
           <os-select
             :type="type"
             :form="form"
@@ -23,6 +26,7 @@
             :cache-image-params="cacheImageParams"
             :decorator="decorators.imageOS"
             :imageCloudproviderDisabled="true"
+            :sys-disk-size="sysDiskSize"
             @updateImageMsg="updateImageMsgDebounce" />
         </a-form-item>
         <a-form-item v-bind="formItemLayout" v-show="imgHidden" label="操作系统">
@@ -251,6 +255,9 @@ export default {
       if (this.hypervisor === HYPERVISORS_MAP.zstack.key) {
         return '由于ZStack/DStack本身不支持重装系统设定新密码，您可以在重装系统完成后在主机列表进行密码重置'
       }
+      if (this.params.data.length === 1) {
+        return '所选镜像容量最小磁盘要求需小于虚拟机系统盘大小'
+      }
       return ''
     },
     osType () {
@@ -291,6 +298,16 @@ export default {
         }
       }
       return Object.keys(loginTypes)
+    },
+    sysDiskSize () {
+      if (this.detailData.length === 1) {
+        const diskInfos = this.detailData[0].disks_info
+        const sysDisk = diskInfos.find((item) => { return item.disk_type === 'sys' || item.index === 0 })
+        if (sysDisk) {
+          return sysDisk.size
+        }
+      }
+      return 0
     },
   },
   // watch: {

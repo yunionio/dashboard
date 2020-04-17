@@ -10,6 +10,9 @@
         </div>
       </a-alert>
       <a-form :form="form.fc" hideRequiredMark>
+        <a-form-item :label="`指定${$t('dictionary.project')}`" v-bind="formItemLayout" class="mb-0">
+          <domain-project :fc="form.fc" :form-layout="formItemLayout" :decorators="{ project: decorators.project, domain: decorators.domain }" />
+        </a-form-item>
         <a-form-item label="策略名称" v-bind="formItemLayout">
           <a-input
             v-decorator="decorators.generate_name"
@@ -72,12 +75,18 @@ import debounce from 'lodash/debounce'
 import { weekOptions, timeOptions } from '../constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import validateForm from '@/utils/validate'
+import DomainProject from '@/sections/DomainProject'
+import validateForm, { isRequired } from '@/utils/validate'
 
 export default {
   name: 'CreateSnapshotPolicyDialog',
+  components: {
+    DomainProject,
+  },
   mixins: [DialogMixin, WindowsMixin],
   data () {
+    const tenant = this.params.extParams && this.params.extParams.tenant
+    const domain = this.params.extParams && this.params.extParams.domain
     return {
       loading: false,
       action: '新建策略',
@@ -130,6 +139,24 @@ export default {
             initialValue: false,
           },
         ],
+        domain: [
+          'domain',
+          {
+            initialValue: domain || this.$store.getters.userInfo.projectDomainId,
+            rules: [
+              { validator: isRequired(), message: this.$t('rules.domain'), trigger: 'change' },
+            ],
+          },
+        ],
+        project: [
+          'project',
+          {
+            initialValue: tenant || this.$store.getters.userInfo.projectId,
+            rules: [
+              { validator: isRequired(), message: this.$t('rules.project'), trigger: 'change' },
+            ],
+          },
+        ],
       },
       snapshotpolicies: [],
       weekOptions: [...weekOptions],
@@ -166,12 +193,15 @@ export default {
       })
     },
     async doCreateSnapshotPolicySubmit () {
-      const { alwaysReserved, ...rest } = this.form.fd
+      const { alwaysReserved, domain, project, ...rest } = this.form.fd
       const params = {
         ...rest,
       }
       if (alwaysReserved) {
         params.retention_days = -1
+      }
+      if (domain && project) {
+        params.tenant = project.key
       }
       return this.manager.create({ data: params })
     },
@@ -181,7 +211,8 @@ export default {
         await this.form.fc.validateFields()
         await this.doCreateSnapshotPolicySubmit()
         this.loading = false
-        this.params.refresh()
+        this.params.refresh && this.params.refresh()
+        this.params.success && this.params.success()
         this.cancelDialog()
       } catch (error) {
         this.loading = false

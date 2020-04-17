@@ -856,9 +856,9 @@ export default {
                   permission: 'server_perform_add_secgroup',
                   action: () => {
                     this.createDialog('VmSetSecgroupDialog', {
+                      vm: this,
                       data: [obj],
                       columns: this.columns,
-                      onManager: this.onManager,
                     })
                   },
                   meta: () => {
@@ -936,7 +936,7 @@ export default {
                       validate: false,
                       tooltip: null,
                     }
-                    if (obj.eip) {
+                    if (obj.eip && obj.eip_mode === 'elastic_ip') {
                       ret.tooltip = '已绑定弹性公网IP的虚拟机不支持该操作'
                       return ret
                     }

@@ -1,3 +1,4 @@
+import * as R from 'ramda'
 import { sizestr } from '@/utils/utils'
 import SystemIcon from '@/sections/SystemIcon'
 import { getStatusTableColumn, getCopyWithContentTableColumn, getProjectTableColumn } from '@/utils/common/tableColumn'
@@ -12,8 +13,9 @@ export default {
         width: 70,
         slots: {
           default: ({ row }) => {
-            if (!row.properties) return
+            if (!row.properties || R.isEmpty(row.properties)) return '未知'
             let name = !row.properties.os_distribution ? row.properties.os_type : decodeURI(row.properties.os_distribution || '')
+            name = name || ''
             if (name.includes('Windows') || name.includes('windows')) {
               name = 'Windows'
             }

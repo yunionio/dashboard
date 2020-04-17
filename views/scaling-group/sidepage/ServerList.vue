@@ -93,7 +93,8 @@ export default {
             },
           },
         },
-        getStatusTableColumn({ statusModule: 'server' }),
+        getStatusTableColumn({ field: 'scaling_status', title: '状态', statusModule: 'scalingserver' }),
+        getStatusTableColumn({ title: '主机状态', statusModule: 'server' }),
         {
           field: 'instance_type',
           title: '配置',

@@ -163,6 +163,9 @@ export default {
                         refresh: this.refresh,
                       })
                     },
+                    meta: obj => ({
+                      validate: obj.brand.toLowerCase() !== 'zstack',
+                    }),
                   },
                   getDomainChangeOwnerAction(this, {
                     name: this.$t('dictionary.host'),

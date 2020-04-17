@@ -29,7 +29,7 @@ export default {
     return {
       list: this.$list.createList(this, {
         id: this.id,
-        resource: this.imagesFetcher,
+        resource: 'images',
         getParams: this.getParams,
         steadyStatus: Object.values(expectStatus.image).flat(),
         apiVersion: 'v1',
@@ -99,10 +99,8 @@ export default {
   },
   watch: {
     cloudEnv (val) {
-      this.$nextTick(() => {
-        this.list.resource = this[`${val}Fetcher`]
-        this.list.fetchData(0)
-      })
+      this.list.resource = this[`${val}Fetcher`]
+      this.list.fetchData(0)
     },
   },
   created () {

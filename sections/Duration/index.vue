@@ -13,7 +13,6 @@
 
 <script>
 import * as R from 'ramda'
-import DurationInput from './DurationInput'
 
 const OPTS = [
   {
@@ -52,9 +51,6 @@ const OPTS = [
 
 export default {
   name: 'Duration',
-  components: {
-    DurationInput,
-  },
   props: {
     decorators: {
       type: Object,

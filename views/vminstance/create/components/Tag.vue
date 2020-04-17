@@ -3,11 +3,14 @@
     <div class="tag-list">
       <template v-for="item of tags">
         <span
-          class="tag mb-1 text-truncate d-inline-block"
+          class="tag mb-1 d-inline-block"
           :title="item.title"
           :key="`${item.key}${item.value}`"
           :style="{ backgroundColor: item.backgroundColor, color: item.color, borderColor: item.color }">
-          {{ item.title }}<a-icon style="font-size: 12px;" class="ml-1" type="close" @click="removeTag(item)" />
+          <div class="d-flex align-items-center">
+            <span class="flex-fill text-truncate">{{ item.title }}</span>
+            <a-icon class="ml-1 remove-tag flex-grow-0 flex-shrink-0" type="close" @click="removeTag(item)" />
+          </div>
         </span>
       </template>
     </div>

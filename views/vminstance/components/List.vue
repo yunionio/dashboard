@@ -370,9 +370,9 @@ export default {
                 permission: 'server_perform_add_secgroup',
                 action: () => {
                   this.createDialog('VmSetSecgroupDialog', {
+                    vm: this,
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    onManager: this.onManager,
                   })
                 },
                 meta: () => {
@@ -448,6 +448,62 @@ export default {
                     ret.validate = false
                     ret.tooltip = '仅包年包月的资源支持此操作'
                   }
+                  return ret
+                },
+              },
+              {
+                label: '自动续费设置',
+                action: () => {
+                  this.createDialog('VmResourceRenewFeeDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                  })
+                },
+                meta: () => {
+                  const ret = {
+                    validate: true,
+                    tooltip: null,
+                  }
+                  const isAllPublic = this.list.selectedItems.every(item => findPlatform(item.hypervisor) === SERVER_TYPE.public)
+                  const isAllPrepaid = this.list.selectedItems.every(item => item.billing_type === 'prepaid')
+                  if (!isAllPublic) {
+                    ret.validate = false
+                    ret.tooltip = '仅公有云支持此操作'
+                  }
+                  if (!isAllPrepaid) {
+                    ret.validate = false
+                    ret.tooltip = '仅包年包月的资源支持此操作'
+                  }
+                  return ret
+                },
+              },
+              {
+                label: '公网IP转EIP',
+                action: () => {
+                  this.createDialog('VmPublicIpToEipDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                  })
+                },
+                meta: () => {
+                  const ret = {
+                    validate: false,
+                    tooltip: null,
+                  }
+                  const isSomeBindEip = this.list.selectedItems.some((item) => { return item.eip && item.eip_mode === 'elastic_ip' })
+                  const isAllBindPublicIp = this.list.selectedItems.every((item) => { return item.eip_mode === 'public_ip' })
+                  if (isSomeBindEip) {
+                    ret.tooltip = '已绑定弹性公网IP的虚拟机不支持该操作'
+                    return ret
+                  }
+                  if (!isAllBindPublicIp) {
+                    ret.tooltip = '只有已分配公网IP的虚拟机支持该操作'
+                    return ret
+                  }
+                  ret.validate = cloudEnabled('publicIpToEip', this.list.selectedItems)
+                  ret.tooltip = cloudUnabledTip('publicIpToEip', this.list.selectedItems)
                   return ret
                 },
               },

@@ -9,10 +9,12 @@
 
 <script>
 // import { sizestr } from '@/utils/utils'
-import { getBrandTableColumn, getEnabledTableColumn } from '@/utils/common/tableColumn'
+import { getBrandTableColumn, getEnabledTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
+import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'ScalingGroupDetailSidpage',
+  mixins: [WindowsMixin],
   props: {
     data: {
       type: Object,
@@ -31,7 +33,13 @@ export default {
         {
           field: 'instance_number',
           title: '当前实例数',
-          width: 100,
+          slots: {
+            default: ({ row }) => {
+              return [
+                <a onClick={ () => this.$emit('tab-change', 'server-list') }>{row.instance_number}</a>,
+              ]
+            },
+          },
         },
         {
           field: 'scaling_policy_number',
@@ -47,6 +55,13 @@ export default {
         {
           field: 'guest_template',
           title: '主机模板',
+          slots: {
+            default: ({ row }) => {
+              return [
+                <a onClick={ () => this.$emit('tab-change', 'server-template-list') }>{row.guest_template}</a>,
+              ]
+            },
+          },
         },
       ],
       extraInfo: [
@@ -75,12 +90,19 @@ export default {
                 return this.$t('flexGrouPprinciple')[row.shrink_principle]
               },
             },
-            {
+            getCopyWithContentTableColumn({
               field: 'vpc',
               title: 'VPC',
-            },
+              hideField: true,
+              slotCallback: row => {
+                if (!row.vpc) return '-'
+                return [
+                  <side-page-trigger permission='vpcs_get' name='VpcSidePage' id={row.vpc_id} vm={this}>{ row.vpc }</side-page-trigger>,
+                ]
+              },
+            }),
             {
-              field: '',
+              field: 'loadbalancer',
               title: '负载均衡',
             },
             {

@@ -4,6 +4,9 @@
     <div slot="body">
       <a-form
         :form="form.fc">
+        <a-form-item :label="`指定${$t('dictionary.project')}`" v-bind="formItemLayout" class="mb-0">
+          <domain-project :fc="form.fc" :form-layout="formItemLayout" :decorators="{ project: decorators.project, domain: decorators.domain }" />
+        </a-form-item>
         <a-form-item label="模版" v-bind="formItemLayout">
           <a-select
             v-decorator="decorators.template"
@@ -42,17 +45,42 @@
 <script>
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import DomainProject from '@/sections/DomainProject'
+import { isRequired } from '@/utils/validate'
 
 export default {
   name: 'CreateSecgroupDialog',
+  components: {
+    DomainProject,
+  },
   mixins: [DialogMixin, WindowsMixin],
   data () {
+    const tenant = this.params.extParams && this.params.extParams.tenant
+    const domain = this.params.extParams && this.params.extParams.domain
     return {
       loading: false,
       form: {
         fc: this.$form.createForm(this),
       },
       decorators: {
+        domain: [
+          'domain',
+          {
+            initialValue: domain || this.$store.getters.userInfo.projectDomainId,
+            rules: [
+              { validator: isRequired(), message: this.$t('rules.domain'), trigger: 'change' },
+            ],
+          },
+        ],
+        project: [
+          'project',
+          {
+            initialValue: tenant || this.$store.getters.userInfo.projectId,
+            rules: [
+              { validator: isRequired(), message: this.$t('rules.project'), trigger: 'change' },
+            ],
+          },
+        ],
         template: [
           'template',
           {
@@ -214,11 +242,7 @@ export default {
       })
     },
     doCreate (data) {
-      return this.params.onManager('create', {
-        managerArgs: {
-          data,
-        },
-      })
+      return new this.$Manager('secgroups').create({ data: data })
     },
     async handleConfirm () {
       this.loading = true
@@ -252,13 +276,16 @@ export default {
         const newValues = {
           name: values.name,
           rules,
+          tenant: values.project && values.project.key,
         }
         await this.doCreate(newValues)
         this.loading = false
         this.cancelDialog()
-        this.params.refresh()
+        this.params.refresh && this.params.refresh()
+        this.params.success && this.params.success()
       } catch (error) {
         this.loading = false
+        throw error
       }
     },
   },

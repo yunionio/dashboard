@@ -201,6 +201,9 @@ export default {
                       refresh: this.refresh,
                     })
                   },
+                  meta: () => ({
+                    validate: this.list.selectedItems.every(item => { return item.brand.toLowerCase() !== 'zstack' }),
+                  }),
                 },
                 {
                   label: '删除',
@@ -231,6 +234,7 @@ export default {
     },
   },
   created () {
+    this.initSidePageTab('host-detail')
     this.list.fetchData()
   },
   methods: {
@@ -241,8 +245,7 @@ export default {
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
     },
-    handleOpenSidepage (row, tab = 'host-detail') {
-      this.initSidePageTab(tab)
+    handleOpenSidepage (row) {
       this.sidePageTriggerHandle(this, 'HostSidePage', {
         id: row.id,
         resource: 'hosts',

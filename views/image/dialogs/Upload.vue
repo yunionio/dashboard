@@ -2,7 +2,11 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">上传</div>
     <div slot="body">
-      <a-alert message="提示：设置更多属性，请上传成功后，点击【修改属性】" banner class="mb-2" />
+      <a-alert class="mb-2" type="warning">
+        <template v-slot:message>
+          <div>设置更多属性，请上传成功后，点击【修改属性】</div>
+        </template>
+      </a-alert>
       <a-form
         :form="form.fc">
         <a-form-item label="镜像名称" v-bind="formItemLayout">
@@ -18,13 +22,18 @@
             </a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item label="镜像文件" v-bind="formItemLayout" v-if="show">
+        <a-form-item label="镜像文件" v-bind="formItemLayout" v-if="show" help="上传过程中请勿刷新或者关闭页面，否则上传任务会中断。">
           <a-upload
             @change="handleUploadChange"
             :fileList="fileList"
             :beforeUpload="beforeUpload">
             <a-button> <a-icon type="upload" /> 选取文件 </a-button>
           </a-upload>
+          <a-progress
+            v-if="loading"
+            :strokeColor="{ from: '#108ee9', to: '#87d068' }"
+            :percent="imageUploadPercent"
+            status="active" />
         </a-form-item>
         <a-form-item label="镜像URL" v-bind="formItemLayout" v-if="!show">
           <a-input placeholder="请输入镜像URL" v-decorator="decorators.copy_from" />
@@ -53,6 +62,7 @@
 
 <script>
 import * as R from 'ramda'
+import _ from 'lodash'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
@@ -110,6 +120,7 @@ export default {
       },
       show: true,
       fileList: [],
+      imageUploadPercent: 0,
     }
   },
   computed: {
@@ -123,7 +134,9 @@ export default {
   methods: {
     clearTimer () {
       clearTimeout(this.timer)
+      clearTimeout(this.percentTimer)
       this.timer = null
+      this.percentTimer = null
     },
     beforeUpload (file) {
       this.fileList = [file]
@@ -206,20 +219,39 @@ export default {
           }
           this.handleUpload(formData)
           this.clearTimer()
-          this.timer = setTimeout(() => {
-            this.cancelDialog()
-            this.params.refresh()
-          }, 3000)
-          return
+          this.timer = setInterval(() => {
+            this.fetchImageInfoByName()
+              .then((res) => {
+                const imageInfo = res.data && res.data.data && res.data.data[0]
+                if (this.fileList && this.fileList.length > 0) {
+                  const percent = (imageInfo.size / this.fileList[0].size) * 100
+                  if (percent === 100) {
+                    this.percentTimer = setTimeout(() => {
+                      this.imageUploadPercent = _.floor(percent)
+                    }, 5000)
+                  } else {
+                    this.imageUploadPercent = _.floor(percent)
+                  }
+                }
+                if (this.imageUploadPercent === 100) {
+                  this.cancelDialog()
+                  this.params.refresh()
+                }
+              })
+          }, 5000)
         } else {
           await this.doImportUrl(values)
+          this.cancelDialog()
+          this.params.refresh()
         }
-        this.loading = false
-        this.cancelDialog()
-        this.params.refresh()
       } catch (error) {
         this.loading = false
       }
+    },
+    fetchImageInfoByName () {
+      const imageManager = new this.$Manager('images', 'v1')
+      const name = this.form.fc.getFieldValue('name')
+      return imageManager.list({ params: { name } })
     },
   },
 }

@@ -45,6 +45,16 @@ export default {
           },
           status: getStatusFilter('scalingpolicie'),
           enabled: getEnabledFilter(),
+          trigger_type: {
+            label: '策略类型',
+            dropdown: true,
+            items: Object.keys(this.$t('flexGrouTriggerType')).map(k => {
+              return {
+                label: this.$t('flexGrouTriggerType')[k],
+                key: k,
+              }
+            }),
+          },
         },
       }),
       columns: [
@@ -68,7 +78,7 @@ export default {
           },
         },
         {
-          field: 'trigger_type',
+          field: 'cycle',
           title: '触发条件',
           width: 300,
           formatter: ({ row }) => {
@@ -82,6 +92,24 @@ export default {
           formatter: ({ row }) => {
             const acn = this.$t('flexGroupRuleAction')[row.action]
             return `${acn}${row.number}个实例`
+          },
+        },
+        {
+          field: 'startTimeAndendTime',
+          title: '有效时间',
+          width: 160,
+          slots: {
+            default: ({ row }) => {
+              const { start_time: startTime, end_time: endTime } = row.cycle_timer
+              if (startTime && endTime) {
+                return [
+                  <div>
+                    {this.$moment(startTime).format()} <br/>
+                    {this.$moment(endTime).format()}
+                  </div>,
+                ]
+              }
+            },
           },
         },
         getTimeTableColumn(),
@@ -214,20 +242,16 @@ export default {
                   })
                 },
                 meta: (obj) => {
-                  const { selectedItems } = this.list
-                  if (!selectedItems.every(item => item.enabled)) {
-                    return {
-                      validate: false,
-                      tooltip: '仅禁用状态下支持此操作',
-                    }
-                  }
                   return {
-                    validate: true,
+                    validate: this.list.selectedItems.length && this.list.selectedItems.every(val => !val.enabled),
                   }
                 },
               },
             ]
           },
+          meta: () => ({
+            validate: this.list.selectedItems.length,
+          }),
         },
       ],
     }
@@ -246,8 +270,8 @@ export default {
       if (type === 'alarm' && row['alarm']) {
         const { indicator, operator, value, cumulate } = row['alarm']
         const wrapperType = {
-          gt: '<',
-          lt: '>',
+          lt: '<',
+          gt: '>',
         }
         const unit = indicator === 'cpu' ? '%' : 'b/s'
         const cumulateTxt = `连续满足${cumulate}次后触发`

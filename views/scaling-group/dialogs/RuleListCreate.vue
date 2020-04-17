@@ -46,10 +46,10 @@
         <template v-if="form.fc.getFieldValue('trigger_type') === 'timing'">
           <a-form-item label="触发时间">
             <a-date-picker
+              showTime
               :disabledDate="disabledDate"
               :disabledTime="disabledDateTime"
               v-decorator="decorators.execTime"
-              :showTime="{ defaultValue: $moment('00:00:00', 'HH:mm:ss') }"
               format="YYYY-MM-DD HH:mm:ss" />
           </a-form-item>
         </template>
@@ -85,9 +85,14 @@
             <a-select style="width: 50%" v-decorator="decorators.action">
               <a-select-option v-for="(v, k) in $t('flexGroupRuleAction')" :key="k" :value="k">{{v}}</a-select-option>
             </a-select>
-            <a-input-number v-decorator="decorators.number" :min="0" :max="1000" />
+            <a-tooltip>
+              <span slot="title">
+                {{actionConfig(form.fc.getFieldValue('action')).tooltip}}
+              </span>
+              <a-input-number v-bind="actionConfig(form.fc.getFieldValue('action')).number" v-decorator="decorators.number" />
+            </a-tooltip>
             <span style="margin:5px 0 0 5px">
-              个实咧
+              个实例
             </span>
           </a-input-group>
         </a-form-item>
@@ -268,8 +273,32 @@ export default {
     }
   },
   methods: {
+    actionConfig (type) {
+      const { resData } = this.params
+      if (type === 'set') {
+        let number = {
+          min: resData.min_instance_number,
+          max: resData.max_instance_number,
+        }
+        let tooltip = `范围在最小值(${number.min}) ～ 最大值(${number.max})`
+        return {
+          number,
+          tooltip,
+        }
+      } else {
+        let number = {
+          min: 1,
+          max: resData.max_instance_number,
+        }
+        let tooltip = `范围在1 ～ 最大值(${number.max})`
+        return {
+          number,
+          tooltip,
+        }
+      }
+    },
     disabledDate (current) {
-      return current && current < this.$moment().subtract(1, 'days')
+      return current && current < this.$moment().subtract(1, 'd').endOf('day')
     },
     range (start, end) {
       const result = []
@@ -280,17 +309,25 @@ export default {
     },
     disabledDateTime (_ = this.$moment(), type) {
       let disabledHours = []
+      let disabledMinutes = []
+      let disabledSeconds = []
       const dayDiff = _.diff(this.$moment(), 'days', true)
-      if (dayDiff < -1) {
-        disabledHours = this.range(0, 24)
-      }
+      const hourDiff = _.diff(this.$moment(), 'hours', true)
+      const minutesDiff = _.diff(this.$moment(), 'minutes', true)
       // 当天
       if (dayDiff > -1 && dayDiff < 0) {
-        const _hour = this.$moment().hour()
-        disabledHours = this.range(0, _hour + 1)
+        disabledHours = this.range(0, this.$moment().hour())
+        if (hourDiff > -1 && hourDiff < 0) {
+          disabledMinutes = this.range(0, this.$moment().minute())
+          if (minutesDiff > -1 && minutesDiff < 0) {
+            disabledSeconds = this.range(0, this.$moment().second())
+          }
+        }
       }
       return {
         disabledHours: () => disabledHours,
+        disabledMinutes: () => disabledMinutes,
+        disabledSeconds: () => disabledSeconds,
       }
     },
     formatValues (values) {

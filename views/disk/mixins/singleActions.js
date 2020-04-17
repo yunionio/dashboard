@@ -132,6 +132,7 @@ export default {
               label: '设置自动快照',
               action: () => {
                 this.createDialog('DiskSetSnapshotDialog', {
+                  vm: this,
                   data: [obj],
                   columns: this.columns,
                   refresh: this.refresh,
@@ -242,7 +243,7 @@ export default {
                   data: [obj],
                   columns: this.columns,
                   title: '删除',
-                  onManger: this.onManger,
+                  onManager: this.onManager,
                   success: () => {
                     this.destroySidePages()
                   },

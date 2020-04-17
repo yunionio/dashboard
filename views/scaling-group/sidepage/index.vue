@@ -9,7 +9,7 @@
     icon="res-scalinggroup"
     @tab-change="handleTabChange">
     <template v-slot:actions>
-      <actions :options="singleActions" :row="detailData" :data="detailData" button-type="link" button-size="small" />
+      <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
     <component
       :is="params.windowData.currentTab"

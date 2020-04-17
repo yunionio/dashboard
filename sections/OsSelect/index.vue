@@ -20,6 +20,7 @@
       :cloudproviderParamsExtra="cloudproviderParamsExtra"
       :cloudaccountId="cloudaccountId"
       :imageCloudproviderDisabled="imageCloudproviderDisabled"
+      :sys-disk-size="sysDiskSize"
       :form="form" />
   </div>
 </template>
@@ -83,6 +84,9 @@ export default {
     form: {
       type: Object,
       required: true,
+    },
+    sysDiskSize: {
+      type: Number,
     },
   },
   data () {

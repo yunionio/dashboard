@@ -1,6 +1,6 @@
 import validateForm from '@/utils/validate'
 
-export const BRANDS = ['OneCloud']
+export const BRANDS = ['OneCloud', 'Azure']
 
 export const DECORATORS = {
   projectDomain: {
@@ -67,7 +67,9 @@ export const DECORATORS = {
   brand: [
     'brand',
     {
-      initialValue: BRANDS[0],
+      rules: [
+        { required: true, message: '暂无平台不可新建' },
+      ],
     },
   ],
   servertemplate: [

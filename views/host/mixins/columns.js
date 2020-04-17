@@ -33,14 +33,14 @@ export default {
             if (row.access_ip) {
               cellWrap.push(
                 <div class="d-flex">
-                 管理IP：<list-body-cell-wrap row={row} field="access_ip" copy />
+                  <list-body-cell-wrap row={row} field="access_ip" copy><span class="text-color-help">(管理)</span></list-body-cell-wrap>
                 </div>
               )
             }
             if (row.ipmi_ip) {
               cellWrap.push(
                 <div class="d-flex">
-                  带外IP：<list-body-cell-wrap row={row} field="ipmi_ip" copy />
+                  <list-body-cell-wrap row={row} field="ipmi_ip" copy><span class="text-color-help">(带外)</span></list-body-cell-wrap>
                 </div>
               )
             }
@@ -53,13 +53,8 @@ export default {
         field: 'nonsystem_guests',
         title: '#VM',
         width: 60,
-        slots: {
-          default: ({ row }, h) => {
-            const ret = [
-              <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row, 'vminstance-list') }>{ row.nonsystem_guests || '0' }</side-page-trigger>,
-            ]
-            return ret
-          },
+        formatter ({ cellValue }) {
+          return cellValue || '0'
         },
       },
       {

@@ -200,11 +200,11 @@ export default {
             },
             {
               field: 'cpu_cmtbound',
-              title: '超售比上限',
+              title: '超售比',
             },
             {
               field: 'cpu_commit_rate',
-              title: '当前超售比例',
+              title: '当前超售比率',
             },
             {
               field: 'cpu_desc',
@@ -231,11 +231,11 @@ export default {
             },
             {
               field: 'mem_cmtbound',
-              title: '超售比上限',
+              title: '超售比',
             },
             {
               field: 'mem_commit_rate',
-              title: '当前超售比例',
+              title: '当前超售比率',
             },
           ],
         },
@@ -258,7 +258,7 @@ export default {
             },
             {
               field: 'storage_commit_rate',
-              title: '当前超售比例',
+              title: '当前超售比率',
             },
             {
               field: 'storage_waste',

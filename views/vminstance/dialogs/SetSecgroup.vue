@@ -10,14 +10,17 @@
         <a-form-item label="安全组" v-bind="formItemLayout" v-if="bindedSecgroupsLoaded">
           <div slot="extra">
             最多支持选择{{max}}个安全组。没有想要的安全组？可以前往
-            <help-link :href="href"> 新建安全组</help-link>
+            <!-- <help-link :href="href"> 新建安全组</help-link> -->
+            <dialog-trigger :vm="params.vm" :extParams="{ tenant, domain }" name="新建安全组" value="CreateSecgroupDialog" resource="secgroups" @success="successCallback" />
           </div>
           <base-select
+            ref="secgroupRef"
             class="w-100"
             remote
             show-sync
             v-decorator="decorators.secgroups"
             resource="secgroups"
+            :options.sync="secgroupOptions"
             :mapper="mapperSecgroups"
             :params="{ limit: 20 }"
             :init-loaded.sync="secgroupsInitLoaded"
@@ -82,6 +85,7 @@ export default {
       secgroupsInitLoaded: false,
       bindedSecgroups: [],
       bindedSecgroupsLoaded: false,
+      secgroupOptions: [],
     }
   },
   computed: {
@@ -113,6 +117,12 @@ export default {
         return 1
       }
       return 5
+    },
+    domain () {
+      return this.params.data[0].domain_id
+    },
+    tenant () {
+      return this.params.data[0].tenant_id
     },
   },
   created () {
@@ -160,6 +170,13 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+    async successCallback () {
+      await this.$refs.secgroupRef.loadOpts()
+      let secgroups = this.form.fc.getFieldValue('secgroups')
+      const newSecgroup = this.secgroupOptions[0]
+      secgroups.push(newSecgroup.id)
+      this.form.fc.setFieldsValue({ 'secgroups': secgroups })
     },
   },
 }
