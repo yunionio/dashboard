@@ -1,3 +1,5 @@
+import router from '@/router'
+
 export default {
   name: 'HelpLink',
   functional: true,
@@ -12,7 +14,19 @@ export default {
     },
   },
   render (h, ctx) {
-    const { blank, href } = ctx.props
+    let { blank, href } = ctx.props
+    const format = path => {
+      if (path.startsWith('http')) return path
+      if (!path.startsWith('/')) {
+        console.error('请填写绝对路径')
+        path += '/'
+      }
+      if (path.startsWith('/v1') || path.startsWith('/v2')) {
+        path = path.replace(/\/v[12]/, '') // 去掉 /v2 或者 /v1
+      }
+      return router.resolve(path).href
+    }
+    href = format(href)
     const target = blank ? '_blank' : '_self'
     const slots = ctx.slots()
     return (
