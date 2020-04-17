@@ -17,6 +17,15 @@ export default {
       type: String,
       required: true,
     },
+    durationOptions: {
+      type: Array,
+      default: () => [
+        { label: '小时', key: 'h' },
+        { label: '天', key: 'd' },
+        { label: '月', key: 'm' },
+        { label: '年', key: 'y' },
+      ],
+    },
   },
   data () {
     const numMatch = this.value.match(/^\d+/)
@@ -25,12 +34,6 @@ export default {
     return {
       num,
       time,
-      durationOptions: [
-        { label: '小时', key: 'h' },
-        { label: '天', key: 'd' },
-        { label: '月', key: 'm' },
-        { label: '年', key: 'y' },
-      ],
     }
   },
   watch: {
