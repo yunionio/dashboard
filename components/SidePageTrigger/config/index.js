@@ -105,4 +105,8 @@ export default {
     resource: 'policies',
     apiVersion: 'v1',
   },
+  // 代理
+  LbSidePage: {
+    resource: 'loadbalancers',
+  },
 }

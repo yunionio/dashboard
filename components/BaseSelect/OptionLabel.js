@@ -25,6 +25,13 @@ const resourceMode = {
       return `${item.name}（${item.cidr_block}）`
     },
   },
+  servers: {
+    labelFormat: item => {
+      let label = item.name
+      if (item.ips) label += ` (${item.ips})`
+      return label
+    },
+  },
 }
 
 export default {

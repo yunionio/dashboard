@@ -180,7 +180,7 @@ export default {
     },
     paramsChange (val, oldV) {
       if (!R.equals(val, oldV)) {
-        const isInitLoad = R.is(Object, oldV) && R.isEmpty(oldV) // 如果oldV是{}，认为是第一次参数变化，则无需 clearSelect
+        const isInitLoad = R.is(Object, oldV) && (R.isEmpty(oldV) || R.isNil(oldV)) // 如果oldV是{}，认为是第一次参数变化，则无需 clearSelect
         if (!isInitLoad) this.clearSelect()
         if (this._valid()) this.loadOptsDebounce()
       }
