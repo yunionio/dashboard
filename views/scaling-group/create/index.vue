@@ -176,6 +176,9 @@ export default {
           this.$refs['BIND_LB'].fetchQueryLbs(this.form.fd.vpc)
         })
       }
+      this.form.fc.setFieldsValue({
+        health_check_mode: v ? 'loadbalancer' : 'normal',
+      })
     },
   },
   methods: {
