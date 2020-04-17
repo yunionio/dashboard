@@ -211,7 +211,11 @@ export default {
         this.fc.setFieldsValue({
           project: undefined,
         })
-        this.$emit('update:domain', domainId)
+        if (this.labelInValue) {
+          this.$emit('update:domain', domain)
+        } else {
+          this.$emit('update:domain', domainId)
+        }
       } else {
         this.fc.setFieldsValue({
           domain: undefined,
@@ -222,7 +226,11 @@ export default {
     },
     projectChange (project) {
       this.projectData = project
-      this.$emit('update:project', project)
+      if (this.labelInValue) {
+        this.$emit('update:project', project)
+      } else {
+        this.$emit('update:project', project.key)
+      }
       if (!this.isAdminMode && !this.isDomainMode) {
         this.fc.getFieldDecorator('project', { preserve: true, initialValue: project })
       }
