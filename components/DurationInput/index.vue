@@ -1,49 +1,46 @@
 <template>
-  <a-input :value="num" type="number" @change="inputChange">
-    <a-select slot="addonAfter" :value="time" @change="change" style="min-width: 70px;">
+  <a-input-group compact>
+    <a-input class="w-25" style="max-width: 200px;" :value="num" type="number" @change="inputChange" />
+    <a-select :value="time" @change="change">
       <a-select-option v-for="item in durationOptions" :key="item.key" :value="item.key">{{ item.label }}</a-select-option>
     </a-select>
-  </a-input>
+  </a-input-group>
 </template>
 
 <script>
-import { formatSeconds } from '@/utils/utils'
+import * as R from 'ramda'
 
-// 此组件以秒为传递单位，输入输出都为秒（Number）
 export default {
   name: 'DurationInput',
   props: {
-    value: {
-      type: Number,
+    value: { // e.g. 1h、1d、1m、1d
+      type: String,
       required: true,
-    },
-    durationOptions: {
-      type: Array,
-      default: () => [
-        { label: '秒', key: 'seconds' },
-        { label: '分', key: 'minutes' },
-        { label: '小时', key: 'hours' },
-        { label: '天', key: 'days' },
-        { label: '月', key: 'months' },
-        { label: '年', key: 'years' },
-      ],
     },
   },
   data () {
-    // 将传入的秒进行和控件单位转换，显示为最大值（如：传入3600，应该显示60分）
-    const f = formatSeconds(this.value)
-    let ret = f.arr[0]
-    for (let i = 0, len = f.arr.length; i < len; i++) {
-      const value = f.arr[i]
-      if (value[0] > 0) {
-        ret = value
-        break
-      }
-    }
+    const numMatch = this.value.match(/^\d+/)
+    const num = R.is(Array, numMatch) ? numMatch[0] : undefined
+    const time = this.value.match(/[a-z]+$/) ? this.value.match(/[a-z]+$/)[0] : 'h'
     return {
-      num: ret[0],
-      time: ret[1],
+      num,
+      time,
+      durationOptions: [
+        { label: '小时', key: 'h' },
+        { label: '天', key: 'd' },
+        { label: '月', key: 'm' },
+        { label: '年', key: 'y' },
+      ],
     }
+  },
+  watch: {
+    value () {
+      const numMatch = this.value.match(/^\d+/)
+      const num = R.is(Array, numMatch) ? numMatch[0] : undefined
+      const time = this.value.match(/[a-z]+$/)[0]
+      this.num = num
+      this.time = time
+    },
   },
   methods: {
     change (val) {
@@ -56,11 +53,12 @@ export default {
       this.emit()
     },
     emit () {
-      let sec = this.$moment.duration(+this.num, this.time)
-      sec = sec.asSeconds()
-      this.$emit('change', sec)
-      this.$emit('input', sec)
+      this.$emit('change', this.num + this.time)
     },
   },
 }
 </script>
+
+<style>
+
+</style>

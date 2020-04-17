@@ -2,7 +2,7 @@
   <a-alert
     v-if="showTips"
     type="warning"
-    :closable="closable"
+    :closable="!closable"
     showIcon
     @close="handleCloseAlert">
     <template v-slot:message>
