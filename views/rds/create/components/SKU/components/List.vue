@@ -1,19 +1,30 @@
 <template>
-  <div style="margin-bottom: 20px">
+  <div style="margin-bottom: 20px;" v-if="skuList">
     <vxe-grid
+      row-id="id"
+      :radio-config="radioConfig"
       :columns="tableColumn"
       :data="skuList"
       :loading="loading"
+      @cell-click="handleSkuChange"
       @radio-change="handleSkuChange"
       max-height="500"
       ref="tableRef">
-      <template v-slot:empty>
+      <div slot="empty" style="min-height: 200px">
         <page-list-empty :loading="loading" />
-      </template>
+      </div>
     </vxe-grid>
-    <p v-if="selectedSku" style="margin-top:10px">
-        已选择: {{formatSku}}
+    <a-form-item
+      class="mt-1"
+      :validate-status="formatSku ? 'success' : 'error'">
+      <p slot="help">
+        {{
+          formatSku
+          ? `已选择: ${formatSku}`
+          : '请选择套餐'
+        }}
       </p>
+    </a-form-item>
   </div>
 </template>
 <script>
@@ -30,10 +41,16 @@ export default {
     return {
       loading: false,
       selectedSku: undefined,
-      skuList: [],
+      skuList: undefined,
     }
   },
   computed: {
+    radioConfig () {
+      return {
+        reserve: true,
+        checkMethod: ({ row }) => this.isAvailable(row),
+      }
+    },
     formatSku () {
       if (this.selectedSku) {
         // eslint-disable-next-line camelcase
@@ -45,12 +62,28 @@ export default {
     },
     tableColumn () {
       const column = [
-        { type: 'radio', width: 40 },
-        { field: 'name', title: '规格' },
+        {
+          type: 'radio',
+          width: 40,
+        },
+        {
+          field: 'name',
+          title: '规格',
+          minWidth: 200,
+          slots: {
+            default: ({ row }) => {
+              if (!this.isAvailable(row)) {
+                return [<span class={'disabled-color'}>{row.name} (已售罄)</span>]
+              }
+              return row.name
+            },
+          },
+        },
         {
           field: 'vcpu_count',
           title: 'CPU(核)',
           sortable: true,
+          minWidth: 200,
           slots: {
             default: ({ row }) => {
               return `${row.vcpu_count}核`
@@ -61,6 +94,7 @@ export default {
           field: 'vmem_size_mb',
           title: '内存（GB）',
           sortable: true,
+          minWidth: 200,
           slots: {
             default: ({ row }) => {
               return sizestr(row.vmem_size_mb, 'M', 1024)
@@ -70,16 +104,19 @@ export default {
         {
           field: 'max_connections',
           title: '最大链接数',
+          minWidth: 140,
           sortable: true,
         },
         {
           field: 'iops',
           title: 'IOPS',
+          minWidth: 100,
           sortable: true,
         },
         {
           title: '规格参考价格',
           sortable: true,
+          minWidth: 150,
           slots: {
             default: () => '-',
           },
@@ -89,10 +126,10 @@ export default {
     },
   },
   watch: {
-    skuList (netSkuList) {
-      if (netSkuList && netSkuList.length > 0) {
-        this.$refs['tableRef'].setRadioRow(this.skuList[0])
-        this.handleSkuChange({ row: this.skuList[0] })
+    skuList (skuList) {
+      if (skuList && skuList.length > 0) {
+        const row = skuList.find(item => this.isAvailable(item))
+        this.handleSkuChange({ row })
       }
     },
   },
@@ -100,45 +137,55 @@ export default {
     this.form.getFieldDecorator('sku', { preserve: true })
   },
   methods: {
-    handleSkuChange ({ row }) {
+    isAvailable (row) {
+      return row.status === 'available'
+    },
+    async handleSkuChange ({ row }) {
+      let _row = (row && this.isAvailable(row)) ? row : undefined
       this.form.setFieldsValue({
-        sku: row,
+        sku: _row,
       })
-      this.selectedSku = row
-      /* 组件sku change */
-      this.$emit('change', row)
+      this.selectedSku = _row
+      await this.$nextTick()
+      this.$refs['tableRef'].setRadioRow(_row)
+      this.$emit('change', _row)
     },
     getSkuParams () {
       const { getFieldsValue } = this.form
       const paramsKeys = ['engine', 'engine_version', 'category', 'storage_type', 'vcpu_count', 'vmem_size_mb', 'cloudregion', 'zones']
-      return new Promise((resolve, reject) => {
-        this.$nextTick(() => {
-          const PARAMS = getFieldsValue(paramsKeys)
-          PARAMS['cloudregion_id'] = PARAMS.cloudregion
-          if (PARAMS.zones) {
-            const zoneArr = PARAMS.zones.split('+')
-            if (zoneArr && zoneArr.length > 0) {
-              for (let i = 0; i < zoneArr.length; i++) {
-                PARAMS[`zone${i + 1}`] = zoneArr[i]
-              }
-            }
-            delete PARAMS.zones
+      const PARAMS = getFieldsValue(paramsKeys)
+      PARAMS['cloudregion_id'] = PARAMS.cloudregion
+      if (PARAMS.zones) {
+        const zoneArr = PARAMS.zones.split('+')
+        if (zoneArr && zoneArr.length > 0) {
+          for (let i = 0; i < zoneArr.length; i++) {
+            PARAMS[`zone${i + 1}`] = zoneArr[i]
           }
-          resolve({ ...PARAMS, ...this.scopeParams })
-        })
-      })
+        }
+      }
+      for (let i = 0; i < paramsKeys.length; i++) {
+        let k = paramsKeys[i]
+        if (!PARAMS[k]) {
+          return null
+        }
+      }
+      delete PARAMS.zones
+      return { ...PARAMS, ...this.scopeParams }
     },
     async fetchSkus () {
-      this.manager = new this.$Manager('dbinstance_skus', 'v2')
       const PARAMS = await this.getSkuParams()
+      if (!PARAMS) return false
       this.loading = true
       this.selectedSku = undefined
+      const manager = new this.$Manager('dbinstance_skus', 'v2')
       try {
-        const { data } = await this.manager.list({ params: PARAMS })
+        const { data } = await manager.list({ params: PARAMS })
         this.skuList = (data && data.data.length > 0) ? data.data : []
-        this.loading = false
         return await data
       } catch (err) {
+        this.skuList = []
+        throw err
+      } finally {
         this.loading = false
       }
     },

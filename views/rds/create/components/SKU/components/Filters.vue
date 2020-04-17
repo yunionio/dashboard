@@ -16,7 +16,7 @@
       </a-radio-group>
     </a-form-item>
     <a-form-item label="存储类型" v-bind="formItemLayout">
-      <a-radio-group v-decorator="['storage_type']" @change="handleStorage">
+      <a-radio-group v-decorator="['storage_type']" @change="handleStorage" :disabled="!!disableds.storage_type">
         <a-radio-button :key="item" :value="item" v-for="item of storage_types">{{formatStorageLabel(item)}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
@@ -107,11 +107,17 @@ export default {
       const { engine, engine_version } = this.form.getFieldsValue(['engine', 'engine_version'])
       // eslint-disable-next-line camelcase
       const version = target.value || engine_version
+      const categorys = this.dbInstance[engine][version]
       this.categorys = DBINSTANCE_CATEGORY_KEYS.filter(k => {
-        if (this.dbInstance[engine][version] && this.dbInstance[engine][version][k]) {
+        if (categorys && categorys[k]) {
           return true
         }
       })
+      for (let k in categorys) {
+        if (this.categorys.indexOf(k) === -1) {
+          this.categorys.push(k)
+        }
+      }
       this.setInitValue('category', this.getStorage)
     },
     getStorage (e) {
@@ -120,8 +126,14 @@ export default {
       const { engine, engine_version, category } = this.form.getFieldsValue(['engine', 'engine_version', 'category'])
       // eslint-disable-next-line camelcase
       const _category = target.value || category
+      const storages = this.dbInstance[engine][engine_version][_category]
       this.storage_types = DBINSTANCE_STORAGE_TYPE_KEYS.filter(k => {
-        return this.dbInstance[engine][engine_version][_category].indexOf(k) > -1
+        return storages.indexOf(k) > -1
+      })
+      storages.forEach(k => {
+        if (this.storage_types.indexOf(k) === -1) {
+          this.storage_types.push(k)
+        }
       })
       this.setInitValue('storage_type', () => {
         this.$emit('change')
@@ -130,7 +142,7 @@ export default {
     handleStorage () {
       this.$emit('change')
     },
-    async fetchFilters (cloudregionId) {
+    async fetchFilters (cloudregionId = this.form.getFieldValue('cloudregion')) {
       const params = {
         resource_type: 'shared',
         show_emulated: true,

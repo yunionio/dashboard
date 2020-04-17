@@ -5,7 +5,7 @@
             <a-form-item  v-bind="formItemLayout" label="名称">
                 <a-input :placeholder="$t('validator.dbName')" v-decorator="decorators.name" />
             </a-form-item>
-            <a-form-item v-bind="formItemLayout" label="数据库">
+            <a-form-item v-bind="formItemLayout" label="数据库" v-if="this.params.rdsItem.brand !== 'Google'">
               <account-privileges :rdsItem="params.rdsItem" />
             </a-form-item>
             <a-form-item label="密码" v-bind="formItemLayout">

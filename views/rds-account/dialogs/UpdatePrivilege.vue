@@ -2,7 +2,7 @@
   <base-dialog :width="900" @cancel="cancelDialog">
     <div slot="header">修改权限</div>
     <a-form :form="form.fc" class="mt-3" slot="body">
-      <dialog-selected-tips :action="params.title" :count="params.data.length" />
+      <dialog-selected-tips :name="$t('dictionary.dbinstanceaccounts')" :action="params.title" :count="params.data.length" />
       <dialog-table :columns="params.columns.slice(0, 3)" :data="params.data" />
       <account-privileges
         :privileges="params.data[0].dbinstanceprivileges || []"

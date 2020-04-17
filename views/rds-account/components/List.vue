@@ -51,6 +51,7 @@ export default {
         {
           field: 'password',
           title: '密码',
+          minWidth: 100,
           slots: {
             default: ({ row }) => {
               return [<PasswordFetcher serverId={row.id} resourceType='dbinstanceaccounts' />]
@@ -59,6 +60,7 @@ export default {
         },
         {
           field: '已授权的数据库',
+          minWidth: 200,
           title: '权限',
           slots: {
             default: ({ row }) => {
@@ -143,10 +145,21 @@ export default {
             })
           },
           meta: (obj) => {
-            const { isHuawei } = this.commonMeta
+            const { isHuawei, isGoogle } = this.commonMeta
+            if (isHuawei && obj.name === 'root') {
+              return {
+                validate: false,
+                tooltip: '华为云主账号不支持此操作',
+              }
+            }
+            if (isGoogle) {
+              return {
+                validate: false,
+                tooltip: '谷歌云不支持此操作',
+              }
+            }
             return {
-              validate: !(isHuawei && obj.name === 'root'),
-              tooltip: (isHuawei && obj.name === 'root') ? '华为云主账号不支持此操作' : '',
+              validate: true,
             }
           },
         },
@@ -176,6 +189,7 @@ export default {
       const isRunning = this.data.status === 'running'
       const isHuawei = this.data.brand === 'Huawei'
       const isAliyun = this.data.brand === 'Aliyun'
+      const isGoogle = this.data.brand === 'Google'
       let tooltip = ''
       if (!isRunning) {
         tooltip = '仅在运行中状态下支持新建操作'
@@ -184,6 +198,7 @@ export default {
         isRunning,
         isHuawei,
         isAliyun,
+        isGoogle,
         tooltip,
         validate: isRunning,
       }
