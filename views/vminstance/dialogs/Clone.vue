@@ -19,6 +19,7 @@
         <a-form-item label="操作系统" v-bind="formItemLayout" v-if="isPublic">
           <os-select
             :type="type"
+            :form="form"
             :types="osTypes"
             :osType="osType"
             :hypervisor="firstData.hypervisor"

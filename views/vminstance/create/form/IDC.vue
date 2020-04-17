@@ -44,6 +44,7 @@
         <os-select
           :type="type"
           :uefi="uefi"
+          :form="form"
           :hypervisor="form.fd.hypervisor"
           :decorator="decorators.imageOS"
           :image-params="scopeParams"

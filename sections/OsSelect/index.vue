@@ -80,8 +80,11 @@ export default {
     cloudaccountId: {
       type: String,
     },
+    form: {
+      type: Object,
+      required: true,
+    },
   },
-  inject: ['form'],
   data () {
     return {
       imageType: this.decorator.imageType[1].initialValue,
