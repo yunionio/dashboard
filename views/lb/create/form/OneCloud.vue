@@ -49,10 +49,6 @@ export default {
   },
   data () {
     return {
-      cloudregionParams: {
-        usable: true,
-        is_on_premise: true,
-      },
       zoneParams: {
         usable: true,
         show_emulated: true,
@@ -80,6 +76,13 @@ export default {
         params = Object.assign(params, this.scopeParams)
       }
       return params
+    },
+    cloudregionParams () { // 覆盖 mixin
+      return {
+        scope: this.$store.getters.scope,
+        usable: true,
+        is_on_premise: true,
+      }
     },
   },
   methods: {

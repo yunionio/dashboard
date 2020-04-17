@@ -78,7 +78,7 @@ export default {
     async submit () {
       try {
         const values = await this.form.fc.validateFields()
-        if (!this.validateIp()) return
+        if (!this.validateIp()) throw Error('指定的IP子网必须有大于或等于8个的可用IP才可以被选择创建实例')
         const data = {
           name: values.name.trim(),
           network: values.network,
