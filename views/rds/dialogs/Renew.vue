@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{params.title}}</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" :action="params.title" />
+      <dialog-selected-tips :name="$t('dictionary.dbinstances')" :count="params.data.length" :action="params.title" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc">
          <clearing-radios v-bind="formItemLayout" />
@@ -67,7 +67,7 @@ export default {
       try {
         const values = await this.validateForm()
         const ids = this.params.data.map(item => item.id)
-        await this.params.list.onManager('batchUpdate', {
+        await this.params.onManager('batchUpdate', {
           id: ids,
           steadyStatus: ['running'],
           managerArgs: {
@@ -77,6 +77,7 @@ export default {
         this.loading = false
         this.$message.success('操作成功')
         this.cancelDialog()
+        this.params.refresh()
       } catch (error) {
         this.loading = false
       }
