@@ -70,7 +70,8 @@ export default {
     validateForm () {
       let f = false
       this.form.fc.validateFieldsAndScroll((err, values) => {
-        f = err === null
+        const { sku } = values
+        f = (err === null) && (sku && sku.name)
       })
       return f
     },
