@@ -25,7 +25,7 @@ export default {
     },
   },
   data () {
-    const ownerDomain = list => this.$store.getters.isAdminMode || this.list.selectedItems.every(obj => obj.domain_id === this.$store.getters.userInfo.projectDomainId)
+    // const ownerDomain = list => this.$store.getters.isAdminMode || this.list.selectedItems.every(obj => obj.domain_id === this.$store.getters.userInfo.projectDomainId)
     return {
       list: this.$list.createList(this, {
         resource: 'cloudproviderregions',
@@ -95,7 +95,7 @@ export default {
           },
           meta: () => {
             return {
-              validate: this.list.selectedItems.length && ownerDomain(this.list),
+              validate: this.list.selectedItems.length,
             }
           },
         },
@@ -111,11 +111,11 @@ export default {
               cloudproviderId: this.cloudproviderId,
             })
           },
-          meta: obj => {
-            return {
-              validate: ownerDomain(this.list),
-            }
-          },
+          // meta: obj => {
+          //   return {
+          //     validate: ownerDomain(this.list),
+          //   }
+          // },
         },
       ],
     }
