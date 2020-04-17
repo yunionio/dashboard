@@ -1,7 +1,7 @@
 <template>
   <detail
     :list="list"
-    :data="data"
+    :data="{ ...data, ...serverDetail }"
     :extra-info="extraInfo"
     :base-info="baseInfo"
     status-module="server" />
@@ -9,6 +9,7 @@
 
 <script>
 // import { ALL_STORAGE } from '@Compute/constants/index'
+import { mapGetters } from 'vuex'
 import {
   getCopyWithContentTableColumn,
   getBrandTableColumn,
@@ -40,8 +41,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['scope']),
     diskInfos () {
-      const disksInfo = this.data.disks_info
+      const disksInfo = this.serverDetail.disks_info
       if (!disksInfo) return {}
       const dataDisk = {}
       const sysDisk = {}
@@ -69,7 +71,7 @@ export default {
         //   }
         // }
       }
-      if (this.data.cdrom && dataDisks.length > 0) {
+      if (this.serverDetail.cdrom && dataDisks.length > 0) {
         image = dataDisks[0].image
         imageId = dataDisks[0].image_id
       }
@@ -101,7 +103,44 @@ export default {
               hideField: true,
               message: this.diskInfos.image,
               slotCallback: row => {
-                return [<span>{ this.diskInfos.image }</span>]
+                return [<span>{ this.diskInfos.image || '-' }</span>]
+              },
+            }),
+            {
+              field: 'vcpu_count',
+              title: 'CPU',
+              formatter: ({ row }) => {
+                return row.vcpu_count + '核'
+              },
+            },
+            {
+              field: 'vmem_size',
+              title: '内存',
+              formatter: ({ row }) => {
+                return (row.vmem_size / 1024) + 'GB'
+              },
+            },
+            {
+              field: 'sysDisk',
+              title: '系统盘',
+              formatter: ({ row }) => {
+                return this.diskInfos.sysDisk
+              },
+            },
+            {
+              field: 'dataDisk',
+              title: '数据盘',
+              formatter: ({ row }) => {
+                return this.diskInfos.dataDisk
+              },
+            },
+            getCopyWithContentTableColumn({
+              field: 'cdrom',
+              title: 'ISO',
+              hideField: true,
+              slotCallback: row => {
+                const idx = row.cdrom.indexOf('(')
+                return row.cdrom.substring(0, idx) || '-'
               },
             }),
             {
@@ -128,44 +167,8 @@ export default {
                 return str.slice(1)
               },
             },
-            {
-              field: 'vcpu_count',
-              title: 'CPU',
-              formatter: ({ row }) => {
-                return row.vcpu_count + '核'
-              },
-            },
-            {
-              field: 'vmem_size',
-              title: '内存',
-              formatter: ({ row }) => {
-                return (row.vmem_size / 1024) + 'GB'
-              },
-            },
-            {
-              field: 'dataDisk',
-              title: '数据盘',
-              formatter: ({ row }) => {
-                return this.diskInfos.dataDisk
-              },
-            },
-            {
-              field: 'sysDisk',
-              title: '系统盘',
-              formatter: ({ row }) => {
-                return this.diskInfos.sysDisk
-              },
-            },
-            getCopyWithContentTableColumn({
-              field: 'cdrom',
-              title: 'ISO',
-              hideField: true,
-              slotCallback: row => {
-                const idx = row.cdrom.indexOf('(')
-                return row.cdrom.substring(0, idx) || '-'
-              },
-            }),
             getCopyWithContentTableColumn({ field: 'host', title: '物理机' }),
+            getCopyWithContentTableColumn({ field: 'host_sn', title: 'SN' }),
           ],
         },
         {
@@ -175,7 +178,7 @@ export default {
               field: 'disable_delete',
               title: '删除保护',
               change: val => {
-                this.list.onManager('update', {
+                this.onManager('update', {
                   id: this.data.id,
                   managerArgs: {
                     data: { disable_delete: val },
@@ -190,7 +193,16 @@ export default {
   },
   created () {
     const manager = new this.$Manager('servers')
-    manager.get({ id: this.data.id }).then(res => {
+    manager.get({
+      id: this.data.id,
+      params: {
+        scope: this.scope,
+        show_fail_reason: true,
+        hypervisor: 'baremetal',
+        details: true,
+        with_meta: true,
+      },
+    }).then(res => {
       this.serverDetail = res.data || {}
     })
   },
