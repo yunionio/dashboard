@@ -5,7 +5,7 @@
         <icon type="question" style="font-size: 24px;" />
       </div>
       <a-menu slot="overlay" @click="handleDropdownClick">
-        <a-menu-item key="/guide">系统引导</a-menu-item>
+        <a-menu-item key="/guide" v-if="this.isAdminMode">系统引导</a-menu-item>
         <a-menu-item key="https://docs.yunion.cn/docs/">产品手册</a-menu-item>
         <a-menu-item key="/licenses">
           <span>关于</span>
