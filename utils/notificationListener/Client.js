@@ -5,39 +5,49 @@
  * 说明：客户端通知消息处理模块
  * @class Clinet
  */
+import io from 'socket.io-client'
+
 class Client {
-  constructor (store, options) {
-    this.server = options.server || process.env.VUE_APP_WEBSCOKET_PATH
-    this.server += `/ws?session=${store.getters.auth.auth.session}`
+  constructor (store, options = {}) {
+    if (!options.session) {
+      throw new Error('session is required')
+    }
+    const { session, server, ...rest } = options
+    this.server = server || 'https://office.yunion.io'
     this.events = {}
     this.errorHandler = () => console.error
-    try {
-      this.socket = new WebSocket(this.server)
-    } catch (error) {
-    }
-    this.socket.addEventListener('open', evt => {
-      // console.log('Connected onecloud push server')
+    this.socket = io(this.server, {
+      ...rest,
+      query: {
+        session,
+      },
+      transports: ['websocket'],
+      reconnection: true,
+      autoConnect: false,
+    })
+    this.socket.on('connect', () => {
+      console.info('connected onecloud push server')
     })
 
-    this.socket.addEventListener('close', evt => {
-      // console.log('Disconnect onecloud push server')
+    this.socket.on('disconnect', () => {
+      console.info('disconnect onecloud push server')
     })
 
-    this.socket.addEventListener('error', evt => {
-      // console.error(evt)
+    this.socket.on('error', (error) => {
+      console.error(error)
     })
 
-    this.socket.addEventListener('message', evt => {
-      const type = evt.type
-      if (!type) {
-        // console.info(`未知的类型${type}`)
+    this.socket.on('message', (message) => {
+      const event = message.event
+      if (!event) {
+        console.info(`未知的类型${event}`)
         return
       }
-      if (!this.events[type]) {
-        // console.info(`Can't found ${event} process`)
+      if (!this.events[event]) {
+        console.info(`can't found ${event} process`)
         return
       }
-      this.events[type](evt.data)
+      this.events[event](message.payload)
     })
   }
   error (cb) {
@@ -48,6 +58,9 @@ class Client {
   }
   getSocket () {
     return this.socket
+  }
+  start () {
+    this.socket.open()
   }
 }
 

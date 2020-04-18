@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import Navbar from '@scope/layouts/Navbar'
 import Sidebar from '../Sidebar'
 import notificationListener from '@/utils/notificationListener'
@@ -26,19 +27,27 @@ export default {
       l2MenuVisible: false,
     }
   },
-  created () {
-    this.enableWs()
+  computed: {
+    ...mapGetters(['auth']),
+  },
+  watch: {
+    'auth.auth': {
+      handler (val, oldVal) {
+        if (val.session !== ((oldVal && oldVal.session) || '')) {
+          this.initIO()
+        }
+      },
+      immediate: true,
+    },
   },
   methods: {
-    enableWs () {
+    initIO () {
       if (!this.$appConfig.isPrivate) return
-      let proto = 'wss'
-      if (window.location.protocol === 'http:') {
-        proto = 'ws'
+      const options = {
+        session: this.auth.auth.session,
       }
-      const options = {}
       if (process.env.NODE_ENV === 'production') {
-        options.server = `${proto}://${window.location.hostname}`
+        options.server = '/'
       }
       notificationListener(this.$store, options)
     },
