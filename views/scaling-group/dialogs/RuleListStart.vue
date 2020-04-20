@@ -32,6 +32,9 @@ export default {
           id: this.params.data[0].id,
           managerArgs: {
             action: 'trigger',
+            data: {
+              manual: true,
+            },
           },
         })
         this.cancelDialog()

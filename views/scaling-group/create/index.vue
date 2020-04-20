@@ -13,9 +13,9 @@
           default-text="名称支持有序后缀占位符‘#’，用法举例，名称host##，数量2，创建后实例的名称依次为host01、host02，已有同名实例，序号顺延"  /> -->
       </a-form-item>
       <a-form-item label="平台">
-         <a-radio-group v-decorator="decorators.brand">
-           <a-radio-button v-for="item in brands" :key="item" :value="item">{{item}}</a-radio-button>
-         </a-radio-group>
+        <a-radio-group v-decorator="decorators.brand">
+          <a-radio-button v-for="item in brands" :key="item" :value="item">{{item}}</a-radio-button>
+        </a-radio-group>
       </a-form-item>
       <a-form-item label="主机模版">
         <a-select :filterOption="filterOption" showSearch @change="handleServerTemplateChange" v-decorator="decorators.guest_template_id" :loading="serverTemplateListLoading">
@@ -37,7 +37,7 @@
         :vpcParams="vpcParams" />
       <a-form-item label="最大实例数">
         <a-tooltip placement="top" title="范围在 1 ～ 1000">
-           <a-input-number v-decorator="decorators.max_instance_number" :min="1" :max="1000" />
+          <a-input-number v-decorator="decorators.max_instance_number" :min="1" :max="1000" />
         </a-tooltip>
       </a-form-item>
       <a-form-item label="期望实例数">
@@ -55,39 +55,39 @@
         </a-tooltip>
       </a-form-item>
       <a-form-item label="实例移除策略">
-          <a-select v-decorator="decorators.shrink_principle">
-            <a-select-option v-for="(v, k) in $t('flexGrouPprinciple')" :key="k" :value="k">{{v}}</a-select-option>
-          </a-select>
+        <a-select v-decorator="decorators.shrink_principle">
+          <a-select-option v-for="(v, k) in $t('flexGrouPprinciple')" :key="k" :value="k">{{v}}</a-select-option>
+        </a-select>
       </a-form-item>
       <a-form-item required label="负载均衡">
-          <a-radio-group v-model="isLoadbalancer">
-            <a-radio-button :value="false">暂不绑定</a-radio-button>
-            <a-tooltip v-if="form.fd.brand === 'Azure'" placement="top" title="Azure平台暂不支持此操作">
-              <a-radio-button :disabled="true" :value="true">绑定</a-radio-button>
-            </a-tooltip>
-             <a-radio-button v-else :value="true">绑定</a-radio-button>
-          </a-radio-group>
-          <div v-if="isLoadbalancer" style="max-width: 920px">
-            <bind-lb :fc="form.fc" ref="BIND_LB" />
-          </div>
+        <a-radio-group v-model="isLoadbalancer">
+          <a-radio-button :value="false">暂不绑定</a-radio-button>
+          <a-tooltip v-if="form.fd.brand === 'Azure'" placement="top" title="Azure平台暂不支持此操作">
+            <a-radio-button :disabled="true" :value="true">绑定</a-radio-button>
+          </a-tooltip>
+          <a-radio-button v-else :value="true">绑定</a-radio-button>
+        </a-radio-group>
+        <div v-if="isLoadbalancer" style="max-width: 920px">
+          <bind-lb :fc="form.fc" ref="BIND_LB" />
+        </div>
       </a-form-item>
       <a-form-item label="健康检查方式">
-         <a-select v-decorator="decorators.health_check_mode">
-           <template v-for="(v, k) in $t('flexGroupHealthCheckMode')">
-             <a-select-option v-if="k !== 'loadbalancer' || (isLoadbalancer && k === 'loadbalancer')" :key="k" :value="k">{{v}}</a-select-option>
-           </template>
-          </a-select>
+        <a-select v-decorator="decorators.health_check_mode">
+          <template v-for="(v, k) in $t('flexGroupHealthCheckMode')">
+            <a-select-option v-if="k !== 'loadbalancer' || (isLoadbalancer && k === 'loadbalancer')" :key="k" :value="k">{{v}}</a-select-option>
+          </template>
+        </a-select>
       </a-form-item>
-       <a-form-item label="检查周期">
-         <a-select v-decorator="decorators.health_check_cycle">
-           <a-select-option v-for="(v, k) in $t('flexGroupCycles')" :key="k" :value="parseInt(k)">{{v}}</a-select-option>
-          </a-select>
+      <a-form-item label="检查周期">
+        <a-select v-decorator="decorators.health_check_cycle">
+          <a-select-option v-for="(v, k) in $t('flexGroupCycles')" :key="k" :value="parseInt(k)">{{v}}</a-select-option>
+        </a-select>
       </a-form-item>
       <a-form-item label="健康状态检查宽限期">
-          <a-input-number :min="1"  v-decorator="decorators.health_check_gov" /> 秒
-          <div slot="extra">
-            实例创建成功后，伸缩组会在健康状况检查宽限期结束后才开始进行健康检查
-          </div>
+        <a-input-number :min="1"  v-decorator="decorators.health_check_gov" /> 秒
+        <div slot="extra">
+          实例创建成功后，伸缩组会在健康状况检查宽限期结束后才开始进行健康检查
+        </div>
       </a-form-item>
     </a-form>
     <page-footer>
