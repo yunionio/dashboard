@@ -58,7 +58,7 @@ export default {
     decorators () {
       const decorators = {
         name: [
-          'name',
+          'generate_name',
           {
             validateFirst: true,
             rules: [
