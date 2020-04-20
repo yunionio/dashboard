@@ -9,7 +9,11 @@
 </template>
 
 <script>
-import { getBrandTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
+import {
+  getBrandTableColumn,
+  getCopyWithContentTableColumn,
+  getPublicScopeTableColumn,
+} from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -29,6 +33,7 @@ export default {
     return {
       baseInfo: [
         getBrandTableColumn(),
+        getPublicScopeTableColumn(),
         {
           field: 'guest_ip_start',
           title: 'IP范围',
