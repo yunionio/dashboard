@@ -146,6 +146,7 @@ export default {
           this.handleDashboardClick(item)
         }
       } catch (error) {
+        this.handleDashboardClick(this.dashboardOptions[0])
         throw error
       } finally {
         this.loading = false
