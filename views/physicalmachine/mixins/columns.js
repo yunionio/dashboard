@@ -9,6 +9,10 @@ export default {
       getNameDescriptionTableColumn({
         onManager: this.onManager,
         hideField: true,
+        formRules: [
+          { required: true, message: '请输入名称' },
+          { validator: this.$validate('serverCreateName') },
+        ],
         slotCallback: row => {
           return (
             <side-page-trigger name='PhysicalmachineSidePage' id={row.id} list={this.list} vm={this}>{ row.name }</side-page-trigger>
