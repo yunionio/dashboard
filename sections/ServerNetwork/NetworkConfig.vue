@@ -31,7 +31,7 @@
           remote
           :item.sync="item.network"
           :need-params="true"
-          :params="{ ...networkParamsC, $t: i }"
+          :params="{ ...networkParamsC, $t: item.key }"
           :mapper="networkResourceMapper"
           :select-props="{ allowClear: true, placeholder: '请选择IP子网' }" />
       </a-form-item>
