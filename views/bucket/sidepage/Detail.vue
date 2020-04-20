@@ -13,6 +13,10 @@
 import { ACL_TYPE } from '@Storage/constants/index.js'
 import { sizestrWithUnit } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
+import {
+  getBrandTableColumn,
+  getRegionTableColumn,
+} from '@/utils/common/tableColumn'
 
 let RenderSizeTitle = {
   props: ['data'],
@@ -68,6 +72,8 @@ export default {
     return {
       syncLoading: false,
       baseInfo: [
+        getBrandTableColumn(),
+        getRegionTableColumn(),
         {
           field: 'storage_class',
           title: '存储类型',

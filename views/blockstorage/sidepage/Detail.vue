@@ -13,6 +13,10 @@
 import { STORAGE_TYPES, MEDIUM_TYPES } from '@Storage/constants/index.js'
 import { sizestr } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
+import {
+  getBrandTableColumn,
+  getEnabledTableColumn,
+} from '@/utils/common/tableColumn'
 
 export default {
   name: 'BlockStorageDetail',
@@ -30,6 +34,8 @@ export default {
   data () {
     return {
       baseInfo: [
+        getBrandTableColumn(),
+        getEnabledTableColumn(),
         {
           field: 'storage_type',
           title: '存储类型',
