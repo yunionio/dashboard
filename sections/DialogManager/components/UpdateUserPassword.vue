@@ -33,6 +33,36 @@ export default {
   name: 'UpdateUserPasswordDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
+    const validatePassword = async (rule, value, callback) => {
+      if (this.minPasswordLen) {
+        if (value.length < this.minPasswordLen) return callback(new Error(`最少${this.minPasswordLen}位字符`))
+        return callback()
+      }
+      const manager = new this.$Manager('services', 'v1')
+      try {
+        const response = await manager.list({
+          params: {
+            type: 'identity',
+          },
+        })
+        const id = response.data.data && response.data.data[0] && response.data.data[0]['id']
+        if (id) {
+          const configRes = await manager.getSpecific({
+            id,
+            spec: 'config',
+          })
+          const len = configRes.data.config && configRes.data.config.default && configRes.data.config.default.password_minimal_length
+          if (len) {
+            this.minPasswordLen = len
+            if (value.length < len) return callback(new Error(`最少${len}位字符`))
+          }
+        }
+        return callback()
+      } catch (error) {
+        callback()
+        throw error
+      }
+    }
     const passwordConfirmValidator = (rule, value, callback) => {
       let msg = '两次密码输入不一致'
       if (value !== this.form.fc.getFieldValue('password_new')) {
@@ -52,7 +82,6 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: '旧密码不能为空' },
-              { min: 6, message: '最少六位字符' },
             ],
           },
         ],
@@ -62,7 +91,7 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: '新密码不能为空' },
-              { min: 6, message: '最少六位字符' },
+              { validator: validatePassword },
             ],
           },
         ],
@@ -100,7 +129,7 @@ export default {
     this.manager = null
   },
   created () {
-    this.manager = new this.$Manager('user', 'v1')
+    this.manager = new this.$Manager('auth', 'v1')
   },
   methods: {
     validateForm () {
@@ -115,7 +144,7 @@ export default {
       })
     },
     doUpdatePassword (values) {
-      return this.manager.performAction({
+      return this.manager.performClassAction({
         action: 'password',
         data: values,
       })
@@ -125,7 +154,7 @@ export default {
       try {
         const values = await this.validateForm()
         this.loading = true
-        await this.doUpdate(values)
+        await this.doUpdatePassword(values)
         this.cancelDialog()
         this.$store.dispatch('auth/logout')
         this.$router.push('/auth')
