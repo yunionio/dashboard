@@ -116,7 +116,7 @@ export default {
                 action: () => {
                   this.createDialog('DiskCreateDialog', {
                     title: '新建',
-                    onManger: this.onManger,
+                    onManager: this.onManager,
                     diskType: 'idc',
                   })
                 },
@@ -127,7 +127,7 @@ export default {
                 action: () => {
                   this.createDialog('DiskCreateDialog', {
                     title: '新建',
-                    onManger: this.onManger,
+                    onManager: this.onManager,
                     diskType: 'private',
                   })
                 },
@@ -138,7 +138,7 @@ export default {
                 action: () => {
                   this.createDialog('DiskCreateDialog', {
                     title: '新建',
-                    onManger: this.onManger,
+                    onManager: this.onManager,
                     diskType: 'public',
                   })
                 },
