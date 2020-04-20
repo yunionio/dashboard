@@ -115,6 +115,12 @@ export default {
 <style lang="scss" scoped>
 .tag-table-column {
   max-width: 300px;
+  .wrap {
+    margin: 0;
+  }
+  & ::v-deep .ant-empty-image {
+    height: 46px;
+  }
 }
 .tag {
   max-width: 100%;

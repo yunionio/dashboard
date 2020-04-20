@@ -254,9 +254,15 @@ export default {
   border-width: 1px;
 }
 .tag-list {
-  min-height: 150px;
+  min-height: 96px;
   border: 2px dashed #ddd;
   padding: 8px;
+  .wrap {
+    margin: 0;
+  }
+  & ::v-deep .ant-empty-image {
+    height: 46px;
+  }
 }
 .remove-tag {
   font-size: 12px;
