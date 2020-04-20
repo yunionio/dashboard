@@ -30,7 +30,7 @@ export default {
   computed: {
     ...mapGetters(['isAdminMode']),
     docsUrl () {
-      return `${window.location.origin}/docs`
+      return `${window.location.origin}/docs/`
     },
   },
   destroyed () {
