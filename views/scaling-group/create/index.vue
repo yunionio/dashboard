@@ -287,9 +287,11 @@ export default {
           const list = data.data
           this.serverTemplateList = list.filter(t => {
             const isNats = t.config_info && t.config_info.nets && t.config_info.nets.length === 1
-            return t.provider === 'OneCloud' && isNats
+            return isNats
           })
-          this.setNetworkValues(list[0])
+          this.setNetworkValues(this.serverTemplateList[0])
+        } else {
+          this.serverTemplateList = []
         }
       } catch (err) {
         throw err
