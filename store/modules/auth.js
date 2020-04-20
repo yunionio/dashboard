@@ -110,6 +110,8 @@ export default {
           await commit('SET_AUTH', auth)
           resolve(response)
         } catch (error) {
+          // await commit('SET_SCOPE', Cookies.get('scope') || 'project')
+          // await commit('SET_AUTH', decodeToken(getToken()) || {})
           reject(error)
         }
       })
@@ -125,6 +127,7 @@ export default {
             projects: [],
           })
           await commit('SET_PERMISSION', null)
+          await commit('SET_SCOPE', 'project')
           resolve(logoutResponse)
         } catch (error) {
           reject(error)

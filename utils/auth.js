@@ -9,6 +9,7 @@ import http from '@/utils/http'
 import storage from '@/utils/storage'
 
 const ONECLOUD_AUTH_KEY = 'yunionauth'
+export const LAST_LOGIN_USERNAME_KEY = '__LAST_LOGIN_USERNAME__'
 
 export function getToken () {
   return Cookies.get(ONECLOUD_AUTH_KEY)
@@ -169,15 +170,14 @@ export function hasBrandsByEnv (envs) {
 
 export function updateLastLoginUserName () {
   return new Promise((resolve, reject) => {
-    const storeKey = '__LAST_LOGIN_USERNAME__'
-    const lastLoginUserName = storage.get(storeKey)
+    const lastLoginUserName = storage.get(LAST_LOGIN_USERNAME_KEY)
     http.get('/v1/auth/user').then(res => {
       const data = res.data.data || {}
       if (lastLoginUserName !== data.name) {
         Cookies.remove('tenant')
         Cookies.remove('scope')
       }
-      storage.set(storeKey, data.name)
+      storage.set(LAST_LOGIN_USERNAME_KEY, data.name)
       resolve()
     }).catch(() => {
       resolve()
