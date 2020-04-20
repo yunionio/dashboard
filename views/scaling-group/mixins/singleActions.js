@@ -1,14 +1,15 @@
+import expectStatus from '@/constants/expectStatus'
 export default {
   created () {
     this.singleActions = [
       {
         label: '启用',
         action: obj => {
-          this.onManager('performAction', {
-            id: obj.id,
-            managerArgs: {
-              action: 'enable',
-            },
+          this.createDialog('ScalingGroupEnable', {
+            data: [obj],
+            columns: this.columns,
+            title: '删除',
+            onManager: this.onManager,
           })
         },
         meta: (obj) => ({
@@ -18,11 +19,11 @@ export default {
       {
         label: '禁用',
         action: (obj) => {
-          this.onManager('performAction', {
-            id: obj.id,
-            managerArgs: {
-              action: 'disable',
-            },
+          this.createDialog('ScalingGroupDisable', {
+            data: [obj],
+            columns: this.columns,
+            title: '删除',
+            onManager: this.onManager,
           })
         },
         meta: (obj) => {
@@ -35,6 +36,7 @@ export default {
         label: '删除',
         action: (obj) => {
           this.createDialog('DeleteResDialog', {
+            steadyStatus: Object.values(expectStatus.scalinggroup).flat(),
             data: [obj],
             columns: this.columns,
             title: '删除',
