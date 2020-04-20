@@ -139,8 +139,14 @@ export default {
           'name',
           {
             initialValue: this.params.data[0].name,
+            validateFirst: true,
             rules: [
-              { required: true },
+              {
+                required: true, message: '名称不能为空',
+              },
+              {
+                validator: this.$validate('serverCreateName'),
+              },
             ],
           },
         ],
