@@ -144,6 +144,7 @@ const getDefaultTopBaseInfo = (vm, h, { idKey, statusKey, statusModule, data, on
         default: ({ row }) => {
           const domain = row.project_domain || row.domain
           if (!row.domain_id) return domain || '-'
+          if (!domain) return '-'
           const p = hasPermission({ key: 'domains_get' })
           let node
           if (p) {
