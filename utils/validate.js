@@ -187,7 +187,7 @@ export const REGEXP = {
     message: i18n.t('validator.postCode'),
   },
   domainName: {
-    regexp: /^[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+/,
+    regexp: /^[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+/,
     message: i18n.t('validator.domain'),
   },
 }
