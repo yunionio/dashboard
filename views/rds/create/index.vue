@@ -1,8 +1,8 @@
 <template>
   <div class="server-create-index">
     <page-header title="新建" />
+    <a-divider orientation="left">基础配置</a-divider>
     <a-form :form="form.fc" class="mt-3">
-      <a-divider orientation="left">基础配置</a-divider>
       <a-form-item class="mb-0" :label="`指定${$t('dictionary.project')}`" v-bind="formItemLayout">
         <domain-project :decorators="decorators.projectDomain" :fc="form.fc" :labelInValue="false" />
       </a-form-item>
@@ -111,11 +111,11 @@ export default {
   },
   methods: {
     vpcFormat (vpc) {
-      const { name, account } = vpc
+      const { name, manager } = vpc
       return (
         <div class='d-flex'>
           <span class='text-truncate flex-fill mr-2' title={ name }>{ name }</span>
-          <span style="color: #8492a6; font-size: 13px">云账号: { account }</span>
+          <span style="color: #8492a6; font-size: 13px">云订阅: { manager }</span>
         </div>
       )
     },

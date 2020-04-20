@@ -40,7 +40,7 @@ export default {
         getNameDescriptionTableColumn({
           vm: this,
           hideField: true,
-          addLock: true,
+          edit: false,
           slotCallback: row => {
             return (
               <side-page-trigger onTrigger={() => this.sidePageTriggerHandle(row.id, 'RDSAcountSidePage')}>{row.name}</side-page-trigger>
@@ -128,7 +128,15 @@ export default {
               redisItem: this.data,
             })
           },
-          meta: () => this.commonMeta,
+          meta: () => {
+            if (this.commonMeta.isHuawei) {
+              return {
+                validate: false,
+                tooltip: '华为云不支持此操作',
+              }
+            }
+            return this.commonMeta
+          },
         },
         {
           label: '修改权限',

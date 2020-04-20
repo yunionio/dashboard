@@ -39,7 +39,7 @@ export default {
         getNameDescriptionTableColumn({
           vm: this,
           hideField: true,
-          addLock: true,
+          edit: false,
           slotCallback: row => {
             return (
               <side-page-trigger onTrigger={() => this.sidePageTriggerHandle(row.id, 'RDSDatabaseSidePage')}>{row.name}</side-page-trigger>
