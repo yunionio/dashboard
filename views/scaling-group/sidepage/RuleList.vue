@@ -95,23 +95,31 @@ export default {
           },
         },
         {
-          field: 'startTimeAndendTime',
-          title: '有效时间',
-          width: 160,
-          slots: {
-            default: ({ row }) => {
-              const { start_time: startTime, end_time: endTime } = row.cycle_timer
-              if (startTime && endTime) {
-                return [
-                  <div>
-                    {this.$moment(startTime).format()} <br/>
-                    {this.$moment(endTime).format()}
-                  </div>,
-                ]
-              }
-            },
+          field: 'cooling_time',
+          title: '冷却时间',
+          width: 100,
+          formatter: ({ row }) => {
+            return `${row.cooling_time}秒`
           },
         },
+        // {
+        //   field: 'startTimeAndendTime',
+        //   title: '有效时间',
+        //   width: 160,
+        //   slots: {
+        //     default: ({ row }) => {
+        //       const { start_time: startTime, end_time: endTime } = row.cycle_timer
+        //       if (startTime && endTime) {
+        //         return [
+        //           <div>
+        //             {this.$moment(startTime).format()} <br/>
+        //             {this.$moment(endTime).format()}
+        //           </div>,
+        //         ]
+        //       }
+        //     },
+        //   },
+        // },
         getTimeTableColumn(),
       ],
       singleActions: [
@@ -285,7 +293,7 @@ export default {
       // 周期策略
       if (type === 'cycle' && row['cycle_timer']) {
         const timer = row['cycle_timer']
-        const { hour, minute } = timer
+        const { hour, minute, start_time: startTime, end_time: endTime } = timer
         const typeTxt = this.$t('flexGroupCycleType')[timer['cycle_type']]
         let itemsTxt = ''
         // 周
@@ -300,7 +308,11 @@ export default {
             return `${v}号`
           }).join('|') + '】'
         }
-        return `${typeTxt}${itemsTxt}${`${numerify(hour, '00')}:${numerify(minute, '00')}`}触发`
+        let tiemStr = ''
+        if (startTime && endTime) {
+          tiemStr = `，有效时间为${this.$moment(startTime).format()}至${this.$moment(endTime).format()}`
+        }
+        return `${typeTxt}${itemsTxt}${`${numerify(hour, '00')}:${numerify(minute, '00')}`}触发 ${tiemStr}`
       }
       return '-'
     },

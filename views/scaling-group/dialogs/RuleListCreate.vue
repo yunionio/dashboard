@@ -4,7 +4,7 @@
     <div slot="body">
        <a-form :form="form.fc" v-bind="formItemLayout">
         <a-form-item label="名称">
-          <a-input :placeholder="$t('validator.serverCreateName')" v-decorator="decorators.generate_name" />
+          <a-input :placeholder="$t('validator.serverCreateName')" v-decorator="decorators.name" />
         </a-form-item>
         <a-form-item label="策略类型">
           <a-radio-group v-decorator="decorators.trigger_type">
@@ -28,12 +28,12 @@
               </span>
             </a-input-group>
           </a-form-item>
-          <!-- <a-form-item label="监控周期">
-            <a-select style="width: 50%" v-decorator="decorators.cooling_time">
+          <a-form-item label="监控周期">
+            <a-select style="width: 50%" v-decorator="decorators.cycle">
               <a-select-option  v-for="(v, k) in $t('flexGroupCycles')" :key="k" :value="parseInt(k)">{{v}}</a-select-option>
             </a-select>
-          </a-form-item> -->
-          <a-form-item label="连线出现次数">
+          </a-form-item>
+          <a-form-item label="连续出现次数">
             <a-tooltip placement="top" title="范围在1 ～ 1000">
               <a-input-number  v-decorator="decorators.cumulate" :min="1" :max="1000" />
             </a-tooltip>
@@ -137,8 +137,8 @@ export default {
         labelCol: { span: 4 },
       },
       decorators: {
-        generate_name: [
-          'generate_name',
+        name: [
+          'name',
           {
             validateTrigger: ['change', 'blur'],
             validateFirst: true,
@@ -169,7 +169,7 @@ export default {
         operator: [
           'alarm.operator',
           {
-            initialValue: 'lt',
+            initialValue: 'gt',
           },
         ],
         value: [
@@ -266,6 +266,15 @@ export default {
           {
             rules: [
               { required: true, message: '触发时间' },
+            ],
+          },
+        ],
+        cycle: [
+          'alarm.cycle',
+          {
+            initialValue: 300,
+            rules: [
+              { required: true, message: '请选择监控周期' },
             ],
           },
         ],
