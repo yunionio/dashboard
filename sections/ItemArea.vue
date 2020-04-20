@@ -36,15 +36,13 @@ export default {
     isRequired: {
       type: Boolean,
     },
-    providers: {
-      type: Array,
-      default: () => ['Aliyun', 'Huawei'],
+    billingType: {
+      type: String,
     },
   },
   data () {
     return {
       providerList: [],
-      providers: ['Aliyun', 'Huawei'],
     }
   },
   computed: {
@@ -87,11 +85,6 @@ export default {
         service: this.service,
         ...this.scopeParams,
       }
-    },
-  },
-  watch: {
-    'values.billing_type' (val) {
-      this.$refs['areaSelects'].fetchs(['provider', 'cloudregion'])
     },
   },
   inject: ['form', 'formItemLayout', 'scopeParams'],
