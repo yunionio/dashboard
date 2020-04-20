@@ -1,8 +1,7 @@
 <template>
   <page-list
     :list="list"
-    :columns="columns"
-    :export-data-options="exportDataOptions" />
+    :columns="columns" />
 </template>
 
 <script>
@@ -35,12 +34,12 @@ export default {
           },
         },
       }),
-      exportDataOptions: {
-        items: [
-          { label: '键', key: 'key' },
-          { label: '值', key: 'value' },
-        ],
-      },
+      // exportDataOptions: {
+      //   items: [
+      //     { label: '键', key: 'key' },
+      //     { label: '值', key: 'value' },
+      //   ],
+      // },
     }
   },
   watch: {
