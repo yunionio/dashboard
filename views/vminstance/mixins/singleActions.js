@@ -1088,6 +1088,7 @@ export default {
                   permission: 'server_delete',
                   action: () => {
                     this.createDialog('DeleteVmDialog', {
+                      vm: this,
                       data: [obj],
                       columns: this.columns,
                       onManager: this.onManager,
