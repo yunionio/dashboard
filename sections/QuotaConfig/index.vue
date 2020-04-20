@@ -253,7 +253,9 @@ export default {
     },
     fetchCloudEnvs () {
       const cloudEnvs = []
-      const brands = this.capability.brands
+      let brands = this.capability.brands
+      brands = R.concat(brands, this.capability.disabled_brands)
+      brands = R.uniq(brands)
       for (let i = 0, len = brands.length; i < len; i++) {
         const data = R.find(R.propEq('key', typeClouds.brandMap[brands[i]]['cloud_env']))(cloudEnvs)
         if (!data) {
@@ -279,7 +281,7 @@ export default {
           brands.push(value)
         }
       }, typeClouds.brandMap)
-      brands = brands.filter(item => this.capability.brands.includes(item.brand))
+      brands = brands.filter(item => this.capability.brands.includes(item.brand) || this.capability.disabled_brands.includes(item.brand))
       this.brands = brands.map(val => ({ ...val, key: val.key, label: val.label }))
       let defaultData
       const initialValue = _.get(this.decorators, 'brand[1].initialValue')
