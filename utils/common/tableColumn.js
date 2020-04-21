@@ -142,6 +142,7 @@ export const getNameDescriptionTableColumn = ({
   sortable = true,
   addBackup,
   cellWrapSlots,
+  edit = true,
 } = {}) => {
   return {
     field: 'name',
@@ -156,7 +157,7 @@ export const getNameDescriptionTableColumn = ({
           h('list-body-cell-wrap', {
             props: {
               copy: true,
-              edit: true,
+              edit,
               row,
               list: vm.list,
               hideField,
