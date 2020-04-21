@@ -128,18 +128,6 @@ export default {
                 meta: () => this.syncPolicy(this.list.selectedItems, ownerDomain), // 和【全量同步】同逻辑
               },
               {
-                label: '设置代理',
-                permission: 'proxysettings_update',
-                action: () => {
-                  this.createDialog('UpdateProxySettingDialog', {
-                    title: '设置代理',
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    onManager: this.onManager,
-                  })
-                },
-              },
-              {
                 label: '启用',
                 permission: 'cloudaccounts_perform_enable',
                 action: () => {

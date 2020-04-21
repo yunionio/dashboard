@@ -11,7 +11,9 @@ export default {
   data () {
     return {
       form: {
-        fc: this.$form.createForm(this),
+        fc: this.$form.createForm(this, {
+          onValuesChange: this.handleValuesChange,
+        }),
       },
       keySecretFieldInit: keySecretFields[this.provider.toLowerCase()],
       formLayout: {
@@ -66,6 +68,25 @@ export default {
           }
         })
       })
+    },
+    domain_change () {
+      const proxySettingref = this.$refs.proxySetting
+      if (proxySettingref && proxySettingref.fetchQueryProxy) {
+        // 根据域获取代理列表信息
+        proxySettingref.fetchQueryProxy()
+      }
+    },
+    async handleValuesChange (vm, changedFields) {
+      await this.$nextTick()
+      const fields = Object.keys(changedFields)
+      if (changedFields && fields.length > 0) {
+        fields.forEach(field => {
+          const fn = this[`${field}_change`]
+          if (fn && typeof fn === 'function') {
+            fn()
+          }
+        })
+      }
     },
   },
 }
