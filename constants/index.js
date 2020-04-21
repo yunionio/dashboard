@@ -1,6 +1,10 @@
 import { sizestrWithUnit } from '@/utils/utils'
 
 // 不定单位使用formatter，固定单位使用unit
+// 磁盘（disk）、内存（memory） 容量单位为：formatter: val => sizestrWithUnit(val, 'M', 1024)
+// 虚拟机（server）、宿主机（host）、物理机（baremetal） 单位为：台
+// CPU 单位为：核
+// GPU（isolated_device） 单位为：块
 export const USAGE_CONFIG = {
   'all.bucket_bytes': {
     formatter: val => sizestrWithUnit(val, 'B', 1024),
@@ -60,7 +64,7 @@ export const USAGE_CONFIG = {
     unit: '个',
   },
   'all.pending_delete_servers': {
-    unit: '个',
+    unit: '台',
   },
   'all.pending_delete_servers.cpu': {
     unit: '核',
@@ -177,7 +181,7 @@ export const USAGE_CONFIG = {
     unit: '个',
   },
   'baremetals': {
-    unit: '个',
+    unit: '台',
   },
   'baremetals.cpu': {
     unit: '核',
@@ -339,7 +343,7 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'running_servers.ha': {
-
+	unit: '台',
   },
   'running_servers.ha.cpu': {
     unit: '核',
@@ -441,16 +445,16 @@ export const USAGE_CONFIG = {
     unit: '个',
   },
   'domain.baremetals': {
-    unit: '个',
+    unit: '台',
   },
   'domain.baremetals.cpu': {
-    unit: '个',
+    unit: '核',
   },
   'domain.baremetals.memory': {
-    unit: '个',
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.bucket_bytes': {
-    unit: '个',
+    formatter: val => sizestrWithUnit(val, 'B', 1024),
   },
   'domain.bucket_objects': {
     unit: '个',
@@ -462,13 +466,13 @@ export const USAGE_CONFIG = {
     unit: '个',
   },
   'domain.cpu_commit_rate.running': {
-    unit: '个',
+    
   },
   'domain.disks': {
-    unit: '个',
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.disks.attached': {
-    unit: '个',
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.disks.attached.count': {
     unit: '个',
@@ -477,13 +481,13 @@ export const USAGE_CONFIG = {
     unit: '个',
   },
   'domain.disks.detached': {
-    unit: '个',
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.disks.detached.count': {
     unit: '个',
   },
   'domain.disks.unready': {
-    unit: '个',
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.disks.unready.count': {
     unit: '个',
@@ -504,67 +508,67 @@ export const USAGE_CONFIG = {
     unit: '个',
   },
   'domain.enabled_hosts': {
-    unit: '个',
+    unit: '台',
   },
   'domain.enabled_hosts.cpu': {
-    unit: '个',
+    unit: '核',
   },
   'domain.enabled_hosts.cpu.virtual': {
-    unit: '个',
+    unit: '核',
   },
   'domain.enabled_hosts.memory': {
-    unit: '个',
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.enabled_hosts.memory.virtual': {
-    unit: '个',
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.hosts': {
-    unit: '个',
+    unit: '台',
   },
   'domain.hosts.cpu': {
-    unit: '个',
+    unit: '核',
   },
   'domain.hosts.cpu.virtual': {
-    unit: '个',
+    unit: '核',
   },
   'domain.hosts.memory': {
-    unit: '个',
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.hosts.memory.virtual': {
-    unit: '个',
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.loadbalancer': {
     unit: '个',
   },
   'domain.memory_commit_rate.running': {
-    unit: '个',
+    
   },
   'domain.pending_delete_servers': {
-    unit: '个',
+    unit: '台',
   },
   'domain.pending_delete_servers.cpu': {
-    unit: '个',
+    unit: '核',
   },
   'domain.pending_delete_servers.disk': {
-    unit: '个',
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.pending_delete_servers.ha': {
-    unit: '个',
+    unit: '台',
   },
   'domain.pending_delete_servers.ha.cpu': {
-    unit: '个',
+    unit: '核',
   },
   'domain.pending_delete_servers.ha.disk': {
-    unit: '个',
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.pending_delete_servers.ha.memory': {
-    unit: '个',
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.pending_delete_servers.isolated_devices': {
-    unit: '个',
+    unit: '块',
   },
   'domain.pending_delete_servers.memory': {
-    unit: '个',
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.ports': {
     unit: '个',
@@ -576,97 +580,97 @@ export const USAGE_CONFIG = {
     unit: '个',
   },
   'domain.ready_servers': {
-    unit: '个',
+    unit: '台',
   },
   'domain.ready_servers.cpu': {
-    unit: '个',
+    unit: '核',
   },
   'domain.ready_servers.disk': {
-    unit: '个',
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.ready_servers.ha': {
-    unit: '个',
+    unit: '台',
   },
   'domain.ready_servers.ha.cpu': {
-    unit: '个',
+    unit: '核',
   },
   'domain.ready_servers.ha.disk': {
-    unit: '个',
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.ready_servers.ha.memory': {
-    unit: '个',
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.ready_servers.isolated_devices': {
-    unit: '个',
+    unit: '块',
   },
   'domain.ready_servers.memory': {
-    unit: '个',
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.running_servers': {
-    unit: '个',
+    unit: '台',
   },
   'domain.running_servers.cpu': {
-    unit: '个',
+    unit: '核',
   },
   'domain.running_servers.disk': {
-    unit: '个',
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.running_servers.ha': {
-    unit: '个',
+    unit: '台',
   },
   'domain.running_servers.ha.cpu': {
-    unit: '个',
+    unit: '核',
   },
   'domain.running_servers.ha.disk': {
-    unit: '个',
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.running_servers.ha.memory': {
-    unit: '个',
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.running_servers.isolated_devices': {
-    unit: '个',
+    unit: '块',
   },
   'domain.running_servers.memory': {
-    unit: '个',
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.servers': {
-    unit: '个',
+    unit: '台',
   },
   'domain.servers.cpu': {
-    unit: '个',
+    unit: '核',
   },
   'domain.servers.disk': {
-    unit: '个',
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.servers.ha': {
-    unit: '个',
+    unit: '台',
   },
   'domain.servers.ha.cpu': {
-    unit: '个',
+    unit: '核',
   },
   'domain.servers.ha.disk': {
-    unit: '个',
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.servers.ha.memory': {
-    unit: '个',
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.servers.isolated_devices': {
-    unit: '个',
+    unit: '块',
   },
   'domain.servers.memory': {
-    unit: '个',
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.snapshot': {
     unit: '个',
   },
   'domain.storages': {
-    unit: '个',
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.storages.commit_rate': {
-    unit: '个',
+    
   },
   'domain.storages.virtual': {
-    unit: '个',
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.vpcs': {
     unit: '个',
