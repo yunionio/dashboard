@@ -9,6 +9,7 @@
 <script>
 import { getStatusTableColumn, getTimeTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 import { getStatusFilter } from '@/utils/common/tableFilter'
+import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ListMixin from '@/mixins/list'
@@ -32,6 +33,7 @@ export default {
         resource: 'scalingactivities',
         apiVersion: 'v1',
         getParams: this.getParams,
+        steadyStatus: Object.values(expectStatus.scalingactivitie).flat(),
         filterOptions: {
           status: getStatusFilter('scalingactivitie'),
         },
@@ -41,16 +43,16 @@ export default {
           field: 'id',
           title: 'ID',
         }),
-        getStatusTableColumn({ statusModule: 'scalingactivitie', minWidth: 150 }),
+        getStatusTableColumn({ statusModule: 'scalingactivitie', minWidth: 100 }),
         {
           field: 'trigger_desc',
           title: '起因描述',
-          minWidth: 150,
+          minWidth: 200,
         },
         {
           field: 'action_desc',
           title: '行为描述',
-          minWidth: 150,
+          minWidth: 200,
         },
         getTimeTableColumn({
           field: 'start_time',
