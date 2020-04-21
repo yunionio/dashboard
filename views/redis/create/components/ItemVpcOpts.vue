@@ -3,14 +3,24 @@
     <a-col :span="12">
       <a-form-item>
         <a-select v-decorator="decorators.vpc" :loading="vpcLoading" placeholder="请选择VPC" showSearch :filterOption="filterOption"  @change="(vpc)=>fetchQueryNetworks(vpc, true)">
-          <a-select-option  :key="item.id" :value="item.id" v-for="item in vpcOptions">{{item.name}}</a-select-option>
+          <a-select-option  :key="item.id" :value="item.id" v-for="item in vpcOptions">
+            <div class="d-flex">
+              <span class="text-truncate flex-fill mr-2" :title="item.name">{{ item.name }}</span>
+              <span style="color: #8492a6; font-size: 13px">云订阅: {{ item.manager }}</span>
+            </div>
+          </a-select-option>
         </a-select>
       </a-form-item>
     </a-col>
     <a-col :span="12">
       <a-form-item>
         <a-select v-decorator="decorators.network" :loading="networkLoading" placeholder="请选择子网netwrok" showSearch :filterOption="filterOption" @change="handleNetworkChange">
-          <a-select-option :key="item.id" :value="item.id" v-for="item in networkOptions">{{item.name}}</a-select-option>
+          <a-select-option :key="item.id" :value="item.id" v-for="item in networkOptions">
+            <div class="d-flex">
+              <span class="text-truncate flex-fill mr-2" :title="item.name">{{ item.name }} ({{item.guest_ip_start}} - {{item.guest_ip_end}}）</span>
+              <span style="color: #8492a6; font-size: 13px">可用: {{ item.ports - item.ports_used }}</span>
+            </div>
+          </a-select-option>
         </a-select>
        </a-form-item>
     </a-col>
