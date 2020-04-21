@@ -24,7 +24,7 @@
       <div class="d-flex align-items-center">
           <div class="mr-4 d-flex align-items-center">
             <div class="text-truncate">费用估算：</div>
-            <div class="ml-2 prices" v-if="rate">
+            <div class="ml-2 prices">
               <div class="hour text-truncate">
                 <template v-if="price">
                   <m-animated-number :value="price" :formatValue="formatToPrice" />
