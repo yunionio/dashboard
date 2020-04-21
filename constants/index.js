@@ -404,4 +404,271 @@ export const USAGE_CONFIG = {
   'zones': {
     unit: '个',
   },
+  'all.disks.attached.count': {
+    unit: '个',
+  },
+  'all.disks.detached.count': {
+    unit: '个',
+  },
+  'all.disks.unready.count': {
+    unit: '个',
+  },
+  'all.loadbalancer': {
+    unit: '个',
+  },
+  'all.cache': {
+    unit: '个',
+  },
+  'all.rds': {
+    unit: '个',
+  },
+  'cache': {
+    unit: '个',
+  },
+  'disks.attached.count': {
+    unit: '个',
+  },
+  'disks.detached.count': {
+    unit: '个',
+  },
+  'disks.unready.count': {
+    unit: '个',
+  },
+  'loadbalancer': {
+    unit: '个',
+  },
+  'rds': {
+    unit: '个',
+  },
+  'domain.baremetals': {
+    unit: '个',
+  },
+  'domain.baremetals.cpu': {
+    unit: '个',
+  },
+  'domain.baremetals.memory': {
+    unit: '个',
+  },
+  'domain.bucket_bytes': {
+    unit: '个',
+  },
+  'domain.bucket_objects': {
+    unit: '个',
+  },
+  'domain.buckets': {
+    unit: '个',
+  },
+  'domain.cache': {
+    unit: '个',
+  },
+  'domain.cpu_commit_rate.running': {
+    unit: '个',
+  },
+  'domain.disks': {
+    unit: '个',
+  },
+  'domain.disks.attached': {
+    unit: '个',
+  },
+  'domain.disks.attached.count': {
+    unit: '个',
+  },
+  'domain.disks.count': {
+    unit: '个',
+  },
+  'domain.disks.detached': {
+    unit: '个',
+  },
+  'domain.disks.detached.count': {
+    unit: '个',
+  },
+  'domain.disks.unready': {
+    unit: '个',
+  },
+  'domain.disks.unready.count': {
+    unit: '个',
+  },
+  'domain.eip': {
+    unit: '个',
+  },
+  'domain.eip.floating_ip': {
+    unit: '个',
+  },
+  'domain.eip.floating_ip.used': {
+    unit: '个',
+  },
+  'domain.eip.public_ip': {
+    unit: '个',
+  },
+  'domain.eip.used': {
+    unit: '个',
+  },
+  'domain.enabled_hosts': {
+    unit: '个',
+  },
+  'domain.enabled_hosts.cpu': {
+    unit: '个',
+  },
+  'domain.enabled_hosts.cpu.virtual': {
+    unit: '个',
+  },
+  'domain.enabled_hosts.memory': {
+    unit: '个',
+  },
+  'domain.enabled_hosts.memory.virtual': {
+    unit: '个',
+  },
+  'domain.hosts': {
+    unit: '个',
+  },
+  'domain.hosts.cpu': {
+    unit: '个',
+  },
+  'domain.hosts.cpu.virtual': {
+    unit: '个',
+  },
+  'domain.hosts.memory': {
+    unit: '个',
+  },
+  'domain.hosts.memory.virtual': {
+    unit: '个',
+  },
+  'domain.loadbalancer': {
+    unit: '个',
+  },
+  'domain.memory_commit_rate.running': {
+    unit: '个',
+  },
+  'domain.pending_delete_servers': {
+    unit: '个',
+  },
+  'domain.pending_delete_servers.cpu': {
+    unit: '个',
+  },
+  'domain.pending_delete_servers.disk': {
+    unit: '个',
+  },
+  'domain.pending_delete_servers.ha': {
+    unit: '个',
+  },
+  'domain.pending_delete_servers.ha.cpu': {
+    unit: '个',
+  },
+  'domain.pending_delete_servers.ha.disk': {
+    unit: '个',
+  },
+  'domain.pending_delete_servers.ha.memory': {
+    unit: '个',
+  },
+  'domain.pending_delete_servers.isolated_devices': {
+    unit: '个',
+  },
+  'domain.pending_delete_servers.memory': {
+    unit: '个',
+  },
+  'domain.ports': {
+    unit: '个',
+  },
+  'domain.ports_exit': {
+    unit: '个',
+  },
+  'domain.rds': {
+    unit: '个',
+  },
+  'domain.ready_servers': {
+    unit: '个',
+  },
+  'domain.ready_servers.cpu': {
+    unit: '个',
+  },
+  'domain.ready_servers.disk': {
+    unit: '个',
+  },
+  'domain.ready_servers.ha': {
+    unit: '个',
+  },
+  'domain.ready_servers.ha.cpu': {
+    unit: '个',
+  },
+  'domain.ready_servers.ha.disk': {
+    unit: '个',
+  },
+  'domain.ready_servers.ha.memory': {
+    unit: '个',
+  },
+  'domain.ready_servers.isolated_devices': {
+    unit: '个',
+  },
+  'domain.ready_servers.memory': {
+    unit: '个',
+  },
+  'domain.running_servers': {
+    unit: '个',
+  },
+  'domain.running_servers.cpu': {
+    unit: '个',
+  },
+  'domain.running_servers.disk': {
+    unit: '个',
+  },
+  'domain.running_servers.ha': {
+    unit: '个',
+  },
+  'domain.running_servers.ha.cpu': {
+    unit: '个',
+  },
+  'domain.running_servers.ha.disk': {
+    unit: '个',
+  },
+  'domain.running_servers.ha.memory': {
+    unit: '个',
+  },
+  'domain.running_servers.isolated_devices': {
+    unit: '个',
+  },
+  'domain.running_servers.memory': {
+    unit: '个',
+  },
+  'domain.servers': {
+    unit: '个',
+  },
+  'domain.servers.cpu': {
+    unit: '个',
+  },
+  'domain.servers.disk': {
+    unit: '个',
+  },
+  'domain.servers.ha': {
+    unit: '个',
+  },
+  'domain.servers.ha.cpu': {
+    unit: '个',
+  },
+  'domain.servers.ha.disk': {
+    unit: '个',
+  },
+  'domain.servers.ha.memory': {
+    unit: '个',
+  },
+  'domain.servers.isolated_devices': {
+    unit: '个',
+  },
+  'domain.servers.memory': {
+    unit: '个',
+  },
+  'domain.snapshot': {
+    unit: '个',
+  },
+  'domain.storages': {
+    unit: '个',
+  },
+  'domain.storages.commit_rate': {
+    unit: '个',
+  },
+  'domain.storages.virtual': {
+    unit: '个',
+  },
+  'domain.vpcs': {
+    unit: '个',
+  },
 }
