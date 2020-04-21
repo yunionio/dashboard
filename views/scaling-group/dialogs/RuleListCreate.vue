@@ -22,7 +22,7 @@
                 <a-select-option value="lt">小于</a-select-option>
                 <a-select-option value="gt">大于</a-select-option>
               </a-select>
-              <a-input-number v-decorator="decorators.value" :min="0" :max="1000" />
+              <a-input-number v-decorator="decorators.value" :min="0" :max="form.fc.getFieldValue('alarm.indicator') && form.fc.getFieldValue('alarm.indicator') !== 'cpu' ? 999999999 : 100" />
               <span style="margin:5px 0 0 5px">
                 {{ form.fc.getFieldValue('alarm.indicator') && form.fc.getFieldValue('alarm.indicator') !== 'cpu' ? 'b/s' : '%' }}
               </span>
@@ -346,8 +346,16 @@ export default {
         delete values.hourMinute
       }
       if (values.startEndTime && values.startEndTime.length > 0) {
-        values.cycleTimer['startTime'] = values.startEndTime[0]
-        values.cycleTimer['endTime'] = values.startEndTime[1]
+        values.cycleTimer['startTime'] = values.startEndTime[0].set({
+          hour: 0,
+          minute: 0,
+          second: 0,
+        })
+        values.cycleTimer['endTime'] = values.startEndTime[1].set({
+          hour: 23,
+          minute: 59,
+          second: 59,
+        })
         delete values.startEndTime
       }
       if (values.alarm) {
@@ -364,6 +372,7 @@ export default {
       }
       try {
         const values = await validateFields()
+        this.formatValues(values)
         this.loading = true
         await manager.create({
           data: Object.assign({}, defaultParams, this.formatValues(values)),

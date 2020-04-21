@@ -31,17 +31,6 @@ export default {
         getEnabledTableColumn(),
         getBrandTableColumn(),
         {
-          field: 'instance_number',
-          title: '当前实例数',
-          slots: {
-            default: ({ row }) => {
-              return [
-                <a onClick={ () => this.$emit('tab-change', 'server-list') }>{row.instance_number}</a>,
-              ]
-            },
-          },
-        },
-        {
           field: 'scaling_policy_number',
           title: '伸缩策略',
           slots: {
@@ -52,22 +41,33 @@ export default {
             },
           },
         },
-        {
-          field: 'guest_template',
-          title: '主机模板',
-          slots: {
-            default: ({ row }) => {
-              return [
-                <a onClick={ () => this.$emit('tab-change', 'server-template-list') }>{row.guest_template}</a>,
-              ]
-            },
-          },
-        },
       ],
       extraInfo: [
         {
           title: '伸缩组信息',
           items: [
+            {
+              field: 'guest_template',
+              title: '主机模板',
+              slots: {
+                default: ({ row }) => {
+                  return [
+                    <a onClick={ () => this.$emit('tab-change', 'server-template-list') }>{row.guest_template}</a>,
+                  ]
+                },
+              },
+            },
+            {
+              field: 'instance_number',
+              title: '当前实例数',
+              slots: {
+                default: ({ row }) => {
+                  return [
+                    <a onClick={ () => this.$emit('tab-change', 'server-list') }>{row.instance_number}</a>,
+                  ]
+                },
+              },
+            },
             {
               field: 'desire_instance_number',
               title: '期望实例数',

@@ -12,6 +12,7 @@
 import numerify from 'numerify'
 import { getNameDescriptionTableColumn, getTimeTableColumn, getStatusTableColumn, getEnabledTableColumn } from '@/utils/common/tableColumn'
 import { getStatusFilter, getEnabledFilter } from '@/utils/common/tableFilter'
+import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ListMixin from '@/mixins/list'
@@ -35,6 +36,7 @@ export default {
         resource: 'scalingpolicies',
         apiVersion: 'v1',
         getParams: this.getParams,
+        steadyStatus: Object.values(expectStatus.scalingpolicie).flat(),
         filterOptions: {
           name: {
             label: '名称',

@@ -12,6 +12,7 @@
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { getNameDescriptionTableColumn, getTimeTableColumn, getStatusTableColumn, getIpsTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 import { getStatusFilter, getEnabledFilter } from '@/utils/common/tableFilter'
+import expectStatus from '@/constants/expectStatus'
 import { sizestr } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
@@ -36,6 +37,7 @@ export default {
         id: this.id,
         resource: 'servers',
         getParams: this.getParams,
+        steadyStatus: Object.values(expectStatus.scalingserver).flat().concat(Object.values(expectStatus.server).flat()),
         filterOptions: {
           name: {
             label: '名称',
