@@ -149,18 +149,17 @@ export default {
                   const isRunning = row.status === 'running'
                   const notRunninTip = !isRunning ? '仅运行中的实例支持此操作' : null
                   let RenderSwitchBtn = null
-                  // eslint-disable-next-line no-constant-condition
-                  if (isRunning) {
-                    RenderSwitchBtn = (<a-button type="link" onClick={() => this.handleSwitchPublicAddress(!addr)}>{btnTxt}</a-button>)
-                  } else {
-                    RenderSwitchBtn = (
-                      <a-tooltip placement='top' title={notRunninTip}>
-                        <a-button type="link" disabled>{btnTxt}</a-button>
-                      </a-tooltip>
-                    )
-                  }
-                  if (row.provider === 'Huawei') {
-                    return '-'
+                  // 华为云不支持开启外网地址和关闭外网地址
+                  if (row.provider !== 'Huawei') {
+                    if (isRunning) {
+                      RenderSwitchBtn = (<a-button type="link" onClick={() => this.handleSwitchPublicAddress(!addr)}>{btnTxt}</a-button>)
+                    } else {
+                      RenderSwitchBtn = (
+                        <a-tooltip placement='top' title={notRunninTip}>
+                          <a-button type="link" disabled>{btnTxt}</a-button>
+                        </a-tooltip>
+                      )
+                    }
                   }
                   return (
                     <div>
