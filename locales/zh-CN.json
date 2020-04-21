@@ -12,6 +12,7 @@
       "queuing": "准备同步",
       "queued": "开始同步",
       "syncing": "同步中",
+      "sync_status": "同步中",
       "idle": "空闲",
       "error": "同步失败"
     },
@@ -137,7 +138,8 @@
       "delete_failed": "删除失败",
       "unknown": "未知",
       "unavailable": "不可用",
-      "syncing": "同步中"
+      "syncing": "同步中",
+      "sync_status": "同步中"
     },
     "host": {
       "init": "初始化",
@@ -197,6 +199,7 @@
       "disconnected": "连接断开",
       "start_sync": "开始同步",
       "syncing": "正在同步",
+      "sync_status": "同步中",
       "unknown": "未知",
       "start_delete": "开始删除",
       "deleting": "正在删除",
@@ -214,6 +217,7 @@
       "idle": "同步完成",
       "queued": "开始同步",
       "syncing": "同步中",
+      "sync_status": "同步中",
       "queuing": "准备同步"
     },
     "redis" : {
@@ -241,6 +245,7 @@
       "majorversionupgrading": "大版本升级中，可正常访问",
       "unknown": "未知状态",
       "syncing": "同步中",
+      "sync_status": "同步中",
       "sync_failed": "同步失败"
     },
     "instanceGroup": {
@@ -315,7 +320,8 @@
       "schedule": "调度中",
       "apply_snapshot_failed": "绑定快照策略失败",
       "cancel_snapshot_failed": "解绑快照策略失败",
-      "syncing": "同步中"
+      "syncing": "同步中",
+      "sync_status": "同步中"
     },
     "secgroupCache": {
       "ready": "正常",
@@ -357,7 +363,8 @@
       "unknown": "未知",
       "create_failed": "创建失败",
       "delete_failed": "删除失败",
-      "syncing": "同步中"
+      "syncing": "同步中",
+      "sync_status": "同步中"
     },
     "rds": {
       "failed": "操作失败",
@@ -396,7 +403,8 @@
       "dissociate_fail": "解绑失败",
       "change_bandwidth": "修改带宽",
       "init": "初始化",
-      "syncing": "同步中"
+      "syncing": "同步中",
+      "sync_status": "同步中"
     },
     "snapshot": {
       "init": "初始化",
@@ -445,7 +453,8 @@
       "failed": "创建失败",
       "unknown": "未知",
       "unavailable": "不可用",
-      "syncing": "同步中"
+      "syncing": "同步中",
+      "sync_status": "同步中"
     },
     "blockstorage": {
       "enabled": "启用",
@@ -488,7 +497,8 @@
       "deleted": "删除",
       "deleting": "删除中",
       "delete_failed": "删除失败",
-      "syncing": "同步中"
+      "syncing": "同步中",
+      "sync_status": "同步中"
     },
     "idp": {
       "connected": "已连接",
@@ -501,7 +511,8 @@
       "sent_ok": "发送成功",
       "sent_fail": "发送失败",
       "unknown": "未知",
-      "syncing": "同步中"
+      "syncing": "同步中",
+      "sync_status": "同步中"
     },
     "contact": {
       "init": "未验证",
