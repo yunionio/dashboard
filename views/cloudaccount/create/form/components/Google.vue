@@ -23,7 +23,7 @@
           <a-input v-decorator="decorators.client_email" placeholder="请输入client_email" />
         </a-form-item>
       </upload-json-file>
-      <proxy-setting :fc="form.fc" />
+      <proxy-setting :fc="form.fc" ref="proxySetting" />
       <auto-sync :fc="form.fc" :form-layout="formLayout" />
     </a-form>
   </div>

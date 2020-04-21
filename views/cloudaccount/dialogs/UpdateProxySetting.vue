@@ -7,7 +7,7 @@
       <a-form
         v-bind="formItemLayout"
         :form="form.fc">
-        <proxy-setting :initialValue="params.data[0].proxy_setting_id" />
+        <proxy-setting :fc="form.fc" :account="params.data[0]" />
       </a-form>
     </div>
     <div slot="footer">
@@ -66,7 +66,6 @@ export default {
           })
         }
         this.cancelDialog()
-        this.params.refresh()
       } catch (error) {
         throw error
       } finally {
