@@ -58,6 +58,7 @@ export default {
         {
           field: 'backup_mode',
           title: '备份类型',
+          width: 100,
           slots: {
             default: ({ row }) => {
               return row.backup_mode === 'manual' ? '手动备份' : '自动备份'
@@ -67,6 +68,7 @@ export default {
         {
           field: 'engine',
           title: '类型版本',
+          width: 100,
           slots: {
             default: ({ row }) => {
               return `${row.engine} ${row.engine_version}`
@@ -76,6 +78,7 @@ export default {
         {
           field: 'backup_size_mb',
           title: '大小',
+          width: 100,
           slots: {
             default: ({ row }) => {
               return sizestr(row.backup_size_mb, 'M', 1024)
@@ -86,6 +89,7 @@ export default {
         getStatusTableColumn({ statusModule: 'redisBackup' }),
         {
           title: '备份开始/结束时间',
+          minWidth: 150,
           slots: {
             default: ({ row }) => {
               if (row.start_time && row.end_time) {
