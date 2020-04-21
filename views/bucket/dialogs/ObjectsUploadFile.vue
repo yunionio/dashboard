@@ -162,7 +162,7 @@ export default {
     font-size: 14px;
   }
   .upload-file-item .ant-upload-list {
-    max-height: 300px;
+    height: 200px;
     overflow: auto;
     padding-right: 20px;
   }
