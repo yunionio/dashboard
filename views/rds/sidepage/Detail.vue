@@ -5,6 +5,7 @@
 <script>
 // import BrandIcon from '@/sections/BrandIcon'
 import { DBINSTANCE_CATEGORY, DBINSTANCE_STORAGE_TYPE } from '../constants'
+import { getBrandTableColumn } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
 
@@ -42,14 +43,6 @@ export default {
     return {
       baseInfo: [
         {
-          field: 'project_domain',
-          title: this.$t('dictionary.domain'),
-        },
-        {
-          field: 'tenant',
-          title: `所属${this.$t('dictionary.project')}`,
-        },
-        {
           title: '计费方式',
           slots: {
             default: ({ row }) => {
@@ -62,9 +55,14 @@ export default {
           title: '区域',
         },
         {
-          field: 'brand',
-          title: '平台',
+          field: 'account',
+          title: '云账号',
         },
+        {
+          field: 'manager',
+          title: '云订阅',
+        },
+        getBrandTableColumn(),
       ],
       extraInfo: [
         {
@@ -154,18 +152,17 @@ export default {
                   const isRunning = row.status === 'running'
                   const notRunninTip = !isRunning ? '仅运行中的实例支持此操作' : null
                   let RenderSwitchBtn = null
-                  // eslint-disable-next-line no-constant-condition
-                  if (isRunning) {
-                    RenderSwitchBtn = (<a-button type="link" onClick={() => this.handleSwitchPublicAddress(!addr)}>{btnTxt}</a-button>)
-                  } else {
-                    RenderSwitchBtn = (
-                      <a-tooltip placement='top' title={notRunninTip}>
-                        <a-button type="link" disabled>{btnTxt}</a-button>
-                      </a-tooltip>
-                    )
-                  }
-                  if (row.provider === 'Huawei') {
-                    return '-'
+                  // 华为云不支持开启外网地址和关闭外网地址
+                  if (row.provider !== 'Huawei') {
+                    if (isRunning) {
+                      RenderSwitchBtn = (<a-button type="link" onClick={() => this.handleSwitchPublicAddress(!addr)}>{btnTxt}</a-button>)
+                    } else {
+                      RenderSwitchBtn = (
+                        <a-tooltip placement='top' title={notRunninTip}>
+                          <a-button type="link" disabled>{btnTxt}</a-button>
+                        </a-tooltip>
+                      )
+                    }
                   }
                   return (
                     <div>

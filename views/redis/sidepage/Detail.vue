@@ -10,6 +10,7 @@
 <script>
 // import BrandIcon from '@/sections/BrandIcon'
 import { NODE_TYPE, PERFORMANCE_TYPE } from '@DB/views/redis/constants'
+import { getBrandTableColumn } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
 
@@ -30,17 +31,14 @@ export default {
     return {
       baseInfo: [
         {
-          field: 'project_domain',
-          title: this.$t('dictionary.domain'),
-        },
-        {
-          field: 'tenant',
-          title: `所属${this.$t('dictionary.project')}`,
+          field: 'account',
+          title: '云账号',
         },
         {
           field: 'manager',
-          title: '云账号',
+          title: '云订阅',
         },
+        getBrandTableColumn(),
       ],
       extraInfo: [
         {
