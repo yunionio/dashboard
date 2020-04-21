@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div class="redis-create-index">
     <page-header title="新建" />
+    <a-divider orientation="left">基础配置</a-divider>
     <a-form
       class="mt-3"
       :form="form.fc">
-      <a-divider orientation="left">基础配置</a-divider>
-      <a-form-item :label="`指定${$t('dictionary.project')}`" class="mb-0" v-bind="formItemLayout">
+      <a-form-item label="指定项目" class="mb-0" v-bind="formItemLayout">
         <domain-project @update:domain="handleDomainChange" :labelInValue="false" :fc="form.fc" :form-layout="formItemLayout"
         :decorators="{ project: project, domain: domain }" />
       </a-form-item>
@@ -21,7 +21,6 @@
       <item-area :defaultActiveFirstOption="['city']" :values="form.fc.getFieldsValue()" />
       <div v-show="!form.fc.getFieldError('provider')">
         <s-k-u ref="REF_SKU" />
-        <a-divider orientation="left">高级配置</a-divider>
         <a-form-item label="管理员密码" v-bind="formItemLayout">
           <server-password :loginTypes="loginTypes" :decorator="decorators.loginConfig" :form="form" />
         </a-form-item>
@@ -156,3 +155,11 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.redis-create-index {
+  ::v-deep .ant-form{
+    padding-left: 20px;
+  }
+}
+</style>

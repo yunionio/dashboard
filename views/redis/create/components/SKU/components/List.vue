@@ -1,11 +1,18 @@
 <template>
   <div>
-    <vxe-grid :loading="loading" max-height="500" :columns="tableColumn" :data="skuList" @radio-change="handleSkuChange" ref="tableRef">
+    <vxe-grid
+      ref="tableRef"
+      max-height="500"
+      :loading="loading"
+      :columns="tableColumn"
+      :data="skuList"
+      @radio-change="handleSkuChange"
+      @cell-click="handleSkuChange">
       <template v-slot:empty>
         <page-list-empty :loading="loading" />
       </template>
     </vxe-grid>
-    <a-form-item>
+    <a-form-item class="redis-sku-valid">
       <template v-show="false">
         <a-radio-group v-decorator="skuDecorator" :placeholder="$t('validator.serverName')" />
       </template>
@@ -129,9 +136,9 @@ export default {
     },
   },
   watch: {
-    skuList () {
-      this.$refs['tableRef'].setRadioRow(this.skuList[0])
-      this.handleSkuChange({ row: this.skuList[0] })
+    skuList (skuList) {
+      const row = (skuList && skuList.length > 0) ? skuList[0] : undefined
+      this.handleSkuChange({ row })
     },
   },
   methods: {
@@ -139,6 +146,8 @@ export default {
       this.FC.setFieldsValue({
         sku: row,
       })
+      this.$refs['tableRef'].setRadioRow(row)
+      this.FC.validateFields(['sku'])
     },
     skuSort (skuList) {
       return skuList ? skuList.sort((a, b) => a.memory_size_mb - b.memory_size_mb) : []
@@ -214,3 +223,8 @@ export default {
   },
 }
 </script>
+<style lang="scss" scoped>
+::v-deep .redis-sku-valid .ant-form-item-control{
+  line-height: 0;
+}
+</style>
