@@ -347,8 +347,11 @@ export default {
     padding: 0;
   }
   .ant-menu-sub.ant-menu-inline > .ant-menu-item {
-    height: 30px;
-    line-height: 1;
+    height: 24px;
+  }
+  .ant-menu-inline > .ant-menu-submenu > .ant-menu-submenu-title {
+    height: 32px;
+    line-height: 32px;
   }
 }
 </style>
