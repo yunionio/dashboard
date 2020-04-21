@@ -6,7 +6,7 @@
       </a-select-option>
     </a-select>
     <div slot="extra">
-      某些云厂商需要设置代理才可以正常访问，例如谷歌云
+      某些云厂商需要设置代理才可以正常访问，例如谷歌云”改为“某些云厂商需要设置代理才可以正常访问，例如谷歌云。为空则表示直连。
     </div>
   </a-form-item>
 </template>
@@ -15,9 +15,11 @@
 export default {
   name: 'ProxySetting',
   props: {
-    initialValue: {
-      type: String,
-      default: () => 'DIRECT',
+    account: {
+      type: Object,
+    },
+    fc: {
+      type: Object,
     },
   },
   data () {
@@ -30,14 +32,13 @@ export default {
     decorator () {
       return [
         'proxy_setting',
-        {
-          initialValue: this.initialValue,
-        },
       ]
     },
   },
   created () {
-    this.fetchQueryProxy()
+    if (this.account) {
+      this.fetchQueryProxy()
+    }
   },
   methods: {
     filterOption (input, option) {
@@ -49,12 +50,21 @@ export default {
       const manager = new this.$Manager('proxysettings')
       const params = {
         limit: 0,
-        scope: this.$store.getters.scope,
+        project_domain: this.account ? this.account.domain_id : this.fc.getFieldValue('domain').key,
       }
       this.loading = true
       try {
         const { data } = await manager.list({ params })
         this.proxyOpts = data.data
+        if (this.proxyOpts && this.proxyOpts.length > 0) {
+          this.fc.setFieldsValue({
+            proxy_setting: this.account ? this.account.proxy_setting_id : this.proxyOpts[0].id,
+          })
+        } else {
+          this.fc.setFieldsValue({
+            proxy_setting: undefined,
+          })
+        }
       } catch (err) {
         throw err
       } finally {

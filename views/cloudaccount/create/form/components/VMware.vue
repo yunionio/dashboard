@@ -22,7 +22,7 @@
         <a-input-password v-decorator="decorators.password" :placeholder="keySecretField.placeholder.s" />
       </a-form-item>
       <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain }" />
-      <proxy-setting :fc="form.fc" />
+      <proxy-setting :fc="form.fc" ref="proxySetting" />
       <auto-sync :fc="form.fc" :form-layout="formLayout" />
     </a-form>
   </div>
