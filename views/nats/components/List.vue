@@ -12,7 +12,7 @@ import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
-import { getStatusFilter, getBrandFilter, getAccountFilter } from '@/utils/common/tableFilter'
+import { getStatusFilter, getBrandFilter, getAccountFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
 
@@ -68,6 +68,7 @@ export default {
               }
             }),
           },
+          project_domain: getProjectDomainFilter(),
         },
       }),
       exportDataOptions: {
@@ -82,6 +83,8 @@ export default {
           { label: '云账号', key: 'manager' },
           { label: '付费类型', key: 'billing_type' },
           { label: '创建时间', key: 'created_at' },
+          { label: '共享范围', key: 'public_scope' },
+          { label: `所属${this.$t('dictionary.domain')}`, key: 'project_domain' },
         ],
       },
       groupActions: [
