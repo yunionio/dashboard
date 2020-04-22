@@ -13,7 +13,7 @@ import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
-import { getNameFilter, getEnabledFilter, getStatusFilter, getBrandFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getEnabledFilter, getStatusFilter, getBrandFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
 import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
 
 export default {
@@ -59,6 +59,7 @@ export default {
               return `medium_type.contains("${val}")`
             },
           },
+          project_domain: getProjectDomainFilter(),
         },
       }),
       exportDataOptions: {
@@ -74,6 +75,8 @@ export default {
           { label: '调度标签', key: 'schedtag' },
           { label: '平台', key: 'provider' },
           { label: '区域', key: 'region' },
+          { label: '共享范围', key: 'public_scope' },
+          { label: `所属${this.$t('dictionary.domain')}`, key: 'project_domain' },
         ],
       },
       groupActions: [
@@ -99,7 +102,7 @@ export default {
               {
                 label: '启用',
                 permission: 'storages_perform_enable',
-                action: (row) => {
+                action: () => {
                   this.onManager('batchPerformAction', {
                     id: this.list.selectedItems.map(item => item.id),
                     managerArgs: {
@@ -116,7 +119,7 @@ export default {
               {
                 label: '禁用',
                 permission: 'storages_perform_disable',
-                action: (row) => {
+                action: () => {
                   this.onManager('batchPerformAction', {
                     id: this.list.selectedItems.map(item => item.id),
                     managerArgs: {
@@ -133,10 +136,22 @@ export default {
               getDomainChangeOwnerAction(this, {
                 name: this.$t('dictionary.storages'),
                 resource: 'storages',
+              }, {
+                meta: () => {
+                  return {
+                    validate: this.list.selectedItems.every(item => item.storage_type === 'local'),
+                  }
+                },
               }),
               getSetPublicAction(this, {
                 name: this.$t('dictionary.storages'),
                 scope: 'domain',
+              }, {
+                meta: () => {
+                  return {
+                    validate: this.list.selectedItems.every(item => item.storage_type === 'local'),
+                  }
+                },
               }),
               // {
               //   label: '同步状态',
