@@ -1141,6 +1141,7 @@
     "network": "IP子网",
     "reserved-ip": "预留IP",
     "schedtag": "调度标签",
+    "dynamicschedtag": "动态调度标签",
     "cachedimage": "镜像缓存",
     "storage": "存储",
     "keypair": "密钥",
@@ -1212,7 +1213,10 @@
     "vpc": "VPC",
     "globalvpc": "全局VPC",
     "nat": "NAT网关",
-    "networkinterface": "弹性网卡"
+    "networkinterface": "弹性网卡",
+    "proxysetting": "代理",
+    "schedpolicie": "调度策略",
+    "servertemplate": "主机模板"
   },
   "shareScope": {
     "system": "系统",
