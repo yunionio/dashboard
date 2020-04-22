@@ -3,7 +3,7 @@
     <div slot="header">移除</div>
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" action="移除" name="虚拟机" />
-      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-table :data="params.data" :columns="columns" />
       <a-form v-bind="formItemLayout">
         <a-form-item label="移除方式">
           <a-radio-group v-model="isDelete">
@@ -36,6 +36,15 @@ export default {
         wrapperCol: { span: 20 },
       },
     }
+  },
+  computed: {
+    columns () {
+      const fields = ['name', 'scaling_status', 'status']
+      return this.params.columns.filter(item => {
+        const { field } = item
+        return fields.indexOf(field) > -1
+      })
+    },
   },
   methods: {
     async handleConfirm () {

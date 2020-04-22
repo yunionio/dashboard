@@ -26,7 +26,7 @@ export default {
             name: '主机模板',
           })
         },
-        // meta: obj => this.$getDeleteResult(obj),
+        meta: obj => this.$getDeleteResult(obj),
       },
     ]
   },
