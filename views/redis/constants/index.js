@@ -1,4 +1,6 @@
 
+import validateForm, { isRequired } from '@/utils/validate'
+
 // 公有云计费方式配置选项
 export const BILL_TYPES_MAP = {
   postpaid: {
@@ -80,4 +82,136 @@ export const PERFORMANCE_TYPE_KEYS = ['standard', 'enhanced']
 export const PERFORMANCE_TYPE = {
   'standard': '标准性能',
   'enhanced': '增强性能',
+}
+
+// capbilit接口所需要的参数
+export const CAPABILIT_PARAMS = ['billing_type', 'city', 'provider', 'cloudregion', 'zone']
+
+// elasticcacheskus/instance-specs接口所需要的参数
+export const SPECS_PARAMS = ['billing_type', 'engine', 'engine_version', 'local_category', 'node_type', 'performance_type']
+
+// elasticcacheskus接口所需要的参数
+export const SKU_PARAMS = ['memory_size_mb', ...CAPABILIT_PARAMS, ...SPECS_PARAMS]
+
+export const DECORATORS = {
+  projectDomain: {
+    project: [
+      'project',
+      {
+        initialValue: undefined,
+      },
+    ],
+    domain: [
+      'domain',
+      {
+        initialValue: undefined,
+      },
+    ],
+  },
+  name: [
+    'name',
+    {
+      initialValue: '',
+      validateTrigger: ['change', 'blur'],
+      validateFirst: true,
+      rules: [
+        { required: true, message: '请输入名称' },
+        { validator: validateForm('serverName') },
+      ],
+    },
+  ],
+  count: [
+    'count',
+    {
+      initialValue: 1,
+      rules: [
+        { required: true, message: '请输入数量' },
+      ],
+    },
+  ],
+  billing_type: [
+    'billing_type',
+    {
+      initialValue: 'postpaid',
+    },
+  ],
+  sku: [
+    'sku',
+    {
+      rules: [
+        { required: true, message: '请选择套餐' },
+      ],
+    },
+  ],
+  regionZone: {
+    cloudregion: [
+      'region',
+      {
+        initialValue: { key: '', label: '' },
+        rules: [
+          { validator: isRequired(), message: '请选择区域' },
+        ],
+      },
+    ],
+    zone: [
+      'zone',
+      {
+        initialValue: { key: '', label: '' },
+        rules: [
+          { validator: isRequired(), message: '请选择可用区' },
+        ],
+      },
+    ],
+  },
+  cityProviderRegion: {
+    city: ['city', {
+      initialValue: undefined,
+    }],
+    provider: ['provider', {
+      initialValue: undefined,
+    }],
+    region: ['region', {
+      initialValue: undefined,
+    }],
+    zone: ['zone', {
+      initialValue: undefined,
+    }],
+  },
+  loginConfig: {
+    loginType: [
+      'loginType',
+      {
+        initialValue: 'random',
+      },
+    ],
+    keypair: [
+      'loginKeypair',
+      {
+        initialValue: undefined, // { key: '', label: '' }
+        rules: [
+          { validator: true, message: '请选择关联密钥' },
+        ],
+      },
+    ],
+  },
+  vpcNetwork: {
+    'vpc': [
+      'vpc',
+      {
+        initialValue: undefined,
+        rules: [
+          { required: true, message: '请选择VPC' },
+        ],
+      },
+    ],
+    'network': [
+      'network',
+      {
+        initialValue: undefined,
+        rules: [
+          { required: true, message: '请选择IP子网' },
+        ],
+      },
+    ],
+  },
 }
