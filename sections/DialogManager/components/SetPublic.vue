@@ -85,7 +85,7 @@ export default {
     let sharedDomainsInitialValue = []
     let sharedProjectsInitialValue = []
     // 只有单项操作时，才进行反显
-    if (!isBatch) {
+    if (!isBatch && this.params.data[0]['is_public']) {
       const firstData = this.params.data[0]
       const { public_scope: publicScope, shared_domains: sharedDomains, shared_projects: sharedProjects } = firstData
       // 初始化值

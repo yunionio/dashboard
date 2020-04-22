@@ -32,7 +32,7 @@ export function disableDeleteAction (params = {}, dialogParams = {}) {
 }
 
 // 更改域
-export function getDomainChangeOwnerAction (vm, dialogParams = {}) {
+export function getDomainChangeOwnerAction (vm, dialogParams = {}, params = {}) {
   if (!vm) {
     throw Error('not found vm instance')
   }
@@ -51,6 +51,9 @@ export function getDomainChangeOwnerAction (vm, dialogParams = {}) {
       })
     },
     meta: row => {
+      if (params.meta) {
+        return params.meta(row)
+      }
       const data = getSelectedData(row, vm)
       const ret = {
         validate: data && data.length > 0,
@@ -59,7 +62,7 @@ export function getDomainChangeOwnerAction (vm, dialogParams = {}) {
       if (!store.getters.l3PermissionEnable || !store.getters.isAdminMode) ret.validate = false
       if (data.some(item => item.public_scope !== 'none')) {
         ret.validate = false
-        ret.tooltip = '只支持设置为共享的数据'
+        ret.tooltip = '只有共享范围为不共享的才支持该操作'
       }
       return ret
     },
