@@ -9,7 +9,7 @@ export default {
             data: [obj],
             columns: this.columns,
             title: '删除',
-            name: '密钥',
+            name: this.$t('keypair'),
             onManager: this.onManager,
           })
         },

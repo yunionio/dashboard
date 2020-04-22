@@ -149,7 +149,7 @@ export default {
                       this.createDialog('HostsAdjustLabelDialog', {
                         data: [obj],
                         columns: this.columns,
-                        name: '宿主机',
+                        name: this.$t('host'),
                         onManager: this.onManager,
                       })
                     },
@@ -161,7 +161,7 @@ export default {
                         data: [obj],
                         columns: this.columns,
                         onManager: this.onManager,
-                        name: '宿主机',
+                        name: this.$t('host'),
                         refresh: this.refresh,
                       })
                     },
@@ -184,7 +184,7 @@ export default {
                         data: [obj],
                         columns: this.columns,
                         onManager: this.onManager,
-                        name: '宿主机',
+                        name: this.$t('host'),
                         refresh: this.refresh,
                       })
                     },
@@ -217,7 +217,7 @@ export default {
                         data: [obj],
                         columns: this.columns,
                         onManager: this.onManager,
-                        name: '宿主机',
+                        name: this.$t('host'),
                         refresh: this.refresh,
                       })
                     },
@@ -240,7 +240,7 @@ export default {
                         data: [obj],
                         columns: this.columns,
                         onManager: this.onManager,
-                        name: '宿主机',
+                        name: this.$t('host'),
                         refresh: this.refresh,
                       })
                     },
@@ -268,7 +268,7 @@ export default {
                         data: [obj],
                         columns: this.columns,
                         title: '删除',
-                        name: '宿主机',
+                        name: this.$t('host'),
                         onManager: this.onManager,
                       })
                     },

@@ -96,7 +96,7 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               title: '删除主机组',
-              name: '主机组',
+              name: this.$t('instancegroup'),
               onManager: this.onManager,
             })
           },

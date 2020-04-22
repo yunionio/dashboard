@@ -10,7 +10,7 @@ export default {
             data: [obj],
             columns: this.columns,
             title: '清除',
-            name: '硬盘',
+            name: this.$t('disk'),
             requestParams: { override_pending_delete: true },
             onManager: this.onManager,
           })

@@ -259,7 +259,7 @@ export default {
                   data: [obj],
                   columns: this.columns,
                   title: '删除',
-                  name: '镜像',
+                  name: this.$t('image'),
                   onManager: this.onManager,
                 })
               },

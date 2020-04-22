@@ -62,7 +62,7 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               title: '清除',
-              name: '镜像',
+              name: this.$t('image'),
               requestParams: { override_pending_delete: true },
               onManager: this.onManager,
             })

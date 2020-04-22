@@ -24,7 +24,7 @@ export default {
             data: [obj],
             columns: this.columns,
             title: '删除',
-            name: '自动快照策略',
+            name: this.$t('snapshotpolicy'),
             onManager: this.onManager,
           })
         },

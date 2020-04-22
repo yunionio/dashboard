@@ -163,7 +163,7 @@ export default {
                     this.createDialog('HostsAdjustLabelDialog', {
                       data: [obj],
                       columns: this.columns,
-                      name: '物理机',
+                      name: this.$t('physicalmachine'),
                     })
                   },
                 },

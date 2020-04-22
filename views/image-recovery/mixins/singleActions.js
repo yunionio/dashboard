@@ -10,7 +10,7 @@ export default {
             data: [obj],
             columns: this.columns,
             title: '清除',
-            name: '镜像',
+            name: this.$t('image'),
             onManager: this.onManager,
             requestParams: { override_pending_delete: true },
           })

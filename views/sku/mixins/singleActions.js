@@ -63,7 +63,7 @@ export default {
                   data: [obj],
                   columns: this.columns,
                   title: '删除',
-                  name: '套餐',
+                  name: this.$t('sku'),
                   onManager: this.onManager,
                 })
               },
