@@ -8,7 +8,7 @@
     :defaultActiveFirstOption="defaultActiveFirstOption"
     :cityParams="cityParams"
     :zoneParams="zoneParams"
-    :providerParams="scopeParams"
+    :providerParams="providerParams"
     :cloudregionParams="cloudregionParams"
     @cityFetchSuccess="cityFetchSuccess"
     @providerFetchSuccess="providerFetchSuccess"
@@ -74,6 +74,12 @@ export default {
     },
     cityParams () {
       return { service: this.service, cloud_env: 'public', ...this.scopeParams }
+    },
+    providerParams () {
+      return {
+        service: this.service,
+        ...this.scopeParams,
+      }
     },
     zoneParams () {
       return {
