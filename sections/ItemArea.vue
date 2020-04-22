@@ -110,7 +110,12 @@ export default {
       this.$refs['areaSelects'].fetchs(['provider', 'cloudregion'])
     },
     providerFetchSuccess (list = []) {
-      const _list = list.filter(({ name }) => this.providers.indexOf(name) > -1)
+      const _list = list.filter(({ name }) => {
+        if (this.providers) {
+          return this.providers.indexOf(name) > -1
+        }
+        return true
+      })
       this.providerList = _list
       this.form.fc.validateFields(['provider'])
       if (this.providerList.length === 0) {
