@@ -363,9 +363,10 @@ export default {
   > li {
     padding: 5px 0;
     > ul {
+      margin-top: 5px;
       > li {
         padding-left: 10px;
-        height: 32px;
+        height: 24px;
       }
     }
   }
