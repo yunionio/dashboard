@@ -24,14 +24,14 @@
       </a-radio-group>
     </a-form-item>
      <a-form-item label="性能类型" v-bind="formItemLayout">
-      <a-radio-group v-decorator="decorators.performance_type || ['performance_type', { initialValue: 'standard' }]" @change="eimtChange">
+      <a-radio-group v-decorator="decorators.performance_type || ['performance_type', { initialValue: 'standard' }]">
         <template v-for="item in performance_types">
            <a-radio-button v-if="item" :key="item" :value="item">{{PERFORMANCE_TYPE[item]}}</a-radio-button>
         </template>
       </a-radio-group>
     </a-form-item>
     <a-form-item label="内存" v-bind="formItemLayout" v-if="memorys && memorys.length > 0">
-      <a-radio-group v-decorator="decorators.memory_size_mb || ['memory_size_mb']" @change="eimtChange">
+      <a-radio-group v-decorator="decorators.memory_size_mb || ['memory_size_mb']">
         <a-radio-button :key="size" :disabled="getIsMemoryDisabled(size)" :value="size" v-for="size in memorys">{{sizestr(size, 'M', 1024)}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
@@ -189,10 +189,6 @@ export default {
       this.setInitValue('performance_type', () => {})
     },
     archPoints (type) {
-      // single': '基础版',
-      // 'master': '高可用',
-      // 'cluster': '集群',
-      // 'rwsplit': '读写分离',
       const points = {
         'single': '数据单副本 | 不支持数据持久化 | 不承诺数据可靠性',
         'ha': '数据双副本 | 数据持久化 | 提供数据可靠性',
@@ -202,9 +198,6 @@ export default {
         'rwsplit': '高可用| 高性能｜高灵活的读写分离服务',
       }
       return points[type]
-    },
-    eimtChange () {
-      this.$emit('change')
     },
     async fetchSpecs (params) {
       const instanceSpecsManager = new this.$Manager('elasticcacheskus/instance-specs')

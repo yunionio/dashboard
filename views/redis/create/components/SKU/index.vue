@@ -2,6 +2,7 @@
   <div>
     <item-filters
       ref="FILTERS"
+      :getParams="getParams"
       :disableds="disableds"
       :decorators="decorators" />
     <sku-list
@@ -10,11 +11,13 @@
   </div>
 </template>
 <script>
+import { isRequiredData } from '@DB/views/utils'
+import { CAPABILIT_PARAMS, SPECS_PARAMS, SKU_PARAMS } from '@DB/views/redis/constants'
 import ItemFilters from './components/ItemFilters'
 import SkuList from './components/List'
 
 export default {
-  name: 'rdisiCreateSkus',
+  name: 'RedisCreateSku',
   components: {
     ItemFilters,
     SkuList,
@@ -31,51 +34,47 @@ export default {
       type: Object,
     },
   },
-  data () {
-    return {
-      T: undefined,
-    }
-  },
-  mounted () {
-    const { fetchCapability, fetchSpecs } = this.$refs['FILTERS']
-    const { fetchSkus } = this.$refs['SKU_LIST']
-    this.fetchCapability = fetchCapability
-    this.fetchSpecs = fetchSpecs
-    this.fetchSkus = fetchSkus
-  },
   methods: {
-    async getParams (keys) {
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          const values = this.form.getFieldsValue(keys)
-          const params = {
-            ...values,
-            usable: true,
-            ...this.scopeParams,
-          }
-          resolve(params)
-        }, 10)
-      })
+    getParams (keys) {
+      const values = this.form.getFieldsValue(keys)
+      return {
+        usable: true,
+        ...values,
+        ...this.scopeParams,
+      }
     },
-    async skuFetchs (changedFields) {
-      const capabilityParamsKeys = ['billing_type', 'city', 'provider', 'cloudregion', 'zone']
-      const instanceSpecsParamsKeys = ['billing_type', 'engine', 'engine_version', 'performance_type', 'local_category', 'node_type', 'performance_type']
-      const skuParamsKey = ['memory_size_mb'].concat(capabilityParamsKeys).concat(instanceSpecsParamsKeys)
-      const field = Object.keys(changedFields || {})[0]
-      const isUndefined = changedFields === undefined
+    async fetchCapability () {
+      const { fetchCapability } = this.$refs['FILTERS']
+      const values = this.getParams(CAPABILIT_PARAMS)
+      if (!values.city && !values.cloudregion) {
+        return false
+      }
       try {
-        if (capabilityParamsKeys.indexOf(field) > -1 || isUndefined) {
-          const params = await this.getParams(capabilityParamsKeys)
-          await this.fetchCapability(params)
-        }
-        if (instanceSpecsParamsKeys.indexOf(field) > -1 || isUndefined) {
-          const params = await this.getParams(instanceSpecsParamsKeys)
-          await this.fetchSpecs(params)
-        }
-        if (skuParamsKey.indexOf(field) > -1 || isUndefined) {
-          const params = await this.getParams(skuParamsKey)
-          await this.fetchSkus(params)
-        }
+        await fetchCapability(values)
+      } catch (err) {
+        throw err
+      }
+    },
+    async fetchSpecs () {
+      const { fetchSpecs } = this.$refs['FILTERS']
+      const values = this.getParams(SPECS_PARAMS)
+      if (!isRequiredData(values, SPECS_PARAMS)) {
+        return false
+      }
+      try {
+        await fetchSpecs(values)
+      } catch (err) {
+        throw err
+      }
+    },
+    async fetchSkus () {
+      const { fetchSkus } = this.$refs['SKU_LIST']
+      const values = this.getParams(SKU_PARAMS)
+      if (!isRequiredData(values, ['memory_size_mb', ...SPECS_PARAMS])) {
+        return false
+      }
+      try {
+        await fetchSkus(values)
       } catch (err) {
         throw err
       }
