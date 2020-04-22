@@ -6,7 +6,7 @@
         <a-form-item
           label="问题描述"
           v-bind="formItemLayout">
-          <a-input v-decorator="decorators.comment" />
+          <a-textarea :autoSize="{ minRows: 4, maxRows: 5 }" v-decorator="decorators.comment" />
         </a-form-item>
       </a-form>
     </div>
