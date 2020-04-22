@@ -19,8 +19,8 @@
           <template v-if="!isAdminMode && !isDomainMode && projectEnabled && customerServiceEnabled">
             <div class="mt-2 text-color-help" style="font-size: 12px;"><a-icon type="plus" /><span class="ml-2">新建工单</span></div>
             <ul class="work-list">
-              <li @click="goV1" v-if="projectEnabled">申请加入{{ $t('dictionary.project') }}</li>
-              <li @click="goV1" v-if="customerServiceEnabled">申请技术支持</li>
+              <li @click="joinProjectHandle" v-if="projectEnabled">申请加入{{ $t('dictionary.project') }}</li>
+              <li @click="customeServiceHandle" v-if="customerServiceEnabled">申请技术支持</li>
             </ul>
           </template>
         </div>
@@ -32,11 +32,13 @@
 <script>
 import { mapGetters } from 'vuex'
 import workflowMixin from '@/mixins/workflow'
+import DialogMixin from '@/mixins/dialog'
+import WindowsMixin from '@/mixins/windows'
 import { WORKFLOW_TYPES } from '@/constants/workflow'
 
 export default {
   name: 'WorkOrderPopover',
-  mixins: [workflowMixin],
+  mixins: [workflowMixin, DialogMixin, WindowsMixin],
   computed: {
     ...mapGetters(['isAdminMode', 'isDomainMode']),
     statistics () {
@@ -63,6 +65,12 @@ export default {
     },
     goV1 () {
       window.location.href = this.$appConfig.v1Perfix
+    },
+    joinProjectHandle () {
+      this.createDialog('ApplyJoinProjectDialog', {})
+    },
+    customeServiceHandle () {
+      this.createDialog('CustomeServiceDialog', {})
     },
   },
 }
