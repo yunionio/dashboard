@@ -409,6 +409,9 @@ export const USAGE_CONFIG = {
   'zones': {
     unit: '个',
   },
+  'all.disks.count': {
+    unit: '个',
+  },
   'all.disks.attached.count': {
     unit: '个',
   },
@@ -428,6 +431,9 @@ export const USAGE_CONFIG = {
     unit: '个',
   },
   'cache': {
+    unit: '个',
+  },
+  'disks.count': {
     unit: '个',
   },
   'disks.attached.count': {
