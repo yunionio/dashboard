@@ -55,6 +55,7 @@ export default {
             data: [obj],
             columns: this.columns,
             title: '删除',
+            name: '调度标签',
             onManager: this.onManager,
             success: () => {
               this.destroySidePages()

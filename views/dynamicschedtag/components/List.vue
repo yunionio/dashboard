@@ -82,6 +82,7 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               title: '删除动态调度标签',
+              name: '动态调度标签',
               onManager: this.onManager,
             })
           },
