@@ -125,6 +125,7 @@ export default {
                     data: this.list.selectedItems,
                     columns: this.columns,
                     title: '删除',
+                    name: '弹性公网IP',
                     onManager: this.onManager,
                   })
                 },

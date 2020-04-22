@@ -106,6 +106,7 @@ export default {
                     data: this.list.selectedItems,
                     columns: this.columns,
                     title: '删除',
+                    name: '二层网络',
                     onManager: this.onManager,
                   })
                 },

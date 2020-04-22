@@ -37,6 +37,7 @@ export default {
                 this.createDialog('DeleteResDialog', {
                   vm: this,
                   title: '删除',
+                  name: 'VPC',
                   data: [obj],
                   columns: this.columns,
                   onManager: this.onManager,

@@ -69,6 +69,7 @@ export default {
                 this.createDialog('DeleteResDialog', {
                   vm: this,
                   title: '删除',
+                  name: '域名服务',
                   data: [obj],
                   columns: this.columns,
                   onManager: this.onManager,
