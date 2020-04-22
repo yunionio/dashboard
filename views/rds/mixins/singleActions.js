@@ -34,6 +34,7 @@ export default {
                   columns: this.columns,
                   onManager: this.onManager,
                   refresh: this.refresh,
+                  name: 'RDS实例',
                 })
               },
             },
@@ -93,7 +94,9 @@ export default {
                 }
               },
             },
-            disableDeleteAction(this),
+            disableDeleteAction(this, {
+              name: 'RDS实例',
+            }),
             {
               label: '删除',
               permission: 'rds_dbinstances_delete',
@@ -105,6 +108,7 @@ export default {
                   columns: this.columns,
                   onManager: this.onManager,
                   refresh: this.refresh,
+                  name: 'RDS实例',
                 })
               },
               meta: () => {

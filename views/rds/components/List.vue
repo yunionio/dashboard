@@ -134,6 +134,7 @@ export default {
               columns: this.columns,
               onManager: this.onManager,
               refresh: this.refresh,
+              name: 'RDS实例',
             })
           },
           meta: () => {
@@ -188,7 +189,9 @@ export default {
                   }
                 },
               },
-              disableDeleteAction(this),
+              disableDeleteAction(this, {
+                name: 'RDS实例',
+              }),
               {
                 label: '重启',
                 action: () => {

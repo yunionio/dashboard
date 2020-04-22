@@ -130,6 +130,7 @@ export default {
               columns: this.columns,
               onManager: this.onManager,
               refresh: this.refresh,
+              name: 'Redis实例',
             })
           },
           meta: () => {
@@ -193,6 +194,7 @@ export default {
                     columns: this.columns,
                     onManager: this.onManager,
                     refresh: this.refresh,
+                    name: 'Redis实例',
                   })
                 },
                 meta: () => {
@@ -211,6 +213,7 @@ export default {
                     columns: this.columns,
                     onManager: this.onManager,
                     refresh: this.refresh,
+                    name: 'Redis实例',
                   })
                 },
                 meta: () => {
@@ -220,7 +223,9 @@ export default {
                   }
                 },
               },
-              disableDeleteAction(this),
+              disableDeleteAction(this, {
+                name: 'Redis实例',
+              }),
             ]
           },
           meta: () => {
