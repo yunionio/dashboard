@@ -7,6 +7,8 @@
 </template>
 
 <script>
+import { getPublicScopeTableColumn } from '@/utils/common/tableColumn'
+
 export default {
   name: 'SecgroupDetail',
   props: {
@@ -36,13 +38,7 @@ export default {
           field: 'cache_cnt',
           title: '缓存份数',
         },
-        {
-          field: 'public_scope',
-          title: '共享范围',
-          formatter: ({ cellValue }) => {
-            return this.PUBLIC_SCOPE_ZH[cellValue]
-          },
-        },
+        getPublicScopeTableColumn(),
       ],
     }
   },
