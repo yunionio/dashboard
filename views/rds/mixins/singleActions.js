@@ -34,7 +34,7 @@ export default {
                   columns: this.columns,
                   onManager: this.onManager,
                   refresh: this.refresh,
-                  name: 'RDS实例',
+                  name: this.$t('dbinstances'),
                 })
               },
             },
@@ -95,7 +95,7 @@ export default {
               },
             },
             disableDeleteAction(this, {
-              name: 'RDS实例',
+              name: this.$t('dbinstances'),
             }),
             {
               label: '删除',
@@ -108,7 +108,7 @@ export default {
                   columns: this.columns,
                   onManager: this.onManager,
                   refresh: this.refresh,
-                  name: 'RDS实例',
+                  name: this.$t('dbinstances'),
                 })
               },
               meta: () => {
