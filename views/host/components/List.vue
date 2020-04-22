@@ -13,7 +13,7 @@
 import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import { getStatusFilter, getEnabledFilter, getBrandFilter } from '@/utils/common/tableFilter'
+import { getStatusFilter, getEnabledFilter, getBrandFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ListMixin from '@/mixins/list'
@@ -73,6 +73,7 @@ export default {
             },
           },
           brand: getBrandFilter(),
+          project_domain: getProjectDomainFilter(),
         },
         responseData: this.responseData,
       }),
@@ -93,6 +94,8 @@ export default {
           { label: this.$t('dictionary.project'), key: 'tenant' },
           { label: '区域', key: 'region' },
           { label: '可用区', key: 'zone' },
+          { label: '共享范围', key: 'public_scope' },
+          { label: `所属${this.$t('dictionary.domain')}`, key: 'project_domain' },
         ],
       },
     }
