@@ -504,6 +504,7 @@ export default {
     {
       meta: {
         label: '回收站',
+        permission: 'recyclebins_list',
       },
       submenus: [
         {
