@@ -130,7 +130,7 @@ export default {
               columns: this.columns,
               onManager: this.onManager,
               refresh: this.refresh,
-              name: 'Redis实例',
+              name: this.$t('elasticcaches'),
             })
           },
           meta: () => {
@@ -194,7 +194,7 @@ export default {
                     columns: this.columns,
                     onManager: this.onManager,
                     refresh: this.refresh,
-                    name: 'Redis实例',
+                    name: this.$t('elasticcaches'),
                   })
                 },
                 meta: () => {
@@ -213,7 +213,7 @@ export default {
                     columns: this.columns,
                     onManager: this.onManager,
                     refresh: this.refresh,
-                    name: 'Redis实例',
+                    name: this.$t('elasticcaches'),
                   })
                 },
                 meta: () => {
@@ -224,7 +224,7 @@ export default {
                 },
               },
               disableDeleteAction(this, {
-                name: 'Redis实例',
+                name: this.$t('elasticcaches'),
               }),
             ]
           },

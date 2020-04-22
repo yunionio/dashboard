@@ -33,7 +33,7 @@ export default {
                     columns: this.columns,
                     onManager: this.onManager,
                     refresh: this.refresh,
-                    name: 'Redis实例',
+                    name: this.$t('elasticcaches'),
                   })
                 },
                 meta: () => {
@@ -53,7 +53,7 @@ export default {
                   columns: this.columns,
                   onManager: this.onManager,
                   refresh: this.refresh,
-                  name: 'Redis实例',
+                  name: this.$t('elasticcaches'),
                 })
               },
               meta: () => {
@@ -74,7 +74,7 @@ export default {
                   columns: this.columns,
                   onManager: this.onManager,
                   refresh: this.refresh,
-                  name: 'Redis实例',
+                  name: this.$t('elasticcaches'),
                 })
               },
             },
@@ -87,7 +87,7 @@ export default {
                   columns: this.columns,
                   onManager: this.onManager,
                   refresh: this.refresh,
-                  name: 'Redis实例',
+                  name: this.$t('elasticcaches'),
                 })
               },
               meta: () => {
@@ -106,7 +106,7 @@ export default {
                   columns: this.columns,
                   onManager: this.onManager,
                   refresh: this.refresh,
-                  name: 'Redis实例',
+                  name: this.$t('elasticcaches'),
                 })
               },
               meta: () => {
@@ -126,7 +126,7 @@ export default {
                   columns: this.columns,
                   onManager: this.onManager,
                   refresh: this.refresh,
-                  name: 'Redis实例',
+                  name: this.$t('elasticcaches'),
                 })
               },
               meta: () => {
@@ -145,7 +145,7 @@ export default {
                   columns: this.columns,
                   onManager: this.onManager,
                   refresh: this.refresh,
-                  name: 'Redis实例',
+                  name: this.$t('elasticcaches'),
                 })
               },
               meta: () => {
@@ -157,7 +157,7 @@ export default {
             },
             setAuthMode(),
             disableDeleteAction(this, {
-              name: 'Redis实例',
+              name: this.$t('elasticcaches'),
             }),
             {
               label: '删除',
@@ -166,7 +166,7 @@ export default {
                 this.createDialog('DeleteResDialog', {
                   vm: this,
                   title: '删除',
-                  name: 'Redis实例',
+                  name: this.$t('elasticcaches'),
                   data: [obj],
                   columns: this.columns,
                   onManager: this.onManager,
