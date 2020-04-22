@@ -188,11 +188,13 @@ export default {
     async doCreate () {
       if (!this.validateForm()) return false
       const manager = new Manager('elasticcaches', 'v2')
-      this.loading = true
-      const { data, status } = await manager.create({ data: this.formatParams() })
-      this.loading = false
-      if ((status === 200 || status === 207) && data) {
+      try {
+        await manager.create({ data: this.formatParams() })
         this.$router.push('/redis')
+      } catch (err) {
+        throw err
+      } finally {
+        this.loading = false
       }
     },
   },
