@@ -55,3 +55,33 @@ export const getHostCountTableColumn = () => {
     minWidth: 70,
   }
 }
+
+export const getPublicScopeTableColumn = () => {
+  return {
+    field: 'public_scope',
+    title: '共享范围',
+    width: 110,
+    showOverflow: 'title',
+    formatter: ({ row }) => {
+      if (!row.is_public) return i18n.t('cloudAccountShareDesc.none')
+      const { share_mode: shareMode, public_scope: publicScope, shared_domains: sharedDomains } = row
+      if (publicScope === 'domain') {
+        if (shareMode === 'provider_domain' && sharedDomains && sharedDomains.length > 0) {
+          return i18n.t('cloudAccountShareDesc.provider')
+        }
+        if (shareMode === 'system' && sharedDomains && sharedDomains.length > 0) {
+          return i18n.t('cloudAccountShareDesc.account')
+        }
+      }
+      if (publicScope === 'system') {
+        if (shareMode === 'provider_domain') {
+          return i18n.t('cloudAccountShareDesc.providerAll')
+        }
+        if (shareMode === 'system' && sharedDomains && sharedDomains.length > 0) {
+          return i18n.t('cloudAccountShareDesc.accountAll')
+        }
+      }
+      return '-'
+    },
+  }
+}
