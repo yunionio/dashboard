@@ -5,7 +5,7 @@
     :group-actions="groupActions"
     :single-actions="singleActions"
     :export-data-options="exportDataOptions"
-    :expand-config="{ lazy: true, loadMethod: loadRules }"
+    :expand-config="{ lazy: true, loadMethod: loadRules, accordion: true }"
     :showSearchbox="showSearchbox"
     :showGroupActions="showGroupActions" />
 </template>
