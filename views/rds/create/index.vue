@@ -24,25 +24,17 @@
         :isRequired="true"
         :names="['city', 'provider', 'cloudregion']" />
       <!-- 套餐信息 -->
-      <div>
-        <s-k-u ref="SKU" />
-        <a-form-item label="管理员密码" v-bind="formItemLayout">
-          <server-password :loginTypes="loginTypes" :decorator="decorators.loginConfig" :form="form" />
-        </a-form-item>
-        <network-selects
-          ref="NETWORK"
-          label="网络"
-          :isDefaultFetch="false"
-          :vpcFormat="vpcFormat"
-          :vpcParams="getVpcParams"
-          :networkParams="getNetworkParams"
-          v-bind="formItemLayout" />
-        <!-- 选择安全组 -->
-        <a-form-item v-if="form.getFieldValue('provider') === 'Huawei'" label="安全组" v-bind="formItemLayout">
-          <secgroup-config :decorators="decorators.secgroup" />
-        </a-form-item>
-        <bottom-bar :values="form.getFieldsValue()" />
-      </div>
+      <s-k-u ref="SKU" />
+      <a-form-item label="管理员密码" v-bind="formItemLayout">
+        <server-password :loginTypes="loginTypes" :decorator="decorators.loginConfig" :form="form" />
+      </a-form-item>
+      <!-- 网络 -->
+      <item-network ref="NETWORK" />
+      <!-- 选择安全组 -->
+      <a-form-item v-if="form.getFieldValue('provider') === 'Huawei'" label="安全组" v-bind="formItemLayout">
+        <secgroup-config :decorators="decorators.secgroup" />
+      </a-form-item>
+      <bottom-bar :values="form.getFieldsValue()" />
     </a-form>
   </div>
 </template>
@@ -51,13 +43,13 @@ import { CreateServerForm } from '@Compute/constants'
 import ServerPassword from '@Compute/sections/ServerPassword'
 import SecgroupConfig from '@Compute/sections/SecgroupConfig'
 import ItemArea from '@DB/sections/ItemArea'
+import ItemNetwork from '@DB/sections/ItemNetwork'
 import { DECORATORS } from './constants/index'
 import SKU from './components/SKU'
 import BottomBar from './components/BottomBar'
 import changeMinxin from './changeMinxin'
 import NameRepeated from '@/sections/NameRepeated'
 import DomainProject from '@/sections/DomainProject'
-import NetworkSelects from '@/sections/NetworkSelects'
 import { getInitialValue } from '@/utils/common/ant'
 
 export default {
@@ -68,7 +60,7 @@ export default {
     BottomBar,
     ServerPassword,
     ItemArea,
-    NetworkSelects,
+    ItemNetwork,
     SecgroupConfig,
     NameRepeated,
   },
@@ -114,39 +106,6 @@ export default {
       formItemLayout: this.formItemLayout,
       scopeParams: this.scopeParams,
     }
-  },
-  methods: {
-    vpcFormat (vpc) {
-      const { name, manager } = vpc
-      return (
-        <div class='d-flex'>
-          <span class='text-truncate flex-fill mr-2' title={ name }>{ name }</span>
-          <span style="color: #8492a6; font-size: 13px">云订阅: { manager }</span>
-        </div>
-      )
-    },
-    getVpcParams () {
-      return {
-        cloudregion_id: this.form.getFieldValue('cloudregion'),
-        ...this.scopeParams,
-      }
-    },
-    getNetworkParams () {
-      const params = {
-        cloudregion_id: this.form.getFieldValue('cloudregion'),
-        ...this.scopeParams,
-      }
-      const zoneStr = this.form.getFieldValue('zones')
-      if (zoneStr) {
-        const zoneArr = zoneStr.split('+')
-        if (zoneArr && zoneArr.length > 0) {
-          for (let i = 0; i < zoneArr.length; i++) {
-            params[`zones.${i}`] = zoneArr[i]
-          }
-        }
-      }
-      return params
-    },
   },
 }
 </script>
