@@ -36,11 +36,12 @@ export default {
         label: '删除',
         action: (obj) => {
           this.createDialog('DeleteResDialog', {
-            steadyStatus: Object.values(expectStatus.scalinggroup).flat(),
+            title: '删除',
+            name: '弹性伸缩组',
             data: [obj],
             columns: this.columns,
-            title: '删除',
             onManager: this.onManager,
+            steadyStatus: Object.values(expectStatus.scalinggroup).flat(),
           })
         },
         meta: (obj) => {

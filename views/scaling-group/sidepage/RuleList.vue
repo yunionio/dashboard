@@ -144,8 +144,11 @@ export default {
             if (!obj.enabled) {
               tooltip = '仅启用状态下支持此操作'
             }
+            if (obj.status !== 'ready') {
+              tooltip = '仅正常状态下支持此操作'
+            }
             return {
-              validate: obj.enabled && this.data.enabled,
+              validate: !tooltip,
               tooltip,
             }
           },
@@ -312,7 +315,7 @@ export default {
         }
         let tiemStr = ''
         if (startTime && endTime) {
-          tiemStr = `，有效时间为${this.$moment(startTime).format()}至${this.$moment(endTime).format()}`
+          tiemStr = `，有效时间为${this.$moment(startTime).format('YYYY-MM-DD')}至${this.$moment(endTime).format('YYYY-MM-DD')}`
         }
         return `${typeTxt}${itemsTxt}${`${numerify(hour, '00')}:${numerify(minute, '00')}`}触发 ${tiemStr}`
       }
