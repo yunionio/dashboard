@@ -344,7 +344,7 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'running_servers.ha': {
-	unit: '台',
+    unit: '台',
   },
   'running_servers.ha.cpu': {
     unit: '核',
@@ -467,7 +467,7 @@ export const USAGE_CONFIG = {
     unit: '个',
   },
   'domain.cpu_commit_rate.running': {
-    
+
   },
   'domain.disks': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -542,7 +542,7 @@ export const USAGE_CONFIG = {
     unit: '个',
   },
   'domain.memory_commit_rate.running': {
-    
+
   },
   'domain.pending_delete_servers': {
     unit: '台',
@@ -668,7 +668,7 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.storages.commit_rate': {
-    
+
   },
   'domain.storages.virtual': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
