@@ -108,10 +108,22 @@ export default {
             getDomainChangeOwnerAction(this, {
               name: this.$t('dictionary.storages'),
               resource: 'storages',
+            }, {
+              meta: (row) => {
+                return {
+                  validate: row.storage_type === 'local',
+                }
+              },
             }),
             getSetPublicAction(this, {
               name: this.$t('dictionary.storages'),
               scope: 'domain',
+            }, {
+              meta: (row) => {
+                return {
+                  validate: row.storage_type === 'local',
+                }
+              },
             }),
             // {
             //   label: '同步状态',
