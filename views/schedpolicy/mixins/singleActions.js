@@ -59,7 +59,7 @@ export default {
                   data: [obj],
                   columns: this.columns,
                   title: '删除调度策略',
-                  name: '调度策略',
+                  name: this.$t('schedpolicie'),
                   onManager: this.onManager,
                 })
               },
