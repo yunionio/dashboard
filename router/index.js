@@ -54,7 +54,7 @@ export default {
           component: Layout,
           children: [
             {
-              name: this.$t('vpc'),
+              name: 'Vpc',
               path: '',
               component: Vpc,
             },
