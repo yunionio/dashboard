@@ -11,7 +11,7 @@
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
-import { getAccountFilter, getBrandFilter } from '@/utils/common/tableFilter'
+import { getAccountFilter, getBrandFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
 
@@ -43,6 +43,7 @@ export default {
             label: '区域',
           },
           brand: getBrandFilter(),
+          project_domain: getProjectDomainFilter(),
         },
       }),
       exportDataOptions: {
@@ -53,6 +54,8 @@ export default {
           { label: '区域', key: 'region' },
           { label: '云账号', key: 'manager' },
           { label: '条目（路由表类型 目标网段 下一跳）', key: 'routes' },
+          { label: '共享范围', key: 'public_scope' },
+          { label: `所属${this.$t('dictionary.domain')}`, key: 'project_domain' },
         ],
       },
       groupActions: [
