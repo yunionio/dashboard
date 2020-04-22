@@ -99,6 +99,7 @@ export default {
               permission: 'server_perform_add_secgroup',
               action: () => {
                 this.createDialog('VmSetSecgroupDialog', {
+                  vm: me,
                   data: [me.detailData],
                   columns: me.columns,
                   onManager: me.onManager,
