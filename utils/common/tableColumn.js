@@ -395,9 +395,21 @@ export const getPublicScopeTableColumn = ({
     showOverflow: 'title',
     width: 110,
     formatter: ({ row }) => {
-      if (!row.is_public) return '不共享'
-      const i18nKey = `publicScope.${row.public_scope}`
-      return i18n.te(i18nKey) ? i18n.t(i18nKey) : row.public_scope
+      if (!row.is_public) return i18n.t('shareDesc.none')
+      const { public_scope: publicScope, shared_projects: sharedProjects, shared_domains: sharedDomains } = row
+      if (publicScope === 'project' && sharedProjects && sharedProjects.length > 0) {
+        return i18n.t('shareDesc.project')
+      }
+      if (publicScope === 'domain') {
+        if (sharedDomains && sharedDomains.length > 0) {
+          return i18n.t('shareDesc.domain')
+        }
+        return i18n.t('shareDesc.projectAll')
+      }
+      if (publicScope === 'system') {
+        return i18n.t('shareDesc.domainAll')
+      }
+      return '-'
     },
   }
 }

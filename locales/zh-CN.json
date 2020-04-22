@@ -1382,17 +1382,6 @@
     "file": "上传镜像文件",
     "url": "输入镜像URL"
   },
-  "publicScope": {
-    "none": "不共享",
-    "project": "@:dictionary.project间共享",
-    "domain": "@:dictionary.domain间共享",
-    "system": "全局共享"
-  },
-  "cloudAccountShareMode": {
-    "account_domain": "不共享",
-    "provider_domain": "共享云订阅",
-    "system": "全局共享"
-  },
   "proxysettings": {
     "http_proxy": "Http代理",
     "https_proxy": "Https代理"
@@ -1404,5 +1393,19 @@
     "create": "创建",
     "delete": "删除",
     "perform": "执行操作"
+  },
+  "shareDesc": {
+    "none": "不共享",
+    "project": "@:dictionary.project共享-部分",
+    "projectAll": "@:dictionary.project共享-全部",
+    "domain": "@:dictionary.domain共享-部分",
+    "domainAll": "@:dictionary.domain共享-全部"
+  },
+  "cloudAccountShareDesc": {
+    "none": "不共享",
+    "provider": "共享@:(dictionary.cloudprovider)-部分",
+    "providerAll": "共享@:(dictionary.cloudprovider)-全部",
+    "account": "共享@:(dictionary.cloudaccount)-部分",
+    "accountAll": "共享@:(dictionary.cloudaccount)-全部"
   }
 }
