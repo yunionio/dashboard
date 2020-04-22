@@ -127,11 +127,12 @@ export default {
                 permission: 'servicecatalogs_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
-                    steadyStatus: Object.values(expectStatus.scalinggroup).flat(),
+                    title: '删除',
+                    name: '弹性伸缩组',
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    title: '删除账号',
                     onManager: this.onManager,
+                    steadyStatus: Object.values(expectStatus.scalinggroup).flat(),
                   })
                 },
                 meta: () => this.$getDeleteResult(this.list.selectedItems),
