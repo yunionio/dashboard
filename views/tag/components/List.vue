@@ -1,7 +1,8 @@
 <template>
   <page-list
     :list="list"
-    :columns="columns" />
+    :columns="columns"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>

@@ -76,7 +76,7 @@ export default {
     let providerSharedDomainsInitialValue = []
     let systemSharedDomainsInitialValue = []
     // 只有单项操作时，才进行反显
-    if (!isBatch) {
+    if (!isBatch && this.params.data[0]['is_public']) {
       const firstData = this.params.data[0]
       const { share_mode: shareMode, shared_domains: sharedDomains } = firstData
       // 共享云订阅

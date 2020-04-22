@@ -3,6 +3,7 @@ import {
   getBalanceTableColumn,
   getGuestCountTableColumn,
   getHostCountTableColumn,
+  getPublicScopeTableColumn,
 } from '../utils/columns'
 import {
   getBrandTableColumn,
@@ -57,16 +58,7 @@ export default {
           },
         },
       },
-      {
-        field: 'share_mode',
-        title: '共享范围',
-        width: 100,
-        showOverflow: 'title',
-        formatter: ({ cellValue }) => {
-          const i18nKey = `cloudAccountShareMode.${cellValue}`
-          return this.$te(i18nKey) ? this.$t(i18nKey) : cellValue
-        },
-      },
+      getPublicScopeTableColumn(),
       getProjectDomainTableColumn(),
       getCopyWithContentTableColumn({
         title: `资源归属${this.$t('dictionary.project')}`,

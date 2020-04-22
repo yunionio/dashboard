@@ -13,8 +13,9 @@ import {
   getBalanceTableColumn,
   getGuestCountTableColumn,
   getHostCountTableColumn,
+  getPublicScopeTableColumn,
 } from '../utils/columns'
-import { getBrandTableColumn, getEnabledTableColumn, getStatusTableColumn, getPublicTableColumn } from '@/utils/common/tableColumn'
+import { getBrandTableColumn, getEnabledTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -34,7 +35,7 @@ export default {
     return {
       baseInfo: [
         getBrandTableColumn(),
-        getPublicTableColumn(),
+        getPublicScopeTableColumn(),
         {
           field: 'account',
           title: '账号',
