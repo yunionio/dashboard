@@ -144,6 +144,7 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               title: '删除报警',
+              name: '报警记录',
             })
           },
           meta: () => {
@@ -162,6 +163,7 @@ export default {
               data: [obj],
               columns: this.columns,
               title: '删除报警',
+              name: '报警记录',
             })
           },
           // meta: obj => this.$getDeleteResult(obj),

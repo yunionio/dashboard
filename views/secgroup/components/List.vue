@@ -133,6 +133,7 @@ export default {
                 data: this.list.selectedItems,
                 columns: this.columns,
                 title: '删除',
+                name: '安全组',
                 onManager: this.onManager,
               })
             },

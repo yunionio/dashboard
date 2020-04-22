@@ -33,6 +33,7 @@ export default {
                   columns: this.columns,
                   onManager: this.onManager,
                   refresh: this.refresh,
+                  name: '安全组',
                 })
               },
               meta: () => {
@@ -171,6 +172,7 @@ export default {
                   data: [obj],
                   columns: this.columns,
                   title: '删除',
+                  name: '安全组',
                   onManager: this.onManager,
                 })
               },

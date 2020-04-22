@@ -9,6 +9,7 @@ export default {
             data: [obj],
             columns: this.columns,
             title: '删除',
+            name: '密钥',
             onManager: this.onManager,
           })
         },

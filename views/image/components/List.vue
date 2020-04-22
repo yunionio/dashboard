@@ -185,6 +185,7 @@ export default {
                     data: this.list.selectedItems,
                     columns: this.columns,
                     title: '删除镜像',
+                    name: '镜像',
                     onManager: this.onManager,
                   })
                 },

@@ -345,6 +345,7 @@ export default {
                       data: [obj],
                       columns: this.columns,
                       onManager: this.onManager,
+                      name: '主机',
                     })
                   },
                   meta: () => {
@@ -578,6 +579,7 @@ export default {
                       columns: this.columns,
                       onManager: this.onManager,
                       refresh: this.refresh,
+                      name: '主机',
                     })
                   },
                   meta: () => {
@@ -1082,7 +1084,9 @@ export default {
             {
               label: '删除',
               submenus: [
-                disableDeleteAction(this),
+                disableDeleteAction(this, {
+                  name: '主机',
+                }),
                 {
                   label: '删除',
                   permission: 'server_delete',

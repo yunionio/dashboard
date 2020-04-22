@@ -122,7 +122,7 @@ export default {
               label: '设置删除保护',
               action: (row) => {
                 this.createDialog('ChangeDisableDelete', {
-                  name: '系统镜像',
+                  name: '主机镜像',
                   columns: this.columns,
                   onManager: this.onManager,
                   data: [row],
@@ -138,6 +138,7 @@ export default {
                   data: [obj],
                   columns: this.columns,
                   title: '删除',
+                  name: '主机镜像',
                   onManager: this.onManager,
                   requestData: {
                     override_pending_delete: true,

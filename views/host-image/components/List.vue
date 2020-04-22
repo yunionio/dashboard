@@ -140,6 +140,7 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               title: '删除镜像',
+              name: '主机镜像',
               onManager: this.onManager,
               requestData: {
                 override_pending_delete: true,

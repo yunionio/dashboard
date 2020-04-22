@@ -290,6 +290,7 @@ export default {
                     data: this.list.selectedItems,
                     columns: this.columns,
                     onManager: this.onManager,
+                    name: '主机',
                   })
                 },
                 meta: () => {
@@ -672,7 +673,7 @@ export default {
                   return ret
                 },
               },
-              disableDeleteAction(this),
+              disableDeleteAction(this, { name: '主机' }),
               {
                 label: '删除',
                 permission: 'server_delete',

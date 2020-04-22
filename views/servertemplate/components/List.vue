@@ -122,6 +122,7 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               title: '删除',
+              name: '主机模板',
               onManager: this.onManager,
             })
           },
