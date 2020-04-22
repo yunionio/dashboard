@@ -37,46 +37,58 @@
     <div class="navbar-item d-flex align-items-center justify-content-end">
       <a-popover
         trigger="click"
-        overlayClassName="navbar-view-change-wrap"
         v-model="viewChangePopoverVisible"
         destroyTooltipOnHide>
         <template slot="content">
-          <a-menu @click="projectChange" mode="inline" :selectable="false" :inlineIndent="12" :openKeys.sync="viewOpenKeys">
+          <ul class="list-unstyled view-list-wrap">
             <!-- 管理后台 -->
             <template v-if="systemProject">
-              <a-menu-item scope="system" :key="`${systemProject.id}$$system`">管理后台</a-menu-item>
+              <li class="item-link" @click="() => projectChange(systemProject.id, 'system')">
+                <div class="d-flex h-100 align-items-center">
+                  <div class="flex-fill text-truncate">管理后台</div>
+                  <div style="width: 20px;" class="ml-1">
+                    <a-icon v-show="scope === 'system' && systemProject.id === userInfo.projectId" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
+                  </div>
+                </div>
+              </li>
             </template>
             <!-- 域管理后台 -->
             <template v-if="domainProjects && domainProjects.length">
-              <a-sub-menu :title="`${$t('dictionary.domain')}管理后台`" key="domainProjects">
-                <template v-for="item of domainProjects">
-                  <a-menu-item scope="domain" :key="`${item.id}$$domain`" :title="item.name">
-                    <div class="d-flex h-100 align-items-center">
-                      <div class="flex-fill text-truncate">{{ item.name }}</div>
-                      <div style="width: 20px;" class="ml-1">
-                        <a-icon v-show="scope === 'domain' && item.id === userInfo.projectId" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
+              <li>
+                <div>{{ $t('dictionary.domain') }}管理后台</div>
+                <ul class="list-unstyled">
+                  <template v-for="item of domainProjects">
+                    <li class="item-link" :key="item.id" @click="() => projectChange(item.id, 'domain')">
+                      <div class="d-flex h-100 align-items-center">
+                        <div class="flex-fill text-truncate">{{ item.domain }}</div>
+                        <div style="width: 20px;" class="ml-1">
+                          <a-icon v-show="scope === 'domain' && item.id === userInfo.projectId" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
+                        </div>
                       </div>
-                    </div>
-                  </a-menu-item>
-                </template>
-              </a-sub-menu>
+                    </li>
+                  </template>
+                </ul>
+              </li>
             </template>
-            <!-- 普通项目 -->
+            <!-- 项目 -->
             <template v-if="projects && projects.length">
-              <a-sub-menu title="普通项目" key="projects">
-                <template v-for="item of projects">
-                  <a-menu-item scope="project" :key="`${item.id}$$project`" :title="item.name">
-                    <div class="d-flex h-100 align-items-center">
-                      <div class="flex-fill text-truncate">{{ item.name }}</div>
-                      <div style="width: 20px;" class="ml-1">
-                        <a-icon v-show="scope === 'project' && item.id === userInfo.projectId" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
+              <li>
+                <div>普通项目</div>
+                <ul class="list-unstyled">
+                  <template v-for="item of projects">
+                    <li class="item-link" :key="item.id" @click="() => projectChange(item.id, 'project')">
+                      <div class="d-flex h-100 align-items-center">
+                        <div class="flex-fill text-truncate">{{ item.name }}</div>
+                        <div style="width: 20px;" class="ml-1">
+                          <a-icon v-show="scope === 'project' && item.id === userInfo.projectId" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
+                        </div>
                       </div>
-                    </div>
-                  </a-menu-item>
-                </template>
-              </a-sub-menu>
+                    </li>
+                  </template>
+                </ul>
+              </li>
             </template>
-          </a-menu>
+          </ul>
         </template>
         <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
           <icon type="navbar-view-switch" />
@@ -140,7 +152,6 @@ export default {
       },
       reLogging: false,
       viewChangePopoverVisible: false,
-      viewOpenKeys: [],
     }
   },
   computed: {
@@ -163,7 +174,15 @@ export default {
       }, this.userInfo.projects)
     },
     domainProjects () {
-      return this.projects.filter(item => item.domain_capable)
+      const domainIds = []
+      const ret = []
+      R.forEach(item => {
+        if (item.domain_capable && !domainIds.includes(item.domain_id)) {
+          ret.push(item)
+        }
+        domainIds.push(item.domain_id)
+      }, this.projects)
+      return ret
     },
     systemProject () {
       return R.find(R.propEq('system_capable', true))(this.projects)
@@ -176,6 +195,7 @@ export default {
       let ret = this.userInfo.projectName || '-'
       let managerLabel = ''
       if (this.$store.getters['auth/isDomain']) {
+        ret = this.userInfo.projectDomain || '-'
         managerLabel = `（${this.$t('dictionary.domain')}管理后台）`
       }
       return ret + managerLabel
@@ -234,11 +254,10 @@ export default {
         this.$router.push('/auth')
       }
     },
-    projectChange (item) {
+    projectChange (id, scope) {
       this.viewChangePopoverVisible = false
-      let [projectId, scope] = item.key.split('$$')
-      if (this.userInfo.projectId === projectId && this.scope === scope) return
-      this.reLogin(projectId, scope)
+      if (this.userInfo.projectId === id && this.scope === scope) return
+      this.reLogin(id, scope)
     },
     productChange (item) {
       // 打开的常用系统是同域下的，则设置一个临时的session（供其他系统使用）
@@ -289,6 +308,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../../styles/_variables.scss';
+
 .navbar-wrap {
   color: #606266;
   height: 60px;
@@ -335,23 +356,25 @@ export default {
 .current-view-label {
   max-width: 150px;
 }
-</style>
-
-<style lang="scss">
-.navbar-view-change-wrap {
-  width: 200px;
-  .ant-menu-inline {
-    border-right: 0;
+.view-list-wrap {
+  max-width: 200px;
+  margin: 0;
+  padding: 0;
+  > li {
+    padding: 5px 0;
+    > ul {
+      margin-top: 5px;
+      > li {
+        padding-left: 10px;
+        height: 24px;
+      }
+    }
   }
-  .ant-popover-inner-content {
-    padding: 0;
-  }
-  .ant-menu-sub.ant-menu-inline > .ant-menu-item {
-    height: 24px;
-  }
-  .ant-menu-inline > .ant-menu-submenu > .ant-menu-submenu-title {
-    height: 32px;
-    line-height: 32px;
+  .item-link {
+    cursor: pointer;
+    &:hover {
+      color: $link-color;
+    }
   }
 }
 </style>

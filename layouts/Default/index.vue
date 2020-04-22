@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import Navbar from '@scope/layouts/Navbar'
 import Sidebar from '../Sidebar'
@@ -33,7 +34,7 @@ export default {
   watch: {
     'auth.auth': {
       handler (val, oldVal) {
-        if (val.session !== ((oldVal && oldVal.session) || '')) {
+        if (val && val.session && !R.equals(val, oldVal)) {
           this.initIO()
         }
       },
