@@ -90,7 +90,7 @@ export default {
                 this.createDialog('ChangeOwenrDialog', {
                   data: [obj],
                   columns: this.columns,
-                  name: 'IP子网',
+                  name: this.$t('network'),
                   onManager: this.onManager,
                 })
               },
@@ -204,7 +204,7 @@ export default {
                   data: [obj],
                   columns: this.columns,
                   title: '删除',
-                  name: 'IP子网',
+                  name: this.$t('network'),
                   onManager: this.onManager,
                 })
               },

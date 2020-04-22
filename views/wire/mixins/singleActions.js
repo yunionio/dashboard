@@ -35,7 +35,7 @@ export default {
                   data: [obj],
                   columns: this.columns,
                   title: '删除',
-                  name: '二层网络',
+                  name: this.$t('hostwire'),
                   onManager: this.onManager,
                 })
               },
