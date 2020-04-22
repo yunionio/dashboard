@@ -49,6 +49,7 @@ const app = new Vue({
 async function start () {
   try {
     await store.dispatch('app/fetchCompayInfo')
+    await store.dispatch('app/fetchWorkflowEnabledKeys')
   } finally {
     app.$mount('#app')
   }
