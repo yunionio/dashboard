@@ -13,7 +13,7 @@
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
-import { getStatusFilter, getBrandFilter } from '@/utils/common/tableFilter'
+import { getStatusFilter, getBrandFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
@@ -59,6 +59,7 @@ export default {
               return `associate_type.contains("${val}")`
             },
           },
+          project_domain: getProjectDomainFilter(),
         },
         responseData: this.responseData,
       }),
@@ -75,6 +76,8 @@ export default {
           { label: this.$t('dictionary.project'), key: 'tenant' },
           { label: '区域', key: 'region' },
           { label: '可用区', key: 'zone' },
+          { label: '共享范围', key: 'public_scope' },
+          { label: `所属${this.$t('dictionary.domain')}`, key: 'project_domain' },
         ],
       },
       groupActions: [

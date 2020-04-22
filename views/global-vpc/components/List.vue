@@ -11,7 +11,7 @@
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
-import { getStatusFilter } from '@/utils/common/tableFilter'
+import { getStatusFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
 
@@ -39,6 +39,7 @@ export default {
             },
           },
           status: getStatusFilter('globalVpc'),
+          project_domain: getProjectDomainFilter(),
         },
       }),
       exportDataOptions: {
@@ -46,6 +47,8 @@ export default {
           { label: 'ID', key: 'id' },
           { label: '名称', key: 'name' },
           { label: '状态', key: 'status' },
+          { label: '共享范围', key: 'public_scope' },
+          { label: `所属${this.$t('dictionary.domain')}`, key: 'project_domain' },
         ],
       },
       groupActions: [

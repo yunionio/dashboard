@@ -29,17 +29,6 @@ export default {
     this.columns = [
       getCopyWithContentTableColumn(),
       {
-        field: 'vpc',
-        title: '所属专有网络',
-        minWidth: 120,
-        showOverflow: 'ellipsis',
-      },
-      getBrandTableColumn(),
-      getPublicScopeTableColumn(),
-      getProjectDomainTableColumn(),
-      getRegionTableColumn(),
-      getAccountTableColumn(),
-      {
         field: 'routes',
         title: '条目（路由表类型 目标网段 下一跳）',
         minWidth: 220,
@@ -68,6 +57,17 @@ export default {
           },
         },
       },
+      {
+        field: 'vpc',
+        title: '所属专有网络',
+        minWidth: 120,
+        showOverflow: 'ellipsis',
+      },
+      getBrandTableColumn(),
+      getAccountTableColumn(),
+      getPublicScopeTableColumn(),
+      getProjectDomainTableColumn(),
+      getRegionTableColumn(),
     ]
   },
 }

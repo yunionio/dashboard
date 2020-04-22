@@ -14,6 +14,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
+import { getProjectDomainFilter } from '@/utils/common/tableFilter'
 
 export default {
   name: 'WireList',
@@ -54,6 +55,7 @@ export default {
           region: {
             label: '区域',
           },
+          project_domain: getProjectDomainFilter(),
         },
       }),
       exportDataOptions: {
@@ -66,6 +68,8 @@ export default {
           { label: this.$t('dictionary.project'), key: 'tenant' },
           { label: '平台', key: 'provider' },
           { label: '云账号', key: 'manager' },
+          { label: '共享范围', key: 'public_scope' },
+          { label: `所属${this.$t('dictionary.domain')}`, key: 'project_domain' },
         ],
       },
       groupActions: [

@@ -12,7 +12,7 @@ import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
-import { getStatusFilter, getBrandFilter, getAccountFilter } from '@/utils/common/tableFilter'
+import { getStatusFilter, getBrandFilter, getAccountFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
 
@@ -46,6 +46,7 @@ export default {
           cidr_block: {
             label: '目标网段',
           },
+          project_domain: getProjectDomainFilter(),
         },
       }),
       exportDataOptions: {
@@ -59,6 +60,8 @@ export default {
           { label: '云账号', key: 'manager' },
           { label: '二层网络', key: 'wire_count' },
           { label: 'IP子网数量', key: 'network_count' },
+          { label: '共享范围', key: 'public_scope' },
+          { label: `所属${this.$t('dictionary.domain')}`, key: 'project_domain' },
         ],
       },
       groupActions: [
