@@ -16,8 +16,8 @@
 </template>
 
 <script>
-import { debounce } from 'lodash'
 import SKU from '../create/components/SKU'
+import changeMinxin from '../create/changeMinxin'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
@@ -26,7 +26,7 @@ export default {
   components: {
     SKU,
   },
-  mixins: [DialogMixin, WindowsMixin],
+  mixins: [DialogMixin, WindowsMixin, changeMinxin],
   data () {
     return {
       loading: false,
@@ -38,17 +38,6 @@ export default {
     }
   },
   computed: {
-    form () {
-      const fc = this.$form.createForm(this, { onFieldsChange: debounce((vm, values) => this._debounceFieldsChange(vm, values)) })
-      const { getFieldDecorator, getFieldValue, getFieldsValue, setFieldsValue } = fc
-      return {
-        fc,
-        getFieldDecorator,
-        getFieldValue,
-        getFieldsValue,
-        setFieldsValue,
-      }
-    },
     redisItem () {
       const { data } = this.params
       const redisItem = data && data.length > 0 ? data[0] : {}
@@ -77,26 +66,15 @@ export default {
       }
     },
   },
-  provide () {
-    return {
-      form: this.form,
-      formItemLayout: this.formItemLayout,
-      scopeParams: {},
-      redisItem: this.redisItem,
-    }
-  },
-  created () {
-    this.form.fc.getFieldDecorator('provider', { initialValue: this.redisItem.provider, preserve: true })
-    this.form.fc.getFieldDecorator('cloudregion', { initialValue: this.redisItem.cloudregion_id, preserve: true })
-    this.form.fc.getFieldDecorator('zone', { initialValue: this.redisItem.zone_id, preserve: true })
-    this.$nextTick(() => {
-      this.$refs['REF_SKU'].skuFetchs()
+  async created () {
+    const redisKeys = ['billing_type', 'provider', 'cloudregion', 'zone']
+    redisKeys.forEach(k => {
+      this.form.fc.getFieldDecorator(k, { initialValue: this.redisItem[k], preserve: true })
     })
+    await this.$nextTick()
+    this.area_change()
   },
   methods: {
-    _debounceFieldsChange (vm, changedFields) {
-      this.$refs['REF_SKU'].skuFetchs(changedFields)
-    },
     async handleConfirm () {
       this.loading = true
       try {
