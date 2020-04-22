@@ -5,6 +5,7 @@ import { sizestrWithUnit } from '@/utils/utils'
 // 虚拟机（server）、宿主机（host）、物理机（baremetal） 单位为：台
 // CPU 单位为：核
 // GPU（isolated_device） 单位为：块
+// nics 和 ports 的区别：ports是所有的IP，nics是被占用的IP，ports包含nics。nics和ports的单位都是个。
 export const USAGE_CONFIG = {
   'all.bucket_bytes': {
     formatter: val => sizestrWithUnit(val, 'B', 1024),
@@ -52,10 +53,10 @@ export const USAGE_CONFIG = {
     unit: '个',
   },
   'all.nics.guest': {
-    unit: '台',
+    unit: '个',
   },
   'all.nics.host': {
-    unit: '台',
+    unit: '个',
   },
   'all.nics.lb': {
     unit: '个',
@@ -265,7 +266,7 @@ export const USAGE_CONFIG = {
     unit: '个',
   },
   'nics.guest': {
-    unit: '台',
+    unit: '个',
   },
   'nics.lb': {
     unit: '个',
