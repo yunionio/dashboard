@@ -1216,7 +1216,8 @@
     "networkinterface": "弹性网卡",
     "proxysetting": "代理",
     "schedpolicie": "调度策略",
-    "servertemplate": "主机模板"
+    "servertemplate": "主机模板",
+    "scalinggroup": "弹性伸缩组"
   },
   "shareScope": {
     "system": "系统",
