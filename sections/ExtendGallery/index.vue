@@ -38,10 +38,12 @@ export default {
     sortExtendsOptions () {
       const ret = []
       R.forEachObjIndexed((value, key) => {
-        ret.push({
-          ...value,
-          component: key,
-        })
+        if (!value.galleryHidden) {
+          ret.push({
+            ...value,
+            component: key,
+          })
+        }
       }, this.extendsOptions)
       ret.sort((a, b) => a.sort - b.sort)
       return ret
