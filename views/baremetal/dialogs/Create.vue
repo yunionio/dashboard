@@ -251,32 +251,35 @@ export default {
   methods: {
     // 组装联动数据
     handleDiskDate () {
-      const level1 = this.diskData[this.diskDataKeys[0]]
-      this.params.diskOptionsDate.forEach(item => {
-        level1[item.diskInfo[1]].forEach(item2 => {
-          if (item2.type === item.type && sizestr(item2.size, 'M', 1024) === item.unitSize) {
-            item2.count = item2.count - item.count
-          }
+      this.diskDataKeys.map(item => {
+        const level1 = this.diskData[item]
+        const diskDataKeyItem = item
+        this.params.diskOptionsDate.forEach(item => {
+          level1[item.diskInfo[1]].forEach(item2 => {
+            if (item2.type === item.type && sizestr(item2.size, 'M', 1024) === item.unitSize) {
+              item2.count = item2.count - item.count
+            }
+          })
         })
-      })
-      Object.keys(level1).forEach((key) => {
-        let option = {}
-        option.value = this.diskDataKeys[0] + ':' + key
-        option.label = this.diskDataKeys[0] + ':' + key
-        option.children = []
-        level1[key].forEach((item) => {
-          let optionL2 = {}
-          optionL2 = {
-            ...item,
-            label: item.type + ':' + sizestr(item.size, 'M', 1024),
-            value: item.type + ':' + sizestr(item.size, 'M', 1024),
-            children: this._getRaidOptions(this.diskDataKeys[0], item.count),
-          }
-          if (optionL2.children.length === 0) return
-          option.children.push(optionL2)
+        Object.keys(level1).forEach((key) => {
+          let option = {}
+          option.value = diskDataKeyItem + ':' + key
+          option.label = diskDataKeyItem + ':' + key
+          option.children = []
+          level1[key].forEach((item) => {
+            let optionL2 = {}
+            optionL2 = {
+              ...item,
+              label: item.type + ':' + sizestr(item.size, 'M', 1024),
+              value: item.type + ':' + sizestr(item.size, 'M', 1024),
+              children: this._getRaidOptions(diskDataKeyItem, item.count),
+            }
+            if (optionL2.children.length === 0) return
+            option.children.push(optionL2)
+          })
+          if (option.children.length === 0) return
+          this.disksOptions.push(option)
         })
-        if (option.children.length === 0) return
-        this.disksOptions.push(option)
       })
     },
     // 计算器
