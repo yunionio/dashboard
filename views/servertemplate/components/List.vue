@@ -78,10 +78,9 @@ export default {
           permission: 'servertemplates_create',
           action: () => {
             this.$router.push({
-              path: '/servertemplate/create',
+              path: '/servertemplate/create?source=servertemplate',
               query: {
                 type: this.cloudEnv === 'onpremise' ? 'idc' : this.cloudEnv || 'idc',
-                source: 'servertemplate',
               },
             })
           },
