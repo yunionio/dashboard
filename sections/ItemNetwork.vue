@@ -30,10 +30,15 @@ export default {
     },
     getVpcParams () {
       const { fd } = this.form
-      return {
+      const params = {
         cloudregion_id: fd.cloudregion_id || fd.cloudregion,
         ...this.scopeParams,
       }
+      const zone = this.form.getFieldValue('zone')
+      if (zone) {
+        params['zone'] = zone
+      }
+      return params
     },
     getNetworkParams () {
       const { fd } = this.form
@@ -41,14 +46,20 @@ export default {
         cloudregion_id: fd.cloudregion_id || fd.cloudregion,
         ...this.scopeParams,
       }
-      const zoneStr = this.form.getFieldValue('zones')
-      if (zoneStr) {
-        const zoneArr = zoneStr.split('+')
+      // zones是rds新建
+      const zonesStr = this.form.getFieldValue('zones')
+      if (zonesStr) {
+        const zoneArr = zonesStr.split('+')
         if (zoneArr && zoneArr.length > 0) {
           for (let i = 0; i < zoneArr.length; i++) {
             params[`zones.${i}`] = zoneArr[i]
           }
         }
+      }
+      // zone是redis新建
+      const zone = this.form.getFieldValue('zone')
+      if (zone) {
+        params['zone'] = zone
       }
       return params
     },

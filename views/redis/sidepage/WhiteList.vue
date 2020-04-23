@@ -116,6 +116,16 @@ export default {
               list: this.list,
             })
           },
+          meta: (obj) => {
+            let tooltip = ''
+            if (obj.name === 'default') {
+              tooltip = 'default白名单不支持此操作'
+            }
+            return {
+              validate: !tooltip,
+              tooltip,
+            }
+          },
         },
       ],
     }
