@@ -35,7 +35,7 @@ export default {
                   data: [obj],
                   columns: this.columns,
                   title: '删除',
-                  name: this.$t('hostwire'),
+                  name: this.$t('dictionary.hostwire'),
                   onManager: this.onManager,
                 })
               },

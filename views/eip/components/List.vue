@@ -125,7 +125,7 @@ export default {
                     data: this.list.selectedItems,
                     columns: this.columns,
                     title: '删除',
-                    name: this.$t('eip'),
+                    name: this.$t('dictionary.eip'),
                     onManager: this.onManager,
                   })
                 },

@@ -73,7 +73,7 @@ export default {
               }, {
                 validator: this.IPValidator,
               }, {
-                validator: this.checkIp,
+                validator: this.checkIp(i),
               }],
             },
           ],
@@ -114,25 +114,32 @@ export default {
         callback()
       }
     },
-    async checkIp (rule, value, callback) {
-      const params = {
-        search: value,
-      }
-      try {
-        const data = await new this.$Manager('reservedips').list({ params })
-        if (data.data.data.length >= 1) {
-          return callback(new Error('该IP已被预留,请勿重复添加'))
-        } else {
-          const ips = Object.values(this.form.fc.getFieldValue('networkIps'))
-          const ipsRepreat = Array.from(new Set(ips))
-          if (ipsRepreat.length === ips.length) {
-            return callback()
-          } else {
-            return callback(new Error('请勿重复添加相同IP'))
-          }
+    checkIp (i) {
+      return async (rule, value, callback) => {
+        const params = {
+          search: value,
         }
-      } catch {
-        return callback()
+        try {
+          const data = await new this.$Manager('reservedips').list({ params })
+          if (data.data.data.length >= 1) {
+            return callback(new Error('该IP已被预留,请勿重复添加'))
+          } else {
+            const ipsVal = Object.values(this.form.fc.getFieldValue('networkIps'))
+            const ipsKey = Object.keys(this.form.fc.getFieldValue('networkIps'))
+            if (ipsVal.indexOf(value) !== -1 && ipsKey[ipsVal.indexOf(value)] !== i) {
+              return callback(new Error('请勿重复添加相同IP'))
+            }
+            return callback()
+            // const ipsRepreat = Array.from(new Set(ips))
+            // if (ipsRepreat.length === ips.length) {
+            //   return callback()
+            // } else {
+            //   return callback(new Error('请勿重复添加相同IP'))
+            // }
+          }
+        } catch {
+          return callback()
+        }
       }
     },
     doCreate (data) {
