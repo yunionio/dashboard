@@ -32,7 +32,7 @@
       <item-network ref="NETWORK" />
       <!-- 选择安全组 -->
       <a-form-item v-if="form.getFieldValue('provider') === 'Huawei'" label="安全组" v-bind="formItemLayout">
-        <secgroup-config :decorators="decorators.secgroup" />
+        <secgroup-config :max="1" :decorators="decorators.secgroup" />
       </a-form-item>
       <bottom-bar :values="form.getFieldsValue()" />
     </a-form>

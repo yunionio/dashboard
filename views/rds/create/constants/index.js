@@ -6,12 +6,18 @@ export const DECORATORS = {
       'project',
       {
         initialValue: undefined,
+        rules: [
+          { required: true, message: '请选择项目', trigger: 'change' },
+        ],
       },
     ],
     domain: [
       'domain',
       {
         initialValue: undefined,
+        rules: [
+          { required: true, message: '请选择域', trigger: 'change' },
+        ],
       },
     ],
   },
