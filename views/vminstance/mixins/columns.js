@@ -133,7 +133,7 @@ export default {
                   tooltipCon = <div slot="help">虚拟机会在 { time } 释放，到期不续费</div>
                 }
               }
-              const help = <a-tooltip>
+              const help = <a-tooltip overlayStyle={{ zIndex: '999' }}>
                 <template slot="title">
                   { tooltipCon }
                 </template>
