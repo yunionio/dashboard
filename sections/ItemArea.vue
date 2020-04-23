@@ -130,7 +130,12 @@ export default {
       if (this.providerList.length === 0) {
         return []
       }
-      return list.filter(({ provider }) => this.providers.indexOf(provider) > -1)
+      return list.filter(({ provider }) => {
+        if (this.providers) {
+          return this.providers.indexOf(provider) > -1
+        }
+        return true
+      })
     },
     cityFetchSuccess (names) {
       this.$emit('cityFetchSuccess', names)
