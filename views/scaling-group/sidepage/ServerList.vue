@@ -11,7 +11,7 @@
 <script>
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { getNameDescriptionTableColumn, getTimeTableColumn, getStatusTableColumn, getIpsTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
-import { getStatusFilter, getEnabledFilter } from '@/utils/common/tableFilter'
+import { getStatusFilter, getEnabledFilter, getHostFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import { sizestr } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
@@ -48,6 +48,7 @@ export default {
           },
           status: getStatusFilter('server'),
           enabled: getEnabledFilter(),
+          host: getHostFilter(),
         },
       }),
       columns: [
