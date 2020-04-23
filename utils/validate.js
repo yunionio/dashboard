@@ -178,6 +178,18 @@ export const REGEXP = {
     regexp: /^[a-zA-Z][a-zA-Z0-9-]{0,127}([a-zA-Z0-9-]|#{1,3})$/,
     message: i18n.t('validator.certName'),
   },
+  bucketName: {
+    func: value => {
+      if (!value) return false
+      if (value.length < 4 || value.length > 64) return false
+      const regexp = /^([a-z]+(\.|-|_|:|[a-z]|\d)*)$/
+      if (regexp.test(value)) {
+        return true
+      }
+      return false
+    },
+    message: i18n.t('validator.bucketName'),
+  },
 }
 
 /**
