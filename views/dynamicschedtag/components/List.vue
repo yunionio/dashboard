@@ -82,7 +82,7 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               title: '删除动态调度标签',
-              name: this.$t('dynamicschedtag'),
+              name: this.$t('dictionary.dynamicschedtag'),
               onManager: this.onManager,
             })
           },

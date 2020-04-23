@@ -22,7 +22,7 @@ export default {
             data: [row],
             columns: this.columns,
             title: '删除',
-            name: this.$t('proxysetting'),
+            name: this.$t('dictionary.proxysetting'),
             onManager: this.onManager,
           })
         },

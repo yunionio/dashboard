@@ -95,7 +95,7 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               title: '删除调度标签',
-              name: this.$t('schedtag'),
+              name: this.$t('dictionary.schedtag'),
               onManager: this.onManager,
             })
           },
