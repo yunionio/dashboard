@@ -34,7 +34,7 @@ export default {
                   columns: this.columns,
                   onManager: this.onManager,
                   refresh: this.refresh,
-                  name: this.$t('dbinstances'),
+                  name: this.$t('dictionary.dbinstances'),
                 })
               },
             },
@@ -95,7 +95,7 @@ export default {
               },
             },
             disableDeleteAction(this, {
-              name: this.$t('dbinstances'),
+              name: this.$t('dictionary.dbinstances'),
             }),
             {
               label: '删除',
@@ -108,7 +108,7 @@ export default {
                   columns: this.columns,
                   onManager: this.onManager,
                   refresh: this.refresh,
-                  name: this.$t('dbinstances'),
+                  name: this.$t('dictionary.dbinstances'),
                 })
               },
               meta: () => {

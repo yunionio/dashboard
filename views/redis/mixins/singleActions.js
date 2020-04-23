@@ -33,7 +33,7 @@ export default {
                     columns: this.columns,
                     onManager: this.onManager,
                     refresh: this.refresh,
-                    name: this.$t('elasticcaches'),
+                    name: this.$t('dictionary.elasticcaches'),
                   })
                 },
                 meta: () => {
@@ -53,7 +53,7 @@ export default {
                   columns: this.columns,
                   onManager: this.onManager,
                   refresh: this.refresh,
-                  name: this.$t('elasticcaches'),
+                  name: this.$t('dictionary.elasticcaches'),
                 })
               },
               meta: () => {
@@ -74,7 +74,7 @@ export default {
                   columns: this.columns,
                   onManager: this.onManager,
                   refresh: this.refresh,
-                  name: this.$t('elasticcaches'),
+                  name: this.$t('dictionary.elasticcaches'),
                 })
               },
             },
@@ -87,7 +87,7 @@ export default {
                   columns: this.columns,
                   onManager: this.onManager,
                   refresh: this.refresh,
-                  name: this.$t('elasticcaches'),
+                  name: this.$t('dictionary.elasticcaches'),
                 })
               },
               meta: () => {
@@ -106,7 +106,7 @@ export default {
                   columns: this.columns,
                   onManager: this.onManager,
                   refresh: this.refresh,
-                  name: this.$t('elasticcaches'),
+                  name: this.$t('dictionary.elasticcaches'),
                 })
               },
               meta: () => {
@@ -126,7 +126,7 @@ export default {
                   columns: this.columns,
                   onManager: this.onManager,
                   refresh: this.refresh,
-                  name: this.$t('elasticcaches'),
+                  name: this.$t('dictionary.elasticcaches'),
                 })
               },
               meta: () => {
@@ -145,7 +145,7 @@ export default {
                   columns: this.columns,
                   onManager: this.onManager,
                   refresh: this.refresh,
-                  name: this.$t('elasticcaches'),
+                  name: this.$t('dictionary.elasticcaches'),
                 })
               },
               meta: () => {
@@ -157,7 +157,7 @@ export default {
             },
             setAuthMode(),
             disableDeleteAction(this, {
-              name: this.$t('elasticcaches'),
+              name: this.$t('dictionary.elasticcaches'),
             }),
             {
               label: '删除',
@@ -166,7 +166,7 @@ export default {
                 this.createDialog('DeleteResDialog', {
                   vm: this,
                   title: '删除',
-                  name: this.$t('elasticcaches'),
+                  name: this.$t('dictionary.elasticcaches'),
                   data: [obj],
                   columns: this.columns,
                   onManager: this.onManager,
