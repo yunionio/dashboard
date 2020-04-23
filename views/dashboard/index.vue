@@ -1,72 +1,66 @@
 <template>
   <div class="dashboard-wrap d-flex flex-column">
-    <div class="dashboard-header flex-shrink-0 flex-grow-0 pl-1 mb-4 d-flex" v-if="!dashboardEmpty">
-      <div class="flex-fill">
-        <a-dropdown :trigger="['click']">
-          <a-button type="link" class="text-color pl-0">{{ currentDashboardOption.name }}<a-icon type="down" /></a-button>
-          <a-menu slot="overlay" @click="e => handleDashboardClick({ id: e.key, name: e.item.title })">
-            <a-menu-item v-for="item of dashboardOptions" :key="item.id" :title="item.name">{{ item.name }}</a-menu-item>
-          </a-menu>
-        </a-dropdown>
-        <a-button type="link" icon="plus" @click="() => handleToEdit()">新建</a-button>
-        <a-button type="link" icon="edit" @click="() => handleToEdit(currentDashboardOption.id)" :disabled="isDefaultDashboard">编辑</a-button>
-        <a-button type="link" icon="download" @click="handleDownloadConfig" :disabled="disableDownloadConfig">导出</a-button>
-        <a-button type="link" icon="file" @click="handleImportConfig">导入</a-button>
-        <a-popover trigger="click" v-model="deletePopoverVisible">
-          <template v-slot:content>
-            <div><a-icon type="exclamation-circle" class="warning-color mr-1" />你所选<span class="font-weight-bold ml-2 mr-2">{{currentDashboardOption.name}}</span>将执行<span class="error-color ml-2 mr-2">删除</span>操作操作，是否确认？</div>
-            <div class="text-right mt-2">
-              <a-button size="small" type="primary" @click="handleRemoveDashboard">确定</a-button>
-              <a-button size="small" @click="deletePopoverVisible = false" class="ml-2">取消</a-button>
-            </div>
-          </template>
-          <a-button type="link" icon="delete" :disabled="isDefaultDashboard">删除</a-button>
-        </a-popover>
-      </div>
-    </div>
-    <div class="dashboard-body flex-fill">
-      <div class="d-flex align-items-center justify-content-center h-100" v-if="loading">
-        <a-spin />
-      </div>
-      <div class="d-flex flex-column h-100" v-if="dashboardEmpty && !loading">
-        <div class="flex-fill d-flex align-items-center justify-content-center">
-          <a-empty>
-            <template v-slot:description>
-              <div>暂无控制面板，点击<a-button type="link" icon="plus" @click="() => handleToEdit()" />新建或<a-button type="link" icon="file" @click="handleImportConfig" />导入</div>
+    <!-- 选项加载完毕 -->
+    <template v-if="dashboardOptionsLoaded">
+      <!-- tabs -->
+      <div class="dashboard-header flex-shrink-0 flex-grow-0 pl-1 d-flex">
+        <div class="flex-fill">
+          <a-tabs :activeKey="currentDashboardKey" @change="handleTabChange" :animated="false">
+            <template v-for="item of dashboardDefaultOptions">
+              <a-tab-pane :tab="item.name" :key="item.id" />
             </template>
-          </a-empty>
+            <template v-for="item of dashboardOptions">
+              <a-tab-pane :tab="item.name" :key="item.id" />
+            </template>
+            <a-dropdown :trigger="['click']" slot="tabBarExtraContent">
+              <a class="ant-dropdown-link pr-2 pl-2 pt-2 pb-2" @click="e => e.preventDefault()">···</a>
+              <a-menu slot="overlay" @click="handleActionClick">
+                <a-menu-item key="create"><a-icon type="plus" />新建</a-menu-item>
+                <a-menu-item key="edit" :disabled="isDefaultDashboard"><a-icon type="edit" />编辑</a-menu-item>
+                <a-menu-item key="download" :disabled="isDefaultDashboard || disableDownloadConfig"><a-icon type="download" />导出</a-menu-item>
+                <a-menu-item key="import"><a-icon type="file" />导入</a-menu-item>
+                <a-menu-item key="delete" :disabled="isDefaultDashboard"><a-icon type="delete" />删除</a-menu-item>
+              </a-menu>
+            </a-dropdown>
+          </a-tabs>
         </div>
       </div>
-      <div v-if="!dashboardEmpty" class="layout-wrap">
-        <grid-layout
-          ref="grid-layout"
-          :layout.sync="layout"
-          :col-num="colNum"
-          :max-rows="maxRows"
-          :row-height="rowHeight"
-          :margin="colMargin"
-          :vertical-compact="false"
-          :is-draggable="false"
-          :is-resizable="false"
-          :is-mirrored="false">
-          <grid-item
-            class="edit-grid-item"
-            v-for="(item, key) in dashboard"
-            :x="item.layout.x"
-            :y="item.layout.y"
-            :w="item.layout.w"
-            :h="item.layout.h"
-            :i="key"
-            :key="key">
-            <component
-              class="card-shadow"
-              :is="item.layout.component"
-              :options="item.layout"
-              :params="item.params" />
-          </grid-item>
-        </grid-layout>
+      <!-- dashboard -->
+      <div class="dashboard-body flex-fill">
+        <div class="layout-wrap">
+          <grid-layout
+            ref="grid-layout"
+            :layout.sync="layout"
+            :col-num="colNum"
+            :max-rows="maxRows"
+            :row-height="rowHeight"
+            :margin="colMargin"
+            :vertical-compact="false"
+            :is-draggable="false"
+            :is-resizable="false"
+            :is-mirrored="false">
+            <grid-item
+              class="edit-grid-item"
+              v-for="(item, key) in dashboard"
+              :x="item.layout.x"
+              :y="item.layout.y"
+              :w="item.layout.w"
+              :h="item.layout.h"
+              :i="key"
+              :key="key">
+              <component
+                class="card-shadow"
+                :is="item.layout.component"
+                :options="item.layout"
+                :params="item.params" />
+            </grid-item>
+          </grid-layout>
+        </div>
       </div>
-    </div>
+    </template>
+    <template v-else>
+      <div class="d-flex align-items-center justify-content-center h-100"><a-spin /></div>
+    </template>
   </div>
 </template>
 
@@ -93,7 +87,9 @@ export default {
   data () {
     return {
       loading: false,
+      dashboardDefaultOptions: [],
       dashboardOptions: [],
+      dashboardOptionsLoaded: false,
       dashboard: {},
       currentDashboardOption: {},
       dashboardParams: {},
@@ -104,15 +100,11 @@ export default {
       maxRows: 34,
       defaultGridW: 2,
       defaultGridH: 2,
-      deletePopoverVisible: false,
       currentDashboardKey: '',
     }
   },
   computed: {
     ...mapGetters(['scope']),
-    dashboardEmpty () {
-      return this.dashboardOptions.length <= 0
-    },
     disableDownloadConfig () {
       return R.isNil(this.dashboardOptions) || R.isEmpty(this.dashboardOptions)
     },
@@ -125,9 +117,28 @@ export default {
     clearCache()
   },
   created () {
-    this.dashboardOptions = defaultConfig[this.scope]['options']
+    this.dashboardDefaultOptions = defaultConfig[this.scope]['options']
     this.pm = new this.$Manager('parameters', 'v1')
     this.fetchDashboardOptions()
+    // 点击更多时操作的配置，key对应到
+    this.moreActionOptions = {
+      create: {
+        method: 'handleToEdit',
+      },
+      edit: {
+        method: 'handleToEdit',
+        params: () => [this.currentDashboardOption.id],
+      },
+      download: {
+        method: 'handleDownloadConfig',
+      },
+      import: {
+        method: 'handleImportConfig',
+      },
+      delete: {
+        method: 'handleRemoveDashboard',
+      },
+    }
   },
   methods: {
     async fetchDashboardOptions () {
@@ -135,21 +146,20 @@ export default {
       try {
         const response = await this.pm.get({ id: `dashboard_${this.scope}` })
         if (response.data && response.data.value) {
-          this.dashboardOptions = R.concat(this.dashboardOptions, response.data.value || [])
+          this.dashboardOptions = response.data.value
         }
-        if (this.dashboardOptions.length > 0) {
-          let item = storage.get(`__oc_dashboard_${this.scope}__`)
-          const matched = item && this.dashboardOptions.find(obj => obj.id === item.id)
-          if (!matched) {
-            item = this.dashboardOptions[0]
-          }
-          this.handleDashboardClick(item)
+        let item = storage.get(`__oc_dashboard_${this.scope}__`)
+        const matched = item && this.dashboardOptions.find(obj => obj.id === item.id)
+        if (!matched) {
+          item = this.dashboardDefaultOptions[0]
         }
+        this.handleDashboardChange(item)
       } catch (error) {
-        this.handleDashboardClick(this.dashboardOptions[0])
+        this.handleDashboardChange(this.dashboardDefaultOptions[0])
         throw error
       } finally {
         this.loading = false
+        this.dashboardOptionsLoaded = true
       }
     },
     async fetchDashboard (id) {
@@ -165,7 +175,7 @@ export default {
         this.loading = false
       }
     },
-    handleDashboardClick (item) {
+    handleDashboardChange (item) {
       // 是否为默认面板
       this.currentDashboardKey = item.id
       storage.set(`__oc_dashboard_${this.scope}__`, item)
@@ -176,30 +186,43 @@ export default {
         this.fetchDashboard()
       }
     },
+    handleTabChange (id) {
+      const opt = R.find(R.propEq('id', id))([...this.dashboardDefaultOptions, ...this.dashboardOptions])
+      if (opt) {
+        this.handleDashboardChange(opt)
+      }
+    },
     handleToEdit (id) {
       this.$router.push({ name: 'DashboardEdit', query: { id } })
     },
-    async handleRemoveDashboard () {
-      try {
-        const newOptions = [ ...this.dashboardOptions ]
-        const index = R.findIndex(R.propEq('id', this.currentDashboardOption.id))(newOptions)
-        if (index !== -1) {
-          newOptions.splice(index, 1)
-        }
-        const optionsResponse = await this.pm.update({
-          id: `dashboard_${this.scope}`,
-          data: {
-            value: newOptions,
-          },
-        })
-        await this.pm.delete({
-          id: this.currentDashboardOption.id,
-        })
-        this.dashboardOptions = optionsResponse.data.value || []
-        this.handleDashboardClick(this.dashboardOptions[0])
-      } catch (error) {
-        throw error
-      }
+    handleRemoveDashboard () {
+      this.$confirm({
+        content: '确定删除当前面板？',
+        onOk: async () => {
+          try {
+            const newOptions = [ ...this.dashboardOptions ]
+            const index = R.findIndex(R.propEq('id', this.currentDashboardOption.id))(newOptions)
+            if (index !== -1) {
+              newOptions.splice(index, 1)
+            }
+            const optionsResponse = await this.pm.update({
+              id: `dashboard_${this.scope}`,
+              data: {
+                value: newOptions,
+              },
+            })
+            await this.pm.delete({
+              id: this.currentDashboardOption.id,
+            })
+            this.dashboardOptions = optionsResponse.data.value || []
+            this.handleDashboardChange(this.dashboardDefaultOptions[0] || this.dashboardOptions[0])
+          } catch (error) {
+            throw error
+          }
+        },
+        okText: this.$t('common.ok'),
+        cancelText: this.$t('common.cancel'),
+      })
     },
     handleDownloadConfig () {
       const ret = {
@@ -218,6 +241,12 @@ export default {
         dashboardOptions: this.dashboardOptions,
         fetchDashboardOptions: () => this.fetchDashboardOptions(),
       })
+    },
+    handleActionClick ({ key }) {
+      const opt = this.moreActionOptions[key]
+      const method = opt.method
+      const params = opt['params'] && opt['params']()
+      params ? this[method](...params) : this[method]()
     },
   },
 }
