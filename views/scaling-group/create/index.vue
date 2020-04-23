@@ -106,6 +106,7 @@ import DomainProject from '@/sections/DomainProject'
 // import NameRepeated from '@/sections/NameRepeated'
 import NetworkSelects from '@/sections/NetworkSelects'
 import { getInitialValue } from '@/utils/common/ant'
+import { typeClouds } from '@/utils/common/hypervisor'
 
 export default {
   name: 'ScalingGroupCreae',
@@ -180,6 +181,9 @@ export default {
         health_check_mode: v ? 'loadbalancer' : 'normal',
       })
     },
+  },
+  created () {
+    console.log(typeClouds)
   },
   methods: {
     filterOption (input, option) {
@@ -304,9 +308,13 @@ export default {
       }
     },
     formatValues (values) {
-      if (values.network) {
-        values['networks'] = [values.network]
+      const { brand, network } = values
+      if (network) {
+        values['networks'] = [network]
         delete values.network
+      }
+      if (brand && typeClouds.brandMap[brand]) {
+        values['hypervisor'] = typeClouds.brandMap[brand].hypervisor
       }
       return values
     },
@@ -320,7 +328,6 @@ export default {
       const manager = new this.$Manager('scalinggroups', 'v1')
       const defaultParams = {
         cloudregion: 'default',
-        hypervisor: 'kvm',
       }
       try {
         const values = await validateFields()
