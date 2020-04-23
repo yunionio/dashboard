@@ -41,12 +41,9 @@ export default {
   methods: {
     doPublicIpToEipSubmit (data) {
       const selectedIds = this.params.data.map(item => item.id)
-      return new this.$Manager('hosts', 'v2').batchPerformAction({
+      return new this.$Manager('servers', 'v2').batchPerformAction({
         ids: selectedIds,
         action: 'publicip-to-eip',
-        data: {
-          auto_renew: data.autoRenew,
-        },
       })
     },
     async handleConfirm () {
@@ -55,8 +52,10 @@ export default {
         await this.doPublicIpToEipSubmit()
         this.loading = false
         this.cancelDialog()
+        this.params.refresh()
       } catch (error) {
         this.loading = false
+        throw error
       }
     },
   },

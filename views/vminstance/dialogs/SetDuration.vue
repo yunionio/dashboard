@@ -1,5 +1,5 @@
 <template>
-  <base-dialog @cancel="cancelDialog" :zIndex="1065">
+  <base-dialog @cancel="cancelDialog">
     <div slot="header">{{action}}</div>
     <div slot="body">
       <a-alert class="mb-2" type="warning">
