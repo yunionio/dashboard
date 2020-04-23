@@ -26,6 +26,9 @@ export default {
       default: () => ({}),
     },
     cloudEnv: String,
+    cloudEnvOptions: {
+      type: Array,
+    },
   },
   data () {
     return {
@@ -78,15 +81,17 @@ export default {
           permission: 'servertemplates_create',
           action: () => {
             this.$router.push({
-              path: '/servertemplate/create?source=servertemplate',
+              path: '/servertemplate/create',
               query: {
-                type: this.cloudEnv === 'onpremise' ? 'idc' : this.cloudEnv || 'idc',
+                type: this.cloudEnv === 'onpremise' ? 'idc' : this.cloudEnv || this._cloudEnv,
+                source: 'servertemplate',
               },
             })
           },
           meta: () => {
             return {
               buttonType: 'primary',
+              validate: !!this._cloudEnv,
             }
           },
         },
@@ -157,6 +162,19 @@ export default {
         },
       ],
     }
+  },
+  computed: {
+    _cloudEnv () {
+      if (this.cloudEnvOptions && this.cloudEnvOptions.length > 0) {
+        const idc = this.cloudEnvOptions.find(item => item.key === 'idc')
+        if (idc && idc.key) {
+          return idc.key
+        }
+        const item = this.cloudEnvOptions.find(item => item.key) || {}
+        return item.key
+      }
+      return ''
+    },
   },
   watch: {
     cloudEnv (val) {
