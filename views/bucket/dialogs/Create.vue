@@ -5,7 +5,10 @@
       <a-form :form="form.fc" v-bind="formItemLayout">
         <a-form-item label="名称">
           <a-input placeholder="请输入名称" v-decorator="decorators.name" />
-          <span slot="extra">4~62个字节，小写字母与数字开头和结尾，中间可以为：小写字母、数字、.-_:Azure 不支持 -</span>
+          <span slot="extra">
+            4~62个字节，小写字母与数字开头和结尾，中间可以为：小写字母、数字、.-_:
+            <br />Azure 不支持 -
+          </span>
         </a-form-item>
          <a-form-item label="区域">
           <cloud-provider-region />
@@ -57,7 +60,7 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: '请输入名称' },
-              { validator: this.$validate('snapshotName') },
+              { validator: this.$validate('bucketName') },
             ],
           },
         ],
