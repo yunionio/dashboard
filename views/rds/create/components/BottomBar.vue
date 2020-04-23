@@ -94,6 +94,9 @@ export default {
         params['instance_type'] = sku['name']
         delete params.sku
       }
+      if (params.secgroup && params.secgroup.length > 0) {
+        params['secgroup'] = params.secgroup[0]
+      }
       return params
     },
     async doCreate () {
