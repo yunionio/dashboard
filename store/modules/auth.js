@@ -110,8 +110,8 @@ export default {
           await commit('SET_AUTH', auth)
           resolve(response)
         } catch (error) {
-          // await commit('SET_SCOPE', Cookies.get('scope') || 'project')
-          // await commit('SET_AUTH', decodeToken(getToken()) || {})
+          await commit('SET_SCOPE', Cookies.get('scope') || 'project')
+          await commit('SET_AUTH', decodeToken(getToken()) || {})
           reject(error)
         }
       })
