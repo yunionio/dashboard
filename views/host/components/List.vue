@@ -136,11 +136,11 @@ export default {
             actions: () => {
               return [
                 getDomainChangeOwnerAction(this, {
-                  name: this.$t('dictionary.host'),
+                  name: this.$t('dictionary.dictionary.host'),
                   resource: 'hosts',
                 }),
                 getSetPublicAction(this, {
-                  name: this.$t('dictionary.host'),
+                  name: this.$t('dictionary.dictionary.host'),
                   scope: 'domain',
                 }),
                 {
@@ -149,7 +149,7 @@ export default {
                     this.createDialog('HostsAdjustLabelDialog', {
                       data: this.list.selectedItems,
                       columns: this.columns,
-                      name: this.$t('host'),
+                      name: this.$t('dictionary.host'),
                       onManager: this.onManager,
                     })
                   },
@@ -202,7 +202,7 @@ export default {
                       data: this.list.selectedItems,
                       columns: this.columns,
                       onManager: this.onManager,
-                      name: this.$t('host'),
+                      name: this.$t('dictionary.host'),
                       refresh: this.refresh,
                     })
                   },
@@ -219,7 +219,7 @@ export default {
                       data: this.list.selectedItems,
                       columns: this.columns,
                       title: '删除',
-                      name: this.$t('host'),
+                      name: this.$t('dictionary.host'),
                       onManager: this.onManager,
                     })
                   },

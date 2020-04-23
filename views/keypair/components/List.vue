@@ -71,7 +71,7 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               title: '删除',
-              name: this.$t('keypair'),
+              name: this.$t('dictionary.keypair'),
               onManager: this.onManager,
             })
           },

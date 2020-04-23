@@ -117,7 +117,7 @@ export default {
           label: '设置删除保护',
           action: (row) => {
             this.createDialog('ChangeDisableDelete', {
-              name: this.$t('guestimage'),
+              name: this.$t('dictionary.guestimage'),
               columns: this.columns,
               onManager: this.onManager,
               data: this.list.selectedItems,
@@ -140,7 +140,7 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               title: '删除镜像',
-              name: this.$t('guestimage'),
+              name: this.$t('dictionary.guestimage'),
               onManager: this.onManager,
               requestData: {
                 override_pending_delete: true,

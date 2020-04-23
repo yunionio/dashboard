@@ -150,7 +150,7 @@ export default {
               },
             },
             getSetPublicAction(this, {
-              name: this.$t('dictionary.image'),
+              name: this.$t('dictionary.dictionary.image'),
               scope: 'project',
             }, {
               meta: () => {
@@ -259,7 +259,7 @@ export default {
                   data: [obj],
                   columns: this.columns,
                   title: '删除',
-                  name: this.$t('image'),
+                  name: this.$t('dictionary.image'),
                   onManager: this.onManager,
                 })
               },

@@ -56,7 +56,7 @@ export default {
                   data: [obj],
                   columns: this.columns,
                   title: '删除主机组',
-                  name: this.$t('instancegroup'),
+                  name: this.$t('dictionary.instancegroup'),
                   onManager: this.onManager,
                 })
               },

@@ -84,7 +84,7 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               title: '清除',
-              name: this.$t('disk'),
+              name: this.$t('dictionary.disk'),
               requestParams: { override_pending_delete: true },
               onManager: this.onManager,
             })

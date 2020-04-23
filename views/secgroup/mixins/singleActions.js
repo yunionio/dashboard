@@ -33,7 +33,7 @@ export default {
                   columns: this.columns,
                   onManager: this.onManager,
                   refresh: this.refresh,
-                  name: this.$t('secgroup'),
+                  name: this.$t('dictionary.secgroup'),
                 })
               },
               meta: () => {
@@ -172,7 +172,7 @@ export default {
                   data: [obj],
                   columns: this.columns,
                   title: '删除',
-                  name: this.$t('secgroup'),
+                  name: this.$t('dictionary.secgroup'),
                   onManager: this.onManager,
                 })
               },

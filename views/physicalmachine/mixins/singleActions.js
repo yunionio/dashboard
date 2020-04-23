@@ -163,7 +163,7 @@ export default {
                     this.createDialog('HostsAdjustLabelDialog', {
                       data: [obj],
                       columns: this.columns,
-                      name: this.$t('physicalmachine'),
+                      name: this.$t('dictionary.physicalmachine'),
                     })
                   },
                 },
@@ -191,11 +191,11 @@ export default {
                   },
                 },
                 getDomainChangeOwnerAction(this, {
-                  name: this.$t('dictionary.host'),
+                  name: this.$t('dictionary.dictionary.host'),
                   resource: 'hosts',
                 }),
                 getSetPublicAction(this, {
-                  name: this.$t('dictionary.host'),
+                  name: this.$t('dictionary.dictionary.host'),
                   scope: 'domain',
                 }),
                 {

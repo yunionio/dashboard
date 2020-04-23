@@ -290,7 +290,7 @@ export default {
                     data: this.list.selectedItems,
                     columns: this.columns,
                     onManager: this.onManager,
-                    name: this.$t('server'),
+                    name: this.$t('dictionary.server'),
                   })
                 },
                 meta: () => {
@@ -673,7 +673,7 @@ export default {
                   return ret
                 },
               },
-              disableDeleteAction(this, { name: this.$t('server') }),
+              disableDeleteAction(this, { name: this.$t('dictionary.server') }),
               {
                 label: '删除',
                 permission: 'server_delete',
