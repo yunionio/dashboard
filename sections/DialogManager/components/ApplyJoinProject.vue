@@ -63,7 +63,11 @@ export default {
       }
       await this.createWorkflow(variables)
       this.$message.success('加入项目流程已提交')
-      this.$router.push('/workflow')
+      if (this.params.success) {
+        this.params.success()
+      } else {
+        this.$router.push('/workflow')
+      }
     },
     async handleConfirm () {
       this.loading = true

@@ -44,7 +44,11 @@ export default {
   },
   methods: {
     joinProject () {
-      this.createDialog('ApplyJoinProjectDialog')
+      this.createDialog('ApplyJoinProjectDialog', {
+        success: () => {
+          this.$router.push('/no-project-status')
+        },
+      })
     },
     async handleLogout () {
       this.$store.dispatch('auth/logout')
