@@ -28,7 +28,6 @@ export default {
       list: this.$list.createList(this, {
         resource: 'cloudproviderquotas',
         getParams: {
-          details: false,
           cloudprovider_id: this.data.id,
         },
         filterOptions: {
@@ -46,29 +45,45 @@ export default {
               return `quota_type.contains("${val}")`
             },
           },
-          quota_range: {
-            label: '位置',
-            filter: true,
-            formatter: val => {
-              return `quota_range.contains("${val}")`
-            },
+          cloudregion: {
+            label: '区域',
+            // filter: true,
+            // formatter: val => {
+            //   return `cloudregion.contains("${val}")`
+            // },
           },
         },
       }),
       columns: [
-        getCopyWithContentTableColumn(),
+        {
+          field: 'name',
+          title: '名称',
+          minWidth: 150,
+          slots: {
+            default: ({ row }, h) => {
+              const { name } = row
+              const text = this.$t('cloudproviderquotaNames')[name] || name
+              return [
+                <list-body-cell-wrap hideField copy field={'name'} row={row} message={text}>
+                  {text}
+                </list-body-cell-wrap>,
+              ]
+            },
+          },
+        },
         getCopyWithContentTableColumn({
           field: 'quota_type',
           title: '类型',
         }),
         getCopyWithContentTableColumn({
-          field: 'quota_range',
-          title: '位置',
+          field: 'cloudregion',
+          title: '区域',
         }),
         {
-          field: 'progress',
+          field: 'used_count',
           title: '使用情况',
           minWidth: 330,
+          sortable: true,
           slots: {
             default: ({ row }) => {
               const { used_count: uc, max_count: mc } = row
