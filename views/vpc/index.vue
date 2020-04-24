@@ -1,6 +1,6 @@
 <template>
   <div>
-   <page-header title="VPC" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
+   <page-header :title="$t('dictionary.vpc')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
    <page-body>
      <list :id="listId" :cloud-env="cloudEnv" :get-params="getParams" />
    </page-body>
