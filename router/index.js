@@ -195,6 +195,7 @@ export default {
     {
       meta: {
         label: '策略',
+        hidden: true,
       },
       submenus: [
         {
