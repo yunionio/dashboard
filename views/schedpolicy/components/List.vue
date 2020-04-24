@@ -77,6 +77,7 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               title: '删除调度策略',
+              name: this.$t('dictionary.schedpolicie'),
               onManager: this.onManager,
             })
           },

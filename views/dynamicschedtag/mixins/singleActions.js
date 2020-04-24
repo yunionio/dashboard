@@ -56,6 +56,7 @@ export default {
                   data: [obj],
                   columns: this.columns,
                   title: '删除动态调度标签',
+                  name: this.$t('dictionary.dynamicschedtag'),
                   onManager: this.onManager,
                 })
               },
