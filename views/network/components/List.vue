@@ -155,6 +155,7 @@ export default {
                   this.createDialog('ChangeOwenrDialog', {
                     data: this.list.selectedItems,
                     columns: this.columns,
+                    name: this.$t('dictionary.network'),
                     onManager: this.onManager,
                   })
                 },
@@ -272,6 +273,7 @@ export default {
                     data: this.list.selectedItems,
                     columns: this.columns,
                     title: '删除',
+                    name: this.$t('dictionary.network'),
                     onManager: this.onManager,
                   })
                 },

@@ -54,7 +54,7 @@ export default {
           component: Layout,
           children: [
             {
-              name: 'VPC',
+              name: 'Vpc',
               path: '',
               component: Vpc,
             },

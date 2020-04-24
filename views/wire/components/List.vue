@@ -106,6 +106,7 @@ export default {
                     data: this.list.selectedItems,
                     columns: this.columns,
                     title: '删除',
+                    name: this.$t('dictionary.hostwire'),
                     onManager: this.onManager,
                   })
                 },

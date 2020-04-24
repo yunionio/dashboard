@@ -68,6 +68,7 @@ export default {
             this.createDialog('DeleteResDialog', {
               vm: this,
               title: '删除',
+              name: this.$t('dictionary.dnsrecord'),
               data: this.list.selectedItems,
               columns: this.columns,
               onManager: this.onManager,
