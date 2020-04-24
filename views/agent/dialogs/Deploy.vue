@@ -74,6 +74,7 @@
               :params="serversParams"
               :label-format="labelFormat"
               :select-props="{ placeholder: '请选择云主机' }"
+              @change="handleServerChange"
               @update:options="serversSuccess" />
               <a-alert v-if="isOut" message="如果您需要再次部署，请确保节点已经从旧机器下线" banner />
           </a-form-item>
@@ -201,7 +202,7 @@ export default {
           'server',
           {
             validateFirst: true,
-            validateTrigger: ['blur'],
+            validateTrigger: ['blur', 'change'],
             rules: [
               { required: true, message: '请选择云主机' },
               { validator: this.serverOldCheck },
@@ -292,6 +293,10 @@ export default {
         this.isDeleteServer = !list.find(item => item.id === id)
         validateFields(['server'])
       }
+    },
+    handleServerChange () {
+      this.isDeleteServer = false
+      this.form.fc.validateFields(['server'])
     },
     userMapper (data) {
       data = data.filter(item => item.is_system_account)
