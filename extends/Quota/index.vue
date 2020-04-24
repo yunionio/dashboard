@@ -75,7 +75,12 @@ export default {
     ...mapGetters(['scope', 'isAdminMode', 'isDomainMode', 'userInfo']),
     chartData () {
       let data = R.sort((a, b) => {
-        return get(a, `usage.${this.params.field}`) - get(b, `usage.${this.params.field}`)
+        const aUsage = get(a, `usage.${this.params.field}`)
+        const bUsage = get(b, `usage.${this.params.field}`)
+        if (aUsage === bUsage) {
+          return get(a, this.params.field) - get(b, this.params.field)
+        }
+        return aUsage - bUsage
       }, R.slice(0, 8, this.data))
       if (this.isDomainMode) {
         data = data.filter(item => item.tenant)
