@@ -117,7 +117,7 @@ export default {
           actions: obj => {
             return [
               getSetPublicAction(this, {
-                name: this.$t('dictionary.dictionary.image'),
+                name: this.$t('dictionary.image'),
                 scope: 'project',
               }, {
                 meta: () => {

@@ -136,11 +136,11 @@ export default {
             actions: () => {
               return [
                 getDomainChangeOwnerAction(this, {
-                  name: this.$t('dictionary.dictionary.host'),
+                  name: this.$t('dictionary.host'),
                   resource: 'hosts',
                 }),
                 getSetPublicAction(this, {
-                  name: this.$t('dictionary.dictionary.host'),
+                  name: this.$t('dictionary.host'),
                   scope: 'domain',
                 }),
                 {
