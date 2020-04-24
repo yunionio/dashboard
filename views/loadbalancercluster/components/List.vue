@@ -91,7 +91,7 @@ export default {
             if (!obj.can_delete) {
               return {
                 validate: false,
-                tooltip: '无法删除，请确保集群中的节点已被删除',
+                tooltip: '无法删除，请确认负载均衡实例已经迁移至其它集群',
               }
             }
             return {

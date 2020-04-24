@@ -70,7 +70,7 @@ export default {
           title: '上一次心跳',
           width: 100,
           formatter: ({ cellValue }) => {
-            return this.$moment(cellValue).fromNow()
+            return cellValue ? this.$moment(cellValue).fromNow() : '-'
           },
         },
         {
