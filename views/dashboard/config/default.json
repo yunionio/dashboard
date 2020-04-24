@@ -264,6 +264,141 @@
           "x": 10,
           "y": 12
         }
+      },
+      {
+        "layout": {
+          "component": "Quota",
+          "h": 7,
+          "w": 5,
+          "x": 0,
+          "y": 17
+        },
+        "params": {
+          "name": "各域CPU配额使用情况",
+          "field": "cpu",
+          "titleKey": "domain",
+          "resource": "quotas"
+        }
+      },
+      {
+        "layout": {
+          "component": "Quota",
+          "h": 7,
+          "w": 5,
+          "x": 5,
+          "y": 17
+        },
+        "params": {
+          "name": "各域内存配额使用情况",
+          "field": "memory",
+          "titleKey": "domain",
+          "resource": "quotas"
+        }
+      },
+      {
+        "layout": {
+          "component": "Quota",
+          "h": 7,
+          "w": 5,
+          "x": 10,
+          "y": 17
+        },
+        "params": {
+          "name": "各域存储配额使用情况",
+          "field": "storage",
+          "titleKey": "domain",
+          "resource": "quotas"
+        }
+      },
+      {
+        "layout": {
+          "component": "Quota",
+          "h": 7,
+          "w": 5,
+          "x": 15,
+          "y": 17
+        },
+        "params": {
+          "name": "各域公网IP配额使用情况",
+          "field": "eip",
+          "titleKey": "domain",
+          "resource": "region_quotas"
+        }
+      },
+      {
+        "layout": {
+          "component": "Quota",
+          "h": 7,
+          "w": 5,
+          "x": 0,
+          "y": 24
+        },
+        "params": {
+          "name": "各域IP配额使用情况",
+          "field": "port",
+          "titleKey": "domain",
+          "resource": "region_quotas"
+        }
+      },
+      {
+        "layout": {
+          "component": "Quota",
+          "h": 7,
+          "w": 5,
+          "x": 0,
+          "y": 24
+        },
+        "params": {
+          "name": "各域IP配额使用情况",
+          "field": "port",
+          "titleKey": "domain",
+          "resource": "region_quotas"
+        }
+      },
+      {
+        "layout": {
+          "component": "Quota",
+          "h": 7,
+          "w": 5,
+          "x": 5,
+          "y": 24
+        },
+        "params": {
+          "name": "各域GPU配额使用情况",
+          "field": "isolated_device",
+          "titleKey": "domain",
+          "resource": "quotas"
+        }
+      },
+      {
+        "layout": {
+          "component": "Quota",
+          "h": 7,
+          "w": 5,
+          "x": 10,
+          "y": 24
+        },
+        "params": {
+          "name": "各域镜像配额使用情况",
+          "field": "image",
+          "titleKey": "domain",
+          "resource": "image_quotas"
+        }
+      },
+      {
+        "layout": {
+          "component": "Quota",
+          "h": 7,
+          "w": 5,
+          "x": 15,
+          "y": 24
+        },
+        "params": {
+          "name": "各域镜像配额使用情况",
+          "field": "snapshot",
+          "titleKey": "domain",
+          "resource": "region_quotas"
+        }
       }
     ]
   },
@@ -545,20 +680,137 @@
       },
       {
         "layout": {
-          "component": "ResourceHistoryLine",
-          "h": 5,
-          "w": 10,
+          "component": "Quota",
+          "h": 7,
+          "w": 5,
           "x": 0,
           "y": 14
+        },
+        "params": {
+          "name": "各域CPU配额使用情况",
+          "field": "cpu",
+          "titleKey": "tenant",
+          "resource": "quotas"
         }
       },
       {
         "layout": {
-          "component": "BillHistoryLine",
-          "h": 5,
-          "w": 10,
+          "component": "Quota",
+          "h": 7,
+          "w": 5,
+          "x": 5,
+          "y": 14
+        },
+        "params": {
+          "name": "各域内存配额使用情况",
+          "field": "memory",
+          "titleKey": "tenant",
+          "resource": "quotas"
+        }
+      },
+      {
+        "layout": {
+          "component": "Quota",
+          "h": 7,
+          "w": 5,
           "x": 10,
           "y": 14
+        },
+        "params": {
+          "name": "各域存储配额使用情况",
+          "field": "storage",
+          "titleKey": "tenant",
+          "resource": "quotas"
+        }
+      },
+      {
+        "layout": {
+          "component": "Quota",
+          "h": 7,
+          "w": 5,
+          "x": 15,
+          "y": 14
+        },
+        "params": {
+          "name": "各域公网IP配额使用情况",
+          "field": "eip",
+          "titleKey": "tenant",
+          "resource": "region_quotas"
+        }
+      },
+      {
+        "layout": {
+          "component": "Quota",
+          "h": 7,
+          "w": 5,
+          "x": 0,
+          "y": 21
+        },
+        "params": {
+          "name": "各域IP配额使用情况",
+          "field": "port",
+          "titleKey": "tenant",
+          "resource": "region_quotas"
+        }
+      },
+      {
+        "layout": {
+          "component": "Quota",
+          "h": 7,
+          "w": 5,
+          "x": 0,
+          "y": 21
+        },
+        "params": {
+          "name": "各域IP配额使用情况",
+          "field": "port",
+          "titleKey": "tenant",
+          "resource": "region_quotas"
+        }
+      },
+      {
+        "layout": {
+          "component": "Quota",
+          "h": 7,
+          "w": 5,
+          "x": 5,
+          "y": 21
+        },
+        "params": {
+          "name": "各域GPU配额使用情况",
+          "field": "isolated_device",
+          "titleKey": "tenant",
+          "resource": "quotas"
+        }
+      },
+      {
+        "layout": {
+          "component": "Quota",
+          "h": 7,
+          "w": 5,
+          "x": 10,
+          "y": 21
+        },
+        "params": {
+          "name": "各域镜像配额使用情况",
+          "field": "image",
+          "titleKey": "tenant",
+          "resource": "image_quotas"
+        }
+      },
+      {
+        "layout": {
+          "component": "Quota",
+          "h": 7,
+          "w": 5,
+          "x": 15,
+          "y": 21
+        },
+        "params": {
+          "name": "各域镜像配额使用情况",
+          "field": "snapshot",
+          "titleKey": "tenant",
+          "resource": "region_quotas"
         }
       }
     ]
