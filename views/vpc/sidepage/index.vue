@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="VPC"
+    :title="$t('dictionary.vpc')"
     icon="res-vpc"
     :res-name="detailData.name"
     :actions="params.actions"
