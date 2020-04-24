@@ -399,6 +399,14 @@ export const PERMISSION = {
   'scalinggroups_perform_enable': ['compute', 'scalinggroups', 'perform', 'enable'],
   'scalinggroups_perform_disable': ['compute', 'scalinggroups', 'perform', 'disable'],
   /**
+   * 弹性伸缩组-伸缩策略
+   */
+  'scalingpolicies_list': ['compute', 'scalingpolicies', 'list'],
+  'scalingpolicies_create': ['compute', 'scalingpolicies', 'create'],
+  'scalingpolicies_delete': ['compute', 'scalingpolicies', 'delete'],
+  'scalingpolicies_perform_enable': ['compute', 'scalingpolicies', 'perform', 'enable'],
+  'scalingpolicies_perform_disable': ['compute', 'scalingpolicies', 'perform', 'disable'],
+  /**
    * cloudregions 相关操作
    */
   'cloudregions_get': ['compute', 'cloudregions', 'get'],
