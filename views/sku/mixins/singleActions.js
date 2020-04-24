@@ -63,6 +63,7 @@ export default {
                   data: [obj],
                   columns: this.columns,
                   title: '删除',
+                  name: this.$t('dictionary.sku'),
                   onManager: this.onManager,
                 })
               },

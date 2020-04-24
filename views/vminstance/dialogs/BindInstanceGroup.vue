@@ -8,7 +8,7 @@
           <div class="mt-2">已创建的虚拟机加入主机组后虚拟机所属宿主机不会变化。</div>
         </template>
       </a-alert>
-      <dialog-selected-tips :name="$t('dictionary.instancegroup')" :count="params.data.length" :action="action" />
+      <dialog-selected-tips :name="params.name || $t('dictionary.instancegroup')" :count="params.data.length" :action="action" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-select
         v-if="instanceGroupsLoaded"
