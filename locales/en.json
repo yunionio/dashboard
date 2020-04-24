@@ -1030,5 +1030,20 @@
     "AzureUSGovernmentCloud": "美国政务区",
     "Public": "国际区",
     "Internation": "国际区"
+  },
+  "providers": {
+    "esxi": "VMware",
+    "kvm": "OneCloud",
+    "vmware": "VMware",
+    "oneCloud": "OneCloud",
+    "openstack": "OpenStack",
+    "zstack": "ZStack",
+    "dStack": "DStack",
+    "aliyun": "阿里云",
+    "azure": "Azure",
+    "qcloud": "腾讯云",
+    "aws": "AWS",
+    "huawei": "华为云",
+    "ucloud": "UCloud"
   }
 }
