@@ -1520,5 +1520,20 @@
     "standardPBSFamily": "标准 PBS 系列 vCPUs",
     "virtualMachineScaleSets": "虚拟机规模集",
     "virtualMachines": "虚拟机"
+  },
+  "providers": {
+    "esxi": "VMware",
+    "kvm": "OneCloud",
+    "vmware": "VMware",
+    "oneCloud": "OneCloud",
+    "openstack": "OpenStack",
+    "zstack": "ZStack",
+    "dStack": "DStack",
+    "aliyun": "阿里云",
+    "azure": "Azure",
+    "qcloud": "腾讯云",
+    "aws": "AWS",
+    "huawei": "华为云",
+    "ucloud": "UCloud"
   }
 }
