@@ -66,20 +66,22 @@
           <a-form-item v-if="this.hostName === ''">
             <a-input v-decorator="decorators.ip" placeholder="请输入外部机器的IP" />
           </a-form-item>
-          <a-form-item v-if="this.hostName === 'server'">
+          <a-form-item class="mb-0" v-if="this.hostName === 'server'">
             <base-select
               v-decorator="decorators.server"
               resource="servers"
-              :params="{}"
+              style="width: 320px"
+              :params="serversParams"
               :label-format="labelFormat"
               :select-props="{ placeholder: '请选择云主机' }"
-              style="width: 320px" />
+              @update:options="serversSuccess" />
+              <a-alert v-if="isOut" message="如果您需要再次部署，请确保节点已经从旧机器下线" banner />
           </a-form-item>
           <a-form-item v-if="this.hostName === 'host'">
             <base-select
               v-decorator="decorators.host"
               resource="hosts"
-              :params="{}"
+              :params="{ status: 'running' }"
               :label-format="labelFormat"
               :select-props="{ placeholder: '请选择宿主机' }"
               style="width: 320px" />
@@ -141,6 +143,7 @@ export default {
     return {
       loading: false,
       isRunning: false,
+      isDeleteServer: false,
       form: {
         fc: this.$form.createForm(this),
       },
@@ -260,11 +263,36 @@ export default {
   },
   computed: {
     ...mapGetters(['isAdminMode', 'scope', 'userInfo']),
+    isOut () {
+      const item = this.params.data && this.params.data.length && this.params.data[0]
+      if (item && item.hb_last_seen) {
+        let s = this.$moment().diff(item.hb_last_seen, 'seconds')
+        if (s < 60) {
+          return true
+        }
+      }
+      return false
+    },
+    serversParams () {
+      return {
+        status: 'running',
+        cloud_env: 'public',
+      }
+    },
   },
   created () {
     this.backfill()
   },
   methods: {
+    serversSuccess (list = []) {
+      const { deployment } = this.params.data[0] || {}
+      const { getFieldValue, validateFields } = this.form.fc
+      if (getFieldValue('hostName') === 'server' && deployment && deployment.host) {
+        const [, id] = deployment.host.split(':')
+        this.isDeleteServer = !list.find(item => item.id === id)
+        validateFields(['server'])
+      }
+    },
     userMapper (data) {
       data = data.filter(item => item.is_system_account)
       this.userData = data
@@ -284,12 +312,15 @@ export default {
     },
     // 更改云主机时与旧的云主机校验
     serverOldCheck (rule, value, callback) {
-      if (value && this.deploymentHost) {
-        const { hostName } = this.deploymentHost
-        const formHost = this.form.fc.getFieldValue('hostName')
-        if (formHost !== this.deploymentHost[hostName]) {
-          return callback(new Error('更换目标机器，需要提前先将节点从旧机器下线'))
-        }
+      // if (value && this.deploymentHost) {
+      //   const { hostName } = this.deploymentHost
+      //   const formHost = this.form.fc.getFieldValue('hostName')
+      //   if (formHost !== this.deploymentHost[hostName]) {
+      //     return callback(new Error('更换目标机器，需要提前先将节点从旧机器下线'))
+      //   }
+      // }
+      if (this.isDeleteServer) {
+        return callback(new Error('该云主机已被删除，请重新选择云主机'))
       }
       return callback()
     },
