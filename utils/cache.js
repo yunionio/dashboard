@@ -11,7 +11,7 @@ let _queue = {}
 export function load ({
   res,
   action,
-  apiVersion = 'v1',
+  apiVersion = 'v2',
   resPath,
   actionArgs = {},
   useManager = true,
@@ -20,7 +20,10 @@ export function load ({
     // 根据params和res生成唯一key
     const _params = { ...actionArgs.params }
     if (_params.$t) delete _params.$t
-    const key = `${res}$$${qs.stringify(_params)}`
+    let key = `${res}$$${qs.stringify(_params)}`
+    if (!useManager && actionArgs.url) {
+      key = `${res}$$${actionArgs.url}$$${qs.stringify(_params)}`
+    }
     let value = _cache[key]
     // 有数据则直接返回
     if (value) {
