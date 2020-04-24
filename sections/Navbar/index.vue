@@ -206,12 +206,19 @@ export default {
     },
   },
   watch: {
-    'userInfo' (val, oldVal) {
-      if (val.id !== oldVal.id) {
-        if (Cookies.get('INIT_SETUP') && val.roles && val.roles.includes('admin')) {
-          this.$router.push('/guide')
+    userInfo: {
+      handler (val, oldVal = {}) {
+        if (val.id !== oldVal.id) {
+          if (Cookies.get('INIT_SETUP') && val.roles && val.roles.includes('admin')) {
+            this.$router.push('/guide')
+            return
+          }
+          if (R.isNil(val.projects) || R.isEmpty(val.projects)) {
+            this.$router.push('/no-project')
+          }
         }
-      }
+      },
+      immediate: true,
     },
     'userInfo.id' (val) {
       this.checkWorkflow(val)
@@ -281,18 +288,17 @@ export default {
       try {
         await this.$store.dispatch('auth/reLogin', projectId)
         await this.$store.commit('auth/SET_SCOPE', scope)
-        await this.$store.dispatch('auth/getInfo')
-        await this.$store.dispatch('auth/getPermission', scope)
-        await this.$store.dispatch('auth/getScopeResource')
-        if (this.$appConfig.isPrivate) {
-          const resolveIndexRoute = this.$router.resolve('/')
-          const currentRoute = this.$route
-          // 如果在首页则刷新
-          if (resolveIndexRoute.route.path === currentRoute.path) {
-            window.location.reload()
-          } else {
-            this.$router.push('/')
-          }
+        Cookies.set('scope', scope, { expires: 7 })
+        const resolveIndexRoute = this.$router.resolve('/')
+        const currentRoute = this.$route
+        // 如果在首页则刷新页面
+        if (resolveIndexRoute.route.path === currentRoute.path) {
+          window.location.reload()
+        } else {
+          await this.$store.dispatch('auth/getInfo')
+          await this.$store.dispatch('auth/getPermission', scope)
+          await this.$store.dispatch('auth/getScopeResource')
+          this.$router.push('/')
         }
       } catch (error) {
         throw error
