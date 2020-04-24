@@ -34,6 +34,7 @@ export default {
                   columns: this.columns,
                   onManager: this.onManager,
                   refresh: this.refresh,
+                  name: this.$t('dictionary.dbinstances'),
                 })
               },
             },
@@ -93,7 +94,9 @@ export default {
                 }
               },
             },
-            disableDeleteAction(this),
+            disableDeleteAction(this, {
+              name: this.$t('dictionary.dbinstances'),
+            }),
             {
               label: '删除',
               permission: 'rds_dbinstances_delete',
@@ -105,6 +108,7 @@ export default {
                   columns: this.columns,
                   onManager: this.onManager,
                   refresh: this.refresh,
+                  name: this.$t('dictionary.dbinstances'),
                 })
               },
               meta: () => {
