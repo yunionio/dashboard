@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{params.title}}</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" action="部署" name="节点" />
+      <dialog-selected-tips :name="$t('dictionary.loadbalanceragent')" :count="params.data.length" action="部署" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 2)" />
       <a-divider orientation="left">指定系统用户</a-divider>
       <a-form
@@ -31,6 +31,7 @@
             :params="userParams"
             :mapper="userMapper"
             :label-format="labelFormat"
+            idKey="name"
             :select-props="{ placeholder: '需要选择有管理员权限的用户' }"
             style="width: 320px" />
         </a-form-item>
@@ -65,20 +66,22 @@
           <a-form-item v-if="this.hostName === ''">
             <a-input v-decorator="decorators.ip" placeholder="请输入外部机器的IP" />
           </a-form-item>
-          <a-form-item v-if="this.hostName === 'server'">
+          <a-form-item class="mb-0" v-if="this.hostName === 'server'">
             <base-select
               v-decorator="decorators.server"
               resource="servers"
-              :params="{}"
+              style="width: 320px"
+              :params="serversParams"
               :label-format="labelFormat"
               :select-props="{ placeholder: '请选择云主机' }"
-              style="width: 320px" />
+              @update:options="serversSuccess" />
+              <a-alert v-if="isOut" message="如果您需要再次部署，请确保节点已经从旧机器下线" banner />
           </a-form-item>
           <a-form-item v-if="this.hostName === 'host'">
             <base-select
               v-decorator="decorators.host"
               resource="hosts"
-              :params="{}"
+              :params="{ status: 'running' }"
               :label-format="labelFormat"
               :select-props="{ placeholder: '请选择宿主机' }"
               style="width: 320px" />
@@ -112,9 +115,16 @@
           <a-checkbox v-decorator="decorators.repo_sslverify">Yum源TLS校验</a-checkbox>
         </a-form-item>
       </a-form>
+      <a-alert v-if="isRunning">
+        <div slot="message">
+          提示：
+          检测到该任务正在执行中，点击
+          <router-link :to="`/lbagent/asbook?ansiblePlaybookId=${ansiblePlaybookId}`">详情</router-link>
+        </div>
+      </a-alert>
     </div>
     <div slot="footer">
-      <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
+      <a-button type="primary" @click="handleConfirm" :loading="loading" :disabled="isRunning">{{ $t('dialog.ok') }}</a-button>
       <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
     </div>
   </base-dialog>
@@ -133,6 +143,7 @@ export default {
     return {
       loading: false,
       isRunning: false,
+      isDeleteServer: false,
       form: {
         fc: this.$form.createForm(this),
       },
@@ -239,7 +250,7 @@ export default {
         system: true,
       },
       nameServers: [
-        { label: '云主机', value: 'server' },
+        { label: this.$t('dictionary.server'), value: 'server' },
         { label: '宿主机', value: 'host' },
         { label: '外部机器', value: '' },
       ],
@@ -247,17 +258,44 @@ export default {
       deploymentHost: '',
       deployMethod: '',
       ansiblePlaybookId: '',
+      userData: [],
     }
   },
   computed: {
     ...mapGetters(['isAdminMode', 'scope', 'userInfo']),
+    isOut () {
+      const item = this.params.data && this.params.data.length && this.params.data[0]
+      if (item && item.hb_last_seen) {
+        let s = this.$moment().diff(item.hb_last_seen, 'seconds')
+        if (s < 60) {
+          return true
+        }
+      }
+      return false
+    },
+    serversParams () {
+      return {
+        status: 'running',
+        cloud_env: 'public',
+      }
+    },
   },
   created () {
     this.backfill()
   },
   methods: {
+    serversSuccess (list = []) {
+      const { deployment } = this.params.data[0] || {}
+      const { getFieldValue, validateFields } = this.form.fc
+      if (getFieldValue('hostName') === 'server' && deployment && deployment.host) {
+        const [, id] = deployment.host.split(':')
+        this.isDeleteServer = !list.find(item => item.id === id)
+        validateFields(['server'])
+      }
+    },
     userMapper (data) {
       data = data.filter(item => item.is_system_account)
+      this.userData = data
       return data
     },
     labelFormat (item) {
@@ -274,12 +312,15 @@ export default {
     },
     // 更改云主机时与旧的云主机校验
     serverOldCheck (rule, value, callback) {
-      if (value && this.deploymentHost) {
-        const { hostName } = this.deploymentHost
-        const formHost = this.form.fc.getFieldValue('hostName')
-        if (formHost !== this.deploymentHost[hostName]) {
-          return callback(new Error('更换目标机器，需要提前先将节点从旧机器下线'))
-        }
+      // if (value && this.deploymentHost) {
+      //   const { hostName } = this.deploymentHost
+      //   const formHost = this.form.fc.getFieldValue('hostName')
+      //   if (formHost !== this.deploymentHost[hostName]) {
+      //     return callback(new Error('更换目标机器，需要提前先将节点从旧机器下线'))
+      //   }
+      // }
+      if (this.isDeleteServer) {
+        return callback(new Error('该云主机已被删除，请重新选择云主机'))
       }
       return callback()
     },
@@ -358,9 +399,17 @@ export default {
         let values = await this.form.fc.validateFields()
         values['repo_sslverify'] = values['repo_sslverify'] ? 1 : 0
         const { hostName, ip, host, proj, pass, server, user } = values
+        let name = ''
+        if (hostName && hostName === 'host') {
+          name = `${hostName}:${host}`
+        } else if (hostName && hostName === 'server') {
+          name = `${hostName}:${server}`
+        } else {
+          name = ip
+        }
         const params = {
           host: {
-            name: hostName ? `${hostName}:${host}` : ip,
+            name,
             vars: {
               host: host,
               pass,
@@ -373,10 +422,15 @@ export default {
           },
           deploy_method: values.deploy_method,
         }
-        await this.doCreate(params)
+        const { data } = await this.doCreate(params)
         this.loading = false
         this.cancelDialog()
-        this.params.list.refresh()
+        if (data) {
+          this.$router.push({
+            path: `/lbagent/asbook?ansiblePlaybookId=${data.deployment.ansible_playbook || this.ansiblePlaybookId}`,
+          })
+        }
+        this.params.refresh()
       } catch (error) {
         this.loading = false
       }
