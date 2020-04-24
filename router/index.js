@@ -50,6 +50,7 @@ export default {
           meta: {
             label: 'VPC',
             permission: 'vpcs_list',
+            t: 'dictionary.vpc',
           },
           component: Layout,
           children: [
