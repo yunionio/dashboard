@@ -12,7 +12,7 @@ export default {
             columns: this.columns,
             title: '更改所属',
             onManager: this.onManager,
-            tipName: '调度标签',
+            tipname: this.$t('dictionary.schedtag'),
           })
         },
         meta: () => {
@@ -55,6 +55,7 @@ export default {
             data: [obj],
             columns: this.columns,
             title: '删除',
+            name: this.$t('dictionary.schedtag'),
             onManager: this.onManager,
             success: () => {
               this.destroySidePages()

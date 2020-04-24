@@ -162,6 +162,7 @@ export default {
                     data: this.list.selectedItems,
                     columns: this.columns,
                     title: '删除云账号',
+                    name: this.$t('dictionary.cloudaccount'),
                     onManager: this.onManager,
                   })
                 },
