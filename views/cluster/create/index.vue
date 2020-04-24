@@ -202,6 +202,9 @@ export default {
             `num[${i}]`,
             {
               initialValue: 1,
+              rules: [
+                { required: true, message: '请填写数量' },
+              ],
             },
           ],
           role: i => [
@@ -404,6 +407,7 @@ export default {
         const hasControl = genValues.machines.some(val => val.role === 'controlplane')
         if (!hasControl) {
           this.$message.warning('新建集群中最少有一台机器是控制节点')
+          this.loading = false
           return
         }
         await this.doCreate(genValues)
