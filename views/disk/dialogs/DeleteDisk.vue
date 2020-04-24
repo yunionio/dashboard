@@ -138,7 +138,7 @@ export default {
           if (this.isIDC) {
             params.delete_snapshots = this.form.fd.autoDelete
           }
-          const res = await this.params.list.onManager('batchDelete', {
+          const res = await this.params.onManager('batchDelete', {
             id: ids,
             managerArgs: { params },
           })

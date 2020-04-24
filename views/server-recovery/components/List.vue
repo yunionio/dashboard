@@ -92,6 +92,7 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               title: '清除',
+              name: this.$t('dictionary.server'),
               requestParams: { override_pending_delete: true },
               onManager: this.onManager,
             })

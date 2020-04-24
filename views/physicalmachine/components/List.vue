@@ -386,6 +386,7 @@ export default {
                   this.createDialog('HostsAdjustLabelDialog', {
                     data: this.list.selectedItems,
                     columns: this.columns,
+                    name: this.$t('dictionary.physicalmachine'),
                   })
                 },
                 meta: () => ({

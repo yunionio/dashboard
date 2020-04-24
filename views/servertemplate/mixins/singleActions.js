@@ -23,7 +23,7 @@ export default {
             columns: this.columns,
             title: '删除',
             onManager: this.onManager,
-            name: '主机模板',
+            name: this.$t('dictionary.servertemplate'),
           })
         },
         meta: obj => this.$getDeleteResult(obj),
