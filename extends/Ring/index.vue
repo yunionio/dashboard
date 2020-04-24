@@ -259,11 +259,12 @@ export default {
         const params = this.genUsageParams()
         const data = await load({
           res: 'usages',
-          action: 'rpc',
           actionArgs: {
-            methodname: 'getGeneralUsage',
+            url: '/v2/rpc/usages/general-usage',
+            method: 'GET',
             params,
           },
+          useManager: false,
           resPath: 'data',
         })
         this.data = data

@@ -226,7 +226,7 @@
           "all_usage_key": "hosts.cpu",
           "brand": "OneCloud",
           "cloud_env": "onpremise",
-          "name": "cpu使用率",
+          "name": "CPU使用率",
           "region": "default",
           "usage_key": "all.servers.cpu"
         }
@@ -687,7 +687,7 @@
           "y": 14
         },
         "params": {
-          "name": "各域CPU配额使用情况",
+          "name": "各项目CPU配额使用情况",
           "field": "cpu",
           "titleKey": "tenant",
           "resource": "quotas"
@@ -702,7 +702,7 @@
           "y": 14
         },
         "params": {
-          "name": "各域内存配额使用情况",
+          "name": "各项目内存配额使用情况",
           "field": "memory",
           "titleKey": "tenant",
           "resource": "quotas"
@@ -717,7 +717,7 @@
           "y": 14
         },
         "params": {
-          "name": "各域存储配额使用情况",
+          "name": "各项目存储配额使用情况",
           "field": "storage",
           "titleKey": "tenant",
           "resource": "quotas"
@@ -732,7 +732,7 @@
           "y": 14
         },
         "params": {
-          "name": "各域公网IP配额使用情况",
+          "name": "各项目公网IP配额使用情况",
           "field": "eip",
           "titleKey": "tenant",
           "resource": "region_quotas"
@@ -747,7 +747,7 @@
           "y": 21
         },
         "params": {
-          "name": "各域IP配额使用情况",
+          "name": "各项目IP配额使用情况",
           "field": "port",
           "titleKey": "tenant",
           "resource": "region_quotas"
@@ -762,7 +762,7 @@
           "y": 21
         },
         "params": {
-          "name": "各域IP配额使用情况",
+          "name": "各项目IP配额使用情况",
           "field": "port",
           "titleKey": "tenant",
           "resource": "region_quotas"
@@ -777,7 +777,7 @@
           "y": 21
         },
         "params": {
-          "name": "各域GPU配额使用情况",
+          "name": "各项目GPU配额使用情况",
           "field": "isolated_device",
           "titleKey": "tenant",
           "resource": "quotas"
@@ -792,7 +792,7 @@
           "y": 21
         },
         "params": {
-          "name": "各域镜像配额使用情况",
+          "name": "各项目镜像配额使用情况",
           "field": "image",
           "titleKey": "tenant",
           "resource": "image_quotas"
@@ -807,7 +807,7 @@
           "y": 21
         },
         "params": {
-          "name": "各域镜像配额使用情况",
+          "name": "各项目镜像配额使用情况",
           "field": "snapshot",
           "titleKey": "tenant",
           "resource": "region_quotas"
