@@ -130,6 +130,7 @@ export default {
               columns: this.columns,
               onManager: this.onManager,
               refresh: this.refresh,
+              name: this.$t('dictionary.elasticcaches'),
             })
           },
           meta: () => {
@@ -193,6 +194,7 @@ export default {
                     columns: this.columns,
                     onManager: this.onManager,
                     refresh: this.refresh,
+                    name: this.$t('dictionary.elasticcaches'),
                   })
                 },
                 meta: () => {
@@ -211,6 +213,7 @@ export default {
                     columns: this.columns,
                     onManager: this.onManager,
                     refresh: this.refresh,
+                    name: this.$t('dictionary.elasticcaches'),
                   })
                 },
                 meta: () => {
@@ -220,7 +223,9 @@ export default {
                   }
                 },
               },
-              disableDeleteAction(this),
+              disableDeleteAction(this, {
+                name: this.$t('dictionary.elasticcaches'),
+              }),
             ]
           },
           meta: () => {

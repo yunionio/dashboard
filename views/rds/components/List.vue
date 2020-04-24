@@ -134,6 +134,7 @@ export default {
               columns: this.columns,
               onManager: this.onManager,
               refresh: this.refresh,
+              name: this.$t('dictionary.dbinstances'),
             })
           },
           meta: () => {
@@ -188,7 +189,9 @@ export default {
                   }
                 },
               },
-              disableDeleteAction(this),
+              disableDeleteAction(this, {
+                name: this.$t('dictionary.dbinstances'),
+              }),
               {
                 label: '重启',
                 action: () => {
