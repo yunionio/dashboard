@@ -45,7 +45,7 @@ export default {
         { label: '详情', key: 'cloudaccount-detail' },
         { label: '区域', key: 'cloudproviderregion-list' },
         { label: this.$t('dictionary.project'), key: 'externalproject-list' },
-        { label: '配额', key: 'cloudaccount-quota-list' },
+        { label: '云上配额', key: 'cloudaccount-quota-list' },
         { label: '资源统计', key: 'usage' },
         { label: '操作日志', key: 'event-drawer' },
       ],
