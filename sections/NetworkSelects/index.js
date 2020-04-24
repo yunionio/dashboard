@@ -31,6 +31,9 @@ export default {
         return ['vpc', 'network']
       },
     },
+    decorators: {
+      type: Object,
+    },
     form: {
       type: Object,
     },
@@ -116,12 +119,12 @@ export default {
         return subChild.children[0].data.attrs.title.toLowerCase().indexOf(input.toLowerCase()) >= 0
       }
     },
-    async fetchs () {
+    async fetchs (callback) {
       if (this.types.indexOf('vpc') > -1) {
-        await this.fetchVpc()
+        await this.fetchVpc(callback)
       }
       if (this.types.indexOf('network') > -1) {
-        await this.fetchNetwork()
+        await this.fetchNetwork(callback)
       }
     },
     getSelectedValue (key, id) {
@@ -146,25 +149,32 @@ export default {
       }
       return _default
     },
-    async fetchVpc () {
+    async fetchVpc (callback) {
       const PARAMS = await this.getVpcParams()
       const MANAGER = new this.$Manager('vpcs', 'v2')
       this.vpcLoading = true
       try {
         const { data = {} } = await MANAGER.list({ params: PARAMS })
-        this.vpcList = data.data || []
-        this.vpcLoading = false
+        if (this.vpcFetchChange) {
+          this.vpcList = await this.vpcFetchChange(this.vpcList)
+        } else {
+          this.vpcList = data.data || []
+        }
         if (this.defaultActiveFirstOption) {
           this.FC.setFieldsValue({
             vpc: !R.isEmpty(this.vpcList) ? this.vpcList[0].id : undefined,
           }, this.fetchNetwork)
         }
-        if (this.vpcFetchChange) {
-          await this.vpcFetchChange(this.vpcList)
-        }
       } catch (err) {
-        this.vpcLoading = false
         throw err
+      } finally {
+        this.vpcLoading = false
+        if (callback && R.type(callback) === 'Function') {
+          // eslint-disable-next-line standard/no-callback-literal
+          callback({
+            vpcList: this.vpcList || [],
+          })
+        }
       }
     },
     RenderVpc () {
@@ -204,7 +214,7 @@ export default {
       }
       return _default
     },
-    async fetchNetwork () {
+    async fetchNetwork (callback) {
       const PARAMS = await this.getNetworkParams()
       if (this.types.indexOf('vpc') > -1 && !PARAMS.vpc) {
         this.networkList = []
@@ -224,12 +234,15 @@ export default {
             network: !R.isEmpty(this.networkList) ? this.networkList[0].id : undefined,
           })
         }
-        if (this.networkFetchChange) {
-          await this.networkFetchChange(this.networkList)
-        }
       } catch (err) {
         throw err
       } finally {
+        if (callback && R.type(callback) === 'Function') {
+          // eslint-disable-next-line standard/no-callback-literal
+          callback({
+            networkList: this.networkList || [],
+          })
+        }
         this.networkLoading = false
       }
     },
@@ -265,21 +278,25 @@ export default {
     const { getFieldDecorator } = this.FC
     const RenderCols = this.types.map(name => {
       const sn = this.firstName(name)
-      const options = {}
-      const rules = []
-      if (this.isRequired) {
-        rules.push({
+      const decorator = this.decorators && this.decorators[name]
+      let _options = {}
+      if (decorator) {
+        const [, options] = decorator
+        _options = options || {}
+      }
+      if (this.isRequired && R.isEmpty(_options)) {
+        _options['rules'] = []
+        _options['rules'].push({
           required: true,
           message: this.placeholders[name],
         })
-        options['rules'] = rules
       }
       if (this[`Render${sn}`]) {
         const Render = this[`Render${sn}`]()
         return (
           <a-col span={this.colSpan}>
             <a-form-item wrapperCol={{ span: 24 }}>
-              {getFieldDecorator(name, options)(Render)}
+              {getFieldDecorator(name, _options)(Render)}
             </a-form-item>
           </a-col>
         )
