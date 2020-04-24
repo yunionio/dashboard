@@ -27,6 +27,7 @@
       </a-form-item>
       <network-selects
         isRequired
+        :decorators="networlDecorators"
         :isDefaultFetch="false"
         :defaultActiveFirstOption="false"
         :disabled="networlDisabled"
@@ -138,6 +139,8 @@ export default {
         labelCol: { span: 3 },
         wrapperCol: { span: 20 },
       },
+      isDeleteVpc: false,
+      isDeleteNetwork: false,
     }
   },
   provide () {
@@ -169,6 +172,38 @@ export default {
       }
       return { scope: this.$store.getters.scope }
     },
+    networlDecorators () {
+      return {
+        vpc: ['vpc', {
+          validateFirst: true,
+          rules: [
+            { required: true, message: '请选择VPC' },
+            {
+              validator: (rule, value, _cb) => {
+                if (this.isDeleteVpc) {
+                  return _cb('该网络资源已缺失')
+                }
+                _cb()
+              },
+            },
+          ],
+        }],
+        network: ['network', {
+          validateFirst: true,
+          rules: [
+            { required: true, message: '请选择IP子网' },
+            {
+              validator: (rule, value, _cb) => {
+                if (this.isDeleteNetwork) {
+                  return _cb('该网络资源已缺失')
+                }
+                _cb()
+              },
+            },
+          ],
+        }],
+      }
+    },
   },
   watch: {
     isLoadbalancer (v) {
@@ -183,7 +218,7 @@ export default {
     },
   },
   created () {
-    console.log(typeClouds)
+    this.form.fc.getFieldDecorator('cloudregion', { preserve: true })
   },
   methods: {
     filterOption (input, option) {
@@ -223,7 +258,29 @@ export default {
       this.fetchQueryTs()
     },
     templateChange () {
-      this.$refs['NETWORK'].fetchs()
+      this.isDeleteVpc = false
+      this.isDeleteNetwork = false
+      const { fc } = this.form
+      this.$refs['NETWORK'].fetchs(async (rets) => {
+        await this.$nextTick()
+        const { vpcList, networkList } = rets
+        // 判断当前选择的主机模版中的VPC是否存在VPC列表中
+        const _vpcId = fc.getFieldValue('vpc')
+        if (vpcList !== undefined && _vpcId) {
+          this.isDeleteVpc = vpcList.length === 0 || !vpcList.find(item => item.id === _vpcId)
+        }
+        if (_vpcId) {
+          fc.validateFields(['vpc'])
+        }
+        // 判断当前选择的主机模版中的netwrok是否存在netwrok列表中
+        const _networkId = fc.getFieldValue('netwrok')
+        if (networkList !== undefined && _networkId) {
+          this.isDeleteNetwork = networkList.length === 0 || !networkList.find(item => item.id === _networkId)
+        }
+        if (_networkId) {
+          fc.validateFields(['netwrok'])
+        }
+      })
     },
     async handleValuesChange (vm, changedFields) {
       this.form.fd = {
@@ -272,6 +329,9 @@ export default {
     handleServerTemplateChange (e, { data }) {
       const { row } = data.attrs
       this.setNetworkValues(row)
+      this.form.fc.setFieldsValue({
+        cloudregion: row.cloudregion_id,
+      })
     },
     async fetchQueryTs () {
       const manager = new this.$Manager('servertemplates')
@@ -294,6 +354,9 @@ export default {
             return isNats
           })
           this.setNetworkValues(this.serverTemplateList[0])
+          this.form.fc.setFieldsValue({
+            cloudregion: this.serverTemplateList[0].cloudregion_id,
+          })
         } else {
           this.serverTemplateList = []
         }
@@ -326,14 +389,11 @@ export default {
     async handleConfirm () {
       const { validateFields } = this.form.fc
       const manager = new this.$Manager('scalinggroups', 'v1')
-      const defaultParams = {
-        cloudregion: 'default',
-      }
       try {
         const values = await validateFields()
         this.loading = true
         await manager.create({
-          data: Object.assign({}, defaultParams, this.formatValues(values)),
+          data: Object.assign({}, this.formatValues(values)),
         })
         this.handleCancel()
       } catch (err) {
