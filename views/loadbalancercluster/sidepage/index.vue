@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import AgentList from '@Network/views/agent/components/List'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import LoadbalancerclusterDetail from './Detail'
@@ -38,19 +39,23 @@ export default {
   components: {
     LoadbalancerclusterDetail,
     Actions,
+    AgentList,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
         { label: '详情', key: 'Loadbalancercluster-detail' },
+        { label: '节点', key: 'agent-list' },
         { label: '操作日志', key: 'event-drawer' },
       ],
     }
   },
   computed: {
     getParams () {
-      return null
+      return {
+        cluster: this.detailData.id,
+      }
     },
   },
 }
