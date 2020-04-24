@@ -147,6 +147,7 @@ export const getNameDescriptionTableColumn = ({
   descriptionRules = [],
   cellWrapSlots,
   edit = true,
+  editDesc = true,
 } = {}) => {
   return {
     field: 'name',
@@ -177,7 +178,7 @@ export const getNameDescriptionTableColumn = ({
         if ((R.type(showDesc) === 'Function' && showDesc(row)) || showDesc === true) {
           ret.push(h('list-body-cell-wrap', {
             props: {
-              edit: true,
+              edit: (R.is(Function, editDesc) && editDesc(row)) || editDesc === true,
               field: 'description',
               row,
               onManager,
