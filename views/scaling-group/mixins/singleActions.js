@@ -4,11 +4,11 @@ export default {
     this.singleActions = [
       {
         label: '启用',
+        permission: 'scalinggroups_perform_enable',
         action: obj => {
           this.createDialog('ScalingGroupEnable', {
             data: [obj],
             columns: this.columns,
-            title: '删除',
             onManager: this.onManager,
           })
         },
@@ -18,11 +18,11 @@ export default {
       },
       {
         label: '禁用',
+        permission: 'scalinggroups_perform_disable',
         action: (obj) => {
           this.createDialog('ScalingGroupDisable', {
             data: [obj],
             columns: this.columns,
-            title: '删除',
             onManager: this.onManager,
           })
         },
@@ -34,6 +34,7 @@ export default {
       },
       {
         label: '删除',
+        permission: 'scalinggroups_delete',
         action: (obj) => {
           this.createDialog('DeleteResDialog', {
             title: '删除',

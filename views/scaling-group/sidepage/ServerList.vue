@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import { SERVER_TYPE } from '@Compute/constants'
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { getNameDescriptionTableColumn, getTimeTableColumn, getStatusTableColumn, getIpsTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 import { getStatusFilter, getEnabledFilter, getHostFilter } from '@/utils/common/tableFilter'
@@ -18,6 +19,7 @@ import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import SystemIcon from '@/sections/SystemIcon'
 import ListMixin from '@/mixins/list'
+import { findPlatform } from '@/utils/common/hypervisor'
 
 export default {
   name: 'ScalingGroupServerListSidePage',
@@ -119,7 +121,18 @@ export default {
         {
           field: 'host',
           title: '宿主机',
-          width: 120,
+          sortable: true,
+          showOverflow: 'ellipsis',
+          minWidth: 100,
+          slots: {
+            default: ({ row }) => {
+              if (findPlatform(row.hypervisor, 'hypervisor') === SERVER_TYPE.public) {
+                return '-'
+              }
+              const text = row['host'] || '-'
+              return text
+            },
+          },
         },
         getCopyWithContentTableColumn({ field: 'account', title: '云账号' }),
       ],

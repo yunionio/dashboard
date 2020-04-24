@@ -159,6 +159,7 @@ export default {
             return [
               {
                 label: '启用',
+                permission: 'scalingpolicies_perform_enable',
                 action: obj => {
                   this.onManager('performAction', {
                     id: obj.id,
@@ -173,6 +174,7 @@ export default {
               },
               {
                 label: '禁用',
+                permission: 'scalingpolicies_perform_disable',
                 action: (obj) => {
                   this.onManager('performAction', {
                     id: obj.id,
@@ -187,6 +189,7 @@ export default {
               },
               {
                 label: '删除',
+                permission: 'scalingpolicies_delete',
                 action: (obj) => {
                   this.createDialog('DeleteResDialog', {
                     data: [obj],
@@ -210,6 +213,7 @@ export default {
       groupActions: [
         {
           label: '新建',
+          permission: 'scalingpolicies_create',
           action: () => {
             this.createDialog('FiexRuleListCreateDialog', {
               title: '新建',
@@ -228,6 +232,7 @@ export default {
             return [
               {
                 label: '启用',
+                permission: 'scalingpolicies_perform_enable',
                 action: () => {
                   this.list.batchPerformAction('enable', null)
                 },
@@ -237,6 +242,7 @@ export default {
               },
               {
                 label: '禁用',
+                permission: 'scalingpolicies_perform_disable',
                 action: () => {
                   this.list.batchPerformAction('disable', null)
                 },
@@ -246,6 +252,7 @@ export default {
               },
               {
                 label: '删除',
+                permission: 'scalingpolicies_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     data: this.list.selectedItems,
