@@ -2,12 +2,18 @@ import NotFoundPage from '@/views/exception/404'
 import EmailVerify from '@/views/email-verify'
 import NoProject from '@/views/no-project'
 import NoProjectStatus from '@/views/no-project/Status'
+import Workflow from '@/views/workflow'
 
 export const menusConfig = getModulesRouteConfig()
 
 let routes = [
   ...getScopeRoutes(),
   ...generateRoutesFromMenu(menusConfig),
+  {
+    name: 'Workflow',
+    path: '/workflow',
+    component: Workflow,
+  },
   {
     path: '/email-verification/id/:id/token/:token',
     name: 'EmailVerification',
