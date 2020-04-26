@@ -9,7 +9,7 @@
       :elements="elements"
       :disabled="disabled"
       :schedtagParams="getSchedtagParams()"
-      :size-disabled="disabled" />
+      :size-disabled="sizeDisabled || disabled" />
   </div>
 </template>
 
@@ -65,6 +65,10 @@ export default {
       type: String,
       default: 'default',
     },
+    sizeDisabled: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     isPublic () {
@@ -105,9 +109,9 @@ export default {
       const hypervisorDisks = { ...STORAGE_TYPES[hyper] } || {}
       if (!this.capabilityData || !this.capabilityData.data_storage_types2) return ret
       let currentTypes = this.capabilityData.data_storage_types2[hyper] || []
-      if (hyper === HYPERVISORS_MAP.openstack.key) { // 前端特殊处理：openstack 不支持 nova
-        currentTypes = currentTypes.filter(val => !val.includes('nova'))
-      }
+      // if (hyper === HYPERVISORS_MAP.openstack.key) { // 前端特殊处理：openstack 系统盘支持 nova
+      //   currentTypes = currentTypes.filter(val => !val.includes('nova'))
+      // }
       if (currentTypes.find(val => val.includes('local'))) {
         currentTypes = findAndUnshift(currentTypes, item => item.includes('local'))
       }
@@ -122,6 +126,8 @@ export default {
           currentTypes = []
         }
       }
+      // 将nova放置到最后
+      currentTypes = this.getSortCurrentTypes(currentTypes)
       for (let i = 0, len = currentTypes.length; i < len; i++) {
         const type = currentTypes[i].split('/')[0]
         let opt = hypervisorDisks[type] || this.getExtraDiskOpt(type)
@@ -135,6 +141,7 @@ export default {
             ...opt,
             sysMin: Math.max(this.imageMinDisk, opt.sysMin, DISK_MIN_SIZE),
             sysMax: max,
+            label: opt.key === 'nova' ? '以镜像为系统盘' : opt.label,
           }
           if (this.hypervisor === HYPERVISORS_MAP.google.key) {
             ret[opt.key]['sysMin'] = opt.sysMin
@@ -232,6 +239,23 @@ export default {
         }
       }
       return ret
+    },
+    getSortCurrentTypes (currentTypes) {
+      if (currentTypes.length > 1) {
+        let nova = ''
+        currentTypes = currentTypes.filter((item) => {
+          const types = item.split('/')
+          if (types && types.length > 0) {
+            if (types[0] === 'nova') {
+              nova = item
+              return false
+            }
+          }
+          return true
+        })
+        currentTypes.push(nova)
+      }
+      return currentTypes
     },
   },
 }
