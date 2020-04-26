@@ -68,9 +68,11 @@
           </a-form-item>
           <a-form-item class="mb-0" v-if="this.hostName === 'server'">
             <base-select
+              filterable
               v-decorator="decorators.server"
               resource="servers"
               style="width: 320px"
+              :mapper="serverMapper"
               :params="serversParams"
               :label-format="labelFormat"
               :select-props="{ placeholder: '请选择云主机' }"
@@ -80,6 +82,7 @@
           </a-form-item>
           <a-form-item v-if="this.hostName === 'host'">
             <base-select
+              filterable
               v-decorator="decorators.host"
               resource="hosts"
               :params="{ status: 'running' }"
@@ -136,6 +139,7 @@ import { mapGetters } from 'vuex'
 import Ansible from '../controls/ansible'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import { findPlatform } from '@/utils/common/hypervisor'
 
 export default {
   name: 'AgentDeployDialog',
@@ -277,7 +281,6 @@ export default {
     serversParams () {
       return {
         status: 'running',
-        cloud_env: 'public',
       }
     },
   },
@@ -297,6 +300,9 @@ export default {
     handleServerChange () {
       this.isDeleteServer = false
       this.form.fc.validateFields(['server'])
+    },
+    serverMapper (retList) {
+      return retList.filter(item => findPlatform(item.brand) !== 'public')
     },
     userMapper (data) {
       data = data.filter(item => item.is_system_account)
