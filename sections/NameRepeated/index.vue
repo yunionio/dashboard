@@ -1,5 +1,5 @@
 <template>
-  <div class="ant-form-extra">
+  <div class="ant-form-extra" style="min-height: 0px;">
     <span v-if="show">{{ text }}</span>
     <span v-else-if="loading && !defaultText">
       <a-icon type="sync" class="mr-1" spin />
@@ -72,11 +72,15 @@ export default {
           scope: this.$store.getters.scope,
           filter: `name.contains('${name}')`,
         }
-        const { data } = await manager.list({ params })
+        await manager.get({ id: name, params })
+        this.isRepeated = true
         this.loading = false
-        this.isRepeated = data && data.data.length && data.total
       } catch (error) {
-        this.isRepeated = false
+        if (error.response.status === 404) {
+          this.isRepeated = false
+        } else {
+          this.isRepeated = true
+        }
         this.loading = false
         throw error
       }

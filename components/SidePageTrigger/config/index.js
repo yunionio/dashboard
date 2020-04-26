@@ -105,8 +105,12 @@ export default {
     resource: 'policies',
     apiVersion: 'v1',
   },
-  // 代理
+  // 负载均衡
   LbSidePage: {
     resource: 'loadbalancers',
+  },
+  // 负载均衡-访问控制
+  LbaclSidePage: {
+    resource: 'loadbalanceracls',
   },
 }
