@@ -6,6 +6,7 @@
  * @class Clinet
  */
 import io from 'socket.io-client'
+import { message } from 'ant-design-vue'
 
 class Client {
   constructor (store, options = {}) {
@@ -37,17 +38,37 @@ class Client {
       console.error(error)
     })
 
-    this.socket.on('message', (message) => {
-      const event = message.event
-      if (!event) {
-        console.info(`未知的类型${event}`)
-        return
+    this.socket.on('message', (payload) => {
+      try {
+        const obj = JSON.parse(payload)
+        if (!obj.success || !obj.action) {
+          return
+        }
+        const type = obj.success === true ? 'success' : 'warning'
+        if (obj.notes && obj.notes.endsWith('type=itsm')) {
+          if (obj.broadcast === true && obj.user_id === '') {
+            store.dispatch('getAllOpenWorkflowKeys')
+          }
+          store.dispatch('fetchWorkflowStatistics')
+          if (obj.notes.startsWith('priority=silence')) {
+            return
+          }
+        }
+        message[type](obj.action)
+      } catch (error) {
+        console.log(payload)
       }
-      if (!this.events[event]) {
-        console.info(`can't found ${event} process`)
-        return
-      }
-      this.events[event](message.payload)
+      // const event = message.event
+      // console.log(message)
+      // if (!event) {
+      //   console.info(`未知的类型${event}`)
+      //   return
+      // }
+      // if (!this.events[event]) {
+      //   console.info(`can't found ${event} process`)
+      //   return
+      // }
+      // this.events[event](message.payload)
     })
   }
   error (cb) {
