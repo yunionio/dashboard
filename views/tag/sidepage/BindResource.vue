@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-tabs :defaultActiveKey="currentResource" @change="handleTabChange">
+    <a-tabs v-model="currentResource">
       <a-tab-pane
         v-for="item of resourceCounts"
         :tab="getTab(item)"
@@ -43,12 +43,38 @@ export default {
     const currentResource = resourceCounts[0]['resource']
     return {
       resources: {
-        disk: '硬盘',
-        server: '主机',
-        eip: 'EIP',
-        snapshot: '快照',
+        disk: this.$t('dictionary.disk'),
+        server: this.$t('dictionary.server'),
+        eip: this.$t('dictionary.eip'),
+        snapshot: this.$t('dictionary.snapshot'),
         dbinstance: 'RDS',
-        host: '物理机',
+        host: this.$t('dictionary.physicalmachine'),
+      },
+      resourceSidePageTriggerOptions: {
+        disk: {
+          name: 'DiskSidePage',
+          permission: 'disks_get',
+        },
+        server: {
+          name: 'VmInstanceSidePage',
+          permission: 'server_get',
+        },
+        eip: {
+          name: 'EipSidePage',
+          permission: 'eips_get',
+        },
+        snapshot: {
+          name: 'SnapshotSidePage',
+          permission: 'snapshots_get',
+        },
+        dbinstance: {
+          name: 'RDSSidePage',
+          permission: 'rds_dbinstances_get',
+        },
+        host: {
+          name: 'PhysicalmachineSidePage',
+          permission: 'hosts_get',
+        },
       },
       resourceCounts,
       currentResource,
@@ -83,7 +109,31 @@ export default {
     },
     columns () {
       return [
-        getNameDescriptionTableColumn({ addLock: true, onManager: this.onManager }),
+        // getNameDescriptionTableColumn({ addLock: true, onManager: this.onManager }),
+        getNameDescriptionTableColumn({
+          onManager: this.onManager,
+          hideField: true,
+          addLock: true,
+          addBackup: true,
+          formRules: [
+            { required: true, message: '请输入名称' },
+            { validator: this.$validate('serverCreateName') },
+          ],
+          slotCallback: row => {
+            const sidePageTriggerOpt = this.resourceSidePageTriggerOptions[this.currentResource]
+            if (sidePageTriggerOpt) {
+              return this.$createElement('side-page-trigger', {
+                props: {
+                  ...sidePageTriggerOpt,
+                  id: row.id,
+                  vm: this,
+                },
+              }, row.name)
+            } else {
+              return row.name
+            }
+          },
+        }),
         getStatusTableColumn({ statusModule: this.currentResource }),
         getBrandTableColumn(),
         getProjectTableColumn(),
@@ -144,9 +194,6 @@ export default {
     },
   },
   methods: {
-    handleTabChange (val) {
-      this.currentResource = val
-    },
     getTab (item) {
       return `${this.resources[item.resource]}(${item.count})`
     },
