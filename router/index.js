@@ -3,12 +3,15 @@ import Bucket from '@Storage/views/bucket'
 import Layout from '@/layouts/RouterView'
 
 export default {
-  index: 4,
+  index: 5,
   meta: {
     label: '存储',
     icon: 'menu-storage',
   },
   menus: [
+    /**
+     * 块存储
+     */
     {
       meta: {
         label: '块存储',
@@ -31,6 +34,9 @@ export default {
         },
       ],
     },
+    /**
+     * 存储桶
+     */
     {
       meta: {
         label: '对象存储',
