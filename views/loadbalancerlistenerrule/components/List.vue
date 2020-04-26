@@ -15,14 +15,14 @@ import WindowsMixin from '@/mixins/windows'
 import { getNameFilter } from '@/utils/common/tableFilter'
 
 export default {
-  name: 'LoadbalancerlistenerList',
+  name: 'LoadbalancerlistenerruleList',
   mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
       type: [Function, Object],
     },
-    data: { // LB实例
+    data: { // 监听的数据
       type: Object,
       required: true,
     },
@@ -31,7 +31,7 @@ export default {
     return {
       list: this.$list.createList(this, {
         id: this.id,
-        resource: 'loadbalancerlisteners',
+        resource: 'loadbalancerlistenerrules',
         getParams: this.getParam,
         filterOptions: {
           name: getNameFilter(),
@@ -40,17 +40,14 @@ export default {
       groupActions: [
         {
           label: '新建',
-          permission: 'lb_loadbalancerlisteners_create',
+          permission: 'lb_loadbalancerlistenerrules_create',
           action: () => {
-            const query = {
-              type: this.data.provider,
-            }
-            if (query.type === 'Aws') {
-              query.spec = this.data.loadbalancer_spec
-            }
-            this.$router.push({
-              path: `/lb/${this.data.id}/listener-create`,
-              query,
+            this.createDialog('LoadbalancerlistenerruleCreateDialog', {
+              title: '新建',
+              data: this.list.selectedItems,
+              onManager: this.onManager,
+              refresh: this.refresh,
+              lbListenerData: this.data,
             })
           },
           meta: () => {
@@ -59,20 +56,6 @@ export default {
               validate: this.$store.getters.isAdminMode,
             }
           },
-        },
-        {
-          label: '删除',
-          permission: 'lb_loadbalancerlisteners_delete',
-          action: () => {
-            this.createDialog('DeleteResDialog', {
-              vm: this,
-              data: this.list.selectedItems,
-              columns: this.columns,
-              title: '删除监听',
-              onManager: this.onManager,
-            })
-          },
-          meta: () => this.$getDeleteResult(this.list.selectedItems),
         },
       ],
     }
@@ -88,11 +71,10 @@ export default {
       return ret
     },
     handleOpenSidepage (row) {
-      this.sidePageTriggerHandle(this, 'LoadbalancerlistenerSidePage', {
+      this.sidePageTriggerHandle(this, 'LoadbalancerlistenerruleSidePage', {
         id: row.id,
-        resource: 'loadbalancerlisteners',
+        resource: 'loadbalancerlistenerrules',
         getParams: this.getParam,
-        listenerType: row.listener_type,
       }, {
         list: this.list,
       })

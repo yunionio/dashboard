@@ -27,6 +27,7 @@
 
 <script>
 import LoadbalancerbackendList from '@Network/views/loadbalancerbackend/components/List'
+import LoadbalancerlistenerruleList from '@Network/views/loadbalancerlistenerrule/components/List'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import LoadbalancerlistenerDetail from './Detail'
@@ -40,18 +41,32 @@ export default {
     LoadbalancerlistenerDetail,
     Actions,
     LoadbalancerbackendList,
+    LoadbalancerlistenerruleList,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
-  data () {
-    return {
-      detailTabs: [
+  // data () {
+  //   return {
+  //     detailTabs: [
+  //       { label: '详情', key: 'loadbalancerlistener-detail' },
+  //       { label: '转发策略', key: 'loadbalancerlistenerrule-list' },
+  //       { label: '后端服务器', key: 'loadbalancerbackend-list' },
+  //       { label: '操作日志', key: 'event-drawer' },
+  //     ],
+  //   }
+  // },
+  computed: {
+    detailTabs () {
+      const ruleItem = { label: '转发策略', key: 'loadbalancerlistenerrule-list' }
+      const rules = [
         { label: '详情', key: 'loadbalancerlistener-detail' },
         { label: '后端服务器', key: 'loadbalancerbackend-list' },
         { label: '操作日志', key: 'event-drawer' },
-      ],
-    }
-  },
-  computed: {
+      ]
+      if (this.params.options.listenerType === 'http' || this.params.options.listenerType === 'https') {
+        rules.splice(1, 0, ruleItem)
+      }
+      return rules
+    },
     getParams () {
       if (this.params.windowData.currentTab === 'loadbalancerbackend-list') {
         return {
