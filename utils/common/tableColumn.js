@@ -97,9 +97,11 @@ export const getStatusTableColumn = ({ field = 'status', title = '状态', statu
     slots: {
       default: ({ row }, h) => {
         if (!statusModule) return 'status module undefined'
+        const val = _.get(row, field)
+        if (R.isNil(val)) return ''
         return [
           <div class='text-truncate'>
-            <status status={ row[field] } statusModule={ statusModule } />
+            <status status={ val } statusModule={ statusModule } />
           </div>,
         ]
       },
