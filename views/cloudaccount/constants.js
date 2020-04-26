@@ -331,8 +331,8 @@ export const keySecretFields = {
     },
   },
   google: {
-    s: 'private_key',
-    k: 'private_key_id',
+    s: 'gcp_private_key',
+    k: 'gcp_private_key_id',
     text: 'Google',
     placeholder: {
       s: '请输入private_key',
