@@ -245,4 +245,14 @@ export default {
     success: ['enabled'],
     danger: ['disabled'],
   },
+  lbHealth: {
+    info: [],
+    success: ['on'],
+    danger: ['off'],
+  },
+  lbAcl: {
+    info: [],
+    success: ['on'],
+    danger: ['off'],
+  },
 }
