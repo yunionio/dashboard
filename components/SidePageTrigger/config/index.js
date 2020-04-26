@@ -113,4 +113,16 @@ export default {
   LbaclSidePage: {
     resource: 'loadbalanceracls',
   },
+  // 弹性公网IP
+  EipSidePage: {
+    resource: 'eips',
+  },
+  // 硬盘快照
+  SnapshotSidePage: {
+    resource: 'snapshots',
+  },
+  // RDS实例
+  RDSSidePage: {
+    resource: 'dbinstances',
+  },
 }
