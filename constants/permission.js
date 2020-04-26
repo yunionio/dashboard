@@ -508,6 +508,7 @@ export const PERMISSION = {
    * eips 相关操作
    */
   'eips_perform_change_owner': ['compute', 'eips', 'perform', 'change-owner'],
+  'eips_get': ['compute', 'eips', 'get'],
   /**
    * meter 相关操作
    */
@@ -535,6 +536,7 @@ export const PERMISSION = {
    */
   'rds_dbinstances_list': ['compute', 'dbinstances', 'list'],
   'rds_dbinstances_delete': ['compute', 'dbinstances', 'delete'],
+  'rds_dbinstances_get': ['compute', 'dbinstances', 'get'],
   'rds_dbinstances_create': ['compute', 'dbinstances', 'create'],
   /**
    * 数据库-RDS备份列表
