@@ -93,7 +93,7 @@ export default {
       return null
     },
     isBlockStorage () {
-      return ['rbd', 'nfs', 'gpfs'].includes(this.data.storage_type)
+      return ['rbd', 'nfs', 'gpfs'].includes(this.detailData.storage_type)
     },
     hostListActions () {
       const me = this
@@ -101,6 +101,26 @@ export default {
         // this = hostList
         frontGroupActions: function () {
           return [
+            {
+              label: '关联宿主机',
+              permission: 'storages_perform_storages',
+              action: row => {
+                this.createDialog('AssociatedHostDialog', {
+                  data: [me.detailData],
+                  columns: this.columns,
+                  title: '关联宿主机',
+                  list: this.list,
+                  onManager: this.onManager,
+                  refresh: this.refresh,
+                })
+              },
+              meta: row => {
+                return {
+                  validate: me.isBlockStorage,
+                  tooltip: !me.isBlockStorage && 'Ceph、GPFS或NFS类型的存储支持该操作',
+                }
+              },
+            },
             {
               label: '取消关联宿主机',
               action: () => {
