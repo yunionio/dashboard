@@ -63,9 +63,6 @@ export default {
         },
       })
     },
-    goV1 () {
-      window.location.href = this.$appConfig.v1Perfix
-    },
     joinProjectHandle () {
       this.createDialog('ApplyJoinProjectDialog', {})
     },

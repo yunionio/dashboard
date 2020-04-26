@@ -9,14 +9,6 @@ import { isLogged } from '@/utils/auth'
 import { authRoutesName, whiteRoutesName } from '@/constants'
 
 router.beforeEach(async (to, from, next) => {
-  if (process.env.VUE_APP_IS_PRIVATE && to.meta && to.meta.v1) {
-    if (process.env.NODE_ENV === 'development') {
-      window.location.href = `${process.env.VUE_APP_V1_PERFIX}${to.path}`
-    } else {
-      window.location.href = `${window.location.origin}${process.env.VUE_APP_V1_PERFIX}${to.path}`
-    }
-    return
-  }
   const hasToken = !!store.getters.auth.token
   if (hasToken) {
     if (authRoutesName.includes(to.name)) {
