@@ -34,7 +34,7 @@ export default {
         },
       },
       {
-        id: 'engine',
+        field: 'engine',
         title: '数据库引擎',
         width: 100,
         slots: {
@@ -44,7 +44,7 @@ export default {
         },
       },
       {
-        id: 'backup_size_mb',
+        field: 'backup_size_mb',
         title: '大小',
         width: 70,
         slots: {
@@ -56,6 +56,7 @@ export default {
       getStatusTableColumn({ statusModule: 'rdsBackup' }),
       // getBrandTableColumn(),
       {
+        field: 'start_time',
         title: '备份开始/结束时间',
         minWidth: 150,
         slots: {
