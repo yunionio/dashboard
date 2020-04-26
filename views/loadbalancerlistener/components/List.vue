@@ -92,7 +92,7 @@ export default {
         id: row.id,
         resource: 'loadbalancerlisteners',
         getParams: this.getParam,
-        listenerType: row.listener_type,
+        rowData: row,
       }, {
         list: this.list,
       })

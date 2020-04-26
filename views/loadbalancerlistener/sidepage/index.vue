@@ -31,6 +31,7 @@ import LoadbalancerlistenerruleList from '@Network/views/loadbalancerlistenerrul
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import LoadbalancerlistenerDetail from './Detail'
+import LoadbalancerlistenerDashboard from './dashboard'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -42,28 +43,23 @@ export default {
     Actions,
     LoadbalancerbackendList,
     LoadbalancerlistenerruleList,
+    LoadbalancerlistenerDashboard,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
-  // data () {
-  //   return {
-  //     detailTabs: [
-  //       { label: '详情', key: 'loadbalancerlistener-detail' },
-  //       { label: '转发策略', key: 'loadbalancerlistenerrule-list' },
-  //       { label: '后端服务器', key: 'loadbalancerbackend-list' },
-  //       { label: '操作日志', key: 'event-drawer' },
-  //     ],
-  //   }
-  // },
   computed: {
     detailTabs () {
       const ruleItem = { label: '转发策略', key: 'loadbalancerlistenerrule-list' }
+      const dashboardItem = { label: '监控', key: 'loadbalancerlistener-dashboard' }
       const rules = [
         { label: '详情', key: 'loadbalancerlistener-detail' },
         { label: '后端服务器', key: 'loadbalancerbackend-list' },
         { label: '操作日志', key: 'event-drawer' },
       ]
-      if (this.params.options.listenerType === 'http' || this.params.options.listenerType === 'https') {
+      if (this.params.options.rowData.listener_type === 'http' || this.params.options.rowData.listener_type === 'https') {
         rules.splice(1, 0, ruleItem)
+      }
+      if (this.params.options.rowData.provider === 'OneCloud') {
+        rules.splice(2, 0, dashboardItem)
       }
       return rules
     },

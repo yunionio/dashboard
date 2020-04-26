@@ -100,7 +100,7 @@ export default {
         const data = this.getParams(this.$refs.formRef.allFd)
         await new this.$Manager('loadbalancerlisteners').update({ id: this.$route.query.listener, data })
         this.loading = false
-        // this.cancel()
+        this.cancel()
       } catch (error) {
         this.loading = false
         throw error
