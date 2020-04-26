@@ -65,7 +65,8 @@
           :hypervisor="form.fd.hypervisor"
           :sku="form.fd.sku"
           :capability-data="form.fi.capability"
-          :image="form.fi.imageMsg" />
+          :image="form.fi.imageMsg"
+          :sizeDisabled="disabledSysDiskSize" />
       </a-form-item>
       <a-form-item label="数据盘">
         <data-disk
@@ -221,6 +222,12 @@ export default {
         params.provider = HYPERVISORS_MAP[this.form.fd.hypervisor].provider
       }
       return params
+    },
+    disabledSysDiskSize () {
+      if (this.form.fd.systemDiskType) {
+        return this.form.fd.systemDiskType.key === 'nova'
+      }
+      return false
     },
   },
   methods: {
