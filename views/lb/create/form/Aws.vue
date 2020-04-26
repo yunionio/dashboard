@@ -52,7 +52,7 @@
 import lbCreate from './mixin'
 
 export default {
-  name: 'LbQcloudCreate',
+  name: 'LbAwsCreate',
   mixins: [lbCreate],
   mounted () {
     this.form.fc.setFieldsValue({ // 因为 和 阿里云的规格时一个字段，所以在这里进行初始化

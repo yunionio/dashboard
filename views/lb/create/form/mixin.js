@@ -217,6 +217,7 @@ export default {
         this.$message.warning('指定的IP子网必须有大于或等于8个的可用IP才可以被选择创建实例')
         return false
       }
+      return true
     },
     onValuesChange (props, values) {
       R.forEachObjIndexed((value, key) => {

@@ -1,8 +1,8 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="实例"
-    icon="res-lb"
+    title="监听"
+    icon="res-lblistener"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
@@ -26,39 +26,41 @@
 </template>
 
 <script>
-import LoadbalancerbackendgroupsList from '@Network/views/loadbalancerbackendgroup/components/List'
-import LoadbalancerlistenersList from '@Network/views/loadbalancerlistener/components/List'
+import LoadbalancerbackendList from '@Network/views/loadbalancerbackend/components/List'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
-import LbDetail from './Detail'
+import LoadbalancerlistenerDetail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
 
 export default {
-  name: 'LbSidePage',
+  name: 'LoadbalancerlistenerSidePage',
   components: {
-    LbDetail,
+    LoadbalancerlistenerDetail,
     Actions,
-    LoadbalancerbackendgroupsList,
-    LoadbalancerlistenersList,
+    LoadbalancerbackendList,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'lb-detail' },
-        { label: '监听', key: 'loadbalancerlisteners-list' },
-        { label: '后端服务器组', key: 'loadbalancerbackendgroups-list' },
+        { label: '详情', key: 'loadbalancerlistener-detail' },
+        { label: '后端服务器', key: 'loadbalancerbackend-list' },
         { label: '操作日志', key: 'event-drawer' },
       ],
     }
   },
   computed: {
     getParams () {
-      return {
-        loadbalancer: this.detailData.id,
+      if (this.params.windowData.currentTab === 'loadbalancerbackend-list') {
+        return {
+          backend_group: this.detailData.backend_group_id,
+          details: true,
+          scope: this.$store.getters.scope,
+        }
       }
+      return null
     },
   },
 }

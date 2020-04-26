@@ -37,7 +37,7 @@ export default {
               slotCallback: row => {
                 if (!row.loadbalancer) return '-'
                 return [
-                  <side-page-trigger permission='images_get' name='LbSidePage' id={row.loadbalancer_id} vm={this}>{ row.loadbalancer }</side-page-trigger>,
+                  <side-page-trigger permission='lb_loadbalancers_get' name='LbSidePage' id={row.loadbalancer_id} vm={this}>{ row.loadbalancer }</side-page-trigger>,
                 ]
               },
             }),

@@ -3,7 +3,7 @@ export default {
     this.singleActions = [
       {
         label: '删除',
-        permission: 'lb_loadbalancercertificates_delete',
+        permission: 'lb_loadbalancerbackendgroups_delete',
         action: (obj) => {
           this.createDialog('DeleteResDialog', {
             vm: this,

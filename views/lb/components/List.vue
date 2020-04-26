@@ -13,7 +13,7 @@ import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
-import { getNameFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getBrandFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import { changeToArr } from '@/utils/utils'
 
@@ -37,6 +37,7 @@ export default {
         getParams: this.getParam,
         filterOptions: {
           name: getNameFilter(),
+          brand: getBrandFilter(),
         },
         steadyStatus: {
           status: Object.values(expectStatus.lb).flat(),
