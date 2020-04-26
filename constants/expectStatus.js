@@ -255,4 +255,9 @@ export default {
     success: ['on'],
     danger: ['off'],
   },
+  rate: {
+    info: ['unavailable'],
+    success: ['available'],
+    danger: ['expired'],
+  },
 }
