@@ -1,15 +1,18 @@
+import FlexNetwork from '@Network/views/flex-network'
+import Wire from '@Network/views/wire'
 import Network from '@Network/views/network'
 import NetworkCreate from '@Network/views/network/Create'
 import EditAttributes from '@Network/views/network/EditAttributes'
 import Eip from '@Network/views/eip'
-import FlexNetwork from '@Network/views/flex-network'
-import Wire from '@Network/views/wire'
-import GolbalVpc from '@Network/views/global-vpc'
-import Vpc from '@Network/views/vpc'
+import GlobalVpc from '@Network/views/global-vpc'
 import RouteTableList from '@Network/views/route-table'
 import NatList from '@Network/views/nats'
 import ReservedIpList from '@Network/views/reserved-ip'
-import DNSList from '@Network/views/dns'
+import DNS from '@Network/views/dns'
+import VPC from '@Network/views/vpc'
+import LbList from '@Network/views/lb'
+import LBCreate from '@Network/views/lb/create/index'
+import LbListenerCreate from '@Network/views/loadbalancerlistener/create'
 import LbaclsList from '@Network/views/lbacls'
 import LbcertsList from '@Network/views/lbcerts'
 import LoadbalancerclusterList from '@Network/views/loadbalancercluster'
@@ -18,13 +21,18 @@ import AgentCreate from '@Network/views/agent/create'
 import AgentAsbook from '@Network/views/agent/asbook'
 import Layout from '@/layouts/RouterView'
 
+import { hasHypervisorsByEnv, hasHypervisors, hasServices } from '@/utils/auth'
+
 export default {
-  index: 3,
+  index: 4,
   meta: {
     label: '网络',
     icon: 'menu-network',
   },
   menus: [
+    /**
+     * 基础网络
+     */
     {
       meta: {
         label: '基础网络',
@@ -41,7 +49,10 @@ export default {
             {
               name: 'GlobalVPC',
               path: '',
-              component: GolbalVpc,
+              meta: {
+                // v1: true,
+              },
+              component: GlobalVpc,
             },
           ],
         },
@@ -55,9 +66,9 @@ export default {
           component: Layout,
           children: [
             {
-              name: 'Vpc',
+              name: 'VPC',
               path: '',
-              component: Vpc,
+              component: VPC,
             },
           ],
         },
@@ -111,11 +122,12 @@ export default {
           meta: {
             label: '弹性公网IP',
             permission: 'eips_list',
+            hidden: () => !hasHypervisorsByEnv(['public', 'private']),
           },
           component: Layout,
           children: [
             {
-              name: 'Eip',
+              name: 'EipList',
               path: '',
               component: Eip,
             },
@@ -145,7 +157,7 @@ export default {
           component: Layout,
           children: [
             {
-              name: 'Network',
+              name: 'NetworkList',
               path: '',
               component: Network,
             },
@@ -187,17 +199,51 @@ export default {
             {
               name: 'DNS',
               path: '',
-              component: DNSList,
+              component: DNS,
             },
           ],
         },
       ],
     },
+    /**
+     * 负载均衡
+     */
     {
       meta: {
         label: '负载均衡',
+        hidden: () => !hasServices('lbagent') && !hasHypervisors(['aliyun', 'qcloud', 'huawei', 'aws']),
       },
       submenus: [
+        {
+          path: '/lb',
+          meta: {
+            label: '实例',
+            permission: 'lb_loadbalancers_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'LBList',
+              path: '',
+              component: LbList,
+            },
+            {
+              name: 'LBCreate',
+              path: 'create',
+              component: LBCreate,
+            },
+            {
+              name: 'LBSDetailListenerCreate',
+              path: ':id/listener-create',
+              component: LbListenerCreate,
+            },
+            {
+              name: 'LBSDetailListenerUpdate',
+              path: ':id/listener-update',
+              component: LbListenerCreate,
+            },
+          ],
+        },
         {
           path: '/lbacl',
           meta: {
@@ -207,7 +253,7 @@ export default {
           component: Layout,
           children: [
             {
-              name: 'LbaclsList',
+              name: 'LbaclList',
               path: '',
               component: LbaclsList,
             },
@@ -222,7 +268,7 @@ export default {
           component: Layout,
           children: [
             {
-              name: 'LbcertsList',
+              name: 'LbcertList',
               path: '',
               component: LbcertsList,
             },
@@ -230,6 +276,9 @@ export default {
         },
       ],
     },
+    /**
+     * 负载均衡集群
+     */
     {
       meta: {
         label: '负载均衡集群',
