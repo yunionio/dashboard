@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import LbList from '@Network/views/lb/components/List'
 import AgentList from '@Network/views/agent/components/List'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
@@ -40,6 +41,7 @@ export default {
     LoadbalancerclusterDetail,
     Actions,
     AgentList,
+    LbList,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
@@ -47,6 +49,7 @@ export default {
       detailTabs: [
         { label: '详情', key: 'Loadbalancercluster-detail' },
         { label: '节点', key: 'agent-list' },
+        { label: '实例', key: 'lb-list' },
         { label: '操作日志', key: 'event-drawer' },
       ],
     }
