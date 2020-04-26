@@ -9,6 +9,7 @@
           <base-select
             resource="servers"
             need-params
+            filterable
             :params="serverParams"
             v-decorator="decorators.backend"
             show-sync
