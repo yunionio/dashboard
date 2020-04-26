@@ -63,7 +63,7 @@ export default {
           },
         ],
         project_id: [
-          'project_id',
+          'gcp_project_id',
           {
             rules: [
               { required: true, message: '请输入project_id' },
@@ -71,7 +71,7 @@ export default {
           },
         ],
         private_key_id: [
-          'private_key_id',
+          'gcp_private_key_id',
           {
             rules: [
               { required: true, message: '请输入private_key_id' },
@@ -79,7 +79,7 @@ export default {
           },
         ],
         private_key: [
-          'private_key',
+          'gcp_private_key',
           {
             rules: [
               { required: true, message: '请输入private_key' },
@@ -87,7 +87,7 @@ export default {
           },
         ],
         client_email: [
-          'client_email',
+          'gcp_client_email',
           {
             rules: [
               { required: true, message: '请输入client_email' },
