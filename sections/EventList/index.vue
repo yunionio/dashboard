@@ -44,7 +44,7 @@ export default {
           obj_name: {
             label: '资源名称',
           },
-          tenant: {
+          owner_tenant: {
             label: `所属${this.$t('dictionary.project')}`,
           },
           user: {
@@ -101,7 +101,7 @@ export default {
           title: '发起人',
         }),
         getCopyWithContentTableColumn({
-          field: 'tenant',
+          field: 'owner_tenant',
           title: `所属${this.$t('dictionary.project')}`,
         }),
         {

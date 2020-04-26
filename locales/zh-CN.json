@@ -1230,7 +1230,8 @@
     "lb": "负载均衡实例",
     "lb_listener": "负载均衡监听",
     "lb_backendgroup": "负载均衡后端服务器组",
-    "lb_backend": "负载均衡后端服务器"
+    "lb_backend": "负载均衡后端服务器",
+    "notice": "公告"
   },
   "shareScope": {
     "system": "系统",
