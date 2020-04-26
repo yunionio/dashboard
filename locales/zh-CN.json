@@ -641,6 +641,14 @@
       "start_failed": "启动失败",
       "stop_failed": "关闭失败",
       "unknown": "未知"
+    },
+    "lbHealth": {
+      "on": "已开启",
+      "off": "已关闭"
+    },
+    "lbAcl": {
+      "on": "已开启",
+      "off": "已关闭"
     }
   },
   "skuCategoryOptions": {
@@ -1218,7 +1226,11 @@
     "proxysetting": "代理",
     "schedpolicie": "调度策略",
     "servertemplate": "主机模板",
-    "scalinggroup": "弹性伸缩组"
+    "scalinggroup": "弹性伸缩组",
+    "lb": "负载均衡实例",
+    "lb_listener": "负载均衡监听",
+    "lb_backendgroup": "负载均衡后端服务器组",
+    "lb_backend": "负载均衡后端服务器"
   },
   "shareScope": {
     "system": "系统",
