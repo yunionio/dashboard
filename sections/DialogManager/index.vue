@@ -15,6 +15,7 @@ const requireDialogs = require.context('../../../containers', true, /^((?![\\/]n
 const scopeDialogs = require.context('../../../scope', true, /^((?![\\/]node_modules).)*.\/views\/.*\/dialogs\/\w+\.(jsx?|vue)$/)
 const commonDialogs = require.context('./components', false, /.\/\w+\.(jsx?|vue)$/)
 const sectionDialogs = require.context('../../../containers', true, /^((?![\\/]node_modules).)*.\/sections\/Dialogs\/\w+\.(jsx?|vue)$/)
+const srcViewsDialogs = require.context('../../views', true, /^((?![\\/]node_modules).)*.\/dialogs\/\w+\.(jsx?|vue)$/)
 
 const registerDialogs = (dialogs) => {
   const keys = dialogs.keys()
@@ -28,6 +29,7 @@ registerDialogs(commonDialogs)
 registerDialogs(requireDialogs)
 registerDialogs(scopeDialogs)
 registerDialogs(sectionDialogs)
+registerDialogs(srcViewsDialogs)
 
 export default {
   name: 'DialogManager',

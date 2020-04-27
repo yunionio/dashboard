@@ -13,15 +13,15 @@
 </template>
 
 <script>
-import ProcessHistory from '@System/views/workflow/components/ProcessHistory'
-import ProcessList from '@System/views/workflow/components/ProcessList'
-import ServerConfigList from '@System/views/workflow/components/ServerConfig'
-import serverConfMixin from '@System/views/workflow/mixins/serverConf'
-import ProjectQuotaMixin from '@System/views/workflow/mixins/projectQuota'
-import DomainQuotaMixin from '@System/views/workflow/mixins/domainQuota'
-import PriceMixin from '@System/views/workflow/mixins/price'
 import { mapGetters } from 'vuex'
-import DeleteServers from '@System/views/workflow/components//DeleteServers'
+import serverConfMixin from '../mixins/serverConf'
+import ProjectQuotaMixin from '../mixins/projectQuota'
+import DomainQuotaMixin from '../mixins/domainQuota'
+import PriceMixin from '../mixins/price'
+import ProcessHistory from './ProcessHistory'
+import ProcessList from './ProcessList'
+import ServerConfigList from './ServerConfig'
+import DeleteServers from './DeleteServers'
 import { getWorkflowType, WORKFLOW_TYPES } from '@/constants/workflow'
 import { HYPERVISORS_GROUP } from '@/constants'
 

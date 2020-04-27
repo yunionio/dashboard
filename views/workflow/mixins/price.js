@@ -1,4 +1,4 @@
-import { getServerConf } from '@System/views/workflow/utils'
+import { getServerConf } from '../utils'
 
 export default {
   methods: {

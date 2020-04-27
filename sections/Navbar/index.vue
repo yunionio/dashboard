@@ -225,6 +225,7 @@ export default {
       this.fetchDictionary(val)
       this.fetchOEM(val)
       this.fetchLicense(val)
+      // this.checkApiServerUrl(val)
     },
   },
   created () {
@@ -232,6 +233,7 @@ export default {
     this.fetchDictionary(this.userInfo.id)
     this.fetchOEM(this.userInfo.id)
     this.fetchLicense(this.userInfo.id)
+    // this.checkApiServerUrl(this.userInfo.id)
   },
   methods: {
     checkWorkflow (val) {
@@ -308,6 +310,47 @@ export default {
     },
     handleMapClose () {
       this.map.visible = false
+    },
+    async checkApiServerUrl (id) {
+      if (!id) return
+      if (process.env.NODE_ENV !== 'production') return
+      let manager = new this.$Manager('services', 'v1')
+      try {
+        const response = await manager.list({
+          params: {
+            type: ['common'],
+          },
+        })
+        const id = (response.data.data && response.data.data.length && response.data.data[0]['id']) || ''
+        if (id) {
+          const configResponse = await manager.getSpecific({
+            id,
+            spec: 'config',
+          })
+          const config = (configResponse.data.config && configResponse.data.config.default) || {}
+          const currentHost = window.location.hostname
+          const apiServer = config.api_server || ''
+          if (apiServer) {
+            if (!apiServer.includes(currentHost)) {
+              this.$message.warning({
+                content: this.$createElement('span', [
+                  this.$createElement('span', '当前配置的控制台地址为：'),
+                  this.$createElement('a', {
+                    attrs: {
+                      href: apiServer,
+                    },
+                  }, apiServer),
+                  this.$createElement('span', '；请使用该地址访问'),
+                ]),
+              })
+            }
+          }
+        }
+      } catch (error) {
+        throw error
+      } finally {
+        manager = null
+      }
     },
   },
 }

@@ -1,4 +1,4 @@
-import { getIncrementFlag } from '@System/views/workflow/utils'
+import { getIncrementFlag } from '../utils'
 import { getRequestT } from '@/utils/utils'
 
 export default {

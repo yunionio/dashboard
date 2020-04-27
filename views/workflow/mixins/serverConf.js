@@ -1,5 +1,5 @@
-import { getServerConf } from '@System/views/workflow/utils'
 import { ALL_STORAGE } from '@Compute/constants'
+import { getServerConf } from '../utils'
 
 export default {
   methods: {
