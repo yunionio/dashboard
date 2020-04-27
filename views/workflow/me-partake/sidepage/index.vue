@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import Detail from '@System/views/workflow/components/Detail'
+import Detail from '../../components/Detail'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import SidePageMixin from '@/mixins/sidePage'

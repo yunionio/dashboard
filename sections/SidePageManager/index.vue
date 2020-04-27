@@ -15,6 +15,7 @@ const components = {}
 const requireSidePages = require.context('../../../containers', true, /^((?![\\/]node_modules).)*.\/views\/.*\/sidepage\/index\.(jsx?|vue)$/)
 const scopeSidePages = require.context('../../../scope', true, /^((?![\\/]node_modules).)*.\/views\/.*\/sidepage\/index\.(jsx?|vue)$/)
 const commonSidePages = require.context('./components', false, /.\/\w+\.(jsx?|vue)$/)
+const srcViewsSidePages = require.context('../../views', true, /^((?![\\/]node_modules).).*\/sidepage\/index\.(jsx?|vue)$/)
 const sidePageNames = []
 const registerSidePages = (sidePages) => {
   const keys = sidePages.keys()
@@ -28,6 +29,7 @@ const registerSidePages = (sidePages) => {
 registerSidePages(commonSidePages)
 registerSidePages(requireSidePages)
 registerSidePages(scopeSidePages)
+registerSidePages(srcViewsSidePages)
 
 export default {
   name: 'SidePageManager',
