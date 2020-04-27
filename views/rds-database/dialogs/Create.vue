@@ -104,7 +104,7 @@ export default {
           ...values,
           dbinstance: this.params.rdsItem.id,
         }
-        await this.params.list.onManager('create', {
+        await this.params.onManager('create', {
           managerArgs: {
             data: params,
           },
@@ -113,6 +113,7 @@ export default {
         this.cancelDialog()
       } catch (error) {
         this.loading = false
+        throw error
       }
     },
   },
