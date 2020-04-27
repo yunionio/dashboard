@@ -1,4 +1,4 @@
-import { diff } from '@System/views/workflow/utils'
+import { diff } from '../utils'
 import { sizestr } from '@/utils/utils'
 
 export default {
