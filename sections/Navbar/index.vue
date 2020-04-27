@@ -225,7 +225,7 @@ export default {
       this.fetchDictionary(val)
       this.fetchOEM(val)
       this.fetchLicense(val)
-      this.checkApiServerUrl(val)
+      // this.checkApiServerUrl(val)
     },
   },
   created () {
@@ -233,7 +233,7 @@ export default {
     this.fetchDictionary(this.userInfo.id)
     this.fetchOEM(this.userInfo.id)
     this.fetchLicense(this.userInfo.id)
-    this.checkApiServerUrl(this.userInfo.id)
+    // this.checkApiServerUrl(this.userInfo.id)
   },
   methods: {
     checkWorkflow (val) {
@@ -332,7 +332,17 @@ export default {
           const apiServer = config.api_server || ''
           if (apiServer) {
             if (!apiServer.includes(currentHost)) {
-              this.$message.warning(`当前配置的控制台地址为：${apiServer}；请使用该地址访问`)
+              this.$message.warning({
+                content: this.$createElement('span', [
+                  this.$createElement('span', '当前配置的控制台地址为：'),
+                  this.$createElement('a', {
+                    attrs: {
+                      href: apiServer,
+                    },
+                  }, apiServer),
+                  this.$createElement('span', '；请使用该地址访问'),
+                ]),
+              })
             }
           }
         }
