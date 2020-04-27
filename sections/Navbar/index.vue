@@ -332,7 +332,7 @@ export default {
           const apiServer = config.api_server || ''
           if (apiServer) {
             if (!apiServer.includes(currentHost)) {
-              this.$message.warning(`当前访问控制台地址错误，请访问${apiServer}`)
+              this.$message.warning(`当前配置的控制台地址为：${apiServer}；请使用该地址访问`)
             }
           }
         }
