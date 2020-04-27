@@ -649,6 +649,11 @@
     "lbAcl": {
       "on": "已开启",
       "off": "已关闭"
+    },
+    "rate": {
+      "unavailable": "未生效",
+      "available": "已生效",
+      "expired": "已失效"
     }
   },
   "skuCategoryOptions": {
