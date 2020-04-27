@@ -9,12 +9,13 @@
 <script>
 import { metricItems, TIME_CN, LEVEL_CN, channelMap } from '@Compute/views/node-alert/constants'
 import WindowsMixin from '@/mixins/windows'
+import ListMixin from '@/mixins/list'
 import { HYPERVISORS_MAP } from '@/constants'
 import { sizestr, splitUnit } from '@/utils/utils'
 
 export default {
   name: 'NodeAlertList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ListMixin],
   props: {
     getParams: {
       type: Object,
@@ -145,6 +146,7 @@ export default {
               columns: this.columns,
               title: '删除报警',
               name: '报警记录',
+              onManager: this.onManager,
             })
           },
           meta: () => {
@@ -164,6 +166,7 @@ export default {
               columns: this.columns,
               title: '删除报警',
               name: '报警记录',
+              onManager: this.onManager,
             })
           },
           // meta: obj => this.$getDeleteResult(obj),
