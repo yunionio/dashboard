@@ -6,8 +6,9 @@
         <a-form-item label="名称">
           <a-input placeholder="请输入名称" v-decorator="decorators.name" />
         </a-form-item>
-        <a-form-item :label="`指定${$t('dictionary.domain')}`" v-if="isAdminMode">
-          <domain-select v-decorator="decorators.project_domain" />
+        <a-form-item :label="`指定${$t('dictionary.domain')}`">
+          <domain-select v-if="isAdminMode && l3PermissionEnable" v-decorator="decorators.project_domain" />
+          <template v-else> {{userInfo.domain.name}} </template>
         </a-form-item>
         <a-form-item label="区域">
           <cloudregion-zone
@@ -70,7 +71,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isAdminMode', 'userInfo']),
+    ...mapGetters(['isAdminMode', 'userInfo', 'l3PermissionEnable']),
     storageTypes () {
       return this.params.storageTypes || ['rbd', 'nfs', 'gpfs']
     },
