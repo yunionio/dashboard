@@ -282,6 +282,7 @@ export default {
       // 过滤掉不支持创建的云硬盘的存储类型
       const conCreateCloud = data.filter(v => {
         const { storageProvider, storageType } = findStorageProvider(v)
+        if (storageType === 'nova') return false
         if (storageType && storageProvider && !R.isEmpty(storageProvider) && storageProvider[storageType]) {
           return !storageProvider[storageType].unCreateCloud
         }
