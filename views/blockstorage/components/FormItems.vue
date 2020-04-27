@@ -83,7 +83,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '必须指定Rbd Key', trigger: 'blur' },
+              // { required: true, message: '必须指定Rbd Key', trigger: 'blur' },
               { validator: commonCheckValid('Rbd Key') },
             ],
           },
