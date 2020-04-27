@@ -1304,6 +1304,14 @@
     "image$pending_delete_expire_seconds": {
       "label": "镜像回收站保存时长",
       "desc": "镜像在回收站内保存时间"
+    },
+    "baremetal$auto_register_baremetal": {
+      "label": "裸金属自动注册",
+      "desc": "是否开启自动注册裸金属"
+    },
+    "baremetal$default_ipmi_password": {
+      "label": "裸金属默认IPMI密码",
+      "desc": "设置裸金属的默认IPMI密码"
     }
   },
   "notificationPriority": {
