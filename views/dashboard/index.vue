@@ -13,8 +13,8 @@
               <a-tab-pane :tab="item.name" :key="item.id" />
             </template>
             <a-dropdown :trigger="['click']" slot="tabBarExtraContent">
-              <a class="ant-dropdown-link font-weight-bold pl-2 pr-2 pt-2 pb-2" @click="e => e.preventDefault()">
-                <a-icon type="more" style="font-size: 20px;" />
+              <a class="ant-dropdown-link font-weight-bold pl-2 pr-2 h-100 d-block" @click="e => e.preventDefault()">
+                <icon type="more" style="font-size: 18px;" />
               </a>
               <a-menu slot="overlay" @click="handleActionClick">
                 <a-menu-item key="create"><a-icon type="plus" />新建</a-menu-item>
