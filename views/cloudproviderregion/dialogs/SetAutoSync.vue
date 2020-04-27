@@ -6,8 +6,11 @@
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
-        <a-form-item label="同步" v-bind="formItemLayout">
+        <a-form-item label="同是步" v-bind="formItemLayout">
           <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.enabled" />
+          <div slot="extra">
+            同步云上资源时，自否同步该区域资源
+          </div>
         </a-form-item>
       </a-form>
     </div>

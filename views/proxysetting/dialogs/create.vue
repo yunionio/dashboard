@@ -6,7 +6,8 @@
         v-bind="formLayout"
         :form="form.fc">
         <a-form-item :label="`指定${$t('dictionary.domain')}`" v-bind="formLayout">
-          <domain-select v-decorator="decorators.project_domain" />
+          <span v-if="isDomainMode">{{userInfo.domain.name}}</span>
+          <domain-select v-else v-decorator="decorators.project_domain" />
         </a-form-item>
         <a-form-item label="名称">
           <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
@@ -29,6 +30,7 @@
 
 <script>
 import * as R from 'ramda'
+import { mapGetters } from 'vuex'
 import CommonFormItems from '../components/CommonFormItems'
 import DomainSelect from '@/sections/DomainSelect'
 import DialogMixin from '@/mixins/dialog'
@@ -88,6 +90,7 @@ export default {
       },
     }
   },
+  computed: mapGetters(['isDomainMode', 'userInfo']),
   methods: {
     doCreate (data) {
       return this.params.onManager('create', {
