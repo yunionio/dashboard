@@ -39,7 +39,6 @@ export default {
           })
         } else {
           await this.params.onManager('delete', {
-            steadyStatus: 'running',
             id: this.params.data[0].id,
           })
         }
