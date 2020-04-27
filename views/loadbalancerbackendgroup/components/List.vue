@@ -52,7 +52,6 @@ export default {
           meta: () => {
             return {
               buttonType: 'primary',
-              validate: this.$store.getters.isAdminMode,
             }
           },
         },
