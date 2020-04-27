@@ -16,11 +16,13 @@
             <li @click="goHistoricProcess">未完成的工单<a>{{workflowStatistics['nr-historic-process-instance'] || 0}}</a>条</li>
             <li @click="goProcessTask">待我审批<a>{{workflowStatistics['nr-process-task'] || 0}}</a>条</li>
           </ul>
-          <template v-if="!isAdminMode && !isDomainMode && projectEnabled && customerServiceEnabled">
+          <template v-if="!isAdminMode && isShowWorkflow">
             <div class="mt-2 text-color-help" style="font-size: 12px;"><a-icon type="plus" /><span class="ml-2">新建工单</span></div>
             <ul class="work-list">
               <li @click="joinProjectHandle" v-if="projectEnabled">申请加入{{ $t('dictionary.project') }}</li>
               <li @click="customeServiceHandle" v-if="customerServiceEnabled">申请技术支持</li>
+              <li @click="applyProjectQuotaHandle" v-if="projectQuotaEnabled">申请{{ $t('dictionary.project') }}配额</li>
+              <li @click="applyDomainQuotaHandle" v-if="isDomainMode && domainQuotaEnabled">申请{{ $t('dictionary.domain') }}配额</li>
             </ul>
           </template>
         </div>
@@ -50,6 +52,15 @@ export default {
     customerServiceEnabled () {
       return this.checkWorkflowEnabled(WORKFLOW_TYPES.CUSTOMER_SERVICE)
     },
+    projectQuotaEnabled () {
+      return this.checkWorkflowEnabled(WORKFLOW_TYPES.APPLY_PROJECT_QUOTA)
+    },
+    domainQuotaEnabled () {
+      return this.checkWorkflowEnabled(WORKFLOW_TYPES.APPLY_DOMAIN_QUOTA)
+    },
+    isShowWorkflow () {
+      return this.projectEnabled || this.customerServiceEnabled || this.projectQuotaEnabled || this.domainQuotaEnabled
+    },
   },
   methods: {
     goHistoricProcess () {
@@ -68,6 +79,12 @@ export default {
     },
     customeServiceHandle () {
       this.createDialog('CustomeServiceDialog', {})
+    },
+    applyProjectQuotaHandle () {
+      this.createDialog('ApplyProjectQuotaDialog', {})
+    },
+    applyDomainQuotaHandle () {
+      this.createDialog('ApplyDomainQuotaDialog', {})
     },
   },
 }
