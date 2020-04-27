@@ -3,6 +3,9 @@
     <page-header title="节点" />
     <page-body>
       <refresh-button class="flex-shrink-0" :loading="isRunning" @refresh="refresh" />
+      <a-tooltip title="返回列表">
+        <a-button class="flex-shrink-0 ml-2" @click="$router.push('/lbagent')" :disabled="this.isRunning"><a-icon type="arrow-left" /></a-button>
+      </a-tooltip>
       <a-button class="flex-shrink-0 ml-2" @click="handleRun" :disabled="this.isRunning">重新执行</a-button>
       <a-button class="flex-shrink-0 ml-2" @click="handleStop" :disabled="!this.isRunning">终止执行</a-button>
       <detail
