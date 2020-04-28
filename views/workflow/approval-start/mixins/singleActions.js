@@ -21,9 +21,10 @@ export default {
           })
         },
         meta: (obj) => {
-          return {
-            validate: obj.process_instance.process_definition_key !== WORKFLOW_TYPES.CUSTOMER_SERVICE,
+          function checkValidate (obj) {
+            return obj.process_instance.process_definition_key !== WORKFLOW_TYPES.CUSTOMER_SERVICE
           }
+          return { validate: checkValidate(obj) }
         },
       },
       {
@@ -42,15 +43,15 @@ export default {
         meta: (obj) => {
           const name = this.userInfo.name
           function checkValidate (obj) {
-            if (obj.process_instance.process_definition_key !== WORKFLOW_TYPES.CUSTOMER_SERVICE) {
-              return true
-            } else {
-              if (obj.process_instance.start_user_name === name) {
+            if (obj.process_instance.process_definition_key === WORKFLOW_TYPES.CUSTOMER_SERVICE) {
+              if (obj.process_instance.start_user_name !== name) {
                 return true
               }
             }
+            return false
           }
-          return { validate: !checkValidate(obj) }
+          console.log(checkValidate(obj))
+          return { validate: checkValidate(obj) }
         },
       },
       {
@@ -67,9 +68,10 @@ export default {
           })
         },
         meta: (obj) => {
-          return {
-            validate: obj.process_instance.process_definition_key !== WORKFLOW_TYPES.CUSTOMER_SERVICE,
+          function checkValidate (obj) {
+            return obj.process_instance.process_definition_key !== WORKFLOW_TYPES.CUSTOMER_SERVICE
           }
+          return { validate: checkValidate(obj) }
         },
       },
       {
@@ -88,15 +90,14 @@ export default {
         meta: (obj) => {
           const name = this.userInfo.name
           function checkValidate (obj) {
-            if (obj.process_instance.process_definition_key !== WORKFLOW_TYPES.CUSTOMER_SERVICE) {
-              return true
-            } else {
+            if (obj.process_instance.process_definition_key === WORKFLOW_TYPES.CUSTOMER_SERVICE) {
               if (obj.process_instance.start_user_name === name) {
-                return false
+                return true
               }
             }
+            return false
           }
-          return { validate: !checkValidate(obj) }
+          return { validate: checkValidate(obj) }
         },
       },
       {
@@ -115,15 +116,14 @@ export default {
         meta: (obj) => {
           const name = this.userInfo.name
           function checkValidate (obj) {
-            if (obj.process_instance.process_definition_key !== WORKFLOW_TYPES.CUSTOMER_SERVICE) {
-              return true
-            } else {
+            if (obj.process_instance.process_definition_key === WORKFLOW_TYPES.CUSTOMER_SERVICE) {
               if (obj.process_instance.start_user_name === name) {
-                return false
+                return true
               }
             }
+            return false
           }
-          return { validate: !checkValidate(obj) }
+          return { validate: checkValidate(obj) }
         },
       },
     ]
