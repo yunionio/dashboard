@@ -15,6 +15,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { getNameFilter, getTenantFilter, getBrandFilter, getStatusFilter, getAccountFilter } from '@/utils/common/tableFilter'
+import { getSetPublicAction } from '@/utils/common/tableActions'
 
 export default {
   name: 'BucketStorageList',
@@ -85,6 +86,10 @@ export default {
           label: '批量操作',
           actions: () => {
             return [
+              getSetPublicAction(this, {
+                name: this.$t('dictionary.bucket'),
+                scope: 'project',
+              }),
               {
                 label: `更改${this.$t('dictionary.project')}`,
                 permission: 'buckets_perform_change_owner',

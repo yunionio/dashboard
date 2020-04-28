@@ -1,6 +1,6 @@
 import { ACL_TYPE } from '@Storage/constants/index.js'
 import AccessInfo from '../components/AccessInfo'
-import { getNameDescriptionTableColumn, getStatusTableColumn, getBrandTableColumn, getRegionTableColumn, getAccountTableColumn, getProjectTableColumn } from '@/utils/common/tableColumn'
+import { getNameDescriptionTableColumn, getStatusTableColumn, getBrandTableColumn, getRegionTableColumn, getAccountTableColumn, getProjectTableColumn, getPublicScopeTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   created () {
@@ -49,6 +49,7 @@ export default {
       },
       getBrandTableColumn(),
       getAccountTableColumn(),
+      getPublicScopeTableColumn(),
       getRegionTableColumn(),
       getProjectTableColumn(),
     ]
