@@ -97,7 +97,13 @@ export default {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
-        await new this.$Manager('kubeclusters').create({ data: values })
+        const data = {
+          mode: 'import',
+          provider: 'external',
+          resource_type: 'unknown',
+          ...values,
+        }
+        await new this.$Manager('kubeclusters', 'v1').create({ data })
         this.loading = false
         this.$message.success('创建成功')
         this.cancel()
