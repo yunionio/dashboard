@@ -20,7 +20,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import QuotaSetToWorkflow from '@System/sections/QuotaSetToWorkflow'
+import QuotaSetToWorkflow from '@/sections/QuotaSetToWorkflow'
 import workflowMixin from '@/mixins/workflow'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
