@@ -13,8 +13,8 @@
         <div class="base-drawer-content h-100 w-100 overflow-auto flex-fill position-absolute"><slot /></div>
       </div>
       <div class="base-drawer-footer flex-grow-0 flex-shrink-0">
-        <a-button type="primary" @click="handleConfirm">确认</a-button>
-        <a-button class="ml-2" @click="handleCancel">取消</a-button>
+        <a-button type="primary" @click="handleConfirm">{{ $t('common.ok') }}</a-button>
+        <a-button class="ml-2" @click="handleCancel">{{ $t('common.cancel') }}</a-button>
       </div>
     </div>
   </a-drawer>
