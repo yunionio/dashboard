@@ -21,7 +21,7 @@ export default {
         title: '关联虚拟机',
         width: 80,
       },
-      getPublicScopeTableColumn(),
+      getPublicScopeTableColumn({ vm: this }),
       {
         field: 'rules',
         title: '规则预览(策略，来源，协议，端口)',
