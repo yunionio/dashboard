@@ -22,9 +22,9 @@
 </template>
 
 <script>
-import ApprovalDoneDetail from '../../components/Detail'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
+import ApprovalDoneDetail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
