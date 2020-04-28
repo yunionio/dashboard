@@ -13,6 +13,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import { getNameFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import { getSetPublicAction } from '@/utils/common/tableActions'
 
 export default {
   name: 'ProxysettingList',
@@ -66,6 +67,10 @@ export default {
             }
           },
         },
+        getSetPublicAction({
+          name: this.$t('dictionary.proxysetting'),
+          scope: 'domain',
+        }),
         {
           label: '删除',
           permission: 'proxysettings_delete',
