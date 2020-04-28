@@ -33,10 +33,10 @@ export default {
       loading: false,
       formItemLayout: {
         wrapperCol: {
-          span: 16,
+          span: 21,
         },
         labelCol: {
-          span: 8,
+          span: 3,
         },
       },
       form: {
