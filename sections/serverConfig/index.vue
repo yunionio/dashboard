@@ -10,7 +10,7 @@
       <a-form-item label="磁盘" v-bind="formItemLayout">
         <a-input-number v-decorator="decorator.disk(i)" :formatter="value => `${value}G`" :parser="value => value.replace('G', '')" />
       </a-form-item>
-      <a-form-item label="IP子网" v-bind="formItemLayout">
+      <a-form-item label="IP子网" v-bind="formItemLayout" required>
         <a-row :gutter="8">
           <a-col :span="12">
             <a-form-item
