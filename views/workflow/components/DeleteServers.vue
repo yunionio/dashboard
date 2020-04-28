@@ -24,6 +24,8 @@ export default {
         {
           field: 'name',
           title: '主机名称',
+          minWidth: 80,
+          showOverflow: 'title',
           formatter: ({ cellVal, row }) => {
             return row.name
           },
@@ -31,6 +33,8 @@ export default {
         {
           field: 'tenant',
           title: '所属项目',
+          minWidth: 80,
+          showOverflow: 'title',
           formatter: ({ cellVal, row }) => {
             return row.tenant
           },
@@ -38,6 +42,8 @@ export default {
         {
           field: 'ips',
           title: 'IP',
+          minWidth: 80,
+          showOverflow: 'title',
           formatter: ({ cellVal, row }) => {
             return row.ips
           },
@@ -45,6 +51,8 @@ export default {
         {
           field: 'conf',
           title: '主机名称',
+          minWidth: 80,
+          showOverflow: 'title',
           formatter: ({ cellVal, row }) => {
             return `${row.vcpu_count}核${sizestr(row.vmem_size, 'M', 1024)}${row.disk ? sizestr(row.disk, 'M', 1024) : ''}`
           },
