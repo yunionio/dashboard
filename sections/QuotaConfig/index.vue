@@ -9,7 +9,7 @@
               class="w-100"
               :labelInValue="labelInValue"
               v-decorator="decorators.cloud_env"
-              placeholder="请选择云环境"
+              placeholder="全部"
               @change="cloudEnvChange"
               :filterOption="filterOption">
               <a-select-option v-for="item of cloudEnvs" :value="item.key" :key="item.key">{{ item.label }}</a-select-option>
@@ -23,7 +23,7 @@
               class="w-100"
               :labelInValue="labelInValue"
               v-decorator="decorators.brand"
-              placeholder="请选择平台"
+              placeholder="全部"
               @change="brandChange"
               :filterOption="filterOption">
               <a-select-option v-for="item of brands" :value="item.key" :key="item.key">{{ item.label }}</a-select-option>
@@ -43,7 +43,7 @@
           class="w-100"
           :labelInValue="labelInValue"
           v-decorator="decorators.region"
-          placeholder="请选择区域"
+          placeholder="全部"
           @change="regionChange"
           :filterOption="filterOption">
           <a-select-option v-for="item of regions" :value="item.key" :key="item.key">{{ item.label }}</a-select-option>
@@ -55,7 +55,7 @@
           class="w-100"
           :labelInValue="labelInValue"
           v-decorator="decorators.account"
-          placeholder="请选择云账号"
+          placeholder="全部"
           @change="accountChange"
           :filterOption="filterOption">
           <a-select-option v-for="item of accounts" :value="item.key" :key="item.key">{{ item.label }}</a-select-option>
