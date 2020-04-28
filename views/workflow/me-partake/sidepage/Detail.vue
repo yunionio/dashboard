@@ -16,14 +16,14 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import serverConfMixin from '../mixins/serverConf'
-import ProjectQuotaMixin from '../mixins/projectQuota'
-import DomainQuotaMixin from '../mixins/domainQuota'
-import PriceMixin from '../mixins/price'
-import ProcessHistory from './ProcessHistory'
-import ProcessList from './ProcessList'
-import ServerConfigList from './ServerConfig'
-import DeleteServers from './DeleteServers'
+import serverConfMixin from '@/views/workflow/mixins/serverConf'
+import ProjectQuotaMixin from '@/views/workflow/mixins/projectQuota'
+import DomainQuotaMixin from '@/views/workflow/mixins/domainQuota'
+import PriceMixin from '@/views/workflow/mixins/price'
+import ProcessHistory from '@/views/workflow/components/ProcessHistory'
+import ProcessList from '@/views/workflow/components/ProcessList'
+import ServerConfigList from '@/views/workflow/components/ServerConfig'
+import DeleteServers from '@/views/workflow/components/DeleteServers'
 import {
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
@@ -31,7 +31,7 @@ import { getWorkflowType, WORKFLOW_TYPES } from '@/constants/workflow'
 import { HYPERVISORS_GROUP } from '@/constants'
 
 export default {
-  name: 'ApprovalStartDetail',
+  name: 'MePartakeDetail',
   mixins: [serverConfMixin, ProjectQuotaMixin, DomainQuotaMixin, PriceMixin],
   props: {
     data: {

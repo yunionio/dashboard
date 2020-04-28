@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import Detail from '../../components/Detail'
+import MeProcessDetail from '../../components/Detail'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import SidePageMixin from '@/mixins/sidePage'
@@ -27,14 +27,14 @@ import Actions from '@/components/PageList/Actions'
 export default {
   name: 'MeProcessSidePage',
   components: {
-    Detail,
+    MeProcessDetail,
     Actions,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'detail' },
+        { label: '详情', key: 'me-process-detail' },
       ],
     }
   },

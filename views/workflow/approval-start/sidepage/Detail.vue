@@ -16,14 +16,14 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import serverConfMixin from '../mixins/serverConf'
-import ProjectQuotaMixin from '../mixins/projectQuota'
-import DomainQuotaMixin from '../mixins/domainQuota'
-import PriceMixin from '../mixins/price'
-import ProcessHistory from './ProcessHistory'
-import ProcessList from './ProcessList'
-import ServerConfigList from './ServerConfig'
-import DeleteServers from './DeleteServers'
+import serverConfMixin from '@/views/workflow/mixins/serverConf'
+import ProjectQuotaMixin from '@/views/workflow/mixins/projectQuota'
+import DomainQuotaMixin from '@/views/workflow/mixins/domainQuota'
+import PriceMixin from '@/views/workflow/mixins/price'
+import ProcessHistory from '@/views/workflow/components/ProcessHistory'
+import ProcessList from '@/views/workflow/components/ProcessList'
+import ServerConfigList from '@/views/workflow/components/ServerConfig'
+import DeleteServers from '@/views/workflow/components/DeleteServers'
 import {
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
@@ -72,8 +72,7 @@ export default {
             return objType && objType.name
           },
         },
-        getTimeTableColumn({ field: 'start_time', title: '创建日期' }),
-        getTimeTableColumn({ field: 'end_time', title: '结束日期' }),
+        getTimeTableColumn({ field: 'create_time', title: '创建日期' }),
       ],
       extraInfo: [],
       loadingLayout: [
