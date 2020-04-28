@@ -33,7 +33,7 @@ export default {
     return {
       baseInfo: [
         getBrandTableColumn(),
-        getPublicScopeTableColumn(),
+        getPublicScopeTableColumn({ vm: this }),
         {
           field: 'guest_ip_start',
           title: 'IP范围',

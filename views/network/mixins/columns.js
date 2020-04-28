@@ -95,10 +95,6 @@ export default {
           },
         },
       },
-      getPublicScopeTableColumn(),
-      getBrandTableColumn(),
-      getProjectTableColumn(),
-      getRegionTableColumn(),
       getCopyWithContentTableColumn({ field: 'wire', title: '二层网络' }),
       {
         field: 'vlan_id',
@@ -106,7 +102,11 @@ export default {
         width: 60,
       },
       getCopyWithContentTableColumn({ field: 'vpc', title: 'VPC' }),
+      getBrandTableColumn(),
       getCopyWithContentTableColumn({ field: 'account', title: '云账号' }),
+      getPublicScopeTableColumn({ vm: this }),
+      getProjectTableColumn(),
+      getRegionTableColumn(),
     ]
   },
   computed: {

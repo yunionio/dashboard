@@ -19,7 +19,7 @@ export default {
         },
       }),
       getStatusTableColumn({ statusModule: 'globalVpc' }),
-      getPublicScopeTableColumn(),
+      getPublicScopeTableColumn({ vm: this }),
       getProjectDomainTableColumn(),
     ]
   },
