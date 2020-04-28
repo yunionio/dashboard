@@ -50,7 +50,6 @@ export default {
             }
             return false
           }
-          console.log(checkValidate(obj))
           return { validate: checkValidate(obj) }
         },
       },

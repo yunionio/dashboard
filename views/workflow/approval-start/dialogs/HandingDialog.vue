@@ -37,6 +37,11 @@ export default {
       decorators: {
         remarks: [
           'remarks',
+          {
+            rules: [
+              { required: true, message: '请输入处理结果' },
+            ],
+          },
         ],
       },
       formItemLayout: {
