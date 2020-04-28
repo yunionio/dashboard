@@ -37,14 +37,19 @@ export default {
       decorators: {
         remarks: [
           'remarks',
+          {
+            rules: [
+              { required: true, message: '请输入补充信息' },
+            ],
+          },
         ],
       },
       formItemLayout: {
         wrapperCol: {
-          span: 22,
+          span: 21,
         },
         labelCol: {
-          span: 2,
+          span: 3,
         },
       },
     }
