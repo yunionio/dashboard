@@ -73,6 +73,11 @@ export default {
       item: this.listItem,
     }
   },
+  watch: {
+    listItem (newVal) {
+      this.item = newVal
+    },
+  },
 }
 </script>
 <style lang="scss" scoped>
