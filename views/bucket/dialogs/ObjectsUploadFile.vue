@@ -117,15 +117,17 @@ export default {
       }
     },
     hanldeFileChange ({ fileList }) {
-      if (!fileList || !fileList.length) return false
+      // if (!fileList || !fileList.length) return false
       const _statusNums = {
         uploading: 0,
         error: 0,
         done: 0,
       }
-      fileList.forEach(({ status }) => {
-        _statusNums[status] += 1
-      })
+      if (fileList && Array.isArray(fileList)) {
+        fileList.forEach(({ status }) => {
+          _statusNums[status] += 1
+        })
+      }
       this.statusNums = _statusNums
     },
     handleCancel () {
