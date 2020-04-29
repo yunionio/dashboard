@@ -17,9 +17,9 @@
 </template>
 
 <script>
-import Detail from '../../components/Detail'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
+import MePartakeDetail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -27,14 +27,14 @@ import Actions from '@/components/PageList/Actions'
 export default {
   name: 'MePartakeSidePage',
   components: {
-    Detail,
+    MePartakeDetail,
     Actions,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'detail' },
+        { label: '详情', key: 'me-partake-detail' },
       ],
     }
   },
