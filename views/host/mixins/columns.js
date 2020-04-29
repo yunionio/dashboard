@@ -107,7 +107,7 @@ export default {
         showOverflow: 'title',
       },
       getBrandTableColumn(),
-      getPublicScopeTableColumn(),
+      getPublicScopeTableColumn({ vm: this }),
       getProjectDomainTableColumn(),
       getRegionTableColumn(),
       {

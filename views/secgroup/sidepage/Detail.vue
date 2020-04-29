@@ -38,7 +38,7 @@ export default {
           field: 'cache_cnt',
           title: '缓存份数',
         },
-        getPublicScopeTableColumn(),
+        getPublicScopeTableColumn({ vm: this }),
       ],
     }
   },
