@@ -77,6 +77,7 @@ export default {
                 permission: 'k8s_kubeclusters_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
+                    vm: this,
                     data: [obj],
                     columns: this.columns,
                     title: '删除',
