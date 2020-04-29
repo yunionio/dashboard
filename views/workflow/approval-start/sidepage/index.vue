@@ -39,7 +39,7 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情2', key: 'approval-start-detail' },
+        { label: '详情', key: 'approval-start-detail' },
       ],
     }
   },
