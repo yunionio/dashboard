@@ -243,20 +243,24 @@ export default {
     },
     // 全部与选择项互斥交互
     handleHasAllSelect (val, field) {
+      let newVal = []
       if (val === 'all') {
-        this.fd[field] = ['all']
-        return
+        newVal = ['all']
+      } else {
+        newVal = [...this.fd[field]]
+        const allIndex = newVal.indexOf('all')
+        const valIndex = newVal.indexOf(val)
+        if (valIndex === -1) {
+          newVal.push(val)
+        }
+        if (allIndex !== -1) {
+          newVal.splice(allIndex, 1)
+        }
       }
-      const newVal = [...this.fd[field]]
-      const allIndex = newVal.indexOf('all')
-      const valIndex = newVal.indexOf(val)
-      if (valIndex === -1) {
-        newVal.push(val)
-      }
-      if (allIndex !== -1) {
-        newVal.splice(allIndex, 1)
-      }
-      this.fd[field] = newVal
+      this.$nextTick(() => {
+        this.fd[field] = newVal
+        this.$refs.form.validate()
+      })
     },
     // 取消选中
     handleDeselect (val, field) {

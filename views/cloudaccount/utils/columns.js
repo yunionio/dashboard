@@ -1,5 +1,6 @@
 import * as R from 'ramda'
 import i18n from '@/locales'
+import { getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 
 export const getAccessUrlTableColumn = () => {
   return {
@@ -56,32 +57,90 @@ export const getHostCountTableColumn = () => {
   }
 }
 
-export const getPublicScopeTableColumn = () => {
+export const getPublicScopeTableColumn = ({
+  vm,
+} = {}) => {
   return {
     field: 'public_scope',
     title: '共享范围',
     width: 110,
     showOverflow: 'title',
-    formatter: ({ row }) => {
-      if (!row.is_public) return i18n.t('cloudAccountShareDesc.none')
-      const { share_mode: shareMode, public_scope: publicScope, shared_domains: sharedDomains } = row
-      if (publicScope === 'domain') {
-        if (shareMode === 'provider_domain' && sharedDomains && sharedDomains.length > 0) {
-          return i18n.t('cloudAccountShareDesc.provider')
+    slots: {
+      default: ({ row }, h) => {
+        if (!row.is_public) return i18n.t('cloudAccountShareDesc.none')
+        const { share_mode: shareMode, public_scope: publicScope, shared_domains: sharedDomains } = row
+        if (publicScope === 'domain') {
+          if (shareMode === 'provider_domain' && sharedDomains && sharedDomains.length > 0) {
+            return [
+              <a onClick={() => {
+                vm.createDialog('CommonDialog', {
+                  hiddenCancel: true,
+                  header: '共享范围',
+                  body: () => {
+                    return (
+                      <dialog-table
+                        vxeGridProps={{ showOverflow: 'title' }}
+                        data={ sharedDomains }
+                        columns={
+                          [
+                            getCopyWithContentTableColumn({
+                              field: 'id',
+                              title: 'ID',
+                              minWidth: 140,
+                            }),
+                            getCopyWithContentTableColumn({
+                              field: 'name',
+                              title: '名称',
+                            }),
+                          ]
+                        } />
+                    )
+                  },
+                })
+              }}>{ i18n.t('cloudAccountShareDesc.provider') }</a>,
+            ]
+          }
+          if (shareMode === 'system' && sharedDomains && sharedDomains.length > 0) {
+            return [
+              <a onClick={() => {
+                vm.createDialog('CommonDialog', {
+                  hiddenCancel: true,
+                  header: '共享范围',
+                  body: () => {
+                    return (
+                      <dialog-table
+                        vxeGridProps={{ showOverflow: 'title' }}
+                        data={ sharedDomains }
+                        columns={
+                          [
+                            getCopyWithContentTableColumn({
+                              field: 'id',
+                              title: 'ID',
+                              minWidth: 140,
+                            }),
+                            getCopyWithContentTableColumn({
+                              field: 'name',
+                              title: '名称',
+                            }),
+                          ]
+                        } />
+                    )
+                  },
+                })
+              }}>{ i18n.t('cloudAccountShareDesc.account') }</a>,
+            ]
+          }
         }
-        if (shareMode === 'system' && sharedDomains && sharedDomains.length > 0) {
-          return i18n.t('cloudAccountShareDesc.account')
+        if (publicScope === 'system') {
+          if (shareMode === 'provider_domain') {
+            return i18n.t('cloudAccountShareDesc.providerAll')
+          }
+          if (shareMode === 'system') {
+            return i18n.t('cloudAccountShareDesc.accountAll')
+          }
         }
-      }
-      if (publicScope === 'system') {
-        if (shareMode === 'provider_domain') {
-          return i18n.t('cloudAccountShareDesc.providerAll')
-        }
-        if (shareMode === 'system' && sharedDomains && sharedDomains.length > 0) {
-          return i18n.t('cloudAccountShareDesc.accountAll')
-        }
-      }
-      return '-'
+        return '-'
+      },
     },
   }
 }
