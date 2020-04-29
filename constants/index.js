@@ -64,6 +64,7 @@ export const HYPERVISORS_GROUP = {
     qcloud: HYPERVISORS_MAP.qcloud,
     huawei: HYPERVISORS_MAP.huawei,
     ucloud: HYPERVISORS_MAP.ucloud,
+    google: HYPERVISORS_MAP.google,
   },
 }
 
