@@ -1238,7 +1238,9 @@
     "bucket": "存储桶",
     "wire": "二层网络",
     "workflowconfig": "配置工单",
-    "zone": "可用区"
+    "zone": "可用区",
+    "oss": "存储桶",
+    "log": "日志"
   },
   "shareScope": {
     "system": "系统",
