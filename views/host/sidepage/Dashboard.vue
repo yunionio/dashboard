@@ -97,9 +97,9 @@ export default {
         try {
           let q = ''
           if (this.topType === 'isKvm') { // kvm 型宿主机
-            q = `SELECT max("${val.seleteItem}") FROM "${val.fromItem}" WHERE ("is_vm" = 'true' AND "host" = '${this.data.name}') AND time >= now() - ${10}m GROUP BY time(1m), "vm_name" FILL(0)`
+            q = `SELECT max("${val.seleteItem}") FROM "${val.fromItem}" WHERE ("is_vm" = 'true' AND "host" = '${this.data.name}') AND time >= now() - ${10}m GROUP BY time(1m), "vm_name" FILL(none)`
           } else { // 其他类型宿主机(esxi、openstack、zstack)
-            q = `SELECT max("${val.seleteItem}") FROM "${val.fromItem}" WHERE ("host_id" = '${this.data.id}') AND time >= now() - ${10}m GROUP BY time(1m), "vm_name" FILL(0)`
+            q = `SELECT max("${val.seleteItem}") FROM "${val.fromItem}" WHERE ("host_id" = '${this.data.id}') AND time >= now() - ${10}m GROUP BY time(1m), "vm_name" FILL(none)`
           }
           let { data: { results } } = await influxdb.get('', {
             params: {
