@@ -44,7 +44,7 @@ export default {
       },
       getCopyWithContentTableColumn({ field: 'vpc', title: '所属专有网络' }),
       getBrandTableColumn(),
-      getPublicScopeTableColumn(),
+      getPublicScopeTableColumn({ vm: this }),
       getProjectDomainTableColumn(),
       {
         field: 'region',

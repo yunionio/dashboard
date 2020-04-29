@@ -21,7 +21,7 @@ export default {
       }),
       getCopyWithContentTableColumn({ field: 'mac', title: 'MAC地址' }),
       getStatusTableColumn({ statusModule: 'network' }),
-      getPublicScopeTableColumn(),
+      getPublicScopeTableColumn({ vm: this }),
       getProjectDomainTableColumn(),
       getBrandTableColumn(),
       getCopyWithContentTableColumn({
