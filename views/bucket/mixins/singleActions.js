@@ -1,3 +1,5 @@
+import { getSetPublicAction } from '@/utils/common/tableActions'
+
 export default {
   created () {
     this.singleActions = [
@@ -36,6 +38,10 @@ export default {
                 })
               },
             },
+            getSetPublicAction(this, {
+              name: this.$t('dictionary.bucket'),
+              scope: 'project',
+            }),
             {
               label: `更改${this.$t('dictionary.project')}`,
               permission: 'buckets_perform_change_owner',
