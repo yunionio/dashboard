@@ -1,3 +1,5 @@
+import { getSetPublicAction } from '@/utils/common/tableActions'
+
 export default {
   created () {
     this.singleActions = [
@@ -14,6 +16,10 @@ export default {
         },
         meta: this.commonMeta,
       },
+      getSetPublicAction({
+        name: this.$t('dictionary.proxysetting'),
+        scope: 'domain',
+      }),
       {
         label: '删除',
         permission: 'proxysettings_delete',

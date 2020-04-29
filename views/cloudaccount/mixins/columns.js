@@ -58,7 +58,7 @@ export default {
           },
         },
       },
-      getPublicScopeTableColumn(),
+      getPublicScopeTableColumn({ vm: this }),
       getProjectDomainTableColumn(),
       getCopyWithContentTableColumn({
         title: `资源归属${this.$t('dictionary.project')}`,
