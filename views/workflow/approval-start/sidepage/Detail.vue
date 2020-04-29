@@ -250,7 +250,7 @@ export default {
               field: 'description',
               title: '备注',
               formatter: ({ cellValue, row }) => {
-                return variables.description2 || '-'
+                return variables.description || '-'
               },
             },
             {
