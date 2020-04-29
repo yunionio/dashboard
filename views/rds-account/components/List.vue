@@ -182,9 +182,9 @@ export default {
             })
           },
           meta: (obj) => {
-            const { tooltip } = this.commonMeta
+            const { tooltip, isAliyun } = this.commonMeta
             return {
-              validate: obj.name !== 'root',
+              validate: obj.name !== 'root' || (!tooltip && isAliyun),
               tooltip,
             }
           },
