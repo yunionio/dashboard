@@ -6,7 +6,7 @@
         <a-input v-decorator="decorators.name" placeholder="请输入名称" />
       </a-form-item>
       <a-form-item label="认证地址">
-        <a-input v-decorator="decorators.auth_url" placeholder="请输入域名或者ip" />
+        <a-input v-decorator="decorators.auth_url" placeholder="例如：http://host:8080/" />
       </a-form-item>
       <a-form-item :label="keySecretField.label.k">
         <a-input v-decorator="decorators.username" :placeholder="keySecretField.placeholder.k" />
