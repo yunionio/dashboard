@@ -85,7 +85,7 @@
               filterable
               v-decorator="decorators.host"
               resource="hosts"
-              :params="{ status: 'running' }"
+              :params="hostsParams"
               :label-format="labelFormat"
               :select-props="{ placeholder: '请选择宿主机' }"
               style="width: 320px" />
@@ -280,6 +280,14 @@ export default {
     },
     serversParams () {
       return {
+        scope: this.$store.getters.scope,
+        status: 'running',
+        cloud_env: 'private_or_onpremise',
+      }
+    },
+    hostsParams () {
+      return {
+        scope: this.$store.getters.scope,
         status: 'running',
       }
     },

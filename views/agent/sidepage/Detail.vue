@@ -114,9 +114,9 @@ export default {
           title: 'VRRP转发实例配置信息',
           items: [
             {
-              field: 'params.telegraf.haproxy_input_interval',
+              field: 'params.vrrp.advert_int',
               title: '通告间隔',
-              formatter: ({ row }) => `${row.params.telegraf.haproxy_input_interval || 0}s`,
+              formatter: ({ row }) => `${row.params.vrrp.advert_int || 0}s`,
             },
             {
               field: 'params.vrrp.interface',
