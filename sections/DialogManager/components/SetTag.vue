@@ -126,7 +126,7 @@ export default {
           'key',
           {
             rules: [
-              { required: true, message: '请输入标签键' },
+              { required: true, whitespace: true, message: '请输入标签键' },
             ],
           },
         ],
