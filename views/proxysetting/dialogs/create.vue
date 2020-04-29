@@ -6,8 +6,8 @@
         v-bind="formLayout"
         :form="form.fc">
         <a-form-item :label="`指定${$t('dictionary.domain')}`" v-bind="formLayout">
-          <span v-if="isDomainMode">{{userInfo.domain.name}}</span>
-          <domain-select v-else v-decorator="decorators.project_domain" />
+           <domain-select v-if="isAdminMode && l3PermissionEnable" v-decorator="decorators.project_domain" />
+          <template v-else> {{userInfo.domain.name}} </template>
         </a-form-item>
         <a-form-item label="名称">
           <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
@@ -90,7 +90,7 @@ export default {
       },
     }
   },
-  computed: mapGetters(['isDomainMode', 'userInfo']),
+  computed: mapGetters(['isDomainMode', 'userInfo', 'l3PermissionEnable']),
   methods: {
     doCreate (data) {
       return this.params.onManager('create', {
