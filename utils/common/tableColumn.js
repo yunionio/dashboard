@@ -391,28 +391,89 @@ export const getBillingTypeTableColumn = ({ field = 'billing_type', title = '计
 export const getPublicScopeTableColumn = ({
   field = 'public_scope',
   title = '共享范围',
+  vm,
 } = {}) => {
   return {
     title,
     field,
     showOverflow: 'title',
     width: 110,
-    formatter: ({ row }) => {
-      if (!row.is_public) return i18n.t('shareDesc.none')
-      const { public_scope: publicScope, shared_projects: sharedProjects, shared_domains: sharedDomains } = row
-      if (publicScope === 'project' && sharedProjects && sharedProjects.length > 0) {
-        return i18n.t('shareDesc.project')
-      }
-      if (publicScope === 'domain') {
-        if (sharedDomains && sharedDomains.length > 0) {
-          return i18n.t('shareDesc.domain')
+    slots: {
+      default: ({ row }, h) => {
+        if (!row.is_public) return i18n.t('shareDesc.none')
+        const { public_scope: publicScope, shared_projects: sharedProjects, shared_domains: sharedDomains } = row
+        if (publicScope === 'project' && sharedProjects && sharedProjects.length > 0) {
+          return [
+            <a onClick={() => {
+              vm.createDialog('CommonDialog', {
+                hiddenCancel: true,
+                header: '共享范围',
+                body: () => {
+                  return (
+                    <dialog-table
+                      vxeGridProps={{ showOverflow: 'title' }}
+                      data={ sharedProjects }
+                      columns={
+                        [
+                          getCopyWithContentTableColumn({
+                            field: 'id',
+                            title: 'ID',
+                            minWidth: 140,
+                          }),
+                          getCopyWithContentTableColumn({
+                            field: 'name',
+                            title: '名称',
+                          }),
+                          getCopyWithContentTableColumn({
+                            field: 'domain',
+                            title: `所属${i18n.t('dictionary.domain')}`,
+                          }),
+                        ]
+                      } />
+                  )
+                },
+              })
+            }}>{ i18n.t('shareDesc.project') }</a>,
+          ]
         }
-        return i18n.t('shareDesc.projectAll')
-      }
-      if (publicScope === 'system') {
-        return i18n.t('shareDesc.domainAll')
-      }
-      return '-'
+        if (publicScope === 'domain') {
+          if (sharedDomains && sharedDomains.length > 0) {
+            return [
+              <a onClick={() => {
+                vm.createDialog('CommonDialog', {
+                  hiddenCancel: true,
+                  header: '共享范围',
+                  body: () => {
+                    return (
+                      <dialog-table
+                        vxeGridProps={{ showOverflow: 'title' }}
+                        data={ sharedDomains }
+                        columns={
+                          [
+                            getCopyWithContentTableColumn({
+                              field: 'id',
+                              title: 'ID',
+                              minWidth: 140,
+                            }),
+                            getCopyWithContentTableColumn({
+                              field: 'name',
+                              title: '名称',
+                            }),
+                          ]
+                        } />
+                    )
+                  },
+                })
+              }}>{ i18n.t('shareDesc.domain') }</a>,
+            ]
+          }
+          return i18n.t('shareDesc.projectAll')
+        }
+        if (publicScope === 'system') {
+          return i18n.t('shareDesc.domainAll')
+        }
+        return '-'
+      },
     },
   }
 }

@@ -323,6 +323,7 @@ class CreateList {
    * @memberof CreateList
    */
   refresh () {
+    this.clearSelected()
     this.fetchData(this.offset, this.getLimit())
   }
   /**

@@ -108,7 +108,7 @@ export default {
         export: this.params.options.fileType || 'xls',
         export_keys: keys.join(','),
         export_texts: texts.join(','),
-        export_limit: 0,
+        export_limit: this.params.list.total,
       }
       if (this.params.options.getParams) {
         if (R.is(Function, this.params.options.getParams)) {
