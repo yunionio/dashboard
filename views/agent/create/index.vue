@@ -19,7 +19,9 @@
           </p>
         </a-form-item>
         <a-form-item label="优先级" extra="指定VRRP实例优先级，优先级大的为主">
-          <a-input-number v-decorator="decorators.priority" :max="255" :min="1" />
+          <a-tooltip title="优先级">
+            <a-input-number v-decorator="decorators.priority" :max="255" :min="1" />
+          </a-tooltip>
         </a-form-item>
         <a-form-item label="抢占模式" extra="高优先级VRRP SLAVE实例见到低优先级的VRRP MASTER实例时，是否抢占完成MASTER角色切换">
           <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.preempt" />
@@ -39,7 +41,7 @@
               <a-input v-decorator="decorators.influx_db_output_url" placeholder="例如：https://192.168.222.171:30086" />
             </a-col>
             <a-col :span="12">
-              <a-checkbox class="ml-4" v-decorator="decorators.influx_db_output_unsafe_ssl">忽略https证书校验</a-checkbox>
+              <a-checkbox class="ml-4" :checked="form.fc.getFieldValue('influx_db_output_unsafe_ssl')" v-decorator="decorators.influx_db_output_unsafe_ssl">忽略https证书校验</a-checkbox>
             </a-col>
           </a-row>
         </a-form-item>
@@ -149,6 +151,11 @@ export default {
         },
       },
     }
+  },
+  mounted () {
+    this.form.fc.setFieldsValue({
+      influx_db_output_unsafe_ssl: true,
+    })
   },
   methods: {
     createCluster () {

@@ -34,7 +34,6 @@ export default {
         if (this.params.data && this.params.data.length > 1) {
           const ids = this.params.data.map(({ id }) => id)
           await this.params.onManager('batchDelete', {
-            steadyStatus: 'running',
             id: ids,
           })
         } else {
