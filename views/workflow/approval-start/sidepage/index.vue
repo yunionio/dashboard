@@ -22,9 +22,9 @@
 </template>
 
 <script>
-import Detail from '../../components/Detail'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
+import ApprovalStartDetail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -32,14 +32,14 @@ import Actions from '@/components/PageList/Actions'
 export default {
   name: 'ApprovalStartSidePage',
   components: {
-    Detail,
+    ApprovalStartDetail,
     Actions,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'detail' },
+        { label: '详情2', key: 'approval-start-detail' },
       ],
     }
   },

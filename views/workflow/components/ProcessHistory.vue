@@ -34,14 +34,20 @@ export default {
       {
         field: 'activity_name',
         title: '审批环节',
+        minWidth: 80,
+        showOverflow: 'title',
       },
       {
         field: 'task_assignee_name',
         title: '处理人',
+        minWidth: 80,
+        showOverflow: 'title',
       },
       {
         field: 'task_approved',
         title: '处理结果',
+        minWidth: 80,
+        showOverflow: 'title',
         slots: {
           default: ({ row }, h) => {
             if (R.isNil(row.task) || R.isNil(row.task.local_variables)) {
@@ -55,6 +61,8 @@ export default {
       {
         field: 'comment',
         title: '备注',
+        minWidth: 80,
+        showOverflow: 'title',
         formatter: ({ cellValue, row }) => {
           if (R.isNil(row.task.local_variables) || R.isNil(row.task.local_variables.comment)) return '-'
           return row.task.local_variables.comment

@@ -49,7 +49,7 @@ export default {
     ...mapGetters(['userInfo']),
   },
   created () {
-    this.initSidePageTab('detail')
+    this.initSidePageTab('me-process-detail')
     this.list.fetchData()
   },
   methods: {

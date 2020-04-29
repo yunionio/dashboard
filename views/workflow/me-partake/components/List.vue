@@ -45,7 +45,7 @@ export default {
     }
   },
   created () {
-    this.initSidePageTab('detail')
+    this.initSidePageTab('me-partake-detail')
     this.list.fetchData()
   },
   methods: {
