@@ -60,6 +60,10 @@ export default {
       type: Function,
       required: true,
     },
+    refresh: {
+      type: Function,
+      required: true,
+    },
     data: {
       type: Object,
       required: true,
@@ -185,8 +189,9 @@ export default {
         title: '设置读写权限',
         data: [row],
         resName: row.name,
-        columns: this.list.templateContext.columns,
+        columns: this.columns,
         list: this.list,
+        refresh: this.refresh,
       })
     },
   },

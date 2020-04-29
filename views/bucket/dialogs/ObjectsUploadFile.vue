@@ -130,12 +130,10 @@ export default {
     },
     handleCancel () {
       if (document.getElementsByClassName('ant-upload-list-item-uploading').length) {
-        this.$confirm({
+        this.createDialog('ConfirmDialog', {
           title: '列表中还有未完成上传的文件。',
           width: '550px',
-          content: '关闭对话框会取消所有未上传成功的文件，是否继续？',
-          okText: '继续',
-          cancelText: '取消',
+          content: '关闭对话框会取消所有未上传成功的文件，是否确定？',
           onOk: () => {
             this.cancelDialog()
             this.params.list.fetchData()
@@ -151,6 +149,9 @@ export default {
 </script>
 <style lang="scss">
   .upload-file-item .ant-upload-list-item-done .anticon-close {
+    display: none;
+  }
+  .upload-file-item .ant-upload-list-item-done .ant-upload-list-item-card-actions {
     display: none;
   }
   .upload-file-item .ant-upload-list-item  .anticon-close {

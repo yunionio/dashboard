@@ -24,6 +24,7 @@
 import { ACL_TYPE } from '@Storage/constants/index.js'
 import { objectsModel } from '@Storage/views/bucket/utils/controller.js'
 import WindowsMixin from '@/mixins/windows'
+import ListMixin from '@/mixins/list'
 import { sizestrWithUnit } from '@/utils/utils'
 
 const validDirName = (rule, value, callback) => {
@@ -41,7 +42,7 @@ const validDirName = (rule, value, callback) => {
 }
 export default {
   name: 'BucketStorageObjectList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ListMixin],
   props: {
     id: String,
     data: {
@@ -225,6 +226,7 @@ export default {
                     resName: this.resName,
                     columns: this.columns,
                     list: this.list,
+                    refresh: this.refresh,
                   })
                 },
                 meta: row => {
@@ -287,6 +289,11 @@ export default {
                     list: this.list,
                   })
                 },
+                meta: row => {
+                  return {
+                    validate: !this.isDir(row.key),
+                  }
+                },
               },
               {
                 label: '设置读写权限',
@@ -297,7 +304,13 @@ export default {
                     resName: this.resName,
                     columns: this.columns,
                     list: this.list,
+                    refresh: this.refresh,
                   })
+                },
+                meta: row => {
+                  return {
+                    validate: !this.isDir(row.key),
+                  }
                 },
               },
               {
@@ -310,6 +323,11 @@ export default {
                     columns: this.columns,
                     list: this.list,
                   })
+                },
+                meta: row => {
+                  return {
+                    validate: !this.isDir(row.key),
+                  }
                 },
               },
               {
@@ -328,11 +346,11 @@ export default {
               },
             ]
           },
-          meta: row => {
-            return {
-              validate: !this.isDir(row.key),
-            }
-          },
+          // meta: row => {
+          //   return {
+          //     validate: !this.isDir(row.key),
+          //   }
+          // },
         },
       ],
     }
