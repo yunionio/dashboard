@@ -1237,7 +1237,8 @@
     "notice": "公告",
     "wire": "二层网络",
     "workflowconfig": "配置工单",
-    "zone": "可用区"
+    "zone": "可用区",
+    "bucket": "存储桶"
   },
   "shareScope": {
     "system": "系统",

@@ -1955,7 +1955,7 @@ export default {
     }
   },
   "ForbiddenError": {
-    "zh-CN": "权限不足",
+    "zh-CN": "禁止操作",
     "details": {
       "not allow to purge. Virtual disk must not have snapshots": {
         "zh-CN": {
