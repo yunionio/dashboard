@@ -129,9 +129,9 @@ export default {
           const value = GAUGEMSG[i]
           let q
           if (value.sql.db === 'net') {
-            q = `SELECT max("${value.sql.key}") FROM "${value.sql.db}" WHERE "interface" = 'eth0' AND "host_id" = '${this.resId}' AND time > now() - 1m GROUP BY time(1m) fill(0)`
+            q = `SELECT max("${value.sql.key}") FROM "${value.sql.db}" WHERE "interface" = 'eth0' AND "host_id" = '${this.resId}' AND time > now() - 1m GROUP BY time(1m) fill(none)`
           } else {
-            q = `SELECT max("${value.sql.key}") FROM "${value.sql.db}" WHERE "host_id" = '${this.resId}' AND time > now() - 1m GROUP BY time(1m) fill(0)`
+            q = `SELECT max("${value.sql.key}") FROM "${value.sql.db}" WHERE "host_id" = '${this.resId}' AND time > now() - 1m GROUP BY time(1m) fill(none)`
           }
           await influxdb.get('', {
             params: {
