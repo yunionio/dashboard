@@ -609,8 +609,8 @@ export const PERMISSION = {
    */
   'policydefinitions_list': ['compute', 'policydefinitions', 'list'],
   /** 优化建议 */
-  'suggestsysalerts_list': ['computed', 'suggestsysalerts', 'list'],
-  'suggestsysrules_list': ['computed', 'suggestsysrules', 'list'],
+  'suggestsysalerts_list': ['compute', 'suggestsysalerts', 'list'],
+  'suggestsysrules_list': ['compute', 'suggestsysrules', 'list'],
   // 权限
   'policies_get': ['identity', 'policies', 'get'],
 }
