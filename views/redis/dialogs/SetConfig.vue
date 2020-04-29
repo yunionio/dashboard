@@ -69,7 +69,8 @@ export default {
   async created () {
     const redisKeys = ['billing_type', 'provider', 'cloudregion', 'zone']
     redisKeys.forEach(k => {
-      this.form.fc.getFieldDecorator(k, { initialValue: this.redisItem[k], preserve: true })
+      const value = this.redisItem[`${k}_id`] || this.redisItem[k]
+      this.form.fc.getFieldDecorator(k, { initialValue: value, preserve: true })
     })
     await this.$nextTick()
     this.area_change()
