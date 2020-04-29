@@ -1,5 +1,7 @@
 import { ALL_STORAGE } from '@Compute/constants'
 import { getServerConf } from '../utils'
+import { HYPERVISORS_MAP } from '@/constants'
+import BrandIcon from '@/sections/BrandIcon'
 
 export default {
   methods: {
@@ -50,9 +52,15 @@ export default {
             {
               field: 'hypervisor',
               title: '平台',
-              formatter: ({ cellValue, row }) => {
-                const serverConf = getServerConf(row)
-                return serverConf.hypervisor
+              slots: {
+                default: ({ row }, h) => {
+                  const serverConf = getServerConf(row)
+                  const brand = HYPERVISORS_MAP[serverConf.hypervisor] && HYPERVISORS_MAP[serverConf.hypervisor].brand
+                  if (!brand) return '-'
+                  return [
+                    <BrandIcon name={ brand } />,
+                  ]
+                },
               },
             },
             {
@@ -74,19 +82,19 @@ export default {
               },
             },
             {
-              field: 'disks',
-              title: '数据盘',
-              formatter: ({ cellValue, row }) => {
-                const serverConf = getServerConf(row)
-                return this.getDiskInfo(row, serverConf).dataDisk || '-'
-              },
-            },
-            {
               field: 'sysdisks',
               title: '系统盘',
               formatter: ({ cellValue, row }) => {
                 const serverConf = getServerConf(row)
                 return this.getDiskInfo(row, serverConf).sysDisk || '-'
+              },
+            },
+            {
+              field: 'disks',
+              title: '数据盘',
+              formatter: ({ cellValue, row }) => {
+                const serverConf = getServerConf(row)
+                return this.getDiskInfo(row, serverConf).dataDisk || '-'
               },
             },
             {

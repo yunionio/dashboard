@@ -24,6 +24,8 @@ export default {
         {
           field: 'name',
           title: '主机名称',
+          minWidth: 80,
+          showOverflow: 'title',
           formatter: ({ cellVal, row }) => {
             return row.name
           },
@@ -31,6 +33,8 @@ export default {
         {
           field: 'project',
           title: '所属项目',
+          minWidth: 80,
+          showOverflow: 'title',
           formatter: ({ cellVal, row }) => {
             return row.project
           },
@@ -38,6 +42,8 @@ export default {
         {
           field: 'beforeConfig',
           title: '调整前配置',
+          minWidth: 80,
+          showOverflow: 'title',
           formatter: ({ cellVal, row }) => {
             return `${row.before && row.before.cpu}核${sizestr(row.before && row.before.memory, 'M', 1024)}${sizestr(row.before && row.before.disk, 'M', 1024)}`
           },
@@ -45,6 +51,8 @@ export default {
         {
           field: 'afterConfig',
           title: '调整后配置',
+          minWidth: 80,
+          showOverflow: 'title',
           formatter: ({ cellVal, row }) => {
             if (row.after && row.after.disk) {
               return `${row.after && row.after.cpu}核${sizestr(row.after && row.after.memory, 'M', 1024)}${sizestr(row.after && row.after.disk, 'M', 1024)}`

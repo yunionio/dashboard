@@ -45,7 +45,7 @@ export default {
     }
   },
   created () {
-    this.initSidePageTab('detail')
+    this.initSidePageTab('approval-start-detail')
     this.list.fetchData()
   },
   methods: {
