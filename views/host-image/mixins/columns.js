@@ -73,8 +73,8 @@ export default {
         },
       },
       getStatusTableColumn({ statusModule: 'image' }),
+      getPublicScopeTableColumn({ vm: this }),
       getProjectTableColumn(),
-      getPublicScopeTableColumn(),
       {
         field: 'is_standard',
         title: '镜像类型',

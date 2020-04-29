@@ -73,9 +73,9 @@ export default {
           },
         },
       },
+      getPublicScopeTableColumn({ vm: this }),
       getProjectTableColumn(),
       // isPublicTableColumn(),
-      getPublicScopeTableColumn(),
       {
         field: 'is_standard',
         title: '镜像类型',
