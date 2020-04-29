@@ -60,7 +60,7 @@
     <div class="d-flex align-items-center" v-if="serverConfigRemaining > 0">
       <a-button type="primary" shape="circle" icon="plus" size="small" @click="add" />
       <a-button type="link" @click="add">添加机器</a-button>
-      <span class="network-count-tips">您还可以添加 <span class="remain-num">{{ serverConfigRemaining }}</span> 中机器配置</span>
+      <span class="network-count-tips">您还可以添加 <span class="remain-num">{{ serverConfigRemaining }}</span> 种机器配置</span>
     </div>
   </div>
 </template>

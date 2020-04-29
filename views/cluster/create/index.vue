@@ -343,7 +343,7 @@ export default {
             return _callback('输入范围 1 - 128 G')
           }
         } else if (type === 'disk') {
-          if (value < 1 || value > 128) {
+          if (value < 1 || value > 500) {
             return _callback('输入范围 40 - 500 G')
           }
         }

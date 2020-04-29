@@ -38,11 +38,12 @@ export default {
     return {
       list: this.$list.createList(this, {
         id: this.id,
+        idKey: 'name',
       }),
       cardFields: {
         url: {
           formatter: (data) => {
-            return require(`../assets/images/${data.name.toLowerCase()}.svg`)
+            return require(`../assets/images/${data.name.toLowerCase()}${data.name.toLowerCase() === 'cephcsi' ? '.svg' : '.png'}`)
           },
         },
         title: 'name',
@@ -177,12 +178,12 @@ export default {
           id: this.cluster,
           spec: 'components-status',
         })
+        this.list.responseData = {
+          data: [],
+        }
         for (let key in data) {
           data[key]['name'] = key
-          this.list.responseData = {
-            data: [],
-          }
-          this.list.responseData.data.push(data[key])
+          if (key === 'cephCSI') this.list.responseData.data.push(data[key])
           this.responseData = this.list.responseData.data
         }
         this.list.fetchData()
