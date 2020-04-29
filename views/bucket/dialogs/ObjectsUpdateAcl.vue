@@ -82,7 +82,7 @@ export default {
           action: 'acl',
           data: params,
         })
-        this.params.list.fetchData()
+        this.params.refresh()
         this.cancelDialog()
       } catch (error) {
         this.loading = false

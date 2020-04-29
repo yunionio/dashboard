@@ -26,7 +26,7 @@ export default {
             {
               label: '设置上限',
               permission: 'buckets_perform_limit',
-              action: obj => {
+              action: row => {
                 this.createDialog('BucketUpdateBucketLimitDialog', {
                   title: '设置上限',
                   data: [row],
@@ -35,6 +35,24 @@ export default {
                   refresh: this.refresh,
                 })
               },
+            },
+            {
+              label: '设置读写权限',
+              action: row => {
+                this.createDialog('ObjectsUpdateAclDialog', {
+                  title: '设置读写权限',
+                  data: [row],
+                  resName: row.name,
+                  columns: this.columns,
+                  list: this.list,
+                  refresh: this.refresh,
+                })
+              },
+              // meta: row => {
+              //   return {
+              //     validate: this.list.selectedItems.every(row => !this.isDir(row.key)),
+              //   }
+              // },
             },
             {
               label: `更改${this.$t('dictionary.project')}`,
