@@ -29,7 +29,7 @@ export default {
         sortable: true,
       },
       getBrandTableColumn(),
-      getPublicScopeTableColumn(),
+      getPublicScopeTableColumn({ vm: this }),
       getProjectDomainTableColumn(),
       getRegionTableColumn(),
     ]
