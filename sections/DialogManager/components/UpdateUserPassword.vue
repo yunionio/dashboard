@@ -1,16 +1,13 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">更新用户密码</div>
+    <div slot="header">更改密码</div>
     <div slot="body">
       <a-form :form="form.fc">
         <a-form-item label="旧密码" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.password_old" placeholder="输入旧密码" type="password" />
+          <a-input-password v-decorator="decorators.password_old" placeholder="输入旧密码" />
         </a-form-item>
         <a-form-item label="新密码" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.password_new" placeholder="输入新密码" type="password" />
-        </a-form-item>
-        <a-form-item label="确认密码" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.password_confirm" placeholder="确认密码" type="password" />
+          <a-input-password v-decorator="decorators.password_new" placeholder="输入新密码" />
         </a-form-item>
         <a-form-item label="MFA安全码" v-bind="formItemLayout" v-if="userInfo.enable_mfa && userInfo.system_totp_on">
           <a-input v-decorator="decorators.passcode" placeholder="MFA安全码" />
@@ -63,13 +60,6 @@ export default {
         throw error
       }
     }
-    const passwordConfirmValidator = (rule, value, callback) => {
-      let msg = '两次密码输入不一致'
-      if (value !== this.form.fc.getFieldValue('password_new')) {
-        return callback(msg)
-      }
-      callback()
-    }
     return {
       loading: false,
       form: {
@@ -92,16 +82,6 @@ export default {
             rules: [
               { required: true, message: '新密码不能为空' },
               { validator: validatePassword },
-            ],
-          },
-        ],
-        password_confirm: [
-          'password_confirm',
-          {
-            validateFirst: true,
-            rules: [
-              { required: true, message: '确认密码不能为空' },
-              { validator: passwordConfirmValidator },
             ],
           },
         ],
