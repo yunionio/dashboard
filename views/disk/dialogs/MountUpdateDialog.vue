@@ -58,13 +58,14 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isAdminMode', 'isDomainMode']),
+    ...mapGetters(['isAdminMode', 'isDomainMode', 'scope']),
   },
   created () {
     const params = {
       details: false,
       disk: this.params.data[0].id,
-      scope: this.$store.getters.scope,
+      scope: this.scope,
+      brand: this.params.data[0].brand,
     }
     if (this.isAdminMode || this.isDomainMode) params['project_id'] = this.params.data[0].project_id
     new this.$Manager('servers').list({ params })
