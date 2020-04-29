@@ -280,15 +280,16 @@ export default {
         this.form.fd.ipmi_username,
         this.form.fd.ipmi_password,
       ]
+      const params = {
+        hosts: data.join(','),
+        no_probe: true,
+      }
       if (this.form.fd.project_domain && this.isAdminMode) {
-        data.push(this.form.fd.project_domain)
+        params.project_domain = this.form.fd.project_domain
       }
       return this.hm.rpc({
         methodname: 'DoBatchRegister',
-        params: {
-          hosts: data.join(','),
-          no_probe: true,
-        },
+        params,
       })
     },
     // 预注册批量录入
