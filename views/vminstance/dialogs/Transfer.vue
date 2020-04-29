@@ -9,8 +9,8 @@
           <base-select
             v-decorator="decorators.host"
             resource="hosts"
-            filterable
             remote
+            :remote-fn="q => ({ filter: `name.contains(${q})` })"
             :params="hostsParams"
             :mapper="hostsMapper"
             :select-props="{ allowClear: true, placeholder: '请选择宿主机' }" />
