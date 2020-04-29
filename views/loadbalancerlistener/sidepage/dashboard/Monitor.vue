@@ -48,7 +48,7 @@ const lbQuery = (fieldType, lsType, lsId, host, time, aggregate) => {
   const fields = {
     status: {
       selected: 'check_status, check_code',
-      perfixLimit: 'group by pxname, svname fill(0) order by time desc limit 1',
+      perfixLimit: 'group by pxname, svname fill(none) order by time desc limit 1',
       pxname: {
         tcp: `backends_listener-${lsId}`,
         http: `backends_listener_default-${lsId}`,
@@ -83,7 +83,7 @@ const lbQuery = (fieldType, lsType, lsId, host, time, aggregate) => {
   const fieldItem = fields[fieldType]
   let { selected, perfixLimit = '', pxname, svname, limit } = fieldItem
   let groupByStr = ''
-  let fill = 'fill(0)'
+  let fill = 'fill(none)'
   if (isObject(selected)) selected = selected[lsType]
   if (isObject(pxname)) pxname = pxname[lsType]
   if (!selected) console.error(`没有找到监听类型为 ${lsType} 的 ${fieldType} 数据的 selected 字段`)
