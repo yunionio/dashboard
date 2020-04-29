@@ -1230,6 +1230,7 @@
     "lb_backendgroup": "负载均衡后端服务器组",
     "lb_backend": "负载均衡后端服务器",
     "notice": "公告",
+    "bucket": "存储桶",
     "wire": "二层网络",
     "workflowconfig": "配置工单",
     "zone": "可用区"
