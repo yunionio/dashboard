@@ -35,7 +35,7 @@ export default {
     return {
       baseInfo: [
         getBrandTableColumn(),
-        getPublicScopeTableColumn(),
+        getPublicScopeTableColumn({ vm: this }),
         {
           field: 'account',
           title: '账号',
