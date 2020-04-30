@@ -4,6 +4,7 @@
     <div class="app-content position-relative h-100">
       <sidebar :l2-menu-visible.sync="l2MenuVisible" />
       <div id="app-page" class="app-page" :class="{ 'l2-menu-show': l2MenuVisible }">
+        <top-alert />
         <slot />
       </div>
     </div>
@@ -16,12 +17,14 @@ import { mapGetters } from 'vuex'
 import Navbar from '@scope/layouts/Navbar'
 import Sidebar from '../Sidebar'
 import notificationListener from '@/utils/notificationListener'
+import TopAlert from '@/sections/TopAlert'
 
 export default {
   name: 'DefaultLayout',
   components: {
     Sidebar,
     Navbar,
+    TopAlert,
   },
   data () {
     return {
@@ -35,6 +38,9 @@ export default {
     'auth.auth': {
       handler (val, oldVal) {
         if (val && val.session && !R.equals(val, oldVal)) {
+          if (this.socket) {
+            this.socket.close()
+          }
           this.initIO()
         }
       },
@@ -50,7 +56,8 @@ export default {
       if (process.env.NODE_ENV === 'production') {
         options.server = '/'
       }
-      notificationListener(this.$store, options)
+      this.socket = notificationListener(this.$store, options)
+      this.socket.start()
     },
   },
 }
