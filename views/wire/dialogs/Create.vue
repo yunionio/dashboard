@@ -61,6 +61,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { BAND_WIDTH_OPTION } from '../../../constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -165,6 +166,9 @@ export default {
       bandwidthOptions: BAND_WIDTH_OPTION,
     }
   },
+  computed: {
+    ...mapGetters(['isAdminMode', 'scope', 'userInfo']),
+  },
   created () {
     this.fetchAreas()
     this.fetchZones()
@@ -185,11 +189,15 @@ export default {
     },
     fetchVpcs (area) {
       let manager = new this.$Manager('vpcs')
-      manager.list({ params: {
+      const params = {
         cloudregion_id: area,
-        scope: this.$store.getters.scope,
-        project_domain: this.$store.getters.userInfo.domain.id,
-      } }).then((res) => {
+      }
+      if (this.isAdminMode) {
+        params['project_domain'] = this.userInfo.domain.id
+      } else {
+        params['scope'] = this.scope
+      }
+      manager.list({ params }).then((res) => {
         this.vpcs = res.data.data.map((item) => {
           return {
             label: item.name,

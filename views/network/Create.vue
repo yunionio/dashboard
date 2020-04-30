@@ -22,7 +22,7 @@
           @regionChange="regionChange"
           @vpcChange="vpcChange"
           :cloudregion-params="params.cloudregion"
-          :vpc-params="params.vpc"
+          :vpc-params="vpcParams"
           :decorator="decorators.cloudregionVpc" />
       </a-form-item>
       <a-form-item label="二层网络" v-bind="formItemLayout" v-if="show || isShowWire">
@@ -107,6 +107,7 @@
 
 <script>
 import * as R from 'ramda'
+import { mapGetters } from 'vuex'
 import IpSubnets from './components/IpSubnets'
 import { isRequired, REGEXP } from '@/utils/validate'
 import CloudregionVpc from '@/sections/CloudregionVpc'
@@ -359,22 +360,22 @@ export default {
       },
       params: {
         cloudregion: {
-          scope: this.$store.getters.scope,
+          scope: this.scope,
           limit: 0,
           is_on_premise: true,
         },
-        vpc: {
-          // scope: this.$store.getters.scope,
-          project_domain: this.$store.getters.userInfo.domain.id,
-          show_emulated: true,
-          limit: 0,
-          usable_vpc: true,
-        },
+        // vpc: {
+        //   scope: this.scope,
+        //   project_domain: this.userInfo.domain.id,
+        //   show_emulated: true,
+        //   limit: 0,
+        //   usable_vpc: true,
+        // },
         wire: {
-          scope: this.$store.getters.scope,
+          scope: this.scope,
         },
         zone: {
-          scope: this.$store.getters.scope,
+          scope: this.scope,
           show_emulated: true,
         },
       },
@@ -406,9 +407,23 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['isAdminMode', 'scope', 'userInfo']),
     remain () {
       const remain = 6 - this.guestIpPrefix.length
       return Math.max(remain, 0)
+    },
+    vpcParams () {
+      const params = {
+        show_emulated: true,
+        limit: 0,
+        usable_vpc: true,
+      }
+      if (this.isAdminMode) {
+        params['project_domain'] = this.userInfo.domain.id
+      } else {
+        params['scope'] = this.scope
+      }
+      return params
     },
   },
   provide () {
