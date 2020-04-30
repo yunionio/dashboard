@@ -12,6 +12,7 @@
       </a-form-item>
       <a-form-item label="镜像密钥" class="mb-0">
         <image-secret
+          :form="form"
           :decorators="decorators.imageSecrets"
           :namespace="namespaceObj.name"
           :cluster="clusterObj.id" />

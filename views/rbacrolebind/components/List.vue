@@ -16,6 +16,7 @@
 <script>
 import ClusterNamespace from '@K8S/sections/ClusterNamespace'
 import releaseMixin from '@K8S/mixins/releaseSidepage'
+import clusterNamespaceMixin from '@K8S/mixins/clusterNamespace'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import { getNameFilter } from '@/utils/common/tableFilter'
@@ -27,7 +28,7 @@ export default {
   components: {
     ClusterNamespace,
   },
-  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin, releaseMixin],
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin, clusterNamespaceMixin, releaseMixin],
   props: {
     id: String,
     getParams: {
@@ -103,15 +104,7 @@ export default {
       ],
     }
   },
-  created () {
-    this.fetchData()
-  },
   methods: {
-    fetchData () {
-      if (this.list.getParams.cluster) {
-        this.list.fetchData()
-      }
-    },
     handleOpenSidepage (row) {
       this.sidePageTriggerHandle(this, 'K8SRbacRoleBindSidePage', {
         id: row.name,

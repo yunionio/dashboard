@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="新建无状态(Deployment)" />
+    <page-header title="新建守护进程(Daemonset)" />
     <page-body>
       <!-- <a-tabs v-model="activeTab">
         <a-tab-pane v-for="item in tabs" :tab="item.label" :key="item.component">
@@ -52,7 +52,7 @@ export default {
       this.cancel()
     },
     cancel () {
-      this.$router.push('/k8s-deployment')
+      this.$router.push('/k8s-daemonset')
     },
   },
 }

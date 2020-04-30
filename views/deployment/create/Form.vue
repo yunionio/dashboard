@@ -13,8 +13,9 @@
       <a-form-item label="容器组个数">
         <a-input-number v-decorator="decorators.replicas" :min="1" :max="10" />
       </a-form-item>
-      <a-form-item label="镜像密钥" class="mb-0">
+      <a-form-item label="镜像密钥">
         <image-secret
+          :form="form"
           :decorators="decorators.imageSecrets"
           :namespace="namespaceObj.name"
           :cluster="clusterObj.id" />

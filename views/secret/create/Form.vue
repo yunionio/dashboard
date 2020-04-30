@@ -24,7 +24,7 @@
           <a-input v-decorator="decorators.user" placeholder="请输入用户名" />
         </a-form-item>
         <a-form-item label="密码" prop="password">
-          <a-input v-decorator="decorators.password" placeholder="请输入密码，" show-password />
+          <a-input v-decorator="decorators.password" placeholder="请输入密码" show-password />
         </a-form-item>
         <a-form-item label="邮箱" prop="email">
           <a-input v-decorator="decorators.email" placeholder="请输入邮箱" />
@@ -73,7 +73,7 @@ export default {
             rules: [
               { required: true, message: '请输入名称' },
               { min: 2, max: 24, message: '长度在 2 到 24 个字符', trigger: 'blur' },
-              { validator: this.$validate('resourceName') },
+              { validator: this.$validate('k8sName') },
             ],
           },
         ],

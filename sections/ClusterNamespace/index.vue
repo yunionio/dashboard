@@ -65,8 +65,10 @@ export default {
       if (this.namespace) {
         if (this.namespace === 'all_namespace') {
           params.all_namespace = true
+          delete params.namespace
         } else {
           params.namespace = this.namespace
+          delete params.all_namespace
         }
       }
       this.$emit('update:getParams', params)
