@@ -63,6 +63,7 @@ export default {
       const _ = {
         'Huawei': ['engine', 'engine_version', 'zones', 'category', 'storage_type'],
         'Aliyun': ['engine', 'engine_version', 'zones'],
+        'Google': ['engine', 'engine_version', 'zones', 'category'],
       }
       return _[this.rdsItem.brand]
     },
