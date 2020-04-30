@@ -6,7 +6,7 @@
         <a-input v-decorator="decorators.name" placeholder="请输入名称" />
       </a-form-item>
       <a-form-item label="认证地址">
-        <a-input v-decorator="decorators.auth_url" placeholder="例如：http://host:8080/" />
+        <a-input v-decorator="decorators.auth_url" :placeholder="urlPlaceholder" />
       </a-form-item>
       <a-form-item :label="keySecretField.label.k">
         <a-input v-decorator="decorators.username" :placeholder="keySecretField.placeholder.k" />
@@ -57,6 +57,12 @@ export default {
   computed: {
     isOpenstack () {
       return this.provider.toLowerCase() === 'openstack'
+    },
+    urlPlaceholder () {
+      if (this.isOpenstack) {
+        return '例如：http://host:port/v3'
+      }
+      return '例如：http://host:8080/'
     },
   },
   deactivated () {
