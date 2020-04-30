@@ -285,7 +285,7 @@ export default {
             this.$router.push('/guide')
             return
           }
-          if (R.isNil(val.projects) || R.isEmpty(val.projects)) {
+          if ((R.isNil(val.projects) || R.isEmpty(val.projects)) && (R.isNil(val.projectId) || R.isEmpty(val.projectId))) {
             this.$router.push('/no-project')
           }
           this.checkProjects(val)
