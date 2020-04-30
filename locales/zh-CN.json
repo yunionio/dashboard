@@ -649,6 +649,12 @@
     "lbAcl": {
       "on": "已开启",
       "off": "已关闭"
+    },
+    "severity": {
+      "OK": "正常",
+      "WARNING": "警告",
+      "Critical": "严重",
+      "Unknown": "未知"
     }
   },
   "skuCategoryOptions": {

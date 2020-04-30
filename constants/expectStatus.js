@@ -255,4 +255,10 @@ export default {
     success: ['on'],
     danger: ['off'],
   },
+  severity: {
+    info: ['Unknown'],
+    success: ['OK'],
+    danger: ['Critical'],
+    warning: ['WARNING'],
+  },
 }
