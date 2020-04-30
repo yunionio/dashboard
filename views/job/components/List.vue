@@ -47,7 +47,7 @@ export default {
           name: getNameFilter(),
         },
         steadyStatus: {
-          status: Object.values(expectStatus.k8s_resource).flat(),
+          status: Object.values(expectStatus.k8s_resource_job).flat(),
         },
         itemGetParams: {
           cluster: '',
@@ -125,7 +125,7 @@ export default {
         idKey: 'name',
         apiVersion: 'v1',
         steadyStatus: {
-          status: Object.values(expectStatus.k8s_resource).flat(),
+          status: Object.values(expectStatus.k8s_resource_job).flat(),
         },
       }, {
         list: this.list,

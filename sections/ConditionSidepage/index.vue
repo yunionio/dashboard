@@ -29,7 +29,7 @@ export default {
         },
         {
           field: 'lastTransitionTime',
-          title: '最近心跳',
+          title: '最近更改',
           formatter: ({ row }) => row.lastTransitionTime ? this.$moment(row.lastTransitionTime).format('YYYY年MM月DD日 HH:mm:ss') : '-',
         },
         {

@@ -10,7 +10,7 @@
       <a-form-item label="命名空间">
         <namespace-select v-decorator="decorators.namespace" :cluster="clusterObj.id" :namespaceObj.sync="namespaceObj" />
       </a-form-item>
-      <a-form-item label="标签">
+      <a-form-item label="标签" required>
         <labels :decorators="decorators.labels" ref="labelRef" :firstCanDelete="false" />
       </a-form-item>
     </a-form>

@@ -31,7 +31,7 @@ export default {
           field: 'message',
           title: '内容',
           minWidth: 150,
-          showOverflow: 'ellipsis',
+          showOverflow: 'title',
         },
         {
           field: 'sourceComponent',

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="新建路由(Ingress)" />
+    <page-header title="新建服务(Service)" />
     <page-body>
       <form-create ref="FormCreateRef" />
     </page-body>

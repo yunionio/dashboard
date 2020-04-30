@@ -10,7 +10,7 @@
       <a-form-item label="命名空间">
         <namespace-select v-decorator="decorators.namespace" :cluster="clusterObj.id" :namespaceObj.sync="namespaceObj" />
       </a-form-item>
-      <a-form-item label="路由">
+      <a-form-item label="路由" required>
         <ingress-rule :decorators="decorators.rule" :namespace="namespaceObj.name" :cluster="clusterObj.id"  />
       </a-form-item>
     </a-form>
