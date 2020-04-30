@@ -216,6 +216,10 @@ export default {
     success: ['Running', 'Succeeded', 'Complete', 'Bound', 'complated', 'Completed'],
     danger: ['Failed', 'unBound'],
   },
+  k8s_resource_job: {
+    success: ['Complete'],
+    danger: ['Failed'],
+  },
   release: {
     success: ['deployed'],
     info: ['superseded'],

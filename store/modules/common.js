@@ -8,6 +8,9 @@ export default {
   state: {
     recentMenus: storage.get(storageRecentMenusKey) || [],
     topAlert: {},
+    bill: {
+      currency: 'CNY',
+    },
   },
   mutations: {
     UPDATE_OBJECT (state, { name, data }) {
@@ -16,6 +19,9 @@ export default {
     },
     SET_RECENT_MENUS (state, payload) {
       state.recentMenus = payload
+    },
+    SET_BILL_CURRENCY (state, payload) {
+      state.bill.currency = payload
     },
   },
   actions: {
