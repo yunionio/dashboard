@@ -187,13 +187,16 @@ export default {
       let manager = new this.$Manager('vpcs')
       manager.list({ params: {
         cloudregion_id: area,
+        scope: this.$store.getters.scope,
+        project_domain: this.$store.getters.userInfo.domain.id,
       } }).then((res) => {
         this.vpcs = res.data.data.map((item) => {
           return {
             label: item.name,
             value: item.id,
           }
-        }).filter(({ value }) => value === 'default')
+        })
+        // .filter(({ value }) => value === 'default')
       })
     },
     fetchZones () {

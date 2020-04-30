@@ -30,6 +30,7 @@
           resource="wires"
           v-decorator="decorators.wire"
           :selectProps="{ 'placeholder': '请选择二层网络' }"
+          :isDefaultSelect="true"
           :params="params.wire" />
       </a-form-item>
       <a-form-item label="可用区" extra="同一 VPC 下可以有不同可用区的子网，同一 VPC 下不同可用区的子网默认可以内网互通。" v-bind="formItemLayout" v-if="!show && !isShowWire">
@@ -363,7 +364,8 @@ export default {
           is_on_premise: true,
         },
         vpc: {
-          scope: this.$store.getters.scope,
+          // scope: this.$store.getters.scope,
+          project_domain: this.$store.getters.userInfo.domain.id,
           show_emulated: true,
           limit: 0,
           usable_vpc: true,
@@ -492,6 +494,7 @@ export default {
           show_emulated: true,
         }
         this.show = false
+        this.isGroupGuestIpPrefix = false
       } else if (e.target.value === 'public') {
         this.params.cloudregion = {
           limit: 0,
@@ -501,6 +504,7 @@ export default {
           show_emulated: true,
         }
         this.show = false
+        this.isGroupGuestIpPrefix = false
       } else {
         this.params.cloudregion = {
           scope: this.$store.getters.scope,
@@ -509,6 +513,7 @@ export default {
           show_emulated: true,
         }
         this.show = true
+        this.isGroupGuestIpPrefix = true
       }
     },
     genData (values) {
