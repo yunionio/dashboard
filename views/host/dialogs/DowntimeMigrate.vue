@@ -54,7 +54,7 @@ export default {
   methods: {
     doMigrate (data) {
       data = {
-        'auto-migrate-on-host-down': data.enable ? 'enable' : 'disable',
+        'allow_health_check': data.enable ? 'enable' : 'disable',
       }
       return this.params.onManager('performAction', {
         id: this.params.data[0].id,
