@@ -38,7 +38,7 @@ export default {
       {
         label: '删除',
         action: (obj) => {
-          this.createDialog('RDSBackupSidePage', {
+          this.createDialog('DeleteResDialog', {
             title: '删除',
             name: '备份',
             data: [obj],
