@@ -1,4 +1,11 @@
 export default {
+  data () {
+    return {
+      okButtonProps: {
+        disabled: true,
+      },
+    }
+  },
   created () {
     this.singleActions = [
       {
@@ -28,12 +35,12 @@ export default {
                   action: 'undeploy',
                   data: {
                     'state': 'suspend',
-                    'process-key': obj.key,
+                    // 'process-key': obj.key,
                   },
                 })
                 if (response.data && response.data.deployment) {
                   this.$router.push({
-                    path: `/lbagent/asbook?ansiblePlaybookId=${response.data.deployment.ansible_playbook}`,
+                    path: `/lbagent/asbook?ansiblePlaybookId=${response.data.deployment.ansible_playbook}&loadbalanceragentId=${obj.id}`,
                   })
                 }
                 return response
@@ -64,6 +71,13 @@ export default {
             columns: this.columns,
             onManager: this.onManager,
             alert: '提示：删除操作仅涉及数据库记录，实际节点的下线计划需要管理员计划实施',
+            content: () => {
+              const change = (bool) => {
+                this.okButtonProps['disabled'] = !bool
+              }
+              return <a-checkbox value={this.isDelete} onInput={ change }>确认已经实际操作下线</a-checkbox>
+            },
+            okButtonProps: this.okButtonProps,
           })
         },
       },

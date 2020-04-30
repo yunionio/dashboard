@@ -135,12 +135,25 @@ export default {
         },
       })
     },
-    handleRun () {
-      return this.ansibleEvents
-        .run()
-        .then(({ data }) => {
-          this.refresh()
-        })
+    async handleRun () {
+      const { loadbalanceragentId } = this.$route.query
+      try {
+        if (loadbalanceragentId) {
+          await new this.$Manager('loadbalanceragents').performAction({
+            id: loadbalanceragentId,
+            action: 'undeploy',
+            data: {
+              'state': 'suspend',
+              // 'process-key': key,
+            },
+          })
+        } else {
+          await this.ansibleEvents.run()
+        }
+        this.refresh()
+      } catch (err) {
+        throw err
+      }
     },
     handleCancel () {
       this.$router.push('/lbagent')

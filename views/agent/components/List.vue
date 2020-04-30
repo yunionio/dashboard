@@ -38,6 +38,14 @@ export default {
               return `name.contains(${val})`
             },
           },
+          cluster: {
+            label: '集群',
+            dropdown: true,
+            distinctField: {
+              type: 'extra_field',
+              key: 'cluster',
+            },
+          },
         },
       }),
       exportDataOptions: {
