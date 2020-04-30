@@ -46,7 +46,7 @@ export default {
         },
         {
           field: 'creationTimestamp',
-          title: '创建于',
+          title: '创建时间',
           minWidth: 100,
           showOverflow: 'ellipsis',
           formatter: ({ row }) => {

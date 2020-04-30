@@ -87,7 +87,7 @@ export function getCreateDecorators (resource) {
         rules: [
           { required: true, message: '请输入名称' },
           { min: 2, max: 24, message: '长度在 2 到 24 个字符', trigger: 'blur' },
-          { validator: this.$validate('resourceName') },
+          { validator: this.$validate('k8sName') },
         ],
       },
     ],
@@ -194,6 +194,7 @@ export function getCreateDecorators (resource) {
         {
           rules: [
             { required: true, message: '请输入键' },
+            { validator: this.$validate('k8sLabel') },
           ],
         },
       ],
@@ -202,6 +203,7 @@ export function getCreateDecorators (resource) {
         {
           rules: [
             { required: true, message: '请输入值' },
+            { validator: this.$validate('k8sLabel') },
           ],
         },
       ],
@@ -212,6 +214,7 @@ export function getCreateDecorators (resource) {
         {
           rules: [
             { required: true, message: '请输入键' },
+            { validator: this.$validate('k8sLabel') },
           ],
         },
       ],
@@ -220,6 +223,7 @@ export function getCreateDecorators (resource) {
         {
           rules: [
             { required: true, message: '请输入值' },
+            { validator: this.$validate('k8sLabel') },
           ],
         },
       ],

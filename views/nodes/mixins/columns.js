@@ -1,4 +1,5 @@
 import { sizestr } from '@/utils/utils'
+import { getTimeTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   created () {
@@ -77,14 +78,7 @@ export default {
           return !cellValue ? '可调度' : '不可调度'
         },
       },
-      {
-        field: 'creationTimestamp',
-        title: '创建于',
-        minWidth: 70,
-        formatter: ({ cellValue }) => {
-          return this.$moment(cellValue).fromNow()
-        },
-      },
+      getTimeTableColumn({ field: 'creationTimestamp', fromNow: true, sortable: true }),
     ]
   },
 }

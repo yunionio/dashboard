@@ -62,9 +62,9 @@ export default {
         const { name, cluster, namespace } = this.data
         this.loading = true
         await this.onManager('update', {
-          id: `${name}/rawdata?namespace=${namespace}&cluster=${cluster}`,
+          id: `${name}?namespace=${namespace}&cluster=${cluster}`,
           managerArgs: {
-            data,
+            data: { data },
           },
         })
         this.$message.success('操作成功')
