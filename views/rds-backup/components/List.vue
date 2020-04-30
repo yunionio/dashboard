@@ -85,6 +85,7 @@ export default {
               rdsItem: this.data,
               onManager: this.onManager,
               refresh: this.refresh,
+              list: this.list,
             })
           },
           meta: () => {
