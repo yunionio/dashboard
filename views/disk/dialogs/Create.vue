@@ -127,7 +127,7 @@ export default {
           usable: true,
           cloud_env: 'onpremise',
           // scope: 'system',
-          project_domain: 'asdasd',
+          project_domain: this.$store.getters.userInfo.domain.id,
         },
       },
       storageOpts: [],

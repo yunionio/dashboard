@@ -178,6 +178,28 @@ export default {
                     scope: 'domain',
                   }),
                   {
+                    label: '宕机自动迁移',
+                    action: () => {
+                      this.createDialog('DowntimeMigrateDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        onManager: this.onManager,
+                        name: '宕机自动迁移',
+                        refresh: this.refresh,
+                      })
+                    },
+                    meta: () => {
+                      if (obj.provider.toLowerCase() === 'onecloud' && obj.enable_health_check) {
+                        return {
+                          validate: true,
+                        }
+                      }
+                      return {
+                        validate: false,
+                      }
+                    },
+                  },
+                  {
                     label: '回收为物理机',
                     action: () => {
                       this.createDialog('HostUnconvertDialog', {
