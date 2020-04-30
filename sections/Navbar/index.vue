@@ -2,12 +2,12 @@
   <div class="navbar-wrap d-flex align-items-center">
     <template v-if="authInfoLoaded">
       <div class="d-flex align-items-center h-100 navbar-item-trigger" @click.stop.prevent="map.visible = !map.visible">
-        <a-icon type="menu" style="font-size: 24px;" />
+        <icon type="menu" style="font-size: 24px;" />
       </div>
     </template>
     <template v-else>
       <div class="d-flex align-items-center h-100 navbar-item-trigger">
-        <a-icon type="menu" style="font-size: 24px; cursor: default;" />
+        <icon type="menu" style="font-size: 24px; cursor: default;" />
       </div>
     </template>
     <div class="flex-fill d-flex align-items-center h-100">
