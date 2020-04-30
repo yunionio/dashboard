@@ -35,6 +35,7 @@
 
 <script>
 import * as R from 'ramda'
+import { mapGetters } from 'vuex'
 import * as CommonConstants from '../../../constants'
 import CloudregionZone from '@/sections/CloudregionZone'
 import DialogMixin from '@/mixins/dialog'
@@ -126,8 +127,6 @@ export default {
         region: {
           usable: true,
           cloud_env: 'onpremise',
-          // scope: 'system',
-          project_domain: 'asdasd',
         },
       },
       storageOpts: [],
@@ -138,6 +137,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['isAdminMode', 'scope', 'userInfo']),
     provider () { // 向外提供的，通过 refs 获取
       if (this.currentCloudregion && this.currentCloudregion.provider) {
         return this.currentCloudregion.provider.toLowerCase()
@@ -182,11 +182,22 @@ export default {
           },
         }
       }
+      if (this.isAdminMode) {
+        return {
+          zone: {},
+          region: {
+            usable: true,
+            cloud_env: 'onpremise',
+            project_domain: this.userInfo.domain.id,
+          },
+        }
+      }
       return {
         zone: {},
         region: {
           usable: true,
           cloud_env: 'onpremise',
+          scope: this.scope,
         },
       }
     },

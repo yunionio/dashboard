@@ -145,14 +145,14 @@ export default {
           title: 'host 版本',
           slots: {
             default: ({ row, cellValue }) => {
-              if (row.brand && row.brand.toLowerCase() === 'onecloud') {
-                const data = row.version.split('/')[1].split('^')[0]
-                return [
-                  <div class='text-truncate'>
-                    { data }
-                  </div>,
-                ]
-              }
+              // if (row.brand && row.brand.toLowerCase() === 'onecloud') {
+              //   const data = row.version.split('/')[1].split('^')[0]
+              //   return [
+              //     <div class='text-truncate'>
+              //       { data }
+              //     </div>,
+              //   ]
+              // }
               return [
                 <div class='text-truncate'>
                   <list-body-cell-wrap copy row={ row } field="version" title={ cellValue } />
