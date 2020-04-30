@@ -117,11 +117,16 @@ export function getCreateDecorators (resource) {
       secretType: [
         'secretType',
         {
-          initialValue: 'new',
+          initialValue: 'none',
         },
       ],
       imagePullSecrets: [
         'imagePullSecrets',
+        {
+          rules: [
+            { required: true, message: '请选择密钥' },
+          ],
+        },
       ],
     },
     portMappings: {

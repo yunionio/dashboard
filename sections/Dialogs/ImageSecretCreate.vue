@@ -169,6 +169,7 @@ export default {
         await this.doCreate(values)
         this.loading = false
         this.cancelDialog()
+        this.params.success && this.params.success(values.name)
       } catch (error) {
         this.loading = false
       }

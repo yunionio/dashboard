@@ -24,7 +24,7 @@
           <a-input v-decorator="decorators.user" placeholder="请输入用户名" />
         </a-form-item>
         <a-form-item label="密码" prop="password">
-          <a-input v-decorator="decorators.password" placeholder="请输入密码，" show-password />
+          <a-input v-decorator="decorators.password" placeholder="请输入密码" show-password />
         </a-form-item>
         <a-form-item label="邮箱" prop="email">
           <a-input v-decorator="decorators.email" placeholder="请输入邮箱" />

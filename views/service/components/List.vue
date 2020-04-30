@@ -4,7 +4,9 @@
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions">
+    :single-actions="singleActions"
+    :showSearchbox="showSearchbox"
+    :showGroupActions="showGroupActions">
     <template v-slot:group-actions-append>
       <cluster-namespace :getParams.sync="list.getParams" @refresh="fetchData" class="ml-3" />
     </template>
@@ -14,6 +16,7 @@
 <script>
 import * as R from 'ramda'
 import ClusterNamespace from '@K8S/sections/ClusterNamespace'
+import clusterNamespaceMixin from '@K8S/mixins/clusterNamespace'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
@@ -25,12 +28,20 @@ export default {
   components: {
     ClusterNamespace,
   },
-  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin, clusterNamespaceMixin],
   props: {
     id: String,
     getParams: {
       type: Object,
       default: () => ({}),
+    },
+    showSearchbox: {
+      type: Boolean,
+      default: true,
+    },
+    showGroupActions: {
+      type: Boolean,
+      default: true,
     },
   },
   data () {
@@ -100,17 +111,7 @@ export default {
       ],
     }
   },
-  created () {
-    this.fetchData()
-  },
   methods: {
-    fetchData () {
-      if (this.list.getParams.cluster) {
-        if (this.list.getParams.all_namespace || this.list.getParams.namespace) {
-          this.list.fetchData()
-        }
-      }
-    },
     handleOpenSidepage (row) {
       this.sidePageTriggerHandle(this, 'K8SServiceSidePage', {
         id: row.name,
