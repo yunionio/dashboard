@@ -5,9 +5,10 @@
       <a-alert v-if="alertProps" v-bind="alertProps" class="mb-2" />
       <dialog-selected-tips :count="params.data.length" :action="this.params.title" :name="this.params.name" />
       <dialog-table v-if="params.columns && params.columns.length" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-content :content="params.content" />
     </div>
     <div slot="footer">
-      <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t("dialog.ok") }}</a-button>
+      <a-button v-bind="okButtonProps" @click="handleConfirm">{{ $t("dialog.ok") }}</a-button>
       <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
     </div>
   </base-dialog>
@@ -20,6 +21,21 @@ import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'DeleteResDialog',
+  components: {
+    DialogContent: {
+      props: {
+        content: {
+          type: Function,
+        },
+      },
+      render () {
+        if (this.content) {
+          return this.content()
+        }
+        return null
+      },
+    },
+  },
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
@@ -35,6 +51,17 @@ export default {
       }
       const t = R.type(alert)
       return data[t] || null
+    },
+    okButtonProps () {
+      const defaultProps = {
+        type: 'primary',
+        loading: this.loading,
+      }
+      const { okButtonProps } = this.params
+      if (okButtonProps && R.type(okButtonProps) === 'Object') {
+        return Object.assign(defaultProps, okButtonProps)
+      }
+      return okButtonProps
     },
     idKey () {
       return this.params.idKey || 'id'
