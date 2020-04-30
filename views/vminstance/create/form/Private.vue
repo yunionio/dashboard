@@ -216,6 +216,7 @@ export default {
     cloudproviderParamsExtra () {
       const params = {
         image_type: 'system',
+        cloud_env: 'private',
         ...this.scopeParams,
       }
       if (this.form.fd.hypervisor && this.form.fd.hypervisor) {
