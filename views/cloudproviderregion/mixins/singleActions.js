@@ -19,6 +19,29 @@ export default {
           }
         },
       },
+      {
+        label: '全量同步',
+        action: obj => {
+          new this.$Manager('cloudproviders').performAction({
+            id: obj.cloudprovider_id,
+            action: 'sync',
+            data: {
+              region: [
+                obj.cloudregion_id,
+              ],
+            },
+          }).then(() => {
+            this.list.refresh()
+          })
+        },
+        meta: obj => {
+          const isIdle = obj.sync_status === 'idle'
+          return {
+            validate: isIdle,
+            tooltip: !isIdle && `${this.$t('status.cloudaccountSyncStatus')[obj.sync_status]}状态下不支持此操作`,
+          }
+        },
+      },
     ]
   },
 }
