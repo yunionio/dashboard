@@ -21,7 +21,7 @@ export default {
         width: 120,
         sortable: true,
       },
-      k8sStatusColumn(),
+      k8sStatusColumn({ statusModule: 'k8s_resource_job' }),
       {
         field: 'podsInfo',
         title: '容器组',

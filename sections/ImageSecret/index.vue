@@ -2,11 +2,10 @@
   <div>
     <a-form-item class="mb-0">
       <a-radio-group v-decorator="decorators.secretType" @change="secretTypeChange">
-        <a-radio-button value="new">新建密钥</a-radio-button>
+        <a-radio-button value="none">无</a-radio-button>
         <a-radio-button value="select">已有密钥</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-button v-if="secretType === 'new'" type="link" @click="createImageSecret">新建密钥</a-button>
     <a-form-item v-if="secretType === 'select'">
       <base-select
         v-decorator="decorators.imagePullSecrets"
@@ -16,6 +15,10 @@
         :params="params"
         :need-params="true"
         :select-props="{ mode: 'multiple', placeholder: '请选择' }" />
+      <div slot="extra">
+        没有想要的密钥？可以立即
+        <a-button type="link" @click="createImageSecret">新建密钥</a-button>
+      </div>
     </a-form-item>
   </div>
 </template>
@@ -34,10 +37,15 @@ export default {
     },
     cluster: {},
     namespace: {},
+    form: {
+      type: Object,
+      required: true,
+      validator: val => val.fc,
+    },
   },
   data () {
     return {
-      secretType: 'new',
+      secretType: 'none',
     }
   },
   computed: {
@@ -61,6 +69,13 @@ export default {
         title: '新建镜像密钥',
         cluster: this.cluster,
         namespace: this.namespace,
+        success: name => {
+          if (this.form.fc) {
+            this.form.fc.setFieldsValue({
+              [this.decorators.imagePullSecrets[0]]: [name],
+            })
+          }
+        },
       })
     },
   },

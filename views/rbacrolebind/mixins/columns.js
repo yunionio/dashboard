@@ -1,3 +1,5 @@
+import { getTimeTableColumn } from '@/utils/common/tableColumn'
+
 export default {
   created () {
     this.columns = [
@@ -19,18 +21,11 @@ export default {
         sortable: true,
       },
       {
-        field: 'creationTimestamp',
-        title: '创建于',
-        minWidth: 70,
-        formatter: ({ cellValue }) => {
-          return this.$moment(cellValue).fromNow()
-        },
-      },
-      {
         field: 'type',
         title: '类型',
         width: 150,
       },
+      getTimeTableColumn({ field: 'creationTimestamp', fromNow: true, sortable: true }),
     ]
   },
 }

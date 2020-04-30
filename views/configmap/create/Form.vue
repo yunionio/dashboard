@@ -10,7 +10,7 @@
       <a-form-item label="命名空间">
         <namespace-select v-decorator="decorators.namespace" :cluster="clusterObj.id" :namespaceObj.sync="namespaceObj" />
       </a-form-item>
-      <a-form-item label="标签">
+      <a-form-item label="标签" required>
         <labels :decorators="decorators.labels" ref="labelRef" :firstCanDelete="false" />
       </a-form-item>
     </a-form>
@@ -47,7 +47,7 @@ export default {
             rules: [
               { required: true, message: '请输入名称' },
               { min: 2, max: 24, message: '长度在 2 到 24 个字符', trigger: 'blur' },
-              { validator: this.$validate('resourceName') },
+              { validator: this.$validate('k8sName') },
             ],
           },
         ],

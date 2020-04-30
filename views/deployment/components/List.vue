@@ -15,8 +15,8 @@
 
 <script>
 import * as R from 'ramda'
-import ClusterNamespace from '@K8S/sections/ClusterNamespace'
 import releaseMixin from '@K8S/mixins/releaseSidepage'
+import clusterNamespaceMixin from '@K8S/mixins/clusterNamespace'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import expectStatus from '@/constants/expectStatus'
@@ -26,10 +26,7 @@ import { getNameFilter } from '@/utils/common/tableFilter'
 
 export default {
   name: 'K8SDeploymentList',
-  components: {
-    ClusterNamespace,
-  },
-  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin, releaseMixin],
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin, clusterNamespaceMixin, releaseMixin],
   props: {
     id: String,
     getParams: {
@@ -45,6 +42,10 @@ export default {
         apiVersion: 'v1',
         getParams: this.getParams,
         idKey: 'name',
+        itemGetParams: {
+          cluster: '',
+          namespace: '',
+        },
         filterOptions: {
           name: getNameFilter(),
         },
@@ -108,17 +109,7 @@ export default {
       ],
     }
   },
-  created () {
-    this.fetchData()
-  },
   methods: {
-    fetchData () {
-      if (this.list.getParams.cluster) {
-        if (this.list.getParams.all_namespace || this.list.getParams.namespace) {
-          this.list.fetchData()
-        }
-      }
-    },
     handleOpenSidepage (row) {
       this.sidePageTriggerHandle(this, 'K8SDeploymentSidePage', {
         id: row.name,

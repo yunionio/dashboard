@@ -53,7 +53,7 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: '请输入名称' },
-              { validator: this.$validate('resourceName') },
+              { validator: this.$validate('k8sName') },
             ],
           },
         ],
