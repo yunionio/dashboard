@@ -202,6 +202,9 @@ export default {
             `num[${i}]`,
             {
               initialValue: 1,
+              rules: [
+                { required: true, message: '请填写数量' },
+              ],
             },
           ],
           role: i => [
