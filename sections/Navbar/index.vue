@@ -105,9 +105,6 @@
     <help-popover class="navbar-item" />
     <!-- 用户 -->
     <slot name="userPopover" />
-    <license-status class="licenseStatus" />
-    <!-- 系统提示 -->
-    <slot name="alert" />
     <!-- 全局导航 -->
     <a-drawer
       width="50%"
@@ -127,8 +124,7 @@
 import * as R from 'ramda'
 import Cookies from 'js-cookie'
 import { Base64 } from 'js-base64'
-import { mapGetters } from 'vuex'
-import LicenseStatus from '../LicenseStatus'
+import { mapGetters, mapState } from 'vuex'
 import OneCloudMap from '../OneCloudMap'
 import NotifyPopover from './components/NotifyPopover'
 import WorkOrderPopover from './components/WorkOrderPopover'
@@ -141,7 +137,6 @@ export default {
     NotifyPopover,
     WorkOrderPopover,
     HelpPopover,
-    LicenseStatus,
     GlobalSearch,
     OneCloudMap,
   },
@@ -155,7 +150,21 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['userInfo', 'scope', 'logo', 'permission', 'scopeResource', 'auth']),
+    ...mapGetters([
+      'isAdminMode',
+      'userInfo',
+      'scope',
+      'logo',
+      'permission',
+      'scopeResource',
+      'auth',
+    ]),
+    ...mapState('app', {
+      computeStatus: state => state.license.status,
+      computeLicense: state => state.license.compute,
+      computeServiceNumbers: state => state.license.service_numbers,
+      oem: state => state.oem,
+    }),
     products () {
       if (this.userInfo.menus && this.userInfo.menus.length > 0) {
         const menus = this.userInfo.menus.map(item => {
@@ -204,6 +213,65 @@ export default {
     authInfoLoaded () {
       return !!this.userInfo.roles && !!this.permission && !!this.scopeResource
     },
+    // 以下是license相关compute
+    email () {
+      const email = this.oem.email
+      if (!R.isNil(email) && !R.isEmpty(email)) {
+        return email
+      }
+      return null
+    },
+    sn () {
+      let sn = this.computeLicense.sn
+      if (R.is(String, sn)) {
+        return [sn]
+      }
+      return sn
+    },
+    unAuthServiceNumbers () {
+      return this.computeServiceNumbers.filter(item => !this.sn.includes(item))
+    },
+    licenseMessage () {
+      const now = new Date()
+      const days = (this.computeStatus.expire - now.getTime() / 1000) / 24 / 3600
+      // 过期
+      if (this.computeStatus.expired) {
+        return {
+          message: `您的授权证书已过期，如您需要升级到其它版本或更新许可证，请将您的服务器识别码和升级需求发送电子邮件至 ${this.email}，我们将尽快与您联系！`,
+        }
+      }
+      // 超过配额
+      if (this.computeStatus.prohibited) {
+        return {
+          message: `您的授权CPU配额已到达上限，如您需要升级到其它版本或更新许可证，请将您的服务器识别码和升级需求发送电子邮件至 ${this.email}，我们将尽快与您联系！`,
+          to: 'licenses',
+        }
+      }
+      // 即将过期
+      if (this.computeStatus.expire > 0 && days < 30) {
+        return {
+          message: `您的授权证书即将过期，如您需要升级到其它版本或更新许可证，请将您的服务器识别码和升级需求发送电子邮件至 ${this.email}，我们将尽快与您联系！`,
+        }
+      }
+      // 即将超出配额
+      if (this.computeStatus.exceeded) {
+        return {
+          message: `您的授权CPU配额即将到达上限，如您需要升级到其它版本或更新许可证，请将您的服务器识别码和升级需求发送电子邮件至 ${this.email}，我们将尽快与您联系！`,
+          to: 'licenses',
+        }
+      }
+      // 发现未被授权的服务器
+      if (this.unAuthServiceNumbers && this.unAuthServiceNumbers.length) {
+        return {
+          message: `发现未被授权的服务器，您需要及时更新license，否则可能会导致系统服务不可用。请将您的服务器识别码和变更需求发送电子邮件至 ${this.email}，我们将尽快与您联系！`,
+          to: 'licenses',
+        }
+      }
+      return null
+    },
+    licenseClosable () {
+      return this.computeStatus.prohibited || this.computeStatus.exceeded
+    },
   },
   watch: {
     userInfo: {
@@ -225,7 +293,17 @@ export default {
       this.fetchDictionary(val)
       this.fetchOEM(val)
       this.fetchLicense(val)
-      // this.checkApiServerUrl(val)
+      this.pushApiServerUrlAlert(val)
+    },
+    licenseMessage: {
+      handler (val) {
+        if (val) {
+          this.$nextTick(() => {
+            this.pushLicenseAlert()
+          })
+        }
+      },
+      immediate: true,
     },
   },
   created () {
@@ -233,7 +311,7 @@ export default {
     this.fetchDictionary(this.userInfo.id)
     this.fetchOEM(this.userInfo.id)
     this.fetchLicense(this.userInfo.id)
-    // this.checkApiServerUrl(this.userInfo.id)
+    this.pushApiServerUrlAlert(this.userInfo.id)
   },
   methods: {
     checkWorkflow (val) {
@@ -311,9 +389,8 @@ export default {
     handleMapClose () {
       this.map.visible = false
     },
-    async checkApiServerUrl (id) {
+    async pushApiServerUrlAlert (id) {
       if (!id) return
-      if (process.env.NODE_ENV !== 'production') return
       let manager = new this.$Manager('services', 'v1')
       try {
         const response = await manager.list({
@@ -332,16 +409,18 @@ export default {
           const apiServer = config.api_server || ''
           if (apiServer) {
             if (!apiServer.includes(currentHost)) {
-              this.$message.warning({
-                content: this.$createElement('span', [
-                  this.$createElement('span', '当前配置的控制台地址为：'),
-                  this.$createElement('a', {
-                    attrs: {
-                      href: apiServer,
-                    },
-                  }, apiServer),
-                  this.$createElement('span', '；请使用该地址访问'),
-                ]),
+              this.$store.dispatch('common/updateObject', {
+                name: 'topAlert',
+                data: {
+                  apiServer: {
+                    messageOptions: [
+                      '当前配置的控制台地址为：',
+                      ['a', { attrs: { href: apiServer } }, apiServer],
+                      '，请使用该地址访问',
+                    ],
+                    interval: 1000 * 60 * 60 * 24,
+                  },
+                },
               })
             }
           }
@@ -351,6 +430,29 @@ export default {
       } finally {
         manager = null
       }
+    },
+    pushLicenseAlert () {
+      if (!this.isAdminMode) return false
+      const messageOptions = [this.licenseMessage.message]
+      if (this.licenseMessage.to) {
+        messageOptions.push([
+          'router-link',
+          { class: 'ml-2', props: { to: this.licenseMessage.to } },
+          '查看详情',
+        ])
+      }
+      this.$store.dispatch('common/updateObject', {
+        name: 'topAlert',
+        data: {
+          license: {
+            messageOptions,
+            alertProps: {
+              clseable: this.licenseClosable,
+            },
+            interval: '1d',
+          },
+        },
+      })
     },
   },
 }
@@ -395,12 +497,6 @@ export default {
   padding: 0;
   font-weight: 400;
   font-size: 18px;
-}
-.licenseStatus {
-  position: fixed;
-  top: 60px;
-  right: 2px;
-  left: 0;
 }
 .current-view-label {
   max-width: 150px;

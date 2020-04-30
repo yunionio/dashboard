@@ -7,6 +7,7 @@ const storageRecentMenusKey = '__oc_recent_menus__'
 export default {
   state: {
     recentMenus: storage.get(storageRecentMenusKey) || [],
+    topAlert: {},
   },
   mutations: {
     UPDATE_OBJECT (state, { name, data }) {
