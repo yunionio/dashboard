@@ -1,5 +1,6 @@
 <template>
   <div class="page-header" :class="title ? ['d-flex', 'align-items-center'] : []">
+    <slot name="title" />
     <h3 v-if="title">{{ title }}</h3>
     <div class="mini-title mb-2" v-if="miniTitle">
       {{ miniTitle }}

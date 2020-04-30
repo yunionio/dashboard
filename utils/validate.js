@@ -202,6 +202,14 @@ export const REGEXP = {
     },
     message: i18n.t('validator.bucketName'),
   },
+  k8sLabel: {
+    regexp: /^([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]$/,
+    message: i18n.t('validator.k8sLabel'),
+  },
+  k8sName: {
+    regexp: /^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$/,
+    message: i18n.t('validator.k8sName'),
+  },
 }
 
 /**
