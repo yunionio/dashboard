@@ -4,7 +4,7 @@
       <a-form-item>
         <a-input v-decorator="decorators.host(item.key)" placeholder="请输入host" />
       </a-form-item>
-      <a-card class="mb-2" v-for="val in item.routes" :key="val.k">
+      <a-card class="mb-2" v-for="(val, i) in item.routes" :key="val.k">
         <a-row :gutter="1">
           <a-col :span="16">
             <a-form-item>
@@ -37,8 +37,10 @@
         <a-form-item>
           <a-input v-decorator="decorators.services(item.key).servicePath(val.k)" placeholder="请输入Path，以 / 开头" />
         </a-form-item>
+        <a class="ml-2 error-color" @click="remvoeRoute(item.routes, i)" v-if="item.routes.length > 1">删除</a>
       </a-card>
       <a-button class="mt-2" type="primary" icon="plus" @click="addRoute(item)">添加路由</a-button>
+      <a-button class="ml-2" type="danger" @click="removeRule(item)" v-if="ruleList.length > 1">删除</a-button>
     </a-card>
     <a-button type="primary" icon="plus" @click="addRule">添加规则</a-button>
   </div>
@@ -97,8 +99,15 @@ export default {
         ],
       })
     },
+    removeRule (item) {
+      const index = this.ruleList.findIndex(val => val.key === item.key)
+      this.ruleList.splice(index, 1)
+    },
     addRoute (item) {
       item.routes.push({ k: uuid(), ports: [] },)
+    },
+    remvoeRoute (item, i) {
+      item.splice(i, 1)
     },
     genPortOpts (service) {
       if (service && service.internalEndpoint && service.internalEndpoint.ports) {

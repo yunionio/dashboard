@@ -2,10 +2,15 @@
   <page-card-list
     :list="list"
     :single-actions="singleActions"
-    :card-fields="cardFields" />
+    :card-fields="cardFields">
+    <template #group-actions-append>
+      <search-box class="ml-3" :options="options" :value="searchValue" @input="search" placeholder="请输入您要应用的名称" />
+    </template>
+  </page-card-list>
 </template>
 
 <script>
+import * as R from 'ramda'
 import WindowsMixin from '@/mixins/windows'
 import { getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 import ListMixin from '@/mixins/list'
@@ -25,6 +30,12 @@ export default {
         url: 'chart.icon',
         title: 'name',
         desc: 'chart.description',
+      },
+      searchValue: {},
+      options: {
+        name: {
+          label: '名称',
+        },
       },
       columns: [
         getNameDescriptionTableColumn({
@@ -64,9 +75,24 @@ export default {
     },
   },
   created () {
-    this.list.fetchData()
+    this.fetchData()
   },
   methods: {
+    fetchData () {
+      this.list.fetchData()
+    },
+    search (val) {
+      this.searchValue = val
+      if (R.isEmpty(val)) {
+        const params = R.clone(this.list.getParams)
+        delete params.keyword
+        this.list.getParams = params
+        this.fetchData()
+        return
+      }
+      this.list.getParams = { ...this.list.getParams, keyword: val.name[0] }
+      this.fetchData()
+    },
   },
 }
 </script>
