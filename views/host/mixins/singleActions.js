@@ -189,13 +189,14 @@ export default {
                       })
                     },
                     meta: () => {
-                      if (obj.provider.toLowerCase() === 'onecloud' && obj.enable_health_check) {
+                      if (obj.provider.toLowerCase() === 'onecloud' && obj.allow_health_check) {
                         return {
                           validate: true,
                         }
                       }
                       return {
                         validate: false,
+                        tooltip: obj.provider.toLowerCase() !== 'onecloud' ? '只有OneCloud平台宿主机支持该操作' : '',
                       }
                     },
                   },
