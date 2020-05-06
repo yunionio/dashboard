@@ -32,7 +32,7 @@
             version="v1"
             :params="imagesParams"
             :mapper="imagesResourceMapper"
-            :options.sync="imagesData"
+            :resList.sync="imagesData"
             @update:item="imagechange"
             :select-props="{ placeholder: '系统盘镜像' }" />
         </a-form-item>
