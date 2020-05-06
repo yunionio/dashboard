@@ -39,7 +39,7 @@ export default {
       }
     },
     cancel () {
-      this.$router.push('/k8s-ingress')
+      this.$router.push('/k8s-service')
     },
   },
 }
