@@ -32,6 +32,7 @@
 <script>
 import StatusSidepage from '@K8S/sections/StatusSidepage'
 import EventsSidepage from '@K8S/sections/EventsSidepage'
+import PodList from '@K8S/views/pod/components/List'
 import SourceInformationSidepage from '@K8S/sections/SourceInformationSidepage'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
@@ -45,6 +46,7 @@ export default {
   components: {
     Actions,
     K8sNodeDetail,
+    PodList,
     StatusSidepage,
     EventsSidepage,
     SourceInformationSidepage,
@@ -54,6 +56,7 @@ export default {
     return {
       detailTabs: [
         { label: '详情', key: 'k8s-node-detail' },
+        { label: '容器组', key: 'pod-list' },
         { label: '状态', key: 'status-sidepage' },
         { label: '事件', key: 'events-sidepage' },
         { label: '源信息', key: 'source-information-sidepage' },

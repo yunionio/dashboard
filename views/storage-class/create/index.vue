@@ -201,7 +201,7 @@ export default {
     secretsParams () {
       if (this.secretNamespace && this.clusterObj.id) {
         return {
-          type: 'yunion.io',
+          type: 'yunion.io/' + this.secretNamespace,
           namespace: this.secretNamespace,
           cluster: this.clusterObj.id,
           limit: 0,

@@ -1,6 +1,8 @@
+import {
+  getNameDescriptionTableColumn,
+} from '@/utils/common/tableColumn'
+
 export default {
-  created () {
-  },
   computed: {
     singleActions () {
       if (this.$store.getters.scope === 'project') {
@@ -79,8 +81,34 @@ export default {
                   this.createDialog('DeleteResDialog', {
                     vm: this,
                     data: [obj],
-                    columns: this.columns,
+                    columns: [
+                      getNameDescriptionTableColumn({
+                        onManager: this.onManager,
+                        hideField: true,
+                        slotCallback: row => {
+                          return (
+                            <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
+                          )
+                        },
+                      }),
+                      {
+                        field: 'version',
+                        title: '版本',
+                        slots: {
+                          default: ({ row }, h) => {
+                            return [
+                              <a-tag color="blue">{ row.version }</a-tag>,
+                            ]
+                          },
+                        },
+                      },
+                      {
+                        field: 'machines',
+                        title: '节点数量',
+                      },
+                    ],
                     title: '删除',
+                    name: this.$t('dictionary.kubecluster'),
                     onManager: this.onManager,
                     success: () => {
                       this.destroySidePages()

@@ -27,12 +27,15 @@ export default {
         minWidth: 100,
         slots: {
           default: ({ row }, h) => {
-            const ret = []
-            row.addresses.filter(val => val.type === 'InternalIP').map(item => {
-              const ip = <div>{item.address}</div>
-              ret.push(ip)
-            })
-            return ret
+            if (row.addresses) {
+              const ret = []
+              row.addresses.filter(val => val.type === 'InternalIP').map(item => {
+                const ip = <div>{item.address}</div>
+                ret.push(ip)
+              })
+              return ret
+            }
+            return '-'
           },
         },
       },
