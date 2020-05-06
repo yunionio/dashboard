@@ -25,7 +25,7 @@
         :names="['city', 'provider', 'cloudregion']" />
       <!-- 套餐信息 -->
       <s-k-u ref="SKU" />
-      <a-form-item label="管理员密码" v-bind="formItemLayout">
+      <a-form-item v-if="form.fd.provider !== 'Aliyun'" label="管理员密码" v-bind="formItemLayout">
         <server-password :loginTypes="loginTypes" :decorator="decorators.loginConfig" :form="form" />
       </a-form-item>
       <!-- 网络 -->
