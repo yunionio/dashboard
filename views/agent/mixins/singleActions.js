@@ -30,7 +30,7 @@ export default {
             alert: '提示：下线操作会把节点配置从部署主机中删除',
             ok: async () => {
               try {
-                const response = await new this.$Manager('loadbalanceragents').performAction({
+                const { data } = await new this.$Manager('loadbalanceragents').performAction({
                   id: obj.id,
                   action: 'undeploy',
                   data: {
@@ -38,12 +38,12 @@ export default {
                     // 'process-key': obj.key,
                   },
                 })
-                if (response.data && response.data.deployment) {
+                if (data && data.deployment && data.deployment.ansible_playbook_undeployment) {
                   this.$router.push({
-                    path: `/lbagent/asbook?ansiblePlaybookId=${response.data.deployment.ansible_playbook}&loadbalanceragentId=${obj.id}`,
+                    path: `/lbagent/asbook?ansiblePlaybookId=${data.deployment.ansible_playbook_undeployment}&loadbalanceragentId=${obj.id}`,
                   })
                 }
-                return response
+                return data
               } catch (error) {
                 throw error
               }

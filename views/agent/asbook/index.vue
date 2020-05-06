@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="ansible-playbook">
     <page-header title="节点" />
     <page-body>
       <refresh-button class="flex-shrink-0" :loading="isRunning" @refresh="refresh" />
@@ -12,6 +12,7 @@
         :data="resourceData"
         :base-info="baseInfo"
         :extra-info="extraInfo"
+        :onManager="()=> {}"
         status-module="ansiblePlaybook" />
     </page-body>
     <page-footer>
@@ -115,6 +116,7 @@ export default {
             clearInterval(this.T)
           }
           this.ansibleplaybookData = data
+          document.getElementsByClassName('CodeMirror-vscrollbar')[0].scrollTop = 999999
         })
     },
     handleStop () {
@@ -161,3 +163,13 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.ansible-playbook {
+  ::v-deep {
+    .CodeMirror {
+      height: 700px !important;
+    }
+  }
+}
+</style>
