@@ -28,6 +28,7 @@
       </a-form-item>
       <a-form-item
         label="保密字典"
+        class="mb-0"
         v-bind="formItemLayout">
         <a-row>
           <a-col :span="4">
