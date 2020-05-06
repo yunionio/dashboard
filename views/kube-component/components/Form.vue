@@ -26,7 +26,8 @@
             ]">
             <div class="d-flex align-items-center">
               <a-input v-model="val.monitor" placeholder="例如 192.168.1.2:6789" />
-              <i style="color: #F56C6C;" class="cursor-pointer ml-2" v-if="item.monitors.length > 1" @click="decreaseMonitor(item, k)" />
+              <a-icon type="minus-circle" style="color: #F56C6C;" class="cursor-pointer ml-2" v-if="item.monitors.length > 1" @click="decreaseMonitor(item, k)" />
+              <!-- <i style="color: #F56C6C;" class="cursor-pointer ml-2" v-if="item.monitors.length > 1" @click="decreaseMonitor(item, k)" /> -->
             </div>
           </a-form-model-item>
           <a-button type="link" size="small" @click="addMonitor(item)">添加 Mon Host 地址</a-button>
