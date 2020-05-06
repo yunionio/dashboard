@@ -17,6 +17,7 @@
         filterable
         :params="clusterParams"
         :select-props="{ placeholder: '请选择集群' }" />
+      <div slot="extra">没有我想要的？可以前往<help-link href="/cluster"> 立即新建</help-link></div>
     </a-form-item>
     <a-form-item label="指定IP子网">
       <base-select
