@@ -37,7 +37,7 @@ export default {
     },
     provider_change () {
       const { provider } = this.form.fd
-      if (provider && provider === 'Google') {
+      if (provider && provider === 'Aliyun') {
         this.loginTypes = ['random']
       } else {
         this.loginTypes = ['random', 'password']
