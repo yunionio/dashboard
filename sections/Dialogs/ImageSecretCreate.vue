@@ -111,11 +111,6 @@ export default {
         ],
         email: [
           'email',
-          {
-            rules: [
-              { required: true, message: '请输入邮件', trigger: 'blur' },
-            ],
-          },
         ],
       },
       formItemLayout: {
