@@ -64,7 +64,7 @@ export default {
         data: {
           ...data,
           mac: this.params.data[0]['mac'],
-          index: -1,
+          index: this.params.data[0]['index'],
         },
       })
     },
