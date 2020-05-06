@@ -8,6 +8,13 @@ export default {
   state: {
     recentMenus: storage.get(storageRecentMenusKey) || [],
     topAlert: {},
+    bill: {
+      currency: 'CNY',
+    },
+    k8s: {
+      cluster: '',
+      namespace: '',
+    },
   },
   mutations: {
     UPDATE_OBJECT (state, { name, data }) {
@@ -16,6 +23,15 @@ export default {
     },
     SET_RECENT_MENUS (state, payload) {
       state.recentMenus = payload
+    },
+    SET_BILL_CURRENCY (state, payload) {
+      state.bill.currency = payload
+    },
+    SET_K8S_CLUSTER (state, payload) {
+      state.k8s.cluster = payload
+    },
+    SET_K8S_NAMESPACE (state, payload) {
+      state.k8s.namespace = payload
     },
   },
   actions: {
