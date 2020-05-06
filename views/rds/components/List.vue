@@ -124,48 +124,6 @@ export default {
           },
         },
         {
-          label: '删除',
-          permission: 'rds_dbinstances_delete',
-          action: () => {
-            this.createDialog('DeleteResDialog', {
-              vm: this,
-              title: '删除',
-              data: this.list.selectedItems,
-              columns: this.columns,
-              onManager: this.onManager,
-              refresh: this.refresh,
-            })
-          },
-          meta: () => {
-            let validate = true
-            let tooltip = ''
-            if (this.list.selectedItems.length === 0) {
-              validate = false
-              tooltip = '请选择需要操作的实例'
-            }
-            if (this.list.selectedItems.length > 0) {
-              for (let i = 0; i < this.list.selectedItems.length; i++) {
-                let obj = this.list.selectedItems[i]
-                if (obj['disable_delete']) {
-                  tooltip = '删除保护，如需解除，请点击【设置删除保护】'
-                  validate = false
-                  break
-                }
-                let seconds = this.$moment(obj.expired_at).diff(new Date()) / 1000
-                if (obj.billing_type === 'prepaid' && seconds > 0) {
-                  tooltip = '实例未到期不允许删除'
-                  validate = false
-                  break
-                }
-              }
-            }
-            return {
-              validate,
-              tooltip,
-            }
-          },
-        },
-        {
           label: this.$t('common.batchAction'),
           actions: (obj) => {
             const selectedLength = this.list.selectedItems.length
@@ -188,7 +146,6 @@ export default {
                   }
                 },
               },
-              disableDeleteAction(this),
               {
                 label: '重启',
                 action: () => {
@@ -207,7 +164,61 @@ export default {
                   }
                 },
               },
+              disableDeleteAction(this, {
+                name: this.$t('dictionary.dbinstances'),
+              }),
+              {
+                label: '删除',
+                permission: 'rds_dbinstances_delete',
+                action: () => {
+                  this.createDialog('DeleteResDialog', {
+                    vm: this,
+                    title: '删除',
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    refresh: this.refresh,
+                    name: this.$t('dictionary.dbinstances'),
+                  })
+                },
+                meta: () => {
+                  let validate = true
+                  let tooltip = ''
+                  if (this.list.selectedItems.length === 0) {
+                    validate = false
+                    tooltip = '请选择需要操作的实例'
+                  }
+                  if (this.list.selectedItems.length > 0) {
+                    for (let i = 0; i < this.list.selectedItems.length; i++) {
+                      let obj = this.list.selectedItems[i]
+                      if (obj['disable_delete']) {
+                        tooltip = '删除保护，如需解除，请点击【设置删除保护】'
+                        validate = false
+                        break
+                      }
+                      let seconds = this.$moment(obj.expired_at).diff(new Date()) / 1000
+                      if (obj.billing_type === 'prepaid' && seconds > 0) {
+                        tooltip = '实例未到期不允许删除'
+                        validate = false
+                        break
+                      }
+                    }
+                  }
+                  return {
+                    validate,
+                    tooltip,
+                  }
+                },
+              },
             ]
+          },
+          meta: () => {
+            const selectedLength = this.list.selectedItems.length
+            const notSelectedTooltip = selectedLength <= 0 ? '请选择需要操作的实例' : ''
+            return {
+              validate: selectedLength,
+              tooltip: notSelectedTooltip,
+            }
           },
         },
       ],

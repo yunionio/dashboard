@@ -2,7 +2,9 @@
   <div>
     <vxe-grid
       ref="tableRef"
+      row-id="id"
       max-height="500"
+      :radio-config="radioConfig"
       :loading="loading"
       :columns="tableColumn"
       :data="skuList"
@@ -55,6 +57,11 @@ export default {
     }
   },
   computed: {
+    radioConfig () {
+      return {
+        reserve: true,
+      }
+    },
     FC () {
       if (this.form && this.form.fc) {
         return this.form.fc
@@ -142,10 +149,11 @@ export default {
     },
   },
   methods: {
-    handleSkuChange ({ row }) {
+    async handleSkuChange ({ row }) {
       this.FC.setFieldsValue({
         sku: row,
       })
+      await this.$nextTick()
       this.$refs['tableRef'].setRadioRow(row)
       this.FC.validateFields(['sku'])
     },

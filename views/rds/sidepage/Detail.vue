@@ -192,7 +192,7 @@ export default {
               title: '安全组',
               slots: {
                 default: ({ row }) => {
-                  return (row.provider === 'Huawei' && row.secgroup) ? row.secgroup : '-'
+                  return row.secgroup || '-'
                 },
               },
             },

@@ -41,7 +41,7 @@ export default {
         {
           field: 'password',
           title: '密码',
-          width: 50,
+          width: 100,
           slots: {
             default: ({ row }) => {
               return [<PasswordFetcher serverId={row.id} resourceType='elasticcacheaccounts' />]
@@ -51,6 +51,7 @@ export default {
         {
           field: 'account_type',
           title: '账号类型',
+          minWidth: 100,
           slots: {
             default: ({ row }) => {
               return row.account_type === 'admin' ? '管理员' : '普通账号'
@@ -60,6 +61,7 @@ export default {
         {
           field: 'ip',
           title: '权限',
+          minWidth: 150,
           slots: {
             default: ({ row }) => {
               return ACCOUNT_PRIVILEGES[row.account_privilege] || '-'
@@ -150,7 +152,7 @@ export default {
               tooltip = '主账号不允许删除'
             }
             return {
-              validate: !isHuawei && obj.account_type !== 'admin',
+              validate: !tooltip,
               tooltip,
             }
           },

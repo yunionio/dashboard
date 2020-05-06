@@ -29,6 +29,8 @@ export default {
   async created () {
     // 当前选中的sku内部的 cloudregion_id
     this.form.fc.getFieldDecorator('cloudregion_id', { preserve: true })
+    // 当前选中的sku内部的 zone_id
+    this.form.fc.getFieldDecorator('zone_id', { preserve: true })
 
     this.keysChange = {
       area: CAPABILIT_PARAMS,
@@ -62,14 +64,25 @@ export default {
       this.skuRef.fetchSkus()
     },
     sku_change () {
-      const { sku } = this.form.fd
-      if (sku && this.form.fd.cloudregion_id !== sku.cloudregion_id) {
+      const { fd } = this.form
+      const { sku, zone } = fd
+      if (sku && (fd.cloudregion_id !== sku.cloudregion_id)) {
         this.form.fc.setFieldsValue({
           cloudregion_id: sku.cloudregion_id,
         })
       }
+      if (sku && zone && (fd.zone_id !== sku.zone_id)) {
+        this.form.fc.setFieldsValue({
+          zone_id: sku.zone_id,
+        })
+      }
     },
     cloudregion_id_change () {
+      if (this.networkRef && this.networkRef.fetchVpc) {
+        this.networkRef.fetchVpc()
+      }
+    },
+    zone_id_change () {
       if (this.networkRef && this.networkRef.fetchVpc) {
         this.networkRef.fetchVpc()
       }

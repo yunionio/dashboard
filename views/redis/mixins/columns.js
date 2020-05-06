@@ -59,6 +59,7 @@ export default {
         },
       },
       {
+        field: 'private_dns',
         title: '链接地址',
         minWidth: 200,
         showOverflow: 'ellipsis',
@@ -90,6 +91,7 @@ export default {
         },
       },
       {
+        field: 'private_connect_port',
         title: '端口',
         width: 100,
         slots: {
