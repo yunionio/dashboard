@@ -12,7 +12,7 @@
             resource="cloudregions"
             v-decorator="decorators.region"
             :selectProps="{ 'placeholder': '请选择区域' }"
-            :params="{ 'cloud_env': 'private_or_onpremise' }" />
+            :params="{ 'cloud_env': 'private_or_onpremise', 'brand': 'OneCloud' }" />
         </a-form-item>
         <a-form-item label="位置" v-bind="formItemLayout">
           <a-input v-decorator="decorators.location" placeholder="请输入位置、例如望京、酒仙桥等" />
