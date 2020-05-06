@@ -2,10 +2,10 @@
   <div>
     <a-card class="mb-2 card" hoverable v-for="(item, i) in serverConfigList" :key="item.key">
       <a-form-item label="CPU" v-bind="formItemLayout">
-        <a-input-number v-decorator="decorator.vcpu_count(i)" :formatter="value => `${value}核`" :parser="value => value.replace('核', '')" :min="2" :max="32" />
+        <a-input-number v-decorator="decorator.vcpu_count(i)" :formatter="value => `${value}核`" :parser="value => value.replace('核', '')" :min="4" :max="32" />
       </a-form-item>
       <a-form-item label="内存" v-bind="formItemLayout">
-        <a-input-number v-decorator="decorator.vmem_size(i)" :formatter="value => `${value}G`" :parser="value => value.replace('G', '')" :min="1" :max="128" />
+        <a-input-number v-decorator="decorator.vmem_size(i)" :formatter="value => `${value}G`" :parser="value => value.replace('G', '')" :min="4" :max="128" />
       </a-form-item>
       <a-form-item label="磁盘" v-bind="formItemLayout">
          <a-input-number v-decorator="decorator.disk(i)" :formatter="value => `${value}G`" :parser="value => value.replace('G', '')" :min="40" :max="500" />
