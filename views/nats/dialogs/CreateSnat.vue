@@ -25,7 +25,7 @@
             :select-props="{ placeholder: '请选择公网IP地址' }"
             resource="eips"
             :labelFormat="labelFormat"
-            :options.sync="eipOptions"
+            :resList.sync="eipOptions"
             :showSync="true" />
         </a-form-item>
       </a-form>
