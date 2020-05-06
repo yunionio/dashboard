@@ -655,6 +655,18 @@
       "WARNING": "警告",
       "Critical": "严重",
       "Unknown": "未知"
+    },
+    "kubecomponent": {
+      "deployed": "已部署",
+      "deploy_fail": "部署失败",
+      "deploying": "部署中",
+      "undeploying": "禁用中",
+      "undeploy_fail": "禁用失败",
+      "updating": "更新中",
+      "deleteing": "删除中",
+      "update_fail": "更新失败",
+      "delete_fail": "删除失败",
+      "init": "初始化"
     }
   },
   "skuCategoryOptions": {
