@@ -118,7 +118,7 @@ export default {
       this.errPanes = Array.from(new Set(errPanes))
     },
     async _doCreate (data) {
-      await new this.$Manager('deployments', 'v1').create({ data })
+      await new this.$Manager('daemonsets', 'v1').create({ data })
     },
     async doCreate () {
       try {
