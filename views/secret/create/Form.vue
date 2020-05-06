@@ -136,9 +136,7 @@ export default {
         email: [
           'email',
           {
-            validateFirst: true,
             rules: [
-              { required: true, message: '请输入邮箱地址', trigger: 'blur' },
               { validator: this.$validate('email'), trigger: 'blur' },
             ],
           },
