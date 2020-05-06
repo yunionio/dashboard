@@ -202,12 +202,12 @@ export default {
     validator (type) {
       return (rule, value, _callback) => {
         if (type === 'vcpu_count') {
-          if (value < 2 || value > 32) {
-            return _callback('输入范围 2 - 32 核')
+          if (value < 4 || value > 32) {
+            return _callback('输入范围 4 - 32 核')
           }
         } else if (type === 'vmem_size') {
-          if (value < 1 || value > 128) {
-            return _callback('输入范围 1 - 128 G')
+          if (value < 4 || value > 128) {
+            return _callback('输入范围 4 - 128 G')
           }
         } else if (type === 'disk') {
           if (value < 1 || value > 128) {

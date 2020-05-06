@@ -54,11 +54,12 @@ export default {
     NamespaceSelect,
   },
   data () {
+    const type = this.$route.query ? this.$route.query.storageType : 'keypair'
     return {
       form: {
         fc: this.$form.createForm(this),
         fd: {
-          type: 'keypair',
+          type,
         },
       },
       formItemLayout: {
@@ -141,7 +142,6 @@ export default {
             ],
           },
         ],
-
       },
       clusterObj: {},
       namespaceObj: {},

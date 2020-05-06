@@ -16,7 +16,8 @@
     :data="data"
     :base-info="baseInfo"
     :extra-info="extraInfo"
-    resource="k8s_nodes" />
+    resource="k8s_nodes"
+    :nameProps="{edit: false}" />
   </div>
 
 </template>

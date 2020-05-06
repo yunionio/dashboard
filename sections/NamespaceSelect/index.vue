@@ -40,12 +40,12 @@ export default {
     }
   },
   watch: {
-    cluster: {
-      handler (v) {
-        if (v) this._fetchNamespace()
-      },
-      immediate: true,
+    cluster (v) {
+      if (v) this._fetchNamespace()
     },
+  },
+  created () {
+    this._fetchNamespace()
   },
   methods: {
     change (v) {
@@ -71,7 +71,8 @@ export default {
         } else {
           this.options = data.map(val => ({ ...val, label: val.name }))
         }
-        if (this.setDefault) {
+        const isErrorNamespace = !this.options.find(v => v.name === this.value)
+        if (this.setDefault && isErrorNamespace) {
           this.setDefaultNamespace(this.options)
         }
       })

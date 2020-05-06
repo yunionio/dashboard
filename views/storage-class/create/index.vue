@@ -28,6 +28,8 @@
       </a-form-item>
       <a-form-item
         label="保密字典"
+        class="mb-0"
+        required
         v-bind="formItemLayout">
         <a-row>
           <a-col :span="4">
@@ -201,7 +203,7 @@ export default {
     secretsParams () {
       if (this.secretNamespace && this.clusterObj.id) {
         return {
-          type: 'yunion.io',
+          type: 'yunion.io/' + this.secretNamespace,
           namespace: this.secretNamespace,
           cluster: this.clusterObj.id,
           limit: 0,
