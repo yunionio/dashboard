@@ -22,7 +22,7 @@
             v-decorator="decorators.project"
             :params="projectParams"
             version="v1"
-            :options.sync="projectOptions"
+            :resList.sync="projectOptions"
             :need-params="true"
             :mapper="projectMapper"
             :select-props="{ placeholder: $t('rules.project'), mode: 'multiple' }" />
