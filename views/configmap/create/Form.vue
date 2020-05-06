@@ -5,10 +5,10 @@
         <a-input placeholder="请输入名称" v-decorator="decorators.name" />
       </a-form-item>
       <a-form-item label="集群">
-        <cluster-select v-decorator="decorators.cluster" :clusterObj.sync="clusterObj" />
+        <cluster-select v-decorator="decorators.cluster" />
       </a-form-item>
       <a-form-item label="命名空间">
-        <namespace-select v-decorator="decorators.namespace" :cluster="clusterObj.id" :namespaceObj.sync="namespaceObj" />
+        <namespace-select v-decorator="decorators.namespace" :cluster="cluster" :namespaceObj.sync="namespaceObj" />
       </a-form-item>
       <a-form-item label="标签" required>
         <labels :decorators="decorators.labels" ref="labelRef" :firstCanDelete="false" />
@@ -22,6 +22,7 @@ import ClusterSelect from '@K8S/sections/ClusterSelect'
 import NamespaceSelect from '@K8S/sections/NamespaceSelect'
 import Labels from '@K8S/sections/Labels'
 import { getLabels } from '@K8S/utils'
+import k8sCreateMixin from '@K8S/mixins/create'
 
 export default {
   name: 'K8sConfigmapCreate',
@@ -30,6 +31,7 @@ export default {
     NamespaceSelect,
     Labels,
   },
+  mixins: [k8sCreateMixin],
   data () {
     return {
       form: {
@@ -54,6 +56,7 @@ export default {
         cluster: [
           'cluster',
           {
+            initialValue: this.$store.state.common.k8s.cluster,
             rules: [
               { required: true, message: '请选择集群', trigger: 'blur' },
             ],
@@ -62,6 +65,7 @@ export default {
         namespace: [
           'namespace',
           {
+            initialValue: this.$store.state.common.k8s.namespace,
             rules: [
               { required: true, message: '请选择命名空间', trigger: 'blur' },
             ],
@@ -86,7 +90,6 @@ export default {
           ],
         },
       },
-      clusterObj: {},
       namespaceObj: {},
     }
   },

@@ -11,10 +11,10 @@
         <a-input placeholder="请输入名称" v-decorator="decorators.name" />
       </a-form-item>
       <a-form-item label="集群">
-        <cluster-select v-decorator="decorators.cluster" :clusterObj.sync="clusterObj" />
+        <cluster-select v-decorator="decorators.cluster" />
       </a-form-item>
       <a-form-item label="命名空间">
-        <namespace-select v-decorator="decorators.namespace" :cluster="clusterObj.id" :namespaceObj.sync="namespaceObj" />
+        <namespace-select v-decorator="decorators.namespace" :cluster="cluster" :namespaceObj.sync="namespaceObj" />
       </a-form-item>
       <template v-if="form.fd.type === 'keypair'">
         <a-form-item label="镜像仓库地址" prop="server">
@@ -46,6 +46,7 @@
 import ClusterSelect from '@K8S/sections/ClusterSelect'
 import NamespaceSelect from '@K8S/sections/NamespaceSelect'
 import { SECRET_DEFAULT_TYPE } from '@K8S/constants'
+import k8sCreateMixin from '@K8S/mixins/create'
 
 export default {
   name: 'K8sConfigmapCreate',
@@ -53,6 +54,7 @@ export default {
     ClusterSelect,
     NamespaceSelect,
   },
+  mixins: [k8sCreateMixin],
   data () {
     const type = this.$route.query ? this.$route.query.storageType : 'keypair'
     return {
@@ -81,6 +83,7 @@ export default {
         cluster: [
           'cluster',
           {
+            initialValue: this.$store.state.common.k8s.cluster,
             rules: [
               { required: true, message: '请选择集群' },
             ],
@@ -89,6 +92,7 @@ export default {
         namespace: [
           'namespace',
           {
+            initialValue: this.$store.state.common.k8s.namespace,
             rules: [
               { required: true, message: '请选择命名空间' },
             ],
@@ -143,7 +147,6 @@ export default {
           },
         ],
       },
-      clusterObj: {},
       namespaceObj: {},
     }
   },

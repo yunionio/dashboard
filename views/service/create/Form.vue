@@ -5,10 +5,10 @@
         <a-input placeholder="请输入名称" v-decorator="decorators.name" />
       </a-form-item>
       <a-form-item label="集群">
-        <cluster-select v-decorator="decorators.cluster" :clusterObj.sync="clusterObj" />
+        <cluster-select v-decorator="decorators.cluster" />
       </a-form-item>
       <a-form-item label="命名空间">
-        <namespace-select v-decorator="decorators.namespace" :cluster="clusterObj.id" :namespaceObj.sync="namespaceObj" />
+        <namespace-select v-decorator="decorators.namespace" :cluster="cluster" :namespaceObj.sync="namespaceObj" />
       </a-form-item>
       <a-form-item label="选择器" class="mb-0">
         <a-radio-group v-model="form.fd.selectorType">
@@ -41,6 +41,7 @@
 import ClusterSelect from '@K8S/sections/ClusterSelect'
 import NamespaceSelect from '@K8S/sections/NamespaceSelect'
 import PortMapping from '@K8S/sections/PortMapping'
+import k8sCreateMixin from '@K8S/mixins/create'
 
 export default {
   name: 'K8sServiceCreate',
@@ -49,6 +50,7 @@ export default {
     NamespaceSelect,
     PortMapping,
   },
+  mixins: [k8sCreateMixin],
   data () {
     return {
       form: {
@@ -76,6 +78,7 @@ export default {
         cluster: [
           'cluster',
           {
+            initialValue: this.$store.state.common.k8s.cluster,
             rules: [
               { required: true, message: '请选择集群', trigger: 'blur' },
             ],
@@ -84,6 +87,7 @@ export default {
         namespace: [
           'namespace',
           {
+            initialValue: this.$store.state.common.k8s.namespace,
             rules: [
               { required: true, message: '请选择命名空间', trigger: 'blur' },
             ],
@@ -143,15 +147,14 @@ export default {
           },
         ],
       },
-      clusterObj: {},
       namespaceObj: {},
     }
   },
   computed: {
     resParams () {
       const params = {}
-      if (this.clusterObj.id && this.namespaceObj.name) {
-        params.cluster = this.clusterObj.id
+      if (this.cluster && this.namespaceObj.name) {
+        params.cluster = this.cluster
         params.limit = 0
         params.namespace = this.namespaceObj.name
       }
