@@ -39,7 +39,7 @@ export default {
             },
           },
         },
-        k8sStatusColumn(),
+        k8sStatusColumn({ statusModule: 'k8s_resource_job' }),
         k8sLabelColumn(),
         {
           field: 'cluster',

@@ -1,20 +1,26 @@
 <template>
   <div style="height: 400px">
-    <component-form @submit="submit" />
+    <component :is="component" @submit="submit" />
   </div>
 </template>
 
 <script>
-import ComponentForm from '../components/Form'
+import Ceph from '../components/Ceph'
+import { componentMap } from '../constants/componentMap'
+import Fluentbit from '../components/Fluentbit'
+import Monitor from '../components/Monitor'
 
 export default {
   name: 'K8SKubeComponentCreate',
   components: {
-    ComponentForm,
+    Ceph,
+    Fluentbit,
+    Monitor,
   },
   data () {
     return {
       loading: false,
+      component: componentMap[this.$route.query.kubeComponent],
     }
   },
   methods: {
@@ -27,9 +33,7 @@ export default {
           id: cluster,
           action: 'enable-component',
           data: {
-            [kubeComponent]: {
-              config: data,
-            },
+            [kubeComponent]: data,
             type: kubeComponent,
           },
         })

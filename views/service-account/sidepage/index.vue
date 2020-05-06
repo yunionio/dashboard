@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="角色绑定(RbacRoleBinding)"
+    title="服务账户(ServiceAccount)"
     icon="res-k8s-serviceaccount"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"

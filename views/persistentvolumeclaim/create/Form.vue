@@ -22,7 +22,8 @@
           v-decorator="decorators.storageClass"
           resource="storageclasses"
           version="v1"
-          :options.sync="storageclassOpts"
+          id-key="name"
+          :resList.sync="storageclassOpts"
           :need-params="true"
           :params="storageclassParams"
           :select-props="{ placeholder: '请选择存储类' }" />
@@ -111,7 +112,7 @@ export default {
   },
   watch: {
     storageclassOpts (val, oldV) {
-      let storageclass = ''
+      let storageclass
       if (!R.equals(val, oldV)) {
         const defaultItem = val.find(v => v.isDefault)
         if (R.is(Object, defaultItem)) {
