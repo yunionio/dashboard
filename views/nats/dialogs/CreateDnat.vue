@@ -18,7 +18,7 @@
             resource="eips"
             :showSync="true"
             :labelFormat="eiplabelFormat"
-            :options.sync="eipOptions"
+            :resList.sync="eipOptions"
             :mapper="eipsMapper" />
         </a-form-item>
         <a-form-item label="云服务器" v-bind="formItemLayout">
@@ -29,7 +29,7 @@
             resource="servers"
             :filterable="true"
             :labelFormat="serverlabelFormat"
-            :options.sync="serverOptions"
+            :resList.sync="serverOptions"
             :mapper="serversMapper" />
         </a-form-item>
         <a-form-item label="公网端口" v-bind="formItemLayout" extra="取值范围：1~65535">
