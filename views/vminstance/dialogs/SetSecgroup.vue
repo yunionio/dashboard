@@ -20,7 +20,7 @@
             show-sync
             v-decorator="decorators.secgroups"
             resource="secgroups"
-            :options.sync="secgroupOptions"
+            :resList.sync="secgroupOptions"
             :mapper="mapperSecgroups"
             :params="{ limit: 20 }"
             :init-loaded.sync="secgroupsInitLoaded"
