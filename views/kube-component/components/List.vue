@@ -48,11 +48,23 @@ export default {
         },
         title: 'name',
         content: [{
-          title: '状态',
+          title: '启用状态',
           field: 'enabled',
           slots: (data) => {
             return (<div class='status'>
               <status status={ data['enabled'] } statusModule='enabled' />
+            </div>)
+          },
+        },
+        {
+          title: '状态',
+          field: 'status',
+          slots: (data) => {
+            if (!data['status']) {
+              return (<span>-</span>)
+            }
+            return (<div class='status'>
+              <status status={ data['status'] } statusModule='kubecomponent' />
             </div>)
           },
         }],
@@ -161,6 +173,7 @@ export default {
       cluster: '',
       clusterObj: {},
       responseData: [],
+      timer: null,
     }
   },
   watch: {
@@ -183,10 +196,25 @@ export default {
         }
         for (let key in data) {
           data[key]['name'] = key
-          if (key === 'cephCSI') this.list.responseData.data.push(data[key])
+          // if (key === 'cephCSI') this.list.responseData.data.push(data[key])
+          this.list.responseData.data.push(data[key])
           this.responseData = this.list.responseData.data
         }
         this.list.fetchData()
+        this.getStableStatus(data)
+      }
+    },
+    getStableStatus (data) {
+      const kubeComponentStatus = ['deployed', 'deploy_fail', 'update_fail', 'delete_fail', 'init']
+      const statusArr = Object.values(data).map(val => val.status).filter(v => v)
+      const flatStableStatus = Object.values(kubeComponentStatus)
+      const notStable = statusArr.some(val => !flatStableStatus.includes(val))
+      if (notStable) {
+        this.timer = setTimeout(() => {
+          this.fetchData()
+        }, 5000)
+      } else {
+        this.timer = null
       }
     },
   },

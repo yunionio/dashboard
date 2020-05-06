@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import ComponentForm from '../components/Form'
+import ComponentForm from '../components/Ceph'
 
 export default {
   name: 'K8SKubeComponentUpdate',
