@@ -22,7 +22,7 @@
           v-decorator="decorators.storageClass"
           resource="storageclasses"
           version="v1"
-          :options.sync="storageclassOpts"
+          :resList.sync="storageclassOpts"
           :need-params="true"
           :params="storageclassParams"
           :select-props="{ placeholder: '请选择存储类' }" />

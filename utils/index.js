@@ -1,5 +1,6 @@
 import * as R from 'ramda'
 import { RESTART_POLICY_OPTS } from '@K8S/constants'
+import store from '@/store'
 
 const validateValidPath = (rule, value, callback) => {
   if (value.startsWith('/')) {
@@ -94,6 +95,7 @@ export function getCreateDecorators (resource) {
     cluster: [
       'cluster',
       {
+        initialValue: store.state.common.k8s.cluster,
         rules: [
           { required: true, message: '请选择集群', trigger: 'blur' },
         ],
@@ -102,6 +104,7 @@ export function getCreateDecorators (resource) {
     namespace: [
       'namespace',
       {
+        initialValue: store.state.common.k8s.namespace,
         rules: [
           { required: true, message: '请选择命名空间', trigger: 'blur' },
         ],

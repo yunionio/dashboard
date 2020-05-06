@@ -8,7 +8,7 @@
         <cluster-select v-decorator="decorators.cluster" :clusterObj.sync="clusterObj" />
       </a-form-item>
       <a-form-item label="命名空间">
-        <namespace-select v-decorator="decorators.namespace" :cluster="clusterObj.id" :namespaceObj.sync="namespaceObj" />
+        <namespace-select v-decorator="decorators.namespace" :cluster="cluster" :namespaceObj.sync="namespaceObj" />
       </a-form-item>
       <a-form-item label="容器组个数">
         <a-input-number v-decorator="decorators.replicas" :min="1" :max="10" />
@@ -18,7 +18,7 @@
           :form="form"
           :decorators="decorators.imageSecrets"
           :namespace="namespaceObj.name"
-          :cluster="clusterObj.id" />
+          :cluster="cluster" />
       </a-form-item>
       <a-form-item label="服务">
         <port-mapping
@@ -47,7 +47,7 @@
         :errPanes="errPanes"
         :decorators="decorators.containers"
         :namespace="namespaceObj.name"
-        :cluster="clusterObj.id" />
+        :cluster="cluster" />
     </a-form>
   </div>
 </template>
@@ -62,6 +62,7 @@ import RestartPolicySelect from '@K8S/sections/RestartPolicySelect'
 import Labels from '@K8S/sections/Labels'
 import SpecContainer from '@K8S/sections/SpecContainer'
 import { getSpecContainerParams, getLabels, getCreateDecorators } from '@K8S/utils'
+import k8sCreateMixin from '@K8S/mixins/create'
 
 export default {
   name: 'K8sDeploymentCreate',
@@ -74,6 +75,7 @@ export default {
     Labels,
     SpecContainer,
   },
+  mixins: [k8sCreateMixin],
   data () {
     return {
       form: {

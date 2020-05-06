@@ -5,17 +5,17 @@
         <a-input placeholder="请输入名称" v-decorator="decorators.name" />
       </a-form-item>
       <a-form-item label="集群">
-        <cluster-select v-decorator="decorators.cluster" :clusterObj.sync="clusterObj" />
+        <cluster-select v-decorator="decorators.cluster" />
       </a-form-item>
       <a-form-item label="命名空间">
-        <namespace-select v-decorator="decorators.namespace" :cluster="clusterObj.id" :namespaceObj.sync="namespaceObj" />
+        <namespace-select v-decorator="decorators.namespace" :cluster="cluster" :namespaceObj.sync="namespaceObj" />
       </a-form-item>
-      <a-form-item label="镜像密钥" class="mb-0">
+      <a-form-item label="镜像密钥">
         <image-secret
           :form="form"
           :decorators="decorators.imageSecrets"
           :namespace="namespaceObj.name"
-          :cluster="clusterObj.id" />
+          :cluster="cluster" />
       </a-form-item>
       <a-form-item label="重启策略">
         <restart-policy-select
@@ -41,7 +41,7 @@
         :errPanes="errPanes"
         :decorators="decorators.containers"
         :namespace="namespaceObj.name"
-        :cluster="clusterObj.id" />
+        :cluster="cluster" />
     </a-form>
   </div>
 </template>
@@ -55,6 +55,7 @@ import RestartPolicySelect from '@K8S/sections/RestartPolicySelect'
 import Labels from '@K8S/sections/Labels'
 import SpecContainer from '@K8S/sections/SpecContainer'
 import { getSpecContainerParams, getLabels, getCreateDecorators } from '@K8S/utils'
+import k8sCreateMixin from '@K8S/mixins/create'
 
 export default {
   name: 'K8sCronJobCreate',
@@ -66,6 +67,7 @@ export default {
     Labels,
     SpecContainer,
   },
+  mixins: [k8sCreateMixin],
   data () {
     return {
       form: {
@@ -78,17 +80,8 @@ export default {
       errPanes: [], // 表单校验错误的tabs
       containerPanes: [], // 子组件同步的tabs
       decorators: getCreateDecorators.call(this, 'cronjob'),
-      clusterObj: {},
       namespaceObj: {},
     }
-  },
-  computed: {
-    networkDisabled () {
-      if (this.clusterObj.mode === 'import') { // 导入的集群新建外部服务时不能选择网络
-        return true
-      }
-      return false
-    },
   },
   methods: {
     validateForm () {

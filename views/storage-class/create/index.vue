@@ -22,9 +22,8 @@
         label="集群"
         v-bind="formItemLayout">
         <cluster-select
-        :clusterObj.sync="clusterObj"
-        v-decorator="decorators.cluster"
-        style="width: 140px;" />
+          v-decorator="decorators.cluster"
+          style="width: 140px;" />
       </a-form-item>
       <a-form-item
         label="保密字典"
@@ -37,7 +36,7 @@
               <namespace-select
                 size="small"
                 v-decorator="decorators.secretNamespace"
-                :cluster="clusterObj.id"
+                :cluster="cluster"
                 @change="secretNamespaceChange" />
             </a-form-item>
           </a-col>
@@ -101,6 +100,7 @@
 import { mapGetters } from 'vuex'
 import ClusterSelect from '@K8S/sections/ClusterSelect'
 import NamespaceSelect from '@K8S/sections/NamespaceSelect'
+import k8sCreateMixin from '@K8S/mixins/create'
 
 export default {
   name: 'StorageClassCreate',
@@ -108,6 +108,7 @@ export default {
     ClusterSelect,
     NamespaceSelect,
   },
+  mixins: [k8sCreateMixin],
   data () {
     return {
       loading: false,
@@ -143,6 +144,7 @@ export default {
         cluster: [
           'cluster',
           {
+            initialValue: this.$store.state.common.k8s.cluster,
             rules: [
               { required: true, message: '请选择集群' },
             ],
@@ -191,7 +193,6 @@ export default {
         wrapperCol: { span: 20 },
         labelCol: { span: 3 },
       },
-      clusterObj: {},
       secretNamespace: '',
       cephcsiOpts: [],
       poolOpts: [],
@@ -201,11 +202,11 @@ export default {
   computed: {
     ...mapGetters(['userInfo', 'scope', 'isAdminMode']),
     secretsParams () {
-      if (this.secretNamespace && this.clusterObj.id) {
+      if (this.secretNamespace && this.cluster) {
         return {
           type: 'yunion.io/' + this.secretNamespace,
           namespace: this.secretNamespace,
-          cluster: this.clusterObj.id,
+          cluster: this.cluster,
           limit: 0,
         }
       }
@@ -228,7 +229,7 @@ export default {
         path: '/k8s-kubecomponent/create',
         query: {
           kubeComponent: 'cephCSI',
-          cluster: this.clusterObj.id,
+          cluster: this.cluster,
         },
       })
     },

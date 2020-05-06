@@ -29,10 +29,10 @@
               </a-select>
             </a-form-item>
             <a-form-item label="集群">
-              <cluster-select v-decorator="decorators.cluster" :clusterObj.sync="clusterObj" />
+              <cluster-select v-decorator="decorators.cluster" />
             </a-form-item>
             <a-form-item label="命名空间">
-              <namespace-select v-decorator="decorators.namespace" :cluster="clusterObj.id" :namespaceObj.sync="namespaceObj" />
+              <namespace-select v-decorator="decorators.namespace" :cluster="cluster" :namespaceObj.sync="namespaceObj" />
             </a-form-item>
             <form-yaml
               :decorators="decorators"
@@ -68,6 +68,7 @@ import { Base64 } from 'js-base64'
 import ClusterSelect from '@K8S/sections/ClusterSelect'
 import NamespaceSelect from '@K8S/sections/NamespaceSelect'
 import TemplatePreview from '@K8S/sections/TemplatePreview'
+import k8sCreateMixin from '@K8S/mixins/create'
 import FormYaml from './FormYaml'
 import { validateYaml } from '@/utils/validate'
 
@@ -79,6 +80,7 @@ export default {
     NamespaceSelect,
     TemplatePreview,
   },
+  mixins: [k8sCreateMixin],
   data () {
     const validator = (rule, value, _callback) => {
       validateYaml(value)
@@ -99,7 +101,6 @@ export default {
         readme: '',
         chart: {},
       },
-      clusterObj: {},
       namespaceObj: {},
       formItemLayout: {
         labelCol: { span: 4 },
@@ -140,6 +141,7 @@ export default {
         cluster: [
           'cluster',
           {
+            initialValue: this.$store.state.common.k8s.cluster,
             rules: [
               { required: true, message: '请选择集群', trigger: 'blur' },
             ],
@@ -148,6 +150,7 @@ export default {
         namespace: [
           'namespace',
           {
+            initialValue: this.$store.state.common.k8s.namespace,
             rules: [
               { required: true, message: '请选择命名空间', trigger: 'blur' },
             ],

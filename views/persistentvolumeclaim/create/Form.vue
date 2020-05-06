@@ -8,10 +8,10 @@
         <a-input-number v-decorator="decorators.size" :min="1" :max="500" /> G
       </a-form-item>
       <a-form-item label="集群">
-        <cluster-select v-decorator="decorators.cluster" :clusterObj.sync="clusterObj" />
+        <cluster-select v-decorator="decorators.cluster" />
       </a-form-item>
       <a-form-item label="命名空间">
-        <namespace-select v-decorator="decorators.namespace" :cluster="clusterObj.id" />
+        <namespace-select v-decorator="decorators.namespace" :cluster="cluster" />
       </a-form-item>
       <a-form-item label="存储类">
         <div slot="extra">
@@ -36,6 +36,7 @@
 import * as R from 'ramda'
 import ClusterSelect from '@K8S/sections/ClusterSelect'
 import NamespaceSelect from '@K8S/sections/NamespaceSelect'
+import k8sCreateMixin from '@K8S/mixins/create'
 
 export default {
   name: 'K8sPersistentvolumeclaimCreate',
@@ -43,6 +44,7 @@ export default {
     ClusterSelect,
     NamespaceSelect,
   },
+  mixins: [k8sCreateMixin],
   data () {
     return {
       form: {
@@ -67,6 +69,7 @@ export default {
         cluster: [
           'cluster',
           {
+            initialValue: this.$store.state.common.k8s.cluster,
             rules: [
               { required: true, message: '请选择集群', trigger: 'blur' },
             ],
@@ -75,6 +78,7 @@ export default {
         namespace: [
           'namespace',
           {
+            initialValue: this.$store.state.common.k8s.namespace,
             rules: [
               { required: true, message: '请选择命名空间', trigger: 'blur' },
             ],
@@ -95,15 +99,14 @@ export default {
           },
         ],
       },
-      clusterObj: {},
       storageclassOpts: [],
     }
   },
   computed: {
     storageclassParams () {
-      if (this.clusterObj.id) {
+      if (this.cluster) {
         return {
-          cluster: this.clusterObj.id,
+          cluster: this.cluster,
           limit: 0,
         }
       }

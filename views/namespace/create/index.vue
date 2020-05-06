@@ -1,11 +1,11 @@
 <template>
   <div>
     <page-header title="新建命名空间" />
-    <a-tabs v-model="activedTab">
+    <!-- <a-tabs v-model="activedTab">
       <a-tab-pane tab="表单创建" key="FormCreate" />
       <a-tab-pane tab="文本输入创建" key="InputCreate" />
       <a-tab-pane tab="上传文件创建" key="UploadCreate" />
-    </a-tabs>
+    </a-tabs> -->
     <component :is="activedTab" />
   </div>
 </template>

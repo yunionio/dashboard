@@ -11,9 +11,8 @@
       label="集群"
       v-bind="formItemLayout">
       <cluster-select
-      :clusterObj.sync="clusterObj"
-      v-decorator="decorators.cluster"
-      style="width: 140px;" />
+        v-decorator="decorators.cluster"
+        style="width: 140px;" />
     </a-form-item>
     <a-form-item :wrapper-col="{ span: 20, offset: 3 }">
       <a-button class="mr-2" type="primary" @click="handleConfirm" :loading="loading">部署</a-button>
@@ -24,12 +23,14 @@
 
 <script>
 import ClusterSelect from '@K8S/sections/ClusterSelect'
+import k8sCreateMixin from '@K8S/mixins/create'
 
 export default {
   name: 'FormCreate',
   components: {
     ClusterSelect,
   },
+  mixins: [k8sCreateMixin],
   data () {
     return {
       loading: false,
@@ -62,7 +63,6 @@ export default {
         wrapperCol: { span: 20 },
         labelCol: { span: 3 },
       },
-      clusterObj: {},
     }
   },
   created () {
