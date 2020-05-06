@@ -265,4 +265,9 @@ export default {
     danger: ['Critical'],
     warning: ['WARNING'],
   },
+  kubecomponent: {
+    info: ['init'],
+    success: ['deployed'],
+    danger: ['delete_fail', 'deploy_fail', 'update_fail'],
+  },
 }
