@@ -11,6 +11,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'K8SClusterSelect',
   props: {
@@ -30,6 +32,11 @@ export default {
     return {
       clusterOps: [],
     }
+  },
+  computed: {
+    ...mapState('common', {
+      cluster: state => state.k8s.cluster,
+    }),
   },
   created () {
     this.clusterM = new this.$Manager('kubeclusters', 'v1')
@@ -61,7 +68,7 @@ export default {
             data.push(systemItem)
           }
           this.clusterOps = data
-          if (this.setDefault) {
+          if (this.setDefault && !this.value) {
             const clusterObj = this.clusterOps[0]
             this.$emit('input', clusterObj.id)
             this.syncCluster(clusterObj.id)
