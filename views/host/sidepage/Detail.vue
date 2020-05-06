@@ -207,7 +207,7 @@ export default {
               },
             },
             {
-              field: 'cpu_cmtbound',
+              field: 'cpu_commit_bound',
               title: '超售比',
             },
             {
@@ -238,7 +238,7 @@ export default {
               },
             },
             {
-              field: 'mem_cmtbound',
+              field: 'mem_commit_bound',
               title: '超售比',
             },
             {
