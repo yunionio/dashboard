@@ -51,7 +51,7 @@ import { mapGetters } from 'vuex'
 import { uuid } from '@/utils/utils'
 
 export default {
-  name: 'KubeComponentForm',
+  name: 'KubeComponentCeph',
   props: {
     config: {
       type: Array,
