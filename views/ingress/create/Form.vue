@@ -5,13 +5,13 @@
         <a-input placeholder="请输入名称" v-decorator="decorators.name" />
       </a-form-item>
       <a-form-item label="集群">
-        <cluster-select v-decorator="decorators.cluster" :clusterObj.sync="clusterObj" />
+        <cluster-select v-decorator="decorators.cluster" />
       </a-form-item>
       <a-form-item label="命名空间">
-        <namespace-select v-decorator="decorators.namespace" :cluster="clusterObj.id" :namespaceObj.sync="namespaceObj" />
+        <namespace-select v-decorator="decorators.namespace" :cluster="cluster" :namespaceObj.sync="namespaceObj" />
       </a-form-item>
       <a-form-item label="路由" required>
-        <ingress-rule :decorators="decorators.rule" :namespace="namespaceObj.name" :cluster="clusterObj.id"  />
+        <ingress-rule :decorators="decorators.rule" :namespace="namespaceObj.name" :cluster="cluster"  />
       </a-form-item>
     </a-form>
   </div>
@@ -21,6 +21,7 @@
 import * as R from 'ramda'
 import ClusterSelect from '@K8S/sections/ClusterSelect'
 import NamespaceSelect from '@K8S/sections/NamespaceSelect'
+import k8sCreateMixin from '@K8S/mixins/create'
 import IngressRule from './IngressRule'
 
 const validateValidPath = (rule, value, callback) => {
@@ -38,6 +39,7 @@ export default {
     NamespaceSelect,
     IngressRule,
   },
+  mixins: [k8sCreateMixin],
   data () {
     return {
       form: {
@@ -64,6 +66,7 @@ export default {
         cluster: [
           'cluster',
           {
+            initialValue: this.$store.state.common.k8s.cluster,
             rules: [
               { required: true, message: '请选择集群', trigger: 'blur' },
             ],
@@ -72,6 +75,7 @@ export default {
         namespace: [
           'namespace',
           {
+            initialValue: this.$store.state.common.k8s.namespace,
             rules: [
               { required: true, message: '请选择命名空间', trigger: 'blur' },
             ],
@@ -116,17 +120,8 @@ export default {
           }),
         },
       },
-      clusterObj: {},
       namespaceObj: {},
     }
-  },
-  computed: {
-    networkDisabled () {
-      if (this.clusterObj.mode === 'import') { // 导入的集群新建外部服务时不能选择网络
-        return true
-      }
-      return false
-    },
   },
   methods: {
     validateForm () {

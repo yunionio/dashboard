@@ -51,8 +51,12 @@ export default {
     change (v) {
       this.$emit('input', v)
       this.$emit('change', v)
-      const obj = this.options.find(val => val.name === v)
-      this.$emit('update:namespaceObj', obj)
+      if (v) {
+        const obj = this.options.find(val => val.name === v)
+        this.$emit('update:namespaceObj', obj)
+      } else {
+        this.$emit('update:namespaceObj', {})
+      }
     },
     _fetchNamespace () {
       const namespacesM = new this.$Manager('namespaces', 'v1')
@@ -86,6 +90,8 @@ export default {
           this.namespace = opts[0].name
         }
         this.change(this.namespace)
+      } else {
+        this.change(undefined)
       }
     },
   },
