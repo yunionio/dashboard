@@ -6,9 +6,10 @@
       label="集群"
       v-bind="formItemLayout">
       <cluster-select
-      :clusterObj.sync="clusterObj"
-      v-decorator="decorators.cluster"
-      style="width: 140px;" />
+        @input="setCluster"
+        :clusterObj.sync="clusterObj"
+        v-decorator="decorators.cluster"
+        style="width: 140px;" />
     </a-form-item>
     <a-form-item
       label="上传"
@@ -35,12 +36,14 @@
 import 'codemirror/mode/yaml/yaml.js'
 import 'codemirror/theme/material.css'
 import ClusterSelect from '@K8S/sections/ClusterSelect'
+import k8sCreateMixin from '@K8S/mixins/create'
 
 export default {
   name: 'UpdateCreate',
   components: {
     ClusterSelect,
   },
+  mixins: [k8sCreateMixin],
   data () {
     return {
       loading: false,
