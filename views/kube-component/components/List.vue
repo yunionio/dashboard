@@ -3,8 +3,8 @@
     <div class="mb-2">
       <span>集群&nbsp;</span>
       <cluster-select
-        :clusterObj.sync="clusterObj"
-        v-model="cluster"
+        :value="cluster"
+        @input="setCluster"
         style="width: 140px;" />
     </div>
     <page-card-list
@@ -21,6 +21,7 @@
 
 <script>
 import ClusterSelect from '@K8S/sections/ClusterSelect'
+import k8sCreateMixin from '@K8S/mixins/create'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -28,7 +29,7 @@ export default {
   components: {
     ClusterSelect,
   },
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, k8sCreateMixin],
   props: {
     id: {
       type: String,
@@ -170,8 +171,6 @@ export default {
           }),
         },
       ],
-      cluster: '',
-      clusterObj: {},
       responseData: [],
       timer: null,
     }
