@@ -30,7 +30,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
-        id: this.id,
+        id: 'LoadbalancerListenerList',
         resource: 'loadbalancerlisteners',
         getParams: this.getParam,
         filterOptions: {
@@ -56,7 +56,6 @@ export default {
           meta: () => {
             return {
               buttonType: 'primary',
-              validate: this.$store.getters.isAdminMode,
             }
           },
         },
@@ -68,7 +67,8 @@ export default {
               vm: this,
               data: this.list.selectedItems,
               columns: this.columns,
-              title: '删除监听',
+              title: '删除',
+              name: '监听',
               onManager: this.onManager,
             })
           },

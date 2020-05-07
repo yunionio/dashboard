@@ -3,7 +3,8 @@
     :list="list"
     :columns="columns"
     :single-actions="singleActions"
-    :group-actions="groupActions" />
+    :group-actions="groupActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -43,6 +44,21 @@ export default {
           status: Object.values(expectStatus.lb).flat(),
         },
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '名称', key: 'name' },
+          { label: '服务地址', key: 'address' },
+          { label: 'VPC', key: 'vpc' },
+          { label: '状态', key: 'status' },
+          { label: '计费方式', key: 'charge_type' },
+          { label: '类型', key: 'loadbalancer_spec' },
+          { label: this.$t('dictionary.domain'), key: 'domain' },
+          { label: '项目', key: 'project' },
+          { label: '区域', key: 'region' },
+          { label: '云账号', key: 'account' },
+        ],
+      },
       groupActions: [
         {
           label: '新建',
@@ -157,7 +173,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['userInfo']),
+    ...mapGetters(['userInfo', 'capability']),
   },
   watch: {
     cloudEnv (val) {
@@ -204,7 +220,7 @@ export default {
     hasHypervisors (hypervisor) {
       const hypervisors = changeToArr(hypervisor)
       for (let i = 0, len = hypervisors.length; i < len; i++) {
-        if ((this.userInfo.hypervisors || []).indexOf(hypervisors[i]) !== -1) {
+        if ((this.capability.hypervisors || []).indexOf(hypervisors[i]) !== -1) {
           return true
         }
       }

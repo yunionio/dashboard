@@ -1,11 +1,13 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">调整访问控制</div>
+    <div slot="header">修改端口</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.lb_listener')" :count="params.data.length" action="调整访问控制" />
+      <dialog-selected-tips :name="$t('dictionary.lb_backend')" :count="params.data.length" action="修改端口" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" v-bind="formItemLayout">
-        <acl :decorators="decorators" :form="form" />
+        <a-form-item label="端口">
+          <a-input-number :min="1" :max="65535" v-decorator="decorators.port" />
+        </a-form-item>
       </a-form>
     </div>
     <div slot="footer">
@@ -16,16 +18,13 @@
 </template>
 
 <script>
-import * as R from 'ramda'
-import Acl from '@Network/views/loadbalancerlistener/components/Acl'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import expectStatus from '@/constants/expectStatus'
 
 export default {
-  name: 'LbListenerUpdateAclDialog',
+  name: 'BackendUpdatePortDialog',
   components: {
-    Acl,
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
@@ -35,22 +34,14 @@ export default {
         fc: this.$form.createForm(this),
       },
       decorators: {
-        acl_status: [
-          'acl_status',
+        port: [
+          'port',
           {
-            valuePropName: 'checked',
-          },
-        ],
-        acl_type: [
-          'acl_type',
-          {
-          },
-        ],
-        acl: [
-          'acl',
-          {
+            initialValue: this.params.data[0].port,
+            validateFirst: true,
             rules: [
-              { required: true, message: '请选择访问控制' },
+              { type: 'integer', required: true, message: '请输入监听端口', trigger: 'blur' },
+              { type: 'integer', min: 1, max: 65535, message: '请输入范围在 1-65535 之间', trigger: 'blur' },
             ],
           },
         ],
@@ -65,22 +56,7 @@ export default {
       },
     }
   },
-  mounted () {
-    this.rollbackForm()
-  },
   methods: {
-    rollbackForm () {
-      const itemData = this.params.data[0]
-      const data = {
-        [this.decorators.acl_status[0]]: itemData.acl_status === 'on',
-        [this.decorators.acl_type[0]]: itemData.acl_type,
-        [this.decorators.acl[0]]: itemData.acl_id,
-      }
-      R.forEachObjIndexed(value => {
-        this.form.fc.getFieldDecorator(value[0], value[1])
-      }, this.decorators)
-      this.form.fc.setFieldsValue(data)
-    },
     doUpdate (id, data) {
       return this.params.onManager('update', {
         id,
@@ -96,14 +72,7 @@ export default {
       this.loading = true
       try {
         let values = await this.form.fc.validateFields()
-        const params = {
-          acl_status: values.acl_status ? 'on' : 'off',
-        }
-        if (params.acl_status === 'on') {
-          params.acl_type = values.acl_type
-          params.acl = values.acl
-        }
-        await this.doUpdate(this.params.data[0].id, params)
+        await this.doUpdate(this.params.data[0].id, values)
         this.loading = false
         this.cancelDialog()
       } catch (error) {
