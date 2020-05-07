@@ -91,7 +91,7 @@
               style="width: 320px" />
           </a-form-item>
         </a-form-item>
-        <a-form-item v-bind="formItemLayout">
+        <!-- <a-form-item v-bind="formItemLayout">
           <template slot="label">
             <span>
               部署方式
@@ -111,11 +111,11 @@
             <a-radio-button value="yum">Yum</a-radio-button>
             <a-radio-button value="copy">Copy</a-radio-button>
           </a-radio-group>
+        </a-form-item> -->
+        <a-form-item label="Yum源地址" v-bind="formItemLayout">
+          <a-input v-decorator="decorators.repo_base_url" placeholder="请输入Yum源地址" />
         </a-form-item>
-        <a-form-item label="Yum源地址" v-bind="formItemLayout" v-if="deployMethod === 'yum'">
-          <a-input v-decorator="decorators.repo_base_url" placeholder="请输入Yum源地址，一般为：https://控制节点IP/yumrepo" />
-        </a-form-item>
-        <a-form-item v-bind="tailFormItemLayout" v-if="deployMethod === 'yum'">
+        <a-form-item v-bind="tailFormItemLayout">
           <a-checkbox v-decorator="decorators.repo_sslverify">Yum源TLS校验</a-checkbox>
         </a-form-item>
       </a-form>
@@ -156,7 +156,7 @@ export default {
         proj: [
           'proj',
           {
-            validateTrigger: ['blur'],
+            validateTrigger: ['blur', 'change'],
             initialValue: 'system',
             rules: [
               { required: true, message: '请输入项目' },
@@ -166,7 +166,7 @@ export default {
         user: [
           'user',
           {
-            validateTrigger: ['blur'],
+            validateTrigger: ['blur', 'change'],
             rules: [
               { required: true, message: '请选择系统管理员用户' },
             ],
@@ -175,7 +175,7 @@ export default {
         pass: [
           'pass',
           {
-            validateTrigger: ['blur'],
+            validateTrigger: ['blur', 'change'],
             rules: [
               { required: true, message: '请输入系统用户的密码' },
             ],
@@ -183,6 +183,9 @@ export default {
         ],
         hostName: [
           'hostName',
+          {
+            initialValue: 'server',
+          },
         ],
         ip: [
           'ip',
@@ -221,7 +224,7 @@ export default {
           {
             validateFirst: true,
             validateTrigger: ['blur'],
-            initialValue: `${location.protocol}//${location.host}/yumrepo`,
+            // initialValue: `${location.protocol}//${location.host}/yumrepo`,
             rules: [
               { required: true, message: '请输入Yum源地址' },
               { validator: this.$validate('url') },
@@ -259,7 +262,7 @@ export default {
         { label: '宿主机', value: 'host' },
         { label: '外部机器', value: '' },
       ],
-      hostName: '',
+      hostName: 'server',
       deploymentHost: '',
       deployMethod: '',
       ansiblePlaybookId: '',
@@ -296,6 +299,23 @@ export default {
     this.backfill()
   },
   methods: {
+    getUpdateInfo () {
+      new this.$Manager('updates', 'v1').list({
+        params: {
+          status: true,
+        },
+      }).then(res => {
+        if (res.data.data && res.data.data.length) {
+          const updateInfo = res.data.data[0]
+          if (updateInfo && updateInfo.current_version) {
+            const v = updateInfo.current_version.slice(1, 4)
+            this.form.fc.setFieldsValue({
+              repo_base_url: `https://yunioniso.oss-cn-beijing.aliyuncs.com/iso/${v}/`,
+            })
+          }
+        }
+      })
+    },
     serversSuccess (list = []) {
       const { deployment } = this.params.data[0] || {}
       const { getFieldValue, validateFields } = this.form.fc
@@ -402,6 +422,8 @@ export default {
           this.hostName = ''
         }
         /* 处理云主机end */
+      } else {
+        this.getUpdateInfo()
       }
     },
     doCreate (data) {
