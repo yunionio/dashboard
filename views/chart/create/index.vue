@@ -29,10 +29,10 @@
               </a-select>
             </a-form-item>
             <a-form-item label="集群">
-              <cluster-select v-decorator="decorators.cluster" />
+              <cluster-select v-decorator="decorators.cluster" @input="setCluster" />
             </a-form-item>
             <a-form-item label="命名空间">
-              <namespace-select v-decorator="decorators.namespace" :cluster="cluster" :namespaceObj.sync="namespaceObj" />
+              <namespace-select v-decorator="decorators.namespace"  @input="setNamespace" :cluster="cluster" :namespaceObj.sync="namespaceObj" />
             </a-form-item>
             <form-yaml
               :decorators="decorators"
