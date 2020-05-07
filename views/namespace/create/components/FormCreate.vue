@@ -11,6 +11,7 @@
       label="集群"
       v-bind="formItemLayout">
       <cluster-select
+        @input="setCluster"
         v-decorator="decorators.cluster"
         style="width: 140px;" />
     </a-form-item>

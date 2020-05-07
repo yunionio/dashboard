@@ -23,6 +23,7 @@
         v-bind="formItemLayout">
         <cluster-select
           v-decorator="decorators.cluster"
+          @input="setCluster"
           style="width: 140px;" />
       </a-form-item>
       <a-form-item

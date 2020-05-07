@@ -5,10 +5,10 @@
         <a-input placeholder="请输入名称" v-decorator="decorators.name" />
       </a-form-item>
       <a-form-item label="集群">
-        <cluster-select v-decorator="decorators.cluster" :clusterObj.sync="clusterObj" />
+        <cluster-select v-decorator="decorators.cluster" @input="setCluster" :clusterObj.sync="clusterObj" />
       </a-form-item>
       <a-form-item label="命名空间">
-        <namespace-select v-decorator="decorators.namespace" :cluster="clusterObj.id" :namespaceObj.sync="namespaceObj" />
+        <namespace-select v-decorator="decorators.namespace" @input="setNamespace" :cluster="clusterObj.id" :namespaceObj.sync="namespaceObj" />
       </a-form-item>
       <a-form-item label="容器组个数">
         <a-input-number v-decorator="decorators.replicas" :min="1" :max="10" />
