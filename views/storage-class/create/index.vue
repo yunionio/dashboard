@@ -112,7 +112,6 @@ export default {
   mixins: [k8sCreateMixin],
   data () {
     const initCluster = _.get(this.$route, 'query.cluster') || this.$store.state.common.k8s.cluster
-    console.log(initCluster, 'initCluster')
     return {
       loading: false,
       form: {
