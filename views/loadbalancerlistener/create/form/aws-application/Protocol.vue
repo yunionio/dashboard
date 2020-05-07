@@ -9,7 +9,7 @@
       <a-input :disabled="isUpdate" type="number" v-decorator="decorators.listener_port" placeholder="请填写负载均衡对外服务的端口, 端口范围 1-65535" />
     </a-form-item>
     <a-form-item label="协议" class="mb-0">
-      <listener-types :decorators="decorators" :disabled="isUpdate" />
+      <listener-types :decorators="decorators" :disabled="isUpdate" :listenerTypeOpts="listenerTypeOpts" />
     </a-form-item>
     <a-form-item label="证书" v-if="form.fd.listener_type === 'https'">
       <base-select
@@ -29,6 +29,14 @@ import mixin from '../mixins/formStepItem'
 export default {
   name: 'LBListenerCreateProtocol',
   mixins: [mixin],
+  data () {
+    return {
+      listenerTypeOpts: [
+        { label: 'http', key: 'HTTP' },
+        { label: 'https', key: 'HTTPS' },
+      ],
+    }
+  },
   methods: {
     async submit () {
       try {

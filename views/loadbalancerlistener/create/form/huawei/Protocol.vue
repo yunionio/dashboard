@@ -74,7 +74,7 @@ export default {
           normalize: v => Number(v),
           rules: [
             { validator, trigger: 'blur' },
-            { type: 'integer', min: 60, max, message: `请输入监听端口在 60-${max} 之间`, trigger: 'blur' },
+            { type: 'integer', min: 60, max, message: `请输入范围在 60-${max} 之间`, trigger: 'blur' },
           ],
         },
       ]

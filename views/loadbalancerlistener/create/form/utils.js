@@ -143,7 +143,7 @@ const healthCheckTimeout = {
       initialValue: 5,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 1, max: 300, message: '请输入监听端口在 1-300 之间', trigger: 'blur' },
+        { type: 'integer', min: 1, max: 300, message: '请输入范围在 1-300 之间', trigger: 'blur' },
       ],
     },
   ],
@@ -153,7 +153,7 @@ const healthCheckTimeout = {
       initialValue: 3,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 1, max: 300, message: '请输入监听端口在 1-300 之间', trigger: 'blur' },
+        { type: 'integer', min: 1, max: 300, message: '请输入范围在 1-300 之间', trigger: 'blur' },
       ],
     },
   ],
@@ -163,7 +163,7 @@ const healthCheckTimeout = {
       initialValue: 2,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 2, max: 60, message: '请输入监听端口在 2-60 之间', trigger: 'blur' },
+        { type: 'integer', min: 2, max: 60, message: '请输入范围在 2-60 之间', trigger: 'blur' },
       ],
     },
   ],
@@ -173,7 +173,7 @@ const healthCheckTimeout = {
       initialValue: 2,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 1, max: 50, message: '请输入监听端口在 1-50 之间', trigger: 'blur' },
+        { type: 'integer', min: 1, max: 50, message: '请输入范围在 1-50 之间', trigger: 'blur' },
       ],
     },
   ],
@@ -183,7 +183,7 @@ const healthCheckTimeout = {
       initialValue: 5,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 2, max: 120, message: '请输入监听端口在 2-120 之间', trigger: 'blur' },
+        { type: 'integer', min: 2, max: 120, message: '请输入范围在 2-120 之间', trigger: 'blur' },
       ],
     },
   ],
@@ -199,7 +199,7 @@ const healthCheckInterval = {
       initialValue: 5,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 1, max: 1000, message: '请输入监听端口在 1-1000 之间', trigger: 'blur' },
+        { type: 'integer', min: 1, max: 1000, message: '请输入范围在 1-1000 之间', trigger: 'blur' },
       ],
     },
   ],
@@ -209,7 +209,7 @@ const healthCheckInterval = {
       initialValue: 5,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 1, max: 50, message: '请输入监听端口在 1-50 之间', trigger: 'blur' },
+        { type: 'integer', min: 1, max: 50, message: '请输入范围在 1-50 之间', trigger: 'blur' },
       ],
     },
   ],
@@ -219,7 +219,7 @@ const healthCheckInterval = {
       initialValue: 5,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 5, max: 300, message: '请输入监听端口在 5-300 之间', trigger: 'blur' },
+        { type: 'integer', min: 5, max: 300, message: '请输入范围在 5-300 之间', trigger: 'blur' },
       ],
     },
   ],
@@ -229,7 +229,7 @@ const healthCheckInterval = {
       initialValue: 5,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 1, max: 50, message: '请输入监听端口在 1-50 之间', trigger: 'blur' },
+        { type: 'integer', min: 1, max: 50, message: '请输入范围在 1-50 之间', trigger: 'blur' },
       ],
     },
   ],
@@ -249,7 +249,7 @@ const healthCheckInterval = {
       initialValue: 30,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 5, max: 300, message: '请输入监听端口在 5-300 之间', trigger: 'blur' },
+        { type: 'integer', min: 5, max: 300, message: '请输入范围在 5-300 之间', trigger: 'blur' },
       ],
     },
   ],
@@ -265,7 +265,7 @@ const healthCheckRise = {
       initialValue: 3,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 1, max: 1000, message: '请输入监听端口在 1-1000 之间', trigger: 'blur' },
+        { type: 'integer', min: 1, max: 1000, message: '请输入范围在 1-1000 之间', trigger: 'blur' },
       ],
     },
   ],
@@ -275,7 +275,7 @@ const healthCheckRise = {
       initialValue: 3,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 2, max: 10, message: '请输入监听端口在 2-10 之间', trigger: 'blur' },
+        { type: 'integer', min: 2, max: 10, message: '请输入范围在 2-10 之间', trigger: 'blur' },
       ],
     },
   ],
@@ -285,7 +285,7 @@ const healthCheckRise = {
       initialValue: 3,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 2, max: 10, message: '请输入监听端口在 2-10 之间', trigger: 'blur' },
+        { type: 'integer', min: 2, max: 10, message: '请输入范围在 2-10 之间', trigger: 'blur' },
       ],
     },
   ],
@@ -295,7 +295,7 @@ const healthCheckRise = {
       initialValue: 3,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 1, max: 10, message: '请输入监听端口在 1-10 之间', trigger: 'blur' },
+        { type: 'integer', min: 1, max: 10, message: '请输入范围在 1-10 之间', trigger: 'blur' },
       ],
     },
   ],
@@ -305,7 +305,7 @@ const healthCheckRise = {
       initialValue: 3,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 2, max: 10, message: '请输入监听端口在 2-10 之间', trigger: 'blur' },
+        { type: 'integer', min: 2, max: 10, message: '请输入范围在 2-10 之间', trigger: 'blur' },
       ],
     },
   ],
@@ -315,7 +315,7 @@ const healthCheckRise = {
       initialValue: 5,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 2, max: 10, message: '请输入监听端口在 2-10 之间', trigger: 'blur' },
+        { type: 'integer', min: 2, max: 10, message: '请输入范围在 2-10 之间', trigger: 'blur' },
       ],
     },
   ],
@@ -331,7 +331,7 @@ const healthCheckFall = {
       initialValue: 3,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 2, max: 1000, message: '请输入监听端口在 1-1000 之间', trigger: 'blur' },
+        { type: 'integer', min: 2, max: 1000, message: '请输入范围在 1-1000 之间', trigger: 'blur' },
       ],
     },
   ],
@@ -341,7 +341,7 @@ const healthCheckFall = {
       initialValue: 3,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 2, max: 10, message: '请输入监听端口在 1-10 之间', trigger: 'blur' },
+        { type: 'integer', min: 2, max: 10, message: '请输入范围在 1-10 之间', trigger: 'blur' },
       ],
     },
   ],
@@ -351,7 +351,7 @@ const healthCheckFall = {
       initialValue: 3,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 2, max: 10, message: '请输入监听端口在 1-10 之间', trigger: 'blur' },
+        { type: 'integer', min: 2, max: 10, message: '请输入范围在 1-10 之间', trigger: 'blur' },
       ],
     },
   ],
@@ -361,7 +361,7 @@ const healthCheckFall = {
       initialValue: 2,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 2, max: 10, message: '请输入监听端口在 1-10 之间', trigger: 'blur' },
+        { type: 'integer', min: 2, max: 10, message: '请输入范围在 1-10 之间', trigger: 'blur' },
       ],
     },
   ],
@@ -397,7 +397,7 @@ export const getDecorators = ({ provider, vm, loadbalancer }) => {
         normalize: v => Number(v),
         rules: [
           { type: 'integer', required: true, message: '请输入监听端口', trigger: 'blur' },
-          { type: 'integer', min: 1, max: 65535, message: '请输入监听端口在 1-65535 之间', trigger: 'blur' },
+          { type: 'integer', min: 1, max: 65535, message: '请输入范围在 1-65535 之间', trigger: 'blur' },
         ],
       },
     ],
@@ -476,7 +476,7 @@ export const getDecorators = ({ provider, vm, loadbalancer }) => {
         initialValue: 5,
         normalize: v => Number(v),
         rules: [
-          { type: 'integer', min: 0, max: 180, message: '请输入监听端口在 0-180 之间', trigger: 'blur' },
+          { type: 'integer', min: 0, max: 180, message: '请输入范围在 0-180 之间', trigger: 'blur' },
         ],
       },
     ],
@@ -486,7 +486,7 @@ export const getDecorators = ({ provider, vm, loadbalancer }) => {
         initialValue: 90,
         normalize: v => Number(v),
         rules: [
-          { type: 'integer', min: 0, max: 600, message: '请输入监听端口在 0-180 之间', trigger: 'blur' },
+          { type: 'integer', min: 0, max: 600, message: '请输入范围在 0-180 之间', trigger: 'blur' },
         ],
       },
     ],

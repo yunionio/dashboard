@@ -10,7 +10,7 @@ export default {
             title: '删除',
             name: '后端服务器组',
             data: [obj],
-            columns: this.columns,
+            columns: this.columns.slice(0, 2),
             onManager: this.onManager,
           })
         },

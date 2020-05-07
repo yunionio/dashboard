@@ -10,7 +10,7 @@ export default {
         permission: 'lb_loadbalancerlisteners_update',
         action: obj => {
           const query = {
-            type: this.data.provider,
+            type: this.list ? this.data.provider : this.detailData.provider,
             listener: obj.id,
           }
           if (query.type === 'Aws') {
@@ -51,8 +51,8 @@ export default {
                 onManager: this.onManager,
               })
             },
-            meta: ({ enabled }) => {
-              return this.getActionMeta(!enabled, row, 'aclUpdate')
+            meta: () => {
+              return this.getActionMeta(true, row, 'aclUpdate')
             },
           },
           {
@@ -62,12 +62,15 @@ export default {
               this.onManager('performAction', {
                 id: row.id,
                 managerArgs: {
-                  action: 'enable',
+                  action: 'status',
+                  data: {
+                    status: 'enabled',
+                  },
                 },
               })
             },
-            meta: ({ enabled }) => {
-              return this.getActionMeta(!enabled, row, 'enable')
+            meta: ({ status }) => {
+              return this.getActionMeta(status !== 'enabled', row, 'enable')
             },
           },
           {
@@ -77,12 +80,15 @@ export default {
               this.onManager('performAction', {
                 id: row.id,
                 managerArgs: {
-                  action: 'disable',
+                  action: 'status',
+                  data: {
+                    status: 'disabled',
+                  },
                 },
               })
             },
-            meta: ({ enabled }) => {
-              return this.getActionMeta(enabled, row, 'disable')
+            meta: ({ status }) => {
+              return this.getActionMeta(status !== 'disabled', row, 'disable')
             },
           },
           {
@@ -120,7 +126,7 @@ export default {
     ]
   },
   methods: {
-    getActionMeta (condition, row, action) {
+    getActionMeta (expect, row, action) {
       const providerItem = LB_LISTENEER_ACTION_POLICIES[row.provider.toLowerCase()]
       if (providerItem) {
         if ((R.is(Function, providerItem[action]) && providerItem[action](row) === false) || providerItem[action] === false) {
@@ -130,7 +136,7 @@ export default {
           }
         }
       }
-      if (!condition) return { validate: false }
+      if (!expect) return { validate: false }
       return { validate: true }
     },
   },

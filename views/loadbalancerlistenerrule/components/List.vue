@@ -13,6 +13,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import { getNameFilter } from '@/utils/common/tableFilter'
+import expectStatus from '@/constants/expectStatus'
 
 export default {
   name: 'LoadbalancerlistenerruleList',
@@ -30,11 +31,14 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
-        id: this.id,
+        id: 'LoadbalancerListenerRuleList',
         resource: 'loadbalancerlistenerrules',
         getParams: this.getParam,
         filterOptions: {
           name: getNameFilter(),
+        },
+        steadyStatus: {
+          status: Object.values(expectStatus.lb).flat(),
         },
       }),
       groupActions: [
@@ -53,7 +57,6 @@ export default {
           meta: () => {
             return {
               buttonType: 'primary',
-              validate: this.$store.getters.isAdminMode,
             }
           },
         },
