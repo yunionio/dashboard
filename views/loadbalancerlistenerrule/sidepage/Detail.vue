@@ -3,7 +3,8 @@
     :on-manager="onManager"
     :data="data"
     :base-info="baseInfo"
-    :extra-info="extraInfo" />
+    :extra-info="extraInfo"
+    statusModule="lb" />
 </template>
 
 <script>

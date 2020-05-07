@@ -1,5 +1,6 @@
 import { mapGetters } from 'vuex'
 import * as R from 'ramda'
+import _ from 'lodash'
 import DomainProject from '@/sections/DomainProject'
 import { isRequired } from '@/utils/validate'
 import CloudproviderRegionZone from '@/sections/CloudproviderRegionZone'
@@ -178,7 +179,11 @@ export default {
     },
     vpcParams () {
       if (this.form.fd.cloudprovider && this.form.fd.cloudprovider.key && !R.isEmpty(this.scopeParams)) {
-        return { ...this.scopeParams, manager_id: this.form.fd.cloudprovider.key }
+        const params = { ...this.scopeParams, manager_id: this.form.fd.cloudprovider.key }
+        if (_.get(this.form.fd, 'cloudregion.key')) {
+          params.cloudregion = _.get(this.form.fd, 'cloudregion.key')
+        }
+        return params
       }
       return {}
     },

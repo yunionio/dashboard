@@ -97,7 +97,6 @@ export default {
           'path',
           {
             validateFirst: true,
-            initialValue: '/',
             rules: urlRules,
           },
         ],

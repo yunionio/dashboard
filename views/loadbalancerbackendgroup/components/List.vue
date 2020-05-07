@@ -13,6 +13,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import { getNameFilter } from '@/utils/common/tableFilter'
+import expectStatus from '@/constants/expectStatus'
 
 export default {
   name: 'LoadbalancerbackendgroupsList',
@@ -30,11 +31,14 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
-        id: this.id,
+        id: 'LoadbalancerBackendgroupList',
         resource: 'loadbalancerbackendgroups',
         getParams: this.getParam,
         filterOptions: {
           name: getNameFilter(),
+        },
+        steadyStatus: {
+          status: Object.values(expectStatus.lb).flat(),
         },
       }),
       groupActions: [
@@ -54,6 +58,21 @@ export default {
               buttonType: 'primary',
             }
           },
+        },
+        {
+          label: '删除',
+          permission: 'lb_loadbalancerbackendgroups_delete',
+          action: () => {
+            this.createDialog('DeleteResDialog', {
+              vm: this,
+              data: this.list.selectedItems,
+              columns: this.columns,
+              title: '删除',
+              name: '后端服务器组',
+              onManager: this.onManager,
+            })
+          },
+          meta: () => this.$getDeleteResult(this.list.selectedItems),
         },
       ],
     }

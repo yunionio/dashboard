@@ -14,7 +14,7 @@
             v-decorator="decorators.backend"
             show-sync
             :mapper="serverlistMapper"
-            :select-props="{ placeholder: '请选择云服务器' }" />
+            :select-props="{ placeholder: `请选择${$t('dictionary.server')}` }" />
             <div slot="extra">
             没有想要的{{ $t('dictionary.server') }}？可以前往
             <help-link :href="serverHref"> 新建</help-link>

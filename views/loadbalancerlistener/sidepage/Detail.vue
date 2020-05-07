@@ -191,12 +191,12 @@ export default {
             {
               field: 'health_check_rise',
               title: '健康检查健康阈值',
-              formatter: ({ row }) => row.health_check_rise,
+              formatter: ({ row }) => row.health_check_rise + ' 次',
             },
             {
               field: 'health_check_fall',
               title: '健康检查不健康阈值',
-              formatter: ({ row }) => row.health_check_fall,
+              formatter: ({ row }) => row.health_check_fall + ' 次',
             },
             {
               field: 'health_check_req',
