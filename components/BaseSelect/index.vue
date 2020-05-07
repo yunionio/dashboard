@@ -249,7 +249,7 @@ export default {
         if (this.mapper) {
           list = this.mapper(list)
         }
-        this.$emit('update:options', list)
+        this.$emit('update:resList', list)
         const resOpts = arrayToObj(list)
         this.resOpts = resOpts
         this.disabledOpts()
