@@ -12,7 +12,7 @@
             <template v-for="item of dashboardOptions">
               <a-tab-pane :tab="item.name" :key="item.id" />
             </template>
-            <a-dropdown :trigger="['click']" slot="tabBarExtraContent">
+            <a-dropdown :trigger="['click']" slot="tabBarExtraContent" placement="bottomRight">
               <a class="ant-dropdown-link font-weight-bold pl-2 pr-2 h-100 d-block" @click="e => e.preventDefault()">
                 <icon type="more" style="font-size: 18px;" />
               </a>
@@ -254,14 +254,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.dashboard-wrap {
-  position: absolute;
-  top: 64px;
-  left: 60px;
-  padding: 15px 20px;
-  bottom: 0;
-  right: 0;
-  overflow: auto;
+.dashboard-body {
+  width: 100%;
+  height: 100%;
 }
 .card-shadow {
   box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
