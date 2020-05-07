@@ -294,12 +294,16 @@ export default {
     },
     // 预注册批量录入
     doPreBatchAdd () {
+      const params = {
+        hosts: this.form.fd.content,
+        no_probe: true,
+      }
+      if (this.form.fd.project_domain && this.isAdminMode) {
+        params.project_domain = this.form.fd.project_domain
+      }
       return this.hm.rpc({
         methodname: 'DoBatchRegister',
-        params: {
-          hosts: this.form.fd.content,
-          no_probe: true,
-        },
+        params,
       })
     },
     // 预注册文件录入
