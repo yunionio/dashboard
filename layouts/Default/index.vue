@@ -12,11 +12,8 @@
 </template>
 
 <script>
-import * as R from 'ramda'
-import { mapGetters } from 'vuex'
 import Navbar from '@scope/layouts/Navbar'
 import Sidebar from '../Sidebar'
-import notificationListener from '@/utils/notificationListener'
 import TopAlert from '@/sections/TopAlert'
 
 export default {
@@ -30,35 +27,6 @@ export default {
     return {
       l2MenuVisible: false,
     }
-  },
-  computed: {
-    ...mapGetters(['auth']),
-  },
-  watch: {
-    'auth.auth': {
-      handler (val, oldVal) {
-        if (val && val.session && !R.equals(val, oldVal)) {
-          if (this.socket) {
-            this.socket.close()
-          }
-          this.initIO()
-        }
-      },
-      immediate: true,
-    },
-  },
-  methods: {
-    initIO () {
-      if (!this.$appConfig.isPrivate) return
-      const options = {
-        session: this.auth.auth.session,
-      }
-      if (process.env.NODE_ENV === 'production') {
-        options.server = '/'
-      }
-      this.socket = notificationListener(this.$store, options)
-      this.socket.start()
-    },
   },
 }
 </script>

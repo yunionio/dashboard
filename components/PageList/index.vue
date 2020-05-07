@@ -9,6 +9,7 @@
           </template>
           <slot name="group-actions-append" />
           <tag-filter
+            :tagManagerInstance="tagManagerInstance"
             v-if="showTagFilter"
             :list="list" />
         </div>
@@ -133,6 +134,7 @@ export default {
       type: Boolean,
       default: true,
     },
+    tagManagerInstance: Object,
   },
   provide: {
     inList: true,

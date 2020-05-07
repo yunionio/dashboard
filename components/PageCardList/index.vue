@@ -5,6 +5,7 @@
       <template v-if="groupActions">
         <actions :options="groupActions" button-type="default" group />
       </template>
+      <slot name="group-actions-append" />
     </div>
     <card-list v-if="hasData" :list="list.data" :cardFields="cardFields" :singleActions="singleActions" :layoutDirection="layoutDirection" />
     <loader v-else :loading="loading" />

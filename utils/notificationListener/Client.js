@@ -10,18 +10,13 @@ import { message } from 'ant-design-vue'
 
 class Client {
   constructor (store, options = {}) {
-    if (!options.session) {
-      throw new Error('session is required')
-    }
-    const { session, server, ...rest } = options
+    const { server, ...rest } = options
     this.server = server || 'https://office.yunion.io'
     this.events = {}
     this.errorHandler = () => console.error
     this.socket = io(this.server, {
       ...rest,
-      query: {
-        session,
-      },
+      query: {},
       transports: ['websocket'],
       reconnection: true,
       autoConnect: false,
@@ -79,9 +74,6 @@ class Client {
   }
   getSocket () {
     return this.socket
-  }
-  start () {
-    this.socket.open()
   }
 }
 

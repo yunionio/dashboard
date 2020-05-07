@@ -1,5 +1,5 @@
 <template>
-  <component :is="chartType" style="height: 100%;" :data="chartData" v-bind="chartConfigC" :loading="loading" :settings="chartSettings" :extend="chartExtend">
+  <component :is="chartType" style="height: 100%;" :data="chartData" v-bind="chartConfigC" :loading="loading" :settings="chartSettings" :extend="chartExtend" ref="chart">
     <div class="monitor-list-line-loader d-flex flex-column justify-content-center" v-if="!loading && noData">
       <a-empty :description="emptyContent" />
     </div>
@@ -64,6 +64,14 @@ export default {
         colors: this.colors,
         ...this.chartConfig,
       }
+    },
+  },
+  watch: {
+    chartData: {
+      deep: true,
+      handler () {
+        this.$refs.chart.echarts.resize()
+      },
     },
   },
 }

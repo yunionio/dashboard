@@ -44,7 +44,7 @@ export default {
           obj_name: {
             label: '资源名称',
           },
-          owner_tenant: {
+          tenant: {
             label: `所属${this.$t('dictionary.project')}`,
           },
           user: {
@@ -100,10 +100,24 @@ export default {
           field: 'user',
           title: '发起人',
         }),
-        getCopyWithContentTableColumn({
+        {
           field: 'owner_tenant',
           title: `所属${this.$t('dictionary.project')}`,
-        }),
+          showOverflow: 'title',
+          minWidth: 120,
+          slots: {
+            default: ({ row }, h) => {
+              const domain = row.project_domain || row.domain
+              const ret = [
+                <list-body-cell-wrap copy field='owner_tenant' row={row} />,
+                <list-body-cell-wrap hide-field copy field="domain" row={{ domain }}>
+                  <span class='text-weak'>{ domain }</span>
+                </list-body-cell-wrap>,
+              ]
+              return ret
+            },
+          },
+        },
         {
           field: 'notes',
           title: '备注',
