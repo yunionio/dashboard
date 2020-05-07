@@ -129,7 +129,7 @@
           "all_usage_key": "isolated_devices",
           "brand": "OneCloud",
           "cloud_env": "onpremise",
-          "name": "私网IP使用率",
+          "name": "GPU使用率",
           "region": "default",
           "usage_key": "all.servers.isolated_devices"
         }
