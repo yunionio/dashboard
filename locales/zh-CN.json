@@ -1345,7 +1345,8 @@
   "common": {
     "batchAction": "批量操作",
     "ok": "确定",
-    "cancel": "取消"
+    "cancel": "取消",
+    "skip": "跳过"
   },
   "currencys": {
     "CNY": "元",
