@@ -71,6 +71,13 @@ export default {
           scope: this.$store.getters.scope,
         }
       }
+      if (this.params.windowData.currentTab === 'loadbalancerlistenerrule-list') {
+        return {
+          listener: this.detailData.id,
+          details: true,
+          scope: this.$store.getters.scope,
+        }
+      }
       return null
     },
   },
