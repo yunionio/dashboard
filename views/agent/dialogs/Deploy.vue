@@ -112,10 +112,10 @@
             <a-radio-button value="copy">Copy</a-radio-button>
           </a-radio-group>
         </a-form-item> -->
-        <a-form-item label="Yum源地址" v-bind="formItemLayout" v-if="deployMethod === 'yum'">
+        <a-form-item label="Yum源地址" v-bind="formItemLayout">
           <a-input v-decorator="decorators.repo_base_url" placeholder="请输入Yum源地址" />
         </a-form-item>
-        <a-form-item v-bind="tailFormItemLayout" v-if="deployMethod === 'yum'">
+        <a-form-item v-bind="tailFormItemLayout">
           <a-checkbox v-decorator="decorators.repo_sslverify">Yum源TLS校验</a-checkbox>
         </a-form-item>
       </a-form>
@@ -135,7 +135,6 @@
 </template>
 
 <script>
-import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import Ansible from '../controls/ansible'
 import DialogMixin from '@/mixins/dialog'
@@ -157,7 +156,7 @@ export default {
         proj: [
           'proj',
           {
-            validateTrigger: ['blur'],
+            validateTrigger: ['blur', 'change'],
             initialValue: 'system',
             rules: [
               { required: true, message: '请输入项目' },
@@ -167,7 +166,7 @@ export default {
         user: [
           'user',
           {
-            validateTrigger: ['blur'],
+            validateTrigger: ['blur', 'change'],
             rules: [
               { required: true, message: '请选择系统管理员用户' },
             ],
@@ -176,7 +175,7 @@ export default {
         pass: [
           'pass',
           {
-            validateTrigger: ['blur'],
+            validateTrigger: ['blur', 'change'],
             rules: [
               { required: true, message: '请输入系统用户的密码' },
             ],
@@ -184,6 +183,9 @@ export default {
         ],
         hostName: [
           'hostName',
+          {
+            initialValue: 'server',
+          },
         ],
         ip: [
           'ip',
@@ -260,7 +262,7 @@ export default {
         { label: '宿主机', value: 'host' },
         { label: '外部机器', value: '' },
       ],
-      hostName: '',
+      hostName: 'server',
       deploymentHost: '',
       deployMethod: '',
       ansiblePlaybookId: '',
@@ -295,21 +297,20 @@ export default {
   },
   created () {
     this.backfill()
-    this.getUpdateInfo()
   },
   methods: {
     getUpdateInfo () {
       new this.$Manager('updates', 'v1').list({
         params: {
-          $t: +new Date(),
+          status: true,
         },
       }).then(res => {
         if (res.data.data && res.data.data.length) {
-          const updateInfo = R.find(R.propEq('updateAvailable', true))(res.data.data)
-          if (updateInfo) {
-            const { tag } = updateInfo
+          const updateInfo = res.data.data[0]
+          if (updateInfo && updateInfo.current_version) {
+            const v = updateInfo.current_version.slice(1, 4)
             this.form.fc.setFieldsValue({
-              repo_base_url: `https://yunioniso.oss-cn-beijing.aliyuncs.com/iso/${tag.slice(1, 4)}/`,
+              repo_base_url: `https://yunioniso.oss-cn-beijing.aliyuncs.com/iso/${v}/`,
             })
           }
         }
@@ -421,6 +422,8 @@ export default {
           this.hostName = ''
         }
         /* 处理云主机end */
+      } else {
+        this.getUpdateInfo()
       }
     },
     doCreate (data) {
