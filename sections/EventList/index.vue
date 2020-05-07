@@ -96,10 +96,28 @@ export default {
           field: 'start_time',
           title: '操作时间',
         }),
-        getCopyWithContentTableColumn({
+        {
           field: 'user',
           title: '发起人',
-        }),
+          showOverflow: 'title',
+          minWidth: 120,
+          slots: {
+            default: ({ row }, h) => {
+              const domain = row.project_domain
+              const tenant = row.tenant
+              const ret = [
+                <list-body-cell-wrap copy field='user' row={row} />,
+                <list-body-cell-wrap hide-field copy field="tenant" row={{ tenant }}>
+                  <span class='text-weak'>{ tenant }</span>
+                </list-body-cell-wrap>,
+                <list-body-cell-wrap hide-field copy field="domain" row={{ domain }}>
+                  <span class='text-weak'>{ domain }</span>
+                </list-body-cell-wrap>,
+              ]
+              return ret
+            },
+          },
+        },
         {
           field: 'owner_tenant',
           title: `所属${this.$t('dictionary.project')}`,
@@ -107,7 +125,7 @@ export default {
           minWidth: 120,
           slots: {
             default: ({ row }, h) => {
-              const domain = row.project_domain || row.domain
+              const domain = row.owner_domain
               const ret = [
                 <list-body-cell-wrap copy field='owner_tenant' row={row} />,
                 <list-body-cell-wrap hide-field copy field="domain" row={{ domain }}>
