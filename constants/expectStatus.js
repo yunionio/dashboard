@@ -216,6 +216,10 @@ export default {
     success: ['Running', 'Succeeded', 'Complete', 'Bound', 'complated', 'Completed'],
     danger: ['Failed', 'unBound'],
   },
+  k8s_resource_job: {
+    success: ['Complete'],
+    danger: ['Failed'],
+  },
   release: {
     success: ['deployed'],
     info: ['superseded'],
@@ -259,5 +263,16 @@ export default {
     info: ['unavailable'],
     success: ['available'],
     danger: ['expired'],
+  },
+  severity: {
+    info: ['Unknown'],
+    success: ['OK'],
+    danger: ['Critical'],
+    warning: ['WARNING'],
+  },
+  kubecomponent: {
+    info: ['init'],
+    success: ['deployed'],
+    danger: ['delete_fail', 'deploy_fail', 'update_fail'],
   },
 }

@@ -37,7 +37,7 @@ export default {
   },
   render (h) {
     return (
-      <base-dialog onCancel={this.cancelDialog}>
+      <base-dialog onCancel={this.cancelDialog} modalProps={this.params.modalProps}>
         <div slot='header'>{ this.params.header }</div>
         <div slot='body'>
           { this.renderBody() }

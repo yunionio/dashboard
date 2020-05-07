@@ -2,12 +2,12 @@
   <div class="navbar-wrap d-flex align-items-center">
     <template v-if="authInfoLoaded">
       <div class="d-flex align-items-center h-100 navbar-item-trigger" @click.stop.prevent="map.visible = !map.visible">
-        <a-icon type="menu" style="font-size: 24px;" />
+        <icon type="menu" style="font-size: 24px;" />
       </div>
     </template>
     <template v-else>
       <div class="d-flex align-items-center h-100 navbar-item-trigger">
-        <a-icon type="menu" style="font-size: 24px; cursor: default;" />
+        <icon type="menu" style="font-size: 24px; cursor: default;" />
       </div>
     </template>
     <div class="flex-fill d-flex align-items-center h-100">
@@ -130,6 +130,8 @@ import NotifyPopover from './components/NotifyPopover'
 import WorkOrderPopover from './components/WorkOrderPopover'
 import HelpPopover from './components/HelpPopover'
 import GlobalSearch from './components/GlobalSearch'
+import UserProjectSelect from '@/sections/UserProjectSelect'
+import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'Navbar',
@@ -140,6 +142,7 @@ export default {
     GlobalSearch,
     OneCloudMap,
   },
+  mixins: [WindowsMixin],
   data () {
     return {
       map: {
@@ -147,6 +150,7 @@ export default {
       },
       reLogging: false,
       viewChangePopoverVisible: false,
+      selectPid: '',
     }
   },
   computed: {
@@ -281,9 +285,10 @@ export default {
             this.$router.push('/guide')
             return
           }
-          if (R.isNil(val.projects) || R.isEmpty(val.projects)) {
+          if ((R.isNil(val.projects) || R.isEmpty(val.projects)) && (R.isNil(val.projectId) || R.isEmpty(val.projectId))) {
             this.$router.push('/no-project')
           }
+          this.checkProjects(val)
         }
       },
       immediate: true,
@@ -380,6 +385,7 @@ export default {
           await this.$store.dispatch('auth/getScopeResource')
           this.$router.push('/')
         }
+        return true
       } catch (error) {
         throw error
       } finally {
@@ -453,6 +459,35 @@ export default {
           },
         },
       })
+    },
+    checkProjects (userInfo) {
+      // 当有项目时 且 没有匹配到当前登录项目，则提示选择项目进行relogin
+      if (
+        (R.isEmpty(userInfo.projectId) || R.isNil(userInfo.projectId)) &&
+        (!R.isEmpty(userInfo.projects) && !R.isNil(userInfo.projects))
+      ) {
+        this.createDialog('CommonDialog', {
+          header: `选择${this.$t('dictionary.project')}`,
+          body: () => {
+            return this.$createElement(UserProjectSelect, {
+              props: {
+                value: this.selectPid,
+              },
+              on: {
+                input: (pid) => {
+                  this.selectPid = pid
+                },
+              },
+            })
+          },
+          ok: () => this.reLogin(this.selectPid, 'project'),
+          hiddenCancel: true,
+          modalProps: {
+            maskClosable: false,
+            closable: false,
+          },
+        })
+      }
     },
   },
 }

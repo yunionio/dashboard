@@ -44,6 +44,16 @@ class WaitStatusJob {
   async checkStatus () {
     if (!this.data.list.manager) return
     const params = this.data.list.params
+    if (!R.isEmpty(this.data.list.itemGetParams)) {
+      for (const key in this.data.list.itemGetParams) {
+        const val = this.data.list.itemGetParams[key]
+        if (val) {
+          params[key] = val
+        } else {
+          params[key] = this.data.data[key]
+        }
+      }
+    }
     delete params.offset
     delete params.limit
     try {
@@ -151,6 +161,8 @@ class CreateList {
     tagFilter = {},
     // 外传responseData
     responseData = {},
+    // get status 额外参数
+    itemGetParams = {},
   }) {
     // 列表唯一标识
     this.id = id ? `LIST_${id}` : undefined
@@ -197,6 +209,8 @@ class CreateList {
     this.responseData = responseData
     // 初始化 params
     this.params = {}
+    // 特殊根据某条数据进行get时的参数，如 k8s/deployment/list
+    this.itemGetParams = itemGetParams
   }
   // 重写selectedItems getter和setter
   get selectedItems () {

@@ -5,6 +5,7 @@
       filter-without-user-meta
       :params="params"
       :value="list.tagFilter"
+      :managerInstance="tagManagerInstance"
       @change="handleTagFilterChange">
       <template v-slot:trigger="{ loading }">
         <a-button class="flex-shrink-0" style="margin-right: -1px;"><icon type="res-tag" />标签</a-button>
@@ -44,6 +45,7 @@ export default {
       type: Object,
       required: true,
     },
+    tagManagerInstance: Object,
   },
   computed: {
     params () {
