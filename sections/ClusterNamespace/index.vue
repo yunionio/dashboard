@@ -62,6 +62,9 @@ export default {
       this.paramsChange()
     },
   },
+  mounted () {
+    this.paramsChange()
+  },
   methods: {
     ...mapMutations('common', {
       setCluster: 'SET_K8S_CLUSTER',
