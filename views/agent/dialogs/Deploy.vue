@@ -91,7 +91,7 @@
               style="width: 320px" />
           </a-form-item>
         </a-form-item>
-        <a-form-item v-bind="formItemLayout">
+        <!-- <a-form-item v-bind="formItemLayout">
           <template slot="label">
             <span>
               部署方式
@@ -111,9 +111,9 @@
             <a-radio-button value="yum">Yum</a-radio-button>
             <a-radio-button value="copy">Copy</a-radio-button>
           </a-radio-group>
-        </a-form-item>
+        </a-form-item> -->
         <a-form-item label="Yum源地址" v-bind="formItemLayout" v-if="deployMethod === 'yum'">
-          <a-input v-decorator="decorators.repo_base_url" placeholder="请输入Yum源地址，一般为：https://控制节点IP/yumrepo" />
+          <a-input v-decorator="decorators.repo_base_url" placeholder="请输入Yum源地址" />
         </a-form-item>
         <a-form-item v-bind="tailFormItemLayout" v-if="deployMethod === 'yum'">
           <a-checkbox v-decorator="decorators.repo_sslverify">Yum源TLS校验</a-checkbox>
@@ -135,6 +135,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import Ansible from '../controls/ansible'
 import DialogMixin from '@/mixins/dialog'
@@ -221,7 +222,7 @@ export default {
           {
             validateFirst: true,
             validateTrigger: ['blur'],
-            initialValue: `${location.protocol}//${location.host}/yumrepo`,
+            // initialValue: `${location.protocol}//${location.host}/yumrepo`,
             rules: [
               { required: true, message: '请输入Yum源地址' },
               { validator: this.$validate('url') },
@@ -294,8 +295,26 @@ export default {
   },
   created () {
     this.backfill()
+    this.getUpdateInfo()
   },
   methods: {
+    getUpdateInfo () {
+      new this.$Manager('updates', 'v1').list({
+        params: {
+          $t: +new Date(),
+        },
+      }).then(res => {
+        if (res.data.data && res.data.data.length) {
+          const updateInfo = R.find(R.propEq('updateAvailable', true))(res.data.data)
+          if (updateInfo) {
+            const { tag } = updateInfo
+            this.form.fc.setFieldsValue({
+              repo_base_url: `https://yunioniso.oss-cn-beijing.aliyuncs.com/iso/${tag.slice(1, 4)}/`,
+            })
+          }
+        }
+      })
+    },
     serversSuccess (list = []) {
       const { deployment } = this.params.data[0] || {}
       const { getFieldValue, validateFields } = this.form.fc
