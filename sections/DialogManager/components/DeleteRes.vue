@@ -61,7 +61,7 @@ export default {
       if (okButtonProps && R.type(okButtonProps) === 'Object') {
         return Object.assign(defaultProps, okButtonProps)
       }
-      return okButtonProps
+      return defaultProps
     },
     idKey () {
       return this.params.idKey || 'id'
