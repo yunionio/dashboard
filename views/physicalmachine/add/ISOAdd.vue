@@ -15,7 +15,7 @@
         <a-input-password v-decorator="decorators.ipmi_password" />
       </a-form-item>
       <a-form-item label="管理口IP" extra="会根据输入的IP子网或者IP地址设置物理机的管理口IP">
-        <net-select v-decorator="decorators.net" />
+        <net-select v-decorator="decorators.net" :project-domain="fd.project_domain" />
       </a-form-item>
     </template>
     <template v-if="isFile">

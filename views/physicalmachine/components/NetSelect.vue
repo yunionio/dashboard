@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex">
+  <div class="d-flex align-items-center">
     <base-select
       class="w-100"
       resource="networks"
@@ -19,8 +19,13 @@
 </template>
 
 <script>
+import * as R from 'ramda'
+
 export default {
   name: 'NetSelect',
+  props: {
+    projectDomain: String,
+  },
   inject: ['form'],
   data () {
     return {
@@ -28,23 +33,44 @@ export default {
       networkId: '',
       network: {},
       ip: '',
-      networkParams: {
+    }
+  },
+  computed: {
+    networkParams () {
+      const ret = {
         is_on_premise: true,
         usable: true,
         vpc: 'default',
-      },
-    }
+      }
+      if (this.projectDomain) ret.project_domain = this.projectDomain
+      return ret
+    },
+  },
+  watch: {
+    projectDomain (val, oldVal) {
+      this.networkId = ''
+      this.network = {}
+      this.ip = ''
+    },
   },
   methods: {
     handleShowIp () {
       this.ipShow = true
     },
     handleChange () {
-      this.$nextTick(() => {
-        this.$emit('change', {
+      let value = null
+      if (
+        (!R.isEmpty(this.networkId) && !R.isNil(this.networkId)) ||
+        (!R.isEmpty(this.network) && !R.isNil(this.network)) ||
+        (!R.isEmpty(this.ip) && !R.isNil(this.ip))
+      ) {
+        value = {
           access_net: this.network,
           access_ip: this.ip,
-        })
+        }
+      }
+      this.$nextTick(() => {
+        this.$emit('change', value)
       })
     },
   },
