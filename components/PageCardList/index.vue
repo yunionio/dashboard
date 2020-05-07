@@ -83,7 +83,7 @@ export default {
       this.list.refresh()
     },
     sizeChange (current, limit) {
-      this.list.offset = (current - 1) * this.list.limit
+      this.list.offset = (Math.max(current, 1) - 1) * this.list.limit
       this.list.limit = limit
       this.refresh()
     },
