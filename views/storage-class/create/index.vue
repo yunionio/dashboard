@@ -84,7 +84,7 @@
         <a-button @click="cancel">取消</a-button>
       </a-form-item>
     </a-form>
-    <base-dialog v-if="showCreateCephCSI">
+    <base-dialog v-if="showCreateCephCSI" @cancel="() => showCreateCephCSI = false">
       <div slot="header">部署CephCSI</div>
       <div slot="body">
         服务组件 CephCSI 尚未部署，请先部署
@@ -101,6 +101,7 @@ import { mapGetters } from 'vuex'
 import ClusterSelect from '@K8S/sections/ClusterSelect'
 import NamespaceSelect from '@K8S/sections/NamespaceSelect'
 import k8sCreateMixin from '@K8S/mixins/create'
+import _ from 'lodash'
 
 export default {
   name: 'StorageClassCreate',
@@ -110,6 +111,8 @@ export default {
   },
   mixins: [k8sCreateMixin],
   data () {
+    const initCluster = _.get(this.$route, 'query.cluster') || this.$store.state.common.k8s.cluster
+    console.log(initCluster, 'initCluster')
     return {
       loading: false,
       form: {
@@ -144,7 +147,7 @@ export default {
         cluster: [
           'cluster',
           {
-            initialValue: this.$store.state.common.k8s.cluster,
+            initialValue: initCluster,
             rules: [
               { required: true, message: '请选择集群' },
             ],

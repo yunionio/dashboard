@@ -41,6 +41,20 @@ import NamespaceSelect from '@K8S/sections/NamespaceSelect'
 import { SECRET_DEFAULT_TYPE } from '@K8S/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import { REGEXP } from '@/utils/validate'
+
+const validateEmail = (rule, value, cb) => {
+  if (!value) {
+    cb()
+  } else {
+    const { regexp, message } = REGEXP.email
+    if (regexp.test(value)) {
+      cb()
+    } else {
+      cb(Error(message))
+    }
+  }
+}
 
 export default {
   name: 'K8SImageSecretCreateDialog',
@@ -111,6 +125,11 @@ export default {
         ],
         email: [
           'email',
+          {
+            rules: [
+              { validator: validateEmail, trigger: 'blur' },
+            ],
+          },
         ],
       },
       formItemLayout: {
