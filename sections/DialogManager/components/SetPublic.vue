@@ -10,7 +10,7 @@
         :rules="rules"
         v-bind="formItemLayout">
         <a-form-model-item label="共享范围" prop="type">
-          <a-radio-group v-model="fd.type">
+          <a-radio-group v-model="fd.type" @change="handleTypeChange">
             <template v-for="item of typeOptions">
               <a-radio-button :key="item.key" :value="item.key">{{ item.label }}</a-radio-button>
             </template>
@@ -285,6 +285,11 @@ export default {
           action: 'public',
           data,
         },
+      })
+    },
+    handleTypeChange () {
+      this.$nextTick(() => {
+        this.$refs.form.validate()
       })
     },
     // 全部与选择项互斥交互
