@@ -268,17 +268,13 @@ export default {
         const _vpcId = fc.getFieldValue('vpc')
         if (vpcList !== undefined && _vpcId) {
           this.isDeleteVpc = vpcList.length === 0 || !vpcList.find(item => item.id === _vpcId)
-        }
-        if (_vpcId) {
           fc.validateFields(['vpc'])
         }
         // 判断当前选择的主机模版中的netwrok是否存在netwrok列表中
-        const _networkId = fc.getFieldValue('netwrok')
+        const _networkId = fc.getFieldValue('network')
         if (networkList !== undefined && _networkId) {
           this.isDeleteNetwork = networkList.length === 0 || !networkList.find(item => item.id === _networkId)
-        }
-        if (_networkId) {
-          fc.validateFields(['netwrok'])
+          fc.validateFields(['network'])
         }
       })
     },
