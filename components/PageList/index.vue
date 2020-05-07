@@ -19,7 +19,7 @@
             <a-tooltip title="导出数据" v-if="exportDataOptions">
               <a-button icon="download" style="width: 40px;" @click="handleExportData" />
             </a-tooltip>
-            <a-tooltip title="自定义列" v-if="list.id">
+            <a-tooltip title="自定义列表项" v-if="list.id">
               <a-button class="ml-2" icon="setting" style="width: 40px;" @click="handleCustomList" />
             </a-tooltip>
           </template>
@@ -280,7 +280,7 @@ export default {
     },
     handleCustomList () {
       this.$parent.createDialog('CustomListDialog', {
-        title: '自定义列表',
+        title: '自定义列表项',
         list: this.list,
         customs: this.tableColumns,
         showTagColumns: this.showTagColumns,
