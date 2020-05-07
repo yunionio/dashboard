@@ -17,24 +17,24 @@
         <namespace-select v-decorator="decorators.namespace" :cluster="cluster" :namespaceObj.sync="namespaceObj" />
       </a-form-item>
       <template v-if="form.fd.type === 'keypair'">
-        <a-form-item label="镜像仓库地址" prop="server">
+        <a-form-item label="镜像仓库地址">
           <a-input v-decorator="decorators.server" placeholder="请输入镜像仓库地址" />
         </a-form-item>
-        <a-form-item label="用户名" prop="user">
+        <a-form-item label="用户名">
           <a-input v-decorator="decorators.user" placeholder="请输入用户名" />
         </a-form-item>
-        <a-form-item label="密码" prop="password">
+        <a-form-item label="密码">
           <a-input v-decorator="decorators.password" placeholder="请输入密码" show-password />
         </a-form-item>
-        <a-form-item label="邮箱" prop="email">
+        <a-form-item label="邮箱">
           <a-input v-decorator="decorators.email" placeholder="请输入邮箱" />
         </a-form-item>
       </template>
       <template v-else>
-        <a-form-item label="UserId" prop="userId">
+        <a-form-item label="UserId">
           <a-input v-decorator="decorators.userId" placeholder="例如 admin" />
         </a-form-item>
-        <a-form-item label="UserKey" prop="userKey">
+        <a-form-item label="UserKey">
           <a-input v-decorator="decorators.userKey" placeholder="例如 AQAc8m5e754hHhAAvWYtFivfs9bvhRm6P51QXA==" />
         </a-form-item>
       </template>
@@ -47,6 +47,21 @@ import ClusterSelect from '@K8S/sections/ClusterSelect'
 import NamespaceSelect from '@K8S/sections/NamespaceSelect'
 import { SECRET_DEFAULT_TYPE } from '@K8S/constants'
 import k8sCreateMixin from '@K8S/mixins/create'
+import _ from 'lodash'
+import { REGEXP } from '@/utils/validate'
+
+const validateEmail = (rule, value, cb) => {
+  if (!value) {
+    cb()
+  } else {
+    const { regexp, message } = REGEXP.email
+    if (regexp.test(value)) {
+      cb()
+    } else {
+      cb(Error(message))
+    }
+  }
+}
 
 export default {
   name: 'K8sConfigmapCreate',
@@ -56,7 +71,7 @@ export default {
   },
   mixins: [k8sCreateMixin],
   data () {
-    const type = this.$route.query ? this.$route.query.storageType : 'keypair'
+    const type = _.get(this.$route, 'query.storageType') || 'keypair'
     return {
       form: {
         fc: this.$form.createForm(this),
@@ -142,7 +157,7 @@ export default {
           'email',
           {
             rules: [
-              { validator: this.$validate('email'), trigger: 'blur' },
+              { validator: validateEmail, trigger: 'blur' },
             ],
           },
         ],

@@ -16,7 +16,7 @@
       <a-form-item label="存储类">
         <div slot="extra">
           没有想要的？可以前往
-          <help-link href="/v2/k8s-storageclass/create"> 新建存储类</help-link>
+          <help-link :href="storageClassHref"> 新建存储类</help-link>
         </div>
         <base-select
           v-decorator="decorators.storageClass"
@@ -48,7 +48,16 @@ export default {
   data () {
     return {
       form: {
-        fc: this.$form.createForm(this),
+        fc: this.$form.createForm(this, {
+          onValuesChange: (props, values) => {
+            R.forEachObjIndexed((value, key) => {
+              this.form.fd[key] = value
+            }, values)
+          },
+        }),
+        fd: {
+          cluster: this.$store.state.common.k8s.cluster,
+        },
       },
       formItemLayout: {
         labelCol: { span: 4 },
@@ -103,10 +112,13 @@ export default {
     }
   },
   computed: {
+    storageClassHref () {
+      return `/v2/k8s-storageclass/create?cluster=${this.form.fd.cluster}`
+    },
     storageclassParams () {
-      if (this.cluster) {
+      if (this.form.fd.cluster) {
         return {
-          cluster: this.cluster,
+          cluster: this.form.fd.cluster,
           limit: 0,
         }
       }

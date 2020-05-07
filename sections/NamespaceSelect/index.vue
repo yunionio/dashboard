@@ -2,6 +2,7 @@
   <a-select
     :disabled="disabled"
     @change="change"
+    placeholder="请选择命名空间"
     :value="value">
     <a-select-option
       v-for="item in options"
