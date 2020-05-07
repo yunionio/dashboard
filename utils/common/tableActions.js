@@ -98,9 +98,26 @@ export function getSetPublicAction (vm, dialogParams = {}, params = {}) {
         validate: data && data.length > 0,
         tooltip: null,
       }
-      if (!store.getters.l3PermissionEnable || !store.getters.isAdminMode) ret.validate = false
+      if (!store.getters.l3PermissionEnable) {
+        ret.validate = false
+        return ret
+      }
+      if (store.getters.isAdminMode) {
+        ret.validate = true
+        return ret
+      }
+      if (store.getters.isDomainAdmin) {
+        const selfDomain = store.getters.userInfo.projectDomain
+        const isSelfDomain = data.every(item => item.project_domain === selfDomain)
+        if (isSelfDomain) {
+          ret.validate = true
+          return ret
+        }
+      }
+      ret.validate = false
       return ret
     },
   }
+  if (params.permission) options.permission = params.permission
   return options
 }
