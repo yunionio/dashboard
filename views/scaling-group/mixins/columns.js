@@ -33,7 +33,9 @@ export default {
         sortable: true,
         slots: {
           default: ({ row }) => {
-            return [<side-page-trigger name='ScalingGroupSidePage' id={row.id} tab="server-list" list={this.list} vm={this}>{ row.instance_number }</side-page-trigger>]
+            if (!row.instance_number) return '-'
+            return row.instance_number
+            // return [<side-page-trigger name='ScalingGroupSidePage' id={row.id} tab="server-list" list={this.list} vm={this}>{ row.instance_number }</side-page-trigger>]
           },
         },
       },

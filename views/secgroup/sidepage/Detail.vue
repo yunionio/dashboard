@@ -32,11 +32,17 @@ export default {
       baseInfo: [
         {
           field: 'guest_cnt',
-          title: '关联实例',
+          title: '关联虚拟机',
+          formatter: ({ row }) => {
+            return <a onClick={ () => this.$emit('tab-change', 'vminstance-list') }>{row.guest_cnt}</a>
+          },
         },
         {
           field: 'cache_cnt',
           title: '缓存份数',
+          formatter: ({ row }) => {
+            return <a onClick={ () => this.$emit('tab-change', 'cache-list') }>{row.cache_cnt}</a>
+          },
         },
         getPublicScopeTableColumn({ vm: this }),
       ],
