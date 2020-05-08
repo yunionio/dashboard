@@ -75,6 +75,7 @@ export default {
         onManager: this.onManager,
         hideField: true,
         title: '域名',
+        edit: false,
         formRules: function (row) {
           return [
             { required: true, message: '请输入名字' },
