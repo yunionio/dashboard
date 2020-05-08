@@ -1,7 +1,7 @@
 
 export default {
   created () {
-    const ownerDomain = obj => this.$store.getters.isAdminMode || obj.domain_id === this.$store.getters.userInfo.projectDomainId
+    const ownerDomain = obj => this.$store.getters.isAdminMode || obj.cloudaccount_domain_id === this.$store.getters.userInfo.projectDomainId
     this.singleActions = [
       {
         label: '设置同步',
@@ -32,6 +32,7 @@ export default {
             },
           }).then(() => {
             this.list.refresh()
+            this.$message.success('同步完成')
           })
         },
         meta: obj => {
