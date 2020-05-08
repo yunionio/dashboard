@@ -1,5 +1,5 @@
 <template>
-  <a-button :disable="loading" @click="refresh">
+  <a-button :disabled="disabled" @click="refresh">
     <a-icon v-if="loading" type="sync" spin />
     <a-icon v-else type="sync" />
   </a-button>
@@ -12,6 +12,9 @@ export default {
     loading: {
       type: Boolean,
       required: true,
+    },
+    disabled: {
+      type: Boolean,
     },
   },
   methods: {

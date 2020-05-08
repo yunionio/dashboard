@@ -3,7 +3,7 @@
     <page-toolbar>
       <div class="mb-2 d-flex" v-if="showGroupActions">
         <div class="d-flex flex-fill">
-          <refresh-button class="flex-shrink-0" :loading="loading" @refresh="refresh" />
+          <refresh-button :disabled="disabledRefreshBtn"  class="flex-shrink-0" :loading="loading" @refresh="refresh" />
           <template v-if="groupActions">
             <actions class="flex-shrink-0" :options="groupActions" button-type="default" @clear-selected="handleClearSelected" group />
           </template>
@@ -135,6 +135,10 @@ export default {
       default: true,
     },
     tagManagerInstance: Object,
+    disabledRefreshBtn: {
+      type: Boolean,
+      default: false,
+    },
   },
   provide: {
     inList: true,
