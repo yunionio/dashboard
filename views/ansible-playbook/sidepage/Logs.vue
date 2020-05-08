@@ -39,7 +39,6 @@ export default {
   watch: {
     isRun: {
       handler (newIsRun) {
-        console.log(`newIsRun: ${newIsRun}`)
         if (newIsRun) {
           this.querys()
         } else {

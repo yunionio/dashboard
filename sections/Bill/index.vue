@@ -79,7 +79,6 @@ export default {
       if (this.providerList && this.providerList.length) {
         const list = this.providerList.map(val => val.name.toLowerCase())
         if (R.is(Array, item.includes)) {
-          console.log(list, item, 'list')
           return item.includes.some(provider => list.includes(provider))
         }
       }
