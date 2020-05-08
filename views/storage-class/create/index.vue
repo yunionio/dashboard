@@ -207,7 +207,7 @@ export default {
     secretsParams () {
       if (this.secretNamespace && this.cluster) {
         return {
-          type: 'yunion.io/' + this.secretNamespace,
+          type: 'yunion.io/ceph-csi',
           namespace: this.secretNamespace,
           cluster: this.cluster,
           limit: 0,
