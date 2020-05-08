@@ -110,9 +110,16 @@ export default {
               resource: 'storages',
             }, {
               meta: (row) => {
-                return {
-                  validate: row.storage_type === 'local',
+                const isLocal = row.storage_type === 'local'
+                const ret = {
+                  validate: true,
+                  tooltip: null,
                 }
+                if (isLocal) {
+                  ret.validate = false
+                  ret.tooltip = '本地存储不支持该操作，默认与该宿主机一致'
+                }
+                return ret
               },
             }),
             getSetPublicAction(this, {
@@ -120,9 +127,16 @@ export default {
               scope: 'domain',
             }, {
               meta: (row) => {
-                return {
-                  validate: row.storage_type === 'local',
+                const isLocal = row.storage_type === 'local'
+                const ret = {
+                  validate: true,
+                  tooltip: null,
                 }
+                if (isLocal) {
+                  ret.validate = false
+                  ret.tooltip = '本地存储不支持该操作，默认与该宿主机一致'
+                }
+                return ret
               },
             }),
             // {
