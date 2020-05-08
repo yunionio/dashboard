@@ -2,7 +2,9 @@
   <a-form :form="form.fc" class="mt-3" v-bind="formItemLayout">
     <a-divider orientation="left">基础配置</a-divider>
     <a-form-item label="开启健康检查">
-      <a-switch v-decorator="decorators.health_check" :disabled="true" />
+      <a-tooltip title="【AWS】的的监听不能关闭健康检查" placement="top">
+        <a-switch v-decorator="decorators.health_check" :disabled="true" />
+      </a-tooltip>
     </a-form-item>
     <template v-if="form.fd.health_check">
       <a-divider orientation="left">高级配置</a-divider>
