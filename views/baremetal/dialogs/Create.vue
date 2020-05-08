@@ -238,6 +238,8 @@ export default {
       diskData: JSON.parse(JSON.stringify(this.params.diskData)), // 拷贝参数
       diskDataKeys: [...Object.keys(this.params.diskData)],
       step: 1,
+      startIndex: 0,
+      endIndex: 0,
     }
   },
   computed: {
@@ -272,6 +274,8 @@ export default {
               ...item,
               label: item.type + ':' + sizestr(item.size, 'M', 1024),
               value: item.type + ':' + sizestr(item.size, 'M', 1024),
+              start_index: item.start_index,
+              end_index: item.end_index,
               children: this._getRaidOptions(diskDataKeyItem, item.count),
             }
             if (optionL2.children.length === 0) return
@@ -308,6 +312,8 @@ export default {
         this.maxcount = selectedOptions[2].props.max
         this.mincount = selectedOptions[2].props.min
         this.step = selectedOptions[2].props.step
+        this.step = selectedOptions[2].props.step
+        this.startIndex = selectedOptions[1].start_index
       }
     },
     validateForm () {
@@ -324,6 +330,8 @@ export default {
     async handleConfirm () {
       const values = await this.validateForm()
       values['computeCount'] = values.count
+      values['start_index'] = this.startIndex
+      values['end_index'] = this.endIndex
       this.params.updateData(values)
       this.cancelDialog()
     },
