@@ -486,6 +486,6 @@ export const getProjectDomainTableColumn = ({
     title,
     field,
     sortable: true,
-    hidden: !store.getters.isAdminMode,
+    hidden: !(store.getters.isAdminMode || store.getters.isDomainMode),
   })
 }
