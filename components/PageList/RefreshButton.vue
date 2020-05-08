@@ -1,5 +1,5 @@
 <template>
-  <a-button :disabled="disabled" @click="refresh">
+  <a-button :disabled="disabled || loading" @click="refresh">
     <a-icon v-if="loading" type="sync" spin />
     <a-icon v-else type="sync" />
   </a-button>
