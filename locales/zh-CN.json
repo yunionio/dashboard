@@ -125,7 +125,8 @@
       "start_eip_convert": "EIP转换中",
       "eip_convert_failed": "EIP转换失败",
       "set_auto_renew": "设置自动续费中",
-      "set_auto_renew_failed": "设置自动续费失败"
+      "set_auto_renew_failed": "设置自动续费失败",
+      "converted": "转换完成"
     },
     "network": {
       "init": "初始化",
