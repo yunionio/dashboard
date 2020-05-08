@@ -12,9 +12,11 @@
 import { getAssociateNameTableColumn } from '../utils/columns'
 import { getBrandTableColumn } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
+import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'EipDetail',
+  mixins: [WindowsMixin],
   props: {
     onManager: {
       type: Function,
@@ -29,7 +31,7 @@ export default {
     return {
       baseInfo: [
         getBrandTableColumn(),
-        getAssociateNameTableColumn(),
+        getAssociateNameTableColumn(this),
         {
           field: 'ip_addr',
           title: 'IP地址',
