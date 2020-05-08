@@ -11,6 +11,7 @@
       </a-form-item>
       <a-form-item
         label="API Server 地址"
+        extra="请输入集群的API Server地址，例如：https://<IP>:<Port>/"
         v-bind="formItemLayout">
         <a-input v-decorator="decorators.api_server" placeholder="请输入API Server 地址" />
       </a-form-item>
@@ -62,7 +63,7 @@ export default {
           {
             validateTrigger: 'blur',
             rules: [
-              { required: true, message: '请输入版本' },
+              { required: true, message: '请输入API Server 地址' },
             ],
           },
         ],
