@@ -3,7 +3,8 @@
     <page-list
       default-search-key="obj_name"
       :list="list"
-      :columns="columns" />
+      :columns="columns"
+      :disabledRefreshBtn="true" />
      <div class="mb-3 search-date">
       <a-date-picker
         v-model="dateTime"
