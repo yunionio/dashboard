@@ -15,7 +15,7 @@ import { sizestrWithUnit } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
 import {
   getBrandTableColumn,
-  getRegionTableColumn,
+  getCopyWithContentTableColumn,
 } from '@/utils/common/tableColumn'
 
 let RenderSizeTitle = {
@@ -77,7 +77,17 @@ export default {
       syncLoading: false,
       baseInfo: [
         getBrandTableColumn(),
-        getRegionTableColumn(),
+        getCopyWithContentTableColumn({
+          field: 'cloudregion',
+          title: '区域',
+          hideField: true,
+          slotCallback: row => {
+            if (!row.cloudregion) return '-'
+            return [
+              <side-page-trigger permission='areas_get' name='CloudregionSidePage' id={row.cloudregion_id} vm={this}>{ row.cloudregion }</side-page-trigger>,
+            ]
+          },
+        }),
         {
           field: 'storage_class',
           title: '存储类型',
