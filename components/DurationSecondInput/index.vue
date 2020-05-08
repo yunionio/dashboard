@@ -28,6 +28,10 @@ export default {
         { label: '年', key: 'years' },
       ],
     },
+    min: {
+      type: Number,
+      default: 1,
+    },
   },
   data () {
     // 将传入的秒进行和控件单位转换，显示为最大值（如：传入3600，应该显示60分）
@@ -50,9 +54,10 @@ export default {
       this.time = val
       this.emit()
     },
-    inputChange (val) {
-      const v = val.target.value === '0' ? 1 : val.target.value
-      this.num = v || 1
+    inputChange (e) {
+      const val = +e.target.value
+      const v = val < this.min ? this.min : val
+      this.num = v || this.min
       this.emit()
     },
     emit () {

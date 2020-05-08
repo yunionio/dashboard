@@ -1281,15 +1281,19 @@
   "globalSetting": {
     "identity$password_unique_history_check": {
       "label": "密码不重复次数",
-      "desc": "云管用户设置密码不重复的次数限制，例如：若设置为3，则新密码不能与之前3次已使用过的历史密码相同。默认为空，代表没有限制。"
+      "desc": "云管用户设置密码不重复的次数限制，例如：若设置为3，则新密码不能与之前3次已使用过的历史密码相同。默认为空，代表没有限制。仅针对本地SQL用户有效。"
     },
     "identity$password_minimal_length": {
       "label": "密码最小长度",
-      "desc": "云管用户设置密码的最小长度限制。默认为6位。"
+      "desc": "云管用户设置密码的最小长度限制。默认为6位。仅针对本地SQL用户有效。"
     },
     "identity$password_error_lock_count": {
       "label": "连续登录失败次数",
-      "desc": "连续登录失败次数的上限。当连续登录失败次数超过设置值时，该用户将被锁定。锁定后的用户需要管理员手动启用用户。默认值为空，代表没有限制。"
+      "desc": "连续登录失败次数的上限。当连续登录失败次数超过设置值时，该用户将被锁定。锁定后的用户需要管理员手动启用用户。默认值为空，代表没有限制。仅针对本地SQL用户有效。"
+    },
+    "identity$password_expiration_seconds": {
+      "label": "密码有效期",
+      "desc": "云管本地用户（SQL）默认密码有效期时长。0代表无限制"
     },
     "common$non_default_domain_projects": {
       "label": "三级权限开关",
@@ -1328,12 +1332,12 @@
       "desc": "镜像在回收站内保存时间"
     },
     "baremetal$auto_register_baremetal": {
-      "label": "裸金属自动注册",
-      "desc": "是否开启自动注册裸金属"
+      "label": "物理机自动注册",
+      "desc": "是否开启自动注册物理机，关闭需手工添加物理机记录。"
     },
     "baremetal$default_ipmi_password": {
-      "label": "裸金属默认IPMI密码",
-      "desc": "设置裸金属的默认IPMI密码"
+      "label": "物理机默认IPMI密码",
+      "desc": "设置物理机的默认IPMI密码"
     }
   },
   "notificationPriority": {
