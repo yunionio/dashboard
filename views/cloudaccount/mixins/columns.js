@@ -60,10 +60,25 @@ export default {
       },
       getPublicScopeTableColumn({ vm: this }),
       getProjectDomainTableColumn(),
-      getCopyWithContentTableColumn({
-        title: `资源归属${this.$t('dictionary.project')}`,
+      {
         field: 'tenant',
-      }),
+        title: `资源归属${this.$t('dictionary.project')}`,
+        minWidth: 120,
+        showOverflow: 'title',
+        slots: {
+          default: ({ row }) => {
+            if (row.auto_create_project) {
+              return [
+                <span class='mr-2'>自动创建项目</span>,
+                <help-tooltip name='cloudaccountAutoCreateProject' />,
+              ]
+            }
+            return [
+              <list-body-cell-wrap copy field='tenant' row={row} />,
+            ]
+          },
+        },
+      },
     ]
   },
 }

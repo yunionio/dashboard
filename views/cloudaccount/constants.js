@@ -1,5 +1,5 @@
 import { typeClouds } from '@/utils/common/hypervisor'
-
+const DOCS_PATH = `${window.location.origin}/docs/user/multiplecloud/cloudaccount/cloudaccount/`
 const providerMap = typeClouds.getProviderlowcase()
 const aliyunLogo = require('../../../../src/assets/images/providers/aliyun.svg')
 const awsLogo = require('../../../../src/assets/images/providers/aws.svg')
@@ -124,21 +124,21 @@ export const ENV_TITLE = {
 }
 
 export const CLOUDACCOUNT_DOCS = {
-  aliyun: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#新建阿里云账号',
-  azure: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BAazure%E8%B4%A6%E5%8F%B7',
-  aws: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BAaws%E8%B4%A6%E5%8F%B7',
-  qcloud: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BA%E8%85%BE%E8%AE%AF%E4%BA%91%E8%B4%A6%E5%8F%B7',
-  huawei: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BA%E5%8D%8E%E4%B8%BA%E4%BA%91%E8%B4%A6%E5%8F%B7',
-  ucloud: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BAucloud%E8%B4%A6%E5%8F%B7',
-  zstack: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BAzstack-dstack%E8%B4%A6%E5%8F%B7',
-  dstack: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BAzstack-dstack%E8%B4%A6%E5%8F%B7',
-  openstack: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BAopenstack%E8%B4%A6%E5%8F%B7',
-  vmware: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BAvmware%E8%B4%A6%E5%8F%B7',
-  s3: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BAs3%E8%B4%A6%E5%8F%B7',
-  ceph: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BAceph%E8%B4%A6%E5%8F%B7',
-  xsky: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BAxsky%E8%B4%A6%E5%8F%B7',
-  google: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BAgoogle%E8%B4%A6%E5%8F%B7',
-  ctyun: 'https://onecloud-docs.com/docs/user/multiplecloud/cloudaccount/#%E6%96%B0%E5%BB%BA%E5%A4%A9%E7%BF%BC%E4%BA%91%E8%B4%A6%E5%8F%B7',
+  aliyun: `${DOCS_PATH}#新建阿里云账号`,
+  azure: `${DOCS_PATH}#新建azure账号`,
+  aws: `${DOCS_PATH}#新建aws账号`,
+  qcloud: `${DOCS_PATH}#新建腾讯云账号`,
+  huawei: `${DOCS_PATH}#新建华为云账号`,
+  ucloud: `${DOCS_PATH}#新建ucloud账号`,
+  zstack: `${DOCS_PATH}#新建zstack-dstack账号`,
+  dstack: `${DOCS_PATH}#新建zstack-dstack账号`,
+  openstack: `${DOCS_PATH}#新建openstack账号`,
+  vmware: `${DOCS_PATH}#新建vmware账号`,
+  s3: `${DOCS_PATH}#新建s3账号`,
+  ceph: `${DOCS_PATH}#新建ceph账号`,
+  xsky: `${DOCS_PATH}#新建xsky账号`,
+  google: `${DOCS_PATH}#新建google账号`,
+  ctyun: `${DOCS_PATH}#新建天翼云账号`,
 }
 
 export const ACCESS_URL = {
@@ -361,8 +361,8 @@ export const keySecretFields = {
 }
 
 export const BILL_BUCKET_URL_DOCS = {
-  aliyun: 'https://docs.yunion.cn/docs/user/multiplecloud/cloudaccount/cloudaccount/#%E6%96%B0%E5%BB%BA%E9%98%BF%E9%87%8C%E4%BA%91%E8%B4%A6%E5%8F%B7  ',
-  aws: 'https://docs.yunion.cn/docs/user/multiplecloud/cloudaccount/cloudaccount/#%E6%96%B0%E5%BB%BAaws%E8%B4%A6%E5%8F%B7',
-  huawei: 'https://docs.yunion.cn/docs/user/multiplecloud/cloudaccount/cloudaccount/#%E6%96%B0%E5%BB%BA%E5%8D%8E%E4%B8%BA%E4%BA%91%E8%B4%A6%E5%8F%B7',
-  google: 'https://docs.yunion.cn/docs/user/multiplecloud/cloudaccount/cloudaccount/#%E6%96%B0%E5%BB%BAgoogle%E8%B4%A6%E5%8F%B7',
+  aliyun: `${DOCS_PATH}#新建阿里云账号`,
+  aws: `${DOCS_PATH}#新建aws账号`,
+  huawei: `${DOCS_PATH}#新建华为云账号`,
+  google: `${DOCS_PATH}#新建google账号`,
 }

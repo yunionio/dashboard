@@ -16,7 +16,7 @@ export default {
         },
         meta: this.commonMeta,
       },
-      getSetPublicAction({
+      getSetPublicAction(this, {
         name: this.$t('dictionary.proxysetting'),
         scope: 'domain',
       }),

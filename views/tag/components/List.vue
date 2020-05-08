@@ -1,5 +1,6 @@
 <template>
   <page-list
+    default-search-key="search"
     :list="list"
     :columns="columns" />
 </template>
