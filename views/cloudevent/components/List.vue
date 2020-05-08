@@ -4,7 +4,8 @@
       :list="list"
       :columns="columns"
       :export-data-options="exportDataOptions"
-      :showGroupActions="true">
+      :showGroupActions="true"
+      :disabledRefreshBtn="true">
       <template v-slot:right-tools-prepend>
           <a-date-picker
             class="mr-2"
