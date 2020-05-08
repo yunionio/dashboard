@@ -136,6 +136,7 @@ export default {
         const params = {
           scope: this.scope,
           limit: 0,
+          filter: 'enabled.equals(1)', // 仅显示启用状态下的域
         }
         const response = await this.dm.list({ params })
         const data = response.data.data || []
