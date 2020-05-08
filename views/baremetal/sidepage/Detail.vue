@@ -15,9 +15,11 @@ import {
   getSwitchTableColumn,
 } from '@/utils/common/tableColumn'
 import expectStatus from '@/constants/expectStatus'
+import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'BaremetalDetail',
+  mixins: [WindowsMixin],
   props: {
     onManager: {
       type: Function,
@@ -122,14 +124,14 @@ export default {
               field: 'sysDisk',
               title: '系统盘',
               formatter: ({ row }) => {
-                return this.diskInfos.sysDisk
+                return <a onClick={ () => this.$emit('tab-change', 'disk-list-for-baremetal-sidepage') }>{this.diskInfos.sysDisk}</a>
               },
             },
             {
               field: 'dataDisk',
               title: '数据盘',
               formatter: ({ row }) => {
-                return this.diskInfos.dataDisk
+                return <a onClick={ () => this.$emit('tab-change', 'disk-list-for-baremetal-sidepage') }>{this.diskInfos.dataDisk}</a>
               },
             },
             getCopyWithContentTableColumn({
@@ -137,8 +139,12 @@ export default {
               title: 'ISO',
               hideField: true,
               slotCallback: row => {
+                if (!row.cdrom) return '-'
                 const idx = row.cdrom.indexOf('(')
-                return row.cdrom.substring(0, idx) || '-'
+                const id = row.cdrom.substring(idx + 1, row.cdrom.indexOf('/'))
+                return [
+                  <side-page-trigger permission='images_get' name='SystemImageSidePage' id={id} vm={this}>{ row.cdrom.substring(0, idx) || '-' }</side-page-trigger>,
+                ]
               },
             }),
             {
@@ -146,26 +152,33 @@ export default {
               title: 'GPU',
               formatter: ({ row }) => {
                 if (!row.isolated_devices) return '-'
-                let gpuArr = row.isolated_devices.split(/\n/g)
-                if (!gpuArr) return '-'
-                gpuArr = gpuArr.filter(v => !!v)
+                let gpuArr = row.isolated_devices
                 let obj = {}
+                const ids = {}
                 gpuArr.forEach(val => {
-                  if (!obj[val]) {
-                    obj[val] = 1
+                  if (!obj[val.model]) {
+                    obj[val.model] = 1
                   } else {
-                    obj[val] += 1
+                    obj[val.model] += 1
                   }
+                  ids[val.model] = val.id
                 })
-                let str = ''
-                for (const k in obj) {
-                  const n = obj[k]
-                  str += `、${n}颗（${k}）`
-                }
-                return str.slice(1)
+                return Object.keys(obj).map(k => {
+                  return <side-page-trigger permission='isolated_devices_get' name='GpuSidePage' id={ids[k]} vm={this}>{`${obj[k]}颗 （${k}）`}</side-page-trigger>
+                })
               },
             },
-            getCopyWithContentTableColumn({ field: 'host', title: '物理机' }),
+            getCopyWithContentTableColumn({
+              field: 'host',
+              title: '物理机',
+              hideField: true,
+              slotCallback: row => {
+                if (!row.host) return '-'
+                return [
+                  <side-page-trigger permission='hosts_get' name='PhysicalmachineSidePage' id={row.host_id} vm={this}>{ row.host }</side-page-trigger>,
+                ]
+              },
+            }),
             getCopyWithContentTableColumn({ field: 'host_sn', title: 'SN' }),
           ],
         },

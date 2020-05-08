@@ -255,7 +255,7 @@ export default {
       if (this.hypervisor === HYPERVISORS_MAP.zstack.key) {
         return '由于ZStack/DStack本身不支持重装系统设定新密码，您可以在重装系统完成后在主机列表进行密码重置'
       }
-      if (this.params.data.length ===1) {
+      if (this.params.data.length === 1) {
         return '所选镜像容量最小磁盘要求需小于虚拟机系统盘大小'
       }
       return ''
