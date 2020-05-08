@@ -32,6 +32,7 @@
             :options="filterOptions"
             :value="filter"
             :list="list"
+            :default-search-key="defaultSearchKey"
             @input="handleFilterChange" />
         </div>
       </div>
@@ -135,10 +136,14 @@ export default {
       default: true,
     },
     tagManagerInstance: Object,
+<<<<<<< HEAD
     disabledRefreshBtn: {
       type: Boolean,
       default: false,
     },
+=======
+    defaultSearchKey: String,
+>>>>>>> 02e8f9ea756ee763e62e1a8ccd40568e8fe44734
   },
   provide: {
     inList: true,

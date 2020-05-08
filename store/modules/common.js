@@ -12,8 +12,8 @@ export default {
       currency: 'CNY',
     },
     k8s: {
-      cluster: '',
-      namespace: '',
+      cluster: undefined,
+      namespace: undefined,
     },
   },
   mutations: {
