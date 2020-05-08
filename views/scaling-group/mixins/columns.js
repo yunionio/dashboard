@@ -23,7 +23,6 @@ export default {
         slotCallback: row => {
           if (!row.guest_template) return '-'
           return row.guest_template
-          // return [<side-page-trigger name='ScalingGroupSidePage' id={row.id} tab="server-template-list" list={this.list} vm={this}>{ row.name }</side-page-trigger>]
         },
       }),
       {
@@ -33,7 +32,8 @@ export default {
         sortable: true,
         slots: {
           default: ({ row }) => {
-            return [<side-page-trigger name='ScalingGroupSidePage' id={row.id} tab="server-list" list={this.list} vm={this}>{ row.instance_number }</side-page-trigger>]
+            if (!row.instance_number) return '-'
+            return row.instance_number
           },
         },
       },
