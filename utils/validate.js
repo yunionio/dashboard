@@ -31,7 +31,7 @@ export const REGEXP = {
   },
   serverCreateName: {
     func: value => {
-      const regexp = /^[a-z$][a-z0-9-${}]{0,61}([a-z0-9}]|#{1,3})$/
+      const regexp = /^[a-z$][a-z0-9-${}]{0,60}([a-z0-9}]|#{1,3})$/
       return regexp.test(value)
       // if (regexp.test(value)) {
       //   const supportVars = ['brand', 'charge_type', 'cloud_env', 'cloudregion_id', 'cpu', 'host', 'host_id', 'hypervisor', 'ip_addr', 'mem', 'os_distribution', 'os_type', 'os_version', 'owner_tenant', 'owner_tenant_id', 'provider', 'region', 'region_id', 'res_name', 'template_id', 'zone', 'zone_id']
