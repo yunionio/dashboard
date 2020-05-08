@@ -417,12 +417,13 @@ export default {
         show_emulated: true,
         limit: 0,
         usable_vpc: true,
+        scope: this.scope,
       }
-      if (this.isAdminMode) {
-        params['project_domain'] = this.userInfo.domain.id
-      } else {
-        params['scope'] = this.scope
-      }
+      // if (this.isAdminMode) {
+      //   params['project_domain'] = this.userInfo.domain.id
+      // } else {
+      //   params['scope'] = this.scope
+      // }
       return params
     },
   },
