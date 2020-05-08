@@ -21,6 +21,21 @@ export default {
             query,
           })
         },
+        meta: obj => {
+          let validate = true
+          let tooltip = null
+          if (obj.provider && obj.provider.toLowerCase() === 'aws') {
+            const spec = this.list ? this.data.loadbalancer_spec : this.detailData.loadbalancer_spec
+            if (spec === 'network') {
+              validate = false
+              tooltip = 'AWS网络型暂不支持修改监听'
+            }
+          }
+          return {
+            validate,
+            tooltip,
+          }
+        },
       },
       {
         label: '删除',

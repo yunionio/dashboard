@@ -24,6 +24,7 @@ import Huawei from './form/huawei'
 import AwsApplication from './form/aws-application'
 import AwsNetwork from './form/aws-network'
 import StepMixin from '@/mixins/step'
+import { filterObj } from '@/utils/utils'
 
 const getOnOff = bool => bool ? 'on' : 'off'
 
@@ -97,7 +98,21 @@ export default {
       this.loading = true
       try {
         await this.$refs.formRef.validateForm()
-        const data = this.getParams(this.$refs.formRef.allFd)
+        let data = this.getParams(this.$refs.formRef.allFd)
+        if (data.sticky_session === 'off') {
+          data = filterObj((val, k) => !k.startsWith('sticky_session_'), data)
+        }
+        if (data.acl_status === 'off') {
+          data = filterObj((val, k) => {
+            if (k.startsWith('acl')) {
+              return k === 'acl_status'
+            }
+            return true
+          }, data)
+        }
+        if (data.health_check === 'off') {
+          data = filterObj((val, k) => !k.startsWith('health_check_'), data)
+        }
         await new this.$Manager('loadbalancerlisteners').update({ id: this.$route.query.listener, data })
         this.loading = false
         this.cancel()

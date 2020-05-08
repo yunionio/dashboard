@@ -59,7 +59,7 @@ export default {
       const params = {
         loadbalancer: this.detailData.id,
       }
-      if (params.windowData.currentTab === 'loadbalancerbackendgroups-list') {
+      if (this.params.windowData.currentTab === 'loadbalancerbackendgroups-list') {
         if (this.detailData.provider && this.detailData.provider.toLowerCase() === 'aliyun') {
           params['filter.0'] = 'type.notequals("default")'
         }
