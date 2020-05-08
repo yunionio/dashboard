@@ -1,4 +1,4 @@
-export const getAssociateNameTableColumn = () => {
+export const getAssociateNameTableColumn = (vm) => {
   return {
     field: 'associate_name',
     title: '绑定资源',
@@ -12,11 +12,14 @@ export const getAssociateNameTableColumn = () => {
         }
         if (!row.associate_name) return '-'
         const text = `${row.associate_name}(${type[row.associate_type] || '-'})`
-        return [
-          <list-body-cell-wrap copy hideField={true} field='associate_name' row={row} message={text}>
-            <side-page-trigger permission='server_get' name='VmInstanceSidePage' id={row.associate_id} vm={this}>{text}</side-page-trigger>
-          </list-body-cell-wrap>,
-        ]
+        if (vm) {
+          return [
+            <list-body-cell-wrap copy hideField={true} field='associate_name' row={row} message={text}>
+              <side-page-trigger permission='server_get' name='VmInstanceSidePage' id={row.associate_id} vm={vm}>{text}</side-page-trigger>
+            </list-body-cell-wrap>,
+          ]
+        }
+        return text
       },
     },
   }
