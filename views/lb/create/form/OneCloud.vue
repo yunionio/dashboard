@@ -17,7 +17,7 @@
         filterable
         :params="clusterParams"
         :select-props="{ placeholder: '请选择集群' }" />
-      <div slot="extra">没有我想要的？可以前往<help-link href="/cluster"> 立即新建</help-link></div>
+      <div slot="extra" v-if="isAdminMode">没有我想要的？可以前往<help-link href="/cluster"> 立即新建</help-link></div>
     </a-form-item>
     <a-form-item label="指定IP子网">
       <base-select
@@ -34,6 +34,7 @@
 
 <script>
 import * as R from 'ramda'
+import { mapGetters } from 'vuex'
 import lbCreate from './mixin'
 import CloudregionZone from '@/sections/CloudregionZone'
 
@@ -60,6 +61,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['isAdminMode']),
     clusterParams () {
       let params = {}
       if (this.zoneObj && this.zoneObj.id && !R.isEmpty(this.scopeParams)) {
