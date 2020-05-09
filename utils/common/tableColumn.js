@@ -136,6 +136,7 @@ export const getPublicTableColumn = ({ field = 'share_mode', title = '共享模�
 
 export const getNameDescriptionTableColumn = ({
   title = '名称',
+  field = 'name',
   slotCallback,
   onManager,
   addLock,
@@ -150,7 +151,7 @@ export const getNameDescriptionTableColumn = ({
   editDesc = true,
 } = {}) => {
   return {
-    field: 'name',
+    field,
     title,
     sortable,
     showOverflow: 'ellipsis',
@@ -162,6 +163,7 @@ export const getNameDescriptionTableColumn = ({
             props: {
               copy: true,
               edit: (R.type(edit) === 'Function' && edit(row)) || edit === true,
+              field,
               row,
               onManager,
               hideField,
