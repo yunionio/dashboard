@@ -17,7 +17,10 @@
         <a-form-item :label="storageLabel" v-bind="formItemLayout">
           <a-select v-decorator="decorators.storage_id" @change="__storageChange">
             <a-select-option v-for="item in storageOpts" :key="item.value">
-              {{item.label}}
+              <div class="d-flex">
+                <span class="text-truncate flex-fill mr-2" :title="item.label">{{ item.label }}</span>
+                <span style="color: #8492a6; font-size: 13px" v-if="item.manager">云订阅: {{ item.manager }}</span>
+              </div>
             </a-select-option>
           </a-select>
         </a-form-item>
