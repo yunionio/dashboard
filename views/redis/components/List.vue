@@ -103,7 +103,7 @@ export default {
           { label: '计费方式', key: 'billing_type' },
           { label: '状态', key: 'status' },
           { label: this.$t('dictionary.project'), key: 'tenant' },
-          { label: '平台', key: 'hypervisor' },
+          { label: '平台', key: 'provider' },
           { label: '区域', key: 'region' },
         ],
       },
