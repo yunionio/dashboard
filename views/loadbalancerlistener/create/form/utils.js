@@ -404,7 +404,7 @@ export const getDecorators = ({ provider, vm, loadbalancer }) => {
     listener_type: [
       'listener_type',
       {
-        initialValue: 'tcp',
+        initialValue: provider === 'aws_application' ? 'http' : 'tcp',
         rules: [
           { required: true, message: '请选择协议' },
         ],
