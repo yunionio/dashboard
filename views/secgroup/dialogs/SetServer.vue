@@ -140,7 +140,7 @@ export default {
           this.form.fc.setFieldsValue({ 'sergroups': data.map(item => item.id) })
         })
       } catch (error) {
-        console.log(error)
+        console.error(error)
       }
     },
     async handleConfirm () {

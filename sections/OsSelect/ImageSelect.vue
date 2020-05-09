@@ -185,7 +185,12 @@ export default {
       let imageOptions = this.imageOpts
       // 所选镜像容量最小磁盘要求需小于虚拟机系统盘大小
       if (this.sysDiskSize) {
-        imageOptions = this.imageOpts.filter((item) => { return item.info.min_disk <= this.sysDiskSize })
+        imageOptions = this.imageOpts.filter((item) => {
+          if (item.info && item.info.min_disk) {
+            return item.info.min_disk <= this.sysDiskSize
+          }
+          return true
+        })
       }
       if (this.uefi) {
         let imageOpts = imageOptions.map((item) => {
