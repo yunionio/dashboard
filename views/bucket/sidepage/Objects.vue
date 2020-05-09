@@ -57,7 +57,7 @@ export default {
       list: this.$list.createList(this, {
         resource: 'objects',
         getParams: this.getParams,
-        ctx: [['buckets', this.data.name]],
+        ctx: [['buckets', this.data.id]],
         idKey: 'key',
         filterOptions: {
           prefix: {
