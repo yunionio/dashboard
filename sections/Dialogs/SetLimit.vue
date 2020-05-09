@@ -23,6 +23,7 @@
 import * as R from 'ramda'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import expectStatus from '@/constants/expectStatus'
 
 export default {
   name: 'K8SSetLimitDialog',
@@ -88,6 +89,7 @@ export default {
           managerArgs: {
             data,
           },
+          steadyStatus: Object.values(expectStatus.k8s_resource).flat(),
         })
       } catch (error) {
         throw error
