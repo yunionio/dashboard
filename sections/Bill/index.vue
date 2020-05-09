@@ -5,6 +5,7 @@
         <a-radio-button
           v-for="(item, key) in billTypesMap"
           :value="key"
+          :disabled="disabledBillType === item.key"
           :key="key">{{ item.label }}</a-radio-button>
       </a-radio-group>
     </a-form-item>
@@ -42,6 +43,9 @@ export default {
     },
     providerList: {
       type: Array,
+    },
+    disabledBillType: {
+      type: String,
     },
   },
   data () {
