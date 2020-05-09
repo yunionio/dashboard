@@ -139,13 +139,13 @@ export default {
         [this.decorator.imageType[0]]: this.mirrorTypeOptions[0].key,
       })
     },
-  },
-  mounted () {
-    const { imageType } = this.$route.query
-    if (imageType) {
-      this.form.fc.setFieldsValue({ imageType })
-      this.imageType = imageType
-    }
+    'form.fd.image.key' () {
+      const { imageType } = this.$route.query
+      if (imageType) {
+        this.form.fc.setFieldsValue({ imageType })
+        this.imageType = imageType
+      }
+    },
   },
   methods: {
     imageInput (image) {
