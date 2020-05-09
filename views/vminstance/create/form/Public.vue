@@ -23,7 +23,7 @@
         <a-input v-decorator="decorators.reason" placeholder="请输入主机申请原因" />
       </a-form-item>
       <a-form-item class="mb-0" label="计费方式">
-        <bill :decorators="decorators.bill" :form="form" :provider-list="form.fi.providerList" />
+        <bill :decorators="decorators.bill" :form="form" :provider-list="form.fi.providerList" :disabledBillType="disabledBillType" />
       </a-form-item>
       <a-form-item v-if="form.fd.billType === 'quantity' && !isServertemplate" label="到期释放">
         <duration :decorators="decorators.duration" :form="form" />
@@ -390,6 +390,14 @@ export default {
     },
     hideCloudaccountSched () {
       return !!this.form.fd.preferManager
+    },
+    disabledBillType () {
+      if (this.form.fd.sku && this.form.fd.sku.provider) {
+        if (this.form.fd.sku.provider === PROVIDER_MAP.Google.key) { // 谷歌云不支持包年包月
+          return 'package'
+        }
+      }
+      return ''
     },
   },
   watch: {
