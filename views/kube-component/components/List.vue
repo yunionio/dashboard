@@ -182,6 +182,7 @@ export default {
   },
   created () {
     this.manager = new this.$Manager('kubeclusters', 'v1')
+    this.fetchData()
   },
   methods: {
     async fetchData () {
