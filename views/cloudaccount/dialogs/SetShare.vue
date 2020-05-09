@@ -274,6 +274,7 @@ export default {
     setPublic (ids, data) {
       return this.params.onManager('batchPerformAction', {
         id: ids,
+        steadyStatus: this.params.steadyStatus,
         managerArgs: {
           action: 'public',
           data,
@@ -283,6 +284,7 @@ export default {
     setPrivate (ids) {
       return this.params.onManager('batchPerformAction', {
         id: ids,
+        steadyStatus: this.params.steadyStatus,
         managerArgs: {
           action: 'private',
         },
