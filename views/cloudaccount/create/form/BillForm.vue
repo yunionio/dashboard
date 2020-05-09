@@ -255,11 +255,20 @@ export default {
         const data = {
           sync_info: true,
           cloudaccount_id: id,
-          start_day: parseFloat(this.$moment().subtract(2, 'd').format('YYYYMMDD')),
-          end_day: parseFloat(this.$moment().subtract(1, 'd').format('YYYYMMDD')),
         }
+        // 获取当月的几（day）号
+        const day = 1
+        let m = this.$moment().month()
+        // 如果大于1号 则取当月（day-1）号至1号的账单
+        if (day > 1) {
+          m += 1
+          data['end_day'] = parseFloat(this.$moment(day - 1, 'D').format('YYYYMMDD'))
+        } else { // 上一个月账单
+          data['end_day'] = parseFloat(this.$moment(m, 'MM').endOf('month').format('YYYYMMDD'))
+        }
+        data['start_day'] = parseFloat(this.$moment(m, 'MM').startOf('month').format('YYYYMMDD'))
         await manager.create({
-          data: data,
+          data,
         })
       } catch (err) {
         throw err

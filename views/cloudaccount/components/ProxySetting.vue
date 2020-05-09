@@ -1,5 +1,5 @@
 <template>
-  <a-form-item label="代理">
+  <a-form-item label="代理" v-if="isPermission">
     <a-select showSearch :loading="loading" :filterOption="filterOption" v-decorator="decorator">
       <a-select-option v-for="item of proxyOpts" :key="item.id" :value="item.id">
         {{item.name}} {{item.id === 'DIRECT' ? '（直连）' :  null}}
@@ -12,6 +12,8 @@
 </template>
 
 <script>
+import { hasPermission } from '@/utils/auth'
+
 export default {
   name: 'ProxySetting',
   props: {
@@ -34,9 +36,12 @@ export default {
         'proxy_setting',
       ]
     },
+    isPermission () {
+      return hasPermission({ key: 'proxysettings_list' })
+    },
   },
   created () {
-    if (this.account) {
+    if (this.account && this.isPermission) {
       this.fetchQueryProxy()
     }
   },

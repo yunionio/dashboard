@@ -52,7 +52,7 @@ export default {
               },
               meta: obj => {
                 return {
-                  validate: ['Aws', 'Aliyun', 'Google', 'Huawei', 'Azure'].indexOf(obj.brand) > -1,
+                  validate: ['Aws', 'Aliyun', 'Google', 'Huawei', 'Azure'].indexOf(obj.brand) > -1 && ownerDomain,
                 }
               },
             },
@@ -117,6 +117,7 @@ export default {
                   data: [obj],
                   columns: this.columns,
                   onManager: this.onManager,
+                  steadyStatus,
                 })
               },
               meta: () => {
@@ -134,7 +135,7 @@ export default {
             },
             {
               label: '设置代理',
-              permission: 'proxysettings_update',
+              permission: 'proxysettings_list',
               action: () => {
                 this.createDialog('UpdateProxySettingDialog', {
                   title: '设置代理',
@@ -142,6 +143,11 @@ export default {
                   columns: this.columns,
                   onManager: this.onManager,
                 })
+              },
+              meta: () => {
+                return {
+                  validate: ownerDomain,
+                }
               },
             },
             {
