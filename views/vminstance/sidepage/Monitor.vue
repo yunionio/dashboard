@@ -72,7 +72,7 @@ export default {
       ],
       loading: false,
       time: '1h',
-      timeGroup: '5m',
+      timeGroup: '1m',
       monitorList: [],
     }
   },
