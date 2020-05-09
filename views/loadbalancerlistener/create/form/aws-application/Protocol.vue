@@ -32,8 +32,8 @@ export default {
   data () {
     return {
       listenerTypeOpts: [
-        { label: 'http', key: 'HTTP' },
-        { label: 'https', key: 'HTTPS' },
+        { label: 'HTTP', key: 'http' },
+        { label: 'HTTPS', key: 'https' },
       ],
     }
   },
