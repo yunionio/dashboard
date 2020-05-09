@@ -77,7 +77,7 @@
               :label-format="labelFormat"
               :select-props="{ placeholder: '请选择云主机' }"
               @change="handleServerChange"
-              @update:options="serversSuccess" />
+              @update:resList="serversSuccess" />
               <a-alert v-if="isOut" message="如果您需要再次部署，请确保节点已经从旧机器下线" banner />
           </a-form-item>
           <a-form-item v-if="this.hostName === 'host'">
