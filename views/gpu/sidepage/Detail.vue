@@ -7,8 +7,11 @@
 </template>
 
 <script>
+import WindowsMixin from '@/mixins/windows'
+
 export default {
   name: 'GpuDetail',
+  mixins: [WindowsMixin],
   props: {
     data: {
       type: Object,
@@ -64,8 +67,8 @@ export default {
   },
   methods: {
     handleOpenSidepage (row) {
-      this.$emit('init-side-page-tab', 'host-detail')
-      this.$emit('side-page-trigger-handle', this, 'HostSidePage', {
+      this.initSidePageTab('host-detail')
+      this.sidePageTriggerHandle(this, 'HostSidePage', {
         id: row.host_id,
         resource: 'hosts',
         getParams: this.getParam,
