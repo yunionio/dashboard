@@ -106,7 +106,7 @@ export function getSetPublicAction (vm, dialogParams = {}, params = {}) {
         ret.validate = true
         return ret
       }
-      if (store.getters.isDomainAdmin) {
+      if (store.getters.isDomainMode) {
         const selfDomain = store.getters.userInfo.projectDomain
         const isSelfDomain = data.every(item => item.project_domain === selfDomain)
         if (isSelfDomain) {
