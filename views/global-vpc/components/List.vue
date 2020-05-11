@@ -52,20 +52,20 @@ export default {
         ],
       },
       groupActions: [
-        {
-          label: '新建',
-          action: () => {
-            this.createDialog('GlobalVpcCreateDialog', {
-              title: '新建全局VPC',
-              onManager: this.onManager,
-            })
-          },
-          meta: () => {
-            return {
-              buttonType: 'primary',
-            }
-          },
-        },
+        // {
+        //   label: '新建',
+        //   action: () => {
+        //     this.createDialog('GlobalVpcCreateDialog', {
+        //       title: '新建全局VPC',
+        //       onManager: this.onManager,
+        //     })
+        //   },
+        //   meta: () => {
+        //     return {
+        //       buttonType: 'primary',
+        //     }
+        //   },
+        // },
         {
           label: this.$t('common.batchAction'),
           actions: () => {
