@@ -7,6 +7,7 @@ import {
   getCopyWithContentTableColumn,
   // getNameDescriptionTableColumn,
   getPublicScopeTableColumn,
+  getTagTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -45,6 +46,7 @@ export default {
           },
         },
       },
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'network', columns: () => this.columns }),
       {
         field: 'ip',
         title: 'IP地址',

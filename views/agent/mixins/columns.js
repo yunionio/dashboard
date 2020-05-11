@@ -1,5 +1,6 @@
 import {
   getNameDescriptionTableColumn,
+  getTagTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -16,6 +17,7 @@ export default {
           )
         },
       }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'loadbalanceragent', columns: () => this.columns }),
       {
         field: 'cluster',
         title: '集群',
