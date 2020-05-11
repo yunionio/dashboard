@@ -29,7 +29,7 @@ export default {
       list: this.$list.createList(this, {
         resource: 'networks',
         ctx: [['servers', this.resId]],
-        idKey: 'network_id',
+        idKey: 'index',
         getParams: {
           order_by: 'index',
           order: 'asc',
@@ -40,8 +40,8 @@ export default {
           field: 'index',
           title: '序号',
           width: 50,
-          formatter: ({ row }) => {
-            return row.index ? row.index : '0'
+          formatter: (data) => {
+            return data.seq
           },
         },
         getCopyWithContentTableColumn({ field: 'network', title: '网卡名称', sortable: true }),
