@@ -263,6 +263,17 @@ export default {
                     },
                   })
                 },
+                meta: () => {
+                  if (this.list.selectedItems.some(v => v.brand.toLowerCase() === 'onecloud')) {
+                    return {
+                      validate: false,
+                      tooltip: '选中项中不能包含本地IDC资源',
+                    }
+                  }
+                  return {
+                    validate: true,
+                  }
+                },
               },
               {
                 label: '删除',

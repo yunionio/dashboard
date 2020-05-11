@@ -191,9 +191,17 @@ export default {
                   },
                 })
               },
-              meta: () => ({
-                validate: true,
-              }),
+              meta: (obj) => {
+                if (obj.brand.toLowerCase() === 'onecloud') {
+                  return {
+                    validate: false,
+                    tooltip: '本地IDC资源不支持该操作',
+                  }
+                }
+                return {
+                  validate: true,
+                }
+              },
             },
             {
               label: '删除',
