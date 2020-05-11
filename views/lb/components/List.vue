@@ -10,6 +10,7 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
+import { surpportLb } from '@Network/views/lb/constants'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
@@ -31,6 +32,11 @@ export default {
     },
   },
   data () {
+    const allBrandsFilter = getBrandFilter()
+    const surpportLbBrandsFilter = {
+      ...allBrandsFilter,
+      items: allBrandsFilter.items.filter(val => surpportLb.includes(val.key.toLowerCase())),
+    }
     return {
       list: this.$list.createList(this, {
         id: this.id,
@@ -38,7 +44,7 @@ export default {
         getParams: this.getParam,
         filterOptions: {
           name: getNameFilter(),
-          brand: getBrandFilter(),
+          brand: surpportLbBrandsFilter,
         },
         steadyStatus: {
           status: Object.values(expectStatus.lb).flat(),
