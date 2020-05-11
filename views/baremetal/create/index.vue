@@ -86,6 +86,7 @@
       <a-divider orientation="left">高级配置</a-divider>
       <a-form-item label="网络" v-bind="formItemLayout" class="mb-0">
         <server-network
+          :form="form"
           :decorator="decorators.network"
           :isBonding="isBonding"
           :network-list-params="networkParam"
