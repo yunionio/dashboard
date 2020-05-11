@@ -105,7 +105,8 @@
           :schedtag-params="schedtagParams"
           :networkVpcParams="networkVpcParams"
           :vpcResource="vpcResource"
-          :vpcResourceMapper="vpcResourceMapper" />
+          :vpcResourceMapper="vpcResourceMapper"
+          :networkResourceMapper="networkResourceMapper" />
       </a-form-item>
       <a-form-item label="标签" class="mb-0">
         <tag
