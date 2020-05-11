@@ -1,4 +1,4 @@
-import { getStatusTableColumn, getNameDescriptionTableColumn, getRegionTableColumn } from '@/utils/common/tableColumn'
+import { getStatusTableColumn, getNameDescriptionTableColumn, getRegionTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 const BACKUP_TYPE = {
   automated: '自动',
@@ -17,6 +17,7 @@ export default {
           )
         },
       }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'dbinstancebackup', columns: () => this.columns }),
       {
         field: 'dbinstance',
         minWidth: 100,
