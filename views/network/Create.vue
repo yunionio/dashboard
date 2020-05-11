@@ -419,11 +419,11 @@ export default {
         usable_vpc: true,
         scope: this.scope,
       }
-      // if (this.isAdminMode) {
-      //   params['project_domain'] = this.userInfo.domain.id
-      // } else {
-      //   params['scope'] = this.scope
-      // }
+      if (this.isAdminMode) {
+        params['project_domain'] = this.params.cloudregion.project_domain
+      } else {
+        params['scope'] = this.scope
+      }
       return params
     },
   },
