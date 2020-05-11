@@ -21,6 +21,7 @@ export default {
       },
       {
         label: '全量同步',
+        permission: 'cloudaccounts_perform_sync',
         action: obj => {
           new this.$Manager('cloudproviders').performAction({
             id: obj.cloudprovider_id,
