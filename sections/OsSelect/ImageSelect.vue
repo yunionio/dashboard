@@ -208,8 +208,7 @@ export default {
     imageChange (imageObj) {
       let imageMsg = {}
       if (imageObj && R.is(Object, imageObj)) {
-        let list = this.images.list
-        if (this.isPublicImage || this.isPrivateImage) list = this.images.cacheimagesList
+        let list = this.imageOptions
         imageMsg = list.find(image => image.id === imageObj.key)
       }
       this.$emit('updateImageMsg', { imageMsg })
