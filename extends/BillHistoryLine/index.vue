@@ -2,12 +2,26 @@
   <div class="h-100 w-100 position-relative">
     <div class="dashboard-card-wrap">
       <div class="dashboard-card-header">
-        <div class="dashboard-card-header-left">历史费用总览<a-icon class="ml-2" type="loading" v-if="loading" /></div>
+        <div class="dashboard-card-header-left">{{ fd.name }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
+        <div class="dashboard-card-header-right">
+          <slot name="actions" :handle-edit="handleEdit" />
+        </div>
       </div>
       <div class="dashboard-card-body align-items-center justify-content-center">
         <line-chart :columns="lineChartColumns" :rows="lineChartRows" width="100%" height="100%" />
       </div>
     </div>
+    <base-drawer :visible.sync="visible" title="配置磁贴" @ok="handleSubmit">
+      <a-form-model
+        ref="form"
+        hideRequiredMark
+        :model="fd"
+        :rules="rules">
+        <a-form-model-item label="磁贴名称" prop="name">
+          <a-input v-model="fd.name" />
+        </a-form-model-item>
+      </a-form-model>
+    </base-drawer>
   </div>
 </template>
 
@@ -15,23 +29,24 @@
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import { load } from '@Dashboard/utils/cache'
+import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import { getRequestT } from '@/utils/utils'
 import LineChart from '@/sections/Charts/Line'
 
 export const options = {
-  label: '总览',
+  label: '费用总览',
   desc: '历史费用总览',
   thumb: require('./assets/thumb.svg'),
-  h: 3,
-  w: 5,
+  h: 5,
+  w: 10,
   sort: 6,
-  galleryHidden: true,
 }
 
 export default {
   name: 'BillHistoryLine',
   components: {
     LineChart,
+    BaseDrawer,
   },
   props: {
     options: {
@@ -41,9 +56,19 @@ export default {
     params: Object,
   },
   data () {
+    const initNameValue = (this.params && this.params.name) || '磁贴名称'
     return {
       data: [],
+      visible: false,
       loading: false,
+      fd: {
+        name: initNameValue,
+      },
+      rules: {
+        name: [
+          { required: true, message: '请输入磁贴名称' },
+        ],
+      },
     }
   },
   computed: {
@@ -66,8 +91,14 @@ export default {
   },
   created () {
     this.fetchData()
+    this.$emit('update', this.options.i, {
+      ...this.fd,
+    })
   },
   methods: {
+    handleEdit () {
+      this.visible = true
+    },
     async fetchData () {
       this.loading = true
       try {
@@ -97,6 +128,15 @@ export default {
         return `SELECT sum(baremetalFee) AS "baremetalFee", sum(gpuFee) AS "gpuFee", sum(serverFee) AS "serverFee" FROM meter_res_fee where time > now() - ${30 * 24}h and time <= now() - 24h GROUP BY time(24h)`
       }
       return `SELECT sum(baremetalFee) AS "baremetalFee", sum(gpuFee) AS "gpuFee", sum(serverFee) AS "serverFee" FROM meter_res_fee where time > now() - ${30 * 24}h and time <= now() - 24h AND projectId='${this.userInfo.projectId}' GROUP BY time(24h)`
+    },
+    async handleSubmit () {
+      try {
+        await this.$refs.form.validate()
+        this.$emit('update', this.options.i, this.fd)
+        this.visible = false
+      } catch (error) {
+        throw error
+      }
     },
   },
 }

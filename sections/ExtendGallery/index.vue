@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import * as R from 'ramda'
 import { extendsOptions } from '@Dashboard/extends'
 
@@ -35,10 +36,16 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['scope']),
     sortExtendsOptions () {
       const ret = []
       R.forEachObjIndexed((value, key) => {
-        if (!value.galleryHidden) {
+        let effective = true
+        // 如果未声明scope，则全部视图可见，设置了scope则根据scope来渲染
+        if (value.scope && !value.scope.includes(this.scope)) {
+          effective = false
+        }
+        if (effective) {
           ret.push({
             ...value,
             component: key,

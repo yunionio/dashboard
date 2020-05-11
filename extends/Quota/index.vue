@@ -2,12 +2,33 @@
   <div class="h-100 position-relative">
     <div class="dashboard-card-wrap">
       <div class="dashboard-card-header">
-        <div class="dashboard-card-header-left">{{ params.name || '配额使用情况'}}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
+        <div class="dashboard-card-header-left">{{ fd.name }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
+        <div class="dashboard-card-header-right">
+          <slot name="actions" :handle-edit="handleEdit" />
+        </div>
       </div>
       <div class="dashboard-card-body align-items-center justify-content-center">
         <e-chart :options="chartOptions" style="height: 100%; width: 100%;" autoresize />
       </div>
     </div>
+    <base-drawer :visible.sync="visible" title="配置磁贴" @ok="handleSubmit">
+      <a-form-model
+        ref="form"
+        hideRequiredMark
+        :model="fd"
+        :rules="rules">
+        <a-form-model-item label="磁贴名称" prop="name">
+          <a-input v-model="fd.name" />
+        </a-form-model-item>
+        <a-form-model-item label="指标" prop="field">
+          <a-select v-model="fd.field">
+            <template v-for="(item, key) of quotaConfig">
+              <a-select-option :value="key" :key="key">{{ item.desc }}</a-select-option>
+            </template>
+          </a-select>
+        </a-form-model-item>
+      </a-form-model>
+    </base-drawer>
   </div>
 </template>
 
@@ -16,20 +37,24 @@ import * as R from 'ramda'
 import get from 'lodash/get'
 import { mapGetters } from 'vuex'
 import { load } from '@Dashboard/utils/cache'
+import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import { getRequestT, sizestr, sizestrWithUnit } from '@/utils/utils'
 
 export const options = {
   label: '配额',
   desc: '配额使用情况',
   thumb: require('./assets/thumb.svg'),
-  h: 3,
+  h: 7,
   w: 5,
   sort: 9,
-  galleryHidden: true,
+  scope: ['domain', 'system'],
 }
 
 export default {
   name: 'Quota',
+  components: {
+    BaseDrawer,
+  },
   props: {
     options: {
       type: Object,
@@ -38,35 +63,78 @@ export default {
     params: Object,
   },
   data () {
+    let name = this.$t('dictionary.project')
+    if (this.$store.getters.isAdminMode) {
+      name = this.$t('dictionary.domain')
+    }
+    const genDesc = function (title) {
+      return `各${name}${title}配额使用情况`
+    }
+    const titleKey = this.$store.getters.isAdminMode ? 'domain' : 'tenant'
+    const initNameValue = (this.params && this.params.name) || genDesc('CPU')
+    const initResourceValue = (this.params && this.params.resource) || 'quotas'
+    const initTitleKeyValue = (this.params && this.params.titleKey) || titleKey
+    const initFieldValue = (this.params && this.params.field) || 'cpu'
     return {
       data: [],
+      visible: false,
       loading: false,
+      fd: {
+        name: initNameValue,
+        field: initFieldValue,
+        titleKey: initTitleKeyValue,
+        resource: initResourceValue,
+      },
+      rules: {
+        name: [
+          { required: true, message: '请输入磁贴名称' },
+        ],
+        field: [
+          { required: true, message: '请选择指标' },
+        ],
+      },
       quotaConfig: {
         cpu: {
           unit: '核',
+          desc: genDesc('CPU'),
+          resource: 'quotas',
         },
         memory: {
           format: 'sizestr',
           unit: 'M',
+          desc: genDesc('内存'),
+          resource: 'quotas',
         },
         storage: {
           format: 'sizestr',
           unit: 'M',
+          desc: genDesc('存储'),
+          resource: 'quotas',
         },
         eip: {
           unit: '个',
+          desc: genDesc('公网IP'),
+          resource: 'region_quotas',
         },
         port: {
           unit: '个',
+          desc: genDesc('IP'),
+          resource: 'region_quotas',
         },
         isolated_device: {
           unit: '个',
+          desc: genDesc('GPU'),
+          resource: 'quotas',
         },
         image: {
           unit: '个',
+          desc: genDesc('镜像'),
+          resource: 'image_quotas',
         },
         snapshot: {
           unit: '个',
+          desc: genDesc('快照'),
+          resource: 'region_quotas',
         },
       },
     }
@@ -75,10 +143,10 @@ export default {
     ...mapGetters(['scope', 'isAdminMode', 'isDomainMode', 'userInfo']),
     chartData () {
       let data = R.sort((a, b) => {
-        const aUsage = get(a, `usage.${this.params.field}`)
-        const bUsage = get(b, `usage.${this.params.field}`)
+        const aUsage = get(a, `usage.${this.fd.field}`)
+        const bUsage = get(b, `usage.${this.fd.field}`)
         if (aUsage === bUsage) {
-          return get(a, this.params.field) - get(b, this.params.field)
+          return get(a, this.fd.field) - get(b, this.fd.field)
         }
         return aUsage - bUsage
       }, R.slice(0, 8, this.data))
@@ -89,9 +157,9 @@ export default {
       const usageData = []
       const allData = []
       R.forEach(item => {
-        yAxisData.push(item[this.params.titleKey])
-        allData.push(item[this.params.field])
-        usageData.push(item[`usage.${this.params.field}`])
+        yAxisData.push(item[this.fd.titleKey])
+        allData.push(item[this.fd.field])
+        usageData.push(item[`usage.${this.fd.field}`])
       }, data)
       return { yAxisData, allData, usageData }
     },
@@ -122,7 +190,7 @@ export default {
           },
           extraCssText: 'box-shadow: 0 0 5px rgba(0,0,0,0.3)',
           formatter: (params, ticket) => {
-            const qc = this.quotaConfig[this.params.field]
+            const qc = this.quotaConfig[this.fd.field]
             let usage
             let allUage
             let label
@@ -237,7 +305,7 @@ export default {
                   fontSize: 12,
                 },
                 formatter: data => {
-                  const qc = this.quotaConfig[this.params.field]
+                  const qc = this.quotaConfig[this.fd.field]
                   if (qc.format === 'sizestr') {
                     return sizestrWithUnit(data.value, qc.unit, 1024)
                   }
@@ -268,7 +336,7 @@ export default {
                   fontSize: 12,
                 },
                 formatter: data => {
-                  const qc = this.quotaConfig[this.params.field]
+                  const qc = this.quotaConfig[this.fd.field]
                   if (qc.format === 'sizestr') {
                     return sizestrWithUnit(data.value, qc.unit, 1024)
                   }
@@ -281,17 +349,34 @@ export default {
       }
     },
   },
+  watch: {
+    'fd.field' (val) {
+      this.fd.resource = this.quotaConfig[val]['resource']
+      this.fd.name = this.quotaConfig[val]['desc']
+    },
+    'fd.resource' (val, oldVal) {
+      if (val !== oldVal) {
+        this.fetchData()
+      }
+    },
+  },
   created () {
     this.fetchData()
+    this.$emit('update', this.options.i, {
+      ...this.fd,
+    })
   },
   methods: {
+    handleEdit () {
+      this.visible = true
+    },
     async fetchData () {
       this.loading = true
       try {
         const data = await load({
           res: 'quotas',
           actionArgs: {
-            url: `/v2/rpc/${this.params.resource}/quota-list`,
+            url: `/v2/rpc/${this.fd.resource}/quota-list`,
             method: 'GET',
             params: {
               $t: getRequestT(),
@@ -315,6 +400,15 @@ export default {
         ret.domain_id = this.userInfo.projectDomainId
       }
       return ret
+    },
+    async handleSubmit () {
+      try {
+        await this.$refs.form.validate()
+        this.$emit('update', this.options.i, this.fd)
+        this.visible = false
+      } catch (error) {
+        throw error
+      }
     },
   },
 }
