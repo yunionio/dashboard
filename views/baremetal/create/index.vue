@@ -6,6 +6,9 @@
       :form="form.fc"
       @submit="handleConfirm">
       <a-divider orientation="left">基础配置</a-divider>
+      <a-form-item :label="`指定${$t('dictionary.project')}`" class="mb-0" v-bind="formItemLayout">
+        <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
+      </a-form-item>
       <a-form-item label="区域" class="mb-0" v-bind="formItemLayout" v-if="!isInstallOperationSystem">
         <cloudregion-zone
           :zone-params="params.zone"
@@ -130,6 +133,7 @@ import ServerPassword from '@Compute/sections/ServerPassword'
 import ServerNetwork from '@Compute/sections/ServerNetwork'
 import SchedPolicy from '@Compute/sections/SchedPolicy'
 import BottomBar from './BottomBar'
+import DomainProject from '@/sections/DomainProject'
 import CloudregionZone from '@/sections/CloudregionZone'
 import validateForm, { isRequired, isWithinRange } from '@/utils/validate'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
@@ -137,6 +141,7 @@ import { sizestr } from '@/utils/utils'
 import { WORKFLOW_TYPES } from '@/constants/workflow'
 import workflowMixin from '@/mixins/workflow'
 import WindowsMixin from '@/mixins/windows'
+import i18n from '@/locales'
 
 function checkIpInSegment (i, networkData) {
   return (rule, value, cb) => {
@@ -158,6 +163,7 @@ export default {
     ServerPassword,
     ServerNetwork,
     SchedPolicy,
+    DomainProject,
   },
   mixins: [WindowsMixin, workflowMixin],
   data () {
@@ -188,6 +194,12 @@ export default {
                 this.capability(this.zone)
               }
             }
+            if (values.domain) {
+              this.params.region = {
+                ...this.params.region,
+                project_domain: values.domain.key,
+              }
+            }
           },
         }),
         fi: {
@@ -197,6 +209,22 @@ export default {
         },
       },
       decorators: {
+        domain: [
+          'domain',
+          {
+            rules: [
+              { validator: isRequired(), message: i18n.t('rules.domain'), trigger: 'change' },
+            ],
+          },
+        ],
+        project: [
+          'project',
+          {
+            rules: [
+              { validator: isRequired(), message: i18n.t('rules.project'), trigger: 'change' },
+            ],
+          },
+        ],
         name: [
           'name',
           {
@@ -815,10 +843,10 @@ export default {
       })
       let range = []
       if (data.option[2] === 'none') {
-        range = [0]
+        range = [data.start_index]
       } else {
-        let k = 0
-        while (k < data.count) {
+        let k = data.start_index
+        while (k < data.start_index + data.count) {
           range.push(k)
           k++
         }
@@ -826,15 +854,15 @@ export default {
       const isRepeat = this.diskOptionsDate.filter(item => item.diskInfo[1] === arr[1])
       if (isRepeat.length > 0) {
         if (data.option[2] === 'none') {
-          range = [this.count++]
+          range = [data.start_index + this.count + 1]
         } else {
-          const lastIndexRange = isRepeat[isRepeat.length - 1].range
-          let i = lastIndexRange[lastIndexRange.length - 1]
-          let j = 0
+          // const lastIndexRange = isRepeat[isRepeat.length - 1].range
+          // let i = lastIndexRange[lastIndexRange.length - 1]
+          let j = data.start_index
           range = []
-          while (j < data.count) {
-            i++
-            range.push(i)
+          while (j < data.start_index + data.count) {
+            // i++
+            range.push(j)
             j++
           }
         }

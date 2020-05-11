@@ -1,7 +1,7 @@
 <template>
   <detail
     :on-manager="onManager"
-    :data="itemData"
+    :data="data"
     :base-info="baseInfo"
     :extra-info="extraInfo"
     resource="hosts"
@@ -32,11 +32,11 @@ export default {
   },
   data () {
     return {
-      itemData: {
-        status: 'ready',
-        host_status: 'ready',
-        enabled: true,
-      },
+      // itemData: {
+      //   status: 'ready',
+      //   host_status: 'ready',
+      //   enabled: true,
+      // },
       storageColumns: [
         {
           field: 'adapter',
@@ -325,17 +325,17 @@ export default {
       ],
     }
   },
-  created () {
-    this.updateDetailData()
-  },
-  methods: {
-    updateDetailData () {
-      const hostManager = new this.$Manager('hosts')
-      hostManager.get({ id: this.data.id })
-        .then((res) => {
-          this.itemData = res.data
-        })
-    },
-  },
+  // created () {
+  //   this.updateDetailData()
+  // },
+  // methods: {
+  //   updateDetailData () {
+  //     const hostManager = new this.$Manager('hosts')
+  //     hostManager.get({ id: this.data.id })
+  //       .then((res) => {
+  //         this.itemData = res.data
+  //       })
+  //   },
+  // },
 }
 </script>

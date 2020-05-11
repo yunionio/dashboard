@@ -427,10 +427,12 @@ export default {
       if (this.form.fd.sysdisks && this.form.fd.sysdisks.length === 1) {
         const sysdisk = this.form.fd.sysdisks[0]
         const storageItem = STORAGE_TYPES[this.selectedItem.hypervisor]
-        this.form.fc.setFieldsValue({
-          [this.decorators.systemDisk.type[0]]: { key: sysdisk.type, label: R.is(Object, storageItem) ? (_.get(storageItem, '[sysdisk.type].key') || sysdisk.type) : sysdisk.type },
-          [this.decorators.systemDisk.size[0]]: sysdisk.value,
-        })
+        setTimeout(() => {
+          this.form.fc.setFieldsValue({
+            [this.decorators.systemDisk.type[0]]: { key: sysdisk.type, label: R.is(Object, storageItem) ? (_.get(storageItem, '[sysdisk.type].key') || sysdisk.type) : sysdisk.type },
+            [this.decorators.systemDisk.size[0]]: sysdisk.value,
+          })
+        }, 1300)
       }
       this.$nextTick(() => {
         setTimeout(() => {

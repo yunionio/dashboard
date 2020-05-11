@@ -40,18 +40,6 @@
       <a-form-item v-if="form.fd.hypervisor === 'kvm'" label="是否配置GPU" extra="目前只有OneCloud支持GPU云服务器">
         <gpu :decorators="decorators.gpu" :gpu-options="gpuOptions" />
       </a-form-item>
-      <a-form-item label="操作系统" extra="操作系统会根据选择的虚拟化平台和可用区域的变化而变化，公共镜像的维护请联系管理员">
-        <os-select
-          :type="type"
-          :uefi="uefi"
-          :form="form"
-          :hypervisor="form.fd.hypervisor"
-          :decorator="decorators.imageOS"
-          :image-params="scopeParams"
-          :cacheImageParams="cacheImageParams"
-          :cloudproviderParamsExtra="cloudproviderParamsExtra"
-          @updateImageMsg="updateFi" />
-      </a-form-item>
       <a-form-item label="CPU核数" class="mb-0">
         <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" @change="cpuChange" />
       </a-form-item>
@@ -64,6 +52,18 @@
           :type="type"
           :sku-params="skuParam"
           :hypervisor="form.fd.hypervisor" />
+      </a-form-item>
+      <a-form-item label="操作系统" extra="操作系统会根据选择的虚拟化平台和可用区域的变化而变化，公共镜像的维护请联系管理员">
+        <os-select
+          :type="type"
+          :uefi="uefi"
+          :form="form"
+          :hypervisor="form.fd.hypervisor"
+          :decorator="decorators.imageOS"
+          :image-params="scopeParams"
+          :cacheImageParams="cacheImageParams"
+          :cloudproviderParamsExtra="cloudproviderParamsExtra"
+          @updateImageMsg="updateFi" />
       </a-form-item>
       <a-form-item label="系统盘" class="mb-0">
         <system-disk

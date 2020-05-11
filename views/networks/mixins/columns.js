@@ -6,8 +6,8 @@ export default {
       {
         title: '序号',
         width: 50,
-        formatter: (data) => {
-          return data.seq
+        formatter: ({ rowIndex }) => {
+          return rowIndex
         },
       },
       getCopyWithContentTableColumn({ field: 'ifname', title: '网卡名称', sortable: true }),

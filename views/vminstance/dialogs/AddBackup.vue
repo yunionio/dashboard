@@ -61,7 +61,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isAdminMode']),
+    ...mapGetters(['isAdminMode', 'isDomainMode', 'scope']),
     firstData () {
       return this.params.data[0]
     },
@@ -72,6 +72,9 @@ export default {
       }
       if (this.isAdminMode && this.params.data.length === 1) {
         params.project_domain = this.firstData['domain_id']
+      }
+      if (this.isDomainMode) {
+        params.scope = this.scope
       }
       return params
     },

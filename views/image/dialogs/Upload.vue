@@ -158,6 +158,7 @@ export default {
       }
       return new this.$Manager('images', 'v1').list({ params: {
         name: value,
+        scope: this.$store.getters.scope,
       } }).then(res => {
         const data = res.data.data
         if (!R.isNil(data) && !R.isEmpty(data)) {

@@ -5,6 +5,7 @@
         <a-radio-button
           v-for="(item, key) in billTypesMap"
           :value="key"
+          :disabled="disabledBillType === item.key"
           :key="key">{{ item.label }}</a-radio-button>
       </a-radio-group>
     </a-form-item>
@@ -43,6 +44,9 @@ export default {
     providerList: {
       type: Array,
     },
+    disabledBillType: {
+      type: String,
+    },
   },
   data () {
     return {
@@ -79,7 +83,6 @@ export default {
       if (this.providerList && this.providerList.length) {
         const list = this.providerList.map(val => val.name.toLowerCase())
         if (R.is(Array, item.includes)) {
-          console.log(list, item, 'list')
           return item.includes.some(provider => list.includes(provider))
         }
       }
