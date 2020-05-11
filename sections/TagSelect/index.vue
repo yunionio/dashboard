@@ -55,7 +55,7 @@
             </div>
           </li>
         </ul>
-        <ul :style="valueWrapStyle" v-if="showValue" class="tag-list values-wrap">
+        <ul :style="valueWrapStyle" v-if="showValue" class="tag-list values-wrap" ref="value-wrap">
           <li class="d-flex align-items-center tag-tip">
             <div class="flex-fill" style="font-size: 12px;">标签值：</div>
             <div class="val-search"><input style="width: 145px;" :value="search" placeholder="关键字搜索" @input="handleSearch" /></div>
@@ -120,6 +120,8 @@ export default {
       userTags: [],
       extTags: [],
       valueWrapTop: 0,
+      valueWrapBottom: 0,
+      valueWrapPlacement: 'top',
       mouseenterKey: null,
       mouseenterType: null,
       search: '',
@@ -174,9 +176,13 @@ export default {
       return this.currentValue && this.currentValue.some(val => val !== null)
     },
     valueWrapStyle () {
-      return {
-        top: `${this.valueWrapTop}px`,
+      const styles = {}
+      if (this.valueWrapPlacement === 'top') {
+        styles.top = `${this.valueWrapTop}px`
+        return styles
       }
+      styles.bottom = `${this.valueWrapBottom}px`
+      return styles
     },
   },
   destroyed () {
@@ -252,11 +258,22 @@ export default {
     },
     handleKeyMouseenter (type, key, evt) {
       this.search = ''
-      const tagWrapTop = this.$refs['tag-wrap'].getBoundingClientRect()['top']
-      const targetTop = evt.target.getBoundingClientRect()['top']
-      this.valueWrapTop = targetTop - tagWrapTop + 10
       this.mouseenterKey = key
       this.mouseenterType = type
+      this.$nextTick(() => {
+        const { top: tagWrapTop, bottom: tagWrapBottom } = this.$refs['tag-wrap'].getBoundingClientRect()
+        const valueWrapHeight = this.$refs['value-wrap'].getBoundingClientRect()['height']
+        const documentClientHeight = document.documentElement.clientHeight
+        const { top: targetTop, bottom: targetBottom } = evt.target.getBoundingClientRect()
+        // 计算剩余的高度是否足够显示值的内容
+        if (valueWrapHeight > documentClientHeight - targetTop) {
+          this.valueWrapPlacement = 'bottom'
+          this.valueWrapBottom = tagWrapBottom - targetBottom
+        } else {
+          this.valueWrapPlacement = 'top'
+          this.valueWrapTop = targetTop - tagWrapTop + 10
+        }
+      })
     },
     handleKeyClick (key, val) {
       let newValue = { ...this.value }
@@ -357,10 +374,9 @@ export default {
   background-color: #fff;
   position: absolute;
   left: 159px;
-  left: -230px;
+  left: -240px;
   top: 0;
-  transition: all .3s ease;
-  width: 230px;
+  width: 240px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 </style>

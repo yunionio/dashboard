@@ -12,6 +12,7 @@ n.register('percent', numerifyPercent)
 n.register('currency', numerifyCurrency)
 
 export const numerify = (num, format = '0.00') => {
+  if (num === '-') return '-'
   num = Number(num)
   if (!num) return 0
   return n(num, format)

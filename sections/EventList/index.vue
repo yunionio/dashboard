@@ -1,8 +1,11 @@
 <template>
   <div class="event-list">
     <page-list
+      default-search-key="obj_name"
       :list="list"
-      :columns="columns" />
+      :columns="columns"
+      :disabled-refresh-btn="true"
+      :show-page="false" />
      <div class="mb-3 search-date">
       <a-date-picker
         v-model="dateTime"
@@ -190,6 +193,7 @@ export default {
 <style lang="scss" scoped>
   .event-list{
     position: relative;
+    padding-bottom: 20px;
     .search-date {
       position: absolute;
       right: 0;

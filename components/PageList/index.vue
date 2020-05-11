@@ -3,7 +3,7 @@
     <page-toolbar>
       <div class="mb-2 d-flex" v-if="showGroupActions">
         <div class="d-flex flex-fill">
-          <refresh-button class="flex-shrink-0" :loading="loading" @refresh="refresh" />
+          <refresh-button :disabled="disabledRefreshBtn"  class="flex-shrink-0" :loading="loading" @refresh="refresh" />
           <template v-if="groupActions">
             <actions class="flex-shrink-0" :options="groupActions" button-type="default" @clear-selected="handleClearSelected" group />
           </template>
@@ -32,6 +32,7 @@
             :options="filterOptions"
             :value="filter"
             :list="list"
+            :default-search-key="defaultSearchKey"
             @input="handleFilterChange" />
         </div>
       </div>
@@ -135,6 +136,15 @@ export default {
       default: true,
     },
     tagManagerInstance: Object,
+    disabledRefreshBtn: {
+      type: Boolean,
+      default: false,
+    },
+    defaultSearchKey: String,
+    showPage: {
+      type: Boolean,
+      default: true,
+    },
   },
   provide: {
     inList: true,
@@ -190,7 +200,7 @@ export default {
     tablePage () {
       const listLimit = this.list.limit
       const limit = this.list.getLimit() || listLimit
-      if (this.list.total <= 0) return null
+      if (this.list.total <= 0 || !this.showPage) return null
       const currentPage = limit ? Math.floor(this.list.offset / limit) + 1 : 1
       return {
         total: this.list.total,

@@ -316,7 +316,7 @@ class CreateList {
       } = response
       this.clearWaitJob()
       this.nextMarker = response.data.next_marker
-      if (this.nextMarker || response.data.marker_order) {
+      if (response.data.marker_order) {
         this.data = Object.assign({}, this.wrapData(data), this.data)
       } else {
         this.data = this.wrapData(data)

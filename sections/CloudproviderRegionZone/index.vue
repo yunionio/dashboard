@@ -3,21 +3,21 @@
     <a-row :gutter="8">
       <a-col :span="8">
         <a-form-item :wrapperCol="{ span: 24 }">
-          <a-select label-in-value v-decorator="decorators.cloudprovider" @change="cloudproviderChange" placeholder="请选择账号">
+          <a-select label-in-value v-decorator="decorators.cloudprovider" @change="cloudproviderChange" placeholder="请选择账号" show-search :filterOption="filterOption">
             <a-select-option v-for="item in cloudproviderOpts" :key="item.id">{{ item.name }}</a-select-option>
           </a-select>
         </a-form-item>
       </a-col>
       <a-col :span="8">
         <a-form-item :wrapperCol="{ span: 24 }">
-          <a-select label-in-value v-decorator="decorators.cloudregion" @change="cloudregionChange" placeholder="请选择区域">
+          <a-select label-in-value v-decorator="decorators.cloudregion" @change="cloudregionChange" placeholder="请选择区域" show-search :filterOption="filterOption">
             <a-select-option v-for="item in cloudregionOpts" :key="item.id">{{ item.name }}</a-select-option>
           </a-select>
         </a-form-item>
       </a-col>
       <a-col :span="8">
         <a-form-item :wrapperCol="{ span: 24 }">
-          <a-select label-in-value v-decorator="decorators.zone" @change="zoneChange" placeholder="请选择可用区">
+          <a-select label-in-value v-decorator="decorators.zone" @change="zoneChange" placeholder="请选择可用区" show-search :filterOption="filterOption">
             <a-select-option v-for="item in zoneOpts" :key="item.id">{{ item.name }}</a-select-option>
           </a-select>
         </a-form-item>
@@ -178,6 +178,11 @@ export default {
     zoneChange (value) {
       const zoneObj = this.zoneOpts.find(val => val.id === value.key)
       this.$emit('update:zoneObj', zoneObj)
+    },
+    filterOption (input, option) {
+      return (
+        option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      )
     },
   },
 }

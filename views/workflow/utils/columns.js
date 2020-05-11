@@ -1,9 +1,9 @@
 import _ from 'lodash'
 
-export const getProcessDefinitionNameTableColumn = ({ field = 'process_definition_name' } = {}) => {
+export const getProcessDefinitionNameTableColumn = ({ field = 'process_definition_name', title = '工单类型' } = {}) => {
   return {
     field,
-    title: '工单类型',
+    title,
     minWidth: 80,
     showOverflow: 'title',
     slots: {
@@ -14,10 +14,10 @@ export const getProcessDefinitionNameTableColumn = ({ field = 'process_definitio
   }
 }
 
-export const getResourceNameTableColumn = () => {
+export const getResourceNameTableColumn = ({ field = 'resource_name', title = '资源名称' } = {}) => {
   return {
-    field: 'resource_name',
-    title: '资源名称',
+    field,
+    title,
     minWidth: 80,
     showOverflow: 'title',
     slots: {
@@ -49,6 +49,20 @@ export const getResourceProjectTableColumn = ({ field = 'resource_project_name',
             { project }
           </list-body-cell-wrap>,
         ]
+      },
+    },
+  }
+}
+
+export const getInitiatorTableColumn = ({ field = 'initiator' } = {}) => {
+  return {
+    field,
+    title: '申请人',
+    minWidth: 80,
+    showOverflow: 'title',
+    slots: {
+      default: ({ row }) => {
+        return _.get(row, field, '-')
       },
     },
   }

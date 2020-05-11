@@ -3,7 +3,7 @@
     <div slot="header">{{ action }}</div>
     <div slot="body">
       <dialog-selected-tips name="工单" :count="params.data.length" :action="action" />
-      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-table :data="params.data" :columns="columns" />
       <a-form
         :form="form.fc"
         v-bind="formItemLayout">
@@ -20,6 +20,11 @@
 </template>
 
 <script>
+import {
+  getProcessDefinitionNameTableColumn,
+  getResourceNameTableColumn,
+  getInitiatorTableColumn,
+} from '../../utils/columns'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 const R = require('ramda')
@@ -47,6 +52,11 @@ export default {
           span: 3,
         },
       },
+      columns: [
+        getProcessDefinitionNameTableColumn({ field: 'process_instance.process_definition_name', title: '名称' }),
+        getResourceNameTableColumn({ title: '资源' }),
+        getInitiatorTableColumn({ field: 'process_instance.start_user_name' }),
+      ],
     }
   },
   computed: {

@@ -468,3 +468,24 @@ export const objAutoComplete = (obj, path) => {
     return []
   }
 }
+
+/**
+ * [过滤对象]
+ * @param Function 过滤函数
+ * @param Object 被过滤对象
+ */
+export const filterObj = (fn, obj) => {
+  if (!R.is(Function, fn) || !R.is(Object, obj)) {
+    throw new Error('filterObj 参数格式不正确')
+  }
+  const result = {}
+  for (const k in obj) {
+    if (obj.hasOwnProperty(k)) {
+      const val = obj[k]
+      if (fn(val, k)) {
+        result[k] = val
+      }
+    }
+  }
+  return result
+}
