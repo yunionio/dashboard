@@ -47,6 +47,7 @@
                       <template v-slot:actions="{ handleEdit }">
                         <a-button class="p-0 h-auto" type="link" icon="delete" @click="handleRemove(item)" />
                         <a-button class="p-0 h-auto ml-2" type="link" icon="setting" @click="handleEdit" />
+                        <a-button class="p-0 h-auto ml-2" type="link" icon="copy" @click="handleCopy(item, dashboardParams[item.i])" />
                       </template>
                     </component>
                   </grid-item>
@@ -278,6 +279,18 @@ export default {
     handleRemove (item) {
       const index = R.findIndex(R.propEq('i', item.i))(this.layout)
       this.layout.splice(index, 1)
+    },
+    handleCopy (item, params) {
+      const id = `dashboard-item-${uuid(32)}`
+      this.dashboardParams[id] = params
+      this.layout.push({
+        component: item.component,
+        h: item.h,
+        i: id,
+        w: item.w,
+        x: item.x,
+        y: item.y,
+      })
     },
     handleUpdateDashboardParams (key, data) {
       this.dashboardParams[key] = data
