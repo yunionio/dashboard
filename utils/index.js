@@ -141,11 +141,9 @@ export function getCreateDecorators (resource) {
       ],
       loadBalancerNetwork: [
         'loadBalancerNetwork',
-        {
-          rules: [
-            { required: true, message: '请输入服务端口' },
-          ],
-        },
+      ],
+      loadBalancerCluster: [
+        'loadBalancerCluster',
       ],
       ports: {
         port: i => [

@@ -102,11 +102,9 @@ export default {
           ],
           loadBalancerNetwork: [
             'loadBalancerNetwork',
-            {
-              rules: [
-                { required: true, message: '请输入服务端口' },
-              ],
-            },
+          ],
+          loadBalancerCluster: [
+            'loadBalancerCluster',
           ],
           ports: {
             port: i => [
@@ -190,6 +188,7 @@ export default {
         if (values.serviceType !== 'none') {
           params.isExternal = (values.serviceType === 'external')
           if (values.loadBalancerNetwork) params.loadBalancerNetwork = values.loadBalancerNetwork
+          if (values.loadBalancerCluster) params.loadBalancerCluster = values.loadBalancerCluster
           const portMappings = Object.keys(values.ports).map(key => {
             return {
               port: +values.ports[key],
