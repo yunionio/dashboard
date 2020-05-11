@@ -141,6 +141,10 @@ export default {
       default: false,
     },
     defaultSearchKey: String,
+    showPage: {
+      type: Boolean,
+      default: true,
+    },
   },
   provide: {
     inList: true,
@@ -196,7 +200,7 @@ export default {
     tablePage () {
       const listLimit = this.list.limit
       const limit = this.list.getLimit() || listLimit
-      if (this.list.total <= 0) return null
+      if (this.list.total <= 0 || !this.showPage) return null
       const currentPage = limit ? Math.floor(this.list.offset / limit) + 1 : 1
       return {
         total: this.list.total,
