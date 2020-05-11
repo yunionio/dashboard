@@ -2,6 +2,7 @@ import {
   getProjectTableColumn,
   getNameDescriptionTableColumn,
   getPublicScopeTableColumn,
+  getTagTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -16,6 +17,7 @@ export default {
           )
         },
       }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'secgroup', columns: () => this.columns }),
       {
         field: 'guest_cnt',
         title: '关联虚拟机',

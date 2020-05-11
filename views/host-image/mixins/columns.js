@@ -1,6 +1,6 @@
 import { sizestr } from '@/utils/utils'
 import SystemIcon from '@/sections/SystemIcon'
-import { getStatusTableColumn, getNameDescriptionTableColumn, getProjectTableColumn, getPublicScopeTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
+import { getStatusTableColumn, getNameDescriptionTableColumn, getProjectTableColumn, getPublicScopeTableColumn, getTimeTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   created () {
@@ -16,6 +16,7 @@ export default {
           )
         },
       }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'guestimage', columns: () => this.columns }),
       {
         field: 'child_image',
         title: '子镜像',
