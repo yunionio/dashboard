@@ -9,7 +9,7 @@
     <template v-if="form.fd.health_check">
       <a-divider orientation="left">高级配置</a-divider>
       <a-form-item label="健康检查协议">
-        <a-radio-group v-decorator="decorators.health_check_type">
+        <a-radio-group v-decorator="decorators.health_check_type" :disabled="isUpdate">
           <a-radio-button v-for="item in healthCheckTypeOpts" :value="item.key" :key="item.key">{{ item.label }}</a-radio-button>
         </a-radio-group>
       </a-form-item>
