@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import { STORAGE_TYPES, MEDIUM_TYPES } from '@Storage/constants/index.js'
 import { sizestr } from '@/utils/utils'
-import { getNameDescriptionTableColumn, getEnabledTableColumn, getStatusTableColumn, getBrandTableColumn, getPublicScopeTableColumn, getProjectDomainTableColumn } from '@/utils/common/tableColumn'
+import { getNameDescriptionTableColumn, getEnabledTableColumn, getStatusTableColumn, getBrandTableColumn, getPublicScopeTableColumn, getProjectDomainTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   created () {
@@ -15,6 +15,7 @@ export default {
           )
         },
       }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'storage', columns: () => this.columns }),
       {
         field: 'capacity',
         title: '实际容量',
