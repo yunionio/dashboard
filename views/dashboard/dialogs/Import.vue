@@ -3,10 +3,7 @@
     <div slot="header">{{this.params.title}}</div>
     <div slot="body">
       <a-form :form="form.fc" v-bind="formItemLayout">
-        <a-form-item label="面板名称">
-          <a-input placeholder="请输入面板名称" v-decorator="decorators.name" />
-        </a-form-item>
-        <a-form-item label="文件">
+        <a-form-item>
           <a-upload-dragger
             name="file"
             v-decorator="decorators.file"
@@ -36,7 +33,6 @@ import { Base64 } from 'js-base64'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { uuid } from '@/utils/utils'
-import storage from '@/utils/storage'
 
 export default {
   name: 'DashboardImport',
@@ -49,15 +45,6 @@ export default {
       },
       fileList: [],
       decorators: {
-        name: [
-          'name',
-          {
-            validateFirst: true,
-            rules: [
-              { required: true, message: '请输入名称' },
-            ],
-          },
-        ],
         file: [
           'file',
           {
@@ -69,10 +56,7 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 21,
-        },
-        labelCol: {
-          span: 3,
+          span: 24,
         },
       },
     }
@@ -105,19 +89,6 @@ export default {
       fileList = fileList.slice(-1)
       this.fileList = fileList
     },
-    hasDashboard () {
-      return new Promise((resolve, reject) => {
-        this.pm.get({ id: `dashboard_${this.scope}` }).then(() => {
-          resolve(true)
-        }).catch(error => {
-          if (error.response && error.response.status === 404) {
-            resolve(false)
-          } else {
-            reject(error)
-          }
-        })
-      })
-    },
     async handleConfirm () {
       this.loading = true
       try {
@@ -132,29 +103,19 @@ export default {
           return
         }
         // 检查是否已经创建了dashboard配置
-        const hasDashboard = await this.hasDashboard()
-        if (!hasDashboard) {
-          await this.pm.create({
-            data: {
-              name: `dashboard_${this.scope}`,
-              value: [],
-            },
-          })
+        const optionsCreated = await this.params.checkOptionsCreated()
+        if (!optionsCreated) {
+          await this.params.initOptions()
         }
         // 更新options
-        const options = [...this.params.dashboardOptions]
+        const options = [...this.params.options]
         const id = `dashboard-${this.scope}-panel-${uuid(16)}`
         const item = {
-          name: values.name,
+          name: this.params.genName(data.name),
           id,
         }
         options.push(item)
-        await this.pm.update({
-          id: `dashboard_${this.scope}`,
-          data: {
-            value: options,
-          },
-        })
+        await this.params.updateOptions(options)
         // 创建panel数据配置
         const panelData = {}
         for (let i = 0, len = data.items.length; i < len; i++) {
@@ -166,9 +127,8 @@ export default {
             value: panelData,
           },
         })
-        storage.set(`__oc_dashboard_${this.scope}__`, item)
         this.cancelDialog()
-        this.params.fetchDashboardOptions()
+        this.params.selectOption(item)
       } catch (error) {
         throw error
       } finally {

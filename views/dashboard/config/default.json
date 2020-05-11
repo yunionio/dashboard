@@ -345,21 +345,6 @@
           "component": "Quota",
           "h": 7,
           "w": 5,
-          "x": 0,
-          "y": 24
-        },
-        "params": {
-          "name": "各域IP配额使用情况",
-          "field": "port",
-          "titleKey": "domain",
-          "resource": "region_quotas"
-        }
-      },
-      {
-        "layout": {
-          "component": "Quota",
-          "h": 7,
-          "w": 5,
           "x": 5,
           "y": 24
         },
@@ -394,7 +379,7 @@
           "y": 24
         },
         "params": {
-          "name": "各域镜像配额使用情况",
+          "name": "各域快照配额使用情况",
           "field": "snapshot",
           "titleKey": "domain",
           "resource": "region_quotas"
@@ -807,7 +792,7 @@
           "y": 21
         },
         "params": {
-          "name": "各项目镜像配额使用情况",
+          "name": "各项目快照配额使用情况",
           "field": "snapshot",
           "titleKey": "tenant",
           "resource": "region_quotas"
