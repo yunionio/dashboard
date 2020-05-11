@@ -1,8 +1,12 @@
 <template>
   <a-select
+    show-search
     :disabled="disabled"
     @change="change"
     placeholder="请选择命名空间"
+    style="min-width: 200px;"
+    :filter-option="filterOption"
+    option-filter-prop="children"
     :value="value">
     <a-select-option
       v-for="item in options"
@@ -97,6 +101,11 @@ export default {
       } else {
         this.change(undefined)
       }
+    },
+    filterOption (input, option) {
+      return (
+        option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      )
     },
   },
 }
