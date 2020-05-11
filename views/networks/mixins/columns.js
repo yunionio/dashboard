@@ -4,11 +4,10 @@ export default {
   created () {
     this.columns = [
       {
-        field: 'index',
         title: '序号',
         width: 50,
-        formatter: ({ row }) => {
-          return row.index ? row.index : '0'
+        formatter: (data) => {
+          return data.seq
         },
       },
       getCopyWithContentTableColumn({ field: 'ifname', title: '网卡名称', sortable: true }),
