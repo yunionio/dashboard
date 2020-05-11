@@ -4,6 +4,7 @@
       default-search-key="obj_name"
       :list="list"
       :columns="columns"
+      :export-data-options="exportDataOptions"
       :disabled-refresh-btn="true"
       :show-page="false" />
      <div class="mb-3 search-date">
@@ -62,6 +63,19 @@ export default {
           },
         },
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: '类型', key: 'obj_type' },
+          { label: '操作', key: 'action' },
+          { label: '资源名称', key: 'obj_name' },
+          { label: '执行状态', key: 'success' },
+          { label: '操作时间', key: 'start_time' },
+          { label: '发起人', key: 'user' },
+          { label: `所属${this.$t('dictionary.project')}`, key: 'owner_tenant' },
+          { label: '备注', key: 'notes' },
+        ],
+      },
       columns: [
         {
           title: '#',
@@ -196,7 +210,7 @@ export default {
     padding-bottom: 20px;
     .search-date {
       position: absolute;
-      right: 0;
+      right: 50px;
       top: 0;
     }
   }
