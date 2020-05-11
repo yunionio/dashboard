@@ -36,7 +36,7 @@ export default {
           slots: {
             default: ({ row }) => {
               return [
-                <side-page-trigger name='HostSidePage' id={row.host_id} vm={this}>{ row.host }</side-page-trigger>,
+                <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) } id={row.host_id}>{ row.host }</side-page-trigger>,
               ]
             },
           },
@@ -61,6 +61,18 @@ export default {
         },
       ],
     }
+  },
+  methods: {
+    handleOpenSidepage (row) {
+      this.$emit('init-side-page-tab', 'host-detail')
+      this.$emit('side-page-trigger-handle', this, 'HostSidePage', {
+        id: row.host_id,
+        resource: 'hosts',
+        getParams: this.getParam,
+      }, {
+        list: this.list,
+      })
+    },
   },
 }
 </script>
