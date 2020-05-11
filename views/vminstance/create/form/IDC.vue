@@ -70,6 +70,7 @@
           v-if="form.fd.hypervisor"
           :decorator="decorators.systemDisk"
           :type="type"
+          :form="form"
           :hypervisor="form.fd.hypervisor"
           :sku="form.fd.sku"
           :capability-data="form.fi.capability"
@@ -100,6 +101,7 @@
       </a-form-item>
       <a-form-item label="网络" class="mb-0">
         <server-network
+          :form="form"
           :decorator="decorators.network"
           :network-list-params="networkParam"
           :schedtag-params="schedtagParams"

@@ -39,13 +39,17 @@ export default {
     NetworkSchedtag,
     NetworkConfig,
   },
-  inject: ['form'],
   props: {
     decorator: {
       type: Object,
       required: true,
       validator: val => val.networkType && val.networkConfig && val.networkSchedtag,
       // val.segment && val.ip && val.schedtag && val.strategy,
+    },
+    form: {
+      type: Object,
+      required: true,
+      validator: val => val.fc,
     },
     networkListParams: {
       type: Object,

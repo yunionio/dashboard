@@ -77,6 +77,7 @@
         </a-form-item>
         <a-form-item label="网络" v-bind="formItemLayout" class="mb-0" v-if="isShowImages">
           <server-network
+            :form="form"
             :decorator="decorators.network"
             :isBonding="isBonding"
             :network-resource-mapper="networkResourceMapper"

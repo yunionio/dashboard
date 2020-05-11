@@ -28,11 +28,15 @@ export const DISK_MIN_SIZE = 10
 
 export default {
   name: 'SystemDisk',
-  inject: ['form'],
   components: {
     Disk,
   },
   props: {
+    form: {
+      type: Object,
+      required: true,
+      validator: val => val.fd && val.fc,
+    },
     type: {
       type: String,
       required: true,
@@ -69,6 +73,9 @@ export default {
     sizeDisabled: {
       type: Boolean,
       default: false,
+    },
+    defaultSize: {
+      type: Number,
     },
   },
   computed: {
@@ -163,7 +170,10 @@ export default {
       return ret
     },
     currentTypeObj () {
-      return this.typesMap[_.get(this.form, 'fd.systemDiskType.key')] || {}
+      if (this.form.fd.systemDiskType && this.form.fd.systemDiskType.key) {
+        return this.typesMap[this.form.fd.systemDiskType.key]
+      }
+      return {}
     },
     max () {
       return this.currentTypeObj.sysMax || 0
@@ -230,7 +240,7 @@ export default {
       })
       this.$nextTick(() => { // 解决磁盘大小 inputNumber 第一次点击变为0 的bug
         this.form.fc.setFieldsValue({
-          systemDiskSize: +diskMsg.sysMin,
+          systemDiskSize: this.defaultSize || +diskMsg.sysMin,
         })
       })
     },

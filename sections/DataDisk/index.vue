@@ -42,11 +42,15 @@ const DISK_MIN_SIZE = 10
 
 export default {
   name: 'dataDisk',
-  inject: ['form'],
   components: {
     Disk,
   },
   props: {
+    form: {
+      type: Object,
+      required: true,
+      validator: val => val.fc,
+    },
     type: {
       type: String,
       required: true,
