@@ -7,6 +7,7 @@ import {
   getAccountTableColumn,
   getPublicScopeTableColumn,
   getProjectDomainTableColumn,
+  getTagTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -21,6 +22,7 @@ export default {
           )
         },
       }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'vpc', columns: () => this.columns }),
       getStatusTableColumn({ statusModule: 'vpc' }),
       getCopyWithContentTableColumn({
         field: 'cidr_block',

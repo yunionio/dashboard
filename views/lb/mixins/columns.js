@@ -6,6 +6,7 @@ import {
   // getTimeTableColumn,
   getProjectTableColumn,
   getBrandTableColumn,
+  getTagTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -24,6 +25,7 @@ export default {
           )
         },
       }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'loadbalancer', columns: () => this.columns }),
       {
         field: 'address',
         title: '服务地址',

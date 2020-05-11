@@ -6,6 +6,7 @@ import {
   getPublicScopeTableColumn,
   getProjectDomainTableColumn,
   getBrandTableColumn,
+  getTagTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -20,6 +21,7 @@ export default {
           )
         },
       }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'wire', columns: () => this.columns }),
       getBandwidthTableColumn(),
       getCopyWithContentTableColumn({ field: 'vpc', title: '专有网络', sortable: true }),
       {

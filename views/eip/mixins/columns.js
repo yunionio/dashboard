@@ -6,6 +6,7 @@ import {
   getProjectTableColumn,
   getCopyWithContentTableColumn,
   getRegionTableColumn,
+  getTagTableColumn,
 } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 
@@ -21,6 +22,7 @@ export default {
           )
         },
       }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'server', columns: () => this.columns }),
       {
         field: 'ip_addr',
         title: '地址',
