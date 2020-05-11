@@ -13,11 +13,6 @@
         </a-form-item>
         <a-form-item label="名称" v-bind="formItemLayout">
           <a-input v-decorator="decorators.generate_name" :placeholder="$t('validator.imageName')" @change="e => {form.fi.generate_name = e.target.value}" />
-          <name-repeated
-            v-slot:extra
-            res="images"
-            version="v1"
-            :name="form.fi.generate_name" />
         </a-form-item>
         <a-form-item label="自动启动" v-bind="formItemLayout">
           <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.auto_start" />
@@ -36,18 +31,15 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { typeClouds } from '@/utils/common/hypervisor'
-import NameRepeated from '@/sections/NameRepeated'
 
 const hypervisorMap = typeClouds.hypervisorMap
 
 export default {
   name: 'VmSaveImageDialog',
-  components: {
-    NameRepeated,
-  },
   mixins: [DialogMixin, WindowsMixin],
   data () {
     const types = {
@@ -86,6 +78,7 @@ export default {
             rules: [
               { required: true, message: '请输入名称' },
               { validator: this.$validate('imageName') },
+              { validator: this.checkTemplateName },
             ],
           },
         ],
@@ -141,6 +134,22 @@ export default {
     },
     handleTypeChange (e) {
       this.form.fi.type = e.target.value
+    },
+    checkTemplateName (rule, value, callback) {
+      if (!value) {
+        return callback(new Error('请输入镜像名称'))
+      }
+      return new this.$Manager('images', 'v1').list({ params: {
+        name: value,
+        scope: this.$store.getters.scope,
+      } }).then(res => {
+        const data = res.data.data
+        if (!R.isNil(data) && !R.isEmpty(data)) {
+          callback(new Error('输入的镜像名称已存在'))
+        } else {
+          callback()
+        }
+      })
     },
   },
 }
