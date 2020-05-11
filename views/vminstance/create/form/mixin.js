@@ -427,5 +427,19 @@ export default {
         this.$set(this.form.fd, 'dataDiskSizes', formValue.dataDiskSizes)
       }
     },
+    networkResourceMapper (list) {
+      return list
+        .map(val => {
+          const remain = val.ports - val.ports_used
+          if (remain <= 0) {
+            return {
+              ...val,
+              __disabled: true,
+            }
+          }
+          return val
+        })
+        .sort((a, b) => (b.ports - b.ports_used) - (a.ports - a.ports_used))
+    },
   },
 }

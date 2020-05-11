@@ -87,7 +87,8 @@
           :network-list-params="networkParam"
           :schedtag-params="schedtagParams"
           :networkVpcParams="networkVpcParams"
-          :vpcResource="vpcResource" />
+          :vpcResource="vpcResource"
+          :networkResourceMapper="networkResourceMapper" />
       </a-form-item>
       <a-form-item label="标签" class="mb-0">
         <tag
