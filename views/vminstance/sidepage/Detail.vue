@@ -103,6 +103,7 @@ export default {
               title: 'IP',
               hideField: true,
               slotCallback: row => {
+                if (!row.ips) return '-'
                 return [
                   <a onClick={ () => this.$emit('tab-change', 'network-list-for-vm-instance-sidepage') }>{row.ips}</a>,
                 ]
