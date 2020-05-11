@@ -199,6 +199,7 @@ export const PERMISSION = {
   'server_perform_add_secgroup': ['compute', 'servers', 'perform', 'add-secgroup'],
   'server_perform_revoke_secgroup': ['compute', 'servers', 'perform', 'revoke-secgroup'],
   'server_perform_cancel_delete': ['compute', 'servers', 'perform', 'cancel-delete'],
+  'server_perform_cancel_expire': ['compute', 'servers', 'perform', 'cancel-expire'],
   /**
    * images 相关操作
    */
