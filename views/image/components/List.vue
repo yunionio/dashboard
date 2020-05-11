@@ -1,5 +1,7 @@
 <template>
   <page-list
+    show-tag-columns
+    show-tag-filter
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
@@ -116,24 +118,6 @@ export default {
           label: '批量操作',
           actions: obj => {
             return [
-              {
-                label: '设置删除保护',
-                action: (row) => {
-                  this.createDialog('ChangeDisableDelete', {
-                    name: '系统镜像',
-                    columns: this.columns,
-                    onManager: this.onManager,
-                    data: this.list.selectedItems,
-                  })
-                },
-                meta: () => {
-                  const validate = this.list.selectedItems.length > 0
-                  return {
-                    validate: validate,
-                    tooltip: !validate && `请选择需要操作的系统镜像`,
-                  }
-                },
-              },
               getSetPublicAction(this, {
                 name: this.$t('dictionary.image'),
                 scope: 'project',
@@ -177,6 +161,24 @@ export default {
                 },
               }),
               {
+                label: '设置删除保护',
+                action: (row) => {
+                  this.createDialog('ChangeDisableDelete', {
+                    name: '系统镜像',
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    data: this.list.selectedItems,
+                  })
+                },
+                meta: () => {
+                  const validate = this.list.selectedItems.length > 0
+                  return {
+                    validate: validate,
+                    tooltip: !validate && `请选择需要操作的系统镜像`,
+                  }
+                },
+              },
+              {
                 label: '删除',
                 permission: 'images_delete',
                 action: () => {
@@ -185,6 +187,7 @@ export default {
                     data: this.list.selectedItems,
                     columns: this.columns,
                     title: '删除镜像',
+                    name: this.$t('dictionary.image'),
                     onManager: this.onManager,
                   })
                 },

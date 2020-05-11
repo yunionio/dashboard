@@ -9,6 +9,7 @@ import {
   getCopyWithContentTableColumn,
   getRegionTableColumn,
   getBillingTypeTableColumn,
+  getTagTableColumn,
 } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 
@@ -28,6 +29,7 @@ export default {
           )
         },
       }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'disk', columns: () => this.columns }),
       {
         field: 'disk_size',
         title: '容量',

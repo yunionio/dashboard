@@ -1,7 +1,7 @@
 import FileProcess from '@Compute/views/image/components/FileProcess'
 import { sizestr } from '@/utils/utils'
 import SystemIcon from '@/sections/SystemIcon'
-import { getNameDescriptionTableColumn, getProjectTableColumn, getTimeTableColumn, getPublicScopeTableColumn } from '@/utils/common/tableColumn'
+import { getNameDescriptionTableColumn, getProjectTableColumn, getTimeTableColumn, getPublicScopeTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   created () {
@@ -21,6 +21,7 @@ export default {
           { validator: this.$validate('imageName') },
         ],
       }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'image', columns: () => this.columns }),
       {
         field: 'disk_format',
         title: '格式',
@@ -73,9 +74,9 @@ export default {
           },
         },
       },
+      getPublicScopeTableColumn({ vm: this }),
       getProjectTableColumn(),
       // isPublicTableColumn(),
-      getPublicScopeTableColumn(),
       {
         field: 'is_standard',
         title: '镜像类型',

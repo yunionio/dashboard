@@ -8,6 +8,7 @@ import {
   getProjectTableColumn,
   getTimeTableColumn,
   getCopyWithContentTableColumn,
+  getTagTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -22,6 +23,7 @@ export default {
           )
         },
       }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'snapshot', columns: () => this.columns }),
       getCopyWithContentTableColumn({
         field: 'disk_name',
         title: '硬盘',

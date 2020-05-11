@@ -4,6 +4,7 @@ import {
   getStatusTableColumn,
   getProjectTableColumn,
   getTimeTableColumn,
+  getTagTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -18,6 +19,7 @@ export default {
           )
         },
       }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'instance_snapshot', columns: () => this.columns }),
       {
         field: 'rules',
         title: '子快照',
