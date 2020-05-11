@@ -122,6 +122,10 @@ export default {
             }
           })
           service.portMappings = portMappings
+          if (service.isExternal) {
+            if (values.loadBalancerCluster) service.loadBalancerCluster = values.loadBalancerCluster
+            if (values.loadBalancerNetwork) service.loadBalancerNetwork = values.loadBalancerNetwork
+          }
         }
         const template = {
           spec: {
