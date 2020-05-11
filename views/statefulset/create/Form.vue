@@ -24,7 +24,7 @@
         <port-mapping
           :form="form"
           :decorators="decorators.portMappings"
-          :network-disabled="networkDisabled" />
+          :is-import-cluster="isImportCluster" />
       </a-form-item>
       <a-form-item label="重启策略">
         <restart-policy-select
@@ -93,7 +93,7 @@ export default {
     }
   },
   computed: {
-    networkDisabled () {
+    isImportCluster () {
       if (this.clusterObj.mode === 'import') { // 导入的集群新建外部服务时不能选择网络
         return true
       }
@@ -139,6 +139,10 @@ export default {
             }
           })
           service.portMappings = portMappings
+          if (service.isExternal) {
+            if (values.loadBalancerCluster) service.loadBalancerCluster = values.loadBalancerCluster
+            if (values.loadBalancerNetwork) service.loadBalancerNetwork = values.loadBalancerNetwork
+          }
         }
         const template = {
           spec: {

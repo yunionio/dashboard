@@ -1,8 +1,12 @@
 <template>
   <a-select
+    show-search
     :disabled="disabled"
     @change="change"
     placeholder="请选择命名空间"
+    style="min-width: 200px;"
+    :filter-option="filterOption"
+    option-filter-prop="children"
     :value="value">
     <a-select-option
       v-for="item in options"
@@ -71,11 +75,14 @@ export default {
       }
       if (!params.cluster) return
       namespacesM.list({ params }).then(({ data: { data = [] } }) => {
-        if (this.supportAllNamespace) {
-          this.options = data.concat({ name: 'all_namespace', label: '所有命名空间' })
-        } else {
-          this.options = data.map(val => ({ ...val, label: val.name }))
-        }
+        this.options = data.map(val => ({ ...val, label: val.name }))
+        /* 暂不支持 所有命名空间
+          if (this.supportAllNamespace) {
+            this.options = data.concat({ name: 'all_namespace', label: '所有命名空间' })
+          } else {
+            this.options = data.map(val => ({ ...val, label: val.name }))
+          }
+        */
         const isErrorNamespace = !this.options.find(v => v.name === this.value)
         if (this.setDefault && isErrorNamespace) {
           this.setDefaultNamespace(this.options)
@@ -94,6 +101,11 @@ export default {
       } else {
         this.change(undefined)
       }
+    },
+    filterOption (input, option) {
+      return (
+        option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      )
     },
   },
 }

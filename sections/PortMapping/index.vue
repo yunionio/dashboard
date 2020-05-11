@@ -1,6 +1,6 @@
 <template>
   <div class="port-mapping">
-    <a-form-item class="mb-0" :extra="(!showNetwork && form.fc.getFieldValue(decorators.serviceType[0]) === 'external') ? '导入的集群无法选择网络' : ''">
+    <a-form-item class="mb-0" :extra="(isImportCluster && form.fc.getFieldValue(decorators.serviceType[0]) === 'external') ? '导入的集群无法选择网络' : ''">
       <a-radio-group v-decorator="decorators.serviceType">
         <a-radio-button v-if="!ignoreNone" value="none">无</a-radio-button>
         <a-radio-button value="internal">内部</a-radio-button>
@@ -8,8 +8,11 @@
       </a-radio-group>
     </a-form-item>
     <lb-network
-      v-if="showNetwork && form.fc.getFieldValue(decorators.serviceType[0]) === 'external'"
+      v-if="!isImportCluster && form.fc.getFieldValue(decorators.serviceType[0]) === 'external'"
       :decorator="decorators.loadBalancerNetwork" />
+    <lb-cluster
+      v-if="!isImportCluster && form.fc.getFieldValue(decorators.serviceType[0]) === 'external' && isAdminMode"
+      :decorator="decorators.loadBalancerCluster" />
     <div class="mt-3" v-if="form.fc.getFieldValue(decorators.serviceType[0]) !== 'none'">
       <div class="d-flex" v-for="(item, i) in portList" :key="item.key">
         <port :decorators="getDecorators(item)" :protocolDisabled="getProtocolDisabled(i)" @protocolChange="protocolChange" />
@@ -22,8 +25,10 @@
 
 <script>
 import * as R from 'ramda'
+import { mapGetters } from 'vuex'
 import Port from './Port'
 import LbNetwork from './LbNetwork'
+import LbCluster from './LbCluster'
 import { uuid } from '@/utils/utils'
 
 export default {
@@ -31,18 +36,19 @@ export default {
   components: {
     Port,
     LbNetwork,
+    LbCluster,
   },
   props: {
     decorators: {
       type: Object,
-      validator: val => R.is(Array, val.serviceType) && R.is(Object, val.ports) && R.is(Array, val.loadBalancerNetwork),
+      validator: val => R.is(Array, val.serviceType) && R.is(Object, val.ports) && R.is(Array, val.loadBalancerNetwork) && R.is(Array, val.loadBalancerCluster),
     },
     form: {
       type: Object,
       required: true,
       validator: val => val.fc,
     },
-    showNetwork: {
+    isImportCluster: {
       type: Boolean,
       default: false,
     },
@@ -58,6 +64,9 @@ export default {
       ],
       currentProtocol: 'TCP',
     }
+  },
+  computed: {
+    ...mapGetters(['isAdminMode']),
   },
   methods: {
     add () {
