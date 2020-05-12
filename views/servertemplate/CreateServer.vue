@@ -1,11 +1,14 @@
 <template>
   <div class="severtemplate-create-server">
     <page-header :title="`新建${this.$t('dictionary.server')}`" />
-    <a-form :form="form.fc" class="mt-3">
-      <a-form-item label="名称" v-bind="formItemLayout" extra="名称支持序号占位符‘#’，用法如下。 名称：host## 数量：2、实例为：host01、host02">
+    <a-form :form="form.fc" class="mt-3" v-bind="formItemLayout">
+      <a-form-item label="名称" extra="名称支持序号占位符‘#’，用法如下。 名称：host## 数量：2、实例为：host01、host02">
         <a-input v-decorator="decorators.generate_name" :placeholder="$t('validator.serverCreateName')" />
       </a-form-item>
-      <a-form-item label="申请原因" v-bind="formItemLayout" v-if="isOpenWorkflow">
+      <a-form-item label="数量">
+        <a-input-number v-decorator="decorators.count" :min="1" :max="100" />
+      </a-form-item>
+      <a-form-item label="申请原因" v-if="isOpenWorkflow">
         <a-input v-decorator="decorators.reason" placeholder="请输入主机申请原因" />
       </a-form-item>
       <page-footer>
@@ -55,6 +58,16 @@ export default {
             rules: [
               { required: true, message: '请输入主机名称' },
               { validator: this.$validate('serverCreateName') },
+            ],
+          },
+        ],
+        count: [
+          'count',
+          {
+            initialValue: 1,
+            validateFirst: true,
+            rules: [
+              { required: true, message: '请输入数量' },
             ],
           },
         ],
