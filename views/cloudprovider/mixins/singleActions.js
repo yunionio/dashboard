@@ -47,6 +47,29 @@ export default {
                   span: 5,
                 },
               },
+              getDomainList: async (params) => {
+                try {
+                  let data
+                  const candidatesResponse = await new this.$Manager('cloudproviders').getSpecific({
+                    id: obj.id,
+                    spec: 'change-owner-candidate-domains',
+                  })
+                  data = candidatesResponse.data.candidates || []
+                  if (data.length <= 0) {
+                    const domainResponse = await new this.$Manager('domains', 'v1').list({
+                      params,
+                    })
+                    data = domainResponse.data.data || []
+                  }
+                  return {
+                    data: {
+                      data,
+                    },
+                  }
+                } catch (error) {
+                  throw error
+                }
+              },
             })
           }
         },
