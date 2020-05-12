@@ -26,19 +26,6 @@ export default {
           const notRunninTip = !isRunning ? '仅运行中的实例支持此操作' : null
           return [
             {
-              label: `更改${this.$t('dictionary.project')}`,
-              action: () => {
-                this.createDialog('ChangeOwenrDialog', {
-                  title: `更改${this.$t('dictionary.project')}`,
-                  data: [obj],
-                  columns: this.columns,
-                  onManager: this.onManager,
-                  refresh: this.refresh,
-                  name: this.$t('dictionary.dbinstances'),
-                })
-              },
-            },
-            {
               label: '重启',
               action: () => {
                 this.createDialog('RDSRestartdialog', {
@@ -92,6 +79,19 @@ export default {
                   validate: isRunning,
                   tooltip: notRunninTip,
                 }
+              },
+            },
+            {
+              label: `更改${this.$t('dictionary.project')}`,
+              action: () => {
+                this.createDialog('ChangeOwenrDialog', {
+                  title: `更改${this.$t('dictionary.project')}`,
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                  refresh: this.refresh,
+                  name: this.$t('dictionary.dbinstances'),
+                })
               },
             },
             disableDeleteAction(this, {
