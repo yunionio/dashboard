@@ -14,30 +14,60 @@ export default {
   created () {
     this.singleActions = [
       {
-        label: '更新账号密码',
-        permission: 'cloudaccounts_perform_update_credential',
-        action: obj => {
-          this.createDialog('CloudaccountUpdateDialog', {
-            data: [obj],
-            columns: this.columns,
-            onManager: this.onManager,
+        label: '全量同步',
+        permission: 'cloudaccounts_perform_sync',
+        action: (obj) => {
+          this.onManager('performAction', {
+            id: obj.id,
+            steadyStatus,
+            managerArgs: {
+              action: 'sync',
+              data: {
+                full_sync: true,
+              },
+            },
           })
         },
-        meta: obj => {
-          const ownerDomain = this.$store.getters.isAdminMode || obj.domain_id === this.$store.getters.userInfo.projectDomainId
-          let tooltip
-          if (!obj.enabled) tooltip = '请先启用云账号'
-          return {
-            validate: obj.enabled && ownerDomain,
-            tooltip,
-          }
-        },
+        meta: (obj) => this.syncPolicy(obj),
       },
       {
         label: '更多',
         actions: obj => {
           const ownerDomain = this.$store.getters.isAdminMode || obj.domain_id === this.$store.getters.userInfo.projectDomainId
-          const privateBillAction = this.$appConfig.isPrivate ? [
+          return [
+            {
+              label: '设置自动同步',
+              permission: 'cloudaccounts_perform_enable_auto_sync,cloudaccounts_perform_disable_auto_sync',
+              action: () => {
+                this.createDialog('CloudaccountSetAutoSyncDialog', {
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                  steadyStatus,
+                })
+              },
+              meta: () => this.setAutoSyncPolicy(obj, ownerDomain),
+            },
+            {
+              label: '更新账号密码',
+              permission: 'cloudaccounts_perform_update_credential',
+              action: obj => {
+                this.createDialog('CloudaccountUpdateDialog', {
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                })
+              },
+              meta: obj => {
+                const ownerDomain = this.$store.getters.isAdminMode || obj.domain_id === this.$store.getters.userInfo.projectDomainId
+                let tooltip
+                if (!obj.enabled) tooltip = '请先启用云账号'
+                return {
+                  validate: obj.enabled && ownerDomain,
+                  tooltip,
+                }
+              },
+            },
             {
               label: '更新账单文件',
               permission: 'cloudaccounts_perform_update_credential',
@@ -52,41 +82,9 @@ export default {
               },
               meta: obj => {
                 return {
-                  validate: ['Aws', 'Aliyun', 'Google', 'Huawei', 'Azure'].indexOf(obj.brand) > -1 && ownerDomain,
+                  validate: this.$appConfig.isPrivate && ['Aws', 'Aliyun', 'Google', 'Huawei', 'Azure'].indexOf(obj.brand) > -1 && ownerDomain,
                 }
               },
-            },
-          ] : []
-          return privateBillAction.concat([
-            {
-              label: '全量同步',
-              permission: 'cloudaccounts_perform_sync',
-              action: () => {
-                this.onManager('performAction', {
-                  id: obj.id,
-                  steadyStatus,
-                  managerArgs: {
-                    action: 'sync',
-                    data: {
-                      full_sync: true,
-                    },
-                  },
-                })
-              },
-              meta: () => this.syncPolicy(obj, ownerDomain),
-            },
-            {
-              label: '设置自动同步',
-              permission: 'cloudaccounts_perform_enable_auto_sync,cloudaccounts_perform_disable_auto_sync',
-              action: () => {
-                this.createDialog('CloudaccountSetAutoSyncDialog', {
-                  data: [obj],
-                  columns: this.columns,
-                  onManager: this.onManager,
-                  steadyStatus,
-                })
-              },
-              meta: () => this.setAutoSyncPolicy(obj, ownerDomain),
             },
             {
               label: '连接测试',
@@ -199,13 +197,13 @@ export default {
               },
               meta: () => this.$getDeleteResult(obj),
             },
-          ])
+          ]
         },
       },
     ]
   },
   methods: {
-    syncPolicy (item, ownerDomain) {
+    syncPolicy (item) {
       let tooltip
       const items = changeToArr(item)
       if (!items.length) return { validate: false }
@@ -223,6 +221,7 @@ export default {
         }
         return true
       })
+      const ownerDomain = this.$store.getters.isAdminMode || item.domain_id === this.$store.getters.userInfo.projectDomainId
       return {
         validate: enabledValid && autoSyncValid && ownerDomain,
         tooltip,
