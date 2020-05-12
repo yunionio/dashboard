@@ -788,12 +788,11 @@ class CreateList {
       managerArgs = {},
     } = opts
     const refreshActions = ['create', 'delete', 'batchDelete']
-    if (R.is(String, ids)) {
-      if (!managerArgs.id) managerArgs.id = ids
-      ids = [ids]
-    }
     if (R.is(Array, ids)) {
       if (!managerArgs.ids) managerArgs.ids = ids
+    } else {
+      if (!managerArgs.id) managerArgs.id = ids
+      ids = [ids]
     }
     if (!managerArgs) {
       throw Error('managerArgs 不能为空')
@@ -823,6 +822,7 @@ class CreateList {
             }
           }
         } else {
+          console.log(ids)
           if (res.status < 400) {
             this.update(ids[0], res.data)
           } else {
