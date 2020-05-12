@@ -11,7 +11,8 @@
             :fc="form.fc"
             :form-layout="formItemLayout"
             :labelInValue="false"
-            :decorators="{ project: decorators.project, domain: decorators.domain }" />
+            :decorators="{ project: decorators.project, domain: decorators.domain }"
+            :getDomainList="params.getDomainList" />
         </a-form-item>
       </a-form>
     </div>

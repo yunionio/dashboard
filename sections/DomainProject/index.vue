@@ -63,6 +63,7 @@ export default {
       required: true,
     },
     allowClear: Boolean,
+    getDomainList: Function,
   },
   data () {
     return {
@@ -138,7 +139,12 @@ export default {
           limit: 0,
           filter: 'enabled.equals(1)', // 仅显示启用状态下的域
         }
-        const response = await this.dm.list({ params })
+        let response
+        if (this.getDomainList) {
+          response = await this.getDomainList(params)
+        } else {
+          response = await this.dm.list({ params })
+        }
         const data = response.data.data || []
         this.domains = data.map(val => ({ ...val, key: val.id, label: val.name }))
         let defaultData = { key: this.userInfo.projectDomainId, label: this.userInfo.projectDomain }
