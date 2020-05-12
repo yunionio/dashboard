@@ -71,19 +71,32 @@ export default {
     params: Object,
   },
   data () {
+    const initialNameValue = (this.params && this.params.name) || '内存使用率'
+    const initialCloudEnvValue = (this.params && this.params.cloud_env) || 'onpremise'
+    const initialBrandValue = (this.params && this.params.brand) || 'OneCloud'
+    const initialRegionValue = (this.params && this.params.region) || 'default'
+    const initialAllUsageKeyValue = (this.params && this.params.all_usage_key) || 'hosts.memory'
+    const initialUsageKeyValue = (this.params && this.params.usage_key) || 'all.servers.memory'
     return {
       data: {},
       visible: false,
       loading: false,
       form: {
         fc: this.$form.createForm(this),
-        fd: {},
+        fd: {
+          name: initialNameValue,
+          cloud_env: initialCloudEnvValue,
+          brand: initialBrandValue,
+          region: initialRegionValue,
+          all_usage_key: initialAllUsageKeyValue,
+          usage_key: initialUsageKeyValue,
+        },
       },
       decorators: {
         name: [
           'name',
           {
-            initialValue: this.params && this.params.name,
+            initialValue: initialNameValue,
             rules: [
               { required: true, message: '请输入磁贴名称' },
             ],
@@ -92,19 +105,19 @@ export default {
         cloud_env: [
           'cloud_env',
           {
-            initialValue: this.params && this.params.cloud_env,
+            initialValue: initialCloudEnvValue,
           },
         ],
         brand: [
           'brand',
           {
-            initialValue: this.params && this.params.brand,
+            initialValue: initialBrandValue,
           },
         ],
         region: [
           'region',
           {
-            initialValue: this.params && this.params.region,
+            initialValue: initialRegionValue,
           },
         ],
         account: [
@@ -116,7 +129,7 @@ export default {
         all_usage_key: [
           'all_usage_key',
           {
-            initialValue: this.params && this.params.all_usage_key,
+            initialValue: initialAllUsageKeyValue,
             rules: [
               { required: true, message: '请选择指标' },
             ],
@@ -125,7 +138,7 @@ export default {
         usage_key: [
           'usage_key',
           {
-            initialValue: this.params && this.params.usage_key,
+            initialValue: initialUsageKeyValue,
             rules: [
               { required: true, message: '请选择指标' },
             ],
@@ -236,6 +249,7 @@ export default {
     if (this.params) {
       this.form.fd = this.params
     }
+    this.$emit('update', this.options.i, this.form.fd)
   },
   methods: {
     genUsageParams () {

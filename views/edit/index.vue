@@ -43,7 +43,7 @@
                     :is-draggable="!item.isTemplate"
                     :is-resizable="!item.isTemplate"
                     :style="{ outline: item.isTemplate ? '2px dashed darkmagenta' : '' }">
-                    <component :is="item.component" :options="item" :params="dashboardParams[item.i]" @update="handleUpdateDashboardParams">
+                    <component :is="item.component" :options="item" :params="dashboardParams[item.i]" @update="handleUpdateDashboardParams" edit>
                       <template v-slot:actions="{ handleEdit }">
                         <a-button class="p-0 h-auto" type="link" icon="delete" @click="handleRemove(item)" />
                         <a-button class="p-0 h-auto ml-2" type="link" icon="setting" @click="handleEdit" />
@@ -353,11 +353,6 @@ export default {
       })
     },
     async handleConfirm () {
-      const layouts = this.layout.filter(item => this.dashboardParams[item.i])
-      if (layouts.length <= 0) {
-        this.$message.warn('请设置后进行保存')
-        return
-      }
       if (!R.trim(this.dashboardName)) {
         this.$message.warn('请输入面板名称')
         this.$refs.input.focus()

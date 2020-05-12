@@ -54,19 +54,24 @@ export default {
     params: Object,
   },
   data () {
+    const initialNameValue = (this.params && this.params.name) || `当前${this.$t('dictionary.project')}${this.$t('dictionary.server')}`
+    const initialUsageKeyValue = (this.params && this.params.usage_key) || 'server'
     return {
       data: {},
       visible: false,
       loading: false,
       form: {
         fc: this.$form.createForm(this),
-        fd: {},
+        fd: {
+          name: initialNameValue,
+          usage_key: initialUsageKeyValue,
+        },
       },
       decorators: {
         name: [
           'name',
           {
-            initialValue: this.params && this.params.name,
+            initialValue: initialNameValue,
             rules: [
               { required: true, message: '请输入磁贴名称' },
             ],
@@ -99,7 +104,7 @@ export default {
         usage_key: [
           'usage_key',
           {
-            initialValue: this.params && this.params.usage_key,
+            initialValue: initialUsageKeyValue,
             rules: [
               { required: true, message: '请选择指标' },
             ],
@@ -151,6 +156,7 @@ export default {
     if (this.params) {
       this.form.fd = this.params
     }
+    this.$emit('update', this.options.i, this.form.fd)
   },
   methods: {
     genUsageParams () {
