@@ -159,6 +159,34 @@ export default {
                 },
               }),
               {
+                label: `更改${this.$t('dictionary.project')}`,
+                action: () => {
+                  this.createDialog('ChangeOwenrDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    name: this.$t('dictionary.image'),
+                  })
+                },
+                meta: () => {
+                  let ret = {
+                    validate: true,
+                    tooltip: null,
+                  }
+                  if (!this.isAdminMode && !this.isDomainMode) {
+                    ret.validate = false
+                    ret.tooltip = '只有管理员支持该操作'
+                    return ret
+                  }
+                  if (this.list.selectedItems.some(item => item.is_public)) {
+                    ret.validate = false
+                    ret.tooltip = '只有不共享的镜像支持该操作'
+                    return ret
+                  }
+                  return ret
+                },
+              },
+              {
                 label: '设置删除保护',
                 action: (row) => {
                   this.createDialog('ChangeDisableDelete', {
