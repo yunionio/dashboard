@@ -6,7 +6,7 @@
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
-        <a-form-item :label="$t('dictionary.project')" v-bind="formItemLayout">
+        <a-form-item :label="params.projectLabel || $t('dictionary.project')" v-bind="formItemLayout">
           <base-select
             v-decorator="decorators.project"
             :params="projectParams"
@@ -50,7 +50,7 @@ export default {
           },
         ],
       },
-      formItemLayout: {
+      formItemLayout: this.params.formItemLayout || {
         wrapperCol: {
           span: 21,
         },

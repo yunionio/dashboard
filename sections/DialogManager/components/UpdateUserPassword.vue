@@ -133,8 +133,12 @@ export default {
       this.loading = true
       try {
         const values = await this.validateForm()
+        const data = {
+          ...values,
+        }
+        data.password_confirm = values.password_new
         this.loading = true
-        await this.doUpdatePassword(values)
+        await this.doUpdatePassword(data)
         this.cancelDialog()
         this.$store.dispatch('auth/logout')
         this.$router.push('/auth')

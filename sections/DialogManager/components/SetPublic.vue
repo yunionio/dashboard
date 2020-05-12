@@ -215,10 +215,12 @@ export default {
   beforeDestroy () {
     this.dm = null
     this.pm = null
+    this.rm = null
   },
   created () {
     this.dm = new this.$Manager('domains', 'v1')
     this.pm = new this.$Manager('projects', 'v1')
+    this.rm = new this.$Manager(this.params.resource, this.params.apiVersion || 'v2')
   },
   methods: {
     async fetchDomains (query) {
@@ -231,16 +233,48 @@ export default {
         params.search = query
       }
       try {
-        const response = await this.dm.list({
-          params,
-        })
-        let data = response.data.data || []
+        let data
+        if (!this.isBatch) {
+          data = await this.fetchChangeOwnerCandidateDomains(query)
+          if (data.length === 0) {
+            const response = await this.dm.list({
+              params,
+            })
+            data = response.data.data || []
+          }
+        } else {
+          const response = await this.dm.list({
+            params,
+          })
+          data = response.data.data || []
+        }
         if (!this.isBatch && this.params.data[0].shared_domains && this.params.data[0].shared_domains.length) {
           data = this.mergeSharedRes(data, this.params.data[0].shared_domains)
         }
         data.unshift({ id: 'all', name: '全部' })
         this.domains = data
         this.domainLoaded = true
+      } catch (error) {
+        throw error
+      }
+    },
+    // 获取可用的domain list
+    async fetchChangeOwnerCandidateDomains (query) {
+      const params = {
+        scope: this.scope,
+        details: true,
+        limit: 0,
+      }
+      if (query) {
+        params.search = query
+      }
+      try {
+        const response = await this.rm.getSpecific({
+          id: this.params.data[0].id,
+          spec: 'change-owner-candidate-domains',
+        })
+        const data = response.data.candidates || []
+        return data
       } catch (error) {
         throw error
       }
