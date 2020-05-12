@@ -19,8 +19,12 @@ export default {
             return [
               h('list-body-cell-wrap', {
                 props: {
-                  edit: true,
+                  formRules: [
+                    { required: true, message: '请输入备注' },
+                  ],
                   row,
+                  edit: true,
+                  copy: true,
                   onManager: this.onManager,
                   field: 'notes',
                 },
