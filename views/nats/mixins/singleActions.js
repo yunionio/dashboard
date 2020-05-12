@@ -25,6 +25,7 @@ export default {
       getSetPublicAction(this, {
         name: this.$t('dictionary.nat'),
         scope: 'domain',
+        resource: 'natgateways',
       }),
     ]
   },

@@ -37,6 +37,7 @@ export default {
             getSetPublicAction(this, {
               name: this.$t('dictionary.vpc'),
               scope: 'domain',
+              resource: 'vpcs',
             }),
             {
               label: '删除',

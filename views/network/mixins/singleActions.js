@@ -103,6 +103,7 @@ export default {
             getSetPublicAction(this, {
               name: this.$t('dictionary.network'),
               scope: 'project',
+              resource: 'networks',
             }),
             // {
             //   label: '设置为共享',

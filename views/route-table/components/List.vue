@@ -80,6 +80,7 @@ export default {
         getSetPublicAction(this, {
           name: this.$t('dictionary.route_table'),
           scope: 'domain',
+          resource: 'route_tables',
         }),
       ],
     }
