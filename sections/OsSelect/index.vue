@@ -3,7 +3,7 @@
     <a-form-item class="mb-0">
       <a-radio-group v-decorator="decorator.imageType" @change="change">
         <a-tooltip v-for="item in mirrorTypeOptions" :key="item.key" :title="item.tooltip" :mouseEnterDelay="0.5">
-          <a-radio-button :value="item.key">{{ item.label }}</a-radio-button>
+          <a-radio-button :value="item.key" :disabled="item.disabled">{{ item.label }}</a-radio-button>
         </a-tooltip>
       </a-radio-group>
     </a-form-item>
@@ -88,6 +88,10 @@ export default {
     sysDiskSize: {
       type: Number,
     },
+    imageTypeMap: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data () {
     return {
@@ -127,6 +131,15 @@ export default {
       if (this.types && !R.isEmpty(this.types)) {
         ret = ret.filter(({ key }) => {
           return this.types.indexOf(key) > -1
+        })
+      }
+      if (!R.isEmpty(this.imageTypeMap)) {
+        ret = ret.map(val => {
+          const imageTypeMapItem = this.imageTypeMap[val.key] // 如果传了外部的 imageTypeMap，采用外部
+          if (R.is(Object, imageTypeMapItem)) {
+            return { ...val, ...imageTypeMapItem }
+          }
+          return val
         })
       }
       return ret

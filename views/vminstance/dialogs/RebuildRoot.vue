@@ -25,9 +25,11 @@
             :osType="osType"
             :cache-image-params="cacheImageParams"
             :decorator="decorators.imageOS"
-            :imageCloudproviderDisabled="true"
             :sys-disk-size="sysDiskSize"
-            @updateImageMsg="updateImageMsgDebounce" />
+            :imageCloudproviderDisabled="true"
+            :cloudproviderParamsExtra="cloudproviderParamsExtra"
+            @updateImageMsg="updateImageMsgDebounce"
+            :imageTypeMap="imageTypeMap" />
         </a-form-item>
         <a-form-item v-bind="formItemLayout" v-show="imgHidden" label="操作系统">
           <div>{{ imgHidden.text }}</div>
@@ -102,6 +104,11 @@ export default {
       },
       detailData: {},
       firstLoad: true,
+      cloudproviderParamsExtra: {
+        scope: this.$store.getters.scope,
+        filter: `id.equals("${this.params.data[0].manager_id}")`,
+      },
+      imageTypeMap: {},
     }
   },
   computed: {
@@ -145,7 +152,7 @@ export default {
           preferManager: [
             'preferManager',
             {
-              initialValue: _.get(this.params, 'data[0].account_id') || '',
+              initialValue: _.get(this.params, 'data[0].manager_id') || '',
               rules: [
                 { required: true, message: '请选择云账号' },
               ],
@@ -377,10 +384,24 @@ export default {
         .then((res) => {
           this.fetchdone = true
           this.detailData = res.data.data
+          this.$set(this.form.fd, 'vmem', _.get(res.data, 'data[0].vmem_size'))
+          this.setImageTypeMap(this.detailData)
         })
         .catch(() => {
           this.fetchdone = true
         })
+    },
+    setImageTypeMap (serverlist) {
+      const firstManagerId = serverlist[0].manager_id
+      if (serverlist.some(val => val.manager_id !== firstManagerId)) { // 说明多台主机是不在同一个订阅下
+        this.imageTypeMap = {
+          public_customize: {
+            ...IMAGES_TYPE_MAP.public_customize,
+            disabled: true,
+            tooltip: `所选的多台${this.$t('dictionary.server')}不在同一个订阅下, 无法选择${IMAGES_TYPE_MAP.public_customize.label}`,
+          },
+        }
+      }
     },
     updateImageMsg (imageMsg) {
       if (this.firstLoad) {
