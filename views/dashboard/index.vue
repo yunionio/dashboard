@@ -76,7 +76,11 @@ export default {
   },
   async created () {
     this.pm = new this.$Manager('parameters', 'v1')
-    this.customOptions = await this.getCustomOptions()
+    try {
+      this.customOptions = await this.getCustomOptions()
+    } catch (error) {
+      this.customOptions = []
+    }
     // 获取以往选择的面板
     let selected = storage.get(this.optionStorageKey)
     const matched = selected && this.allOptions.find(obj => obj.id === selected.id)
