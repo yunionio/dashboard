@@ -10,6 +10,7 @@
 import { formatSeconds } from '@/utils/utils'
 
 // 此组件以秒为传递单位，输入输出都为秒（Number）
+// 定义一月为30天，一年为12个月，都为固定值计算
 export default {
   name: 'DurationSecondInput',
   props: {
@@ -61,8 +62,26 @@ export default {
       this.emit()
     },
     emit () {
-      let sec = this.$moment.duration(+this.num, this.time)
-      sec = sec.asSeconds()
+      let sec = this.num
+      switch (this.time) {
+        case 'minutes':
+          sec = sec * 60
+          break
+        case 'hours':
+          sec = sec * 60 * 60
+          break
+        case 'days':
+          sec = sec * 60 * 60 * 24
+          break
+        case 'months':
+          sec = sec * 60 * 60 * 24 * 30
+          break
+        case 'years':
+          sec = sec * 60 * 60 * 24 * 30 * 12
+          break
+        default:
+          break
+      }
       this.$emit('change', sec)
       this.$emit('input', sec)
     },
