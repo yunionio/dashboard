@@ -70,6 +70,7 @@ export default {
         getSetPublicAction(this, {
           name: this.$t('dictionary.proxysetting'),
           scope: 'domain',
+          resource: 'proxysettings',
         }),
         {
           label: '删除',
