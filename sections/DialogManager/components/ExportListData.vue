@@ -110,6 +110,16 @@ export default {
         export_texts: texts.join(','),
         export_limit: this.params.list.total,
       }
+      // 处理操作日志
+      const { resource, data } = this.params.list
+      const dtaLength = Object.keys(data).length
+      if (resource === 'actions') {
+        if (dtaLength) {
+          params['export_limit'] = dtaLength
+        } else {
+          return null
+        }
+      }
       if (this.params.options.getParams) {
         if (R.is(Function, this.params.options.getParams)) {
           params = {
@@ -145,6 +155,9 @@ export default {
       }
       if (params.limit) delete params.limit
       if (params.offset) delete params.offset
+      if (resource === 'actions') {
+        delete params.paging_marker
+      }
       return params
     },
     validateForm () {
