@@ -297,6 +297,7 @@ export default {
   },
   created () {
     this.backfill()
+    this.form.fc.getFieldDecorator('deploy_method', { preserve: true, initialValue: 'yum' })
   },
   methods: {
     getUpdateInfo () {
