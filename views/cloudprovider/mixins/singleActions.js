@@ -17,16 +17,36 @@ export default {
         action: obj => {
           if (isAccountDomain(this.data)) {
             this.createDialog('ChangeProjectDialog', {
+              name: this.$t('dictionary.cloudprovider'),
               data: [obj],
               columns: this.columns,
               onManager: this.onManager,
+              projectLabel: `资源默认归属${this.$t('dictionary.project')}`,
+              formItemLayout: {
+                wrapperCol: {
+                  span: 19,
+                },
+                labelCol: {
+                  span: 5,
+                },
+              },
             })
           } else {
             this.createDialog('ChangeOwenrDialog', {
+              name: this.$t('dictionary.cloudprovider'),
               data: [obj],
               columns: this.columns,
               onManager: this.onManager,
               action: 'change-project',
+              projectLabel: `资源默认归属${this.$t('dictionary.project')}`,
+              formItemLayout: {
+                wrapperCol: {
+                  span: 19,
+                },
+                labelCol: {
+                  span: 5,
+                },
+              },
             })
           }
         },
