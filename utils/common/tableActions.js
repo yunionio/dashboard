@@ -75,7 +75,7 @@ export function getSetPublicAction (vm, dialogParams = {}, params = {}) {
   if (!vm) {
     throw Error('not found vm instance')
   }
-  const { name = '实例', scope } = dialogParams
+  const { name = '实例', scope, resource, apiVersion } = dialogParams
   const options = {
     label: '设置共享',
     action: row => {
@@ -87,6 +87,8 @@ export function getSetPublicAction (vm, dialogParams = {}, params = {}) {
         refresh: vm.refresh,
         columns: vm.columns,
         scope,
+        resource,
+        apiVersion,
       })
     },
     meta: row => {
