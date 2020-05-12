@@ -89,7 +89,7 @@ export default {
   },
   created () {
     this.dm = new this.$Manager('domains', 'v1')
-    this.rm = new this.$Manager(this.params.resource, this.params.apiVersion)
+    this.rm = new this.$Manager(this.params.resource, this.params.apiVersion || 'v2')
     this.getCanUseDomains()
   },
   methods: {

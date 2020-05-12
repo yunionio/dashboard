@@ -6,12 +6,13 @@
       <dialog-table :data="params.data" :columns="columns" />
       <a-form
         :form="form.fc">
-        <a-form-item :label="$t('dictionary.project')" v-bind="formItemLayout">
+        <a-form-item :label="params.projectLabel || $t('dictionary.project')" v-bind="formItemLayout">
           <domain-project
             :fc="form.fc"
             :form-layout="formItemLayout"
             :labelInValue="false"
-            :decorators="{ project: decorators.project, domain: decorators.domain }" />
+            :decorators="{ project: decorators.project, domain: decorators.domain }"
+            :getDomainList="params.getDomainList" />
         </a-form-item>
       </a-form>
     </div>
@@ -60,7 +61,7 @@ export default {
           },
         ],
       },
-      formItemLayout: {
+      formItemLayout: this.params.formItemLayout || {
         wrapperCol: {
           span: 21,
         },
