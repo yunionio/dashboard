@@ -387,9 +387,11 @@ export default {
       const params = {
         ...this.scopeParams,
       }
+      const { cloudregion } = this.form.fd
       if (this.form.fd.sku && this.form.fd.sku.provider) {
         params.provider = this.form.fd.sku.provider
       }
+      if (cloudregion) params.cloudregion = cloudregion
       return params
     },
     hideCloudaccountSched () {
