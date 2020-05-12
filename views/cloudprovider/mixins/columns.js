@@ -1,8 +1,8 @@
 import {
-  getProjectTableColumn,
   getStatusTableColumn,
   getEnabledTableColumn,
   getNameDescriptionTableColumn,
+  getCopyWithContentTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -63,7 +63,15 @@ export default {
         minWidth: 100,
         statusModule: 'cloudaccountSyncStatus',
       }),
-      getProjectTableColumn(),
+      getCopyWithContentTableColumn({
+        field: 'project_domain',
+        title: `所属${this.$t('dictionary.domain')}`,
+      }),
+      getCopyWithContentTableColumn({
+        field: 'tenant',
+        title: `资源默认归属${this.$t('dictionary.project')}`,
+        minWidth: 140,
+      }),
     ]
   },
 }
