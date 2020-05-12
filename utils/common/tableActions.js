@@ -98,9 +98,17 @@ export function getSetPublicAction (vm, dialogParams = {}, params = {}) {
         validate: data && data.length > 0,
         tooltip: null,
       }
-      if (!store.getters.l3PermissionEnable) {
-        ret.validate = false
-        return ret
+      // 不管是否开启了三级权限都可以设置共享 -> luxiangjie
+      // if (!store.getters.l3PermissionEnable) {
+      //   ret.validate = false
+      //   return ret
+      // }
+      // 如果是域资源则只有管理员可以设置
+      if (scope === 'domain') {
+        if (!store.getters.isAdminMode) {
+          ret.validate = false
+          return ret
+        }
       }
       if (store.getters.isAdminMode) {
         ret.validate = true
