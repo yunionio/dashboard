@@ -463,12 +463,15 @@ export default {
       return callback()
     },
     handleTypeChange (e) {
+      const project_domain = this.form.fc.getFieldValue('project_domain')
       this.form.fc.resetFields()
       this.$nextTick(() => {
         this.form.fc.getFieldDecorator('mode', { preserve: true })
+        this.form.fc.getFieldDecorator('project_domain', { preserve: true })
         this.form.fc.setFieldsValue({
           type: e.target.value,
           mode: 'single',
+          project_domain,
         })
       })
     },
