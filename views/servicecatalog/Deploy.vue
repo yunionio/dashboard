@@ -7,11 +7,14 @@
       :img="catalogData.icon_url"
       :page-title="catalogData.name"
       :description="catalogData.description" />
-    <a-form :form="form.fc" class="mt-3">
-      <a-form-item label="名称" v-bind="formItemLayout" extra="名称支持序号占位符‘#’，用法如下。 名称：host## 数量：2、实例为：host01、host02">
+    <a-form :form="form.fc" class="mt-3" v-bind="formItemLayout">
+      <a-form-item label="名称" extra="名称支持序号占位符‘#’，用法如下。 名称：host## 数量：2、实例为：host01、host02">
         <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverCreateName')" />
       </a-form-item>
-      <a-form-item label="申请原因" v-bind="formItemLayout" v-if="isOpenWorkflow">
+      <a-form-item label="数量">
+        <a-input-number v-decorator="decorators.count" :min="1" :max="100" />
+      </a-form-item>
+      <a-form-item label="申请原因" v-if="isOpenWorkflow">
         <a-input v-decorator="decorators.reason" placeholder="请输入主机申请原因" />
       </a-form-item>
       <page-footer>
@@ -64,6 +67,16 @@ export default {
             ],
           },
         ],
+        count: [
+          'count',
+          {
+            initialValue: 1,
+            validateFirst: true,
+            rules: [
+              { required: true, message: '请输入数量' },
+            ],
+          },
+        ],
         reason: [
           'reason',
         ],
@@ -111,6 +124,7 @@ export default {
     doCreateWorkflow (values) {
       const params = {
         ...this.serverConfig,
+        __count__: values.count,
         generate_name: values.name,
       }
       delete params.reason
@@ -131,7 +145,11 @@ export default {
     },
     doForecast (fd) {
       const genCreateData = new GenCreateData()
-      const params = { ...fd, ...this.serverConfig }
+      const params = {
+        ...fd,
+        ...this.serverConfig,
+        __count__: fd.count,
+      }
       return new this.$Manager('schedulers', 'v1').rpc({ methodname: 'DoForecast', params })
         .then(res => {
           if (res.data.can_create) {
