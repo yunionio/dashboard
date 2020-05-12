@@ -124,6 +124,7 @@ export default {
     doCreateWorkflow (values) {
       const params = {
         ...this.serverConfig,
+        __count__: values.count,
         generate_name: values.name,
       }
       delete params.reason
@@ -144,7 +145,11 @@ export default {
     },
     doForecast (fd) {
       const genCreateData = new GenCreateData()
-      const params = { ...fd, ...this.serverConfig }
+      const params = {
+        ...fd,
+        ...this.serverConfig,
+        __count__: fd.count,
+      }
       return new this.$Manager('schedulers', 'v1').rpc({ methodname: 'DoForecast', params })
         .then(res => {
           if (res.data.can_create) {

@@ -112,6 +112,7 @@ export default {
       const params = {
         ...this.serverConfig,
         generate_name: values.generate_name,
+        __count__: values.count,
       }
       delete params.reason
       const variables = {
@@ -131,7 +132,11 @@ export default {
     },
     doForecast (fd) {
       const genCreateData = new GenCreateData()
-      const params = { generate_name: fd.generate_name, ...this.serverConfig }
+      const params = {
+        generate_name: fd.generate_name,
+        __count__: fd.count,
+        ...this.serverConfig,
+      }
       return new this.$Manager('schedulers', 'v1').rpc({ methodname: 'DoForecast', params })
         .then(res => {
           if (res.data.can_create) {
