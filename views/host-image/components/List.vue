@@ -72,9 +72,15 @@ export default {
         getSetPublicAction(this, {
           name: this.$t('dictionary.guestimage'),
           scope: 'project',
+          resource: 'guestimages',
         }, {
           permission: 'images_perform_public',
           meta: () => {
+            if (!this.list.selectedItems || this.list.selectedItems.length <= 0) {
+              return {
+                validate: false,
+              }
+            }
             if (this.list.selectedItems.some(item => item.is_standard)) {
               return {
                 validate: false,
@@ -114,40 +120,80 @@ export default {
           },
         }),
         {
-          label: '设置删除保护',
-          action: (row) => {
-            this.createDialog('ChangeDisableDelete', {
-              name: this.$t('dictionary.guestimage'),
-              columns: this.columns,
-              onManager: this.onManager,
-              data: this.list.selectedItems,
-            })
+          label: this.$t('common.batchAction'),
+          actions: () => {
+            return [
+              {
+                label: `更改${this.$t('dictionary.project')}`,
+                action: () => {
+                  this.createDialog('ChangeOwenrDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    name: this.$t('dictionary.guestimage'),
+                  })
+                },
+                meta: () => {
+                  let ret = {
+                    validate: true,
+                    tooltip: null,
+                  }
+                  if (!this.isAdminMode && !this.isDomainMode) {
+                    ret.validate = false
+                    ret.tooltip = '只有管理员支持该操作'
+                    return ret
+                  }
+                  if (this.list.selectedItems.some(item => item.is_public)) {
+                    ret.validate = false
+                    ret.tooltip = '只有不共享的镜像支持该操作'
+                    return ret
+                  }
+                  return ret
+                },
+              },
+              {
+                label: '设置删除保护',
+                action: () => {
+                  this.createDialog('ChangeDisableDelete', {
+                    name: this.$t('dictionary.guestimage'),
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    data: this.list.selectedItems,
+                  })
+                },
+                meta: () => {
+                  const validate = this.list.selectedItems.length > 0
+                  return {
+                    validate: validate,
+                    tooltip: !validate && `请选择需要操作的主机镜像`,
+                  }
+                },
+              },
+              {
+                label: '删除',
+                permission: 'images_delete',
+                action: () => {
+                  this.createDialog('DeleteResDialog', {
+                    vm: this,
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    title: '删除镜像',
+                    name: this.$t('dictionary.guestimage'),
+                    onManager: this.onManager,
+                    requestData: {
+                      override_pending_delete: true,
+                    },
+                  })
+                },
+                meta: () => this.$getDeleteResult(this.list.selectedItems),
+              },
+            ]
           },
           meta: () => {
-            const validate = this.list.selectedItems.length > 0
             return {
-              validate: validate,
-              tooltip: !validate && `请选择需要操作的主机镜像`,
+              validate: this.list.selectedItems && this.list.selectedItems.length > 0,
             }
           },
-        },
-        {
-          label: '删除',
-          permission: 'images_delete',
-          action: () => {
-            this.createDialog('DeleteResDialog', {
-              vm: this,
-              data: this.list.selectedItems,
-              columns: this.columns,
-              title: '删除镜像',
-              name: this.$t('dictionary.guestimage'),
-              onManager: this.onManager,
-              requestData: {
-                override_pending_delete: true,
-              },
-            })
-          },
-          meta: () => this.$getDeleteResult(this.list.selectedItems),
         },
       ],
     }
