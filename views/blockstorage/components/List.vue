@@ -146,6 +146,7 @@ export default {
               getSetPublicAction(this, {
                 name: this.$t('dictionary.storages'),
                 scope: 'domain',
+                resource: 'storages',
               }, {
                 meta: () => {
                   return {

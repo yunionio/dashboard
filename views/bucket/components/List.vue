@@ -89,6 +89,7 @@ export default {
               getSetPublicAction(this, {
                 name: this.$t('dictionary.bucket'),
                 scope: 'project',
+                resource: 'buckets',
               }),
               {
                 label: `更改${this.$t('dictionary.project')}`,

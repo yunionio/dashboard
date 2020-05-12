@@ -41,6 +41,7 @@ export default {
             getSetPublicAction(this, {
               name: this.$t('dictionary.bucket'),
               scope: 'project',
+              resource: 'buckets',
             }),
             {
               label: '设置读写权限',
