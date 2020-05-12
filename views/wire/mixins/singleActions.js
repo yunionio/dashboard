@@ -25,6 +25,7 @@ export default {
             getSetPublicAction(this, {
               name: this.$t('dictionary.wire'),
               scope: 'domain',
+              resource: 'wires',
             }),
             {
               label: '删除',
