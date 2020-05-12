@@ -19,8 +19,6 @@
 </template>
 
 <script>
-import * as R from 'ramda'
-
 export default {
   name: 'NetSelect',
   props: {
@@ -48,9 +46,7 @@ export default {
   },
   watch: {
     projectDomain (val, oldVal) {
-      this.networkId = ''
-      this.network = {}
-      this.ip = ''
+      this.form.fc.resetFields(['project_domain'])
     },
   },
   methods: {
@@ -58,19 +54,11 @@ export default {
       this.ipShow = true
     },
     handleChange () {
-      let value = null
-      if (
-        (!R.isEmpty(this.networkId) && !R.isNil(this.networkId)) ||
-        (!R.isEmpty(this.network) && !R.isNil(this.network)) ||
-        (!R.isEmpty(this.ip) && !R.isNil(this.ip))
-      ) {
-        value = {
+      this.$nextTick(() => {
+        this.$emit('change', {
           access_net: this.network,
           access_ip: this.ip,
-        }
-      }
-      this.$nextTick(() => {
-        this.$emit('change', value)
+        })
       })
     },
   },

@@ -355,6 +355,7 @@ export default {
               getSetPublicAction(this, {
                 name: this.$t('dictionary.host'),
                 scope: 'domain',
+                resource: 'hosts',
               }),
               {
                 label: '同步硬件配置',
