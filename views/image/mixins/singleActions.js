@@ -152,6 +152,8 @@ export default {
             getSetPublicAction(this, {
               name: this.$t('dictionary.image'),
               scope: 'project',
+              resource: 'images',
+              apiVersion: 'v1',
             }, {
               meta: () => {
                 let ret = {

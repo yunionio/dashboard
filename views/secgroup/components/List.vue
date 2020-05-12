@@ -120,6 +120,7 @@ export default {
           getSetPublicAction(this, {
             name: this.$t('dictionary.secgroup'),
             scope: 'project',
+            resource: 'secgroups',
           }, {
             permission: 'secgroups_performAction',
           }),

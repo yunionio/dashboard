@@ -142,6 +142,7 @@ export default {
                 getSetPublicAction(this, {
                   name: this.$t('dictionary.host'),
                   scope: 'domain',
+                  resource: 'hosts',
                 }),
                 {
                   label: '调整标签',

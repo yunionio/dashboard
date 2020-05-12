@@ -65,6 +65,7 @@ export default {
             getSetPublicAction(this, {
               name: this.$t('dictionary.guestimage'),
               scope: 'project',
+              resource: 'guestimages',
             }, {
               permission: 'images_perform_public',
               meta: () => {
