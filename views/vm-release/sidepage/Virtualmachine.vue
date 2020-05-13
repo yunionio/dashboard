@@ -1,0 +1,62 @@
+<template>
+  <vxe-grid :data="responseData.data || []" :columns="columns" />
+</template>
+
+<script>
+import WindowsMixin from '@/mixins/windows'
+import { getStatusTableColumn } from '@/utils/common/tableColumn'
+
+export default {
+  name: 'VmReleaseVirtualmachineSidepage',
+  mixins: [WindowsMixin],
+  props: {
+    responseData: {
+      type: Object,
+      default: () => ({ data: [] }),
+    },
+  },
+  data () {
+    return {
+      columns: [
+        {
+          field: 'name',
+          title: '名称',
+          minWidth: 100,
+          slots: {
+            default: ({ row }) => {
+              const text = row['name'] || '-'
+              return [
+                <list-body-cell-wrap copy hideField={true} field='name' row={row} message={text}>
+                  <side-page-trigger name='VmInstanceSidePage' id={row.externalInfo.id} vm={this}>{text}</side-page-trigger>
+                </list-body-cell-wrap>,
+              ]
+            },
+          },
+        },
+        getStatusTableColumn({ statusModule: 'vmReleaseVirtualmachine', sortable: false }),
+        {
+          field: 'ips',
+          title: 'IP',
+          minWidth: 120,
+          slots: {
+            default: ({ row }) => {
+              if (!row.externalInfo || !row.externalInfo.ips) return '-'
+              return row.externalInfo.ips.map(val => <list-body-cell-wrap copy hideField={true} message={val}>{val}</list-body-cell-wrap>)
+            },
+          },
+        },
+        {
+          field: 'vcpuCount',
+          title: 'CPU',
+          formatter: ({ row }) => `${row.vcpuCount} 核`,
+        },
+        {
+          field: 'vmemSizeGB',
+          title: '内存',
+          formatter: ({ row }) => `${row.vmemSizeGB} GB`,
+        },
+      ],
+    }
+  },
+}
+</script>
