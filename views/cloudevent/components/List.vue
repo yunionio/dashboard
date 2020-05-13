@@ -5,7 +5,6 @@
       :columns="columns"
       :export-data-options="exportDataOptions"
       :show-group-actions="true"
-      :disabled-refresh-btn="true"
       :show-page="false">
       <template v-slot:right-tools-prepend>
           <a-date-picker
