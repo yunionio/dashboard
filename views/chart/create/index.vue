@@ -255,6 +255,7 @@ export default {
         chart_name: `${this.chartDetail.repo}/${this.chartDetail.name}`,
         release_name: values.release_name,
         cluster: values.cluster,
+        namespace: values.namespace,
       }
       if (!R.isNil(values.version) && !R.isEmpty(values.version)) {
         data.version = values.version.split('-')[1]
