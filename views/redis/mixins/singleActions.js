@@ -152,6 +152,7 @@ export default {
                   onManager: this.onManager,
                   refresh: this.refresh,
                   name: this.$t('dictionary.elasticcaches'),
+                  resource: 'elasticcaches',
                 })
               },
             },
