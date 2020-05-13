@@ -1,8 +1,8 @@
 <template>
   <div>
-    <page-header :title="$t('dictionary.networkinterface')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
+    <page-header :title="$t('dictionary.networkinterface')" />
     <page-body>
-      <flex-network-list :id="listId" :cloud-env="cloudEnv" />
+      <flex-network-list :id="listId" />
     </page-body>
   </div>
 </template>
@@ -18,12 +18,6 @@ export default {
   data () {
     return {
       listId: 'FlexNetworkList',
-      cloudEnvOptions: [
-        { key: '', label: '全部' },
-        { key: 'private', label: this.$t('cloud_env.private') },
-        { key: 'public', label: this.$t('cloud_env.public') },
-      ],
-      cloudEnv: '',
     }
   },
 }
