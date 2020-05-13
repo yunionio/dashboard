@@ -249,6 +249,8 @@ export default {
                   columns: this.columns,
                   onManager: this.onManager,
                   name: this.$t('dictionary.image'),
+                  resource: 'images',
+                  apiVersion: 'v1',
                 })
               },
               meta: () => {

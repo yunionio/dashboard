@@ -34,6 +34,7 @@ export default {
                   onManager: this.onManager,
                   refresh: this.refresh,
                   name: this.$t('dictionary.secgroup'),
+                  resource: 'secgroups',
                 })
               },
               meta: () => {
