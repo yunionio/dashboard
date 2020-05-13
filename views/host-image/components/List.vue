@@ -133,6 +133,8 @@ export default {
                     columns: this.columns,
                     onManager: this.onManager,
                     name: this.$t('dictionary.guestimage'),
+                    resource: 'guestimages',
+                    apiVersion: 'v1',
                   })
                 },
                 meta: () => {

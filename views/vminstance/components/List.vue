@@ -291,6 +291,7 @@ export default {
                     columns: this.columns,
                     onManager: this.onManager,
                     name: this.$t('dictionary.server'),
+                    resource: 'servers',
                   })
                 },
                 meta: () => {

@@ -213,6 +213,7 @@ export default {
                   data: [obj],
                   columns: this.columns,
                   onManager: this.onManager,
+                  resource: 'disks',
                 })
               },
               meta: () => ({

@@ -1,8 +1,8 @@
 <template>
   <div>
-    <page-header title="服务目录" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
+    <page-header title="服务目录" />
     <page-body>
-      <servicecatalog-list :id="listId" :cloud-env="cloudEnv" />
+      <servicecatalog-list :id="listId" />
     </page-body>
   </div>
 </template>
@@ -18,11 +18,6 @@ export default {
   data () {
     return {
       listId: 'ServicecatalogList',
-      cloudEnvOptions: [
-        { key: '', label: '全部' },
-        { key: 'onpremise', label: this.$t('cloud_env.onpremise') },
-      ],
-      cloudEnv: '',
     }
   },
 }

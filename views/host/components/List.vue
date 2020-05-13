@@ -29,7 +29,6 @@ export default {
     getParams: {
       type: [Function, Object],
     },
-    cloudEnv: String,
     frontGroupActions: {
       type: Function,
     },
@@ -235,13 +234,6 @@ export default {
       )
     },
   },
-  watch: {
-    cloudEnv (val) {
-      this.$nextTick(() => {
-        this.list.fetchData(0)
-      })
-    },
-  },
   created () {
     this.initSidePageTab('host-detail')
     this.list.fetchData()
@@ -251,7 +243,6 @@ export default {
       const ret = {
         ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
       }
-      if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
     },
     handleOpenSidepage (row) {
