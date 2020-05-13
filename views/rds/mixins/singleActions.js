@@ -91,6 +91,7 @@ export default {
                   onManager: this.onManager,
                   refresh: this.refresh,
                   name: this.$t('dictionary.dbinstances'),
+                  resource: 'dbinstances',
                 })
               },
             },
