@@ -4,7 +4,6 @@
       default-search-key="obj_name"
       :list="list"
       :columns="columns"
-      :disabled-refresh-btn="true"
       :show-page="false" />
      <div class="mb-3 search-date">
       <a-date-picker

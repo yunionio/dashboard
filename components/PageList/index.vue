@@ -250,6 +250,10 @@ export default {
   },
   methods: {
     refresh () {
+      const { resource } = this.list
+      if (resource === 'actions') {
+        this.reset()
+      }
       this.list.refresh()
       this.handleClearSelected()
     },
