@@ -79,6 +79,7 @@ export default {
     try {
       this.customOptions = await this.getCustomOptions()
     } catch (error) {
+      console.error(error)
       this.customOptions = []
     }
     // 获取以往选择的面板
@@ -87,6 +88,7 @@ export default {
     if (!matched) {
       selected = this.allOptions[0]
     }
+    console.log('selected', selected)
     this.handleCurrentOptionSelect(selected)
   },
   methods: {
