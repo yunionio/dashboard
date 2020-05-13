@@ -2,11 +2,11 @@
   <div>
     <a-card class="position-relative card-wrap" hoverable style="width: 240px">
         <actions slot="extra" v-if="showSingleActions(listItem)" :options="getOptions(listItem, 'singleActions')" :row="listItem.data" button-type="link" button-size="small" />
-        <div class="p-2" style="height: 180px;">
+        <div class="p-2 d-flex justify-content-center align-items-center" style="height: 180px;">
           <img
             :ref="`img${listKey}`"
-            class="w-100 h-100"
-            :alt="getData(listItem.data, 'description')"
+            style="width: 120px;"
+            alt=""
             :src="getData(listItem.data, 'url')"
             @error="imgError(listItem, `img${listKey}`)"
             slot="cover" />

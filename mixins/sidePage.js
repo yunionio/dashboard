@@ -221,6 +221,9 @@ export default {
         this.clearWaitJob()
         this.data = this.wrapData(data)
         this.checkSteadyStatus()
+        if (R.is(Function, this.fetchDataCallback)) {
+          this.fetchDataCallback()
+        }
         return response
       } catch (error) {
         this.requestError.error = error

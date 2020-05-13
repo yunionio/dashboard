@@ -1,14 +1,18 @@
 <template>
   <div>
-    <div class="mb-4 d-flex">
-      <refresh-button :loading="loading" @refresh="refresh" v-show="isRefreshed" />
-      <template v-if="groupActions">
-        <actions :options="groupActions" button-type="default" group />
-      </template>
-      <slot name="group-actions-append" />
+    <div class="mb-2 d-flex justify-content-between">
+      <div class="d-flex">
+        <refresh-button :loading="loading" @refresh="refresh" v-show="isRefreshed" />
+        <template v-if="groupActions">
+          <actions :options="groupActions" button-type="default" group />
+        </template>
+        <slot name="group-actions-append" />
+      </div>
+      <slot name="tool-actions-between" />
     </div>
+    <slot name="tool-actions-append" />
     <card-list v-if="hasData" :list="list.data" :cardFields="cardFields" :singleActions="singleActions" :layoutDirection="layoutDirection" />
-    <loader v-else :loading="loading" />
+    <loader v-else :loading="loading" class="mt-3" />
     <a-pagination
       v-show="showPageer && list.total !== 0"
       class="my-3 text-center"

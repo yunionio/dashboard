@@ -57,7 +57,7 @@ export const PERMISSION = {
   'k8s_persistentvolumeclaims_list': ['k8s', 'persistentvolumeclaims', 'list'],
   // 容器字典
   'k8s_secrets_list': ['k8s', 'secrets', 'list'],
-  // 容器应用目录
+  // 容器应用市场
   'k8s_charts_list': ['k8s', 'charts', 'list'],
   // Helm仓库地址
   'k8s_repos_list': ['k8s', 'repos', 'list'],
