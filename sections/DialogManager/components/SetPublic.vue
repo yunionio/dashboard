@@ -90,7 +90,7 @@ export default {
       const { public_scope: publicScope, shared_domains: sharedDomains, shared_projects: sharedProjects } = firstData
       // 初始化值
       // 当为部门共享时
-      if (publicScope === 'system') {
+      if (publicScope === 'system' && this.$store.getters.isAdminMode) {
         typeInitialValue = 'domain'
         // 域为空时，为全局共享
         if (R.isNil(sharedDomains) || R.isEmpty(sharedDomains)) {
