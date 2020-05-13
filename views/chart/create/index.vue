@@ -242,8 +242,8 @@ export default {
       }
       this.versions = data.map(v => {
         return {
-          label: `${v.repo}-${v.version}`,
-          key: `${v.repo}-${v.version}`,
+          label: `${v.repo} - ${v.version}`,
+          key: `${v.repo} - ${v.version}`,
         }
       })
       this.form.fc.setFieldsValue({
@@ -258,7 +258,7 @@ export default {
         namespace: values.namespace,
       }
       if (!R.isNil(values.version) && !R.isEmpty(values.version)) {
-        data.version = values.version.split('-')[1]
+        data.version = values.version.split(' - ')[1]
       }
       const sets = {}
       if (this.formActiveTab === 'form') {
