@@ -27,7 +27,6 @@ export default {
       type: Object,
       default: () => ({}),
     },
-    cloudEnv: String,
   },
   data () {
     return {
@@ -130,13 +129,6 @@ export default {
       ],
     }
   },
-  watch: {
-    cloudEnv (val) {
-      this.$nextTick(() => {
-        this.list.fetchData(0)
-      })
-    },
-  },
   created () {
     this.initSidePageTab('wire-detail')
     this.list.fetchData()
@@ -148,7 +140,6 @@ export default {
         show_emulated: false,
         ...this.getParams,
       }
-      if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
     },
     handleOpenSidepage (row) {

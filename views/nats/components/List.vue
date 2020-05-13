@@ -29,7 +29,6 @@ export default {
     getParams: {
       type: [Function, Object],
     },
-    cloudEnv: String,
   },
   data () {
     return {
@@ -114,13 +113,6 @@ export default {
       ],
     }
   },
-  watch: {
-    cloudEnv (val) {
-      this.$nextTick(() => {
-        this.list.fetchData(0)
-      })
-    },
-  },
   created () {
     this.initSidePageTab('nat-detail')
     this.list.fetchData()
@@ -131,7 +123,6 @@ export default {
         ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
         detail: true,
       }
-      if (this.cloudEnv) ret[this.cloudEnv] = true
       return ret
     },
     handleOpenSidepage (row) {

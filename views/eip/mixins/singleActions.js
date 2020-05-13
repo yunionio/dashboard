@@ -116,6 +116,7 @@ export default {
                   columns: this.columns,
                   name: this.$t('dictionary.eip'),
                   onManager: this.onManager,
+                  resource: 'eips',
                 })
               },
             },

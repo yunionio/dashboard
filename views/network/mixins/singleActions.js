@@ -92,6 +92,7 @@ export default {
                   columns: this.columns,
                   name: this.$t('dictionary.network'),
                   onManager: this.onManager,
+                  resource: 'networks',
                 })
               },
               meta: () => {
