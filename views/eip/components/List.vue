@@ -26,7 +26,6 @@ export default {
     getParams: {
       type: Object,
     },
-    cloudEnv: String,
   },
   data () {
     return {
@@ -146,13 +145,6 @@ export default {
       ],
     }
   },
-  watch: {
-    cloudEnv (val) {
-      this.$nextTick(() => {
-        this.list.fetchData(0)
-      })
-    },
-  },
   created () {
     this.initSidePageTab('eip-detail')
     this.list.fetchData()
@@ -163,7 +155,6 @@ export default {
         ...this.getParams,
         details: true,
       }
-      if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
     },
     handleOpenSidepage (row) {

@@ -1,8 +1,8 @@
 <template>
   <div>
-    <page-header :title="this.$t('dictionary.nat')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
+    <page-header :title="this.$t('dictionary.nat')" />
     <page-body>
-      <nat-list :id="listId" :cloud-env="cloudEnv" />
+      <nat-list :id="listId" />
     </page-body>
   </div>
 </template>
@@ -17,11 +17,6 @@ export default {
   data () {
     return {
       listId: 'NatList',
-      cloudEnvOptions: [
-        { key: '', label: '全部' },
-        { key: 'public_cloud', label: this.$t('cloud_env.public') },
-      ],
-      cloudEnv: '',
     }
   },
 }
