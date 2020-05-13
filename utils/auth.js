@@ -178,6 +178,7 @@ export function updateLastLoginUserName () {
         Cookies.remove('scope')
       }
       store.commit('auth/SET_INFO', data)
+      store.dispatch('auth/getCapabilities')
       storage.set(LAST_LOGIN_USERNAME_KEY, data.name)
       resolve()
     }).catch(() => {
