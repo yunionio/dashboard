@@ -32,6 +32,20 @@ const resourceMode = {
       return label
     },
   },
+  repos: {
+    vnode: (vm, h) => {
+      const text = vm.getLabel()
+      let type = '-'
+      if (vm.data.type === 'internal') type = `${vm.$t('dictionary.server')}类型`
+      if (vm.data.type === 'external') type = `${vm.$t('dictionary.container')}类型`
+      return (
+        <div class='d-flex'>
+          <span class='text-truncate flex-fill mr-2' title={ text }>{ text }</span>
+          <span style="color: #8492a6; font-size: 13px">{ type }</span>
+        </div>
+      )
+    },
+  },
 }
 
 export default {

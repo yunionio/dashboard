@@ -675,6 +675,12 @@
       "update_fail": "更新失败",
       "delete_fail": "删除失败",
       "init": "初始化"
+    },
+    "vmReleaseVirtualmachine": {
+      "Running": "运行中"
+    },
+    "vmReleaseAnsibleplaybook": {
+      "Finished": "完成"
     }
   },
   "skuCategoryOptions": {
@@ -1263,7 +1269,8 @@
     "workflowconfig": "配置工单",
     "zone": "可用区",
     "oss": "存储桶",
-    "log": "日志"
+    "log": "日志",
+    "container": "容器"
   },
   "shareScope": {
     "system": "系统",

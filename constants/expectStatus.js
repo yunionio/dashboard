@@ -275,4 +275,14 @@ export default {
     success: ['deployed'],
     danger: ['delete_fail', 'deploy_fail', 'update_fail'],
   },
+  vmReleaseVirtualmachine: {
+    info: [],
+    success: ['Running'],
+    danger: ['delete_fail', 'deploy_fail', 'update_fail', 'create_fail'],
+  },
+  vmReleaseAnsibleplaybook: {
+    info: [],
+    success: ['Finished'],
+    danger: ['delete_fail', 'deploy_fail', 'update_fail', 'create_fail'],
+  },
 }
