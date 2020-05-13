@@ -85,9 +85,8 @@ export default {
               data,
               columns: this.columns,
               title: '删除',
-              name: '发布',
+              name: '容器实例',
               onManager: this.onManager,
-              idKey: 'name',
               requestData,
             })
           },

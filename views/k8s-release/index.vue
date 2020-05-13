@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="发布(Release)" />
+    <page-header title="容器实例" />
     <page-body>
       <release-list :id="listId" />
     </page-body>

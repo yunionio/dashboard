@@ -65,20 +65,13 @@ export default {
           permission: 'k8s_releases_delete',
           action: () => {
             const data = this.list.selectedItems
-            const requestData = {
-              cluster: data[0].clusterID,
-            }
-            const namespace = data[0].namespace
-            if (namespace) requestData.namespace = namespace
             this.createDialog('DeleteResDialog', {
               vm: this,
               data,
               columns: this.columns,
               title: '删除',
-              name: '发布',
+              name: '虚拟机实例',
               onManager: this.onManager,
-              idKey: 'name',
-              requestData,
             })
           },
           meta: () => {
