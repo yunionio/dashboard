@@ -1,5 +1,5 @@
 import { typeClouds } from '@/utils/common/hypervisor'
-const DOCS_PATH = `${window.location.origin}/docs/user/multiplecloud/cloudaccount/cloudaccount/`
+const DOCS_PATH = `${window.location.origin}/docs/docs/user/multiplecloud/cloudaccount/cloudaccount/`
 const providerMap = typeClouds.getProviderlowcase()
 const aliyunLogo = require('../../../../src/assets/images/providers/aliyun.svg')
 const awsLogo = require('../../../../src/assets/images/providers/aws.svg')
