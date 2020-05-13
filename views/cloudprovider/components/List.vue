@@ -89,6 +89,7 @@ export default {
                 columns: this.columns,
                 onManager: this.onManager,
                 action: 'change-project',
+                resource: 'cloudproviders',
               })
             }
           },
