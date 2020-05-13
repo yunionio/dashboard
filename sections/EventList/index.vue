@@ -5,7 +5,6 @@
       :list="list"
       :columns="columns"
       :export-data-options="exportDataOptions"
-      :disabled-refresh-btn="true"
       :show-page="false" />
      <div class="mb-3 search-date">
       <a-date-picker
