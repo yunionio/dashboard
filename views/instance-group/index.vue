@@ -1,8 +1,8 @@
 <template>
   <div>
-    <page-header title="主机组" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
+    <page-header title="主机组" />
     <page-body>
-      <instance-group-list :id="listId" :cloud-env="cloudEnv" />
+      <instance-group-list :id="listId" />
     </page-body>
   </div>
 </template>
@@ -18,11 +18,6 @@ export default {
   data () {
     return {
       listId: 'InstanceGroupList',
-      cloudEnvOptions: [
-        { key: '', label: '全部' },
-        { key: 'onpremise', label: this.$t('cloud_env.onpremise') },
-      ],
-      cloudEnv: '',
     }
   },
 }

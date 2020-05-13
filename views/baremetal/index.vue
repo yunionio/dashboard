@@ -20,7 +20,6 @@ export default {
       listId: 'BaremetalList',
       cloudEnvOptions: [
         { key: '', label: '全部' },
-        { key: 'onpremise', label: this.$t('cloud_env.onpremise') },
       ],
       cloudEnv: '',
     }
