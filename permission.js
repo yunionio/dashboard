@@ -8,6 +8,14 @@ import store from './store'
 import { isLogged } from '@/utils/auth'
 import { authRoutesName, whiteRoutesName } from '@/constants'
 
+// 获取scope beforeEach
+const scopePermission = require.context('../scope', false, /.\/permission.js/)
+let scopeBeforeEach
+scopePermission.keys().forEach(name => {
+  const obj = scopePermission(name)
+  scopeBeforeEach = obj.beforeEach
+})
+
 router.beforeEach(async (to, from, next) => {
   const hasToken = !!store.getters.auth.token
   if (hasToken) {
@@ -45,3 +53,5 @@ router.beforeEach(async (to, from, next) => {
     }
   }
 })
+
+scopeBeforeEach && router.beforeEach(scopeBeforeEach)
