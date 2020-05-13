@@ -12,7 +12,7 @@
             :form-layout="formItemLayout"
             :labelInValue="false"
             :decorators="{ project: decorators.project, domain: decorators.domain }"
-            :getDomainList="params.getDomainList" />
+            :getDomainList="getDomainList" />
         </a-form-item>
       </a-form>
     </div>
@@ -81,6 +81,12 @@ export default {
       }
       return this.params.columns
     },
+    getDomainList () {
+      if (this.params.data.length === 1) {
+        return this.getCandidateDomains
+      }
+      return undefined
+    },
   },
   methods: {
     validateForm () {
@@ -111,6 +117,29 @@ export default {
         this.cancelDialog()
       } catch (error) {
         this.loading = false
+      }
+    },
+    async getCandidateDomains (params) {
+      try {
+        let data
+        const candidatesResponse = await new this.$Manager(this.params.resource, this.params.apiVersion || 'v2').getSpecific({
+          id: this.params.data[0].id,
+          spec: 'change-owner-candidate-domains',
+        })
+        data = candidatesResponse.data.candidates || []
+        if (data.length <= 0) {
+          const domainResponse = await new this.$Manager('domains', 'v1').list({
+            params,
+          })
+          data = domainResponse.data.data || []
+        }
+        return {
+          data: {
+            data,
+          },
+        }
+      } catch (error) {
+        throw error
       }
     },
   },
