@@ -1,8 +1,8 @@
 <template>
   <div>
-    <page-header :title="$t('dictionary.host')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
+    <page-header :title="$t('dictionary.host')" />
     <page-body>
-      <host-list :get-params="listParams" :id="listId" :cloud-env="cloudEnv" />
+      <host-list :get-params="listParams" :id="listId" />
     </page-body>
   </div>
 </template>
@@ -22,12 +22,6 @@ export default {
         details: true,
         baremetal: false,
       },
-      cloudEnvOptions: [
-        { key: '', label: '全部' },
-        { key: 'onpremise', label: this.$t('cloud_env.onpremise') },
-        { key: 'private', label: this.$t('cloud_env.private') },
-      ],
-      cloudEnv: '',
     }
   },
 }
