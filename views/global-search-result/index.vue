@@ -1,10 +1,13 @@
 <template>
   <div>
-    <a-tabs v-model="currentTab">
-      <a-tab-pane :key="item.id" v-for="item in searchMapsObj" :disabled="item.resData.status && item.resData.status !== 200">
-        <span slot="tab" :class="{ 'text-color-help': getTotal(item) === 0 }">{{ item.label }}({{ getTotal(item) }})</span>
-      </a-tab-pane>
-    </a-tabs>
+    <div class="d-flex align-items-center">
+      <refresh-button :loading="loading" :disabled="loading" class="mr-3" @refresh="fetchData" />
+      <a-tabs v-model="currentTab">
+        <a-tab-pane :key="item.id" v-for="item in searchMapsObj" :disabled="item.resData.status && item.resData.status !== 200">
+          <span slot="tab" :class="{ 'text-color-help': getTotal(item) === 0 }">{{ item.label }}({{ getTotal(item) }})</span>
+        </a-tab-pane>
+      </a-tabs>
+    </div>
     <div v-if="loading || !currentTab">
       <loader :loading="loading" />
     </div>
@@ -43,6 +46,7 @@ import ServerRecoveryList from '@Compute/views/server-recovery/components/List'
 import DiskRecoveryList from '@Compute/views/disk-recovery/components/List'
 import ImageRecoveryList from '@Compute/views/image-recovery/components/List'
 import { getSearchMaps } from '@/constants/globalSearch'
+import RefreshButton from '@/components/PageList/RefreshButton'
 
 export default {
   name: 'GlobalSearchResult',
@@ -64,6 +68,7 @@ export default {
     ServerRecoveryList,
     DiskRecoveryList,
     ImageRecoveryList,
+    RefreshButton,
   },
   data () {
     const maps = getSearchMaps()
