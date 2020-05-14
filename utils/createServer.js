@@ -814,7 +814,7 @@ export class GenCreateData {
           id: value,
           strategy: this.fd.policySchedtagPolicys[key],
         })
-      }, this.policySchedtagSchedtags)
+      }, this.fd.policySchedtagSchedtags)
     }
     return ret
   }
