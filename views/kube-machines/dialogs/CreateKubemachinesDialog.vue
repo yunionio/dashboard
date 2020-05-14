@@ -233,7 +233,7 @@ export default {
           vm: {
             vcpu_count: item,
             vmem_size: data.vmem_size[index] * 1024,
-            disk: [{ index: 0, size: data.disk[index] * 1024 }],
+            disks: [{ index: 0, size: data.disk[index] * 1024 }],
             nets: [{ network: data.network[index] }],
           },
         }

@@ -38,7 +38,7 @@
       </a-form-item>
       <a-form-item label="版本" v-bind="formItemLayout">
         <base-select
-          v-decorator="decorators.k8s_version"
+          v-decorator="decorators.version"
           :options="k8sVersionOps"
           :filterable="true"
           :select-props="{ placeholder: '输入关键词搜索' }" />
@@ -215,8 +215,8 @@ export default {
             },
           ],
         },
-        k8s_version: [
-          'k8s_version',
+        version: [
+          'version',
         ],
         is_public: [
           'is_public',
@@ -327,7 +327,7 @@ export default {
         data.map((item, index) => {
           this.k8sVersionOps.push({ key: item, label: item })
         })
-        this.form.fc.setFieldsValue({ 'k8s_version': data[0] })
+        this.form.fc.setFieldsValue({ 'version': data[0] })
       })
     },
     isConfigImageChange (val) {
@@ -360,11 +360,11 @@ export default {
       })
     },
     genData (data) {
-      const { hypervisor, is_public: isPublic, k8s_version: k8sVersion, name, zone, cloudregion } = data
+      const { hypervisor, is_public: isPublic, version: k8sVersion, name, zone, cloudregion } = data
       const values = {
         hypervisor,
         is_public: isPublic,
-        k8s_version: k8sVersion,
+        version: k8sVersion,
         machines: [],
         name,
         resource_type: 'guest',
@@ -385,7 +385,7 @@ export default {
             vcpu_count: item,
             vmem_size: data.vmem_size[index] * 1024,
             hypervisor,
-            disk: [{ index: 0, size: data.disk[index] * 1024 }],
+            disks: [{ index: 0, size: data.disk[index] * 1024 }],
             nets: [{ network: data.network[index] }],
           },
         }
