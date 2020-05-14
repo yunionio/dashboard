@@ -2,7 +2,7 @@ export const STRATEGY_CN = {
   prefer: '尽量使用',
   avoid: '避免使用',
   exclude: '禁止使用',
-  require: '必须使用',
+  // require: '必须使用',
   '': '无',
 }
 
