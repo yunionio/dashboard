@@ -170,8 +170,8 @@ export default {
       return ret
     },
     currentTypeObj () {
-      if (this.form.fd.systemDiskType && this.form.fd.systemDiskType.key) {
-        return this.typesMap[this.form.fd.systemDiskType.key]
+      if (R.is(Object, this.typesMap) && this.form.fd.systemDiskType && this.form.fd.systemDiskType.key) {
+        return this.typesMap[this.form.fd.systemDiskType.key] || {}
       }
       return {}
     },
