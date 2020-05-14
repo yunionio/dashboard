@@ -165,7 +165,7 @@ export default {
             data,
           },
         })
-        this.params.callback && this.params.callback()
+        this.params.refresh && this.params.refresh()
         this.cancelDialog()
       } finally {
         this.loading = false
