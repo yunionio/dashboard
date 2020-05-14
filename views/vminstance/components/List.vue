@@ -375,6 +375,7 @@ export default {
                     vm: this,
                     data: this.list.selectedItems,
                     columns: this.columns,
+                    onManager: this.onManager,
                   })
                 },
                 meta: () => {
