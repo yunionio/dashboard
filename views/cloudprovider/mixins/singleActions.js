@@ -39,6 +39,7 @@ export default {
               onManager: this.onManager,
               action: 'change-project',
               projectLabel: `资源默认归属${this.$t('dictionary.project')}`,
+              alertMessage: `更改${this.$t('dictionary.project')}时若同时修改${this.$t('dictionary.domain')}，该订阅所属${this.$t('dictionary.domain')}会同步修改`,
               formItemLayout: {
                 wrapperCol: {
                   span: 19,
@@ -47,29 +48,7 @@ export default {
                   span: 5,
                 },
               },
-              getDomainList: async (params) => {
-                try {
-                  let data
-                  const candidatesResponse = await new this.$Manager('cloudproviders').getSpecific({
-                    id: obj.id,
-                    spec: 'change-owner-candidate-domains',
-                  })
-                  data = candidatesResponse.data.candidates || []
-                  if (data.length <= 0) {
-                    const domainResponse = await new this.$Manager('domains', 'v1').list({
-                      params,
-                    })
-                    data = domainResponse.data.data || []
-                  }
-                  return {
-                    data: {
-                      data,
-                    },
-                  }
-                } catch (error) {
-                  throw error
-                }
-              },
+              resource: 'cloudproviders',
             })
           }
         },
