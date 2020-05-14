@@ -83,14 +83,14 @@ export default {
       singleActions: [
         {
           label: '部署',
-          permission: 'k8s_charts_create',
+          // permission: 'k8s_charts_create',
           action: (obj) => {
             this.$router.push({
               path: '/k8s-chart/create',
               query: {
                 repo: obj.repo,
                 name: obj.name,
-                type: obj.type || 'internal', // !!! 临时
+                type: obj.type,
               },
             })
           },
