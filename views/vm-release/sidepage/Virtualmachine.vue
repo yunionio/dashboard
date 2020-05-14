@@ -34,7 +34,7 @@ export default {
             },
           },
         },
-        getStatusTableColumn({ statusModule: 'vmReleaseVirtualmachine', sortable: false }),
+        getStatusTableColumn({ statusModule: 'vmReleaseVirtualmachine', sortable: false, minWidth: 50 }),
         {
           field: 'ips',
           title: 'IP',
@@ -49,6 +49,7 @@ export default {
         {
           field: 'eip',
           title: this.$t('dictionary.eip'),
+          minWidth: 120,
           slots: {
             default: ({ row }) => {
               if (!row.externalInfo || !row.externalInfo.eip) return '-'
