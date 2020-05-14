@@ -5,7 +5,7 @@
       <dialog-selected-tips :count="params.data.length" :action="this.params.title" :name="$t('dictionary.blockstorage')" />
       <dialog-table :data="params.data" :columns="columns" />
       <a-form :form="form.fc" v-bind="formItemLayout">
-        <form-items :storage_type="storage_type" />
+        <form-items :storage_type="storage_type" :edit="true" />
          <a-form-item label="超售比" v-if="params.data[0].brand.toLowerCase() !== 'zstack'">
           <a-input-number :step="0.1" v-decorator="decorators.commit_bound" :min="0" />
         </a-form-item>
