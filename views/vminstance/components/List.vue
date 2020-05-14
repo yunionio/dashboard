@@ -641,7 +641,7 @@ export default {
                 label: '到期释放',
                 permission: 'server_perform_cancel_expire',
                 action: () => {
-                  this.createDialog('VmSetDurationDialog', {
+                  this.createDialog('SetDurationDialog', {
                     data: this.list.selectedItems,
                     columns: this.columns,
                     onManager: this.onManager,
@@ -759,14 +759,6 @@ export default {
         steadyStatus: Object.values(expectStatus.server).flat(),
       }, {
         list: this.list,
-      })
-    },
-    openVmSetDurationDialog (obj) {
-      this.createDialog('VmSetDurationDialog', {
-        data: [obj],
-        columns: this.columns,
-        onManager: this.onManager,
-        refresh: this.refresh,
       })
     },
   },

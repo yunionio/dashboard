@@ -59,7 +59,7 @@ export default {
             default: ({ row }) => {
               const arr = [...(row.data_images || [])]
               arr.push(row.root_image.name)
-              return `${arr.length}个`
+              return <a onClick={ () => this.$emit('tab-change', 'children-image-list') }>{arr.length}个</a>
             },
           },
         },

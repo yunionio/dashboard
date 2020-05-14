@@ -522,7 +522,7 @@ export default {
                   label: '到期释放',
                   permission: 'server_perform_cancel_expire',
                   action: () => {
-                    this.createDialog('VmSetDurationDialog', {
+                    this.createDialog('SetDurationDialog', {
                       data: [obj],
                       columns: this.columns,
                       onManager: this.onManager,
