@@ -272,14 +272,10 @@ export default {
           key: `${v.repo} - ${v.version}`,
         }
       })
-      this.form.fc.getFieldDecorator({
-        [this.decorators.version[0]]: this.decorators.version[1],
+      this.form.fc.getFieldDecorator(this.decorators.version[0], this.decorators.version[1])
+      this.form.fc.setFieldsValue({
+        [this.decorators.version[0]]: this.versions[0].key,
       })
-      setTimeout(() => {
-        this.form.fc.setFieldsValue({
-          [this.decorators.version[0]]: this.versions[0].key,
-        })
-      }, 300)
     },
     async doCreate (values) {
       const data = {
