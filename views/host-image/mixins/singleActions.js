@@ -65,6 +65,7 @@ export default {
             getSetPublicAction(this, {
               name: this.$t('dictionary.guestimage'),
               scope: 'project',
+              resource: 'guestimages',
             }, {
               permission: 'images_perform_public',
               meta: () => {
@@ -119,10 +120,40 @@ export default {
             //   },
             // },
             {
+              label: `更改${this.$t('dictionary.project')}`,
+              action: () => {
+                this.createDialog('ChangeOwenrDialog', {
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                  name: this.$t('dictionary.guestimage'),
+                  resource: 'guestimages',
+                  apiVersion: 'v1',
+                })
+              },
+              meta: () => {
+                let ret = {
+                  validate: true,
+                  tooltip: null,
+                }
+                if (!this.isAdminMode && !this.isDomainMode) {
+                  ret.validate = false
+                  ret.tooltip = '只有管理员支持该操作'
+                  return ret
+                }
+                if (obj.is_public) {
+                  ret.validate = false
+                  ret.tooltip = '只有不共享的镜像支持该操作'
+                  return ret
+                }
+                return ret
+              },
+            },
+            {
               label: '设置删除保护',
               action: (row) => {
                 this.createDialog('ChangeDisableDelete', {
-                  name: '系统镜像',
+                  name: this.$t('dictionary.guestimage'),
                   columns: this.columns,
                   onManager: this.onManager,
                   data: [row],
@@ -138,6 +169,7 @@ export default {
                   data: [obj],
                   columns: this.columns,
                   title: '删除',
+                  name: this.$t('dictionary.guestimage'),
                   onManager: this.onManager,
                   requestData: {
                     override_pending_delete: true,

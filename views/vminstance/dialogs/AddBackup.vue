@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { typeClouds } from '@/utils/common/hypervisor'
@@ -60,6 +61,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['isAdminMode', 'isDomainMode', 'scope']),
     firstData () {
       return this.params.data[0]
     },
@@ -67,6 +69,12 @@ export default {
       const params = { enabled: 1, host_type: this.firstData['hypervisor'] }
       if (this.firstData['hypervisor'] === hypervisorMap.kvm.key) {
         params.host_type = 'hypervisor'
+      }
+      if (this.isAdminMode && this.params.data.length === 1) {
+        params.project_domain = this.firstData['domain_id']
+      }
+      if (this.isDomainMode) {
+        params.scope = this.scope
       }
       return params
     },

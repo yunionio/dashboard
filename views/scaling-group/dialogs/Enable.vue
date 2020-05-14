@@ -1,17 +1,10 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">移除</div>
+    <div slot="header">启用</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" action="移除" name="虚拟机" />
+      <a-alert class="mb-2" type="warning" message="启用弹性伸缩组之后，将会根据策略触发伸缩，可能会进行虚拟机创建或删除" />
+      <dialog-selected-tips :count="params.data.length" action="启用" name="弹性伸缩组" />
       <dialog-table :data="params.data" :columns="columns" />
-      <a-form v-bind="formItemLayout">
-        <a-form-item label="移除方式">
-          <a-radio-group v-model="isDelete">
-            <a-radio :value="true">移除且删除</a-radio>
-            <a-radio :value="false">仅移除</a-radio>
-          </a-radio-group>
-        </a-form-item>
-      </a-form>
     </div>
     <div slot="footer">
       <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
@@ -25,21 +18,16 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'ScalingGroupServerRemoveDialog',
+  name: 'ScalingGroupEnable',
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
       loading: false,
-      isDelete: true,
-      formItemLayout: {
-        labelCol: { span: 3 },
-        wrapperCol: { span: 20 },
-      },
     }
   },
   computed: {
     columns () {
-      const fields = ['name', 'scaling_status', 'status']
+      const fields = ['name', 'desire_instance_number', 'max_instance_number']
       return this.params.columns.filter(item => {
         const { field } = item
         return fields.indexOf(field) > -1
@@ -49,20 +37,15 @@ export default {
   methods: {
     async handleConfirm () {
       this.loading = true
-      const { data } = this.params
-      const manager = new this.$Manager('servers')
       try {
-        const ids = data.map(({ id }) => id)
-        await manager.batchPerformAction({
-          ids,
-          action: 'detach-scaling-group',
-          data: {
-            scaling_group: this.params.resId,
-            delete_server: this.isDelete,
+        await this.params.onManager('batchPerformAction', {
+          id: this.params.data.map(item => item.id),
+          managerArgs: {
+            action: 'enable',
           },
         })
         this.cancelDialog()
-        this.params.refresh()
+        this.$message.success('执行成功')
       } catch (err) {
         throw err
       } finally {

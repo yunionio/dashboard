@@ -14,6 +14,7 @@ import {
 import SystemIcon from '@/sections/SystemIcon'
 import { sizestr } from '@/utils/utils'
 import { findPlatform } from '@/utils/common/hypervisor'
+import { hasPermission } from '@/utils/auth'
 
 export default {
   created () {

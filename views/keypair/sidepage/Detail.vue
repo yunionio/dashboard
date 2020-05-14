@@ -6,6 +6,8 @@
 </template>
 
 <script>
+import { getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
+
 export default {
   name: 'KeyPairDetail',
   props: {
@@ -21,10 +23,10 @@ export default {
   data () {
     return {
       baseInfo: [
-        {
+        getCopyWithContentTableColumn({
           field: 'fingerprint',
           title: '指纹',
-        },
+        }),
         {
           field: 'scheme',
           title: '类型',

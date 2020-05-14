@@ -9,7 +9,7 @@
       :elements="elements"
       :disabled="disabled"
       :schedtagParams="getSchedtagParams()"
-      :size-disabled="disabled"
+      :size-disabled="sizeDisabled || disabled"
       :storage-status-map="storageStatusMap" />
   </div>
 </template>
@@ -28,11 +28,15 @@ export const DISK_MIN_SIZE = 10
 
 export default {
   name: 'SystemDisk',
-  inject: ['form'],
   components: {
     Disk,
   },
   props: {
+    form: {
+      type: Object,
+      required: true,
+      validator: val => val.fd && val.fc,
+    },
     type: {
       type: String,
       required: true,
@@ -65,6 +69,13 @@ export default {
     domain: {
       type: String,
       default: 'default',
+    },
+    sizeDisabled: {
+      type: Boolean,
+      default: false,
+    },
+    defaultSize: {
+      type: Number,
     },
   },
   computed: {
@@ -106,9 +117,9 @@ export default {
       const hypervisorDisks = { ...STORAGE_TYPES[hyper] } || {}
       if (!this.capabilityData || !this.capabilityData.data_storage_types2) return ret
       let currentTypes = this.capabilityData.data_storage_types2[hyper] || []
-      if (hyper === HYPERVISORS_MAP.openstack.key) { // 前端特殊处理：openstack 不支持 nova
-        currentTypes = currentTypes.filter(val => !val.includes('nova'))
-      }
+      // if (hyper === HYPERVISORS_MAP.openstack.key) { // 前端特殊处理：openstack 系统盘支持 nova
+      //   currentTypes = currentTypes.filter(val => !val.includes('nova'))
+      // }
       if (currentTypes.find(val => val.includes('local'))) {
         currentTypes = findAndUnshift(currentTypes, item => item.includes('local'))
       }
@@ -123,6 +134,8 @@ export default {
           currentTypes = []
         }
       }
+      // 将nova放置到最后
+      currentTypes = this.getSortCurrentTypes(currentTypes)
       for (let i = 0, len = currentTypes.length; i < len; i++) {
         const type = currentTypes[i].split('/')[0]
         let opt = hypervisorDisks[type] || this.getExtraDiskOpt(type)
@@ -136,6 +149,7 @@ export default {
             ...opt,
             sysMin: Math.max(this.imageMinDisk, opt.sysMin, DISK_MIN_SIZE),
             sysMax: max,
+            label: opt.key === 'nova' ? '以镜像为系统盘' : opt.label,
           }
           if (this.hypervisor === HYPERVISORS_MAP.google.key) {
             ret[opt.key]['sysMin'] = opt.sysMin
@@ -156,7 +170,10 @@ export default {
       return ret
     },
     currentTypeObj () {
-      return this.typesMap[_.get(this.form, 'fd.systemDiskType.key')] || {}
+      if (R.is(Object, this.typesMap) && this.form.fd.systemDiskType && this.form.fd.systemDiskType.key) {
+        return this.typesMap[this.form.fd.systemDiskType.key] || {}
+      }
+      return {}
     },
     max () {
       return this.currentTypeObj.sysMax || 0
@@ -223,7 +240,7 @@ export default {
       })
       this.$nextTick(() => { // 解决磁盘大小 inputNumber 第一次点击变为0 的bug
         this.form.fc.setFieldsValue({
-          systemDiskSize: +diskMsg.sysMin,
+          systemDiskSize: this.defaultSize || +diskMsg.sysMin,
         })
       })
     },
@@ -271,11 +288,28 @@ export default {
     getHypervisor () {
       let ret = this.hypervisor
       if (this.isPublic) {
-        if (this.sku.provider) {
+        if (this.sku && this.sku.provider) {
           ret = this.sku.provider.toLowerCase()
         }
       }
       return ret
+    },
+    getSortCurrentTypes (currentTypes) {
+      if (currentTypes.length > 1) {
+        let nova = ''
+        currentTypes = currentTypes.filter((item) => {
+          const types = item.split('/')
+          if (types && types.length > 0) {
+            if (types[0] === 'nova') {
+              nova = item
+              return false
+            }
+          }
+          return true
+        })
+        currentTypes.push(nova)
+      }
+      return currentTypes
     },
   },
 }

@@ -72,7 +72,7 @@ export default {
       ],
       loading: false,
       time: '1h',
-      timeGroup: '5m',
+      timeGroup: '1m',
       monitorList: [],
     }
   },
@@ -93,7 +93,7 @@ export default {
       return this.data.id
     },
     sql () {
-      return `time > now() - ${this.time} AND "vm_id"='${this.serverId}' GROUP BY time(${this.timeGroup}) FILL(0)`
+      return `time > now() - ${this.time} AND "vm_id"='${this.serverId}' GROUP BY time(${this.timeGroup}) FILL(none)`
     },
     hasMemMetric () {
       return this.hypervisor === HYPERVISORS_MAP.esxi.key

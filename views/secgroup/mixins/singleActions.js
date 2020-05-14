@@ -33,6 +33,8 @@ export default {
                   columns: this.columns,
                   onManager: this.onManager,
                   refresh: this.refresh,
+                  name: this.$t('dictionary.secgroup'),
+                  resource: 'secgroups',
                 })
               },
               meta: () => {
@@ -49,6 +51,7 @@ export default {
             getSetPublicAction(this, {
               name: this.$t('dictionary.secgroup'),
               scope: 'project',
+              resource: 'secgroups',
             }, {
               permission: 'secgroups_performAction',
             }),
@@ -171,6 +174,7 @@ export default {
                   data: [obj],
                   columns: this.columns,
                   title: '删除',
+                  name: this.$t('dictionary.secgroup'),
                   onManager: this.onManager,
                 })
               },

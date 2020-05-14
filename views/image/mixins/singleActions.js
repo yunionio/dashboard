@@ -152,6 +152,8 @@ export default {
             getSetPublicAction(this, {
               name: this.$t('dictionary.image'),
               scope: 'project',
+              resource: 'images',
+              apiVersion: 'v1',
             }, {
               meta: () => {
                 let ret = {
@@ -240,6 +242,36 @@ export default {
             //   },
             // },
             {
+              label: `更改${this.$t('dictionary.project')}`,
+              action: () => {
+                this.createDialog('ChangeOwenrDialog', {
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                  name: this.$t('dictionary.image'),
+                  resource: 'images',
+                  apiVersion: 'v1',
+                })
+              },
+              meta: () => {
+                let ret = {
+                  validate: true,
+                  tooltip: null,
+                }
+                if (!this.isAdminMode && !this.isDomainMode) {
+                  ret.validate = false
+                  ret.tooltip = '只有管理员支持该操作'
+                  return ret
+                }
+                if (obj.is_public) {
+                  ret.validate = false
+                  ret.tooltip = '只有不共享的镜像支持该操作'
+                  return ret
+                }
+                return ret
+              },
+            },
+            {
               label: '设置删除保护',
               action: (row) => {
                 this.createDialog('ChangeDisableDelete', {
@@ -259,6 +291,7 @@ export default {
                   data: [obj],
                   columns: this.columns,
                   title: '删除',
+                  name: this.$t('dictionary.image'),
                   onManager: this.onManager,
                 })
               },

@@ -10,7 +10,7 @@
 
 <script>
 import { sizestr } from '@/utils/utils'
-import { getStatusTableColumn, getCopyWithContentTableColumn, getSwitchTableColumn, isPublicTableColumn } from '@/utils/common/tableColumn'
+import { getStatusTableColumn, getCopyWithContentTableColumn, getSwitchTableColumn, getPublicScopeTableColumn } from '@/utils/common/tableColumn'
 
 const isStandard = status => status === true || status === 'true'
 export default {
@@ -43,7 +43,7 @@ export default {
             return <side-page-trigger permission="projects_get" name="ProjectSidePage" id={row.tenant_id} vm={this}>{ row.tenant }</side-page-trigger>
           },
         },
-        isPublicTableColumn(),
+        getPublicScopeTableColumn({ vm: this }),
         {
           field: 'type',
           title: '类型',

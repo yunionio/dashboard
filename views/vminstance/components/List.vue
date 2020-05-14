@@ -290,6 +290,8 @@ export default {
                     data: this.list.selectedItems,
                     columns: this.columns,
                     onManager: this.onManager,
+                    name: this.$t('dictionary.server'),
+                    resource: 'servers',
                   })
                 },
                 meta: () => {
@@ -373,6 +375,7 @@ export default {
                     vm: this,
                     data: this.list.selectedItems,
                     columns: this.columns,
+                    onManager: this.onManager,
                   })
                 },
                 meta: () => {
@@ -636,6 +639,7 @@ export default {
               },
               {
                 label: '到期释放',
+                permission: 'server_perform_cancel_expire',
                 action: () => {
                   this.createDialog('VmSetDurationDialog', {
                     data: this.list.selectedItems,
@@ -672,12 +676,13 @@ export default {
                   return ret
                 },
               },
-              disableDeleteAction(this),
+              disableDeleteAction(this, { name: this.$t('dictionary.server') }),
               {
                 label: '删除',
                 permission: 'server_delete',
                 action: () => {
                   this.createDialog('DeleteVmDialog', {
+                    vm: this,
                     data: this.list.selectedItems,
                     columns: this.columns,
                     onManager: this.onManager,

@@ -34,17 +34,6 @@
       <a-form-item label="数量" v-show="!isServertemplate">
         <a-input-number v-decorator="decorators.count" :min="1" :max="100" />
       </a-form-item>
-      <a-form-item label="操作系统" extra="操作系统会根据选择的虚拟化平台和可用区域的变化而变化，公共镜像的维护请联系管理员">
-        <os-select
-          :type="type"
-          :form="form"
-          :hypervisor="form.fd.hypervisor"
-          :decorator="decorators.imageOS"
-          :image-params="scopeParams"
-          :cacheImageParams="cacheImageParams"
-          :cloudproviderParamsExtra="cloudproviderParamsExtra"
-          @updateImageMsg="updateFi" />
-      </a-form-item>
       <a-form-item label="CPU核数" class="mb-0">
         <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" @change="cpuChange" />
       </a-form-item>
@@ -58,20 +47,34 @@
           :sku-params="skuParam"
           :hypervisor="form.fd.hypervisor" />
       </a-form-item>
+      <a-form-item label="操作系统" extra="操作系统会根据选择的虚拟化平台和可用区域的变化而变化，公共镜像的维护请联系管理员">
+        <os-select
+          :type="type"
+          :form="form"
+          :hypervisor="form.fd.hypervisor"
+          :decorator="decorators.imageOS"
+          :image-params="scopeParams"
+          :cacheImageParams="cacheImageParams"
+          :cloudproviderParamsExtra="cloudproviderParamsExtra"
+          @updateImageMsg="updateFi" />
+      </a-form-item>
       <a-form-item label="系统盘" class="mb-0">
         <system-disk
           :decorator="decorators.systemDisk"
           :type="type"
+          :form="form"
           :hypervisor="form.fd.hypervisor"
           :sku="form.fd.sku"
           :capability-data="form.fi.capability"
-          :image="form.fi.imageMsg" />
+          :image="form.fi.imageMsg"
+          :sizeDisabled="disabledSysDiskSize" />
       </a-form-item>
       <a-form-item label="数据盘">
         <data-disk
           v-if="form.fd.hypervisor"
           :decorator="decorators.dataDisk"
           :type="type"
+          :form="form"
           :hypervisor="form.fd.hypervisor"
           :sku="form.fd.sku"
           :capability-data="form.fi.capability"
@@ -82,11 +85,13 @@
       </a-form-item>
       <a-form-item label="网络" class="mb-0">
         <server-network
+          :form="form"
           :decorator="decorators.network"
           :network-list-params="networkParam"
           :schedtag-params="schedtagParams"
           :networkVpcParams="networkVpcParams"
-          :vpcResource="vpcResource" />
+          :vpcResource="vpcResource"
+          :networkResourceMapper="networkResourceMapper" />
       </a-form-item>
       <a-form-item label="标签" class="mb-0">
         <tag
@@ -215,12 +220,19 @@ export default {
     cloudproviderParamsExtra () {
       const params = {
         image_type: 'system',
+        cloud_env: 'private',
         ...this.scopeParams,
       }
       if (this.form.fd.hypervisor && this.form.fd.hypervisor) {
         params.provider = HYPERVISORS_MAP[this.form.fd.hypervisor].provider
       }
       return params
+    },
+    disabledSysDiskSize () {
+      if (this.form.fd.systemDiskType) {
+        return this.form.fd.systemDiskType.key === 'nova'
+      }
+      return false
     },
   },
   methods: {

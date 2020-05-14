@@ -15,7 +15,7 @@
 import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import { getStatusFilter, getEnabledFilter, getBrandFilter } from '@/utils/common/tableFilter'
+import { getStatusFilter, getEnabledFilter, getBrandFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ListMixin from '@/mixins/list'
@@ -29,7 +29,6 @@ export default {
     getParams: {
       type: [Function, Object],
     },
-    cloudEnv: String,
     frontGroupActions: {
       type: Function,
     },
@@ -75,6 +74,7 @@ export default {
             },
           },
           brand: getBrandFilter(),
+          project_domain: getProjectDomainFilter(),
         },
         responseData: this.responseData,
       }),
@@ -95,6 +95,8 @@ export default {
           { label: this.$t('dictionary.project'), key: 'tenant' },
           { label: '区域', key: 'region' },
           { label: '可用区', key: 'zone' },
+          { label: '共享范围', key: 'public_scope' },
+          { label: `所属${this.$t('dictionary.domain')}`, key: 'project_domain' },
         ],
       },
     }
@@ -141,6 +143,7 @@ export default {
                 getSetPublicAction(this, {
                   name: this.$t('dictionary.host'),
                   scope: 'domain',
+                  resource: 'hosts',
                 }),
                 {
                   label: '调整标签',
@@ -148,6 +151,7 @@ export default {
                     this.createDialog('HostsAdjustLabelDialog', {
                       data: this.list.selectedItems,
                       columns: this.columns,
+                      name: this.$t('dictionary.host'),
                       onManager: this.onManager,
                     })
                   },
@@ -200,6 +204,7 @@ export default {
                       data: this.list.selectedItems,
                       columns: this.columns,
                       onManager: this.onManager,
+                      name: this.$t('dictionary.host'),
                       refresh: this.refresh,
                     })
                   },
@@ -216,6 +221,7 @@ export default {
                       data: this.list.selectedItems,
                       columns: this.columns,
                       title: '删除',
+                      name: this.$t('dictionary.host'),
                       onManager: this.onManager,
                     })
                   },
@@ -228,13 +234,6 @@ export default {
       )
     },
   },
-  watch: {
-    cloudEnv (val) {
-      this.$nextTick(() => {
-        this.list.fetchData(0)
-      })
-    },
-  },
   created () {
     this.initSidePageTab('host-detail')
     this.list.fetchData()
@@ -244,7 +243,6 @@ export default {
       const ret = {
         ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
       }
-      if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
     },
     handleOpenSidepage (row) {

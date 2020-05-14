@@ -22,7 +22,6 @@ export default {
       type: Object,
       default: () => ({}),
     },
-    cloudEnv: String,
   },
   data () {
     return {
@@ -71,6 +70,7 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               title: '删除',
+              name: this.$t('dictionary.keypair'),
               onManager: this.onManager,
             })
           },
@@ -83,13 +83,6 @@ export default {
       ],
     }
   },
-  watch: {
-    cloudEnv (val) {
-      this.$nextTick(() => {
-        this.list.fetchData(0)
-      })
-    },
-  },
   created () {
     this.initSidePageTab('key-pair-detail')
     this.list.fetchData()
@@ -101,7 +94,6 @@ export default {
         details: true,
         scope: 'user',
       }
-      if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
     },
     handleOpenSidepage (row) {

@@ -32,7 +32,7 @@
             :labelFormat="labelFormat"
             :disabled-items="disabledItems"
             filterable
-            :options.sync="gpuOpt"
+            :resList.sync="gpuOpt"
             :mapper="mapper"
             resource="isolated_devices"
             :select-props="{ allowClear: true, placeholder: '请选择GPU设备', mode: 'default' }">
@@ -55,7 +55,7 @@
             :labelFormat="labelFormat"
             :disabled-items="disabledItems"
             filterable
-            :options.sync="gpuOpt"
+            :resList.sync="gpuOpt"
             resource="isolated_devices"
             :select-props="{ allowClear: true, placeholder: '请选择GPU设备', mode: 'multiple' }" />
         </a-form-item>

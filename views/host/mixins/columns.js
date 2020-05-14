@@ -9,6 +9,10 @@ export default {
         onManager: this.onManager,
         hideField: true,
         addBackup: true,
+        formRules: [
+          { required: true, message: '请输入名称' },
+          { validator: this.$validate('serverCreateName') },
+        ],
         slotCallback: row => {
           return (
             <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
@@ -104,7 +108,7 @@ export default {
         showOverflow: 'title',
       },
       getBrandTableColumn(),
-      getPublicScopeTableColumn(),
+      getPublicScopeTableColumn({ vm: this }),
       getProjectDomainTableColumn(),
       getRegionTableColumn(),
       {

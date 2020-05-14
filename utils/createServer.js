@@ -845,7 +845,6 @@ export class GenCreateData {
     // 调度策略选择为 云账号
     if (this.fd.schedPolicyType === SCHED_POLICY_OPTIONS_MAP.cloudprovider.key) {
       ret.key = 'preferManager'
-      console.log(this.fd.cloudprovider, 'this.fd.cloudprovider')
       ret.value = this.fd.cloudprovider
     }
     // 调度策略选择为 调度标签

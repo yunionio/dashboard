@@ -2,7 +2,7 @@
   <div>
     <page-header title="主机模版" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
     <page-body>
-      <servertemplate-list :id="listId" :cloud-env="cloudEnv" />
+      <servertemplate-list :id="listId" :cloud-env="cloudEnv" :cloudEnvOptions="cloudEnvOptions" />
     </page-body>
   </div>
 </template>

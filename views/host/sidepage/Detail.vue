@@ -1,7 +1,7 @@
 <template>
   <detail
     :on-manager="onManager"
-    :data="itemData"
+    :data="data"
     :base-info="baseInfo"
     :extra-info="extraInfo"
     resource="hosts"
@@ -32,11 +32,11 @@ export default {
   },
   data () {
     return {
-      itemData: {
-        status: 'ready',
-        host_status: 'ready',
-        enabled: true,
-      },
+      // itemData: {
+      //   status: 'ready',
+      //   host_status: 'ready',
+      //   enabled: true,
+      // },
       storageColumns: [
         {
           field: 'adapter',
@@ -145,6 +145,14 @@ export default {
           title: 'host 版本',
           slots: {
             default: ({ row, cellValue }) => {
+              // if (row.brand && row.brand.toLowerCase() === 'onecloud') {
+              //   const data = row.version.split('/')[1].split('^')[0]
+              //   return [
+              //     <div class='text-truncate'>
+              //       { data }
+              //     </div>,
+              //   ]
+              // }
               return [
                 <div class='text-truncate'>
                   <list-body-cell-wrap copy row={ row } field="version" title={ cellValue } />
@@ -199,7 +207,7 @@ export default {
               },
             },
             {
-              field: 'cpu_cmtbound',
+              field: 'cpu_commit_bound',
               title: '超售比',
             },
             {
@@ -230,7 +238,7 @@ export default {
               },
             },
             {
-              field: 'mem_cmtbound',
+              field: 'mem_commit_bound',
               title: '超售比',
             },
             {
@@ -317,17 +325,17 @@ export default {
       ],
     }
   },
-  created () {
-    this.updateDetailData()
-  },
-  methods: {
-    updateDetailData () {
-      const hostManager = new this.$Manager('hosts')
-      hostManager.get({ id: this.data.id })
-        .then((res) => {
-          this.itemData = res.data
-        })
-    },
-  },
+  // created () {
+  //   this.updateDetailData()
+  // },
+  // methods: {
+  //   updateDetailData () {
+  //     const hostManager = new this.$Manager('hosts')
+  //     hostManager.get({ id: this.data.id })
+  //       .then((res) => {
+  //         this.itemData = res.data
+  //       })
+  //   },
+  // },
 }
 </script>

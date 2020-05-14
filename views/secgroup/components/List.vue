@@ -7,7 +7,7 @@
     :group-actions="groupActions"
     :single-actions="singleActions"
     :export-data-options="exportDataOptions"
-    :expand-config="{ lazy: true, loadMethod: loadRules }"
+    :expand-config="{ lazy: true, loadMethod: loadRules, accordion: true }"
     :showSearchbox="showSearchbox"
     :showGroupActions="showGroupActions" />
 </template>
@@ -122,6 +122,7 @@ export default {
           getSetPublicAction(this, {
             name: this.$t('dictionary.secgroup'),
             scope: 'project',
+            resource: 'secgroups',
           }, {
             permission: 'secgroups_performAction',
           }),
@@ -135,6 +136,7 @@ export default {
                 data: this.list.selectedItems,
                 columns: this.columns,
                 title: '删除',
+                name: this.$t('dictionary.secgroup'),
                 onManager: this.onManager,
               })
             },

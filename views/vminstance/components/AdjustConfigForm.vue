@@ -29,6 +29,8 @@
           :type="type"
           :hypervisor="hypervisor"
           :sku="form.fd.sku"
+          :form="form"
+          :defaultSize="sysdisk.value"
           :capability-data="form.fi.capability"
           :disabled="true" />
       </a-form-item>
@@ -38,6 +40,7 @@
           ref="dataDiskRef"
           :decorator="decorators.dataDisk"
           :type="type"
+          :form="form"
           :hypervisor="hypervisor"
           :capability-data="form.fi.capability"
           :sku="form.fd.sku"
@@ -88,11 +91,6 @@ export default {
     SystemDisk,
   },
   mixins: [WindowsMixin, WorkflowMixin],
-  provide () {
-    return {
-      form: this.form,
-    }
-  },
   props: {
     params: {
       type: Object,
@@ -425,11 +423,12 @@ export default {
       this.form.fd.sysdisks = conf[3]
       this.beforeDataDisks = [ ...this.form.fd.datadisks ]
       if (this.form.fd.sysdisks && this.form.fd.sysdisks.length === 1) {
-        const sysdisk = this.form.fd.sysdisks[0]
+        this.sysdisk = this.form.fd.sysdisks[0]
         const storageItem = STORAGE_TYPES[this.selectedItem.hypervisor]
-        this.form.fc.setFieldsValue({
-          [this.decorators.systemDisk.type[0]]: { key: sysdisk.type, label: R.is(Object, storageItem) ? (_.get(storageItem, '[sysdisk.type].key') || sysdisk.type) : sysdisk.type },
-          [this.decorators.systemDisk.size[0]]: sysdisk.value,
+        this.$nextTick(() => {
+          this.form.fc.setFieldsValue({
+            [this.decorators.systemDisk.type[0]]: { key: this.sysdisk.type, label: R.is(Object, storageItem) ? (_.get(storageItem, '[sysdisk.type].key') || this.sysdisk.type) : this.sysdisk.type },
+          })
         })
       }
       this.$nextTick(() => {
@@ -553,11 +552,13 @@ export default {
     },
     cpuChange (cpu) {
       if (cpu) {
-        const memOpts = this.form.fi.cpuMem.cpu_mems_mb[cpu]
-        this.form.fi.cpuMem.mems_mb = memOpts
-        this.form.fc.setFieldsValue({
-          vmem: memOpts[0],
-        })
+        if (R.is(Object, this.form.fi.cpuMem)) {
+          const memOpts = _.get(this.form.fi, `cpuMem.cpu_mems_mb[${cpu}]`) || []
+          this.form.fi.cpuMem.mems_mb = memOpts
+          this.form.fc.setFieldsValue({
+            vmem: memOpts[0],
+          })
+        }
       }
     },
     fetchInstanceSpecs () {
@@ -587,7 +588,8 @@ export default {
     },
     onValuesChange (props, values) {
       Object.keys(values).forEach((key) => {
-        this.form.fd[key] = values[key]
+        // this.form.fd[key] = values[key]
+        this.$set(this.form.fd, key, values[key])
       })
     },
     async capability (v) { // 可用区查询
