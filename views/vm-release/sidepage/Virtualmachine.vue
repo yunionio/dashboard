@@ -3,6 +3,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import WindowsMixin from '@/mixins/windows'
 import { getStatusTableColumn } from '@/utils/common/tableColumn'
 
@@ -46,14 +47,29 @@ export default {
           },
         },
         {
+          field: 'eip',
+          title: this.$t('dictionary.eip'),
+          slots: {
+            default: ({ row }) => {
+              if (!row.externalInfo || !row.externalInfo.eip) return '-'
+              const val = row.externalInfo.eip
+              return [<list-body-cell-wrap copy hideField={true} message={val}>{val}</list-body-cell-wrap>]
+            },
+          },
+        },
+        {
+          field: 'instanceType',
+          title: '套餐',
+        },
+        {
           field: 'vcpuCount',
           title: 'CPU',
-          formatter: ({ row }) => `${row.vcpuCount} 核`,
+          formatter: ({ row }) => R.is(Number, row.vcpuCount) ? `${row.vcpuCount} 核` : '-',
         },
         {
           field: 'vmemSizeGB',
           title: '内存',
-          formatter: ({ row }) => `${row.vmemSizeGB} GB`,
+          formatter: ({ row }) => R.is(Number, row.vcpuCount) ? `${row.vmemSizeGB} GB` : '-',
         },
       ],
     }
