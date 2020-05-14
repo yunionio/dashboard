@@ -4,8 +4,9 @@
       <img style="width: 80px;" ref="imgRef" @error="getDefaultImg" :src="img" :alt="pageTitle" />
     </div>
     <div class="text-wrap">
-      <div class="title mb-2">{{ pageTitle }}</div>
-      <div class="description">{{ description }}</div>
+      <div class="title">{{ pageTitle }}</div>
+      <slot />
+      <div class="description mt-2">{{ description }}</div>
     </div>
   </div>
 </template>
