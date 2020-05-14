@@ -2,6 +2,9 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">更改{{ $t('dictionary.project') }}</div>
     <div slot="body">
+      <template v-if="params.alertMessage">
+        <a-alert :message="params.alertMessage" banner class="mb-2" />
+      </template>
       <dialog-selected-tips :count="params.data.length" :action="`更改${$t('dictionary.project')}`" :name="params.name || '实例'" />
       <dialog-table :data="params.data" :columns="columns" />
       <a-form
