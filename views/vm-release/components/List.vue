@@ -46,7 +46,7 @@ export default {
       }),
       groupActions: [
         {
-          label: '应用市场',
+          label: '新建',
           permission: 'k8s_releases_create',
           action: () => {
             this.$router.push({

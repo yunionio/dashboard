@@ -18,7 +18,14 @@ export default {
       {
         field: 'metadata',
         title: '应用',
-        formatter: ({ row }) => `${row.chart}/${row.chart_version || ''}`,
+        minWidth: 200,
+        formatter: ({ row }) => {
+          let text = row.chart || '-'
+          if (row.chart_version) {
+            text += `/${row.chart_version}`
+          }
+          return text
+        },
       },
       k8sStatusColumn({ statusModule: 'release' }),
       getProjectTableColumn(),
