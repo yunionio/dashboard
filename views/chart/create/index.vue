@@ -11,7 +11,9 @@
             class="mt-3 mb-4"
             :img="chartDetail.chart.metadata.icon"
             :page-title="chartDetail.name"
-            :description="chartDetail.chart.metadata.description" />
+            :description="chartDetail.chart.metadata.description">
+            <div class="mt-1" style="font-size: 12px; color: #555; font-weight: 500;">{{ isVm ? '虚拟机应用' : '容器应用' }}</div>
+          </page-card-detail>
           <a-form
             v-bind="formItemLayout"
             :form="form.fc">
