@@ -69,7 +69,7 @@ export default {
         })
       })
     },
-    domain_change () {
+    project_change () {
       const proxySettingref = this.$refs.proxySetting
       if (proxySettingref && proxySettingref.fetchQueryProxy) {
         // 根据域获取代理列表信息

@@ -57,6 +57,11 @@ export default {
         ],
         app_id: [
           'app_id',
+          {
+            rules: [
+              { required: true, message: '请输入App ID' },
+            ],
+          },
         ],
         username: [
           keySecretField.k,
