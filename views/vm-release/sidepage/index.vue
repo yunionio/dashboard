@@ -91,9 +91,13 @@ export default {
       }
     },
   },
+  destroyed () {
+    this.timer = null
+  },
   methods: {
     fetchDataCallback () {
       if (R.is(Object, this.detailData.resources)) {
+        this.timer = null
         const stableStatusMap = {
           virtualmachine: 'Running',
           k8s_ansibleplaybook: 'Finished',
@@ -105,9 +109,7 @@ export default {
         if (!isStable1 || !isStable2) {
           this.timer = setTimeout(() => {
             this.fetchData()
-          }, 1000)
-        } else {
-          this.timer = null
+          }, 10000)
         }
       }
     },
