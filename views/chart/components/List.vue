@@ -5,7 +5,13 @@
     :card-fields="cardFields">
     <template #group-actions-append>
       <div class="d-flex align-items-center ml-3">
-        <span>仓库：</span>
+        <span class="chart-form-label">类型：</span>
+        <base-select
+          v-model="type"
+          :options="typeOpts"
+          isDefaultSelect
+          :select-props="{ placeholder: '请选择' }" />
+        <span class="chart-form-labe ml-3">仓库：</span>
         <base-select
           version="v1"
           v-model="repo"
@@ -53,6 +59,11 @@ export default {
       },
       searchValue: {},
       repo: undefined,
+      type: this.$route.query.type || 'internal',
+      typeOpts: [
+        { key: 'internal', label: '虚拟机类型' },
+        { key: 'external', label: '容器类型' },
+      ],
       options: {
         name: {
           label: '名称',
@@ -106,7 +117,7 @@ export default {
       return {
         limit: 0,
         scope: this.$store.getters.scope,
-        ...(this.$route.query || {}),
+        type: this.type,
       }
     },
   },
@@ -147,3 +158,9 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.chart-form-label {
+  color: rgba(0, 0, 0, 0.85);
+}
+</style>

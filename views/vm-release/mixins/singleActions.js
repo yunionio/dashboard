@@ -42,6 +42,7 @@ export default {
             onManager: this.onManager,
           })
         },
+        meta: obj => this.$getDeleteResult(obj),
       },
     ]
   },
