@@ -374,17 +374,18 @@ export default {
         await this.$store.dispatch('auth/reLogin', projectId)
         await this.$store.commit('auth/SET_SCOPE', scope)
         Cookies.set('scope', scope, { expires: 7 })
-        const resolveIndexRoute = this.$router.resolve('/')
-        const currentRoute = this.$route
-        // 如果在首页则刷新页面
-        if (resolveIndexRoute.route.path === currentRoute.path) {
-          window.location.reload()
-        } else {
-          await this.$store.dispatch('auth/getInfo')
-          await this.$store.dispatch('auth/getPermission', scope)
-          await this.$store.dispatch('auth/getScopeResource')
-          this.$router.push('/')
-        }
+        // const resolveIndexRoute = this.$router.resolve('/')
+        // const currentRoute = this.$route
+        // // 如果在首页则刷新页面
+        // if (resolveIndexRoute.route.path === currentRoute.path) {
+        //   window.location.reload()
+        // } else {
+        //   await this.$store.dispatch('auth/getInfo')
+        //   await this.$store.dispatch('auth/getPermission', scope)
+        //   await this.$store.dispatch('auth/getScopeResource')
+        //   this.$router.push('/')
+        // }
+        window.location.reload()
         return true
       } catch (error) {
         throw error
