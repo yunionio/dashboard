@@ -47,6 +47,11 @@ export default {
     K8s_ansibleplaybook,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
+  data () {
+    return {
+      timer: null,
+    }
+  },
   computed: {
     detailTabs () {
       const detailTabs = [{ label: '详情', key: 'detail' }]
@@ -86,23 +91,29 @@ export default {
       }
     },
   },
+  destroyed () {
+    clearTimeout(this.timer)
+    this.timer = null
+  },
   methods: {
     fetchDataCallback () {
-      this.$nextTick(() => {
-        if (this.responseData && R.is(Array, this.responseData.data)) {
-          const stableStatusMap = {
-            virtualmachine: 'Running',
-            k8s_ansibleplaybook: 'Finished',
-          }
-          const stableStatus = stableStatusMap[this.currentTab]
-          const isStable = this.responseData.data.every(val => val.status === stableStatus)
-          if (!isStable) {
-            this.timer = setTimeout(() => {
-              this.fetchData()
-            }, 5000)
-          }
+      if (R.is(Object, this.detailData.resources)) {
+        clearTimeout(this.timer)
+        this.timer = null
+        const stableStatusMap = {
+          virtualmachine: 'Running',
+          k8s_ansibleplaybook: 'Finished',
         }
-      })
+        const virtualmachineList = this.detailData.resources.virtualmachine
+        const ansibleplaybookList = this.detailData.resources.k8s_ansibleplaybook
+        const isStable1 = virtualmachineList.every(val => val.status === stableStatusMap.virtualmachine)
+        const isStable2 = ansibleplaybookList.every(val => val.status === stableStatusMap.k8s_ansibleplaybook)
+        if (!isStable1 || !isStable2) {
+          this.timer = setTimeout(() => {
+            this.fetchData()
+          }, 10000)
+        }
+      }
     },
   },
 }

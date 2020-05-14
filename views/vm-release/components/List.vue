@@ -74,14 +74,7 @@ export default {
               onManager: this.onManager,
             })
           },
-          meta: () => {
-            let validate = true
-            let tooltip = ''
-            return {
-              validate,
-              tooltip,
-            }
-          },
+          meta: () => this.$getDeleteResult(this.list.selectedItems),
         },
       ],
     }
