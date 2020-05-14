@@ -5,7 +5,7 @@
  */
 import router from './router'
 import store from './store'
-import { isLogged } from '@/utils/auth'
+import { isLogged, hasPermission } from '@/utils/auth'
 import { authRoutesName, whiteRoutesName } from '@/constants'
 
 // 获取scope beforeEach
@@ -52,6 +52,20 @@ router.beforeEach(async (to, from, next) => {
       next({ name: 'Auth' })
     }
   }
+})
+
+// 检测权限，无权限导向403
+router.beforeEach((to, from, next) => {
+  const { meta = {} } = to.matched[0]
+  if (meta.permission) {
+    const isPermission = hasPermission({ key: meta.permission })
+    if (!isPermission) return next('/403')
+  }
+  if (meta.hidden) {
+    const isHidden = meta.hidden()
+    if (isHidden) return next('/403')
+  }
+  next()
 })
 
 scopeBeforeEach && router.beforeEach(scopeBeforeEach)
