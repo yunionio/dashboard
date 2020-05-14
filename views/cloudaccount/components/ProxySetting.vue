@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { hasPermission } from '@/utils/auth'
 
 export default {
@@ -31,6 +32,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['isAdminMode', 'userInfo', 'l3PermissionEnable']),
     decorator () {
       return [
         'proxy_setting',
@@ -55,19 +57,25 @@ export default {
       const manager = new this.$Manager('proxysettings')
       const params = {
         limit: 0,
-        project_domain: this.account ? this.account.domain_id : this.fc.getFieldValue('domain').key,
+      }
+      if (this.account) {
+        params['project_domain'] = this.account.domain_id
+      } else if (this.l3PermissionEnable && this.isAdminMode) {
+        params['project_domain'] = this.fc.getFieldValue('domain').key
+      } else {
+        params['project_domain'] = this.userInfo.projectDomainId
       }
       this.loading = true
       try {
         const { data } = await manager.list({ params })
         this.proxyOpts = data.data
-        if (this.proxyOpts && this.proxyOpts.length > 0) {
+        if (this.proxyOpts && this.proxyOpts.length > 0 && this.account) {
           this.fc.setFieldsValue({
-            proxy_setting: this.account ? this.account.proxy_setting_id : this.proxyOpts[0].id,
+            proxy_setting: this.account.proxy_setting_id,
           })
         } else {
           this.fc.setFieldsValue({
-            proxy_setting: undefined,
+            proxy_setting: 'DIRECT',
           })
         }
       } catch (err) {
