@@ -288,7 +288,7 @@ export default {
     getHypervisor () {
       let ret = this.hypervisor
       if (this.isPublic) {
-        if (this.sku.provider) {
+        if (this.sku && this.sku.provider) {
           ret = this.sku.provider.toLowerCase()
         }
       }
