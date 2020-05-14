@@ -92,11 +92,13 @@ export default {
     },
   },
   destroyed () {
+    clearTimeout(this.timer)
     this.timer = null
   },
   methods: {
     fetchDataCallback () {
       if (R.is(Object, this.detailData.resources)) {
+        clearTimeout(this.timer)
         this.timer = null
         const stableStatusMap = {
           virtualmachine: 'Running',
