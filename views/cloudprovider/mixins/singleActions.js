@@ -39,6 +39,7 @@ export default {
               onManager: this.onManager,
               action: 'change-project',
               projectLabel: `资源默认归属${this.$t('dictionary.project')}`,
+              alertMessage: `更改${this.$t('dictionary.project')}时若同时修改${this.$t('dictionary.domain')}，该订阅所属${this.$t('dictionary.domain')}会同步修改`,
               formItemLayout: {
                 wrapperCol: {
                   span: 19,

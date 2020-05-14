@@ -82,6 +82,7 @@ export default {
                 data: this.list.selectedItems,
                 columns: this.columns,
                 onManager: this.onManager,
+                alertMessage: `更改${this.$t('dictionary.project')}时若同时修改${this.$t('dictionary.domain')}，该订阅所属${this.$t('dictionary.domain')}会同步修改`,
               })
             } else {
               this.createDialog('ChangeOwenrDialog', {
@@ -90,6 +91,7 @@ export default {
                 onManager: this.onManager,
                 action: 'change-project',
                 resource: 'cloudproviders',
+                alertMessage: `更改${this.$t('dictionary.project')}时若同时修改${this.$t('dictionary.domain')}，该订阅所属${this.$t('dictionary.domain')}会同步修改`,
               })
             }
           },
