@@ -285,8 +285,18 @@ export default {
         release_name: values.release_name,
       }
       if (this.isVm) {
-        data.domain = values.domain.key
-        data.project = values.project.key
+        if (this.$store.getters.isAdminMode) {
+          data.domain = values.domain.key
+          data.project = values.project.key
+        }
+        if (this.$store.getters.isDomainMode) {
+          data.project = values.project.key
+          data.domain = this.$store.getters.userInfo.projectDomainId
+        }
+        if (this.$store.getters.isProjectMode) {
+          data.domain = this.$store.getters.userInfo.projectDomainId
+          data.project = this.$store.getters.userInfo.projectId
+        }
       } else {
         data.cluster = values.cluster
         data.namespace = values.namespace
