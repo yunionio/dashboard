@@ -5,6 +5,7 @@ import BrandIcon from '@/sections/BrandIcon'
 import TagTableColumn from '@/sections/TagTableColumn'
 import store from '@/store'
 import i18n from '@/locales'
+import { hasPermission } from '@/utils/auth'
 
 export const getProjectTableColumn = ({ field = 'tenant', title = i18n.t('dictionary.project'), projectsItem = 'tenant', sortable = true, hidden = false, minWidth = 100 } = {}) => {
   return {
@@ -490,4 +491,69 @@ export const getProjectDomainTableColumn = ({
     sortable: true,
     hidden: !(store.getters.isAdminMode || store.getters.isDomainMode),
   })
+}
+
+export const getBillingTableColumn = ({
+  vm,
+  field = 'billing_type',
+  title = '计费方式',
+  width = 120,
+  showOverflow = 'ellipsis',
+} = {}) => {
+  return {
+    title,
+    field,
+    width,
+    showOverflow,
+    slots: {
+      default: ({ row }, h) => {
+        const billingType = row[field]
+        const ret = []
+        const openVmSetDurationDialog = () => {
+          if (!vm) return null
+          vm.createDialog('SetDurationDialog', {
+            data: [row],
+            columns: vm.columns,
+            onManager: vm.onManager,
+            refresh: vm.refresh,
+          })
+        }
+        if (billingType === 'postpaid') {
+          ret.push(<div style={{ color: '#0A1F44' }}>按量付费</div>)
+        } else if (billingType === 'prepaid') {
+          ret.push(<div style={{ color: '#0A1F44' }}>包年包月</div>)
+        }
+        if (row.expired_at) {
+          const time = vm.$moment(row.expired_at).format()
+          let tooltipCon = <div slot="help"></div>
+          if (billingType === 'postpaid') {
+            if (hasPermission({ key: 'server_perform_cancel_expire' })) {
+              tooltipCon = <div slot="help">虚拟机会在 { time } 释放，<span class="link-color" style="cursor: pointer" onClick={ openVmSetDurationDialog }>去设置</span></div>
+            } else {
+              tooltipCon = <div slot="help">虚拟机会在 { time } 释放</div>
+            }
+          } else if (billingType === 'prepaid') {
+            if (row.auto_renew) {
+              tooltipCon = <div slot="help">虚拟机会在 { time } 释放，到期自动续费</div>
+            } else {
+              tooltipCon = <div slot="help">虚拟机会在 { time } 释放，到期不续费</div>
+            }
+          }
+          const help = <a-tooltip>
+            <template slot="title">
+              { tooltipCon }
+            </template>
+            <a-icon type="question-circle-o" />
+          </a-tooltip>
+          let dateArr = vm.$moment(row.expired_at).fromNow().split(' ')
+          let date = dateArr.join('')
+          let seconds = vm.$moment(row.expired_at).diff(new Date()) / 1000
+          let textColor = seconds / 24 / 60 / 60 < 7 ? '#DD2727' : '#53627C'
+          let text = seconds < 0 ? '已过期' : `${date.substring(0, date.length - 1)}后到期`
+          ret.push(<div style={{ color: textColor }}>{ text } { help }</div>)
+        }
+        return ret
+      },
+    },
+  }
 }
