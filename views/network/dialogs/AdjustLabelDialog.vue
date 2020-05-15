@@ -2,7 +2,9 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">调整调度标签</div>
     <div slot="body">
-       <a-form
+      <dialog-selected-tips :name="$t('dictionary.network')" :count="params.data.length" action="调整调度标签" />
+      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <a-form
         :form="form.fc">
         <a-form-item label="调度标签" v-bind="formItemLayout">
           <a-select v-decorator="decorators.schedTags" placeholder="请选择调度标签" mode="multiple">
@@ -12,8 +14,6 @@
           </a-select>
         </a-form-item>
       </a-form>
-      <dialog-selected-tips :name="$t('dictionary.network')" :count="params.data.length" action="调整调度标签" />
-      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
     </div>
     <div slot="footer">
       <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
@@ -79,7 +79,7 @@ export default {
     },
     doBindSchedTags (data) {
       return this.params.onManager('batchPerformAction', {
-        id: this.params.data[0].id,
+        id: this.params.data.map(item => item.id),
         managerArgs: {
           action: 'set-schedtag',
           data,
