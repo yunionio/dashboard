@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import { mapGetters } from 'vuex'
 import {
   getProjectTableColumn,
@@ -102,6 +103,23 @@ export default {
         width: 60,
       },
       getCopyWithContentTableColumn({ field: 'vpc', title: 'VPC' }),
+      {
+        field: 'schedtag',
+        title: '调度标签',
+        width: 120,
+        type: 'expand',
+        slots: {
+          content: ({ row }) => {
+            let tags = _.sortBy(row.schedtags, ['default', 'name'])
+            if (tags.length > 0) {
+              return tags.map(tag => <a-tag class='mb-2' color='blue'>{tag.name}</a-tag>)
+            }
+            return [
+              <div class='text-color-help'>无调度标签</div>,
+            ]
+          },
+        },
+      },
       getBrandTableColumn(),
       getCopyWithContentTableColumn({ field: 'account', title: '云账号' }),
       getPublicScopeTableColumn({ vm: this }),
