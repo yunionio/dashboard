@@ -98,11 +98,11 @@
       </a-popover>
     </div>
     <!-- 消息中心 -->
-    <notify-popover class="navbar-item" />
+    <notify-popover class="navbar-item" v-if="showNotify" />
     <!-- 工单 -->
-    <work-order-popover class="navbar-item" />
+    <work-order-popover class="navbar-item" v-if="showWorkOrder" />
     <!-- 帮助 -->
-    <help-popover class="navbar-item" />
+    <help-popover class="navbar-item" v-if="showHelp" />
     <!-- 用户 -->
     <slot name="userPopover" />
     <!-- 全局导航 -->
@@ -143,6 +143,20 @@ export default {
     OneCloudMap,
   },
   mixins: [WindowsMixin],
+  props: {
+    showNotify: {
+      type: Boolean,
+      default: true,
+    },
+    showWorkOrder: {
+      type: Boolean,
+      default: true,
+    },
+    showHelp: {
+      type: Boolean,
+      default: true,
+    },
+  },
   data () {
     return {
       map: {
