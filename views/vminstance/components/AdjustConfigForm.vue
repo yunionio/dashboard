@@ -289,6 +289,7 @@ export default {
       },
       diskLoaded: false,
       domain: itemData.domain_id,
+      sysdisk: {},
     }
   },
   computed: {
