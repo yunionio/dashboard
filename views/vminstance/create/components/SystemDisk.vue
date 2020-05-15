@@ -77,6 +77,9 @@ export default {
     defaultSize: {
       type: Number,
     },
+    defaultType: {
+      type: Object,
+    },
   },
   computed: {
     isPublic () {
@@ -235,7 +238,7 @@ export default {
       const keys = Object.keys(this.typesMap)
       const firstKey = keys[0]
       let diskMsg = this.typesMap[firstKey]
-      this.form.fc.setFieldsValue({
+      this.form.fc.setFieldsValue(this.defaultType || {
         systemDiskType: { key: diskMsg.key, label: diskMsg.label },
       })
       this.$nextTick(() => { // 解决磁盘大小 inputNumber 第一次点击变为0 的bug
