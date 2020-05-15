@@ -1,14 +1,11 @@
 <template>
   <div>
-    <div class="d-flex align-items-center">
-      <refresh-button :loading="loading" :disabled="loading" class="mr-3" @refresh="fetchData" />
-      <a-tabs v-model="currentTab">
-        <a-tab-pane :key="item.id" v-for="item in searchMapsObj" :disabled="item.resData.status && item.resData.status !== 200">
-          <span slot="tab" :class="{ 'text-color-help': getTotal(item) === 0 }">{{ item.label }}({{ getTotal(item) }})</span>
-        </a-tab-pane>
-      </a-tabs>
-    </div>
-    <div v-if="loading || !currentTab">
+    <a-tabs v-model="currentTab">
+      <a-tab-pane :key="item.id" v-for="item in searchMapsObj" :disabled="item.resData.status && item.resData.status !== 200">
+        <span slot="tab" :class="{ 'text-color-help': getTotal(item) === 0 }">{{ item.label }}({{ getTotal(item) }})</span>
+      </a-tab-pane>
+    </a-tabs>
+    <div v-if="!currentTab">
       <loader :loading="loading" />
     </div>
     <div v-else>
@@ -46,7 +43,6 @@ import ServerRecoveryList from '@Compute/views/server-recovery/components/List'
 import DiskRecoveryList from '@Compute/views/disk-recovery/components/List'
 import ImageRecoveryList from '@Compute/views/image-recovery/components/List'
 import { getSearchMaps } from '@/constants/globalSearch'
-import RefreshButton from '@/components/PageList/RefreshButton'
 
 export default {
   name: 'GlobalSearchResult',
@@ -68,7 +64,6 @@ export default {
     ServerRecoveryList,
     DiskRecoveryList,
     ImageRecoveryList,
-    RefreshButton,
   },
   data () {
     const maps = getSearchMaps()
@@ -95,15 +90,18 @@ export default {
     },
   },
   watch: {
-    '$route.query' () {
+    '$route.query' (val, oldV) {
       const query = window.location.search.replace('?', '')
       this.searchRes = qs.parse(query)
-      if (!R.isEmpty(this.searchRes)) this.fetchData()
+      if (!R.equals(val, oldV)) this.fetchData()
     },
   },
   created () {
     this.searchMaps = getSearchMaps()
     if (!R.isEmpty(this.searchRes)) this.fetchData()
+    this.$bus.$on('GlobalSearch', () => {
+      this.fetchData()
+    }, this)
   },
   methods: {
     getTotal (item) {
@@ -128,10 +126,20 @@ export default {
     setCurrentTab (key) {
       this.currentTab = key
     },
+    clearData () {
+      this.loading = false
+      this.setCurrentTab(null)
+      this.searchRes = {}
+      this.searchMaps = {}
+    },
     async fetchData () {
       try {
         // 根据请求类型过滤
         const maps = getSearchMaps(this.searchRes)
+        if (R.isEmpty(this.searchRes)) {
+          this.clearData()
+          return
+        }
         // 组装成数组
         const paramsList = Object.values(maps)
           .map(val => ({
