@@ -1350,11 +1350,11 @@
     },
     "baremetal$auto_register_baremetal": {
       "label": "物理机自动注册",
-      "desc": "是否开启自动注册物理机，关闭需手工添加物理机记录。"
+      "desc": "开启自动注册后，Baremetal Agent收到任意物理机发送的PXE请求都会将其注册到OneCloud平台并重置BMC信息，请谨慎启用自动注册"
     },
     "baremetal$default_ipmi_password": {
       "label": "物理机默认IPMI密码",
-      "desc": "设置物理机的默认IPMI密码"
+      "desc": "通过预注册或自动注册功能重置物理机BMC信息时使用的默认密码"
     }
   },
   "notificationPriority": {
