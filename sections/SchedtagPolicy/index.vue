@@ -8,7 +8,9 @@
         v-decorator="decorators.schedtag"
         resource="schedtags"
         :need-params="true"
+        :item.sync="schedtagItem"
         :params="schedtagParams"
+        @change="schedtagChange"
         :select-props="{ allowClear: true, placeholder: '请选择调度标签' }" />
     </a-form-item>
     <a-form-item class="mb-0 w-50" :wrapperCol="{ span: 24 }">
@@ -36,11 +38,33 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    form: {
+      type: Object,
+      validator: val => !val || val.fc, // 不传 或者 传就有fc
+    },
   },
   data () {
     return {
       policyOpts: SCHEDTAG_POLICY_OPTIONS,
+      schedtagItem: {},
     }
+  },
+  methods: {
+    schedtagChange (val) {
+      this.$nextTick(() => {
+        if (this.form && this.form.fc) {
+          const defaultStrategy = this.schedtagItem.default_strategy
+          if (defaultStrategy) {
+            if (this.policyOpts.find(val => val.key === defaultStrategy)) {
+              this.form.fc.getFieldDecorator(this.decorators.policy[0], this.decorators.policy[1])
+              this.form.fc.setFieldsValue({
+                [this.decorators.policy[0]]: defaultStrategy,
+              })
+            }
+          }
+        }
+      })
+    },
   },
 }
 </script>
