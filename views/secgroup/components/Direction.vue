@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 
 const PROTOCOL = {
@@ -23,7 +24,7 @@ const ACTIONS = {
 
 export default {
   name: 'DirectionList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ListMixin],
   props: {
     type: {
       type: String,
