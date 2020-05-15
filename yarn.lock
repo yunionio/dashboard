@@ -10815,15 +10815,15 @@ vuex@^3.1.2:
   resolved "https://registry.npm.taobao.org/vuex/download/vuex-3.1.2.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvuex%2Fdownload%2Fvuex-3.1.2.tgz#a2863f4005aa73f2587e55c3fadf3f01f69c7d4d"
   integrity sha1-ooY/QAWqc/JYflXD+t8/AfacfU0=
 
-vxe-table-plugin-antd@^1.5.8:
-  version "1.5.10"
-  resolved "https://registry.npm.taobao.org/vxe-table-plugin-antd/download/vxe-table-plugin-antd-1.5.10.tgz#e9d3ea55b97e8b65d9446c24cbff74c3cea22f83"
-  integrity sha1-6dPqVbl+i2XZRGwky/90w86iL4M=
+vxe-table-plugin-antd@^1.8.9:
+  version "1.8.9"
+  resolved "https://registry.npm.taobao.org/vxe-table-plugin-antd/download/vxe-table-plugin-antd-1.8.9.tgz#19312e9dcf18724de44210fe6b4c54281fc74740"
+  integrity sha1-GTEunc8Yck3kQhD+a0xUKB/HR0A=
 
-vxe-table@^2.8.33:
-  version "2.8.33"
-  resolved "https://registry.npm.taobao.org/vxe-table/download/vxe-table-2.8.33.tgz?cache=0&sync_timestamp=1585636303780&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvxe-table%2Fdownload%2Fvxe-table-2.8.33.tgz#f58d95f4a483bd8bf751427e303338e8a446a061"
-  integrity sha1-9Y2V9KSDvYv3UUJ+MDM46KRGoGE=
+vxe-table@^2.9.6:
+  version "2.9.6"
+  resolved "https://registry.npm.taobao.org/vxe-table/download/vxe-table-2.9.6.tgz#187f88d45642727db07886b4a08d0615cb69af57"
+  integrity sha1-GH+I1FZCcn2weIa0oI0GFctpr1c=
 
 w3c-hr-time@^1.0.1:
   version "1.0.1"
@@ -11173,10 +11173,10 @@ ws@~6.1.0:
   dependencies:
     async-limiter "~1.0.0"
 
-xe-utils@^2.3.0:
-  version "2.3.0"
-  resolved "https://registry.npm.taobao.org/xe-utils/download/xe-utils-2.3.0.tgz#5db56893c39b6e65c267997a607acbac887c9e96"
-  integrity sha1-XbVok8ObbmXCZ5l6YHrLrIh8npY=
+xe-utils@^2.4.5:
+  version "2.4.5"
+  resolved "https://registry.npm.taobao.org/xe-utils/download/xe-utils-2.4.5.tgz#e549e4c682f69fc611e2a8cbf676fe32e4266c6e"
+  integrity sha1-5UnkxoL2n8YR4qjL9nb+MuQmbG4=
 
 xml-name-validator@^3.0.0:
   version "3.0.0"
