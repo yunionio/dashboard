@@ -33,7 +33,7 @@ export default {
             onManager: this.onManager,
           })
         },
-        meta: this.commonMeta,
+        meta: (row) => this.commonMeta(row, 'delete'),
       },
     ]
   },

@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import CloudaccountList from '@Cloudenv/views/cloudaccount/components/List'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import detail from './Detail'
@@ -28,19 +29,23 @@ export default {
   components: {
     Actions,
     detail,
+    CloudaccountList,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
         { label: '详情', key: 'detail' },
+        { label: '云账号', key: 'cloudaccount-list' },
         { label: '操作日志', key: 'event-drawer' },
       ],
     }
   },
   computed: {
     getParams () {
-      return null
+      return {
+        proxy_setting: this.detailData.id,
+      }
     },
   },
 }
