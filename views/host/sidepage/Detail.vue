@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import WindowsMixin from '@/mixins/windows'
 import { getEnabledTableColumn, getBrandTableColumn, getCopyWithContentTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 
@@ -20,12 +21,21 @@ const storageType = {
 
 export default {
   name: 'HostDetail',
+  mixins: [WindowsMixin],
   props: {
     data: {
       type: Object,
       required: true,
     },
     onManager: {
+      type: Function,
+      required: true,
+    },
+    columns: {
+      type: Array,
+      required: true,
+    },
+    refresh: {
       type: Function,
       required: true,
     },
@@ -207,8 +217,13 @@ export default {
               },
             },
             {
-              field: 'cpu_commit_bound',
+              field: 'cpu_cmtbound',
               title: '超售比',
+              slots: {
+                default: ({ row }, h) => {
+                  return [<a onClick={this.openHostAdjustOversoldRatioDialog}>{row.cpu_cmtbound}</a>]
+                },
+              },
             },
             {
               field: 'cpu_commit_rate',
@@ -238,8 +253,13 @@ export default {
               },
             },
             {
-              field: 'mem_commit_bound',
+              field: 'mem_cmtbound',
               title: '超售比',
+              slots: {
+                default: ({ row }, h) => {
+                  return [<a onClick={this.openHostAdjustOversoldRatioDialog}>{row.mem_cmtbound}</a>]
+                },
+              },
             },
             {
               field: 'mem_commit_rate',
@@ -328,14 +348,23 @@ export default {
   // created () {
   //   this.updateDetailData()
   // },
-  // methods: {
-  //   updateDetailData () {
-  //     const hostManager = new this.$Manager('hosts')
-  //     hostManager.get({ id: this.data.id })
-  //       .then((res) => {
-  //         this.itemData = res.data
-  //       })
-  //   },
-  // },
+  methods: {
+    // updateDetailData () {
+    //   const hostManager = new this.$Manager('hosts')
+    //   hostManager.get({ id: this.data.id })
+    //     .then((res) => {
+    //       this.itemData = res.data
+    //     })
+    // },
+    openHostAdjustOversoldRatioDialog () {
+      this.createDialog('HostAdjustOversoldRatioDialog', {
+        data: [this.data],
+        columns: this.columns,
+        onManager: this.onManager,
+        name: this.$t('dictionary.host'),
+        refresh: this.refresh,
+      })
+    },
+  },
 }
 </script>

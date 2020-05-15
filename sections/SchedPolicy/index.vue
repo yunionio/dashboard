@@ -36,6 +36,7 @@
     </a-form-item>
     <a-form-item v-if="schedPolicyComponent === 'schedtag'">
       <policy-schedtag
+        :form="form"
         :decorators="decorators.policySchedtag"
         :schedtag-params="policySchedtagParams" />
     </a-form-item>
