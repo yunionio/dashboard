@@ -30,12 +30,6 @@ export default {
         title: '当前实例数',
         width: 100,
         sortable: true,
-        slots: {
-          default: ({ row }) => {
-            if (!row.instance_number) return '-'
-            return row.instance_number
-          },
-        },
       },
       {
         field: 'desire_instance_number',
