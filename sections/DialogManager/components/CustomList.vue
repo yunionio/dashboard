@@ -70,7 +70,7 @@ export default {
       return item.type !== 'checkbox' && item.property !== 'action' && isUserTag(item.property)
     })
     const initialTagsSelected = tagFields.filter(item => {
-      return this.params.list.config.showTagKeys.includes(item.property)
+      return this.params.config.showTagKeys.includes(item.property)
     }).map(item => item.property)
     return {
       loading: false,
@@ -108,10 +108,10 @@ export default {
         limit: 0,
         scope: this.scope,
       }
-      if (R.is(String, this.params.list.resource)) {
-        ret.resources = this.params.list.resource.substr(0, this.params.list.resource.length - 1)
+      if (R.is(String, this.params.resource)) {
+        ret.resources = this.params.resource.substr(0, this.params.resource.length - 1)
       } else {
-        ret.resources = this.params.list.resource.resource.substr(0, this.params.list.resource.resource.length - 1)
+        ret.resources = this.params.resource.resource.substr(0, this.params.resource.resource.length - 1)
       }
       return ret
     },
@@ -170,8 +170,8 @@ export default {
         this.loading = true
         const unSelect = this.columnFields.filter(item => !columnsSelected.includes(item.property)).map(item => item.property)
         const showTagKeys = this.tagFields.filter(item => tagsSelected.includes(item.property)).map(item => item.property)
-        await this.params.list.updateConfig({
-          ...this.params.list.config,
+        await this.params.update({
+          ...this.params.config,
           hiddenColumns: unSelect,
           showTagKeys,
         })
