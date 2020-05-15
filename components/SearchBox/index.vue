@@ -27,8 +27,8 @@
           :show="showCompleter"
           :key-separator="keySeparator"
           :value-separator="valueSeparator"
-          :list="list"
           :default-search-key="defaultSearchKey"
+          :fetch-distinct-field="fetchDistinctField"
           @focus-input="focusInput"
           @confirm="handleSearch"
           @remove-tag="handleRemoveTag"
@@ -62,10 +62,6 @@ export default {
       type: Object,
       required: true,
     },
-    list: {
-      type: Object,
-      // required: true,
-    },
     defaultSearchKey: {
       type: String,
       default: 'name',
@@ -74,6 +70,7 @@ export default {
       type: String,
       default: '关键字用“|”分隔，过滤标签用回车键分隔',
     },
+    fetchDistinctField: Function,
   },
   data () {
     return {

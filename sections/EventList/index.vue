@@ -5,7 +5,8 @@
       :list="list"
       :columns="columns"
       :export-data-options="exportDataOptions"
-      :show-page="false" />
+      :show-page="false"
+      :refresh-method="refresh" />
      <div class="mb-3 search-date">
       <a-date-picker
         v-model="dateTime"
@@ -74,6 +75,7 @@ export default {
           { label: `所属${this.$t('dictionary.project')}`, key: 'owner_tenant' },
           { label: '备注', key: 'notes' },
         ],
+        limit: () => Object.keys(this.list.data).length,
       },
       columns: [
         {
@@ -197,6 +199,11 @@ export default {
       return param
     },
     handleDateTimeChange () {
+      this.list.reset()
+      this.list.fetchData()
+    },
+    refresh (clearSelected) {
+      clearSelected()
       this.list.reset()
       this.list.fetchData()
     },

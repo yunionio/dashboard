@@ -1,89 +1,77 @@
 <template>
   <div>
-    <page-toolbar>
-      <div class="mb-2 d-flex" v-if="showGroupActions">
-        <div class="d-flex flex-fill">
-          <refresh-button :disabled="disabledRefreshBtn"  class="flex-shrink-0" :loading="loading" @refresh="refresh" />
-          <template v-if="groupActions">
-            <actions class="flex-shrink-0" :options="groupActions" button-type="default" @clear-selected="handleClearSelected" group />
-          </template>
-          <slot name="group-actions-append" />
-          <tag-filter
-            :tagManagerInstance="tagManagerInstance"
-            v-if="showTagFilter"
-            :list="list" />
-        </div>
-        <div class="ml-4 d-flex flex-shrink-0 justify-content-end">
-          <slot name="right-tools-prepend" />
-          <template v-if="exportDataOptions || list.id">
-            <a-tooltip title="导出数据" v-if="exportDataOptions">
-              <a-button icon="download" style="width: 40px;" @click="handleExportData" />
-            </a-tooltip>
-            <a-tooltip title="自定义列表项" v-if="list.id">
-              <a-button class="ml-2" icon="setting" style="width: 40px;" @click="handleCustomList" />
-            </a-tooltip>
-          </template>
-        </div>
-      </div>
-      <div class="d-flex" v-if="showSearchbox">
-        <div class="flex-fill">
-          <search-box
-            v-if="filterOptions"
-            :options="filterOptions"
-            :value="filter"
-            :list="list"
-            :default-search-key="defaultSearchKey"
-            @input="handleFilterChange" />
-        </div>
-      </div>
-    </page-toolbar>
+    <page-list-header
+      :id="id"
+      :show-group-actions="showGroupActions"
+      :loading="loading"
+      :group-actions="groupActions"
+      :tag-manager-instance="tagManagerInstance"
+      :show-tag-filter="showTagFilter"
+      :tag-filter="tagFilter"
+      :resource="resource"
+      :show-searchbox="showSearchbox"
+      :filter-options="filterOptions"
+      :filter="filter"
+      :default-search-key="defaultSearchKey"
+      :on-manager="onManager"
+      :params="params"
+      :export-data-options="exportDataOptions"
+      :refresh-method="refreshMethod"
+      :config="config"
+      :show-tag-columns="showTagColumns"
+      :get-grid="getGrid"
+      :total="total"
+      :selected="selected"
+      :api-version="apiVersion"
+      @refresh="refresh"
+      @clear-selected="clearSelected"
+      @tag-filter-change="tagFilterChange"
+      @filter-change="filterChange"
+      @update-config="updateConfig">
+      <slot name="group-actions-append" slot="group-actions-append" />
+      <slot name="right-tools-prepend" slot="right-tools-prepend" />
+    </page-list-header>
+    <!-- header和table中间内容插槽 -->
     <slot name="table-prepend" />
-    <floating-scroll>
-      <vxe-grid
-        :row-id="rowId"
-        class="page-list-grid"
-        ref="grid"
-        align="left"
-        highlight-hover-row
-        highlight-current-row
+    <!-- 列表待config加载完成后呈现 -->
+    <template v-if="configLoaded">
+      <page-list-table
+        ref="table"
+        :id-key="idKey"
         :data="data"
-        :style="{ width: gridWidth}"
-        :columns="tableColumns"
-        :pager-config="tablePage"
-        :sort-config="{ sortMethod: () => {} }"
-        :checkbox-config="checkboxConfig"
+        :columns="columns"
+        :loading="loading"
+        :group-actions="groupActions"
+        :single-actions="singleActions"
+        :show-selection="showSelection"
+        :show-single-actions="showSingleActions"
+        :get-limit="getLimit"
+        :limit="limit"
+        :offset="offset"
+        :total="total"
+        :pager-layout="pagerLayout"
         :expand-config="expandConfig"
-        @sort-change="handleSortChange"
-        @page-change="handlePageChange"
-        @checkbox-change="handleCheckboxChange"
-        @checkbox-all="handleCheckboxChange">
-        <template v-slot:empty>
-          <loader :loading="loading" />
-        </template>
-      </vxe-grid>
-    </floating-scroll>
-    <div  v-if="data.length > 0 && nextMarker" class="text-center mt-4">
-      <a-button :loading="loading" type="link" @click="handleNextMarkerChange">{{ loading ? '加载中' : '加载更多' }}</a-button>
-    </div>
+        :config="config"
+        :next-marker="nextMarker"
+        @change-current-page="changeCurrentPage"
+        @change-page-size="changePageSize"
+        @do-sort="doSort"
+        @change-selected="changeSelected"
+        @clear-selected="clearSelected"
+        @change-next-marker="changeNextMarker" />
+    </template>
   </div>
 </template>
 
 <script>
-import * as R from 'ramda'
-import { mapGetters } from 'vuex'
-import debounce from 'lodash/debounce'
-import Actions from './Actions'
-import RefreshButton from './RefreshButton'
-import TagFilter from './TagFilter'
-import { getTagTitle, isUserTag } from '@/utils/common/tag'
-import { addResizeListener, removeResizeListener } from '@/utils/resizeEvent'
+import PageListHeader from './components/Header'
+import PageListTable from './components/Table'
 
 export default {
   name: 'PageList',
   components: {
-    Actions,
-    RefreshButton,
-    TagFilter,
+    PageListHeader,
+    PageListTable,
   },
   props: {
     // 生成的list实例store
@@ -91,38 +79,7 @@ export default {
       type: Object,
       required: true,
     },
-    // 列配置
-    columns: {
-      type: Array,
-      required: true,
-    },
-    // 单行操作配置
-    singleActions: {
-      type: Array,
-    },
-    // 列表头部操作按钮
-    groupActions: {
-      type: Array,
-    },
-    // 导出数据配置
-    exportDataOptions: {
-      type: Object,
-    },
-    // 开启标签过滤
-    showTagFilter: Boolean,
-    // 开启标签列
-    showTagColumns: Boolean,
-    showSelection: Boolean,
-    pagerLayout: {
-      type: Array,
-      default: () => {
-        return ['PrevJump', 'PrevPage', 'Jump', 'PageCount', 'NextPage', 'NextJump', 'Sizes', 'Total']
-      },
-    },
-    // 展开行配置项
-    expandConfig: {
-      type: Object,
-    },
+    // 是否显示批量操作区域
     showGroupActions: {
       type: Boolean,
       default: true,
@@ -131,22 +88,46 @@ export default {
       type: Boolean,
       default: true,
     },
+    // 列表头部操作按钮
+    groupActions: Array,
+    // 单行操作配置
+    singleActions: Array,
+    // 提供给标签过滤器自定义获取标签数据的Manager实例
+    tagManagerInstance: Object,
+    // 开启标签过滤
+    showTagFilter: Boolean,
+    // 开启标签列
+    showTagColumns: Boolean,
+    // 是否显示搜索框
     showSearchbox: {
       type: Boolean,
       default: true,
     },
-    tagManagerInstance: Object,
-    disabledRefreshBtn: {
-      type: Boolean,
-      default: false,
-    },
+    // 不选择搜索类型情况下，默认搜索key
     defaultSearchKey: String,
-    showPage: {
-      type: Boolean,
-      default: true,
+    // 列配置
+    columns: {
+      type: Array,
+      required: true,
     },
+    // 是否显示列选择
+    showSelection: Boolean,
+    // 导出数据配置
+    exportDataOptions: Object,
+    // 分页布局
+    pagerLayout: {
+      type: Array,
+      default: () => {
+        return ['PrevJump', 'PrevPage', 'Jump', 'PageCount', 'NextPage', 'NextJump', 'Sizes', 'Total']
+      },
+    },
+    // 展开行配置项
+    expandConfig: Object,
+    // 自定义刷新方法
+    refreshMethod: Function,
   },
   provide: {
+    // 声明在List中
     inList: true,
   },
   inject: {
@@ -155,262 +136,110 @@ export default {
       default: false,
     },
   },
-  data () {
-    return {
-      tableColumns: [],
-      gridWidth: 'auto',
-    }
-  },
   computed: {
-    ...mapGetters(['userInfo']),
+    id () {
+      return this.list.id
+    },
     loading () {
       return this.list.loading
     },
-    data () {
-      return Object.values(this.list.data).sort((a, b) => a.index - b.index).map(item => item.data)
+    configLoaded () {
+      return this.list.configLoaded
     },
-    rowId () {
-      return this.list.idKey
+    resource () {
+      return this.list.resource
+    },
+    apiVersion () {
+      return this.list.apiVersion
+    },
+    // 标签过滤项
+    tagFilter () {
+      return this.list.tagFilter
     },
     filterOptions () {
-      const { filterOptions } = this.list
-      if (!filterOptions || R.isEmpty(filterOptions)) return null
-      const filterSortKeys = ['name', 'brand', 'provider', 'ip', 'ips', 'status', 'enabled', 'sn', 'os_type', 'tenant', 'region', 'host', 'billing_type']
-      const _filterOptions = {}
-      filterSortKeys.forEach(k => {
-        const _k = k.toLowerCase()
-        if (filterOptions[_k]) {
-          _filterOptions[_k] = filterOptions[_k]
-        }
-      })
-      Object.keys(filterOptions).forEach(k => {
-        const _k = k.toLowerCase()
-        if (!_filterOptions[_k]) {
-          _filterOptions[_k] = filterOptions[_k]
-        }
-      })
-      return _filterOptions
+      return this.list.filterOptions
     },
     filter () {
       return this.list.filter
     },
+    params () {
+      return this.list.params
+    },
+    idKey () {
+      return this.list.idKey
+    },
+    data () {
+      return this.list.data
+    },
+    limit () {
+      return this.list.limit
+    },
+    total () {
+      return this.list.total
+    },
+    offset () {
+      return this.list.offset
+    },
+    // 列表配置信息
+    config () {
+      return this.list.config
+    },
+    selected () {
+      return this.list.selected
+    },
     nextMarker () {
       return this.list.nextMarker
-    },
-    tablePage () {
-      const listLimit = this.list.limit
-      const limit = this.list.getLimit() || listLimit
-      if (this.list.total <= 0 || !this.showPage) return null
-      const currentPage = limit ? Math.floor(this.list.offset / limit) + 1 : 1
-      return {
-        total: this.list.total,
-        currentPage,
-        pageSize: limit,
-        layouts: this.pagerLayout,
-      }
-    },
-    checkboxConfig () {
-      return {
-        reserve: true,
-        highlight: true,
-      }
-    },
-    // 是否渲染
-    showCheckbox () {
-      return (this.groupActions && this.groupActions.length > 0) || this.showSelection
-    },
-  },
-  watch: {
-    'list.config.hiddenColumns' (val, oldVal) {
-      if (!R.equals(val, oldVal)) {
-        this.$nextTick(() => {
-          this.updateHiddenColumns()
-        })
-      }
-    },
-    'list.config.showTagKeys' (val, oldVal) {
-      if (!R.equals(val, oldVal)) {
-        this.$nextTick(() => {
-          this.updateTagKeyColumns()
-        })
-      }
     },
   },
   beforeDestroy () {
     this.list.clearWaitJob()
   },
-  created () {
-    this.tableColumns = this.genTableColumns()
-    this.$nextTick(() => {
-      this.tableColumns = this.$refs.grid.getColumns()
-    })
-  },
-  mounted () {
-    this.initFloatingScrollListener()
-  },
   methods: {
     refresh () {
-      const { resource } = this.list
-      if (resource === 'actions') {
-        this.reset()
-      }
       this.list.refresh()
-      this.handleClearSelected()
     },
     reset () {
       this.list.reset()
     },
-    handleNextMarkerChange () {
-      this.list.changeNextMarker()
+    // 更改标签并重置刷新列表
+    tagFilterChange (tagFilter) {
+      this.list.changeTagFilter(tagFilter)
     },
-    handlePageChange ({ type, currentPage, pageSize }) {
-      if (type === 'current') {
-        this.list.changeCurrentPage(currentPage)
-        this.handleClearSelected()
-      }
-      if (type === 'size') {
-        this.list.changePageSize(pageSize)
-      }
-    },
-    handleFilterChange (filter) {
-      this.handleClearSelected()
+    filterChange (filter) {
       this.list.changeFilter(filter)
     },
-    handleCheckboxChange ({ selection }) {
-      this.list.changeSelected(selection)
+    onManager () {
+      return this.list.onManager(...arguments)
     },
-    async handleClearSelected () {
-      this.list.clearSelected()
-      await this.$refs.grid.clearCheckboxReserve()
-      await this.$refs.grid.clearCheckboxRow()
+    getLimit () {
+      return this.list.getLimit()
     },
-    handleExportData () {
-      this.$parent.createDialog('ExportListDataDialog', {
-        title: '导出数据',
-        list: this.list,
-        options: this.exportDataOptions,
-        showTagColumns: this.showTagColumns,
-      })
+    changeCurrentPage (currentPage) {
+      this.list.changeCurrentPage(currentPage)
     },
-    handleCustomList () {
-      this.$parent.createDialog('CustomListDialog', {
-        title: '自定义列表项',
-        list: this.list,
-        customs: this.tableColumns,
-        showTagColumns: this.showTagColumns,
-      })
+    changePageSize (pageSize) {
+      this.list.changePageSize(pageSize)
     },
-    handleSortChange ({ property, order }) {
-      this.handleClearSelected()
+    doSort (property, order) {
       this.list.doSort(property, order)
     },
-    genTableColumns () {
-      let defaultColumns = this.columns.filter(item => {
-        if (R.is(Function, item.hidden)) return !item.hidden()
-        return !item.hidden
-      })
-      if (this.showCheckbox) {
-        defaultColumns.unshift({ type: 'checkbox', width: 40 })
-      }
-      if (this.showSingleActions && this.singleActions && this.singleActions.length) {
-        defaultColumns.push({
-          field: 'action',
-          title: '操作',
-          minWidth: 120,
-          slots: {
-            default: ({ row }, h) => {
-              return [<Actions options={ this.singleActions } row={ row } button-type='link' button-size='small' button-style={{ fontSize: '12px' }} />]
-            },
-            header: ({ column }, h) => {
-              return [
-                <span style={{ paddingLeft: '7px' }}>操作</span>,
-              ]
-            },
-          },
-        })
-      }
-      return defaultColumns
+    changeSelected (selection) {
+      this.list.changeSelected(selection)
     },
-    // 初始化tbody监听器，发生变化更新虚拟滚动条，以保证宽度是正确的
-    initFloatingScrollListener () {
-      const gridEl = this.$refs.grid.$el
-      const tableBodyEl = gridEl.querySelector('.vxe-table--body-wrapper .vxe-table--body')
-      const debounceUpdateFloatingScroll = debounce(this.updateFloatingScroll, 500)
-      addResizeListener(tableBodyEl, debounceUpdateFloatingScroll)
-      this.$once('hook:beforeDestroy', () => {
-        removeResizeListener(tableBodyEl, debounceUpdateFloatingScroll)
-      })
+    // 清除list中的选择项
+    clearSelected () {
+      this.list.clearSelected()
+      this.$refs.table.clearCheckbox()
     },
-    // 更新虚拟滚动条
-    updateFloatingScroll () {
-      const gridEl = this.$refs.grid && this.$refs.grid.$el
-      if (!gridEl) return
-      const tableBodyEl = gridEl.querySelector('.vxe-table--body-wrapper .vxe-table--body')
-      const tableBodyWidth = tableBodyEl.getBoundingClientRect().width
-      if (tableBodyWidth) this.gridWidth = `${tableBodyWidth}px`
-      gridEl && this.$bus.$emit('FloatingScrollUpdate', {
-        sourceElement: gridEl,
-      })
+    updateConfig (value) {
+      return this.list.updateConfig(value)
     },
-    updateTagKeyColumns () {
-      let tableColumns = this.genTableColumns()
-      const showTagKeys = this.list.config.showTagKeys || []
-      const tagsColumns = showTagKeys.map(item => {
-        return {
-          field: item,
-          title: getTagTitle(item),
-          showOverflow: 'title',
-          minWidth: 70,
-          sortable: true,
-          slots: {
-            default: ({ row }) => {
-              const message = row.metadata && row.metadata[item]
-              return [
-                <list-body-cell-wrap copy field={item} row={row} message={message} hideField>{ message }</list-body-cell-wrap>,
-              ]
-            },
-          },
-        }
-      })
-      const insertIndex = this.showCheckbox ? 2 : 1
-      tableColumns = R.insertAll(insertIndex, tagsColumns, tableColumns)
-      this.$refs.grid.loadColumn(tableColumns)
-      this.$nextTick(() => {
-        this.tableColumns = this.$refs.grid.getColumns()
-        this.updateHiddenColumns()
-      })
+    getGrid () {
+      return this.$refs.table.$refs.grid
     },
-    updateHiddenColumns () {
-      const hiddenColumns = this.list.config.hiddenColumns || []
-      R.forEach(item => {
-        if (item.property && (item.type !== 'checkbox' || item.property !== 'action') && !isUserTag(item.property)) {
-          item.visible = !hiddenColumns.includes(item.property)
-        }
-      }, this.tableColumns)
-      this.$refs.grid.refreshColumn()
-    },
-    updateColumns () { // 对于动态columns时，请在外部调用 this.refs.pagelist.updateColumns()
-      const tableColumns = this.genTableColumns()
-      this.$refs.grid.loadColumn(tableColumns)
-      this.$nextTick(() => {
-        this.tableColumns = this.$refs.grid.getColumns()
-        this.updateHiddenColumns()
-      })
+    changeNextMarker () {
+      this.list.changeNextMarker()
     },
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.page-list-grid {
-  min-width: 100%;
-  ::v-deep {
-    > .vxe-table > .vxe-table--main-wrapper > .vxe-table--body-wrapper {
-      overflow: hidden;
-    }
-    .vxe-table.is--empty .vxe-table--empty-block, .vxe-table.is--empty .vxe-table--empty-placeholder {
-      height: auto !important;
-    }
-  }
-}
-</style>

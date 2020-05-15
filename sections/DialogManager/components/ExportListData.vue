@@ -51,7 +51,7 @@ export default {
   data () {
     let exportOptionItems = [...this.params.options.items]
     let allExportKeys = exportOptionItems.map(item => item.key)
-    const exportTags = (this.params.showTagColumns && this.params.list.config.showTagKeys) || []
+    const exportTags = (this.params.showTagColumns && this.params.config.showTagKeys) || []
     if (exportTags && exportTags.length) {
       allExportKeys = R.insertAll(0, exportTags.map(item => {
         return `tag:${item}`
@@ -95,6 +95,14 @@ export default {
       checkAll: true,
     }
   },
+  computed: {
+    resource () {
+      if (R.is(String, this.params.resource)) {
+        return this.params.resource
+      }
+      return this.params.resource.resource.substr(0, this.params.resource.resource.length - 1)
+    },
+  },
   methods: {
     genParams (formValues) {
       const keys = []
@@ -108,17 +116,10 @@ export default {
         export: this.params.options.fileType || 'xls',
         export_keys: keys.join(','),
         export_texts: texts.join(','),
-        export_limit: this.params.list.total,
+        export_limit: this.params.total,
       }
-      // 处理操作日志
-      const { resource, data } = this.params.list
-      const dtaLength = Object.keys(data).length
-      if (resource === 'actions') {
-        if (dtaLength) {
-          params['export_limit'] = dtaLength
-        } else {
-          return null
-        }
+      if (this.params.options.limit) {
+        params['export_limit'] = R.is(Function, this.params.options.limit) ? this.params.options.limit() : this.params.options.limit
       }
       if (this.params.options.getParams) {
         if (R.is(Function, this.params.options.getParams)) {
@@ -134,17 +135,17 @@ export default {
           params = { ...params, ...this.params.options.getParams }
         }
       }
-      const listParams = this.params.list.params
+      const listParams = this.params.listParams
       if (formValues.type === this.exportType.custom.key) { // 导出范围选择根据筛选条件时
         params = {
           ...params,
           ...listParams,
         }
-        if (this.params.list.selected.length) {
+        if (this.params.selected.length) {
           if (params.filter && params.filter.length) {
-            params.filter = [...params.filter, `id.in(${this.params.list.selected.join(',')})`]
+            params.filter = [...params.filter, `id.in(${this.params.selected.join(',')})`]
           } else {
-            params.filter = [`id.in(${this.params.list.selected.join(',')})`]
+            params.filter = [`id.in(${this.params.selected.join(',')})`]
           }
         }
       } else if (formValues.type === this.exportType.all.key) { // 导出范围选择全部时
@@ -155,9 +156,7 @@ export default {
       }
       if (params.limit) delete params.limit
       if (params.offset) delete params.offset
-      if (resource === 'actions') {
-        delete params.paging_marker
-      }
+      delete params.paging_marker
       return params
     },
     validateForm () {
@@ -178,7 +177,7 @@ export default {
         const params = this.genParams(values)
         const response = await this.$http({
           methods: 'GET',
-          url: `/${this.params.list.apiVersion}/${this.params.list.resource}`,
+          url: `/${this.params.apiVersion}/${this.resource}`,
           params,
           responseType: 'blob',
           headers: {

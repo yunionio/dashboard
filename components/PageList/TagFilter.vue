@@ -4,10 +4,10 @@
       multiple
       filter-without-user-meta
       :params="params"
-      :value="list.tagFilter"
+      :value="tagFilter"
       :managerInstance="tagManagerInstance"
       @change="handleTagFilterChange">
-      <template v-slot:trigger="{ loading }">
+      <template v-slot:trigger>
         <a-button class="flex-shrink-0" style="margin-right: -1px;"><icon type="res-tag" />标签</a-button>
       </template>
     </tag-select>
@@ -41,21 +41,19 @@ export default {
     TagSelect,
   },
   props: {
-    list: {
-      type: Object,
-      required: true,
-    },
     tagManagerInstance: Object,
+    tagFilter: Object,
+    resource: [String, Object],
   },
   computed: {
     params () {
       const ret = {
         with_cloud_meta: true,
       }
-      if (R.is(String, this.list.resource)) {
-        ret.resources = this.list.resource.substr(0, this.list.resource.length - 1)
+      if (R.is(String, this.resource)) {
+        ret.resources = this.resource.substr(0, this.resource.length - 1)
       } else {
-        ret.resources = this.list.resource.resource.substr(0, this.list.resource.resource.length - 1)
+        ret.resources = this.resource.resource.substr(0, this.resource.resource.length - 1)
       }
       return ret
     },
@@ -69,13 +67,13 @@ export default {
         } else {
           ret.push(this.genTag(key))
         }
-      }, this.list.tagFilter)
+      }, this.tagFilter)
       return ret
     },
   },
   methods: {
     handleTagFilterChange (tagFilter) {
-      this.list.changeTagFilter(tagFilter)
+      this.$emit('tag-filter-change', tagFilter)
     },
     genTag (key, value) {
       const rgb = getTagColor(key, value, 'rgb')
@@ -89,7 +87,7 @@ export default {
       }
     },
     removeTag (item) {
-      const newValue = { ...this.list.tagFilter }
+      const newValue = { ...this.tagFilter }
       if (newValue[item.key].length > 1) {
         const index = R.indexOf(item.value, newValue[item.key])
         newValue[item.key].splice(index, 1)

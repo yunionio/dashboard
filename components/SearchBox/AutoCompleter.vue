@@ -83,11 +83,8 @@ export default {
       type: String,
       required: true,
     },
-    list: {
-      type: Object,
-      // required: true,
-    },
     defaultSearchKey: String,
+    fetchDistinctField: Function,
   },
   data () {
     return {
@@ -110,30 +107,6 @@ export default {
     },
   },
   methods: {
-    /**
-     * @description 远端获取过滤项
-     */
-    async fetchDistinctField (item) {
-      try {
-        const response = await this.list.onManager('get', {
-          managerArgs: {
-            id: 'distinct-field',
-            params: {
-              ...this.list.params,
-              [item.distinctField.type]: item.distinctField.key,
-            },
-          },
-        })
-        let values = response.data[item.distinctField.key] || []
-        values = values.map(item => ({ label: item, key: item }))
-        if (item.mapper) {
-          values = item.mapper(values)
-        }
-        return values
-      } catch (error) {
-        return error
-      }
-    },
     clear () {
       this.$emit('update-show', false)
       this.search = ''
