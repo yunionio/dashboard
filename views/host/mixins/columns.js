@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { getRegionTableColumn, getStatusTableColumn, getBrandTableColumn, getEnabledTableColumn, getNameDescriptionTableColumn, getPublicScopeTableColumn, getProjectDomainTableColumn } from '@/utils/common/tableColumn'
 import { sizestr, percentstr } from '@/utils/utils'
@@ -105,6 +106,23 @@ export default {
         title: 'SN',
         width: 100,
         showOverflow: 'title',
+      },
+      {
+        field: 'schedtag',
+        title: '调度标签',
+        width: 120,
+        type: 'expand',
+        slots: {
+          content: ({ row }) => {
+            let tags = _.sortBy(row.schedtags, ['default', 'name'])
+            if (tags.length > 0) {
+              return tags.map(tag => <a-tag class='mb-2' color='blue'>{tag.name}</a-tag>)
+            }
+            return [
+              <div class='text-color-help'>无调度标签</div>,
+            ]
+          },
+        },
       },
       getBrandTableColumn(),
       getPublicScopeTableColumn({ vm: this }),
