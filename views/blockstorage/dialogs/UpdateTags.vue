@@ -109,8 +109,8 @@ export default {
           })
         }
         const ids = this.params.data.map(item => item.id)
-        await this.params.onManager({
-          id: ids,
+        await this.params.onManager('performAction', {
+          id: ids[0],
           managerArgs: {
             action: 'set-schedtag',
             data: params,
