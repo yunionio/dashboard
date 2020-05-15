@@ -3,6 +3,7 @@
     <disk
       :max="max"
       :min="min"
+      :form="form"
       :decorator="decorator"
       :hypervisor="hypervisor"
       :types-map="typesMap"

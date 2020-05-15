@@ -52,6 +52,16 @@ export default {
           },
         },
         {
+          field: 'rules',
+          title: '子快照',
+          slots: {
+            default: ({ row }) => {
+              const len = (row.snapshots && row.snapshots.length) || 0
+              return <a onClick={ () => this.$emit('tab-change', 'sub-snapshot-detail') }>{len}个</a>
+            },
+          },
+        },
+        {
           field: 'guest',
           title: this.$t('dictionary.server'),
           slots: {
