@@ -126,7 +126,7 @@ export default {
               const time = this.$moment(row.expired_at).format()
               let tooltipCon = <div slot="help"></div>
               if (row.billing_type === 'postpaid') {
-                if (hasPermission('server_perform_cancel_expire')) {
+                if (hasPermission({ key: 'server_perform_cancel_expire' })) {
                   tooltipCon = <div slot="help">虚拟机会在 { time } 释放，<span class="link-color" style="cursor: pointer" onClick={ () => this.openVmSetDurationDialog(row) }>去设置</span></div>
                 } else {
                   tooltipCon = <div slot="help">虚拟机会在 { time } 释放</div>
