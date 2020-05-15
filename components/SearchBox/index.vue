@@ -1,9 +1,10 @@
 <template>
   <div
-    class="search-box-wrap ant-input"
+    class="search-box-wrap ant-input d-flex align-items-center justify-content-between"
     :class="{ focus }"
     v-clickoutside="handleWrapClickoutside"
-    @click="handleWrapClick">
+    @click="handleWrapClick"
+    @keyup.enter="search">
     <ul class="clearfix">
       <template v-for="(item, key) of value">
         <li :key="key" class="mb-1 mt-1">
@@ -37,6 +38,7 @@
         <div class="text-weak help-tips">{{ placeholder }}</div>
       </li>
     </ul>
+    <a-icon type="search" class="cursor-pointer" @click.stop="search" />
   </div>
 </template>
 
@@ -79,6 +81,7 @@ export default {
       focus: false,
       // 是否显示过滤选提示器
       showCompleter: false,
+      newValues: {},
     }
   },
   created () {
@@ -114,20 +117,20 @@ export default {
      * @param {Object} values
      */
     handleSearch (values) {
-      const newValues = {}
+      this.newValues = {}
       R.forEachObjIndexed((value, key) => {
         if (this.options[key].dropdown) {
           const config = this.options[key]
-          newValues[key] = value.map(item => {
+          this.newValues[key] = value.map(item => {
             const op = R.find(R.propEq('label', item))(config.items)
             if (op) return op.key
             return item
           })
         } else {
-          newValues[key] = value
+          this.newValues[key] = value
         }
       }, values)
-      this.$emit('input', newValues)
+      this.$emit('input', this.newValues)
     },
     /**
      * @description 删除标签事件
@@ -136,6 +139,7 @@ export default {
       const newValues = { ...this.value }
       delete newValues[key]
       this.showCompleter = false
+      this.newValues = newValues
       this.$emit('input', newValues)
     },
     /**
@@ -144,6 +148,9 @@ export default {
      */
     handleUpdateShow (show) {
       this.showCompleter = show
+    },
+    search () {
+      this.$emit('input', this.newValues)
     },
   },
 }
