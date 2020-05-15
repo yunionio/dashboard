@@ -50,7 +50,7 @@ export default {
             },
           },
           // status: getStatusFilter('image'),
-          disk_format: {
+          disk_formats: {
             label: '镜像格式',
             dropdown: true,
             items: [
@@ -89,7 +89,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isAdminMode', 'isDomainMode']),
+    ...mapGetters(['isAdminMode', 'isDomainMode', 'userInfo']),
     groupActions () {
       const ImageImport = {
         label: '镜像市场',
@@ -224,6 +224,50 @@ export default {
                   })
                 },
                 meta: () => {
+                  let ret = {
+                    validate: false,
+                    tooltip: '',
+                  }
+                  const someStandard = this.list.selectedItems.some((item) => {
+                    return this.booleanTransfer(item.is_standard)
+                  })
+                  const someDisableDelete = this.list.selectedItems.some((item) => {
+                    return this.booleanTransfer(item.disable_delete) && this.booleanTransfer(item.protected)
+                  })
+                  if (this.isAdminMode) {
+                    if (someStandard) {
+                      ret.tooltip = '公共镜像禁止删除，请切换为自定义镜像后重试'
+                      return ret
+                    }
+                  } else if (this.isDomainMode) {
+                    const allOwnerDomain = this.list.selectedItems.every((item) => {
+                      return item.domain_id === this.userInfo.projectDomainId
+                    })
+                    if (someStandard) {
+                      ret.tooltip = '公共镜像禁止删除'
+                      return ret
+                    }
+                    if (!allOwnerDomain) {
+                      ret.tooltip = '非当前域下的镜像无法删除'
+                      return ret
+                    }
+                  } else {
+                    const allOwnerProject = this.list.selectedItems.every((item) => {
+                      return item.tenant_id === this.userInfo.projectId
+                    })
+                    if (someStandard) {
+                      ret.tooltip = '公共镜像禁止删除'
+                      return ret
+                    }
+                    if (!allOwnerProject) {
+                      ret.tooltip = '非当前项目下的镜像无法删除'
+                      return ret
+                    }
+                  }
+                  if (someDisableDelete) {
+                    ret.tooltip = '删除保护，如需解除，请点击【设置删除保护】'
+                    return ret
+                  }
                   return this.$getDeleteResult(this.list.selectedItems)
                 },
               },
