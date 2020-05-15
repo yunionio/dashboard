@@ -48,7 +48,7 @@ export default {
             },
           },
           // status: getStatusFilter('image'),
-          disk_format: {
+          disk_formats: {
             label: '镜像格式',
             dropdown: true,
             items: [
