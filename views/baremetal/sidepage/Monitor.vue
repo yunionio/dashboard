@@ -88,7 +88,7 @@ export default {
       return this.data.id
     },
     sql () {
-      return `time > now() - ${this.time} AND "vm_id"='${this.serverId}' GROUP BY time(${this.timeGroup}) FILL(0)`
+      return `time > now() - ${this.time} AND "vm_id"='${this.serverId}' GROUP BY time(${this.timeGroup}) FILL(none)`
     },
   },
   created () {

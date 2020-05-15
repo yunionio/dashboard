@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
+import { getCopyWithContentTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
@@ -29,27 +29,28 @@ export default {
           field: 'id',
           title: 'ID',
         },
-        {
-          field: 'severity',
-          title: '严重性',
-          formatter: ({ row }) => {
-            let text = '未知'
-            switch (row.severity) {
-              case 'OK':
-                text = '正常'
-                break
-              case 'WARNING':
-                text = '警告'
-                break
-              case 'CRITICAL':
-                text = '严重'
-                break
-              default:
-                break
-            }
-            return text
-          },
-        },
+        getStatusTableColumn({ field: 'severity', title: '严重性', statusModule: 'severity' }),
+        // {
+        //   field: 'severity',
+        //   title: '严重性',
+        //   formatter: ({ row }) => {
+        //     let text = '未知'
+        //     switch (row.severity) {
+        //       case 'OK':
+        //         text = '正常'
+        //         break
+        //       case 'WARNING':
+        //         text = '警告'
+        //         break
+        //       case 'Critical':
+        //         text = '严重'
+        //         break
+        //       default:
+        //         break
+        //     }
+        //     return text
+        //   },
+        // },
         {
           field: 'type',
           title: '类型',

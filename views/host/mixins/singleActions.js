@@ -149,6 +149,7 @@ export default {
                       this.createDialog('HostsAdjustLabelDialog', {
                         data: [obj],
                         columns: this.columns,
+                        name: this.$t('dictionary.host'),
                         onManager: this.onManager,
                       })
                     },
@@ -160,6 +161,7 @@ export default {
                         data: [obj],
                         columns: this.columns,
                         onManager: this.onManager,
+                        name: this.$t('dictionary.host'),
                         refresh: this.refresh,
                       })
                     },
@@ -174,7 +176,31 @@ export default {
                   getSetPublicAction(this, {
                     name: this.$t('dictionary.host'),
                     scope: 'domain',
+                    resource: 'hosts',
                   }),
+                  {
+                    label: '宕机自动迁移',
+                    action: () => {
+                      this.createDialog('DowntimeMigrateDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        onManager: this.onManager,
+                        name: '宕机自动迁移',
+                        refresh: this.refresh,
+                      })
+                    },
+                    meta: () => {
+                      if (obj.provider.toLowerCase() === 'onecloud' && obj.allow_health_check) {
+                        return {
+                          validate: true,
+                        }
+                      }
+                      return {
+                        validate: false,
+                        tooltip: obj.provider.toLowerCase() !== 'onecloud' ? '只有OneCloud平台宿主机支持该操作' : '',
+                      }
+                    },
+                  },
                   {
                     label: '回收为物理机',
                     action: () => {
@@ -182,6 +208,7 @@ export default {
                         data: [obj],
                         columns: this.columns,
                         onManager: this.onManager,
+                        name: this.$t('dictionary.host'),
                         refresh: this.refresh,
                       })
                     },
@@ -214,6 +241,7 @@ export default {
                         data: [obj],
                         columns: this.columns,
                         onManager: this.onManager,
+                        name: this.$t('dictionary.host'),
                         refresh: this.refresh,
                       })
                     },
@@ -236,6 +264,7 @@ export default {
                         data: [obj],
                         columns: this.columns,
                         onManager: this.onManager,
+                        name: this.$t('dictionary.host'),
                         refresh: this.refresh,
                       })
                     },
@@ -263,6 +292,7 @@ export default {
                         data: [obj],
                         columns: this.columns,
                         title: '删除',
+                        name: this.$t('dictionary.host'),
                         onManager: this.onManager,
                       })
                     },

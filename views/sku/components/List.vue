@@ -129,6 +129,7 @@ export default {
                     data: this.list.selectedItems,
                     columns: this.columns,
                     title: '删除账号',
+                    name: this.$t('dictionary.sku'),
                     onManager: this.onManager,
                   })
                 },

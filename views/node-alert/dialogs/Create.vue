@@ -53,7 +53,6 @@ export default {
       this.loading = true
       try {
         const values = await this.$refs.nodeAlertFormRef.validateForm()
-        this.loading = false
         const recipients = values.recipients.join(',')
         const data = {
           metric: values.metric,
@@ -73,6 +72,7 @@ export default {
             data,
           })
         }
+        this.loading = false
         this.cancelDialog()
         this.$message.success('操作成功')
       } catch (error) {

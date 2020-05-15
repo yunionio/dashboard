@@ -9,6 +9,7 @@ import {
   getIpsTableColumn,
   getNameDescriptionTableColumn,
   getTagTableColumn,
+  getBillingTableColumn,
 } from '@/utils/common/tableColumn'
 import SystemIcon from '@/sections/SystemIcon'
 import { sizestr } from '@/utils/utils'
@@ -108,48 +109,7 @@ export default {
           return cellValue.map(item => item.name).join(',')
         },
       },
-      {
-        field: 'billing_type',
-        title: '计费方式',
-        width: 120,
-        showOverflow: 'ellipsis',
-        slots: {
-          default: ({ row }, h) => {
-            const ret = []
-            if (row.billing_type === 'postpaid') {
-              ret.push(<div style={{ color: '#0A1F44' }}>按量付费</div>)
-            } else if (row.billing_type === 'prepaid') {
-              ret.push(<div style={{ color: '#0A1F44' }}>包年包月</div>)
-            }
-            if (row.expired_at) {
-              const time = this.$moment(row.expired_at).format()
-              let tooltipCon = <div slot="help"></div>
-              if (row.billing_type === 'postpaid') {
-                tooltipCon = <div slot="help">虚拟机会在 { time } 释放，<span class="link-color" style="cursor: pointer" onClick={ () => this.openVmSetDurationDialog(row) }>去设置</span></div>
-              } else if (row.billing_type === 'prepaid') {
-                if (row.auto_renew) {
-                  tooltipCon = <div slot="help">虚拟机会在 { time } 释放，到期自动续费</div>
-                } else {
-                  tooltipCon = <div slot="help">虚拟机会在 { time } 释放，到期不续费</div>
-                }
-              }
-              const help = <a-tooltip>
-                <template slot="title">
-                  { tooltipCon }
-                </template>
-                <a-icon type="question-circle-o" />
-              </a-tooltip>
-              let dateArr = this.$moment(row.expired_at).fromNow().split(' ')
-              let date = dateArr.join('')
-              let seconds = this.$moment(row.expired_at).diff(new Date()) / 1000
-              let textColor = seconds / 24 / 60 / 60 < 7 ? '#DD2727' : '#53627C'
-              let text = seconds < 0 ? '已过期' : `${date.substring(0, date.length - 1)}后到期`
-              ret.push(<div style={{ color: textColor }}>{ text } { help }</div>)
-            }
-            return ret
-          },
-        },
-      },
+      getBillingTableColumn({ vm: this }),
       getStatusTableColumn({ statusModule: 'server' }),
       getCopyWithContentTableColumn({ field: 'vpc', title: 'VPC' }),
       {

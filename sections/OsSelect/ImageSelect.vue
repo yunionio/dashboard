@@ -12,7 +12,7 @@
             :select-props="{ placeholder: '请选择云账号', disabled: imageCloudproviderDisabled }" />
         </a-form-item>
       </a-col>
-      <a-col :span="4">
+      <a-col :span="showCloudaccount ? 4 : 6">
         <a-form-item :wrapperCol="{ span: 24 }">
           <a-select v-decorator="decorator.os" :loading="loading" @change="osChange">
             <a-select-option v-for="item in imagesInfo.osOpts" :key="item.key">
@@ -185,7 +185,13 @@ export default {
       let imageOptions = this.imageOpts
       // 所选镜像容量最小磁盘要求需小于虚拟机系统盘大小
       if (this.sysDiskSize) {
-        imageOptions = this.imageOpts.filter((item) => { return item.info.min_disk <= this.sysDiskSize })
+        imageOptions = this.imageOpts.filter((item) => {
+          const minDisk = item.min_disk || (item.info && item.info.min_disk)
+          if (minDisk) {
+            return minDisk <= this.sysDiskSize
+          }
+          return true
+        })
       }
       if (this.uefi) {
         let imageOpts = imageOptions.map((item) => {
@@ -223,11 +229,16 @@ export default {
       if (R.equals(val, oldVal)) return
       this.fetchData()
     },
-    showCloudaccount (val) { // 如果不显示云账号，清空 fd 中的 preferManager
-      if (!val) {
+    showCloudaccount (val) {
+      if (!val) { // 如果不显示云账号，清空 fd 中的 preferManager
         if (this.form && this.form.fd && this.form.fd.preferManager) {
           this.form.fd.preferManager = ''
         }
+      } else { // 如果显示查看是否有初始化云订阅，如果有则请求 cacheImage-list
+        this.$nextTick(() => {
+          const { preferManager } = this.form.fc.getFieldsValue([this.decorator.preferManager[0]])
+          this.cloudproviderChange(preferManager)
+        })
       }
     },
     'form.fd.vmem' (val) {
@@ -264,8 +275,7 @@ export default {
     imageChange (imageObj) {
       let imageMsg = {}
       if (imageObj && R.is(Object, imageObj)) {
-        let list = this.images.list
-        if (this.isPublicImage || this.isPrivateImage) list = this.images.cacheimagesList
+        let list = this.imageOptions
         imageMsg = list.find(image => image.id === imageObj.key)
       }
       this.$emit('updateImageMsg', { imageMsg })

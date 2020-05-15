@@ -39,7 +39,7 @@ import ScalingGroupCreate from '@Compute/views/scaling-group/create'
 import Layout from '@/layouts/RouterView'
 import i18n from '@/locales'
 
-import { hasHypervisorsByEnv } from '@/utils/auth'
+import { hasHypervisorsByEnv, hasServices } from '@/utils/auth'
 
 export default {
   index: 2,
@@ -450,6 +450,14 @@ export default {
           meta: {
             label: '宿主机',
             permission: 'hosts_list',
+            hidden: () => {
+              const hasBMAgent = hasServices('bmagent')
+              const hasHostAgent = hasServices('hostagent')
+              if (!hasBMAgent && !hasHostAgent) {
+                return true
+              }
+              return false
+            },
           },
           component: Layout,
           children: [
@@ -465,6 +473,13 @@ export default {
           meta: {
             label: '物理机',
             permission: 'hosts_list',
+            hidden: () => {
+              const hasBMAgent = hasServices('bmagent')
+              if (!hasBMAgent) {
+                return true
+              }
+              return false
+            },
           },
           component: Layout,
           children: [
@@ -485,6 +500,14 @@ export default {
           meta: {
             label: '透传设备',
             permission: 'isolated_devices_list',
+            hidden: () => {
+              const hasBMAgent = hasServices('bmagent')
+              const hasHostAgent = hasServices('hostagent')
+              if (!hasBMAgent && !hasHostAgent) {
+                return true
+              }
+              return false
+            },
           },
           component: Layout,
           children: [
@@ -542,6 +565,7 @@ export default {
     {
       meta: {
         label: '回收站',
+        permission: 'recyclebins_list',
       },
       submenus: [
         {

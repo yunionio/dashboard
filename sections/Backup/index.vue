@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import * as R from 'ramda'
 import { Manager } from '@/utils/manager'
 
@@ -32,6 +33,7 @@ export default {
     diskType: { // 系统盘磁盘类型
       type: String,
     },
+    domain: Object,
   },
   data () {
     return {
@@ -40,10 +42,18 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['isAdminMode']),
     switchDisabled () {
       if (this.diskType === 'gpfs') return true
       if (this.hostList.length < 2) return true
       return false
+    },
+  },
+  watch: {
+    domain (val) {
+      if (val && val.key) {
+        this.getBackupHosts()
+      }
     },
   },
   created () {
@@ -54,8 +64,15 @@ export default {
       this.backupEnable = val
     },
     getBackupHosts () {
+      const params = {
+        hypervisor: 'kvm',
+        enabled: 1,
+      }
+      if (this.isAdminMode && this.domain && this.domain.key) {
+        params.project_domain = this.domain.key
+      }
       new Manager('hosts', 'v2')
-        .list({ params: { hypervisor: 'kvm', enabled: 1 } })
+        .list({ params })
         .then(({ data: { data = [] } }) => {
           this.hostList = data
         })

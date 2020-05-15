@@ -40,18 +40,6 @@
       <a-form-item v-if="form.fd.hypervisor === 'kvm'" label="是否配置GPU" extra="目前只有OneCloud支持GPU云服务器">
         <gpu :decorators="decorators.gpu" :gpu-options="gpuOptions" />
       </a-form-item>
-      <a-form-item label="操作系统" extra="操作系统会根据选择的虚拟化平台和可用区域的变化而变化，公共镜像的维护请联系管理员">
-        <os-select
-          :type="type"
-          :uefi="uefi"
-          :form="form"
-          :hypervisor="form.fd.hypervisor"
-          :decorator="decorators.imageOS"
-          :image-params="scopeParams"
-          :cacheImageParams="cacheImageParams"
-          :cloudproviderParamsExtra="cloudproviderParamsExtra"
-          @updateImageMsg="updateFi" />
-      </a-form-item>
       <a-form-item label="CPU核数" class="mb-0">
         <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" @change="cpuChange" />
       </a-form-item>
@@ -65,11 +53,24 @@
           :sku-params="skuParam"
           :hypervisor="form.fd.hypervisor" />
       </a-form-item>
+      <a-form-item label="操作系统" extra="操作系统会根据选择的虚拟化平台和可用区域的变化而变化，公共镜像的维护请联系管理员">
+        <os-select
+          :type="type"
+          :uefi="uefi"
+          :form="form"
+          :hypervisor="form.fd.hypervisor"
+          :decorator="decorators.imageOS"
+          :image-params="scopeParams"
+          :cacheImageParams="cacheImageParams"
+          :cloudproviderParamsExtra="cloudproviderParamsExtra"
+          @updateImageMsg="updateFi" />
+      </a-form-item>
       <a-form-item label="系统盘" class="mb-0">
         <system-disk
           v-if="form.fd.hypervisor"
           :decorator="decorators.systemDisk"
           :type="type"
+          :form="form"
           :hypervisor="form.fd.hypervisor"
           :sku="form.fd.sku"
           :capability-data="form.fi.capability"
@@ -100,12 +101,14 @@
       </a-form-item>
       <a-form-item label="网络" class="mb-0">
         <server-network
+          :form="form"
           :decorator="decorators.network"
           :network-list-params="networkParam"
           :schedtag-params="schedtagParams"
           :networkVpcParams="networkVpcParams"
           :vpcResource="vpcResource"
-          :vpcResourceMapper="vpcResourceMapper" />
+          :vpcResourceMapper="vpcResourceMapper"
+          :networkResourceMapper="networkResourceMapper" />
       </a-form-item>
       <a-form-item label="标签" class="mb-0">
         <tag
@@ -140,7 +143,8 @@
             <backup
               :decorator="decorators.backup"
               :disabled="form.fd.systemDiskType"
-              :disabled-items="backupDisableds" />
+              :disabled-items="backupDisableds"
+              :domain="form.fd.domain" />
           </a-form-item>
           <a-form-item v-show="!isServertemplate" v-if="isKvm" label="主机组" extra="对资源的简单调度策略，组内的机器根据设置分布在不同的宿主机上，从而实现业务的高可用">
             <instance-groups :decorators="decorators.groups" :params="instanceGroupsParams" />

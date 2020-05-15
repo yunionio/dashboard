@@ -23,7 +23,6 @@ export default {
       type: Object,
       default: () => ({}),
     },
-    cloudEnv: String,
   },
   data () {
     return {
@@ -96,6 +95,7 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               title: '删除主机组',
+              name: this.$t('dictionary.instancegroup'),
               onManager: this.onManager,
             })
           },
@@ -103,13 +103,6 @@ export default {
         },
       ],
     }
-  },
-  watch: {
-    cloudEnv (val) {
-      this.$nextTick(() => {
-        this.list.fetchData(0)
-      })
-    },
   },
   created () {
     this.initSidePageTab('instance-group-detail')
@@ -124,7 +117,6 @@ export default {
         details: true,
         ...this.getParams,
       }
-      if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
     },
     handleOpenSidepage (row) {

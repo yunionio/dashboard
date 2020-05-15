@@ -21,6 +21,7 @@
       :data="detailData"
       :resource="resource"
       :on-manager="onManager"
+      @tab-change="handleTabChange"
       @refresh="refresh" />
   </base-side-page>
 </template>

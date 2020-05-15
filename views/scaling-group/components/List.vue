@@ -17,9 +17,10 @@ import { getStatusFilter, getEnabledFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ListMixin from '@/mixins/list'
+import expectStatus from '@/constants/expectStatus'
 
 export default {
-  name: 'HostList',
+  name: 'ScalingGroupList',
   mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
@@ -34,6 +35,7 @@ export default {
         resource: 'scalinggroups',
         apiVersion: 'v1',
         getParams: this.getParam,
+        steadyStatus: Object.values(expectStatus.scalinggroup).flat(),
         filterOptions: {
           name: {
             label: '名称',
@@ -96,7 +98,11 @@ export default {
                 label: '启用',
                 permission: 'scalinggroups_perform_enable',
                 action: () => {
-                  this.list.batchPerformAction('enable', null)
+                  this.createDialog('ScalingGroupEnable', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                  })
                 },
                 meta: () => ({
                   validate: this.list.selectedItems.length,
@@ -106,7 +112,11 @@ export default {
                 label: '禁用',
                 permission: 'scalinggroups_perform_disable',
                 action: () => {
-                  this.list.batchPerformAction('disable', null)
+                  this.createDialog('ScalingGroupDisable', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                  })
                 },
                 meta: () => ({
                   validate: this.list.selectedItems.length,
@@ -117,10 +127,12 @@ export default {
                 permission: 'servicecatalogs_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
+                    title: '删除',
+                    name: '弹性伸缩组',
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    title: '删除账号',
                     onManager: this.onManager,
+                    steadyStatus: Object.values(expectStatus.scalinggroup).flat(),
                   })
                 },
                 meta: () => this.$getDeleteResult(this.list.selectedItems),

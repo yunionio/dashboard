@@ -23,7 +23,7 @@
         <a-input v-decorator="decorators.reason" placeholder="请输入主机申请原因" />
       </a-form-item>
       <a-form-item class="mb-0" label="计费方式">
-        <bill :decorators="decorators.bill" :form="form" :provider-list="form.fi.providerList" />
+        <bill :decorators="decorators.bill" :form="form" :provider-list="form.fi.providerList" :disabledBillType="disabledBillType" />
       </a-form-item>
       <a-form-item v-if="form.fd.billType === 'quantity' && !isServertemplate" label="到期释放">
         <duration :decorators="decorators.duration" :form="form" />
@@ -77,6 +77,7 @@
           v-if="form.fd.sku"
           :decorator="decorators.systemDisk"
           :type="type"
+          :form="form"
           :hypervisor="hypervisor"
           :sku="form.fd.sku"
           :capability-data="form.fi.capability"
@@ -87,6 +88,7 @@
           v-if="form.fd.sku"
           :decorator="decorators.dataDisk"
           :type="type"
+          :form="form"
           :hypervisor="hypervisor"
           :sku="form.fd.sku"
           :capability-data="form.fi.capability"
@@ -97,11 +99,13 @@
       </a-form-item>
       <a-form-item label="网络" class="mb-0">
         <server-network
+          :form="form"
           :decorator="decorators.network"
           :network-list-params="networkParam"
           :schedtag-params="schedtagParams"
           :networkVpcParams="networkVpcParams"
-          :vpcResource="vpcResource" />
+          :vpcResource="vpcResource"
+          :networkResourceMapper="networkResourceMapper" />
       </a-form-item>
       <a-form-item label="标签" class="mb-0">
         <tag
@@ -383,13 +387,23 @@ export default {
       const params = {
         ...this.scopeParams,
       }
+      const { cloudregion } = this.form.fd
       if (this.form.fd.sku && this.form.fd.sku.provider) {
         params.provider = this.form.fd.sku.provider
       }
+      if (cloudregion) params.cloudregion = cloudregion
       return params
     },
     hideCloudaccountSched () {
       return !!this.form.fd.preferManager
+    },
+    disabledBillType () {
+      if (this.form.fd.sku && this.form.fd.sku.provider) {
+        if (this.form.fd.sku.provider === PROVIDER_MAP.Google.key) { // 谷歌云不支持包年包月
+          return 'package'
+        }
+      }
+      return ''
     },
   },
   watch: {

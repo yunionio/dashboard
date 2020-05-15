@@ -345,6 +345,8 @@ export default {
                       data: [obj],
                       columns: this.columns,
                       onManager: this.onManager,
+                      name: this.$t('dictionary.server'),
+                      resource: 'servers',
                     })
                   },
                   meta: () => {
@@ -477,8 +479,8 @@ export default {
                       validate: false,
                       tooltip: null,
                     }
-                    if (!this.isAdminMode) {
-                      ret.tooltip = '暂只有系统管理员支持该操作'
+                    if (!this.isAdminMode && !this.isDomainMode) {
+                      ret.tooltip = `仅系统或${this.$t('dictionary.domain')}管理员支持该操作`
                       return ret
                     }
                     if (findPlatform(obj.hypervisor, 'hypervisor') !== SERVER_TYPE.idc) {
@@ -518,8 +520,9 @@ export default {
                 },
                 {
                   label: '到期释放',
+                  permission: 'server_perform_cancel_expire',
                   action: () => {
-                    this.createDialog('VmSetDurationDialog', {
+                    this.createDialog('SetDurationDialog', {
                       data: [obj],
                       columns: this.columns,
                       onManager: this.onManager,
@@ -578,6 +581,7 @@ export default {
                       columns: this.columns,
                       onManager: this.onManager,
                       refresh: this.refresh,
+                      name: this.$t('dictionary.server'),
                     })
                   },
                   meta: () => {
@@ -859,6 +863,8 @@ export default {
                       vm: this,
                       data: [obj],
                       columns: this.columns,
+                      onManager: this.onManager,
+                      refresh: this.refresh,
                     })
                   },
                   meta: () => {
@@ -901,6 +907,7 @@ export default {
                       data: [obj],
                       columns: this.columns,
                       onManager: this.onManager,
+                      refresh: this.refresh,
                     })
                   },
                   meta: () => {
@@ -929,6 +936,7 @@ export default {
                       data: [obj],
                       columns: this.columns,
                       onManager: this.onManager,
+                      refresh: this.refresh,
                     })
                   },
                   meta: () => {
@@ -968,7 +976,7 @@ export default {
                       validate: false,
                       tooltip: null,
                     }
-                    if (!this.isAdminMode) {
+                    if (!this.isAdminMode && !this.isDomainMode) {
                       return ret
                     }
                     if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
@@ -1000,7 +1008,7 @@ export default {
                     if (!obj.backup_host_id) {
                       return ret
                     }
-                    if (!this.isAdminMode) {
+                    if (!this.isAdminMode && !this.isDomainMode) {
                       return ret
                     }
                     if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
@@ -1032,7 +1040,7 @@ export default {
                       ret.tooltip = '备份机的宿主机离线不允许切换'
                       return ret
                     }
-                    if (!this.isAdminMode) {
+                    if (!this.isAdminMode && !this.isDomainMode) {
                       return ret
                     }
                     if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
@@ -1065,7 +1073,7 @@ export default {
                       ret.tooltip = '仅通用型云服务器支持该操作'
                       return ret
                     }
-                    if (!this.isAdminMode) {
+                    if (!this.isAdminMode && !this.isDomainMode) {
                       return ret
                     }
                     if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
@@ -1082,12 +1090,15 @@ export default {
             {
               label: '删除',
               submenus: [
-                disableDeleteAction(this),
+                disableDeleteAction(this, {
+                  name: this.$t('dictionary.server'),
+                }),
                 {
                   label: '删除',
                   permission: 'server_delete',
                   action: () => {
                     this.createDialog('DeleteVmDialog', {
+                      vm: this,
                       data: [obj],
                       columns: this.columns,
                       onManager: this.onManager,

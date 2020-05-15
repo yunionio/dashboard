@@ -103,7 +103,7 @@ export default {
       } else {
         sqlObj.str2 = ''
       }
-      return `${sqlObj.str} AND time > now() - ${this.time} GROUP BY time(${this.timeGroup}), "${sqlObj.tag}"${sqlObj.str2} FILL(0)`
+      return `${sqlObj.str} AND time > now() - ${this.time} GROUP BY time(${this.timeGroup}), "${sqlObj.tag}"${sqlObj.str2} FILL(none)`
     },
     async fetchData () {
       this.loading = true

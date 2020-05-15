@@ -23,7 +23,6 @@ export default {
         slotCallback: row => {
           if (!row.guest_template) return '-'
           return row.guest_template
-          // return [<side-page-trigger name='ScalingGroupSidePage' id={row.id} tab="server-template-list" list={this.list} vm={this}>{ row.name }</side-page-trigger>]
         },
       }),
       {
@@ -31,11 +30,6 @@ export default {
         title: '当前实例数',
         width: 100,
         sortable: true,
-        slots: {
-          default: ({ row }) => {
-            return [<side-page-trigger name='ScalingGroupSidePage' id={row.id} tab="server-list" list={this.list} vm={this}>{ row.instance_number }</side-page-trigger>]
-          },
-        },
       },
       {
         field: 'desire_instance_number',

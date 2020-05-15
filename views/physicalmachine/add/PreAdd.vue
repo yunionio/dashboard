@@ -14,7 +14,7 @@
       <a-form-item label="IPMI用户名" extra="为空时，系统默认使用 root ；不为空时，则使用用户输入信息。新机器建议留空，老机器建议输入旧用户名">
         <a-input v-decorator="decorators.ipmi_username" />
       </a-form-item>
-      <a-form-item label="IPMI密码" extra="为空时，系统默认使用 YunionDev@123 ；不为空时，则使用用户输入信息。新机器建议留空，老机器建议输入旧密码">
+      <a-form-item label="IPMI密码" :extra="`为空时，系统默认使用 ${ ipmiPassword }；不为空时，则使用用户输入信息。新机器建议留空，老机器建议输入旧密码`">
         <a-input-password v-decorator="decorators.ipmi_password" />
       </a-form-item>
     </template>
@@ -30,7 +30,7 @@
             <div>例如：ee:b3:f4:48:1c:f5,gpuhost01,192.168.1.1,root,admin123</div>
             <div>其中，MAC地址、名称为必填选项，其他为选填，选填字段值可直接省略</div>
             <div>例如：ee:b3:f4:48:1c:f5,gpuhost01,,, --省略了IPMI地址、IPMI用户名和IPMI密码</div>
-            <div>选填字段为空时，依次表示默认自动分配IP、默认使用用户名root、默认使用密码YunionDev@123；不为空时，则使用用户输入的信息</div>
+            <div>选填字段为空时，依次表示默认自动分配IP、默认使用用户名root、默认使用密码{{ ipmiPassword }}；不为空时，则使用用户输入的信息</div>
           </template>
         </a-alert>
       </a-form-item>
@@ -75,6 +75,11 @@ export default {
       required: true,
     },
   },
+  data () {
+    return {
+      ipmiPassword: '-',
+    }
+  },
   computed: {
     isSingle () {
       return this.fd.mode === 'single'
@@ -90,11 +95,37 @@ export default {
       return lines.length || 0
     },
   },
+  created () {
+    this.fetchDefaultIpmiPassword()
+  },
   methods: {
     handleClearContent () {
       this.form.fc.setFieldsValue({
         content: undefined,
       })
+    },
+    async fetchDefaultIpmiPassword () {
+      let manager = new this.$Manager('services', 'v1')
+      try {
+        const listResponse = await manager.list({
+          params: {
+            type: ['baremetal'],
+          },
+        })
+        const data = (listResponse.data.data || [])[0]
+        const serviceId = data && data.id
+        if (!serviceId) return
+        const configResponse = await manager.getSpecific({
+          id: serviceId,
+          spec: 'config',
+        })
+        const config = (configResponse.data.config && configResponse.data.config.default) || {}
+        this.ipmiPassword = config.default_ipmi_password
+      } catch (error) {
+        throw error
+      } finally {
+        manager = null
+      }
     },
   },
 }

@@ -41,6 +41,7 @@ export default {
       },
       {
         label: '删除',
+        permission: 'snapshots_delete',
         action: obj => {
           this.createDialog('DeleteResDialog', {
             vm: this,

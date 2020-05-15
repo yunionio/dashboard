@@ -9,8 +9,8 @@
           <base-select
             v-decorator="decorators.host"
             resource="hosts"
-            filterable
             remote
+            :remote-fn="q => ({ filter: `name.contains(${q})` })"
             :params="hostsParams"
             :mapper="hostsMapper"
             :select-props="{ allowClear: true, placeholder: '请选择宿主机' }" />
@@ -79,7 +79,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['scope']),
+    ...mapGetters(['scope', 'isAdminMode']),
     firstData () {
       return this.params.data[0]
     },
@@ -87,12 +87,16 @@ export default {
       return this.params.data.length === 1
     },
     hostsParams () {
-      return {
+      const ret = {
         scope: this.scope,
         host_type: 'hypervisor',
         limit: 20,
         enabled: 1,
       }
+      if (this.isAdminMode && this.isSingle) {
+        ret.project_domain = this.params.data[0].domain_id
+      }
+      return ret
     },
   },
   methods: {

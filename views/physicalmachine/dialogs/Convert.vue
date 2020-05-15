@@ -32,7 +32,7 @@
             version="v1"
             :params="imagesParams"
             :mapper="imagesResourceMapper"
-            :options.sync="imagesData"
+            :resList.sync="imagesData"
             @update:item="imagechange"
             :select-props="{ placeholder: '系统盘镜像' }" />
         </a-form-item>
@@ -77,6 +77,7 @@
         </a-form-item>
         <a-form-item label="网络" v-bind="formItemLayout" class="mb-0" v-if="isShowImages">
           <server-network
+            :form="form"
             :decorator="decorators.network"
             :isBonding="isBonding"
             :network-resource-mapper="networkResourceMapper"
@@ -139,8 +140,14 @@ export default {
           'name',
           {
             initialValue: this.params.data[0].name,
+            validateFirst: true,
             rules: [
-              { required: true },
+              {
+                required: true, message: '名称不能为空',
+              },
+              {
+                validator: this.$validate('serverCreateName'),
+              },
             ],
           },
         ],

@@ -12,6 +12,7 @@
 import numerify from 'numerify'
 import { getNameDescriptionTableColumn, getTimeTableColumn, getStatusTableColumn, getEnabledTableColumn } from '@/utils/common/tableColumn'
 import { getStatusFilter, getEnabledFilter } from '@/utils/common/tableFilter'
+import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ListMixin from '@/mixins/list'
@@ -35,6 +36,7 @@ export default {
         resource: 'scalingpolicies',
         apiVersion: 'v1',
         getParams: this.getParams,
+        steadyStatus: Object.values(expectStatus.scalingpolicie).flat(),
         filterOptions: {
           name: {
             label: '名称',
@@ -142,8 +144,11 @@ export default {
             if (!obj.enabled) {
               tooltip = '仅启用状态下支持此操作'
             }
+            if (obj.status !== 'ready') {
+              tooltip = '仅正常状态下支持此操作'
+            }
             return {
-              validate: obj.enabled && this.data.enabled,
+              validate: !tooltip,
               tooltip,
             }
           },
@@ -154,6 +159,7 @@ export default {
             return [
               {
                 label: '启用',
+                permission: 'scalingpolicies_perform_enable',
                 action: obj => {
                   this.onManager('performAction', {
                     id: obj.id,
@@ -168,6 +174,7 @@ export default {
               },
               {
                 label: '禁用',
+                permission: 'scalingpolicies_perform_disable',
                 action: (obj) => {
                   this.onManager('performAction', {
                     id: obj.id,
@@ -182,6 +189,7 @@ export default {
               },
               {
                 label: '删除',
+                permission: 'scalingpolicies_delete',
                 action: (obj) => {
                   this.createDialog('DeleteResDialog', {
                     data: [obj],
@@ -205,6 +213,7 @@ export default {
       groupActions: [
         {
           label: '新建',
+          permission: 'scalingpolicies_create',
           action: () => {
             this.createDialog('FiexRuleListCreateDialog', {
               title: '新建',
@@ -223,6 +232,7 @@ export default {
             return [
               {
                 label: '启用',
+                permission: 'scalingpolicies_perform_enable',
                 action: () => {
                   this.list.batchPerformAction('enable', null)
                 },
@@ -232,6 +242,7 @@ export default {
               },
               {
                 label: '禁用',
+                permission: 'scalingpolicies_perform_disable',
                 action: () => {
                   this.list.batchPerformAction('disable', null)
                 },
@@ -241,6 +252,7 @@ export default {
               },
               {
                 label: '删除',
+                permission: 'scalingpolicies_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     data: this.list.selectedItems,
@@ -310,7 +322,7 @@ export default {
         }
         let tiemStr = ''
         if (startTime && endTime) {
-          tiemStr = `，有效时间为${this.$moment(startTime).format()}至${this.$moment(endTime).format()}`
+          tiemStr = `，有效时间为${this.$moment(startTime).format('YYYY-MM-DD')}至${this.$moment(endTime).format('YYYY-MM-DD')}`
         }
         return `${typeTxt}${itemsTxt}${`${numerify(hour, '00')}:${numerify(minute, '00')}`}触发 ${tiemStr}`
       }

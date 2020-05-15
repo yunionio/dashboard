@@ -15,7 +15,7 @@
 import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import { getStatusFilter, getEnabledFilter } from '@/utils/common/tableFilter'
+import { getStatusFilter, getEnabledFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
@@ -79,6 +79,7 @@ export default {
               { label: '正常', key: false },
             ],
           },
+          project_domain: getProjectDomainFilter(),
         },
         responseData: this.responseData,
       }),
@@ -95,6 +96,8 @@ export default {
           { label: '维护模式', key: 'is_maintenance' },
           { label: '区域', key: 'region' },
           { label: '可用区', key: 'zone' },
+          { label: '共享范围', key: 'public_scope' },
+          { label: `所属${this.$t('dictionary.domain')}`, key: 'project_domain' },
         ],
       },
       groupActions: [
@@ -352,6 +355,7 @@ export default {
               getSetPublicAction(this, {
                 name: this.$t('dictionary.host'),
                 scope: 'domain',
+                resource: 'hosts',
               }),
               {
                 label: '同步硬件配置',
@@ -383,6 +387,7 @@ export default {
                   this.createDialog('HostsAdjustLabelDialog', {
                     data: this.list.selectedItems,
                     columns: this.columns,
+                    name: this.$t('dictionary.physicalmachine'),
                   })
                 },
                 meta: () => ({

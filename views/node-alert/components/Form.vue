@@ -57,7 +57,7 @@
         resource="users"
         version="v1"
         :params="recipientParams"
-        :options.sync="recipientOpts"
+        :resList.sync="recipientOpts"
         :initLoaded.sync="recipientsLoaded"
         :select-props="{ placeholder: '请选择报警接收人', allowClear: true, mode: 'multiple' }" />
     </a-form-item>

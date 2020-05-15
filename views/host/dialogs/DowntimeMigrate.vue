@@ -1,18 +1,13 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">设置二层网络</div>
+    <div slot="header">{{this.params.name}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.physicalmachine')" :count="params.data.length" action="设置二层网络" />
+      <dialog-selected-tips :name="$t('dictionary.host')" :count="params.data.length" action="宕机自动迁移" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
-      <a-form
+       <a-form
         :form="form.fc">
-        <a-form-item label="二层网络" v-bind="formItemLayout">
-          <base-select
-            :filterable="true"
-            v-decorator="decorators.wire"
-            resource="wires"
-            version="v1"
-            :select-props="{ placeholder: '选择二层网络' }" />
+        <a-form-item label="自动迁移" v-bind="formItemLayout" extra="当宿主机宕机后，其上的虚拟机(仅限硬盘为共享存储)是否会自动迁移到其他宿主机">
+          <a-switch v-decorator="decorators.enable" checkedChildren="开" unCheckedChildren="关" />
         </a-form-item>
       </a-form>
     </div>
@@ -28,55 +23,54 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'HostSetWireDialog',
+  name: 'DowntimeMigrateDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
       loading: false,
+      scope: this.$store.getters.scope,
       form: {
         fc: this.$form.createForm(this),
       },
       decorators: {
-        wire: [
-          'wire',
+        enable: [
+          'enable',
           {
-            rules: [
-              { required: true },
-            ],
+            initialValue: true,
+            valuePropName: 'checked',
           },
         ],
       },
       formItemLayout: {
         wrapperCol: {
-          span: 21,
+          span: 20,
         },
         labelCol: {
-          span: 3,
+          span: 4,
         },
       },
     }
   },
   methods: {
-    doUpdate (data) {
-      return new this.$Manager('hosts').performAction({
-        action: 'add-netif',
-        id: this.params.data[0].hostId,
-        data: {
-          ...data,
-          mac: this.params.data[0]['mac'],
-          index: this.params.data[0]['index'],
+    doMigrate (data) {
+      data = {
+        'allow_health_check': data.enable ? 'enable' : 'disable',
+      }
+      return this.params.onManager('performAction', {
+        id: this.params.data[0].id,
+        managerArgs: {
+          action: 'auto-migrate-on-host-down',
+          data,
         },
       })
     },
     async handleConfirm () {
       this.loading = true
       try {
-        let values = this.form.fc.validateFields()
-        this.loading = true
-        await this.doUpdate(values)
+        let values = await this.form.fc.validateFields()
+        await this.doMigrate(values)
         this.loading = false
         this.cancelDialog()
-        this.params.refresh()
       } catch (error) {
         this.loading = false
       }

@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex">
+  <div class="d-flex align-items-center">
     <base-select
       class="w-100"
       resource="networks"
@@ -21,6 +21,9 @@
 <script>
 export default {
   name: 'NetSelect',
+  props: {
+    projectDomain: String,
+  },
   inject: ['form'],
   data () {
     return {
@@ -28,12 +31,23 @@ export default {
       networkId: '',
       network: {},
       ip: '',
-      networkParams: {
+    }
+  },
+  computed: {
+    networkParams () {
+      const ret = {
         is_on_premise: true,
         usable: true,
         vpc: 'default',
-      },
-    }
+      }
+      if (this.projectDomain) ret.project_domain = this.projectDomain
+      return ret
+    },
+  },
+  watch: {
+    projectDomain (val, oldVal) {
+      this.form.fc.resetFields(['project_domain'])
+    },
   },
   methods: {
     handleShowIp () {

@@ -24,6 +24,7 @@ export default {
             data: [obj],
             columns: this.columns,
             title: '删除',
+            name: this.$t('dictionary.snapshotpolicy'),
             onManager: this.onManager,
           })
         },
