@@ -28,7 +28,7 @@ export const getResourceCountTableColumn = () => {
     title: '资源数量',
     width: 80,
     formatter: ({ row }) => {
-      return row.host_count || row.storage_count || row.network_count || '0'
+      return row.host_count || row.other_count || '0'
     },
   }
 }
