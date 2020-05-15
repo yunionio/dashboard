@@ -1,7 +1,7 @@
 <template>
   <div class="policy-schedtag">
     <div class="d-flex align-items-start mb-2" v-for="(item, i) in schedtagPolicyList" :key="item.key">
-      <schedtag-policy class="w-50" :decorators="genDecorator(item.key)" :schedtag-params="schedtagParams" />
+      <schedtag-policy :form="form" class="w-50" :decorators="genDecorator(item.key)" :schedtag-params="schedtagParams" />
       <a-button shape="circle" icon="minus" size="small" @click="decrease(item.key, i)" class="mt-2" />
     </div>
     <a-button type="primary" shape="circle" icon="plus" size="small" @click="add" />
@@ -29,6 +29,10 @@ export default {
       type: Object,
       required: true,
       validator: val => R.is(Function, val.schedtags) && R.is(Function, val.policys),
+    },
+    form: {
+      type: Object,
+      validator: val => !val || val.fc, // 不传 或者 传就有fc
     },
   },
   data () {

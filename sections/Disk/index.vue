@@ -39,7 +39,7 @@
         :decorators="{ filetype: decorator.filetype, mountPath: decorator.mountPath }" />
     </template>
     <template v-if="has('schedtag')">
-      <schedtag-policy v-if="showSchedtag" :decorators="{ schedtag: decorator.schedtag, policy: decorator.policy }" :schedtag-params="schedtagParams" />
+      <schedtag-policy v-if="showSchedtag" :form="form" :decorators="{ schedtag: decorator.schedtag, policy: decorator.policy }" :schedtag-params="schedtagParams" />
       <a-button v-if="!disabled" class="mt-1" type="link" @click="() => showSchedtag = !showSchedtag">{{ showSchedtag ? '取消' : '设置' }}调度标签</a-button>
     </template>
     <!-- 磁盘容量预警信息提示 -->
@@ -121,6 +121,10 @@ export default {
     storageStatusMap: {
       type: Object,
       default: () => ({}),
+    },
+    form: {
+      type: Object,
+      validator: val => !val || val.fc, // 不传 或者 传就有fc
     },
   },
   data () {
