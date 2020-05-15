@@ -217,11 +217,12 @@ export default {
               },
             },
             {
-              field: 'cpu_cmtbound',
+              field: 'cpu_commint_bound',
               title: '超售比',
               slots: {
                 default: ({ row }, h) => {
-                  return [<a onClick={this.openHostAdjustOversoldRatioDialog}>{row.cpu_cmtbound}</a>]
+                  if (row.cpu_commint_bound) return [<a onClick={this.openHostAdjustOversoldRatioDialog}>{row.cpu_commint_bound}</a>]
+                  return '-'
                 },
               },
             },
@@ -253,11 +254,12 @@ export default {
               },
             },
             {
-              field: 'mem_cmtbound',
+              field: 'mem_commint_bound',
               title: '超售比',
               slots: {
                 default: ({ row }, h) => {
-                  return [<a onClick={this.openHostAdjustOversoldRatioDialog}>{row.mem_cmtbound}</a>]
+                  if (row.mem_commint_bound) return [<a onClick={this.openHostAdjustOversoldRatioDialog}>{row.mem_commint_bound}</a>]
+                  return '-'
                 },
               },
             },
