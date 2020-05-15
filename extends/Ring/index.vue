@@ -250,6 +250,9 @@ export default {
       this.form.fd = this.params
     }
     this.$emit('update', this.options.i, this.form.fd)
+    this.$bus.$on('DashboardCardRefresh', args => {
+      this.fetchUsage()
+    }, this)
   },
   methods: {
     genUsageParams () {

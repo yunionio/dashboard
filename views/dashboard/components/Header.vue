@@ -8,6 +8,7 @@
         :class="{ active: current.id === item.id }"
         @click.stop.prevent="$emit('select', item)">{{ item.name }}</li>
     </draggable>
+    <a-button @click="handleRefresh" type="link" icon="sync" />
     <a-dropdown :trigger="['click']" slot="tabBarExtraContent" placement="bottomRight">
       <a class="ant-dropdown-link font-weight-bold pl-2 pr-2 h-100 d-block" @click="e => e.preventDefault()">
         <icon type="more" style="font-size: 18px;" />
@@ -29,6 +30,7 @@ import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import { Base64 } from 'js-base64'
 import draggable from 'vuedraggable'
+import { clear as clearCache } from '@Dashboard/utils/cache'
 import { download, uuid } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
 
@@ -225,6 +227,10 @@ export default {
       }, this.data)
       const data = Base64.encode(JSON.stringify(ret))
       return data
+    },
+    handleRefresh () {
+      clearCache()
+      this.$bus.$emit('DashboardCardRefresh')
     },
   },
 }

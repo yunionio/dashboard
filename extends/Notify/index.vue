@@ -135,6 +135,9 @@ export default {
     this.$emit('update', this.options.i, {
       name: this.form.fd.name,
     })
+    this.$bus.$on('DashboardCardRefresh', args => {
+      this.fetchNotices()
+    }, this)
   },
   methods: {
     async fetchNotices () {

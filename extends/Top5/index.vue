@@ -286,6 +286,9 @@ export default {
   created () {
     this.$emit('update', this.options.i, this.form.fd)
     this.fetchData()
+    this.$bus.$on('DashboardCardRefresh', args => {
+      this.fetchData()
+    }, this)
   },
   methods: {
     async fetchData () {
