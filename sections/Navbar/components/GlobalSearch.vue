@@ -37,6 +37,10 @@ export default {
       }
     },
     search (val) {
+      if (R.equals(val, this.value)) {
+        this.$bus.$emit('GlobalSearch')
+        return
+      }
       this.value = val
       if (R.isEmpty(val)) {
         this.$router.push(path)
