@@ -509,6 +509,7 @@ export const PERMISSION = {
    * eips 相关操作
    */
   'eips_perform_change_owner': ['compute', 'eips', 'perform', 'change-owner'],
+  'eips_delete': ['compute', 'eips', 'delete'],
   'eips_get': ['compute', 'eips', 'get'],
   /**
    * meter 相关操作
