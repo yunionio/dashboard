@@ -396,10 +396,6 @@ export const createVmDecorators = type => {
           `networkPolicys[${i}]`,
           {
             validateTrigger: ['blur', 'change'],
-            rules: [{
-              required: true,
-              message: '请选择调度标签',
-            }],
           },
         ],
       },
@@ -434,10 +430,6 @@ export const createVmDecorators = type => {
           `policySchedtagPolicys[${i}]`,
           {
             validateTrigger: ['blur', 'change'],
-            rules: [{
-              required: true,
-              message: '请选择调度标签',
-            }],
           },
         ],
       },
@@ -831,6 +823,7 @@ export class GenCreateData {
    * @memberof GenCreateData
    */
   getSchedPolicyValueKey () {
+    console.log(this.fd, 'this.fd')
     const ret = {}
     // 调度策略选择为 指定宿主机
     if (this.fd.schedPolicyType === SCHED_POLICY_OPTIONS_MAP.host.key) {
@@ -852,11 +845,12 @@ export class GenCreateData {
       ret.key = 'schedtags'
       ret.value = []
       R.forEachObjIndexed((value, key) => {
-        ret.value.push({
-          id: value,
-          strategy: this.fd.policySchedtagPolicys[key],
-        })
-      }, this.policySchedtagSchedtags)
+        const item = { id: value }
+        if (this.fd.policySchedtagPolicys[key]) {
+          item.strategy = this.fd.policySchedtagPolicys[key]
+        }
+        ret.value.push(item)
+      }, this.fd.policySchedtagSchedtags)
     }
     return ret
   }

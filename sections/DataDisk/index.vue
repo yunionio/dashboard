@@ -6,6 +6,7 @@
         <disk
           :max="max"
           :min="item.min || min"
+          :form="form"
           :schedtagParams="getSchedtagParams()"
           :snapshots-params="getSnapshotsParams(item)"
           :diskTypeLabel="i === 0 ? '' : diskTypeLabel"
