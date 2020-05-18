@@ -87,7 +87,6 @@ export default {
       tableWidth: 'auto',
       tableColumns: [],
       finalLimit: this.getLimit(),
-      tableData: [],
     }
   },
   computed: {
@@ -99,6 +98,9 @@ export default {
       return {
         width: `${this.tableWidth}px`,
       }
+    },
+    tableData (val, oldVal) {
+      return Object.values(this.data).sort((a, b) => a.index - b.index).map(item => item.data)
     },
     tablePage () {
       if (this.total <= 0) return null
@@ -124,16 +126,6 @@ export default {
     },
     limit (val, oldVal) {
       this.finalLimit = this.getLimit()
-    },
-    data: {
-      handler (val, oldVal) {
-        if (!R.equals(val, oldVal)) {
-          this.$nextTick(() => {
-            this.tableData = Object.values(this.data).sort((a, b) => a.index - b.index).map(item => item.data)
-          })
-        }
-      },
-      immediate: true,
     },
     'config.hiddenColumns' (val, oldVal) {
       if (!R.equals(val, oldVal)) {
