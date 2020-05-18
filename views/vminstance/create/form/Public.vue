@@ -396,7 +396,7 @@ export default {
       return params
     },
     hideCloudaccountSched () {
-      return !!this.form.fd.preferManager
+      return !!this.form.fd.prefer_manager
     },
     disabledBillType () {
       if (this.form.fd.sku && this.form.fd.sku.provider) {

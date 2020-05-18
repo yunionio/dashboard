@@ -4,7 +4,7 @@
       <a-col :span="8" v-if="showCloudaccount">
         <a-form-item :wrapperCol="{ span: 24 }">
           <base-select
-            v-decorator="decorator.preferManager"
+            v-decorator="decorator.prefer_manager"
             resource="cloudproviders"
             @change="cloudproviderChange"
             :params="cloudproviderParams"
@@ -151,7 +151,7 @@ export default {
       return storage.get(`${this.cloudType}${SELECT_IMAGE_KEY_SUFFIX}`)
     },
     showCloudaccount () {
-      if (!this.decorator.preferManager) return false
+      if (!this.decorator.prefer_manager) return false
       const imageMsg = IMAGES_TYPE_MAP[this.imageType]
       return imageMsg && imageMsg.enable_cloudaccount
     },
@@ -230,13 +230,13 @@ export default {
       this.fetchData()
     },
     showCloudaccount (val) {
-      if (!val) { // 如果不显示云账号，清空 fd 中的 preferManager
-        if (this.form && this.form.fd && this.form.fd.preferManager) {
-          this.form.fd.preferManager = ''
+      if (!val) { // 如果不显示云账号，清空 fd 中的 prefer_manager
+        if (this.form && this.form.fd && this.form.fd.prefer_manager) {
+          this.form.fd.prefer_manager = ''
         }
       } else { // 如果显示查看是否有初始化云订阅，如果有则请求 cacheImage-list
         this.$nextTick(() => {
-          const { preferManager } = this.form.fc.getFieldsValue([this.decorator.preferManager[0]])
+          const { prefer_manager: preferManager } = this.form.fc.getFieldsValue([this.decorator.prefer_manager[0]])
           this.cloudproviderChange(preferManager)
         })
       }

@@ -120,8 +120,8 @@ export const createVmDecorators = type => {
       ],
     },
     imageOS: {
-      preferManager: [
-        'preferManager',
+      prefer_manager: [
+        'prefer_manager',
         {
           rules: [
             { required: true, message: '请选择云账号' },
@@ -433,7 +433,7 @@ export const createVmDecorators = type => {
           },
         ],
       },
-      cloudprovider: [ // 传给后端的字段是 preferManager
+      cloudprovider: [ // 传给后端的字段是 prefer_manager
         'cloudprovider',
         {
           rules: [
@@ -837,7 +837,7 @@ export class GenCreateData {
     // 如果是通过云账号过滤镜像
     if (this.showPreferManager()) {
       ret.key = 'prefer_manager'
-      ret.value = this.fd.preferManager
+      ret.value = this.fd.prefer_manager
     }
     // 调度策略选择为 云账号
     if (this.fd.schedPolicyType === SCHED_POLICY_OPTIONS_MAP.cloudprovider.key) {

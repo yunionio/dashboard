@@ -149,8 +149,8 @@ export default {
       }
       return {
         imageOS: {
-          preferManager: [
-            'preferManager',
+          prefer_manager: [
+            'prefer_manager',
             {
               initialValue: _.get(this.params, 'data[0].manager_id') || '',
               rules: [
