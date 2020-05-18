@@ -18,7 +18,7 @@
         class="w-100"
         v-decorator="decorators.policy"
         :options="policyOpts"
-        :select-props="{ allowClear: true, placeholder: '请选择调度策略' }" />
+        :select-props="{ allowClear: true, placeholder: '请选择调度标签偏好' }" />
     </a-form-item>
   </div>
 </template>
@@ -53,15 +53,16 @@ export default {
     schedtagChange (val) {
       this.$nextTick(() => {
         if (this.form && this.form.fc) {
-          const defaultStrategy = this.schedtagItem.default_strategy
+          let defaultStrategy = this.schedtagItem.default_strategy
           if (defaultStrategy) {
-            if (this.policyOpts.find(val => val.key === defaultStrategy)) {
-              this.form.fc.getFieldDecorator(this.decorators.policy[0], this.decorators.policy[1])
-              this.form.fc.setFieldsValue({
-                [this.decorators.policy[0]]: defaultStrategy,
-              })
+            if (!this.policyOpts.find(val => val.key === defaultStrategy)) {
+              defaultStrategy = undefined
             }
           }
+          this.form.fc.getFieldDecorator(this.decorators.policy[0], this.decorators.policy[1])
+          this.form.fc.setFieldsValue({
+            [this.decorators.policy[0]]: defaultStrategy,
+          })
         }
       })
     },
