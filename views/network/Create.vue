@@ -31,6 +31,7 @@
           v-decorator="decorators.wire"
           :selectProps="{ 'placeholder': '请选择二层网络' }"
           :isDefaultSelect="true"
+          :labelFormat="wireLabelFormat"
           :params="params.wire" />
       </a-form-item>
       <a-form-item label="可用区" extra="同一 VPC 下可以有不同可用区的子网，同一 VPC 下不同可用区的子网默认可以内网互通。" v-bind="formItemLayout" v-if="!show && !isShowWire">
@@ -385,6 +386,7 @@ export default {
         { label: '容器', key: 'container' },
         { label: 'PXE', key: 'pxe' },
         { label: 'IPMI', key: 'ipmi' },
+        { label: '弹性公网IP', key: 'eip' },
       ],
       allocPolicyoptions: [
         { label: '缺省策略', key: 'none' },
@@ -433,6 +435,18 @@ export default {
     }
   },
   methods: {
+    wireLabelFormat (item) {
+      if (item) {
+        const { name, zone } = item
+        return (
+          <div class='d-flex'>
+            <span class='text-truncate flex-fill mr-2' title={ name }>{ name }</span>
+            <span style="color: #8492a6; font-size: 13px">可用区:{zone}</span>
+          </div>
+        )
+      }
+      return null
+    },
     addGuestIpPrefix () {
       this.clearGuestIpPrefixError()
       const key = uuid()
