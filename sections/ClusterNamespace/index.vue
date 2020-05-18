@@ -14,6 +14,7 @@
         @input="setNamespace"
         :cluster="cluster"
         :support-all-namespace="true"
+        :namespaceMap="namespaceMap"
         size="small"
         style="width: 140px;" />
     </div>
@@ -40,6 +41,9 @@ export default {
     ignoreNamespace: {
       type: Boolean,
       default: false,
+    },
+    namespaceMap: {
+      type: Object,
     },
   },
   data () {
