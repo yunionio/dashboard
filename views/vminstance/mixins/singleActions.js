@@ -714,7 +714,7 @@ export default {
                       return ret
                     }
                     const osType = obj.metadata && obj.metadata.os_name
-                    if (['aws', 'azure', 'google'].includes(obj.hypervisor) && osType === 'Windows') {
+                    if (['aws', 'azure', 'google', 'aliyun'].includes(obj.hypervisor) && osType === 'Windows') {
                       ret.tooltip = 'Windows操作系统不支持该功能'
                       return ret
                     }
