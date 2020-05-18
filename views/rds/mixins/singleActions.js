@@ -26,19 +26,6 @@ export default {
           const notRunninTip = !isRunning ? '仅运行中的实例支持此操作' : null
           return [
             {
-              label: `更改${this.$t('dictionary.project')}`,
-              action: () => {
-                this.createDialog('ChangeOwenrDialog', {
-                  title: `更改${this.$t('dictionary.project')}`,
-                  data: [obj],
-                  columns: this.columns,
-                  onManager: this.onManager,
-                  refresh: this.refresh,
-                  name: this.$t('dictionary.dbinstances'),
-                })
-              },
-            },
-            {
               label: '重启',
               action: () => {
                 this.createDialog('RDSRestartdialog', {
@@ -95,26 +82,17 @@ export default {
               },
             },
             {
-              label: '到期释放',
+              label: `更改${this.$t('dictionary.project')}`,
               action: () => {
-                this.createDialog('SetDurationDialog', {
+                this.createDialog('ChangeOwenrDialog', {
+                  title: `更改${this.$t('dictionary.project')}`,
                   data: [obj],
                   columns: this.columns,
                   onManager: this.onManager,
                   refresh: this.refresh,
+                  name: this.$t('dictionary.dbinstances'),
+                  resource: 'dbinstances',
                 })
-              },
-              meta: () => {
-                const ret = {
-                  validate: false,
-                  tooltip: null,
-                }
-                if (obj.billing_type === 'prepaid') {
-                  ret.tooltip = '包年包月机器，不支持此操作'
-                  return ret
-                }
-                ret.validate = true
-                return ret
               },
             },
             disableDeleteAction(this, {

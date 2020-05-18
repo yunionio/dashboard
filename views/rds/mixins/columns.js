@@ -1,6 +1,6 @@
 import { DBINSTANCE_CATEGORY } from '../constants/index.js'
 import { sizestr } from '@/utils/utils'
-import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getNameDescriptionTableColumn, getBrandTableColumn, getBillingTableColumn } from '@/utils/common/tableColumn'
+import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getNameDescriptionTableColumn, getBrandTableColumn, getBillingTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   created () {
@@ -20,6 +20,7 @@ export default {
           )
         },
       }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'dbinstance', columns: () => this.columns }),
       {
         field: 'category',
         title: '类型',

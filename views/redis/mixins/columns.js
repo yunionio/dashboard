@@ -1,7 +1,7 @@
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { ENGINE_ARCH } from '../constants/index.js'
 import { sizestr } from '@/utils/utils'
-import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getNameDescriptionTableColumn, getBrandTableColumn } from '@/utils/common/tableColumn'
+import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getNameDescriptionTableColumn, getBrandTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   created () {
@@ -17,6 +17,7 @@ export default {
           )
         },
       }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'elasticcache', columns: () => this.columns }),
       {
         field: 'arch_type',
         title: '实例类型',
