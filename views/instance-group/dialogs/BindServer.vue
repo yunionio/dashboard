@@ -10,19 +10,21 @@
       </a-alert>
       <dialog-selected-tips :name="$t('dictionary.instancegroup')" :count="params.data.length" :action="`绑定${this.$t('dictionary.server')}`" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
-      <a-select
-        v-if="serversLoaded"
-        class="w-100"
-        mode="multiple"
-        :placeholder="`请选择要绑定的${this.$t('dictionary.server')}`"
-        :defaultValue="defaultSelected"
-        :loading="serversLoading"
-        @search="debounceFetchServers"
-        @change="handleSelectChange">
-        <a-select-option
-          v-for="item of servers"
-          :key="item.id">{{ item.name }}</a-select-option>
-      </a-select>
+      <a-form-item :label="$t('dictionary.server')" v-bind="formItemLayout">
+        <a-select
+          v-if="serversLoaded"
+          class="w-100"
+          mode="multiple"
+          :placeholder="`请选择要绑定的${this.$t('dictionary.server')}`"
+          :defaultValue="defaultSelected"
+          :loading="serversLoading"
+          @search="debounceFetchServers"
+          @change="handleSelectChange">
+          <a-select-option
+            v-for="item of servers"
+            :key="item.id">{{ item.name }}</a-select-option>
+        </a-select>
+       </a-form-item>
     </div>
     <div slot="footer">
       <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
@@ -55,6 +57,14 @@ export default {
       bindedServers: [],
       // 默认选择
       defaultSelected: [],
+      formItemLayout: {
+        wrapperCol: {
+          span: 21,
+        },
+        labelCol: {
+          span: 3,
+        },
+      },
     }
   },
   computed: mapGetters(['scope']),

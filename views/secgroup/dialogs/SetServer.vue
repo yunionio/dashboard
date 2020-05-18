@@ -103,7 +103,8 @@ export default {
           limit: 0,
           offset: 0,
           filter: 'hypervisor.notin(container, baremetal, esxi)',
-          tenant: this.params.data[0]['tenant_id'],
+          // tenant: this.params.data[0]['tenant_id'],
+          scope: this.$store.getters.scope,
         }
       }
     },
