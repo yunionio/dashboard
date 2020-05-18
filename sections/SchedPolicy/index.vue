@@ -174,16 +174,16 @@ export default {
     change (e) {
       const schedPolicyType = lodash.isString(e) ? e : e.target.value
       switch (schedPolicyType) {
-        case this.schedPolicyOptionsMap.default.key:
+        case lodash.get(this.schedPolicyOptionsMap, 'default.key'):
           this.schedPolicyComponent = ''
           break
-        case this.schedPolicyOptionsMap.host.key:
+        case lodash.get(this.schedPolicyOptionsMap, 'host.key'):
           this.schedPolicyComponent = 'host'
           break
-        case this.schedPolicyOptionsMap.schedtag.key:
+        case lodash.get(this.schedPolicyOptionsMap, 'schedtag.key'):
           this.schedPolicyComponent = 'schedtag'
           break
-        case this.schedPolicyOptionsMap.cloudprovider.key:
+        case lodash.get(this.schedPolicyOptionsMap, 'cloudprovider.key'):
           this.schedPolicyComponent = 'cloudprovider'
           break
       }
