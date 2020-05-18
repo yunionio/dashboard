@@ -96,16 +96,5 @@ export default {
   created () {
     this.list.fetchData()
   },
-  methods: {
-    commonMeta (row = {}) {
-      const { id } = row
-      const isDirect = id === 'DIRECT'
-      return {
-        isDirect,
-        validate: !isDirect,
-        tooltip: isDirect && '直连不支持此操作',
-      }
-    },
-  },
 }
 </script>
