@@ -162,13 +162,13 @@ export const SCHED_POLICY_OPTIONS_MAP = {
     label: {
       [SERVER_TYPE.idc]: '指定宿主机',
       [SERVER_TYPE.private]: '指定宿主机',
-      [SERVER_TYPE.public]: '指定云账号',
+      [SERVER_TYPE.public]: '指定云订阅',
       [SERVER_TYPE.baremetal]: '指定物理机',
     },
     key: 'host',
   },
   cloudprovider: {
-    label: '指定云账号',
+    label: '指定云订阅',
     key: 'cloudprovider',
   },
   schedtag: {

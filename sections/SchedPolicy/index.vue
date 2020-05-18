@@ -23,6 +23,17 @@
       <template v-else>
         <base-select
           class="w-50"
+          resource="cloudproviders"
+          v-if="showCloudproviderSelect"
+          v-decorator="decorators.schedPolicyHost"
+          :params="policycloudproviderParams"
+          :need-params="true"
+          :filterable="true"
+          :showSync="true"
+          :select-props="{ placeholder: lodash.get(schedPolicyOptionsMap, 'host.label') || '' }" />
+        <base-select
+          v-else
+          class="w-50"
           resource="hosts"
           :disabled-items="disabledHost"
           v-decorator="decorators.schedPolicyHost"
@@ -94,7 +105,7 @@ export default {
       type: Object,
       validator: val => !val || val.fc, // 不传 或者 传就有fc
     },
-    hideCloudaccountSched: { // 隐藏 指定云账号(hosts接口)
+    hideCloudaccountSched: { // 隐藏 指定云订阅(hosts接口)
       type: Boolean,
       default: false,
     },
@@ -106,6 +117,9 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    provider: {
+      type: String,
+    },
   },
   data () {
     return {
@@ -114,6 +128,16 @@ export default {
     }
   },
   computed: {
+    policycloudproviderParams () {
+      return {
+        limit: 0,
+        enabled: true,
+        'filter.0': 'status.equals("connected")',
+        'filter.1': 'health_status.equals("normal")',
+        project_domain: 'default',
+        provider: this.provider,
+      }
+    },
     schedPolicyOptionsMap () {
       const { default: _default, host, ...rest } = SCHED_POLICY_OPTIONS_MAP
       let ret = {}
@@ -152,6 +176,16 @@ export default {
         params.scope = this.$store.getters.scope
       }
       return params
+    },
+    showCloudproviderSelect () { // 在公有云的情况下
+      if (this.form && this.serverType === SERVER_TYPE.public) {
+        const schedPolicyType = this.form.fc.getFieldsValue([this.decorators.schedPolicyType[0]])[this.decorators.schedPolicyType[0]]
+        console.log(schedPolicyType, 'schedPolicyType')
+        if (schedPolicyType === 'host') { // 公有云 此时 host 表示 指定云订阅
+          return true
+        }
+      }
+      return false
     },
   },
   watch: {
