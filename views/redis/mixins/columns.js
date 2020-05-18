@@ -21,7 +21,7 @@ export default {
       {
         field: 'arch_type',
         title: '实例类型',
-        width: 70,
+        width: 100,
         slots: {
           default: ({ row }) => {
             const type = row.local_category || row.arch_type
@@ -42,7 +42,7 @@ export default {
       {
         field: 'engine',
         title: '类型版本',
-        width: 70,
+        width: 100,
         slots: {
           default: ({ row }) => {
             return `${row.engine} ${row.engine_version}`

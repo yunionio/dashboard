@@ -24,7 +24,7 @@ export default {
       {
         field: 'category',
         title: '类型',
-        width: 70,
+        width: 100,
         slots: {
           default: ({ row }) => {
             return DBINSTANCE_CATEGORY[row.category]
