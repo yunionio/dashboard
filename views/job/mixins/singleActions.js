@@ -1,18 +1,18 @@
 export default {
   created () {
     this.singleActions = [
-      {
-        label: '设置镜像',
-        permission: 'k8s_jobs_update',
-        action: obj => {
-          this.createDialog('K8SSetImageDialog', {
-            data: [obj],
-            columns: this.columns,
-            onManager: this.onManager,
-            refresh: this.refresh,
-          })
-        },
-      },
+      // {
+      //   label: '设置镜像',
+      //   permission: 'k8s_jobs_update',
+      //   action: obj => {
+      //     this.createDialog('K8SSetImageDialog', {
+      //       data: [obj],
+      //       columns: this.columns,
+      //       onManager: this.onManager,
+      //       refresh: this.refresh,
+      //     })
+      //   },
+      // },
       {
         label: '查看/编辑',
         permission: 'k8s_jobs_update',
