@@ -217,11 +217,11 @@ export default {
               },
             },
             {
-              field: 'cpu_commint_bound',
+              field: 'cpu_commit_bound',
               title: '超售比',
               slots: {
                 default: ({ row }, h) => {
-                  if (row.cpu_commint_bound) return [<a onClick={this.openHostAdjustOversoldRatioDialog}>{row.cpu_commint_bound}</a>]
+                  if (row.cpu_commit_bound) return [<a onClick={this.openHostAdjustOversoldRatioDialog}>{row.cpu_commit_bound}</a>]
                   return '-'
                 },
               },
