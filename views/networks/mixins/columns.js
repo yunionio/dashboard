@@ -4,7 +4,6 @@ export default {
   created () {
     this.columns = [
       {
-        field: 'index',
         title: '序号',
         width: 50,
         formatter: ({ rowIndex }) => {
