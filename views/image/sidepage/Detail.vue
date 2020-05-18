@@ -35,6 +35,7 @@ export default {
           field: 'project_domain',
           title: '部门',
           formatter: ({ row }) => {
+            if (!row.domain_id) return '-'
             return <side-page-trigger permission="domains_get" name="DomainSidePage" id={row.domain_id} vm={this}>{ row.project_domain }</side-page-trigger>
           },
         },
@@ -42,6 +43,7 @@ export default {
           field: 'tenant',
           title: this.$t('dictionary.project'),
           formatter: ({ row }) => {
+            if (!row.tenant_id) return '-'
             return <side-page-trigger permission="projects_get" name="ProjectSidePage" id={row.tenant_id} vm={this}>{ row.tenant }</side-page-trigger>
           },
         },
