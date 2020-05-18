@@ -37,4 +37,24 @@ export default {
       },
     ]
   },
+  methods: {
+    commonMeta (row = {}, action) {
+      const { id } = row
+      const isDirect = id === 'DIRECT'
+      let validate = !isDirect
+      let tooltip = '直连不支持此操作'
+      if (!row.can_delete && action === 'delete') {
+        validate = false
+        tooltip = '已关联云账号，请取消关联云账号后重试'
+      }
+      if (isDirect) {
+        tooltip = '直连不支持此操作'
+      }
+      return {
+        isDirect,
+        validate,
+        tooltip,
+      }
+    },
+  },
 }
