@@ -135,7 +135,6 @@ export const diskResizeConfig = {
   },
   aliyun (obj) {
     const provider = obj.provider
-    const guestStatus = ['ready', 'running']
     const diskType = 'data'
     const storageType = ['cloud', 'cloud_efficiency', 'cloud_ssd']
     const { validate, tooltip } = diskResizeConfig.base(obj)
@@ -143,12 +142,6 @@ export const diskResizeConfig = {
       return {
         validate: false,
         tooltip,
-      }
-    }
-    if (!guestStatus.includes(obj.guest_status)) {
-      return {
-        validate: false,
-        tooltip: `${PROVIDER_MAP[provider].label}磁盘仅在挂载主机状态为【${_tran(guestStatus, serverStatus)}】下可以进行该操作`,
       }
     }
     if (obj.disk_type !== diskType) {
@@ -217,19 +210,11 @@ export const diskResizeConfig = {
     }
   },
   huawei (obj) {
-    const guestStatus = ['ready', 'running']
-    const provider = obj.provider
     const { validate, tooltip } = diskResizeConfig.base(obj)
     if (!validate) {
       return {
         validate: false,
         tooltip,
-      }
-    }
-    if (!guestStatus.includes(obj.guest_status)) {
-      return {
-        validate: false,
-        tooltip: `${PROVIDER_MAP[provider].label}磁盘仅在挂载主机状态为【${_tran(guestStatus, serverStatus)}】下可以进行该操作`,
       }
     }
     return {

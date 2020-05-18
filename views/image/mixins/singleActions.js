@@ -304,19 +304,6 @@ export default {
                   ['admin', () => {
                     if (this.booleanTransfer(obj.is_standard)) {
                       ret.tooltip = '公共镜像禁止删除，请切换为自定义镜像后重试'
-                      if (obj.is_public && obj.public_scope === 'system') {
-                        ret.tooltip = '公共镜像禁止删除，请切换为自定义镜像且取消共享后重试'
-                        return ret
-                      }
-                      return ret
-                    } else {
-                      if (obj.shared_projects) {
-                        ret.tooltip = '共享镜像禁止删除，请取消共享后重试'
-                        return ret
-                      }
-                    }
-                    if (this.booleanTransfer(obj.is_public)) {
-                      ret.tooltip = '共享镜像禁止删除，请取消共享后重试'
                       return ret
                     }
                     if (this.booleanTransfer(obj.disable_delete) && this.booleanTransfer(obj.protected)) {
@@ -329,24 +316,10 @@ export default {
                     if (this.booleanTransfer(obj.is_standard)) {
                       ret.tooltip = '公共镜像禁止删除'
                       return ret
-                    } else {
-                      if (obj.shared_projects) {
-                        ret.tooltip = '共享镜像禁止删除，请取消共享后重试'
-                        return ret
-                      }
                     }
-                    if (this.booleanTransfer(obj.is_public)) {
-                      if (obj.public_scope === 'domain') {
-                        ret.tooltip = '共享镜像禁止删除，请取消共享后重试'
-                      } else {
-                        ret.tooltip = '系统共享镜像禁止删除'
-                      }
+                    if (!ownerDomain(obj)) {
+                      ret.tooltip = '非当前域下的镜像无法删除'
                       return ret
-                    } else {
-                      if (obj.shared_projects) {
-                        ret.tooltip = '共享镜像禁止删除，请取消共享后重试'
-                        return ret
-                      }
                     }
                     if (this.booleanTransfer(obj.disable_delete) && this.booleanTransfer(obj.protected)) {
                       ret.tooltip = '删除保护，如需解除，请点击【设置删除保护】'
@@ -358,14 +331,9 @@ export default {
                     if (this.booleanTransfer(obj.is_standard)) {
                       ret.tooltip = '公共镜像禁止删除'
                       return ret
-                    } else {
-                      if (obj.shared_projects) {
-                        ret.tooltip = '共享镜像禁止删除'
-                        return ret
-                      }
                     }
-                    if (this.booleanTransfer(obj.is_public)) {
-                      ret.tooltip = '共享镜像禁止删除'
+                    if (!isOwnerProject(obj.tenant_id)) {
+                      ret.tooltip = '非当前项目下的镜像无法删除'
                       return ret
                     }
                     if (this.booleanTransfer(obj.disable_delete) && this.booleanTransfer(obj.protected)) {

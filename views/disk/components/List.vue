@@ -62,8 +62,8 @@ export default {
             label: '是否挂载',
             dropdown: true,
             items: [
-              { label: '是', key: false },
-              { label: '否', key: true },
+              { label: '已挂载', key: false },
+              { label: '待挂载', key: true },
             ],
           },
           brand: getBrandFilter(),

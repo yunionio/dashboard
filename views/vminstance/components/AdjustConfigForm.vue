@@ -31,6 +31,7 @@
           :sku="form.fd.sku"
           :form="form"
           :defaultSize="sysdisk.value"
+          :defaultType="form.fd.defaultType"
           :capability-data="form.fi.capability"
           :disabled="true" />
       </a-form-item>
@@ -120,6 +121,7 @@ export default {
         fd: {
           vcpu: 2,
           vmem: 2048,
+          diskType: null,
         },
         fi: {
           cpuMem: {}, // cpu 和 内存 的关联关系
@@ -287,6 +289,7 @@ export default {
       },
       diskLoaded: false,
       domain: itemData.domain_id,
+      sysdisk: {},
     }
   },
   computed: {
@@ -425,11 +428,9 @@ export default {
       if (this.form.fd.sysdisks && this.form.fd.sysdisks.length === 1) {
         this.sysdisk = this.form.fd.sysdisks[0]
         const storageItem = STORAGE_TYPES[this.selectedItem.hypervisor]
-        this.$nextTick(() => {
-          this.form.fc.setFieldsValue({
-            [this.decorators.systemDisk.type[0]]: { key: this.sysdisk.type, label: R.is(Object, storageItem) ? (_.get(storageItem, '[sysdisk.type].key') || this.sysdisk.type) : this.sysdisk.type },
-          })
-        })
+        this.form.fd.defaultType = {
+          [this.decorators.systemDisk.type[0]]: { key: this.sysdisk.type, label: R.is(Object, storageItem) ? (_.get(storageItem, '[sysdisk.type].key') || this.sysdisk.type) : this.sysdisk.type },
+        }
       }
       this.$nextTick(() => {
         setTimeout(() => {
