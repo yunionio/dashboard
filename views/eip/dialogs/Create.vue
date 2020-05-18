@@ -7,6 +7,9 @@
         <a-form-item :label="`指定${$t('dictionary.project')}`" v-bind="formItemLayout" class="mb-0">
           <domain-project :fc="form.fc" :form-layout="formItemLayout" :decorators="{ project: decorators.project, domain: decorators.domain }" @update:domain="domainChange" />
         </a-form-item>
+         <a-form-item label="名称" v-bind="formItemLayout">
+          <a-input v-decorator="decorators.name" placeholder="字母开头，数字和字母大小写组合，长度为2-128个字符，不含'.','_','@'" />
+        </a-form-item>
         <a-form-item label="平台" v-bind="formItemLayout">
           <a-radio-group v-decorator="decorators.platform" @change="platformChange">
             <a-radio-button value="public_cloud">
@@ -15,9 +18,10 @@
             <a-radio-button value="private_cloud">
               私有云
             </a-radio-button>
+            <a-radio-button value="idc">本地IDC</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item label="云账号" v-bind="formItemLayout">
+        <a-form-item label="云账号" v-bind="formItemLayout"  v-if="selectedPlatform !== 'idc'">
           <base-select
             :remote="true"
             v-decorator="decorators.manager"
@@ -27,11 +31,10 @@
             :label-format="labelFormat"
             :remote-fn="q => ({ filter: `name.contains(${q})` })"
             @update:item="providerChange"
-            :select-props="{ placeholder: '平台、账号、子账号' }"
-            style="width: 320px" />
+            :select-props="{ placeholder: '平台、账号、子账号' }" />
         </a-form-item>
         <a-form-item label="区域" v-bind="formItemLayout">
-          <base-select
+           <base-select
             :remote="true"
             needParams
             v-decorator="decorators.region"
@@ -39,44 +42,43 @@
             :params="regionParams"
             :remote-fn="q => ({ search: q })"
             @update:item="regionChange"
-            :select-props="{ placeholder: '请选择' }"
-            style="width: 320px" />
+            :select-props="{ placeholder: '请选择' }" />
         </a-form-item>
-        <a-form-item label="指定IP子网" v-bind="formItemLayout" v-if="providerC === 'zstack' || providerC === 'openstack'">
-          <base-select
-            :remote="true"
-            needParams
-            v-decorator="decorators.network"
-            resource="networks"
-            :params="networkParams"
-            :remote-fn="q => ({ filter: `name.contains(${q})` })"
-            @update:item="regionChange"
-            :select-props="{ placeholder: '请选择IP子网' }"
-            style="width: 320px" />
-        </a-form-item>
-        <a-form-item label="ip地址" v-bind="formItemLayout" v-if="providerC === 'zstack' || providerC === 'openstack'">
-          <a-input v-decorator="decorators.ip_addr" placeholder="请输入子网内ip" />
-        </a-form-item>
-        <a-form-item label="带宽" v-bind="formItemLayout" v-if="showBandwidth && selectedPlatform === 'public_cloud'">
-          <a-row>
-            <a-col :span="12">
-              <a-slider :min="1" :max="maxBandwidth" v-decorator="decorators.bandwidth" />
-            </a-col>
-            <a-col :span="4">
-              <a-input-number :min="1" :max="maxBandwidth" v-decorator="decorators.bandwidth" />
-            </a-col>
-          </a-row>
-        </a-form-item>
-        <a-form-item label="名称" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.name" placeholder="字母开头，数字和字母大小写组合，长度为2-128个字符，不含'.','_','@'" />
-        </a-form-item>
-        <a-form-item label="计费方式" v-bind="formItemLayout" v-if="showBandwidth && selectedPlatform === 'public_cloud'">
-          <a-radio-group v-decorator="decorators.charge_type" @change="chargeTypeChange">
-            <a-radio-button v-for="item in chargeTypeOptions" :value="item.value" :key="item.value">
-              {{item.label}}
-            </a-radio-button>
-          </a-radio-group>
-        </a-form-item>
+        <template v-if="(providerC === 'zstack' || providerC === 'openstack') || (selectedPlatform === 'idc' && this.selectedRegionItem && this.selectedRegionItem.id)">
+          <a-form-item label="指定IP子网" v-bind="formItemLayout">
+            <base-select
+              :remote="true"
+              needParams
+              v-decorator="decorators.network"
+              resource="networks"
+              :params="networkParams"
+              :remote-fn="q => ({ filter: `name.contains(${q})` })"
+              @update:item="regionChange"
+              :select-props="{ placeholder: '请选择IP子网' }" />
+          </a-form-item>
+          <a-form-item label="ip地址" v-bind="formItemLayout">
+            <a-input v-decorator="decorators.ip_addr" placeholder="请输入子网内ip" />
+          </a-form-item>
+        </template>
+        <template v-if="showBandwidth && selectedPlatform === 'public_cloud'">
+          <a-form-item label="带宽" v-bind="formItemLayout">
+            <a-row>
+              <a-col :span="12">
+                <a-slider :min="1" :max="maxBandwidth" v-decorator="decorators.bandwidth" />
+              </a-col>
+              <a-col :span="4">
+                <a-input-number :min="1" :max="maxBandwidth" v-decorator="decorators.bandwidth" />
+              </a-col>
+            </a-row>
+          </a-form-item>
+          <a-form-item label="计费方式" v-bind="formItemLayout">
+            <a-radio-group v-decorator="decorators.charge_type" @change="chargeTypeChange">
+              <a-radio-button v-for="item in chargeTypeOptions" :value="item.value" :key="item.value">
+                {{item.label}}
+              </a-radio-button>
+            </a-radio-group>
+          </a-form-item>
+        </template>
       </a-form>
     </div>
     <div slot="footer">
@@ -145,6 +147,14 @@ export default {
             ],
           },
         ],
+        // idcRegion: [
+        //   'idcRegion',
+        //   {
+        //     rules: [
+        //       { required: true, message: '请输入区域' },
+        //     ],
+        //   },
+        // ],
         network: [
           'network',
           {
@@ -206,21 +216,28 @@ export default {
   computed: {
     ...mapGetters(['isAdminMode', 'scope', 'userInfo']),
     regionParams () {
+      let params = {}
       if (this.manager) {
-        const params = {
+        params = {
           manager: this.manager,
           usable: true,
           scope: this.$store.getters.scope,
           show_emulated: true,
           capability: 'compute',
         }
-        if (this.isAdminMode) {
-          params['project_domain'] = this.domain_id
-          delete params.scope
-        }
-        return params
       }
-      return {}
+      if (this.selectedPlatform === 'idc') {
+        return {
+          cloud_env: 'onpremise',
+          usable: true,
+          show_emulated: true,
+        }
+      }
+      if (this.isAdminMode) {
+        params['project_domain'] = this.domain_id
+        delete params.scope
+      }
+      return params
     },
     networkParams () {
       if (this.manager) {
@@ -229,9 +246,16 @@ export default {
           limit: 0,
           scope: this.$store.getters.scope,
         }
-      } else {
-        return {}
       }
+      if (this.selectedPlatform === 'idc' && this.selectedRegionItem) {
+        return {
+          limit: 0,
+          scope: this.$store.getters.scope,
+          server_type: 'eip',
+          cloudregion_id: this.selectedRegionItem.id,
+        }
+      }
+      return {}
     },
     chargeTypeOptions () {
       if (this.showBandwidth) {
@@ -274,11 +298,15 @@ export default {
     },
   },
   methods: {
-    domainChange (id) {
-      this.domain_id = id
+    domainChange (item) {
+      if (R.type(item) === 'Object') {
+        this.domain_id = item.key
+      } else {
+        this.domain_id = item
+      }
       this.updateProviderParams = {
         ...this.updateProviderParams,
-        domain_id: id,
+        domain_id: this.domain_id,
       }
     },
     platformChange (e) {
@@ -315,9 +343,7 @@ export default {
       }
     },
     regionChange (e) {
-      if (e) {
-        this.selectedRegionItem = e
-      }
+      this.selectedRegionItem = e
     },
     chargeTypeChange (e) {
       this.charge_type = e.target.value
@@ -359,7 +385,6 @@ export default {
         await this.doCreate(values)
         this.loading = false
         this.cancelDialog()
-        this.params.refresh()
       } catch (error) {
         this.loading = false
       }
