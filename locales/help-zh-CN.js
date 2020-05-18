@@ -43,5 +43,11 @@ export default {
     cloudaccountAutoCreateProject: `
       <div>若云账号上面已设置项目信息，我们会自动创建与云上项目名称相同的项目（若与本地项目重名，系统默认追加“-1）</div>
     `,
+    useCasProject: `
+      <div>优先把用户同步到该系统中与CAS中的同名的项目（没有则会自动创建），如果CAS中某些用户没有项目则会使用默认项目。</div>
+    `,
+    useCasRole: `
+      <div>把用户同步到该系统中的项目时，优先使用CAS中的同名的角色，如果系统中没有对应的角色则会使用默认角色。</div>
+    `,
   },
 }
