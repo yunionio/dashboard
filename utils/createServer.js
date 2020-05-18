@@ -767,8 +767,8 @@ export class GenCreateData {
     for (let i = 0, len = this.fd.gpuCount; i < len; i++) {
       const regexp = /vendor=(.+):(.+)/
       const matched = this.fd.gpu.match(regexp)
-      const model = matched[1]
-      const vendor = matched[2]
+      const model = matched[2]
+      const vendor = matched[1]
       ret.push({
         model,
         vendor,
