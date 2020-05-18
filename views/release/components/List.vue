@@ -6,7 +6,7 @@
     :group-actions="groupActions"
     :single-actions="singleActions">
     <template v-slot:group-actions-append>
-      <cluster-namespace :getParams.sync="list.getParams" @refresh="fetchData" class="ml-3" />
+      <cluster-namespace :getParams.sync="list.getParams" :namespaceMap="namespaceMap" @refresh="fetchData" class="ml-3" />
     </template>
   </page-list>
 </template>

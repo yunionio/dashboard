@@ -11,7 +11,7 @@
           <a-input v-decorator="decorators.name" placeholder="请输入名称" />
         </a-form-item>
         <a-form-item label="URL">
-          <a-input v-decorator="decorators.url" placeholder="请输入" />
+          <a-input v-decorator="decorators.url" placeholder="请输入URL，如: http://mirror.azure.cn/kubernetes/charts/" />
         </a-form-item>
         <a-form-item label="是否为公有" v-if="$store.getters.isAdminMode">
           <a-switch v-decorator="decorators.is_public" />
