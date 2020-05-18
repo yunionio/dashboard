@@ -8,6 +8,12 @@ export default {
   created () {
     this.fetchData()
   },
+  inject: {
+    // 是否处于SidePage中
+    inBaseSidePage: {
+      default: false,
+    },
+  },
   data () {
     return {
       namespaceMap: {},
@@ -16,7 +22,7 @@ export default {
   },
   methods: {
     async fetchAllNamespaceData () {
-      if (this.loadedAllNamepspace) return
+      if (this.loadedAllNamepspace || this.inBaseSidePage) return
       const params = R.clone(this.list.getParams)
       delete params.namespace
       params.all_namespace = true
