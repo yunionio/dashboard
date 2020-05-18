@@ -8,16 +8,18 @@
     :filter-option="filterOption"
     option-filter-prop="children"
     :value="value">
-    <a-select-option
-      v-for="item in options"
-      :value="item.name"
-      :key="item.name">
-      {{ item.label || item.name }}
+    <a-select-option v-for="item in options" :value="item.name" :key="item.name">
+      <div class="d-flex">
+        <span class="text-truncate flex-fill mr-2">{{ item.label || item.name }}</span>
+        <span style="color: #8492a6; font-size: 13px" v-if="R.is(Number, item.num)">{{ item.num }}</span>
+      </div>
     </a-select-option>
   </a-select>
 </template>
 
 <script>
+import * as R from 'ramda'
+
 export default {
   name: 'K8sComponentsNamespace',
   props: {
@@ -38,21 +40,41 @@ export default {
       type: Boolean,
       default: false,
     },
+    namespaceMap: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data () {
     return {
       options: [],
+      R,
     }
   },
   watch: {
     cluster (v) {
       if (v) this._fetchNamespace()
     },
+    namespaceMap () {
+      this.$nextTick(this.addNum)
+    },
   },
   created () {
     this._fetchNamespace()
   },
   methods: {
+    addNum () {
+      if (R.isEmpty(this.namespaceMap)) return
+      this.options = this.options.map(val => {
+        const item = R.clone(val)
+        if (R.is(Array, this.namespaceMap[item.name])) {
+          item.num = this.namespaceMap[item.name].length
+        } else {
+          item.num = 0
+        }
+        return item
+      })
+    },
     change (v) {
       this.$emit('input', v)
       this.$emit('change', v)
