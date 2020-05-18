@@ -134,6 +134,7 @@
           <a-form-item label="调度策略" v-show="!isServertemplate" class="mb-0">
             <sched-policy
               :form="form"
+              :provider="hypervisor"
               :server-type="form.fi.createType"
               :disabled-host="policyHostDisabled"
               :policy-host-params="policyHostParams"
