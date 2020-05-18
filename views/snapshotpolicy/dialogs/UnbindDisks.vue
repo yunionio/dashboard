@@ -50,9 +50,11 @@ export default {
       try {
         await this.doSubmit()
         this.loading = false
+        this.params.refresh && this.params.refresh()
         this.cancelDialog()
       } catch (error) {
         this.loading = false
+        throw error
       }
     },
   },

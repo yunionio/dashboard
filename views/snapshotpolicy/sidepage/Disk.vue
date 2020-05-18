@@ -12,12 +12,13 @@ import {
   getRegionTableColumn,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
+import ListMixin from '@/mixins/list'
 import { sizestr } from '@/utils/utils'
 import expectStatus from '@/constants/expectStatus'
 
 export default {
   name: 'DiskListForVmSnapshotPolicySidePage',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ListMixin],
   props: {
     resId: String,
     data: {
@@ -95,6 +96,7 @@ export default {
               title: '解绑',
               resId: this.resId,
               onManager: this.onManager,
+              refresh: this.refresh,
             })
           },
           meta: obj => {
