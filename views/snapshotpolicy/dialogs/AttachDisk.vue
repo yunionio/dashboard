@@ -134,6 +134,7 @@ export default {
             data,
           })
         }
+        this.params.refresh && this.params.refresh()
         this.cancelDialog()
       } finally {
         this.loading = false
