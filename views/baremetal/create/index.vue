@@ -793,14 +793,23 @@ export default {
         if (data.option[2] === 'none') {
           range = [data.start_index + this.count + 1]
         } else {
-          // const lastIndexRange = isRepeat[isRepeat.length - 1].range
-          // let i = lastIndexRange[lastIndexRange.length - 1]
-          let j = data.start_index
-          range = []
-          while (j < data.start_index + data.count) {
-            // i++
-            range.push(j)
-            j++
+          if (data.start_index === 0) {
+            const lastIndexRange = isRepeat[isRepeat.length - 1].range
+            let i = lastIndexRange[lastIndexRange.length - 1]
+            let p = 0
+            range = []
+            while (p < data.count) {
+              i++
+              range.push(i)
+              p++
+            }
+          } else {
+            let j = data.start_index
+            range = []
+            while (j < data.start_index + data.count) {
+              range.push(j)
+              j++
+            }
           }
         }
       }
