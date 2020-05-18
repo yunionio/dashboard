@@ -895,6 +895,10 @@ export default {
                       ret.tooltip = '已绑定，解绑后重试'
                       return ret
                     }
+                    if (obj.brand === 'OneCloud' && obj.vpc_id === 'default') {
+                      ret.tooltip = '经典网络的虚拟机不支持此操作'
+                      return ret
+                    }
                     ret.validate = cloudEnabled('bindEip', obj)
                     ret.tooltip = cloudUnabledTip('bindEip', obj)
                     return ret

@@ -271,7 +271,7 @@ const actionEableMap = {
       qcloud: ['running', 'ready'],
       aliyun: ['running', 'ready'],
       aws: ['running', 'ready'],
-      onecloud: false,
+      onecloud: ['running', 'ready'],
       vmware: false,
       baremetal: false,
       huawei: ['running', 'ready'],
