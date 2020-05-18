@@ -23,11 +23,11 @@
       :total="total"
       :selected="selected"
       :api-version="apiVersion"
+      :update-config="updateConfig"
       @refresh="refresh"
       @clear-selected="clearSelected"
       @tag-filter-change="tagFilterChange"
-      @filter-change="filterChange"
-      @update-config="updateConfig">
+      @filter-change="filterChange">
       <slot name="group-actions-append" slot="group-actions-append" />
       <slot name="right-tools-prepend" slot="right-tools-prepend" />
     </page-list-header>
