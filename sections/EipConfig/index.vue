@@ -113,7 +113,7 @@ export default {
     chargeTypes () {
       const ret = { ...chargeTypes }
       // 腾讯云、Azure 不支持按固定带宽计费
-      if ([typeClouds.hypervisorMap.qcloud.key, typeClouds.hypervisorMap.azure.key].includes(this.hypervisor)) {
+      if ([typeClouds.hypervisorMap.qcloud.key, typeClouds.hypervisorMap.azure.key, typeClouds.hypervisorMap.aws.key].includes(this.hypervisor)) {
         delete ret.bandwidth
       }
       return ret
