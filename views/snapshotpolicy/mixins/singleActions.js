@@ -8,6 +8,7 @@ export default {
             data: [obj],
             columns: this.columns,
             title: '关联硬盘',
+            refresh: this.refresh,
           })
         },
         meta: obj => {
