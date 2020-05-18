@@ -116,17 +116,46 @@ export default {
       try {
         const values = await this.form.fc.validateFields()
         const ids = values.disks
+        const disk = this.getDisks(ids, this.bindedDisks)
         const data = {
           snapshotpolicy: this.params.data[0].id,
         }
-        await manager.batchPerformAction({
-          ids,
-          action: 'bind-snapshotpolicy',
-          data,
-        })
+        if (disk.addDisks.length > 0) {
+          await manager.batchPerformAction({
+            ids: disk.addDisks,
+            action: 'bind-snapshotpolicy',
+            data,
+          })
+        }
+        if (disk.delDisks.length > 0) {
+          await manager.batchPerformAction({
+            ids: disk.delDisks,
+            action: 'unbind-snapshotpolicy',
+            data,
+          })
+        }
         this.cancelDialog()
       } finally {
         this.loading = false
+      }
+    },
+    getDisks (newDisks = [], oldDisks = []) {
+      const addDisks = []
+      const delDisks = []
+      const oldDiskIds = oldDisks.map((item) => { return item.id })
+      newDisks.forEach((diskId) => {
+        if (!oldDiskIds.includes(diskId)) {
+          addDisks.push(diskId)
+        }
+      })
+      oldDiskIds.forEach((diskId) => {
+        if (!newDisks.includes(diskId)) {
+          delDisks.push(diskId)
+        }
+      })
+      return {
+        addDisks,
+        delDisks,
       }
     },
   },
