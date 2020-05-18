@@ -115,6 +115,7 @@ export const authRoutesName = [
   'Auth',
   'Login',
   'Register',
+  'ChannelPartnerRegister',
   'RegisterResult',
   'SecretVerify',
   'BindSecret',
