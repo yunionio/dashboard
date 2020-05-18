@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import lodash from 'lodash'
 import { SERVER_TYPE, SCHED_POLICY_OPTIONS_MAP } from '@Compute/constants'
 import PolicySchedtag from './PolicySchedtag'
 
@@ -108,15 +109,19 @@ export default {
   },
   methods: {
     change (e) {
-      switch (e.target.value) {
-        case this.schedPolicyOptionsMap.default.key:
+      const schedPolicyType = lodash.isString(e) ? e : e.target.value
+      switch (schedPolicyType) {
+        case lodash.get(this.schedPolicyOptionsMap, 'default.key'):
           this.schedPolicyComponent = ''
           break
-        case this.schedPolicyOptionsMap.host.key:
+        case lodash.get(this.schedPolicyOptionsMap, 'host.key'):
           this.schedPolicyComponent = 'host'
           break
-        case this.schedPolicyOptionsMap.schedtag.key:
+        case lodash.get(this.schedPolicyOptionsMap, 'schedtag.key'):
           this.schedPolicyComponent = 'schedtag'
+          break
+        case lodash.get(this.schedPolicyOptionsMap, 'cloudprovider.key'):
+          this.schedPolicyComponent = 'cloudprovider'
           break
       }
     },
