@@ -301,7 +301,7 @@ export default {
           HYPERVISORS_MAP.esxi.key,
         ]
         if (disableKeypairHyper.includes(hypervisor)) {
-          delete loginTypes[LOGIN_TYPES_MAP.keypair.value]
+          delete loginTypes[LOGIN_TYPES_MAP.keypair.key]
         }
       }
       return Object.keys(loginTypes)
