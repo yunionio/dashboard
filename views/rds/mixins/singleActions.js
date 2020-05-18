@@ -94,6 +94,29 @@ export default {
                 }
               },
             },
+            {
+              label: '到期释放',
+              action: () => {
+                this.createDialog('SetDurationDialog', {
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                  refresh: this.refresh,
+                })
+              },
+              meta: () => {
+                const ret = {
+                  validate: false,
+                  tooltip: null,
+                }
+                if (obj.billing_type === 'prepaid') {
+                  ret.tooltip = '包年包月机器，不支持此操作'
+                  return ret
+                }
+                ret.validate = true
+                return ret
+              },
+            },
             disableDeleteAction(this, {
               name: this.$t('dictionary.dbinstances'),
             }),

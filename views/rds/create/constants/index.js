@@ -1,6 +1,20 @@
 import validateForm from '@/utils/validate'
 
 export const DECORATORS = {
+  duration: {
+    durationStandard: [
+      'durationStandard',
+      {
+        initialValue: 'none',
+      },
+    ],
+    duration: [
+      'duration',
+      {
+        initialValue: '1h',
+      },
+    ],
+  },
   projectDomain: {
     project: [
       'project',

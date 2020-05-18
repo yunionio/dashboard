@@ -2,11 +2,11 @@
   <div class="server-create-index">
     <page-header title="新建" />
     <a-divider orientation="left">基础配置</a-divider>
-    <a-form :form="form.fc" class="mt-3">
+    <a-form :form="form.fc" class="mt-3"  v-bind="formItemLayout">
       <a-form-item class="mb-0" :label="`指定${$t('dictionary.project')}`" v-bind="formItemLayout">
         <domain-project :decorators="decorators.projectDomain" :fc="form.fc" :labelInValue="false" />
       </a-form-item>
-      <a-form-item label="名称" v-bind="formItemLayout">
+      <a-form-item label="名称">
         <a-input :placeholder="$t('validator.serverCreateName')" v-decorator="decorators.generate_name" />
         <name-repeated
           v-slot:extra
@@ -16,6 +16,9 @@
       </a-form-item>
       <!-- 计费方式 -->
       <clearing-radios v-bind="formItemLayout" />
+      <a-form-item label="到期释放" v-if="form.fd.billing_type !== 'prepaid'">
+        <duration :decorators="decorators.duration" :form="form" />
+      </a-form-item>
       <!-- 区域 -->
       <item-area
         :billingType="form.fd.billing_type"
@@ -25,13 +28,13 @@
         :names="['city', 'provider', 'cloudregion']" />
       <!-- 套餐信息 -->
       <s-k-u ref="SKU" />
-      <a-form-item v-if="form.fd.provider !== 'Aliyun'" label="管理员密码" v-bind="formItemLayout">
+      <a-form-item v-if="form.fd.provider !== 'Aliyun'" label="管理员密码">
         <server-password :loginTypes="loginTypes" :decorator="decorators.loginConfig" :form="form" />
       </a-form-item>
       <!-- 网络 -->
       <item-network ref="NETWORK" />
       <!-- 选择安全组 -->
-      <a-form-item v-if="form.getFieldValue('provider') === 'Huawei'" label="安全组" v-bind="formItemLayout">
+      <a-form-item v-if="form.getFieldValue('provider') === 'Huawei'" label="安全组">
         <secgroup-config :max="1" :decorators="decorators.secgroup" />
       </a-form-item>
       <bottom-bar :values="form.getFieldsValue()" />
@@ -42,6 +45,7 @@
 import { CreateServerForm } from '@Compute/constants'
 import ServerPassword from '@Compute/sections/ServerPassword'
 import SecgroupConfig from '@Compute/sections/SecgroupConfig'
+import Duration from '@Compute/sections/Duration'
 import ItemArea from '@DB/sections/ItemArea'
 import ItemNetwork from '@DB/sections/ItemNetwork'
 import { DECORATORS } from './constants/index'
@@ -63,6 +67,7 @@ export default {
     ItemNetwork,
     SecgroupConfig,
     NameRepeated,
+    Duration,
   },
   mixins: [changeMinxin],
   data () {

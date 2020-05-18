@@ -164,6 +164,44 @@ export default {
                   }
                 },
               },
+              {
+                label: '到期释放',
+                action: () => {
+                  this.createDialog('SetDurationDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    refresh: this.refresh,
+                  })
+                },
+                meta: () => {
+                  const ret = {
+                    validate: false,
+                    tooltip: null,
+                  }
+                  // 包年包月机器，不支持此操作
+                  let isSomePrepaid = this.list.selectedItems.some((item) => {
+                    return item.billing_type === 'prepaid'
+                  })
+                  if (isSomePrepaid) {
+                    ret.tooltip = '包年包月机器，不支持此操作'
+                    return ret
+                  }
+                  // 暂只支持同时操作已设置到期或未设置到期释放的机器
+                  let isSomeExpired = this.list.selectedItems.some((item) => {
+                    return item.expired_at
+                  })
+                  let isSomeNotExpired = this.list.selectedItems.some((item) => {
+                    return !item.expired_at
+                  })
+                  if (isSomeExpired && isSomeNotExpired) {
+                    ret.tooltip = '暂只支持同时操作已设置到期释放'
+                    return ret
+                  }
+                  ret.validate = true
+                  return ret
+                },
+              },
               disableDeleteAction(this, {
                 name: this.$t('dictionary.dbinstances'),
               }),
