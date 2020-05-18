@@ -115,6 +115,10 @@ export default {
       type: String,
       default: 'v1',
     },
+    updateConfig: {
+      type: Function,
+      required: true,
+    },
   },
   computed: {
     _filterOptions () {
@@ -193,7 +197,7 @@ export default {
       this.$parent.$parent.createDialog('CustomListDialog', {
         title: '自定义列表项',
         config: this.config,
-        update: value => this.$emit('update-config', value),
+        update: this.updateConfig,
         showTagColumns: this.showTagColumns,
         customs: grid.getTableColumn().collectColumn,
         resource: this.resource,

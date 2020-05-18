@@ -334,6 +334,9 @@ class CreateList {
       } else {
         this.offset = 0
       }
+      return response.data
+    } catch (error) {
+      throw error
     } finally {
       this.loaded = true
       this.loading = false
