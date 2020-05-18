@@ -41,6 +41,7 @@ export default {
         vpc: 'default',
       }
       if (this.projectDomain) ret.project_domain = this.projectDomain
+      if (this.$store.getters.isDomainMode) ret.scope = this.$store.getters.scope
       return ret
     },
   },
