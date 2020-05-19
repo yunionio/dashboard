@@ -140,7 +140,8 @@
               :policy-host-params="policyHostParams"
               :decorators="decorators.schedPolicy"
               :hideCloudaccountSched="hideCloudaccountSched"
-              :policy-schedtag-params="policySchedtagParams" />
+              :policy-schedtag-params="policySchedtagParams"
+              :policycloudproviderParams="policycloudproviderParams" />
           </a-form-item>
         </a-collapse-panel>
       </a-collapse>
@@ -405,6 +406,18 @@ export default {
         }
       }
       return ''
+    },
+    policycloudproviderParams () {
+      const params = {
+        limit: 0,
+        provider: this.provider,
+        cloudregion: this.cloudregionZoneParams.cloudregion,
+        ...this.scopeParams,
+      }
+      if (this.form.fd.zone) {
+        params.zone = this.form.fd.zone
+      }
+      return params
     },
   },
   watch: {
