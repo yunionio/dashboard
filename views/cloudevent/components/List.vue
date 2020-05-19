@@ -5,16 +5,17 @@
       :columns="columns"
       :export-data-options="exportDataOptions"
       :show-group-actions="true"
-      :show-page="false">
+      :show-page="false"
+      :refresh-method="refresh">
       <template v-slot:right-tools-prepend>
-          <a-date-picker
-            class="mr-2"
-            v-model="dateTime"
-            style="width: 300px"
-            format="YYYY-MM-DD HH:mm:ss"
-            placeholder="选择终止时间进行查询"
-            @change="handleDateTimeChange"
-            :showTime="{ defaultValue: $moment('00:00:00', 'HH:mm:ss') }" />
+        <a-date-picker
+          class="mr-2"
+          v-model="dateTime"
+          style="width: 300px"
+          format="YYYY-MM-DD HH:mm:ss"
+          placeholder="选择终止时间进行查询"
+          @change="handleDateTimeChange"
+          :showTime="{ defaultValue: $moment('00:00:00', 'HH:mm:ss') }" />
       </template>
     </page-list>
   </div>
@@ -133,6 +134,7 @@ export default {
           { label: '订阅', key: 'manager' },
           { label: '备注', key: 'notes' },
         ],
+        limit: () => Object.keys(this.list.data).length,
       },
     }
   },
@@ -158,6 +160,11 @@ export default {
         delete param.until
       }
       return param
+    },
+    refresh (clearSelected) {
+      clearSelected()
+      this.list.reset()
+      this.list.fetchData()
     },
   },
 }

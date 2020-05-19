@@ -121,6 +121,27 @@ export default {
     },
     {
       meta: {
+        label: '标签',
+      },
+      submenus: [
+        {
+          path: '/tag',
+          meta: {
+            label: '标签',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Tag',
+              path: '',
+              component: Tag,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      meta: {
         label: '调度',
       },
       submenus: [
@@ -166,27 +187,6 @@ export default {
               name: 'Dynamicschedtag',
               path: '',
               component: Dynamicschedtag,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      meta: {
-        label: '标签',
-      },
-      submenus: [
-        {
-          path: '/tag',
-          meta: {
-            label: '标签',
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'Tag',
-              path: '',
-              component: Tag,
             },
           ],
         },
