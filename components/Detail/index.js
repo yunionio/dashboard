@@ -267,6 +267,11 @@ export default {
             defaultTopBaseInfo.splice(j, 1)
           }
         }
+        for (let l = 0; l < defaultLastBaseInfo.length; l++) {
+          if (this.baseInfo[i].field === defaultLastBaseInfo[l].field || this.baseInfo[i].title === defaultLastBaseInfo[l].title) {
+            defaultLastBaseInfo.splice(l, 1)
+          }
+        }
       }
       let baseInfo = defaultTopBaseInfo.concat(this.baseInfo).concat(defaultLastBaseInfo)
       baseInfo = R.uniqBy(item => item.field && item.title, baseInfo)
