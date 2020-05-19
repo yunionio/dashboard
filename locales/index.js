@@ -12,6 +12,22 @@ const messages = {
   'zh-CN': Object.assign(zhCN, helpZhCN),
 }
 
+const containerLocales = require.context('../../containers', true, /^((?![\\/]node_modules).)*.\/locales\/.*(json)$/)
+const scopeLocales = require.context('../..', true, /.\/scope\/locales\/.*(json)/)
+
+const registerLocales = (locales) => {
+  const keys = locales.keys()
+  for (let i = 0, len = keys.length; i < len; i++) {
+    const module = (keys[i].match(/\/(.+?)\//)[1]).toUpperCase()
+    const locale = keys[i].match(/([^\\/]+)(?=\.\w+$)/)[0]
+    const localeConfig = locales(keys[i])
+    messages[locale][module] = localeConfig
+  }
+}
+
+registerLocales(containerLocales)
+registerLocales(scopeLocales)
+
 const i18n = new VueI18n({
   locale: window.localStorage.getItem('language') || 'zh-CN',
   messages,
