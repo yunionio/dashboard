@@ -70,6 +70,9 @@ export default {
         if (R.is(Function, menu.meta.hidden)) {
           return !menu.meta.hidden(this.userInfo)
         }
+        if (R.is(Function, menu.meta.invisible)) {
+          return !menu.meta.invisible(this.userInfo)
+        }
         return false
       }
       return true
