@@ -84,7 +84,7 @@ export default {
           meta: {
             label: 'Helm仓库地址',
             permission: 'k8s_repos_list',
-            hidden: true,
+            invisible: () => true,
           },
           component: Layout,
           children: [
