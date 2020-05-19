@@ -206,6 +206,9 @@ export default {
           this.selectKey = this.defaultSearchKey
           this.search = `${this.options[this.defaultSearchKey]['label']}${this.keySeparator}${this.search}`
         } else {
+          if (R.is(Object, this.value) && !R.isEmpty(this.value)) {
+            this.$emit('confirm', this.value)
+          }
           return
         }
       }

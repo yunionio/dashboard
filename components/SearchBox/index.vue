@@ -150,7 +150,8 @@ export default {
       this.showCompleter = show
     },
     search () {
-      this.$emit('input', this.newValues)
+      // this.$emit('input', this.newValues)
+      this.$refs.completer.handleOk()
     },
   },
 }
