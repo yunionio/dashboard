@@ -219,27 +219,34 @@ export default {
             return false
           }
           this.handleUpload(formData)
-          this.clearTimer()
-          this.timer = setInterval(() => {
-            this.fetchImageInfoByName()
-              .then((res) => {
-                const imageInfo = res.data && res.data.data && res.data.data[0]
-                if (this.fileList && this.fileList.length > 0) {
-                  const percent = (imageInfo.size / this.fileList[0].size) * 100
-                  if (percent === 100) {
-                    this.percentTimer = setTimeout(() => {
-                      this.imageUploadPercent = _.floor(percent)
-                    }, 5000)
-                  } else {
-                    this.imageUploadPercent = _.floor(percent)
-                  }
-                }
-                if (this.imageUploadPercent === 100) {
-                  this.cancelDialog()
-                  this.params.refresh()
-                }
-              })
-          }, 5000)
+            .then(() => {
+              this.clearTimer()
+              this.timer = setInterval(() => {
+                this.fetchImageInfoByName()
+                  .then((res) => {
+                    const imageInfo = res.data && res.data.data && res.data.data[0]
+                    if (this.fileList && this.fileList.length > 0) {
+                      if (imageInfo) {
+                        const percent = (imageInfo.size / this.fileList[0].size) * 100
+                        if (percent === 100) {
+                          this.percentTimer = setTimeout(() => {
+                            this.imageUploadPercent = _.floor(percent)
+                          }, 5000)
+                        } else {
+                          this.imageUploadPercent = _.floor(percent)
+                        }
+                      }
+                    }
+                    if (this.imageUploadPercent >= 100) {
+                      this.cancelDialog()
+                      this.params.refresh()
+                    }
+                  })
+              }, 5000)
+            })
+            .catch(() => {
+              this.loading = false
+            })
         } else {
           await this.doImportUrl(values)
           this.cancelDialog()
@@ -247,6 +254,7 @@ export default {
         }
       } catch (error) {
         this.loading = false
+        throw error
       }
     },
     fetchImageInfoByName () {
