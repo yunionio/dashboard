@@ -36,6 +36,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import * as R from 'ramda'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -89,6 +90,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['scope']),
     isAzure () {
       return this.params.data[0].provider === HYPERVISORS_MAP.azure.provider
     },
