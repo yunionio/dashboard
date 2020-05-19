@@ -282,6 +282,14 @@ export default {
         name: fd.name,
         generate_name: fd.name,
       }
+      const disks = this.createParams.disks
+      if (disks && disks.length > 0) {
+        disks.forEach((disk) => {
+          if (disk.disk_type === 'data') {
+            delete disk.image_id
+          }
+        })
+      }
       delete server.eip
       if (this.isPublic) {
         server.disks[0].image_id = fd.image.key
