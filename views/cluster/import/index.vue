@@ -9,12 +9,12 @@
         v-bind="formItemLayout">
         <a-input v-decorator="decorators.name" placeholder="请输入名称" />
       </a-form-item>
-      <a-form-item
+      <!-- <a-form-item
         label="API Server 地址"
         extra="请输入集群的API Server地址，例如：https://<IP>:<Port>/"
         v-bind="formItemLayout">
         <a-input v-decorator="decorators.api_server" placeholder="请输入API Server 地址" />
-      </a-form-item>
+      </a-form-item> -->
       <a-form-item
         label="KubeConfig 配置"
         v-bind="formItemLayout">
@@ -58,15 +58,15 @@ export default {
             ],
           },
         ],
-        api_server: [
-          'api_server',
-          {
-            validateTrigger: 'blur',
-            rules: [
-              { required: true, message: '请输入API Server 地址' },
-            ],
-          },
-        ],
+        // api_server: [
+        //   'api_server',
+        //   {
+        //     validateTrigger: 'blur',
+        //     rules: [
+        //       { required: true, message: '请输入API Server 地址' },
+        //     ],
+        //   },
+        // ],
         kubeconfig: [
           'kubeconfig',
           {
