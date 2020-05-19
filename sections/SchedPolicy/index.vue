@@ -27,6 +27,9 @@
           v-if="showCloudproviderSelect"
           v-decorator="decorators.schedPolicyHost"
           :params="policycloudproviderParams"
+          :disabledItems="disabledCloudproviders"
+          :label-format="cloudproviderLabel"
+          :resList.sync="allCloudproviders"
           :need-params="true"
           :filterable="true"
           :showSync="true"
@@ -65,9 +68,11 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import lodash from 'lodash'
 import { SERVER_TYPE, SCHED_POLICY_OPTIONS_MAP } from '@Compute/constants'
 import PolicySchedtag from './PolicySchedtag'
+import { arrayToObj, uuid } from '@/utils/utils'
 
 export default {
   name: 'SchedPolicy',
@@ -120,24 +125,20 @@ export default {
     provider: {
       type: String,
     },
+    policycloudproviderParams: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data () {
     return {
       schedPolicyComponent: '',
       lodash,
+      usableCloudproviderMaps: {},
+      allCloudproviders: [],
     }
   },
   computed: {
-    policycloudproviderParams () {
-      return {
-        limit: 0,
-        enabled: true,
-        'filter.0': 'status.equals("connected")',
-        'filter.1': 'health_status.equals("normal")',
-        project_domain: 'default',
-        provider: this.provider,
-      }
-    },
     schedPolicyOptionsMap () {
       const { default: _default, host, ...rest } = SCHED_POLICY_OPTIONS_MAP
       let ret = {}
@@ -180,12 +181,14 @@ export default {
     showCloudproviderSelect () { // 在公有云的情况下
       if (this.form && this.serverType === SERVER_TYPE.public) {
         const schedPolicyType = this.form.fc.getFieldsValue([this.decorators.schedPolicyType[0]])[this.decorators.schedPolicyType[0]]
-        console.log(schedPolicyType, 'schedPolicyType')
         if (schedPolicyType === 'host') { // 公有云 此时 host 表示 指定云订阅
           return true
         }
       }
       return false
+    },
+    disabledCloudproviders () {
+      return this.allCloudproviders.filter(val => !this.usableCloudproviderMaps[val.id]).map(val => val.id)
     },
   },
   watch: {
@@ -203,8 +206,47 @@ export default {
         }
       })
     },
+    policycloudproviderParams (val, oldV) {
+      if (!R.equals(val, oldV)) {
+        this.fetchUsagebleCloudprovider()
+      }
+    },
+  },
+  created () {
+    this.cloudproviderM = new this.$Manager('cloudproviders')
+    this.fetchUsagebleCloudprovider()
   },
   methods: {
+    cloudproviderLabel (item) {
+      let label = item.name
+      if (!this.usableCloudproviderMaps[item.id]) {
+        if (item.status !== 'connected') {
+          label += '(该云订阅的状态不是【已连接】)'
+        } else if (item.health_status !== 'normal') {
+          label += '(该云订阅的健康状态不是【正常】)'
+        } else if (item.enabled === false) {
+          label += '(该云订阅未启用)'
+        } else {
+          label += '(该云订阅在指定的区域下没有可用的IP子网)'
+        }
+      }
+      return label
+    },
+    async fetchUsagebleCloudprovider () {
+      try {
+        const usageParmas = {
+          enabled: true,
+          'filter.0': 'status.equals("connected")',
+          'filter.1': 'health_status.equals("normal")',
+          usable: true,
+          $t: uuid(),
+        }
+        const { data: { data = [] } } = await this.cloudproviderM.list({ params: { ...this.policycloudproviderParams, ...usageParmas } })
+        this.usableCloudproviderMaps = arrayToObj(data)
+      } catch (error) {
+        throw error
+      }
+    },
     change (e) {
       const schedPolicyType = lodash.isString(e) ? e : e.target.value
       switch (schedPolicyType) {
