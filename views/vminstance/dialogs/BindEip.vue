@@ -95,7 +95,7 @@ export default {
       return {
         usable_eip_for_associate_type: 'server',
         usable_eip_for_associate_id: this.params.data[0]['id'],
-        project: this.params.data[0]['tenant_id'],
+        scope: this.$store.getters.scope,
       }
     },
   },
