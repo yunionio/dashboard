@@ -227,6 +227,9 @@ export default {
         order: 'desc',
         zone: this.params.data[0].zone_id,
       }
+      if (this.hypervisor === HYPERVISORS_MAP.esxi.key) {
+        params.image_type = 'system'
+      }
       return params
     },
     isFreezeImg () {

@@ -286,7 +286,6 @@ export default {
     },
     cloudproviderParamsExtra () {
       const params = {
-        image_type: 'system',
         ...this.scopeParams,
       }
       if (this.form.fd.hypervisor && this.form.fd.hypervisor) {
