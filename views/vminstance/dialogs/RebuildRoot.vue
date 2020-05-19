@@ -29,7 +29,8 @@
             :imageCloudproviderDisabled="true"
             :cloudproviderParamsExtra="cloudproviderParamsExtra"
             @updateImageMsg="updateImageMsgDebounce"
-            :imageTypeMap="imageTypeMap" />
+            :imageTypeMap="imageTypeMap"
+            :edit="true" />
         </a-form-item>
         <a-form-item v-bind="formItemLayout" v-show="imgHidden" label="操作系统">
           <div>{{ imgHidden.text }}</div>

@@ -21,7 +21,8 @@
       :cloudaccountId="cloudaccountId"
       :imageCloudproviderDisabled="imageCloudproviderDisabled"
       :sys-disk-size="sysDiskSize"
-      :form="form" />
+      :form="form"
+      :edit="edit" />
   </div>
 </template>
 
@@ -91,6 +92,10 @@ export default {
     imageTypeMap: {
       type: Object,
       default: () => ({}),
+    },
+    edit: {
+      type: Boolean,
+      default: false,
     },
   },
   data () {
