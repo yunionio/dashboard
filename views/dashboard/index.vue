@@ -88,7 +88,6 @@ export default {
     if (!matched) {
       selected = this.allOptions[0]
     }
-    console.log('selected', selected)
     this.handleCurrentOptionSelect(selected)
   },
   methods: {
