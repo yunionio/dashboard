@@ -122,7 +122,7 @@ export default {
           meta: {
             label: '弹性公网IP',
             permission: 'eips_list',
-            hidden: () => !hasHypervisorsByEnv(['public', 'private']),
+            hidden: () => !hasHypervisorsByEnv(['idc', 'public', 'private']),
           },
           component: Layout,
           children: [
