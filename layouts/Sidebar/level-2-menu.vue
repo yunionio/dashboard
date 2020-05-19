@@ -14,6 +14,7 @@
           <div class="level-3-group-title">{{ getLabel(citem.meta) }}</div>
           <router-link
             v-for="(sitem, sidx) of citem.submenus"
+            v-show="visibleSubmenu(sitem)"
             :key="sidx"
             class="menu-item"
             :to="sitem.path"
@@ -37,6 +38,8 @@
 </template>
 
 <script>
+import * as R from 'ramda'
+
 export default {
   name: 'Level2Menu',
   props: {
@@ -96,6 +99,12 @@ export default {
     },
     setRecentMenus (item) {
       this.$store.dispatch('common/setRecentMenus', item)
+    },
+    visibleSubmenu (item) {
+      if (item.meta && R.is(Function, item.meta.invisible)) {
+        return !item.meta.invisible(this.$store.getters.userInfo)
+      }
+      return true
     },
   },
 }
