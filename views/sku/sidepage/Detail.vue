@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import { sizestr } from '@/utils/utils'
 import { getEnabledTableColumn } from '@/utils/common/tableColumn'
 
 export default {
@@ -34,7 +35,7 @@ export default {
           field: 'memory_size_mb',
           title: '内存容量',
           formatter: ({ cellValue }) => {
-            return this.PUBLIC_SCOPE_ZH[cellValue]
+            return sizestr(cellValue, 'M', 1024) + 'B'
           },
         },
         {
