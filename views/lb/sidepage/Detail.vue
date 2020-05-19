@@ -2,16 +2,19 @@
   <detail
     :on-manager="onManager"
     :data="data"
+    statusModule="lb"
     :base-info="baseInfo"
     :extra-info="extraInfo" />
 </template>
 
 <script>
 import { LB_SPEC, CHARGE_TYPE } from '@Network/views/lb/constants'
-import { getStatusTableColumn, getBrandTableColumn } from '@/utils/common/tableColumn'
+import { getBrandTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
+import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'LbDetail',
+  mixins: [WindowsMixin],
   props: {
     data: {
       type: Object,
@@ -25,7 +28,6 @@ export default {
   data () {
     return {
       baseInfo: [
-        getStatusTableColumn({ statusModule: 'lb' }),
         {
           field: 'loadbalance_type',
           title: '类型',
@@ -42,6 +44,7 @@ export default {
             return row.loadbalancer_spec || '-'
           },
         },
+        getBrandTableColumn(),
         {
           field: 'charge_type',
           title: '计费方式',
@@ -50,11 +53,18 @@ export default {
             return '-'
           },
         },
-        getBrandTableColumn(),
+        {
+          field: 'region',
+          title: '区域',
+        },
+        {
+          field: 'account',
+          title: '云账号',
+        },
       ],
       extraInfo: [
         {
-          title: '其他信息',
+          title: '配置信息',
           items: [
             {
               field: 'address',
@@ -79,18 +89,17 @@ export default {
                 },
               },
             },
-            {
+            getCopyWithContentTableColumn({
               field: 'vpc',
               title: 'VPC',
-            },
-            {
-              field: 'account',
-              title: '云账号',
-            },
-            {
-              field: 'region',
-              title: '区域',
-            },
+              hideField: true,
+              slotCallback: row => {
+                if (!row.vpc) return '-'
+                return [
+                  <side-page-trigger permission='vpcs_get' name='VpcSidePage' id={row.vpc_id} vm={this}>{ row.vpc }</side-page-trigger>,
+                ]
+              },
+            }),
           ],
         },
       ],

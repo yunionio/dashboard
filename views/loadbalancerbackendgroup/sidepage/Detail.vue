@@ -8,9 +8,11 @@
 
 <script>
 import { getCopyWithContentTableColumn, getBrandTableColumn } from '@/utils/common/tableColumn'
+import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'LoadbalancerbackendgroupDetail',
+  mixins: [WindowsMixin],
   props: {
     data: {
       type: Object,
