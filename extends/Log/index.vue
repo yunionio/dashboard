@@ -49,7 +49,7 @@ import { load } from '@Dashboard/utils/cache'
 import { getRequestT } from '@/utils/utils'
 
 export const options = {
-  label: '审计日志',
+  label: '操作日志',
   desc: '显示最近的系统操作日志',
   thumb: require('./assets/thumb.svg'),
   h: 5,
@@ -71,7 +71,7 @@ export default {
     edit: Boolean,
   },
   data () {
-    const initialNameValue = (this.params && this.params.name) || '审计日志'
+    const initialNameValue = (this.params && this.params.name) || '操作日志'
     const initialLimitValue = (this.params && this.params.limit) || 4
     return {
       data: [],
