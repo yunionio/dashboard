@@ -1,5 +1,6 @@
 <template>
   <detail
+    resource="networkinterfaces"
     :on-manager="onManager"
     :data="data"
     :base-info="baseInfo"
@@ -46,7 +47,7 @@ export default {
         },
         {
           field: 'network',
-          title: '子网IP(VPC)',
+          title: 'IP子网(VPC)',
         },
         {
           field: 'networkinterface_id',

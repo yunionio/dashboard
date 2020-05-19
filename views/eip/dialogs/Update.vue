@@ -42,7 +42,7 @@ export default {
         bandwidth: [
           'bandwidth',
           {
-            initialValue: 30,
+            initialValue: this.params.data[0].bandwidth || 30,
           },
         ],
       },

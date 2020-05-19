@@ -14,7 +14,7 @@
             :remote-fn="q => ({ filter: `name.contains(${q})` })"
             :select-props="{ placeholder: '请选择IP子网' }" />
         </a-form-item>
-        <a-form-item label="IP地址" v-bind="formItemLayout">
+        <a-form-item label="IP地址" v-bind="formItemLayout" required>
           <ip-address
             :decorators="decorators" />
         </a-form-item>

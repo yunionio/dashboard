@@ -33,7 +33,7 @@ export default {
         const params = {
           ips,
         }
-        await manager.rpc({ methodname: 'DoBatchReleaseReservedIPs', params })
+        await manager.rpc({ methodname: 'DoBatchReleaseReservedIps', params })
         this.cancelDialog()
         this.params.refresh()
         this.$message.success('操作成功')

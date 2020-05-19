@@ -25,6 +25,16 @@ export default {
       getProjectDomainTableColumn(),
       getBrandTableColumn(),
       getCopyWithContentTableColumn({
+        field: 'account',
+        title: '云账号',
+        minWidth: 110,
+      }),
+      getCopyWithContentTableColumn({
+        field: 'cloudregion',
+        title: '区域',
+        minWidth: 120,
+      }),
+      getCopyWithContentTableColumn({
         field: 'associate_type',
         title: '绑定设备类型(VPC)',
         minWidth: 160,
