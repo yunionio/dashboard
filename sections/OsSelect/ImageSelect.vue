@@ -97,6 +97,10 @@ export default {
     sysDiskSize: {
       type: Number,
     },
+    edit: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
@@ -542,7 +546,7 @@ export default {
           this.form.fc.setFieldsValue({ image: { ...initData } })
         } else {
           let image = { key: imageOpts[0].id, label: imageOpts[0].name }
-          if (!osValue && this.storageImage) { // 采用上次选择的镜像（storage）
+          if (!this.edit && !osValue && this.storageImage) { // 采用上次选择的镜像（storage）
             const { os: storageOs, image: storageImage } = this.storageImage
             const tempImageOpts = imageOptsMap[storageOs] || []
             const storageImageObj = tempImageOpts.find(val => val.id === storageImage)
