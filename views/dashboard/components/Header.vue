@@ -1,16 +1,19 @@
 <template>
   <div class="wrap d-flex align-items-center">
-    <draggable v-model="options" tag="ul" class="d-flex flex-fill flex-wrap list-unstyled m-0">
+    <draggable v-model="options" tag="ul" class="d-flex flex-fill flex-wrap list-unstyled m-0" handle=".handle">
       <li
         class="item"
         v-for="item in options"
         :key="item.id"
         :class="{ active: current.id === item.id }"
-        @click.stop.prevent="$emit('select', item)">{{ item.name }}</li>
+        @click.stop.prevent="$emit('select', item)">
+        <icon type="move" class="handle" />
+        <span>{{ item.name }}</span>
+      </li>
     </draggable>
-    <a-button @click="handleRefresh" type="link" icon="sync" />
+    <a-button @click="handleRefresh" type="link" icon="sync" class="action-btn" />
     <a-dropdown :trigger="['click']" slot="tabBarExtraContent" placement="bottomRight">
-      <a class="ant-dropdown-link font-weight-bold pl-2 pr-2 h-100 d-block" @click="e => e.preventDefault()">
+      <a class="ant-dropdown-link font-weight-bold pl-2 pr-2 h-100 d-block action-btn" @click="e => e.preventDefault()">
         <icon type="more" style="font-size: 18px;" />
       </a>
       <a-menu slot="overlay" @click="handleActionClick">
@@ -243,7 +246,8 @@ export default {
 .item {
   padding: 12px 16px;
   margin: 0 32px 0 0;
-  cursor: move;
+  cursor: pointer;
+  position: relative;
   &:last-child {
     margin-right: 0;
   }
@@ -253,6 +257,23 @@ export default {
   }
   &:hover {
     color: #1890ff;
+    .handle {
+      visibility: visible;
+    }
+  }
+  .handle {
+    cursor: move;
+    visibility: hidden;
+    position: absolute;
+    left: 0;
+    top: 4px;
+    color: rgba(0, 0, 0, 0.65);
+  }
+}
+.action-btn {
+  color: rgba(0, 0, 0, 0.65);
+  &:hover {
+    color: #40a9ff;
   }
 }
 </style>
