@@ -69,17 +69,12 @@ export default {
               label: '解绑',
               permission: 'eips_perform_dissociate',
               action: () => {
-                this.onManager('performAction', {
-                  steadyStatus: 'ready',
-                  id: obj.id,
-                  managerArgs: {
-                    action: 'dissociate',
-                  },
+                this.createDialog('EipUntieServerDialog', {
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                  refresh: this.refresh,
                 })
-                // this.list.singlePerformAction('dissociate', {
-                //   id: obj.id,
-                //   steadyStatus: 'ready',
-                // })
               },
               meta: () => {
                 if (obj.associate_id) {
