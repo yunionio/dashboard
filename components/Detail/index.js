@@ -48,7 +48,7 @@ const getDefaultLastBaseInfo = (vm, h, { data, onManager, resource }) => {
           if (p) {
             node = (
               <list-body-cell-wrap copy row={ data } onManager={ onManager } field='zone' title={ row['zone'] } hideField={ true }>
-                <side-page-trigger permission='zones_get' name='ZoneSidePage' id={row.zone_id} vm={vm}>{ row.region }</side-page-trigger>
+                <side-page-trigger permission='zones_get' name='ZoneSidePage' id={row.zone_id} vm={vm}>{ row.zone }</side-page-trigger>
               </list-body-cell-wrap>
             )
           } else {
