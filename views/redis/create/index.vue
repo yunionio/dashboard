@@ -4,17 +4,21 @@
     <a-divider orientation="left">基础配置</a-divider>
     <a-form
       class="mt-3"
+      v-bind="formItemLayout"
       :form="form.fc">
-      <a-form-item label="指定项目" class="mb-0" v-bind="formItemLayout">
+      <a-form-item label="指定项目" class="mb-0">
         <domain-project :decorators="decorators.projectDomain" :fc="form.fc" :labelInValue="false" />
       </a-form-item>
-      <a-form-item label="名称" v-bind="formItemLayout">
+      <a-form-item label="名称">
         <a-input v-decorator="decorators.generate_name" :placeholder="$t('validator.serverName')" />
         <name-repeated v-slot:extra res="elasticcaches" :name="form.getFieldValue('generate_name')" />
       </a-form-item>
       <!-- 计费方式 -->
       <clearing-radios v-bind="formItemLayout" />
-      <a-form-item label="数量" v-bind="formItemLayout">
+      <a-form-item label="到期释放" v-if="form.fd.billing_type !== 'prepaid'">
+        <duration :decorators="decorators.duration" :form="form" />
+      </a-form-item>
+      <a-form-item label="数量">
         <a-input-number v-decorator="decorators.count" :min="1" :max="10" />
       </a-form-item>
       <!-- 区域 -->
@@ -25,7 +29,7 @@
        :values="form.fc.getFieldsValue()" />
       <!-- 套餐 -->
       <s-k-u ref="REF_SKU" />
-      <a-form-item label="管理员密码" v-bind="formItemLayout">
+      <a-form-item label="管理员密码">
         <server-password :loginTypes="loginTypes" :decorator="decorators.loginConfig" :form="form" />
       </a-form-item>
       <!-- 网络 -->
@@ -38,6 +42,7 @@
 import { CreateServerForm } from '@Compute/constants'
 import { DECORATORS } from '@DB/views/redis/constants'
 import ServerPassword from '@Compute/sections/ServerPassword'
+import Duration from '@Compute/sections/Duration'
 import ItemArea from '@DB/sections/ItemArea'
 import ItemNetwork from '@DB/sections/ItemNetwork'
 import SKU from './components/SKU'
@@ -49,6 +54,7 @@ import NameRepeated from '@/sections/NameRepeated'
 export default {
   name: 'IDCCreate',
   components: {
+    Duration,
     // 区域
     ItemArea,
     // SKU

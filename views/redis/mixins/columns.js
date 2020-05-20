@@ -1,7 +1,7 @@
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { ENGINE_ARCH } from '../constants/index.js'
 import { sizestr } from '@/utils/utils'
-import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getNameDescriptionTableColumn, getBrandTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
+import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getNameDescriptionTableColumn, getBrandTableColumn, getTagTableColumn, getBillingTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   created () {
@@ -121,30 +121,7 @@ export default {
           },
         },
       },
-      {
-        field: 'billing_type',
-        title: '计费方式',
-        width: 100,
-        slots: {
-          default: ({ row }) => {
-            const ret = []
-            if (row.billing_type === 'postpaid') {
-              ret.push(<div style={{ color: '#0A1F44' }}>按量付费</div>)
-            } else if (row.billing_type === 'prepaid') {
-              ret.push(<div style={{ color: '#0A1F44' }}>包年包月</div>)
-            }
-            if (row.expired_at) {
-              let dateArr = this.$moment(row.expired_at).fromNow().split(' ')
-              let date = dateArr.join('')
-              let seconds = this.$moment(row.expired_at).diff(new Date()) / 1000
-              let textColor = seconds / 24 / 60 / 60 < 7 ? '#DD2727' : '#53627C'
-              let text = seconds < 0 ? '已过期' : `${date.substring(0, date.length - 1)}后到期`
-              ret.push(<div style={{ color: textColor }}>{text}</div>)
-            }
-            return ret
-          },
-        },
-      },
+      getBillingTableColumn({ vm: this }),
       getStatusTableColumn({ statusModule: 'redis' }),
       getProjectTableColumn(),
       getBrandTableColumn(),

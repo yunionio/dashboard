@@ -94,6 +94,20 @@ export const SPECS_PARAMS = ['billing_type', 'engine', 'engine_version', 'local_
 export const SKU_PARAMS = ['memory_size_mb', ...CAPABILIT_PARAMS, ...SPECS_PARAMS]
 
 export const DECORATORS = {
+  duration: {
+    durationStandard: [
+      'durationStandard',
+      {
+        initialValue: 'none',
+      },
+    ],
+    duration: [
+      'duration',
+      {
+        initialValue: '1h',
+      },
+    ],
+  },
   projectDomain: {
     project: [
       'project',
