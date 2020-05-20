@@ -119,6 +119,7 @@ export default {
       groupActions: [
         {
           label: '新建',
+          permission: 'server_create',
           action: () => {
             this.$router.push({
               path: '/vminstance/create',
