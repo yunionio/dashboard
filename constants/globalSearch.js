@@ -238,7 +238,7 @@ export const getSearchMaps = (searchRes = {}) => {
           filter: `name.contains(${getFilter('name')})`,
         },
         ip: {
-          ip: getFilter('ip', ''),
+          ip_match: searchRes.ip ? searchRes.ip[0] : '',
         },
       },
       resData: {},

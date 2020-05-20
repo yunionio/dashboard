@@ -24,7 +24,7 @@
       </div>
       <div class="d-flex mt-3">
         <div class="label">{{$t('common.text00092')}}: </div>
-        <div class="ml-3">
+        <div class="ml-3" style="width: calc(100% - 80px)">
           <pre>{{ request }}</pre>
         </div>
       </div>
