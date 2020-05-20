@@ -1654,6 +1654,20 @@
     "traffic": "按流量计费",
     "bandwidth": "按带宽计费"
   },
+  "networkServerType": {
+    "baremetal": "物理机",
+    "container": "容器",
+    "guest": "虚拟机",
+    "pxe": "PXE",
+    "ipmi": "IPMI",
+    "eip": "弹性公网IP"
+  },
+  "passwordInputTypes": {
+    "random": "随机生成",
+    "keypair": "关联密钥",
+    "image": "保留镜像设置",
+    "password": "手工输入"
+  },
   "common.batchAction": "批量操作",
   "common.action": "操作",
   "common.ok": "确定",

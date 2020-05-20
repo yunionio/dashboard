@@ -31,7 +31,7 @@ registerLocales(scopeLocales)
 const i18n = new VueI18n({
   locale: window.localStorage.getItem('language') || 'zh-CN',
   messages,
-  silentTranslationWarn: true,
+  // silentTranslationWarn: true,
 })
 
 export default i18n
