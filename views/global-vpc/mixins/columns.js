@@ -19,6 +19,11 @@ export default {
         },
       }),
       getStatusTableColumn({ statusModule: 'globalVpc' }),
+      {
+        field: 'vpc_count',
+        title: 'VPC数量',
+        width: 100,
+      },
       getPublicScopeTableColumn({ vm: this }),
       getProjectDomainTableColumn(),
     ]
