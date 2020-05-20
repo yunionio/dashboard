@@ -219,7 +219,6 @@ export default {
     },
     cloudproviderParamsExtra () {
       const params = {
-        image_type: 'system',
         cloud_env: 'private',
         ...this.scopeParams,
       }
