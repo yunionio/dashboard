@@ -75,6 +75,7 @@ export default {
       groupActions: [
         {
           label: '新建',
+          permission: 'instancegroups_create',
           action: () => {
             this.createDialog('InstanceGroupCreateDialog', {
               onManager: this.onManager,
