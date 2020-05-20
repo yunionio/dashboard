@@ -15,7 +15,7 @@
             v-decorator="decorators.disks"
             resource="disks"
             :mapper="mapperDisks"
-            :params="{ limit: 20, }"
+            :params="diskParams"
             :init-loaded.sync="disksInitLoaded"
             :select-props="{ allowClear: true, placeholder: '请选择磁盘', mode: 'tags' }" />
         </a-form-item>
@@ -75,6 +75,9 @@ export default {
     },
     message () {
       return '多个时间点的快照策略暂不支持绑定，只支持解绑操作'
+    },
+    diskParams () {
+      return { limit: 20, tenant: this.params.data[0].tenant }
     },
   },
   watch: {
