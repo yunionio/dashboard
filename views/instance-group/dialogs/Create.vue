@@ -4,6 +4,9 @@
     <div slot="body">
       <a-form
         :form="form.fc">
+        <a-form-item :label="`指定${$t('dictionary.project')}`" class="mb-0" v-bind="formItemLayout">
+          <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
+        </a-form-item>
         <a-form-item label="名称" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
         </a-form-item>
@@ -26,11 +29,18 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import { isRequired } from '@/utils/validate'
+import i18n from '@/locales'
+import DomainProject from '@/sections/DomainProject'
 
 export default {
   name: 'InstanceGroupCreateDialog',
+  components: {
+    DomainProject,
+  },
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
@@ -48,6 +58,22 @@ export default {
         },
       },
       decorators: {
+        domain: [
+          'domain',
+          {
+            rules: [
+              { validator: isRequired(), message: i18n.t('rules.domain'), trigger: 'change' },
+            ],
+          },
+        ],
+        project: [
+          'project',
+          {
+            rules: [
+              { validator: isRequired(), message: i18n.t('rules.project'), trigger: 'change' },
+            ],
+          },
+        ],
         name: [
           'name',
           {
@@ -87,6 +113,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['userInfo']),
     forceDispersionExtra () {
       let s = '组内主机严格根据粒度要求分布在不同宿主机，当没有更多宿主机时，则创建失败'
       if (!this.form.fd.force_dispersion) {
@@ -111,9 +138,14 @@ export default {
       this.loading = true
       try {
         const values = await this.validateForm()
+        const { project, domain, ...rest } = values
         await this.params.onManager('create', {
           managerArgs: {
-            data: values,
+            data: {
+              ...rest,
+              project_domain: (domain && domain.key) || this.userInfo.projectDomainId,
+              project_id: (project && project.key) || this.userInfo.projectId,
+            },
           },
         })
         this.loading = false
