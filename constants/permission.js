@@ -19,6 +19,7 @@ export const PERMISSION = {
   'snapshots_list': ['compute', 'snapshots', 'list'],
   // 自动快照策略
   'snapshotpolicy_list': ['compute', 'snapshotpolicies', 'list'],
+  'snapshotpolicy_create': ['compute', 'snapshotpolicies', 'create'],
   // 主机快照
   'instance_snapshots_list': ['compute', 'instance_snapshots', 'list'],
   // 安全组
