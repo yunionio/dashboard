@@ -28,6 +28,8 @@ export default {
         title: '地址',
         width: 140,
       },
+      getStatusTableColumn({ statusModule: 'eip' }),
+      getAssociateNameTableColumn(),
       {
         field: 'bandwidth',
         title: '带宽',
@@ -37,12 +39,6 @@ export default {
           return sizestr(cellValue, 'M', 1024)
         },
       },
-      getCopyWithContentTableColumn({
-        field: 'account',
-        title: '云账号',
-      }),
-      getRegionTableColumn(),
-      getBrandTableColumn(),
       {
         field: 'charge_type',
         title: '计费方式',
@@ -57,9 +53,13 @@ export default {
           return cellValue
         },
       },
-      getStatusTableColumn({ statusModule: 'eip' }),
-      getAssociateNameTableColumn(),
+      getBrandTableColumn(),
+      getCopyWithContentTableColumn({
+        field: 'account',
+        title: '云账号',
+      }),
       getProjectTableColumn(),
+      getRegionTableColumn(),
     ]
   },
 }
