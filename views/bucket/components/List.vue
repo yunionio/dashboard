@@ -71,6 +71,7 @@ export default {
       groupActions: [
         {
           label: '新建',
+          permission: 'buckets_create',
           action: () => {
             this.createDialog('BucketCreateDialog', {
               title: '新建',
