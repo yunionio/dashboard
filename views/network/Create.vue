@@ -497,6 +497,7 @@ export default {
       new this.$Manager('cloudregions')
         .getSpecific({ id: regionId, spec: 'zones', params: this.params.zone })
         .then(({ data: { data = [] } }) => {
+          this.form.fc.resetFields(['zone'])
           this.zoneList = data
         })
     },
