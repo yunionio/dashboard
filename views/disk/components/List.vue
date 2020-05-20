@@ -108,6 +108,7 @@ export default {
       groupActions: [
         {
           label: '新建',
+          permission: 'disks_create',
           actions: () => {
             return [
               {
