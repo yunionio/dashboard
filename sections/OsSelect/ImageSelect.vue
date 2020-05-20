@@ -575,7 +575,7 @@ export default {
       if (images && images.length > 0) {
         images = images.filter((item) => {
           const minRam = (item.info && item.info.min_ram) || item.min_ram
-          if (minRam > 0) {
+          if (minRam > 0 && R.is(Number, this.form.fd.vmem)) {
             return minRam <= this.form.fd.vmem
           }
           return true
