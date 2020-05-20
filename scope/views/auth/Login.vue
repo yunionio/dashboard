@@ -90,6 +90,7 @@ export default {
     const captchaValidator = (rule, value, callback) => {
       const msg = '验证码错误'
       if (value.length !== 4) {
+        this.loading = false
         callback(msg)
         return
       }
@@ -97,9 +98,11 @@ export default {
         if (res.data.vali) {
           callback()
         } else {
+          this.loading = false
           callback(msg)
         }
       }).catch(() => {
+        this.loading = false
         this.fetchCaptcha()
         callback(msg)
       })
