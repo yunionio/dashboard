@@ -81,7 +81,8 @@ export default {
       if (!jsonStr || jsonStr === '') return false
       const json = JSON.parse(jsonStr)
       for (let key in json) {
-        this.fc.getFieldDecorator(key, {
+        const k = ['project_id', 'private_key_id', 'private_key', 'client_email'].indexOf(key) > -1 ? `gcp_${key}` : key
+        this.fc.getFieldDecorator(k, {
           preserve: true,
           initialValue: json[key],
         })
