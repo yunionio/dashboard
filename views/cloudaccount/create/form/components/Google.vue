@@ -19,7 +19,7 @@
           <a-input v-decorator="decorators.private_key_id" placeholder="请输入private_key_id" />
         </a-form-item>
         <a-form-item label="private_key">
-          <a-textarea :autosize="{ minRows: 3, maxRows: 7 }" v-decorator="decorators.private_key" placeholder="请输入private_key" />
+          <a-textarea style="overflow-y:auto" :autosize="{ minRows: 3, maxRows: 35 }" v-decorator="decorators.private_key" placeholder="请输入private_key" />
         </a-form-item>
         <a-form-item label="client_email">
           <a-input v-decorator="decorators.client_email" placeholder="请输入client_email" />
