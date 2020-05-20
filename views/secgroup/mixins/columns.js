@@ -23,6 +23,11 @@ export default {
         title: '关联虚拟机',
         width: 80,
       },
+      {
+        field: 'cache_cnt',
+        title: '缓存数量',
+        width: 80,
+      },
       getPublicScopeTableColumn({ vm: this }),
       {
         field: 'rules',
