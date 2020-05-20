@@ -153,7 +153,7 @@ export default {
               validate = false
               tooltip = '华为云基础版不支持此操作'
             }
-            if (row.status !== 'running') {
+            if (row.status !== 'running' && row.status !== 'success') {
               validate = false
               tooltip = '仅正常状态下的备份支持此操作'
             }
