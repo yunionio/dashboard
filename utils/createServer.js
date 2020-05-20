@@ -185,6 +185,7 @@ export const createVmDecorators = type => {
       gpuEnable: [
         'gpuEnable',
         {
+          valuePropName: 'checked',
           initialValue: false,
         },
       ],
