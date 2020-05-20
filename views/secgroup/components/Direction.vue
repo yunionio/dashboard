@@ -120,6 +120,7 @@ export default {
       singleActions: [
         {
           label: '编辑',
+          permission: 'secgrouprules_update',
           action: obj => {
             this.createDialog('EditRulesDialog', {
               data: [obj],
@@ -133,6 +134,7 @@ export default {
         },
         {
           label: '克隆',
+          permission: 'secgrouprules_create',
           action: obj => {
             this.createDialog('EditRulesDialog', {
               data: [obj],
@@ -147,6 +149,7 @@ export default {
         },
         {
           label: '删除',
+          permission: 'secgrouprules_delete',
           action: obj => {
             this.createDialog('DeleteResDialog', {
               vm: this,
@@ -162,6 +165,7 @@ export default {
       groupActions: [
         {
           label: '新建',
+          permission: 'secgrouprules_create',
           action: () => {
             this.createDialog('EditRulesDialog', {
               title: 'create',
@@ -178,6 +182,7 @@ export default {
         },
         {
           label: '删除',
+          permission: 'secgrouprules_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,

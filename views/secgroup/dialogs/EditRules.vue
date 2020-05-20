@@ -219,19 +219,18 @@ export default {
         })
         this.portsCheckboxDisabled = true
       } else {
-        this.portsCheckboxDisabled = false
-      }
-      if (e === 'any') {
-        this.portsChecked = true
-        this.$nextTick(() => {
-          this.form.fc.setFieldsValue({ 'ports': 'ALL' })
-        })
-        this.portsCheckboxDisabled = true
-        this.portsDisabled = true
-        this.typeDisabled = true
-      } else {
-        this.portsCheckboxDisabled = false
-        this.typeDisabled = false
+        if (e === 'any') {
+          this.portsChecked = true
+          this.$nextTick(() => {
+            this.form.fc.setFieldsValue({ 'ports': 'ALL' })
+          })
+          this.portsCheckboxDisabled = true
+          this.portsDisabled = true
+          this.typeDisabled = true
+        } else {
+          this.portsCheckboxDisabled = false
+          this.typeDisabled = false
+        }
       }
     },
     cidrChange (e) {
