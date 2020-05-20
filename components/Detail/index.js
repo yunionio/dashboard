@@ -8,7 +8,7 @@ import WindowsMixin from '@/mixins/windows'
 import { hasPermission } from '@/utils/auth'
 
 // 需要添加区域（cloudregion/cloudregion_id), 可用区（zone/zone_id)，云账号(account/account_id)，云订阅（manager/manager_id)的资源
-const appendOutherResources = ['servers', 'hosts', 'disks', 'storages', 'vpcs', 'wires', 'networks', 'snapshots', 'eips', 'dbinstances', 'elasticcaches', 'servertemplates', 'buckets']
+const appendOutherResources = ['servers', 'hosts', 'disks', 'storages', 'vpcs', 'wires', 'networks', 'snapshots', 'eips', 'dbinstances', 'elasticcaches', 'servertemplates', 'buckets', 'networkinterfaces']
 
 const getDefaultLastBaseInfo = (vm, h, { data, onManager, resource }) => {
   const outher = [
@@ -48,7 +48,7 @@ const getDefaultLastBaseInfo = (vm, h, { data, onManager, resource }) => {
           if (p) {
             node = (
               <list-body-cell-wrap copy row={ data } onManager={ onManager } field='zone' title={ row['zone'] } hideField={ true }>
-                <side-page-trigger permission='zones_get' name='ZoneSidePage' id={row.zone_id} vm={vm}>{ row.region }</side-page-trigger>
+                <side-page-trigger permission='zones_get' name='ZoneSidePage' id={row.zone_id} vm={vm}>{ row.zone }</side-page-trigger>
               </list-body-cell-wrap>
             )
           } else {
@@ -265,6 +265,11 @@ export default {
         for (let j = 0; j < defaultTopBaseInfo.length; j++) {
           if (this.baseInfo[i].field === defaultTopBaseInfo[j].field || this.baseInfo[i].title === defaultTopBaseInfo[j].title) {
             defaultTopBaseInfo.splice(j, 1)
+          }
+        }
+        for (let l = 0; l < defaultLastBaseInfo.length; l++) {
+          if (this.baseInfo[i].field === defaultLastBaseInfo[l].field || this.baseInfo[i].title === defaultLastBaseInfo[l].title) {
+            defaultLastBaseInfo.splice(l, 1)
           }
         }
       }
