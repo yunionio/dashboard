@@ -21,7 +21,7 @@
             <a-radio-button value="idc">本地IDC</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item label="云账号" v-bind="formItemLayout"  v-if="selectedPlatform !== 'idc'">
+        <a-form-item label="云账号" v-bind="formItemLayout"  v-if="selectedPlatform !== 'idc'" key="manager">
           <base-select
             :remote="true"
             v-decorator="decorators.manager"
@@ -33,10 +33,9 @@
             @update:item="providerChange"
             :select-props="{ placeholder: '平台、账号、子账号' }" />
         </a-form-item>
-        <a-form-item label="区域" v-bind="formItemLayout">
+        <a-form-item label="区域" v-bind="formItemLayout" key="region">
            <base-select
             :remote="true"
-            needParams
             v-decorator="decorators.region"
             resource="cloudregions"
             :params="regionParams"
@@ -53,11 +52,17 @@
               resource="networks"
               :params="networkParams"
               :remote-fn="q => ({ filter: `name.contains(${q})` })"
-              @update:item="regionChange"
               :select-props="{ placeholder: '请选择IP子网' }" />
           </a-form-item>
-          <a-form-item label="ip地址" v-bind="formItemLayout">
-            <a-input v-decorator="decorators.ip_addr" placeholder="请输入子网内ip" />
+          <a-form-item label="IP地址" v-bind="formItemLayout">
+            <a-radio-group v-model="inputIpType">
+              <template  v-for="(v, k) in this.$t('passwordInputTypes')">
+                <a-radio-button v-if="['random', 'password'].indexOf(k) > -1" :value="k" :key="k">
+                  {{v}}
+                </a-radio-button>
+               </template>
+            </a-radio-group>
+            <a-input v-if="inputIpType === 'password'" v-decorator="decorators.ip_addr" placeholder="请输入子网内IP" />
           </a-form-item>
         </template>
         <template v-if="showBandwidth && selectedPlatform === 'public_cloud'">
@@ -105,6 +110,7 @@ export default {
   data () {
     return {
       loading: false,
+      inputIpType: 'random',
       form: {
         fc: this.$form.createForm(this),
       },
@@ -165,6 +171,13 @@ export default {
         ],
         ip_addr: [
           'ip_addr',
+          {
+            validateFirst: true,
+            rules: [
+              { required: true, message: '请输入IP地址' },
+              { validator: this.$validate('IPv4') },
+            ],
+          },
         ],
         bandwidth: [
           'bandwidth',
@@ -227,10 +240,11 @@ export default {
         }
       }
       if (this.selectedPlatform === 'idc') {
-        return {
+        params = {
           cloud_env: 'onpremise',
           usable: true,
           show_emulated: true,
+          scope: this.$store.getters.scope,
         }
       }
       if (this.isAdminMode) {
@@ -320,8 +334,9 @@ export default {
         ...this.updateProviderParams,
         [platform]: true,
       }
-      this.selectedPlatform = e.target.value
+      this.selectedPlatform = platform
       this.form.fc.resetFields(['manager', 'region'])
+      this.manager = ''
       this.providerC = ''
     },
     providerMapper (data) {

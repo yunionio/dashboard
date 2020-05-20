@@ -64,24 +64,9 @@ export default {
       {
         field: 'server_type',
         title: '类型',
-        width: 60,
+        width: 100,
         formatter: ({ cellValue }) => {
-          if (cellValue === 'baremetal') {
-            return '物理机'
-          }
-          if (cellValue === 'container') {
-            return '容器'
-          }
-          if (cellValue === 'guest') {
-            return '虚拟机'
-          }
-          if (cellValue === 'pxe') {
-            return 'PXE'
-          }
-          if (cellValue === 'ipmi') {
-            return 'IPMI'
-          }
-          return '未知'
+          return this.$t('networkServerType')[cellValue] || '未知'
         },
       },
       getStatusTableColumn({ statusModule: 'network' }),
