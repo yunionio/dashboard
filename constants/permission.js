@@ -533,6 +533,7 @@ export const PERMISSION = {
    * 主机组
    */
   'instancegroups_list': ['compute', 'instancegroups', 'list'],
+  'instancegroups_create': ['compute', 'instancegroups', 'create'],
   /**
    * 数据库-RDS
    */
