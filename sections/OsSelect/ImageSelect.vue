@@ -36,6 +36,7 @@
 
 <script>
 import * as R from 'ramda'
+import _ from 'lodash'
 import { SELECT_IMAGE_KEY_SUFFIX } from '@Compute/constants'
 import ImageSelectTemplate from './ImageSelectTemplate'
 import { Manager } from '@/utils/manager'
@@ -116,7 +117,7 @@ export default {
       },
       loading: false,
       imageOpts: [],
-      cloudprovider: '',
+      cloudprovider: _.get(this.decorator, 'prefer_manager[1].initialValue') || '',
     }
   },
   computed: {
@@ -295,6 +296,7 @@ export default {
       }
     },
     async fetchImages () {
+      if (this.isPublicImage || this.isPrivateImage || this.isVMware) return // 阻止不必要的请求
       let params = {
         limit: 0,
         details: true,
@@ -372,12 +374,12 @@ export default {
     },
     async fetchCacheimages () {
       if (!this.isVMware && (R.isNil(this.cacheImageParams) || R.isEmpty(this.cacheImageParams))) return
+      if (!this.isPublicImage && !this.isPrivateImage && !this.isVMware) return // 阻止不必要的请求，仅这三种情况需要渲染的是cacheimage，而且现在没有[需要标出哪些已缓存]的功能了
       this.images.cacheimagesList = []
       const params = {
         details: false,
         order_by: 'ref_count',
         order: 'desc',
-        image_type: 'customized',
         $t: uuid(),
         ...this.cacheImageParams,
       }
@@ -388,10 +390,13 @@ export default {
           return
         }
       }
-      if (
-        this.imageType === IMAGES_TYPE_MAP.public.key ||
-        this.imageType === IMAGES_TYPE_MAP.private.key
-      ) {
+      if (this.imageType === IMAGES_TYPE_MAP.public.key) {
+        params.image_type = 'system'
+      }
+      if (this.imageType === IMAGES_TYPE_MAP.public_customize.key) {
+        params.image_type = 'customized'
+      }
+      if (this.isVMware) {
         params.image_type = 'system'
       }
       this.loading = true
