@@ -18,7 +18,7 @@ const scopeLocales = require.context('../..', true, /.\/scope\/locales\/.*(json)
 const registerLocales = (locales) => {
   const keys = locales.keys()
   for (let i = 0, len = keys.length; i < len; i++) {
-    const module = (keys[i].match(/\/(.+?)\//)[1]).toUpperCase()
+    const module = (keys[i].match(/\/(.+?)\//)[1]).toLowerCase()
     const locale = keys[i].match(/([^\\/]+)(?=\.\w+$)/)[0]
     const localeConfig = locales(keys[i])
     messages[locale][module] = localeConfig
