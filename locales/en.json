@@ -512,6 +512,12 @@
       "prohibited": "禁用",
       "exceeded": "警告",
       "success": "正常"
+    },
+    "suggestsysalert": {
+      "ready": "待处理",
+      "start_delete": "删除中",
+      "deleteing": "删除中",
+      "delete_fail": "删除失败"
     }
   },
   "skuCategoryOptions": {
