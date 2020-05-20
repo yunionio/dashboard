@@ -270,4 +270,8 @@ export default {
     success: ['deployed'],
     danger: ['delete_fail', 'deploy_fail', 'update_fail'],
   },
+  suggestsysalert: {
+    info: ['ready'],
+    danger: ['delete_fail'],
+  },
 }

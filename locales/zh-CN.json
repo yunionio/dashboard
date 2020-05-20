@@ -670,6 +670,12 @@
       "update_fail": "更新失败",
       "delete_fail": "删除失败",
       "init": "初始化"
+    },
+    "suggestsysalert": {
+      "ready": "待处理",
+      "start_delete": "删除中",
+      "deleteing": "删除中",
+      "delete_fail": "删除失败"
     }
   },
   "skuCategoryOptions": {
