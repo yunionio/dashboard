@@ -1,4 +1,5 @@
 import { i18nSetProperty } from '@/utils/utils'
+import i18n from '@/locales'
 
 export const WORKFLOW_TYPES = {
   APPLY_MACHINE: 'apply-machine',
@@ -12,7 +13,7 @@ export const WORKFLOW_TYPES = {
 
 export const PROCESS_TYPES_OPTS = [
   {
-    name: '主机申请',
+    name: i18n.t('common.text00033'),
     value: WORKFLOW_TYPES.APPLY_MACHINE,
   },
   {
@@ -25,15 +26,15 @@ export const PROCESS_TYPES_OPTS = [
     value: WORKFLOW_TYPES.APPLY_JOIN_PROJECT,
   },
   {
-    name: '主机调整配置',
+    name: i18n.t('common.text00034'),
     value: WORKFLOW_TYPES.APPLY_SERVER_CHANGECONFIG,
   },
   {
-    name: '主机删除',
+    name: i18n.t('common.text00035'),
     value: WORKFLOW_TYPES.APPLY_SERVER_DELETE,
   },
   {
-    name: '技术支持工单',
+    name: i18n.t('common.text00036'),
     value: WORKFLOW_TYPES.CUSTOMER_SERVICE,
   },
 ]
@@ -42,22 +43,22 @@ i18nSetProperty({
   obj: PROCESS_TYPES_OPTS[1],
   key: 'name',
   i18nKey: 'dictionary.project',
-  suffix: '配额申请',
+  suffix: i18n.t('common.text00037'),
 })
 
 i18nSetProperty({
   obj: PROCESS_TYPES_OPTS[3],
   key: 'name',
   i18nKey: 'dictionary.project',
-  suffix: '申请',
-  perfix: '加入',
+  suffix: i18n.t('common.text00038'),
+  perfix: i18n.t('common.text00039'),
 })
 
 i18nSetProperty({
   obj: PROCESS_TYPES_OPTS[2],
   key: 'name',
   i18nKey: 'dictionary.domain',
-  suffix: '配额申请',
+  suffix: i18n.t('common.text00037'),
 })
 
 export const getWorkflowType = function (pdk) {

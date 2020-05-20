@@ -8,7 +8,7 @@
       :managerInstance="tagManagerInstance"
       @change="handleTagFilterChange">
       <template v-slot:trigger>
-        <a-button class="flex-shrink-0" style="margin-right: -1px;"><icon type="res-tag" />标签</a-button>
+        <a-button class="flex-shrink-0" style="margin-right: -1px;"><icon type="res-tag" />{{$t('common.text00012')}}</a-button>
       </template>
     </tag-select>
     <div class="tag-wrap" v-if="tags && tags.length > 0">
@@ -81,7 +81,7 @@ export default {
       return {
         key,
         value,
-        title: key === 'without_user_meta' ? '无本地标签资源' : getTagTitle(key, value),
+        title: key === 'without_user_meta' ? this.$t('common.text00013') : getTagTitle(key, value),
         color: `rgb(${strRgb})`,
         backgroundColor: `rgba(${strRgb},.1)`,
       }

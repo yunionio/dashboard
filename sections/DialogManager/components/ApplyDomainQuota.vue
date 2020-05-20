@@ -3,7 +3,7 @@
     <div slot="header">{{ title }}</div>
     <div slot="body">
       <a-form :form="form.fc">
-        <a-form-item label="配额设置">
+        <a-form-item :label="$t('common.text00068')">
           <quota-set-to-workflow
             ref="quotaSetRef"
             sence="domain"
@@ -34,7 +34,7 @@ export default {
   mixins: [workflowMixin, DialogMixin, WindowsMixin],
   data () {
     return {
-      title: `申请${this.$t('dictionary.domain')}配额`,
+      title: `${this.$t('common.text00069')}${this.$t('dictionary.domain')}${this.$t('common.text00070')}`,
       loading: false,
       formItemLayout: {
         wrapperCol: {
@@ -64,7 +64,7 @@ export default {
         paramter: JSON.stringify(params),
       }
       await this.createWorkflow(variables)
-      this.$message.success(`申请${this.$t('dictionary.domain')}配额流程已提交`)
+      this.$message.success(`${this.$t('common.text00070')}${this.$t('dictionary.domain')}${this.$t('common.text00071')}`)
       if (this.params.success) {
         this.params.success()
       } else {
@@ -79,7 +79,7 @@ export default {
         const oldQuota = this.$refs['quotaSetRef'].quotaOptions
         const isChange = this.checkQuotaChangeHandle(oldQuota, quota)
         if (!isChange) {
-          this.$message.error('配额没有改变，请修改配额或者取消操作！')
+          this.$message.error('')
           return
         }
         if (this.isOpenWorkflow) {

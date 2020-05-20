@@ -3,16 +3,16 @@
     <a-row :gutter="8">
       <a-col :span="12">
         <a-form-item>
-          <a-select label-in-value v-decorator="decorator.cloudregion" placeholder="区域" @change="regionChange">
+          <a-select label-in-value v-decorator="decorator.cloudregion" :placeholder="$t('dictionary.region')" @change="regionChange">
             <a-select-option v-for="item in regionOpts" :key="item.id" :provider="item.provider">{{ item.name }}</a-select-option>
           </a-select>
         </a-form-item>
       </a-col>
       <a-col :span="12">
         <a-form-item>
-          <a-select label-in-value  v-decorator="decorator.vpc" allow-clear placeholder="云账号 / VPC（IP网段）" @change="vpcChange">
+          <a-select label-in-value  v-decorator="decorator.vpc" allow-clear :placeholder="$t('common.text00046')" @change="vpcChange">
             <a-select-option v-for="item in vpcOpts" :key="item.id">
-              {{ item.account ? `${ item.account }/` : '' }}{{ item.name === 'Default' ? 'Default(经典网络)' : item.name }}{{ item.cidr_block ? `（${item.cidr_block}）` : '' }}
+              {{ item.account ? `${ item.account }/` : '' }}{{ item.name === 'Default' ? `Default(${$t('common.text00046')})` : item.name }}{{ item.cidr_block ? `（${item.cidr_block}）` : '' }}
             </a-select-option>
           </a-select>
         </a-form-item>

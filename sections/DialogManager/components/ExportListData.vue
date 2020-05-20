@@ -3,7 +3,7 @@
     <div slot="header">{{ params.title }}</div>
     <div slot="body">
       <a-form :form="form.fc" hideRequiredMark>
-        <a-form-item label="导出范围">
+        <a-form-item :label="$t('common.text00097')">
           <a-radio-group v-decorator="decorators.type">
             <a-radio-button
               v-for="item of exportType"
@@ -11,11 +11,11 @@
               :value="item.key">{{ item.label }}</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item label="导出数据列">
+        <a-form-item :label="$t('common.text00098')">
           <a-checkbox
             :indeterminate="indeterminate"
             @change="handleCheckAllChange"
-            :checked="checkAll">全选</a-checkbox>
+            :checked="checkAll">{{$t('common.checkAll')}}</a-checkbox>
           <a-divider />
           <a-checkbox-group v-decorator="decorators.selected" @change="handleSelectedChange" class="w-100">
             <a-row>

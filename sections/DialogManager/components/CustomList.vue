@@ -4,11 +4,11 @@
     <div slot="body">
       <a-form :form="form.fc" hideRequiredMark>
         <a-form-item>
-          <a-divider orientation="left">属性</a-divider>
+          <a-divider orientation="left">{{$t('common.text00084')}}</a-divider>
           <a-checkbox
             :indeterminate="columnsIndeterminate"
             @change="handleColumnsCheckAllChange"
-            :checked="columnsCheckAll">全选</a-checkbox>
+            :checked="columnsCheckAll">{{$t('common.checkAll')}}</a-checkbox>
           <a-checkbox-group v-decorator="decorators.columnsSelected" @change="handleColumnsSelectedChange" class="w-100">
             <a-row>
               <a-col
@@ -24,7 +24,7 @@
         <!-- 标签 -->
         <template v-if="showTags">
           <a-form-item>
-            <a-divider orientation="left">资源标签键</a-divider>
+            <a-divider orientation="left">{{$t('common.text00086')}}</a-divider>
             <a-checkbox-group v-decorator="decorators.tagsSelected" class="w-100">
               <div class="tag-fields-wrap">
                 <a-row>
@@ -83,7 +83,7 @@ export default {
           {
             initialValue: initialColumnsSelected,
             rules: [
-              { required: true, message: '至少选择一列' },
+              { required: true, message: this.$t('common.text00087') },
             ],
           },
         ],

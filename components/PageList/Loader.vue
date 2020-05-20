@@ -4,13 +4,13 @@
       <div class="loading-image">
         <a-icon type="sync" spin />
       </div>
-      <div class="loading-description">加载中</div>
+      <div class="loading-description">{{this.$t('common.loding')}}</div>
     </div>
     <div v-else>
       <div class="empty-image">
         <img src="../../assets/images/empty.svg" />
       </div>
-      <div class="empty-description">暂无数据</div>
+      <div class="empty-description">{{this.$t('coomon.notData')}}</div>
     </div>
   </div>
 </template>

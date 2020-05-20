@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import i18n from '@/locales'
 import { formatSeconds } from '@/utils/utils'
 
 // 此组件以秒为传递单位，输入输出都为秒（Number）
@@ -20,14 +21,12 @@ export default {
     },
     durationOptions: {
       type: Array,
-      default: () => [
-        { label: '秒', key: 'seconds' },
-        { label: '分', key: 'minutes' },
-        { label: '小时', key: 'hours' },
-        { label: '天', key: 'days' },
-        { label: '月', key: 'months' },
-        { label: '年', key: 'years' },
-      ],
+      default: () => Object.keys(i18n.t('subDurations')).map(k => (
+        {
+          label: i18n.t('subDurations')[k],
+          key: k,
+        }
+      )),
     },
     min: {
       type: Number,

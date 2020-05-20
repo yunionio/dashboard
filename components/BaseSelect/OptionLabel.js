@@ -1,3 +1,5 @@
+import i18n from '@/locales'
+
 const resourceMode = {
   networks: {
     vnode: (vm, h) => {
@@ -5,7 +7,7 @@ const resourceMode = {
       return ( // IP子网
         <div class='d-flex'>
           <span class='text-truncate flex-fill mr-2' title={ text }>{ text }</span>
-          <span style="color: #8492a6; font-size: 13px">可用: { vm.data.ports - vm.data.ports_used }</span>
+          <span style="color: #8492a6; font-size: 13px">{i18n.t('common.text00001')}: { vm.data.ports - vm.data.ports_used }</span>
         </div>
       )
     },

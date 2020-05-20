@@ -4,7 +4,7 @@
     <div slot="body">
       <a-form :form="form.fc">
         <a-form-item
-          label="问题描述"
+          :label="this.$t('common.text00080')"
           v-bind="formItemLayout">
           <a-textarea :autoSize="{ minRows: 4, maxRows: 5 }" v-decorator="decorators.comment" />
         </a-form-item>
@@ -29,7 +29,7 @@ export default {
   mixins: [workflowMixin, DialogMixin, WindowsMixin],
   data () {
     return {
-      title: '申请技术支持',
+      title: this.$t('common.text00081'),
       loading: false,
       formItemLayout: {
         wrapperCol: {
@@ -43,7 +43,7 @@ export default {
         fc: this.$form.createForm(this),
       },
       decorators: {
-        comment: ['comment', { rules: [{ required: true, message: '必须填写问题描述' }] }],
+        comment: ['comment', { rules: [{ required: true, message: this.$t('common.text00082') }] }],
       },
     }
   },
@@ -61,7 +61,7 @@ export default {
         comment: values.comment,
       }
       await this.createWorkflow(variables)
-      this.$message.success('加入项目流程已提交')
+      this.$message.success(this.$t('common.text00083'))
       this.$router.push('/workflow')
     },
     async handleConfirm () {

@@ -4,19 +4,20 @@
     <div slot="body">
       <a-alert class="mb-2" type="warning">
         <div slot="message">
-          1. 释放时间目前支持最小单位为1小时，不足1小时按1小时设置 <br /> 2. 实际释放时间与设置时间存在一定误差，具体释放时间以实际为准
+          {{$t('common.text00059')}} <br /> 
+          {{$t('common.text00060')}}
         </div>
       </a-alert>
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="action" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
-        <a-form-item label="到期释放" v-bind="formItemLayout">
-          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.durationEnable" />
+        <a-form-item :label="$t('common.text00061')" v-bind="formItemLayout">
+          <a-switch :checkedChildren="$t('common.text00062')" :unCheckedChildren="$t('common.text00063')" v-decorator="decorators.durationEnable" />
         </a-form-item>
         <a-form-item
           v-if="form.fd.durationEnable"
-          label="释放时间"
+          :label="$t('common.text00064')"
           v-bind="formItemLayout"
           :help="help">
           <div @click="openDatePicker">
@@ -28,8 +29,8 @@
               @change="dateChangeHandle"
               showTime>
               <template slot="renderExtraFooter">
-                快速选择：<a-tag color="blue" style="border-radius: 10px;" :class="{ active: currentDuration === v.value }" v-for="v in durationArrs" :key="v.value" @click="chooseDurationHandle(v)">{{v.text}}</a-tag>
-                <p class="ant-calendar-ok-btn" style="position: absolute; right: 13px; top: 83px; padding: 0 8px; z-index: 999;" @click="closeDatePicker">确定</p>
+                {{$t('common.text00065')}}<a-tag color="blue" style="border-radius: 10px;" :class="{ active: currentDuration === v.value }" v-for="v in durationArrs" :key="v.value" @click="chooseDurationHandle(v)">{{v.text}}</a-tag>
+                <p class="ant-calendar-ok-btn" style="position: absolute; right: 13px; top: 83px; padding: 0 8px; z-index: 999;" @click="closeDatePicker">{{$t('common.ok')}}</p>
               </template>
             </a-date-picker>
           </div>
@@ -60,7 +61,7 @@ export default {
     const expireDate = datas[0].expired_at ? moment(datas[0].expired_at) : moment()
     return {
       loading: false,
-      action: '到期释放',
+      action: this.$t('common.text00061'),
       form: {
         fc: this.$form.createForm(this, { onValuesChange: this.onValuesChange }),
         fd: {
@@ -83,7 +84,7 @@ export default {
           {
             initialValue: expireDate,
             rules: [
-              { required: true, message: '请选择释放时间' },
+              { required: true, message: this.$t('common.text00066') },
             ],
           },
         ],
@@ -96,22 +97,19 @@ export default {
           span: 3,
         },
       },
-      durationArrs: [
-        { value: '1h', text: '1小时' },
-        { value: '2h', text: '2小时' },
-        { value: '3h', text: '3小时' },
-        { value: '6h', text: '6小时' },
-        { value: '1d', text: '1天' },
-        { value: '2d', text: '2天' },
-        { value: '1w', text: '1周' },
-      ],
       open: false,
     }
   },
   computed: {
     help () {
-      return '释放时间设置只支持延后，暂不支持提前'
+      return this.$t('common.text00067')
     },
+    durationArrs () {
+      return Object.keys(this.$t('durations')).map(k => ({
+        value: key,
+        text: this.$t('durations')[k],
+      }))
+    }
   },
   watch: {
     'form.fd.durationEnable' (val) {

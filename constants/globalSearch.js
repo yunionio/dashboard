@@ -1,4 +1,5 @@
 import * as R from 'ramda'
+import i18n from '@/locales'
 import store from '@/store'
 import { hasPermission } from '@/utils/auth'
 import { changeToArr } from '@/utils/utils'
@@ -46,7 +47,7 @@ export const getSearchMaps = (searchRes = {}) => {
   const maps = {
     servers: {
       res_name: 'servers',
-      label: '虚拟机',
+      label: i18n.t('dictionary.server'),
       id: 'servers',
       component: 'VmInstanceList',
       hasPermission: hasPermission({ key: 'servers_list' }),
@@ -67,7 +68,7 @@ export const getSearchMaps = (searchRes = {}) => {
     },
     baremetals: {
       res_name: 'servers',
-      label: '裸金属服务器',
+      label: i18n.t('dictionary.baremetal'),
       id: 'baremetals',
       component: 'BaremetalList',
       hasPermission: hasPermission({ key: 'servers_list' }),
@@ -88,7 +89,7 @@ export const getSearchMaps = (searchRes = {}) => {
     },
     images: {
       res_name: 'images',
-      label: '系统镜像',
+      label: i18n.t('dictionary.image'),
       id: 'images',
       component: 'ImageList',
       hasPermission: hasPermission({ key: 'images_list' }),
@@ -105,7 +106,7 @@ export const getSearchMaps = (searchRes = {}) => {
     },
     guestimages: {
       res_name: 'guestimages',
-      label: '主机镜像',
+      label: i18n.t('dictionary.guestimage'),
       id: 'guestimages',
       component: 'HostImageList',
       hasPermission: hasPermission({ key: 'guestimages_list' }),
@@ -122,7 +123,7 @@ export const getSearchMaps = (searchRes = {}) => {
     },
     disks: {
       res_name: 'disks',
-      label: '硬盘',
+      label: i18n.t('dictionary.disk'),
       id: 'disks',
       component: 'DiskList',
       hasPermission: hasPermission({ key: 'disks_list' }),
@@ -140,7 +141,7 @@ export const getSearchMaps = (searchRes = {}) => {
     },
     diskSnapshots: {
       res_name: 'snapshots',
-      label: '硬盘快照',
+      label: i18n.t('dictionary.disk_snapshots'),
       id: 'diskSnapshots',
       component: 'VmDiskSnapshotsIndex',
       hasPermission: hasPermission({ key: 'snapshots_list' }),
@@ -158,7 +159,7 @@ export const getSearchMaps = (searchRes = {}) => {
     },
     instanceSnapshots: {
       res_name: 'instance_snapshots',
-      label: '主机快照',
+      label: i18n.t('common.text00023'),
       id: 'instanceSnapshots',
       component: 'VmInstanceSnapshotsIndex',
       hasPermission: hasPermission({ key: 'instance_snapshots_list' }),
@@ -174,7 +175,7 @@ export const getSearchMaps = (searchRes = {}) => {
     },
     secgroups: {
       res_name: 'secgroups',
-      label: '安全组',
+      label: i18n.t('dictionary.secgroup'),
       id: 'secgroups',
       component: 'SecgroupList',
       hasPermission: hasPermission({ key: 'secgroups_list' }),
@@ -190,7 +191,7 @@ export const getSearchMaps = (searchRes = {}) => {
     },
     eips: {
       res_name: 'eips',
-      label: '弹性公网IP',
+      label: i18n.t('dictionary.eip'),
       id: 'eips',
       component: 'EipList',
       hasPermission: hasPermission({ key: 'eips_list' }),
@@ -209,7 +210,7 @@ export const getSearchMaps = (searchRes = {}) => {
     },
     networkinterfaces: {
       res_name: 'networkinterfaces',
-      label: '弹性网卡',
+      label: i18n.t('dictionary.networkinterface'),
       id: 'networkinterfaces',
       component: 'FlexNetworkList',
       hasPermission: hasPermission({ key: 'networkcard_list' }),
@@ -225,7 +226,7 @@ export const getSearchMaps = (searchRes = {}) => {
     },
     networks: {
       res_name: 'networks',
-      label: 'IP子网',
+      label: i18n.t('dictionary.network'),
       id: 'networks',
       component: 'NetworkList',
       hasPermission: hasPermission({ key: 'networks_list' }),
@@ -244,7 +245,7 @@ export const getSearchMaps = (searchRes = {}) => {
     },
     hosts: {
       res_name: 'hosts',
-      label: '宿主机',
+      label: i18n.t('dictionary.host'),
       id: 'hosts',
       component: 'HostList',
       hasPermission: hasPermission({ key: 'hosts_list' }),
@@ -264,7 +265,7 @@ export const getSearchMaps = (searchRes = {}) => {
     },
     physicalmachines: {
       res_name: 'hosts',
-      label: '物理机',
+      label: i18n.t('dictionary.physicalmachine'),
       id: 'physicalmachines',
       component: 'PhysicalmachineList',
       hasPermission: hasPermission({ key: 'hosts_list' }),
@@ -324,7 +325,7 @@ export const getSearchMaps = (searchRes = {}) => {
     },
     deleteServers: {
       res_name: 'servers',
-      label: '主机（回收站）',
+      label: i18n.t('dictionary.delete_servers'),
       id: 'deleteServers',
       component: 'ServerRecoveryList',
       hasPermission: hasPermission({ key: 'servers_list' }),
@@ -345,7 +346,7 @@ export const getSearchMaps = (searchRes = {}) => {
     },
     deleteDisks: {
       res_name: 'disks',
-      label: '硬盘（回收站）',
+      label: i18n.t('dictionary.delete_disks'),
       id: 'deleteDisks',
       component: 'DiskRecoveryList',
       hasPermission: hasPermission({ key: 'disks_list' }),
@@ -363,7 +364,7 @@ export const getSearchMaps = (searchRes = {}) => {
     },
     deleteImages: {
       res_name: 'images',
-      label: '镜像（回收站）',
+      label: i18n.t('dictionary.delete_images'),
       id: 'deleteImages',
       component: 'ImageRecoveryList',
       hasPermission: hasPermission({ key: 'images_list' }),

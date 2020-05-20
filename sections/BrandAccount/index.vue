@@ -10,7 +10,7 @@
             :labelInValue="labelInValue"
             v-decorator="decorators.brand"
             :loading="brandLoading"
-            placeholder="请选择云账号"
+            :placeholder="$t('rules.cloudaccount')"
             @change="brandChange"
             :filterOption="filterOption"
             showSearch>
@@ -26,7 +26,7 @@
             :labelInValue="labelInValue"
             v-decorator="decorators.account"
             :loading="accountLoading"
-            placeholder="请选择账号"
+            :placeholder="$t('common.text00045')"
             @change="accountChange"
             :filterOption="filterOption"
             showSearch>

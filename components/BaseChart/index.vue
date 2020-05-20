@@ -10,6 +10,7 @@
 // 使用前需先引入对应模块
 import 'v-charts/lib/style.css' // 使用loading属性前先引入css
 import * as R from 'ramda'
+import i18n from '@/locales'
 import 'echarts/lib/component/toolbox'
 import 'echarts/lib/component/title'
 import 'echarts/lib/component/grid'
@@ -49,7 +50,7 @@ export default {
       default: () => chartColors,
     },
     emptyContent: {
-      default: '暂无数据',
+      default: i18n.t('common.notData'),
     },
   },
   computed: {

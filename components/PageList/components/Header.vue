@@ -33,10 +33,10 @@
       <div class="ml-4 d-flex flex-shrink-0 justify-content-end">
         <slot name="right-tools-prepend" />
         <template v-if="exportDataOptions || id">
-          <a-tooltip title="导出数据" v-if="exportDataOptions">
+          <a-tooltip :title="$t('common.text00010')" v-if="exportDataOptions">
             <a-button icon="download" style="width: 40px;" @click="handleExportData" />
           </a-tooltip>
-          <a-tooltip title="自定义列表项" v-if="id">
+          <a-tooltip :title="$t('common.text00011')" v-if="id">
             <a-button class="ml-2" icon="setting" style="width: 40px;" @click="handleCustomList" />
           </a-tooltip>
         </template>
@@ -181,7 +181,7 @@ export default {
     },
     handleExportData () {
       this.$parent.$parent.createDialog('ExportListDataDialog', {
-        title: '导出数据',
+        title: this.$t('common.text00010'),
         config: this.config,
         total: this.total,
         options: this.exportDataOptions,
@@ -195,7 +195,7 @@ export default {
     handleCustomList () {
       const grid = this.getGrid()
       this.$parent.$parent.createDialog('CustomListDialog', {
-        title: '自定义列表项',
+        title: this.$t('common.text00011'),
         config: this.config,
         update: this.updateConfig,
         showTagColumns: this.showTagColumns,

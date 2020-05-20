@@ -1,4 +1,5 @@
 import * as R from 'ramda'
+import i18n from '@/locales'
 import { findAndPush } from '@/utils/utils'
 
 // const Select = {
@@ -36,16 +37,16 @@ export default {
       type: Object,
       default: () => {
         return {
-          'city': '请选择城市',
-          'provider': '请选择平台',
-          'cloudregion': '请选择区域',
-          'zone': '请选择可用区',
+          'city': i18n.t('rules.city'),
+          'provider': i18n.t('rules.provider'),
+          'cloudregion': i18n.t('rules.region'),
+          'zone': i18n.t('rules.zone'),
         }
       },
     },
     label: {
       type: String,
-      default: '区域',
+      default: i18n.t('dictionary.region'),
     },
     names: {
       type: Array,
@@ -269,7 +270,7 @@ export default {
       }
       const citys = this.$t('citys')
       return (
-        <a-select allowClear showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.cityLoading} placeholder="请选择城市">
+        <a-select allowClear showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.cityLoading} placeholder={this.placeholders.city}>
           {findAndPush(this.cityList, ({ name }) => name === 'Other').map(city => {
             const { name } = city
             const lowercaseName = name.toLowerCase()
@@ -310,7 +311,7 @@ export default {
       }
       const cloudProvidersMap = this.$t('cloudPrvidersMap')
       return (
-        <a-select allowClear showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.providerLoading} placeholder="请选择平台">
+        <a-select allowClear showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.providerLoading} placeholder={this.placeholders.prvider}>
           {this.providerList.map(provider => {
             const { name } = provider
             return <a-select-option key={name} value={name}>{cloudProvidersMap[name] || name}</a-select-option>
@@ -357,7 +358,7 @@ export default {
         }, _callback)
       }
       return (
-        <a-select allowClear showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.cloudregionLoading} placeholder="请选择区域">
+        <a-select allowClear showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.cloudregionLoading} placeholder={this.placeholders.cloudregion}>
           {this.cloudregionList.map(cloudregion => {
             const { id, name } = cloudregion
             return <a-select-option key={id} value={id}>{name}</a-select-option>
@@ -404,7 +405,7 @@ export default {
         }, _callback)
       }
       return (
-        <a-select allowClear showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.regionLoading} placeholder="请选择可用区">
+        <a-select allowClear showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.regionLoading} placeholder={this.placeholders.zone}>
           {this.zoneList.map(zone => {
             const { id, name } = zone
             return <a-select-option key={id} value={id}>{name}</a-select-option>

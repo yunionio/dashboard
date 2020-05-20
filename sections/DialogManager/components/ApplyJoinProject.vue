@@ -4,7 +4,7 @@
     <div slot="body">
       <a-form :form="form.fc">
         <a-form-item
-          label="备注"
+          :label="$t('common.description')"
           v-bind="formItemLayout">
           <a-input v-decorator="decorators.desc" />
         </a-form-item>
@@ -29,7 +29,7 @@ export default {
   mixins: [workflowMixin, DialogMixin, WindowsMixin],
   data () {
     return {
-      title: `申请加入${this.$t('dictionary.project')}`,
+      title: `${this.$t('common.text00073')}${this.$t('dictionary.project')}`,
       loading: false,
       formItemLayout: {
         wrapperCol: {
@@ -43,7 +43,7 @@ export default {
         fc: this.$form.createForm(this),
       },
       decorators: {
-        desc: ['desc', { rules: [{ required: true, message: '必须填写备注' }] }],
+        desc: ['desc', { rules: [{ required: true, message: this.$t('common.text00074') }] }],
       },
     }
   },
@@ -62,7 +62,7 @@ export default {
         description: values.desc,
       }
       await this.createWorkflow(variables)
-      this.$message.success('加入项目流程已提交')
+      this.$message.success(this.$t('common.text00075'))
       if (this.params.success) {
         this.params.success()
       } else {

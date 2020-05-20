@@ -7,14 +7,15 @@
       <a-input class="w-100" v-decorator="decorators.input" :placeholder="placeholder" allowClear />
     </a-form-item>
     <div class="text-right">
-      <a-button type="primary" html-type="submit">确定</a-button>
-      <a-button class="ml-3" @click="cancel">取消</a-button>
+      <a-button type="primary" html-type="submit">{{this.$t(common.ok)}}</a-button>
+      <a-button class="ml-3" @click="cancel">{{this.$t(common.cancel)}}</a-button>
     </div>
   </a-form>
 </template>
 
 <script>
 import * as R from 'ramda'
+import i18n from '@/locales'
 
 export default {
   name: 'EditForm',
@@ -32,7 +33,7 @@ export default {
     },
     label: {
       type: String,
-      default: '名称',
+      default: i18n.t('common.name'),
     },
     defaultValue: {
       type: String,
@@ -51,7 +52,7 @@ export default {
             initialValue: this.defaultValue,
             validateFirst: true,
             rules: this.formRules || [
-              { required: true, message: `请输入${this.label}` },
+              { required: true, message: `${this.$t('common.placeholder')}${this.label}` },
               { validator: this.$validate('resourceName') },
             ],
           },
@@ -61,8 +62,8 @@ export default {
   },
   computed: {
     placeholder () {
-      if (this.label) return `请输入${this.label}`
-      return '请输入'
+      if (this.label) return `${this.$t('common.placeholder')}${this.label}`
+      return this.$t('common.placeholder')
     },
   },
   methods: {

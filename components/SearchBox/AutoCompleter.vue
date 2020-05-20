@@ -12,7 +12,7 @@
     <div class="auto-completer-wrap" v-show="show">
       <ul class="auto-completer-items">
         <li v-show="!isDropdown">
-          <span class="empty text-weak">选择资源属性进行过滤</span>
+          <span class="empty text-weak">{{this.$t('common.text00014')}}</span>
         </li>
         <template v-if="isDropdown">
           <!-- 如果有配置项则渲染 -->
@@ -46,8 +46,8 @@
         </template>
       </ul>
       <div class="actions" v-if="isDropdown">
-        <span @click="handleConfirm($event)" :class="{ disabled: !selectValue || (selectValue && selectValue.length <= 0) }">确定</span>
-        <span @click="handleCancel($event)">取消</span>
+        <span @click="handleConfirm($event)" :class="{ disabled: !selectValue || (selectValue && selectValue.length <= 0) }">{{$t('common.ok')}}</span>
+        <span @click="handleCancel($event)">{{$t('common.cancel')}}</span>
       </div>
     </div>
   </div>
