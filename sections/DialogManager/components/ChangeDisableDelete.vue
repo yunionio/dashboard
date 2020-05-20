@@ -7,10 +7,10 @@
       <a-form
         class="mt-3"
         :form="form.fc">
-        <a-form-item label="删除保护" v-bind="formItemLayout">
+        <a-form-item :label="$t('common.text00076')" v-bind="formItemLayout">
           <a-radio-group  v-decorator="decorators.disable_delete">
-            <a-radio :value="true">启用</a-radio>
-            <a-radio :value="false">禁用</a-radio>
+            <a-radio :value="true">{{$t('status.enabled.true')}}</a-radio>
+            <a-radio :value="false">{{$t('status.enabled.false')}}</a-radio>
           </a-radio-group>
         </a-form-item>
       </a-form>
@@ -43,7 +43,7 @@ export default {
   },
   computed: {
     title () {
-      return this.params.title || '设置删除保护'
+      return this.params.title || this.$t('common.text00077')
     },
     decorators () {
       const { data } = this.params
@@ -90,7 +90,7 @@ export default {
           })
         }
         this.cancelDialog()
-        this.$message.success('操作成功')
+        this.$message.success(this.$t('common.success'))
       } catch (error) {
         this.loading = false
         throw error

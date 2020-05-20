@@ -14,7 +14,7 @@ const getDefaultLastBaseInfo = (vm, h, { data, onManager, resource }) => {
   const outher = [
     {
       field: 'region',
-      title: '区域',
+      title: i18n.t('common.region'),
       slots: {
         default: ({ row }) => {
           if (!row.region_id) return row.region || '-'
@@ -39,7 +39,7 @@ const getDefaultLastBaseInfo = (vm, h, { data, onManager, resource }) => {
     },
     {
       field: 'zone',
-      title: '可用区',
+      title: i18n.t('common.zone'),
       slots: {
         default: ({ row }) => {
           if (!row.zone_id) return row.zone || '-'
@@ -64,7 +64,7 @@ const getDefaultLastBaseInfo = (vm, h, { data, onManager, resource }) => {
     },
     {
       field: 'account',
-      title: '云账号',
+      title: i18n.t('common.account'),
       slots: {
         default: ({ row }) => {
           if (!row.account_id) return row.account || '-'
@@ -91,14 +91,14 @@ const getDefaultLastBaseInfo = (vm, h, { data, onManager, resource }) => {
   let ret = [
     {
       field: 'created_at',
-      title: '创建时间',
+      title: i18n.t('common.createdAt'),
       formatter: ({ row }) => {
         return (row.created_at && moment(row.created_at).format()) || '-'
       },
     },
     {
       field: 'updated_at',
-      title: '更新时间',
+      title: i18n.t('common.updatedAt'),
       formatter: ({ row }) => {
         return (row.updated_at && moment(row.updated_at).format()) || '-'
       },
@@ -127,7 +127,7 @@ const getDefaultTopBaseInfo = (vm, h, { idKey, statusKey, statusModule, data, on
     },
     {
       field: statusKey,
-      title: '状态',
+      title: i18n.t('common.status'),
       slots: {
         default: ({ row }) => {
           if (statusModule && row[statusKey]) {
@@ -358,7 +358,7 @@ export default {
       return h('div', {
         class: 'detail-left',
       }, [
-        this.renderContent(h, 'info', '基本信息', this.commonBaseInfo, null, 'base-info'),
+        this.renderContent(h, 'info', i18n.t('common.info'), this.commonBaseInfo, null, 'base-info'),
       ])
     },
     renderExtra (h) {
@@ -370,7 +370,7 @@ export default {
     },
     renderDesc (h) {
       const children = [
-        h('div', { class: 'detail-item-title' }, '备注'),
+        h('div', { class: 'detail-item-title' }, i18n.t('common.description')),
         h('div', { class: 'detail-item-value' }, [
           h('list-body-cell-wrap', {
             props: {
@@ -391,7 +391,7 @@ export default {
     },
     renderName (h) {
       const children = [
-        h('div', { class: 'detail-item-title' }, '名称'),
+        h('div', { class: 'detail-item-title' }, i18n.t('common.name')),
         h('div', { class: 'detail-item-value' }, [
           h('list-body-cell-wrap', {
             props: {

@@ -1,24 +1,25 @@
 import * as R from 'ramda'
+import i18n from '@/locales'
 
 // 平台的配置
 export const HYPERVISORS_MAP = {
   // IDC
   kvm: { key: 'kvm', label: 'OneCloud', provider: 'OneCloud', brand: 'OneCloud', host_type: 'kvm', hypervisor: 'kvm', env: 'idc', cloud_env: 'onpremise' },
   esxi: { key: 'esxi', label: 'VMware', provider: 'VMware', brand: 'VMware', host_type: 'esxi', hypervisor: 'esxi', env: 'idc', cloud_env: 'onpremise' },
-  baremetal: { key: 'baremetal', label: '裸金属服务器', provider: 'OneCloud-baremetal', brand: 'OneCloud-baremetal', host_type: 'baremetal', hypervisor: 'baremetal', env: 'baremetal' },
+  baremetal: { key: 'baremetal', label: i18n.t('dictionary.baremetal'), provider: 'OneCloud-baremetal', brand: 'OneCloud-baremetal', host_type: 'baremetal', hypervisor: 'baremetal', env: 'baremetal' },
   // Private
   openstack: { key: 'openstack', label: 'OpenStack', provider: 'OpenStack', brand: 'OpenStack', host_type: 'openstack', hypervisor: 'openstack', env: 'private', cloud_env: 'private' },
   dstack: { key: 'dstack', label: 'DStack', provider: 'ZStack', brand: 'DStack', host_type: 'dstack', hypervisor: 'dstack', env: 'private', cloud_env: 'private' },
   zstack: { key: 'zstack', label: 'ZStack', provider: 'ZStack', brand: 'ZStack', host_type: 'zstack', hypervisor: 'zstack', env: 'private', cloud_env: 'private' },
   // Public
-  aliyun: { key: 'aliyun', label: '阿里云', provider: 'Aliyun', brand: 'Aliyun', host_type: 'aliyun', hypervisor: 'aliyun', env: 'public', cloud_env: 'public' },
+  aliyun: { key: 'aliyun', label: i18n.t('cloudPrvidersMap.Aliyun'), provider: 'Aliyun', brand: 'Aliyun', host_type: 'aliyun', hypervisor: 'aliyun', env: 'public', cloud_env: 'public' },
   azure: { key: 'azure', label: 'Azure', provider: 'Azure', brand: 'Azure', host_type: 'azure', hypervisor: 'azure', env: 'public', cloud_env: 'public' },
   aws: { key: 'aws', label: 'AWS', provider: 'Aws', brand: 'Aws', host_type: 'aws', hypervisor: 'aws', env: 'public', cloud_env: 'public' },
-  qcloud: { key: 'qcloud', label: '腾讯云', provider: 'Qcloud', brand: 'Qcloud', host_type: 'qcloud', hypervisor: 'qcloud', env: 'public', cloud_env: 'public' },
-  huawei: { key: 'huawei', label: '华为云', provider: 'Huawei', brand: 'Huawei', host_type: 'huawei', hypervisor: 'huawei', env: 'public', cloud_env: 'public' },
+  qcloud: { key: 'qcloud', label: i18n.t('cloudPrvidersMap.Qcloud'), provider: 'Qcloud', brand: 'Qcloud', host_type: 'qcloud', hypervisor: 'qcloud', env: 'public', cloud_env: 'public' },
+  huawei: { key: 'huawei', label: i18n.t('cloudPrvidersMap.Huawei'), provider: 'Huawei', brand: 'Huawei', host_type: 'huawei', hypervisor: 'huawei', env: 'public', cloud_env: 'public' },
   ucloud: { key: 'ucloud', label: 'UCloud', provider: 'Ucloud', brand: 'Ucloud', host_type: 'ucloud', hypervisor: 'ucloud', env: 'public', cloud_env: 'public' },
   google: { key: 'google', label: 'Google', provider: 'Google', brand: 'Google', host_type: 'google', hypervisor: 'google', env: 'public', cloud_env: 'public' },
-  ctyun: { key: 'ctyun', label: '天翼云', provider: 'Ctyun', brand: 'Ctyun', host_type: 'ctyun', hypervisor: 'ctyun', env: 'public', cloud_env: 'public' },
+  ctyun: { key: 'ctyun', label: i18n.t('cloudPrvidersMap.Ctyun'), provider: 'Ctyun', brand: 'Ctyun', host_type: 'ctyun', hypervisor: 'ctyun', env: 'public', cloud_env: 'public' },
 }
 
 export const EXTRA_HYPERVISORS = {
@@ -82,16 +83,14 @@ export const SCOPES_MAP = {
 }
 
 // 调度策略
-export const SCHEDTAG_POLICY_OPTIONS = [
-  { key: 'prefer', label: '尽量使用' },
-  { key: 'require', label: '必须使用' },
-  { key: 'avoid', label: '避免使用' },
-  { key: 'exclude', label: '禁止使用' },
-]
+export const SCHEDTAG_POLICY_OPTIONS = Object.keys(i18n.t('schedtagPolicys')).map(key => ({
+  key,
+  label: i18n.t('schedtagPolicys')[key],
+}))
 
 export const ENABLED_OPTS = [
-  { key: true, label: '启用' },
-  { key: false, label: '禁用' },
+  { key: true, label: i18n.t('status.enabled.true') },
+  { key: false, label: i18n.t('status.enabled.false') },
 ]
 
 // 自定义字典存储配置的name

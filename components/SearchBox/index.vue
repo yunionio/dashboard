@@ -46,6 +46,7 @@
 import * as R from 'ramda'
 import AutoCompleter from './AutoCompleter'
 import Tag from './Tag'
+import i18n from '@/locales'
 
 export default {
   name: 'SearchBox',
@@ -68,7 +69,7 @@ export default {
     },
     placeholder: {
       type: String,
-      default: '关键字用“|”分隔，过滤标签用回车键分隔',
+      default: i18n.t('common.text00015'),
     },
     fetchDistinctField: Function,
   },

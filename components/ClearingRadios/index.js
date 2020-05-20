@@ -1,4 +1,3 @@
-import { BILL_TYPES_MAP, BUY_DURATIONS_OPTIONS } from './constants'
 export default {
   name: 'ClearingRadios',
   inject: ['form'],
@@ -51,10 +50,10 @@ export default {
           initialValue: this.duration,
         })(
           <a-radio-group>
-            {Object.keys(BUY_DURATIONS_OPTIONS).map(k => {
+            {Object.keys(this.$t('buyDurations')).map(k => {
               return (
                 <a-radio-button key={k} value={k}>
-                  {BUY_DURATIONS_OPTIONS[k]}
+                  {this.$t('buyDurations')[k]}
                 </a-radio-button>
               )
             })}
@@ -69,10 +68,10 @@ export default {
             initialValue: this.billing_type,
           })(
             <a-radio-group>
-              {Object.keys(BILL_TYPES_MAP).map(k => {
+              {Object.keys(this.$t('billingType')).map(k => {
                 return (
                   <a-radio-button key={k} value={k}>
-                    {BILL_TYPES_MAP[k]}
+                    {this.$t('billingType')[k]}
                   </a-radio-button>
                 )
               })}

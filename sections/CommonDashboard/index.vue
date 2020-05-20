@@ -69,7 +69,7 @@ export default {
           },
         },
         {
-          title: '内存',
+          title: this.$t('common.text00048'),
           percent: memory.used.value / (memory.total.value || 1),
           msg: {
             current: memory.used.formatValue,
@@ -77,7 +77,7 @@ export default {
           },
         },
         {
-          title: '磁盘',
+          title: this.$t('common.text00049'),
           percent: disk.used.value / (disk.total.value || 1),
           msg: {
             current: disk.used.formatValue,
@@ -85,7 +85,7 @@ export default {
           },
         },
         {
-          title: '私有IP',
+          title: this.$t('common.text00050'),
           percent: ip.used.value / (ip.total.value || 1),
           msg: {
             current: ip.used.formatValue,
@@ -100,41 +100,41 @@ export default {
       const hostMsg = getUsageData('host', this.resData, usageMap, this.scope)
       const server = {
         pieData: [{
-          name: `运行: ${f(serverMsg.running.value)}`,
+          name: `${this.$t('common.text00051')}: ${f(serverMsg.running.value)}`,
           value: f(serverMsg.running.value),
         }, {
-          name: `关机: ${f(serverMsg.ready.value)}`,
+          name: `${this.$t('status.server.ready')}: ${f(serverMsg.ready.value)}`,
           value: f(serverMsg.ready.value),
         }, {
-          name: `回收站: ${f(serverMsg.delete.value)}`,
+          name: `${this.$t('common.text00052')}: ${f(serverMsg.delete.value)}`,
           value: f(serverMsg.delete.value),
         }, {
-          name: `其他: ${f(serverMsg.other.value)}`,
+          name: `${this.$t('common.text00053')}: ${f(serverMsg.other.value)}`,
           value: f(serverMsg.other.value),
         }],
-        title: '虚拟主机',
+        title: this.$t('common.text00054'),
         total: f(serverMsg.total.value),
       }
       const gpu = {
         pieData: [{
-          name: `使用: ${gpuMsg.used.value}`,
+          name: `${this.$t('common.text00055')}: ${gpuMsg.used.value}`,
           value: f(gpuMsg.used.value),
         }, {
-          name: `未使用: ${gpuMsg.total.value - gpuMsg.used.value}`,
+          name: `${this.$t('common.text00056')}: ${gpuMsg.total.value - gpuMsg.used.value}`,
           value: f(gpuMsg.total.value - gpuMsg.used.value),
         }],
-        title: '透传设备（GPU）',
+        title: this.$t('common.text00057'),
         total: f(gpuMsg.total.value),
       }
       const host = {
         pieData: [{
-          name: `启用: ${hostMsg.used.value}`,
+          name: `${this.$t('status.enabled.true')}: ${hostMsg.used.value}`,
           value: f(hostMsg.used.value),
         }, {
-          name: `未启用: ${hostMsg.total.value - hostMsg.used.value}`,
+          name: `${this.$t('common.text00058')}: ${hostMsg.total.value - hostMsg.used.value}`,
           value: f(hostMsg.total.value - hostMsg.used.value),
         }],
-        title: '宿主机',
+        title: this.$t('dictionary.host'),
         total: f(hostMsg.total.value),
       }
       let dataList = [host, server, gpu]

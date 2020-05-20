@@ -1,14 +1,16 @@
 <template>
   <div class="mb-2">
-    <span>你所选的</span>
-    <span class="ml-2 mr-2 primary-color">{{ count }}个{{ name }}</span>
-    <span>将执行</span>
+    <span>{{$t('common.text00002') }}</span>
+    <span class="ml-2 mr-2 primary-color">{{ count }}{{$t('common.text00003') }}{{ name }}</span>
+    <span>{{$t('common.text00004')}}</span>
     <span class="ml-2 mr-2 warning-color">{{ action }}</span>
-    <span>操作，你是否确认操作？</span>
+    <span>{{$t('common.text00005')}}</span>
   </div>
 </template>
 
 <script>
+import i18n from '@/locales'
+
 export default {
   name: 'DialogSelectedTips',
   props: {
@@ -18,11 +20,11 @@ export default {
     },
     name: {
       type: String,
-      default: '实例',
+      default: i18n.t('common.text00006'),
     },
     action: {
       type: String,
-      default: '修改属性',
+      default: i18n.t('common.text00007'),
     },
   },
 }

@@ -22,10 +22,10 @@ export default {
     async doCopy (e) {
       e.stopPropagation()
       try {
-        this.title = '已复制'
+        this.title = this.$('common.copy')
         await this.$copyText(this.message)
       } catch (error) {
-        this.title = '复制失败'
+        this.title = this.$('common.copyError')
       }
       this.clearTimer()
       this.timer = setTimeout(() => {

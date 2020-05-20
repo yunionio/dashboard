@@ -22,7 +22,7 @@ const confirm = {
       defaultParams: {
         width: 420,
         type: 'confirm',
-        header: '提示',
+        header: this.$t('common.text00079'),
         okText: this.$t('dialog.ok'),
         cancelText: this.$t('dialog.cancel'),
       },

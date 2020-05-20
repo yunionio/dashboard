@@ -1,12 +1,12 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">更改所属</div>
+    <div slot="header">{{$t('common.text00104')}}</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" action="更改所属" :name="this.params.tipName || ''" />
+      <dialog-selected-tips :count="params.data.length" :action="$t('common.text00104')" :name="this.params.tipName || ''" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
-        <a-form-item label="所属范围" v-bind="formItemLayout">
+        <a-form-item :label="$t('common.text00105')" v-bind="formItemLayout">
           <a-radio-group v-model="formScope">
             <a-radio-button
               v-for="item in scopeOptions"
@@ -21,7 +21,7 @@
             :params="domainParams"
             filterable
             version="v1"
-            :select-props="{ placeholder: `请选择所属范围${$t('dictionary.domain')}` }" />
+            :select-props="{ placeholder: `${$t('common.text00106')}${$t('dictionary.domain')}` }" />
         </a-form-item>
         <a-form-item :label="$t('dictionary.project')" key="project" v-bind="formItemLayout" v-if="isProjectScope">
           <base-select
@@ -31,7 +31,7 @@
             filterable
             version="v1"
             :need-params="true"
-            :select-props="{ placeholder: `请选择所属范围${$t('dictionary.project')}` }" />
+            :select-props="{ placeholder: `${$t('common.text00106')}${$t('dictionary.project')}` }" />
         </a-form-item>
       </a-form>
     </div>

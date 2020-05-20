@@ -1,12 +1,12 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">更改{{ $t('dictionary.domain') }}</div>
+    <div slot="header">{{$t('common.text00078')}}{{ $t('dictionary.domain') }}</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" :action="`更改${$t('dictionary.domain')}`" :name="params.name || '实例'" />
+      <dialog-selected-tips :count="params.data.length" :action="`${$t('common.text00078')}${$t('dictionary.domain')}`" :name="params.name || $t('common.text00006')" />
       <dialog-table :data="params.data" :columns="columns" />
       <template v-if="domainLoaded">
         <a-form :form="form.fc">
-          <a-form-item :label="$t('dictionary.domain')" v-bind="formItemLayout" extra="更改部门可选范围与该资源账号(若有)可用范围一致">
+          <a-form-item :label="$t('dictionary.domain')" v-bind="formItemLayout" :extra="$t('common.text00088')">
             <a-select v-decorator="decorators.project_domain" showSearch @search="getCanUseDomains" :filterOption="false">
               <template v-for="item of domains">
                 <a-select-option :key="item.id" :value="item.id">{{ item.name }}</a-select-option>

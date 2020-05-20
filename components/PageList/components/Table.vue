@@ -24,7 +24,7 @@
     </vxe-grid>
     <template v-if="tableData.length > 0 && nextMarker">
       <div class="text-center mt-4">
-        <a-button :loading="loading" type="link" @click="handleNextMarkerChange">{{ loading ? '加载中' : '加载更多' }}</a-button>
+        <a-button :loading="loading" type="link" @click="handleNextMarkerChange">{{ loading ? this.$t('common.loding') : this.$t('common.LoadMore') }}</a-button>
       </div>
     </template>
   </floating-scroll>
@@ -178,7 +178,7 @@ export default {
       if (this.showSingleActions && this.singleActions && this.singleActions.length) {
         defaultColumns.push({
           field: 'action',
-          title: '操作',
+          title: this.$t('common.action'),
           minWidth: 120,
           slots: {
             default: ({ row }, h) => {
@@ -202,7 +202,7 @@ export default {
                   style: {
                     paddingLeft: '7px',
                   },
-                }, '操作'),
+                }, this.$t('common.action')),
               ]
             },
           },

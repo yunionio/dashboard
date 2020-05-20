@@ -4,7 +4,7 @@
       <div class="loading-image">
         <a-icon type="sync" spin />
       </div>
-      <div class="loading-description">加载中</div>
+      <div class="loading-description">{{$t('common.loding')}}</div>
     </div>
     <div v-else class="text-center">
       <a-empty />
@@ -13,6 +13,8 @@
 </template>
 
 <script>
+import i18n from '@/locales'
+
 export default {
   name: 'Loader',
   props: {
@@ -21,7 +23,7 @@ export default {
     },
     noDataText: {
       type: String,
-      default: '暂无数据',
+      default: i18n.t('common.notData'),
     },
   },
 }

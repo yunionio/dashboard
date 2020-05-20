@@ -13,6 +13,7 @@
 
 <script>
 import * as R from 'ramda'
+import i18n from '@/locales'
 
 export default {
   name: 'ChargeType',
@@ -24,10 +25,10 @@ export default {
     },
     typeOpts: {
       type: Array,
-      default: () => [
-        { key: 'traffic', label: '按流量计费' },
-        { key: 'bandwidth', label: '按带宽计费' },
-      ],
+      default: () => Object.keys(i18n.t('chargeTypes')).map(key => ({
+        key,
+        label: i18n.t('chargeTypes')[key],
+      })),
     },
   },
   data () {

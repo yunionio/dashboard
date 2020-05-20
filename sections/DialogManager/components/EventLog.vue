@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">日志查看</div>
+    <div slot="header">{{$t('common.text00093')}}</div>
     <div class="clearfix pr-2" slot="body">
       <code-mirror v-model="params.data" :options="cmOptions" ref="codeMirrorRef" view-height="300px" :is-scroll="true" />
       <div
@@ -9,7 +9,7 @@
         v-clipboard:success="copySuccess"
         v-clipboard:error="copyError">
         <a-icon class="primary-color" type="copy" />
-        <a-button type="link" size="small">复制内容</a-button>
+        <a-button type="link" size="small">{{$t('common.text00094')}}</a-button>
       </div>
     </div>
     <div slot="footer">
@@ -43,10 +43,10 @@ export default {
   },
   methods: {
     copySuccess (evt) {
-      this.$message.success('复制成功')
+      this.$message.success(this.$t('common.text00095'))
     },
     copyError () {
-      this.$message.error('复制失败')
+      this.$message.error(this.$t('common.text00096'))
     },
   },
 }

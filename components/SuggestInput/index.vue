@@ -10,6 +10,7 @@
 
 <script>
 import * as R from 'ramda'
+import i18n from '@/locales'
 import { objAutoComplete } from '@/utils/utils'
 
 export default {
@@ -20,7 +21,7 @@ export default {
     },
     autoCompleteProps: {
       type: Object,
-      default: () => ({ placeholder: '请输入' }),
+      default: () => ({ placeholder: i18n.t('common.placeholder') }),
     },
     localData: {
       type: Object,

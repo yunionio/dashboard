@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{ params.title || '设置图片' }}</div>
+    <div slot="header">{{ params.title || $t('common.text00085') }}</div>
     <div slot="body">
       <div class="d-flex">
         <div class="flex-fill">
@@ -14,7 +14,7 @@
             <p class="ant-upload-drag-icon">
               <a-icon type="inbox" />
             </p>
-            <p class="ant-upload-text">单击或拖动文件到该区域以上传</p>
+            <p class="ant-upload-text">{{$t('common.text00099')}}</p>
           </a-upload-dragger>
           <vue-cropper
             v-show="imageLoaded"
@@ -24,7 +24,7 @@
         </div>
         <div class="flex-grow-0 flex-shrink-0 ml-4" v-show="imageLoaded">
           <div class="cropper-preview overflow-hidden" :style="this.params.previewStyle" />
-          <div class="mt-3 text-center">预览</div>
+          <div class="mt-3 text-center">{{$t('common.text00100')}}</div>
           <div class="text-center mt-3">
             <a-upload
               v-show="imageLoaded"
@@ -33,7 +33,7 @@
               :showUploadList="false"
               :accept="accept"
               :beforeUpload="handleBeforeUpload">
-              <a-button type="link">重新选择</a-button>
+              <a-button type="link">{{$t('common.text00101')}}</a-button>
             </a-upload>
           </div>
         </div>
@@ -75,7 +75,7 @@ export default {
     handleFileChange (e) {
       const file = e.file
       if (file.type.includes(this.accept) === -1) {
-        this.$message.warning(`仅支持${this.accept}格式图片`)
+        this.$message.warning(`${this.$t('common.text00102')}${this.accept}${this.$t('common.text00103')}`)
         return
       }
       const reader = new FileReader()

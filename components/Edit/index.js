@@ -1,5 +1,6 @@
 import './index.scss'
 import Form from './Form.vue'
+import i18n from '@/locales'
 
 export default {
   name: 'Edit',
@@ -9,7 +10,7 @@ export default {
   props: {
     label: {
       type: String,
-      default: '名称',
+      default: i18n.t('common.name'),
     },
     formRules: {
       type: Array,
@@ -26,7 +27,7 @@ export default {
   },
   computed: {
     title () {
-      return `修改${this.label}`
+      return `${i18n.t('common.edit')}${this.label}`
     },
   },
   methods: {
@@ -35,7 +36,7 @@ export default {
       if (!this.$slots.default) { // 没有自定义表单slot
         this.$emit('update', values)
         if (this.showSuccessMessage) {
-          this.$message.success('操作成功')
+          this.$message.success(this.$t('common.success'))
         }
       }
     },

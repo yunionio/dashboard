@@ -1,16 +1,16 @@
+import i18n from '@/locales'
 import { HYPERVISORS_MAP } from '@/constants'
-
 // 镜像类型
 export const IMAGES_TYPE_MAP = {
-  standard: { key: 'standard', label: '公共镜像', tooltip: 'OneCloud平台提供的公共镜像，可以适配所有平台使用' },
-  customize: { key: 'customize', label: '自定义镜像', tooltip: '用户在OneCloud平台上传的自定义镜像' },
-  iso: { key: 'iso', label: '从ISO启动', tooltip: 'OneCloud平台上的所有ISO格式镜像' },
-  host: { key: 'host', label: '主机镜像', tooltip: '用户在OneCloud平台保存某一台主机所有磁盘的镜像组合，磁盘数量及容量最低要求与原主机一致' },
-  snapshot: { key: 'snapshot', label: '主机快照', tooltip: '用户在OneCloud平台保存某一台主机所有磁盘且同一时刻的快照组合，磁盘数量、容量和介质类型均需与原主机一致' },
-  public: { key: 'public', label: '公有云镜像', tooltip: '公有云平台提供的标准镜像' },
-  'public_customize': { key: 'public_customize', label: '公有云自定义镜像', tooltip: '用户在公有云平台上传的镜像', enable_cloudaccount: true },
-  private: { key: 'private', label: '私有云镜像', tooltip: '私有云平台提供的镜像', enable_cloudaccount: true },
-  vmware: { key: 'vmware', label: 'VMware平台镜像', tooltip: 'VMware平台提供的镜像', enable_cloudaccount: true },
+  standard: { key: 'standard', label: i18n.t('label.standardImage'), tooltip: i18n.t('common.text00016') },
+  customize: { key: 'customize', label: i18n.t('common.text00017'), tooltip: i18n.t('common.text00018') },
+  iso: { key: 'iso', label: i18n.t('common.text00019'), tooltip: i18n.t('common.text00020') },
+  host: { key: 'host', label: i18n.t('common.text00021'), tooltip: i18n.t('common.text00022') },
+  snapshot: { key: 'snapshot', label: i18n.t('common.text00023'), tooltip: i18n.t('common.text00024') },
+  public: { key: 'public', label: i18n.t('common.text00025'), tooltip: i18n.t('common.text00026') },
+  'public_customize': { key: 'public_customize', label: i18n.t('common.text00027'), tooltip: i18n.t('common.text00028'), enable_cloudaccount: true },
+  private: { key: 'private', label: i18n.t('common.text00029'), tooltip: i18n.t('common.text00030'), enable_cloudaccount: true },
+  vmware: { key: 'vmware', label: i18n.t('common.text00031'), tooltip: i18n.t('common.text00032'), enable_cloudaccount: true },
 }
 
 // 镜像图标
@@ -30,7 +30,7 @@ export const OS_ICONS = {
 export const STORAGE_TYPES = {
   [HYPERVISORS_MAP.aliyun.key]: {
     cloud: {
-      label: '普通云盘',
+      label: i18n.t('common.storage.cloud'),
       key: 'cloud',
       min: 5, // 数据盘或者新建云硬盘的取值范围【G】
       max: 2000, // 数据盘或者新建云硬盘的取值范围【G】
@@ -38,7 +38,7 @@ export const STORAGE_TYPES = {
       sysMax: 500, // 系统盘取值范围【G】
     },
     cloud_ssd: {
-      label: 'SSD 云盘',
+      label: i18n.t('common.storage.cloudssd'),
       key: 'cloud_ssd',
       min: 20,
       max: 32768,
@@ -46,7 +46,7 @@ export const STORAGE_TYPES = {
       sysMax: 500,
     },
     cloud_essd: {
-      label: 'ESSD云盘PL1',
+      label: i18n.t('common.storage.cloudessd'),
       key: 'cloud_essd',
       min: 20,
       max: 32768,
@@ -54,7 +54,7 @@ export const STORAGE_TYPES = {
       sysMax: 500,
     },
     cloud_essd_pl2: {
-      label: 'ESSD云盘PL2',
+      label: i18n.t('common.storage.cloudessdpl2'),
       key: 'cloud_essd_pl2',
       min: 461,
       max: 32768,
@@ -62,7 +62,7 @@ export const STORAGE_TYPES = {
       sysMax: 500,
     },
     cloud_essd_pl3: {
-      label: 'ESSD云盘PL3',
+      label: i18n.t('common.storage.cloudessdpl3'),
       key: 'cloud_essd_pl3',
       min: 1261,
       max: 32768,
@@ -70,7 +70,7 @@ export const STORAGE_TYPES = {
       sysMax: 500,
     },
     cloud_efficiency: {
-      label: '高效云盘',
+      label: i18n.t('common.storage.cloudefficiency'),
       key: 'cloud_efficiency',
       min: 20,
       max: 32768,
@@ -79,7 +79,7 @@ export const STORAGE_TYPES = {
       sysMax: 500,
     },
     ephemeral_ssd: {
-      label: '本地 SSD 盘',
+      label: i18n.t('common.storage.ephemeralssd'),
       key: 'ephemeral_ssd',
       min: 5,
       max: 800,
@@ -89,7 +89,7 @@ export const STORAGE_TYPES = {
   },
   [HYPERVISORS_MAP.aws.key]: {
     gp2: {
-      label: '通用型 SSD',
+      label: i18n.t('common.storage.gp2'),
       key: 'gp2',
       min: 1,
       max: 16384,
@@ -98,7 +98,7 @@ export const STORAGE_TYPES = {
       sysMax: 16384,
     },
     io1: {
-      label: '预配置 IOPS SSD',
+      label: i18n.t('common.storage.io1'),
       key: 'io1',
       min: 4,
       max: 16384,
@@ -106,7 +106,7 @@ export const STORAGE_TYPES = {
       sysMax: 16384,
     },
     st1: {
-      label: '吞吐优化 HDD',
+      label: i18n.t('common.storage.st1'),
       key: 'st1',
       sysUnusable: true, // 系统盘不可用
       min: 500,
@@ -120,7 +120,7 @@ export const STORAGE_TYPES = {
       max: 16384,
     },
     standard: {
-      label: '磁介质',
+      label: i18n.t('common.storage.standard'),
       key: 'standard',
       min: 1,
       max: 1024,
@@ -130,7 +130,7 @@ export const STORAGE_TYPES = {
   },
   [HYPERVISORS_MAP.qcloud.key]: {
     cloud_basic: {
-      label: '普通云硬盘',
+      label: i18n.t('common.storage.cloudbasic'),
       key: 'cloud_basic',
       min: 10,
       max: 16000,
@@ -140,7 +140,7 @@ export const STORAGE_TYPES = {
       resizeStep: 10,
     },
     cloud_premium: {
-      label: '高性能云硬盘',
+      label: i18n.t('common.storage.cloudpremium'),
       key: 'cloud_premium',
       min: 50,
       max: 16000,
@@ -149,7 +149,7 @@ export const STORAGE_TYPES = {
       resizeStep: 10,
     },
     cloud_ssd: {
-      label: 'SSD 云硬盘',
+      label: i18n.t('common.storage.cloudssd'),
       key: 'cloud_ssd',
       min: 100,
       max: 16000,
@@ -160,7 +160,7 @@ export const STORAGE_TYPES = {
   },
   [HYPERVISORS_MAP.azure.key]: {
     standard_lrs: {
-      label: '标准 HDD',
+      label: i18n.t('common.storage.standardlrs'),
       key: 'standard_lrs',
       min: 1,
       max: 4095,
@@ -169,7 +169,7 @@ export const STORAGE_TYPES = {
       sysMax: 4095,
     },
     standardssd_lrs: {
-      label: '标准 SSD',
+      label: i18n.t('common.storage.standardssdlrs'),
       key: 'standardssd_lrs',
       min: 1,
       max: 4095,
@@ -177,7 +177,7 @@ export const STORAGE_TYPES = {
       sysMax: 4095,
     },
     premium_lrs: {
-      label: '高级 SSD',
+      label: i18n.t('common.storage.premiumlrs'),
       key: 'premium_lrs',
       min: 1,
       max: 4095,
@@ -187,7 +187,7 @@ export const STORAGE_TYPES = {
   },
   [HYPERVISORS_MAP.kvm.key]: {
     local: {
-      label: '本地硬盘',
+      label: i18n.t('common.storage.local'),
       key: 'local',
       min: 1,
       max: 3 * 1024,
@@ -216,7 +216,7 @@ export const STORAGE_TYPES = {
   },
   [HYPERVISORS_MAP.esxi.key]: {
     local: {
-      label: '本地硬盘',
+      label: i18n.t('common.storage.local'),
       key: 'local',
       min: 1,
       max: 3 * 1024,
@@ -226,7 +226,7 @@ export const STORAGE_TYPES = {
       unCreateCloud: true, // 不支持创建云硬盘
     },
     nas: {
-      label: 'nas 云盘',
+      label: i18n.t('common.storage.nas'),
       key: 'nas',
       min: 1,
       max: 3 * 1024,
@@ -235,7 +235,7 @@ export const STORAGE_TYPES = {
       unCreateCloud: true, // 不支持创建云硬盘
     },
     vsan: {
-      label: 'vsan 云盘',
+      label: i18n.t('common.storage.vsan'),
       key: 'vsan',
       min: 1,
       max: 3 * 1024,
@@ -246,7 +246,7 @@ export const STORAGE_TYPES = {
   },
   [HYPERVISORS_MAP.huawei.key]: {
     SSD: {
-      label: '超高IO云硬盘',
+      label: i18n.t('common.storage.ssd'),
       key: 'SSD',
       min: 10,
       max: 32768,
@@ -255,7 +255,7 @@ export const STORAGE_TYPES = {
       sort: 3,
     },
     SAS: {
-      label: '高IO云硬盘',
+      label: i18n.t('common.storage.sas'),
       key: 'SAS',
       min: 10,
       max: 32768,
@@ -264,7 +264,7 @@ export const STORAGE_TYPES = {
       sort: 2,
     },
     SATA: {
-      label: '普通IO云硬盘',
+      label: i18n.t('common.storage.sata'),
       key: 'SATA',
       min: 10,
       max: 32768,
@@ -286,7 +286,7 @@ export const STORAGE_TYPES = {
   },
   [HYPERVISORS_MAP.zstack.key]: {
     localstorage: {
-      label: '本地云盘',
+      label: i18n.t('common.storage.localstorage'),
       key: 'localstorage',
       min: 1,
       max: 3 * 1024,
@@ -295,7 +295,7 @@ export const STORAGE_TYPES = {
       sysMax: 500,
     },
     ceph: {
-      label: '共享云盘',
+      label: i18n.t('common.storage.ceph'),
       key: 'ceph',
       min: 1,
       max: 3 * 1024,
@@ -305,7 +305,7 @@ export const STORAGE_TYPES = {
   },
   [HYPERVISORS_MAP.ucloud.key]: {
     LOCAL_NORMAL: {
-      label: '本地普通盘',
+      label: i18n.t('common.storage.LOCAL_NORMAL'),
       key: 'LOCAL_NORMAL',
       min: 20,
       max: 2000,
@@ -314,7 +314,7 @@ export const STORAGE_TYPES = {
       skuFamily: ['N1', 'N2', 'N3', 'D1'],
     },
     LOCAL_SSD: {
-      label: '本地SSD盘',
+      label: i18n.t('common.storage.LOCAL_SSD'),
       key: 'LOCAL_SSD',
       min: 20,
       max: 2000,
@@ -323,7 +323,7 @@ export const STORAGE_TYPES = {
       skuFamily: ['C1', 'I2', 'G2', 'G3', 'I1', 'G1'],
     },
     CLOUD_NORMAL: {
-      label: '普通云盘',
+      label: i18n.t('common.storage.cloud'),
       key: 'CLOUD_NORMAL',
       min: 20,
       max: 8000,
@@ -331,7 +331,7 @@ export const STORAGE_TYPES = {
       skuFamily: ['N2', 'N3'],
     },
     CLOUD_SSD: {
-      label: 'SSD云盘',
+      label: i18n.t('common.storage.cloudssd'),
       key: 'CLOUD_SSD',
       min: 20,
       max: 4000,
@@ -340,7 +340,7 @@ export const STORAGE_TYPES = {
       skuFamily: ['N3', 'C1', 'N2', 'I2', 'G2', 'G3'],
     },
     EXCLUSIVE_LOCAL_DISK: {
-      label: '独享本地盘',
+      label: i18n.t('common.storage.EXCLUSIVE_LOCAL_DISK'),
       key: 'EXCLUSIVE_LOCAL_DISK',
       min: 4096,
       max: 4096,
@@ -350,7 +350,7 @@ export const STORAGE_TYPES = {
   },
   [HYPERVISORS_MAP.ctyun.key]: {
     'SSD': {
-      label: '超高IO云硬盘',
+      label: i18n.t('common.storage.ssd'),
       key: 'SSD',
       min: 10,
       max: 32768,
@@ -359,7 +359,7 @@ export const STORAGE_TYPES = {
       sort: 3,
     },
     'SAS': {
-      label: '高IO云硬盘',
+      label: i18n.t('common.storage.sas'),
       key: 'SAS',
       min: 10,
       max: 32768,
@@ -368,7 +368,7 @@ export const STORAGE_TYPES = {
       sort: 2,
     },
     'SATA': {
-      label: '普通IO云硬盘',
+      label: i18n.t('common.storage.sata'),
       key: 'SATA',
       min: 10,
       max: 32768,
@@ -380,7 +380,7 @@ export const STORAGE_TYPES = {
   },
   [HYPERVISORS_MAP.google.key]: {
     'pd-ssd': {
-      label: 'SSD永久性磁盘',
+      label: i18n.t('common.storage.pd-ssd'),
       key: 'pd-ssd',
       min: 10,
       max: 65536,
@@ -389,7 +389,7 @@ export const STORAGE_TYPES = {
       sort: 1,
     },
     'pd-standard': {
-      label: '标准永久性磁盘',
+      label: i18n.t('common.storage.pd-standard'),
       key: 'pd-standard',
       min: 10,
       max: 65536,
@@ -398,7 +398,7 @@ export const STORAGE_TYPES = {
       sort: 2,
     },
     'local-ssd': {
-      label: '本地SSD',
+      label: i18n.t('common.storage.LOCAL_SSD'),
       key: 'local-ssd',
       min: 375,
       max: 375,
