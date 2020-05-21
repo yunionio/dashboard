@@ -53,7 +53,8 @@ export default {
           const mapIpActions = (ipArr, type) => {
             if (!['IP SSH', 'EIP SSH'].includes(type)) throw Error('ssh 类型必须为 IP SSH,EIP SSH 中的一种')
             const options = []
-            ipArr.forEach(v => {
+            ipArr.forEach(item => {
+              const v = item.ip_addr
               const meta = () => {
                 const ret = {
                   validate: false,
@@ -123,7 +124,9 @@ export default {
             return options
           }
           let eips = (obj.eip || '').split(',').filter(item => !!item)
-          let ips = (obj.ips || '').split(',').filter(item => !!item)
+          let ips = (obj.nics || []).filter(item => {
+            return item.vpc_id === 'default'
+          })
           eips = eips.length ? mapIpActions(eips, 'EIP SSH') : []
           ips = ips.length ? mapIpActions(ips, 'IP SSH') : []
           ret = ret.concat(eips).concat(ips)
