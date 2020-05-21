@@ -223,6 +223,7 @@ export default {
             },
             {
               label: '同步状态',
+              permission: 'disks_perform_syncstatus',
               action: () => {
                 this.onManager('performAction', {
                   steadyStatus: ['running', 'ready'],
