@@ -72,6 +72,7 @@ export default {
           { label: '执行状态', key: 'success' },
           { label: '操作时间', key: 'start_time' },
           { label: '发起人', key: 'user' },
+          { label: `所属${this.$t('dictionary.domain')}`, key: 'owner_domain' },
           { label: `所属${this.$t('dictionary.project')}`, key: 'owner_tenant' },
           { label: '备注', key: 'notes' },
         ],
@@ -124,11 +125,11 @@ export default {
               const domain = row.project_domain
               const tenant = row.tenant
               const ret = [
-                <list-body-cell-wrap copy field='user' row={row} />,
-                <list-body-cell-wrap hide-field copy field="tenant" row={{ tenant }}>
+                <list-body-cell-wrap style="margin: 3px 0 2px 0" copy field='user' row={row} />,
+                <list-body-cell-wrap style="line-height: 1" hide-field copy field="tenant" row={{ tenant }}>
                   <span class='text-weak'>{ tenant }</span>
                 </list-body-cell-wrap>,
-                <list-body-cell-wrap hide-field copy field="domain" row={{ domain }}>
+                <list-body-cell-wrap style="margin-bottom: 3px" hide-field copy field="domain" row={{ domain }}>
                   <span class='text-weak'>{ domain }</span>
                 </list-body-cell-wrap>,
               ]
