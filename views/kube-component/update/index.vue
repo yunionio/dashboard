@@ -1,22 +1,30 @@
 <template>
   <div style="height: 400px">
-    <component-form v-if="resData.config" @submit="submit" :config="resData.config" />
+    <!-- <component-form v-if="resData.config" @submit="submit" :config="resData.config" /> -->
+    <component :is="component" v-if="loaded" @submit="submit" :updateData="resData" :isUpdate="true" />
     <a-alert v-else message="无可用服务组件" banner />
   </div>
 </template>
 
 <script>
-import ComponentForm from '../components/Ceph'
+import Ceph from '../components/Ceph'
+import Fluentbit from '../components/Fluentbit'
+import Monitor from '../components/Monitor'
+import { componentMap } from '../constants/componentMap'
 
 export default {
   name: 'K8SKubeComponentUpdate',
   components: {
-    ComponentForm,
+    Ceph,
+    Fluentbit,
+    Monitor,
   },
   data () {
     return {
       loading: false,
+      loaded: false,
       resData: {},
+      component: componentMap[this.$route.query.kubeComponent],
     }
   },
   created () {
@@ -27,6 +35,7 @@ export default {
     async fetchData () {
       try {
         const { cluster = 'default', kubeComponent } = this.$route.query
+        this.loading = true
         const { data = {} } = await this.manager.getSpecific({
           id: cluster,
           spec: 'component-setting',
@@ -35,8 +44,11 @@ export default {
           },
         })
         this.resData = data[kubeComponent]
+        this.loaded = true
       } catch (error) {
         throw error
+      } finally {
+        this.loading = false
       }
     },
     async submit (data) {
