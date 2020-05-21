@@ -9,6 +9,9 @@
       </a-alert>
       <a-form
         :form="form.fc">
+        <a-form-item :label="`指定${$t('dictionary.project')}`" class="mb-0" v-bind="formItemLayout">
+          <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
+        </a-form-item>
         <a-form-item label="镜像名称" v-bind="formItemLayout">
           <a-input placeholder="字母开头，数字和字母大小写组合，长度为2-128个字符，可含'.','-','_'" v-decorator="decorators.name" />
         </a-form-item>
@@ -61,13 +64,20 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import * as R from 'ramda'
 import _ from 'lodash'
+import { isRequired } from '@/utils/validate'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import DomainProject from '@/sections/DomainProject'
+import i18n from '@/locales'
 
 export default {
   name: 'ImageUploadDialog',
+  components: {
+    DomainProject,
+  },
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
@@ -76,6 +86,22 @@ export default {
         fc: this.$form.createForm(this),
       },
       decorators: {
+        domain: [
+          'domain',
+          {
+            rules: [
+              { validator: isRequired(), message: i18n.t('rules.domain'), trigger: 'change' },
+            ],
+          },
+        ],
+        project: [
+          'project',
+          {
+            rules: [
+              { validator: isRequired(), message: i18n.t('rules.project'), trigger: 'change' },
+            ],
+          },
+        ],
         name: [
           'name',
           {
@@ -124,6 +150,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['userInfo']),
     headers () {
       return { 'Authorization': `Bearer ${this.$store.getters.userInfo.session}` }
     },
@@ -205,6 +232,8 @@ export default {
         const { fileList } = this
         let formData = new FormData()
         const values = await this.form.fc.validateFields()
+        formData.append('domain', (values.domain && values.domain.key) || this.userInfo.projectDomainId)
+        formData.append('project', (values.project && values.project.key) || this.userInfo.projectId)
         if (values.uploadType === 'file') {
           formData.append('name', values.name)
           formData.append('os_version', '')
