@@ -3,6 +3,9 @@
     <div slot="header">{{this.params.title}}</div>
     <div slot="body">
       <a-form :form="form.fc" v-bind="formItemLayout">
+        <a-form-item :label="`指定${$t('dictionary.project')}`" class="mb-0" v-bind="formItemLayout">
+          <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
+        </a-form-item>
         <a-form-item label="名称">
           <a-input placeholder="请输入名称" v-decorator="decorators.name" />
           <span slot="extra">
@@ -23,15 +26,20 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { formItemLayout } from '@Storage/constants/index.js'
 import CloudProviderRegion from '@Storage/views/bucket/components/CloudProviderRegion'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import { isRequired } from '@/utils/validate'
+import i18n from '@/locales'
+import DomainProject from '@/sections/DomainProject'
 
 export default {
   name: 'BucketCreateDialog',
   components: {
     CloudProviderRegion,
+    DomainProject,
   },
   mixins: [DialogMixin, WindowsMixin],
   provide () {
@@ -49,11 +57,28 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['userInfo']),
     getFieldValue () {
       return this.form.fc.getFieldValue
     },
     decorators () {
       return {
+        domain: [
+          'domain',
+          {
+            rules: [
+              { validator: isRequired(), message: i18n.t('rules.domain'), trigger: 'change' },
+            ],
+          },
+        ],
+        project: [
+          'project',
+          {
+            rules: [
+              { validator: isRequired(), message: i18n.t('rules.project'), trigger: 'change' },
+            ],
+          },
+        ],
         name: [
           'name',
           {
@@ -87,9 +112,14 @@ export default {
       this.loading = true
       try {
         const values = await this.validateForm()
+        const { project, domain, ...rest } = values
         await this.params.onManager('create', {
           managerArgs: {
-            data: values,
+            data: {
+              ...rest,
+              project_domain: (domain && domain.key) || this.userInfo.projectDomainId,
+              project_id: (project && project.key) || this.userInfo.projectId,
+            },
           },
         })
         this.cancelDialog()
