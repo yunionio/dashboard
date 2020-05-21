@@ -77,6 +77,7 @@
           :image="form.fi.imageMsg"
           :isHostImageType="isHostImageType"
           :disabled="form.fi.sysDiskDisabled"
+          :sizeDisabled="systemdiskSizeDisabled"
           :domain="project_domain" />
       </a-form-item>
       <a-form-item label="数据盘">
@@ -301,6 +302,15 @@ export default {
         }
       }
       return show
+    },
+    systemdiskSizeDisabled () {
+      if (this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key) {
+        const vmLocalImageType = [IMAGES_TYPE_MAP.standard.key, IMAGES_TYPE_MAP.customize.key]
+        if (vmLocalImageType.includes(this.form.fd.imageType)) {
+          return true
+        }
+      }
+      return false
     },
   },
   watch: {
