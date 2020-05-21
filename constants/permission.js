@@ -222,6 +222,7 @@ export const PERMISSION = {
   'disks_perform_create_snapshot': ['compute', 'disks', 'perform', 'create-snapshot'],
   'disks_perform_disk_reset': ['compute', 'disks', 'perform', 'disk-reset'],
   'disks_perform_cancel_delete': ['compute', 'disks', 'perform', 'cancel-delete'],
+  'disks_perform_syncstatus': ['compute', 'disks', 'perform', 'syncstatus'],
   /**
    * snapshots 相关操作
    */
@@ -432,6 +433,7 @@ export const PERMISSION = {
   'networks_perform_split': ['compute', 'networks', 'perform', 'split'],
   'networks_perform_merge': ['compute', 'networks', 'perform', 'merge'],
   'networks_perform_change_owner': ['compute', 'networks', 'perform', 'change-owner'],
+  'networks_perform_syncstatus': ['compute', 'networks', 'perform', 'syncstatus'],
   /**
    * notices 相关操作
    */
