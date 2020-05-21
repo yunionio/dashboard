@@ -79,6 +79,7 @@
           :sku="form.fd.sku"
           :capability-data="form.fi.capability"
           :image="form.fi.imageMsg"
+          :defaultSize="systemdiskDefaultSize"
           :isHostImageType="isHostImageType"
           :disabled="form.fi.sysDiskDisabled"
           :sizeDisabled="systemdiskSizeDisabled"
@@ -315,6 +316,12 @@ export default {
         }
       }
       return false
+    },
+    systemdiskDefaultSize () {
+      if (this.isIso) {
+        return 30
+      }
+      return null
     },
   },
   watch: {
