@@ -272,8 +272,8 @@ export default {
       this.list.fetchData()
     },
     doSave () {
-      return this.list.onManager('performAction', {
-        id: this.list.selectedItems[0].id,
+      return this.list.onManager('batchPerformAction', {
+        id: this.list.selectedItems.map(item => { return item.id }),
         managerArgs: {
           action: 'cache-image',
           data: {
@@ -289,15 +289,10 @@ export default {
           this.$message.info('请选择可用区')
           this.loading = false
           return
-        } else if (this.list.selectedItems.length > 1) {
-          this.$message.info('目前不支持批量操作')
-          this.loading = false
-          return
         }
         await this.doSave()
         this.loading = false
         this.cancelDialog()
-        this.params.refresh()
       } catch (error) {
         this.loading = false
         throw error

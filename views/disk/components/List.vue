@@ -158,6 +158,7 @@ export default {
             return [
               {
                 label: '同步状态',
+                permission: 'disks_perform_syncstatus',
                 action: () => {
                   this.onManager('batchPerformAction', {
                     steadyStatus: ['running', 'ready'],
