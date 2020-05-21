@@ -63,7 +63,7 @@ export default {
   created () {
     const params = {
       details: false,
-      disk: this.params.data[0].id,
+      attachable_servers_for_disk: this.params.data[0].id,
       scope: this.scope,
       brand: this.params.data[0].brand,
     }
