@@ -1,10 +1,10 @@
 <template>
-  <base-dialog @cancel="cancelDialog" :zIndex="1065">
+  <base-dialog @cancel="cancelDialog">
     <div slot="header">{{action}}</div>
     <div slot="body">
       <a-alert class="mb-2" type="warning">
         <div slot="message">
-          {{$t('common.text00059')}} <br /> 
+          {{$t('common.text00059')}} <br />
           {{$t('common.text00060')}}
         </div>
       </a-alert>
@@ -106,10 +106,10 @@ export default {
     },
     durationArrs () {
       return Object.keys(this.$t('durations')).map(k => ({
-        value: key,
+        value: k,
         text: this.$t('durations')[k],
       }))
-    }
+    },
   },
   watch: {
     'form.fd.durationEnable' (val) {
