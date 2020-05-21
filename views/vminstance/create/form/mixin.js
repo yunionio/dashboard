@@ -289,9 +289,13 @@ export default {
     },
     doCreateServertemplate (genCreateData) {
       const data = genCreateData.all()
+      const { project_id, ...rest } = data
       const templateData = {
         name: this.form.fc.getFieldValue('servertemplate_name'),
-        content: data,
+        project: project_id,
+        content: {
+          ...rest,
+        },
       }
       this.submiting = true
       this.servertemplateM.create({ data: templateData })
