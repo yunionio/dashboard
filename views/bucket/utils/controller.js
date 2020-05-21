@@ -40,7 +40,10 @@ export const objectsModel = {
         }
         return null
       } else if (accessUrl) {
-        return `http://${accessUrl}/${key}`
+        if (!accessUrl.startsWith('http')) {
+          return `http://${accessUrl}/${key}`
+        }
+        return `${accessUrl}/${key}`
       }
       return null
     } catch (err) {
