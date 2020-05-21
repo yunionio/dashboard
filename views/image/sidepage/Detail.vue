@@ -33,7 +33,7 @@ export default {
       baseInfo: [
         {
           field: 'project_domain',
-          title: '部门',
+          title: this.$t('dictionary.domain'),
           formatter: ({ row }) => {
             if (!row.domain_id) return '-'
             return <side-page-trigger permission="domains_get" name="DomainSidePage" id={row.domain_id} vm={this}>{ row.project_domain }</side-page-trigger>
