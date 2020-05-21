@@ -325,6 +325,12 @@ export const diskCreateSnapshotConfig = {
   openstack (obj) {
     const guestStatus = ['ready', 'running']
     const provider = obj.provider
+    if (obj.storage_type === 'nova') {
+      return {
+        validate: false,
+        tooltip: `${PROVIDER_MAP[provider].label}以镜像为系统盘不支持创建快照`,
+      }
+    }
     if (obj.guest_status && !guestStatus.includes(obj.guest_status)) {
       return {
         validate: false,
