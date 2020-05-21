@@ -58,6 +58,7 @@ export default {
       groupActions: [
         {
           label: '新建',
+          permission: 'snapshotpolicy_create',
           action: () => {
             this.createDialog('CreateSnapshotPolicyDialog', {
               data: this.list.selectedItems,

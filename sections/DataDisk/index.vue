@@ -18,7 +18,7 @@
           :size-disabled="item.sizeDisabled"
           @snapshotChange="val => snapshotChange(item, val, i)"
           @diskTypeChange="val => diskTypeChange(item, val)" />
-        <a-button v-if="!getDisabled(item, 'minus')" shape="circle" icon="minus" size="small" @click="decrease(item.key)" class="mt-2" />
+        <a-button v-if="!getDisabled(item, 'minus') && (dataDisks.length > 1 ? (i !== 0) : true)" shape="circle" icon="minus" size="small" @click="decrease(item.key)" class="mt-2" />
       </div>
       <div class="d-flex align-items-center" v-if="diskRemain > 0 && !disabled">
         <a-button type="primary" shape="circle" icon="plus" size="small" @click="add" />
