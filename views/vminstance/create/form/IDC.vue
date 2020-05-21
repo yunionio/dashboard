@@ -92,6 +92,7 @@
           :isSnapshotImageType="isSnapshotImageType"
           :isHostImageType="isHostImageType"
           :disabled="form.fi.dataDiskDisabled"
+          :defaultType="form.fd.systemDiskType"
           :domain="project_domain"
           :isWindows="isWindows"
           :enableMointpoint="true" />
