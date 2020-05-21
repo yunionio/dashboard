@@ -53,8 +53,8 @@ import { uuid } from '@/utils/utils'
 export default {
   name: 'KubeComponentCeph',
   props: {
-    config: {
-      type: Array,
+    updateData: {
+      type: Object,
     },
   },
   data () {
@@ -70,9 +70,9 @@ export default {
         },
       ],
     }
-    if (R.is(Array, this.config)) {
+    if (this.updateData && R.is(Array, this.updateData.config)) {
       formData = {
-        config: this.config.map(val => {
+        config: this.updateData.config.map(val => {
           return {
             key: uuid(),
             clusterId: val.clusterId,
