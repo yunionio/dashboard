@@ -100,6 +100,9 @@ export default {
       type: Boolean,
       default: false, // 默认不支持挂载点
     },
+    defaultType: {
+      type: Object,
+    },
   },
   data () {
     return {
@@ -273,7 +276,9 @@ export default {
         }
       } else if (!diskType && !_.get(this.dataDisks, '[0].diskType')) { // 表单中数据盘无第一项，需要 set 磁盘类型默认值
         const defaultKey = Object.keys(this.typesMap)[0]
-        if (defaultKey) {
+        if (R.is(Object, this.defaultType) && this.defaultType.key && this.defaultType.label) {
+          dataDiskTypes = this.defaultType
+        } else if (defaultKey) {
           dataDiskTypes = {
             key: this.typesMap[defaultKey].key,
             label: this.typesMap[defaultKey].label,

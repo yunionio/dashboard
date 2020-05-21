@@ -77,6 +77,7 @@
           :form="form"
           :hypervisor="form.fd.hypervisor"
           :sku="form.fd.sku"
+          :defaultType="form.fd.systemDiskType"
           :capability-data="form.fi.capability"
           ref="dataDiskRef" />
       </a-form-item>
