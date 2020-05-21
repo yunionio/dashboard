@@ -82,6 +82,12 @@ export default {
           title: 'mac地址',
           showOverflow: 'ellipsis',
           minWidth: 100,
+          formatter: ({ cellValue, row }) => {
+            if (cellValue) {
+              return cellValue.toUpperCase()
+            }
+            return '-'
+          },
         },
         {
           field: 'masklen',
@@ -118,6 +124,12 @@ export default {
         {
           field: 'access_mac',
           title: 'mac地址',
+          formatter: ({ cellValue, row }) => {
+            if (cellValue) {
+              return cellValue.toUpperCase()
+            }
+            return '-'
+          },
         },
         {
           field: 'schedtags',
@@ -181,7 +193,7 @@ export default {
             },
             {
               field: 'cpu_cmtbound',
-              title: '超售比上限',
+              title: '超售比',
             },
             {
               field: 'cpu_commit_rate',
@@ -212,7 +224,7 @@ export default {
             },
             {
               field: 'mem_cmtbound',
-              title: '超售比上限',
+              title: '超售比',
             },
             {
               field: 'mem_commit_rate',
