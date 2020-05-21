@@ -367,7 +367,7 @@ export default {
       return `${item.provider}/${item.cloudaccount}/${item.name}`
     },
     hiddenBrandwidthHandle (selectedProvider) {
-      const providers = ['Azure', 'Aws', 'Qcloud']
+      const providers = ['Azure', 'Aws', 'Qcloud', 'Google']
       if (providers.some((v) => { return v === selectedProvider })) {
         this.form.fc.setFieldsValue({ 'bandwidth': 0 })
         this.showBandwidth = false
