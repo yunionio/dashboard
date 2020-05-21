@@ -824,7 +824,6 @@ export class GenCreateData {
    * @memberof GenCreateData
    */
   getSchedPolicyValueKey () {
-    console.log(this.fd, 'this.fd')
     const ret = {}
     // 调度策略选择为 指定宿主机
     if (this.fd.schedPolicyType === SCHED_POLICY_OPTIONS_MAP.host.key) {
