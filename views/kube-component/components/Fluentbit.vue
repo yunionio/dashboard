@@ -106,7 +106,7 @@ export default {
         ],
       },
       formData,
-      labelCol: { span: 5 },
+      labelCol: { span: 7 },
       wrapperCol: { span: 13 },
     }
   },

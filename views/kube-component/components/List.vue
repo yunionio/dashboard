@@ -148,7 +148,7 @@ export default {
               vm: this,
               data: [obj],
               title: '删除',
-              name: 'cephCSI',
+              name: obj.name,
               idKey: 'name',
               ok: (ids, data) => {
                 return new this.$Manager(`kubeclusters`, 'v1').performAction({
@@ -158,7 +158,7 @@ export default {
                     type: obj.name,
                   },
                 }).then(() => {
-                  this.refresh()
+                  this.fetchData()
                   return true
                 }).catch(error => {
                   throw error
@@ -223,7 +223,6 @@ export default {
 
 <style lang="scss" scoped>
 .status {
-  width: 50px;
   display: inline-block;
   vertical-align: bottom;
   overflow: hidden;
