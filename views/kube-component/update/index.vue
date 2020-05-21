@@ -59,9 +59,7 @@ export default {
           id: cluster,
           action: 'update-component',
           data: {
-            [kubeComponent]: {
-              config: data,
-            },
+            [kubeComponent]: data,
             type: kubeComponent,
           },
         })
