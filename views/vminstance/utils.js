@@ -314,6 +314,7 @@ const actionEableMap = {
     brand: {
       qcloud: ['running', 'ready'],
       aliyun: ['running', 'ready'],
+      google: false,
     },
   },
 }
