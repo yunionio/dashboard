@@ -184,6 +184,7 @@ export default {
             },
             {
               label: '同步状态',
+              permission: 'networks_perform_syncstatus',
               action: () => {
                 this.onManager('performAction', {
                   steadyStatus: ['running', 'ready'],
