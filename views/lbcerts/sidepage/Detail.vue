@@ -44,13 +44,7 @@ export default {
           title: '过期时间',
         },
       ],
-      extraInfo: [
-        {
-          title: '其他信息',
-          items: [
-          ],
-        },
-      ],
+      extraInfo: [],
     }
   },
 }

@@ -31,13 +31,7 @@ export default {
           },
         },
       ],
-      extraInfo: [
-        {
-          title: '其他信息',
-          items: [
-          ],
-        },
-      ],
+      extraInfo: [],
     }
   },
 }
