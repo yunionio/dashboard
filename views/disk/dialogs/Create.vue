@@ -4,6 +4,9 @@
     <div slot="body">
       <a-form
         :form="form.fc">
+        <a-form-item :label="`指定${$t('dictionary.project')}`" class="mb-0" v-bind="formItemLayout">
+          <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
+        </a-form-item>
         <a-form-item label="区域" class="mb-0" v-bind="formItemLayout">
           <cloudregion-zone
             :zone-params="par.zone"
@@ -43,11 +46,15 @@ import * as CommonConstants from '../../../constants'
 import CloudregionZone from '@/sections/CloudregionZone'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import { isRequired } from '@/utils/validate'
+import i18n from '@/locales'
+import DomainProject from '@/sections/DomainProject'
 
 export default {
   name: 'DiskCreateDialog',
   components: {
     CloudregionZone,
+    DomainProject,
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
@@ -66,6 +73,22 @@ export default {
         }),
       },
       decorators: {
+        domain: [
+          'domain',
+          {
+            rules: [
+              { validator: isRequired(), message: i18n.t('rules.domain'), trigger: 'change' },
+            ],
+          },
+        ],
+        project: [
+          'project',
+          {
+            rules: [
+              { validator: isRequired(), message: i18n.t('rules.project'), trigger: 'change' },
+            ],
+          },
+        ],
         name: [
           'name',
           {
@@ -254,11 +277,14 @@ export default {
       this.loading = true
       try {
         let values = await this.validateForm()
+        const { project, domain, ...rest } = values
         const storageOpts = R.indexBy(R.prop('value'), this.storageOpts)
         values = {
-          ...values,
+          ...rest,
           size: values.size * 1024,
           backend: storageOpts[values.storage_id].storage_type,
+          project_domain: (domain && domain.key) || this.userInfo.projectDomainId,
+          project_id: (project && project.key) || this.userInfo.projectId,
         }
         Reflect.deleteProperty(values, 'cloudregion')
         Reflect.deleteProperty(values, 'zone')
