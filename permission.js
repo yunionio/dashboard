@@ -6,7 +6,6 @@
 import router from './router'
 import store from './store'
 import { isLogged, hasPermission } from '@/utils/auth'
-import { authRoutesName, whiteRoutesName } from '@/constants'
 
 // 获取scope beforeEach
 const scopePermission = require.context('../scope', false, /.\/permission.js/)
@@ -17,9 +16,10 @@ scopePermission.keys().forEach(name => {
 })
 
 router.beforeEach(async (to, from, next) => {
+  const { authPage = false, auth = true } = to.meta
   const hasToken = !!store.getters.auth.token
   if (hasToken) {
-    if (authRoutesName.includes(to.name)) {
+    if (authPage) {
       if (to.name === 'Login') {
         const logged = isLogged()
         if (logged) {
@@ -46,7 +46,7 @@ router.beforeEach(async (to, from, next) => {
       }
     }
   } else {
-    if (whiteRoutesName.includes(to.name)) {
+    if (!auth) {
       next()
     } else {
       next({ name: 'Auth' })

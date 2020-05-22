@@ -3,24 +3,75 @@ import moment from 'moment'
 import Cookies from 'js-cookie'
 import { Base64 } from 'js-base64'
 import store from '@/store'
-import router from '@/router'
 import { typeClouds } from '@/utils/common/hypervisor'
-import http from '@/utils/http'
 import storage from '@/utils/storage'
 
 const ONECLOUD_AUTH_KEY = 'yunionauth'
-export const LAST_LOGIN_USERNAME_KEY = '__LAST_LOGIN_USERNAME__'
+const HISTORY_USERS_STORAGE_KEY = '__oc_history_users__'
+const ENABLE_SETUP_STORAGE_KEY = '__oc_enable_setup__'
 
-export function getToken () {
+export function getTokenFromCookie () {
   return Cookies.get(ONECLOUD_AUTH_KEY)
 }
 
-export function setToken (token) {
+export function setTokenInCookie (token) {
   return Cookies.set(ONECLOUD_AUTH_KEY, token)
 }
 
-export function removeToken () {
-  return Cookies.remove(ONECLOUD_AUTH_KEY)
+export function getScopeFromCookie () {
+  return Cookies.get('scope')
+}
+
+export function setScopeInCookie (scope) {
+  return Cookies.set('scope', scope, { expires: 7 })
+}
+
+export function removeScopeInCookie () {
+  return Cookies.remove('scope')
+}
+
+export function getTenantFromCookie () {
+  return Cookies.get('tenant')
+}
+
+export function setTenantInCookie (tenant) {
+  return Cookies.set('tenant', tenant, { expires: 7 })
+}
+
+export function removeTenantInCookie () {
+  return Cookies.remove('tenant')
+}
+
+export function getRegionFromCookie () {
+  return Cookies.get('region')
+}
+
+export function setRegionInCookie (region) {
+  return Cookies.set('region', region, { expires: 7 })
+}
+
+export function removeRegionInCookie () {
+  return Cookies.remove('region')
+}
+
+export function getHistoryUsersFromStorage () {
+  return storage.get(HISTORY_USERS_STORAGE_KEY)
+}
+
+export function setHistoryUsersInStorage (users) {
+  return storage.set(HISTORY_USERS_STORAGE_KEY, users)
+}
+
+export function setSetupInStorage (val) {
+  return storage.set(ENABLE_SETUP_STORAGE_KEY, val)
+}
+
+export function removeSetupInStorage () {
+  return storage.remove(ENABLE_SETUP_STORAGE_KEY)
+}
+
+export function getSetupInStorage () {
+  return storage.get(ENABLE_SETUP_STORAGE_KEY)
 }
 
 export function decodeToken (token) {
@@ -30,7 +81,6 @@ export function decodeToken (token) {
       try {
         return JSON.parse(auth)
       } catch (error) {
-        router.push('/auth')
         console.warn('Parse auth failed, please re login')
       }
     }
@@ -39,7 +89,7 @@ export function decodeToken (token) {
 }
 
 export function isLogged () {
-  let token = getToken()
+  let token = getTokenFromCookie()
   if (token) {
     const auth = Base64.decode(token)
     if (auth) {
@@ -166,23 +216,4 @@ export function hasBrandsByEnv (envs) {
   if (R.is(Array, envs)) {
     return envs.some(t => hasBrands(envsMap[t]))
   }
-}
-
-export function updateLastLoginUserName () {
-  return new Promise((resolve, reject) => {
-    const lastLoginUserName = storage.get(LAST_LOGIN_USERNAME_KEY)
-    http.get('/v1/auth/user').then(res => {
-      const data = res.data.data || {}
-      if (lastLoginUserName !== data.name) {
-        Cookies.remove('tenant')
-        Cookies.remove('scope')
-      }
-      store.commit('auth/SET_INFO', data)
-      store.dispatch('auth/getCapabilities')
-      storage.set(LAST_LOGIN_USERNAME_KEY, data.name)
-      resolve()
-    }).catch(() => {
-      resolve()
-    })
-  })
 }

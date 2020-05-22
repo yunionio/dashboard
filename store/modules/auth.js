@@ -1,30 +1,75 @@
 import * as R from 'ramda'
 import _ from 'lodash'
-import Cookies from 'js-cookie'
 import http from '@/utils/http'
-import { getToken, decodeToken } from '@/utils/auth'
-import { SCOPES_MAP } from '@/constants'
 import { PERMISSION, ALL_RESOURCES } from '@/constants/permission'
+import {
+  getTokenFromCookie,
+  decodeToken,
+  getRegionFromCookie,
+  setRegionInCookie,
+  setHistoryUsersInStorage,
+  getScopeFromCookie,
+  getTenantFromCookie,
+  setTenantInCookie,
+  setScopeInCookie,
+  removeTenantInCookie,
+  removeScopeInCookie,
+  getHistoryUsersFromStorage,
+} from '@/utils/auth'
+import { SCOPES_MAP } from '@/constants'
+import router from '@/router'
+
+const initialState = {
+  scope: getScopeFromCookie() || 'project',
+  tenant: getTenantFromCookie(),
+  region: getRegionFromCookie(),
+  token: getTokenFromCookie(),
+  auth: decodeToken(getTokenFromCookie()) || {},
+  info: {
+    projectId: '',
+    projects: [],
+  },
+  permission: null,
+  scopeResource: null,
+  capability: {},
+  regions: {
+    captcha: false,
+    domains: [],
+    idps: [],
+    regions: [],
+  },
+  registersStatus: true,
+  historyUsers: getHistoryUsersFromStorage() || {},
+}
 
 export default {
   state: {
-    scope: Cookies.get('scope') || 'project',
-    token: getToken(),
-    auth: decodeToken(getToken()) || {},
-    info: {
-      projectId: '',
-      projects: [],
-    },
-    permission: null,
-    scopeResource: null,
-    capability: {},
+    ...initialState,
   },
   mutations: {
     SET_SCOPE (state, payload) {
+      setScopeInCookie(payload)
       state.scope = payload
     },
-    SET_TOKEN (state, payload) {
-      state.token = payload
+    SET_TENANT (state, payload) {
+      setTenantInCookie(payload)
+      state.tenant = payload
+    },
+    SET_REGION (state, payload) {
+      setRegionInCookie(payload)
+      state.region = payload
+    },
+    RESET_COOKIE (state, payload) {
+      state.scope = 'project'
+      state.tenant = ''
+      removeTenantInCookie()
+      removeScopeInCookie()
+    },
+    UPDATE_AUTH (state) {
+      const token = getTokenFromCookie()
+      const auth = decodeToken(token)
+      state.token = token
+      state.auth = auth
     },
     SET_INFO (state, payload) {
       state.info = payload
@@ -32,23 +77,61 @@ export default {
     SET_CAPABILITY (state, payload) {
       state.capability = payload
     },
-    SET_AUTH (state, payload) {
-      state.auth = payload
-    },
     SET_PERMISSION (state, payload) {
       state.permission = payload
     },
     SET_SCOPERESOURCE (state, payload) {
       state.scopeResource = payload
     },
+    SET_REGIONS (state, payload) {
+      state.regions = payload
+    },
+    SET_REGISTERS_STATUS (state, payload) {
+      state.registersStatus = payload
+    },
+    UPDATE_HISTORY_USERS (state, payload) {
+      const newVal = { ...state.historyUsers }
+      if (payload.action === 'delete') {
+        delete newVal[payload.key]
+      } else {
+        const key = payload.key || state.info.name
+        const data = {
+          ...newVal[key],
+          ...payload.value,
+        }
+        // 设置创建时间
+        const timestamp = +new Date()
+        if (!_.get(data, 'create_time')) {
+          _.set(data, 'create_time', timestamp)
+        }
+        // 设置更新时间
+        _.set(data, 'update_time', timestamp)
+        // 最多存储5条纪录，超过5则移除掉创建时间最早的
+        if (Object.keys(newVal).length > 5) {
+          const newValArr = Object.entries(newVal)
+          let oldestUser = _.minBy(newValArr, o => o[1]['create_time'])
+          oldestUser[0] && delete newVal[oldestUser[0]]
+        }
+        if (payload === 'action') {
+          _.unset(data, payload.path)
+        }
+        newVal[key] = data
+      }
+      setHistoryUsersInStorage(newVal)
+      state.historyUsers = newVal
+    },
+    LOGOUT (state) {
+      state.token = null
+      state.auth = {}
+    },
   },
   getters: {
     // 是否切换到管理后台
-    isAdmin (state, getters) {
+    isAdmin (state) {
       return state.scope === SCOPES_MAP.system.key
     },
     // 是否切换到域管理后台
-    isDomain (state, getters) {
+    isDomain (state) {
       return state.scope === SCOPES_MAP.domain.key
     },
     // 当前用户是否有含有 system 权限 项目
@@ -100,144 +183,198 @@ export default {
     },
   },
   actions: {
-    login ({ commit, dispatch }, data) {
-      return new Promise(async (resolve, reject) => {
-        try {
-          const response = await http.post('/v1/auth/login', data)
-          const token = getToken()
-          const auth = decodeToken(token)
-          await commit('SET_TOKEN', token)
-          await commit('SET_AUTH', auth)
-          resolve(response)
-        } catch (error) {
-          await commit('SET_SCOPE', Cookies.get('scope') || 'project')
-          await commit('SET_AUTH', decodeToken(getToken()) || {})
-          reject(error)
-        }
-      })
-    },
-    logout ({ commit }, data) {
-      return new Promise(async (resolve, reject) => {
-        try {
-          const logoutResponse = http.post('/v1/auth/logout', data)
-          await commit('SET_TOKEN', null)
-          await commit('SET_AUTH', {})
-          await commit('SET_INFO', {
-            projectId: '',
-            projects: [],
-          })
-          await commit('SET_PERMISSION', null)
-          await commit('SET_SCOPE', 'project')
-          resolve(logoutResponse)
-        } catch (error) {
-          reject(error)
-        }
-      })
-    },
-    reLogin ({ commit, dispatch }, projectId) {
-      return new Promise(async (resolve, reject) => {
-        try {
-          const response = await dispatch('login', { tenantId: projectId })
-          resolve(response)
-        } catch (error) {
-          reject(error)
-        }
-      })
-    },
-    getInfo ({ commit, dispatch, state }) {
-      return new Promise(async (resolve, reject) => {
-        try {
-          const { data: { data } } = await http.get('/v1/auth/user')
-          if (!data) {
-            reject(new Error('Verification failed, please Login again.'))
+    async login ({ commit, state }, data) {
+      try {
+        const _data = { ...data }
+        if (_data.username) {
+          const currentHistoryUser = _.get(state.historyUsers, _data.username, {})
+          if (!R.isEmpty(currentHistoryUser)) {
+            _data.username = `${currentHistoryUser.tenant}/${_data.username}`
+            await commit('SET_TENANT', currentHistoryUser.tenant)
+            await commit('SET_SCOPE', currentHistoryUser.scope)
+          } else {
+            await commit('RESET_COOKIE')
           }
-          await commit('SET_INFO', data)
-          await dispatch('getCapabilities')
-          Cookies.set('tenant', data.projectId, { expires: 7 })
-          Cookies.set('scope', state.scope, { expires: 7 })
-          resolve(data)
-        } catch (error) {
-          reject(error)
         }
-      })
-    },
-    getCapabilities ({ commit, state }) {
-      return new Promise(async (resolve, reject) => {
-        const params = {}
-        if (state.scope === 'system') {
-          params.scope = state.scope
+        const response = await http.post('/v1/auth/login', _data)
+        await commit('UPDATE_AUTH')
+        const newStorageUser = {
+          scope: getScopeFromCookie(),
+          tenant: getTenantFromCookie(),
         }
-        try {
-          const response = await http.get('/v2/capabilities', { params })
-          const data = (response.data.data && response.data.data[0]) || {}
-          await commit('SET_CAPABILITY', data)
-          resolve(response)
-        } catch (error) {
-          reject(error)
-        }
-      })
-    },
-    getPermission ({ commit, state }, scope) {
-      return new Promise(async (resolve, reject) => {
-        const data = R.map(item => [scope || state.scope, ...item], PERMISSION)
-        try {
-          const permissionResponse = await http.post('/v1/auth/permissions', data)
-          await commit('SET_PERMISSION', permissionResponse.data)
-          resolve(permissionResponse)
-        } catch (error) {
-          reject(error)
-        }
-      })
-    },
-    getScopeResource ({ commit, getters }, params) {
-      return new Promise(async (resolve, reject) => {
-        try {
-          const response = await http.get('/v1/auth/scoped_resources', { params })
-          const data = R.map(item => {
-            return R.flatten(R.values(item))
-          }, response.data)
-          await commit('SET_SCOPERESOURCE', data)
-          resolve(response)
-        } catch (error) {
-          reject(error)
-        }
-      })
-    },
-    validPasscode ({ commit }, data) {
-      return new Promise((resolve, reject) => {
-        http.post('/v1/auth/passcode', data).then(response => {
-          resolve(response)
-        }).catch(error => {
-          reject(error)
+        await commit('SET_SCOPE', newStorageUser.scope)
+        await commit('SET_TENANT', newStorageUser.tenant)
+        await commit('UPDATE_HISTORY_USERS', {
+          key: data.username,
+          value: newStorageUser,
         })
-      })
+        return response.data
+      } catch (error) {
+        throw error
+      }
     },
-    getRecovery ({ commit }, params) {
-      return new Promise((resolve, reject) => {
-        http.get('/v1/auth/recovery', { params }).then(response => {
-          resolve(response)
-        }).catch(error => {
-          reject(error)
-        })
-      })
+    async logout ({ commit }, data) {
+      try {
+        const response = await http.post('/v1/auth/logout', data)
+        await commit('LOGOUT')
+        await commit('RESET_COOKIE')
+        return response.data
+      } catch (error) {
+        throw error
+      }
     },
-    setRecovery ({ commit }, data) {
-      return new Promise((resolve, reject) => {
-        http.post('/v1/auth/recovery', data).then(response => {
-          resolve(response)
-        }).catch(error => {
-          reject(error)
+    /**
+     * @description Get user info
+     */
+    async getInfo ({ commit, state }) {
+      try {
+        const response = await http.get('/v1/auth/user')
+        if (!response.data) {
+          throw new Error('Verification failed, please Login again.')
+        }
+        await commit('SET_INFO', response.data.data)
+        await commit('UPDATE_HISTORY_USERS', {
+          key: state.info.name,
+          value: {
+            displayname: state.info.displayname,
+            projectName: state.info.projectName,
+          },
         })
-      })
+        return response.data.data
+      } catch (error) {
+        throw error
+      }
+    },
+    async getCapabilities ({ commit, state }) {
+      try {
+        const response = await http.get('/v2/capabilities', {
+          params: {
+            scope: state.scope,
+          },
+        })
+        const data = (response.data.data && response.data.data[0]) || {}
+        await commit('SET_CAPABILITY', data)
+        return response.data
+      } catch (error) {
+        throw error
+      }
+    },
+    async getPermission ({ commit, state }) {
+      try {
+        const data = R.map(item => [state.scope, ...item], PERMISSION)
+        const response = await http.post('/v1/auth/permissions', data)
+        await commit('SET_PERMISSION', response.data)
+        return response.data
+      } catch (error) {
+        throw error
+      }
+    },
+    async getScopeResource ({ commit }) {
+      try {
+        const response = await http.get('/v1/auth/scoped_resources')
+        const data = R.map(item => {
+          return R.flatten(R.values(item))
+        }, response.data)
+        await commit('SET_SCOPERESOURCE', data)
+        return response.data
+      } catch (error) {
+        throw error
+      }
+    },
+    async getRegions ({ commit, state }) {
+      try {
+        const response = await http.get('/v1/auth/regions')
+        // 如果当前region不在regions列表中，则重新设置region
+        const regions = response.data.regions
+        if (
+          (state.region && !regions.includes(state.region)) ||
+          !state.region
+        ) {
+          commit('SET_REGION', regions[0])
+        }
+        await commit('SET_REGIONS', response.data)
+        return response.data
+      } catch (error) {
+        throw error
+      }
+    },
+    async getRegistersStatus ({ commit }) {
+      try {
+        const response = await http.get('/v1/registers/status')
+        await commit('SET_REGISTERS_STATUS', response.data.status === 'true')
+        return response.data
+      } catch (error) {
+        throw error
+      }
+    },
+    // 登录后所做的后续处理
+    async onAfterLogin ({ commit, state, dispatch }, payload) {
+      // 如果 data 不为空，则是 server 返回的首次绑定秘钥的二维码，存入 storage，以免刷新后重新登录丢失的问题
+      if (payload.data) {
+        await commit('auth/UPDATE_HISTORY_USERS', {
+          key: state.info.name,
+          value: {
+            secret: payload.data,
+          },
+        })
+      }
+      // 如果获取到有效的二维码且开启了totp则进入首次初始化页面
+      if (
+        (
+          payload.data ||
+          _.get(state.historyUsers, `${state.info.name}.secret`)
+        ) && state.auth.auth.totp_on
+      ) {
+        // 获取密码问题，如果设置过则直接进入绑定秘钥页面，没有跳转至设置密码问题页面
+        try {
+          const recovery = await dispatch('auth/getRecovery')
+          if (recovery) {
+            router.replace('/auth/bindsecret')
+          }
+        } catch (error) {
+          if (error.response.status === 404) {
+            router.replace('/auth/setsecretquestion')
+          }
+          throw error
+        }
+      } else if (state.auth.totp_on) {
+        // 如果开启了认证则进入输入秘钥页面
+        router.replace('/auth/secretverify')
+      } else {
+        router.replace('/')
+      }
+    },
+    async validPasscode ({ commit }, data) {
+      try {
+        const response = await http.post('/v1/auth/passcode', data)
+        return response.data
+      } catch (error) {
+        throw error
+      }
+    },
+    async getRecovery ({ commit }, params) {
+      try {
+        const response = http.get('/v1/auth/recovery', { params })
+        return response.data
+      } catch (error) {
+        throw error
+      }
+    },
+    async setRecovery ({ commit }, data) {
+      try {
+        const response = http.post('/v1/auth/recovery', data)
+        return response.data
+      } catch (error) {
+        throw error
+      }
     },
     credential ({ commit }, data) {
-      return new Promise((resolve, reject) => {
-        http.post('/v1/auth/credential', data).then(response => {
-          resolve(response)
-        }).catch(error => {
-          reject(error)
-        })
-      })
+      try {
+        const response = http.post('/v1/auth/credential', data)
+        return response.data
+      } catch (error) {
+        throw error
+      }
     },
   },
 }
