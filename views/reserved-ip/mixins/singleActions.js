@@ -10,6 +10,7 @@ export default {
             columns: this.columns,
             onManager: this.onManager,
             name: '预留IP',
+            refresh: this.refresh,
           })
         },
         meta: (obj) => {
