@@ -12,9 +12,9 @@
         </a-form-item>
         <a-form-item label="平台" v-bind="formItemLayout">
           <a-radio-group v-decorator="decorators.platform">
-            <a-radio-button value="public_cloud">公有云</a-radio-button>
-            <a-radio-button value="private_cloud">私有云</a-radio-button>
             <a-radio-button value="idc">本地IDC</a-radio-button>
+            <a-radio-button value="private_cloud">私有云</a-radio-button>
+            <a-radio-button value="public_cloud">公有云</a-radio-button>
           </a-radio-group>
         </a-form-item>
         <a-form-item label="区域" v-bind="formItemLayout" v-if="platform !== 'idc'">
