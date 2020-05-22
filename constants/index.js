@@ -181,6 +181,18 @@ export const USAGE_CONFIG = {
   'all.snapshot': {
     unit: '个',
   },
+  'all.servers.system': {
+    unit: '台',
+  },
+  'all.disks.system': {
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
+  },
+  'all.servers.system.cpu': {
+    unit: '核',
+  },
+  'all.servers.system.memory': {
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
+  },
   'baremetals': {
     unit: '台',
   },
