@@ -3,6 +3,7 @@
     :on-manager="onManager"
     :data="data"
     statusModule="lb"
+    resource="lbs"
     :base-info="baseInfo"
     :extra-info="extraInfo" />
 </template>
@@ -52,14 +53,6 @@ export default {
             if (row.charge_type) return CHARGE_TYPE[row.charge_type] || row.charge_type
             return '-'
           },
-        },
-        {
-          field: 'region',
-          title: '区域',
-        },
-        {
-          field: 'account',
-          title: '云账号',
         },
       ],
       extraInfo: [
