@@ -687,6 +687,12 @@
       "start_delete": "删除中",
       "deleteing": "删除中",
       "delete_fail": "删除失败"
+    },
+    "reportProject": {
+      "init": "未开始",
+      "refused": "报备失败",
+      "accept": "报备成功",
+      "expired": "已过期"
     }
   },
   "skuCategoryOptions": {

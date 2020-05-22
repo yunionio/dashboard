@@ -289,4 +289,9 @@ export default {
     info: ['ready'],
     danger: ['delete_fail'],
   },
+  reportProject: {
+    info: ['init'],
+    success: ['accept'],
+    danger: ['refused', 'expired'],
+  },
 }
