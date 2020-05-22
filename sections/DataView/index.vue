@@ -78,6 +78,12 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+.data-view {
+  &::v-deep {
+    .CodeMirror {
+      height: 600px !important;
+    }
+  }
+}
 </style>
