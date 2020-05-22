@@ -7,6 +7,7 @@
 
 <script>
 import WindowsMixin from '@/mixins/windows'
+import ListMixin from '@/mixins/list'
 import {
   getStatusTableColumn,
   getBrandTableColumn,
@@ -15,7 +16,7 @@ import {
 
 export default {
   name: 'CacheList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ListMixin],
   props: {
     getParams: {
       type: Object,
