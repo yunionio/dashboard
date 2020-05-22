@@ -66,7 +66,11 @@ export default {
       return this.params.data[0]
     },
     selectParams () {
-      const params = { enabled: 1, host_type: this.firstData['hypervisor'] }
+      const params = {
+        enabled: 1,
+        host_type: this.firstData['hypervisor'],
+        host_status: 'online',
+      }
       if (this.firstData['hypervisor'] === hypervisorMap.kvm.key) {
         params.host_type = 'hypervisor'
       }

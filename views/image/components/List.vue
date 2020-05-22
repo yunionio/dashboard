@@ -281,7 +281,7 @@ export default {
         },
       ]
       if (this.$appConfig.isPrivate) {
-        if (this.$store.getters.scope !== 'project') {
+        if (this.isAdminMode) {
           batchActions.unshift(ImageImport)
         }
         batchActions.unshift(ImageUpload)
