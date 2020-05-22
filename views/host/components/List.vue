@@ -227,6 +227,11 @@ export default {
                 },
               ]
             },
+            meta: () => {
+              return {
+                validate: this.list.selected.length,
+              }
+            },
           },
         ]
       )
