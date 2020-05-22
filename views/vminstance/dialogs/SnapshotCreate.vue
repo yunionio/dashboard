@@ -4,7 +4,7 @@
     <div slot="body">
       <a-alert class="mb-2" type="warning">
         <div slot="message">
-          1. 状态异常的硬盘不支持创建快照. 2. 私有云仅支持本地硬盘创建快照
+          1. 状态异常的硬盘不支持创建快照. 2. 私有云仅支持本地硬盘创建快照（以镜像为系统盘的硬盘不支持创建快照）
         </div>
       </a-alert>
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" action="新建快照" />
@@ -34,7 +34,8 @@
             nameKey="disk"
             :label-format="getDiskLabel"
             :ctx="[['servers', this.params.data[0].id]]"
-            :filterable="true" />
+            :filterable="true"
+            :item.sync="selectDisk" />
         </a-form-item>
         <a-form-item
           v-bind="formItemLayout"
@@ -50,7 +51,7 @@
       </a-form>
     </div>
     <div slot="footer">
-      <a-button type="primary" @click="handleConfirm" :loading="loading">{{
+      <a-button type="primary" @click="handleConfirm" :loading="loading" :disabled="disabledSubmit">{{
         $t("dialog.ok")
       }}</a-button>
       <a-button @click="cancelDialog">{{ $t("dialog.cancel") }}</a-button>
@@ -118,6 +119,8 @@ export default {
         labelCol: { span: 3 },
         wrapperCol: { span: 21 },
       },
+      selectDisk: {},
+      disabledSubmit: false,
     }
   },
   computed: {
@@ -144,6 +147,9 @@ export default {
   watch: {
     'form.fd.snapshotName' (val) {
       this.debounceCheckTemplateName()
+    },
+    'selectDisk' (val) {
+      this.disabledSubmit = val.storage_type === 'nova'
     },
   },
   created () {
