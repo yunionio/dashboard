@@ -52,7 +52,6 @@ export default {
       singleActions: [
         {
           label: '部署',
-          permission: 'k8s_charts_create',
           action: (obj) => {
             this.$router.push({
               path: '/k8s-chart/create',
