@@ -3,6 +3,7 @@
  * author: houjiazong <houjiazong@gmail.com>
  * date: 2018/08/07
  */
+import * as R from 'ramda'
 import router from './router'
 import store from './store'
 import { isLogged, hasPermission } from '@/utils/auth'
@@ -32,11 +33,13 @@ router.beforeEach(async (to, from, next) => {
       const hasRoles = !!store.getters.userInfo.roles
       const hasPermission = !!store.getters.permission
       const hasScopeResource = !!store.getters.scopeResource
+      const hasCapability = !R.isEmpty(store.getters.capability) && !R.isNil(store.getters.capability)
       if (hasRoles && hasPermission && hasScopeResource) {
         next()
       } else {
         try {
           !hasRoles && await store.dispatch('auth/getInfo')
+          !hasCapability && await store.dispatch('auth/getCapabilities')
           !hasPermission && await store.dispatch('auth/getPermission')
           !hasScopeResource && await store.dispatch('auth/getScopeResource')
           next()
