@@ -240,7 +240,6 @@ export default {
             projectName: state.info.projectName,
           },
         })
-        await dispatch('getCapabilities')
         return response.data.data
       } catch (error) {
         throw error

@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import Navbar from '@scope/layouts/Navbar'
 import Sidebar from '../Sidebar'
 import TopAlert from '@/sections/TopAlert'
@@ -26,6 +27,23 @@ export default {
   data () {
     return {
       l2MenuVisible: false,
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'userInfo',
+    ]),
+  },
+  watch: {
+    'userInfo.id' (val) {
+      if (val) {
+        this.$store.dispatch('auth/getCapabilities')
+      }
+    },
+  },
+  created () {
+    if (this.userInfo.id) {
+      this.$store.dispatch('auth/getCapabilities')
     }
   },
 }
