@@ -226,7 +226,7 @@ export default {
     /**
      * @description Get user info
      */
-    async getInfo ({ commit, state }) {
+    async getInfo ({ commit, state, dispatch }) {
       try {
         const response = await http.get('/v1/auth/user')
         if (!response.data) {
@@ -240,6 +240,7 @@ export default {
             projectName: state.info.projectName,
           },
         })
+        await dispatch('getCapabilities')
         return response.data.data
       } catch (error) {
         throw error
