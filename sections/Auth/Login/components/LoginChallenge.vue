@@ -81,6 +81,7 @@ export default {
   name: 'LoginChallenge',
   props: {
     placeholder: Object,
+    formDataMapper: Function,
   },
   data () {
     return {
@@ -192,14 +193,16 @@ export default {
         await this.$refs.form.validate()
         // ------------ 拼接请求所需数据 start ------------
         const data = {}
-        data.username = this.fd.username
-        data.password = Base64.encode(this.fd.password)
-        if (this.fd.captcha) data.captcha = this.fd.captcha
-        if (this.fd.region) {
-          data.region = this.fd.region
+        // 检查parent是否要处理表单数据
+        let fd = this.formDataMapper ? this.formDataMapper({ ...this.fd }) : { ...this.fd }
+        data.username = fd.username
+        data.password = Base64.encode(fd.password)
+        if (fd.captcha) data.captcha = fd.captcha
+        if (fd.region) {
+          data.region = fd.region
           this.$store.commit('SET_REGION', data.region)
         }
-        if (this.fd.domain) data.domain = this.fd.domain
+        if (fd.domain) data.domain = fd.domain
         // ------------ 拼接请求所需数据 end ------------
         const response = await this.$store.dispatch('auth/login', data)
         await this.$store.dispatch('auth/getInfo')
