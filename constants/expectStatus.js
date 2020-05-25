@@ -12,7 +12,7 @@ export default {
   },
   host: {
     success: ['online', 'running'],
-    info: ['offline', 'init', 'ready'],
+    info: ['offline', 'ready'],
     // danger: ['ready'],
   },
   image: {
