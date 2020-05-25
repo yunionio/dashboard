@@ -2,15 +2,15 @@
 <template>
   <div>
     <template v-if="storage_type === 'rbd'">
-      <!-- <a-form-item label="Ceph Mon Host">
+      <a-form-item label="Ceph Mon Host" v-if="!edit">
         <a-input placeholder="例如: 192.168.1.1,192.168.1.2" v-decorator="decorators.rbd_mon_host" />
-      </a-form-item> -->
+      </a-form-item>
       <a-form-item label="Ceph Key">
         <a-input placeholder="例如：AQCP4L1aORs8HRAAdcVS2y2R1oERNa+3xyacTA==" v-decorator="decorators.rbd_key" />
       </a-form-item>
-      <!-- <a-form-item label="Ceph Pool">
+      <a-form-item label="Ceph Pool" v-if="!edit">
           <a-input placeholder="请输入存储池名称" v-decorator="decorators.rbd_pool" />
-      </a-form-item> -->
+      </a-form-item>
     </template>
     <template v-if="storage_type === 'nfs'">
       <a-form-item label="NFS Host">
@@ -29,6 +29,10 @@ export default {
   props: {
     storage_type: {
       type: String,
+    },
+    edit: {
+      type: Boolean,
+      default: false,
     },
   },
   inject: ['form'],
