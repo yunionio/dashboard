@@ -512,6 +512,27 @@ export default {
                 },
               },
               {
+                label: '设置源/目标检查',
+                action: () => {
+                  this.createDialog('VmSourceTargetCheckDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    refresh: this.refresh,
+                  })
+                },
+                meta: () => {
+                  const ret = { validate: true, tooltip: null }
+                  const isAllOneCloud = this.list.selectedItems.every((item) => { return item.hypervisor === typeClouds.hypervisorMap.kvm.key })
+                  if (!isAllOneCloud) {
+                    ret.validate = false
+                    ret.tooltip = '暂只有OneCloud平台支持该操作'
+                    return ret
+                  }
+                  return ret
+                },
+              },
+              {
                 label: '迁移',
                 action: () => {
                   this.createDialog('VmTransferDialog', {
