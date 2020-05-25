@@ -100,7 +100,7 @@
     <!-- 消息中心 -->
     <notify-popover class="navbar-item" />
     <!-- 工单 -->
-    <work-order-popover class="navbar-item" />
+    <work-order-popover class="navbar-item" v-if="itsmServiceEnable" />
     <!-- 帮助 -->
     <help-popover class="navbar-item" />
     <!-- 用户 -->
@@ -275,6 +275,10 @@ export default {
     },
     licenseClosable () {
       return this.computeStatus.prohibited || this.computeStatus.exceeded
+    },
+    itsmServiceEnable () {
+      const itsm = (this.userInfo.services || []).find(v => v.type === 'itsm' && v.status === true)
+      return !!itsm
     },
   },
   watch: {
