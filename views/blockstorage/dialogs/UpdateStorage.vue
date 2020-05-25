@@ -6,6 +6,12 @@
       <dialog-table :data="params.data" :columns="columns" />
       <a-form :form="form.fc" v-bind="formItemLayout">
         <form-items :storage_type="storage_type" :edit="true" />
+<<<<<<< HEAD
+=======
+         <a-form-item label="超售比" v-if="params.data[0].brand.toLowerCase() !== 'zstack'">
+          <a-input-number :step="0.1" v-decorator="decorators.commit_bound" :min="0" />
+        </a-form-item>
+>>>>>>> c9f4dacd09cebd475aaf041f023e75b0ea0b19d0
         <a-form-item label="介质类型">
           <a-select v-decorator="decorators.medium_type" style="width: 200px">
             <a-select-option v-for="(val, key) in MEDIUM_TYPES"  :key="key" :value="key">{{val}}</a-select-option>
