@@ -42,7 +42,7 @@ export default {
   meta: {
     label: '容器',
     icon: 'menu-k8s',
-    hidden: () =>  !hasServices('k8s'),
+    hidden: () => !hasServices('k8s'),
   },
   menus: [
     {
