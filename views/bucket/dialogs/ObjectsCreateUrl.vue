@@ -11,7 +11,7 @@
         </a-form-item>
         <a-form-item label="URL">
            <a-textarea :value="url || '暂无URL'" :disabled="true" autosize />
-           <span style="font-size: 12px">复制文件URL<copy v-if="url" class="ml-1" :message="url" /></span>
+           <a style="font-size: 12px" v-clipboard:copy="url">复制文件URL<copy v-if="url" class="ml-1" :message="url" /></a>
         </a-form-item>
       </a-form>
     </div>

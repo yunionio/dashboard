@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{this.params.title}}</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" :action="this.params.title" name="文件" />
+      <dialog-selected-tips :count="params.data.length" :action="this.params.title" :name="$t('dictionary.bucket')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" v-bind="formItemLayout">
         <a-form-item label="读写权限">

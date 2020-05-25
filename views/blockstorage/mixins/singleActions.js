@@ -75,6 +75,25 @@ export default {
               },
             },
             {
+              label: '调整超售比',
+              permission: 'storages_update',
+              action: row => {
+                this.createDialog('BlockStorageUpdateCommitBoundDialog', {
+                  data: [row],
+                  columns: this.columns,
+                  title: '调整超售比',
+                  onManager: this.onManager,
+                  refresh: this.refresh,
+                })
+              },
+              meta: row => {
+                return {
+                  validate: row.provider !== 'ZStack',
+                  tooltip: row.provider === 'ZStack' && '该平台暂不支持此操作',
+                }
+              },
+            },
+            {
               label: '调整容量',
               permission: 'storages_update_capacity',
               action: row => {
@@ -90,19 +109,6 @@ export default {
                 return {
                   validate: row.provider === 'OpenStack',
                 }
-              },
-            },
-            {
-              label: '调整超售比',
-              permission: 'storages_update',
-              action: row => {
-                this.createDialog('BlockStorageUpdateCommitBoundDialog', {
-                  data: [row],
-                  columns: this.columns,
-                  title: '调整超售比',
-                  onManager: this.onManager,
-                  refresh: this.refresh,
-                })
               },
             },
             {
