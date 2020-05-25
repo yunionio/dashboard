@@ -977,6 +977,7 @@ export default {
                   meta: () => {
                     const ret = { validate: true, tooltip: null }
                     if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
+                      ret.validate = false
                       ret.tooltip = '暂只有OneCloud平台支持该操作'
                       return ret
                     }
