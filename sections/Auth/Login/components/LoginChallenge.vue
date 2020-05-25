@@ -171,6 +171,7 @@ export default {
           },
         })
         this.captchaImg = `data:;base64,${Buffer.from(response.data, 'binary').toString('base64')}`
+        this.fd.captcha = ''
       } catch (error) {
         throw error
       } finally {
