@@ -105,7 +105,7 @@ export default {
         domain: undefined,
         region: undefined,
       },
-      rules: R.mergeDeepWith({
+      rules: R.mergeDeepWith(R.concat, {
         username: [
           { required: true, message: this.$t('auth.username.validate') },
         ],
