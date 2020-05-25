@@ -92,7 +92,7 @@ export default {
         },
         {
           field: 'mac',
-          title: 'mac地址',
+          title: 'MAC地址',
           showOverflow: 'ellipsis',
           minWidth: 100,
         },
@@ -118,7 +118,7 @@ export default {
         },
         {
           field: 'access_mac',
-          title: 'mac地址',
+          title: 'MAC地址',
         },
         getStatusTableColumn({ field: 'host_status', statusModule: 'host_status', title: '服务' }),
         {
@@ -137,7 +137,7 @@ export default {
         },
         {
           field: 'access_mac',
-          title: 'mac地址',
+          title: 'MAC地址',
         },
         {
           field: 'schedtags',

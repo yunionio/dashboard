@@ -79,14 +79,11 @@ export default {
         },
         {
           field: 'mac',
-          title: 'mac地址',
+          title: 'MAC地址',
           showOverflow: 'ellipsis',
           minWidth: 100,
           formatter: ({ cellValue, row }) => {
-            if (cellValue) {
-              return cellValue.toUpperCase()
-            }
-            return '-'
+            return cellValue || '-'
           },
         },
         {
@@ -123,12 +120,9 @@ export default {
         getCopyWithContentTableColumn({ field: 'server', title: '分配' }),
         {
           field: 'access_mac',
-          title: 'mac地址',
+          title: 'MAC地址',
           formatter: ({ cellValue, row }) => {
-            if (cellValue) {
-              return cellValue.toUpperCase()
-            }
-            return '-'
+            return cellValue || '-'
           },
         },
         {
