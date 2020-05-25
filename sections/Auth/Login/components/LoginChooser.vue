@@ -2,7 +2,7 @@
   <div class="history-wrap d-flex flex-column" :class="{ default: !showDelete }">
     <div class="list flex-fill overflow-auto">
       <template v-for="item of dataSource">
-        <div class="item d-flex align-items-center pb-2 pt-2" :key="item[0]" @click="handleSelect(item[0])">
+        <div class="item d-flex align-items-center pb-2 pt-2" :key="item[0]" @click="handleSelect(item)">
           <div class="left flex-fill">
             <div class="l1info">{{ item[0] }} - {{ item[1].displayname }}</div>
             <div class="l2info text-color-help mt-1">{{ $t('common.text00118') }}：{{ $t(`authChooser.${item[1]['scope']}`) }}</div>
@@ -40,6 +40,9 @@ import { mapState } from 'vuex'
 
 export default {
   name: 'LoginChooser',
+  props: {
+    getUsernameQuery: Function,
+  },
   data () {
     return {
       showDelete: false,
@@ -70,8 +73,9 @@ export default {
         action: 'delete',
       })
     },
-    handleSelect (username) {
+    handleSelect (item) {
       if (this.showDelete) return
+      const username = this.getUsernameQuery ? this.getUsernameQuery(item) : item[0]
       this.$router.replace({
         path: '/auth/login',
         query: {

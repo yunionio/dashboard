@@ -238,6 +238,7 @@ export default {
           value: {
             displayname: state.info.displayname,
             projectName: state.info.projectName,
+            projectDomain: state.info.projectDomain,
           },
         })
         return response.data.data
