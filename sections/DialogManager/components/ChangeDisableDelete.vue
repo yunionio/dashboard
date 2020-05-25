@@ -46,16 +46,12 @@ export default {
       return this.params.title || this.$t('common.text00077')
     },
     decorators () {
-      const { data } = this.params
-      let initialValueDisableDelete = true
-      if (data && data.length === 1) {
-        initialValueDisableDelete = data[0]['disable_delete']
-      }
+      const isAllNotDisable = this.params.data.every((item) => { return !item.disable_delete })
       return {
         disable_delete: [
           'disable_delete',
           {
-            initialValue: initialValueDisableDelete,
+            initialValue: !isAllNotDisable,
           },
         ],
       }
