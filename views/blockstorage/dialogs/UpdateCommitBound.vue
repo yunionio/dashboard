@@ -6,10 +6,8 @@
       <dialog-table :data="params.data" :columns="columns" />
       <a-form :form="form.fc" v-bind="formItemLayout">
         <form-items :storage_type="storage_type" :edit="true" />
-        <a-form-item label="介质类型">
-          <a-select v-decorator="decorators.medium_type" style="width: 200px">
-            <a-select-option v-for="(val, key) in MEDIUM_TYPES"  :key="key" :value="key">{{val}}</a-select-option>
-          </a-select>
+         <a-form-item label="超售比" v-if="params.data[0].brand.toLowerCase() !== 'zstack'">
+          <a-input-number :step="0.1" v-decorator="decorators.commit_bound" :min="0" />
         </a-form-item>
       </a-form>
     </div>
@@ -22,16 +20,13 @@
 
 <script>
 import { formItemLayout, MEDIUM_TYPES } from '@Storage/constants/index.js'
-import FormItems from '@Storage/views/blockstorage/components/FormItems'
 import { getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'BlockStorageUpdateStorageDialog',
-  components: {
-    FormItems,
-  },
+  name: 'BlockStorageUpdateCommitBoundDialog',
+  components: {},
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
@@ -43,6 +38,13 @@ export default {
       },
       columns: [
         getCopyWithContentTableColumn(),
+        {
+          field: 'commit_bound',
+          title: '超售比',
+          formatter: ({ row }) => {
+            return row.commit_bound ? row.commit_bound.toFixed(1) : '-'
+          },
+        },
         {
           field: 'medium_type',
           title: '介质类型',
@@ -59,12 +61,6 @@ export default {
     }
   },
   computed: {
-    storage_type () {
-      if (this.params.data && this.params.data.length > 0) {
-        return this.params.data[0].storage_type
-      }
-      return undefined
-    },
     decorators () {
       return {
         commit_bound: [
@@ -103,8 +99,12 @@ export default {
           Reflect.deleteProperty(values, 'commit_bound')
         }
         const manager = new this.$Manager('storages', 'v2')
-        await manager.update({ id: this.params.data[0].id, data: values })
+        await manager.batchUpdate({
+          ids: this.params.data.map(item => item.id),
+          data: values,
+        })
         this.cancelDialog()
+        this.$message.success('操作成功')
         this.params.refresh()
         this.loading = false
       } catch (error) {

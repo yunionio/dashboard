@@ -93,8 +93,20 @@ export default {
               },
             },
             {
-              label: '调度标签',
+              label: '调整超售比',
               permission: 'storages_update',
+              action: row => {
+                this.createDialog('BlockStorageUpdateCommitBoundDialog', {
+                  data: [row],
+                  columns: this.columns,
+                  title: '调整超售比',
+                  onManager: this.onManager,
+                  refresh: this.refresh,
+                })
+              },
+            },
+            {
+              label: '调度标签',
               action: row => {
                 this.createDialog('BlockStorageUpdateTagsDialog', {
                   data: [row],
