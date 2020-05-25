@@ -124,7 +124,12 @@ export default {
         done: 0,
       }
       if (fileList && Array.isArray(fileList)) {
-        fileList.forEach(({ status }) => {
+        fileList.forEach((file) => {
+          const { status, response } = file
+          if (status === 'error' && response) {
+            file['response'] = response.details
+          }
+          console.log(file)
           _statusNums[status] += 1
         })
       }
