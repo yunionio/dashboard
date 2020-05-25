@@ -102,19 +102,6 @@ export default {
           actions: () => {
             return [
               {
-                label: '调整超售比',
-                permission: 'storages_update',
-                action: row => {
-                  this.createDialog('BlockStorageUpdateCommitBoundDialog', {
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    title: '调整超售比',
-                    onManager: this.onManager,
-                    refresh: this.refresh,
-                  })
-                },
-              },
-              {
                 label: '启用',
                 permission: 'storages_perform_enable',
                 action: () => {
@@ -145,6 +132,26 @@ export default {
                 meta: () => {
                   return {
                     validate: this.list.selectedItems.some(item => item.enabled),
+                  }
+                },
+              },
+              {
+                label: '调整超售比',
+                permission: 'storages_update',
+                action: row => {
+                  this.createDialog('BlockStorageUpdateCommitBoundDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    title: '调整超售比',
+                    onManager: this.onManager,
+                    refresh: this.refresh,
+                  })
+                },
+                meta: () => {
+                  const validate = this.list.selectedItems.every(item => item.brand !== 'ZStack')
+                  return {
+                    validate,
+                    tooltip: !validate && 'ZStack平台暂不支持此操作',
                   }
                 },
               },
