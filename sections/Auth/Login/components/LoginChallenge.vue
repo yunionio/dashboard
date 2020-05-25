@@ -122,6 +122,7 @@ export default {
       captchaImg: '',
       submiting: false,
       showUsernameInput: !this.$route.query.username,
+      showChooserBtn: false,
     }
   },
   computed: {
@@ -137,9 +138,6 @@ export default {
     showCaptchaInput () {
       return this.regions.captcha === true
     },
-    showChooserBtn () {
-      return Object.keys(this.historyUsers).length > 0
-    },
   },
   watch: {
     showCaptchaInput: {
@@ -150,6 +148,10 @@ export default {
       },
       immediate: true,
     },
+  },
+  created () {
+    // showChooserBtn 没使用compute。主要希望只触发一次
+    this.showChooserBtn = Object.keys(this.historyUsers).length > 0
   },
   methods: {
     // 获取验证码图片

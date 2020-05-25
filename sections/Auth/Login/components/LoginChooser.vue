@@ -91,6 +91,7 @@ export default {
     border-bottom: 1px solid #ccc;
     padding-left: 60px;
     padding-right: 60px;
+    cursor: default;
   }
   .actions {
     padding-left: 60px;
@@ -104,6 +105,7 @@ export default {
   }
   &.default {
     .item {
+      cursor: pointer;
       &:hover {
         background-color: #e8f0fe;
       }
