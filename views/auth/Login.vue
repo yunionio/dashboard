@@ -299,7 +299,7 @@ export default {
         await this.onTotpLogin(loginResponse)
         this.submting = false
       } catch (error) {
-        if (error.response.status === 409) {
+        if (error.response && error.response.status === 409) {
           this.form.fi.showDomain = true
         }
         this.fetchCaptcha()
