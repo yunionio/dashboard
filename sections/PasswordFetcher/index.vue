@@ -59,20 +59,35 @@
     <a-modal
       :visible="dialog.visible"
       :closable="false"
-      okText="确定"
-      cancelText="取消"
       title="获取密码"
-      @cancel="handleDialogCacel"
-      @ok="handleDialogConfirm">
+      @cancel="handleDialogCacel">
       <div>
         <div class="mb-2">
           <a-alert type="warning" message="仅支持 OpenSSL's PEM 格式" />
         </div>
-        <a-textarea v-model="dialog.value" :rows="7" />
+        <a-row :gutter="20" class="mb-2">
+          <a-col :span="5" class="text-right">密钥名称：</a-col>
+          <a-col :span="19">{{ loginInfos.password.keypair }}</a-col>
+        </a-row>
+        <a-row :gutter="20" class="mb-2">
+          <a-col :span="5" class="text-right">密钥：</a-col>
+          <a-col :span="19">
+            <a-textarea v-model="dialog.value" :rows="7" />
+          </a-col>
+        </a-row>
         <template v-if="dialog.password">
-          <div class="mt-2"><span>密码：</span><span>{{ dialog.password }}</span><copy class="ml-1" :message="dialog.password" /></div>
+          <a-row :gutter="20">
+            <a-col :span="5" class="text-right">密码：</a-col>
+            <a-col :span="19">
+              <span>{{ dialog.password }}</span><copy class="ml-1" :message="dialog.password" />
+            </a-col>
+          </a-row>
         </template>
       </div>
+      <template #footer>
+        <a-button type="primary" @click="handleDialogConfirm">确定</a-button>
+        <a-button @click="handleDialogCacel">取消</a-button>
+      </template>
     </a-modal>
   </div>
 </template>
