@@ -102,6 +102,19 @@ export default {
           actions: () => {
             return [
               {
+                label: '调整超售比',
+                permission: 'storages_update',
+                action: row => {
+                  this.createDialog('BlockStorageUpdateCommitBoundDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    title: '调整超售比',
+                    onManager: this.onManager,
+                    refresh: this.refresh,
+                  })
+                },
+              },
+              {
                 label: '启用',
                 permission: 'storages_perform_enable',
                 action: () => {
