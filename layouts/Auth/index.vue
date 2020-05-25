@@ -53,7 +53,7 @@ export default {
       try {
         await this.$store.dispatch('auth/getRegistersStatus')
         if (!this.$store.state.auth.registersStatus) {
-          this.$router.replace('/auth/register')
+          this.$router.replace('/auth/adminregister')
         }
       } catch (error) {
         console.error(error)
