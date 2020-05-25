@@ -40,7 +40,7 @@ router.beforeEach(async (to, from, next) => {
     !hasPermission && await store.dispatch('auth/getPermission')
     !hasScopeResource && await store.dispatch('auth/getScopeResource')
   } catch (error) {
-    console.error(error)
+    throw error
   } finally {
     next()
   }
