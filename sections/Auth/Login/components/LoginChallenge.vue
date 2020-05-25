@@ -74,6 +74,7 @@
   </div>
 </template>
 <script>
+import * as R from 'ramda'
 import { mapState } from 'vuex'
 import { Base64 } from 'js-base64'
 
@@ -82,6 +83,10 @@ export default {
   props: {
     placeholder: Object,
     formDataMapper: Function,
+    formRules: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data () {
     return {
@@ -100,7 +105,7 @@ export default {
         domain: undefined,
         region: undefined,
       },
-      rules: {
+      rules: R.mergeDeepWith({
         username: [
           { required: true, message: this.$t('auth.username.validate') },
         ],
@@ -117,7 +122,7 @@ export default {
         region: [
           { required: true, message: this.$t('auth.region.validate') },
         ],
-      },
+      }, this.formRules),
       showDomainSelect: false,
       captchaLoading: false,
       captchaImg: '',
