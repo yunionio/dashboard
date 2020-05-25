@@ -18,42 +18,31 @@ scopePermission.keys().forEach(name => {
 
 router.beforeEach(async (to, from, next) => {
   const { authPage = false, auth = true } = to.meta
-  const hasToken = !!store.getters.auth.token
-  if (hasToken) {
+  // 不需要认证的页面
+  // 认证相关页面，如果是登录中，直接push到首页，否则next
+  if (!auth) {
     if (authPage) {
-      if (to.name === 'Login') {
-        const logged = isLogged()
-        if (logged) {
-          next('/')
-        }
-      } else {
-        next()
-      }
-    } else {
-      const hasRoles = !!store.getters.userInfo.roles
-      const hasPermission = !!store.getters.permission
-      const hasScopeResource = !!store.getters.scopeResource
-      const hasCapability = !R.isEmpty(store.getters.capability) && !R.isNil(store.getters.capability)
-      if (hasRoles && hasPermission && hasScopeResource) {
-        next()
-      } else {
-        try {
-          !hasRoles && await store.dispatch('auth/getInfo')
-          !hasCapability && await store.dispatch('auth/getCapabilities')
-          !hasPermission && await store.dispatch('auth/getPermission')
-          !hasScopeResource && await store.dispatch('auth/getScopeResource')
-          next()
-        } catch (error) {
-          throw error
-        }
-      }
+      const logged = isLogged()
+      if (logged) return next('/')
     }
-  } else {
-    if (!auth) {
-      next()
-    } else {
-      next({ name: 'Auth' })
-    }
+    return next()
+  }
+  // 需要认证页面
+  const hasToken = !!store.getters.auth.token
+  if (!hasToken) return next('/auth/login')
+  const hasRoles = !R.isEmpty(store.getters.userInfo.roles) && !R.isNil(store.getters.userInfo.roles)
+  const hasPermission = !R.isEmpty(store.getters.permission) && !R.isNil(store.getters.permission)
+  const hasScopeResource = !R.isEmpty(store.getters.scopeResource) && !R.isNil(store.getters.scopeResource)
+  const hasCapability = !R.isEmpty(store.getters.capability) && !R.isNil(store.getters.capability)
+  try {
+    !hasRoles && await store.dispatch('auth/getInfo')
+    !hasCapability && await store.dispatch('auth/getCapabilities')
+    !hasPermission && await store.dispatch('auth/getPermission')
+    !hasScopeResource && await store.dispatch('auth/getScopeResource')
+  } catch (error) {
+    console.error(error)
+  } finally {
+    next()
   }
 })
 
