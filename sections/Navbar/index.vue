@@ -132,6 +132,7 @@ import HelpPopover from './components/HelpPopover'
 import GlobalSearch from './components/GlobalSearch'
 import UserProjectSelect from '@/sections/UserProjectSelect'
 import WindowsMixin from '@/mixins/windows'
+import { getSetupInStorage } from '@/utils/auth'
 
 export default {
   name: 'Navbar',
@@ -299,7 +300,7 @@ export default {
     userInfo: {
       handler (val, oldVal = {}) {
         if (val.id !== oldVal.id) {
-          if (Cookies.get('INIT_SETUP') && val.roles && val.roles.includes('admin')) {
+          if (getSetupInStorage() && val.roles && val.roles.includes('admin')) {
             this.$router.push('/guide')
             return
           }
