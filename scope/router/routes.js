@@ -2,7 +2,7 @@ import AuthLayout from '@/layouts/Auth'
 import Login from '@/sections/Auth/Login'
 import LoginChooser from '@/sections/Auth/Login/components/LoginChooser'
 import LoginChallenge from '@/sections/Auth/Login/components/LoginChallenge'
-import Register from '@/sections/Auth/Register'
+import AdminRegister from '@/sections/Auth/AdminRegister'
 import SecretVerify from '@/sections/Auth/SecretVerify'
 import BindSecret from '@/sections/Auth/BindSecret'
 import SetSecretQuestion from '@/sections/Auth/SetSecretQuestion'
@@ -35,9 +35,9 @@ const routes = [
         ],
       },
       {
-        name: 'Register',
-        path: 'register',
-        component: Register,
+        name: 'AdminRegister',
+        path: 'adminregister',
+        component: AdminRegister,
         meta: { layout: 'full-screen', auth: false, authPage: true },
       },
       {
