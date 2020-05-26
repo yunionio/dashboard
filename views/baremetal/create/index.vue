@@ -1137,7 +1137,7 @@ export default {
         if (this.checkWorkflowEnabled(WORKFLOW_TYPES.APPLY_MACHINE)) { // 提交工单
           let variables = {
             process_definition_key: WORKFLOW_TYPES.APPLY_MACHINE,
-            initiator: this.$userInfo.id,
+            initiator: this.$store.getters.userInfo.id,
             paramter: JSON.stringify(params),
           }
           this.doCreateWorkflow(variables, params)
