@@ -28,6 +28,7 @@ const initialState = {
   info: {
     projectId: '',
     projects: [],
+    domain: {},
   },
   permission: null,
   scopeResource: null,
@@ -239,6 +240,7 @@ export default {
             displayname: state.info.displayname,
             projectName: state.info.projectName,
             projectDomain: state.info.projectDomain,
+            domain: state.info.domain || {},
           },
         })
         return response.data.data
