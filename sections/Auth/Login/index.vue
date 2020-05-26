@@ -65,7 +65,7 @@ export default {
     ...mapGetters(['auth', 'userInfo', 'loginLogo']),
     ...mapState('auth', {
       regions: state => state.regions,
-      historyUsers: state => state.historyUsers,
+      loggedUsers: state => state.loggedUsers,
     }),
     title () {
       if (this.$route.name === 'Auth') {
@@ -97,7 +97,7 @@ export default {
   },
   created () {
     this.$store.dispatch('auth/getRegions')
-    if (!R.isEmpty(this.historyUsers)) {
+    if (!R.isEmpty(this.loggedUsers)) {
       this.$router.replace('/auth/login/chooser')
     }
   },

@@ -69,10 +69,10 @@ export default {
       historyUsers: state => state.historyUsers,
     }),
     secret () {
-      return _.get(this.historyUsers, `${this.userInfo.name}.secret`)
+      return _.get(this.historyUsers, `${this.$store.getters['auth/currentHistoryUserKey']}.secret`)
     },
     secretImg () {
-      return `data:image/png;base64,${_.get(this.historyUsers, `${this.userInfo.name}.secret`)}`
+      return `data:image/png;base64,${_.get(this.historyUsers, `${this.$store.getters['auth/currentHistoryUserKey']}.secret`)}`
     },
   },
   watch: {
@@ -94,7 +94,7 @@ export default {
         })
         this.$store.commit('auth/UPDATE_HISTORY_USERS', {
           action: 'unset',
-          key: this.userInfo.name,
+          key: this.$store.getters['auth/currentHistoryUserKey'],
           path: 'secret',
         })
         this.loading = false

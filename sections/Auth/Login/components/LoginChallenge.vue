@@ -102,7 +102,7 @@ export default {
         username: this.$route.query.username || '',
         password: '',
         captcha: '',
-        domain: undefined,
+        domain: this.$route.query.domain,
         region: undefined,
       },
       rules: R.mergeDeepWith(R.concat, {
@@ -133,7 +133,7 @@ export default {
   },
   computed: {
     ...mapState('auth', {
-      historyUsers: state => state.historyUsers,
+      loggedUsers: state => state.loggedUsers,
     }),
     regions () {
       return this.$store.state.auth.regions
@@ -157,7 +157,7 @@ export default {
   },
   created () {
     // showChooserBtn 没使用compute。主要希望只触发一次
-    this.showChooserBtn = Object.keys(this.historyUsers).length > 0
+    this.showChooserBtn = Object.keys(this.loggedUsers).length > 0
   },
   methods: {
     // 获取验证码图片
@@ -210,8 +210,8 @@ export default {
         }
         if (fd.domain) data.domain = fd.domain
         // ------------ 拼接请求所需数据 end ------------
+        await this.$store.commit('auth/SET_LOGIN_FORM_DATA', data)
         const response = await this.$store.dispatch('auth/login', data)
-        await this.$store.dispatch('auth/getInfo')
         await this.$emit('after-login')
         await this.$store.dispatch('auth/onAfterLogin', response)
       } catch (error) {

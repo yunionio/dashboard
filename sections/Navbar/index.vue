@@ -399,15 +399,17 @@ export default {
         })
         await this.$store.commit('auth/SET_SCOPE', scope)
         await this.$store.commit('auth/SET_TENANT', projectId)
-        await this.$store.commit('auth/UPDATE_HISTORY_USERS', {
-          key: this.userInfo.name,
+        await this.$store.commit('auth/UPDATE_LOGGED_USERS', {
+          key: this.$store.getters['auth/currentLoggedUserKey'],
           value: {
             tenant: projectId,
+            scope,
           },
         })
         await this.$store.commit('auth/UPDATE_HISTORY_USERS', {
-          key: this.userInfo.name,
+          key: this.$store.getters['auth/currentHistoryUserKey'],
           value: {
+            tenant: projectId,
             scope,
           },
         })
