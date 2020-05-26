@@ -97,6 +97,11 @@ export default {
       if (params.secgroup && params.secgroup.length > 0) {
         params['secgroup'] = params.secgroup[0]
       }
+      // 到期释放
+      if (params.durationStandard !== 'none') {
+        params['duration'] = params.duration || params.durationStandard
+      }
+      delete params.durationStandard
       return params
     },
     async doCreate () {
