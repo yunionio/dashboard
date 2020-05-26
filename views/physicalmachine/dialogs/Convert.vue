@@ -414,10 +414,10 @@ export default {
       })
       let range = []
       if (data.option[2] === 'none') {
-        range = [0]
+        range = [data.start_index]
       } else {
-        let k = 0
-        while (k < data.count) {
+        let k = data.start_index
+        while (k < data.start_index + data.count) {
           range.push(k)
           k++
         }
@@ -425,16 +425,25 @@ export default {
       const isRepeat = this.diskOptionsDate.filter(item => item.diskInfo[1] === arr[1])
       if (isRepeat.length > 0) {
         if (data.option[2] === 'none') {
-          range = [this.count++]
+          range = [data.start_index + this.count + 1]
         } else {
-          const lastIndexRange = isRepeat[isRepeat.length - 1].range
-          let i = lastIndexRange[lastIndexRange.length - 1]
-          let j = 0
-          range = []
-          while (j < data.count) {
-            i++
-            range.push(i)
-            j++
+          if (data.start_index === 0) {
+            const lastIndexRange = isRepeat[isRepeat.length - 1].range
+            let i = lastIndexRange[lastIndexRange.length - 1]
+            let p = 0
+            range = []
+            while (p < data.count) {
+              i++
+              range.push(i)
+              p++
+            }
+          } else {
+            let j = data.start_index
+            range = []
+            while (j < data.start_index + data.count) {
+              range.push(j)
+              j++
+            }
           }
         }
       }
