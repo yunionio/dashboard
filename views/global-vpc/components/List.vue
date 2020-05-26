@@ -11,6 +11,7 @@
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
+import expectStatus from '@/constants/expectStatus'
 import { getStatusFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
@@ -30,6 +31,7 @@ export default {
         id: this.id,
         resource: 'globalvpcs',
         getParams: this.getParam,
+        steadyStatus: Object.values(expectStatus.globalVpc).flat(),
         filterOptions: {
           name: {
             label: '名称',
