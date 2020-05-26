@@ -7,7 +7,7 @@
         <a-form-item v-bind="formItemLayout" :label="`指定${$t('dictionary.domain')}`" v-if="$store.getters.isAdminMode">
           <domain-select v-decorator="decorators.project_domain" />
         </a-form-item>
-        <a-form-item label="专有网络" v-bind="formItemLayout" :validateStatus="vpcValidateStatus" :help="vpcHelp" :required="true">
+        <a-form-item label="VPC" v-bind="formItemLayout" :validateStatus="vpcValidateStatus" :help="vpcHelp" :required="true">
           <a-row :gutter="8">
             <a-col :span="12">
               <a-select
@@ -22,7 +22,7 @@
             <a-col :span="12">
               <a-select
                   v-decorator="decorators.vpc"
-                  placeholder="专有网络">
+                  placeholder="VPC">
                 <a-select-option v-for="item in vpcs" :value="item.value" :key="item.value">
                   {{item.label}}
                 </a-select-option>
