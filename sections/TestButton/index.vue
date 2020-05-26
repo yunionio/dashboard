@@ -30,8 +30,8 @@ export default {
       return {
         loading: this.loading,
         disabled: this.disabled,
-        type: 'link',
-        style: 'padding: 0',
+        // type: 'link',
+        // style: 'padding: 0',
       }
     },
   },
