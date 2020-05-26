@@ -174,8 +174,6 @@ export const PERMISSION = {
   'serverskus_list': ['compute', 'serverskus', 'list'],
   // 认证源
   'idps_list': ['identity', 'identity_providers', 'list'],
-  // 私有云账单
-  'bill_virtual_accounts_list': ['meter', 'res_results', 'list'],
   // 常用系统(接入端)
   'endpoints_list': ['identity', 'endpoints', 'list'],
   /**
