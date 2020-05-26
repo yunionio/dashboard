@@ -109,7 +109,7 @@
         :form="form"
         :selectedSpecItem="selectedSpecItem"
         type="baremetal"
-        :isOpenWorkflow="false"
+        :isOpenWorkflow="isOpenWorkflow"
         :errors.sync="errors"
         :isServertemplate="false"
         :hasMeterService="hasMeterService" />
@@ -513,6 +513,9 @@ export default {
         types.push('iso')
       }
       return types
+    },
+    isOpenWorkflow () {
+      return this.checkWorkflowEnabled(WORKFLOW_TYPES.APPLY_MACHINE)
     },
   },
   provide () {
@@ -1056,6 +1059,8 @@ export default {
         nets,
         prefer_host: this.isInstallOperationSystem ? this.$route.query.id : values.schedPolicyHost,
         description: values.description,
+        prefer_region: values.cloudregion.key,
+        prefer_zone: values.zone.key,
       }
       // 判断是否是iso导入
       if (values.imageType === 'iso') {
@@ -1068,7 +1073,7 @@ export default {
         Reflect.deleteProperty(params, 'project_id')
         this.createBaremetal(params)
       } else {
-        if (this.checkWorkflowEnabled(WORKFLOW_TYPES.APPLY_MACHINE)) { // 提交工单
+        if (this.isOpenWorkflow) { // 提交工单
           let variables = {
             process_definition_key: WORKFLOW_TYPES.APPLY_MACHINE,
             initiator: this.$store.getters.userInfo.id,
@@ -1088,11 +1093,11 @@ export default {
         initiator: this.$store.getters.userInfo.id,
         'server-create-paramter': JSON.stringify(createData),
       }
-      new this.$Manager('process-instances')
-        .create({ variables })
+      new this.$Manager('process-instances', 'v1')
+        .create({ data: { variables } })
         .then(() => {
           this.submiting = false
-          this.$message.success(`主机 ${params.name} 创建请求流程已提交`)
+          this.$message.success(`裸金属 ${params.name} 创建请求流程已提交`)
           this.$router.push('/workflow')
         })
         .catch(() => {
