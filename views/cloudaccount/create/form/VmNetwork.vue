@@ -1,5 +1,11 @@
 <template>
   <div>
+    <a-alert :showIcon="false" banner>
+      <div slot="message">
+        注意事项：对接VMware账号需保证本地IP子网包含该vCenter下所有宿主机的IP，若无对应IP子网则无法使用和同步该宿主机下的资源。
+        <div style="margin-left: 68px">您可在下方新建缺失的IP子网，无需新建关闭下方配置IP子网开关即可</div>
+      </div>
+   </a-alert>
     <a-form class="mt-3" :form="form.fc">
       <a-divider orientation="left">基础配置</a-divider>
       <a-form-item label="配置IP子网" v-bind="formLayout">
@@ -57,7 +63,7 @@ export default {
   },
   data () {
     return {
-      configNetwork: false,
+      configNetwork: true,
       decorators: {
         name: [
           'name',

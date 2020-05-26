@@ -257,7 +257,7 @@ export default {
           cloudaccount_id: id,
         }
         // 获取当月的几（day）号
-        const day = 1
+        const day = this.$moment().date()
         let m = this.$moment().month()
         // 如果大于1号 则取当月（day-1）号至1号的账单
         if (day > 1) {

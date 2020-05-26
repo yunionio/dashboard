@@ -46,6 +46,17 @@ export default {
         {
           field: 'condition',
           title: '条件',
+          minWidth: 70,
+          showOverflow: 'title',
+          slots: {
+            default: ({ row }, h) => {
+              return [
+                <div class='text-truncate' title={ row.condition }>
+                  { row.condition }
+                </div>,
+              ]
+            },
+          },
         },
       ],
     }
