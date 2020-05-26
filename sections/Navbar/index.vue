@@ -38,7 +38,8 @@
       <a-popover
         trigger="click"
         v-model="viewChangePopoverVisible"
-        destroyTooltipOnHide>
+        destroyTooltipOnHide
+        :getPopupContainer="triggerNode => triggerNode.parentNode">
         <template slot="content">
           <ul class="list-unstyled view-list-wrap">
             <!-- 管理后台 -->

@@ -166,6 +166,10 @@ export default {
       state.token = null
       state.auth = {}
       state.loginFormData = {}
+      state.info = { ...initialState.info }
+      state.permission = null
+      state.scopeResource = null
+      state.capability = {}
     },
   },
   getters: {
