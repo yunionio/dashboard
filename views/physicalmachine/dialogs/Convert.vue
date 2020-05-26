@@ -386,7 +386,7 @@ export default {
     // 镜像改变
     imagechange (e) {
       this.imagesData.forEach(item => {
-        if (item.id === e) {
+        if (item.id === e.id) {
           this.selectedImage = item
         }
       })
