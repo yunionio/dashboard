@@ -117,10 +117,14 @@ export default {
     },
   },
   methods: {
-    userMenuClick (item) {
+    async userMenuClick (item) {
       if (item.key === 'logout') {
-        this.$store.dispatch('auth/logout')
-        this.$router.push('/auth')
+        try {
+          await this.$store.dispatch('auth/logout')
+          this.$router.push('/auth/login')
+        } catch (error) {
+          throw error
+        }
       }
     },
     projectChange (item) {
@@ -138,12 +142,32 @@ export default {
       window.open(item.key, '_blank')
     },
     async reLogin (projectId, scope) {
-      await this.$store.dispatch('auth/reLogin', projectId)
-      await this.$store.commit('auth/SET_SCOPE', scope)
-      await this.$store.dispatch('auth/getInfo')
-      await this.$store.dispatch('auth/getPermission', scope)
-      await this.$store.dispatch('auth/getScopeResource')
-      window.location.reload()
+      this.reLogging = true
+      try {
+        await this.$store.dispatch('auth/login', {
+          tenantId: projectId,
+        })
+        await this.$store.commit('auth/SET_SCOPE', scope)
+        await this.$store.commit('auth/SET_TENANT', projectId)
+        await this.$store.commit('auth/UPDATE_HISTORY_USERS', {
+          key: this.userInfo.name,
+          value: {
+            tenant: projectId,
+          },
+        })
+        await this.$store.commit('auth/UPDATE_HISTORY_USERS', {
+          key: this.userInfo.name,
+          value: {
+            scope,
+          },
+        })
+        window.location.reload()
+        return true
+      } catch (error) {
+        throw error
+      } finally {
+        this.reLogging = false
+      }
     },
   },
 }
