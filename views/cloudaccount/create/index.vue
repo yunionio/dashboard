@@ -5,9 +5,6 @@
     <keep-alive>
       <component :is="currentComponent" :current-item.sync="currentItem" :account="newAccountInfo" ref="stepRef" :provider="currentItem.provider" /><!-- provider 是为了 VmNetwork 的 prop 不报错 -->
     </keep-alive>
-    <a-form-item v-if="step.currentStep === 1" v-bind="offsetFormLayout">
-      <a-button :loading="testLoding" style="padding: 0" type="link" @click="handleTest">连接测试</a-button>
-    </a-form-item>
     <page-footer>
       <div slot="left">
         <div class="d-flex align-items-center">
@@ -21,6 +18,7 @@
       <div slot="right">
         <a-button class="mr-3" @click="perv" v-if="!isFirstStep">上一步</a-button>
         <a-button class="mr-3" type="primary" @click="next" :loading="loading">{{ nextStepTitle }}</a-button>
+        <test-button v-if="currentComponent === 'CreateCloudaccount' || currentComponent === 'BillForm'" class="mr-3" :post="testPost" />
         <a-button @click="cancel">{{currentComponent === 'BillForm' ? '跳 过': '取 消'}}</a-button>
       </div>
     </page-footer>
@@ -35,6 +33,7 @@ import BillForm from './form/BillForm'
 import VmNetwork from './form/VmNetwork'
 import step from '@/mixins/step'
 import { Manager } from '@/utils/manager'
+import TestButton from '@/sections/TestButton'
 
 export default {
   name: 'Cloudaccount',
@@ -43,6 +42,7 @@ export default {
     CreateCloudaccount,
     BillForm,
     VmNetwork,
+    TestButton,
   },
   mixins: [step],
   data () {
@@ -285,33 +285,30 @@ export default {
       const prev = currentStep - 1
       this.setStep(prev)
     },
-    async handleTest () {
-      let createForm = this.$refs.stepRef.$refs.createForm
-      this.testLoding = true
-      try {
-        const formData = await createForm.validateForm()
-        const data = {
-          ...formData,
-          enabled: true,
-          provider: this.currentItem.provider,
-        }
-        if (formData.sync_interval_seconds) {
-          data.sync_interval_seconds = formData.sync_interval_seconds * 60 // 转换为秒
-        }
-        this._addDomainProject(data)
-        await this.cloudaccountsM.performClassAction({
-          action: 'check-create-data',
-          data: data,
-        })
-        this.$notification.success({
-          message: '连接成功',
-          description: '请点击确定继续',
-        })
-      } catch (err) {
-        throw err
-      } finally {
-        this.testLoding = false
+    testPost () {
+      if (this.currentComponent === 'CreateCloudaccount') {
+        return this.handleTest()
       }
+      if (this.$refs.stepRef && this.$refs.stepRef.testPost) {
+        return this.$refs['stepRef'].testPost()
+      }
+    },
+    async handleTest () {
+      const createForm = this.$refs.stepRef.$refs.createForm
+      const formData = await createForm.validateForm()
+      const data = {
+        ...formData,
+        enabled: true,
+        provider: this.currentItem.provider,
+      }
+      if (formData.sync_interval_seconds) {
+        data.sync_interval_seconds = formData.sync_interval_seconds * 60 // 转换为秒
+      }
+      this._addDomainProject(data)
+      await this.cloudaccountsM.performClassAction({
+        action: 'check-create-data',
+        data: data,
+      })
     },
   },
 }

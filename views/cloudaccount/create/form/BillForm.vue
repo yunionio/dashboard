@@ -53,23 +53,16 @@
       <a-form-item label="立即采集账单"  extra="开启立即采集账单，在账单文件访问信息配置完成后，立即采集当月账单。关闭立即采集账单，系统会在每天4:00自动采集账单">
         <a-switch v-decorator="decorators.sync_info" />
       </a-form-item>
-      <a-form-item v-if="!isAzure" v-bind="offsetFormLayout">
-        <test-button :post="testPost" />
-      </a-form-item>
     </a-form>
   </div>
 </template>
 <script>
 import { keySecretFields, BILL_BUCKET_URL_DOCS } from '../../constants'
-import TestButton from '@/sections/TestButton'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'BillConfig',
-  components: {
-    TestButton,
-  },
   mixins: [DialogMixin, WindowsMixin],
   props: {
     account: {
