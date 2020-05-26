@@ -674,7 +674,7 @@
     "suggestsysalert": {
       "ready": "待处理",
       "start_delete": "删除中",
-      "deleteing": "删除中",
+      "deleting": "删除中",
       "delete_fail": "删除失败"
     }
   },

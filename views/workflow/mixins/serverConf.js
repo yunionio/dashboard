@@ -240,6 +240,8 @@ export default {
         const disk = storageArr.find(v => v.value === k)
         if (disk) {
           str += `、${parseInt(num / 1024)}GB（${disk.label}）`
+        } else {
+          str += `、${parseInt(num / 1024)}GB（${k}）`
         }
       }
       return str.slice(1)
