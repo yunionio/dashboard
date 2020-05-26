@@ -12,6 +12,7 @@ import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
+import expectStatus from '@/constants/expectStatus'
 import { getStatusFilter, getBrandFilter, getAccountFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
@@ -32,6 +33,7 @@ export default {
         id: this.id,
         resource: 'vpcs',
         getParams: this.getParam,
+        steadyStatus: Object.values(expectStatus.vpc).flat(),
         filterOptions: {
           name: {
             label: '名称',
