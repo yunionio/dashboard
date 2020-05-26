@@ -183,6 +183,11 @@ export default {
       params['__count__'] = params['count']
       params['billing_cycle'] = params['duration']
       delete params.sku
+      // 到期释放
+      if (params.durationStandard !== 'none') {
+        params['duration'] = params.duration || params.durationStandard
+      }
+      delete params.durationStandard
       return params
     },
     async doCreate () {
