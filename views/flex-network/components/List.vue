@@ -18,6 +18,7 @@ import ListMixin from '@/mixins/list'
 import { getStatusFilter, getBrandFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
+import expectStatus from '@/constants/expectStatus'
 import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
 
 export default {
@@ -35,6 +36,7 @@ export default {
         id: this.id,
         resource: 'networkinterfaces',
         getParams: this.getParam,
+        steadyStatus: Object.values(expectStatus.network).flat(),
         filterOptions: {
           name: {
             label: '名称',

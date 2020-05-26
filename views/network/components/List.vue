@@ -20,6 +20,7 @@ import WindowsMixin from '@/mixins/windows.js'
 import { getBrandFilter, getAccountFilter, getTenantFilter } from '@/utils/common/tableFilter'
 import ListMixin from '@/mixins/list'
 import GlobalSearchMixin from '@/mixins/globalSearch'
+import expectStatus from '@/constants/expectStatus'
 import { getSetPublicAction } from '@/utils/common/tableActions'
 
 export default {
@@ -50,6 +51,7 @@ export default {
         id: this.id,
         resource: 'networks',
         getParams: this.getParam,
+        steadyStatus: Object.values(expectStatus.network).flat(),
         filterOptions: {
           name: {
             label: '名称',
