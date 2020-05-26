@@ -181,7 +181,6 @@ export default {
           onValuesChange: (props, values) => {
             this.$bus.$emit('updateForm', values)
             if (values.hasOwnProperty('cloudregion') && values.cloudregion.key) {
-              this.capability(values.cloudregion.key)
               this.cloudregion = values.cloudregion.key
             }
             if (values.hasOwnProperty('zone') && values.zone.key) {
@@ -196,6 +195,7 @@ export default {
               }
             }
             if (values.domain) {
+              this.project_domain = values.domain.key
               this.params.region = {
                 ...this.params.region,
                 project_domain: values.domain.key,
@@ -503,11 +503,14 @@ export default {
       hostData: [],
       filterHostData: [],
       isSupportIso: false,
+      project_domain: '',
     }
   },
   computed: {
     ...mapGetters([
       'isAdminMode',
+      'scope',
+      'isDomainMode',
     ]),
     routerQuery () {
       return this.$route.query
@@ -544,12 +547,12 @@ export default {
       return `cloudregions/${this.cloudregion}/vpcs`
     },
     scopeParams () {
-      if (this.$store.getters.isAdminMode) {
+      if (this.isDomainMode) {
         return {
-          project_domain: this.project_domain,
+          scope: this.scope,
         }
       }
-      return { scope: this.$store.getters.scope }
+      return { project_domain: this.project_domain }
     },
     hasMeterService () { // 是否有计费的服务
       const { services } = this.$store.getters.userInfo
@@ -610,13 +613,17 @@ export default {
       },
       deep: true,
     },
+    project_domain (newVal, oldVal) {
+      if (this.isInstallOperationSystem) this._fetchSpec()
+      this.capability(this.zone)
+    },
   },
   created () {
     this.zonesM2 = new this.$Manager('zones')
     this.serverM = new this.$Manager('servers')
     this.schedulerM = new this.$Manager('schedulers', 'v1')
     if (this.$route.query.id) {
-      this._fetchSpec()
+      // this._fetchSpec()
       this.hostDetail()
     }
     if (this.$route.query.zone_id) {
@@ -687,7 +694,7 @@ export default {
     // 安装操作系统下获取规格
     _fetchSpec () {
       let manager = new this.$Manager('specs')
-      const params = { host_type: 'baremetal', filter: `id.equals(${this.$route.query.id})` }
+      const params = { host_type: 'baremetal', filter: `id.equals(${this.$route.query.id})`, ...this.scopeParams }
       manager.rpc({ methodname: 'GetHostSpecs', params }).then(res => {
         let specs = res.data
         this.form.fi.capability = {
@@ -707,7 +714,12 @@ export default {
       })
     },
     capability (v, isIso = false) { // 可用区查询
-      let data = { show_emulated: true, resource_type: this.resourceType, scope: this.$store.getters.scope, host_type: 'baremetal' }
+      let data = {
+        show_emulated: true,
+        resource_type: this.resourceType,
+        host_type: 'baremetal',
+        ...this.scopeParams,
+      }
       if (isIso) {
         data.cdrom_boot = true
       }
