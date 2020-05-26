@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-popover trigger="click">
+    <a-popover trigger="click" :getPopupContainer="triggerNode => triggerNode.parentNode">
       <div class="trigger d-flex align-items-center justify-content-center">
         <a-badge :count="statistics" :overflowCount="99">
           <icon type="navbar-process" style="font-size: 24px;" />
