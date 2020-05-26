@@ -359,10 +359,14 @@ export default {
         this.$store.dispatch('app/fetchLicense')
       }
     },
-    userMenuClick (item) {
+    async userMenuClick (item) {
       if (item.key === 'logout') {
-        this.$store.dispatch('auth/logout')
-        this.$router.push('/auth')
+        try {
+          await this.$store.dispatch('auth/logout')
+          this.$router.push('/auth/login')
+        } catch (error) {
+          throw error
+        }
       }
     },
     projectChange (id, scope) {

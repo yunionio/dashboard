@@ -1,5 +1,5 @@
 import * as R from 'ramda'
-import moment from 'moment'
+// import moment from 'moment'
 import Cookies from 'js-cookie'
 import { Base64 } from 'js-base64'
 import store from '@/store'
@@ -88,24 +88,24 @@ export function decodeToken (token) {
   return null
 }
 
-export function isLogged () {
-  let token = getTokenFromCookie()
-  if (token) {
-    const auth = Base64.decode(token)
-    if (auth) {
-      try {
-        const obj = JSON.parse(auth)
-        const diff = moment(obj.exp).diff(moment(), 'seconds')
-        if (diff > 0) {
-          return true
-        }
-      } catch (error) {
-        return false
-      }
-    }
-  }
-  return false
-}
+// export function isLogged () {
+//   let token = getTokenFromCookie()
+//   if (token) {
+//     const auth = Base64.decode(token)
+//     if (auth) {
+//       try {
+//         const obj = JSON.parse(auth)
+//         const diff = moment(obj.exp).diff(moment(), 'seconds')
+//         if (diff > 0) {
+//           return true
+//         }
+//       } catch (error) {
+//         return false
+//       }
+//     }
+//   }
+//   return false
+// }
 
 export function hasPermission ({
   key,
