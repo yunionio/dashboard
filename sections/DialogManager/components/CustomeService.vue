@@ -61,7 +61,7 @@ export default {
         comment: values.comment,
       }
       await this.createWorkflow(variables)
-      this.$message.success('加入项目流程已提交')
+      this.$message.success('技术支持工单流程已提交')
       this.$router.push('/workflow')
     },
     async handleConfirm () {

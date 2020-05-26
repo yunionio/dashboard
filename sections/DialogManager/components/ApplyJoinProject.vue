@@ -62,7 +62,7 @@ export default {
         description: values.desc,
       }
       await this.createWorkflow(variables)
-      this.$message.success('技术支持工单流程已提交')
+      this.$message.success('加入项目工单流程已提交')
       if (this.params.success) {
         this.params.success()
       } else {
