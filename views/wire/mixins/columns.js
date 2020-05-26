@@ -21,7 +21,7 @@ export default {
         },
       }),
       getBandwidthTableColumn(),
-      getCopyWithContentTableColumn({ field: 'vpc', title: '专有网络', sortable: true }),
+      getCopyWithContentTableColumn({ field: 'vpc', title: 'VPC', sortable: true }),
       {
         field: 'networks',
         title: '网络数量',
