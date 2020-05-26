@@ -245,6 +245,10 @@ export default {
       type: Array,
     },
     resource: String,
+    isEditDesc: {
+      type: Boolean,
+      default: true,
+    },
   },
   computed: {
     commonBaseInfo () {
@@ -380,7 +384,7 @@ export default {
           h('list-body-cell-wrap', {
             props: {
               copy: true,
-              edit: true,
+              edit: this.isEditDesc,
               row: this.data,
               onManager: this.onManager,
               field: 'description',
