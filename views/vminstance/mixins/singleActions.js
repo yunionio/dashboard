@@ -667,6 +667,17 @@ export default {
                     return ret
                   },
                 },
+                {
+                  label: '保存主机模版',
+                  action: () => {
+                    this.createDialog('VmAddTemplateDialog', {
+                      data: [obj],
+                      columns: this.columns,
+                      onManager: this.onManager,
+                      refresh: this.refresh,
+                    })
+                  },
+                },
               ],
             },
             {
