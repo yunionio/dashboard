@@ -55,13 +55,11 @@
               :value="item.key">{{ item.label }}</a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item v-bind="offsetFormLayout">
-          <test-button :post="testPost" />
-        </a-form-item>
       </a-form>
     </div>
     <div slot="footer">
       <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
+      <test-button :post="testPost" />
       <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
     </div>
   </base-dialog>
