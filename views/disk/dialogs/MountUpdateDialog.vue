@@ -61,13 +61,18 @@ export default {
     ...mapGetters(['isAdminMode', 'isDomainMode', 'scope']),
   },
   created () {
+    const itemData = this.params.data[0]
     const params = {
-      details: false,
-      attachable_servers_for_disk: this.params.data[0].id,
+      details: true,
+      attachable_servers_for_disk: itemData.id,
       scope: this.scope,
-      brand: this.params.data[0].brand,
+      brand: itemData.brand,
     }
-    if (this.isAdminMode || this.isDomainMode) params['project_id'] = this.params.data[0].project_id
+    if (itemData.cloud_env === 'public' || itemData.cloud_env === 'private') {
+      params.manager = itemData.manager_id
+      params.zone = itemData.zone_id
+    }
+    if (this.isAdminMode || this.isDomainMode) params['project_id'] = itemData.project_id
     new this.$Manager('servers').list({ params })
       .then((res) => {
         this.serversOpts = res.data.data
