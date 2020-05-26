@@ -506,7 +506,8 @@
     "idp": {
       "connected": "已连接",
       "disconnected": "连接断开",
-      "init": "初始化"
+      "init": "初始化",
+      "deleting": "删除中"
     },
     "notification": {
       "received": "已接收",
