@@ -44,7 +44,7 @@
             html-type="submit"
             style="width: 120px;"
             :loading="loading"
-            :disabled="!!errors.length">新 建</a-button>
+            :disabled="!!errors.length">{{ isOpenWorkflow ? '提交工单' : '新 建' }}</a-button>
         </div>
         <side-errors error-title="创建主机失败" :errors="errors" @update:errors="changeErrors" />
       </template>
