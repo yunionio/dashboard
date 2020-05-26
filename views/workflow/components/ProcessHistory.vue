@@ -156,6 +156,7 @@ export default {
     color: #4DA1FF;
   }
   .error-link {
+    display: block;
     font-size: 12px;
     color: #999;
     margin-left: '3px';
