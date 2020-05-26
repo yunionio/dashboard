@@ -273,6 +273,7 @@ export default {
             },
             {
               label: '设置删除保护',
+              permission: 'images_delete',
               action: (row) => {
                 this.createDialog('ChangeDisableDelete', {
                   name: '系统镜像',
@@ -280,6 +281,47 @@ export default {
                   onManager: this.onManager,
                   data: [row],
                 })
+              },
+              meta: () => {
+                let ret = {
+                  validate: false,
+                  tooltip: '',
+                }
+                const actions = new Map([
+                  ['admin', () => {
+                    if (this.booleanTransfer(obj.is_standard)) {
+                      ret.tooltip = '公共镜像禁止设置删除保护，请切换为自定义镜像后重试'
+                      return ret
+                    }
+                    return ret
+                  }],
+                  ['domain', () => {
+                    if (this.booleanTransfer(obj.is_standard)) {
+                      ret.tooltip = '公共镜像禁止设置删除保护'
+                      return ret
+                    }
+                    if (!ownerDomain(obj)) {
+                      ret.tooltip = '非当前域下的镜像无法设置删除保护'
+                      return ret
+                    }
+                    return ret
+                  }],
+                  ['user', () => {
+                    if (this.booleanTransfer(obj.is_standard)) {
+                      ret.tooltip = '公共镜像禁止设置删除保护'
+                      return ret
+                    }
+                    if (!isOwnerProject(obj.tenant_id)) {
+                      ret.tooltip = '非当前项目下的镜像无法设置删除保护'
+                      return ret
+                    }
+                    return ret
+                  }],
+                ])
+                let action = actions.get(this.isAdminMode ? 'admin' : '') || actions.get(this.isDomainMode ? 'domain' : 'user')
+                ret = action.call(this)
+                if (ret.tooltip) return ret
+                return this.$getDeleteResult(obj)
               },
             },
             {
