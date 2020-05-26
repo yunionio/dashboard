@@ -321,6 +321,7 @@ class CreateList {
       } else {
         this.data = this.wrapData(data)
       }
+      this.syncSelected()
       this.checkSteadyStatus()
       this.total = total
       if (responseLimit > 0) {
@@ -336,11 +337,25 @@ class CreateList {
     }
   }
   /**
+   * @description 因为selectedItems的getter是根据selected生成的，所以在数据刷新后需要同步selected，避免有留下的脏数据
+   * @memberof CreateList
+   */
+  syncSelected () {
+    const newSelected = [...this.selected]
+    for (let i = 0, len = this.selected.length; i < len; i++) {
+      const key = this.selected[i]
+      if (!this.data[key]) {
+        const index = R.indexOf(key, newSelected)
+        newSelected.splice(index, 1)
+      }
+    }
+    this.selected = newSelected
+  }
+  /**
    * @description 刷新数据，不改变当前页数和条数
    * @memberof CreateList
    */
   refresh () {
-    this.clearSelected()
     this.fetchData(this.offset, this.getLimit())
   }
   /**
