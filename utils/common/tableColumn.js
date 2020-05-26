@@ -400,7 +400,7 @@ export const getPublicScopeTableColumn = ({
     width: 110,
     slots: {
       default: ({ row }, h) => {
-        if (!row.is_public) return i18n.t('shareDesc.none')
+        if (row.is_public === false || row.is_public === 'false') return i18n.t('shareDesc.none')
         const { public_scope: publicScope, shared_projects: sharedProjects, shared_domains: sharedDomains } = row
         if (publicScope === 'project' && sharedProjects && sharedProjects.length > 0) {
           return [
