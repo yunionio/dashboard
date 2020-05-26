@@ -1122,7 +1122,7 @@ export default {
         description: values.description,
       }
       if (values.loginPassword) params.password = values.loginPassword
-      if (values.loginKeypair) params.keypair = values.loginKeypair
+      if (values.loginKeypair) params.keypair = values.loginKeypair.key
       // 判断是否是iso导入
       if (values.imageType === 'iso') {
         params = {
