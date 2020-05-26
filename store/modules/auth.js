@@ -15,6 +15,8 @@ import {
   removeTenantInCookie,
   removeScopeInCookie,
   getHistoryUsersFromStorage,
+  getLoggedUsersFromStorage,
+  setLoggedUsersInStorage,
 } from '@/utils/auth'
 import { SCOPES_MAP } from '@/constants'
 import router from '@/router'
@@ -40,7 +42,12 @@ const initialState = {
     regions: [],
   },
   registersStatus: true,
+  // loggedUsers记录的key为username + domain，是获取用户信息之后记录的
+  // historyUsers记录的key为username，是登录成功之前记录的
   historyUsers: getHistoryUsersFromStorage() || {},
+  loggedUsers: getLoggedUsersFromStorage() || {},
+  // 提交的登录表单数据
+  loginFormData: {},
 }
 
 export default {
@@ -90,6 +97,9 @@ export default {
     SET_REGISTERS_STATUS (state, payload) {
       state.registersStatus = payload
     },
+    SET_LOGIN_FORM_DATA (state, payload) {
+      state.loginFormData = payload
+    },
     UPDATE_HISTORY_USERS (state, payload) {
       const newVal = { ...state.historyUsers }
       if (payload.action === 'delete') {
@@ -121,9 +131,41 @@ export default {
       setHistoryUsersInStorage(newVal)
       state.historyUsers = newVal
     },
+    UPDATE_LOGGED_USERS (state, payload) {
+      const newVal = { ...state.loggedUsers }
+      if (payload.action === 'delete') {
+        delete newVal[payload.key]
+      } else {
+        const key = payload.key || state.info.name
+        const data = {
+          ...newVal[key],
+          ...payload.value,
+        }
+        // 设置创建时间
+        const timestamp = +new Date()
+        if (!_.get(data, 'create_time')) {
+          _.set(data, 'create_time', timestamp)
+        }
+        // 设置更新时间
+        _.set(data, 'update_time', timestamp)
+        // 最多存储5条纪录，超过5则移除掉创建时间最早的
+        if (Object.keys(newVal).length > 5) {
+          const newValArr = Object.entries(newVal)
+          let oldestUser = _.minBy(newValArr, o => o[1]['create_time'])
+          oldestUser[0] && delete newVal[oldestUser[0]]
+        }
+        if (payload === 'action') {
+          _.unset(data, payload.path)
+        }
+        newVal[key] = data
+      }
+      setLoggedUsersInStorage(newVal)
+      state.loggedUsers = newVal
+    },
     LOGOUT (state) {
       state.token = null
       state.auth = {}
+      state.loginFormData = {}
     },
   },
   getters: {
@@ -182,32 +224,47 @@ export default {
       })
       return ret
     },
+    currentLoggedUserKey (state) {
+      return `${state.info.name}@${state.info.domain.name}`
+    },
+    currentHistoryUserKey (state) {
+      return state.loginFormData.username
+    },
   },
   actions: {
     async login ({ commit, state }, data) {
       try {
         const _data = { ...data }
+        let matchedUser
         if (_data.username) {
-          const currentHistoryUser = _.get(state.historyUsers, _data.username, {})
-          if (!R.isEmpty(currentHistoryUser)) {
-            _data.username = `${currentHistoryUser.tenant}/${_data.username}`
-            await commit('SET_TENANT', currentHistoryUser.tenant)
-            await commit('SET_SCOPE', currentHistoryUser.scope)
+          if (_data.domain) {
+            matchedUser = _.get(state.loggedUsers, `${_data.username}@${_data.domain}`) || _.get(state.historyUsers, _data.username)
           } else {
-            await commit('RESET_COOKIE')
+            matchedUser = _.get(state.historyUsers, _data.username)
           }
+        }
+        if (matchedUser) {
+          _data.username = `${matchedUser.tenant}/${_data.username}`
+          if (matchedUser.tenant) {
+            await commit('SET_TENANT', matchedUser.tenant)
+          }
+          if (matchedUser.scope) {
+            await commit('SET_SCOPE', matchedUser.scope)
+          }
+        } else {
+          await commit('RESET_COOKIE')
         }
         const response = await http.post('/v1/auth/login', _data)
         await commit('UPDATE_AUTH')
-        const newStorageUser = {
+        const newCurrentHistoryUserStorageValue = {
           scope: getScopeFromCookie(),
           tenant: getTenantFromCookie(),
         }
-        await commit('SET_SCOPE', newStorageUser.scope)
-        await commit('SET_TENANT', newStorageUser.tenant)
+        await commit('SET_SCOPE', newCurrentHistoryUserStorageValue.scope)
+        await commit('SET_TENANT', newCurrentHistoryUserStorageValue.tenant)
         await commit('UPDATE_HISTORY_USERS', {
           key: data.username,
-          value: newStorageUser,
+          value: newCurrentHistoryUserStorageValue,
         })
         return response.data
       } catch (error) {
@@ -227,20 +284,23 @@ export default {
     /**
      * @description Get user info
      */
-    async getInfo ({ commit, state, dispatch }) {
+    async getInfo ({ commit, state, getters }) {
       try {
         const response = await http.get('/v1/auth/user')
         if (!response.data) {
           throw new Error('Verification failed, please Login again.')
         }
         await commit('SET_INFO', response.data.data)
-        await commit('UPDATE_HISTORY_USERS', {
-          key: state.info.name,
+        await commit('UPDATE_LOGGED_USERS', {
+          key: getters.currentLoggedUserKey,
           value: {
             displayname: state.info.displayname,
             projectName: state.info.projectName,
             projectDomain: state.info.projectDomain,
             domain: state.info.domain || {},
+            scope: getScopeFromCookie(),
+            tenant: getTenantFromCookie(),
+            name: state.info.name,
           },
         })
         return response.data.data
@@ -311,11 +371,11 @@ export default {
       }
     },
     // 登录后所做的后续处理
-    async onAfterLogin ({ commit, state, dispatch }, payload) {
+    async onAfterLogin ({ commit, state, dispatch, getters }, payload) {
       // 如果 data 不为空，则是 server 返回的首次绑定秘钥的二维码，存入 storage，以免刷新后重新登录丢失的问题
       if (payload.data) {
         await commit('auth/UPDATE_HISTORY_USERS', {
-          key: state.info.name,
+          key: getters.currentHistoryUserKey,
           value: {
             secret: payload.data,
           },
@@ -325,7 +385,7 @@ export default {
       if (
         (
           payload.data ||
-          _.get(state.historyUsers, `${state.info.name}.secret`)
+          _.get(state.historyUsers, `${getters.currentHistoryUserKey}.secret`)
         ) && state.auth.auth.totp_on
       ) {
         // 获取密码问题，如果设置过则直接进入绑定秘钥页面，没有跳转至设置密码问题页面

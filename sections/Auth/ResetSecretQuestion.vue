@@ -50,7 +50,7 @@ export default {
       this.$store.dispatch('auth/credential', data).then(res => {
         this.loading = false
         this.$store.commit('auth/UPDATE_HISTORY_USERS', {
-          key: this.userInfo.name,
+          key: this.$store.getters['auth/currentHistoryUserKey'],
           value: {
             secret: res.data.qrcode,
           },

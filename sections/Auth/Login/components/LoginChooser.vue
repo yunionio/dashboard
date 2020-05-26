@@ -4,7 +4,7 @@
       <template v-for="item of dataSource">
         <div class="item d-flex align-items-center pb-2 pt-2" :key="item[0]" @click="handleSelect(item)">
           <div class="left flex-fill">
-            <div class="l1info">{{ item[0] }} - {{ item[1].displayname }}</div>
+            <div class="l1info">{{ item[1]['name'] }} - {{ item[1]['domain']['name'] }}</div>
             <div class="l2info text-color-help mt-1">{{ $t('common.text00118') }}：{{ $t(`authChooser.${item[1]['scope']}`) }}</div>
             <div class="l2info text-color-help mt-1">{{ $t('dictionary.project') }}：{{ item[1].projectName }}</div>
           </div>
@@ -51,16 +51,16 @@ export default {
   },
   computed: {
     ...mapState('auth', {
-      historyUsers: state => state.historyUsers,
+      loggedUsers: state => state.loggedUsers,
     }),
     dataSource () {
       return R.sort((a, b) => {
         return a[1]['update_time'] - b[1]['update_time']
-      }, Object.entries(this.historyUsers))
+      }, Object.entries(this.loggedUsers))
     },
   },
   watch: {
-    historyUsers (val) {
+    loggedUsers (val) {
       if (Object.keys(val).length === 0) {
         this.$router.replace('/auth/login')
       }
@@ -68,18 +68,19 @@ export default {
   },
   methods: {
     handleDelete (key) {
-      this.$store.commit('auth/UPDATE_HISTORY_USERS', {
+      this.$store.commit('auth/UPDATE_LOGGED_USERS', {
         key,
         action: 'delete',
       })
     },
     handleSelect (item) {
       if (this.showDelete) return
-      const username = this.getUsernameQuery ? this.getUsernameQuery(item) : item[0]
+      const username = this.getUsernameQuery ? this.getUsernameQuery(item) : item[1].name
       this.$router.replace({
         path: '/auth/login',
         query: {
           username,
+          domain: item[1]['domain']['name'],
         },
       })
     },

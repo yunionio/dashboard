@@ -8,6 +8,7 @@ import storage from '@/utils/storage'
 
 const ONECLOUD_AUTH_KEY = 'yunionauth'
 const HISTORY_USERS_STORAGE_KEY = '__oc_history_users__'
+const LOGGED_USERS_STORAGE_KEY = '__oc_logged_users__'
 const ENABLE_SETUP_STORAGE_KEY = '__oc_enable_setup__'
 
 export function getTokenFromCookie () {
@@ -72,6 +73,14 @@ export function removeSetupInStorage () {
 
 export function getSetupInStorage () {
   return storage.get(ENABLE_SETUP_STORAGE_KEY)
+}
+
+export function getLoggedUsersFromStorage () {
+  return storage.get(LOGGED_USERS_STORAGE_KEY)
+}
+
+export function setLoggedUsersInStorage (users) {
+  return storage.set(LOGGED_USERS_STORAGE_KEY, users)
 }
 
 export function decodeToken (token) {

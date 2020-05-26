@@ -68,7 +68,6 @@ export default {
         const response = await this.$store.dispatch('auth/login', {
           cas_ticket: this.$route.query.ticket,
         })
-        await this.$store.dispatch('auth/getInfo')
         await this.$store.dispatch('auth/onAfterLogin', response)
       } catch (error) {
         this.$message.error(this.$t('auth.login.fast.login.fail'))
