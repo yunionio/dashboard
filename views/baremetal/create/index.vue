@@ -1113,7 +1113,7 @@ export default {
           let variables = {
             process_definition_key: WORKFLOW_TYPES.APPLY_MACHINE,
             initiator: this.$store.getters.userInfo.id,
-            paramter: JSON.stringify(params),
+            'server-create-paramter': JSON.stringify(params),
           }
           this.doCreateWorkflow(variables, params)
         } else { // 创建裸金属
@@ -1122,15 +1122,10 @@ export default {
       }
     },
     // 创建工单
-    doCreateWorkflow (createData, params) {
+    doCreateWorkflow (variables, params) {
       this.submiting = true
-      const variables = {
-        process_definition_key: WORKFLOW_TYPES.APPLY_MACHINE,
-        initiator: this.$store.getters.userInfo.id,
-        'server-create-paramter': JSON.stringify(createData),
-      }
       new this.$Manager('process-instances', 'v1')
-        .create({ data: { variables } })
+        .create({ data: variables })
         .then(() => {
           this.submiting = false
           this.$message.success(`裸金属 ${params.name} 创建请求流程已提交`)
