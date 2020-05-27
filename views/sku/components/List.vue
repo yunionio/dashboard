@@ -11,6 +11,7 @@
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import { getStatusFilter, getEnabledFilter } from '@/utils/common/tableFilter'
+import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import WindowsMixin from '@/mixins/windows'
 import { sizestr } from '@/utils/utils'
 import ListMixin from '@/mixins/list'
@@ -100,26 +101,7 @@ export default {
           label: this.$t('common.batchAction'),
           actions: () => {
             return [
-              {
-                label: '启用',
-                permission: 'skus_update',
-                action: () => {
-                  this.list.batchPerformAction('enable', null)
-                },
-                meta: () => ({
-                  validate: this.list.selectedItems.length,
-                }),
-              },
-              {
-                label: '禁用',
-                permission: 'skus_update',
-                action: () => {
-                  this.list.batchPerformAction('disable', null)
-                },
-                meta: () => ({
-                  validate: this.list.selectedItems.length,
-                }),
-              },
+              ...getEnabledSwitchActions(this, undefined, ['skus_update', 'skus_update']),
               {
                 label: '删除',
                 permission: 'skus_delete',

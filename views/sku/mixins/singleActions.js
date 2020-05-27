@@ -1,3 +1,5 @@
+import { getEnabledSwitchActions } from '@/utils/common/tableActions'
+
 export default {
   created () {
     this.singleActions = [
@@ -24,36 +26,7 @@ export default {
         label: '更多',
         actions: obj => {
           return [
-            {
-              label: '启用',
-              permission: 'skus_update',
-              action: () => {
-                this.onManager('performAction', {
-                  id: obj.id,
-                  managerArgs: {
-                    action: 'enable',
-                  },
-                })
-              },
-              meta: () => ({
-                validate: !obj.enabled,
-              }),
-            },
-            {
-              label: '禁用',
-              permission: 'skus_update',
-              action: () => {
-                this.onManager('performAction', {
-                  id: obj.id,
-                  managerArgs: {
-                    action: 'disable',
-                  },
-                })
-              },
-              meta: () => ({
-                validate: obj.enabled,
-              }),
-            },
+            ...getEnabledSwitchActions(this, obj, 'skus_update', 'skus_update'),
             {
               label: '删除',
               permission: 'skus_delete',

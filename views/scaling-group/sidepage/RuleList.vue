@@ -11,6 +11,7 @@
 <script>
 import numerify from 'numerify'
 import { getNameDescriptionTableColumn, getTimeTableColumn, getStatusTableColumn, getEnabledTableColumn } from '@/utils/common/tableColumn'
+import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import { getStatusFilter, getEnabledFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
@@ -157,36 +158,7 @@ export default {
           label: '更多',
           actions: obj => {
             return [
-              {
-                label: '启用',
-                permission: 'scalingpolicies_perform_enable',
-                action: obj => {
-                  this.onManager('performAction', {
-                    id: obj.id,
-                    managerArgs: {
-                      action: 'enable',
-                    },
-                  })
-                },
-                meta: (obj) => ({
-                  validate: !obj.enabled,
-                }),
-              },
-              {
-                label: '禁用',
-                permission: 'scalingpolicies_perform_disable',
-                action: (obj) => {
-                  this.onManager('performAction', {
-                    id: obj.id,
-                    managerArgs: {
-                      action: 'disable',
-                    },
-                  })
-                },
-                meta: (obj) => ({
-                  validate: obj.enabled,
-                }),
-              },
+              ...getEnabledSwitchActions(this, obj, ['scalingpolicies_perform_enable', 'scalingpolicies_perform_disable']),
               {
                 label: '删除',
                 permission: 'scalingpolicies_delete',

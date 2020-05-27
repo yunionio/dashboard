@@ -1,37 +1,10 @@
 import expectStatus from '@/constants/expectStatus'
+import { getEnabledSwitchActions } from '@/utils/common/tableActions'
+
 export default {
   created () {
     this.singleActions = [
-      {
-        label: '启用',
-        permission: 'scalinggroups_perform_enable',
-        action: obj => {
-          this.createDialog('ScalingGroupEnable', {
-            data: [obj],
-            columns: this.columns,
-            onManager: this.onManager,
-          })
-        },
-        meta: (obj) => ({
-          validate: !obj.enabled,
-        }),
-      },
-      {
-        label: '禁用',
-        permission: 'scalinggroups_perform_disable',
-        action: (obj) => {
-          this.createDialog('ScalingGroupDisable', {
-            data: [obj],
-            columns: this.columns,
-            onManager: this.onManager,
-          })
-        },
-        meta: (obj) => {
-          return {
-            validate: obj.enabled,
-          }
-        },
-      },
+      ...getEnabledSwitchActions(this, undefined, ['scalinggroups_perform_enable', 'scalinggroups_perform_disable']),
       {
         label: '删除',
         permission: 'scalinggroups_delete',

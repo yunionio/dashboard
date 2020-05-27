@@ -1,3 +1,5 @@
+import { getEnabledSwitchActions } from '@/utils/common/tableActions'
+
 export default {
   created () {
     this.singleActions = [
@@ -8,40 +10,7 @@ export default {
       //     this.$router.push(`/ansibletemplate/create?id=${id}`)
       //   },
       // },
-      {
-        label: '启用',
-        action: (obj) => {
-          this.onManager('update', {
-            id: obj.id,
-            managerArgs: {
-              data: {
-                enabled: true,
-              },
-            },
-          })
-        },
-        meta: (obj) => ({
-          validate: !obj.enabled,
-          tooltip: obj.enabled ? '请选择已禁用的模版' : '',
-        }),
-      },
-      {
-        label: '禁用',
-        action: (obj) => {
-          this.onManager('update', {
-            id: obj.id,
-            managerArgs: {
-              data: {
-                enabled: false,
-              },
-            },
-          })
-        },
-        meta: (obj) => ({
-          validate: obj.enabled,
-          tooltip: !obj.enabled ? '请选择已启用的模版' : '',
-        }),
-      },
+      ...getEnabledSwitchActions(this),
       {
         label: '关联主机',
         action: obj => {
