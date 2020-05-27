@@ -80,8 +80,6 @@ export const PERMISSION = {
   'servertemplates_list': ['compute', 'servertemplates', 'list'],
   // 弹性伸缩组
   'scalinggroups_list': ['compute', 'scalinggroups', 'list'],
-  // 服务目录
-  'servicecatalogs_list': ['compute', 'servicecatalogs', 'list'],
   // 负载均衡实例管理
   'lb_loadbalancers_list': ['compute', 'loadbalancers', 'list'],
   // 负载均衡监听
@@ -387,12 +385,6 @@ export const PERMISSION = {
   'servertemplates_create': ['compute', 'servertemplates', 'create'],
   'servertemplates_delete': ['compute', 'servertemplates', 'delete'],
   'servertemplates_perform_public': ['compute', 'servertemplates', 'perform', 'public'],
-  /**
-   * 服务目录
-   */
-  'servicecatalogs_create': ['compute', 'servicecatalogs', 'create'],
-  'servicecatalogs_update': ['compute', 'servicecatalogs', 'update'],
-  'servicecatalogs_delete': ['compute', 'servicecatalogs', 'delete'],
   /**
    * 弹性伸缩组
    */
