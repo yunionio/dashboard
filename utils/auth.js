@@ -170,13 +170,8 @@ export function hasBrandsByEnv (envs) {
 
 export function updateLastLoginUserName () {
   return new Promise((resolve, reject) => {
-    const lastLoginUserName = storage.get(LAST_LOGIN_USERNAME_KEY)
     http.get('/v1/auth/user').then(res => {
       const data = res.data.data || {}
-      if (lastLoginUserName !== data.name) {
-        Cookies.remove('tenant')
-        Cookies.remove('scope')
-      }
       store.commit('auth/SET_INFO', data)
       store.dispatch('auth/getCapabilities')
       storage.set(LAST_LOGIN_USERNAME_KEY, data.name)
