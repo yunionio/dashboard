@@ -1,6 +1,6 @@
 import { Base64 } from 'js-base64'
 import qs from 'qs'
-import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
+import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
 
 export default {
   destroyed () {
@@ -103,43 +103,7 @@ export default {
           label: '更多',
           actions: (obj) => {
             return [
-              {
-                label: '禁用',
-                submenus: [
-                  {
-                    label: '启用',
-                    action: () => {
-                      this.onManager('performAction', {
-                        steadyStatus: 'running',
-                        id: obj.id,
-                        managerArgs: {
-                          action: 'enable',
-                        },
-                      })
-                    },
-                    meta: () => ({
-                      validate: !obj.enabled,
-                      tooltip: obj.enabled ? '请选择已禁用的实例' : '',
-                    }),
-                  },
-                  {
-                    label: '禁用',
-                    action: () => {
-                      this.onManager('performAction', {
-                        steadyStatus: 'ready',
-                        id: obj.id,
-                        managerArgs: {
-                          action: 'disable',
-                        },
-                      })
-                    },
-                    meta: () => ({
-                      validate: obj.enabled,
-                      tooltip: !obj.enabled ? '请选择已启用的实例' : '',
-                    }),
-                  },
-                ],
-              },
+              ...getEnabledSwitchActions(this, obj),
               {
                 label: '设置',
                 submenus: [

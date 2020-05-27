@@ -20,7 +20,7 @@ import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ListMixin from '@/mixins/list'
-import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
+import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
 
 export default {
   name: 'PhysicalmachineList',
@@ -113,55 +113,10 @@ export default {
           },
         },
         {
-          label: '启用',
-          action: () => {
-            this.list.batchPerformAction('enable', null, this.list.steadyStatus)
-          },
-          meta: () => {
-            if (this.list.selectedItems.length <= 0) {
-              return {
-                validate: false,
-                tooltip: '请选择已经禁用的实例',
-              }
-            }
-            if (this.list.selectedItems.some(item => item.enabled)) {
-              return {
-                validate: false,
-                tooltip: '请选择已经禁用的实例',
-              }
-            }
-            return {
-              validate: true,
-            }
-          },
-        },
-        {
-          label: '禁用',
-          action: () => {
-            this.list.batchPerformAction('disable', null, this.list.steadyStatus)
-          },
-          meta: () => {
-            if (this.list.selectedItems.length <= 0) {
-              return {
-                validate: false,
-                tooltip: '请选择已经启用的实例',
-              }
-            }
-            if (this.list.selectedItems.some(item => !item.enabled)) {
-              return {
-                validate: false,
-                tooltip: '请选择已经启用的实例',
-              }
-            }
-            return {
-              validate: true,
-            }
-          },
-        },
-        {
           label: '批量操作',
           actions: (obj) => {
             return [
+              ...getEnabledSwitchActions(this, obj),
               {
                 label: '开机',
                 action: (obj) => {

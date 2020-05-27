@@ -19,7 +19,7 @@ import { getStatusFilter, getEnabledFilter, getBrandFilter, getProjectDomainFilt
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ListMixin from '@/mixins/list'
-import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
+import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
 
 export default {
   name: 'HostList',
@@ -107,35 +107,10 @@ export default {
       return _frontGroupActions.concat(
         [
           {
-            label: '启用',
-            action: () => {
-              this.list.batchPerformAction('enable', null, this.list.steadyStatus)
-            },
-            meta: (obj) => {
-              const validate = this.list.selectedItems.length && this.list.selectedItems.some(item => !item.enabled)
-              return {
-                validate,
-                tooltip: !validate ? '请选择已经禁用的实例' : '',
-              }
-            },
-          },
-          {
-            label: '禁用',
-            action: () => {
-              this.list.batchPerformAction('disable', null, this.list.steadyStatus)
-            },
-            meta: (obj) => {
-              const validate = this.list.selectedItems.length && this.list.selectedItems.some(item => item.enabled)
-              return {
-                validate,
-                tooltip: !validate ? '请选择已经启用的实例' : '',
-              }
-            },
-          },
-          {
             label: this.$t('common.batchAction'),
             actions: () => {
               return [
+                ...getEnabledSwitchActions(this, undefined),
                 getDomainChangeOwnerAction(this, {
                   name: this.$t('dictionary.host'),
                   resource: 'hosts',
