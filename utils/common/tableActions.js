@@ -131,3 +131,62 @@ export function getSetPublicAction (vm, dialogParams = {}, params = {}) {
   if (params.permission) options.permission = params.permission
   return options
 }
+
+export function getEnabledSwitchActions (vm, row, permissions) {
+  if (!vm) {
+    throw Error('not found vm instance')
+  }
+  const { list = {}, resourceName } = vm
+  const { resource } = list
+  const data = getSelectedData(row, vm)
+  const dialogParams = {
+    resourceName,
+    vm,
+    data,
+    resource,
+    onManager: vm.onManager,
+    refresh: vm.refresh,
+    columns: vm.columns,
+  }
+  const openDialog = (rowItem, action) => {
+    const params = Object.assign(dialogParams, {
+      action,
+    })
+    if (!params.data || params.data.length === 0) {
+      params['data'] = [rowItem]
+    }
+    vm.createDialog('EnabledSwitchDialog', params)
+  }
+  const enable = {
+    label: '启用',
+    action: (rowItem) => openDialog(rowItem, 'enable'),
+    meta: (rowItem) => {
+      const item = (data && data.length === 1) ? data[0] : rowItem
+      return {
+        validate: !!item && !item.enabled,
+      }
+    },
+  }
+  const disable = {
+    label: '禁用',
+    action: (rowItem) => openDialog(rowItem, 'disable'),
+    meta: (rowItem) => {
+      const item = (data && data.length === 1) ? data[0] : rowItem
+      return {
+        validate: !!item && item.enabled,
+      }
+    },
+  }
+
+  // 权限处理
+  if (permissions && permissions.length > 0) {
+    const [ enablePermission, disablePermission ] = permissions
+    if (enablePermission) {
+      enable['permission'] = enablePermission
+    }
+    if (disablePermission) {
+      disable['permission'] = disablePermission
+    }
+  }
+  return [enable, disable]
+}

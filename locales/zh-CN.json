@@ -1275,7 +1275,8 @@
     "delete_servers": "主机（回收站）",
     "delete_disks": "硬盘（回收站）",
     "delete_images": "镜像（回收站）",
-    "account": "账号"
+    "account": "账号",
+    "serverskus": "套餐"
   },
   "shareScope": {
     "system": "系统",
@@ -1668,6 +1669,17 @@
     "image": "保留镜像设置",
     "password": "手工输入"
   },
+  "enabledSwitchMessage": {
+    "instancegroups.disable":"禁用后，虚拟机将无法加入到主机组",
+    "scalinggroups.enable": "启用后，伸缩组将按照伸缩策略创建或删除虚拟机。",
+    "scalinggroups.disable": "禁用后，伸缩组下的所有伸缩策略都无法执行，但是仍可创建伸缩策略。",
+    "scalingpolicies.enable": "启用后，伸缩策略将会根据策略设置创建或删除虚拟机。",
+    "scalingpolicies.disable": "启用后，禁用状态的伸缩策略不生效。",
+    "serverskus.disable": "创建本地IDC或私有云虚拟机时无法选择禁用状态的套餐。",
+    "hosts.disable": "禁用状态的宿主机无法创建虚拟机，请确保至少有一个宿主机处于启用状态，否则将不显示虚拟机菜单。",
+    "physicalmachine.disable": "禁用状态的物理机无法创建裸金属，请确保至少有一个物理机处于启用状态，否则将不显示裸金属菜单。",
+    "devtool_templates.disable": "禁用后，运维模板无法关联虚拟机使用。"
+  },
   "common.batchAction": "批量操作",
   "common.action": "操作",
   "common.ok": "确定",
@@ -1687,7 +1699,7 @@
   "common.edit": "修改",
   "common.success": "操作成功",
   "common.loding": "加载中",
-  "coomon.notData": "暂无数据",
+  "common.notData": "暂无数据",
   "common.placeholder": "请输入",
   "common.LoadMore": "加载更多",
   "common.checkAll": "全选",
