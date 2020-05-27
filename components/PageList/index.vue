@@ -43,7 +43,7 @@
         :loading="loading"
         :group-actions="groupActions"
         :single-actions="singleActions"
-        :show-selection="showSelection"
+        :show-checkbox="showCheckbox"
         :show-single-actions="showSingleActions"
         :get-limit="getLimit"
         :limit="limit"
@@ -111,7 +111,7 @@ export default {
       required: true,
     },
     // 是否显示列选择
-    showSelection: Boolean,
+    showCheckbox: Boolean,
     // 导出数据配置
     exportDataOptions: Object,
     // 分页布局
