@@ -20,14 +20,15 @@ let routes = [
     name: 'EmailVerification',
     meta: {
       layout: 'full-screen',
+      auth: false,
     },
     component: EmailVerify,
   },
   { name: 'NoProject', path: '/no-project', component: NoProject, meta: { layout: 'full-screen' } },
   { name: 'NoProjectStatus', path: '/no-project-status', component: NoProjectStatus, meta: { layout: 'full-screen' } },
-  { name: '404', path: '/404', component: NotFoundPage, meta: { layout: 'full-screen' } },
-  { name: '403', path: '/403', component: NoPermission, meta: { layout: 'full-screen' } },
-  { name: 'NotFound', path: '*', component: NotFoundPage, meta: { layout: 'full-screen' } },
+  { name: '404', path: '/404', component: NotFoundPage, meta: { layout: 'full-screen', auth: false } },
+  { name: '403', path: '/403', component: NoPermission, meta: { layout: 'full-screen', auth: false } },
+  { name: 'NotFound', path: '*', component: NotFoundPage, meta: { layout: 'full-screen', auth: false } },
 ]
 
 function getScopeRoutes () {

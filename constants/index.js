@@ -108,23 +108,3 @@ export const ENABLE_USER_CUSTOM_DICTIONARY = [
 ]
 
 export const chartColors = ['#4DA1FF', '#FFC760', '#F76F89', '#5ED28A', '#ff5f2e', '#A593E0', '#7f9eb2', '#f6ea8c', '#a5dff9', '#77AAAD', '#E71D36', '#4ea1d3']
-
-// 登录相关的路由名称
-export const authRoutesName = [
-  'Auth',
-  'Login',
-  'Register',
-  'ChannelPartnerRegister',
-  'RegisterResult',
-  'SecretVerify',
-  'BindSecret',
-  'SetSecretQuestion',
-  'ResetSecretQuestion',
-]
-// 白名单路由名称，不需要登录认证
-export const whiteRoutesName = authRoutesName.concat([
-  '404',
-  'NotFound',
-  'EmailVerification',
-  'Agreement',
-])

@@ -489,3 +489,26 @@ export const filterObj = (fn, obj) => {
   }
   return result
 }
+
+/**
+ * [城市code中文映射]
+ * @param cities 城市list
+ * @param val 被映射的城市code
+ */
+export const cityMap = (cities, val) => {
+  let result = ''
+  if (val) {
+    const valPrefix = val.slice(0, 3)
+    cities.map(item => {
+      const itemPrefix = item.value.slice(0, 3)
+      if (valPrefix === itemPrefix && item.children && item.children.length) {
+        item.children.map(chilItem => {
+          if (val === chilItem.value) {
+            result = item.label + chilItem.label
+          }
+        })
+      }
+    })
+  }
+  return result
+}

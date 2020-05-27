@@ -22,7 +22,7 @@
     </div>
     <!-- 系统选择 -->
     <div class="navbar-item d-flex align-items-center justify-content-end" v-if="products">
-      <a-dropdown :trigger="['click']">
+      <a-dropdown :trigger="['click']" :getPopupContainer="triggerNode => triggerNode.parentNode">
         <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
           <icon type="navbar-setting" />
           <span class="ml-2">云管平台</span>
@@ -38,7 +38,8 @@
       <a-popover
         trigger="click"
         v-model="viewChangePopoverVisible"
-        destroyTooltipOnHide>
+        destroyTooltipOnHide
+        :getPopupContainer="triggerNode => triggerNode.parentNode">
         <template slot="content">
           <ul class="list-unstyled view-list-wrap">
             <!-- 管理后台 -->
@@ -100,7 +101,7 @@
     <!-- 消息中心 -->
     <notify-popover class="navbar-item" v-if="showNotify" />
     <!-- 工单 -->
-    <work-order-popover class="navbar-item" v-if="showWorkOrder" />
+    <work-order-popover class="navbar-item" v-if="showWorkOrder && itsmServiceEnable" />
     <!-- 帮助 -->
     <help-popover class="navbar-item" v-if="showHelp" />
     <!-- 用户 -->
@@ -132,6 +133,7 @@ import HelpPopover from './components/HelpPopover'
 import GlobalSearch from './components/GlobalSearch'
 import UserProjectSelect from '@/sections/UserProjectSelect'
 import WindowsMixin from '@/mixins/windows'
+import { getSetupInStorage } from '@/utils/auth'
 
 export default {
   name: 'Navbar',
@@ -290,12 +292,16 @@ export default {
     licenseClosable () {
       return this.computeStatus.prohibited || this.computeStatus.exceeded
     },
+    itsmServiceEnable () {
+      const itsm = (this.userInfo.services || []).find(v => v.type === 'itsm' && v.status === true)
+      return !!itsm
+    },
   },
   watch: {
     userInfo: {
       handler (val, oldVal = {}) {
         if (val.id !== oldVal.id) {
-          if (Cookies.get('INIT_SETUP') && val.roles && val.roles.includes('admin')) {
+          if (getSetupInStorage() && val.roles && val.roles.includes('admin')) {
             this.$router.push('/guide')
             return
           }
@@ -354,10 +360,14 @@ export default {
         this.$store.dispatch('app/fetchLicense')
       }
     },
-    userMenuClick (item) {
+    async userMenuClick (item) {
       if (item.key === 'logout') {
-        this.$store.dispatch('auth/logout')
-        this.$router.push('/auth')
+        try {
+          await this.$store.dispatch('auth/logout')
+          this.$router.push('/auth/login')
+        } catch (error) {
+          throw error
+        }
       }
     },
     projectChange (id, scope) {
@@ -385,20 +395,25 @@ export default {
     async reLogin (projectId, scope) {
       this.reLogging = true
       try {
-        await this.$store.dispatch('auth/reLogin', projectId)
+        await this.$store.dispatch('auth/login', {
+          tenantId: projectId,
+        })
         await this.$store.commit('auth/SET_SCOPE', scope)
-        Cookies.set('scope', scope, { expires: 7 })
-        // const resolveIndexRoute = this.$router.resolve('/')
-        // const currentRoute = this.$route
-        // // 如果在首页则刷新页面
-        // if (resolveIndexRoute.route.path === currentRoute.path) {
-        //   window.location.reload()
-        // } else {
-        //   await this.$store.dispatch('auth/getInfo')
-        //   await this.$store.dispatch('auth/getPermission', scope)
-        //   await this.$store.dispatch('auth/getScopeResource')
-        //   this.$router.push('/')
-        // }
+        await this.$store.commit('auth/SET_TENANT', projectId)
+        await this.$store.commit('auth/UPDATE_LOGGED_USERS', {
+          key: this.$store.getters['auth/currentLoggedUserKey'],
+          value: {
+            tenant: projectId,
+            scope,
+          },
+        })
+        await this.$store.commit('auth/UPDATE_HISTORY_USERS', {
+          key: this.$store.getters['auth/currentHistoryUserKey'],
+          value: {
+            tenant: projectId,
+            scope,
+          },
+        })
         window.location.reload()
         return true
       } catch (error) {

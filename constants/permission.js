@@ -19,6 +19,7 @@ export const PERMISSION = {
   'snapshots_list': ['compute', 'snapshots', 'list'],
   // 自动快照策略
   'snapshotpolicy_list': ['compute', 'snapshotpolicies', 'list'],
+  'snapshotpolicy_create': ['compute', 'snapshotpolicies', 'create'],
   // 主机快照
   'instance_snapshots_list': ['compute', 'instance_snapshots', 'list'],
   // 安全组
@@ -79,8 +80,6 @@ export const PERMISSION = {
   'servertemplates_list': ['compute', 'servertemplates', 'list'],
   // 弹性伸缩组
   'scalinggroups_list': ['compute', 'scalinggroups', 'list'],
-  // 服务目录
-  'servicecatalogs_list': ['compute', 'servicecatalogs', 'list'],
   // 负载均衡实例管理
   'lb_loadbalancers_list': ['compute', 'loadbalancers', 'list'],
   // 负载均衡监听
@@ -173,8 +172,6 @@ export const PERMISSION = {
   'serverskus_list': ['compute', 'serverskus', 'list'],
   // 认证源
   'idps_list': ['identity', 'identity_providers', 'list'],
-  // 私有云账单
-  'bill_virtual_accounts_list': ['meter', 'res_results', 'list'],
   // 常用系统(接入端)
   'endpoints_list': ['identity', 'endpoints', 'list'],
   /**
@@ -221,6 +218,7 @@ export const PERMISSION = {
   'disks_perform_create_snapshot': ['compute', 'disks', 'perform', 'create-snapshot'],
   'disks_perform_disk_reset': ['compute', 'disks', 'perform', 'disk-reset'],
   'disks_perform_cancel_delete': ['compute', 'disks', 'perform', 'cancel-delete'],
+  'disks_perform_syncstatus': ['compute', 'disks', 'perform', 'syncstatus'],
   /**
    * snapshots 相关操作
    */
@@ -388,12 +386,6 @@ export const PERMISSION = {
   'servertemplates_delete': ['compute', 'servertemplates', 'delete'],
   'servertemplates_perform_public': ['compute', 'servertemplates', 'perform', 'public'],
   /**
-   * 服务目录
-   */
-  'servicecatalogs_create': ['compute', 'servicecatalogs', 'create'],
-  'servicecatalogs_update': ['compute', 'servicecatalogs', 'update'],
-  'servicecatalogs_delete': ['compute', 'servicecatalogs', 'delete'],
-  /**
    * 弹性伸缩组
    */
   'scalinggroups_create': ['compute', 'scalinggroups', 'create'],
@@ -431,6 +423,7 @@ export const PERMISSION = {
   'networks_perform_split': ['compute', 'networks', 'perform', 'split'],
   'networks_perform_merge': ['compute', 'networks', 'perform', 'merge'],
   'networks_perform_change_owner': ['compute', 'networks', 'perform', 'change-owner'],
+  'networks_perform_syncstatus': ['compute', 'networks', 'perform', 'syncstatus'],
   /**
    * notices 相关操作
    */
@@ -511,6 +504,7 @@ export const PERMISSION = {
   'eips_perform_change_owner': ['compute', 'eips', 'perform', 'change-owner'],
   'eips_delete': ['compute', 'eips', 'delete'],
   'eips_get': ['compute', 'eips', 'get'],
+  'eips_create': ['compute', 'eips', 'create'],
   /**
    * meter 相关操作
    */
@@ -533,6 +527,7 @@ export const PERMISSION = {
    * 主机组
    */
   'instancegroups_list': ['compute', 'instancegroups', 'list'],
+  'instancegroups_create': ['compute', 'instancegroups', 'create'],
   /**
    * 数据库-RDS
    */

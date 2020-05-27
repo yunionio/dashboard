@@ -12,7 +12,7 @@ export default {
   },
   host: {
     success: ['online', 'running'],
-    info: ['offline', 'init', 'ready'],
+    info: ['offline', 'ready'],
     // danger: ['ready'],
   },
   image: {
@@ -284,5 +284,14 @@ export default {
     info: [],
     success: ['Finished'],
     danger: ['delete_fail', 'deploy_fail', 'update_fail', 'create_fail'],
+  },
+  suggestsysalert: {
+    info: ['ready'],
+    danger: ['delete_fail'],
+  },
+  reportProject: {
+    info: ['init'],
+    success: ['accept'],
+    danger: ['refused', 'expired'],
   },
 }

@@ -8,7 +8,7 @@ import WindowsMixin from '@/mixins/windows'
 import { hasPermission } from '@/utils/auth'
 
 // 需要添加区域（cloudregion/cloudregion_id), 可用区（zone/zone_id)，云账号(account/account_id)，云订阅（manager/manager_id)的资源
-const appendOutherResources = ['servers', 'hosts', 'disks', 'storages', 'vpcs', 'wires', 'networks', 'snapshots', 'eips', 'dbinstances', 'elasticcaches', 'servertemplates', 'buckets', 'networkinterfaces']
+const appendOutherResources = ['servers', 'hosts', 'disks', 'storages', 'vpcs', 'wires', 'networks', 'snapshots', 'eips', 'dbinstances', 'elasticcaches', 'servertemplates', 'buckets', 'networkinterfaces', 'lbs']
 
 const getDefaultLastBaseInfo = (vm, h, { data, onManager, resource }) => {
   const outher = [
@@ -245,6 +245,10 @@ export default {
       type: Array,
     },
     resource: String,
+    isEditDesc: {
+      type: Boolean,
+      default: true,
+    },
   },
   computed: {
     commonBaseInfo () {
@@ -380,7 +384,7 @@ export default {
           h('list-body-cell-wrap', {
             props: {
               copy: true,
-              edit: true,
+              edit: this.isEditDesc,
               row: this.data,
               onManager: this.onManager,
               field: 'description',

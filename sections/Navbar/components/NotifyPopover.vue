@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-popover trigger="click" v-model="visible" @visibleChange="handleVisibleChange">
+    <a-popover trigger="click" v-model="visible" @visibleChange="handleVisibleChange" :getPopupContainer="triggerNode => triggerNode.parentNode">
       <div class="trigger d-flex align-items-center justify-content-center">
         <icon type="navbar-notify" style="font-size: 24px;" />
       </div>

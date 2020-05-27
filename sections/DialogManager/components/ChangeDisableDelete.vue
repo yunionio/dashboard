@@ -30,10 +30,19 @@ export default {
   name: 'ChangeDisableDelete',
   mixins: [DialogMixin, WindowsMixin],
   data () {
+    const isAllNotDisable = this.params.data.every((item) => { return !item.disable_delete })
     return {
       loading: false,
       form: {
         fc: this.$form.createForm(this, { onFieldsChange: this.onFieldsChange }),
+      },
+      decorators: {
+        disable_delete: [
+          'disable_delete',
+          {
+            initialValue: !isAllNotDisable,
+          },
+        ],
       },
       formItemLayout: {
         wrapperCol: { span: 21 },
@@ -44,21 +53,6 @@ export default {
   computed: {
     title () {
       return this.params.title || this.$t('common.text00077')
-    },
-    decorators () {
-      const { data } = this.params
-      let initialValueDisableDelete = true
-      if (data && data.length === 1) {
-        initialValueDisableDelete = data[0]['disable_delete']
-      }
-      return {
-        disable_delete: [
-          'disable_delete',
-          {
-            initialValue: initialValueDisableDelete,
-          },
-        ],
-      }
     },
   },
   created () {},
