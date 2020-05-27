@@ -34,10 +34,9 @@ export default {
       type: Boolean,
       default: false,
     },
-  },
-  data () {
-    return {
-      timeOpts: {
+    timeOpts: {
+      type: Object,
+      default: () => ({
         [`${1}h`]: {
           key: `${1}h`,
           label: '近1小时',
@@ -94,8 +93,8 @@ export default {
             { key: '7d', label: '7天' },
           ],
         },
-      },
-    }
+      }),
+    },
   },
   computed: {
     timeGroupOpts () {

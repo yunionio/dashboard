@@ -3,6 +3,7 @@
     <monitor-header
       :time="time"
       :timeGroup="timeGroup"
+      :timeOpts="timeOpts"
       @update:time="updateTime"
       @update:timeGroup="updateTimeGroup"
       @refresh="refresh" />
@@ -35,7 +36,7 @@ export default {
       required: true,
     },
     timeOpts: {
-      type: Array,
+      type: Object,
     },
     timeGroupOpts: {
       type: Array,
