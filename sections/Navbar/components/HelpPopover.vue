@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-dropdown :trigger="['click']">
+    <a-dropdown :trigger="['click']" :getPopupContainer="triggerNode => triggerNode.parentNode">
       <div class="trigger d-flex align-items-center justify-content-center">
         <icon type="question" style="font-size: 24px;" />
       </div>
