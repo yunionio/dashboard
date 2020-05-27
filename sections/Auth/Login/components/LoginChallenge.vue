@@ -1,16 +1,31 @@
 <template>
   <div>
+    <template v-if="!showUsernameInput">
+      <div class="selected-user-wrap text-center mb-4">
+        <div class="selected-user-content" @click="$router.replace('/auth/login/chooser')">
+          <div class="mr-2">
+            <a-icon type="user" />
+          </div>
+          <div class="selected-user-name">{{ fd.username }}</div>
+          <div class="ml-2 d-flex align-items-center">
+            <svg aria-hidden="true" fill="currentColor" focusable="false" width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><polygon points="12,16.41 5.29,9.71 6.71,8.29 12,13.59 17.29,8.29 18.71,9.71" /></svg>
+          </div>
+        </div>
+      </div>
+    </template>
     <a-form-model
       ref="form"
       :model="fd"
       :rules="rules"
       @submit.prevent.stop="handleLogin">
       <!-- 用户名 -->
-      <a-form-model-item prop="username" v-if="showUsernameInput">
-        <a-input class="material-input" v-model="fd.username" :placeholder="placeholderOpts.username">
-          <a-icon slot="prefix" type="user" style="color: rgba(0, 0, 0, .25)" />
-        </a-input>
-      </a-form-model-item>
+      <template v-if="showUsernameInput">
+        <a-form-model-item prop="username">
+          <a-input class="material-input" v-model="fd.username" :placeholder="placeholderOpts.username">
+            <a-icon slot="prefix" type="user" style="color: rgba(0, 0, 0, .25)" />
+          </a-input>
+        </a-form-model-item>
+      </template>
       <!-- 密码 -->
       <a-form-model-item prop="password">
         <a-input-password class="material-input" v-model="fd.password" :placeholder="placeholderOpts.password">
@@ -61,7 +76,7 @@
       <a-form-model-item>
         <div class="d-flex">
           <div class="flex-shrink-1 flex-grow-1 text-left" style="margin-left: -15px;">
-            <template v-if="showChooserBtn">
+            <template v-if="hasLoggedUsers && showUsernameInput">
               <a-button type="link" @click="$router.replace('/auth/login/chooser')" class="week-link-button">{{ $t('auth.chooser') }}</a-button>
             </template>
           </div>
@@ -128,7 +143,7 @@ export default {
       captchaImg: '',
       submiting: false,
       showUsernameInput: !this.$route.query.username,
-      showChooserBtn: false,
+      hasLoggedUsers: false,
     }
   },
   computed: {
@@ -156,8 +171,8 @@ export default {
     },
   },
   created () {
-    // showChooserBtn 没使用compute。主要希望只触发一次
-    this.showChooserBtn = Object.keys(this.loggedUsers).length > 0
+    // hasLoggedUsers 没使用compute。主要希望只触发一次
+    this.hasLoggedUsers = Object.keys(this.loggedUsers).length > 0
   },
   methods: {
     // 获取验证码图片
@@ -242,6 +257,31 @@ export default {
     .ant-input-affix-wrapper .ant-input-suffix {
       padding-right: 0px !important;
     }
+  }
+}
+.selected-user-wrap {
+  height: 32px;
+}
+.selected-user-content {
+  align-items: center;
+  border: 1px solid #d9d9d9;
+  color: #3c4043;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: .25px;
+  max-width: 100%;
+  border-radius: 16px;
+  padding: 5px 7px 5px 5px;
+  .selected-user-name {
+    direction: ltr;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  &:hover {
+    background: rgba(60,64,67,0.039);
   }
 }
 </style>
