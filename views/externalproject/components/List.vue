@@ -8,13 +8,14 @@
 
 <script>
 import WindowsMixin from '@/mixins/windows'
+import ListMixin from '@/mixins/list'
 import {
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
   name: 'ExternalprojectList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ListMixin],
   props: {
     getParams: {
       type: [Function, Object],
