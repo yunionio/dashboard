@@ -239,6 +239,10 @@ export default {
                       validate: false,
                       tooltip: null,
                     }
+                    if (obj.metadata.is_fake_baremetal_server === 'true') {
+                      ret.validate = false
+                      return ret
+                    }
                     if (obj.status !== 'ready') {
                       ret.tooltip = '仅在云服务器状态为【关机】下可以进行该操作'
                       return ret
@@ -299,7 +303,6 @@ export default {
                       tooltip: null,
                     }
                     if (obj.metadata.is_fake_baremetal_server === 'true') ret.validate = false
-                    ret.validate = true
                     return ret
                   },
                 },
