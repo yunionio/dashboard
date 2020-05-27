@@ -314,6 +314,7 @@ export default {
         this.step = selectedOptions[2].props.step
         this.step = selectedOptions[2].props.step
         this.startIndex = selectedOptions[1].start_index
+        this.endIndex = selectedOptions[1].end_index
       }
     },
     validateForm () {
