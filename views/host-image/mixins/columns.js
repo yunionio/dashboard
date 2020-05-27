@@ -29,9 +29,12 @@ export default {
             return `${arr.length}个`
           },
           content: ({ row }) => {
-            const list = row.data_images.map(val => (
-              <a-tag class='mb-2'>{ val.name }</a-tag>
-            ))
+            let list = []
+            if (row.data_images && row.data_images.length > 0) {
+              list = row.data_images.map(val => (
+                <a-tag class='mb-2'>{ val.name }</a-tag>
+              ))
+            }
             list.push(
               <a-tag class='mb-2'>{ row.root_image.name }</a-tag>
             )
