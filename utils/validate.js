@@ -81,7 +81,7 @@ export const REGEXP = {
     message: i18n.t('validator.url'),
   },
   password: {
-    regexp: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+    regexp: /^(?=.*[0-9].*)(?=.*[A-Z].*)(?=.*[a-z].*).{8,}$/,
     message: i18n.t('validator.password'),
   },
   publicKey: {
