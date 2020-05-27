@@ -28,8 +28,6 @@ import Servertemplate from '@Compute/views/servertemplate'
 import ServertemplateCreateServer from '@Compute/views/servertemplate/CreateServer'
 import DiskSnapshot from '@Compute/views/snapshot'
 import InstanceSnapshot from '@Compute/views/snapshot-instance'
-import Servicecatalog from '@Compute/views/servicecatalog'
-import ServicecatalogDeploy from '@Compute/views/servicecatalog/Deploy'
 import SnapshotPolicy from '@Compute/views/snapshotpolicy'
 import AnsibleTemplate from '@Compute/views/ansible-template'
 import AnsibleTemplateCreate from '@Compute/views/ansible-template/create'
@@ -141,28 +139,6 @@ export default {
               path: 'create-server',
               meta: {},
               component: ServertemplateCreateServer,
-            },
-          ],
-        },
-        {
-          path: '/servicecatalog',
-          meta: {
-            label: '服务目录',
-            permission: 'servicecatalogs_list',
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'Servicecatalog',
-              path: '',
-              meta: {},
-              component: Servicecatalog,
-            },
-            {
-              name: 'ServicecatalogDeploy',
-              path: 'deploy',
-              meta: {},
-              component: ServicecatalogDeploy,
             },
           ],
         },
