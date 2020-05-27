@@ -50,7 +50,7 @@
       </a-form>
       <page-list
         :list="list"
-        :showSelection="true"
+        :show-checkbox="true"
         :pagerLayout="['PrevPage', 'Jump', 'PageCount', 'NextPage', 'Total']"
         :columns="cacheColumns" />
     </div>
