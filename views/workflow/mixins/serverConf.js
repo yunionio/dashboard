@@ -215,8 +215,21 @@ export default {
         sysDisk[sysKey] = this._dealSize(sysDisks)
       }
       if (dataDisks && dataDisks.length > 0) {
-        for (const k in ALL_STORAGE) {
-          const e = ALL_STORAGE[k]
+        const NEW_ALL_STORAGE = { ...ALL_STORAGE }
+        dataDisks.forEach((item) => {
+          if (!ALL_STORAGE[item.backend]) {
+            NEW_ALL_STORAGE[item.backend] = {
+              label: item.backend,
+              max: 500,
+              min: 1,
+              sysMax: 500,
+              sysMin: 10,
+              value: item.backend,
+            }
+          }
+        })
+        for (const k in NEW_ALL_STORAGE) {
+          const e = NEW_ALL_STORAGE[k] || { key: k, value: k }
           const sameType = dataDisks.filter(v => (v.backend || 'local') === e.value)
           if (sameType && sameType.length) {
             dataDisk[k] = this._dealSize(sameType)
