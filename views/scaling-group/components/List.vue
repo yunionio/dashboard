@@ -124,7 +124,7 @@ export default {
               },
               {
                 label: '删除',
-                permission: 'servicecatalogs_delete',
+                permission: 'scalinggroups_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     title: '删除',
