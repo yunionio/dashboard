@@ -22,7 +22,7 @@
     </div>
     <!-- 系统选择 -->
     <div class="navbar-item d-flex align-items-center justify-content-end" v-if="products">
-      <a-dropdown :trigger="['click']">
+      <a-dropdown :trigger="['click']" :getPopupContainer="triggerNode => triggerNode.parentNode">
         <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
           <icon type="navbar-setting" />
           <span class="ml-2">云管平台</span>
