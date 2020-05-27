@@ -51,7 +51,7 @@ export default {
     },
     loading: Boolean,
     // 是否显示列选择
-    showSelection: Boolean,
+    showCheckbox: Boolean,
     groupActions: Array,
     // 单行操作配置
     singleActions: Array,
@@ -91,8 +91,8 @@ export default {
   },
   computed: {
     // 是否渲染
-    showCheckbox () {
-      return (this.groupActions && this.groupActions.length > 0) || this.showSelection
+    _showCheckbox () {
+      return (this.groupActions && this.groupActions.length > 0) || this.showCheckbox
     },
     gridStyle () {
       return {
@@ -172,7 +172,7 @@ export default {
         if (R.is(Function, item.hidden)) return !item.hidden()
         return !item.hidden
       })
-      if (this.showCheckbox) {
+      if (this._showCheckbox) {
         defaultColumns.unshift({ type: 'checkbox', width: 40 })
       }
       if (this.showSingleActions && this.singleActions && this.singleActions.length) {
@@ -241,7 +241,7 @@ export default {
             },
           }
         })
-        const insertIndex = this.showCheckbox ? 2 : 1
+        const insertIndex = this._showCheckbox ? 2 : 1
         defaultColumns = R.insertAll(insertIndex, tagColumns, defaultColumns)
       }
       return defaultColumns
