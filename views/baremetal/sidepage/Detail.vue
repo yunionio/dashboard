@@ -103,7 +103,10 @@ export default {
               hideField: true,
               message: this.diskInfos.image,
               slotCallback: row => {
-                return [<side-page-trigger onTrigger={ () => this.handleOpenSystemImageDetail(this.diskInfos.imageId) }>{ this.diskInfos.image }</side-page-trigger>]
+                if (this.diskInfos.image) {
+                  return [<side-page-trigger onTrigger={ () => this.handleOpenSystemImageDetail(this.diskInfos.imageId) }>{ this.diskInfos.image }</side-page-trigger>]
+                }
+                return '-'
               },
             }),
             {
@@ -124,14 +127,16 @@ export default {
               field: 'sysDisk',
               title: '系统盘',
               formatter: ({ row }) => {
-                return <a onClick={ () => this.$emit('tab-change', 'disk-list-for-baremetal-sidepage') }>{this.diskInfos.sysDisk}</a>
+                if (this.diskInfos.sysDisk) return <a onClick={ () => this.$emit('tab-change', 'disk-list-for-baremetal-sidepage') }>{this.diskInfos.sysDisk}</a>
+                return '-'
               },
             },
             {
               field: 'dataDisk',
               title: '数据盘',
               formatter: ({ row }) => {
-                return <a onClick={ () => this.$emit('tab-change', 'disk-list-for-baremetal-sidepage') }>{this.diskInfos.dataDisk}</a>
+                if (this.diskInfos.dataDisk) return <a onClick={ () => this.$emit('tab-change', 'disk-list-for-baremetal-sidepage') }>{this.diskInfos.dataDisk}</a>
+                return '-'
               },
             },
             getCopyWithContentTableColumn({

@@ -143,7 +143,7 @@ export default {
         width: 70,
         slots: {
           default: ({ row }) => {
-            return [<PasswordFetcher serverId={ row.id } resourceType='baremetal_ssh' disabled={ row.is_import } promptText={row.is_import ? '托管物理机，无法查看账号信息' : '' } />]
+            return [<PasswordFetcher serverId={ row.server_id ? row.server_id : row.id } resourceType={row.server_id ? 'servers' : 'baremetal_ssh' } disabled={ row.is_import } promptText={row.is_import ? '托管物理机，无法查看账号信息' : '' } />]
           },
         },
       },

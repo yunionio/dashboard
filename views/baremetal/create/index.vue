@@ -7,7 +7,7 @@
       @submit="handleConfirm">
       <a-divider orientation="left">基础配置</a-divider>
       <a-form-item :label="`指定${$t('dictionary.project')}`" class="mb-0" v-bind="formItemLayout">
-        <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
+        <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" :project.sync="projectId" />
       </a-form-item>
       <a-form-item label="区域" class="mb-0" v-bind="formItemLayout" v-if="!isInstallOperationSystem">
         <cloudregion-zone
@@ -504,6 +504,7 @@ export default {
       filterHostData: [],
       isSupportIso: false,
       project_domain: '',
+      projectId: '',
     }
   },
   computed: {
@@ -552,7 +553,7 @@ export default {
           scope: this.scope,
         }
       }
-      return { project_domain: this.project_domain }
+      return { project_domain: this.project_domain || this.projectId }
     },
     hasMeterService () { // 是否有计费的服务
       const { services } = this.$store.getters.userInfo
@@ -1135,8 +1136,8 @@ export default {
         nets,
         prefer_host: this.isInstallOperationSystem ? this.$route.query.id : values.schedPolicyHost,
         description: values.description,
-        prefer_region: values.cloudregion.key,
-        prefer_zone: values.zone.key,
+        prefer_region: values.cloudregion ? values.cloudregion.key : this.$route.query.zone_id,
+        prefer_zone: values.zone ? values.zone.key : this.$route.query.region_id,
       }
       if (values.loginPassword) params.password = values.loginPassword
       if (values.loginKeypair) params.keypair = values.loginKeypair.key
@@ -1167,7 +1168,7 @@ export default {
     doCreateWorkflow (variables, params) {
       this.submiting = true
       new this.$Manager('process-instances', 'v1')
-        .create({ data: variables })
+        .create({ data: { variables } })
         .then(() => {
           this.submiting = false
           this.$message.success(`裸金属 ${params.name} 创建请求流程已提交`)
