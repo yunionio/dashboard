@@ -213,6 +213,7 @@ export default {
         domain: [
           'domain',
           {
+            initialValue: this.$route.query.domain_id || '',
             rules: [
               { validator: isRequired(), message: i18n.t('rules.domain'), trigger: 'change' },
             ],

@@ -204,7 +204,14 @@ export default {
                   action: () => {
                     this.$router.push({
                       path: '/baremetal/create',
-                      query: { id: obj.id, type: 'baremetal', zone_id: obj.zone_id, host_id: obj.id, region_id: obj.cloudregion_id },
+                      query: {
+                        id: obj.id,
+                        type: 'baremetal',
+                        zone_id: obj.zone_id,
+                        host_id: obj.id,
+                        region_id: obj.cloudregion_id,
+                        domain_id: obj.domain_id,
+                      },
                     })
                   },
                   meta: () => {
