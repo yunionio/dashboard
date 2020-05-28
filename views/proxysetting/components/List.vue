@@ -71,6 +71,34 @@ export default {
           name: this.$t('dictionary.proxysetting'),
           scope: 'domain',
           resource: 'proxysettings',
+        }, {
+          meta: () => {
+            const lent = this.list.selectedItems.length
+            if (lent === 0) {
+              return {
+                validate: false,
+              }
+            }
+            for (let i = 0; i < lent; i++) {
+              const row = this.list.selectedItems[i]
+              if (row.id === 'DIRECT') {
+                return {
+                  tooltip: '直接代理不支持此操作',
+                  validate: false,
+                }
+              }
+              const { isDomainMode, userInfo } = this.$store.getters
+              if (isDomainMode && (userInfo.projectDomainId !== row.domain_id)) {
+                return {
+                  validate: false,
+                  tooltip: '他人共享代理不支持该操作',
+                }
+              }
+            }
+            return {
+              validate: true,
+            }
+          },
         }),
         {
           label: '删除',

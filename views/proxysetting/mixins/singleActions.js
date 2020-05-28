@@ -20,6 +20,8 @@ export default {
         name: this.$t('dictionary.proxysetting'),
         scope: 'domain',
         resource: 'proxysettings',
+      }, {
+        meta: this.commonMeta,
       }),
       {
         label: '删除',
@@ -41,19 +43,28 @@ export default {
     commonMeta (row = {}, action) {
       const { id } = row
       const isDirect = id === 'DIRECT'
-      let validate = !isDirect
-      let tooltip = '直连不支持此操作'
       if (!row.can_delete && action === 'delete') {
-        validate = false
-        tooltip = '已关联云账号，请取消关联云账号后重试'
+        return {
+          validate: false,
+          tooltip: '已关联云账号，请取消关联云账号后重试',
+        }
       }
       if (isDirect) {
-        tooltip = '直连不支持此操作'
+        return {
+          validate: false,
+          tooltip: '直接代理不支持此操作',
+        }
+      }
+      const { isDomainMode, userInfo } = this.$store.getters
+      if (isDomainMode && (userInfo.projectDomainId !== row.domain_id)) {
+        return {
+          validate: false,
+          tooltip: '他人共享代理不支持该操作',
+        }
       }
       return {
         isDirect,
-        validate,
-        tooltip,
+        validate: true,
       }
     },
   },
