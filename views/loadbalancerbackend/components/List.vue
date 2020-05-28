@@ -27,6 +27,10 @@ export default {
       type: Object,
       required: true,
     },
+    isListenerSidepage: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
@@ -41,7 +45,14 @@ export default {
           status: Object.values(expectStatus.lb).flat(),
         },
       }),
-      groupActions: [
+    }
+  },
+  computed: {
+    groupActions () {
+      if (this.isListenerSidepage) { // 监听抽屉里面不能直接新建后端服务器
+        return []
+      }
+      return [
         {
           label: '新建',
           permission: 'lb_loadbalancerbackends_create',
@@ -68,8 +79,8 @@ export default {
             }
           },
         },
-      ],
-    }
+      ]
+    },
   },
   created () {
     this.list.fetchData()
