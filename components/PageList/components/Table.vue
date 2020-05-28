@@ -12,12 +12,14 @@
       :style="gridStyle"
       :sort-config="{ sortMethod: () => {} }"
       :checkbox-config="{ reserve: true, highlight: true }"
+      :radio-config="{ reserve: true, highlight: true, trigger: 'row' }"
       :expand-config="expandConfig"
       :pager-config="tablePage"
       @page-change="handlePageChange"
       @sort-change="handleSortChange"
       @checkbox-change="handleCheckboxChange"
-      @checkbox-all="handleCheckboxChange">
+      @checkbox-all="handleCheckboxChange"
+      @radio-change="handleRadioChange">
       <template v-slot:empty>
         <loader :loading="loading" />
       </template>
@@ -80,6 +82,10 @@ export default {
     expandConfig: Object,
     config: Object,
     nextMarker: String,
+    selectionType: {
+      type: String,
+      required: true,
+    },
   },
   data () {
     return {
@@ -90,9 +96,16 @@ export default {
     }
   },
   computed: {
-    // 是否渲染
-    _showCheckbox () {
-      return (this.groupActions && this.groupActions.length > 0) || this.showCheckbox
+    // 是否开启checkbox
+    checkboxEnabled () {
+      return (
+        ((this.groupActions && this.groupActions.length > 0) || this.showCheckbox) &&
+        this.selectionType === 'checkbox'
+      )
+    },
+    // 是否开启radio
+    radioEnabled () {
+      return this.selectionType === 'radio'
     },
     gridStyle () {
       return {
@@ -172,8 +185,10 @@ export default {
         if (R.is(Function, item.hidden)) return !item.hidden()
         return !item.hidden
       })
-      if (this._showCheckbox) {
+      if (this.checkboxEnabled) {
         defaultColumns.unshift({ type: 'checkbox', width: 40 })
+      } else if (this.radioEnabled) {
+        defaultColumns.unshift({ type: 'radio', width: 40 })
       }
       if (this.showSingleActions && this.singleActions && this.singleActions.length) {
         defaultColumns.push({
@@ -210,7 +225,7 @@ export default {
       }
       if (this.config && this.config.hiddenColumns) {
         R.forEach(item => {
-          if (item.type !== 'checkbox' || item.field !== 'action') {
+          if (item.type !== 'checkbox' || item.type !== 'radio' || item.field !== 'action') {
             item.visible = !this.config.hiddenColumns.includes(item.field)
           }
         }, defaultColumns)
@@ -241,7 +256,7 @@ export default {
             },
           }
         })
-        const insertIndex = this._showCheckbox ? 2 : 1
+        const insertIndex = this.checkboxEnabled ? 2 : 1
         defaultColumns = R.insertAll(insertIndex, tagColumns, defaultColumns)
       }
       return defaultColumns
@@ -268,6 +283,14 @@ export default {
     },
     handleNextMarkerChange () {
       this.$emit('change-next-marker')
+    },
+    handleRadioChange ({ row }) {
+      this.$emit('change-selected', [ row ])
+      this.$emit('radio-change', row)
+    },
+    clearRadio () {
+      this.$refs.grid.clearRadioReserve()
+      this.$refs.grid.clearRadioRow()
     },
   },
 }

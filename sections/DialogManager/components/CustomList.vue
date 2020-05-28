@@ -62,12 +62,12 @@ export default {
   data () {
     // 普通的列
     const columnFields = this.params.customs.filter(item => {
-      return item.type !== 'checkbox' && item.property !== 'action' && !isUserTag(item.property)
+      return item.type !== 'checkbox' && item.type !== 'radio' && item.property !== 'action' && !isUserTag(item.property)
     })
     const initialColumnsSelected = columnFields.filter(item => item.visible).map(item => item.property)
     // 标签列
     const tagFields = this.params.customs.filter(item => {
-      return item.type !== 'checkbox' && item.property !== 'action' && isUserTag(item.property)
+      return item.type !== 'checkbox' && item.type !== 'radio' && item.property !== 'action' && isUserTag(item.property)
     })
     const initialTagsSelected = tagFields.filter(item => {
       return this.params.config.showTagKeys.includes(item.property)
