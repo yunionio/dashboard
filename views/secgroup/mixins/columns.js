@@ -36,28 +36,30 @@ export default {
           content: ({ row }, h) => {
             const inList = []
             const outList = []
-            row.rules.forEach(obj => {
-              let text = ''
-              if (obj.action) text += `${obj.action}`
-              if (obj.cidr) text += `，${obj.cidr}`
-              if (obj.protocol) text += `，${obj.protocol}`
-              if (obj.ports) text += `，${obj.ports}`
-              if (obj.direction === 'in') {
-                inList.push({
-                  value: text,
-                })
-              } else if (obj.direction === 'out') {
-                outList.push({
-                  value: text,
-                })
-              }
-            })
+            if (row.rules && row.rules.length > 0) {
+              row.rules.forEach(obj => {
+                let text = ''
+                if (obj.action) text += `${obj.action}`
+                if (obj.cidr) text += `，${obj.cidr}`
+                if (obj.protocol) text += `，${obj.protocol}`
+                if (obj.ports) text += `，${obj.ports}`
+                if (obj.direction === 'in') {
+                  inList.push({
+                    value: text,
+                  })
+                } else if (obj.direction === 'out') {
+                  outList.push({
+                    value: text,
+                  })
+                }
+              })
+            }
             const ret = []
             if (outList.length > 0) {
               ret.push(
                 <div class='d-flex'>
-                  <div class='flex-grow-0 flex-shrink-0'>入方向：</div>
-                  <div>{ inList.map(item => <a-tag class='mb-2'>{ item.value }</a-tag>) }</div>
+                  <div class='flex-grow-0 flex-shrink-0'>出方向：</div>
+                  <div>{ outList.map(item => <a-tag class='mb-2'>{ item.value }</a-tag>) }</div>
                 </div>
               )
             }
