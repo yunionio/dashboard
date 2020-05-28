@@ -12,10 +12,20 @@ export default {
         onManager: this.onManager,
         hideField: true,
         edit: (row) => {
-          return row.id !== 'DIRECT'
+          if (row.id === 'DIRECT') return false
+          const { isDomainMode, userInfo } = this.$store.getters
+          if (isDomainMode && (userInfo.projectDomainId !== row.domain_id)) {
+            return false
+          }
+          return true
         },
         showDesc: (row) => {
-          return row.id !== 'DIRECT'
+          if (row.id === 'DIRECT') return false
+          const { isDomainMode, userInfo } = this.$store.getters
+          if (isDomainMode && (userInfo.projectDomainId !== row.domain_id)) {
+            return false
+          }
+          return true
         },
         slotCallback: row => {
           return (
