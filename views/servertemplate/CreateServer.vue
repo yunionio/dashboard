@@ -130,6 +130,15 @@ export default {
           this.goWorkflow()
         })
     },
+    async checkCreateData (fd) {
+      try {
+        const data = { generate_name: fd.generate_name, ...this.serverConfig }
+        const res = new this.$Manager('servers').performAction({ id: 'check-create-data', action: '', data })
+        return res
+      } catch (error) {
+        throw error
+      }
+    },
     doForecast (fd) {
       const genCreateData = new GenCreateData()
       const params = {
@@ -165,6 +174,7 @@ export default {
         if (this.isOpenWorkflow) {
           await this.doCreateWorkflow(values)
         } else {
+          await this.checkCreateData(values)
           await this.doForecast(values)
         }
         this.loading = false

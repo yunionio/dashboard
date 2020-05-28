@@ -273,13 +273,14 @@ export default {
     submit (e) {
       e.preventDefault()
       this.validateForm()
-        .then(formData => {
+        .then(async formData => {
           const genCreteData = new GenCreateData(formData, this.form.fi)
           if (this.isServertemplate) { // 创建主机模板
             this.doCreateServertemplate(genCreteData)
           } else if (this.isOpenWorkflow) { // 提交工单
             this.doCreateWorkflow(genCreteData)
           } else { // 创建主机
+            await this.checkCreateData(genCreteData)
             this.doForecast(genCreteData)
           }
         })
@@ -329,6 +330,15 @@ export default {
         .catch(() => {
           this.submiting = false
         })
+    },
+    async checkCreateData (genCreateData) {
+      try {
+        const data = genCreateData.all()
+        const res = new this.$Manager('servers').performAction({ id: 'check-create-data', action: '', data })
+        return res
+      } catch (error) {
+        throw error
+      }
     },
     doForecast (genCreateData) {
       const data = genCreateData.all()
