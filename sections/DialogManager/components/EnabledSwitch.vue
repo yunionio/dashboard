@@ -27,7 +27,7 @@ export default {
   },
   computed: {
     columns () {
-      const fields = ['name']
+      const fields = this.params.fields || ['name', 'enabled', 'status']
       return this.params.columns.filter(item => {
         const { field } = item
         return fields.indexOf(field) > -1
@@ -66,14 +66,18 @@ export default {
   methods: {
     async handleConfirm () {
       this.loading = true
-      const { action } = this.params
+      const { action, onOk } = this.params
       try {
-        await this.params.onManager('batchPerformAction', {
-          id: this.params.data.map(item => item.id),
-          managerArgs: {
-            action,
-          },
-        })
+        if (onOk) {
+          await onOk()
+        } else {
+          await this.params.onManager('batchPerformAction', {
+            id: this.params.data.map(item => item.id),
+            managerArgs: {
+              action,
+            },
+          })
+        }
         this.cancelDialog()
         this.$message.success('执行成功')
       } catch (err) {
