@@ -624,7 +624,7 @@ export default {
     this.serverM = new this.$Manager('servers')
     this.schedulerM = new this.$Manager('schedulers', 'v1')
     if (this.$route.query.id) {
-      // this._fetchSpec()
+      this._fetchSpec()
       this.hostDetail()
     }
     if (this.$route.query.zone_id) {

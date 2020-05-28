@@ -200,6 +200,29 @@ export default {
       ],
       extraInfo: [
         {
+          title: '品牌信息',
+          items: [
+            {
+              field: 'manufacture',
+              title: '名称',
+              formatter: ({ cellValue, row }) => {
+                return ((row.sys_info || {}).manufacture) || '-'
+              },
+            },
+            {
+              field: 'model',
+              title: '型号',
+              formatter: ({ cellValue, row }) => {
+                return ((row.sys_info || {}).model) || '-'
+              },
+            },
+            getCopyWithContentTableColumn({
+              field: 'sn',
+              title: '序列号',
+            }),
+          ],
+        },
+        {
           title: 'CPU',
           items: [
             {
@@ -320,29 +343,6 @@ export default {
               ]
             },
           },
-        },
-        {
-          title: '品牌信息',
-          items: [
-            {
-              field: 'manufacture',
-              title: '名称',
-              formatter: ({ cellValue, row }) => {
-                return ((row.sys_info || {}).manufacture) || '-'
-              },
-            },
-            {
-              field: 'model',
-              title: '型号',
-              formatter: ({ cellValue, row }) => {
-                return ((row.sys_info || {}).model) || '-'
-              },
-            },
-            getCopyWithContentTableColumn({
-              field: 'sn',
-              title: '序列号',
-            }),
-          ],
         },
       ],
     }
