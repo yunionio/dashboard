@@ -16,7 +16,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { getNameFilter, getEnabledFilter, getStatusFilter, getBrandFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
-import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
+import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
 
 export default {
   name: 'BlockStorageList',
@@ -101,40 +101,7 @@ export default {
           label: '批量操作',
           actions: () => {
             return [
-              {
-                label: '启用',
-                permission: 'storages_perform_enable',
-                action: () => {
-                  this.onManager('batchPerformAction', {
-                    id: this.list.selectedItems.map(item => item.id),
-                    managerArgs: {
-                      action: 'enable',
-                    },
-                  })
-                },
-                meta: () => {
-                  return {
-                    validate: this.list.selectedItems.some(item => !item.enabled),
-                  }
-                },
-              },
-              {
-                label: '禁用',
-                permission: 'storages_perform_disable',
-                action: () => {
-                  this.onManager('batchPerformAction', {
-                    id: this.list.selectedItems.map(item => item.id),
-                    managerArgs: {
-                      action: 'disable',
-                    },
-                  })
-                },
-                meta: () => {
-                  return {
-                    validate: this.list.selectedItems.some(item => item.enabled),
-                  }
-                },
-              },
+              ...getEnabledSwitchActions(this),
               {
                 label: '调整超售比',
                 permission: 'storages_update',
