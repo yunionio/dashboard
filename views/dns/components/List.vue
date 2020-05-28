@@ -12,6 +12,7 @@ import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
+import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 
 export default {
   name: 'DNSList',
@@ -62,21 +63,34 @@ export default {
           },
         },
         {
-          label: '删除',
-          permission: 'vpcs_delete',
-          action: () => {
-            this.createDialog('DeleteResDialog', {
-              vm: this,
-              title: '删除',
-              name: this.$t('dictionary.dnsrecord'),
-              data: this.list.selectedItems,
-              columns: this.columns,
-              onManager: this.onManager,
-            })
+          label: this.$t('common.batchAction'),
+          actions: () => {
+            return [
+              ...getEnabledSwitchActions(this),
+              {
+                label: '删除',
+                permission: 'vpcs_delete',
+                action: () => {
+                  this.createDialog('DeleteResDialog', {
+                    vm: this,
+                    title: '删除',
+                    name: this.$t('dictionary.dnsrecord'),
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                  })
+                },
+                meta: () => {
+                  return {
+                    validate: this.list.allowDelete(),
+                  }
+                },
+              },
+            ]
           },
           meta: () => {
             return {
-              validate: this.list.allowDelete(),
+              validate: this.list.selectedItems.length > 0,
             }
           },
         },
