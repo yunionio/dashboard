@@ -1,4 +1,4 @@
-import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
+import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
 
 export default {
   created () {
@@ -20,40 +20,7 @@ export default {
         label: '更多',
         actions: (row) => {
           return [
-            {
-              label: '启用',
-              permission: 'storages_perform_enable',
-              action: (row) => {
-                this.onManager('performAction', {
-                  id: row.id,
-                  managerArgs: {
-                    action: 'enable',
-                  },
-                })
-              },
-              meta: ({ enabled }) => {
-                return {
-                  validate: !enabled,
-                }
-              },
-            },
-            {
-              label: '禁用',
-              permission: 'storages_perform_disable',
-              action: (row) => {
-                this.onManager('performAction', {
-                  id: row.id,
-                  managerArgs: {
-                    action: 'disable',
-                  },
-                })
-              },
-              meta: ({ enabled }) => {
-                return {
-                  validate: enabled,
-                }
-              },
-            },
+            ...getEnabledSwitchActions(this),
             {
               label: '关联宿主机',
               permission: 'storages_perform_storages',
