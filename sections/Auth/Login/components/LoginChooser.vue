@@ -55,7 +55,7 @@ export default {
     }),
     dataSource () {
       return R.sort((a, b) => {
-        return a[1]['update_time'] - b[1]['update_time']
+        return b[1]['update_time'] - a[1]['update_time']
       }, Object.entries(this.loggedUsers))
     },
   },
@@ -81,6 +81,7 @@ export default {
         query: {
           username,
           domain: item[1]['domain']['name'],
+          displayname: item[1]['displayname'],
         },
       })
     },

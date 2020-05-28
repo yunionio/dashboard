@@ -3,9 +3,7 @@
     <template v-if="!showUsernameInput">
       <div class="selected-user-wrap text-center mb-4">
         <div class="selected-user-content" @click="$router.replace('/auth/login/chooser')">
-          <div class="mr-2">
-            <a-icon type="user" />
-          </div>
+          <div class="mr-2 name-icon">{{ firstNameWord }}</div>
           <div class="selected-user-name">{{ fd.username }}</div>
           <div class="ml-2 d-flex align-items-center">
             <svg aria-hidden="true" fill="currentColor" focusable="false" width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><polygon points="12,16.41 5.29,9.71 6.71,8.29 12,13.59 17.29,8.29 18.71,9.71" /></svg>
@@ -159,6 +157,10 @@ export default {
     showCaptchaInput () {
       return this.regions.captcha === true
     },
+    firstNameWord () {
+      const word = (this.$route.query.displayname || this.$route.query.username || '').split('')[0]
+      return word && word.toUpperCase()
+    },
   },
   watch: {
     showCaptchaInput: {
@@ -283,5 +285,15 @@ export default {
   &:hover {
     background: rgba(60,64,67,0.039);
   }
+}
+.name-icon {
+  color: #fff;
+  height: 22px;
+  width: 22px;
+  text-align: center;
+  line-height: 22px;
+  border-radius: 50%;
+  background-color: #1890ff;
+  font-size: 12px;
 }
 </style>
