@@ -41,10 +41,10 @@ export default {
           })
         },
         meta: (obj) => {
-          const name = this.userInfo.name
+          const id = this.userInfo.id
           function checkValidate (obj) {
             if (obj.process_instance.process_definition_key === WORKFLOW_TYPES.CUSTOMER_SERVICE) {
-              if (obj.process_instance.start_user_name !== name) {
+              if (obj.process_instance.start_user_id !== id) {
                 return true
               }
             }
@@ -87,10 +87,10 @@ export default {
           })
         },
         meta: (obj) => {
-          const name = this.userInfo.name
+          const id = this.userInfo.id
           function checkValidate (obj) {
             if (obj.process_instance.process_definition_key === WORKFLOW_TYPES.CUSTOMER_SERVICE) {
-              if (obj.process_instance.start_user_name === name) {
+              if (obj.process_instance.start_user_id === id) {
                 return true
               }
             }
@@ -113,10 +113,10 @@ export default {
           })
         },
         meta: (obj) => {
-          const name = this.userInfo.name
+          const id = this.userInfo.id
           function checkValidate (obj) {
             if (obj.process_instance.process_definition_key === WORKFLOW_TYPES.CUSTOMER_SERVICE) {
-              if (obj.process_instance.start_user_name === name) {
+              if (obj.process_instance.start_user_id === id) {
                 return true
               }
             }
