@@ -57,6 +57,7 @@
       <div class="mt-2 d-flex">
         <div style="line-height: 40px;">
           <tag-select
+            global
             button-text="已有标签"
             resource="server"
             v-model="checked"
