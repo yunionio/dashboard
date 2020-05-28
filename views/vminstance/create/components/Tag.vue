@@ -17,7 +17,7 @@
     <a-form-item extra="每个资源最多可绑定20个标签" class="mt-2">
       <div class="d-flex">
         <div style="line-height: 40px;">
-          <tag-select v-model="checked" :params="params" button-text="已有标签" />
+          <tag-select global v-model="checked" :params="params" button-text="已有标签" />
           <a-button class="ml-2" v-if="!showForm" @click="() => showForm = true">新建</a-button>
         </div>
         <a-form
