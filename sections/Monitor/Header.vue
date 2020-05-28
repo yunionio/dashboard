@@ -2,7 +2,8 @@
   <div>
     <refresh-button :loading="loading" @refresh="refresh" class="mr-2" />
     <a-radio-group class="mr-3" @change="timeChange" :value="time">
-      <a-radio-button v-for="item in timeOpts" :key="item.key" :value="item.key">{{ item.label }}</a-radio-button>
+      <a-radio-button v-for="item in timeOpts" v-show="!item.hidden" :key="item.key" :value="item.key">{{ item.label }}</a-radio-button>
+      <slot name="radio-button-append" />
     </a-radio-group>
     <div class="ant-form-item-label">
       <label title="时间粒度">时间粒度</label>

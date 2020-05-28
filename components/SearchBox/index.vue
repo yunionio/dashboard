@@ -3,8 +3,7 @@
     class="search-box-wrap ant-input d-flex align-items-center justify-content-between"
     :class="{ focus }"
     v-clickoutside="handleWrapClickoutside"
-    @click="handleWrapClick"
-    @keyup.enter="search">
+    @click="handleWrapClick">
     <ul class="clearfix">
       <template v-for="(item, key) of value">
         <li :key="key" class="mb-1 mt-1">
