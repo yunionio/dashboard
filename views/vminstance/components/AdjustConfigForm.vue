@@ -6,55 +6,68 @@
         {{ tips }}
       </div>
     </a-alert>
-    <a-form
-      :form="form.fc">
-      <a-form-item label="CPU核数" v-bind="formItemLayout" class="mb-0">
-        <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" :disable-options="disableCpus" @change="cpuChange" />
-      </a-form-item>
-      <a-form-item label="内存" v-bind="formItemLayout" class="mb-0">
-        <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" :disable-options="disableMems" />
-      </a-form-item>
-      <a-form-item label="套餐" v-bind="formItemLayout">
-        <sku
-          v-decorator="decorators.sku"
-          :type="type"
-          :sku-params="skuParam"
-          :instance-type="instanceType"
-          :hypervisor="hypervisor" />
-      </a-form-item>
-      <a-form-item label="系统盘" v-bind="formItemLayout" v-show="selectedItems.length === 1">
-        <system-disk
-          v-if="hypervisor && form.fi.capability.storage_types"
-          :decorator="decorators.systemDisk"
-          :type="type"
-          :hypervisor="hypervisor"
-          :sku="form.fd.sku"
-          :form="form"
-          :defaultSize="sysdisk.value"
-          :defaultType="form.fd.defaultType"
-          :capability-data="form.fi.capability"
-          :disabled="true" />
-      </a-form-item>
-      <a-form-item label="数据盘" v-bind="formItemLayout" v-show="selectedItems.length === 1">
-        <data-disk
-          v-if="hypervisor && form.fi.capability.storage_types"
-          ref="dataDiskRef"
-          :decorator="decorators.dataDisk"
-          :type="type"
-          :form="form"
-          :hypervisor="hypervisor"
-          :capability-data="form.fi.capability"
-          :sku="form.fd.sku"
-          :image="form.fi.imageMsg"
-          :domain="domain" />
-      </a-form-item>
-      <a-form-item label="申请原因" v-bind="formItemLayout" v-if="isOpenWorkflow">
-        <a-input v-decorator="decorators.reason" placeholder="请输入申请原因" />
-      </a-form-item>
-      <a-form-item label="自动启动" v-bind="formItemLayout" extra="调整配置后是否自动启动">
-        <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.autoStart" :disabled="isSomeRunning" />
-      </a-form-item>
-    </a-form>
+    <div class="h-desc-bg">
+      <h5 class="h-title">以下虚拟机将进行调整配置</h5>
+      <div class="pl-4 pr-4 pb-2">
+        <a-row>
+          <a-col :span="24">
+            <dialog-table :data="params.data" :columns="columns" />
+          </a-col>
+        </a-row>
+      </div>
+    </div>
+    <h5 class="h-title">请选择要调整的配置</h5>
+    <div class="form-wrapper">
+      <a-form
+        :form="form.fc">
+        <a-form-item label="CPU核数" v-bind="formItemLayout" class="mb-0">
+          <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" :disable-options="disableCpus" @change="cpuChange" />
+        </a-form-item>
+        <a-form-item label="内存" v-bind="formItemLayout" class="mb-0">
+          <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" :disable-options="disableMems" />
+        </a-form-item>
+        <a-form-item label="套餐" v-bind="formItemLayout">
+          <sku
+            v-decorator="decorators.sku"
+            :type="type"
+            :sku-params="skuParam"
+            :instance-type="instanceType"
+            :hypervisor="hypervisor" />
+        </a-form-item>
+        <a-form-item label="系统盘" v-bind="formItemLayout" v-show="selectedItems.length === 1">
+          <system-disk
+            v-if="hypervisor && form.fi.capability.storage_types"
+            :decorator="decorators.systemDisk"
+            :type="type"
+            :hypervisor="hypervisor"
+            :sku="form.fd.sku"
+            :form="form"
+            :defaultSize="sysdisk.value"
+            :defaultType="form.fd.defaultType"
+            :capability-data="form.fi.capability"
+            :disabled="true" />
+        </a-form-item>
+        <a-form-item label="数据盘" v-bind="formItemLayout" v-show="selectedItems.length === 1">
+          <data-disk
+            v-if="hypervisor && form.fi.capability.storage_types"
+            ref="dataDiskRef"
+            :decorator="decorators.dataDisk"
+            :type="type"
+            :form="form"
+            :hypervisor="hypervisor"
+            :capability-data="form.fi.capability"
+            :sku="form.fd.sku"
+            :image="form.fi.imageMsg"
+            :domain="domain" />
+        </a-form-item>
+        <a-form-item label="申请原因" v-bind="formItemLayout" v-if="isOpenWorkflow">
+          <a-input v-decorator="decorators.reason" placeholder="请输入申请原因" />
+        </a-form-item>
+        <a-form-item label="自动启动" v-bind="formItemLayout" extra="调整配置后是否自动启动">
+          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.autoStart" :disabled="isSomeRunning" />
+        </a-form-item>
+      </a-form>
+    </div>
     <page-footer>
       <div slot="right">
         <a-button class="mr-3" type="primary" @click="handleConfirm" :loading="loading">确 定</a-button>
@@ -74,12 +87,21 @@ import DataDisk from '@Compute/sections/DataDisk'
 import SystemDisk from '@Compute/views/vminstance/create/components/SystemDisk'
 import sku from '@Compute/sections/SKU'
 import { SERVER_TYPE } from '@Compute/constants'
+import SystemIcon from '@/sections/SystemIcon'
 import { Manager } from '@/utils/manager'
 import WindowsMixin from '@/mixins/windows'
 import WorkflowMixin from '@/mixins/workflow'
 import { HYPERVISORS_MAP } from '@/constants'
+import {
+  getNameDescriptionTableColumn,
+  getIpsTableColumn,
+  getProjectTableColumn,
+  getStatusTableColumn,
+  getRegionTableColumn,
+} from '@/utils/common/tableColumn'
 import { findPlatform } from '@/utils/common/hypervisor'
 import { isRequired } from '@/utils/validate'
+import { sizestr } from '@/utils/utils'
 import { STORAGE_TYPES } from '@/constants/compute'
 
 export default {
@@ -386,8 +408,59 @@ export default {
       return this.checkWorkflowEnabled(this.WORKFLOW_TYPES.APPLY_SERVER_CHANGECONFIG)
     },
     columns () {
-      const showFields = ['name', 'ip', 'instance_type', 'status']
-      return this.params.columns.filter((item) => { return showFields.includes(item.field) })
+      return [
+        getNameDescriptionTableColumn({
+          hideField: true,
+          addLock: true,
+          addBackup: true,
+          edit: false,
+          editDesc: false,
+          slotCallback: row => {
+            return (
+              <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
+            )
+          },
+        }),
+        getIpsTableColumn({ field: 'ip', title: 'IP' }),
+        {
+          field: 'instance_type',
+          title: '配置',
+          showOverflow: 'ellipsis',
+          minWidth: 120,
+          sortable: true,
+          slots: {
+            default: ({ row }) => {
+              let ret = []
+              if (row.instance_type) {
+                ret.push(<div class='text-truncate' style={{ color: '#0A1F44' }}>{ row.instance_type }</div>)
+              }
+              const config = row.vcpu_count + 'C' + sizestr(row.vmem_size, 'M', 1024) + (row.disk ? sizestr(row.disk, 'M', 1024) : '')
+              return ret.concat(<div class='text-truncate' style={{ color: '#53627C' }}>{ config }</div>)
+            },
+          },
+        },
+        {
+          field: 'os_type',
+          title: '系统',
+          width: 50,
+          slots: {
+            default: ({ row }) => {
+              let name = (row.metadata && row.metadata.os_distribution) ? row.metadata.os_distribution : row.os_type || ''
+              if (name.includes('Windows') || name.includes('windows')) {
+                name = 'Windows'
+              }
+              const version = (row.metadata && row.metadata.os_version) ? `${row.metadata.os_version}` : ''
+              const tooltip = (version.includes(name) ? version : `${name} ${version}`) || '未知' // 去重
+              return [
+                <SystemIcon tooltip={ tooltip } name={ name } />,
+              ]
+            },
+          },
+        },
+        getStatusTableColumn({ statusModule: 'server' }),
+        getProjectTableColumn(),
+        getRegionTableColumn(),
+      ]
     },
     instanceType () {
       return this.selectedItem.instance_type
@@ -650,3 +723,18 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.form-wrapper {
+  padding-left: 22px;
+}
+.h-title{
+  font-size: 16px;
+  padding: 10px 0;
+  margin-left: 21px;
+  font-weight: normal;
+}
+.h-desc-bg{
+  background: rgba(245, 245, 243, 0.4)
+}
+</style>
