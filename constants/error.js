@@ -996,6 +996,12 @@ export default {
           "message": "验证码错误"
         }
       },
+      "user_name: must be in a valid format.": {
+        "zh-CN": {
+          "fields": {},
+          "message": "用户名格式不正确"
+        }
+      },
     }
   },
   "SpecNotFoundError": {
@@ -1249,6 +1255,12 @@ export default {
         "zh-CN": {
           "fields": {},
           "message": "磁盘 {0} 未找到"
+        }
+      },
+      "account not found": {
+        "zh-CN": {
+          "fields": {},
+          "message": "账号未找到"
         }
       }
     }
@@ -3179,7 +3191,19 @@ export default {
           "fields": {},
           "message": "账号重复"
         }
-      }
+      },
+      "{0} with {1} already exist.": {
+        "zh-CN": {
+          "fields": {},
+          "message": "{0}为{1}已经存在"
+        }
+      },
+      "{0} {1} already exist.": {
+        "zh-CN": {
+          "fields": {},
+          "message": "{0} {1}已经存在"
+        }
+      },
     }
   },
   "ImageNotFoundError": {

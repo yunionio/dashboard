@@ -1,5 +1,5 @@
 <template>
-  <base-dialog @cancel="cancelDialog">
+  <base-dialog @cancel="cancelDialog" :width="400">
     <div slot="header">更改密码</div>
     <div slot="body">
       <a-form :form="form.fc">
@@ -8,6 +8,9 @@
         </a-form-item>
         <a-form-item label="新密码" v-bind="formItemLayout">
           <a-input-password v-decorator="decorators.password_new" placeholder="输入新密码" />
+        </a-form-item>
+        <a-form-item label="确认密码" v-bind="formItemLayout">
+          <a-input-password v-decorator="decorators.com_password" placeholder="再次输入新密码" />
         </a-form-item>
         <a-form-item label="MFA安全码" v-bind="formItemLayout" v-if="userInfo.enable_mfa && userInfo.system_totp_on">
           <a-input v-decorator="decorators.passcode" placeholder="MFA安全码" />
@@ -70,6 +73,7 @@ export default {
           'password_old',
           {
             validateFirst: true,
+            validateTrigger: ['blur'],
             rules: [
               { required: true, message: '旧密码不能为空' },
             ],
@@ -79,9 +83,22 @@ export default {
           'password_new',
           {
             validateFirst: true,
+            validateTrigger: ['blur'],
             rules: [
               { required: true, message: '新密码不能为空' },
               { validator: validatePassword },
+              { validator: this.$validate('password') },
+            ],
+          },
+        ],
+        com_password: [
+          'com_password',
+          {
+            validateFirst: true,
+            validateTrigger: ['blur'],
+            rules: [
+              { required: true, message: '请再次输入新密码' },
+              { validator: this.checkComPassword },
             ],
           },
         ],
@@ -96,10 +113,10 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 21,
+          span: 18,
         },
         labelCol: {
-          span: 3,
+          span: 6,
         },
       },
     }
@@ -112,6 +129,13 @@ export default {
     this.manager = new this.$Manager('auth', 'v1')
   },
   methods: {
+    checkComPassword (rule, value, callback) {
+      const password = this.form.fc.getFieldValue('password_new')
+      if (password !== value) {
+        callback(new Error('两次密码不统一'))
+      }
+      callback()
+    },
     validateForm () {
       return new Promise((resolve, reject) => {
         this.form.fc.validateFields((err, values) => {
@@ -139,6 +163,7 @@ export default {
         data.password_confirm = values.password_new
         this.loading = true
         await this.doUpdatePassword(data)
+        this.$message.success(this.$t('common.success'))
         this.cancelDialog()
         this.$store.dispatch('auth/logout')
         this.$router.push('/auth')
