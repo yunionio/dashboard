@@ -1,6 +1,7 @@
 import { mapGetters } from 'vuex'
 import { changeToArr } from '@/utils/utils'
 import expectStatus from '@/constants/expectStatus'
+import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 
 const steadyStatus = {
   status: Object.values(expectStatus.cloudaccount).flat(),
@@ -148,40 +149,20 @@ export default {
                 }
               },
             },
-            {
-              label: '启用',
-              permission: 'cloudaccounts_perform_enable',
-              action: () => {
-                this.onManager('performAction', {
-                  id: obj.id,
-                  managerArgs: {
-                    action: 'enable',
-                  },
-                })
-              },
-              meta: () => {
-                return {
-                  validate: !obj.enabled && ownerDomain,
-                }
-              },
-            },
-            {
-              label: '禁用',
-              permission: 'cloudaccounts_perform_disable',
-              action: () => {
-                this.onManager('performAction', {
-                  id: obj.id,
-                  managerArgs: {
-                    action: 'disable',
-                  },
-                })
-              },
-              meta: () => {
-                return {
-                  validate: obj.enabled && ownerDomain,
-                }
-              },
-            },
+            ...getEnabledSwitchActions(this, obj, ['cloudaccounts_perform_enable', 'cloudaccounts_perform_disable'], {
+              metas: [
+                () => {
+                  return {
+                    validate: !obj.enabled && ownerDomain,
+                  }
+                },
+                () => {
+                  return {
+                    validate: obj.enabled && ownerDomain,
+                  }
+                },
+              ],
+            }),
             {
               label: '删除',
               permission: 'cloudaccounts_delete',

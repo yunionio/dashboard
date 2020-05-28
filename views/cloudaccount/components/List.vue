@@ -13,6 +13,7 @@ import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import expectStatus from '@/constants/expectStatus'
 import { getNameFilter, getFilter, getEnabledFilter, getStatusFilter, getBrandFilter, getPublicFilter } from '@/utils/common/tableFilter'
+import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 
@@ -127,32 +128,22 @@ export default {
                 },
                 meta: () => this.syncPolicy(this.list.selectedItems, ownerDomain), // 和【全量同步】同逻辑
               },
-              {
-                label: '启用',
-                permission: 'cloudaccounts_perform_enable',
-                action: () => {
-                  this.list.batchPerformAction('enable', null)
-                },
-                meta: () => {
-                  const isDisable = !!this.list.selectedItems.find(item => !item.enabled)
-                  return {
-                    validate: this.list.selectedItems.length && ownerDomain && isDisable,
-                  }
-                },
-              },
-              {
-                label: '禁用',
-                permission: 'cloudaccounts_perform_disable',
-                action: () => {
-                  this.list.batchPerformAction('disable', null)
-                },
-                meta: () => {
-                  const isEnable = !!this.list.selectedItems.find(item => item.enabled)
-                  return {
-                    validate: this.list.selectedItems.length && ownerDomain && isEnable,
-                  }
-                },
-              },
+              ...getEnabledSwitchActions(this, undefined, ['cloudaccounts_perform_enable', 'cloudaccounts_perform_disable'], {
+                metas: [
+                  () => {
+                    const isDisable = !!this.list.selectedItems.find(item => !item.enabled)
+                    return {
+                      validate: this.list.selectedItems.length && ownerDomain && isDisable,
+                    }
+                  },
+                  () => {
+                    const isEnable = !!this.list.selectedItems.find(item => item.enabled)
+                    return {
+                      validate: this.list.selectedItems.length && ownerDomain && isEnable,
+                    }
+                  },
+                ],
+              }),
               {
                 label: '删除',
                 permission: 'cloudaccounts_delete',
