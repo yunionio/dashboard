@@ -112,6 +112,8 @@ export default {
     multiple: Boolean,
     resources: String,
     managerInstance: Object,
+    // global代表获取全部标签，不进行resources过滤
+    global: Boolean,
   },
   data () {
     return {
@@ -143,6 +145,7 @@ export default {
       if (this.params) {
         ret = Object.assign({}, ret, this.params)
       }
+      if (this.global) delete ret.resources
       return ret
     },
     currentTag () {
