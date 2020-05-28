@@ -53,12 +53,14 @@
         :expand-config="expandConfig"
         :config="config"
         :next-marker="nextMarker"
+        :selection-type="selectionType"
         @change-current-page="changeCurrentPage"
         @change-page-size="changePageSize"
         @do-sort="doSort"
         @change-selected="changeSelected"
         @clear-selected="clearSelected"
-        @change-next-marker="changeNextMarker" />
+        @change-next-marker="changeNextMarker"
+        @radio-change="radioChange" />
     </template>
   </div>
 </template>
@@ -125,6 +127,11 @@ export default {
     expandConfig: Object,
     // 自定义刷新方法
     refreshMethod: Function,
+    // 列表行选择类型，单选（radio）多选（checkbox）
+    selectionType: {
+      type: String,
+      default: 'checkbox',
+    },
   },
   provide: {
     // 声明在List中
@@ -229,7 +236,12 @@ export default {
     // 清除list中的选择项
     clearSelected () {
       this.list.clearSelected()
-      this.$refs.table.clearCheckbox()
+      if (this.selectionType === 'checkbox') {
+        this.$refs.table.clearCheckbox()
+      }
+      if (this.selectionType === 'radio') {
+        this.$refs.table.clearRadio()
+      }
     },
     updateConfig (value) {
       return this.list.updateConfig(value)
@@ -239,6 +251,9 @@ export default {
     },
     changeNextMarker () {
       this.list.changeNextMarker()
+    },
+    radioChange (data) {
+      this.$emit('radio-change', data)
     },
   },
 }

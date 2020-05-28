@@ -163,6 +163,8 @@ class CreateList {
     responseData = {},
     // get status 额外参数
     itemGetParams = {},
+    // 不使用localstorage中的limit参数
+    disableStorageLimit = false,
   }) {
     // 列表唯一标识
     this.id = id ? `LIST_${id}` : undefined
@@ -212,6 +214,7 @@ class CreateList {
     this.params = {}
     // 特殊根据某条数据进行get时的参数，如 k8s/deployment/list
     this.itemGetParams = itemGetParams
+    this.disableStorageLimit = disableStorageLimit
   }
   // 重写selectedItems getter和setter
   get selectedItems () {
@@ -343,6 +346,21 @@ class CreateList {
     }
   }
   /**
+   * @description 获取选择项的详情信息
+   * @memberof CreateList
+   */
+  async fetchSelectedDetails (ids = this.selected, params) {
+    try {
+      const response = await this.manager.batchGet({
+        id: ids,
+        params,
+      })
+      return response.data.data
+    } catch (error) {
+      throw error
+    }
+  }
+  /**
    * @description 因为selectedItems的getter是根据selected生成的，所以在数据刷新后需要同步selected，避免有留下的脏数据
    * @memberof CreateList
    */
@@ -462,8 +480,11 @@ class CreateList {
    * @memberof CreateList
    */
   getLimit () {
-    const limit = storage.get(STORAGE_LIST_LIMIT_KEY)
-    return limit || this.limit
+    if (!this.disableStorageLimit) {
+      const limit = storage.get(STORAGE_LIST_LIMIT_KEY)
+      return limit || this.limit
+    }
+    return this.limit
   }
   /**
    * @description 包装返回数据
