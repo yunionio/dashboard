@@ -14,7 +14,7 @@
             v-decorator="decorators.image_id"
             resource="images"
             search-key="search"
-            :params="{ disk_formats: 'iso' }"
+            :params="imageParams"
             :select-props="{ placeholder: '请选择ISO镜像' }" />
         </a-form-item>
       </a-form>
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
@@ -58,6 +59,12 @@ export default {
         },
       },
     }
+  },
+  computed: {
+    ...mapGetters(['scope']),
+    imageParams () {
+      return { disk_formats: 'iso', scope: this.scope }
+    },
   },
   methods: {
     async handleConfirm () {
