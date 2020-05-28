@@ -305,6 +305,7 @@ export default {
         data.sync_interval_seconds = formData.sync_interval_seconds * 60 // 转换为秒
       }
       this._addDomainProject(data)
+      this._providerDiff(data)
       await this.cloudaccountsM.performClassAction({
         action: 'check-create-data',
         data: data,
