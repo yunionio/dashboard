@@ -17,6 +17,7 @@
       :data="detailData"
       :getParams="getParams"
       :on-manager="onManager"
+      :isListenerSidepage="true"
       @side-page-trigger-handle="sidePageTriggerHandle"
       @init-side-page-tab="initSidePageTab"
       @refresh="refresh"
