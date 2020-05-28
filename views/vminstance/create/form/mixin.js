@@ -278,10 +278,16 @@ export default {
           if (this.isServertemplate) { // 创建主机模板
             this.doCreateServertemplate(genCreteData)
           } else if (this.isOpenWorkflow) { // 提交工单
-            this.doCreateWorkflow(genCreteData)
+            this.doForecast(genCreteData)
+              .then(() => {
+                this.doCreateWorkflow(genCreteData)
+              })
           } else { // 创建主机
             await this.checkCreateData(genCreteData)
             this.doForecast(genCreteData)
+              .then((data) => {
+                this.createServer(data)
+              })
           }
         })
         .catch(error => {
@@ -343,19 +349,23 @@ export default {
     doForecast (genCreateData) {
       const data = genCreateData.all()
       this.submiting = true
-      this.schedulerM.rpc({ methodname: 'DoForecast', params: data })
-        .then(res => {
-          if (res.data.can_create) {
-            this.createServer(data)
-          } else {
-            this.errors = genCreateData.getForecastErrors(res.data)
+      return new Promise((resolve, reject) => {
+        this.schedulerM.rpc({ methodname: 'DoForecast', params: data })
+          .then(res => {
+            if (res.data.can_create) {
+              resolve(data)
+            } else {
+              this.errors = genCreateData.getForecastErrors(res.data)
+              this.submiting = false
+              reject(this.errors)
+            }
+          })
+          .catch(err => {
+            this.$message.error(`创建失败: ${err}`)
             this.submiting = false
-          }
-        })
-        .catch(err => {
-          this.$message.error(`创建失败: ${err}`)
-          this.submiting = false
-        })
+            reject(err)
+          })
+      })
     },
     createServer (data) {
       delete data['vcpu_count']
