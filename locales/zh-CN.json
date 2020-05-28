@@ -1700,7 +1700,8 @@
     "serverskus.disable": "创建本地IDC或私有云虚拟机时无法选择禁用状态的套餐。",
     "hosts.disable": "禁用状态的宿主机无法创建虚拟机，请确保至少有一个宿主机处于启用状态，否则将不显示虚拟机菜单。",
     "physicalmachine.disable": "禁用状态的物理机无法创建裸金属，请确保至少有一个物理机处于启用状态，否则将不显示裸金属菜单。",
-    "devtool_templates.disable": "禁用后，运维模板无法关联虚拟机使用。"
+    "devtool_templates.disable": "禁用后，运维模板无法关联虚拟机使用。",
+    "dnsrecords.disable": "禁用后，域名服务将不再解析域名。"
   },
   "authCarouselOptions": [
     { "title": "统一", "messages": ["统一模版/API/调度/账号体系/监控/控制台/计费计量", "实现物理机/虚拟机/容器/公有云资源全面纳管"] },

@@ -132,14 +132,20 @@ export function getSetPublicAction (vm, dialogParams = {}, params = {}) {
   return options
 }
 
-export function getEnabledSwitchActions (vm, row, permissions) {
+export function getEnabledSwitchActions (vm, row, permissions, params = {}) {
   if (!vm) {
     throw Error('not found vm instance')
   }
-  const { list = {}, resourceName } = vm
+  const { list = {} } = vm
+  const { resourceName = '', actions, metas, fields } = params
   const { resource } = list
   const data = getSelectedData(row, vm)
+  const actionIndexs = {
+    enable: 0,
+    disable: 1,
+  }
   const dialogParams = {
+    fields,
     resourceName,
     vm,
     data,
@@ -152,6 +158,11 @@ export function getEnabledSwitchActions (vm, row, permissions) {
     const params = Object.assign(dialogParams, {
       action,
     })
+    const ind = actionIndexs[action]
+    // 自定义提交接口
+    if (actions && actions.length > 0 && actions[ind]) {
+      params['onOk'] = () => actions[ind](rowItem)
+    }
     if (!params.data || params.data.length === 0) {
       params['data'] = [rowItem]
     }
@@ -161,9 +172,20 @@ export function getEnabledSwitchActions (vm, row, permissions) {
     label: '启用',
     action: (rowItem) => openDialog(rowItem, 'enable'),
     meta: (rowItem) => {
+      if (metas && metas.length > 0) {
+        const [meta] = metas
+        return meta && meta(rowItem)
+      }
       const item = (data && data.length === 1) ? data[0] : rowItem
+      // 批量选择1条，或者单个操作
+      if (item) {
+        return {
+          validate: !item.enabled,
+        }
+      }
+      // 批量N条操作
       return {
-        validate: !!item && !item.enabled,
+        validate: true,
       }
     },
   }
@@ -171,9 +193,20 @@ export function getEnabledSwitchActions (vm, row, permissions) {
     label: '禁用',
     action: (rowItem) => openDialog(rowItem, 'disable'),
     meta: (rowItem) => {
+      if (metas && metas.length > 0) {
+        const [, meta] = metas
+        return meta && meta(rowItem)
+      }
       const item = (data && data.length === 1) ? data[0] : rowItem
+      // 批量选择1条，或者单个操作
+      if (item) {
+        return {
+          validate: item.enabled,
+        }
+      }
+      // 批量N条操作
       return {
-        validate: !!item && item.enabled,
+        validate: true,
       }
     },
   }
