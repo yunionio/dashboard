@@ -1,6 +1,6 @@
 export default {
   created () {
-    this.singleActions = [
+    this.singleActions = this.isListenerSidepage ? [] : [
       {
         label: '修改端口',
         permission: 'lb_loadbalancerbackends_update',
