@@ -108,10 +108,10 @@ export default {
           },
           wire: {
             label: '二层网络',
-            filter: true,
-            formatter: val => {
-              return `wire.contains("${val}")`
-            },
+            // filter: true,
+            // formatter: val => {
+            //   return `wire.contains("${val}")`
+            // },
           },
         },
         responseData: this.responseData,
