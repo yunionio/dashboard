@@ -1,13 +1,20 @@
 <template>
   <div class="app-container">
-    <navbar />
-    <div class="app-content position-relative h-100">
-      <sidebar :l2-menu-visible.sync="l2MenuVisible" />
-      <div id="app-page" class="app-page" :class="{ 'l2-menu-show': l2MenuVisible }">
-        <top-alert />
-        <slot />
+    <template v-if="$store.state.auth.canRenderDefaultLayout">
+      <navbar />
+        <div class="app-content position-relative h-100">
+          <sidebar :l2-menu-visible.sync="l2MenuVisible" />
+          <div id="app-page" class="app-page" :class="{ 'l2-menu-show': l2MenuVisible }">
+            <top-alert />
+            <slot />
+          </div>
+        </div>
+    </template>
+    <template v-else>
+      <div class="h-100 d-flex align-items-center justify-content-center">
+        <a-spin />
       </div>
-    </div>
+    </template>
   </div>
 </template>
 

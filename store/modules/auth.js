@@ -48,6 +48,7 @@ const initialState = {
   loggedUsers: getLoggedUsersFromStorage() || {},
   // 提交的登录表单数据
   loginFormData: {},
+  canRenderDefaultLayout: false,
 }
 
 export default {
@@ -162,6 +163,9 @@ export default {
       setLoggedUsersInStorage(newVal)
       state.loggedUsers = newVal
     },
+    SET_CAN_RENDER_DEFAULT_LAYOUT (state, payload) {
+      state.canRenderDefaultLayout = payload
+    },
     LOGOUT (state) {
       state.token = null
       state.auth = {}
@@ -170,6 +174,7 @@ export default {
       state.permission = null
       state.scopeResource = null
       state.capability = {}
+      state.canRenderDefaultLayout = false
     },
   },
   getters: {
@@ -408,7 +413,16 @@ export default {
         // 如果开启了认证则进入输入秘钥页面
         router.replace('/auth/secretverify')
       } else {
-        router.replace('/')
+        const { rf, pathAuthPage, pathAuth, path } = router.currentRoute.query
+        if (rf) {
+          document.location.href = rf
+          return
+        }
+        if (!pathAuthPage && pathAuth && path) {
+          router.replace(path)
+        } else {
+          router.replace('/')
+        }
       }
     },
     async validPasscode ({ commit }, data) {

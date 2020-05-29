@@ -50,6 +50,7 @@ router.beforeEach(async (to, from, next) => {
   } catch (error) {
     throw error
   } finally {
+    store.commit('auth/SET_CAN_RENDER_DEFAULT_LAYOUT', true)
     next()
   }
 })

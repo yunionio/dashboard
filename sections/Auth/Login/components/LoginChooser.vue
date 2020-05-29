@@ -82,6 +82,7 @@ export default {
           username,
           domain: item[1]['domain']['name'],
           displayname: item[1]['displayname'],
+          ...this.$route.query,
         },
       })
     },

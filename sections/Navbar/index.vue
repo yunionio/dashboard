@@ -364,7 +364,14 @@ export default {
       if (item.key === 'logout') {
         try {
           await this.$store.dispatch('auth/logout')
-          this.$router.push('/auth/login')
+          this.$router.push({
+            path: '/auth/login',
+            query: {
+              pathAuthPage: this.$route.meta.authPage,
+              pathAuth: this.$route.meta.auth || true,
+              path: this.$route.path,
+            },
+          })
         } catch (error) {
           throw error
         }

@@ -196,7 +196,16 @@ http.interceptors.response.use(
       const status = error.response.status
       if (status === 401 && needLogout(error)) {
         store.dispatch('auth/logout').then(() => {
-          router.push({ name: 'Auth' })
+          if (!router.currentRoute.meta.authPage) {
+            router.push({
+              path: '/auth/login',
+              query: {
+                pathAuthPage: router.currentRoute.meta.authPage,
+                pathAuth: router.currentRoute.meta.auth || true,
+                path: router.currentRoute.path,
+              },
+            })
+          }
         })
       }
       if (error.response.data && error.response.data.details && !error.response.data.details.includes('No token in header')) {
