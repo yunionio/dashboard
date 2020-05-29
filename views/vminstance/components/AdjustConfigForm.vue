@@ -22,7 +22,7 @@
           :instance-type="instanceType"
           :hypervisor="hypervisor" />
       </a-form-item>
-      <a-form-item label="系统盘" v-bind="formItemLayout" v-show="selectedItems.length === 1">
+      <a-form-item label="系统盘" v-bind="formItemLayout" v-show="selectedItems.length === 1 && form.fd.defaultType">
         <system-disk
           v-if="hypervisor && form.fi.capability.storage_types && form.fd.defaultType"
           :decorator="decorators.systemDisk"
