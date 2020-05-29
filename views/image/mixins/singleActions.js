@@ -321,7 +321,7 @@ export default {
                 let action = actions.get(this.isAdminMode ? 'admin' : '') || actions.get(this.isDomainMode ? 'domain' : 'user')
                 ret = action.call(this)
                 if (ret.tooltip) return ret
-                return this.$getDeleteResult(obj)
+                // return this.$getDeleteResult(obj)
               },
             },
             {
