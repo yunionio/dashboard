@@ -193,6 +193,10 @@ export default {
                         }
                       }
                     }
+                    return {
+                      validate: true,
+                      tooltip: '',
+                    }
                   },
                 },
                 {
