@@ -132,94 +132,59 @@ export function getSetPublicAction (vm, dialogParams = {}, params = {}) {
   return options
 }
 
-export function getEnabledSwitchActions (vm, row, permissions, params = {}) {
+export function getEnabledSwitchActions (vm, row, permissions = [], params = {}) {
   if (!vm) {
     throw Error('not found vm instance')
   }
-  const { list = {} } = vm
-  const { resourceName = '', actions, metas, fields } = params
-  const { resource } = list
+  const { resourceName = '', fields, actions, metas } = params
   const data = getSelectedData(row, vm)
-  const actionIndexs = {
-    enable: 0,
-    disable: 1,
-  }
-  const dialogParams = {
-    fields,
-    resourceName,
-    vm,
-    data,
-    resource,
-    onManager: vm.onManager,
-    refresh: vm.refresh,
-    columns: vm.columns,
-  }
-  const openDialog = (rowItem, action) => {
-    const params = Object.assign(dialogParams, {
-      action,
-    })
-    const ind = actionIndexs[action]
-    // 自定义提交接口
-    if (actions && actions.length > 0 && actions[ind]) {
-      params['onOk'] = () => actions[ind](rowItem)
+  const openDialog = (rowItem, type, index) => {
+    const { list = {} } = vm
+    const { resource } = list
+    const dialogParams = {
+      fields,
+      resourceName,
+      vm,
+      data,
+      resource,
+      onManager: vm.onManager,
+      refresh: vm.refresh,
+      columns: vm.columns,
+      action: type,
     }
-    if (!params.data || params.data.length === 0) {
-      params['data'] = [rowItem]
+    if (actions && actions.length > 0 && actions[index]) {
+      dialogParams['onOk'] = () => actions[index](rowItem)
     }
-    vm.createDialog('EnabledSwitchDialog', params)
+    if (!dialogParams.data || dialogParams.data.length === 0) {
+      dialogParams['data'] = [rowItem]
+    }
+    vm.createDialog('EnabledSwitchDialog', dialogParams)
   }
-  const enable = {
-    label: '启用',
-    action: (rowItem) => openDialog(rowItem, 'enable'),
-    meta: (rowItem) => {
-      if (metas && metas.length > 0) {
-        const [meta] = metas
-        return meta && meta(rowItem)
-      }
-      const item = (data && data.length === 1) ? data[0] : rowItem
-      // 批量选择1条，或者单个操作
-      if (item) {
-        return {
-          validate: !item.enabled,
+  const btns = ['enable', 'disable'].map((type, index) => {
+    const _permissions = permissions || []
+    return {
+      permissions: _permissions[index],
+      label: i18n.t('status.enabled')[type],
+      action: (rowItem) => openDialog(rowItem, type, index),
+      meta: (rowItem) => {
+        if (metas && metas.length > 0) {
+          const meta = metas[index]
+          return meta && meta(rowItem)
         }
-      }
-      // 批量N条操作
-      return {
-        validate: true,
-      }
-    },
-  }
-  const disable = {
-    label: '禁用',
-    action: (rowItem) => openDialog(rowItem, 'disable'),
-    meta: (rowItem) => {
-      if (metas && metas.length > 0) {
-        const [, meta] = metas
-        return meta && meta(rowItem)
-      }
-      const item = (data && data.length === 1) ? data[0] : rowItem
-      // 批量选择1条，或者单个操作
-      if (item) {
-        return {
-          validate: item.enabled,
+        const item = (data && data.length === 1) ? data[0] : rowItem
+        // 批量选择1条，或者单个操作
+        if (item) {
+          let validate = index ? item.enabled : !item.enabled
+          return {
+            validate,
+          }
         }
-      }
-      // 批量N条操作
-      return {
-        validate: true,
-      }
-    },
-  }
-
-  // 权限处理
-  if (permissions && permissions.length > 0) {
-    const [ enablePermission, disablePermission ] = permissions
-    if (enablePermission) {
-      enable['permission'] = enablePermission
+        // 批量N条操作
+        return {
+          validate: true,
+        }
+      },
     }
-    if (disablePermission) {
-      disable['permission'] = disablePermission
-    }
-  }
-  return [enable, disable]
+  })
+  return btns
 }
