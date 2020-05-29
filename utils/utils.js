@@ -512,3 +512,15 @@ export const cityMap = (cities, val) => {
   }
   return result
 }
+
+export const genReferRouteQuery = (route) => {
+  const query = {
+    pathAuthPage: route.meta.authPage,
+    pathAuth: route.meta.auth || true,
+    path: route.path,
+  }
+  if (!R.isNil(route.query) && !R.isEmpty(route.query)) {
+    query.pathQuery = JSON.stringify(route.query)
+  }
+  return query
+}

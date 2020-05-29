@@ -413,13 +413,16 @@ export default {
         // 如果开启了认证则进入输入秘钥页面
         router.replace('/auth/secretverify')
       } else {
-        const { rf, pathAuthPage, pathAuth, path } = router.currentRoute.query
+        const { rf, pathAuthPage, pathAuth, path, pathQuery } = router.currentRoute.query
         if (rf) {
           document.location.href = rf
           return
         }
         if (!pathAuthPage && pathAuth && path) {
-          router.replace(path)
+          router.replace({
+            path,
+            query: pathQuery && JSON.parse(pathQuery),
+          })
         } else {
           router.replace('/')
         }

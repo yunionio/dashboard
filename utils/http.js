@@ -11,7 +11,7 @@ import qs from 'qs'
 import store from '@/store'
 import router from '@/router'
 import { getHttpErrorMessage, getHttpReqMessage, getErrorBody } from '@/utils/error'
-import { uuid } from '@/utils/utils'
+import { uuid, genReferRouteQuery } from '@/utils/utils'
 
 const http = axios.create({
   baseURL: process.env.VUE_APP_BASE_API,
@@ -199,11 +199,7 @@ http.interceptors.response.use(
           if (!router.currentRoute.meta.authPage) {
             router.push({
               path: '/auth/login',
-              query: {
-                pathAuthPage: router.currentRoute.meta.authPage,
-                pathAuth: router.currentRoute.meta.auth || true,
-                path: router.currentRoute.path,
-              },
+              query: genReferRouteQuery(router.currentRoute),
             })
           }
         })
