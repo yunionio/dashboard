@@ -146,8 +146,14 @@ export default {
         if (R.is(Boolean, this.row.disable_delete)) {
           return this.row.disable_delete
         }
+        if (R.is(String, this.row.disable_delete)) {
+          return this.row.disable_delete === 'true'
+        }
         if (R.is(Boolean, this.row.can_delete)) {
           return this.row.can_delete
+        }
+        if (R.is(String, this.row.can_delete)) {
+          return this.row.can_delete === 'true'
         }
       }
       return false
