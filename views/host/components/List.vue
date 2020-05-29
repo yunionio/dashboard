@@ -136,8 +136,15 @@ export default {
                 },
                 {
                   label: '回收为物理机',
-                  action: () => {
-                    this.list.batchPerformAction('disable', null)
+                  action: (obj) => {
+                    // this.list.batchPerformAction('disable', null)
+                    this.createDialog('HostUnconvertDialog', {
+                      data: this.list.selectedItems,
+                      columns: this.columns,
+                      onManager: this.onManager,
+                      name: this.$t('dictionary.host'),
+                      refresh: this.refresh,
+                    })
                   },
                   meta: () => {
                     if (!this.list.selectedItems.length) {
