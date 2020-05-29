@@ -168,6 +168,10 @@ export default {
                     return ret
                   }],
                   ['domain', () => {
+                    if (obj.shared_domains && obj.shared_domains.length > 0) {
+                      ret.tooltip = '域共享镜像不支持该操作'
+                      return ret
+                    }
                     if (this.booleanTransfer(obj.is_standard)) {
                       ret.tooltip = '公共镜像不支持该操作'
                       return ret
