@@ -12,14 +12,12 @@
       :style="gridStyle"
       :sort-config="{ sortMethod: () => {} }"
       :checkbox-config="{ reserve: true, highlight: true }"
-      :radio-config="{ reserve: true, highlight: true, trigger: 'row' }"
       :expand-config="expandConfig"
       :pager-config="tablePage"
       @page-change="handlePageChange"
       @sort-change="handleSortChange"
       @checkbox-change="handleCheckboxChange"
-      @checkbox-all="handleCheckboxChange"
-      @radio-change="handleRadioChange">
+      @checkbox-all="handleCheckboxChange">
       <template v-slot:empty>
         <loader :loading="loading" />
       </template>
