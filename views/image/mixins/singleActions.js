@@ -168,12 +168,12 @@ export default {
                     return ret
                   }],
                   ['domain', () => {
-                    if (this.booleanTransfer(obj.is_standard)) {
-                      ret.tooltip = '公共镜像不支持该操作'
+                    if ((obj.shared_domains && obj.shared_domains.length > 0) || obj.public_scope === 'system') {
+                      ret.tooltip = '共享范围超出本域,不支持再设置共享'
                       return ret
                     }
-                    if (obj.public_scope === 'system') {
-                      ret.tooltip = '系统共享镜像不支持该操作'
+                    if (this.booleanTransfer(obj.is_standard)) {
+                      ret.tooltip = '公共镜像不支持该操作'
                       return ret
                     }
                     return ret
@@ -321,7 +321,7 @@ export default {
                 let action = actions.get(this.isAdminMode ? 'admin' : '') || actions.get(this.isDomainMode ? 'domain' : 'user')
                 ret = action.call(this)
                 if (ret.tooltip) return ret
-                return this.$getDeleteResult(obj)
+                // return this.$getDeleteResult(obj)
               },
             },
             {
