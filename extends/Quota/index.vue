@@ -319,7 +319,7 @@ export default {
             type: 'bar',
             itemStyle: {
               normal: {
-                color: 'rgba(0, 0, 0, 0.1)',
+                color: '#dddfe6',
               },
             },
             barWidth: 3,
