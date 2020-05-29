@@ -482,6 +482,7 @@ export default {
           path: '/k8s-kubecomponent',
           meta: {
             label: '服务组件',
+            permission: 'k8s_kubeclusters_list', // 服务组件权限和 集群list 权限一致
           },
           component: Layout,
           children: [

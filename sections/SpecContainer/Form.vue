@@ -31,7 +31,7 @@
     <a-form-item label="环境变量">
       <labels :decorators="decorators.env" title="变量" keyLabel="变量" />
     </a-form-item>
-    <a-form-item label="消费预警">
+    <a-form-item label="">
       <a-checkbox v-decorator="decorators.privileged">以特权模式运行</a-checkbox>
     </a-form-item>
   </div>
