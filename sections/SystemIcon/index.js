@@ -12,11 +12,9 @@ export default {
   },
   render (h) {
     return (
-      <a-tooltip title={ this.tooltip }>
-        <span>
-          <image-icon image={ this.name } />
-        </span>
-      </a-tooltip>
+      <span title={ this.tooltip }>
+        <image-icon image={ this.name } />
+      </span>
     )
   },
 }

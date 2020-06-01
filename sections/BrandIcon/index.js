@@ -19,11 +19,9 @@ export default {
       fontSize = '16px'
     }
     return (
-      <a-tooltip title={ option.label }>
-        <span>
-          <icon type={ name } style={{ fontSize }} />
-        </span>
-      </a-tooltip>
+      <span title={ option.label }>
+        <icon type={ name } style={{ fontSize }} />
+      </span>
     )
   },
 }
