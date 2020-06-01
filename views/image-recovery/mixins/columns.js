@@ -1,7 +1,7 @@
 import * as R from 'ramda'
 import { sizestr } from '@/utils/utils'
 import SystemIcon from '@/sections/SystemIcon'
-import { getStatusTableColumn, getCopyWithContentTableColumn, getProjectTableColumn } from '@/utils/common/tableColumn'
+import { getStatusTableColumn, getCopyWithContentTableColumn, getProjectTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   created () {
@@ -41,6 +41,7 @@ export default {
       },
       getStatusTableColumn({ statusModule: 'image' }),
       getProjectTableColumn(),
+      getTimeTableColumn({ field: 'auto_delete_at', title: '自动清除时间' }),
     ]
   },
 }

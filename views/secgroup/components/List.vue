@@ -123,6 +123,11 @@ export default {
             resource: 'secgroups',
           }, {
             permission: 'secgroups_performAction',
+            meta: () => {
+              return {
+                validate: this.list.selectedItems.length,
+              }
+            },
           }),
           {
             index: 3,
