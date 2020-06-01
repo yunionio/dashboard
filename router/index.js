@@ -1,11 +1,11 @@
-import FlexNetwork from '@Network/views/flex-network'
+// import FlexNetwork from '@Network/views/flex-network'
 import Wire from '@Network/views/wire'
 import Network from '@Network/views/network'
 import NetworkCreate from '@Network/views/network/Create'
 import EditAttributes from '@Network/views/network/EditAttributes'
 import Eip from '@Network/views/eip'
 import GlobalVpc from '@Network/views/global-vpc'
-import RouteTableList from '@Network/views/route-table'
+// import RouteTableList from '@Network/views/route-table'
 import NatList from '@Network/views/nats'
 import ReservedIpList from '@Network/views/reserved-ip'
 import DNS from '@Network/views/dns'
@@ -21,7 +21,7 @@ import AgentCreate from '@Network/views/agent/create'
 import AgentAsbook from '@Network/views/agent/asbook'
 import Layout from '@/layouts/RouterView'
 
-import { hasHypervisorsByEnv, hasHypervisors, hasServices } from '@/utils/auth'
+import { hasHypervisorsByEnv, hasHypervisors, hasServices, hasBrands } from '@/utils/auth'
 
 export default {
   index: 4,
@@ -43,15 +43,13 @@ export default {
           meta: {
             label: '全局VPC',
             permission: 'network_globalvpcs_list',
+            hidden: () => !hasBrands('Google'),
           },
           component: Layout,
           children: [
             {
               name: 'GlobalVPC',
               path: '',
-              meta: {
-                // v1: true,
-              },
               component: GlobalVpc,
             },
           ],
@@ -72,41 +70,27 @@ export default {
             },
           ],
         },
-        {
-          path: '/routetable',
-          meta: {
-            label: '路由表',
-            permission: 'route_tables_list',
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'RouteTable',
-              path: '',
-              component: RouteTableList,
-            },
-          ],
-        },
-        {
-          path: '/nat',
-          meta: {
-            label: 'NAT网关',
-            permission: 'natgateways_list',
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'Nat',
-              path: '',
-              component: NatList,
-            },
-          ],
-        },
+        // {
+        //   path: '/routetable',
+        //   meta: {
+        //     label: '路由表',
+        //     permission: 'route_tables_list',
+        //   },
+        //   component: Layout,
+        //   children: [
+        //     {
+        //       name: 'RouteTable',
+        //       path: '',
+        //       component: RouteTableList,
+        //     },
+        //   ],
+        // },
         {
           path: '/wire',
           meta: {
             label: '二层网络',
             permission: 'wires_list',
+            hidden: () => !hasHypervisorsByEnv(['idc']),
           },
           component: Layout,
           children: [
@@ -117,37 +101,21 @@ export default {
             },
           ],
         },
-        {
-          path: '/eip',
-          meta: {
-            label: '弹性公网IP',
-            permission: 'eips_list',
-            hidden: () => !hasHypervisorsByEnv(['public', 'private']),
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'EipList',
-              path: '',
-              component: Eip,
-            },
-          ],
-        },
-        {
-          path: '/flexnetwork',
-          meta: {
-            label: '弹性网卡',
-            permission: 'networkcard_list',
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'NetworkcardList',
-              path: '',
-              component: FlexNetwork,
-            },
-          ],
-        },
+        // {
+        //   path: '/flexnetwork',
+        //   meta: {
+        //     label: '弹性网卡',
+        //     permission: 'networkcard_list',
+        //   },
+        //   component: Layout,
+        //   children: [
+        //     {
+        //       name: 'NetworkcardList',
+        //       path: '',
+        //       component: FlexNetwork,
+        //     },
+        //   ],
+        // },
         {
           path: '/network',
           meta: {
@@ -185,6 +153,47 @@ export default {
               name: 'ReservedIP',
               path: '',
               component: ReservedIpList,
+            },
+          ],
+        },
+      ],
+    },
+    /**
+     * 网络服务
+     */
+    {
+      meta: {
+        label: '网络服务',
+      },
+      submenus: [
+        {
+          path: '/eip',
+          meta: {
+            label: '弹性公网IP',
+            permission: 'eips_list',
+            hidden: () => !hasHypervisorsByEnv(['public', 'private']),
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'EipList',
+              path: '',
+              component: Eip,
+            },
+          ],
+        },
+        {
+          path: '/nat',
+          meta: {
+            label: 'NAT网关',
+            permission: 'natgateways_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Nat',
+              path: '',
+              component: NatList,
             },
           ],
         },
