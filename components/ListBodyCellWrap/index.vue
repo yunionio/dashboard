@@ -5,12 +5,12 @@
       class="text-truncate"
       :class="{ 'text-weak': field === 'description', [titleClass]: titleClass }">{{ row[field] || '-' }}</span>
     <div class="text-truncate slot-wrap" v-if="$scopedSlots.default"><slot /></div>
-    <a-tooltip :title="$t('common.text00008')" v-if="showDeleteLock">
-      <a-icon class="ml-1" type="lock" />
-    </a-tooltip>
-    <a-tooltip v-if="addBackup && row.backup_host_id" :title="$t('common.text00009')">
-      <icon type="gaokeyong" class="ml-1" />
-    </a-tooltip>
+    <template v-if="showDeleteLock">
+      <a-icon class="ml-1" type="lock" :title="$t('common.text00008')" />
+    </template>
+    <template v-if="addBackup && row.backup_host_id">
+      <icon type="gaokeyong" class="ml-1" :title="$t('common.text00009')" />
+    </template>
     <slot name="append" />
     <edit
       slot="edit"
