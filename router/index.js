@@ -105,6 +105,7 @@ export default {
           meta: {
             label: '主机组',
             permission: 'instancegroups_list',
+            t: 'dictionary.instancegroup',
           },
           component: Layout,
           children: [

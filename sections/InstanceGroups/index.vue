@@ -6,7 +6,7 @@
     <a-form-item v-if="showGroups">
       <base-select
         v-decorator="decorators.groups"
-        :select-props="{ placeholder: '请选择主机组', mode: 'multiple' }"
+        :select-props="{ placeholder: `请选择${$t('dictionary.instancegroup')}`, mode: 'multiple' }"
         resource="instancegroups"
         :params="params"
         :need-params="true" />

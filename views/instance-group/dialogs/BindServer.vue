@@ -4,8 +4,8 @@
     <div slot="body">
       <a-alert class="mb-2" type="warning">
         <template v-slot:message>
-          <div>新建虚拟机时加入主机组，将按照主机组内规则调度选择宿主机。</div>
-          <div class="mt-2">已创建的虚拟机加入主机组后虚拟机所属宿主机不会变化。</div>
+          <div>新建虚拟机时加入{{ $t('dictionary.instancegroup') }}，将按照{{ $t('dictionary.instancegroup') }}内规则调度选择宿主机。</div>
+          <div class="mt-2">已创建的虚拟机加入{{ $t('dictionary.instancegroup') }}后虚拟机所属宿主机不会变化。</div>
         </template>
       </a-alert>
       <dialog-selected-tips :name="$t('dictionary.instancegroup')" :count="params.data.length" :action="`绑定${this.$t('dictionary.server')}`" />

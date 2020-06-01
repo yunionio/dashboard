@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="主机组" />
+    <page-header :title="$t('dictionary.instancegroup')" />
     <page-body>
       <instance-group-list :id="listId" />
     </page-body>
