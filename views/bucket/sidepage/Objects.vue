@@ -398,6 +398,7 @@ export default {
       // 表示根目录，根目录不需要prefix
       this.prefix = key
       this.nextFetchListLoading = true
+      await this.list.reset()
       await this.list.fetchData()
       this.nextFetchListLoading = false
     },
