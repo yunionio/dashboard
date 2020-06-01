@@ -95,7 +95,7 @@ export default {
               vm: this,
               data: this.list.selectedItems,
               columns: this.columns,
-              title: `删除${$t('dictionary.instancegroup')}`,
+              title: `删除${this.$t('dictionary.instancegroup')}`,
               name: this.$t('dictionary.instancegroup'),
               onManager: this.onManager,
             })
