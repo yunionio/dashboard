@@ -22,7 +22,7 @@
             resource="secgroups"
             :resList.sync="secgroupOptions"
             :mapper="mapperSecgroups"
-            :params="{ limit: 20 }"
+            :params="secgroupsParams"
             :init-loaded.sync="secgroupsInitLoaded"
             :select-props="{ allowClear: true, placeholder: '请选择安全组', mode: 'multiple' }" />
         </a-form-item>
@@ -90,7 +90,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['scope']),
+    ...mapGetters(['isAdminMode', 'scope']),
     isAzure () {
       return this.params.data[0].provider === HYPERVISORS_MAP.azure.provider
     },
@@ -125,6 +125,15 @@ export default {
     },
     tenant () {
       return this.params.data[0].tenant_id
+    },
+    secgroupsParams () {
+      const params = { limit: 20 }
+      if (this.isAdminMode) {
+        params.project_domain = this.params.data[0].domain_id
+      } else {
+        params.scope = this.scope
+      }
+      return params
     },
   },
   created () {
