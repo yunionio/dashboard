@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">新建主机组</div>
+    <div slot="header">新建{{ $t('dictionary.instancegroup') }}</div>
     <div slot="body">
       <a-form
         :form="form.fc">

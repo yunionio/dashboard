@@ -30,7 +30,7 @@ export default {
                   vm: this,
                   data: [obj],
                   columns: this.columns,
-                  title: '删除主机组',
+                  title: `删除${this.$t('dictionary.instancegroup')}`,
                   name: this.$t('dictionary.instancegroup'),
                   onManager: this.onManager,
                 })
