@@ -45,11 +45,7 @@ export default {
               tooltip = 'GPU云服务器'
               icontype = 'gpu'
             }
-            return [
-              <a-tooltip placement="top" title={tooltip}>
-                <icon type={icontype} style={{ fontSize: '16px' }} />
-              </a-tooltip>,
-            ]
+            return [<icon type={icontype} style={{ fontSize: '16px' }} title={tooltip} />]
           },
         },
       },
