@@ -129,10 +129,9 @@ export default {
       // 清空可用区
       this.regionOpts = []
       this.emit({}, 'region')
-      if (this.isAdminMode && !params['project_domain']) {
-        params['project_domain'] = this.userInfo.projectDomainId
+      if (this.cloudproviderParams['project_domain']) {
+        params['project_domain'] = this.cloudproviderParams.project_domain
         delete params.scope
-        delete params.domain_id
       }
       this.form && this.form.fc.setFieldsValue({
         region: { key: '', label: '' },
