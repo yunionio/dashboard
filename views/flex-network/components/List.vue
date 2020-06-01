@@ -104,6 +104,12 @@ export default {
           name: this.$t('dictionary.networkinterface'),
           scope: 'domain',
           resource: 'networkinterfaces',
+        }, {
+          meta: () => {
+            return {
+              validate: this.list.selectedItems.length,
+            }
+          },
         }),
       ],
     }
