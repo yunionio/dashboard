@@ -8,7 +8,7 @@
           <a-input v-decorator="decorators.name" placeholder="字母开头，数字和字母大小写组合，长度为2-20个字符，可含'-','_'" />
         </a-form-item>
         <a-form-item v-bind="formItemLayout" :label="`指定${$t('dictionary.domain')}`" v-if="$store.getters.isAdminMode">
-          <domain-select v-decorator="decorators.project_domain" />
+          <domain-select v-decorator="decorators.project_domain" @change="handleDomainChange" />
         </a-form-item>
         <a-form-item label="平台" v-bind="formItemLayout">
           <a-radio-group v-decorator="decorators.platform">
@@ -17,7 +17,7 @@
             <a-radio-button value="public_cloud">公有云</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item label="区域" v-bind="formItemLayout" v-if="platform !== 'idc'">
+        <a-form-item label="区域1" v-bind="formItemLayout" v-if="platform !== 'idc'">
           <cloudprovider-region
            @update:region="handleRegionChange"
            :decorator="decorators"
@@ -143,12 +143,7 @@ export default {
         },
       },
       platform: 'public_cloud',
-      idcCloudRegionParams: {
-        cloud_env: 'onpremise',
-        usable: true,
-        show_emulated: true,
-        project_domain: 'default',
-      },
+      project_domain: this.$store.getters.userInfo.projectDomainId,
     }
   },
   computed: {
@@ -162,12 +157,27 @@ export default {
       }
       if (this.isAdminMode) params['admin'] = true
       if (this.platform) params[this.platform] = true
-      if (this.isAdminMode && !params['project_domain']) {
-        params['project_domain'] = this.userInfo.projectDomainId
+      if (this.isAdminMode) {
+        params['project_domain'] = this.project_domain
         delete params.scope
         delete params.domain_id
       }
       return params
+    },
+    idcCloudRegionParams () {
+      if (this.isAdminMode) {
+        return {
+          cloud_env: 'onpremise',
+          usable: true,
+          show_emulated: true,
+          project_domain: this.project_domain,
+        }
+      }
+      return {
+        cloud_env: 'onpremise',
+        usable: true,
+        show_emulated: true,
+      }
     },
   },
   provide () {
@@ -205,6 +215,9 @@ export default {
           data,
         },
       })
+    },
+    handleDomainChange (val) {
+      this.project_domain = val
     },
     async handleConfirm () {
       this.loading = true
