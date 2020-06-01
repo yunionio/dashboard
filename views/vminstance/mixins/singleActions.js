@@ -576,7 +576,7 @@ export default {
                   },
                 },
                 {
-                  label: '加入主机组',
+                  label: `加入${this.$t('dictionary.instancegroup')}`,
                   action: () => {
                     this.createDialog('VmBindInstanceGroupDialog', {
                       data: [obj],

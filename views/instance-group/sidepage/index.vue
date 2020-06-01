@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="主机组"
+    :title="$t('dictionary.instancegroup')"
     icon="res-instancegroup"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"

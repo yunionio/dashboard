@@ -1,8 +1,8 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">解绑主机组</div>
+    <div slot="header">解绑{{ $t('dictionary.instancegroup') }}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.instancegroup')" :count="params.data.length" action="解绑主机组" />
+      <dialog-selected-tips :name="$t('dictionary.instancegroup')" :count="params.data.length" :action="`解绑${$t('dictionary.instancegroup')}`" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
     </div>
     <div slot="footer">
