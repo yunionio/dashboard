@@ -1226,7 +1226,7 @@
     "identity_provider": "认证源",
     "image": "系统镜像",
     "infos": "系统",
-    "instancegroup": "主机组",
+    "instancegroup": "反亲和组",
     "isolated_device": "GPU透传设备",
     "keypair": "密钥",
     "kubecluster": "K8S-集群",
