@@ -37,6 +37,7 @@ export default {
     return {
       list: this.$list.createList(this, {
         id: this.id,
+        key: 'id',
         resource: 'servers',
         getParams: this.getParams,
         steadyStatus: Object.values(expectStatus.scalingserver).flat().concat(Object.values(expectStatus.server).flat()),
@@ -99,7 +100,7 @@ export default {
           },
         },
         getStatusTableColumn({ field: 'scaling_status', title: '状态', statusModule: 'scalingserver' }),
-        getStatusTableColumn({ title: '主机状态', statusModule: 'server' }),
+        getStatusTableColumn({ title: '主机状态', statusModule: 'server', width: 130 }),
         {
           field: 'instance_type',
           title: '配置',
@@ -143,7 +144,7 @@ export default {
             this.createDialog('ScalingGroupServerRemoveDialog', {
               title: '移除',
               data: [row],
-              resId: this.getParams.scaling_group,
+              resId: this.data.id,
               columns: this.columns,
               refresh: this.refresh,
               onManager: this.onManager,
@@ -152,6 +153,24 @@ export default {
         },
       ],
       groupActions: [
+        {
+          label: '批量移除',
+          action: (row) => {
+            this.createDialog('ScalingGroupServerRemoveDialog', {
+              title: '移除',
+              data: this.list.selectedItems,
+              resId: this.data.id,
+              columns: this.columns,
+              refresh: this.refresh,
+              onManager: this.onManager,
+            })
+          },
+          meta: (row) => {
+            return {
+              validate: !!this.list.selectedItems.length,
+            }
+          },
+        },
       ],
     }
   },
