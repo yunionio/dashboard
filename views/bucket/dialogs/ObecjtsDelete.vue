@@ -32,13 +32,18 @@ export default {
       try {
         const { resName, data } = this.params
         const manager = new this.$Manager('buckets', 'v2')
+        const keys = data.map(({ key }) => key)
         await manager.performAction({
           id: resName,
           action: 'delete',
           data: {
-            keys: data.map(({ key }) => key),
+            keys,
           } })
-        this.params.list.fetchData()
+        keys.forEach(k => {
+          if (this.params.list.data[k]) {
+            this.$delete(this.params.list.data, k)
+          }
+        })
         this.cancelDialog()
       } finally {
         this.loading = false
