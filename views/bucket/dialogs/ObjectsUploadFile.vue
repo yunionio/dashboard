@@ -129,7 +129,6 @@ export default {
           if (status === 'error' && response) {
             file['response'] = response.details
           }
-          console.log(file)
           _statusNums[status] += 1
         })
       }
