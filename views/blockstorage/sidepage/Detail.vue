@@ -11,6 +11,7 @@
 <script>
 // import BrandIcon from '@/sections/BrandIcon'
 import { STORAGE_TYPES, MEDIUM_TYPES } from '@Storage/constants/index.js'
+import ColumnsMixin from '../mixins/columns'
 import { sizestr } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
 import {
@@ -20,13 +21,17 @@ import {
 
 export default {
   name: 'BlockStorageDetail',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ColumnsMixin],
   props: {
     data: {
       type: Object,
       required: true,
     },
     onManager: {
+      type: Function,
+      required: true,
+    },
+    refresh: {
       type: Function,
       required: true,
     },
@@ -75,6 +80,13 @@ export default {
             {
               field: 'commit_bound',
               title: '超售比',
+              slots: {
+                default: ({ row }) => {
+                  return [
+                    <div class="edit-item">{row.commit_bound} <a class="edit-icon" onClick={this.updateCommitBound}><a-icon type='edit' /></a></div>,
+                  ]
+                },
+              },
             },
             {
               field: 'virtual_capacity',
@@ -146,6 +158,25 @@ export default {
       if (!value) return '-'
       return sizestr(value, 'M', 1024)
     },
+    updateCommitBound () {
+      this.createDialog('BlockStorageUpdateCommitBoundDialog', {
+        data: [this.data],
+        columns: this.columns,
+        title: '调整超售比',
+        onManager: this.onManager,
+        refresh: this.refresh,
+      })
+    },
   },
 }
 </script>
+<style lang="scss" scoped>
+  .edit-item {
+    .edit-icon {
+      display: none;
+    }
+    &:hover .edit-icon {
+      display: inline;
+    }
+  }
+</style>
