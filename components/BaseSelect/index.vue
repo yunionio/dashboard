@@ -156,6 +156,8 @@ export default {
             }
           })
           this.resOpts = arrayToObj(resOpts)
+        } else {
+          this.resOpts = {}
         }
       },
       immediate: true,
