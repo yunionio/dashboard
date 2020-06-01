@@ -35,6 +35,7 @@
         label="网络"
         :form="form"
         v-bind="formItemLayout"
+        :networkParams="networkParams"
         :vpcParams="vpcParams" />
       <a-form-item label="最大实例数">
         <a-tooltip placement="top" title="范围在 1 ～ 1000">
@@ -301,6 +302,11 @@ export default {
       const { brand } = this.form.fd
       return {
         brand,
+        ...this.scopeParams,
+      }
+    },
+    networkParams () {
+      return {
         ...this.scopeParams,
       }
     },
