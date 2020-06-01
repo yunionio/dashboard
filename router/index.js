@@ -22,16 +22,14 @@ import Keypair from '@Compute/views/keypair'
 import Disk from '@Compute/views/disk'
 import GPU from '@Compute/views/gpu'
 import Secgroup from '@Compute/views/secgroup'
-import FlexNetwork from '@Network/views/flex-network'
-import Wire from '@Network/views/wire'
 import Servertemplate from '@Compute/views/servertemplate'
 import ServertemplateCreateServer from '@Compute/views/servertemplate/CreateServer'
 import DiskSnapshot from '@Compute/views/snapshot'
 import InstanceSnapshot from '@Compute/views/snapshot-instance'
 import SnapshotPolicy from '@Compute/views/snapshotpolicy'
-import AnsibleTemplate from '@Compute/views/ansible-template'
-import AnsibleTemplateCreate from '@Compute/views/ansible-template/create'
-import AnsiblePlaybook from '@Compute/views/ansible-playbook'
+// import AnsibleTemplate from '@Compute/views/ansible-template'
+// import AnsibleTemplateCreate from '@Compute/views/ansible-template/create'
+// import AnsiblePlaybook from '@Compute/views/ansible-playbook'
 import ScalingGroup from '@Compute/views/scaling-group'
 import ScalingGroupCreate from '@Compute/views/scaling-group/create'
 import Layout from '@/layouts/RouterView'
@@ -300,52 +298,6 @@ export default {
           ],
         },
         {
-          path: '/eip2',
-          meta: {
-            label: '弹性公网IP',
-            permission: 'eips_list',
-            hidden: () => !hasHypervisorsByEnv(['idc', 'private', 'public']),
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'Eip2',
-              path: '',
-              component: Eip,
-            },
-          ],
-        },
-        {
-          path: '/flexnetwork2',
-          meta: {
-            label: '弹性网卡',
-            permission: 'networkcard_list',
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'NetworkcardList2',
-              path: '',
-              component: FlexNetwork,
-            },
-          ],
-        },
-        {
-          path: '/wire2',
-          meta: {
-            label: '二层网络',
-            permission: 'wires_list',
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'WireList2',
-              path: '',
-              component: Wire,
-            },
-          ],
-        },
-        {
           path: '/network2',
           meta: {
             label: 'IP子网',
@@ -367,6 +319,22 @@ export default {
               name: 'NetworkUpdate2',
               path: 'edit',
               component: EditAttributes,
+            },
+          ],
+        },
+        {
+          path: '/eip2',
+          meta: {
+            label: '弹性公网IP',
+            permission: 'eips_list',
+            hidden: () => !hasHypervisorsByEnv(['private', 'public']),
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Eip2',
+              path: '',
+              component: Eip,
             },
           ],
         },
@@ -497,48 +465,48 @@ export default {
         },
       ],
     },
-    {
-      meta: {
-        label: '运维工具',
-      },
-      submenus: [
-        {
-          path: '/ansibletemplate',
-          meta: {
-            label: '模板',
-            permission: 'ansible_devtool_templates_list',
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'AnsibleTemplate',
-              path: '',
-              component: AnsibleTemplate,
-            },
-            {
-              name: 'AnsibleTemplateCreate',
-              path: 'create',
-              component: AnsibleTemplateCreate,
-            },
-          ],
-        },
-        {
-          path: '/ansibleplaybook',
-          meta: {
-            label: '任务',
-            permission: 'ansible_ansibleplaybooks_list',
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'AnsiblePlaybook',
-              path: '',
-              component: AnsiblePlaybook,
-            },
-          ],
-        },
-      ],
-    },
+    // {
+    //   meta: {
+    //     label: '运维工具',
+    //   },
+    //   submenus: [
+    //     {
+    //       path: '/ansibletemplate',
+    //       meta: {
+    //         label: '模板',
+    //         permission: 'ansible_devtool_templates_list',
+    //       },
+    //       component: Layout,
+    //       children: [
+    //         {
+    //           name: 'AnsibleTemplate',
+    //           path: '',
+    //           component: AnsibleTemplate,
+    //         },
+    //         {
+    //           name: 'AnsibleTemplateCreate',
+    //           path: 'create',
+    //           component: AnsibleTemplateCreate,
+    //         },
+    //       ],
+    //     },
+    //     {
+    //       path: '/ansibleplaybook',
+    //       meta: {
+    //         label: '任务',
+    //         permission: 'ansible_ansibleplaybooks_list',
+    //       },
+    //       component: Layout,
+    //       children: [
+    //         {
+    //           name: 'AnsiblePlaybook',
+    //           path: '',
+    //           component: AnsiblePlaybook,
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // },
     {
       meta: {
         label: '回收站',
