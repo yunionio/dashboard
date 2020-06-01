@@ -11,13 +11,12 @@
       :columns="tableColumns"
       :style="gridStyle"
       :sort-config="{ sortMethod: () => {} }"
-      :checkbox-config="{ reserve: true, highlight: true }"
       :expand-config="expandConfig"
       :pager-config="tablePage"
       @page-change="handlePageChange"
       @sort-change="handleSortChange"
-      @checkbox-change="handleCheckboxChange"
-      @checkbox-all="handleCheckboxChange">
+      v-on="dynamicEvents"
+      v-bind="dynamicProps">
       <template v-slot:empty>
         <loader :loading="loading" />
       </template>
@@ -122,6 +121,27 @@ export default {
         pageSize: this.finalLimit,
         layouts: this.pagerLayout,
       }
+    },
+    // 动态生成额外事件
+    dynamicEvents () {
+      const ret = {}
+      if (this.checkboxEnabled) {
+        ret['checkbox-change'] = this.handleCheckboxChange
+        ret['checkbox-all'] = this.handleCheckboxChange
+      } else if (this.radioEnabled) {
+        ret['radio-change'] = this.handleRadioChange
+      }
+      return ret
+    },
+    // 动态生成额外Props
+    dynamicProps () {
+      const ret = {}
+      if (this.checkboxEnabled) {
+        ret['checkbox-config'] = { reserve: true, highlight: true }
+      } else if (this.radioEnabled) {
+        ret['radio-config'] = { reserve: true, highlight: true, trigger: 'row' }
+      }
+      return ret
     },
   },
   watch: {
