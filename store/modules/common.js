@@ -21,6 +21,9 @@ export default {
       if (!state[name]) state[name] = {}
       Vue.set(state, name, { ...state[name], ...data })
     },
+    DELETE_OBJECT (state, { name, key }) {
+      Vue.delete(state[name], key)
+    },
     SET_RECENT_MENUS (state, payload) {
       state.recentMenus = payload
     },
@@ -37,6 +40,9 @@ export default {
   actions: {
     updateObject ({ commit }, payload) {
       commit('UPDATE_OBJECT', payload)
+    },
+    deleteObject ({ commit }, payload) {
+      commit('DELETE_OBJECT', payload)
     },
     setRecentMenus ({ commit, state }, payload) {
       let menus = state.recentMenus
