@@ -161,7 +161,7 @@ export default {
           {
             initialValue: options.usage_report_bucket,
             rules: [
-              { required: true, message: '请输入存储桶URL' },
+              // { required: true, message: '请输入存储桶URL' },
             ],
           },
         ],

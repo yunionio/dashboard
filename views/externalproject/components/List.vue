@@ -43,7 +43,7 @@ export default {
           slots: {
             default: ({ row }) => {
               return [
-                <side-page-trigger permission='projects_get' name='ProjectSidePage' id={row.manager_project_id} vm={this}>{row.tenant}</side-page-trigger>,
+                <side-page-trigger permission='projects_get' name='ProjectSidePage' id={row.tenant_id} vm={this}>{row.tenant}</side-page-trigger>,
               ]
             },
           },
