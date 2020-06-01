@@ -103,7 +103,12 @@ export default {
           label: '更多',
           actions: (obj) => {
             return [
-              ...getEnabledSwitchActions(this, obj),
+              {
+                label: '禁用',
+                submenus: [
+                  ...getEnabledSwitchActions(this, obj),
+                ],
+              },
               {
                 label: '设置',
                 submenus: [
