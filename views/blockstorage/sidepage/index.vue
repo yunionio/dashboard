@@ -21,6 +21,7 @@
       :data="detailData"
       :resource="resource"
       :on-manager="onManager"
+      :refresh="refresh"
       @refresh="refresh"
       :list="params.list"
       :getParams="getParams"
