@@ -1,10 +1,12 @@
 import { NODE_ROLE_MAP } from '@K8S/views/cluster/constants'
+import * as R from 'ramda'
 import {
   getNameDescriptionTableColumn,
   getStatusTableColumn,
 } from '@/utils/common/tableColumn'
 import { HYPERVISORS_MAP } from '@/constants'
 import BrandIcon from '@/sections/BrandIcon'
+import { sizestr } from '@/utils/utils'
 
 export default {
   created () {
@@ -36,6 +38,30 @@ export default {
         },
       },
       getStatusTableColumn({ statusModule: 'kubemachines' }),
+      {
+        field: 'cpuRequests/cpuCapacity',
+        title: 'CPU(核)',
+        minWidth: 70,
+        formatter: ({ row }) => {
+          if (row.machine_node && R.is(Object, row.machine_node.allocatedResources)) {
+            const nodeInfo = row.machine_node.allocatedResources
+            return (nodeInfo.cpuRequests / 1000) + ' / ' + (nodeInfo.cpuCapacity / 1000)
+          }
+          return '-/-'
+        },
+      },
+      {
+        field: 'memoryRequests/memoryCapacity',
+        title: '内存',
+        minWidth: 70,
+        formatter: ({ row }) => {
+          if (row.machine_node && R.is(Object, row.machine_node.allocatedResources)) {
+            const nodeInfo = row.machine_node.allocatedResources
+            return sizestr(nodeInfo.memoryRequests, 'B', 1024) + ' / ' + sizestr(nodeInfo.memoryCapacity, 'B', 1024)
+          }
+          return '-/-'
+        },
+      },
       {
         field: 'address',
         title: 'IP地址',
