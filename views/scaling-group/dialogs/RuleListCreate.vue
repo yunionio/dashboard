@@ -46,11 +46,13 @@
         <template v-if="form.fc.getFieldValue('trigger_type') === 'timing'">
           <a-form-item label="触发时间">
             <a-date-picker
-              showTime
+              :showTime="{
+                format: 'HH:mm',
+              }"
               :disabledDate="disabledDate"
               :disabledTime="disabledDateTime"
               v-decorator="decorators.execTime"
-              format="YYYY-MM-DD HH:mm:ss" />
+              format="YYYY-MM-DD HH:mm" />
           </a-form-item>
         </template>
         <!-- 周期策略 -->
