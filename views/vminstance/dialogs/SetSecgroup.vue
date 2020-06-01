@@ -19,7 +19,7 @@
             v-decorator="decorators.secgroups"
             resource="secgroups"
             :mapper="mapperSecgroups"
-            :params="{ limit: 20 }"
+            :params="secgroupsParams"
             :init-loaded.sync="secgroupsInitLoaded"
             :select-props="{ allowClear: true, placeholder: '请选择安全组', mode: 'multiple' }" />
         </a-form-item>
@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import * as R from 'ramda'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -85,6 +86,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['isAdminMode', 'scope']),
     isAzure () {
       return this.params.data[0].provider === HYPERVISORS_MAP.azure.provider
     },
@@ -107,6 +109,15 @@ export default {
         return 1
       }
       return 5
+    },
+    secgroupsParams () {
+      const params = { limit: 20 }
+      if (this.isAdminMode) {
+        params.project_domain = this.params.data[0].domain_id
+      } else {
+        params.scope = this.scope
+      }
+      return params
     },
   },
   created () {
