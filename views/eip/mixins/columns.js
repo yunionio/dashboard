@@ -44,7 +44,7 @@ export default {
       {
         field: 'charge_type',
         title: '计费方式',
-        width: 80,
+        minWidth: 80,
         formatter: ({ cellValue }) => {
           if (cellValue === 'traffic') {
             return '按流量计费'
