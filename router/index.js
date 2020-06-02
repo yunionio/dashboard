@@ -146,6 +146,7 @@ export default {
           meta: {
             label: '预留IP',
             permission: 'reservedips_list',
+            hidden: () => !hasHypervisorsByEnv(['private']),
           },
           component: Layout,
           children: [
