@@ -21,7 +21,8 @@
           <cloudprovider-region
            @update:region="handleRegionChange"
            :decorator="decorators"
-           :cloudproviderParams="cloudproviderParams" />
+           :cloudproviderParams="cloudproviderParams"
+           :regionParamsExtra="regionParamsExtra" />
         </a-form-item>
         <a-form-item label="区域" v-bind="formItemLayout" v-else>
           <base-select
@@ -178,6 +179,15 @@ export default {
         usable: true,
         show_emulated: true,
       }
+    },
+    regionParamsExtra () {
+      const res = {}
+      if (this.platform === 'public_cloud') {
+        res['cloud_env'] = 'public'
+      } else if (this.platform === 'private_cloud') {
+        res['cloud_env'] = 'private'
+      }
+      return res
     },
   },
   provide () {
