@@ -81,6 +81,10 @@ export default {
           name: this.$t('dictionary.route_table'),
           scope: 'domain',
           resource: 'route_tables',
+        }, {
+          meta: () => {
+            validate: this.list.selectedItems.length > 0,
+          },
         }),
       ],
     }
