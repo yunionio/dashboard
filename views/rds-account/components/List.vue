@@ -125,7 +125,6 @@ export default {
               data: [obj],
               list: this.list,
               columns: this.columns,
-              redisItem: this.data,
             })
           },
           meta: () => {
