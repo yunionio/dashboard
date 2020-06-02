@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
@@ -20,13 +21,14 @@ export default {
   mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
+    getParams: [Object, Function],
   },
   data () {
     return {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'route_tables',
-        getParams: { details: true },
+        getParams: this.getParam,
         filterOptions: {
           name: {
             label: '名称',
@@ -91,6 +93,15 @@ export default {
   },
   created () {
     this.list.fetchData()
+  },
+  methods: {
+    getParam () {
+      const ret = {
+        ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
+        details: true,
+      }
+      return ret
+    },
   },
 }
 </script>

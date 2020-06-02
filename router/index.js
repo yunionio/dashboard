@@ -7,7 +7,7 @@ import Eip from '@Network/views/eip'
 import GlobalVpc from '@Network/views/global-vpc'
 // import RouteTableList from '@Network/views/route-table'
 import NatList from '@Network/views/nats'
-import ReservedIpList from '@Network/views/reserved-ip'
+// import ReservedIpList from '@Network/views/reserved-ip'
 import DNS from '@Network/views/dns'
 import VPC from '@Network/views/vpc'
 import LbList from '@Network/views/lb'
@@ -141,21 +141,21 @@ export default {
             },
           ],
         },
-        {
-          path: '/reservedip',
-          meta: {
-            label: '预留IP',
-            permission: 'reservedips_list',
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'ReservedIP',
-              path: '',
-              component: ReservedIpList,
-            },
-          ],
-        },
+        // {
+        //   path: '/reservedip',
+        //   meta: {
+        //     label: '预留IP',
+        //     permission: 'reservedips_list',
+        //   },
+        //   component: Layout,
+        //   children: [
+        //     {
+        //       name: 'ReservedIP',
+        //       path: '',
+        //       component: ReservedIpList,
+        //     },
+        //   ],
+        // },
       ],
     },
     /**
