@@ -64,6 +64,9 @@ export default {
       form: {
         fc: this.$form.createForm(this, {
           onValuesChange: (props, values) => {
+            Object.keys(values).forEach((key) => {
+              this.form.fd[key] = values[key]
+            })
             if (values.hasOwnProperty('zone')) {
               if (values.zone && values.zone.key) {
                 this.fetchStorageList(values.zone.key)
@@ -71,6 +74,10 @@ export default {
             }
           },
         }),
+        fd: {
+          domain: '',
+          project: '',
+        },
       },
       decorators: {
         domain: [
@@ -180,6 +187,7 @@ export default {
       return '介质类型'
     },
     par () {
+      const project_domain = { project_domain: this.form.fd.domain.key || this.userInfo.domain.id }
       if (this.diskType === 'private') {
         return {
           zone: {
@@ -192,6 +200,7 @@ export default {
             usable: true,
             cloud_env: 'private',
             show_emulated: true,
+            ...project_domain,
           },
         }
       } else if (this.diskType === 'public') {
@@ -205,6 +214,7 @@ export default {
           region: {
             usable: true,
             cloud_env: 'public',
+            ...project_domain,
           },
         }
       }
@@ -214,7 +224,7 @@ export default {
           region: {
             usable: true,
             cloud_env: 'onpremise',
-            project_domain: this.userInfo.domain.id,
+            ...project_domain,
           },
         }
       }
