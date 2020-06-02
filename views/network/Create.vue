@@ -4,7 +4,7 @@
     <a-form class="mt-3" :form="form.fc" @submit.prevent="handleSubmit">
       <a-divider orientation="left">基础配置</a-divider>
       <a-form-item :label="`指定${$t('dictionary.project')}`" v-bind="formItemLayout">
-        <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
+        <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" @update:domain="handleDomainChange" />
       </a-form-item>
       <a-form-item label="名称" v-bind="formItemLayout">
         <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
@@ -21,7 +21,7 @@
         <cloudregion-vpc
           @regionChange="regionChange"
           @vpcChange="vpcChange"
-          :cloudregion-params="params.cloudregion"
+          :cloudregion-params="cloudregionParams"
           :vpc-params="vpcParams"
           :decorator="decorators.cloudregionVpc" />
       </a-form-item>
@@ -31,7 +31,7 @@
           v-decorator="decorators.wire"
           :selectProps="{ 'placeholder': '请选择二层网络' }"
           :isDefaultSelect="true"
-          :params="params.wire" />
+          :params="wireParams" />
       </a-form-item>
       <a-form-item label="可用区" extra="同一 VPC 下可以有不同可用区的子网，同一 VPC 下不同可用区的子网默认可以内网互通。" v-bind="formItemLayout" v-if="!show && !isShowWire">
         <a-select v-decorator="decorators.zone" placeholder="请选择可用区">
@@ -157,11 +157,8 @@ export default {
       form: {
         fc: this.$form.createForm(this, {
           onValuesChange: (props, values) => {
-            if (values.domain) {
-              this.params.cloudregion = {
-                ...this.params.cloudregion,
-                project_domain: values.domain.key,
-              }
+            if (values['platform_type']) {
+              this.platform_type = values['platform_type']
             }
           },
         }),
@@ -358,27 +355,6 @@ export default {
           },
         ],
       },
-      params: {
-        cloudregion: {
-          scope: this.scope,
-          limit: 0,
-          is_on_premise: true,
-        },
-        // vpc: {
-        //   scope: this.scope,
-        //   project_domain: this.userInfo.domain.id,
-        //   show_emulated: true,
-        //   limit: 0,
-        //   usable_vpc: true,
-        // },
-        wire: {
-          scope: this.scope,
-        },
-        zone: {
-          scope: this.scope,
-          show_emulated: true,
-        },
-      },
       serverTypeOpts: [
         { label: '虚拟机', key: 'guest' },
         { label: '物理机', key: 'baremetal' },
@@ -404,6 +380,9 @@ export default {
       regionId: '',
       guestIpPrefix: [{ key: uuid() }],
       zoneList: [],
+      project_domain: '',
+      platform_type: 'idc',
+      vpcId: '',
     }
   },
   computed: {
@@ -420,9 +399,57 @@ export default {
         scope: this.scope,
       }
       if (this.isAdminMode) {
-        params['project_domain'] = this.params.cloudregion.project_domain
+        params['project_domain'] = this.project_domain
+        delete params.scope
+      }
+      return params
+    },
+    cloudregionParams () {
+      const params = {
+        scope: this.scope,
+        limit: 0,
+        is_on_premise: true,
+        usable_vpc: true,
+        show_emulated: true,
+      }
+      if (this.platform_type === 'private') {
+        params['is_private'] = true
+        delete params.is_public
+        delete params.is_on_premise
+      } else if (this.platform_type === 'public') {
+        params['is_public'] = true
+        delete params.is_private
+        delete params.is_on_premise
       } else {
-        params['scope'] = this.scope
+        params['is_on_premise'] = true
+        delete params.is_private
+        delete params.is_public
+      }
+      if (this.isAdminMode) {
+        params['project_domain'] = this.project_domain
+        delete params.scope
+      }
+      return params
+    },
+    wireParams () {
+      const params = {
+        scope: this.scope,
+        vpcId: this.vpcId,
+      }
+      if (this.isAdminMode) {
+        params['project_domain'] = this.project_domain
+        delete params.scope
+      }
+      return params
+    },
+    zoneParams () {
+      const params = {
+        scope: this.scope,
+        show_emulated: true,
+      }
+      if (this.isAdminMode) {
+        params['project_domain'] = this.project_domain
+        delete params.scope
       }
       return params
     },
@@ -433,6 +460,9 @@ export default {
     }
   },
   methods: {
+    handleDomainChange (val) {
+      this.project_domain = val.key
+    },
     addGuestIpPrefix () {
       this.clearGuestIpPrefixError()
       const key = uuid()
@@ -460,10 +490,7 @@ export default {
       }
     },
     vpcChange (vpcId) {
-      this.params.wire = {
-        ...this.params.wire,
-        vpc: vpcId,
-      }
+      this.vpcId = vpcId
       const platformType = this.form.fc.getFieldValue('platform_type')
       if (platformType === 'idc') {
         if (vpcId !== 'default') {
@@ -495,7 +522,7 @@ export default {
     },
     fetchZone (regionId) {
       new this.$Manager('cloudregions')
-        .getSpecific({ id: regionId, spec: 'zones', params: this.params.zone })
+        .getSpecific({ id: regionId, spec: 'zones', params: this.zoneParams })
         .then(({ data: { data = [] } }) => {
           this.form.fc.resetFields(['zone'])
           this.zoneList = data
@@ -503,32 +530,12 @@ export default {
     },
     handlePlatformChange (e) {
       if (e.target.value === 'private') {
-        this.params.cloudregion = {
-          limit: 0,
-          usable_vpc: true,
-          scope: this.$store.getters.scope,
-          is_private: true,
-          show_emulated: true,
-        }
         this.show = false
         this.isGroupGuestIpPrefix = false
       } else if (e.target.value === 'public') {
-        this.params.cloudregion = {
-          limit: 0,
-          usable_vpc: true,
-          scope: this.$store.getters.scope,
-          is_public: true,
-          show_emulated: true,
-        }
         this.show = false
         this.isGroupGuestIpPrefix = false
       } else {
-        this.params.cloudregion = {
-          scope: this.$store.getters.scope,
-          limit: 0,
-          is_on_premise: true,
-          show_emulated: true,
-        }
         this.show = true
         this.isGroupGuestIpPrefix = true
       }
