@@ -195,6 +195,7 @@ export default {
             show_emulated: true,
             order_by: 'created_at',
             order: 'asc',
+            ...project_domain,
           },
           region: {
             usable: true,
@@ -210,6 +211,7 @@ export default {
             show_emulated: true,
             order_by: 'created_at',
             order: 'asc',
+            ...project_domain,
           },
           region: {
             usable: true,
@@ -220,7 +222,9 @@ export default {
       }
       if (this.isAdminMode) {
         return {
-          zone: {},
+          zone: {
+            ...project_domain,
+          },
           region: {
             usable: true,
             cloud_env: 'onpremise',
@@ -229,7 +233,9 @@ export default {
         }
       }
       return {
-        zone: {},
+        zone: {
+          ...project_domain,
+        },
         region: {
           usable: true,
           cloud_env: 'onpremise',
