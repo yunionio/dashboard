@@ -17,7 +17,7 @@
             <a-radio-button value="public_cloud">公有云</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item label="区域1" v-bind="formItemLayout" v-if="platform !== 'idc'">
+        <a-form-item label="区域" v-bind="formItemLayout" v-if="platform !== 'idc'">
           <cloudprovider-region
            @update:region="handleRegionChange"
            :decorator="decorators"
@@ -155,9 +155,9 @@ export default {
         details: true,
         scope: this.scope,
       }
-      if (this.isAdminMode) params['admin'] = true
       if (this.platform) params[this.platform] = true
       if (this.isAdminMode) {
+        params['admin'] = true
         params['project_domain'] = this.project_domain
         delete params.scope
         delete params.domain_id
