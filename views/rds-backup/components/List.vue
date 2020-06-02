@@ -40,10 +40,14 @@ export default {
         filterOptions: {
           name: getNameFilter(),
           status: getStatusFilter('rdsBackup'),
-          dbinstance: getFilter({
+          // dbinstance: getFilter({
+          //   field: 'dbinstance',
+          //   title: '实例名称',
+          // }),
+          dbinstance: {
             field: 'dbinstance',
-            title: '实例名称',
-          }),
+            label: '实例名称',
+          },
           engine: getFilter({
             field: 'engine',
             title: '数据库引擎',
