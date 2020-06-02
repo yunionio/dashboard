@@ -3,7 +3,7 @@
     :form="form"
     :style="{ width: `${width}px` }"
     @submit="handleSubmit">
-    <a-form-item :label="label" v-bind="formLayout">
+    <a-form-item :label="label" v-bind="formLayout" :help="$t('help.ipSupplement')">
       <a-input class="w-100" v-decorator="decorators.input" :placeholder="placeholder" allowClear />
     </a-form-item>
     <div class="text-right">
