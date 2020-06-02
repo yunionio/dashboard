@@ -109,7 +109,9 @@ export default {
         const values = await this.validateForm()
         const params = {
           ...values,
-          elasticcache: this.params.redisItem.id,
+        }
+        if (this.params.redisItem) {
+          params['elasticcache'] = this.params.redisItem.id
         }
         delete params.checkPassword
         await this.params.list.onManager('performAction', {
