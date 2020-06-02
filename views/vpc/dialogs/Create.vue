@@ -4,11 +4,11 @@
     <div slot="body">
       <a-form
         :form="form.fc">
-        <a-form-item label="名称" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.name" placeholder="字母开头，数字和字母大小写组合，长度为2-20个字符，可含'-','_'" />
-        </a-form-item>
         <a-form-item v-bind="formItemLayout" :label="`指定${$t('dictionary.domain')}`" v-if="$store.getters.isAdminMode">
           <domain-select v-decorator="decorators.project_domain" @change="handleDomainChange" />
+        </a-form-item>
+        <a-form-item label="名称" v-bind="formItemLayout">
+          <a-input v-decorator="decorators.name" placeholder="字母开头，数字和字母大小写组合，长度为2-20个字符，可含'-','_'" />
         </a-form-item>
         <a-form-item label="平台" v-bind="formItemLayout">
           <a-radio-group v-decorator="decorators.platform">
