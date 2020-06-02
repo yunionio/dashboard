@@ -90,7 +90,7 @@ export default {
           meta: {
             label: '二层网络',
             permission: 'wires_list',
-            hidden: () => !hasHypervisorsByEnv(['idc']),
+            hidden: () => !hasServices(['esxiagent', 'hostagent', 'bmagent']) && !hasBrands('ZStack'),
           },
           component: Layout,
           children: [
