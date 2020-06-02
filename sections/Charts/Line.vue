@@ -3,6 +3,7 @@
     v-if="rows && rows.length"
     :style="chartStyles"
     :options="chartOptions"
+    @chartInstance="v => $emit('chartInstance', v)"
     autoresize />
   <a-empty v-else />
 </template>

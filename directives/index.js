@@ -1,5 +1,6 @@
 
 import Vue from 'vue'
+import loading from './loading'
 
 const requireDirectives = require.context('.', false, /\w+\.js$/)
 
@@ -12,3 +13,5 @@ requireDirectives.keys().forEach(fileName => {
     config.default || config
   )
 })
+
+Vue.directive('loading', loading)
