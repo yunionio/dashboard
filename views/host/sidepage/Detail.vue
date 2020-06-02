@@ -141,7 +141,7 @@ export default {
         },
         {
           field: 'schedtags',
-          title: '调度策略',
+          title: '调度标签',
           formatter: ({ cellValue, row }) => {
             if (row.schedtags && row.schedtags.length > 0) {
               const schedtags = row.schedtags.map(v => v.name)
