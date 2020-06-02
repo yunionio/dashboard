@@ -146,7 +146,6 @@ export default {
           meta: {
             label: '预留IP',
             permission: 'reservedips_list',
-            hidden: () => !hasHypervisorsByEnv(['private']),
           },
           component: Layout,
           children: [
@@ -203,6 +202,7 @@ export default {
           meta: {
             label: '域名服务',
             permission: 'dnsrecords_list',
+            hidden: () => !hasHypervisorsByEnv(['private']),
           },
           component: Layout,
           children: [
