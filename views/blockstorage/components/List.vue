@@ -17,6 +17,7 @@ import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { getNameFilter, getEnabledFilter, getStatusFilter, getBrandFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
 import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
+import { hasServices } from '@/utils/auth'
 
 export default {
   name: 'BlockStorageList',
@@ -29,6 +30,106 @@ export default {
     },
   },
   data () {
+    const groupActions = [
+      {
+        label: '新建',
+        action: () => {
+          this.createDialog('BlockStorageCreateDialog', {
+            title: '新建',
+            onManager: this.onManager,
+            refresh: this.refresh,
+          })
+        },
+        meta: () => {
+          return {
+            buttonType: 'primary',
+            validate: hasServices('hostagent'),
+          }
+        },
+      },
+      {
+        label: '批量操作',
+        actions: () => {
+          return [
+            ...getEnabledSwitchActions(this),
+            {
+              label: '调整超售比',
+              permission: 'storages_update',
+              action: row => {
+                this.createDialog('BlockStorageUpdateCommitBoundDialog', {
+                  data: this.list.selectedItems,
+                  columns: this.columns,
+                  title: '调整超售比',
+                  onManager: this.onManager,
+                  refresh: this.refresh,
+                })
+              },
+              meta: () => {
+                const validate = this.list.selectedItems.every(item => item.brand !== 'ZStack')
+                return {
+                  validate,
+                  tooltip: !validate && 'ZStack平台暂不支持此操作',
+                }
+              },
+            },
+            getDomainChangeOwnerAction(this, {
+              name: this.$t('dictionary.storages'),
+              resource: 'storages',
+            }, {
+              meta: () => {
+                return {
+                  validate: this.list.selectedItems.every(item => item.storage_type === 'local'),
+                }
+              },
+            }),
+            getSetPublicAction(this, {
+              name: this.$t('dictionary.storages'),
+              scope: 'domain',
+              resource: 'storages',
+            }, {
+              meta: () => {
+                return {
+                  validate: this.list.selectedItems.every(item => item.storage_type === 'local'),
+                }
+              },
+            }),
+            // {
+            //   label: '同步状态',
+            //   action: () => {
+            //     this.onManager('batchPerformAction', {
+            //       id: this.list.selectedItems.map(item => item.id),
+            //       steadyStatus: ['running', 'ready'],
+            //       managerArgs: {
+            //         action: 'syncstatus',
+            //       },
+            //     })
+            //   },
+            // },
+            {
+              label: '删除',
+              permission: 'storages_delete',
+              action: row => {
+                this.createDialog('DeleteResDialog', {
+                  vm: this,
+                  title: '删除',
+                  name: '块存储',
+                  data: this.list.selectedItems,
+                  columns: this.columns,
+                  onManager: this.onManager,
+                  refresh: this.refresh,
+                })
+              },
+              meta: () => this.$getDeleteResult(this.list.selectedItems),
+            },
+          ]
+        },
+        meta: () => {
+          return {
+            validate: !!this.list.selectedItems.length,
+          }
+        },
+      },
+    ]
     return {
       list: this.$list.createList(this, {
         id: this.id,
@@ -64,6 +165,7 @@ export default {
           project_domain: getProjectDomainFilter(),
         },
       }),
+      groupActions: !hasServices('hostagent') ? groupActions.splice(0, 1) : groupActions,
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
@@ -81,105 +183,6 @@ export default {
           { label: `所属${this.$t('dictionary.domain')}`, key: 'project_domain' },
         ],
       },
-      groupActions: [
-        {
-          label: '新建',
-          action: () => {
-            this.createDialog('BlockStorageCreateDialog', {
-              title: '新建',
-              onManager: this.onManager,
-              refresh: this.refresh,
-            })
-          },
-          meta: () => {
-            return {
-              buttonType: 'primary',
-            }
-          },
-        },
-        {
-          label: '批量操作',
-          actions: () => {
-            return [
-              ...getEnabledSwitchActions(this),
-              {
-                label: '调整超售比',
-                permission: 'storages_update',
-                action: row => {
-                  this.createDialog('BlockStorageUpdateCommitBoundDialog', {
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    title: '调整超售比',
-                    onManager: this.onManager,
-                    refresh: this.refresh,
-                  })
-                },
-                meta: () => {
-                  const validate = this.list.selectedItems.every(item => item.brand !== 'ZStack')
-                  return {
-                    validate,
-                    tooltip: !validate && 'ZStack平台暂不支持此操作',
-                  }
-                },
-              },
-              getDomainChangeOwnerAction(this, {
-                name: this.$t('dictionary.storages'),
-                resource: 'storages',
-              }, {
-                meta: () => {
-                  return {
-                    validate: this.list.selectedItems.every(item => item.storage_type === 'local'),
-                  }
-                },
-              }),
-              getSetPublicAction(this, {
-                name: this.$t('dictionary.storages'),
-                scope: 'domain',
-                resource: 'storages',
-              }, {
-                meta: () => {
-                  return {
-                    validate: this.list.selectedItems.every(item => item.storage_type === 'local'),
-                  }
-                },
-              }),
-              // {
-              //   label: '同步状态',
-              //   action: () => {
-              //     this.onManager('batchPerformAction', {
-              //       id: this.list.selectedItems.map(item => item.id),
-              //       steadyStatus: ['running', 'ready'],
-              //       managerArgs: {
-              //         action: 'syncstatus',
-              //       },
-              //     })
-              //   },
-              // },
-              {
-                label: '删除',
-                permission: 'storages_delete',
-                action: row => {
-                  this.createDialog('DeleteResDialog', {
-                    vm: this,
-                    title: '删除',
-                    name: '块存储',
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    onManager: this.onManager,
-                    refresh: this.refresh,
-                  })
-                },
-                meta: () => this.$getDeleteResult(this.list.selectedItems),
-              },
-            ]
-          },
-          meta: () => {
-            return {
-              validate: !!this.list.selectedItems.length,
-            }
-          },
-        },
-      ],
       handleOpenSidepage (row) {
         this.sidePageTriggerHandle(this, 'BlockStorageSidePage', {
           id: row.id,
