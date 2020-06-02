@@ -83,7 +83,9 @@ export default {
           resource: 'route_tables',
         }, {
           meta: () => {
-            validate: this.list.selectedItems.length > 0,
+            return {
+              validate: this.list.selectedItems.length > 0,
+            }
           },
         }),
       ],
