@@ -202,7 +202,7 @@ export default {
           meta: {
             label: '域名服务',
             permission: 'dnsrecords_list',
-            hidden: () => !hasHypervisorsByEnv(['private']),
+            hidden: () => !hasServices(['esxiagent', 'hostagent', 'bmagent']),
           },
           component: Layout,
           children: [
