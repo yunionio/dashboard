@@ -155,9 +155,9 @@ export default {
         details: true,
         scope: this.scope,
       }
-      if (this.isAdminMode) params['admin'] = true
       if (this.platform) params[this.platform] = true
       if (this.isAdminMode) {
+        params['admin'] = true
         params['project_domain'] = this.project_domain
         delete params.scope
         delete params.domain_id
