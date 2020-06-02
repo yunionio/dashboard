@@ -102,6 +102,7 @@ export default {
             label: '主机组',
             permission: 'instancegroups_list',
             t: 'dictionary.instancegroup',
+            hidden: () => !hasServices('hostagent'),
           },
           component: Layout,
           children: [
