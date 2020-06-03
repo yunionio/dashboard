@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="监控面板" />
+    <page-header title="Metrics Explorer" />
     <page-body>
       <monitor-index />
     </page-body>

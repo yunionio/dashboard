@@ -3,30 +3,30 @@
     <template v-slot:icon><i /></template>
     <template v-slot:title>
       <a-form-model ref="ruleForm" :model="formData" :rules="rules" v-bind="layout">
-        <a-form-model-item label="开始时间" prop="startValue">
+        <a-form-model-item :label="$t('common.text00119')" prop="startValue">
           <a-date-picker
             v-model="formData.startValue"
             :disabled-date="disabledStartDate"
             :disabled-time="disabledDateTime"
             :show-time="{ defaultValue: $moment('00:00:00', 'HH:mm') }"
             format="YYYY-MM-DD HH:mm"
-            placeholder="开始时间"
+            :placeholder="$t('common.text00119')"
             @openChange="handleStartOpenChange" />
         </a-form-model-item>
-        <a-form-model-item label="结束时间" prop="endValue">
+        <a-form-model-item :label="$t('common.text00120')" prop="endValue">
           <a-date-picker
             v-model="formData.endValue"
             :disabled-date="disabledEndDate"
             :disabled-time="disabledDateTime"
             :show-time="{ defaultValue: $moment('00:00:00', 'HH:mm') }"
             format="YYYY-MM-DD HH:mm"
-            placeholder="结束时间"
+            :placeholder="$t('common.text00120')"
             :open="endOpen"
             @openChange="handleEndOpenChange" />
         </a-form-model-item>
       </a-form-model>
     </template>
-    <a-radio-button value="custom">自定义</a-radio-button>
+    <a-radio-button value="custom">{{ $t('common.text00121') }}</a-radio-button>
   </a-popconfirm>
 </template>
 
@@ -46,10 +46,10 @@ export default {
       },
       rules: {
         startValue: [
-          { required: true, message: '请选择开始时间' },
+          { required: true, message: this.$t('common.select') },
         ],
         endValue: [
-          { required: true, message: '请选择结束时间' },
+          { required: true, message: this.$t('common.select') },
         ],
       },
     }

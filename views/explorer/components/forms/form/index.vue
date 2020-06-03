@@ -8,33 +8,33 @@
       v-show="panelShow"
       v-bind="formItemLayout"
       :form="form.fc">
-      <a-form-item label="监控指标" class="mb-0">
+      <a-form-item :label="$t('monitor.monitor_metric')" class="mb-0">
         <metric
           :metricOpts="metricInfo.field_key"
           :decorators="decorators"
           :metricKeyOpts="metricKeyOpts"
           @metricKeyChange="getMetricInfo" />
       </a-form-item>
-      <a-form-item label="资源过滤">
+      <a-form-item :label="$t('monitor.monitor_filters')">
         <filters
           :form="form"
           :decorators="decorators.filters"
           @remove="$nextTick(toParams)"
           :metricInfo="metricInfo" />
       </a-form-item>
-      <a-form-item label="分组">
+      <a-form-item :label="$t('monitor.monitor_group')">
         <base-select
           v-decorator="decorators.group_by"
           :options="groupbyOpts"
           class="w-100"
-          :select-props="{ placeholder: '请选择', allowClear: true }" />
+          :select-props="{ placeholder: $t('common.select'), allowClear: true }" />
       </a-form-item>
-      <a-form-item label="函数">
+      <a-form-item :label="$t('monitor.monitor_function')">
         <base-select
           v-decorator="decorators.function"
           :options="functionOpts"
           class="w-100"
-          :select-props="{ placeholder: '请选择', allowClear: true }" />
+          :select-props="{ placeholder: $t('common.select'), allowClear: true }" />
       </a-form-item>
     </a-form>
   </a-card>
@@ -84,7 +84,7 @@ export default {
           'metric_key',
           {
             rules: [
-              { required: true, message: '请选择' },
+              { required: true, message: this.$t('common.select') },
             ],
           },
         ],
@@ -92,7 +92,7 @@ export default {
           'metric_value',
           {
             rules: [
-              { required: true, message: '请选择' },
+              { required: true, message: this.$t('common.select') },
             ],
           },
         ],
@@ -102,7 +102,7 @@ export default {
             {
               initialValue: 'AND',
               rules: [
-                { required: true, message: '请选择' },
+                { required: true, message: this.$t('common.select') },
               ],
             },
           ],
@@ -110,7 +110,7 @@ export default {
             `tagKeys[${i}]`,
             {
               rules: [
-                // { required: true, message: '请选择' },
+                // { required: true, message: this.$t('common.select') },
               ],
             },
           ],
@@ -119,7 +119,7 @@ export default {
             {
               initialValue: '=',
               rules: [
-                { required: true, message: '请选择' },
+                { required: true, message: this.$t('common.select') },
               ],
             },
           ],
@@ -127,7 +127,7 @@ export default {
             `tagValues[${i}]`,
             {
               rules: [
-                // { required: true, message: '请选择' },
+                // { required: true, message: this.$t('common.select') },
               ],
             },
           ],
@@ -152,7 +152,7 @@ export default {
       if (!this.panelShow && this.form.fd.metric_key) {
         return `${this.form.fd.metric_key} (${this.form.fd.metric_value || '-'})`
       }
-      return '补充你的查询条件'
+      return this.$t('monitor.monitor_fill_filters')
     },
   },
   created () {
