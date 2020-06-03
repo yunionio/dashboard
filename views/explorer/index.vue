@@ -1,15 +1,15 @@
 <template>
   <div>
-    <page-header title="监控面板" />
+    <page-header title="Metrics Explorer" />
     <page-body>
       <monitor-index />
     </page-body>
-    <page-footer>
+    <!-- <page-footer>
       <div slot="right">
-        <a-button class="mr-3" type="primary" :loading="loading" @click="handleConfirm">保存</a-button>
-        <a-button @click="reset">重置</a-button>
+        <a-button class="mr-3" type="primary" :loading="loading" @click="handleConfirm">{{ $t('common.save') }}</a-button>
+        <a-button @click="reset">{{ $t('common.reset') }}</a-button>
       </div>
-    </page-footer>
+    </page-footer> -->
   </div>
 </template>
 

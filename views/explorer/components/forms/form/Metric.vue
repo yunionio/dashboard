@@ -8,7 +8,7 @@
           :options="metricKeyOpts"
           filterable
           :label-format="metricKeyLabelFormat"
-          :select-props="{ placeholder: '请选择' }"
+          :select-props="{ placeholder: $t('common.select') }"
           @change="metricKeyChange" />
       </a-form-item>
     </a-col>
@@ -20,7 +20,7 @@
           v-decorator="decorators.metric_value"
           :options="metricOptsC"
           :label-format="metricValueLabelFormat"
-          :select-props="{ placeholder: '请选择' }" />
+          :select-props="{ placeholder: $t('common.select') }" />
       </a-form-item>
     </a-col>
   </a-row>

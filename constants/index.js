@@ -1,66 +1,68 @@
+import i18n from '@/locales'
+
 export const timeOpts = {
   [`${1}h`]: {
     key: `${1}h`,
-    label: '近1小时',
+    label: i18n.t('monitor.text00001'),
     timeFormat: 'YYYY-MM-DD HH:mm',
     timeGroupOpts: [
-      { key: '1m', label: '1分钟' },
-      { key: '5m', label: '5分钟' },
+      { key: '1m', label: i18n.t('monitor.text00007') },
+      { key: '5m', label: i18n.t('monitor.text00008') },
     ],
   },
   [`${3}h`]: {
     key: `${3}h`,
-    label: '近3小时',
+    label: i18n.t('monitor.text00002'),
     timeFormat: 'YYYY-MM-DD HH:mm',
     timeGroupOpts: [
-      { key: '1m', label: '1分钟' },
-      { key: '5m', label: '5分钟' },
+      { key: '1m', label: i18n.t('monitor.text00007') },
+      { key: '5m', label: i18n.t('monitor.text00008') },
     ],
   },
   [`${6}h`]: {
     key: `${6}h`,
-    label: '近6小时',
+    label: i18n.t('monitor.text00003'),
     timeFormat: 'YYYY-MM-DD HH:mm',
     timeGroupOpts: [
-      { key: '1m', label: '1分钟' },
-      { key: '5m', label: '5分钟' },
-      { key: '10m', label: '10分钟' },
+      { key: '1m', label: i18n.t('monitor.text00007') },
+      { key: '5m', label: i18n.t('monitor.text00008') },
+      { key: '10m', label: i18n.t('monitor.text00009') },
     ],
   },
   [`${24}h`]: {
     key: `${24}h`,
-    label: '近1天',
+    label: i18n.t('monitor.text00004'),
     timeFormat: 'YYYY-MM-DD HH:mm',
     timeGroupOpts: [
-      { key: '5m', label: '5分钟' },
-      { key: '10m', label: '10分钟' },
-      { key: '30m', label: '30分钟' },
-      { key: '1h', label: '1小时' },
+      { key: '5m', label: i18n.t('monitor.text00008') },
+      { key: '10m', label: i18n.t('monitor.text00009') },
+      { key: '30m', label: i18n.t('monitor.text000010') },
+      { key: '1h', label: i18n.t('monitor.text00011') },
     ],
   },
   [`${3 * 24}h`]: {
     key: `${3 * 24}h`,
-    label: '近3天',
+    label: i18n.t('monitor.text00005'),
     timeFormat: 'YYYY-MM-DD HH:mm',
     timeGroupOpts: [
-      { key: '5m', label: '5分钟' },
-      { key: '10m', label: '10分钟' },
-      { key: '30m', label: '30分钟' },
-      { key: '1h', label: '1小时' },
+      { key: '5m', label: i18n.t('monitor.text00008') },
+      { key: '10m', label: i18n.t('monitor.text00009') },
+      { key: '30m', label: i18n.t('monitor.text000010') },
+      { key: '1h', label: i18n.t('monitor.text00011') },
     ],
   },
   'custom': {
     key: 'custom',
     hidden: true,
-    label: '自定义',
+    label: i18n.t('monitor.text00006'),
     timeFormat: 'YYYY-MM-DD HH:mm',
     timeGroupOpts: [
-      { key: '5m', label: '5分钟' },
-      { key: '10m', label: '10分钟' },
-      { key: '30m', label: '30分钟' },
-      { key: '1h', label: '1小时' },
-      { key: '6h', label: '6小时' },
-      { key: '1d', label: '1天' },
+      { key: '5m', label: i18n.t('monitor.text00008') },
+      { key: '10m', label: i18n.t('monitor.text00009') },
+      { key: '30m', label: i18n.t('monitor.text000010') },
+      { key: '1h', label: i18n.t('monitor.text00011') },
+      { key: '6h', label: i18n.t('monitor.text00012') },
+      { key: '1d', label: i18n.t('monitor.text00013') },
     ],
   },
 }
@@ -68,27 +70,27 @@ export const timeOpts = {
 export const metricMaps = {
   cpu: {
     key: 'cpu',
-    label: '宿主机cpu使用情况',
+    label: i18n.t('monitor.metrics_cpu'),
     metrics: {
       usage_active: {
         key: 'usage_active',
-        label: 'cpu使用百分比',
+        label: i18n.t('monitor.metrics_cpu_usage_active'),
       },
     },
   },
   disk: {
     key: 'disk',
-    label: '宿主机磁盘使用情况',
+    label: i18n.t('monitor.metrics_disk'),
     metrics: {
       used_percent: {
         key: 'used_percent',
-        label: '磁盘使用率',
+        label: i18n.t('monitor.metrics_disk_used_percent'),
       },
     },
   },
   diskio: {
     key: 'diskio',
-    label: '宿主机磁盘读写情况',
+    label: i18n.t('monitor.metrics_disk_used_percent'),
   },
   haproxy: {
     key: 'haproxy',
@@ -124,11 +126,11 @@ export const metricMaps = {
   },
   mem: {
     key: 'mem',
-    label: '宿主机内存使用情况',
+    label: i18n.t('monitor.metrics_mem'),
   },
   net: {
     key: 'net',
-    label: '宿主机网络使用情况',
+    label: i18n.t('monitor.metrics_net'),
   },
   netstat: {
     key: 'netstat',
@@ -164,47 +166,47 @@ export const metricMaps = {
   },
   vm_capacity: {
     key: 'vm_capacity',
-    label: '虚拟机中配置使用量',
+    label: i18n.t('monitor.metrics_vm_capacity'),
     metrics: {
       disk: {
         key: 'disk',
-        label: '磁盘容量',
+        label: i18n.t('monitor.metrics_vm_capacity_disk'),
       },
       vcpu_count: {
         key: 'vcpu_count',
-        label: 'cpu核数',
+        label: i18n.t('monitor.metrics_vm_capacity_vcpu_count'),
       },
       vmem_size: {
         key: 'vmem_size',
-        label: '内存容量',
+        label: i18n.t('monitor.metrics_vm_capacity_vmem_size'),
       },
     },
   },
   vm_cpu: {
     key: 'vm_cpu',
-    label: '虚拟机cpu使用情况',
+    label: i18n.t('monitor.metrics_vm_cpu'),
     metrics: {
       cpu_count: {
         key: 'cpu_count',
-        label: 'cpu核数',
+        label: i18n.t('monitor.metrics_vm_cpu_cpu_count'),
       },
       usage_active: {
         key: 'usage_active',
-        label: 'cpu使用率',
+        label: i18n.t('monitor.metrics_vm_cpu_usage_active'),
       },
     },
   },
   vm_diskio: {
     key: 'vm_diskio',
-    label: '虚拟机磁盘读写情况',
+    label: i18n.t('monitor.metrics_vm_diskio'),
   },
   vm_mem: {
     key: 'vm_mem',
-    label: '虚拟机内存使用情况',
+    label: i18n.t('monitor.metrics_vm_mem'),
   },
   vm_netio: {
     key: 'vm_netio',
-    label: '虚拟机网络流量情况',
+    label: i18n.t('monitor.metrics_vm_netio'),
   },
 }
 
@@ -212,7 +214,7 @@ export const DATABASE = 'telegraf'
 
 export const tableColumnMaps = {
   vm_name: {
-    title: '名称',
+    title: i18n.t('common.name'),
     field: 'vm_name',
   },
   vm_ip: {
@@ -220,15 +222,15 @@ export const tableColumnMaps = {
     field: 'vm_ip',
   },
   host: {
-    title: '宿主机',
+    title: i18n.t('dictionary.host'),
     field: 'host',
   },
   cloudregion: {
-    title: '区域',
+    title: i18n.t('dictionary.cloudregion'),
     field: 'cloudregion',
   },
   zone: {
-    title: '区域',
+    title: i18n.t('dictionary.zone'),
     field: 'zone',
   },
 }

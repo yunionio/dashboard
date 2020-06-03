@@ -7,7 +7,7 @@
             minWidth="70px"
             v-decorator="decorators.tagCondition(item.key)"
             :options="conditionOpts"
-            :select-props="{ placeholder: '请选择' }" />
+            :select-props="{ placeholder: $t('common.select') }" />
         </a-form-item>
         <a-form-item class="mr-1" :style="{ width: `calc(100% - ${i === 0 ? 0 : 70}px)` }">
           <base-select
@@ -15,8 +15,9 @@
             :minWidth="`calc(100% - ${i === 0 ? 0 : 70}px)`"
             v-decorator="decorators.tagKey(item.key)"
             :options="tagKeyOpts"
+            filterable
             @change="val => tagKeyChange(val, i, item)"
-            :select-props="{ placeholder: '请选择', allowClear: true }" />
+            :select-props="{ placeholder: $t('common.select'), allowClear: true }" />
         </a-form-item>
       </a-col>
       <a-col :span="3">
@@ -25,7 +26,7 @@
             minWidth="50px"
             v-decorator="decorators.tagOperator(item.key)"
             :options="tagOperatorOpts"
-            :select-props="{ placeholder: '请选择' }" />
+            :select-props="{ placeholder: $t('common.select') }" />
         </a-form-item>
       </a-col>
       <a-col :span="12" class="d-flex">
@@ -34,7 +35,8 @@
             class="w-100 mr-1"
             v-decorator="decorators.tagValue(item.key)"
             :options="item.tagValueOpts"
-            :select-props="{ placeholder: '请选择', allowClear: true }" />
+            filterable
+            :select-props="{ placeholder: $t('common.select'), allowClear: true }" />
         </a-form-item>
         <a-form-item style="width: 20px;" v-if="i !== 0">
           <a-icon
@@ -46,7 +48,7 @@
     </a-row>
     <div class="d-flex align-items-center">
       <a-button type="primary" shape="circle" icon="plus" size="small" @click="add" />
-      <a-button type="link" @click="add">添加过滤条件</a-button>
+      <a-button type="link" @click="add">{{ $t('monitor.monitor_add_filters') }}</a-button>
     </div>
   </div>
 </template>
@@ -107,6 +109,9 @@ export default {
     },
   },
   methods: {
+    reset () {
+      this.filters = [{ key: uuid(), tagValueOpts: [] }]
+    },
     add () {
       this.filters.push({ key: uuid(), tagValueOpts: [] })
     },
