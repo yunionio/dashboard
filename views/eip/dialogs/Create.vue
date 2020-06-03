@@ -27,6 +27,7 @@
             :label-format="labelFormat"
             :remote-fn="q => ({ filter: `name.contains(${q})` })"
             @update:item="providerChange"
+            :isDefaultSelect="true"
             :select-props="{ placeholder: '平台、账号、子账号' }"
             style="width: 320px" />
         </a-form-item>
@@ -39,6 +40,7 @@
             :params="regionParams"
             :remote-fn="q => ({ search: q })"
             @update:item="regionChange"
+            :isDefaultSelect="true"
             :select-props="{ placeholder: '请选择' }"
             style="width: 320px" />
         </a-form-item>
@@ -275,10 +277,18 @@ export default {
   },
   methods: {
     domainChange (id) {
-      this.domain_id = id
-      this.updateProviderParams = {
-        ...this.updateProviderParams,
-        domain_id: id,
+      this.domain_id = id.key
+      if (this.isAdminMode) {
+        this.updateProviderParams = {
+          ...this.updateProviderParams,
+          project_domain: id.key,
+        }
+        delete this.updateProviderParams.scope
+      } else {
+        this.updateProviderParams = {
+          ...this.updateProviderParams,
+          scope: this.$store.getters.scope,
+        }
       }
     },
     platformChange (e) {
