@@ -61,6 +61,15 @@ export default {
       return Object.assign({}, _, this.decorators)
     },
   },
+  watch: {
+    cloudprovideParams: {
+      handler (val, oldVal) {
+        this.fetchCloudproviders()
+      },
+      deep: true,
+      immediate: true,
+    },
+  },
   created () {
     this.fetchCloudproviders()
   },
@@ -78,6 +87,9 @@ export default {
         scope: this.$store.getters.scope,
         has_object_storage: true,
       }, this.cloudprovideParams)
+      if (this.$store.getters.isAdminMode && params.project_domain) {
+        delete params.scope
+      }
       this.cloudproviderLoading = true
       try {
         const manager = new this.$Manager('cloudproviders', 'v2')
@@ -104,6 +116,9 @@ export default {
         limit: 0,
         scope: this.$store.getters.scope,
       }, this.cloudregionParams, queryParams)
+      if (this.$store.getters.isAdminMode && params.project_domain) {
+        delete params.scope
+      }
       this.cloudregionLoading = true
       try {
         const manager = new this.$Manager('cloudregions', 'v2')
