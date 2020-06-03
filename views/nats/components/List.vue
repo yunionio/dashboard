@@ -50,7 +50,7 @@ export default {
           account: getAccountFilter(),
           brand: getBrandFilter('network_manage_brands'),
           vpc: {
-            label: '所属专有网络',
+            label: '所属VPC',
           },
           region: {
             label: '区域',
@@ -78,7 +78,7 @@ export default {
           { label: '名称', key: 'name' },
           { label: '状态', key: 'status' },
           { label: '型号', key: 'nat_spec' },
-          { label: '所属专有网络', key: 'vpc' },
+          { label: '所属VPC', key: 'vpc' },
           { label: '平台', key: 'provider' },
           { label: '区域', key: 'region' },
           { label: '云账号', key: 'manager' },
