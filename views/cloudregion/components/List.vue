@@ -34,7 +34,7 @@ export default {
           { label: '名称', key: 'name' },
           { label: '状态', key: 'status' },
           { label: '云服务器', key: 'guest_count' },
-          { label: '专有网络(VPC)', key: 'vpc_count' },
+          { label: 'VPC', key: 'vpc_count' },
           { label: '可用区', key: 'zone_count' },
           { label: '平台', key: 'provider' },
         ],
