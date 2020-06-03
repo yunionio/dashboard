@@ -70,13 +70,23 @@ export default {
       ],
     }
   },
+  watch: {
+    'data.id' () {
+      this.fetchData()
+    },
+  },
   created () {
     this.fetchData()
   },
   methods: {
     async fetchData () {
       try {
-        const { data } = await new this.$Manager('loadbalancerlisteners').getSpecific({ id: this.data.id, spec: 'backend-status' })
+        const isRule = this.data.type === 2
+        let manager = new this.$Manager('loadbalancerlisteners')
+        if (isRule) {
+          manager = new this.$Manager('loadbalancerlistenerrules')
+        }
+        const { data } = await manager.getSpecific({ id: this.data.id, spec: 'backend-status' })
         this.listData = data
       } catch (error) {
         throw error

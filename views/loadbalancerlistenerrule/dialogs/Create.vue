@@ -6,7 +6,7 @@
         v-bind="formItemLayout"
         :form="form.fc">
         <a-form-item label="名称">
-          <a-input v-decorator="decorators.name" />
+          <a-input v-decorator="decorators.name"  placeholder="请输入" />
         </a-form-item>
         <a-form-item label="域名">
           <div slot="extra">
@@ -23,15 +23,30 @@
           </div>
           <a-input v-decorator="decorators.path" placeholder="请输入" />
         </a-form-item>
-        <a-form-item label="后端服务器组">
-          <base-select
-            resource="loadbalancerbackendgroups"
-            need-params
-            :params="bgParams"
-            filterable
-            v-decorator="decorators.backend_group"
-            :select-props="{ placeholder: '请选择后端服务器组' }" />
-        </a-form-item>
+         <redirect-form-items :form="form" @redirectChange="handleRedirectChange" />
+         <template v-if="!isRedirect">
+          <a-form-item label="后端服务器组">
+            <base-select
+              resource="loadbalancerbackendgroups"
+              need-params
+              :params="bgParams"
+              filterable
+              v-decorator="decorators.backend_group"
+              :select-props="{ placeholder: '请选择后端服务器组' }" />
+          </a-form-item>
+          <a-form-item label="限定接受请求速率">
+            <div slot="extra">
+              0为默认，表示不限速
+            </div>
+            <a-input :min="0" v-decorator="decorators.http_request_rate" addonAfter="秒/次" type="number" />
+          </a-form-item>
+          <a-form-item label="限定同源IP发送请求速率">
+            <div slot="extra">
+              限制同一源地址对转发策略发送请求的速率，0为默认值，表示不限速
+            </div>
+            <a-input :min="0" v-decorator="decorators.http_request_rate_per_src" addonAfter="秒/次" type="number" />
+          </a-form-item>
+        </template>
       </a-form>
     </div>
     <div slot="footer">
@@ -42,12 +57,16 @@
 </template>
 
 <script>
+import RedirectFormItems from '@Network/views/loadbalancerlistener/components/RedirectFormItems'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { REGEXP } from '@/utils/validate'
 
 export default {
   name: 'LoadbalancerlistenerruleCreateDialog',
+  components: {
+    RedirectFormItems,
+  },
   mixins: [DialogMixin, WindowsMixin],
   data () {
     const customDomain = (rule, value, callback) => {
@@ -69,6 +88,7 @@ export default {
       urlRules.unshift({ required: true, message: '请输入URL' })
     }
     return {
+      isRedirect: false,
       loading: false,
       form: {
         fc: this.$form.createForm(this),
@@ -109,13 +129,27 @@ export default {
             ],
           },
         ],
+        http_request_rate: [
+          'http_request_rate',
+          {
+            normalize: v => Number(v),
+            initialValue: 0,
+          },
+        ],
+        http_request_rate_per_src: [
+          'http_request_rate_per_src',
+          {
+            normalize: v => Number(v),
+            initialValue: 0,
+          },
+        ],
       },
       formItemLayout: {
         wrapperCol: {
-          span: 20,
+          span: 18,
         },
         labelCol: {
-          span: 4,
+          span: 6,
         },
       },
     }
@@ -133,6 +167,9 @@ export default {
     },
   },
   methods: {
+    handleRedirectChange (bool) {
+      this.isRedirect = bool
+    },
     async doCreate (values) {
       const data = {
         ...values,
@@ -146,6 +183,7 @@ export default {
       this.loading = true
       try {
         let values = await this.form.fc.validateFields()
+        values['redirect'] = values.redirect ? 'raw' : 'off'
         await this.doCreate(values)
         this.loading = false
         this.cancelDialog()

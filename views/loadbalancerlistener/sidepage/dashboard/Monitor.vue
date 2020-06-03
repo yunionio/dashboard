@@ -36,10 +36,9 @@ const commonLbSql = (pxname, svname, host, selected, limit, perfixLimit, time, g
   return `select ${selected} from haproxy where pxname = '${pxname}' and svname =${svname} ${perfixLimit} ${timeSql} ${groupBy} ${fill};`
 }
 
-const lbQuery = (fieldType, lsType, lsId, host, time, aggregate) => {
+const lbQuery = (fieldType, lsType, lsId, host, time, aggregate, isRule) => {
   const timeDiff = (time[1] - time[0]) / 1000
   const groupBy = `${timeDiff / LINE_POINT}s`
-
   const accidentArr = ['2xx', '3xx', '4xx', '5xx', 'other']
   const accidentSql = accidentArr.reduce((a, b) => {
     return `${a} ,non_negative_derivative(${aggregate}(hrsp_${b}), 1s) as hrsp_${b}`
@@ -80,7 +79,30 @@ const lbQuery = (fieldType, lsType, lsId, host, time, aggregate) => {
       svname: `'${FRONTEND}'`,
     },
   }
-  const fieldItem = fields[fieldType]
+  const ruleFields = {
+    bps: {
+      selected: `non_negative_derivative(${aggregate}(bin), 1s) * 8 as in_bps, non_negative_derivative(${aggregate}(bout), 1s) * 8 as out_bps`,
+      pxname: `backends_rule_${lsId}`,
+      svname: `BACKEND`,
+    },
+    rate: {
+      selected: {
+        http: `${aggregate}(req_rate) as req_rate, ${aggregate}(conn_rate) as conn_rate`,
+        https: `${aggregate}(req_rate)as req_rate, ${aggregate}(conn_rate) as conn_rate`,
+      },
+      pxname: `backends_rule_${lsId}`,
+      svname: `BACKEND`,
+    },
+    accident: {
+      selected: {
+        http: `non_negative_derivative(${aggregate}(dreq), 1s) as dreq, non_negative_derivative(${aggregate}(dcon), 1s) as dcon${accidentSql}`,
+        https: `non_negative_derivative(${aggregate}(/d(req|con)/), 1s), non_negative_derivative(${aggregate}(/hrsp_.+/), 1s)${accidentSql}`,
+      },
+      pxname: `backends_rule_${lsId}`,
+      svname: `BACKEND`,
+    },
+  }
+  const fieldItem = isRule ? ruleFields[fieldType] : fields[fieldType]
   let { selected, perfixLimit = '', pxname, svname, limit } = fieldItem
   let groupByStr = ''
   let fill = 'fill(none)'
@@ -149,7 +171,7 @@ export default {
         this.fetchData()
       },
     },
-    'data.id' () {
+    'data.id' (key) {
       this.fetchData()
     },
   },
@@ -164,9 +186,10 @@ export default {
     },
     async getData (fieldType, timeRange, aggregate) {
       timeRange = timeRange.map(val => new Date(val).getTime())
+      const isRule = this.data.type === 2
       let res = await influxdb.get('', {
         params: {
-          q: lbQuery(fieldType, this.listenerType, this.data.id, LB_HOST, timeRange, aggregate),
+          q: lbQuery(fieldType, this.listenerType, this.data.id, LB_HOST, timeRange, aggregate, isRule),
           db: 'telegraf',
           epoch: 'ms',
         },

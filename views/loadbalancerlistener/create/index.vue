@@ -2,14 +2,19 @@
   <div>
     <page-header :title="`${isUpdate ? '修改' : '新建'}负载均衡监听`" />
     <page-body>
-      <steps v-model="step" />
+      <steps v-show="!isLbRedirected" v-model="step" />
       <components :is="component" :step="step" ref="formRef" :isUpdate="isUpdate" />
     </page-body>
     <page-footer>
       <template v-slot:right>
-        <a-button @click="prev" v-if="!isFirstStep" class="mr-2">上一步</a-button>
-        <a-button :type="isUpdate ? '' : 'primary'" class="mr-2" @click="next" :loading="isUpdate ? false : loading" v-if="isUpdate ? !isLastStep : true">{{ nextStepTitle }}</a-button>
-        <a-button :type="isUpdate ? 'primary' : ''" class="mr-2" v-if="isUpdate" @click="update" :loading="loading">修改监听</a-button>
+        <template v-if="isLbRedirected">
+          <a-button type="primary" class="mr-2" @click="isUpdate ? update() : validateForm() " :loading="loading">提交</a-button>
+        </template>
+        <template v-else>
+          <a-button @click="prev" v-if="!isFirstStep" class="mr-2">上一步</a-button>
+          <a-button :type="isUpdate ? '' : 'primary'" class="mr-2" @click="next" :loading="isUpdate ? false : loading" v-if="isUpdate ? !isLastStep : true">{{ nextStepTitle }}</a-button>
+          <a-button :type="isUpdate ? 'primary' : ''" class="mr-2" v-if="isUpdate" @click="update" :loading="loading">修改监听</a-button>
+        </template>
         <a-button @click="cancel">取消</a-button>
       </template>
     </page-footer>
@@ -17,6 +22,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import Onecloud from './form/onecloud'
 import Aliyun from './form/aliyun'
 import Qcloud from './form/qcloud'
@@ -46,6 +52,9 @@ export default {
       component += `-${this.$route.query.spec}`
     }
     return {
+      component,
+      isUpdate,
+      loading: false,
       step: {
         steps: [
           { title: '协议&监听', component: 'Protocol' },
@@ -54,10 +63,14 @@ export default {
         ],
         currentStep: 0,
       },
-      component,
-      isUpdate,
-      loading: false,
     }
+  },
+  computed: {
+    ...mapState('common', {
+      isLbRedirected: state => {
+        return !!state.lbRedirected.isLbRedirected
+      },
+    }),
   },
   methods: {
     getParams (data) {
@@ -66,6 +79,7 @@ export default {
         acl_status: getOnOff(data.acl_status),
         health_check: getOnOff(data.health_check),
         sticky_session: getOnOff(data.sticky_session),
+        redirect: data.redirect ? 'off' : 'raw',
       }
       if (params.health_check_http_code) {
         params.health_check_http_code = params.health_check_http_code.join(',')
@@ -75,7 +89,7 @@ export default {
     async validateForm () { // 配合 StepMixin 进行下一步或者提交表单时的校验
       try {
         await this.$refs.formRef.validateForm()
-        if (this.isLastStep) {
+        if (this.isLastStep || this.isLbRedirected) {
           const params = this.getParams(this.$refs.formRef.allFd)
           this.create(params)
         }
@@ -86,6 +100,7 @@ export default {
     next () {
       const { currentStep } = this.step
       const next = currentStep + 1
+      // this.step['currentStep'] = next
       this.setStep(next)
     },
     async prev () {

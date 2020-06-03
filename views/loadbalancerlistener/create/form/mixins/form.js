@@ -31,7 +31,9 @@ export default {
     async fetchdata () {
       this.loading = true
       const requests = [this.fetchLbDetail()]
-      if (this.isUpdate) requests.push(this.fetchLbListener())
+      if (this.isUpdate) {
+        requests.push(this.fetchLbListener())
+      }
       try {
         await Promise.all(requests)
         this.loading = false
@@ -68,6 +70,7 @@ export default {
         const { id } = this.$route.params
         const { data } = await new this.$Manager('loadbalancers').get({ id })
         this.lbDetail = data
+        return data
       } catch (error) {
         throw error
       }

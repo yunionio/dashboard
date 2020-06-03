@@ -15,9 +15,11 @@ import { mapGetters } from 'vuex'
 import { surpportLb } from '@Network/views/lb/constants'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
+import { validateEnabled, validateDisable } from '../utils'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import { getNameFilter, getBrandFilter } from '@/utils/common/tableFilter'
+import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
 import { changeToArr } from '@/utils/utils'
 
@@ -160,20 +162,88 @@ export default {
           },
         },
         {
-          label: '删除',
-          permission: 'lb_loadbalancers_delete',
-          action: () => {
-            this.createDialog('DeleteResDialog', {
-              vm: this,
-              title: '删除',
-              data: this.list.selectedItems,
-              columns: this.columns,
-              onManager: this.onManager,
-            })
+          label: '批量操作',
+          actions: () => {
+            return [
+              ...getEnabledSwitchActions(this, undefined, undefined, {
+                actions: [
+                  (obj) => {
+                    const ids = this.list.selectedItems.map(item => item.id)
+                    this.onManager('batchPerformAction', {
+                      steadyStatus: Object.values(expectStatus.lb).flat(),
+                      id: ids,
+                      managerArgs: {
+                        action: 'status',
+                        data: {
+                          status: 'enabled',
+                        },
+                      },
+                    })
+                  },
+                  (obj) => {
+                    const ids = this.list.selectedItems.map(item => item.id)
+                    this.onManager('batchPerformAction', {
+                      steadyStatus: Object.values(expectStatus.lb).flat(),
+                      id: ids,
+                      managerArgs: {
+                        action: 'status',
+                        data: {
+                          status: 'disabled',
+                        },
+                      },
+                    })
+                  },
+                ],
+                metas: [
+                  () => {
+                    return validateEnabled(this.list.selectedItems)
+                  },
+                  () => {
+                    return validateDisable(this.list.selectedItems)
+                  },
+                ],
+              }),
+              {
+                label: '更改集群',
+                action: () => {
+                  this.createDialog('LbUpdateCluster', {
+                    title: '更改集群',
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                  })
+                },
+                meta: () => {
+                  const isOneCloud = this.list.selectedItems.every(item => item.brand === 'OneCloud')
+                  return {
+                    validate: isOneCloud,
+                    tooltip: !isOneCloud && '仅OneCloud平台支持此操作',
+                  }
+                },
+              },
+              {
+                label: '删除',
+                permission: 'lb_loadbalancers_delete',
+                action: () => {
+                  this.createDialog('DeleteResDialog', {
+                    vm: this,
+                    title: '删除',
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                  })
+                },
+                meta: () => {
+                  return {
+                    validate: this.list.allowDelete(),
+                  }
+                },
+              },
+            ]
           },
           meta: () => {
             return {
-              validate: this.list.allowDelete(),
+              validate: !!this.list.selectedItems.length,
             }
           },
         },

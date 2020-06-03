@@ -135,6 +135,24 @@ export default {
     }
   },
   methods: {
+    openBackendgroupsCreate () {
+      this.createDialog('LoadbalancerbackendgroupsCreateDialog', {
+        title: '新建后端服务器组',
+        loadbalancer: this.$route.params.id,
+        onManager: this.onManager,
+        refresh: async () => {
+          const vnode = this.$refs['backendgroupsRef']
+          if (vnode && vnode.loadOpts) {
+            const retList = await vnode.loadOpts()
+            if (retList && retList.length > 0) {
+              this.form.fc.setFieldsValue({
+                backend_group: retList[0].id,
+              })
+            }
+          }
+        },
+      })
+    },
     onValuesChange (props, values) {
       R.forEachObjIndexed((value, key) => {
         this.$set(this.form.fd, key, value)
@@ -190,7 +208,6 @@ export default {
         }
         this.form.fc.getFieldDecorator(key, value[1])
       }, this.decorators)
-      console.log(updateData, 'updateData')
       this.$nextTick(() => {
         this.form.fc.setFieldsValue(updateData)
         this.$nextTick(() => { // 让有条件渲染的表单项重新赋值，如 证书、重写cookie 等

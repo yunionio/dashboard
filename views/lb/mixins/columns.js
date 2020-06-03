@@ -29,6 +29,7 @@ export default {
       {
         field: 'address',
         title: '服务地址',
+        minWidth: 150,
         slots: {
           default: ({ row }) => {
             let text = row.address || '-'
@@ -52,11 +53,13 @@ export default {
       {
         field: 'vpc',
         title: 'VPC',
+        minWidth: 100,
       },
       getStatusTableColumn({ statusModule: 'lb' }),
       {
         field: 'charge_type',
         title: '计费方式',
+        minWidth: 100,
         formatter: ({ row }) => {
           if (row.charge_type) return CHARGE_TYPE[row.charge_type] || row.charge_type
           return '-'
@@ -65,6 +68,7 @@ export default {
       {
         field: 'loadbalancer_spec',
         title: '类型',
+        minWidth: 100,
         formatter: ({ row }) => {
           let { provider } = row
           if (provider) {
@@ -108,10 +112,12 @@ export default {
       {
         field: 'region',
         title: '区域',
+        minWidth: 120,
       },
       {
         field: 'account',
         title: '云账号',
+        minWidth: 120,
       },
       // getTimeTableColumn(), // 列表太长先隐藏
     ]

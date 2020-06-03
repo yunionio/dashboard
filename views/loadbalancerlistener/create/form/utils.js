@@ -373,6 +373,16 @@ const healthCheckFall = {
 export const getDecorators = ({ provider, vm, loadbalancer }) => {
   provider = provider.toLowerCase()
   return {
+    redirect: ['redirect'],
+    redirect_code: ['redirect_code', {
+      initialValue: '301',
+    }],
+    redirect_scheme: ['redirect_scheme', {
+      initialValue: 'http',
+    }],
+    redirect_host: ['redirect_host'],
+    redirect_path: ['redirect_path'],
+    send_proxy: ['send_proxy'],
     loadbalancer: [
       'loadbalancer',
       {
@@ -510,7 +520,7 @@ export const getDecorators = ({ provider, vm, loadbalancer }) => {
       'enable_http2',
       {
         valuePropName: 'checked',
-        initialValue: false,
+        initialValue: true,
       },
     ],
     gzip: [

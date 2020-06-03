@@ -1,9 +1,6 @@
-import _ from 'lodash'
-import { PROVIDER_MAP } from '@/constants'
+import { validateEnabled, validateDisable } from '../utils'
 import expectStatus from '@/constants/expectStatus'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
-const notSupportEnable = ['huawei', 'aws', 'qcloud']
-const notSupportDisable = ['huawei', 'aws', 'qcloud']
 
 export default {
   created () {
@@ -39,38 +36,51 @@ export default {
         ],
         metas: [
           (obj) => {
-            const notSupport = notSupportEnable.includes(obj.provider.toLowerCase())
-            const label = notSupport ? _.get(PROVIDER_MAP, `[${obj.provider}].label`) : ''
-            const tooltip = label ? `【${label}】暂不支持该操作` : ''
-            return {
-              validate: !notSupport && obj.status === 'disabled',
-              tooltip,
-            }
+            return validateEnabled([obj])
           },
           (obj) => {
-            const notSupport = notSupportDisable.includes(obj.provider.toLowerCase())
-            const label = notSupport ? _.get(PROVIDER_MAP, `[${obj.provider}].label`) : ''
-            const tooltip = label ? `【${label}】暂不支持该操作` : ''
-            return {
-              validate: !notSupport && obj.status === 'enabled',
-              tooltip,
-            }
+            return validateDisable([obj])
           },
         ],
       }),
       {
-        label: '删除',
-        permission: 'lb_loadbalancers_delete',
-        action: (obj) => {
-          this.createDialog('DeleteResDialog', {
-            vm: this,
-            title: '删除',
-            data: [obj],
-            columns: this.columns,
-            onManager: this.onManager,
-          })
+        label: '更多',
+        actions: (obj) => {
+          return [
+            {
+              label: '删除',
+              permission: 'lb_loadbalancers_delete',
+              action: () => {
+                this.createDialog('DeleteResDialog', {
+                  vm: this,
+                  title: '删除',
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                })
+              },
+              meta: () => this.$getDeleteResult(obj),
+            },
+            {
+              label: '更改集群',
+              action: () => {
+                this.createDialog('LbUpdateCluster', {
+                  title: '更改集群',
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                })
+              },
+              meta: () => {
+                const isOneCloud = obj.brand === 'OneCloud'
+                return {
+                  validate: isOneCloud,
+                  tooltip: !isOneCloud && '仅OneCloud平台支持此操作',
+                }
+              },
+            },
+          ]
         },
-        meta: (obj) => this.$getDeleteResult(obj),
       },
     ]
   },

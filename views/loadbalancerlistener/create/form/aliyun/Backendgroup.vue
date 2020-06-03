@@ -2,12 +2,16 @@
   <a-form :form="form.fc" class="mt-3" v-bind="formItemLayout">
     <a-form-item label="后端服务器组">
       <base-select
+        isDefaultSelect
+        ref="backendgroupsRef"
+        showSync
         v-decorator="decorators.backend_group"
         resource="loadbalancerbackendgroups"
         :params="backendgroupParams"
         :item.sync="backendgroup"
         @change="fetchBackendList"
         :select-props="{ placeholder: '请选择后端服务器组' }" />
+        <div slot="extra">没有想要的后端服务器组？可以立即 <a @click="openBackendgroupsCreate">新建</a></div>
     </a-form-item>
     <a-form-item label="后端服务器" :extra="backendgroup.name ? `${backendgroup.name} 后端服务器组所包含的服务器` : ''">
       <vxe-grid size="mini" border :columns="backendColumns" :data="backendList" />
@@ -17,9 +21,11 @@
 
 <script>
 import mixin from '../mixins/formStepItem'
+import WindowsMixin from '@/mixins/windows'
+import ListMixin from '@/mixins/list'
 
 export default {
   name: 'LBListenerCreateBackendgroup',
-  mixins: [mixin],
+  mixins: [mixin, WindowsMixin, ListMixin],
 }
 </script>
