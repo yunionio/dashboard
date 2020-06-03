@@ -39,7 +39,7 @@ export default {
           },
           account: getAccountFilter(),
           vpc: {
-            label: '所属专有网络',
+            label: '所属VPC',
           },
           region: {
             label: '区域',
@@ -52,7 +52,7 @@ export default {
         items: [
           { label: 'ID', key: 'id' },
           { label: '名称', key: 'name' },
-          { label: '所属专有网络', key: 'vpc' },
+          { label: '所属VPC', key: 'vpc' },
           { label: '区域', key: 'region' },
           { label: '云账号', key: 'manager' },
           { label: '条目（路由表类型 目标网段 下一跳）', key: 'routes' },

@@ -32,7 +32,7 @@ export default {
   data () {
     return {
       baseInfo: [
-        getCopyWithContentTableColumn({ field: 'vpc', title: '所属专有网络' }),
+        getCopyWithContentTableColumn({ field: 'vpc', title: '所属VPC' }),
         {
           field: 'region',
           title: '区域',

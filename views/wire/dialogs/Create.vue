@@ -112,7 +112,7 @@ export default {
           'vpc',
           {
             rules: [
-              { required: true, message: '请选择专有网络' },
+              { required: true, message: '请选择VPC' },
             ],
           },
         ],
@@ -253,7 +253,7 @@ export default {
           return
         } else if (!this.form.fc.getFieldValue('vpc')) {
           this.vpcValidateStatus = 'error'
-          this.vpcHelp = '请选择专有网络'
+          this.vpcHelp = '请选择VPC'
           this.loading = false
           return
         }
