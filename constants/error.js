@@ -657,7 +657,7 @@ export default {
       "No either wire or vpc provided": {
         "zh-CN": {
           "fields": {},
-          "message": "未提供二层网络或专有网络信息"
+          "message": "未提供二层网络或专有网络VPC信息"
         }
       },
       "name longer than {0}": {
@@ -963,7 +963,7 @@ export default {
       "no valid vpc ???": {
         "zh-CN": {
           "fields": {},
-          "message": "不正确的专有网络???"
+          "message": "不正确的专有网络VPC???"
         }
       },
       "invalid vrrp priority {0}: want [1,255]": {
@@ -1110,7 +1110,7 @@ export default {
       "Vpc {0} not found": {
         "zh-CN": {
           "fields": {},
-          "message": "专有网络 {0} 未找到"
+          "message": "专有网络VPC {0} 未找到"
         }
       },
       "Can not get disk snapshot": {
@@ -1128,13 +1128,13 @@ export default {
       "VPC {0} not found": {
         "zh-CN": {
           "fields": {},
-          "message": "专有网络 {0} 未找到"
+          "message": "专有网络VPC {0} 未找到"
         }
       },
       "wire not found for zone {0} and vpc {1}": {
         "zh-CN": {
           "fields": {},
-          "message": "未能找到可用区 {0} 及专有网络 {0} 的二层网络"
+          "message": "未能找到可用区 {0} 及专有网络VPC {0} 的二层网络"
         }
       },
       "Region {0} not found: {1}": {
@@ -1176,7 +1176,7 @@ export default {
       "vpc {0} not found": {
         "zh-CN": {
           "fields": {},
-          "message": "专有网络 {0} 未找到"
+          "message": "专有网络VPC {0} 未找到"
         }
       },
       "IPMI has no password information": {
@@ -1301,7 +1301,7 @@ export default {
       "Cannot purge vpc on enabled cloud provider": {
         "zh-CN": {
           "fields": {},
-          "message": "不能在账号启用状态下抹除专有网络信息"
+          "message": "不能在账号启用状态下抹除专有网络VPC信息"
         }
       },
       "Host {0} is not online": {
@@ -1595,7 +1595,7 @@ export default {
       "VPC not ready": {
         "zh-CN": {
           "fields": {},
-          "message": "专有网络状态异常"
+          "message": "专有网络VPC状态异常"
         }
       },
       "Cannot uncache in status {0}": {
@@ -1845,7 +1845,7 @@ export default {
       "VPC not empty": {
         "zh-CN": {
           "fields": {},
-          "message": "专有网络底下依然有IP子网存在"
+          "message": "专有网络VPC底下依然有IP子网存在"
         }
       },
       "Tag is associated with hosts": {
@@ -2425,7 +2425,7 @@ export default {
       "VPC {0} not found": {
         "zh-CN": {
           "fields": {},
-          "message": "未发现专有网络 {0}"
+          "message": "未发现专有网络VPC {0}"
         }
       },
       "cloud provider {0} not found": {
@@ -2666,7 +2666,7 @@ export default {
       "query vpc {0} error {1}": {
         "zh-CN": {
           "fields": {},
-          "message": "查询专有网络 {0} 失败 {1}"
+          "message": "查询专有网络VPC {0} 失败 {1}"
         }
       },
       "query wire {0} error {1}": {
@@ -2714,7 +2714,7 @@ export default {
       "Fetch Vpc {0} error {1}": {
         "zh-CN": {
           "fields": {},
-          "message": "匹配专有网络 {0} 失败 {1}"
+          "message": "匹配专有网络VPC {0} 失败 {1}"
         }
       },
       "fail to get http response writer from context": {
@@ -2726,7 +2726,7 @@ export default {
       "vpc {0} query fail {1}": {
         "zh-CN": {
           "fields": {},
-          "message": "查询专有网络 {0} 失败 {1}"
+          "message": "查询专有网络VPC {0} 失败 {1}"
         }
       },
       "query all networks fail": {
@@ -2744,7 +2744,7 @@ export default {
       "query wire for zone {0} and vpc {1} error {2}": {
         "zh-CN": {
           "fields": {},
-          "message": "获取可用区 {0} 及专有网络 {1} 关联的二层网络失败 {2}"
+          "message": "获取可用区 {0} 及专有网络VPC {1} 关联的二层网络失败 {2}"
         }
       },
       "delete sku {0} failed.": {
@@ -2791,7 +2791,7 @@ export default {
       "not allow to delete default vpc": {
         "zh-CN": {
           "fields": {},
-          "message": "不允许删除默认专有网络"
+          "message": "不允许删除默认专有网络VPC"
         }
       },
       "not allow to delete default cloud region": {
@@ -3153,7 +3153,7 @@ export default {
       "more than 1 wire found for zone {0} and vpc {1}": {
         "zh-CN": {
           "fields": {},
-          "message": "可用区 {0} 专有网络 {1} 底下的二层网络不能超过1个"
+          "message": "可用区 {0} 专有网络VPC {1} 底下的二层网络不能超过1个"
         }
       },
       "{0} listener port {1} is already taken by listener {2}({3})": {
@@ -3183,7 +3183,7 @@ export default {
       "failed getting region of vpc {0}({1})": {
         "zh-CN": {
           "fields": {},
-          "message": "通过专有网络 {0}({1}) 查找区域失败"
+          "message": "通过专有网络VPC {0}({1}) 查找区域失败"
         }
       },
       "Access url and account conflict": {

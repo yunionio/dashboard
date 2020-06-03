@@ -1318,7 +1318,7 @@
     "account": "请选择@:dictionary.account",
     "region": "请选择@:dictionary.region",
     "zone": "请选择@:dictionary.zone",
-    "vpc": "请选择专有网络",
+    "vpc": "请选择专有网络VPC",
     "wire": "请选择@:dictionary.wire",
     "provider": "请选择平台",
     "city": "请选择城市"
