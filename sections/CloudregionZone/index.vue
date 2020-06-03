@@ -10,7 +10,7 @@
       </a-col>
       <a-col :span="12">
         <a-form-item :wrapperCol="{ span: 24 }">
-          <a-select label-in-value  v-decorator="decorator.zone" allow-clear @change="emit">
+          <a-select label-in-value  v-decorator="decorator.zone" allow-clear @change="v => emit(v, 'zone')">
             <a-select-option v-for="item in zoneOpts" :key="item.id">{{ item.name }}</a-select-option>
           </a-select>
         </a-form-item>
@@ -71,7 +71,7 @@ export default {
       if (R.is(String, item)) {
         itemObj = opts.find(val => val.id === item)
       } else if (R.is(Object, item)) {
-        itemObj = opts.find(val => val.id === item.id)
+        itemObj = opts.find(val => val.id === (item.id || item.key))
       }
       this.$emit(`update:${emitStr}`, itemObj)
     },
