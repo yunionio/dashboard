@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import { STORAGE_TYPES, MEDIUM_TYPES } from '@Storage/constants/index.js'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
@@ -165,7 +166,7 @@ export default {
           project_domain: getProjectDomainFilter(),
         },
       }),
-      groupActions: !hasServices('hostagent') ? groupActions.splice(0, 1) : groupActions,
+      groupActions: !hasServices('hostagent') ? R.remove(0, 1, groupActions) : groupActions,
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
