@@ -91,6 +91,10 @@ export default {
         delete params.scope
       }
       this.cloudproviderLoading = true
+      const [id] = this._decorators.manager
+      this.FC.setFieldsValue({
+        [id]: undefined,
+      })
       try {
         const manager = new this.$Manager('cloudproviders', 'v2')
         const { data = {} } = await manager.list({ params })
@@ -120,6 +124,10 @@ export default {
         delete params.scope
       }
       this.cloudregionLoading = true
+      const [id] = this._decorators.cloudregion
+      this.FC.setFieldsValue({
+        [id]: undefined,
+      })
       try {
         const manager = new this.$Manager('cloudregions', 'v2')
         const { data = {} } = await manager.list({ params })
