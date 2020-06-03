@@ -14,7 +14,7 @@
           </span>
         </a-form-item>
          <a-form-item label="区域">
-          <cloud-provider-region />
+          <cloud-provider-region ref="providerRegionRef" :cloudprovideParams="scopeParams" :cloudregionParams="scopeParams" />
         </a-form-item>
       </a-form>
     </div>
@@ -51,9 +51,13 @@ export default {
     return {
       loading: false,
       form: {
-        fc: this.$form.createForm(this),
+        fc: this.$form.createForm(this, { onValuesChange: this.handleValuesChange }),
       },
       formItemLayout,
+      scopeParams: {
+        scope: this.$store.getters.scope,
+        project_domain: undefined,
+      },
     }
   },
   computed: {
@@ -93,6 +97,16 @@ export default {
     },
   },
   methods: {
+    async handleValuesChange (vm, changedFields) {
+      if (changedFields && changedFields.domain) {
+        if (this.$store.getters.isAdminMode) {
+          this.scopeParams['project_domain'] = changedFields.domain.key || this.getFieldValue('domain').key
+          delete this.scopeParams['scope']
+        } else {
+          delete this.scopeParams['project_domain']
+        }
+      }
+    },
     validateForm () {
       return new Promise((resolve, reject) => {
         this.form.fc.validateFields((err, values) => {
