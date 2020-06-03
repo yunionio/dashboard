@@ -69,7 +69,6 @@ export default {
       })
     },
     paramsChange (params, i) {
-      console.log(params, 'toParams')
       this.$set(this.formList[i], 'model', params)
       this.$emit('refresh', params, i)
     },

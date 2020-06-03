@@ -54,14 +54,6 @@ export default {
       },
     }
   },
-  watch: {
-    startValue (val) {
-      console.log('startValue', val)
-    },
-    endValue (val) {
-      console.log('endValue', val)
-    },
-  },
   methods: {
     cancel () {
       this.visible = false

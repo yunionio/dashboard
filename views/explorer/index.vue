@@ -6,8 +6,8 @@
     </page-body>
     <page-footer>
       <div slot="right">
-        <a-button class="mr-3" type="primary" :loading="loading" @click="handleConfirm">保存</a-button>
-        <a-button @click="reset">重置</a-button>
+        <a-button class="mr-3" type="primary" :loading="loading" @click="handleConfirm">{{ $t('common.save') }}</a-button>
+        <a-button @click="reset">{{ $t('common.reset') }}</a-button>
       </div>
     </page-footer>
   </div>
