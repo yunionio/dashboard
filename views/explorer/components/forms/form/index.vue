@@ -1,0 +1,273 @@
+<template>
+  <a-card :title="title" size="small" class="monitor-form" :class="{ 'hideBody': !panelShow }">
+    <div slot="extra">
+      <a-icon type="delete" v-if="showDelete" @click="remove" class="mr-2 remove-icon" />
+      <a-icon :type="panelShow ? 'up' : 'down'" @click="toggle" />
+    </div>
+    <a-form
+      v-show="panelShow"
+      v-bind="formItemLayout"
+      :form="form.fc">
+      <a-form-item label="监控指标" class="mb-0">
+        <metric
+          :metricOpts="metricInfo.field_key"
+          :decorators="decorators"
+          :metricKeyOpts="metricKeyOpts"
+          @metricKeyChange="getMetricInfo" />
+      </a-form-item>
+      <a-form-item label="资源过滤">
+        <filters
+          :form="form"
+          :decorators="decorators.filters"
+          @remove="$nextTick(toParams)"
+          :metricInfo="metricInfo" />
+      </a-form-item>
+      <a-form-item label="分组">
+        <base-select
+          v-decorator="decorators.group_by"
+          :options="groupbyOpts"
+          class="w-100"
+          :select-props="{ placeholder: '请选择', allowClear: true }" />
+      </a-form-item>
+      <a-form-item label="函数">
+        <base-select
+          v-decorator="decorators.function"
+          :options="functionOpts"
+          class="w-100"
+          :select-props="{ placeholder: '请选择', allowClear: true }" />
+      </a-form-item>
+    </a-form>
+  </a-card>
+</template>
+
+<script>
+import _ from 'lodash'
+import * as R from 'ramda'
+import { DATABASE } from '@Monitor/constants'
+import Metric from './Metric'
+import Filters from './Filters'
+import { resolveValueChangeField } from '@/utils/common/ant'
+
+export default {
+  name: 'ExplorerForm',
+  components: {
+    Metric,
+    Filters,
+  },
+  props: {
+    formItemLayout: {
+      type: Object,
+      default: () => ({
+        wrapperCol: {
+          span: 21,
+        },
+        labelCol: {
+          span: 3,
+        },
+      }),
+    },
+    showDelete: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  data () {
+    return {
+      form: {
+        fc: this.$form.createForm(this, {
+          onValuesChange: this.onValuesChange,
+        }),
+        fd: {},
+      },
+      decorators: {
+        metric_key: [
+          'metric_key',
+          {
+            rules: [
+              { required: true, message: '请选择' },
+            ],
+          },
+        ],
+        metric_value: [
+          'metric_value',
+          {
+            rules: [
+              { required: true, message: '请选择' },
+            ],
+          },
+        ],
+        filters: {
+          tagCondition: i => [
+            `tagConditions[${i}]`,
+            {
+              initialValue: 'AND',
+              rules: [
+                { required: true, message: '请选择' },
+              ],
+            },
+          ],
+          tagKey: i => [
+            `tagKeys[${i}]`,
+            {
+              rules: [
+                // { required: true, message: '请选择' },
+              ],
+            },
+          ],
+          tagOperator: i => [
+            `tagOperators[${i}]`,
+            {
+              initialValue: '=',
+              rules: [
+                { required: true, message: '请选择' },
+              ],
+            },
+          ],
+          tagValue: i => [
+            `tagValues[${i}]`,
+            {
+              rules: [
+                // { required: true, message: '请选择' },
+              ],
+            },
+          ],
+        },
+        group_by: [
+          'group_by',
+        ],
+        function: [
+          'function',
+        ],
+      },
+      groupbyOpts: [],
+      functionOpts: [],
+      metricKeyOpts: [],
+      metricInfo: {},
+      panelShow: true,
+      oldParams: {},
+    }
+  },
+  computed: {
+    title () {
+      if (!this.panelShow && this.form.fd.metric_key) {
+        return `${this.form.fd.metric_key} (${this.form.fd.metric_value || '-'})`
+      }
+      return '补充你的查询条件'
+    },
+  },
+  created () {
+    this.getMeasurement()
+    this.$bus.$on('togglePanel', val => {
+      this.panelShow = val
+    }, this)
+  },
+  methods: {
+    remove () {
+      this.$emit('remove')
+    },
+    onValuesChange (props, values) {
+      const newField = resolveValueChangeField(values)
+      R.forEachObjIndexed((item, key) => {
+        if (R.is(Object, this.form.fd[key]) && R.is(Object, item)) {
+          this.$set(this.form.fd, key, { ...this.form.fd[key], ...item })
+        } else {
+          this.$set(this.form.fd, key, item)
+        }
+      }, newField)
+      this.$nextTick(this.toParams)
+    },
+    async getMeasurement () {
+      try {
+        const { data: { measurements = [] } } = await new this.$Manager('unifiedmonitors', 'v1').get({ id: 'measurements', params: { database: 'telegraf' } })
+        this.metricKeyOpts = measurements.map(val => ({ key: val.measurement, label: val.measurement }))
+      } catch (error) {
+        throw error
+      }
+    },
+    async getMetricInfo (metricKey) {
+      try {
+        this.form.fc.setFieldsValue({
+          [this.decorators.metric_value[0]]: undefined,
+        })
+        const { data } = await new this.$Manager('unifiedmonitors', 'v1').get({ id: 'metric-measurement', params: { database: 'telegraf', measurement: metricKey } })
+        this.metricInfo = data
+        if (R.is(Array, this.metricInfo.tag_key)) {
+          this.groupbyOpts = this.metricInfo.tag_key.map(v => ({ key: v, label: v }))
+        }
+        const Aggregations = _.get(this.metricInfo, 'func.field_opt_value.Aggregations')
+        if (R.is(Array, Aggregations)) {
+          this.functionOpts = Aggregations.map(v => ({ key: v, label: v }))
+        }
+      } catch (error) {
+        this.metricInfo = {
+          field_key: [],
+          func: {},
+          tag_key: [],
+          tag_value: {},
+        }
+        const params = this.toParams()
+        this.$emit('paramsChange', params)
+        throw error
+      }
+    },
+    toggle () {
+      this.panelShow = !this.panelShow
+    },
+    toParams () {
+      const fd = this.form.fc.getFieldsValue()
+      const params = {
+        database: DATABASE,
+      }
+      const tags = []
+      if (fd.metric_key) params.measurement = fd.metric_key
+      if (fd.metric_value) params.select = [[{ type: 'field', params: [fd.metric_value] }]]
+      if (R.is(Object, fd.tagValues)) {
+        R.forEachObjIndexed((value, key) => {
+          if (value) {
+            const tag = {
+              key: fd.tagKeys[key],
+              value,
+              operator: fd.tagOperators[key],
+            }
+            if (fd.tagConditions && fd.tagConditions[key]) {
+              tag.condition = fd.tagConditions[key]
+            }
+            tags.push(tag)
+          }
+        }, fd.tagValues)
+      }
+      if (tags.length) {
+        params.tags = tags
+      }
+      if (fd.group_by) {
+        // eslint-disable-next-line no-template-curly-in-string
+        params.group_by = [{ type: 'tag', params: [fd.group_by] }]
+      }
+      if (!fd.metric_key || !fd.metric_value) return params
+      if (R.is(String, fd.function)) {
+        params.select[0].push({ type: fd.function.toLowerCase(), params: [] })
+      }
+      if (R.equals(this.oldParams, params)) return params
+      this.$emit('paramsChange', params)
+      this.oldParams = params // 记录为上一次 params
+    },
+  },
+}
+</script>
+
+<style lang="scss" scoped>
+@import '../../../../../../../src/styles/_variables.scss';
+
+.monitor-form {
+  &.hideBody ::v-deep .ant-card-body {
+    padding: 0 !important;
+  }
+  .remove-icon {
+    transition: color 0.1s ease-in;
+    &:hover {
+      color: $error-color;
+    }
+  }
+}
+
+</style>
