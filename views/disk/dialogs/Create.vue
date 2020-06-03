@@ -256,6 +256,7 @@ export default {
         share: true,
         details: true,
         show_emulated: true,
+        project_domain: this.form.fd.domain.key || this.userInfo.domain.id,
       }
       this.storageOpts = []
       new this.$Manager('storages').list({ ctx: [['zones', zoneId]], params })
