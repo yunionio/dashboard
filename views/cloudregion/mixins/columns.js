@@ -23,7 +23,7 @@ export default {
       },
       {
         field: 'vpc_count',
-        title: '专有网络(VPC)',
+        title: 'VPC',
         minWidth: 120,
         showOverflow: 'title',
       },

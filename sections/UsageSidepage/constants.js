@@ -216,7 +216,7 @@ export const USAGE_CONFIG = {
   },
   'vpcs': {
     unit: '个',
-    zh_cn: '专有网络VPC数量',
+    zh_cn: 'VPC数量',
   },
   'wires': {
     unit: '个',

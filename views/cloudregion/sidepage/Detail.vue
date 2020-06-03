@@ -28,7 +28,7 @@ export default {
         },
         {
           field: 'vpc_count',
-          title: '专有网络（数量）',
+          title: 'VPC（数量）',
         },
         {
           field: 'network_count',
