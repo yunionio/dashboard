@@ -3,9 +3,9 @@
     <a-form
       v-bind="formItemLayout"
       :form="form.fc">
-      <a-form-item :label="$t('common.name')">
+      <!-- <a-form-item :label="$t('common.name')">
         <a-input v-decorator="decorators.name" :placeholder="$t('common.placeholder')" />
-      </a-form-item>
+      </a-form-item> -->
     </a-form>
     <div v-for="(item, i) in formList" :key="item.key" class="mb-3">
       <monitor-form

@@ -15,6 +15,7 @@
             :minWidth="`calc(100% - ${i === 0 ? 0 : 70}px)`"
             v-decorator="decorators.tagKey(item.key)"
             :options="tagKeyOpts"
+            filterable
             @change="val => tagKeyChange(val, i, item)"
             :select-props="{ placeholder: $t('common.select'), allowClear: true }" />
         </a-form-item>
@@ -34,6 +35,7 @@
             class="w-100 mr-1"
             v-decorator="decorators.tagValue(item.key)"
             :options="item.tagValueOpts"
+            filterable
             :select-props="{ placeholder: $t('common.select'), allowClear: true }" />
         </a-form-item>
         <a-form-item style="width: 20px;" v-if="i !== 0">
@@ -107,6 +109,9 @@ export default {
     },
   },
   methods: {
+    reset () {
+      this.filters = [{ key: uuid(), tagValueOpts: [] }]
+    },
     add () {
       this.filters.push({ key: uuid(), tagValueOpts: [] })
     },

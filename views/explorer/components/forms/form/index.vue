@@ -18,6 +18,7 @@
       <a-form-item :label="$t('monitor.monitor_filters')">
         <filters
           :form="form"
+          ref="filtersRef"
           :decorators="decorators.filters"
           @remove="$nextTick(toParams)"
           :metricInfo="metricInfo" />
@@ -186,9 +187,13 @@ export default {
     },
     async getMetricInfo (metricKey) {
       try {
-        this.form.fc.setFieldsValue({
-          [this.decorators.metric_value[0]]: undefined,
-        })
+        this.$refs.filtersRef.reset()
+        this.form.fc.resetFields()
+        // this.form.fc.setFieldsValue({
+        //   [this.decorators.metric_value[0]]: undefined,
+        //   [this.decorators.group_by[0]]: undefined,
+        //   [this.decorators.function[0]]: undefined,
+        // })
         const { data } = await new this.$Manager('unifiedmonitors', 'v1').get({ id: 'metric-measurement', params: { database: 'telegraf', measurement: metricKey } })
         this.metricInfo = data
         if (R.is(Array, this.metricInfo.tag_key)) {
