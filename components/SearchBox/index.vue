@@ -9,12 +9,17 @@
         <li :key="key" class="mb-1 mt-1">
           <tag
             :value="item"
+            :all-value="newValues"
             :id="key"
             :focus="focus"
             :options="options"
             :key-separator="keySeparator"
             :value-separator="valueSeparator"
-            @remove="handleRemoveTag" />
+            :fetch-distinct-field="fetchDistinctField"
+            @remove="handleRemoveTag"
+            @update-show="handleUpdateShow"
+            @confirm="handleSearch"
+            @update-focus="handleUpdateFocus" />
         </li>
       </template>
       <li class="mb-1 mt-1">
@@ -149,6 +154,9 @@ export default {
     search () {
       // this.$emit('input', this.newValues)
       this.$refs.completer.handleOk()
+    },
+    handleUpdateFocus (focus) {
+      this.focus = focus
     },
   },
 }
