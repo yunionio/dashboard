@@ -10,7 +10,7 @@ import Tag from '@Cloudenv/views/tag'
 import Cloudevent from '@Cloudenv/views/cloudevent'
 import Proxysetting from '@Cloudenv/views/proxysetting'
 import Policydefinition from '@Cloudenv/views/policydefinition'
-import Monitor from '@Cloudenv/views/monitor/explorer'
+import Monitor from '@Monitor/router'
 import Layout from '@/layouts/RouterView'
 
 export default {
@@ -216,26 +216,6 @@ export default {
         },
       ],
     },
-    {
-      meta: {
-        label: '监控报警',
-      },
-      submenus: [
-        {
-          path: '/monitor',
-          meta: {
-            label: 'Metrics Explorer',
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'Monitor',
-              path: '',
-              component: Monitor,
-            },
-          ],
-        },
-      ],
-    },
+    Monitor,
   ],
 }
