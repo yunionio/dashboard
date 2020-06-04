@@ -7,11 +7,12 @@
       <a-form :form="form.fc" v-bind="formItemLayout">
         <a-form-item label="集群">
           <base-select
+            remote
+            showSync
+            :params="clusterParams"
             v-decorator="decorators.cluster_id"
             resource="loadbalancerclusters"
-            remote
             :remote-fn="q => ({ filter: `name.contains(${q})` })"
-            showSync
             :select-props="{ placeholder: '请选择集群' }" />
           <p slot="extra">
             没有我想要的，立即 <a-button type="link" size="small" @click="createCluster">新建</a-button>
@@ -59,6 +60,15 @@ export default {
         },
       },
     }
+  },
+  computed: {
+    clusterParams () {
+      return {
+        limit: 0,
+        scope: this.$store.getters.scope,
+        zone_id: this.params.data[0].zone_id,
+      }
+    },
   },
   methods: {
     createCluster () {

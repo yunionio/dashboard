@@ -214,10 +214,25 @@ export default {
                   })
                 },
                 meta: () => {
-                  const isOneCloud = this.list.selectedItems.every(item => item.brand === 'OneCloud')
+                  const zonsIds = {}
+                  const isOneCloud = this.list.selectedItems.every(item => {
+                    zonsIds[item.zone_id] = true
+                    return item.brand === 'OneCloud'
+                  })
+                  if (!isOneCloud) {
+                    return {
+                      validate: false,
+                      tooltip: '仅OneCloud平台支持此操作',
+                    }
+                  }
+                  if (Object.keys(zonsIds).length > 1) {
+                    return {
+                      validate: false,
+                      tooltip: '请选择同一可用区下的负载均衡实例',
+                    }
+                  }
                   return {
-                    validate: isOneCloud,
-                    tooltip: !isOneCloud && '仅OneCloud平台支持此操作',
+                    validate: true,
                   }
                 },
               },
