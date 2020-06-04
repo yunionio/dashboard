@@ -216,13 +216,14 @@ export default {
       return `${this.percent} %`
     },
     percentColor () {
-      if (this.percent < 80) {
-        return '#52c41a'
-      }
-      if (this.percent < 100) {
-        return '#faad14'
-      }
-      return '#f5222d'
+      // if (this.percent < 80) {
+      //   return '#52c41a'
+      // }
+      // if (this.percent < 100) {
+      //   return '#faad14'
+      // }
+      // return '#f5222d'
+      return '#1890ff'
     },
     status () {
       let ret = 'normal'
