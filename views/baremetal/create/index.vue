@@ -1124,7 +1124,7 @@ export default {
       }
       // 判断是否是安装操作系统
       let params = {
-        project_id: this.$store.getters.userInfo.projectId,
+        project_id: this.projectId.key,
         count: values.count,
         vmem_size: Number(this.selectedSpecItem.mem.substr(0, this.selectedSpecItem.mem.length - 1)),
         vcpu_count: Number(this.selectedSpecItem.cpu),
