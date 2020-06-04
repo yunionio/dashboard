@@ -108,6 +108,12 @@ export default {
           }, () => {
             this.fetchCloudregions({ manager: list[0].id })
           })
+        } else {
+          const [id] = this._decorators.cloudregion
+          this.FC.setFieldsValue({
+            [id]: undefined,
+          })
+          this.cloudregionList = []
         }
       } catch (err) {
         throw err
