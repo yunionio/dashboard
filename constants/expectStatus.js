@@ -294,4 +294,8 @@ export default {
     success: ['accept'],
     danger: ['refused', 'expired'],
   },
+  lbRedirect: {
+    success: ['raw'],
+    danger: ['off'],
+  },
 }
