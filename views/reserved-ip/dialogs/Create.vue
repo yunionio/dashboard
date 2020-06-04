@@ -5,14 +5,22 @@
       <a-form
         :form="form.fc">
         <a-form-item label="指定IP子网" v-bind="formItemLayout">
-          <base-select
-            :remote="true"
-            needParams
-            v-decorator="decorators.network"
-            resource="networks"
-            :params="networkParams"
-            :remote-fn="q => ({ filter: `name.contains(${q})` })"
-            :select-props="{ placeholder: '请选择IP子网' }" />
+          <template v-if="hasNetwork">
+            <div>
+              <span>{{ params.network.name }}（{{ params.network.guest_ip_start }} - {{ params.network.guest_ip_end }}，vlan={{ params.network.vlan_id }}）</span>
+              <span class="text-color-help">{{ $t('common.text00001') }}：{{ params.network.ports - params.network.ports_used }}</span>
+            </div>
+          </template>
+          <template v-else>
+            <base-select
+              :remote="true"
+              needParams
+              v-decorator="decorators.network"
+              resource="networks"
+              :params="networkParams"
+              :remote-fn="q => ({ filter: `name.contains(${q})` })"
+              :select-props="{ placeholder: '请选择IP子网' }" />
+          </template>
         </a-form-item>
         <a-form-item label="IP地址" v-bind="formItemLayout" required>
           <ip-address
@@ -34,6 +42,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import IpAddress from '../components/IpAddress'
 import { validate } from '@/utils/validate'
@@ -105,6 +114,9 @@ export default {
         limit: 20,
       }
     },
+    hasNetwork () {
+      return !R.isEmpty(this.params.network) && !R.isNil(this.params.network)
+    },
   },
   methods: {
     IPValidator (rule, value, callback) {
@@ -156,6 +168,9 @@ export default {
       this.loading = true
       try {
         let values = await this.form.fc.validateFields()
+        if (this.hasNetwork) {
+          values.network = this.params.network.id
+        }
         await this.doCreate(values)
         this.loading = false
         this.cancelDialog()
