@@ -1,11 +1,10 @@
 <template>
   <div class="cursor-text">
-    <input
-      v-show="focus"
-      v-model="search"
+    <input-autosize
       ref="input"
-      class="search-input"
-      v-input-autowidth="{ maxWidth: '500px', minWidth: '5px', comfortZone: 0 }"
+      v-show="focus"
+      :value="search"
+      :input-style="{ border: 'none', outline: 0, padding: '0 0 0 2px', margin: 0, height: '20px', fontSize: '12px' }"
       @keydown.13="handleInputEnter"
       @keydown.delete="handleInputDelete"
       @input="handleInput" />
@@ -241,6 +240,7 @@ export default {
      */
     handleInput (e) {
       e.stopPropagation()
+      this.search = e.target.value
       let value = (e.target.value && e.target.value.split(this.keySeparator)) || []
       value = value[1] && value[1].split(this.valueSeparator)
       if (this.isDropdown) {
