@@ -31,7 +31,9 @@
             :label-format="labelFormat"
             :remote-fn="q => ({ filter: `name.contains(${q})` })"
             @update:item="providerChange"
-            :select-props="{ placeholder: '平台、账号、子账号' }" />
+            :isDefaultSelect="true"
+            :select-props="{ placeholder: '平台、账号、子账号' }"
+            style="width: 320px" />
         </a-form-item>
         <a-form-item label="区域" v-bind="formItemLayout" key="region">
            <base-select
@@ -41,7 +43,9 @@
             :params="regionParams"
             :remote-fn="q => ({ search: q })"
             @update:item="regionChange"
-            :select-props="{ placeholder: '请选择' }" />
+            :isDefaultSelect="true"
+            :select-props="{ placeholder: '请选择' }"
+            style="width: 320px" />
         </a-form-item>
         <template v-if="(providerC === 'zstack' || providerC === 'openstack') || (selectedPlatform === 'idc' && this.selectedRegionItem && this.selectedRegionItem.id)">
           <a-form-item label="指定IP子网" v-bind="formItemLayout">
@@ -318,9 +322,17 @@ export default {
       } else {
         this.domain_id = item
       }
-      this.updateProviderParams = {
-        ...this.updateProviderParams,
-        domain_id: this.domain_id,
+      if (this.isAdminMode) {
+        this.updateProviderParams = {
+          ...this.updateProviderParams,
+          project_domain: this.domain_id,
+        }
+        delete this.updateProviderParams.scope
+      } else {
+        this.updateProviderParams = {
+          ...this.updateProviderParams,
+          scope: this.$store.getters.scope,
+        }
       }
     },
     platformChange (e) {
