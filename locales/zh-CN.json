@@ -1297,7 +1297,8 @@
     "delete_disks": "硬盘（回收站）",
     "delete_images": "镜像（回收站）",
     "account": "账号",
-    "serverskus": "套餐"
+    "serverskus": "套餐",
+    "cloudregion": "区域"
   },
   "shareScope": {
     "system": "系统",
