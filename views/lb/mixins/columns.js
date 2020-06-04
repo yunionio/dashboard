@@ -7,6 +7,7 @@ import {
   getProjectTableColumn,
   getBrandTableColumn,
   getTagTableColumn,
+  getRegionTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -109,11 +110,7 @@ export default {
       // },
       getProjectTableColumn(),
       getBrandTableColumn(),
-      {
-        field: 'region',
-        title: '区域',
-        minWidth: 120,
-      },
+      getRegionTableColumn(),
       {
         field: 'account',
         title: '云账号',
