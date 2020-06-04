@@ -1150,7 +1150,7 @@ export default {
         }
       }
       if (this.isInstallOperationSystem) {
-        Reflect.deleteProperty(params, 'project_id')
+        // Reflect.deleteProperty(params, 'project_id')
         this.createBaremetal(params)
       } else {
         if (this.isOpenWorkflow) { // 提交工单
