@@ -61,6 +61,7 @@ export default {
       // this.$emit('clear-selected')
     },
     handlePopoverClick (e) {
+      e.stopPropagation()
       this.$emit('click', e)
     },
   },

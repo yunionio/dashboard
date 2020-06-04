@@ -1,8 +1,41 @@
 <template>
-  <a-tag class="tag" :closable="focus" @close="handleClose($event)">{{ label }}</a-tag>
+  <div @click="handleWrapClick">
+    <a-popover v-model="visible" trigger="click" destroyTooltipOnHide placement="bottomLeft" overlayClassName="search-box-tag-popover-wrap">
+      <div class="auto-completer-wrap" slot="content">
+        <ul class="auto-completer-items">
+          <template v-if="isDropdown">
+            <!-- 如果有配置项则渲染 -->
+            <template v-if="config.items">
+              <li
+                v-for="item of config.items"
+                :key="item.key">
+                <span>
+                  <a-checkbox
+                    class="w-100 text-truncate"
+                    :checked="newValue && newValue.includes(item.key)"
+                    :value="item.key"
+                    @change="handleValueChange">{{ item.label }}</a-checkbox>
+                </span>
+              </li>
+            </template>
+          </template>
+          <template v-else>
+            <a-input v-model="newValue[0]" ref="input" @keydown.13="handleConfirm" />
+          </template>
+        </ul>
+        <div class="actions">
+          <span @click="handleConfirm($event)" :class="{ disabled: confirmDisable }">{{$t('common.ok')}}</span>
+          <span @click="handleCancel($event)">{{$t('common.cancel')}}</span>
+        </div>
+      </div>
+      <a-tag class="tag" :closable="focus" @close="handleClose($event)">{{ label }}</a-tag>
+    </a-popover>
+  </div>
 </template>
 
 <script>
+import * as R from 'ramda'
+
 export default {
   name: 'Tag',
   props: {
@@ -30,6 +63,17 @@ export default {
       type: String,
       required: true,
     },
+    fetchDistinctField: Function,
+    allValue: {
+      type: Object,
+      required: true,
+    },
+  },
+  data () {
+    return {
+      visible: false,
+      newValue: [...this.value],
+    }
   },
   computed: {
     label () {
@@ -44,20 +88,164 @@ export default {
       }).filter(item => !!item).join(this.valueSeparator)
       return ret
     },
+    config () {
+      return this.options[this.id]
+    },
+    // 配置项是否使用了dropdown模式
+    isDropdown () {
+      return this.config && this.config.dropdown
+    },
+    confirmDisable () {
+      if (this.isDropdown) {
+        return R.isEmpty(this.newValue) || R.isNil(this.newValue)
+      }
+      return R.isEmpty(R.trim(this.newValue[0]))
+    },
+  },
+  watch: {
+    visible (val) {
+      if (!val) {
+        this.newValue = [...this.value]
+      }
+    },
   },
   methods: {
     handleClose (e) {
       e.stopPropagation()
       this.$emit('remove', this.id)
     },
+    async handleWrapClick (e) {
+      e.stopPropagation()
+      this.$emit('update-show', false)
+      if (!this.isDropdown) {
+        this.$nextTick(() => {
+          if (this.$refs.input) this.$refs.input.focus()
+        })
+      }
+    },
+    handleConfirm (e) {
+      e.stopPropagation()
+      this.visible = false
+      this.$emit('update-focus', false)
+      this.$emit('confirm', {
+        ...this.allValue,
+        [this.id]: this.newValue,
+      })
+    },
+    handleCancel (e) {
+      e.stopPropagation()
+      this.newValue = this.value
+      this.visible = false
+      this.$emit('update-focus', false)
+    },
+    handleValueChange (e) {
+      e.stopPropagation()
+      const value = e.target.value
+      const index = this.newValue.indexOf(value)
+      const hasValue = index !== -1
+      const multiple = this.config.multiple
+      if (hasValue) {
+        if (multiple) {
+          this.newValue.splice(index, 1)
+        }
+      } else {
+        if (multiple) {
+          this.newValue.push(value)
+        } else {
+          this.newValue = [value]
+        }
+      }
+    },
   },
 }
 </script>
+
+<style lang="scss">
+.search-box-tag-popover-wrap {
+  .ant-popover-inner-content {
+    padding: 0;
+  }
+}
+</style>
 
 <style lang="scss" scoped>
 .tag {
   text-overflow: ellipsis;
   overflow: hidden;
   word-break: break-all;
+}
+.auto-completer-wrap {
+  width: 200px;
+}
+.auto-completer-items {
+  font-size: 12px;
+  overflow: hidden;
+  overflow-y: auto;
+  background-color: #fff;
+  max-height: 400px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  > li {
+    > span {
+      line-height: 30px;
+      height: 30px;
+      display: block;
+      padding: 0 10px;
+      cursor: pointer;
+      &.empty {
+        cursor: default;
+      }
+    }
+    &:hover {
+      background-color: #f2f2f2;
+      > span {
+        &.empty {
+          background-color: #fff;
+        }
+      }
+    }
+    &.actions {
+      &:hover {
+        background-color: #fff;
+      }
+    }
+  }
+  .loading {
+    &:hover {
+      background-color: #fff;
+    }
+  }
+  .no-data {
+    &:hover {
+      background-color: #fff;
+    }
+  }
+}
+.actions {
+  border-top: 1px solid #ddd;
+  > span {
+    cursor: pointer;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-size: 12px;
+    display: inline-block;
+    box-sizing: border-box;
+    width: 50%;
+    color: #000;
+    &:first-child {
+      border-right: 1px solid #ddd;
+      color: #006eff;
+    }
+    &:hover {
+      background-color: #f2f2f2;
+    }
+    &.disabled {
+      cursor: not-allowed;
+      background-color: #f5f5f5;
+      color: rgba(0, 0, 0, 0.25);
+    }
+  }
 }
 </style>

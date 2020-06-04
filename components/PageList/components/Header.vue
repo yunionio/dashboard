@@ -150,7 +150,8 @@ export default {
           managerArgs: {
             id: 'distinct-field',
             params: {
-              ...this.params,
+              // ...this.params,
+              scope: this.$store.getters.scope,
               [item.distinctField.type]: item.distinctField.key,
             },
           },

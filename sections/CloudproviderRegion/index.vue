@@ -112,7 +112,7 @@ export default {
       if (!R.isNil(this.cloudproviderParams) && !R.isEmpty(this.cloudproviderParams)) params = this.cloudproviderParams
       this.cloudprovidersM.list({ params: params })
         .then(({ data: { data = [] } }) => {
-          this.providerOpts = data.filter(item => item.enabled && item.status === 'connected')
+          this.providerOpts = data.filter(item => item.enabled && item.status === 'connected' && item.provider.toLowerCase() !== 'zstack')
           this.$emit('update:closeproviderOpts', this.providerOpts)
           if (this.providerOpts.length && this.form) {
             const firstProvider = this.providerOpts[0]
@@ -121,6 +121,8 @@ export default {
             this.form.fc.setFieldsValue({
               cloudprovider: { key: firstProvider.id, label: firstProvider.name },
             })
+          } else {
+            this.form.fc.resetFields(['cloudprovider', 'region'])
           }
         })
     },
@@ -129,14 +131,15 @@ export default {
       // 清空可用区
       this.regionOpts = []
       this.emit({}, 'region')
-      if (this.isAdminMode && !params['project_domain']) {
-        params['project_domain'] = this.userInfo.projectDomainId
+      if (this.cloudproviderParams['project_domain']) {
+        params['project_domain'] = this.cloudproviderParams.project_domain
         delete params.scope
-        delete params.domain_id
       }
-      this.form && this.form.fc.setFieldsValue({
-        region: { key: '', label: '' },
-      })
+      if (this.form) {
+        this.form.fc.setFieldsValue({
+          region: { key: '', label: '' },
+        })
+      }
       this.regionsM.list({ params })
         .then(({ data: { data = [] } }) => {
           this.regionOpts = data
@@ -146,6 +149,8 @@ export default {
             this.form.fc.setFieldsValue({
               region: { key: firstRegion.id, label: firstRegion.name },
             })
+          } else {
+            this.form.fc.resetFields(['region'])
           }
         })
     },

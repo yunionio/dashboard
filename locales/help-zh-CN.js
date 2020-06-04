@@ -49,5 +49,6 @@ export default {
     useCasRole: `
       <div>把用户同步到该系统中的项目时，优先使用CAS中的同名的角色，如果系统中没有对应的角色则会使用默认角色。</div>
     `,
+    ipSupplement: '请确保本次提交IP与实际IP一致，一经提交成功无法修改',
   },
 }

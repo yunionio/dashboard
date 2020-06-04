@@ -57,12 +57,13 @@ export default {
   computed: mapGetters(['isAdminMode', 'scope', 'isDomainMode', 'userInfo', 'l3PermissionEnable']),
   watch: {
     cloudregionParams: {
-      handler (val) {
-        this.$nextTick(() => {
-          this.fetchRegions()
-        })
-      },
       deep: true,
+      handler (val, oldVal) {
+        console.log(val, oldVal)
+        if (!R.equals(val, oldVal)) {
+          this.fetchRegions()
+        }
+      },
     },
   },
   created () {
@@ -98,10 +99,9 @@ export default {
       const params = {
         ...this.cloudregionParams,
       }
-      if (this.isAdminMode && params['project_domain'] === undefined) {
-        params['project_domain'] = this.userInfo.projectDomainId
+      if (this.cloudregionParams['project_domain']) {
+        params['project_domain'] = this.cloudregionParams.project_domain
         delete params.scope
-        delete params.domain_id
       }
       this.cloudregionsM.list({ params })
         .then(({ data: { data = [] } }) => {

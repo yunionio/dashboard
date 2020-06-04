@@ -203,6 +203,7 @@ export default {
         },
       })
       this.chart = chart
+      this.$emit('chartInstance', this.chart)
     },
     initOptionsWatcher () {
       if (this.__unwatchOptions) {

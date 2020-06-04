@@ -3,9 +3,11 @@ import _ from 'lodash'
 import moment from 'moment'
 import BrandIcon from '@/sections/BrandIcon'
 import TagTableColumn from '@/sections/TagTableColumn'
+import IpSupplement from '@/sections/IpSupplement'
 import store from '@/store'
 import i18n from '@/locales'
 import { hasPermission } from '@/utils/auth'
+import { typeClouds } from '@/utils/common/hypervisor'
 
 export const getProjectTableColumn = ({ field = 'tenant', title = i18n.t('dictionary.project'), projectsItem = 'tenant', sortable = true, hidden = false, minWidth = 100 } = {}) => {
   return {
@@ -227,7 +229,7 @@ export const getCopyWithContentTableColumn = ({
   }
 }
 
-export const getIpsTableColumn = ({ field = 'ips', title = 'IP' } = {}) => {
+export const getIpsTableColumn = ({ field = 'ips', title = 'IP', vm } = {}) => {
   return {
     field,
     title,
@@ -235,7 +237,19 @@ export const getIpsTableColumn = ({ field = 'ips', title = 'IP' } = {}) => {
     width: '180px',
     slots: {
       default: ({ row }, h) => {
-        if (!row.eip && !row.ips) return '-'
+        if (!row.eip && !row.ips) {
+          if (row.hypervisor === typeClouds.hypervisorMap.esxi.key && ['ready', 'running'].includes(row.status)) {
+            return [
+              h(IpSupplement, {
+                props: {
+                  row,
+                  field,
+                  vm,
+                },
+              }),
+            ]
+          }
+        }
         let ret = []
         if (row.eip) {
           ret.push(
