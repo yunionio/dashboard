@@ -27,12 +27,12 @@
 </template>
 
 <script>
+import ReservedIpList from '@Network/views/reserved-ip/components/List'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import NetworkDetail from './Detail'
 import HostMachineip from './HostMachineIp'
 import HostIp from './HostIp'
-import ReservedIp from './ReservedIp'
 import LbIp from './LbIp'
 import FlexIp from './FlexIp'
 import IPList from './IPList'
@@ -46,7 +46,7 @@ export default {
     NetworkDetail,
     HostMachineip,
     HostIp,
-    ReservedIp,
+    ReservedIpList,
     LbIp,
     FlexIp,
     Actions,
@@ -60,7 +60,7 @@ export default {
         { label: 'IP使用情况', key: 'i-p-list' },
         // { label: '宿主机IP', key: 'host-machineip' },
         // { label: '主机IP', key: 'host-ip' },
-        { label: '预留IP', key: 'reserved-ip' },
+        { label: '预留IP', key: 'reserved-ip-list' },
         // { label: '负载均衡IP', key: 'lb-ip' },
         // { label: '弹性网卡IP', key: 'flex-ip' },
         { label: '操作日志', key: 'event-drawer' },
@@ -69,7 +69,7 @@ export default {
   },
   computed: {
     getParams () {
-      if (this.params.windowData.currentTab === 'reserved-ip') {
+      if (this.params.windowData.currentTab === 'reserved-ip-list') {
         return {
           network: this.detailData.id,
         }

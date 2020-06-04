@@ -4,16 +4,13 @@ export default {
   created () {
     this.columns = [
       getCopyWithContentTableColumn({
-        field: 'network',
-        title: 'IP子网',
-      }),
-      getCopyWithContentTableColumn({
         field: 'ip_addr',
         title: 'IP地址',
       }),
       {
         field: 'notes',
         title: '备注',
+        minWidth: 100,
         slots: {
           default: ({ row }, h) => {
             return [
