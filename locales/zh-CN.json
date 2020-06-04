@@ -128,7 +128,9 @@
       "eip_convert_failed": "EIP转换失败",
       "set_auto_renew": "设置自动续费中",
       "set_auto_renew_failed": "设置自动续费失败",
-      "converted": "转换完成"
+      "converted": "转换完成",
+      "tempalte_saving": "开始创建主机模版",
+      "template_save_failed": "创建主机失败"
     },
     "network": {
       "init": "初始化",
@@ -1743,6 +1745,20 @@
       { "label": "我父亲的生日？" },
       { "label": "我母亲的生日？" }
     ]
+  },
+  "redirect_code": {
+    "301": {
+      "name": "永久重定向（301）",
+      "description": "当用户请求的网址资源永久的迁移到了新的网址，可以使用永久重定向（301），使得用户访问旧网址时直接替换成重定向网址。"
+    },
+    "302": {
+      "name": "临时重定向（302）",
+      "description": "当用户请求的网址资源临时改变了位置，可以使用临时重定向，但是302只能实现GET到GET的重定向，非GET请求可能会重定向为GET请求。"
+    },
+    "307": {
+      "name": "临时重定向（307）",
+      "description": "当用户请求的网址资源临时改变了位置，可以使用临时重定向，307可以保持请求方法不变，如POST请求仍旧重定向为POST请求。"
+    }
   },
   "common.batchAction": "批量操作",
   "common.action": "操作",
