@@ -15,6 +15,7 @@ export default {
       cluster: undefined,
       namespace: undefined,
     },
+    lbRedirected: {},
   },
   mutations: {
     UPDATE_OBJECT (state, { name, data }) {
