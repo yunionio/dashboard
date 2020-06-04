@@ -154,13 +154,14 @@ export const getNameDescriptionTableColumn = ({
   cellWrapSlots,
   edit = true,
   editDesc = true,
+  minWidth = 100,
 } = {}) => {
   return {
     field,
     title,
     sortable,
     showOverflow: 'ellipsis',
-    minWidth: 100,
+    minWidth,
     slots: {
       default: ({ row }, h) => {
         const ret = [
