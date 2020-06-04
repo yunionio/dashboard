@@ -258,7 +258,7 @@ export default {
         this.loading = false
         this.defaultSelect(list)
         this.$emit('update:initLoaded', true)
-        return await list
+        return list
       } catch (error) {
         this.loading = false
         throw error
