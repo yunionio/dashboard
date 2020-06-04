@@ -322,7 +322,9 @@ export default {
       const { getFieldValue, validateFields } = this.form.fc
       if (getFieldValue('hostName') === 'server' && deployment && deployment.host) {
         const [, id] = deployment.host.split(':')
-        this.isDeleteServer = !list.find(item => item.id === id)
+        this.isDeleteServer = !list.find(item => {
+          return item.id === id || item.name === id
+        })
         validateFields(['server'])
       }
     },
