@@ -79,7 +79,7 @@ export default {
         acl_status: getOnOff(data.acl_status),
         health_check: getOnOff(data.health_check),
         sticky_session: getOnOff(data.sticky_session),
-        redirect: data.redirect ? 'off' : 'raw',
+        redirect: data.redirect ? 'raw' : 'off',
       }
       if (params.health_check_http_code) {
         params.health_check_http_code = params.health_check_http_code.join(',')
