@@ -24,14 +24,17 @@ export default {
       {
         field: 'domain',
         title: '域名',
+        minWidth: 200,
       },
       {
         field: 'path',
         title: 'URL',
+        minWidth: 200,
       },
       {
         field: 'backend_group',
         title: '后端服务器组',
+        minWidth: 200,
       },
     ]
   },
