@@ -145,9 +145,11 @@ export default {
           if (vnode && vnode.loadOpts) {
             const retList = await vnode.loadOpts()
             if (retList && retList.length > 0) {
+              const backend_group = retList[0].id
               this.form.fc.setFieldsValue({
-                backend_group: retList[0].id,
+                backend_group,
               })
+              this.fetchBackendList(backend_group)
             }
           }
         },
@@ -157,6 +159,11 @@ export default {
       R.forEachObjIndexed((value, key) => {
         this.$set(this.form.fd, key, value)
       }, values)
+      const redirectKeys = ['redirect_scheme', 'redirect_host', 'redirect_path', 'listener_type']
+      if (redirectKeys.indexOf(Object.keys(values)[0]) > -1) {
+        this.form.fc.resetFields(['check'])
+        this.form.fc.validateFields(['check'])
+      }
     },
     healthCheckChange (val) {
       if (val) {

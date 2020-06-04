@@ -38,13 +38,13 @@
             <div slot="extra">
               0为默认，表示不限速
             </div>
-            <a-input :min="0" v-decorator="decorators.http_request_rate" addonAfter="秒/次" type="number" />
+            <a-input :min="0" v-decorator="decorators.http_request_rate" addonAfter="次/秒" type="number" />
           </a-form-item>
           <a-form-item label="限定同源IP发送请求速率">
             <div slot="extra">
               限制同一源地址对转发策略发送请求的速率，0为默认值，表示不限速
             </div>
-            <a-input :min="0" v-decorator="decorators.http_request_rate_per_src" addonAfter="秒/次" type="number" />
+            <a-input :min="0" v-decorator="decorators.http_request_rate_per_src" addonAfter="次/秒" type="number" />
           </a-form-item>
         </template>
       </a-form>
