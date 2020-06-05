@@ -27,6 +27,9 @@
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ScheduledtaskDetail from './Detail'
+import RelatedResource from './RelatedResource'
+import RelatedResourceTag from './RelatedResourceTag'
+import TaskHistory from './TaskHistory'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -36,15 +39,28 @@ export default {
   components: {
     Actions,
     ScheduledtaskDetail,
+    RelatedResource,
+    RelatedResourceTag,
+    TaskHistory,
   },
   mixins: [WindowsMixin, SidePageMixin, ColumnsMixin, SingleActionsMixin],
   data () {
-    return {
-      detailTabs: [
+    return {}
+  },
+  computed: {
+    detailTabs () {
+      const tabs = [
         { label: '详情', key: 'scheduledtask-detail' },
+        { label: '任务历史', key: 'task-history' },
         { label: '操作日志', key: 'event-drawer' },
-      ],
-    }
+      ]
+      if (this.detailData.label_type === 'id') {
+        tabs.splice(1, 0, { label: '关联资源', key: 'related-resource' })
+      } else if (this.detailData.label_type === 'tag') {
+        tabs.splice(1, 0, { label: '关联资源', key: 'related-resource-tag' })
+      }
+      return tabs
+    },
   },
 }
 </script>

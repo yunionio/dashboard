@@ -385,7 +385,10 @@ export default {
       if (labelType === 'id') {
         params.labels = servers
       } else if (labelType === 'tag') {
-        params['__meta__'] = values.tag
+        const tags = Object.keys(values.tag).map((k) => {
+          return `${k}:${values.tag[k]}`
+        })
+        params.labels = tags
       }
       return params
     },

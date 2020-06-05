@@ -125,6 +125,9 @@ export default {
   created () {
     this.initSidePageTab('scheduledtask-detail')
     this.list.fetchData()
+    this.$bus.$on('ScheduledtasksListSingleRefresh', args => {
+      this.list.singleRefresh(...args)
+    }, this)
   },
   methods: {
     handleOpenSidepage (row) {
