@@ -155,11 +155,12 @@ export default {
         },
       })
     },
-    onValuesChange (props, values) {
+    async onValuesChange (props, values) {
       R.forEachObjIndexed((value, key) => {
         this.$set(this.form.fd, key, value)
       }, values)
-      const redirectKeys = ['redirect_scheme', 'redirect_host', 'redirect_path', 'listener_type']
+      await this.$nextTick()
+      const redirectKeys = ['redirect', 'redirect_scheme', 'redirect_host', 'redirect_path', 'listener_type']
       if (redirectKeys.indexOf(Object.keys(values)[0]) > -1) {
         this.form.fc.resetFields(['check'])
         this.form.fc.validateFields(['check'])
