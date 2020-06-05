@@ -237,7 +237,6 @@ export default {
       props.forEach(iterator, this)
     },
     updateFi (fiItems) { // 子组件更新fi
-      console.log(fiItems, 'fiItems')
       if (R.is(Object, fiItems)) {
         R.forEachObjIndexed((item, key) => {
           this.$set(this.form.fi, key, item)
