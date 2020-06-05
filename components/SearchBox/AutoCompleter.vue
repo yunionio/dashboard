@@ -1,6 +1,6 @@
 <template>
   <div class="cursor-text">
-    <input-autosize
+    <autosize-input
       ref="input"
       v-show="focus"
       :value="search"
