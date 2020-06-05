@@ -83,6 +83,8 @@ export default {
           createType: SERVER_TYPE[this.type],
           dataDiskDisabled: false, // 数据盘是否禁用
           sysDiskDisabled: false, // 系统盘是否禁用
+          cpuDisabled: false,
+          memDisabled: false,
         },
         fd: { ...initFd, os: '' },
       },
@@ -235,6 +237,7 @@ export default {
       props.forEach(iterator, this)
     },
     updateFi (fiItems) { // 子组件更新fi
+      console.log(fiItems, 'fiItems')
       if (R.is(Object, fiItems)) {
         R.forEachObjIndexed((item, key) => {
           this.$set(this.form.fi, key, item)
