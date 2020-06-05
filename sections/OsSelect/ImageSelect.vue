@@ -249,7 +249,7 @@ export default {
     'form.fd.vmem' (val) {
       if (this.imagesInfo.osOpts && this.imagesInfo.osOpts.length) {
         const { os, image } = this.form.fc.getFieldsValue([this.decorator.os[0], this.decorator.image[0]])
-        this.osChange(os, image)
+        this.defaultSelect(os, image)
       }
     },
   },
@@ -568,7 +568,11 @@ export default {
           }
           this.imageOpts = imageOpts
           this.form.fc.setFieldsValue({ image })
-          this.imageChange(image)
+          const currentImage = this.form.fc.getFieldValue(this.decorator.image[0])
+          if (currentImage && imageValue && currentImage.key === imageValue.key) {
+          } else {
+            this.imageChange(image)
+          }
         }
         this.form.fc.setFieldsValue({ os })
       } else {
