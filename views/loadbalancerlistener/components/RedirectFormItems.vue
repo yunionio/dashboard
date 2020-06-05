@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-form-item label="重定向">
-      <a-switch @change="handleRedirectChange" v-decorator="decorators.redirect" />
+      <a-switch v-decorator="decorators.redirect" @change="handleRedirectChange" />
     </a-form-item>
     <template v-if="form.fc.getFieldValue('redirect') || form.fc.getFieldValue('redirect') === 'off'">
       <a-form-item label="重定向方式">
@@ -57,7 +57,9 @@ export default {
       loading: false,
       isGoogle: false,
       decorators: {
-        redirect: ['redirect'],
+        redirect: ['redirect', {
+          valuePropName: 'checked',
+        }],
         redirect_code: ['redirect_code', {
           initialValue: 301,
         }],

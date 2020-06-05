@@ -23,7 +23,7 @@
     <redirect-form-items v-if="['http', 'https'].includes(form.fd.listener_type)" :form="form" />
     <!-- <a-divider orientation="left">高级配置</a-divider> -->
     <a-collapse :bordered="false">
-      <a-collapse-panel header="高级配置" key="1">
+      <a-collapse-panel header="高级配置" key="1" forceRender>
         <!-- 开启重定向 -->
         <div v-if="isLbRedirected">
           <acl :decorators="decorators" :form="form" />

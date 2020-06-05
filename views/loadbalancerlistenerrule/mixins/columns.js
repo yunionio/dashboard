@@ -20,7 +20,8 @@ export default {
           )
         },
       }),
-      getStatusTableColumn({ statusModule: 'lb' }),
+      getStatusTableColumn({ minWidth: 100, statusModule: 'lb' }),
+      getStatusTableColumn({ minWidth: 100, statusModule: 'lbRedirect', field: 'redirect', title: '重定向' }),
       {
         field: 'domain',
         title: '域名',
@@ -35,6 +36,9 @@ export default {
         field: 'backend_group',
         title: '后端服务器组',
         minWidth: 200,
+        formatter: ({ row }) => {
+          return row.redirect === 'off' && row.backend_group ? row.backend_group : '-'
+        },
       },
     ]
   },
