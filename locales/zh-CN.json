@@ -698,6 +698,10 @@
       "refused": "报备失败",
       "accept": "报备成功",
       "expired": "已过期"
+    },
+    "lbRedirect": {
+      "raw": "已启用",
+      "off": "已关闭"
     }
   },
   "skuCategoryOptions": {
