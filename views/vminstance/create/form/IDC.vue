@@ -45,10 +45,10 @@
         <gpu :decorators="decorators.gpu" :gpu-options="gpuOptions" />
       </a-form-item>
       <a-form-item label="CPU核数" class="mb-0">
-        <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" @change="cpuChange" />
+        <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" @change="cpuChange" :disabled="form.fi.cpuDisabled" />
       </a-form-item>
       <a-form-item label="内存" class="mb-0">
-        <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" />
+        <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" :disabled="form.fi.memDisabled" />
       </a-form-item>
       <a-form-item label="套餐" v-if="showSku">
         <sku
@@ -333,6 +333,8 @@ export default {
         this.$nextTick(() => {
           this.form.fi.dataDiskDisabled = false
           this.form.fi.sysDiskDisabled = false
+          this.form.fi.cpuDisabled = false
+          this.form.fi.memDisabled = false
           if (this.form.fd.imageType === IMAGES_TYPE_MAP.host.key) {
             const { root_image: rootImage, data_images: dataImages } = this.form.fi.imageMsg
             const systemDiskSize = rootImage.min_disk_mb / 1024
@@ -349,19 +351,27 @@ export default {
             dataImages.forEach(val => {
               this.$refs.dataDiskRef.add({ size: val.min_disk_mb / 1024, min: val.min_disk_mb / 1024, minusDisabled: true })
             })
-          } else if (this.form.fd.imageType === IMAGES_TYPE_MAP.snapshot.key) {
+          }
+          if (this.form.fd.imageType === IMAGES_TYPE_MAP.snapshot.key) {
             // 镜像类型为主机快照的话要回填数据并禁用
             const snapshots = this.form.fi.imageMsg.server_config.disks
             if (!snapshots) return
-            const sysDisk = snapshots.find(val => val.disk_type === 'sys')
+            const sysDisk = snapshots.find(val => val.disk_type === 'sys') || snapshots[0]
             const dataDisks = snapshots.filter(val => val.disk_type !== 'sys')
-            this.form.fc.setFieldsValue({
+            const data = {
               systemDiskType: {
                 key: sysDisk.backend,
                 label: STORAGE_TYPES[HYPERVISORS_MAP.kvm.key][sysDisk.backend].label,
               },
               systemDiskSize: sysDisk.size / 1024,
-            })
+            }
+            if (val && R.is(Object, val.server_config)) {
+              if (val.server_config.vcpu_count) data[this.decorators.vcpu[0]] = val.server_config.vcpu_count
+              if (val.server_config.vmem_size) data[this.decorators.vmem[0]] = val.server_config.vmem_size
+              this.form.fi.cpuDisabled = true
+              this.form.fi.memDisabled = true
+            }
+            this.form.fc.setFieldsValue(data)
             // 重置数据盘数据
             this._resetDataDisk()
             dataDisks.forEach(val => {
@@ -369,6 +379,15 @@ export default {
             })
             this.form.fi.dataDiskDisabled = true
             this.form.fi.sysDiskDisabled = true
+          } else {
+            if (oldVal && R.is(Object, oldVal.server_config)) { // 说明是从主机快照切换过去的
+              const vcpuDecorator = this.decorators.vcpu
+              const vcpuInit = vcpuDecorator[1].initialValue
+              this.form.fc.setFieldsValue({
+                [vcpuDecorator[0]]: vcpuInit,
+              })
+              this.cpuChange(vcpuInit)
+            }
           }
         })
       },
