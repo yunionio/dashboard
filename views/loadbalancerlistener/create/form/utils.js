@@ -382,7 +382,9 @@ export const getDecorators = ({ provider, vm, loadbalancer }) => {
     }],
     redirect_host: ['redirect_host'],
     redirect_path: ['redirect_path'],
-    send_proxy: ['send_proxy'],
+    send_proxy: ['send_proxy', {
+      initialValue: 'off',
+    }],
     loadbalancer: [
       'loadbalancer',
       {

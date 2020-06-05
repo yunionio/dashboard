@@ -20,28 +20,31 @@
         :select-props="{ placeholder: '请选择证书' }" />
       <div slot="extra">没有想要的？可以前往<help-link href="/lbcert"> 新建证书</help-link></div>
     </a-form-item>
-    <a-divider orientation="left">高级配置</a-divider>
-    <a-form-item label="调度算法" class="mb-0">
-      <scheduler-types :decorators="decorators" :form="form" :schedulerTypeOpts="schedulerTypeOpts" />
-    </a-form-item>
-    <sticky-session :decorators="decorators" :form="form" v-if="['http'].includes(form.fd.listener_type)" />
-    <acl :decorators="decorators" :form="form" />
-    <!-- !!! 下面的这些 v-if 会影响scheduler 的回填(原因未知)，所以在formStepItem里面回填时会单独getFieldDecorator -->
-    <a-form-item label="连接空闲超时时间" v-if="['http', 'https'].includes(form.fd.listener_type)">
-      <a-input v-decorator="decorators.client_idle_timeout" addonAfter="秒" type="number" />
-    </a-form-item>
-    <a-form-item label="连接请求超时时间" v-if="['http', 'https'].includes(form.fd.listener_type)">
-      <a-input v-decorator="decorators.client_request_timeout" addonAfter="秒" type="number" />
-    </a-form-item>
-    <a-form-item label="启用HTTP2.0" v-if="['https'].includes(form.fd.listener_type)">
-      <a-switch v-decorator="decorators.enable_http2" />
-    </a-form-item>
-    <a-form-item label="Gzip数据压缩" v-if="['http', 'https'].includes(form.fd.listener_type)">
-      <a-switch v-decorator="decorators.gzip" />
-    </a-form-item>
-    <a-form-item label="获取客户端真实IP" extra="通过X-Forwarded-For头字段获取客户端真实 IP" v-if="['http', 'https'].includes(form.fd.listener_type)">
-      <a-checkbox v-decorator="decorators.xforwarded_for">X-Forwarded-For</a-checkbox>
-    </a-form-item>
+    <a-collapse :bordered="false">
+      <a-collapse-panel header="高级配置" key="1">
+        <a-form-item label="调度算法" class="mb-0">
+          <scheduler-types :decorators="decorators" :form="form" :schedulerTypeOpts="schedulerTypeOpts" />
+        </a-form-item>
+        <sticky-session :decorators="decorators" :form="form" v-if="['http'].includes(form.fd.listener_type)" />
+        <acl :decorators="decorators" :form="form" />
+        <!-- !!! 下面的这些 v-if 会影响scheduler 的回填(原因未知)，所以在formStepItem里面回填时会单独getFieldDecorator -->
+        <a-form-item label="连接空闲超时时间" v-if="['http', 'https'].includes(form.fd.listener_type)">
+          <a-input v-decorator="decorators.client_idle_timeout" addonAfter="秒" type="number" />
+        </a-form-item>
+        <a-form-item label="连接请求超时时间" v-if="['http', 'https'].includes(form.fd.listener_type)">
+          <a-input v-decorator="decorators.client_request_timeout" addonAfter="秒" type="number" />
+        </a-form-item>
+        <a-form-item label="启用HTTP2.0" v-if="['https'].includes(form.fd.listener_type)">
+          <a-switch v-decorator="decorators.enable_http2" />
+        </a-form-item>
+        <a-form-item label="Gzip数据压缩" v-if="['http', 'https'].includes(form.fd.listener_type)">
+          <a-switch v-decorator="decorators.gzip" />
+        </a-form-item>
+        <a-form-item label="获取客户端真实IP" extra="通过X-Forwarded-For头字段获取客户端真实 IP" v-if="['http', 'https'].includes(form.fd.listener_type)">
+          <a-checkbox v-decorator="decorators.xforwarded_for">X-Forwarded-For</a-checkbox>
+        </a-form-item>
+      </a-collapse-panel>
+    </a-collapse>
   </a-form>
 </template>
 

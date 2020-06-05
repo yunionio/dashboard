@@ -8,7 +8,7 @@
     <page-footer>
       <template v-slot:right>
         <template v-if="isLbRedirected">
-          <a-button type="primary" class="mr-2" @click="isUpdate ? update() : validateForm() " :loading="loading">提交</a-button>
+          <a-button type="primary" class="mr-2" @click="isUpdate ? update() : validateForm() " :loading="loading">确定</a-button>
         </template>
         <template v-else>
           <a-button @click="prev" v-if="!isFirstStep" class="mr-2">上一步</a-button>

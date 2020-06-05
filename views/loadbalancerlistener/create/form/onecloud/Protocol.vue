@@ -55,11 +55,11 @@
           <a-form-item label="连接请求超时时间" v-if="['http'].includes(form.fd.listener_type)">
             <a-input v-decorator="decorators.client_request_timeout" addonAfter="秒" type="number" />
           </a-form-item>
-          <a-form-item label="限定监听接收请示速率" extra="tips: 0为默认值，表示不限速" v-if="['http', 'https'].includes(form.fd.listener_type)">
-            <a-input v-decorator="decorators.http_request_rate" addonAfter="req/s" type="number" />
+          <a-form-item label="限定接受请求速率" extra="0为默认，表示不限速" v-if="['http', 'https'].includes(form.fd.listener_type)">
+            <a-input v-decorator="decorators.http_request_rate" addonAfter="次/秒" type="number" />
           </a-form-item>
-          <a-form-item label="源IP监听请求最大速率" extra="tips: 限定每个源IP对此监听请求的最大速率，0为默认值，表示不限速" v-if="['http', 'https'].includes(form.fd.listener_type)">
-            <a-input v-decorator="decorators.http_request_rate_per_src" addonAfter="req/s" type="number" />
+          <a-form-item label="限定同源IP发送请求速率" extra="限制同一源地址对转发策略发送请求的速率，0为默认值，表示不限速" v-if="['http', 'https'].includes(form.fd.listener_type)">
+            <a-input v-decorator="decorators.http_request_rate_per_src" addonAfter="次/秒" type="number" />
           </a-form-item>
           <a-form-item label="启用HTTP2.0" v-if="['https'].includes(form.fd.listener_type)">
             <a-switch v-decorator="decorators.enable_http2" />
@@ -67,10 +67,10 @@
           <a-form-item label="Gzip数据压缩" v-if="['http', 'https'].includes(form.fd.listener_type)">
             <a-switch v-decorator="decorators.gzip" />
           </a-form-item>
-          <a-form-item label="设置PROXY协议" extra="通过PROXY协议获取客户端真实IP" v-if="['http', 'https'].includes(form.fd.listener_type)">
+          <a-form-item label="设置PROXY协议" extra="通过PROXY协议获取客户端真实IP" v-if="['tcp', 'http', 'https'].includes(form.fd.listener_type)">
             <a-select v-decorator="decorators.send_proxy">
               <a-select-option v-for="(v, k) in proxyOpts" :value="k" :key="k">
-                {{k}}
+                {{v}}
               </a-select-option>
             </a-select>
           </a-form-item>

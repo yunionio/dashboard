@@ -145,18 +145,26 @@ export default {
           if (vnode && vnode.loadOpts) {
             const retList = await vnode.loadOpts()
             if (retList && retList.length > 0) {
+              const backend_group = retList[0].id
               this.form.fc.setFieldsValue({
-                backend_group: retList[0].id,
+                backend_group,
               })
+              this.fetchBackendList(backend_group)
             }
           }
         },
       })
     },
-    onValuesChange (props, values) {
+    async onValuesChange (props, values) {
       R.forEachObjIndexed((value, key) => {
         this.$set(this.form.fd, key, value)
       }, values)
+      await this.$nextTick()
+      const redirectKeys = ['redirect', 'redirect_scheme', 'redirect_host', 'redirect_path', 'listener_type']
+      if (redirectKeys.indexOf(Object.keys(values)[0]) > -1) {
+        this.form.fc.resetFields(['check'])
+        this.form.fc.validateFields(['check'])
+      }
     },
     healthCheckChange (val) {
       if (val) {

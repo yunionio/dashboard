@@ -34,7 +34,7 @@ export default {
         title: '调度算法',
         minWidth: 100,
         formatter: ({ row }) => {
-          if (!row.scheduler) return '-'
+          if (!row.scheduler || row.redirect === 'raw') return '-'
           const scheduler = LB_SCHEDULER_MAP[row.scheduler]
           return scheduler ? scheduler.text : row.scheduler
         },
@@ -44,8 +44,9 @@ export default {
         title: '后端服务器组',
         minWidth: 200,
       },
-      getStatusTableColumn({ statusModule: 'lbHealth', field: 'health_check', title: '健康检查' }),
-      getStatusTableColumn({ statusModule: 'lbAcl', field: 'acl_status', title: '访问控制' }),
+      getStatusTableColumn({ minWidth: 100, statusModule: 'lbHealth', field: 'health_check', title: '健康检查' }),
+      getStatusTableColumn({ minWidth: 100, statusModule: 'lbAcl', field: 'acl_status', title: '访问控制' }),
+      getStatusTableColumn({ minWidth: 100, statusModule: 'lbRedirect', field: 'redirect', title: '重定向' }),
       getProjectTableColumn(),
     ]
   },

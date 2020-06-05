@@ -14,11 +14,12 @@
             </a-radio-button>
           </a-radio-group>
       </a-form-item>
-      <a-form-item label="重定向至" class="mb-0">
+      <a-form-item label="重定向至">
+        <a-input v-show="false" v-decorator="decorators.check" />
         <a-input-group compact>
           <a-row class="w-100">
             <a-col :span="4">
-              <a-form-item>
+              <a-form-item class="mb-0">
                 <a-select class="w-100" v-decorator="decorators.redirect_scheme">
                   <a-select-option value="http">HTTP</a-select-option>
                   <a-select-option value="https">HTTPS</a-select-option>
@@ -26,12 +27,12 @@
               </a-form-item>
             </a-col>
             <a-col :span="10">
-              <a-form-item>
+              <a-form-item class="mb-0">
                 <a-input v-decorator="decorators.redirect_host" placeholder="请输入域名或IP地址（端口号）" />
               </a-form-item>
             </a-col>
             <a-col :span="10">
-              <a-form-item>
+              <a-form-item class="mb-0">
                 <a-input v-decorator="decorators.redirect_path" placeholder="请输入URL路径（可选）" />
               </a-form-item>
             </a-col>
@@ -75,6 +76,28 @@ export default {
                 _callback()
               },
               trigger: ['blur', 'change'],
+            },
+          ],
+        }],
+        check: ['check', {
+          rules: [
+            {
+              validator: (rule, value, _callback) => {
+                const { validateFields } = this.form.fc
+                this.$nextTick(() => {
+                  validateFields(['redirect_scheme', 'redirect_host', 'redirect_path', 'listener_type'], (errs, vals) => {
+                    const { listener_type, redirect_scheme, redirect_host, redirect_path } = vals
+                    if (errs || !listener_type) {
+                      _callback()
+                    }
+                    if (listener_type === redirect_scheme && !redirect_host && !redirect_path) {
+                      return _callback(new Error('重定向后的URL地址不能与重定向之前相同'))
+                    } else {
+                      _callback()
+                    }
+                  })
+                })
+              },
             },
           ],
         }],

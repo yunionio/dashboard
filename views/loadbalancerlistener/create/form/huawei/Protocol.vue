@@ -20,15 +20,19 @@
         :select-props="{ placeholder: '请选择证书' }" />
       <div slot="extra">没有想要的？可以前往<help-link href="/lbcert"> 新建证书</help-link></div>
     </a-form-item>
-    <a-divider orientation="left">高级配置</a-divider>
-    <a-form-item label="调度算法" class="mb-0">
-      <scheduler-types :decorators="decorators" :form="form" :schedulerTypeOpts="schedulerTypeOpts" />
-    </a-form-item>
-    <sticky-session :decorators="decorators" :form="form" :stickySessionTypeOpts="stickySessionTypeOpts" :sticky_session_cookie_timeout_decorator="sticky_session_cookie_timeout_decorator" />
-    <acl :decorators="decorators" :form="form" :aclTypeOpts="aclTypeOpts" />
-    <a-form-item label="启用HTTP2.0" v-if="['https'].includes(form.fd.listener_type)">
-      <a-switch v-decorator="decorators.enable_http2" />
-    </a-form-item>
+    <a-collapse :bordered="false">
+      <a-collapse-panel header="高级配置" key="1">
+        <a-form-item label="调度算法" class="mb-0">
+          <scheduler-types :decorators="decorators" :form="form" :schedulerTypeOpts="schedulerTypeOpts" />
+        </a-form-item>
+        <sticky-session :decorators="decorators" :form="form" :stickySessionTypeOpts="stickySessionTypeOpts" :sticky_session_cookie_timeout_decorator="sticky_session_cookie_timeout_decorator" />
+        <acl :decorators="decorators" :form="form" :aclTypeOpts="aclTypeOpts" />
+        <a-form-item label="启用HTTP2.0" v-if="['https'].includes(form.fd.listener_type)">
+          <a-switch v-decorator="decorators.enable_http2" />
+        </a-form-item>
+      </a-collapse-panel>
+    </a-collapse>
+    <!-- <a-divider orientation="left">高级配置</a-divider> -->
   </a-form>
 </template>
 

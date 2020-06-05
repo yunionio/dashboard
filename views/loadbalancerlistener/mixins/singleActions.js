@@ -6,7 +6,7 @@ export default {
   created () {
     this.singleActions = [
       {
-        label: '更改',
+        label: '修改',
         permission: 'lb_loadbalancerlisteners_update',
         action: obj => {
           const query = {
