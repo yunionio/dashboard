@@ -3,20 +3,23 @@
     <a-card v-for="item in listData" :key="item.title" style="width: 700px;" class="position-relative m-3">
       <a-divider>{{ item.title }}</a-divider>
       <actions class="actions position-absolute" :options="singleActions" :row="item" button-type="link" button-size="small" />
-      <monitor-list-line :chartData="item.chartData" :lineConfig="getConfig(item)" :loading="loading" />
+      <!-- <monitor-list-line :chartData="item.chartData" :lineConfig="getConfig(item)" :loading="loading" /> -->
+      <chart-line :columns="item.chartData.columns" :rows="item.chartData.rows" :options="getConfig(item)" />
     </a-card>
   </div>
 </template>
 
 <script>
-import MonitorListLine from './Line'
+// import MonitorListLine from './Line'
 import Actions from '@/components/PageList/Actions'
+import ChartLine from '@/sections/Charts/Line'
 
 export default {
   name: 'MonitorList',
   components: {
-    MonitorListLine,
+    // MonitorListLine, // 统一用 echarts 图表
     Actions,
+    ChartLine,
   },
   props: {
     singleActions: {
