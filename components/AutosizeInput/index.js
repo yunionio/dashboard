@@ -30,7 +30,7 @@ const getListeners = context => {
 }
 
 export default {
-  name: 'InputAutosize',
+  name: 'AutosizeInput',
   props: {
     // id to use for the input, can be set for consistent snapshots
     id: String,
