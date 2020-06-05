@@ -21,7 +21,7 @@
       <div slot="extra">没有想要的？可以前往<help-link href="/lbcert"> 新建证书</help-link></div>
     </a-form-item>
     <a-collapse :bordered="false">
-      <a-collapse-panel header="高级配置" key="1">
+      <a-collapse-panel header="高级配置" key="1" forceRender>
         <a-form-item label="调度算法" class="mb-0">
           <scheduler-types :decorators="decorators" :form="form" :schedulerTypeOpts="schedulerTypeOpts" />
         </a-form-item>

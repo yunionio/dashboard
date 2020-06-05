@@ -211,6 +211,8 @@ export default {
           updateData[key] = this.listenerData[key].split(',')
         } else if (updateFieldMap[key]) {
           updateData[key] = this.listenerData[updateFieldMap[key]]
+        } else if (key === 'redirect') {
+          updateData[key] = (this.listenerData[key] === 'raw')
         } else {
           updateData[key] = this.listenerData[key]
         }
