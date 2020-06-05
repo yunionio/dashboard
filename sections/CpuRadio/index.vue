@@ -1,6 +1,6 @@
 <template>
   <a-form-item>
-    <a-radio-group v-decorator="decorator" @change="change">
+    <a-radio-group v-decorator="decorator" @change="change" :disabled="disabled">
       <a-radio-button v-for="item in options" :value="item" :key="item" v-show="item < max || !showMore" :disabled="disableOptionHandle(item)">{{ item }}核</a-radio-button>
       <a-radio-button v-if="showMore" @click="showMore = !showMore">...</a-radio-button>
     </a-radio-group>
@@ -26,6 +26,10 @@ export default {
     max: {
       type: Number,
       default: 32,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
   },
   data () {
