@@ -64,34 +64,20 @@
     </a-form-item>
     <a-form-item label="总量指标" class="mb-0" v-if="decorators.all_usage_key">
       <a-form-item :wrapperCol="{ span: 24 }">
-        <a-select
+        <usage-select
           class="w-100"
           v-decorator="decorators.all_usage_key"
-          @change="allUsageChange"
-          :filterOption="usageFilterOption"
-          showSearch
-          optionLabelProp="value">
-          <a-select-option v-for="item of usages" :value="item.key" :key="item.key">
-            <div style="font-size: 14px;">{{ item.key }}</div>
-            <div class="text-color-help">{{ item.label }}</div>
-          </a-select-option>
-        </a-select>
+          :usages="usages"
+          @change="allUsageChange" />
       </a-form-item>
     </a-form-item>
     <a-form-item :label="usageLabel || '使用量指标'" class="mb-0" v-if="decorators.usage_key">
       <a-form-item :wrapperCol="{ span: 24 }">
-        <a-select
+        <usage-select
           class="w-100"
           v-decorator="decorators.usage_key"
-          @change="usageChange"
-          :filterOption="usageFilterOption"
-          showSearch
-          optionLabelProp="value">
-          <a-select-option v-for="item of usages" :value="item.key" :key="item.key">
-            <div style="font-size: 14px;">{{ item.key }}</div>
-            <div class="text-color-help">{{ item.label }}</div>
-          </a-select-option>
-        </a-select>
+          :usages="usages"
+          @change="usageChange" />
       </a-form-item>
     </a-form-item>
   </div>
@@ -102,10 +88,14 @@ import * as R from 'ramda'
 import _ from 'lodash'
 import { mapGetters } from 'vuex'
 import { USAGE_CONFIG } from '@Dashboard/constants'
+import UsageSelect from './UsageSelect'
 import { typeClouds } from '@/utils/common/hypervisor'
 
 export default {
   name: 'QuotaConfig',
+  components: {
+    UsageSelect,
+  },
   props: {
     labelInValue: {
       type: Boolean,
@@ -179,9 +169,6 @@ export default {
     })
   },
   methods: {
-    usageFilterOption (input, option) {
-      return option.key.toLowerCase().indexOf(input.toLowerCase()) >= 0
-    },
     filterOption (input, option) {
       return (
         option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
