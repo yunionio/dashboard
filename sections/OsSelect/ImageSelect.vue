@@ -176,8 +176,8 @@ export default {
     },
     'form.fd.vmem' (val) {
       if (this.imagesInfo.osOpts && this.imagesInfo.osOpts.length) {
-        const { os } = this.form.fc.getFieldsValue([this.decorator.os[0]])
-        this.osChange(os)
+        const { os, image } = this.form.fc.getFieldsValue([this.decorator.os[0], this.decorator.image[0]])
+        this.defaultSelect(os, image)
       }
     },
   },
@@ -453,7 +453,11 @@ export default {
       }
       this.defaultSelect()
     },
-    defaultSelect (osValue) {
+    /*
+     * @params {String} osValue
+     * @params {Object} imageValue { key: <id>, label: <name> }
+     */
+    defaultSelect (osValue, imageValue) {
       this.imageOpts = []
       const { osOpts, imageOptsMap } = this.imagesInfo
       if (osOpts && osOpts.length) {
@@ -462,7 +466,8 @@ export default {
         if (!imageOpts || !imageOpts.length) {
           this.form.fc.setFieldsValue({ image: { ...initData } })
         } else {
-          let image = { key: imageOpts[0].id, label: imageOpts[0].name }
+          const isEsxit = imageValue && !!imageOpts.find(val => val.id === imageValue.key)
+          let image = isEsxit ? imageValue : { key: imageOpts[0].id, label: imageOpts[0].name }
           if (!osValue && this.storageImage) { // 采用上次选择的镜像（storage）
             const { os: storageOs, image: storageImage } = this.storageImage
             const tempImageOpts = imageOptsMap[storageOs] || []
@@ -475,7 +480,11 @@ export default {
           }
           this.imageOpts = imageOpts
           this.form.fc.setFieldsValue({ image })
-          this.imageChange(image)
+          const currentImage = this.form.fc.getFieldValue(this.decorator.image[0])
+          if (currentImage && imageValue && currentImage.key === imageValue.key) {
+          } else {
+            this.imageChange(image)
+          }
         }
         this.form.fc.setFieldsValue({ os })
       } else {
