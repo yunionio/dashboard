@@ -298,4 +298,8 @@ export default {
     success: ['raw'],
     danger: ['off'],
   },
+  scheduledtask: {
+    success: ['ready'],
+    danger: ['create_failed'],
+  },
 }

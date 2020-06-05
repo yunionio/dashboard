@@ -702,6 +702,10 @@
     "lbRedirect": {
       "raw": "已启用",
       "off": "已关闭"
+    },
+    "scheduledtask": {
+      "ready": "正常",
+      "create_failed": "创建失败"
     }
   },
   "skuCategoryOptions": {
