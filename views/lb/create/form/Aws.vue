@@ -26,14 +26,14 @@
         <a-radio-button value="ipv4">IPv4</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-form-item label="专有网络">
+    <a-form-item label="VPC">
       <base-select
         v-decorator="decorators.vpc"
         resource="vpcs"
         need-params
         filterable
         :params="vpcParams"
-        :select-props="{ placeholder: '请选择专有网络' }" />
+        :select-props="{ placeholder: '请选择VPC' }" />
     </a-form-item>
     <a-form-item label="指定IP子网">
       <base-select

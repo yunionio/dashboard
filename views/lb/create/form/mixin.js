@@ -79,7 +79,7 @@ export default {
           'vpc',
           {
             rules: [
-              { required: true, message: '请选择专有网络', trigger: 'change' },
+              { required: true, message: '请选择VPC', trigger: 'change' },
             ],
           },
         ],

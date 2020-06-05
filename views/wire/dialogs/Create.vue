@@ -7,6 +7,9 @@
         <a-form-item v-bind="formItemLayout" :label="`指定${$t('dictionary.domain')}`" v-if="$store.getters.isAdminMode">
           <domain-select v-decorator="decorators.project_domain" />
         </a-form-item>
+        <a-form-item label="名称" v-bind="formItemLayout">
+          <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')"  />
+        </a-form-item>
         <a-form-item label="VPC" v-bind="formItemLayout" :validateStatus="vpcValidateStatus" :help="vpcHelp" :required="true">
           <a-row :gutter="8">
             <a-col :span="12">
@@ -38,9 +41,6 @@
               {{item.label}}
             </a-select-option>
           </a-select>
-        </a-form-item>
-        <a-form-item label="名称" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')"  />
         </a-form-item>
         <a-form-item label="带宽" v-bind="formItemLayout">
           <a-select
@@ -112,7 +112,7 @@ export default {
           'vpc',
           {
             rules: [
-              { required: true, message: '请选择专有网络' },
+              { required: true, message: '请选择VPC' },
             ],
           },
         ],
@@ -253,7 +253,7 @@ export default {
           return
         } else if (!this.form.fc.getFieldValue('vpc')) {
           this.vpcValidateStatus = 'error'
-          this.vpcHelp = '请选择专有网络'
+          this.vpcHelp = '请选择VPC'
           this.loading = false
           return
         }

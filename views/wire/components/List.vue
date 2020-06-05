@@ -51,7 +51,7 @@ export default {
             }),
           },
           vpc: {
-            label: '专有网络',
+            label: 'VPC',
           },
           region: {
             label: '区域',
@@ -64,7 +64,7 @@ export default {
           { label: 'ID', key: 'id' },
           { label: '名称', key: 'name' },
           { label: '带宽', key: 'bandwidth' },
-          { label: '专有网络', key: 'vpc' },
+          { label: 'VPC', key: 'vpc' },
           { label: '网络数量', key: 'networks' },
           { label: this.$t('dictionary.project'), key: 'tenant' },
           { label: '平台', key: 'provider' },

@@ -4,11 +4,11 @@
     <div slot="body">
       <a-form
         :form="form.fc">
-        <a-form-item label="名称" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.name" placeholder="字母开头，数字和字母大小写组合，长度为2-20个字符，可含'-','_'" />
-        </a-form-item>
         <a-form-item v-bind="formItemLayout" :label="`指定${$t('dictionary.domain')}`" v-if="$store.getters.isAdminMode">
           <domain-select v-decorator="decorators.project_domain" @change="handleDomainChange" />
+        </a-form-item>
+        <a-form-item label="名称" v-bind="formItemLayout">
+          <a-input v-decorator="decorators.name" placeholder="字母开头，数字和字母大小写组合，长度为2-20个字符，可含'-','_'" />
         </a-form-item>
         <a-form-item label="平台" v-bind="formItemLayout">
           <a-radio-group v-decorator="decorators.platform">
@@ -17,11 +17,12 @@
             <a-radio-button value="public_cloud">公有云</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item label="区域1" v-bind="formItemLayout" v-if="platform !== 'idc'">
+        <a-form-item label="区域" v-bind="formItemLayout" v-if="platform !== 'idc'">
           <cloudprovider-region
            @update:region="handleRegionChange"
            :decorator="decorators"
-           :cloudproviderParams="cloudproviderParams" />
+           :cloudproviderParams="cloudproviderParams"
+           :regionParamsExtra="regionParamsExtra" />
         </a-form-item>
         <a-form-item label="区域" v-bind="formItemLayout" v-else>
           <base-select
@@ -30,7 +31,7 @@
             :selectProps="{ 'placeholder': '请选择区域' }"
             :params="idcCloudRegionParams" />
         </a-form-item>
-        <a-form-item v-if="!isGoogle || platform !== 'public_cloud'" label="目标网段" v-bind="formItemLayout" :extra="platform !== 'idc' ? '一旦创建成功，网段不能修改。支持使用 192.168.0.0/16、172.16.0.0/12、10.0.0.0/8 及其子网作为专有网络地址段。' : '一旦创建成功，网段不能修改。'">
+        <a-form-item v-if="!isGoogle || platform !== 'public_cloud'" label="目标网段" v-bind="formItemLayout" :extra="platform !== 'idc' ? '一旦创建成功，网段不能修改。支持使用 192.168.0.0/16、172.16.0.0/12、10.0.0.0/8 及其子网作为VPC地址段。' : '一旦创建成功，网段不能修改。'">
           <a-input v-decorator="decorators.cidr_block" placeholder="请输入IP段，例如：192.168.0.0/16" v-if="platform !== 'idc'" />
           <a-select v-decorator="decorators.cidr_block" v-else>
             <a-select-option value="192.168.0.0/16">192.168.0.0/16</a-select-option>
@@ -155,9 +156,9 @@ export default {
         details: true,
         scope: this.scope,
       }
-      if (this.isAdminMode) params['admin'] = true
       if (this.platform) params[this.platform] = true
       if (this.isAdminMode) {
+        params['admin'] = true
         params['project_domain'] = this.project_domain
         delete params.scope
         delete params.domain_id
@@ -178,6 +179,15 @@ export default {
         usable: true,
         show_emulated: true,
       }
+    },
+    regionParamsExtra () {
+      const res = {}
+      if (this.platform === 'public_cloud') {
+        res['cloud_env'] = 'public'
+      } else if (this.platform === 'private_cloud') {
+        res['cloud_env'] = 'private'
+      }
+      return res
     },
   },
   provide () {

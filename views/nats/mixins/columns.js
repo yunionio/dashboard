@@ -42,7 +42,7 @@ export default {
           return NatSpec[spec] || spec
         },
       },
-      getCopyWithContentTableColumn({ field: 'vpc', title: '所属专有网络' }),
+      getCopyWithContentTableColumn({ field: 'vpc', title: '所属VPC' }),
       getBrandTableColumn(),
       getPublicScopeTableColumn({ vm: this }),
       getProjectDomainTableColumn(),

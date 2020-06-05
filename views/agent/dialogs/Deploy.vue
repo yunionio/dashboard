@@ -311,7 +311,7 @@ export default {
           if (updateInfo && updateInfo.current_version) {
             const v = updateInfo.current_version.slice(1, 4)
             this.form.fc.setFieldsValue({
-              repo_base_url: `https://yunioniso.oss-cn-beijing.aliyuncs.com/iso/${v}/`,
+              repo_base_url: `https://yunioniso.oss-cn-beijing.aliyuncs.com/iso/${v}/rpms`,
             })
           }
         }
@@ -322,7 +322,9 @@ export default {
       const { getFieldValue, validateFields } = this.form.fc
       if (getFieldValue('hostName') === 'server' && deployment && deployment.host) {
         const [, id] = deployment.host.split(':')
-        this.isDeleteServer = !list.find(item => item.id === id)
+        this.isDeleteServer = !list.find(item => {
+          return item.id === id || item.name === id
+        })
         validateFields(['server'])
       }
     },

@@ -22,6 +22,7 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    data: Object,
   },
   data () {
     return {
@@ -30,13 +31,8 @@ export default {
         resource: 'reservedips',
         getParams: this.getParam,
         filterOptions: {
-          name: {
-            label: 'IP子网',
-            filter: true,
-            formatter: val => {
-              return `networks.id(network_id).name.contains(${val})`
-            },
-            jointFilter: true,
+          ip_addr: {
+            label: 'IP地址',
           },
         },
       }),
@@ -56,6 +52,7 @@ export default {
               title: '新建',
               onManager: this.onManager,
               refresh: this.refresh,
+              network: this.data,
             })
           },
           meta: () => {

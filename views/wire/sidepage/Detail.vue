@@ -30,7 +30,7 @@ export default {
         getBandwidthTableColumn(),
         {
           field: 'vpc',
-          title: '专有网络',
+          title: 'VPC',
         },
         {
           field: 'networks',

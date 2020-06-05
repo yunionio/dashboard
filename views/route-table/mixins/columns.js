@@ -59,7 +59,7 @@ export default {
       },
       {
         field: 'vpc',
-        title: '所属专有网络',
+        title: '所属VPC',
         minWidth: 120,
         showOverflow: 'ellipsis',
       },

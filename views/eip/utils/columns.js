@@ -2,7 +2,7 @@ export const getAssociateNameTableColumn = (vm) => {
   return {
     field: 'associate_name',
     title: '绑定资源',
-    width: 120,
+    minWidth: 120,
     slots: {
       default: ({ row }, h) => {
         const type = {
