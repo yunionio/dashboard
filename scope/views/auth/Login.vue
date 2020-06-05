@@ -78,6 +78,7 @@
 </template>
 
 <script>
+import { Base64 } from 'js-base64'
 import { mapGetters } from 'vuex'
 import Cookies from 'js-cookie'
 import { STORE_SECRET_PERFIX_KEY } from './constants'
@@ -250,6 +251,7 @@ export default {
         }
         if (tenant) data.username = `${tenant}/${data.username}`
         if (scope) data.scope = scope
+        data.password = Base64.encode(data.password)
         try {
           const loginResponse = await this.$store.dispatch('auth/login', data)
           this.onTotpLogin(loginResponse)
