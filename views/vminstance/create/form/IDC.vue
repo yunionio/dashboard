@@ -284,6 +284,8 @@ export default {
         this.$nextTick(() => {
           this.form.fi.dataDiskDisabled = false
           this.form.fi.sysDiskDisabled = false
+          this.form.fi.cpuDisabled = false
+          this.form.fi.memDisabled = false
           if (this.form.fd.imageType === IMAGES_TYPE_MAP.host.key) {
             const { root_image: rootImage, data_images: dataImages } = this.form.fi.imageMsg
             const systemDiskSize = rootImage.min_disk_mb / 1024
@@ -315,8 +317,6 @@ export default {
               systemDiskSize: sysDisk.size / 1024,
             }
             if (val && R.is(Object, val.server_config)) {
-              console.log(this.decorators.vmem[0], 'this.decorators.vmem[0]')
-              console.log(val.server_config.vmem_size, 'val.server_config.vmem_size')
               if (val.server_config.vcpu_count) data[this.decorators.vcpu[0]] = val.server_config.vcpu_count
               if (val.server_config.vmem_size) data[this.decorators.vmem[0]] = val.server_config.vmem_size
               this.form.fi.cpuDisabled = true
@@ -331,8 +331,6 @@ export default {
             this.form.fi.dataDiskDisabled = true
             this.form.fi.sysDiskDisabled = true
           } else {
-            this.form.fi.dataDiskDisabled = false
-            this.form.fi.sysDiskDisabled = false
             if (oldVal && R.is(Object, oldVal.server_config)) { // 说明是从主机快照切换过去的
               const vcpuDecorator = this.decorators.vcpu
               const vcpuInit = vcpuDecorator[1].initialValue
