@@ -3,6 +3,7 @@ export default {
     this.singleActions = [
       {
         label: '修改',
+        permission: 'lb_loadbalancerlistenerrules_update',
         action: (obj) => {
           this.createDialog('LoadbalancerlistenerruleUpdateDialog', {
             lbListenerData: this.data,
