@@ -53,7 +53,7 @@ export default {
           field: 'enabled',
           slots: (data) => {
             return (<div class='status'>
-              <status status={ data['enabled'] } statusModule='enabled' />
+              <status status={ data.enabled } statusModule='enabled' />
             </div>)
           },
         },
@@ -61,11 +61,11 @@ export default {
           title: '状态',
           field: 'status',
           slots: (data) => {
-            if (!data['status']) {
+            if (!data.status) {
               return (<span>-</span>)
             }
             return (<div class='status'>
-              <status status={ data['status'] } statusModule='kubecomponent' />
+              <status status={ data.status } statusModule='kubecomponent' />
             </div>)
           },
         }],
@@ -151,7 +151,7 @@ export default {
               name: obj.name,
               idKey: 'name',
               ok: (ids, data) => {
-                return new this.$Manager(`kubeclusters`, 'v1').performAction({
+                return new this.$Manager('kubeclusters', 'v1').performAction({
                   id: this.cluster,
                   action: 'delete-component',
                   data: {
@@ -194,8 +194,8 @@ export default {
         this.list.responseData = {
           data: [],
         }
-        for (let key in data) {
-          data[key]['name'] = key
+        for (const key in data) {
+          data[key].name = key
           // if (key === 'cephCSI') this.list.responseData.data.push(data[key])
           this.list.responseData.data.push(data[key])
           this.responseData = this.list.responseData.data

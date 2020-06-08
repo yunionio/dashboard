@@ -14,7 +14,7 @@ export default {
             onManager: this.onManager,
             idKey: 'name',
             ok: (ids, data) => {
-              return new this.$Manager(`${data[0]['type']}s`, 'v1').batchDelete({
+              return new this.$Manager(`${data[0].type}s`, 'v1').batchDelete({
                 ids,
                 data: {
                   cluster: data[0].clusterID,

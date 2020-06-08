@@ -1,5 +1,5 @@
-import { NODE_ROLE_MAP } from '@K8S/views/cluster/constants'
 import * as R from 'ramda'
+import { NODE_ROLE_MAP } from '@K8S/views/cluster/constants'
 import {
   getNameDescriptionTableColumn,
   getStatusTableColumn,

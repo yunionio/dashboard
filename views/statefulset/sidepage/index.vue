@@ -17,13 +17,13 @@
 </template>
 
 <script>
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
+import Detail from './Detail'
 import SourceInformationSidepage from '@K8S/sections/SourceInformationSidepage'
 import EventsSidepage from '@K8S/sections/EventsSidepage'
 import PodList from '@K8S/views/pod/components/List'
 import ServiceList from '@K8S/views/service/components/List'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
-import Detail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'

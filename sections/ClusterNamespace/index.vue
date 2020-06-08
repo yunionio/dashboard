@@ -23,9 +23,9 @@
 
 <script>
 import * as R from 'ramda'
+import { mapState, mapMutations } from 'vuex'
 import ClusterSelect from '@K8S/sections/ClusterSelect'
 import NamespaceSelect from '@K8S/sections/NamespaceSelect'
-import { mapState, mapMutations } from 'vuex'
 
 export default {
   name: 'K8SClusterNamespace',

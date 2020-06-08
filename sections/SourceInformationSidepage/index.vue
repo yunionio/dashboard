@@ -47,8 +47,8 @@ export default {
   methods: {
     fetchData () {
       const params = {}
-      if (this.data.cluster) params['cluster'] = this.data.cluster
-      if (this.data.namespace) params['namespace'] = this.data.namespace
+      if (this.data.cluster) params.cluster = this.data.cluster
+      if (this.data.namespace) params.namespace = this.data.namespace
       new this.$Manager(this.resource, 'v1').getSpecific({
         id: this.data.name,
         spec: 'rawdata',

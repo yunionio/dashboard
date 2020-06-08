@@ -17,11 +17,11 @@
 </template>
 
 <script>
-import SourceInformationSidepage from '@K8S/sections/SourceInformationSidepage'
-import ServiceList from '@K8S/views/service/components/List'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import Detail from './Detail'
+import ServiceList from '@K8S/views/service/components/List'
+import SourceInformationSidepage from '@K8S/sections/SourceInformationSidepage'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'

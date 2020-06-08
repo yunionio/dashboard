@@ -30,10 +30,10 @@
 </template>
 
 <script>
-import SourceInformationSidepage from '@K8S/sections/SourceInformationSidepage'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import K8sRbacRoleDetail from './Detail'
+import SourceInformationSidepage from '@K8S/sections/SourceInformationSidepage'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'

@@ -179,7 +179,7 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        let values = await this.validateForm()
+        const values = await this.validateForm()
         await this.doCreate(values)
         this.loading = false
         this.cancelDialog()

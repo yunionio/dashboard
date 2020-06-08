@@ -17,12 +17,12 @@
 </template>
 
 <script>
-import EventsSidepage from '@K8S/sections/EventsSidepage'
-import SourceInformationSidepage from '@K8S/sections/SourceInformationSidepage'
-import JobList from '@K8S/views/job/components/List'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import Detail from './Detail'
+import EventsSidepage from '@K8S/sections/EventsSidepage'
+import SourceInformationSidepage from '@K8S/sections/SourceInformationSidepage'
+import JobList from '@K8S/views/job/components/List'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'

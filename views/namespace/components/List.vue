@@ -12,9 +12,9 @@
 </template>
 
 <script>
-import ClusterNamespace from '@K8S/sections/ClusterNamespace'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
+import ClusterNamespace from '@K8S/sections/ClusterNamespace'
 import { getNameFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
@@ -67,7 +67,7 @@ export default {
               name: '命名空间',
               onManager: this.onManager,
               requestData: {
-                cluster: this.list.selectedItems[0]['clusterID'],
+                cluster: this.list.selectedItems[0].clusterID,
               },
               requestParams: {
                 id: this.list.selectedItems.map(item => { return item.name }),
@@ -76,8 +76,8 @@ export default {
           },
           meta: () => {
             if (this.list.selectedItems.length > 0) {
-              let namespaces = this.list.selectedItems.map(v => v.namespace)
-              let unique = Array.from(new Set(namespaces))
+              const namespaces = this.list.selectedItems.map(v => v.namespace)
+              const unique = Array.from(new Set(namespaces))
               if (unique.length > 1) {
                 return {
                   validate: false,

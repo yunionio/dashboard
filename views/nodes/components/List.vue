@@ -11,9 +11,9 @@
 </template>
 
 <script>
-import ClusterNamespace from '@K8S/sections/ClusterNamespace'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
+import ClusterNamespace from '@K8S/sections/ClusterNamespace'
 import { getNameFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'

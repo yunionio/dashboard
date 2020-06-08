@@ -69,8 +69,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import ServerConfig from '@K8S/sections/serverConfig'
 import { hyperOpts, KUBE_PROVIDER } from '../constants'
+import ServerConfig from '@K8S/sections/serverConfig'
 import CloudregionZone from '@/sections/CloudregionZone'
 import { isWithinRange } from '@/utils/validate'
 import { findPlatform } from '@/utils/common/hypervisor'
@@ -304,13 +304,13 @@ export default {
       let param = {}
       switch (type) {
         case 'idc':
-          param = { 'cloud_env': 'onpremise' }
+          param = { cloud_env: 'onpremise' }
           break
         case 'public':
-          param = { 'cloud_env': 'public' }
+          param = { cloud_env: 'public' }
           break
         case 'private':
-          param = { 'cloud_env': 'private', show_emulated: true }
+          param = { cloud_env: 'private', show_emulated: true }
           break
         default :
           param = { is_on_premise: true }
@@ -327,7 +327,7 @@ export default {
         data.map((item, index) => {
           this.k8sVersionOps.push({ key: item, label: item })
         })
-        this.form.fc.setFieldsValue({ 'version': data[0] })
+        this.form.fc.setFieldsValue({ version: data[0] })
       })
     },
     isConfigImageChange (val) {
@@ -376,9 +376,9 @@ export default {
       }
       if (data.image_repository_url) {
         values.image_repository = {}
-        values.image_repository['url'] = data.image_repository_url
+        values.image_repository.url = data.image_repository_url
       }
-      if (data.image_repository_insecure) values.image_repository['insecure'] = data.image_repository_insecure
+      if (data.image_repository_insecure) values.image_repository.insecure = data.image_repository_insecure
       data.vcpu_count.map((item, index) => {
         const machinesItem = {
           vm: {
@@ -389,7 +389,7 @@ export default {
             nets: [{ network: data.network[index] }],
           },
         }
-        if (data.ip && data.ip.length > 0) machinesItem.vm.nets[0]['address'] = data.ip[index]
+        if (data.ip && data.ip.length > 0) machinesItem.vm.nets[0].address = data.ip[index]
         if (data.num[index] > 1) {
           for (let i = 0; i < data.num[index]; i++) {
             values.machines.push({ config: machinesItem, role: data.role[index], resource_type: 'vm' })

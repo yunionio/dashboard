@@ -237,7 +237,7 @@ export default {
             nets: [{ network: data.network[index] }],
           },
         }
-        if (data.ip && data.ip.length > 0) machinesItem.vm.nets[0]['address'] = data.ip[index]
+        if (data.ip && data.ip.length > 0) machinesItem.vm.nets[0].address = data.ip[index]
         if (data.num[index] > 1) {
           for (let i = 0; i < data.num[index]; i++) {
             values.machines.push({ config: machinesItem, role: data.role[index], resource_type: 'vm' })

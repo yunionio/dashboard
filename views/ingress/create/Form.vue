@@ -19,10 +19,10 @@
 
 <script>
 import * as R from 'ramda'
+import IngressRule from './IngressRule'
 import ClusterSelect from '@K8S/sections/ClusterSelect'
 import NamespaceSelect from '@K8S/sections/NamespaceSelect'
 import k8sCreateMixin from '@K8S/mixins/create'
-import IngressRule from './IngressRule'
 
 const validateValidPath = (rule, value, callback) => {
   if (value.startsWith('/')) {
