@@ -29,7 +29,8 @@
           class="menu-item"
           :to="citem.path"
           tag="a"
-          active-class="active">
+          active-class="active"
+          @click.native="$emit('clear-ghost-l2-menu')">
           {{ getLabel(citem.meta) }}
         </router-link>
       </div>
@@ -99,6 +100,7 @@ export default {
     },
     setRecentMenus (item) {
       this.$store.dispatch('common/setRecentMenus', item)
+      this.$emit('clear-ghost-l2-menu')
     },
     visibleSubmenu (item) {
       if (item.meta && R.is(Function, item.meta.invisible)) {

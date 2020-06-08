@@ -4,7 +4,8 @@
       v-for="(item, idx) of menus"
       :key="idx"
       class="level-1-item"
-      @click="toPage(item)">
+      @mouseenter.stop="handleMouseenter(item)"
+      @click.stop="handleClick(item)">
       <div class="level-1-item-wrap" :class="{ 'active': item.meta.group === currentGroup }">
         <div class="level-1-item-icon">
           <icon :type="item.meta.icon" />
@@ -85,20 +86,19 @@ export default {
         }
       }
     },
-    toPage (item) {
-      let path
-      if (item.menus) {
-        path = this.searchPath(item.menus)
-      } else {
-        path = item.menu.path
-      }
-      this.$router.push(path)
-    },
     getLabel (meta) {
       if (meta.t) {
         return this.$t(meta.t)
       }
       return meta.label
+    },
+    handleMouseenter (item) {
+      this.$emit('ghost-l2-change', item)
+    },
+    handleClick (item) {
+      if (item.menus) return
+      const path = item.menu.path
+      this.$router.push(path)
     },
   },
 }

@@ -1,22 +1,30 @@
 <template>
-  <div class="sidebar-wrap">
-    <level1-menu :menuitems="menuitems" :show-menu="showMenu" />
+  <div class="sidebar-wrap" @mouseleave="handleMouseLeave">
+    <level1-menu :menuitems="menuitems" :show-menu="showMenu" @ghost-l2-change="ghostL2ChangeHandle" />
     <level2-menu ref="level2menu" :current-menu="currentMenu" :show-menu="showMenu" :visible="l2MenuVisible" />
+    <transition name="slide-fade">
+      <level2-menu
+        :key="showGhostL2Menu.index"
+        v-if="showGhostL2Menu"
+        :current-menu="ghostL2Menu"
+        :show-menu="showMenu"
+        visible
+        style="zindex: 5;"
+        @clear-ghost-l2-menu="handleMouseLeave" />
+    </transition>
   </div>
 </template>
 
 <script>
+import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import Level1Menu from './level-1-menu'
 import Level2Menu from './level-2-menu'
 import { menusConfig } from '@/router/routes'
 import { hasPermission } from '@/utils/auth'
 
-const R = require('ramda')
-
 export default {
   name: 'Sidebar',
-  componentName: 'Sidebar',
   components: {
     Level1Menu,
     Level2Menu,
@@ -30,12 +38,17 @@ export default {
   data () {
     return {
       menuitems: menusConfig,
-      // 当前路由所匹配的菜单
+      // 选择菜单
       currentMenu: {},
+      // 临时菜单
+      ghostL2Menu: {},
     }
   },
   computed: {
     ...mapGetters(['userInfo']),
+    showGhostL2Menu () {
+      return this.ghostL2Menu.menus && this.ghostL2Menu.menus.length > 0
+    },
   },
   watch: {
     $route: {
@@ -84,6 +97,12 @@ export default {
       }
       return hidden && hasPermission({ key: item.meta.permission })
     },
+    ghostL2ChangeHandle (item) {
+      this.ghostL2Menu = item
+    },
+    handleMouseLeave () {
+      this.ghostL2Menu = {}
+    },
   },
 }
 </script>
@@ -95,5 +114,15 @@ export default {
   left: 0;
   bottom: 0;
   z-index: 98;
+}
+.slide-fade-enter-active {
+  transition: all .1s ease;
+}
+.slide-fade-leave-active {
+  transition: none;
+}
+.slide-fade-enter, .slide-fade-leave-to {
+  transform: translateX(-10px);
+  opacity: 0;
 }
 </style>
