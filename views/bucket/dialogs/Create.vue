@@ -99,10 +99,10 @@ export default {
           if (err) return reject(err)
           const { zone, cloudregion } = values
           if (zone) {
-            values['zone'] = zone.key
+            values.zone = zone.key
           }
           if (cloudregion) {
-            values['cloudregion'] = cloudregion.key
+            values.cloudregion = cloudregion.key
           }
           resolve(values)
         })

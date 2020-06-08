@@ -96,7 +96,7 @@ export default {
         const values = await this.form.fc.validateFields()
         const manager = new this.$Manager('hosts', 'v2')
         if (!this.isHiddenDir) {
-          values['mount_point'] = values.dir
+          values.mount_point = values.dir
         }
         await manager.batchPerformAction({
           ids: values.host,

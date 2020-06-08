@@ -68,7 +68,7 @@ export default {
       this.loading = true
       try {
         const valies = await this.validateForm()
-        for (let k in valies) {
+        for (const k in valies) {
           if (!valies[k]) {
             delete valies[k]
           } else {

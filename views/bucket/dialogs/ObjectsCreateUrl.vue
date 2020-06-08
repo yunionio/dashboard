@@ -56,7 +56,7 @@ export default {
           rules: [
             { type: 'integer', message: '请输入整数', transform: (v) => parseFloat(v) },
           ],
-        } ],
+        }],
       }
     },
     isPrivate () {

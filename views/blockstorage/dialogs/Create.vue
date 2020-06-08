@@ -143,13 +143,13 @@ export default {
           const deleteKeys = {
             rbd: deleteRbdKeys,
             nfs: deleteNfsKeys,
-            gpfs: [ ...deleteRbdKeys, ...deleteNfsKeys ],
+            gpfs: [...deleteRbdKeys, ...deleteNfsKeys],
           }
           if (zone) {
-            values['zone'] = zone.key
+            values.zone = zone.key
           }
           if (cloudregion) {
-            values['area'] = cloudregion.key
+            values.area = cloudregion.key
             delete values.cloudregion
           }
           deleteKeys[storage_type].forEach(key => {

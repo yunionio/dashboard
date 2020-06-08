@@ -1,5 +1,5 @@
-import { ACL_TYPE } from '@Storage/constants/index.js'
 import AccessInfo from '../components/AccessInfo'
+import { ACL_TYPE } from '@Storage/constants/index.js'
 import { getNameDescriptionTableColumn, getStatusTableColumn, getBrandTableColumn, getRegionTableColumn, getAccountTableColumn, getProjectTableColumn, getPublicScopeTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
 
 export default {
