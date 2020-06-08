@@ -75,13 +75,9 @@
     "pre-commit": "lint-staged"
   },
   "lint-staged": {
-    "*.{js,vue}": [
+    "*.{js,jsx,vue}": [
       "vue-cli-service lint",
       "git add"
     ]
-  },
-  "engines": {
-    "node": ">=10.0.0",
-    "npm": ">=6.0.0"
   }
 }
