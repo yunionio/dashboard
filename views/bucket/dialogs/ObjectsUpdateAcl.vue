@@ -75,7 +75,7 @@ export default {
           acl,
         }
         if (key && key.length > 0) {
-          params['key'] = key
+          params.key = key
         }
         await new this.$Manager('buckets', 'v2').performAction({
           id: resName,

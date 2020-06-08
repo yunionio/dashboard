@@ -40,7 +40,7 @@ export default {
     decorators () {
       const hostCheckValid = (rule, value, _callback) => {
         const pattern = /^(?=(\b|\D))(((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))\.){3}((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))(?=(\b|\D))$/
-        let ips = value.split(',')
+        const ips = value.split(',')
         if (!value || value === '') {
           return _callback(new Error('必须输入Ceph Mon Host'))
         }

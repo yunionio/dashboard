@@ -95,7 +95,7 @@ export default {
           }
         },
         headers: {
-          'Authorization': `Bearer ${this.$store.getters.auth.auth.session}`,
+          Authorization: `Bearer ${this.$store.getters.auth.auth.session}`,
         },
       }
     },
@@ -127,7 +127,7 @@ export default {
         fileList.forEach((file) => {
           const { status, response } = file
           if (status === 'error' && response) {
-            file['response'] = response.details
+            file.response = response.details
           }
           _statusNums[status] += 1
         })

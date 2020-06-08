@@ -11,9 +11,9 @@
 
 <script>
 import * as R from 'ramda'
-import { STORAGE_TYPES, MEDIUM_TYPES } from '@Storage/constants/index.js'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
+import { STORAGE_TYPES, MEDIUM_TYPES } from '@Storage/constants/index.js'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { getNameFilter, getEnabledFilter, getStatusFilter, getBrandFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'

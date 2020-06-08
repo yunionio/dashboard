@@ -102,7 +102,7 @@ export default {
       try {
         const values = await this.validateForm()
         if (values.commit_bound) {
-          values['cmtbound'] = values.commit_bound
+          values.cmtbound = values.commit_bound
           Reflect.deleteProperty(values, 'commit_bound')
         }
         const manager = new this.$Manager('storages', 'v2')

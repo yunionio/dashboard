@@ -1,22 +1,22 @@
 export const STORAGE_TYPES = {
-  'local': '本地存储',
-  'baremetal': '物理机存储',
-  'sheepdog': 'Sheepdog',
-  'rbd': 'Ceph',
-  'docker': '容器存储',
-  'nas': 'NAS',
-  'vsan': 'vSAN',
-  'nfs': 'NFS',
-  'gpfs': 'GPFS',
-  'localstorage': '本地云盘',
-  'ceph': '共享云盘',
-  'iscsi': 'iscsi',
+  local: '本地存储',
+  baremetal: '物理机存储',
+  sheepdog: 'Sheepdog',
+  rbd: 'Ceph',
+  docker: '容器存储',
+  nas: 'NAS',
+  vsan: 'vSAN',
+  nfs: 'NFS',
+  gpfs: 'GPFS',
+  localstorage: '本地云盘',
+  ceph: '共享云盘',
+  iscsi: 'iscsi',
 }
 
 export const MEDIUM_TYPES = {
-  'rotate': '机械盘',
-  'ssd': '固态盘',
-  'hybrid': '混合盘',
+  rotate: '机械盘',
+  ssd: '固态盘',
+  hybrid: '混合盘',
 }
 
 export const formItemLayout = {

@@ -10,8 +10,8 @@
 
 <script>
 // import BrandIcon from '@/sections/BrandIcon'
-import { STORAGE_TYPES, MEDIUM_TYPES } from '@Storage/constants/index.js'
 import ColumnsMixin from '../mixins/columns'
+import { STORAGE_TYPES, MEDIUM_TYPES } from '@Storage/constants/index.js'
 import { sizestr } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
 import {

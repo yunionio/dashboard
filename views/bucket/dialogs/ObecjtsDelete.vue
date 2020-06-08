@@ -38,7 +38,8 @@ export default {
           action: 'delete',
           data: {
             keys,
-          } })
+          },
+        })
         keys.forEach(k => {
           if (this.params.list.data[k]) {
             this.$delete(this.params.list.data, k)

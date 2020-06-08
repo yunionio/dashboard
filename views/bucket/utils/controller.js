@@ -24,7 +24,7 @@ export const objectsModel = {
         }
         // 链接有效时间 秒
         if (row.expire_seconds) {
-          params['expire_seconds'] = row.expire_seconds
+          params.expire_seconds = row.expire_seconds
         }
         const { data = {} } = await bucketsManager.performAction({
           id: resName,

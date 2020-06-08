@@ -167,7 +167,7 @@ export default {
               width: 600,
               callback: async (data) => {
                 const manager = new this.$Manager(`buckets/${this.resName}/makedir`, 'v2')
-                data['key'] = `${this.prefix}${data.key}/`
+                data.key = `${this.prefix}${data.key}/`
                 await manager.create({ data })
                 this.list.fetchData()
               },
@@ -363,8 +363,8 @@ export default {
       if (this.data.access_urls && this.data.access_urls.length > 0) {
         const accessUrls = this.data.access_urls
         for (let i = 0; i < accessUrls.length; i++) {
-          if (accessUrls[i]['primary']) {
-            return accessUrls[i]['url']
+          if (accessUrls[i].primary) {
+            return accessUrls[i].url
           }
         }
         return accessUrls[0].url
@@ -405,7 +405,7 @@ export default {
     getParams () {
       const _ = {}
       if (this.prefix) {
-        _['prefix'] = this.prefix
+        _.prefix = this.prefix
       }
       return _
     },

@@ -18,7 +18,7 @@ import {
   getCopyWithContentTableColumn,
 } from '@/utils/common/tableColumn'
 
-let RenderSizeTitle = {
+const RenderSizeTitle = {
   props: ['data'],
   data () {
     return {
@@ -37,8 +37,8 @@ let RenderSizeTitle = {
             stats_only: true,
           },
         })
-        this.data['size_bytes'] = data.size_bytes
-        this.data['object_cnt'] = data.object_cnt
+        this.data.size_bytes = data.size_bytes
+        this.data.object_cnt = data.object_cnt
       } catch (err) {
         throw err
       } finally {

@@ -200,7 +200,7 @@ export default {
               return <a-select-option value={id}>{name}</a-select-option>
             })
           }
-        </a-select>
+        </a-select>,
       )
       return (
         <FormItem>
