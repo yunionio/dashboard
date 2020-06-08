@@ -76,13 +76,15 @@ export default {
                           validateFirst: true,
                           rules: [
                             { required: true, message: '请输入端口' },
-                            { validator: (rule, value, _callback) => {
-                              const num = parseFloat(value)
-                              if (!/^\d+$/.test(value) || !num || num > 65535) {
-                                _callback('端口范围在 0-65535 之间')
-                              }
-                              _callback()
-                            } },
+                            {
+                              validator: (rule, value, _callback) => {
+                                const num = parseFloat(value)
+                                if (!/^\d+$/.test(value) || !num || num > 65535) {
+                                  _callback('端口范围在 0-65535 之间')
+                                }
+                                _callback()
+                              },
+                            },
                           ],
                         },
                         {

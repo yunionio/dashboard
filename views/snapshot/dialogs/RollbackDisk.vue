@@ -89,7 +89,7 @@ export default {
         auto_start: values.autoStart,
       }
       const ids = this.params.data.map(item => item.disk_id)
-      let manager = new this.$Manager('disks')
+      const manager = new this.$Manager('disks')
       return manager.performAction({
         id: ids[0],
         action: 'disk-reset',

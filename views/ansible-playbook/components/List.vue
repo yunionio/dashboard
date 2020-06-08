@@ -42,7 +42,7 @@ export default {
             items: (function (t) {
               const _items = []
               const statusItems = t.$t('status.ansiblePlaybook')
-              for (let key in statusItems) {
+              for (const key in statusItems) {
                 _items.push({
                   key,
                   label: statusItems[key],

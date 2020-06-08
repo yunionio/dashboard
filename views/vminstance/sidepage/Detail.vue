@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import { ALL_STORAGE } from '@Compute/constants/index'
-import { SERVER_TYPE } from '@Compute/constants'
+import { ALL_STORAGE, SERVER_TYPE } from '@Compute/constants/index'
+
 import {
   getCopyWithContentTableColumn,
   getBrandTableColumn,
@@ -132,7 +132,7 @@ export default {
                   if (findPlatform(row.hypervisor, 'hypervisor') === SERVER_TYPE.public) {
                     return '-'
                   }
-                  const text = row['host'] || '-'
+                  const text = row.host || '-'
                   return [
                     <list-body-cell-wrap copy hideField={true} field='host' row={row} message={text}>
                       <side-page-trigger permission='hosts_get' name='HostSidePage' id={row.host_id} vm={this}>{row.host}</side-page-trigger>
@@ -214,8 +214,8 @@ export default {
               title: 'GPU',
               formatter: ({ row }) => {
                 if (!row.isolated_devices) return '-'
-                let gpuArr = row.isolated_devices
-                let obj = {}
+                const gpuArr = row.isolated_devices
+                const obj = {}
                 const ids = {}
                 gpuArr.forEach(val => {
                   if (!obj[val.model]) {
@@ -279,8 +279,8 @@ export default {
       return str.slice(1)
     },
     _dealSize (sameType) {
-      let sameType1 = sameType.map(v => {
-        let size = +v.size
+      const sameType1 = sameType.map(v => {
+        const size = +v.size
         return size
       })
       return sameType1.reduce((a, b) => {

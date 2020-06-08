@@ -28,7 +28,7 @@ export default {
   },
   methods: {
     doDelete (data) {
-      let params = {
+      const params = {
         image: this.params.imageId,
       }
       if (this.checked) params.is_force = true

@@ -132,7 +132,7 @@ export default {
                 })
               },
               meta: () => {
-                let ret = {
+                const ret = {
                   validate: true,
                   tooltip: null,
                 }

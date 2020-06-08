@@ -135,8 +135,8 @@
 <script>
 import _ from 'lodash'
 import * as R from 'ramda'
-import SecgroupConfig from '@Compute/sections/SecgroupConfig'
 import mixin from './mixin'
+import SecgroupConfig from '@Compute/sections/SecgroupConfig'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import { HYPERVISORS_MAP } from '@/constants'
 

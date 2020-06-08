@@ -320,7 +320,7 @@ export default {
       const { systemDiskSize, systemDiskType } = this.fd
       if (R.isNil(systemDiskSize)) return
       if (this.fi.createType !== SERVER_TYPE.public) {
-        let diskSize = this.disk || 0
+        const diskSize = this.disk || 0
         // params.provider = 'kvm'
         params.spec = `cpu=${this.fd.vcpu}core;mem=${sizestrWithUnit(this.fd.vmem, 'M', 1024)};disk=${diskSize}GB`
       } else {
@@ -329,7 +329,7 @@ export default {
         const image = this.fi.imageMsg
         const osType = image.os_type ? image.os_type.toLowerCase() : ''
         params.region_id = regionExtId
-        let provider = skuProvider.toLowerCase()
+        const provider = skuProvider.toLowerCase()
         // params.provider = provider
         // price_key
         if (provider === HYPERVISORS_MAP.ucloud.key || provider === HYPERVISORS_MAP.azure.key) {
@@ -345,7 +345,7 @@ export default {
         if (provider === HYPERVISORS_MAP.ucloud.key || provider === HYPERVISORS_MAP.azure.key) {
           params.spec = `${systemDiskSize}:${provider}::${regionExtId}::::disk::${systemDiskType.key}`
         }
-        let dataDiskSpec = []
+        const dataDiskSpec = []
         const isUcloudAzure = (provider === HYPERVISORS_MAP.ucloud.key || provider === HYPERVISORS_MAP.azure.key)
         // if (this.dataDiskSizes && this.dataDiskSizes.length && !this.dataDiskType) return
         R.forEach((value) => {

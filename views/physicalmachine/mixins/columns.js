@@ -1,5 +1,5 @@
-import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { getMaintenanceTableColumn } from '../utils/columns'
+import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { getRegionTableColumn, getStatusTableColumn, getEnabledTableColumn, getNameDescriptionTableColumn, getCopyWithContentTableColumn, getTagTableColumn, getPublicScopeTableColumn, getProjectDomainTableColumn } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 
@@ -20,7 +20,7 @@ export default {
         },
         cellWrapSlots: row => {
           return {
-            append: () => row.is_import ? (<a-tooltip title="托管的物理机，不可转化为宿主机"><icon class='ml-2' type='res-physicalmachine' style={{ 'color': '#1890ff' }} /></a-tooltip>) : null,
+            append: () => row.is_import ? (<a-tooltip title="托管的物理机，不可转化为宿主机"><icon class='ml-2' type='res-physicalmachine' style={{ color: '#1890ff' }} /></a-tooltip>) : null,
           }
         },
       }),
@@ -34,19 +34,19 @@ export default {
         showOverflow: 'ellipsis',
         slots: {
           default: ({ row }) => {
-            let cellWrap = []
+            const cellWrap = []
             if (row.access_ip) {
               cellWrap.push(
                 <div class="d-flex">
                   <list-body-cell-wrap row={row} field="access_ip" copy><span class="text-color-help">(管理)</span></list-body-cell-wrap>
-                </div>
+                </div>,
               )
             }
             if (row.ipmi_ip) {
               cellWrap.push(
                 <div class="d-flex">
                   <list-body-cell-wrap row={row} field="ipmi_ip" copy><span class="text-color-help">(带外)</span></list-body-cell-wrap>
-                </div>
+                </div>,
               )
             }
             return cellWrap
@@ -60,7 +60,7 @@ export default {
         showOverflow: 'ellipsis',
         formatter: ({ row }) => {
           if (!row.spec) return '-'
-          let g = function (sz, prefix) {
+          const g = function (sz, prefix) {
             if (!prefix || prefix.length === 0) {
               prefix = ''
             }
@@ -70,24 +70,24 @@ export default {
               return ''
             }
           }
-          let spec = row.spec
+          const spec = row.spec
           let cpu = ''
           if (spec.cpu && spec.cpu > 0) {
             cpu = `${spec.cpu}C`
           }
-          let mem = g(spec.mem)
+          const mem = g(spec.mem)
           let ssd = ''
           let hdd = ''
           if (spec.disk) {
             if (spec.disk.SSD) {
               ssd = 'SSD'
-              for (let key in spec.disk.SSD) {
+              for (const key in spec.disk.SSD) {
                 ssd += `${g(spec.disk.SSD[key])}x${spec.disk.SSD[key]}`
               }
             }
             if (spec.disk.HDD) {
               hdd = 'HDD'
-              for (let key in spec.disk.HDD) {
+              for (const key in spec.disk.HDD) {
                 hdd += `${g(key)}x${spec.disk.HDD[key]}`
               }
             }

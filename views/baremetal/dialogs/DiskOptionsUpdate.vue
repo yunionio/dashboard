@@ -142,11 +142,11 @@ export default {
       }
     },
     checkMountpoint (rule, value, callback) {
-      let pathReg = new RegExp('^(/[^/ ]*)+')
+      const pathReg = new RegExp('^(/[^/ ]*)+')
       if (!pathReg.test(value)) {
         callback(new Error('挂载点必须以"/"头'))
       }
-      let checkName = this.params.nameArr.filter(item => item.name === value)
+      const checkName = this.params.nameArr.filter(item => item.name === value)
       if (this.params.title === '更新分区' && checkName.length > 1) {
         callback(new Error('名称已经存在'))
       }

@@ -60,7 +60,7 @@ export default {
         showOverflow: 'ellipsis',
         slots: {
           default: ({ row }) => {
-            return [<status status={ row['backup_host_status'] } statusModule='host_status'/>]
+            return [<status status={ row.backup_host_status } statusModule='host_status'/>]
           },
         },
       })

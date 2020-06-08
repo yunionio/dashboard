@@ -157,8 +157,8 @@ export default {
               title: 'GPU',
               formatter: ({ row }) => {
                 if (!row.isolated_devices) return '-'
-                let gpuArr = row.isolated_devices
-                let obj = {}
+                const gpuArr = row.isolated_devices
+                const obj = {}
                 const ids = {}
                 gpuArr.forEach(val => {
                   if (!obj[val.model]) {
@@ -219,7 +219,7 @@ export default {
         //   str += `、${parseInt(num / 1024)}GB（裸金属}）`
         // }
         if (num < 0) {
-          str += `、全盘使用（裸金属）`
+          str += '、全盘使用（裸金属）'
         } else {
           str += `、${parseInt(num / 1024)}GB（裸金属）`
         }
@@ -227,8 +227,8 @@ export default {
       return str.slice(1)
     },
     _dealSize (sameType) {
-      let sameType1 = sameType.map(v => {
-        let size = +v.size
+      const sameType1 = sameType.map(v => {
+        const size = +v.size
         return size
       })
       return sameType1.reduce((a, b) => {

@@ -79,7 +79,7 @@ export default {
               return [
                 <div class='text-truncate'>
                   {row.guest}
-                  {row.guest_status ? <status status={ row['guest_status'] } statusModule='server'/> : ''}
+                  {row.guest_status ? <status status={ row.guest_status } statusModule='server'/> : ''}
                 </div>,
               ]
             },

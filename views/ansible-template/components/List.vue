@@ -37,7 +37,7 @@ export default {
               return `name.contains("${val}")`
             },
           },
-          'enabled': {
+          enabled: {
             label: '启用状态',
             dropdown: true,
             multiple: true,

@@ -362,7 +362,7 @@ export default {
       return findPlatform(brand)
     },
     skuParam () {
-      let params = {
+      const params = {
         limit: 0,
         usable: true,
         enabled: true,
@@ -375,15 +375,15 @@ export default {
       if (this.type === SERVER_TYPE.private) {
         params['provider.0'] = HYPERVISORS_MAP.kvm.provider
         params['provider.1'] = HYPERVISORS_MAP.openstack.provider
-        params['postpaid_status'] = 'available'
+        params.postpaid_status = 'available'
       }
       if (this.type === SERVER_TYPE.public) {
         params.public_cloud = true
         params.zone_id = this.selectedItem.zone_id
         if (this.selectedItem.billingMethods === 'quantity') {
-          params['postpaid_status'] = 'available'
+          params.postpaid_status = 'available'
         } else if (this.selectedItem.billingMethods === 'package') {
-          params['prepaid_status'] = 'available'
+          params.prepaid_status = 'available'
         }
       }
       return params
@@ -430,7 +430,7 @@ export default {
           sortable: true,
           slots: {
             default: ({ row }) => {
-              let ret = []
+              const ret = []
               if (row.instance_type) {
                 ret.push(<div class='text-truncate' style={{ color: '#0A1F44' }}>{ row.instance_type }</div>)
               }
@@ -492,12 +492,12 @@ export default {
           this.form.fi.capability = data
         } catch (error) {}
       }
-      let conf = this.maxConfig()
+      const conf = this.maxConfig()
       this.form.fd.vcpu_count = conf[0]
       this.form.fd.vmem = Math.ceil(conf[1]) * 1024
       this.form.fd.datadisks = conf[2]
       this.form.fd.sysdisks = conf[3]
-      this.beforeDataDisks = [ ...this.form.fd.datadisks ]
+      this.beforeDataDisks = [...this.form.fd.datadisks]
       if (this.form.fd.sysdisks && this.form.fd.sysdisks.length === 1) {
         this.sysdisk = this.form.fd.sysdisks[0]
         const storageItem = STORAGE_TYPES[this.selectedItem.hypervisor]
@@ -518,8 +518,8 @@ export default {
     maxConfig () {
       let cpu = 0
       let mem = 0
-      let datadisks = []
-      let sysdisks = []
+      const datadisks = []
+      const sysdisks = []
       for (let i = 0; i < this.data.length; i++) {
         if (cpu < this.data[i].vcpu_count) {
           cpu = this.data[i].vcpu_count
@@ -576,7 +576,7 @@ export default {
       })
       params.project_id = this.userInfo.projectId
       params.domain = this.userInfo.projectDomainId
-      let variables = {
+      const variables = {
         process_definition_key: this.WORKFLOW_TYPES.APPLY_SERVER_CHANGECONFIG,
         initiator: this.userInfo.id,
         paramter: JSON.stringify(params),
@@ -647,9 +647,9 @@ export default {
       }
       if (this.type === SERVER_TYPE.public) {
         if (this.selectedItem.billingMethods === 'quantity') {
-          params['postpaid_status'] = 'available'
+          params.postpaid_status = 'available'
         } else if (this.selectedItem.billingMethods === 'package') {
-          params['prepaid_status'] = 'available'
+          params.prepaid_status = 'available'
         }
       }
       this.serverskusM.get({ id: 'instance-specs', params })
@@ -667,7 +667,7 @@ export default {
       })
     },
     async capability (v) { // 可用区查询
-      let params = {
+      const params = {
         show_emulated: true,
       }
       if (this.isAdminMode) {

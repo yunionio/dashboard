@@ -40,7 +40,7 @@ export default {
             const diskSize = disks.map(item => item.size_mb).reduce((a, b) => {
               return a + b
             })
-            let ret = []
+            const ret = []
             if (row.name) {
               ret.push(<div class='text-truncate' style={{ color: '#0A1F44' }}>{ sku.name }</div>)
             }

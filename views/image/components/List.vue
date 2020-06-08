@@ -156,7 +156,7 @@ export default {
                       return ret
                     }],
                   ])
-                  let action = actions.get(this.isAdminMode ? 'admin' : '') || actions.get(this.isDomainMode ? 'domain' : 'user')
+                  const action = actions.get(this.isAdminMode ? 'admin' : '') || actions.get(this.isDomainMode ? 'domain' : 'user')
                   ret = action.call(this)
                   if (ret.tooltip) return ret
                   return { validate: true }
@@ -175,7 +175,7 @@ export default {
                   })
                 },
                 meta: () => {
-                  let ret = {
+                  const ret = {
                     validate: true,
                     tooltip: null,
                   }
@@ -206,7 +206,7 @@ export default {
                   const validate = this.list.selectedItems.length > 0
                   return {
                     validate: validate,
-                    tooltip: !validate && `请选择需要操作的系统镜像`,
+                    tooltip: !validate && '请选择需要操作的系统镜像',
                   }
                 },
               },
@@ -224,7 +224,7 @@ export default {
                   })
                 },
                 meta: () => {
-                  let ret = {
+                  const ret = {
                     validate: false,
                     tooltip: '',
                   }

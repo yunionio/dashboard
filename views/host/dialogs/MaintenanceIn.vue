@@ -49,7 +49,7 @@ export default {
   },
   computed: {
     disabled () {
-      let isDisabled = this.servers.every((item) => {
+      const isDisabled = this.servers.every((item) => {
         // 宿主机下的虚拟机的状态只能是ready、running、unknown三者中任意一种，否则不允许进入维护模式
         if (!['ready', 'running', 'unknown'].includes(item.status)) {
           return false

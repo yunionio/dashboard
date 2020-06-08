@@ -178,10 +178,10 @@ export default {
             const kvmModuleMap = {
               'kvm-intel': 'Intel',
               'kvm-amd': 'AMD',
-              'unsupport': '不支持',
+              unsupport: '不支持',
             }
             if (!row.sys_info) return '-'
-            return kvmModuleMap[row.sys_info['kvm_module']] || '-'
+            return kvmModuleMap[row.sys_info.kvm_module] || '-'
           },
         },
         {

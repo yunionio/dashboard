@@ -210,7 +210,7 @@ export default {
     isLoadbalancer (v) {
       if (v) {
         this.$nextTick(() => {
-          this.$refs['BIND_LB'].fetchQueryLbs(this.form.fd.vpc)
+          this.$refs.BIND_LB.fetchQueryLbs(this.form.fd.vpc)
         })
       }
       this.form.fc.setFieldsValue({
@@ -248,7 +248,7 @@ export default {
     },
     vpcChange () {
       if (this.isLoadbalancer) {
-        this.$refs['BIND_LB'].fetchQueryLbs(this.form.fd.vpc)
+        this.$refs.BIND_LB.fetchQueryLbs(this.form.fd.vpc)
       }
     },
     brandChange () {
@@ -262,7 +262,7 @@ export default {
       this.isDeleteVpc = false
       this.isDeleteNetwork = false
       const { fc } = this.form
-      this.$refs['NETWORK'].fetchs(async (rets) => {
+      this.$refs.NETWORK.fetchs(async (rets) => {
         await this.$nextTick()
         const { vpcList, networkList } = rets
         // 判断当前选择的主机模版中的VPC是否存在VPC列表中
@@ -375,11 +375,11 @@ export default {
     formatValues (values) {
       const { brand, network } = values
       if (network) {
-        values['networks'] = [network]
+        values.networks = [network]
         delete values.network
       }
       if (brand && typeClouds.brandMap[brand]) {
-        values['hypervisor'] = typeClouds.brandMap[brand].hypervisor
+        values.hypervisor = typeClouds.brandMap[brand].hypervisor
       }
       return values
     },

@@ -97,7 +97,7 @@ export default {
         const { data: { data = [] } } = await manager.list({
           params: {
             scope: this.scope,
-            group: this.params.data[0]['id'],
+            group: this.params.data[0].id,
           },
         })
         this.bindedServers = data
@@ -111,7 +111,7 @@ export default {
       this.serversLoading = true
       const params = {
         scope: this.scope,
-        project: this.params.data[0]['tenant_id'],
+        project: this.params.data[0].tenant_id,
         limit: 20,
         filter: 'hypervisor.notin(baremetal,container)',
       }
@@ -133,7 +133,7 @@ export default {
         data[`guest.${i}`] = ids[i]
       }
       return this.params.onManager('performAction', {
-        id: this.params.data[0]['id'],
+        id: this.params.data[0].id,
         managerArgs: {
           action,
           data,

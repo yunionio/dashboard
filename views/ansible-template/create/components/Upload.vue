@@ -40,7 +40,7 @@ export default {
           const blob = new Blob([buffer])
           const file = new File([blob], key)
           // file['name'] = key
-          file['uid'] = index
+          file.uid = index
           // const elink = document.createElement('a')
           // elink.download = key
           // elink.style.display = 'none'

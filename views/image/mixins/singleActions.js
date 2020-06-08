@@ -110,7 +110,7 @@ export default {
                     return ret
                   }],
                 ])
-                let action = actions.get(this.isAdminMode ? 'admin' : '') || actions.get(this.isDomainMode ? 'domain' : 'user')
+                const action = actions.get(this.isAdminMode ? 'admin' : '') || actions.get(this.isDomainMode ? 'domain' : 'user')
                 ret = action.call(this)
                 if (ret.tooltip) return ret
                 return { validate: true, tooltip: '' }
@@ -143,7 +143,7 @@ export default {
                     return ret
                   }],
                 ])
-                let action = actions.get(this.isAdminMode ? 'admin' : '') || actions.get(this.isDomainMode ? 'domain' : 'user')
+                const action = actions.get(this.isAdminMode ? 'admin' : '') || actions.get(this.isDomainMode ? 'domain' : 'user')
                 ret = action.call(this)
                 if (ret.tooltip) return ret
                 return { validate: true, tooltip: '' }
@@ -187,7 +187,7 @@ export default {
                     return ret
                   }],
                 ])
-                let action = actions.get(this.isAdminMode ? 'admin' : '') || actions.get(this.isDomainMode ? 'domain' : 'user')
+                const action = actions.get(this.isAdminMode ? 'admin' : '') || actions.get(this.isDomainMode ? 'domain' : 'user')
                 ret = action.call(this)
                 if (ret.tooltip) return ret
                 return { validate: true, tooltip: '' }
@@ -254,7 +254,7 @@ export default {
                 })
               },
               meta: () => {
-                let ret = {
+                const ret = {
                   validate: true,
                   tooltip: null,
                 }
@@ -318,7 +318,7 @@ export default {
                     return ret
                   }],
                 ])
-                let action = actions.get(this.isAdminMode ? 'admin' : '') || actions.get(this.isDomainMode ? 'domain' : 'user')
+                const action = actions.get(this.isAdminMode ? 'admin' : '') || actions.get(this.isDomainMode ? 'domain' : 'user')
                 ret = action.call(this)
                 if (ret.tooltip) return ret
                 return { validate: true, tooltip: '' }
@@ -385,7 +385,7 @@ export default {
                     return ret
                   }],
                 ])
-                let action = actions.get(this.isAdminMode ? 'admin' : '') || actions.get(this.isDomainMode ? 'domain' : 'user')
+                const action = actions.get(this.isAdminMode ? 'admin' : '') || actions.get(this.isDomainMode ? 'domain' : 'user')
                 ret = action.call(this)
                 if (ret.tooltip) return ret
                 return this.$getDeleteResult(obj)
@@ -398,7 +398,7 @@ export default {
   },
   methods: {
     updateStandard (isStandard, selectedItems) {
-      let params = {
+      const params = {
         is_standard: isStandard,
       }
       this.onManager('batchPerformAction', {

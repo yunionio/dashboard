@@ -117,7 +117,7 @@ export default {
                 })
               },
               meta: () => {
-                const pArr = this.$store.getters.permission && this.$store.getters.permission['secgroups_create']
+                const pArr = this.$store.getters.permission && this.$store.getters.permission.secgroups_create
                 const val = pArr[pArr.length - 1]
                 if (val === 'deny') {
                   return {

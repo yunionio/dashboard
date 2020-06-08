@@ -47,9 +47,9 @@ export default {
   mixins: [DialogMixin, WindowsMixin],
   data () {
     const validateSecgroups = (rule, value, callback) => {
-      let maxError = this.isBindOne ? '最多关联一个' : '最多关联五个'
-      let minError = '最少关联一个'
-      let max = this.isBindOne ? 1 : 5
+      const maxError = this.isBindOne ? '最多关联一个' : '最多关联五个'
+      const minError = '最少关联一个'
+      const max = this.isBindOne ? 1 : 5
       if (value.length > max) {
         return callback(maxError)
       }
@@ -67,7 +67,7 @@ export default {
         secgroups: [
           'secgroups',
           {
-            initialValue: this.params.data[0]['secgroups'] && this.params.data[0]['secgroups'].map(item => item.id),
+            initialValue: this.params.data[0].secgroups && this.params.data[0].secgroups.map(item => item.id),
             validateFirst: true,
             rules: [
               { validator: validateSecgroups, trigger: 'change' },
@@ -151,7 +151,7 @@ export default {
         const { data: { data = [] } } = await manager.list({
           params: {
             scope: this.scope,
-            server: this.params.data[0]['id'],
+            server: this.params.data[0].id,
           },
         })
         this.bindedSecgroups = data
@@ -184,10 +184,10 @@ export default {
     },
     async successCallback () {
       await this.$refs.secgroupRef.loadOpts()
-      let secgroups = this.form.fc.getFieldValue('secgroups')
+      const secgroups = this.form.fc.getFieldValue('secgroups')
       const newSecgroup = this.secgroupOptions[0]
       secgroups.push(newSecgroup.id)
-      this.form.fc.setFieldsValue({ 'secgroups': secgroups })
+      this.form.fc.setFieldsValue({ secgroups: secgroups })
     },
   },
 }

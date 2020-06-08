@@ -149,7 +149,7 @@ export default {
     skuInfo () {
       let currentCategory = SKU_CATEGORY_MAP[this.hypervisor] || []
       if (this.isPublic) {
-        currentCategory = SKU_CATEGORY_MAP['public_cloud']
+        currentCategory = SKU_CATEGORY_MAP.public_cloud
       }
       const categoryOptions = {
         [ALL_SKU_CATEGORY_OPT.key]: {
@@ -175,13 +175,13 @@ export default {
       const skuSet = new Set()
       for (let i = 0, len = this.skuList.length; i < len; i++) {
         const item = this.skuList[i]
-        let flag = `${item.name}-${item.provider}-${item.region_ext_id}`
+        const flag = `${item.name}-${item.provider}-${item.region_ext_id}`
         if (skuSet.has(flag)) {
           continue
         }
         skuSet.add(flag)
-        let key = item.local_category
-        let category = item.instance_type_category
+        const key = item.local_category
+        const category = item.instance_type_category
         if (!skuOptions[key]) {
           skuOptions[key] = []
           if (categoryOptions[key]) {
@@ -198,8 +198,8 @@ export default {
         if (this.isPublic) {
           item.rate_key = this.genRateKey(item)
           if (this.ratesMap[item.rate_key]) {
-            item.hour_price = this.ratesMap[item.rate_key][this.priceUnit['key']]
-            item.currency = this.ratesMap[item.rate_key]['currency']
+            item.hour_price = this.ratesMap[item.rate_key][this.priceUnit.key]
+            item.currency = this.ratesMap[item.rate_key].currency
           }
         }
         skuOptions[key].push(item)
@@ -219,8 +219,8 @@ export default {
       return ret
     },
     skuResults () {
-      let ret = this.skuInfo.skuOptions[this.skuType]
-      if (ret && ret.length > 0 && ret[0]['hour_price']) {
+      const ret = this.skuInfo.skuOptions[this.skuType]
+      if (ret && ret.length > 0 && ret[0].hour_price) {
         ret.sort((a, b) => a.hour_price - b.hour_price)
       }
       return ret
@@ -288,7 +288,7 @@ export default {
       })
     },
     getHypervisor (data) {
-      return data.provider ? PROVIDER_MAP[data.provider]['label'] : PROVIDER_MAP.OneCloud.label
+      return data.provider ? PROVIDER_MAP[data.provider].label : PROVIDER_MAP.OneCloud.label
     },
     genRateKey (data) {
       const provider = data.provider.toLowerCase()

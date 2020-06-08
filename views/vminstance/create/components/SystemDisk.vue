@@ -108,7 +108,7 @@ export default {
       return Math.ceil(minSize)
     },
     elements () {
-      let ret = ['disk-select']
+      const ret = ['disk-select']
       if (this.isIDC) {
         ret.push('schedtag')
       }
@@ -128,7 +128,7 @@ export default {
         currentTypes = findAndUnshift(currentTypes, item => item.includes('local'))
       }
       if (!R.isNil(this.sku) && !R.isEmpty(this.sku)) {
-        for (let obj in hypervisorDisks) {
+        for (const obj in hypervisorDisks) {
           if (hypervisorDisks[obj].skuFamily && !hypervisorDisks[obj].skuFamily.includes(this.sku.instance_type_family)) {
             delete hypervisorDisks[obj]
           }
@@ -142,7 +142,7 @@ export default {
       currentTypes = this.getSortCurrentTypes(currentTypes)
       for (let i = 0, len = currentTypes.length; i < len; i++) {
         const type = currentTypes[i].split('/')[0]
-        let opt = hypervisorDisks[type] || this.getExtraDiskOpt(type)
+        const opt = hypervisorDisks[type] || this.getExtraDiskOpt(type)
         if (opt && !opt.sysUnusable) {
           // 新建ucloud云服务器时，系统盘类型选择普通本地盘或SSD本地盘，其大小只能是系统镜像min_disk大小
           let max = opt.sysMax
@@ -156,7 +156,7 @@ export default {
             label: opt.key === 'nova' ? '以镜像为系统盘' : opt.label,
           }
           if (this.hypervisor === HYPERVISORS_MAP.google.key) {
-            ret[opt.key]['sysMin'] = opt.sysMin
+            ret[opt.key].sysMin = opt.sysMin
           }
         }
       }
@@ -238,7 +238,7 @@ export default {
       if ([IMAGES_TYPE_MAP.host.key, IMAGES_TYPE_MAP.snapshot.key].includes(this.form.fd.imageType)) return // 主机镜像和主机快照设置默认值交给外层处理
       const keys = Object.keys(this.typesMap)
       const firstKey = keys[0]
-      let diskMsg = this.typesMap[firstKey]
+      const diskMsg = this.typesMap[firstKey]
       this.form.fc.setFieldsValue(this.defaultType || {
         systemDiskType: { key: diskMsg.key, label: diskMsg.label },
       })

@@ -1,9 +1,9 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils'
-import { LOGIN_TYPES_MAP } from '@Compute/constants'
 import VueRouter from 'vue-router'
 import BaseSelect from '@tests/stubs/BaseSelect'
 import Icon from '@tests/stubs/Icon'
 import ServerPassword from '../index'
+import { LOGIN_TYPES_MAP } from '@Compute/constants'
 
 const localVue = createLocalVue()
 localVue.use(VueRouter)
@@ -34,7 +34,7 @@ beforeEach(() => {
 
 describe('ServerPassword loginTypeMap', () => {
   it('check all loginTypeMap', () => {
-    let loginTypes = ['random', 'keypair', 'image', 'password']
+    const loginTypes = ['random', 'keypair', 'image', 'password']
     const wrapper = shallowMount(ServerPassword, {
       propsData: {
         decorator,
@@ -48,7 +48,7 @@ describe('ServerPassword loginTypeMap', () => {
   })
 
   it('check loginTypeMap initValue is image', () => {
-    let loginTypes = ['keypair', 'image']
+    const loginTypes = ['keypair', 'image']
     const wrapper = shallowMount(ServerPassword, {
       propsData: {
         decorator,
@@ -66,7 +66,7 @@ describe('ServerPassword loginTypeMap', () => {
 
   // 暂时无法解决 BaseSelect value is required
   it('check loginTypeMap initValue is the first of loginTypes', () => {
-    let loginTypes = ['keypair', 'password']
+    const loginTypes = ['keypair', 'password']
     const wrapper = shallowMount(ServerPassword, {
       propsData: {
         decorator,
@@ -75,7 +75,7 @@ describe('ServerPassword loginTypeMap', () => {
       },
       stubs: {
         'base-select': BaseSelect,
-        'icon': Icon,
+        icon: Icon,
       },
       localVue,
       router,

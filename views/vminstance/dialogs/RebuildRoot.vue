@@ -221,7 +221,7 @@ export default {
       }
     },
     cacheImageParams () {
-      let params = {
+      const params = {
         details: false,
         order_by: 'ref_count',
         order: 'desc',
@@ -350,12 +350,12 @@ export default {
       //   params.image_id = this.detailData[0].disks_info[0].image_id
       // }
       if (loginType === 'keypair') {
-        params['keypair'] = loginKeypair.key
-        params['reset_password'] = false
+        params.keypair = loginKeypair.key
+        params.reset_password = false
       } else if (loginType === 'image') {
-        params['reset_password'] = false // 如果登录方式为创建后设置, 则增加参数 reset_password = false
+        params.reset_password = false // 如果登录方式为创建后设置, 则增加参数 reset_password = false
       } else if (loginType === 'password') {
-        params['password'] = loginPassword
+        params.password = loginPassword
       }
       return this.params.onManager('batchPerformAction', {
         steadyStatus: ['running', 'ready'],
@@ -378,7 +378,7 @@ export default {
       }
     },
     fetchData () {
-      let ids = []
+      const ids = []
       this.params.data.forEach((item) => {
         ids.push(item.id)
       })

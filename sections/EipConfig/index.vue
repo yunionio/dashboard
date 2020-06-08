@@ -80,15 +80,15 @@ export default {
   },
   data () {
     return {
-      type: this.decorators.type[1] && this.decorators.type[1]['initialValue'],
-      chargeType: this.decorators.charge_type[1] && this.decorators.charge_type[1]['initialValue'],
+      type: this.decorators.type[1] && this.decorators.type[1].initialValue,
+      chargeType: this.decorators.charge_type[1] && this.decorators.charge_type[1].initialValue,
     }
   },
   computed: {
     ...mapGetters(['scope']),
     isPrivateEnv () {
       const privateHyper = []
-      for (let key in typeClouds.hypervisorMap) {
+      for (const key in typeClouds.hypervisorMap) {
         if (typeClouds.hypervisorMap[key].env === 'private') {
           privateHyper.push(typeClouds.hypervisorMap[key].hypervisor)
         }

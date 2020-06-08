@@ -54,7 +54,7 @@ export default {
         {
           label: this.imported ? '已导入' : '导入',
           action: obj => {
-            let data = {
+            const data = {
               name: obj.name,
               copy_from: obj.url,
               disk_format: obj.format,
@@ -103,7 +103,7 @@ export default {
       this.list.loading = true
       new this.$Manager('imageutils/imagesinfo', 'v1').list({ params: { market } }).then(({ data }) => {
         this.list.loading = false
-        let osDesc = (image) => {
+        const osDesc = (image) => {
           return `镜像格式: ${image.format || '-'}
                   镜像大小: ${image.disk || '-'}GiB
                   系统架构: ${image.arch || '-'}
@@ -111,7 +111,7 @@ export default {
                   更新日期: ${image.create_at || '-'}`
         }
         var publicImages = []
-        for (let image of data) {
+        for (const image of data) {
           if (!image.hasOwnProperty('distribution')) {
             console.log('warnning, image missing key distribution', image)
             continue
@@ -122,28 +122,28 @@ export default {
             continue
           }
 
-          let os = image.distribution.split(' ')[0].toLowerCase()
-          let o = {}
-          o['id'] = image.id
-          o['name'] = image.name
-          o['url'] = image.url
-          o['format'] = image.format
-          o['os_type'] = image.type
-          o['os_arch'] = image.arch
-          o['os_description'] = image.os_description
-          o['os_distribution'] = image.distribution
-          o['os_version'] = image.version
-          o['class'] = `fo-${os} os-logo ${image['type'].toLowerCase()}`
-          o['title'] = `${image.distribution} ${image.version}`
-          o['desc'] = osDesc(image)
-          o['imported'] = image.imported
-          o['os'] = os || image.type.toLowerCase()
-          o['description'] = image.description
+          const os = image.distribution.split(' ')[0].toLowerCase()
+          const o = {}
+          o.id = image.id
+          o.name = image.name
+          o.url = image.url
+          o.format = image.format
+          o.os_type = image.type
+          o.os_arch = image.arch
+          o.os_description = image.os_description
+          o.os_distribution = image.distribution
+          o.os_version = image.version
+          o.class = `fo-${os} os-logo ${image.type.toLowerCase()}`
+          o.title = `${image.distribution} ${image.version}`
+          o.desc = osDesc(image)
+          o.imported = image.imported
+          o.os = os || image.type.toLowerCase()
+          o.description = image.description
           publicImages.push(o)
         }
         publicImages = publicImages.filter((item) => { return item.imported === this.imported.toString() })
         publicImages.forEach(item => {
-          item['os'] = require(`@/assets/images/os-images/${item['os']}.svg`)
+          item.os = require(`@/assets/images/os-images/${item.os}.svg`)
         })
         this.list.data = arrToObjByKey(publicImages, 'id')
       }).catch((e) => {

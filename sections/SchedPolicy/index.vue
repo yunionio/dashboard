@@ -70,8 +70,8 @@
 <script>
 import * as R from 'ramda'
 import lodash from 'lodash'
-import { SERVER_TYPE, SCHED_POLICY_OPTIONS_MAP } from '@Compute/constants'
 import PolicySchedtag from './PolicySchedtag'
+import { SERVER_TYPE, SCHED_POLICY_OPTIONS_MAP } from '@Compute/constants'
 import { arrayToObj, uuid } from '@/utils/utils'
 
 export default {
@@ -145,7 +145,7 @@ export default {
       ret.default = { ..._default }
       ret.host = {
         ...host,
-        label: host['label'][this.serverType],
+        label: host.label[this.serverType],
       }
       if (this.serverType !== SERVER_TYPE.public) {
         ret = {
@@ -155,10 +155,10 @@ export default {
       }
       // 限制非管理后台模式下不能指定宿主机(私有云)、云账号(公有云)
       if (!this.$store.getters.isAdminMode && !this.$store.getters.isDomainMode) {
-        delete ret['host']
+        delete ret.host
       }
       if (this.hideCloudaccountSched) {
-        delete ret['host']
+        delete ret.host
       }
       if (!this.showSchedCloudprovider) {
         delete ret.cloudprovider

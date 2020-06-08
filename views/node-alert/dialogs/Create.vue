@@ -38,7 +38,7 @@ export default {
       let opts = this.params.metricOpts
       if (this.params.list && this.params.list.data) {
         // 新建时要保证新建的报警不会和已有的重复，下面是过滤掉已有的metric
-        let listDataArr = Object.values(this.params.list.data)
+        const listDataArr = Object.values(this.params.list.data)
         if (listDataArr && listDataArr.length) {
           opts = opts.filter(val => {
             return !listDataArr.find(dataWrap => dataWrap.data.metric === val.key)

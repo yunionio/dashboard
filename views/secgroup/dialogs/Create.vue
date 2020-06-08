@@ -107,9 +107,9 @@ export default {
         },
       },
       templateOps: {
-        '1': '通用Web服务器',
-        '2': '开放全部端口',
-        '3': '自定义',
+        1: '通用Web服务器',
+        2: '开放全部端口',
+        3: '自定义',
       },
       columns: [
         {
@@ -138,8 +138,8 @@ export default {
         },
       ],
       ruleData: {
-        '1': {
-          'in': [
+        1: {
+          in: [
             {
               cidr: '0.0.0.0/0',
               protocol: 'TCP',
@@ -176,7 +176,7 @@ export default {
               description: 'Ping服务',
             },
           ],
-          'out': [
+          out: [
             {
               cidr: '0.0.0.0/0',
               protocol: 'ALL',
@@ -186,8 +186,8 @@ export default {
             },
           ],
         },
-        '2': {
-          'in': [
+        2: {
+          in: [
             {
               cidr: '0.0.0.0/0',
               protocol: 'ALL',
@@ -196,7 +196,7 @@ export default {
               description: '开放全部端口有一定安全风险，请谨慎选择',
             },
           ],
-          'out': [
+          out: [
             {
               cidr: '0.0.0.0/0',
               protocol: 'ALL',
@@ -206,8 +206,8 @@ export default {
             },
           ],
         },
-        '3': {
-          'in': [
+        3: {
+          in: [
             {
               action: '',
               cidr: '',
@@ -216,7 +216,7 @@ export default {
               description: '入方向不放通任何端口，您可在安全组创建后，根据实际访问需求添加或修改安全组规则',
             },
           ],
-          'out': [],
+          out: [],
         },
       },
       templateType: 1,
@@ -249,24 +249,24 @@ export default {
       try {
         const values = await this.validateForm()
         this.loading = true
-        let rules = []
+        const rules = []
         const key = this.templateType || '1'
         if (key && key !== '3' && this.ruleData[key]) {
           Object.keys(this.ruleData[key]).forEach(k => {
             const items = this.ruleData[key][k]
             for (let i = 0; i < items.length; i++) {
               const obj = { ...items[i] }
-              if (obj['protocol'] === 'ALL') {
-                obj['protocol'] = 'any'
+              if (obj.protocol === 'ALL') {
+                obj.protocol = 'any'
               }
-              if (obj['protocol'] === 'ALL') {
-                obj['protocol'] = 'any'
+              if (obj.protocol === 'ALL') {
+                obj.protocol = 'any'
               }
-              obj['priority'] = items.length - i
-              obj['action'] = 'allow'
-              obj['direction'] = k
-              obj['protocol'] = obj['protocol'].toLowerCase()
-              if (obj['ports'] === 'ALL') {
+              obj.priority = items.length - i
+              obj.action = 'allow'
+              obj.direction = k
+              obj.protocol = obj.protocol.toLowerCase()
+              if (obj.ports === 'ALL') {
                 delete obj.ports
               }
               rules.push(obj)

@@ -165,11 +165,11 @@
 </template>
 <script>
 import * as R from 'ramda'
+import mixin from './mixin'
 import Bill from '@Compute/sections/Bill'
 import { LOGIN_TYPES_MAP, BILL_TYPES_MAP } from '@Compute/constants'
 import EipConfig from '@Compute/sections/EipConfig'
 import SecgroupConfig from '@Compute/sections/SecgroupConfig'
-import mixin from './mixin'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import { PROVIDER_MAP, HYPERVISORS_MAP } from '@/constants'
 import AreaSelects from '@/sections/AreaSelects'
@@ -294,9 +294,9 @@ export default {
         }
       }
       if (this.form.fd.billType === 'quantity') {
-        params['postpaid_status'] = 'available'
+        params.postpaid_status = 'available'
       } else if (this.form.fd.billType === 'package') {
-        params['prepaid_status'] = 'available'
+        params.prepaid_status = 'available'
       }
       return params
     },

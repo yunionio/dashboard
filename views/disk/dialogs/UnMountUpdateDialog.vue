@@ -26,7 +26,7 @@ export default {
     }
   },
   created () {
-    let params = {
+    const params = {
       details: false,
       disk: this.params.data[0].id,
     }

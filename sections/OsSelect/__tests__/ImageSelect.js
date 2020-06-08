@@ -50,7 +50,7 @@ const idcStandardImageParams = {
   is_standard: true,
 }
 
-let $route = {
+const $route = {
   query: {},
 }
 let store = null

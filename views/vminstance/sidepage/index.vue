@@ -30,16 +30,16 @@
 </template>
 
 <script>
-import SecgroupList from '@Compute/views/secgroup/components/List'
 // import HostList from '@Compute/views/host/components/List'
-import DiskListForVmInstanceSidepage from '@Compute/views/disk/components/List'
-import NetworkListForVmInstanceSidepage from '@Compute/views/networks/components/List'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import { cloudEnabled, cloudUnabledTip } from '../utils'
 import VmInstanceDetail from './Detail'
 import VmInstanceMonitorSidepage from './Monitor'
 import VmInstanceAlertSidepage from './Alert'
+import NetworkListForVmInstanceSidepage from '@Compute/views/networks/components/List'
+import DiskListForVmInstanceSidepage from '@Compute/views/disk/components/List'
+import SecgroupList from '@Compute/views/secgroup/components/List'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'

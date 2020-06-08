@@ -154,7 +154,7 @@ export default {
                       }
                     }
                     for (let i = 0; i < this.list.selectedItems.length; i++) {
-                      let obj = this.list.selectedItems[i]
+                      const obj = this.list.selectedItems[i]
                       if (obj.host_type !== 'hypervisor') {
                         return {
                           validate: false,
@@ -221,7 +221,7 @@ export default {
               }
             },
           },
-        ]
+        ],
       )
     },
   },

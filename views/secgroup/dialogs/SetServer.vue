@@ -128,17 +128,17 @@ export default {
           scope: this.scope,
           filter: 'hypervisor.notin(container, baremetal)',
           limit: 0,
-          secgroup: this.params.data[0]['id'],
+          secgroup: this.params.data[0].id,
         }
         if (this.isAdminMode) {
-          params['project_domain'] = this.userInfo.projectDomain
+          params.project_domain = this.userInfo.projectDomain
           delete params.scope
         }
         const { data: { data = [] } } = await manager.list({ params })
         this.bindServers = data
         this.bindServersLoaded = true
         this.$nextTick(() => {
-          this.form.fc.setFieldsValue({ 'sergroups': data.map(item => item.id) })
+          this.form.fc.setFieldsValue({ sergroups: data.map(item => item.id) })
         })
       } catch (error) {
         console.error(error)
@@ -150,7 +150,7 @@ export default {
         const values = await this.form.fc.validateFields()
         let ids = []
         const bindServers = []
-        let removeServers = []
+        const removeServers = []
         const data = {
           'secgrp.0': this.params.data[0].id,
         }

@@ -1,8 +1,8 @@
 import { mapGetters } from 'vuex'
 import { Base64 } from 'js-base64'
 import qs from 'qs'
-import { SERVER_TYPE } from '@Compute/constants'
 import { commonUnabled, cloudEnabled, cloudUnabledTip, commonEnabled, commonTip } from '../utils'
+import { SERVER_TYPE } from '@Compute/constants'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
 
@@ -24,7 +24,7 @@ export default {
             label: 'VNC 远程终端',
             action: () => {
               const isValidURL = str => {
-                let regex = /(\w+):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!-/]))?/
+                const regex = /(\w+):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!-/]))?/
                 if (!regex.test(str)) {
                   return false
                 } else {
@@ -100,13 +100,15 @@ export default {
                           validateFirst: true,
                           rules: [
                             { required: true, message: '请输入端口' },
-                            { validator: (rule, value, _callback) => {
-                              const num = parseFloat(value)
-                              if (!/^\d+$/.test(value) || !num || num > 65535) {
-                                _callback('端口范围在 0-65535 之间')
-                              }
-                              _callback()
-                            } },
+                            {
+                              validator: (rule, value, _callback) => {
+                                const num = parseFloat(value)
+                                if (!/^\d+$/.test(value) || !num || num > 65535) {
+                                  _callback('端口范围在 0-65535 之间')
+                                }
+                                _callback()
+                              },
+                            },
                           ],
                         },
                         {
@@ -787,7 +789,7 @@ export default {
                       tooltip: null,
                     }
                     if (findPlatform(obj.hypervisor) === SERVER_TYPE.public) {
-                      ret.tooltip = `公有云不支持该操作`
+                      ret.tooltip = '公有云不支持该操作'
                       return ret
                     }
                     const noSupportBrand = [

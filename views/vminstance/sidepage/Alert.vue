@@ -43,7 +43,7 @@ export default {
       return this.hypervisor === HYPERVISORS_MAP.esxi.key
     },
     metricOpts () {
-      let opts = [metricItems['vm_cpu.usage_active'], metricItems['vm_netio.bps_recv'], metricItems['vm_netio.bps_sent'], metricItems['vm_diskio.read_bps'], metricItems['vm_diskio.write_bps']]
+      const opts = [metricItems['vm_cpu.usage_active'], metricItems['vm_netio.bps_recv'], metricItems['vm_netio.bps_sent'], metricItems['vm_diskio.read_bps'], metricItems['vm_diskio.write_bps']]
       if (this.hasMemMetric) {
         opts.splice(1, 0, metricItems['vm_mem.used_percent'])
       }

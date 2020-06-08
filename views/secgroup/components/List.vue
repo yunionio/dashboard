@@ -74,7 +74,8 @@ export default {
       const _frontGroupActions = this.frontGroupActions ? this.frontGroupActions.bind(this)() || [] : []
       return _frontGroupActions.concat(
         [
-          { index: 0,
+          {
+            index: 0,
             label: '新建',
             permission: 'secgroups_create',
             action: () => {
@@ -147,7 +148,7 @@ export default {
             },
             meta: (obj) => this.$getDeleteResult(this.list.selectedItems),
           },
-        ]
+        ],
       ).sort((a, b) => a.index - b.index)
     },
   },

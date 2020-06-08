@@ -30,7 +30,7 @@ export default {
           title: '时间间隔',
           slots: {
             default: ({ row }) => {
-              return row['hour'] + '小时'
+              return row.hour + '小时'
             },
           },
         },

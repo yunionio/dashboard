@@ -29,9 +29,9 @@
 </template>
 
 <script>
-import { NETWORK_OPTIONS_MAP } from '@Compute/constants'
 import NetworkConfig from './NetworkConfig'
 import NetworkSchedtag from './NetworkSchedtag'
+import { NETWORK_OPTIONS_MAP } from '@Compute/constants'
 
 export default {
   name: 'ServerNetwork',

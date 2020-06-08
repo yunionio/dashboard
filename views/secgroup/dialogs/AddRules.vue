@@ -180,9 +180,9 @@ export default {
   },
   methods: {
     validatePorts (rule, value, callback) {
-      let ports = value.indexOf(',') !== -1 ? value.split(',') : value.split('-')
+      const ports = value.indexOf(',') !== -1 ? value.split(',') : value.split('-')
       if (ports.length > 1) {
-        let pass = ports.every(function (item, index) {
+        const pass = ports.every(function (item, index) {
           return +item && item >= 0 && item <= 65535
         })
         if (!pass) {
@@ -206,17 +206,17 @@ export default {
     },
     typeChange (e) {
       if (e === 'windows') {
-        this.form.fc.setFieldsValue({ 'ports': '3389' })
+        this.form.fc.setFieldsValue({ ports: '3389' })
       } else if (e === 'linux') {
-        this.form.fc.setFieldsValue({ 'ports': '22' })
+        this.form.fc.setFieldsValue({ ports: '22' })
       } else if (e === 'http') {
-        this.form.fc.setFieldsValue({ 'ports': '80' })
+        this.form.fc.setFieldsValue({ ports: '80' })
       } else if (e === 'https') {
-        this.form.fc.setFieldsValue({ 'ports': '443' })
+        this.form.fc.setFieldsValue({ ports: '443' })
       } else if (e === 'ping') {
         this.portsChecked = true
         this.portsDisabled = true
-        this.form.fc.setFieldsValue({ 'ports': 'ALL' })
+        this.form.fc.setFieldsValue({ ports: 'ALL' })
         this.portsCheckboxDisabled = true
       } else {
         this.portsChecked = false
@@ -229,15 +229,15 @@ export default {
       if (e === 'icmp') {
         this.portsChecked = true
         this.portsDisabled = true
-        this.form.fc.setFieldsValue({ 'ports': 'ALL' })
+        this.form.fc.setFieldsValue({ ports: 'ALL' })
         this.portsCheckboxDisabled = true
       } else {
         this.portsCheckboxDisabled = false
       }
       if (e === 'any') {
         this.portsChecked = true
-        this.form.fc.setFieldsValue({ 'ports': 'ALL' })
-        this.form.fc.setFieldsValue({ 'type': 'custom' })
+        this.form.fc.setFieldsValue({ ports: 'ALL' })
+        this.form.fc.setFieldsValue({ type: 'custom' })
         this.portsCheckboxDisabled = true
         this.portsDisabled = true
         this.typeDisabled = true
@@ -257,7 +257,7 @@ export default {
     cidrChange (e) {
       this.IPCheckboxDisabled = !this.IPCheckboxDisabled
       if (e.target.checked) {
-        this.form.fc.setFieldsValue({ 'cidr': '0.0.0.0/0' })
+        this.form.fc.setFieldsValue({ cidr: '0.0.0.0/0' })
       } else {
         this.form.fc.resetFields(['cidr'])
       }
@@ -266,7 +266,7 @@ export default {
       this.portsChecked = !this.portsChecked
       this.portsDisabled = !this.portsDisabled
       if (e.target.checked) {
-        this.form.fc.setFieldsValue({ 'ports': 'ALL' })
+        this.form.fc.setFieldsValue({ ports: 'ALL' })
       } else {
         this.form.fc.resetFields(['ports'])
       }
@@ -282,7 +282,7 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        let values = await this.form.fc.validateFields()
+        const values = await this.form.fc.validateFields()
         if (values.ports === 'ALL') {
           values.ports = ''
         }

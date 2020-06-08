@@ -68,14 +68,14 @@ export default {
     selectParams () {
       const params = {
         enabled: 1,
-        host_type: this.firstData['hypervisor'],
+        host_type: this.firstData.hypervisor,
         host_status: 'online',
       }
-      if (this.firstData['hypervisor'] === hypervisorMap.kvm.key) {
+      if (this.firstData.hypervisor === hypervisorMap.kvm.key) {
         params.host_type = 'hypervisor'
       }
       if (this.isAdminMode && this.params.data.length === 1) {
-        params.project_domain = this.firstData['domain_id']
+        params.project_domain = this.firstData.domain_id
       }
       if (this.isDomainMode) {
         params.scope = this.scope
