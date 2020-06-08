@@ -17,7 +17,7 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'RelatedResourceServerRemoveDialog',
+  name: 'RelatedResourceRemoveDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {

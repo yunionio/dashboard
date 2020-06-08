@@ -38,7 +38,7 @@ export default {
         {
           label: '解绑',
           action: (row) => {
-            this.createDialog('RelatedResourceTagRemoveDialog', {
+            this.createDialog('RelatedResourceRemoveDialog', {
               title: '解绑',
               data: [row],
               resData: this.data,
