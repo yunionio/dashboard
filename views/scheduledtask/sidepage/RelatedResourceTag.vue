@@ -53,11 +53,35 @@ export default {
           },
         },
       ],
-      groupActions: [],
+      groupActions: [
+        {
+          label: '关联资源',
+          action: () => {
+            this.createDialog('ScheduledtaskEditDialog', {
+              data: [this.data],
+              columns: this.columns,
+              onManager: this.onManager,
+              success: (labels) => {
+                this.fetchData(labels)
+                this.list.fetchData()
+              },
+            })
+          },
+          meta: () => {
+            return {
+              buttonType: 'primary',
+            }
+          },
+        },
+      ],
     }
   },
   created () {
     this.list.fetchData()
+    this.$bus.$on('RelatedResourceTagListSidePageRefresh', labels => {
+      this.fetchData(labels)
+      this.list.fetchData()
+    }, this)
   },
   methods: {
     fetchData (labels) {

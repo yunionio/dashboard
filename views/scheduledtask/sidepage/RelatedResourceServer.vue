@@ -8,7 +8,7 @@
 
 <script>
 import { SERVER_TYPE } from '@Compute/constants'
-import { getNameDescriptionTableColumn, getTimeTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
+import { getNameDescriptionTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
 import { getStatusFilter, getEnabledFilter, getHostFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import { sizestr } from '@/utils/utils'
@@ -102,7 +102,16 @@ export default {
             },
           },
         },
-        getTimeTableColumn(),
+        {
+          field: 'isolated_time',
+          title: '关联时间',
+          minWidth: 100,
+          formatter: ({ row }) => {
+            const labelDetails = this.data.label_details
+            const label = labelDetails.find((item) => item.label === row.id) || {}
+            return this.$moment(label.isolated_time).format() || '-'
+          },
+        },
         {
           field: 'host',
           title: '宿主机',
@@ -141,11 +150,39 @@ export default {
           },
         },
       ],
-      groupActions: [],
+      groupActions: [
+        {
+          label: '关联资源',
+          action: () => {
+            this.createDialog('ScheduledtaskEditDialog', {
+              data: [this.data],
+              columns: this.columns,
+              onManager: this.onManager,
+              success: (labels) => {
+                this.list.getParams = {
+                  filter: `id.in(${labels.join(',')})`,
+                }
+                this.list.fetchData()
+              },
+            })
+          },
+          meta: () => {
+            return {
+              buttonType: 'primary',
+            }
+          },
+        },
+      ],
     }
   },
   created () {
     this.list.fetchData()
+    this.$bus.$on('RelatedResourceServerListSidePageRefresh', labels => {
+      this.list.getParams = {
+        filter: `id.in(${labels.join(',')})`,
+      }
+      this.list.fetchData()
+    }, this)
   },
 }
 </script>

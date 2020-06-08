@@ -86,22 +86,11 @@
 <script>
 import { mapGetters } from 'vuex'
 import * as R from 'ramda'
+import ServerPropsMixin from '../mixins/serverProps'
 import Tag from '@/sections/Tag'
 import DomainProject from '@/sections/DomainProject'
 import ListSelect from '@/sections/ListSelect'
 import { isRequired } from '@/utils/validate'
-import {
-  getNameDescriptionTableColumn,
-  getIpsTableColumn,
-  getProjectTableColumn,
-  getStatusTableColumn,
-  getRegionTableColumn,
-} from '@/utils/common/tableColumn'
-import {
-  getNameFilter,
-  getIpFilter,
-} from '@/utils/common/tableFilter'
-import { sizestr } from '@/utils/utils'
 
 export default {
   name: 'ScheduledtaskCreateIndex',
@@ -110,6 +99,7 @@ export default {
     Tag,
     ListSelect,
   },
+  mixins: [ServerPropsMixin],
   data () {
     const validateTag = function (rule, value, callback) {
       if (R.is(Object, value) && Object.keys(value).length > 20) {
@@ -259,54 +249,6 @@ export default {
           xl: { span: 3 },
           xxl: { span: 2 },
         },
-      },
-      serverProps: {
-        list: this.$list.createList(this, {
-          resource: 'servers',
-          getParams: {
-            filter: 'hypervisor.notin(baremetal,container)',
-          },
-          filterOptions: {
-            name: getNameFilter(),
-            ips: getIpFilter(),
-          },
-        }),
-        columns: [
-          getNameDescriptionTableColumn({
-            hideField: true,
-            addLock: true,
-            addBackup: true,
-            edit: false,
-            editDesc: false,
-            minWidth: 140,
-            slotCallback: row => {
-              return [
-                <list-body-cell-wrap field='name' row={row} />,
-              ]
-            },
-          }),
-          getIpsTableColumn({ field: 'ip', title: 'IP' }),
-          {
-            field: 'instance_type',
-            title: '配置',
-            showOverflow: 'ellipsis',
-            minWidth: 120,
-            sortable: true,
-            slots: {
-              default: ({ row }) => {
-                let ret = []
-                if (row.instance_type) {
-                  ret.push(<div class='text-truncate' style={{ color: '#0A1F44' }}>{ row.instance_type }</div>)
-                }
-                const config = row.vcpu_count + 'C' + sizestr(row.vmem_size, 'M', 1024) + (row.disk ? sizestr(row.disk, 'M', 1024) : '')
-                return ret.concat(<div class='text-truncate' style={{ color: '#53627C' }}>{ config }</div>)
-              },
-            },
-          },
-          getStatusTableColumn({ statusModule: 'server' }),
-          getProjectTableColumn(),
-          getRegionTableColumn(),
-        ],
       },
     }
   },

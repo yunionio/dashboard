@@ -5,52 +5,76 @@ export default {
   created () {
     this.singleActions = [
       {
-        label: '启用',
+        label: '修改',
         action: (obj) => {
-          this.createDialog('ScheduledtaskEnabledDialog', {
+          this.createDialog('ScheduledtaskEditDialog', {
             data: [obj],
             columns: this.columns,
             onManager: this.onManager,
+            refresh: this.refresh,
           })
         },
-        meta: (obj) => {
+        meta: () => {
           return {
-            validate: !obj.enabled,
-            tooltip: obj.enabled ? '请选择已禁用的定时任务' : '',
+            validate: true,
+            tooltip: '',
           }
         },
       },
       {
-        label: '禁用',
-        action: (obj) => {
-          this.createDialog('ScheduledtaskDisabledDialog', {
-            data: [obj],
-            columns: this.columns,
-            onManager: this.onManager,
-          })
-        },
-        meta: (obj) => {
-          return {
-            validate: obj.enabled,
-            tooltip: !obj.enabled ? '请选择已启用的定时任务' : '',
-          }
-        },
-      },
-      {
-        label: '删除',
-        action: obj => {
-          this.createDialog('DeleteResDialog', {
-            vm: this,
-            data: [obj],
-            columns: this.columns,
-            title: '删除',
-            onManager: this.onManager,
-            success: () => {
-              this.destroySidePages()
+        label: '更多',
+        actions: () => {
+          return [
+            {
+              label: '启用',
+              action: (obj) => {
+                this.createDialog('ScheduledtaskEnabledDialog', {
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                })
+              },
+              meta: (obj) => {
+                return {
+                  validate: !obj.enabled,
+                  tooltip: obj.enabled ? '请选择已禁用的定时任务' : '',
+                }
+              },
             },
-          })
+            {
+              label: '禁用',
+              action: (obj) => {
+                this.createDialog('ScheduledtaskDisabledDialog', {
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                })
+              },
+              meta: (obj) => {
+                return {
+                  validate: obj.enabled,
+                  tooltip: !obj.enabled ? '请选择已启用的定时任务' : '',
+                }
+              },
+            },
+            {
+              label: '删除',
+              action: obj => {
+                this.createDialog('DeleteResDialog', {
+                  vm: this,
+                  data: [obj],
+                  columns: this.columns,
+                  title: '删除',
+                  onManager: this.onManager,
+                  success: () => {
+                    this.destroySidePages()
+                  },
+                })
+              },
+              meta: (obj) => this.$getDeleteResult(obj),
+            },
+          ]
         },
-        meta: (obj) => this.$getDeleteResult(obj),
       },
     ]
   },
