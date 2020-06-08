@@ -131,7 +131,7 @@ export default {
       try {
         const values = await this.form.fc.validateFields()
         const data = {
-          ip_addr: this.params.data[0]['ip_addr'],
+          ip_addr: this.params.data[0].ip_addr,
           net_desc: values.ip ? `${values.network}:${values.ip}` : values.network,
         }
         await manager.performAction({

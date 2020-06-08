@@ -287,21 +287,21 @@ export default {
     actionConfig (type) {
       const { resData } = this.params
       if (type === 'set') {
-        let number = {
+        const number = {
           min: resData.min_instance_number,
           max: resData.max_instance_number,
         }
-        let tooltip = `范围在最小值(${number.min}) ～ 最大值(${number.max})`
+        const tooltip = `范围在最小值(${number.min}) ～ 最大值(${number.max})`
         return {
           number,
           tooltip,
         }
       } else {
-        let number = {
+        const number = {
           min: 1,
           max: resData.max_instance_number,
         }
-        let tooltip = `范围在1 ～ 最大值(${number.max})`
+        const tooltip = `范围在1 ～ 最大值(${number.max})`
         return {
           number,
           tooltip,
@@ -343,17 +343,17 @@ export default {
     },
     formatValues (values) {
       if (values.hourMinute) {
-        values.cycleTimer['hour'] = values.hourMinute.hours()
-        values.cycleTimer['minute'] = values.hourMinute.minutes()
+        values.cycleTimer.hour = values.hourMinute.hours()
+        values.cycleTimer.minute = values.hourMinute.minutes()
         delete values.hourMinute
       }
       if (values.startEndTime && values.startEndTime.length > 0) {
-        values.cycleTimer['startTime'] = values.startEndTime[0].set({
+        values.cycleTimer.startTime = values.startEndTime[0].set({
           hour: 0,
           minute: 0,
           second: 0,
         })
-        values.cycleTimer['endTime'] = values.startEndTime[1].set({
+        values.cycleTimer.endTime = values.startEndTime[1].set({
           hour: 23,
           minute: 59,
           second: 59,
@@ -361,7 +361,7 @@ export default {
         delete values.startEndTime
       }
       if (values.alarm) {
-        values['alarm']['wrapper'] = 'average'
+        values.alarm.wrapper = 'average'
       }
       return values
     },

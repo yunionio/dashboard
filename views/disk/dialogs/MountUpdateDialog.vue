@@ -72,7 +72,7 @@ export default {
       params.manager = itemData.manager_id
       params.zone = itemData.zone_id
     }
-    if (this.isAdminMode || this.isDomainMode) params['project_id'] = itemData.project_id
+    if (this.isAdminMode || this.isDomainMode) params.project_id = itemData.project_id
     new this.$Manager('servers').list({ params })
       .then((res) => {
         this.serversOpts = res.data.data

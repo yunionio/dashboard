@@ -264,7 +264,7 @@ export default {
           })
         })
         Object.keys(level1).forEach((key) => {
-          let option = {}
+          const option = {}
           option.value = diskDataKeyItem + ':' + key
           option.label = diskDataKeyItem + ':' + key
           option.children = []
@@ -288,14 +288,14 @@ export default {
     },
     // 计算器
     _getRaidOptions (dirver, diskNum) {
-      let options = []
-      let limits = this.driverLimiations[dirver]
+      const options = []
+      const limits = this.driverLimiations[dirver]
       if (!limits) {
         return options
       }
       _.forEach(limits, function (item, k) {
         if (diskNum >= item.min) {
-          let option = { value: item.value, label: item.label, props: { step: item.step || 1, min: item.min || 1 } }
+          const option = { value: item.value, label: item.label, props: { step: item.step || 1, min: item.min || 1 } }
           if (item.max && item.max <= diskNum) {
             option.props.max = item.max
           } else {
@@ -330,9 +330,9 @@ export default {
     },
     async handleConfirm () {
       const values = await this.validateForm()
-      values['computeCount'] = values.count
-      values['start_index'] = this.startIndex
-      values['end_index'] = this.endIndex
+      values.computeCount = values.count
+      values.start_index = this.startIndex
+      values.end_index = this.endIndex
       this.params.updateData(values)
       this.cancelDialog()
     },

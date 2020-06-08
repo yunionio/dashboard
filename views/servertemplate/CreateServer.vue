@@ -159,8 +159,8 @@ export default {
         })
     },
     createServer (data) {
-      delete data['vcpu_count']
-      delete data['vmem_size']
+      delete data.vcpu_count
+      delete data.vmem_size
       new this.$Manager('servers', 'v2').create({ data })
         .then(res => {
           this.$message.success('操作成功，开始创建')
@@ -170,7 +170,7 @@ export default {
     async submit () {
       this.loading = true
       try {
-        let values = await this.form.fc.validateFields()
+        const values = await this.form.fc.validateFields()
         if (this.isOpenWorkflow) {
           await this.doCreateWorkflow(values)
         } else {

@@ -140,7 +140,7 @@ export default {
           title: 'GPU',
           slots: {
             default: ({ row }) => {
-              let ret = []
+              const ret = []
               if (row.isolated_devices) {
                 row.isolated_devices.map(item => {
                   ret.push(<span>{item.model}</span>)
@@ -208,7 +208,7 @@ export default {
         this.disabledItems.forEach(disabledId => {
           this.gpuOpt.forEach(item => {
             if (disabledId === item.id) {
-              item['__disabled'] = true
+              item.__disabled = true
             }
           })
         })
@@ -227,8 +227,8 @@ export default {
         const selectedNum = this.params.data.length
         const { number: count } = data
         const gpuItem = this.gpuOpt.filter(item => { return item.id === this.attchGpu[0] })
-        const model = gpuItem[0]['model']
-        const remain = gpuItem[0]['totalCount'] - gpuItem[0]['usedCount']
+        const model = gpuItem[0].model
+        const remain = gpuItem[0].totalCount - gpuItem[0].usedCount
         if (selectedNum * count > remain) {
           this.$message.warning('GPU卡数量不足')
           throw new Error('数量不足')
@@ -320,7 +320,7 @@ export default {
             }
           }
           // 兼容如果某个型号第一个就是已使用情况
-          if (item.guest && !obj[item.model]['id']) {
+          if (item.guest && !obj[item.model].id) {
             obj[item.model] = {
               ...obj[item.model],
               ...item,
@@ -356,7 +356,7 @@ export default {
           obj[item.host_id].push(item)
         }
       }
-      for (let key in obj) {
+      for (const key in obj) {
         obj[key] = this.genResourceData(obj[key])
       }
       return this.filterSameModel(obj)
@@ -368,12 +368,12 @@ export default {
       Object.values(obj).map(item => arrs.push(item))
       let arr = arrs.shift()
       for (let i = arrs.length; i--;) {
-        let obj = {}
+        const obj = {}
         arr = arr.concat(arrs[i]).filter((item, key) => {
-          let objItem = obj[item.model]
+          const objItem = obj[item.model]
           if (!objItem) {
             obj[item.model] = item
-            obj[item.model]['inx'] = key
+            obj[item.model].inx = key
           }
           if (objItem && objItem.inx !== key) {
             const readyRemain = objItem.totalCount - objItem.usedCount

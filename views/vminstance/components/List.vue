@@ -14,10 +14,10 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import { SERVER_TYPE } from '@Compute/constants'
 import { cloudEnabled, cloudUnabledTip } from '../utils'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
+import { SERVER_TYPE } from '@Compute/constants'
 import ListMixin from '@/mixins/list'
 import {
   getNameFilter,
@@ -676,7 +676,7 @@ export default {
                     tooltip: null,
                   }
                   // 包年包月机器，不支持此操作
-                  let isSomePrepaid = this.list.selectedItems.some((item) => {
+                  const isSomePrepaid = this.list.selectedItems.some((item) => {
                     return item.billing_type === 'prepaid'
                   })
                   if (isSomePrepaid) {
@@ -684,10 +684,10 @@ export default {
                     return ret
                   }
                   // 暂只支持同时操作已设置到期或未设置到期释放的机器
-                  let isSomeExpired = this.list.selectedItems.some((item) => {
+                  const isSomeExpired = this.list.selectedItems.some((item) => {
                     return item.expired_at
                   })
-                  let isSomeNotExpired = this.list.selectedItems.some((item) => {
+                  const isSomeNotExpired = this.list.selectedItems.some((item) => {
                     return !item.expired_at
                   })
                   if (isSomeExpired && isSomeNotExpired) {

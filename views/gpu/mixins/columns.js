@@ -7,7 +7,7 @@ export default {
   created () {
     const DEVICE_MAP = {
       '10de': 'nvidia',
-      '1002': 'amd',
+      1002: 'amd',
     }
     this.columns = [
       getNameDescriptionTableColumn({
@@ -56,7 +56,7 @@ export default {
                 <list-body-cell-wrap copy={true} row={row} onManager={this.onManager} hideField={ true }>
                   <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row, 'servers-list') }>{ row.guest }</side-page-trigger>
                 </list-body-cell-wrap>
-                {row.guest_status ? <status status={ row['guest_status'] } statusModule='server'/> : ''}
+                {row.guest_status ? <status status={ row.guest_status } statusModule='server'/> : ''}
               </div>,
             ]
           },

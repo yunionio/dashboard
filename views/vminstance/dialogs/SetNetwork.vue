@@ -140,12 +140,12 @@ export default {
           this.cancelDialog()
           return false
         }
-        for (let key in networks) {
-          let o = {
+        for (const key in networks) {
+          const o = {
             network: networks[key],
           }
           if (networkIps && networkIps[key]) {
-            o['address'] = networkIps[key]
+            o.address = networkIps[key]
           }
           nets.push(o)
         }

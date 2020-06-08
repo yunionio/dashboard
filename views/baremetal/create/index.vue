@@ -128,12 +128,12 @@
 import * as R from 'ramda'
 import _ from 'lodash'
 import { mapGetters } from 'vuex'
+import BottomBar from './BottomBar'
 import { CreateServerForm, LOGIN_TYPES_MAP, NETWORK_OPTIONS_MAP, FORECAST_FILTERS_MAP } from '@Compute/constants'
 import OsSelect from '@Compute/sections/OsSelect'
 import ServerPassword from '@Compute/sections/ServerPassword'
 import ServerNetwork from '@Compute/sections/ServerNetwork'
 import SchedPolicy from '@Compute/sections/SchedPolicy'
-import BottomBar from './BottomBar'
 import DomainProject from '@/sections/DomainProject'
 import CloudregionZone from '@/sections/CloudregionZone'
 import validateForm, { isRequired, isWithinRange } from '@/utils/validate'
@@ -168,7 +168,7 @@ export default {
   },
   mixins: [WindowsMixin, workflowMixin],
   data () {
-    let imageTypeInitValue = IMAGES_TYPE_MAP.standard.key
+    const imageTypeInitValue = IMAGES_TYPE_MAP.standard.key
     return {
       submiting: false,
       errors: [],
@@ -571,7 +571,7 @@ export default {
       return false
     },
     osSelectTypes () {
-      let types = ['standard', 'customize']
+      const types = ['standard', 'customize']
       if (this.isInstallOperationSystem && this.isSupportIso) {
         types.push('iso')
       }
@@ -652,11 +652,11 @@ export default {
     },
     // 规格变动
     specificationChange (value) {
-      let str = value.replace(/\//g, ',')
-      let arr = str.split(',')
-      let obj = {}
+      const str = value.replace(/\//g, ',')
+      const arr = str.split(',')
+      const obj = {}
       for (var i = 0; i < arr.length; i++) {
-        let arr2 = arr[i].split(':')
+        const arr2 = arr[i].split(':')
         obj[arr2[0]] = arr2[1]
       }
       this.selectedSpecItem = obj
@@ -666,8 +666,8 @@ export default {
     },
     // 获取物理机数据
     loadHostOpt () {
-      let manager = new this.$Manager('hosts')
-      let params = { ...this.params.policyHostParams }
+      const manager = new this.$Manager('hosts')
+      const params = { ...this.params.policyHostParams }
       manager.list({ params })
         .then(({ data: { data = [] } }) => {
           this.hostData = data
@@ -695,10 +695,10 @@ export default {
     },
     // 安装操作系统下获取规格
     _fetchSpec () {
-      let manager = new this.$Manager('specs')
+      const manager = new this.$Manager('specs')
       const params = { host_type: 'baremetal', filter: `id.equals(${this.$route.query.id})`, ...this.scopeParams }
       manager.rpc({ methodname: 'GetHostSpecs', params }).then(res => {
-        let specs = res.data
+        const specs = res.data
         this.form.fi.capability = {
           specs: {
             hosts: specs,
@@ -716,7 +716,7 @@ export default {
       })
     },
     capability (v, isIso = false) { // 可用区查询
-      let data = {
+      const data = {
         show_emulated: true,
         resource_type: this.resourceType,
         host_type: 'baremetal',
@@ -731,7 +731,7 @@ export default {
         params: data,
       }).then(({ data = {} }) => {
         data.hypervisors = Array.from(new Set(data.hypervisors))
-        let specs = data.specs.hosts
+        const specs = data.specs.hosts
         // 如果是安装操作系统，只需要拿取public_network_count
         if (this.isInstallOperationSystem) {
           this.form.fi.capability = {
@@ -755,18 +755,18 @@ export default {
       })
     },
     _loadSpecificationOptions (data) {
-      let specs = {}
+      const specs = {}
       let entries = Object.entries(data)
       entries = entries.map(item => {
-        let newKey = item[0].replace(/model:.+\//, '')
+        const newKey = item[0].replace(/model:.+\//, '')
         return [newKey, item[1]]
       })
       entries.forEach(item => {
         specs[item[0]] = item[1]
       })
-      let options = []
-      for (let k in specs) {
-        let spec = {
+      const options = []
+      for (const k in specs) {
+        const spec = {
           text: this.__getSpecification(specs[k]),
           value: k,
         }
@@ -782,21 +782,21 @@ export default {
         // 存储选中规格中的信息
         this.diskData = this.form.fi.capability.specs.hosts[this.specOptions[0].value].disk
         this.hostResourceMapper(this.hostData)
-        let str = this.specOptions[0].value.replace(/\//g, ',')
-        let arr = str.split(',')
-        let obj = {}
+        const str = this.specOptions[0].value.replace(/\//g, ',')
+        const arr = str.split(',')
+        const obj = {}
         for (var i = 0; i < arr.length; i++) {
-          let arr2 = arr[i].split(':')
+          const arr2 = arr[i].split(':')
           obj[arr2[0]] = arr2[1]
         }
         this.selectedSpecItem = obj
       }
     },
     __getSpecification (spec) {
-      let cpu = spec.cpu
-      let mem = sizestr(spec.mem, 'M', 1024)
+      const cpu = spec.cpu
+      const mem = sizestr(spec.mem, 'M', 1024)
       // 按类型和容量归并磁盘信息
-      let disksObj = {}
+      const disksObj = {}
       _.forEach(spec.disk, function (adapters, driver) {
         _.forEach(adapters, function (disks, adapter) {
           _.forEach(disks, function (disk) {
@@ -810,7 +810,7 @@ export default {
       let disks = ''
       _.forEach(disksObj, function (caps, d) {
         disks += '_' + d
-        let sizes = []
+        const sizes = []
         _.forEach(caps, function (num, cap) {
           sizes.push(sizestr(cap, 'M', 1024) + 'x' + num)
         })
@@ -829,13 +829,13 @@ export default {
     },
     uniqueArr (arr, field) {
       if (field) {
-        let obj = {}
+        const obj = {}
         arr.forEach(item => {
           if (!obj[item[field]]) {
             obj[item[field]] = item
           }
         })
-        let newArr = Object.values(obj)
+        const newArr = Object.values(obj)
         return Array.from(new Set(newArr))
       } else {
         return Array.from(new Set(arr))
@@ -906,7 +906,7 @@ export default {
       } else {
         sizeNumber = this.raidUtil(n, arr[4], data.count)
       }
-      let option = {
+      const option = {
         title: arr[3] + ' ' + arr[2] + ' X ' + `${data.option[2] === 'none' ? 1 : data.count}`,
         size: sizestr(sizeNumber, 'G', 1024),
         unitSize: sizestr(n, 'G', 1024),
@@ -924,14 +924,14 @@ export default {
         const imageDiskSize = this.selectedImage.min_disk / 1024
         if (imageDiskSize >= defaultSize) {
           sizeNumber = sizeNumber - imageDiskSize
-          option.chartData.rows.push({ 'name': '/(系统)', 'size': imageDiskSize })
+          option.chartData.rows.push({ name: '/(系统)', size: imageDiskSize })
         } else {
           sizeNumber = sizeNumber - defaultSize
-          option.chartData.rows.push({ 'name': '/', 'size': defaultSize })
+          option.chartData.rows.push({ name: '/', size: defaultSize })
         }
       }
       option.remainder = sizeNumber
-      option.chartData.rows.push({ 'name': '剩余', 'size': sizeNumber })
+      option.chartData.rows.push({ name: '剩余', size: sizeNumber })
       this.diskOptionsDate.push(option)
       data.computeCount--
       if (data.option[2] === 'none' && data.computeCount > 0) {
@@ -960,7 +960,7 @@ export default {
         nameArr,
         selectedArea: selectedArea[0],
         updateData: (values) => {
-          let updateItem = this.diskOptionsDate[idx].chartData.rows
+          const updateItem = this.diskOptionsDate[idx].chartData.rows
           if (e.name === '剩余') {
             // 创建新分区
             updateItem.unshift({ name: values.name, size: values.size, format: values.format })
@@ -988,7 +988,7 @@ export default {
               if (updateItem[updateItem.length - 1].name === '剩余') {
                 updateItem[updateItem.length - 1].size = this.diskOptionsDate[idx].remainder
               } else {
-                updateItem.push({ 'name': '剩余', 'size': this.diskOptionsDate[idx].remainder })
+                updateItem.push({ name: '剩余', size: this.diskOptionsDate[idx].remainder })
               }
             } else {
               if (values.method === 'autoextend') {
@@ -1001,7 +1001,7 @@ export default {
               if (updateItem[updateItem.length - 1].name === '剩余') {
                 updateItem[updateItem.length - 1].size = this.diskOptionsDate[idx].remainder
               } else {
-                updateItem.push({ 'name': '剩余', 'size': this.diskOptionsDate[idx].remainder })
+                updateItem.push({ name: '剩余', size: this.diskOptionsDate[idx].remainder })
               }
             }
           }
@@ -1040,7 +1040,7 @@ export default {
     },
     async handleConfirm (e) {
       e.preventDefault()
-      let diskConfigs = []
+      const diskConfigs = []
       const values = await this.validateForm()
       const disks = []
       const nets = []
@@ -1056,7 +1056,7 @@ export default {
         for (var i = 0; i < this.diskOptionsDate.length; i++) {
           const rows = this.diskOptionsDate[i].chartData.rows
           const adapter = Number(this.diskOptionsDate[i].diskInfo[1].charAt(this.diskOptionsDate[i].diskInfo[1].length - 1))
-          let configOption = {
+          const configOption = {
             conf: this.diskOptionsDate[i].diskInfo[2],
             driver: this.diskOptionsDate[i].diskInfo[0],
             count: this.diskOptionsDate[i].count,
@@ -1107,8 +1107,8 @@ export default {
           }
           // 是否启用bonding
           if (this.isBonding) {
-            option['require_teaming'] = true
-            if (this.isInstallOperationSystem) option['private'] = false
+            option.require_teaming = true
+            if (this.isInstallOperationSystem) option.private = false
             nets.push(option)
           } else {
             nets.push(option)
@@ -1154,7 +1154,7 @@ export default {
         this.createBaremetal(params)
       } else {
         if (this.isOpenWorkflow) { // 提交工单
-          let variables = {
+          const variables = {
             process_definition_key: WORKFLOW_TYPES.APPLY_MACHINE,
             initiator: this.$store.getters.userInfo.id,
             'server-create-paramter': JSON.stringify(params),

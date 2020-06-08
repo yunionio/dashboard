@@ -244,7 +244,7 @@ export default {
     },
     async validateForm () {
       try {
-        let values = await this.form.fc.validateFields()
+        const values = await this.form.fc.validateFields()
         return values
       } catch (error) {
         throw error

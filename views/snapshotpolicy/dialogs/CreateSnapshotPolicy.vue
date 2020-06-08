@@ -101,7 +101,7 @@ export default {
         },
       },
       decorators: {
-        'generate_name': [
+        generate_name: [
           'generate_name',
           {
             validateFirst: true,
@@ -111,7 +111,7 @@ export default {
             ],
           },
         ],
-        'repeat_weekdays': [
+        repeat_weekdays: [
           'repeat_weekdays',
           {
             rules: [
@@ -119,7 +119,7 @@ export default {
             ],
           },
         ],
-        'time_points': [
+        time_points: [
           'time_points',
           {
             rules: [
@@ -127,13 +127,13 @@ export default {
             ],
           },
         ],
-        'retention_days': [
+        retention_days: [
           'retention_days',
           {
             initialValue: 7,
           },
         ],
-        'alwaysReserved': [
+        alwaysReserved: [
           'alwaysReserved',
           {
             initialValue: false,
@@ -226,7 +226,7 @@ export default {
     timeSelectHandle (val) {
       this.form.fd.time_points = [val]
       this.$nextTick(() => {
-        this.form.fc.setFieldsValue({ 'time_points': [val] })
+        this.form.fc.setFieldsValue({ time_points: [val] })
       })
     },
     onValuesChange (props, values) {

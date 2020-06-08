@@ -62,7 +62,7 @@ export default {
                 <div class='d-flex'>
                   <div class='flex-grow-0 flex-shrink-0'>入方向：</div>
                   <div>{ inList.map(item => <a-tag class='mb-2'>{ item.value }</a-tag>) }</div>
-                </div>
+                </div>,
               )
             }
             if (outList.length > 0) {
@@ -70,12 +70,12 @@ export default {
                 <div class='mb-2 d-flex'>
                   <div class='flex-grow-0 flex-shrink-0'>出方向：</div>
                   <div>{ outList.map(item => <a-tag class='mb-2'>{ item.value }</a-tag>) }</div>
-                </div>
+                </div>,
               )
             }
             if (ret.length <= 0) {
               ret.push(
-                <div>暂无规则</div>
+                <div>暂无规则</div>,
               )
             }
             return ret

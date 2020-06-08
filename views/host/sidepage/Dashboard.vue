@@ -78,7 +78,7 @@ export default {
   methods: {
     _getSeriesMax (arr) {
       if (!arr) return []
-      let data = arr.map(item => {
+      const data = arr.map(item => {
         this.vmName = item.tags.vm_name
         return {
           name: this.vmName,
@@ -101,14 +101,14 @@ export default {
           } else { // 其他类型宿主机(esxi、openstack、zstack)
             q = `SELECT max("${val.seleteItem}") FROM "${val.fromItem}" WHERE ("host_id" = '${this.data.id}') AND time >= now() - ${10}m GROUP BY time(1m), "vm_name" FILL(none)`
           }
-          let { data: { results } } = await influxdb.get('', {
+          const { data: { results } } = await influxdb.get('', {
             params: {
               db: 'telegraf', // 用于在组件拼接和表示不同类型的数据,  e.g. `${item.name}Loading`
               q,
               epoch: 'ms',
             },
           })
-          let data = this._getSeriesMax(results[0].series)
+          const data = this._getSeriesMax(results[0].series)
           this.topList.push({
             // metric: TOP5REQDATA[i].metrics[0].name[0], // 需要 link 跳转页面的时候可以加上
             title: val.label,
@@ -143,7 +143,7 @@ export default {
             const series = results[0].series
             const values = _.get(series, '[0].values')
             if (values && values.length) {
-              let temValues = values.map(v => (v[1] || 0))
+              const temValues = values.map(v => (v[1] || 0))
               const maxNum = temValues.length ? Math.max.apply(null, temValues) : 0
               let unit = '%'
               let numerifyFloat = '0.00'
@@ -179,7 +179,7 @@ export default {
       return (<div>{oversell}<div class="mt-2 text-color">{ numerify(per, vm.numerifyFloat) }{ vm.unit }</div></div>)
     },
     turnToList (obj) {
-      let tempList = new Array(4)
+      const tempList = new Array(4)
       tempList[0] = (() => {
         const current = obj.cpu_commit || 0
         const total = obj.cpu_count - (obj.cpu_reserved || 0)

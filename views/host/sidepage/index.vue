@@ -16,8 +16,6 @@
 </template>
 
 <script>
-import VminstanceList from '@Compute/views/vminstance/components/List'
-import ServerRecovery from '@Compute/views/server-recovery/components/List'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import HostDetail from './Detail'
@@ -27,6 +25,8 @@ import NetworkList from './Network'
 import StorageList from './Storage'
 import GpuList from './Gpu'
 import Monitor from './Monitor'
+import ServerRecovery from '@Compute/views/server-recovery/components/List'
+import VminstanceList from '@Compute/views/vminstance/components/List'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'

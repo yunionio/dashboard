@@ -1,5 +1,9 @@
 import * as R from 'ramda'
 import _ from 'lodash'
+import BottomBar from '../components/BottomBar'
+import Servertemplate from '../components/Servertemplate'
+import SystemDisk from '../components/SystemDisk'
+import Tag from '../components/Tag'
 import { SCHED_POLICY_OPTIONS_MAP, SERVER_TYPE, SELECT_IMAGE_KEY_SUFFIX, LOGIN_TYPES_MAP } from '@Compute/constants'
 import OsSelect from '@Compute/sections/OsSelect'
 import ServerPassword from '@Compute/sections/ServerPassword'
@@ -15,10 +19,6 @@ import Backup from '@Compute/sections/Backup'
 import Duration from '@Compute/sections/Duration'
 import InstanceGroups from '@Compute/sections/InstanceGroups'
 import DataDisk from '@Compute/sections/DataDisk'
-import BottomBar from '../components/BottomBar'
-import Servertemplate from '../components/Servertemplate'
-import SystemDisk from '../components/SystemDisk'
-import Tag from '../components/Tag'
 import storage from '@/utils/storage'
 import { WORKFLOW_TYPES } from '@/constants/workflow'
 import workflowMixin from '@/mixins/workflow'
@@ -370,8 +370,8 @@ export default {
       })
     },
     createServer (data) {
-      delete data['vcpu_count']
-      delete data['vmem_size']
+      delete data.vcpu_count
+      delete data.vmem_size
       this.serverM.create({ data })
         .then(res => {
           if (R.is(Array, data.disks)) {

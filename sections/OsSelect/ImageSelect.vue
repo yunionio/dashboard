@@ -37,8 +37,8 @@
 <script>
 import * as R from 'ramda'
 import _ from 'lodash'
-import { SELECT_IMAGE_KEY_SUFFIX } from '@Compute/constants'
 import ImageSelectTemplate from './ImageSelectTemplate'
+import { SELECT_IMAGE_KEY_SUFFIX } from '@Compute/constants'
 import { Manager } from '@/utils/manager'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
 import storage from '@/utils/storage'
@@ -199,7 +199,7 @@ export default {
         })
       }
       if (this.uefi) {
-        let imageOpts = imageOptions.map((item) => {
+        const imageOpts = imageOptions.map((item) => {
           if (item.uefi_support !== 'true') {
             return {
               ...item,
@@ -208,7 +208,7 @@ export default {
           }
           return item
         })
-        let arr = imageOpts.filter((item) => { return !item.hidden })
+        const arr = imageOpts.filter((item) => { return !item.hidden })
         if (arr.length === 0 && os === 'Windows') {
           this.form.fc.setFieldsValue({ image: {} })
         }
@@ -266,6 +266,7 @@ export default {
       this.images.list = []
       switch (this.imageType) { // 自定义镜像
         case IMAGES_TYPE_MAP.host.key: // 主机镜像
+          // eslint-disable-next-line no-case-declarations
           const params = { ...this.imageParams, status: 'active' }
           this.fetchHostImages(params)
           break
@@ -280,7 +281,7 @@ export default {
     imageChange (imageObj) {
       let imageMsg = {}
       if (imageObj && R.is(Object, imageObj)) {
-        let list = this.imageOptions
+        const list = this.imageOptions
         imageMsg = list.find(image => image.id === imageObj.key)
       }
       this.$emit('updateImageMsg', { imageMsg })
@@ -428,13 +429,13 @@ export default {
     },
     genImageName (img) {
       let name = ''
-      if (img.properties && img.properties['os_distribution']) {
-        name = img.properties['os_distribution']
-        if (img.properties['os_version']) {
-          name += ' ' + img.properties['os_version']
+      if (img.properties && img.properties.os_distribution) {
+        name = img.properties.os_distribution
+        if (img.properties.os_version) {
+          name += ' ' + img.properties.os_version
         }
-        if (img.properties['os_codename']) {
-          name += ' ' + img.properties['os_codename']
+        if (img.properties.os_codename) {
+          name += ' ' + img.properties.os_codename
         }
         name += ' (' + img.name + ')'
       } else {

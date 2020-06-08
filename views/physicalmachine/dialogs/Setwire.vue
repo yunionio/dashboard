@@ -63,15 +63,15 @@ export default {
         id: this.params.data[0].hostId,
         data: {
           ...data,
-          mac: this.params.data[0]['mac'],
-          index: this.params.data[0]['index'],
+          mac: this.params.data[0].mac,
+          index: this.params.data[0].index,
         },
       })
     },
     async handleConfirm () {
       this.loading = true
       try {
-        let values = this.form.fc.validateFields()
+        const values = this.form.fc.validateFields()
         this.loading = true
         await this.doUpdate(values)
         this.loading = false

@@ -5,7 +5,7 @@ import { IMAGES_TYPE_MAP } from '@/constants/compute'
 let setFieldsValue = null
 let decorator = null
 
-let $route = {
+const $route = {
   query: {
   },
 }

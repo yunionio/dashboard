@@ -3,9 +3,9 @@
 </template>
 
 <script>
+import { KVM_MONITOR_OPTS, VMWARE_MONITOR_OPTS } from '../constants.js'
 import NodeAlertList from '@Compute/views/node-alert/components/List'
 // import { metricItems } from '@Compute/views/node-alert/constants'
-import { KVM_MONITOR_OPTS, VMWARE_MONITOR_OPTS } from '../constants.js'
 
 export default {
   name: 'HostNodeAlertListSidepage',

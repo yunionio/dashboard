@@ -59,9 +59,9 @@ export default {
   },
   data () {
     const validateSecgroups = (rule, value, callback) => {
-      let max = this._max
-      let maxError = `最多关联${max}个安全组`
-      let minError = '最少关联一个'
+      const max = this._max
+      const maxError = `最多关联${max}个安全组`
+      const minError = '最少关联一个'
       if (value.length > max) {
         return callback(maxError)
       }
@@ -70,10 +70,10 @@ export default {
       }
       return callback()
     }
-    let concatRules = (k, l, r) => k === 'rules' ? R.concat(l, r) : r
+    const concatRules = (k, l, r) => k === 'rules' ? R.concat(l, r) : r
     const secgroupDecMsg = R.mergeDeepWithKey(concatRules,
       (this.decorators.secgroup[1] || {}),
-      { rules: [{ validator: validateSecgroups }] }
+      { rules: [{ validator: validateSecgroups }] },
     )
     return {
       types: SECGROUP_OPTIONS_MAP,

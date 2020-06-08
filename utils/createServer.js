@@ -594,6 +594,7 @@ export class Decorator {
   constructor (type) {
     this.type = type
   }
+
   createDecorators () {
     const decoratorArr = decoratorGroup[this.type]
     if (decoratorArr) {
@@ -625,6 +626,7 @@ export class GenCreateData {
     this.isPublic = this.createType === SERVER_TYPE.public
     this.isPrepaid = this.fd.resourceType === RESOURCE_TYPES_MAP.prepaid.key
   }
+
   /**
    * 拼装磁盘数据
    *
@@ -661,6 +663,7 @@ export class GenCreateData {
     }
     return ret
   }
+
   _getDataDiskType (dataDiskTypes) {
     if (!R.isNil(dataDiskTypes) && !R.isEmpty(dataDiskTypes)) {
       const firstKey = Object.keys(dataDiskTypes)[0]
@@ -669,6 +672,7 @@ export class GenCreateData {
       }
     }
   }
+
   _genDisksArr () {
     const sysDiskType = this.fd.systemDiskType.key
     const dataDiskType = this._getDataDiskType(this.fd.dataDiskTypes)
@@ -712,6 +716,7 @@ export class GenCreateData {
     const disks = { data: dataDisk, system: systemDisk }
     return disks
   }
+
   /**
    * 组装所有磁盘数据，包含系统盘及数据盘
    *
@@ -729,6 +734,7 @@ export class GenCreateData {
     }
     return ret
   }
+
   /**
    * 组装所有网络数据
    *
@@ -771,6 +777,7 @@ export class GenCreateData {
     }
     return ret
   }
+
   /**
    * 获取配置的GPU数据
    *
@@ -791,6 +798,7 @@ export class GenCreateData {
     }
     return ret
   }
+
   /**
    * 获取管理员密码所提交的 key 与 value
    *
@@ -817,6 +825,7 @@ export class GenCreateData {
     }
     return ret
   }
+
   /**
    * 获取调度策略所提交的 key 与 value
    *
@@ -858,6 +867,7 @@ export class GenCreateData {
     }
     return ret
   }
+
   /**
    * 获取平台
    *
@@ -867,11 +877,12 @@ export class GenCreateData {
   getHypervisor () {
     let ret = this.fd.hypervisor
     if (this.isPublic && !this.isPrepaid) {
-      let provider = this.fd.sku.provider
+      const provider = this.fd.sku.provider
       if (provider) ret = provider.toLowerCase()
     }
     return ret
   }
+
   /**
    * 是否是通过云账号过滤后选择的镜像
    *
@@ -882,6 +893,7 @@ export class GenCreateData {
     const imageMsg = IMAGES_TYPE_MAP[this.fd.imageType]
     return imageMsg && imageMsg.enable_cloudaccount
   }
+
   /**
    * 获取Region
    *
@@ -894,6 +906,7 @@ export class GenCreateData {
     }
     return this.fd.cloudregion.key
   }
+
   /**
    * 获取Zone
    *
@@ -910,6 +923,7 @@ export class GenCreateData {
     }
     return ret
   }
+
   /**
    * 获取CPU核数
    *
@@ -923,6 +937,7 @@ export class GenCreateData {
     }
     return ret
   }
+
   /**
    * 获取内存
    *
@@ -936,6 +951,7 @@ export class GenCreateData {
     }
     return ret
   }
+
   /**
    * 组装所有的创建数据
    *
@@ -1008,20 +1024,20 @@ export class GenCreateData {
     // zone
     const zoneId = this.getPreferZone()
     if (zoneId) {
-      data['prefer_zone'] = zoneId
+      data.prefer_zone = zoneId
     }
     // 只有kvm支持启动方式
     if (this.fd.hypervisor === HYPERVISORS_MAP.kvm.key) {
-      data['bios'] = this.fd.bios
+      data.bios = this.fd.bios
     }
     // 到期释放
     if (this.fd.billType !== BILL_TYPES_MAP.package.key && this.fd.durationStandard !== 'none') {
       if (this.fd.durationStandard === 'custom') {
-        data['duration'] = this.fd.duration
+        data.duration = this.fd.duration
       } else {
-        data['duration'] = this.fd.durationStandard
+        data.duration = this.fd.durationStandard
       }
-      data['billing_type'] = 'postpaid'
+      data.billing_type = 'postpaid'
     }
     // 镜像类型为 iso 需要加参数 cdrom
     if (this.fd.imageType === IMAGES_TYPE_MAP.iso.key) {
@@ -1053,6 +1069,7 @@ export class GenCreateData {
     }
     return data
   }
+
   /**
    * 获取创建预测的错误信息
    *

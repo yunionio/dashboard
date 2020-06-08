@@ -85,7 +85,7 @@ export default {
       if (val) {
         const ids = val.map((item) => { return item.id })
         this.$nextTick(() => {
-          this.form.fc.setFieldsValue({ 'disks': ids })
+          this.form.fc.setFieldsValue({ disks: ids })
         })
       }
     },
@@ -106,7 +106,7 @@ export default {
         const { data: { data = [] } } = await manager.list({
           params: {
             scope: this.scope,
-            snapshotpolicy_id: this.params.data[0]['id'],
+            snapshotpolicy_id: this.params.data[0].id,
           },
         })
         this.bindedDisks = data

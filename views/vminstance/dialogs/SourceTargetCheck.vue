@@ -63,7 +63,7 @@ export default {
       const ids = this.params.data.map(item => item.id)
       const values = await this.form.fc.validateFields()
       const open = values.open ? 'on' : 'off'
-      const params = { 'src_ip_check': open, 'src_mac_check': open }
+      const params = { src_ip_check: open, src_mac_check: open }
       return this.params.onManager('batchPerformAction', {
         id: ids,
         steadyStatus: 'running',

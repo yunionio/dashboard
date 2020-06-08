@@ -372,14 +372,14 @@ export const SECGROUP_OPTIONS_MAP = {
 
 // 创建预测错误过滤类型映射表
 export const FORECAST_FILTERS_MAP = {
-  'host_cpu': '宿主机 cpu 空闲个数不满足请求个数',
-  'host_isolated_device': '宿主机 gpu 空闲个数不满足请求个数',
-  'host_memory': '宿主机空闲内存不满足请求数量',
-  'host_network': '网络剩余 ip 数量不满足',
-  'host_storage': '宿主机磁盘不足',
-  'host_status': '宿主机状态异常',
-  'host_aggregate': '宿主机被标签过滤',
-  'disk_schedtag': '磁盘被标签过滤',
+  host_cpu: '宿主机 cpu 空闲个数不满足请求个数',
+  host_isolated_device: '宿主机 gpu 空闲个数不满足请求个数',
+  host_memory: '宿主机空闲内存不满足请求数量',
+  host_network: '网络剩余 ip 数量不满足',
+  host_storage: '宿主机磁盘不足',
+  host_status: '宿主机状态异常',
+  host_aggregate: '宿主机被标签过滤',
+  disk_schedtag: '磁盘被标签过滤',
 }
 
 // 资源池配置选项
@@ -396,13 +396,13 @@ export const RESOURCE_TYPES_MAP = {
 
 // 介质过滤类型映射表
 export const MEDIUM_MAP = {
-  'rotate': '机械盘',
-  'ssd': '固态硬盘',
+  rotate: '机械盘',
+  ssd: '固态硬盘',
 }
 
 export const DISK_TYPES = {
-  'sys': '系统盘',
-  'data': '数据盘',
+  sys: '系统盘',
+  data: '数据盘',
   'swap-swap': '分区',
 }
 
@@ -411,7 +411,7 @@ export const CUSTOM_STORAGE_TYPES = ['openstack', 'kvm']
 // 公有云存储类型 + 私有云存储类型
 export const STORAGE_TYPES = {
   aliyun: {
-    'cloud': {
+    cloud: {
       label: '普通云盘',
       value: 'cloud',
       min: 5, // 数据盘或者新建云硬盘的取值范围【G】
@@ -419,7 +419,7 @@ export const STORAGE_TYPES = {
       sysMin: 20, // 系统盘取值范围【G】
       sysMax: 500, // 系统盘取值范围【G】
     },
-    'cloud_ssd': {
+    cloud_ssd: {
       label: 'SSD 云盘',
       value: 'cloud_ssd',
       min: 20,
@@ -451,7 +451,7 @@ export const STORAGE_TYPES = {
       sysMin: 20,
       sysMax: 500,
     },
-    'cloud_efficiency': {
+    cloud_efficiency: {
       label: '高效云盘',
       value: 'cloud_efficiency',
       min: 20,
@@ -460,7 +460,7 @@ export const STORAGE_TYPES = {
       sysMin: 20,
       sysMax: 500,
     },
-    'ephemeral_ssd': {
+    ephemeral_ssd: {
       label: '本地 SSD 盘',
       value: 'ephemeral_ssd',
       min: 5,
@@ -470,7 +470,7 @@ export const STORAGE_TYPES = {
     },
   },
   aws: {
-    'gp2': {
+    gp2: {
       label: '通用型 SSD',
       value: 'gp2',
       min: 1,
@@ -479,7 +479,7 @@ export const STORAGE_TYPES = {
       sysMin: 1,
       sysMax: 16384,
     },
-    'io1': {
+    io1: {
       label: '预配置 IOPS SSD',
       value: 'io1',
       min: 4,
@@ -487,21 +487,21 @@ export const STORAGE_TYPES = {
       sysMin: 1,
       sysMax: 16384,
     },
-    'st1': {
+    st1: {
       label: '吞吐优化 HDD',
       value: 'st1',
       sysUnusable: true, // 系统盘不可用
       min: 500,
       max: 16384,
     },
-    'sc1': {
+    sc1: {
       label: 'Cold HDD',
       value: 'sc1',
       sysUnusable: true, // 系统盘不可用
       min: 500,
       max: 16384,
     },
-    'standard': {
+    standard: {
       label: '磁介质',
       value: 'standard',
       min: 1,
@@ -511,7 +511,7 @@ export const STORAGE_TYPES = {
     },
   },
   qcloud: {
-    'local_basic': { // 公有云下架了这两款磁盘类型
+    local_basic: { // 公有云下架了这两款磁盘类型
       label: '普通本地盘',
       value: 'local_basic',
       min: 10,
@@ -520,7 +520,7 @@ export const STORAGE_TYPES = {
       resizeStep: 10, // 扩容步长，默认值是 1 G
       unCreateCloud: true, // 不支持创建云硬盘
     },
-    'cloud_basic': {
+    cloud_basic: {
       label: '普通云硬盘',
       value: 'cloud_basic',
       min: 10,
@@ -530,7 +530,7 @@ export const STORAGE_TYPES = {
       sysMax: 500,
       resizeStep: 10,
     },
-    'cloud_premium': {
+    cloud_premium: {
       label: '高性能云硬盘',
       value: 'cloud_premium',
       min: 50,
@@ -539,7 +539,7 @@ export const STORAGE_TYPES = {
       sysMax: 1024,
       resizeStep: 10,
     },
-    'cloud_ssd': {
+    cloud_ssd: {
       label: 'SSD 云硬盘',
       value: 'cloud_ssd',
       min: 100,
@@ -550,7 +550,7 @@ export const STORAGE_TYPES = {
     },
   },
   azure: {
-    'standard_lrs': {
+    standard_lrs: {
       label: '标准 HDD',
       value: 'standard_lrs',
       min: 1,
@@ -559,7 +559,7 @@ export const STORAGE_TYPES = {
       sysMin: 30,
       sysMax: 4095,
     },
-    'standardssd_lrs': {
+    standardssd_lrs: {
       label: '标准 SSD',
       value: 'standardssd_lrs',
       min: 1,
@@ -567,7 +567,7 @@ export const STORAGE_TYPES = {
       sysMin: 30,
       sysMax: 4095,
     },
-    'premium_lrs': {
+    premium_lrs: {
       label: '高级 SSD',
       value: 'premium_lrs',
       min: 1,
@@ -577,7 +577,7 @@ export const STORAGE_TYPES = {
     },
   },
   kvm: {
-    'local': {
+    local: {
       label: '本地硬盘',
       value: 'local',
       min: 1,
@@ -587,7 +587,7 @@ export const STORAGE_TYPES = {
       sysMax: 500,
       unCreateCloud: true, // 不支持创建云硬盘
     },
-    'nfs': {
+    nfs: {
       label: 'NFS',
       value: 'nfs',
       min: 1,
@@ -596,7 +596,7 @@ export const STORAGE_TYPES = {
       sysMax: 500,
       unCreateCloud: true, // 不支持创建云硬盘
     },
-    'gpfs': {
+    gpfs: {
       label: 'GPFS',
       value: 'gpfs',
       min: 1,
@@ -604,7 +604,7 @@ export const STORAGE_TYPES = {
       sysMin: 10,
       sysMax: 500,
     },
-    'rbd': {
+    rbd: {
       label: 'Ceph RBD',
       value: 'rbd',
       min: 1,
@@ -614,7 +614,7 @@ export const STORAGE_TYPES = {
     },
   },
   onecloud: {
-    'local': {
+    local: {
       label: '本地硬盘',
       value: 'local',
       min: 1,
@@ -624,7 +624,7 @@ export const STORAGE_TYPES = {
       sysMax: 500,
       unCreateCloud: true, // 不支持创建云硬盘
     },
-    'nfs': {
+    nfs: {
       label: 'NFS',
       value: 'nfs',
       min: 1,
@@ -633,7 +633,7 @@ export const STORAGE_TYPES = {
       sysMax: 500,
       unCreateCloud: true, // 不支持创建云硬盘
     },
-    'gpfs': {
+    gpfs: {
       label: 'GPFS',
       value: 'gpfs',
       min: 1,
@@ -641,7 +641,7 @@ export const STORAGE_TYPES = {
       sysMin: 10,
       sysMax: 500,
     },
-    'rbd': {
+    rbd: {
       label: 'rbd',
       value: 'rbd',
       min: 1,
@@ -651,7 +651,7 @@ export const STORAGE_TYPES = {
     },
   },
   esxi: {
-    'local': {
+    local: {
       label: '本地硬盘',
       value: 'local',
       min: 1,
@@ -662,7 +662,7 @@ export const STORAGE_TYPES = {
       sysMax: 500,
       unCreateCloud: true, // 不支持创建云硬盘
     },
-    'nas': {
+    nas: {
       label: 'nas 云盘',
       value: 'nas',
       min: 1,
@@ -671,7 +671,7 @@ export const STORAGE_TYPES = {
       sysMax: 500,
       unCreateCloud: true, // 不支持创建云硬盘
     },
-    'vsan': {
+    vsan: {
       label: 'vsan 云盘',
       value: 'vsan',
       min: 1,
@@ -682,7 +682,7 @@ export const STORAGE_TYPES = {
     },
   },
   huawei: {
-    'SSD': {
+    SSD: {
       label: '超高IO云硬盘',
       value: 'SSD',
       min: 10,
@@ -691,7 +691,7 @@ export const STORAGE_TYPES = {
       sysMax: 1024,
       sort: 3,
     },
-    'SAS': {
+    SAS: {
       label: '高IO云硬盘',
       value: 'SAS',
       min: 10,
@@ -700,7 +700,7 @@ export const STORAGE_TYPES = {
       sysMax: 1024,
       sort: 2,
     },
-    'SATA': {
+    SATA: {
       label: '普通IO云硬盘',
       value: 'SATA',
       min: 10,
@@ -767,7 +767,7 @@ export const STORAGE_TYPES = {
     },
   },
   ctyun: {
-    'SSD': {
+    SSD: {
       label: '超高IO云硬盘',
       value: 'SSD',
       min: 10,
@@ -776,7 +776,7 @@ export const STORAGE_TYPES = {
       sysMax: 1024,
       sort: 3,
     },
-    'SAS': {
+    SAS: {
       label: '高IO云硬盘',
       value: 'SAS',
       min: 10,
@@ -785,7 +785,7 @@ export const STORAGE_TYPES = {
       sysMax: 1024,
       sort: 2,
     },
-    'SATA': {
+    SATA: {
       label: '普通IO云硬盘',
       value: 'SATA',
       min: 10,
@@ -867,11 +867,11 @@ export const timeOptions = [
 
 // 磁盘类型
 export const DISK_TYPE = {
-  'data': {
+  data: {
     value: 'data',
     text: '数据盘',
   },
-  'sys': {
+  sys: {
     value: 'sys',
     text: '系统盘',
   },

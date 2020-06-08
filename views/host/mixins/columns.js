@@ -21,7 +21,7 @@ export default {
         },
         cellWrapSlots: row => {
           return {
-            append: () => row.is_baremetal ? (<a-tooltip title="有IPMI信息，可转换为物理机"><icon class='ml-2' type='res-host' style={{ 'color': '#1890ff' }} /></a-tooltip>) : null,
+            append: () => row.is_baremetal ? (<a-tooltip title="有IPMI信息，可转换为物理机"><icon class='ml-2' type='res-host' style={{ color: '#1890ff' }} /></a-tooltip>) : null,
           }
         },
       }),
@@ -35,19 +35,19 @@ export default {
         showOverflow: 'ellipsis',
         slots: {
           default: ({ row }) => {
-            let cellWrap = []
+            const cellWrap = []
             if (row.access_ip) {
               cellWrap.push(
                 <div class="d-flex">
                   <list-body-cell-wrap row={row} field="access_ip" copy><span class="text-color-help">(管理)</span></list-body-cell-wrap>
-                </div>
+                </div>,
               )
             }
             if (row.ipmi_ip) {
               cellWrap.push(
                 <div class="d-flex">
                   <list-body-cell-wrap row={row} field="ipmi_ip" copy><span class="text-color-help">(带外)</span></list-body-cell-wrap>
-                </div>
+                </div>,
               )
             }
             return cellWrap
@@ -115,7 +115,7 @@ export default {
         type: 'expand',
         slots: {
           content: ({ row }) => {
-            let tags = _.sortBy(row.schedtags, ['default', 'name'])
+            const tags = _.sortBy(row.schedtags, ['default', 'name'])
             if (tags.length > 0) {
               return tags.map(tag => <a-tag class='mb-2' color='blue'>{tag.name}</a-tag>)
             }

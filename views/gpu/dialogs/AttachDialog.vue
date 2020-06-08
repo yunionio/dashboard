@@ -68,7 +68,7 @@ export default {
     }
   },
   created () {
-    let params = {
+    const params = {
       host: this.params.data[0].host_id,
       hypervisor: 'kvm',
       scope: this.scope,

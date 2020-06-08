@@ -30,8 +30,8 @@
 </template>
 <script>
 // import * as R from 'ramda'
-import { CreateServerForm } from '@Compute/constants'
 import Upload from './components/Upload'
+import { CreateServerForm } from '@Compute/constants'
 export default {
   name: 'AnsibleTemplateCreate',
   components: {
@@ -81,7 +81,7 @@ export default {
       let moduleStr = ''
       if (modules && modules.length > 0) {
         playbook.modules.forEach((item, i) => {
-          item['args'] = item.args || []
+          item.args = item.args || []
           const { name, args } = item
           moduleStr += `${i ? '\r' : ''}${name} ${args.join(' ')}`
         })
@@ -221,12 +221,12 @@ export default {
             const arr = item.split('=')
             if (arr.length === 2) {
               const [key, value] = arr
-              hostItem['vars'][key] = value
+              hostItem.vars[key] = value
             } else {
-              hostItem['name'] = item
+              hostItem.name = item
             }
           })
-          playbook['inventory']['hosts'].push(hostItem)
+          playbook.inventory.hosts.push(hostItem)
           if (values.playbook) {
             const modules = []
             const modeItems = values.playbook.replace(/[\r\n]/g, '<br/>').split('<br/>')
@@ -240,14 +240,14 @@ export default {
                 }
               })
               if (_arr && _arr.length > 0) {
-                moduleItem['name'] = _arr.shift()
+                moduleItem.name = _arr.shift()
                 moduleItem.args = _arr
                 modules.push(moduleItem)
               }
             })
-            playbook['modules'] = modules
+            playbook.modules = modules
           }
-          params['playbook'] = playbook
+          params.playbook = playbook
           resolve(params)
         })
       })

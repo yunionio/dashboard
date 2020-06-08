@@ -26,13 +26,13 @@
 </template>
 
 <script>
-import VminstanceList from '@Compute/views/vminstance/components/List'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import SecgroupDetail from './Detail'
 import InDirection from './InDirection'
 import OutDirection from './OutDirection'
 import CacheList from './Cache'
+import VminstanceList from '@Compute/views/vminstance/components/List'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'

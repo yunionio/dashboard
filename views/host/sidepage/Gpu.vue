@@ -9,7 +9,7 @@ import WindowsMixin from '@/mixins/windows'
 
 const DEVICE_MAP = {
   '10de': 'nvidia',
-  '1002': 'amd',
+  1002: 'amd',
 }
 
 export default {

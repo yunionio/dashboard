@@ -138,7 +138,7 @@ export default {
     detachPolicy (id) {
       return this.manager.delete({
         id,
-        ctx: [['disks', this.params.data[0]['id']]],
+        ctx: [['disks', this.params.data[0].id]],
       })
     },
     detachPolices () {
@@ -150,7 +150,7 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        let values = await this.form.fc.validateFields()
+        const values = await this.form.fc.validateFields()
         this.loading = true
         if (this.enable) {
           await this.detachPolices()
@@ -158,7 +158,7 @@ export default {
             id: values.snapshotpolicy,
             action: '',
             data: null,
-            ctx: [['disks', this.params.data[0]['id']]],
+            ctx: [['disks', this.params.data[0].id]],
           })
         } else {
           if (this.attchedPolices.length) {
@@ -193,7 +193,7 @@ export default {
     },
     async fetchSnaphotpolicy () {
       const manager = new this.$Manager('snapshotpolicies')
-      let params = {
+      const params = {
         scope: this.scope,
         tenant: this.params.data[0].tenant_id,
       }

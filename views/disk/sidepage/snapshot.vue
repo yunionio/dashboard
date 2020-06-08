@@ -15,8 +15,8 @@ import { sizestr } from '@/utils/utils'
 import expectStatus from '@/constants/expectStatus'
 
 const DISK_TYPES = {
-  'sys': '系统盘',
-  'data': '数据盘',
+  sys: '系统盘',
+  data: '数据盘',
   'swap-swap': '分区',
 }
 
@@ -88,7 +88,7 @@ export default {
               return [
                 <div class='text-truncate'>
                   {row.guest}
-                  {row.guest_status ? <status status={ row['guest_status'] } statusModule='server'/> : ''}
+                  {row.guest_status ? <status status={ row.guest_status } statusModule='server'/> : ''}
                 </div>,
               ]
             },

@@ -215,12 +215,14 @@ export default {
         })
     },
     checkTemplateName (rule, value, callback) {
-      return new this.$Manager(this.isHostImage ? 'guestimages' : 'images', 'v1').list({ params: {
-        name: value,
-      } }).then(res => {
+      return new this.$Manager(this.isHostImage ? 'guestimages' : 'images', 'v1').list({
+        params: {
+          name: value,
+        },
+      }).then(res => {
         const data = res.data.data
         if (!R.isNil(data) && !R.isEmpty(data)) {
-          if (data[0]['name'] === this.initName) {
+          if (data[0].name === this.initName) {
             callback()
           } else {
             callback(new Error('输入的镜像名称已存在'))
@@ -257,7 +259,7 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        let values = await this.form.fc.validateFields()
+        const values = await this.form.fc.validateFields()
         const { name, osType, osDistribution, osOtherDistribution, minDisk, diskDriver, netDriver } = values
         const params = {
           name,

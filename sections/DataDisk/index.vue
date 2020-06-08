@@ -120,7 +120,7 @@ export default {
       return this.type === 'idc'
     },
     elements () {
-      let ret = []
+      const ret = []
       if (this.isSnapshotImageType) return ret
       if (this.isHostImageType) return ['snapshot', 'schedtag']
       if (this.enableMointpoint) {
@@ -161,7 +161,7 @@ export default {
         }
       }
       if (!R.isNil(this.sku) && !R.isEmpty(this.sku)) {
-        for (let obj in hypervisorDisks) {
+        for (const obj in hypervisorDisks) {
           if (hypervisorDisks[obj].skuFamily && !hypervisorDisks[obj].skuFamily.includes(this.sku.instance_type_family)) {
             delete hypervisorDisks[obj]
           }
@@ -173,9 +173,9 @@ export default {
       }
       for (let i = 0, len = currentTypes.length; i < len; i++) {
         const type = currentTypes[i].split('/')[0]
-        let opt = hypervisorDisks[type] || this.getExtraDiskOpt(type)
+        const opt = hypervisorDisks[type] || this.getExtraDiskOpt(type)
         if (opt) {
-          let min = Math.max(DISK_MIN_SIZE, opt.min)
+          const min = Math.max(DISK_MIN_SIZE, opt.min)
           if (opt) {
             ret[opt.key] = {
               ...opt,

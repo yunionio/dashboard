@@ -54,7 +54,7 @@ export default {
   methods: {
     doMigrate (data) {
       data = {
-        'auto_migrate_on_host_down': data.enable ? 'enable' : 'disable',
+        auto_migrate_on_host_down: data.enable ? 'enable' : 'disable',
       }
       return this.params.onManager('performAction', {
         id: this.params.data[0].id,
@@ -67,7 +67,7 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        let values = await this.form.fc.validateFields()
+        const values = await this.form.fc.validateFields()
         await this.doMigrate(values)
         this.loading = false
         this.cancelDialog()

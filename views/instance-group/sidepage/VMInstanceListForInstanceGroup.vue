@@ -95,7 +95,7 @@ export default {
           minWidth: 120,
           slots: {
             default: ({ row }) => {
-              let ret = []
+              const ret = []
               if (row.instance_type) {
                 ret.push(<div style={{ color: '#0A1F44' }}>{ row.instance_type }</div>)
               }

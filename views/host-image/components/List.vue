@@ -138,7 +138,7 @@ export default {
                   })
                 },
                 meta: () => {
-                  let ret = {
+                  const ret = {
                     validate: true,
                     tooltip: null,
                   }
@@ -169,7 +169,7 @@ export default {
                   const validate = this.list.selectedItems.length > 0
                   return {
                     validate: validate,
-                    tooltip: !validate && `请选择需要操作的主机镜像`,
+                    tooltip: !validate && '请选择需要操作的主机镜像',
                   }
                 },
               },

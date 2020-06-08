@@ -89,12 +89,12 @@ export default {
   },
   computed: {
     hypervisor () {
-      return this.params.data[0]['hypervisor']
+      return this.params.data[0].hypervisor
     },
     eipParams () {
       return {
         usable_eip_for_associate_type: 'server',
-        usable_eip_for_associate_id: this.params.data[0]['id'],
+        usable_eip_for_associate_id: this.params.data[0].id,
         scope: this.$store.getters.scope,
       }
     },

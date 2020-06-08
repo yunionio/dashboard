@@ -36,7 +36,7 @@ export default {
               ))
             }
             list.push(
-              <a-tag class='mb-2'>{ row.root_image.name }</a-tag>
+              <a-tag class='mb-2'>{ row.root_image.name }</a-tag>,
             )
             return list
           },

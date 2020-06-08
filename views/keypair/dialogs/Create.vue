@@ -28,12 +28,12 @@ export default {
   name: 'CreateKeyPairDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
-    let publicKeyNameDuplicate = debounce((rule, value, callback) => {
-      let manager = new this.$Manager('keypairs')
+    const publicKeyNameDuplicate = debounce((rule, value, callback) => {
+      const manager = new this.$Manager('keypairs')
       manager.list({
         params: { filter: `name.equals(${value})` },
       }).then((res) => {
-        let len = res.data.data.length
+        const len = res.data.data.length
         let msg
         if (len === 0) {
           callback()

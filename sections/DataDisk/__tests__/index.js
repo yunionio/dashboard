@@ -1,8 +1,8 @@
 import { mount } from '@vue/test-utils'
-import { diskValidator } from '@Compute/utils/createServer'
 import * as R from 'ramda'
-import Disk from '@Compute/sections/Disk'
 import DataDisk from '../index'
+import { diskValidator } from '@Compute/utils/createServer'
+import Disk from '@Compute/sections/Disk'
 import { isRequired } from '@/utils/validate'
 
 let decorator = null

@@ -24,8 +24,8 @@
 
 <script>
 import * as R from 'ramda'
-import { DISK_TYPES, SERVER_TYPE } from '@Compute/constants'
 import { mapGetters } from 'vuex'
+import { DISK_TYPES, SERVER_TYPE } from '@Compute/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import WorkflowMixin from '@/mixins/workflow'

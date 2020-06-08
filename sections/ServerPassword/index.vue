@@ -76,7 +76,7 @@ export default {
     loginTypeMap () {
       if (this.loginTypes && this.loginTypes.length > 0) {
         const _ = {}
-        for (let k in LOGIN_TYPES_MAP) {
+        for (const k in LOGIN_TYPES_MAP) {
           if (this.loginTypes.includes(k)) {
             _[k] = LOGIN_TYPES_MAP[k]
           }

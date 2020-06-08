@@ -253,14 +253,14 @@ export default {
   },
   methods: {
     formatTriggerType (row) {
-      const type = row['trigger_type']
+      const type = row.trigger_type
       const initStatus = ['creating', 'create_failed', 'init']
       if (initStatus.indexOf(row.status) > -1) {
         return '-'
       }
       // 告警策略
-      if (type === 'alarm' && row['alarm']) {
-        const { indicator, operator, value, cumulate } = row['alarm']
+      if (type === 'alarm' && row.alarm) {
+        const { indicator, operator, value, cumulate } = row.alarm
         const wrapperType = {
           lt: '<',
           gt: '>',
@@ -270,25 +270,25 @@ export default {
         return `${this.$t('flexGroupIndicator')[indicator]} ${wrapperType[operator]} ${value} ${unit}，${cumulateTxt}`
       }
       // 定时策略
-      if (type === 'timing' && row['timer']) {
-        const timeTxt = this.$moment(row.timer['exec_time']).format()
+      if (type === 'timing' && row.timer) {
+        const timeTxt = this.$moment(row.timer.exec_time).format()
         return `${timeTxt} 触发`
       }
       // 周期策略
-      if (type === 'cycle' && row['cycle_timer']) {
-        const timer = row['cycle_timer']
+      if (type === 'cycle' && row.cycle_timer) {
+        const timer = row.cycle_timer
         const { hour, minute, start_time: startTime, end_time: endTime } = timer
-        const typeTxt = this.$t('flexGroupCycleType')[timer['cycle_type']]
+        const typeTxt = this.$t('flexGroupCycleType')[timer.cycle_type]
         let itemsTxt = ''
         // 周
-        if (timer['cycle_type'] === 'week' && timer['week_days'].length > 0) {
-          itemsTxt = '【' + timer['week_days'].map(v => {
+        if (timer.cycle_type === 'week' && timer.week_days.length > 0) {
+          itemsTxt = '【' + timer.week_days.map(v => {
             return this.$t('flexGroupSubCycleTypeWeek')[v]
           }).join('|') + '】'
         }
         // 月
-        if (timer['cycle_type'] === 'month') {
-          itemsTxt = '【' + timer['month_days'].map(v => {
+        if (timer.cycle_type === 'month') {
+          itemsTxt = '【' + timer.month_days.map(v => {
             return `${v}号`
           }).join('|') + '】'
         }

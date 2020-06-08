@@ -215,7 +215,7 @@ export default {
       }
     },
     desc () {
-      return this.types[this.form.fd.type]['desc']
+      return this.types[this.form.fd.type].desc
     },
     isScriptAdd () {
       return this.form.fd.type === 'scriptAdd'

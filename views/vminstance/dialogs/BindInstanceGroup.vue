@@ -69,7 +69,7 @@ export default {
         const { data: { data = [] } } = await this.instanceGroupsManager.list({
           params: {
             scope: this.scope,
-            server: this.params.data[0]['id'],
+            server: this.params.data[0].id,
           },
         })
         this.bindedInstanceGroups = data
@@ -84,7 +84,7 @@ export default {
       const params = {
         enabled: true,
         scope: this.scope,
-        project: this.params.data[0]['tenant_id'],
+        project: this.params.data[0].tenant_id,
       }
       if (query) params.filter = `name.contains("${query}")`
       try {
@@ -103,7 +103,7 @@ export default {
         data[`group.${i}`] = ids[i]
       }
       return this.params.onManager('performAction', {
-        id: this.params.data[0]['id'],
+        id: this.params.data[0].id,
         managerArgs: {
           action,
           data,

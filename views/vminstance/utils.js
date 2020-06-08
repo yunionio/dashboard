@@ -17,7 +17,7 @@ const _tran = enArr => {
 }
 
 const actionEableMap = {
-  'rebuildRoot': {
+  rebuildRoot: {
     cn: '重装系统',
     brand: {
       azure: ['ready', 'running'],
@@ -36,7 +36,7 @@ const actionEableMap = {
       google: ['ready'],
     },
   },
-  'resetPassword': {
+  resetPassword: {
     cn: '重置密码',
     brand: {
       azure: ['running'],
@@ -55,7 +55,7 @@ const actionEableMap = {
       google: ['ready'],
     },
   },
-  'bindKeyPair': {
+  bindKeyPair: {
     cn: '绑定密钥',
     brand: {
       azure: ['running'],
@@ -74,7 +74,7 @@ const actionEableMap = {
       google: ['ready'],
     },
   },
-  'unBindKeyPair': {
+  unBindKeyPair: {
     cn: '解绑密钥',
     brand: {
       azure: ['running'],
@@ -93,7 +93,7 @@ const actionEableMap = {
       google: ['ready'],
     },
   },
-  'adjustConfig': {
+  adjustConfig: {
     cn: '调整配置',
     brand: {
       azure: ['ready', 'running'],
@@ -112,7 +112,7 @@ const actionEableMap = {
       google: ['ready'],
     },
   },
-  'vnc': {
+  vnc: {
     cn: 'vnc',
     brand: {
       azure: false,
@@ -169,7 +169,7 @@ const actionEableMap = {
       google: false,
     },
   },
-  'createSnapshot': {
+  createSnapshot: {
     cn: '创建快照',
     brand: {
       azure: ['running', 'ready'],
@@ -188,7 +188,7 @@ const actionEableMap = {
       google: ['running', 'ready'],
     },
   },
-  'transfer': {
+  transfer: {
     cn: '迁移',
     brand: {
       azure: false,
@@ -207,7 +207,7 @@ const actionEableMap = {
       google: false,
     },
   },
-  'assignSecgroup': {
+  assignSecgroup: {
     cn: '关联安全组',
     brand: {
       azure: true,
@@ -226,7 +226,7 @@ const actionEableMap = {
       google: true,
     },
   },
-  'insertiso': {
+  insertiso: {
     cn: '挂载ISO',
     brand: {
       azure: true,
@@ -245,7 +245,7 @@ const actionEableMap = {
       google: false,
     },
   },
-  'ejectiso': {
+  ejectiso: {
     cn: '卸载ISO',
     brand: {
       azure: true,
@@ -264,7 +264,7 @@ const actionEableMap = {
       google: false,
     },
   },
-  'bindEip': {
+  bindEip: {
     cn: '绑定EIP',
     brand: {
       azure: ['running', 'ready'],
@@ -283,7 +283,7 @@ const actionEableMap = {
       google: ['running', 'ready'],
     },
   },
-  'unbindEip': {
+  unbindEip: {
     cn: '解绑EIP',
     brand: {
       azure: ['running', 'ready'],
@@ -302,14 +302,14 @@ const actionEableMap = {
       google: ['running', 'ready'],
     },
   },
-  'acttachGpu': {
+  acttachGpu: {
     cn: '绑定GPU卡',
     brand: {
       onecloud: ['ready'],
       vmware: false,
     },
   },
-  'publicIpToEip': {
+  publicIpToEip: {
     cn: '公有IP转EIP',
     brand: {
       qcloud: ['running', 'ready'],
@@ -400,7 +400,7 @@ export const cloudUnabledTip = (action, value, othersEabledStatus = ['ready']) =
       } else {
         if (H === 'onecloud') H = 'kvm'
         if (H === 'vmware') H = 'esxi'
-        const tooltip = hypervisorMap[H]['label']
+        const tooltip = hypervisorMap[H].label
         errorMsg = `${tooltip}暂不支持该操作`
         return false
       }

@@ -139,10 +139,12 @@ export default {
       if (!value) {
         return callback(new Error('请输入镜像名称'))
       }
-      return new this.$Manager('images', 'v1').list({ params: {
-        name: value,
-        scope: this.$store.getters.scope,
-      } }).then(res => {
+      return new this.$Manager('images', 'v1').list({
+        params: {
+          name: value,
+          scope: this.$store.getters.scope,
+        },
+      }).then(res => {
         const data = res.data.data
         if (!R.isNil(data) && !R.isEmpty(data)) {
           callback(new Error('输入的镜像名称已存在'))

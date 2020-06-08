@@ -152,7 +152,7 @@ export default {
   computed: {
     ...mapGetters(['userInfo']),
     headers () {
-      return { 'Authorization': `Bearer ${this.$store.getters.userInfo.session}` }
+      return { Authorization: `Bearer ${this.$store.getters.userInfo.session}` }
     },
   },
   destroyed () {
@@ -183,10 +183,12 @@ export default {
       if (!value) {
         return callback(new Error('请输入镜像名称'))
       }
-      return new this.$Manager('images', 'v1').list({ params: {
-        name: value,
-        scope: this.$store.getters.scope,
-      } }).then(res => {
+      return new this.$Manager('images', 'v1').list({
+        params: {
+          name: value,
+          scope: this.$store.getters.scope,
+        },
+      }).then(res => {
         const data = res.data.data
         if (!R.isNil(data) && !R.isEmpty(data)) {
           callback(new Error('输入的镜像名称已存在'))
@@ -230,7 +232,7 @@ export default {
       this.loading = true
       try {
         const { fileList } = this
-        let formData = new FormData()
+        const formData = new FormData()
         const values = await this.form.fc.validateFields()
         formData.append('domain', (values.domain && values.domain.key) || this.userInfo.projectDomainId)
         formData.append('project', (values.project && values.project.key) || this.userInfo.projectId)

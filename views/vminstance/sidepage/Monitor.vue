@@ -99,7 +99,7 @@ export default {
       return this.hypervisor === HYPERVISORS_MAP.esxi.key
     },
     metricOpts () {
-      let opts = [metricItems['vm_cpu.usage_active'], metricItems['vm_netio.bps_recv'], metricItems['vm_netio.bps_sent'], metricItems['vm_diskio.read_bps'], metricItems['vm_diskio.write_bps']]
+      const opts = [metricItems['vm_cpu.usage_active'], metricItems['vm_netio.bps_recv'], metricItems['vm_netio.bps_sent'], metricItems['vm_diskio.read_bps'], metricItems['vm_diskio.write_bps']]
       if (this.hasMemMetric) {
         opts.splice(1, 0, metricItems['vm_mem.used_percent'])
       }
@@ -116,9 +116,9 @@ export default {
       this.loading = true
       const resList = []
       for (let idx = 0; idx < this.monitorConstants.length; idx++) {
-        let val = this.monitorConstants[idx]
+        const val = this.monitorConstants[idx]
         try {
-          let { data: { results } } = await influxdb.get('', {
+          const { data: { results } } = await influxdb.get('', {
             params: {
               db: 'telegraf',
               q: `SELECT mean("${val.seleteItem}") as "${val.label}" FROM "telegraf"."30day_only"."${val.fromItem}" WHERE ${this.sql}`,

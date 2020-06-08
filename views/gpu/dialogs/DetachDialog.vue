@@ -93,7 +93,7 @@ export default {
         detach_all: true,
         auto_start: values.autoStart,
       }
-      let selectedIds = this.params.data.map((item) => {
+      const selectedIds = this.params.data.map((item) => {
         return item.guest_id
       })
       return new this.$Manager('servers').batchPerformAction({

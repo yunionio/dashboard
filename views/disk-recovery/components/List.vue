@@ -47,7 +47,8 @@ export default {
             items: [
               { label: '系统盘', key: 'sys' },
               { label: '数据盘', key: 'data' },
-            ] }),
+            ],
+          }),
           storage: {
             label: '存储',
             jointFilter: true,

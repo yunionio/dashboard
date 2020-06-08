@@ -51,7 +51,7 @@ export default {
     getParams () {
       if (this.params.windowData.currentTab === 'servers-list') {
         return {
-          'filter': `id.equals(${this.detailData.guest_id})`,
+          filter: `id.equals(${this.detailData.guest_id})`,
         }
       }
       return null

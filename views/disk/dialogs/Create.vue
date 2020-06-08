@@ -385,12 +385,12 @@ export default {
       } catch (error) {
         console.warn(`没有找到 ${CommonConstants.STORAGE_TYPES[provider]} 下面的 ${item.storage_type}`)
       }
-      this.form.fc.setFieldsValue({ 'size': 10 })
+      this.form.fc.setFieldsValue({ size: 10 })
       const size = this.form.fc.getFieldValue('size')
       if (size > this.maxDiskData) { // 如果当前容量大于当前集群的最大值，那么取最大值
-        this.form.fc.setFieldsValue({ 'size': this.maxDiskData })
+        this.form.fc.setFieldsValue({ size: this.maxDiskData })
       } else if (size < this.minDiskData) { // 如果当前容量小于当前集群的最大值，那么取最小值
-        this.form.fc.setFieldsValue({ 'size': this.minDiskData })
+        this.form.fc.setFieldsValue({ size: this.minDiskData })
       }
     },
   },

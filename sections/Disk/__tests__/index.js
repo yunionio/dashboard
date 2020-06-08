@@ -1,6 +1,6 @@
 import { shallowMount } from '@vue/test-utils'
-import { diskValidator } from '@Compute/utils/createServer'
 import Disk from '../index'
+import { diskValidator } from '@Compute/utils/createServer'
 import { isRequired } from '@/utils/validate'
 
 let decorator = null
@@ -128,7 +128,7 @@ describe('Disk', () => {
     expect(wrapper.vm.$el).toMatchSnapshot()
   })
   it('check disk minSize >= min size', () => {
-    let min = 60
+    const min = 60
     const wrapper = shallowMount(Disk, {
       data () {
         return {

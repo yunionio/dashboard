@@ -73,13 +73,15 @@ export default {
                         validateFirst: true,
                         rules: [
                           { required: true, message: '请输入端口' },
-                          { validator: (rule, value, _callback) => {
-                            const num = parseFloat(value)
-                            if (!/^\d+$/.test(value) || !num || num > 65535) {
-                              _callback('端口范围在 0-65535 之间')
-                            }
-                            _callback()
-                          } },
+                          {
+                            validator: (rule, value, _callback) => {
+                              const num = parseFloat(value)
+                              if (!/^\d+$/.test(value) || !num || num > 65535) {
+                                _callback('端口范围在 0-65535 之间')
+                              }
+                              _callback()
+                            },
+                          },
                         ],
                       },
                       {
@@ -97,10 +99,10 @@ export default {
             label: 'Java控制台',
             action: () => {
               return new this.$Manager('hosts').getSpecific({ id: obj.id, spec: 'jnlp' }).then(res => {
-                let blob = new Blob([res.data.jnlp], { type: 'application/x-java-jnlp-file' })
-                let url = window.URL.createObjectURL(blob)
-                let fileName = `${obj.name}.jnlp`
-                let linkDom = document.createElement('a')
+                const blob = new Blob([res.data.jnlp], { type: 'application/x-java-jnlp-file' })
+                const url = window.URL.createObjectURL(blob)
+                const fileName = `${obj.name}.jnlp`
+                const linkDom = document.createElement('a')
                 linkDom.href = url
                 linkDom.setAttribute('download', fileName)
                 document.body.appendChild(linkDom)

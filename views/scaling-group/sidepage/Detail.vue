@@ -72,7 +72,7 @@ export default {
               field: 'desire_instance_number',
               title: '期望实例数',
               formatter: ({ row }) => {
-                return row['desire_instance_number']
+                return row.desire_instance_number
               },
             },
             {
@@ -123,7 +123,7 @@ export default {
               field: 'health_check_gov',
               title: '健康状态检查宽限期',
               formatter: ({ row }) => {
-                return `${row['health_check_gov']}s`
+                return `${row.health_check_gov}s`
               },
             },
           ],

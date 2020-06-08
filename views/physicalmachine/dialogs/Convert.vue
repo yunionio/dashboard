@@ -308,7 +308,7 @@ export default {
   computed: {
     raidOptions () {
       let flag = false
-      let items = this.params.data[0]
+      const items = this.params.data[0]
       if (Object.keys(items.spec.disk).length > 1) {
         flag = true
       } else {
@@ -342,13 +342,13 @@ export default {
     },
   },
   watch: {
-    'imagesData': {
+    imagesData: {
       handler (val) {
-        this.form.fc.setFieldsValue({ 'image': val[0].id })
+        this.form.fc.setFieldsValue({ image: val[0].id })
         this.selectedImage = val[0]
       },
     },
-    'isShowImages': {
+    isShowImages: {
       handler (val) {
         if (val) {
           this.capability()
@@ -393,7 +393,7 @@ export default {
       return data
     },
     capability () { // 可用区查询
-      let data = { show_emulated: true, resource_type: 'shared', scope: this.$store.getters.scope, host_type: 'baremetal' }
+      const data = { show_emulated: true, resource_type: 'shared', scope: this.$store.getters.scope, host_type: 'baremetal' }
       this.zonesM2.get({
         id: `${this.params.data[0].zone_id}/capability`,
         params: data,
@@ -407,9 +407,9 @@ export default {
       if (e === 'custom') {
         this.isShowImages = true
         this.imagesParams = {
-          'is_standard': 'false',
-          'status': 'active',
-          'details': true,
+          is_standard: 'false',
+          status: 'active',
+          details: true,
           'filter.0': 'disk_format.notequals(iso)',
         }
       } else {
@@ -492,7 +492,7 @@ export default {
       } else {
         sizeNumber = this.raidUtil(n, arr[4], data.count)
       }
-      let option = {
+      const option = {
         title: arr[3] + ' ' + arr[2] + ' X ' + `${data.option[2] === 'none' ? 1 : data.count}`,
         size: sizestr(sizeNumber, 'G', 1024),
         unitSize: sizestr(n, 'G', 1024),
@@ -510,14 +510,14 @@ export default {
         const imageDiskSize = this.selectedImage.min_disk / 1024
         if (imageDiskSize >= defaultSize) {
           sizeNumber = sizeNumber - imageDiskSize
-          option.chartData.rows.push({ 'name': '/(系统)', 'size': imageDiskSize })
+          option.chartData.rows.push({ name: '/(系统)', size: imageDiskSize })
         } else {
           sizeNumber = sizeNumber - defaultSize
-          option.chartData.rows.push({ 'name': '/', 'size': defaultSize })
+          option.chartData.rows.push({ name: '/', size: defaultSize })
         }
       }
       option.remainder = sizeNumber
-      option.chartData.rows.push({ 'name': '剩余', 'size': sizeNumber })
+      option.chartData.rows.push({ name: '剩余', size: sizeNumber })
       this.diskOptionsDate.push(option)
       data.computeCount--
       if (data.option[2] === 'none' && data.computeCount > 0) {
@@ -548,7 +548,7 @@ export default {
         nameArr,
         selectedArea: selectedArea[0],
         updateData: (values) => {
-          let updateItem = this.diskOptionsDate[idx].chartData.rows
+          const updateItem = this.diskOptionsDate[idx].chartData.rows
           if (e.name === '剩余') {
             // 创建新分区
             updateItem.unshift({ name: values.name, size: values.size, format: values.format })
@@ -576,7 +576,7 @@ export default {
               if (updateItem[updateItem.length - 1].name === '剩余') {
                 updateItem[updateItem.length - 1].size = this.diskOptionsDate[idx].remainder
               } else {
-                updateItem.push({ 'name': '剩余', 'size': this.diskOptionsDate[idx].remainder })
+                updateItem.push({ name: '剩余', size: this.diskOptionsDate[idx].remainder })
               }
             } else {
               if (values.method === 'autoextend') {
@@ -589,7 +589,7 @@ export default {
               if (updateItem[updateItem.length - 1].name === '剩余') {
                 updateItem[updateItem.length - 1].size = this.diskOptionsDate[idx].remainder
               } else {
-                updateItem.push({ 'name': '剩余', 'size': this.diskOptionsDate[idx].remainder })
+                updateItem.push({ name: '剩余', size: this.diskOptionsDate[idx].remainder })
               }
             }
           }
@@ -638,8 +638,8 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        let diskConfigs = []
-        let values = await this.validateForm()
+        const diskConfigs = []
+        const values = await this.validateForm()
         const disks = []
         const nets = []
         let params = {}
@@ -652,7 +652,7 @@ export default {
             }
             // 是否启用bonding
             if (this.isBonding) {
-              option['require_teaming'] = true
+              option.require_teaming = true
               nets.push(option)
             } else {
               nets.push(option)
@@ -679,7 +679,7 @@ export default {
             for (var i = 0; i < this.diskOptionsDate.length; i++) {
               const rows = this.diskOptionsDate[i].chartData.rows
               const adapter = Number(this.diskOptionsDate[i].diskInfo[1].charAt(this.diskOptionsDate[i].diskInfo[1].length - 1))
-              let configOption = {
+              const configOption = {
                 conf: this.diskOptionsDate[i].diskInfo[2],
                 driver: this.diskOptionsDate[i].diskInfo[0],
                 count: this.diskOptionsDate[i].count,

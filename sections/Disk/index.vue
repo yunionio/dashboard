@@ -163,7 +163,7 @@ export default {
       return this.elements.includes(element)
     },
     format (num) {
-      let n = num
+      const n = num
       if (this.hypervisor === HYPERVISORS_MAP.qcloud.key) {
         num = Math.floor(num / 10) * 10
       }
