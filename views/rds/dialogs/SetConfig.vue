@@ -22,8 +22,8 @@
 </template>
 
 <script>
-import { CreateServerForm } from '@Compute/constants'
 import SKU from '../create/components/SKU'
+import { CreateServerForm } from '@Compute/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
@@ -61,9 +61,9 @@ export default {
     },
     disableds () {
       const _ = {
-        'Huawei': ['engine', 'engine_version', 'zones', 'category', 'storage_type'],
-        'Aliyun': ['engine', 'engine_version', 'zones'],
-        'Google': ['engine', 'engine_version', 'zones', 'category'],
+        Huawei: ['engine', 'engine_version', 'zones', 'category', 'storage_type'],
+        Aliyun: ['engine', 'engine_version', 'zones'],
+        Google: ['engine', 'engine_version', 'zones', 'category'],
       }
       return _[this.rdsItem.brand]
     },
@@ -98,13 +98,13 @@ export default {
       specs,
     }
     await this.$nextTick()
-    this.skuRef = this.$refs['SKU']
-    await this.skuRef.fetchCapability(this.rdsItem['cloudregion_id'])
+    this.skuRef = this.$refs.SKU
+    await this.skuRef.fetchCapability(this.rdsItem.cloudregion_id)
     await this.setValues()
   },
   methods: {
     setValues () {
-      const SKU = this.$refs['SKU']
+      const SKU = this.$refs.SKU
       const { engine, provider } = this.rdsItem
       const zoneIds = []
       const zoneNames = []
@@ -126,14 +126,14 @@ export default {
       this.form.setFieldsValue({
         provider,
         engine,
-        engine_version: this.rdsItem['engine_version'],
-        category: this.rdsItem['category'],
-        storage_type: this.rdsItem['storage_type'],
-        vcpu_count: this.rdsItem['vcpu_count'],
-        vmem_size_mb: this.rdsItem['vmem_size_mb'],
+        engine_version: this.rdsItem.engine_version,
+        category: this.rdsItem.category,
+        storage_type: this.rdsItem.storage_type,
+        vcpu_count: this.rdsItem.vcpu_count,
+        vmem_size_mb: this.rdsItem.vmem_size_mb,
         zones: zoneIds.join('+'),
-        cloudregion_id: this.rdsItem['cloudregion_id'],
-        cloudregion: this.rdsItem['cloudregion_id'],
+        cloudregion_id: this.rdsItem.cloudregion_id,
+        cloudregion: this.rdsItem.cloudregion_id,
       }, SKU.linkageValue)
     },
     // 获取CPU核数、内存、可用区
@@ -148,7 +148,7 @@ export default {
       Object.keys(changedFields).forEach(field => {
         if (changedFields[field] === undefined) return false
         let _field = field
-        for (let k in this.keysChange) {
+        for (const k in this.keysChange) {
           if (this.keysChange[k].indexOf(_field) > -1) {
             _field = k
           }
@@ -164,7 +164,7 @@ export default {
         this.form.fc.validateFields((err, values) => {
           if (!err) {
             if (values.sku) {
-              values['instance_type'] = values.sku.name
+              values.instance_type = values.sku.name
               delete values.sku
             }
             if (values.zones) {

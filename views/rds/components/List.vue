@@ -182,7 +182,7 @@ export default {
                     tooltip: null,
                   }
                   // 包年包月机器，不支持此操作
-                  let isSomePrepaid = this.list.selectedItems.some((item) => {
+                  const isSomePrepaid = this.list.selectedItems.some((item) => {
                     return item.billing_type === 'prepaid'
                   })
                   if (isSomePrepaid) {
@@ -190,10 +190,10 @@ export default {
                     return ret
                   }
                   // 暂只支持同时操作已设置到期或未设置到期释放的机器
-                  let isSomeExpired = this.list.selectedItems.some((item) => {
+                  const isSomeExpired = this.list.selectedItems.some((item) => {
                     return item.expired_at
                   })
-                  let isSomeNotExpired = this.list.selectedItems.some((item) => {
+                  const isSomeNotExpired = this.list.selectedItems.some((item) => {
                     return !item.expired_at
                   })
                   if (isSomeExpired && isSomeNotExpired) {
@@ -230,13 +230,13 @@ export default {
                   }
                   if (this.list.selectedItems.length > 0) {
                     for (let i = 0; i < this.list.selectedItems.length; i++) {
-                      let obj = this.list.selectedItems[i]
-                      if (obj['disable_delete']) {
+                      const obj = this.list.selectedItems[i]
+                      if (obj.disable_delete) {
                         tooltip = '删除保护，如需解除，请点击【设置删除保护】'
                         validate = false
                         break
                       }
-                      let seconds = this.$moment(obj.expired_at).diff(new Date()) / 1000
+                      const seconds = this.$moment(obj.expired_at).diff(new Date()) / 1000
                       if (obj.billing_type === 'prepaid' && seconds > 0) {
                         tooltip = '实例未到期不允许删除'
                         validate = false

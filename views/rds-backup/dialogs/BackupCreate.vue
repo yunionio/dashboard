@@ -116,8 +116,8 @@ export default {
         this.form.fc.validateFields((err, values) => {
           if (!err) {
             if (this.params.rdsItem) {
-              values['dbinstance_id'] = this.params.rdsItem.id
-              values['dbinstance'] = this.params.rdsItem.id
+              values.dbinstance_id = this.params.rdsItem.id
+              values.dbinstance = this.params.rdsItem.id
             }
             resolve(values)
           } else {

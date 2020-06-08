@@ -155,7 +155,7 @@ export default {
       const target = (e && e.target) ? e.target : {}
       const keys = ['engine', 'engine_version']
       const data = this.FC.getFieldsValue(keys)
-      data['engine_version'] = target.value || data.engine_version
+      data.engine_version = target.value || data.engine_version
       const arr = R.keys(R.pathOr({}, R.values(data), this.filterItems))
       this.local_categorys = ENGINE_KEYS.filter((k) => {
         return arr.indexOf(k) > -1
@@ -168,7 +168,7 @@ export default {
       const target = (e && e.target) ? e.target : {}
       const keys = ['engine', 'engine_version', 'local_category']
       const data = this.FC.getFieldsValue(keys)
-      data['local_category'] = target.value || data.local_category
+      data.local_category = target.value || data.local_category
       const arr = R.keys(R.pathOr({}, R.values(data), this.filterItems))
       this.node_types = NODE_KEYS.filter((k) => {
         return arr.indexOf(k) > -1
@@ -181,7 +181,7 @@ export default {
       const target = (e && e.target) ? e.target : {}
       const keys = ['engine', 'engine_version', 'local_category', 'node_type']
       const data = this.FC.getFieldsValue(keys)
-      data['node_type'] = target.value || data.node_type
+      data.node_type = target.value || data.node_type
       const arr = R.pathOr([], R.values(data), this.filterItems)
       this.performance_types = PERFORMANCE_TYPE_KEYS.filter(k => {
         return arr.indexOf(k) > -1
@@ -190,12 +190,12 @@ export default {
     },
     archPoints (type) {
       const points = {
-        'single': '数据单副本 | 不支持数据持久化 | 不承诺数据可靠性',
-        'ha': '数据双副本 | 数据持久化 | 提供数据可靠性',
-        'proxy': '大容量 | 高性能| 支持分片',
-        'master': '数据双副本 | 数据持久化 | 提供数据可靠性',
-        'cluster': '大容量 | 高性能| 支持分片',
-        'rwsplit': '高可用| 高性能｜高灵活的读写分离服务',
+        single: '数据单副本 | 不支持数据持久化 | 不承诺数据可靠性',
+        ha: '数据双副本 | 数据持久化 | 提供数据可靠性',
+        proxy: '大容量 | 高性能| 支持分片',
+        master: '数据双副本 | 数据持久化 | 提供数据可靠性',
+        cluster: '大容量 | 高性能| 支持分片',
+        rwsplit: '高可用| 高性能｜高灵活的读写分离服务',
       }
       return points[type]
     },
@@ -203,7 +203,7 @@ export default {
       const instanceSpecsManager = new this.$Manager('elasticcacheskus/instance-specs')
       try {
         const { data } = await instanceSpecsManager.batchGet({ params })
-        this.memorys = data['mems_mb']
+        this.memorys = data.mems_mb
         this.$nextTick(() => {
           if (this.memorys && this.redisItem && this.redisItem.capacity_mb) {
             const redisMb = this.redisItem.capacity_mb
@@ -223,7 +223,7 @@ export default {
     },
     async fetchCapability (params) {
       const capabilityManager = new this.$Manager('elasticcacheskus/capability')
-      params['engine'] = 'redis'
+      params.engine = 'redis'
       try {
         const { data: { redis } } = await capabilityManager.batchGet({ params })
         this.filterItems = { redis }

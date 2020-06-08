@@ -104,7 +104,7 @@ export const decorators = {
     ],
   },
   vpcNetwork: {
-    'vpc': [
+    vpc: [
       'vpc',
       {
         initialValue: undefined,
@@ -113,7 +113,7 @@ export const decorators = {
         ],
       },
     ],
-    'network': [
+    network: [
       'network',
       {
         initialValue: undefined,
@@ -132,6 +132,7 @@ export class ControlParams {
     this.params = DEFAULT_PARAMS[type]
     this.initScope()
   }
+
   initScope () {
     R.forEachObjIndexed((value, key) => {
       if (!R.isNil(value.scope)) {
@@ -139,6 +140,7 @@ export class ControlParams {
       }
     }, this.params)
   }
+
   zoneChange (zoneId) {
     this.params.network.zone = zoneId
   }
@@ -158,6 +160,7 @@ export class GenCreateData {
     this.isPublic = this.createType === SERVER_TYPE.public
     this.isPrepaid = this.fd.resourceType === RESOURCE_TYPES_MAP.prepaid.key
   }
+
   /**
    * 拼装磁盘数据
    *
@@ -194,6 +197,7 @@ export class GenCreateData {
     }
     return ret
   }
+
   _genDisksArr () {
     const diskType = this.fd.systemDiskType.key
     const systemDisk = {
@@ -236,6 +240,7 @@ export class GenCreateData {
     const disks = { data: dataDisk, system: systemDisk }
     return disks
   }
+
   /**
    * 组装所有磁盘数据，包含系统盘及数据盘
    *
@@ -253,6 +258,7 @@ export class GenCreateData {
     }
     return ret
   }
+
   /**
    * 组装所有网络数据
    *
@@ -295,6 +301,7 @@ export class GenCreateData {
     }
     return ret
   }
+
   /**
    * 获取配置的GPU数据
    *
@@ -315,6 +322,7 @@ export class GenCreateData {
     }
     return ret
   }
+
   /**
    * 获取管理员密码所提交的 key 与 value
    *
@@ -341,6 +349,7 @@ export class GenCreateData {
     }
     return ret
   }
+
   /**
    * 获取调度策略所提交的 key 与 value
    *
@@ -367,6 +376,7 @@ export class GenCreateData {
     }
     return ret
   }
+
   /**
    * 获取平台
    *
@@ -376,11 +386,12 @@ export class GenCreateData {
   getHypervisor () {
     let ret = this.fd.hypervisor
     if (this.isPublic && !this.isPrepaid) {
-      let provider = this.fd.sku.selected.provider
+      const provider = this.fd.sku.selected.provider
       if (provider) ret = provider.toLowerCase()
     }
     return ret
   }
+
   /**
    * 获取Region
    *
@@ -390,11 +401,12 @@ export class GenCreateData {
   getPreferRegion () {
     let ret = this.fd.cloudregion.key
     if (this.isPublic && !this.isPrepaid) {
-      let region = this.fd.sku.selected.cloudregion_id
+      const region = this.fd.sku.selected.cloudregion_id
       if (region) ret = region
     }
     return ret
   }
+
   /**
    * 获取Zone
    *
@@ -402,9 +414,10 @@ export class GenCreateData {
    * @memberof GenCreateData
    */
   getPreferZone () {
-    let ret = this.fd.zone && this.fd.zone.key
+    const ret = this.fd.zone && this.fd.zone.key
     return ret
   }
+
   /**
    * 获取CPU核数
    *
@@ -418,6 +431,7 @@ export class GenCreateData {
     }
     return ret
   }
+
   /**
    * 获取内存
    *
@@ -431,6 +445,7 @@ export class GenCreateData {
     }
     return ret
   }
+
   /**
    * 组装所有的创建数据
    *
@@ -503,14 +518,15 @@ export class GenCreateData {
     // zone
     const zoneId = this.getPreferZone()
     if (zoneId) {
-      data['prefer_zone'] = zoneId
+      data.prefer_zone = zoneId
     }
     // 只有kvm支持启动方式
     if (this.fd.hypervisor === HYPERVISORS_MAP.kvm.key) {
-      data['bios'] = this.fd.bios
+      data.bios = this.fd.bios
     }
     return data
   }
+
   /**
    * 获取创建预测的错误信息
    *

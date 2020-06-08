@@ -113,7 +113,7 @@ export default {
           return true
         }
       })
-      for (let k in categorys) {
+      for (const k in categorys) {
         if (this.categorys.indexOf(k) === -1) {
           this.categorys.push(k)
         }

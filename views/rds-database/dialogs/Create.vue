@@ -25,9 +25,9 @@
 </template>
 
 <script>
+import DatabasePrivileges from '../components/DatabasePrivileges'
 import { CreateServerForm } from '@Compute/constants'
 import { RDS_ACCOUNT_PRIVILEGES } from '@DB/constants'
-import DatabasePrivileges from '../components/DatabasePrivileges'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import validateForm from '@/utils/validate'

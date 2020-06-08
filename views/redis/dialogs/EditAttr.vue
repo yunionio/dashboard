@@ -47,7 +47,7 @@ export default {
       const { data } = this.params
       let initialValueDisableDelete = true
       if (data && data.length === 1) {
-        initialValueDisableDelete = data[0]['disable_delete']
+        initialValueDisableDelete = data[0].disable_delete
       }
       return {
         disable_delete: [

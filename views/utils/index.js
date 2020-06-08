@@ -9,7 +9,7 @@ export const isRequiredData = (data, keys) => {
     return !!data
   }
   const fn = {
-    'Array': () => {
+    Array: () => {
       for (let i = 0; i < keys.length; i++) {
         // 没有发现data中存在 当前循环中的k
         if (!data[keys[i]]) {
@@ -18,8 +18,8 @@ export const isRequiredData = (data, keys) => {
       }
       return true
     },
-    'Object': () => {
-      for (let k in keys) {
+    Object: () => {
+      for (const k in keys) {
         const v = keys[k]
         // 没有发现data中存在 当前循环中的k
         if (!data[k]) {

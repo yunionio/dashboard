@@ -154,7 +154,7 @@ export default {
         sku: row,
       })
       await this.$nextTick()
-      this.$refs['tableRef'].setRadioRow(row)
+      this.$refs.tableRef.setRadioRow(row)
       this.FC.validateFields(['sku'])
     },
     skuSort (skuList) {
@@ -181,9 +181,9 @@ export default {
         // eslint-disable-next-line camelcase
         const { provider, region_ext_id, zone_ext_id, cache = 'cache', name } = sku
         // eslint-disable-next-line camelcase
-        let _arr = [ provider.toLowerCase(), region_ext_id, zone_ext_id, cache, name ]
-        let key = _arr.join('::')
-        sku['data_key'] = key
+        const _arr = [provider.toLowerCase(), region_ext_id, zone_ext_id, cache, name]
+        const key = _arr.join('::')
+        sku.data_key = key
         params.push(key)
       })
       // eslint-disable-next-line camelcase
@@ -191,9 +191,11 @@ export default {
       try {
         const rateData = {}
         this.rateLoading = true
-        const { data = {} } = await managerRates.list({ params: {
-          param_keys,
-        } })
+        const { data = {} } = await managerRates.list({
+          params: {
+            param_keys,
+          },
+        })
         const retList = data.data
         if (retList && retList.length > 0) {
           retList.forEach(item => {
@@ -202,7 +204,7 @@ export default {
         }
         // this.rateData = rateData
         this.skuList = skuList.map(sku => {
-          sku['rate'] = rateData[sku.data_key]
+          sku.rate = rateData[sku.data_key]
           return sku
         })
       } catch (err) {

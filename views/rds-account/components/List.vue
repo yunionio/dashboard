@@ -143,7 +143,7 @@ export default {
             this.createDialog('RDSAccountUpdatePrivilegeDialog', {
               title: '修改权限',
               initialValues: {
-                account_privilege: obj['account_privilege'],
+                account_privilege: obj.account_privilege,
               },
               data: [obj],
               list: this.list,

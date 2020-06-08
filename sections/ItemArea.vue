@@ -63,7 +63,7 @@ export default {
             {
               validator: (rule, value, _callback) => {
                 if (!this.providerList || this.providerList.length === 0) {
-                  return _callback(new Error(`该项目下没有可用平台`))
+                  return _callback(new Error('该项目下没有可用平台'))
                 }
                 _callback()
               },
@@ -101,13 +101,13 @@ export default {
   },
   created () {
     if (this.isRds) {
-      this.providers = PROVIDERS['postpaid']
+      this.providers = PROVIDERS.postpaid
     }
   },
   methods: {
     doFetchs (billingType) {
       this.providers = PROVIDERS[billingType]
-      this.$refs['areaSelects'].fetchs(['provider', 'cloudregion'])
+      this.$refs.areaSelects.fetchs(['provider', 'cloudregion'])
     },
     providerFetchSuccess (list = []) {
       const _list = list.filter(({ name }) => {

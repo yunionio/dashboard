@@ -39,15 +39,15 @@
   </div>
 </template>
 <script>
+import SKU from './components/SKU'
+import BottomBar from './components/BottomBar'
+import changeMinxin from './changeMinxin'
 import { CreateServerForm } from '@Compute/constants'
 import { DECORATORS } from '@DB/views/redis/constants'
 import ServerPassword from '@Compute/sections/ServerPassword'
 import Duration from '@Compute/sections/Duration'
 import ItemArea from '@DB/sections/ItemArea'
 import ItemNetwork from '@DB/sections/ItemNetwork'
-import SKU from './components/SKU'
-import BottomBar from './components/BottomBar'
-import changeMinxin from './changeMinxin'
 import DomainProject from '@/sections/DomainProject'
 import NameRepeated from '@/sections/NameRepeated'
 

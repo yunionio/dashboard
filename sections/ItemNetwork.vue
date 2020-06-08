@@ -36,7 +36,7 @@ export default {
       }
       const zone = this.form.getFieldValue('zone')
       if (zone) {
-        params['zone'] = zone
+        params.zone = zone
       }
       return params
     },
@@ -59,12 +59,12 @@ export default {
       // zone是redis新建
       const zone = this.form.getFieldValue('zone')
       if (zone) {
-        params['zone'] = zone
+        params.zone = zone
       }
       return params
     },
     fetchVpc () {
-      this.$refs['NETWORK'].fetchVpc()
+      this.$refs.NETWORK.fetchVpc()
     },
   },
 }

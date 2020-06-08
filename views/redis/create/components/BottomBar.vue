@@ -96,7 +96,7 @@ export default {
         ],
         [
           { label: '配置', labelClass: 'label-w-80', value: `${sizestrWithUnit(sku.memory_size_mb, 'M', 1024)}内存` },
-          { label: '类型版本', labelClass: 'label-w-80', value: `${this.values['engine'] || '-'}${this.values['engine_version'] || ''}` },
+          { label: '类型版本', labelClass: 'label-w-80', value: `${this.values.engine || '-'}${this.values.engine_version || ''}` },
         ],
       ]
       return ret
@@ -170,22 +170,22 @@ export default {
         ...this.values,
       }
       if (params.sku) {
-        params['cloudregion'] = params.sku.cloudregion_id
-        params['zone'] = params.sku.zone_id
-        params['engine_version'] = params.sku.engine_version
-        params['engine'] = params.sku.engine
-        params['instance_type'] = params.sku.id
+        params.cloudregion = params.sku.cloudregion_id
+        params.zone = params.sku.zone_id
+        params.engine_version = params.sku.engine_version
+        params.engine = params.sku.engine
+        params.instance_type = params.sku.id
       }
       if (params.loginType === 'random') {
-        params['reset_password'] = true
+        params.reset_password = true
         delete params.loginType
       }
-      params['__count__'] = params['count']
-      params['billing_cycle'] = params['duration']
+      params.__count__ = params.count
+      params.billing_cycle = params.duration
       delete params.sku
       // 到期释放
       if (params.durationStandard !== 'none') {
-        params['duration'] = params.duration || params.durationStandard
+        params.duration = params.duration || params.durationStandard
       }
       delete params.durationStandard
       return params

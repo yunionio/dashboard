@@ -1,5 +1,5 @@
-import { DECORATORS } from '@DB/views/redis/constants'
-import { SKU_PARAMS, CAPABILIT_PARAMS, SPECS_PARAMS } from '../constants'
+import { SKU_PARAMS, CAPABILIT_PARAMS, SPECS_PARAMS, DECORATORS } from '../constants'
+
 import { getInitialValue } from '@/utils/common/ant'
 
 export default {
@@ -36,19 +36,19 @@ export default {
       area: CAPABILIT_PARAMS,
       capability: SPECS_PARAMS,
     }
-    this.keysChange['sku_params'] = SKU_PARAMS
+    this.keysChange.sku_params = SKU_PARAMS
     await this.$nextTick()
-    this.skuRef = this.$refs['REF_SKU']
-    this.networkRef = this.$refs['REF_NETWORK']
+    this.skuRef = this.$refs.REF_SKU
+    this.networkRef = this.$refs.REF_NETWORK
   },
   methods: {
     domain_change () {
       if (this.$store.getters.isAdminMode) {
         const { domain } = this.form.fd
-        this.scopeParams['project_domain'] = domain || this.form.getFieldValue('domain')
-        delete this.scopeParams['scope']
+        this.scopeParams.project_domain = domain || this.form.getFieldValue('domain')
+        delete this.scopeParams.scope
       } else {
-        delete this.scopeParams['project_domain']
+        delete this.scopeParams.project_domain
       }
     },
     // 区域字段发生变化，获取Capability信息
@@ -102,7 +102,7 @@ export default {
           return handleChange()
         }
 
-        for (let k in this.keysChange) {
+        for (const k in this.keysChange) {
           if (this.keysChange[k].indexOf(field) > -1 && this[`${k}_change`]) {
             this[`${k}_change`]()
           }

@@ -137,7 +137,7 @@ export default {
               },
               meta: () => {
                 let tooltip = ''
-                let seconds = this.$moment(obj.expired_at).diff(new Date()) / 1000
+                const seconds = this.$moment(obj.expired_at).diff(new Date()) / 1000
                 if (obj.disable_delete) {
                   tooltip = '请点击修改属性禁用删除保护后重试'
                 } else if (obj.billing_type === 'prepaid' && seconds > 0) {

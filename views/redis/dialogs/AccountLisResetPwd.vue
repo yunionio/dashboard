@@ -21,9 +21,9 @@
 </template>
 
 <script>
+import { ACCOUNT_PRIVILEGES } from '../constants'
 import { CreateServerForm } from '@Compute/constants'
 import ServerPassword from '@Compute/sections/ServerPassword'
-import { ACCOUNT_PRIVILEGES } from '../constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { passwordValidator } from '@/utils/validate'

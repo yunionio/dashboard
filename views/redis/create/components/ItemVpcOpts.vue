@@ -97,8 +97,8 @@ export default {
         if ((sku.cloudregion_id === this.cloudregion) && !isUpdate) {
           return false
         }
-        params['cloudregion_id'] = sku.cloudregion_id
-        params['provider'] = sku.provider
+        params.cloudregion_id = sku.cloudregion_id
+        params.provider = sku.provider
         this.cloudregion = sku.cloudregion_id
       }
       this.FC.setFieldsValue({
@@ -130,7 +130,7 @@ export default {
       }
       const sku = this.getFieldValue('sku')
       if (sku) {
-        params['zone'] = sku.zone_id
+        params.zone = sku.zone_id
       }
       this.FC.setFieldsValue({
         network: undefined,
