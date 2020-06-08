@@ -8,7 +8,7 @@ import helpZhCN from './help-zh-CN'
 Vue.use(VueI18n)
 
 const messages = {
-  'en': Object.assign(en, helpEN),
+  en: Object.assign(en, helpEN),
   'zh-CN': Object.assign(zhCN, helpZhCN),
 }
 

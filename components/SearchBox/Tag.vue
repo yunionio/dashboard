@@ -77,11 +77,11 @@ export default {
   },
   computed: {
     label () {
-      let label = this.options[this.id]['label']
+      const label = this.options[this.id].label
       let ret = `${label}${this.keySeparator}`
       ret += this.value.map(value => {
-        if (this.options[this.id]['items']) {
-          const target = this.options[this.id]['items'].find(item => item.key === value)
+        if (this.options[this.id].items) {
+          const target = this.options[this.id].items.find(item => item.key === value)
           if (target) return target.label
         }
         return value

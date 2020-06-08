@@ -282,9 +282,9 @@ export default {
     },
     getDeleteServerData (serverIds = []) {
       if (!Array.isArray(serverIds)) {
-        serverIds = [ serverIds ]
+        serverIds = [serverIds]
       }
-      let servers = JSON.parse(this.variables['parameter'] || '[]')
+      const servers = JSON.parse(this.variables.parameter || '[]')
       if (servers.length > 0) {
         this.deleteServers = servers
         return

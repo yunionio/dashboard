@@ -37,10 +37,10 @@ export default {
       type: Object,
       default: () => {
         return {
-          'city': i18n.t('rules.city'),
-          'provider': i18n.t('rules.provider'),
-          'cloudregion': i18n.t('rules.region'),
-          'zone': i18n.t('rules.zone'),
+          city: i18n.t('rules.city'),
+          provider: i18n.t('rules.provider'),
+          cloudregion: i18n.t('rules.region'),
+          zone: i18n.t('rules.zone'),
         }
       },
     },
@@ -423,9 +423,9 @@ export default {
       if (this.isRequired && options) {
         const requiredRule = [{ required: true, message: this.placeholders[name] }]
         if (options.rules && options.rules.length > 0) {
-          options['rules'] = requiredRule.concat(options.rules)
+          options.rules = requiredRule.concat(options.rules)
         } else {
-          options['rules'] = requiredRule
+          options.rules = requiredRule
         }
       }
       let fieldDecorator = getFieldDecorator(name, options)

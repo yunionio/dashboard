@@ -22,13 +22,13 @@ const getDefaultLastBaseInfo = (vm, h, { data, onManager, resource }) => {
           let node
           if (p) {
             node = (
-              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='region' title={ row['region'] } hideField={ true }>
+              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='region' title={ row.region } hideField={ true }>
                 <side-page-trigger permission='areas_get' name='CloudregionSidePage' id={row.region_id} vm={vm}>{ row.region }</side-page-trigger>
               </list-body-cell-wrap>
             )
           } else {
             node = (
-              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='region' title={ row['region'] } />
+              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='region' title={ row.region } />
             )
           }
           return [
@@ -47,13 +47,13 @@ const getDefaultLastBaseInfo = (vm, h, { data, onManager, resource }) => {
           let node
           if (p) {
             node = (
-              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='zone' title={ row['zone'] } hideField={ true }>
+              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='zone' title={ row.zone } hideField={ true }>
                 <side-page-trigger permission='zones_get' name='ZoneSidePage' id={row.zone_id} vm={vm}>{ row.zone }</side-page-trigger>
               </list-body-cell-wrap>
             )
           } else {
             node = (
-              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='zone' title={ row['zone'] } />
+              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='zone' title={ row.zone } />
             )
           }
           return [
@@ -72,13 +72,13 @@ const getDefaultLastBaseInfo = (vm, h, { data, onManager, resource }) => {
           let node
           if (p) {
             node = (
-              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='account' title={ row['account'] } hideField={ true }>
+              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='account' title={ row.account } hideField={ true }>
                 <side-page-trigger permission='cloudaccounts_get' name='CloudaccountSidePage' id={row.account_id} vm={vm}>{ row.account }</side-page-trigger>
               </list-body-cell-wrap>
             )
           } else {
             node = (
-              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='account' title={ row['account'] } />
+              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='account' title={ row.account } />
             )
           }
           return [
@@ -149,13 +149,13 @@ const getDefaultTopBaseInfo = (vm, h, { idKey, statusKey, statusModule, data, on
           let node
           if (p) {
             node = (
-              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='project_domain' title={ row['project_domain'] } message={domain} hideField={ true }>
+              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='project_domain' title={ row.project_domain } message={domain} hideField={ true }>
                 <side-page-trigger permission='domains_get' name='DomainSidePage' id={row.project_domain} vm={vm}>{ domain }</side-page-trigger>
               </list-body-cell-wrap>
             )
           } else {
             node = (
-              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='project_domain' title={ row['project_domain'] } message={domain} />
+              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='project_domain' title={ row.project_domain } message={domain} />
             )
           }
           return [
@@ -177,13 +177,13 @@ const getDefaultTopBaseInfo = (vm, h, { idKey, statusKey, statusModule, data, on
           let node
           if (p) {
             node = (
-              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='tenant' title={ row['tenant'] } hideField={ true }>
+              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='tenant' title={ row.tenant } hideField={ true }>
                 <side-page-trigger permission='projects_get' name='ProjectSidePage' id={row.tenant_id} vm={vm}>{ row.tenant }</side-page-trigger>
               </list-body-cell-wrap>
             )
           } else {
             node = (
-              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='tenant' title={ row['tenant'] } />
+              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='tenant' title={ row.tenant } />
             )
           }
           return [

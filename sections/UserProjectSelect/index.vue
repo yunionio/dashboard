@@ -34,7 +34,7 @@ export default {
     },
   },
   created () {
-    this.handleItemClick(this.projects[0]['id'])
+    this.handleItemClick(this.projects[0].id)
   },
   methods: {
     handleItemClick (pid) {

@@ -40,8 +40,8 @@ export default {
   watch: {
     $route: {
       handler (val, oldVal) {
-        const newParentPath = val.matched[0] && val.matched[0]['path']
-        const oldParentPath = oldVal && oldVal.matched && oldVal.matched[0] && oldVal.matched[0]['path']
+        const newParentPath = val.matched[0] && val.matched[0].path
+        const oldParentPath = oldVal && oldVal.matched && oldVal.matched[0] && oldVal.matched[0].path
         if (newParentPath !== oldParentPath) {
           const firstMatched = val.matched[0]
           for (let i = 0, len = this.menuitems.length; i < len; i++) {

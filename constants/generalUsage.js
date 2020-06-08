@@ -92,7 +92,7 @@ export const usageMap = {
           obj['all.servers.any_pool'] -
           (obj['all.running_servers.any_pool'] + obj['all.ready_servers.any_pool']),
         domain: obj => obj['servers.any_pool'] - (obj['running_servers.any_pool'] + obj['ready_servers.any_pool']),
-        project: obj => obj['servers.any_pool'] - (obj['running_servers.any_pool'] + obj['ready_servers']),
+        project: obj => obj['servers.any_pool'] - (obj['running_servers.any_pool'] + obj.ready_servers),
       },
       delete: {
         system: 'all.pending_delete_servers.any_pool',

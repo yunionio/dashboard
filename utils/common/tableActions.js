@@ -153,10 +153,10 @@ export function getEnabledSwitchActions (vm, row, permissions = [], params = {})
       action: type,
     }
     if (actions && actions.length > 0 && actions[index]) {
-      dialogParams['onOk'] = () => actions[index](rowItem)
+      dialogParams.onOk = () => actions[index](rowItem)
     }
     if (!dialogParams.data || dialogParams.data.length === 0) {
-      dialogParams['data'] = [rowItem]
+      dialogParams.data = [rowItem]
     }
     vm.createDialog('EnabledSwitchDialog', dialogParams)
   }
@@ -174,7 +174,7 @@ export function getEnabledSwitchActions (vm, row, permissions = [], params = {})
         const item = (data && data.length === 1) ? data[0] : rowItem
         // 批量选择1条，或者单个操作
         if (item) {
-          let validate = index ? item.enabled : !item.enabled
+          const validate = index ? item.enabled : !item.enabled
           return {
             validate,
           }

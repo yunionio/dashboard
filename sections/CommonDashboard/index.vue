@@ -154,9 +154,9 @@ export default {
   },
   methods: {
     fetchData () {
-      let manager = new Manager('usages')
+      const manager = new Manager('usages')
       this.loading = true
-      let params = { scope: this.scope }
+      const params = { scope: this.scope }
       manager.getSpecific({
         id: this.rangeType,
         spec: this.rangeId,

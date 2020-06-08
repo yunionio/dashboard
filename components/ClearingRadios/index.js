@@ -57,7 +57,7 @@ export default {
                 </a-radio-button>
               )
             })}
-          </a-radio-group>
+          </a-radio-group>,
         )}
       </div>
     ) : null
@@ -75,7 +75,7 @@ export default {
                   </a-radio-button>
                 )
               })}
-            </a-radio-group>
+            </a-radio-group>,
           )}
           {RenderDuration}
         </a-form-item>

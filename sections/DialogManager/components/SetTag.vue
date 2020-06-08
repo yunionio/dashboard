@@ -107,7 +107,7 @@ export default {
       metadata: this.params.data[0].metadata,
       needExt: true,
     })
-    let extTags = data.arr.filter(item => item.key.startsWith('ext:')).map(item => this.genTag(item))
+    const extTags = data.arr.filter(item => item.key.startsWith('ext:')).map(item => this.genTag(item))
     const checked = {}
     // when single
     if (this.params.data.length === 1) {
@@ -157,7 +157,7 @@ export default {
       return this.isBatchAddMode ? '新增标签' : '以下标签为用户自定义标签'
     },
     userTags () {
-      let ret = []
+      const ret = []
       R.forEachObjIndexed((value, key) => {
         if (value.length > 0) {
           for (let i = 0, len = value.length; i < len; i++) {

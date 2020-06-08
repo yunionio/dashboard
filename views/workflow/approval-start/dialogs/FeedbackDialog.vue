@@ -75,7 +75,7 @@ export default {
       try {
         const ids = this.params.data.map(item => item.id || (item.process_instance && item.process_instance.id))
         const values = await this.form.fc.validateFields()
-        let params = {
+        const params = {
           variables: {
             satisfied: false, // 审批结果：true通过，false拒绝
             comment: values.remarks, // 审批意见
@@ -83,7 +83,7 @@ export default {
         }
         const state = this.selectedItems[0].process_instance && this.selectedItems[0].process_instance.state
         if (state === 'CUSTOM_TODO') {
-          params['variables']['user_retry'] = true
+          params.variables.user_retry = true
         }
         const res = await new this.$Manager('process-tasks', 'v1').batchUpdate({
           ids,

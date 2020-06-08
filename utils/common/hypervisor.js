@@ -16,6 +16,7 @@ export class TypeClouds {
     this.env = changeToArr(env)
     this.initMap()
   }
+
   initMap () {
     this.hypervisorMap = Object.assign({}, HYPERVISORS_MAP, EXTRA_HYPERVISORS)
     // 支持 hypervisor、brand、provider、host_type
@@ -32,6 +33,7 @@ export class TypeClouds {
       }
     }, this.hypervisorMap)
   }
+
   commonGet (map) {
     const currentMap = {}
     R.forEachObjIndexed((obj, key) => {
@@ -41,21 +43,27 @@ export class TypeClouds {
     }, map)
     return currentMap
   }
+
   getBrandlowcase () {
     return this.commonGet(this.brandlowcaseMap)
   }
+
   getProviderlowcase () {
     return this.commonGet(this.brandlowcaseMap)
   }
+
   getHypervisor () {
     return this.commonGet(this.hypervisorMap)
   }
+
   getProvider () {
     return this.commonGet(this.providerMap)
   }
+
   getBrand () {
     return this.commonGet(this.brandMap)
   }
+
   getHosttype () {
     return this.commonGet(this.hosttypeMap)
   }
@@ -96,11 +104,11 @@ export const findPlatform = (provider, type = 'brand') => {
 export const getCloudEnvOptions = (capabilityBrandKey, ignoreAll) => {
   const orderKeys = ['onpremise', 'private', 'public']
   let ret = !ignoreAll ? [{ key: '', label: '全部' }] : []
-  const brands = store.getters.capability[capabilityBrandKey] || store.getters.capability['brands']
+  const brands = store.getters.capability[capabilityBrandKey] || store.getters.capability.brands
   for (let i = 0, len = brands.length; i < len; i++) {
-    const data = R.find(R.propEq('key', typeClouds.brandMap[brands[i]]['cloud_env']))(ret)
+    const data = R.find(R.propEq('key', typeClouds.brandMap[brands[i]].cloud_env))(ret)
     if (!data) {
-      ret.push({ key: typeClouds.brandMap[brands[i]]['cloud_env'], label: i18n.t(`cloud_env.${typeClouds.brandMap[brands[i]]['cloud_env']}`) })
+      ret.push({ key: typeClouds.brandMap[brands[i]].cloud_env, label: i18n.t(`cloud_env.${typeClouds.brandMap[brands[i]].cloud_env}`) })
     }
   }
   ret = ret.sort((a, b) => orderKeys.indexOf(a.key) - orderKeys.indexOf(b.key))

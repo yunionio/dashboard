@@ -92,7 +92,7 @@ export default {
       }
     },
     tags () {
-      let ret = []
+      const ret = []
       R.forEachObjIndexed((value, key) => {
         if (value.length > 0) {
           for (let i = 0, len = value.length; i < len; i++) {
@@ -111,7 +111,7 @@ export default {
       if (val && val.length > 0) {
         ret = {}
         for (let i = 0, len = val.length; i < len; i++) {
-          ret[val[i]['key']] = val[i]['value'] || ''
+          ret[val[i].key] = val[i].value || ''
         }
       }
       this.$emit('change', ret)

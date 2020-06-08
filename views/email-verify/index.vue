@@ -78,8 +78,8 @@ export default {
     }
   },
   created () {
-    let id = this.$route.params.id
-    let token = this.$route.params.token
+    const id = this.$route.params.id
+    const token = this.$route.params.token
     if (!id || !token) {
       this.$message.error('不合法的网址')
     }
@@ -91,7 +91,7 @@ export default {
       this.$router.push('/')
     },
     confirmVerification () {
-      let manager = new this.$Manager('verifications', 'v1')
+      const manager = new this.$Manager('verifications', 'v1')
       this.mailVerify.confirm = false
       manager._csrfGet({ id: this.id, words: [], params: { token: this.token, region: this.$route.query.region } })
         .then(res => {

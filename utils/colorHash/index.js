@@ -99,7 +99,7 @@ export const ColorHash = function (options) {
  * @returns {Array} [h, s, l]
  */
 ColorHash.prototype.hsl = function (str) {
-  let H, S, L
+  let H
   let hash = this.hash(str)
 
   if (this.hueRanges.length) {
@@ -110,9 +110,9 @@ ColorHash.prototype.hsl = function (str) {
     H = hash % 359 // note that 359 is a prime
   }
   hash = parseInt(hash / 360)
-  S = this.S[hash % this.S.length]
+  const S = this.S[hash % this.S.length]
   hash = parseInt(hash / this.S.length)
-  L = this.L[hash % this.L.length]
+  const L = this.L[hash % this.L.length]
 
   return [H, S, L]
 }

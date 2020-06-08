@@ -17,6 +17,7 @@ class WaitStatusJob {
     this.data = data
     this.timer = null
   }
+
   /**
    * @description 清除定时器
    * @memberof WaitStatusJob
@@ -27,6 +28,7 @@ class WaitStatusJob {
       this.timer = null
     }
   }
+
   /**
    * @description 设置定时器进行状态检测
    * @memberof WaitStatusJob
@@ -37,6 +39,7 @@ class WaitStatusJob {
       this.checkStatus()
     }, this.data.list.refreshInterval * 1000)
   }
+
   /**
    * @description 获取新数据，进行状态检测
    * @memberof WaitStatusJob
@@ -88,6 +91,7 @@ class DataWrap {
     this.index = index
     this.error = null
   }
+
   /**
    * @description 开始轮询检测状态
    * @param {Object} steadyStatus
@@ -97,6 +101,7 @@ class DataWrap {
     this.wait = new WaitStatusJob(steadyStatus, this)
     this.wait.start()
   }
+
   /**
    * @description 清除定时器，供List调用
    * @memberof DataWrap
@@ -106,6 +111,7 @@ class DataWrap {
       this.wait.clearTimer()
     }
   }
+
   /**
    * @description 设置数据错误信息，供WaitStatusJob调用
    * @param {Error} error
@@ -114,6 +120,7 @@ class DataWrap {
   setError (error) {
     this.error = error
   }
+
   /**
    * @description 检测状态
    * @param {Object} steadyStatus
@@ -122,7 +129,7 @@ class DataWrap {
    */
   isSteadyStatus (steadyStatus) {
     let isSteadyStatus = true
-    for (let key in steadyStatus) {
+    for (const key in steadyStatus) {
       const status = steadyStatus[key]
       const currentStatus = _.get(this.data, key)
       if (
@@ -216,18 +223,21 @@ class CreateList {
     this.itemGetParams = itemGetParams
     this.disableStorageLimit = disableStorageLimit
   }
+
   // 重写selectedItems getter和setter
   get selectedItems () {
     const items = []
     R.forEach(id => {
-      items.push(this.data[id]['data'])
+      items.push(this.data[id].data)
     }, this.selected)
     this._selectedItems = items
     return items
   }
+
   set selectedItems (items) {
     this._selectedItems = items
   }
+
   /**
    * @description 获取列表配置，如果没有则创建
    */
@@ -255,6 +265,7 @@ class CreateList {
       this.configLoaded = true
     }
   }
+
   /**
    * @description 更新列表配置
    * @param {Object} 需要更新的数据
@@ -276,6 +287,7 @@ class CreateList {
       throw error
     }
   }
+
   /**
    * @description 重置数据
    * @memberof CreateList
@@ -290,6 +302,7 @@ class CreateList {
     this.data = {}
     this.clearSelected()
   }
+
   async fetchData (offset, limit) {
     this.loading = true
     this.params = this.genParams(offset, limit)
@@ -345,6 +358,7 @@ class CreateList {
       this.loading = false
     }
   }
+
   /**
    * @description 获取选择项的详情信息
    * @memberof CreateList
@@ -360,6 +374,7 @@ class CreateList {
       throw error
     }
   }
+
   /**
    * @description 因为selectedItems的getter是根据selected生成的，所以在数据刷新后需要同步selected，避免有留下的脏数据
    * @memberof CreateList
@@ -375,6 +390,7 @@ class CreateList {
     }
     this.selected = newSelected
   }
+
   /**
    * @description 刷新数据，不改变当前页数和条数
    * @memberof CreateList
@@ -382,6 +398,7 @@ class CreateList {
   refresh () {
     this.fetchData(this.offset, this.getLimit())
   }
+
   /**
    * @description 更新排序
    * @param {String} property 排序的key
@@ -407,6 +424,7 @@ class CreateList {
     this.sortParams = params
     this.refresh()
   }
+
   /**
    * @description 获取api资源相关的参数
    * @memberof CreateList
@@ -417,6 +435,7 @@ class CreateList {
     }
     return this.getParams || {}
   }
+
   /**
    * @description 生成所有的请求参数
    * @param {Number} offset
@@ -454,12 +473,13 @@ class CreateList {
     }
     // 加载更多类型分页的列表
     if (this.nextMarker) {
-      params['paging_marker'] = this.nextMarker
+      params.paging_marker = this.nextMarker
       delete params.limit
       delete params.offset
     }
     return params
   }
+
   /**
    * @description 生成期望的状态数据结构
    * @param {Array | String | Object} steadyStatus
@@ -474,6 +494,7 @@ class CreateList {
     }
     return steadyStatus
   }
+
   /**
    * @description 获取每页请求条数
    * @returns { Number }
@@ -486,6 +507,7 @@ class CreateList {
     }
     return this.limit
   }
+
   /**
    * @description 包装返回数据
    * @param {Array} arr
@@ -504,6 +526,7 @@ class CreateList {
     }
     return data
   }
+
   /**
    * @description 设置单挑数据的数据
    * @param {String} id
@@ -514,6 +537,7 @@ class CreateList {
     const item = this.data[id]
     item.data = data
   }
+
   /**
    * @description 设置单条数据的Error
    * @param {String} id
@@ -524,6 +548,7 @@ class CreateList {
     const item = this.data[id]
     item.error = error
   }
+
   /**
    * @description 改变单条数据的期望状态，重新进行定时更新
    * @param {String} id
@@ -540,6 +565,7 @@ class CreateList {
       item.waitStatus(steadyStatus)
     }
   }
+
   /**
    * @description 检查期望状态，是否需要轮询更新
    * @memberof CreateList
@@ -549,7 +575,7 @@ class CreateList {
       (R.isNil(this.steadyStatus) || R.isEmpty(this.steadyStatus)) ||
       (R.isNil(this.data) || R.isEmpty(this.data))
     ) return
-    for (let key in this.data) {
+    for (const key in this.data) {
       const item = this.data[key]
       const isSteadyStatus = item.isSteadyStatus(this.steadyStatus)
       if (!isSteadyStatus) {
@@ -557,6 +583,7 @@ class CreateList {
       }
     }
   }
+
   /**
    * @description 清除轮询更新
    * @memberof CreateList
@@ -566,11 +593,12 @@ class CreateList {
       (R.isNil(this.steadyStatus) || R.isEmpty(this.steadyStatus)) ||
       (R.isNil(this.data) || R.isEmpty(this.data))
     ) return
-    for (let key in this.data) {
+    for (const key in this.data) {
       const item = this.data[key]
       item.clearWaitJob()
     }
   }
+
   /**
    * @description 变更当前页
    * @param {Number} currentPage
@@ -581,6 +609,7 @@ class CreateList {
     const offset = (currentPage - 1) * limit
     this.fetchData(offset, limit)
   }
+
   /**
    * @description 变更当前条数
    * @param {Number} pageSize
@@ -592,12 +621,14 @@ class CreateList {
     this.limit = pageSize
     this.fetchData(offset, pageSize)
   }
+
   /**
    * @description nextMarker加载更多
    */
   changeNextMarker () {
     this.fetchData()
   }
+
   /**
    * @description 过滤条件变更
    * @param {*} filter
@@ -608,6 +639,7 @@ class CreateList {
     this.reset()
     this.fetchData(0, 0)
   }
+
   /**
    * @description 标签过滤条件变更
    * @param {*} tagFilter
@@ -618,6 +650,7 @@ class CreateList {
     this.reset()
     this.fetchData(0, 0)
   }
+
   /**
    * @description 勾选的数据发生改变事件
    *
@@ -632,6 +665,7 @@ class CreateList {
     this.selectedItems = selection
     this.selected = ids
   }
+
   /**
    * @description 清空勾选的数据
    * @memberof CreateList
@@ -640,6 +674,7 @@ class CreateList {
     this.selectedItems = []
     this.selected = []
   }
+
   /**
    * @description 生成自定义filter的params
    *
@@ -652,13 +687,13 @@ class CreateList {
     const filters = []
     const jointFilters = []
     // 查找已经存在的filter和自定义filter做合并
-    for (let key in params) {
+    for (const key in params) {
       if (key === 'filter') {
         filters.push(params[key])
       }
     }
     // 生成自定义过滤的params
-    for (let key in this.filter) {
+    for (const key in this.filter) {
       const option = this.filterOptions[key]
       let val = this.filter[key]
       if (option.formatter) {
@@ -675,13 +710,14 @@ class CreateList {
       }
     }
     if (filters.length > 0) {
-      ret['filter'] = filters
+      ret.filter = filters
     }
     if (jointFilters.length > 0) {
-      ret['joint_filter'] = jointFilters
+      ret.joint_filter = jointFilters
     }
     return ret
   }
+
   /**
    * @description 生成标签过滤的params
    *
@@ -708,6 +744,7 @@ class CreateList {
     }, this.tagFilter)
     return ret
   }
+
   /**
    * @description 是否允许删除
    **/
@@ -725,6 +762,7 @@ class CreateList {
     }
     return true
   }
+
   /**
    * @description 对应 manager 里面的 performAction 方法
    *
@@ -746,10 +784,11 @@ class CreateList {
       },
     })
   }
+
   batchPerformAction (action, data, steadyStatus, selectedIds = this.selected) {
     if (steadyStatus) {
       for (let i = 0, len = selectedIds.length; i < len; i++) {
-        let idstr = selectedIds[i]
+        const idstr = selectedIds[i]
         this.waitStatus(idstr, steadyStatus)
       }
     }
@@ -762,6 +801,7 @@ class CreateList {
       },
     })
   }
+
   /**
    *
    * 刷新单条数据
@@ -784,6 +824,7 @@ class CreateList {
       return response
     })
   }
+
   /**
    * @description 对应 manager 里面的 update 方法
    *
@@ -802,10 +843,11 @@ class CreateList {
       },
     })
   }
+
   batchUpdate (selectedIds = this.selected, data, steadyStatus) {
     if (steadyStatus) {
       for (let i = 0, len = selectedIds.length; i < len; i++) {
-        let idstr = selectedIds[i]
+        const idstr = selectedIds[i]
         this.waitStatus(idstr, steadyStatus)
       }
     }
@@ -817,6 +859,7 @@ class CreateList {
       },
     })
   }
+
   /**
    * @description 调用manager方法的桥接方法，调用此方法可以同时更新 list 的对应数据
    * @param {String} on manager 的实例方法
@@ -857,7 +900,7 @@ class CreateList {
       if (on !== 'get') {
         if (isBatch) {
           for (let i = 0, len = res.data.data.length; i < len; i++) {
-            let rec = res.data.data[i]
+            const rec = res.data.data[i]
             if (rec.status < 400) {
               // success
               this.update(rec[this.idKey], rec.data)
@@ -877,7 +920,7 @@ class CreateList {
       }
       if (steadyStatus) {
         for (let i = 0, len = ids.length; i < len; i++) {
-          let id = ids[i]
+          const id = ids[i]
           this.waitStatus(id, steadyStatus)
         }
       }

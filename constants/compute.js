@@ -8,22 +8,22 @@ export const IMAGES_TYPE_MAP = {
   host: { key: 'host', label: i18n.t('common.text00021'), tooltip: i18n.t('common.text00022') },
   snapshot: { key: 'snapshot', label: i18n.t('common.text00023'), tooltip: i18n.t('common.text00024') },
   public: { key: 'public', label: i18n.t('common.text00025'), tooltip: i18n.t('common.text00026') },
-  'public_customize': { key: 'public_customize', label: i18n.t('common.text00027'), tooltip: i18n.t('common.text00028'), enable_cloudaccount: true },
+  public_customize: { key: 'public_customize', label: i18n.t('common.text00027'), tooltip: i18n.t('common.text00028'), enable_cloudaccount: true },
   private: { key: 'private', label: i18n.t('common.text00029'), tooltip: i18n.t('common.text00030'), enable_cloudaccount: true },
   vmware: { key: 'vmware', label: i18n.t('common.text00031'), tooltip: i18n.t('common.text00032'), enable_cloudaccount: true },
 }
 
 // 镜像图标
 export const OS_ICONS = {
-  'Aliyun': 'aliyun',
-  'CentOS': 'centos',
-  'CoreOS': 'coreos',
-  'Debian': 'debian',
-  'Freebsd': 'freebsd',
-  'openSUSE': 'suse',
-  'SUSE': 'suse',
-  'Ubuntu': 'ubuntu',
-  'Windows': 'windows',
+  Aliyun: 'aliyun',
+  CentOS: 'centos',
+  CoreOS: 'coreos',
+  Debian: 'debian',
+  Freebsd: 'freebsd',
+  openSUSE: 'suse',
+  SUSE: 'suse',
+  Ubuntu: 'ubuntu',
+  Windows: 'windows',
 }
 
 // 公有云存储类型 + 私有云存储类型
@@ -349,7 +349,7 @@ export const STORAGE_TYPES = {
     },
   },
   [HYPERVISORS_MAP.ctyun.key]: {
-    'SSD': {
+    SSD: {
       label: i18n.t('common.storage.ssd'),
       key: 'SSD',
       min: 10,
@@ -358,7 +358,7 @@ export const STORAGE_TYPES = {
       sysMax: 1024,
       sort: 3,
     },
-    'SAS': {
+    SAS: {
       label: i18n.t('common.storage.sas'),
       key: 'SAS',
       min: 10,
@@ -367,7 +367,7 @@ export const STORAGE_TYPES = {
       sysMax: 1024,
       sort: 2,
     },
-    'SATA': {
+    SATA: {
       label: i18n.t('common.storage.sata'),
       key: 'SATA',
       min: 10,

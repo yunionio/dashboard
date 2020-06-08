@@ -32,7 +32,7 @@ export default {
     chartData () {
       const mapIndexed = R.addIndex(R.map)
       const series = []
-      const [ x, ...legendData ] = this.columns
+      const [x, ...legendData] = this.columns
       mapIndexed((item, index) => {
         series.push(this.genSerie(item, colors[index]))
       }, legendData)

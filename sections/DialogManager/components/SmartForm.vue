@@ -51,7 +51,7 @@ export default {
         <a-form-item label={label}>
           {
             getFieldDecorator(name, options)(
-              <RenderFormVal/>
+              <RenderFormVal/>,
             )
           }
           {

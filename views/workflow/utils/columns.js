@@ -23,8 +23,8 @@ export const getResourceNameTableColumn = ({ field = 'resource_name', title = 'è
     slots: {
       default: ({ row }, h) => {
         if (!row.variables) return '-'
-        const paramter = row.variables['server-create-paramter'] || row.variables['paramter']
-        let rs = paramter ? JSON.parse(paramter) : {}
+        const paramter = row.variables['server-create-paramter'] || row.variables.paramter
+        const rs = paramter ? JSON.parse(paramter) : {}
         return [
           <list-body-cell-wrap copy row={row} hideField={ true } message={ rs.generate_name }>
             { rs.generate_name }

@@ -73,7 +73,7 @@ export default {
   },
   methods: {
     queueUpdate () {
-      let instance = this
+      const instance = this
       return instance.$nextTick().then(() => {
         // Recalculate scrollbar parameters and set its visibility
         instance.update()
@@ -82,10 +82,10 @@ export default {
       })
     },
     addEventHandlers () {
-      let instance = this
+      const instance = this
       if (!instance.$refs.scrollBody) {
-        let onScroll = () => instance.checkVisibility()
-        let onResize = () => instance.update()
+        const onScroll = () => instance.checkVisibility()
+        const onResize = () => instance.update()
         window.addEventListener('scroll', onScroll, false)
         window.addEventListener('resize', onResize, false)
         instance.$once('hook:beforeDestroy', () => {
@@ -100,7 +100,7 @@ export default {
       }, this)
     },
     handleWidgetScroll () {
-      let instance = this
+      const instance = this
       if (instance.visible && !instance.$options.skipSyncContainer) {
         instance.syncContainer()
       }
@@ -109,7 +109,7 @@ export default {
       instance.$options.skipSyncContainer = false
     },
     handleContainerScroll () {
-      let instance = this
+      const instance = this
       if (!instance.$options.skipSyncWidget) {
         instance.syncWidget()
       }
@@ -121,12 +121,12 @@ export default {
       setTimeout(() => this.syncWidget(), 0)
     },
     checkVisibility () {
-      let instance = this
-      let { widget, container, scrollBody } = instance.$refs
+      const instance = this
+      const { widget, container, scrollBody } = instance.$refs
       let mustHide = (widget.scrollWidth <= widget.offsetWidth)
       if (!mustHide) {
-        let containerRect = container.getBoundingClientRect()
-        let maxVisibleY = scrollBody
+        const containerRect = container.getBoundingClientRect()
+        const maxVisibleY = scrollBody
           ? scrollBody.getBoundingClientRect().bottom
           : window.innerHeight || document.documentElement.clientHeight
         mustHide = ((containerRect.bottom <= maxVisibleY) || (containerRect.top > maxVisibleY))
@@ -137,8 +137,8 @@ export default {
       }
     },
     syncContainer () {
-      let { widget, container } = this.$refs
-      let { scrollLeft } = widget
+      const { widget, container } = this.$refs
+      const { scrollLeft } = widget
       if (container.scrollLeft !== scrollLeft) {
         // Prevents container’s “scroll” event handler from syncing back again widget scroll position
         this.$options.skipSyncWidget = true
@@ -147,8 +147,8 @@ export default {
       }
     },
     syncWidget () {
-      let { widget, container } = this.$refs
-      let { scrollLeft } = container
+      const { widget, container } = this.$refs
+      const { scrollLeft } = container
       if (widget.scrollLeft !== scrollLeft) {
         // Prevents widget’s “scroll” event handler from syncing back again container scroll position
         this.$options.skipSyncContainer = true
@@ -158,9 +158,9 @@ export default {
     },
     // Recalculate scroll width and container boundaries
     update () {
-      let { widget, strut, container, scrollBody } = this.$refs
-      let { style: widgetStyle } = widget
-      let { clientWidth, scrollWidth } = container
+      const { widget, strut, container, scrollBody } = this.$refs
+      const { style: widgetStyle } = widget
+      const { clientWidth, scrollWidth } = container
       widgetStyle.width = `${clientWidth}px`
       if (!scrollBody) {
         widgetStyle.left = `${container.getBoundingClientRect().left}px`

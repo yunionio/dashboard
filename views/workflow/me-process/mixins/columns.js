@@ -95,7 +95,7 @@ export default {
         showOverflow: 'title',
         slots: {
           default: ({ row }) => {
-            let assignees = []
+            const assignees = []
             if (Array.isArray(row.tasks)) {
               row.tasks.forEach((item) => {
                 if (!item.delete_reason) {

@@ -53,7 +53,7 @@ export default {
   },
   methods: {
     inputEvent (event) {
-      let value = event.target.value
+      const value = event.target.value
       if (value.length > 1) {
         event.target.value = value.substr(0, 1)
       }
@@ -99,21 +99,21 @@ export default {
       return false
     },
     pressEvent (event) {
-      let keyCode = event.which || event.keyCode
+      const keyCode = event.which || event.keyCode
       if (
         this.isMainKeyCode(keyCode) ||
         this.isTab(keyCode) ||
         this.isBackspace(keyCode) ||
         this.isMetaKey(event, keyCode)
       ) {
-        return void 0
+        return undefined
       } else {
         return (event.preventDefault(), false)
       }
     },
     downEvent (event) {
-      let parentNode = event.target.parentNode
-      let keyCode = event.which || event.keyCode
+      const parentNode = event.target.parentNode
+      const keyCode = event.which || event.keyCode
       let _sibling
       if (keyCode === 8 && !event.target.value) {
         _sibling = parentNode.previousSibling
@@ -136,15 +136,15 @@ export default {
       }
     },
     previousElement (event, length) {
-      let elements = event.target.parentNode.parentNode.childNodes
+      const elements = event.target.parentNode.parentNode.childNodes
       if (length >= elements.length) {
         length = elements.length - 1
       }
       elements[length].firstChild.focus()
     },
     nextElement (event) {
-      let parentNode = event.target.parentNode
-      let nextSibling = parentNode.nextSibling
+      const parentNode = event.target.parentNode
+      const nextSibling = parentNode.nextSibling
       if (nextSibling) {
         nextSibling.firstChild.focus()
       } else {
@@ -167,7 +167,7 @@ export default {
       event.target.select()
     },
     getCodeString () {
-      let code = this.securityCode.join('')
+      const code = this.securityCode.join('')
       this.$emit('input', code)
       return code
     },

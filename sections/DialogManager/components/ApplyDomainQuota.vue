@@ -75,8 +75,8 @@ export default {
       this.loading = true
       try {
         // const values = await this.form.fc.validateFields()
-        let quota = this.$refs['quotaSetRef'].getParams()
-        const oldQuota = this.$refs['quotaSetRef'].quotaOptions
+        const quota = this.$refs.quotaSetRef.getParams()
+        const oldQuota = this.$refs.quotaSetRef.quotaOptions
         const isChange = this.checkQuotaChangeHandle(oldQuota, quota)
         if (!isChange) {
           this.$message.error('')

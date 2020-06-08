@@ -54,7 +54,7 @@ export const getHttpErrorMessage = (err, isErrorBody = false) => {
     if (errorBody.data) {
       const { id = '', fields = [] } = errorBody.data
       // 查到对应class的details翻译信息
-      const errorInfoDetails = errorInfo['details'] || {}
+      const errorInfoDetails = errorInfo.details || {}
       const detail = errorInfoDetails[id]
       if (detail) {
         ret = `${replaceErrorMessage(detail['zh-CN'], fields)}`

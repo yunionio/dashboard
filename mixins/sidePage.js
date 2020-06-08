@@ -7,6 +7,7 @@ class WaitStatusJob {
     this.data = data
     this.timer = null
   }
+
   /**
    * @description 清除定时器
    * @memberof WaitStatusJob
@@ -17,6 +18,7 @@ class WaitStatusJob {
       this.timer = null
     }
   }
+
   /**
    * @description 设置定时器进行状态检测
    * @memberof WaitStatusJob
@@ -27,6 +29,7 @@ class WaitStatusJob {
       this.checkStatus()
     }, this.data.detail.refreshInterval * 1000)
   }
+
   /**
    * @description 获取新数据，进行状态检测
    * @memberof WaitStatusJob
@@ -64,6 +67,7 @@ class DataWrap {
     this.data = data
     this.error = null
   }
+
   /**
    * @description 开始轮询检测状态
    * @param {Object} steadyStatus
@@ -73,6 +77,7 @@ class DataWrap {
     this.wait = new WaitStatusJob(steadyStatus, this)
     this.wait.start()
   }
+
   /**
    * @description 清除定时器，供List调用
    * @memberof DataWrap
@@ -82,6 +87,7 @@ class DataWrap {
       this.wait.clearTimer()
     }
   }
+
   /**
    * @description 设置数据错误信息，供WaitStatusJob调用
    * @param {Error} error
@@ -90,6 +96,7 @@ class DataWrap {
   setError (error) {
     this.error = error
   }
+
   /**
    * @description 检测状态
    * @param {Object} steadyStatus
@@ -98,7 +105,7 @@ class DataWrap {
    */
   isSteadyStatus (steadyStatus) {
     let isSteadyStatus = true
-    for (let key in steadyStatus) {
+    for (const key in steadyStatus) {
       const status = steadyStatus[key]
       const currentStatus = _.get(this.data, key)
       if (
@@ -264,7 +271,7 @@ export default {
      * @returns {Object}
      */
     genParams () {
-      let params = {
+      const params = {
         scope: this.$store.getters.scope,
         show_fail_reason: true,
         ...this.getOptionParams(),
@@ -358,7 +365,7 @@ export default {
         }
         if (on !== 'get') {
           if (isBatch) {
-            let rec = res.data.data[0]
+            const rec = res.data.data[0]
             if (rec.status < 400) {
               // success
               this.data.data = rec.data

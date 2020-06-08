@@ -139,7 +139,7 @@ export const REGEXP = {
       const ALL_UPPERS = /[A-Z]/g
       /* eslint-disable no-useless-escape */
       const ALL_PUNC = '~`!@#$%^&*()-_=+[]{}|;\':\",./<>?'.split('')
-      let spec = ALL_PUNC.some(v => value.includes(v))
+      const spec = ALL_PUNC.some(v => value.includes(v))
       if (
         !(
           ALL_DIGITS.test(value) &&

@@ -100,12 +100,12 @@ export default {
   methods: {
     async fetchCloudprovider () {
       const params = this.cloudproviderParams
-      if (this.isAdminMode && !params['project_domain']) {
-        params['project_domain'] = this.userInfo.projectDomainId
+      if (this.isAdminMode && !params.project_domain) {
+        params.project_domain = this.userInfo.projectDomainId
         delete params.scope
       }
-      if (this.isAdminMode && !params['project_domain']) {
-        params['project_domain'] = this.userInfo.projectDomainId
+      if (this.isAdminMode && !params.project_domain) {
+        params.project_domain = this.userInfo.projectDomainId
         delete params.scope
       }
       const { data: { data = [] } } = await this.cloudporviderM.list({ params })
@@ -123,8 +123,8 @@ export default {
         ...this.cloudregionParams,
         manager: cloudproviderObj.key,
       }
-      if (this.isAdminMode && !params['project_domain']) {
-        params['project_domain'] = this.userInfo.projectDomainId
+      if (this.isAdminMode && !params.project_domain) {
+        params.project_domain = this.userInfo.projectDomainId
         delete params.scope
       }
       if (this.form) {
@@ -145,8 +145,8 @@ export default {
     },
     async fetchZone (cloudregionObj) {
       const params = Object.assign({}, this.zoneParams, { cloudregion_id: cloudregionObj.key, order_by: 'created_at', order: 'asc' })
-      if (this.isAdminMode && !params['project_domain']) {
-        params['project_domain'] = this.userInfo.projectDomainId
+      if (this.isAdminMode && !params.project_domain) {
+        params.project_domain = this.userInfo.projectDomainId
         delete params.scope
       }
       // 清空可用区

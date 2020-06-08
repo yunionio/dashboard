@@ -196,7 +196,7 @@ export default {
     },
     chooseDurationHandle (v) {
       this.currentDuration = v.value
-      let durationDate = R.clone(this.expireDate)
+      const durationDate = R.clone(this.expireDate)
       switch (v.value) {
         case '1h':
           durationDate.add(1, 'h')

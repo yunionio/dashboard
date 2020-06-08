@@ -9,7 +9,7 @@ export const UNITS = ['B', 'K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y']
 export function camel2Words (camel) {
   let tmp = ''
   for (let i = 0; i < camel.length; i++) {
-    let ch = camel.charAt(i)
+    const ch = camel.charAt(i)
     if (ch === ch.toUpperCase() && ch !== ch.toLowerCase()) {
       if (tmp.length > 0) {
         tmp += '-'
@@ -24,7 +24,7 @@ export function camel2Words (camel) {
 
 export function uuid (len, radix) {
   const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('')
-  let uuid = []
+  const uuid = []
   let i
   radix = radix || chars.length
   if (len) {
@@ -48,7 +48,7 @@ export function uuid (len, radix) {
 class Sizestr {
   sizestr (sz, unit, base, precision = 2, end = UNITS[UNITS.length - 1]) {
     if (!sz) return '0B'
-    let nsz = this.normalizeSize(sz, unit, base)
+    const nsz = this.normalizeSize(sz, unit, base)
     if (nsz < base) {
       return '' + nsz
     }
@@ -64,6 +64,7 @@ class Sizestr {
     }
     return 'NaN'
   }
+
   // 在 sizestr 上加上 B 结尾
   sizestrWithUnit (...args) {
     const res = this.sizestr(...args)
@@ -75,6 +76,7 @@ class Sizestr {
     const matched = res.match(reg) // ['111T', '111', 'T']
     return `${matched[1]} ${matched[2]}B`
   }
+
   unitBase (unit, base) {
     if (!unit) {
       return base
@@ -88,9 +90,11 @@ class Sizestr {
     }
     return Math.NaN
   }
+
   normalizeSize (sz, unit, base) {
     return sz * this.unitBase(unit, base)
   }
+
   numScale (num) {
     if (parseInt(num) === 0) {
       return 0
@@ -109,8 +113,9 @@ class Sizestr {
     }
     return width
   }
+
   round (num, bits) {
-    let scale = this.numScale(num)
+    const scale = this.numScale(num)
     if (scale > bits) {
       bits = 0
     } else {
@@ -122,6 +127,7 @@ class Sizestr {
     }
     return Math.floor(num * base + 0.5) / base
   }
+
   percentStr (val) {
     return '' + this.round(val * 100, 0) + '%'
   }
@@ -142,7 +148,7 @@ export const arrayToObj = (arr, itemKey = 'id') => {
 
 export const changeToArr = R.unless(
   R.is(Array),
-  R.of
+  R.of,
 )
 
 export function isChrome () {
@@ -277,7 +283,7 @@ export const splitUnit = value => {
 }
 
 function extend (to, _from) {
-  for (let key in _from) {
+  for (const key in _from) {
     to[key] = _from[key]
   }
   return to

@@ -175,7 +175,7 @@ export function hasPermission ({
 }
 
 export function hasServices (services) {
-  let s = R.is(String, services) ? [services] : services
+  const s = R.is(String, services) ? [services] : services
   return s.some(item => {
     const r = (store.getters.userInfo.services || []).find(v => v.type === item && v.status === true)
     return !!r
@@ -183,12 +183,12 @@ export function hasServices (services) {
 }
 
 export function hasHypervisors (hypervisors) {
-  let h = R.is(String, hypervisors) ? [hypervisors] : hypervisors
+  const h = R.is(String, hypervisors) ? [hypervisors] : hypervisors
   return h.some(item => (store.getters.capability.hypervisors || []).includes(item))
 }
 
 export function hasBrands (brands) {
-  let b = R.is(String, brands) ? [brands] : brands
+  const b = R.is(String, brands) ? [brands] : brands
   return b.some(item => (store.getters.capability.brands || []).includes(item))
 }
 

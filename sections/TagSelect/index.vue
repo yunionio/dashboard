@@ -218,8 +218,8 @@ export default {
       }
     },
     genTags (data) {
-      let userRet = []
-      let extRet = []
+      const userRet = []
+      const extRet = []
       for (let i = 0, len = data.length; i < len; i++) {
         const item = data[i]
         const isUserKey = item.key.startsWith('user:')
@@ -234,8 +234,8 @@ export default {
         }
         const index = R.findIndex(R.propEq('key', item.key))(temp)
         if (index !== -1) {
-          if (temp[index]['value'] && !temp[index]['value'].includes(item.value)) {
-            temp[index]['value'].push(item.value)
+          if (temp[index].value && !temp[index].value.includes(item.value)) {
+            temp[index].value.push(item.value)
           }
         } else {
           if (item.value) {
@@ -265,7 +265,7 @@ export default {
       this.mouseenterType = type
       this.$nextTick(() => {
         const { top: tagWrapTop, bottom: tagWrapBottom } = this.$refs['tag-wrap'].getBoundingClientRect()
-        const valueWrapHeight = this.$refs['value-wrap'].getBoundingClientRect()['height']
+        const valueWrapHeight = this.$refs['value-wrap'].getBoundingClientRect().height
         const documentClientHeight = document.documentElement.clientHeight
         const { top: targetTop, bottom: targetBottom } = evt.target.getBoundingClientRect()
         // 计算剩余的高度是否足够显示值的内容
@@ -279,7 +279,7 @@ export default {
       })
     },
     handleKeyClick (key, val) {
-      let newValue = { ...this.value }
+      const newValue = { ...this.value }
       if (this.multiple) {
         if (val) {
           if (newValue[key]) {

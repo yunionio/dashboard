@@ -103,8 +103,8 @@ export default {
             data = await this.fetchDomains(query)
           }
           const usedDomain = {
-            id: this.params.data[0]['domain_id'],
-            name: this.params.data[0]['project_domain'],
+            id: this.params.data[0].domain_id,
+            name: this.params.data[0].project_domain,
           }
           const hasUsedDomain = R.find(R.propEq('id', usedDomain.id))(data)
           if (!hasUsedDomain) {

@@ -38,7 +38,7 @@ export default {
   },
 
   render (h) {
-    let gutter = scrollbarWidth()
+    const gutter = scrollbarWidth()
     let style = this.wrapStyle
 
     if (gutter) {
@@ -103,12 +103,11 @@ export default {
     },
 
     update () {
-      let heightPercentage, widthPercentage
       const wrap = this.wrap
       if (!wrap) return
 
-      heightPercentage = (wrap.clientHeight * 100 / wrap.scrollHeight)
-      widthPercentage = (wrap.clientWidth * 100 / wrap.scrollWidth)
+      const heightPercentage = (wrap.clientHeight * 100 / wrap.scrollHeight)
+      const widthPercentage = (wrap.clientWidth * 100 / wrap.scrollWidth)
 
       this.sizeHeight = (heightPercentage < 100) ? (heightPercentage + '%') : ''
       this.sizeWidth = (widthPercentage < 100) ? (widthPercentage + '%') : ''

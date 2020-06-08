@@ -97,9 +97,9 @@ export default {
       }
       if (this.platform) params[this.platform] = true
       if (this.providerProp) params.provider = this.providerProp
-      if (this.isAdminMode) params['admin'] = true
-      if (this.isAdminMode && !params['project_domain']) {
-        params['project_domain'] = this.userInfo.projectDomainId
+      if (this.isAdminMode) params.admin = true
+      if (this.isAdminMode && !params.project_domain) {
+        params.project_domain = this.userInfo.projectDomainId
         delete params.scope
         delete params.domain_id
       }
@@ -131,8 +131,8 @@ export default {
       // 清空可用区
       this.regionOpts = []
       this.emit({}, 'region')
-      if (this.cloudproviderParams['project_domain']) {
-        params['project_domain'] = this.cloudproviderParams.project_domain
+      if (this.cloudproviderParams.project_domain) {
+        params.project_domain = this.cloudproviderParams.project_domain
         delete params.scope
       }
       if (this.form) {

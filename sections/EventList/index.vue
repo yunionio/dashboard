@@ -187,13 +187,13 @@ export default {
     getParam () {
       const param = {}
       if (this.objId) {
-        param['filter'] = `obj_id.in('${this.objId}')`
+        param.filter = `obj_id.in('${this.objId}')`
       }
       if (this.objType) {
-        param['obj_type'] = this.objType
+        param.obj_type = this.objType
       }
       if (this.dateTime) {
-        param['until'] = this.$moment.utc(this.dateTime).format()
+        param.until = this.$moment.utc(this.dateTime).format()
       } else {
         delete param.until
       }

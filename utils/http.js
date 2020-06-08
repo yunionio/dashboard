@@ -139,9 +139,9 @@ http.interceptors.request.use(
     pendingCount++
     config.method === 'get' && pendingCount === 1 && showLoading()
     if (store.getters.auth.auth && store.getters.auth.auth.session) {
-      config.headers['Authorization'] = `Bearer ${store.getters.auth.auth.session}`
+      config.headers.Authorization = `Bearer ${store.getters.auth.auth.session}`
     }
-    config['$requestKey'] = requestKey
+    config.$requestKey = requestKey
     config.cancelToken = new axios.CancelToken(cancel => {
       requestMap[requestKey] = {
         cancel,
@@ -154,7 +154,7 @@ http.interceptors.request.use(
     pendingCount--
     pendingCount === 0 && hiddenLoading()
     Promise.reject(error)
-  }
+  },
 )
 
 export const needLogout = error => {
@@ -181,7 +181,7 @@ export const isSuccess = res => {
 // response interceptor
 http.interceptors.response.use(
   (response) => {
-    cancelRquest(response.config['$requestKey'])
+    cancelRquest(response.config.$requestKey)
     pendingCount--
     pendingCount === 0 && hiddenLoading()
     if (response.status === 207) { // 批量操作
@@ -209,7 +209,7 @@ http.interceptors.response.use(
       }
     }
     return Promise.reject(error)
-  }
+  },
 )
 
 export default http

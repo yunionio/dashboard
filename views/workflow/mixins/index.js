@@ -23,7 +23,7 @@ export default {
     }
   },
   watch: {
-    '$route': 'changeProcess',
+    $route: 'changeProcess',
   },
   created () {
     this.curProcess = this.$route.query.type || 'me-process'

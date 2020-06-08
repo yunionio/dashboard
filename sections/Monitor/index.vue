@@ -83,7 +83,7 @@ export default {
   computed: {
     listData () {
       return this.monitorList.map(val => {
-        let columns = (val.series && val.series.length) ? val.series[0].columns : []
+        const columns = (val.series && val.series.length) ? val.series[0].columns : []
         const rows = []
         val.series.forEach(item => {
           item.values.forEach(row => {
@@ -92,7 +92,7 @@ export default {
               if (column === 'time') {
                 const momentObj = this.$moment(row[i])
                 const time = momentObj._isAMomentObject ? momentObj.format(this.timeFormatStr) : row[0]
-                rowsItem['time'] = time
+                rowsItem.time = time
               } else {
                 rowsItem[column] = row[i]
               }

@@ -176,7 +176,7 @@ export default {
         if (this.options[this.defaultSearchKey] && R.trim(this.search)) {
           this.selectValue = [this.search]
           this.selectKey = this.defaultSearchKey
-          this.search = `${this.options[this.defaultSearchKey]['label']}${this.keySeparator}${this.search}`
+          this.search = `${this.options[this.defaultSearchKey].label}${this.keySeparator}${this.search}`
         } else {
           if (R.is(Object, this.value) && !R.isEmpty(this.value)) {
             this.$emit('confirm', this.value)

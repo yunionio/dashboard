@@ -31,7 +31,7 @@ function int2hex (val) {
 
 function byteArray2hex (arr) {
   let result = ''
-  for (let i in arr) {
+  for (const i in arr) {
     result += byte2hex(arr[i])
   }
   return result
@@ -63,7 +63,7 @@ function aesDecrypt (data, key) {
       mode: jsrsasign.CryptoJS.mode.CFB8,
       padding: jsrsasign.CryptoJS.pad.NoPadding,
       iv: iv,
-    }
+    },
   )
   res = res.toString(jsrsasign.CryptoJS.enc.Utf8)
   return res
@@ -78,7 +78,7 @@ function exportDsaSshPubkey (key) {
     key.y.toByteArray(),
   ]
   let all = ''
-  for (let i in chunks) {
+  for (const i in chunks) {
     const chunk = chunks[i]
     all += int2hex(chunk.length)
     all += byteArray2hex(chunk)
@@ -138,7 +138,7 @@ jsrsasign.CryptoJS.mode.CFB8 = (function () {
     }
 
     function hex2wordArray (hex) {
-      let arr = []
+      const arr = []
       for (let j = 0; j < hex.length; j += 8) {
         let subhex
         if (hex.length - offset < 8) {
