@@ -125,6 +125,7 @@ export default {
     },
     handleConfirm (e) {
       e.stopPropagation()
+      if (this.confirmDisable) return
       this.visible = false
       this.$emit('update-focus', false)
       this.$emit('confirm', {
