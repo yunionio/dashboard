@@ -44,9 +44,9 @@
 <script>
 import _ from 'lodash'
 import * as R from 'ramda'
-import { DATABASE } from '@Monitor/constants'
 import Metric from './Metric'
 import Filters from './Filters'
+import { DATABASE } from '@Monitor/constants'
 import { resolveValueChangeField } from '@/utils/common/ant'
 
 export default {

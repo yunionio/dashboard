@@ -51,7 +51,7 @@ export const timeOpts = {
       { key: '1h', label: i18n.t('monitor.text00011') },
     ],
   },
-  'custom': {
+  custom: {
     key: 'custom',
     hidden: true,
     label: i18n.t('monitor.text00006'),
