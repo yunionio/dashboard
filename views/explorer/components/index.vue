@@ -23,10 +23,10 @@
 
 <script>
 import echarts from 'echarts'
-import { timeOpts } from '@Monitor/constants'
 import MonitorForms from './forms'
 import MonitorLine from './monitor-line'
 import CustomDate from './monitor-line/CustomDate'
+import { timeOpts } from '@Monitor/constants'
 import MonitorHeader from '@/sections/Monitor/Header'
 
 export default {
