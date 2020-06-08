@@ -84,7 +84,7 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        let values = await this.form.fc.validateFields()
+        const values = await this.form.fc.validateFields()
         await this.doUpdate(this.params.data[0].id, values)
         this.loading = false
         this.cancelDialog()

@@ -97,7 +97,7 @@ export default {
         type: 'expand',
         slots: {
           content: ({ row }) => {
-            let tags = _.sortBy(row.schedtags, ['default', 'name'])
+            const tags = _.sortBy(row.schedtags, ['default', 'name'])
             if (tags.length > 0) {
               return tags.map(tag => <a-tag class='mb-2' color='blue'>{tag.name}</a-tag>)
             }

@@ -192,7 +192,7 @@ export default {
             initialValue: 1,
             rules: [
               { required: true, message: '请输入VRRP通告间隔' },
-              { type: 'integer', min: 1, max: 255, message: `请输入范围在 1-255 之间`, trigger: 'blur' },
+              { type: 'integer', min: 1, max: 255, message: '请输入范围在 1-255 之间', trigger: 'blur' },
             ],
           },
         ],
@@ -205,7 +205,7 @@ export default {
             normalize: v => Number(v),
             initialValue: 3600,
             rules: [
-              { type: 'integer', min: 600, max: 3600, message: `请输入范围在 600-3600 之间`, trigger: 'blur' },
+              { type: 'integer', min: 600, max: 3600, message: '请输入范围在 600-3600 之间', trigger: 'blur' },
             ],
           },
         ],
@@ -230,7 +230,7 @@ export default {
           {
             normalize: v => Number(v),
             rules: [
-              { type: 'integer', min: 1, max: 600, message: `请输入范围在 1-600 之间`, trigger: 'blur' },
+              { type: 'integer', min: 1, max: 600, message: '请输入范围在 1-600 之间', trigger: 'blur' },
             ],
           },
         ],
@@ -239,7 +239,7 @@ export default {
           {
             normalize: v => Number(v),
             rules: [
-              { type: 'integer', min: 1, max: 64, message: `请输入范围在 1-64 之间`, trigger: 'blur' },
+              { type: 'integer', min: 1, max: 64, message: '请输入范围在 1-64 之间', trigger: 'blur' },
             ],
           },
         ],
@@ -270,7 +270,7 @@ export default {
             initialValue: 1,
             normalize: v => Number(v),
             rules: [
-              { type: 'integer', min: 1, max: 32767, message: `请输入范围在 1-32767 之间`, trigger: 'blur' },
+              { type: 'integer', min: 1, max: 32767, message: '请输入范围在 1-32767 之间', trigger: 'blur' },
             ],
           },
         ],
@@ -315,23 +315,8 @@ export default {
       this.submiting = true
       try {
         const values = await this.form.fc.validateFields()
-        const templKeys = ['telegraf_conf_tmpl', 'haproxy_conf_tmpl', 'keepalived_conf_tmpl']
-        templKeys.forEach(k => {
-          if (values[k]) {
-            values[k] = window.btoa(values[k])
-          } else {
-            values[k] = this.defaultParams[k]
-          }
-        })
-        if (values.haproxy.global_log_path) {
-          const logConfs = this.defaultParams['haproxy']['global_log'].split(' ')
-          logConfs[1] = values.haproxy.global_log_path
-          values['haproxy']['global_log'] = logConfs.join(' ')
-          delete values.global_log_path
-        }
-        await this.manager.create({
-          data: values,
-        })
+        await this.doCreate(values)
+        this.handleCancel()
       } catch (error) {
         throw error
       } finally {
@@ -347,7 +332,7 @@ export default {
           const defaultParams = data.params
           this.defaultParams = defaultParams
           if (defaultParams.haproxy && defaultParams.haproxy.global_log) {
-            defaultParams.haproxy['global_log_path'] = defaultParams.haproxy.global_log.split(' ')[1]
+            defaultParams.haproxy.global_log_path = defaultParams.haproxy.global_log.split(' ')[1]
           }
           this.form.fc.setFieldsValue({
             haproxy_input_interval: defaultParams.telegraf.haproxy_input_interval,

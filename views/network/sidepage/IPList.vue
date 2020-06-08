@@ -33,11 +33,11 @@ import WindowsMixin from '@/mixins/windows.js'
 
 // eslint-disable-next-line no-unused-vars
 const IP_TYPES = {
-  'reservedips': '预留IP',
-  'loadbalancers': '负载均衡IP',
-  'servers': '虚拟机IP',
-  'networkinterfaces': '弹性网卡',
-  'hosts': '宿主机IP',
+  reservedips: '预留IP',
+  loadbalancers: '负载均衡IP',
+  servers: '虚拟机IP',
+  networkinterfaces: '弹性网卡',
+  hosts: '宿主机IP',
 }
 export default {
   name: 'IPList',
@@ -96,9 +96,9 @@ export default {
   },
   computed: {
     list () {
-      let filterName = this.filterName.toString().trim().toLowerCase()
+      const filterName = this.filterName.toString().trim().toLowerCase()
       if (filterName) {
-        let searchProps = ['ip_addr', 'mac_addr', 'owner_type', 'owner']
+        const searchProps = ['ip_addr', 'mac_addr', 'owner_type', 'owner']
         return this.tableData.filter(item => searchProps.some(key => {
           if (item[key]) {
             return item[key].toString().toLowerCase().indexOf(filterName) > -1

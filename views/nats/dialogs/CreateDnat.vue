@@ -200,10 +200,10 @@ export default {
         const params = {
           name: values.name,
           natgateway_id: this.params.data.id,
-          internal_ip: serverObj[values.server]['ips'],
+          internal_ip: serverObj[values.server].ips,
           internal_port: Number(values.internalPort),
-          external_ip: eipObj[values.ip]['ip_addr'],
-          external_ip_id: eipObj[values.ip]['id'],
+          external_ip: eipObj[values.ip].ip_addr,
+          external_ip_id: eipObj[values.ip].id,
           external_port: Number(values.externalPort),
           ip_protocol: values.protocol,
         }

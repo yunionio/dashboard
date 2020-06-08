@@ -26,11 +26,11 @@
 </template>
 
 <script>
-import LbList from '@Network/views/lb/components/List'
-import AgentList from '@Network/views/agent/components/List'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import LoadbalancerclusterDetail from './Detail'
+import AgentList from '@Network/views/agent/components/List'
+import LbList from '@Network/views/lb/components/List'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'

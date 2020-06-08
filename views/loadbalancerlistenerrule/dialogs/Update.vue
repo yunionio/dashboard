@@ -144,7 +144,7 @@ export default {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
-        values['redirect'] = values.redirect ? 'raw' : 'off'
+        values.redirect = values.redirect ? 'raw' : 'off'
         await this.params.onManager('update', {
           id: this.params.data[0].id,
           managerArgs: {

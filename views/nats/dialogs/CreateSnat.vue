@@ -133,7 +133,7 @@ export default {
           name: values.name,
           natgateway_id: this.params.data.id,
           network_id: values.network,
-          ip: eipObj[values.ip]['ip_addr'],
+          ip: eipObj[values.ip].ip_addr,
           external_ip_id: values.ip,
           source_cidr: '',
         }

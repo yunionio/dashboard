@@ -252,7 +252,7 @@ export default {
         }
       }
       if (this.isAdminMode) {
-        params['project_domain'] = this.domain_id
+        params.project_domain = this.domain_id
         delete params.scope
       }
       return params
@@ -359,10 +359,10 @@ export default {
       if (e) {
         this.manager = e.id
         if (e.provider.toLowerCase() === 'azure') {
-          this.form.fc.setFieldsValue({ 'bandwidth': 0 })
+          this.form.fc.setFieldsValue({ bandwidth: 0 })
           this.showBandwidth = false
         } else {
-          this.form.fc.setFieldsValue({ 'bandwidth': 30 })
+          this.form.fc.setFieldsValue({ bandwidth: 30 })
           this.showBandwidth = true
         }
         this.hiddenBrandwidthHandle(e.provider)
@@ -381,10 +381,10 @@ export default {
     hiddenBrandwidthHandle (selectedProvider) {
       const providers = ['Azure', 'Aws', 'Qcloud', 'Google']
       if (providers.some((v) => { return v === selectedProvider })) {
-        this.form.fc.setFieldsValue({ 'bandwidth': 0 })
+        this.form.fc.setFieldsValue({ bandwidth: 0 })
         this.showBandwidth = false
       } else {
-        this.form.fc.setFieldsValue({ 'bandwidth': 30 })
+        this.form.fc.setFieldsValue({ bandwidth: 30 })
         this.showBandwidth = true
       }
     },
@@ -398,7 +398,7 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        let values = await this.form.fc.validateFields()
+        const values = await this.form.fc.validateFields()
         values.tenant = values.project.key
         Reflect.deleteProperty(values, 'project')
         if (values.platform === 'private_cloud') {

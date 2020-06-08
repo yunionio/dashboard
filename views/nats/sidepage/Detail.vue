@@ -13,8 +13,8 @@ import {
 } from '@/utils/common/tableColumn'
 
 const BillingType = {
-  'postpaid': '后付费',
-  'prepaid': '预付费',
+  postpaid: '后付费',
+  prepaid: '预付费',
 }
 
 export default {

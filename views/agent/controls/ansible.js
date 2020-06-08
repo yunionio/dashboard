@@ -6,6 +6,7 @@ export default class ansible {
     this.ansiblePlaybookId = ansiblePlaybookId
     this.managerAnsibleplaybooks = new Manager('ansibleplaybooks')
   }
+
   stop () {
     if (this.ansiblePlaybookId) {
       return this.managerAnsibleplaybooks.performAction({
@@ -14,6 +15,7 @@ export default class ansible {
       })
     }
   }
+
   run () {
     if (this.ansiblePlaybookId) {
       return this.managerAnsibleplaybooks.performAction({
@@ -22,6 +24,7 @@ export default class ansible {
       })
     }
   }
+
   get () {
     if (this.ansiblePlaybookId) {
       return this.managerAnsibleplaybooks.get({ id: this.ansiblePlaybookId })

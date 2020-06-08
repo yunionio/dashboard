@@ -10,14 +10,14 @@ import {
 } from '@/utils/common/tableColumn'
 
 const NatSpec = {
-  'small': '小型',
-  'medium': '中型',
-  'large': '大型',
+  small: '小型',
+  medium: '中型',
+  large: '大型',
   'x-large': '超大型',
 }
 const BillingType = {
-  'postpaid': '后付费',
-  'prepaid': '预付费',
+  postpaid: '后付费',
+  prepaid: '预付费',
 }
 
 export default {

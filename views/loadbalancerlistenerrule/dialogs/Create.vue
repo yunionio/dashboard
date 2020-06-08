@@ -182,8 +182,8 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        let values = await this.form.fc.validateFields()
-        values['redirect'] = values.redirect ? 'raw' : 'off'
+        const values = await this.form.fc.validateFields()
+        values.redirect = values.redirect ? 'raw' : 'off'
         await this.doCreate(values)
         this.loading = false
         this.cancelDialog()

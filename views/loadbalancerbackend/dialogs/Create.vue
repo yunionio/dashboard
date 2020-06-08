@@ -83,9 +83,9 @@ export default {
   computed: {
     backendTypes () {
       const _ = {
-        'guest': '指定虚拟机',
-        'host': '指定宿主机',
-        'ip': '外部机器',
+        guest: '指定虚拟机',
+        host: '指定宿主机',
+        ip: '外部机器',
       }
       const { isAdminMode, isDomainMode } = this.$store.getters
       if (!isAdminMode && !isDomainMode) {
@@ -158,7 +158,7 @@ export default {
     },
     serverHref () {
       const { provider } = this.params.lbBackendgroupData
-      let platform = findPlatform(provider, 'provider')
+      const platform = findPlatform(provider, 'provider')
       const platformArr = ['idc', 'private', 'public']
       if (platformArr.includes(platform)) return `/vminstance/create?type=${platform}`
       return '/vminstance/create'
@@ -217,7 +217,7 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        let values = await this.form.fc.validateFields()
+        const values = await this.form.fc.validateFields()
         await this.doCreate(values)
         this.loading = false
         this.cancelDialog()

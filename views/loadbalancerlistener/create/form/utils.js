@@ -556,7 +556,7 @@ export const getDecorators = ({ provider, vm, loadbalancer }) => {
         valuePropName: 'checked',
       },
     ],
-    health_check_type: healCheckType[provider] || healCheckType['default'],
+    health_check_type: healCheckType[provider] || healCheckType.default,
     health_check_uri: [
       'health_check_uri',
       {
