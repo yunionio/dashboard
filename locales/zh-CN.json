@@ -706,6 +706,13 @@
     "scheduledtask": {
       "ready": "正常",
       "create_failed": "创建失败"
+    },
+    "scheduledtaskactivity": {
+      "execution": "执行中",
+      "succeed": "成功",
+      "part_succeed": "部分成功",
+      "failed": "失败",
+      "reject": "拒绝"
     }
   },
   "skuCategoryOptions": {
