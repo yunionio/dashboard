@@ -9,6 +9,7 @@
 <script>
 import {
   getOperationColumns,
+  getResourceTypeColumns,
   getLabelTypeColumns,
   getTimerDescColumns,
 } from '../utils/columns'
@@ -29,6 +30,14 @@ export default {
     return {
       baseInfo: [
         getOperationColumns(),
+        getResourceTypeColumns(),
+        {
+          field: 'labels',
+          title: '资源数量',
+          formatter: ({ row }) => {
+            return <a onClick={ () => this.$emit('tab-change', 'related-resource') }>{row.labels.length}</a>
+          },
+        },
         getLabelTypeColumns(),
         getTimerDescColumns(),
       ],

@@ -1,5 +1,7 @@
 import {
   getOperationColumns,
+  getResourceTypeColumns,
+  getResourceNumberColumns,
   getLabelTypeColumns,
   getTimerDescColumns,
 } from '../utils/columns'
@@ -26,6 +28,8 @@ export default {
       getEnabledTableColumn({ minWidth: 10 }),
       getStatusTableColumn({ statusModule: 'scheduledtask', minWidth: 10 }),
       getOperationColumns(),
+      getResourceTypeColumns(),
+      getResourceNumberColumns(this),
       getLabelTypeColumns(),
       getTimerDescColumns(),
       getTimeTableColumn(),

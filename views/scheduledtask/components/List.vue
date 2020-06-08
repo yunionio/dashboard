@@ -11,6 +11,10 @@
 // import { mapGetters } from 'vuex'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
+import {
+  getStatusFilter,
+  getTenantFilter,
+} from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 // import expectStatus from '@/constants/expectStatus'
@@ -35,6 +39,26 @@ export default {
               return `name.contains("${val}")`
             },
           },
+          enabled: {
+            label: '启用状态',
+            dropdown: true,
+            items: [
+              { label: '启用', key: true },
+              { label: '禁用', key: false },
+            ],
+          },
+          status: getStatusFilter('scheduledtask'),
+          operation: {
+            label: '操作动作',
+            dropdown: true,
+            items: Object.keys(this.$t('cloudenv.ScheduledtaskRuleAction')).map((k) => {
+              return {
+                label: this.$t('cloudenv.ScheduledtaskRuleAction')[k],
+                key: k,
+              }
+            }),
+          },
+          tenant: getTenantFilter(),
         },
       }),
       exportDataOptions: {
@@ -123,14 +147,14 @@ export default {
     }
   },
   created () {
-    this.initSidePageTab('scheduledtask-detail')
     this.list.fetchData()
     this.$bus.$on('ScheduledtasksListSingleRefresh', args => {
       this.list.singleRefresh(...args)
     }, this)
   },
   methods: {
-    handleOpenSidepage (row) {
+    handleOpenSidepage (row, initSidePageTab = 'scheduledtask-detail') {
+      this.initSidePageTab(initSidePageTab)
       this.sidePageTriggerHandle(this, 'ScheduledtaskSidePage', {
         id: row.id,
         resource: 'scheduledtasks',

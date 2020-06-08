@@ -25,6 +25,34 @@ export const getResourceColumns = () => {
   }
 }
 
+export const getResourceTypeColumns = () => {
+  return {
+    field: 'resource_type',
+    title: '资源类型',
+    width: 110,
+    showOverflow: 'title',
+    formatter: ({ row }) => {
+      return i18n.t('cloudenv.ScheduledtaskResourceType')[row.resource_type] || '-'
+    },
+  }
+}
+
+export const getResourceNumberColumns = (that) => {
+  return {
+    field: 'labels',
+    title: '资源数量',
+    width: 110,
+    showOverflow: 'title',
+    slots: {
+      default: ({ row }, h) => {
+        return [
+          <side-page-trigger onTrigger={ () => that.handleOpenSidepage(row, 'related-resource') }>{ row.labels.length }</side-page-trigger>,
+        ]
+      },
+    },
+  }
+}
+
 export const getLabelTypeColumns = () => {
   return {
     field: 'label_type',

@@ -19,7 +19,8 @@
       :on-manager="onManager"
       @side-page-trigger-handle="sidePageTriggerHandle"
       @init-side-page-tab="initSidePageTab"
-      @single-refresh="singleRefresh" />
+      @single-refresh="singleRefresh"
+      @tab-change="handleTabChange" />
   </base-side-page>
 </template>
 
