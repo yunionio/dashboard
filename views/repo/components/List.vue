@@ -66,7 +66,7 @@ export default {
           },
           meta: () => {
             const isAdmin = this.$store.getters.isAdminMode
-            let validate = this.list.selectedItems.length > 0 && isAdmin && this.list.selectedItems.every(val => val.can_delete)
+            const validate = this.list.selectedItems.length > 0 && isAdmin && this.list.selectedItems.every(val => val.can_delete)
             let tooltip = ''
             if (!isAdmin) {
               tooltip = '仅系统管理员可操作'

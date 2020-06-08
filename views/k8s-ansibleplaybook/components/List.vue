@@ -24,7 +24,7 @@ export default {
           minWidth: 100,
           slots: {
             default: ({ row }) => {
-              const text = row['name'] || '-'
+              const text = row.name || '-'
               return [
                 <list-body-cell-wrap copy hideField={true} field='name' row={row} message={text}>
                   <side-page-trigger name='K8sAnsibleplaybookSidePage' id='test' vm={this} options={{ output: row.externalInfo.output }}>{text}</side-page-trigger>

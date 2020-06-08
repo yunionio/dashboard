@@ -74,11 +74,11 @@ import _ from 'lodash'
 import * as R from 'ramda'
 import marked from 'marked'
 import { Base64 } from 'js-base64'
+import FormYaml from './FormYaml'
 import ClusterSelect from '@K8S/sections/ClusterSelect'
 import NamespaceSelect from '@K8S/sections/NamespaceSelect'
 import TemplatePreview from '@K8S/sections/TemplatePreview'
 import k8sCreateMixin from '@K8S/mixins/create'
-import FormYaml from './FormYaml'
 import { validateYaml, isRequired } from '@/utils/validate'
 import DomainProject from '@/sections/DomainProject'
 
@@ -232,7 +232,7 @@ export default {
       const values = this.chartDetail.chart.values
       const value = _.get(values, path)
       if (value && (R.is(String, value) || R.is(Number, value))) {
-        let opts = []
+        const opts = []
         if (!query || (value === query || (query && value.toLowerCase().includes(query.toLowerCase())))) opts.push(value)
         return opts
       }

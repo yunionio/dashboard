@@ -27,6 +27,10 @@
 </template>
 
 <script>
+import * as R from 'ramda'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
+import Detail from './Detail'
 import Statefulset from '@K8S/views/statefulset/components/List'
 import Deployment from '@K8S/views/deployment/components/List'
 import Secret from '@K8S/views/secret/components/List'
@@ -35,10 +39,6 @@ import Daemonset from '@K8S/views/daemonset/components/List'
 import Clusterrole from '@K8S/views/rbacrole/components/List'
 import Clusterrolebinding from '@K8S/views/rbacrolebind/components/List'
 import Serviceaccount from '@K8S/views/service-account/components/List'
-import * as R from 'ramda'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
-import Detail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
