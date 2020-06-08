@@ -104,7 +104,7 @@ export default {
       this.ruleList.splice(index, 1)
     },
     addRoute (item) {
-      item.routes.push({ k: uuid(), ports: [] },)
+      item.routes.push({ k: uuid(), ports: [] })
     },
     remvoeRoute (item, i) {
       item.splice(i, 1)

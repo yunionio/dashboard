@@ -13,10 +13,10 @@
 
 <script>
 import * as R from 'ramda'
-import ClusterNamespace from '@K8S/sections/ClusterNamespace'
-import clusterNamespaceMixin from '@K8S/mixins/clusterNamespace'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
+import ClusterNamespace from '@K8S/sections/ClusterNamespace'
+import clusterNamespaceMixin from '@K8S/mixins/clusterNamespace'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
@@ -98,8 +98,8 @@ export default {
             let validate = true
             let tooltip = ''
             if (this.list.selectedItems.length > 0) {
-              let namespaces = this.list.selectedItems.map(v => v.namespace)
-              let unique = Array.from(new Set(namespaces))
+              const namespaces = this.list.selectedItems.map(v => v.namespace)
+              const unique = Array.from(new Set(namespaces))
               if (unique.length > 1) {
                 validate = false
                 tooltip = '请选择同一个命名空间下的资源'

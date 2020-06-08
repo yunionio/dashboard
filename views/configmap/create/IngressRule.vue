@@ -98,7 +98,7 @@ export default {
       })
     },
     addRoute (item) {
-      item.routes.push({ k: uuid(), ports: [] },)
+      item.routes.push({ k: uuid(), ports: [] })
     },
     genPortOpts (service) {
       if (service && service.internalEndpoint && service.internalEndpoint.ports) {

@@ -14,11 +14,11 @@
 </template>
 
 <script>
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 import ClusterNamespace from '@K8S/sections/ClusterNamespace'
 import releaseMixin from '@K8S/mixins/releaseSidepage'
 import clusterNamespaceMixin from '@K8S/mixins/clusterNamespace'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import { getNameFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
@@ -64,7 +64,7 @@ export default {
               onManager: this.onManager,
               idKey: 'name',
               ok: (ids, data) => {
-                return new this.$Manager(`${data[0]['type']}s`, 'v1').batchDelete({
+                return new this.$Manager(`${data[0].type}s`, 'v1').batchDelete({
                   ids,
                   data: {
                     cluster: data[0].clusterID,
@@ -81,8 +81,8 @@ export default {
           },
           meta: () => {
             if (this.list.selectedItems.length > 0) {
-              let namespaces = this.list.selectedItems.map(v => v.namespace)
-              let unique = Array.from(new Set(namespaces))
+              const namespaces = this.list.selectedItems.map(v => v.namespace)
+              const unique = Array.from(new Set(namespaces))
               if (unique.length === 1) {
                 return {
                   validate: true,

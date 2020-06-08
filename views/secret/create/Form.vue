@@ -43,11 +43,11 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import ClusterSelect from '@K8S/sections/ClusterSelect'
 import NamespaceSelect from '@K8S/sections/NamespaceSelect'
 import { SECRET_DEFAULT_TYPE } from '@K8S/constants'
 import k8sCreateMixin from '@K8S/mixins/create'
-import _ from 'lodash'
 import { REGEXP } from '@/utils/validate'
 
 const validateEmail = (rule, value, cb) => {

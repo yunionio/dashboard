@@ -30,13 +30,13 @@
 </template>
 
 <script>
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
+import K8sNodeDetail from './Detail'
 import StatusSidepage from '@K8S/sections/StatusSidepage'
 import EventsSidepage from '@K8S/sections/EventsSidepage'
 import PodList from '@K8S/views/pod/components/List'
 import SourceInformationSidepage from '@K8S/sections/SourceInformationSidepage'
-import SingleActionsMixin from '../mixins/singleActions'
-import ColumnsMixin from '../mixins/columns'
-import K8sNodeDetail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'

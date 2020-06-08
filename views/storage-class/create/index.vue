@@ -99,10 +99,10 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import _ from 'lodash'
 import ClusterSelect from '@K8S/sections/ClusterSelect'
 import NamespaceSelect from '@K8S/sections/NamespaceSelect'
 import k8sCreateMixin from '@K8S/mixins/create'
-import _ from 'lodash'
 
 export default {
   name: 'StorageClassCreate',

@@ -30,11 +30,11 @@
 </template>
 
 <script>
-import EventsSidepage from '@K8S/sections/EventsSidepage'
-import SourceInformationSidepage from '@K8S/sections/SourceInformationSidepage'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import K8sStorageclassDetail from './Detail'
+import SourceInformationSidepage from '@K8S/sections/SourceInformationSidepage'
+import EventsSidepage from '@K8S/sections/EventsSidepage'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'

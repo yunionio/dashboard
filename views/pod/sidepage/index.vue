@@ -18,16 +18,16 @@
 
 <script>
 /* eslint-disable import/no-duplicates */
-import EventsSidepage from '@K8S/sections/EventsSidepage'
-import ContainerSidepage from '@K8S/sections/ContainerSidepage'
-import InitContainerSidepage from '@K8S/sections/ContainerSidepage'
-import ConditionSidepage from '@K8S/sections/ConditionSidepage'
-import SourceInformationSidepage from '@K8S/sections/SourceInformationSidepage'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import Detail from './Detail'
 import Terminal from './Terminal'
 import Log from './Log'
+import EventsSidepage from '@K8S/sections/EventsSidepage'
+import ContainerSidepage from '@K8S/sections/ContainerSidepage'
+import InitContainerSidepage from '@K8S/sections/ContainerSidepage'
+import ConditionSidepage from '@K8S/sections/ConditionSidepage'
+import SourceInformationSidepage from '@K8S/sections/SourceInformationSidepage'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'

@@ -103,7 +103,7 @@ export default {
       const fr = new FileReader()
       fr.readAsText(file.originFileObj)
       fr.onload = (evt) => {
-        this.form.fc.setFieldsValue({ 'yaml': evt.target.result })
+        this.form.fc.setFieldsValue({ yaml: evt.target.result })
       }
       fr.onerror = () => {
         this.$message.error('读取文件内容出错')

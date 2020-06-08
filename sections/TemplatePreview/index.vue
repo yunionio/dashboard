@@ -43,7 +43,7 @@ export default {
       handler (previewFiles) {
         if (previewFiles && previewFiles.length) {
           let defaultFile = previewFiles[0]
-          let valueFile = previewFiles.find(val => val.name.endsWith('values.yaml'))
+          const valueFile = previewFiles.find(val => val.name.endsWith('values.yaml'))
           if (valueFile) defaultFile = valueFile
           this.changePreviwFile(defaultFile.data)
         }
