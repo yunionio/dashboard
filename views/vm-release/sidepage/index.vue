@@ -29,11 +29,11 @@
 
 <script>
 import * as R from 'ramda'
-import K8s_ansibleplaybook from '@Helm/views/k8s-ansibleplaybook/components/List'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import Virtualmachine from './Virtualmachine'
 import Detail from './Detail'
+import K8s_ansibleplaybook from '@Helm/views/k8s-ansibleplaybook/components/List'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'

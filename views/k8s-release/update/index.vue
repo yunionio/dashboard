@@ -49,8 +49,8 @@
 import * as R from 'ramda'
 import marked from 'marked'
 import { Base64 } from 'js-base64'
-import TemplatePreview from '@K8S/sections/TemplatePreview'
 import jsYaml from 'js-yaml'
+import TemplatePreview from '@K8S/sections/TemplatePreview'
 import { validateYaml } from '@/utils/validate'
 
 export default {

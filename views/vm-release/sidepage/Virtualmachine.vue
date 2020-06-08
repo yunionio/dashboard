@@ -25,7 +25,7 @@ export default {
           minWidth: 100,
           slots: {
             default: ({ row }) => {
-              const text = row['name'] || '-'
+              const text = row.name || '-'
               return [
                 <list-body-cell-wrap copy hideField={true} field='name' row={row} message={text}>
                   <side-page-trigger name='VmInstanceSidePage' id={row.externalInfo.id} vm={this}>{text}</side-page-trigger>
