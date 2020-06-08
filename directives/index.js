@@ -10,7 +10,7 @@ requireDirectives.keys().forEach(fileName => {
   const name = fileName.replace(/^\.\/(.*)\.\w+$/, '$1')
   Vue.directive(
     name,
-    config.default || config
+    config.default || config,
   )
 })
 

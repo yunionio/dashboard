@@ -19,7 +19,7 @@ export const getProjectTableColumn = ({ field = 'tenant', title = i18n.t('dictio
     slots: {
       default: ({ row }, h) => {
         const ret = []
-        let project = row[field]
+        const project = row[field]
         if (R.is(Array, project)) {
           for (let i = 0, len = project.length; i < len; i++) {
             const row = project[i]
@@ -33,7 +33,7 @@ export const getProjectTableColumn = ({ field = 'tenant', title = i18n.t('dictio
           ret.push(
             <list-body-cell-wrap hide-field copy field="domain" row={{ domain }}>
               <span class='text-weak'>{ domain }</span>
-            </list-body-cell-wrap>
+            </list-body-cell-wrap>,
           )
         }
         return ret
@@ -56,13 +56,13 @@ export const getRegionTableColumn = ({ field = 'region', title = '区域' } = {}
         ret.push(
           <list-body-cell-wrap hide-field copy field={field} row={row}>
             <span style={{ color: '#0A1F44' }}>{ val }</span>
-          </list-body-cell-wrap>
+          </list-body-cell-wrap>,
         )
         if (row.zone) {
           ret.push(
             <list-body-cell-wrap hide-field copy field="zone" row={row}>
               <span style={{ color: '#53627C' }}>{ row.zone }</span>
-            </list-body-cell-wrap>
+            </list-body-cell-wrap>,
           )
         }
         return ret
@@ -254,7 +254,7 @@ export const getIpsTableColumn = ({ field = 'ips', title = 'IP', vm } = {}) => {
         let ret = []
         if (row.eip) {
           ret.push(
-            <list-body-cell-wrap row={row} field="eip" copy><span class="text-color-help">({ row.eip_mode === 'elastic_ip' ? '弹性' : '公有' })</span></list-body-cell-wrap>
+            <list-body-cell-wrap row={row} field="eip" copy><span class="text-color-help">({ row.eip_mode === 'elastic_ip' ? '弹性' : '公有' })</span></list-body-cell-wrap>,
           )
         }
         if (row.ips) {
@@ -393,11 +393,11 @@ export const getBillingTypeTableColumn = ({ field = 'billing_type', title = '计
           ret.push(<div style={{ color: '#0A1F44' }}>包年包月</div>)
         }
         if (row.expired_at) {
-          let dateArr = moment(row.expired_at).fromNow().split(' ')
-          let date = dateArr.join('')
-          let seconds = moment(row.expired_at).diff(new Date()) / 1000
-          let textColor = seconds / 24 / 60 / 60 < 7 ? '#DD2727' : '#53627C'
-          let text = seconds < 0 ? '已过期' : `${date.substring(0, date.length - 1)}后到期`
+          const dateArr = moment(row.expired_at).fromNow().split(' ')
+          const date = dateArr.join('')
+          const seconds = moment(row.expired_at).diff(new Date()) / 1000
+          const textColor = seconds / 24 / 60 / 60 < 7 ? '#DD2727' : '#53627C'
+          const text = seconds < 0 ? '已过期' : `${date.substring(0, date.length - 1)}后到期`
           ret.push(<div style={{ color: textColor }}>{ text }</div>)
         }
         return ret
@@ -560,11 +560,11 @@ export const getBillingTableColumn = ({
             </template>
             <a-icon type="question-circle-o" />
           </a-tooltip>
-          let dateArr = vm.$moment(row.expired_at).fromNow().split(' ')
-          let date = dateArr.join('')
-          let seconds = vm.$moment(row.expired_at).diff(new Date()) / 1000
-          let textColor = seconds / 24 / 60 / 60 < 7 ? '#DD2727' : '#53627C'
-          let text = seconds < 0 ? '已过期' : `${date.substring(0, date.length - 1)}后到期`
+          const dateArr = vm.$moment(row.expired_at).fromNow().split(' ')
+          const date = dateArr.join('')
+          const seconds = vm.$moment(row.expired_at).diff(new Date()) / 1000
+          const textColor = seconds / 24 / 60 / 60 < 7 ? '#DD2727' : '#53627C'
+          const text = seconds < 0 ? '已过期' : `${date.substring(0, date.length - 1)}后到期`
           ret.push(<div style={{ color: textColor }}>{ text } { help }</div>)
         }
         return ret

@@ -23,8 +23,8 @@
 
 <script>
 import * as R from 'ramda'
-import { SERVER_TYPE } from '@Compute/constants'
 import { mapGetters } from 'vuex'
+import { SERVER_TYPE } from '@Compute/constants'
 import { Manager } from '@/utils/manager'
 
 export default {
@@ -99,8 +99,8 @@ export default {
       const params = {
         ...this.cloudregionParams,
       }
-      if (this.cloudregionParams['project_domain']) {
-        params['project_domain'] = this.cloudregionParams.project_domain
+      if (this.cloudregionParams.project_domain) {
+        params.project_domain = this.cloudregionParams.project_domain
         delete params.scope
       }
       this.cloudregionsM.list({ params })

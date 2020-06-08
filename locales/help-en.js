@@ -8,7 +8,7 @@ export default {
     },
     demo2: {
       head: '证书',
-      content: `当监听协议为HTTPS，需绑定证书使用，支持上传证书和证书链。`,
+      content: '当监听协议为HTTPS，需绑定证书使用，支持上传证书和证书链。',
     },
   },
 }

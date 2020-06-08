@@ -49,7 +49,7 @@ export default {
     const questionGroupKeys = Object.keys(authSecretQuestion)
     const decorators = {}
     for (let i = 0, len = questionGroupKeys.length; i < len; i++) {
-      let initQuestion = authSecretQuestion[questionGroupKeys[i]][0]['label']
+      let initQuestion = authSecretQuestion[questionGroupKeys[i]][0].label
       if (this.questions && this.questions.length) {
         initQuestion = this.questions[i]
       }

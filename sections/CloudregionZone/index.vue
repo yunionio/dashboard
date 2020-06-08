@@ -79,8 +79,8 @@ export default {
       const params = {
         ...this.cloudregionParams,
       }
-      if (this.isAdminMode && !params['project_domain']) {
-        params['project_domain'] = this.userInfo.projectDomainId
+      if (this.isAdminMode && !params.project_domain) {
+        params.project_domain = this.userInfo.projectDomainId
         delete params.scope
         delete params.domain_id
       }

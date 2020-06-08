@@ -7,7 +7,7 @@ import Workflow from '@/views/workflow'
 
 export const menusConfig = getModulesRouteConfig()
 
-let routes = [
+const routes = [
   ...getScopeRoutes(),
   ...generateRoutesFromMenu(menusConfig),
   {
@@ -50,14 +50,14 @@ function getModulesRouteConfig () {
   })
   ret.sort((a, b) => a.index - b.index)
   for (let i = 0, len = ret.length; i < len; i++) {
-    let item = ret[i]
+    const item = ret[i]
     item.meta.group = i
     if (item.menus) {
       for (let j = 0; j < item.menus.length; j++) {
-        let menu = item.menus[j]
+        const menu = item.menus[j]
         if (menu.submenus) {
           for (let m = 0; m < menu.submenus.length; m++) {
-            let subitem = menu.submenus[m]
+            const subitem = menu.submenus[m]
             subitem.meta.group = i
           }
         } else {
@@ -74,20 +74,20 @@ function getModulesRouteConfig () {
 // Menu should have 2 levels.
 function generateRoutesFromMenu (menugroups = [], routes = []) {
   for (let m = 0, ml = menugroups.length; m < ml; m++) {
-    let mg = menugroups[m]
+    const mg = menugroups[m]
     if (mg.menu) {
       routes.push(mg.menu)
     }
     if (mg.menus) {
       for (let i = 0, l = mg.menus.length; i < l; i++) {
-        let item = mg.menus[i]
+        const item = mg.menus[i]
         if (item.path) {
           routes.push(item)
         }
         if (item.submenus) {
           // second tier
           for (let j = 0; j < item.submenus.length; j++) {
-            let subitem = item.submenus[j]
+            const subitem = item.submenus[j]
             if (subitem.path) {
               routes.push(subitem)
             }

@@ -121,7 +121,7 @@ export default {
       try {
         const ids = this.params.data.map(item => item.id || (item.process_instance && item.process_instance.id))
         const values = await this.form.fc.validateFields()
-        let params = {
+        const params = {
           variables: {
             approved: true, // 审批结果：true通过，false拒绝
             comment: values.remarks, // 审批意见
@@ -129,10 +129,10 @@ export default {
         }
         const state = this.selectedItems[0].process_instance && this.selectedItems[0].process_instance.state
         if (state === 'CUSTOM_TODO') {
-          params['variables']['user_retry'] = true
+          params.variables.user_retry = true
         }
         if (values.roles && values.projects && this.isShowJoinProject) {
-          params.variables['parameter'] = JSON.stringify({ rids: values.roles.key, pids: values.projects.key })
+          params.variables.parameter = JSON.stringify({ rids: values.roles.key, pids: values.projects.key })
         }
         const res = await new this.$Manager('process-tasks', 'v1').batchUpdate({
           ids,
@@ -176,7 +176,7 @@ export default {
       }
       this.roleLoading = true
       manager.list({ params }).then(res => {
-        let data = res.data || []
+        const data = res.data || []
         this.roleLoading = false
         this.roleOptions = data
       }).catch(() => {

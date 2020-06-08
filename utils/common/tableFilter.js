@@ -55,9 +55,9 @@ export function getStatusFilter (params) {
   let statusModule = ''
   let field = 'status'
   if (R.type(params) === 'Object') {
-    label = params['title'] || label
-    statusModule = params['statusModule']
-    field = params['field'] || field
+    label = params.title || label
+    statusModule = params.statusModule
+    field = params.field || field
   }
   if (R.type(params) === 'String') {
     statusModule = params
@@ -154,7 +154,7 @@ export function getFilter (params = {}) {
     ...otherParams,
   }
   if (options.items || options.distinctField) {
-    options['dropdown'] = true
+    options.dropdown = true
   }
   return options
 }

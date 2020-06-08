@@ -242,7 +242,7 @@ export default {
       return null
     },
     sn () {
-      let sn = this.computeLicense.sn
+      const sn = this.computeLicense.sn
       if (R.is(String, sn)) {
         return [sn]
       }
@@ -441,7 +441,7 @@ export default {
             type: ['common'],
           },
         })
-        const id = (response.data.data && response.data.data.length && response.data.data[0]['id']) || ''
+        const id = (response.data.data && response.data.data.length && response.data.data[0].id) || ''
         if (id) {
           const configResponse = await manager.getSpecific({
             id,

@@ -195,7 +195,7 @@ export default {
   computed: {
     ...mapGetters(['isAdminMode', 'l3PermissionEnable', 'scope', 'userInfo']),
     quotaOptionsColumns () {
-      let quotaCols = [
+      const quotaCols = [
         {
           title: '名称',
           dataIndex: 'label',
@@ -255,7 +255,7 @@ export default {
           Object.assign(quotaData, quota)
         })
         for (let i = 0, len = this.quotaOptions.length; i < len; i++) {
-          const key = this.quotaOptions[i]['key']
+          const key = this.quotaOptions[i].key
           let total = quotaData[key] || 0
           let usage = quotaData[`usage.${key}`] || 0
           if (key === 'memory') {
@@ -298,7 +298,7 @@ export default {
           Object.assign(quotaData, quota)
         })
         for (let i = 0, len = this.quotaOptions.length; i < len; i++) {
-          const key = this.quotaOptions[i]['key']
+          const key = this.quotaOptions[i].key
           let total = quotaData[key] || 0
           let usage = quotaData[`usage.${key}`] || 0
           if (key === 'memory') {
@@ -333,34 +333,34 @@ export default {
       }
     },
     getParams () {
-      let params = {}
-      params['cpu'] = this.quota.cpu
-      params['memory'] = this.quota.memory * 1024
-      params['storage'] = this.quota.storage * 1024
-      params['image'] = this.quota.image
-      params['port'] = this.quota.port
-      params['count'] = this.quota['count']
-      params['bw'] = this.quota.port * 10000
-      params['isolated_device'] = this.quota['isolated_device']
-      params['eip'] = this.quota['eip']
-      params['snapshot'] = this.quota['snapshot']
-      params['object_cnt'] = this.quota['object_cnt']
-      params['object_gb'] = this.quota['object_gb'] * 1024
-      params['rds'] = this.quota['rds']
-      params['secgroup'] = this.quota['secgroup']
-      params['cache'] = this.quota['cache']
-      params['bucket'] = this.quota['bucket']
-      params['loadbalancer'] = this.quota['loadbalancer']
+      const params = {}
+      params.cpu = this.quota.cpu
+      params.memory = this.quota.memory * 1024
+      params.storage = this.quota.storage * 1024
+      params.image = this.quota.image
+      params.port = this.quota.port
+      params.count = this.quota.count
+      params.bw = this.quota.port * 10000
+      params.isolated_device = this.quota.isolated_device
+      params.eip = this.quota.eip
+      params.snapshot = this.quota.snapshot
+      params.object_cnt = this.quota.object_cnt
+      params.object_gb = this.quota.object_gb * 1024
+      params.rds = this.quota.rds
+      params.secgroup = this.quota.secgroup
+      params.cache = this.quota.cache
+      params.bucket = this.quota.bucket
+      params.loadbalancer = this.quota.loadbalancer
       if (this.isDomain) {
-        params['cloudaccount'] = this.quota['cloudaccount']
-        params['globalvpc'] = this.quota['globalvpc']
-        params['group'] = this.quota['group']
-        params['policy'] = this.quota['policy']
-        params['project'] = this.quota['project']
-        params['role'] = this.quota['role']
-        params['user'] = this.quota['user']
-        params['host'] = this.quota['host']
-        params['vpc'] = this.quota['vpc']
+        params.cloudaccount = this.quota.cloudaccount
+        params.globalvpc = this.quota.globalvpc
+        params.group = this.quota.group
+        params.policy = this.quota.policy
+        params.project = this.quota.project
+        params.role = this.quota.role
+        params.user = this.quota.user
+        params.host = this.quota.host
+        params.vpc = this.quota.vpc
       }
       return params
     },

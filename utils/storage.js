@@ -1,4 +1,4 @@
-let storage = {
+const storage = {
   storage: window.localStorage,
   session: {
     storage: window.sessionStorage,
@@ -21,7 +21,7 @@ const api = {
     if (this.disabled) {
       return def
     }
-    let val = deserialize(this.storage.getItem(key))
+    const val = deserialize(this.storage.getItem(key))
     return (val === undefined ? def : val)
   },
 
@@ -47,7 +47,7 @@ const api = {
     if (this.disabled) {
       return null
     }
-    let ret = {}
+    const ret = {}
     this.forEach((key, val) => {
       ret[key] = val
     })
@@ -59,7 +59,7 @@ const api = {
       return
     }
     for (let i = 0; i < this.storage.length; i++) {
-      let key = this.storage.key(i)
+      const key = this.storage.key(i)
       callback(key, this.get(key))
     }
   },

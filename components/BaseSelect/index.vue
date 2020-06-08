@@ -204,7 +204,7 @@ export default {
       this.change(initValue)
     },
     change (val) {
-      let changeValue = val
+      const changeValue = val
       if (R.is(Object, changeValue) && R.is(Array, changeValue.label)) { // 兼容 label-in-value 的形式
         const data = _.get(changeValue, 'label[0].componentOptions.propsData.data')
         const nameKey = _.get(changeValue, 'label[0].componentOptions.propsData.nameKey')
@@ -236,7 +236,7 @@ export default {
     async loadOpts (query) {
       if (!R.isNil(query) && this.filterable) return // 如果开启本地搜索，远程搜索将取消
       this.loading = true
-      let manager = new Manager(this.resource, this.version)
+      const manager = new Manager(this.resource, this.version)
       let params = { ...this.params }
       if (query && this.remote) {
         if (this.remoteFn) {

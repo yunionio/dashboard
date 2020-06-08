@@ -53,7 +53,7 @@ export class Manager {
   }
 
   batchCreate ({ data, count, ctx = [] } = {}) {
-    data['__count__'] = count
+    data.__count__ = count
     return Vue.http.post(`${this.contextPath(ctx)}${this.resource}`, data)
   }
 
@@ -98,7 +98,7 @@ export class Manager {
   }
 
   objectRpc ({ methodname, objId, params } = {}) {
-    let words = camel2Words(methodname)
+    const words = camel2Words(methodname)
     if (words[0] === 'get') {
       return this._rpcGet({
         id: objId,
@@ -117,7 +117,7 @@ export class Manager {
   }
 
   rpc ({ methodname, params } = {}) {
-    let words = camel2Words(methodname)
+    const words = camel2Words(methodname)
     if (words[0] === 'get') {
       return this._rpcGet({
         id: null,
@@ -146,7 +146,7 @@ export class Manager {
 
   _rpcGet ({ id, words, params } = {}) {
     let url = this._rpcURL({ id, words })
-    let _qs = qs.stringify(params)
+    const _qs = qs.stringify(params)
     if (_qs) {
       url += '?' + _qs
     }
@@ -154,12 +154,12 @@ export class Manager {
   }
 
   _rpcPost ({ id, words, params } = {}) {
-    let url = this._rpcURL({ id, words })
+    const url = this._rpcURL({ id, words })
     return Vue.http.post(url, params)
   }
 
   objectCsrf ({ methodname, objId, params } = {}) {
-    let words = camel2Words(methodname)
+    const words = camel2Words(methodname)
     if (words[0] === 'get') {
       return this._csrfGet({
         id: objId,
@@ -178,7 +178,7 @@ export class Manager {
   }
 
   csrf ({ methodname, params } = {}) {
-    let words = camel2Words(methodname)
+    const words = camel2Words(methodname)
     if (words[0] === 'get') {
       return this._csrfGet({
         id: null,
@@ -207,7 +207,7 @@ export class Manager {
 
   _csrfGet ({ id, words, params } = {}) {
     let url = this._csrfURL({ id, words })
-    let _qs = qs.stringify(params)
+    const _qs = qs.stringify(params)
     if (_qs) {
       url += '?' + _qs
     }
@@ -215,7 +215,7 @@ export class Manager {
   }
 
   _csrfPost ({ id, words, params } = {}) {
-    let url = this._csrfURL({ id, words })
+    const url = this._csrfURL({ id, words })
     return Vue.http.post(url, params)
   }
 }

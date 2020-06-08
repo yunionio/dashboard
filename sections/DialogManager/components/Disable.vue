@@ -30,8 +30,8 @@ export default {
     alertProps () {
       const { alert } = this.params
       const data = {
-        'String': { message: alert, type: 'warning' },
-        'Object': alert,
+        String: { message: alert, type: 'warning' },
+        Object: alert,
       }
       const t = R.type(alert)
       return data[t] || null

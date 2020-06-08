@@ -303,7 +303,7 @@ export default {
       this.$emit('change-next-marker')
     },
     handleRadioChange ({ row }) {
-      this.$emit('change-selected', [ row ])
+      this.$emit('change-selected', [row])
       this.$emit('radio-change', row)
     },
     clearRadio () {

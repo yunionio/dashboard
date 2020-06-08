@@ -65,7 +65,7 @@ export default {
         const response = await this.dm.list({
           params,
         })
-        let data = response.data.data || []
+        const data = response.data.data || []
         const userDomain = R.find(R.propEq('id', this.userDomain.id))(data)
         if (!userDomain) {
           data.push(this.userDomain)

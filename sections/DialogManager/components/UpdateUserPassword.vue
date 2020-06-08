@@ -45,7 +45,7 @@ export default {
             type: 'identity',
           },
         })
-        const id = response.data.data && response.data.data[0] && response.data.data[0]['id']
+        const id = response.data.data && response.data.data[0] && response.data.data[0].id
         if (id) {
           const configRes = await manager.getSpecific({
             id,

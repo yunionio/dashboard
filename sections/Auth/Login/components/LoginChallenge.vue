@@ -217,7 +217,7 @@ export default {
         // ------------ 拼接请求所需数据 start ------------
         const data = {}
         // 检查parent是否要处理表单数据
-        let fd = this.formDataMapper ? this.formDataMapper({ ...this.fd }) : { ...this.fd }
+        const fd = this.formDataMapper ? this.formDataMapper({ ...this.fd }) : { ...this.fd }
         data.username = fd.username
         data.password = Base64.encode(fd.password)
         if (fd.captcha) data.captcha = fd.captcha

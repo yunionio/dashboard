@@ -23,7 +23,7 @@ export const resolveChangeField = changedFields => {
  * @param {Object} changedFields { zone: { value: { key: <id>, label: ’YunionHQ‘ }, name: 'zone' } } -> { zone: { key: <id>, label: ’YunionHQ‘ } }
  */
 export const resolveValueChangeField = changedFields => {
-  let fields = {}
+  const fields = {}
   R.forEachObjIndexed((obj, key) => {
     fields[key] = obj
   }, changedFields)

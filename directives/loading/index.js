@@ -33,10 +33,10 @@ const toggleLoading = function (el, binding) {
 
 export default {
   bind (el, binding) {
-    let background = binding.value.background
-    let text = binding.value.text
-    let color = binding.value.color
-    let fontSize = binding.value.fontSize
+    const background = binding.value.background
+    const text = binding.value.text
+    const color = binding.value.color
+    const fontSize = binding.value.fontSize
     const mask = new Mask({
       el: document.createElement('div'),
       data: {

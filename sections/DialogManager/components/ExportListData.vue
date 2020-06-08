@@ -119,7 +119,7 @@ export default {
         export_limit: this.params.total,
       }
       if (this.params.options.limit) {
-        params['export_limit'] = R.is(Function, this.params.options.limit) ? this.params.options.limit() : this.params.options.limit
+        params.export_limit = R.is(Function, this.params.options.limit) ? this.params.options.limit() : this.params.options.limit
       }
       if (this.params.options.getParams) {
         if (R.is(Function, this.params.options.getParams)) {

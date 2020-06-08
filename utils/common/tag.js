@@ -29,7 +29,7 @@ export function filterUserTag ({
 }) {
   const arr = []
   const obj = {}
-  for (let key in metadata) {
+  for (const key in metadata) {
     if (
       (ignoreKeys.length > 0 && ignoreKeys.includes(key)) ||
       needExt ? (!isUserTag(key) && !isExtTag(key)) : !isUserTag(key)

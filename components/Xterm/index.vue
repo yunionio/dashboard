@@ -50,11 +50,11 @@ export default {
       if (!this.connectParams) return
       const param = querystring.parse(this.connectParams)
       Terminal.applyAddon(fit)
-      this.socket = io(param['api_server'], {
+      this.socket = io(param.api_server, {
         transports: ['websocket'],
         path: '/connect',
         query: {
-          access_token: param['access_token'],
+          access_token: param.access_token,
         },
       })
       const term = new Terminal({

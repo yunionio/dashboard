@@ -61,8 +61,8 @@ export default {
         minWidth: 120,
         showOverflow: 'title',
         formatter: ({ cellVal, row }) => {
-          let pit = row.process_instance.tasks
-          let assignees = []
+          const pit = row.process_instance.tasks
+          const assignees = []
           if (Array.isArray(pit)) {
             pit.forEach((item) => {
               if (item.delete_reason === 'completed') {

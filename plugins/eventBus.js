@@ -9,32 +9,37 @@ class EventBus {
     this.Vue = vue
     this.eventMapUid = {} // _uid和EventName的映射
   }
+
   setEventMapUid (uid, eventName) {
     if (!this.eventMapUid[uid]) this.eventMapUid[uid] = []
     this.eventMapUid[uid].push(eventName) // 把每个_uid订阅的事件名字push到各自uid所属的数组里
   }
+
   $on (eventName, callback, vm) { // vm是在组件内部使用时组件当前的this用于取_uid
     if (!this.handles[eventName]) this.handles[eventName] = []
     this.handles[eventName].push(callback)
     if (vm instanceof this.Vue) this.setEventMapUid(vm._uid, eventName)
   }
+
   $emit () {
-    let args = [...arguments]
-    let eventName = args[0]
-    let params = args.slice(1)
+    const args = [...arguments]
+    const eventName = args[0]
+    const params = args.slice(1)
     if (this.handles[eventName]) {
-      let len = this.handles[eventName].length
+      const len = this.handles[eventName].length
       for (let i = 0; i < len; i++) {
         this.handles[eventName][i](...params)
       }
     }
   }
+
   $offVmEvent (uid) {
-    let currentEvents = this.eventMapUid[uid] || []
+    const currentEvents = this.eventMapUid[uid] || []
     currentEvents.forEach(event => {
       this.$off(event)
     })
   }
+
   $off (eventName) {
     delete this.handles[eventName]
   }

@@ -41,7 +41,7 @@ export default {
       }
     },
     disabled () {
-      let isValidate = this.meta.validate
+      const isValidate = this.meta.validate
       let isPermission = true
       if (this.item.permission) {
         isPermission = hasPermission({ key: this.item.permission, resourceData: this.row })

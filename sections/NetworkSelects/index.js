@@ -285,8 +285,8 @@ export default {
         _options = options || {}
       }
       if (this.isRequired && R.isEmpty(_options)) {
-        _options['rules'] = []
-        _options['rules'].push({
+        _options.rules = []
+        _options.rules.push({
           required: true,
           message: this.placeholders[name],
         })

@@ -35,10 +35,10 @@ export default {
           formatter: '{b} ({d}%)',
         },
         legend: {
-          'orient': 'vertical',
-          'left': '55%',
-          'bottom': '20%',
-          'data': [
+          orient: 'vertical',
+          left: '55%',
+          bottom: '20%',
+          data: [
             '50%以下: 4',
             '50-80%以下: 0',
             '80%以上: 4',
@@ -46,22 +46,22 @@ export default {
         },
         series: [
           {
-            'name': '',
-            'type': 'pie',
+            name: '',
+            type: 'pie',
             center: ['26%', '50%'],
-            'radius': [
+            radius: [
               '40%',
               '55%',
             ],
-            'avoidLabelOverlap': false,
-            'labelLine': {
-              'show': true,
+            avoidLabelOverlap: false,
+            labelLine: {
+              show: true,
             },
-            'data': [],
-            'label': {
-              'show': true,
-              'position': 'center',
-              'formatter': '8',
+            data: [],
+            label: {
+              show: true,
+              position: 'center',
+              formatter: '8',
               textStyle: {
                 fontSize: 22,
                 color: '#333',
@@ -87,7 +87,7 @@ export default {
   },
   methods: {
     concatOption (opData) {
-      let tempOption = JSON.parse(JSON.stringify(this.ringOption))
+      const tempOption = JSON.parse(JSON.stringify(this.ringOption))
       // tempOption.title.text = opData.title
       tempOption.legend.data = opData.pieData.map(v => v.name)
       tempOption.series[0].data = opData.pieData

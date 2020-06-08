@@ -55,12 +55,12 @@ export default {
       let domain
       let project
       const item = this.params.data[0]
-      if (item['domain_id'] && item['project_id']) { // 既有 domain_id 又有 project_id 说明所属在项目
+      if (item.domain_id && item.project_id) { // 既有 domain_id 又有 project_id 说明所属在项目
         scope = 'project'
-        project = item['project_id']
-      } else if (item['domain_id'] && !item['project_id']) {
+        project = item.project_id
+      } else if (item.domain_id && !item.project_id) {
         scope = 'domain'
-        domain = item['domain_id']
+        domain = item.domain_id
       }
       return {
         scope,
@@ -127,7 +127,7 @@ export default {
       }
     },
     projectParams () {
-      let params = { limit: 0 }
+      const params = { limit: 0 }
       if (this.isAdminMode) {
         params.scope = 'system'
       } else if (this.isDomainMode) {
@@ -136,7 +136,7 @@ export default {
       return params
     },
     scopeOptions () {
-      let ret = [
+      const ret = [
         { label: this.$t('shareScope.project'), key: 'project' },
       ]
       if (this.isAdminMode) {
@@ -161,13 +161,13 @@ export default {
       })
     },
     doSubmit (values) {
-      let data = {
+      const data = {
         id: this.params.data[0].id,
       }
       if (this.isProjectScope) {
-        data['project'] = values.project
+        data.project = values.project
       } else if (this.isDomainScope) {
-        data['domain'] = values.domain
+        data.domain = values.domain
       } else {
         data.domain = ''
         data.project = ''

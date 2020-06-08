@@ -66,12 +66,15 @@ class Client {
       // this.events[event](message.payload)
     })
   }
+
   error (cb) {
     this.errorHandler = cb
   }
+
   on (name, cb) {
     this.events[name] = cb
   }
+
   getSocket () {
     return this.socket
   }

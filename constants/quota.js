@@ -46,8 +46,8 @@ export const initDomainQuota = {
 }
 
 export const QUOTA_KEYS = {
-  'HOST': ['count', 'cpu', 'memory', 'storage', 'isolated_device'],
-  'REGION': ['port', 'eip', 'snapshot', 'bucket', 'object_cnt', 'object_gb', 'rds', 'cache', 'loadbalancer'],
-  'IMAGE': ['image'],
-  'PROJECT': ['secgroup'],
+  HOST: ['count', 'cpu', 'memory', 'storage', 'isolated_device'],
+  REGION: ['port', 'eip', 'snapshot', 'bucket', 'object_cnt', 'object_gb', 'rds', 'cache', 'loadbalancer'],
+  IMAGE: ['image'],
+  PROJECT: ['secgroup'],
 }

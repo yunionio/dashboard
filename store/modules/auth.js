@@ -121,7 +121,7 @@ export default {
         // 最多存储5条纪录，超过5则移除掉创建时间最早的
         if (Object.keys(newVal).length > 5) {
           const newValArr = Object.entries(newVal)
-          let oldestUser = _.minBy(newValArr, o => o[1]['create_time'])
+          const oldestUser = _.minBy(newValArr, o => o[1].create_time)
           oldestUser[0] && delete newVal[oldestUser[0]]
         }
         if (payload === 'action') {
@@ -152,7 +152,7 @@ export default {
         // 最多存储5条纪录，超过5则移除掉创建时间最早的
         if (Object.keys(newVal).length > 5) {
           const newValArr = Object.entries(newVal)
-          let oldestUser = _.minBy(newValArr, o => o[1]['create_time'])
+          const oldestUser = _.minBy(newValArr, o => o[1].create_time)
           oldestUser[0] && delete newVal[oldestUser[0]]
         }
         if (payload === 'action') {
@@ -210,7 +210,7 @@ export default {
       return state.info.non_default_domain_projects
     },
     currentScopeResource (state, getters) {
-      let ret = [ ...ALL_RESOURCES ]
+      const ret = [...ALL_RESOURCES]
       const systemResource = state.scopeResource && state.scopeResource.system
       const domainResource = state.scopeResource && state.scopeResource.domain
       // 如果为管理后台返回所有的资源

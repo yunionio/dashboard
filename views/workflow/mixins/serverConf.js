@@ -1,5 +1,5 @@
-import { ALL_STORAGE } from '@Compute/constants'
 import { getServerConf } from '../utils'
+import { ALL_STORAGE } from '@Compute/constants'
 import { HYPERVISORS_MAP } from '@/constants'
 import BrandIcon from '@/sections/BrandIcon'
 
@@ -7,7 +7,7 @@ export default {
   methods: {
     async getApplyMachineData () {
       try {
-        const serverParam = JSON.parse(this.data.variables['server-create-paramter'] || this.data.variables['paramter'] || '{}')
+        const serverParam = JSON.parse(this.data.variables['server-create-paramter'] || this.data.variables.paramter || '{}')
         const skuInfo = await this.getSkuInfo(serverParam.sku)
         this.detailsData.skuInfo = skuInfo.data.data[0] || {}
         const regionInfo = await this.getRegionInfo(serverParam.prefer_region)
@@ -17,7 +17,7 @@ export default {
           this.detailsData.zoneInfo = zoneInfo.data || {}
         }
       } catch (error) {
-        this.$notification['error']({
+        this.$notification.error({
           message: '错误提示',
           description:
             '获取工单资源信息失败',
@@ -168,9 +168,9 @@ export default {
       this.extraInfo.push(...serverInfo)
     },
     getSkuInfo (name) {
-      let params = { name: name, limit: 1 }
+      const params = { name: name, limit: 1 }
       if (this.allPublic[this.data.hypervisor]) {
-        params['public_cloud'] = true
+        params.public_cloud = true
       }
       return new this.$Manager('serverskus').list({ params })
     },
@@ -185,12 +185,12 @@ export default {
     },
     getServerInfo (serverIds) {
       if (!Array.isArray(serverIds)) {
-        serverIds = [ serverIds ]
+        serverIds = [serverIds]
       }
       return new this.$Manager('servers').list({ filter: `id.in(${serverIds.join(',')})` })
     },
     initDeleteServeInfo (variables) {
-      let servers = JSON.parse(variables['parameter'])
+      let servers = JSON.parse(variables.parameter)
       if (servers.length === 0) {
         this.fetchServerInfo(variables.ids || [])
           .then((res) => {
@@ -260,8 +260,8 @@ export default {
       return str.slice(1)
     },
     _dealSize (sameType) {
-      let sameType1 = sameType.map(v => {
-        let size = +v.size
+      const sameType1 = sameType.map(v => {
+        const size = +v.size
         return size
       })
       return sameType1.reduce((a, b) => {

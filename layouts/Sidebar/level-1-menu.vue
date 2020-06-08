@@ -33,7 +33,7 @@ export default {
     currentGroup () {
       const firstMatched = this.$route.matched[0]
       if (firstMatched) {
-        return firstMatched['meta']['group']
+        return firstMatched.meta.group
       }
       return null
     },

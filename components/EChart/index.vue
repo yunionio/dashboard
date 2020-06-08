@@ -46,7 +46,7 @@ export default {
         () => {
           this.refresh()
         },
-        { deep: true }
+        { deep: true },
       )
     })
     REWATCH_TRIGGERS.forEach(prop => {
@@ -169,7 +169,7 @@ export default {
             this.lastArea = this.getArea()
           },
           100,
-          { leading: true }
+          { leading: true },
         )
         addListener(this.$el, this.__resizeHandler)
       }
@@ -227,7 +227,7 @@ export default {
               this.chart.setOption(val, val !== oldVal)
             }
           },
-          { deep: !this.watchShallow }
+          { deep: !this.watchShallow },
         )
       }
     },
