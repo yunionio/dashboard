@@ -116,7 +116,9 @@ export default {
             clearInterval(this.T)
           }
           this.ansibleplaybookData = data
-          document.getElementsByClassName('CodeMirror-vscrollbar')[0].scrollTop = 999999
+          this.$nextTick(() => {
+            document.getElementsByClassName('CodeMirror-scroll')[0].scrollTop = 999999
+          })
         })
     },
     handleStop () {
