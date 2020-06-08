@@ -59,9 +59,9 @@ export default {
     },
   },
   mounted () {
-    const { fetchFilters, getVersion } = this.$refs['FILTERS']
-    const { fetchSpecs } = this.$refs['SIZE_FILTER']
-    const { fetchSkus } = this.$refs['LIST']
+    const { fetchFilters, getVersion } = this.$refs.FILTERS
+    const { fetchSpecs } = this.$refs.SIZE_FILTER
+    const { fetchSkus } = this.$refs.LIST
     this.fetchCapability = fetchFilters
     this.fetchSpecs = fetchSpecs
     this.fetchSkus = fetchSkus

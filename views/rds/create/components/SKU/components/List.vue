@@ -141,20 +141,20 @@ export default {
       return row.status === 'available'
     },
     async handleSkuChange ({ row }) {
-      let _row = (row && this.isAvailable(row)) ? row : undefined
+      const _row = (row && this.isAvailable(row)) ? row : undefined
       this.form.setFieldsValue({
         sku: _row,
       })
       this.selectedSku = _row
       await this.$nextTick()
-      this.$refs['tableRef'].setRadioRow(_row)
+      this.$refs.tableRef.setRadioRow(_row)
       this.$emit('change', _row)
     },
     getSkuParams () {
       const { getFieldsValue } = this.form
       const paramsKeys = ['engine', 'engine_version', 'category', 'storage_type', 'vcpu_count', 'vmem_size_mb', 'cloudregion', 'zones']
       const PARAMS = getFieldsValue(paramsKeys)
-      PARAMS['cloudregion_id'] = PARAMS.cloudregion
+      PARAMS.cloudregion_id = PARAMS.cloudregion
       if (PARAMS.zones) {
         const zoneArr = PARAMS.zones.split('+')
         if (zoneArr && zoneArr.length > 0) {
@@ -164,7 +164,7 @@ export default {
         }
       }
       for (let i = 0; i < paramsKeys.length; i++) {
-        let k = paramsKeys[i]
+        const k = paramsKeys[i]
         if (!PARAMS[k]) {
           return null
         }

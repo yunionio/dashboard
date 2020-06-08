@@ -11,10 +11,10 @@
   </div>
 </template>
 <script>
-import { isRequiredData } from '@DB/views/utils'
-import { CAPABILIT_PARAMS, SPECS_PARAMS, SKU_PARAMS } from '@DB/views/redis/constants'
 import ItemFilters from './components/ItemFilters'
 import SkuList from './components/List'
+import { isRequiredData } from '@DB/views/utils'
+import { CAPABILIT_PARAMS, SPECS_PARAMS, SKU_PARAMS } from '@DB/views/redis/constants'
 
 export default {
   name: 'RedisCreateSku',
@@ -44,7 +44,7 @@ export default {
       }
     },
     async fetchCapability () {
-      const { fetchCapability } = this.$refs['FILTERS']
+      const { fetchCapability } = this.$refs.FILTERS
       const values = this.getParams(CAPABILIT_PARAMS)
       if (!values.city && !values.cloudregion) {
         return false
@@ -56,7 +56,7 @@ export default {
       }
     },
     async fetchSpecs () {
-      const { fetchSpecs } = this.$refs['FILTERS']
+      const { fetchSpecs } = this.$refs.FILTERS
       const values = this.getParams(SPECS_PARAMS)
       if (!isRequiredData(values, SPECS_PARAMS)) {
         return false
@@ -68,7 +68,7 @@ export default {
       }
     },
     async fetchSkus () {
-      const { fetchSkus } = this.$refs['SKU_LIST']
+      const { fetchSkus } = this.$refs.SKU_LIST
       const values = this.getParams(SKU_PARAMS)
       if (!isRequiredData(values, ['memory_size_mb', ...SPECS_PARAMS])) {
         return false

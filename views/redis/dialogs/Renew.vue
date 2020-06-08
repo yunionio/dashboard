@@ -24,8 +24,8 @@
 </template>
 
 <script>
-import { CreateServerForm } from '@Compute/constants'
 import { BUY_DURATIONS_OPTIONS } from '../constants/index.js'
+import { CreateServerForm } from '@Compute/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 

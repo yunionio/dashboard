@@ -20,10 +20,10 @@
 </template>
 
 <script>
+import AccountPrivileges from '../components/AccountPrivileges'
 import { CreateServerForm } from '@Compute/constants'
 import { RDS_ACCOUNT_PRIVILEGES } from '@DB/constants'
 import ServerPassword from '@Compute/sections/ServerPassword'
-import AccountPrivileges from '../components/AccountPrivileges'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import validateForm, { passwordValidator } from '@/utils/validate'

@@ -114,7 +114,7 @@ export default {
                 default: ({ row }) => {
                   const pri = row.private_dns || row.private_ip_addr
                   if (pri) {
-                    return `${pri}:${row['private_connect_port']}`
+                    return `${pri}:${row.private_connect_port}`
                   }
                   return '-'
                 },
@@ -126,7 +126,7 @@ export default {
               slots: {
                 default: ({ row }) => {
                   const pub = row.public_dns || row.public_ip_addr
-                  const port = row['public_connect_port']
+                  const port = row.public_connect_port
                   const btnTxt = port ? '关闭外网地址' : '开启外网地址'
                   const isRunning = row.status === 'running'
                   const notRunninTip = !isRunning ? '仅运行中的实例支持此操作' : null
@@ -175,7 +175,7 @@ export default {
               title: '访问方式',
               slots: {
                 default: ({ row }) => {
-                  return row['auth_mode'] === 'on' ? '密码访问' : '免密访问'
+                  return row.auth_mode === 'on' ? '密码访问' : '免密访问'
                 },
               },
             },
@@ -223,11 +223,11 @@ export default {
     },
     handleSwitchPublicAddress (bool) {
       const txts = {
-        'true': {
+        true: {
           title: '确认开启外网地址？',
           content: '开启外网地址后将外网IP设置白名单即可访问',
         },
-        'false': {
+        false: {
           title: '确认关闭外网地址？',
           content: '关闭外网地址后外网IP将无法访问',
         },

@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { ACCOUNT_PRIVILEGES } from '../constants'
+import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { getStatusTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import expectStatus from '@/constants/expectStatus'
@@ -116,7 +116,7 @@ export default {
             this.createDialog('RedisAccountListSetPrivilegeDialog', {
               title: '修改权限',
               initialValues: {
-                account_privilege: obj['account_privilege'],
+                account_privilege: obj.account_privilege,
               },
               data: [obj],
               list: this.list,

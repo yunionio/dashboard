@@ -22,8 +22,8 @@
 </template>
 
 <script>
-import { CreateServerForm } from '@Compute/constants'
 import { ACCOUNT_PRIVILEGES } from '../constants'
+import { CreateServerForm } from '@Compute/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
@@ -50,7 +50,7 @@ export default {
         account_privilege: [
           'account_privilege',
           {
-            initialValue: initialValues['account_privilege'],
+            initialValue: initialValues.account_privilege,
           },
         ],
       }

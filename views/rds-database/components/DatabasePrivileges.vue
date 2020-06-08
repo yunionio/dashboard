@@ -51,8 +51,8 @@ export default {
           this.dbList = retList
             .filter(({ status, name }) => status === 'available' && name !== 'root')
             .map(item => {
-              item['title'] = item.name
-              item['key'] = item.id
+              item.title = item.name
+              item.key = item.id
               this.dbIdItemObj[item.id] = item
               return item
             })
@@ -80,7 +80,7 @@ export default {
             })(
               <a-radio-group onChange={_handleChange}>
                 {renderRadios}
-              </a-radio-group>
+              </a-radio-group>,
             )
           }
         </a-form-item>

@@ -57,7 +57,7 @@ export default {
   watch: {
     rdsList (newList) {
       if (newList && newList.length > 0) {
-        this.$refs['tableRef'].setRadioRow(newList[0])
+        this.$refs.tableRef.setRadioRow(newList[0])
         this.handleRdsChange({ row: newList[0] })
       }
     },

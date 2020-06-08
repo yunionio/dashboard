@@ -60,7 +60,7 @@ export default {
           { label: '系列', labelClass: 'label-w-50', value: sku.name },
         ],
         [
-          { label: '类型版本', labelClass: 'label-w-80', value: `${this.values['engine'] || '-'}${this.values['engine_version'] || ''}` },
+          { label: '类型版本', labelClass: 'label-w-80', value: `${this.values.engine || '-'}${this.values.engine_version || ''}` },
         ],
       ]
       return ret
@@ -91,15 +91,15 @@ export default {
       }
       if (params.sku) {
         const { sku } = params
-        params['instance_type'] = sku['name']
+        params.instance_type = sku.name
         delete params.sku
       }
       if (params.secgroup && params.secgroup.length > 0) {
-        params['secgroup'] = params.secgroup[0]
+        params.secgroup = params.secgroup[0]
       }
       // 到期释放
       if (params.durationStandard !== 'none') {
-        params['duration'] = params.duration || params.durationStandard
+        params.duration = params.duration || params.durationStandard
       }
       delete params.durationStandard
       return params

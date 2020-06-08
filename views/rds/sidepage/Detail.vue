@@ -40,11 +40,11 @@ export default {
         ret.push(<div style={{ color: '#0A1F44' }}>包年包月</div>)
       }
       if (row.expired_at) {
-        let dateArr = this.$moment(row.expired_at).fromNow().split(' ')
-        let date = dateArr.join('')
-        let seconds = this.$moment(row.expired_at).diff(new Date()) / 1000
-        let textColor = seconds / 24 / 60 / 60 < 7 ? '#DD2727' : '#53627C'
-        let text = seconds < 0 ? '已过期' : `${date.substring(0, date.length - 1)}后到期`
+        const dateArr = this.$moment(row.expired_at).fromNow().split(' ')
+        const date = dateArr.join('')
+        const seconds = this.$moment(row.expired_at).diff(new Date()) / 1000
+        const textColor = seconds / 24 / 60 / 60 < 7 ? '#DD2727' : '#53627C'
+        const text = seconds < 0 ? '已过期' : `${date.substring(0, date.length - 1)}后到期`
         ret.push(<div style={{ color: textColor }}>{text}</div>)
       }
       return ret
@@ -235,10 +235,10 @@ export default {
   methods: {
     handleSwitchPublicAddress (bool) {
       const txts = {
-        'true': {
+        true: {
           title: '确认开启外网地址？',
         },
-        'false': {
+        false: {
           title: '确认关闭外网地址？',
           content: '关闭外网地址后外网IP将无法访问',
         },

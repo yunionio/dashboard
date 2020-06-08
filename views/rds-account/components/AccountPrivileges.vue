@@ -60,7 +60,7 @@ export default {
           this.dbList = retList
             .filter(({ status, name }) => status === 'running')
             .map(item => {
-              item['title'] = item.name
+              item.title = item.name
               this.dbIdItemObj[item.id] = item
               if (this.propsPrivileges[item.id]) {
                 item = {
@@ -69,7 +69,7 @@ export default {
                 }
                 this.targetKeys.push(item.id)
               }
-              item['key'] = item.id
+              item.key = item.id
               return item
             })
           this.setPrivileges()
@@ -97,7 +97,7 @@ export default {
             })(
               <a-radio-group onChange={_handleChange}>
                 {renderRadios}
-              </a-radio-group>
+              </a-radio-group>,
             )
           }
         </a-form-item>

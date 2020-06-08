@@ -7,17 +7,17 @@ export default {
       specs,
     }
     await this.$nextTick()
-    this.skuRef = this.$refs['SKU']
-    this.networkRef = this.$refs['NETWORK']
+    this.skuRef = this.$refs.SKU
+    this.networkRef = this.$refs.NETWORK
   },
   methods: {
     domain_change () {
       if (this.$store.getters.isAdminMode) {
         const { domain } = this.form.fd
-        this.scopeParams['project_domain'] = domain || this.form.getFieldValue('domain')
-        delete this.scopeParams['scope']
+        this.scopeParams.project_domain = domain || this.form.getFieldValue('domain')
+        delete this.scopeParams.scope
       } else {
-        delete this.scopeParams['project_domain']
+        delete this.scopeParams.project_domain
       }
     },
     cloudregion_change () {
@@ -53,7 +53,7 @@ export default {
         if (changedFields[field] === undefined) return false
         let _field = field
         if (this[`${_field}_change`] === undefined) {
-          for (let k in this.keysChange) {
+          for (const k in this.keysChange) {
             if (this.keysChange[k].indexOf(_field) > -1) {
               _field = k
             }

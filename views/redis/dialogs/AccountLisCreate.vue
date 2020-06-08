@@ -24,9 +24,9 @@
 </template>
 
 <script>
+import { ACCOUNT_PRIVILEGES } from '../constants'
 import { CreateServerForm } from '@Compute/constants'
 import ServerPassword from '@Compute/sections/ServerPassword'
-import { ACCOUNT_PRIVILEGES } from '../constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import validateForm, { passwordValidator } from '@/utils/validate'
@@ -134,7 +134,7 @@ export default {
           elasticcache: this.params.redisItem.id,
         }
         if (params.loginType === 'random') {
-          params['reset_password'] = true
+          params.reset_password = true
         }
         delete params.checkPassword
         delete params.loginType

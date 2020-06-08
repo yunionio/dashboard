@@ -20,8 +20,8 @@
   </div>
 </template>
 <script>
-import { CreateServerForm } from '@Compute/constants'
 import { BILL_TYPES_MAP, BUY_DURATIONS_OPTIONS } from '../constants/index.js'
+import { CreateServerForm } from '@Compute/constants'
 
 const decorators = {
   billing_type: [

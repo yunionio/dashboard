@@ -20,8 +20,8 @@
 </template>
 
 <script>
-import { CreateServerForm } from '@Compute/constants'
 import { ACCOUNT_PRIVILEGES } from '../constants'
+import { CreateServerForm } from '@Compute/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import validateForm from '@/utils/validate'

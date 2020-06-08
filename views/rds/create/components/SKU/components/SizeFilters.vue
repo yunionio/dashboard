@@ -57,7 +57,7 @@ export default {
     getMemsMb (e) {
       const target = e && e.target ? e.target : {}
       const cpu = target.value || this.form.getFieldValue('vcpu_count')
-      this.mems_mbs = this['cpu_mems_mb'][cpu] || {}
+      this.mems_mbs = this.cpu_mems_mb[cpu] || {}
       const mbCount = this.form.getFieldValue('vmem_size_mb')
       if (!mbCount || this.mems_mbs.indexOf(mbCount) === -1) {
         this.form.setFieldsValue({
@@ -70,9 +70,9 @@ export default {
       const { getFieldsValue } = this.form
       const paramsKeys = ['provider', 'cloudregion', 'engine', 'engine_version', 'category', 'storage_type']
       const PARASM = getFieldsValue(paramsKeys)
-      PARASM['cloudregion_id'] = PARASM['cloudregion']
+      PARASM.cloudregion_id = PARASM.cloudregion
       for (let i = 0; i < paramsKeys.length; i++) {
-        let k = paramsKeys[i]
+        const k = paramsKeys[i]
         if (!PARASM[k]) {
           return null
         }
@@ -85,8 +85,8 @@ export default {
       try {
         const manager = new this.$Manager('dbinstance_skus/instance-specs', 'v2')
         const { data = {} } = await manager.list({ params: PARAMS })
-        this.cpus = data['cpus']
-        this.cpu_mems_mb = data['cpu_mems_mb']
+        this.cpus = data.cpus
+        this.cpu_mems_mb = data.cpu_mems_mb
         const { zones } = data
         if (zones) {
           this.zones = zones.zones || {}

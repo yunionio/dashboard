@@ -28,9 +28,9 @@ export default {
           disabled: true,
         }
       }
-      let min = this.min > 0 ? this.min : this.selectedSku['min_disk_size_gb']
-      let max = this.selectedSku['max_disk_size_gb']
-      let step = this.selectedSku['disk_size_step']
+      const min = this.min > 0 ? this.min : this.selectedSku.min_disk_size_gb
+      const max = this.selectedSku.max_disk_size_gb
+      const step = this.selectedSku.disk_size_step
       return {
         min,
         max,

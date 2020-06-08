@@ -41,9 +41,9 @@ export const ENGINR_VERSION_SERVER_ALIYUN_KYES = ['2012_web', '2012_std_ha', '20
 export const ENGINR_VERSION_POSTGRE_KYES = ['9.5', '9.6', '10', '11', '1.0']
 // Elasticache机型翻译
 export const ENGINR_VERSION = {
-  'EE': '企业版',
-  'WEB': 'web版',
-  'SE': '标准版',
+  EE: '企业版',
+  WEB: 'web版',
+  SE: '标准版',
   '2017_ent': '2017 企业集群版',
   '2016_std_ha': '2016 标准版',
   '2008r2': '2008 R2',
@@ -51,7 +51,7 @@ export const ENGINR_VERSION = {
   '2012_web': '2012 WEB',
   '2016_ent_ha': '2016 企业版',
   '2012_ent_ha': '2012 企业版',
-  '2012': '2012 企业版 单机',
+  2012: '2012 企业版 单机',
   '2017_std_ha': '2017 标准版',
   '2012_std_ha': '2012 标准版',
   '1.0': '增强版',

@@ -1,5 +1,5 @@
-import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { ENGINE_ARCH } from '../constants/index.js'
+import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { sizestr } from '@/utils/utils'
 import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getNameDescriptionTableColumn, getBrandTableColumn, getTagTableColumn, getBillingTableColumn } from '@/utils/common/tableColumn'
 
@@ -105,7 +105,7 @@ export default {
               ports.push(<div> 内网：{row.private_connect_port}</div>)
             }
             if (row.public_connect_port && (row.public_dns || row.public_ip_addr)) {
-              ports.push(<div>外网：{row.public_connect_port}</div>,)
+              ports.push(<div>外网：{row.public_connect_port}</div>)
             }
             return ports
           },
