@@ -26,11 +26,11 @@
 </template>
 
 <script>
-import { CLOUDACCOUNT_TYPES } from '@Cloudenv/views/cloudaccount/constants'
 import SelectCloudaccount from './form/SelectCloudaccount'
 import CreateCloudaccount from './form/CreateCloudaccount'
 import BillForm from './form/BillForm'
 import VmNetwork from './form/VmNetwork'
+import { CLOUDACCOUNT_TYPES } from '@Cloudenv/views/cloudaccount/constants'
 import step from '@/mixins/step'
 import { Manager } from '@/utils/manager'
 import TestButton from '@/sections/TestButton'
@@ -151,7 +151,7 @@ export default {
     _providerDiff (data) {
       const brand = this.currentItem.provider.toLowerCase()
       if (brand === 'ucloud' || brand === 'huawei' || brand === 'azure') {
-        data['auto_create_project'] = true
+        data.auto_create_project = true
       }
       if (brand === 'dstack') {
         data.brand = 'DStack'
@@ -173,19 +173,19 @@ export default {
     },
     async doCreateNetwork (formData) {
       const data = {
-        'wire_id': formData.wire.key,
+        wire_id: formData.wire.key,
         name: formData.name,
       }
       let num = 0
       for (const uid in formData.startip) {
-        data['guest_ip_start'] = formData.startip[uid]
-        data['guest_ip_end'] = formData.endip[uid]
-        data['guest_ip_mask'] = formData.netmask[uid]
+        data.guest_ip_start = formData.startip[uid]
+        data.guest_ip_end = formData.endip[uid]
+        data.guest_ip_mask = formData.netmask[uid]
         if (formData.gateway[uid]) {
-          data['guest_gateway'] = formData.gateway[uid]
+          data.guest_gateway = formData.gateway[uid]
         }
         if (formData.vlan[uid]) {
-          data['vlan_id'] = formData.vlan[uid]
+          data.vlan_id = formData.vlan[uid]
         }
         if (num > 0) {
           data.name = `${data.name}-${num}`
@@ -290,7 +290,7 @@ export default {
         return this.handleTest()
       }
       if (this.$refs.stepRef && this.$refs.stepRef.testPost) {
-        return this.$refs['stepRef'].testPost()
+        return this.$refs.stepRef.testPost()
       }
     },
     async handleTest () {

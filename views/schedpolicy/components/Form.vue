@@ -122,7 +122,7 @@ export default {
   methods: {
     conditionValsChange (val) {
       if (val) {
-        let conditions = []
+        const conditions = []
         val.forEach((item) => {
           /* eslint-disable no-useless-escape */
           conditions.push(`\"${item}\"`)

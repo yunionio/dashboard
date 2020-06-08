@@ -32,12 +32,12 @@ export default {
       this.$router.push('/cloudaccount')
     },
     testPost () {
-      return this.$refs['BILL_FORM'].testPost()
+      return this.$refs.BILL_FORM.testPost()
     },
     async handleConfirm () {
       this.loading = true
       try {
-        await this.$refs['BILL_FORM'].doSubmit()
+        await this.$refs.BILL_FORM.doSubmit()
         this.cancel()
       } catch (err) {
         throw err

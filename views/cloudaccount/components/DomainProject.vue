@@ -175,7 +175,7 @@ export default {
         }
         if (domainId && !this.isDomainMode) params.domain_id = domainId
         if (this.isAdminMode) {
-          params['project_domain'] = domainId || this.userInfo.projectDomainId
+          params.project_domain = domainId || this.userInfo.projectDomainId
           delete params.scope
           delete params.domain_id
         }

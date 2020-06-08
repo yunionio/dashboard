@@ -76,7 +76,7 @@ export default {
     let providerSharedDomainsInitialValue = []
     let systemSharedDomainsInitialValue = []
     // 只有单项操作时，才进行反显
-    if (!isBatch && this.params.data[0]['is_public']) {
+    if (!isBatch && this.params.data[0].is_public) {
       const firstData = this.params.data[0]
       const { share_mode: shareMode, shared_domains: sharedDomains } = firstData
       // 共享云订阅
@@ -141,9 +141,9 @@ export default {
     ...mapGetters(['l3PermissionEnable']),
     extra () {
       const shareModeExtra = {
-        'account_domain': `只有该${this.$t('dictionary.cloudaccount')}所属${this.$t('dictionary.domain')}下的任意${this.$t('dictionary.project')}可以使用该${this.$t('dictionary.cloudaccount')}下的任意订阅创建资源`,
-        'provider_domain': `根据设置指定或所有${this.$t('dictionary.domain')}下的任意${this.$t('dictionary.project')}可以使用该${this.$t('dictionary.cloudaccount')}下的指定订阅，该类型设置完成后，还需要单独在订阅列表进行 【更改${this.$t('dictionary.project')}】 设置才可生效`,
-        'system': `根据设置，指定或所有${this.$t('dictionary.domain')}下的任意${this.$t('dictionary.project')}可以使用该${this.$t('dictionary.cloudaccount')}下的任意订阅创建资源`,
+        account_domain: `只有该${this.$t('dictionary.cloudaccount')}所属${this.$t('dictionary.domain')}下的任意${this.$t('dictionary.project')}可以使用该${this.$t('dictionary.cloudaccount')}下的任意订阅创建资源`,
+        provider_domain: `根据设置指定或所有${this.$t('dictionary.domain')}下的任意${this.$t('dictionary.project')}可以使用该${this.$t('dictionary.cloudaccount')}下的指定订阅，该类型设置完成后，还需要单独在订阅列表进行 【更改${this.$t('dictionary.project')}】 设置才可生效`,
+        system: `根据设置，指定或所有${this.$t('dictionary.domain')}下的任意${this.$t('dictionary.project')}可以使用该${this.$t('dictionary.cloudaccount')}下的任意订阅创建资源`,
       }
       return shareModeExtra[this.fd.share_mode]
     },

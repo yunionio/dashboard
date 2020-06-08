@@ -9,9 +9,9 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { STRATEGY_OPT } from '@Cloudenv/constants/sched'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
+import { STRATEGY_OPT } from '@Cloudenv/constants/sched'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 
@@ -39,7 +39,7 @@ export default {
               return `name.contains("${val}")`
             },
           },
-          'default_strategy': {
+          default_strategy: {
             label: '偏好',
             dropdown: true,
             multiple: true,

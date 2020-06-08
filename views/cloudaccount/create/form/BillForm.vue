@@ -234,7 +234,7 @@ export default {
           },
         })
         this.cloudAccount = data
-        if (data && data.options && data.options['billing_bucket_account']) {
+        if (data && data.options && data.options.billing_bucket_account) {
           this.billingType = 2
         }
         return data
@@ -255,11 +255,11 @@ export default {
         // 如果大于1号 则取当月（day-1）号至1号的账单
         if (day > 1) {
           m += 1
-          data['end_day'] = parseFloat(this.$moment(day - 1, 'D').format('YYYYMMDD'))
+          data.end_day = parseFloat(this.$moment(day - 1, 'D').format('YYYYMMDD'))
         } else { // 上一个月账单
-          data['end_day'] = parseFloat(this.$moment(m, 'MM').endOf('month').format('YYYYMMDD'))
+          data.end_day = parseFloat(this.$moment(m, 'MM').endOf('month').format('YYYYMMDD'))
         }
-        data['start_day'] = parseFloat(this.$moment(m, 'MM').startOf('month').format('YYYYMMDD'))
+        data.start_day = parseFloat(this.$moment(m, 'MM').startOf('month').format('YYYYMMDD'))
         await manager.create({
           data,
         })
@@ -290,7 +290,7 @@ export default {
     },
     async testPost () {
       const values = await this.form.fc.validateFields()
-      values['cloudaccount_id'] = this.id
+      values.cloudaccount_id = this.id
       await new this.$Manager('bucket_options', 'v1').performClassAction({
         action: 'verify',
         data: values,

@@ -17,14 +17,14 @@
 </template>
 
 <script>
-import HostList from '@Compute/views/host/components/List'
-import PhysicalmachineList from '@Compute/views/physicalmachine/components/List'
-import storageList from '@Storage/views/blockstorage/components/List'
-import networkList from '@Network/views/network/components/List'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import SchedtagDetail from './Detail'
 import Dashboard from './Dashboard'
+import HostList from '@Compute/views/host/components/List'
+import PhysicalmachineList from '@Compute/views/physicalmachine/components/List'
+import storageList from '@Storage/views/blockstorage/components/List'
+import networkList from '@Network/views/network/components/List'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
