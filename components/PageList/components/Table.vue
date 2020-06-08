@@ -1,5 +1,5 @@
 <template>
-  <floating-scroll>
+  <floating-scroll :hiddenScrollbar="hiddenScrollbar">
     <vxe-grid
       highlight-hover-row
       highlight-current-row
@@ -83,6 +83,14 @@ export default {
       type: String,
       required: true,
     },
+    inBaseSidePage: {
+      type: Boolean,
+      default: false,
+    },
+    isSidepageOpen: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
@@ -105,6 +113,7 @@ export default {
       return this.selectionType === 'radio'
     },
     gridStyle () {
+      if (!this.inBaseSidePage && this.isSidepageOpen) return {} // 如果打开抽屉，且列表是最外层列表，则禁用横向滚动条
       return {
         width: `${this.tableWidth}px`,
       }
@@ -142,6 +151,9 @@ export default {
         ret['radio-config'] = { reserve: true, highlight: true, trigger: 'row' }
       }
       return ret
+    },
+    hiddenScrollbar () {
+      return !this.gridStyle.width
     },
   },
   watch: {
