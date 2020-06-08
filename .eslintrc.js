@@ -3,39 +3,42 @@ module.exports = {
   env: {
     node: true,
   },
-  'extends': [
+  extends: [
     'plugin:vue/essential',
     '@vue/standard',
   ],
+  parserOptions: {
+    parser: 'babel-eslint',
+  },
   rules: {
-    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'comma-dangle': ['error', 'always-multiline'],
-    'camelcase': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    camelcase: process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'import/order': ['error', {
-      'groups': ['builtin', 'external', 'parent', 'sibling', 'index'],
+      groups: ['builtin', 'external', 'parent', 'sibling', 'index'],
     }],
     'vue/html-closing-bracket-newline': ['error', {
-      'multiline': 'never',
+      multiline: 'never',
     }],
     'vue/html-closing-bracket-spacing': ['error', {
-      'startTag': 'never',
-      'endTag': 'never',
-      'selfClosingTag': 'always',
+      startTag: 'never',
+      endTag: 'never',
+      selfClosingTag: 'always',
     }],
     'vue/component-name-in-template-casing': ['error', 'kebab-case'],
     'vue/html-quotes': ['error', 'double'],
     'vue/html-self-closing': ['error', {
-      'html': {
-        'void': 'always',
-        'normal': 'always',
-        'component': 'always',
+      html: {
+        void: 'always',
+        normal: 'always',
+        component: 'always',
       },
-      'svg': 'always',
-      'math': 'always',
+      svg: 'always',
+      math: 'always',
     }],
     'vue/order-in-components': ['error', {
-      'order': [
+      order: [
         'el',
         'name',
         'parent',
@@ -56,9 +59,8 @@ module.exports = {
         'renderError',
       ],
     }],
-  },
-  parserOptions: {
-    parser: 'babel-eslint',
+    'no-useless-catch': 0,
+    'no-prototype-builtins': 0,
   },
   overrides: [
     {
