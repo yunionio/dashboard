@@ -24,7 +24,7 @@ export function load ({
     if (!useManager && actionArgs.url) {
       key = `${res}$$${actionArgs.url}$$${qs.stringify(_params)}`
     }
-    let value = _cache[key]
+    const value = _cache[key]
     // 有数据则直接返回
     if (value) {
       return resolve(value)
@@ -57,9 +57,11 @@ class Loader {
     this.resPath = resPath
     this.useManager = useManager
   }
+
   add (resolve, reject) {
     this.queue.push([resolve, reject])
   }
+
   async load () {
     let manager
     try {
@@ -73,14 +75,14 @@ class Loader {
       const data = get(response, this.resPath)
       _cache[this.key] = data
       for (let i = 0; i < this.queue.length; i++) {
-        let cb = this.queue[i]
+        const cb = this.queue[i]
         cb[0](data)
       }
       delete _queue[this.key]
       return data
     } catch (error) {
       for (let i = 0; i < this.queue.length; i++) {
-        let cb = this.queue[i]
+        const cb = this.queue[i]
         cb[1](error)
       }
       delete _queue[this.key]

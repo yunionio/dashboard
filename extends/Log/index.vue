@@ -120,7 +120,7 @@ export default {
   watch: {
     'form.fd' (val) {
       this.fetchLogs()
-      for (let key in this.decorators) {
+      for (const key in this.decorators) {
         let config = this.decorators[key][1] || {}
         config = {
           ...config,

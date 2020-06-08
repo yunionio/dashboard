@@ -43,7 +43,7 @@ export default {
       // 面板配置是否加载完毕
       optionsLoaded: false,
       // 默认面板配置 -> [{ id: 'xxx', name: 'xxx' }]
-      defaultOptions: defaultConfig[this.$store.getters.scope]['options'],
+      defaultOptions: defaultConfig[this.$store.getters.scope].options,
       // 自定义面板配置
       customOptions: [],
       // 当前面板配置 -> { id: 'xxx', name: 'xxx' }

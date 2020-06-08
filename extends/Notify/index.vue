@@ -111,7 +111,7 @@ export default {
   },
   watch: {
     'form.fd' (val) {
-      for (let key in this.decorators) {
+      for (const key in this.decorators) {
         let config = this.decorators[key][1] || {}
         config = {
           ...config,
@@ -164,7 +164,7 @@ export default {
       try {
         const response = await this.rm.list({
           params: {
-            notice_id: this.data[0]['id'],
+            notice_id: this.data[0].id,
             $t: getRequestT(),
           },
         })
@@ -180,7 +180,7 @@ export default {
       try {
         await this.rm.create({
           data: {
-            notice_id: this.data[0]['id'],
+            notice_id: this.data[0].id,
             scope: this.scope,
           },
         })

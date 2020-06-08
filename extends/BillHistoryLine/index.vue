@@ -81,9 +81,9 @@ export default {
       R.forEach(item => {
         rows.push({
           time: this.$moment(item[0]).format('MM月DD日'),
-          '裸金属资源': (+item[1] || 0).toFixed(2),
-          'GPU卡': (+item[2] || 0).toFixed(2),
-          '虚拟资源': (+item[3] || 0).toFixed(2),
+          裸金属资源: (+item[1] || 0).toFixed(2),
+          GPU卡: (+item[2] || 0).toFixed(2),
+          虚拟资源: (+item[3] || 0).toFixed(2),
         })
       }, (this.data[0] && this.data[0].values) || [])
       return rows

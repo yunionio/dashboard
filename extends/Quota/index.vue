@@ -351,8 +351,8 @@ export default {
   },
   watch: {
     'fd.field' (val) {
-      this.fd.resource = this.quotaConfig[val]['resource']
-      this.fd.name = this.quotaConfig[val]['desc']
+      this.fd.resource = this.quotaConfig[val].resource
+      this.fd.name = this.quotaConfig[val].desc
     },
     'fd.resource' (val, oldVal) {
       if (val !== oldVal) {
