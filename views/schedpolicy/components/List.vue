@@ -8,9 +8,9 @@
 </template>
 
 <script>
-import { STRATEGY_OPT } from '@Cloudenv/constants/sched'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
+import { STRATEGY_OPT } from '@Cloudenv/constants/sched'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import { getNameFilter, getEnabledFilter, getFilter } from '@/utils/common/tableFilter'
@@ -32,7 +32,7 @@ export default {
         filterOptions: {
           name: getNameFilter(),
           enabled: getEnabledFilter(),
-          'strategy': {
+          strategy: {
             label: '偏好',
             dropdown: true,
             multiple: true,

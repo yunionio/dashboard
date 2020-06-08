@@ -24,7 +24,7 @@ export default {
         minWidth: 160,
         slots: {
           default: ({ row }) => {
-            let subscribeIds = (row.account && row.account.split('/')) || []
+            const subscribeIds = (row.account && row.account.split('/')) || []
             const text = subscribeIds.length > 1 ? subscribeIds[1] : subscribeIds[0]
             return [
               <list-body-cell-wrap message={text} copy hideField={true}>
@@ -47,7 +47,7 @@ export default {
                 <status status={ row.sync_status } statusModule='cloudaccountSyncStatus' />,
               ]
             } else {
-              let time = this.$moment(row.last_sync)
+              const time = this.$moment(row.last_sync)
               if (time) {
                 return time.fromNow()
               } else {

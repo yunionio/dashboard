@@ -25,11 +25,11 @@
 </template>
 
 <script>
-import HostList from '@Compute/views/host/components/List'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import ZoneDetail from './Detail'
 import Dashboard from './Dashboard'
+import HostList from '@Compute/views/host/components/List'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'

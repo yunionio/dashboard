@@ -155,7 +155,7 @@ export default {
     getParam () {
       const param = {}
       if (this.dateTime) {
-        param['until'] = this.$moment.utc(this.dateTime).format()
+        param.until = this.$moment.utc(this.dateTime).format()
       } else {
         delete param.until
       }

@@ -40,7 +40,7 @@ export default {
         resourceCounts.push({ resource: key.replace('_count', ''), count: value })
       }
     }, this.data)
-    const currentResource = resourceCounts[0]['resource']
+    const currentResource = resourceCounts[0].resource
     return {
       resources: {
         disk: this.$t('dictionary.disk'),
@@ -100,10 +100,10 @@ export default {
       const ret = {
         details: true,
         with_meta: true,
-        'tags.0.key': this.data['key'],
+        'tags.0.key': this.data.key,
       }
-      if (this.data['value']) {
-        ret['tags.0.value'] = this.data['value']
+      if (this.data.value) {
+        ret['tags.0.value'] = this.data.value
       }
       return ret
     },

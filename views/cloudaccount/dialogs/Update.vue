@@ -67,8 +67,8 @@
 
 <script>
 import * as R from 'ramda'
-import UploadJsonFile from '@Cloudenv/views/cloudaccount/components/UploadJsonFile'
 import { keySecretFields, CLOUDACCOUNT_DOCS } from '../constants'
+import UploadJsonFile from '@Cloudenv/views/cloudaccount/components/UploadJsonFile'
 import TestButton from '@/sections/TestButton'
 import { HYPERVISORS_MAP } from '@/constants'
 import DialogMixin from '@/mixins/dialog'

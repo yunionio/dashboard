@@ -36,7 +36,7 @@ export default {
             default: ({ row }) => {
               return [
                 <div class='text-truncate'>
-                  <list-body-cell-wrap copy row={ row } field='account' title={ row['account'] } />
+                  <list-body-cell-wrap copy row={ row } field='account' title={ row.account } />
                 </div>,
               ]
             },

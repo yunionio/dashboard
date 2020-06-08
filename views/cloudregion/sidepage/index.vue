@@ -13,10 +13,10 @@
 </template>
 
 <script>
-import ZoneList from '@Cloudenv/views/zone/components/List'
 import ColumnsMixin from '../mixins/columns'
 import CloudregionDetail from './Detail'
 import Dashboard from './Dashboard'
+import ZoneList from '@Cloudenv/views/zone/components/List'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 

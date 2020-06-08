@@ -17,12 +17,12 @@
 </template>
 
 <script>
-import CloudproviderList from '@Cloudenv/views/cloudprovider/components/List'
-import HostList from '@Compute/views/host/components/List'
-import Usage from '@Cloudenv/sections/UsageSidepage'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import CloudaccountDetail from './Detail'
+import CloudproviderList from '@Cloudenv/views/cloudprovider/components/List'
+import HostList from '@Compute/views/host/components/List'
+import Usage from '@Cloudenv/sections/UsageSidepage'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'

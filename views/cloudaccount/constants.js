@@ -19,49 +19,49 @@ const ctyunLogo = require('../../../../src/assets/images/providers/tianyi.svg')
 
 export const CLOUDACCOUNT_TYPES = {
   public: {
-    'aliyun': {
+    aliyun: {
       name: providerMap.aliyun.label,
       logo: aliyunLogo,
       component: 'AliyunCreate',
       provider: providerMap.aliyun.key,
     },
-    'aws': {
+    aws: {
       name: providerMap.aws.label,
       logo: awsLogo,
       component: 'AwsCreate',
       provider: providerMap.aws.key,
     },
-    'azure': {
+    azure: {
       name: providerMap.azure.label,
       logo: azureLogo,
       component: 'AzureCreate',
       provider: providerMap.azure.key,
     },
-    'huawei': {
+    huawei: {
       name: providerMap.huawei.label,
       logo: huaweiLogo,
       component: 'HuaweiCreate',
       provider: providerMap.huawei.key,
     },
-    'qcloud': {
+    qcloud: {
       name: providerMap.qcloud.label,
       logo: qcloudLogo,
       component: 'QcloudCreate',
       provider: providerMap.qcloud.key,
     },
-    'ucloud': {
+    ucloud: {
       name: providerMap.ucloud.label,
       logo: ucloudLogo,
       component: 'UcloudCreate',
       provider: providerMap.ucloud.key,
     },
-    'google': {
+    google: {
       name: providerMap.google.label,
       logo: googleLogo,
       component: 'GoogleCreate',
       provider: providerMap.google.key,
     },
-    'ctyun': {
+    ctyun: {
       name: providerMap.ctyun.label,
       logo: ctyunLogo,
       component: 'CtyunCreate',
@@ -69,25 +69,25 @@ export const CLOUDACCOUNT_TYPES = {
     },
   },
   private: {
-    'vmware': {
+    vmware: {
       name: providerMap.vmware.label,
       logo: vmwareLogo,
       component: 'VMwareCreate',
       provider: providerMap.vmware.key,
     },
-    'openstack': {
+    openstack: {
       name: providerMap.openstack.label,
       logo: openstackLogo,
       component: 'OpenstackCreate',
       provider: providerMap.openstack.key,
     },
-    'dstack': {
+    dstack: {
       name: providerMap.dstack.label,
       logo: dstackLogo,
       component: 'DstackCreate',
       provider: providerMap.dstack.key,
     },
-    'zstack': {
+    zstack: {
       name: providerMap.zstack.label,
       logo: zstackLogo,
       component: 'ZstackCreate',
@@ -95,19 +95,19 @@ export const CLOUDACCOUNT_TYPES = {
     },
   },
   storage: {
-    's3': {
+    s3: {
       name: providerMap.s3.label,
       logo: s3Logo,
       component: 'S3Create',
       provider: providerMap.s3.key,
     },
-    'ceph': {
+    ceph: {
       name: providerMap.ceph.label,
       logo: cephLogo,
       component: 'CephCreate',
       provider: providerMap.ceph.key,
     },
-    'xsky': {
+    xsky: {
       name: providerMap.xsky.label,
       logo: xskyLogo,
       component: 'XskyCreate',
@@ -118,9 +118,9 @@ export const CLOUDACCOUNT_TYPES = {
 }
 
 export const ENV_TITLE = {
-  'public': '公有云',
-  'storage': '对象存储',
-  'private': '私有云 & 虚拟化平台',
+  public: '公有云',
+  storage: '对象存储',
+  private: '私有云 & 虚拟化平台',
 }
 
 export const CLOUDACCOUNT_DOCS = {

@@ -2,19 +2,19 @@ import { sizestrWithUnit } from '@/utils/utils'
 
 // 不定单位使用formatter，固定单位使用unit
 export const USAGE_CONFIG = {
-  'bucket_bytes': {
+  bucket_bytes: {
     formatter: val => sizestrWithUnit(val, 'B', 1024),
     zh_cn: '对象存储容量',
   },
-  'bucket_objects': {
+  bucket_objects: {
     unit: '个',
     zh_cn: '对象存储文件数量',
   },
-  'buckets': {
+  buckets: {
     unit: '个',
     zh_cn: '存储桶数量',
   },
-  'disks': {
+  disks: {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
     zh_cn: '磁盘容量',
   },
@@ -30,7 +30,7 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
     zh_cn: '异常状态的磁盘容量',
   },
-  'eip': {
+  eip: {
     unit: '个',
     zh_cn: '弹性公网IP和公网IP总数',
   },
@@ -50,7 +50,7 @@ export const USAGE_CONFIG = {
     unit: '个',
     zh_cn: '已使用的弹性公网IP和公网IP数量',
   },
-  'enabled_hosts': {
+  enabled_hosts: {
     unit: '台',
     zh_cn: '启用的宿主机数量',
   },
@@ -70,7 +70,7 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
     zh_cn: '启用的宿主机内存虚拟容量',
   },
-  'hosts': {
+  hosts: {
     unit: '台',
     zh_cn: '宿主机总量',
   },
@@ -90,15 +90,15 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
     zh_cn: '宿主机内存虚拟容量',
   },
-  'isolated_devices': {
+  isolated_devices: {
     unit: '个',
     zh_cn: 'GPU卡总量',
   },
-  'networks': {
+  networks: {
     unit: '个',
     zh_cn: 'IP子网总量',
   },
-  'nics': {
+  nics: {
     unit: '个',
     zh_cn: '当前项目网卡数量',
   },
@@ -110,7 +110,7 @@ export const USAGE_CONFIG = {
     unit: '个',
     zh_cn: '负载均衡网卡数量',
   },
-  'pending_delete_servers': {
+  pending_delete_servers: {
     unit: '台',
     zh_cn: '回收站虚拟机数量',
   },
@@ -130,15 +130,15 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
     zh_cn: '回收站虚拟机内存容量',
   },
-  'ports': {
+  ports: {
     unit: '个',
     zh_cn: 'IP总量',
   },
-  'ports_exit': {
+  ports_exit: {
     unit: '个',
     zh_cn: '外网IP数量',
   },
-  'ready_servers': {
+  ready_servers: {
     unit: '台',
     zh_cn: '关机状态虚拟机数量',
   },
@@ -158,11 +158,11 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
     zh_cn: '关机状态的虚拟机内存容量',
   },
-  'regions': {
+  regions: {
     unit: '个',
     zh_cn: '区域总数量',
   },
-  'running_servers': {
+  running_servers: {
     unit: '台',
     zh_cn: '运行状态的虚拟机数量',
   },
@@ -182,7 +182,7 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
     zh_cn: '运行状态的虚拟机内存容量',
   },
-  'servers': {
+  servers: {
     unit: '台',
     zh_cn: '虚拟机数量',
   },
@@ -202,11 +202,11 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
     zh_cn: '虚拟机内存容量',
   },
-  'snapshot': {
+  snapshot: {
     unit: '个',
     zh_cn: '快照数量',
   },
-  'storages': {
+  storages: {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
     zh_cn: '存储总容量',
   },
@@ -214,15 +214,15 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
     zh_cn: '存储总虚拟容量',
   },
-  'vpcs': {
+  vpcs: {
     unit: '个',
     zh_cn: 'VPC数量',
   },
-  'wires': {
+  wires: {
     unit: '个',
     zh_cn: '二层网络数量',
   },
-  'zones': {
+  zones: {
     unit: '个',
     zh_cn: '可用区的数量',
   },

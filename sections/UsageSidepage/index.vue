@@ -56,7 +56,7 @@ export default {
     async fetchData () {
       try {
         this.loading = true
-        let params = { scope: this.$store.getters.scope }
+        const params = { scope: this.$store.getters.scope }
         const { data } = await new this.$Manager('usages', 'v2').getSpecific({
           id: this.resource,
           spec: this.resId,

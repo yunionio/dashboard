@@ -59,11 +59,11 @@ export default {
         limit: 0,
       }
       if (this.account) {
-        params['project_domain'] = this.account.domain_id
+        params.project_domain = this.account.domain_id
       } else if (this.l3PermissionEnable && this.isAdminMode) {
-        params['project_domain'] = this.fc.getFieldValue('domain').key
+        params.project_domain = this.fc.getFieldValue('domain').key
       } else {
-        params['project_domain'] = this.userInfo.projectDomainId
+        params.project_domain = this.userInfo.projectDomainId
       }
       this.loading = true
       try {
