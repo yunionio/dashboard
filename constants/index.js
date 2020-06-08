@@ -193,7 +193,7 @@ export const USAGE_CONFIG = {
   'all.servers.system.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
-  'baremetals': {
+  baremetals: {
     unit: '台',
   },
   'baremetals.cpu': {
@@ -202,16 +202,16 @@ export const USAGE_CONFIG = {
   'baremetals.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
-  'bucket_bytes': {
+  bucket_bytes: {
     formatter: val => sizestrWithUnit(val, 'B', 1024),
   },
-  'bucket_objects': {
+  bucket_objects: {
     unit: '个',
   },
-  'buckets': {
+  buckets: {
     unit: '个',
   },
-  'disks': {
+  disks: {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'disks.attached': {
@@ -223,7 +223,7 @@ export const USAGE_CONFIG = {
   'disks.unready': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
-  'eip': {
+  eip: {
     unit: '个',
   },
   'eip.floating_ip': {
@@ -238,7 +238,7 @@ export const USAGE_CONFIG = {
   'eip.used': {
     unit: '个',
   },
-  'enabled_hosts': {
+  enabled_hosts: {
     unit: '台',
   },
   'enabled_hosts.cpu': {
@@ -253,7 +253,7 @@ export const USAGE_CONFIG = {
   'enabled_hosts.memory.virtual': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
-  'hosts': {
+  hosts: {
     unit: '台',
   },
   'hosts.cpu': {
@@ -268,13 +268,13 @@ export const USAGE_CONFIG = {
   'hosts.memory.virtual': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
-  'isolated_devices': {
+  isolated_devices: {
     unit: '块',
   },
-  'networks': {
+  networks: {
     unit: '个',
   },
-  'nics': {
+  nics: {
     unit: '个',
   },
   'nics.guest': {
@@ -283,7 +283,7 @@ export const USAGE_CONFIG = {
   'nics.lb': {
     unit: '个',
   },
-  'pending_delete_servers': {
+  pending_delete_servers: {
     unit: '台',
   },
   'pending_delete_servers.cpu': {
@@ -310,13 +310,13 @@ export const USAGE_CONFIG = {
   'pending_delete_servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
-  'ports': {
+  ports: {
     unit: '个',
   },
-  'ports_exit': {
+  ports_exit: {
     unit: '个',
   },
-  'ready_servers': {
+  ready_servers: {
     unit: '台',
   },
   'ready_servers.cpu': {
@@ -343,10 +343,10 @@ export const USAGE_CONFIG = {
   'ready_servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
-  'regions': {
+  regions: {
     unit: '个',
   },
-  'running_servers': {
+  running_servers: {
     unit: '台',
   },
   'running_servers.cpu': {
@@ -373,7 +373,7 @@ export const USAGE_CONFIG = {
   'running_servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
-  'servers': {
+  servers: {
     unit: '台',
   },
   'servers.cpu': {
@@ -400,10 +400,10 @@ export const USAGE_CONFIG = {
   'servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
-  'snapshot': {
+  snapshot: {
     unit: '个',
   },
-  'storages': {
+  storages: {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'storages.commit_rate': {
@@ -412,13 +412,13 @@ export const USAGE_CONFIG = {
   'storages.virtual': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
-  'vpcs': {
+  vpcs: {
     unit: '个',
   },
-  'wires': {
+  wires: {
     unit: '个',
   },
-  'zones': {
+  zones: {
     unit: '个',
   },
   'all.disks.count': {
@@ -442,7 +442,7 @@ export const USAGE_CONFIG = {
   'all.rds': {
     unit: '个',
   },
-  'cache': {
+  cache: {
     unit: '个',
   },
   'disks.count': {
@@ -457,10 +457,10 @@ export const USAGE_CONFIG = {
   'disks.unready.count': {
     unit: '个',
   },
-  'loadbalancer': {
+  loadbalancer: {
     unit: '个',
   },
-  'rds': {
+  rds: {
     unit: '个',
   },
   'domain.baremetals': {

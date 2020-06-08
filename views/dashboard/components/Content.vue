@@ -49,9 +49,9 @@ export default {
     },
     getItemStyles (layout) {
       const { x, y, w, h } = layout
-      let colWidth = 65
-      let rowHeight = 65
-      let margin = [5, 5]
+      const colWidth = 65
+      const rowHeight = 65
+      const margin = [5, 5]
       const pos = {
         left: Math.round(colWidth * x + (x + 1) * margin[0]),
         top: Math.round(rowHeight * y + (y + 1) * margin[1]),

@@ -83,7 +83,7 @@ export default {
           time: this.$moment(item[0]).format('MM月DD日'),
           '裸金属服务器(台)': (+item[5] || 0).toFixed(2),
           '磁盘(GB)': (+item[1] || 0).toFixed(2),
-          '虚拟资源': (+item[3] || 0).toFixed(2),
+          虚拟资源: (+item[3] || 0).toFixed(2),
           'GPU(卡)': (+item[4] || 0).toFixed(2),
           '内存(G)': (+item[2] || 0).toFixed(2),
         })

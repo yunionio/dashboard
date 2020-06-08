@@ -236,7 +236,7 @@ export default {
   watch: {
     'form.fd' (val) {
       this.fetchUsage()
-      for (let key in this.decorators) {
+      for (const key in this.decorators) {
         let config = this.decorators[key][1] || {}
         config = {
           ...config,

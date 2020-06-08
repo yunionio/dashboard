@@ -87,8 +87,8 @@
 import * as R from 'ramda'
 import _ from 'lodash'
 import { mapGetters } from 'vuex'
-import { USAGE_CONFIG } from '@Dashboard/constants'
 import UsageSelect from './UsageSelect'
+import { USAGE_CONFIG } from '@Dashboard/constants'
 import { typeClouds } from '@/utils/common/hypervisor'
 
 export default {
@@ -135,7 +135,7 @@ export default {
     },
     usages () {
       const ret = []
-      for (let key in USAGE_CONFIG) {
+      for (const key in USAGE_CONFIG) {
         ret.push({
           key,
           label: this.translateUsage[key] ? this.translateUsage[key] : key,
@@ -244,9 +244,9 @@ export default {
       brands = R.concat(brands, this.capability.disabled_brands)
       brands = R.uniq(brands)
       for (let i = 0, len = brands.length; i < len; i++) {
-        const data = R.find(R.propEq('key', typeClouds.brandMap[brands[i]]['cloud_env']))(cloudEnvs)
+        const data = R.find(R.propEq('key', typeClouds.brandMap[brands[i]].cloud_env))(cloudEnvs)
         if (!data) {
-          cloudEnvs.push({ key: typeClouds.brandMap[brands[i]]['cloud_env'], label: this.$t(`cloud_env.${typeClouds.brandMap[brands[i]]['cloud_env']}`) })
+          cloudEnvs.push({ key: typeClouds.brandMap[brands[i]].cloud_env, label: this.$t(`cloud_env.${typeClouds.brandMap[brands[i]].cloud_env}`) })
         }
       }
       this.cloudEnvs = cloudEnvs.map(val => ({ ...val, key: val.key, label: val.label }))

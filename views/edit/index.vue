@@ -65,10 +65,10 @@ import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import interact from 'interactjs'
 import VueGridLayout from 'vue-grid-layout'
+import debounce from 'lodash/debounce'
 import GridShadow from '@Dashboard/components/GridShadow'
 import ExtendGallery from '@Dashboard/sections/ExtendGallery'
 import extendsComponents from '@Dashboard/extends'
-import debounce from 'lodash/debounce'
 import { clear as clearCache } from '@Dashboard/utils/cache'
 import { uuid } from '@/utils/utils'
 import storage from '@/utils/storage'
@@ -189,7 +189,7 @@ export default {
         listeners: {
           start: event => {
             event.target.parentNode.parentNode.classList.add('overflow-hidden')
-            const component = event.target.dataset['component']
+            const component = event.target.dataset.component
             this.setCurrentOption(component)
             this.copy = event.target.cloneNode(true)
             this.copy.classList.add('drag')
@@ -204,11 +204,11 @@ export default {
             this.copy.style.transform = `translate(${this.position.x}px, ${this.position.y}px)`
             this.copy.style.outline = '1px dashed darkmagenta'
             const editContainerScrollTop = document.querySelector('.grid-shadow-wrap').scrollTop
-            let { x: _x, y: _y } = (this.calcXY(this.position.y + (this.movingGridDeltaY - 60 + editContainerScrollTop) - this.dropzoneY, this.position.x - this.dropzoneX))
+            const { x: _x, y: _y } = (this.calcXY(this.position.y + (this.movingGridDeltaY - 60 + editContainerScrollTop) - this.dropzoneY, this.position.x - this.dropzoneX))
             this.x = _x
             this.y = _y
             if (this.entered) {
-              let currentDragGridData = this.layout[this.layout.length - 1]
+              const currentDragGridData = this.layout[this.layout.length - 1]
               currentDragGridData.x = _x
               currentDragGridData.y = _y
               this.debounceUpdateGridItem(_x, _y)
@@ -297,10 +297,10 @@ export default {
     },
     updateDashboardOptions (id) {
       return new Promise((resolve, reject) => {
-        const options = [ ...this.dashboardOptions ]
+        const options = [...this.dashboardOptions]
         const index = R.findIndex(R.propEq('id', id))(options)
         if (index !== -1) {
-          options[index]['name'] = this.dashboardName
+          options[index].name = this.dashboardName
         } else {
           options.push({ id, name: this.dashboardName })
         }

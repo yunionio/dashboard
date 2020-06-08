@@ -154,7 +154,7 @@ export default {
         },
         ok: async () => {
           try {
-            const newOptions = [ ...this.options ]
+            const newOptions = [...this.options]
             const index = R.findIndex(R.propEq('id', this.current.id))(newOptions)
             if (index !== -1) {
               newOptions.splice(index, 1)
@@ -193,7 +193,7 @@ export default {
             panelData[`dashboard-item-${uuid(32)}`] = this.data[i]
           }
         } else {
-          for (let key in this.data) {
+          for (const key in this.data) {
             panelData[`dashboard-item-${uuid(32)}`] = this.data[key]
           }
         }

@@ -80,9 +80,9 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
+import { usageConfig } from './constants'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import { load } from '@Dashboard/utils/cache'
-import { usageConfig } from './constants'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
 import { getRequestT } from '@/utils/utils'
@@ -128,10 +128,10 @@ export default {
     let initialUsage = this.params && this.params.usage
     if (!initialUsage) {
       if (initialResTypeValue === 'server') {
-        initialUsage = serverUsageOptions[0]['key']
+        initialUsage = serverUsageOptions[0].key
       }
       if (initialResTypeValue === 'host') {
-        initialUsage = hostUsageOptions[0]['key']
+        initialUsage = hostUsageOptions[0].key
       }
     }
     const initialOrderValue = (this.params && this.params.order) || 'TOP'
@@ -257,15 +257,15 @@ export default {
       return this.brandEnv === 'private' || this.brandEnv === 'idc'
     },
     maxSeriesData () {
-      let dataList = this.seriesData.map(item => Number(item.value))
-      let maxData = Math.max.apply(null, dataList)
+      const dataList = this.seriesData.map(item => Number(item.value))
+      const maxData = Math.max.apply(null, dataList)
       return maxData > 100 ? maxData : 100
     },
   },
   watch: {
     'form.fd' (val) {
       this.fetchData()
-      for (let key in this.decorators) {
+      for (const key in this.decorators) {
         let config = this.decorators[key][1] || {}
         config = {
           ...config,
@@ -278,7 +278,7 @@ export default {
       if (!val) {
         this.form.fc.setFieldsValue({
           resType: 'server',
-          usage: this.usageOptions['server'][0]['key'],
+          usage: this.usageOptions.server[0].key,
         })
       }
     },
@@ -331,7 +331,7 @@ export default {
     },
     handleResTypeChange (e) {
       this.form.fc.setFieldsValue({
-        usage: this.usageOptions[e.target.value][0]['key'],
+        usage: this.usageOptions[e.target.value][0].key,
       })
     },
     genSQLQuery () {
@@ -342,7 +342,7 @@ export default {
       const usageKeys = fd.usage.split(',')
       const min = fd.time / 60 / 60
       if (this.brandEnv === 'idc' || this.brandEnv === 'private') {
-        const hypervisor = typeClouds.brandMap[brand]['hypervisor']
+        const hypervisor = typeClouds.brandMap[brand].hypervisor
         if (hypervisor === 'kvm') {
           brandKey = 'platform'
           brand = 'kvm'
@@ -367,7 +367,7 @@ export default {
       if (!series || !series.length) return []
       const index = series[0].columns.findIndex(v => v === 'vm_name')
       const arr = series[0].values
-      let data = arr.map(item => {
+      const data = arr.map(item => {
         return {
           host: item[index],
           value: item[1],
