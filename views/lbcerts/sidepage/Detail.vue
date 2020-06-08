@@ -30,7 +30,7 @@ export default {
           width: '120px',
           slots: {
             default: ({ row, cellValue }, h) => {
-              let ret = [<list-body-cell-wrap row={ row } field="fingerprint" />]
+              const ret = [<list-body-cell-wrap row={ row } field="fingerprint" />]
               return ret
             },
           },

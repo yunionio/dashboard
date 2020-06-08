@@ -80,12 +80,14 @@ export default {
       if (this.$route.query.id) {
         callback()
       }
-      let wiresManager = new this.$Manager('wires')
-      wiresManager.list({ params: {
-        filter: 'name.equals(' + value + ')',
-      } })
+      const wiresManager = new this.$Manager('wires')
+      wiresManager.list({
+        params: {
+          filter: 'name.equals(' + value + ')',
+        },
+      })
         .then((res) => {
-          let data = res.data.data
+          const data = res.data.data
           if (data.length === 0) {
             callback()
           }
@@ -175,10 +177,12 @@ export default {
   },
   methods: {
     fetchAreas () {
-      let manager = new this.$Manager('cloudregions')
-      manager.list({ params: {
-        is_on_premise: true,
-      } }).then((res) => {
+      const manager = new this.$Manager('cloudregions')
+      manager.list({
+        params: {
+          is_on_premise: true,
+        },
+      }).then((res) => {
         this.areas = res.data.data.map((item) => {
           return {
             label: item.name,
@@ -188,14 +192,14 @@ export default {
       })
     },
     fetchVpcs (area) {
-      let manager = new this.$Manager('vpcs')
+      const manager = new this.$Manager('vpcs')
       const params = {
         cloudregion_id: area,
       }
       if (this.isAdminMode) {
-        params['project_domain'] = this.userInfo.domain.id
+        params.project_domain = this.userInfo.domain.id
       } else {
-        params['scope'] = this.scope
+        params.scope = this.scope
       }
       manager.list({ params }).then((res) => {
         this.vpcs = res.data.data.map((item) => {
@@ -208,17 +212,19 @@ export default {
       })
     },
     fetchZones () {
-      let manager = new this.$Manager('zones')
-      manager.list({ params: {
-        is_on_premise: true,
-      } }).then((res) => {
+      const manager = new this.$Manager('zones')
+      manager.list({
+        params: {
+          is_on_premise: true,
+        },
+      }).then((res) => {
         this.loadZoneOptions(res.data.data)
       })
     },
     loadZoneOptions (data) {
       const results = []
       for (let i = 0; i < data.length; i++) {
-        let zone = data[i]
+        const zone = data[i]
         let name = zone.name
         if (zone.name_cn) {
           name += '(' + zone.name_cn + ')'

@@ -69,7 +69,7 @@ export default {
         with_meta: true,
         scope: this.scope,
       }
-      if (this.isAdminMode || this.isDomainMode) params['project_id'] = this.params.data[0].project_id
+      if (this.isAdminMode || this.isDomainMode) params.project_id = this.params.data[0].project_id
       return params
     },
   },

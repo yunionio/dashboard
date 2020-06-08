@@ -39,12 +39,12 @@ export default {
               ret.push(
                 <div class='mb-2'>
                   { arr.map(item => <a-tag>{ item.value }</a-tag>) }
-                </div>
+                </div>,
               )
             }
             if (ret.length <= 0) {
               ret.push(
-                <div>暂无源地址 | 备注</div>
+                <div>暂无源地址 | 备注</div>,
               )
             }
             return ret

@@ -69,8 +69,8 @@ export default {
       form: {
         fc: this.$form.createForm(this, {
           onValuesChange: (props, values) => {
-            if (values['platform']) {
-              this.platform = values['platform']
+            if (values.platform) {
+              this.platform = values.platform
             }
           },
         }),
@@ -158,8 +158,8 @@ export default {
       }
       if (this.platform) params[this.platform] = true
       if (this.isAdminMode) {
-        params['admin'] = true
-        params['project_domain'] = this.project_domain
+        params.admin = true
+        params.project_domain = this.project_domain
         delete params.scope
         delete params.domain_id
       }
@@ -183,9 +183,9 @@ export default {
     regionParamsExtra () {
       const res = {}
       if (this.platform === 'public_cloud') {
-        res['cloud_env'] = 'public'
+        res.cloud_env = 'public'
       } else if (this.platform === 'private_cloud') {
-        res['cloud_env'] = 'private'
+        res.cloud_env = 'private'
       }
       return res
     },
@@ -232,7 +232,7 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        let values = await this.form.fc.validateFields()
+        const values = await this.form.fc.validateFields()
         let params = {}
         if (values.region) {
           params = {
@@ -247,7 +247,7 @@ export default {
           }
         }
         if (!this.isGoogle) {
-          params['cidr_block'] = values.cidr_block
+          params.cidr_block = values.cidr_block
         }
         if (values.project_domain) {
           params.project_domain = values.project_domain

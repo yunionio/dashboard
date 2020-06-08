@@ -359,16 +359,16 @@ export default {
       return f
     },
     _border (first, second) {
-      let firstArr = first.split('.')
-      let secondArr = second.split('.')
-      let firstNum = Number(firstArr[firstArr.length - 1])
-      let secondNum = Number(secondArr[secondArr.length - 1])
-      let diff = firstNum - secondNum
+      const firstArr = first.split('.')
+      const secondArr = second.split('.')
+      const firstNum = Number(firstArr[firstArr.length - 1])
+      const secondNum = Number(secondArr[secondArr.length - 1])
+      const diff = firstNum - secondNum
       return Math.abs(diff) === 1
     },
     _comparePre (first, second) {
-      let firstArr = first.split('.')
-      let secondArr = second.split('.')
+      const firstArr = first.split('.')
+      const secondArr = second.split('.')
       firstArr.pop()
       secondArr.pop()
       return firstArr.join('') === secondArr.join('')

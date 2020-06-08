@@ -1,5 +1,5 @@
-import { LB_LISTENEER_ACTION_POLICIES } from '@Network/constants/lb'
 import * as R from 'ramda'
+import { LB_LISTENEER_ACTION_POLICIES } from '@Network/constants/lb'
 import { PROVIDER_MAP } from '@/constants'
 
 export default {

@@ -34,7 +34,7 @@ export default {
                   id: obj.id,
                   action: 'undeploy',
                   data: {
-                    'state': 'suspend',
+                    state: 'suspend',
                     // 'process-key': obj.key,
                   },
                 })
@@ -73,7 +73,7 @@ export default {
             alert: '提示：删除操作仅涉及数据库记录，实际节点的下线计划需要管理员计划实施',
             content: () => {
               const change = (bool) => {
-                this.okButtonProps['disabled'] = !bool
+                this.okButtonProps.disabled = !bool
               }
               return <a-checkbox value={this.isDelete} onInput={ change }>确认已经实际操作下线</a-checkbox>
             },

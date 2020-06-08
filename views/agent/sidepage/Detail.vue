@@ -47,7 +47,7 @@ export default {
           field: 'hb_last_seen',
           title: '上一次心跳',
           formatter: ({ row }) => {
-            return row['hb_last_seen'] ? this.$moment(row['hb_last_seen']).fromNow() : '-'
+            return row.hb_last_seen ? this.$moment(row.hb_last_seen).fromNow() : '-'
           },
         },
         {
@@ -58,7 +58,7 @@ export default {
           field: 'hb_timeout',
           title: '心跳超时时间',
           formatter: ({ row }) => {
-            return `${row['hb_timeout']}s`
+            return `${row.hb_timeout}s`
           },
         },
         {
@@ -210,7 +210,7 @@ export default {
               title: '地址',
               formatter: ({ row }) => {
                 let str = row.params.telegraf.influx_db_output_url || '-'
-                if (row && row['params'] && row['params']['telegraf'] && row['params']['telegraf']['influx_db_output_url']) {
+                if (row && row.params && row.params.telegraf && row.params.telegraf.influx_db_output_url) {
                   str += ' (忽略证书校验)'
                 }
                 return str

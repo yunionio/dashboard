@@ -167,7 +167,7 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        let values = await this.form.fc.validateFields()
+        const values = await this.form.fc.validateFields()
         if (this.hasNetwork) {
           values.network = this.params.network.id
         }

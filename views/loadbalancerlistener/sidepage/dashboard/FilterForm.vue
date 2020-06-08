@@ -40,8 +40,8 @@ export default {
     handleRuleChange (id, vnode) {
       if (vnode && vnode.data && vnode.data.attrs) {
         const { row = {} } = vnode.data.attrs
-        row['type'] = this.type
-        row['listener_type'] = this.data.listener_type
+        row.type = this.type
+        row.listener_type = this.data.listener_type
         this.$emit('change', row)
       }
     },

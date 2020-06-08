@@ -95,7 +95,7 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        let values = await this.form.fc.validateFields()
+        const values = await this.form.fc.validateFields()
         const params = {
           acl_status: values.acl_status ? 'on' : 'off',
         }

@@ -12,10 +12,10 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import { surpportLb } from '@Network/views/lb/constants'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import { validateEnabled, validateDisable } from '../utils'
+import { surpportLb } from '@Network/views/lb/constants'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import { getNameFilter, getBrandFilter } from '@/utils/common/tableFilter'

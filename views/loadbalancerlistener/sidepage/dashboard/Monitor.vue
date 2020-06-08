@@ -83,7 +83,7 @@ const lbQuery = (fieldType, lsType, lsId, host, time, aggregate, isRule) => {
     bps: {
       selected: `non_negative_derivative(${aggregate}(bin), 1s) * 8 as in_bps, non_negative_derivative(${aggregate}(bout), 1s) * 8 as out_bps`,
       pxname: `backends_rule_${lsId}`,
-      svname: `BACKEND`,
+      svname: 'BACKEND',
     },
     rate: {
       selected: {
@@ -91,7 +91,7 @@ const lbQuery = (fieldType, lsType, lsId, host, time, aggregate, isRule) => {
         https: `${aggregate}(req_rate)as req_rate, ${aggregate}(conn_rate) as conn_rate`,
       },
       pxname: `backends_rule_${lsId}`,
-      svname: `BACKEND`,
+      svname: 'BACKEND',
     },
     accident: {
       selected: {
@@ -99,7 +99,7 @@ const lbQuery = (fieldType, lsType, lsId, host, time, aggregate, isRule) => {
         https: `non_negative_derivative(${aggregate}(/d(req|con)/), 1s), non_negative_derivative(${aggregate}(/hrsp_.+/), 1s)${accidentSql}`,
       },
       pxname: `backends_rule_${lsId}`,
-      svname: `BACKEND`,
+      svname: 'BACKEND',
     },
   }
   const fieldItem = isRule ? ruleFields[fieldType] : fields[fieldType]
@@ -187,7 +187,7 @@ export default {
     async getData (fieldType, timeRange, aggregate) {
       timeRange = timeRange.map(val => new Date(val).getTime())
       const isRule = this.data.type === 2
-      let res = await influxdb.get('', {
+      const res = await influxdb.get('', {
         params: {
           q: lbQuery(fieldType, this.listenerType, this.data.id, LB_HOST, timeRange, aggregate, isRule),
           db: 'telegraf',
@@ -203,6 +203,7 @@ export default {
         //   break;
         case 'bps':
           this.netOpt = this._getSeries(results, true)
+          // eslint-disable-next-line no-case-declarations
           const { unit } = this.netOpt
           this.bpsUnit = unit
           break
@@ -210,6 +211,7 @@ export default {
           this.connectOpt = this._getSeries(results)
           break
         case 'accident':
+          // eslint-disable-next-line no-case-declarations
           const obj = {
             chart: {
               grid: {
