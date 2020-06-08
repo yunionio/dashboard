@@ -8,6 +8,7 @@
         </a-form-item>
         <a-form-item label="集群" v-bind="formItemLayout">
           <base-select
+            @change="handleClusterChange"
             v-decorator="decorators.cluster_id"
             resource="loadbalancerclusters"
             remote
@@ -301,6 +302,9 @@ export default {
         title: '新建',
       })
     },
+    handleClusterChange (id) {
+      this.getFetchDefaultParams(id)
+    },
     async handleCollapseChange (activeKeys) {
       activeKeys.forEach((k) => {
         const tk = `${k}_conf_tmpl`
@@ -311,37 +315,49 @@ export default {
         }
       })
     },
+    doCreate (values) {
+      const templKeys = ['telegraf_conf_tmpl', 'haproxy_conf_tmpl', 'keepalived_conf_tmpl']
+      templKeys.forEach(k => {
+        if (values[k]) {
+          values[k] = window.btoa(values[k])
+        } else {
+          values[k] = this.defaultParams[k]
+        }
+      })
+      if (values.haproxy.global_log_path) {
+        const logConfs = this.defaultParams['haproxy']['global_log'].split(' ')
+        logConfs[1] = values.haproxy.global_log_path
+        values['haproxy']['global_log'] = logConfs.join(' ')
+        delete values.global_log_path
+      }
+      const { name, cluster_id, ...params } = values
+      return this.manager.create({
+        data: {
+          name,
+          cluster_id,
+          params,
+        },
+      })
+    },
     async handleSubmit () {
       this.submiting = true
       try {
         const values = await this.form.fc.validateFields()
-        const templKeys = ['telegraf_conf_tmpl', 'haproxy_conf_tmpl', 'keepalived_conf_tmpl']
-        templKeys.forEach(k => {
-          if (values[k]) {
-            values[k] = window.btoa(values[k])
-          } else {
-            values[k] = this.defaultParams[k]
-          }
-        })
-        if (values.haproxy.global_log_path) {
-          const logConfs = this.defaultParams['haproxy']['global_log'].split(' ')
-          logConfs[1] = values.haproxy.global_log_path
-          values['haproxy']['global_log'] = logConfs.join(' ')
-          delete values.global_log_path
-        }
-        await this.manager.create({
-          data: values,
-        })
+        await this.doCreate(values)
+        this.handleCancel()
       } catch (error) {
         throw error
       } finally {
         this.submiting = false
       }
     },
-    async getFetchDefaultParams () {
+    async getFetchDefaultParams (cluster) {
       try {
         const { data = {} } = await this.manager.get(({
           id: 'default-params',
+          params: {
+            cluster,
+          },
         }))
         if (data && data.params) {
           const defaultParams = data.params
