@@ -2,7 +2,7 @@
   <div class="app-container">
     <template v-if="$store.state.auth.canRenderDefaultLayout">
       <navbar />
-        <div class="app-content position-relative h-100" :class="{ 'overflow-hidden': isSidepageOpen }">
+        <div class="app-content position-relative h-100">
           <sidebar :l2-menu-visible.sync="l2MenuVisible" />
           <div id="app-page" class="app-page" :class="{ 'l2-menu-show': l2MenuVisible }">
             <top-alert />
@@ -19,8 +19,6 @@
 </template>
 
 <script>
-import Navbar from '@scope/layouts/Navbar'
-import { mapGetters } from 'vuex'
 import Sidebar from '../Sidebar'
 import Navbar from '@scope/layouts/Navbar'
 import TopAlert from '@/sections/TopAlert'
@@ -36,9 +34,6 @@ export default {
     return {
       l2MenuVisible: false,
     }
-  },
-  computed: {
-    ...mapGetters(['isSidepageOpen']),
   },
 }
 </script>
