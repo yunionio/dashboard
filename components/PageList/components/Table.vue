@@ -323,7 +323,8 @@ export default {
       this.$refs.grid.clearRadioReserve()
       this.$refs.grid.clearRadioRow()
     },
-    cellClick ({ $event }) {
+    cellClick ({ columnIndex, $event }) {
+      if (columnIndex !== 1) return // 不是第一列
       const path = $event.path
       if ([].includes.call(path[4].classList, 'vxe-body--column')) {
         const { left, width } = path[4].getBoundingClientRect()
