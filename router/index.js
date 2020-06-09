@@ -10,6 +10,8 @@ import Tag from '@Cloudenv/views/tag'
 import Cloudevent from '@Cloudenv/views/cloudevent'
 import Proxysetting from '@Cloudenv/views/proxysetting'
 import Policydefinition from '@Cloudenv/views/policydefinition'
+import Scheduledtask from '@Cloudenv/views/scheduledtask'
+import ScheduledtaskCreate from '@Cloudenv/views/scheduledtask/create'
 import Layout from '@/layouts/RouterView'
 
 export default {
@@ -210,6 +212,32 @@ export default {
               name: 'Policydefinition',
               path: '',
               component: Policydefinition,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      meta: {
+        label: '定时任务',
+      },
+      submenus: [
+        {
+          path: '/scheduledtask',
+          meta: {
+            label: '定时任务',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Scheduledtasks',
+              path: '',
+              component: Scheduledtask,
+            },
+            {
+              name: 'ScheduledtaskCreate',
+              path: 'create',
+              component: ScheduledtaskCreate,
             },
           ],
         },
