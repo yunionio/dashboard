@@ -6,7 +6,12 @@
       class="level-1-item"
       @mouseenter.stop="handleMouseenter(item)"
       @click.stop="handleClick(item)">
-      <div class="level-1-item-wrap" :class="{ 'active': item.meta.group === currentGroup }">
+      <div
+        class="level-1-item-wrap"
+        :class="{
+          'active': item.meta.group === currentGroup,
+          'is-mouseenter': ghostL2Menu.index === item.index,
+        }">
         <div class="level-1-item-icon">
           <icon :type="item.meta.icon" />
         </div>
@@ -27,6 +32,10 @@ export default {
     },
     showMenu: {
       type: Function,
+      required: true,
+    },
+    ghostL2Menu: {
+      type: Object,
       required: true,
     },
   },
@@ -96,8 +105,12 @@ export default {
       this.$emit('ghost-l2-change', item)
     },
     handleClick (item) {
-      if (item.menus) return
-      const path = item.menu.path
+      let path
+      if (item.menus) {
+        path = this.searchPath(item.menus)
+      } else {
+        path = item.menu.path
+      }
       this.$router.push(path)
     },
   },
@@ -138,12 +151,12 @@ export default {
   flex-direction: column;
   &:hover {
     color: #fff;
-    background-color: #007fdf;
+    background-color: #00599c;
   }
   &.active {
     border-left-color: #007fdf;
     color: #fff;
-    background-color: #007fdf;
+    background-color: #007fdf !important;
   }
   .level-1-item-icon {
     width: 100%;
@@ -152,6 +165,9 @@ export default {
     justify-content: center;
     line-height: 1;
     font-size: 24px;
+  }
+  &.is-mouseenter {
+    background-color: #00599c;
   }
 }
 .level-1-item-text {
