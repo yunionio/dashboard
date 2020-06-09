@@ -232,6 +232,10 @@ export default {
         await this.$emit('after-login')
         await this.$store.dispatch('auth/onAfterLogin', response)
       } catch (error) {
+        // 登录失败，如果domain已存在则清除domain，主要是应对历史账号存储的domain被更改的情况。（异常情况）
+        if (this.fd.domain) {
+          this.fd.domain = ''
+        }
         // 409 则显示 domain 选择框 并 刷新验证码
         if (error.response && error.response.status === 409) {
           this.showDomainSelect = true
