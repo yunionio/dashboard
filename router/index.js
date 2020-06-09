@@ -13,7 +13,7 @@ import Policydefinition from '@Cloudenv/views/policydefinition'
 import Layout from '@/layouts/RouterView'
 
 export default {
-  index: 7,
+  index: 9,
   meta: {
     label: '多云管理',
     icon: 'onecloud',
