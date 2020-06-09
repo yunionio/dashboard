@@ -617,7 +617,7 @@ export const PERMISSION = {
   scheduledtasks_delete: ['compute', 'scheduledtasks', 'delete'],
   scheduledtasks_perform_enable: ['compute', 'scheduledtasks', 'perform', 'enable'],
   scheduledtasks_perform_disable: ['compute', 'scheduledtasks', 'perform', 'disable'],
-  scheduledtasks_perform_set_label: ['compute', 'scheduledtasks', 'perform', 'set-label'],
+  scheduledtasks_perform_set_label: ['compute', 'scheduledtasks', 'perform', 'set-labels'],
 }
 
 // 已声明权限的资源
