@@ -4,6 +4,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import config from './config/index.js'
 import { hasPermission } from '@/utils/auth'
 
@@ -37,6 +38,16 @@ export default {
       type: String,
     },
   },
+  inject: {
+    // 是否处于List中
+    inList: {
+      default: false,
+    },
+    // 是否处于SidePage中
+    inBaseSidePage: {
+      default: false,
+    },
+  },
   computed: {
     isLink () {
       const { globalSidePages } = this.$store.state.common
@@ -49,9 +60,12 @@ export default {
     },
     clickHandle () {
       if (this.$listeners.trigger) {
-        return this.handlePropsTrigger()
+        this.updateSidepageLeft()
+        this.handlePropsTrigger()
+        return
       }
       if (this.name && this.id && this.vm) {
+        this.updateSidepageLeft()
         const { name, id, vm, options, list, tab, params } = this
         vm.sidePageTriggerHandle(vm, name, {
           id,
@@ -64,6 +78,31 @@ export default {
         if (tab) {
           vm.initSidePageTab(tab)
         }
+      }
+    },
+    findPageListTableByParent (vm) {
+      if (vm.$options._componentTag === 'vxe-table') {
+        return vm
+      }
+      if (vm.$parent) {
+        return this.findPageListTableByParent(vm.$parent)
+      }
+    },
+    updateSidepageLeft () {
+      if (!this.inBaseSidePage && this.inList && this.$parent.field) {
+        // column 的 right 值只需查找一次，查找后进行缓存，后续直接使用缓存
+        if (!this.columnRightTemp) {
+          const table = this.findPageListTableByParent(this.$parent)
+          if (table) {
+            const columns = table.getColumns()
+            const fieldColumn = R.find(R.propEq('property', this.$parent.field))(columns)
+            const colId = fieldColumn.id
+            const $column = table.$el.querySelector(`.vxe-table--main-wrapper .vxe-table--body-wrapper .vxe-body--column[data-colid=${colId}]`)
+            const columnRect = $column.getBoundingClientRect()
+            this.columnRightTemp = columnRect.right
+          }
+        }
+        this.$store.dispatch('sidePage/updateSidepageLeft', this.columnRightTemp)
       }
     },
   },

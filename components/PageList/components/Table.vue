@@ -15,7 +15,6 @@
       :pager-config="tablePage"
       @page-change="handlePageChange"
       @sort-change="handleSortChange"
-      @cell-click="cellClick"
       v-on="dynamicEvents"
       v-bind="dynamicProps">
       <template v-slot:empty>
@@ -322,15 +321,6 @@ export default {
     clearRadio () {
       this.$refs.grid.clearRadioReserve()
       this.$refs.grid.clearRadioRow()
-    },
-    cellClick ({ columnIndex, $event }) {
-      if (columnIndex !== 1) return // 不是第一列
-      const path = $event.path
-      if ([].includes.call(path[4].classList, 'vxe-body--column')) {
-        const { left, width } = path[4].getBoundingClientRect()
-        const sidepageLeft = left + width // 抽屉距离屏幕左边的距离
-        this.$bus.$emit('BaseSidePageLeft', sidepageLeft)
-      }
     },
   },
 }

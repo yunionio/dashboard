@@ -61,6 +61,7 @@
 
 <script>
 import * as R from 'ramda'
+import { mapState } from 'vuex'
 import VcDialog from 'ant-design-vue/lib/vc-dialog'
 import Clickoutside from '@/directives/clickoutside'
 import { getHttpErrorMessage } from '@/utils/error'
@@ -116,6 +117,9 @@ export default {
     inBaseSidePage: true,
   },
   computed: {
+    ...mapState('sidePage', {
+      sidepageLeft: state => state.sidepageLeft,
+    }),
     errorInfo () {
       return this.requestError.error && getHttpErrorMessage(this.requestError.error)
     },
@@ -135,10 +139,15 @@ export default {
       return this.isFirstSidePage ? 'close' : 'left'
     },
   },
-  created () {
-    this.$bus.$on('BaseSidePageLeft', sidepageLeft => {
-      this.wrapStyle.left = `${sidepageLeft}px`
-    })
+  watch: {
+    sidepageLeft: {
+      handler (val, oldVal) {
+        if (val !== oldVal) {
+          this.wrapStyle.left = `${val}px`
+        }
+      },
+      immediate: true,
+    },
   },
   mounted () {
     this.$nextTick(() => {
