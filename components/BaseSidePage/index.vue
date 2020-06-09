@@ -3,6 +3,7 @@
     visible
     prefix-cls="side-page"
     :class="{ 'first-side-page': isFirstSidePage }"
+    :wrapStyle="wrapStyle"
     :mask="false"
     :closable="false">
     <div class="side-page-header">
@@ -108,6 +109,7 @@ export default {
         [8, 6, 8],
         [13, 9],
       ],
+      wrapStyle: { left: '500px' },
     }
   },
   provide: {
@@ -132,6 +134,11 @@ export default {
     iconType () {
       return this.isFirstSidePage ? 'close' : 'left'
     },
+  },
+  created () {
+    this.$bus.$on('BaseSidePageLeft', sidepageLeft => {
+      this.wrapStyle.left = `${sidepageLeft}px`
+    })
   },
   mounted () {
     this.$nextTick(() => {
