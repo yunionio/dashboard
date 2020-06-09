@@ -4,11 +4,11 @@
     <page-body>
       <a-form :form="form.fc" v-bind="formItemLayout">
         <a-form-item label="名称">
-          <a-input v-decorator="decorators.name" placeholder="字母开头，数字和字母大小写组合，长度为2-128个字符，不含'.','_','@'" />
+          <a-input :disabled="!!lbAgentId" v-decorator="decorators.name" placeholder="字母开头，数字和字母大小写组合，长度为2-128个字符，不含'.','_','@'" />
         </a-form-item>
         <a-form-item label="集群" v-bind="formItemLayout">
           <base-select
-            @change="handleClusterChange"
+            :disabled="!!lbAgentId"
             v-decorator="decorators.cluster_id"
             resource="loadbalancerclusters"
             remote
@@ -21,20 +21,20 @@
         </a-form-item>
         <a-form-item label="优先级" extra="指定VRRP实例优先级，优先级大的为主">
           <a-tooltip title="优先级">
-            <a-input-number v-decorator="decorators.priority" :max="255" :min="1" />
+            <a-input-number v-decorator="decorators.vrrp_priority" :max="255" :min="1" />
           </a-tooltip>
         </a-form-item>
         <a-form-item label="抢占模式" extra="高优先级VRRP SLAVE实例见到低优先级的VRRP MASTER实例时，是否抢占完成MASTER角色切换">
-          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.preempt" />
+          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.vrrp_preempt" />
         </a-form-item>
         <a-form-item label="VRRP路由ID" extra="主备组的ID值必须相同。同一个二层网络中，不同集群的VRRP路由ID必须不同">
           <a-input-number v-decorator="decorators.virtual_router_id" :max="255" :min="1" />
         </a-form-item>
         <a-form-item label="VRRP网口" extra="VRRP实例广播通告用的网卡名">
-          <a-input v-decorator="decorators.interface" placeholder="请输入网卡名称，例如：eth0" />
+          <a-input v-decorator="decorators.vrrp_interface" placeholder="请输入网卡名称，例如：eth0" />
         </a-form-item>
         <a-form-item label="VRRP通告间隔" extra="VRRP广播通告间隔，关系到故障时自动切换的灵敏度">
-          <a-input v-decorator="decorators.advert_int" type="number" addonAfter="秒" />
+          <a-input v-decorator="decorators.vrrp_advert_int" type="number" addonAfter="秒" />
         </a-form-item>
         <a-collapse :bordered="false">
          <a-collapse-panel header="高级配置" key="1" forceRender>
@@ -60,7 +60,7 @@
                   <a-input v-decorator="decorators.telegraf_influx_db_output_name" />
                 </a-form-item>
                 <a-form-item label="监控数据采集间隔">
-                  <a-input v-decorator="decorators.haproxy_input_interval" type="Number" addonAfter="秒" />
+                  <a-input v-decorator="decorators.telegraf_haproxy_input_interval" type="Number" addonAfter="秒" />
                 </a-form-item>
                 <a-form-item label="配置模版">
                   <code-mirror v-decorator="decorators.telegraf_conf_tmpl" :options="cmOptions" />
@@ -151,7 +151,17 @@ export default {
             ],
           },
         ],
-        priority: [
+        hb_timeout: [
+          'hb_timeout',
+          {
+            normalize: v => Number(v),
+            initialValue: 3600,
+            rules: [
+              { type: 'integer', min: 600, max: 3600, message: '请输入范围在 600-3600 之间', trigger: 'blur' },
+            ],
+          },
+        ],
+        vrrp_priority: [
           'vrrp.priority',
           {
             initialValue: 1,
@@ -169,7 +179,7 @@ export default {
             ],
           },
         ],
-        interface: [
+        vrrp_interface: [
           'vrrp.interface',
           {
             rules: [
@@ -177,16 +187,17 @@ export default {
             ],
           },
         ],
-        preempt: [
+        vrrp_preempt: [
           'vrrp.preempt',
           {
+            valuePropName: 'checked',
             initialValue: false,
             rules: [
               { required: true, message: '请选择抢占模式' },
             ],
           },
         ],
-        advert_int: [
+        vrrp_advert_int: [
           'vrrp.advert_int',
           {
             normalize: v => Number(v),
@@ -199,16 +210,6 @@ export default {
         ],
         vrrp_pass: [
           'vrrp.pass',
-        ],
-        hb_timeout: [
-          'hb_timeout',
-          {
-            normalize: v => Number(v),
-            initialValue: 3600,
-            rules: [
-              { type: 'integer', min: 600, max: 3600, message: '请输入范围在 600-3600 之间', trigger: 'blur' },
-            ],
-          },
         ],
         telegraf_influx_db_output_url: [
           'telegraf.influx_db_output_url',
@@ -226,8 +227,8 @@ export default {
         telegraf_conf_tmpl: [
           'telegraf_conf_tmpl',
         ],
-        haproxy_input_interval: [
-          'haproxy_input_interval',
+        telegraf_haproxy_input_interval: [
+          'telegraf.haproxy_input_interval',
           {
             normalize: v => Number(v),
             rules: [
@@ -292,9 +293,18 @@ export default {
       },
     }
   },
+  computed: {
+    lbAgentId () {
+      return this.$route.query.id
+    },
+  },
   created () {
     this.manager = new this.$Manager('loadbalanceragents')
-    this.getFetchDefaultParams()
+    if (this.lbAgentId) {
+      this.getFetchLbAgent()
+    } else {
+      this.getFetchDefaultParams()
+    }
   },
   methods: {
     createCluster () {
@@ -303,19 +313,30 @@ export default {
       })
     },
     handleClusterChange (id) {
-      this.getFetchDefaultParams(id)
+      !this.lbAgentId && this.getFetchDefaultParams(id)
     },
-    async handleCollapseChange (activeKeys) {
-      activeKeys.forEach((k) => {
-        const tk = `${k}_conf_tmpl`
-        if (!this.form.fc.getFieldValue(tk)) {
-          this.form.fc.setFieldsValue({
-            [tk]: window.atob(this.defaultParams[tk]),
-          })
-        }
+    setValues (data) {
+      if (!data || !Object.keys(data).length || !data.params) return false
+      const params = {
+        ...data.params,
+        // 在handleCollapseChange赋值， 为了解决code-mirror赋值bug
+        ...{
+          telegraf_conf_tmpl: undefined,
+          haproxy_conf_tmpl: undefined,
+          keepalived_conf_tmpl: undefined,
+        },
+      }
+      if (params.haproxy && params.haproxy.global_log) {
+        params.haproxy.global_log_path = params.haproxy.global_log.split(' ')[1]
+      }
+      this.form.fc.setFieldsValue({
+        name: data.name,
+        cluster_id: data.cluster_id,
+        ...params,
       })
+      this.defaultParams = data.params
     },
-    doCreate (values) {
+    formatValues (values) {
       const templKeys = ['telegraf_conf_tmpl', 'haproxy_conf_tmpl', 'keepalived_conf_tmpl']
       templKeys.forEach(k => {
         if (values[k]) {
@@ -331,24 +352,50 @@ export default {
         delete values.global_log_path
       }
       const { name, cluster_id, ...params } = values
-      return this.manager.create({
-        data: {
+      if (this.lbAgentId) {
+        return {
           name,
           cluster_id,
-          params,
-        },
+          ...params,
+        }
+      }
+      return {
+        name,
+        cluster_id,
+        params,
+      }
+    },
+    doCreate (values) {
+      return this.manager.create({
+        data: this.formatValues(values),
       })
     },
-    async handleSubmit () {
-      this.submiting = true
+    doUpdate (values) {
+      return this.manager.performAction({
+        action: 'params-patch',
+        id: this.lbAgentId,
+        data: this.formatValues(values),
+      })
+    },
+    async handleCollapseChange (activeKeys) {
+      activeKeys.forEach((k) => {
+        const tk = `${k}_conf_tmpl`
+        if (!this.form.fc.getFieldValue(tk)) {
+          this.form.fc.setFieldsValue({
+            [tk]: window.atob(this.defaultParams[tk]),
+          })
+        }
+      })
+    },
+    async getFetchLbAgent () {
+      const { id } = this.$route.query
       try {
-        const values = await this.form.fc.validateFields()
-        await this.doCreate(values)
-        this.handleCancel()
-      } catch (error) {
-        throw error
-      } finally {
-        this.submiting = false
+        const { data = {} } = await this.manager.get(({
+          id,
+        }))
+        this.setValues(data)
+      } catch (err) {
+        throw err
       }
     },
     async getFetchDefaultParams (cluster) {
@@ -360,19 +407,26 @@ export default {
           },
         }))
         if (data && data.params) {
-          const defaultParams = data.params
-          this.defaultParams = defaultParams
-          if (defaultParams.haproxy && defaultParams.haproxy.global_log) {
-            defaultParams.haproxy.global_log_path = defaultParams.haproxy.global_log.split(' ')[1]
-          }
-          this.form.fc.setFieldsValue({
-            haproxy_input_interval: defaultParams.telegraf.haproxy_input_interval,
-            telegraf: defaultParams.telegraf,
-            haproxy: defaultParams.haproxy,
-          })
+          this.setValues(data)
         }
       } catch (err) {
         throw err
+      }
+    },
+    async handleSubmit () {
+      this.submiting = true
+      try {
+        const values = await this.form.fc.validateFields()
+        if (this.lbAgentId) {
+          await this.doUpdate(values)
+        } else {
+          await this.doCreate(values)
+        }
+        this.handleCancel()
+      } catch (error) {
+        throw error
+      } finally {
+        this.submiting = false
       }
     },
     handleCancel () {

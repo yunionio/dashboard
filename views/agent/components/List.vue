@@ -67,7 +67,9 @@ export default {
           label: '新建',
           permission: 'lb_loadbalancers_create',
           action: () => {
-            this.$router.push({ name: 'AgentCreate' })
+            this.$router.push({
+              name: 'AgentForm',
+            })
           },
           meta: () => {
             return {
