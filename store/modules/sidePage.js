@@ -25,6 +25,11 @@ export default {
       Vue.delete(state.sidePages, id)
     },
   },
+  getters: {
+    isSidepageOpen (state) {
+      return !!state.sidePageIds.length
+    },
+  },
   actions: {
     create ({ commit }, payload) {
       return new Promise((resolve, reject) => {

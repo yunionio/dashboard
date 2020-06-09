@@ -3,6 +3,7 @@
     visible
     prefix-cls="side-page"
     :class="{ 'first-side-page': isFirstSidePage }"
+    :wrapStyle="wrapStyle"
     :mask="false"
     :closable="false">
     <div class="side-page-header">
@@ -108,6 +109,7 @@ export default {
         [8, 6, 8],
         [13, 9],
       ],
+      wrapStyle: { left: '500px' },
     }
   },
   provide: {
@@ -133,9 +135,14 @@ export default {
       return this.isFirstSidePage ? 'close' : 'left'
     },
   },
+  created () {
+    this.$bus.$on('BaseSidePageLeft', sidepageLeft => {
+      this.wrapStyle.left = `${sidepageLeft}px`
+    })
+  },
   mounted () {
     this.$nextTick(() => {
-      document.body.style.overflow = ''
+      // document.body.style.overflow = ''
       if (!this.currentTab && this.tabs && this.tabs.length > 0) {
         this.handleTabChange(this.tabs[0].key)
       }
@@ -168,6 +175,7 @@ export default {
   }
 }
 .side-page {
+  box-shadow: rgba(197, 219, 232, 0.4) -5px 0px 3px 0px;
   height: 100%;
 }
 .side-page-content {

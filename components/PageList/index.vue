@@ -54,6 +54,8 @@
         :config="config"
         :next-marker="nextMarker"
         :selection-type="selectionType"
+        :inBaseSidePage="inBaseSidePage"
+        :isSidepageOpen="isSidepageOpen"
         @change-current-page="changeCurrentPage"
         @change-page-size="changePageSize"
         @do-sort="doSort"
@@ -66,6 +68,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import PageListHeader from './components/Header'
 import PageListTable from './components/Table'
 
@@ -197,6 +200,7 @@ export default {
     nextMarker () {
       return this.list.nextMarker
     },
+    ...mapGetters(['isSidepageOpen']),
   },
   beforeDestroy () {
     this.list.clearWaitJob()

@@ -1,5 +1,5 @@
 <template>
-  <floating-scroll>
+  <floating-scroll :hiddenScrollbar="hiddenScrollbar">
     <vxe-grid
       highlight-hover-row
       highlight-current-row
@@ -15,6 +15,7 @@
       :pager-config="tablePage"
       @page-change="handlePageChange"
       @sort-change="handleSortChange"
+      @cell-click="cellClick"
       v-on="dynamicEvents"
       v-bind="dynamicProps">
       <template v-slot:empty>
@@ -83,6 +84,14 @@ export default {
       type: String,
       required: true,
     },
+    inBaseSidePage: {
+      type: Boolean,
+      default: false,
+    },
+    isSidepageOpen: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
@@ -105,6 +114,7 @@ export default {
       return this.selectionType === 'radio'
     },
     gridStyle () {
+      if (!this.inBaseSidePage && this.isSidepageOpen) return {} // 如果打开抽屉，且列表是最外层列表，则禁用横向滚动条
       return {
         width: `${this.tableWidth}px`,
       }
@@ -142,6 +152,9 @@ export default {
         ret['radio-config'] = { reserve: true, highlight: true, trigger: 'row' }
       }
       return ret
+    },
+    hiddenScrollbar () {
+      return !this.gridStyle.width
     },
   },
   watch: {
@@ -309,6 +322,15 @@ export default {
     clearRadio () {
       this.$refs.grid.clearRadioReserve()
       this.$refs.grid.clearRadioRow()
+    },
+    cellClick ({ columnIndex, $event }) {
+      if (columnIndex !== 1) return // 不是第一列
+      const path = $event.path
+      if ([].includes.call(path[4].classList, 'vxe-body--column')) {
+        const { left, width } = path[4].getBoundingClientRect()
+        const sidepageLeft = left + width // 抽屉距离屏幕左边的距离
+        this.$bus.$emit('BaseSidePageLeft', sidepageLeft)
+      }
     },
   },
 }

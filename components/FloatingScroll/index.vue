@@ -31,14 +31,14 @@
     v-else
     ref="container"
     class="floating-scroll-area"
-    :class="{'floating-scroll-unobtrusive': unobtrusive}"
+    :class="{ 'floating-scroll-unobtrusive': unobtrusive }"
     @scroll="handleContainerScroll"
     @focusin="handleContainerFocus">
     <slot />
     <div
       ref="widget"
       class="floating-scroll"
-      :class="{'floating-scroll-hidden': !visible}"
+      :class="{ 'floating-scroll-hidden': !visible, 'opacity-0': hiddenScrollbar }"
       @scroll="handleWidgetScroll">
       <div ref="strut" />
     </div>
@@ -54,6 +54,10 @@ export default {
       default: false,
     },
     unobtrusive: {
+      type: Boolean,
+      default: false,
+    },
+    hiddenScrollbar: { // 隐藏滚动条
       type: Boolean,
       default: false,
     },
