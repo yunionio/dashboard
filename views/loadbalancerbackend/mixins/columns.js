@@ -25,14 +25,17 @@ export default {
       {
         field: 'address',
         title: 'IP地址',
+        minWidth: 150,
       },
       {
         field: 'port',
         title: '端口',
+        minWidth: 50,
       },
       {
         field: 'weight',
         title: '权重',
+        minWidth: 50,
       },
       getProjectTableColumn(),
     ]

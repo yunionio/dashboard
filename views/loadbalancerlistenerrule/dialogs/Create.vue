@@ -91,7 +91,7 @@ export default {
       isRedirect: false,
       loading: false,
       form: {
-        fc: this.$form.createForm(this),
+        fc: this.$form.createForm(this, { onValuesChange: this.onValuesChange }),
       },
       decorators: {
         name: [
@@ -166,9 +166,23 @@ export default {
       return params
     },
   },
+  created () {
+    this.form.fc.getFieldDecorator('listener_type', {
+      preserve: true,
+      initialValue: this.params.lbListenerData.listener_type,
+    })
+  },
   methods: {
     handleRedirectChange (bool) {
       this.isRedirect = bool
+    },
+    async onValuesChange (props, values) {
+      await this.$nextTick()
+      const redirectKeys = ['redirect', 'redirect_scheme', 'redirect_host', 'redirect_path']
+      if (redirectKeys.indexOf(Object.keys(values)[0]) > -1) {
+        this.form.fc.resetFields(['check'])
+        this.form.fc.validateFields(['check'])
+      }
     },
     async doCreate (values) {
       const data = {

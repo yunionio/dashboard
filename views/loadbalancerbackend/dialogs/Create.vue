@@ -153,7 +153,12 @@ export default {
             ],
           },
         ],
-        ssl: ['ssl'],
+        ssl: [
+          'ssl',
+          {
+            valuePropName: 'checked',
+          },
+        ],
       }
     },
     serverHref () {
@@ -207,7 +212,7 @@ export default {
       const data = {
         ...values,
         backend_group: this.params.lbBackendgroupData.id,
-        ssl: values ? 'on' : 'off',
+        ssl: values.ssl ? 'on' : 'off',
         backend: values[`${backend_type}_backend`],
       }
       await new this.$Manager('loadbalancerbackends').create({

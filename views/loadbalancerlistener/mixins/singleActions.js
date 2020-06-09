@@ -118,6 +118,12 @@ export default {
               })
             },
             meta: (row) => {
+              if (row.redirect === 'raw') {
+                return {
+                  validate: false,
+                  tooltip: '重定向类型的监听不支持此操作',
+                }
+              }
               return this.getActionMeta(row.health_check === 'off', row, 'enableHealthCheck')
             },
           },
@@ -133,6 +139,12 @@ export default {
               })
             },
             meta: (row) => {
+              if (row.redirect === 'raw') {
+                return {
+                  validate: false,
+                  tooltip: '重定向类型的监听不支持此操作',
+                }
+              }
               return this.getActionMeta(row.health_check === 'on', row, 'disableHealthCheck')
             },
           },

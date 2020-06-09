@@ -48,20 +48,6 @@ export default {
         actions: (obj) => {
           return [
             {
-              label: '删除',
-              permission: 'lb_loadbalancers_delete',
-              action: () => {
-                this.createDialog('DeleteResDialog', {
-                  vm: this,
-                  title: '删除',
-                  data: [obj],
-                  columns: this.columns,
-                  onManager: this.onManager,
-                })
-              },
-              meta: () => this.$getDeleteResult(obj),
-            },
-            {
               label: '更改集群',
               action: () => {
                 this.createDialog('LbUpdateCluster', {
@@ -78,6 +64,20 @@ export default {
                   tooltip: !isOneCloud && '仅OneCloud平台支持此操作',
                 }
               },
+            },
+            {
+              label: '删除',
+              permission: 'lb_loadbalancers_delete',
+              action: () => {
+                this.createDialog('DeleteResDialog', {
+                  vm: this,
+                  title: '删除',
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                })
+              },
+              meta: () => this.$getDeleteResult(obj),
             },
           ]
         },
