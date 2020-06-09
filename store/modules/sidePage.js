@@ -4,6 +4,7 @@ export default {
   state: {
     sidePageIds: [],
     sidePages: {},
+    sidepageLeft: 0,
   },
   mutations: {
     CREATE (state, payload) {
@@ -24,6 +25,9 @@ export default {
       state.sidePageIds.splice(index, 1)
       Vue.delete(state.sidePages, id)
     },
+    SET_SIDEPAGE_LEFT (state, payload) {
+      state.sidepageLeft = payload
+    },
   },
   getters: {
     isSidepageOpen (state) {
@@ -42,6 +46,9 @@ export default {
     },
     destroy ({ commit }, id) {
       commit('DESTROY', id)
+    },
+    updateSidepageLeft ({ commit }, payload) {
+      commit('SET_SIDEPAGE_LEFT', payload)
     },
   },
 }

@@ -62,6 +62,7 @@ export default {
       if (this.$listeners.trigger) {
         this.updateSidepageLeft()
         this.handlePropsTrigger()
+        return
       }
       if (this.name && this.id && this.vm) {
         this.updateSidepageLeft()
@@ -98,10 +99,10 @@ export default {
             const colId = fieldColumn.id
             const $column = table.$el.querySelector(`.vxe-table--main-wrapper .vxe-table--body-wrapper .vxe-body--column[data-colid=${colId}]`)
             const columnRect = $column.getBoundingClientRect()
-            this.columnRightTemp = columnRect.left
+            this.columnRightTemp = columnRect.right
           }
         }
-        this.$bus.$emit('BaseSidePageLeft', this.columnRightTemp)
+        this.$store.dispatch('sidePage/updateSidepageLeft', this.columnRightTemp)
       }
     },
   },
