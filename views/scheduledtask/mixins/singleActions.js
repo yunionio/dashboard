@@ -28,6 +28,7 @@ export default {
           return [
             {
               label: '启用',
+              permission: 'scheduledtasks_perform_enable',
               action: (obj) => {
                 this.createDialog('ScheduledtaskEnabledDialog', {
                   data: [obj],
@@ -44,6 +45,7 @@ export default {
             },
             {
               label: '禁用',
+              permission: 'scheduledtasks_perform_disable',
               action: (obj) => {
                 this.createDialog('ScheduledtaskDisabledDialog', {
                   data: [obj],

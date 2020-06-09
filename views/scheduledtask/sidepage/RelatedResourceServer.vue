@@ -93,7 +93,7 @@ export default {
           sortable: true,
           slots: {
             default: ({ row }) => {
-              let ret = []
+              const ret = []
               if (row.instance_type) {
                 ret.push(<div class='text-truncate' style={{ color: '#0A1F44' }}>{ row.instance_type }</div>)
               }
@@ -123,7 +123,7 @@ export default {
               if (findPlatform(row.hypervisor, 'hypervisor') === SERVER_TYPE.public) {
                 return '-'
               }
-              const text = row['host'] || '-'
+              const text = row.host || '-'
               return text
             },
           },
@@ -132,6 +132,7 @@ export default {
       singleActions: [
         {
           label: '解绑',
+          permission: 'scheduledtasks_perform_set_label',
           action: (row) => {
             this.createDialog('RelatedResourceRemoveDialog', {
               title: '解绑',
@@ -153,6 +154,7 @@ export default {
       groupActions: [
         {
           label: '关联资源',
+          permission: 'scheduledtasks_perform_set_label',
           action: () => {
             this.createDialog('ScheduledtaskEditDialog', {
               data: [this.data],

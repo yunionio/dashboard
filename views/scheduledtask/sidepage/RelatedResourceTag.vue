@@ -37,6 +37,7 @@ export default {
       singleActions: [
         {
           label: '解绑',
+          permission: 'scheduledtasks_perform_set_label',
           action: (row) => {
             this.createDialog('RelatedResourceRemoveDialog', {
               title: '解绑',
@@ -56,6 +57,7 @@ export default {
       groupActions: [
         {
           label: '关联资源',
+          permission: 'scheduledtasks_perform_set_label',
           action: () => {
             this.createDialog('ScheduledtaskEditDialog', {
               data: [this.data],

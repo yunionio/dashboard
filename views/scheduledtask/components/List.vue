@@ -95,6 +95,7 @@ export default {
             return [
               {
                 label: '启用',
+                permission: 'scheduledtasks_perform_enable',
                 action: () => {
                   this.list.batchPerformAction('enable', null, this.list.steadyStatus)
                 },
@@ -108,6 +109,7 @@ export default {
               },
               {
                 label: '禁用',
+                permission: 'scheduledtasks_perform_disable',
                 action: () => {
                   this.createDialog('ScheduledtaskDisabledDialog', {
                     columns: this.columns,
