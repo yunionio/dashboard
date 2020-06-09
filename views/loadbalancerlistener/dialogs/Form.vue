@@ -1,41 +1,47 @@
 <template>
-  <div>
-    <page-header :title="`${isUpdate ? '修改' : '新建'}负载均衡监听`" />
-    <page-body>
+  <base-dialog :width="1000" @cancel="cancelDialog">
+    <div slot="header">调整访问控制</div>
+    <div slot="body">
       <steps v-show="!isLbRedirected" v-model="step" />
-      <components :is="component" :step="step" ref="formRef" :isUpdate="isUpdate" />
-    </page-body>
-    <page-footer>
-      <template v-slot:right>
-        <template v-if="isLbRedirected">
-          <a-button type="primary" class="mr-2" @click="isUpdate ? update() : validateForm() " :loading="loading">确定</a-button>
-        </template>
-        <template v-else>
-          <a-button @click="prev" v-if="!isFirstStep" class="mr-2">上一步</a-button>
-          <a-button :type="isUpdate ? '' : 'primary'" class="mr-2" @click="next" :loading="isUpdate ? false : loading" v-if="isUpdate ? !isLastStep : true">{{ nextStepTitle }}</a-button>
-          <a-button :type="isUpdate ? 'primary' : ''" class="mr-2" v-if="isUpdate" @click="update" :loading="loading">修改监听</a-button>
-        </template>
-        <a-button @click="cancel">取消</a-button>
+      <components
+        :is="component"
+        :step="step"
+        ref="formRef"
+        :listener-data="params.listenerData"
+        :lb-detail="params.lbDetail"
+        :isUpdate="isUpdate" />
+    </div>
+    <div slot="footer">
+      <template v-if="isLbRedirected">
+        <a-button type="primary" class="mr-2" @click="isUpdate ? update() : validateForm() " :loading="loading">确定</a-button>
       </template>
-    </page-footer>
-  </div>
+      <template v-else>
+        <a-button @click="prev" v-if="!isFirstStep" class="mr-2">上一步</a-button>
+        <a-button :type="isUpdate ? '' : 'primary'" class="mr-2" @click="next" :loading="isUpdate ? false : loading" v-if="isUpdate ? !isLastStep : true">{{ nextStepTitle }}</a-button>
+        <a-button :type="isUpdate ? 'primary' : ''" class="mr-2" v-if="isUpdate" @click="update" :loading="loading">修改监听</a-button>
+      </template>
+      <a-button @click="cancel">取消</a-button>
+    </div>
+  </base-dialog>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import Onecloud from './form/onecloud'
-import Aliyun from './form/aliyun'
-import Qcloud from './form/qcloud'
-import Huawei from './form/huawei'
-import AwsApplication from './form/aws-application'
-import AwsNetwork from './form/aws-network'
-import StepMixin from '@/mixins/step'
+import Onecloud from '@Network/views/loadbalancerlistener/create/form/onecloud'
+import Aliyun from '@Network/views/loadbalancerlistener/create/form/aliyun'
+import Qcloud from '@Network/views/loadbalancerlistener/create/form/qcloud'
+import Huawei from '@Network/views/loadbalancerlistener/create/form/huawei'
+import AwsApplication from '@Network/views/loadbalancerlistener/create/form/aws-application'
+import AwsNetwork from '@Network/views/loadbalancerlistener/create/form/aws-network'
 import { filterObj } from '@/utils/utils'
+import StepMixin from '@/mixins/step'
+import DialogMixin from '@/mixins/dialog'
+import WindowsMixin from '@/mixins/windows'
 
 const getOnOff = bool => bool ? 'on' : 'off'
 
 export default {
-  name: 'LbCreateIndex',
+  name: 'LbListenerFormDialog',
   components: {
     Onecloud,
     Aliyun,
@@ -44,12 +50,13 @@ export default {
     AwsApplication,
     AwsNetwork,
   },
-  mixins: [StepMixin],
+  mixins: [StepMixin, DialogMixin, WindowsMixin],
   data () {
-    const isUpdate = this.$route.path.includes('listener-update')
-    let component = this.$route.query.type.toLowerCase()
+    const { listenerData, lbDetail } = this.params
+    const isUpdate = !!listenerData
+    let component = lbDetail.brand.toLowerCase()
     if (component === 'aws') {
-      component += `-${this.$route.query.spec}`
+      component += `-${lbDetail.loadbalancer_spec}`
     }
     return {
       component,
@@ -127,7 +134,12 @@ export default {
         if (data.health_check === 'off') {
           data = filterObj((val, k) => !k.startsWith('health_check_'), data)
         }
-        await new this.$Manager('loadbalancerlisteners').update({ id: this.$route.query.listener, data })
+        await this.params.onManager('update', {
+          id: this.params.listenerData.id,
+          managerArgs: {
+            data,
+          },
+        })
         this.loading = false
         this.cancel()
       } catch (error) {
@@ -138,7 +150,11 @@ export default {
     async create (data) {
       this.loading = true
       try {
-        await new this.$Manager('loadbalancerlisteners').create({ data })
+        await this.params.onManager('create', {
+          managerArgs: {
+            data,
+          },
+        })
         this.$message.success('操作成功')
         this.loading = false
         this.cancel()
@@ -148,7 +164,7 @@ export default {
       }
     },
     cancel () {
-      this.$router.push('/lb')
+      this.cancelDialog()
     },
   },
 }

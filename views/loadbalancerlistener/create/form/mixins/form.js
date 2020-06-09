@@ -8,15 +8,20 @@ export default {
       type: Boolean,
       default: false,
     },
+    listenerData: {
+      type: Object,
+    },
+    lbDetail: {
+      type: Object,
+      required: true,
+    },
   },
   data () {
     return {
       loading: false,
-      lbDetail: {},
       allFd: {
-        loadbalancer: this.$route.params.id,
+        loadbalancer: this.lbDetail.id,
       },
-      listenerData: {},
     }
   },
   computed: {
@@ -24,24 +29,7 @@ export default {
       return this.step.steps[this.step.currentStep] ? this.step.steps[this.step.currentStep].component : ''
     },
   },
-  created () {
-    this.fetchdata()
-  },
   methods: {
-    async fetchdata () {
-      this.loading = true
-      const requests = [this.fetchLbDetail()]
-      if (this.isUpdate) {
-        requests.push(this.fetchLbListener())
-      }
-      try {
-        await Promise.all(requests)
-        this.loading = false
-      } catch (error) {
-        this.loading = false
-        throw error
-      }
-    },
     async validateForm (isGoPrev) {
       try {
         const values = await this.$refs.formRef.form.fc.validateFields()
@@ -54,25 +42,6 @@ export default {
         } else {
           throw error
         }
-      }
-    },
-    async fetchLbListener () {
-      try {
-        const { listener } = this.$route.query
-        const { data } = await new this.$Manager('loadbalancerlisteners').get({ id: listener })
-        this.listenerData = data
-      } catch (error) {
-        throw error
-      }
-    },
-    async fetchLbDetail () {
-      try {
-        const { id } = this.$route.params
-        const { data } = await new this.$Manager('loadbalancers').get({ id })
-        this.lbDetail = data
-        return data
-      } catch (error) {
-        throw error
       }
     },
   },

@@ -57,7 +57,7 @@ export default {
   mixins: [mixin],
   computed: {
     schedulerTypeOpts () {
-      const type = this.$route.query.type.toLowerCase()
+      const type = this.lbDetail.brand.toLowerCase()
       if (type) {
         const opts = schedulerProviderMaps[type.toLowerCase()]
         const { listener_type } = this.form.fd
