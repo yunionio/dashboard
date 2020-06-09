@@ -215,6 +215,8 @@ export default {
     },
     doImportUrl (data) {
       const params = {
+        domain_id: (data.domain && data.domain.key) || this.userInfo.projectDomainId,
+        project_id: (data.project && data.project.key) || this.userInfo.projectId,
         copy_from: data.copy_from,
         name: data.name,
         properties: {
@@ -234,8 +236,8 @@ export default {
         const { fileList } = this
         const formData = new FormData()
         const values = await this.form.fc.validateFields()
-        formData.append('domain', (values.domain && values.domain.key) || this.userInfo.projectDomainId)
-        formData.append('project', (values.project && values.project.key) || this.userInfo.projectId)
+        formData.append('domain_id', (values.domain && values.domain.key) || this.userInfo.projectDomainId)
+        formData.append('project_id', (values.project && values.project.key) || this.userInfo.projectId)
         if (values.uploadType === 'file') {
           formData.append('name', values.name)
           formData.append('os_version', '')
