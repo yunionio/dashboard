@@ -111,7 +111,7 @@ export default {
           ...values,
         }
         if (this.params.redisItem) {
-          params['elasticcache'] = this.params.redisItem.id
+          params.elasticcache = this.params.redisItem.id
         }
         delete params.checkPassword
         await this.params.list.onManager('performAction', {
