@@ -308,17 +308,17 @@ export default {
       }
       // 触发时间
       if (values.hourMinute) {
-        params.cycle_timer['hour'] = values.hourMinute.hours()
-        params.cycle_timer['minute'] = values.hourMinute.minutes()
+        params.cycle_timer.hour = values.hourMinute.hours()
+        params.cycle_timer.minute = values.hourMinute.minutes()
       }
       // 有效时间
       if (values.startEndTime && values.startEndTime.length > 0) {
-        params.cycle_timer['startTime'] = values.startEndTime[0].set({
+        params.cycle_timer.startTime = values.startEndTime[0].set({
           hour: 0,
           minute: 0,
           second: 0,
         })
-        params.cycle_timer['endTime'] = values.startEndTime[1].set({
+        params.cycle_timer.endTime = values.startEndTime[1].set({
           hour: 23,
           minute: 59,
           second: 59,
