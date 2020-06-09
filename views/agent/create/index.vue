@@ -325,9 +325,9 @@ export default {
         }
       })
       if (values.haproxy.global_log_path) {
-        const logConfs = this.defaultParams['haproxy']['global_log'].split(' ')
+        const logConfs = this.defaultParams.haproxy.global_log.split(' ')
         logConfs[1] = values.haproxy.global_log_path
-        values['haproxy']['global_log'] = logConfs.join(' ')
+        values.haproxy.global_log = logConfs.join(' ')
         delete values.global_log_path
       }
       const { name, cluster_id, ...params } = values
