@@ -175,6 +175,7 @@ export default {
   }
 }
 .side-page {
+  box-shadow: rgba(197, 219, 232, 0.4) -5px 0px 3px 0px;
   height: 100%;
 }
 .side-page-content {
