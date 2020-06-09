@@ -77,6 +77,7 @@ export default {
       groupActions: [
         {
           label: '新建',
+          permission: 'scheduledtasks_create',
           action: () => {
             this.$router.push({
               path: '/scheduledtask/create',
@@ -124,6 +125,7 @@ export default {
               },
               {
                 label: '删除',
+                permission: 'scheduledtasks_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     vm: this,

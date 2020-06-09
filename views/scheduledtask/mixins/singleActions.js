@@ -6,6 +6,7 @@ export default {
     this.singleActions = [
       {
         label: '修改',
+        permission: 'scheduledtasks_update',
         action: (obj) => {
           this.createDialog('ScheduledtaskEditDialog', {
             data: [obj],
@@ -59,6 +60,7 @@ export default {
             },
             {
               label: '删除',
+              permission: 'scheduledtasks_delete',
               action: obj => {
                 this.createDialog('DeleteResDialog', {
                   vm: this,
