@@ -56,7 +56,7 @@
                     </a-col>
                   </a-row>
                 </a-form-item>
-                <a-form-item label="InfluxDB数据库名称" extra="主备组的VRRP密码必须相同，为空则密码默认为YunionLB">
+                <a-form-item label="InfluxDB数据库名称">
                   <a-input v-decorator="decorators.telegraf_influx_db_output_name" />
                 </a-form-item>
                 <a-form-item label="监控数据采集间隔">
@@ -70,8 +70,8 @@
                 <a-form-item label="HAProxy线程数">
                   <a-input v-decorator="decorators.haproxy_global_nbthread" type="Number" />
                 </a-form-item>
-                <a-form-item label="日志输出设置">
-                  <a-input v-decorator="decorators.haproxy_global_log" placeholder="请输入日志输出位置" extra="例如：/dev/log（转发节点本地系统日志）、IP（远端的syslog服务器）、IP:Port（默认为UDP 514）；为空则表示不记录日志" />
+                <a-form-item label="日志输出设置" extra="例如：/dev/log（转发节点本地系统日志）、IP（远端的syslog服务器）、IP:Port（默认为UDP 514）；为空则表示不记录日志">
+                  <a-input v-decorator="decorators.haproxy_global_log" placeholder="请输入日志输出位置" />
                 </a-form-item>
                 <a-form-item label="记录HTTP日志">
                   <a-switch v-decorator="decorators.haproxy_log_http" />

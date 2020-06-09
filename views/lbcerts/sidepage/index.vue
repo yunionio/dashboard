@@ -31,6 +31,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import LbcertDetail from './Detail'
 import LbcertCacheList from './Cache'
+import LoadbalancerlistenersList from '@Network/views/loadbalancerlistener/components/List'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -40,6 +41,7 @@ export default {
   components: {
     LbcertDetail,
     LbcertCacheList,
+    LoadbalancerlistenersList,
     Actions,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
@@ -47,6 +49,7 @@ export default {
     return {
       detailTabs: [
         { label: '详情', key: 'lbcert-detail' },
+        { label: '监听', key: 'loadbalancerlisteners-list' },
         { label: '缓存列表', key: 'lbcert-cache-list' },
         { label: '操作日志', key: 'event-drawer' },
       ],
@@ -54,7 +57,7 @@ export default {
   },
   computed: {
     getParams () {
-      if (this.params.windowData.currentTab === 'lbcert-cache-list') {
+      if (['loadbalancerlisteners-list', 'lbcert-cache-list'].indexOf(this.params.windowData.currentTab) > -1) {
         return {
           details: true,
           certificate_id: this.detailData.id,

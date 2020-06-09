@@ -23,7 +23,7 @@
           </div>
           <a-input v-decorator="decorators.path" placeholder="请输入" />
         </a-form-item>
-         <redirect-form-items :form="form" @redirectChange="handleRedirectChange" />
+         <redirect-form-items v-if="this.params.lbListenerData.brand === 'OneCloud'" :form="form" @redirectChange="handleRedirectChange" />
          <template v-if="!isRedirect">
           <a-form-item label="后端服务器组">
             <base-select

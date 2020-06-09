@@ -33,7 +33,7 @@
             </a-col>
             <a-col :span="10">
               <a-form-item class="mb-0">
-                <a-input v-decorator="decorators.redirect_path" placeholder="请输入URL路径（可选）" />
+                <a-input v-decorator="decorators.redirect_path" placeholder="请输入URL路径" />
               </a-form-item>
             </a-col>
           </a-row>
