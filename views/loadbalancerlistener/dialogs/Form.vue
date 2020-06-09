@@ -1,15 +1,20 @@
 <template>
   <base-dialog :width="1000" @cancel="cancelDialog">
-    <div slot="header">调整访问控制</div>
+    <div slot="header">{{isUpdate ? '修改' : '新建'}}负载均衡监听</div>
     <div slot="body">
       <steps v-show="!isLbRedirected" v-model="step" />
-      <components
-        :is="component"
-        :step="step"
-        ref="formRef"
-        :listener-data="params.listenerData"
-        :lb-detail="params.lbDetail"
-        :isUpdate="isUpdate" />
+      <a-spin :spinning="spinning">
+        <a-icon slot="indicator" type="loading" style="font-size: 24px" spin />
+        <a-skeleton :loading="spinning" active :paragraph="{ rows: 6 }">
+          <components
+            :is="component"
+            :step="step"
+            ref="formRef"
+            :listener-data="this.listenerData"
+            :lb-detail="params.lbDetail"
+            :isUpdate="isUpdate" />
+        </a-skeleton>
+      </a-spin>
     </div>
     <div slot="footer">
       <template v-if="isLbRedirected">
@@ -26,7 +31,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import Onecloud from '@Network/views/loadbalancerlistener/create/form/onecloud'
 import Aliyun from '@Network/views/loadbalancerlistener/create/form/aliyun'
 import Qcloud from '@Network/views/loadbalancerlistener/create/form/qcloud'
@@ -62,6 +66,8 @@ export default {
       component,
       isUpdate,
       loading: false,
+      spinning: false,
+      listenerData: {},
       step: {
         steps: [
           { title: '协议&监听', component: 'Protocol' },
@@ -73,11 +79,20 @@ export default {
     }
   },
   computed: {
-    ...mapState('common', {
-      isLbRedirected: state => {
-        return !!state.lbRedirected.isLbRedirected
-      },
-    }),
+    isLbRedirected () {
+      return this.$store.getters.common.lbRedirected.isLbRedirected
+    },
+  },
+  created () {
+    if (this.isUpdate) {
+      this.fetchLbListener()
+      this.$store.dispatch('common/updateObject', {
+        name: 'lbRedirected',
+        data: {
+          isLbRedirected: this.params.listenerData.redirect === 'raw',
+        },
+      })
+    }
   },
   methods: {
     getParams (data) {
@@ -92,6 +107,17 @@ export default {
         params.health_check_http_code = params.health_check_http_code.join(',')
       }
       return params
+    },
+    async fetchLbListener () {
+      try {
+        this.spinning = true
+        const { data } = await new this.$Manager('loadbalancerlisteners').get({ id: this.params.listenerData.id })
+        this.listenerData = data
+      } catch (error) {
+        throw error
+      } finally {
+        this.spinning = false
+      }
     },
     async validateForm () { // 配合 StepMixin 进行下一步或者提交表单时的校验
       try {
