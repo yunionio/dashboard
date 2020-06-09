@@ -38,6 +38,20 @@ export default {
       required: true,
     },
   },
+  watch: {
+    'form.fd.listener_type' (val) {
+      const isLbRedirected = ['http', 'https'].includes(val) && this.form.fd.redirect
+      this.form.fc.setFieldsValue({
+        redirect: isLbRedirected,
+      })
+      this.$store.dispatch('common/updateObject', {
+        name: 'lbRedirected',
+        data: {
+          isLbRedirected,
+        },
+      })
+    },
+  },
   computed: {
     certificateParams () {
       const params = {
@@ -50,7 +64,7 @@ export default {
       return params
     },
     schedulerTypeOpts () {
-      let type = this.$route.query.type.toLowerCase()
+      let type = this.lbDetail.brand.toLowerCase()
       if (type) {
         if (type === 'aws') type = `${type}_${this.lbDetail.loadbalancer_spec}`
         return schedulerProviderMaps[type.toLowerCase()]
@@ -58,7 +72,7 @@ export default {
       return []
     },
     healthCheckTypeOpts () {
-      let type = this.$route.query.type.toLowerCase()
+      let type = this.lbDetail.brand.toLowerCase()
       if (type) {
         if (type === 'aws') type = `${type}_${this.lbDetail.loadbalancer_spec}`
         return healthCheckTypeProviderMaps[type.toLowerCase()]
@@ -66,7 +80,7 @@ export default {
       return []
     },
     healthCheckHttpCodeOpts () {
-      let type = this.$route.query.type.toLowerCase()
+      let type = this.lbDetail.brand.toLowerCase()
       if (type) {
         if (type === 'aws') type = `${type}_${this.lbDetail.loadbalancer_spec}`
         return healthCheckHttpCodeOpts[type.toLowerCase()] || healthCheckHttpCodeOpts.default
@@ -87,8 +101,8 @@ export default {
     },
   },
   data () {
-    let type = this.$route.query.type.toLowerCase()
-    const loadbalancer = this.$route.params.id
+    let type = this.lbDetail.brand.toLowerCase()
+    const loadbalancer = this.lbDetail.id
     if (type === 'aws') type = `${type}_${this.lbDetail.loadbalancer_spec}`
     const decorators = getDecorators({ provider: type, vm: this, loadbalancer })
     const initFd = getInitialValue(decorators)
@@ -138,7 +152,7 @@ export default {
     openBackendgroupsCreate () {
       this.createDialog('LoadbalancerbackendgroupsCreateDialog', {
         title: '新建后端服务器组',
-        loadbalancer: this.$route.params.id,
+        loadbalancer: this.lbDetail.id,
         onManager: this.onManager,
         refresh: async () => {
           const vnode = this.$refs.backendgroupsRef

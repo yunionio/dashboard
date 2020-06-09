@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="true">
     <page-header :title="`${isUpdate ? '修改' : '新建'}负载均衡监听`" />
     <page-body>
       <steps v-show="!isLbRedirected" v-model="step" />
@@ -100,7 +100,6 @@ export default {
     next () {
       const { currentStep } = this.step
       const next = currentStep + 1
-      // this.step['currentStep'] = next
       this.setStep(next)
     },
     async prev () {

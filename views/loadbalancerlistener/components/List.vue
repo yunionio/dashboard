@@ -78,15 +78,10 @@ export default {
           label: '新建',
           permission: 'lb_loadbalancerlisteners_create',
           action: () => {
-            const query = {
-              type: this.data.provider,
-            }
-            if (query.type === 'Aws') {
-              query.spec = this.data.loadbalancer_spec
-            }
-            this.$router.push({
-              path: `/lb/${this.data.id}/listener-create`,
-              query,
+            this.createDialog('LbListenerFormDialog', {
+              lbDetail: this.data,
+              columns: this.columns,
+              onManager: this.onManager,
             })
           },
           meta: () => {

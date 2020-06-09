@@ -115,20 +115,6 @@ export default {
       },
     }),
   },
-  watch: {
-    'form.fd.listener_type' (val) {
-      const isLbRedirected = ['http', 'https'].includes(val) && this.form.fd.redirect
-      this.form.fc.setFieldsValue({
-        redirect: isLbRedirected,
-      })
-      this.$store.dispatch('common/updateObject', {
-        name: 'lbRedirected',
-        data: {
-          isLbRedirected,
-        },
-      })
-    },
-  },
   methods: {
     async submit () {
       try {

@@ -39,16 +39,11 @@ export default {
           label: '修改',
           permission: 'lb_loadbalancerlisteners_update',
           action: obj => {
-            const query = {
-              type: this.list ? this.data.provider : this.detailData.provider,
-              listener: obj.id,
-            }
-            if (query.type === 'Aws') {
-              query.spec = this.list ? this.data.loadbalancer_spec : this.detailData.loadbalancer_spec
-            }
-            this.$router.push({
-              path: `/lb/${obj.loadbalancer_id}/listener-update`,
-              query,
+            this.createDialog('LbListenerFormDialog', {
+              listenerData: obj,
+              lbDetail: this.data,
+              columns: this.columns,
+              onManager: this.onManager,
             })
           },
           meta: obj => {
