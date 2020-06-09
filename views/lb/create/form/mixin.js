@@ -170,7 +170,7 @@ export default {
       const params = {}
       if (this.isAdminMode) {
         if (R.is(String, this.domain)) {
-          params['project_domain'] = this.domain
+          params.project_domain = this.domain
         }
       } else {
         params.scope = this.scope

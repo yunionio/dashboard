@@ -15,7 +15,7 @@ const RECORD_TYPE_MAP = {
 }
 
 const classify = (recordStr) => {
-  let initArr = recordStr.split(',')
+  const initArr = recordStr.split(',')
   const recordList = initArr.map(keyValue => {
     const arr = keyValue.split(':')
     const key = arr[0]
@@ -52,7 +52,7 @@ const checkName = (row) => {
     }
     const { recordType } = classify(row.records)
     if (recordType === 'SRV') {
-      let parts = value.split('.')
+      const parts = value.split('.')
       if (parts.length < 3) {
         return callback(new Error('请输入合法的SRV域名'))
       }

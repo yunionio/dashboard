@@ -1,57 +1,57 @@
 export const CEHCK_STATUS_CN = {
-  'UNK': {
+  UNK: {
     textColor: '#909399',
     text: '未知',
   },
-  'INI': {
+  INI: {
     textColor: '#67C23A',
     text: '启动中',
   },
-  'SOCKERR': {
+  SOCKERR: {
     textColor: '#F56C6C',
     text: 'socket错误',
   },
-  'L4OK': {
+  L4OK: {
     textColor: '#67C23A',
     text: 'L4正常',
   },
-  'L4TOUT': {
+  L4TOUT: {
     textColor: '#F56C6C',
     text: 'L4超时',
   },
-  'L4CON': {
+  L4CON: {
     textColor: '#F56C6C',
     text: 'L4连接错误',
   },
-  'L6OK': {
+  L6OK: {
     textColor: '#67C23A',
     text: 'L6正常',
   },
-  'L6TOUT': {
+  L6TOUT: {
     textColor: '#F56C6C',
     text: 'L6超时',
   },
-  'L6RSP': {
+  L6RSP: {
     textColor: '#F56C6C',
     text: 'L6协议错误',
   },
-  'L7OK': {
+  L7OK: {
     textColor: '#67C23A',
     text: 'L7正常',
   },
-  'L7OKC': {
+  L7OKC: {
     textColor: '#67C23A',
     text: 'L7正常',
   },
-  'L7TOUT': {
+  L7TOUT: {
     textColor: '#F56C6C',
     text: 'L7超时',
   },
-  'L7RSP': {
+  L7RSP: {
     textColor: '#F56C6C',
     text: 'L7协议错误',
   },
-  'L7STS': {
+  L7STS: {
     textColor: '#F56C6C',
     text: 'L7响应错误',
   },

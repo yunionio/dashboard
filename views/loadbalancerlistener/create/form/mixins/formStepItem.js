@@ -1,10 +1,10 @@
 import * as R from 'ramda'
+import { getDecorators } from '../utils'
 import ListenerTypes from '@Network/views/loadbalancerlistener/components/ListenerTypes'
 import SchedulerTypes from '@Network/views/loadbalancerlistener/components/SchedulerTypes'
 import { schedulerProviderMaps, healthCheckTypeProviderMaps, healthCheckHttpCodeOpts } from '@Network/views/loadbalancerlistener/constants'
 import StickySession from '@Network/views/loadbalancerlistener/components/StickySession'
 import Acl from '@Network/views/loadbalancerlistener/components/Acl'
-import { getDecorators } from '../utils'
 import { getInitialValue } from '@/utils/common/ant'
 import NameRepeated from '@/sections/NameRepeated'
 import { HYPERVISORS_MAP } from '@/constants'
@@ -69,7 +69,7 @@ export default {
       let type = this.$route.query.type.toLowerCase()
       if (type) {
         if (type === 'aws') type = `${type}_${this.lbDetail.loadbalancer_spec}`
-        return healthCheckHttpCodeOpts[type.toLowerCase()] || healthCheckHttpCodeOpts['default']
+        return healthCheckHttpCodeOpts[type.toLowerCase()] || healthCheckHttpCodeOpts.default
       }
       return []
     },
@@ -141,7 +141,7 @@ export default {
         loadbalancer: this.$route.params.id,
         onManager: this.onManager,
         refresh: async () => {
-          const vnode = this.$refs['backendgroupsRef']
+          const vnode = this.$refs.backendgroupsRef
           if (vnode && vnode.loadOpts) {
             const retList = await vnode.loadOpts()
             if (retList && retList.length > 0) {
@@ -195,7 +195,7 @@ export default {
       }
     },
     rollbackForm () {
-      let updateData = {}
+      const updateData = {}
       const needTurnBool = ['acl_status', 'health_check', 'sticky_session']
       const updateFieldMap = { // 后端返回数据和前端请求数据不一致，这里做字段映射
         [this.decorators.certificate[0]]: 'certificate_id',

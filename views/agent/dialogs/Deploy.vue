@@ -274,7 +274,7 @@ export default {
     isOut () {
       const item = this.params.data && this.params.data.length && this.params.data[0]
       if (item && item.hb_last_seen) {
-        let s = this.$moment().diff(item.hb_last_seen, 'seconds')
+        const s = this.$moment().diff(item.hb_last_seen, 'seconds')
         if (s < 60) {
           return true
         }
@@ -387,7 +387,7 @@ export default {
                 })
                 this.deployMethod = vars.repo_base_url ? 'yum' : 'copy'
                 this.$nextTick(() => {
-                  this.form.fc.setFieldsValue({ 'repo_sslverify': !!parseInt(vars.repo_sslverify) })
+                  this.form.fc.setFieldsValue({ repo_sslverify: !!parseInt(vars.repo_sslverify) })
                 })
               }
             }
@@ -396,7 +396,7 @@ export default {
           })
 
         /* 处理云主机start */
-        let arrHost = deployment.host.split(':') || []
+        const arrHost = deployment.host.split(':') || []
         if (arrHost && arrHost.length === 2) {
           const obj = {
             hostName: arrHost[0],
@@ -440,8 +440,8 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        let values = await this.form.fc.validateFields()
-        values['repo_sslverify'] = values['repo_sslverify'] ? 1 : 0
+        const values = await this.form.fc.validateFields()
+        values.repo_sslverify = values.repo_sslverify ? 1 : 0
         const { hostName, ip, host, proj, pass, server, user } = values
         let name = ''
         if (hostName && hostName === 'host') {

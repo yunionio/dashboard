@@ -63,7 +63,7 @@ export default {
           return NO_DATA
         }
         source = source.concat(values)
-        let { unit = '' } = this.options
+        const { unit = '' } = this.options
         const exceptTime = this.options.columns.filter(column => column !== 'time')
         const chartOpt = {
           legend: {

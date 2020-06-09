@@ -158,8 +158,8 @@ export default {
       form: {
         fc: this.$form.createForm(this, {
           onValuesChange: (props, values) => {
-            if (values['platform_type']) {
-              this.platform_type = values['platform_type']
+            if (values.platform_type) {
+              this.platform_type = values.platform_type
             }
           },
         }),
@@ -401,7 +401,7 @@ export default {
         scope: this.scope,
       }
       if (this.isAdminMode) {
-        params['project_domain'] = this.project_domain
+        params.project_domain = this.project_domain
         delete params.scope
       }
       return params
@@ -415,20 +415,20 @@ export default {
         show_emulated: true,
       }
       if (this.platform_type === 'private') {
-        params['is_private'] = true
+        params.is_private = true
         delete params.is_public
         delete params.is_on_premise
       } else if (this.platform_type === 'public') {
-        params['is_public'] = true
+        params.is_public = true
         delete params.is_private
         delete params.is_on_premise
       } else {
-        params['is_on_premise'] = true
+        params.is_on_premise = true
         delete params.is_private
         delete params.is_public
       }
       if (this.isAdminMode) {
-        params['project_domain'] = this.project_domain
+        params.project_domain = this.project_domain
         delete params.scope
       }
       return params
@@ -439,7 +439,7 @@ export default {
         vpcId: this.vpcId,
       }
       if (this.isAdminMode) {
-        params['project_domain'] = this.project_domain
+        params.project_domain = this.project_domain
         delete params.scope
       }
       return params
@@ -450,7 +450,7 @@ export default {
         show_emulated: true,
       }
       if (this.isAdminMode) {
-        params['project_domain'] = this.project_domain
+        params.project_domain = this.project_domain
         delete params.scope
       }
       return params
@@ -523,7 +523,7 @@ export default {
       const maskNum = (value && value.split('/').length > 1) ? value.split('/')[1] : null
       const publicWire = this.form.fc.getFieldValue('cloudregion')
       if (maskNum && publicWire && publicWire.provider) {
-        const provider = publicWire['provider'].toLowerCase()
+        const provider = publicWire.provider.toLowerCase()
         if (masks[provider]) {
           const min = masks[provider].min
           const max = masks[provider].max
@@ -562,9 +562,9 @@ export default {
             const obj = {
               guest_ip_prefix: value,
               name: values.name,
-              vpc: values['vpc']['key'],
-              zone: values['zone'],
-              project_id: values['project']['key'],
+              vpc: values.vpc.key,
+              zone: values.zone,
+              project_id: values.project.key,
             }
             data.push(obj)
           }, values.guest_ip_prefix)
@@ -574,15 +574,15 @@ export default {
               alloc_policy: values.alloc_policy,
               guest_dns: values.guest_dns,
               guest_domain: values.guest_domain,
-              guest_gateway: values['gateway'][key],
-              guest_ip_end: values['endip'][key],
-              guest_ip_mask: values['netmask'][key],
-              guest_ip_start: values['startip'][key],
-              vlan_id: values['vlan'][key] === '' ? '1' : values['vlan'][key],
+              guest_gateway: values.gateway[key],
+              guest_ip_end: values.endip[key],
+              guest_ip_mask: values.netmask[key],
+              guest_ip_start: values.startip[key],
+              vlan_id: values.vlan[key] === '' ? '1' : values.vlan[key],
               name: values.name,
-              project_id: values['project']['key'],
+              project_id: values.project.key,
               server_type: values.server_type,
-              wire_id: values['wire'],
+              wire_id: values.wire,
             }
             data.push(obj)
           }, values.startip)
@@ -591,18 +591,18 @@ export default {
       }
       if (this.regionProvider === typeClouds.providerMap.ZStack.key) {
         return {
-          project_id: values['project']['key'],
+          project_id: values.project.key,
           guest_ip_prefix: values.guest_ip_prefix[0],
           name: values.name,
-          wire_id: values['wire'],
+          wire_id: values.wire,
         }
       }
       return {
-        project_id: values['project']['key'],
+        project_id: values.project.key,
         guest_ip_prefix: values.guest_ip_prefix[0],
         name: values.name,
-        vpc: values['vpc']['key'],
-        zone: values['zone'],
+        vpc: values.vpc.key,
+        zone: values.zone,
       }
     },
     clearIpSubnetsError () {

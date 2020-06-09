@@ -100,9 +100,9 @@ export default {
   data () {
     return {
       proxyOpts: {
-        'off': '关闭',
-        'v1': 'V1',
-        'v2': 'V2',
+        off: '关闭',
+        v1: 'V1',
+        v2: 'V2',
         'v2-ssl': 'V2-SSL',
         'v2-ssl-on': 'V2-SSL-CN',
       },

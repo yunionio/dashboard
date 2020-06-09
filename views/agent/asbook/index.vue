@@ -147,7 +147,7 @@ export default {
             id: loadbalanceragentId,
             action: 'undeploy',
             data: {
-              'state': 'suspend',
+              state: 'suspend',
               // 'process-key': key,
             },
           })

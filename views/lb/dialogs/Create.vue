@@ -91,7 +91,7 @@ export default {
           onValuesChange: (props, values) => {
             if (values.acl_entries) {
               const str = values.acl_entries
-              let cidrs = str.split(/[\s\n]/).filter(v => !!v)
+              const cidrs = str.split(/[\s\n]/).filter(v => !!v)
               this.aclEntries = cidrs.map(str => {
                 const [cidr, comment = ''] = str.split('|')
                 return {
@@ -175,7 +175,7 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        let values = await this.form.fc.validateFields()
+        const values = await this.form.fc.validateFields()
         if (this.params.type === 'create') {
           await this.doCreate(values)
         } else {

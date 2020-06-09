@@ -77,8 +77,8 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        let values = await this.form.fc.validateFields()
-        if (values['split_ip'] === this.params.data[0].guest_ip_start || values['split_ip'] === this.params.data[0].guest_ip_end) {
+        const values = await this.form.fc.validateFields()
+        if (values.split_ip === this.params.data[0].guest_ip_start || values.split_ip === this.params.data[0].guest_ip_end) {
           this.$message.error('新网络的起始IP不能写为原网络的起始IP或者终止IP')
           return
         }

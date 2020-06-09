@@ -49,15 +49,15 @@
 </template>
 
 <script>
-import { schedulerProviderMaps } from '@Network/views/loadbalancerlistener/constants'
 import mixin from '../mixins/formStepItem'
+import { schedulerProviderMaps } from '@Network/views/loadbalancerlistener/constants'
 
 export default {
   name: 'LBListenerCreateProtocol',
   mixins: [mixin],
   computed: {
     schedulerTypeOpts () {
-      let type = this.$route.query.type.toLowerCase()
+      const type = this.$route.query.type.toLowerCase()
       if (type) {
         const opts = schedulerProviderMaps[type.toLowerCase()]
         const { listener_type } = this.form.fd

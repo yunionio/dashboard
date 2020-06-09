@@ -287,7 +287,7 @@ export default {
       }
 
       if (this.formMsg.recordType === 'SRV') {
-        let parts = value.split('.')
+        const parts = value.split('.')
         if (parts.length < 3) {
           return callback(new Error('请输入合法的SRV域名'))
         }
@@ -317,11 +317,11 @@ export default {
           this.form.fc.getFieldDecorator('name', { preserve: true, initialValue: val.name })
         }
       }
-      let ttl = val.ttl
+      const ttl = val.ttl
       this.form.fc.getFieldDecorator('ttl', { preserve: true, initialValue: ttl })
     },
     _classify (recordStr) {
-      let initArr = recordStr.split(',')
+      const initArr = recordStr.split(',')
       const recordList = initArr.map(keyValue => {
         const arr = keyValue.split(':')
         const key = arr[0]
@@ -358,33 +358,41 @@ export default {
           this.recordList = this.formMsg.cacheRecord[type] || [
             { key: 'A', record: '' },
           ]
-          this.form.fc.setFieldsValue({ key: [
-            { key: 'A', record: '' },
-          ] })
+          this.form.fc.setFieldsValue({
+            key: [
+              { key: 'A', record: '' },
+            ],
+          })
           break
         case 'CNAME':
           this.recordList = this.formMsg.cacheRecord[type] || [
             { key: 'CNAME', record: '' },
           ]
-          this.form.fc.setFieldsValue({ key: [
-            { key: 'CNAME', record: '' },
-          ] })
+          this.form.fc.setFieldsValue({
+            key: [
+              { key: 'CNAME', record: '' },
+            ],
+          })
           break
         case 'PTR':
           this.recordList = this.formMsg.cacheRecord[type] || [
             { key: 'PTR', record: '' },
           ]
-          this.form.fc.setFieldsValue({ key: [
-            { key: 'PTR', record: '' },
-          ] })
+          this.form.fc.setFieldsValue({
+            key: [
+              { key: 'PTR', record: '' },
+            ],
+          })
           break
         case 'SRV':
           this.recordList = this.formMsg.cacheRecord[type] || [
             { key: 'SRV', host: '', port: 1, weight: 0, priority: 0 },
           ]
-          this.form.fc.setFieldsValue({ key: [
-            { key: 'SRV', host: '', port: 1, weight: 0, priority: 0 },
-          ] })
+          this.form.fc.setFieldsValue({
+            key: [
+              { key: 'SRV', host: '', port: 1, weight: 0, priority: 0 },
+            ],
+          })
           break
       }
       this.$nextTick(() => {
@@ -478,7 +486,7 @@ export default {
       if (this.formMsg.recordType === 'A/AAAA') {
         const aType = recordList.filter(v => v.key === 'A')
         const aaaaType = recordList.filter(
-          v => v.key === 'AAAA'
+          v => v.key === 'AAAA',
         )
         addParams(aType, (obj, i) => {
           newValues[`A.${i}`] = obj.record
@@ -487,10 +495,10 @@ export default {
           newValues[`AAAA.${i}`] = obj.record
         })
       } else if (this.formMsg.recordType === 'CNAME') {
-        newValues['CNAME'] = recordList[0].record
+        newValues.CNAME = recordList[0].record
       } else if (this.formMsg.recordType === 'PTR') {
         newValues.name = `${newValues.ptrName}.in-addr.arpa`
-        newValues['PTR'] = recordList[0].record
+        newValues.PTR = recordList[0].record
       } else if (this.formMsg.recordType === 'SRV') {
         addParams(recordList, (obj, i) => {
           newValues[`SRV.${i}`] = `${obj.host}:${obj.port}:${obj.weight}:${obj.priority}`
@@ -502,7 +510,7 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        let values = await this.form.fc.validateFields()
+        const values = await this.form.fc.validateFields()
         const newValues = this.genData(values)
         await this.doCreate(newValues)
         this.loading = false

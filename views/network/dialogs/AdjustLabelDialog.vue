@@ -59,7 +59,7 @@ export default {
   },
   methods: {
     loadSchedTags (query) {
-      let manager = new this.$Manager('schedtags')
+      const manager = new this.$Manager('schedtags')
       const params = { 'filter.0': 'resource_type.equals(networks)', scope: this.scope }
       if (query && query.length > 0) {
         params['filter.1'] = 'name.contains(' + query + ')'
@@ -73,7 +73,7 @@ export default {
           const allUseSchedTags = R.uniqBy(obj => obj.id, R.flatten(this.params.data.map(item => item.schedtags || [])))
           if (allUseSchedTags) {
             this.useSchedTags = allUseSchedTags.map(item => ({ id: item.id, name: item.name }))
-            this.form.fc.setFieldsValue({ 'schedTags': allUseSchedTags.map(item => item.id) })
+            this.form.fc.setFieldsValue({ schedTags: allUseSchedTags.map(item => item.id) })
           }
         })
     },
@@ -89,7 +89,7 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        let values = await this.form.fc.validateFields()
+        const values = await this.form.fc.validateFields()
         values.schedTags.forEach((item, idx) => {
           values[`schedtag.${idx}`] = item
         })

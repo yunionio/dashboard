@@ -18,7 +18,7 @@ import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'DNatList',
-  mixins: [ DialogMixin, WindowsMixin, ListMixin ],
+  mixins: [DialogMixin, WindowsMixin, ListMixin],
   props: {
     resId: {
       type: String,

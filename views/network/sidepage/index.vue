@@ -27,7 +27,6 @@
 </template>
 
 <script>
-import ReservedIpList from '@Network/views/reserved-ip/components/List'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import NetworkDetail from './Detail'
@@ -36,6 +35,7 @@ import HostIp from './HostIp'
 import LbIp from './LbIp'
 import FlexIp from './FlexIp'
 import IPList from './IPList'
+import ReservedIpList from '@Network/views/reserved-ip/components/List'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'

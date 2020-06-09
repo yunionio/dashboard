@@ -54,8 +54,8 @@
 </template>
 
 <script>
-import { LB_SPEC } from '@Network/views/lb/constants'
 import lbCreate from './mixin'
+import { LB_SPEC } from '@Network/views/lb/constants'
 import ChargeTypeRadio from '@/sections/ChargeTypeRadio'
 
 export default {

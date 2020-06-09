@@ -16,7 +16,7 @@ import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'HostsList',
-  mixins: [ DialogMixin, WindowsMixin ],
+  mixins: [DialogMixin, WindowsMixin],
   props: {
     resId: {
       type: String,

@@ -18,8 +18,8 @@ import WindowsMixin from '@/mixins/windows'
 import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
 
 const BillingType = {
-  'postpaid': '后付费',
-  'prepaid': '预付费',
+  postpaid: '后付费',
+  prepaid: '预付费',
 }
 
 export default {
