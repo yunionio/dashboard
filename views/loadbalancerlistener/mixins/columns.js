@@ -44,7 +44,15 @@ export default {
         title: '后端服务器组',
         minWidth: 200,
       },
-      getStatusTableColumn({ minWidth: 100, statusModule: 'lbHealth', field: 'health_check', title: '健康检查' }),
+      getStatusTableColumn({
+        minWidth: 100,
+        statusModule: 'lbHealth',
+        field: 'health_check',
+        title: '健康检查',
+        slotCallback: (row) => {
+          return row.redirect === 'raw' ? '-' : null
+        },
+      }),
       getStatusTableColumn({ minWidth: 100, statusModule: 'lbAcl', field: 'acl_status', title: '访问控制' }),
       getStatusTableColumn({ minWidth: 100, statusModule: 'lbRedirect', field: 'redirect', title: '重定向' }),
       getProjectTableColumn(),

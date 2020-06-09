@@ -37,7 +37,43 @@ export default {
           name: getNameFilter(),
         },
       }),
-      groupActions: [
+    }
+  },
+  computed: {
+    groupActions () {
+      if (this.$route.name === 'LbcertList') {
+        return [
+          {
+            label: '更换证书',
+            permission: 'lb_loadbalancerlisteners_update',
+            action: (obj) => {
+              this.createDialog('LbListenerUpdateCertificate', {
+                vm: this,
+                data: [obj],
+                columns: this.columns,
+                onManager: this.onManager,
+                lbDetail: this.data,
+              })
+            },
+            meta: () => {
+              if (this.list.selectedItems.length <= 0) {
+                return {
+                  validate: false,
+                }
+              }
+              const isHttps = this.list.selectedItems.every(item => item.listener_type === 'https')
+              if (!isHttps) {
+                return {
+                  validate: false,
+                  tooltip: '仅https协议支持此操作',
+                }
+              }
+              return { validate: true }
+            },
+          },
+        ]
+      }
+      return [
         {
           label: '新建',
           permission: 'lb_loadbalancerlisteners_create',
@@ -74,8 +110,8 @@ export default {
           },
           meta: () => this.$getDeleteResult(this.list.selectedItems),
         },
-      ],
-    }
+      ]
+    },
   },
   created () {
     this.list.fetchData()
