@@ -610,6 +610,14 @@ export const PERMISSION = {
   suggestsysrules_list: ['compute', 'suggestsysrules', 'list'],
   // 权限
   policies_get: ['identity', 'policies', 'get'],
+  // 定时任务
+  scheduledtasks_list: ['compute', 'scheduledtasks', 'list'],
+  scheduledtasks_create: ['compute', 'scheduledtasks', 'create'],
+  scheduledtasks_update: ['compute', 'scheduledtasks', 'update'],
+  scheduledtasks_delete: ['compute', 'scheduledtasks', 'delete'],
+  scheduledtasks_perform_enable: ['compute', 'scheduledtasks', 'perform', 'enable'],
+  scheduledtasks_perform_disable: ['compute', 'scheduledtasks', 'perform', 'disable'],
+  scheduledtasks_perform_set_label: ['compute', 'scheduledtasks', 'perform', 'set-labels'],
 }
 
 // 已声明权限的资源

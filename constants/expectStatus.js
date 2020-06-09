@@ -302,4 +302,9 @@ export default {
     success: ['ready'],
     danger: ['create_failed'],
   },
+  scheduledtaskactivity: {
+    info: ['execution'],
+    success: ['succeed', 'part_succeed'],
+    danger: ['failed', 'reject'],
+  },
 }
