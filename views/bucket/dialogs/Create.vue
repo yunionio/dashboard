@@ -100,10 +100,10 @@ export default {
     async handleValuesChange (vm, changedFields) {
       if (changedFields && changedFields.domain) {
         if (this.$store.getters.isAdminMode) {
-          this.scopeParams['project_domain'] = changedFields.domain.key || this.getFieldValue('domain').key
-          delete this.scopeParams['scope']
+          this.scopeParams.project_domain = changedFields.domain.key || this.getFieldValue('domain').key
+          delete this.scopeParams.scope
         } else {
-          delete this.scopeParams['project_domain']
+          delete this.scopeParams.project_domain
         }
       }
     },
