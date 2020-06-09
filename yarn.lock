@@ -1826,7 +1826,7 @@ ansi-styles@^4.0.0, ansi-styles@^4.1.0:
     "@types/color-name" "^1.1.1"
     color-convert "^2.0.1"
 
-ant-design-vue@^1.5.0:
+ant-design-vue@^1.6.2:
   version "1.6.2"
   resolved "https://registry.yarnpkg.com/ant-design-vue/-/ant-design-vue-1.6.2.tgz#983634caac9cdaca0b3a095b540105b4f76da29f"
   integrity sha512-VEwWomHxY+0rt0RKRd4FqrW+udCr7cpFt0GwVOCJPwIdulkZkB3GjK64GslEl9XtBp/rKzcorfAx4t1ues6Izg==
