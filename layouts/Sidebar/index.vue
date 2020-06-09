@@ -1,6 +1,6 @@
 <template>
   <div class="sidebar-wrap" @mouseleave="handleMouseLeave">
-    <level1-menu :menuitems="menuitems" :show-menu="showMenu" @ghost-l2-change="ghostL2ChangeHandle" />
+    <level1-menu :menuitems="menuitems" :show-menu="showMenu" :ghost-l2-menu="ghostL2Menu" @ghost-l2-change="ghostL2ChangeHandle" />
     <level2-menu ref="level2menu" :current-menu="currentMenu" :show-menu="showMenu" :visible="l2MenuVisible" />
     <transition name="slide-fade">
       <level2-menu
