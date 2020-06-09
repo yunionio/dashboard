@@ -20,7 +20,7 @@ export default {
       }),
       getStatusTableColumn({ statusModule: 'snapshotpolicy' }),
       {
-        filed: 'binding_disk_count',
+        field: 'binding_disk_count',
         title: '关联硬盘数量',
         width: 120,
         slots: {
@@ -33,7 +33,7 @@ export default {
         },
       },
       {
-        filed: 'repeat_weekdays',
+        field: 'repeat_weekdays',
         title: '策略详情',
         minWidth: 180,
         showOverflow: 'ellipsis',
