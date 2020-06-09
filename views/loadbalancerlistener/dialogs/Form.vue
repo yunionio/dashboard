@@ -10,7 +10,7 @@
             :is="component"
             :step="step"
             ref="formRef"
-            :listener-data="this.listenerData"
+            :listener-data="listenerData"
             :lb-detail="params.lbDetail"
             :isUpdate="isUpdate" />
         </a-skeleton>
