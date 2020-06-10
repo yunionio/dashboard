@@ -77,10 +77,12 @@ export default {
     },
     doResourceFeeSubmit (data) {
       const selectedIds = this.params.data.map(item => item.id)
-      return new this.$Manager('hosts', 'v2').batchPerformAction({
+      return new this.$Manager('servers').batchPerformAction({
         ids: selectedIds,
-        action: 'renew-prepaid-recycle',
-        data,
+        action: 'renew',
+        data: {
+          duration: data.buyDuration,
+        },
       })
     },
     async handleConfirm () {
