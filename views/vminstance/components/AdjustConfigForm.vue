@@ -417,7 +417,7 @@ export default {
           editDesc: false,
           slotCallback: row => {
             return (
-              <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
+              <side-page-trigger>{ row.name }</side-page-trigger>
             )
           },
         }),
