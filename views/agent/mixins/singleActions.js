@@ -62,23 +62,41 @@ export default {
         },
       },
       {
-        label: '删除',
-        action: (obj) => {
-          this.createDialog('DeleteResDialog', {
-            vm: this,
-            title: '删除',
-            data: [obj],
-            columns: this.columns,
-            onManager: this.onManager,
-            alert: '提示：删除操作仅涉及数据库记录，实际节点的下线计划需要管理员计划实施',
-            content: () => {
-              const change = (bool) => {
-                this.okButtonProps.disabled = !bool
-              }
-              return <a-checkbox value={this.isDelete} onInput={ change }>确认已经实际操作下线</a-checkbox>
+        label: '更多',
+        actions: (obj) => {
+          return [
+            {
+              label: '修改',
+              action: () => {
+                this.$router.push({
+                  name: 'AgentForm',
+                  query: {
+                    id: obj.id,
+                  },
+                })
+              },
             },
-            okButtonProps: this.okButtonProps,
-          })
+            {
+              label: '删除',
+              action: (obj) => {
+                this.createDialog('DeleteResDialog', {
+                  vm: this,
+                  title: '删除',
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                  alert: '提示：删除操作仅涉及数据库记录，实际节点的下线计划需要管理员计划实施',
+                  content: () => {
+                    const change = (bool) => {
+                      this.okButtonProps.disabled = !bool
+                    }
+                    return <a-checkbox value={this.isDelete} onInput={ change }>确认已经实际操作下线</a-checkbox>
+                  },
+                  okButtonProps: this.okButtonProps,
+                })
+              },
+            },
+          ]
         },
       },
     ]

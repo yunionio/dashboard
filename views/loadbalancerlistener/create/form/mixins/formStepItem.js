@@ -146,6 +146,9 @@ export default {
   mounted () {
     if (this.isUpdate) {
       this.rollbackForm()
+      if (this.$refs.backendgroupsRef) {
+        this.$refs.backendgroupsRef.change(this.listenerData.backend_group_id)
+      }
     }
   },
   methods: {

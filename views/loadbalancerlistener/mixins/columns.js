@@ -43,6 +43,10 @@ export default {
         field: 'backend_group',
         title: '后端服务器组',
         minWidth: 200,
+        formatter: ({ row }) => {
+          if (!row.backend_group || row.redirect === 'raw') return '-'
+          return row.backend_group
+        },
       },
       getStatusTableColumn({
         minWidth: 100,
