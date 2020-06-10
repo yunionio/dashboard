@@ -90,7 +90,7 @@ export const getBrandTableColumn = ({ field = 'brand', title = '平台', hidden 
   }
 }
 
-export const getStatusTableColumn = ({ field = 'status', title = '状态', statusModule, sortable = true, minWidth = 80 } = {}) => {
+export const getStatusTableColumn = ({ field = 'status', title = '状态', statusModule, sortable = true, minWidth = 80, slotCallback } = {}) => {
   return {
     field,
     title,
@@ -99,6 +99,10 @@ export const getStatusTableColumn = ({ field = 'status', title = '状态', statu
     minWidth,
     slots: {
       default: ({ row }, h) => {
+        if (slotCallback && R.type(slotCallback) === 'Function') {
+          const slot = slotCallback(row)
+          if (slot || slot === 0) return slot
+        }
         if (!statusModule) return 'status module undefined'
         const val = _.get(row, field)
         if (R.isNil(val)) return ''

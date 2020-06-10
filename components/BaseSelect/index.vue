@@ -2,6 +2,7 @@
   <div>
     <a-select
       class="base-select"
+      :disabled="disabled"
       v-bind="{ ...selectProps, ...filterOpts }"
       :style="{ width: (showSync ? 'calc(100% - 22px)' : '100%'), 'min-width': minWidth }"
       :value="value"
@@ -34,6 +35,10 @@ export default {
   props: {
     value: {
       required: true,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
     params: {
       type: Object,
