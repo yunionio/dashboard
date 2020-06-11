@@ -1,0 +1,64 @@
+<template>
+  <base-side-page
+    @cancel="cancelSidePage"
+    :title="$t('dictionary.cloudgroup')"
+    icon="res-cloudaccount"
+    :res-name="detailData.name"
+    :actions="params.actions"
+    :current-tab="params.windowData.currentTab"
+    :tabs="detailTabs"
+    :loaded="loaded"
+    @tab-change="handleTabChange">
+    <template v-slot:actions>
+      <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
+    </template>
+    <component :is="params.windowData.currentTab" :data="detailData" :on-manager="onManager" :res-id="data.id" :getParams="getParams" />
+  </base-side-page>
+</template>
+
+<script>
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
+import CloudgroupDetail from './Detail'
+import ClouduserListForCloudgroupSidepage from './ClouduserList'
+import CloudpolicyListForCloudgroupSidepage from './CloudpolicyList'
+import SidePageMixin from '@/mixins/sidePage'
+import WindowsMixin from '@/mixins/windows'
+import Actions from '@/components/PageList/Actions'
+
+export default {
+  name: 'CloudgroupSidePage',
+  components: {
+    Actions,
+    CloudgroupDetail,
+    ClouduserListForCloudgroupSidepage,
+    CloudpolicyListForCloudgroupSidepage,
+  },
+  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
+  data () {
+    return {
+      detailTabs: [
+        { label: this.$t('sidepage.tab.label.detail'), key: 'cloudgroup-detail' },
+        { label: this.$t('cloudenv.coludgroup_text001'), key: 'clouduser-list-for-cloudgroup-sidepage' },
+        { label: this.$t('dictionary.policy'), key: 'cloudpolicy-list-for-cloudgroup-sidepage' },
+        { label: this.$t('dictionary.actions'), key: 'event-drawer' },
+      ],
+    }
+  },
+  computed: {
+    getParams () {
+      if (this.params.windowData.currentTab === 'clouduser-list-for-cloudgroup-sidepage') {
+        return {
+          cloudgroup_id: this.data.id,
+        }
+      }
+      if (this.params.windowData.currentTab === 'cloudpolicy-list-for-cloudgroup-sidepage') {
+        return {
+          cloudgroup_id: this.data.id,
+        }
+      }
+      return null
+    },
+  },
+}
+</script>
