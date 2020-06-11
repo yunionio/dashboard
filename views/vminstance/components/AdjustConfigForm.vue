@@ -7,7 +7,7 @@
       </div>
     </a-alert>
     <div class="h-desc-bg">
-      <h5 class="h-title">以下虚拟机将进行调整配置</h5>
+      <h5 class="h-title">以下<em>{{params.data.length}}台</em>虚拟机将进行调整配置</h5>
       <div class="pl-4 pr-4 pb-2">
         <a-row>
           <a-col :span="24">
@@ -417,7 +417,7 @@ export default {
           editDesc: false,
           slotCallback: row => {
             return (
-              <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
+              <side-page-trigger>{ row.name }</side-page-trigger>
             )
           },
         }),
@@ -733,6 +733,10 @@ export default {
   padding: 10px 0;
   margin-left: 21px;
   font-weight: normal;
+}
+.h-title em{
+  font-style: normal;
+  color: #1890ff;
 }
 .h-desc-bg{
   background: rgba(245, 245, 243, 0.4)
