@@ -618,6 +618,30 @@ export const PERMISSION = {
   scheduledtasks_perform_enable: ['compute', 'scheduledtasks', 'perform', 'enable'],
   scheduledtasks_perform_disable: ['compute', 'scheduledtasks', 'perform', 'disable'],
   scheduledtasks_perform_set_label: ['compute', 'scheduledtasks', 'perform', 'set-labels'],
+  // 权限组
+  cloudgroup_create: ['cloudid', 'cloudgroups', 'create'],
+  cloudgroup_list: ['cloudid', 'cloudgroups', 'list'],
+  cloudgroup_get: ['cloudid', 'cloudgroups', 'get'],
+  cloudgroup_perform_add_user: ['cloudid', 'cloudgroups', 'perform', 'set-users'],
+  cloudgroup_perform_set_policy: ['cloudid', 'cloudgroups', 'perform', 'set-policies'],
+  cloudgroup_delete: ['cloudid', 'cloudgroups', 'delete'],
+  cloudgroup_perform_remove_user: ['cloudid', 'cloudgroups', 'perform', 'remove-user'],
+  cloudgroup_perform_syncstatus: ['cloudid', 'cloudgroups', 'perform', 'syncstatus'],
+  // 云用户
+  clouduser_list: ['cloudid', 'cloudusers', 'list'],
+  clouduser_get: ['cloudid', 'cloudusers', 'get'],
+  clouduser_create: ['cloudid', 'cloudusers', 'create'],
+  clouduser_update: ['cloudid', 'cloudusers', 'update'],
+  clouduser_delete: ['cloudid', 'cloudusers', 'delete'],
+  clouduser_perform_leave_group: ['cloudid', 'cloudusers', 'perform', 'leave-group'],
+  clouduser_perform_change_owner: ['cloudid', 'cloudusers', 'perform', 'change-owner'],
+  clouduser_perform_set_groups: ['cloudid', 'cloudusers', 'perform', 'set-groups'],
+  // 云权限
+  cloudpolicy_list: ['cloudid', 'cloudpolicies', 'list'],
+  cloudpolicy_perform_revoke_group: ['cloudid', 'cloudpolicies', 'perform', 'revoke-group'],
+  // 权限组缓存
+  cloudgroupcache_get: ['cloudid', 'cloudgroupcaches', 'get'],
+  cloudgroupcache_delete: ['cloudid', 'cloudgroupcaches', 'delete'],
 }
 
 // 已声明权限的资源

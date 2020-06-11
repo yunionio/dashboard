@@ -30,9 +30,11 @@ export default {
     const target = blank ? '_blank' : '_self'
     const slots = ctx.slots()
     return (
-      <a href={ href } target={ target } title={ href }>
-        { slots.default ? h('span', slots.default) : href }
-        { blank ? <icon class='ml-1' type='blank' /> : null }
+      <a class='d-inline-flex align-items-center' href={ href } target={ target } title={ href } style='max-width: 100%;'>
+        <span class='flex-fill text-truncate'>
+          { slots.default ? h('span', slots.default) : href }
+        </span>
+        { blank ? <icon class='ml-1 flex-grow-1 flex-shrink-1' type='blank' /> : null }
       </a>
     )
   },

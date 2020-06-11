@@ -910,7 +910,6 @@ class CreateList {
             }
           }
         } else {
-          console.log(ids)
           if (res.status < 400) {
             this.update(ids[0], res.data)
           } else {
