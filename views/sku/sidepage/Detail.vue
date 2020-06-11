@@ -4,7 +4,10 @@
     :data="data"
     :base-info="baseInfo"
     :extra-info="extraInfo"
-    status-module="sku" />
+    status-module="sku"
+    :nameProps="{
+      edit: false,
+    }" />
 </template>
 
 <script>

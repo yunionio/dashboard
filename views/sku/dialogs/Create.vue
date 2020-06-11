@@ -5,10 +5,10 @@
       <a-form
         :form="form.fc">
         <a-form-item label="虚拟CPU核数" v-bind="formItemLayout">
-          <a-input-number :min="1" :max="100000" v-decorator="decorators.cpu_core_count" /> 核
+          <a-input-number :min="1" :max="256" v-decorator="decorators.cpu_core_count" /> 核
         </a-form-item>
         <a-form-item label="虚拟内存容量" v-bind="formItemLayout">
-          <a-input-number :min="1" :max="100000" v-decorator="decorators.memory_size_mb" /> GB
+          <a-input-number :min="512" :max="524288" v-decorator="decorators.memory_size_mb" /> GB
         </a-form-item>
       </a-form>
     </div>
@@ -42,7 +42,7 @@ export default {
         memory_size_mb: [
           'memory_size_mb',
           {
-            initialValue: 1,
+            initialValue: 512,
           },
         ],
       },
