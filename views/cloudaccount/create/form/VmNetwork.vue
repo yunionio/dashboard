@@ -1,5 +1,6 @@
 <template>
   <div>
+    asdasd
     <a-alert :showIcon="false" banner>
       <div slot="message">
         注意事项：对接VMware账号需保证本地IP子网包含该vCenter下所有宿主机的IP，若无对应IP子网则无法使用和同步该宿主机下的资源。

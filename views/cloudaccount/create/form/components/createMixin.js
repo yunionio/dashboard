@@ -51,6 +51,7 @@ export default {
   },
   methods: {
     validateForm () {
+      console.log('提交： validateForm')
       return new Promise((resolve, reject) => {
         this.form.fc.validateFields((err, values) => {
           if (err) {
