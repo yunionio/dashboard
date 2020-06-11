@@ -1,8 +1,8 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">修改</div>
+    <div slot="header">{{ title }}</div>
     <div slot="body">
-      <dialog-selected-tips name="定时任务" class="mt-3" :count="params.data.length" action="修改" />
+      <dialog-selected-tips name="定时任务" class="mt-3" :count="params.data.length" :action="title" />
       <dialog-table v-if="params.columns && params.columns.length" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc"
@@ -101,6 +101,9 @@ export default {
     },
     isTag () {
       return this.params.data.every((item) => item.label_type === 'tag')
+    },
+    title () {
+      return this.params.title || '修改'
     },
   },
   methods: {

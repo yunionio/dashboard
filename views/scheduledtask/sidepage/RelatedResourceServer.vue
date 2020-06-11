@@ -164,6 +164,7 @@ export default {
               data: [this.data],
               columns: this.columns,
               onManager: this.onManager,
+              title: '关联资源',
               success: (labels) => {
                 this.list.getParams = {
                   filter: `id.in(${labels.join(',')})`,
