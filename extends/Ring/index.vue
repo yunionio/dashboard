@@ -66,7 +66,6 @@ export default {
   },
   methods: {
     update (...ret) {
-      console.log(ret, 'res')
       this.$emit('update', ...ret)
     },
   },

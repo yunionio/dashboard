@@ -7,7 +7,7 @@
         :usages="usages"
         @change="allUsageChange" />
     </a-form-item>
-    <a-form-item label="使用量指标" v-if="decorators.usage_key">
+    <a-form-item :label="usageLabel || '使用量指标'" v-if="decorators.usage_key">
       <usage-select
         class="w-100"
         v-decorator="decorators.usage_key"
@@ -35,6 +35,7 @@ export default {
       type: Object,
       required: true,
     },
+    usageLabel: String,
   },
   data () {
     return {

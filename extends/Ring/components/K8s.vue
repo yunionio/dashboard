@@ -55,7 +55,7 @@ export default {
   },
   mixins: [mixin],
   data () {
-    const initialNameValue = ((this.params && this.params.type === 'k8s') && this.params.name) || '内存使用率'
+    const initialNameValue = ((this.params && this.params.type === 'k8s') && this.params.name) || '容器内存使用率'
     const initialAllUsageKeyValue = ((this.params && this.params.type === 'k8s') && this.params.all_usage_key) || 'all.cluster.node.memory.capacity'
     const initialUsageKeyValue = ((this.params && this.params.type === 'k8s') && this.params.usage_key) || 'all.cluster.node.memory.request'
 
