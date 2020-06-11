@@ -2,7 +2,7 @@
   <div class="extend-gallery-wrap d-flex flex-column">
     <div class="extend-gallery-title flex-grow-0 flex-shrink-0">磁贴库</div>
     <div class="extend-gallery-tips flex-grow-0 flex-shrink-0 d-flex">
-      <div>2个磁贴</div>
+      <div>{{ sortExtendsOptions.length }} 个磁贴</div>
       <div class="flex-fill text-right">可将任意磁贴拖动到仪表盘</div>
     </div>
     <div class="flex-fill extend-list overflow-auto position-relative">
