@@ -1,6 +1,7 @@
 <template>
   <div>
     <page-header title="定时任务" />
+    <a-alert :message="$t('cloudenv.scheduled_task_desc')" type="info" class="mt-2" />
     <page-body>
       <scheduledtask-list :id="listId" />
     </page-body>
