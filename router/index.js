@@ -1,3 +1,4 @@
+import Cloudgroup from '@Cloudenv/views/cloudgroup'
 import Cloudaccount from '@Cloudenv/views/cloudaccount'
 import CloudaccountCreate from '@Cloudenv/views/cloudaccount/create'
 import CloudaccountUpdateBill from '@Cloudenv/views/cloudaccount/create/BillFileIndex'
@@ -85,6 +86,22 @@ export default {
               name: 'CloudaccountUpdateBill',
               path: 'updatebill',
               component: CloudaccountUpdateBill,
+            },
+          ],
+        },
+        {
+          path: '/cloudgroup',
+          meta: {
+            label: '权限组',
+            permission: 'cloudgroup_list',
+            t: 'dictionary.cloudgroup',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Cloudgroup',
+              path: '',
+              component: Cloudgroup,
             },
           ],
         },
