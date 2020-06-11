@@ -695,3 +695,114 @@ export const USAGE_CONFIG = {
     unit: '个',
   },
 }
+
+export const K8S_USAGE_CONFIG = {
+  'all.cluster.count': {
+    unit: '个',
+  },
+  'all.cluster.node.count': {
+    unit: '个',
+  },
+  'all.cluster.node.not_ready_count': {
+    unit: '个',
+  },
+  'all.cluster.node.ready_count': {
+    unit: '个',
+  },
+  'all.cluster.node.pod.capacity': {
+    unit: '个',
+  },
+  'all.cluster.node.pod.count': {
+    unit: '个',
+  },
+  'all.cluster.node.cpu.capacity': {
+    unit: '核',
+  },
+  'all.cluster.node.cpu.limit': {
+    unit: '核',
+  },
+  'all.cluster.node.cpu.request': {
+    unit: '核',
+  },
+  'all.cluster.node.memory.capacity': {
+    formatter: val => sizestrWithUnit(val, 'B', 1024),
+  },
+  'all.cluster.node.memory.limit': {
+    formatter: val => sizestrWithUnit(val, 'B', 1024),
+  },
+  'all.cluster.node.memory.request': {
+    formatter: val => sizestrWithUnit(val, 'B', 1024),
+  },
+  'domain.cluster.count': {
+    unit: '个',
+  },
+  'domain.cluster.node.count': {
+    unit: '个',
+  },
+  'domain.cluster.node.not_ready_count': {
+    unit: '个',
+  },
+  'domain.cluster.node.ready_count': {
+    unit: '个',
+  },
+  'domain.cluster.node.pod.capacity': {
+    unit: '个',
+  },
+  'domain.cluster.node.pod.count': {
+    unit: '个',
+  },
+  'domain.cluster.node.cpu.capacity': {
+    unit: '核',
+  },
+  'domain.cluster.node.cpu.limit': {
+    unit: '核',
+  },
+  'domain.cluster.node.cpu.request': {
+    unit: '核',
+  },
+  'domain.cluster.node.memory.capacity': {
+    formatter: val => sizestrWithUnit(val, 'B', 1024),
+  },
+  'domain.cluster.node.memory.limit': {
+    formatter: val => sizestrWithUnit(val, 'B', 1024),
+  },
+  'domain.cluster.node.memory.request': {
+    formatter: val => sizestrWithUnit(val, 'B', 1024),
+  },
+  'project.cluster.count': {
+    unit: '个',
+  },
+  'project.cluster.node.count': {
+    unit: '个',
+  },
+  'project.cluster.node.not_ready_count': {
+    unit: '个',
+  },
+  'project.cluster.node.ready_count': {
+    unit: '个',
+  },
+  'project.cluster.node.pod.capacity': {
+    unit: '个',
+  },
+  'project.cluster.node.pod.count': {
+    unit: '个',
+  },
+  'project.cluster.node.cpu.capacity': {
+    unit: '核',
+  },
+  'project.cluster.node.cpu.limit': {
+    unit: '核',
+  },
+  'project.cluster.node.cpu.request': {
+    unit: '核',
+  },
+  'project.cluster.node.memory.capacity': {
+    formatter: val => sizestrWithUnit(val, 'B', 1024),
+  },
+  'project.cluster.node.memory.limit': {
+    formatter: val => sizestrWithUnit(val, 'B', 1024),
+  },
+  'project.cluster.node.memory.request': {
+    formatter: val => sizestrWithUnit(val, 'B', 1024),
+  },
+}
