@@ -19,6 +19,7 @@ export default {
           resource: 'servers',
           getParams: {
             filter: 'hypervisor.notin(baremetal,container)',
+            tenant: this.params.data[0].tenant,
           },
           filterOptions: {
             name: getNameFilter(),
@@ -32,7 +33,7 @@ export default {
             addBackup: true,
             edit: false,
             editDesc: false,
-            minWidth: 140,
+            minWidth: 120,
             slotCallback: row => {
               return [
                 <list-body-cell-wrap field='name' row={row} />,
@@ -44,7 +45,7 @@ export default {
             field: 'instance_type',
             title: '配置',
             showOverflow: 'ellipsis',
-            minWidth: 120,
+            minWidth: 100,
             sortable: true,
             slots: {
               default: ({ row }) => {

@@ -43,12 +43,8 @@ export const getResourceNumberColumns = (that) => {
     title: '资源数量',
     width: 110,
     showOverflow: 'title',
-    slots: {
-      default: ({ row }, h) => {
-        return [
-          <side-page-trigger onTrigger={ () => that.handleOpenSidepage(row, 'related-resource') }>{ row.labels.length }</side-page-trigger>,
-        ]
-      },
+    formatter: ({ row }) => {
+      return (row.labels && row.labels.length) || 0
     },
   }
 }
