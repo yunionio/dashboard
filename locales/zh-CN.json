@@ -14,8 +14,7 @@
     "server": "虚拟机"
   },
   "ScheduledtaskLabelType": {
-    "id": "指定虚拟机",
-    "tag": "指定标签"
+    "id": "指定虚拟机"
   },
   "ScheduledtaskType": {
     "cycle": "周期策略",

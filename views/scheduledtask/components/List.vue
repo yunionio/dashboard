@@ -151,14 +151,15 @@ export default {
     }
   },
   created () {
+    this.initSidePageTab('scheduledtask-detail')
     this.list.fetchData()
     this.$bus.$on('ScheduledtasksListSingleRefresh', args => {
       this.list.singleRefresh(...args)
     }, this)
   },
   methods: {
-    handleOpenSidepage (row, initSidePageTab = 'scheduledtask-detail') {
-      this.initSidePageTab(initSidePageTab)
+    handleOpenSidepage (row) {
+      // this.initSidePageTab(initSidePageTab)
       this.sidePageTriggerHandle(this, 'ScheduledtaskSidePage', {
         id: row.id,
         resource: 'scheduledtasks',

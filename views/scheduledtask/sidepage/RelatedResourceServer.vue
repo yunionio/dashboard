@@ -25,6 +25,9 @@ export default {
     data: {
       type: Object,
     },
+    params: {
+      type: Object,
+    },
   },
   data () {
     const labels = this.data.labels || []
@@ -35,6 +38,7 @@ export default {
         resource: 'servers',
         getParams: {
           filter: `id.in(${labels.join(',')})`,
+          ...this.params,
         },
         steadyStatus: Object.values(expectStatus.scalingserver).flat().concat(Object.values(expectStatus.server).flat()),
         filterOptions: {
