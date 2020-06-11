@@ -307,4 +307,12 @@ export default {
     success: ['succeed', 'part_succeed'],
     danger: ['failed', 'reject'],
   },
+  cloudgroup: {
+    info: 'unknown',
+    success: ['available'],
+  },
+  clouduser: {
+    info: 'unknown',
+    success: ['available'],
+  },
 }

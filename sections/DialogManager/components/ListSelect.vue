@@ -1,5 +1,5 @@
 <template>
-  <base-dialog @cancel="cancelDialog">
+  <base-dialog @cancel="cancelDialog" :modal-props="modalProps" :width="params.dialogParams.width || 900">
     <div slot="header">{{ params.dialogParams.title || $t('common.select') }}</div>
     <div class="clearfix pr-2" slot="body">
       <div class="d-flex mb-2">
@@ -7,7 +7,7 @@
         <div class="selected-warp p-2 flex-fill ml-2">
           <template v-for="item of details">
             <a-tag
-              class="mb-2"
+              class="mb-2 text-wrap"
               closable
               :key="item[idKey]"
               :color="item[idKey] === currentId ? '#108ee9' : ''"
@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
@@ -48,7 +49,7 @@ export default {
         selectionType: 'radio',
         showSingleActions: false,
         showGroupActions: false,
-        pagerLayout: ['PrevPage', 'Jump', 'NextPage', 'Total'],
+        pagerLayout: ['PrevPage', 'Jump', 'PageCount', 'NextPage', 'Total'],
         ...this.params.listProps,
       }
     },
@@ -57,6 +58,15 @@ export default {
     },
     currentId () {
       return this.current[this.idKey]
+    },
+    modalProps () {
+      let mask = true
+      if (!R.isNil(this.params.dialogParams.mask)) {
+        mask = this.params.dialogParams.mask
+      }
+      return {
+        mask,
+      }
     },
   },
   created () {

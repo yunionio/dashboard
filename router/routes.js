@@ -4,6 +4,7 @@ import EmailVerify from '@/views/email-verify'
 import NoProject from '@/views/no-project'
 import NoProjectStatus from '@/views/no-project/Status'
 import Workflow from '@/views/workflow'
+import Clouduser from '@/views/clouduser'
 
 export const menusConfig = getModulesRouteConfig()
 
@@ -14,6 +15,11 @@ const routes = [
     name: 'Workflow',
     path: '/workflow',
     component: Workflow,
+  },
+  {
+    name: 'Clouduser',
+    path: '/clouduser',
+    component: Clouduser,
   },
   {
     path: '/email-verification/id/:id/token/:token',

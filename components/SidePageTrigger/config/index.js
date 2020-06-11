@@ -125,4 +125,9 @@ export default {
   RDSSidePage: {
     resource: 'dbinstances',
   },
+  // 权限组
+  CloudgroupSidePage: {
+    resource: 'cloudgroups',
+    apiVersion: 'v1',
+  },
 }

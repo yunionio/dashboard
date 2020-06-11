@@ -25,7 +25,7 @@
       <a-dropdown :trigger="['click']" :getPopupContainer="triggerNode => triggerNode.parentNode">
         <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
           <icon type="navbar-setting" />
-          <span class="ml-2">云管平台</span>
+          <span class="ml-2 text-truncate">云管平台</span>
           <icon type="caret-down" style="font-size: 24px; line-height: normal;" />
         </div>
         <a-menu slot="overlay" @click="productChange">
@@ -592,6 +592,16 @@ export default {
     &:hover {
       color: $link-color;
     }
+  }
+}
+@media only screen and (max-width: 1100px) {
+  .header-title {
+    display: none;
+  }
+}
+@media only screen and (max-width: 980px) {
+  .globar-search-wrapper {
+    display: none !important;
   }
 }
 </style>

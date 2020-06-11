@@ -62,6 +62,7 @@
 import * as R from 'ramda'
 import Actions from '../Actions'
 import TagFilter from '../TagFilter'
+import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'PageListHeader',
@@ -69,6 +70,7 @@ export default {
     Actions,
     TagFilter,
   },
+  mixins: [WindowsMixin],
   props: {
     id: String,
     // 是否加载中
@@ -181,7 +183,7 @@ export default {
       this.$emit('filter-change', filter)
     },
     handleExportData () {
-      this.$parent.$parent.createDialog('ExportListDataDialog', {
+      this.createDialog('ExportListDataDialog', {
         title: this.$t('common.text00010'),
         config: this.config,
         total: this.total,
@@ -195,7 +197,7 @@ export default {
     },
     handleCustomList () {
       const grid = this.getGrid()
-      this.$parent.$parent.createDialog('CustomListDialog', {
+      this.createDialog('CustomListDialog', {
         title: this.$t('common.text00011'),
         config: this.config,
         update: this.updateConfig,
