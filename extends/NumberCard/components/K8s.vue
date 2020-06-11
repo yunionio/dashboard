@@ -35,7 +35,7 @@ import { getRequestT } from '@/utils/utils'
 import K8sConfig from '@Dashboard/sections/K8sConfig'
 
 export default {
-  name: 'RingK8s',
+  name: 'NumberCardK8s',
   components: {
     BaseDrawer,
     K8sConfig,

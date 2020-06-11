@@ -34,7 +34,7 @@ import { load } from '@Dashboard/utils/cache'
 import { getRequestT } from '@/utils/utils'
 
 export default {
-  name: 'NumberCard',
+  name: 'NumberCardServer',
   components: {
     BaseDrawer,
     QuotaConfig,
