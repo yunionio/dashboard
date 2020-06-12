@@ -10,7 +10,7 @@ import Tag from '@Cloudenv/views/tag'
 import Cloudevent from '@Cloudenv/views/cloudevent'
 import Proxysetting from '@Cloudenv/views/proxysetting'
 import Policydefinition from '@Cloudenv/views/policydefinition'
-import Monitor from '@Monitor/router'
+// import Monitor from '@Monitor/router'
 import Scheduledtask from '@Cloudenv/views/scheduledtask'
 import ScheduledtaskCreate from '@Cloudenv/views/scheduledtask/create'
 import Layout from '@/layouts/RouterView'
@@ -218,7 +218,7 @@ export default {
         },
       ],
     },
-    Monitor,
+    // Monitor,
     {
       meta: {
         label: '定时任务',
