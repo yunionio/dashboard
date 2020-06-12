@@ -91,27 +91,6 @@
               style="width: 320px" />
           </a-form-item>
         </a-form-item>
-        <!-- <a-form-item v-bind="formItemLayout">
-          <template slot="label">
-            <span>
-              部署方式
-              <a-tooltip placement="topLeft">
-                <template slot="title">
-                  <div>
-                    支持2种部署方式：
-                    <br />1.yum部署，需要输入Yum源地址，一般为：https://控制节点IP/yumrepo
-                    <br />2.copy部署，直接从安装目录拷贝.rpm文件到目标机器
-                  </div>
-                </template>
-                <a-icon type="info-circle" />
-              </a-tooltip>
-            </span>
-          </template>
-          <a-radio-group v-decorator="decorators.deploy_method" @change="deployMethodChange">
-            <a-radio-button value="yum">Yum</a-radio-button>
-            <a-radio-button value="copy">Copy</a-radio-button>
-          </a-radio-group>
-        </a-form-item> -->
         <a-form-item label="Yum源地址" v-bind="formItemLayout">
           <a-input v-decorator="decorators.repo_base_url" placeholder="请输入Yum源地址" />
         </a-form-item>
@@ -123,7 +102,7 @@
         <div slot="message">
           提示：
           检测到该任务正在执行中，点击
-          <router-link :to="`/lbagent/asbook?ansiblePlaybookId=${ansiblePlaybookId}`">详情</router-link>
+          <a @click="openAsbook(ansiblePlaybookId)">详情</a>
         </div>
       </a-alert>
     </div>
@@ -354,13 +333,6 @@ export default {
     },
     // 更改云主机时与旧的云主机校验
     serverOldCheck (rule, value, callback) {
-      // if (value && this.deploymentHost) {
-      //   const { hostName } = this.deploymentHost
-      //   const formHost = this.form.fc.getFieldValue('hostName')
-      //   if (formHost !== this.deploymentHost[hostName]) {
-      //     return callback(new Error('更换目标机器，需要提前先将节点从旧机器下线'))
-      //   }
-      // }
       if (this.isDeleteServer) {
         return callback(new Error('该云主机已被删除，请重新选择云主机'))
       }
@@ -437,6 +409,12 @@ export default {
         data,
       })
     },
+    openAsbook (ansiblePlaybookId) {
+      this.createDialog('AnsibleplaybookDialog', {
+        title: '部署信息',
+        ansiblePlaybookId,
+      })
+    },
     async handleConfirm () {
       this.loading = true
       try {
@@ -470,9 +448,7 @@ export default {
         this.loading = false
         this.cancelDialog()
         if (data) {
-          this.$router.push({
-            path: `/lbagent/asbook?ansiblePlaybookId=${data.deployment.ansible_playbook || this.ansiblePlaybookId}`,
-          })
+          this.openAsbook(data.deployment.ansible_playbook || this.ansiblePlaybookId)
         }
         this.params.refresh()
       } catch (error) {

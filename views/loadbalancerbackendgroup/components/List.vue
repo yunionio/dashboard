@@ -3,7 +3,8 @@
     :list="list"
     :columns="columns"
     :single-actions="singleActions"
-    :group-actions="groupActions" />
+    :group-actions="groupActions"
+    :expand-config="{ lazy: true, loadMethod: loadListeners, accordion: true }" />
 </template>
 
 <script>
@@ -95,6 +96,22 @@ export default {
       }, {
         list: this.list,
       })
+    },
+    async loadListeners ({ row }) {
+      const manager = new this.$Manager('loadbalancerlisteners')
+      try {
+        const params = {
+          backend_group: row.id,
+          scope: this.$store.getters.scope,
+          limit: 0,
+        }
+        const ret = await manager.list({
+          params,
+        })
+        row.listeners = ret.data.data || []
+      } catch (err) {
+        throw err
+      }
     },
   },
 }

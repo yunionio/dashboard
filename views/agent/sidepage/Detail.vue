@@ -36,7 +36,7 @@ export default {
       },
       baseInfo: [
         {
-          field: 'cluster_id',
+          field: 'cluster',
           title: '集群',
         },
         {
@@ -56,7 +56,7 @@ export default {
         },
         {
           field: 'hb_timeout',
-          title: '心跳超时时间',
+          title: '转发实例心跳超时时间',
           formatter: ({ row }) => {
             return `${row.hb_timeout}s`
           },
@@ -114,17 +114,12 @@ export default {
           title: 'VRRP转发实例配置信息',
           items: [
             {
-              field: 'params.vrrp.advert_int',
-              title: '通告间隔',
-              formatter: ({ row }) => `${row.params.vrrp.advert_int || 0}s`,
+              field: 'params.vrrp.virtual_router_id',
+              title: 'VRRP路由ID',
             },
             {
-              field: 'params.vrrp.interface',
-              title: '网口',
-            },
-            {
-              field: 'params.vrrp.pass',
-              title: '密码',
+              field: 'params.vrrp.priority',
+              title: '优先级',
             },
             {
               field: 'params.vrrp.preempt',
@@ -134,12 +129,17 @@ export default {
               },
             },
             {
-              field: 'params.vrrp.priority',
-              title: '优先级',
+              field: 'params.vrrp.interface',
+              title: 'VRRP网口',
             },
             {
-              field: 'params.vrrp.virtual_router_id',
-              title: '路由ID',
+              field: 'params.vrrp.advert_int',
+              title: 'VRRP通告间隔',
+              formatter: ({ row }) => `${row.params.vrrp.advert_int || 0}s`,
+            },
+            {
+              field: 'params.vrrp.pass',
+              title: 'VRRP密码',
             },
           ],
         },
@@ -148,35 +148,43 @@ export default {
           items: [
             {
               field: 'params.haproxy.global_nbthread',
-              title: '线程数',
+              title: 'HAProxy线程数',
             },
             {
               field: 'params.haproxy.global_log',
-              title: '开启日志',
+              title: '日志输出设置',
               formatter: ({ row }) => {
-                return row.params.haproxy.global_log ? '开启' : '关闭'
+                const { haproxy } = row.params
+                if (haproxy && haproxy.global_log) {
+                  return haproxy.global_log.split(' ')[1]
+                }
+                return '-'
               },
             },
             {
               field: 'params.haproxy.log_http',
-              title: '开启HTTP日志',
+              title: '记录HTTP日志',
               formatter: ({ row }) => {
                 return row.params.haproxy.log_http ? '开启' : '关闭'
               },
             },
             {
+              field: 'params.haproxy.log_tcp',
+              title: '记录TCP日志',
+              formatter: ({ row }) => {
+                return row.params.haproxy.log_tcp ? '开启' : '关闭'
+              },
+            },
+            {
               field: 'params.haproxy.log_normal',
-              title: '开启Normal日志',
+              title: '记录Normal日志',
               formatter: ({ row }) => {
                 return row.params.haproxy.log_normal ? '开启' : '关闭'
               },
             },
             {
-              field: 'params.haproxy.log_tcp',
-              title: '开启TCP日志',
-              formatter: ({ row }) => {
-                return row.params.haproxy.log_tcp ? '开启' : '关闭'
-              },
+              field: 'params.haproxy.tune_http_maxhdr',
+              title: '请求中最大http头数量：',
             },
             {
               field: 'params.haproxy_conf_tmpl',

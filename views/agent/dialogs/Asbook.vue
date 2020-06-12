@@ -1,44 +1,50 @@
 <template>
-  <div class="ansible-playbook">
-    <page-header title="节点" />
-    <page-body>
-      <refresh-button class="flex-shrink-0" :loading="isRunning" @refresh="refresh" />
-      <a-tooltip title="返回列表">
-        <a-button class="flex-shrink-0 ml-2" @click="$router.push('/lbagent')" :disabled="this.isRunning"><a-icon type="arrow-left" /></a-button>
-      </a-tooltip>
-      <a-button class="flex-shrink-0 ml-2" @click="handleRun" :disabled="this.isRunning">重新执行</a-button>
-      <a-button class="flex-shrink-0 ml-2" @click="handleStop" :disabled="!this.isRunning">终止执行</a-button>
-      <detail
-        :data="resourceData"
-        :base-info="baseInfo"
-        :extra-info="extraInfo"
-        :onManager="()=> {}"
-        status-module="ansiblePlaybook" />
-    </page-body>
-    <page-footer>
-      <template v-slot:right>
-        <a-button class="ml-2" size="large" @click="handleCancel">返回</a-button>
-      </template>
-    </page-footer>
-  </div>
+  <base-dialog @cancel="cancelDialog">
+    <div slot="header">{{params.title}}</div>
+    <div slot="body">
+      <a-descriptions bordered size="small">
+        <a-descriptions-item label="名称">
+          {{ansibleplaybookData.name}}
+        </a-descriptions-item>
+        <a-descriptions-item label="状态">
+          <status :status="ansibleplaybookData.status" statusModule="ansiblePlaybook" />
+        </a-descriptions-item>
+      </a-descriptions>
+      <div class="mt-3">
+        <code-mirror :value="ansibleplaybookData.output " :options="cmOptions" />
+      </div>
+    </div>
+    <div slot="footer">
+      <a-button class="ml-2 mr-2" @click="handleRun" :disabled="this.isRunning">重新执行</a-button>
+       <a-popconfirm
+          class=""
+          placement="topRight"
+          title="提示：确认要中止执行？"
+          ok-text="确定"
+          cancel-text="取消"
+          @confirm="handleStop">
+        <a-button class="" :disabled="!this.isRunning">终止执行</a-button>
+      </a-popconfirm>
+      <a-button class="ml-2" @click="cancelDialog">关闭</a-button>
+    </div>
+  </base-dialog>
 </template>
 
 <script>
 import Ansible from '../controls/ansible'
-import RefreshButton from '@/components/PageList/RefreshButton'
 import WindowsMixin from '@/mixins/windows'
+import DialogMixin from '@/mixins/dialog'
 
 export default {
-  name: 'Ansibleplaybook',
+  name: 'AnsibleplaybookDialog',
   components: {
-    RefreshButton,
   },
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, DialogMixin],
   data () {
     return {
       T: null,
       isRunning: false,
-      resourceData: {},
+      ansibleplaybookData: {},
       columns: [
         {
           field: 'name',
@@ -101,7 +107,7 @@ export default {
     },
   },
   created () {
-    const { ansiblePlaybookId } = this.$route.query
+    const { ansiblePlaybookId } = this.params
     this.ansibleEvents = new Ansible(ansiblePlaybookId)
     this.refresh()
   },
@@ -110,50 +116,29 @@ export default {
       return this.ansibleEvents
         .get()
         .then(({ data }) => {
-          this.resourceData = data
+          this.ansibleplaybookData = data
           this.isRunning = data.status === 'running'
           if (!this.isRunning) {
             clearInterval(this.T)
           }
-          this.ansibleplaybookData = data
           this.$nextTick(() => {
             document.getElementsByClassName('CodeMirror-scroll')[0].scrollTop = 999999
           })
         })
     },
-    handleStop () {
-      this.createDialog('DisableDialog', {
-        title: '中止',
-        name: '节点',
-        columns: this.columns,
-        data: [this.ansibleplaybookData],
-        alert: '提示：确认要中止执行？',
-        ok: async () => {
-          try {
-            await this.ansibleEvents.stop()
-            this.$message.success('中止成功')
-            this.refresh()
-          } catch (error) {
-            throw error
-          }
-        },
-      })
+    async handleStop () {
+      try {
+        await this.ansibleEvents.stop()
+        this.$message.success('中止成功')
+        this.refresh()
+      } catch (err) {
+        throw err
+      }
     },
     async handleRun () {
-      const { loadbalanceragentId } = this.$route.query
       try {
-        if (loadbalanceragentId) {
-          await new this.$Manager('loadbalanceragents').performAction({
-            id: loadbalanceragentId,
-            action: 'undeploy',
-            data: {
-              state: 'suspend',
-              // 'process-key': key,
-            },
-          })
-        } else {
-          await this.ansibleEvents.run()
-        }
+        this.ansibleplaybookData.output = ' '
+        await this.ansibleEvents.run()
         this.refresh()
       } catch (err) {
         throw err

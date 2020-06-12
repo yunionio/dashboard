@@ -11,15 +11,13 @@
         <a-form-item label="域名">
           <div slot="extra">
             <!-- - 泛解析域名：*.test.com，*一定在第一个字符，并且是*.或者*aaa.的格式，*不能在最后。<br /> -->
-            - 标准域名：例如，www.test.com;(www可以省略)
+            域名仅支持精确匹配
           </div>
           <a-input v-decorator="decorators.domain" placeholder="请输入" />
         </a-form-item>
-        <a-form-item label="URL">
+        <a-form-item label="URL路径">
           <div slot="extra">
-            - 长度限制为2-80个字符，只能使用字母、数字、‘-’、‘/’、‘.’、‘%’、‘?’、‘#’、‘&’这些字符<br />
-            - URL不能只为"/"，但必须以"/"开头<br />
-            - 域名、服务器组为必填，URL默认值“/”，备注为选填
+            以"/"开头，但不能只填“/”，URL路径支持前缀匹配，匹配所有以设置的路径开头的URL路径。
           </div>
           <a-input v-decorator="decorators.path" placeholder="请输入" />
         </a-form-item>
@@ -108,7 +106,7 @@ export default {
           'domain',
           {
             rules: [
-              { required: true, message: '请输入域名' },
+              // { required: true, message: '请输入域名' },
               { validator: customDomain, message: '请根据提示输入规范域名', trigger: 'blur' },
             ],
           },

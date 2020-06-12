@@ -25,7 +25,7 @@ export default {
       baseInfo: [
         {
           field: 'fingerprint',
-          title: '指纹（可不加）',
+          title: '指纹',
           showOverflow: 'ellipsis',
           width: '120px',
           slots: {

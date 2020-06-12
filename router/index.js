@@ -18,7 +18,6 @@ import LbcertsList from '@Network/views/lbcerts'
 import LoadbalancerclusterList from '@Network/views/loadbalancercluster'
 import AgentList from '@Network/views/agent'
 import AgentForm from '@Network/views/agent/form'
-import AgentAsbook from '@Network/views/agent/asbook'
 import Layout from '@/layouts/RouterView'
 
 import { hasHypervisorsByEnv, hasHypervisors, hasServices, hasBrands } from '@/utils/auth'
@@ -326,11 +325,6 @@ export default {
               name: 'AgentForm',
               path: 'form',
               component: AgentForm,
-            },
-            {
-              name: 'AgentAsbook',
-              path: 'asbook',
-              component: AgentAsbook,
             },
           ],
         },

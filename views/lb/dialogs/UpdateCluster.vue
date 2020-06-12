@@ -45,6 +45,7 @@ export default {
         cluster_id: [
           'cluster_id',
           {
+            initialValue: this.params.data[0].cluster_id,
             rules: [
               { required: true, message: '请选择集群' },
             ],
