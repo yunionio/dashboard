@@ -20,6 +20,10 @@ export default {
   mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
+    getParams: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data () {
     return {
@@ -27,6 +31,7 @@ export default {
         id: this.id,
         resource: 'isolated_devices',
         getParams: {
+          ...this.getParams,
           details: true,
         },
         filterOptions: {

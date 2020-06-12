@@ -23,10 +23,11 @@ import Dashboard from './Dashboard'
 // import Alert from './Alert'
 import NetworkList from './Network'
 import StorageList from './Storage'
-import GpuList from './Gpu'
+// import GpuList from './Gpu'
 import Monitor from './Monitor'
 import ServerRecovery from '@Compute/views/server-recovery/components/List'
 import VminstanceList from '@Compute/views/vminstance/components/List'
+import GpuList from '@Compute/views/gpu/components/List'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -77,6 +78,11 @@ export default {
       } else if (this.params.windowData.currentTab === 'server-recovery') {
         return {
           host: this.data.id,
+        }
+      } else if (this.params.windowData.currentTab === 'gpu-list') {
+        return {
+          host: this.data.id,
+          gpu: true,
         }
       }
       return null

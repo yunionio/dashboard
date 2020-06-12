@@ -17,12 +17,6 @@
           </a-form-item>
         </a-col>
       </a-row>
-      <div class="info" v-if="isShowData">
-        <h3 class="title">每台宿主机总预留资源情况如下:</h3>
-        <ul class="content">
-          <li v-for="v in data" :key="v.id">宿主机{{v.name}}: {{getResource(v)}}</li>
-        </ul>
-      </div>
   </a-form-item>
 </template>
 
@@ -58,11 +52,6 @@ export default {
           },
         }
       },
-    },
-  },
-  computed: {
-    isShowData () {
-      return this.data.length > 0
     },
   },
   methods: {
