@@ -271,7 +271,7 @@ export default {
       }
       if (this.step.currentStep === 3) {
         try {
-          // await this.doCreateCloudaccount(this.vmwareFormData)
+          await this.doCreateCloudaccount(this.vmwareFormData)
           const wireDta = await this.createWire()
           await this.doCreateNetwork(wireDta)
         } catch (err) {
