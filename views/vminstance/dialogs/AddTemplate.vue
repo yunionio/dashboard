@@ -7,6 +7,10 @@
       <a-form :form="form.fc"  v-bind="formItemLayout">
         <a-form-item :label="$t('common.name')">
           <a-input v-decorator="decorators.name" placeholder="请输入名称" />
+          <name-repeated
+            v-slot:extra
+            res="servertemplates"
+            :name="form.fc.getFieldValue('generate_name')" />
         </a-form-item>
       </a-form>
     </div>
@@ -20,9 +24,13 @@
 <script>
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import NameRepeated from '@/sections/NameRepeated'
 
 export default {
   name: 'VmAddTemplateDialog',
+  components: {
+    NameRepeated,
+  },
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
@@ -32,7 +40,7 @@ export default {
       },
       decorators: {
         name: [
-          'name',
+          'generate_name',
           {
             rules: [
               { required: true, message: '请输入名称' },
