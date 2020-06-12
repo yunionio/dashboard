@@ -62,7 +62,7 @@
                 <a-form-item label="监控数据采集间隔">
                   <a-input v-decorator="decorators.telegraf_haproxy_input_interval" type="Number" addonAfter="秒" />
                 </a-form-item>
-                <a-form-item label="配置模版">
+                <a-form-item label="配置模板">
                   <code-mirror v-decorator="decorators.telegraf_conf_tmpl" :options="cmOptions" />
                 </a-form-item>
               </a-collapse-panel>
@@ -85,12 +85,12 @@
                 <a-form-item label="请求中最大http头数量">
                   <a-input v-decorator="decorators.haproxy_tune_http_maxhdr" extra="为空则表示为默认值101" type="Number" />
                 </a-form-item>
-                <a-form-item label="配置模版">
+                <a-form-item label="配置模板">
                   <code-mirror v-decorator="decorators.haproxy_conf_tmpl" :options="cmOptions" />
                 </a-form-item>
               </a-collapse-panel>
               <a-collapse-panel key="keepalived" header="配置Keepalived参数" forceRender>
-                <a-form-item label="配置模版">
+                <a-form-item label="配置模板">
                   <code-mirror v-decorator="decorators.keepalived_conf_tmpl" :options="cmOptions" />
                 </a-form-item>
               </a-collapse-panel>

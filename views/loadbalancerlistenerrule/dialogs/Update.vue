@@ -84,10 +84,10 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 19,
+          span: 18,
         },
         labelCol: {
-          span: 5,
+          span: 6,
         },
       },
     }
@@ -114,6 +114,7 @@ export default {
   methods: {
     async backfill () {
       const { data = [] } = this.params
+      await this.$nextTick()
       if (data && data.length > 0) {
         const rowData = data[0]
         this.isRedirect = rowData.redirect === 'raw'

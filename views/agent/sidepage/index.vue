@@ -30,6 +30,7 @@
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import AgentDetail from './Detail'
+import Asbook from './Asbook'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -38,20 +39,30 @@ export default {
   name: 'AgentSidePage',
   components: {
     AgentDetail,
+    Asbook,
     Actions,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
-  data () {
-    return {
-      detailTabs: [
+  computed: {
+    detailTabs () {
+      const tabs = [
         { label: '详情', key: 'agent-detail' },
         { label: '操作日志', key: 'event-drawer' },
-      ],
-    }
-  },
-  computed: {
+      ]
+      if (this.detailData.deployment && this.detailData.deployment.ansible_playbook) {
+        tabs.splice(1, 0, { label: '部署详情', key: 'asbook' })
+      }
+      return tabs
+    },
     getParams () {
       return null
+    },
+  },
+  watch: {
+    detailTabs (tabs) {
+      if (tabs.length === 2 && this.params.windowData.currentTab === 'asbook') {
+        this.handleTabChange('agent-detail')
+      }
     },
   },
 }

@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="detail-title">后端健康状态</div>
-    <vxe-grid :data="listData" :columns="columns" />
+    <vxe-grid :data="listData" :columns="columns">
+      <span v-if="isRedirect" slot="empty">重定向类型监听（转发策略）无后端服务器组</span>
+    </vxe-grid>
   </div>
 </template>
 
@@ -32,6 +34,7 @@ export default {
           title: '状态',
           slots: {
             default: ({ row }, h) => {
+              if (!row.check_status) return '-'
               if (CEHCK_STATUS_CN[row.check_status]) {
                 return [h('span', {
                   style: {
@@ -70,16 +73,25 @@ export default {
       ],
     }
   },
+  computed: {
+    isRedirect () {
+      return this.data.redirect === 'raw'
+    }
+  },
   watch: {
     'data.id' () {
       this.fetchData()
     },
   },
-  created () {
+  mounted () {
     this.fetchData()
   },
   methods: {
     async fetchData () {
+      if (this.isRedirect) {
+        this.listData = []
+        return false
+      }
       try {
         const isRule = this.data.type === 2
         let manager = new this.$Manager('loadbalancerlisteners')

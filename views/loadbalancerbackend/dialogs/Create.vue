@@ -186,6 +186,7 @@ export default {
     },
     hostParams () {
       return {
+        baremetal: false,
         brand: 'OneCloud',
         'filter.0': 'status.equals(running,ready)',
       }

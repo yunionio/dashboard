@@ -24,26 +24,17 @@ export default {
       }),
       getStatusTableColumn({ statusModule: 'lb' }),
       {
-        field: 'listener_type',
+        field: 'listeners',
         title: '关联监听',
-        minWidth: 300,
+        type: 'expand',
+        width: 100,
         slots: {
-          default: ({ row }, h) => {
-            const attrs = {
-              props: {
-                params: {
-                  backend_group: row.id,
-                  scope: this.$store.getters.scope,
-                },
-                type: 'lbBackendGroup',
-                manager: new this.$Manager('loadbalancerlisteners', 'v2'),
-                format: item => {
-                  return `${item.listener_type}:${item.listener_port}`
-                },
-                status: row.status,
-              },
+          content: ({ row }, h) => {
+            if (row.listeners && row.listeners.length > 0) {
+              return row.listeners.map(item => {
+                return <a-tag class='mb-2'>{item.name}({item.listener_type}: {item.listener_port})</a-tag>
+              })
             }
-            return [<LbListCell { ...attrs } />]
           },
         },
       },

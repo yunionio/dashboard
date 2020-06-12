@@ -39,8 +39,13 @@ export default {
                   },
                 })
                 if (data && data.deployment && data.deployment.ansible_playbook_undeployment) {
-                  this.$router.push({
-                    path: `/lbagent/asbook?ansiblePlaybookId=${data.deployment.ansible_playbook_undeployment}&loadbalanceragentId=${obj.id}`,
+                  // this.$router.push({
+                  //   path: `/lbagent/asbook?ansiblePlaybookId=${data.deployment.ansible_playbook_undeployment}&loadbalanceragentId=${obj.id}`,
+                  // })
+                  this.createDialog('AnsibleplaybookDialog', {
+                    title: '下线信息',
+                    ansiblePlaybookId: data.deployment.ansible_playbook_undeployment,
+                    loadbalanceragentId: obj.id,
                   })
                 }
                 return data
@@ -73,6 +78,16 @@ export default {
                   query: {
                     id: obj.id,
                   },
+                })
+              },
+            },
+            {
+              label: '设置心跳超时时间',
+              action: () => {
+                this.createDialog('AgentUpdateDialog', {
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
                 })
               },
             },
