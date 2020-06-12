@@ -204,13 +204,14 @@ export default {
         }
       })
     },
-    async doCreateNetwork () {
+    async doCreateNetwork (wire) {
       const hostNetData = this.networkData['host-network']
       const hostParams = this.formatNetParams(hostNetData)
       const promises = []
       hostParams.forEach(dta => {
         promises.push(new Promise((resolve, reject) => {
           dta.server_type = 'baremetal'
+          dta.wire = wire.id
           this.networksM.create({
             data: dta,
             params: { $t: getRequestT() },
@@ -227,6 +228,7 @@ export default {
         guestParams.forEach(dta => {
           promises.push(new Promise((resolve, reject) => {
             dta.server_type = 'guest'
+            dta.wire = wire.id
             this.networksM.create({
               data: dta,
               params: { $t: getRequestT() },
@@ -244,15 +246,16 @@ export default {
       const manager = new this.$Manager('wires')
       try {
         if (!this.prepareNetData.suitable_wire && this.prepareNetData.suggested_wire) {
-          const { name, description, zone_id, zone } = this.prepareNetData.suggested_wire
-          await manager.create({
+          const { name, description, zone_id, zone_ids } = this.prepareNetData.suggested_wire
+          const { data } = await manager.create({
             data: {
               name,
               description,
-              zone_id: zone_id || zone,
+              zone_id: zone_id || ((zone_ids && zone_ids.length > 0) ? zone_ids[0] : undefined),
               vpc_id: 'default',
             },
           })
+          return data
         }
       } catch (err) {
         throw err
@@ -268,9 +271,9 @@ export default {
       }
       if (this.step.currentStep === 3) {
         try {
-          // await this.doCreateCloudaccount(this.vmwareFormData)
-          await this.createWire()
-          await this.doCreateNetwork(values)
+          await this.doCreateCloudaccount(this.vmwareFormData)
+          const wireDta = await this.createWire()
+          await this.doCreateNetwork(wireDta)
         } catch (err) {
           throw err
         }
