@@ -1,10 +1,11 @@
 <template>
-  <a-select label-in-value :value="value" :loading="loading" @change="imageChange">
+  <a-select label-in-value :value="value" :loading="loading" @change="imageChange" :filterOption="filterOption" :showSearch="true" option-filter-prop="children">
     <a-select-option v-for="item in imageOptions" :key="item.id" :value="item.id">
-      <div class="d-flex align-items-center">
+      {{ item.name }}
+      <!-- <div class="d-flex align-items-center">
         <span class="flex-fill mr-2">{{ item.name }}</span>
         <a-tag v-show="item.feData.cached" color="green">已缓存</a-tag>
-      </div>
+      </div> -->
     </a-select-option>
   </a-select>
 </template>
@@ -46,6 +47,11 @@ export default {
         this.$emit('change', imageObj)
         this.$emit('imageChange', imageObj)
       }
+    },
+    filterOption (input, option) {
+      return (
+        option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      )
     },
   },
 }
