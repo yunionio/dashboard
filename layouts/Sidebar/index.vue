@@ -100,6 +100,8 @@ export default {
       return hidden && hasPermission({ key: item.meta.permission })
     },
     ghostL2ChangeHandle (item) {
+      // 首次如果hover的是当前显示的菜单，则直接return
+      if (R.isEmpty(this.ghostL2Menu) && item.index === this.currentMenu.index) return
       this.ghostL2Menu = item
     },
     handleMouseLeave () {
