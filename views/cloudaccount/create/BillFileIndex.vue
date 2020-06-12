@@ -2,6 +2,9 @@
   <div>
     <page-header title="更新账单文件" />
     <div style="padding: 7px" />
+    <a-spin :spinning="!isRender">
+      <content-info :params="params" v-if="isRender" />
+    </a-spin>
     <bill-form ref="BILL_FORM" />
     <page-footer>
       <div slot="right">
@@ -15,17 +18,32 @@
 
 <script>
 import BillForm from './form/BillForm'
+import ContentInfo from './form/components/ContentInfo'
 import TestButton from '@/sections/TestButton'
+import { getRequestT } from '@/utils/utils'
+
 export default {
   name: 'CloudaccountBillFileIndex',
   components: {
     BillForm,
     TestButton,
+    ContentInfo,
   },
   data () {
     return {
+      params: {
+        data: [],
+      },
       loading: false,
     }
+  },
+  computed: {
+    isRender () {
+      return this.params.data.length > 0
+    },
+  },
+  created () {
+    this.fetchData()
   },
   methods: {
     cancel () {
@@ -44,6 +62,17 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+    fetchData () {
+      const manager = new this.$Manager('cloudaccounts')
+      let ids = [this.$route.query.id]
+      if (Array.isArray(this.$route.query.id)) {
+        ids = this.$route.query.id
+      }
+      manager.batchGet({ id: ids, params: { $t: getRequestT() } })
+        .then((res) => {
+          this.params.data = res.data.data
+        })
     },
   },
 }

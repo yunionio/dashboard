@@ -3,7 +3,7 @@
     <page-header title="新建云账号" />
     <steps class="my-3" v-model="step" />
     <keep-alive>
-      <component :is="currentComponent" :current-item.sync="currentItem" :account="newAccountInfo" ref="stepRef" :provider="currentItem.provider" /><!-- provider 是为了 VmNetwork 的 prop 不报错 -->
+      <component :prepareNetData="prepareNetData" :is="currentComponent" :current-item.sync="currentItem" :account="newAccountInfo" ref="stepRef" :provider="currentItem.provider" /><!-- provider 是为了 VmNetwork 的 prop 不报错 -->
     </keep-alive>
     <page-footer>
       <div slot="left">
@@ -19,7 +19,7 @@
         <a-button class="mr-3" @click="perv" v-if="!isFirstStep">上一步</a-button>
         <a-button class="mr-3" type="primary" @click="next" :loading="loading">{{ nextStepTitle }}</a-button>
         <test-button v-if="currentComponent === 'CreateCloudaccount' || currentComponent === 'BillForm'" class="mr-3" :post="testPost" />
-        <a-button @click="cancel">{{currentComponent === 'BillForm' ? '跳 过': '取 消'}}</a-button>
+        <a-button @click="cancel">{{currentComponent === 'bill-form' ? '跳 过': '取 消'}}</a-button>
       </div>
     </page-footer>
   </div>
@@ -29,10 +29,12 @@
 import SelectCloudaccount from './form/SelectCloudaccount'
 import CreateCloudaccount from './form/CreateCloudaccount'
 import BillForm from './form/BillForm'
-import VmNetwork from './form/VmNetwork'
+import GuestNetwork from './form/GuestNetwork'
+import HostNetwork from './form/HostNetwork'
 import { CLOUDACCOUNT_TYPES } from '@Cloudenv/views/cloudaccount/constants'
 import step from '@/mixins/step'
 import { Manager } from '@/utils/manager'
+import { getRequestT } from '@/utils/utils'
 import TestButton from '@/sections/TestButton'
 
 export default {
@@ -41,7 +43,8 @@ export default {
     SelectCloudaccount,
     CreateCloudaccount,
     BillForm,
-    VmNetwork,
+    GuestNetwork,
+    HostNetwork,
     TestButton,
   },
   mixins: [step],
@@ -57,9 +60,10 @@ export default {
       currentComponent: 'SelectCloudaccount',
       vmwareFormData: null,
       loading: false,
+      prepareNetData: {},
+      networkData: {},
       step: {
-        steps: [
-        ],
+        steps: [],
         currentStep: 0,
       },
       offsetFormLayout: {
@@ -84,16 +88,13 @@ export default {
     isBill () {
       return ['Aws', 'Aliyun', 'Google', 'Huawei', 'Azure'].indexOf(this.currentItem.provider) > -1 && this.$appConfig.isPrivate
     },
+    brand () {
+      return this.currentItem.provider.toLowerCase()
+    },
   },
   watch: {
     'step.currentStep' (step) {
-      if (step === 0) {
-        this.currentComponent = 'SelectCloudaccount'
-      } else if (step === 1) {
-        this.currentComponent = 'CreateCloudaccount'
-      } else {
-        this.currentComponent = this.isBill ? 'BillForm' : 'VmNetwork'
-      }
+      this.currentComponent = this.step.steps[step].key
     },
     currentItem (val) {
       this.changeSteps(val)
@@ -105,23 +106,45 @@ export default {
     this.changeSteps()
   },
   methods: {
+    async getFetchPrepareNets () {
+      if (!this.vmwareFormData) return false
+      try {
+        const { name, host, password, port, project, username } = this.vmwareFormData
+        const { data } = await this.cloudaccountsM.performClassAction({
+          action: 'prepare-nets',
+          data: {
+            name,
+            host,
+            password,
+            port,
+            project: project.key,
+            provider: 'VMware',
+            username,
+          },
+        })
+        this.prepareNetData = data || {}
+      } catch (err) {
+        throw err
+      }
+    },
     changeSteps (val) {
       if (val && val.provider === 'VMware') {
         this.step.steps = [
-          { title: '选择云平台', key: 'platform' },
-          { title: '配置云账号', key: 'cloudaccount' },
-          { title: '配置IP子网', key: 'network' },
+          { title: '选择云平台', key: 'select-cloudaccount' },
+          { title: '配置云账号', key: 'create-cloudaccount' },
+          { title: '配置物理机IP', key: 'host-network' },
+          { title: '配置虚拟机IP', key: 'guest-network' },
         ]
       } else if (this.isBill) {
         this.step.steps = [
-          { title: '选择云平台', key: 'platform' },
-          { title: '配置云账号', key: 'cloudaccount' },
-          { title: '账单文件访问信息（可选）', key: 'billConfig' },
+          { title: '选择云平台', key: 'select-cloudaccount' },
+          { title: '配置云账号', key: 'create-cloudaccount' },
+          { title: '账单文件访问信息（可选）', key: 'bill-form' },
         ]
       } else {
         this.step.steps = [
-          { title: '选择云平台', key: 'platform' },
-          { title: '配置云账号', key: 'cloudaccount' },
+          { title: '选择云平台', key: 'select-cloudaccount' },
+          { title: '配置云账号', key: 'create-cloudaccount' },
         ]
       }
     },
@@ -171,98 +194,117 @@ export default {
       this._providerDiff(data)
       return this.cloudaccountsM.create({ data })
     },
-    async doCreateNetwork (formData) {
-      const data = {
-        wire_id: formData.wire.key,
-        name: formData.name,
-      }
-      let num = 0
-      for (const uid in formData.startip) {
-        data.guest_ip_start = formData.startip[uid]
-        data.guest_ip_end = formData.endip[uid]
-        data.guest_ip_mask = formData.netmask[uid]
-        if (formData.gateway[uid]) {
-          data.guest_gateway = formData.gateway[uid]
+    formatNetParams (values) {
+      const { keys = [] } = values
+      return keys.map(k => {
+        return {
+          zone: 'default',
+          wire: 'default',
+          ...values[k],
         }
-        if (formData.vlan[uid]) {
-          data.vlan_id = formData.vlan[uid]
-        }
-        if (num > 0) {
-          data.name = `${data.name}-${num}`
-        }
-        try {
-          await this.networksM.create({ data })
-          num++
-        } catch (error) {
-          console.error(error, '<----doCreateNetwork')
-        }
-      }
-      return true
+      })
     },
-    validateForm () {
-      const successFn = () => {
-        this.loading = false
-        this.$message.success('操作成功')
-        this.$router.push('/cloudaccount')
-      }
-      const errorFn = () => {
-        this.loading = false
-      }
-      const brand = this.currentItem.provider.toLowerCase()
-      let createForm = this.$refs.stepRef.$refs.createForm
-      if (this.step.currentStep === 2) {
-        if (this.isBill) {
-          return this.fetchBillSubmit()
-        }
-        createForm = this.$refs.stepRef // VmNetwork 组件
-      }
-      return new Promise((resolve, reject) => {
-        if (createForm && createForm.validateForm) {
-          createForm.validateForm()
-            .then(values => {
-              if (brand === 'vmware') { // vmware 需要第三步的时候提交云账号的创建和network的创建
-                if (this.step.currentStep === 1) {
-                  this.vmwareFormData = values
-                } else if (this.step.currentStep === 2) {
-                  this.loading = true
-                  return this.doCreateCloudaccount(this.vmwareFormData)
-                    .then(() => {
-                      const networkRef = this.$refs.stepRef
-                      if (networkRef.configNetwork) {
-                        this.doCreateNetwork(values) // 创建IP子网
-                          .then(successFn)
-                          .catch(err => {
-                            this.$message.error(`创建云账号出错：${err}`)
-                            errorFn()
-                          })
-                      } else {
-                        successFn()
-                      }
-                    })
-                    .catch(errorFn)
-                }
-                resolve()
-              } else {
-                this.loading = true
-                return this.doCreateCloudaccount(values)
-                  .then(({ data }) => {
-                    if (this.isBill) {
-                      this.step.currentStep = 2
-                      this.newAccountInfo = data
-                    } else {
-                      successFn()
-                    }
-                    this.loading = false
-                  })
-                  .catch(errorFn)
-              }
+    async doCreateNetwork (wire) {
+      const hostNetData = this.networkData['host-network']
+      const hostParams = this.formatNetParams(hostNetData)
+      const promises = []
+      hostParams.forEach(dta => {
+        promises.push(new Promise((resolve, reject) => {
+          dta.server_type = 'baremetal'
+          dta.wire = wire.id
+          this.networksM.create({
+            data: dta,
+            params: { $t: getRequestT() },
+          }).then(({ data }) => {
+            resolve(data)
+          }).catch(err => {
+            reject(err)
+          })
+        }))
+      })
+      const guestNetData = this.networkData['guest-network']
+      if (guestNetData.isCreate) {
+        const guestParams = this.formatNetParams(guestNetData)
+        guestParams.forEach(dta => {
+          promises.push(new Promise((resolve, reject) => {
+            dta.server_type = 'guest'
+            dta.wire = wire.id
+            this.networksM.create({
+              data: dta,
+              params: { $t: getRequestT() },
+            }).then(({ data }) => {
+              resolve(data)
             }).catch(err => {
               reject(err)
             })
-        } else {
-          resolve()
+          }))
+        })
+      }
+      await Promise.all(promises)
+    },
+    async createWire () {
+      const manager = new this.$Manager('wires')
+      try {
+        if (!this.prepareNetData.suitable_wire && this.prepareNetData.suggested_wire) {
+          const { name, description, zone_id, zone_ids } = this.prepareNetData.suggested_wire
+          const { data } = await manager.create({
+            data: {
+              name,
+              description,
+              zone_id: zone_id || ((zone_ids && zone_ids.length > 0) ? zone_ids[0] : undefined),
+              vpc_id: 'default',
+            },
+          })
+          return data
         }
-      })
+      } catch (err) {
+        throw err
+      }
+    },
+    async vmwareForm (values) {
+      if (this.step.currentStep === 1) {
+        this.vmwareFormData = values
+        await this.getFetchPrepareNets()
+      }
+      if (this.step.currentStep > 1) {
+        this.networkData[this.currentComponent] = values
+      }
+      if (this.step.currentStep === 3) {
+        try {
+          await this.doCreateCloudaccount(this.vmwareFormData)
+          const wireDta = await this.createWire()
+          await this.doCreateNetwork(wireDta)
+        } catch (err) {
+          throw err
+        }
+      }
+    },
+    async validateForm () {
+      let createForm = this.$refs.stepRef.$refs.createForm
+      if (this.brand === 'vmware' && this.step.currentStep > 1) {
+        createForm = this.$refs.stepRef
+      }
+      if (this.step.currentStep === 2 && this.isBill) {
+        return this.fetchBillSubmit()
+      }
+      if (!createForm) return false
+      try {
+        this.loading = true
+        const values = await createForm.validateForm()
+        if (this.brand === 'vmware') {
+          return await this.vmwareForm(values)
+        }
+        await this.doCreateCloudaccount(values)
+        if (this.isBill) {
+          this.currentComponent = 'billConfig'
+        } else {
+          this.$router.push('/cloudaccount')
+        }
+      } catch (err) {
+        throw err
+      } finally {
+        this.loading = false
+      }
     },
     async fetchBillSubmit () {
       const BILL_FORM = this.$refs.stepRef

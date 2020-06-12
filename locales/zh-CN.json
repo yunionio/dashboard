@@ -1,0 +1,24 @@
+{
+  "ScheduledtaskGroupCycleType": {
+    "one": "单次",
+    "day": "每天",
+    "week": "每周",
+    "month": "每月"
+  },
+  "ScheduledtaskRuleAction": {
+    "start": "开机",
+    "stop": "关机",
+    "restart": "重启"
+  },
+  "ScheduledtaskResourceType": {
+    "server": "虚拟机"
+  },
+  "ScheduledtaskLabelType": {
+    "id": "指定虚拟机"
+  },
+  "ScheduledtaskType": {
+    "cycle": "周期策略",
+    "timing": "定时策略"
+  },
+  "scheduled_task_desc": "通过定时任务可以实现对关联虚拟机的定时开关机或重启等操作"
+}
