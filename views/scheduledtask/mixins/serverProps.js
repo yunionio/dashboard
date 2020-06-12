@@ -13,13 +13,14 @@ import { sizestr } from '@/utils/utils'
 
 export default {
   data () {
+    const tenant = this.params && this.params.data && this.params.data[0].tenant
     return {
       serverProps: {
         list: this.$list.createList(this, {
           resource: 'servers',
           getParams: {
             filter: 'hypervisor.notin(baremetal,container)',
-            tenant: this.params.data[0].tenant,
+            tenant,
           },
           filterOptions: {
             name: getNameFilter(),
