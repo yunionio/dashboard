@@ -263,13 +263,12 @@ export default {
               slots: {
                 default: ({ row }, h) => {
                   const cpu = row.reserved_resource_for_gpu && row.reserved_resource_for_gpu.reserved_cpu
-                  let ret = []
                   if (cpu) {
-                    ret = [
+                    return [
                       <a onClick={ () => this.$emit('tab-change', 'gpu-list') }>{cpu}核</a>,
                     ]
                   }
-                  return ret
+                  return '-'
                 },
               },
             },
@@ -312,13 +311,12 @@ export default {
               slots: {
                 default: ({ row }, h) => {
                   const memory = row.reserved_resource_for_gpu && row.reserved_resource_for_gpu.reserved_memory
-                  let ret = []
                   if (memory) {
-                    ret = [
+                    return [
                       <a onClick={ () => this.$emit('tab-change', 'gpu-list') }>{ sizestr(memory, 'M', 1024) }</a>,
                     ]
                   }
-                  return ret
+                  return '-'
                 },
               },
             },
@@ -351,13 +349,12 @@ export default {
               slots: {
                 default: ({ row }, h) => {
                   const storage = row.reserved_resource_for_gpu && row.reserved_resource_for_gpu.reserved_storage
-                  let ret = []
                   if (storage) {
-                    ret = [
+                    return [
                       <a onClick={ () => this.$emit('tab-change', 'gpu-list') }>{ sizestr(storage, 'M', 1024) }</a>,
                     ]
                   }
-                  return ret
+                  return '-'
                 },
               },
             },
