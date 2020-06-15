@@ -10,10 +10,18 @@ import Tag from '@Cloudenv/views/tag'
 import Cloudevent from '@Cloudenv/views/cloudevent'
 import Proxysetting from '@Cloudenv/views/proxysetting'
 import Policydefinition from '@Cloudenv/views/policydefinition'
-// import Monitor from '@Monitor/router'
 import Scheduledtask from '@Cloudenv/views/scheduledtask'
 import ScheduledtaskCreate from '@Cloudenv/views/scheduledtask/create'
 import Layout from '@/layouts/RouterView'
+
+let Monitor = { meta: { hidden: true } }
+if (process.env.VUE_APP_IS_PRIVATE) {
+  const modules = require.context('../../../containers', true, /^((?![\\/]node_modules).)*.\/router\/index.js$/)
+  const moduleList = modules.keys()
+  if ([].includes.call(moduleList, './Monitor/router/index.js')) {
+    Monitor = modules('./Monitor/router/index.js').default
+  }
+}
 
 export default {
   index: 9,
@@ -218,7 +226,7 @@ export default {
         },
       ],
     },
-    // Monitor,
+    Monitor,
     {
       meta: {
         label: '定时任务',
