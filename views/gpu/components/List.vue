@@ -118,6 +118,29 @@ export default {
             }
           },
         },
+        {
+          label: '设置预留资源',
+          action: () => {
+            this.createDialog('SetReserveResourceDialog', {
+              onManager: this.onManager,
+              data: this.list.selectedItems,
+              columns: this.columns,
+              refresh: this.refresh,
+            })
+          },
+          meta: () => {
+            const item = this.list.selectedItems
+            if (item.length <= 0) {
+              return {
+                validate: false,
+                tooltip: '请选择要设置预留资源的GPU卡',
+              }
+            }
+            return {
+              validate: true,
+            }
+          },
+        },
       ],
     }
   },

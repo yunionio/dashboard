@@ -131,8 +131,9 @@ export default {
       })
     },
     doSubmit (data) {
-      return new this.$Manager('isolated_devices').update({
-        id: this.params.data[0].id,
+      const ids = this.params.data.map((item) => item.id)
+      return new this.$Manager('isolated_devices').batchUpdate({
+        ids,
         data: {
           reserved_cpu: data.cpu,
           reserved_memory: data.memory * 1024,
