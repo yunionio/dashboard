@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import { getIsolatedDeviceCountColumns } from '../utils/columns'
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { getRegionTableColumn, getStatusTableColumn, getBrandTableColumn, getEnabledTableColumn, getNameDescriptionTableColumn, getPublicScopeTableColumn, getProjectDomainTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
 import { sizestr, percentstr } from '@/utils/utils'
@@ -157,6 +158,7 @@ export default {
           },
         },
       },
+      getIsolatedDeviceCountColumns(),
     ]
   },
 }

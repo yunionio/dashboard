@@ -45,6 +45,17 @@ export default {
           }
         },
       },
+      {
+        label: '设置预留资源',
+        action: obj => {
+          this.createDialog('SetReserveResourceDialog', {
+            onManager: this.onManager,
+            data: [obj],
+            columns: this.columns,
+            refresh: this.refresh,
+          })
+        },
+      },
     ]
   },
 }

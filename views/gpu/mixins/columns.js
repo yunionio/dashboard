@@ -1,4 +1,7 @@
 import {
+  getReserveResourceColumn,
+} from '../utils/columns'
+import {
   getNameDescriptionTableColumn,
   getCopyWithContentTableColumn,
 } from '@/utils/common/tableColumn'
@@ -68,6 +71,7 @@ export default {
         hideField: true,
         slotCallback: row => row.host || row.host_id,
       }),
+      getReserveResourceColumn(),
     ]
   },
 }

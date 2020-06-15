@@ -1,5 +1,6 @@
 import { Base64 } from 'js-base64'
 import qs from 'qs'
+import { typeClouds } from '@/utils/common/hypervisor'
 import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
 
 export default {
@@ -247,6 +248,34 @@ export default {
                       }
                       return {
                         validate: ['maintaining', 'maintain_fail'].includes(obj.status),
+                      }
+                    },
+                  },
+                  {
+                    label: '设置GPU卡预留资源',
+                    action: obj => {
+                      this.createDialog('SetHostReserveResourceDialog', {
+                        onManager: this.onManager,
+                        data: [obj],
+                        columns: this.columns,
+                        refresh: this.refresh,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      if (obj.provider !== typeClouds.providerMap.OneCloud.key) {
+                        ret.tooltip = '只有OneCloud宿主机支持此操作'
+                        return ret
+                      }
+                      if (!obj.reserved_resource_for_gpu) {
+                        ret.tooltip = '该宿主机没有GPU资源，暂不支持该操作'
+                        return ret
+                      }
+                      return {
+                        validate: true,
                       }
                     },
                   },

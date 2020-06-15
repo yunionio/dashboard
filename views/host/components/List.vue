@@ -19,6 +19,7 @@ import { getStatusFilter, getEnabledFilter, getBrandFilter, getProjectDomainFilt
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ListMixin from '@/mixins/list'
+import { typeClouds } from '@/utils/common/hypervisor'
 import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
 
 export default {
@@ -197,6 +198,36 @@ export default {
                   meta: () => ({
                     validate: this.list.selectedItems.every(item => { return item.brand.toLowerCase() !== 'zstack' }),
                   }),
+                },
+                {
+                  label: '设置GPU卡预留资源',
+                  action: () => {
+                    this.createDialog('SetHostReserveResourceDialog', {
+                      onManager: this.onManager,
+                      data: this.list.selectedItems,
+                      columns: this.columns,
+                      refresh: this.refresh,
+                    })
+                  },
+                  meta: () => {
+                    const ret = {
+                      validate: false,
+                      tooltip: null,
+                    }
+                    const isAllOneCloud = this.list.selectedItems.every((item) => { return item.provider === typeClouds.providerMap.OneCloud.key })
+                    if (!isAllOneCloud) {
+                      ret.tooltip = '只有OneCloud宿主机支持此操作'
+                      return ret
+                    }
+                    const isAllReservedResource = this.list.selectedItems.every((item) => { return item.reserved_resource_for_gpu })
+                    if (!isAllReservedResource) {
+                      ret.tooltip = '该宿主机没有GPU资源，暂不支持该操作'
+                      return ret
+                    }
+                    return {
+                      validate: true,
+                    }
+                  },
                 },
                 {
                   label: '删除',

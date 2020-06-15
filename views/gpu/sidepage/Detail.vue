@@ -7,6 +7,9 @@
 </template>
 
 <script>
+import {
+  getReserveResourceColumn,
+} from '../utils/columns'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -51,6 +54,7 @@ export default {
             return row.guest || row.guest_id
           },
         },
+        getReserveResourceColumn(),
       ],
       extraInfo: [
         {
