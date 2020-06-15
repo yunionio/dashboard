@@ -79,7 +79,7 @@ export const getCycleTimerColumns = ({ timeFormat = 'YYYY-MM-DD HH:mm:ss' } = {}
   return {
     field: 'cycle_timer',
     title: '策略详情',
-    minWidth: 300,
+    minWidth: 200,
     showOverflow: 'title',
     slots: {
       default: ({ row }, h) => {
