@@ -1065,7 +1065,17 @@
     "lanzhou": "兰州",
     "wulumuqi": "乌鲁木齐",
     "wuhu": "芜湖",
-    "other": "其他"
+    "other": "其他",
+    "nanjing": "南京",
+    "fuzhou": "福州",
+    "haikou": "海口",
+    "kunming": "昆明",
+    "nanning": "南宁",
+    "suzhou": "苏州",
+    "taiyuan": "太原",
+    "tianjin": "天津",
+    "wuhan": "武汉",
+    "zhengzhou": "郑州"
   },
   "cloudPrvidersMap": {
     "Aliyun": "阿里云",
