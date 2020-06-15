@@ -1,8 +1,8 @@
 <template>
-  <base-dialog width="800px" class="license-dialog">
+  <base-dialog width="700px" class="license-dialog">
     <div slot="body">
       <div class="titles">
-          <img class="logo" :src="logo" alt="" />
+         <img class="logo" :src="logo" alt="" />
          <h2>OneCloud 授权激活</h2>
          <p>软件版本：{{updateInfo.current_version}}</p>
       </div>
@@ -63,10 +63,10 @@ export default {
       // allSn: [],
       formItemLayout: {
         wrapperCol: {
-          span: 18,
+          span: 19,
         },
         labelCol: {
-          span: 6,
+          span: 5,
         },
       },
       form: {
@@ -158,10 +158,11 @@ export default {
       display: none;
     }
     .titles {
-      text-align: center;
+      // text-align: center;
       padding: 10px 0 30px 0;
       font-weight: 500;
       position: relative;
+      padding-left: 20.83333333%;
       h2 {
         font-size: 30px;
         color: $heading-color;
