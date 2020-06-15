@@ -1,5 +1,5 @@
 <template>
-  <div class="level-2-shade" v-show="visible">
+  <scrollbar class="level-2-shade" v-show="visible" ref="scroll">
     <div
       class="level-2-menu"
       v-if="menus">
@@ -30,12 +30,12 @@
           :to="citem.path"
           tag="a"
           active-class="active"
-          @click.native="$emit('clear-ghost-l2-menu')">
+          @click.native="handleClick">
           {{ getLabel(citem.meta) }}
         </router-link>
       </div>
     </div>
-  </div>
+  </scrollbar>
 </template>
 
 <script>
@@ -56,6 +56,7 @@ export default {
       type: Boolean,
       default: false,
     },
+    ghostL2MenuScrollTop: Number,
   },
   computed: {
     label () {
@@ -91,6 +92,22 @@ export default {
       return res
     },
   },
+  watch: {
+    ghostL2MenuScrollTop (val) {
+      if (val) {
+        this.$nextTick(() => {
+          this.$refs.scroll.wrap.scrollTop = this.ghostL2MenuScrollTop || 0
+        })
+      }
+    },
+  },
+  mounted () {
+    if (this.ghostL2MenuScrollTop) {
+      this.$nextTick(() => {
+        this.$refs.scroll.wrap.scrollTop = this.ghostL2MenuScrollTop || 0
+      })
+    }
+  },
   methods: {
     getLabel (meta) {
       if (meta.t) {
@@ -100,6 +117,7 @@ export default {
     },
     setRecentMenus (item) {
       this.$store.dispatch('common/setRecentMenus', item)
+      this.$emit('set-ghost-l2-menu-scroll-top', this.getWrapScrollTop())
       this.$emit('clear-ghost-l2-menu')
     },
     visibleSubmenu (item) {
@@ -107,6 +125,13 @@ export default {
         return !item.meta.invisible(this.$store.getters.userInfo)
       }
       return true
+    },
+    handleClick () {
+      this.$emit('set-ghost-l2-menu-scroll-top', this.getWrapScrollTop())
+      this.$emit('clear-ghost-l2-menu')
+    },
+    getWrapScrollTop () {
+      return this.$refs.scroll.wrap.scrollTop
     },
   },
 }
@@ -121,6 +146,11 @@ export default {
   bottom: 0;
   background-color: rgb(247, 248, 250);
   box-shadow: 1px 0 6px 0 rgba(165,192,207,.3);
+  ::v-deep {
+    .scrollbar-wrap {
+      overflow-x: hidden;
+    }
+  }
 }
 
 .level-2-menu {

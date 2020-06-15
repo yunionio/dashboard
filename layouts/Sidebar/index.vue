@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar-wrap" @mouseleave="handleMouseLeave">
-    <level1-menu :menuitems="menuitems" :show-menu="showMenu" :ghost-l2-menu="ghostL2Menu" @ghost-l2-change="ghostL2ChangeHandle" />
-    <level2-menu ref="level2menu" :current-menu="currentMenu" :show-menu="showMenu" :visible="l2MenuVisible" />
+    <level1-menu :menuitems="menuitems" :show-menu="showMenu" :ghost-l2-menu="ghostL2Menu" @ghost-l2-change="ghostL2ChangeHandle" @set-ghost-l2-menu-scroll-top="setGhostL2MenuScrollTop" />
+    <level2-menu ref="level2menu" :ghost-l2-menu-scroll-top="ghostL2MenuScrollTop" :current-menu="currentMenu" :show-menu="showMenu" :visible="l2MenuVisible" />
     <transition name="slide-fade">
       <level2-menu
         :key="showGhostL2Menu.index"
@@ -10,7 +10,8 @@
         :show-menu="showMenu"
         visible
         style="zindex: 5;"
-        @clear-ghost-l2-menu="handleMouseLeave" />
+        @clear-ghost-l2-menu="handleMouseLeave"
+        @set-ghost-l2-menu-scroll-top="setGhostL2MenuScrollTop" />
     </transition>
   </div>
 </template>
@@ -42,6 +43,7 @@ export default {
       currentMenu: {},
       // 临时菜单
       ghostL2Menu: {},
+      ghostL2MenuScrollTop: 0,
     }
   },
   computed: {
@@ -98,10 +100,15 @@ export default {
       return hidden && hasPermission({ key: item.meta.permission })
     },
     ghostL2ChangeHandle (item) {
+      // 首次如果hover的是当前显示的菜单，则直接return
+      if (R.isEmpty(this.ghostL2Menu) && item.index === this.currentMenu.index) return
       this.ghostL2Menu = item
     },
     handleMouseLeave () {
       this.ghostL2Menu = {}
+    },
+    setGhostL2MenuScrollTop (val) {
+      this.ghostL2MenuScrollTop = val
     },
   },
 }

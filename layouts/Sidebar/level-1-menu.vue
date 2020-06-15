@@ -111,6 +111,7 @@ export default {
       } else {
         path = item.menu.path
       }
+      this.$emit('set-ghost-l2-menu-scroll-top', 0)
       this.$router.push(path)
     },
   },
