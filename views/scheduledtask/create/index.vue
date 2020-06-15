@@ -236,7 +236,13 @@ export default {
         ],
       },
       form: {
-        fc: this.$form.createForm(this),
+        fc: this.$form.createForm(this, {
+          onValuesChange: (props, values) => {
+            if (values.hasOwnProperty('project')) {
+              this.serverProps.list.getParams.tenant = values.project && values.project.key
+            }
+          },
+        }),
       },
       formItemLayout: {
         wrapperCol: {
