@@ -10,20 +10,15 @@
          <a-form-item v-if="allSn && allSn.length > 0" label="服务器识别码">
           <div>
             <div class="flex-fill d-flex all-sn" :class="{ 'align-items-end': allSn.length > 1 }">
-              <div :class="{ 'border pt-2 pb-2 px-3': allSn.length > 1 }">
-                <template v-for="item of sn">
-                  <div :key="item" class="mb-2">{{ item }}</div>
-                </template>
-                <template v-for="item of unAuthServiceNumbers">
+              <div class="border pb-2 px-3">
+                <template v-for="item of allSn">
                   <div class="mt-2" :key="item">
                     <span>{{ item }}</span>
-                    <a-icon class="ml-1 error-color" type="exclamation-circle" />
                   </div>
                 </template>
               </div>
-              <copy :message="copySn" class="flex-shrink-0 flex-grow-0 ml-2 mt-1" />
+              <copy :message="copySn" class="flex-shrink-0 flex-grow-0 ml-2 mt-1" style="top: 10px;" />
             </div>
-            <div class="mini-text error-color" v-if="unAuthServiceNumbers && unAuthServiceNumbers.length">发现未被授权的服务器，您需要及时更新license，否则可能会导致系统服务不可用。请将您的服务器识别码和变更需求发送电子邮件至 {{ email }}，我们将尽快与您联系！</div>
           </div>
         </a-form-item>
         <a-form-item label="License文件上传">
@@ -91,25 +86,8 @@ export default {
       serviceNumbers: state => state.app.license.service_numbers,
       status: state => state.app.license.status,
     }),
-    sn () {
-      const sn = this.license.sn
-      if (R.is(String, sn)) {
-        return [sn]
-      }
-      return sn
-    },
-    unAuthServiceNumbers () {
-      if (this.serviceNumbers && R.type(this.serviceNumbers) === 'Array') {
-        return this.serviceNumbers.filter(item => !this.sn.includes(item))
-      }
-      return []
-    },
     allSn () {
-      if (this.sn && R.type(this.sn) === 'Array') {
-        const ret = this.sn.concat(this.unAuthServiceNumbers)
-        return ret
-      }
-      return []
+      return this.serviceNumbers && R.type(this.serviceNumbers) === 'Array' ? this.serviceNumbers : []
     },
     copySn () {
       return this.allSn.join('\n')

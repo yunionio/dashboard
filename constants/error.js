@@ -3690,5 +3690,16 @@ export default {
         }
       }
     }
+  },
+  "RequireLicenseError": {
+    "zh-CN": "OneCloud未激活",
+    "details": {
+      "no license found": {
+        "zh-CN": {
+          "fields": {},
+          "message": ""
+        }
+      }
+    }
   }
 }
