@@ -706,6 +706,10 @@
     "scheduledtask": {
       "ready": "正常",
       "create_failed": "创建失败"
+    },
+    "prepare": {
+      "true": "已满足",
+      "false": "不满足"
     }
   },
   "skuCategoryOptions": {

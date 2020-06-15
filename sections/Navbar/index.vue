@@ -357,7 +357,11 @@ export default {
     },
     fetchLicense (val) {
       if (val) {
-        this.$store.dispatch('app/fetchLicense')
+        this.$store.dispatch('app/fetchLicense').catch(ret => {
+          if (this.$store.getters.isAdminMode) {
+            this.createDialog('UpdateLicenseDialog')
+          }
+        })
       }
     },
     async userMenuClick (item) {

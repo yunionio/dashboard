@@ -302,4 +302,8 @@ export default {
     success: ['ready'],
     danger: ['create_failed'],
   },
+  prepare: {
+    success: [true],
+    danger: [false],
+  },
 }

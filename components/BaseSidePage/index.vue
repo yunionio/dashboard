@@ -136,6 +136,7 @@ export default {
   mounted () {
     this.$nextTick(() => {
       document.body.style.overflow = ''
+      console.log(this.tab)
       if (!this.currentTab && this.tabs && this.tabs.length > 0) {
         this.handleTabChange(this.tabs[0].key)
       }
