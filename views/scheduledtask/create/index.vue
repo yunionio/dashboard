@@ -239,7 +239,7 @@ export default {
         fc: this.$form.createForm(this, {
           onValuesChange: (props, values) => {
             if (values.hasOwnProperty('project')) {
-              this.serverProps.list.getParams.tenant = values.project.key
+              this.serverProps.list.getParams.tenant = values.project && values.project.key
             }
           },
         }),
