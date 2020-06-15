@@ -94,7 +94,7 @@ export default {
               const rs = row.reserved_resource_for_gpu || {}
               const ret = []
               if (rs.reserved_cpu) {
-                const config = rs.reserved_cpu + 'C' + (rs.reserved_memory ? sizestr(rs.reserved_memory, 'M', 1024) : '') + (rs.reserved_storage ? sizestr(row.reserved_storage, 'M', 1024) : '')
+                const config = rs.reserved_cpu + 'C' + (rs.reserved_memory ? sizestr(rs.reserved_memory, 'M', 1024) : '') + (rs.reserved_storage ? sizestr(rs.reserved_storage, 'M', 1024) : '')
                 return ret.concat(<div class='text-truncate' style={{ color: '#53627C' }}>{ config }</div>)
               }
               return ret
@@ -119,8 +119,9 @@ export default {
       })
     },
     doSubmit (data) {
-      return new this.$Manager('hosts').performAction({
-        id: this.params.data[0].id,
+      const ids = this.params.data.map((item) => { return item.id })
+      return new this.$Manager('hosts').batchPerformAction({
+        ids,
         action: 'set-reserved-resource-for-isolated-device',
         data: {
           reserved_cpu: data.cpu,
