@@ -1,3 +1,4 @@
+import CommonalertsIndex from '@Monitor/views/commonalert'
 import Explorer from '@Monitor/views/explorer'
 import Layout from '@/layouts/RouterView'
 
@@ -17,6 +18,20 @@ export default {
           name: 'Explorer',
           path: '',
           component: Explorer,
+        },
+      ],
+    },
+    {
+      path: '/commonalerts',
+      meta: {
+        label: '报警策略',
+      },
+      component: Layout,
+      children: [
+        {
+          name: 'CommonalertsIndex',
+          path: '',
+          component: CommonalertsIndex,
         },
       ],
     },
