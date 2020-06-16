@@ -9,6 +9,7 @@
 </template>
 <script>
 import _ from 'lodash'
+import * as R from 'ramda'
 
 export default {
   name: 'NameRepeated',
@@ -26,6 +27,10 @@ export default {
     version: {
       type: String,
       default: 'v2',
+    },
+    params: {
+      type: [Object, Function],
+      default: () => ({}),
     },
   },
   data () {
@@ -55,6 +60,11 @@ export default {
         this.debouncedFetchQueryList(newValue)
       }
     },
+    params (val, oldVal) {
+      if (!R.equals(val, oldVal)) {
+        this.debouncedFetchQueryList()
+      }
+    },
   },
   created () {
     this.debouncedFetchQueryList = _.debounce(this.fetchQueryList, 300)
@@ -63,7 +73,7 @@ export default {
     this.debouncedFetchQueryList = null
   },
   methods: {
-    async fetchQueryList (name) {
+    async fetchQueryList (name = this.name) {
       this.loading = true
       const manager = new this.$Manager(this.res, this.version)
       try {
@@ -71,6 +81,7 @@ export default {
           name,
           scope: this.$store.getters.scope,
           filter: `name.contains('${name}')`,
+          ...(R.is(Function, this.params) ? this.params() : this.params),
         }
         await manager.get({ id: name, params })
         this.isRepeated = true
