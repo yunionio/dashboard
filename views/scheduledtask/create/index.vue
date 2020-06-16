@@ -2,7 +2,7 @@
   <div>
     <page-header title="新建定时任务" />
     <a-form :form="form.fc" v-bind="formItemLayout" hideRequiredMark>
-      <a-form-item :label="`指定${$t('dictionary.project')}`" class="mb-0" v-bind="formItemLayout">
+      <a-form-item :label="`指定${$t('dictionary.project')}`" class="mt-3 mb-0" v-bind="formItemLayout">
         <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
       </a-form-item>
       <a-form-item label="名称">
