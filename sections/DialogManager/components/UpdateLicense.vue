@@ -146,6 +146,8 @@ export default {
           data: fd,
         })
         this.goGuide()
+        this.cancelDialog()
+        this.$message.success('授权成功')
       } catch (error) {
         throw error
       } finally {
