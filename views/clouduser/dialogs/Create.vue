@@ -17,7 +17,8 @@
               v-decorator="decorators.cloudprovider_id"
               resource="cloudproviders"
               filterable
-              :params="cloudproviderParams" />
+              :params="cloudproviderParams"
+              :item.sync="form.fi.cloudprovider" />
           </a-form-item>
         </template>
         <a-form-item :label="$t('common.name')" :extra="$t('cloudenv.clouduser_text1')">
@@ -26,7 +27,8 @@
             v-slot:extra
             res="cloudusers"
             version="v1"
-            :name="form.fi.generate_name" />
+            :name="form.fi.generate_name"
+            :params="nameRepeatParams" />
         </a-form-item>
         <a-form-item :label="$t('dictionary.cloudgroup')" :extra="$t('cloudenv.clouduser_text2')">
           <list-select
@@ -68,6 +70,7 @@ export default {
         fi: {
           generate_name: '',
           user: {},
+          cloudprovider: {},
         },
       },
       decorators: {
@@ -151,6 +154,12 @@ export default {
     },
     namePlaceholder () {
       return this.isGoogle ? this.$t('validator.serverCreateName') : this.form.fi.user.name
+    },
+    nameRepeatParams () {
+      if (this.isGoogle) {
+        return { cloudprovider_id: this.form.fi.cloudprovider.id }
+      }
+      return { cloudaccount_id: this.params.cloudaccount.id }
     },
   },
   methods: {
