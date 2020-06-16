@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import { getIsolatedDeviceCountColumns } from '../utils/columns'
 import WindowsMixin from '@/mixins/windows'
 import { getEnabledTableColumn, getBrandTableColumn, getCopyWithContentTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
@@ -197,6 +198,7 @@ export default {
             return ret
           },
         },
+        getIsolatedDeviceCountColumns(),
       ],
       extraInfo: [
         {
