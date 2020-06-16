@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    :title="$t('dictionary.cloudgroup')"
+    :title="$t('dictionary.cloudgroupcache')"
     icon="res-cloudaccount"
     :res-name="detailData.name"
     :actions="params.actions"
@@ -19,46 +19,28 @@
 <script>
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import CloudgroupDetail from './Detail'
-import ClouduserListForCloudgroupSidepage from './ClouduserList'
-import CloudpolicyListForCloudgroupSidepage from './CloudpolicyList'
-import Cache from './Cache'
+import CloudgroupcacheDetail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
 
 export default {
-  name: 'CloudgroupSidePage',
+  name: 'CloudgroupcacheSidePage',
   components: {
     Actions,
-    CloudgroupDetail,
-    ClouduserListForCloudgroupSidepage,
-    CloudpolicyListForCloudgroupSidepage,
-    Cache,
+    CloudgroupcacheDetail,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
-        { label: this.$t('sidepage.tab.label.detail'), key: 'cloudgroup-detail' },
-        { label: this.$t('dictionary.clouduser'), key: 'clouduser-list-for-cloudgroup-sidepage' },
-        { label: this.$t('dictionary.policy'), key: 'cloudpolicy-list-for-cloudgroup-sidepage' },
-        { label: this.$t('dictionary.cloudgroupcache'), key: 'cache' },
+        { label: this.$t('sidepage.tab.label.detail'), key: 'cloudgroupcache-detail' },
         { label: this.$t('dictionary.actions'), key: 'event-drawer' },
       ],
     }
   },
   computed: {
     getParams () {
-      if (
-        this.params.windowData.currentTab === 'clouduser-list-for-cloudgroup-sidepage' ||
-        this.params.windowData.currentTab === 'cloudpolicy-list-for-cloudgroup-sidepage' ||
-        this.params.windowData.currentTab === 'cache'
-      ) {
-        return {
-          cloudgroup_id: this.data.id,
-        }
-      }
       return null
     },
   },

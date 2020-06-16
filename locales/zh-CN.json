@@ -27,9 +27,15 @@
   "cloudgroup_delete_tip": "删除@:dictionary.cloudgroup",
   "coludgroup_text001": "子账号",
   "coludgroup_text002": "删除子账号",
+  "coludgroup_text003": "删除缓存",
+  "coludgroup_text004": "权限组缓存",
   "clouduser_list_t1": "用户名",
   "clouduser_list_t2": "密码",
   "clouduser_list_t3": "登录地址",
   "clouduser_list_t4": "关联用户",
-  "clouduser_list_t5": "控制台登录"
+  "clouduser_list_t5": "控制台登录",
+  "clouduser_list_a1": "关联@:dictionary.cloudgroup",
+  "clouduser_list_a2": "修改关联用户",
+  "clouduser_text1": "密码自动生成,新建完成后可在列表查看",
+  "clouduser_text2": "对应云上主机组,是权限的集合,选择多个组继承多个组权限"
 }

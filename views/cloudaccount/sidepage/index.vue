@@ -12,7 +12,7 @@
     <template v-slot:actions>
       <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :data="detailData" :on-manager="onManager" :res-id="data.id" resource="cloudaccounts" :cloudaccount-list-refresh="params.options.refresh" :getParams="getParams" />
+    <component :is="params.windowData.currentTab" :data="detailData" :cloudaccount="detailData" :on-manager="onManager" :res-id="data.id" resource="cloudaccounts" :cloudaccount-list-refresh="params.options.refresh" :getParams="getParams" />
   </base-side-page>
 </template>
 
@@ -27,6 +27,8 @@ import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
 import { findPlatform } from '@/utils/common/hypervisor'
+import CloudgroupList from '@Cloudenv/views/cloudgroup/components/List'
+import ClouduserList from '@Cloudenv/views/clouduser/components/List'
 
 export default {
   name: 'CloudaccountSidePage',
@@ -36,6 +38,8 @@ export default {
     CloudproviderList,
     HostList,
     Usage,
+    ClouduserList,
+    CloudgroupList,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   computed: {
@@ -49,6 +53,8 @@ export default {
         { label: '详情', key: 'cloudaccount-detail' },
         { label: '订阅', key: 'cloudprovider-list' },
         { label: '资源统计', key: 'usage' },
+        { label: this.$t('dictionary.clouduser'), key: 'clouduser-list' },
+        { label: this.$t('dictionary.cloudgroup'), key: 'cloudgroup-list' },
         { label: '操作日志', key: 'event-drawer' },
       ]
       if (platform === 'idc' || platform === 'private') {
@@ -67,6 +73,14 @@ export default {
           detail: true,
           account: this.data.id,
           baremetal: false,
+        }
+      } else if (this.params.windowData.currentTab === 'clouduser-list') {
+        return {
+          cloudaccount: this.data.id,
+        }
+      } else if (this.params.windowData.currentTab === 'cloudgroup-list') {
+        return {
+          provider: this.data.data && this.data.data.provider,
         }
       }
       return null

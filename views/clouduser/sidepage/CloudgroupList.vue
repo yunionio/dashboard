@@ -9,16 +9,15 @@
 
 <script>
 import * as R from 'ramda'
+import ColumnsMixin from '@Cloudenv/views/cloudgroup/mixins/columns'
 import { getNameFilter, getBrandFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
-import ColumnsMixin from '@Cloudenv/views/clouduser/mixins/columns'
 
 export default {
-  name: 'ClouduserListForCloudgroupSidepage',
+  name: 'CloudgroupListForClouduserSidepage',
   mixins: [WindowsMixin, ListMixin, ColumnsMixin],
   props: {
-    id: String,
     getParams: {
       type: Object,
       default: () => ({}),
@@ -28,8 +27,8 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
-        id: this.id,
-        resource: 'cloudusers',
+        id: 'CloudgroupListForClouduserSidepage',
+        resource: 'cloudgroups',
         apiVersion: 'v1',
         getParams: this.getParam,
         filterOptions: {
@@ -53,16 +52,16 @@ export default {
               vm: this,
               data: this.list.selectedItems,
               columns: this.columns,
-              title: this.$t('cloudenv.coludgroup_text002'),
-              name: this.$t('cloudenv.coludgroup_text001'),
+              title: this.$t('cloudenv.cloudgroup_delete_tip'),
+              name: this.$t('dictionary.cloudgroup'),
               onManager: this.onManager,
               ok: async ids => {
                 try {
                   const response = await this.manager.batchPerformAction({
                     ids,
-                    action: 'leave-group',
+                    action: 'remove-user',
                     data: {
-                      cloudgroup_id: this.resId,
+                      clouduser_id: this.resId,
                     },
                   })
                   this.list.refresh()
@@ -83,16 +82,16 @@ export default {
               vm: this,
               data: [obj],
               columns: this.columns,
-              title: this.$t('cloudenv.coludgroup_text002'),
-              name: this.$t('cloudenv.coludgroup_text001'),
+              title: this.$t('cloudenv.cloudgroup_delete_tip'),
+              name: this.$t('dictionary.cloudgroup'),
               onManager: this.onManager,
               ok: async ids => {
                 try {
                   const response = await this.manager.batchPerformAction({
                     ids,
-                    action: 'leave-group',
+                    action: 'remove-user',
                     data: {
-                      cloudgroup_id: this.resId,
+                      clouduser_id: this.resId,
                     },
                   })
                   this.list.refresh()
@@ -111,7 +110,10 @@ export default {
   },
   created () {
     this.list.fetchData()
-    this.manager = new this.$Manager('cloudusers', 'v1')
+    this.$bus.$on('CloudgroupListForClouduserSidepageRefresh', () => {
+      this.list.refresh()
+    }, this)
+    this.manager = new this.$Manager('cloudgroups', 'v1')
   },
   methods: {
     getParam () {
