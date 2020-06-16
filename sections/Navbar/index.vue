@@ -1,9 +1,11 @@
 <template>
   <div class="navbar-wrap d-flex align-items-center">
     <template v-if="authInfoLoaded">
-      <div class="d-flex align-items-center h-100 navbar-item-trigger" @click.stop.prevent="map.visible = !map.visible">
-        <icon type="menu" style="font-size: 24px;" />
-      </div>
+      <a-tooltip title="全局导航" placement="right">
+        <div class="d-flex align-items-center navbar-item-trigger justify-content-center global-map-btn ml-1" @click.stop.prevent="map.visible = !map.visible">
+          <icon type="menu" style="font-size: 24px;" />
+        </div>
+      </a-tooltip>
     </template>
     <template v-else>
       <div class="d-flex align-items-center h-100 navbar-item-trigger">
@@ -594,6 +596,29 @@ export default {
     cursor: pointer;
     &:hover {
       color: $link-color;
+    }
+  }
+}
+.global-map-btn {
+  width: 50px;
+  height: 50px;
+  padding: 0 !important;
+  position: relative;
+  &::after {
+    content: "";
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    background: #fff;
+    border-radius: 50%;
+    z-index: -1;
+    transition: all .3s ease;
+  }
+  &:hover {
+    &::after {
+      background-color: rgb(241, 241, 241);
     }
   }
 }
