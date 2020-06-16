@@ -122,7 +122,7 @@ export default {
           resource: 'region_quotas',
         },
         isolated_device: {
-          unit: '个',
+          unit: '块',
           desc: genDesc('GPU'),
           resource: 'quotas',
         },
