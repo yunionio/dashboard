@@ -9,7 +9,7 @@
       <a-form :form="form.fc" v-bind="formItemLayout">
          <a-form-item v-if="allSn && allSn.length > 0" label="服务器识别码">
           <div>
-            <div class="flex-fill d-flex all-sn" :class="{ 'align-items-end': allSn.length > 1 }">
+            <div class="flex-fill d-flex all-sn align-items-end">
               <div class="border pb-2 px-3">
                 <template v-for="item of allSn">
                   <div class="mt-2" :key="item">
@@ -17,7 +17,7 @@
                   </div>
                 </template>
               </div>
-              <copy :message="copySn" class="flex-shrink-0 flex-grow-0 ml-2 mt-1" style="top: 10px;" />
+              <copy :message="copySn" class="flex-shrink-0 flex-grow-0 ml-2 mt-1" />
             </div>
           </div>
         </a-form-item>
@@ -27,6 +27,7 @@
             :headers="headers"
             :beforeUpload="beforeUpload"
             :fileList="fileList"
+            :remove="hanldeRemoveFile"
             action="/api/v1/licenses">
             <p class="ant-upload-drag-icon">
               <a-icon type="inbox" />
@@ -97,6 +98,10 @@ export default {
     this.getUpdateInfo()
   },
   methods: {
+    hanldeRemoveFile (file) {
+      this.fileList = []
+      return true
+    },
     beforeUpload (file) {
       if (!file.name.endsWith('.lic')) {
         this.$message.info('文件扩展名必须为.lic')
