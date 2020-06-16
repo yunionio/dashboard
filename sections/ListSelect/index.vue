@@ -81,6 +81,11 @@ export default {
       return !R.isEmpty(this.details) && !R.isNil(this.details)
     },
   },
+  watch: {
+    details (newVal, oldVal) {
+      if (!R.equals(newVal, oldVal)) this.$emit('update:items', newVal)
+    },
+  },
   created () {
     this.listProps.list.disableStorageLimit = true
     this.listProps.list.limit = 10
@@ -118,11 +123,9 @@ export default {
     handleSelected (selected, details) {
       this.selected = selected
       this.details = details
-      const currentItem = details[0]
       const val = this.multiple ? selected : selected[0]
       this.$emit('change', val)
       this.$emit('input', val)
-      this.$emit('update:currentItem', currentItem)
     },
     handleRemove (item) {
       const id = item[this.idKey]
