@@ -87,6 +87,11 @@ export default {
         ],
         cloudpolicy_ids: [
           'cloudpolicy_ids',
+          {
+            rules: [
+              { required: true, message: this.$t('rules.policy') },
+            ],
+          },
         ],
       },
       policySelectProps: {
