@@ -27,9 +27,7 @@ export default {
         field: 'listener_type&listener_port',
         title: '前端协议:端口',
         minWidth: 150,
-        formatter: ({ row }) => {
-          return `${row.listener_type}:${row.listener_port}`
-        },
+        formatter: ({ row }) => `${row.listener_type}:${row.listener_port}`,
       },
       {
         field: 'scheduler',
