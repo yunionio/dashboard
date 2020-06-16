@@ -118,9 +118,11 @@ export default {
     handleSelected (selected, details) {
       this.selected = selected
       this.details = details
+      const currentItem = details[0]
       const val = this.multiple ? selected : selected[0]
       this.$emit('change', val)
       this.$emit('input', val)
+      this.$emit('update:currentItem', currentItem)
     },
     handleRemove (item) {
       const id = item[this.idKey]
