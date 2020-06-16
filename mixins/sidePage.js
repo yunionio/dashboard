@@ -229,7 +229,7 @@ export default {
         this.data = this.wrapData(data)
         this.checkSteadyStatus()
         if (R.is(Function, this.fetchDataCallback)) {
-          this.fetchDataCallback()
+          await this.fetchDataCallback()
         }
         return response
       } catch (error) {

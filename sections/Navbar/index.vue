@@ -124,7 +124,6 @@
 <script>
 import * as R from 'ramda'
 import Cookies from 'js-cookie'
-import { Base64 } from 'js-base64'
 import { mapGetters, mapState } from 'vuex'
 import OneCloudMap from '../OneCloudMap'
 import NotifyPopover from './components/NotifyPopover'
@@ -357,7 +356,11 @@ export default {
     },
     fetchLicense (val) {
       if (val) {
-        this.$store.dispatch('app/fetchLicense')
+        this.$store.dispatch('app/fetchLicense').catch(ret => {
+          if (this.$store.getters.isAdminMode) {
+            this.createDialog('UpdateLicenseDialog')
+          }
+        })
       }
     },
     async userMenuClick (item) {
@@ -394,7 +397,7 @@ export default {
           id: this.userInfo.id,
           ...this.auth.auth,
         }
-        const bStr = Base64.encode(JSON.stringify(obj))
+        const bStr = window.encodeURI(JSON.stringify(obj))
         Cookies.set('timeauth', bStr)
       }
       window.open(item.key, '_blank')

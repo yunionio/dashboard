@@ -22,7 +22,7 @@
         @radio-change="handleRadioChange" />
     </div>
     <div slot="footer">
-      <a-button type="primary" @click="handleOk">{{ $t('dialog.ok') }}</a-button>
+      <a-button @click="handleOk">选择</a-button>
       <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
     </div>
   </base-dialog>

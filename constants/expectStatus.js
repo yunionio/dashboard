@@ -315,4 +315,7 @@ export default {
     info: 'unknown',
     success: ['available'],
   },
+  cloudgroupcaches: {
+    success: ['available'],
+  },
 }

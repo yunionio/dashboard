@@ -1271,7 +1271,17 @@
     "lanzhou": "兰州",
     "wulumuqi": "乌鲁木齐",
     "wuhu": "芜湖",
-    "other": "其他"
+    "other": "其他",
+    "nanjing": "南京",
+    "fuzhou": "福州",
+    "haikou": "海口",
+    "kunming": "昆明",
+    "nanning": "南宁",
+    "suzhou": "苏州",
+    "taiyuan": "太原",
+    "tianjin": "天津",
+    "wuhan": "武汉",
+    "zhengzhou": "郑州"
   },
   "cloudPrvidersMap": {
     "Aliyun": "阿里云",
@@ -1389,7 +1399,8 @@
     "serverskus": "套餐",
     "cloudregion": "区域",
     "cloudgroup": "权限组",
-    "clouduser": "云用户"
+    "clouduser": "云用户",
+    "cloudgroupcache": "权限组缓存"
   },
   "shareScope": {
     "system": "系统",
@@ -1954,7 +1965,7 @@
   "common.text00040": "已选",
   "common.text00041": "已选择",
   "common.text00042": "请输入名称",
-  "common.text00043": "",
+  "common.text00043": "同步状态",
   "common.text00044": "子账号/账号",
   "common.text00045": "请选择账号",
   "common.text00046": "云账号 / VPC（IP网段）",
@@ -2018,9 +2029,9 @@
   "common.text00104": "更改所属",
   "common.text00105": "所属范围",
   "common.text00106": "请选择所属范围",
-  "common.text00107": "",
-  "common.text00108": "",
-  "common.text00109": "",
+  "common.text00107": "缓存",
+  "common.text00108": "所属@:dictionary.cloudaccount",
+  "common.text00109": "更多",
   "common.text00110": "为了获取更好的产品体验，请使用 Chrome 最新版本的浏览器",
   "common.text00111": "加载中，请稍后",
   "common.text00112": "重置密钥",
