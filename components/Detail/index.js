@@ -249,6 +249,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    isEditName: {
+      type: Boolean,
+      default: true,
+    },
   },
   computed: {
     commonBaseInfo () {
@@ -405,7 +409,7 @@ export default {
           h('list-body-cell-wrap', {
             props: {
               copy: true,
-              edit: true,
+              edit: this.isEditName,
               row: this.data,
               onManager: this.onManager,
               formRules: this.nameRules,
