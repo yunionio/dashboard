@@ -715,23 +715,11 @@
       "reject": "拒绝"
     },
     "cloudgroup": {
-      "creating": "创建中",
-      "create_failed": "创建失败",
       "available": "可用",
-      "unknown": "未知",
       "deleting": "删除中",
       "delete_failed": "删除失败",
-      "add_user": "添加用户中",
-      "add_user_failed": "添加用户失败",
-      "remove_user": "移除用户中",
-      "remove_user_failed": "移除用户失败",
-      "attach_policy": "绑定权限中",
-      "attach_policy_failed": "绑定权限失败",
-      "detach_policy": "解绑权限中",
-      "detach_policy_failed": "解绑权限失败",
-      "sync_status": "同步状态中",
-      "sync": "同步配置",
-      "sync_failed": "同步配置失败"
+      "sync_policies": "同步权限中",
+      "sync_users": "同步用户中"
     },
     "clouduser": {
       "creating": "创建中",
@@ -740,15 +728,24 @@
       "unknown": "未知",
       "deleting": "删除中",
       "delete_failed": "删除失败",
-      "attach_policy": "绑定权限中",
-      "attach_policy_failed": "绑定权限失败",
-      "detach_policy": "解绑权限中",
-      "detach_policy_failed": "解绑权限失败",
       "sync_status": "同步状态中",
       "sync": "同步配置中",
       "sync_failed": "同步配置失败",
+      "sync_policies": "同步权限中",
+      "sync_policies_failed": "同步权限失败",
+      "sync_groups": "同步权限组中",
+      "sync_groups_failed": "同步权限组失败",
       "reset_password": "重置密码中",
       "reset_password_failed": "重置密码失败"
+    },
+    "cloudgroupcache": {
+      "available": "可用",
+      "creating": "创建中",
+      "create_failed": "创建失败",
+      "deleting": "删除中",
+      "delete_failed": "删除失败",
+      "sync_status": "同步状态中",
+      "unknown": "未知"
     }
   },
   "skuCategoryOptions": {

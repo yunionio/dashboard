@@ -640,6 +640,7 @@ export const PERMISSION = {
   clouduser_delete: ['cloudid', 'cloudusers', 'delete'],
   clouduser_perform_change_owner: ['cloudid', 'cloudusers', 'perform', 'change-owner'],
   clouduser_perform_set_groups: ['cloudid', 'cloudusers', 'perform', 'set-groups'],
+  clouduser_perform_syncstatus: ['cloudid', 'cloudusers', 'perform', 'syncstatus'],
   // 权限组缓存
   cloudgroupcache_get: ['cloudid', 'cloudgroupcaches', 'get'],
   cloudgroupcache_delete: ['cloudid', 'cloudgroupcaches', 'delete'],
