@@ -121,7 +121,7 @@ export default {
         name: '节点',
         columns: this.columns,
         data: [this.ansibleplaybookData],
-        alert: '提示：确认要中止执行？',
+        alert: '提示：确认要终止执行？',
         ok: async () => {
           try {
             await this.ansibleEvents.stop()

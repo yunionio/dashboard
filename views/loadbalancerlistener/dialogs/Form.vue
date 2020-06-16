@@ -22,8 +22,8 @@
       </template>
       <template v-else>
         <a-button @click="prev" v-if="!isFirstStep" class="mr-2">上一步</a-button>
-        <a-button :type="isUpdate ? '' : 'primary'" class="mr-2" @click="next" :loading="isUpdate ? false : loading" v-if="isUpdate ? !isLastStep : true">{{ nextStepTitle }}</a-button>
-        <a-button :type="isUpdate ? 'primary' : ''" class="mr-2" v-if="isUpdate" @click="update" :loading="loading">修改监听</a-button>
+        <a-button type="primary" class="mr-2" @click="next" :loading="isUpdate ? false : loading" v-if="!isLastStep">{{ nextStepTitle }}</a-button>
+        <a-button type="primary" class="mr-2" v-if="isLastStep" @click="update" :loading="loading">确定</a-button>
       </template>
       <a-button @click="cancel">取消</a-button>
     </div>
@@ -90,6 +90,13 @@ export default {
         name: 'lbRedirected',
         data: {
           isLbRedirected: this.params.listenerData.redirect === 'raw',
+        },
+      })
+    } else {
+      this.$store.dispatch('common/updateObject', {
+        name: 'lbRedirected',
+        data: {
+          isLbRedirected: false,
         },
       })
     }

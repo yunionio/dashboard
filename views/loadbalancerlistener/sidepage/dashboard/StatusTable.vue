@@ -2,7 +2,7 @@
   <div>
     <div class="detail-title">后端健康状态</div>
     <vxe-grid :data="listData" :columns="columns">
-      <span v-if="isRedirect" slot="empty">重定向类型监听（转发策略）无后端服务器组</span>
+      <span slot="empty">{{isRedirect ? '重定向类型监听（转发策略）无后端服务器组' : '暂无数据'}}</span>
     </vxe-grid>
   </div>
 </template>
@@ -76,7 +76,7 @@ export default {
   computed: {
     isRedirect () {
       return this.data.redirect === 'raw'
-    }
+    },
   },
   watch: {
     'data.id' () {
