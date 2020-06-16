@@ -74,7 +74,7 @@ export default {
   computed: {
     ...mapGetters(['userInfo', 'isAdminMode']),
     lineChartColumns () {
-      return ['time', '裸金属服务器(台)', 'CPU(核)', '磁盘(GB)', 'GPU(卡)', '内存(G)']
+      return ['time', '裸金属服务器(台)', 'CPU(核)', '磁盘(GB)', 'GPU(块)', '内存(G)']
     },
     lineChartRows () {
       const rows = []
@@ -84,7 +84,7 @@ export default {
           '裸金属服务器(台)': (+item[5] || 0).toFixed(2),
           '磁盘(GB)': (+item[1] || 0).toFixed(2),
           虚拟资源: (+item[3] || 0).toFixed(2),
-          'GPU(卡)': (+item[4] || 0).toFixed(2),
+          'GPU(块)': (+item[4] || 0).toFixed(2),
           '内存(G)': (+item[2] || 0).toFixed(2),
         })
       }, (this.data[0] && this.data[0].values) || [])
