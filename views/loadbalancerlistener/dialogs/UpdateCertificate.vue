@@ -91,7 +91,6 @@ export default {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
-        console.log(values)
         await this.doCreate(values)
         this.loading = false
         this.cancelDialog()
