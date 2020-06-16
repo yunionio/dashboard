@@ -19,7 +19,7 @@
        <a-popconfirm
           class=""
           placement="topRight"
-          title="提示：确认要中止执行？"
+          title="提示：确认要终止执行？"
           ok-text="确定"
           cancel-text="取消"
           @confirm="handleStop">

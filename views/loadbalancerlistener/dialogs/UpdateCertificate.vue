@@ -5,7 +5,7 @@
       <dialog-selected-tips :name="$t('dictionary.lb_listener')" :count="params.data.length" action="调整访问控制" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" v-bind="formItemLayout">
-        <a-form-item label="新证书">
+        <a-form-item label="新证书" key="ads">
           <base-select
             v-decorator="decorators.certificate"
             resource="loadbalancercertificates"
@@ -91,6 +91,7 @@ export default {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
+        console.log(values)
         await this.doCreate(values)
         this.loading = false
         this.cancelDialog()

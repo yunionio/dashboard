@@ -204,18 +204,18 @@ export default {
           items: [
             {
               field: 'params.telegraf.haproxy_input_interval',
-              title: 'HAProxy上报间隔',
+              title: '监控数据采集间隔',
               formatter: ({ row }) => {
                 return `${row.params.telegraf.haproxy_input_interval || 0}s`
               },
             },
             {
               field: 'params.telegraf.influx_db_output_name',
-              title: '数据库名称',
+              title: 'InfluxDB数据库名称',
             },
             {
               field: 'params.telegraf.influx_db_output_url',
-              title: '地址',
+              title: 'InfluxDB地址',
               formatter: ({ row }) => {
                 let str = row.params.telegraf.influx_db_output_url || '-'
                 if (row && row.params && row.params.telegraf && row.params.telegraf.influx_db_output_url) {

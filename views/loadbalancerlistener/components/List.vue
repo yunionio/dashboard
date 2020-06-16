@@ -46,10 +46,10 @@ export default {
           {
             label: '更换证书',
             permission: 'lb_loadbalancerlisteners_update',
-            action: (obj) => {
+            action: () => {
               this.createDialog('LbListenerUpdateCertificate', {
                 vm: this,
-                data: [obj],
+                data: this.list.selectedItems,
                 columns: this.columns,
                 onManager: this.onManager,
                 lbDetail: this.data,

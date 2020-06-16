@@ -41,7 +41,7 @@
             <a-form-item label="VRRP密码" extra="主备组的VRRP密码必须相同，为空则密码默认为YunionLB">
               <a-input v-decorator="decorators.vrrp_pass" />
             </a-form-item>
-            <a-form-item label="转发实例心跳超时时间">
+            <a-form-item v-if="!lbAgentId" label="转发实例心跳超时时间">
               <a-input v-decorator="decorators.hb_timeout" type="Number" addonAfter="秒" />
             </a-form-item>
             <a-collapse @change="handleCollapseChange">
