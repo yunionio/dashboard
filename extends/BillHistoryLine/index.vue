@@ -56,7 +56,7 @@ export default {
     params: Object,
   },
   data () {
-    const initNameValue = (this.params && this.params.name) || '磁贴名称'
+    const initNameValue = (this.params && this.params.name) || '近一个月历史消费总览'
     return {
       data: [],
       visible: false,
