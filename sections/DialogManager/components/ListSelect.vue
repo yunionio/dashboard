@@ -13,13 +13,19 @@
               :color="item[idKey] === currentId ? '#108ee9' : ''"
               @close="handleRemove(item)">{{ params.formatterLabel(item) }}</a-tag>
           </template>
-          <div class="mini-text text-color-help">{{ params.dialogParams.selectedTip || $t('common.text00041') }}：{{ details.length }}</div>
+          <div class="clearfix">
+            <div class="mini-text text-color-help float-left">{{ params.dialogParams.selectedTip || $t('common.text00041') }}：{{ details.length }}</div>
+            <div class="mini-text select-all-close ml-2 float-left" @click="clearAllChoose" v-if="details.length > 0">清空</div>
+          </div>
         </div>
       </div>
-      <page-list
-        ref="page-list"
-        v-bind="listProps"
-        @radio-change="handleRadioChange" />
+      <div class="page-list-wrapper">
+        <page-list
+          ref="page-list"
+          v-bind="listProps"
+          @radio-change="handleRadioChange" />
+        <a-button type="link" size="small" class="choose-all" @click="chooseAllHandle">本页全选</a-button>
+      </div>
     </div>
     <div slot="footer">
       <a-button @click="handleOk">选择</a-button>
@@ -102,12 +108,41 @@ export default {
       this.params.ok(this.selected, this.details)
       this.cancelDialog()
     },
+    chooseAllHandle () {
+      Object.keys(this.listProps.list.data).forEach((v) => {
+        if (!this.selected.includes(v)) {
+          this.selected.push(v)
+          this.details.push(this.listProps.list.data[v].data)
+        }
+      })
+    },
+    clearAllChoose () {
+      this.selected = []
+      this.details = []
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
 .selected-warp {
+  position: relative;
   border: 1px solid #d9d9d9;
+  max-height: 180px;
+  overflow-y: auto;
+  .select-all-close{
+    display: inline-block;
+    color: #1890ff;
+    cursor: pointer;
+  }
+}
+.page-list-wrapper{
+  position: relative;
+  .choose-all{
+    position: absolute;
+    left: 0;
+    bottom: 14px;
+    font-size: 12px;
+  }
 }
 </style>
