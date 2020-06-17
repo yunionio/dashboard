@@ -25,6 +25,10 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    cloudaccount: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data () {
     return {
@@ -53,6 +57,7 @@ export default {
           action: () => {
             this.createDialog('CloudgroupCreateDialog', {
               onManager: this.onManager,
+              provider: this.cloudaccount.provider,
             })
           },
           meta: () => {

@@ -11,10 +11,15 @@
             v-slot:extra
             res="servers"
             version="v1"
-            :name="form.fi.generate_name" />
+            :name="form.fi.generate_name"
+            :params="nameRepeatParams" />
         </a-form-item>
         <a-form-item :label="$t('common.brand')">
-          <a-select v-decorator="decorators.provider" :placeholder="$t('rules.provider')">
+          <a-select
+            v-decorator="decorators.provider"
+            :placeholder="$t('rules.provider')"
+            :disabled="!!params.provider"
+            @change="e => form.fi.provider = e.target.value">
             <template v-for="item of providerOptions">
               <a-select-option :key="item[0]" :value="item[1].provider">{{ item[1].label }}</a-select-option>
             </template>
@@ -62,6 +67,7 @@ export default {
         fc: this.$form.createForm(this),
         fi: {
           generate_name: '',
+          provider: this.params.provider || providerOptions[0][1].provider,
         },
       },
       providerOptions,
@@ -79,7 +85,7 @@ export default {
         provider: [
           'provider',
           {
-            initialValue: providerOptions[0][1].provider,
+            initialValue: this.params.provider || providerOptions[0][1].provider,
             rules: [
               { required: true, message: this.$t('rules.provider') },
             ],
@@ -87,11 +93,6 @@ export default {
         ],
         cloudpolicy_ids: [
           'cloudpolicy_ids',
-          {
-            rules: [
-              { required: true, message: this.$t('rules.policy') },
-            ],
-          },
         ],
       },
       policySelectProps: {
@@ -131,6 +132,13 @@ export default {
         },
       },
     }
+  },
+  computed: {
+    nameRepeatParams () {
+      return {
+        provider: this.form.fi.provider,
+      }
+    },
   },
   methods: {
     async handleConfirm () {

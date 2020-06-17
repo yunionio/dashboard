@@ -16,7 +16,7 @@ export default {
           )
         },
       }),
-      getStatusTableColumn({ statusModule: 'cloudgroupcaches' }),
+      getStatusTableColumn({ statusModule: 'cloudgroupcache' }),
       {
         field: 'cloudaccount',
         title: this.$t('dictionary.cloudaccount'),

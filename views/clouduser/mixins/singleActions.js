@@ -2,14 +2,15 @@ export default {
   created () {
     this.singleActions = [
       {
-        label: this.$t('cloudenv.clouduser_list_a2'),
-        permission: 'clouduser_perform_change_owner',
+        label: this.$t('common.text00043'),
+        permission: 'clouduser_perform_syncstatus',
         action: (obj) => {
-          this.createDialog('ClouduserChangeOwnerDialog', {
-            data: [obj],
-            onManager: this.onManager,
-            columns: this.columns,
-            cloudaccount: this.cloudaccount,
+          this.onManager('performAction', {
+            id: obj.id,
+            steadyStatus: ['available'],
+            managerArgs: {
+              action: 'syncstatus',
+            },
           })
         },
       },
@@ -17,6 +18,18 @@ export default {
         label: this.$t('common.text00109'),
         actions: obj => {
           return [
+            {
+              label: this.$t('cloudenv.clouduser_list_a2'),
+              permission: 'clouduser_perform_change_owner',
+              action: () => {
+                this.createDialog('ClouduserChangeOwnerDialog', {
+                  data: [obj],
+                  onManager: this.onManager,
+                  columns: this.columns,
+                  cloudaccount: this.cloudaccount,
+                })
+              },
+            },
             {
               label: this.$t('cloudenv.clouduser_list_a1'),
               permission: 'clouduser_perform_set_groups',
