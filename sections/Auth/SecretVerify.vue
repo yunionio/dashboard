@@ -33,6 +33,11 @@ export default {
       }
     },
   },
+  created () {
+    if (!this.$store.getters['auth/currentHistoryUserKey']) {
+      this.$router.push('/auth/login')
+    }
+  },
   mounted () {
     this.$refs['security-code'].focusInput(1)
   },
@@ -55,7 +60,7 @@ export default {
       this.$refs['security-code'].focusInput(1)
     },
     resetSecret () {
-      this.$router.replace('/auth/secretverify')
+      this.$router.replace('/auth/resetsecretquestion')
     },
   },
 }

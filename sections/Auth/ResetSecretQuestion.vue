@@ -32,7 +32,11 @@ export default {
     }),
   },
   created () {
-    this.getRecovery()
+    if (!this.$store.getters['auth/currentHistoryUserKey']) {
+      this.$router.push('/auth/login')
+    } else {
+      this.getRecovery()
+    }
   },
   methods: {
     getRecovery () {
@@ -47,18 +51,19 @@ export default {
     },
     onSubmit (data) {
       this.loading = true
-      this.$store.dispatch('auth/credential', data).then(res => {
+      this.$store.dispatch('auth/credential', data).then(data => {
         this.loading = false
         this.$store.commit('auth/UPDATE_HISTORY_USERS', {
           key: this.$store.getters['auth/currentHistoryUserKey'],
           value: {
-            secret: res.data.qrcode,
+            secret: data.qrcode,
           },
         })
-        this.$message.success(this.$('auth.question.reset.success'))
+        this.$message.success(this.$t('auth.question.reset.success'))
         this.$router.replace('/auth/bindsecret')
-      }).catch(() => {
+      }).catch(error => {
         this.loading = false
+        throw error
       })
     },
   },

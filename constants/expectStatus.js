@@ -315,7 +315,7 @@ export default {
     info: 'unknown',
     success: ['available'],
   },
-  cloudgroupcaches: {
+  cloudgroupcache: {
     success: ['available'],
   },
 }
