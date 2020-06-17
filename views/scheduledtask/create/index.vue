@@ -58,7 +58,7 @@
           <a-radio-button v-for="(v, k) in $t('cloudenv.ScheduledtaskRuleAction')" :key="k" :value="k">{{v}}</a-radio-button>
         </a-radio-group>
       </a-form-item>
-      <a-form-item label="绑定资源">
+      <a-form-item label="绑定资源" v-show="false">
         <a-radio-group v-decorator="decorators.labelType">
           <a-radio-button v-for="(v, k) in $t('cloudenv.ScheduledtaskLabelType')" :key="k" :value="k">{{v}}</a-radio-button>
         </a-radio-group>
