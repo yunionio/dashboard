@@ -220,6 +220,7 @@ export default {
     {
       meta: {
         label: '负载均衡',
+        labelAlias: '网络负载均衡',
         hidden: () => !hasServices('lbagent') && !hasHypervisors(['aliyun', 'qcloud', 'huawei', 'aws']),
       },
       submenus: [
@@ -291,6 +292,7 @@ export default {
     {
       meta: {
         label: '负载均衡集群',
+        labelAlias: '网络负载均衡集群',
       },
       submenus: [
         {
