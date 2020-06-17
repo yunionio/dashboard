@@ -28,10 +28,10 @@ router.beforeEach(async (to, from, next) => {
     return next()
   }
   // 有token情况
-  // 如果是登录相关(authPage)页面，则跳转回首页
+  // 如果是登录相关(authPage)页面，则直接跳转
   // 不需要认证的页面直接next
   if (authPage) {
-    return next('/')
+    return next()
   }
   if (!auth) {
     return next()

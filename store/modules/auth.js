@@ -124,7 +124,7 @@ export default {
           const oldestUser = _.minBy(newValArr, o => o[1].create_time)
           oldestUser[0] && delete newVal[oldestUser[0]]
         }
-        if (payload === 'action') {
+        if (payload.action === 'unset') {
           _.unset(data, payload.path)
         }
         newVal[key] = data
@@ -155,7 +155,7 @@ export default {
           const oldestUser = _.minBy(newValArr, o => o[1].create_time)
           oldestUser[0] && delete newVal[oldestUser[0]]
         }
-        if (payload === 'action') {
+        if (payload.action === 'unset') {
           _.unset(data, payload.path)
         }
         newVal[key] = data
@@ -383,7 +383,7 @@ export default {
     async onAfterLogin ({ commit, state, dispatch, getters }, payload) {
       // 如果 data 不为空，则是 server 返回的首次绑定秘钥的二维码，存入 storage，以免刷新后重新登录丢失的问题
       if (payload.data) {
-        await commit('auth/UPDATE_HISTORY_USERS', {
+        await commit('UPDATE_HISTORY_USERS', {
           key: getters.currentHistoryUserKey,
           value: {
             secret: payload.data,
@@ -395,11 +395,11 @@ export default {
         (
           payload.data ||
           _.get(state.historyUsers, `${getters.currentHistoryUserKey}.secret`)
-        ) && state.auth.auth.totp_on
+        ) && state.auth.totp_on
       ) {
         // 获取密码问题，如果设置过则直接进入绑定秘钥页面，没有跳转至设置密码问题页面
         try {
-          const recovery = await dispatch('auth/getRecovery')
+          const recovery = await dispatch('getRecovery')
           if (recovery) {
             router.replace('/auth/bindsecret')
           }
@@ -438,7 +438,7 @@ export default {
     },
     async getRecovery ({ commit }, params) {
       try {
-        const response = http.get('/v1/auth/recovery', { params })
+        const response = await http.get('/v1/auth/recovery', { params })
         return response.data
       } catch (error) {
         throw error
@@ -446,15 +446,15 @@ export default {
     },
     async setRecovery ({ commit }, data) {
       try {
-        const response = http.post('/v1/auth/recovery', data)
+        const response = await http.post('/v1/auth/recovery', data)
         return response.data
       } catch (error) {
         throw error
       }
     },
-    credential ({ commit }, data) {
+    async credential ({ commit }, data) {
       try {
-        const response = http.post('/v1/auth/credential', data)
+        const response = await http.post('/v1/auth/credential', data)
         return response.data
       } catch (error) {
         throw error
