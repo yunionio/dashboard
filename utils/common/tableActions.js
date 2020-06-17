@@ -181,7 +181,7 @@ export function getEnabledSwitchActions (vm, row, permissions = [], params = {})
         }
         // 批量N条操作
         return {
-          validate: true,
+          validate: data.length > 0, // 批量数量大于0才可以操作
         }
       },
     }

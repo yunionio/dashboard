@@ -746,6 +746,12 @@
       "delete_failed": "删除失败",
       "sync_status": "同步状态中",
       "unknown": "未知"
+    },
+    "commonalert": {
+      "init": "创建中",
+      "ready": "可用",
+      "deleting": "删除中",
+      "delete_fail": "删除失败"
     }
   },
   "skuCategoryOptions": {
@@ -1398,7 +1404,8 @@
     "cloudgroup": "权限组",
     "clouduser": "云用户",
     "cloudgroupcache": "权限组缓存",
-    "cloudpolicy": "云权限"
+    "cloudpolicy": "云权限",
+    "commonalert": "报警策略"
   },
   "shareScope": {
     "system": "系统",

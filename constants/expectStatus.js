@@ -318,4 +318,9 @@ export default {
   cloudgroupcache: {
     success: ['available'],
   },
+  commonalert: {
+    info: [],
+    success: ['ready'],
+    danger: ['delete_fail'],
+  },
 }
