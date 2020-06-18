@@ -1397,7 +1397,8 @@
     "cloudregion": "区域",
     "cloudgroup": "权限组",
     "clouduser": "云用户",
-    "cloudgroupcache": "权限组缓存"
+    "cloudgroupcache": "权限组缓存",
+    "cloudpolicy": "云权限"
   },
   "shareScope": {
     "system": "系统",

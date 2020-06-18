@@ -153,7 +153,7 @@ export function hasPermission ({
           }
         }
       }
-      if (val === 'guest' || val === 'user' || val === 'allow') {
+      if (val === 'allow') {
         const isSystemResource = store.getters.scopeResource && store.getters.scopeResource.system.includes(pArr[1])
         const isDomainResource = store.getters.scopeResource && store.getters.scopeResource.domain.includes(pArr[1])
         if (isSystemResource) {
