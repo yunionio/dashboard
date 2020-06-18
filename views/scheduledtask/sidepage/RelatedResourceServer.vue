@@ -9,7 +9,7 @@
 <script>
 import { SERVER_TYPE } from '@Compute/constants'
 import { getNameDescriptionTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
-import { getStatusFilter, getEnabledFilter, getHostFilter } from '@/utils/common/tableFilter'
+import { getStatusFilter, getHostFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import { sizestr } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
@@ -50,7 +50,6 @@ export default {
             },
           },
           status: getStatusFilter('server'),
-          enabled: getEnabledFilter(),
           host: getHostFilter(),
         },
       }),
