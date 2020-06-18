@@ -213,16 +213,16 @@ export default {
      */
     domainChange (domain) {
       const domainId = R.is(Object, domain) ? domain.key : domain
+      if (this.labelInValue) {
+        this.$emit('update:domain', domain)
+      } else {
+        this.$emit('update:domain', domainId)
+      }
       if (domainId) {
         this.fetchProjects(domainId)
         this.fc.setFieldsValue({
           project: undefined,
         })
-        if (this.labelInValue) {
-          this.$emit('update:domain', domain)
-        } else {
-          this.$emit('update:domain', domainId)
-        }
       } else {
         this.fc.setFieldsValue({
           domain: undefined,
