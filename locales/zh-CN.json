@@ -2062,6 +2062,7 @@
   "auth.register.account_name.placeholder": "管理员账号",
   "auth.register.account_name.validate": "请输入管理员账号",
   "auth.register.account_password.placeholder": "请输入密码",
+  "auth.register.confirm_account_password.placeholder": "请再次确认管理员密码",
   "auth.register.account_password.validate": "请输入管理员密码",
   "auth.register.company.placeholder": "请输入企业名称",
   "auth.register.company.validate": "请输入企业名称",

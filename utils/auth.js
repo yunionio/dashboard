@@ -226,3 +226,21 @@ export function hasBrandsByEnv (envs) {
     return envs.some(t => hasBrands(envsMap[t]))
   }
 }
+
+export function hasSetupKey (envs) {
+  const { guide = {} } = store.state
+  if (!guide || !guide.keys || (guide.keys && guide.keys.length === 0)) return true
+  const _envs = R.type(envs) === 'String' ? [envs] : envs
+  if (!_envs.length) return true
+
+  const { keys } = guide
+  let f = false
+  for (let i = 0; i < _envs.length; i++) {
+    const env = _envs[i]
+    if (keys.indexOf(env) > -1) {
+      f = true
+      break
+    }
+  }
+  return f
+}

@@ -19,6 +19,11 @@
           <a-icon slot="prefix" type="lock" style="color: rgba(0, 0, 0, .25)" />
         </a-input-password>
       </a-form-model-item>
+      <a-form-model-item prop="confirm_account_password">
+        <a-input-password class="material-input" v-model="fd.confirm_account_password" :placeholder="$t('auth.register.confirm_account_password.placeholder')">
+          <a-icon slot="prefix" type="lock" style="color: rgba(0, 0, 0, .25)" />
+        </a-input-password>
+      </a-form-model-item>
       <!-- <a-form-model-item prop="company">
         <a-input class="material-input" v-model="fd.company" :placeholder="$t('auth.register.company.placeholder')">
           <a-icon slot="prefix" type="home" style="color: rgba(0, 0, 0, .25)" />
@@ -53,6 +58,7 @@ export default {
       fd: {
         account_name: '',
         account_password: '',
+        confirm_account_password: '',
         company: '',
         email: '',
         mobile: '',
@@ -75,6 +81,18 @@ export default {
           { required: true, message: this.$t('auth.register.mobile.validate') },
           { validator: this.$validate('phone') },
         ],
+        confirm_account_password: [
+          { required: true, message: this.$t('auth.register.confirm_account_password.placeholder') },
+          {
+            validator: (rule, value, _callback) => {
+              if (value && value !== this.fd.account_password) {
+                _callback('密码输入不一致')
+              } else {
+                _callback()
+              }
+            },
+          },
+        ],
       },
     }
   },
@@ -86,7 +104,10 @@ export default {
       this.submiting = true
       try {
         await this.$refs.form.validate()
-        await this.$http.post('/v1/registers', this.fd)
+        await this.$http.post('/v1/registers', {
+          account_name: this.fd.account_name,
+          account_password: this.fd.account_password,
+        })
         this.$router.replace('/auth/login')
         setSetupInStorage(true)
       } catch (error) {
