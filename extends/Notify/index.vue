@@ -42,6 +42,7 @@ import { getRequestT } from '@/utils/utils'
 export const options = {
   label: '公告',
   desc: '管理员发的系统公告',
+  icon: 'dashboard-notice',
   thumb: require('./assets/thumb.svg'),
   h: 4,
   w: 5,

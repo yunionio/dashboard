@@ -43,6 +43,7 @@ import { getRequestT, sizestr, sizestrWithUnit } from '@/utils/utils'
 export const options = {
   label: '配额',
   desc: '配额使用情况',
+  icon: 'dashboard-quota',
   thumb: require('./assets/thumb.svg'),
   h: 7,
   w: 5,

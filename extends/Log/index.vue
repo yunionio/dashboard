@@ -51,6 +51,7 @@ import { getRequestT } from '@/utils/utils'
 export const options = {
   label: '操作日志',
   desc: '显示最近的系统操作日志',
+  icon: 'dashboard-log',
   thumb: require('./assets/thumb.svg'),
   h: 5,
   w: 4,
