@@ -5,7 +5,7 @@
     </template>
     <a-row :gutter="8" class="w-100" v-else>
       <a-col :span="12">
-        <a-form-item v-if="isAdminMode && l3PermissionEnable" :wrapperCol="{ span: 24 }">
+        <a-form-item :class="{ 'mb-0': mb0 }" v-if="isAdminMode && l3PermissionEnable" :wrapperCol="{ span: 24 }">
           <a-select
             :allowClear="allowClear"
             class="w-100"
@@ -22,7 +22,7 @@
         </a-form-item>
       </a-col>
       <a-col :span="(isAdminMode && l3PermissionEnable) ? 12 : 24">
-        <a-form-item :wrapperCol="{ span: 24 }">
+        <a-form-item :class="{ 'mb-0': mb0 }" :wrapperCol="{ span: 24 }">
           <a-select
             :allowClear="allowClear"
             class="w-100"
@@ -64,6 +64,14 @@ export default {
     },
     allowClear: Boolean,
     getDomainList: Function,
+    isDefaultSelect: {
+      type: Boolean,
+      default: true,
+    },
+    mb0: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
@@ -156,8 +164,18 @@ export default {
             defaultData = { key: findInitValue.key, label: findInitValue.label }
           }
         }
-        this._setInitDomain(defaultData)
-        this.domainChange(defaultData || {})
+        const projectInitialValue = _.get(this.decorators, 'project[1].initialValue')
+        const domainChange = () => {
+          this._setInitDomain(defaultData)
+          this.domainChange(defaultData || {})
+        }
+        if (projectInitialValue) {
+          domainChange()
+        } else {
+          if (this.isDefaultSelect) {
+            domainChange()
+          }
+        }
       } catch (error) {
         throw error
       } finally {
@@ -171,8 +189,10 @@ export default {
           label: this.userInfo.projectName,
         }]
         this.projects = data
-        this.projectChange(data[0])
-        this._setInitProject(data[0])
+        if (this.isDefaultSelect) {
+          this.projectChange(data[0])
+          this._setInitProject(data[0])
+        }
         return
       }
       this.projectLoading = true
@@ -200,8 +220,17 @@ export default {
             defaultData = { key: findInitValue.key, label: findInitValue.label }
           }
         }
-        this.projectChange(defaultData || {})
-        this._setInitProject(defaultData || {})
+        const projectChange = () => {
+          this.projectChange(defaultData || {})
+          this._setInitProject(defaultData || {})
+        }
+        if (initialValue) {
+          projectChange()
+        } else {
+          if (this.isDefaultSelect) {
+            projectChange()
+          }
+        }
       } catch (error) {
         throw error
       } finally {

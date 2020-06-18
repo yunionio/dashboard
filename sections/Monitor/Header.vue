@@ -104,9 +104,9 @@ export default {
   },
   watch: {
     timeGroupOpts () {
-      const isExist = this.timeGroupOpts.find(val => val.key === this.time)
+      const isExist = this.timeGroupOpts.find(val => val.key === this.timeGroup)
       if (!isExist) {
-        this.timeGroupChange(this.timeGroupOpts[0].key)
+        this.$emit('update:timeGroup', this.timeGroupOpts[0].key)
       }
     },
   },

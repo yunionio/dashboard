@@ -1,4 +1,5 @@
 import * as R from 'ramda'
+import { mergeWith } from 'lodash'
 
 export default {
   props: {
@@ -27,7 +28,7 @@ export default {
   },
   methods: {
     mergeOptions (o1, o2) {
-      return R.mergeDeepRight(o1, o2)
+      return mergeWith(o1, o2)
     },
   },
 }
