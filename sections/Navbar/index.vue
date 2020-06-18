@@ -248,7 +248,7 @@ export default {
       return sn
     },
     unAuthServiceNumbers () {
-      return this.computeServiceNumbers.filter(item => !this.sn.includes(item))
+      return this.computeServiceNumbers.filter(item => this.sn && !this.sn.includes(item))
     },
     licenseMessage () {
       const now = new Date()
@@ -344,9 +344,16 @@ export default {
         this.$store.dispatch('app/fetchWorkflowEnabledKeys')
       }
     },
-    fetchDictionary (val) {
+    async fetchDictionary (val) {
       if (val) {
-        this.$store.dispatch('app/fetchDictionary')
+        try {
+          const { data } = await this.$store.dispatch('app/fetchDictionary')
+          this.$store.dispatch('guide/updateKeys', {
+            keys: data.value.guideKeys || [],
+          })
+        } catch (err) {
+          throw err
+        }
       }
     },
     fetchOEM (val) {

@@ -19,6 +19,11 @@
           <a-icon slot="prefix" type="lock" style="color: rgba(0, 0, 0, .25)" />
         </a-input-password>
       </a-form-model-item>
+      <!-- <a-form-model-item prop="confirm_account_password">
+        <a-input-password class="material-input" v-model="fd.account_password" :placeholder="$t('auth.register.account_password.placeholder')">
+          <a-icon slot="prefix" type="lock" style="color: rgba(0, 0, 0, .25)" />
+        </a-input-password>
+      </a-form-model-item> -->
       <!-- <a-form-model-item prop="company">
         <a-input class="material-input" v-model="fd.company" :placeholder="$t('auth.register.company.placeholder')">
           <a-icon slot="prefix" type="home" style="color: rgba(0, 0, 0, .25)" />
@@ -53,6 +58,7 @@ export default {
       fd: {
         account_name: '',
         account_password: '',
+        confirm_account_password: '',
         company: '',
         email: '',
         mobile: '',
