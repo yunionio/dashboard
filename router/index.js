@@ -20,7 +20,7 @@ import AgentList from '@Network/views/agent'
 import AgentForm from '@Network/views/agent/form'
 import Layout from '@/layouts/RouterView'
 
-import { hasHypervisorsByEnv, hasHypervisors, hasServices, hasBrands } from '@/utils/auth'
+import { hasSetupKey } from '@/utils/auth'
 
 export default {
   index: 4,
@@ -42,7 +42,7 @@ export default {
           meta: {
             label: '全局VPC',
             permission: 'network_globalvpcs_list',
-            hidden: () => !hasBrands('Google'),
+            hidden: () => !hasSetupKey('google'),
           },
           component: Layout,
           children: [
@@ -59,6 +59,7 @@ export default {
             label: 'VPC',
             permission: 'vpcs_list',
             t: 'dictionary.vpc',
+            hidden: () => !hasSetupKey(['onestack', 'zstack', 'dstack', 'vmware', 'public', 'baremetal']),
           },
           component: Layout,
           children: [
@@ -89,7 +90,8 @@ export default {
           meta: {
             label: '二层网络',
             permission: 'wires_list',
-            hidden: () => !hasServices(['esxiagent', 'hostagent', 'bmagent']) && !hasBrands('ZStack'),
+            hidden: () => !hasSetupKey(['onestack', 'private', 'vmware', 'zstack', 'dstack']),
+            // hidden: () => !hasServices(['esxiagent', 'hostagent', 'bmagent']) && !hasBrands('ZStack'),
           },
           component: Layout,
           children: [
@@ -120,6 +122,7 @@ export default {
           meta: {
             label: 'IP子网',
             permission: 'networks_list',
+            hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'baremetal', 'vmware']),
           },
           component: Layout,
           children: [
@@ -170,7 +173,7 @@ export default {
           meta: {
             label: '弹性公网IP',
             permission: 'eips_list',
-            hidden: () => !hasHypervisorsByEnv(['idc', 'public', 'private']),
+            hidden: () => !hasSetupKey(['onestack', 'private', 'public']),
           },
           component: Layout,
           children: [
@@ -186,6 +189,7 @@ export default {
           meta: {
             label: 'NAT网关',
             permission: 'natgateways_list',
+            hidden: () => !hasSetupKey(['aliyun', 'huawei']),
           },
           component: Layout,
           children: [
@@ -201,7 +205,7 @@ export default {
           meta: {
             label: '域名服务',
             permission: 'dnsrecords_list',
-            hidden: () => !hasServices(['esxiagent', 'hostagent', 'bmagent']),
+            hidden: () => !hasSetupKey(['onestack', 'baremetal', 'vmware']),
           },
           component: Layout,
           children: [
@@ -220,8 +224,9 @@ export default {
     {
       meta: {
         label: '负载均衡',
+        hidden: () => !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s']),
         labelAlias: '网络负载均衡',
-        hidden: () => !hasServices('lbagent') && !hasHypervisors(['aliyun', 'qcloud', 'huawei', 'aws']),
+        // hidden: () => !hasServices('lbagent') && !hasHypervisors(['aliyun', 'qcloud', 'huawei', 'aws']),
       },
       submenus: [
         {
@@ -292,6 +297,7 @@ export default {
     {
       meta: {
         label: '负载均衡集群',
+        hidden: () => !hasSetupKey(['lb', 'k8s']),
         labelAlias: '网络负载均衡集群',
       },
       submenus: [
