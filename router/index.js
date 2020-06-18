@@ -35,14 +35,14 @@ import Secret from '@K8S/views/secret'
 import K8sSecretCreate from '@K8S/views/secret/create'
 import Layout from '@/layouts/RouterView'
 
-import { hasServices } from '@/utils/auth'
+import { hasSetupKey } from '@/utils/auth'
 
 export default {
   index: 3,
   meta: {
     label: '容器',
     icon: 'menu-k8s',
-    hidden: () => !hasServices('k8s'),
+    hidden: () => !hasSetupKey('k8s'),
   },
   menus: [
     {
