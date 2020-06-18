@@ -58,6 +58,9 @@ export default {
       return this.limit - this.schedtagList.length
     },
   },
+  created () {
+    this.add()
+  },
   methods: {
     add () {
       const uid = uuid()
