@@ -1405,7 +1405,8 @@
     "clouduser": "云用户",
     "cloudgroupcache": "权限组缓存",
     "cloudpolicy": "云权限",
-    "commonalert": "报警策略"
+    "commonalert": "报警策略",
+    "monitor_commonalert": "监控报警"
   },
   "shareScope": {
     "system": "系统",
@@ -1899,6 +1900,9 @@
   "common.create": "新建",
   "common.delete": "删除",
   "common.brand": "平台",
+  "common.email": "邮件",
+  "common.dingtalk": "钉钉",
+  "common.feishu": "飞书",
   "common.storage.cloud": "普通云盘",
   "common.storage.cloudssd": "SSD 云盘",
   "common.storage.cloudessd": "ESSD云盘PL1",
