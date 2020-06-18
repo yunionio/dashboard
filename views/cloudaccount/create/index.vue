@@ -104,7 +104,6 @@ export default {
     this.cloudaccountsM = new Manager('cloudaccounts', 'v2')
     this.networksM = new Manager('networks', 'v2')
     this.changeSteps()
-    console.log(this.$store.state.app.guide)
   },
   methods: {
     async getFetchPrepareNets () {

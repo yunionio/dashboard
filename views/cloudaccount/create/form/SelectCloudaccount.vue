@@ -5,7 +5,7 @@
         <h2 class="mb-3">{{ envTitle[env] }}</h2>
         <div class="items d-flex flex-wrap">
           <template v-for="(item, cloudaccount) of cloudaccounts">
-            <div class="item d-flex p-2 mr-3 align-items-center" :class="{ active: currentItem.name === item.name }" :key="cloudaccount" @click="selectProvider(item)">
+            <div class="item d-flex p-2 mr-3 align-items-center" v-if="guideKeys.indexOf(item.provider.toLowerCase()) > -1" :class="{ active: currentItem.name === item.name }" :key="cloudaccount" @click="selectProvider(item)">
               <img :src="item.logo" />
               <h5 class="flex-fill" v-if="showName(item)">{{ item.name }}</h5>
             </div>
@@ -52,7 +52,7 @@ export default {
     defaultItem () {
       for (const env in this.types) {
         for (const provider in this.types[env]) {
-          if (this.guideKeys.indexOf(provider) > -1) {
+          if (this.guideKeys.indexOf(provider.toLowerCase()) > -1) {
             return this.types[env][provider]
           }
         }
