@@ -1,9 +1,11 @@
 <template>
   <div class="navbar-wrap d-flex align-items-center">
     <template v-if="authInfoLoaded">
-      <div class="d-flex align-items-center h-100 navbar-item-trigger" @click.stop.prevent="map.visible = !map.visible">
-        <icon type="menu" style="font-size: 24px;" />
-      </div>
+      <a-tooltip title="全局导航" placement="right">
+        <div class="d-flex align-items-center navbar-item-trigger justify-content-center global-map-btn ml-1" @click.stop.prevent="map.visible = !map.visible">
+          <icon type="menu" style="font-size: 24px;" />
+        </div>
+      </a-tooltip>
     </template>
     <template v-else>
       <div class="d-flex align-items-center h-100 navbar-item-trigger">
@@ -25,7 +27,7 @@
       <a-dropdown :trigger="['click']" :getPopupContainer="triggerNode => triggerNode.parentNode">
         <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
           <icon type="navbar-setting" />
-          <span class="ml-2">云管平台</span>
+          <span class="ml-2 text-truncate">云管平台</span>
           <icon type="caret-down" style="font-size: 24px; line-height: normal;" />
         </div>
         <a-menu slot="overlay" @click="productChange">
@@ -602,6 +604,39 @@ export default {
     &:hover {
       color: $link-color;
     }
+  }
+}
+.global-map-btn {
+  width: 50px;
+  height: 50px;
+  padding: 0 !important;
+  position: relative;
+  &::after {
+    content: "";
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    background: #fff;
+    border-radius: 50%;
+    z-index: -1;
+    transition: all .3s ease;
+  }
+  &:hover {
+    &::after {
+      background-color: rgb(241, 241, 241);
+    }
+  }
+}
+@media only screen and (max-width: 1100px) {
+  .header-title {
+    display: none;
+  }
+}
+@media only screen and (max-width: 980px) {
+  .globar-search-wrapper {
+    display: none !important;
   }
 }
 </style>

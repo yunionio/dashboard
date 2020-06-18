@@ -213,16 +213,16 @@ export default {
      */
     domainChange (domain) {
       const domainId = R.is(Object, domain) ? domain.key : domain
+      if (this.labelInValue) {
+        this.$emit('update:domain', domain)
+      } else {
+        this.$emit('update:domain', domainId)
+      }
       if (domainId) {
         this.fetchProjects(domainId)
         this.fc.setFieldsValue({
           project: undefined,
         })
-        if (this.labelInValue) {
-          this.$emit('update:domain', domain)
-        } else {
-          this.$emit('update:domain', domainId)
-        }
       } else {
         this.fc.setFieldsValue({
           domain: undefined,
@@ -232,11 +232,12 @@ export default {
       }
     },
     projectChange (project) {
+      const projectId = R.is(Object, project) ? project.key : project
       this.projectData = project
       if (this.labelInValue) {
         this.$emit('update:project', project)
       } else {
-        this.$emit('update:project', project.key)
+        this.$emit('update:project', projectId)
       }
       if (!this.isAdminMode && !this.isDomainMode) {
         this.fc.getFieldDecorator('project', { preserve: true, initialValue: project })

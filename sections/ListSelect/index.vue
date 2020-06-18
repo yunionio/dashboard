@@ -81,6 +81,11 @@ export default {
       return !R.isEmpty(this.details) && !R.isNil(this.details)
     },
   },
+  watch: {
+    details (newVal, oldVal) {
+      if (!R.equals(newVal, oldVal)) this.$emit('update:items', newVal)
+    },
+  },
   created () {
     this.listProps.list.disableStorageLimit = true
     this.listProps.list.limit = 10

@@ -128,14 +128,18 @@ export default {
       if (meta.t) {
         return this.$t(meta.t)
       }
+      if (meta.labelAlias) {
+        return meta.labelAlias
+      }
       return meta.label
     },
     getSearchMatch (menu) {
       if (this.search) {
-        let label = menu.meta.label
-        if (menu.meta.t) {
-          label = this.getLabel(menu.meta)
-        }
+        // let label = menu.meta.label
+        // if (menu.meta.t) {
+        //   label = this.getLabel(menu.meta)
+        // }
+        let label = this.getLabel(menu.meta)
         label = label.toLowerCase()
         return label.includes(this.search.toLowerCase())
       }

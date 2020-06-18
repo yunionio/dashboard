@@ -713,6 +713,39 @@
       "part_succeed": "部分成功",
       "failed": "失败",
       "reject": "拒绝"
+    },
+    "cloudgroup": {
+      "available": "可用",
+      "deleting": "删除中",
+      "delete_failed": "删除失败",
+      "sync_policies": "同步权限中",
+      "sync_users": "同步用户中"
+    },
+    "clouduser": {
+      "creating": "创建中",
+      "create_failed": "创建失败",
+      "available": "可用",
+      "unknown": "未知",
+      "deleting": "删除中",
+      "delete_failed": "删除失败",
+      "sync_status": "同步状态中",
+      "sync": "同步配置中",
+      "sync_failed": "同步配置失败",
+      "sync_policies": "同步权限中",
+      "sync_policies_failed": "同步权限失败",
+      "sync_groups": "同步权限组中",
+      "sync_groups_failed": "同步权限组失败",
+      "reset_password": "重置密码中",
+      "reset_password_failed": "重置密码失败"
+    },
+    "cloudgroupcache": {
+      "available": "可用",
+      "creating": "创建中",
+      "create_failed": "创建失败",
+      "deleting": "删除中",
+      "delete_failed": "删除失败",
+      "sync_status": "同步状态中",
+      "unknown": "未知"
     }
   },
   "skuCategoryOptions": {
@@ -1361,7 +1394,10 @@
     "delete_images": "镜像（回收站）",
     "account": "账号",
     "serverskus": "套餐",
-    "cloudregion": "区域"
+    "cloudregion": "区域",
+    "cloudgroup": "权限组",
+    "clouduser": "云用户",
+    "cloudgroupcache": "权限组缓存"
   },
   "shareScope": {
     "system": "系统",
@@ -1387,7 +1423,9 @@
     "vpc": "请选择专有网络VPC",
     "wire": "请选择@:dictionary.wire",
     "provider": "请选择平台",
-    "city": "请选择城市"
+    "city": "请选择城市",
+    "policy": "请选择权限",
+    "clouduser": "请选择@:dictionary.clouduser"
   },
   "policyScopeLabel": {
     "system": "管理后台",
@@ -1850,6 +1888,9 @@
   "common.LoadMore": "加载更多",
   "common.checkAll": "全选",
   "common.select": "请选择",
+  "common.create": "新建",
+  "common.delete": "删除",
+  "common.brand": "平台",
   "common.storage.cloud": "普通云盘",
   "common.storage.cloudssd": "SSD 云盘",
   "common.storage.cloudessd": "ESSD云盘PL1",
@@ -1920,8 +1961,8 @@
   "common.text00039": "加入",
   "common.text00040": "已选",
   "common.text00041": "已选择",
-  "common.text00042": "",
-  "common.text00043": "",
+  "common.text00042": "请输入名称",
+  "common.text00043": "同步状态",
   "common.text00044": "子账号/账号",
   "common.text00045": "请选择账号",
   "common.text00046": "云账号 / VPC（IP网段）",
@@ -1985,9 +2026,9 @@
   "common.text00104": "更改所属",
   "common.text00105": "所属范围",
   "common.text00106": "请选择所属范围",
-  "common.text00107": "",
-  "common.text00108": "",
-  "common.text00109": "",
+  "common.text00107": "缓存",
+  "common.text00108": "所属@:dictionary.cloudaccount",
+  "common.text00109": "更多",
   "common.text00110": "为了获取更好的产品体验，请使用 Chrome 最新版本的浏览器",
   "common.text00111": "加载中，请稍后",
   "common.text00112": "重置密钥",
@@ -2042,5 +2083,9 @@
   "auth.login.fast.login.title": "其他登录",
   "auth.login.fast.login.fail": "登录失败，请重新登录",
   "auth.remove.history.user.btn": "移除账号",
-  "auth.outher.history.user.btn": "使用其他账号"
+  "auth.outher.history.user.btn": "使用其他账号",
+  "table.column.title.name": "名称",
+  "table.column.title.brand": "平台",
+  "table.column.title.desc": "描述",
+  "sidepage.tab.label.detail": "详情"
 }

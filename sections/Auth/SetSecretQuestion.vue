@@ -20,6 +20,11 @@ export default {
       loading: false,
     }
   },
+  created () {
+    if (!this.$store.getters['auth/currentHistoryUserKey']) {
+      this.$router.push('/auth/login')
+    }
+  },
   methods: {
     onSubmit (data) {
       this.loading = true
