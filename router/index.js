@@ -5,14 +5,24 @@ import K8sReleaseUpdate from '@Helm/views/k8s-release/update'
 import Chart from '@Helm/views/chart'
 import K8sChartCreate from '@Helm/views/chart/create'
 import Repo from '@Helm/views/repo'
+import Scheduledtask from '@Cloudenv/views/scheduledtask'
+import ScheduledtaskCreate from '@Cloudenv/views/scheduledtask/create'
 import Layout from '@/layouts/RouterView'
-
 import { hasSetupKey } from '@/utils/auth'
+
+let Monitor = { meta: { hidden: true } }
+if (process.env.VUE_APP_IS_PRIVATE) {
+  const modules = require.context('../../../containers', true, /^((?![\\/]node_modules).)*.\/router\/index.js$/)
+  const moduleList = modules.keys()
+  if ([].includes.call(moduleList, './Monitor/router/index.js')) {
+    Monitor = modules('./Monitor/router/index.js').default
+  }
+}
 
 export default {
   index: 7,
   meta: {
-    label: '应用编排',
+    label: '运维工具',
     icon: 'menu-helm',
   },
   menus: [
@@ -97,6 +107,33 @@ export default {
               name: 'K8sRepoList',
               path: '',
               component: Repo,
+            },
+          ],
+        },
+      ],
+    },
+    Monitor,
+    {
+      meta: {
+        label: '定时任务',
+      },
+      submenus: [
+        {
+          path: '/scheduledtask',
+          meta: {
+            label: '定时任务',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Scheduledtasks',
+              path: '',
+              component: Scheduledtask,
+            },
+            {
+              name: 'ScheduledtaskCreate',
+              path: 'create',
+              component: ScheduledtaskCreate,
             },
           ],
         },
