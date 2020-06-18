@@ -143,7 +143,7 @@ export default {
       const { os } = this.form.fc.getFieldsValue(['os'])
       if (this.uefi) {
         let imageOpts = this.imageOpts.map((item) => {
-          if (item.uefi_support !== 'true') {
+          if (item.properties && item.properties.uefi_support && item.properties.uefi_support !== 'true') {
             return {
               ...item,
               hidden: true,
