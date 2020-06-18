@@ -37,7 +37,6 @@ export const options = {
   label: '费用总览',
   desc: '历史费用总览',
   icon: 'dashboard-fee',
-  thumb: require('./assets/thumb.svg'),
   h: 5,
   w: 10,
   sort: 6,

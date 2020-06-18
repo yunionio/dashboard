@@ -91,7 +91,6 @@ export const options = {
   label: 'TOP5',
   desc: '某项指标排名前5',
   icon: 'dashboard-top5',
-  thumb: require('./assets/thumb.svg'),
   h: 5,
   w: 4,
   sort: 4,

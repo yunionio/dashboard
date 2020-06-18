@@ -37,7 +37,6 @@ export const options = {
   label: '资源总览',
   desc: '历史资源总览',
   icon: 'dashboard-resource',
-  thumb: require('./assets/thumb.svg'),
   h: 5,
   w: 10,
   sort: 7,
