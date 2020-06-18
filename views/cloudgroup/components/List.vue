@@ -66,6 +66,21 @@ export default {
             }
           },
         },
+        {
+          label: this.$t('common.delete'),
+          permission: 'cloudgroup_delete',
+          action: () => {
+            this.createDialog('DeleteResDialog', {
+              vm: this,
+              data: this.list.selectedItems,
+              columns: this.columns,
+              title: this.$t('cloudenv.cloudgroup_delete_tip'),
+              name: this.$t('dictionary.cloudgroup'),
+              onManager: this.onManager,
+            })
+          },
+          meta: () => this.$getDeleteResult(this.list.selectedItems),
+        },
       ],
     }
   },

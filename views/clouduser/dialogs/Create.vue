@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{ this.$t('common.create') }}{{ this.$t('dictionary.clouduser') }}</div>
+    <div slot="header">{{ $t('common.create') }}{{ $t('dictionary.clouduser') }}</div>
     <div slot="body">
       <a-form
         :form="form.fc"
@@ -21,7 +21,7 @@
               :item.sync="form.fi.cloudprovider" />
           </a-form-item>
         </template>
-        <a-form-item :label="$t('common.name')" :extra="$t('cloudenv.clouduser_text1')">
+        <a-form-item label="用户名" :extra="nameExtra">
           <a-input v-decorator="decorators.generate_name" :placeholder="namePlaceholder"  @change="e => { form.fi.generate_name = e.target.value }" />
           <name-repeated
             v-slot:extra
@@ -80,7 +80,7 @@ export default {
             validateFirst: true,
             rules: this.params.cloudaccount.brand === 'Google' ? [
               { required: true, message: this.$t('common.text00042') },
-              { validator: this.$validate('email'), message: '请输入正确名称' },
+              { validator: this.$validate('email'), message: '请输入正确的Google账号' },
             ] : [],
           },
         ],
@@ -153,13 +153,17 @@ export default {
       return this.params.cloudaccount.brand === 'Google'
     },
     namePlaceholder () {
-      return this.isGoogle ? this.$t('validator.serverCreateName') : this.form.fi.user.name
+      return this.isGoogle ? '请输入Google云账号' : this.form.fi.user.name
     },
     nameRepeatParams () {
       if (this.isGoogle) {
         return { cloudprovider_id: this.form.fi.cloudprovider.id }
       }
       return { cloudaccount_id: this.params.cloudaccount.id }
+    },
+    nameExtra () {
+      if (this.isGoogle) return null
+      return this.$t('cloudenv.clouduser_text1')
     },
   },
   methods: {
