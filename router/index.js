@@ -4,6 +4,7 @@ import RDS from '@DB/views/rds'
 import RDSCreate from '@DB/views/rds/create'
 import RDSBackup from '@DB/views/rds-backup'
 import Layout from '@/layouts/RouterView'
+import { hasSetupKey } from '@/utils/auth'
 
 export default {
   index: 6,
@@ -26,6 +27,7 @@ export default {
           meta: {
             label: '实例列表',
             permission: 'rds_dbinstances_list',
+            hidden: () => !hasSetupKey(['aliyun', 'huawei', 'google', 'aws']),
           },
           children: [
             {
@@ -49,6 +51,7 @@ export default {
           meta: {
             label: '备份管理',
             permission: 'rds_dbinstancebackups_list',
+            hidden: () => !hasSetupKey(['aliyun', 'huawei', 'google', 'aws']),
           },
           children: [
             {
@@ -67,6 +70,7 @@ export default {
     {
       meta: {
         label: 'Redis',
+        hidden: () => !hasSetupKey(['aliyun', 'huawei']),
       },
       submenus: [
         {
