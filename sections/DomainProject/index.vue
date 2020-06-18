@@ -232,11 +232,12 @@ export default {
       }
     },
     projectChange (project) {
+      const projectId = R.is(Object, project) ? project.key : project
       this.projectData = project
       if (this.labelInValue) {
         this.$emit('update:project', project)
       } else {
-        this.$emit('update:project', project.key)
+        this.$emit('update:project', projectId)
       }
       if (!this.isAdminMode && !this.isDomainMode) {
         this.fc.getFieldDecorator('project', { preserve: true, initialValue: project })
