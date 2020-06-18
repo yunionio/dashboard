@@ -7,6 +7,8 @@ import K8sChartCreate from '@Helm/views/chart/create'
 import Repo from '@Helm/views/repo'
 import Layout from '@/layouts/RouterView'
 
+import { hasSetupKey } from '@/utils/auth'
+
 export default {
   index: 7,
   meta: {
@@ -25,6 +27,7 @@ export default {
           meta: {
             label: '虚拟机实例',
             permission: 'k8s_releases_list',
+            hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'k8s', 'vmware']),
           },
           children: [
             {
@@ -45,6 +48,7 @@ export default {
           meta: {
             label: '容器实例',
             permission: 'k8s_releases_list',
+            hidden: () => !hasSetupKey(['k8s']),
           },
           children: [
             {
@@ -64,6 +68,7 @@ export default {
           meta: {
             label: '应用市场',
             permission: 'k8s_charts_list',
+            hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'k8s', 'vmware']),
           },
           component: Layout,
           children: [
