@@ -69,7 +69,7 @@ export default {
   methods: {
     validateForm () {
       let f = false
-      this.form.fc.validateFieldsAndScroll((err, values) => {
+      this.form.fc.validateFieldsAndScroll({ scroll: { alignWithTop: true, offsetTop: 100 } }, (err, values) => {
         const { sku } = values
         f = (err === null) && (sku && sku.name)
       })

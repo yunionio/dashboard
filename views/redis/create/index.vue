@@ -5,7 +5,8 @@
     <a-form
       class="mt-3"
       v-bind="formItemLayout"
-      :form="form.fc">
+      :form="form.fc"
+      hideRequiredMark>
       <a-form-item label="指定项目" class="mb-0">
         <domain-project :decorators="decorators.projectDomain" :fc="form.fc" :labelInValue="false" />
       </a-form-item>
