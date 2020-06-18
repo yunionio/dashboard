@@ -35,7 +35,7 @@ import ScalingGroupCreate from '@Compute/views/scaling-group/create'
 import Layout from '@/layouts/RouterView'
 import i18n from '@/locales'
 
-import { hasHypervisorsByEnv, hasServices } from '@/utils/auth'
+import { hasSetupKey } from '@/utils/auth'
 
 export default {
   index: 2,
@@ -54,7 +54,7 @@ export default {
           meta: {
             label: '虚拟机',
             permission: 'servers_list',
-            hidden: () => !hasHypervisorsByEnv(['idc', 'private', 'public']),
+            hidden: () => !hasSetupKey(['onestack', 'private', 'public']),
           },
           component: Layout,
           children: [
@@ -80,7 +80,7 @@ export default {
           meta: {
             label: '裸金属',
             permission: 'servers_list',
-            hidden: () => !hasHypervisorsByEnv('baremetal'),
+            hidden: () => !hasSetupKey(['baremetal']),
           },
           component: Layout,
           children: [
@@ -102,7 +102,7 @@ export default {
             label: '主机组',
             permission: 'instancegroups_list',
             t: 'dictionary.instancegroup',
-            hidden: () => !hasServices('hostagent'),
+            hidden: () => !hasSetupKey(['onestack']),
           },
           component: Layout,
           children: [
@@ -119,6 +119,7 @@ export default {
           meta: {
             label: '主机模板',
             permission: 'servertemplates_list',
+            hidden: () => !hasSetupKey(['onestack']),
           },
           component: Layout,
           children: [
@@ -147,6 +148,7 @@ export default {
           meta: {
             label: '弹性伸缩组',
             permission: 'scalinggroups_list',
+            hidden: () => !hasSetupKey(['onestack', 'azure']),
           },
           component: Layout,
           children: [
@@ -176,6 +178,7 @@ export default {
           meta: {
             label: '系统镜像',
             permission: 'images_list',
+            hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'baremetal']),
           },
           component: Layout,
           children: [
@@ -196,6 +199,7 @@ export default {
           meta: {
             label: '主机镜像',
             permission: 'guestimages_list',
+            hidden: () => !hasSetupKey(['onestack']),
           },
           component: Layout,
           children: [
@@ -218,7 +222,7 @@ export default {
           meta: {
             label: '硬盘',
             permission: 'disks_list',
-            hidden: () => !hasHypervisorsByEnv(['idc', 'private', 'public']),
+            hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'baremetal']),
           },
           component: Layout,
           children: [
@@ -234,7 +238,7 @@ export default {
           meta: {
             label: '硬盘快照',
             permission: 'snapshots_list',
-            hidden: () => !hasHypervisorsByEnv(['idc', 'private', 'public']),
+            hidden: () => !hasSetupKey(['onestack', 'private', 'public']),
           },
           component: Layout,
           children: [
@@ -250,7 +254,7 @@ export default {
           meta: {
             label: '主机快照',
             permission: 'instance_snapshots_list',
-            hidden: () => !hasHypervisorsByEnv(['idc', 'private', 'public']),
+            hidden: () => !hasSetupKey(['onestack']),
           },
           component: Layout,
           children: [
@@ -266,6 +270,7 @@ export default {
           meta: {
             label: '自动快照策略',
             permission: 'snapshotpolicy_list',
+            hidden: () => !hasSetupKey(['onestack', 'aliyun', 'qcloud']),
           },
           component: Layout,
           children: [
@@ -281,6 +286,7 @@ export default {
     {
       meta: {
         label: '网络',
+        hidden: () => !hasSetupKey(['onestack', 'public', 'private', 'baremetal']),
       },
       submenus: [
         {
@@ -288,6 +294,7 @@ export default {
           meta: {
             label: '安全组',
             permission: 'secgroups_list',
+            hidden: () => !hasSetupKey(['onestack', 'public', 'private']),
           },
           component: Layout,
           children: [
@@ -303,6 +310,7 @@ export default {
           meta: {
             label: 'IP子网',
             permission: 'networks_list',
+            hidden: () => !hasSetupKey(['onestack', 'public', 'private', 'baremetal']),
           },
           component: Layout,
           children: [
@@ -328,7 +336,7 @@ export default {
           meta: {
             label: '弹性公网IP',
             permission: 'eips_list',
-            hidden: () => !hasHypervisorsByEnv(['private', 'public']),
+            hidden: () => !hasSetupKey(['onestack', 'public', 'private']),
           },
           component: Layout,
           children: [
@@ -350,6 +358,7 @@ export default {
           path: '/keypair',
           meta: {
             label: '密钥',
+            hidden: () => !hasSetupKey(['onestack', 'public', 'private', 'baremetal']),
           },
           component: Layout,
           children: [
@@ -373,6 +382,7 @@ export default {
           meta: {
             label: '套餐',
             permission: 'serverskus_list',
+            hidden: () => !hasSetupKey(['onestack', 'private', 'baremetal']),
           },
           component: Layout,
           children: [
@@ -396,14 +406,15 @@ export default {
           meta: {
             label: '宿主机',
             permission: 'hosts_list',
-            hidden: () => {
-              const hasBMAgent = hasServices('bmagent')
-              const hasHostAgent = hasServices('hostagent')
-              if (!hasBMAgent && !hasHostAgent) {
-                return true
-              }
-              return false
-            },
+            hidden: () => !hasSetupKey(['onestack', 'private']),
+            // hidden: () => {
+            //   const hasBMAgent = hasServices('bmagent')
+            //   const hasHostAgent = hasServices('hostagent')
+            //   if (!hasBMAgent && !hasHostAgent) {
+            //     return true
+            //   }
+            //   return false
+            // },
           },
           component: Layout,
           children: [
@@ -419,13 +430,14 @@ export default {
           meta: {
             label: '物理机',
             permission: 'hosts_list',
-            hidden: () => {
-              const hasBMAgent = hasServices('bmagent')
-              if (!hasBMAgent) {
-                return true
-              }
-              return false
-            },
+            hidden: () => !hasSetupKey(['baremetal']),
+            // hidden: () => {
+            //   const hasBMAgent = hasServices('bmagent')
+            //   if (!hasBMAgent) {
+            //     return true
+            //   }
+            //   return false
+            // },
           },
           component: Layout,
           children: [
@@ -446,14 +458,15 @@ export default {
           meta: {
             label: '透传设备',
             permission: 'isolated_devices_list',
-            hidden: () => {
-              const hasBMAgent = hasServices('bmagent')
-              const hasHostAgent = hasServices('hostagent')
-              if (!hasBMAgent && !hasHostAgent) {
-                return true
-              }
-              return false
-            },
+            hidden: () => !hasSetupKey(['onestack']),
+            // hidden: () => {
+            //   const hasBMAgent = hasServices('bmagent')
+            //   const hasHostAgent = hasServices('hostagent')
+            //   if (!hasBMAgent && !hasHostAgent) {
+            //     return true
+            //   }
+            //   return false
+            // },
           },
           component: Layout,
           children: [
@@ -519,6 +532,7 @@ export default {
           meta: {
             label: i18n.t('dictionary.serverrecovery'),
             permission: 'servers_list,server_delete',
+            hidden: () => !hasSetupKey(['onestack', 'public', 'private']),
           },
           component: Layout,
           children: [
@@ -534,6 +548,7 @@ export default {
           meta: {
             label: '硬盘',
             permission: 'disks_list,disks_delete',
+            hidden: () => !hasSetupKey(['onestack', 'public', 'private']),
           },
           component: Layout,
           children: [
@@ -541,6 +556,7 @@ export default {
               name: 'DiskRecovery',
               path: '',
               component: DiskRecovery,
+              hidden: () => !hasSetupKey(['onestack', 'public', 'private']),
             },
           ],
         },
@@ -549,6 +565,7 @@ export default {
           meta: {
             label: '镜像',
             permission: 'images_list,images_delete',
+            hidden: () => !hasSetupKey(['onestack', 'public', 'private']),
           },
           component: Layout,
           children: [
