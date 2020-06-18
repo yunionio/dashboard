@@ -42,7 +42,7 @@ export default {
       }),
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('common.create'),
           permission: 'k8s_repos_create',
           action: () => {
             this.$router.push({
@@ -54,12 +54,12 @@ export default {
           }),
         },
         {
-          label: '批量操作',
+          label: this.$t('common.batchAction'),
           actions: obj => {
             return [
               ...getEnabledSwitchActions(this, obj),
               {
-                label: '删除',
+                label: this.$t('common.delete'),
                 permission: 'k8s_repos_delete',
                 action: () => {
                   const data = this.list.selectedItems
@@ -67,8 +67,8 @@ export default {
                     vm: this,
                     data,
                     columns: this.columns,
-                    title: '删除',
-                    name: '报警策略',
+                    title: this.$t('common.delete'),
+                    name: this.$t('dictionary.commonalert'),
                     onManager: this.onManager,
                   })
                 },

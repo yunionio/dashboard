@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="报警策略" />
+    <page-header :title="$t('dictionary.commonalert')" />
     <page-body>
       <commonalert-list />
     </page-body>

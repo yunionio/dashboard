@@ -7,6 +7,7 @@ import Layout from '@/layouts/RouterView'
 export default {
   meta: {
     label: '监控报警',
+    t: 'dictionary.monitor_commonalert',
   },
   submenus: [
     {
@@ -27,6 +28,7 @@ export default {
       path: '/commonalerts',
       meta: {
         label: '报警策略',
+        t: 'dictionary.commonalert',
       },
       component: Layout,
       children: [

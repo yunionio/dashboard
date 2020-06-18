@@ -1,29 +1,16 @@
-import { metricMaps, channelMaps, alertStrategyMaps, preiodMaps } from '@Monitor/constants'
+import { metricMaps, channelMaps, alertStrategyMaps, preiodMaps, levelMaps } from '@Monitor/constants'
+import i18n from '@/locales'
 
 export const levelColumn = {
   field: 'level',
-  title: '级别',
+  title: i18n.t('monitor.level'),
   slots: {
     default: ({ row }, h) => {
-      const levelMap = {
-        normal: {
-          color: 'cyan',
-          label: '普通',
-        },
-        important: {
-          color: 'pink',
-          label: '重要',
-        },
-        fatal: {
-          color: 'red',
-          label: '致命',
-        },
-      }
-      const levelItem = levelMap[row.level]
+      const levelItem = levelMaps[row.level]
       const text = levelItem ? levelItem.label : row.level
       return [h('a-tag', {
         props: {
-          color: levelItem ? levelItem.color : levelMap.normal.color,
+          color: levelItem ? levelItem.color : levelMaps.normal.color,
         },
       }, text)]
     },
@@ -32,7 +19,7 @@ export const levelColumn = {
 
 export const conditionColumn = {
   field: 'conditions',
-  title: '通知方式',
+  title: i18n.t('monitor.condition'),
   minWidth: 80,
   formatter: ({ row }) => {
     if (!row.channel || !row.channel.length) return '-'
@@ -42,7 +29,7 @@ export const conditionColumn = {
 
 export const strategyColumn = {
   field: 'common_alert_metric_details',
-  title: '策略详情',
+  title: i18n.t('monitor.strategy_detail'),
   minWidth: 120,
   formatter: ({ row }) => {
     if (row.common_alert_metric_details && row.common_alert_metric_details[0]) {

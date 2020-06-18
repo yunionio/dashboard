@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="新建报警策略" />
+    <page-header :title="`${$t('common.create')}${$t('dictionary.commonalert')}`" />
     <page-body>
       <alert ref="alertRef" :loading.sync="loading" />
     </page-body>

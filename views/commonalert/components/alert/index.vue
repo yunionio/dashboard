@@ -77,7 +77,7 @@ export default {
               color: '#f5222d',
             },
             data: [{
-              name: '平均线',
+              name: this.$t('monitor.text00014'),
               yAxis: this.threshold,
               label: {
                 position: 'insideEndBottom',
@@ -160,7 +160,7 @@ export default {
           await new this.$Manager('commonalerts', 'v1').create({ data })
         }
         this.$emit('update:loading', false)
-        this.$message.success('操作成功')
+        this.$message.success(this.$t('common.success'))
         this.cancel()
       } catch (error) {
         this.$emit('update:loading', false)

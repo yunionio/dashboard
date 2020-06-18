@@ -42,8 +42,8 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'commonalert-detail' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('sidepage.tab.label.detail'), key: 'commonalert-detail' },
+        { label: this.$t('dictionary.actions'), key: 'event-drawer' },
       ],
     }
   },

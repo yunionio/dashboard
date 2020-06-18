@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="更新报警策略" />
+    <page-header :title="`${$t('common.edit')}${$t('dictionary.commonalert')}`" />
     <page-body>
       <alert ref="alertRef" :isUpdate="true" :commonalertId="$route.params.id" :loading.sync="loading" />
     </page-body>

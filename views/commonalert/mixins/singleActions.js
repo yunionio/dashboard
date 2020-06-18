@@ -4,7 +4,7 @@ export default {
   created () {
     this.singleActions = [
       {
-        label: '修改',
+        label: this.$t('commo.edit'),
         permission: 'commonalerts_update',
         action: obj => {
           this.$router.push({
@@ -13,11 +13,11 @@ export default {
         },
       },
       {
-        label: '更多',
+        label: this.$t('common.text00109'),
         actions: row => [
           ...getEnabledSwitchActions(this, row, ['commonalerts_perform_enable', 'commonalerts_perform_disable']),
           {
-            label: '删除',
+            label: this.$t('common.delete'),
             permission: 'k8s_repos_delete',
             action: (obj) => {
               const requestParams = {
@@ -30,8 +30,8 @@ export default {
                 vm: this,
                 data: [obj],
                 columns: this.columns,
-                title: '删除',
-                name: 'Helm仓库地址',
+                title: this.$t('common.delete'),
+                name: this.$t('dictionary.commonalert'),
                 onManager: this.onManager,
                 idKey: 'name',
                 requestParams,

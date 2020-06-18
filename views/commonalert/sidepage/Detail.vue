@@ -29,10 +29,6 @@ export default {
     return {
       baseInfo: [
         getEnabledTableColumn(),
-        {
-          field: 'idp',
-          title: '资源详情',
-        },
         strategyColumn,
         levelColumn,
         conditionColumn,

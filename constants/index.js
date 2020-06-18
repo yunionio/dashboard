@@ -237,23 +237,41 @@ export const tableColumnMaps = {
 
 // 报警通知方式，配合 a-checkbox-group 用 value 而非 key
 export const channelMaps = {
-  webconsole: { value: 'webconsole', label: '系统', disabled: true },
-  email: { value: 'email', label: '邮件' },
-  dingtalk: { value: 'dingtalk', label: '钉钉' },
-  feishu: { value: 'feishu', label: '飞书' },
+  webconsole: { value: 'webconsole', label: i18n.t('dictionary.infos'), disabled: true },
+  email: { value: 'email', label: i18n.t('common.email') },
+  dingtalk: { value: 'dingtalk', label: i18n.t('common.dingtalk') },
+  feishu: { value: 'feishu', label: i18n.t('common.feishu') },
 }
 
 export const alertStrategyMaps = {
-  avg: '平均值',
-  max: '最大值',
-  min: '最小值',
+  avg: i18n.t('monitor.avg'),
+  max: i18n.t('monitor.max'),
+  min: i18n.t('monitor.min'),
 }
 
 export const preiodMaps = {
-  '5m': { key: '5m', label: '5分钟周期' },
-  '10m': { key: '10m', label: '10分钟周期' },
-  '15m': { key: '15m', label: '15分钟周期' },
-  '30m': { key: '30m', label: '30分钟周期' },
-  '60m': { key: '60m', label: '1小时' },
-  '180m': { key: '180m', label: '3小时' },
+  '5m': { key: '5m', label: i18n.t('monitor.text00018') },
+  '10m': { key: '10m', label: i18n.t('monitor.text00019') },
+  '15m': { key: '15m', label: i18n.t('monitor.text00020') },
+  '30m': { key: '30m', label: i18n.t('monitor.text00021') },
+  '60m': { key: '60m', label: i18n.t('monitor.text00022') },
+  '180m': { key: '180m', label: i18n.t('monitor.text00022') },
+}
+
+export const levelMaps = {
+  normal: {
+    color: 'cyan',
+    key: 'normal',
+    label: i18n.t('monitor.normal'),
+  },
+  important: {
+    color: 'pink',
+    key: 'important',
+    label: i18n.t('monitor.important'),
+  },
+  fatal: {
+    color: 'red',
+    key: 'fatal',
+    label: i18n.t('monitor.fatal'),
+  },
 }

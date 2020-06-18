@@ -1,9 +1,9 @@
 <template>
   <a-form v-bind="formItemLayout" :form="form.fc">
-    <a-form-item label="策略归属">
+    <a-form-item :label="$t('monitor.text00015')">
       <div slot="extra">
-        不指定域或项目时,该策略归属系统管理员,只有在管理后台才可以查看该策略,资源选择范围为所有。<br />
-        当您指定域或项目时,该策略则归属于该域或项目, 资源选择范围会相应为指定域或项目
+        {{ $t('monitor.text00016') }}<br />
+        {{ $t('monitor.text00017') }}
       </div>
       <domain-project
         :fc="form.fc"
@@ -16,7 +16,7 @@
         :domain.sync="domain"
         :project.sync="project" />
     </a-form-item>
-    <a-form-item label="名称">
+    <a-form-item :label="$t('common.name')">
       <a-input v-decorator="decorators.name" :placeholder="$t('common.placeholder')" />
       <name-repeated v-slot:extra res="commonalerts" :name="form.fd.name" />
     </a-form-item>
@@ -36,17 +36,15 @@
         @remove="$nextTick(toParams)"
         :metricInfo="metricInfo" />
     </a-form-item>
-    <a-form-item label="触发条件" class="mb-0">
+    <a-form-item :label="$t('monitor.condition')" class="mb-0">
       <condition :decorators="decorators" />
     </a-form-item>
-    <a-form-item label="报警级别">
+    <a-form-item :label="$t('monitor.level')">
       <a-radio-group v-decorator="decorators.level">
-        <a-radio-button value="normal">普通</a-radio-button>
-        <a-radio-button value="important">重要</a-radio-button>
-        <a-radio-button value="fatal">致命</a-radio-button>
+        <a-radio-button v-for="item in levelOpts" :value="item.key" :key="item.key">{{ item.label }}</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-form-item label="报警接收人">
+    <a-form-item :label="$t('monitor.recipient')">
       <base-select
         v-decorator="decorators.recipients"
         resource="contacts"
@@ -57,7 +55,7 @@
         :select-props="{ mode: 'multiple' }"
         :params="contactParams" />
     </a-form-item>
-    <a-form-item label="接收方式">
+    <a-form-item :label="$t('monitor.channel')">
       <a-checkbox-group name="checkboxgroup" :options="channelOpts" v-decorator="decorators.channel" />
     </a-form-item>
   </a-form>
@@ -71,9 +69,9 @@ import Metric from '@Monitor/views/explorer/components/forms/form/Metric'
 import Filters from '@Monitor/views/explorer/components/forms/form/Filters'
 import DomainProject from '@/sections/DomainProject'
 import NameRepeated from '@/sections/NameRepeated'
-import { DATABASE, channelMaps } from '@Monitor/constants'
+import { DATABASE, channelMaps, levelMaps } from '@Monitor/constants'
 import { resolveValueChangeField } from '@/utils/common/ant'
-
+console.log(levelMaps, '123213levelMaps')
 export default {
   name: 'CommonalertForm',
   components: {
@@ -146,7 +144,7 @@ export default {
           {
             initialValue: initialValue.name,
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: `${this.$t('common.placeholder')}${this.$t('common.name')}` },
             ],
           },
         ],
@@ -265,6 +263,7 @@ export default {
         limit: 0,
       },
       channelOpts: Object.values(channelMaps),
+      levelOpts: [],
     }
   },
   watch: {
