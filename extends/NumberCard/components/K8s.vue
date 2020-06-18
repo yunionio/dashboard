@@ -19,7 +19,7 @@
         <a-form-item label="磁贴名称">
           <a-input v-decorator="decorators.name" />
         </a-form-item>
-        <k8s-config :fc="form.fc" :decorators="decorators" usage-label="指标" />
+        <k8s-config :fc="form.fc" :decorators="decorators" usage-label="指标" @update:usage_key="setDefaultName" />
       </a-form>
     </base-drawer>
   </div>
@@ -53,6 +53,9 @@ export default {
         fd: {
           name: initialNameValue,
           usage_key: initialUsageKeyValue,
+        },
+        fi: {
+          nameTouched: false,
         },
       },
       decorators: {
