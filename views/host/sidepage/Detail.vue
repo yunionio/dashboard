@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import { getIsolatedDeviceCountColumns } from '../utils/columns'
 import WindowsMixin from '@/mixins/windows'
 import { getEnabledTableColumn, getBrandTableColumn, getCopyWithContentTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
@@ -197,6 +198,7 @@ export default {
             return ret
           },
         },
+        getIsolatedDeviceCountColumns(),
       ],
       extraInfo: [
         {
@@ -257,6 +259,21 @@ export default {
               field: 'cpu_desc',
               title: '描述',
             },
+            {
+              field: 'reserved_cpu',
+              title: 'GPU卡预留',
+              slots: {
+                default: ({ row }, h) => {
+                  const cpu = row.reserved_resource_for_gpu && row.reserved_resource_for_gpu.reserved_cpu
+                  if (cpu) {
+                    return [
+                      <a onClick={ () => this.$emit('tab-change', 'gpu-list') }>{cpu}核</a>,
+                    ]
+                  }
+                  return '-'
+                },
+              },
+            },
           ],
         },
         {
@@ -290,6 +307,21 @@ export default {
               field: 'mem_commit_rate',
               title: '当前超售比率',
             },
+            {
+              field: 'reserved_memory',
+              title: 'GPU卡预留',
+              slots: {
+                default: ({ row }, h) => {
+                  const memory = row.reserved_resource_for_gpu && row.reserved_resource_for_gpu.reserved_memory
+                  if (memory) {
+                    return [
+                      <a onClick={ () => this.$emit('tab-change', 'gpu-list') }>{ sizestr(memory, 'M', 1024) }</a>,
+                    ]
+                  }
+                  return '-'
+                },
+              },
+            },
           ],
         },
         {
@@ -312,6 +344,21 @@ export default {
             {
               field: 'storage_commit_rate',
               title: '当前超售比率',
+            },
+            {
+              field: 'reserved_storage',
+              title: 'GPU卡预留',
+              slots: {
+                default: ({ row }, h) => {
+                  const storage = row.reserved_resource_for_gpu && row.reserved_resource_for_gpu.reserved_storage
+                  if (storage) {
+                    return [
+                      <a onClick={ () => this.$emit('tab-change', 'gpu-list') }>{ sizestr(storage, 'M', 1024) }</a>,
+                    ]
+                  }
+                  return '-'
+                },
+              },
             },
             {
               field: 'storage_waste',

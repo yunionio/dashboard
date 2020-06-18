@@ -13,7 +13,7 @@
         <a-form-item label="IP子网" v-bind="formItemLayout" class="mb-0">
           <a-row :gutter="20">
             <a-col :span="14">
-              <a-form-item>
+              <a-form-item help="VMware平台暂不支持更改IP功能，此处修改仅仅修改界面展示IP，请根据实际情况操作">
                 <base-select
                   class="w-100"
                   v-decorator="decorators.network"
@@ -23,7 +23,8 @@
                   remote
                   :label-format="item => `${item.name}(${item.guest_ip_start} - ${item.guest_ip_end}, vlan=${item.vlan_id})`"
                   :remote-fn="q => ({ filter: `name.contains(${q})` })"
-                  :select-props="{ placeholder: '请选择IP子网' }" />
+                  :select-props="{ placeholder: '请选择IP子网' }"
+                  :mapper="mapper" />
               </a-form-item>
             </a-col>
             <a-col :span="10">
@@ -146,6 +147,9 @@ export default {
         this.loading = false
         manager = null
       }
+    },
+    mapper (list) {
+      return list.sort((a, b) => { return (b.ports - b.ports_used) - (a.ports - a.ports_used) })
     },
   },
 }

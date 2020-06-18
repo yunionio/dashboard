@@ -20,6 +20,10 @@ export default {
   mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
+    getParams: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data () {
     return {
@@ -27,6 +31,7 @@ export default {
         id: this.id,
         resource: 'isolated_devices',
         getParams: {
+          ...this.getParams,
           details: true,
         },
         filterOptions: {
@@ -106,6 +111,29 @@ export default {
               return {
                 validate: false,
                 tooltip: `关联${this.$t('dictionary.server')}在【关机】的状态下支持该操作`,
+              }
+            }
+            return {
+              validate: true,
+            }
+          },
+        },
+        {
+          label: '设置预留资源',
+          action: () => {
+            this.createDialog('SetReserveResourceDialog', {
+              onManager: this.onManager,
+              data: this.list.selectedItems,
+              columns: this.columns,
+              refresh: this.refresh,
+            })
+          },
+          meta: () => {
+            const item = this.list.selectedItems
+            if (item.length <= 0) {
+              return {
+                validate: false,
+                tooltip: '请选择要设置预留资源的GPU卡',
               }
             }
             return {
