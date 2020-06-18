@@ -12,7 +12,7 @@
           v-for="item in sortExtendsOptions"
           :key="item.component"
           :data-component="item.component">
-          <div class="extend-thumb"><img :src="item.thumb" /></div>
+          <div class="extend-thumb"><icon :type="item.icon" style="font-size: 40px; color: #2A8FF7;" /></div>
           <div class="extend-content ml-4 flex-fill">
             <div class="extend-title">{{ item.label }}</div>
             <div class="extend-desc text-color-help mt-1">{{ item.desc }}</div>
@@ -91,7 +91,7 @@ export default {
       border-bottom: 1px solid #eee;
       background-color: #fff;
       touch-action: none;
-      height: 100px;
+      height: 86px;
       width: 100%;
       min-width: 100%;
       position: relative;
@@ -106,8 +106,8 @@ export default {
   }
 }
 .extend-thumb {
-  width: 60px;
-  height: 60px;
+  width: 40px;
+  height: 40px;
   overflow: hidden;
   > img {
     width: 100%;

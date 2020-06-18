@@ -90,7 +90,7 @@ import { getRequestT } from '@/utils/utils'
 export const options = {
   label: 'TOP5',
   desc: '某项指标排名前5',
-  thumb: require('./assets/thumb.svg'),
+  icon: 'dashboard-top5',
   h: 5,
   w: 4,
   sort: 4,

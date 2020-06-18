@@ -27,7 +27,7 @@ import K8s from './components/K8s'
 export const options = {
   label: '使用率',
   desc: '某个资源的使用率',
-  thumb: require('./assets/thumb.svg'),
+  icon: 'dashboard-usage',
   h: 3,
   w: 5,
   sort: 2,

@@ -36,7 +36,7 @@ import LineChart from '@/sections/Charts/Line'
 export const options = {
   label: '资源总览',
   desc: '历史资源总览',
-  thumb: require('./assets/thumb.svg'),
+  icon: 'dashboard-resource',
   h: 5,
   w: 10,
   sort: 7,

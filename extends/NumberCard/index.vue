@@ -27,7 +27,7 @@ import K8s from './components/K8s'
 export const options = {
   label: '数字图',
   desc: '某项指标的统计数字',
-  thumb: require('./assets/thumb.svg'),
+  icon: 'dashboard-number',
   h: 2,
   w: 5,
   sort: 1,
