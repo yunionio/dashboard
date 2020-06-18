@@ -1,7 +1,8 @@
 <template>
   <a-card class="explorer-monitor-line d-flex align-items-center justify-content-center">
-    <line-chart :columns="lineChartColumns" :rows="lineChartRows" @chartInstance="v => $emit('chartInstance', v)" width="100%" height="250px" class="mb-4" />
+    <line-chart :columns="lineChartColumns" :rows="lineChartRows" @chartInstance="v => $emit('chartInstance', v)" width="100%" height="250px" class="mb-4" :options="lineChartOptions" />
     <vxe-grid
+      v-if="tableData && tableData.length"
       max-height="200"
       size="mini"
       border
@@ -28,6 +29,10 @@ export default {
     timeFormatStr: {
       type: String,
       default: 'YYYY-MM-DD HH:mm',
+    },
+    lineChartOptions: {
+      type: Object,
+      default: () => ({}),
     },
   },
   data () {

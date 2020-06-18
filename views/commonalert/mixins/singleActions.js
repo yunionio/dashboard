@@ -8,7 +8,7 @@ export default {
         permission: 'commonalerts_update',
         action: obj => {
           this.$router.push({
-            path: `commonalerts/${obj.id}`,
+            path: `commonalerts/${obj.id}/update`,
           })
         },
       },

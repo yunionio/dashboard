@@ -13,6 +13,8 @@ import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { getNameFilter } from '@/utils/common/tableFilter'
+import expectStatus from '@/constants/expectStatus'
+import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 
 export default {
   name: 'CommonalertList',
@@ -33,6 +35,7 @@ export default {
         resource: 'commonalerts',
         apiVersion: 'v1',
         getParams: this.getParams,
+        steadyStatus: Object.values(expectStatus.commonalert).flat(),
         filterOptions: {
           name: getNameFilter(),
         },
@@ -51,25 +54,34 @@ export default {
           }),
         },
         {
-          label: '删除',
-          permission: 'k8s_repos_delete',
-          action: () => {
-            const data = this.list.selectedItems
-            this.createDialog('DeleteResDialog', {
-              vm: this,
-              data,
-              columns: this.columns,
-              title: '删除',
-              name: '报警策略',
-              onManager: this.onManager,
-            })
+          label: '批量操作',
+          actions: obj => {
+            return [
+              ...getEnabledSwitchActions(this, obj),
+              {
+                label: '删除',
+                permission: 'k8s_repos_delete',
+                action: () => {
+                  const data = this.list.selectedItems
+                  this.createDialog('DeleteResDialog', {
+                    vm: this,
+                    data,
+                    columns: this.columns,
+                    title: '删除',
+                    name: '报警策略',
+                    onManager: this.onManager,
+                  })
+                },
+                meta: () => this.$getDeleteResult(this.list.selectedItems),
+              },
+            ]
           },
-          meta: () => this.$getDeleteResult(this.list.selectedItems),
         },
       ],
     }
   },
   created () {
+    this.initSidePageTab('commonalert-detail')
     this.fetchData()
   },
   methods: {

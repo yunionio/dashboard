@@ -1,4 +1,6 @@
 import CommonalertsIndex from '@Monitor/views/commonalert'
+import commonalertsCreate from '@Monitor/views/commonalert/create'
+import commonalertsUpdate from '@Monitor/views/commonalert/update'
 import Explorer from '@Monitor/views/explorer'
 import Layout from '@/layouts/RouterView'
 
@@ -32,6 +34,16 @@ export default {
           name: 'CommonalertsIndex',
           path: '',
           component: CommonalertsIndex,
+        },
+        {
+          name: 'CommonalertCreate',
+          path: 'create',
+          component: commonalertsCreate,
+        },
+        {
+          name: 'CommonalertUpdate',
+          path: ':id/update',
+          component: commonalertsUpdate,
         },
       ],
     },
