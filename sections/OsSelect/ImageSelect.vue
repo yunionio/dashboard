@@ -200,7 +200,7 @@ export default {
       }
       if (this.uefi) {
         let imageOpts = imageOptions.map((item) => {
-          if (item.uefi_support !== 'true') {
+          if (item.properties && item.properties.uefi_support && item.properties.uefi_support !== 'true') {
             return {
               ...item,
               hidden: true,
