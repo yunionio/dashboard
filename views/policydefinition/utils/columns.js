@@ -26,7 +26,7 @@ export const getConditionTableColumn = () => {
 
 export const getParameterTableColumn = () => {
   return {
-    field: 'parameters',
+    field: 'parameter',
     title: '参数',
     minWidth: 70,
     showOverflow: 'title',
