@@ -6,10 +6,7 @@
     <a-form-item label="时间间隔" v-bind="formLayout" v-if="showSecond">
       <a-input-number v-decorator="decorators.sync_interval_seconds" />
       <span> 分钟 </span>
-      <a-tooltip>
-        <a-icon type="question-circle" color="grey" />
-        <div slot="title">最少时间间隔为 30 分钟</div>
-      </a-tooltip>
+      <div slot="extra">最少时间间隔为 30 分钟</div>
     </a-form-item>
     <!-- <a-form-item label="是否共享" v-bind="formLayout">
       <a-switch v-decorator="decorators.is_public" />
