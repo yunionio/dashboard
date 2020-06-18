@@ -137,9 +137,9 @@ export default {
       return ret
     },
     vmType () {
-      let ret = '通用云服务器'
+      let ret = `通用${this.$t('dictionary.server')}`
       if (this.fd.gpuEnable) {
-        ret = 'GPU云服务器'
+        ret = `GPU${this.$t('dictionary.server')}`
       }
       return ret
     },

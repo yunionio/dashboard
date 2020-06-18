@@ -86,8 +86,8 @@ export default {
             label: '类型',
             dropdown: true,
             items: [
-              { label: '通用云服务器', key: false },
-              { label: 'GPU云服务器', key: true },
+              { label: `通用${this.$t('dictionary.server')}`, key: false },
+              { label: `GPU${this.$t('dictionary.server')}`, key: true },
             ],
           },
         },

@@ -39,10 +39,10 @@ export default {
         width: 50,
         slots: {
           default: ({ row }) => {
-            let tooltip = '通用云服务器'
+            let tooltip = `通用${this.$t('dictionary.server')}`
             let icontype = 'cpu'
             if (row.is_gpu) {
-              tooltip = 'GPU云服务器'
+              tooltip = `GPU${this.$t('dictionary.server')}`
               icontype = 'gpu'
             }
             return [<icon type={icontype} style={{ fontSize: '16px' }} title={tooltip} />]
