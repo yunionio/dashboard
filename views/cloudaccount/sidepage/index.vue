@@ -12,11 +12,13 @@
     <template v-slot:actions>
       <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
+    <a-alert :message="$t('cloudenv.clouduser_desc')" class="mb-2" v-if="params.windowData.currentTab === 'clouduser-list'" />
     <component :is="params.windowData.currentTab" :data="detailData" :cloudaccount="detailData" :on-manager="onManager" :res-id="data.id" resource="cloudaccounts" :cloudaccount-list-refresh="params.options.refresh" :getParams="getParams" />
   </base-side-page>
 </template>
 
 <script>
+import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import CloudaccountDetail from './Detail'
@@ -29,6 +31,7 @@ import Actions from '@/components/PageList/Actions'
 import { findPlatform } from '@/utils/common/hypervisor'
 import CloudgroupList from '@Cloudenv/views/cloudgroup/components/List'
 import ClouduserList from '@Cloudenv/views/clouduser/components/List'
+import { SUPPORT_CLOUDUSER_PROVIDERS } from '@/constants'
 
 export default {
   name: 'CloudaccountSidePage',
@@ -53,12 +56,14 @@ export default {
         { label: '详情', key: 'cloudaccount-detail' },
         { label: '订阅', key: 'cloudprovider-list' },
         { label: '资源统计', key: 'usage' },
-        { label: this.$t('dictionary.clouduser'), key: 'clouduser-list' },
-        { label: this.$t('dictionary.cloudgroup'), key: 'cloudgroup-list' },
         { label: '操作日志', key: 'event-drawer' },
       ]
       if (platform === 'idc' || platform === 'private') {
         detailTabs.splice(1, 0, { label: '宿主机', key: 'host-list' })
+      }
+      if (SUPPORT_CLOUDUSER_PROVIDERS.includes(data.provider)) {
+        detailTabs.splice(detailTabs.length - 1, 0, { label: this.$t('dictionary.clouduser'), key: 'clouduser-list' })
+        detailTabs.splice(detailTabs.length - 1, 0, { label: this.$t('dictionary.cloudgroup'), key: 'cloudgroup-list' })
       }
       return detailTabs
     },
@@ -85,6 +90,11 @@ export default {
       }
       return null
     },
+  },
+  created () {
+    if (R.isNil(R.find(R.propEq('key', this.params.windowData.currentTab))(this.detailTabs))) {
+      this.handleTabChange(this.detailTabs[0].key)
+    }
   },
 }
 </script>

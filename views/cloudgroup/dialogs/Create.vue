@@ -29,6 +29,7 @@
           <list-select
             v-decorator="decorators.cloudpolicy_ids"
             :listProps="policySelectProps"
+            :multiple="false"
             :formatter="row => `${row.name} / ${row.description || ''}`"
             :dialog-params="{ mask: false, width: 900, title: $t('rules.policy') }" />
         </a-form-item>
@@ -47,7 +48,7 @@ import WindowsMixin from '@/mixins/windows'
 import NameRepeated from '@/sections/NameRepeated'
 import ListSelect from '@/sections/ListSelect'
 import { getNameFilter } from '@/utils/common/tableFilter'
-import { HYPERVISORS_MAP } from '@/constants'
+import { HYPERVISORS_MAP, SUPPORT_CLOUDUSER_PROVIDERS } from '@/constants'
 
 export default {
   name: 'CloudgroupCreateDialog',
@@ -57,9 +58,8 @@ export default {
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
-    const supportCloud = ['Google', 'Aliyun', 'Huawei', 'Azure', 'Qcloud', 'Aws']
     const providerOptions = Object.entries(HYPERVISORS_MAP).filter(item => {
-      return supportCloud.includes(item[1].provider) && this.$store.getters.capability.brands.includes(item[1].provider)
+      return SUPPORT_CLOUDUSER_PROVIDERS.includes(item[1].provider) && this.$store.getters.capability.brands.includes(item[1].provider)
     })
     return {
       loading: false,
@@ -108,6 +108,13 @@ export default {
           },
           filterOptions: {
             name: getNameFilter(),
+            description: {
+              label: this.$t('table.column.title.desc'),
+              filter: true,
+              formatter: val => {
+                return `description.contains(${val})`
+              },
+            },
           },
         }),
         columns: [
