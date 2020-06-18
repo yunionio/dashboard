@@ -76,6 +76,7 @@ export default {
           showOverflow: 'title',
           slots: {
             default: ({ row }) => {
+              if (!row.iam_login_url) return '-'
               return [<help-link href={ row.iam_login_url } />]
             },
           },
