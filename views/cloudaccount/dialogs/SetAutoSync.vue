@@ -14,7 +14,7 @@
             v-decorator="decorators.sync_interval_seconds"
             :min="30" />
           <span class="ml-1">分钟</span>
-          <help-tooltip class="ml-1" name="cloudaccountSetAutoSyncTime" />
+          <div slot="extra">最少时间间隔为30分钟</div>
         </a-form-item>
       </a-form>
     </div>

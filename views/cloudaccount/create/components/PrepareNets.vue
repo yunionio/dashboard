@@ -1,4 +1,6 @@
 <script>
+import { isWithinRange } from '@/utils/validate'
+
 export default {
   name: 'CreatePrepareNets',
   props: {
@@ -29,8 +31,11 @@ export default {
         if (!ips || !ips.length) return true
         for (let i = 0; i < networks.length; i++) {
           const { guest_ip_start, guest_ip_end } = networks[i]
-          if (ips.indexOf(guest_ip_start) > -1 || ips.indexOf(guest_ip_end) > -1) {
-            return true
+          for (let p = 0; p < ips.length; p++) {
+            const ip = ips[p]
+            if (isWithinRange(ip, guest_ip_start, guest_ip_end)) {
+              return true
+            }
           }
         }
         return false

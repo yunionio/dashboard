@@ -66,6 +66,7 @@
 
 <script>
 import { uuid } from '@/utils/utils'
+import { isWithinRange } from '@/utils/validate'
 
 export default {
   name: 'PrepareNetsForm',
@@ -87,6 +88,7 @@ export default {
     return {
       loading: false,
       netInit: {},
+      noSuitableIps: [],
       netMaskOptions: [
         { label: '16', value: '16' },
         { label: '17', value: '17' },
@@ -168,16 +170,6 @@ export default {
       }
       return []
     },
-    noSuitableIps () {
-      const ips = []
-      for (let i = 0; i < this.list.length; i++) {
-        const item = this.list[i]
-        if (!item.isSuitable && item.ips.length) {
-          ips.push(...item.ips)
-        }
-      }
-      return ips
-    },
   },
   watch: {
     list (value) {
@@ -190,7 +182,18 @@ export default {
     this.form.fc.getFieldDecorator('keys', { initialValue: [], preserve: true })
     this.initNets()
   },
+  mounted () {
+    this.noSuitableIps = this.getNoSuitableIps()
+  },
   methods: {
+    getNoSuitableIps () {
+      const ips = []
+      for (let i = 0; i < this.list.length; i++) {
+        const item = this.list[i]
+        ips.push(...item.ips)
+      }
+      return ips
+    },
     formatDecorator (k, id) {
       return [`${k}.${id}`, {
         ...this.options[id],
@@ -204,6 +207,7 @@ export default {
           const key = uuid()
           keys.push(key)
           this.netInit[key] = net
+          console.log(net)
         })
       } else {
         keys.push(uuid())
@@ -214,16 +218,20 @@ export default {
     },
     setSuitable () {
       const values = this.form.fc.getFieldsValue()
-      const ips = []
-      values.keys.forEach(k => {
-        const { guest_ip_start, guest_ip_end } = values[k]
-        ips.push(guest_ip_start, guest_ip_end)
-      })
       if (this.list && this.list.length > 0) {
         this.list.forEach(item => {
           for (let i = 0; i < item.ips.length; i++) {
             const ip = item.ips[i]
-            item.isSuitable = ips.indexOf(ip) > -1
+            let isSuitable = false
+            for (let i = 0; i < values.keys.length; i++) {
+              const k = values.keys[i]
+              const { guest_ip_start, guest_ip_end } = values[k]
+              if (isWithinRange(ip, guest_ip_start, guest_ip_end)) {
+                isSuitable = true
+                break
+              }
+            }
+            item.isSuitable = isSuitable
           }
         })
       }
