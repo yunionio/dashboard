@@ -37,6 +37,7 @@
           </a-upload-dragger>
           <div slot="extra">
              还没有License? 您可以<help-link href="https://cloud.yunion.cn/account/license"> 申请免费License</help-link>
+             <template v-if="email">或联系<a :href="`mailto:${email}`">{{ email }}</a> 获得支持</template>
           </div>
         </a-form-item>
       </a-form>
@@ -86,12 +87,19 @@ export default {
       license: state => state.app.license.compute,
       serviceNumbers: state => state.app.license.service_numbers,
       status: state => state.app.license.status,
+      oemInfo: state => state.app.oem,
     }),
     allSn () {
       return this.serviceNumbers && R.type(this.serviceNumbers) === 'Array' ? this.serviceNumbers : []
     },
     copySn () {
       return this.allSn.join('\n')
+    },
+    email () {
+      if (!R.isNil(this.oemInfo.email) && !R.isEmpty(this.oemInfo.email)) {
+        return this.oemInfo.email
+      }
+      return null
     },
   },
   created () {
