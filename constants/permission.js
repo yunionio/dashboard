@@ -174,6 +174,8 @@ export const PERMISSION = {
   idps_list: ['identity', 'identity_providers', 'list'],
   // 常用系统(接入端)
   endpoints_list: ['identity', 'endpoints', 'list'],
+  // 报警
+  commonalerts_list: ['monitor', 'commonalerts', 'list'],
   /**
    * server 相关操作
    */
@@ -644,6 +646,13 @@ export const PERMISSION = {
   // 权限组缓存
   cloudgroupcache_get: ['cloudid', 'cloudgroupcaches', 'get'],
   cloudgroupcache_delete: ['cloudid', 'cloudgroupcaches', 'delete'],
+  // 报警
+  commonalerts_get: ['monitor', 'commonalerts', 'get'],
+  commonalerts_create: ['monitor', 'commonalerts', 'create'],
+  commonalerts_update: ['monitor', 'commonalerts', 'update'],
+  commonalerts_delete: ['monitor', 'commonalerts', 'delete'],
+  commonalerts_perform_enable: ['monitor', 'commonalerts', 'perform', 'enable'],
+  commonalerts_perform_disable: ['monitor', 'commonalerts', 'perform', 'disable'],
 }
 
 // 已声明权限的资源
