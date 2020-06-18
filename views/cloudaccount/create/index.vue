@@ -274,6 +274,7 @@ export default {
           await this.doCreateCloudaccount(this.vmwareFormData)
           const wireDta = await this.createWire()
           await this.doCreateNetwork(wireDta)
+          this.$router.push('/cloudaccount')
         } catch (err) {
           throw err
         }
