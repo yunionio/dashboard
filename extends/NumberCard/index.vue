@@ -1,6 +1,7 @@
 <template>
   <component
     :is="type"
+    :type="type"
     :visible.sync="visible"
     :formItemLayout="formItemLayout"
     :options="options"
