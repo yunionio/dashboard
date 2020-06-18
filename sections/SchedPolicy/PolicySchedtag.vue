@@ -41,6 +41,9 @@ export default {
       policyOpts: SCHEDTAG_POLICY_OPTIONS,
     }
   },
+  created () {
+    this.add()
+  },
   methods: {
     add () {
       const uid = uuid()
