@@ -50,8 +50,13 @@
           </a-form-item>
         </template>
       </template>
-      <a-form-item label="立即采集账单"  extra="开启立即采集账单，在账单文件访问信息配置完成后，立即采集当月账单。关闭立即采集账单，系统会在每天4:00自动采集账单">
+      <a-form-item label="立即采集账单"  extra="在账单文件访问信息配置完成后，立即采集历史账单。">
         <a-switch v-decorator="decorators.sync_info" />
+      </a-form-item>
+      <a-form-item label="时间范围" v-if="form.fc.getFieldValue('sync_info')" extra="请确保在该时间范围内，有账单数据。时间范围不宜过大，建议选择1~6个月之内，数据过多会造成系统压力导致日常采集任务无法正常执行。">
+        <a-select v-decorator="decorators.billtask">
+          <a-select-option v-for="(val, key) in billTasks" :key="key" :value="key">{{val}}</a-select-option>
+        </a-select>
       </a-form-item>
     </a-form>
   </div>
@@ -78,6 +83,13 @@ export default {
       billingType: 1,
       form: {
         fc: this.$form.createForm(this),
+      },
+      billTasks: {
+        '7 days': '近1周',
+        '1 months': '近1月',
+        '3 months': '近3月',
+        '6 months': '近6月',
+        '1 years': '近1年',
       },
       formLayout: {
         wrapperCol: {
@@ -188,6 +200,9 @@ export default {
             ],
           },
         ],
+        billtask: ['billtask', {
+          initialValue: '7 days',
+        }],
       }
     },
   },
@@ -245,21 +260,16 @@ export default {
     async postBillTasks (id, values) {
       const manager = new this.$Manager('bill_tasks', 'v1')
       try {
+        const { billtask } = values
         const data = {
           sync_info: true,
           cloudaccount_id: id,
         }
-        // 获取当月的几（day）号
-        const day = this.$moment().date()
-        let m = this.$moment().month()
-        // 如果大于1号 则取当月（day-1）号至1号的账单
-        if (day > 1) {
-          m += 1
-          data.end_day = parseFloat(this.$moment(day - 1, 'D').format('YYYYMMDD'))
-        } else { // 上一个月账单
-          data.end_day = parseFloat(this.$moment(m, 'MM').endOf('month').format('YYYYMMDD'))
-        }
-        data.start_day = parseFloat(this.$moment(m, 'MM').startOf('month').format('YYYYMMDD'))
+        const [num, format] = billtask.split(' ')
+        const endDayMoment = this.$moment().subtract(1, 'd')
+        const startDayMoment = this.$moment().subtract(num, format)
+        data.end_day = endDayMoment.format('YYYYMMDD')
+        data.start_day = startDayMoment.format('YYYYMMDD')
         await manager.create({
           data,
         })
@@ -274,6 +284,7 @@ export default {
           this.postBillTasks(id, values)
         }
         delete values.sync_info
+        delete values.billtask
         const params = {
           id,
           data: {
