@@ -1,6 +1,7 @@
 import BlockStorage from '@Storage/views/blockstorage'
 import Bucket from '@Storage/views/bucket'
 import Layout from '@/layouts/RouterView'
+import { hasSetupKey } from '@/utils/auth'
 
 export default {
   index: 5,
@@ -22,6 +23,7 @@ export default {
           meta: {
             label: '块存储',
             permission: 'storages_list',
+            hidden: () => !hasSetupKey(['onestack', 'private', 'vmware']),
           },
           component: Layout,
           children: [
@@ -47,6 +49,7 @@ export default {
           meta: {
             label: '存储桶',
             permission: 'buckets_list',
+            hidden: () => !hasSetupKey(['aliyun', 'aws', 'azure', 'huawei', 'qcloud', 'google', 'storage']),
           },
           component: Layout,
           children: [
