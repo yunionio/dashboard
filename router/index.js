@@ -13,6 +13,7 @@ import Policydefinition from '@Cloudenv/views/policydefinition'
 import Scheduledtask from '@Cloudenv/views/scheduledtask'
 import ScheduledtaskCreate from '@Cloudenv/views/scheduledtask/create'
 import Layout from '@/layouts/RouterView'
+import { hasSetupKey } from '@/utils/auth'
 
 export default {
   index: 9,
@@ -24,6 +25,7 @@ export default {
     {
       meta: {
         label: '地域',
+        hidden: () => !hasSetupKey(['onestack', 'private', 'vmware']),
       },
       submenus: [
         {
@@ -68,6 +70,7 @@ export default {
           meta: {
             label: '云账号',
             permission: 'cloudaccounts_list',
+            hidden: () => !hasSetupKey(['onestack', 'private', 'vmware', 'public', 'storage']),
           },
           component: Layout,
           children: [
@@ -93,6 +96,7 @@ export default {
           meta: {
             label: '代理',
             permission: 'proxysettings_list',
+            hidden: () => !hasSetupKey(['onestack', 'private', 'vmware', 'public', 'storage']),
           },
           component: Layout,
           children: [
@@ -109,6 +113,7 @@ export default {
             label: '操作日志',
             permission: 'cloudevents_list',
             t: 'dictionary.cloudevents',
+            hidden: () => !hasSetupKey(['aliyun', 'aws', 'azure', 'huawei', 'qcloud']),
           },
           component: Layout,
           children: [
@@ -145,6 +150,7 @@ export default {
     {
       meta: {
         label: '调度',
+        hidden: () => !hasSetupKey(['onestack', 'private', 'vmware', 'public']),
       },
       submenus: [
         {
