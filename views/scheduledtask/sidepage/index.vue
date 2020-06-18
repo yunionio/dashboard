@@ -50,8 +50,8 @@ export default {
     detailTabs () {
       const tabs = [
         { label: '详情', key: 'scheduledtask-detail' },
-        { label: '关联资源', key: 'related-resource' },
         { label: '任务历史', key: 'task-history' },
+        { label: '关联资源', key: 'related-resource' },
         { label: '操作日志', key: 'event-drawer' },
       ]
       return tabs

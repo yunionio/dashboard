@@ -2,7 +2,7 @@
   <div>
     <page-header title="新建定时任务" />
     <a-form :form="form.fc" v-bind="formItemLayout" hideRequiredMark>
-      <a-form-item :label="`指定${$t('dictionary.project')}`" class="mb-0" v-bind="formItemLayout">
+      <a-form-item :label="`指定${$t('dictionary.project')}`" class="mt-3 mb-0" v-bind="formItemLayout">
         <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
       </a-form-item>
       <a-form-item label="名称">
@@ -58,7 +58,7 @@
           <a-radio-button v-for="(v, k) in $t('cloudenv.ScheduledtaskRuleAction')" :key="k" :value="k">{{v}}</a-radio-button>
         </a-radio-group>
       </a-form-item>
-      <a-form-item label="绑定资源">
+      <a-form-item label="绑定资源" v-show="false">
         <a-radio-group v-decorator="decorators.labelType">
           <a-radio-button v-for="(v, k) in $t('cloudenv.ScheduledtaskLabelType')" :key="k" :value="k">{{v}}</a-radio-button>
         </a-radio-group>
@@ -236,7 +236,13 @@ export default {
         ],
       },
       form: {
-        fc: this.$form.createForm(this),
+        fc: this.$form.createForm(this, {
+          onValuesChange: (props, values) => {
+            if (values.hasOwnProperty('project')) {
+              this.serverProps.list.getParams.tenant = values.project && values.project.key
+            }
+          },
+        }),
       },
       formItemLayout: {
         wrapperCol: {
