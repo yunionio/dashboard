@@ -155,7 +155,7 @@ export default {
   methods: {
     validateForm () {
       let f = false
-      this.form.fc.validateFields((err, values) => {
+      this.form.fc.validateFieldsAndScroll({ scroll: { alignWithTop: true, offsetTop: 100 } }, (err, values) => {
         f = err === null
       })
       return f

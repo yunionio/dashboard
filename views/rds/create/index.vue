@@ -2,7 +2,7 @@
   <div class="server-create-index">
     <page-header title="新建" />
     <a-divider orientation="left">基础配置</a-divider>
-    <a-form :form="form.fc" class="mt-3"  v-bind="formItemLayout">
+    <a-form hideRequiredMark :form="form.fc" class="mt-3"  v-bind="formItemLayout">
       <a-form-item class="mb-0" :label="`指定${$t('dictionary.project')}`" v-bind="formItemLayout">
         <domain-project :decorators="decorators.projectDomain" :fc="form.fc" :labelInValue="false" />
       </a-form-item>
