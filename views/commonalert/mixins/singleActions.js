@@ -4,7 +4,7 @@ export default {
   created () {
     this.singleActions = [
       {
-        label: this.$t('commo.edit'),
+        label: this.$t('common.edit'),
         permission: 'commonalerts_update',
         action: obj => {
           this.$router.push({
@@ -18,7 +18,7 @@ export default {
           ...getEnabledSwitchActions(this, row, ['commonalerts_perform_enable', 'commonalerts_perform_disable']),
           {
             label: this.$t('common.delete'),
-            permission: 'k8s_repos_delete',
+            permission: 'commonalerts_delete',
             action: (obj) => {
               const requestParams = {
                 cluster: obj.clusterID,

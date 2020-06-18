@@ -145,6 +145,8 @@ export default {
             threshold: fd.threshold,
           }],
         }
+        if (fd.domain) data.domain_id = fd.domain
+        if (fd.project) data.project_id = fd.project
         if (this.time === 'custom') { // 自定义时间
           if (this.customTime && this.customTime.from && this.customTime.to) {
             data.from = this.customTime.from

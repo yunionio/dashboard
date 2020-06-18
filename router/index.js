@@ -29,6 +29,7 @@ export default {
       meta: {
         label: '报警策略',
         t: 'dictionary.commonalert',
+        permission: 'commonalerts_list',
       },
       component: Layout,
       children: [

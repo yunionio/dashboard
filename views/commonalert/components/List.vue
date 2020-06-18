@@ -43,7 +43,7 @@ export default {
       groupActions: [
         {
           label: this.$t('common.create'),
-          permission: 'k8s_repos_create',
+          permission: 'commonalerts_create',
           action: () => {
             this.$router.push({
               path: '/commonalerts/create',
@@ -57,10 +57,10 @@ export default {
           label: this.$t('common.batchAction'),
           actions: obj => {
             return [
-              ...getEnabledSwitchActions(this, obj),
+              ...getEnabledSwitchActions(this, obj, ['commonalerts_perform_enable', 'commonalerts_perform_disable']),
               {
                 label: this.$t('common.delete'),
-                permission: 'k8s_repos_delete',
+                permission: 'commonalerts_delete',
                 action: () => {
                   const data = this.list.selectedItems
                   this.createDialog('DeleteResDialog', {

@@ -71,7 +71,7 @@ import DomainProject from '@/sections/DomainProject'
 import NameRepeated from '@/sections/NameRepeated'
 import { DATABASE, channelMaps, levelMaps } from '@Monitor/constants'
 import { resolveValueChangeField } from '@/utils/common/ant'
-console.log(levelMaps, '123213levelMaps')
+
 export default {
   name: 'CommonalertForm',
   components: {
@@ -108,6 +108,8 @@ export default {
       initialValue.name = this.alertData.name
       initialValue.period = this.alertData.period
       initialValue.level = this.alertData.level
+      initialValue.domain = this.alertData.domain_id
+      initialValue.project = this.alertData.tenant_id
       tags = _.get(this.alertData, 'settings.conditions[0].query.model.tags') || []
       initialValue.metric_key = _.get(this.alertData, 'settings.conditions[0].query.model.measurement')
       initialValue.metric_value = _.get(this.alertData, 'settings.conditions[0].query.model.select[0][0].params[0]')
@@ -130,13 +132,13 @@ export default {
         domain: [
           'domain',
           {
-            initialValue: undefined,
+            initialValue: initialValue.domain,
           },
         ],
         project: [
           'project',
           {
-            initialValue: undefined,
+            initialValue: initialValue.project,
           },
         ],
         name: [
@@ -263,7 +265,7 @@ export default {
         limit: 0,
       },
       channelOpts: Object.values(channelMaps),
-      levelOpts: [],
+      levelOpts: Object.values(levelMaps),
     }
   },
   watch: {
@@ -330,12 +332,10 @@ export default {
     },
     async getMetricInfo (metricKey, isResetForm = true) {
       try {
-        const name = this.form.fc.getFieldValue(this.decorators.name[0])
         if (isResetForm) {
           this.$refs.filtersRef.reset()
-          this.form.fc.resetFields()
           this.form.fc.setFieldsValue({
-            [this.decorators.name[0]]: name,
+            [this.decorators.metric_value[0]]: undefined,
           })
         }
         const { data } = await new this.$Manager('unifiedmonitors', 'v1').get({ id: 'metric-measurement', params: { database: 'telegraf', measurement: metricKey } })
