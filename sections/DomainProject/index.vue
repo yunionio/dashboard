@@ -164,9 +164,17 @@ export default {
             defaultData = { key: findInitValue.key, label: findInitValue.label }
           }
         }
-        if (this.isDefaultSelect) {
+        const projectInitialValue = _.get(this.decorators, 'project[1].initialValue')
+        const domainChange = () => {
           this._setInitDomain(defaultData)
           this.domainChange(defaultData || {})
+        }
+        if (projectInitialValue) {
+          domainChange()
+        } else {
+          if (this.isDefaultSelect) {
+            domainChange()
+          }
         }
       } catch (error) {
         throw error
@@ -212,9 +220,16 @@ export default {
             defaultData = { key: findInitValue.key, label: findInitValue.label }
           }
         }
-        if (this.isDefaultSelect) {
+        const projectChange = () => {
           this.projectChange(defaultData || {})
           this._setInitProject(defaultData || {})
+        }
+        if (initialValue) {
+          projectChange()
+        } else {
+          if (this.isDefaultSelect) {
+            projectChange()
+          }
         }
       } catch (error) {
         throw error
