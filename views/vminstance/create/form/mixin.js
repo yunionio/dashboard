@@ -421,11 +421,13 @@ export default {
         return
       }
       this.form.fi.cpuMem.mems_mb = memOpts
+      let defaultMem = 2048
       if (!this.form.fi.cpuMem.mems_mb.includes(2048)) { // 如果返回值不包括默认内存2G，选择第一项
-        this.form.fc.setFieldsValue({
-          vmem: memOpts[0],
-        })
+        defaultMem = memOpts[0]
       }
+      this.form.fc.setFieldsValue({
+        vmem: defaultMem,
+      })
     },
     _getProjectDomainInfo (variables) {
       variables.project = this.form.fd.project.key
