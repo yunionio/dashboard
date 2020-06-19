@@ -71,7 +71,7 @@ export default {
               return `os_type.in(${val})`
             },
           },
-          tenant: getTenantFilter(),
+          projects: getTenantFilter(),
           billing_type: {
             label: '计费方式',
             dropdown: true,
@@ -80,7 +80,7 @@ export default {
               { label: '包年包月', key: 'prepaid' },
             ],
           },
-          account: getAccountFilter(),
+          cloudaccount: getAccountFilter(),
           host: getHostFilter(),
           gpu: {
             label: '类型',

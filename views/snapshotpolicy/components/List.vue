@@ -41,7 +41,7 @@ export default {
             },
           },
           status: getStatusFilter('snapshotpolicy'),
-          tenant: getTenantFilter(),
+          projects: getTenantFilter(),
         },
       }),
       exportDataOptions: {

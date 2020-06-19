@@ -43,7 +43,7 @@ export default {
             },
           },
           status: getStatusFilter('snapshot'),
-          tenant: getTenantFilter(),
+          projects: getTenantFilter(),
         },
         responseData: this.responseData,
       }),

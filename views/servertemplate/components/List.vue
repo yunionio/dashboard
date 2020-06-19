@@ -54,7 +54,7 @@ export default {
               return `name.contains("${val}")`
             },
           },
-          tenant: getTenantFilter(),
+          projects: getTenantFilter(),
           status: getStatusFilter('servertemplate'),
           brand: getBrandFilter(),
           os_type: {

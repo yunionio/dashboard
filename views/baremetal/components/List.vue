@@ -66,7 +66,7 @@ export default {
           host: {
             label: '物理机',
           },
-          tenant: getTenantFilter(),
+          projects: getTenantFilter(),
           status: getStatusFilter({ statusModule: 'server' }),
           os_type: getOsTypeFilter(),
         },
