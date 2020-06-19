@@ -33,7 +33,7 @@
         <a-input-password v-decorator="decorators.password" :placeholder="keySecretField.placeholder.s" />
       </a-form-item>
       <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" />
-      <proxy-setting :fc="form.fc" ref="proxySetting" />
+      <proxy-setting :fc="form.fc" :fd="form.fd" ref="proxySetting" />
       <auto-sync :fc="form.fc" :form-layout="formLayout" />
       <!-- <a-form-item label="账单密钥">
         <a-input v-decorator="decorators.balanceKey" type="textarea" rows="4" />

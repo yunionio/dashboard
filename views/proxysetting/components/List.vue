@@ -59,6 +59,7 @@ export default {
           action: () => {
             this.createDialog('ProxysettingCreateDialog', {
               onManager: this.onManager,
+              refresh: this.refresh,
             })
           },
           meta: () => {

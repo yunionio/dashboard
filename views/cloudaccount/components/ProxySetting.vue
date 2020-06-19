@@ -7,6 +7,7 @@
     </a-select>
     <div slot="extra">
       某些云厂商需要设置代理才可以正常访问，例如谷歌云”改为“某些云厂商需要设置代理才可以正常访问，例如谷歌云。为空则表示直连。
+      没有想要的？可以前往 <span class="link-color oc-pointer" @click="createProxySetting">新建</span>
     </div>
   </a-form-item>
 </template>
@@ -14,14 +15,19 @@
 <script>
 import { mapGetters } from 'vuex'
 import { hasPermission } from '@/utils/auth'
+import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'ProxySetting',
+  mixins: [WindowsMixin],
   props: {
     account: {
       type: Object,
     },
     fc: {
+      type: Object,
+    },
+    fd: {
       type: Object,
     },
   },
@@ -40,6 +46,13 @@ export default {
     },
     isPermission () {
       return hasPermission({ key: 'proxysettings_list' })
+    },
+  },
+  watch: {
+    proxyOpts (val) {
+      if (val && val.length > 0) {
+        this.fc.setFieldsValue({ 'proxy_setting': val[0].id })
+      }
     },
   },
   created () {
@@ -83,6 +96,14 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+    createProxySetting () {
+      this.createDialog('ProxysettingCreateDialog', {
+        domain: this.fd.domain || {},
+        success: () => {
+          this.fetchQueryProxy()
+        },
+      })
     },
   },
 }

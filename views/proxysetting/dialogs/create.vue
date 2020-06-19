@@ -6,7 +6,7 @@
         v-bind="formLayout"
         :form="form.fc">
         <a-form-item :label="`指定${$t('dictionary.domain')}`" v-bind="formLayout">
-          <domain-select v-if="isAdminMode && l3PermissionEnable" v-decorator="decorators.project_domain" />
+          <domain-select v-if="isAdminMode && l3PermissionEnable" v-decorator="decorators.project_domain" :params="domainParams" />
           <template v-else> {{userInfo.domain.name}} </template>
         </a-form-item>
         <a-form-item label="名称">
@@ -46,10 +46,9 @@ export default {
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
-    const projectDomainInitialValue = this.$store.getters.userInfo.projectDomainId
+    const projectDomainInitialValue = (this.params.domain && this.params.domain.key) || this.$store.getters.userInfo.projectDomainId
     return {
       loading: false,
-      projectDomainInitialValue,
       form: {
         fc: this.$form.createForm(this),
       },
@@ -67,7 +66,7 @@ export default {
         project_domain: [
           'project_domain',
           {
-            initialValue: this.projectDomainInitialValue,
+            initialValue: projectDomainInitialValue,
             rules: [
               { required: true, message: `请选择${this.$t('dictionary.domain')}` },
             ],
@@ -88,16 +87,16 @@ export default {
           offset: 3,
         },
       },
+      domainParams: {
+        limit: 0,
+        filter: 'enabled.equals(1)',
+      },
     }
   },
   computed: mapGetters(['isAdminMode', 'isDomainMode', 'userInfo', 'l3PermissionEnable']),
   methods: {
     doCreate (data) {
-      return this.params.onManager('create', {
-        managerArgs: {
-          data,
-        },
-      })
+      return new this.$Manager('proxysettings').create({ data: data })
     },
     async testPost () {
       const manager = new this.$Manager('proxysettings')
@@ -135,12 +134,10 @@ export default {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
-        await this.params.onManager('create', {
-          managerArgs: {
-            data: values,
-          },
-        })
+        await this.doCreate(values)
         this.cancelDialog()
+        this.params.refresh && this.params.refresh()
+        this.params.success && this.params.success()
       } catch (error) {
         throw error
       } finally {
