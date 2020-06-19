@@ -61,6 +61,9 @@ export default {
     timeGroup () {
       this.fetchAllData()
     },
+    customTime () {
+      this.fetchAllData()
+    },
   },
   methods: {
     remove (i) {
