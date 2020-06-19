@@ -226,6 +226,7 @@ export default {
               // will trigger `this.chart.setOption(val, false)`
               this.chart.setOption(val, val !== oldVal)
             }
+            this.$emit('chartInstance', this.chart)
           },
           { deep: !this.watchShallow },
         )
