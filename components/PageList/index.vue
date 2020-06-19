@@ -226,9 +226,11 @@ export default {
       return this.list.getLimit()
     },
     changeCurrentPage (currentPage) {
+      if (this.loading) return
       this.list.changeCurrentPage(currentPage)
     },
     changePageSize (pageSize) {
+      if (this.loading) return
       this.list.changePageSize(pageSize)
     },
     doSort (property, order) {
