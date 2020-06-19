@@ -44,7 +44,7 @@ export default {
           },
           status: getStatusFilter('snapshot'),
           brand: getBrandFilter(),
-          tenant: getTenantFilter(),
+          projects: getTenantFilter(),
           disk_name: {
             label: '硬盘',
             jointFilter: true,

@@ -39,7 +39,7 @@ export default {
           name: getNameFilter(),
           brand: getBrandFilter(),
           status: getStatusFilter('disk'),
-          tenant: getTenantFilter(),
+          projects: getTenantFilter(),
           // guest: getFilter({ field: 'guest', title: '云服务器' }),
           disk_type: getFilter({
             field: 'guest',

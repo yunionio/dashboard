@@ -55,7 +55,7 @@ export default {
             },
           },
           status: getStatusFilter('image'),
-          tenant: getTenantFilter(),
+          projects: getTenantFilter(),
         },
         responseData: this.responseData,
       }),

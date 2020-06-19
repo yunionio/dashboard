@@ -52,7 +52,7 @@ export default {
               return `name.contains("${val}")`
             },
           },
-          tenant: getTenantFilter(),
+          projects: getTenantFilter(),
         },
         responseData: this.responseData,
       }),

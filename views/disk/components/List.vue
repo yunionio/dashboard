@@ -67,7 +67,7 @@ export default {
             ],
           },
           brand: getBrandFilter(),
-          tenant: getTenantFilter(),
+          projects: getTenantFilter(),
           medium_type: {
             label: '介质类型',
             dropdown: true,
