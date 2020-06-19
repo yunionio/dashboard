@@ -14,6 +14,9 @@ export default {
         fc: this.$form.createForm(this, {
           onValuesChange: this.handleValuesChange,
         }),
+        fd: {
+          domain: '',
+        },
       },
       keySecretFieldInit: keySecretFields[this.provider.toLowerCase()],
       formLayout: {
@@ -81,6 +84,9 @@ export default {
       const fields = Object.keys(changedFields)
       if (changedFields && fields.length > 0) {
         fields.forEach(field => {
+          if (changedFields.hasOwnProperty('domain')) {
+            this.form.fd[field] = changedFields[field]
+          }
           const fn = this[`${field}_change`]
           if (fn && typeof fn === 'function') {
             fn()
