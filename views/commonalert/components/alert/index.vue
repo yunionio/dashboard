@@ -95,6 +95,9 @@ export default {
     timeGroup () {
       this.fetchData()
     },
+    customTime () {
+      this.fetchData()
+    },
   },
   created () {
     if (this.isUpdate) {

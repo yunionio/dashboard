@@ -10,7 +10,7 @@
 
 <script>
 import { levelColumn, conditionColumn, strategyColumn } from '../utils'
-import { getEnabledTableColumn } from '@/utils/common/tableColumn'
+import { getEnabledTableColumn, getProjectTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   name: 'CommonalertDetail',
@@ -32,6 +32,7 @@ export default {
         strategyColumn,
         levelColumn,
         conditionColumn,
+        getProjectTableColumn(),
       ],
       extraInfo: [],
     }

@@ -62,7 +62,7 @@ export const timeOpts = {
       { key: '30m', label: i18n.t('monitor.text00010') },
       { key: '1h', label: i18n.t('monitor.text00011') },
       { key: '6h', label: i18n.t('monitor.text00012') },
-      { key: '1d', label: i18n.t('monitor.text00013') },
+      { key: '24h', label: i18n.t('monitor.text00013') },
     ],
   },
 }
@@ -212,18 +212,19 @@ export const metricMaps = {
 
 export const DATABASE = 'telegraf'
 
+// 顺序决定在 tableColumn 的顺序
 export const tableColumnMaps = {
   vm_name: {
     title: i18n.t('common.name'),
     field: 'vm_name',
   },
-  vm_ip: {
-    title: 'IP',
-    field: 'vm_ip',
-  },
   host: {
     title: i18n.t('dictionary.host'),
     field: 'host',
+  },
+  vm_ip: {
+    title: 'IP',
+    field: 'vm_ip',
   },
   cloudregion: {
     title: i18n.t('dictionary.cloudregion'),
