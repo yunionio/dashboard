@@ -366,7 +366,14 @@ export default {
     fetchLicense (val) {
       if (val) {
         this.$store.dispatch('app/fetchLicense').catch(ret => {
-          if (this.$store.getters.isAdminMode) {
+          let is402 = false
+          if (R.type(ret) === 'Error' || R.type(ret) === 'String') {
+            is402 = ret.toString().indexOf('status code 402') > -1
+          }
+          if (R.type(ret) === 'Object') {
+            is402 = ret.status === 402
+          }
+          if (is402 && this.$store.getters.isAdminMode) {
             this.createDialog('UpdateLicenseDialog')
           }
         })
