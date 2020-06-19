@@ -4,7 +4,7 @@
       <div class="titles">
          <img class="logo" :src="logo" alt="" />
          <h2>OneCloud 授权激活</h2>
-         <p>软件版本：{{updateInfo.current_version}}</p>
+         <p v-if="updateInfo.current_version">软件版本：{{updateInfo.current_version}}</p>
       </div>
       <a-form :form="form.fc" v-bind="formItemLayout">
          <a-form-item v-if="allSn && allSn.length > 0" label="服务器识别码">
@@ -36,8 +36,11 @@
             <p class="ant-upload-hint">license文件扩展名为.lic,大小不超过10KB</p>
           </a-upload-dragger>
           <div slot="extra">
-             还没有License? 您可以<help-link href="https://cloud.yunion.cn/account/license"> 申请免费License</help-link>
-             <template v-if="email">或联系<a :href="`mailto:${email}`">{{ email }}</a> 获得支持</template>
+            <div class="mt-2 mb-1">还没有License? 您可以通过以下途径获取：</div>
+            <ul>
+              <li>线上<help-link href="https://cloud.yunion.cn/account/license">申请免费License</help-link></li>
+              <li v-if="email">或联系<a :href="`mailto:${email}`">{{ email }}</a> 获得支持</li>
+            </ul>
           </div>
         </a-form-item>
       </a-form>
