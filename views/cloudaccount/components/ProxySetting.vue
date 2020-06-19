@@ -7,7 +7,7 @@
     </a-select>
     <div slot="extra">
       某些云厂商需要设置代理才可以正常访问，例如谷歌云”改为“某些云厂商需要设置代理才可以正常访问，例如谷歌云。为空则表示直连。
-      没有想要的？可以前往 <span class="link-color oc-pointer" @click="createProxySetting">新建</span>
+      <div>没有想要的？可以前往 <span class="link-color oc-pointer" @click="createProxySetting">新建</span></div>
     </div>
   </a-form-item>
 </template>
