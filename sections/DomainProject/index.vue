@@ -189,10 +189,9 @@ export default {
           label: this.userInfo.projectName,
         }]
         this.projects = data
-        if (this.isDefaultSelect) {
-          this.projectChange(data[0])
-          this._setInitProject(data[0])
-        }
+        // 普通视图下不用判断 isDefaultSelect
+        this.projectChange(data[0])
+        this._setInitProject(data[0])
         return
       }
       this.projectLoading = true
