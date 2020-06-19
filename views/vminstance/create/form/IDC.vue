@@ -325,8 +325,12 @@ export default {
               systemDiskSize: sysDisk.size / 1024,
             }
             if (val && R.is(Object, val.server_config)) {
-              if (val.server_config.vcpu_count) data[this.decorators.vcpu[0]] = val.server_config.vcpu_count
-              if (val.server_config.vmem_size) data[this.decorators.vmem[0]] = val.server_config.vmem_size
+              if (val.server_config.vcpu_count) {
+                const cpuValue = val.server_config.vcpu_count
+                data[this.decorators.vcpu[0]] = cpuValue
+                this.cpuChange(cpuValue)
+                if (val.server_config.vmem_size) data[this.decorators.vmem[0]] = val.server_config.vmem_size
+              }
               this.form.fi.cpuDisabled = true
               this.form.fi.memDisabled = true
             }
