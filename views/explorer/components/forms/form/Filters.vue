@@ -87,6 +87,9 @@ export default {
         { key: 'OR', label: 'OR' },
       ],
     },
+    tags: {
+      type: Array,
+    },
   },
   data () {
     return {
@@ -108,7 +111,30 @@ export default {
       return []
     },
   },
+  mounted () {
+    if (this.tags && this.tags.length) {
+      this.fillFilters(this.tags)
+    }
+  },
   methods: {
+    fillFilters (tags) {
+      const tagFields = {}
+      this.filters = tags.map(item => {
+        const key = uuid()
+        const { tagCondition, tagKey, tagValue, tagOperator } = this.decorators
+        tagFields[tagKey(key)[0]] = item.key
+        tagFields[tagValue(key)[0]] = item.value
+        tagFields[tagOperator(key)[0]] = item.operator
+        if (item.condition) tagFields[tagCondition(key)[0]] = item.condition
+        return {
+          key,
+          tagValueOpts: this.tagValueOpts(item.key),
+        }
+      })
+      this.$nextTick(() => {
+        this.form.fc.setFieldsValue(tagFields)
+      })
+    },
     reset () {
       this.filters = [{ key: uuid(), tagValueOpts: [] }]
     },
@@ -141,7 +167,3 @@ export default {
   },
 }
 </script>
-
-<style>
-
-</style>

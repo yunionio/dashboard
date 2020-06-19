@@ -10,6 +10,7 @@
             :disabled-time="disabledDateTime"
             :show-time="{ defaultValue: $moment('00:00:00', 'HH:mm') }"
             format="YYYY-MM-DD HH:mm"
+            :open="startOpen"
             :placeholder="$t('common.text00119')"
             @openChange="handleStartOpenChange" />
         </a-form-model-item>
@@ -31,14 +32,24 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
+  name: 'CustomDate',
+  props: {
+    endTime: {
+      type: Object,
+      default: () => moment(),
+    },
+  },
   data () {
     return {
       formData: {
         startValue: null,
-        endValue: null,
+        endValue: this.endTime,
       },
       visible: false,
+      startOpen: false,
       endOpen: false,
       layout: {
         labelCol: { span: 8 },
@@ -62,8 +73,8 @@ export default {
       const from = this.formData.startValue.diff(this.$moment(), 'hours')
       const to = this.formData.endValue.diff(this.$moment(), 'hours')
       return {
-        from: `now${from}h`, // from 是负数
-        to: `now${to}h`, // to 是负数
+        from: from === 0 ? 'now' : `now${from}h`, // from 是负数
+        to: to === 0 ? 'now' : `now${to}h`, // to 是负数
       }
     },
     async submit () {
@@ -96,9 +107,7 @@ export default {
       return (endValue && (endValue > this.$moment().endOf('day'))) || (startValue.valueOf() >= endValue.valueOf())
     },
     handleStartOpenChange (open) {
-      if (!open) {
-        this.endOpen = true
-      }
+      this.startOpen = open
     },
     handleEndOpenChange (open) {
       this.endOpen = open

@@ -36,7 +36,7 @@ export const timeOpts = {
     timeGroupOpts: [
       { key: '5m', label: i18n.t('monitor.text00008') },
       { key: '10m', label: i18n.t('monitor.text00009') },
-      { key: '30m', label: i18n.t('monitor.text000010') },
+      { key: '30m', label: i18n.t('monitor.text00010') },
       { key: '1h', label: i18n.t('monitor.text00011') },
     ],
   },
@@ -47,7 +47,7 @@ export const timeOpts = {
     timeGroupOpts: [
       { key: '5m', label: i18n.t('monitor.text00008') },
       { key: '10m', label: i18n.t('monitor.text00009') },
-      { key: '30m', label: i18n.t('monitor.text000010') },
+      { key: '30m', label: i18n.t('monitor.text00010') },
       { key: '1h', label: i18n.t('monitor.text00011') },
     ],
   },
@@ -59,10 +59,10 @@ export const timeOpts = {
     timeGroupOpts: [
       { key: '5m', label: i18n.t('monitor.text00008') },
       { key: '10m', label: i18n.t('monitor.text00009') },
-      { key: '30m', label: i18n.t('monitor.text000010') },
+      { key: '30m', label: i18n.t('monitor.text00010') },
       { key: '1h', label: i18n.t('monitor.text00011') },
       { key: '6h', label: i18n.t('monitor.text00012') },
-      { key: '1d', label: i18n.t('monitor.text00013') },
+      { key: '24h', label: i18n.t('monitor.text00013') },
     ],
   },
 }
@@ -212,18 +212,19 @@ export const metricMaps = {
 
 export const DATABASE = 'telegraf'
 
+// 顺序决定在 tableColumn 的顺序
 export const tableColumnMaps = {
   vm_name: {
     title: i18n.t('common.name'),
     field: 'vm_name',
   },
-  vm_ip: {
-    title: 'IP',
-    field: 'vm_ip',
-  },
   host: {
     title: i18n.t('dictionary.host'),
     field: 'host',
+  },
+  vm_ip: {
+    title: 'IP',
+    field: 'vm_ip',
   },
   cloudregion: {
     title: i18n.t('dictionary.cloudregion'),
@@ -232,5 +233,46 @@ export const tableColumnMaps = {
   zone: {
     title: i18n.t('dictionary.zone'),
     field: 'zone',
+  },
+}
+
+// 报警通知方式，配合 a-checkbox-group 用 value 而非 key
+export const channelMaps = {
+  webconsole: { value: 'webconsole', label: i18n.t('dictionary.infos'), disabled: true },
+  email: { value: 'email', label: i18n.t('common.email') },
+  dingtalk: { value: 'dingtalk', label: i18n.t('common.dingtalk') },
+  feishu: { value: 'feishu', label: i18n.t('common.feishu') },
+}
+
+export const alertStrategyMaps = {
+  avg: i18n.t('monitor.avg'),
+  max: i18n.t('monitor.max'),
+  min: i18n.t('monitor.min'),
+}
+
+export const preiodMaps = {
+  '5m': { key: '5m', label: i18n.t('monitor.text00018') },
+  '10m': { key: '10m', label: i18n.t('monitor.text00019') },
+  '15m': { key: '15m', label: i18n.t('monitor.text00020') },
+  '30m': { key: '30m', label: i18n.t('monitor.text00021') },
+  '60m': { key: '60m', label: i18n.t('monitor.text00022') },
+  '180m': { key: '180m', label: i18n.t('monitor.text00022') },
+}
+
+export const levelMaps = {
+  normal: {
+    color: 'cyan',
+    key: 'normal',
+    label: i18n.t('monitor.normal'),
+  },
+  important: {
+    color: 'pink',
+    key: 'important',
+    label: i18n.t('monitor.important'),
+  },
+  fatal: {
+    color: 'red',
+    key: 'fatal',
+    label: i18n.t('monitor.fatal'),
   },
 }

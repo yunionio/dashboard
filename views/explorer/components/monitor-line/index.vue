@@ -1,10 +1,12 @@
 <template>
   <a-card class="explorer-monitor-line d-flex align-items-center justify-content-center">
-    <line-chart :columns="lineChartColumns" :rows="lineChartRows" @chartInstance="v => $emit('chartInstance', v)" width="100%" height="250px" class="mb-4" />
+    <line-chart :columns="lineChartColumns" :rows="lineChartRows" @chartInstance="setChartInstance" width="100%" height="250px" class="mb-4" :options="lineChartOptions" />
     <vxe-grid
+      v-if="tableData && tableData.length"
       max-height="200"
       size="mini"
       border
+      row-id="vm_id"
       :columns="columns"
       :data="tableData" />
   </a-card>
@@ -29,11 +31,16 @@ export default {
       type: String,
       default: 'YYYY-MM-DD HH:mm',
     },
+    lineChartOptions: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data () {
     return {
       lineChartColumns: [],
       lineChartRows: [],
+      chartInstanceOption: { gradientColor: [] },
     }
   },
   computed: {
@@ -41,14 +48,26 @@ export default {
       return this.series.map(val => val.tags)
     },
     columns () {
-      const columns = []
+      const columns = [
+        {
+          field: 'vm_id',
+          slots: {
+            default: ({ rowIndex }) => {
+              const { series } = this.chartInstanceOption
+              const colors = series.map(val => val.itemStyle.color)
+              const c = colors[rowIndex]
+              return [<div class="mx-auto" style={{ width: '10px', height: '10px', 'border-radius': '50%', background: c }} />]
+            },
+          },
+        },
+      ]
       if (this.tableData && this.tableData.length) {
         R.forEachObjIndexed((value, key) => {
-          const column = tableColumnMaps[key]
+          const column = this.tableData[0][key]
           if (column) {
-            columns.push(column)
+            columns.push(value)
           }
-        }, this.tableData[0])
+        }, tableColumnMaps)
       }
       return columns
     },
@@ -64,6 +83,10 @@ export default {
     this.getMonitorLine()
   },
   methods: {
+    setChartInstance (v) {
+      this.chartInstanceOption = v.getOption()
+      this.$emit('chartInstance', v)
+    },
     getMonitorLine () {
       const columns = ['time']
       const rows = []

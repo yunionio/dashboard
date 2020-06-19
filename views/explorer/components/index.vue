@@ -1,9 +1,9 @@
 <template>
   <a-row>
-    <a-col :xs="{ span: 24 }" :xxl="{ span: 11 }" class="mb-5">
+    <a-col :md="{ span: 24 }" :lg="{ span: 22 }" :xl="{ span: 16 }"  :xxl="{ span: 11 }" class="mb-5">
       <monitor-forms @refresh="refresh" @remove="remove" />
     </a-col>
-    <a-col class="line mb-5" :xs="{ span: 24 }" :xxl="{ span: 12, offset: 1 }">
+    <a-col class="line mb-5" :md="{ span: 24 }" :lg="{ span: 22 }" :xl="{ span: 16 }" :xxl="{ span: 12, offset: 1 }">
       <monitor-header
         class="mb-4"
         :timeOpts="timeOpts"
@@ -59,6 +59,9 @@ export default {
       this.fetchAllData()
     },
     timeGroup () {
+      this.fetchAllData()
+    },
+    customTime () {
       this.fetchAllData()
     },
   },
