@@ -171,7 +171,7 @@ export default {
                 })
               },
               meta: () => {
-                if (this.isDomainMode) {
+                if (!this.isAdminMode) {
                   return {
                     validate: false,
                     tooltip: '权限不足',
