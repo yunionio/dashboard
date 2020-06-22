@@ -14,6 +14,7 @@ export default {
       path: '/explorer',
       meta: {
         label: 'Metrics Explorer',
+        t: 'dictionary.explorer',
       },
       component: Layout,
       children: [
