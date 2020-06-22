@@ -37,9 +37,9 @@ export default {
         filterOptions: {
           name: getNameFilter(),
           brand: getBrandFilter(),
-          tenant: getTenantFilter(),
+          projects: getTenantFilter(),
           status: getStatusFilter({ statusModule: 'bucket' }),
-          account: getAccountFilter(),
+          cloudaccount: getAccountFilter(),
           // region: {
           //   label: '区域',
           // },
