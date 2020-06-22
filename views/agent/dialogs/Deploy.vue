@@ -43,19 +43,16 @@
           <template slot="label">
             <span>
               部署类型
-              <a-tooltip placement="topLeft">
-                <template slot="title">
-                  <div>
+              <a-tooltip placement="topLeft" :overlayStyle="{'max-width': '400px'}">
+                 <div slot="title" style="width: 400px">
                     支持3种部署类型：
-                    <br />1.OneCloud平台下，与LB集群同一个可用区下的云主机
-                    <br />2.OneCloud平台下，与LB集群同一个可用区下的宿主机
-                    <br />3.非OneCloud平台下的其他主机，需要满足以下条件：
-                    <br />AnsibleServer能够访问目标机器
-                    <br />目标机器存在cloudroot用户
-                    <br />目标机器允许管理员pubkey免密登录
-                    <br />目标机器的cloudroot用户支持sudo免密
+                    <br />1. 支持选择本地IDC或私有云平台的运行状态的虚拟机。
+                    <br />2. 支持选择宿主机列表所有运行状态的宿主机。
+                    <br />3. 支持通过IP地址选择非OneCloud纳管的外部机器，需要满足以下要求：
+                    <div class="pl-2">a. 控制节点的Ansible Server可以访问目标机器</div>
+                    <div class="pl-2">b. 目标机器存在cloudroot用户且支持sudo免密登录</div>
+                    <div class="pl-2">c. 目标机器允许管理员通过公钥免密登录，通过climc sshkeypair-show --admin命令获取公钥</div>
                   </div>
-                </template>
                 <a-icon type="info-circle" />
               </a-tooltip>
             </span>
