@@ -50,7 +50,8 @@ export default {
     columns () {
       const columns = [
         {
-          field: 'vm_id',
+          field: 'color',
+          width: 100,
           slots: {
             default: ({ rowIndex }) => {
               const { series } = this.chartInstanceOption

@@ -226,6 +226,10 @@ export const tableColumnMaps = {
     title: 'IP',
     field: 'vm_ip',
   },
+  host_ip: {
+    title: `${i18n.t('dictionary.host')}IP`,
+    field: 'host_ip',
+  },
   cloudregion: {
     title: i18n.t('dictionary.cloudregion'),
     field: 'cloudregion',
