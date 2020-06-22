@@ -26,8 +26,8 @@ export const DBINSTANCE_STORAGE_TYPE = {
   HIGH: '高IO',
   ULTRAHIGHPRO: '超高IO（尊享版）',
   COMMON: 'COMMON',
-  cloud_essd2: 'ESSD PL 云盘2',
-  cloud_essd3: 'ESSD PL 云盘3',
+  cloud_essd2: 'ESSD PL2 云盘',
+  cloud_essd3: 'ESSD PL3 云盘',
 }
 
 export const ACCOUNT_PRIVILEGES = {
