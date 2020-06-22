@@ -8,7 +8,7 @@
           {{$t('common.text00060')}}
         </div>
       </a-alert>
-      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="action" />
+      <dialog-selected-tips :name="name" :count="params.data.length" :action="action" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
@@ -109,6 +109,9 @@ export default {
         value: k,
         text: this.$t('durations')[k],
       }))
+    },
+    name () {
+      return this.params.name || this.$t('dictionary.server')
     },
   },
   watch: {
