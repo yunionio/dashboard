@@ -1406,7 +1406,8 @@
     "cloudgroupcache": "权限组缓存",
     "cloudpolicy": "云权限",
     "commonalert": "报警策略",
-    "monitor_commonalert": "监控报警"
+    "monitor_commonalert": "监控报警",
+    "explorer": "监控查询"
   },
   "shareScope": {
     "system": "系统",
