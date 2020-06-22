@@ -319,8 +319,6 @@ export default {
       this.fetchOEM(val)
       this.fetchLicense(val)
       this.pushApiServerUrlAlert(val)
-      this.fetchGlobalSetting(val)
-      // this.fetchDictionary(val)
     },
     licenseMessage: {
       handler (val) {
@@ -338,30 +336,12 @@ export default {
     this.fetchOEM(this.userInfo.id)
     this.fetchLicense(this.userInfo.id)
     this.pushApiServerUrlAlert(this.userInfo.id)
-    this.fetchGlobalSetting()
-    //  this.fetchDictionary(this.userInfo.id)
   },
   methods: {
     checkWorkflow (val) {
       if (val) {
         this.$store.dispatch('app/fetchWorkflowStatistics')
         this.$store.dispatch('app/fetchWorkflowEnabledKeys')
-      }
-    },
-    async fetchGlobalSetting () {
-      try {
-        await this.$store.dispatch('globalSetting/getFetchGlobalSetting')
-      } catch (err) {
-        throw err
-      }
-    },
-    async fetchDictionary (val) {
-      if (val) {
-        try {
-          await this.$store.dispatch('app/fetchDictionary')
-        } catch (err) {
-          throw err
-        }
       }
     },
     fetchOEM (val) {
