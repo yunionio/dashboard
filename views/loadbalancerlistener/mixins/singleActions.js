@@ -1,6 +1,7 @@
 import * as R from 'ramda'
 import { LB_LISTENEER_ACTION_POLICIES } from '@Network/constants/lb'
 import { PROVIDER_MAP } from '@/constants'
+import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 
 export default {
   computed: {
@@ -80,42 +81,40 @@ export default {
         {
           label: '更多',
           actions: row => [
-            {
-              label: '启用',
-              permission: 'lb_loadbalancerlisteners_enable',
-              action: (row) => {
-                this.onManager('performAction', {
-                  id: row.id,
-                  managerArgs: {
-                    action: 'status',
-                    data: {
-                      status: 'enabled',
+            ...getEnabledSwitchActions(this, row, ['lb_loadbalancerlisteners_enable', 'lb_loadbalancerlisteners_disable'], {
+              metas: [
+                ({ status }) => {
+                  return this.getActionMeta(status !== 'enabled', row, 'enable')
+                },
+                ({ status }) => {
+                  return this.getActionMeta(status !== 'disabled', row, 'disable')
+                },
+              ],
+              actions: [
+                (row) => {
+                  this.onManager('performAction', {
+                    id: row.id,
+                    managerArgs: {
+                      action: 'status',
+                      data: {
+                        status: 'enabled',
+                      },
                     },
-                  },
-                })
-              },
-              meta: ({ status }) => {
-                return this.getActionMeta(status !== 'enabled', row, 'enable')
-              },
-            },
-            {
-              label: '禁用',
-              permission: 'lb_loadbalancerlisteners_disable',
-              action: (row) => {
-                this.onManager('performAction', {
-                  id: row.id,
-                  managerArgs: {
-                    action: 'status',
-                    data: {
-                      status: 'disabled',
+                  })
+                },
+                (row) => {
+                  this.onManager('performAction', {
+                    id: row.id,
+                    managerArgs: {
+                      action: 'status',
+                      data: {
+                        status: 'disabled',
+                      },
                     },
-                  },
-                })
-              },
-              meta: ({ status }) => {
-                return this.getActionMeta(status !== 'disabled', row, 'disable')
-              },
-            },
+                  })
+                },
+              ],
+            }),
             {
               label: '调整访问控制',
               permission: 'lb_loadbalancerlisteners_update',
