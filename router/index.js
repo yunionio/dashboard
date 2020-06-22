@@ -80,7 +80,7 @@ export default {
           meta: {
             label: '云账号',
             permission: 'cloudaccounts_list',
-            hidden: () => !hasSetupKey(['private', 'vmware', 'public', 'storage'], true),
+            hidden: () => !hasSetupKey(['private', 'vmware', 'public', 'storage']),
           },
           component: Layout,
           children: [
