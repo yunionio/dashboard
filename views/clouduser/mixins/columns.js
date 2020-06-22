@@ -26,6 +26,12 @@ export default {
           )
         },
       }),
+      getEnabledTableColumn({
+        field: 'is_console_login',
+        title: this.$t('cloudenv.clouduser_list_t5'),
+        minWidth: 100,
+      }),
+      getStatusTableColumn({ statusModule: 'clouduser' }),
       {
         field: 'password',
         title: this.$t('cloudenv.clouduser_list_t2'),
@@ -52,17 +58,11 @@ export default {
         field: 'owner_name',
         title: this.$t('cloudenv.clouduser_list_t4'),
       }),
+      getBrandTableColumn({ field: 'provider' }),
       getCopyWithContentTableColumn({
         field: 'cloudaccount',
         title: this.$t('common.text00108'),
       }),
-      getEnabledTableColumn({
-        field: 'is_console_login',
-        title: this.$t('cloudenv.clouduser_list_t5'),
-        minWidth: 100,
-      }),
-      getStatusTableColumn({ statusModule: 'clouduser' }),
-      getBrandTableColumn({ field: 'provider' }),
     ]
   },
 }
