@@ -37,7 +37,7 @@ export default {
               return `name.contains("${val}")`
             },
           },
-          account: getAccountFilter(),
+          cloudaccount: getAccountFilter(),
           vpc: {
             label: '所属VPC',
           },
