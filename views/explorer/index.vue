@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="Metrics Explorer" />
+    <page-header :title="$t('dictionary.explorer')" />
     <page-body>
       <monitor-index />
     </page-body>
