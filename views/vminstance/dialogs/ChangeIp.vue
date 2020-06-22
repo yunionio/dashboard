@@ -13,7 +13,7 @@
         <a-form-item label="IP子网" v-bind="formItemLayout" class="mb-0">
           <a-row :gutter="20">
             <a-col :span="14">
-              <a-form-item help="VMware平台暂不支持更改IP功能，此处修改仅仅修改界面展示IP，请根据实际情况操作">
+              <a-form-item :help="help">
                 <base-select
                   class="w-100"
                   v-decorator="decorators.network"
@@ -123,6 +123,12 @@ export default {
     columns () {
       const showFields = ['ifname', 'ip_addr', 'mac_addr']
       return this.params.columns.filter((item) => { return showFields.includes(item.field) })
+    },
+    help () {
+      if (this.params.hypervisor === HYPERVISORS_MAP.esxi.key) {
+        return 'VMware平台暂不支持更改IP功能，此处修改仅仅修改界面展示IP，请根据实际情况操作'
+      }
+      return ''
     },
   },
   methods: {

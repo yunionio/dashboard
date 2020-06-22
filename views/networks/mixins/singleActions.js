@@ -25,6 +25,7 @@ export default {
             columns: this.columns,
             zone: this.data.zone_id,
             resId: this.resId,
+            hypervisor: this.data.hypervisor,
             refresh: this.refresh,
           })
         },
