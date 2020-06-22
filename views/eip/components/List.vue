@@ -53,7 +53,7 @@ export default {
           },
           status: getStatusFilter('eip'),
           // tenant: getTenantFilter(), //后台暂时不支持项目筛选
-          account: getAccountFilter(),
+          cloudaccount: getAccountFilter(),
           charge_type: {
             label: '计费方式',
             dropdown: true,
