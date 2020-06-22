@@ -51,7 +51,7 @@ export default {
   watch: {
     proxyOpts (val) {
       if (val && val.length > 0) {
-        this.fc.setFieldsValue({ 'proxy_setting': val[0].id })
+        this.fc.setFieldsValue({ proxy_setting: val[0].id })
       }
     },
   },
