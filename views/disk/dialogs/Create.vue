@@ -263,6 +263,7 @@ export default {
         .then(({ data: { data } = { data: [] } }) => {
           try {
             this.storageOpts = this._translateStorageOps(data)
+            this.form.fc.setFieldsValue({ storage_id: '' })
             if (this.storageOpts.length > 0) {
               this.form.fc.setFieldsValue({ storage_id: this.storageOpts[0].value })
               this.__storageChange(this.storageOpts[0].value)
