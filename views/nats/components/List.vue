@@ -47,7 +47,7 @@ export default {
             },
           },
           status: getStatusFilter('nat'),
-          account: getAccountFilter(),
+          cloudaccount: getAccountFilter(),
           brand: getBrandFilter('network_manage_brands'),
           vpc: {
             label: '所属VPC',

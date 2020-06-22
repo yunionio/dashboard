@@ -45,7 +45,7 @@ export default {
             },
           },
           status: getStatusFilter('vpc'),
-          account: getAccountFilter(),
+          cloudaccount: getAccountFilter(),
           brand: getBrandFilter(),
           cidr_block: {
             label: '目标网段',
