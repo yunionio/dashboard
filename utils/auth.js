@@ -228,16 +228,15 @@ export function hasBrandsByEnv (envs) {
 }
 
 export function hasSetupKey (envs) {
-  const { guide = {} } = store.state
-  if (!guide || !guide.keys || (guide.keys && guide.keys.length === 0)) return true
+  const { globalSetting = {} } = store.state
+  if (!globalSetting || !globalSetting.value || !globalSetting.value.setupKeys || globalSetting.value.setupKeys.length === 0) return true
   const _envs = R.type(envs) === 'String' ? [envs] : envs
   if (!_envs.length) return true
-
-  const { keys } = guide
+  const { setupKeys } = globalSetting.value
   let f = false
   for (let i = 0; i < _envs.length; i++) {
     const env = _envs[i]
-    if (keys.indexOf(env) > -1) {
+    if (setupKeys.indexOf(env) > -1) {
       f = true
       break
     }
