@@ -4,10 +4,11 @@
       {{ type === 'host' ? '配置物理机IP' : '配置虚拟机IP' }}
     </a-divider>
     <a-alert v-if="noSuitableIps && noSuitableIps.length > 0" class="mb-3" type="warning" show-icon>
-      <template slot="message">
-        发现该域子网目前不包含该账号下的IP为
-          {{noSuitableIps.join(' | ')}}
-        的虚拟机，您需要新建X个包含上诉虚拟机的IP,否则您可能无法正常使用上述虚拟机
+      <template slot="message" v-if="type === 'host'">
+        {{noSuitableIps.lenth === 0 ? '恭喜已有网络全部满足,点击下一步即可' : `发现该域子网目前不包含该账号下的IP为${noSuitableIps.join(' 、 ')}的宿主机，您需要新建${noSuitableIps.length}个包含上述宿主机IP的子网，否则您无法使用或同步该宿主机下资源` }}
+      </template>
+      <template  slot="message" v-if="type === 'guest'">
+        发现该域子网目前不包含该账号下的IP为 {{noSuitableIps.join(' 、 ')}} 的虚拟机，您需要新建{{noSuitableIps.length}}个包含上述虚拟机的IP,否则您可能无法正常使用上述虚拟机
       </template>
     </a-alert>
     <a-form-item label="IP子网">
@@ -207,7 +208,6 @@ export default {
           const key = uuid()
           keys.push(key)
           this.netInit[key] = net
-          console.log(net)
         })
       } else {
         keys.push(uuid())

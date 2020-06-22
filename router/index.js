@@ -69,7 +69,7 @@ export default {
           meta: {
             label: '云账号',
             permission: 'cloudaccounts_list',
-            hidden: () => !hasSetupKey(['onestack', 'private', 'vmware', 'public', 'storage']),
+            hidden: () => !hasSetupKey(['private', 'vmware', 'public', 'storage']),
           },
           component: Layout,
           children: [
@@ -96,6 +96,7 @@ export default {
             label: '权限组',
             permission: 'cloudgroup_list',
             t: 'dictionary.cloudgroup',
+            hidden: () => !hasSetupKey(['aliyun', 'huawei', 'qcloud', 'aws', 'azure', 'google']),
           },
           component: Layout,
           children: [
@@ -111,7 +112,7 @@ export default {
           meta: {
             label: '代理',
             permission: 'proxysettings_list',
-            hidden: () => !hasSetupKey(['onestack', 'private', 'vmware', 'public', 'storage']),
+            hidden: () => !hasSetupKey(['private', 'vmware', 'public', 'storage']),
           },
           component: Layout,
           children: [
