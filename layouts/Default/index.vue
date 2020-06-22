@@ -3,8 +3,8 @@
     <template v-if="$store.state.auth.canRenderDefaultLayout">
       <navbar />
         <div class="app-content position-relative h-100">
-          <sidebar v-if="guideKeys.length > 0" :l2-menu-visible.sync="l2MenuVisible" />
-          <div :style="{marginLeft: !guideKeys.length ? 0 : '60px' }" id="app-page" class="app-page" :class="{ 'l2-menu-show': l2MenuVisible }">
+          <sidebar v-if="isShowMenu" :l2-menu-visible.sync="l2MenuVisible" />
+          <div :style="{marginLeft: !isShowMenu ? 0 : '60px' }" id="app-page" class="app-page" :class="{ 'l2-menu-show': l2MenuVisible }">
             <top-alert />
             <slot />
           </div>
@@ -36,8 +36,12 @@ export default {
     }
   },
   computed: {
-    guideKeys () {
-      return this.$store.state.guide.keys
+    isShowMenu () {
+      const { globalSetting } = this.$store.state
+      if (!globalSetting || (globalSetting && !globalSetting.value) || (globalSetting.value && !globalSetting.value.key)) {
+        return true
+      }
+      return globalSetting.value.key.length > 0
     },
   },
 }

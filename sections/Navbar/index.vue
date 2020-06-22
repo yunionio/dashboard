@@ -316,10 +316,11 @@ export default {
     },
     'userInfo.id' (val) {
       this.checkWorkflow(val)
-      this.fetchDictionary(val)
       this.fetchOEM(val)
       this.fetchLicense(val)
       this.pushApiServerUrlAlert(val)
+      this.fetchGlobalSetting(val)
+      // this.fetchDictionary(val)
     },
     licenseMessage: {
       handler (val) {
@@ -334,10 +335,11 @@ export default {
   },
   created () {
     this.checkWorkflow(this.userInfo.id)
-    this.fetchDictionary(this.userInfo.id)
     this.fetchOEM(this.userInfo.id)
     this.fetchLicense(this.userInfo.id)
     this.pushApiServerUrlAlert(this.userInfo.id)
+    this.fetchGlobalSetting()
+    //  this.fetchDictionary(this.userInfo.id)
   },
   methods: {
     checkWorkflow (val) {
@@ -346,13 +348,17 @@ export default {
         this.$store.dispatch('app/fetchWorkflowEnabledKeys')
       }
     },
+    async fetchGlobalSetting () {
+      try {
+        await this.$store.dispatch('globalSetting/getFetchGlobalSetting')
+      } catch (err) {
+        throw err
+      }
+    },
     async fetchDictionary (val) {
       if (val) {
         try {
-          const { data } = await this.$store.dispatch('app/fetchDictionary')
-          this.$store.dispatch('guide/updateKeys', {
-            keys: data.value.guideKeys || [],
-          })
+          await this.$store.dispatch('app/fetchDictionary')
         } catch (err) {
           throw err
         }
