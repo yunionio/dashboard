@@ -58,7 +58,7 @@ export default {
               }
             }),
           },
-          tenant: getTenantFilter(),
+          projects: getTenantFilter(),
         },
       }),
       exportDataOptions: {
