@@ -1,11 +1,11 @@
 <template>
   <div class="cloudaccount pt-2">
     <template v-for="(cloudaccounts, env) of types">
-      <div class="env-item-wrap my-5" v-if="guideKeys.indexOf(env) > -1" :key="env">
+      <div class="env-item-wrap my-5" v-if="isShowItem(env)" :key="env">
         <h2 class="mb-3">{{ envTitle[env] }}</h2>
         <div class="items d-flex flex-wrap">
           <template v-for="(item, cloudaccount) of cloudaccounts">
-            <div class="item d-flex p-2 mr-3 align-items-center" v-if="guideKeys.indexOf(item.provider.toLowerCase()) > -1" :class="{ active: currentItem.name === item.name }" :key="cloudaccount" @click="selectProvider(item)">
+            <div class="item d-flex p-2 mr-3 align-items-center" v-if="isShowItem(item.provider.toLowerCase())" :class="{ active: currentItem.name === item.name }" :key="cloudaccount" @click="selectProvider(item)">
               <img :src="item.logo" />
               <h5 class="flex-fill" v-if="showName(item)">{{ item.name }}</h5>
             </div>
@@ -34,14 +34,18 @@ export default {
     }
   },
   computed: {
-    guideKeys () {
-      return this.$store.state.guide.keys
+    globalSettingSetupKeys () {
+      const { globalSetting } = this.$store.state
+      if (globalSetting && globalSetting.value) {
+        return globalSetting.value.setupKeys
+      }
+      return undefined
     },
   },
   watch: {
-    guideKeys: {
-      handler () {
-        if (this.defaultItem()) {
+    globalSettingSetupKeys: {
+      handler (value) {
+        if (value && value.length > 0 && this.defaultItem()) {
           this.$emit('update:currentItem', this.defaultItem())
         }
       },
@@ -52,11 +56,15 @@ export default {
     defaultItem () {
       for (const env in this.types) {
         for (const provider in this.types[env]) {
-          if (this.guideKeys.indexOf(provider.toLowerCase()) > -1) {
+          if (this.globalSettingSetupKeys.indexOf(provider.toLowerCase()) > -1) {
             return this.types[env][provider]
           }
         }
       }
+    },
+    isShowItem (key) {
+      if (this.globalSettingSetupKeys === undefined) return true
+      return this.globalSettingSetupKeys.indexOf(key) > -1
     },
     selectProvider (item) {
       this.$emit('update:currentItem', item)

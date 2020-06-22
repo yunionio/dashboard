@@ -139,9 +139,10 @@ export default {
     width: 100%;
     margin-top: 30px;
     .thead{
+      background-color: #f8f8f9;
       td {
         padding: 5px;
-        font-weight: 600;
+        font-weight: 500;
       }
     }
     td {
