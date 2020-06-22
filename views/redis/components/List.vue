@@ -50,7 +50,7 @@ export default {
             ],
           },
           // account: getAccountFilter(),
-          tenant: getTenantFilter(),
+          projects: getTenantFilter(),
           billing_type: getFilter({
             field: 'billing_type',
             title: '计费方式',
