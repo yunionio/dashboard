@@ -13,7 +13,7 @@
 
 <script>
 import * as R from 'ramda'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
 import DefaultLayout from '@/layouts/Default'
 import FullScreenLayout from '@/layouts/FullScreen'
@@ -21,6 +21,7 @@ import DialogManager from '@/sections/DialogManager'
 import SidePageManager from '@/sections/SidePageManager'
 import WindowResizeListener from '@/sections/WindowResizeListener'
 import notificationListener from '@/utils/notificationListener'
+import i18n from '@/locales'
 
 export default {
   name: 'App',
@@ -38,6 +39,9 @@ export default {
   },
   computed: {
     ...mapGetters(['auth']),
+    ...mapState({
+      globalSetting: state => state.globalSetting,
+    }),
     layout () {
       return `${(this.$route.meta.layout || 'default')}-layout`
     },
@@ -49,6 +53,23 @@ export default {
           this.connect(val.session)
         }
       }
+    },
+    'globalSetting.value.dictionary': {
+      handler (val, oldVal) {
+        if (!R.equals(val, oldVal) && !R.isNil(val) && !R.isEmpty(val)) {
+          if (!R.isNil(val.en) && !R.isEmpty(val.en)) {
+            i18n.mergeLocaleMessage('en-US', {
+              dictionary: val.en,
+            })
+          }
+          if (!R.isNil(val.zh) && !R.isEmpty(val.zh)) {
+            i18n.mergeLocaleMessage('zh-CN', {
+              dictionary: val.zh,
+            })
+          }
+        }
+      },
+      immediate: true,
     },
   },
   created () {
