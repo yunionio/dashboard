@@ -165,6 +165,7 @@ export default {
                   columns: this.columns,
                   onManager: this.onManager,
                   refresh: this.refresh,
+                  name: this.$t('dictionary.elasticcaches'),
                 })
               },
               meta: () => {
