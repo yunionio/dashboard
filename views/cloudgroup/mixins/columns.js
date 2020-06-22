@@ -16,16 +16,6 @@ export default {
           )
         },
       }),
-      {
-        field: 'cloudpolicy_count',
-        title: this.$t('cloudenv.coludgroup_text005'),
-        width: 80,
-      },
-      {
-        field: 'clouduser_count',
-        title: this.$t('cloudenv.coludgroup_text006'),
-        width: 80,
-      },
       getStatusTableColumn({ statusModule: 'cloudgroup' }),
       getBrandTableColumn({ field: 'provider' }),
     ]
