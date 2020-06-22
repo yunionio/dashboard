@@ -115,7 +115,7 @@ export default {
     Monitor,
     {
       meta: {
-        label: '定时任务',
+        label: '常用工具',
       },
       submenus: [
         {
