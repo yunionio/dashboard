@@ -1808,24 +1808,26 @@
     "password": "手工输入"
   },
   "enabledSwitchMessage": {
-    "instancegroups.disable":"禁用后，虚拟机将无法加入到主机组",
+    "instancegroups.disable":"禁用后，虚拟机将无法加入到反亲和组。",
     "scalinggroups.enable": "启用后，伸缩组将按照伸缩策略创建或删除虚拟机。",
     "scalinggroups.disable": "禁用后，伸缩组下的所有伸缩策略都无法执行，但是仍可创建伸缩策略。",
     "scalingpolicies.enable": "启用后，伸缩策略将会根据策略设置创建或删除虚拟机。",
-    "scalingpolicies.disable": "启用后，禁用状态的伸缩策略不生效。",
+    "scalingpolicies.disable": "禁用后，禁用状态的伸缩策略不生效。",
     "serverskus.disable": "创建本地IDC或私有云虚拟机时无法选择禁用状态的套餐。",
-    "hosts.disable": "禁用状态的宿主机无法创建虚拟机，请确保至少有一个宿主机处于启用状态，否则将不显示虚拟机菜单。",
-    "physicalmachine.disable": "禁用状态的物理机无法创建裸金属，请确保至少有一个物理机处于启用状态，否则将不显示裸金属菜单。",
+    "hosts.disable": "禁用状态的宿主机不能用于创建虚拟机。",
+    "physicalmachine.disable": "禁用状态的物理机不能用于创建裸金属。",
     "devtool_templates.disable": "禁用后，运维模板无法关联虚拟机使用。",
     "dnsrecords.disable": "禁用后，域名服务将不再解析域名。",
     "storages.disable": "禁用后，无法使用块存储创建虚拟机磁盘。",
     "cloudaccounts.disable": "禁用后，无法使用云账号创建资源，已创建的资源也无法使用。",
     "identity_providers.disable": "禁用后，认证源将不再同步。但认证源下的用户仍可以正常登录系统。",
     "domains.disable": "高危操作，禁用后，域下所有用户都不能登录系统且不能在域下创建资源。",
-    "users.disable": "禁用后，用户被禁用后将无法登录系统。",
-    "contacts.disable": "禁用后，联系方式禁用后，用户将无法接收系统的消息通知。",
+    "users.disable": "禁用后，用户将无法登录系统",
+    "contacts.disable": "联系方式禁用后，用户将无法接收系统的消息通知。",
     "endpoints.enable": "启用后，不会立即生效，需要重新登录系统生效。",
-    "endpoints.disable": "禁用后，不会立即生效，需要重新登录系统生效"
+    "endpoints.disable": "禁用后，不会立即生效，需要重新登录系统生效",
+    "loadbalancers.disable": "禁用后，禁用状态的实例无法提供负载均衡服务。",
+    "loadbalancerlisteners.disable": "禁用状态的监听无法提供服务。"
   },
   "authCarouselOptions": [
     { "title": "统一", "messages": ["统一模版/API/调度/账号体系/监控/控制台/计费计量", "实现物理机/虚拟机/容器/公有云资源全面纳管"] },
