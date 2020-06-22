@@ -3,7 +3,6 @@ export default {
   loginLogo: (state, getters) => getters['app/loginLogo'],
   copyright: (state, getters) => getters['app/copyright'],
   workflow: state => state.app.workflow,
-  dictionary: state => state.app.dictionary,
   scope: state => state.auth.scope,
   auth: state => state.auth,
   userInfo: state => state.auth.info,

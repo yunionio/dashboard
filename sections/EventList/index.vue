@@ -77,6 +77,10 @@ export default {
           { label: '备注', key: 'notes' },
         ],
         limit: () => Object.keys(this.list.data).length,
+        export: 'custom',
+        exportType: {
+          custom: { label: '本页显示日志', key: 'custom' },
+        },
       },
       columns: [
         {

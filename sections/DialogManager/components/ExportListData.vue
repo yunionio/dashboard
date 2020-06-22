@@ -73,7 +73,7 @@ export default {
         type: [
           'type',
           {
-            initialValue: 'custom',
+            initialValue: this.params.options.type || 'custom',
           },
         ],
         selected: [
@@ -87,7 +87,7 @@ export default {
         ],
       },
       allExportKeys,
-      exportType: {
+      exportType: this.params.options.exportType || {
         all: { label: '全部', key: 'all' },
         custom: { label: '根据当前列表筛选条件', key: 'custom' },
       },
