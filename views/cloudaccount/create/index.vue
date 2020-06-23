@@ -18,7 +18,7 @@
       <div slot="right">
         <a-button class="mr-3" @click="perv" v-if="!isFirstStep">上一步</a-button>
         <a-button class="mr-3" type="primary" @click="next" :loading="loading">{{ nextStepTitle }}</a-button>
-        <test-button v-if="currentComponent === 'CreateCloudaccount' || currentComponent === 'BillForm'" class="mr-3" :post="testPost" />
+        <test-button v-if="currentComponent === 'create-cloudaccount' || currentComponent === 'bill-form'" class="mr-3" :post="testPost" />
         <a-button @click="cancel">{{currentComponent === 'bill-form' ? '跳 过': '取 消'}}</a-button>
       </div>
     </page-footer>
@@ -329,7 +329,7 @@ export default {
       this.setStep(prev)
     },
     testPost () {
-      if (this.currentComponent === 'CreateCloudaccount') {
+      if (this.currentComponent === 'create-cloudaccount') {
         return this.handleTest()
       }
       if (this.$refs.stepRef && this.$refs.stepRef.testPost) {
