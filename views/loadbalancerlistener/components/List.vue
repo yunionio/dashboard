@@ -26,10 +26,6 @@ export default {
       type: Object,
       required: true,
     },
-    lbDetail: {
-      type: Object,
-      required: true,
-    },
   },
   data () {
     return {

@@ -15,7 +15,6 @@
       :is="params.windowData.currentTab"
       :res-id="detailData.id"
       :data="detailData"
-      :lbDetail="detailData"
       :getParams="getParams"
       :on-manager="onManager"
       @side-page-trigger-handle="sidePageTriggerHandle"
