@@ -3,22 +3,22 @@
     <a-row :gutter="8">
       <a-col :span="8">
         <a-form-item :wrapperCol="{ span: 24 }">
-          <a-select label-in-value v-decorator="decorators.cloudprovider" @change="cloudproviderChange" placeholder="请选择账号" show-search :filterOption="filterOption">
-            <a-select-option v-for="item in cloudproviderOpts" :key="item.id">{{ item.name }}</a-select-option>
-          </a-select>
-        </a-form-item>
-      </a-col>
-      <a-col :span="8">
-        <a-form-item :wrapperCol="{ span: 24 }">
-          <a-select label-in-value v-decorator="decorators.cloudregion" @change="cloudregionChange" placeholder="请选择区域" show-search :filterOption="filterOption">
+          <a-select label-in-value v-decorator="decorators.cloudregion" @change="cloudregionChange" placeholder="请选择区域" show-search :filterOption="filterOption" :loading="loading.cloudregion">
             <a-select-option v-for="item in cloudregionOpts" :key="item.id">{{ item.name }}</a-select-option>
           </a-select>
         </a-form-item>
       </a-col>
       <a-col :span="8">
         <a-form-item :wrapperCol="{ span: 24 }">
-          <a-select label-in-value v-decorator="decorators.zone" @change="zoneChange" placeholder="请选择可用区" show-search :filterOption="filterOption">
+          <a-select label-in-value v-decorator="decorators.zone" @change="zoneChange" placeholder="请选择可用区" show-search :filterOption="filterOption" :loading="loading.zone">
             <a-select-option v-for="item in zoneOpts" :key="item.id">{{ item.name }}</a-select-option>
+          </a-select>
+        </a-form-item>
+      </a-col>
+      <a-col :span="8">
+        <a-form-item :wrapperCol="{ span: 24 }">
+          <a-select label-in-value v-decorator="decorators.cloudprovider" placeholder="请选择账号" show-search :filterOption="filterOption" :loading="loading.cloudprovider">
+            <a-select-option v-for="item in cloudproviderOpts" :key="item.id">{{ item.name }}</a-select-option>
           </a-select>
         </a-form-item>
       </a-col>
@@ -62,6 +62,11 @@ export default {
       cloudproviderOpts: [],
       cloudregionOpts: [],
       zoneOpts: [],
+      loading: {
+        cloudregion: false,
+        zone: false,
+        cloudprovider: false,
+      },
     }
   },
   computed: mapGetters(['isAdminMode', 'scope', 'userInfo']),
@@ -70,7 +75,7 @@ export default {
       deep: true,
       handler (val, oldVal) {
         if (!R.equals(val, oldVal)) {
-          this.fetchCloudprovider()
+          this.fetchRegion()
         }
       },
     },
@@ -78,7 +83,7 @@ export default {
       deep: true,
       handler (val, oldVal) {
         if (!R.equals(val, oldVal)) {
-          this.fetchCloudprovider()
+          this.fetchRegion()
         }
       },
     },
@@ -86,7 +91,7 @@ export default {
       deep: true,
       handler (val, oldVal) {
         if (!R.equals(val, oldVal)) {
-          this.fetchCloudprovider()
+          this.fetchRegion()
         }
       },
     },
@@ -95,11 +100,11 @@ export default {
     this.cloudporviderM = new Manager('cloudproviders', 'v2')
     this.zonesM = new Manager('zones', 'v2')
     this.cloudregionsM = new Manager('cloudregions', 'v2')
-    this.fetchCloudprovider()
+    this.fetchRegion()
   },
   methods: {
-    async fetchCloudprovider () {
-      const params = this.cloudproviderParams
+    async fetchCloudprovider (cloudregionObj) {
+      const params = { ...this.cloudproviderParams, cloudregion: cloudregionObj.key }
       if (this.isAdminMode && !params['project_domain']) {
         params['project_domain'] = this.userInfo.projectDomainId
         delete params.scope
@@ -108,20 +113,31 @@ export default {
         params['project_domain'] = this.userInfo.projectDomainId
         delete params.scope
       }
-      const { data: { data = [] } } = await this.cloudporviderM.list({ params })
-      this.cloudproviderOpts = data
-      if (data && data.length && this.form) {
-        const defaultItem = { key: data[0].id, label: data[0].name }
-        this.form.fc.setFieldsValue({
-          [this.decorators.cloudprovider[0]]: defaultItem,
-        })
-        this.cloudproviderChange(defaultItem)
+      // 清空可用区
+      this.cloudproviderOpts = []
+      this.form.fc.setFieldsValue({
+        [this.decorators.cloudprovider[0]]: { key: '', label: '' },
+      })
+      this.loading.cloudprovider = true
+      try {
+        const { data: { data = [] } } = await this.cloudporviderM.list({ params })
+        this.cloudproviderOpts = data
+        this.loading.cloudprovider = false
+        if (data && data.length && this.form) {
+          const defaultItem = { key: data[0].id, label: data[0].name }
+          this.form.fc.setFieldsValue({
+            [this.decorators.cloudprovider[0]]: defaultItem,
+          })
+        }
+      } catch (error) {
+        this.loading.cloudprovider = false
+        throw error
       }
     },
-    async fetchRegion (cloudproviderObj) {
+    async fetchRegion () {
       const params = {
         ...this.cloudregionParams,
-        manager: cloudproviderObj.key,
+        // manager: cloudproviderObj.key,
       }
       if (this.isAdminMode && !params['project_domain']) {
         params['project_domain'] = this.userInfo.projectDomainId
@@ -129,18 +145,26 @@ export default {
       }
       if (this.form) {
         this.form.fc.setFieldsValue({
-          [this.decorators.cloudregion[0]]: { key: '', label: '' },
-          [this.decorators.zone[0]]: { key: '', label: '' },
+          [this.decorators.cloudregion[0]]: undefined,
+          [this.decorators.zone[0]]: undefined,
+          [this.decorators.cloudprovider[0]]: undefined,
         })
       }
-      const { data: { data = [] } } = await this.cloudregionsM.list({ params })
-      this.cloudregionOpts = data
-      if (this.cloudregionOpts.length && this.form) {
-        const defaultItem = { key: data[0].id, label: data[0].name }
-        this.form.fc.setFieldsValue({
-          [this.decorators.cloudregion[0]]: defaultItem,
-        })
-        this.cloudregionChange(defaultItem)
+      this.loading.cloudregion = true
+      try {
+        const { data: { data = [] } } = await this.cloudregionsM.list({ params })
+        this.cloudregionOpts = data
+        this.loading.cloudregion = false
+        if (this.cloudregionOpts.length && this.form) {
+          const defaultItem = { key: data[0].id, label: data[0].name }
+          this.form.fc.setFieldsValue({
+            [this.decorators.cloudregion[0]]: defaultItem,
+          })
+          this.cloudregionChange(defaultItem)
+        }
+      } catch (error) {
+        this.loading.cloudregion = false
+        throw error
       }
     },
     async fetchZone (cloudregionObj) {
@@ -155,25 +179,28 @@ export default {
         [this.decorators.zone[0]]: { key: '', label: '' },
       })
       if (!params.cloudregion_id) return
-      const { data: { data = [] } } = await this.zonesM.list({ params })
-      this.zoneOpts = data
-      if (this.zoneOpts.length && this.form) {
-        const defaultItem = { key: data[0].id, label: data[0].name }
-        this.$emit('update:zoneObj', data[0])
-        this.form.fc.setFieldsValue({
-          [this.decorators.zone[0]]: defaultItem,
-        })
+      this.loading.zone = true
+      try {
+        const { data: { data = [] } } = await this.zonesM.list({ params })
+        this.zoneOpts = data
+        this.loading.zone = false
+        if (this.zoneOpts.length && this.form) {
+          const defaultItem = { key: data[0].id, label: data[0].name }
+          this.$emit('update:zoneObj', data[0])
+          this.form.fc.setFieldsValue({
+            [this.decorators.zone[0]]: defaultItem,
+          })
+        }
+      } catch (error) {
+        this.loading.zone = false
+        throw error
       }
-    },
-    cloudproviderChange (value) {
-      const cloudproviderObj = this.cloudproviderOpts.find(val => val.id === value.key)
-      this.$emit('update:cloudproviderObj', cloudproviderObj)
-      this.fetchRegion(value)
     },
     cloudregionChange (value) {
       const cloudregionObj = this.cloudregionOpts.find(val => val.id === value.key)
       this.$emit('update:cloudregionObj', cloudregionObj)
       this.fetchZone(value)
+      this.fetchCloudprovider(value)
     },
     zoneChange (value) {
       const zoneObj = this.zoneOpts.find(val => val.id === value.key)
