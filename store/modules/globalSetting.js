@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import { GLOBAL_SETTINGS } from '@/constants'
 import http from '@/utils/http'
 
 export default {
@@ -18,7 +19,7 @@ export default {
      */
     async createFetchGlobalSetting ({ commit }, payload = {}) {
       try {
-        const { data } = await http.post('/v1/rpc/parameters/global-settings', payload)
+        const { data } = await http.post('/v1/parameters', payload)
         commit('UPDATE', data)
         return Promise.resolve(data)
       } catch (err) {
@@ -55,7 +56,11 @@ export default {
           commit('UPDATE', data)
           return Promise.resolve(data)
         } else {
-          return dispatch('createFetchGlobalSetting', payload)
+          return dispatch('createFetchGlobalSetting', {
+            service: 'yunionagent',
+            name: GLOBAL_SETTINGS,
+            value: payload,
+          })
         }
       } catch (err) {
         throw err
