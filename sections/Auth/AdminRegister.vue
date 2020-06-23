@@ -66,9 +66,11 @@ export default {
       rules: {
         account_name: [
           { required: true, message: this.$t('auth.register.account_name.validate') },
+          { validator: this.$validate('domainAccount') },
         ],
         account_password: [
           { required: true, message: this.$t('auth.register.account_password.validate') },
+          { validator: this.$validate('domainPassword') },
         ],
         company: [
           { required: true, message: this.$t('auth.register.company.validate') },
