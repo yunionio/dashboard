@@ -146,7 +146,7 @@ export function getEnabledSwitchActions (vm, row, permissions = [], params = {})
       resourceName,
       vm,
       data,
-      resource,
+      resource: vm.resource || resource,
       onManager: vm.onManager,
       refresh: vm.refresh,
       columns: vm.columns,
