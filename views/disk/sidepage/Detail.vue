@@ -37,7 +37,7 @@ export default {
           field: 'disk_size',
           title: '容量',
           formatter: ({ cellValue }) => {
-            return sizestr(cellValue, 'M', 1024)
+            return cellValue ? sizestr(cellValue, 'M', 1024) : '-'
           },
         },
         {
@@ -51,6 +51,9 @@ export default {
         {
           field: 'disk_format',
           title: '格式',
+          formatter: ({ cellValue }) => {
+            return cellValue || '-'
+          },
         },
         {
           field: 'medium_type',
