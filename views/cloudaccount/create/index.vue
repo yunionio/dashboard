@@ -212,6 +212,8 @@ export default {
         promises.push(new Promise((resolve, reject) => {
           dta.server_type = 'baremetal'
           dta.wire = wire.id
+          dta.generate_name = dta.name
+          delete dta.name
           this.networksM.create({
             data: dta,
             params: { $t: getRequestT() },
@@ -229,6 +231,8 @@ export default {
           promises.push(new Promise((resolve, reject) => {
             dta.server_type = 'guest'
             dta.wire = wire.id
+            dta.generate_name = dta.name
+            delete dta.name
             this.networksM.create({
               data: dta,
               params: { $t: getRequestT() },
