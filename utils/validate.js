@@ -210,6 +210,14 @@ export const REGEXP = {
     regexp: /^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$/,
     message: i18n.t('validator.k8sName'),
   },
+  domainAccount: {
+    regexp: /^[a-z][a-z0-9]{5,11}/,
+    message: i18n.t('validator.domainAccount'),
+  },
+  domainPassword: {
+    regexp: /[a-zA-Z0-9_@#]{6,64}/,
+    message: i18n.t('validator.domainPassword'),
+  },
 }
 
 /**
