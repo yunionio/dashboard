@@ -19,4 +19,5 @@ export default {
   l3PermissionEnable: (state, getters) => getters['auth/l3PermissionEnable'],
   currentScopeResource: (state, getters) => getters['auth/currentScopeResource'],
   isSidepageOpen: (state, getters) => getters['sidePage/isSidepageOpen'],
+  userConfigInfo: (state, getters) => state.userConfig.info,
 }
