@@ -130,7 +130,7 @@ export default {
                   data: this.list.selectedItems,
                   columns: this.columns,
                   list: this.list,
-                  resId: me.params.resId,
+                  resId: me.getParams.storage,
                 })
               },
               meta: () => {
@@ -151,7 +151,7 @@ export default {
                   data: [row],
                   columns: this.columns,
                   list: this.list,
-                  resId: me.params.resId,
+                  resId: me.getParams.storage,
                 })
               },
               meta: () => {
