@@ -1876,6 +1876,19 @@
       "description": "当用户请求的网址资源临时改变了位置，可以使用临时重定向，307可以保持请求方法不变，如POST请求仍旧重定向为POST请求。"
     }
   },
+  "schedulerTypeOpts": {
+    "rr": "轮询(RR)",
+    "wrr": "加权轮询(WRR)",
+    "wlc": "加权最小连接数(WLC)",
+    "sch": "源IP一致性哈希(SCH)"
+  },
+  "listenerProxyOpts": {
+    "off": "关闭",
+    "v1": "V1",
+    "v2": "V2",
+    "v2-ssl": "V2-SSL",
+    "v2-ssl-cn": "V2-SSL-CN"
+  },
   "common.batchAction": "批量操作",
   "common.action": "操作",
   "common.ok": "确定",
