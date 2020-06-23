@@ -21,6 +21,7 @@
       :data="detailData"
       :resource="resource"
       :on-manager="onManager"
+      :refresh="refresh"
       @refresh="refresh"
       :list="params.list"
       :getParams="getParams"
@@ -30,13 +31,13 @@
 </template>
 
 <script>
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
+import Detail from './Detail'
 import DiskList from '@Compute/views/disk/components/List'
 import HostList from '@Compute/views/host/components/List'
 import DiskRecoveryList from '@Compute/views/disk-recovery/components/List'
 import CachedImages from '@Storage/views/blockstorage/sidepage/CachedImages'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
-import Detail from './Detail'
 import { getStatusTableColumn, getCopyWithContentTableColumn, getProjectTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
@@ -129,7 +130,7 @@ export default {
                   data: this.list.selectedItems,
                   columns: this.columns,
                   list: this.list,
-                  resId: me.params.resId,
+                  resId: me.getParams.storage,
                 })
               },
               meta: () => {
@@ -150,7 +151,7 @@ export default {
                   data: [row],
                   columns: this.columns,
                   list: this.list,
-                  resId: me.params.resId,
+                  resId: me.getParams.storage,
                 })
               },
               meta: () => {
