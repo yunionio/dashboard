@@ -88,7 +88,6 @@ export default {
         </tr>
       )
     }
-    console.log(this.listData)
     const Tbody = () => {
       let index = 0
       const trs = this.listData.map(rows => {
