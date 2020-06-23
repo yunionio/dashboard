@@ -1,8 +1,8 @@
 <template>
-  <a-popconfirm placement="bottom" @confirm="submit" @cancel="cancel" v-model="visible">
+  <a-popconfirm placement="bottom" overlayClassName="custom-date-time" @confirm="submit" @cancel="cancel" v-model="visible">
     <template v-slot:icon><i /></template>
     <template v-slot:title>
-      <a-form-model ref="ruleForm" :model="formData" :rules="rules" v-bind="layout">
+      <a-form-model hideRequiredMark ref="ruleForm" :model="formData" :rules="rules" v-bind="layout">
         <a-form-model-item :label="$t('common.text00119')" prop="startValue">
           <a-date-picker
             v-model="formData.startValue"
@@ -52,8 +52,8 @@ export default {
       startOpen: false,
       endOpen: false,
       layout: {
-        labelCol: { span: 8 },
-        wrapperCol: { span: 16 },
+        labelCol: { span: 6 },
+        wrapperCol: { span: 18 },
       },
       rules: {
         startValue: [
