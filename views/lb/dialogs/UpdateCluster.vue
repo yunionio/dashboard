@@ -89,6 +89,7 @@ export default {
             data: values,
           },
         })
+        this.params.refresh()
         this.cancelDialog()
       } catch (err) {
         throw err

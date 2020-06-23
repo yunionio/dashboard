@@ -92,6 +92,7 @@ export default {
       try {
         const values = await this.form.fc.validateFields()
         await this.doCreate(values)
+        this.params.refresh()
         this.loading = false
         this.cancelDialog()
       } catch (error) {
