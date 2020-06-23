@@ -55,7 +55,7 @@ export default {
       loading: false,
       isRedirect: false,
       form: {
-        fc: this.$form.createForm(this),
+        fc: this.$form.createForm(this, { onValuesChange: this.onValuesChange }),
       },
       decorators: {
         backend_group: [
@@ -108,6 +108,12 @@ export default {
       return params
     },
   },
+  created () {
+    this.form.fc.getFieldDecorator('listener_type', {
+      preserve: true,
+      initialValue: this.params.lbListenerData.listener_type,
+    })
+  },
   mounted () {
     this.backfill()
   },
@@ -138,6 +144,14 @@ export default {
         }
       }
     },
+    async onValuesChange (props, values) {
+      await this.$nextTick()
+      const redirectKeys = ['redirect', 'redirect_scheme', 'redirect_host', 'redirect_path']
+      if (redirectKeys.indexOf(Object.keys(values)[0]) > -1) {
+        this.form.fc.resetFields(['check'])
+        this.form.fc.validateFields(['check'])
+      }
+    },
     handleRedirectChange (bool) {
       this.isRedirect = bool
     },
@@ -146,6 +160,9 @@ export default {
       try {
         const values = await this.form.fc.validateFields()
         values.redirect = values.redirect ? 'raw' : 'off'
+        if (!values.redirect_host) {
+          delete values.redirect_host
+        }
         await this.params.onManager('update', {
           id: this.params.data[0].id,
           managerArgs: {

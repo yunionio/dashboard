@@ -23,7 +23,7 @@
       <template v-else>
         <a-button @click="prev" v-if="!isFirstStep" class="mr-2">上一步</a-button>
         <a-button type="primary" class="mr-2" @click="next" :loading="isUpdate ? false : loading" v-if="!isLastStep">{{ nextStepTitle }}</a-button>
-        <a-button type="primary" class="mr-2" v-if="isLastStep" @click="update" :loading="loading">确定</a-button>
+        <a-button type="primary" class="mr-2" v-if="isLastStep" @click="isUpdate ? update() : validateForm()" :loading="loading">确定</a-button>
       </template>
       <a-button @click="cancel">取消</a-button>
     </div>
@@ -181,6 +181,7 @@ export default {
       }
     },
     async create (data) {
+      console.log(data)
       this.loading = true
       try {
         await this.params.onManager('create', {

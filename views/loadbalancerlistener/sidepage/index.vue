@@ -56,6 +56,9 @@ export default {
         { label: '后端服务器', key: 'loadbalancerbackend-list' },
         { label: '操作日志', key: 'event-drawer' },
       ]
+      if (this.detailData.redirect === 'raw') {
+        rules.splice(1, 1)
+      }
       if (this.params.options.rowData.listener_type === 'http' || this.params.options.rowData.listener_type === 'https') {
         rules.splice(1, 0, ruleItem)
       }

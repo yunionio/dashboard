@@ -104,7 +104,7 @@ export default {
         v1: 'V1',
         v2: 'V2',
         'v2-ssl': 'V2-SSL',
-        'v2-ssl-on': 'V2-SSL-CN',
+        'v2-ssl-cn': 'V2-SSL-CN',
       },
     }
   },

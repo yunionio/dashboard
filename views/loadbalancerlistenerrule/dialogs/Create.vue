@@ -196,6 +196,9 @@ export default {
       try {
         const values = await this.form.fc.validateFields()
         values.redirect = values.redirect ? 'raw' : 'off'
+        if (!values.redirect_host) {
+          delete values.redirect_host
+        }
         await this.doCreate(values)
         this.loading = false
         this.cancelDialog()
