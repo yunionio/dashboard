@@ -7,9 +7,11 @@
 </template>
 
 <script>
+import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'AgentDetail',
+  mixins: [WindowsMixin],
   props: {
     data: {
       type: Object,
@@ -25,6 +27,7 @@ export default {
       return this.$moment(cellValue).format('YYYY年MM月DD日 HH:mm:ss')
     }
     return {
+      deploymentServer: {},
       cmOptions: {
         tabSize: 2,
         styleActiveLine: true,
@@ -64,8 +67,14 @@ export default {
         {
           field: 'deployment',
           title: '部署机器',
-          formatter: ({ row }) => {
-            return (row.deployment && row.deployment.host) || '-'
+          slots: {
+            default: ({ row }, h) => {
+              if (this.deploymentServer.id) {
+                const name = this.deploymentServer.type === 'server' ? 'VmInstanceSidePage' : 'HostSidePage'
+                return [<side-page-trigger name={name} id={this.deploymentServer.id} vm={this}>{ this.deploymentServer.name }</side-page-trigger>]
+              }
+              return '-'
+            },
           },
         },
       ],
@@ -184,7 +193,7 @@ export default {
             },
             {
               field: 'params.haproxy.tune_http_maxhdr',
-              title: '请求中最大http头数量：',
+              title: '请求中最大http头数',
             },
             {
               field: 'params.haproxy_conf_tmpl',
@@ -255,6 +264,28 @@ export default {
         },
       ],
     }
+  },
+  created () {
+    this.queryDeploymentHost(this.data.deployment)
+  },
+  methods: {
+    async queryDeploymentHost (deployment) {
+      if (!deployment || !deployment.host) return '-'
+      const [type, id] = deployment.host.split(':')
+      try {
+        if (type === 'server') {
+          const { data } = await new this.$Manager('servers').get({ id })
+          this.deploymentServer = data
+        }
+        if (type === 'host') {
+          const { data } = await new this.$Manager('hosts').get({ id })
+          this.deploymentServer = data
+        }
+        this.deploymentServer.type = type
+      } catch (err) {
+        throw err
+      }
+    },
   },
 }
 </script>

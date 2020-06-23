@@ -51,6 +51,7 @@ export default {
                 vm: this,
                 data: this.list.selectedItems,
                 columns: this.columns,
+                refresh: this.refresh,
                 onManager: this.onManager,
                 lbDetail: this.data,
               })
@@ -79,7 +80,7 @@ export default {
           permission: 'lb_loadbalancerlisteners_create',
           action: () => {
             this.createDialog('LbListenerFormDialog', {
-              lbDetail: this.data,
+              lbDetail: this.lbDetail,
               columns: this.columns,
               onManager: this.onManager,
             })
@@ -126,6 +127,7 @@ export default {
         rowData: row,
       }, {
         list: this.list,
+        lbDetail: this.lbDetail,
       })
     },
   },

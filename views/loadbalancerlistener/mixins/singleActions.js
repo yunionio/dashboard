@@ -18,6 +18,7 @@ export default {
                 data: [obj],
                 columns: this.columns,
                 onManager: this.onManager,
+                refresh: this.refresh,
                 lbDetail: this.data,
               })
             },
@@ -42,7 +43,7 @@ export default {
           action: obj => {
             this.createDialog('LbListenerFormDialog', {
               listenerData: obj,
-              lbDetail: this.data,
+              lbDetail: this.params ? this.params.lbDetail : this.lbDetail,
               columns: this.columns,
               onManager: this.onManager,
             })

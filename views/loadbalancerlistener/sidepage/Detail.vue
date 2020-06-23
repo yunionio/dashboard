@@ -61,6 +61,13 @@ export default {
           items: [
             {
               field: 'sticky_session',
+              title: '调度算法',
+              formatter: ({ row }) => {
+                return this.$t('schedulerTypeOpts')[row.scheduler]
+              },
+            },
+            {
+              field: 'sticky_session',
               title: '会话保持',
               formatter: ({ row }) => {
                 if (row.sticky_session === 'off') return '关闭'
@@ -74,6 +81,13 @@ export default {
                 if (row.sticky_session_type === 'insert') return '植入 Cookie'
                 else if (row.sticky_session_type === 'server') return '重写 Cookie'
                 else return '-'
+              },
+            },
+            {
+              field: 'sticky_session_cookie_timeout',
+              title: '会话超时时间',
+              formatter: ({ row }) => {
+                return `${row.sticky_session_cookie_timeout} 秒`
               },
             },
             {
@@ -98,13 +112,6 @@ export default {
               },
             }),
             {
-              field: 'sticky_session_cookie_timeout',
-              title: '会话超时时间',
-              formatter: ({ row }) => {
-                return `${row.sticky_session_cookie_timeout} 秒`
-              },
-            },
-            {
               field: 'sticky_session_cookie',
               title: 'Cookie名称',
             },
@@ -119,7 +126,10 @@ export default {
               field: 'xforwarded_for',
               title: '获取客户端真实IP',
               formatter: ({ row }) => {
-                return row.xforwarded_for ? '开启' : '关闭'
+                if (row.xforwarded_for || row.send_proxy !== 'of') {
+                  return '开启'
+                }
+                return '关闭'
               },
             },
             {
@@ -147,6 +157,18 @@ export default {
               field: 'client_request_timeout',
               title: '连接请求超时时间',
               formatter: ({ row }) => row.client_request_timeout + ' 秒',
+            },
+            {
+              field: 'send_proxy',
+              title: '设置PROXY协议',
+              formatter: ({ row }) => {
+                return this.$t('listenerProxyOpts')[row.send_proxy]
+              },
+            },
+            {
+              field: 'client_request_timeout',
+              title: '附加HTTP头部字段',
+              formatter: ({ row }) => row.xforwarded_for ? '通过X-Forwarded-For字段获取客户端真实IP' : '-',
             },
           ],
         },

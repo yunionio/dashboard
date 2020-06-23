@@ -82,7 +82,7 @@
                  <a-form-item label="记录Normal日志">
                   <a-switch v-decorator="decorators.haproxy_log_normal" />
                 </a-form-item>
-                <a-form-item label="请求中最大http头数量">
+                <a-form-item label="请求中最大http头数">
                   <a-input v-decorator="decorators.haproxy_tune_http_maxhdr" extra="为空则表示为默认值101" type="Number" />
                 </a-form-item>
                 <a-form-item label="配置模板">
@@ -269,7 +269,7 @@ export default {
         haproxy_tune_http_maxhdr: [
           'haproxy.tune_http_maxhdr',
           {
-            initialValue: 1,
+            initialValue: 101,
             normalize: v => Number(v),
             rules: [
               { type: 'integer', min: 1, max: 32767, message: '请输入范围在 1-32767 之间', trigger: 'blur' },
