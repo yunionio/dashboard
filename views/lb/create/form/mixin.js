@@ -165,10 +165,13 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isAdminMode', 'scope', 'isDomainMode', 'userInfo']),
+    ...mapGetters(['isAdminMode', 'scope', 'isDomainMode', 'userInfo', 'l3PermissionEnable']),
     scopeParams () {
       const params = {}
       if (this.isAdminMode) {
+        if (!this.l3PermissionEnable) {
+          params['project_domain'] = 'default'
+        }
         if (R.is(String, this.domain)) {
           params.project_domain = this.domain
         }
