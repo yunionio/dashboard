@@ -41,9 +41,9 @@
             <a-input-password v-decorator="decorators.keySecret" :placeholder="field.placeholder.s" type="password" />
           </a-form-item>
          </div>
-        <a-form-item label="账单密钥" v-if="isAzure">
+        <!-- <a-form-item label="账单密钥" v-if="isAzure">
           <a-textarea v-decorator="decorators.balanceKey" rows="4" />
-        </a-form-item>
+        </a-form-item> -->
         <a-form-item label="项目" v-if="isOpenStack">
           <a-input v-decorator="decorators.project_name" placeholder="请输入OpenStack的项目，如：admin" />
         </a-form-item>
