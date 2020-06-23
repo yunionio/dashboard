@@ -33,14 +33,18 @@ export default {
     },
     lineChartOptions: {
       type: Object,
-      default: () => ({}),
+      default: () => ({
+        legend: {
+          show: false,
+        },
+      }),
     },
   },
   data () {
     return {
       lineChartColumns: [],
       lineChartRows: [],
-      chartInstanceOption: { gradientColor: [] },
+      chartInstanceOption: {},
     }
   },
   computed: {
@@ -51,12 +55,12 @@ export default {
       const columns = [
         {
           field: 'color',
-          width: 100,
+          width: 50,
           slots: {
             default: ({ rowIndex }) => {
-              const { series } = this.chartInstanceOption
+              const { series, color } = this.chartInstanceOption
               const colors = series.map(val => val.itemStyle.color)
-              const c = colors[rowIndex]
+              const c = colors[rowIndex] || color[0]
               return [<div class="mx-auto" style={{ width: '10px', height: '10px', 'border-radius': '50%', background: c }} />]
             },
           },

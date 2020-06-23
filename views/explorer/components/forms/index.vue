@@ -11,6 +11,7 @@
       <monitor-form
         :showDelete="formList.length > 1"
         :formItemLayout="formItemLayout"
+        @resetChart="() => resetChart(i)"
         @paramsChange="val => paramsChange(val, i)"
         @remove="() => remove(i)" />
     </div>
@@ -76,10 +77,9 @@ export default {
       this.formList.splice(i, 1)
       this.$emit('remove', i)
     },
+    resetChart (i) {
+      this.$emit('resetChart', i)
+    },
   },
 }
 </script>
-
-<style>
-
-</style>
