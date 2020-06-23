@@ -51,6 +51,11 @@ export default {
           _listData.push(items)
           return _listData
         }
+        // 最后一个
+        if (i === _.length - 1) {
+          _listData.push(items)
+          break
+        }
         if (j >= 1) {
           _listData.push(items)
           items = []
@@ -83,6 +88,7 @@ export default {
         </tr>
       )
     }
+    console.log(this.listData)
     const Tbody = () => {
       let index = 0
       const trs = this.listData.map(rows => {
@@ -99,7 +105,7 @@ export default {
               Object.keys(o).forEach(k => {
                 if (k === 'ips') {
                   tds.push(
-                    <td>{ o.ips.map(ip => ip) }</td>,
+                    <td>{ o.ips && o.ips.length > 0 ? o.ips.map(ip => ip) : '-'}</td>,
                   )
                 } else {
                   tds.push(
