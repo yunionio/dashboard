@@ -422,7 +422,8 @@ export const getPublicScopeTableColumn = ({
     width: 110,
     slots: {
       default: ({ row }, h) => {
-        if (row.is_public === false || row.is_public === 'false') return i18n.t('shareDesc.none')
+        const i18nPrefix = store.getters.l3PermissionEnable ? 'shareDesc' : 'shareDescPrimary'
+        if (row.is_public === false || row.is_public === 'false') return i18n.t(`${i18nPrefix}.none`)
         const { public_scope: publicScope, shared_projects: sharedProjects, shared_domains: sharedDomains } = row
         if (publicScope === 'project' && sharedProjects && sharedProjects.length > 0) {
           return [
@@ -455,7 +456,7 @@ export const getPublicScopeTableColumn = ({
                   )
                 },
               })
-            }}>{ i18n.t('shareDesc.project') }</a>,
+            }}>{ i18n.t(`${i18nPrefix}.project`) }</a>,
           ]
         }
         if (publicScope === 'domain') {
@@ -486,13 +487,13 @@ export const getPublicScopeTableColumn = ({
                     )
                   },
                 })
-              }}>{ i18n.t('shareDesc.domain') }</a>,
+              }}>{ i18n.t(`${i18nPrefix}.domain`) }</a>,
             ]
           }
-          return i18n.t('shareDesc.projectAll')
+          return i18n.t(`${i18nPrefix}.projectAll`)
         }
         if (publicScope === 'system') {
-          return i18n.t('shareDesc.domainAll')
+          return i18n.t(`${i18nPrefix}.domainAll`)
         }
         return '-'
       },

@@ -382,18 +382,18 @@ export default {
     // 登录后所做的后续处理
     async onAfterLogin ({ commit, state, dispatch, getters }, payload) {
       // 如果 data 不为空，则是 server 返回的首次绑定秘钥的二维码，存入 storage，以免刷新后重新登录丢失的问题
-      if (payload.data) {
+      if (payload) {
         await commit('UPDATE_HISTORY_USERS', {
           key: getters.currentHistoryUserKey,
           value: {
-            secret: payload.data,
+            secret: payload,
           },
         })
       }
       // 如果获取到有效的二维码且开启了totp则进入首次初始化页面
       if (
         (
-          payload.data ||
+          payload ||
           _.get(state.historyUsers, `${getters.currentHistoryUserKey}.secret`)
         ) && state.auth.totp_on
       ) {

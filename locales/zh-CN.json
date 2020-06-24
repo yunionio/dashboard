@@ -1613,12 +1613,19 @@
     "delete": "删除",
     "perform": "执行操作"
   },
-  "shareDesc": {
+  "shareDescPrimary": {
     "none": "不共享",
-    "project": "@:dictionary.project共享-部分",
-    "projectAll": "@:dictionary.project共享-全部",
+    "project": "多@:dictionary.project共享",
+    "projectAll": "全局共享",
     "domain": "@:dictionary.domain共享-部分",
     "domainAll": "@:dictionary.domain共享-全部"
+  },
+  "shareDesc": {
+    "none": "私有",
+    "project": "本@:dictionary.domain内多@:dictionary.project共享",
+    "projectAll": "本@:dictionary.domain共享",
+    "domain": "多@:dictionary.domain共享",
+    "domainAll": "全局共享"
   },
   "cloudAccountShareDesc": {
     "none": "不共享",
