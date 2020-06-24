@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import * as R from 'ramda'
 import storage from '@/utils/storage'
-import http from '@/utils/http'
 
 const storageRecentMenusKey = '__oc_recent_menus__'
 
@@ -17,7 +16,6 @@ export default {
       namespace: undefined,
     },
     lbRedirected: {},
-    isShowSystemResource: false,
   },
   mutations: {
     UPDATE_OBJECT (state, { name, data }) {
@@ -38,9 +36,6 @@ export default {
     },
     SET_K8S_NAMESPACE (state, payload) {
       state.k8s.namespace = payload
-    },
-    SET_IS_SHOW_SYSTEM_RESOURCE (state, payload) {
-      state.isShowSystemResource = payload
     },
   },
   actions: {
@@ -66,44 +61,6 @@ export default {
       }
       storage.set(storageRecentMenusKey, menus)
       commit('SET_RECENT_MENUS', menus)
-    },
-    async queryIsShowSystemResource ({ commit, state }, payload) {
-      try {
-        const res = await http.get('/v1/parameters/show-system-resource')
-        const val = (res.data && res.data.value)
-        await commit('SET_IS_SHOW_SYSTEM_RESOURCE', val)
-        return res.data
-      } catch (error) {
-        throw error
-      }
-    },
-    async createIsShowSystemResource ({ commit }, payload) {
-      try {
-        const res = await http.post('/v1/parameters/show-system-resource', payload)
-        const val = (res.data && res.data.value)
-        await commit('SET_IS_SHOW_SYSTEM_RESOURCE', val)
-        return Promise.resolve(val)
-      } catch (error) {
-        throw error
-      }
-    },
-    async setIsShowSystemResource ({ state, commit, dispatch }, payload = {}) {
-      try {
-        const { id, ...rest } = payload
-        if (id) {
-          const res = await http.put(`/v1/parameters/${id}`, rest)
-          const val = (res.data && res.data.value)
-          await commit('SET_IS_SHOW_SYSTEM_RESOURCE', val)
-          return Promise.resolve(val)
-        } else {
-          return dispatch('createIsShowSystemResource', {
-            name: 'show-system-resource',
-            value: payload,
-          })
-        }
-      } catch (err) {
-        throw err
-      }
     },
   },
 }
