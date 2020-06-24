@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">调整调度标签</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.host')" :count="params.data.length" action="调整调度标签" />
+      <dialog-selected-tips :name="params.name || $t('dictionary.host')" :count="params.data.length" action="调整调度标签" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 2)" />
        <a-form
         :form="form.fc">
