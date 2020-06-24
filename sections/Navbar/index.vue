@@ -1,8 +1,8 @@
 <template>
   <div class="navbar-wrap d-flex align-items-center">
-    <template v-if="authInfoLoaded">
-      <a-tooltip title="全局导航" placement="right">
-        <div class="d-flex align-items-center navbar-item-trigger justify-content-center global-map-btn ml-1" @click.stop.prevent="map.visible = !map.visible">
+    <template v-if="authInfoLoaded && isShowMenu">
+      <a-tooltip title="导航菜单" placement="bottomRight">
+        <div class="d-flex align-items-center navbar-item-trigger justify-content-center global-map-btn ml-1" @click.stop.prevent="handleToggleSidebar">
           <icon type="menu" style="font-size: 24px;" />
         </div>
       </a-tooltip>
@@ -108,26 +108,14 @@
     <help-popover class="navbar-item" v-if="showHelp" />
     <!-- 用户 -->
     <slot name="userPopover" />
-    <!-- 全局导航 -->
-    <a-drawer
-      width="50%"
-      placement="left"
-      destroyOnClose
-      :visible="map.visible"
-      :zIndex="98"
-      :wrapStyle="{ transition: 'none', '-webkit-transition': 'none' }"
-      :bodyStyle="{ padding: '0px', paddingTop: '60px', position: 'releative', height: '100%', width: '100%' }"
-      @close="handleMapClose">
-      <div class="w-100 h-100 overflow-auto"><one-cloud-map @click="handleMapClose" /></div>
-    </a-drawer>
   </div>
 </template>
 
 <script>
+import get from 'lodash/get'
 import * as R from 'ramda'
 import Cookies from 'js-cookie'
 import { mapGetters, mapState } from 'vuex'
-import OneCloudMap from '../OneCloudMap'
 import NotifyPopover from './components/NotifyPopover'
 import WorkOrderPopover from './components/WorkOrderPopover'
 import HelpPopover from './components/HelpPopover'
@@ -143,7 +131,6 @@ export default {
     WorkOrderPopover,
     HelpPopover,
     GlobalSearch,
-    OneCloudMap,
   },
   mixins: [WindowsMixin],
   props: {
@@ -162,9 +149,6 @@ export default {
   },
   data () {
     return {
-      map: {
-        visible: false,
-      },
       reLogging: false,
       viewChangePopoverVisible: false,
       selectPid: '',
@@ -296,6 +280,13 @@ export default {
     itsmServiceEnable () {
       const itsm = (this.userInfo.services || []).find(v => v.type === 'itsm' && v.status === true)
       return !!itsm
+    },
+    isShowMenu () {
+      const { globalSetting } = this.$store.state
+      if (!globalSetting || (globalSetting && !globalSetting.value) || (globalSetting.value && !globalSetting.value.key)) {
+        return true
+      }
+      return globalSetting.value.key.length > 0
     },
   },
   watch: {
@@ -434,9 +425,6 @@ export default {
         this.reLogging = false
       }
     },
-    handleMapClose () {
-      this.map.visible = false
-    },
     async pushApiServerUrlAlert (id) {
       if (!id) return
       let manager = new this.$Manager('services', 'v1')
@@ -530,6 +518,15 @@ export default {
           },
         })
       }
+    },
+    handleToggleSidebar () {
+      const drawerVisible = !(get(this.$store.getters, 'common.sidebar.drawerVisible', false))
+      this.$store.dispatch('common/updateObject', {
+        name: 'sidebar',
+        data: {
+          drawerVisible,
+        },
+      })
     },
   },
 }

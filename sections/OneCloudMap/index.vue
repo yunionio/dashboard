@@ -51,6 +51,7 @@ import { mapState } from 'vuex'
 import SubMap from './SubMap'
 import { menusConfig } from '@/router/routes'
 import { hasPermission } from '@/utils/auth'
+import storage from '@/utils/storage'
 
 export default {
   name: 'OneCloudMap',
@@ -146,25 +147,48 @@ export default {
       return true
     },
     getMenuHidden (menu) {
-      if (menu.meta.hidden) {
+      if (!R.isNil(menu.meta.hidden)) {
         if (R.is(Function, menu.meta.hidden)) {
-          return !menu.meta.hidden(this.userInfo)
+          return menu.meta.hidden(this.userInfo)
         }
-        return false
+        return menu.meta.hidden
       }
-      return true
+      if (!R.isNil(menu.meta.invisible)) {
+        if (R.is(Function, menu.meta.invisible)) {
+          return menu.meta.invisible(this.userInfo)
+        }
+        return menu.meta.invisible
+      }
+      return false
     },
     showMenu (item) {
       const hidden = this.getMenuHidden(item)
       if (R.isNil(item.meta.permission) || R.isEmpty(item.meta.permission)) {
-        return hidden && true
+        return !hidden && true
       }
-      return hidden && hasPermission({ key: item.meta.permission })
+      return !hidden && hasPermission({ key: item.meta.permission })
     },
     handleClick (item) {
       this.$emit('click')
       this.$nextTick(() => {
-        this.$store.dispatch('common/setRecentMenus', item)
+        let menus = this.$store.getters.common.recentMenus
+        const newRecent = {
+          meta: item.meta,
+          path: item.path,
+        }
+        const index = R.findIndex(R.propEq('path', newRecent.path))(menus)
+        if (index !== -1) {
+          menus = R.remove(index, 1, menus)
+        }
+        menus = R.prepend(newRecent, menus)
+        if (menus.length > 8) {
+          menus = R.slice(0, 8, menus)
+        }
+        storage.set('__oc_recent_menus__', menus)
+        this.$store.dispatch('common/updateObject', {
+          name: 'recentMenus',
+          data: menus,
+        })
       })
     },
   },
