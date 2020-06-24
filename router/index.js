@@ -54,7 +54,7 @@ export default {
           meta: {
             label: '虚拟机',
             permission: 'servers_list',
-            hidden: () => !hasSetupKey(['onestack', 'private', 'public']),
+            hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'vmware']),
           },
           component: Layout,
           children: [
@@ -178,7 +178,7 @@ export default {
           meta: {
             label: '系统镜像',
             permission: 'images_list',
-            hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'baremetal']),
+            hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'baremetal', 'vmware']),
           },
           component: Layout,
           children: [
@@ -222,7 +222,7 @@ export default {
           meta: {
             label: '硬盘',
             permission: 'disks_list',
-            hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'baremetal']),
+            hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'baremetal', 'vmware']),
           },
           component: Layout,
           children: [
@@ -310,7 +310,7 @@ export default {
           meta: {
             label: 'IP子网',
             permission: 'networks_list',
-            hidden: () => !hasSetupKey(['onestack', 'public', 'private', 'baremetal']),
+            hidden: () => !hasSetupKey(['onestack', 'public', 'private', 'baremetal', 'vmware']),
           },
           component: Layout,
           children: [
@@ -358,7 +358,7 @@ export default {
           path: '/keypair',
           meta: {
             label: '密钥',
-            hidden: () => !hasSetupKey(['onestack', 'public', 'private', 'baremetal']),
+            hidden: () => !hasSetupKey(['onestack', 'public', 'private', 'baremetal', 'vmware']),
           },
           component: Layout,
           children: [
@@ -382,7 +382,7 @@ export default {
           meta: {
             label: '套餐',
             permission: 'serverskus_list',
-            hidden: () => !hasSetupKey(['onestack', 'private', 'baremetal']),
+            hidden: () => !hasSetupKey(['onestack', 'private', 'baremetal', 'vmware']),
           },
           component: Layout,
           children: [
@@ -406,7 +406,7 @@ export default {
           meta: {
             label: '宿主机',
             permission: 'hosts_list',
-            hidden: () => !hasSetupKey(['onestack', 'private']),
+            hidden: () => !hasSetupKey(['onestack', 'private', 'vmware']),
             // hidden: () => {
             //   const hasBMAgent = hasServices('bmagent')
             //   const hasHostAgent = hasServices('hostagent')
@@ -532,7 +532,7 @@ export default {
           meta: {
             label: i18n.t('dictionary.serverrecovery'),
             permission: 'servers_list,server_delete',
-            hidden: () => !hasSetupKey(['onestack', 'public', 'private']),
+            hidden: () => !hasSetupKey(['onestack', 'public', 'private', 'vmware']),
           },
           component: Layout,
           children: [
@@ -548,7 +548,7 @@ export default {
           meta: {
             label: '硬盘',
             permission: 'disks_list,disks_delete',
-            hidden: () => !hasSetupKey(['onestack', 'public', 'private']),
+            hidden: () => !hasSetupKey(['onestack', 'public', 'private', 'vmware']),
           },
           component: Layout,
           children: [
@@ -556,7 +556,7 @@ export default {
               name: 'DiskRecovery',
               path: '',
               component: DiskRecovery,
-              hidden: () => !hasSetupKey(['onestack', 'public', 'private']),
+              hidden: () => !hasSetupKey(['onestack', 'public', 'private', 'vmware']),
             },
           ],
         },
@@ -565,7 +565,7 @@ export default {
           meta: {
             label: '镜像',
             permission: 'images_list,images_delete',
-            hidden: () => !hasSetupKey(['onestack', 'public', 'private']),
+            hidden: () => !hasSetupKey(['onestack', 'public', 'private', 'vmware']),
           },
           component: Layout,
           children: [
