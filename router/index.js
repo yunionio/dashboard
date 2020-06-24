@@ -166,7 +166,7 @@ export default {
     {
       meta: {
         label: '调度',
-        hidden: () => !hasSetupKey(['onestack', 'private', 'vmware', 'public']),
+        hidden: () => !hasSetupKey(['onestack', 'private', 'vmware']),
       },
       submenus: [
         {

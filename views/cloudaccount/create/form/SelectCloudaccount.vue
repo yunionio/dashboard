@@ -5,7 +5,7 @@
         <h2 class="mb-3">{{ envTitle[env] }}</h2>
         <div class="items d-flex flex-wrap">
           <template v-for="(item, cloudaccount) of cloudaccounts">
-            <div class="item d-flex p-2 mr-3 align-items-center" v-if="isShowItem(item.provider.toLowerCase())" :class="{ active: currentItem.name === item.name }" :key="cloudaccount" @click="selectProvider(item)">
+            <div class="item d-flex p-2 mr-3 align-items-center" v-if="isShowItem(item)" :class="{ active: currentItem.name === item.name }" :key="cloudaccount" @click="selectProvider(item)">
               <img :src="item.logo" />
               <h5 class="flex-fill" v-if="showName(item)">{{ item.name }}</h5>
             </div>
@@ -62,9 +62,15 @@ export default {
         }
       }
     },
-    isShowItem (key) {
-      if (this.globalSettingSetupKeys === undefined) return true
-      return this.globalSettingSetupKeys.indexOf(key) > -1
+    isShowItem (item) {
+      if (this.globalSettingSetupKeys === undefined) {
+        return true
+      }
+      if (typeof item === 'string') {
+        if (item === 'private' && this.globalSettingSetupKeys.indexOf('vmware') > -1) return true
+        return this.globalSettingSetupKeys.indexOf(item) > -1
+      }
+      return this.globalSettingSetupKeys.indexOf(item.provider.toLowerCase()) > -1
     },
     selectProvider (item) {
       this.$emit('update:currentItem', item)
