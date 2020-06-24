@@ -59,7 +59,7 @@ export default {
             label: 'VPC',
             permission: 'vpcs_list',
             t: 'dictionary.vpc',
-            hidden: () => !hasSetupKey(['onestack', 'zstack', 'dstack', 'vmware', 'public', 'baremetal']),
+            hidden: () => !hasSetupKey(['onestack', 'zstack', 'dstack', 'public', 'baremetal']),
           },
           component: Layout,
           children: [
@@ -90,7 +90,7 @@ export default {
           meta: {
             label: '二层网络',
             permission: 'wires_list',
-            hidden: () => !hasSetupKey(['onestack', 'private', 'vmware', 'zstack', 'dstack']),
+            hidden: () => !hasSetupKey(['onestack', 'vmware', 'zstack', 'dstack']),
             // hidden: () => !hasServices(['esxiagent', 'hostagent', 'bmagent']) && !hasBrands('ZStack'),
           },
           component: Layout,
