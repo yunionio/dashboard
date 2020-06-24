@@ -123,7 +123,7 @@ export default {
       ],
       exportDataOptions: {
         items: [
-          { label: 'ID', key: 'id' },
+          // { label: 'ID', key: 'id' },
           { label: '资源名称', key: 'name' },
           { label: '服务类型', key: 'service' },
           { label: '操作类型', key: 'action' },
@@ -132,7 +132,7 @@ export default {
           { label: '平台', key: 'provider' },
           { label: '账号', key: 'account' },
           { label: '订阅', key: 'manager' },
-          { label: '备注', key: 'notes' },
+          // { label: '备注', key: 'notes' },
         ],
         limit: () => Object.keys(this.list.data).length,
         export: 'custom',
