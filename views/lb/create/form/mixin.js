@@ -170,7 +170,7 @@ export default {
       const params = {}
       if (this.isAdminMode) {
         if (!this.l3PermissionEnable) {
-          params['project_domain'] = 'default'
+          params.project_domain = 'default'
         }
         if (R.is(String, this.domain)) {
           params.project_domain = this.domain
