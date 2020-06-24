@@ -126,7 +126,7 @@ export default {
               field: 'xforwarded_for',
               title: '获取客户端真实IP',
               formatter: ({ row }) => {
-                if (row.xforwarded_for || row.send_proxy !== 'of') {
+                if (row.xforwarded_for || row.send_proxy !== 'off') {
                   return '开启'
                 }
                 return '关闭'
