@@ -1,7 +1,7 @@
 <template>
   <a-row v-loading="loading">
     <a-col :md="{ span: 24 }" :lg="{ span: 22 }" :xl="{ span: 16 }" :xxl="{ span: 11 }" class="mb-5">
-      <alert-form ref="alertFormRef" v-if="!isUpdate || (loaded && !loading)" @refresh="refresh" :threshold.sync="threshold" :alertData="alertData" />
+      <alert-form ref="alertFormRef" v-if="!isUpdate || (loaded && !loading)" @refresh="refresh" :threshold.sync="threshold" :alertData="alertData" @resetChart="resetChart" />
     </a-col>
     <a-col class="line mb-5" :md="{ span: 24 }" :lg="{ span: 22 }" :xl="{ span: 16 }" :xxl="{ span: 12, offset: 1 }">
       <monitor-header
@@ -129,6 +129,9 @@ export default {
     },
     reset () {
       this.$refs.alertFormRef.form.fc.resetFields()
+    },
+    resetChart () {
+      this.series = []
     },
     async submit () {
       try {
