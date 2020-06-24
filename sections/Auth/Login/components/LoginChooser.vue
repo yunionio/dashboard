@@ -5,7 +5,7 @@
         <div class="item d-flex align-items-center pb-2 pt-2" :key="item[0]" @click="handleSelect(item)">
           <div class="left flex-fill">
             <div class="l1info">{{ item[1]['name'] }} - {{ item[1]['domain']['name'] }}</div>
-            <div class="l2info text-color-help mt-1">{{ $t('common.text00118') }}：{{ $t(`authChooser.${item[1]['scope']}`) }}</div>
+            <div class="l2info text-color-help mt-1">{{ $t('common.text00118') }}：{{ $te(`authChooser.${item[1]['scope']}`) ? $t(`authChooser.${item[1]['scope']}`) : '-' }}</div>
             <div class="l2info text-color-help mt-1">{{ $t('dictionary.project') }}：{{ item[1].projectName }}</div>
           </div>
           <template v-if="showDelete">
