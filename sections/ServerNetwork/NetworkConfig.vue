@@ -13,6 +13,7 @@
           :resource="vpcResource"
           remote
           :label-format="vpcLabelFormat"
+          :isDefaultSelect="i === 0"
           :item.sync="item.vpc"
           :need-params="true"
           :params="vpcParams"
@@ -30,6 +31,7 @@
           resource="networks"
           remote
           :item.sync="item.network"
+          :isDefaultSelect="i === 0"
           :need-params="true"
           :params="{ ...networkParamsC, $t: item.key }"
           :mapper="networkResourceMapper"
