@@ -122,7 +122,7 @@ export default {
             {
               label: '启用/禁用',
               submenus: [
-                ...getEnabledSwitchActions(Object.assign(this, { resourceName: this.$t('dictionary.physicalmachine') }), obj),
+                ...getEnabledSwitchActions(Object.assign({}, this, { resource: 'physicalmachine' }), obj, undefined, { resourceName: this.$t('dictionary.physicalmachine') }),
               ],
             },
             {
@@ -162,11 +162,11 @@ export default {
                   },
                 },
                 getDomainChangeOwnerAction(this, {
-                  name: this.$t('dictionary.host'),
+                  name: this.$t('dictionary.physicalmachine'),
                   resource: 'hosts',
                 }),
                 getSetPublicAction(this, {
-                  name: this.$t('dictionary.host'),
+                  name: this.$t('dictionary.physicalmachine'),
                   scope: 'domain',
                   resource: 'hosts',
                 }),
@@ -433,6 +433,7 @@ export default {
                   label: '删除',
                   action: () => {
                     this.createDialog('DeleteResDialog', {
+                      name: this.$t('dictionary.physicalmachine'),
                       vm: this,
                       data: [obj],
                       columns: this.columns,
