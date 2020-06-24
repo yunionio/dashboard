@@ -29,7 +29,7 @@ export default {
   z-index: 10;
   position: fixed;
   bottom: 0;
-  left: 224px;
+  left: 160px;
   right: 0;
   height: 74px;
   box-shadow: 0 -2px 4px 0 rgba(237, 237, 237, 0.5), 0 -2px 4px 0 rgba(237, 237, 237, 0.5);
