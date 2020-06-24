@@ -48,9 +48,13 @@ export const getRequestKey = config => {
     delete config.params.$t
   }
   // 是否展示系统资源控制
-  if (store.getters.userConfigInfo && store.getters.userConfigInfo[SHOW_SYSTEM_RESOURCE].value) {
+  if (store.getters.userConfigInfo && store.getters.userConfigInfo[SHOW_SYSTEM_RESOURCE] && store.getters.userConfigInfo[SHOW_SYSTEM_RESOURCE].value) {
     if (config.params) {
       config.params.system = true
+    } else {
+      config.params = {
+        system: true,
+      }
     }
   }
   return ret
