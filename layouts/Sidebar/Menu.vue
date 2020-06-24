@@ -1,8 +1,7 @@
 <template>
-  <scrollbar class="level-2-shade" v-show="visible" ref="scroll">
-    <div
-      class="level-2-menu"
-      v-if="menus">
+  <div class="level-2-wrap">
+    <scrollbar
+      class="level-2-menu">
       <div class="title">{{ label }}</div>
       <div
         class="level-3-item"
@@ -14,11 +13,10 @@
           <div class="level-3-group-title">{{ getLabel(citem.meta) }}</div>
           <router-link
             v-for="(sitem, sidx) of citem.submenus"
-            v-show="visibleSubmenu(sitem)"
+            v-show="showMenu(sitem)"
             :key="sidx"
             class="menu-item"
             :to="sitem.path"
-            @click.native="() => setRecentMenus(sitem)"
             tag="a"
             active-class="active">
             {{ getLabel(sitem.meta) }}
@@ -29,44 +27,32 @@
           class="menu-item"
           :to="citem.path"
           tag="a"
-          active-class="active"
-          @click.native="handleClick">
+          active-class="active">
           {{ getLabel(citem.meta) }}
         </router-link>
       </div>
-    </div>
-  </scrollbar>
+    </scrollbar>
+  </div>
 </template>
 
 <script>
 import * as R from 'ramda'
+import { hasPermission } from '@/utils/auth'
 
 export default {
   name: 'Level2Menu',
   props: {
-    currentMenu: {
+    l2Menu: {
       type: Object,
       required: true,
     },
-    showMenu: {
-      type: Function,
-      required: true,
-    },
-    visible: {
-      type: Boolean,
-      default: false,
-    },
-    ghostL2MenuScrollTop: Number,
   },
   computed: {
     label () {
-      return this.currentMenu.meta.label
+      return this.l2Menu.meta.label
     },
     menus () {
-      const menus = this.currentMenu.menus
-      if (!menus) {
-        return null
-      }
+      const menus = this.l2Menu.menus
       const res = []
       menus.forEach(m2item => {
         const m2 = { ...m2item }
@@ -92,22 +78,6 @@ export default {
       return res
     },
   },
-  watch: {
-    ghostL2MenuScrollTop (val) {
-      if (val) {
-        this.$nextTick(() => {
-          this.$refs.scroll.wrap.scrollTop = this.ghostL2MenuScrollTop || 0
-        })
-      }
-    },
-  },
-  mounted () {
-    if (this.ghostL2MenuScrollTop) {
-      this.$nextTick(() => {
-        this.$refs.scroll.wrap.scrollTop = this.ghostL2MenuScrollTop || 0
-      })
-    }
-  },
   methods: {
     getLabel (meta) {
       if (meta.t) {
@@ -115,34 +85,38 @@ export default {
       }
       return meta.label
     },
-    setRecentMenus (item) {
-      this.$store.dispatch('common/setRecentMenus', item)
-      this.$emit('set-ghost-l2-menu-scroll-top', this.getWrapScrollTop())
-      this.$emit('clear-ghost-l2-menu')
-    },
-    visibleSubmenu (item) {
-      if (item.meta && R.is(Function, item.meta.invisible)) {
-        return !item.meta.invisible(this.$store.getters.userInfo)
+    getMenuHidden (menu) {
+      if (!R.isNil(menu.meta.hidden)) {
+        if (R.is(Function, menu.meta.hidden)) {
+          return menu.meta.hidden(this.userInfo)
+        }
+        return menu.meta.hidden
       }
-      return true
+      if (!R.isNil(menu.meta.invisible)) {
+        if (R.is(Function, menu.meta.invisible)) {
+          return menu.meta.invisible(this.userInfo)
+        }
+        return menu.meta.invisible
+      }
+      return false
     },
-    handleClick () {
-      this.$emit('set-ghost-l2-menu-scroll-top', this.getWrapScrollTop())
-      this.$emit('clear-ghost-l2-menu')
-    },
-    getWrapScrollTop () {
-      return this.$refs.scroll.wrap.scrollTop
+    showMenu (item) {
+      const hidden = this.getMenuHidden(item)
+      if (R.isNil(item.meta.permission) || R.isEmpty(item.meta.permission)) {
+        return !hidden && true
+      }
+      return !hidden && hasPermission({ key: item.meta.permission })
     },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-.level-2-shade {
-  position: absolute;
-  left: 64px;
+.level-2-wrap {
+  position: fixed;
+  left: 0;
   width: 160px;
-  top: 0;
+  top: 60px;
   bottom: 0;
   background-color: rgb(247, 248, 250);
   box-shadow: 1px 0 6px 0 rgba(165,192,207,.3);
@@ -160,7 +134,6 @@ export default {
   color: #fff;
   transition: left .2s;
   padding: 24px 0 0 23px;
-  overflow-y: auto;
   .title {
     color: #435a71;
     font-size: 18px;

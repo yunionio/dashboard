@@ -1,12 +1,9 @@
 import Vue from 'vue'
-import * as R from 'ramda'
 import storage from '@/utils/storage'
-
-const storageRecentMenusKey = '__oc_recent_menus__'
 
 export default {
   state: {
-    recentMenus: storage.get(storageRecentMenusKey) || [],
+    recentMenus: storage.get('__oc_recent_menus__') || [],
     topAlert: {},
     bill: {
       currency: 'CNY',
@@ -16,6 +13,8 @@ export default {
       namespace: undefined,
     },
     lbRedirected: {},
+    // 菜单栏
+    sidebar: {},
   },
   mutations: {
     UPDATE_OBJECT (state, { name, data }) {
@@ -24,9 +23,6 @@ export default {
     },
     DELETE_OBJECT (state, { name, key }) {
       Vue.delete(state[name], key)
-    },
-    SET_RECENT_MENUS (state, payload) {
-      state.recentMenus = payload
     },
     SET_BILL_CURRENCY (state, payload) {
       state.bill.currency = payload
@@ -44,23 +40,6 @@ export default {
     },
     deleteObject ({ commit }, payload) {
       commit('DELETE_OBJECT', payload)
-    },
-    setRecentMenus ({ commit, state }, payload) {
-      let menus = state.recentMenus
-      const newRecent = {
-        meta: payload.meta,
-        path: payload.path,
-      }
-      const index = R.findIndex(R.propEq('path', newRecent.path))(menus)
-      if (index !== -1) {
-        menus = R.remove(index, 1, menus)
-      }
-      menus = R.prepend(newRecent, menus)
-      if (menus.length > 8) {
-        menus = R.slice(0, 8, menus)
-      }
-      storage.set(storageRecentMenusKey, menus)
-      commit('SET_RECENT_MENUS', menus)
     },
   },
 }
