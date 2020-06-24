@@ -160,9 +160,6 @@ export default {
       try {
         const values = await this.form.fc.validateFields()
         values.redirect = values.redirect ? 'raw' : 'off'
-        if (!values.redirect_host) {
-          delete values.redirect_host
-        }
         await this.params.onManager('update', {
           id: this.params.data[0].id,
           managerArgs: {

@@ -40,6 +40,7 @@ export default {
         certificate: [
           'certificate',
           {
+            initialValue: this.params.lbDetail.id,
             rules: [
               { required: true, message: '请选择证书' },
             ],
