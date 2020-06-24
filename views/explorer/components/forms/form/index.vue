@@ -189,11 +189,6 @@ export default {
       try {
         this.$refs.filtersRef.reset()
         this.form.fc.resetFields()
-        // this.form.fc.setFieldsValue({
-        //   [this.decorators.metric_value[0]]: undefined,
-        //   [this.decorators.group_by[0]]: undefined,
-        //   [this.decorators.function[0]]: undefined,
-        // })
         const { data } = await new this.$Manager('unifiedmonitors', 'v1').get({ id: 'metric-measurement', params: { database: 'telegraf', measurement: metricKey } })
         this.metricInfo = data
         if (R.is(Array, this.metricInfo.tag_key)) {
@@ -203,6 +198,7 @@ export default {
         if (R.is(Array, Aggregations)) {
           this.functionOpts = Aggregations.map(v => ({ key: v, label: v }))
         }
+        this.$emit('resetChart')
       } catch (error) {
         this.metricInfo = {
           field_key: [],
