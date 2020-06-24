@@ -165,7 +165,7 @@ export const createVmDecorators = type => {
         {
           initialValue: undefined, // { key: '', label: '' }
           rules: [
-            { validator: isRequired(), message: '请选择关联密钥' },
+            { required: true, message: '请选择关联密钥' },
           ],
         },
       ],
@@ -810,7 +810,7 @@ export class GenCreateData {
     switch (this.fd.loginType) {
       case LOGIN_TYPES_MAP.keypair.key:
         ret.key = 'keypair'
-        ret.value = this.fd.loginKeypair.key
+        ret.value = this.fd.loginKeypair
         break
       case LOGIN_TYPES_MAP.image.key:
         ret.key = 'reset_password'
