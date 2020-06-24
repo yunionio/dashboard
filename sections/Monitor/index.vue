@@ -19,6 +19,7 @@
 import _ from 'lodash'
 import MonitorHeader from './Header'
 import MonitorList from './List'
+import { numerify } from '@/filters'
 
 export default {
   name: 'Monitor',
@@ -94,7 +95,8 @@ export default {
                 const time = momentObj._isAMomentObject ? momentObj.format(this.timeFormatStr) : row[0]
                 rowsItem.time = time
               } else {
-                rowsItem[column] = row[i]
+                const format = val.constants.format || '0.00' // 默认是保留小数点后两位
+                rowsItem[column] = numerify(row[i], format)
               }
             })
             rows.push(rowsItem)
