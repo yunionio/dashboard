@@ -1,16 +1,18 @@
 <template>
   <div class="wrap d-flex flex-column h-100 w-100">
     <div class="flex-fill position-relative overflow-auto">
-      <div class="d-flex align-items-center justify-content-center h-100 w-100">
-        <template v-if="!statusLoaded">
-          <div class="text-white">{{ $t('common.text00111') }}</div>
-        </template>
-        <template v-else-if="ticketLogging">
-          <div class="text-white">{{ $t('auth.logging') }}</div>
-        </template>
-        <template v-else>
-          <router-view />
-        </template>
+      <div class="position-absolute w-100 h-100" style="left: 0; top: 0;">
+        <div class="d-flex align-items-center justify-content-center h-100 w-100">
+          <template v-if="!statusLoaded">
+            <div class="text-white">{{ $t('common.text00111') }}</div>
+          </template>
+          <template v-else-if="ticketLogging">
+            <div class="text-white">{{ $t('auth.logging') }}</div>
+          </template>
+          <template v-else>
+            <router-view />
+          </template>
+        </div>
       </div>
     </div>
     <div class="flex-grow-0 flex-shrink-0 p-2 white-color text-center text-color-help">
