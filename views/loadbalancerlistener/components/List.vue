@@ -80,7 +80,7 @@ export default {
           permission: 'lb_loadbalancerlisteners_create',
           action: () => {
             this.createDialog('LbListenerFormDialog', {
-              lbDetail: this.lbDetail,
+              lbDetail: this.data,
               columns: this.columns,
               onManager: this.onManager,
             })
@@ -127,7 +127,7 @@ export default {
         rowData: row,
       }, {
         list: this.list,
-        lbDetail: this.lbDetail,
+        lbDetail: this.data,
       })
     },
   },
