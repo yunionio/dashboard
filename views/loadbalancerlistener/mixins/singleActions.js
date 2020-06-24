@@ -43,7 +43,7 @@ export default {
           action: obj => {
             this.createDialog('LbListenerFormDialog', {
               listenerData: obj,
-              lbDetail: this.params ? this.params.lbDetail : this.lbDetail,
+              lbDetail: this.params ? this.params.lbDetail : this.data,
               columns: this.columns,
               onManager: this.onManager,
             })
