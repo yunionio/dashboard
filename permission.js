@@ -7,6 +7,7 @@ import * as R from 'ramda'
 import router from './router'
 import store from './store'
 import { hasPermission } from '@/utils/auth'
+import { SHOW_SYSTEM_RESOURCE } from '@/constants'
 
 // 获取scope beforeEach
 const scopePermission = require.context('../scope', false, /.\/permission.js/)
@@ -43,12 +44,14 @@ router.beforeEach(async (to, from, next) => {
   const hasScopeResource = !R.isEmpty(store.getters.scopeResource) && !R.isNil(store.getters.scopeResource)
   const hasCapability = !R.isEmpty(store.getters.capability) && !R.isNil(store.getters.capability)
   const hasGlobalSettings = !R.isEmpty(store.state.globalSetting.id) && !R.isNil(store.state.globalSetting.id)
+  const hasIsShowSystemResource = !R.isEmpty(store.getters.userConfigInfo) && !R.isNil(store.getters.userConfigInfo)
   try {
     !hasRoles && await store.dispatch('auth/getInfo')
     !hasCapability && await store.dispatch('auth/getCapabilities')
     !hasPermission && await store.dispatch('auth/getPermission')
     !hasScopeResource && await store.dispatch('auth/getScopeResource')
     !hasGlobalSettings && await store.dispatch('globalSetting/getFetchGlobalSetting')
+    !hasIsShowSystemResource && await store.dispatch('userConfig/queryParametersByKey', { key: SHOW_SYSTEM_RESOURCE })
   } catch (error) {
     throw error
   } finally {

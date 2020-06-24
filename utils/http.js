@@ -12,6 +12,7 @@ import store from '@/store'
 import router from '@/router'
 import { getHttpErrorMessage, getHttpReqMessage, getErrorBody } from '@/utils/error'
 import { uuid, genReferRouteQuery } from '@/utils/utils'
+import { SHOW_SYSTEM_RESOURCE } from '@/constants'
 
 const http = axios.create({
   baseURL: process.env.VUE_APP_BASE_API,
@@ -45,6 +46,16 @@ export const getRequestKey = config => {
   if (t) {
     ret += `$$${t}`
     delete config.params.$t
+  }
+  // 是否展示系统资源控制
+  if (store.getters.userConfigInfo && store.getters.userConfigInfo[SHOW_SYSTEM_RESOURCE] && store.getters.userConfigInfo[SHOW_SYSTEM_RESOURCE].value) {
+    if (config.params) {
+      config.params.system = true
+    } else {
+      config.params = {
+        system: true,
+      }
+    }
   }
   return ret
 }
