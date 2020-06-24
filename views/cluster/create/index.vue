@@ -6,7 +6,7 @@
         <div>
           <p>控制节点(controlplane)：同时运行 kube-apiserver 和 etcd 的节点，默认不运行pod，建议部署 1个或 3个</p>
           <p>计算节点(node)：只运行 pod 的节点</p>
-          <p>无可用平台，请从系统引导配置OneStack、VMWare或OpenStack环境，以确保系统有可用资源创建容器集群</p>
+          <p>无可用平台，请从“功能选择”配置OneStack、VMWare或OpenStack环境，以确保系统有可用资源创建容器集群</p>
         </div>
       </template>
     </a-alert>
