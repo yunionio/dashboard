@@ -59,7 +59,7 @@ export default {
       ],
       groupActions: [
         {
-          label: `更改${this.$t('dictionary.project')}`,
+          label: `切换本地${this.$t('dictionary.project')}`,
           permission: 'externalprojects_update',
           action: obj => {
             this.createDialog('ChangeProjectDialog', {
@@ -77,7 +77,7 @@ export default {
       ],
       singleActions: [
         {
-          label: `更改${this.$t('dictionary.project')}`,
+          label: `切换本地${this.$t('dictionary.project')}`,
           permission: 'externalprojects_update',
           action: obj => {
             this.createDialog('ChangeProjectDialog', {
