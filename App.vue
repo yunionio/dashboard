@@ -22,6 +22,7 @@ import SidePageManager from '@/sections/SidePageManager'
 import WindowResizeListener from '@/sections/WindowResizeListener'
 import notificationListener from '@/utils/notificationListener'
 import i18n from '@/locales'
+import { SHOW_SYSTEM_RESOURCE } from '@/constants'
 
 export default {
   name: 'App',
@@ -38,7 +39,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['auth']),
+    ...mapGetters(['auth', 'userInfo']),
     ...mapState({
       globalSetting: state => state.globalSetting,
     }),
@@ -71,6 +72,11 @@ export default {
       },
       immediate: true,
     },
+    userInfo (val, oldVal) {
+      if (val && val.id) {
+        this.initShowSystemResource()
+      }
+    },
   },
   created () {
     this.initIO()
@@ -90,6 +96,9 @@ export default {
       if (!session) return
       this.socket.io.opts.query.session = session
       this.socket.connect()
+    },
+    initShowSystemResource () {
+      this.$store.dispatch('userConfig/queryParametersByKey', { key: SHOW_SYSTEM_RESOURCE })
     },
   },
 }
