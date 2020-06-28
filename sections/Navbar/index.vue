@@ -299,6 +299,7 @@ export default {
           }
           if ((R.isNil(val.projects) || R.isEmpty(val.projects)) && (R.isNil(val.projectId) || R.isEmpty(val.projectId))) {
             this.$router.push('/no-project')
+            return
           }
           this.checkProjects(val)
         }
