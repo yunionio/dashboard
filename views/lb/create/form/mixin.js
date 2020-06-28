@@ -204,6 +204,7 @@ export default {
     cloudregionParams () {
       const params = {
         limit: 0,
+        provider: this.$route.query.type,
         ...this.scopeParams,
       }
       return params
