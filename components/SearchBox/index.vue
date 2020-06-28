@@ -100,7 +100,7 @@ export default {
      * @description wrap点击事件
      */
     handleWrapClick (e) {
-      e.stopPropagation()
+      // e.stopPropagation()
       this.focus = true
       this.showCompleter = true
       this.$nextTick(() => {
