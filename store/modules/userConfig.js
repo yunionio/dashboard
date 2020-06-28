@@ -47,7 +47,7 @@ export default {
     async updateParameters ({ state, commit, dispatch }, payload = {}) {
       try {
         const { key, value } = payload
-        if (state.info[key] && state.info[key].id) {
+        if (state.info && state.info[key]) {
           const res = await http.put(`/v1/parameters/${key}`, { value })
           await commit('UPDATE', { key: 'info', value: { [key]: res.data } })
           return Promise.resolve(res.data)
