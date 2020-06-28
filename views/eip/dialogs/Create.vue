@@ -69,18 +69,23 @@
             <a-input v-if="inputIpType === 'password'" v-decorator="decorators.ip_addr" placeholder="请输入子网内IP" />
           </a-form-item>
         </template>
-        <template v-if="showBandwidth && selectedPlatform === 'public_cloud'">
+        <template v-if="(showBandwidth && selectedPlatform === 'public_cloud') || selectedPlatform === 'idc'">
           <a-form-item label="带宽" v-bind="formItemLayout">
-            <a-row>
-              <a-col :span="12">
-                <a-slider :min="1" :max="maxBandwidth" v-decorator="decorators.bandwidth" />
-              </a-col>
-              <a-col :span="4">
-                <a-input-number :min="1" :max="maxBandwidth" v-decorator="decorators.bandwidth" />
-              </a-col>
-            </a-row>
+            <div class="d-flex">
+              <div class="flex-fill">
+                <a-slider :min="1" :max="maxBandwidth" :step="1" :marks="sliderMarks" v-decorator="decorators.bandwidth" />
+              </div>
+              <a-input-number
+                class="ml-4"
+                :min="1"
+                :max="maxBandwidth"
+                :step="1"
+                :formatter="format"
+                :parse="format"
+                v-decorator="decorators.bandwidth" />
+            </div>
           </a-form-item>
-          <a-form-item label="计费方式" v-bind="formItemLayout">
+          <a-form-item label="计费方式" v-bind="formItemLayout" v-if="selectedPlatform !== 'idc' ">
             <a-radio-group v-decorator="decorators.charge_type" @change="chargeTypeChange">
               <a-radio-button v-for="item in chargeTypeOptions" :value="item.value" :key="item.value">
                 {{item.label}}
@@ -232,6 +237,11 @@ export default {
   },
   computed: {
     ...mapGetters(['isAdminMode', 'scope', 'userInfo']),
+    sliderMarks () {
+      let ret = { [this.maxBandwidth / 2]: `${this.maxBandwidth / 2}Mbps` }
+      ret = { ...ret, ...{ 1: '1Mbps', [this.maxBandwidth]: `${this.maxBandwidth}Mbps` } }
+      return ret
+    },
     regionParams () {
       let params = {}
       if (this.manager) {
@@ -316,6 +326,9 @@ export default {
     },
   },
   methods: {
+    format (val) {
+      return +val || 1
+    },
     domainChange (item) {
       if (R.type(item) === 'Object') {
         this.domain_id = item.key

@@ -23,7 +23,7 @@ export default {
             }
           }
           let { brand } = obj
-          if (brand) {
+          if (brand && brand !== 'OneCloud') {
             brand = brand.toLowerCase()
             if (noChangeBandwidth.includes(brand)) {
               return {

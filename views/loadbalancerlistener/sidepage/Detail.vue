@@ -32,8 +32,15 @@ export default {
       ],
       extraInfo: [
         {
-          title: '其他信息',
+          title: '配置信息',
           items: [
+            {
+              field: 'listener_type/listener_port',
+              title: '前端协议/端口',
+              formatter: ({ row }) => {
+                return `${row.listener_type.toUpperCase()}: ${row.listener_port}`
+              },
+            },
             getCopyWithContentTableColumn({
               field: 'loadbalancer',
               title: '负载均衡实例',
@@ -45,15 +52,6 @@ export default {
                 ]
               },
             }),
-            {
-              field: 'listener_type',
-              title: '前端协议',
-              formatter: ({ row }) => row.listener_type.toUpperCase(),
-            },
-            {
-              field: 'listener_port',
-              title: '端口',
-            },
           ],
         },
         {
@@ -111,6 +109,21 @@ export default {
                 ]
               },
             }),
+            {
+              field: 'redirect',
+              title: '重定向',
+              formatter: ({ row }) => {
+                return row.redirect === 'raw' ? '已开启' : '未开启'
+              },
+            },
+            {
+              field: 'redirect',
+              title: '重定向方式',
+              formatter: ({ row }) => {
+                if (row.redirect !== 'raw') return '-'
+                return this.$t('redirect_code')[row.redirect_code] ? this.$t('redirect_code')[row.redirect_code].name : '-'
+              },
+            },
             {
               field: 'sticky_session_cookie',
               title: 'Cookie名称',
