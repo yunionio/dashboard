@@ -14,6 +14,9 @@ import {
   getLabelTypeColumns,
   getTimerDescColumns,
 } from '../utils/columns'
+import {
+  getEnabledTableColumn,
+} from '@/utils/common/tableColumn'
 
 export default {
   name: 'ScheduledtaskDetail',
@@ -30,6 +33,7 @@ export default {
   data () {
     return {
       baseInfo: [
+        getEnabledTableColumn(),
         getOperationColumns(),
         getResourceTypeColumns(),
         getResourceNumberColumns(),
