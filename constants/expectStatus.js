@@ -201,6 +201,7 @@ export default {
   servertemplate: {
     success: ['ready'],
     info: ['init', 'unavailable', 'unknown'],
+    danger: ['invalid'],
   },
   kubecluster: {
     success: ['running'],
