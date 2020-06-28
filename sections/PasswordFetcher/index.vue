@@ -107,7 +107,7 @@ export default {
     resourceType: {
       type: String,
       required: true,
-      validator: val => ['servers', 'baremetals', 'baremetal_ssh', 'elasticcaches', 'dbinstanceaccounts', 'elasticcacheaccounts'].includes(val),
+      validator: val => ['servers', 'baremetals', 'baremetal_ssh', 'elasticcaches', 'dbinstanceaccounts', 'elasticcacheaccounts', 'cloudusers'].includes(val),
     },
     disabled: {
       type: Boolean,
@@ -147,6 +147,11 @@ export default {
           resource: 'elasticcacheaccounts',
           methodname: 'GetLoginInfo',
         },
+        cloudusers: {
+          resource: 'cloudusers',
+          methodname: 'GetLoginInfo',
+          apiVersion: 'v1',
+        },
       },
       loginInfos: {
         ip: {
@@ -176,7 +181,7 @@ export default {
       this.$nextTick(async () => {
         if (this.visible === false) return
         const config = this.requestConfigs[this.resourceType]
-        const manager = new Manager(config.resource)
+        const manager = new Manager(config.resource, config.apiVersion || 'v2')
         this.loading = true
         try {
           const { data: { password, username, account, keypair, login_key: loginKey, ip } } = await manager.objectRpc({

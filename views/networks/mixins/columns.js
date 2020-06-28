@@ -25,7 +25,7 @@ export default {
         slots: {
           default: ({ row }, h) => {
             const ret = [
-              <list-body-cell-wrap copy row={row} hideField={ true }>
+              <list-body-cell-wrap copy row={row} field="network" hideField={ true }>
                 <side-page-trigger onTrigger={ () => this.handleOpenNetworkDetail(row.network_id) }>{ row.network }</side-page-trigger>
               </list-body-cell-wrap>,
             ]

@@ -3,9 +3,10 @@
     <div slot="header">上传</div>
     <div slot="body">
       <a-alert class="mb-2" type="warning">
-        <template v-slot:message>
-          <div>设置更多属性，请上传成功后，点击【修改属性】</div>
-        </template>
+        <div slot="message">
+          设置更多属性，请上传成功后，点击【修改属性】
+         <br />ISO格式镜像只有OneCloud平台可用
+        </div>
       </a-alert>
       <a-form
         :form="form.fc">
