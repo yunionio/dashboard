@@ -579,7 +579,8 @@
     "servertemplate": {
       "ready": "可用",
       "init": "初始化",
-      "unknown": "未知"
+      "unknown": "未知",
+      "invalid": "无效"
     },
     "kubecluster": {
       "init": "待部署",
