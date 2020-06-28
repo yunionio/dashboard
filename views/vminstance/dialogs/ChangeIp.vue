@@ -114,6 +114,7 @@ export default {
       const params = {
         zone: this.params.zone,
         scope: this.scope,
+        wire: this.params.data[0].wire_id,
       }
       if (this.params.hypervisor === HYPERVISORS_MAP.esxi.key) {
         params.vpc_id = 'default'

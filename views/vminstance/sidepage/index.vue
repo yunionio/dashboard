@@ -86,6 +86,11 @@ export default {
           id: this.detailData.host_id,
         }
       }
+      if (this.params.windowData.currentTab === 'network-list-for-vm-instance-sidepage') {
+        return {
+          detail: true,
+        }
+      }
       return null
     },
     secgroupListActives () {
