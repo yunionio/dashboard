@@ -1,6 +1,6 @@
 <template>
   <a-card class="explorer-monitor-line d-flex align-items-center justify-content-center">
-    <line-chart :columns="lineChartColumns" :rows="lineChartRows" @chartInstance="setChartInstance" width="100%" height="250px" class="mb-4" :options="lineChartOptions" />
+    <line-chart :columns="lineChartColumns" :rows="lineChartRows" @chartInstance="setChartInstance" width="100%" height="250px" class="mb-4" :options="lineChartOptionsC" />
     <vxe-grid
       v-if="tableData && tableData.length"
       max-height="200"
@@ -14,8 +14,10 @@
 
 <script>
 import * as R from 'ramda'
+import { colors } from '@/sections/Charts/constants'
 import { tableColumnMaps } from '@Monitor/constants'
 import LineChart from '@/sections/Charts/Line'
+import { ColorHash } from '@/utils/colorHash'
 
 export default {
   name: 'ExplorerMonitorLine',
@@ -45,6 +47,7 @@ export default {
       lineChartColumns: [],
       lineChartRows: [],
       chartInstanceOption: {},
+      lineChartOptionsC: this.lineChartOptions,
     }
   },
   computed: {
@@ -86,6 +89,16 @@ export default {
   },
   created () {
     this.getMonitorLine()
+    this.colorHash = new ColorHash({
+      hue: [
+        { min: 0, max: 360 },
+        { min: 0, max: 360 },
+        { min: 0, max: 360 },
+      ],
+    })
+  },
+  destroyed () {
+    this.colorHash = null
   },
   methods: {
     setChartInstance (v) {
@@ -95,8 +108,21 @@ export default {
     getMonitorLine () {
       const columns = ['time']
       const rows = []
+      if (this.lineChartOptions && !this.lineChartOptions.series) {
+        this.lineChartOptionsC = { ...this.lineChartOptionsC, series: [] }
+      }
       this.series.forEach((item, i) => {
-        const name = item.raw_name
+        this.$set(this.lineChartOptionsC.series, i, {
+          itemStyle: {
+            normal: {
+              color: colors[i] || this.colorHash.hex(`${i * 1000}`),
+            },
+          },
+        })
+        let name = item.raw_name
+        if (item.tags && item.tags.path) {
+          name += ` (path: ${item.tags.path})`
+        }
         columns.push(name)
         if (i === 0) { // 证明是第一条线，时间点取第一条时间线里的点，所以要求几条线的时间点是一致的
           item.points.forEach(row => {

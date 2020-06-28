@@ -222,6 +222,10 @@ export const tableColumnMaps = {
     title: i18n.t('dictionary.host'),
     field: 'host',
   },
+  path: {
+    title: i18n.t('monitor.path'),
+    field: 'path',
+  },
   vm_ip: {
     title: 'IP',
     field: 'vm_ip',
