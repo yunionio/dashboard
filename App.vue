@@ -73,7 +73,9 @@ export default {
       immediate: true,
     },
     userInfo (val, oldVal) {
-      this.initShowSystemResource()
+      if (val && val.id) {
+        this.initShowSystemResource()
+      }
     },
   },
   created () {
