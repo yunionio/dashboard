@@ -3,20 +3,15 @@
     <template v-if="$store.state.auth.canRenderDefaultLayout">
       <navbar />
       <div class="app-content position-relative h-100">
-        <template v-if="hasProjectId">
-          <sidebar-drawer v-if="isShowMenu" :active-menu="l2Menu" />
-          <l2-menu :l2-menu="l2Menu" v-if="l2MenuVisible && isShowMenu" />
-          <div
-            id="app-page"
-            class="app-page"
-            :class="{ 'l2-menu-show': l2MenuVisible }">
-            <top-alert />
-            <slot />
-          </div>
-        </template>
-        <template v-else>
-          <a-result status="warning" title="未选择项目，请加入项目后重试" />
-        </template>
+        <sidebar-drawer v-if="isShowMenu" :active-menu="l2Menu" />
+        <l2-menu :l2-menu="l2Menu" v-if="l2MenuVisible && isShowMenu" />
+        <div
+          id="app-page"
+          class="app-page"
+          :class="{ 'l2-menu-show': l2MenuVisible }">
+          <top-alert />
+          <slot />
+        </div>
       </div>
     </template>
     <template v-else>
@@ -58,9 +53,6 @@ export default {
         return true
       }
       return globalSetting.value.key.length > 0
-    },
-    hasProjectId () {
-      return this.userInfo && this.userInfo.projectId
     },
   },
   watch: {

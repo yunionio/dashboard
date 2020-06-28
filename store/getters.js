@@ -20,4 +20,5 @@ export default {
   currentScopeResource: (state, getters) => getters['auth/currentScopeResource'],
   isSidepageOpen: (state, getters) => getters['sidePage/isSidepageOpen'],
   userConfigInfo: (state, getters) => state.userConfig.info,
+  profile: (state, getters) => state.profile.data,
 }
