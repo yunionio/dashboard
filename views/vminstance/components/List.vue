@@ -524,9 +524,14 @@ export default {
                 meta: () => {
                   const ret = { validate: true, tooltip: null }
                   const isAllOneCloud = this.list.selectedItems.every((item) => { return item.hypervisor === typeClouds.hypervisorMap.kvm.key })
+                  const isOk = this.list.selectedItems.every((item) => { return ['running', 'ready'].includes(item.status) })
                   if (!isAllOneCloud) {
                     ret.validate = false
                     ret.tooltip = '暂只有OneCloud平台支持该操作'
+                    return ret
+                  }
+                  if (!isOk) {
+                    ret.tooltip = '只有运行中或关机状态的主机支持此操作'
                     return ret
                   }
                   return ret

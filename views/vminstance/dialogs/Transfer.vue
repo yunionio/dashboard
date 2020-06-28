@@ -93,6 +93,7 @@ export default {
         limit: 20,
         enabled: 1,
         host_status: 'online',
+        server_id_for_network: this.firstData.id,
       }
       if (this.isAdminMode && this.isSingle) {
         ret.project_domain = this.params.data[0].domain_id
