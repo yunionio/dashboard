@@ -1,7 +1,7 @@
 <template>
-  <div class="navbar-wrap d-flex align-items-center">
+  <div class="navbar-wrap d-flex align-items-center" @click.stop.prevent="handleCloseSidebar">
     <template v-if="authInfoLoaded && isShowMenu">
-      <a-tooltip title="导航菜单" placement="bottomRight">
+      <a-tooltip title="导航菜单" placement="right">
         <div class="d-flex align-items-center navbar-item-trigger justify-content-center global-map-btn ml-1" @click.stop.prevent="handleToggleSidebar">
           <icon type="menu" style="font-size: 24px;" />
         </div>
@@ -525,6 +525,14 @@ export default {
         name: 'sidebar',
         data: {
           drawerVisible,
+        },
+      })
+    },
+    handleCloseSidebar () {
+      this.$store.dispatch('common/updateObject', {
+        name: 'sidebar',
+        data: {
+          drawerVisible: false,
         },
       })
     },
