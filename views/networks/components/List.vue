@@ -26,6 +26,10 @@ export default {
       type: Array,
       default: () => ([]),
     },
+    getParams: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data () {
     return {
@@ -36,6 +40,7 @@ export default {
         getParams: {
           order_by: 'index',
           order: 'asc',
+          ...this.getParams,
         },
       }),
       groupActions: [
