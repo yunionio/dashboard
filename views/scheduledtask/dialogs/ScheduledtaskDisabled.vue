@@ -2,6 +2,11 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">禁用</div>
     <div slot="body">
+      <a-alert class="mb-4" type="warning">
+        <div slot="message">
+          禁用后，定时任务不生效
+        </div>
+      </a-alert>
       <dialog-selected-tips name="定时任务" class="mt-3" :count="params.data.length" action="禁用" />
       <dialog-table v-if="params.columns && params.columns.length" :data="params.data" :columns="params.columns.slice(0, 3)" />
     </div>
