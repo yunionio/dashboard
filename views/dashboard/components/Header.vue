@@ -12,7 +12,7 @@
       </li>
     </draggable>
     <a-button @click="handleRefresh" type="link" icon="sync" class="action-btn" />
-    <a-dropdown :trigger="['click']" slot="tabBarExtraContent" placement="bottomRight">
+    <a-dropdown :trigger="['click']" slot="tabBarExtraContent" placement="bottomRight" v-if="isPrivate">
       <a class="ant-dropdown-link font-weight-bold pl-2 pr-2 h-100 d-block action-btn" @click="e => e.preventDefault()">
         <icon type="more" style="font-size: 18px;" />
       </a>
@@ -69,6 +69,11 @@ export default {
     },
     // 是否为默认面板
     isDefaultOption: Boolean,
+  },
+  data () {
+    return {
+      isPrivate: process.env.VUE_APP_IS_PRIVATE,
+    }
   },
   computed: {
     ...mapGetters(['scope']),
