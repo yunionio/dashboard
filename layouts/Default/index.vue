@@ -3,15 +3,20 @@
     <template v-if="$store.state.auth.canRenderDefaultLayout">
       <navbar />
       <div class="app-content position-relative h-100">
-        <sidebar-drawer v-if="isShowMenu" :active-menu="l2Menu" />
-        <l2-menu :l2-menu="l2Menu" v-if="l2MenuVisible && isShowMenu" />
-        <div
-          id="app-page"
-          class="app-page"
-          :class="{ 'l2-menu-show': l2MenuVisible }">
-          <top-alert />
-          <slot />
-        </div>
+        <template v-if="hasProjectId">
+          <sidebar-drawer v-if="isShowMenu" :active-menu="l2Menu" />
+          <l2-menu :l2-menu="l2Menu" v-if="l2MenuVisible && isShowMenu" />
+          <div
+            id="app-page"
+            class="app-page"
+            :class="{ 'l2-menu-show': l2MenuVisible }">
+            <top-alert />
+            <slot />
+          </div>
+        </template>
+        <template v-else>
+          <a-result status="warning" title="未选择项目，请加入项目后重试" />
+        </template>
       </div>
     </template>
     <template v-else>
@@ -23,6 +28,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import SidebarDrawer from '../Sidebar/Drawer'
 import L2Menu from '../Sidebar/Menu'
 import Navbar from '@scope/layouts/Navbar'
@@ -45,12 +51,16 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['userInfo']),
     isShowMenu () {
       const { globalSetting } = this.$store.state
       if (!globalSetting || (globalSetting && !globalSetting.value) || (globalSetting.value && !globalSetting.value.key)) {
         return true
       }
       return globalSetting.value.key.length > 0
+    },
+    hasProjectId () {
+      return this.userInfo && this.userInfo.projectId
     },
   },
   watch: {

@@ -34,9 +34,11 @@ export default {
   },
   watch: {
     userInfo: {
-      handler (val = {}) {
-        if (!R.isNil(val.projects) && !R.isEmpty(val.projects)) {
-          this.$router.push('/dashboard')
+      handler (val = {}, oldVal = {}) {
+        if (val.id !== oldVal.id) {
+          if (!R.isNil(val.projects) && !R.isEmpty(val.projects)) {
+            this.$router.push('/dashboard')
+          }
         }
       },
       immediate: true,
