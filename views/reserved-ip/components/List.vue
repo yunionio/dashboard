@@ -8,6 +8,8 @@
 </template>
 
 <script>
+import * as R from 'ramda'
+import { mapGetters } from 'vuex'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
@@ -56,7 +58,13 @@ export default {
             })
           },
           meta: () => {
+            let validate = true
+            if (!R.isNil(this.data) && !R.isEmpty(this.data)) {
+              validate = this.isOwner(this.data)
+            }
             return {
+              validate,
+              tooltip: !validate ? '权限不足' : null,
               buttonType: 'primary',
             }
           },
@@ -74,14 +82,13 @@ export default {
               name: '预留IP',
             })
           },
-          meta: () => {
-            return {
-              validate: this.list.allowDelete(),
-            }
-          },
+          meta: () => this.$getDeleteResult(this.list.selectedItems),
         },
       ],
     }
+  },
+  computed: {
+    ...mapGetters(['isAdminMode', 'isDomainMode', 'userInfo']),
   },
   created () {
     this.initSidePageTab('detail')
@@ -95,6 +102,11 @@ export default {
         ...this.getParams,
       }
       return ret
+    },
+    isOwner (obj) {
+      if (this.isAdminMode) return true
+      if (this.isDomainMode) return obj.domain_id === this.userInfo.projectDomainId
+      return obj.tenant_id === this.userInfo.projectId
     },
   },
 }

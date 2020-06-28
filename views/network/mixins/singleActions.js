@@ -170,8 +170,8 @@ export default {
                   onManager: this.onManager,
                 })
               },
-              meta: () => {
-                if (!this.isAdminMode) {
+              meta: (obj) => {
+                if (!this.isPower(obj)) {
                   return {
                     validate: false,
                     tooltip: '权限不足',
@@ -195,6 +195,12 @@ export default {
                 })
               },
               meta: (obj) => {
+                if (!this.isPower(obj)) {
+                  return {
+                    validate: false,
+                    tooltip: '权限不足',
+                  }
+                }
                 if (obj.brand.toLowerCase() === 'onecloud') {
                   return {
                     validate: false,
