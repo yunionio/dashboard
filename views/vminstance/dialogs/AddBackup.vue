@@ -70,6 +70,7 @@ export default {
         enabled: 1,
         host_type: this.firstData.hypervisor,
         host_status: 'online',
+        server_id_for_network: this.firstData.id,
       }
       if (this.firstData.hypervisor === hypervisorMap.kvm.key) {
         params.host_type = 'hypervisor'
