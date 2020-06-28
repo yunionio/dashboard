@@ -271,6 +271,12 @@ export default {
                   })
                 },
                 meta: () => {
+                  if (this.list.selectedItems.some(item => !this.isPower(item))) {
+                    return {
+                      validate: false,
+                      tooltip: '权限不足',
+                    }
+                  }
                   if (this.list.selectedItems.some(v => v.brand.toLowerCase() === 'onecloud')) {
                     return {
                       validate: false,
