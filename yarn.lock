@@ -6737,10 +6737,10 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
-jsrsasign@^8.0.12:
-  version "8.0.16"
-  resolved "https://registry.yarnpkg.com/jsrsasign/-/jsrsasign-8.0.16.tgz#ca5db63dd8613624136e691f8ea68545612ace70"
-  integrity sha512-4yR8Bm76RKlh+qYtS7m7F1wjKB2A0R0e0VxyMy10PJNEpb/UiXKS40QmU36nuUT7Ea4/cbv4HXu1Z9c91nwLow==
+jsrsasign@^8.0.20:
+  version "8.0.20"
+  resolved "https://registry.yarnpkg.com/jsrsasign/-/jsrsasign-8.0.20.tgz#37d8029c9d8f794d8ac8d8998bce319921491f11"
+  integrity sha512-JTXt9+nqdynIB8wFsS6e8ffHhIjilhywXwdaEVHSj9OVmwldG2H0EoCqkQ+KXkm2tVqREfH/HEmklY4k1/6Rcg==
 
 killable@^1.0.1:
   version "1.0.1"
@@ -10983,10 +10983,10 @@ vxe-table-plugin-antd@^1.8.9:
   resolved "https://registry.yarnpkg.com/vxe-table-plugin-antd/-/vxe-table-plugin-antd-1.8.9.tgz#19312e9dcf18724de44210fe6b4c54281fc74740"
   integrity sha512-f+8GZdzftGY/jsaWuy7jCZEUXg5U9v4zBC/Kxv7bWmcZ9i8kQAnqKKi1SYpRbA8TlMniq+UqHJvekwqIOa4Vkw==
 
-vxe-table@^2.9.9:
-  version "2.9.11"
-  resolved "https://registry.yarnpkg.com/vxe-table/-/vxe-table-2.9.11.tgz#a3fedb4a736ea8e04d566bf5ebd8a95a83cd8672"
-  integrity sha512-SXsGWcXNMpLW3Edhp/PwUDiOmeIlK0uXTEVsYpiM6zj/PlFtYX+jowAAdylNC9vpd5mQAF7Emda32Q65Ej9Bvg==
+vxe-table@^2.9.14:
+  version "2.9.14"
+  resolved "https://registry.yarnpkg.com/vxe-table/-/vxe-table-2.9.14.tgz#d4366ff693f578c053e336cdd0e9739144f5ff8e"
+  integrity sha512-DoKHF+Aykw5LQ1LTX82Q0Bkv9plQH8iaMoLFXm6MFqcGh2RUIEQ0/202XpdqnweJGC5B3F8RBgIADqja/ue4pw==
 
 w3c-hr-time@^1.0.1:
   version "1.0.2"

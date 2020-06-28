@@ -23,7 +23,7 @@
     "js-base64": "^2.5.1",
     "js-cookie": "^2.2.1",
     "js-yaml": "^3.13.1",
-    "jsrsasign": "^8.0.12",
+    "jsrsasign": "^8.0.20",
     "lodash": "^4.17.15",
     "marked": "^1.1.0",
     "moment": "^2.24.0",
@@ -41,7 +41,7 @@
     "vue-router": "^3.2.0",
     "vuedraggable": "^2.23.2",
     "vuex": "^3.4.0",
-    "vxe-table": "^2.9.9",
+    "vxe-table": "^2.9.14",
     "vxe-table-plugin-antd": "^1.8.9",
     "xe-utils": "^2.4.5",
     "xterm": "3.7.0"
