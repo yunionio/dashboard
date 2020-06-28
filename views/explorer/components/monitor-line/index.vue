@@ -19,14 +19,6 @@ import { tableColumnMaps } from '@Monitor/constants'
 import LineChart from '@/sections/Charts/Line'
 import { ColorHash } from '@/utils/colorHash'
 
-const colorHash = new ColorHash({
-  hue: [
-    { min: 0, max: 360 },
-    { min: 0, max: 360 },
-    { min: 0, max: 360 },
-  ],
-})
-
 export default {
   name: 'ExplorerMonitorLine',
   components: {
@@ -97,6 +89,16 @@ export default {
   },
   created () {
     this.getMonitorLine()
+    this.colorHash = new ColorHash({
+      hue: [
+        { min: 0, max: 360 },
+        { min: 0, max: 360 },
+        { min: 0, max: 360 },
+      ],
+    })
+  },
+  destroyed () {
+    this.colorHash = null
   },
   methods: {
     setChartInstance (v) {
@@ -113,7 +115,7 @@ export default {
         this.$set(this.lineChartOptionsC.series, i, {
           itemStyle: {
             normal: {
-              color: colors[i] || colorHash.hex(`${i * 1000}`),
+              color: colors[i] || this.colorHash.hex(`${i * 1000}`),
             },
           },
         })
