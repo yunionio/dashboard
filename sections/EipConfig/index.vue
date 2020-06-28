@@ -8,7 +8,7 @@
           :value="item.key">{{ item.label }}</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-form-item class="mb-0" v-if="isNew && types.none">
+    <a-form-item class="mb-0" v-if="isNew && !hiddenNoneType">
       <a-radio-group v-decorator="decorators.charge_type" @change="handleChargeTypeChange">
         <a-radio-button
           v-for="item of chargeTypes"
