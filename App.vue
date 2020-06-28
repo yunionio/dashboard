@@ -15,7 +15,6 @@
 import * as R from 'ramda'
 import { mapGetters, mapState } from 'vuex'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
-import store from './store'
 import DefaultLayout from '@/layouts/Default'
 import FullScreenLayout from '@/layouts/FullScreen'
 import DialogManager from '@/sections/DialogManager'
@@ -97,7 +96,7 @@ export default {
       this.socket.connect()
     },
     initShowSystemResource () {
-      store.dispatch('userConfig/queryParametersByKey', { key: SHOW_SYSTEM_RESOURCE })
+      this.$store.dispatch('userConfig/queryParametersByKey', { key: SHOW_SYSTEM_RESOURCE })
     },
   },
 }
