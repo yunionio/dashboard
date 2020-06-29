@@ -45,6 +45,13 @@ export default {
             return row.loadbalancer_spec || '-'
           },
         },
+        {
+          field: 'cluster',
+          title: '集群',
+          formatter: ({ row }) => {
+            return row.cluster || '-'
+          },
+        },
         getBrandTableColumn(),
         {
           field: 'charge_type',

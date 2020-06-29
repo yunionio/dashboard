@@ -83,6 +83,14 @@ export default {
           return row.loadbalancer_spec || '-'
         },
       },
+      {
+        field: 'cluster',
+        title: '集群',
+        minWidth: 100,
+        formatter: ({ row }) => {
+          return row.cluster || '-'
+        },
+      },
       // {
       //   field: 'server_type',
       //   title: '端口/健康检查/后端服务器',
