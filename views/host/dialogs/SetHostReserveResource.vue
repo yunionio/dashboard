@@ -2,12 +2,17 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{ title }}</div>
     <div slot="body">
+      <a-alert class="mb-2" type="warning">
+        <template v-slot:message>
+          此页面支持为每个GPU卡设置相同的预留资源,如需单独设置可在透传设备列表操作
+        </template>
+      </a-alert>
       <dialog-selected-tips :name="$t('dictionary.host')" :count="params.data.length" :action="title" />
       <dialog-table :data="params.data" :columns="columns" />
       <a-form
         :form="form.fc"
         hideRequiredMark>
-        <reserve-resource :decorators="decorators" label="单个GPU预留资源" />
+        <reserve-resource :decorators="decorators" label="每个GPU预留资源" />
       </a-form>
     </div>
     <div slot="footer">
