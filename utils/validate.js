@@ -29,6 +29,10 @@ export const REGEXP = {
     regexp: /^[a-zA-Z][a-zA-Z0-9-]{0,127}([a-zA-Z0-9-]|#{1,3})$/,
     message: i18n.t('validator.serverName'),
   },
+  resourceCreateName: {
+    regexp: /^[a-zA-Z$][a-zA-Z0-9-${}]{0,60}([a-zA-Z0-9}]|#{1,3})$/,
+    message: i18n.t('validator.resourceCreateName'),
+  },
   serverCreateName: {
     func: value => {
       const regexp = /^[a-z$][a-z0-9-${}]{0,60}([a-z0-9}]|#{1,3})$/
