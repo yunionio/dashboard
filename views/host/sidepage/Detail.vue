@@ -246,7 +246,11 @@ export default {
               title: '超售比',
               slots: {
                 default: ({ row }, h) => {
-                  if (row.cpu_commit_bound) return [<a onClick={this.openHostAdjustOversoldRatioDialog}>{row.cpu_commit_bound}</a>]
+                  if (row.cpu_commit_bound) {
+                    return [
+                      <a class="mem-edit-item" onClick={this.openHostAdjustOversoldRatioDialog}>{row.cpu_commit_bound} <a class="edit-icon"><a-icon type='edit' /></a></a>,
+                    ]
+                  }
                   return '-'
                 },
               },
@@ -298,7 +302,7 @@ export default {
               title: '超售比',
               slots: {
                 default: ({ row }, h) => {
-                  if (row.mem_commint_bound) return [<a onClick={this.openHostAdjustOversoldRatioDialog}>{row.mem_commint_bound}</a>]
+                  if (row.mem_commint_bound) return [<a class="mem-edit-item" onClick={this.openHostAdjustOversoldRatioDialog}>{row.mem_commint_bound}<a class="edit-icon"><a-icon type='edit' /></a></a>]
                   return '-'
                 },
               },
@@ -417,3 +421,13 @@ export default {
   },
 }
 </script>
+<style lang="scss">
+  .mem-edit-item {
+    .edit-icon {
+      display: none;
+    }
+    &:hover .edit-icon {
+      display: inline;
+    }
+  }
+</style>
