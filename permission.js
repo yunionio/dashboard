@@ -43,12 +43,14 @@ router.beforeEach(async (to, from, next) => {
   const hasScopeResource = !R.isEmpty(store.getters.scopeResource) && !R.isNil(store.getters.scopeResource)
   const hasCapability = !R.isEmpty(store.getters.capability) && !R.isNil(store.getters.capability)
   const hasGlobalSettings = !R.isEmpty(store.state.globalSetting.id) && !R.isNil(store.state.globalSetting.id)
+  const hasProfile = !R.isEmpty(store.state.profile.id) && !R.isNil(store.state.profile.id)
   try {
     !hasRoles && await store.dispatch('auth/getInfo')
     !hasCapability && await store.dispatch('auth/getCapabilities')
     !hasPermission && await store.dispatch('auth/getPermission')
     !hasScopeResource && await store.dispatch('auth/getScopeResource')
     !hasGlobalSettings && await store.dispatch('globalSetting/getFetchGlobalSetting')
+    !hasProfile && await store.dispatch('profile/get')
   } catch (error) {
     throw error
   } finally {
