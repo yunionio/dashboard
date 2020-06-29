@@ -3,17 +3,17 @@
       <a-row>
         <a-col :span="8">
           <a-form-item>
-          CPU: <a-input-number v-decorator="decorators.cpu" :min="1" /> 核
+          CPU: <a-input-number v-decorator="decorators.cpu" :min="1" :precision="0" /> 核
           </a-form-item>
         </a-col>
         <a-col :span="8">
           <a-form-item>
-          内存: <a-input-number v-decorator="decorators.memory" :min="1" /> G
+          内存: <a-input-number v-decorator="decorators.memory" :min="1" :precision="0" /> G
           </a-form-item>
         </a-col>
         <a-col :span="8">
           <a-form-item>
-          硬盘: <a-input-number v-decorator="decorators.disk" :min="1" /> G
+          硬盘: <a-input-number v-decorator="decorators.disk" :min="1" :precision="0" /> G
           </a-form-item>
         </a-col>
       </a-row>
