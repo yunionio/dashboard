@@ -12,7 +12,7 @@ export default {
         addBackup: true,
         formRules: [
           { required: true, message: '请输入名称' },
-          { validator: this.$validate('serverCreateName') },
+          { validator: this.$validate('resourceCreateName') },
         ],
         slotCallback: row => {
           return (
