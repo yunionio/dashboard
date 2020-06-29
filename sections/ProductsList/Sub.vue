@@ -136,6 +136,7 @@ export default {
       this.$emit('route-change')
     },
     handleL1LinkClick () {
+      this.visible = false
       this.$emit('route-change')
       let path
       if (this.item.menus) {
@@ -152,6 +153,9 @@ export default {
 <style lang="scss">
 .l2-menus-popover {
   padding: 0;
+  .ant-popover-inner {
+    background-color: rgb(19, 44, 75, .8);
+  }
   .ant-popover-arrow {
     display: none;
   }
@@ -169,7 +173,7 @@ export default {
 .l2-menu-list {
   .l2-menu-group-title {
     font-size: 12px;
-    color: #53627C;
+    color: rgb(255, 255, 255, .7);
     line-height: 24px;
     margin-bottom: 6px;
     margin-top: 6px;
@@ -182,12 +186,12 @@ export default {
     padding-left: 24px;
     padding-right: 16px;
     font-size: 14px;
-    color: #43444B;
+    color: #fff;
     &:hover {
-      background-color: rgba(0,0,0,0.04);
+      background-color: #00599c;
     }
     &.active {
-      background-color: rgba(0,0,0,0.04);
+      background-color: #007fdf !important;
     }
   }
 }
