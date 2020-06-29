@@ -181,7 +181,7 @@ export default {
         data.provider = 'ZStack'
       }
     },
-    doCreateCloudaccount (formData) {
+    async doCreateCloudaccount (formData) {
       const data = {
         ...formData,
         enabled: true,
@@ -192,7 +192,8 @@ export default {
       }
       this._addDomainProject(data)
       this._providerDiff(data)
-      return this.cloudaccountsM.create({ data })
+      const ret = await this.cloudaccountsM.create({ data })
+      return ret.data
     },
     formatNetParams (values) {
       const { keys = [] } = values
@@ -299,7 +300,7 @@ export default {
         if (this.brand === 'vmware') {
           return await this.vmwareForm(values)
         }
-        await this.doCreateCloudaccount(values)
+        this.newAccountInfo = await this.doCreateCloudaccount(values)
         if (this.isBill) {
           this.currentComponent = 'billConfig'
         } else {
