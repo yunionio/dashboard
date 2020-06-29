@@ -29,7 +29,7 @@ export const DECORATORS = {
       validateFirst: true,
       rules: [
         { required: true, message: '请输入名称' },
-        { validator: validateForm('serverCreateName') },
+        { validator: validateForm('resourceCreateName') },
       ],
     },
   ],

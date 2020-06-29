@@ -7,7 +7,7 @@
         <domain-project :decorators="decorators.projectDomain" :fc="form.fc" :labelInValue="false" />
       </a-form-item>
       <a-form-item label="名称" v-bind="formItemLayout">
-        <a-input :placeholder="$t('validator.serverCreateName')" v-decorator="decorators.generate_name" />
+        <a-input :placeholder="$t('validator.resourceCreateName')" v-decorator="decorators.generate_name" />
         <name-repeated
           v-slot:extra
           res="dbinstances"
