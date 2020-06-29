@@ -19,7 +19,7 @@
         label="名称"
         v-bind="formItemLayout"
         extra="名称支持序号占位符‘#’，用法如下：名称：host## 数量：2,实例为：host01、host02，已有同名实例，序号顺延">
-        <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverCreateName')" />
+        <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceCreateName')" />
       </a-form-item>
       <a-form-item label="数量" v-bind="formItemLayout">
         <a-input-number v-decorator="decorators.count" :min="1" :max="100" :disabled="isInstallOperationSystem" />
@@ -235,7 +235,7 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: '请输入名称' },
-              { validator: this.$validate('serverCreateName') },
+              { validator: this.$validate('resourceCreateName') },
             ],
           },
         ],
