@@ -31,8 +31,8 @@
 </template>
 
 <script>
-import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 import Detail from './Detail'
 import DiskList from '@Compute/views/disk/components/List'
 import HostList from '@Compute/views/host/components/List'
@@ -130,7 +130,7 @@ export default {
                   data: this.list.selectedItems,
                   columns: this.columns,
                   list: this.list,
-                  resId: me.params.resId,
+                  resId: me.getParams.storage,
                 })
               },
               meta: () => {
@@ -151,7 +151,7 @@ export default {
                   data: [row],
                   columns: this.columns,
                   list: this.list,
-                  resId: me.params.resId,
+                  resId: me.getParams.storage,
                 })
               },
               meta: () => {
