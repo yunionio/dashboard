@@ -547,7 +547,7 @@ export default {
 .navbar-wrap {
   color: #606266;
   height: 60px;
-  box-shadow: 0 2px 4px 0 hsla(0,0%,93%,.5), 0 2px 4px 0 hsla(0,0%,93%,.5);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05), 0 2px 4px 0 rgba(0, 0, 0, 0.05);
   padding: 0;
   position: fixed;
   top: 0;
