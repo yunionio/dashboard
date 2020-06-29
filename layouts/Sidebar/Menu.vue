@@ -118,7 +118,7 @@ export default {
   width: 160px;
   top: 60px;
   bottom: 0;
-  background-color: rgb(247, 248, 250);
+  background-color: rgb(66, 86, 111);
   box-shadow: 1px 0 6px 0 rgba(165,192,207,.3);
   ::v-deep {
     .scrollbar-wrap {
@@ -135,7 +135,7 @@ export default {
   transition: left .2s;
   padding: 24px 0 0 23px;
   .title {
-    color: #435a71;
+    color: #fff;
     font-size: 18px;
     margin-bottom: 16px;
   }
@@ -147,7 +147,7 @@ export default {
   }
   .level-3-group-title {
     font-size: 12px;
-    color: #53627C;
+    color: rgb(238,238,238);
     line-height: 24px;
     margin-left: 3px;
     margin-bottom: 14px;
@@ -159,7 +159,7 @@ export default {
     padding-top: 6px;
     padding-left: 20px;
     font-size: 14px;
-    color: #43444B;
+    color: #fff;
     position: relative;
     cursor: pointer;
     &::after {
@@ -169,14 +169,14 @@ export default {
       top: 0;
       height: 100%;
       width: 1px;
-      background-color: #D8D8D8;
+      background-color: rgb(98,126,162);
       transition: width .2s ease;
     }
     &:hover, &.active {
       text-decoration: none;
       &::after {
         width: 4px;
-        background-color: #1890ff;
+        background-color: rgb(54,137,247);
       }
     }
   }
