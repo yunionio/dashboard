@@ -31,13 +31,13 @@
 </template>
 
 <script>
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
+import Detail from './Detail'
 import DiskList from '@Compute/views/disk/components/List'
 import HostList from '@Compute/views/host/components/List'
 import DiskRecoveryList from '@Compute/views/disk-recovery/components/List'
 import CachedImages from '@Storage/views/blockstorage/sidepage/CachedImages'
-import SingleActionsMixin from '../mixins/singleActions'
-import ColumnsMixin from '../mixins/columns'
-import Detail from './Detail'
 import { getStatusTableColumn, getCopyWithContentTableColumn, getProjectTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
