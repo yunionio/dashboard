@@ -26,7 +26,7 @@
           label="名称">
           <a-input
             v-decorator="decorators.name"
-            :placeholder="$t('validator.serverCreateName')" />
+            :placeholder="$t('validator.resourceCreateName')" />
           <name-repeated
             v-slot:extra
             res="servers"
@@ -94,7 +94,7 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: '请输入主机名称' },
-              { validator: this.$validate('serverCreateName') },
+              { validator: this.$validate('resourceCreateName') },
             ],
           },
         ],
