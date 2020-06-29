@@ -22,7 +22,7 @@
           :decorator="decorators.cloudregionZone" />
       </a-form-item>
       <a-form-item label="名称" v-if="!isServertemplate">
-        <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverCreateName')" />
+        <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceCreateName')" />
         <name-repeated
           v-slot:extra
           res="servers"
