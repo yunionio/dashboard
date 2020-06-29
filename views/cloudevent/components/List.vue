@@ -8,14 +8,12 @@
       :show-page="false"
       :refresh-method="refresh">
       <template v-slot:right-tools-prepend>
-        <a-date-picker
+        <a-range-picker
+          style="width: 370px;"
           class="mr-2"
-          v-model="dateTime"
-          style="width: 300px"
+          v-model="rangeTime"
           format="YYYY-MM-DD HH:mm:ss"
-          placeholder="选择终止时间进行查询"
-          @change="handleDateTimeChange"
-          :showTime="{ defaultValue: $moment('00:00:00', 'HH:mm:ss') }" />
+          @change="handleRangeTimeChange" />
       </template>
     </page-list>
   </div>
@@ -38,7 +36,7 @@ export default {
   },
   data () {
     return {
-      dateTime: null,
+      rangeTime: [null, null],
       list: this.$list.createList(this, {
         id: this.id,
         getParams: this.getParam,
@@ -152,21 +150,21 @@ export default {
         data: val,
       })
     },
-    handleDateTimeChange () {
-      this.list.reset()
-      this.list.fetchData()
-    },
     getParam () {
       const param = {}
-      if (this.dateTime) {
-        param.until = this.$moment.utc(this.dateTime).format()
+      if (this.rangeTime[0] && this.rangeTime[1]) {
+        param.filter = `created_at.between('${this.$moment.utc(this.rangeTime[0]).format()}', '${this.$moment.utc(this.rangeTime[1]).format()}')`
       } else {
-        delete param.until
+        delete param.filter
       }
       return param
     },
     refresh (clearSelected) {
       clearSelected()
+      this.list.reset()
+      this.list.fetchData()
+    },
+    handleRangeTimeChange () {
       this.list.reset()
       this.list.fetchData()
     },
