@@ -6,7 +6,7 @@
       </a-select-option>
     </a-select>
     <div slot="extra">
-      某些云厂商需要设置代理才可以正常访问，例如谷歌云”改为“某些云厂商需要设置代理才可以正常访问，例如谷歌云。为空则表示直连。
+      某些云厂商需要设置代理才可以正常访问，例如谷歌云。
       <div>没有想要的？可以前往 <span class="link-color oc-pointer" @click="createProxySetting">新建</span></div>
     </div>
   </a-form-item>
@@ -51,7 +51,7 @@ export default {
   watch: {
     proxyOpts (val) {
       if (val && val.length > 0) {
-        this.fc.setFieldsValue({ 'proxy_setting': val[0].id })
+        this.fc.setFieldsValue({ proxy_setting: val[0].id })
       }
     },
   },
@@ -72,11 +72,11 @@ export default {
         limit: 0,
       }
       if (this.account) {
-        params['project_domain'] = this.account.domain_id
+        params.project_domain = this.account.domain_id
       } else if (this.l3PermissionEnable && this.isAdminMode) {
-        params['project_domain'] = this.fc.getFieldValue('domain').key
+        params.project_domain = this.fc.getFieldValue('domain').key
       } else {
-        params['project_domain'] = this.userInfo.projectDomainId
+        params.project_domain = this.userInfo.projectDomainId
       }
       this.loading = true
       try {
