@@ -15,7 +15,7 @@
             :decorator="decorators.regionZone" />
         </a-form-item>
         <a-form-item label="名称" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverCreateName')" />
+          <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceCreateName')" />
         </a-form-item>
         <a-form-item :label="storageLabel" v-bind="formItemLayout">
           <a-select v-decorator="decorators.storage_id" @change="__storageChange">
@@ -102,7 +102,7 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: '请输入名称' },
-              { validator: this.$validate('serverCreateName') },
+              { validator: this.$validate('resourceCreateName') },
             ],
           },
         ],
