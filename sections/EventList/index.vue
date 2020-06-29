@@ -8,13 +8,12 @@
       :show-page="false"
       :refresh-method="refresh" />
      <div class="mb-3 search-date">
-      <a-date-picker
-        v-model="dateTime"
-        style="width: 300px"
-        format="YYYY-MM-DD HH:mm:ss"
-        placeholder="选择终止时间进行查询"
-        @change="handleDateTimeChange"
-        :showTime="{ defaultValue: $moment('00:00:00', 'HH:mm:ss') }" />
+        <a-range-picker
+          style="width: 370px;"
+          class="mr-2"
+          v-model="rangeTime"
+          format="YYYY-MM-DD HH:mm:ss"
+          @change="handleRangeTimeChange" />
     </div>
   </div>
 </template>
@@ -39,7 +38,7 @@ export default {
   },
   data () {
     return {
-      dateTime: null,
+      rangeTime: [null, null],
       list: this.$list.createList(this, {
         resource: 'actions',
         apiVersion: 'v1',
@@ -203,7 +202,7 @@ export default {
       }
       return param
     },
-    handleDateTimeChange () {
+    handleRangeTimeChange () {
       this.list.reset()
       this.list.fetchData()
     },

@@ -182,7 +182,7 @@ export default {
   .l2-menu-item {
     display: block;
     padding-bottom: 4px;
-    padding-top: 6px;
+    padding-top: 4px;
     padding-left: 24px;
     padding-right: 16px;
     font-size: 14px;
