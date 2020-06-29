@@ -3,6 +3,7 @@
  * author: houjiazong <houjiazong@gmail.com>
  * date: 2018/08/07
  */
+import Vue from 'vue'
 import * as R from 'ramda'
 import _ from 'lodash'
 import { Manager } from '@/utils/manager'
@@ -172,6 +173,8 @@ class CreateList {
     itemGetParams = {},
     // 不使用localstorage中的limit参数
     disableStorageLimit = false,
+    // 额外的data获取方法Object
+    extraDataFecther = {},
   }) {
     // 列表唯一标识
     this.id = id ? `LIST_${id}` : undefined
@@ -222,6 +225,9 @@ class CreateList {
     // 特殊根据某条数据进行get时的参数，如 k8s/deployment/list
     this.itemGetParams = itemGetParams
     this.disableStorageLimit = disableStorageLimit
+    // extraDataFecther
+    this.extraDataFecther = extraDataFecther
+    this.extraData = {}
   }
 
   // 重写selectedItems getter和setter
@@ -349,6 +355,15 @@ class CreateList {
         this.offset = responseOffset
       } else {
         this.offset = 0
+      }
+      if (!R.isNil(this.extraDataFecther) && !R.isEmpty(this.extraDataFecther)) {
+        for (const key in this.extraDataFecther) {
+          this.extraDataFecther[key](response.data, this.params).then(extraResponse => {
+            Vue.set(this.extraData, key, extraResponse.data)
+          }).catch((error) => {
+            console.error(`get ${key} data error: ${error}`)
+          })
+        }
       }
       return response.data
     } catch (error) {

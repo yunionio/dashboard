@@ -38,7 +38,7 @@
       <page-list-table
         ref="table"
         :id-key="idKey"
-        :data="data"
+        :data="finalData"
         :columns="columns"
         :loading="loading"
         :group-actions="groupActions"
@@ -68,6 +68,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import PageListHeader from './components/Header'
 import PageListTable from './components/Table'
@@ -135,6 +136,7 @@ export default {
       type: String,
       default: 'checkbox',
     },
+    dataMapper: Function,
   },
   provide: {
     // 声明在List中
@@ -178,8 +180,17 @@ export default {
     idKey () {
       return this.list.idKey
     },
+    extraData () {
+      return this.list.extraData
+    },
     data () {
       return this.list.data
+    },
+    finalData () {
+      if (!R.isNil(this.extraData) && !R.isEmpty(this.extraData) && this.dataMapper) {
+        return this.dataMapper(this.data, this.extraData)
+      }
+      return this.data
     },
     limit () {
       return this.list.limit
