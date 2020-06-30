@@ -11,7 +11,6 @@
 import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import { getNameFilter, getBrandFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import expectStatus from '@/constants/expectStatus'
@@ -36,15 +35,22 @@ export default {
         getParams: this.getParam,
         steadyStatus: Object.values(expectStatus.clouduser).flat(),
         filterOptions: {
-          name: getNameFilter(),
-          provider: getBrandFilter(),
+          name: {
+            label: this.$t('cloudenv.clouduser_list_t1'),
+          },
+          owner_name: {
+            label: this.$t('cloudenv.clouduser_list_t4'),
+          },
         },
       }),
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: this.$t('table.column.title.name'), key: 'name' },
-          { label: this.$t('table.column.title.brand'), key: 'brand' },
+          { label: this.$t('cloudenv.clouduser_list_t1'), key: 'name' },
+          { label: this.$t('cloudenv.clouduser_list_t5'), key: 'is_console_login' },
+          { label: '状态', key: 'status' },
+          { label: this.$t('cloudenv.clouduser_list_t3'), key: 'iam_login_url' },
+          { label: this.$t('cloudenv.clouduser_list_t4'), key: 'owner_name' },
         ],
       },
       groupActions: [
