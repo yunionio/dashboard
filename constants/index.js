@@ -29,3 +29,58 @@ export const ACL_TYPE = {
   'public-read': '本账号写公开读',
   'public-read-write': '公开读写',
 }
+
+export const OSS_MONITOR_OPTS = {
+  aliyun: [
+    {
+      name: 'GetObjectE2eLatency',
+      label: 'GetObject请求平均E2E延时',
+      seleteItem: 'req_late',
+      fromItem: 'oss_latency',
+      as: 'GET类请求次数',
+      unit: 'ms',
+      transfer: 1,
+      tag: {
+        request: 'get',
+      },
+    },
+    {
+      name: 'GetObjectCount',
+      label: 'GetObject成功请求数',
+      seleteItem: 'req_count',
+      fromItem: 'oss_req',
+      as: 'GetObject成功请求数',
+      unit: '',
+      transfer: 1,
+      tag: {
+        request: 'get',
+      },
+    },
+  ],
+  huawei: [
+    {
+      name: 'GetObjectE2eLatency',
+      label: 'GET类请求次数',
+      seleteItem: 'req_count',
+      fromItem: 'oss_req',
+      as: 'GET类请求次数',
+      unit: '',
+      transfer: 1,
+      tag: {
+        request: 'get',
+      },
+    },
+    {
+      name: 'first_byte_latency',
+      label: 'GET类请求首字节平均时延',
+      seleteItem: 'req_late',
+      fromItem: 'oss_latency',
+      as: 'GET类请求首字节平均时延',
+      unit: 'ms',
+      transfer: 1,
+      tag: {
+        request: 'get',
+      },
+    },
+  ],
+}
