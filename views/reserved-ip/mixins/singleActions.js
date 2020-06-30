@@ -14,7 +14,14 @@ export default {
           })
         },
         meta: (obj) => {
-          return this.$getDeleteResult(obj)
+          let { validate, tooltip } = this.$getDeleteResult(obj)
+          if (validate) {
+            validate = this.isOwner(obj)
+          }
+          return {
+            validate,
+            tooltip,
+          }
         },
       },
     ]
