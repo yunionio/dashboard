@@ -22,6 +22,7 @@ import RedisDetail from './Detail'
 import RedisWhiteList from './WhiteList'
 import RedisAccountList from './AccountList'
 import RedisBackupList from './BackupList'
+import Monitor from './Monitor'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -34,6 +35,7 @@ export default {
     RedisWhiteList,
     RedisAccountList,
     RedisBackupList,
+    Monitor,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
@@ -43,6 +45,7 @@ export default {
         { label: '白名单设置', key: 'redis-white-list' },
         { label: '账号管理', key: 'redis-account-list' },
         { label: '备份列表', key: 'redis-backup-list' },
+        { label: '监控', key: 'monitor' },
         { label: '操作日志', key: 'event-drawer' },
       ],
     }
