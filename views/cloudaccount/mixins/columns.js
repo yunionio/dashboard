@@ -30,6 +30,21 @@ export default {
       getEnabledTableColumn(),
       getStatusTableColumn({ statusModule: 'cloudaccount' }),
       getStatusTableColumn({ statusModule: 'cloudaccountHealthStatus', title: '健康状态', field: 'health_status', minWidth: 90 }),
+      {
+        field: 'probe_at',
+        title: '检查时间',
+        minWidth: 100,
+        slots: {
+          default: ({ row }) => {
+            const time = this.$moment(row.probe_at)
+            if (time) {
+              return time.fromNow()
+            } else {
+              return '-'
+            }
+          },
+        },
+      },
       getGuestCountTableColumn(),
       getBalanceTableColumn(),
       getHostCountTableColumn(),
