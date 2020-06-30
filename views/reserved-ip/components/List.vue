@@ -82,7 +82,16 @@ export default {
               name: '预留IP',
             })
           },
-          meta: () => this.$getDeleteResult(this.list.selectedItems),
+          meta: () => {
+            let { validate, tooltip } = this.$getDeleteResult(this.list.selectedItems)
+            if (validate) {
+              validate = this.list.selectedItems.every(item => this.isOwner(item))
+            }
+            return {
+              validate,
+              tooltip,
+            }
+          },
         },
       ],
     }
