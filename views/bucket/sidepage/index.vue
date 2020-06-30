@@ -21,6 +21,7 @@ import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import Detail from './Detail'
 import Objects from './Objects'
+import Monitor from './Monitor'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -31,6 +32,7 @@ export default {
     Actions,
     Detail,
     Objects,
+    Monitor,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
@@ -38,6 +40,7 @@ export default {
       detailTabs: [
         { label: '详情', key: 'detail' },
         { label: '文件列表', key: 'objects' },
+        { label: '监控', key: 'monitor' },
         { label: '操作日志', key: 'event-drawer' },
       ],
     }
