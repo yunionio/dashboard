@@ -20,7 +20,7 @@
             </template>
           </template>
           <template v-else>
-            <a-input v-model="newValue[0]" ref="input" @keydown.13="handleConfirm" />
+            <a-input :value="newValue.join(valueSeparator)" ref="input" @keydown.13="handleConfirm" @change="handleInputChange" />
           </template>
         </ul>
         <div class="actions">
@@ -156,6 +156,11 @@ export default {
           this.newValue = [value]
         }
       }
+    },
+    handleInputChange (e) {
+      let val = e.target.value
+      val = val.split(this.valueSeparator)
+      this.newValue = val
     },
   },
 }
