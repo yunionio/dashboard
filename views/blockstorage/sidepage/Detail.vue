@@ -83,7 +83,7 @@ export default {
               slots: {
                 default: ({ row }) => {
                   return [
-                    <a class="edit-item">{row.commit_bound} <a class="edit-icon" onClick={this.updateCommitBound}><a-icon type='edit' /></a></a>,
+                    <a class="edit-item" onClick={this.updateCommitBound}>{row.commit_bound} <a class="edit-icon"><a-icon type='edit' /></a></a>,
                   ]
                 },
               },
