@@ -1898,6 +1898,12 @@
     "v2-ssl": "V2-SSL",
     "v2-ssl-cn": "V2-SSL-CN"
   },
+  "suggestsyRuleTypes": {
+    "EIP_UNUSED": "未挂载的弹性公网IP",
+    "DISK_UNUSED": "未挂载的云硬盘",
+    "LB_UNUSED": "未使用的负载均衡实例",
+    "SCALE_DOWN": "低负载的虚拟机"
+  },
   "common.batchAction": "批量操作",
   "common.action": "操作",
   "common.ok": "确定",
