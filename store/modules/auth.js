@@ -133,6 +133,8 @@ export default {
       state.historyUsers = newVal
     },
     UPDATE_LOGGED_USERS (state, payload) {
+      // 如果是cas登录则不保存信息
+      if (state.info && state.info.idp_driver === 'cas') return
       const newVal = { ...state.loggedUsers }
       if (payload.action === 'delete') {
         delete newVal[payload.key]
