@@ -14,6 +14,8 @@ import Policydefinition from '@Cloudenv/views/policydefinition'
 import Layout from '@/layouts/RouterView'
 import { hasSetupKey } from '@/utils/auth'
 
+import store from '@/store'
+
 export default {
   index: 9,
   meta: {
@@ -96,7 +98,7 @@ export default {
             label: '权限组',
             permission: 'cloudgroup_list',
             t: 'dictionary.cloudgroup',
-            hidden: () => !hasSetupKey(['aliyun', 'huawei', 'qcloud', 'aws', 'azure', 'google']),
+            hidden: () => store.getters.isProjectMode || !hasSetupKey(['aliyun', 'huawei', 'qcloud', 'aws', 'azure', 'google']),
           },
           component: Layout,
           children: [
