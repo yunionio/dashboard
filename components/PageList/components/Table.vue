@@ -1,5 +1,5 @@
 <template>
-  <floating-scroll :hiddenScrollbar="hiddenScrollbar">
+  <floating-scroll :hiddenScrollbar="hiddenScrollbar" unobtrusive>
     <vxe-grid
       highlight-hover-row
       highlight-current-row
@@ -203,7 +203,7 @@ export default {
       const gridEl = this.$refs.grid && this.$refs.grid.$el
       if (!gridEl) return
       const tableBodyEl = gridEl.querySelector('.vxe-table--body-wrapper .vxe-table--body')
-      const tableBodyWidth = tableBodyEl.getBoundingClientRect().width
+      const tableBodyWidth = tableBodyEl.getBoundingClientRect().width - 15
       if (tableBodyWidth) this.tableWidth = tableBodyWidth
       gridEl && this.$bus.$emit('FloatingScrollUpdate', {
         sourceElement: gridEl,
