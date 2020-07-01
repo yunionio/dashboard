@@ -163,7 +163,7 @@ export default {
         },
       },
       getMaintenanceTableColumn(),
-      getPublicScopeTableColumn({ vm: this }),
+      getPublicScopeTableColumn({ vm: this, resource: 'hosts' }),
       getProjectDomainTableColumn(),
       getRegionTableColumn(),
     ]

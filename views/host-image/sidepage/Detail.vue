@@ -43,7 +43,7 @@ export default {
             return <side-page-trigger permission="projects_get" name="ProjectSidePage" id={row.tenant_id} vm={this}>{ row.tenant }</side-page-trigger>
           },
         },
-        getPublicScopeTableColumn({ vm: this }),
+        getPublicScopeTableColumn({ vm: this, resource: 'guestimages' }),
         {
           field: 'type',
           title: '类型',

@@ -28,7 +28,7 @@ export default {
         title: '缓存数量',
         width: 80,
       },
-      getPublicScopeTableColumn({ vm: this }),
+      getPublicScopeTableColumn({ vm: this, resource: 'secgroups' }),
       {
         field: 'rules',
         title: '规则预览(策略，来源，协议，端口)',
