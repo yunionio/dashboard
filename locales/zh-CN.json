@@ -636,8 +636,8 @@
       "success": "正常"
     },
     "lb": {
-      "enabled": "已启用",
-      "disabled": "已禁用",
+      "enabled": "启用",
+      "disabled": "禁用",
       "init": "初始化",
       "creating": "创建中",
       "create_failed": "创建失败",
@@ -653,11 +653,11 @@
     },
     "lbHealth": {
       "on": "已开启",
-      "off": "已关闭"
+      "off": "未开启"
     },
     "lbAcl": {
       "on": "已开启",
-      "off": "已关闭"
+      "off": "未开启"
     },
     "rate": {
       "unavailable": "未生效",
@@ -701,8 +701,8 @@
       "expired": "已过期"
     },
     "lbRedirect": {
-      "raw": "已启用",
-      "off": "已关闭"
+      "raw": "已开启",
+      "off": "未开启"
     },
     "scheduledtask": {
       "ready": "正常",
