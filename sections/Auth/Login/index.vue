@@ -103,7 +103,7 @@ export default {
         return v[1].domain.name === this.$route.query.domain
       })
     }
-    if (!R.isEmpty(this.loggedUsers) && data.length > 0) {
+    if (!R.isEmpty(data)) {
       this.$router.replace({
         path: '/auth/login/chooser',
         query: this.$route.query,
