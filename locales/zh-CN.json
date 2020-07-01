@@ -1619,8 +1619,8 @@
     "none": "不共享",
     "project": "多@:dictionary.project共享",
     "projectAll": "全局共享",
-    "domain": "@:dictionary.domain共享-部分",
-    "domainAll": "@:dictionary.domain共享-全部"
+    "domain": "全局共享",
+    "domainAll": "全局共享"
   },
   "shareDesc": {
     "none": "私有",
