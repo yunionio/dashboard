@@ -77,7 +77,7 @@ export default {
         },
       },
       getStatusTableColumn({ statusModule: 'image' }),
-      getPublicScopeTableColumn({ vm: this }),
+      getPublicScopeTableColumn({ vm: this, resource: 'guestimages' }),
       getProjectTableColumn(),
       {
         field: 'is_standard',

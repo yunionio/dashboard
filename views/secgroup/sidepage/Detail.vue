@@ -44,7 +44,7 @@ export default {
             return <a onClick={ () => this.$emit('tab-change', 'cache-list') }>{row.cache_cnt}</a>
           },
         },
-        getPublicScopeTableColumn({ vm: this }),
+        getPublicScopeTableColumn({ vm: this, resource: 'secgroups' }),
       ],
     }
   },

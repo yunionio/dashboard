@@ -74,7 +74,7 @@ export default {
           },
         },
       },
-      getPublicScopeTableColumn({ vm: this }),
+      getPublicScopeTableColumn({ vm: this, resource: 'images' }),
       getProjectTableColumn(),
       // isPublicTableColumn(),
       {
