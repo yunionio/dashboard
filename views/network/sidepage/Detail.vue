@@ -33,7 +33,7 @@ export default {
     return {
       baseInfo: [
         getBrandTableColumn(),
-        getPublicScopeTableColumn({ vm: this }),
+        getPublicScopeTableColumn({ vm: this, resource: 'natgateways' }),
         {
           field: 'guest_ip_start',
           title: 'IP范围',

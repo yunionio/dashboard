@@ -109,7 +109,7 @@ export default {
       },
       getBrandTableColumn(),
       getCopyWithContentTableColumn({ field: 'account', title: '云账号' }),
-      getPublicScopeTableColumn({ vm: this }),
+      getPublicScopeTableColumn({ vm: this, resource: 'networks' }),
       getProjectTableColumn(),
       getRegionTableColumn(),
     ]
