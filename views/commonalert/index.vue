@@ -1,8 +1,8 @@
 <template>
   <div>
-    <page-header :title="$t('dictionary.commonalert')" />
+    <page-header :title="$t('dictionary.commonalert')" :current-tab.sync="alertType" :tabs="cloudEnvOptions" />
     <page-body>
-      <commonalert-list />
+      <commonalert-list :alertType="alertType" />
     </page-body>
   </div>
 </template>
@@ -17,7 +17,8 @@ export default {
   },
   data () {
     return {
-      loading: false,
+      cloudEnvOptions: [{ key: 'all', label: '全部' }, { key: 'normal', label: '自定义策略' }, { key: 'system', label: '默认策略' }],
+      alertType: 'all',
     }
   },
 }
