@@ -140,4 +140,7 @@ export default {
     resource: 'cloudgroupcaches',
     apiVersion: 'v1',
   },
+  LoadbalancerbackendgroupSidePage: {
+    resource: 'loadbalancerbackendgroups',
+  },
 }
