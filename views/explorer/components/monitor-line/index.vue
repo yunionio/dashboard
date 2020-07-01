@@ -52,7 +52,7 @@ export default {
   },
   computed: {
     tableData () {
-      return this.series.map(val => val.tags)
+      return this.series.map(val => ({ ...val.tags, __metric: val.name }))
     },
     columns () {
       const columns = [

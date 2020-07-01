@@ -29,7 +29,7 @@
   "condition": "触发条件",
   "level": "报警级别",
   "recipient": "报警接收人",
-  "channel": "接收方式",
+  "channel": "通知渠道",
   "strategy_detail": "策略详情",
   "avg": "平均值",
   "max": "最大值",

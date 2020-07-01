@@ -9,6 +9,7 @@
     </a-form>
     <div v-for="(item, i) in formList" :key="item.key" class="mb-3">
       <monitor-form
+        :defaultPanelShow="item.show"
         :showDelete="formList.length > 1"
         :formItemLayout="formItemLayout"
         @resetChart="() => resetChart(i)"
@@ -33,7 +34,7 @@ export default {
   },
   data () {
     return {
-      formList: [{ key: uuid() }],
+      formList: [{ key: uuid(), show: true }],
       form: {
         fc: this.$form.createForm(this),
       },
@@ -64,18 +65,24 @@ export default {
   },
   methods: {
     add () {
-      this.$bus.$emit('togglePanel', false)
-      this.$nextTick(() => {
-        this.formList.push({ key: uuid() })
-      })
+      const list = this.formList.map(val => ({ ...val, show: false }))
+      this.formList = list.concat({ key: uuid(), show: true })
     },
     paramsChange (params, i) {
       this.$set(this.formList[i], 'model', params)
       this.$emit('refresh', params, i)
     },
-    remove (i) {
-      this.formList.splice(i, 1)
-      this.$emit('remove', i)
+    remove (idx) {
+      this.formList.splice(idx, 1)
+      this.$emit('remove', idx)
+      if (idx === this.formList.length) {
+        this.formList = this.formList.map((val, i, arr) => {
+          if (i === arr.length - 1) {
+            return { ...val, show: true }
+          }
+          return { ...val, show: false }
+        })
+      }
     },
     resetChart (i) {
       this.$emit('resetChart', i)

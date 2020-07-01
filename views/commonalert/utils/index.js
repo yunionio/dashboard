@@ -19,8 +19,8 @@ export const levelColumn = {
 }
 
 export const conditionColumn = {
-  field: 'conditions',
-  title: i18n.t('monitor.condition'),
+  field: 'channel',
+  title: i18n.t('monitor.channel'),
   minWidth: 80,
   formatter: ({ row }) => {
     if (!row.channel || !row.channel.length) return '-'

@@ -1,7 +1,7 @@
 <template>
   <div>
     <page-header :title="`${$t('common.edit')}${$t('dictionary.commonalert')}`" />
-    <page-body>
+    <page-body style="padding-left: 20px;">
       <alert ref="alertRef" :isUpdate="true" :commonalertId="$route.params.id" :loading.sync="loading" />
     </page-body>
     <page-footer>
