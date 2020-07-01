@@ -32,16 +32,6 @@ export const BRAND_MAP = {}
 export const PROVIDER_MAP = {}
 export const HOST_TYPE_MAP = {}
 
-// 支持云用户的provider
-export const SUPPORT_CLOUDUSER_PROVIDERS = [
-  HYPERVISORS_MAP.google.provider,
-  HYPERVISORS_MAP.aliyun.provider,
-  HYPERVISORS_MAP.huawei.provider,
-  HYPERVISORS_MAP.azure.provider,
-  HYPERVISORS_MAP.qcloud.provider,
-  HYPERVISORS_MAP.aws.provider,
-]
-
 // 支持 hypervisor、brand、provider、host_type
 R.forEachObjIndexed((obj, key) => {
   BRAND_MAP[obj.brand] = {
