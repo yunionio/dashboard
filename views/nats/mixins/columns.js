@@ -44,7 +44,7 @@ export default {
       },
       getCopyWithContentTableColumn({ field: 'vpc', title: '所属VPC' }),
       getBrandTableColumn(),
-      getPublicScopeTableColumn({ vm: this }),
+      getPublicScopeTableColumn({ vm: this, resource: 'natgateways' }),
       getProjectDomainTableColumn(),
       {
         field: 'region',

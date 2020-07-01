@@ -23,7 +23,7 @@ export default {
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'networkinterface', columns: () => this.columns }),
       getCopyWithContentTableColumn({ field: 'mac', title: 'MAC地址' }),
       getStatusTableColumn({ statusModule: 'network' }),
-      getPublicScopeTableColumn({ vm: this }),
+      getPublicScopeTableColumn({ vm: this, resource: 'networkinterfaces' }),
       getProjectDomainTableColumn(),
       getBrandTableColumn(),
       getCopyWithContentTableColumn({
