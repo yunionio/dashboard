@@ -97,7 +97,7 @@ export default {
   },
   created () {
     this.$store.dispatch('auth/getRegions')
-    if (!R.isEmpty(this.loggedUsers)) {
+    if (!R.isEmpty(this.loggedUsers) && !this.$route.query.domain) {
       this.$router.replace({
         path: '/auth/login/chooser',
         query: this.$route.query,
