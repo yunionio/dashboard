@@ -752,7 +752,8 @@
       "init": "创建中",
       "ready": "可用",
       "deleting": "删除中",
-      "delete_fail": "删除失败"
+      "delete_fail": "删除失败",
+      "deleted": "已删除"
     }
   },
   "skuCategoryOptions": {
