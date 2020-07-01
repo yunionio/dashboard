@@ -44,6 +44,7 @@ export default {
     },
     singleActions: {
       type: Array,
+      default: () => [],
     },
     /* monitorList 示例：
       {
