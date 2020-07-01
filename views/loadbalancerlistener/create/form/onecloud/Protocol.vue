@@ -55,7 +55,7 @@
           <a-form-item label="连接请求超时时间" v-if="['http'].includes(form.fd.listener_type)">
             <a-input v-decorator="decorators.client_request_timeout" addonAfter="秒" type="number" />
           </a-form-item>
-          <a-form-item label="限定接受请求速率" extra="0为默认，表示不限速" v-if="['http', 'https'].includes(form.fd.listener_type)">
+          <a-form-item label="限定接收请求速率" extra="0为默认，表示不限速" v-if="['http', 'https'].includes(form.fd.listener_type)">
             <a-input v-decorator="decorators.http_request_rate" addonAfter="次/秒" type="number" />
           </a-form-item>
           <a-form-item label="限定同源IP发送请求速率" extra="限制同一源地址对监听发送请求的速率，0为默认值，表示不限速" v-if="['http', 'https'].includes(form.fd.listener_type)">
