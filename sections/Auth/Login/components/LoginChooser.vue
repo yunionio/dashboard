@@ -54,9 +54,15 @@ export default {
       loggedUsers: state => state.loggedUsers,
     }),
     dataSource () {
+      let data = Object.entries(this.loggedUsers)
+      if (this.$route.query.domain) {
+        data = data.filter(v => {
+          return v[1].domain.name === this.$route.query.domain
+        })
+      }
       return R.sort((a, b) => {
         return b[1].update_time - a[1].update_time
-      }, Object.entries(this.loggedUsers))
+      }, data)
     },
   },
   watch: {
