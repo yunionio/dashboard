@@ -1,7 +1,7 @@
 <template>
   <div>
     <page-header :title="$t('dictionary.explorer')" />
-    <page-body>
+    <page-body class="pl-3">
       <monitor-index />
     </page-body>
     <!-- <page-footer>

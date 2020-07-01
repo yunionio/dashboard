@@ -214,6 +214,10 @@ export const DATABASE = 'telegraf'
 
 // 顺序决定在 tableColumn 的顺序
 export const tableColumnMaps = {
+  __metric: {
+    title: i18n.t('monitor.monitor_metric'),
+    field: '__metric',
+  },
   vm_name: {
     title: i18n.t('common.name'),
     field: 'vm_name',

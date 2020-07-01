@@ -27,6 +27,7 @@
         <base-select
           v-decorator="decorators.group_by"
           :options="groupbyOpts"
+          @change="groupbyChange"
           class="w-100"
           :select-props="{ placeholder: $t('common.select'), allowClear: true }" />
       </a-form-item>
@@ -70,6 +71,9 @@ export default {
     showDelete: {
       type: Boolean,
       default: false,
+    },
+    defaultPanelShow: {
+      type: Boolean,
     },
   },
   data () {
@@ -144,7 +148,7 @@ export default {
       functionOpts: [],
       metricKeyOpts: [],
       metricInfo: {},
-      panelShow: true,
+      panelShow: this.defaultPanelShow,
       oldParams: {},
     }
   },
@@ -156,15 +160,25 @@ export default {
       return this.$t('monitor.monitor_fill_filters')
     },
   },
+  watch: {
+    defaultPanelShow (val) {
+      this.panelShow = val
+    },
+  },
   created () {
     this.getMeasurement()
-    this.$bus.$on('togglePanel', val => {
-      this.panelShow = val
-    }, this)
   },
   methods: {
     remove () {
       this.$emit('remove')
+    },
+    groupbyChange (a) {
+      if (this.functionOpts && this.functionOpts.length) {
+        const mean = this.functionOpts.find(val => val.key.toLowerCase() === 'mean')
+        this.form.fc.setFieldsValue({
+          [this.decorators.function[0]]: mean.key,
+        })
+      }
     },
     onValuesChange (props, values) {
       const newField = resolveValueChangeField(values)
@@ -198,6 +212,9 @@ export default {
         if (R.is(Array, Aggregations)) {
           this.functionOpts = Aggregations.map(v => ({ key: v, label: v }))
         }
+        // this.form.fc.setFieldsValue({
+        //   group_by: 'MEAN',
+        // })
         this.$emit('resetChart')
       } catch (error) {
         this.metricInfo = {
