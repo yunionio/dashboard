@@ -322,6 +322,6 @@ export default {
   commonalert: {
     info: [],
     success: ['ready'],
-    danger: ['delete_fail'],
+    danger: ['delete_fail', 'deleted'],
   },
 }
