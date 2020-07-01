@@ -9,7 +9,7 @@
 
 <script>
 import * as R from 'ramda'
-import { getCopyWithContentTableColumn, getBrandTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
+import { getCopyWithContentTableColumn, getBrandTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -52,6 +52,17 @@ export default {
                 ]
               },
             }),
+            getCopyWithContentTableColumn({
+              field: 'backend_group',
+              title: '后端服务器组',
+              hideField: true,
+              slotCallback: row => {
+                if (!row.backend_group) return '-'
+                return [
+                  <side-page-trigger name='LoadbalancerbackendgroupSidePage' id={row.backend_group_id} vm={this}>{ row.backend_group }</side-page-trigger>,
+                ]
+              },
+            }),
           ],
         },
         {
@@ -68,8 +79,8 @@ export default {
               field: 'sticky_session',
               title: '会话保持',
               formatter: ({ row }) => {
-                if (row.sticky_session === 'off') return '关闭'
-                return '开启'
+                if (row.sticky_session === 'off') return '未开启'
+                return '已开启'
               },
             },
             {
@@ -82,6 +93,10 @@ export default {
               },
             },
             {
+              field: 'sticky_session_cookie',
+              title: 'Cookie名称',
+            },
+            {
               field: 'sticky_session_cookie_timeout',
               title: '会话超时时间',
               formatter: ({ row }) => {
@@ -90,25 +105,16 @@ export default {
             },
             {
               field: 'acl_type',
-              title: '访问控制方式',
+              title: '访问控制',
               formatter: ({ row }) => {
-                if (row.acl_type === 'white') return '白名单'
-                else if (row.acl_type === 'black') return '黑名单'
-                return '-'
+                if (row.acl_status === 'on') {
+                  return [
+                    <div>{row.acl_type === 'white' ? '白名单' : '黑名单'} <side-page-trigger permission='lb_loadbalanceracls_get' name='LbaclSidePage' id={row.acl_id} vm={this}>{ row.acl_name }</side-page-trigger></div>,
+                  ]
+                }
+                return '未开启'
               },
             },
-            getStatusTableColumn({ statusModule: 'lbAcl', field: 'acl_status', title: '访问控制状态' }),
-            getCopyWithContentTableColumn({
-              field: 'acl_name',
-              title: '访问控制名称',
-              hideField: true,
-              slotCallback: row => {
-                if (!row.acl_name || !row.acl_id) return '-'
-                return [
-                  <side-page-trigger permission='lb_loadbalanceracls_get' name='LbaclSidePage' id={row.acl_id} vm={this}>{ row.acl_name }</side-page-trigger>,
-                ]
-              },
-            }),
             {
               field: 'redirect',
               title: '重定向',
@@ -117,7 +123,7 @@ export default {
               },
             },
             {
-              field: 'redirect',
+              field: 'redirect_code',
               title: '重定向方式',
               formatter: ({ row }) => {
                 if (row.redirect !== 'raw') return '-'
@@ -125,41 +131,22 @@ export default {
               },
             },
             {
-              field: 'sticky_session_cookie',
-              title: 'Cookie名称',
-            },
-            {
-              field: 'gzip',
-              title: 'Gzip数据压缩',
+              field: 'redirect_scheme',
+              title: '重定向至',
               formatter: ({ row }) => {
-                return row.gzip ? '开启' : '关闭'
+                if (row.redirect !== 'raw') return '-'
+                return [row.redirect_scheme, row.redirect_host, row.redirect_path].filter(item => !!item).join('、')
               },
             },
             {
-              field: 'xforwarded_for',
-              title: '获取客户端真实IP',
-              formatter: ({ row }) => {
-                if (row.xforwarded_for || row.send_proxy !== 'off') {
-                  return '开启'
-                }
-                return '关闭'
-              },
+              field: 'backend_connect_timeout',
+              title: '后端连接超时时间',
+              formatter: ({ row }) => row.backend_connect_timeout + '秒',
             },
             {
-              field: 'enable_http2',
-              title: '启用HTTP2.0',
-              formatter: ({ row }) => {
-                return row.enable_http2 ? '开启' : '关闭'
-              },
-            },
-            {
-              field: 'egress_mbps',
-              title: '带宽峰值',
-              formatter: ({ row }) => {
-                if (row.egress_mbps === 0) return '无限制'
-                if (R.is(Number, row.egress_mbps)) return `${row.egress_mbps} Mbps`
-                return '-'
-              },
+              field: 'backend_idle_timeout',
+              title: '后端连接空闲时间',
+              formatter: ({ row }) => row.backend_idle_timeout + '秒',
             },
             {
               field: 'client_idle_timeout',
@@ -170,6 +157,49 @@ export default {
               field: 'client_request_timeout',
               title: '连接请求超时时间',
               formatter: ({ row }) => row.client_request_timeout + ' 秒',
+            },
+            {
+              field: 'http_request_rate',
+              title: '限定接收请求速率',
+              formatter: ({ row }) => row.http_request_rate + ' 秒',
+            },
+            {
+              field: 'http_request_rate_per_src',
+              title: '限定同源IP发送请求速率',
+              formatter: ({ row }) => row.http_request_rate_per_src + ' 秒',
+            },
+            {
+              field: 'enable_http2',
+              title: 'HTTP2.0',
+              formatter: ({ row }) => {
+                return row.enable_http2 ? '已开启' : '未开启'
+              },
+            },
+            {
+              field: 'gzip',
+              title: 'Gzip数据压缩',
+              formatter: ({ row }) => {
+                return row.gzip ? '已开启' : '未开启'
+              },
+            },
+            {
+              field: 'xforwarded_for',
+              title: '获取客户端真实IP',
+              formatter: ({ row }) => {
+                if (row.xforwarded_for || row.send_proxy !== 'off') {
+                  return '已开启'
+                }
+                return '未开启'
+              },
+            },
+            {
+              field: 'egress_mbps',
+              title: '带宽峰值',
+              formatter: ({ row }) => {
+                if (row.egress_mbps === 0) return '无限制'
+                if (R.is(Number, row.egress_mbps)) return `${row.egress_mbps} Mbps`
+                return '-'
+              },
             },
             {
               field: 'send_proxy',
@@ -191,12 +221,17 @@ export default {
             {
               field: 'health_check',
               title: '启用健康检查',
-              formatter: ({ row }) => row.health_check === 'on' ? '开启' : '关闭',
+              formatter: ({ row }) => row.health_check === 'on' ? '已开启' : '未开启',
             },
             {
               field: 'health_check_type',
               title: '健康检查协议',
-              formatter: ({ row }) => row.health_check_type.toUpperCase(),
+              formatter: ({ row }) => {
+                if (row.health_check_type) {
+                  return row.health_check_type.toUpperCase()
+                }
+                return '-'
+              },
             },
             {
               field: 'health_check_uri',
