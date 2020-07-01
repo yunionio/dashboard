@@ -52,7 +52,7 @@ export default {
           return STORAGE_TYPES[row.storage_type] || row.storage_type
         },
       },
-      getPublicScopeTableColumn({ vm: this }),
+      getPublicScopeTableColumn({ vm: this, resource: 'storages' }),
       getProjectDomainTableColumn(),
       getBrandTableColumn(),
       {

@@ -50,7 +50,7 @@ export default {
       },
       getBrandTableColumn(),
       getAccountTableColumn(),
-      getPublicScopeTableColumn({ vm: this }),
+      getPublicScopeTableColumn({ vm: this, resource: 'buckets' }),
       getRegionTableColumn(),
       getProjectTableColumn(),
     ]
