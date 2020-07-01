@@ -1,7 +1,7 @@
 <template>
   <div>
     <page-header :title="`${$t('common.create')}${$t('dictionary.commonalert')}`" />
-    <page-body>
+    <page-body style="padding-left: 20px;">
       <alert ref="alertRef" :loading.sync="loading" />
     </page-body>
     <page-footer>

@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
@@ -28,6 +29,10 @@ export default {
         details: true,
       }),
     },
+    alertType: {
+      type: String,
+      default: 'all',
+    },
   },
   data () {
     return {
@@ -35,7 +40,7 @@ export default {
         id: this.id,
         resource: 'commonalerts',
         apiVersion: 'v1',
-        getParams: this.getParams,
+        getParams: this.getParam,
         steadyStatus: Object.values(expectStatus.commonalert).flat(),
         filterOptions: {
           name: getNameFilter(),
@@ -89,11 +94,25 @@ export default {
       ],
     }
   },
+  watch: {
+    alertType (val) {
+      this.$nextTick(() => {
+        this.list.fetchData(0)
+      })
+    },
+  },
   created () {
     this.initSidePageTab('commonalert-detail')
     this.fetchData()
   },
   methods: {
+    getParam () {
+      const ret = {
+        ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
+      }
+      if (this.alertType && this.alertType !== 'all') ret.alert_type = this.alertType
+      return ret
+    },
     fetchData () {
       this.list.fetchData()
     },
@@ -101,7 +120,7 @@ export default {
       this.sidePageTriggerHandle(this, 'CommonalertsSidePage', {
         id: row.id,
         resource: 'commonalerts',
-        getParams: this.getParams,
+        getParams: this.getParam,
         apiVersion: 'v1',
       }, {
         list: this.list,
