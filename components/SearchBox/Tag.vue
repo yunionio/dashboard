@@ -28,7 +28,7 @@
           <span @click="handleCancel($event)">{{$t('common.cancel')}}</span>
         </div>
       </div>
-      <a-tag class="tag" :closable="focus" @close="handleClose($event)">{{ label }}</a-tag>
+      <a-tag class="tag" closable @close="handleClose($event)">{{ label }}</a-tag>
     </a-popover>
   </div>
 </template>
