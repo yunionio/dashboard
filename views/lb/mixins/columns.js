@@ -47,7 +47,12 @@ export default {
             } else {
               weakTip = row.address_type === 'intranet' ? '（私网IP）' : '（公网IP）'
             }
-            return [<div><span>{ text }</span><span class="text-color-secondary">{ weakTip }</span></div>]
+            return [<div>
+              <list-body-cell-wrap hide-field copy field={row.eip ? 'eip' : 'address' } row={row}>
+                <span style={{ color: '#53627C' }}>{ text }</span>
+              </list-body-cell-wrap>
+              <span class="text-color-secondary">{ weakTip }</span>
+            </div>]
           },
         },
       },
@@ -56,7 +61,7 @@ export default {
         title: 'VPC',
         minWidth: 100,
       },
-      getStatusTableColumn({ statusModule: 'lb' }),
+      getStatusTableColumn({ statusModule: 'lb', title: '状态' }),
       {
         field: 'charge_type',
         title: '计费方式',
