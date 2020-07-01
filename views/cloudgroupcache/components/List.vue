@@ -11,7 +11,6 @@
 import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import { getNameFilter, getBrandFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import expectStatus from '@/constants/expectStatus'
@@ -35,8 +34,9 @@ export default {
         getParams: this.getParam,
         steadyStatus: Object.values(expectStatus.cloudgroup).flat(),
         filterOptions: {
-          name: getNameFilter(),
-          provider: getBrandFilter(),
+          provider: {
+            label: '云账号',
+          },
         },
       }),
       exportDataOptions: {
