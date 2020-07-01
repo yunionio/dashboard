@@ -88,17 +88,17 @@ export default {
     width: 20px;
     .status-success.status-dot {
       background-color: @success-color;
-      &::after {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        border: 1px solid #1890ff;
-        border-radius: 50%;
-        animation: antStatusProcessing 1.2s ease-in-out infinite;
-        content: "";
-      }
+      // &::after {
+      //   position: absolute;
+      //   top: 0;
+      //   left: 0;
+      //   width: 100%;
+      //   height: 100%;
+      //   border: 1px solid #1890ff;
+      //   border-radius: 50%;
+      //   animation: antStatusProcessing 1.2s ease-in-out infinite;
+      //   content: "";
+      // }
     }
     .status-danger.status-dot {
       background-color: @error-color;
