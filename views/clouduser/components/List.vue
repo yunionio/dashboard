@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import get from 'lodash/get'
 import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
@@ -65,6 +66,7 @@ export default {
           },
           meta: () => {
             return {
+              validate: this.$store.getters.isAdminMode || get(this.cloudaccount, 'domain_id') === this.$store.getters.userInfo.projectDomainId,
               buttonType: 'primary',
             }
           },
@@ -92,7 +94,7 @@ export default {
           },
           meta: () => {
             return {
-              validate: this.list.selectedItems && this.list.selectedItems.length > 0,
+              validate: this.list.selectedItems && this.list.selectedItems.length > 0 && (this.$store.getters.isAdminMode || get(this.cloudaccount, 'domain_id') === this.$store.getters.userInfo.projectDomainId),
             }
           },
         },
