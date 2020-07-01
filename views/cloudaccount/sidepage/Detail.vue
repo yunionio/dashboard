@@ -35,7 +35,7 @@ export default {
     return {
       baseInfo: [
         getBrandTableColumn(),
-        getPublicScopeTableColumn({ vm: this }),
+        getPublicScopeTableColumn({ vm: this, resource: 'cloudaccounts' }),
         {
           field: 'account',
           title: '账号',
