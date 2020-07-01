@@ -65,7 +65,7 @@ export default {
       },
       getBrandTableColumn(),
       getAccountTableColumn(),
-      getPublicScopeTableColumn({ vm: this }),
+      getPublicScopeTableColumn({ vm: this, resource: 'routetables' }),
       getProjectDomainTableColumn(),
       getRegionTableColumn(),
     ]

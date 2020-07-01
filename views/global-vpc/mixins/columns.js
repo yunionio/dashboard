@@ -24,7 +24,7 @@ export default {
         title: 'VPC数量',
         width: 100,
       },
-      getPublicScopeTableColumn({ vm: this }),
+      getPublicScopeTableColumn({ vm: this, resource: 'globalvpcs' }),
       getProjectDomainTableColumn(),
     ]
   },

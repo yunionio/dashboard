@@ -31,7 +31,7 @@ export default {
         sortable: true,
       },
       getBrandTableColumn(),
-      getPublicScopeTableColumn({ vm: this }),
+      getPublicScopeTableColumn({ vm: this, resource: 'wires' }),
       getProjectDomainTableColumn(),
       getRegionTableColumn(),
     ]
