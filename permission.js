@@ -31,7 +31,7 @@ router.beforeEach(async (to, from, next) => {
   // 如果是登录相关(authPage)页面，则直接跳转
   // 不需要认证的页面直接next
   if (authPage) {
-    return next()
+    return next('/')
   }
   if (!auth) {
     return next()
