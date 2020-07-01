@@ -31,7 +31,6 @@ import Actions from '@/components/PageList/Actions'
 import { findPlatform } from '@/utils/common/hypervisor'
 import CloudgroupList from '@Cloudenv/views/cloudgroup/components/List'
 import ClouduserList from '@Cloudenv/views/clouduser/components/List'
-import { SUPPORT_CLOUDUSER_PROVIDERS } from '@/constants'
 
 export default {
   name: 'CloudaccountSidePage',
@@ -61,7 +60,7 @@ export default {
       if (platform === 'idc' || platform === 'private') {
         detailTabs.splice(1, 0, { label: '宿主机', key: 'host-list' })
       }
-      if (SUPPORT_CLOUDUSER_PROVIDERS.includes(data.provider)) {
+      if ((this.$store.getters.capability.cloud_id_brands || []).includes(data.provider)) {
         detailTabs.splice(detailTabs.length - 1, 0, { label: this.$t('dictionary.clouduser'), key: 'clouduser-list' })
         detailTabs.splice(detailTabs.length - 1, 0, { label: this.$t('dictionary.cloudgroup'), key: 'cloudgroup-list' })
       }

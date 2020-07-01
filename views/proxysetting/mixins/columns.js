@@ -45,7 +45,7 @@ export default {
         field: 'no_proxy',
         title: '不走代理地址',
       }),
-      getPublicScopeTableColumn({ vm: this }),
+      getPublicScopeTableColumn({ vm: this, resource: 'proxysettings' }),
       getProjectDomainTableColumn(),
     ]
   },

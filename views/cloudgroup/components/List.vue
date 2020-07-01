@@ -40,7 +40,7 @@ export default {
         steadyStatus: Object.values(expectStatus.cloudgroup).flat(),
         filterOptions: {
           name: getNameFilter(),
-          provider: getBrandFilter(),
+          provider: getBrandFilter('cloud_id_brands'),
         },
       }),
       exportDataOptions: {
