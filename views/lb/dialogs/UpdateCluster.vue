@@ -14,7 +14,7 @@
             resource="loadbalancerclusters"
             :remote-fn="q => ({ filter: `name.contains(${q})` })"
             :select-props="{ placeholder: '请选择集群' }" />
-          <p slot="extra">
+          <p slot="extra" v-if="this.params.data.length === 1">
             没有我想要的，立即 <a-button type="link" size="small" @click="createCluster">新建</a-button>
           </p>
         </a-form-item>
