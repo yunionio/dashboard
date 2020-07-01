@@ -246,19 +246,19 @@ export default {
     warning: ['exceeded'],
   },
   lb: {
-    info: [],
+    info: ['disabled'],
     success: ['enabled'],
-    danger: ['disabled'],
+    danger: [],
   },
   lbHealth: {
-    info: [],
+    info: ['off'],
     success: ['on'],
-    danger: ['off'],
+    danger: [''],
   },
   lbAcl: {
-    info: [],
+    info: ['off'],
     success: ['on'],
-    danger: ['off'],
+    danger: [''],
   },
   rate: {
     info: ['unavailable'],
@@ -296,8 +296,9 @@ export default {
     danger: ['refused', 'expired'],
   },
   lbRedirect: {
+    info: ['off'],
     success: ['raw'],
-    danger: ['off'],
+    danger: [],
   },
   scheduledtask: {
     success: ['ready'],
