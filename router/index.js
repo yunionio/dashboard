@@ -3,6 +3,7 @@ import commonalertsCreate from '@Monitor/views/commonalert/create'
 import commonalertsUpdate from '@Monitor/views/commonalert/update'
 import Explorer from '@Monitor/views/explorer'
 import Layout from '@/layouts/RouterView'
+import { hasSetupKey } from '@/utils/auth'
 
 export default {
   meta: {
@@ -15,6 +16,7 @@ export default {
       meta: {
         label: 'Metrics Explorer',
         t: 'dictionary.explorer',
+        hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'vmware']),
       },
       component: Layout,
       children: [
@@ -31,6 +33,7 @@ export default {
         label: '报警策略',
         t: 'dictionary.commonalert',
         permission: 'commonalerts_list',
+        hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'vmware']),
       },
       component: Layout,
       children: [
