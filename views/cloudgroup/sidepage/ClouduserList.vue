@@ -9,7 +9,6 @@
 
 <script>
 import * as R from 'ramda'
-import { getNameFilter, getBrandFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import ColumnsMixin from '@Cloudenv/views/clouduser/mixins/columns'
@@ -33,8 +32,12 @@ export default {
         apiVersion: 'v1',
         getParams: this.getParam,
         filterOptions: {
-          name: getNameFilter(),
-          provider: getBrandFilter(),
+          name: {
+            label: this.$t('cloudenv.clouduser_list_t1'),
+          },
+          owner_name: {
+            label: this.$t('cloudenv.clouduser_list_t4'),
+          },
         },
       }),
       exportDataOptions: {
