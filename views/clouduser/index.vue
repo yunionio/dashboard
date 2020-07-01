@@ -32,7 +32,7 @@ export default {
         },
         filterOptions: {
           name: getNameFilter(),
-          provider: getBrandFilter(),
+          provider: getBrandFilter('cloud_id_brands'),
         },
       }),
       exportDataOptions: {
