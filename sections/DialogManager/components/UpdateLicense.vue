@@ -39,7 +39,7 @@
             <div class="mt-2 mb-1">还没有License? 您可以通过以下途径获取：</div>
             <ul>
               <li>线上<help-link href="https://cloud.yunion.cn/account/license">申请免费License</help-link></li>
-              <li v-if="email">或联系<a :href="`mailto:${email}`">{{ email }}</a> 获得支持</li>
+              <li v-if="email">联系<a :href="`mailto:${email}`">{{ email }}</a> 获得支持</li>
             </ul>
           </div>
         </a-form-item>
@@ -147,7 +147,8 @@ export default {
       this.loading = true
       try {
         if (!this.fileList || this.fileList.length === 0) {
-          this.$message.info('License文件上传')
+          this.$message.info('请上传License文件上传')
+          return false
         }
         const file = this.fileList[0]
         const fd = new FormData()
