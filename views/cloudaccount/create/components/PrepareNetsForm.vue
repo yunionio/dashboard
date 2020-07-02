@@ -49,7 +49,7 @@
               <a-input v-decorator="formatDecorator(k, 'guest_gateway')" placeholder="默认网关地址" />
             </a-form-item>
           </a-col>
-          <a-col :span="2" v-if="form.fc.getFieldValue('keys').length > 1">
+          <a-col :span="2">
             <a-button @click="handleRemove(k)" shape="circle" icon="minus" size="small" class="mt-2 ml-2" />
           </a-col>
         </a-row>
@@ -182,6 +182,11 @@ export default {
   created () {
     this.form.fc.getFieldDecorator('keys', { initialValue: [], preserve: true })
     this.initNets()
+    this.$nextTick(() => {
+      this.form.fc.setFieldsValue({
+        isCreate: this.list && this.list.length > 0,
+      })
+    })
   },
   mounted () {
     this.noSuitableIps = this.getNoSuitableIps()
@@ -191,7 +196,9 @@ export default {
       const ips = []
       for (let i = 0; i < this.list.length; i++) {
         const item = this.list[i]
-        ips.push(...item.ips)
+        if (!item.suitable_network) {
+          ips.push(...item.ips)
+        }
       }
       return ips
     },
@@ -209,8 +216,6 @@ export default {
           keys.push(key)
           this.netInit[key] = net
         })
-      } else {
-        keys.push(uuid())
       }
       this.form.fc.setFieldsValue({
         keys,
