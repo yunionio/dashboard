@@ -19,6 +19,10 @@ export default {
           name: 'me-partake',
           label: '我参与的',
         },
+        {
+          name: 'third-process',
+          label: '第三方',
+        },
       ],
     }
   },
