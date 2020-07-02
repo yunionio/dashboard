@@ -45,10 +45,10 @@
         <gpu :decorators="decorators.gpu" :gpu-options="gpuOptions" />
       </a-form-item>
       <a-form-item label="CPU核数" class="mb-0">
-        <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" @change="cpuChange" :disabled="form.fi.cpuDisabled" />
+        <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" @change="cpuChange" />
       </a-form-item>
       <a-form-item label="内存" class="mb-0">
-        <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" :disabled="form.fi.memDisabled" />
+        <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" />
       </a-form-item>
       <a-form-item label="套餐" v-if="showSku">
         <sku
@@ -333,8 +333,6 @@ export default {
         this.$nextTick(() => {
           this.form.fi.dataDiskDisabled = false
           this.form.fi.sysDiskDisabled = false
-          this.form.fi.cpuDisabled = false
-          this.form.fi.memDisabled = false
           if (this.form.fd.imageType === IMAGES_TYPE_MAP.host.key) {
             const { root_image: rootImage, data_images: dataImages } = this.form.fi.imageMsg
             const systemDiskSize = rootImage.min_disk_mb / 1024
@@ -372,8 +370,6 @@ export default {
                 this.cpuChange(cpuValue)
                 if (val.server_config.vmem_size) data[this.decorators.vmem[0]] = val.server_config.vmem_size
               }
-              this.form.fi.cpuDisabled = true
-              this.form.fi.memDisabled = true
             }
             this.form.fc.setFieldsValue(data)
             // 重置数据盘数据
