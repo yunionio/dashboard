@@ -9,7 +9,7 @@ export default {
       getNameDescriptionTableColumn({
         onManager: this.onManager,
         hideField: true,
-        edit: false,
+        showDesc: false,
         slotCallback: row => {
           return (
             <side-page-trigger permission='cloudgroupcache_get' name='CloudgroupcacheSidePage' id={row.id} list={this.list} vm={this}>{ row.name }</side-page-trigger>
