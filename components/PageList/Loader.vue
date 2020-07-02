@@ -10,7 +10,7 @@
       <div class="empty-image">
         <img src="../../assets/images/empty.svg" />
       </div>
-      <div class="empty-description">暂无数据</div>
+      <div class="empty-description">{{ noDataText }}</div>
     </div>
   </div>
 </template>
@@ -22,6 +22,10 @@ export default {
     loading: {
       type: Boolean,
       required: true,
+    },
+    noDataText: {
+      type: String,
+      default: '暂无数据',
     },
   },
 }
