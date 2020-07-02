@@ -18,7 +18,7 @@
       v-on="dynamicEvents"
       v-bind="dynamicProps">
       <template v-slot:empty>
-        <loader :loading="loading" />
+        <loader :loading="loading" :noDataText="noDataText" />
       </template>
     </vxe-grid>
     <template v-if="tableData.length > 0 && nextMarker">
@@ -91,6 +91,7 @@ export default {
       type: Boolean,
       default: false,
     },
+    noDataText: String,
   },
   data () {
     return {

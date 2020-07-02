@@ -56,6 +56,7 @@
         :selection-type="selectionType"
         :inBaseSidePage="inBaseSidePage"
         :isSidepageOpen="isSidepageOpen"
+        :noDataText="noDataText"
         @change-current-page="changeCurrentPage"
         @change-page-size="changePageSize"
         @do-sort="doSort"
@@ -137,6 +138,7 @@ export default {
       default: 'checkbox',
     },
     dataMapper: Function,
+    noDataText: String,
   },
   provide: {
     // 声明在List中
