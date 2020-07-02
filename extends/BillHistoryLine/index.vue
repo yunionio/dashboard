@@ -33,15 +33,6 @@ import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import { getRequestT } from '@/utils/utils'
 import LineChart from '@/sections/Charts/Line'
 
-export const options = {
-  label: '费用总览',
-  desc: '历史费用总览',
-  icon: 'dashboard-fee',
-  h: 5,
-  w: 10,
-  sort: 6,
-}
-
 export default {
   name: 'BillHistoryLine',
   components: {

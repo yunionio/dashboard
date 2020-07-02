@@ -2,17 +2,17 @@
   <div class="extend-gallery-wrap d-flex flex-column">
     <div class="extend-gallery-title flex-grow-0 flex-shrink-0">磁贴库</div>
     <div class="extend-gallery-tips flex-grow-0 flex-shrink-0 d-flex">
-      <div>{{ sortExtendsOptions.length }} 个磁贴</div>
+      <div>{{ options.length }} 个磁贴</div>
       <div class="flex-fill text-right">可将任意磁贴拖动到仪表盘</div>
     </div>
     <div class="flex-fill extend-list overflow-auto position-relative">
       <ul>
         <li
           class="extend-gallery-item d-flex align-items-center"
-          v-for="item in sortExtendsOptions"
+          v-for="item in options"
           :key="item.component"
           :data-component="item.component">
-          <div class="extend-thumb"><icon :type="item.icon" style="font-size: 40px; color: #2A8FF7;" /></div>
+          <div class="extend-thumb flex-shrink-0 flex-grow-0"><icon :type="item.icon" style="font-size: 40px; color: #2A8FF7;" /></div>
           <div class="extend-content ml-4 flex-fill">
             <div class="extend-title">{{ item.label }}</div>
             <div class="extend-desc text-color-help mt-1">{{ item.desc }}</div>
@@ -25,34 +25,29 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import * as R from 'ramda'
-import { extendsOptions } from '@Dashboard/extends'
+import options from './config'
 
 export default {
   name: 'ExtendGallery',
   data () {
+    const extendsOptions = {}
+    for (let i = 0, len = options.length; i < len; i++) {
+      extendsOptions[options[i].component] = { ...options[i] }
+    }
     return {
       extendsOptions,
     }
   },
   computed: {
     ...mapGetters(['scope']),
-    sortExtendsOptions () {
-      const ret = []
-      R.forEachObjIndexed((value, key) => {
+    options () {
+      const ret = options.filter(item => {
         let effective = true
-        // 如果未声明scope，则全部视图可见，设置了scope则根据scope来渲染
-        if (value.scope && !value.scope.includes(this.scope)) {
+        if (item.scope && !item.scope.includes(this.scope)) {
           effective = false
         }
-        if (effective) {
-          ret.push({
-            ...value,
-            component: key,
-          })
-        }
-      }, this.extendsOptions)
-      ret.sort((a, b) => a.sort - b.sort)
+        return effective
+      })
       return ret
     },
   },
