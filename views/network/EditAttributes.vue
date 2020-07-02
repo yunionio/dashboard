@@ -42,23 +42,26 @@
       <a-form-item label="VLAN ID" v-bind="formItemLayout">
         <a-input v-decorator="decorators.vlan_id" />
       </a-form-item>
-      <a-divider orientation="left">高级配置</a-divider>
-      <a-form-item v-bind="formItemLayout">
-        <span slot="label">地址分配策略<help-tooltip class="ml-1" name="networkPolicy" /></span>
-        <a-radio-group v-decorator="decorators.alloc_policy">
-          <a-radio-button
-            v-for="item of allocPolicyoptions"
-            :key="item.key"
-            :value="item.key">{{ item.label }}</a-radio-button>
-        </a-radio-group>
-      </a-form-item>
-      <a-form-item label="域名服务器" v-bind="formItemLayout">
-        <a-input :placeholder="$t('validator.IPv4')" v-decorator="decorators.guest_dns" />
-      </a-form-item>
-      <a-form-item v-bind="formItemLayout">
-        <span slot="label">主机域名后缀<help-tooltip class="ml-1" name="networkDomain" /></span>
-        <a-input :placeholder="$t('validator.domain')" v-decorator="decorators.guest_domain" />
-      </a-form-item>
+      <a-collapse :bordered="false">
+        <a-collapse-panel header="高级配置" key="1" forceRender>
+          <a-form-item v-bind="formItemLayout">
+            <span slot="label">地址分配策略<help-tooltip class="ml-1" name="networkPolicy" /></span>
+            <a-radio-group v-decorator="decorators.alloc_policy">
+              <a-radio-button
+                v-for="item of allocPolicyoptions"
+                :key="item.key"
+                :value="item.key">{{ item.label }}</a-radio-button>
+            </a-radio-group>
+          </a-form-item>
+          <a-form-item label="域名服务器" v-bind="formItemLayout">
+            <a-input :placeholder="$t('validator.IPv4')" v-decorator="decorators.guest_dns" />
+          </a-form-item>
+          <a-form-item v-bind="formItemLayout">
+            <span slot="label">主机域名后缀<help-tooltip class="ml-1" name="networkDomain" /></span>
+            <a-input :placeholder="$t('validator.domain')" v-decorator="decorators.guest_domain" />
+          </a-form-item>
+        </a-collapse-panel>
+      </a-collapse>
       <page-footer>
         <template v-slot:right>
           <a-button type="primary" html-type="submit" class="ml-3" :loading="submiting" size="large">确定</a-button>
@@ -205,6 +208,7 @@ export default {
         { label: '容器', key: 'container' },
         { label: 'PXE', key: 'pxe' },
         { label: 'IPMI', key: 'ipmi' },
+        { label: '弹性公网IP', key: 'eip' },
       ],
       allocPolicyoptions: [
         { label: '缺省策略', key: 'none' },
