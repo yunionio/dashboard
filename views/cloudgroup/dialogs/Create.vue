@@ -48,7 +48,7 @@ import WindowsMixin from '@/mixins/windows'
 import NameRepeated from '@/sections/NameRepeated'
 import ListSelect from '@/sections/ListSelect'
 import { getNameFilter } from '@/utils/common/tableFilter'
-import { HYPERVISORS_MAP, SUPPORT_CLOUDUSER_PROVIDERS } from '@/constants'
+import { HYPERVISORS_MAP } from '@/constants'
 
 export default {
   name: 'CloudgroupCreateDialog',
@@ -59,7 +59,7 @@ export default {
   mixins: [DialogMixin, WindowsMixin],
   data () {
     const providerOptions = Object.entries(HYPERVISORS_MAP).filter(item => {
-      return SUPPORT_CLOUDUSER_PROVIDERS.includes(item[1].provider) && this.$store.getters.capability.brands.includes(item[1].provider)
+      return (this.$store.getters.capability.cloud_id_brands || []).includes(item[1].provider) && this.$store.getters.capability.brands.includes(item[1].provider)
     })
     return {
       loading: false,

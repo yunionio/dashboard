@@ -73,7 +73,7 @@ export default {
           },
         },
       },
-      getPublicScopeTableColumn({ vm: this }),
+      getPublicScopeTableColumn({ vm: this, resource: 'cloudaccounts' }),
       getProjectDomainTableColumn(),
       {
         field: 'tenant',

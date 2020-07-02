@@ -9,7 +9,7 @@
 
 <script>
 import * as R from 'ramda'
-import { getNameFilter, getBrandFilter } from '@/utils/common/tableFilter'
+import { getNameFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 
@@ -33,7 +33,9 @@ export default {
         getParams: this.getParam,
         filterOptions: {
           name: getNameFilter(),
-          provider: getBrandFilter(),
+          description: {
+            label: '描述',
+          },
         },
       }),
       exportDataOptions: {
