@@ -61,7 +61,7 @@ export default {
       if (type) {
         const opts = schedulerProviderMaps[type.toLowerCase()]
         const { listener_type } = this.form.fd
-        if (listener_type !== 'udp') {
+        if (listener_type === 'udp' && !this.lbDetail.loadbalancer_spec) {
           const noUdpScheduler = ['sch', 'tch', 'qch']
           return opts.filter(val => !noUdpScheduler.includes(val.key))
         }
