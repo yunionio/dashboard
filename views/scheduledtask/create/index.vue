@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="scheduletask">
     <page-header title="新建定时任务" />
     <a-form :form="form.fc" v-bind="formItemLayout" hideRequiredMark>
       <a-form-item :label="`指定${$t('dictionary.project')}`" class="mt-3 mb-0" v-bind="formItemLayout">
@@ -367,3 +367,11 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.scheduletask {
+  .ant-row {
+    margin-left: 20px;
+  }
+}
+</style>
