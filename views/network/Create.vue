@@ -2,8 +2,7 @@
   <div>
     <page-header title="新建IP子网" />
     <a-form class="mt-3" :form="form.fc" @submit.prevent="handleSubmit">
-      <a-divider orientation="left">基础配置</a-divider>
-      <a-form-item :label="`指定${$t('dictionary.project')}`" v-bind="formItemLayout">
+      <a-form-item :label="`指定${$t('dictionary.project')}`" class="mt-3 mb-0" v-bind="formItemLayout">
         <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" @update:domain="handleDomainChange" />
       </a-form-item>
       <a-form-item label="名称" v-bind="formItemLayout">
@@ -74,29 +73,32 @@
           <span class="count-tips">您还可以添加 <span class="remain-num">{{ remain }}</span> 个</span>
         </div>
       </a-form-item>
-      <a-divider orientation="left" v-if="show">高级配置</a-divider>
-      <a-form-item extra="缺省策略为：物理机从高地址分配，虚拟机从低地址分配" v-bind="formItemLayout" v-if="show">
-        <span slot="label">地址分配策略<help-tooltip class="ml-1" name="networkPolicy" /></span>
-        <a-radio-group v-decorator="decorators.alloc_policy">
-          <a-radio-button
-            v-for="item of allocPolicyoptions"
-            :key="item.key"
-            :value="item.key">{{ item.label }}</a-radio-button>
-        </a-radio-group>
-      </a-form-item>
-      <a-form-item label="域名服务器" v-bind="formItemLayout" v-if="show">
-        <a-input :placeholder="$t('validator.IPv4')" v-decorator="decorators.guest_dns" />
-      </a-form-item>
-      <a-form-item v-bind="formItemLayout" v-if="show">
-        <span slot="label">主机域名后缀<help-tooltip class="ml-1" name="networkDomain" /></span>
-        <template slot="extra">
-          <div>系统为主机分配IP时，会同时创建一条指向该IP的域名记录，域名由主机名称+主机域名后缀组成。例如：</div>
-          <div>主机名称为vm01，主机ip为192.168.1.1</div>
-          <div>主机域名后缀为gh.baidu.com</div>
-          <div>主机创建成功后，ping vm01.gh.baidu.com就会得到vm01的ip</div>
-        </template>
-        <a-input :placeholder="$t('validator.domain')" v-decorator="decorators.guest_domain" />
-      </a-form-item>
+      <a-collapse :bordered="false"  v-if="show">
+        <a-collapse-panel header="高级配置" key="1" forceRender>
+           <a-form-item extra="缺省策略为：物理机从高地址分配，虚拟机从低地址分配" v-bind="formItemLayout">
+            <span slot="label">地址分配策略<help-tooltip class="ml-1" name="networkPolicy" /></span>
+            <a-radio-group v-decorator="decorators.alloc_policy">
+              <a-radio-button
+                v-for="item of allocPolicyoptions"
+                :key="item.key"
+                :value="item.key">{{ item.label }}</a-radio-button>
+            </a-radio-group>
+          </a-form-item>
+          <a-form-item label="域名服务器" v-bind="formItemLayout">
+            <a-input :placeholder="$t('validator.IPv4')" v-decorator="decorators.guest_dns" />
+          </a-form-item>
+           <a-form-item v-bind="formItemLayout">
+            <span slot="label">主机域名后缀<help-tooltip class="ml-1" name="networkDomain" /></span>
+            <template slot="extra">
+              <div>系统为主机分配IP时，会同时创建一条指向该IP的域名记录，域名由主机名称+主机域名后缀组成。例如：</div>
+              <div>主机名称为vm01，主机ip为192.168.1.1</div>
+              <div>主机域名后缀为gh.baidu.com</div>
+              <div>主机创建成功后，ping vm01.gh.baidu.com就会得到vm01的ip</div>
+            </template>
+            <a-input :placeholder="$t('validator.domain')" v-decorator="decorators.guest_domain" />
+          </a-form-item>
+        </a-collapse-panel>
+      </a-collapse>
       <page-footer>
         <template v-slot:right>
           <a-button type="primary" html-type="submit" class="ml-3" :loading="submiting" size="large">确定</a-button>
