@@ -3,7 +3,8 @@
     :data="data"
     :onManager="onManager"
     status-module="cloudgroupcache"
-    :is-edit-name="false" />
+    :is-edit-name="false"
+    :show-desc="false" />
 </template>
 
 <script>
