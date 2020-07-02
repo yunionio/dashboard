@@ -24,7 +24,7 @@
           ref="page-list"
           v-bind="listProps"
           @radio-change="handleRadioChange" />
-        <a-button type="link" size="small" class="choose-all" @click="chooseAllHandle">本页全选</a-button>
+        <a-button type="link" size="small" class="choose-all" @click="chooseAllHandle" v-if="isShowChooseAll">本页全选</a-button>
       </div>
     </div>
     <div slot="footer">
@@ -73,6 +73,9 @@ export default {
       return {
         mask,
       }
+    },
+    isShowChooseAll () {
+      return !R.isEmpty(this.listProps.list.data)
     },
   },
   created () {
