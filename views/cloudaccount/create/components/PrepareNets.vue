@@ -6,7 +6,7 @@ export default {
   props: {
     type: {
       type: String,
-      default: 'hosts',
+      default: 'host',
     },
     prepareNetData: {
       type: Object,
@@ -14,9 +14,15 @@ export default {
     },
   },
   computed: {
+    nets () {
+      return this.prepareNetData[`${this.type}s`] || []
+    },
+    suggestedNets () {
+      return this.prepareNetData[`${this.type}_suggested_networks`] || []
+    },
     listData () {
-      const _ = this.prepareNetData[`${this.type}s`]
-      const networks = this.prepareNetData[`${this.type}_suggested_networks`]
+      const _ = this.nets
+      const networks = this.suggestedNets
       const _listData = []
       if (!_ || _.length === 0) return []
       const formatIps = (row) => {
@@ -123,12 +129,17 @@ export default {
     }
     return (
       <div class="prepare-content">
-        <table class="prepare-table">
-          <tbody>
-            <Thead />
-            <Tbody />
-          </tbody>
-        </table>
+        {
+          (this.nets && this.nets.length > 0)
+            ? <table class="prepare-table">
+              <tbody>
+                <Thead />
+                <Tbody />
+              </tbody>
+            </table>
+            : <a-alert show-icon message={this.type === 'host' ? '无法获取该云账号物理机IP' : '该账号下暂无虚拟机'} type="error" class="mt-4" />
+        }
+
       </div>
     )
   },

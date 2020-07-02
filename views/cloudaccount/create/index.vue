@@ -17,7 +17,7 @@
       </div>
       <div slot="right">
         <a-button class="mr-3" @click="perv" v-if="!isFirstStep">上一步</a-button>
-        <a-button class="mr-3" type="primary" @click="next" :loading="loading">{{ nextStepTitle }}</a-button>
+        <a-button :disabled="nextDisabled" class="mr-3" type="primary"  @click="next" :loading="loading">{{ nextStepTitle }}</a-button>
         <test-button v-if="currentComponent === 'create-cloudaccount' || currentComponent === 'bill-form'" class="mr-3" :post="testPost" />
         <a-button @click="cancel">{{currentComponent === 'bill-form' ? '跳 过': '取 消'}}</a-button>
       </div>
@@ -91,6 +91,12 @@ export default {
     brand () {
       return this.currentItem.provider.toLowerCase()
     },
+    nextDisabled () {
+      if (this.currentComponent === 'host-network' && (!this.prepareNetData.hosts || (this.prepareNetData.hosts && !this.prepareNetData.hosts.length))) {
+        return true
+      }
+      return false
+    },
   },
   watch: {
     'step.currentStep' (step) {
@@ -131,7 +137,7 @@ export default {
       if (val && val.provider === 'VMware') {
         this.step.steps = [
           { title: '选择云平台', key: 'select-cloudaccount' },
-          { title: '配置云账号', key: 'create-cloudaccount' },
+          { title: '配置云账号', key: 'host-network' },
           { title: '配置物理机IP', key: 'host-network' },
           { title: '配置虚拟机IP', key: 'guest-network' },
         ]
@@ -258,6 +264,7 @@ export default {
               description,
               zone_id: zone_id || ((zone_ids && zone_ids.length > 0) ? zone_ids[0] : undefined),
               vpc_id: 'default',
+              bandwidth: '1000',
             },
           })
           return data
