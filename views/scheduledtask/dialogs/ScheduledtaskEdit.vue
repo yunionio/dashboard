@@ -103,7 +103,7 @@ export default {
       return this.params.data.every((item) => item.label_type === 'tag')
     },
     title () {
-      return this.params.title || '修改'
+      return this.params.title || '关联资源'
     },
   },
   methods: {

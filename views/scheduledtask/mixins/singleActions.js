@@ -5,7 +5,7 @@ export default {
   created () {
     this.singleActions = [
       {
-        label: '修改',
+        label: '关联资源',
         permission: 'scheduledtasks_update',
         action: (obj) => {
           this.createDialog('ScheduledtaskEditDialog', {
