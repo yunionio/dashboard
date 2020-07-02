@@ -522,7 +522,7 @@ export const PERMISSION = {
   /**
    * cloudwatcher 相关操作
    */
-  underutilizedinstances_list: ['cloudwatcher', 'underutilizedinstances', 'list'],
+  underutilizedinstances_list: ['monitor', 'underutilizedinstances', 'list'],
   // 工单管理相关操作
   process_manage_list: ['itsm', 'process-definitions', 'list'],
   /**
