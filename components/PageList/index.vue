@@ -58,7 +58,7 @@
         @checkbox-change="handleCheckboxChange"
         @checkbox-all="handleCheckboxChange">
         <template v-slot:empty>
-          <loader :loading="loading" />
+          <loader :loading="loading" :noDataText="noDataText" />
         </template>
       </vxe-grid>
     </floating-scroll>
@@ -144,6 +144,9 @@ export default {
     showPage: {
       type: Boolean,
       default: true,
+    },
+    noDataText: {
+      type: String,
     },
   },
   provide: {
