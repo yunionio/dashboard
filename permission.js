@@ -17,7 +17,7 @@ scopePermission.keys().forEach(name => {
 })
 
 router.beforeEach(async (to, from, next) => {
-  const { authPage = false, auth = true } = to.meta
+  const { auth = true } = to.meta
   // 无token情况
   // 是否为需要认证的页面，是则跳转至登录进行认证，否则next
   const hasToken = !!store.getters.auth.token
@@ -28,9 +28,9 @@ router.beforeEach(async (to, from, next) => {
     return next()
   }
   // 有token情况
-  // 如果是登录相关(authPage)页面，则直接跳转
+  // 如果是登录页面，则直接跳转
   // 不需要认证的页面直接next
-  if (authPage) {
+  if (to.path.includes('/auth/login')) {
     return next('/')
   }
   if (!auth) {
