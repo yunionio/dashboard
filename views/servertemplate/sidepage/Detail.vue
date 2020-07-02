@@ -92,8 +92,13 @@ export default {
               title: 'IP子网',
               slots: {
                 default: ({ row }) => {
-                  if (row.config_info.nets && row.config_info.nets.length && row.config_info.nets[0].guest_ip_start) {
-                    return row.config_info.nets.map(net => (<div><a-tag>{ `${net.name}（${net.guest_ip_start} - ${net.guest_ip_end}, vlan=${net.vlan_id}）` }</a-tag></div>))
+                  if (row.config_info.nets && row.config_info.nets.length) {
+                    return row.config_info.nets.map(net => {
+                      if (net.guest_ip_start) {
+                        return <div><a-tag>{ `${net.name}（${net.guest_ip_start} - ${net.guest_ip_end}, vlan=${net.vlan_id}）` }</a-tag></div>
+                      }
+                      return net.network
+                    })
                   }
                   return '默认'
                 },
