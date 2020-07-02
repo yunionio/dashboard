@@ -3204,6 +3204,12 @@ export default {
           "message": "{0} {1}已经存在"
         }
       },
+      "duplicate username": {
+        "zh-CN": {
+          "fields": {},
+          "message": "用户名冲突，请使用“用户名@企业账户名”登录，或者通过您的企业用户登录地址登录。"
+        }
+      }
     }
   },
   "ImageNotFoundError": {
