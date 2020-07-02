@@ -87,15 +87,6 @@ import { resolveValueChangeField } from '@/utils/common/ant'
 import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
 import { getRequestT } from '@/utils/utils'
 
-export const options = {
-  label: 'TOP5',
-  desc: '某项指标排名前5',
-  icon: 'dashboard-top5',
-  h: 5,
-  w: 4,
-  sort: 4,
-}
-
 export default {
   name: 'Top5',
   components: {
@@ -122,7 +113,7 @@ export default {
       { label: '网络入流量', key: 'bps_recv,net' },
       { label: '网络出流量', key: 'bps_sent,net' },
     ]
-    const initialNameValue = (this.params && this.params.name) || '磁贴名称'
+    const initialNameValue = (this.params && this.params.name) || 'TOP5'
     const initialBrandValue = (this.params && this.params.brand) || ''
     const initialResTypeValue = (this.params && this.params.resType) || 'server'
     let initialUsage = this.params && this.params.usage

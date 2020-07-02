@@ -39,15 +39,6 @@ import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import { load } from '@Dashboard/utils/cache'
 import { getRequestT } from '@/utils/utils'
 
-export const options = {
-  label: '公告',
-  desc: '管理员发的系统公告',
-  icon: 'dashboard-notice',
-  h: 4,
-  w: 5,
-  sort: 3,
-}
-
 export default {
   name: 'Notify',
   components: {
