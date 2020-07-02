@@ -32,6 +32,7 @@ export default {
           content: ({ row }, h) => {
             if (row.listeners && row.listeners.length > 0) {
               return row.listeners.map(item => {
+                if (item.redirect !== 'off') return null
                 return <a-tag class='mb-2'>{item.name}({item.listener_type}: {item.listener_port})</a-tag>
               })
             }
