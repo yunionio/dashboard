@@ -25,15 +25,6 @@
 import Server from './components/Server'
 import K8s from './components/K8s'
 
-export const options = {
-  label: '数字图',
-  desc: '某项指标的统计数字',
-  icon: 'dashboard-number',
-  h: 2,
-  w: 5,
-  sort: 1,
-}
-
 export default {
   name: 'NumberCard',
   components: {

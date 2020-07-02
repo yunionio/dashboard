@@ -48,15 +48,6 @@ import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import { load } from '@Dashboard/utils/cache'
 import { getRequestT } from '@/utils/utils'
 
-export const options = {
-  label: '操作日志',
-  desc: '显示最近的系统操作日志',
-  icon: 'dashboard-log',
-  h: 5,
-  w: 4,
-  sort: 5,
-}
-
 export default {
   name: 'Log',
   components: {
