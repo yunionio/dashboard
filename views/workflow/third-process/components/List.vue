@@ -56,7 +56,7 @@ export default {
     handleOpenSidepage (row) {
       this.sidePageTriggerHandle(this, 'ThirdProcessSidePage', {
         id: row.id,
-        resource: 'historic-process-instances',
+        resource: 'extra-process-instances',
         apiVersion: 'v1',
         getParams: this.getParam,
       }, {
