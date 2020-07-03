@@ -66,7 +66,7 @@ export default {
           },
           meta: () => {
             return {
-              validate: this.$store.getters.isAdminMode || get(this.cloudaccount, 'domain_id') === this.$store.getters.userInfo.projectDomainId,
+              validate: (this.$store.getters.isAdminMode || get(this.cloudaccount, 'domain_id') === this.$store.getters.userInfo.projectDomainId) && this.isNormalStatus(),
               buttonType: 'primary',
             }
           },
@@ -94,7 +94,7 @@ export default {
           },
           meta: () => {
             return {
-              validate: this.list.selectedItems && this.list.selectedItems.length > 0 && (this.$store.getters.isAdminMode || get(this.cloudaccount, 'domain_id') === this.$store.getters.userInfo.projectDomainId),
+              validate: this.list.selectedItems && this.list.selectedItems.length > 0 && (this.$store.getters.isAdminMode || get(this.cloudaccount, 'domain_id') === this.$store.getters.userInfo.projectDomainId) && this.isNormalStatus(),
             }
           },
         },
