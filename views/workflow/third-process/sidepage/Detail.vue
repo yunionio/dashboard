@@ -1,16 +1,12 @@
 <template>
   <div>
     <detail
-      v-if="loaded"
       :onManager="onManager"
       :data="detailsData"
-      :hiddenKeys="['created_at', 'updated_at', 'description']"
+      :hiddenKeys="['updated_at', 'description']"
       :show-desc="false"
       :base-info="baseInfo"
       :extra-info="extraInfo" />
-    <loading-block
-      v-else
-      :layout="loadingLayout" />
   </div>
 </template>
 
@@ -57,43 +53,48 @@ export default {
       processList: [],
       baseInfo: [
         {
+          field: 'status',
+          title: '状态',
+          formatter: ({ cellValue, row }) => {
+            return this.data.status || '-'
+          },
+        },
+        {
+          field: 'project',
+          title: '项目',
+          formatter: ({ cellValue, row }) => {
+            return this.variables.resource_project_name || '-'
+          },
+        },
+        {
           field: 'initiator_name',
           title: '申请人',
           formatter: ({ cellValue, row }) => {
-            return row.variables.initiator_name || row.process_instance.start_user_name
+            return this.data.start_user_name || '-'
           },
         },
         {
           field: 'process_definition_key',
           title: '工单类型',
           formatter: ({ cellValue, row }) => {
-            const pdk = row.variables.process_definition_key || row.process_definition_key
+            const pdk = this.variables.process_definition_key || this.process_definition_key
             const objType = getWorkflowType(pdk)
-            return objType && objType.name
+            return (objType && objType.name) || '-'
           },
         },
-        getTimeTableColumn({ field: 'start_time', title: '创建日期' }),
-        getTimeTableColumn({ field: 'end_time', title: '结束日期' }),
+        getTimeTableColumn({ field: 'created_at', title: '创建日期' }),
+        getTimeTableColumn({ field: 'end_at', title: '结束日期' }),
       ],
       extraInfo: [],
-      loadingLayout: [
-        [10],
-        [8, 9],
-        [2, 4, 7, 5],
-        [13, 9],
-        [4, 3, 8],
-        [8, 6, 8],
-        [13, 9],
-      ],
     }
   },
   computed: {
     ...mapGetters(['isDomainMode', 'isAdminMode']),
     variables () {
-      return this.data.variables
+      return JSON.parse(this.data.variables || '{}')
     },
     proccessDefinitionKey () {
-      return this.data.process_definition_key || this.data.process_instance.process_definition_key
+      return this.variables.process_definition_key || this.variables.process_instance.process_definition_key
     },
     paramter () {
       if (this.variables.paramter) {
@@ -102,51 +103,7 @@ export default {
       return {}
     },
   },
-  watch: {
-    paramter: {
-      handler: function (val) {
-        if (WORKFLOW_TYPES.APPLY_DOMAIN_QUOTA === this.proccessDefinitionKey) {
-          this.getDomainQuotaData(val.domain)
-        }
-        if (WORKFLOW_TYPES.APPLY_PROJECT_QUOTA === this.proccessDefinitionKey) {
-          this.getProjectQuotaData(val.tenant)
-        }
-      },
-      immediate: true,
-    },
-  },
   created () {
-    const that = this
-    switch (this.proccessDefinitionKey) {
-      case WORKFLOW_TYPES.APPLY_MACHINE:
-        this.initServerInfo()
-        this.initPriceInfo()
-        this.getApplyMachineData()
-        break
-      case WORKFLOW_TYPES.APPLY_SERVER_CHANGECONFIG:
-        this.initServerConfigInfo()
-        break
-      case WORKFLOW_TYPES.APPLY_PROJECT_QUOTA:
-        this.initProjectQuotaInfo(that.paramter)
-        break
-      case WORKFLOW_TYPES.APPLY_DOMAIN_QUOTA:
-        this.initDomainQuotaInfo(that.paramter)
-        // this.getDomainQuotaData(that.paramter.domain)
-        break
-      case WORKFLOW_TYPES.APPLY_JOIN_PROJECT:
-        this.initProjectInfo()
-        break
-      case WORKFLOW_TYPES.APPLY_SERVER_DELETE:
-        this.initDeleteServerInfo()
-        this.getDeleteServerData(that.variables.ids)
-        break
-    }
-    if (this.isDomainMode || this.isAdminMode) {
-      if (WORKFLOW_TYPES.APPLY_PROJECT_QUOTA === this.proccessDefinitionKey) {
-        this.getProjectDomainQuotaData(this.paramter.domain)
-      }
-    }
-    this.initProcessInstanceInfo()
   },
   methods: {
     initServerConfigInfo () {
