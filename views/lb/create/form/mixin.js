@@ -191,9 +191,7 @@ export default {
       return {}
     },
     networkParams () {
-      let params = {
-        vpc_id: 'default',
-      }
+      let params = {}
       if (this.form.fd.vpc && !R.isEmpty(this.scopeParams)) {
         params = { ...this.scopeParams }
         params.limit = 0
