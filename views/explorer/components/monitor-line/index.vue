@@ -41,6 +41,10 @@ export default {
         },
       }),
     },
+    showMetric: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
@@ -52,7 +56,13 @@ export default {
   },
   computed: {
     tableData () {
-      return this.series.map(val => ({ ...val.tags, __metric: val.name }))
+      return this.series.map(val => {
+        const ret = { ...val.tags }
+        if (this.showMetric) {
+          ret.__metric = val.name
+        }
+        return ret
+      })
     },
     columns () {
       const columns = [

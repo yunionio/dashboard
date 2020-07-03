@@ -1,5 +1,5 @@
-import { levelColumn, conditionColumn, strategyColumn } from '../utils'
-import { getNameDescriptionTableColumn, getStatusTableColumn, getEnabledTableColumn, getProjectTableColumn } from '@/utils/common/tableColumn'
+import { levelColumn, conditionColumn, strategyColumn, projectTableColumn } from '../utils'
+import { getNameDescriptionTableColumn, getStatusTableColumn, getEnabledTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   created () {
@@ -15,12 +15,12 @@ export default {
           )
         },
       }),
-      getStatusTableColumn({ statusModule: 'commonalert' }),
-      getEnabledTableColumn(),
+      getStatusTableColumn({ statusModule: 'commonalert', minWidth: 50 }),
+      getEnabledTableColumn({ minWidth: 50 }),
       strategyColumn,
       levelColumn,
       conditionColumn,
-      getProjectTableColumn(),
+      projectTableColumn,
     ]
   },
 }

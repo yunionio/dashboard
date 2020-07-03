@@ -4,12 +4,13 @@
     :base-info="baseInfo"
     :extra-info="extraInfo"
     :on-manager="onManager"
+    :hiddenKeys="hiddenKeys"
     status-module="commonalert"
     :resource="resource" />
 </template>
 
 <script>
-import { levelColumn, conditionColumn, strategyColumn } from '../utils'
+import { levelColumn, conditionColumn, strategyColumn, projectTableColumn } from '../utils'
 import { getEnabledTableColumn, getProjectTableColumn } from '@/utils/common/tableColumn'
 
 export default {
@@ -28,6 +29,7 @@ export default {
   data () {
     return {
       baseInfo: [
+        projectTableColumn,
         getEnabledTableColumn(),
         strategyColumn,
         levelColumn,
@@ -35,6 +37,7 @@ export default {
         getProjectTableColumn(),
       ],
       extraInfo: [],
+      hiddenKeys: ['project_domain', 'tenant'],
     }
   },
 }

@@ -69,8 +69,17 @@ export default {
       return _.get(this.timeOpts, '[this.time].timeFormat') || defaultTimeFormat
     },
     lineChartOptions () {
-      if (!this.threshold) return {}
+      if (!this.threshold) {
+        return {
+          legend: {
+            show: false,
+          },
+        }
+      }
       return {
+        legend: {
+          show: false,
+        },
         series: [{
           markLine: {
             lineStyle: {
