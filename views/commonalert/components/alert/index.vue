@@ -69,8 +69,17 @@ export default {
       return _.get(this.timeOpts, '[this.time].timeFormat') || defaultTimeFormat
     },
     lineChartOptions () {
-      if (!this.threshold) return {}
+      if (!this.threshold) {
+        return {
+          legend: {
+            show: false,
+          },
+        }
+      }
       return {
+        legend: {
+          show: false,
+        },
         series: [{
           markLine: {
             lineStyle: {
@@ -114,7 +123,8 @@ export default {
             params: { scope: this.$store.getters.scope },
           })
         this.alertData = data
-        this.time = _.get(this.alertData, 'settings.conditions[0].query.from')
+        const time = _.get(this.alertData, 'settings.conditions[0].query.from')
+        this.time = this.timeOpts[time] ? time : '1h'
         this.timeGroup = _.get(this.alertData, 'settings.conditions[0].query.model.interval')
         this.loading = false
       } catch (error) {
