@@ -1,6 +1,7 @@
 <template>
   <a-drawer
     placement="left"
+    id="sidebar-wrap"
     :closable="false"
     :visible="drawerVisible"
     :z-index="98"
