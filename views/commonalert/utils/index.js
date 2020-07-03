@@ -43,3 +43,27 @@ export const strategyColumn = {
     return '-'
   },
 }
+
+export const projectTableColumn = {
+  field: 'project',
+  title: i18n.t('monitor.text00015'),
+  slots: {
+    default: ({ row }, h) => {
+      if (!row.tenant && !row.project_domain) {
+        return i18n.t('monitor.text00024')
+      }
+      const domain = row.project_domain || row.domain
+      if (!row.tenant && domain) {
+        return `${domain}${i18n.t('monitor.text00024')}`
+      }
+      if (row.tenant && domain) {
+        return [
+          <list-body-cell-wrap copy field='tenant' row={row} />,
+          <list-body-cell-wrap hide-field copy field="domain" row={{ domain }}>
+            <span class='text-weak'>{ domain }</span>
+          </list-body-cell-wrap>,
+        ]
+      }
+    },
+  },
+}

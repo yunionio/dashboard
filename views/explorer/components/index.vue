@@ -14,14 +14,15 @@
           <custom-date :time.sync="time" :customTime.sync="customTime" />
         </template>
       </monitor-header>
-      <div>
-        <monitor-line v-for="(item, i) in seriesList" class="mb-3" @chartInstance="setChartInstance" :series="item" :key="i" :timeFormatStr="timeFormatStr" />
+      <div v-for="(item, i) in seriesList" :key="i">
+        <monitor-line :showMetric="metricList[i][0] && metricList[i][0].model && metricList[i][0].model.group_by" class="mb-3" @chartInstance="setChartInstance" :series="item" :timeFormatStr="timeFormatStr" />
       </div>
     </a-col>
   </a-row>
 </template>
 
 <script>
+import get from 'lodash/get'
 import echarts from 'echarts'
 import MonitorForms from './forms'
 import MonitorLine from './monitor-line'
@@ -47,6 +48,7 @@ export default {
       seriesList: [],
       chartInstanceList: [], // e-chart 实例
       loading: false,
+      get,
     }
   },
   computed: {
