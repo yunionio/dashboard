@@ -7,6 +7,7 @@ export default {
   created () {
     this.columns = [
       getNameDescriptionTableColumn({
+        title: '云上用户组',
         onManager: this.onManager,
         hideField: true,
         showDesc: false,
