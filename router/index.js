@@ -59,7 +59,7 @@ export default {
             label: 'VPC',
             permission: 'vpcs_list',
             t: 'dictionary.vpc',
-            hidden: () => !hasSetupKey(['onestack', 'zstack', 'dstack', 'public', 'baremetal']),
+            hidden: () => !hasSetupKey(['openstack', 'onestack', 'zstack', 'dstack', 'public', 'baremetal']),
           },
           component: Layout,
           children: [
