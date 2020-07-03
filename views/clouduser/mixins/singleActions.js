@@ -13,6 +13,11 @@ export default {
             },
           })
         },
+        meta: () => {
+          return {
+            validate: this.isNormalStatus(),
+          }
+        },
       },
       {
         label: this.$t('common.text00109'),
@@ -62,7 +67,26 @@ export default {
             },
           ]
         },
+        meta: () => {
+          return {
+            validate: this.isNormalStatus(),
+          }
+        },
       },
     ]
+  },
+  methods: {
+    isNormalStatus () {
+      let normalStatus = false
+      if (
+        this.cloudaccount &&
+        this.cloudaccount.enabled &&
+        this.cloudaccount.status === 'connected' &&
+        this.cloudaccount.health_status === 'normal'
+      ) {
+        normalStatus = true
+      }
+      return normalStatus
+    },
   },
 }
