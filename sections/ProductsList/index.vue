@@ -1,5 +1,5 @@
 <template>
-  <scrollbar class="products-list-wrap">
+  <scrollbar class="products-list-wrap" id="products-list-wrap">
     <ul class="list-unstyled p-0 mb-0">
       <template v-for="(item, idx) of menus">
         <products-list-sub
