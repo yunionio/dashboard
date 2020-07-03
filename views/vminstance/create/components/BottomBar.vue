@@ -311,6 +311,7 @@ export default {
     async _getPriceList () {
       if (!this.hasMeterService) return // 如果没有 meter 服务则取消调用
       if (R.isEmpty(this.fd.sku) || R.isNil(this.fd.sku)) return
+      if (!R.is(Number, this.fd.count)) return
       const skuProvider = this.fd.sku.provider || PROVIDER_MAP.OneCloud.key
       const brand = PROVIDER_MAP[skuProvider].brand
       const params = {
