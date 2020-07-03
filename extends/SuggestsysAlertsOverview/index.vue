@@ -18,7 +18,7 @@
             <div class="flex-fill text-right error-color font-weight-bold">￥{{ forcastAmount }}</div>
           </div>
           <div class="d-flex mt-2">
-            <div class="flex-grow-0 flex-shrink-0 text-color-help">优化建议可省</div>
+            <div class="flex-grow-0 flex-shrink-0 text-color-help">费用优化可省</div>
             <div class="flex-fill text-right success-color font-weight-bold">￥{{ suggestAmount }}</div>
           </div>
         </div>
@@ -57,7 +57,7 @@ export default {
     params: Object,
   },
   data () {
-    const initNameValue = (this.params && this.params.name) || '优化建议总览'
+    const initNameValue = (this.params && this.params.name) || '费用优化总览'
     return {
       data: {},
       visible: false,
