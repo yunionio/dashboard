@@ -34,7 +34,7 @@ export default {
         getParams: this.getParam,
         steadyStatus: Object.values(expectStatus.cloudgroup).flat(),
         filterOptions: {
-          provider: {
+          cloudaccount: {
             label: '云账号',
           },
         },
