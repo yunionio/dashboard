@@ -29,7 +29,7 @@ export default {
           field: 'id',
           title: 'ID',
         },
-        getStatusTableColumn({ field: 'severity', title: '严重性', statusModule: 'severity' }),
+        getStatusTableColumn({ field: 'severity', title: '级别', statusModule: 'severity' }),
         // {
         //   field: 'severity',
         //   title: '严重性',
