@@ -8,6 +8,7 @@
         <a-form-item :label="$t('common.name')">
           <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverCreateName')"  @change="e => { form.fi.generate_name = e.target.value }" />
           <name-repeated
+            v-if="form.fi.generate_name"
             v-slot:extra
             res="servers"
             version="v1"
@@ -19,7 +20,7 @@
             v-decorator="decorators.provider"
             :placeholder="$t('rules.provider')"
             :disabled="!!params.provider"
-            @change="e => form.fi.provider = e.target.value">
+            @change="handleProviderChange">
             <template v-for="item of providerOptions">
               <a-select-option :key="item[0]" :value="item[1].provider">{{ item[1].label }}</a-select-option>
             </template>
@@ -67,7 +68,7 @@ export default {
         fc: this.$form.createForm(this),
         fi: {
           generate_name: '',
-          provider: this.params.provider || providerOptions[0][1].provider,
+          provider: this.params.provider || (providerOptions[0] && providerOptions[0][1].provider),
         },
       },
       providerOptions,
@@ -161,6 +162,9 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+    handleProviderChange (val) {
+      this.form.fi.provider = val
     },
   },
 }
