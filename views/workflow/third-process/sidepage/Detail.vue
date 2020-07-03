@@ -53,10 +53,10 @@ export default {
       processList: [],
       baseInfo: [
         {
-          field: 'status',
-          title: '状态',
+          field: 'domain',
+          title: '域',
           formatter: ({ cellValue, row }) => {
-            return this.data.status || '-'
+            return this.variables.resource_domain_name || '-'
           },
         },
         {
@@ -64,6 +64,13 @@ export default {
           title: '项目',
           formatter: ({ cellValue, row }) => {
             return this.variables.resource_project_name || '-'
+          },
+        },
+        {
+          field: 'status',
+          title: '状态',
+          formatter: ({ cellValue, row }) => {
+            return this.data.status || '-'
           },
         },
         {
