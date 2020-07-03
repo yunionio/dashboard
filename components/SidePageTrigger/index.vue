@@ -99,7 +99,12 @@ export default {
             const colId = fieldColumn.id
             const $column = table.$el.querySelector(`.vxe-table--main-wrapper .vxe-table--body-wrapper .vxe-body--column[data-colid=${colId}]`)
             const columnRect = $column.getBoundingClientRect()
-            this.columnRightTemp = columnRect.right
+            let rightTemp = columnRect.right
+            // 如果列宽超过150，则抽屉展开的位置定位在距离列150的位置
+            if (columnRect.width > 150) {
+              rightTemp = columnRect.left + 150
+            }
+            this.columnRightTemp = rightTemp
           }
         }
         this.$store.dispatch('sidePage/updateSidepageLeft', this.columnRightTemp)
