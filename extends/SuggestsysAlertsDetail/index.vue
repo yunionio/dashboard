@@ -47,7 +47,7 @@ export default {
     params: Object,
   },
   data () {
-    const initNameValue = (this.params && this.params.name) || '优化建议资源类型成本分布'
+    const initNameValue = (this.params && this.params.name) || '费用优化资源类型成本分布'
     return {
       data: [],
       visible: false,
