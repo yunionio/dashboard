@@ -522,7 +522,7 @@ export const PERMISSION = {
   /**
    * cloudwatcher 相关操作
    */
-  underutilizedinstances_list: ['monitor', 'underutilizedinstances', 'list'],
+  // underutilizedinstances_list: ['monitor', 'underutilizedinstances', 'list'],
   // 工单管理相关操作
   process_manage_list: ['itsm', 'process-definitions', 'list'],
   /**
@@ -607,10 +607,6 @@ export const PERMISSION = {
    * 策略
    */
   policydefinitions_list: ['compute', 'policydefinitions', 'list'],
-  /** 优化建议 */
-  suggestsysalerts_list: ['compute', 'suggestsysalerts', 'list'],
-  suggestsysrules_list: ['compute', 'suggestsysrules', 'list'],
-  suggestsysruleconfigs_list: ['compute', 'suggestsysrules', 'list'],
   // 权限
   policies_get: ['identity', 'policies', 'get'],
   // 定时任务
@@ -654,6 +650,10 @@ export const PERMISSION = {
   commonalerts_delete: ['monitor', 'commonalerts', 'delete'],
   commonalerts_perform_enable: ['monitor', 'commonalerts', 'perform', 'enable'],
   commonalerts_perform_disable: ['monitor', 'commonalerts', 'perform', 'disable'],
+  /** 费用优化 */
+  suggestsysalerts_list: ['monitor', 'suggestsysalerts', 'list'],
+  suggestsysrules_list: ['monitor', 'suggestsysrules', 'list'],
+  suggestsysruleconfigs_list: ['monitor', 'suggestsysrules', 'list'],
 }
 
 // 已声明权限的资源
