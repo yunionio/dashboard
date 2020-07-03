@@ -127,7 +127,7 @@ export default {
           },
           {
             field: 'description',
-            title: this.$t('table.column.title.desc'),
+            title: '备注',
             showOverflow: 'title',
           },
         ],
