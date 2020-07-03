@@ -1,5 +1,10 @@
 <template>
   <div class="cloudaccount pt-2">
+    <a-alert type="info" show-icon class="mt-2">
+      <template slot="message">
+        新建云账号可选平台与您在「功能选择」时选择平台一致,如需调整可点击右上角 “<icon type="question" style="font-size: 15px;" />” 选择「功能选择」重新进入配置即可(备注:若无相应菜单请联系管理员设置)
+      </template>
+    </a-alert>
     <template v-for="(cloudaccounts, env) of types">
       <div class="env-item-wrap my-5" v-if="isShowItem(env)" :key="env">
         <h2 class="mb-3">{{ envTitle[env] }}</h2>
