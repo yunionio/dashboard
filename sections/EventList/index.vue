@@ -189,17 +189,17 @@ export default {
     },
     getParam () {
       const param = {}
+      const filter = []
       if (this.objId) {
-        param.filter = `obj_id.in('${this.objId}')`
+        filter.push([`obj_id.in('${this.objId}')`])
       }
       if (this.objType) {
         param.obj_type = this.objType
       }
-      if (this.dateTime) {
-        param.until = this.$moment.utc(this.dateTime).format()
-      } else {
-        delete param.until
+      if (this.rangeTime[0] && this.rangeTime[1]) {
+        filter.push(`created_at.between('${this.$moment.utc(this.rangeTime[0]).format()}', '${this.$moment.utc(this.rangeTime[1]).format()}')`)
       }
+      param.filter = filter
       return param
     },
     handleRangeTimeChange () {

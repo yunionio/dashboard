@@ -1,10 +1,11 @@
 <template>
   <a-popover
-    placement="rightTop"
-    overlayClassName="l2-menus-popover"
-    destroyTooltipOnHide
+    placement="right"
+    overlay-class-name="l2-menus-popover"
+    destroy-tooltip-on-hide
     :align="popoverAlign"
     :visible="visible"
+    :get-popup-container="getPopupContainer"
     @visibleChange="handleVisibleChange"
     v-if="item.menus">
     <li class="l1-menu-item" :class="{ active: activeMenu.index === item.index }">
@@ -146,6 +147,9 @@ export default {
       }
       this.$router.push(path)
     },
+    getPopupContainer (popover) {
+      return document.querySelector('#sidebar-wrap')
+    },
   },
 }
 </script>
@@ -161,7 +165,8 @@ export default {
   }
   .ant-popover-inner-content {
     padding: 0;
-    max-height: calc(100vh - 60px);
+    margin-top: 60px;
+    max-height: calc(100vh - 120px);
     overflow: auto;
     min-width: 180px;
     max-width: 180px;
