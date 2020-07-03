@@ -14,6 +14,7 @@
 
 <script>
 import * as R from 'ramda'
+import { mergeWith } from 'lodash'
 import { colors } from '@/sections/Charts/constants'
 import { tableColumnMaps } from '@Monitor/constants'
 import LineChart from '@/sections/Charts/Line'
@@ -96,6 +97,14 @@ export default {
         this.getMonitorLine()
       }
     },
+    lineChartOptions: {
+      deep: true,
+      handler (val, oldV) {
+        if (!R.equals(val, oldV)) {
+          this.getMonitorLine()
+        }
+      },
+    },
   },
   created () {
     this.getMonitorLine()
@@ -116,13 +125,14 @@ export default {
       this.$emit('chartInstance', v)
     },
     getMonitorLine () {
+      if (!this.series || !this.series.length) return
       const columns = ['time']
       const rows = []
-      if (this.lineChartOptions && !this.lineChartOptions.series) {
-        this.lineChartOptionsC = { ...this.lineChartOptionsC, series: [] }
-      }
+      this.lineChartOptionsC = mergeWith(this.lineChartOptions, { series: [] })
       this.series.forEach((item, i) => {
+        const seriesItem = this.lineChartOptionsC.series[i] || {}
         this.$set(this.lineChartOptionsC.series, i, {
+          ...seriesItem,
           itemStyle: {
             normal: {
               color: colors[i] || this.colorHash.hex(`${i * 1000}`),
