@@ -148,9 +148,10 @@ http.interceptors.request.use(
     cancelRquest(requestKey)
     pendingCount++
     config.method === 'get' && pendingCount === 1 && showLoading()
-    if (store.getters.auth.auth && store.getters.auth.auth.session) {
-      config.headers.Authorization = `Bearer ${store.getters.auth.auth.session}`
-    }
+    // 3.4起不再需要Authorization header
+    // if (store.getters.auth.auth && store.getters.auth.auth.session) {
+    //   config.headers.Authorization = `Bearer ${store.getters.auth.auth.session}`
+    // }
     config.$requestKey = requestKey
     config.cancelToken = new axios.CancelToken(cancel => {
       requestMap[requestKey] = {
