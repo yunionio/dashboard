@@ -1,10 +1,8 @@
 import {
-  getProcessDefinitionNameTableColumn,
-} from '../../utils/columns'
-import {
   getCopyWithContentTableColumn,
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
+import { getWorkflowType } from '@/constants/workflow'
 
 export default {
   created () {
@@ -21,7 +19,19 @@ export default {
           )
         },
       }),
-      getProcessDefinitionNameTableColumn(),
+      {
+        field: 'process_definition_key',
+        title: '工单类型',
+        minWidth: 80,
+        showOverflow: 'title',
+        slots: {
+          default: ({ row }, h) => {
+            const veriables = JSON.parse(row.variables || '{}')
+            const objType = getWorkflowType(veriables.process_definition_key)
+            return (objType && objType.name) || '-'
+          },
+        },
+      },
       {
         field: 'variables.resource_project_name',
         title: this.$t('dictionary.project'),
