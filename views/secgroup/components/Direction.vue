@@ -68,7 +68,7 @@ export default {
       columns: [
         {
           field: 'cidr',
-          title: '来源',
+          title: () => this.type === 'out' ? '目标' : '来源',
           minWidth: 70,
           showOverflow: 'ellipsis',
         },
