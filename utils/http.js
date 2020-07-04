@@ -171,8 +171,8 @@ http.interceptors.request.use(
 export const needLogout = error => {
   const isAuth = error.config.url.startsWith('/api/v1/auth')
   const details = error.response.data && error.response.data.details
-  const isNoToken = details && error.response.data.details.includes('No token in header')
-  const noTotp = details && error.response.data.details.includes('TOTP authentication failed')
+  const isNoToken = details && details.includes('No token in header')
+  const noTotp = details && details.includes('TOTP authentication failed')
   return isAuth || isNoToken || noTotp
 }
 
