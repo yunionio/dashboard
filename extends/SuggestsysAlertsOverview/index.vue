@@ -85,6 +85,7 @@ export default {
       if (percent < 10) {
         return percent.toFixed(1)
       }
+      if (isNaN(percent)) return 0
       return `${parseInt(percent)}`
     },
     chartOptions () {
