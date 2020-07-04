@@ -2,7 +2,7 @@
   <div class="level-2-wrap">
     <scrollbar
       class="level-2-menu">
-      <div class="title">{{ label }}</div>
+      <div class="title">{{ getLabel(l2Menu.meta) }}</div>
       <div
         class="level-3-item"
         v-for="(citem, cidx) of menus"
@@ -48,9 +48,6 @@ export default {
     },
   },
   computed: {
-    label () {
-      return this.l2Menu.meta.label
-    },
     menus () {
       const menus = this.l2Menu.menus
       const res = []
@@ -83,7 +80,7 @@ export default {
       if (meta.t) {
         return this.$t(meta.t)
       }
-      return meta.label
+      return R.is(Function, meta.label) ? meta.label() : meta.label
     },
     getMenuHidden (menu) {
       if (!R.isNil(menu.meta.hidden)) {

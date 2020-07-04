@@ -68,7 +68,7 @@ export default {
       if (meta.t) {
         return this.$t(meta.t)
       }
-      return meta.label
+      return R.is(Function, meta.label) ? meta.label() : meta.label
     },
     getMenuHidden (menu) {
       if (!R.isNil(menu.meta.hidden)) {
