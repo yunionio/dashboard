@@ -392,12 +392,13 @@ export default {
           },
         })
       }
+      const totp_on = state.auth.totp_on && state.auth.system_totp_on
       // 如果获取到有效的二维码且开启了totp则进入首次初始化页面
       if (
         (
           payload ||
           _.get(state.historyUsers, `${getters.currentHistoryUserKey}.secret`)
-        ) && state.auth.totp_on
+        ) && totp_on
       ) {
         // 获取密码问题，如果设置过则直接进入绑定秘钥页面，没有跳转至设置密码问题页面
         try {
@@ -411,7 +412,7 @@ export default {
           }
           throw error
         }
-      } else if (state.auth.totp_on) {
+      } else if (totp_on) {
         // 如果开启了认证则进入输入秘钥页面
         router.replace('/auth/secretverify')
       } else {
