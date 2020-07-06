@@ -58,6 +58,7 @@ export default {
         order: 'asc',
       },
       zoneObj: {},
+      hadVpc: false,
     }
   },
   computed: {
