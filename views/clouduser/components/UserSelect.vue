@@ -194,12 +194,12 @@ export default {
           params,
         })
         const data = response.data.data || []
-        if (!R.isNil(this.defaultUser) && !R.isEmpty(this.defaultUser)) {
-          const hasDefaultUser = R.find(R.propEq('id', this.defaultUser.id))(data)
-          if (!hasDefaultUser) {
-            data.unshift(this.defaultUser)
-          }
-        }
+        // if (!R.isNil(this.defaultUser) && !R.isEmpty(this.defaultUser)) {
+        //   const hasDefaultUser = R.find(R.propEq('id', this.defaultUser.id))(data)
+        //   if (!hasDefaultUser) {
+        //     data.unshift(this.defaultUser)
+        //   }
+        // }
         this.users = data
         if (this.users.length > 0) {
           this.user = this.users[0].id
