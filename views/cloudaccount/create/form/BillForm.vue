@@ -6,8 +6,7 @@
         <a-form-item label="合约编号">
           <a-input v-decorator="decorators.enrollment_number" />
           <span slot="extra">
-            EA（Enterprise Agreement）账户请提供合约编号（Enrollment Number）和账单密钥，
-            Azure官网未提供非EA账户的账单获取API，OneCloud暂不支持对非EA账户的账单拉取及分析功能，非EA账户请直接点击取消结束创建任务。
+             账单文件存储桶获取可参考 <help-link :href="enrollmentNumberUrl">如何获取azure合约编号和密钥</help-link>
           </span>
         </a-form-item>
         <a-form-item label="密钥">
@@ -32,8 +31,8 @@
         <a-form-item label="存储桶URL">
           <a-input v-decorator="decorators.billing_report_bucket" />
           <span slot="extra" v-if="bucketUrl">
-            请正确输入账单文件所在存储桶的URL，例如：https://bucket-name.oss-cn-beijing.aliyuncs.com <br />
-            如何获取存储桶的URL，请参考<help-link :href="bucketUrl">新建{{brandCn}}账号</help-link>
+            <!-- 请正确输入账单文件所在存储桶的URL，例如：https://bucket-name.oss-cn-beijing.aliyuncs.com <br /> -->
+            账单文件存储桶获取可参考 <help-link :href="bucketUrl">如何获取账单存储桶URL</help-link>
           </span>
         </a-form-item>
         <a-form-item v-if="!isHuawei" label="文件前缀"  extra="一般为公有云的账户ID，用于筛选存储桶的账单文件。上述Bucket里面只有账单文件时，不需要关注该字段。">
@@ -136,6 +135,9 @@ export default {
     bucketUrl () {
       const { brand } = this.cloudAccount
       return brand ? BILL_BUCKET_URL_DOCS[brand.toLowerCase()] : ''
+    },
+    enrollmentNumberUrl () {
+      return '/docs/user/multiplecloud/cloudaccount/cloudaccount/#如何获取azure合约编号和密钥'
     },
     decorators () {
       const { options = {} } = this.cloudAccount
