@@ -137,7 +137,7 @@ export default {
       if (val && val.provider === 'VMware') {
         this.step.steps = [
           { title: '选择云平台', key: 'select-cloudaccount' },
-          { title: '配置云账号', key: 'host-network' },
+          { title: '配置云账号', key: 'create-cloudaccount' },
           { title: '配置物理机IP', key: 'host-network' },
           { title: '配置虚拟机IP', key: 'guest-network' },
         ]
