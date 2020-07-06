@@ -29,6 +29,7 @@
 <script>
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
+import NetworkList from '../../network/components/List'
 import WireDetail from './Detail'
 import BaremetalsList from './Baremetals'
 import HostsList from './Hosts'
@@ -45,21 +46,30 @@ export default {
     HostsList,
     Dashboard,
     Actions,
+    NetworkList,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
         { label: '详情', key: 'wire-detail' },
+        { label: 'IP子网', key: 'network-list' },
         { label: '物理机', key: 'baremetals-list' },
         { label: '宿主机', key: 'hosts-list' },
-        { label: '资源统计', key: 'dashboard' },
+        { label: '资源统计', key: 'dashboarde' },
         { label: '操作日志', key: 'event-drawer' },
       ],
     }
   },
   computed: {
     getParams () {
+      if (this.params.windowData.currentTab === 'network-list') {
+        return {
+          width_meta: true,
+          wire: this.detailData.id,
+          details: true,
+        }
+      }
       return null
     },
   },
