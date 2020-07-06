@@ -24,10 +24,10 @@
 </template>
 <script>
 import * as R from 'ramda'
-import { DBINSTANCE_CATEGORY, DBINSTANCE_CATEGORY_KEYS, DBINSTANCE_STORAGE_TYPE, DBINSTANCE_STORAGE_TYPE_KEYS, ENGINR_VERSION_POSTGRE_KYES, ENGINR_VERSION_SERVER_ALIYUN_KYES, ENGINR_VERSION_SERVER_HUAWEI_KYES, ENGINR_VERSION } from '@DB/views/rds/constants'
+import { DBINSTANCE_CATEGORY, DBINSTANCE_CATEGORY_KEYS, DBINSTANCE_STORAGE_TYPE, DBINSTANCE_STORAGE_TYPE_KEYS, ENGINR_VERSION_SERVER_ALIYUN_KYES, ENGINR_VERSION_SERVER_HUAWEI_KYES, ENGINR_VERSION } from '@DB/views/rds/constants'
 
 const VERSION_SORT = {
-  PostgreSQL: ENGINR_VERSION_POSTGRE_KYES,
+  // PostgreSQL: ENGINR_VERSION_POSTGRE_KYES,
   SQLServer: ENGINR_VERSION_SERVER_ALIYUN_KYES,
 }
 export default {
@@ -94,9 +94,14 @@ export default {
       if (provider === 'Huawei' && _engine === 'SQLServer') {
         versions = ENGINR_VERSION_SERVER_HUAWEI_KYES.filter(k => versions.indexOf(k) > -1)
       } else if (VERSION_SORT[_engine]) {
-        versions = VERSION_SORT[_engine].filter(k => {
-          return versions.indexOf(k) > -1
-        })
+        const _versions = VERSION_SORT[_engine].filter(k => {
+          const index = versions.indexOf(k)
+          if (index > -1) {
+            versions.splice(index, 1)
+            return true
+          }
+        }).concat(versions)
+        versions = _versions
       }
       this.engine_versions = versions
       this.setInitValue('engine_version', this.getCategory)
