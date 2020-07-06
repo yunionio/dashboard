@@ -38,7 +38,7 @@
           <div slot="extra">
             <div class="mt-2 mb-1">还没有License? 您可以通过以下途径获取：</div>
             <ul>
-              <li>线上<help-link href="https://cloud.yunion.cn/account/license">申请免费License</help-link></li>
+              <li v-if="license">线上<help-link :href="license">申请免费License</help-link></li>
               <li v-if="email">联系<a :href="`mailto:${email}`">{{ email }}</a> 获得支持</li>
             </ul>
           </div>
@@ -66,6 +66,7 @@ export default {
       fileList: [],
       updateInfo: {},
       // allSn: [],
+      license: undefined,
       formItemLayout: {
         wrapperCol: {
           span: 19,
@@ -107,6 +108,7 @@ export default {
   },
   created () {
     this.getUpdateInfo()
+    this.getInfo()
   },
   methods: {
     hanldeRemoveFile (file) {
@@ -142,6 +144,16 @@ export default {
         return
       }
       this.$router.push('/guide')
+    },
+    async getInfo () {
+      try {
+        const { data } = await new this.$Manager('infos', 'v1').get({
+          id: 'copyright',
+        })
+        this.license = data.license
+      } catch (err) {
+        throw err
+      }
     },
     async handleConfirm () {
       this.loading = true
