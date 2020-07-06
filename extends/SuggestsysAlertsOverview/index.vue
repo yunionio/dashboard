@@ -81,12 +81,13 @@ export default {
       return ((this.data.suggest_cost && this.data.suggest_cost[0] && this.data.suggest_cost[0].amount) || 0).toFixed(2)
     },
     percent () {
-      const percent = ((this.suggestAmount / this.forcastAmount) || 0) * 100
+      let percent = ((this.suggestAmount / this.forcastAmount) || 0) * 100
       if (percent < 10) {
         return percent.toFixed(1)
       }
+      percent = parseInt(percent)
       if (isNaN(percent)) return 0
-      return `${parseInt(percent)}`
+      return percent
     },
     chartOptions () {
       return {
