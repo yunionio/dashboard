@@ -1,11 +1,11 @@
 <template>
   <page-list
+    ref="pageList"
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
     :single-actions="singleActions"
     :export-data-options="exportDataOptions"
-    :expand-config="{ lazy: true, loadMethod: loadRules, accordion: true }"
     :showSearchbox="showSearchbox"
     :showGroupActions="showGroupActions" />
 </template>
@@ -51,6 +51,12 @@ export default {
             },
           },
           tenant: getTenantFilter(),
+          ip: {
+            label: 'IP',
+          },
+          ports: {
+            label: '端口号',
+          },
         },
         responseData: this.responseData,
       }),
@@ -147,6 +153,19 @@ export default {
           },
         ]
       ).sort((a, b) => a.index - b.index)
+    },
+  },
+  watch: {
+    'list.loading': {
+      handler (val) {
+        if (this.list.filter.ip || this.list.filter.ports) {
+          this.$nextTick(() => {
+            this.$refs.pageList.$refs.grid.setAllRowExpansion(true)
+          })
+        } else {
+          this.$refs.pageList.$refs.grid.clearRowExpand()
+        }
+      },
     },
   },
   created () {
