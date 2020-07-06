@@ -197,7 +197,7 @@ export default {
         param.obj_type = this.objType
       }
       if (this.rangeTime[0] && this.rangeTime[1]) {
-        filter.push(`created_at.between('${this.$moment.utc(this.rangeTime[0]).format()}', '${this.$moment.utc(this.rangeTime[1]).format()}')`)
+        filter.push(`start_time.between('${this.$moment.utc(this.rangeTime[0]).format()}', '${this.$moment.utc(this.rangeTime[1]).format()}')`)
       }
       param.filter = filter
       return param
