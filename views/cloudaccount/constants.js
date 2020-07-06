@@ -361,8 +361,8 @@ export const keySecretFields = {
 }
 
 export const BILL_BUCKET_URL_DOCS = {
-  aliyun: `${DOCS_PATH}#新建阿里云账号`,
-  aws: `${DOCS_PATH}#新建aws账号`,
-  huawei: `${DOCS_PATH}#新建华为云账号`,
-  google: `${DOCS_PATH}#新建google账号`,
+  aliyun: `${DOCS_PATH}#如何获取账单存储桶url`,
+  aws: `${DOCS_PATH}#如何获取账单存储桶url-1`,
+  huawei: `${DOCS_PATH}#如何获取账单存储桶url-2`,
+  google: `${DOCS_PATH}#如何获取账单文件的存储桶url以及文件前缀`,
 }
