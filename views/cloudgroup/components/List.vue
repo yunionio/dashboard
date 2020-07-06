@@ -91,6 +91,7 @@ export default {
   methods: {
     getParam () {
       const ret = {
+        usable: true,
         ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
       }
       return ret
