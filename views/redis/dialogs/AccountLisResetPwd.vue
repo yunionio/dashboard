@@ -115,6 +115,7 @@ export default {
         }
         delete params.checkPassword
         await this.params.list.onManager('performAction', {
+          steadyStatus: ['available', 'unknown', 'unavailable'],
           id: this.params.data[0].id,
           managerArgs: {
             action: 'reset-password',
