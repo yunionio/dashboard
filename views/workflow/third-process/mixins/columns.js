@@ -1,4 +1,7 @@
 import {
+  getCommentTableColumn,
+} from '../../utils/columns'
+import {
   getCopyWithContentTableColumn,
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
@@ -44,6 +47,7 @@ export default {
           },
         },
       },
+      getCommentTableColumn(),
       {
         field: 'status',
         title: '流程状态',

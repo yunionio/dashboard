@@ -12,6 +12,9 @@
 
 <script>
 import {
+  getCommentTableColumn,
+} from '../../utils/columns'
+import {
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import { getWorkflowType } from '@/constants/workflow'
@@ -68,6 +71,7 @@ export default {
             return (objType && objType.name) || '-'
           },
         },
+        getCommentTableColumn(),
         getTimeTableColumn({ field: 'created_at', title: '创建日期' }),
         getTimeTableColumn({ field: 'end_at', title: '结束日期' }),
       ],
