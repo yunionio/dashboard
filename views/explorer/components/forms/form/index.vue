@@ -212,9 +212,6 @@ export default {
         if (R.is(Array, Aggregations)) {
           this.functionOpts = Aggregations.map(v => ({ key: v, label: v }))
         }
-        // this.form.fc.setFieldsValue({
-        //   group_by: 'MEAN',
-        // })
         this.$emit('resetChart')
       } catch (error) {
         this.metricInfo = {
