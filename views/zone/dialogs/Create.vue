@@ -5,7 +5,7 @@
       <a-form
         :form="form.fc">
         <a-form-item label="名称" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
+          <a-input v-decorator="decorators.name" placeholder="请输入名称" />
         </a-form-item>
         <a-form-item label="区域" v-bind="formItemLayout">
           <base-select
@@ -46,7 +46,7 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: '请输入名称' },
-              { validator: this.$validate('resourceName') },
+              // { validator: this.$validate('resourceName') },
             ],
           },
         ],
