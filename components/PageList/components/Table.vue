@@ -92,6 +92,7 @@ export default {
       default: false,
     },
     noDataText: String,
+    showPage: Boolean,
   },
   data () {
     return {
@@ -123,7 +124,7 @@ export default {
       return Object.values(this.data).sort((a, b) => a.index - b.index).map(item => item.data)
     },
     tablePage () {
-      if (this.total <= 0) return null
+      if (this.total <= 0 || !this.showPage) return null
       const currentPage = this.finalLimit ? Math.floor(this.offset / this.finalLimit) + 1 : 1
       return {
         total: this.total,
