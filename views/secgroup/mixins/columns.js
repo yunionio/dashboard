@@ -3,6 +3,7 @@ import {
   getNameDescriptionTableColumn,
   getPublicScopeTableColumn,
 } from '@/utils/common/tableColumn'
+import HighLight from '@/components/HighLight'
 
 export default {
   created () {
@@ -46,20 +47,33 @@ export default {
                 if (obj.direction === 'in') {
                   inList.push({
                     value: text,
+                    rule: obj,
                   })
                 } else if (obj.direction === 'out') {
                   outList.push({
                     value: text,
+                    rule: obj,
                   })
                 }
               })
             }
             const ret = []
+            const keys = this.list.filter
+            const getHightLight = (keys, item) => {
+              if (keys.ip) {
+                return <HighLight k={ keys['ip'] && keys['ip'][0] } v={ item.value } />
+              } else if (keys.ports) {
+                return <HighLight k={ keys['ports'] && keys['ports'][0] } v={ item.value } />
+              }
+              return <a-tag class='mb-2'>{ item.value }</a-tag>
+            }
             if (inList.length > 0) {
               ret.push(
                 <div class='d-flex'>
                   <div class='flex-grow-0 flex-shrink-0'>入方向：</div>
-                  <div>{ inList.map(item => <a-tag class='mb-2'>{ item.value }</a-tag>) }</div>
+                  <div>{ inList.map(item => {
+                    return <span onClick={ () => { this.openEditRulesDialog(item.rule) } }>{ getHightLight(keys, item) }</span>
+                  }) }</div>
                 </div>
               )
             }
@@ -67,7 +81,9 @@ export default {
               ret.push(
                 <div class='mb-2 d-flex'>
                   <div class='flex-grow-0 flex-shrink-0'>出方向：</div>
-                  <div>{ outList.map(item => <a-tag class='mb-2'>{ item.value }</a-tag>) }</div>
+                  <div>{ outList.map(item => {
+                    return <span onClick={ () => { this.openEditRulesDialog(item.rule) } }>{ getHightLight(keys, item) }</span>
+                  }) }</div>
                 </div>
               )
             }
