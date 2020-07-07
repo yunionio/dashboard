@@ -2,12 +2,12 @@
   <page-list
     show-tag-columns
     show-tag-filter
+    ref="pageList"
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
     :single-actions="singleActions"
     :export-data-options="exportDataOptions"
-    :expand-config="{ lazy: true, loadMethod: loadRules, accordion: true }"
     :showSearchbox="showSearchbox"
     :showGroupActions="showGroupActions" />
 </template>
@@ -53,6 +53,13 @@ export default {
             },
           },
           projects: getTenantFilter(),
+          tenant: getTenantFilter(),
+          ip: {
+            label: 'IP',
+          },
+          ports: {
+            label: '端口',
+          },
         },
         responseData: this.responseData,
       }),
@@ -62,6 +69,7 @@ export default {
           { label: '名称', key: 'name' },
           { label: '关联虚拟机', key: 'guest_cnt' },
           { label: '共享范围', key: 'public_scope' },
+          { label: '规则预览(策略，来源，协议，端口)', key: 'rules' },
           { label: '状态', key: 'status' },
           { label: this.$t('dictionary.project'), key: 'tenant' },
         ],
@@ -152,6 +160,22 @@ export default {
       ).sort((a, b) => a.index - b.index)
     },
   },
+  watch: {
+    'list.loading': {
+      handler (val) {
+        if (this.$refs && this.$refs.pageList && this.$refs.pageList.$refs && this.$refs.pageList.$refs.table && this.$refs.pageList.$refs.table.$refs) {
+          const grid = this.$refs.pageList.$refs.table.$refs.grid
+          if (this.list.filter.ip || this.list.filter.ports) {
+            this.$nextTick(() => {
+              grid.setAllRowExpansion(true)
+            })
+          } else {
+            grid.clearRowExpand()
+          }
+        }
+      },
+    },
+  },
   created () {
     this.initSidePageTab('secgroup-detail')
     this.list.fetchData()
@@ -190,6 +214,16 @@ export default {
       } finally {
         manager = null
       }
+    },
+    openEditRulesDialog (obj) {
+      this.createDialog('EditRulesDialog', {
+        data: [obj],
+        title: 'edit',
+        columns: this.columns,
+        refresh: () => {
+          this.list.refresh()
+        },
+      })
     },
   },
 }
