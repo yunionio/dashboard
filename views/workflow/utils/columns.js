@@ -67,3 +67,18 @@ export const getInitiatorTableColumn = ({ field = 'initiator' } = {}) => {
     },
   }
 }
+
+export const getCommentTableColumn = () => {
+  return {
+    field: 'comment',
+    title: '问题描述',
+    minWidth: 80,
+    showOverflow: 'title',
+    slots: {
+      default: ({ row }) => {
+        const veriables = JSON.parse(row.variables || '{}')
+        return veriables.comment || '-'
+      },
+    },
+  }
+}
