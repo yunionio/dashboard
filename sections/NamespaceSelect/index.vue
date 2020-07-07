@@ -106,7 +106,8 @@ export default {
           }
         */
         const isErrorNamespace = !this.options.find(v => v.name === this.value)
-        if (this.setDefault && isErrorNamespace) {
+        const isEmptyNamespace = R.isEmpty(this.value) || R.isNil(this.value)
+        if (this.setDefault && (isEmptyNamespace || !isErrorNamespace)) {
           this.setDefaultNamespace(this.options)
         }
       })

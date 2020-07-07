@@ -140,7 +140,7 @@ export default {
           'selector',
           {
             rules: [
-              { required: true, message: '请选择存储类', trigger: 'blur' },
+              { required: true, message: '请选择', trigger: 'blur' },
             ],
           },
         ],

@@ -48,6 +48,7 @@ export default {
     {
       meta: {
         label: '应用',
+        labelAlias: '容器应用',
       },
       submenus: [
         {
@@ -190,6 +191,7 @@ export default {
     {
       meta: {
         label: '服务与负载均衡',
+        labelAlias: '容器服务与负载均衡',
       },
       submenus: [
         {
@@ -237,6 +239,7 @@ export default {
     {
       meta: {
         label: '应用配置',
+        labelAlias: '容器应用配置',
       },
       submenus: [
         {
@@ -284,6 +287,7 @@ export default {
     {
       meta: {
         label: '集群',
+        labelAlias: '容器集群',
       },
       submenus: [
         {
