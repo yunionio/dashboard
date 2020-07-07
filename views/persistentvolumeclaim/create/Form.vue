@@ -19,6 +19,7 @@
           <help-link :href="storageClassHref"> 新建存储类</help-link>
         </div>
         <base-select
+          show-sync
           v-decorator="decorators.storageClass"
           resource="storageclasses"
           version="v1"
