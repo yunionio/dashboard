@@ -625,6 +625,8 @@
       "uninstalled": "已经删除",
       "superseded": "已废弃",
       "failed": "部署失败",
+      "creating": "创建中",
+      "created": "创建完成",
       "uninstalling": "删除中",
       "pending-install": "部署中",
       "penging-upgrade": "升级中",
