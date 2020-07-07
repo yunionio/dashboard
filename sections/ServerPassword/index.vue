@@ -10,7 +10,7 @@
     </a-form-item>
     <a-form-item v-if="(loginTypeMap && loginTypeMap.keypair) && vmLoginType === loginTypeMap.keypair.key">
       <div slot="extra">
-        没有想要的密钥？
+        没有想要的密钥？可以前往
         <help-link :href="href"> 新建密钥</help-link>
       </div>
       <base-select
