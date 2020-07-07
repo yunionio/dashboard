@@ -93,12 +93,13 @@ export default {
               slots: {
                 default: ({ row }) => {
                   if (row.config_info.nets && row.config_info.nets.length) {
-                    return row.config_info.nets.map(net => {
+                    const _ = row.config_info.nets.map(net => {
                       if (net.guest_ip_start) {
                         return <div><a-tag>{ `${net.name}（${net.guest_ip_start} - ${net.guest_ip_end}, vlan=${net.vlan_id}）` }</a-tag></div>
                       }
-                      return net.network
-                    })
+                      return net.network || net.id
+                    }).filter(v => !!v)
+                    return _.length > 0 ? _ : '-'
                   }
                   return '默认'
                 },
