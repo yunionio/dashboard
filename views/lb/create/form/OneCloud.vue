@@ -1,5 +1,5 @@
 <template>
-  <a-form :form="form.fc" class="mt-3" v-bind="formItemLayout">
+  <a-form :form="form.fc" class="mt-3 w-75" v-bind="formItemLayout">
     <a-form-item :label="`指定${$t('dictionary.project')}`" class="mb-0">
       <domain-project :fc="form.fc" :decorators="decorators" :domain.sync="domain" :project.sync="project" :labelInValue="false" />
     </a-form-item>
@@ -11,6 +11,7 @@
     </a-form-item>
     <a-form-item label="集群">
       <base-select
+        show-sync
         v-decorator="decorators.cluster_id"
         resource="loadbalancerclusters"
         need-params
