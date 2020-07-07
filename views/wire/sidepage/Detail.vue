@@ -9,10 +9,12 @@
 
 <script>
 import { getBandwidthTableColumn } from '../utils/columns'
-import { getBrandTableColumn } from '@/utils/common/tableColumn'
+import { getBrandTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
+import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'WireDetail',
+  mixins: [WindowsMixin],
   props: {
     data: {
       type: Object,
@@ -28,10 +30,17 @@ export default {
       baseInfo: [
         getBrandTableColumn(),
         getBandwidthTableColumn(),
-        {
+        getCopyWithContentTableColumn({
           field: 'vpc',
           title: 'VPC',
-        },
+          hideField: true,
+          slotCallback: row => {
+            if (!row.vpc) return '-'
+            return [
+              <side-page-trigger permission='vpcs_get' name='VpcSidePage' id={row.vpc_id} vm={this}>{ row.vpc }</side-page-trigger>,
+            ]
+          },
+        }),
         {
           field: 'networks',
           title: '网络数量',
@@ -43,10 +52,17 @@ export default {
             },
           },
         },
-        {
+        getCopyWithContentTableColumn({
           field: 'region',
           title: '区域',
-        },
+          hideField: true,
+          slotCallback: row => {
+            if (!row.region) return '-'
+            return [
+              <side-page-trigger permission='areas_get' name='CloudregionSidePage' id={row.region_id} vm={this}>{ row.region }</side-page-trigger>,
+            ]
+          },
+        }),
       ],
       extraInfo: [],
     }
