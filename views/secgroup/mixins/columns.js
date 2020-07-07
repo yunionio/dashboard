@@ -1,9 +1,9 @@
+import HighLight from '../components/HighLight'
 import {
   getProjectTableColumn,
   getNameDescriptionTableColumn,
   getPublicScopeTableColumn,
 } from '@/utils/common/tableColumn'
-import HighLight from '@/components/HighLight'
 
 export default {
   created () {
