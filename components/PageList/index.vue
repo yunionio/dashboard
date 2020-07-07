@@ -57,6 +57,7 @@
         :inBaseSidePage="inBaseSidePage"
         :isSidepageOpen="isSidepageOpen"
         :noDataText="noDataText"
+        :show-page="showPage"
         @change-current-page="changeCurrentPage"
         @change-page-size="changePageSize"
         @do-sort="doSort"
@@ -139,6 +140,11 @@ export default {
     },
     dataMapper: Function,
     noDataText: String,
+    // 是否显示分页
+    showPage: {
+      type: Boolean,
+      default: true,
+    },
   },
   provide: {
     // 声明在List中
