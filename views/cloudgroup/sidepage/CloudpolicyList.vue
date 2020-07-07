@@ -35,6 +35,8 @@ export default {
           name: getNameFilter(),
           description: {
             label: '描述',
+            filter: true,
+            formatter: val => `description.contains(${val})`,
           },
         },
       }),
