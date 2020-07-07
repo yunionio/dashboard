@@ -1,10 +1,13 @@
 <template>
   <a-form-item label="代理" v-if="isPermission">
-    <a-select showSearch :loading="loading" :filterOption="filterOption" v-decorator="decorator">
-      <a-select-option v-for="item of proxyOpts" :key="item.id" :value="item.id">
-        {{item.name}} {{item.id === 'DIRECT' ? '（直连）' :  null}}
-      </a-select-option>
-    </a-select>
+    <div class="d-flex align-items-center w-25">
+      <a-select class="base-select" :loading="loading" showSearch :filterOption="filterOption" v-decorator="decorator">
+        <a-select-option v-for="item of proxyOpts" :key="item.id" :value="item.id">
+          {{item.name}} {{item.id === 'DIRECT' ? '（直连）' :  null}}
+        </a-select-option>
+      </a-select>
+      <a @click="fetchQueryProxy"><a-icon :spin="loading" type="sync" class="ml-2" /></a>
+    </div>
     <div slot="extra">
       某些云厂商需要设置代理才可以正常访问，例如谷歌云。
       <div>没有想要的？可以前往 <span class="link-color oc-pointer" @click="createProxySetting">新建</span></div>
@@ -68,6 +71,9 @@ export default {
     },
     async fetchQueryProxy () {
       const manager = new this.$Manager('proxysettings')
+      if (this.loading) {
+        return false
+      }
       const params = {
         limit: 0,
       }
