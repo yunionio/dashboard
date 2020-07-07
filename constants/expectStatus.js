@@ -222,7 +222,7 @@ export default {
     danger: ['Failed'],
   },
   release: {
-    success: ['deployed'],
+    success: ['deployed', 'created'],
     info: ['superseded'],
     danger: ['uninstalled', 'failed'],
   },
