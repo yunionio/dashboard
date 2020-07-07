@@ -1,3 +1,4 @@
+import moment from 'moment'
 const DATE_TYPE_ENUM = 'date,date-time,time'
 
 export default function (def, schema) {
@@ -25,8 +26,11 @@ export default function (def, schema) {
       format: momentFormat,
     }
 
+    const initialValue = schema.default ? moment(schema.default) : undefined
+
     def.decorator = [
       {
+        initialValue,
         rules: [
           {
             validator: this.handleFieldValidate,

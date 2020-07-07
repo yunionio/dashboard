@@ -10,6 +10,7 @@ export default function (def, schema) {
     }
     def.decorator = [
       {
+        initialValue: schema.default,
         rules: [
           {
             validator: this.handleFieldValidate,

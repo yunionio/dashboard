@@ -5,6 +5,7 @@ export default function (def, schema) {
     def.type = 'a-switch'
     def.decorator = [
       {
+        initialValue: schema.default,
         rules: [
           {
             validator: this.handleFieldValidate,

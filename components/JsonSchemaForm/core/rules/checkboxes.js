@@ -1,3 +1,4 @@
+import * as R from 'ramda'
 import { enumToOptions } from '../../util/util'
 
 export default function (def, schema) {
@@ -8,8 +9,13 @@ export default function (def, schema) {
     def.input = {
       options: enumToOptions(schema.items.enum),
     }
+    let initialValue = schema.default
+    if (R.is(String, initialValue)) {
+      initialValue = initialValue.split(',')
+    }
     def.decorator = [
       {
+        initialValue,
         rules: [
           {
             validator: this.handleFieldValidate,
