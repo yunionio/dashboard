@@ -1,4 +1,5 @@
 import * as R from 'ramda'
+import moment from 'moment'
 import _ from 'lodash'
 import i18n from '@/locales'
 
@@ -529,4 +530,43 @@ export const genReferRouteQuery = (route) => {
     query.pathQuery = JSON.stringify(route.query)
   }
   return query
+}
+
+/**
+ * [月份补全日期]
+ * @param data 原始数据
+ * * @param currentMonth 当前月份
+ * @param keys 待补0的字段
+ */
+export const completionDate = (data, currentMonth, keys = []) => {
+  if (data.length === 0) return []
+  const result = []
+  const maxDay = moment(currentMonth).daysInMonth()
+  for (let i = 1; i <= maxDay; i++) {
+    let day = 1
+    let obj = {}
+    if (i < 10) {
+      day = '0' + i
+    } else {
+      day = i + ''
+    }
+    for (let j = 0; j < data.length; j++) {
+      const dataItemDay = data[j].time.substring(data[j].time.length - 2)
+      if (day === dataItemDay) {
+        obj = data[j]
+        break
+      } else {
+        obj = {
+          time: moment(currentMonth).format('YYYY-MM') + '-' + day,
+        }
+      }
+    }
+    keys.map(item => {
+      if (!obj[item]) {
+        obj[item] = 0
+      }
+    })
+    result.push(obj)
+  }
+  return result
 }
