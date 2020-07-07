@@ -43,24 +43,24 @@
                 <namespace-select v-decorator="decorators.namespace"  @input="setNamespace" :cluster="cluster" :namespaceObj.sync="namespaceObj" />
               </a-form-item>
             </template>
+            <a-collapse v-model="activeKey">
+              <a-collapse-panel header="表单配置" key="jsonschema">
+                <json-schema-form v-if="isJsonSchema" :schema="schema" :definition="definition" :hide-reset="false" ref="formRef" />
+                <form-yaml
+                  v-else
+                  :decorators="decorators"
+                  :activeTab.sync="formActiveTab"
+                  :localData="chartDetail.chart.values"
+                  :valueSearch="valueSearch" />
+              </a-collapse-panel>
+              <a-collapse-panel v-if="chartDetail.yaml !== ''" header="详细描述" key="desc">
+                <div v-html="compiledMarkdown" />
+              </a-collapse-panel>
+              <a-collapse-panel header="YAML模板" key="yaml">
+                <template-preview :previewFiles="previewFiles" />
+              </a-collapse-panel>
+            </a-collapse>
           </a-form>
-          <a-collapse v-model="activeKey">
-            <a-collapse-panel header="表单配置" key="jsonschema">
-              <json-schema-form v-if="isJsonSchema" :schema="schema" :definition="definition" :hide-reset="false" ref="formRef" />
-              <form-yaml
-                v-else
-                :decorators="decorators"
-                :activeTab.sync="formActiveTab"
-                :localData="chartDetail.chart.values"
-                :valueSearch="valueSearch" />
-            </a-collapse-panel>
-            <a-collapse-panel v-if="chartDetail.yaml !== ''" header="详细描述" key="desc">
-              <div v-html="compiledMarkdown" />
-            </a-collapse-panel>
-            <a-collapse-panel header="YAML模板" key="yaml">
-              <template-preview :previewFiles="previewFiles" />
-            </a-collapse-panel>
-          </a-collapse>
         </template>
       </div>
     </page-body>
@@ -86,6 +86,7 @@ import k8sCreateMixin from '@K8S/mixins/create'
 import DomainProject from '@/sections/DomainProject'
 import { validateYaml, isRequired } from '@/utils/validate'
 import { HYPERVISORS_MAP } from '@/constants'
+import FormYaml from '@Helm/views/chart/create/FormYaml'
 
 export default {
   name: 'K8SChartCreate',
@@ -94,6 +95,7 @@ export default {
     NamespaceSelect,
     TemplatePreview,
     DomainProject,
+    FormYaml,
   },
   mixins: [k8sCreateMixin],
   data () {
@@ -340,6 +342,7 @@ export default {
       })
     },
     async doCreate (values, valuesJson) {
+      console.log(values, 'values')
       const data = {
         chart_name: `${this.chartDetail.repo}/${this.chartDetail.name}`,
         release_name: values.release_name,
@@ -366,12 +369,14 @@ export default {
       }
       if (valuesJson) {
         data.values_json = valuesJson
+        data.values_json.project = data.project
       } else {
         const sets = {}
         if (this.formActiveTab === 'form') {
           R.forEachObjIndexed((value, key) => {
             sets[value] = values.values[key]
           }, values.keys)
+          console.log(sets, 'sets')
           data.sets = sets
         } else {
           data.values = values.yaml
