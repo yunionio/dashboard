@@ -159,7 +159,7 @@ export default {
       this.loading = true
       try {
         if (!this.fileList || this.fileList.length === 0) {
-          this.$message.info('请上传License文件上传')
+          this.$message.info('请选择License文件上传')
           return false
         }
         const file = this.fileList[0]

@@ -27,7 +27,8 @@
               :disabledTime="disabledDateTime"
               :open="open"
               @change="dateChangeHandle"
-              showTime>
+              format="YYYY-MM-DD HH:mm"
+              :showTime="{ format: 'HH:mm' }">
               <template slot="renderExtraFooter">
                 {{$t('common.text00065')}}<a-tag color="blue" style="border-radius: 10px;" :class="{ active: currentDuration === v.value }" v-for="v in durationArrs" :key="v.value" @click="chooseDurationHandle(v)">{{v.text}}</a-tag>
                 <p class="ant-calendar-ok-btn" style="position: absolute; right: 13px; top: 83px; padding: 0 8px; z-index: 999;" @click="closeDatePicker">{{$t('common.ok')}}</p>
@@ -193,8 +194,8 @@ export default {
       }
       return {
         disabledHours: () => this.range(0, currentHour),
-        disabledMinutes: () => this.range(0, 60),
-        disabledSeconds: () => this.range(0, 60),
+        // disabledMinutes: () => this.range(0, 60),
+        // disabledSeconds: () => this.range(0, 60),
       }
     },
     chooseDurationHandle (v) {

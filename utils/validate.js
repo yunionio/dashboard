@@ -215,7 +215,7 @@ export const REGEXP = {
     message: i18n.t('validator.k8sName'),
   },
   domainAccount: {
-    regexp: /^[a-z][a-z0-9]{5,11}/,
+    regexp: /^[a-z][a-z0-9]{5,}/,
     message: i18n.t('validator.domainAccount'),
   },
   domainPassword: {
