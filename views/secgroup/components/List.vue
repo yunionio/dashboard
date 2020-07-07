@@ -207,6 +207,16 @@ export default {
         manager = null
       }
     },
+    openEditRulesDialog (obj) {
+      this.createDialog('EditRulesDialog', {
+        data: [obj],
+        title: 'edit',
+        columns: this.columns,
+        refresh: () => {
+          this.list.refresh()
+        },
+      })
+    },
   },
 }
 </script>

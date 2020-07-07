@@ -47,10 +47,12 @@ export default {
                 if (obj.direction === 'in') {
                   inList.push({
                     value: text,
+                    rule: obj,
                   })
                 } else if (obj.direction === 'out') {
                   outList.push({
                     value: text,
+                    rule: obj,
                   })
                 }
               })
@@ -69,7 +71,9 @@ export default {
               ret.push(
                 <div class='d-flex'>
                   <div class='flex-grow-0 flex-shrink-0'>入方向：</div>
-                  <div>{ inList.map(item => getHightLight(keys, item)) }</div>
+                  <div>{ inList.map(item => {
+                    return <span onClick={ () => { this.openEditRulesDialog(item.rule) } }>{ getHightLight(keys, item) }</span>
+                  }) }</div>
                 </div>
               )
             }
@@ -77,7 +81,9 @@ export default {
               ret.push(
                 <div class='mb-2 d-flex'>
                   <div class='flex-grow-0 flex-shrink-0'>出方向：</div>
-                  <div>{ outList.map(item => getHightLight(keys, item)) }</div>
+                  <div>{ outList.map(item => {
+                    return <span>{ getHightLight(keys, item) }</span>
+                  }) }</div>
                 </div>
               )
             }
