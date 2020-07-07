@@ -13,6 +13,7 @@
           class="mr-2"
           v-model="rangeTime"
           format="YYYY-MM-DD HH:mm:ss"
+          :show-time="{ defaultValue: [$moment('00:00:00', 'HH:mm:ss'), $moment('23:59:59', 'HH:mm:ss')] }"
           @change="handleRangeTimeChange" />
     </div>
   </div>
