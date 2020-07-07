@@ -59,6 +59,8 @@ router.beforeEach(async (to, from, next) => {
   }
 })
 
+scopeBeforeEach && router.beforeEach(scopeBeforeEach)
+
 // 检测权限，无权限导向403
 router.beforeEach((to, from, next) => {
   const { meta = {} } = to.matched[0]
@@ -72,5 +74,3 @@ router.beforeEach((to, from, next) => {
   }
   next()
 })
-
-scopeBeforeEach && router.beforeEach(scopeBeforeEach)
