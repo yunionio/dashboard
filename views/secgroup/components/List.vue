@@ -55,7 +55,7 @@ export default {
             label: 'IP',
           },
           ports: {
-            label: '端口号',
+            label: '端口',
           },
         },
         responseData: this.responseData,
