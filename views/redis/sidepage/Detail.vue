@@ -204,7 +204,7 @@ export default {
   methods: {
     async fetchSwitchPublic (bool) {
       if (bool) {
-        return this.list.onManager('performAction', {
+        return this.onManager('performAction', {
           steadyStatus: 'running',
           id: this.data.id,
           managerArgs: {
@@ -212,7 +212,7 @@ export default {
           },
         })
       } else {
-        return this.list.onManager('performAction', {
+        return this.onManager('performAction', {
           steadyStatus: 'running',
           id: this.data.id,
           managerArgs: {
