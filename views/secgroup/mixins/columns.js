@@ -82,7 +82,7 @@ export default {
                 <div class='mb-2 d-flex'>
                   <div class='flex-grow-0 flex-shrink-0'>出方向：</div>
                   <div>{ outList.map(item => {
-                    return <span>{ getHightLight(keys, item) }</span>
+                    return <span onClick={ () => { this.openEditRulesDialog(item.rule) } }>{ getHightLight(keys, item) }</span>
                   }) }</div>
                 </div>
               )

@@ -66,6 +66,7 @@ export default {
           { label: '名称', key: 'name' },
           { label: '关联虚拟机', key: 'guest_cnt' },
           { label: '共享范围', key: 'public_scope' },
+          { label: '规则预览(策略，来源，协议，端口)', key: 'rules' },
           { label: '状态', key: 'status' },
           { label: this.$t('dictionary.project'), key: 'tenant' },
         ],
