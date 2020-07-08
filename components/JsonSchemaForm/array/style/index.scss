@@ -1,0 +1,58 @@
+.j-list {
+  padding: 16px;
+  border: 1px dashed #d9d9d9;
+
+  .j-list-header,
+  .j-list-footer,
+  .j-list-item {
+    padding-right: 24px;
+  }
+
+  .j-list-item {
+    position: relative;
+    margin-top: 10px;
+    border-bottom: 1px dashed #f0f0f0;
+
+    > .ant-row > div {
+      padding-right: 24px;
+
+      &:last-child {
+        padding-right: 0;
+      }
+    }
+
+    .btn-delete {
+      position: absolute;
+      right: 0;
+      top: 10px;
+      font-size: 20px;
+      color: #999;
+      cursor: pointer;
+
+      &:hover {
+        color: #333;
+      }
+    }
+  }
+
+  .j-list-header {
+    > div {
+      padding-right: 24px;
+
+      label {
+        display: block;
+        padding: 0 11px;
+        line-height: 32px;
+        background-color: #f0f0f0;
+      }
+
+      &:last-child {
+        padding-right: 0;
+      }
+    }
+  }
+
+  .j-list-footer {
+    margin-top: 10px;
+  }
+}

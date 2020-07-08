@@ -570,3 +570,39 @@ export const completionDate = (data, currentMonth, keys = []) => {
   }
   return result
 }
+
+/*
+ * 去除对象中所有符合条件的对象，默认是去除对象属性为空值
+ * @param {Object} obj 来源对象
+ * @param {Function} fn 函数验证每个字段
+ */
+export const compactObj = (obj, fn = R.isEmpty) => {
+  const newObj = _.cloneDeep(obj)
+  for (var i in newObj) {
+    if (typeof newObj[i] === 'object') {
+      compactObj(newObj[i], fn)
+    }
+    if (fn(newObj[i])) {
+      delete newObj[i]
+    }
+  }
+  return newObj
+}
+
+/**
+ * 去除对象中所有符合条件的对象，默认是去除对象属性为空值
+ * @param {Object} obj 来源对象
+ * @param {Function} fn 函数验证每个字段
+ */
+export const handleJsonSchemaProperties = (obj, fn) => {
+  if (!R.is(Function, fn)) return obj
+  const newObj = _.cloneDeep(obj)
+  for (var i in newObj.properties) {
+    const item = newObj.properties[i]
+    if (item.properties) {
+      handleJsonSchemaProperties(item, fn)
+    }
+    fn(i, item)
+  }
+  return newObj
+}
