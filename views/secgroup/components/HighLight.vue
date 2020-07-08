@@ -1,5 +1,5 @@
 <template>
-  <a-tag class="mb-2" v-html="wrapperKeyword(k, v)" />
+  <a-tag class="oc-tag mb-2" v-html="wrapperKeyword(k, v)" />
 </template>
 
 <script>
@@ -23,3 +23,9 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.oc-tag {
+  cursor: pointer !important;
+}
+</style>
