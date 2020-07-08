@@ -17,7 +17,7 @@ import { hasPermission } from '@/utils/auth'
 
 export default {
   created () {
-    this.columns = [
+    const columns = [
       getNameDescriptionTableColumn({
         onManager: this.onManager,
         hideField: true,
@@ -180,5 +180,10 @@ export default {
       getBrandTableColumn(),
       getRegionTableColumn(),
     ]
+    if (this.hideColumnFields) {
+      this.columns = columns.filter((column) => { return !this.hideColumnFields.includes(column.field) })
+    } else {
+      this.columns = columns
+    }
   },
 }

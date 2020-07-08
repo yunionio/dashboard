@@ -18,16 +18,10 @@ export default {
         },
       }),
       {
-        field: 'guest_cnt',
-        title: '关联虚拟机',
-        width: 80,
-      },
-      {
         field: 'cache_cnt',
         title: '缓存数量',
         width: 80,
       },
-      getPublicScopeTableColumn({ vm: this }),
       {
         field: 'rules',
         title: '规则预览(策略，来源，协议，端口)',
@@ -64,8 +58,9 @@ export default {
                 return <HighLight k={ keys['ip'] && keys['ip'][0] } v={ item.value } />
               } else if (keys.ports) {
                 return <HighLight k={ keys['ports'] && keys['ports'][0] } v={ item.value } />
+              } else {
+                return <HighLight v={ item.value } />
               }
-              return <a-tag class='mb-2'>{ item.value }</a-tag>
             }
             if (inList.length > 0) {
               ret.push(
@@ -96,6 +91,12 @@ export default {
           },
         },
       },
+      {
+        field: 'guest_cnt',
+        title: '关联虚拟机',
+        width: 80,
+      },
+      getPublicScopeTableColumn({ vm: this }),
       getProjectTableColumn(),
     ]
   },
