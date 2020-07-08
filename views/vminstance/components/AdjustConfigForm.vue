@@ -630,7 +630,7 @@ export default {
           const memOpts = _.get(this.form.fi, `cpuMem.cpu_mems_mb[${cpu}]`) || []
           this.form.fi.cpuMem.mems_mb = memOpts
           this.form.fc.setFieldsValue({
-            vmem: memOpts[0],
+            vmem: Math.max(this.selectedItem.vmem_size, memOpts[0]),
           })
         }
       }
