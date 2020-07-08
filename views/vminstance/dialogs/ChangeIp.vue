@@ -49,7 +49,7 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import { isWithinRange } from '@/utils/validate'
+import { validate, isWithinRange } from '@/utils/validate'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { HYPERVISORS_MAP } from '@/constants'
@@ -63,6 +63,10 @@ export default {
       if (!R.isNil(value) && !R.isEmpty(value)) {
         if (R.isEmpty(this.form.fi.network)) {
           msg = '请选择子网'
+          return callback(msg)
+        }
+        if (validate(value, 'IPv4') !== true) {
+          msg = '输入合法IP地址'
           return callback(msg)
         }
         if (!isWithinRange(value, this.form.fi.network.guest_ip_start, this.form.fi.network.guest_ip_end)) {
