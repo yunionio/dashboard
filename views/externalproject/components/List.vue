@@ -38,6 +38,10 @@ export default {
       }),
       columns: [
         {
+          field: 'name',
+          title: `云上${this.$t('dictionary.project')}`,
+        },
+        {
           field: 'tenant',
           title: `本地${this.$t('dictionary.project')}`,
           slots: {
@@ -47,10 +51,6 @@ export default {
               ]
             },
           },
-        },
-        {
-          field: 'name',
-          title: `云上${this.$t('dictionary.project')}`,
         },
         getTimeTableColumn({
           field: 'created_at',
@@ -82,6 +82,7 @@ export default {
           action: obj => {
             this.createDialog('ChangeProjectDialog', {
               data: [obj],
+              name: this.$t('dictionary.project'),
               columns: this.columns,
               onManager: this.onManager,
             })
