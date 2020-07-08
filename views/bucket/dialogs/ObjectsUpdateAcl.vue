@@ -82,7 +82,9 @@ export default {
           action: 'acl',
           data: params,
         })
-        this.params.refresh()
+        data.forEach(item => {
+          item.acl = acl
+        })
         this.cancelDialog()
       } catch (error) {
         this.loading = false
