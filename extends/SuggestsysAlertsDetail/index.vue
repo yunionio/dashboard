@@ -5,6 +5,7 @@
         <div class="dashboard-card-header-left">{{ fd.name }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
         <div class="dashboard-card-header-right">
           <slot name="actions" :handle-edit="() => visible = true" />
+          <router-link v-if="!edit" to="/suggestsysalert" class="ml-2">更多</router-link>
         </div>
       </div>
       <div class="dashboard-card-body align-items-center justify-content-center">
@@ -45,6 +46,7 @@ export default {
       required: true,
     },
     params: Object,
+    edit: Boolean,
   },
   data () {
     const initNameValue = (this.params && this.params.name) || '费用优化资源类型成本分布'
