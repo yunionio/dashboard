@@ -46,8 +46,9 @@ export default {
           title: '网络数量',
           slots: {
             default: ({ row }, h) => {
+              if (!row.networks) return row.networks || 0
               return [
-                <p>{ row.networks }<span style={{ color: '#aaa' }}>（IP子网数量）</span></p>,
+                <a onClick={ () => this.$emit('tab-change', 'network-list') }>{row.networks}</a>,
               ]
             },
           },
