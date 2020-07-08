@@ -10,6 +10,7 @@
     </div>
     <template v-else>
       <a-alert
+        v-if="brand !== 'huawei'"
         message="当前云厂商暂未对接"
         class="mb-2"
         description="目前仅阿里云和华为云支持查看监控数据"
