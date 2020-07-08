@@ -53,7 +53,6 @@ export default {
             },
           },
           projects: getTenantFilter(),
-          tenant: getTenantFilter(),
           ip: {
             label: 'IP',
           },
