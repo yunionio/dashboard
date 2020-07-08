@@ -194,9 +194,9 @@ export default {
           keypair: [
             'loginKeypair',
             {
-              initialValue: undefined, // { key: '', label: '' }
+              initialValue: undefined,
               rules: [
-                { validator: isRequired(), message: '请选择关联密钥' },
+                { required: true, message: '请选择关联密钥' },
               ],
             },
           ],
@@ -350,7 +350,7 @@ export default {
       //   params.image_id = this.detailData[0].disks_info[0].image_id
       // }
       if (loginType === 'keypair') {
-        params.keypair = loginKeypair.key
+        params.keypair = loginKeypair
         params.reset_password = false
       } else if (loginType === 'image') {
         params.reset_password = false // 如果登录方式为创建后设置, 则增加参数 reset_password = false
