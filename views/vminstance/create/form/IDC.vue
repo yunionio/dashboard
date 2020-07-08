@@ -352,9 +352,12 @@ export default {
           }
           if (this.form.fd.imageType === IMAGES_TYPE_MAP.snapshot.key) {
             // 镜像类型为主机快照的话要回填数据并禁用
-            const snapshots = this.form.fi.imageMsg.server_config.disks
+            const snapshots = _.cloneDeep(this.form.fi.imageMsg.server_config.disks)
             if (!snapshots) return
-            const sysDisk = snapshots.find(val => val.disk_type === 'sys') || snapshots[0]
+            let sysDisk = snapshots.find(val => val.disk_type === 'sys')
+            if (!sysDisk) {
+              sysDisk = snapshots.shift()
+            }
             const dataDisks = snapshots.filter(val => val.disk_type !== 'sys')
             const data = {
               systemDiskType: {
@@ -375,7 +378,7 @@ export default {
             // 重置数据盘数据
             this._resetDataDisk()
             dataDisks.forEach(val => {
-              this.$refs.dataDiskRef.add({ size: val.size / 1024, sizeDisabled: true })
+              this.$refs.dataDiskRef.add({ diskType: val.backend, size: val.size / 1024, sizeDisabled: true })
             })
             this.form.fi.dataDiskDisabled = true
             this.form.fi.sysDiskDisabled = true
