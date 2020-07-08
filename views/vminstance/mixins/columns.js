@@ -180,8 +180,8 @@ export default {
       getBrandTableColumn(),
       getRegionTableColumn(),
     ]
-    if (this.hideFields) {
-      this.columns = columns.filter((column) => { return !this.hideFields.includes(column.field) })
+    if (this.hideColumnFields) {
+      this.columns = columns.filter((column) => { return !this.hideColumnFields.includes(column.field) })
     } else {
       this.columns = columns
     }

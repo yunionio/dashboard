@@ -39,7 +39,7 @@ export default {
   },
   data () {
     return {
-      hideFields: ['is_gpu', 'instance_type', 'os_type', 'host', 'account'],
+      hideColumnFields: ['is_gpu', 'instance_type', 'os_type', 'host', 'account'],
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'servers',
