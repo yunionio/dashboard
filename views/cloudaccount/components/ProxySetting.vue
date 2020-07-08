@@ -1,6 +1,6 @@
 <template>
   <a-form-item label="代理" v-if="isPermission">
-    <div class="d-flex align-items-center w-25">
+    <div class="d-flex align-items-center w-50">
       <a-select class="base-select" :loading="loading" showSearch :filterOption="filterOption" v-decorator="decorator">
         <a-select-option v-for="item of proxyOpts" :key="item.id" :value="item.id">
           {{item.name}} {{item.id === 'DIRECT' ? '（直连）' :  null}}
@@ -105,7 +105,7 @@ export default {
     },
     createProxySetting () {
       this.createDialog('ProxysettingCreateDialog', {
-        domain: this.fd.domain || {},
+        domain: this.account ? this.account.domain_id : this.fd.domain || {},
         success: () => {
           this.fetchQueryProxy()
         },
