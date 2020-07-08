@@ -13,6 +13,8 @@
     "sync": "chmod +x ./scripts/sync-modules.sh && sh ./scripts/sync-modules.sh $@"
   },
   "dependencies": {
+    "ajv": "^6.12.3",
+    "ajv-errors": "^1.0.1",
     "animejs": "^3.1.0",
     "ant-design-vue": "^1.6.2",
     "axios": "^0.19.0",
@@ -20,6 +22,7 @@
     "codemirror": "^5.52.2",
     "core-js": "^3.6.5",
     "echarts": "^4.4.0",
+    "extend": "^3.0.2",
     "js-base64": "^2.5.1",
     "js-cookie": "^2.2.1",
     "js-yaml": "^3.13.1",
@@ -28,6 +31,7 @@
     "marked": "^1.1.0",
     "moment": "^2.24.0",
     "numerify": "^1.2.9",
+    "objectpath": "^2.0.0",
     "qs": "^6.8.0",
     "ramda": "^0.27.0",
     "resize-detector": "^0.2.1",
