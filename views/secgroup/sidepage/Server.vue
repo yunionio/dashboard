@@ -11,7 +11,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import PasswordFetcher from '@Compute/sections/PasswordFetcher'
+import ColumnMixin from '@Compute/views/vminstance/mixins/columns'
 import ListMixin from '@/mixins/list'
 import {
   getNameFilter,
@@ -24,21 +24,10 @@ import {
 } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
-import {
-  getProjectTableColumn,
-  getRegionTableColumn,
-  getStatusTableColumn,
-  getBrandTableColumn,
-  getCopyWithContentTableColumn,
-  getIpsTableColumn,
-  getNameDescriptionTableColumn,
-  getTagTableColumn,
-} from '@/utils/common/tableColumn'
-import { hasPermission } from '@/utils/auth'
 
 export default {
   name: 'ServerList',
-  mixins: [WindowsMixin, ListMixin],
+  mixins: [WindowsMixin, ListMixin, ColumnMixin],
   props: {
     id: String,
     getParams: {
@@ -50,6 +39,7 @@ export default {
   },
   data () {
     return {
+      hideFields: ['is_gpu', 'instance_type', 'os_type', 'host', 'account'],
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'servers',
@@ -209,7 +199,6 @@ export default {
     this.$bus.$on('VMInstanceListSingleRefresh', args => {
       this.list.singleRefresh(...args)
     }, this)
-    this.initColumn()
   },
   methods: {
     getParam () {
@@ -239,97 +228,6 @@ export default {
         onManager: this.onManager,
         refresh: this.refresh,
       })
-    },
-    initColumn () {
-      this.columns = [
-        getNameDescriptionTableColumn({
-          onManager: this.onManager,
-          hideField: true,
-          addLock: true,
-          addBackup: true,
-          formRules: [
-            { required: true, message: '请输入名称' },
-            { validator: this.$validate('resourceCreateName') },
-          ],
-          slotCallback: row => {
-            return (
-              <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
-            )
-          },
-        }),
-        getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'server', columns: () => this.columns }),
-        getIpsTableColumn({ field: 'ip', title: 'IP' }),
-        {
-          field: 'password',
-          title: '密码',
-          width: 50,
-          slots: {
-            default: ({ row }) => {
-              return [<PasswordFetcher serverId={ row.id } resourceType='servers' />]
-            },
-          },
-        },
-        {
-          field: 'secgroups',
-          title: '安全组',
-          width: 80,
-          showOverflow: 'ellipsis',
-          formatter: ({ cellValue = [] }) => {
-            return cellValue.map(item => item.name).join(',')
-          },
-        },
-        {
-          field: 'billing_type',
-          title: '计费方式',
-          width: 120,
-          showOverflow: 'ellipsis',
-          slots: {
-            default: ({ row }, h) => {
-              const ret = []
-              if (row.billing_type === 'postpaid') {
-                ret.push(<div style={{ color: '#0A1F44' }}>按量付费</div>)
-              } else if (row.billing_type === 'prepaid') {
-                ret.push(<div style={{ color: '#0A1F44' }}>包年包月</div>)
-              }
-              if (row.expired_at) {
-                const time = this.$moment(row.expired_at).format()
-                let tooltipCon = <div slot="help"></div>
-                if (row.billing_type === 'postpaid') {
-                  if (hasPermission({ key: 'server_perform_cancel_expire' })) {
-                    tooltipCon = <div slot="help">虚拟机会在 { time } 释放，<span class="link-color" style="cursor: pointer" onClick={ () => this.openVmSetDurationDialog(row) }>去设置</span></div>
-                  } else {
-                    tooltipCon = <div slot="help">虚拟机会在 { time } 释放</div>
-                  }
-                } else if (row.billing_type === 'prepaid') {
-                  if (row.auto_renew) {
-                    tooltipCon = <div slot="help">虚拟机会在 { time } 释放，到期自动续费</div>
-                  } else {
-                    tooltipCon = <div slot="help">虚拟机会在 { time } 释放，到期不续费</div>
-                  }
-                }
-                const help = <a-tooltip overlayStyle={{ zIndex: '999' }}>
-                  <template slot="title">
-                    { tooltipCon }
-                  </template>
-                  <a-icon type="question-circle-o" />
-                </a-tooltip>
-                let dateArr = this.$moment(row.expired_at).fromNow().split(' ')
-                let date = dateArr.join('')
-                let seconds = this.$moment(row.expired_at).diff(new Date()) / 1000
-                let textColor = seconds / 24 / 60 / 60 < 7 ? '#DD2727' : '#53627C'
-                let text = seconds < 0 ? '已过期' : `${date.substring(0, date.length - 1)}后到期`
-                ret.push(<div style={{ color: textColor }}>{ text } { help }</div>)
-              }
-              return ret
-            },
-          },
-        },
-        getStatusTableColumn({ statusModule: 'server' }),
-        getCopyWithContentTableColumn({ field: 'vpc', title: 'VPC' }),
-        getProjectTableColumn(),
-        getBrandTableColumn(),
-        getRegionTableColumn(),
-      ]
     },
   },
 }
