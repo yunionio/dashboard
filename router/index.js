@@ -286,7 +286,6 @@ export default {
     {
       meta: {
         label: '网络',
-        hidden: () => !hasSetupKey(['onestack', 'public', 'private', 'baremetal']),
       },
       submenus: [
         {
