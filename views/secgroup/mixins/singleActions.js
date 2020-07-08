@@ -7,17 +7,26 @@ export default {
   },
   created () {
     this.singleActions = [
+      // {
+      //   label: `关联${this.$t('dictionary.server')}`,
+      //   permission: 'server_perform_assign_secgroup',
+      //   action: (obj) => {
+      //     this.createDialog('SetServerDialog', {
+      //       data: [obj],
+      //       columns: this.columns,
+      //       title: `关联${this.$t('dictionary.server')}`,
+      //       onManager: this.onManager,
+      //       refresh: this.refresh,
+      //     })
+      //   },
+      // },
       {
-        label: `关联${this.$t('dictionary.server')}`,
-        permission: 'server_perform_assign_secgroup',
+        label: '配置规则',
         action: (obj) => {
-          this.createDialog('SetServerDialog', {
-            data: [obj],
-            columns: this.columns,
-            title: `关联${this.$t('dictionary.server')}`,
-            onManager: this.onManager,
-            refresh: this.refresh,
-          })
+          this.sidePageTriggerHandle(this, 'SecGroupSidePage', {
+            id: obj.id,
+            resource: 'secgroups',
+          }, { tab: 'in-direction' })
         },
       },
       {
@@ -104,6 +113,15 @@ export default {
             //     }
             //   },
             // },
+            {
+              label: '虚拟机管理',
+              action: (obj) => {
+                this.sidePageTriggerHandle(this, 'SecGroupSidePage', {
+                  id: obj.id,
+                  resource: 'secgroups',
+                }, { tab: 'vminstance-list' })
+              },
+            },
             {
               label: '克隆',
               // permission: 'secgroups_create',
