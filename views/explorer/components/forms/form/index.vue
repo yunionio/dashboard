@@ -13,7 +13,8 @@
           :metricOpts="metricInfo.field_key"
           :decorators="decorators"
           :metricKeyOpts="metricKeyOpts"
-          @metricKeyChange="getMetricInfo" />
+          @metricKeyChange="getMetricInfo"
+          @metricClear="resetChart" />
       </a-form-item>
       <a-form-item :label="$t('monitor.monitor_filters')">
         <filters
@@ -169,6 +170,9 @@ export default {
     this.getMeasurement()
   },
   methods: {
+    resetChart () {
+      this.$emit('resetChart')
+    },
     remove () {
       this.$emit('remove')
     },
@@ -212,10 +216,7 @@ export default {
         if (R.is(Array, Aggregations)) {
           this.functionOpts = Aggregations.map(v => ({ key: v, label: v }))
         }
-        // this.form.fc.setFieldsValue({
-        //   group_by: 'MEAN',
-        // })
-        this.$emit('resetChart')
+        this.resetChart()
       } catch (error) {
         this.metricInfo = {
           field_key: [],
@@ -261,7 +262,11 @@ export default {
         // eslint-disable-next-line no-template-curly-in-string
         params.group_by = [{ type: 'tag', params: [fd.group_by] }]
       }
-      if (!fd.metric_key || !fd.metric_value) return params
+      if (!fd.metric_key || !fd.metric_value) {
+        this.resetChart()
+        this.oldParams = params
+        return params
+      }
       if (R.is(String, fd.function)) {
         params.select[0].push({ type: fd.function.toLowerCase(), params: [] })
       }

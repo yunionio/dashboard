@@ -15,13 +15,14 @@
         </template>
       </monitor-header>
       <div v-for="(item, i) in seriesList" :key="i">
-        <monitor-line :showMetric="metricList[i][0] && metricList[i][0].model && metricList[i][0].model.group_by" class="mb-3" @chartInstance="setChartInstance" :series="item" :timeFormatStr="timeFormatStr" />
+        <monitor-line :showMetric="metricList[i][0] && metricList[i][0].model && !!metricList[i][0].model.group_by" class="mb-3" @chartInstance="setChartInstance" :series="item" :timeFormatStr="timeFormatStr" />
       </div>
     </a-col>
   </a-row>
 </template>
 
 <script>
+import * as R from 'ramda'
 import get from 'lodash/get'
 import echarts from 'echarts'
 import MonitorForms from './forms'
@@ -78,6 +79,7 @@ export default {
       echarts.connect(this.chartInstanceList)
     },
     resetChart (i) {
+      if (R.isEmpty(this.seriesList)) return
       this.$set(this.seriesList, i, [])
     },
     async fetchAllData () {

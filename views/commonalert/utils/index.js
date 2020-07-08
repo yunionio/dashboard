@@ -54,7 +54,7 @@ export const projectTableColumn = {
       }
       const domain = row.project_domain || row.domain
       if (!row.tenant && domain) {
-        return `${domain}${i18n.t('monitor.text00024')}`
+        return `${domain}${i18n.t('monitor.text00025')}`
       }
       if (row.tenant && domain) {
         return [
