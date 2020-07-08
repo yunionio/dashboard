@@ -28,6 +28,7 @@
 <script>
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
+import VminstanceList from './Server'
 import SecgroupDetail from './Detail'
 import InDirection from './InDirection'
 import OutDirection from './OutDirection'
@@ -52,9 +53,9 @@ export default {
     return {
       detailTabs: [
         { label: '详情', key: 'secgroup-detail' },
-        { label: '关联虚拟机', key: 'vminstance-list' },
         { label: '入方向', key: 'in-direction' },
         { label: '出方向', key: 'out-direction' },
+        { label: '关联虚拟机', key: 'vminstance-list' },
         { label: '缓存列表', key: 'cache-list' },
         { label: '操作日志', key: 'event-drawer' },
       ],
@@ -83,6 +84,9 @@ export default {
       }
       return null
     },
+  },
+  created () {
+    if (this.params.tab) this.handleTabChange(this.params.tab)
   },
 }
 </script>

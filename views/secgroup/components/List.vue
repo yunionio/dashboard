@@ -54,7 +54,7 @@ export default {
           },
           projects: getTenantFilter(),
           ip: {
-            label: 'IP',
+            label: '来源/目标',
           },
           ports: {
             label: '端口',
