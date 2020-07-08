@@ -20,7 +20,8 @@
           v-decorator="decorators.metric_value"
           :options="metricOptsC"
           :label-format="metricValueLabelFormat"
-          :select-props="{ placeholder: $t('common.select') }" />
+          @change="metricValueChange"
+          :select-props="{ placeholder: $t('common.select'), allowClear: true }" />
       </a-form-item>
     </a-col>
   </a-row>
@@ -83,6 +84,11 @@ export default {
         label += `（${metricValueItem.label}）`
       }
       return label
+    },
+    metricValueChange (val) {
+      if (!val) {
+        this.$emit('metricClear')
+      }
     },
   },
 }

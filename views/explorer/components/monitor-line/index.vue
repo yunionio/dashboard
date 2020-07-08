@@ -52,7 +52,7 @@ export default {
       lineChartColumns: [],
       lineChartRows: [],
       chartInstanceOption: {},
-      lineChartOptionsC: this.lineChartOptions,
+      lineChartOptionsC: {},
     }
   },
   computed: {
@@ -125,20 +125,19 @@ export default {
       this.$emit('chartInstance', v)
     },
     getMonitorLine () {
-      if (!this.series || !this.series.length) return
       const columns = ['time']
       const rows = []
       const lineChartOptions = _.cloneDeep(_.mergeWith(this.lineChartOptions, { series: [] }))
       this.series.forEach((item, i) => {
-        const seriesItem = lineChartOptions.series[i] || {}
-        lineChartOptions.series.push({
-          ...seriesItem,
+        const seriesItem = {
+          ...(lineChartOptions.series[i] || {}),
           itemStyle: {
             normal: {
               color: colors[i] || this.colorHash.hex(`${i * 1000}`),
             },
           },
-        })
+        }
+        lineChartOptions.series[i] = seriesItem
         let name = item.raw_name
         if (item.tags && item.tags.path) {
           name += ` (path: ${item.tags.path})`
