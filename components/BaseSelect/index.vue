@@ -217,14 +217,14 @@ export default {
           changeValue.label = data[nameKey]
         }
       }
-      this.$emit('input', changeValue)
-      this.$emit('change', changeValue)
       // 同步当前选择项obj
       if (changeValue) {
         let syncValue = R.is(Object, changeValue) ? this.resOpts[changeValue.key] : this.resOpts[changeValue]
         if (this.options && this.options.length) syncValue = changeValue // 外面传递 options
         this.$emit('update:item', syncValue)
       }
+      this.$emit('input', changeValue)
+      this.$emit('change', changeValue)
     },
     disabledOpts () {
       if (this.disabledItems && this.disabledItems.length) { // 禁用某些选项
