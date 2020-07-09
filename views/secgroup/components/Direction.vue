@@ -36,6 +36,7 @@ export default {
     },
   },
   data () {
+    const title = this.type === 'out' ? '目标' : '来源'
     return {
       list: this.$list.createList(this, {
         resource: 'secgrouprules',
@@ -47,7 +48,7 @@ export default {
         },
         filterOptions: {
           cidr: {
-            label: '来源',
+            label: title,
             filter: true,
             formatter: val => {
               return `cidr.contains("${val}")`
@@ -68,7 +69,7 @@ export default {
       columns: [
         {
           field: 'cidr',
-          title: '来源',
+          title: title,
           minWidth: 70,
           showOverflow: 'ellipsis',
         },
