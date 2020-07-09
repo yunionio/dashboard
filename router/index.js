@@ -49,6 +49,10 @@ export default {
           meta: {
             label: '备份管理',
             permission: 'rds_dbinstancebackups_list',
+<<<<<<< Updated upstream
+=======
+            hidden: () => true,
+>>>>>>> Stashed changes
           },
           children: [
             {

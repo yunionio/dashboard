@@ -35,19 +35,19 @@ export default {
           validate: true,
         }),
       },
-      {
-        label: '删除',
-        action: (obj) => {
-          this.createDialog('DeleteResDialog', {
-            title: '删除',
-            name: '备份',
-            data: [obj],
-            columns: this.columns,
-            onManager: this.onManager,
-            refresh: this.refresh,
-          })
-        },
-      },
+      // {
+      //   label: '删除',
+      //   action: (obj) => {
+      //     this.createDialog('DeleteResDialog', {
+      //       title: '删除',
+      //       name: '备份',
+      //       data: [obj],
+      //       columns: this.columns,
+      //       onManager: this.onManager,
+      //       refresh: this.refresh,
+      //     })
+      //   },
+      // },
     ]
   },
 }
