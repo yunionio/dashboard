@@ -45,7 +45,7 @@
             </template>
             <a-collapse v-model="activeKey">
               <a-collapse-panel header="表单配置" key="jsonschema">
-                <json-schema-form v-if="isJsonSchema" :schema="schema" :definition="definition" :hide-reset="false" ref="formRef" />
+                <json-schema-form v-if="isJsonSchema" :schema="schema" :extendFd="form.fd" :definition="definition" :hide-reset="false" ref="formRef" />
                 <form-yaml
                   v-else
                   :decorators="decorators"
@@ -78,7 +78,7 @@ import _ from 'lodash'
 import * as R from 'ramda'
 import marked from 'marked'
 import { Base64 } from 'js-base64'
-import { compactObj, handleJsonSchemaProperties } from '@/utils/utils'
+import { compactObj } from '@/utils/utils'
 import ClusterSelect from '@K8S/sections/ClusterSelect'
 import NamespaceSelect from '@K8S/sections/NamespaceSelect'
 import TemplatePreview from '@K8S/sections/TemplatePreview'
@@ -135,7 +135,14 @@ export default {
         [13, 9],
       ],
       form: {
-        fc: this.$form.createForm(this),
+        fc: this.$form.createForm(this, {
+          onValuesChange: (props, values) => {
+            Object.keys(values).forEach((key) => {
+              this.$set(this.form.fd, key, values[key])
+            })
+          },
+        }),
+        fd: {},
       },
       schema: {},
       decorators: {
@@ -221,7 +228,30 @@ export default {
           },
         ],
       },
-      definition: [],
+      definition: [
+        // 'hypervisor',
+        // 'preferRegion',
+        // 'preferZone',
+        // 'network',
+        // 'virtualMachines',
+        // 'virtualMachines.masterNode',
+        // 'virtualMachines.slaveNode',
+        // 'virtualMachines.masterNode.instanceType',
+        // 'virtualMachines.masterNode.diskSizeGB',
+        // 'virtualMachines.masterNode.storageBackend',
+        // 'virtualMachines.masterNode.ansiblePlaybook',
+        // 'virtualMachines.masterNode.ansiblePlaybook.jenkins',
+        // 'virtualMachines.masterNode.ansiblePlaybook.telegraf',
+        // 'virtualMachines.masterNode.ansiblePlaybook.jenkins.adminUsername',
+        // 'virtualMachines.masterNode.ansiblePlaybook.jenkins.adminPassword',
+        // 'virtualMachines.masterNode.ansiblePlaybook.jenkins.httpPort',
+        // 'virtualMachines.masterNode.ansiblePlaybook.telegraf.influxdbName',
+        // 'virtualMachines.masterNode.ansiblePlaybook.telegraf.influxdbUrl',
+        // 'virtualMachines.slaveNode.count',
+        // 'virtualMachines.slaveNode.instanceType',
+        // 'virtualMachines.slaveNode.diskSizeGB',
+        // 'virtualMachines.slaveNode.storageBackend',
+      ],
     }
   },
   computed: {
@@ -263,12 +293,7 @@ export default {
       }
     },
     getDefinition (jsonshcema = this.schema) {
-      const _getDefinition = (key, value) => {
-        const item = key
-        if (key === 'project') return
-        this.definition.push(item)
-      }
-      handleJsonSchemaProperties(jsonshcema, _getDefinition)
+      this.definition = Object.keys(jsonshcema.properties).filter(val => val !== 'project')
       this.getCapability()
     },
     valueSearch (query, path) {
@@ -342,7 +367,6 @@ export default {
       })
     },
     async doCreate (values, valuesJson) {
-      console.log(values, 'values')
       const data = {
         chart_name: `${this.chartDetail.repo}/${this.chartDetail.name}`,
         release_name: values.release_name,
@@ -376,7 +400,6 @@ export default {
           R.forEachObjIndexed((value, key) => {
             sets[value] = values.values[key]
           }, values.keys)
-          console.log(sets, 'sets')
           data.sets = sets
         } else {
           data.values = values.yaml
@@ -392,7 +415,6 @@ export default {
       }
       try {
         const [values, valuesJson] = await Promise.all(jobs)
-        console.log(values, valuesJson, 'values, valuesJson')
         await this.doCreate(values, valuesJson)
         this.$message.success('操作成功')
         this.loading = false
