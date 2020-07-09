@@ -1,17 +1,17 @@
 <template>
   <div>
-    <a-divider orientation="left" class="mt-5 mb-3">
+    <a-divider v-if="!allSuccess" orientation="left" class="mt-5 mb-3">
       {{ type === 'host' ? '配置物理机IP' : '配置虚拟机IP' }}
     </a-divider>
-    <a-alert v-if="noSuitableIps && noSuitableIps.length > 0" class="mb-3" type="warning" show-icon>
+    <a-alert v-if="list.length > 0" class="mb-3 mt-3" :type="allSuccess? 'success' : 'warning'" show-icon>
       <template slot="message" v-if="type === 'host'">
-        {{noSuitableIps.lenth === 0 ? '恭喜已有网络全部满足,点击下一步即可' : `发现该域子网目前不包含该账号下的IP为${noSuitableIps.join(' 、 ')}的宿主机，您需要新建${noSuitableIps.length}个包含上述宿主机IP的子网，否则您无法使用或同步该宿主机下资源` }}
+        {{allSuccess ? '恭喜已有网络全部满足,点击“下一步”即可' : `发现该域子网目前不包含该账号下的IP为${noSuitableIps.join(' 、 ')}的宿主机，您需要新建${noSuitableIps.length}个包含上述宿主机IP的子网，否则您无法使用或同步该宿主机下资源` }}
       </template>
       <template  slot="message" v-if="type === 'guest'">
-        发现该域子网目前不包含该账号下的IP为 {{noSuitableIps.join(' 、 ')}} 的虚拟机，您需要新建{{noSuitableIps.length}}个包含上述虚拟机的IP,否则您可能无法正常使用上述虚拟机
+        {{allSuccess ? '恭喜已有网络全部满足,点击“确定”即可' : `发现该域子网目前不包含该账号下的IP为${noSuitableIps.join(' 、 ')}的虚拟机，您需要新建${noSuitableIps.length}个包含上述虚拟机的IP,否则您可能无法正常使用上述虚拟机` }}
       </template>
     </a-alert>
-    <a-form-item label="IP子网">
+    <a-form-item label="IP子网" v-if="!allSuccess">
       <a-radio-group v-if="type !== 'host'" v-decorator="['isCreate', { initialValue: true }]" button-style="solid">
         <a-radio-button :value="true">
           创建IP子网
@@ -170,6 +170,9 @@ export default {
         return this.prepareNetData[`${this.type}s`]
       }
       return []
+    },
+    allSuccess () {
+      return this.list.length > 0 && this.noSuitableIps.length === 0
     },
   },
   watch: {
