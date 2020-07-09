@@ -530,10 +530,12 @@ export default {
                   })
                   if (isOk) {
                     isOk = this.list.selectedItems.every((item) => {
+                      if (item.backup_host_id) {
+                        return false
+                      }
                       if (item.status === 'running') {
                         return !item.is_gpu && !item.cdrom
                       }
-                      return !item.backup_host_id
                     })
                   }
                   if (!isOk) {
