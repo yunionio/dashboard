@@ -71,18 +71,19 @@
         </template>
         <template v-if="(showBandwidth && selectedPlatform === 'public_cloud') || selectedPlatform === 'idc'">
           <a-form-item label="带宽" v-bind="formItemLayout">
-            <div class="d-flex">
-              <div class="flex-fill">
+            <div class="d-flex align-items-center">
+              <!-- <div class="flex-fill">
                 <a-slider :min="1" :max="maxBandwidth" :step="1" :marks="sliderMarks" v-decorator="decorators.bandwidth" />
-              </div>
+              </div> -->
               <a-input-number
-                class="ml-4"
+                style="width: 120px"
                 :min="1"
                 :max="maxBandwidth"
-                :step="1"
+                :step="50"
                 :formatter="format"
                 :parse="format"
                 v-decorator="decorators.bandwidth" />
+                <span class="ml-2">Mbps</span>
             </div>
           </a-form-item>
           <a-form-item label="计费方式" v-bind="formItemLayout" v-if="selectedPlatform !== 'idc' ">
@@ -223,7 +224,7 @@ export default {
       selectedRegionItem: {},
       showBandwidth: true,
       charge_type: 'traffic',
-      selectedPlatform: 'public_cloud',
+      selectedPlatform: 'idc',
       providerC: '',
       domain_id: 'default',
       providerParams: {
@@ -298,6 +299,9 @@ export default {
       }
     },
     maxBandwidth () {
+      if (this.selectedPlatform === 'idc') {
+        return 999999
+      }
       let maxBandwidth = 200
       if (!R.isEmpty(this.selectedRegionItem)) {
         if (this.charge_type === 'bandwidth') {
