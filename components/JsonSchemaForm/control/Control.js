@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import FormMixin from '../mixins'
 
 const Control = {
@@ -19,7 +20,11 @@ const Control = {
   },
   render (h) {
     const { path, definition } = this
-    const component = definition.type
+    let component = definition.type
+    const componentType = _.get(definition, 'schema.componentType')
+    if (componentType) {
+      component = `J${componentType}`
+    }
     const inputProps = {
       props: {
         ...definition.input,
@@ -35,7 +40,6 @@ const Control = {
           value: decorator,
         },
       ]
-      // console.log(path, inputProps, '-----------------')
       return (
         <a-form-item { ...this.groupProps }>
           { h(component, inputProps) }

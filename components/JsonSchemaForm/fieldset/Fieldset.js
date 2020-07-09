@@ -15,8 +15,10 @@ const Fieldset = {
       const { definition } = this
 
       return (definition.items || definition).map(item => {
+        const path = this.getPath(item.key)
+        const key = path.join('.')
         return (
-          <j-control path={ this.getPath(item.key) }></j-control>
+          <j-control key={ key } path={ path }></j-control>
         )
       })
     },
