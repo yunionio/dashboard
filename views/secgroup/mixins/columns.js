@@ -20,16 +20,15 @@ export default {
       }),
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'secgroup', columns: () => this.columns }),
       {
-        field: 'cache_cnt',
-        title: '缓存数量',
-        width: 80,
-      },
-      {
         field: 'rules',
         title: '规则预览(策略，来源，协议，端口)',
         width: 220,
         type: 'expand',
         slots: {
+          default: ({ row }) => {
+            const len = (row.rules && row.rules.length) || 0
+            return `${len}个`
+          },
           content: ({ row }, h) => {
             const inList = []
             const outList = []
