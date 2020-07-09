@@ -105,6 +105,7 @@ export default {
           meta: {
             label: 'Helm仓库地址',
             permission: 'k8s_repos_list',
+            hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'k8s', 'vmware']),
             invisible: () => true,
           },
           component: Layout,
@@ -127,6 +128,7 @@ export default {
         {
           path: '/scheduledtask',
           meta: {
+            hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'vmware']),
             label: '定时任务',
           },
           component: Layout,
