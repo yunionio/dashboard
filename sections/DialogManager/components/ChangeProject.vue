@@ -1,8 +1,8 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{$t('common.text00078')}}{{ $t('dictionary.project') }}</div>
+    <div slot="header">{{title}}</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" :action="`${$t('common.text00078')}${$t('dictionary.project')}`" :name="name" />
+      <dialog-selected-tips :count="params.data.length" :action="title" :name="name" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
@@ -76,6 +76,9 @@ export default {
     },
     name () {
       return this.params.name || this.$t('common.text00006')
+    },
+    title () {
+      return this.params.title || `${this.$t('common.text00078')}${this.$t('dictionary.project')}`
     },
   },
   methods: {
