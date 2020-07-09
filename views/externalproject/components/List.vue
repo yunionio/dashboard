@@ -64,6 +64,8 @@ export default {
           action: obj => {
             this.createDialog('ChangeProjectDialog', {
               data: this.list.selectedItems,
+              title: `切换本地${this.$t('dictionary.project')}`,
+              name: this.$t('dictionary.project'),
               columns: this.columns,
               onManager: this.onManager,
             })
@@ -82,6 +84,7 @@ export default {
           action: obj => {
             this.createDialog('ChangeProjectDialog', {
               data: [obj],
+              title: `切换本地${this.$t('dictionary.project')}`,
               name: this.$t('dictionary.project'),
               columns: this.columns,
               onManager: this.onManager,
