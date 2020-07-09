@@ -52,13 +52,13 @@ export default {
               return `name.contains("${val}")`
             },
           },
-          projects: getTenantFilter(),
           ip: {
             label: '来源/目标',
           },
           ports: {
             label: '端口',
           },
+          tenant: getTenantFilter(),
         },
         responseData: this.responseData,
       }),
