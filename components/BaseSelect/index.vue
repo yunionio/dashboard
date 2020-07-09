@@ -186,7 +186,12 @@ export default {
       return option.componentOptions.children[0].componentInstance.text.toLowerCase().includes(input.toLowerCase())
     },
     paramsChange (val, oldV) {
-      if (!R.equals(val, oldV)) {
+      const del$t = value => {
+        const obj = { ...value }
+        delete obj.$t
+        return obj
+      }
+      if (!R.equals(del$t(val), del$t(oldV))) {
         const isInitLoad = R.is(Object, oldV) && (R.isEmpty(oldV) || R.isNil(oldV)) // 如果oldV是{}，认为是第一次参数变化，则无需 clearSelect
         if (!isInitLoad) this.clearSelect()
         if (this._valid()) this.loadOptsDebounce()
