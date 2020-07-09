@@ -125,7 +125,7 @@ export default {
   computed: {
     _filterOptions () {
       if (!this.filterOptions || R.isEmpty(this.filterOptions)) return null
-      const filterSortKeys = ['name', 'brand', 'provider', 'ip', 'ips', 'status', 'enabled', 'sn', 'os_type', 'tenant', 'region', 'host', 'billing_type']
+      const filterSortKeys = ['name', 'brand', 'provider', 'ip', 'ips', 'status', 'enabled', 'sn', 'os_type', 'cidr', 'ports', 'tenant', 'region', 'host', 'billing_type']
       const _filterOptions = {}
       filterSortKeys.forEach(k => {
         const _k = k.toLowerCase()
