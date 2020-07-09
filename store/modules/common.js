@@ -15,6 +15,9 @@ export default {
     lbRedirected: {},
     // 菜单栏
     sidebar: {},
+    jsonschema: {
+      sku: {},
+    },
   },
   mutations: {
     UPDATE_OBJECT (state, { name, data }) {

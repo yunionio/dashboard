@@ -1,5 +1,5 @@
 import _ from 'lodash'
-
+import * as R from 'ramda'
 import localize from '../validate/localize'
 import { parseErrors, removeEmptyValue } from '../util/util'
 
@@ -52,24 +52,57 @@ export default {
     schema: Object,
     definition: Array,
     defaultValue: [Object, Array],
+    extendFd: Object,
   },
   data () {
     return {
-      form: this.$form.createForm(this),
+      form: {
+        fc: this.$form.createForm(this, {
+          onValuesChange: (props, values) => {
+            Object.keys(values).forEach((key) => {
+              this.form.fd = { ...this.form.fd, [key]: values[key] }
+            })
+          },
+        }),
+        fd: {},
+      },
       formDefinition: {
         definition: [],
       },
       model: {
         value: null,
       },
+      formScopeparams: {
+        scopeParams: {
+          scope: this.$store.getters.scope,
+        },
+      },
     }
+  },
+  watch: {
+    extendFd (fd) {
+      if (fd.domain) {
+        let domain = fd.domain
+        if (R.is(Object, domain) && domain.key) {
+          domain = domain.key
+        }
+        if (this.$store.getters.isAdminMode) {
+          delete this.formScopeparams.scopeParams.scope
+          this.formScopeparams.scopeParams.project_domain = domain
+        } else {
+          this.formScopeparams.scopeParams.scope = this.$store.getters.scope
+        }
+      }
+    },
   },
   provide () {
     return {
-      form: this.form,
+      form: this.form.fc,
+      formFd: this.form,
       formDefinition: this.formDefinition,
       defaultValue: this.defaultValue,
       model: this.model,
+      scopeParams: this.formScopeparams,
     }
   },
   created () {
@@ -117,13 +150,13 @@ export default {
     const { defaultValue } = this
 
     if (!_.isEmpty(defaultValue)) {
-      this.form.setFieldsValue(defaultValue)
+      this.form.fc.setFieldsValue(defaultValue)
     }
   },
   methods: {
     async handleSubmit () {
       try {
-        const values = await this.form.validateFields()
+        const values = await this.form.fc.validateFields()
         return values
       } catch (error) {
         throw error
@@ -132,7 +165,7 @@ export default {
     handleFieldValidate (rule, value, callback) {
       const { validate, form, schema } = this
       const path = rule.fullField
-      const model = form.getFieldsValue()
+      const model = form.fc.getFieldsValue()
       // 移除空数据
       removeEmptyValue(model)
 
@@ -153,7 +186,7 @@ export default {
       }
     },
     handleClear () {
-      this.form.resetFields()
+      this.form.fc.resetFields()
     },
   },
   render (h) {
@@ -161,7 +194,7 @@ export default {
 
     return (
       <a-form
-        form={ form }
+        form={ form.fc }
         layout={ layout }
         prefixCls={ prefixCls }
         hideRequiredMark={ hideRequiredMark }

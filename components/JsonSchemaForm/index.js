@@ -9,6 +9,12 @@ import Radio from './radio'
 import DateTimePicker from './datetime'
 import Html from './html'
 
+import JCloudregionList from './JComponents/JCloudregionList/index'
+import JZoneList from './JComponents/JZoneList/index'
+import JNetworkList from './JComponents/JNetworkList/index'
+import JSKUList from './JComponents/JSKUList/index'
+import JStorageBackendList from './JComponents/JStorageBackendList/index'
+
 const components = [
   Form,
   Fieldset,
@@ -19,6 +25,11 @@ const components = [
   Radio,
   DateTimePicker,
   Html,
+  JCloudregionList,
+  JZoneList,
+  JNetworkList,
+  JSKUList,
+  JStorageBackendList,
 ]
 
 components.map(component => {
