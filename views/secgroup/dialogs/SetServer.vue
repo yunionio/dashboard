@@ -30,7 +30,7 @@ import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import {
   getNameDescriptionTableColumn,
-  getPublicScopeTableColumn,
+  getProjectTableColumn,
 } from '@/utils/common/tableColumn'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -128,7 +128,7 @@ export default {
           title: '关联虚拟机',
           width: 80,
         },
-        getPublicScopeTableColumn({ vm: this }),
+        getProjectTableColumn(),
       ]
     },
   },
