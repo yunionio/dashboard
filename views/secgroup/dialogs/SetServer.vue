@@ -3,7 +3,7 @@
     <div slot="header">{{params.title}}</div>
     <div slot="body">
       <dialog-selected-tips :name="$t('dictionary.secgroup')" :count="params.data.length" :action="params.title" />
-      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-table :data="params.data" :columns="columns" />
       <a-form :form="form.fc" hideRequiredMark>
         <a-form-item :label="$t('dictionary.server')" v-bind="formItemLayout">
           <base-select
@@ -28,6 +28,10 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
+import {
+  getNameDescriptionTableColumn,
+  getProjectTableColumn,
+} from '@/utils/common/tableColumn'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
@@ -107,6 +111,25 @@ export default {
           scope: this.$store.getters.scope,
         }
       }
+    },
+    columns () {
+      return [
+        getNameDescriptionTableColumn({
+          onManager: this.onManager,
+          hideField: true,
+          slotCallback: row => {
+            return (
+              <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
+            )
+          },
+        }),
+        {
+          field: 'guest_cnt',
+          title: '关联虚拟机',
+          width: 80,
+        },
+        getProjectTableColumn(),
+      ]
     },
   },
   created () {

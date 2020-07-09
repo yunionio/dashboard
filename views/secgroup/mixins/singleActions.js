@@ -33,37 +33,6 @@ export default {
         label: '更多',
         actions: obj => {
           return [
-            {
-              label: `更改${this.$t('dictionary.project')}`,
-              permission: 'secgroups_create',
-              action: () => {
-                this.createDialog('ChangeOwenrDialog', {
-                  data: [obj],
-                  columns: this.columns,
-                  onManager: this.onManager,
-                  refresh: this.refresh,
-                  name: this.$t('dictionary.secgroup'),
-                  resource: 'secgroups',
-                })
-              },
-              meta: () => {
-                if (this.$store.getters.isAdminMode || this.$store.getters.isDomainMode) {
-                  return {
-                    validate: this.isPower(obj),
-                  }
-                }
-                return {
-                  validate: false,
-                }
-              },
-            },
-            getSetPublicAction(this, {
-              name: this.$t('dictionary.secgroup'),
-              scope: 'project',
-              resource: 'secgroups',
-            }, {
-              permission: 'secgroups_performAction',
-            }),
             // {
             //   label: '设置为私有',
             //   permission: 'secgroups_create',
@@ -183,6 +152,37 @@ export default {
                 }
               },
             },
+            {
+              label: `更改${this.$t('dictionary.project')}`,
+              permission: 'secgroups_create',
+              action: () => {
+                this.createDialog('ChangeOwenrDialog', {
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                  refresh: this.refresh,
+                  name: this.$t('dictionary.secgroup'),
+                  resource: 'secgroups',
+                })
+              },
+              meta: () => {
+                if (this.$store.getters.isAdminMode || this.$store.getters.isDomainMode) {
+                  return {
+                    validate: this.isPower(obj),
+                  }
+                }
+                return {
+                  validate: false,
+                }
+              },
+            },
+            getSetPublicAction(this, {
+              name: this.$t('dictionary.secgroup'),
+              scope: 'project',
+              resource: 'secgroups',
+            }, {
+              permission: 'secgroups_performAction',
+            }),
             {
               label: '删除',
               permission: 'secgroups_delete',
