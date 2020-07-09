@@ -43,7 +43,7 @@ export default {
         }),
         {
           field: 'networks',
-          title: '网络数量',
+          title: 'IP子网',
           slots: {
             default: ({ row }, h) => {
               if (!row.networks) return row.networks || 0
