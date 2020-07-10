@@ -251,8 +251,9 @@ export default {
         }
       }
       try {
-        const { data: { data = [] } } = await manager.list({ params, ctx: this.ctx })
-        let list = data.map(val => ({ ...val, id: val[this.idKey], name: val[this.nameKey] }))
+        const { data } = await manager.list({ params, ctx: this.ctx })
+        const _list = R.type(data) === 'Array' ? data : (R.type(data) === 'Object' && (data.data || []))
+        let list = _list.map(val => ({ ...val, id: val[this.idKey], name: val[this.nameKey] }))
         if (this.mapper) {
           list = this.mapper(list)
         }
