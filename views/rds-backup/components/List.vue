@@ -97,6 +97,8 @@ export default {
           meta: () => {
             return {
               buttonType: 'primary',
+              validate: this.data.status === 'running',
+              tooltip: this.data.status === 'running' && '仅实例在运行中状态下支持新建操作',
             }
           },
         },
