@@ -2,7 +2,8 @@
   <div>
     <a-popover trigger="click" :getPopupContainer="triggerNode => triggerNode.parentNode">
       <div class="trigger d-flex align-items-center justify-content-center">
-        <a-badge :count="statistics" :overflowCount="99">
+        <span v-if="workOrderMenuTitleUsedText">工单</span>
+        <a-badge :count="statistics" :overflowCount="99" v-else>
           <icon type="navbar-process" style="font-size: 24px;" />
         </a-badge>
       </div>
@@ -41,6 +42,12 @@ import { WORKFLOW_TYPES } from '@/constants/workflow'
 export default {
   name: 'WorkOrderPopover',
   mixins: [workflowMixin, DialogMixin, WindowsMixin],
+  props: {
+    workOrderMenuTitleUsedText: {
+      type: Boolean,
+      default: false,
+    },
+  },
   computed: {
     ...mapGetters(['isAdminMode', 'isDomainMode']),
     statistics () {
