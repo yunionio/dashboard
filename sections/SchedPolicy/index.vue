@@ -277,7 +277,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .vm-sched-policy {
   .host-form-item ::v-deep .ant-form-item-control {
     width: 100%;

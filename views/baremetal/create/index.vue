@@ -1288,7 +1288,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .disk-option-item {
   & + .disk-option-item {
     margin-left: 15px;

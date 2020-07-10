@@ -65,7 +65,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .info {
   margin-left: -124px;
   .title {

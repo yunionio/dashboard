@@ -421,7 +421,7 @@ export default {
   },
 }
 </script>
-<style lang="scss">
+<style lang="less">
   .mem-edit-item {
     .edit-icon {
       display: none;

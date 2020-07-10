@@ -418,13 +418,13 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-@import '../../../../src/styles/variables';
+<style lang="less" scoped>
+@import '~@/styles/less/theme';
 
 .data-disk {
   .count-tips {
     .remain-num {
-      color: $primary-color;
+      color: @primary-color;
     }
   }
 }

@@ -176,7 +176,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .disk-wrapper{
   .storage-icon{
     position: relative;

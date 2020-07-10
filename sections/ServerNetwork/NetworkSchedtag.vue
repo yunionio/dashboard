@@ -81,13 +81,13 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-@import '../../../../src/styles/variables';
+<style lang="less" scoped>
+@import '../../../../src/styles/less/theme';
 
 .network-schedtag {
   .network-count-tips {
     .remain-num {
-      color: $primary-color;
+      color: @primary-color;
     }
   }
 }

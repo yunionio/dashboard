@@ -196,7 +196,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .severtemplate-create-server {
   ::v-deep .ant-form.ant-form-horizontal .ant-form-item .ant-form-item-label{
     padding-left: 20px;

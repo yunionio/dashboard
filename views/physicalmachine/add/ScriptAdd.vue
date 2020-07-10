@@ -70,7 +70,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .script-add-wrap {
   line-height: 1.5rem;
   max-width: 600px;
