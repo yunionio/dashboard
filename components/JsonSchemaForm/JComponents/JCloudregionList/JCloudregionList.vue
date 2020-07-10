@@ -10,6 +10,7 @@
 
 <script>
 import mixin from '../mixin'
+import { HYPERVISORS_MAP } from '@/constants'
 
 export default {
   name: 'JCloudregionList',
@@ -17,9 +18,10 @@ export default {
   computed: {
     params () {
       if (!this.formFd.fd.hypervisor) return {}
+      const provider = HYPERVISORS_MAP[this.formFd.fd.hypervisor] ? HYPERVISORS_MAP[this.formFd.fd.hypervisor].provider : this.formFd.fd.hypervisor
       const p = {
         ...this.scopeParams.scopeParams,
-        provider: this.formFd.fd.hypervisor,
+        provider,
       }
       return p
     },
