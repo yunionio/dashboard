@@ -59,7 +59,7 @@ export default {
             return {
               buttonType: 'primary',
               validate: this.data.brand === 'Azure',
-              tooltip: this.data.brand === 'Azure' && '仅Azure平台支持此操作',
+              tooltip: this.data.brand !== 'Azure' && '仅Azure平台支持此操作',
             }
           },
         },
