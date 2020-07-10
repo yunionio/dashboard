@@ -51,7 +51,7 @@ export default {
           meta: {
             label: '备份管理',
             permission: 'rds_dbinstancebackups_list',
-            hidden: () => !hasSetupKey(['aliyun', 'huawei', 'google', 'aws']),
+            hidden: () => true,
           },
           children: [
             {
