@@ -278,8 +278,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-@import '../../../../../../../src/styles/_variables.scss';
+<style lang="less" scoped>
+@import '../../../../../../../src/styles/less/theme';
 
 .monitor-form {
   &.hideBody ::v-deep .ant-card-body {
@@ -288,7 +288,7 @@ export default {
   .remove-icon {
     transition: color 0.1s ease-in;
     &:hover {
-      color: $error-color;
+      color: @error-color;
     }
   }
 }

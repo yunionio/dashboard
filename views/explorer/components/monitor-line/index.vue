@@ -166,7 +166,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .explorer-monitor-line ::v-deep .ant-card-body {
   width: 100%;
 }
