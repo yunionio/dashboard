@@ -208,8 +208,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-@import '../../../../../src/styles/_variables.scss';
+<style lang="less" scoped>
+@import '../../../../../src/styles/less/theme';
 
 .create-server-result-wrap {
   position: relative;
@@ -238,7 +238,7 @@ export default {
   }
   .prices {
     .hour {
-      color: $error-color;
+      color: @error-color;
       font-size: 24px;
     }
     .tips {

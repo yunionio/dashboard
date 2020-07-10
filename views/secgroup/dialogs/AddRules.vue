@@ -305,7 +305,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .right-checkbox {
   width: 100px;
   height: 40px;

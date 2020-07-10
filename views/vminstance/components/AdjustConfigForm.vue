@@ -724,7 +724,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .form-wrapper {
   padding-left: 22px;
 }

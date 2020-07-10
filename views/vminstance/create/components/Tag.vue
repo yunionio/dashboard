@@ -150,7 +150,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .tag-list {
   min-height: 65px;
   border: 2px dashed #ddd;

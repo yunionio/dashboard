@@ -240,8 +240,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-@import "../../../../src/styles/variables";
+<style lang="less" scoped>
+@import "../../../../src/styles/less/theme";
 
 .wrap {
   .keypair-icon {
@@ -249,14 +249,14 @@ export default {
     font-size: 18px;
     svg {
       &:hover {
-        fill: $primary-color;
+        fill: @primary-color;
       }
     }
   }
   .keypair-icon-disabled {
     font-size: 18px;
     svg {
-      fill: $disabled-color;
+      fill: @disabled-color;
     }
   }
 }

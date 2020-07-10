@@ -238,7 +238,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .select-btn {
   margin-left: 0 !important;
   margin-right: 8px;
