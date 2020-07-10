@@ -285,7 +285,9 @@ export default {
           this.definition.splice(index, 1, {
             ...hyperObj,
             type: 'a-select',
-            options: hypervisors.map(v => ({ value: v, label: (_.get(HYPERVISORS_MAP, `${v}.label`) || v) })),
+            options: hypervisors
+              .filter(v => v !== 'baremetal')
+              .map(v => ({ value: v, label: (_.get(HYPERVISORS_MAP, `${v}.label`) || v) })),
           })
         }
       } catch (error) {
