@@ -107,11 +107,11 @@
     <notify-popover class="navbar-item" :notifyMenuTitleUsedText="notifyMenuTitleUsedText" v-if="showNotify" />
     <!-- 工单 -->
     <work-order-popover class="navbar-item" :workOrderMenuTitleUsedText="workOrderMenuTitleUsedText" v-if="showWorkOrder && itsmServiceEnable" />
+    <slot name="behindNavbar" />
     <!-- 设置 -->
-    <setting-popover class="navbar-item" />
+    <setting-popover class="navbar-item" :settingMenuTitleUsedText="settingMenuTitleUsedText" />
     <!-- 帮助 -->
     <help-popover class="navbar-item" v-if="showHelp" />
-    <slot name="behindNavbar" />
     <!-- 用户 -->
     <slot name="userPopover" />
   </div>
@@ -163,6 +163,10 @@ export default {
       default: false,
     },
     workOrderMenuTitleUsedText: {
+      type: Boolean,
+      default: false,
+    },
+    settingMenuTitleUsedText: {
       type: Boolean,
       default: false,
     },

@@ -2,7 +2,8 @@
   <div>
     <a-popover trigger="click" :getPopupContainer="triggerNode => triggerNode.parentNode">
       <div class="trigger d-flex align-items-center justify-content-center">
-        <a-icon type="setting" style="font-size: 24px;" />
+        <span v-if="settingMenuTitleUsedText">设置</span>
+        <a-icon type="setting" style="font-size: 24px;" v-else />
       </div>
       <template v-slot:content>
         <div class="setting-wrap">
@@ -29,6 +30,12 @@ export default {
   components: {
     ThemeColorReplacer,
     ThemeReplacer,
+  },
+  props: {
+    settingMenuTitleUsedText: {
+      type: Boolean,
+      default: false,
+    },
   },
 }
 </script>
