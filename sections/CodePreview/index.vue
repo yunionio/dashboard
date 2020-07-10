@@ -48,7 +48,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .code-preview {
   .code-preview-item_content {
     padding: 6px 12px;
