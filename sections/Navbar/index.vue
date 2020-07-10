@@ -111,8 +111,9 @@
     <setting-popover class="navbar-item" />
     <!-- 帮助 -->
     <help-popover class="navbar-item" v-if="showHelp" />
-    <!-- 用户 -->
     <slot name="behindNavbar" />
+    <!-- 用户 -->
+    <slot name="userPopover" />
   </div>
 </template>
 
