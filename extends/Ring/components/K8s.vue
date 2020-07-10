@@ -248,7 +248,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .percent-tips {
   font-size: 18px;
 }

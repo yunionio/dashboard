@@ -65,7 +65,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .item {
   box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
 }

@@ -244,7 +244,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .wrap {
   border-bottom: 1px solid #d8d8d8;
 }

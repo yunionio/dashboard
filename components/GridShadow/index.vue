@@ -23,7 +23,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .grid-shadow-wrap {
   position: relative;
   overflow: auto;

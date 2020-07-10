@@ -416,11 +416,11 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="less">
 @import url('../../styles/index.scss');
 </style>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .edit-wrap {
   left: 0;
   right: 0;
