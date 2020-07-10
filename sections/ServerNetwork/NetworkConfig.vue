@@ -30,12 +30,17 @@
           v-decorator="decorator.networks(item.key)"
           resource="networks"
           remote
+          show-sync
           :item.sync="item.network"
           :isDefaultSelect="i === 0"
           :need-params="true"
           :params="{ ...networkParamsC, $t: item.key }"
           :mapper="networkResourceMapper"
           :select-props="{ allowClear: true, placeholder: '请选择IP子网' }" />
+          <div slot="extra" v-if="i === 0">
+            没有想要的？可以立即
+            <help-link href="/network2"> 立即新建</help-link>
+          </div>
       </a-form-item>
       <a-form-item class="mb-0 mr-2" v-if="item.ipShow" :wrapperCol="{ span: 24 }">
         <a-input
@@ -44,7 +49,7 @@
           v-decorator="decorator.ips(item.key, item.network)" />
       </a-form-item>
       <a-button v-else type="link" class="mr-1 mt-1" @click="showIp(item)">手动配置IP</a-button>
-      <a-button shape="circle" icon="minus" size="small" @click="decrease(item.key, i)" class="mt-2" />
+      <a-button shape="circle" icon="minus" size="small" v-if="i !== 0" @click="decrease(item.key, i)" class="mt-2" />
     </div>
     <div class="d-flex align-items-center" v-if="networkCountRemaining > 0">
       <a-button type="primary" shape="circle" icon="plus" size="small" @click="add" />
