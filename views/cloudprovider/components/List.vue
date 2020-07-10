@@ -47,6 +47,23 @@ export default {
       }),
       groupActions: [
         {
+          label: '新建',
+          action: () => {
+            this.createDialog('cloudproviderCreateDialog', {
+              data: this.data,
+              onManager: this.onManager,
+              refresh: this.refresh,
+            })
+          },
+          meta: () => {
+            return {
+              buttonType: 'primary',
+              validate: this.data.brand === 'Azure',
+              tooltip: this.data.brand === 'Azure' && '仅Azure平台支持此操作',
+            }
+          },
+        },
+        {
           label: '启用',
           action: () => {
             this.list.batchPerformAction('enable', null).then(() => {
