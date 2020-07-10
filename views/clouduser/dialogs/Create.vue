@@ -102,6 +102,11 @@ export default {
         ],
         cloudgroup_ids: [
           'cloudgroup_ids',
+          {
+            rules: [
+              { required: this.params.cloudaccount.brand === 'Google', message: this.$t('common.select') },
+            ],
+          },
         ],
       },
       cloudgroupListSelectProps: {
