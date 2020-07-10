@@ -286,7 +286,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 ::v-deep .detail-item {
   .detail-item-title {
     width: 200px !important;
