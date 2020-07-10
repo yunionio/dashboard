@@ -1,5 +1,5 @@
 <template>
-  <div class="wrap">
+  <div class="wrap shadow-lg bg-white rounded">
     <a-card>
       <div class="wrap-inner">
         <h5>管理员已开启登录保护，请按照以下步骤开启虚拟MFA</h5>
@@ -117,7 +117,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .wrap {
   width: 710px;
   position: relative;

@@ -42,7 +42,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .monitor-list-line-loader {
   position: absolute;
   left: 0;

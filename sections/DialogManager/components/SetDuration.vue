@@ -239,7 +239,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .ant-tag-blue {
   background: none;
   &.active {

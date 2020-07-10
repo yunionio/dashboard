@@ -24,7 +24,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .page-footer {
   z-index: 10;
   position: fixed;

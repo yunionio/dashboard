@@ -112,7 +112,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .tag-table-column {
   max-width: 300px;
   .wrap {

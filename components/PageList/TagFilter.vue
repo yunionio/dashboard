@@ -100,7 +100,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .tag-filter-wrap {
   min-width: 0;
 }

@@ -48,8 +48,8 @@ export default {
 }
 </script>
 
-<style lang="scss">
-@import '../../styles/_variables.scss';
+<style lang="less">
+@import '../../styles/less/theme';
 
 .oc-mask {
   position: absolute;
@@ -58,7 +58,7 @@ export default {
   background: rgba(255, 255, 255, 1);
   width: 100%;
   height: 100%;
-  color: $primary-color;
+  color: @primary-color;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -66,10 +66,10 @@ export default {
   flex-flow: column;
 }
 .oc-mask-fullscreen {
-  @extend .oc-mask;
+  &:extend(.oc-mask);
   width: 100vw;
   height: 100vh;
   top: 0;
-  background: (0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.5);
 }
 </style>

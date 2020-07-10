@@ -1,5 +1,5 @@
 <template>
-  <div class="wrap">
+  <div class="wrap shadow-lg bg-white rounded">
     <secret-question-form
       :title="$t('auth.mfa.title')"
       :loading="loading"
@@ -70,10 +70,9 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .wrap {
   width: 600px;
-  height: 660px;
   position: relative;
 }
 </style>

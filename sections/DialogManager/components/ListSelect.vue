@@ -127,7 +127,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .selected-warp {
   position: relative;
   border: 1px solid #d9d9d9;

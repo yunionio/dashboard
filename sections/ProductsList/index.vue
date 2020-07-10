@@ -1,5 +1,5 @@
 <template>
-  <scrollbar class="products-list-wrap" id="products-list-wrap">
+  <scrollbar class="products-list-wrap" :class="{ 'light-theme': light }" id="products-list-wrap">
     <ul class="list-unstyled p-0 mb-0">
       <template v-for="(item, idx) of menus">
         <products-list-sub
@@ -9,6 +9,7 @@
           :popover-align="popoverAlign"
           :get-label="getLabel"
           :show-menu="showMenu"
+          :light="light"
           @route-change="$emit('route-change')" />
       </template>
     </ul>
@@ -16,6 +17,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import * as R from 'ramda'
 import ProductsListSub from './Sub'
 import { menusConfig } from '@/router/routes'
@@ -36,6 +38,10 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['theme']),
+    light () {
+      return this.theme === 'light'
+    },
     menus () {
       const ret = this.menuitems.filter(m1item => {
         let flag = false
@@ -96,18 +102,39 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="less">
+@import "../../styles/less/theme";
+
 .products-list-wrap {
   height: 100%;
-  background-color: #092c4d;
+  background-color: @sidebar-dark-bg-color;
   .scrollbar-wrap {
     overflow-x: hidden;
+  }
+  &.light-theme {
+    background-color: @sidebar-light-bg-color;
+    .l1-menu-item {
+      > a {
+        color: @sidebar-light-text-color;
+      }
+      &:hover {
+        > a {
+          color: @sidebar-light-hover-text-color;
+        }
+      }
+      &.active {
+        background-color: @primary-1 !important;
+        > a {
+          color: @sidebar-light-active-text-color;
+        }
+      }
+    }
   }
 }
 .l1-menu-item {
   > a {
     height: 44px;
-    color: #fff;
+    color: @sidebar-dark-text-color;
   }
   .l1-menu-item-icon {
     width: 64px;
@@ -125,10 +152,15 @@ export default {
     }
   }
   &:hover {
-    background-color: #00599c;
+    > a {
+      color: @sidebar-dark-hover-text-color;
+    }
   }
   &.active {
-    background-color: #007fdf !important;
+    background-color: @primary-color !important;
+    > a {
+      color: @sidebar-dark-active-text-color;
+    }
   }
 }
 </style>

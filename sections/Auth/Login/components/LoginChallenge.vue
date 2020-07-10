@@ -19,21 +19,21 @@
       <!-- 用户名 -->
       <template v-if="showUsernameInput">
         <a-form-model-item prop="username">
-          <a-input class="material-input" v-model="fd.username" :placeholder="placeholderOpts.username">
+          <a-input v-model="fd.username" :placeholder="placeholderOpts.username">
             <a-icon slot="prefix" type="user" style="color: rgba(0, 0, 0, .25)" />
           </a-input>
         </a-form-model-item>
       </template>
       <!-- 密码 -->
       <a-form-model-item prop="password">
-        <a-input-password class="material-input" v-model="fd.password" :placeholder="placeholderOpts.password">
+        <a-input-password v-model="fd.password" :placeholder="placeholderOpts.password">
           <a-icon slot="prefix" type="lock" style="color: rgba(0, 0, 0, .25)" />
         </a-input-password>
       </a-form-model-item>
       <!-- 域 -->
       <template v-if="showDomainSelect">
         <a-form-model-item prop="domain">
-          <a-select class="material-input" v-model="fd.domain" :placeholder="placeholderOpts.domain">
+          <a-select v-model="fd.domain" :placeholder="placeholderOpts.domain">
             <a-select-option
               v-for="item in regions.domains"
               :key="item"
@@ -44,7 +44,7 @@
       <!-- 区域 -->
       <template v-if="showRegionSelect">
         <a-form-model-item prop="region">
-          <a-select class="material-input" v-model="fd.region" :placeholder="placeholderOpts.region">
+          <a-select v-model="fd.region" :placeholder="placeholderOpts.region">
             <a-select-option
               v-for="item in regions.regions"
               :key="item"
@@ -55,7 +55,7 @@
       <!-- 验证码 -->
       <template v-if="showCaptchaInput">
         <a-form-model-item prop="captcha" class="captcha-form-item">
-          <a-input class="material-input" v-model="fd.captcha" :placeholder="placeholderOpts.captcha">
+          <a-input v-model="fd.captcha" :placeholder="placeholderOpts.captcha">
             <a-icon slot="prefix" type="safety-certificate" style="color: rgba(0, 0, 0, .25)" />
             <template #suffix>
               <div class="captcha-suffix d-flex align-items-center justify-content-end">
@@ -254,7 +254,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .captcha-suffix {
   height: 28px;
   width: 98px;

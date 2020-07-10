@@ -96,7 +96,9 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
+@import "../../../../styles/less/theme";
+
 .history-wrap {
   height: 290px !important;
   margin: 0 -60px 0;
@@ -105,10 +107,14 @@ export default {
     padding-left: 60px;
     padding-right: 60px;
     cursor: default;
+    &:last-child {
+      border-bottom: none;
+    }
   }
   .actions {
     padding-left: 60px;
     padding-right: 60px;
+    margin-top: 10px;
   }
   .l1info {
     font-size: 15px;
@@ -120,7 +126,7 @@ export default {
     .item {
       cursor: pointer;
       &:hover {
-        background-color: #e8f0fe;
+        background-color: @primary-1;
       }
     }
   }

@@ -1,5 +1,5 @@
 <template>
-  <div class="level-2-wrap">
+  <div class="level-2-wrap" :class="{ 'light-theme': light }">
     <scrollbar
       class="level-2-menu">
       <div class="title">{{ getLabel(l2Menu.meta) }}</div>
@@ -36,6 +36,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import * as R from 'ramda'
 import { hasPermission } from '@/utils/auth'
 
@@ -48,6 +49,10 @@ export default {
     },
   },
   computed: {
+    ...mapGetters(['theme']),
+    light () {
+      return this.theme === 'light'
+    },
     menus () {
       const menus = this.l2Menu.menus
       const res = []
@@ -108,18 +113,50 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
+@import "../../styles/less/theme";
+
 .level-2-wrap {
   position: fixed;
   left: 0;
   width: 160px;
   top: 60px;
   bottom: 0;
-  background-color: rgb(66, 86, 111);
+  background-color: @sidebar-dark-bg-color;
   box-shadow: 1px 0 6px 0 rgba(165,192,207,.3);
   ::v-deep {
     .scrollbar-wrap {
       overflow-x: hidden;
+    }
+  }
+  &.light-theme {
+    background-color: @sidebar-light-bg-color;
+    .level-2-menu {
+      .title {
+        color: #333;
+      }
+    }
+    .level-3-item {
+      .level-3-group-title {
+        color: rgba(0, 0, 0, .7);
+      }
+      .menu-item {
+        color: @sidebar-light-text-color;
+        &::after {
+          background-color: @primary-2;
+        }
+        &:hover, &.active {
+          &::after {
+            background-color: @primary-3;
+          }
+        }
+        &:hover {
+          color: @sidebar-light-hover-text-color;
+        }
+        &.active {
+          color: @sidebar-light-active-text-color;
+        }
+      }
     }
   }
 }
@@ -144,7 +181,7 @@ export default {
   }
   .level-3-group-title {
     font-size: 12px;
-    color: rgb(238,238,238);
+    color: rgba(255, 255, 255, .7);
     line-height: 24px;
     margin-left: 3px;
     margin-bottom: 14px;
@@ -156,7 +193,7 @@ export default {
     padding-top: 6px;
     padding-left: 20px;
     font-size: 14px;
-    color: #fff;
+    color: @sidebar-dark-text-color;
     position: relative;
     cursor: pointer;
     &::after {
@@ -166,15 +203,21 @@ export default {
       top: 0;
       height: 100%;
       width: 1px;
-      background-color: rgb(98,126,162);
+      background-color: @primary-3;
       transition: width .2s ease;
     }
     &:hover, &.active {
       text-decoration: none;
       &::after {
         width: 4px;
-        background-color: rgb(54,137,247);
+        background-color: @primary-color;
       }
+    }
+    &:hover {
+      color: @sidebar-dark-hover-text-color;
+    }
+    &.active {
+      color: @sidebar-dark-active-text-color;
     }
   }
   > .menu-item {

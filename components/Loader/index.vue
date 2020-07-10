@@ -29,7 +29,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .wrap {
   margin: 32px 0;
   color: rgba(0, 0, 0, .25);

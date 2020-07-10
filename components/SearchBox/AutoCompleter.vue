@@ -261,7 +261,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .auto-completer-wrap {
   height: auto;
   right: -200px;

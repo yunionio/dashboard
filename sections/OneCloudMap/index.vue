@@ -195,8 +195,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-@import "../../styles/variables";
+<style lang="less" scoped>
+@import "../../styles/less/theme";
 
 .onecloud-map-header {
   padding: 20px 30px 0;
@@ -224,7 +224,7 @@ export default {
   padding: 5px 5px;
   display: block;
   font-size: 13px;
-  color: $text-color-secondary;
+  color: @text-color-secondary;
   text-decoration: none;
   transition: all 300ms ease 0s;
   &:hover {

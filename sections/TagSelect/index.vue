@@ -326,13 +326,13 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="less">
 .tag-overlay .ant-popover-inner-content {
   padding: 0 !important;
 }
 </style>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .tag-wrap {
   width: 180px;
   max-height: 400px;

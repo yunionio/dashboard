@@ -21,7 +21,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .page-card-loader {
   ::v-deep .ant-skeleton .ant-skeleton-paragraph {
     padding: 0;

@@ -46,7 +46,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import '../../../src/styles/antd/index.less';
+@import '../../../src/styles/less/theme';
 
 .page-header {
   height: 60px;

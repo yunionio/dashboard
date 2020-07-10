@@ -104,6 +104,8 @@
     <notify-popover class="navbar-item" v-if="showNotify" />
     <!-- 工单 -->
     <work-order-popover class="navbar-item" v-if="showWorkOrder && itsmServiceEnable" />
+    <!-- 设置 -->
+    <setting-popover class="navbar-item" />
     <!-- 帮助 -->
     <help-popover class="navbar-item" v-if="showHelp" />
     <!-- 用户 -->
@@ -117,6 +119,7 @@ import * as R from 'ramda'
 import Cookies from 'js-cookie'
 import { mapGetters, mapState } from 'vuex'
 import NotifyPopover from './components/NotifyPopover'
+import SettingPopover from './components/SettingPopover'
 import WorkOrderPopover from './components/WorkOrderPopover'
 import HelpPopover from './components/HelpPopover'
 import GlobalSearch from './components/GlobalSearch'
@@ -128,6 +131,7 @@ export default {
   name: 'Navbar',
   components: {
     NotifyPopover,
+    SettingPopover,
     WorkOrderPopover,
     HelpPopover,
     GlobalSearch,
@@ -541,8 +545,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-@import '../../styles/_variables.scss';
+<style lang="less" scoped>
+@import '../../styles/less/theme';
 
 .navbar-wrap {
   color: #606266;
@@ -601,7 +605,7 @@ export default {
   .item-link {
     cursor: pointer;
     &:hover {
-      color: $link-color;
+      color: @link-color;
     }
   }
 }

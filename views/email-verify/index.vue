@@ -111,7 +111,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="less">
   .email-activate {
     h2 {
       text-align: center;

@@ -30,7 +30,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="less">
 .help-tooltip-content-wrap {
   > h4 {
     color: #fff;

@@ -1,7 +1,7 @@
 <template>
   <div
     class="search-box-wrap ant-input d-flex align-items-center justify-content-between"
-    :class="{ focus }"
+    :class="{ 'ant-input-number-focused': focus }"
     v-clickoutside="handleWrapClickoutside"
     @click="handleWrapClick">
     <ul class="clearfix">
@@ -162,7 +162,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .search-box-wrap {
   width: 100%;
   height: auto;
@@ -182,12 +182,6 @@ export default {
   .help-tips {
     font-size: 12px;
     line-height: 24px;
-  }
-  &.focus {
-    border-color: #40a9ff;
-    outline: 0;
-    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
-    border-right-width: 1px !important;
   }
 }
 </style>

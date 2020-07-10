@@ -22,6 +22,7 @@ import SidePageManager from '@/sections/SidePageManager'
 import WindowResizeListener from '@/sections/WindowResizeListener'
 import notificationListener from '@/utils/notificationListener'
 import i18n from '@/locales'
+import { updateThemeColor } from '@/utils/theme/utils'
 
 export default {
   name: 'App',
@@ -38,7 +39,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['auth']),
+    ...mapGetters(['auth', 'theme', 'themeColor']),
     ...mapState({
       globalSetting: state => state.globalSetting,
     }),
@@ -67,6 +68,22 @@ export default {
               dictionary: val.zh,
             })
           }
+        }
+      },
+      immediate: true,
+    },
+    theme: {
+      handler (val) {
+        if (val && val !== process.env.theme) {
+          console.log(val)
+        }
+      },
+      immediate: true,
+    },
+    themeColor: {
+      handler (val) {
+        if (val && val !== process.env.themeColor) {
+          updateThemeColor(val)
         }
       },
       immediate: true,

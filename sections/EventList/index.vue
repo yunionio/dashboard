@@ -215,7 +215,7 @@ export default {
   },
 }
 </script>
-<style lang="scss" scoped>
+<style lang="less" scoped>
   .event-list{
     position: relative;
     padding-bottom: 20px;

@@ -244,7 +244,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .tag {
   max-width: 100%;
   line-height: 20px;

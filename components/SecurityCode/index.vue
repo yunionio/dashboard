@@ -10,7 +10,7 @@
           autocapitalize="off"
           spellcheck="false"
           type="tel"
-          class="form-control"
+          class="form-control ant-input-number"
           v-model="securityCode[n - 1]"
           @focus="setSelected"
           @input.stop="inputEvent"
@@ -184,7 +184,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .security-code-box {
   position: relative;
   width: 519px;
@@ -207,11 +207,6 @@ export default {
         background: #fff;
         background-clip: padding-box;
         border: 1px solid #d6d6d6;
-        &:focus {
-          outline: 0;
-          box-shadow: 0 0 0 3px rgba(131, 192, 253, .5);
-          border: 1px solid #97cee5;
-        }
       }
       &:nth-child(3) {
         margin-right: 55px;

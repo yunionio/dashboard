@@ -50,7 +50,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="less">
 .side-page-shadow {
   position: fixed;
   left: 500px;

@@ -77,15 +77,15 @@ export default {
   },
 }
 </script>
-<style lang="scss" scoped>
-@import '../../../src/styles/variables';
+<style lang="less" scoped>
+@import '../../../src/styles/less/theme';
 
 .card-wrap {
   .text-wrap {
     height: 200px;
     padding: 24px;
     background-color: #efefefa1;
-    color: $text-color-help;
+    color: @border-color-base;
     .primary-btn-wrap {
       bottom: 8px;
       left: 24px;
@@ -104,7 +104,7 @@ export default {
     }
     .ant-card-meta-title {
       text-align: center;
-      color: $primary-color;
+      color: @primary-color;
     }
     .ant-card-meta-description {
       text-align: center;
