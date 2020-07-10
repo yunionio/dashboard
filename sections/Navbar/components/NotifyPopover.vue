@@ -2,7 +2,8 @@
   <div>
     <a-popover trigger="click" v-model="visible" @visibleChange="handleVisibleChange" :getPopupContainer="triggerNode => triggerNode.parentNode">
       <div class="trigger d-flex align-items-center justify-content-center">
-        <icon type="navbar-notify" style="font-size: 24px;" />
+        <span v-if="notifyMenuTitleUsedText">消息</span>
+        <icon type="navbar-notify" style="font-size: 24px;" v-else />
       </div>
       <template v-slot:content>
         <div class="notify-wrap">
@@ -39,6 +40,12 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'NotifyPopover',
+  props: {
+    notifyMenuTitleUsedText: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data () {
     return {
       visible: false,

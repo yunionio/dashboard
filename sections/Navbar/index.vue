@@ -1,29 +1,31 @@
 <template>
   <div class="navbar-wrap d-flex align-items-center" @click.stop.prevent="handleCloseSidebar">
-    <template v-if="authInfoLoaded && isShowMenu">
-      <a-tooltip title="导航菜单" placement="right">
-        <div class="d-flex align-items-center navbar-item-trigger justify-content-center global-map-btn ml-1" @click.stop.prevent="handleToggleSidebar">
-          <icon type="menu" style="font-size: 24px;" />
+    <div v-if="!isHiddenMenu">
+      <template v-if="authInfoLoaded && isShowMenu">
+        <a-tooltip title="导航菜单" placement="right">
+          <div class="d-flex align-items-center navbar-item-trigger justify-content-center global-map-btn ml-1" @click.stop.prevent="handleToggleSidebar">
+            <icon type="menu" style="font-size: 24px;" />
+          </div>
+        </a-tooltip>
+      </template>
+      <template v-else>
+        <div class="d-flex align-items-center h-100 navbar-item-trigger">
+          <icon type="menu" style="font-size: 24px; cursor: default;" />
         </div>
-      </a-tooltip>
-    </template>
-    <template v-else>
-      <div class="d-flex align-items-center h-100 navbar-item-trigger">
-        <icon type="menu" style="font-size: 24px; cursor: default;" />
-      </div>
-    </template>
+      </template>
+    </div>
     <div class="flex-fill d-flex align-items-center h-100">
       <div class="header-logo ml-2">
         <img class="logo" :src="logo" />
       </div>
-      <h1 class="header-title ml-3">管理控制台</h1>
+      <router-link to="/dashboard" class="header-title ml-3">管理控制台</router-link>
     </div>
     <!-- 全局搜索 -->
     <div class="navbar-item d-flex align-items-center w-25 globar-search-wrapper">
       <global-search class="mx-2" />
     </div>
     <!-- 系统选择 -->
-    <div class="navbar-item d-flex align-items-center justify-content-end" v-if="products">
+    <div class="navbar-item d-flex align-items-center justify-content-end" v-if="products && showSystemChoose">
       <a-dropdown :trigger="['click']" :getPopupContainer="triggerNode => triggerNode.parentNode">
         <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
           <icon type="navbar-setting" />
@@ -100,16 +102,17 @@
         </div>
       </a-popover>
     </div>
+    <slot name="frontNavbar" />
     <!-- 消息中心 -->
-    <notify-popover class="navbar-item" v-if="showNotify" />
+    <notify-popover class="navbar-item" :notifyMenuTitleUsedText="notifyMenuTitleUsedText" v-if="showNotify" />
     <!-- 工单 -->
-    <work-order-popover class="navbar-item" v-if="showWorkOrder && itsmServiceEnable" />
+    <work-order-popover class="navbar-item" :workOrderMenuTitleUsedText="workOrderMenuTitleUsedText" v-if="showWorkOrder && itsmServiceEnable" />
     <!-- 设置 -->
     <setting-popover class="navbar-item" />
     <!-- 帮助 -->
     <help-popover class="navbar-item" v-if="showHelp" />
     <!-- 用户 -->
-    <slot name="userPopover" />
+    <slot name="behindNavbar" />
   </div>
 </template>
 
@@ -149,6 +152,22 @@ export default {
     showHelp: {
       type: Boolean,
       default: true,
+    },
+    showSystemChoose: {
+      type: Boolean,
+      default: true,
+    },
+    notifyMenuTitleUsedText: {
+      type: Boolean,
+      default: false,
+    },
+    workOrderMenuTitleUsedText: {
+      type: Boolean,
+      default: false,
+    },
+    isHiddenMenu: {
+      type: Boolean,
+      default: false,
     },
   },
   data () {
@@ -584,6 +603,7 @@ export default {
   padding: 0;
   font-weight: 400;
   font-size: 18px;
+  color: rgba(0,0,0,.85);
 }
 .current-view-label {
   max-width: 150px;
