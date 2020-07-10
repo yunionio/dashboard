@@ -153,7 +153,7 @@ export default {
   },
 }
 </script>
-<style lang="scss">
+<style lang="less">
   .upload-file-item .ant-upload-list-item-done .anticon-close {
     display: none;
   }
