@@ -5,6 +5,8 @@
  */
 const path = require('path')
 const fs = require('fs')
+const webpack = require('webpack')
+const createThemeColorReplacerPlugin = require('./src/config/plugin.config')
 
 const PROXY_TIMEOUT = 1000 * 60 * 2
 
@@ -30,6 +32,11 @@ const devServerCoustomConfig = fsExistsSync(resolve('./dev.server.config.js')) ?
 module.exports = {
   lintOnSave: process.env.NODE_ENV !== 'production',
   configureWebpack: (config) => {
+    config.plugins.push(createThemeColorReplacerPlugin())
+    config.plugins.push(new webpack.DefinePlugin({
+      themeColor: JSON.stringify(process.env.THEME_COLOR),
+      theme: JSON.stringify(process.env.THEME),
+    }))
     const aliasSrcDirConfig = {}
     const modules = getModuleList()
     modules.forEach(item => {
