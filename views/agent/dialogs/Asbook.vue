@@ -151,7 +151,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .ansible-playbook {
   ::v-deep {
     .CodeMirror {
