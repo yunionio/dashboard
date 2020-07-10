@@ -159,7 +159,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .chart-form-label {
   color: rgba(0, 0, 0, 0.85);
 }
