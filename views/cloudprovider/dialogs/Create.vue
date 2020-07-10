@@ -1,11 +1,11 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">创建订阅</div>
+    <div slot="header">新建订阅</div>
     <div slot="body">
       <a-alert class="mb-3" type="warning">
         <template slot="message">
           <div>
-            创建订阅需要满足以下2个条件：
+            新建订阅需要满足以下2个条件：
           </div>
           <div>1.国际区的云账号，中国大陆地区的云账号不支持该操作 </div>
           <div>2.录入的APP必须被授予Owner的权限，操作步骤请点击查看帮助  <help-link href="/">详情</help-link></div>
@@ -16,12 +16,11 @@
           <base-select
             showSync
             isDefaultSelect
-            idKey="name"
             :resource="`cloudaccounts/${params.data.id}/enrollment-accounts`"
             v-decorator="decorators.enrollmentAccountId"
             :selectProps="{ 'placeholder': '请选择EA账号' }" />
             <div slot="extra">
-              需要指定使用哪个EA账号创建订阅
+              需要指定使用哪个EA账号新建订阅
             </div>
         </a-form-item>
         <a-form-item label="订阅名称">
@@ -70,7 +69,7 @@ export default {
           },
         ],
         enrollmentAccountId: [
-          'enrollmentAccountId',
+          'enrollment_account_id',
           {
             rules: [
               { required: true, message: '请选择EA账号' },
@@ -78,7 +77,7 @@ export default {
           },
         ],
         offerType: [
-          'offerType',
+          'offer_type',
           {
             initialValue: 'MS-AZR-0017P',
             rules: [
