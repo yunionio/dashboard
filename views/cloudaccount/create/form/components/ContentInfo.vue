@@ -61,7 +61,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .h-title{
   font-size: 16px;
   padding: 10px 0;

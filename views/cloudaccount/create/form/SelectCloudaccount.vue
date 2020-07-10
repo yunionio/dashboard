@@ -91,7 +91,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="less">
 .cloudaccount {
   h2 {
     font-size: 14px;

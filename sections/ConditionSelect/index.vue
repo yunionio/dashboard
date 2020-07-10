@@ -55,7 +55,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .no-line-height {
   .custom-form-item ::v-deep .ant-form-item-control {
     line-height: 0px;
