@@ -46,6 +46,9 @@ const themePluginOption = {
         return '.ant-btn:focus:not(.ant-btn-primary),.ant-btn:hover:not(.ant-btn-primary)'
       case '.ant-btn.active,.ant-btn:active':
         return '.ant-btn.active:not(.ant-btn-primary),.ant-btn:active:not(.ant-btn-primary)'
+      case '.ant-steps-item-process .ant-steps-item-icon > .ant-steps-icon':
+      case '.ant-steps-item-process .ant-steps-item-icon>.ant-steps-icon':
+        return ':not(.ant-steps-item-process)' + selector
       default:
         return selector
     }
