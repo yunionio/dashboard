@@ -15,14 +15,13 @@
         </template>
       </monitor-header>
       <div v-for="(item, i) in seriesList" :key="i">
-        <monitor-line :showMetric="metricList[i][0] && metricList[i][0].model && !!metricList[i][0].model.group_by" class="mb-3" @chartInstance="setChartInstance" :series="item" :timeFormatStr="timeFormatStr" />
+        <monitor-line :loading="loadingList[i]" :showMetric="metricList[i][0] && metricList[i][0].model && !!metricList[i][0].model.group_by" class="mb-3" @chartInstance="setChartInstance" :series="item" :timeFormatStr="timeFormatStr" />
       </div>
     </a-col>
   </a-row>
 </template>
 
 <script>
-import * as R from 'ramda'
 import get from 'lodash/get'
 import echarts from 'echarts'
 import MonitorForms from './forms'
@@ -30,6 +29,7 @@ import MonitorLine from './monitor-line'
 import CustomDate from './monitor-line/CustomDate'
 import { timeOpts } from '@Monitor/constants'
 import MonitorHeader from '@/sections/Monitor/Header'
+import { getRequestT } from '@/utils/utils'
 
 export default {
   name: 'ExplorerIndex',
@@ -48,7 +48,7 @@ export default {
       metricList: [],
       seriesList: [],
       chartInstanceList: [], // e-chart 实例
-      loading: false,
+      loadingList: [],
       get,
     }
   },
@@ -73,32 +73,44 @@ export default {
       this.metricList.splice(i, 1)
       this.chartInstanceList.splice(i, 1)
       this.seriesList.splice(i, 1)
+      this.loadingList.splice(i, 1)
     },
     setChartInstance (val, i) {
       this.chartInstanceList.push(val)
       echarts.connect(this.chartInstanceList)
     },
     resetChart (i) {
-      if (R.isEmpty(this.seriesList)) return
-      this.$set(this.seriesList, i, [])
+      if (this.seriesList && this.seriesList.length && this.seriesList[i]) {
+        this.$set(this.seriesList, i, [])
+      }
     },
     async fetchAllData () {
-      const seriesList = []
+      const jobs = []
+      this.loadingList = []
       for (let i = 0; i < this.metricList.length; i++) {
         const metric_query = this.metricList[i]
-        const { series = [] } = await this.fetchData(metric_query)
-        seriesList.push(series)
+        this.loadingList.push(true)
+        jobs.push(this.fetchData(metric_query))
       }
-      this.seriesList = seriesList
+      try {
+        const res = await Promise.all(jobs)
+        this.seriesList = res.map(val => get(val, 'series') || [])
+        this.loadingList = this.loadingList.map(v => false)
+      } catch (error) {
+        throw error
+      }
     },
     async refresh (params, i) { // 将多个查询 分开调用
       try {
         const metric_query = [{ model: params }]
         this.$set(this.metricList, i, metric_query)
+        this.$set(this.loadingList, i, true)
         const { series = [] } = await this.fetchData(metric_query)
         this.$set(this.seriesList, i, series)
+        this.$set(this.loadingList, i, false)
       } catch (error) {
         this.$set(this.seriesList, i, [])
+        this.$set(this.loadingList, i, false)
         throw error
       }
     },
@@ -117,12 +129,9 @@ export default {
           data.from = this.time
         }
         if (!data.metric_query || !data.metric_query.length || !data.from) return
-        // this.loading = true
-        const { data: resdata } = await new this.$Manager('unifiedmonitors', 'v1').performAction({ id: 'query', action: '', data })
-        // this.loading = false
+        const { data: resdata } = await new this.$Manager('unifiedmonitors', 'v1').performAction({ id: 'query', action: '', data, params: { $t: getRequestT() } })
         return resdata
       } catch (error) {
-        // this.loading = false
         throw error
       }
     },

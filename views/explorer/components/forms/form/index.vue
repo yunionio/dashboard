@@ -50,6 +50,7 @@ import Metric from './Metric'
 import Filters from './Filters'
 import { DATABASE } from '@Monitor/constants'
 import { resolveValueChangeField } from '@/utils/common/ant'
+import { getRequestT } from '@/utils/utils'
 
 export default {
   name: 'ExplorerForm',
@@ -207,7 +208,7 @@ export default {
       try {
         this.$refs.filtersRef.reset()
         this.form.fc.resetFields()
-        const { data } = await new this.$Manager('unifiedmonitors', 'v1').get({ id: 'metric-measurement', params: { database: 'telegraf', measurement: metricKey } })
+        const { data } = await new this.$Manager('unifiedmonitors', 'v1').get({ id: 'metric-measurement', params: { database: 'telegraf', measurement: metricKey, $t: getRequestT() } })
         this.metricInfo = data
         if (R.is(Array, this.metricInfo.tag_key)) {
           this.groupbyOpts = this.metricInfo.tag_key.map(v => ({ key: v, label: v }))
