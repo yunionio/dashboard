@@ -1,14 +1,17 @@
 <template>
   <a-card class="explorer-monitor-line d-flex align-items-center justify-content-center">
-    <line-chart :columns="lineChartColumns" :rows="lineChartRows" @chartInstance="setChartInstance" width="100%" height="250px" class="mb-4" :options="lineChartOptionsC" />
-    <vxe-grid
-      v-if="tableData && tableData.length"
-      max-height="200"
-      size="mini"
-      border
-      row-id="vm_id"
-      :columns="columns"
-      :data="tableData" />
+    <loader v-if="loading" :loading="true" />
+    <template v-else>
+      <line-chart :columns="lineChartColumns" :rows="lineChartRows" @chartInstance="setChartInstance" width="100%" height="250px" class="mb-4" :options="lineChartOptionsC" />
+      <vxe-grid
+        v-if="tableData && tableData.length"
+        max-height="200"
+        size="mini"
+        border
+        row-id="vm_id"
+        :columns="columns"
+        :data="tableData" />
+    </template>
   </a-card>
 </template>
 
@@ -46,12 +49,18 @@ export default {
       type: Boolean,
       default: false,
     },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
       lineChartColumns: [],
       lineChartRows: [],
-      chartInstanceOption: {},
+      chartInstanceOption: {
+        series: [],
+      },
       lineChartOptionsC: {},
     }
   },
@@ -107,7 +116,6 @@ export default {
     },
   },
   created () {
-    this.getMonitorLine()
     this.colorHash = new ColorHash({
       hue: [
         { min: 0, max: 360 },
@@ -115,6 +123,7 @@ export default {
         { min: 0, max: 360 },
       ],
     })
+    this.getMonitorLine()
   },
   destroyed () {
     this.colorHash = null
