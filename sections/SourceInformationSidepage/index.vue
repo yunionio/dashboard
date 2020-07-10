@@ -75,7 +75,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .K8S-source-information-sidepage {
   ::v-deep .CodeMirror {
     height: 500px;

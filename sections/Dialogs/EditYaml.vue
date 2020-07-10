@@ -62,7 +62,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .k8s-edit-yaml-dialog {
   ::v-deep .CodeMirror {
     height: 600px;

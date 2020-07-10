@@ -78,7 +78,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .data-view {
   &::v-deep {
     .CodeMirror {

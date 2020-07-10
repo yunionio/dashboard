@@ -133,7 +133,7 @@ export default {
   },
 }
 </script>
-<style lang="scss">
+<style lang="less">
   .card {
     position: relative;
     .decrease {
