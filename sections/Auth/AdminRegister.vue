@@ -1,41 +1,38 @@
 <template>
-  <div class="wrap">
-    <div class="logo mb-2">
-      <img :src="logo" />
-    </div>
-    <h4>管理员注册</h4>
+  <div class="wrap shadow-lg bg-white rounded">
+    <h4 class="text-center">管理员注册</h4>
     <a-form-model
       ref="form"
       :model="fd"
       :rules="rules"
       @submit.prevent.stop="handleRegister">
       <a-form-model-item prop="account_name">
-        <a-input class="material-input" v-model="fd.account_name" :placeholder="$t('auth.register.account_name.placeholder')">
+        <a-input v-model="fd.account_name" :placeholder="$t('auth.register.account_name.placeholder')">
           <a-icon slot="prefix" type="user" style="color: rgba(0, 0, 0, .25)" />
         </a-input>
       </a-form-model-item>
       <a-form-model-item prop="account_password">
-        <a-input-password class="material-input" v-model="fd.account_password" :placeholder="$t('auth.register.account_password.placeholder')">
+        <a-input-password v-model="fd.account_password" :placeholder="$t('auth.register.account_password.placeholder')">
           <a-icon slot="prefix" type="lock" style="color: rgba(0, 0, 0, .25)" />
         </a-input-password>
       </a-form-model-item>
       <a-form-model-item prop="confirm_account_password">
-        <a-input-password class="material-input" v-model="fd.confirm_account_password" :placeholder="$t('auth.register.confirm_account_password.placeholder')">
+        <a-input-password v-model="fd.confirm_account_password" :placeholder="$t('auth.register.confirm_account_password.placeholder')">
           <a-icon slot="prefix" type="lock" style="color: rgba(0, 0, 0, .25)" />
         </a-input-password>
       </a-form-model-item>
       <!-- <a-form-model-item prop="company">
-        <a-input class="material-input" v-model="fd.company" :placeholder="$t('auth.register.company.placeholder')">
+        <a-input v-model="fd.company" :placeholder="$t('auth.register.company.placeholder')">
           <a-icon slot="prefix" type="home" style="color: rgba(0, 0, 0, .25)" />
         </a-input>
       </a-form-model-item> -->
       <!-- <a-form-model-item prop="email">
-        <a-input class="material-input" v-model="fd.email" :placeholder="$t('auth.register.email.placeholder ')">
+        <a-input v-model="fd.email" :placeholder="$t('auth.register.email.placeholder ')">
           <a-icon slot="prefix" type="mail" style="color: rgba(0, 0, 0, .25)" />
         </a-input>
       </a-form-model-item> -->
       <!-- <a-form-model-item prop="mobile">
-        <a-input class="material-input" v-model="fd.mobile" :placeholder="$t('auth.register.mobile.placeholder')">
+        <a-input v-model="fd.mobile" :placeholder="$t('auth.register.mobile.placeholder')">
           <a-icon slot="prefix" type="phone" style="color: rgba(0, 0, 0, .25)" />
         </a-input>
       </a-form-model-item> -->
@@ -122,7 +119,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .wrap {
   width: 370px;
   position: relative;
@@ -131,13 +128,6 @@ export default {
   h4 {
     margin-top: 20px;
     margin-bottom: 40px;
-  }
-}
-
-.logo {
-  text-align: right;
-  img {
-    height: 40px;
   }
 }
 </style>

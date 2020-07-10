@@ -328,7 +328,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .page-list-grid {
   min-width: 100%;
   ::v-deep {

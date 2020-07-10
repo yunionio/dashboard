@@ -51,7 +51,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .monitor-list {
   .actions {
     right: 16px;

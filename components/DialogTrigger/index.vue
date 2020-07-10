@@ -58,10 +58,10 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-@import "~@/styles/_variables.scss";
+<style lang="less" scoped>
+@import "~@/styles/less/theme";
 
 .open-dialog-link {
-  color: $link-color
+  color: @link-color;
 }
 </style>

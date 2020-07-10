@@ -1,32 +1,22 @@
 <template>
-  <a-row class="wrap position-relative" type="flex">
-    <a-col class="left position-relative" :span="12">
-      <div class="d-flex flex-column h-100">
-        <h2 class="flex-shrink-0 flex-grow-0">{{ $store.state.app.companyInfo.name }}</h2>
-        <div class="flex-fill position-relative">
-          <a-carousel class="carousel h-100 w-100">
-            <div v-for="(item, idx) of carouselOptions" :key="idx">
-              <h4>{{ item.title }}</h4>
-              <p v-for="(msg, idx) of item.messages" :key="idx">{{ msg }}</p>
-            </div>
-          </a-carousel>
-        </div>
-      </div>
-    </a-col>
-    <a-col class="right d-flex flex-column" :span="12">
-      <div class="logo flex-shrink-0 flex-grow-0 text-right">
-        <img :src="loginLogo" />
-      </div>
+  <div class="login-index-wrap flex-fill d-flex h-100 align-items-center">
+    <div class="login-index-left flex-fill">
+      <h2>{{ $t('login.desc1') }}</h2>
+      <h4>{{ $t('login.desc2') }}</h4>
+      <h6>{{ $t('login.desc3') }}</h6>
+    </div>
+    <div class="login-index-right d-flex flex-column shadow-lg bg-white rounded">
+      <!-- login form -->
       <div class="flex-fill position-relative">
-        <div class="h-100 w-100 overflow-hidden content-wrap">
-          <h4>{{ title }}</h4>
+        <div class="login-content-wrap h-100 w-100 overflow-hidden">
+          <h4 class="text-center">{{ title }}</h4>
           <transition-page>
             <router-view />
           </transition-page>
         </div>
       </div>
+      <!-- 第三方登录 -->
       <div class="flex-shrink-0 flex-grow-0">
-        <!-- 第三方快速登录 -->
         <template v-if="fastLoginOptions.length > 0">
           <div class="fast-login-wrap">
             <div class="fast-login-title d-flex justify-content-center align-items-center"><span class="mr-2" />{{ $t('auth.login.fast.login.title') }}<span class="ml-2" /></div>
@@ -45,8 +35,8 @@
           </div>
         </template>
       </div>
-    </a-col>
-  </a-row>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -58,7 +48,6 @@ export default {
   data () {
     return {
       prevHeight: 0,
-      carouselOptions: this.$t('authCarouselOptions'),
     }
   },
   computed: {
@@ -113,53 +102,35 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.wrap {
-  width: 800px;
+<style lang="less">
+.login-index-wrap {
+  background-image: url('./assets/bg.png');
+  background-repeat: no-repeat;
+  background-position: center left;
 }
-.left {
-  min-height: 580px;
-  background-color: #69afe8;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 2 1'%3E%3Cdefs%3E%3ClinearGradient id='a' gradientUnits='userSpaceOnUse' x1='0' x2='0' y1='0' y2='1'%3E%3Cstop offset='0' stop-color='%2369afe8'/%3E%3Cstop offset='1' stop-color='%230c90e8'/%3E%3C/linearGradient%3E%3ClinearGradient id='b' gradientUnits='userSpaceOnUse' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23052ee8' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23052ee8' stop-opacity='1'/%3E%3C/linearGradient%3E%3ClinearGradient id='c' gradientUnits='userSpaceOnUse' x1='0' y1='0' x2='2' y2='2'%3E%3Cstop offset='0' stop-color='%23052ee8' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23052ee8' stop-opacity='1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='0' y='0' fill='url(%23a)' width='2' height='1'/%3E%3Cg fill-opacity='0.5'%3E%3Cpolygon fill='url(%23b)' points='0 1 0 0 2 0'/%3E%3Cpolygon fill='url(%23c)' points='2 1 2 0 0 0'/%3E%3C/g%3E%3C/svg%3E");
-  background-attachment: fixed;
-  background-size: cover;
-  color: #fff;
-  padding: 40px;
+.login-index-left {
   h2 {
-    color: #fff;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
+    font-weight: 400;
+    font-size:34px;
   }
   h4 {
-    color: #fff;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    font-weight: 400;
+    font-size:22px;
   }
-  p {
-    font-size: 14px;
-    color: #fff;
-  }
-  .carousel {
-    top: 0;
-    left: 0;
-    position: absolute;
-    ::v-deep {
-      .slick-slider {
-        height: 100%;
-      }
-    }
+  h6 {
+    font-weight: 400;
+    color:rgb(102,102,102);
+    font-size:16px;
   }
 }
-.right {
-  background-color: #fff;
-  min-height: 580px;
+.login-index-right {
+  min-height: 420px;
+  min-width: 400px;
+  width: 400px;
 }
-.logo {
-  padding-right: 30px;
-  padding-top: 40px;
-  > img {
-    height: 40px;
-  }
-}
-.content-wrap {
+.login-content-wrap {
   padding: 20px 60px 20px;
   > h4 {
     font-weight: 400;

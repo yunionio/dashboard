@@ -197,7 +197,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .tag-fields-wrap {
   max-height: 100px;
   overflow: auto;

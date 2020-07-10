@@ -83,7 +83,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .oc-popover-desc{
   font-size: 12px;
   color: #1890ff;

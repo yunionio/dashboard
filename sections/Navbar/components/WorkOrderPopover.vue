@@ -90,7 +90,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .trigger {
   height: 100%;
   padding: 0 20px;

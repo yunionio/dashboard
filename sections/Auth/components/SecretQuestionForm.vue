@@ -1,5 +1,5 @@
 <template>
-  <a-card>
+  <a-card style="border: none;">
     <h5 class="text-center mb-4">{{ title }}</h5>
     <a-form :form="form.fc" @submit.prevent="handleSubmit">
       <template v-for="(questionGroup, idx) of questionGroupKeys">

@@ -98,7 +98,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .ant-card {
   & ::v-deep .ant-card-body {
     padding: 12px;

@@ -44,7 +44,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .window-min-width-tips {
   width: 240px;
   height: 100px;

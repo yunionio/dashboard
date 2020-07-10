@@ -21,4 +21,12 @@ export default {
   isSidepageOpen: (state, getters) => getters['sidePage/isSidepageOpen'],
   userConfigInfo: (state, getters) => state.userConfig.info,
   profile: (state, getters) => state.profile.data,
+  theme: (state, getters) => {
+    const profile = state.profile.data
+    return (profile.value && profile.value.theme) || state.setting.theme
+  },
+  themeColor: (state, getters) => {
+    const profile = state.profile.data
+    return (profile.value && profile.value.themeColor) || state.setting.themeColor
+  },
 }

@@ -166,7 +166,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="less">
 .search-box-tag-popover-wrap {
   .ant-popover-inner-content {
     padding: 0;
@@ -174,7 +174,7 @@ export default {
 }
 </style>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .tag {
   text-overflow: ellipsis;
   overflow: hidden;

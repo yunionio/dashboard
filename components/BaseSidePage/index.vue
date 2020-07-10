@@ -168,8 +168,8 @@ export default {
 }
 </script>
 
-<style lang="scss">
-@import "../../styles/variables";
+<style lang="less">
+@import "../../styles/less/theme";
 
 .side-page-wrap {
   position: fixed;
@@ -210,7 +210,7 @@ export default {
   width: 70px;
   height: 70px;
   .side-page-close-inner {
-    background-color: $primary-color;
+    background-color: @primary-color;
     position: absolute;
     left: -35px;
     top: -35px;

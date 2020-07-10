@@ -81,7 +81,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-@import '../../styles/antd/index.less';
+@import '../../styles/less/theme';
 
 .status-wrapper {
   .status-icon {

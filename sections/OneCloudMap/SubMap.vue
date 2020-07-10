@@ -67,8 +67,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-@import "../../styles/variables";
+<style lang="less" scoped>
+@import "../../styles/less/theme";
 
 .onecloud-sub-map-item {
   .map-label {
@@ -79,7 +79,7 @@ export default {
     padding: 5px 5px;
     display: block;
     font-size: 13px;
-    color: $text-color-secondary;
+    color: @text-color-secondary;
     text-decoration: none;
     transition: all 300ms ease 0s;
     &:hover {

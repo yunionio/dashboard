@@ -8,7 +8,7 @@
     :width="width"
     :body-style="{ paddingTop: '60px', paddingLeft: 0, paddingRight: 0, paddingBottom: 0, height: '100%' }"
     @close="handleClose">
-    <products-list @route-change="handleClose" :active-menu="activeMenu" :popover-align="{ offset: [0, 5] }" />
+    <products-list @route-change="handleClose" :active-menu="activeMenu" :popover-align="{ offset: [5, 5] }" />
   </a-drawer>
 </template>
 

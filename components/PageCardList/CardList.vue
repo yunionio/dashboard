@@ -47,9 +47,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-@import '../../../src/styles/variables';
-
+<style lang="less" scoped>
 .card-list {
   .card-wrap {
     margin-right: 16px;

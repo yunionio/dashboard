@@ -118,7 +118,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="less">
 .page-list-actions-dropmenus-wrap {
   .ant-popover-inner-content {
     padding-left: 5px !important;
@@ -127,7 +127,9 @@ export default {
 }
 </style>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
+@import "../../../styles/less/theme";
+
 .submenu-item {
   cursor: default;
   width: 320px;
@@ -151,7 +153,7 @@ export default {
   button {
     color: rgba(0, 0, 0, 0.65);
     &:hover {
-      color: #1890ff;
+      color: @primary-5;
     }
     &:disabled {
       color: rgba(0, 0, 0, 0.25);
@@ -169,7 +171,7 @@ export default {
   button {
     color: rgba(0, 0, 0, 0.65);
     &:hover {
-      color: #1890ff;
+      color: @primary-5;
     }
     &:disabled {
       color: rgba(0, 0, 0, 0.25);

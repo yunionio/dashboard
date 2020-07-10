@@ -1,5 +1,5 @@
 <template>
-  <div class="wrap">
+  <div class="wrap shadow-lg bg-white rounded">
     <a-card>
       <div class="wrap-inner">
         <h5 class="auth-base-title text-center">{{ $t('auth.secret.verify.title') }}</h5>
@@ -66,7 +66,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .wrap {
   width: 810px;
   position: relative;
@@ -97,7 +97,6 @@ export default {
   text-align: center;
   margin-bottom: 40px;
   .reset-secret-btn {
-    color: #409EFF;
     margin-left: 10px;
   }
 }

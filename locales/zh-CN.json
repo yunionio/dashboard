@@ -1844,12 +1844,6 @@
     "loadbalancers.disable": "禁用后，禁用状态的实例无法提供负载均衡服务。",
     "loadbalancerlisteners.disable": "禁用状态的监听无法提供服务。"
   },
-  "authCarouselOptions": [
-    { "title": "统一", "messages": ["统一模版/API/调度/账号体系/监控/控制台/计费计量", "实现物理机/虚拟机/容器/公有云资源全面纳管"] },
-    { "title": "易用", "messages": ["开箱即用，30分钟快速安装部署", "支持在线升级、易于运维管理和使用", "产品化+定制化有机结合"] },
-    { "title": "安全", "messages": ["基于项目的多租户隔离", "统一账户权限管理体系", "统一登陆入口、降低跨云账户安全隐患"] },
-    { "title": "开放", "messages": ["所有功能通过REST API开放，提供多语言SDK", "扩展性好，易于和第三方系统集成", "通过“开源+商业支持服务”的方式，向企业级客户交付更好用的多云管理平台"] }
-  ],
   "authSecretQuestion": {
     "group1": [
       { "label": "我出生的城市?" },
@@ -1914,6 +1908,9 @@
     "SNAPSHOT_UNUSED": "未使用的快照",
     "OSS_SEC_ACL": "对象存储权限为开放读、写的存储桶和文件"
   },
+  "login.desc1": "新一代产品化融合云",
+  "login.desc2": "简单 · 开放 · 融合 · 智能",
+  "login.desc3": "为企业上云、用云、多云管理等全部需求提供一键部署、产品化解决方案",
   "common.batchAction": "批量操作",
   "common.action": "操作",
   "common.ok": "确定",

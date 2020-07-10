@@ -1,7 +1,7 @@
 <template>
   <a-popover
     placement="right"
-    overlay-class-name="l2-menus-popover"
+    :overlay-class-name="overlayClassName"
     destroy-tooltip-on-hide
     :align="popoverAlign"
     :visible="visible"
@@ -76,6 +76,7 @@ export default {
     showMenu: Function,
     activeMenu: Object,
     popoverAlign: Object,
+    light: Boolean,
   },
   data () {
     return {
@@ -83,6 +84,13 @@ export default {
     }
   },
   computed: {
+    overlayClassName () {
+      let classname = 'l2-menus-popover'
+      if (this.light) {
+        classname += ' light-theme'
+      }
+      return classname
+    },
     menus () {
       const menus = this.item.menus
       if (!menus) return []
@@ -154,11 +162,13 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="less">
+@import "../../styles/less/theme";
+
 .l2-menus-popover {
   padding: 0;
   .ant-popover-inner {
-    background-color: rgb(19, 44, 75, .8);
+    background-color: @sidebar-dark-bg-color;
   }
   .ant-popover-arrow {
     display: none;
@@ -171,6 +181,26 @@ export default {
     min-width: 180px;
     max-width: 180px;
   }
+  &.light-theme {
+    .ant-popover-inner {
+      background-color: @sidebar-light-bg-color;
+    }
+    .l2-menu-list {
+      .l2-menu-group-title {
+        color: rgba(0, 0, 0, .7);
+      }
+      .l2-menu-item {
+        color: @sidebar-light-text-color;
+        &:hover {
+          color: @sidebar-light-hover-text-color;
+        }
+        &.active {
+          background-color: @primary-1 !important;
+          color: @sidebar-light-active-text-color;
+        }
+      }
+    }
+  }
 }
 .l2-menu-list-wrap {
   padding: 8px 0;
@@ -178,7 +208,7 @@ export default {
 .l2-menu-list {
   .l2-menu-group-title {
     font-size: 12px;
-    color: rgb(255, 255, 255, .7);
+    color: rgba(255, 255, 255, .7);
     line-height: 24px;
     margin-bottom: 6px;
     margin-top: 6px;
@@ -191,12 +221,13 @@ export default {
     padding-left: 24px;
     padding-right: 16px;
     font-size: 14px;
-    color: #fff;
+    color: @sidebar-dark-text-color;
     &:hover {
-      background-color: #00599c;
+      color: @sidebar-dark-hover-text-color;
     }
     &.active {
-      background-color: #007fdf !important;
+      background-color: @primary-color !important;
+      color: @sidebar-dark-active-text-color;
     }
   }
 }

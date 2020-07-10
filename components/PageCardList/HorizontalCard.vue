@@ -80,14 +80,14 @@ export default {
   },
 }
 </script>
-<style lang="scss" scoped>
-@import '../../../src/styles/variables';
+<style lang="less" scoped>
+@import '../../../src/styles/less/theme';
 
 .card-wrap {
   .text-wrap {
     height: 200px;
     padding: 24px;
-    color: $text-color-help;
+    color: @border-color-base;
     .primary-btn-wrap {
       bottom: 8px;
       left: 24px;

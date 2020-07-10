@@ -144,7 +144,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .process-history {
   .error-approved{
     color: rgba(240, 61, 61, 1);

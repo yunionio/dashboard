@@ -182,37 +182,37 @@ export default {
 }
 </script>
 
-<style lang="scss">
-@import "~@/styles/_variables.scss";
-  .license-dialog {
-    .ant-modal-header, .ant-modal-close{
-      display: none;
+<style lang="less">
+@import "~@/styles/less/theme";
+.license-dialog {
+  .ant-modal-header, .ant-modal-close{
+    display: none;
+  }
+  .titles {
+    // text-align: center;
+    padding: 10px 0 30px 0;
+    font-weight: 500;
+    position: relative;
+    padding-left: 20.83333333%;
+    h2 {
+      font-size: 30px;
+      color: @heading-color;
     }
-    .titles {
-      // text-align: center;
-      padding: 10px 0 30px 0;
-      font-weight: 500;
-      position: relative;
-      padding-left: 20.83333333%;
-      h2 {
-        font-size: 30px;
-        color: $heading-color;
-      }
-      p {
-        font-size: 13px;
-        color: $text-color;
-        font-weight: 400;
-      }
-      .logo{
-        position: absolute;
-        left: 0;
-        top: 10px;
-        // max-width: 100px;
-        width: 110px;
-      }
+    p {
+      font-size: 13px;
+      color: @text-color;
+      font-weight: 400;
     }
-    .all-sn {
-      line-height: 20px;
+    .logo{
+      position: absolute;
+      left: 0;
+      top: 10px;
+      // max-width: 100px;
+      width: 110px;
     }
   }
+  .all-sn {
+    line-height: 20px;
+  }
+}
 </style>

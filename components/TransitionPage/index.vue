@@ -68,7 +68,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .fade-enter-active,
 .fade-leave-active {
   transition-duration: 0.3s;
@@ -105,7 +105,7 @@ export default {
 .zoom-leave-active {
   animation-direction: reverse;
 }
- @keyframes slide-left-in {
+@keyframes slide-left-in {
   0% {
     transform: translate3d(100%, 0, 0);
     opacity: 0;
@@ -113,12 +113,14 @@ export default {
   100% {
     transform: translate3d(0, 0, 0);
     opacity: 1;
+    height: auto;
   }
 }
 @keyframes slide-left-out {
   0% {
     transform: translate3d(0, 0, 0);
     opacity: 1;
+    height: auto;
   }
   100% {
     transform: translate3d(-100%, 0, 0);
@@ -133,12 +135,14 @@ export default {
   100% {
     transform: translate3d(0, 0, 0);
     opacity: 1;
+    height: auto;
   }
 }
 @keyframes slide-right-out {
   0% {
     transform: translate3d(0, 0, 0);
     opacity: 1;
+    height: auto;
   }
   100% {
     transform: translate3d(100%, 0, 0);
