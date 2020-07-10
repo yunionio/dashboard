@@ -16,6 +16,7 @@
           <base-select
             showSync
             isDefaultSelect
+            idKey="name"
             :resource="`cloudaccounts/${params.data.id}/enrollment-accounts`"
             v-decorator="decorators.enrollmentAccountId"
             :selectProps="{ 'placeholder': '请选择EA账号' }" />
