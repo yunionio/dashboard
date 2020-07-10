@@ -370,7 +370,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="less">
 .cloudaccount-create {
   .item {
     width: 120px;

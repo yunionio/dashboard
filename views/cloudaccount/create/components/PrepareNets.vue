@@ -146,7 +146,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
   .prepare-content{
     max-height: 300px;
     overflow: auto;

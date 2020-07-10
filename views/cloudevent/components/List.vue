@@ -172,7 +172,7 @@ export default {
   },
 }
 </script>
-<style lang="scss" scoped>
+<style lang="less" scoped>
   .event-list{
     position: relative;
     .search-date {
