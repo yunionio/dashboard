@@ -39,7 +39,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="less">
 .base-drawer-wrap {
   .ant-drawer-wrapper-body {
     overflow: hidden;

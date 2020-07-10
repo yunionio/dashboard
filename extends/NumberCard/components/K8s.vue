@@ -170,7 +170,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .number-card-number, .number-card-unit {
   font-size: 36px;
   color: #1890ff;

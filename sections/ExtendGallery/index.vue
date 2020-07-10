@@ -54,7 +54,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .extend-gallery-wrap {
   background-color: #fff;
   width: 300px;
