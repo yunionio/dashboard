@@ -233,7 +233,7 @@ export default {
   },
 }
 </script>
-<style lang="scss" scoped>
+<style lang="less" scoped>
 ::v-deep .redis-sku-valid .ant-form-item-control{
   line-height: 0;
 }

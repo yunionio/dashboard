@@ -317,7 +317,7 @@ export default {
   },
 }
 </script>
-<style lang="scss">
+<style lang="less">
  .td-ellipsis{
     width: 150px;
     word-break: keep-all;

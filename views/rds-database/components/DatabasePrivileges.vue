@@ -116,7 +116,7 @@ export default {
   },
 }
 </script>
-<style lang="scss">
+<style lang="less">
 .ant-transfer {
   .radios {
     display: none;
