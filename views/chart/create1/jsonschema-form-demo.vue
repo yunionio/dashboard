@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container1">
     <json-schema-form ref="vueForm" :schema="schema" :definition="definition" :default-value="model" :hide-reset="false" @submit="onSubmit" />
   </div>
 </template>
@@ -167,7 +167,7 @@ export default {
 </script>
 
 <style lang="scss">
-.container {
+.container1 {
   margin: 40px auto;
   width: 1300px;
 }
