@@ -36,7 +36,7 @@
         <duration :decorators="decorators.duration" :form="form" />
       </a-form-item>
       <a-form-item label="数量" v-show="!isServertemplate">
-        <a-input-number v-decorator="decorators.count" :min="1" :max="100" />
+        <a-input-number v-decorator="decorators.count" @blur="countBlur" :min="1" :max="100" />
       </a-form-item>
       <a-form-item label="平台" extra="根据选择的区域不同，平台的可用类型不同且目前只有OneCloud支持GPU云服务器、云硬盘">
         <hypervisor-radio :decorator="decorators.hypervisor" :type="form.fi.createType" :hypervisors="hypervisors" />
