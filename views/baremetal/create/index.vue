@@ -1100,10 +1100,13 @@ export default {
         diskConfigs.sort((a, b) => { return a.adapter - b.adapter })
       }
       if (values.networks) {
-        const netVals = Object.values(values.networks)
-        netVals.forEach(item => {
+        const networks = values.networks
+        for (let key in networks) {
           const option = {
-            network: item,
+            network: networks[key],
+          }
+          if (!R.isNil(values.networkIps) && !R.isEmpty(values.networkIps)) {
+            option.address = values.networkIps[key]
           }
           // 是否启用bonding
           if (this.isBonding) {
@@ -1113,7 +1116,7 @@ export default {
           } else {
             nets.push(option)
           }
-        })
+        }
       } else {
         // 是否启用bonding
         if (this.isBonding) {
