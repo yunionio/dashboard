@@ -24,7 +24,7 @@
         <a-row :gutter="10" v-for="k in form.fc.getFieldValue('keys')" :key="k">
           <a-col :span="4">
             <a-form-item>
-              <a-input  v-decorator="formatDecorator(k, 'name')" placeholder="子网名称" />
+              <a-input  v-decorator="formatDecorator(k, 'generate_name')" placeholder="子网名称" />
             </a-form-item>
           </a-col>
           <a-col :span="5">
@@ -120,7 +120,7 @@ export default {
         },
       },
       options: {
-        name: {
+        generate_name: {
           initialValue: undefined,
           validateTrigger: ['change', 'blur'],
           validateFirst: true,
