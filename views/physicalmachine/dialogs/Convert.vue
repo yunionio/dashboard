@@ -646,7 +646,7 @@ export default {
         let params = {}
         if (values.networks) {
           const networks = values.networks
-          for (let key in networks) {
+          for (const key in networks) {
             const option = {
               network: networks[key],
             }
@@ -656,7 +656,7 @@ export default {
             // 是否启用bonding
             if (this.isBonding) {
               option.require_teaming = true
-              if (this.isInstallOperationSystem) option['private'] = false
+              if (this.isInstallOperationSystem) option.private = false
               nets.push(option)
             } else {
               nets.push(option)

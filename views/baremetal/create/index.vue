@@ -1101,7 +1101,7 @@ export default {
       }
       if (values.networks) {
         const networks = values.networks
-        for (let key in networks) {
+        for (const key in networks) {
           const option = {
             network: networks[key],
           }
