@@ -4,6 +4,7 @@ import {
   getNameDescriptionTableColumn,
   getPublicScopeTableColumn,
 } from '@/utils/common/tableColumn'
+import ListSelect from '@/sections/ListSelect'
 
 export default {
   created () {
@@ -94,6 +95,27 @@ export default {
         field: 'guest_cnt',
         title: '关联虚拟机',
         width: 80,
+        slots: {
+          default: ({ row }, h) => {
+            const dialogParams = {
+              title: '关联虚拟机',
+              selectLabel: '已关联',
+              hiddenPageChooseAll: true,
+              hiddenFooterAction: true,
+              hiddenChoose: true,
+              getParams: {
+                secgroup: row.id,
+              },
+            }
+            return [
+              <ListSelect
+                list-props={ this.serverProps }
+                text={ row.guest_cnt }
+                type='text'
+                dialog-params={ dialogParams } />,
+            ]
+          },
+        },
       },
       getPublicScopeTableColumn({ vm: this }),
       getProjectTableColumn(),
