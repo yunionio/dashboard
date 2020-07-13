@@ -202,7 +202,7 @@ export default {
         }
         return true
       })
-      const ownerDomain = this.$store.getters.isAdminMode || item.domain_id === this.$store.getters.userInfo.projectDomainId
+      const ownerDomain = this.$store.getters.isAdminMode || this.list.selectedItems.every(obj => obj.domain_id === this.$store.getters.userInfo.projectDomainId)
       return {
         validate: enabledValid && autoSyncValid && ownerDomain,
         tooltip,
