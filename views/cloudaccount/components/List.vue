@@ -105,7 +105,7 @@ export default {
                 action: () => {
                   this.list.batchPerformAction('sync', { full_sync: true }, this.list.steadyStatus)
                 },
-                meta: () => this.syncPolicy(this.list.selectedItems, ownerDomain),
+                meta: () => this.syncPolicy(this.list.selectedItems),
               },
               {
                 label: '设置自动同步',
@@ -118,7 +118,7 @@ export default {
                     steadyStatus: this.list.steadyStatus,
                   })
                 },
-                meta: () => this.setAutoSyncPolicy(this.list.selectedItems, ownerDomain),
+                meta: () => this.setAutoSyncPolicy(this.list.selectedItems),
               },
               {
                 label: '连接测试',
@@ -126,7 +126,7 @@ export default {
                 action: () => {
                   this.list.batchPerformAction('sync', null, this.list.steadyStatus)
                 },
-                meta: () => this.syncPolicy(this.list.selectedItems, ownerDomain), // 和【全量同步】同逻辑
+                meta: () => this.syncPolicy(this.list.selectedItems), // 和【全量同步】同逻辑
               },
               ...getEnabledSwitchActions(this, undefined, ['cloudaccounts_perform_enable', 'cloudaccounts_perform_disable'], {
                 metas: [
