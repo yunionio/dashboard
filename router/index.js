@@ -29,6 +29,7 @@ export default {
     {
       meta: {
         label: '编排',
+        hidden: true,
       },
       submenus: [
         {
