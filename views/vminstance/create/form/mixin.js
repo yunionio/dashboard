@@ -469,5 +469,13 @@ export default {
         })
         .sort((a, b) => (b.ports - b.ports_used) - (a.ports - a.ports_used))
     },
+    countBlur () {
+      const count = this.form.fc.getFieldValue(this.decorators.count[0])
+      if (!count) {
+        this.form.fc.setFieldsValue({
+          [this.decorators.count[0]]: 1,
+        })
+      }
+    },
   },
 }

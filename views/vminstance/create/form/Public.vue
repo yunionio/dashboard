@@ -33,7 +33,7 @@
         <duration :decorators="decorators.duration" :form="form" />
       </a-form-item>
       <a-form-item label="数量" v-show="!isServertemplate">
-        <a-input-number v-decorator="decorators.count" :min="1" :max="100" />
+        <a-input-number v-decorator="decorators.count" @blur="countBlur" :min="1" :max="100" />
       </a-form-item>
       <area-selects
         class="mb-0"
