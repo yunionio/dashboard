@@ -269,7 +269,12 @@ export default {
       }
     },
     defaultSelect (list) {
-      if (this.isDefaultSelect && list.length > 0 && !this.value) { // 没有初始化值才可以默认选择
+      let isUnvalidOrEmpty = !this.value
+      if (this.value) {
+        const value = _.get(this.value, 'key') || this.value
+        isUnvalidOrEmpty = !list.find(val => val.id === value || val.key === value)
+      }
+      if (this.isDefaultSelect && list.length > 0 && isUnvalidOrEmpty) { // 是错误值或者没有初始化值才可以默认选择
         const defaultItem = list[0]
         if (this.selectProps && this.selectProps.labelInValue) {
           this.change({ label: defaultItem[this.nameKey], value: defaultItem[this.idKey] })
