@@ -201,6 +201,10 @@ export default {
     }, this)
   },
   methods: {
+    refresh () {
+      this.list.refresh()
+      this.$bus.$emit('secgroup-list-refresh')
+    },
     getParam () {
       const ret = {
         details: true,

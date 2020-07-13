@@ -64,6 +64,7 @@ export default {
               })
               this.list.refresh()
               this.$bus.$emit('list-refresh')
+              this.$message.success('移除成功')
             },
           },
         ],

@@ -173,6 +173,9 @@ export default {
   created () {
     this.initSidePageTab('secgroup-detail')
     this.list.fetchData()
+    this.$bus.$on('secgroup-list-refresh', () => {
+      this.list.refresh()
+    })
   },
   methods: {
     getParam () {
