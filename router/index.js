@@ -9,7 +9,6 @@ export default {
   meta: {
     label: '监控报警',
     t: 'dictionary.monitor_commonalert',
-    hidden: true,
   },
   submenus: [
     {
