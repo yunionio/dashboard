@@ -38,8 +38,8 @@
           :mapper="networkResourceMapper"
           :select-props="{ allowClear: true, placeholder: '请选择IP子网' }" />
           <div slot="extra" v-if="i === 0">
-            没有想要的？可以立即
-            <help-link href="/network2"> 立即新建</help-link>
+            没有您想要的？可以
+            <help-link href="/network2"> 新建</help-link>
           </div>
       </a-form-item>
       <a-form-item class="mb-0 mr-2" v-if="item.ipShow" :wrapperCol="{ span: 24 }">
