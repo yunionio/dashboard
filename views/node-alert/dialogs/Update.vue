@@ -18,9 +18,9 @@
 </template>
 
 <script>
-import NodeAlertForm from '../components/Form'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import NodeAlertForm from '../components/Form'
 
 export default {
   name: 'UpdateNodeAlert',
@@ -54,6 +54,7 @@ export default {
           node_id: this.params.nodeId,
           type: this.params.alertType,
           recipients,
+          scope: this.$store.getters.scope,
         }
         const id = this.params.data[0].id
         if (this.params.list) {
