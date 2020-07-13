@@ -57,6 +57,7 @@ export default {
               title: '后端服务器组',
               hideField: true,
               slotCallback: row => {
+                if (this.isRedirect) return '-'
                 if (!row.backend_group) return '-'
                 return [
                   <side-page-trigger name='LoadbalancerbackendgroupSidePage' id={row.backend_group_id} vm={this}>{ row.backend_group }</side-page-trigger>,
@@ -72,13 +73,14 @@ export default {
               field: 'sticky_session',
               title: '调度算法',
               formatter: ({ row }) => {
-                return this.$t('schedulerTypeOpts')[row.scheduler]
+                return this.isRedirect ? '-' : this.$t('schedulerTypeOpts')[row.scheduler]
               },
             },
             {
               field: 'sticky_session',
               title: '会话保持',
               formatter: ({ row }) => {
+                if (this.isRedirect) return '-'
                 if (row.sticky_session === 'off') return '未开启'
                 return '已开启'
               },
@@ -87,6 +89,7 @@ export default {
               field: 'sticky_session_type',
               title: 'Cookie处理方式',
               formatter: ({ row }) => {
+                if (this.isRedirect) return '-'
                 if (row.sticky_session_type === 'insert') return '植入 Cookie'
                 else if (row.sticky_session_type === 'server') return '重写 Cookie'
                 else return '-'
@@ -95,11 +98,18 @@ export default {
             {
               field: 'sticky_session_cookie',
               title: 'Cookie名称',
+              formatter: ({ row }) => {
+                if (this.isRedirect) return '-'
+                if (row.sticky_session_type === 'insert') return '植入 Cookie'
+                else if (row.sticky_session_type === 'server') return '重写 Cookie'
+                else return '-'
+              },
             },
             {
               field: 'sticky_session_cookie_timeout',
               title: '会话超时时间',
               formatter: ({ row }) => {
+                if (this.isRedirect) return '-'
                 return `${row.sticky_session_cookie_timeout} 秒`
               },
             },
@@ -141,32 +151,48 @@ export default {
             {
               field: 'backend_connect_timeout',
               title: '后端连接超时时间',
-              formatter: ({ row }) => row.backend_connect_timeout + '秒',
+              formatter: ({ row }) => {
+                if (this.isRedirect) return '-'
+                return row.backend_connect_timeout + '秒'
+              },
             },
             {
               field: 'backend_idle_timeout',
               title: '后端连接空闲时间',
-              formatter: ({ row }) => row.backend_idle_timeout + '秒',
+              formatter: ({ row }) => {
+                if (this.isRedirect) return '-'
+                return row.backend_idle_timeout + '秒'
+              },
             },
             {
               field: 'client_idle_timeout',
               title: '连接空闲超时时间',
-              formatter: ({ row }) => row.client_idle_timeout + ' 秒',
+              formatter: ({ row }) => {
+                return row.client_idle_timeout + ' 秒'
+              },
             },
             {
               field: 'client_request_timeout',
               title: '连接请求超时时间',
-              formatter: ({ row }) => row.client_request_timeout + ' 秒',
+              formatter: ({ row }) => {
+                return row.client_request_timeout + ' 秒'
+              },
             },
             {
               field: 'http_request_rate',
               title: '限定接收请求速率',
-              formatter: ({ row }) => row.http_request_rate + ' 秒',
+              formatter: ({ row }) => {
+                if (this.isRedirect) return '-'
+                return row.http_request_rate + ' 秒'
+              },
             },
             {
               field: 'http_request_rate_per_src',
               title: '限定同源IP发送请求速率',
-              formatter: ({ row }) => row.http_request_rate_per_src + ' 秒',
+              formatter: ({ row }) => {
+                if (this.isRedirect) return '-'
+                return row.http_request_rate_per_src + ' 秒'
+              },
             },
             {
               field: 'enable_http2',
@@ -179,6 +205,7 @@ export default {
               field: 'gzip',
               title: 'Gzip数据压缩',
               formatter: ({ row }) => {
+                if (this.isRedirect) return '-'
                 return row.gzip ? '已开启' : '未开启'
               },
             },
@@ -186,6 +213,7 @@ export default {
               field: 'xforwarded_for',
               title: '获取客户端真实IP',
               formatter: ({ row }) => {
+                if (this.isRedirect) return '-'
                 if (row.xforwarded_for || row.send_proxy !== 'off') {
                   return '已开启'
                 }
@@ -196,6 +224,7 @@ export default {
               field: 'egress_mbps',
               title: '带宽峰值',
               formatter: ({ row }) => {
+                if (this.isRedirect) return '-'
                 if (row.egress_mbps === 0) return '无限制'
                 if (R.is(Number, row.egress_mbps)) return `${row.egress_mbps} Mbps`
                 return '-'
@@ -205,13 +234,17 @@ export default {
               field: 'send_proxy',
               title: '设置PROXY协议',
               formatter: ({ row }) => {
+                if (this.isRedirect) return '-'
                 return this.$t('listenerProxyOpts')[row.send_proxy]
               },
             },
             {
               field: 'client_request_timeout',
               title: '附加HTTP头部字段',
-              formatter: ({ row }) => row.xforwarded_for ? '通过X-Forwarded-For字段获取客户端真实IP' : '-',
+              formatter: ({ row }) => {
+                if (this.isRedirect) return '-'
+                return row.xforwarded_for ? '通过X-Forwarded-For字段获取客户端真实IP' : '-'
+              },
             },
           ],
         },
@@ -221,12 +254,16 @@ export default {
             {
               field: 'health_check',
               title: '启用健康检查',
-              formatter: ({ row }) => row.health_check === 'on' ? '已开启' : '未开启',
+              formatter: ({ row }) => {
+                if (this.isRedirect) return '-'
+                return row.health_check === 'on' ? '已开启' : '未开启'
+              },
             },
             {
               field: 'health_check_type',
               title: '健康检查协议',
               formatter: ({ row }) => {
+                if (this.isRedirect) return '-'
                 if (row.health_check_type) {
                   return row.health_check_type.toUpperCase()
                 }
@@ -236,52 +273,84 @@ export default {
             {
               field: 'health_check_uri',
               title: '健康检查路径',
-              formatter: ({ row }) => row.health_check_uri,
+              formatter: ({ row }) => {
+                if (this.isRedirect) return '-'
+                return row.health_check_uri
+              },
             },
             {
               field: 'health_check_domain',
               title: '健康检查域名',
-              formatter: ({ row }) => row.health_check_domain,
+              formatter: ({ row }) => {
+                if (this.isRedirect) return '-'
+                return row.health_check_domain
+              },
             },
             {
               field: 'health_check_http_code',
               title: '正常状态码',
-              formatter: ({ row }) => row.health_check_http_code,
+              formatter: ({ row }) => {
+                if (this.isRedirect) return '-'
+                return row.health_check_http_code
+              },
             },
             {
               field: 'health_check_timeout',
               title: '健康检查响应超时时间',
-              formatter: ({ row }) => row.health_check_timeout + ' 秒',
+              formatter: ({ row }) => {
+                if (this.isRedirect) return '-'
+                return row.health_check_timeout + ' 秒'
+              },
             },
             {
               field: 'health_check_interval',
               title: '健康检查间隔时间',
-              formatter: ({ row }) => row.health_check_interval + ' 秒',
+              formatter: ({ row }) => {
+                if (this.isRedirect) return '-'
+                return row.health_check_interval + ' 秒'
+              },
             },
             {
               field: 'health_check_rise',
               title: '健康检查健康阈值',
-              formatter: ({ row }) => row.health_check_rise + ' 次',
+              formatter: ({ row }) => {
+                if (this.isRedirect) return '-'
+                return row.health_check_rise + ' 次'
+              },
             },
             {
               field: 'health_check_fall',
               title: '健康检查不健康阈值',
-              formatter: ({ row }) => row.health_check_fall + ' 次',
+              formatter: ({ row }) => {
+                if (this.isRedirect) return '-'
+                return row.health_check_fall + ' 次'
+              },
             },
             {
               field: 'health_check_req',
               title: '健康检查请求',
-              formatter: ({ row }) => row.health_check_req,
+              formatter: ({ row }) => {
+                if (this.isRedirect) return '-'
+                return row.health_check_req
+              },
             },
             {
               field: 'health_check_exp',
               title: '健康检查返回结果',
-              formatter: ({ row }) => row.health_check_exp,
+              formatter: ({ row }) => {
+                if (this.isRedirect) return '-'
+                return row.health_check_exp
+              },
             },
           ],
         },
       ],
     }
+  },
+  computed: {
+    isRedirect () {
+      return this.data.redirect === 'raw'
+    },
   },
 }
 </script>
