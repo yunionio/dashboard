@@ -113,6 +113,7 @@
           :schedtag-params="schedtagParams"
           :networkVpcParams="networkVpcParams"
           :vpcResource="vpcResource"
+          :hypervisor="form.fd.hypervisor"
           :vpcResourceMapper="vpcResourceMapper"
           :networkResourceMapper="networkResourceMapper" />
       </a-form-item>
