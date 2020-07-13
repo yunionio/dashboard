@@ -1,8 +1,8 @@
 <template>
   <div class="severtemplate-create-server">
     <page-header :title="`新建${this.$t('dictionary.server')}`" />
-    <a-form :form="form.fc" class="mt-3">
-      <a-form-item label="名称" v-bind="formItemLayout" extra="名称支持序号占位符‘#’，用法如下。 名称：host## 数量：2、实例为：host01、host02">
+    <a-form :form="form.fc" class="mt-3"  v-bind="formItemLayout">
+      <a-form-item label="名称" extra="名称支持序号占位符‘#’，用法如下。 名称：host## 数量：2、实例为：host01、host02">
         <a-input v-decorator="decorators.generate_name" :placeholder="$t('validator.resourceCreateName')" />
       </a-form-item>
       <a-form-item label="数量">
