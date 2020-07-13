@@ -259,6 +259,14 @@ export default {
     },
   },
   methods: {
+    countBlur () {
+      const count = this.form.fc.getFieldValue(this.decorators.count[0])
+      if (!count) {
+        this.form.fc.setFieldsValue({
+          [this.decorators.count[0]]: 1,
+        })
+      }
+    },
     baywatch (props, watcher) {
       const iterator = function (prop) {
         this.$watch(prop, watcher)

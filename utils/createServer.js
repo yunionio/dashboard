@@ -94,12 +94,6 @@ export const createVmDecorators = type => {
       'count',
       {
         initialValue: 1,
-        normalize: val => {
-          if (R.is(Number, val)) {
-            return val
-          }
-          return 1
-        },
         rules: [
           { required: true, message: '请输入数量' },
         ],
