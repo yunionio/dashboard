@@ -84,6 +84,7 @@ export default {
               title: '后端服务器组',
               hideField: true,
               slotCallback: row => {
+                if (this.isRedirect) return '-'
                 if (!row.backend_group) return '-'
                 return [
                   <side-page-trigger name='LoadbalancerbackendgroupSidePage' id={row.backend_group_id} vm={this}>{ row.backend_group }</side-page-trigger>,
@@ -93,12 +94,18 @@ export default {
             {
               field: 'http_request_rate',
               title: '限定接收请求速率',
-              formatter: ({ row }) => row.http_request_rate + ' 秒',
+              formatter: ({ row }) => {
+                if (this.isRedirect) return '-'
+                return row.http_request_rate + ' 秒'
+              },
             },
             {
               field: 'http_request_rate_per_src',
               title: '限定同源IP发送请求速率',
-              formatter: ({ row }) => row.http_request_rate_per_src + ' 秒',
+              formatter: ({ row }) => {
+                if (this.isRedirect) return '-'
+                return row.http_request_rate_per_src + ' 秒'
+              },
             },
             // {
             //   field: 'vpc',
@@ -116,6 +123,11 @@ export default {
         },
       ],
     }
+  },
+  computed: {
+    isRedirect () {
+      return this.data.redirect === 'raw'
+    },
   },
 }
 </script>
