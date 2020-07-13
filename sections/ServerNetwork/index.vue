@@ -32,6 +32,7 @@
 import NetworkConfig from './NetworkConfig'
 import NetworkSchedtag from './NetworkSchedtag'
 import { NETWORK_OPTIONS_MAP } from '@Compute/constants'
+import { HYPERVISORS_MAP } from '@/constants'
 
 export default {
   name: 'ServerNetwork',
@@ -78,6 +79,9 @@ export default {
       type: Function,
       default: data => data,
     },
+    hypervisor: {
+      type: String,
+    },
   },
   data () {
     return {
@@ -99,6 +103,16 @@ export default {
           networkType: NETWORK_OPTIONS_MAP.default.key,
         })
         this.networkComponent = ''
+      }
+    },
+    hypervisor (val, oldVal) {
+      if (val === HYPERVISORS_MAP.esxi.key || oldVal === HYPERVISORS_MAP.esxi.key) {
+        if (this.networkComponent === 'config') {
+          this.networkComponent = ''
+          this.$nextTick(() => { // 刷新 network-config 组件
+            this.networkComponent = 'config'
+          })
+        }
       }
     },
   },
