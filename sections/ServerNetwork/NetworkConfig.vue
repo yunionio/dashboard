@@ -120,6 +120,7 @@ export default {
       return this.limit - this.networkList.length
     },
     networkParamsC () {
+      if (!this.networkList[0].vpc.id) return {}
       return {
         vpc: this.networkList[0].vpc.id,
         ...this.networkParams,
