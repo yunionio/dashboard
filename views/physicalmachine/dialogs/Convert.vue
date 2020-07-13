@@ -101,6 +101,7 @@
 
 <script>
 import _ from 'lodash'
+import * as R from 'ramda'
 import { NETWORK_OPTIONS_MAP } from '@Compute/constants'
 import ServerNetwork from '@Compute/sections/ServerNetwork'
 import { sizestr } from '@/utils/utils'
@@ -644,20 +645,23 @@ export default {
         const nets = []
         let params = {}
         if (values.networks) {
-          const netVals = Object.values(values.networks)
-          netVals.forEach(item => {
+          const networks = values.networks
+          for (let key in networks) {
             const option = {
-              network: item,
-              private: false,
+              network: networks[key],
+            }
+            if (!R.isNil(values.networkIps) && !R.isEmpty(values.networkIps)) {
+              option.address = values.networkIps[key]
             }
             // 是否启用bonding
             if (this.isBonding) {
               option['require_teaming'] = true
+              if (this.isInstallOperationSystem) option['private'] = false
               nets.push(option)
             } else {
               nets.push(option)
             }
-          })
+          }
         } else {
           // 是否启用bonding
           if (this.isBonding) {
