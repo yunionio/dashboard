@@ -25,6 +25,13 @@ import OptionLabel from './OptionLabel'
 import { Manager } from '@/utils/manager'
 import { arrayToObj } from '@/utils/utils'
 
+const del$t = value => {
+  if (!R.is(Object, value)) return {}
+  const obj = { ...value }
+  delete obj.$t
+  return obj
+}
+
 export default {
   name: 'BaseSelect',
   components: {
@@ -181,24 +188,22 @@ export default {
       return option.componentOptions.children[0].componentInstance.text.toLowerCase().includes(input.toLowerCase())
     },
     paramsChange (val, oldV) {
-      const del$t = value => {
-        const obj = { ...value }
-        delete obj.$t
-        return obj
-      }
-      if (!R.equals(del$t(val), del$t(oldV))) {
+      val = del$t(val)
+      oldV = del$t(oldV)
+      if (!R.equals(val, oldV)) {
         const isInitLoad = R.is(Object, oldV) && (R.isEmpty(oldV) || R.isNil(oldV)) // 如果oldV是{}，认为是第一次参数变化，则无需 clearSelect
         if (!isInitLoad) this.clearSelect()
         if (this._valid()) this.loadOptsDebounce()
       }
     },
     _valid () {
+      const params = del$t(_.cloneDeep(this.params))
       if (
         (this.resource && (!this.options || !this.options.length)) &&
         ((!this.needParams && !this.needCtx) ||
-        (this.needParams && !R.isEmpty(this.params)) ||
+        (this.needParams && !R.isEmpty(params)) ||
         (this.needCtx && !R.isEmpty(this.ctx)) ||
-        (this.needCtx && this.needParams && !R.isEmpty(this.ctx) && !R.isEmpty(this.params)))
+        (this.needCtx && this.needParams && !R.isEmpty(this.ctx) && !R.isEmpty(params)))
       ) {
         return true
       }
