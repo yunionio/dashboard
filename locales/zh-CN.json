@@ -1911,6 +1911,10 @@
   "login.desc1": "新一代产品化融合云",
   "login.desc2": "简单 · 开放 · 融合 · 智能",
   "login.desc3": "为企业上云、用云、多云管理等全部需求提供一键部署、产品化解决方案",
+  "billWarningCostTypes": {
+    "day": "日消费预警",
+    "month": "月消费预警"
+  },
   "common.batchAction": "批量操作",
   "common.action": "操作",
   "common.ok": "确定",

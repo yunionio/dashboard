@@ -222,7 +222,7 @@ export const getCopyWithContentTableColumn = ({
     minWidth,
     slots: {
       default: ({ row }, h) => {
-        const text = message || (row[field] && row[field].toString()) || '-'
+        const text = (message && R.type(message) === 'Function') ? message(row) : (message || (row[field] && row[field].toString()) || '-')
         return [
           <list-body-cell-wrap copy field={field} row={row} hideField={hideField} message={text}>
             { slotCallback ? slotCallback(row) : null }
