@@ -1905,6 +1905,10 @@
     "LB_UNUSED": "未使用的负载均衡实例",
     "SCALE_DOWN": "低负载的虚拟机"
   },
+  "billWarningCostTypes": {
+    "day": "日消费预警",
+    "month": "月消费预警"
+  },
   "common.batchAction": "批量操作",
   "common.action": "操作",
   "common.ok": "确定",
