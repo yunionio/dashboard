@@ -220,6 +220,10 @@ export default {
           dta.server_type = 'baremetal'
           dta.wire = wire.id
           dta.generate_name = dta.name
+          dta.tenant = this.newAccountInfo.tenant
+          if (this.isAdminMode && this.l3PermissionEnable) {
+            dta.domain_id = this.newAccountInfo.domain_id
+          }
           delete dta.name
           this.networksM.create({
             data: dta,
@@ -239,6 +243,10 @@ export default {
             dta.server_type = 'guest'
             dta.wire = wire.id
             dta.generate_name = dta.name
+            dta.tenant = this.newAccountInfo.tenant
+            if (this.isAdminMode && this.l3PermissionEnable) {
+              dta.domain_id = this.newAccountInfo.domain_id
+            }
             delete dta.name
             this.networksM.create({
               data: dta,
@@ -258,16 +266,24 @@ export default {
       try {
         if (!this.prepareNetData.suitable_wire && this.prepareNetData.suggested_wire) {
           const { name, description, zone_id, zone_ids } = this.prepareNetData.suggested_wire
+          const params = {
+            generate_name: name,
+            description,
+            zone_id: zone_id || ((zone_ids && zone_ids.length > 0) ? zone_ids[0] : undefined),
+            vpc_id: 'default',
+            bandwidth: '1000',
+          }
+          params.tenant = this.newAccountInfo.tenant
+          if (this.isAdminMode && this.l3PermissionEnable) {
+            params.domain_id = this.newAccountInfo.domain_id
+          }
           const { data } = await manager.create({
-            data: {
-              name,
-              description,
-              zone_id: zone_id || ((zone_ids && zone_ids.length > 0) ? zone_ids[0] : undefined),
-              vpc_id: 'default',
-              bandwidth: '1000',
-            },
+            data: params,
           })
           return data
+        }
+        return {
+          id: this.prepareNetData.suitable_wire,
         }
       } catch (err) {
         throw err
@@ -283,7 +299,7 @@ export default {
       }
       if (this.step.currentStep === 3) {
         try {
-          await this.doCreateCloudaccount(this.vmwareFormData)
+          this.newAccountInfo = await this.doCreateCloudaccount(this.vmwareFormData)
           const wireDta = await this.createWire()
           await this.doCreateNetwork(wireDta)
           this.$router.push('/cloudaccount')
