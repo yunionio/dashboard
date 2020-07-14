@@ -81,12 +81,18 @@ export default {
           {
             validateFirst: true,
             validateTrigger: ['blur', 'change'],
-            rules: [{
-              required: true,
-              message: '请输入ip',
-            }, {
-              validator: checkIpInSegment(i, networkData),
-            }],
+            rules: [
+              {
+                required: true,
+                message: '请输入ip',
+              },
+              {
+                validator: this.$validate('IPv4'),
+              },
+              {
+                validator: checkIpInSegment(i, networkData),
+              },
+            ],
           },
         ],
       },

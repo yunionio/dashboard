@@ -115,6 +115,7 @@
           :networkVpcParams="networkVpcParams"
           :vpcResource="vpcResource"
           :hypervisor="form.fd.hypervisor"
+          :serverCount="form.fd.count"
           :vpcResourceMapper="vpcResourceMapper"
           :networkResourceMapper="networkResourceMapper" />
       </a-form-item>
@@ -301,7 +302,7 @@ export default {
       }
       return params
     },
-    showSchedCloudprovider () { // 创建VMware机器时，镜像类型不是 VMware 平台镜像时调度策略可以选择知道云账号
+    showSchedCloudprovider () { // 创建VMware机器时，镜像类型不是 VMware 平台镜像时调度策略可以选择指定云账号
       let show = false
       if (this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key) {
         if (this.form.fd.imageType !== IMAGES_TYPE_MAP.vmware.key) {
