@@ -154,7 +154,7 @@ export default {
       ],
       groupActions: [
         {
-          label: '批量移除',
+          label: '移除',
           action: (row) => {
             this.createDialog('ScalingGroupServerRemoveDialog', {
               title: '移除',
