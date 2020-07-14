@@ -96,6 +96,7 @@
           :schedtag-params="schedtagParams"
           :networkVpcParams="networkVpcParams"
           :vpcResource="vpcResource"
+          :serverCount="form.fd.count"
           :networkResourceMapper="networkResourceMapper" />
       </a-form-item>
       <a-form-item label="标签" class="mb-0">
