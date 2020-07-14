@@ -25,7 +25,7 @@ export default {
           path: '/rds',
           component: Layout,
           meta: {
-            label: '实例列表',
+            label: 'RDS实例',
             permission: 'rds_dbinstances_list',
             hidden: () => !hasSetupKey(['aliyun', 'huawei', 'google', 'aws']),
           },
@@ -76,7 +76,7 @@ export default {
         {
           path: '/redis',
           meta: {
-            label: '实例列表',
+            label: 'Redis实例',
             permission: 'redis_elasticcaches_list',
           },
           component: Layout,
