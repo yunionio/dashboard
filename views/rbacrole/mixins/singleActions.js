@@ -39,7 +39,7 @@ export default {
         label: '查看/编辑',
         permission: 'k8s_rbacroles_update',
         action: async obj => {
-          const manager = new this.$Manager('roles', 'v1')
+          const manager = new this.$Manager('rbacroles', 'v1')
           async function fetchData () {
             const { cluster, namespace } = obj
             const { data } = await manager.getSpecific({ id: obj.name, spec: 'rawdata', params: { cluster, namespace } })
