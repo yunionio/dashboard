@@ -229,10 +229,10 @@ export const REGEXP = {
  * @param {Boolean} isObj: 是否是验证对象，vue-ant-design 里面的 form 的对象格式为 { key: '', value: '' }
  * @return {Function} validator: vue-ant-design 要求的自定义规则校验函数
  */
-export const isRequired = (isObj = true) => {
+export const isRequired = (isObj = true, valueKey = 'key') => {
   return function (rule, value, callback) {
     if (isObj && R.is(Object, value)) {
-      if (value.key) {
+      if (value[valueKey]) {
         callback()
       } else {
         callback(Error)
