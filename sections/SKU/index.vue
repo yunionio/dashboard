@@ -235,8 +235,13 @@ export default {
   watch: {
     skuParams: {
       handler (val, oldV) {
-        if (!R.isEmpty(val) && !R.equals(val, oldV)) {
-          this.fetchData()
+        if (!R.isEmpty(val)) {
+          if (!R.equals(val, oldV)) {
+            this.fetchData()
+          }
+        } else {
+          this.skuList = []
+          this.setSku({})
         }
       },
       deep: true,

@@ -23,7 +23,7 @@
       </a-form-item>
       <a-form-item
         :wrapperCol="{ span: 24 }"
-        style="min-width: 200px;"
+        style="min-width: 240px;"
         class="w-25 mb-0 mr-1">
         <base-select
           class="w-100"
@@ -42,13 +42,16 @@
             <help-link href="/network2"> 新建</help-link>
           </div>
       </a-form-item>
-      <a-form-item class="mb-0 mr-2" v-if="item.ipShow" :wrapperCol="{ span: 24 }">
-        <a-input
-          placeholder="请输入子网内的IP地址"
-          @change="e => ipChange(e, i)"
-          v-decorator="decorator.ips(item.key, item.network)" />
-      </a-form-item>
-      <a-button v-else type="link" class="mr-1 mt-1" @click="showIp(item)">手动配置IP</a-button>
+      <template v-if="item.ipShow">
+        <a-form-item class="mb-0 mr-2" :wrapperCol="{ span: 24 }">
+          <a-input
+            placeholder="请输入子网内的IP地址"
+            @change="e => ipChange(e, i)"
+            v-decorator="decorator.ips(item.key, item.network)" />
+        </a-form-item>
+        <a-button type="link" class="mr-1 mt-1" @click="triggerShowIp(item)">取消</a-button>
+      </template>
+      <a-button v-else type="link" class="mr-1 mt-1" :disabled="ipsDisabled" @click="triggerShowIp(item)">手动配置IP</a-button>
       <a-button shape="circle" icon="minus" size="small" v-if="i !== 0" @click="decrease(item.key, i)" class="mt-2" />
     </div>
     <div class="d-flex align-items-center" v-if="networkCountRemaining > 0">
@@ -111,6 +114,10 @@ export default {
       type: Object,
       validator: val => val.id && val.name,
     },
+    ipsDisabled: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
@@ -164,8 +171,8 @@ export default {
         }
       })
     },
-    showIp (item, i) {
-      item.ipShow = true
+    triggerShowIp (item, i) {
+      item.ipShow = !item.ipShow
     },
     decrease (uid, index) {
       this.networkList.splice(index, 1)

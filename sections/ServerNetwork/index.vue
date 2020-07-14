@@ -13,6 +13,7 @@
         :network-params="networkListParams"
         :vpc-params="networkVpcParams"
         :vpc-resource="vpcResource"
+        :ipsDisabled="ipsDisabled"
         :network-resource-mapper="networkResourceMapper"
         :vpc-resource-mapper="vpcResourceMapper"
         :limit="form.fi.capability.max_nic_count" />
@@ -82,12 +83,21 @@ export default {
     hypervisor: {
       type: String,
     },
+    serverCount: {
+      type: Number,
+      default: 1,
+    },
   },
   data () {
     return {
       networkMaps: { ...NETWORK_OPTIONS_MAP },
       networkComponent: '', // 指定IP子网 / 指定调度标签 的控件
     }
+  },
+  computed: {
+    ipsDisabled () {
+      return this.serverCount > 1
+    },
   },
   watch: {
     'form.fi.capability.public_network_count' (val) {
@@ -107,12 +117,12 @@ export default {
     },
     hypervisor (val, oldVal) {
       if (val === HYPERVISORS_MAP.esxi.key || oldVal === HYPERVISORS_MAP.esxi.key) {
-        if (this.networkComponent === 'config') {
-          this.networkComponent = ''
-          this.$nextTick(() => { // 刷新 network-config 组件
-            this.networkComponent = 'config'
-          })
-        }
+        this.refreshNetworkConfig()
+      }
+    },
+    serverCount (val, oldVal) {
+      if (val !== oldVal && (val === 1 || oldVal === 1)) {
+        this.refreshNetworkConfig()
       }
     },
   },
@@ -128,6 +138,14 @@ export default {
         case NETWORK_OPTIONS_MAP.schedtag.key:
           this.networkComponent = 'schedtag'
           break
+      }
+    },
+    refreshNetworkConfig () {
+      if (this.networkComponent === 'config') {
+        this.networkComponent = ''
+        this.$nextTick(() => { // 刷新 network-config 组件
+          this.networkComponent = 'config'
+        })
       }
     },
   },
