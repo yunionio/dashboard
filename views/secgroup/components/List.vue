@@ -222,6 +222,14 @@ export default {
         },
       })
     },
+    openAssociateVirtualMachineDialog (obj) {
+      this.createDialog('AssociateVirtualMachineDialog', {
+        data: [obj],
+        refresh: () => {
+          this.list.refresh()
+        },
+      })
+    },
   },
 }
 </script>

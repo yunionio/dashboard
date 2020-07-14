@@ -1,5 +1,5 @@
 <template>
-  <base-dialog @cancel="cancelDialog">
+  <base-dialog @cancel="cancelDialog" width="40%">
     <div slot="header">{{ action }}</div>
     <div slot="body">
       是否确认移除？
