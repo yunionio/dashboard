@@ -54,17 +54,16 @@ export default {
           {
             label: '移除',
             width: 40,
-            action: async (obj) => {
-              await new this.$Manager('servers').performAction({
-                id: obj.id,
-                action: 'revoke-secgroup',
-                data: {
-                  'secgrp.0': obj.secgroup,
+            action: (obj) => {
+              const secgrpId = this.serverProps.list.getParams.secgroup || obj.secgrp_id
+              this.createDialog('RevokeSecgroupDialog', {
+                data: [obj],
+                secgrpId,
+                refresh: () => {
+                  this.list.refresh()
+                  this.$bus.$emit('list-refresh')
                 },
               })
-              this.list.refresh()
-              this.$bus.$emit('list-refresh')
-              this.$message.success('移除成功')
             },
           },
         ],
