@@ -228,7 +228,7 @@ export const createVmDecorators = type => {
       'sku',
       {
         rules: [
-          { required: true, message: '请选择套餐' },
+          { validator: isRequired(true, 'id'), message: '请选择套餐' },
         ],
       },
     ],
