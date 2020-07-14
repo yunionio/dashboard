@@ -373,12 +373,18 @@ export const createVmDecorators = type => {
           {
             validateFirst: true,
             validateTrigger: ['blur', 'change'],
-            rules: [{
-              required: true,
-              message: '请输入ip',
-            }, {
-              validator: checkIpInSegment(i, networkData),
-            }],
+            rules: [
+              {
+                required: true,
+                message: '请输入ip',
+              },
+              {
+                validator: validateForm('IPv4'),
+              },
+              {
+                validator: checkIpInSegment(i, networkData),
+              },
+            ],
           },
         ],
       },
