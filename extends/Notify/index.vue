@@ -5,7 +5,7 @@
         <div class="dashboard-card-header-left">{{ form.fd.name || '磁贴名称' }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
         <div class="dashboard-card-header-right">
           <slot name="actions" :handle-edit="handleEdit" />
-          <router-link v-if="!edit" to="/notice" class="ml-2">更多</router-link>
+          <router-link v-if="!edit && isAdminMode" to="/notice" class="ml-2">更多</router-link>
         </div>
       </div>
       <div class="dashboard-card-body flex-column mini-text justify-content-center">
@@ -87,7 +87,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['userInfo', 'scope']),
+    ...mapGetters(['userInfo', 'scope', 'isAdminMode']),
     readmarkTotal () {
       return this.readmarkData.total || 0
     },
