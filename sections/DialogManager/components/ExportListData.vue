@@ -116,7 +116,10 @@ export default {
         export: this.params.options.fileType || 'xls',
         export_keys: keys.join(','),
         export_texts: texts.join(','),
-        export_limit: total || this.params.list.total,
+        export_limit: total || this.params.total,
+      }
+      if (this.params.options.limit) {
+        params.export_limit = R.is(Function, this.params.options.limit) ? this.params.options.limit() : this.params.options.limit
       }
       if (this.params.options.getParams) {
         if (R.is(Function, this.params.options.getParams)) {
@@ -157,6 +160,7 @@ export default {
       }
       if (params.limit) delete params.limit
       if (params.offset) delete params.offset
+      delete params.paging_marker
       if (this.params.options.transformParams) {
         params = this.params.options.transformParams(params)
       }
