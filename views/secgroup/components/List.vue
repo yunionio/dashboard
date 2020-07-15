@@ -167,7 +167,7 @@ export default {
           const grid = this.$refs.pageList.$refs.table.$refs.grid
           if (this.list.filter.ip || this.list.filter.ports) {
             this.$nextTick(() => {
-              grid.setAllRowExpansion(true)
+              grid.setAllRowExpand(true)
             })
           } else {
             grid.clearRowExpand()
