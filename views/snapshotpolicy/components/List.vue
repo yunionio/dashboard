@@ -50,7 +50,6 @@ export default {
           { label: '名称', key: 'name' },
           { label: '关联硬盘数量', key: 'binding_disk_count' },
           { label: '策略详情', key: 'repeat_weekdays' },
-          { label: '创建时间', key: 'create_at' },
           { label: '状态', key: 'status' },
           { label: this.$t('dictionary.project'), key: 'tenant' },
         ],

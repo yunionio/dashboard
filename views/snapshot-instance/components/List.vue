@@ -39,7 +39,6 @@ export default {
           { label: '状态', key: 'status' },
           { label: this.$t('dictionary.project'), key: 'tenant' },
           { label: '虚拟机', key: 'guest' },
-          { label: '创建时间', key: 'create_at' },
         ],
       },
       groupActions: [
