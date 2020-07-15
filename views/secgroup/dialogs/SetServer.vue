@@ -93,6 +93,7 @@ export default {
           filter: 'hypervisor.notin(container, baremetal, esxi)',
           project_domain: this.userInfo.projectDomain,
           project_id: this.params.data[0].project_id,
+          secgroup: `!${this.params.data[0].id}`,
         }
       } else {
         // if (this.requestParams.scope) {
@@ -109,6 +110,7 @@ export default {
           filter: 'hypervisor.notin(container, baremetal, esxi)',
           // tenant: this.params.data[0]['tenant_id'],
           scope: this.$store.getters.scope,
+          secgroup: `!${this.params.data[0].id}`,
         }
       }
     },
@@ -151,7 +153,7 @@ export default {
           scope: this.scope,
           filter: 'hypervisor.notin(container, baremetal)',
           limit: 0,
-          secgroup: this.params.data[0].id,
+          secgroup: `!${this.params.data[0].id}`,
         }
         if (this.isAdminMode) {
           params.project_domain = this.userInfo.projectDomain
