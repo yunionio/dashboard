@@ -9,7 +9,9 @@
         :columns="columns"
         :single-actions="singleActions" />
     </div>
-    <div slot="footer" />
+    <div slot="footer">
+      <a-button type="primary" @click="cancelDialog" :loading="loading">{{ $t('dialog.ok') }}</a-button>
+    </div>
   </base-dialog>
 </template>
 
