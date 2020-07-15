@@ -436,7 +436,8 @@ export const getPublicScopeTableColumn = ({
                 hiddenCancel: true,
                 header: '共享范围',
                 body: () => {
-                  return (
+                  return [
+                    <a-alert class='mb-2' message={ `该资源已共享给以下${sharedProjects.length}个项目` } />,
                     <dialog-table
                       vxeGridProps={{ showOverflow: 'title' }}
                       data={ sharedProjects }
@@ -456,8 +457,8 @@ export const getPublicScopeTableColumn = ({
                             title: `所属${i18n.t('dictionary.domain')}`,
                           }),
                         ]
-                      } />
-                  )
+                      } />,
+                  ]
                 },
               })
             }}>{ i18n.t(`${i18nPrefix}.project`) }</a>,
@@ -471,7 +472,8 @@ export const getPublicScopeTableColumn = ({
                   hiddenCancel: true,
                   header: '共享范围',
                   body: () => {
-                    return (
+                    return [
+                      <a-alert class='mb-2' message={ `该资源已共享给以下${sharedDomains.length}个域` } />,
                       <dialog-table
                         vxeGridProps={{ showOverflow: 'title' }}
                         data={ sharedDomains }
@@ -487,8 +489,8 @@ export const getPublicScopeTableColumn = ({
                               title: '名称',
                             }),
                           ]
-                        } />
-                    )
+                        } />,
+                    ]
                   },
                 })
               }}>{ i18n.t(`${i18nPrefix}.domain`) }</a>,
