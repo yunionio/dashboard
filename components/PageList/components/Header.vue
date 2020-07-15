@@ -184,7 +184,7 @@ export default {
     },
     handleExportData () {
       this.createDialog('ExportListDataDialog', {
-        title: this.$t('common.text00010'),
+        title: this.exportDataOptions.title || this.$t('common.text00010'),
         config: this.config,
         total: this.total,
         options: this.exportDataOptions,
