@@ -17,7 +17,6 @@ import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import ServerPropsMixin from '../mixins/serverProps'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import { getTenantFilter } from '@/utils/common/tableFilter'
@@ -26,7 +25,7 @@ import { getSetPublicAction } from '@/utils/common/tableActions'
 
 export default {
   name: 'SecgroupList',
-  mixins: [WindowsMixin, ListMixin, globalSearchMixins, ColumnsMixin, SingleActionsMixin, ServerPropsMixin],
+  mixins: [WindowsMixin, ListMixin, globalSearchMixins, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
@@ -64,15 +63,36 @@ export default {
         responseData: this.responseData,
       }),
       exportDataOptions: {
+        title: '导出规则',
+        resource: 'secgrouprules',
         items: [
-          { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
-          { label: '关联虚拟机', key: 'guest_cnt' },
-          { label: '共享范围', key: 'public_scope' },
-          { label: '规则预览(策略，来源，协议，端口)', key: 'rules' },
-          { label: '状态', key: 'status' },
+          { label: '规则ID', key: 'id' },
+          { label: '安全组名称', key: 'secgroup' },
+          { label: '安全组ID', key: 'secgroup_id' },
+          { label: '方向', key: 'direction' },
+          { label: '策略', key: 'action' },
+          { label: '协议', key: 'protocol' },
+          { label: '端口', key: 'ports' },
+          { label: '优先级', key: 'priority' },
+          { label: 'CIDR', key: 'cidr' },
           { label: this.$t('dictionary.project'), key: 'tenant' },
         ],
+        transformParams (params) {
+          if (params.filter) {
+            params.filter = params.filter.map((item) => {
+              if (item.includes('name.contains(')) {
+                const val = /"(.+?)"/.exec(item)[1]
+                params.secgroup_name = val
+                return ''
+              }
+              return item
+            })
+            if (params.filter.length === 1) {
+              delete params.filter
+            }
+          }
+          return params
+        },
       },
     }
   },
