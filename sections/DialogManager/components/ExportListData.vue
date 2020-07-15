@@ -40,7 +40,7 @@
 
 <script>
 import * as R from 'ramda'
-import { download } from '@/utils/utils'
+import { download, getRequestT } from '@/utils/utils'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { getTagTitle } from '@/utils/common/tag'
@@ -96,7 +96,7 @@ export default {
     }
   },
   methods: {
-    genParams (formValues) {
+    genParams (formValues, total) {
       const keys = []
       const texts = []
       for (let i = 0, len = formValues.selected.length; i < len; i++) {
@@ -108,7 +108,7 @@ export default {
         export: this.params.options.fileType || 'xls',
         export_keys: keys.join(','),
         export_texts: texts.join(','),
-        export_limit: this.params.list.total,
+        export_limit: total || this.params.list.total,
       }
       if (this.params.options.getParams) {
         if (R.is(Function, this.params.options.getParams)) {
@@ -145,6 +145,9 @@ export default {
       }
       if (params.limit) delete params.limit
       if (params.offset) delete params.offset
+      if (this.params.options.transformParams) {
+        params = this.params.options.transformParams(params)
+      }
       return params
     },
     validateForm () {
@@ -162,10 +165,12 @@ export default {
       try {
         const values = await this.validateForm()
         this.loading = true
-        const params = this.genParams(values)
+        const resource = this.params.options.resource || this.params.list.resource
+        const total = this.params.options.resource && await this.getResourceTotal(resource)
+        const params = this.genParams(values, total)
         const response = await this.$http({
           methods: 'GET',
-          url: `/${this.params.list.apiVersion}/${this.params.list.resource}`,
+          url: `/${this.params.list.apiVersion}/${resource}`,
           params,
           responseType: 'blob',
           headers: {
@@ -196,6 +201,23 @@ export default {
       })
       this.checkAll = e.target.checked
       this.indeterminate = false
+    },
+    getResourceTotal (resource) {
+      return new Promise((resolve, reject) => {
+        this.$http({
+          methods: 'GET',
+          url: `/${this.params.list.apiVersion}/${resource}`,
+          params: {
+            $t: getRequestT(),
+            ...this.params.list.params,
+            limit: 1,
+          },
+        }).then((res) => {
+          resolve(res.data.total)
+        }).catch(() => {
+          resolve(0)
+        })
+      })
     },
   },
 }

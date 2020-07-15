@@ -289,7 +289,7 @@ export default {
     },
     handleExportData () {
       this.$parent.createDialog('ExportListDataDialog', {
-        title: '导出数据',
+        title: this.exportDataOptions.title || '导出数据',
         list: this.list,
         options: this.exportDataOptions,
         showTagColumns: this.showTagColumns,
