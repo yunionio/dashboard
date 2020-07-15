@@ -304,6 +304,8 @@ export default {
     async testPost () {
       const values = await this.form.fc.validateFields()
       values.cloudaccount_id = this.id
+      delete values.sync_info
+      delete values.billtask
       await new this.$Manager('bucket_options', 'v1').performClassAction({
         action: 'verify',
         data: values,
