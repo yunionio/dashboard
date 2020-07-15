@@ -94,6 +94,13 @@ export default {
         field: 'guest_cnt',
         title: '关联虚拟机',
         width: 80,
+        slots: {
+          default: ({ row }, h) => {
+            return [
+              <span class={{ 'link-color oc-pointer': true }} onClick={ () => this.openAssociateVirtualMachineDialog(row) }>{ row.guest_cnt }</span>,
+            ]
+          },
+        },
       },
       getPublicScopeTableColumn({ vm: this }),
       getProjectTableColumn(),

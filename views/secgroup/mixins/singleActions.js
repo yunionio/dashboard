@@ -83,7 +83,7 @@ export default {
             //   },
             // },
             {
-              label: '虚拟机管理',
+              label: '管理虚拟机',
               action: (obj) => {
                 this.sidePageTriggerHandle(this, 'SecGroupSidePage', {
                   id: obj.id,

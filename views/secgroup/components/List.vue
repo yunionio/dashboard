@@ -15,6 +15,7 @@ import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
+import ServerPropsMixin from '../mixins/serverProps'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import { getTenantFilter } from '@/utils/common/tableFilter'
@@ -23,7 +24,7 @@ import { getSetPublicAction } from '@/utils/common/tableActions'
 
 export default {
   name: 'SecgroupList',
-  mixins: [WindowsMixin, ListMixin, globalSearchMixins, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, globalSearchMixins, ColumnsMixin, SingleActionsMixin, ServerPropsMixin],
   props: {
     id: String,
     getParams: {
@@ -172,6 +173,9 @@ export default {
   created () {
     this.initSidePageTab('secgroup-detail')
     this.list.fetchData()
+    this.$bus.$on('secgroup-list-refresh', () => {
+      this.list.refresh()
+    })
   },
   methods: {
     getParam () {
@@ -213,6 +217,14 @@ export default {
         data: [obj],
         title: 'edit',
         columns: this.columns,
+        refresh: () => {
+          this.list.refresh()
+        },
+      })
+    },
+    openAssociateVirtualMachineDialog (obj) {
+      this.createDialog('AssociateVirtualMachineDialog', {
+        data: [obj],
         refresh: () => {
           this.list.refresh()
         },
