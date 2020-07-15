@@ -46,8 +46,7 @@ export default {
         <a-icon
           class='copy-icon'
           type='copy'
-          theme='twoTone'
-          twoToneColor='#1890ff'
+          class='primary-color'
           onClick={ this.doCopy } />
       </a-tooltip>
     )

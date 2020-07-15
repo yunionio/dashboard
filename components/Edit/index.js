@@ -54,7 +54,7 @@ export default {
     return (
       <div class='edit-icon mini-text'>
         <a-popover v-model={ this.visible } title={ this.title } trigger="click" destroyTooltipOnHide={true}>
-          <a-icon type='edit' theme='twoTone' twoToneColor='#1890ff' />
+          <a-icon type='edit' class='primary-color' />
           { customForm ? <customForm slot="content" onSubmit={this.submit} /> : <edit-form slot="content" { ...{ attrs: this.$attrs, props: this.$props } } onSubmit={this.submit} onCancel={ this.hideForm } /> }
         </a-popover>
       </div>
