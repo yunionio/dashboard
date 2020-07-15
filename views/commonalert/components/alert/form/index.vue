@@ -1,21 +1,6 @@
 <template>
   <a-form v-bind="formItemLayout" :form="form.fc">
-    <a-form-item :label="$t('monitor.text00015')">
-      <div slot="extra">
-        {{ $t('monitor.text00016') }}<br />
-        {{ $t('monitor.text00017') }}
-      </div>
-      <domain-project
-        :fc="form.fc"
-        :mb0="true"
-        :form-layout="formItemLayout"
-        :labelInValue="false"
-        :decorators="decorators"
-        :isDefaultSelect="false"
-        :allowClear="true"
-        :domain.sync="domain"
-        :project.sync="project" />
-    </a-form-item>
+    <scope-radio :decorators="decorators" :project.sync="projectItem" :formScopeInit="formScopeInit" />
     <a-form-item :label="$t('common.name')">
       <a-input v-decorator="decorators.name" :placeholder="$t('common.placeholder')" />
       <name-repeated v-slot:extra res="commonalerts" :name="form.fd.name" />
@@ -67,7 +52,7 @@ import _ from 'lodash'
 import Condition from './Condition'
 import Metric from '@Monitor/views/explorer/components/forms/form/Metric'
 import Filters from '@Monitor/views/explorer/components/forms/form/Filters'
-import DomainProject from '@/sections/DomainProject'
+import ScopeRadio from '@/sections/ScopeRadio'
 import NameRepeated from '@/sections/NameRepeated'
 import { DATABASE, channelMaps, levelMaps } from '@Monitor/constants'
 import { resolveValueChangeField } from '@/utils/common/ant'
@@ -75,7 +60,7 @@ import { resolveValueChangeField } from '@/utils/common/ant'
 export default {
   name: 'CommonalertForm',
   components: {
-    DomainProject,
+    ScopeRadio,
     NameRepeated,
     Metric,
     Filters,
@@ -93,8 +78,7 @@ export default {
         },
       }),
     },
-    alertData: {
-    },
+    alertData: {},
   },
   data () {
     let tags = []
@@ -120,6 +104,16 @@ export default {
       if (comparator === 'lt') initialValue.comparator = '<='
       if (comparator === 'gt') initialValue.comparator = '>='
     }
+    let formScopeInit
+    if (!initialValue.project && !initialValue.domain) {
+      formScopeInit = 'system'
+    }
+    if (!initialValue.project && initialValue.domain) {
+      formScopeInit = 'domain'
+    }
+    if (initialValue.project) {
+      formScopeInit = 'project'
+    }
     return {
       form: {
         fc: this.$form.createForm(this, {
@@ -128,17 +122,24 @@ export default {
         fd: {
         },
       },
+      formScopeInit,
       decorators: {
         domain: [
           'domain',
           {
             initialValue: initialValue.domain,
+            rules: [
+              { required: true, message: `${this.$t('common.select')}` },
+            ],
           },
         ],
         project: [
           'project',
           {
             initialValue: initialValue.project,
+            rules: [
+              { required: true, message: `${this.$t('common.select')}` },
+            ],
           },
         ],
         name: [
@@ -266,6 +267,7 @@ export default {
       },
       channelOpts: Object.values(channelMaps),
       levelOpts: Object.values(levelMaps),
+      projectItem: {},
     }
   },
   watch: {
@@ -311,9 +313,11 @@ export default {
     },
     async validate () {
       const monitorParams = this.toParams(false)
+      const fd = await this.form.fc.validateFields()
+      if (this.projectItem && this.projectItem.domain_id) fd.domain_id = this.projectItem.domain_id // 其实不传domain后端也会根据project定位domain，这里保险起见
       return {
         monitorParams,
-        fd: await this.form.fc.validateFields(),
+        fd,
       }
     },
     onValuesChange (props, values) {
