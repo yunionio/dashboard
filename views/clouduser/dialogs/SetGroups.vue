@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import ListSelect from '@/sections/ListSelect'
@@ -83,7 +84,59 @@ export default {
             title: this.$t('table.column.title.desc'),
             showOverflow: 'title',
           },
+          {
+            field: 'cloudpolicies',
+            title: '权限',
+            type: 'expand',
+            slots: {
+              default: ({ row }) => {
+                return [`${(row.cloudpolicies && row.cloudpolicies.length) || 0}个`]
+              },
+              content: ({ row }) => {
+                if (R.isNil(row.feCloudpolicies) || R.isEmpty(row.feCloudpolicies)) return '无关联权限'
+                return [
+                  <vxe-grid
+                    showOverflow='title'
+                    data={ row.feCloudpolicies }
+                    columns={[
+                      {
+                        field: 'name',
+                        title: this.$t('common.name'),
+                      },
+                      {
+                        field: 'description',
+                        title: this.$t('table.column.title.desc'),
+                        formatter: ({ cellValue }) => cellValue || '-',
+                      },
+                    ]} />,
+                ]
+              },
+            },
+          },
         ],
+        expandConfig: {
+          lazy: true,
+          loadMethod: async ({ row }) => {
+            let manager = new this.$Manager('cloudpolicies', 'v1')
+            try {
+              const response = await manager.list({
+                params: {
+                  cloudgroup_id: row.id,
+                  scope: this.$store.getters.scope,
+                },
+              })
+              row.feCloudpolicies = response.data.data || []
+              return response
+            } catch (error) {
+              throw error
+            } finally {
+              manager = null
+            }
+          },
+          visibleMethod: ({ row }) => {
+            return row.cloudpolicies && row.cloudpolicies.length > 0
+          },
+        },
       },
     }
   },
