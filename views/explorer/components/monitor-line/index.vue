@@ -45,9 +45,9 @@ export default {
         },
       }),
     },
-    showMetric: {
-      type: Boolean,
-      default: false,
+    metricInfo: {
+      type: Object,
+      default: () => ({}),
     },
     loading: {
       type: Boolean,
@@ -65,10 +65,14 @@ export default {
     }
   },
   computed: {
+    groupBy () {
+      return _.get(this.metricInfo, 'model.group_by')
+    },
     tableData () {
       return this.series.map(val => {
         const ret = { ...val.tags }
-        if (this.showMetric) {
+        const showMetric = !!this.groupBy
+        if (showMetric) {
           ret.__metric = val.name
         }
         return ret
@@ -91,11 +95,22 @@ export default {
       ]
       if (this.tableData && this.tableData.length) {
         R.forEachObjIndexed((value, key) => {
-          const column = this.tableData[0][key]
-          if (column) {
+          const isColumn = !R.isNil(this.tableData[0][key])
+          if (isColumn) {
             columns.push(value)
           }
         }, tableColumnMaps)
+      }
+      const groupByField = _.get(this.groupBy, '[0].params[0]')
+      if (this.groupBy && groupByField) {
+        if (!columns.find(val => val.field === groupByField)) {
+          const title = this.$te(`dictionary.${groupByField}`) ? this.$t(`dictionary.${groupByField}`) : groupByField
+          columns.push({
+            field: groupByField,
+            title,
+            formatter: ({ row }) => row[groupByField] || '-',
+          })
+        }
       }
       return columns
     },

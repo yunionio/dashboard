@@ -238,14 +238,6 @@ export const tableColumnMaps = {
     title: `${i18n.t('dictionary.host')}IP`,
     field: 'host_ip',
   },
-  cloudregion: {
-    title: i18n.t('dictionary.cloudregion'),
-    field: 'cloudregion',
-  },
-  zone: {
-    title: i18n.t('dictionary.zone'),
-    field: 'zone',
-  },
 }
 
 // 报警通知方式，配合 a-checkbox-group 用 value 而非 key
