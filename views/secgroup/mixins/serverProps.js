@@ -65,6 +65,11 @@ export default {
               },
             })
           },
+          meta: (obj) => {
+            return {
+              validate: ['running', 'ready'].includes(obj.status),
+            }
+          },
         },
       ],
     }
