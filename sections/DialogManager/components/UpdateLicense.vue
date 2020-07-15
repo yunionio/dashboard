@@ -1,13 +1,13 @@
 <template>
-  <base-dialog width="700px" class="license-dialog">
+  <base-dialog width="580px" class="license-dialog">
     <div slot="body">
       <div class="titles">
          <img class="logo" :src="logo" alt="" />
          <h2>OneCloud 授权激活</h2>
          <p v-if="updateInfo.current_version">软件版本：{{updateInfo.current_version}}</p>
       </div>
-      <a-form :form="form.fc" v-bind="formItemLayout">
-         <a-form-item v-if="allSn && allSn.length > 0" label="服务器识别码">
+      <a-form class="form" label-align="right" :form="form.fc" v-bind="formItemLayout">
+        <a-form-item v-if="allSn && allSn.length > 0" label="服务器识别码">
           <div>
             <div class="flex-fill d-flex all-sn align-items-end">
               <div class="border pb-2 px-3">
@@ -17,7 +17,7 @@
                   </div>
                 </template>
               </div>
-              <copy :message="copySn" class="flex-shrink-0 flex-grow-0 ml-2 mt-1" />
+              <copy :message="copySn" class="flex-shrink-0 flex-grow-0 ml-2" />
             </div>
           </div>
         </a-form-item>
@@ -30,12 +30,12 @@
             :remove="hanldeRemoveFile"
             action="/api/v1/licenses">
             <p class="ant-upload-drag-icon">
-              <a-icon type="inbox" />
+              <a-icon type="cloud-upload" />
             </p>
             <p class="ant-upload-text">单击或将文件拖到该区域以上传</p>
             <p class="ant-upload-hint">license文件扩展名为.lic,大小不超过10KB</p>
           </a-upload-dragger>
-          <div slot="extra">
+          <div slot="extra"  v-if="license || email">
             <div class="mt-2 mb-1">还没有License? 您可以通过以下途径获取：</div>
             <ul>
               <li v-if="license">线上<help-link :href="license">申请免费License</help-link></li>
@@ -43,11 +43,14 @@
             </ul>
           </div>
         </a-form-item>
+        <a-form-item v-bind="formItemOffset">
+          <a-button block type="primary" @click="handleConfirm" :loading="loading">{{ $t("dialog.ok") }}</a-button>
+        </a-form-item>
       </a-form>
     </div>
-    <div slot="footer">
+    <!-- <div slot="footer">
       <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t("dialog.ok") }}</a-button>
-    </div>
+    </div> -->
   </base-dialog>
 </template>
 
@@ -69,10 +72,16 @@ export default {
       license: undefined,
       formItemLayout: {
         wrapperCol: {
-          span: 19,
+          span: 17,
         },
         labelCol: {
-          span: 5,
+          span: 7,
+        },
+      },
+      formItemOffset: {
+        wrapperCol: {
+          span: 17,
+          offset: 7,
         },
       },
       form: {
@@ -185,17 +194,28 @@ export default {
 <style lang="less">
 @import "~@/styles/less/theme";
 .license-dialog {
-  .ant-modal-header, .ant-modal-close{
+  .ant-modal-header, .ant-modal-close, .ant-modal-footer{
     display: none;
   }
+  .ant-modal-body{
+    padding: 10px;
+  }
+  .ant-form-item-label{
+    text-align: right;
+    label {
+      margin-right: 5px;
+    }
+  }
+  .form{
+     padding: 0 60px;
+  }
   .titles {
-    // text-align: center;
+    text-align: center;
     padding: 10px 0 30px 0;
     font-weight: 500;
-    position: relative;
-    padding-left: 20.83333333%;
     h2 {
-      font-size: 30px;
+      font-size: 20px;
+      margin: 10px 0;
       color: @heading-color;
     }
     p {
@@ -204,11 +224,7 @@ export default {
       font-weight: 400;
     }
     .logo{
-      position: absolute;
-      left: 0;
-      top: 10px;
-      // max-width: 100px;
-      width: 110px;
+      height: 62px;
     }
   }
   .all-sn {
