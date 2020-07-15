@@ -20,7 +20,17 @@
             v-show="imageLoaded"
             v-bind="params.cropperProps"
             ref="cropper"
-            preview=".cropper-preview" />
+            preview=".cropper-preview"
+            :ready="ready" />
+          <div v-show="showControl">
+            <div class="d-flex align-items-center w-100">
+              <a-button type="link" icon="minus" class="flex-shrink-0 flex-grow-0 mt-1" @click="handleDecZoom" />
+              <div class="flex-fill w-100">
+                <a-slider v-model="zoom" v-bind="zoomSlider" @change="handleZoomChange" />
+              </div>
+              <a-button type="link" icon="plus" class="flex-shrink-0 flex-grow-0 mt-1" @click="handleIncZoom" />
+            </div>
+          </div>
         </div>
         <div class="flex-grow-0 flex-shrink-0 ml-4" v-show="imageLoaded">
           <div class="cropper-preview overflow-hidden" :style="this.params.previewStyle" />
@@ -61,6 +71,13 @@ export default {
   data () {
     return {
       imageLoaded: false,
+      showControl: false,
+      zoom: 0,
+      zoomSlider: {
+        min: 0,
+        max: 1,
+        step: 0.1,
+      },
     }
   },
   computed: {
@@ -81,6 +98,7 @@ export default {
       const reader = new FileReader()
       reader.onload = e => {
         this.imageLoaded = true
+        this.showControl = true
         this.$refs.cropper.replace(event.target.result)
       }
       reader.readAsDataURL(file)
@@ -97,6 +115,29 @@ export default {
         this.params.ok(data)
       }
       this.cancelDialog()
+    },
+    ready (e) {
+      if (this.params.cropperProps && this.params.cropperProps.ready) {
+        this.params.cropperProps.ready(e)
+      }
+      const cropper = e.target.cropper
+      cropper.zoomTo(0)
+    },
+    handleZoomChange (val) {
+      const cropper = this.$refs.cropper
+      cropper.zoomTo(val)
+    },
+    handleDecZoom () {
+      if (this.zoom > 0) {
+        this.zoom -= 0.1
+        this.$refs.cropper.zoomTo(this.zoom)
+      }
+    },
+    handleIncZoom () {
+      if (this.zoom < 1) {
+        this.zoom += 0.1
+        this.$refs.cropper.zoomTo(this.zoom)
+      }
     },
   },
 }
