@@ -15,7 +15,7 @@
         </template>
       </monitor-header>
       <div v-for="(item, i) in seriesList" :key="i">
-        <monitor-line :loading="loadingList[i]" :showMetric="metricList[i][0] && metricList[i][0].model && !!metricList[i][0].model.group_by" class="mb-3" @chartInstance="setChartInstance" :series="item" :timeFormatStr="timeFormatStr" />
+        <monitor-line :loading="loadingList[i]" :metricInfo="metricList[i][0]" class="mb-3" @chartInstance="setChartInstance" :series="item" :timeFormatStr="timeFormatStr" />
       </div>
     </a-col>
   </a-row>
