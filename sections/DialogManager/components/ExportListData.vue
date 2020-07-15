@@ -40,7 +40,7 @@
 
 <script>
 import * as R from 'ramda'
-import { download, uuid } from '@/utils/utils'
+import { download, getRequestT } from '@/utils/utils'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { getTagTitle } from '@/utils/common/tag'
@@ -208,7 +208,7 @@ export default {
           methods: 'GET',
           url: `/${this.params.list.apiVersion}/${resource}`,
           params: {
-            $t: uuid(),
+            $t: getRequestT(),
             ...this.params.list.params,
             limit: 1,
           },
