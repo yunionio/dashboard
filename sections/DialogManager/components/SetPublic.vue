@@ -92,12 +92,30 @@ export default {
       // 当为部门共享时
       if (publicScope === 'system' && this.$store.getters.isAdminMode) {
         typeInitialValue = 'domain'
-        // 域为空时，为全局共享
-        if (R.isNil(sharedDomains) || R.isEmpty(sharedDomains)) {
-          sharedDomainsInitialValue = ['all']
-        } else {
-          sharedDomainsInitialValue = sharedDomains.map(item => item.id)
+        // 2020.6.24旧代码 start
+        // // 域为空时，为全局共享
+        // if (R.isNil(sharedDomains) || R.isEmpty(sharedDomains)) {
+        //   sharedDomainsInitialValue = ['all']
+        // } else {
+        //   sharedDomainsInitialValue = sharedDomains.map(item => item.id)
+        // }
+        // 2020.6.24旧代码 end
+        // 2020.6.24修改 start
+        // 未开启三级权限直接定位至不共享
+        if (!this.$store.getters.l3PermissionEnable) {
+          typeInitialValue = 'none'
         }
+        if (!this.$store.getters.l3PermissionEnable) {
+          sharedDomainsInitialValue = []
+        } else {
+          // 域为空时，为全局共享
+          if (R.isNil(sharedDomains) || R.isEmpty(sharedDomains)) {
+            sharedDomainsInitialValue = ['all']
+          } else {
+            sharedDomainsInitialValue = sharedDomains.map(item => item.id)
+          }
+        }
+        // 2020.6.24修改 end
       }
       // 为域共享时
       if (publicScope === 'domain') {
@@ -292,6 +310,9 @@ export default {
         limit: 20,
         domain_id: this.params.data[0].domain_id,
       }
+      if (!this.isBatch) {
+        params.filter = `name.notin('${this.params.data[0].project}')`
+      }
       if (query) {
         params.search = query
       }
@@ -374,7 +395,11 @@ export default {
         scope: 'project',
       }
       if (projects[0] === 'all') {
-        ret.scope = 'domain'
+        if (this.l3PermissionEnable) {
+          ret.scope = 'domain'
+        } else {
+          ret.scope = 'system'
+        }
       } else {
         ret.shared_projects = projects
       }
