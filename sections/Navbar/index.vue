@@ -48,7 +48,7 @@
             <template v-if="systemProject">
               <li class="item-link" @click="() => projectChange(systemProject.id, 'system')">
                 <div class="d-flex h-100 align-items-center">
-                  <div class="flex-fill text-truncate">管理后台</div>
+                  <div class="flex-fill text-truncate">{{ isOperation ? '系统管理后台' : '管理后台' }}</div>
                   <div style="width: 20px;" class="ml-1">
                     <a-icon v-show="scope === 'system' && systemProject.id === userInfo.projectId" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
                   </div>
@@ -58,7 +58,7 @@
             <!-- 域管理后台 -->
             <template v-if="domainProjects && domainProjects.length">
               <li>
-                <div>{{ $t('dictionary.domain') }}管理后台</div>
+                <div>{{ isOperation ? '管理后台' : `${$t('dictionary.domain')}管理后台` }}</div>
                 <ul class="list-unstyled">
                   <template v-for="item of domainProjects">
                     <li class="item-link" :key="item.id" @click="() => projectChange(item.id, 'domain')">
@@ -152,6 +152,7 @@ export default {
       reLogging: false,
       viewChangePopoverVisible: false,
       selectPid: '',
+      isOperation: process.env.VUE_APP_PLATFORM === 'operation',
     }
   },
   computed: {
@@ -204,13 +205,13 @@ export default {
     viewLabel () {
       if (this.reLogging) return '-'
       if (this.$store.getters['auth/isAdmin']) {
-        return '管理后台'
+        return this.isOperation ? '系统管理后台' : '管理后台'
       }
       let ret = this.userInfo.projectName || '-'
       let managerLabel = ''
       if (this.$store.getters['auth/isDomain']) {
         ret = this.userInfo.projectDomain || '-'
-        managerLabel = `（${this.$t('dictionary.domain')}管理后台）`
+        managerLabel = this.isOperation ? '管理后台' : `（${this.$t('dictionary.domain')}管理后台）`
       }
       return ret + managerLabel
     },

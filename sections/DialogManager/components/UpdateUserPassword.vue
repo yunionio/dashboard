@@ -65,6 +65,7 @@ export default {
     }
     return {
       loading: false,
+      minPasswordLen: null,
       form: {
         fc: this.$form.createForm(this),
       },
@@ -87,7 +88,6 @@ export default {
             rules: [
               { required: true, message: '新密码不能为空' },
               { validator: validatePassword },
-              { validator: this.$validate('password') },
             ],
           },
         ],

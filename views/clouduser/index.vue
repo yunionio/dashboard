@@ -45,7 +45,7 @@ export default {
       singleActions: [
         {
           label: '查看权限',
-          permission: 'cloudpolicy_list',
+          // permission: 'cloudpolicy_list',
           action: (obj) => {
             this.createDialog('CloudgroupListForClouduserForUserDialog', {
               data: [obj],
