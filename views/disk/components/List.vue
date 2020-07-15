@@ -95,7 +95,7 @@ export default {
           { label: '容量', key: 'disk_size' },
           { label: '格式', key: 'disk_format' },
           { label: '磁盘类型', key: 'disk_type' },
-          { label: '是否挂载', key: 'unused' },
+          { label: '挂载机器数量', key: 'guest_count' },
           { label: '主机', key: 'guest' },
           { label: '主存储', key: 'storage' },
           { label: '创建时间', key: 'created_at' },
