@@ -4,7 +4,8 @@
     <div slot="body">
       <page-list
         :list="list"
-        :columns="columns" />
+        :columns="columns"
+        :expand-config="{ lazy: true, loadMethod: loadPolicy, visibleMethod: visbleLoadPolicy }" />
     </div>
     <div slot="footer">
       <a-button type="primary" @click="cancelDialog">{{ $t('dialog.ok') }}</a-button>
@@ -44,11 +45,11 @@ export default {
               return [`${(row.cloudpolicies && row.cloudpolicies.length) || 0}个`]
             },
             content: ({ row }) => {
-              if (R.isNil(row.cloudpolicies) || R.isEmpty(row.cloudpolicies)) return '无关联权限'
+              if (R.isNil(row.feCloudpolicies) || R.isEmpty(row.feCloudpolicies)) return '无关联权限'
               return [
                 <vxe-grid
                   showOverflow='title'
-                  data={ row.cloudpolicies }
+                  data={ row.feCloudpolicies }
                   columns={[
                     {
                       field: 'name',
@@ -69,6 +70,28 @@ export default {
   },
   created () {
     this.list.fetchData()
+  },
+  methods: {
+    async loadPolicy ({ row }) {
+      let manager = new this.$Manager('cloudpolicies', 'v1')
+      try {
+        const response = await manager.list({
+          params: {
+            cloudgroup_id: row.id,
+            scope: this.$store.getters.scope,
+          },
+        })
+        row.feCloudpolicies = response.data.data || []
+        return response
+      } catch (error) {
+        throw error
+      } finally {
+        manager = null
+      }
+    },
+    visbleLoadPolicy ({ row }) {
+      return row.cloudpolicies && row.cloudpolicies.length > 0
+    },
   },
 }
 </script>

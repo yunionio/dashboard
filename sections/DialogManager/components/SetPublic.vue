@@ -92,30 +92,12 @@ export default {
       // 当为部门共享时
       if (publicScope === 'system' && this.$store.getters.isAdminMode) {
         typeInitialValue = 'domain'
-        // 2020.6.24旧代码 start
-        // // 域为空时，为全局共享
-        // if (R.isNil(sharedDomains) || R.isEmpty(sharedDomains)) {
-        //   sharedDomainsInitialValue = ['all']
-        // } else {
-        //   sharedDomainsInitialValue = sharedDomains.map(item => item.id)
-        // }
-        // 2020.6.24旧代码 end
-        // 2020.6.24修改 start
-        // 未开启三级权限直接定位至不共享
-        if (!this.$store.getters.l3PermissionEnable) {
-          typeInitialValue = 'none'
-        }
-        if (!this.$store.getters.l3PermissionEnable) {
-          sharedDomainsInitialValue = []
+        // 域为空时，为全局共享
+        if (R.isNil(sharedDomains) || R.isEmpty(sharedDomains)) {
+          sharedDomainsInitialValue = ['all']
         } else {
-          // 域为空时，为全局共享
-          if (R.isNil(sharedDomains) || R.isEmpty(sharedDomains)) {
-            sharedDomainsInitialValue = ['all']
-          } else {
-            sharedDomainsInitialValue = sharedDomains.map(item => item.id)
-          }
+          sharedDomainsInitialValue = sharedDomains.map(item => item.id)
         }
-        // 2020.6.24修改 end
       }
       // 为域共享时
       if (publicScope === 'domain') {
