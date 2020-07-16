@@ -139,6 +139,7 @@ export default {
         },
         {
           label: '删除',
+          permission: 'server_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,
@@ -159,6 +160,7 @@ export default {
       singleActions: [
         {
           label: '删除',
+          permission: 'server_delete',
           action: obj => {
             this.createDialog('DeleteResDialog', {
               vm: this,
