@@ -392,12 +392,13 @@ export const getPublicScopeTableColumn = ({
   field = 'public_scope',
   title = '共享范围',
   vm,
+  width = '110px',
 } = {}) => {
   return {
     title,
     field,
     showOverflow: 'title',
-    width: 110,
+    width,
     slots: {
       default: ({ row }, h) => {
         if (row.is_public === false || row.is_public === 'false') return i18n.t('shareDesc.none')
