@@ -11,7 +11,7 @@
     <template v-if="addBackup && row.backup_host_id">
       <icon type="gaokeyong" class="ml-1" :title="$t('common.text00009')" />
     </template>
-    <slot name="append" v-if="showSlot" />
+    <slot name="append" />
     <slot name="appendActions" v-if="showAppendActions" />
     <edit
       slot="edit"
