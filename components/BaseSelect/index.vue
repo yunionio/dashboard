@@ -9,6 +9,13 @@
       @change="change"
       @search="loadOptsDebounce"
       :loading="loading">
+      <div slot="dropdownRender" slot-scope="menu">
+        <v-nodes :vnodes="menu" />
+        <div class="d-flex justify-content-center mb-2">
+          <a-button class="mx-auto" :loading="loading" :disabled="loading" v-if="showLoadMore" @mousedown="e => e.preventDefault()" type="link" @click="loadMore">加载更多</a-button>
+          <span v-if="loadMoreClicked && noMoreData" class="text-color-secondary pt-2 pb-1">没有更多了</span>
+        </div>
+      </div>
       <slot name="optionTemplate" v-bind:options="resOpts">
         <a-select-option v-for="item of resOpts" :key="item.id" :value="item.id" :disabled="item.__disabled">
           <option-label :nameKey="nameKey" :labelFormat="labelFormat" :data="item" :resource="resource" />
@@ -37,6 +44,10 @@ export default {
   name: 'BaseSelect',
   components: {
     OptionLabel,
+    VNodes: {
+      functional: true,
+      render: (h, ctx) => ctx.props.vnodes,
+    },
   },
   inheritAttrs: false,
   props: {
@@ -124,12 +135,20 @@ export default {
       type: String,
       default: '200px',
     },
+    loadMoreLimit: {
+      type: Number,
+      default: 20,
+    },
   },
   data () {
     this.loadOptsDebounce = debounce(this.loadOpts, 500)
     return {
       resOpts: {},
       loading: false,
+      showLoadMore: false,
+      noMoreData: false,
+      loadMoreClicked: false,
+      loadMoreOffset: this.loadMoreLimit,
     }
   },
   computed: {
@@ -189,6 +208,11 @@ export default {
     if (this._valid()) this.loadOptsDebounce()
   },
   methods: {
+    loadMore () {
+      this.loadMoreClicked = true
+      this.loadMoreOffset += this.loadMoreLimit
+      this.loadOpts(this.loadMoreOffset)
+    },
     filterOption (input, option) {
       return option.componentOptions.children[0].componentInstance.text.toLowerCase().includes(input.toLowerCase())
     },
@@ -248,7 +272,11 @@ export default {
         })
       }
     },
-    async loadOpts (query) {
+    async loadOpts (query, offset) {
+      if (R.is(Number, query)) {
+        offset = query
+        query = undefined
+      }
       if (!R.isNil(query) && this.filterable) return // 如果开启本地搜索，远程搜索将取消
       this.loading = true
       const manager = new Manager(this.resource, this.version)
@@ -260,6 +288,7 @@ export default {
           params.filter = `${this.searchKey}.contains(${query})`
         }
       }
+      if (R.is(Number, offset)) params.offset = offset
       try {
         const { data } = await manager.list({ params, ctx: this.ctx })
         const _list = R.type(data) === 'Array' ? data : (R.type(data) === 'Object' && (data.data || []))
@@ -267,13 +296,22 @@ export default {
         if (this.mapper) {
           list = this.mapper(list)
         }
+        if (data.total > (this.loadMoreOffset + data.data.length)) {
+          this.noMoreData = false
+          this.showLoadMore = true
+        } else {
+          this.showLoadMore = false
+          this.noMoreData = true // 没有更多了
+        }
         this.$emit('update:resList', list)
         const resOpts = arrayToObj(list)
-        this.resOpts = resOpts
+        this.resOpts = Object.assign({}, this.resOpts, resOpts)
         this.disabledOpts()
         this.loading = false
-        this.defaultSelect(list)
-        this.$emit('update:initLoaded', true)
+        if (!offset) {
+          this.defaultSelect(list)
+          this.$emit('update:initLoaded', true)
+        }
         return list
       } catch (error) {
         this.loading = false
