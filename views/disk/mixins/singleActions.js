@@ -214,6 +214,7 @@ export default {
                   columns: this.columns,
                   onManager: this.onManager,
                   resource: 'disks',
+                  name: '硬盘',
                 })
               },
               meta: () => ({
