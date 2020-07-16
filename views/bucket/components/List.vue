@@ -74,7 +74,7 @@ export default {
           permission: 'buckets_create',
           action: () => {
             this.createDialog('BucketCreateDialog', {
-              title: '新建',
+              title: '新建存储桶',
               onManager: this.onManager,
               refresh: this.refresh,
             })

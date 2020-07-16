@@ -36,7 +36,7 @@ export default {
         label: '新建',
         action: () => {
           this.createDialog('BlockStorageCreateDialog', {
-            title: '新建',
+            title: '新建块存储',
             onManager: this.onManager,
             refresh: this.refresh,
           })
