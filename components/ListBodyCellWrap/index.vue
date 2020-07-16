@@ -11,7 +11,7 @@
     <template v-if="addBackup && row.backup_host_id">
       <icon type="gaokeyong" class="ml-1" :title="$t('common.text00009')" />
     </template>
-    <slot name="append" />
+    <slot name="append" v-if="showSlot" />
     <edit
       slot="edit"
       class="ml-1"
@@ -129,6 +129,10 @@ export default {
       if (this.alwaysShowEditBtn) return true
       if (this.editVisible) return true
       if (this.edit && this.showBtn) return true
+      return false
+    },
+    showSlot () {
+      if (this.showBtn) return true
       return false
     },
     formRulesComputer () {

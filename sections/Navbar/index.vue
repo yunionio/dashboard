@@ -18,10 +18,10 @@
       <div class="header-logo ml-2">
         <img class="logo" :src="logo" />
       </div>
-      <router-link to="/dashboard" class="header-title ml-3">管理控制台</router-link>
+      <router-link to="/" class="header-title ml-3">管理控制台</router-link>
     </div>
     <!-- 全局搜索 -->
-    <div class="navbar-item d-flex align-items-center w-25 globar-search-wrapper">
+    <div class="navbar-item d-flex align-items-center w-25 globar-search-wrapper" v-if="showGlobalSearch">
       <global-search class="mx-2" />
     </div>
     <!-- 系统选择 -->
@@ -38,7 +38,7 @@
       </a-dropdown>
     </div>
     <!-- 视图选择 -->
-    <div class="navbar-item d-flex align-items-center justify-content-end">
+    <div class="navbar-item d-flex align-items-center justify-content-end" v-if="showViewSelection">
       <a-popover
         trigger="click"
         v-model="viewChangePopoverVisible"
@@ -173,6 +173,14 @@ export default {
     isHiddenMenu: {
       type: Boolean,
       default: false,
+    },
+    showGlobalSearch: {
+      type: Boolean,
+      default: true,
+    },
+    showViewSelection: {
+      type: Boolean,
+      default: true,
     },
   },
   data () {
