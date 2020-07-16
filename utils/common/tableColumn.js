@@ -414,6 +414,7 @@ export const getPublicScopeTableColumn = ({
   field = 'public_scope',
   title = '共享范围',
   vm,
+  resource,
   width = '110px',
 } = {}) => {
   return {
@@ -421,6 +422,9 @@ export const getPublicScopeTableColumn = ({
     field,
     showOverflow: 'title',
     width,
+    hidden: () => {
+      return !store.getters.l3PermissionEnable && (store.getters.scopeResource && store.getters.scopeResource.domain.includes(resource))
+    },
     slots: {
       default: ({ row }, h) => {
         const i18nPrefix = store.getters.l3PermissionEnable ? 'shareDesc' : 'shareDescPrimary'
