@@ -49,7 +49,7 @@ export default {
           label: '新建',
           action: () => {
             this.createDialog('DnsCreateDialog', {
-              title: '新建',
+              title: '新建域名服务',
               data: this.list.selectedItems,
               onManager: this.onManager,
               refresh: this.refresh,
