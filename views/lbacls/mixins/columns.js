@@ -25,26 +25,28 @@ export default {
         slots: {
           content: ({ row }, h) => {
             const arr = []
-            row.acl_entries.forEach(obj => {
-              let text = obj.cidr
-              if (obj.comment) {
-                text += ` | ${obj.comment}`
-              }
-              arr.push({
-                value: text,
+            if (row.acl_entries && row.acl_entries.length > 0) {
+              row.acl_entries.forEach(obj => {
+                let text = obj.cidr
+                if (obj.comment) {
+                  text += ` | ${obj.comment}`
+                }
+                arr.push({
+                  value: text,
+                })
               })
-            })
+            }
             const ret = []
             if (arr.length > 0) {
               ret.push(
                 <div class='mb-2'>
                   { arr.map(item => <a-tag>{ item.value }</a-tag>) }
-                </div>
+                </div>,
               )
             }
             if (ret.length <= 0) {
               ret.push(
-                <div>暂无源地址 | 备注</div>
+                <div>暂无源地址 | 备注</div>,
               )
             }
             return ret
