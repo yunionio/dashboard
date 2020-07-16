@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">新建</div>
+    <div slot="header">新建弹性公网IP</div>
     <div slot="body">
       <a-form
         :form="form.fc">
