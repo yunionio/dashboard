@@ -12,6 +12,7 @@
       <icon type="gaokeyong" class="ml-1" :title="$t('common.text00009')" />
     </template>
     <slot name="append" />
+    <slot name="appendActions" v-if="showAppendActions" />
     <edit
       slot="edit"
       class="ml-1"
@@ -129,6 +130,10 @@ export default {
       if (this.alwaysShowEditBtn) return true
       if (this.editVisible) return true
       if (this.edit && this.showBtn) return true
+      return false
+    },
+    showAppendActions () {
+      if (this.showBtn) return true
       return false
     },
     formRulesComputer () {
