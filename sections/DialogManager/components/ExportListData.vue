@@ -181,12 +181,12 @@ export default {
       try {
         const values = await this.validateForm()
         this.loading = true
-        const resource = this.params.options.resource || this.params.list.resource
+        const resource = this.params.options.resource || this.params.resource
         const total = this.params.options.resource && await this.getResourceTotal(resource)
         const params = this.genParams(values, total)
         const response = await this.$http({
           methods: 'GET',
-          url: `/${this.params.list.apiVersion}/${resource}`,
+          url: `/${this.params.apiVersion}/${resource}`,
           params,
           responseType: 'blob',
           headers: {
@@ -222,10 +222,10 @@ export default {
       return new Promise((resolve, reject) => {
         this.$http({
           methods: 'GET',
-          url: `/${this.params.list.apiVersion}/${resource}`,
+          url: `/${this.params.apiVersion}/${resource}`,
           params: {
             $t: getRequestT(),
-            ...this.params.list.params,
+            ...this.params.params,
             limit: 1,
           },
         }).then((res) => {
