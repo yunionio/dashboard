@@ -1,4 +1,4 @@
-import Cloudgroup from '@Cloudenv/views/cloudgroup'
+// import Cloudgroup from '@Cloudenv/views/cloudgroup'
 import Cloudaccount from '@Cloudenv/views/cloudaccount'
 import CloudaccountCreate from '@Cloudenv/views/cloudaccount/create'
 import CloudaccountUpdateBill from '@Cloudenv/views/cloudaccount/create/BillFileIndex'
@@ -14,7 +14,7 @@ import Policydefinition from '@Cloudenv/views/policydefinition'
 import Layout from '@/layouts/RouterView'
 import { hasSetupKey } from '@/utils/auth'
 
-import store from '@/store'
+// import store from '@/store'
 
 export default {
   index: 9,
