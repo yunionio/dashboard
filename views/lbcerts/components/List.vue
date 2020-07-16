@@ -56,7 +56,7 @@ export default {
           permission: 'lb_loadbalancercertificates_create',
           action: () => {
             this.createDialog('LbcertsCreateDialog', {
-              title: '新建',
+              title: '新建证书',
               data: this.list.selectedItems,
               onManager: this.onManager,
             })

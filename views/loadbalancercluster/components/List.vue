@@ -55,7 +55,7 @@ export default {
           permission: 'lb_loadbalancercluster_create',
           action: () => {
             this.createDialog('LoadbalancerclusterCreateDialog', {
-              title: '新建',
+              title: '新建集群',
               data: this.list.selectedItems,
               onManager: this.onManager,
               refresh: this.refresh,
