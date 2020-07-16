@@ -21,12 +21,13 @@
             v-bind="params.cropperProps"
             ref="cropper"
             preview=".cropper-preview"
-            :ready="ready" />
+            :ready="ready"
+            @zoom="handleCropperZoom" />
           <div v-show="showControl">
             <div class="d-flex align-items-center w-100">
               <a-button type="link" icon="minus" class="flex-shrink-0 flex-grow-0 mt-1" @click="handleDecZoom" />
               <div class="flex-fill w-100">
-                <a-slider v-model="zoom" v-bind="zoomSlider" @change="handleZoomChange" />
+                <a-slider v-model="zoom" v-bind="zoomSlider" @change="handleZoomChange" :tooltip-visible="false" />
               </div>
               <a-button type="link" icon="plus" class="flex-shrink-0 flex-grow-0 mt-1" @click="handleIncZoom" />
             </div>
@@ -72,11 +73,12 @@ export default {
     return {
       imageLoaded: false,
       showControl: false,
+      minSliderZoom: 0,
       zoom: 0,
       zoomSlider: {
         min: 0,
         max: 1,
-        step: 0.1,
+        step: 0.001,
       },
     }
   },
@@ -121,22 +123,33 @@ export default {
         this.params.cropperProps.ready(e)
       }
       const cropper = e.target.cropper
-      cropper.zoomTo(0)
+      // const imageData = cropper.getImageData()
+      // const minSliderZoom = imageData.width / imageData.naturalWidth
+      // this.zoomSlider.min = Number(minSliderZoom.toFixed(3))
+      this.zoom = this.zoomSlider.min
+      cropper.zoomTo(this.zoomSlider.min)
     },
     handleZoomChange (val) {
       const cropper = this.$refs.cropper
       cropper.zoomTo(val)
     },
     handleDecZoom () {
-      if (this.zoom > 0) {
-        this.zoom -= 0.1
+      if (this.zoom > this.zoomSlider.min) {
+        this.zoom -= 0.001
         this.$refs.cropper.zoomTo(this.zoom)
       }
     },
     handleIncZoom () {
       if (this.zoom < 1) {
-        this.zoom += 0.1
+        this.zoom += 0.001
         this.$refs.cropper.zoomTo(this.zoom)
+      }
+    },
+    handleCropperZoom (e) {
+      const { ratio } = e.detail
+      this.zoom = ratio
+      if (ratio > 1 || ratio < this.zoomSlider.min) {
+        event.preventDefault()
       }
     },
   },
