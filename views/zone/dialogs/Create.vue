@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">创建可用区</div>
+    <div slot="header">新建可用区</div>
     <div slot="body">
       <a-form
         :form="form.fc">

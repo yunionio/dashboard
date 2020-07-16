@@ -74,6 +74,7 @@ export default {
               action: 'sync',
               params: {
                 full_sync: true,
+                force: true,
               },
             },
           }).then(() => {

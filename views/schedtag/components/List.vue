@@ -71,7 +71,6 @@ export default {
           label: '新建',
           action: () => {
             this.createDialog('CreateSchedtagDialog', {
-              title: '创建调度标签',
               onManager: this.onManager,
             })
           },
