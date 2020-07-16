@@ -90,13 +90,13 @@ export default {
               { label: `GPU${this.$t('dictionary.server')}`, key: true },
             ],
           },
-          cloudregion: {
+          region: {
             label: '区域',
             dropdown: true,
             multiple: true,
             distinctField: {
               type: 'extra_field',
-              key: 'cloudregion',
+              key: 'region',
             },
           },
         },
