@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">上传</div>
+    <div slot="header">上传系统镜像</div>
     <div slot="body">
       <a-alert class="mb-2" type="warning">
         <div slot="message">
