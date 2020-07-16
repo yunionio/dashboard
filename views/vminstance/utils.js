@@ -315,6 +315,7 @@ const actionEableMap = {
       qcloud: ['running', 'ready'],
       aliyun: ['running', 'ready'],
       google: false,
+      aws: false,
     },
   },
 }
