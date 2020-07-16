@@ -104,7 +104,7 @@ export default {
           },
         },
       },
-      getPublicScopeTableColumn({ vm: this }),
+      getPublicScopeTableColumn({ vm: this, width: '180px' }),
       getProjectTableColumn(),
     ]
   },
