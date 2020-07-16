@@ -56,7 +56,7 @@ export default {
           permission: 'lb_loadbalanceracls_create',
           action: () => {
             this.createDialog('LbaclsCreateDialog', {
-              title: '新建',
+              title: '新建访问控制',
               data: this.list.selectedItems,
               onManager: this.onManager,
               type: 'create',
