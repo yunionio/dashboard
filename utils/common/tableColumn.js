@@ -415,12 +415,13 @@ export const getPublicScopeTableColumn = ({
   title = '共享范围',
   vm,
   resource,
+  width = '110px',
 } = {}) => {
   return {
     title,
     field,
     showOverflow: 'title',
-    width: 110,
+    width,
     hidden: () => {
       return !store.getters.l3PermissionEnable && (store.getters.scopeResource && store.getters.scopeResource.domain.includes(resource))
     },
