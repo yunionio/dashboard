@@ -170,7 +170,7 @@ export default {
                 {
                   label: '同步状态',
                   action: () => {
-                    this.onManager('batchPerformAction', {
+                    this.onManager('performAction', {
                       id: obj.id,
                       steadyStatus: Object.values(expectStatus.host).flat(),
                       managerArgs: {
