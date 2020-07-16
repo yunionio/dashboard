@@ -533,15 +533,17 @@ export const genReferRouteQuery = (route) => {
 }
 
 /**
- * [月份补全日期]
- * @param data 原始数据
- * * @param currentMonth 当前月份
- * @param keys 待补0的字段
+ * [月份/年补全日期/月份]
+ * @param {Array} data 原始数据
+ * @param {Date} currentMonth 当前时间
+ * @param {Array} keys 待补0的字段
+ * eg: [{ time: 07-01, value: 21 }, ... { time: 07-16, value: 35 }] => [{ time: 07-01, value: 21 }, ... { time: 07-31, value: 45 }]
  */
-export const completionDate = (data, currentMonth, keys = []) => {
+export const completionDate = (data, currentMonth, keys = [], monthInYear) => {
   if (data.length === 0) return []
   const result = []
-  const maxDay = moment(currentMonth).daysInMonth()
+  const maxDay = monthInYear ? 12 : moment(currentMonth).daysInMonth()
+  const momentFormat = monthInYear ? 'YYYY' : 'MM'
   for (let i = 1; i <= maxDay; i++) {
     let day = 1
     let obj = {}
@@ -557,7 +559,7 @@ export const completionDate = (data, currentMonth, keys = []) => {
         break
       } else {
         obj = {
-          time: moment(currentMonth).format('YYYY-MM') + '-' + day,
+          time: moment(currentMonth).format(momentFormat) + '-' + day,
         }
       }
     }
