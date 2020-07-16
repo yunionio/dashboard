@@ -92,23 +92,23 @@ export default {
             },
           ],
         },
-        {
-          path: '/cloudgroup',
-          meta: {
-            label: '权限组',
-            permission: 'cloudgroup_list',
-            t: 'dictionary.cloudgroup',
-            hidden: () => store.getters.isProjectMode || !hasSetupKey(['aliyun', 'huawei', 'qcloud', 'aws', 'azure', 'google']),
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'Cloudgroup',
-              path: '',
-              component: Cloudgroup,
-            },
-          ],
-        },
+        // {
+        //   path: '/cloudgroup',
+        //   meta: {
+        //     label: '权限组',
+        //     permission: 'cloudgroup_list',
+        //     t: 'dictionary.cloudgroup',
+        //     hidden: () => store.getters.isProjectMode || !hasSetupKey(['aliyun', 'huawei', 'qcloud', 'aws', 'azure', 'google']),
+        //   },
+        //   component: Layout,
+        //   children: [
+        //     {
+        //       name: 'Cloudgroup',
+        //       path: '',
+        //       component: Cloudgroup,
+        //     },
+        //   ],
+        // },
         {
           path: '/proxysetting',
           meta: {
