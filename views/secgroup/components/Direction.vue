@@ -103,16 +103,17 @@ export default {
           title: '备注',
           slots: {
             default: ({ row }, h) => {
-              const ret = [
-                <list-body-cell-wrap
-                  edit
-                  copy
-                  field="description"
-                  row={row}
-                  list={this.list}
-                  formRules={[]}
-                />,
-              ]
+              const ret = []
+              ret.push(h('list-body-cell-wrap', {
+                props: {
+                  edit: true,
+                  copy: true,
+                  field: 'description',
+                  row,
+                  onManager: this.onManager,
+                  formRules: [],
+                },
+              }))
               return ret
             },
           },
