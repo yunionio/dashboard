@@ -36,7 +36,7 @@ export default {
         enable: [
           'enable',
           {
-            initialValue: true,
+            initialValue: this.params.data[0].auto_migrate_on_host_down,
             valuePropName: 'checked',
           },
         ],
