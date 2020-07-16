@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">创建调度标签</div>
+    <div slot="header">新建调度标签</div>
     <div slot="body">
       <a-form
         :form="form.fc">

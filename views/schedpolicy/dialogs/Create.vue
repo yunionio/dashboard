@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">创建调度策略</div>
+    <div slot="header">新建调度策略</div>
     <div slot="body">
       <schedpolicy-form ref="formRef" />
     </div>

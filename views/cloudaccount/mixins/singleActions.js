@@ -25,6 +25,7 @@ export default {
               action: 'sync',
               data: {
                 full_sync: true,
+                force: true,
               },
             },
           })

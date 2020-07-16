@@ -103,7 +103,7 @@ export default {
                 label: '全量同步',
                 permission: 'cloudaccounts_perform_sync',
                 action: () => {
-                  this.list.batchPerformAction('sync', { full_sync: true }, this.list.steadyStatus)
+                  this.list.batchPerformAction('sync', { full_sync: true, force: true }, this.list.steadyStatus)
                 },
                 meta: () => this.syncPolicy(this.list.selectedItems),
               },
