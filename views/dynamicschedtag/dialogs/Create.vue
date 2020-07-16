@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">创建动态调度标签</div>
+    <div slot="header">新建动态调度标签</div>
     <div slot="body">
       <dynamicschedtag-form ref="formRef" />
     </div>

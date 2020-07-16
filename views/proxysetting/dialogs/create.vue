@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">新建</div>
+    <div slot="header">新建代理</div>
     <div slot="body">
       <a-form
         v-bind="formLayout"

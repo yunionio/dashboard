@@ -64,7 +64,6 @@ export default {
           label: '新建',
           action: () => {
             this.createDialog('CreateDynamicschedtagDialog', {
-              title: '创建动态调度标签',
               onManager: this.onManager,
             })
           },
