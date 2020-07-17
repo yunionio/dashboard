@@ -85,10 +85,8 @@ export default {
       },
       image: {
         limit: 0,
-        scope: '',
         details: true,
         status: 'active',
-        is_standard: true,
       },
       ignoreImageOptions: [
         IMAGES_TYPE_MAP.iso.key,
