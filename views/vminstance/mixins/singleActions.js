@@ -360,6 +360,10 @@ export default {
                       validate: false,
                       tooltip: null,
                     }
+                    if (!this.isAdminMode) {
+                      ret.tooltip = '只有管理员支持该操作'
+                      return ret
+                    }
                     if (commonUnabled(obj)) return ret
                     ret.validate = true
                     return ret
