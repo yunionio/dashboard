@@ -400,408 +400,208 @@
     "dashboard-domain-default": [
       {
         "layout": {
-          "component": "Ring",
+          "y": 6,
+          "w": 5,
           "h": 3,
-          "w": 5,
-          "x": 15,
-          "y": 6
+          "component": "Ring",
+          "x": 5
         },
         "params": {
-          "all_usage_key": "domain.eip",
-          "name": "EIP使用率",
-          "usage_key": "domain.eip.used"
+          "all_usage_key": "disks.count",
+          "name": "磁盘未挂载率",
+          "usage_key": "disks.detached.count"
         }
-      },
-      {
+      }, {
         "layout": {
-          "component": "NumberCard",
-          "h": 2,
+          "y": 4,
           "w": 5,
+          "h": 2,
+          "component": "NumberCard",
+          "x": 0
+        },
+        "params": {
+          "name": "弹性公网IP和公网IP总量",
+          "usage_key": "eip"
+        }
+      }, {
+        "layout": {
           "x": 10,
-          "y": 2
+          "y": 9,
+          "w": 10,
+          "h": 5,
+          "component": "BillHistoryLine"
         },
         "params": {
-          "name": "虚拟机磁盘总量",
-          "usage_key": "domain.servers.disk"
+          "name": "历史费用总览"
         }
-      },
-      {
-        "layout": {
-          "component": "NumberCard",
-          "h": 2,
-          "w": 5,
-          "x": 0,
-          "y": 4
-        },
+      }, {
         "params": {
-          "name": "GPU卡使用量",
-          "usage_key": "domain.servers.isolated_devices"
-        }
-      },
-      {
+          "usage_key": "servers.cpu",
+          "name": "CPU使用总量"
+        },
         "layout": {
           "component": "NumberCard",
-          "h": 2,
+          "x": 5,
+          "y": 0,
           "w": 5,
+          "h": 2
+        }
+      }, {
+        "layout": {
+          "component": "NumberCard",
           "x": 10,
-          "y": 4
+          "y": 4,
+          "w": 5,
+          "h": 2
         },
         "params": {
           "name": "对象存储文件数量",
-          "usage_key": "domain.bucket_objects"
+          "usage_key": "bucket_objects"
         }
-      },
-      {
+      }, {
         "layout": {
-          "component": "Notify",
-          "h": 4,
+          "x": 0,
+          "y": 6,
           "w": 5,
+          "h": 3,
+          "component": "Ring"
+        },
+        "params": {
+          "usage_key": "ready_servers",
+          "all_usage_key": "servers",
+          "name": "虚拟机关机率"
+        }
+      }, {
+        "params": {
+          "all_usage_key": "ports",
+          "name": "IP使用率",
+          "usage_key": "nics"
+        },
+        "layout": {
+          "component": "Ring",
+          "x": 10,
+          "y": 6,
+          "w": 5,
+          "h": 3
+        }
+      }, {
+        "layout": {
           "x": 15,
-          "y": 0
+          "y": 0,
+          "w": 5,
+          "h": 4,
+          "component": "Notify"
         },
         "params": {
           "name": "公告"
         }
-      },
-      {
+      }, {
         "layout": {
-          "component": "Ring",
-          "h": 3,
+          "x": 10,
+          "y": 2,
           "w": 5,
-          "x": 0,
-          "y": 6
-        },
-        "params": {
-          "all_usage_key": "domain.hosts.cpu",
-          "brand": "OneCloud",
-          "cloud_env": "onpremise",
-          "name": "CPU使用率（OneCloud）",
-          "usage_key": "domain.servers.cpu"
-        }
-      },
-      {
-        "layout": {
-          "component": "NumberCard",
           "h": 2,
-          "w": 5,
-          "x": 0,
-          "y": 0
+          "component": "NumberCard"
         },
         "params": {
-          "name": "虚拟机数量",
-          "usage_key": "domain.servers"
+          "usage_key": "servers.isolated_devices",
+          "name": "GPU卡使用量"
         }
-      },
-      {
+      }, {
+        "params": {
+          "name": "历史资源总览"
+        },
         "layout": {
-          "component": "Top5",
+          "y": 9,
+          "w": 10,
           "h": 5,
-          "w": 5,
-          "x": 10,
-          "y": 9
-        },
-        "params": {
-          "brand": "OneCloud",
-          "limit": 5,
-          "name": "磁盘写入速度TOP5（OneCloud）",
-          "order": "TOP",
-          "resType": "server",
-          "time": 108000,
-          "usage": "write_bps,vm_diskio"
+          "component": "ResourceHistoryLine",
+          "x": 0
         }
-      },
-      {
+      }, {
         "layout": {
-          "component": "Ring",
-          "h": 3,
-          "w": 5,
-          "x": 10,
-          "y": 6
-        },
-        "params": {
-          "all_usage_key": "domain.storages",
-          "brand": "OneCloud",
-          "cloud_env": "onpremise",
-          "name": "存储使用率（OneCloud）",
-          "usage_key": "domain.disks"
-        }
-      },
-      {
-        "layout": {
-          "component": "NumberCard",
           "h": 2,
-          "w": 5,
-          "x": 10,
-          "y": 0
-        },
-        "params": {
-          "name": "物理机数量",
-          "usage_key": "domain.baremetals"
-        }
-      },
-      {
-        "layout": {
           "component": "NumberCard",
-          "h": 2,
-          "w": 5,
-          "x": 5,
-          "y": 2
-        },
-        "params": {
-          "name": "虚拟机内存总量",
-          "usage_key": "domain.servers.memory"
-        }
-      },
-      {
-        "layout": {
-          "component": "Log",
-          "h": 5,
-          "w": 5,
           "x": 15,
-          "y": 9
+          "y": 4,
+          "w": 5
         },
         "params": {
-          "limit": 5,
-          "name": "操作日志"
+          "usage_key": "buckets",
+          "name": "存储桶数量"
         }
-      },
-      {
+      }, {
         "layout": {
-          "component": "Top5",
-          "h": 5,
-          "w": 5,
+          "h": 2,
+          "component": "NumberCard",
           "x": 5,
-          "y": 9
+          "y": 2,
+          "w": 5
         },
         "params": {
-          "brand": "OneCloud",
-          "limit": 5,
-          "name": "磁盘读取速度TOP5（OneCloud）",
-          "order": "TOP",
-          "resType": "server",
-          "time": 108000,
-          "usage": "read_bps,vm_diskio"
+          "name": "IP使用总量",
+          "usage_key": "nics"
         }
-      },
-      {
+      }, {
         "layout": {
-          "component": "NumberCard",
-          "h": 2,
+          "y": 6,
           "w": 5,
-          "x": 15,
-          "y": 4
+          "h": 3,
+          "component": "Ring",
+          "x": 15
         },
         "params": {
-          "name": "存储桶数量",
-          "usage_key": "domain.buckets"
+          "name": "EIP使用率",
+          "usage_key": "eip.used",
+          "all_usage_key": "eip"
         }
-      },
-      {
+      }, {
         "layout": {
-          "component": "NumberCard",
-          "h": 2,
+          "x": 10,
+          "y": 0,
           "w": 5,
-          "x": 0,
-          "y": 2
+          "h": 2,
+          "component": "NumberCard"
         },
         "params": {
-          "name": "虚拟机CPU总量",
-          "usage_key": "domain.servers.cpu"
+          "name": "内存使用总量",
+          "usage_key": "servers.memory"
         }
-      },
-      {
-        "layout": {
-          "component": "NumberCard",
-          "h": 2,
-          "w": 5,
-          "x": 5,
-          "y": 4
-        },
+      }, {
         "params": {
           "name": "对象存储容量",
-          "usage_key": "domain.bucket_bytes"
-        }
-      },
-      {
-        "layout": {
-          "component": "Top5",
-          "h": 5,
-          "w": 5,
-          "x": 0,
-          "y": 9
+          "usage_key": "bucket_bytes"
         },
-        "params": {
-          "brand": "OneCloud",
-          "limit": 5,
-          "name": "CPU使用率TOP5（OneCloud）",
-          "order": "TOP",
-          "resType": "server",
-          "time": 108000,
-          "usage": "usage_active,vm_cpu"
-        }
-      },
-      {
         "layout": {
-          "component": "Ring",
-          "h": 3,
-          "w": 5,
           "x": 5,
-          "y": 6
-        },
-        "params": {
-          "all_usage_key": "domain.hosts.memory",
-          "brand": "OneCloud",
-          "cloud_env": "onpremise",
-          "name": "内存使用率（OneCloud）",
-          "usage_key": "domain.servers.memory"
-        }
-      },
-      {
-        "layout": {
-          "component": "NumberCard",
+          "y": 4,
+          "w": 5,
           "h": 2,
-          "w": 5,
-          "x": 5,
-          "y": 0
-        },
-        "params": {
-          "name": "宿主机数量",
-          "usage_key": "domain.hosts"
+          "component": "NumberCard"
         }
-      },
-      {
+      }, {
+        "params": {
+          "usage_key": "disks",
+          "name": "存储使用总量"
+        },
         "layout": {
-          "component": "Quota",
-          "h": 7,
           "w": 5,
+          "h": 2,
+          "component": "NumberCard",
           "x": 0,
-          "y": 14
-        },
-        "params": {
-          "name": "各项目CPU配额使用情况",
-          "field": "cpu",
-          "titleKey": "tenant",
-          "resource": "quotas"
+          "y": 2
         }
-      },
-      {
+      }, {
         "layout": {
-          "component": "Quota",
-          "h": 7,
-          "w": 5,
-          "x": 5,
-          "y": 14
-        },
-        "params": {
-          "name": "各项目内存配额使用情况",
-          "field": "memory",
-          "titleKey": "tenant",
-          "resource": "quotas"
-        }
-      },
-      {
-        "layout": {
-          "component": "Quota",
-          "h": 7,
-          "w": 5,
-          "x": 10,
-          "y": 14
-        },
-        "params": {
-          "name": "各项目存储配额使用情况",
-          "field": "storage",
-          "titleKey": "tenant",
-          "resource": "quotas"
-        }
-      },
-      {
-        "layout": {
-          "component": "Quota",
-          "h": 7,
-          "w": 5,
-          "x": 15,
-          "y": 14
-        },
-        "params": {
-          "name": "各项目公网IP配额使用情况",
-          "field": "eip",
-          "titleKey": "tenant",
-          "resource": "region_quotas"
-        }
-      },
-      {
-        "layout": {
-          "component": "Quota",
-          "h": 7,
-          "w": 5,
+          "h": 2,
+          "component": "NumberCard",
           "x": 0,
-          "y": 21
+          "y": 0,
+          "w": 5
         },
         "params": {
-          "name": "各项目IP配额使用情况",
-          "field": "port",
-          "titleKey": "tenant",
-          "resource": "region_quotas"
-        }
-      },
-      {
-        "layout": {
-          "component": "Quota",
-          "h": 7,
-          "w": 5,
-          "x": 0,
-          "y": 21
-        },
-        "params": {
-          "name": "各项目IP配额使用情况",
-          "field": "port",
-          "titleKey": "tenant",
-          "resource": "region_quotas"
-        }
-      },
-      {
-        "layout": {
-          "component": "Quota",
-          "h": 7,
-          "w": 5,
-          "x": 5,
-          "y": 21
-        },
-        "params": {
-          "name": "各项目GPU配额使用情况",
-          "field": "isolated_device",
-          "titleKey": "tenant",
-          "resource": "quotas"
-        }
-      },
-      {
-        "layout": {
-          "component": "Quota",
-          "h": 7,
-          "w": 5,
-          "x": 10,
-          "y": 21
-        },
-        "params": {
-          "name": "各项目镜像配额使用情况",
-          "field": "image",
-          "titleKey": "tenant",
-          "resource": "image_quotas"
-        }
-      },
-      {
-        "layout": {
-          "component": "Quota",
-          "h": 7,
-          "w": 5,
-          "x": 15,
-          "y": 21
-        },
-        "params": {
-          "name": "各项目快照配额使用情况",
-          "field": "snapshot",
-          "titleKey": "tenant",
-          "resource": "region_quotas"
+          "usage_key": "servers",
+          "name": "虚拟机总数"
         }
       }
     ]
@@ -813,291 +613,208 @@
     "dashboard-project-default": [
       {
         "layout": {
-          "component": "Ring",
+          "y": 6,
+          "w": 5,
           "h": 3,
-          "w": 5,
-          "x": 15,
-          "y": 6
-        },
-        "params": {
-          "all_usage_key": "eip",
-          "name": "EIP使用率",
-          "usage_key": "eip.used"
-        }
-      },
-      {
-        "layout": {
-          "component": "NumberCard",
-          "h": 2,
-          "w": 5,
-          "x": 0,
-          "y": 4
-        },
-        "params": {
-          "name": "弹性公网IP和公网IP总量",
-          "usage_key": "eip"
-        }
-      },
-      {
-        "layout": {
           "component": "Ring",
-          "h": 3,
-          "w": 5,
-          "x": 10,
-          "y": 6
-        },
-        "params": {
-          "all_usage_key": "ports",
-          "name": "IP使用率",
-          "usage_key": "nics"
-        }
-      },
-      {
-        "layout": {
-          "component": "Top5",
-          "h": 5,
-          "w": 5,
-          "x": 0,
-          "y": 9
-        },
-        "params": {
-          "brand": "OneCloud",
-          "limit": 5,
-          "name": "CPU使用率TOP5（本地IDC）",
-          "order": "TOP",
-          "resType": "server",
-          "time": 36000,
-          "usage": "usage_active,vm_cpu"
-        }
-      },
-      {
-        "layout": {
-          "component": "Top5",
-          "h": 5,
-          "w": 5,
-          "x": 10,
-          "y": 9
-        },
-        "params": {
-          "brand": "OneCloud",
-          "limit": 5,
-          "name": "磁盘写入速度TOP5（本地IDC）",
-          "order": "TOP",
-          "resType": "server",
-          "time": 36000,
-          "usage": "write_bps,vm_diskio"
-        }
-      },
-      {
-        "layout": {
-          "component": "NumberCard",
-          "h": 2,
-          "w": 5,
-          "x": 5,
-          "y": 0
-        },
-        "params": {
-          "name": "CPU使用总量",
-          "usage_key": "servers.cpu"
-        }
-      },
-      {
-        "layout": {
-          "component": "NumberCard",
-          "h": 2,
-          "w": 5,
-          "x": 10,
-          "y": 4
-        },
-        "params": {
-          "name": "对象存储文件数量",
-          "usage_key": "bucket_objects"
-        }
-      },
-      {
-        "layout": {
-          "component": "Top5",
-          "h": 5,
-          "w": 5,
-          "x": 5,
-          "y": 9
-        },
-        "params": {
-          "brand": "OneCloud",
-          "limit": 5,
-          "name": "磁盘读取速度TOP5（本地IDC）",
-          "order": "TOP",
-          "resType": "server",
-          "time": 36000,
-          "usage": "read_bps,vm_diskio"
-        }
-      },
-      {
-        "layout": {
-          "component": "Ring",
-          "h": 3,
-          "w": 5,
-          "x": 0,
-          "y": 6
-        },
-        "params": {
-          "all_usage_key": "servers",
-          "name": "虚拟机关机率",
-          "usage_key": "ready_servers"
-        }
-      },
-      {
-        "layout": {
-          "component": "NumberCard",
-          "h": 2,
-          "w": 5,
-          "x": 0,
-          "y": 0
-        },
-        "params": {
-          "name": "虚拟机总数",
-          "usage_key": "servers"
-        }
-      },
-      {
-        "layout": {
-          "component": "NumberCard",
-          "h": 2,
-          "w": 5,
-          "x": 5,
-          "y": 4
-        },
-        "params": {
-          "name": "对象存储容量",
-          "usage_key": "bucket_bytes"
-        }
-      },
-      {
-        "layout": {
-          "component": "Log",
-          "h": 5,
-          "w": 5,
-          "x": 15,
-          "y": 9
-        },
-        "params": {
-          "limit": 5,
-          "name": "操作日志"
-        }
-      },
-      {
-        "layout": {
-          "component": "NumberCard",
-          "h": 2,
-          "w": 5,
-          "x": 10,
-          "y": 0
-        },
-        "params": {
-          "name": "内存使用总量",
-          "usage_key": "servers.memory"
-        }
-      },
-      {
-        "layout": {
-          "component": "Ring",
-          "h": 3,
-          "w": 5,
-          "x": 5,
-          "y": 6
+          "x": 5
         },
         "params": {
           "all_usage_key": "disks.count",
           "name": "磁盘未挂载率",
           "usage_key": "disks.detached.count"
         }
-      },
-      {
+      }, {
         "layout": {
-          "component": "NumberCard",
-          "h": 2,
+          "y": 4,
           "w": 5,
-          "x": 0,
-          "y": 2
+          "h": 2,
+          "component": "NumberCard",
+          "x": 0
         },
         "params": {
-          "name": "存储使用总量",
-          "usage_key": "disks"
+          "name": "弹性公网IP和公网IP总量",
+          "usage_key": "eip"
         }
-      },
-      {
+      }, {
         "layout": {
-          "component": "Notify",
-          "h": 4,
+          "x": 10,
+          "y": 9,
+          "w": 10,
+          "h": 5,
+          "component": "BillHistoryLine"
+        },
+        "params": {
+          "name": "历史费用总览"
+        }
+      }, {
+        "params": {
+          "usage_key": "servers.cpu",
+          "name": "CPU使用总量"
+        },
+        "layout": {
+          "component": "NumberCard",
+          "x": 5,
+          "y": 0,
           "w": 5,
+          "h": 2
+        }
+      }, {
+        "layout": {
+          "component": "NumberCard",
+          "x": 10,
+          "y": 4,
+          "w": 5,
+          "h": 2
+        },
+        "params": {
+          "name": "对象存储文件数量",
+          "usage_key": "bucket_objects"
+        }
+      }, {
+        "layout": {
+          "x": 0,
+          "y": 6,
+          "w": 5,
+          "h": 3,
+          "component": "Ring"
+        },
+        "params": {
+          "usage_key": "ready_servers",
+          "all_usage_key": "servers",
+          "name": "虚拟机关机率"
+        }
+      }, {
+        "params": {
+          "all_usage_key": "ports",
+          "name": "IP使用率",
+          "usage_key": "nics"
+        },
+        "layout": {
+          "component": "Ring",
+          "x": 10,
+          "y": 6,
+          "w": 5,
+          "h": 3
+        }
+      }, {
+        "layout": {
           "x": 15,
-          "y": 0
+          "y": 0,
+          "w": 5,
+          "h": 4,
+          "component": "Notify"
         },
         "params": {
           "name": "公告"
         }
-      },
-      {
+      }, {
         "layout": {
-          "component": "NumberCard",
-          "h": 2,
+          "x": 10,
+          "y": 2,
           "w": 5,
+          "h": 2,
+          "component": "NumberCard"
+        },
+        "params": {
+          "usage_key": "servers.isolated_devices",
+          "name": "GPU卡使用量"
+        }
+      }, {
+        "params": {
+          "name": "历史资源总览"
+        },
+        "layout": {
+          "y": 9,
+          "w": 10,
+          "h": 5,
+          "component": "ResourceHistoryLine",
+          "x": 0
+        }
+      }, {
+        "layout": {
+          "h": 2,
+          "component": "NumberCard",
+          "x": 15,
+          "y": 4,
+          "w": 5
+        },
+        "params": {
+          "usage_key": "buckets",
+          "name": "存储桶数量"
+        }
+      }, {
+        "layout": {
+          "h": 2,
+          "component": "NumberCard",
           "x": 5,
-          "y": 2
+          "y": 2,
+          "w": 5
         },
         "params": {
           "name": "IP使用总量",
           "usage_key": "nics"
         }
-      },
-      {
+      }, {
         "layout": {
-          "component": "NumberCard",
-          "h": 2,
+          "y": 6,
           "w": 5,
-          "x": 15,
-          "y": 4
+          "h": 3,
+          "component": "Ring",
+          "x": 15
         },
         "params": {
-          "name": "存储桶数量",
-          "usage_key": "buckets"
+          "name": "EIP使用率",
+          "usage_key": "eip.used",
+          "all_usage_key": "eip"
         }
-      },
-      {
+      }, {
         "layout": {
-          "component": "NumberCard",
-          "h": 2,
-          "w": 5,
           "x": 10,
-          "y": 2
+          "y": 0,
+          "w": 5,
+          "h": 2,
+          "component": "NumberCard"
         },
         "params": {
-          "name": "GPU卡使用量",
-          "usage_key": "servers.isolated_devices"
+          "name": "内存使用总量",
+          "usage_key": "servers.memory"
         }
-      },
-      {
+      }, {
+        "params": {
+          "name": "对象存储容量",
+          "usage_key": "bucket_bytes"
+        },
         "layout": {
-          "component": "ResourceHistoryLine",
-          "h": 5,
-          "w": 10,
+          "x": 5,
+          "y": 4,
+          "w": 5,
+          "h": 2,
+          "component": "NumberCard"
+        }
+      }, {
+        "params": {
+          "usage_key": "disks",
+          "name": "存储使用总量"
+        },
+        "layout": {
+          "w": 5,
+          "h": 2,
+          "component": "NumberCard",
           "x": 0,
-          "y": 14
-        },
-        "params": {
-          "name": "历史资源总览"
+          "y": 2
         }
-      },
-      {
+      }, {
         "layout": {
-          "component": "BillHistoryLine",
-          "h": 5,
-          "w": 10,
-          "x": 10,
-          "y": 14
+          "h": 2,
+          "component": "NumberCard",
+          "x": 0,
+          "y": 0,
+          "w": 5
         },
         "params": {
-          "name": "历史费用总览"
+          "usage_key": "servers",
+          "name": "虚拟机总数"
         }
       }
     ]
