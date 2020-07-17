@@ -17,7 +17,7 @@
             :mapper="mapperDisks"
             :params="diskParams"
             :init-loaded.sync="disksInitLoaded"
-            :select-props="{ allowClear: true, placeholder: '请选择磁盘', mode: 'tags' }" />
+            :select-props="{ allowClear: true, placeholder: '请选择磁盘', mode: 'multiple' }" />
         </a-form-item>
       </a-form>
     </div>
