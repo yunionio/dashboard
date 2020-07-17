@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">编辑标签</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" action="编辑标签" />
+      <dialog-selected-tips :count="params.data.length" action="编辑标签" :name="params.tipName" />
       <template v-if="params.columns">
         <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       </template>
