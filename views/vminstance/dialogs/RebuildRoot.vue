@@ -295,6 +295,9 @@ export default {
       if (HYPERVISORS_MAP.google.key === hypervisor) {
         delete loginTypes[LOGIN_TYPES_MAP.image.key]
       }
+      if (HYPERVISORS_MAP.qcloud.key === hypervisor) {
+        delete loginTypes[LOGIN_TYPES_MAP.image.key]
+      }
       if (this.osType === 'Windows') {
         // 以下平台在选择 windows 镜像时禁用关联密钥
         const disableKeypairHyper = [
