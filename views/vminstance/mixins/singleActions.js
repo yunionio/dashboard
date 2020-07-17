@@ -330,13 +330,15 @@ export default {
                       validate: false,
                       tooltip: null,
                     }
-                    if (commonUnabled(obj)) return ret
                     if (obj.billing_type === 'prepaid') {
                       ret.tooltip = this.isAdminMode ? '包年包月机器，不支持此操作' : '包年包月资源池的资源不支持此操作'
+                      return ret
                     }
                     if (obj.backup_host_id) {
                       ret.tooltip = '高可用机器，不支持此操作'
+                      return ret
                     }
+                    if (commonUnabled(obj)) return ret
                     ret.validate = cloudEnabled('adjustConfig', obj)
                     ret.tooltip = cloudUnabledTip('adjustConfig', obj)
                     return ret
