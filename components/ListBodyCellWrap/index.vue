@@ -8,7 +8,7 @@
     <a-tooltip title="删除保护，如需解除，请点击【设置删除保护】" v-if="showDeleteLock">
       <a-icon class="ml-1" type="lock" />
     </a-tooltip>
-    <a-tooltip v-if="addBackup && row.backup_host_id" title="高可用云服务器">
+    <a-tooltip v-if="addBackup && row.backup_host_id" title="备用机虚拟机">
       <icon type="gaokeyong" class="ml-1" />
     </a-tooltip>
     <slot name="append" />
