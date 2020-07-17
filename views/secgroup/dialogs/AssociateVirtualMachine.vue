@@ -26,6 +26,7 @@ export default {
   data () {
     return {
       action: `关联${this.$t('dictionary.server')}`,
+      loading: false,
     }
   },
   created () {
