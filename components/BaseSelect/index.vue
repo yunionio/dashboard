@@ -6,6 +6,7 @@
       v-bind="{ ...selectProps, ...filterOpts }"
       :style="{ width: (showSync ? 'calc(100% - 22px)' : '100%'), 'min-width': minWidth }"
       :value="value"
+      @blur="onBlur"
       @change="change"
       @search="loadOptsDebounce"
       :loading="loading">
@@ -135,20 +136,18 @@ export default {
       type: String,
       default: '200px',
     },
-    loadMoreLimit: {
-      type: Number,
-      default: 20,
-    },
   },
   data () {
     this.loadOptsDebounce = debounce(this.loadOpts, 500)
     return {
       resOpts: {},
+      resList: [],
+      query: undefined,
       loading: false,
       showLoadMore: false,
       noMoreData: false,
       loadMoreClicked: false,
-      loadMoreOffset: this.loadMoreLimit,
+      loadMoreOffset: 0,
     }
   },
   computed: {
@@ -208,11 +207,6 @@ export default {
     if (this._valid()) this.loadOptsDebounce()
   },
   methods: {
-    loadMore () {
-      this.loadMoreClicked = true
-      this.loadMoreOffset += this.loadMoreLimit
-      this.loadOpts(this.loadMoreOffset)
-    },
     filterOption (input, option) {
       return option.componentOptions.children[0].componentInstance.text.toLowerCase().includes(input.toLowerCase())
     },
@@ -241,6 +235,10 @@ export default {
     clearSelect () {
       let initValue
       this.change(initValue)
+    },
+    onBlur () {
+      this.query = undefined
+      this.loadMoreOffset = 0
     },
     change (val) {
       const changeValue = val
@@ -272,13 +270,7 @@ export default {
         })
       }
     },
-    async loadOpts (query, offset) {
-      if (R.is(Number, query)) {
-        offset = query
-        query = undefined
-      }
-      if (!R.isNil(query) && this.filterable) return // 如果开启本地搜索，远程搜索将取消
-      this.loading = true
+    genParams (query, offset) {
       const manager = new Manager(this.resource, this.version)
       let params = { ...this.params }
       if (query && this.remote) {
@@ -289,30 +281,63 @@ export default {
         }
       }
       if (R.is(Number, offset)) params.offset = offset
+      return { manager, params }
+    },
+    async loadMore () {
+      this.loadMoreClicked = true
+      this.loadMoreOffset += (this.params.limit || 20)
+      const { manager, params } = this.genParams(this.query, this.loadMoreOffset)
+      const { list, data } = await this.fetchData(manager, params)
+      if (data.total > (data.data.length + this.resList.length)) {
+        this.noMoreData = false
+        this.showLoadMore = true
+      } else {
+        this.showLoadMore = false
+        this.noMoreData = true // 没有更多了
+      }
+      this.resList = this.resList.concat(list)
+      this.$emit('update:resList', this.resList)
+      const resOpts = arrayToObj(this.resList)
+      this.resOpts = resOpts
+      this.disabledOpts()
+    },
+    async loadOpts (query) {
+      if (!R.isNil(query) && this.filterable) return // 如果开启本地搜索，远程搜索将取消
+      const { manager, params } = this.genParams(query)
+      this.loadMoreOffset = 0
+      this.query = query
       try {
-        const { data } = await manager.list({ params, ctx: this.ctx })
-        const _list = R.type(data) === 'Array' ? data : (R.type(data) === 'Object' && (data.data || []))
-        let list = _list.map(val => ({ ...val, id: val[this.idKey], name: val[this.nameKey] }))
-        if (this.mapper) {
-          list = this.mapper(list)
-        }
-        if (data.total > (this.loadMoreOffset + data.data.length)) {
+        const { list, data } = await this.fetchData(manager, params)
+        if (data.total > data.data.length) {
           this.noMoreData = false
           this.showLoadMore = true
         } else {
           this.showLoadMore = false
           this.noMoreData = true // 没有更多了
         }
+        this.resList = list
         this.$emit('update:resList', list)
         const resOpts = arrayToObj(list)
-        this.resOpts = Object.assign({}, this.resOpts, resOpts)
+        this.resOpts = resOpts
         this.disabledOpts()
-        this.loading = false
-        if (!offset) {
-          this.defaultSelect(list)
-          this.$emit('update:initLoaded', true)
-        }
+        this.defaultSelect(list)
+        this.$emit('update:initLoaded', true)
         return list
+      } catch (error) {
+        throw error
+      }
+    },
+    async fetchData (manager, params) {
+      try {
+        this.loading = true
+        const { data } = await manager.list({ params, ctx: this.ctx })
+        const _list = R.type(data) === 'Array' ? data : (R.type(data) === 'Object' && (data.data || []))
+        let list = _list.map(val => ({ ...val, id: val[this.idKey], name: val[this.nameKey] }))
+        if (this.mapper) {
+          list = this.mapper(list)
+        }
+        this.loading = false
+        return { list, data }
       } catch (error) {
         this.loading = false
         throw error
