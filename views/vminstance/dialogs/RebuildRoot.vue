@@ -85,10 +85,8 @@ export default {
       },
       image: {
         limit: 0,
-        scope: '',
         details: true,
         status: 'active',
-        is_standard: true,
       },
       ignoreImageOptions: [
         IMAGES_TYPE_MAP.iso.key,
@@ -293,6 +291,9 @@ export default {
         delete loginTypes[LOGIN_TYPES_MAP.image.key]
       }
       if (HYPERVISORS_MAP.google.key === hypervisor) {
+        delete loginTypes[LOGIN_TYPES_MAP.image.key]
+      }
+      if (HYPERVISORS_MAP.qcloud.key === hypervisor) {
         delete loginTypes[LOGIN_TYPES_MAP.image.key]
       }
       if (this.osType === 'Windows') {

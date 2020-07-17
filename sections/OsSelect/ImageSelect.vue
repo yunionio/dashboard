@@ -568,7 +568,11 @@ export default {
             }
           }
           this.imageOpts = imageOpts
-          this.form.fc.setFieldsValue({ image })
+          if (this.imageOptions.find(val => val.id === image.key)) {
+            this.form.fc.setFieldsValue({ image })
+          } else {
+            this.form.fc.setFieldsValue({ image: { ...initData } })
+          }
           const currentImage = this.form.fc.getFieldValue(this.decorator.image[0])
           if (currentImage && imageValue && currentImage.key === imageValue.key) {
           } else {
