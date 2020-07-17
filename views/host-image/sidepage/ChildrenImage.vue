@@ -18,6 +18,12 @@ export default {
     },
   },
   data () {
+    const getResourceData = () => {
+      if (!this.data.data_images) {
+        return [{ ...this.data.root_image, type: 'sys' }]
+      }
+      return [{ ...this.data.root_image, type: 'sys' }].concat(this.data.data_images.map(val => ({ ...val, type: 'data' })))
+    }
     return {
       columns: [
         {
@@ -49,7 +55,7 @@ export default {
         },
         getTimeTableColumn(),
       ],
-      resourceData: [{ ...this.data.root_image, type: 'sys' }].concat(this.data.data_images.map(val => ({ ...val, type: 'data' }))),
+      resourceData: getResourceData(),
     }
   },
 }
