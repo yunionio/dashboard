@@ -397,6 +397,7 @@ export default {
       }
     },
     diskTypeChange (item, val) {
+      item.sizeDisabled = false
       // 仅有第一块盘可以更改磁盘类型
       this.$nextTick(() => {
         const dataDiskItem = {
@@ -407,12 +408,16 @@ export default {
           dataDiskItem.min = Math.max(item.min, this.min)
         }
         this.$set(this.dataDisks, 0, dataDiskItem)
+        this.form.fc.setFieldsValue({
+          [`dataDiskSizes[${item.key}]`]: Math.max((dataDiskItem.min || 0), this.min),
+        })
       })
     },
     snapshotChange (item, val, i) {
       this.form.fc.setFieldsValue({
         [`dataDiskSizes[${item.key}]`]: val,
       })
+      item.sizeDisabled = true
     },
   },
 }
