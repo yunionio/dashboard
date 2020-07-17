@@ -147,7 +147,7 @@
           <a-form-item label="引导方式" class="mb-0" v-if="isKvm">
             <bios :decorator="decorators.bios" :uefi="uefi" />
           </a-form-item>
-          <a-form-item v-show="!isServertemplate" v-if="isKvm && isLocalDisk" label="高可用" extra="只有宿主机数量不少于2台时才可以使用该功能">
+          <a-form-item v-show="!isServertemplate" v-if="isKvm && isLocalDisk" label="备份机" extra="只有宿主机数量不少于2台时才可以使用该功能">
             <backup
               :decorator="decorators.backup"
               :disabled="form.fd.systemDiskType"

@@ -171,6 +171,7 @@ export default {
     },
     typeChange (val) {
       this.$emit('diskTypeChange', val)
+      this.snapshotObj = {}
     },
   },
 }
