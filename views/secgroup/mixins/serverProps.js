@@ -14,14 +14,12 @@ import {
 
 export default {
   data () {
-    const tenant = this.params && this.params.data && this.params.data[0].tenant
     const secgrp_id = this.params && this.params.data && this.params.data[0].id
     return {
       list: this.$list.createList(this, {
         resource: 'servers',
         getParams: {
           filter: 'hypervisor.notin(baremetal,container)',
-          tenant,
           secgroup: secgrp_id,
         },
         filterOptions: {
