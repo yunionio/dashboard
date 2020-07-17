@@ -17,6 +17,7 @@ import {
 } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
+import { hasPermission } from '@/utils/auth'
 
 export default {
   name: 'RDSDetail',
@@ -57,6 +58,52 @@ export default {
           slots: {
             default: ({ row }) => {
               return formatPostpaid(row)
+            },
+          },
+        },
+        {
+          field: 'region',
+          title: '区域',
+          slots: {
+            default: ({ row }) => {
+              if (!row.region_id) return row.region || '-'
+              const p = hasPermission({ key: 'cloudregions_get' })
+              let node
+              if (p) {
+                node = (
+                  <list-body-cell-wrap copy row={ row } onManager={ this.onManager } field='region' title={ row.region } hideField={ true }>
+                    <side-page-trigger permission='areas_get' name='CloudregionSidePage' id={row.region_id} vm={this}>{ row.region }</side-page-trigger>
+                  </list-body-cell-wrap>
+                )
+              } else {
+                node = (
+                  <list-body-cell-wrap copy row={ row } onManager={ this.onManager } field='region' title={ row.region } />
+                )
+              }
+              return [
+                <div class='text-truncate'>{ node }</div>,
+              ]
+            },
+          },
+        },
+        {
+          field: 'zone',
+          title: '可用区',
+          slots: {
+            default: ({ row }) => {
+              const ret = []
+              let i = 0
+              for (;;) {
+                ++i
+                const value = row[`zone${i}_name`]
+                if (!value) break
+                ret.push(
+                  <div>
+                    {value}({i > 1 ? '备' : '主'})
+                  </div>,
+                )
+              }
+              return ret
             },
           },
         },
