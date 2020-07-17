@@ -259,6 +259,18 @@ export default {
                     tooltip: null,
                   }
                   if (this.isSameHyper) {
+                    const isSomePrepaid = this.list.selectedItems.some((item) => { return item.billing_type === 'prepaid' })
+                    if (isSomePrepaid) {
+                      ret.validate = false
+                      ret.tooltip = this.isAdminMode ? '包年包月机器，不支持此操作' : '包年包月资源池的资源不支持此操作'
+                      return ret
+                    }
+                    const isSomeBackupHost = this.list.selectedItems.some((item) => { return item.backup_host_id })
+                    if (isSomeBackupHost) {
+                      ret.validate = false
+                      ret.tooltip = '高可用机器，不支持此操作'
+                      return ret
+                    }
                     ret.validate = cloudEnabled('adjustConfig', this.list.selectedItems)
                     ret.tooltip = cloudUnabledTip('adjustConfig', this.list.selectedItems)
                     // const googleItems = this.list.selectedItems.filter(val => val.brand === typeClouds.brandMap.Google.key)
