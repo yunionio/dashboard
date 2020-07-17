@@ -75,20 +75,23 @@
       </a-form-item>
       <a-collapse :bordered="false"  v-if="show">
         <a-collapse-panel header="高级配置" key="1" forceRender>
-           <a-form-item extra="缺省策略为：物理机从高地址分配，虚拟机从低地址分配" v-bind="formItemLayout">
-            <span slot="label">地址分配策略<help-tooltip class="ml-1" name="networkPolicy" /></span>
+           <a-form-item v-bind="formItemLayout">
+            <span slot="label">地址分配策略</span>
             <a-radio-group v-decorator="decorators.alloc_policy">
               <a-radio-button
                 v-for="item of allocPolicyoptions"
                 :key="item.key"
                 :value="item.key">{{ item.label }}</a-radio-button>
             </a-radio-group>
+            <span slot="extra" v-if="form.fc.getFieldValue('alloc_policy') === 'none'">
+              缺省策略为：物理机从低地址分配，虚拟机从高地址分配
+            </span>
           </a-form-item>
           <a-form-item label="域名服务器" v-bind="formItemLayout">
             <a-input :placeholder="$t('validator.IPv4')" v-decorator="decorators.guest_dns" />
           </a-form-item>
            <a-form-item v-bind="formItemLayout">
-            <span slot="label">主机域名后缀<help-tooltip class="ml-1" name="networkDomain" /></span>
+            <span slot="label">主机域名后缀</span>
             <template slot="extra">
               <div>系统为主机分配IP时，会同时创建一条指向该IP的域名记录，域名由主机名称+主机域名后缀组成。例如：</div>
               <div>主机名称为vm01，主机ip为192.168.1.1</div>
