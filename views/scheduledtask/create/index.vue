@@ -218,11 +218,6 @@ export default {
         ],
         servers: [
           'servers',
-          {
-            rules: [
-              { required: true, message: '请选择虚拟机' },
-            ],
-          },
         ],
         tag: [
           'tag',
