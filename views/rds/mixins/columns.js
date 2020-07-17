@@ -1,6 +1,6 @@
 import { DBINSTANCE_CATEGORY } from '../constants/index.js'
 import { sizestr } from '@/utils/utils'
-import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getNameDescriptionTableColumn, getBrandTableColumn, getBillingTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
+import { getProjectTableColumn, getStatusTableColumn, getNameDescriptionTableColumn, getBrandTableColumn, getBillingTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   created () {
@@ -86,7 +86,7 @@ export default {
       {
         title: '数据库端口号',
         field: 'port',
-        width: 100,
+        width: 120,
         slots: {
           default: ({ row }) => row.port || '-',
         },
@@ -100,7 +100,30 @@ export default {
       getStatusTableColumn({ statusModule: 'rds' }),
       getProjectTableColumn(),
       getBrandTableColumn(),
-      getRegionTableColumn(),
+      {
+        field: 'region',
+        minWidth: 120,
+        showOverflow: 'ellipsis',
+        title: '区域',
+        slots: {
+          default: ({ row }, h) => {
+            const ret = []
+            ret.push(
+              <list-body-cell-wrap hide-field copy field={'region'} row={row}>
+                <span style={{ color: '#0A1F44' }}>{ row.region }</span>
+              </list-body-cell-wrap>,
+            )
+            if (row.zone1_name) {
+              ret.push(
+                <list-body-cell-wrap hide-field copy field="zone1_name" row={row}>
+                  <span style={{ color: '#53627C' }}>{ row.zone1_name }</span>
+                </list-body-cell-wrap>,
+              )
+            }
+            return ret
+          },
+        },
+      },
     ]
   },
 }

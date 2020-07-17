@@ -1,6 +1,6 @@
 <template>
   <base-dialog :width="900" @cancel="cancelDialog">
-    <div slot="header">新建备份</div>
+    <div slot="header">恢复</div>
     <a-form :form="form.fc" class="mt-3" slot="body">
       <dialog-selected-tips :name="$t('dictionary.dbinstancebackups')" :count="params.data.length" :action="params.title" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
@@ -52,7 +52,7 @@ export default {
       return this.params.data ? this.params.data[0] : {}
     },
     isGoogle () {
-      return this.backupItem.provider === 'Aliyun'
+      return this.backupItem.provider === 'Google'
     },
   },
   watch: {
