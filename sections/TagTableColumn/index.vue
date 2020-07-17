@@ -58,6 +58,7 @@ export default {
       required: true,
     },
     columns: [Array, Function],
+    tipName: String,
   },
   inject: {
     // 是否处于BaseDialog中
@@ -106,6 +107,7 @@ export default {
         columns,
         onManager: this.onManager,
         params: this.params,
+        tipName: this.tipName,
       })
     },
   },

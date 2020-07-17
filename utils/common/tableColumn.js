@@ -300,6 +300,7 @@ export const getTagTableColumn = ({
   resource,
   onManager,
   columns,
+  tipName,
 } = {}) => {
   return {
     field,
@@ -317,6 +318,7 @@ export const getTagTableColumn = ({
               needExt,
               resource,
               columns,
+              tipName,
             },
           }),
         ]
