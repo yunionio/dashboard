@@ -6,9 +6,17 @@
       v-bind="{ ...selectProps, ...filterOpts }"
       :style="{ width: (showSync ? 'calc(100% - 22px)' : '100%'), 'min-width': minWidth }"
       :value="value"
+      @blur="onBlur"
       @change="change"
       @search="loadOptsDebounce"
       :loading="loading">
+      <div slot="dropdownRender" slot-scope="menu">
+        <v-nodes :vnodes="menu" />
+        <div class="d-flex justify-content-center mb-2">
+          <a-button class="mx-auto" :loading="loading" :disabled="loading" v-if="showLoadMore" @mousedown="e => e.preventDefault()" type="link" @click="loadMore">加载更多</a-button>
+          <span v-if="loadMoreClicked && noMoreData" class="text-color-secondary pt-2 pb-1">没有更多了</span>
+        </div>
+      </div>
       <slot name="optionTemplate" v-bind:options="resOpts">
         <a-select-option v-for="item of resOpts" :key="item.id" :value="item.id" :disabled="item.__disabled">
           <option-label :nameKey="nameKey" :labelFormat="labelFormat" :data="item" :resource="resource" />
@@ -37,6 +45,10 @@ export default {
   name: 'BaseSelect',
   components: {
     OptionLabel,
+    VNodes: {
+      functional: true,
+      render: (h, ctx) => ctx.props.vnodes,
+    },
   },
   inheritAttrs: false,
   props: {
@@ -129,7 +141,13 @@ export default {
     this.loadOptsDebounce = debounce(this.loadOpts, 500)
     return {
       resOpts: {},
+      resList: [],
+      query: undefined,
       loading: false,
+      showLoadMore: false,
+      noMoreData: false,
+      loadMoreClicked: false,
+      loadMoreOffset: 0,
     }
   },
   computed: {
@@ -218,6 +236,10 @@ export default {
       let initValue
       this.change(initValue)
     },
+    onBlur () {
+      this.query = undefined
+      this.loadMoreOffset = 0
+    },
     change (val) {
       const changeValue = val
       if (R.is(Object, changeValue) && R.is(Array, changeValue.label)) { // 兼容 label-in-value 的形式
@@ -248,9 +270,7 @@ export default {
         })
       }
     },
-    async loadOpts (query) {
-      if (!R.isNil(query) && this.filterable) return // 如果开启本地搜索，远程搜索将取消
-      this.loading = true
+    genParams (query, offset) {
       const manager = new Manager(this.resource, this.version)
       let params = { ...this.params }
       if (query && this.remote) {
@@ -260,21 +280,64 @@ export default {
           params.filter = `${this.searchKey}.contains(${query})`
         }
       }
+      if (R.is(Number, offset)) params.offset = offset
+      return { manager, params }
+    },
+    async loadMore () {
+      this.loadMoreClicked = true
+      this.loadMoreOffset += (this.params.limit || 20)
+      const { manager, params } = this.genParams(this.query, this.loadMoreOffset)
+      const { list, data } = await this.fetchData(manager, params)
+      if (data.total > (data.data.length + this.resList.length)) {
+        this.noMoreData = false
+        this.showLoadMore = true
+      } else {
+        this.showLoadMore = false
+        this.noMoreData = true // 没有更多了
+      }
+      this.resList = this.resList.concat(list)
+      this.$emit('update:resList', this.resList)
+      const resOpts = arrayToObj(this.resList)
+      this.resOpts = resOpts
+      this.disabledOpts()
+    },
+    async loadOpts (query) {
+      if (!R.isNil(query) && this.filterable) return // 如果开启本地搜索，远程搜索将取消
+      const { manager, params } = this.genParams(query)
+      this.loadMoreOffset = 0
+      this.query = query
       try {
+        const { list, data } = await this.fetchData(manager, params)
+        if (data.total > data.data.length) {
+          this.noMoreData = false
+          this.showLoadMore = true
+        } else {
+          this.showLoadMore = false
+          this.noMoreData = true // 没有更多了
+        }
+        this.resList = list
+        this.$emit('update:resList', list)
+        const resOpts = arrayToObj(list)
+        this.resOpts = resOpts
+        this.disabledOpts()
+        this.defaultSelect(list)
+        this.$emit('update:initLoaded', true)
+        return list
+      } catch (error) {
+        throw error
+      }
+    },
+    async fetchData (manager, params) {
+      try {
+        this.loading = true
         const { data } = await manager.list({ params, ctx: this.ctx })
         const _list = R.type(data) === 'Array' ? data : (R.type(data) === 'Object' && (data.data || []))
         let list = _list.map(val => ({ ...val, id: val[this.idKey], name: val[this.nameKey] }))
         if (this.mapper) {
           list = this.mapper(list)
         }
-        this.$emit('update:resList', list)
-        const resOpts = arrayToObj(list)
-        this.resOpts = resOpts
-        this.disabledOpts()
         this.loading = false
-        this.defaultSelect(list)
-        this.$emit('update:initLoaded', true)
-        return list
+        return { list, data }
       } catch (error) {
         this.loading = false
         throw error
