@@ -2,7 +2,7 @@
 import Dashboard from '@Dashboard/views/dashboard'
 import DashboardEdit from '@Dashboard/views/edit'
 import Layout from '@/layouts/RouterView'
-import store from '@/store'
+// import store from '@/store'
 
 export default {
   index: 1,
@@ -13,12 +13,12 @@ export default {
   menu: {
     path: '/dashboard',
     meta: {
-      hidden: () => {
-        if (process.env.VUE_APP_PLATFORM === 'operation' && store.getters.isDomainMode) {
-          return true
-        }
-        return false
-      },
+      // hidden: () => {
+      //   if (process.env.VUE_APP_PLATFORM === 'operation' && store.getters.isDomainMode) {
+      //     return true
+      //   }
+      //   return false
+      // },
     },
     component: Layout,
     children: [
