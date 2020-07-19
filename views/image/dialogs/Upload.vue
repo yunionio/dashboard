@@ -253,34 +253,12 @@ export default {
             return false
           }
           this.handleUpload(formData)
-            .then(() => {
-              this.clearTimer()
-              this.timer = setInterval(() => {
-                this.fetchImageInfoByName()
-                  .then((res) => {
-                    const imageInfo = res.data && res.data.data && res.data.data[0]
-                    if (this.fileList && this.fileList.length > 0) {
-                      if (imageInfo) {
-                        const percent = (imageInfo.size / this.fileList[0].size) * 100
-                        if (percent === 100) {
-                          this.percentTimer = setTimeout(() => {
-                            this.imageUploadPercent = _.floor(percent)
-                          }, 5000)
-                        } else {
-                          this.imageUploadPercent = _.floor(percent)
-                        }
-                      }
-                    }
-                    if (this.imageUploadPercent >= 100) {
-                      this.cancelDialog()
-                      this.params.refresh()
-                    }
-                  })
-              }, 5000)
-            })
+            .then(() => {})
             .catch(() => {
               this.loading = false
+              this.clearTimer()
             })
+          this.getProcessBarInfo()
         } else {
           await this.doImportUrl(values)
           this.cancelDialog()
@@ -294,7 +272,32 @@ export default {
     fetchImageInfoByName () {
       const imageManager = new this.$Manager('images', 'v1')
       const name = this.form.fc.getFieldValue('name')
-      return imageManager.list({ params: { name } })
+      return imageManager.list({ params: { name, scope: this.$store.getters.scope } })
+    },
+    getProcessBarInfo () {
+      this.clearTimer()
+      this.timer = setInterval(() => {
+        this.fetchImageInfoByName()
+          .then((res) => {
+            const imageInfo = res.data && res.data.data && res.data.data[0]
+            if (this.fileList && this.fileList.length > 0) {
+              if (imageInfo) {
+                const percent = (imageInfo.size / this.fileList[0].size) * 100
+                if (percent === 100) {
+                  this.percentTimer = setTimeout(() => {
+                    this.imageUploadPercent = _.floor(percent)
+                  }, 5000)
+                } else {
+                  this.imageUploadPercent = _.floor(percent)
+                }
+              }
+            }
+            if (this.imageUploadPercent >= 100) {
+              this.cancelDialog()
+              this.params.refresh()
+            }
+          })
+      }, 5000)
     },
   },
 }
