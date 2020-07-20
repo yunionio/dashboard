@@ -337,6 +337,13 @@
       "delete_failed": "删除失败",
       "init": "初始化"
     },
+    "secgroup": {
+      "ready": "正常",
+      "deleting": "删除中",
+      "caching": "缓存中",
+      "delete_failed": "删除失败",
+      "init": "初始化"
+    },
     "rdsAccount": {
       "init": "初始化中",
       "unknown": "未知状态",

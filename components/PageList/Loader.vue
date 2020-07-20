@@ -10,7 +10,7 @@
       <div class="empty-image">
         <img src="../../assets/images/empty.svg" />
       </div>
-      <div class="empty-description">{{this.$t('coomon.notData')}}</div>
+      <div class="empty-description">{{this.$t('common.notData')}}</div>
     </div>
   </div>
 </template>

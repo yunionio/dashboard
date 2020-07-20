@@ -91,6 +91,11 @@ export default {
     success: ['ready'],
     info: ['init'],
   },
+  secgroup: {
+    danger: ['delete_failed'],
+    success: ['ready'],
+    info: ['init'],
+  },
   rdsAccount: {
     success: ['available'],
     danger: ['create_failed', 'delete_failed', 'reset_passwd_failed'],
