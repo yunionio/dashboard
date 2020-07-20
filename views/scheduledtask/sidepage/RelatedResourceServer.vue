@@ -178,6 +178,34 @@ export default {
             }
           },
         },
+        {
+          label: '解绑',
+          permission: 'scheduledtasks_perform_set_label',
+          action: () => {
+            this.createDialog('RelatedResourceRemoveDialog', {
+              title: '解绑',
+              data: this.list.selectedItems,
+              resData: this.data,
+              columns: this.columns,
+              // refresh: this.refresh,
+              onManager: this.onManager,
+              success: (labels) => {
+                this.list.getParams = {
+                  filter: `id.in(${labels.join(',')})`,
+                }
+                this.list.fetchData()
+              },
+            })
+          },
+          meta: () => {
+            const ret = {
+              validate: false,
+              tooltip: null,
+            }
+            ret.validate = this.list.selectedItems.length > 0
+            return ret
+          },
+        },
       ],
     }
   },

@@ -69,9 +69,6 @@ export default {
           'servers',
           {
             initialValue: labels,
-            rules: [
-              { required: true, message: '请选择虚拟机' },
-            ],
           },
         ],
         tag: [
