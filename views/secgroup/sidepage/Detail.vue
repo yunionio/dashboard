@@ -7,10 +7,12 @@
 </template>
 
 <script>
+import WindowsMixin from '@/mixins/windows'
 import { getPublicScopeTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   name: 'SecgroupDetail',
+  mixins: [WindowsMixin],
   props: {
     onManager: {
       type: Function,
