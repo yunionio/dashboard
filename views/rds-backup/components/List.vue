@@ -119,6 +119,7 @@ export default {
               },
               {
                 label: '删除',
+                permission: 'rds_dbinstancebackups_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     vm: this,
@@ -130,7 +131,15 @@ export default {
                     refresh: this.refresh,
                   })
                 },
-                meta: () => this.$getDeleteResult(this.list.selectedItems),
+                meta: () => {
+                  if (this.data.brand === 'Aliyun') {
+                    return {
+                      validate: false,
+                      tooltip: '阿里云平台不支持此操作',
+                    }
+                  }
+                  return this.$getDeleteResult(this.list.selectedItems)
+                },
               },
             ]
           },
