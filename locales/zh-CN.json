@@ -337,6 +337,13 @@
       "delete_failed": "删除失败",
       "init": "初始化"
     },
+    "secgroup": {
+      "ready": "正常",
+      "deleting": "删除中",
+      "caching": "缓存中",
+      "delete_failed": "删除失败",
+      "init": "初始化"
+    },
     "rdsAccount": {
       "init": "初始化中",
       "unknown": "未知状态",
@@ -1978,7 +1985,7 @@
   "common.text00006": "实例",
   "common.text00007": "修改属性",
   "common.text00008": "删除保护，如需解除，请点击【设置删除保护】",
-  "common.text00009": "高可用云服务器",
+  "common.text00009": "备用机虚拟机",
   "common.text00010": "导出数据",
   "common.text00011": "自定义列表项",
   "common.text00012": "标签",
