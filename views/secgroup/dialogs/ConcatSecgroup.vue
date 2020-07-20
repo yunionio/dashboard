@@ -47,10 +47,10 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 8,
+          span: 18,
         },
         labelCol: {
-          span: 2,
+          span: 6,
         },
       },
       secgroupOps: [],

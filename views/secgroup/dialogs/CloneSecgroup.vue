@@ -45,7 +45,7 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 8,
+          span: 22,
         },
         labelCol: {
           span: 2,
