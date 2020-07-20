@@ -146,7 +146,7 @@ export default {
         this.list = this.$list.createList(this, {
           resource: `${val}s`,
           getParams: this.getParams,
-          steadyStatus: Object.values(expectStatus[val]) && Object.values(expectStatus[val]).flat(),
+          steadyStatus: expectStatus[val] && Object.values(expectStatus[val]) && Object.values(expectStatus[val]).flat(),
           filterOptions: {
             name: {
               label: '名称',
@@ -195,7 +195,8 @@ export default {
   },
   methods: {
     getTab (item) {
-      return `${this.resources[item.resource]}(${item.count})`
+      const resourceName = this.resources[item.resource] || this.$t('dictionary')[item.resource]
+      return `${resourceName}(${item.count})`
     },
   },
 }
