@@ -104,13 +104,8 @@ export default {
                 })
               },
               meta: () => {
-                if (this.$store.getters.isAdminMode || this.$store.getters.isDomainMode) {
-                  return {
-                    validate: this.isPower(obj),
-                  }
-                }
                 return {
-                  validate: false,
+                  validate: this.isPower(obj),
                 }
               },
             },
