@@ -10,7 +10,7 @@
             <a-radio-button v-for="(v, k) in backendTypes" :value="k" :key="k">{{v}}</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item key="server" :label="$t('dictionary.server')" v-show="backend_type === 'guest'">
+        <a-form-item key="server" :label="$t('dictionary.server')" v-if="backend_type === 'guest'">
           <base-select
             resource="servers"
             need-params
@@ -25,7 +25,7 @@
             <help-link :href="serverHref"> 新建</help-link>
           </div>
         </a-form-item>
-        <a-form-item key="host" :label="$t('dictionary.host')" v-show="backend_type === 'host'">
+        <a-form-item key="host" :label="$t('dictionary.host')" v-if="backend_type === 'host'">
           <base-select
             show-sync
             class="w-100"
@@ -34,7 +34,7 @@
             :params="hostParams"
             :select-props="{ placeholder: '请选择宿主机' }" />
         </a-form-item>
-        <a-form-item key="ip" label="IP地址" v-show="backend_type === 'ip'" extra="支持通过IP地址选择未被OneCloud纳管的服务器作为后端服务器">
+        <a-form-item key="ip" label="IP地址" v-if="backend_type === 'ip'" extra="支持通过IP地址选择未被OneCloud纳管的服务器作为后端服务器">
           <a-input v-decorator="decorators.ip_backend" placeholder="请输入IP" />
         </a-form-item>
         <a-form-item label="端口" extra="端口范围是1-65535，同一台服务器在一个组中，端口不可以重复">
