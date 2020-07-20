@@ -35,19 +35,31 @@ export default {
           validate: true,
         }),
       },
-      // {
-      //   label: '删除',
-      //   action: (obj) => {
-      //     this.createDialog('DeleteResDialog', {
-      //       title: '删除',
-      //       name: '备份',
-      //       data: [obj],
-      //       columns: this.columns,
-      //       onManager: this.onManager,
-      //       refresh: this.refresh,
-      //     })
-      //   },
-      // },
+      {
+        label: '删除',
+        permission: 'rds_dbinstancebackups_delete',
+        action: (obj) => {
+          this.createDialog('DeleteResDialog', {
+            title: '删除',
+            name: '备份',
+            data: [obj],
+            columns: this.columns,
+            onManager: this.onManager,
+            refresh: this.refresh,
+          })
+        },
+        meta: () => {
+          if (this.data.brand === 'Aliyun') {
+            return {
+              validate: false,
+              tooltip: '阿里云平台不支持此操作',
+            }
+          }
+          return {
+            validate: true,
+          }
+        },
+      },
     ]
   },
 }
