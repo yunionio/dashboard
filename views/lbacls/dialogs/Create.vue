@@ -51,7 +51,7 @@ const ipsValidate = (rule, value, cb) => {
     const [ip, comment = ''] = ipComment.split('|').filter(v => !!v && v !== '|')
     if (comment.length > 16) descValid = false
     if (ip.includes('/')) {
-      let [ipStr] = ip.split('/')
+      const [ipStr] = ip.split('/')
       if (REGEXP.IPv4.regexp.test(ipStr) && REGEXP.cidr.regexp.test(ip)) {
         return true
       } else {
