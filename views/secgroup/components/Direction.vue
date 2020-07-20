@@ -158,6 +158,7 @@ export default {
               data: [obj],
               columns: this.columns,
               title: '删除',
+              name: '规则',
               onManager: this.onManager,
               refresh: this.refresh,
             })
