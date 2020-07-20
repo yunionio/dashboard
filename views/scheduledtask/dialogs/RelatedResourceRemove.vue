@@ -40,7 +40,7 @@ export default {
       const manager = new this.$Manager('scheduledtasks')
       try {
         const ids = data.map(({ id }) => id)
-        const labels = this.params.resData.labels.filter((item) => item !== ids[0])
+        const labels = this.params.resData.labels.filter((item) => !ids.includes(item))
         const res = await manager.performAction({
           id: this.params.resData.id,
           action: 'set-labels',
