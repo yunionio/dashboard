@@ -6,13 +6,6 @@
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
-        <a-form-item label="模版" v-bind="formItemLayout">
-          <a-select v-decorator="decorators.template">
-            <a-select-option v-for="(v, k) in templateOps" :key="k" :value="k">
-              {{v}}
-            </a-select-option>
-          </a-select>
-        </a-form-item>
         <a-form-item label="名称" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" placeholder="请输入名称" />
         </a-form-item>
@@ -58,7 +51,7 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 8,
+          span: 22,
         },
         labelCol: {
           span: 2,

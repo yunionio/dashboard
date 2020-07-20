@@ -6,7 +6,7 @@
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
-        <a-form-item label="名称" v-bind="formItemLayout">
+        <a-form-item label="指定要合并安全组" v-bind="formItemLayout">
           <a-select v-decorator="decorators.name" mode="multiple">
             <a-select-option v-for="item in secgroupOps" :key="item.id" :value="item.id">
               {{item.name}}
@@ -47,10 +47,10 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 8,
+          span: 18,
         },
         labelCol: {
-          span: 2,
+          span: 6,
         },
       },
       secgroupOps: [],
