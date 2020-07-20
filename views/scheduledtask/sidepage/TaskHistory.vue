@@ -46,8 +46,8 @@ export default {
           minWidth: '200',
         },
         getStatusTableColumn({ statusModule: 'scheduledtaskactivity' }),
-        getTimeTableColumn(),
-        getTimeTableColumn({ field: 'end_time', title: '修改时间' }),
+        getTimeTableColumn({ title: '开始时间' }),
+        getTimeTableColumn({ field: 'end_time', title: '结束时间' }),
       ],
       singleActions: [
         {
