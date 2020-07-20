@@ -182,7 +182,7 @@ export default {
     ...mapGetters(['scope', 'l3PermissionEnable', 'isAdminMode']),
     columns () {
       if (this.params.columns && this.params.columns.length >= 2) {
-        const keys = ['name', 'public_scope', ['shared_domains']]
+        const keys = ['name', 'public_scope', ['shared_domains'], 'tenant']
         return this.params.columns.filter(({ field }) => {
           return keys.indexOf(field) > -1
         })
