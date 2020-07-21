@@ -556,6 +556,10 @@ export const completionDate = (data, currentMonth, keys = [], monthInYear) => {
       const dataItemDay = data[j].time.substring(data[j].time.length - 2)
       if (day === dataItemDay) {
         obj = data[j]
+        obj = {
+          ...obj,
+          time: moment(currentMonth).format(momentFormat) + '-' + day,
+        }
         break
       } else {
         obj = {
