@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header :title="isInstallOperationSystem ? '安装操作系统' : '创建裸金属服务器'" />
+    <page-header :title="isInstallOperationSystem ? '安装操作系统' : '新建裸金属服务器'" />
     <a-form
       class="mt-3"
       :form="form.fc"
@@ -32,7 +32,8 @@
           hypervisor="baremetal"
           :image-params="imageParams"
           :decorator="decorators.imageOS"
-          @updateImageMsg="setSelectedImage" />
+          @updateImageMsg="setSelectedImage"
+          :imageType.sync="osSelectImageType" />
       </a-form-item>
       <a-form-item v-bind="formItemLayout" label="规格">
         <a-select v-decorator="decorators.specifications" :disabled="isInstallOperationSystem" @change="specificationChange">
@@ -80,7 +81,7 @@
           新增磁盘
         </a-button>
       </a-form-item>
-      <a-form-item label="管理员密码" v-bind="formItemLayout">
+      <a-form-item label="管理员密码" v-bind="formItemLayout" v-if="!isCheckedIso">
         <server-password :form="form" :login-types="loginTypes" :isSnapshotImageType="false" :decorator="decorators.loginConfig" />
       </a-form-item>
       <a-divider orientation="left">高级配置</a-divider>
@@ -506,6 +507,7 @@ export default {
       isSupportIso: false,
       project_domain: '',
       projectId: '',
+      osSelectImageType: 'standard',
     }
   },
   computed: {
@@ -583,6 +585,9 @@ export default {
     isOpenWorkflow () {
       return this.checkWorkflowEnabled(WORKFLOW_TYPES.APPLY_MACHINE)
     },
+    isCheckedIso () {
+      return this.osSelectImageType === 'iso'
+    },
   },
   provide () {
     return {
@@ -632,7 +637,9 @@ export default {
       this.zone = this.$route.query.zone_id
       this.capability(this.$route.query.zone_id)
     }
-    this.loadHostOpt()
+    if (this.scope !== 'project') {
+      this.loadHostOpt()
+    }
   },
   methods: {
     vpcResourceMapper (list) {
@@ -682,7 +689,7 @@ export default {
       const hostManager = new this.$Manager('hosts')
       hostManager.get({ id: this.$route.query.id || hostId })
         .then(({ data }) => {
-          if (data.ipmi_info && data.ipmi_info.cdrom_boot === 'true') {
+          if (data.ipmi_info && data.ipmi_info.cdrom_boot) {
             this.isSupportIso = true
           } else {
             this.isSupportIso = false
@@ -1291,7 +1298,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .disk-option-item {
   & + .disk-option-item {
     margin-left: 15px;
