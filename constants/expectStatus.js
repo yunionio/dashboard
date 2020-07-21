@@ -84,7 +84,7 @@ export default {
   disk: {
     success: ['ready', 'post_migrate'],
     danger: ['alloc_failed', 'dealloc_failed', 'clone_failed', 'backup_alloc_failed', 'cancel_snapshot_failed'],
-    info: ['init', 'unknown', 'unavailable'],
+    info: ['unknown', 'unavailable'],
   },
   secgroupCache: {
     danger: ['delete_failed'],
