@@ -1,8 +1,8 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">更改{{ $t('dictionary.project') }}</div>
+    <div slot="header">{{title}}</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" :action="`更改${$t('dictionary.project')}`" :name="name" />
+      <dialog-selected-tips :count="params.data.length" :action="title" :name="name" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
@@ -75,7 +75,10 @@ export default {
       return params
     },
     name () {
-      return this.params.name || '实例'
+      return this.params.name || this.$t('common.text00006')
+    },
+    title () {
+      return this.params.title || `${this.$t('common.text00078')}${this.$t('dictionary.project')}`
     },
   },
   methods: {
@@ -111,6 +114,7 @@ export default {
         this.cancelDialog()
       } catch (error) {
         this.loading = false
+        throw error
       }
     },
   },
