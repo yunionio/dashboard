@@ -165,7 +165,7 @@ export default {
               return `medium_type.contains("${val}")`
             },
           },
-          project_domain: getProjectDomainFilter(),
+          project_domains: getProjectDomainFilter(),
         },
       }),
       groupActions: !hasServices('hostagent') ? R.remove(0, 1, groupActions) : groupActions,
