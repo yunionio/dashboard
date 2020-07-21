@@ -48,7 +48,7 @@ export const getRegionTableColumn = ({ field = 'region', title = '区域' } = {}
     field,
     title,
     showOverflow: 'ellipsis',
-    minWidth: 100,
+    minWidth: 120,
     slots: {
       default: ({ row }, h) => {
         const val = _.get(row, field)
