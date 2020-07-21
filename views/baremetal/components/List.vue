@@ -91,6 +91,7 @@ export default {
           { label: '可用区', key: 'zone' },
           { label: '用户标签', key: 'user_tags' },
         ],
+        getParams: () => ({ hypervisor: 'baremetal' }),
       },
       groupActions: [
         {
