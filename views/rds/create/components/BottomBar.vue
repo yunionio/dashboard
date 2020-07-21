@@ -18,9 +18,23 @@
           </template>
         </div>
       </div>
-      <!-- <div>费用估算</div> -->
     </template>
     <template v-slot:right>
+       <div class="d-flex align-items-center">
+          <div class="mr-4 d-flex align-items-center">
+            <div class="text-truncate">费用估算：</div>
+            <div class="ml-2 prices">
+              <div class="hour text-truncate">
+                <template v-if="price">
+                  <m-animated-number :value="price" :formatValue="formatToPrice" />
+                </template>
+              </div>
+              <div class="tips text-truncate">
+                <span v-html="priceTips" />
+              </div>
+            </div>
+          </div>
+      </div>
       <div class="btns-wrapper d-flex align-items-center">
         <a-button @click="doCreate" :loading="loading" type="primary" class="ml-3">新建</a-button>
       </div>
@@ -28,9 +42,8 @@
   </page-footer>
 </template>
 <script>
-// import * as R from 'ramda'
-// import _ from 'lodash'
-// import { ENGINE_ARCH } from '@DB/views/redis/constants'
+import _ from 'lodash'
+import { BILL_TYPES_MAP } from '@DB/views/redis/constants'
 import { sizestr } from '@/utils/utils'
 import { Manager } from '@/utils/manager'
 
@@ -43,11 +56,19 @@ export default {
     },
   },
   data () {
+    this.getPrice = _.debounce(this._getPrice, 500)
     return {
       loading: false,
+      priceTotal: undefined,
     }
   },
   computed: {
+    skuId () {
+      if (this.values.sku) {
+        return this.values.sku.id
+      }
+      return undefined
+    },
     tips () {
       const { sku = {} } = this.values
       const ret = [
@@ -65,8 +86,101 @@ export default {
       ]
       return ret
     },
+    // 是否为包年包月
+    isPackage () {
+      return this.values.billing_type === BILL_TYPES_MAP.prepaid.key
+    },
+    durationNum () {
+      if (this.isPackage) {
+        const { duration } = this.values
+        let num = parseInt(duration)
+        if (num && duration.endsWith('Y')) {
+          num *= 12 // 1年=12月
+        } else if (num && duration.endsWith('W')) {
+          num *= 0.25 // 1周=0.25月
+        }
+        return num
+      }
+      return 0
+    },
+    price () {
+      const { count = 1 } = this.values
+      if (count && this.priceTotal) {
+        const { month_price, hour_price } = this.priceTotal
+        let _price = hour_price
+        if (this.isPackage && this.durationNum) {
+          _price = parseFloat(month_price) * this.durationNum
+        }
+        return _price * parseFloat(count)
+      }
+      return null
+    },
+    currency () {
+      const currencys = {
+        USD: '$',
+        CNY: '¥',
+      }
+      if (this.pricesList && this.pricesList.length > 0) {
+        return currencys[this.pricesList[0].currency]
+      }
+      return '¥'
+    },
+    priceTips () {
+      if (this.price) {
+        if (this.isPackage && this.durationNum) {
+          const _day = (this.price / 30 / this.durationNum).toFixed(2)
+          const _hour = (parseFloat(_day) / 24).toFixed(2)
+          return `(合¥${_day}/天  ¥${_hour}/小时)`
+        } else {
+          const _day = (this.price * 24).toFixed(2)
+          const _month = this.priceTotal.month_price
+          return `(合¥${_day}/天 ¥${_month}/月)`
+        }
+      }
+      return '--'
+    },
+  },
+  watch: {
+    skuId () {
+      this.getPrice()
+    },
+    'values.disk_size_gb' () {
+      this.getPrice()
+    },
   },
   methods: {
+    formatToPrice (val) {
+      let ret = `¥ ${val.toFixed(2)}`
+      ret += !this.isPackage ? ' / 时' : ''
+      return ret
+    },
+    async _getPrice () {
+      const { sku, disk_size_gb } = this.values
+      if (!sku || !disk_size_gb) {
+        this.priceTotal = undefined
+        return false
+      }
+      try {
+        const { region_ext_id, storage_type, provider, name, category, engine } = sku
+        const price_keys = [
+          `${provider.toLowerCase()}::${region_ext_id}::::rds::${name}`,
+        ]
+        if (provider.toLowerCase() === 'huawei') {
+          price_keys.push(`${provider.toLowerCase()}::${region_ext_id}::::rds_storage::${category}_${engine}_ULTRA${storage_type}::${disk_size_gb}GB`)
+        } else {
+          price_keys.push(`${provider.toLowerCase()}::${region_ext_id}::::rds_storage::${storage_type}::${disk_size_gb}GB`)
+        }
+        const { data } = await new this.$Manager('price_infos', 'v1').get({
+          id: 'total',
+          params: {
+            price_keys,
+          },
+        })
+        this.priceTotal = data
+      } catch (err) {
+        throw err
+      }
+    },
     validateForm () {
       let f = false
       this.form.fc.validateFieldsAndScroll({ scroll: { alignWithTop: true, offsetTop: 100 } }, (err, values) => {
@@ -214,4 +328,14 @@ export default {
     opacity: 0;
   }
 }
+.prices {
+    .hour {
+      color: $error-color;
+      font-size: 24px;
+    }
+    .tips {
+      color: #999;
+      font-size: 12px;
+    }
+  }
 </style>
