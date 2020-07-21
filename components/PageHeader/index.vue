@@ -50,7 +50,6 @@ export default {
 
 .page-header {
   height: 60px;
-  padding: 0 20px;
   position: relative;
   > h3 {
     font-size: 20px;
