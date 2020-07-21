@@ -37,11 +37,15 @@ export default {
   methods: {
     getParams (keys) {
       const values = this.form.getFieldsValue(keys)
-      return {
+      const params = {
         usable: true,
         ...values,
         ...this.scopeParams,
       }
+      if (!params.project_domian) {
+        params['project_domian'] = this.$store.getters.userInfo.projectDomain
+      }
+      return params
     },
     async fetchCapability () {
       const { fetchCapability } = this.$refs['FILTERS']
