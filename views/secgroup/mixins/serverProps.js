@@ -64,6 +64,11 @@ export default {
             })
           },
           meta: (obj) => {
+            const ret = { validate: false, tooltip: null }
+            if (obj.secgroups && obj.secgroups.length === 1) {
+              ret.tooltip = '该虚拟机只有一个安全组，不支持该操作'
+              return ret
+            }
             return {
               validate: ['running', 'ready'].includes(obj.status),
             }
