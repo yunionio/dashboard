@@ -12,6 +12,13 @@ export default {
             },
           })
         },
+        meta: obj => {
+          const isReady = obj.status === 'ready'
+          return {
+            validate: isReady,
+            tooltip: !isReady && '仅可用状态下支持此操作',
+          }
+        },
       },
       {
         label: '删除',
