@@ -330,7 +330,7 @@ export default {
 }
 .prices {
     .hour {
-      color: $error-color;
+      color: @error-color;
       font-size: 24px;
     }
     .tips {
