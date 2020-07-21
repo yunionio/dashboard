@@ -682,7 +682,7 @@ export default {
       const hostManager = new this.$Manager('hosts')
       hostManager.get({ id: this.$route.query.id || hostId })
         .then(({ data }) => {
-          if (data.ipmi_info && data.ipmi_info.cdrom_boot === 'true') {
+          if (data.ipmi_info && data.ipmi_info.cdrom_boot) {
             this.isSupportIso = true
           } else {
             this.isSupportIso = false
