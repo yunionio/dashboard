@@ -133,7 +133,7 @@ export default {
         slotCallback: row => {
           if (!row.server) return '-'
           return [
-            <side-page-trigger name='PhysicalmachineSidePage' id={row.id} list={this.list} tab='baremetal-list' vm={this}>{ row.server }</side-page-trigger>,
+            <span>{ row.server }</span>,
           ]
         },
       }),
