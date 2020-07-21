@@ -80,6 +80,9 @@ export default {
     title () {
       return this.params.title || `${this.$t('common.text00078')}${this.$t('dictionary.project')}`
     },
+    title () {
+      return this.params.title || `更改${this.$t('dictionary.project')}`
+    },
   },
   methods: {
     validateForm () {
