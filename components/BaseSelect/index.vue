@@ -148,6 +148,7 @@ export default {
       noMoreData: false,
       loadMoreClicked: false,
       loadMoreOffset: 0,
+      sourceList: [], // 未经过 mapper 的数据
     }
   },
   computed: {
@@ -208,7 +209,17 @@ export default {
   },
   methods: {
     filterOption (input, option) {
-      return option.componentOptions.children[0].componentInstance.text.toLowerCase().includes(input.toLowerCase())
+      let text = _.get(option, 'componentOptions.children[0].componentInstance.text')
+      if (!text) {
+        const propsData = _.get(option, 'componentOptions.children[0].componentOptions.propsData')
+        const nameKey = propsData.nameKey
+        if (nameKey) {
+          text = propsData.data[nameKey]
+        }
+      }
+      if (text) {
+        return text.toLowerCase().includes(input.toLowerCase())
+      }
     },
     paramsChange (val, oldV) {
       val = del$t(val)
@@ -287,14 +298,15 @@ export default {
       this.loadMoreClicked = true
       this.loadMoreOffset += (this.params.limit || 20)
       const { manager, params } = this.genParams(this.query, this.loadMoreOffset)
-      const { list, data } = await this.fetchData(manager, params)
-      if (data.total > (data.data.length + this.resList.length)) {
+      const { list, data, sourceList } = await this.fetchData(manager, params)
+      if (data.total > (data.data.length + this.sourceList.length)) {
         this.noMoreData = false
         this.showLoadMore = true
       } else {
         this.showLoadMore = false
         this.noMoreData = true // 没有更多了
       }
+      this.sourceList = this.sourceList.concat(sourceList)
       this.resList = this.resList.concat(list)
       this.$emit('update:resList', this.resList)
       const resOpts = arrayToObj(this.resList)
@@ -307,7 +319,7 @@ export default {
       this.loadMoreOffset = 0
       this.query = query
       try {
-        const { list, data } = await this.fetchData(manager, params)
+        const { list, data, sourceList } = await this.fetchData(manager, params)
         if (data.total > data.data.length) {
           this.noMoreData = false
           this.showLoadMore = true
@@ -315,6 +327,7 @@ export default {
           this.showLoadMore = false
           this.noMoreData = true // 没有更多了
         }
+        this.sourceList = sourceList
         this.resList = list
         this.$emit('update:resList', list)
         const resOpts = arrayToObj(list)
@@ -333,11 +346,12 @@ export default {
         const { data } = await manager.list({ params, ctx: this.ctx })
         const _list = R.type(data) === 'Array' ? data : (R.type(data) === 'Object' && (data.data || []))
         let list = _list.map(val => ({ ...val, id: val[this.idKey], name: val[this.nameKey] }))
+        const sourceList = list
         if (this.mapper) {
           list = this.mapper(list)
         }
         this.loading = false
-        return { list, data }
+        return { list, data, sourceList }
       } catch (error) {
         this.loading = false
         throw error
