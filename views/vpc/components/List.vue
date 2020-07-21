@@ -48,7 +48,7 @@ export default {
           cidr_block: {
             label: '目标网段',
           },
-          project_domain: getProjectDomainFilter(),
+          project_domains: getProjectDomainFilter(),
         },
       }),
       exportDataOptions: {
