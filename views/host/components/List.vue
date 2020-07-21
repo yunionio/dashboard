@@ -75,7 +75,7 @@ export default {
             },
           },
           brand: getBrandFilter(),
-          project_domain: getProjectDomainFilter(),
+          project_domains: getProjectDomainFilter(),
         },
         responseData: this.responseData,
       }),
