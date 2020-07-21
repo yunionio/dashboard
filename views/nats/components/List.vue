@@ -69,7 +69,7 @@ export default {
               }
             }),
           },
-          project_domain: getProjectDomainFilter(),
+          project_domains: getProjectDomainFilter(),
         },
       }),
       exportDataOptions: {
