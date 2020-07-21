@@ -78,7 +78,7 @@ export default {
         hideField: true,
         slotCallback: row => {
           if (!row.host) return '-'
-          return [<side-page-trigger name='PhysicalmachineSidePage' id={row.host_id} list={this.list} tab='physicalmachine-detail' vm={this} >{ row.host }</side-page-trigger>]
+          return [<span>{ row.host }</span>]
         },
       }),
     ]
