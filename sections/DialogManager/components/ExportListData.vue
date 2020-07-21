@@ -219,13 +219,17 @@ export default {
       this.indeterminate = false
     },
     getResourceTotal (resource) {
+      let listParams = this.params.listParams
+      if (this.params.options.transformParams) {
+        listParams = this.params.options.transformParams(listParams)
+      }
       return new Promise((resolve, reject) => {
         this.$http({
           methods: 'GET',
           url: `/${this.params.apiVersion}/${resource}`,
           params: {
             $t: getRequestT(),
-            ...this.params.params,
+            ...listParams,
             limit: 1,
           },
         }).then((res) => {
