@@ -94,9 +94,14 @@ export default {
       if (provider === 'Huawei' && _engine === 'SQLServer') {
         versions = ENGINR_VERSION_SERVER_HUAWEI_KYES.filter(k => versions.indexOf(k) > -1)
       } else if (VERSION_SORT[_engine]) {
-        versions = VERSION_SORT[_engine].filter(k => {
-          return versions.indexOf(k) > -1
-        })
+        const _versions = VERSION_SORT[_engine].filter(k => {
+          const index = versions.indexOf(k)
+          if (index > -1) {
+            versions.splice(index, 1)
+            return true
+          }
+        }).concat(versions)
+        versions = _versions
       }
       this.engine_versions = versions
       this.setInitValue('engine_version', this.getCategory)
@@ -113,7 +118,7 @@ export default {
           return true
         }
       })
-      for (let k in categorys) {
+      for (const k in categorys) {
         if (this.categorys.indexOf(k) === -1) {
           this.categorys.push(k)
         }

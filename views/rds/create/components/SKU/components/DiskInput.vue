@@ -28,9 +28,9 @@ export default {
           disabled: true,
         }
       }
-      let min = this.min > 0 ? this.min : this.selectedSku['min_disk_size_gb']
-      let max = this.selectedSku['max_disk_size_gb']
-      let step = this.selectedSku['disk_size_step']
+      const min = this.min > 0 ? this.min : this.selectedSku.min_disk_size_gb
+      const max = this.selectedSku.max_disk_size_gb
+      const step = this.selectedSku.disk_size_step
       return {
         min,
         max,
@@ -41,6 +41,11 @@ export default {
   methods: {
     handleBlurDiskSize (e, step = this.numberProps.step) {
       const val = parseFloat(e.target.value)
+      if (!val) {
+        this.form.setFieldsValue({
+          disk_size_gb: this.numberProps.min,
+        })
+      }
       if (val > 0) {
         const num = val % step
         if (num > 0) {

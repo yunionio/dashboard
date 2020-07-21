@@ -29,6 +29,7 @@
 </template>
 <script>
 import { sizestr } from '@/utils/utils'
+import { BILL_TYPES_MAP } from '@DB/views/redis/constants'
 import PageListEmpty from '@/components/PageList/Loader'
 
 export default {
@@ -53,9 +54,7 @@ export default {
     },
     formatSku () {
       if (this.selectedSku) {
-        // eslint-disable-next-line camelcase
         const { name, vmem_size_mb, iops, vcpu_count } = this.selectedSku
-        // eslint-disable-next-line camelcase
         return `${name} （${vcpu_count}核, ${sizestr(vmem_size_mb, 'M', 1024)}, IOPS:${iops}）`
       }
       return ''
@@ -114,11 +113,30 @@ export default {
           sortable: true,
         },
         {
-          title: '规格参考价格',
+          field: 'rate',
+          title: '价格',
           sortable: true,
-          minWidth: 150,
+          minWidth: 140,
           slots: {
-            default: () => '-',
+            default: ({ row: { rate } }) => {
+              if (this.rateLoading) {
+                return [<a-icon type="loading" />]
+              }
+              const isPackage = this.form.getFieldValue('billing_type') === BILL_TYPES_MAP.prepaid.key
+              if (rate) {
+                let price = rate.hour_price
+                let unit = '小时'
+                if (isPackage) {
+                  price = rate.month_price
+                  unit = '月'
+                }
+                return [
+                  <span style="color: rgb(230, 139, 80);">{ price.toFixed(2) }</span>,
+                  <span> 元 / {unit}</span>,
+                ]
+              }
+              return '-'
+            },
           },
         },
       ]
@@ -141,20 +159,56 @@ export default {
       return row.status === 'available'
     },
     async handleSkuChange ({ row }) {
-      let _row = (row && this.isAvailable(row)) ? row : undefined
+      const _row = (row && this.isAvailable(row)) ? row : undefined
       this.form.setFieldsValue({
         sku: _row,
       })
       this.selectedSku = _row
       await this.$nextTick()
-      this.$refs['tableRef'].setRadioRow(_row)
+      this.$refs.tableRef.setRadioRow(_row)
       this.$emit('change', _row)
+    },
+    async fetchGetRates (skuList = this.skuList) {
+      const managerRates = new this.$Manager('cloud_sku_rates', 'v1')
+      const params = []
+      skuList.forEach(sku => {
+        const { provider, region_ext_id, zone_ext_id, zone_id, cache = 'rds', name } = sku
+        const _arr = [provider.toLowerCase(), region_ext_id, (zone_ext_id || zone_id), cache, name]
+        const key = _arr.join('::')
+        sku.data_key = key
+        params.push(key)
+      })
+      const param_keys = params.join('$')
+      try {
+        const rateData = {}
+        this.rateLoading = true
+        const { data = {} } = await managerRates.list({
+          params: {
+            param_keys,
+          },
+        })
+        const retList = data.data
+        if (retList && retList.length > 0) {
+          retList.forEach(item => {
+            rateData[item.data_key] = item
+          })
+        }
+        // this.rateData = rateData
+        this.skuList = skuList.map(sku => {
+          sku.rate = rateData[sku.data_key]
+          return sku
+        })
+      } catch (err) {
+        throw err
+      } finally {
+        this.rateLoading = false
+      }
     },
     getSkuParams () {
       const { getFieldsValue } = this.form
       const paramsKeys = ['engine', 'engine_version', 'category', 'storage_type', 'vcpu_count', 'vmem_size_mb', 'cloudregion', 'zones']
       const PARAMS = getFieldsValue(paramsKeys)
-      PARAMS['cloudregion_id'] = PARAMS.cloudregion
+      PARAMS.cloudregion_id = PARAMS.cloudregion
       if (PARAMS.zones) {
         const zoneArr = PARAMS.zones.split('+')
         if (zoneArr && zoneArr.length > 0) {
@@ -164,7 +218,7 @@ export default {
         }
       }
       for (let i = 0; i < paramsKeys.length; i++) {
-        let k = paramsKeys[i]
+        const k = paramsKeys[i]
         if (!PARAMS[k]) {
           return null
         }
@@ -181,6 +235,7 @@ export default {
       try {
         const { data } = await manager.list({ params: PARAMS })
         this.skuList = (data && data.data.length > 0) ? data.data : []
+        this.fetchGetRates()
         return await data
       } catch (err) {
         this.skuList = []
