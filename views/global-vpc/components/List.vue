@@ -41,7 +41,7 @@ export default {
             },
           },
           status: getStatusFilter('globalVpc'),
-          project_domain: getProjectDomainFilter(),
+          project_domains: getProjectDomainFilter(),
         },
       }),
       exportDataOptions: {
