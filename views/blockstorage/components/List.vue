@@ -19,6 +19,7 @@ import ListMixin from '@/mixins/list'
 import { getNameFilter, getEnabledFilter, getStatusFilter, getBrandFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
 import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
 import { hasServices } from '@/utils/auth'
+import expectStatus from '@/constants/expectStatus'
 
 export default {
   name: 'BlockStorageList',
@@ -136,6 +137,7 @@ export default {
         id: this.id,
         resource: 'storages',
         getParams: this.getParams,
+        steadyStatus: Object.values(expectStatus.blockstorage).flat(),
         filterOptions: {
           name: getNameFilter(),
           enabled: getEnabledFilter(),
