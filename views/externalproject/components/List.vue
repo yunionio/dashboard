@@ -59,11 +59,13 @@ export default {
       ],
       groupActions: [
         {
-          label: `更改${this.$t('dictionary.project')}`,
+          label: `切换本地${this.$t('dictionary.project')}`,
           permission: 'externalprojects_update',
           action: obj => {
             this.createDialog('ChangeProjectDialog', {
               data: this.list.selectedItems,
+              title: `切换本地${this.$t('dictionary.project')}`,
+              name: this.$t('dictionary.project'),
               columns: this.columns,
               onManager: this.onManager,
             })
@@ -77,11 +79,12 @@ export default {
       ],
       singleActions: [
         {
-          label: `更改${this.$t('dictionary.project')}`,
+          label: `切换本地${this.$t('dictionary.project')}`,
           permission: 'externalprojects_update',
           action: obj => {
             this.createDialog('ChangeProjectDialog', {
               data: [obj],
+              title: `切换本地${this.$t('dictionary.project')}`,
               name: this.$t('dictionary.project'),
               columns: this.columns,
               onManager: this.onManager,
