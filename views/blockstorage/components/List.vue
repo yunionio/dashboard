@@ -61,7 +61,7 @@ export default {
               return `medium_type.contains("${val}")`
             },
           },
-          project_domain: getProjectDomainFilter(),
+          project_domains: getProjectDomainFilter(),
         },
       }),
       exportDataOptions: {
