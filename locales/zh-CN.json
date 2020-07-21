@@ -1329,6 +1329,7 @@
     "dynamicschedtag": "动态调度标签",
     "eip": "弹性公网IP",
     "elasticcaches": "Redis-实例",
+    "elasticcache": "Redis-实例",
     "endpoint": "常用系统",
     "globalsetting": "全局属性",
     "globalvpc": "全局VPC",
@@ -1407,6 +1408,7 @@
     "log": "日志",
     "container": "容器",
     "disk_snapshots": "硬盘快照",
+    "disk_snapshot": "硬盘快照",
     "delete_servers": "主机（回收站）",
     "delete_disks": "硬盘（回收站）",
     "delete_images": "镜像（回收站）",
@@ -1419,7 +1421,9 @@
     "cloudpolicy": "云权限",
     "commonalert": "报警策略",
     "monitor_commonalert": "监控报警",
-    "explorer": "监控查询"
+    "explorer": "监控查询",
+    "instance_snapshot": "主机快照",
+    "dbinstance": "RDS实例"
   },
   "shareScope": {
     "system": "系统",
