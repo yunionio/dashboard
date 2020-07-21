@@ -15,12 +15,6 @@ export default {
       domain: {},
       project: {},
       networkObj: {},
-      zoneParams: {
-        // usable: true,
-        // show_emulated: true,
-        // order_by: 'created_at',
-        // order: 'asc',
-      },
       form: {
         fc: this.$form.createForm(this, { onValuesChange: this.onValuesChange }),
         fd: {
@@ -214,6 +208,16 @@ export default {
         enabled: true,
         provider: this.$route.query.type,
         status: 'connected',
+        ...this.scopeParams,
+      }
+      return params
+    },
+    zoneParams () {
+      const params = {
+        usable: true,
+        order_by: 'created_at',
+        order: 'asc',
+        limit: 0,
         ...this.scopeParams,
       }
       return params
