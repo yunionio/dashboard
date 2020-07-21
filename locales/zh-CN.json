@@ -1645,11 +1645,11 @@
     "domainAll": "全局共享"
   },
   "cloudAccountShareDesc": {
-    "none": "不共享",
-    "provider": "共享@:(dictionary.cloudprovider)-部分",
-    "providerAll": "共享@:(dictionary.cloudprovider)-全部",
-    "account": "共享@:(dictionary.cloudaccount)-部分",
-    "accountAll": "共享@:(dictionary.cloudaccount)-全部"
+    "none": "私有",
+    "provider": "多域共享云订阅",
+    "providerAll": "全局共享云订阅",
+    "account": "多域共享云账号",
+    "accountAll": "全局共享云账号"
   },
   "cloudproviderquotaNames": {
     "ApplicationGateways": "Application Gateways",

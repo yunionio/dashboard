@@ -91,31 +91,23 @@ export default {
       // 初始化值
       // 当为部门共享时
       if (publicScope === 'system' && this.$store.getters.isAdminMode) {
-        typeInitialValue = 'domain'
-        // 2020.6.24旧代码 start
-        // // 域为空时，为全局共享
-        // if (R.isNil(sharedDomains) || R.isEmpty(sharedDomains)) {
-        //   sharedDomainsInitialValue = ['all']
-        // } else {
-        //   sharedDomainsInitialValue = sharedDomains.map(item => item.id)
-        // }
-        // 2020.6.24旧代码 end
-        // 2020.6.24修改 start
-        // 未开启三级权限直接定位至不共享
-        if (!this.$store.getters.l3PermissionEnable) {
-          typeInitialValue = 'none'
-        }
-        if (!this.$store.getters.l3PermissionEnable) {
-          sharedDomainsInitialValue = []
-        } else {
+        if (this.$store.getters.l3PermissionEnable) {
+          typeInitialValue = 'domain'
           // 域为空时，为全局共享
           if (R.isNil(sharedDomains) || R.isEmpty(sharedDomains)) {
             sharedDomainsInitialValue = ['all']
           } else {
             sharedDomainsInitialValue = sharedDomains.map(item => item.id)
           }
+        } else {
+          typeInitialValue = 'project'
+          // 域为空时，为全局共享
+          if (R.isNil(sharedProjects) || R.isEmpty(sharedProjects)) {
+            sharedProjectsInitialValue = ['all']
+          } else {
+            sharedProjectsInitialValue = sharedProjects.map(item => item.id)
+          }
         }
-        // 2020.6.24修改 end
       }
       // 为域共享时
       if (publicScope === 'domain') {
@@ -182,7 +174,7 @@ export default {
     ...mapGetters(['scope', 'l3PermissionEnable', 'isAdminMode']),
     columns () {
       if (this.params.columns && this.params.columns.length >= 2) {
-        const keys = ['name', 'public_scope', ['shared_domains'], 'tenant']
+        const keys = ['name', 'public_scope', 'shared_domains', 'tenant']
         return this.params.columns.filter(({ field }) => {
           return keys.indexOf(field) > -1
         })
