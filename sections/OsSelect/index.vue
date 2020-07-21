@@ -171,6 +171,7 @@ export default {
     },
     change (e) {
       this.imageType = e.target.value
+      this.$emit('update:imageType', e.target.value)
     },
     updateImageMsg (...ret) {
       this.$emit('updateImageMsg', ...ret)
