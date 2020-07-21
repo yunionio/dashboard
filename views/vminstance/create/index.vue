@@ -129,11 +129,3 @@ export default {
   },
 }
 </script>
-
-<style lang="less" scoped>
-.server-create-index {
-  ::v-deep .ant-form.ant-form-horizontal .ant-form-item .ant-form-item-label{
-    padding-left: 20px;
-  }
-}
-</style>
