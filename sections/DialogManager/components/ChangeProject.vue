@@ -75,10 +75,10 @@ export default {
       return params
     },
     name () {
-      return this.params.name || this.$t('common.text00006')
+      return this.params.name || '实例'
     },
     title () {
-      return this.params.title || `${this.$t('common.text00078')}${this.$t('dictionary.project')}`
+      return this.params.title || `更改${this.$t('dictionary.project')}`
     },
   },
   methods: {
