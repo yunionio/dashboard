@@ -128,12 +128,12 @@
 import * as R from 'ramda'
 import _ from 'lodash'
 import { mapGetters } from 'vuex'
+import BottomBar from './BottomBar'
 import { CreateServerForm, LOGIN_TYPES_MAP, NETWORK_OPTIONS_MAP, FORECAST_FILTERS_MAP } from '@Compute/constants'
 import OsSelect from '@Compute/sections/OsSelect'
 import ServerPassword from '@Compute/sections/ServerPassword'
 import ServerNetwork from '@Compute/sections/ServerNetwork'
 import SchedPolicy from '@Compute/sections/SchedPolicy'
-import BottomBar from './BottomBar'
 import DomainProject from '@/sections/DomainProject'
 import CloudregionZone from '@/sections/CloudregionZone'
 import validateForm, { isRequired, isWithinRange } from '@/utils/validate'
@@ -682,7 +682,7 @@ export default {
       const hostManager = new this.$Manager('hosts')
       hostManager.get({ id: this.$route.query.id || hostId })
         .then(({ data }) => {
-          if (data.ipmi_info && data.ipmi_info.cdrom_boot === 'true') {
+          if (data.ipmi_info && data.ipmi_info.cdrom_boot) {
             this.isSupportIso = true
           } else {
             this.isSupportIso = false
