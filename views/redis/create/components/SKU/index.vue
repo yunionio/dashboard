@@ -43,7 +43,7 @@ export default {
         ...this.scopeParams,
       }
       if (!params.project_domian) {
-        params['project_domian'] = this.$store.getters.userInfo.projectDomain
+        params.project_domian = this.$store.getters.userInfo.projectDomain
       }
       return params
     },
