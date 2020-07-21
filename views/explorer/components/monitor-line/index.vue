@@ -9,6 +9,12 @@
         size="mini"
         border
         row-id="vm_id"
+        ref="tableRef"
+        highlight-hover-row
+        highlight-current-row
+        @mouseleave.native="tableMouseleave"
+        @cell-mouseenter="tableMouseenter"
+        @cell-click="cellClick"
         :columns="columns"
         :data="tableData" />
     </template>
@@ -62,6 +68,8 @@ export default {
         series: [],
       },
       lineChartOptionsC: {},
+      chartInstance: null,
+      seriesOldClickName: null,
     }
   },
   computed: {
@@ -144,9 +152,96 @@ export default {
     this.colorHash = null
   },
   methods: {
+    tableMouseleave () {
+      this._cancelHighlight()
+      this._setHighlight()
+    },
+    tableMouseenter ({ row, rowIndex }) {
+      if (this.oldRowIndex === rowIndex) return
+      this.tableSetHighlight({ row, rowIndex, click: false })
+      this.oldRowIndex = rowIndex
+    },
+    cellClick ({ row, rowIndex }) {
+      this.tableSetHighlight({ row, rowIndex, click: true })
+    },
+    tableSetHighlight ({ row, rowIndex, click }) {
+      let seriesName = _.get(this.chartInstanceOption, `series[${rowIndex}].name`)
+      seriesName = seriesName || `series${rowIndex}`
+      this.highlightSeries(seriesName, click, row)
+    },
     setChartInstance (v) {
       this.chartInstanceOption = v.getOption()
+      this.chartInstance = v
       this.$emit('chartInstance', v)
+      this.chartInstance.on('click', params => {
+        const seriesName = params.seriesName
+        if (seriesName !== this.seriesOldClickName) {
+          this.seriesOldClickName = null
+        }
+        this._cancelHighlight()
+        this.highlightSeries(params.seriesName, true, this.tableData[params.seriesIndex])
+      })
+    },
+    highlightSeries (seriesName, isClick = false, row) {
+      if (this.chartInstance) {
+        if (isClick) {
+          this._cancelHighlight()
+          if (seriesName === this.seriesOldClickName) { // 如果上一次高亮是click触发的，那么只能通过click切换或者取消
+            this.seriesOldClickName = null
+            this.$refs.tableRef.clearCurrentRow()
+          } else {
+            this.$refs.tableRef.setCurrentRow(row)
+            this._setHighlight(seriesName)
+            this.seriesOldClickName = seriesName
+          }
+        } else {
+          this._cancelHighlight()
+          this._setHighlight(seriesName)
+        }
+      }
+    },
+    _cancelHighlight () {
+      this._setOptionForOpacity(1) // 需要还原opacity
+    },
+    _setOptionForOpacity (opacity) {
+      this.chartInstance.setOption({
+        ...this.chartInstanceOption,
+        series: this.chartInstanceOption.series.map(val => {
+          return {
+            ...val,
+            lineStyle: {
+              ...val.lineStyle,
+              opacity,
+            },
+          }
+        }),
+      })
+    },
+    _setHighlight (seriesName) {
+      const _setOption = name => {
+        this.chartInstance.setOption({
+          series: {
+            name,
+            symbolSize: 3,
+            lineStyle: {
+              width: 3,
+              shadowBlur: 6,
+              opacity: 1,
+              shadowOffsetX: 8,
+              shadowOffsetY: 8,
+            },
+          },
+        })
+      }
+      if (this.seriesOldClickName || seriesName) {
+        this._setOptionForOpacity(0.5) // 先把其他数据线变灰
+      }
+      if (this.seriesOldClickName) {
+        _setOption(this.seriesOldClickName)
+      }
+      if (seriesName) {
+        _setOption(seriesName)
+      }
     },
     getMonitorLine () {
       const columns = ['time']
@@ -160,6 +255,7 @@ export default {
               color: colors[i] || this.colorHash.hex(`${i * 1000}`),
             },
           },
+          symbolSize: 2,
         }
         lineChartOptions.series[i] = seriesItem
         let name = item.raw_name
