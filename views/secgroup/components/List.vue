@@ -58,7 +58,7 @@ export default {
           ports: {
             label: '端口',
           },
-          tenant: getTenantFilter(),
+          projects: getTenantFilter(),
         },
         responseData: this.responseData,
       }),
