@@ -97,7 +97,7 @@ export default {
           },
           brand: brandFilter,
           account: getAccountFilter(),
-          tenant: getTenantFilter(),
+          projects: getTenantFilter(),
           region: {
             label: '区域',
           },
