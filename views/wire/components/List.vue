@@ -54,7 +54,7 @@ export default {
           region: {
             label: '区域',
           },
-          project_domain: getProjectDomainFilter(),
+          project_domains: getProjectDomainFilter(),
         },
       }),
       exportDataOptions: {
