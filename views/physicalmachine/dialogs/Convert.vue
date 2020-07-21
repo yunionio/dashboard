@@ -1,5 +1,5 @@
 <template>
-  <base-dialog @cancel="cancelDialog">
+  <base-dialog @cancel="cancelDialog" :width="900">
     <div slot="header">转换为宿主机</div>
     <div slot="body">
       <dialog-selected-tips :name="$t('dictionary.physicalmachine')" :count="params.data.length" action="转换为宿主机" />
