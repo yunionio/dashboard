@@ -31,8 +31,8 @@ import ColumnsMixin from '../mixins/columns'
 import BaremetalDetail from './Detail'
 import NetworkListForBaremetalSidepage from './Network'
 import DiskListForBaremetalSidepage from './Disk'
-import BaremetalMonitorSidepage from './Monitor'
-import BaremetalAlertSidepage from './Alert'
+// import BaremetalMonitorSidepage from './Monitor'
+// import BaremetalAlertSidepage from './Alert'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -44,8 +44,8 @@ export default {
     BaremetalDetail,
     NetworkListForBaremetalSidepage,
     DiskListForBaremetalSidepage,
-    BaremetalAlertSidepage,
-    BaremetalMonitorSidepage,
+    // BaremetalAlertSidepage,
+    // BaremetalMonitorSidepage,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
@@ -54,8 +54,8 @@ export default {
         { label: '详情', key: 'baremetal-detail' },
         { label: '网络', key: 'network-list-for-baremetal-sidepage' },
         { label: '磁盘', key: 'disk-list-for-baremetal-sidepage' },
-        { label: '监控', key: 'baremetal-monitor-sidepage' },
-        { label: '报警', key: 'baremetal-alert-sidepage' },
+        // { label: '监控', key: 'baremetal-monitor-sidepage' },
+        // { label: '报警', key: 'baremetal-alert-sidepage' },
         { label: '操作日志', key: 'event-drawer' },
       ],
     }
