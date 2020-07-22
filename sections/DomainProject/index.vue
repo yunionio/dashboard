@@ -152,11 +152,11 @@ export default {
           response = await this.getDomainList(params)
         } else {
           response = await this.dm.list({ params })
+          if (response.data && !response.data.data.find(val => val.key === this.userInfo.projectDomainId)) return // 如果下拉列表没有当前域值，return
         }
         const data = response.data.data || []
         this.domains = data.map(val => ({ ...val, key: val.id, label: val.name }))
         let defaultData = { key: this.userInfo.projectDomainId, label: this.userInfo.projectDomain }
-        if (!this.domains.find(val => val.key === this.userInfo.projectDomainId)) return // 如果下拉列表没有当前域值，return
         const initialValue = _.get(this.decorators, 'domain[1].initialValue')
         if (initialValue) {
           const findInitValue = this.domains.find(val => val.key === (initialValue.key || initialValue))
