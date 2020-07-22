@@ -2,10 +2,10 @@
   <div class="h-100 position-relative">
     <div class="dashboard-card-wrap">
       <div class="dashboard-card-header">
-        <div class="dashboard-card-header-left">{{ form.fd.name || '磁贴名称' }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
+        <div class="dashboard-card-header-left">{{ form.fd.name || $t('dashboard.text_6') }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
         <div class="dashboard-card-header-right">
           <slot name="actions" :handle-edit="handleEdit" />
-          <router-link v-if="!edit" to="/log" class="ml-2">更多</router-link>
+          <router-link v-if="!edit" to="/log" class="ml-2">{{$t('dashboard.text_13')}}</router-link>
         </div>
       </div>
       <div class="dashboard-card-body flex-column justify-content-center">
@@ -18,7 +18,7 @@
                     <div>{{ $te(`dictionary.${item.obj_type}`) ? $t(`dictionary.${item.obj_type}`) : item.obj_type }} - {{ item.action }}</div>
                     <div class="text-color-help mt-1">{{ item.user }} · {{ $moment(item.ops_time).fromNow() }}</div>
                   </div>
-                  <a-tag :color="item.success ? '#52c41a' : '#f5222d'"> {{ item.success ? '成功' : '失败' }} </a-tag>
+                  <a-tag :color="item.success ? '#52c41a' : '#f5222d'"> {{ item.success ? $t('dashboard.text_14') : $t('dashboard.text_15') }} </a-tag>
                 </div>
               </template>
             </div>
@@ -26,15 +26,15 @@
         </template>
       </div>
     </div>
-    <base-drawer :visible.sync="visible" title="配置磁贴" @ok="handleSubmit">
+    <base-drawer :visible.sync="visible" :title="$t('dashboard.text_5')" @ok="handleSubmit">
       <a-form
         hideRequiredMark
         :form="form.fc"
         v-bind="formItemLayout">
-        <a-form-item label="磁贴名称">
+        <a-form-item :label="$t('dashboard.text_6')">
           <a-input v-decorator="decorators.name" />
         </a-form-item>
-        <a-form-item label="行数">
+        <a-form-item :label="$t('dashboard.text_16')">
           <a-input-number v-decorator="decorators.limit" />
         </a-form-item>
       </a-form>
@@ -62,7 +62,7 @@ export default {
     edit: Boolean,
   },
   data () {
-    const initialNameValue = (this.params && this.params.name) || '操作日志'
+    const initialNameValue = (this.params && this.params.name) || this.$t('dashboard.text_17')
     const initialLimitValue = (this.params && this.params.limit) || 4
     return {
       data: [],
@@ -81,7 +81,7 @@ export default {
           {
             initialValue: initialNameValue,
             rules: [
-              { required: true, message: '请输入磁贴名称' },
+              { required: true, message: this.$t('dashboard.text_8') },
             ],
           },
         ],
@@ -90,7 +90,7 @@ export default {
           {
             initialValue: initialLimitValue,
             rules: [
-              { required: true, message: '请选择行数' },
+              { required: true, message: this.$t('dashboard.text_18') },
             ],
           },
         ],

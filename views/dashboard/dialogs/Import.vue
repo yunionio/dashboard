@@ -15,7 +15,7 @@
             <p class="ant-upload-drag-icon">
               <a-icon type="inbox" />
             </p>
-            <p class="ant-upload-text">单击或将配置文件拖到该区域</p>
+            <p class="ant-upload-text">{{$t('dashboard.text_112')}}</p>
           </a-upload-dragger>
         </a-form-item>
       </a-form>
@@ -49,7 +49,7 @@ export default {
           'file',
           {
             rules: [
-              { required: true, message: '请选择文件' },
+              { required: true, message: this.$t('dashboard.text_113') },
             ],
           },
         ],
@@ -98,7 +98,7 @@ export default {
         const objStr = Base64.decode(Base64.decode(fileDataArr[1]))
         const data = JSON.parse(objStr)
         if (data.scope !== this.scope) {
-          this.$message.warning(`选择的文件为${this.$t(`policyScopeLabel.${data.scope}`)}导出的配置，当前为${this.$t(`policyScopeLabel.${this.scope}`)}，请重新选择`)
+          this.$message.warning(this.$t('dashboard.text_114', [this.$t(`policyScopeLabel.${data.scope}`), this.$t(`policyScopeLabel.${this.scope}`)]))
           this.loading = false
           return
         }

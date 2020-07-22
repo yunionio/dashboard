@@ -15,7 +15,7 @@
       <dashboard-content :data="dashboard" class="mt-2" />
     </template>
     <template v-else>
-      <div class="pt-4 pb-4 text-center"><a-spin tip="加载配置中" /></div>
+      <div class="pt-4 pb-4 text-center"><a-spin :tip="$t('dashboard.text_117')" /></div>
     </template>
   </div>
 </template>

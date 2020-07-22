@@ -28,28 +28,28 @@
         </template>
       </div>
     </div>
-    <base-drawer :visible.sync="visible" title="配置磁贴" @ok="handleSubmit">
+    <base-drawer :visible.sync="visible" :title="$t('dashboard.text_5')" @ok="handleSubmit">
       <a-form
         hideRequiredMark
         :form="form.fc"
         v-bind="formItemLayout">
-        <a-form-item label="磁贴名称">
+        <a-form-item :label="$t('dashboard.text_6')">
           <a-input v-decorator="decorators.name" />
         </a-form-item>
-        <a-form-item label="平台">
+        <a-form-item :label="$t('dashboard.text_55')">
           <a-select v-decorator="decorators.brand">
             <template v-for="item of capability.brands">
               <a-select-option :key="item" :value="item">{{ item }}</a-select-option>
             </template>
           </a-select>
         </a-form-item>
-        <a-form-item label="资源类型">
+        <a-form-item :label="$t('dashboard.text_56')">
           <a-radio-group v-decorator="decorators.resType" @change="handleResTypeChange">
-            <a-radio-button value="server">虚拟机</a-radio-button>
-            <a-radio-button value="host" v-if="showResTypeHost">宿主机</a-radio-button>
+            <a-radio-button value="server">{{$t('dashboard.text_57')}}</a-radio-button>
+            <a-radio-button value="host" v-if="showResTypeHost">{{$t('dashboard.text_58')}}</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item label="指标">
+        <a-form-item :label="$t('dashboard.text_20')">
           <a-select v-decorator="decorators.usage">
             <template v-for="item of usageOptions[form.fd.resType]">
               <a-select-option :key="item.key" :value="item.key">{{ item.label }}</a-select-option>
@@ -62,10 +62,10 @@
             <a-select-option value="BOTTOM">BOTTOM</a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item label="显示行数">
+        <a-form-item :label="$t('dashboard.text_59')">
           <a-input-number :min="1" :max="100" v-decorator="decorators.limit" />
         </a-form-item>
-        <a-form-item label="近">
+        <a-form-item :label="$t('dashboard.text_60')">
           <a-select v-decorator="decorators.time">
             <template v-for="item of timeOptions">
               <a-select-option :key="item.key" :value="item.key">{{ item.label }}</a-select-option>
@@ -101,17 +101,17 @@ export default {
   },
   data () {
     const serverUsageOptions = [
-      { label: 'CPU使用率', key: 'usage_active,vm_cpu' },
-      { label: '磁盘读取速度', key: 'read_bps,vm_diskio' },
-      { label: '磁盘写入速度', key: 'write_bps,vm_diskio' },
-      { label: '网络入流量', key: 'bps_recv,vm_netio' },
-      { label: '网络出流量', key: 'bps_sent,vm_netio' },
+      { label: this.$t('dashboard.text_61'), key: 'usage_active,vm_cpu' },
+      { label: this.$t('dashboard.text_62'), key: 'read_bps,vm_diskio' },
+      { label: this.$t('dashboard.text_63'), key: 'write_bps,vm_diskio' },
+      { label: this.$t('dashboard.text_64'), key: 'bps_recv,vm_netio' },
+      { label: this.$t('dashboard.text_65'), key: 'bps_sent,vm_netio' },
     ]
     const hostUsageOptions = [
-      { label: 'CPU使用率', key: 'usage_active,cpu' },
-      { label: '内存使用率', key: 'used_percent,mem' },
-      { label: '网络入流量', key: 'bps_recv,net' },
-      { label: '网络出流量', key: 'bps_sent,net' },
+      { label: this.$t('dashboard.text_61'), key: 'usage_active,cpu' },
+      { label: this.$t('dashboard.text_46'), key: 'used_percent,mem' },
+      { label: this.$t('dashboard.text_64'), key: 'bps_recv,net' },
+      { label: this.$t('dashboard.text_65'), key: 'bps_sent,net' },
     ]
     const initialNameValue = (this.params && this.params.name) || 'TOP5'
     const initialBrandValue = (this.params && this.params.brand) || ''
@@ -157,12 +157,12 @@ export default {
         host: hostUsageOptions,
       },
       timeOptions: [
-        { label: '5分钟', key: 60 * 60 * 5 },
-        { label: '10分钟', key: 60 * 60 * 10 },
-        { label: '15分钟', key: 60 * 60 * 15 },
-        { label: '20分钟', key: 60 * 60 * 20 },
-        { label: '25分钟', key: 60 * 60 * 25 },
-        { label: '30分钟', key: 60 * 60 * 30 },
+        { label: this.$t('dashboard.text_66'), key: 60 * 60 * 5 },
+        { label: this.$t('dashboard.text_67'), key: 60 * 60 * 10 },
+        { label: this.$t('dashboard.text_68'), key: 60 * 60 * 15 },
+        { label: this.$t('dashboard.text_69'), key: 60 * 60 * 20 },
+        { label: this.$t('dashboard.text_70'), key: 60 * 60 * 25 },
+        { label: this.$t('dashboard.text_71'), key: 60 * 60 * 30 },
       ],
       decorators: {
         name: [
@@ -170,7 +170,7 @@ export default {
           {
             initialValue: initialNameValue,
             rules: [
-              { required: true, message: '请输入磁贴名称' },
+              { required: true, message: this.$t('dashboard.text_8') },
             ],
           },
         ],
@@ -179,7 +179,7 @@ export default {
           {
             initialValue: initialBrandValue,
             rules: [
-              { required: true, message: '请选择平台' },
+              { required: true, message: this.$t('dashboard.text_72') },
             ],
           },
         ],
@@ -188,7 +188,7 @@ export default {
           {
             initialValue: initialResTypeValue,
             rules: [
-              { required: true, message: '请选择资源类型' },
+              { required: true, message: this.$t('dashboard.text_73') },
             ],
           },
         ],
@@ -197,7 +197,7 @@ export default {
           {
             initialValue: initialUsage,
             rules: [
-              { required: true, message: '请选择指标' },
+              { required: true, message: this.$t('dashboard.text_22') },
             ],
           },
         ],
@@ -206,7 +206,7 @@ export default {
           {
             initialValue: initialOrderValue,
             rules: [
-              { required: true, message: '请选择顺序' },
+              { required: true, message: this.$t('dashboard.text_74') },
             ],
           },
         ],
@@ -215,7 +215,7 @@ export default {
           {
             initialValue: initialLimit,
             rules: [
-              { required: true, message: '请填写行数' },
+              { required: true, message: this.$t('dashboard.text_75') },
             ],
           },
         ],
@@ -224,7 +224,7 @@ export default {
           {
             initialValue: initialTime,
             rules: [
-              { required: true, message: '请选择时间' },
+              { required: true, message: this.$t('dashboard.text_76') },
             ],
           },
         ],

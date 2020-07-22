@@ -8,7 +8,7 @@
     :params="params">
     <a-row class="mb-4">
       <a-col :span="formItemLayout.labelCol.span" class="ant-form-item-label">
-        <label>类型</label>
+        <label>{{$t('dashboard.text_24')}}</label>
       </a-col>
       <a-col :span="formItemLayout.wrapperCol.span">
         <a-radio-group v-model="type">
@@ -41,8 +41,8 @@ export default {
     return {
       type: (this.params && this.params.type) || 'server',
       typeOpts: [
-        { key: 'server', label: '主机资源' },
-        { key: 'k8s', label: '容器资源' },
+        { key: 'server', label: this.$t('dashboard.text_25') },
+        { key: 'k8s', label: this.$t('dashboard.text_26') },
       ],
       formItemLayout: {
         wrapperCol: {

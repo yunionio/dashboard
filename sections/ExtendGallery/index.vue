@@ -1,9 +1,9 @@
 <template>
   <div class="extend-gallery-wrap d-flex flex-column">
-    <div class="extend-gallery-title flex-grow-0 flex-shrink-0">磁贴库</div>
+    <div class="extend-gallery-title flex-grow-0 flex-shrink-0">{{$t('dashboard.text_93')}}</div>
     <div class="extend-gallery-tips flex-grow-0 flex-shrink-0 d-flex">
-      <div>{{ options.length }} 个磁贴</div>
-      <div class="flex-fill text-right">可将任意磁贴拖动到仪表盘</div>
+      <div>{{$t('dashboard.text_94', [ options.length ])}}</div>
+      <div class="flex-fill text-right">{{$t('dashboard.text_95')}}</div>
     </div>
     <div class="flex-fill extend-list overflow-auto position-relative">
       <ul>

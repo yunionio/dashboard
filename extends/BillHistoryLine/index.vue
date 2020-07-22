@@ -11,13 +11,13 @@
         <line-chart :columns="lineChartColumns" :rows="lineChartRows" width="100%" height="100%" />
       </div>
     </div>
-    <base-drawer :visible.sync="visible" title="配置磁贴" @ok="handleSubmit">
+    <base-drawer :visible.sync="visible" :title="$t('dashboard.text_5')" @ok="handleSubmit">
       <a-form-model
         ref="form"
         hideRequiredMark
         :model="fd"
         :rules="rules">
-        <a-form-model-item label="磁贴名称" prop="name">
+        <a-form-model-item :label="$t('dashboard.text_6')" prop="name">
           <a-input v-model="fd.name" />
         </a-form-model-item>
       </a-form-model>
@@ -47,7 +47,7 @@ export default {
     params: Object,
   },
   data () {
-    const initNameValue = (this.params && this.params.name) || '近一个月历史消费总览'
+    const initNameValue = (this.params && this.params.name) || this.$t('dashboard.text_7')
     return {
       data: [],
       visible: false,
@@ -57,7 +57,7 @@ export default {
       },
       rules: {
         name: [
-          { required: true, message: '请输入磁贴名称' },
+          { required: true, message: this.$t('dashboard.text_8') },
         ],
       },
     }
@@ -65,13 +65,13 @@ export default {
   computed: {
     ...mapGetters(['userInfo', 'isAdminMode']),
     lineChartColumns () {
-      return ['time', '裸金属资源', 'GPU卡', '虚拟资源']
+      return ['time', this.$t('dashboard.text_9'), this.$t('dashboard.text_10'), this.$t('dashboard.text_11')]
     },
     lineChartRows () {
       const rows = []
       R.forEach(item => {
         rows.push({
-          time: this.$moment(item[0]).format('MM月DD日'),
+          time: this.$moment(item[0]).format(this.$t('dashboard.text_12')),
           裸金属资源: (+item[1] || 0).toFixed(2),
           GPU卡: (+item[2] || 0).toFixed(2),
           虚拟资源: (+item[3] || 0).toFixed(2),

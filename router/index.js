@@ -3,11 +3,12 @@ import Dashboard from '@Dashboard/views/dashboard'
 import DashboardEdit from '@Dashboard/views/edit'
 import Layout from '@/layouts/RouterView'
 // import store from '@/store'
+import i18n from '@/locales'
 
 export default {
   index: 1,
   meta: {
-    label: '控制面板',
+    label: i18n.t('dashboard.text_77'),
     icon: 'menu-dashboard',
   },
   menu: {

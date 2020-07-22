@@ -1,4 +1,5 @@
 import { sizestrWithUnit } from '@/utils/utils'
+import i18n from '@/locales'
 
 // 不定单位使用formatter，固定单位使用unit
 // 磁盘（disk）、内存（memory） 容量单位为：formatter: val => sizestrWithUnit(val, 'M', 1024)
@@ -11,10 +12,10 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'B', 1024),
   },
   'all.bucket_objects': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'all.buckets': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'all.cpu_commit_rate.running': {
 
@@ -32,52 +33,52 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'all.eip': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'all.eip.floating_ip': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'all.eip.floating_ip.used': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'all.eip.public_ip': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'all.eip.used': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'all.memory_commit_rate.running': {
 
   },
   'all.nics': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'all.nics.guest': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'all.nics.host': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'all.nics.lb': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'all.nics.reserve': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'all.pending_delete_servers': {
-    unit: '台',
+    unit: i18n.t('dashboard.text_2'),
   },
   'all.pending_delete_servers.cpu': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'all.pending_delete_servers.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'all.pending_delete_servers.ha': {
-    unit: '台',
+    unit: i18n.t('dashboard.text_2'),
   },
   'all.pending_delete_servers.ha.cpu': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'all.pending_delete_servers.ha.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -86,31 +87,31 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'all.pending_delete_servers.isolated_devices': {
-    unit: '块',
+    unit: i18n.t('dashboard.text_4'),
   },
   'all.pending_delete_servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'all.ports': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'all.ports_exit': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'all.ready_servers': {
-    unit: '台',
+    unit: i18n.t('dashboard.text_2'),
   },
   'all.ready_servers.cpu': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'all.ready_servers.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'all.ready_servers.ha': {
-    unit: '台',
+    unit: i18n.t('dashboard.text_2'),
   },
   'all.ready_servers.ha.cpu': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'all.ready_servers.ha.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -119,25 +120,25 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'all.ready_servers.isolated_devices': {
-    unit: '块',
+    unit: i18n.t('dashboard.text_4'),
   },
   'all.ready_servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'all.running_servers': {
-    unit: '台',
+    unit: i18n.t('dashboard.text_2'),
   },
   'all.running_servers.cpu': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'all.running_servers.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'all.running_servers.ha': {
-    unit: '台',
+    unit: i18n.t('dashboard.text_2'),
   },
   'all.running_servers.ha.cpu': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'all.running_servers.ha.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -146,25 +147,25 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'all.running_servers.isolated_devices': {
-    unit: '块',
+    unit: i18n.t('dashboard.text_4'),
   },
   'all.running_servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'all.servers': {
-    unit: '台',
+    unit: i18n.t('dashboard.text_2'),
   },
   'all.servers.cpu': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'all.servers.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'all.servers.ha': {
-    unit: '台',
+    unit: i18n.t('dashboard.text_2'),
   },
   'all.servers.ha.cpu': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'all.servers.ha.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -173,31 +174,31 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'all.servers.isolated_devices': {
-    unit: '块',
+    unit: i18n.t('dashboard.text_4'),
   },
   'all.servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'all.snapshot': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'all.servers.system': {
-    unit: '台',
+    unit: i18n.t('dashboard.text_2'),
   },
   'all.disks.system': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'all.servers.system.cpu': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'all.servers.system.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   baremetals: {
-    unit: '台',
+    unit: i18n.t('dashboard.text_2'),
   },
   'baremetals.cpu': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'baremetals.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -206,10 +207,10 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'B', 1024),
   },
   bucket_objects: {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   buckets: {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   disks: {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -224,28 +225,28 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   eip: {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'eip.floating_ip': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'eip.floating_ip.used': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'eip.public_ip': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'eip.used': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   enabled_hosts: {
-    unit: '台',
+    unit: i18n.t('dashboard.text_2'),
   },
   'enabled_hosts.cpu': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'enabled_hosts.cpu.virtual': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'enabled_hosts.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -254,13 +255,13 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   hosts: {
-    unit: '台',
+    unit: i18n.t('dashboard.text_2'),
   },
   'hosts.cpu': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'hosts.cpu.virtual': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'hosts.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -269,34 +270,34 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   isolated_devices: {
-    unit: '块',
+    unit: i18n.t('dashboard.text_4'),
   },
   networks: {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   nics: {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'nics.guest': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'nics.lb': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   pending_delete_servers: {
-    unit: '台',
+    unit: i18n.t('dashboard.text_2'),
   },
   'pending_delete_servers.cpu': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'pending_delete_servers.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'pending_delete_servers.ha': {
-    unit: '台',
+    unit: i18n.t('dashboard.text_2'),
   },
   'pending_delete_servers.ha.cpu': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'pending_delete_servers.ha.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -305,31 +306,31 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'pending_delete_servers.isolated_devices': {
-    unit: '块',
+    unit: i18n.t('dashboard.text_4'),
   },
   'pending_delete_servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   ports: {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   ports_exit: {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   ready_servers: {
-    unit: '台',
+    unit: i18n.t('dashboard.text_2'),
   },
   'ready_servers.cpu': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'ready_servers.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'ready_servers.ha': {
-    unit: '台',
+    unit: i18n.t('dashboard.text_2'),
   },
   'ready_servers.ha.cpu': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'ready_servers.ha.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -338,28 +339,28 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'ready_servers.isolated_devices': {
-    unit: '块',
+    unit: i18n.t('dashboard.text_4'),
   },
   'ready_servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   regions: {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   running_servers: {
-    unit: '台',
+    unit: i18n.t('dashboard.text_2'),
   },
   'running_servers.cpu': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'running_servers.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'running_servers.ha': {
-    unit: '台',
+    unit: i18n.t('dashboard.text_2'),
   },
   'running_servers.ha.cpu': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'running_servers.ha.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -368,25 +369,25 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'running_servers.isolated_devices': {
-    unit: '块',
+    unit: i18n.t('dashboard.text_4'),
   },
   'running_servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   servers: {
-    unit: '台',
+    unit: i18n.t('dashboard.text_2'),
   },
   'servers.cpu': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'servers.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'servers.ha': {
-    unit: '台',
+    unit: i18n.t('dashboard.text_2'),
   },
   'servers.ha.cpu': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'servers.ha.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -395,13 +396,13 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'servers.isolated_devices': {
-    unit: '块',
+    unit: i18n.t('dashboard.text_4'),
   },
   'servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   snapshot: {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   storages: {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -413,61 +414,61 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   vpcs: {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   wires: {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   zones: {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'all.disks.count': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'all.disks.attached.count': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'all.disks.detached.count': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'all.disks.unready.count': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'all.loadbalancer': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'all.cache': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'all.rds': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   cache: {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'disks.count': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'disks.attached.count': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'disks.detached.count': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'disks.unready.count': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   loadbalancer: {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   rds: {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'domain.baremetals': {
-    unit: '台',
+    unit: i18n.t('dashboard.text_2'),
   },
   'domain.baremetals.cpu': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'domain.baremetals.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -476,13 +477,13 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'B', 1024),
   },
   'domain.bucket_objects': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'domain.buckets': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'domain.cache': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'domain.cpu_commit_rate.running': {
 
@@ -494,46 +495,46 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.disks.attached.count': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'domain.disks.count': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'domain.disks.detached': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.disks.detached.count': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'domain.disks.unready': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.disks.unready.count': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'domain.eip': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'domain.eip.floating_ip': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'domain.eip.floating_ip.used': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'domain.eip.public_ip': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'domain.eip.used': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'domain.enabled_hosts': {
-    unit: '台',
+    unit: i18n.t('dashboard.text_2'),
   },
   'domain.enabled_hosts.cpu': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'domain.enabled_hosts.cpu.virtual': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'domain.enabled_hosts.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -542,13 +543,13 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.hosts': {
-    unit: '台',
+    unit: i18n.t('dashboard.text_2'),
   },
   'domain.hosts.cpu': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'domain.hosts.cpu.virtual': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'domain.hosts.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -557,25 +558,25 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.loadbalancer': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'domain.memory_commit_rate.running': {
 
   },
   'domain.pending_delete_servers': {
-    unit: '台',
+    unit: i18n.t('dashboard.text_2'),
   },
   'domain.pending_delete_servers.cpu': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'domain.pending_delete_servers.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.pending_delete_servers.ha': {
-    unit: '台',
+    unit: i18n.t('dashboard.text_2'),
   },
   'domain.pending_delete_servers.ha.cpu': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'domain.pending_delete_servers.ha.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -584,34 +585,34 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.pending_delete_servers.isolated_devices': {
-    unit: '块',
+    unit: i18n.t('dashboard.text_4'),
   },
   'domain.pending_delete_servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.ports': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'domain.ports_exit': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'domain.rds': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'domain.ready_servers': {
-    unit: '台',
+    unit: i18n.t('dashboard.text_2'),
   },
   'domain.ready_servers.cpu': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'domain.ready_servers.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.ready_servers.ha': {
-    unit: '台',
+    unit: i18n.t('dashboard.text_2'),
   },
   'domain.ready_servers.ha.cpu': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'domain.ready_servers.ha.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -620,25 +621,25 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.ready_servers.isolated_devices': {
-    unit: '块',
+    unit: i18n.t('dashboard.text_4'),
   },
   'domain.ready_servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.running_servers': {
-    unit: '台',
+    unit: i18n.t('dashboard.text_2'),
   },
   'domain.running_servers.cpu': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'domain.running_servers.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.running_servers.ha': {
-    unit: '台',
+    unit: i18n.t('dashboard.text_2'),
   },
   'domain.running_servers.ha.cpu': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'domain.running_servers.ha.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -647,25 +648,25 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.running_servers.isolated_devices': {
-    unit: '块',
+    unit: i18n.t('dashboard.text_4'),
   },
   'domain.running_servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.servers': {
-    unit: '台',
+    unit: i18n.t('dashboard.text_2'),
   },
   'domain.servers.cpu': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'domain.servers.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.servers.ha': {
-    unit: '台',
+    unit: i18n.t('dashboard.text_2'),
   },
   'domain.servers.ha.cpu': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'domain.servers.ha.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -674,13 +675,13 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.servers.isolated_devices': {
-    unit: '块',
+    unit: i18n.t('dashboard.text_4'),
   },
   'domain.servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.snapshot': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'domain.storages': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
@@ -692,37 +693,37 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.vpcs': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
 }
 
 export const K8S_USAGE_CONFIG = {
   'all.cluster.count': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'all.cluster.node.count': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'all.cluster.node.not_ready_count': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'all.cluster.node.ready_count': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'all.cluster.node.pod.capacity': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'all.cluster.node.pod.count': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'all.cluster.node.cpu.capacity': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'all.cluster.node.cpu.limit': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'all.cluster.node.cpu.request': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'all.cluster.node.memory.capacity': {
     formatter: val => sizestrWithUnit(val, 'B', 1024),
@@ -734,31 +735,31 @@ export const K8S_USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'B', 1024),
   },
   'domain.cluster.count': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'domain.cluster.node.count': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'domain.cluster.node.not_ready_count': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'domain.cluster.node.ready_count': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'domain.cluster.node.pod.capacity': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'domain.cluster.node.pod.count': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'domain.cluster.node.cpu.capacity': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'domain.cluster.node.cpu.limit': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'domain.cluster.node.cpu.request': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'domain.cluster.node.memory.capacity': {
     formatter: val => sizestrWithUnit(val, 'B', 1024),
@@ -770,31 +771,31 @@ export const K8S_USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'B', 1024),
   },
   'project.cluster.count': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'project.cluster.node.count': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'project.cluster.node.not_ready_count': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'project.cluster.node.ready_count': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'project.cluster.node.pod.capacity': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'project.cluster.node.pod.count': {
-    unit: '个',
+    unit: i18n.t('dashboard.text_1'),
   },
   'project.cluster.node.cpu.capacity': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'project.cluster.node.cpu.limit': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'project.cluster.node.cpu.request': {
-    unit: '核',
+    unit: i18n.t('dashboard.text_3'),
   },
   'project.cluster.node.memory.capacity': {
     formatter: val => sizestrWithUnit(val, 'B', 1024),

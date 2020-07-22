@@ -2,7 +2,7 @@
   <div class="h-100 position-relative">
     <div class="dashboard-card-wrap">
       <div class="dashboard-card-header">
-        <div class="dashboard-card-header-left">{{ form.fd.name || '磁贴名称' }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
+        <div class="dashboard-card-header-left">{{ form.fd.name || $t('dashboard.text_6') }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
         <div class="dashboard-card-header-right"><slot name="actions" :handle-edit="handleEdit" /></div>
       </div>
       <div class="dashboard-card-body align-items-center">
@@ -10,16 +10,16 @@
         <div class="number-card-unit">{{ this.usage.unit }}</div>
       </div>
     </div>
-    <base-drawer class="drawer-wrapper" @update:visible="updateVisible" :visible="visible" title="配置磁贴" @ok="handleSubmit">
+    <base-drawer class="drawer-wrapper" @update:visible="updateVisible" :visible="visible" :title="$t('dashboard.text_5')" @ok="handleSubmit">
       <a-form
         hideRequiredMark
         :form="form.fc"
         v-bind="formItemLayout">
         <slot />
-        <a-form-item label="磁贴名称">
+        <a-form-item :label="$t('dashboard.text_6')">
           <a-input v-decorator="decorators.name" />
         </a-form-item>
-        <quota-config :fc="form.fc" :decorators="decorators" usage-label="指标" @update:usage_key="setDefaultName" />
+        <quota-config :fc="form.fc" :decorators="decorators" usage-:label="$t('dashboard.text_20')" @update:usage_key="setDefaultName" />
       </a-form>
     </base-drawer>
   </div>
@@ -41,7 +41,7 @@ export default {
   },
   mixins: [mixin],
   data () {
-    const initialNameValue = ((this.params && this.params.type !== 'k8s') && this.params.name) || `当前${this.$t('dictionary.project')}${this.$t('dictionary.server')}`
+    const initialNameValue = ((this.params && this.params.type !== 'k8s') && this.params.name) || `${this.$t('dashboard.text_23')}${this.$t('dictionary.project')}${this.$t('dictionary.server')}`
     const initialUsageKeyValue = ((this.params && this.params.type !== 'k8s') && this.params.usage_key) || 'server'
     return {
       data: {},
@@ -62,7 +62,7 @@ export default {
           {
             initialValue: initialNameValue,
             rules: [
-              { required: true, message: '请输入磁贴名称' },
+              { required: true, message: this.$t('dashboard.text_8') },
             ],
           },
         ],
@@ -95,7 +95,7 @@ export default {
           {
             initialValue: initialUsageKeyValue,
             rules: [
-              { required: true, message: '请选择指标' },
+              { required: true, message: this.$t('dashboard.text_22') },
             ],
           },
         ],

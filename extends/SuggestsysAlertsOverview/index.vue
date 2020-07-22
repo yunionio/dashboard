@@ -5,33 +5,33 @@
         <div class="dashboard-card-header-left">{{ fd.name }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
         <div class="dashboard-card-header-right">
           <slot name="actions" :handle-edit="() => visible = true" />
-          <router-link v-if="!edit" to="/suggestsysalert" class="ml-2">更多</router-link>
+          <router-link v-if="!edit" to="/suggestsysalert" class="ml-2">{{$t('dashboard.text_13')}}</router-link>
         </div>
       </div>
       <div class="dashboard-card-body align-items-center justify-content-center flex-column">
-        <div class="flex-shrink-0 flex-grow-0 font-weight-bold mt-2">您的本月支出预估有<span class="success-color">{{ percent }}%</span>的下降空间</div>
+        <div class="flex-shrink-0 flex-grow-0 font-weight-bold mt-2">{{$t('dashboard.text_50')}}<span class="success-color">{{ percent }}%</span>{{$t('dashboard.text_51')}}</div>
         <div class="flex-fill w-100">
           <e-chart :options="chartOptions" style="height: 100%; width: 100%;" autoresize />
         </div>
         <div class="w-100">
           <div class="d-flex">
-            <div class="flex-grow-0 flex-shrink-0 text-color-help">本月预估成本</div>
+            <div class="flex-grow-0 flex-shrink-0 text-color-help">{{$t('dashboard.text_52')}}</div>
             <div class="flex-fill text-right error-color font-weight-bold">￥{{ forcastAmount }}</div>
           </div>
           <div class="d-flex mt-2">
-            <div class="flex-grow-0 flex-shrink-0 text-color-help">费用优化可省</div>
+            <div class="flex-grow-0 flex-shrink-0 text-color-help">{{$t('dashboard.text_53')}}</div>
             <div class="flex-fill text-right success-color font-weight-bold">￥{{ suggestAmount }}</div>
           </div>
         </div>
       </div>
     </div>
-    <base-drawer :visible.sync="visible" title="配置磁贴" @ok="handleSubmit">
+    <base-drawer :visible.sync="visible" :title="$t('dashboard.text_5')" @ok="handleSubmit">
       <a-form-model
         ref="form"
         hideRequiredMark
         :model="fd"
         :rules="rules">
-        <a-form-model-item label="磁贴名称" prop="name">
+        <a-form-model-item :label="$t('dashboard.text_6')" prop="name">
           <a-input v-model="fd.name" />
         </a-form-model-item>
       </a-form-model>
@@ -59,7 +59,7 @@ export default {
     edit: Boolean,
   },
   data () {
-    const initNameValue = (this.params && this.params.name) || '费用优化总览'
+    const initNameValue = (this.params && this.params.name) || this.$t('dashboard.text_54')
     return {
       data: {},
       visible: false,
@@ -69,7 +69,7 @@ export default {
       },
       rules: {
         name: [
-          { required: true, message: '请输入磁贴名称' },
+          { required: true, message: this.$t('dashboard.text_8') },
         ],
       },
     }
