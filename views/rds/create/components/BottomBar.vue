@@ -46,6 +46,7 @@ import _ from 'lodash'
 import { BILL_TYPES_MAP } from '@DB/views/redis/constants'
 import { sizestr } from '@/utils/utils'
 import { Manager } from '@/utils/manager'
+import { numerify } from '@/filters'
 
 export default {
   name: 'BottomBar',
@@ -120,8 +121,8 @@ export default {
         USD: '$',
         CNY: '¥',
       }
-      if (this.pricesList && this.pricesList.length > 0) {
-        return currencys[this.pricesList[0].currency]
+      if (this.priceTotal) {
+        return currencys[this.priceTotal.currency]
       }
       return '¥'
     },
@@ -129,12 +130,12 @@ export default {
       if (this.price) {
         if (this.isPackage && this.durationNum) {
           const _day = (this.price / 30 / this.durationNum).toFixed(2)
-          const _hour = (parseFloat(_day) / 24).toFixed(2)
-          return `(合¥${_day}/天  ¥${_hour}/小时)`
+          const _hour = numerify((parseFloat(_day) / 24), '0,0.00')
+          return `(合${this.currency}${_day}/天  ${this.currency}${_hour}/小时)`
         } else {
-          const _day = (this.price * 24).toFixed(2)
-          const _month = this.priceTotal.month_price
-          return `(合¥${_day}/天 ¥${_month}/月)`
+          const _day = numerify(this.price * 24, '0,0.00')
+          const _month = numerify(this.priceTotal.month_price, '0,0.00')
+          return `(合${this.currency}${_day}/天 ${this.currency}${_month}/月)`
         }
       }
       return '--'
@@ -150,7 +151,7 @@ export default {
   },
   methods: {
     formatToPrice (val) {
-      let ret = `¥ ${val.toFixed(2)}`
+      let ret = `${this.currency} ${numerify(val, '0,0.00')}`
       ret += !this.isPackage ? ' / 时' : ''
       return ret
     },
@@ -162,13 +163,20 @@ export default {
       }
       try {
         const { region_ext_id, storage_type, provider, name, category, engine } = sku
-        const price_keys = [
-          `${provider.toLowerCase()}::${region_ext_id}::::rds::${name}`,
-        ]
-        if (provider.toLowerCase() === 'huawei') {
-          price_keys.push(`${provider.toLowerCase()}::${region_ext_id}::::rds_storage::${category}_${engine}_ULTRA${storage_type}::${disk_size_gb}GB`)
+        const pvt = provider.toLowerCase()
+        const price_keys = []
+        if (pvt === 'google') {
+          price_keys.push(`${pvt}::${region_ext_id}::::rds::${category}_${engine}_${name}`)
         } else {
-          price_keys.push(`${provider.toLowerCase()}::${region_ext_id}::::rds_storage::${storage_type}::${disk_size_gb}GB`)
+          price_keys.push(`${pvt}::${region_ext_id}::::rds::${name}`)
+        }
+
+        if (pvt === 'huawei') {
+          price_keys.push(`${pvt}::${region_ext_id}::::rds_storage::${category}_${engine}_ULTRA${storage_type}::${disk_size_gb}GB`)
+        } else if (pvt === 'google') {
+          price_keys.push(`${pvt}::${region_ext_id}::::rds_storage::${category}_${engine}_${storage_type}::${disk_size_gb}GB`)
+        } else {
+          price_keys.push(`${pvt}::${region_ext_id}::::rds_storage::${storage_type}::${disk_size_gb}GB`)
         }
         const { data } = await new this.$Manager('price_infos', 'v1').get({
           id: 'total',

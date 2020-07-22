@@ -31,6 +31,7 @@
 import { sizestr } from '@/utils/utils'
 import { BILL_TYPES_MAP } from '@DB/views/redis/constants'
 import PageListEmpty from '@/components/PageList/Loader'
+import { numerify } from '@/filters'
 
 export default {
   name: 'rdsSkuList',
@@ -130,9 +131,13 @@ export default {
                   price = rate.month_price
                   unit = '月'
                 }
+                const currencys = {
+                  USD: '$',
+                  CNY: '¥',
+                }
                 return [
-                  <span style="color: rgb(230, 139, 80);">{ price.toFixed(2) }</span>,
-                  <span> 元 / {unit}</span>,
+                  <span style="color: rgb(230, 139, 80);">{currencys[rate.currency]} { numerify(price, '0,0.00') }</span>,
+                  <span>  / {unit}</span>,
                 ]
               }
               return '-'
@@ -172,11 +177,18 @@ export default {
       const managerRates = new this.$Manager('cloud_sku_rates', 'v1')
       const params = []
       skuList.forEach(sku => {
-        const { provider, region_ext_id, zone_ext_id, zone_id, cache = 'rds', name } = sku
-        const _arr = [provider.toLowerCase(), region_ext_id, (zone_ext_id || zone_id), cache, name]
-        const key = _arr.join('::')
-        sku.data_key = key
-        params.push(key)
+        const { provider, region_ext_id, zone_id, cache = 'rds', name, category, engine } = sku
+        const pvt = provider.toLowerCase()
+        if (pvt === 'google') {
+          const key = `${pvt}::${region_ext_id}::::${cache}::${category}_${engine}_${name}`
+          sku.data_key = key
+          params.push(key)
+        } else {
+          const _arr = [provider.toLowerCase(), region_ext_id, zone_id, cache, name]
+          const key = _arr.join('::')
+          sku.data_key = key
+          params.push(key)
+        }
       })
       const param_keys = params.join('$')
       try {
