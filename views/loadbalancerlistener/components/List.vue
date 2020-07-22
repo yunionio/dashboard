@@ -13,6 +13,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import { getNameFilter } from '@/utils/common/tableFilter'
+import expectStatus from '@/constants/expectStatus'
 
 export default {
   name: 'LoadbalancerlistenerList',
@@ -35,6 +36,9 @@ export default {
         getParams: this.getParam,
         filterOptions: {
           name: getNameFilter(),
+        },
+        steadyStatus: {
+          status: Object.values(expectStatus.lb).flat(),
         },
       }),
     }
