@@ -192,12 +192,20 @@ export default {
     typeChange (e) {
       if (e === 'windows') {
         this.form.fc.setFieldsValue({ ports: '3389' })
+        this.portsChecked = false
+        this.portsDisabled = false
       } else if (e === 'linux') {
         this.form.fc.setFieldsValue({ ports: '22' })
+        this.portsChecked = false
+        this.portsDisabled = false
       } else if (e === 'http') {
         this.form.fc.setFieldsValue({ ports: '80' })
+        this.portsChecked = false
+        this.portsDisabled = false
       } else if (e === 'https') {
         this.form.fc.setFieldsValue({ ports: '443' })
+        this.portsChecked = false
+        this.portsDisabled = false
       } else if (e === 'ping') {
         this.portsChecked = true
         this.portsDisabled = true
@@ -255,7 +263,7 @@ export default {
         })
       } else {
         this.$nextTick(() => {
-          this.form.fc.resetFields(['ports'])
+          this.form.fc.setFieldsValue({ ports: '' })
         })
       }
     },
