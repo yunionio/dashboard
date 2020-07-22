@@ -28,8 +28,8 @@
   </div>
 </template>
 <script>
-import { sizestr } from '@/utils/utils'
 import { BILL_TYPES_MAP } from '@DB/views/redis/constants'
+import { sizestr } from '@/utils/utils'
 import PageListEmpty from '@/components/PageList/Loader'
 import { numerify } from '@/filters'
 
