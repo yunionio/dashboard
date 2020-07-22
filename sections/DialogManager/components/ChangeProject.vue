@@ -78,9 +78,6 @@ export default {
       return this.params.name || this.$t('common.text00006')
     },
     title () {
-      return this.params.title || `${this.$t('common.text00078')}${this.$t('dictionary.project')}`
-    },
-    title () {
       return this.params.title || `更改${this.$t('dictionary.project')}`
     },
   },
