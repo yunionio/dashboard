@@ -224,7 +224,7 @@ export default {
       this.$nextTick(() => {
         this.form.fc.setFieldsValue(updateData)
         this.$nextTick(() => { // 让有条件渲染的表单项重新赋值，如 证书、重写cookie 等
-          this.form.fc.getFieldDecorator('scheduler', this.decorators.scheduler[1])
+          // this.form.fc.getFieldDecorator('scheduler', this.decorators.scheduler[1])
           this.form.fc.setFieldsValue(updateData)
         })
       })
