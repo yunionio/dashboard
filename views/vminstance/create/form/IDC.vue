@@ -256,6 +256,7 @@ export default {
           usable: true,
           zone,
           hypervisor: this.form.fd.hypervisor,
+          ...this.scopeParams,
         }
       }
       return {}
