@@ -43,7 +43,7 @@
         <a-form-item label="权重" :extra="`权重范围是0-${params.maxWeight}，权重越大转发到该服务器的请求越多`">
           <a-input-number v-decorator="decorators.weight" />
         </a-form-item>
-        <a-form-item label="SSL" extra="通过加密方式访问后端服务器">
+        <a-form-item v-if="isOneCloud" label="SSL" extra="通过加密方式访问后端服务器">
           <a-switch v-decorator="decorators.ssl" />
         </a-form-item>
       </a-form>
@@ -81,7 +81,15 @@ export default {
     }
   },
   computed: {
+    isOneCloud () {
+      return this.params.lbBackendgroupData.provider === 'OneCloud'
+    },
     backendTypes () {
+      if (!this.isOneCloud) {
+        return {
+          guest: '指定虚拟机',
+        }
+      }
       const _ = {
         guest: '指定虚拟机',
         host: '指定宿主机',

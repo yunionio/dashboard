@@ -21,7 +21,7 @@
           </div>
           <a-input v-decorator="decorators.path" placeholder="请输入" />
         </a-form-item>
-         <redirect-form-items v-if="this.params.lbListenerData.brand === 'OneCloud'" :form="form" @redirectChange="handleRedirectChange" />
+         <redirect-form-items v-if="isOneCloud" :form="form" @redirectChange="handleRedirectChange" />
          <template v-if="!isRedirect">
           <a-form-item label="后端服务器组">
             <base-select
@@ -32,13 +32,13 @@
               v-decorator="decorators.backend_group"
               :select-props="{ placeholder: '请选择后端服务器组' }" />
           </a-form-item>
-          <a-form-item label="限定接受请求速率">
+          <a-form-item v-if="isOneCloud" label="限定接受请求速率">
             <div slot="extra">
               0为默认，表示不限速
             </div>
             <a-input :min="0" v-decorator="decorators.http_request_rate" addonAfter="次/秒" type="number" />
           </a-form-item>
-          <a-form-item label="限定同源IP发送请求速率">
+          <a-form-item v-if="isOneCloud" label="限定同源IP发送请求速率">
             <div slot="extra">
               限制同一源地址对转发策略发送请求的速率，0为默认值，表示不限速
             </div>
@@ -162,6 +162,9 @@ export default {
         params.type = 'normal'
       }
       return params
+    },
+    isOneCloud () {
+      return this.params.lbListenerData.provider === 'OneCloud'
     },
   },
   created () {
