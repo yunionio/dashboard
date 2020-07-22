@@ -178,6 +178,7 @@ export default {
       const managerRates = new this.$Manager('cloud_sku_rates', 'v1')
       const params = []
       skuList.forEach(sku => {
+        // eslint-disable-next-line camelcase
         const { provider, region_ext_id, zone_ext_id, cache = 'cache', name } = sku
         // eslint-disable-next-line camelcase
         let _arr = [ provider.toLowerCase(), region_ext_id, zone_ext_id, cache, name ]
