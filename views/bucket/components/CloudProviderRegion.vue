@@ -144,6 +144,7 @@ export default {
           this.FC.setFieldsValue({
             [id]: list[0].id,
           })
+          this.$emit('cloudregionChange', list[0])
         }
       } catch (err) {
         throw err
@@ -177,7 +178,10 @@ export default {
       cloudregion: {
         loading: cloudregionLoading,
         list: cloudregionList,
-        onChange: () => {},
+        onChange: (id, vnode) => {
+          const { row } = vnode.data.attrs
+          this.$emit('cloudregionChange', row)
+        },
       },
     }
     const FormItem = ({ children }) => {
@@ -197,7 +201,7 @@ export default {
           {
             list.map(item => {
               const { id, name } = item
-              return <a-select-option value={id}>{name}</a-select-option>
+              return <a-select-option row={item} value={id} >{name}</a-select-option>
             })
           }
         </a-select>,
