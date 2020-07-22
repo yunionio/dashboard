@@ -49,6 +49,9 @@ export default {
           { label: '可用受管物理机', key: 'baremetals_enabled' },
           { label: '二层网络', key: 'wires' },
         ],
+        getParams: {
+          cloud_env: 'private_or_onpremise',
+        },
       },
       groupActions: [
         {
