@@ -11,6 +11,18 @@ export default {
             onManager: this.onManager,
           })
         },
+        meta: obj => {
+          const { provider } = this.data
+          if (provider.toLowerCase === 'huawei') {
+            return {
+              validate: false,
+              tooltip: '华为云暂不支持端口',
+            }
+          }
+          return {
+            validate: true,
+          }
+        },
       },
       {
         label: '修改权重',
