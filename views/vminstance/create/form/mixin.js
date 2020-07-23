@@ -104,6 +104,7 @@ export default {
       decorators,
       capabilityParams: {}, // 防止 capability 反复调用，这里对当前的接口参数做记录
       price: null,
+      collapseActive: [],
     }
   },
   provide () {
@@ -393,6 +394,7 @@ export default {
         })
     },
     validateForm () {
+      this.collapseActive = ['1']
       return new Promise((resolve, reject) => {
         this.form.fc.validateFieldsAndScroll({ scroll: { alignWithTop: true, offsetTop: 100 } }, (err, values) => {
           if (!err) {
