@@ -39,7 +39,7 @@ export const ACCOUNT_PRIVILEGES = {
   custom: '自定义',
 }
 export const ENGINR_VERSION_SERVER_HUAWEI_KYES = ['2008_R2_WEB', '2008_R2_EE', '2012_WEB', '2012_EE', '2012_SE', '2014_WEB', '2014_SE', '2014_EE', '2016_WEB', '2016_SE', '2016_EE', '2017_WEB', '2017_SE', '2017_EE']
-export const ENGINR_VERSION_SERVER_ALIYUN_KYES = ['2012_web', '2012_std_ha', '2012', '2012_ent_ha', '2016_web', '2016_std_ha', '2016_ent_ha', '2017_std_ha', '2017_ent', '2017 Enterprise', '2017 Express', '2017 Standard', '2017 Web']
+export const ENGINR_VERSION_SERVER_ALIYUN_KYES = ['2008r2', '08r2_ent_ha', '2012_web', '2012_std_ha', '2012_ent_ha', '2012', '2014_std_ha', '2014_ent_ha', '2016_web', '2016_std_ha', '2016_ent_ha', '2017_std_ha', '2017_ent', '2017 Enterprise', '2017 Express', '2017 Standard', '2017 Web', '2019_std_ha']
 export const ENGINR_VERSION_POSTGRE_KYES = ['9.5', '9.6', '10', '11', '1.0']
 // Elasticache机型翻译
 export const ENGINR_VERSION = {
@@ -49,6 +49,7 @@ export const ENGINR_VERSION = {
   '2017_ent': '2017 企业集群版',
   '2016_std_ha': '2016 标准版',
   '2008r2': '2008 R2',
+  '08r2_ent_ha': '2008 R2 云盘版',
   '2016_web': '2016 WEB',
   '2012_web': '2012 WEB',
   '2016_ent_ha': '2016 企业版',
@@ -57,4 +58,7 @@ export const ENGINR_VERSION = {
   '2017_std_ha': '2017 标准版',
   '2012_std_ha': '2012 标准版',
   '1.0': '增强版',
+  '2014_ent_ha': '2014 企业版',
+  '2014_std_ha': '2014 标准版',
+  '2019_std_ha': '2019 标准版',
 }
