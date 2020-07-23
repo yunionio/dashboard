@@ -359,7 +359,7 @@ export default {
     },
     defaultSelect (list) {
       let isUnvalidOrEmpty = !this.value
-      if (this.value) {
+      if (R.is(String, this.value)) {
         const value = _.get(this.value, 'key') || this.value
         isUnvalidOrEmpty = !list.find(val => val.id === value || val.key === value)
       }
