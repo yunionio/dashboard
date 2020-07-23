@@ -40,6 +40,12 @@ export default {
               return `name.contains(${val})`
             },
           },
+          region: {
+            label: '区域',
+          },
+          zone: {
+            label: '可用区',
+          },
         },
       }),
       exportDataOptions: {

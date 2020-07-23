@@ -17,7 +17,7 @@ import { mapGetters } from 'vuex'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows.js'
-import { getBrandFilter, getAccountFilter, getTenantFilter } from '@/utils/common/tableFilter'
+import { getBrandFilter, getAccountFilter, getTenantFilter, getDomainFilter } from '@/utils/common/tableFilter'
 import ListMixin from '@/mixins/list'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import expectStatus from '@/constants/expectStatus'
@@ -100,6 +100,7 @@ export default {
           brand: brandFilter,
           cloudaccount: getAccountFilter(),
           projects: getTenantFilter(),
+          domain: getDomainFilter(),
           region: {
             label: '区域',
           },

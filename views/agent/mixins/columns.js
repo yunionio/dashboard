@@ -1,6 +1,7 @@
 import {
   getNameDescriptionTableColumn,
   getTagTableColumn,
+  getRegionTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -42,11 +43,7 @@ export default {
           return this.$moment(cellValue).fromNow()
         },
       },
-      {
-        field: 'zone',
-        title: '可用区',
-        width: 70,
-      },
+      getRegionTableColumn(),
       {
         field: 'version',
         title: '软件版本',
