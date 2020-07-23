@@ -42,6 +42,7 @@
 
 <script>
 import mixin from '../mixins/formStepItem'
+import { schedulerProviderMaps } from '@Network/views/loadbalancerlistener/constants'
 
 export default {
   name: 'LBListenerCreateProtocol',
@@ -55,6 +56,21 @@ export default {
         },
       ],
     }
+  },
+  computed: {
+    schedulerTypeOpts () {
+      const type = this.lbDetail.brand.toLowerCase()
+      if (type) {
+        const opts = schedulerProviderMaps[type.toLowerCase()]
+        const { listener_type } = this.form.fd
+        if ((listener_type === 'tcp' || listener_type === 'udp') && type === 'qcloud') {
+          const noUdpScheduler = ['sch', 'tch', 'qch']
+          return opts.filter(val => !noUdpScheduler.includes(val.key))
+        }
+        return opts
+      }
+      return []
+    },
   },
   watch: {
     'form.fd.scheduler' (val) {
