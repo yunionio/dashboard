@@ -7,7 +7,7 @@
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <loader loading v-if="!(bindedDisksLoaded && disksInitLoaded)" />
       <a-form :form="form.fc" hideRequiredMark v-show="bindedDisksLoaded && disksInitLoaded">
-        <a-form-item label="磁盘" v-bind="formItemLayout" v-if="bindedDisksLoaded">
+        <a-form-item label="硬盘" v-bind="formItemLayout" v-if="bindedDisksLoaded">
           <base-select
             class="w-100"
             filterable
@@ -17,7 +17,7 @@
             :mapper="mapperDisks"
             :params="diskParams"
             :init-loaded.sync="disksInitLoaded"
-            :select-props="{ allowClear: true, placeholder: '请选择磁盘', mode: 'multiple' }" />
+            :select-props="{ allowClear: true, placeholder: '请选择硬盘', mode: 'multiple' }" />
         </a-form-item>
       </a-form>
     </div>
