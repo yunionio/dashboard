@@ -120,7 +120,7 @@
       <!-- <a-divider orientation="left">高级配置</a-divider> -->
       <a-collapse :bordered="false">
         <a-collapse-panel header="高级配置" key="1">
-          <a-form-item label="弹性公网IP">
+          <a-form-item v-if="!isServertemplate" label="弹性公网IP">
             <eip-config
               :decorators="decorators.eip"
               :eip-params="eipParams"

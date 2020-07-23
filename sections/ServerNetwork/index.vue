@@ -2,7 +2,9 @@
   <div>
     <a-form-item>
       <a-radio-group v-decorator="decorator.networkType" @change="change">
-        <a-radio-button v-for="(item, key) in networkMaps" :value="key" :key="key">{{ item.label }}</a-radio-button>
+        <template  v-for="(item, key) in networkMaps">
+          <a-radio-button v-if="(isServertemplate && (key !== 'schedtag')) || !isServertemplate" :value="key" :key="key">{{ item.label }}</a-radio-button>
+        </template>
       </a-radio-group>
     </a-form-item>
     <a-form-item v-if="networkComponent === 'config'">
@@ -86,6 +88,10 @@ export default {
     serverCount: {
       type: Number,
       default: 1,
+    },
+    isServertemplate: {
+      type: Boolean,
+      default: false,
     },
   },
   data () {
