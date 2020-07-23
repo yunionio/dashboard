@@ -32,7 +32,9 @@ export default {
       list: this.$list.createList(this, {
         resource: 'snapshotpolicycaches',
         steadyStatus: Object.values(expectStatus.snapshotpolcyCache).flat(),
-        getParams: this.getParams,
+        getParams: {
+          snapshotpolicy_id: this.resId,
+        },
       }),
       columns: [
         getCopyWithContentTableColumn({ field: 'name', title: '策略名称' }),
