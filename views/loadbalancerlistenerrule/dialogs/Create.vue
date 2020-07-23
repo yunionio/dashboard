@@ -158,7 +158,7 @@ export default {
         scope: this.$store.getters.scope,
         loadbalancer: this.params.lbListenerData.loadbalancer_id,
       }
-      if (this.params.provider && this.params.provider.toLowerCase() === 'aliyun') {
+      if (this.params.lbListenerData.provider && this.params.lbListenerData.provider.toLowerCase() === 'aliyun') {
         params.type = 'normal'
       }
       return params

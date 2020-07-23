@@ -62,7 +62,7 @@ export default {
               return `associate_type.contains("${val}")`
             },
           },
-          project_domain: getProjectDomainFilter(),
+          project_domains: getProjectDomainFilter(),
         },
         responseData: this.responseData,
       }),
