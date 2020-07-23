@@ -7,14 +7,11 @@
       <a-form
         :form="form.fc">
         <a-form-item label="带宽" v-bind="formItemLayout">
-          <a-row>
-            <a-col :span="12">
-              <a-slider :min="1" :max="200" v-decorator="decorators.bandwidth" />
-            </a-col>
-            <a-col :span="4">
-              <a-input-number :min="1" :max="200" v-decorator="decorators.bandwidth" />
-            </a-col>
-          </a-row>
+          <a-input-number v-if="isOneCloud" style="width: 120px" :precision="0" :min="1" v-decorator="decorators.bandwidth" />
+          <a-tooltip v-else placement="top" :title="`范围在 1～${maxBandwidth}Mbps`">
+            <a-input-number style="width: 120px" :precision="0" :min="1" :max="200" v-decorator="decorators.bandwidth" />
+          </a-tooltip>
+          <span class="ml-2">Mbps</span>
         </a-form-item>
       </a-form>
     </div>
@@ -55,6 +52,23 @@ export default {
         },
       },
     }
+  },
+  computed: {
+    isOneCloud () {
+      return this.params.data[0].provider === 'OneCloud'
+    },
+    maxBandwidth () {
+      const eipItem = this.params.data[0]
+      let maxBandwidth = 200
+      const isBandwidth = eipItem.charge_type === 'bandwidth'
+      if (eipItem.provider === 'Huawei') {
+        maxBandwidth = isBandwidth ? 2000 : 300
+      }
+      if (eipItem.provider === 'Aliyun') {
+        maxBandwidth = 500
+      }
+      return maxBandwidth
+    },
   },
   methods: {
     doUpdate (data) {
