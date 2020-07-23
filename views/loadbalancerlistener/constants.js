@@ -10,7 +10,7 @@ export const schedulerMaps = {
 export const schedulerProviderMaps = {
   onecloud: [schedulerMaps.rr, schedulerMaps.wrr, schedulerMaps.wlc, schedulerMaps.sch],
   aliyun: [schedulerMaps.rr, schedulerMaps.wrr, schedulerMaps.wlc, schedulerMaps.sch, schedulerMaps.tch, schedulerMaps.qch],
-  qcloud: [schedulerMaps.wrr, schedulerMaps.wlc],
+  qcloud: [schedulerMaps.wrr, schedulerMaps.wlc, schedulerMaps.sch],
   huawei: [schedulerMaps.wrr, schedulerMaps.wlc, schedulerMaps.sch],
   aws_network: [schedulerMaps.wrr, schedulerMaps.wlc, schedulerMaps.sch],
   aws_application: [schedulerMaps.wrr, schedulerMaps.wlc, schedulerMaps.sch],
