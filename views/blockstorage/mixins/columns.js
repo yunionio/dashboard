@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import { STORAGE_TYPES, MEDIUM_TYPES } from '@Storage/constants/index.js'
 import { sizestr } from '@/utils/utils'
-import { getNameDescriptionTableColumn, getEnabledTableColumn, getStatusTableColumn, getBrandTableColumn, getPublicScopeTableColumn, getProjectDomainTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
+import { getNameDescriptionTableColumn, getEnabledTableColumn, getStatusTableColumn, getBrandTableColumn, getPublicScopeTableColumn, getProjectDomainTableColumn, getTagTableColumn, getRegionTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   created () {
@@ -80,6 +80,7 @@ export default {
           },
         },
       },
+      getRegionTableColumn(),
     ]
   },
 }

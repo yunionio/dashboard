@@ -166,6 +166,12 @@ export default {
             },
           },
           project_domains: getProjectDomainFilter(),
+          region: {
+            label: '区域',
+          },
+          zone: {
+            label: '可用区',
+          },
         },
       }),
       groupActions: !hasServices('hostagent') ? R.remove(0, 1, groupActions) : groupActions,
