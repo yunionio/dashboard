@@ -38,6 +38,9 @@ export default {
           { label: '可用区', key: 'zone_count' },
           { label: '平台', key: 'provider' },
         ],
+        getParams: {
+          cloud_env: 'private_or_onpremise',
+        },
       },
     }
   },
