@@ -22,6 +22,7 @@ export default {
       type: [Object, Function],
       default: () => ({}),
     },
+    disableCreate: Boolean,
   },
   data () {
     return {
@@ -65,6 +66,7 @@ export default {
           meta: () => {
             return {
               buttonType: 'primary',
+              validate: !this.disableCreate,
             }
           },
         },
