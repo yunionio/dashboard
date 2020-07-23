@@ -256,6 +256,7 @@ export default {
         await this.doCreate(genValues)
         this.loading = false
         this.$message.success('创建节点成功，并开始部署')
+        this.params.refresh()
         this.cancelDialog()
       } catch (error) {
         this.loading = false
