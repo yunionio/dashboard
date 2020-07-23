@@ -110,7 +110,7 @@ export default {
         [8, 6, 8],
         [13, 9],
       ],
-      wrapStyle: { left: '500px' },
+      wrapStyle: { left: '300px' },
     }
   },
   provide: {
@@ -143,7 +143,7 @@ export default {
     sidepageLeft: {
       handler (val, oldVal) {
         if (val !== oldVal) {
-          this.wrapStyle.left = `${val}px`
+          this.wrapStyle.left = `${val || 300}px`
         }
       },
       immediate: true,
