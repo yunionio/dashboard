@@ -57,6 +57,7 @@ export default {
               title: '新建',
               data: this.data,
               onManager: this.onManager,
+              refresh: this.refresh,
             })
           },
           meta: () => ({
