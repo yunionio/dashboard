@@ -10,11 +10,11 @@
           <a-input placeholder="请输入名称" v-decorator="decorators.name" />
           <span slot="extra">
             4~62个字节，小写字母与数字开头和结尾，中间可以为：小写字母、数字、.-_:
-            <br />Azure 不支持 -
+            <br />Azure名称不允许出现 -
           </span>
         </a-form-item>
          <a-form-item label="区域">
-          <cloud-provider-region ref="providerRegionRef" :cloudprovideParams="scopeParams" :cloudregionParams="scopeParams" />
+          <cloud-provider-region @cloudregionChange="handleCloudregionChange" ref="providerRegionRef" :cloudprovideParams="scopeParams" :cloudregionParams="scopeParams" />
         </a-form-item>
       </a-form>
     </div>
@@ -58,6 +58,7 @@ export default {
         scope: this.$store.getters.scope,
         project_domain: undefined,
       },
+      cloudregion: {},
     }
   },
   computed: {
@@ -89,7 +90,15 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: '请输入名称' },
-              { validator: this.$validate('bucketName') },
+              {
+                validator: (rule, value, _callback) => {
+                  const isAzure = this.cloudregion.provider === 'Azure'
+                  if (isAzure && (value && value.indexOf('-'))) {
+                    _callback(new Error('Azure名称不允许出现 -'))
+                  }
+                  return this.$validate('bucketName')(rule, value, _callback)
+                },
+              },
             ],
           },
         ],
@@ -121,6 +130,21 @@ export default {
           resolve(values)
         })
       })
+    },
+    handleCloudregionChange (cloudregion) {
+      const isAzure = cloudregion.provider === 'Azure'
+      const name = this.form.fc.getFieldValue('name')
+      this.cloudregion = cloudregion
+      if (isAzure && (name && name.indexOf('-'))) {
+        this.form.fc.setFields({
+          name: {
+            value: name,
+            errors: [new Error('Azure名称不允许出现 -')],
+          },
+        })
+      } else if (name) {
+        this.form.fc.validateFields(['name'])
+      }
     },
     async handleConfirm () {
       this.loading = true
