@@ -8,7 +8,7 @@
     :loaded="loaded"
     :tabs="detailTabs"
     @tab-change="handleTabChange">
-    <component :is="params.windowData.currentTab" :res-id="data.id" :data="detailData" :on-manager="onManager" :getParams="getParams" />
+    <component :is="params.windowData.currentTab" :res-id="data.id" :data="detailData" :on-manager="onManager" @tab-change="handleTabChange" />
   </base-side-page>
 </template>
 
@@ -16,7 +16,9 @@
 import ColumnsMixin from '../mixins/columns'
 import CloudregionDetail from './Detail'
 import Dashboard from './Dashboard'
-import ZoneList from '@Cloudenv/views/zone/components/List'
+import VPCList from './VPCList'
+import NetworkList from './NetworkList'
+import ZoneList from './ZoneList'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 
@@ -26,6 +28,8 @@ export default {
     CloudregionDetail,
     ZoneList,
     Dashboard,
+    VPCList,
+    NetworkList,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin],
   data () {
@@ -33,23 +37,12 @@ export default {
       detailTabs: [
         { label: '详情', key: 'cloudregion-detail' },
         { label: '可用区', key: 'zone-list' },
+        { label: 'VPC', key: 'v-p-c-list' },
+        { label: 'IP子网', key: 'network-list' },
         { label: '资源统计', key: 'dashboard' },
         { label: '操作日志', key: 'event-drawer' },
       ],
     }
-  },
-  computed: {
-    getParams () {
-      if (this.params.windowData.currentTab === 'zone-list') {
-        return {
-          details: true,
-          with_meta: true,
-          cloud_env: 'private_or_onpremise',
-          cloudregion_id: this.data.id,
-        }
-      }
-      return null
-    },
   },
 }
 </script>

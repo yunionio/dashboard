@@ -1,6 +1,7 @@
 import {
   getEnabledTableColumn,
   getNameDescriptionTableColumn,
+  getBrandTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -15,7 +16,7 @@ export default {
           )
         },
       }),
-      getEnabledTableColumn({ title: '状态' }),
+      getEnabledTableColumn({ title: '启用状态' }),
       {
         field: 'guest_count',
         title: this.$t('dictionary.server'),
@@ -32,6 +33,7 @@ export default {
         title: '可用区',
         width: 70,
       },
+      getBrandTableColumn({ field: 'provider' }),
     ]
   },
 }
