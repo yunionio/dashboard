@@ -152,7 +152,7 @@ export default {
           response = await this.getDomainList(params)
         } else {
           response = await this.dm.list({ params })
-          if (response.data && !response.data.data.find(val => val.key === this.userInfo.projectDomainId)) return // 如果下拉列表没有当前域值，return
+          if (response.data && !response.data.data.find(domain => domain.id === this.userInfo.projectDomainId)) return // 如果下拉列表没有当前域值，return
         }
         const data = response.data.data || []
         this.domains = data.map(val => ({ ...val, key: val.id, label: val.name }))
