@@ -15,7 +15,7 @@
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
-import { getNameFilter, getFilter, getTenantFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getFilter, getTenantFilter, getDomainFilter } from '@/utils/common/tableFilter'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
@@ -89,6 +89,7 @@ export default {
           region: {
             label: '区域',
           },
+          domain: getDomainFilter(),
         },
         responseData: this.responseData,
       }),
