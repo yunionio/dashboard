@@ -118,7 +118,7 @@
           v-decorator="decorators.tag" />
       </a-form-item>
       <!-- <a-divider orientation="left">高级配置</a-divider> -->
-      <a-collapse :bordered="false">
+      <a-collapse :bordered="false" v-model="collapseActive">
         <a-collapse-panel header="高级配置" key="1">
           <a-form-item v-if="!isServertemplate" label="弹性公网IP">
             <eip-config
