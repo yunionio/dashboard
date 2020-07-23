@@ -250,8 +250,13 @@ export default {
       }
       try {
         let data
+        // 是否需要加入全部选项
+        let needAll = true
         if (!this.isBatch) {
           data = await this.fetchChangeOwnerCandidateDomains(query)
+          if (data.length > 0) {
+            needAll = false
+          }
           if (data.length === 0) {
             const response = await this.dm.list({
               params,
@@ -267,7 +272,9 @@ export default {
         if (!this.isBatch && this.params.data[0].shared_domains && this.params.data[0].shared_domains.length) {
           data = this.mergeSharedRes(data, this.params.data[0].shared_domains)
         }
-        data.unshift({ id: 'all', name: '全部' })
+        if (needAll) {
+          data.unshift({ id: 'all', name: '全部' })
+        }
         this.domains = data
         this.domainLoaded = true
       } catch (error) {
