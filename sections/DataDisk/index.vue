@@ -133,7 +133,7 @@ export default {
       if (this.hypervisor === HYPERVISORS_MAP.kvm.key) {
         ret.push('snapshot')
       }
-      if (this.isIDC) {
+      if (this.isIDC || this.isPrivate) {
         ret.push('schedtag')
       }
       return ret
@@ -381,7 +381,6 @@ export default {
     getSchedtagParams () {
       const params = {
         with_meta: true,
-        cloud_env: 'onpremise',
         resource_type: 'storages',
         limit: 0,
       }
