@@ -45,7 +45,7 @@ export default {
         apiVersion: 'v1',
         idKey: 'event_id',
         filterOptions: {
-          name: getNameFilter(),
+          name: getNameFilter({ label: '资源名称' }),
           brand: getBrandFilter(),
           account: {
             label: '账号',
