@@ -15,7 +15,7 @@
 import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import { getStatusFilter, getEnabledFilter, getBrandFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
+import { getStatusFilter, getEnabledFilter, getBrandFilter, getProjectDomainFilter, getAccountFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ListMixin from '@/mixins/list'
@@ -74,8 +74,15 @@ export default {
               return `access_ip.contains("${val}")`
             },
           },
+          region: {
+            label: '区域',
+          },
+          zone: {
+            label: '可用区',
+          },
           brand: getBrandFilter(),
           project_domains: getProjectDomainFilter(),
+          account: getAccountFilter(),
         },
         responseData: this.responseData,
       }),

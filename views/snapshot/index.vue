@@ -15,7 +15,7 @@
 <script>
 import { steadyStatus } from './constants'
 import SnapshotList from './components/List'
-import { getTenantFilter, getStatusFilter, getBrandFilter } from '@/utils/common/tableFilter'
+import { getTenantFilter, getStatusFilter, getBrandFilter, getDomainFilter, getAccountFilter } from '@/utils/common/tableFilter'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 
@@ -45,6 +45,8 @@ export default {
           status: getStatusFilter('snapshot'),
           brand: getBrandFilter(),
           projects: getTenantFilter(),
+          domain: getDomainFilter(),
+          account: getAccountFilter(),
           disk_name: {
             label: '硬盘',
             jointFilter: true,

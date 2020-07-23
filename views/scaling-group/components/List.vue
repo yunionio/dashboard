@@ -13,7 +13,7 @@
 // import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import { getStatusFilter, getEnabledFilter } from '@/utils/common/tableFilter'
+import { getStatusFilter, getEnabledFilter, getTenantFilter, getDomainFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ListMixin from '@/mixins/list'
@@ -46,6 +46,8 @@ export default {
           },
           status: getStatusFilter('scalinggroup'),
           enabled: getEnabledFilter(),
+          projects: getTenantFilter(),
+          domain: getDomainFilter(),
           brand: {
             label: '平台',
             dropdown: true,

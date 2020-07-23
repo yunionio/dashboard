@@ -66,6 +66,12 @@ export default {
               return `hosts.id(host_id).name.contains("${val}")`
             },
           },
+          region: {
+            label: '区域',
+          },
+          zone: {
+            label: '可用区',
+          },
         },
         steadyStatus: {
           guest_status: [...Object.values(expectStatus.server).flat(), '', undefined],

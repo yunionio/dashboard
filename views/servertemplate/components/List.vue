@@ -13,7 +13,7 @@
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import expectStatus from '@/constants/expectStatus'
-import { getTenantFilter, getStatusFilter, getBrandFilter } from '@/utils/common/tableFilter'
+import { getTenantFilter, getStatusFilter, getBrandFilter, getDomainFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 
@@ -55,6 +55,7 @@ export default {
             },
           },
           projects: getTenantFilter(),
+          domain: getDomainFilter(),
           status: getStatusFilter('servertemplate'),
           brand: getBrandFilter(),
           os_type: {

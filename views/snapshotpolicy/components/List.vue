@@ -10,7 +10,7 @@
 <script>
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import { getTenantFilter, getStatusFilter } from '@/utils/common/tableFilter'
+import { getTenantFilter, getStatusFilter, getDomainFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
@@ -42,6 +42,7 @@ export default {
           },
           status: getStatusFilter('snapshotpolicy'),
           projects: getTenantFilter(),
+          domain: getDomainFilter(),
         },
       }),
       exportDataOptions: {

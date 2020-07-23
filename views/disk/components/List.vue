@@ -17,7 +17,7 @@ import * as R from 'ramda'
 import { MEDIUM_MAP } from '../../../constants'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import { getTenantFilter, getStatusFilter, getBrandFilter, getNameFilter } from '@/utils/common/tableFilter'
+import { getTenantFilter, getStatusFilter, getBrandFilter, getNameFilter, getDomainFilter, getAccountFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
@@ -68,6 +68,11 @@ export default {
           },
           brand: getBrandFilter(),
           projects: getTenantFilter(),
+          domain: getDomainFilter(),
+          account: getAccountFilter(),
+          region: {
+            label: '区域',
+          },
           medium_type: {
             label: '介质类型',
             dropdown: true,

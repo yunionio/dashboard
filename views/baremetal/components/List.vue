@@ -18,7 +18,7 @@ import { cloudEnabled, cloudUnabledTip } from '../../vminstance/utils'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import { disableDeleteAction } from '@/utils/common/tableActions'
-import { getTenantFilter, getStatusFilter, getOsTypeFilter } from '@/utils/common/tableFilter'
+import { getTenantFilter, getStatusFilter, getOsTypeFilter, getDomainFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import expectStatus from '@/constants/expectStatus'
@@ -66,7 +66,14 @@ export default {
           host: {
             label: '物理机',
           },
+          region: {
+            label: '区域',
+          },
+          zone: {
+            label: '可用区',
+          },
           projects: getTenantFilter(),
+          domain: getDomainFilter(),
           status: getStatusFilter({ statusModule: 'server' }),
           os_type: getOsTypeFilter(),
         },
