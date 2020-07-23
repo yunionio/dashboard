@@ -14,6 +14,7 @@
       :res-id="data.id"
       :data="detailData"
       :on-manager="onManager"
+      :cloud-env="params.cloudEnv"
       @tab-change="handleTabChange" />
   </base-side-page>
 </template>

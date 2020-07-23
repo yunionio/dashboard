@@ -121,11 +121,28 @@ export default {
         getParams: this.getParam,
       }, {
         list: this.list,
+        cloudEnv: this.cloudEnv,
       })
     },
     getParam () {
+      let params = {}
+      if (this.cloudEnv === 'local_compute') {
+        params = {
+          service: 'compute',
+          with_user_meta: true,
+        }
+      } else if (this.cloudEnv === 'local_image') {
+        params = {
+          service: 'image',
+          with_user_meta: true,
+        }
+      } else if (this.cloudEnv === 'cloud') {
+        params = {
+          with_cloud_meta: true,
+        }
+      }
       const ret = {
-        [this.cloudEnv]: true,
+        ...params,
         ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
       }
       return ret
