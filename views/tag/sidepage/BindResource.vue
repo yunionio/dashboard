@@ -32,6 +32,7 @@ export default {
       type: Object,
       required: true,
     },
+    cloudEnv: String,
   },
   data () {
     const resourceCounts = []
@@ -145,6 +146,7 @@ export default {
       handler (val) {
         this.list = this.$list.createList(this, {
           resource: `${val}s`,
+          apiVersion: this.cloudEnv === 'local_image' ? 'v1' : 'v2',
           getParams: this.getParams,
           steadyStatus: expectStatus[val] && Object.values(expectStatus[val]) && Object.values(expectStatus[val]).flat(),
           filterOptions: {

@@ -17,10 +17,11 @@ export default {
   },
   data () {
     return {
-      cloudEnv: 'with_user_meta',
+      cloudEnv: 'local_compute',
       cloudEnvOptions: [
-        { key: 'with_user_meta', label: '本地' },
-        { key: 'with_cloud_meta', label: '云上' },
+        { key: 'local_compute', label: '本地计算资源' },
+        { key: 'local_image', label: '本地镜像资源' },
+        { key: 'cloud', label: '云上资源' },
       ],
     }
   },
