@@ -12,7 +12,7 @@ import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import expectStatus from '@/constants/expectStatus'
-import { getNameFilter, getFilter, getEnabledFilter, getStatusFilter, getBrandFilter, getPublicFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getFilter, getEnabledFilter, getStatusFilter, getBrandFilter, getPublicFilter, getDomainFilter } from '@/utils/common/tableFilter'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
@@ -61,7 +61,7 @@ export default {
           },
           enable_auto_sync: getEnabledFilter({ label: '自动同步' }),
           share_mode: getPublicFilter(),
-          // tenant: getTenantFilter(),
+          domain: getDomainFilter(),
         },
       }),
       exportDataOptions: {
