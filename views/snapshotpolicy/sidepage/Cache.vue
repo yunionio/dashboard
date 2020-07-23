@@ -34,6 +34,7 @@ export default {
         steadyStatus: Object.values(expectStatus.snapshotpolcyCache).flat(),
         getParams: {
           snapshotpolicy_id: this.resId,
+          brand: ['Qcloud', 'Aliyun'],
         },
       }),
       columns: [
