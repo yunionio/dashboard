@@ -106,8 +106,14 @@ export default {
               },
             },
             {
-              field: 'config_info.secgroup',
+              field: 'secgroups',
               title: '安全组',
+              formatter: ({ row }) => {
+                if (row.secgroups && row.secgroups.length > 0) {
+                  return row.secgroups.map(item => <a-tag>{item}</a-tag>)
+                }
+                return '-'
+              },
             },
             {
               field: 'config_info.sys',

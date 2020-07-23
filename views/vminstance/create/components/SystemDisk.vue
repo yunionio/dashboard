@@ -81,6 +81,10 @@ export default {
     defaultType: {
       type: Object,
     },
+    isServertemplate: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     isPublic () {
@@ -109,7 +113,7 @@ export default {
     },
     elements () {
       const ret = ['disk-select']
-      if (this.isIDC) {
+      if (this.isIDC && !this.isServertemplate) {
         ret.push('schedtag')
       }
       return ret

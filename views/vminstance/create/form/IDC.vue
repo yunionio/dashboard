@@ -73,6 +73,7 @@
         <system-disk
           v-if="form.fd.hypervisor"
           :decorator="decorators.systemDisk"
+          :isServertemplate="isServertemplate"
           :type="type"
           :form="form"
           :hypervisor="form.fd.hypervisor"
@@ -109,6 +110,7 @@
       <a-form-item label="网络" class="mb-0">
         <server-network
           :form="form"
+          :isServertemplate="isServertemplate"
           :decorator="decorators.network"
           :network-list-params="networkParam"
           :schedtag-params="schedtagParams"
