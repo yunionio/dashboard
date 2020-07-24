@@ -1461,7 +1461,14 @@
   "storageAclTypes": {
     "private": "本账号读写",
     "public-read": "本账号写公开读",
-    "public-read-write": "公开读写"
+    "public-read-write": "公开读写",
+    "authenticated-read": "认证用户可读"
+  },
+  "storageAclExtras": {
+    "private": "本账号读写：只有用户本人可读写指定Bucket中的数据",
+    "public-read": "本账号写公开读：任何用户均可读取Bucket中的数据，写操作需进行身份验证",
+    "public-read-write": "公开读写：所有人均可读写Bucket内的Object，无需身份验证。该权限安全风险极高，为确保您的数据安全，请谨慎选择",
+    "authenticated-read": "认证用户可读：已认证用户可读取bucket中的数据，仅用户本人可执行写操作"
   },
   "globalSetting": {
     "identity$password_unique_history_check": {
