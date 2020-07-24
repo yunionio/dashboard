@@ -48,6 +48,12 @@ export default {
               key: 'cluster',
             },
           },
+          region: {
+            label: '区域',
+          },
+          zone: {
+            label: '可用区',
+          },
         },
       }),
       exportDataOptions: {

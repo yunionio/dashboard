@@ -14,6 +14,7 @@ import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
+import { getTenantFilter, getDomainFilter } from '@/utils/common/tableFilter'
 
 export default {
   name: 'LbcertList',
@@ -38,6 +39,8 @@ export default {
               return `name.contains(${val})`
             },
           },
+          projects: getTenantFilter(),
+          domain: getDomainFilter(),
         },
       }),
       exportDataOptions: {

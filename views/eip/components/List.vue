@@ -15,7 +15,7 @@
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
-import { getStatusFilter, getBrandFilter, getAccountFilter } from '@/utils/common/tableFilter'
+import { getStatusFilter, getBrandFilter, getAccountFilter, getTenantFilter, getDomainFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
@@ -52,8 +52,12 @@ export default {
             },
           },
           status: getStatusFilter('eip'),
-          // tenant: getTenantFilter(), //后台暂时不支持项目筛选
           cloudaccount: getAccountFilter(),
+          projects: getTenantFilter(),
+          domain: getDomainFilter(),
+          region: {
+            label: '区域',
+          },
           charge_type: {
             label: '计费方式',
             dropdown: true,

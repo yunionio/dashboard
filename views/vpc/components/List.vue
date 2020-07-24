@@ -56,6 +56,9 @@ export default {
             label: '目标网段',
           },
           project_domains: getProjectDomainFilter(),
+          region: {
+            label: '区域',
+          },
         },
       }),
       exportDataOptions: {

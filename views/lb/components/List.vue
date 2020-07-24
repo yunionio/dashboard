@@ -18,7 +18,7 @@ import { validateEnabled, validateDisable } from '../utils'
 import { surpportLb } from '@Network/views/lb/constants'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
-import { getNameFilter, getBrandFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getBrandFilter, getTenantFilter, getDomainFilter, getAccountFilter } from '@/utils/common/tableFilter'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
 import { changeToArr } from '@/utils/utils'
@@ -49,6 +49,15 @@ export default {
         filterOptions: {
           name: getNameFilter(),
           brand: surpportLbBrandsFilter,
+          projects: getTenantFilter(),
+          domain: getDomainFilter(),
+          cloudaccount: getAccountFilter(),
+          region: {
+            label: '区域',
+          },
+          zone: {
+            label: '可用区',
+          },
         },
         steadyStatus: {
           status: Object.values(expectStatus.lb).flat(),
