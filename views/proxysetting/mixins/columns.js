@@ -46,7 +46,7 @@ export default {
         title: '不走代理地址',
       }),
       getPublicScopeTableColumn({ vm: this, resource: 'proxysettings' }),
-      getProjectDomainTableColumn(),
+      getProjectDomainTableColumn({ sortable: false }),
     ]
   },
 }
