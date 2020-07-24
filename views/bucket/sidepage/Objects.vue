@@ -222,6 +222,7 @@ export default {
                 action: () => {
                   this.createDialog('ObjectsUpdateAclDialog', {
                     title: '设置读写权限',
+                    bucket: this.data,
                     data: this.list.selectedItems,
                     resName: this.resName,
                     columns: this.columns,
@@ -301,6 +302,7 @@ export default {
                   this.createDialog('ObjectsUpdateAclDialog', {
                     title: '设置读写权限',
                     data: [row],
+                    bucket: this.data,
                     resName: this.resName,
                     columns: this.columns,
                     list: this.list,
