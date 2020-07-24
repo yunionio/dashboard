@@ -1464,7 +1464,14 @@
   "storageAclTypes": {
     "private": "本账号读写",
     "public-read": "本账号写公开读",
-    "public-read-write": "公开读写"
+    "public-read-write": "公开读写",
+    "authenticated-read": "认证用户可读"
+  },
+  "storageAclExtras": {
+    "private": "本账号读写：只有用户本人可读写指定Bucket中的数据",
+    "public-read": "本账号写公开读：任何用户均可读取Bucket中的数据，写操作需进行身份验证",
+    "public-read-write": "公开读写：所有人均可读写Bucket内的Object，无需身份验证。该权限安全风险极高，为确保您的数据安全，请谨慎选择",
+    "authenticated-read": "认证用户可读：已认证用户可读取bucket中的数据，仅用户本人可执行写操作"
   },
   "globalSetting": {
     "identity$password_unique_history_check": {
@@ -1493,7 +1500,7 @@
     },
     "yunionapi$enable_totp": {
       "label": "双因子认证",
-      "desc": "云管用户登陆系统时，是否需要进行二次认证"
+      "desc": "云管用户登录系统时，是否需要进行二次认证"
     },
     "compute$enable_pending_delete": {
       "label": "主机、硬盘回收站",
@@ -1855,6 +1862,12 @@
     "loadbalancers.disable": "禁用后，禁用状态的实例无法提供负载均衡服务。",
     "loadbalancerlisteners.disable": "禁用状态的监听无法提供服务。"
   },
+  "authCarouselOptions": [
+    { "title": "统一", "messages": ["统一模版/API/调度/账号体系/监控/控制台/计费计量", "实现物理机/虚拟机/容器/公有云资源全面纳管"] },
+    { "title": "易用", "messages": ["开箱即用，30分钟快速安装部署", "支持在线升级、易于运维管理和使用", "产品化+定制化有机结合"] },
+    { "title": "安全", "messages": ["基于项目的多租户隔离", "统一账户权限管理体系", "统一登录入口、降低跨云账户安全隐患"] },
+    { "title": "开放", "messages": ["所有功能通过REST API开放，提供多语言SDK", "扩展性好，易于和第三方系统集成", "通过“开源+商业支持服务”的方式，向企业级客户交付更好用的多云管理平台"] }
+  ],
   "authSecretQuestion": {
     "group1": [
       { "label": "我出生的城市?" },

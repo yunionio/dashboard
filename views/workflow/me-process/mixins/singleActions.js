@@ -16,7 +16,7 @@ export default {
         },
         meta: (obj) => {
           return {
-            validate: obj.state !== 'COMPLETED' && obj.state !== 'EXTERNALLY_TERMINATED',
+            validate: obj.state !== 'COMPLETED' && obj.state !== 'EXTERNALLY_TERMINATED' && obj.variables.can_terminate_status !== false,
           }
         },
       },
