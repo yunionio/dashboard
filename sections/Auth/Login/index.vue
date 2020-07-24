@@ -17,17 +17,17 @@
       </div>
       <!-- 第三方登录 -->
       <div class="flex-shrink-0 flex-grow-0">
-        <template v-if="fastLoginOptions.length > 0">
+        <template v-if="idps.length > 0">
           <div class="fast-login-wrap">
             <div class="fast-login-title d-flex justify-content-center align-items-center"><span class="mr-2" />{{ $t('auth.login.fast.login.title') }}<span class="ml-2" /></div>
-            <template v-for="(item, idx) of fastLoginOptions">
+            <template v-for="(item, idx) of idps">
               <div class="fast-login-items mt-2 mb-2" :key="idx">
-                <a class="fast-login-item d-flex align-items-center justify-content-center ml-2 mr-2" :href="item.serverUrl">
+                <a class="fast-login-item d-flex align-items-center justify-content-center ml-2 mr-2">
                   <a-tooltip placement="top">
                     <template slot="title">
                       <span>{{ item.tooltip }}</span>
                     </template>
-                    <img :src="item.logo" />
+                    <img :src="item.icon_uri" />
                   </a-tooltip>
                 </a>
               </div>
@@ -73,6 +73,7 @@ export default {
       return this.casConfig && `${this.casConfig.cas.cas_server_url}?service=${this.casConfig.cas.service}`
     },
     fastLoginOptions () {
+      console.log(this.regions)
       const ret = []
       if (this.casServerUrl) {
         ret.push({
@@ -82,6 +83,9 @@ export default {
         })
       }
       return ret
+    },
+    idps () {
+      return this.regions.idps || []
     },
   },
   created () {

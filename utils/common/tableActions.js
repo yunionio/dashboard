@@ -92,7 +92,7 @@ export function getSetPublicAction (vm, dialogParams = {}, params = {}) {
       })
     },
     meta: row => {
-      if (!store.getters.l3PermissionEnable && (store.getters.scopeResource && store.getters.scopeResource.domain.includes(resource))) {
+      if (!store.getters.l3PermissionEnable && (scope === 'domain' || (store.getters.scopeResource && store.getters.scopeResource.domain.includes(resource)))) {
         return {
           validate: false,
           tooltip: '仅在开启三级权限的情况下支持此操作',
