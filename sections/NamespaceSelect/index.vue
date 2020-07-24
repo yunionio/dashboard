@@ -7,6 +7,7 @@
     style="min-width: 200px;"
     :filter-option="filterOption"
     option-filter-prop="children"
+    :loading="loading"
     :value="value">
     <a-select-option v-for="item in options" :value="item.name" :key="item.name">
       <div class="d-flex">
@@ -49,6 +50,7 @@ export default {
     return {
       options: [],
       R,
+      loading: false,
     }
   },
   watch: {
@@ -85,7 +87,7 @@ export default {
         this.$emit('update:namespaceObj', {})
       }
     },
-    _fetchNamespace () {
+    async _fetchNamespace () {
       const namespacesM = new this.$Manager('namespaces', 'v1')
       const params = {
         cluster: this.cluster,
@@ -96,8 +98,11 @@ export default {
         params.project = this.$store.getters.userInfo.projectId
       }
       if (!params.cluster) return
-      namespacesM.list({ params }).then(({ data: { data = [] } }) => {
+      try {
+        this.loading = true
+        const { data: { data = [] } } = await namespacesM.list({ params })
         this.options = data.map(val => ({ ...val, label: val.name }))
+        this.loading = false
         /* 暂不支持 所有命名空间
           if (this.supportAllNamespace) {
             this.options = data.concat({ name: 'all_namespace', label: '所有命名空间' })
@@ -107,10 +112,13 @@ export default {
         */
         const isErrorNamespace = !this.options.find(v => v.name === this.value)
         const isEmptyNamespace = R.isEmpty(this.value) || R.isNil(this.value)
-        if (this.setDefault && (isEmptyNamespace || !isErrorNamespace)) {
+        if (this.setDefault && (isEmptyNamespace || isErrorNamespace)) {
           this.setDefaultNamespace(this.options)
         }
-      })
+      } catch (error) {
+        this.loading = false
+        throw error
+      }
     },
     setDefaultNamespace (opts) {
       const all = opts.find(v => v.name === 'all_namespace')
