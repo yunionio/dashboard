@@ -513,11 +513,12 @@ export const getPublicScopeTableColumn = ({
 export const getProjectDomainTableColumn = ({
   field = 'project_domain',
   title = `所属${i18n.t('dictionary.domain')}`,
+  sortable = true,
 } = {}) => {
   return getCopyWithContentTableColumn({
     title,
     field,
-    sortable: true,
+    sortable,
     hidden: !(store.getters.isAdminMode || store.getters.isDomainMode),
   })
 }
