@@ -17,12 +17,11 @@ export default {
   data () {
     return {
       namespaceMap: {},
-      loadedAllNamepspace: false, // 是否请求了加载全部的命名空间
     }
   },
   methods: {
     async fetchAllNamespaceData () {
-      if (this.loadedAllNamepspace || this.inBaseSidePage) return
+      if (this.inBaseSidePage) return
       const params = R.clone(this.list.getParams)
       delete params.namespace
       params.all_namespace = true
@@ -40,9 +39,7 @@ export default {
           map[val.namespace].push(val)
         })
         this.namespaceMap = map
-        this.loadedAllNamepspace = true
       } catch (error) {
-        this.loadedAllNamepspace = false
         throw error
       }
     },
