@@ -329,6 +329,11 @@ export default {
                     validate: true,
                     tooltip: null,
                   }
+                  if (!this.isAdminMode && !this.isDomainMode) {
+                    ret.validate = false
+                    ret.tooltip = `仅系统或${this.$t('dictionary.domain')}管理员支持该操作`
+                    return ret
+                  }
                   const domains = this.list.selectedItems.map(item => item.domain_id)
                   if (R.uniq(domains).length !== 1) {
                     ret.validate = false

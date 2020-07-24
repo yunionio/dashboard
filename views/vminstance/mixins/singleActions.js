@@ -360,8 +360,8 @@ export default {
                       validate: false,
                       tooltip: null,
                     }
-                    if (!this.isAdminMode) {
-                      ret.tooltip = '只有管理员支持该操作'
+                    if (!this.isAdminMode && !this.isDomainMode) {
+                      ret.tooltip = `仅系统或${this.$t('dictionary.domain')}管理员支持该操作`
                       return ret
                     }
                     if (commonUnabled(obj)) return ret
