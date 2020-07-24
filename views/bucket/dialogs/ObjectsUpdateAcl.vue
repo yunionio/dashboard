@@ -5,16 +5,18 @@
       <dialog-selected-tips :count="params.data.length" :action="this.params.title" :name="$t('dictionary.bucket')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" v-bind="formItemLayout">
-        <a-form-item label="读写权限">
-          <a-radio-group v-decorator="decorators.acl">
-            <a-radio-button v-for="(v, k) in $t('storageAclTypes')" :key="k" :value="k">{{v}}</a-radio-button>
-          </a-radio-group>
-          <div slot="extra">
-          本账号读写：只有用户本人可读写指定Bucket中的数据<br />
-          本账号写公开读：任何用户均可读取Bucket中的数据，写操作需进行身份验证<br />
-          公开读写：所有人均可读写Bucket内的Object，无需身份验证。该权限安全风险极高，为确保您的数据安全，请谨慎选择<br />
-        </div>
-        </a-form-item>
+        <a-spin :spinning="getAclsLoading">
+          <a-form-item label="读写权限">
+            <a-radio-group v-decorator="decorators.acl">
+              <a-radio-button v-for="k in acls" :key="k" :value="k">{{$t('storageAclTypes')[k]}}</a-radio-button>
+            </a-radio-group>
+            <div slot="extra">
+              <div v-for="k in acls" :key="k">
+                {{$t('storageAclExtras')[k]}}<br />
+              </div>
+          </div>
+          </a-form-item>
+        </a-spin>
       </a-form>
     </div>
     <div slot="footer">
@@ -35,8 +37,10 @@ export default {
   data () {
     return {
       loading: false,
+      getAclsLoading: false,
       formItemLayout,
       fileList: [],
+      acls: [],
       form: {
         fc: this.$form.createForm(this),
       },
@@ -56,6 +60,9 @@ export default {
       }
     },
   },
+  created () {
+    this.queryAcls()
+  },
   methods: {
     validateForm () {
       return new Promise((resolve, reject) => {
@@ -65,11 +72,28 @@ export default {
         })
       })
     },
+    async queryAcls () {
+      this.getAclsLoading = true
+      const { bucket, type = 'bucket' } = this.params
+      try {
+        const ret = await new this.$Manager('cloudproviders', 'v2').getSpecific({
+          id: bucket.manager_id,
+          spec: 'canned-acls',
+        })
+        if (ret && ret.data) {
+          this.acls = ret.data[`${type}_canned_acls`]
+        }
+      } catch (err) {
+        throw err
+      } finally {
+        this.getAclsLoading = false
+      }
+    },
     async handleConfirm () {
       this.loading = true
       try {
         const { acl } = await this.validateForm()
-        const { resName, data } = this.params
+        const { bucket, data } = this.params
         const key = data.map(({ key }) => key).filter((t) => !!t)
         const params = {
           acl,
@@ -78,7 +102,7 @@ export default {
           params.key = key
         }
         await new this.$Manager('buckets', 'v2').performAction({
-          id: resName,
+          id: bucket.id,
           action: 'acl',
           data: params,
         })
