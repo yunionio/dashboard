@@ -11,6 +11,7 @@ export default {
             data: [obj],
             columns: this.columns,
             title: '更改所属',
+            tipName: '调度标签',
             onManager: this.onManager,
             tipname: this.$t('dictionary.schedtag'),
           })
