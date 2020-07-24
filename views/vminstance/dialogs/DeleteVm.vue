@@ -5,7 +5,7 @@
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="this.params.title" />
       <dialog-table v-if="params.columns && params.columns.length" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
-        :form="form.fc" v-show="isIDC">
+        :form="form.fc" v-show="isShowAutoDelete">
         <a-form-item label="同时删除快照" v-bind="formItemLayout">
           <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.autoDelete" @change="autoDeleteChangeHandle" />
         </a-form-item>
@@ -30,6 +30,7 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import WorkflowMixin from '@/mixins/workflow'
 import { findPlatform } from '@/utils/common/hypervisor'
+import { BRAND_MAP } from '@/constants'
 
 export default {
   name: 'DeleteVmDialog',
@@ -104,15 +105,16 @@ export default {
       const brand = this.params.data[0].brand
       return findPlatform(brand)
     },
-    isIDC () {
-      return this.type === SERVER_TYPE.idc
+    isShowAutoDelete () {
+      const brand = this.params.data[0].brand
+      return this.type === SERVER_TYPE.idc || brand === BRAND_MAP.openstack.brand
     },
     isOpenWorkflow () {
       return this.checkWorkflowEnabled(this.WORKFLOW_TYPES.APPLY_SERVER_DELETE)
     },
   },
   created () {
-    if (this.isIDC) {
+    if (this.isShowAutoDelete) {
       const ids = this.params.data.map((item) => { return item.id })
       this.fetchSnapshotsByVmId(ids.join(','))
     }
@@ -154,7 +156,7 @@ export default {
           ...params,
           ...this.params.requestParams,
         }
-        if (this.isIDC) {
+        if (this.isShowAutoDelete) {
           params.delete_snapshots = this.form.fd.autoDelete
         }
         const response = await this.params.onManager('batchDelete', {
