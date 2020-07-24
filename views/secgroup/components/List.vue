@@ -97,7 +97,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isAdminMode', 'isDomainMode', 'userInfo']),
+    ...mapGetters(['isAdminMode', 'isDomainMode', 'userInfo', 'isProjectMode']),
     groupActions () {
       const _frontGroupActions = this.frontGroupActions ? this.frontGroupActions.bind(this)() || [] : []
       return _frontGroupActions.concat(
@@ -238,9 +238,12 @@ export default {
         manager = null
       }
     },
-    openEditRulesDialog (obj) {
+    openEditRulesDialog (rule, row) {
+      if (this.isProjectMode && this.userInfo.projectId !== row.tenant_id) {
+        return
+      }
       this.createDialog('EditRulesDialog', {
-        data: [obj],
+        data: [rule],
         title: 'edit',
         columns: this.columns,
         refresh: () => {
