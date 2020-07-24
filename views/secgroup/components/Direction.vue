@@ -34,6 +34,10 @@ export default {
       type: String,
       required: true,
     },
+    isRead: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     const title = this.type === 'out' ? '目标' : '来源'
@@ -133,6 +137,11 @@ export default {
               type: this.type,
             })
           },
+          meta: () => {
+            return {
+              validate: !this.isRead,
+            }
+          },
         },
         {
           label: '克隆',
@@ -148,6 +157,11 @@ export default {
               secgroup: this.id,
             })
           },
+          meta: () => {
+            return {
+              validate: !this.isRead,
+            }
+          },
         },
         {
           label: '删除',
@@ -162,6 +176,11 @@ export default {
               onManager: this.onManager,
               refresh: this.refresh,
             })
+          },
+          meta: () => {
+            return {
+              validate: !this.isRead,
+            }
           },
         },
       ],
@@ -179,9 +198,12 @@ export default {
               secgroup: this.id,
             })
           },
-          meta: () => ({
-            buttonType: 'primary',
-          }),
+          meta: () => {
+            return {
+              buttonType: 'primary',
+              validate: !this.isRead,
+            }
+          },
         },
         {
           label: '删除',
@@ -196,7 +218,14 @@ export default {
               onManager: this.onManager,
             })
           },
-          meta: (obj) => this.$getDeleteResult(this.list.selectedItems),
+          meta: (obj) => {
+            if (this.isRead) {
+              return {
+                validate: !this.isRead,
+              }
+            }
+            return this.$getDeleteResult(this.list.selectedItems)
+          },
         },
       ],
     }
