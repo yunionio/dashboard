@@ -51,13 +51,6 @@ export default {
       return hasPermission({ key: 'proxysettings_list' })
     },
   },
-  watch: {
-    proxyOpts (val) {
-      if (val && val.length > 0) {
-        this.fc.setFieldsValue({ proxy_setting: val[0].id })
-      }
-    },
-  },
   created () {
     if (this.account && this.isPermission) {
       this.fetchQueryProxy()
@@ -106,8 +99,11 @@ export default {
     createProxySetting () {
       this.createDialog('ProxysettingCreateDialog', {
         domain: this.account ? this.account.domain_id : this.fd.domain || {},
-        success: () => {
-          this.fetchQueryProxy()
+        success: async () => {
+          await this.fetchQueryProxy()
+          if (this.proxyOpts && this.proxyOpts.length > 0) {
+            this.fc.setFieldsValue({ proxy_setting: this.proxyOpts[0].id })
+          }
         },
       })
     },
