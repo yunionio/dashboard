@@ -25,6 +25,7 @@ export default {
     this.singleActions = [
       {
         label: '调整标签',
+        permission: 'schedtags_list,networks_perform_set_schedtag',
         action: (obj) => {
           this.createDialog('AdjustLabelDialog', {
             data: [obj],
