@@ -10,6 +10,7 @@ import {
   getRegionTableColumn,
   getBillingTypeTableColumn,
   getTagTableColumn,
+  getAccountTableColumn,
 } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 
@@ -75,6 +76,7 @@ export default {
       getBillingTypeTableColumn(),
       getStatusTableColumn({ statusModule: 'disk' }),
       getProjectTableColumn(),
+      getAccountTableColumn(),
       {
         field: 'medium_type',
         title: '介质类型',

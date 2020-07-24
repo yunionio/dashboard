@@ -15,7 +15,7 @@
 <script>
 import { steadyStatus } from './constants'
 import SnapshotList from './components/List'
-import { getTenantFilter, getStatusFilter } from '@/utils/common/tableFilter'
+import { getTenantFilter, getStatusFilter, getDomainFilter } from '@/utils/common/tableFilter'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 
@@ -44,6 +44,10 @@ export default {
           },
           status: getStatusFilter('snapshot'),
           projects: getTenantFilter(),
+          domain: getDomainFilter(),
+          region: {
+            label: '区域',
+          },
         },
         responseData: this.responseData,
       }),

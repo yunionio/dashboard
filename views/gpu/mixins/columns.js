@@ -4,6 +4,7 @@ import {
 import {
   getNameDescriptionTableColumn,
   getCopyWithContentTableColumn,
+  getRegionTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -72,6 +73,7 @@ export default {
         slotCallback: row => row.host || row.host_id,
       }),
       getReserveResourceColumn(),
+      getRegionTableColumn(),
     ]
   },
 }

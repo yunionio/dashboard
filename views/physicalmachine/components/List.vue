@@ -80,6 +80,12 @@ export default {
             ],
           },
           project_domain: getProjectDomainFilter(),
+          region: {
+            label: '区域',
+          },
+          zone: {
+            label: '可用区',
+          },
         },
         responseData: this.responseData,
       }),

@@ -9,6 +9,8 @@ import {
   getTimeTableColumn,
   getCopyWithContentTableColumn,
   getTagTableColumn,
+  getRegionTableColumn,
+  getAccountTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -65,6 +67,8 @@ export default {
       },
       getTimeTableColumn(),
       getStorageTypeTableColumn(),
+      getRegionTableColumn(),
+      getAccountTableColumn(),
     ]
   },
 }

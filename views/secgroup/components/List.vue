@@ -19,7 +19,7 @@ import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
-import { getTenantFilter } from '@/utils/common/tableFilter'
+import { getTenantFilter, getDomainFilter } from '@/utils/common/tableFilter'
 import globalSearchMixins from '@/mixins/globalSearch'
 import { getSetPublicAction } from '@/utils/common/tableActions'
 
@@ -59,6 +59,7 @@ export default {
             label: '端口',
           },
           projects: getTenantFilter(),
+          domain: getDomainFilter(),
         },
         responseData: this.responseData,
       }),

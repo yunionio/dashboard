@@ -1,7 +1,7 @@
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import SystemIcon from '@/sections/SystemIcon'
 import { sizestr } from '@/utils/utils'
-import { getProjectTableColumn, getStatusTableColumn, getCopyWithContentTableColumn, getIpsTableColumn, getNameDescriptionTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
+import { getProjectTableColumn, getStatusTableColumn, getCopyWithContentTableColumn, getIpsTableColumn, getNameDescriptionTableColumn, getTagTableColumn, getRegionTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   created () {
@@ -81,6 +81,7 @@ export default {
           return [<span>{ row.host }</span>]
         },
       }),
+      getRegionTableColumn(),
     ]
   },
 }

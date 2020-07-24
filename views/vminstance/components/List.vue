@@ -23,6 +23,7 @@ import {
   getNameFilter,
   getBrandFilter,
   getStatusFilter,
+  getDomainFilter,
   getTenantFilter,
   getAccountFilter,
   getIpFilter,
@@ -78,6 +79,7 @@ export default {
             },
           },
           projects: getTenantFilter(),
+          domain: getDomainFilter(),
           billing_type: {
             label: '计费方式',
             dropdown: true,
