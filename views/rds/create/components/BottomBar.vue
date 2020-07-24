@@ -172,7 +172,7 @@ export default {
         }
 
         if (pvt === 'huawei' || pvt === 'aliyun') {
-          price_keys.push(`${pvt}::${region_ext_id}::::rds_storage::${category}_${engine}_ULTRA${storage_type}::${disk_size_gb}GB`)
+          price_keys.push(`${pvt}::${region_ext_id}::::rds_storage::${category}_${engine}_${storage_type}::${disk_size_gb}GB`)
         } else if (pvt === 'google') {
           price_keys.push(`${pvt}::${region_ext_id}::::rds_storage::${category}_${engine}_${storage_type}::${disk_size_gb}GB`)
         } else {
