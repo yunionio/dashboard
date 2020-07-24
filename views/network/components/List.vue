@@ -154,6 +154,7 @@ export default {
             return [
               {
                 label: `更改${this.$t('dictionary.project')}`,
+                permission: 'networks_perform_change_owner',
                 action: () => {
                   this.createDialog('ChangeOwenrDialog', {
                     data: this.list.selectedItems,
