@@ -13,7 +13,7 @@ export default {
         },
         meta: obj => {
           const { provider } = this.data
-          if (provider.toLowerCase === 'huawei') {
+          if (provider.toLowerCase() === 'huawei') {
             return {
               validate: false,
               tooltip: '华为云暂不支持端口',
