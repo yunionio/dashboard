@@ -132,6 +132,10 @@ class DataWrap {
     let isSteadyStatus = true
     for (const key in steadyStatus) {
       const status = steadyStatus[key]
+      if (R.is(Function, status)) {
+        isSteadyStatus = !status(this.data)
+        return isSteadyStatus
+      }
       const currentStatus = _.get(this.data, key)
       if (
         (R.is(String, status) && status === currentStatus) ||
