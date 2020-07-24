@@ -40,10 +40,10 @@ export default {
         },
         filterOptions: {
           name: getNameFilter(),
-          access_url: getFilter({
-            field: 'access_url',
-            title: '环境',
-          }),
+          // access_url: getFilter({
+          //   field: 'access_url',
+          //   title: '环境',
+          // }),
           enabled: getEnabledFilter(),
           status: getStatusFilter('cloudaccount'),
           health_status: getStatusFilter({
