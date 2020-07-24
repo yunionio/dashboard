@@ -49,9 +49,15 @@ export default {
     return {
       list: this.$list.createList(this, {
         id: this.id,
+        refreshInterval: 5,
         resource: 'servers',
         getParams: this.getParam,
-        steadyStatus: Object.values(expectStatus.server).flat(),
+        steadyStatus: {
+          status: Object.values(expectStatus.server).flat(),
+          checkBackup: (val) => {
+            return val.metadata.create_backup || val.metadata.switch_backup
+          },
+        },
         filterOptions: {
           name: getNameFilter(),
           brand: getBrandFilter('compute_engine_brands'),
@@ -751,6 +757,7 @@ export default {
           },
         },
       ],
+      execLoading: false,
     }
   },
   computed: {

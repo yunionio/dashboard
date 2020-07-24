@@ -17,6 +17,51 @@ import { findPlatform } from '@/utils/common/hypervisor'
 
 export default {
   created () {
+    this.serverManager = new this.$Manager('servers')
+    const doCreateOrSwitchBackup = (obj) => {
+      this.execLoading = true
+      this.serverManager.performAction({
+        id: obj.id,
+        action: 'reconcile-backup',
+        data: {},
+      }).then((res) => {
+        this.execLoading = false
+        this.$message.success('执行成功')
+      }).catch((err) => {
+        this.execLoading = false
+        this.$message.success('执行失败')
+        throw err
+      })
+    }
+    const getToolTip = (row) => {
+      const num = row.metadata.create_backup_count || row.metadata.switch_backup_count
+      let time = row.metadata.create_backup || row.metadata.switch_backup
+      if (time) {
+        const aLink = <a-button type="link" class="oc-pointer" disabled={ this.execLoading } style="padding: 0;" onClick={() => doCreateOrSwitchBackup(row)}>立即重试</a-button>
+        const aIcon = <a-icon type="exclamation-circle" class="ml-1 error-color oc-pointer" />
+        try {
+          time = this.$moment(JSON.parse(time)).format()
+        } catch (error) {
+          throw new Error('解析日期失败', error)
+        }
+        if (row.metadata.create_backup) {
+          return <a-tooltip placement="right">
+            <template slot="title">
+              创建备用机失败: 自动创建备用机已失败{ num }次，下次自动创建备用机时间：{ time } ，{ aLink }
+            </template>
+            { aIcon }
+          </a-tooltip>
+        } else if (row.metadata.switch_backup) {
+          return <a-tooltip placement="right">
+            <template slot="title">
+              切换备用机失败: 自动切换备用机已失败{ num }次，下次自动切换备用机时间：{ time } ，{ aLink }
+            </template>
+            { aIcon }
+          </a-tooltip>
+        }
+      }
+      return null
+    }
     const columns = [
       getNameDescriptionTableColumn({
         onManager: this.onManager,
@@ -106,7 +151,17 @@ export default {
         },
       },
       getBillingTableColumn({ vm: this }),
-      getStatusTableColumn({ statusModule: 'server' }),
+      getStatusTableColumn({
+        statusModule: 'server',
+        slotCallback: row => {
+          return [
+            <div class='d-flex align-items-center text-truncate'>
+              <status status={ row.status } statusModule='server' />
+              { getToolTip(row) }
+            </div>,
+          ]
+        },
+      }),
       getCopyWithContentTableColumn({ field: 'vpc', title: 'VPC' }),
       {
         field: 'host',
