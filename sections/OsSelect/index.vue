@@ -101,6 +101,7 @@ export default {
   data () {
     return {
       imageType: this.decorator.imageType[1].initialValue,
+      isFirstLoad: true,
     }
   },
   computed: {
@@ -160,7 +161,7 @@ export default {
     'form.fd.image.key': {
       handler () {
         const { imageType } = this.$route.query
-        if (imageType) {
+        if (this.isFirstLoad && imageType) {
           this.form.fc.setFieldsValue({ imageType })
           this.imageType = imageType
         }
@@ -173,6 +174,7 @@ export default {
       this.$emit('change', image)
     },
     change (e) {
+      this.isFirstLoad = false
       this.imageType = e.target.value
       this.$emit('update:imageType', e.target.value)
     },
