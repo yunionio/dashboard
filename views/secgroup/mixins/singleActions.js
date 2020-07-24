@@ -3,7 +3,7 @@ import { getSetPublicAction } from '@/utils/common/tableActions'
 
 export default {
   computed: {
-    ...mapGetters(['isAdminMode', 'isDomainMode', 'userInfo']),
+    ...mapGetters(['isAdminMode', 'isDomainMode', 'isProjectMode', 'userInfo']),
   },
   created () {
     this.singleActions = [
@@ -141,12 +141,13 @@ export default {
                 })
               },
               meta: () => {
-                if (this.$store.getters.isAdminMode || this.$store.getters.isDomainMode) {
+                if (!this.isProjectMode) {
                   return {
                     validate: this.isPower(obj),
                   }
                 }
                 return {
+                  tooltip: `仅系统或${this.$t('dictionary.domain')}管理员支持该操作`,
                   validate: false,
                 }
               },

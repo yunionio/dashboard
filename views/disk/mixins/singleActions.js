@@ -217,10 +217,20 @@ export default {
                   name: '硬盘',
                 })
               },
-              meta: () => ({
-                validate: obj.guest_count < 1,
-                tooltip: obj.guest ? `已挂载的硬盘不可以更改${this.$t('dictionary.project')}，请卸载后重试` : '',
-              }),
+              meta: () => {
+                const ret = {
+                  validate: false,
+                  tooltip: '',
+                }
+                if (this.isProjectMode) {
+                  ret.tooltip = `仅系统或${this.$t('dictionary.domain')}管理员支持该操作`
+                  return ret
+                }
+                return {
+                  validate: obj.guest_count < 1,
+                  tooltip: obj.guest ? `已挂载的硬盘不可以更改${this.$t('dictionary.project')}，请卸载后重试` : '',
+                }
+              },
             },
             {
               label: '同步状态',
