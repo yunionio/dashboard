@@ -16,7 +16,7 @@ import { ENGINE_ARCH } from '../constants/index.js'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
-import { getNameFilter, getStatusFilter, getTenantFilter, getFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getStatusFilter, getTenantFilter, getFilter, getDomainFilter } from '@/utils/common/tableFilter'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
@@ -51,6 +51,7 @@ export default {
           },
           // account: getAccountFilter(),
           projects: getTenantFilter(),
+          domain: getDomainFilter(),
           billing_type: getFilter({
             field: 'billing_type',
             title: '计费方式',
