@@ -427,6 +427,7 @@ export const PERMISSION = {
   networks_perform_merge: ['compute', 'networks', 'perform', 'merge'],
   networks_perform_change_owner: ['compute', 'networks', 'perform', 'change-owner'],
   networks_perform_syncstatus: ['compute', 'networks', 'perform', 'syncstatus'],
+  networks_perform_set_schedtag: ['compute', 'networks', 'perform', 'set-schedtag'],
   /**
    * notices 相关操作
    */
