@@ -198,6 +198,7 @@ export default {
       this.createDialog('ObjectsUpdateAclDialog', {
         title: '设置读写权限',
         data: [row],
+        bucket: row,
         resName: row.name,
         columns: this.columns,
         list: this.list,
