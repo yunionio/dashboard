@@ -11,6 +11,7 @@
 
 <script>
 import * as R from 'ramda'
+import { mapGetters } from 'vuex'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import { ACL_TYPE } from '@Storage/constants/index.js'
@@ -114,6 +115,14 @@ export default {
                   })
                 },
                 meta: row => {
+                  const ret = {
+                    validate: false,
+                    tooltip: '',
+                  }
+                  if (this.isProjectMode) {
+                    ret.tooltip = `仅系统或${this.$t('dictionary.domain')}管理员支持该操作`
+                    return ret
+                  }
                   const domainIds = this.list.selectedItems.map(item => item.domain_id)
                   const validate = R.uniq(domainIds).length === 1
                   return {
@@ -172,6 +181,9 @@ export default {
         },
       ],
     }
+  },
+  computed: {
+    ...mapGetters(['isProjectMode']),
   },
   created () {
     this.list.fetchData()
