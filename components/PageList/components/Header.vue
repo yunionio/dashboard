@@ -197,6 +197,7 @@ export default {
     },
     handleCustomList () {
       const grid = this.getGrid()
+      const hidenColumns = ['name']
       this.createDialog('CustomListDialog', {
         title: this.$t('common.text00011'),
         config: this.config,
@@ -204,6 +205,7 @@ export default {
         showTagColumns: this.showTagColumns,
         customs: grid.getTableColumn().collectColumn,
         resource: this.resource,
+        hidenColumns,
       })
     },
   },

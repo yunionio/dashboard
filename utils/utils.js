@@ -199,11 +199,11 @@ export const maxTextLength = (text, maxLen) => {
  * @param {String} key
  * @param {String} itemKey
  */
-export const arrToObjByKey = (arr, key, itemKey) => {
+export const arrToObjByKey = (arr, key, cb) => {
   const target = {}
-  arr.reduce((obj, item) => {
-    if (itemKey) {
-      obj[item[key]] = item[itemKey]
+  arr.reduce((obj, item, i) => {
+    if (R.is(Function, cb)) {
+      obj[item[key]] = cb(item, i)
     } else {
       obj[item[key]] = { data: item }
     }
