@@ -16,7 +16,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import { ACL_TYPE } from '@Storage/constants/index.js'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
-import { getNameFilter, getTenantFilter, getBrandFilter, getStatusFilter, getAccountFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getTenantFilter, getBrandFilter, getStatusFilter, getAccountFilter, getDomainFilter } from '@/utils/common/tableFilter'
 import { getSetPublicAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
 
@@ -55,6 +55,10 @@ export default {
               return { label: ACL_TYPE[k], key: k }
             }),
           },
+          region: {
+            label: '区域',
+          },
+          domain: getDomainFilter(),
         },
       }),
       exportDataOptions: {
