@@ -1000,6 +1000,7 @@ export default {
                       return ret
                     }
                     if (!['running', 'ready'].includes(obj.status)) {
+                      ret.validate = false
                       ret.tooltip = '只有运行中或关机状态的主机支持此操作'
                       return ret
                     }
