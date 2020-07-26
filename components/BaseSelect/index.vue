@@ -179,7 +179,7 @@ export default {
       this.paramsChange(val, oldV)
     },
     resource (val, oldV) {
-      this.paramsChange(val, oldV)
+      this.paramsChange(val, oldV, true)
     },
     options: {
       handler (val) {
@@ -221,13 +221,13 @@ export default {
         return text.toLowerCase().includes(input.toLowerCase())
       }
     },
-    paramsChange (val, oldV) {
+    paramsChange (val, oldV, needChange = false) {
       val = del$t(val)
       oldV = del$t(oldV)
-      if (!R.equals(val, oldV)) {
+      if (needChange || !R.equals(val, oldV)) {
         const isInitLoad = R.is(Object, oldV) && (R.isEmpty(oldV) || R.isNil(oldV)) // 如果oldV是{}，认为是第一次参数变化，则无需 clearSelect
-        if (!isInitLoad) this.clearSelect()
-        if (this._valid()) this.loadOptsDebounce()
+        if (needChange || !isInitLoad) this.clearSelect()
+        if (needChange || this._valid()) this.loadOptsDebounce()
       }
     },
     _valid () {
