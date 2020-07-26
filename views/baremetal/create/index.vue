@@ -867,10 +867,10 @@ export default {
         arr = arr.concat(item.split(':'))
       })
       let range = []
+      let k = data.start_index
       if (data.option[2] === 'none') {
         range = [data.start_index]
       } else {
-        let k = data.start_index
         while (k < data.start_index + data.count) {
           range.push(k)
           k++
@@ -895,8 +895,8 @@ export default {
             let j = data.start_index
             range = []
             while (j < data.start_index + data.count) {
-              range.push(j)
               j++
+              range.push(j)
             }
           }
         }
