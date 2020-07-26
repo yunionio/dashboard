@@ -235,6 +235,7 @@ export function getCreateDecorators (resource) {
         {
           rules: [
             { required: true, message: '请输入名称' },
+            { validator: this.$validate('k8sLabel') },
           ],
         },
       ],

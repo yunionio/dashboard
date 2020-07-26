@@ -7,10 +7,10 @@
       <a-input placeholder="请输入容器镜像" v-decorator="decorators.image" />
     </a-form-item>
     <a-form-item label="CPU">
-      <a-input placeholder="请输入CPU核数" type="number" v-decorator="decorators.cpu" addonAfter="核" :min="1" />
+      <a-input placeholder="请输入CPU核数" type="number" v-decorator="decorators.cpu" addonAfter="核" :min="1" @blur="e => formatInput(e, 'cpu')" />
     </a-form-item>
     <a-form-item label="内存">
-      <a-input placeholder="请输入内存" type="number" v-decorator="decorators.memory" addonAfter="G" :min="1" />
+      <a-input placeholder="请输入内存" type="number" v-decorator="decorators.memory" addonAfter="G" :min="1" @blur="e => formatInput(e, 'memory')" />
     </a-form-item>
     <a-form-item label="容器命令">
       <a-input placeholder="容器命令，选填" v-decorator="decorators.command" />
@@ -39,6 +39,7 @@
 
 <script>
 import Labels from '@K8S/sections/Labels'
+import * as R from 'ramda'
 
 export default {
   name: 'K8SSpecContainerForm',
@@ -52,6 +53,10 @@ export default {
     },
     cluster: String,
     namespace: String,
+    form: {
+      tpye: Object,
+      validator: val => val.fc,
+    },
   },
   computed: {
     keyBaseSelectProps () {
@@ -70,6 +75,19 @@ export default {
         idKey: 'name',
       }
       return props
+    },
+  },
+  methods: {
+    formatInput (e, field) {
+      if (this.form && this.form.fc) {
+        const val = Number(e.target.value)
+        if (R.is(Number, val) && !Number.isNaN(val) && val >= 0) {
+        } else {
+          this.form.fc.setFieldsValue({
+            [this.decorators[field][0]]: 1, // 不合法直接设置为初始值 1
+          })
+        }
+      }
     },
   },
 }
