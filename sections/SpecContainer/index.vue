@@ -7,7 +7,7 @@
             <span>{{ `容器${i + 1}` }}</span>
           </a-badge>
         </template>
-        <spec-container-form :decorators="getDecorators(pane.key)" :cluster="cluster" :namespace="namespace" />
+        <spec-container-form :decorators="getDecorators(pane.key)" :cluster="cluster" :namespace="namespace" :form="form" />
       </a-tab-pane>
       <template v-slot:tabBarExtraContent>
         <a-button type="link" @click="add">添加容器</a-button>

@@ -8,7 +8,7 @@
         v-bind="formItemLayout"
         :form="form.fc">
         <a-form-item label="副本数" v-if="!params.hideReplicas">
-          <a-input v-decorator="decorators.replicas" type="number" placeholder="请输入副本数" addonAfter="个" />
+          <a-input v-decorator="decorators.replicas" :min="0" type="number" placeholder="请输入副本数" addonAfter="个" @blur="change" />
         </a-form-item>
       </a-form>
     </div>
@@ -54,12 +54,22 @@ export default {
           span: 3,
         },
       },
+      replicas: 3,
     }
   },
   created () {
     this.fetchData()
   },
   methods: {
+    change (e) {
+      const val = Number(e.target.value)
+      if (R.is(Number, val) && !Number.isNaN(val) && val >= 0) {
+      } else {
+        this.form.fc.setFieldsValue({
+          replicas: this.replicas,
+        })
+      }
+    },
     async fetchData () {
       const { data } = await this.params.onManager('get', {
         managerArgs: {
@@ -70,9 +80,10 @@ export default {
           },
         },
       })
+      this.replicas = data.replicas || 3
       this.$nextTick(() => {
         this.form.fc.setFieldsValue({
-          replicas: data.replicas || 3,
+          replicas: this.replicas,
         })
       })
     },
