@@ -114,6 +114,8 @@ export default {
         const isEmptyNamespace = R.isEmpty(this.value) || R.isNil(this.value)
         if (this.setDefault && (isEmptyNamespace || isErrorNamespace)) {
           this.setDefaultNamespace(this.options)
+        } else if (this.setDefault && !isEmptyNamespace && !isErrorNamespace) {
+          this.change(this.value)
         }
       } catch (error) {
         this.loading = false
