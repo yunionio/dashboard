@@ -38,8 +38,8 @@
 </template>
 
 <script>
-import Labels from '@K8S/sections/Labels'
 import * as R from 'ramda'
+import Labels from '@K8S/sections/Labels'
 
 export default {
   name: 'K8SSpecContainerForm',
