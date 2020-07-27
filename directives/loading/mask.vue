@@ -17,30 +17,11 @@
 export default {
   data () {
     return {
-<<<<<<< HEAD
-      fullscreen: false,
-      background: '255, 255, 255, 1',
-      text: this.$t('common_67'),
-      iconSrc: null,
-      iconWidth: null,
-      iconHeight: null,
-      color: null,
-      fontSize: null,
-    }
-  },
-  beforeCreate () {},
-  created () {},
-  beforeMount () {},
-  mounted () {
-    if (this.fullscreen) {
-      document.body.style.overflow = 'hidden'
-=======
       text: null,
       background: null,
       fullscreen: true,
       visible: false,
       customClass: '',
->>>>>>> feature [3.4] 完全体v-loading指令
     }
   },
   methods: {
