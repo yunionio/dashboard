@@ -6,7 +6,7 @@
   </a-button>
   <vxe-toolbar>
     <template v-slot:buttons>
-       <a-input-search v-model="filterName" size="large" placeholder="全文搜索" style="width: 500px" />
+       <a-input-search v-model="filterName" size="large" :placeholder="$t('network.text_659')" style="width: 500px" />
     </template>
   </vxe-toolbar>
   <vxe-grid
@@ -30,14 +30,15 @@
 
 <script>
 import WindowsMixin from '@/mixins/windows.js'
+import i18n from '@/locales'
 
 // eslint-disable-next-line no-unused-vars
 const IP_TYPES = {
-  reservedips: '预留IP',
-  loadbalancers: '负载均衡IP',
-  servers: '虚拟机IP',
-  networkinterfaces: '弹性网卡',
-  hosts: '宿主机IP',
+  reservedips: i18n.t('network.text_651'),
+  loadbalancers: i18n.t('network.text_660'),
+  servers: i18n.t('network.text_661'),
+  networkinterfaces: i18n.t('network.text_241'),
+  hosts: i18n.t('network.text_662'),
 }
 export default {
   name: 'IPList',
@@ -57,17 +58,17 @@ export default {
       columns: [
         {
           field: 'ip_addr',
-          title: 'IP地址',
+          title: this.$t('network.text_213'),
           sortable: true,
         },
         {
           field: 'mac_addr',
-          title: 'MAC地址',
+          title: this.$t('network.text_228'),
           sortable: true,
         },
         {
           field: 'owner_type',
-          title: '资源类型',
+          title: this.$t('network.text_663'),
           sortable: true,
           slots: {
             default: ({ row }) => {
@@ -77,14 +78,14 @@ export default {
         },
         {
           field: 'owner',
-          title: '资源名称',
+          title: this.$t('network.text_664'),
         },
         {
           field: 'action',
-          title: '操作',
+          title: this.$t('network.text_665'),
           slots: {
             default: ({ row }, h) => {
-              if (IP_TYPES[row.owner_type] !== '预留IP') {
+              if (IP_TYPES[row.owner_type] !== this.$t('network.text_651')) {
                 return [<span>-</span>]
               }
               return [<a onClick = {() => this.freed(row)}>释放</a>]
@@ -115,7 +116,7 @@ export default {
   methods: {
     freed (obj) {
       this.createDialog('ReservedIPFreedDialog', {
-        title: '释放',
+        title: this.$t('network.text_666'),
         data: [obj],
         columns: this.columns,
         onManager: this.onManager,

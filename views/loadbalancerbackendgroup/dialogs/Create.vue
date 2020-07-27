@@ -5,7 +5,7 @@
       <a-form
         v-bind="formItemLayout"
         :form="form.fc">
-        <a-form-item label="名称">
+        <a-form-item :label="$t('network.text_21')">
           <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
         </a-form-item>
       </a-form>
@@ -37,7 +37,7 @@ export default {
             validateFirst: true,
             validateTrigger: ['blur'],
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('network.text_116') },
               { validator: this.$validate('resourceName') },
             ],
           },

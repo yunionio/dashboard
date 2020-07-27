@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="实例" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
+    <page-header :title="$t('network.text_303')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
     <page-body>
       <list :id="listId" :get-params="getParams" :cloud-env="cloudEnv" />
     </page-body>

@@ -31,7 +31,7 @@ export default {
       baseInfo: [
         {
           field: 'loadbalance_type',
-          title: '类型',
+          title: this.$t('network.text_249'),
           formatter: ({ row }) => {
             let { provider } = row
             if (provider) {
@@ -47,7 +47,7 @@ export default {
         },
         {
           field: 'cluster',
-          title: '集群',
+          title: this.$t('network.text_19'),
           formatter: ({ row }) => {
             return row.cluster || '-'
           },
@@ -55,7 +55,7 @@ export default {
         getBrandTableColumn(),
         {
           field: 'charge_type',
-          title: '计费方式',
+          title: this.$t('network.text_192'),
           formatter: ({ row }) => {
             if (row.charge_type) return CHARGE_TYPE[row.charge_type] || row.charge_type
             return '-'
@@ -64,11 +64,11 @@ export default {
       ],
       extraInfo: [
         {
-          title: '配置信息',
+          title: this.$t('network.text_308'),
           items: [
             {
               field: 'address',
-              title: '服务地址',
+              title: this.$t('network.text_248'),
               slots: {
                 default: ({ row }) => {
                   let text = row.address || '-'
@@ -76,14 +76,14 @@ export default {
                   if (row.eip) {
                     text = row.eip
                     if (row.eip_mode === 'elastic_ip') {
-                      weakTip = '（弹性公网IP）'
+                      weakTip = this.$t('network.text_304')
                     } else if (row.eip_mode === 'public_ip') {
-                      weakTip = '（公网ip）'
+                      weakTip = this.$t('network.text_305')
                     } else {
                       weakTip = ''
                     }
                   } else {
-                    weakTip = row.address_type === 'intranet' ? '（私网IP）' : '（公网IP）'
+                    weakTip = row.address_type === 'intranet' ? this.$t('network.text_306') : this.$t('network.text_307')
                   }
                   return [<div><span>{ text }</span><span class="text-color-secondary">{ weakTip }</span><copy message={ text } /></div>]
                 },

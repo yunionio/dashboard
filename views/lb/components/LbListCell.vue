@@ -8,7 +8,7 @@
     </div>
     <div v-else-if="showUnused">
       <a-icon type="bulb" theme="twoTone" twoToneColor="#f5222d" class="mr-1" />
-      <span>未使用</span>
+      <span>{{$t('network.text_245')}}</span>
     </div>
     <div class="error-color" v-else-if="errorText">
       <span>{{ errorText }}</span>
@@ -80,9 +80,9 @@ export default {
       } catch (error) {
         this.showUnused = false
         if (error.response.status === 404) {
-          this.errorText = '资源不存在'
+          this.errorText = this.$t('network.text_246')
         } else {
-          this.errorText = '请求出错啦..'
+          this.errorText = this.$t('network.text_247')
         }
         this.loading = false
       }

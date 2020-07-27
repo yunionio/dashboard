@@ -7,8 +7,8 @@
     </div>
     <div class="d-flex align-items-center" v-if="remain > 0">
       <a-button type="primary" shape="circle" icon="plus" size="small" @click="add" />
-      <a-button type="link" @click="add">添加新IP子网</a-button>
-      <span class="count-tips">您还可以添加 <span class="remain-num">{{ remain }}</span> 个</span>
+      <a-button type="link" @click="add">{{$t('network.text_612')}}</a-button>
+      <span class="count-tips">{{$t('network.text_169')}}<span class="remain-num">{{ remain }}</span>{{$t('network.text_170')}}</span>
     </div>
   </div>
 </template>

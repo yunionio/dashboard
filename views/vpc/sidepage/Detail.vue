@@ -31,19 +31,19 @@ export default {
         getBrandTableColumn(),
         {
           field: 'cidr_block',
-          title: '目标网段',
+          title: this.$t('network.text_244'),
         },
         {
           field: 'wire_count',
-          title: '二层网络数量',
+          title: this.$t('network.text_691'),
         },
         {
           field: 'routetable_count',
-          title: '路由表数量',
+          title: this.$t('network.text_692'),
         },
         {
           field: 'network_count',
-          title: 'IP子网数量',
+          title: this.$t('network.text_682'),
           slots: {
             default: ({ row }) => {
               if (!row.network_count) return '-'
@@ -53,7 +53,7 @@ export default {
         },
         {
           field: 'natgateway_count',
-          title: 'nat网关数量',
+          title: this.$t('network.text_693'),
         },
       ],
       extraInfo: [],

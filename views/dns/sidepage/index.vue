@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="域名服务"
+    :title="$t('network.text_184')"
     icon="res-dns"
     :res-name="detailData.name"
     :actions="params.actions"
@@ -44,8 +44,8 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'dns-detail' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('network.text_67'), key: 'dns-detail' },
+        { label: this.$t('network.text_150'), key: 'event-drawer' },
       ],
     }
   },

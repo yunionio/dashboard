@@ -1,10 +1,10 @@
 <template>
   <div class="d-flex">
     <a-form-model :model="form" layout="inline">
-      <a-form-model-item label="日期范围">
+      <a-form-model-item :label="$t('network.text_496')">
         <a-range-picker :ranges="ranges" v-model="form.timeRange" />
       </a-form-model-item>
-      <a-form-model-item label="聚合函数">
+      <a-form-model-item :label="$t('network.text_497')">
         <a-select v-model="form.aggregate" style="width: 150px;">
           <a-select-option v-for="item in aggregateOpts" :value="item.key" :key="item.key">{{ item.label }}</a-select-option>
         </a-select>
@@ -39,9 +39,9 @@ export default {
         aggregate: 'mean',
       },
       aggregateOpts: [
-        { key: 'mean', label: '平均值' },
-        { key: 'max', label: '最大值' },
-        { key: 'min', label: '最小值' },
+        { key: 'mean', label: this.$t('network.text_498') },
+        { key: 'max', label: this.$t('network.text_499') },
+        { key: 'min', label: this.$t('network.text_500') },
       ],
       ranges: {
         最近十分钟: [this.$moment(+new Date() - 1000 * 600), this.$moment()],

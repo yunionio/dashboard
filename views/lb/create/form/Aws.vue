@@ -1,27 +1,27 @@
 <template>
   <a-form :form="form.fc" class="mt-3" v-bind="formItemLayout">
-    <a-form-item :label="`指定${$t('dictionary.project')}`" class="mb-0">
+    <a-form-item :label="$t('network.text_205', [$t('dictionary.project')])" class="mb-0">
       <domain-project :fc="form.fc" :decorators="decorators" :domain.sync="domain" :project.sync="project" :labelInValue="false" />
     </a-form-item>
-    <a-form-item label="名称">
+    <a-form-item :label="$t('network.text_21')">
       <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
     </a-form-item>
-    <a-form-item label="实例类型">
+    <a-form-item :label="$t('network.text_277')">
       <a-radio-group v-decorator="decorators.loadbalancer_spec">
-        <a-radio-button value="application">应用型</a-radio-button>
-        <a-radio-button value="network">网络型</a-radio-button>
+        <a-radio-button value="application">{{$t('network.text_266')}}</a-radio-button>
+        <a-radio-button value="network">{{$t('network.text_267')}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-form-item label="区域" class="mb-0">
+    <a-form-item :label="$t('network.text_199')" class="mb-0">
       <cloudprovider-region-zone :form="form" :decorators="decorators" :cloudproviderParams="cloudproviderParams" :cloudregionParams="cloudregionParams" :zoneParams="zoneParams" />
     </a-form-item>
-    <a-form-item label="网络">
+    <a-form-item :label="$t('network.text_16')">
       <a-radio-group v-decorator="decorators.address_type">
-        <a-radio-button value="internet">公网</a-radio-button>
-        <a-radio-button value="intranet">私网</a-radio-button>
+        <a-radio-button value="internet">{{$t('network.text_270')}}</a-radio-button>
+        <a-radio-button value="intranet">{{$t('network.text_271')}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-form-item label="IP版本">
+    <a-form-item :label="$t('network.text_273')">
       <a-radio-group v-decorator="decorators.ip">
         <a-radio-button value="ipv4">IPv4</a-radio-button>
       </a-radio-group>
@@ -33,9 +33,9 @@
         need-params
         filterable
         :params="vpcParams"
-        :select-props="{ placeholder: '请选择VPC' }" />
+        :select-props="{ placeholder: $t('network.text_274') }" />
     </a-form-item>
-    <a-form-item label="指定IP子网">
+    <a-form-item :label="$t('network.text_211')">
       <base-select
         v-decorator="decorators.network"
         resource="networks"
@@ -43,7 +43,7 @@
         filterable
         :item.sync="networkObj"
         :params="networkParams"
-        :select-props="{ placeholder: '请选择可用IP大于0的网络' }" />
+        :select-props="{ placeholder: $t('network.text_275') }" />
     </a-form-item>
   </a-form>
 </template>
@@ -63,7 +63,7 @@ export default {
     async submit () {
       try {
         const values = await this.form.fc.validateFields()
-        if (!this.validateIp()) throw Error('指定的IP子网必须有大于或等于8个的可用IP才可以被选择创建实例')
+        if (!this.validateIp()) throw Error(this.$t('network.text_276'))
         const data = {
           name: values.name.trim(),
           loadbalancer_spec: values.loadbalancer_spec,

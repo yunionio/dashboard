@@ -4,14 +4,14 @@
     <div slot="body">
       <a-form
         :form="form.fc">
-        <a-form-item label="区域" class="mb-0" v-bind="formItemLayout">
+        <a-form-item :label="$t('network.text_199')" class="mb-0" v-bind="formItemLayout">
           <cloudregion-zone
             :zone-params="resParams.zone"
             :cloudregion-params="resParams.region"
             :decorator="decorators.regionZone" />
         </a-form-item>
-        <a-form-item label="名称" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.name" placeholder="字母开头，数字和字母大小写组合，长度为2-128个字符，不含'.','_','@'" />
+        <a-form-item :label="$t('network.text_21')" v-bind="formItemLayout">
+          <a-input v-decorator="decorators.name" :placeholder="$t('network.text_44')" />
         </a-form-item>
       </a-form>
     </div>
@@ -46,7 +46,7 @@ export default {
             validateFirst: true,
             validateTrigger: ['blur'],
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('network.text_116') },
               { validator: this.$validate('resourceName') },
             ],
           },
@@ -57,7 +57,7 @@ export default {
             {
               initialValue: { key: '', label: '' },
               rules: [
-                { required: true, message: '请选择区域' },
+                { required: true, message: this.$t('network.text_286') },
               ],
             },
           ],
@@ -66,7 +66,7 @@ export default {
             {
               initialValue: { key: '', label: '' },
               rules: [
-                { required: true, message: '请选择可用区' },
+                { required: true, message: this.$t('network.text_287') },
               ],
             },
           ],

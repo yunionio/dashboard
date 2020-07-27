@@ -33,7 +33,7 @@ export default {
         getParams: this.getParam,
         filterOptions: {
           name: {
-            label: '策略组名称',
+            label: this.$t('network.text_291'),
             filter: true,
             formatter: val => {
               return `name.contains(${val})`
@@ -46,20 +46,20 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '策略组名称', key: 'name' },
-          { label: '源地址 | 备注', key: 'acl_entries' },
-          { label: '创建时间', key: 'created_at' },
-          { label: '更新时间', key: 'updated_at' },
+          { label: this.$t('network.text_291'), key: 'name' },
+          { label: this.$t('network.text_312'), key: 'acl_entries' },
+          { label: this.$t('network.text_313'), key: 'created_at' },
+          { label: this.$t('network.text_314'), key: 'updated_at' },
           { label: this.$t('dictionary.project'), key: 'tenant' },
         ],
       },
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('network.text_26'),
           permission: 'lb_loadbalanceracls_create',
           action: () => {
             this.createDialog('LbaclsCreateDialog', {
-              title: '新建访问控制',
+              title: this.$t('network.text_315'),
               data: this.list.selectedItems,
               onManager: this.onManager,
               type: 'create',
@@ -73,12 +73,12 @@ export default {
           },
         },
         {
-          label: '删除',
+          label: this.$t('network.text_131'),
           permission: 'lb_loadbalancerlisteners_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,
-              title: '删除',
+              title: this.$t('network.text_131'),
               data: this.list.selectedItems,
               columns: this.columns,
               onManager: this.onManager,

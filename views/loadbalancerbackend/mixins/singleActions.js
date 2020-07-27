@@ -1,8 +1,9 @@
+import i18n from '@/locales'
 export default {
   created () {
     this.singleActions = this.isListenerSidepage ? [] : [
       {
-        label: '修改端口',
+        label: i18n.t('network.text_349'),
         permission: 'lb_loadbalancerbackends_update',
         action: (obj) => {
           this.createDialog('BackendUpdatePortDialog', {
@@ -16,7 +17,7 @@ export default {
           if (provider.toLowerCase() === 'huawei') {
             return {
               validate: false,
-              tooltip: '华为云暂不支持端口',
+              tooltip: i18n.t('network.text_354'),
             }
           }
           return {
@@ -25,7 +26,7 @@ export default {
         },
       },
       {
-        label: '修改权重',
+        label: i18n.t('network.text_352'),
         permission: 'lb_loadbalancerbackends_update',
         action: (obj) => {
           this.createDialog('BackendUpdateWeightDialog', {
@@ -36,13 +37,13 @@ export default {
         },
       },
       {
-        label: '删除',
+        label: i18n.t('network.text_131'),
         permission: 'lb_loadbalancerbackends_delete',
         action: (obj) => {
           this.createDialog('DeleteResDialog', {
             vm: this,
-            title: '删除',
-            name: '后端服务器',
+            title: i18n.t('network.text_131'),
+            name: i18n.t('network.text_140'),
             data: [obj],
             columns: this.columns,
             onManager: this.onManager,

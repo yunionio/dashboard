@@ -1,6 +1,7 @@
 import { validateEnabled, validateDisable } from '../utils'
 import expectStatus from '@/constants/expectStatus'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -44,14 +45,14 @@ export default {
         ],
       }),
       {
-        label: '更多',
+        label: i18n.t('network.text_129'),
         actions: (obj) => {
           return [
             {
-              label: '更改集群',
+              label: i18n.t('network.text_253'),
               action: () => {
                 this.createDialog('LbUpdateCluster', {
-                  title: '更改集群',
+                  title: i18n.t('network.text_253'),
                   data: [obj],
                   columns: this.columns,
                   onManager: this.onManager,
@@ -62,17 +63,17 @@ export default {
                 const isOneCloud = obj.brand === 'OneCloud'
                 return {
                   validate: isOneCloud,
-                  tooltip: !isOneCloud && '仅OneCloud平台支持此操作',
+                  tooltip: !isOneCloud && i18n.t('network.text_254'),
                 }
               },
             },
             {
-              label: '删除',
+              label: i18n.t('network.text_131'),
               permission: 'lb_loadbalancers_delete',
               action: () => {
                 this.createDialog('DeleteResDialog', {
                   vm: this,
-                  title: '删除',
+                  title: i18n.t('network.text_131'),
                   data: [obj],
                   columns: this.columns,
                   onManager: this.onManager,

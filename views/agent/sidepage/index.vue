@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="节点"
+    :title="$t('network.text_20')"
     icon="res-cluster"
     :res-name="detailData.name"
     :actions="params.actions"
@@ -46,11 +46,11 @@ export default {
   computed: {
     detailTabs () {
       const tabs = [
-        { label: '详情', key: 'agent-detail' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('network.text_67'), key: 'agent-detail' },
+        { label: this.$t('network.text_150'), key: 'event-drawer' },
       ]
       if (this.detailData.deployment && this.detailData.deployment.ansible_playbook) {
-        tabs.splice(1, 0, { label: '部署详情', key: 'asbook' })
+        tabs.splice(1, 0, { label: this.$t('network.text_151'), key: 'asbook' })
       }
       return tabs
     },

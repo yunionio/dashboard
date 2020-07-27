@@ -9,6 +9,7 @@ import {
   getTagTableColumn,
   getRegionTableColumn,
 } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   components: {
@@ -19,7 +20,7 @@ export default {
       getNameDescriptionTableColumn({
         onManager: this.onManager,
         hideField: true,
-        title: '名称',
+        title: i18n.t('network.text_21'),
         slotCallback: row => {
           return (
             <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
@@ -29,7 +30,7 @@ export default {
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'loadbalancer', columns: () => this.columns }),
       {
         field: 'address',
-        title: '服务地址',
+        title: i18n.t('network.text_248'),
         minWidth: 150,
         slots: {
           default: ({ row }) => {
@@ -38,14 +39,14 @@ export default {
             if (row.eip) {
               text = row.eip
               if (row.eip_mode === 'elastic_ip') {
-                weakTip = '（弹性公网IP）'
+                weakTip = i18n.t('network.text_304')
               } else if (row.eip_mode === 'public_ip') {
-                weakTip = '（公网ip）'
+                weakTip = i18n.t('network.text_305')
               } else {
                 weakTip = ''
               }
             } else {
-              weakTip = row.address_type === 'intranet' ? '（私网IP）' : '（公网IP）'
+              weakTip = row.address_type === 'intranet' ? i18n.t('network.text_306') : i18n.t('network.text_307')
             }
             return [<div>
               <list-body-cell-wrap hide-field copy field={row.eip ? 'eip' : 'address' } row={row}>
@@ -61,10 +62,10 @@ export default {
         title: 'VPC',
         minWidth: 100,
       },
-      getStatusTableColumn({ statusModule: 'lb', title: '状态' }),
+      getStatusTableColumn({ statusModule: 'lb', title: i18n.t('network.text_27') }),
       {
         field: 'charge_type',
-        title: '计费方式',
+        title: i18n.t('network.text_192'),
         minWidth: 100,
         formatter: ({ row }) => {
           if (row.charge_type) return CHARGE_TYPE[row.charge_type] || row.charge_type
@@ -73,7 +74,7 @@ export default {
       },
       {
         field: 'loadbalancer_spec',
-        title: '类型',
+        title: i18n.t('network.text_249'),
         minWidth: 100,
         formatter: ({ row }) => {
           let { provider } = row
@@ -90,7 +91,7 @@ export default {
       },
       {
         field: 'cluster',
-        title: '集群',
+        title: i18n.t('network.text_19'),
         minWidth: 100,
         formatter: ({ row }) => {
           return row.cluster || '-'
@@ -126,7 +127,7 @@ export default {
       getRegionTableColumn(),
       {
         field: 'account',
-        title: '云账号',
+        title: i18n.t('network.text_196'),
         minWidth: 120,
       },
       // getTimeTableColumn(), // 列表太长先隐藏

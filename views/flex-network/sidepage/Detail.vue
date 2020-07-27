@@ -29,15 +29,15 @@ export default {
         getBrandTableColumn(),
         {
           field: 'mac',
-          title: 'MAC地址',
+          title: this.$t('network.text_228'),
         },
         {
           field: 'associate_type',
-          title: '绑定设备类型',
+          title: this.$t('network.text_229'),
         },
         {
           field: 'associate_id',
-          title: '绑定设备',
+          title: this.$t('network.text_234'),
         },
       ],
       columns: [
@@ -47,23 +47,23 @@ export default {
         },
         {
           field: 'network',
-          title: 'IP子网(VPC)',
+          title: this.$t('network.text_235'),
         },
         {
           field: 'networkinterface_id',
-          title: '网卡ID',
+          title: this.$t('network.text_236'),
         },
         {
           field: 'primary',
-          title: '主IP',
+          title: this.$t('network.text_237'),
           formatter: ({ cellValue }) => {
-            return cellValue ? '是' : '否'
+            return cellValue ? this.$t('network.text_238') : this.$t('network.text_239')
           },
         },
       ],
       extraInfo: [
         {
-          title: 'IP列表',
+          title: this.$t('network.text_240'),
           field: 'networks',
           slots: {
             default: ({ row }, h) => {

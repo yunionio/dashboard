@@ -5,7 +5,7 @@
       <a-form
         v-bind="formItemLayout"
         :form="form.fc">
-        <a-form-item label="类型">
+        <a-form-item :label="$t('network.text_249')">
           <a-radio-group v-decorator="decorators.backend_type" @change="handleBackendTypeChange">
             <a-radio-button v-for="(v, k) in backendTypes" :value="k" :key="k">{{v}}</a-radio-button>
           </a-radio-group>
@@ -19,10 +19,8 @@
             v-decorator="decorators.guest_backend"
             show-sync
             :mapper="serverlistMapper"
-            :select-props="{ placeholder: `请选择${$t('dictionary.server')}` }" />
-            <div slot="extra">
-            没有想要的{{ $t('dictionary.server') }}？可以前往
-            <help-link :href="serverHref"> 新建</help-link>
+            :select-props="{ placeholder: $t('dictionary.text_334', [$t('dictionary.server')]) }" />
+            <div slot="extra">{{$t('network.text_335', [$t('dictionary.server')])}}<help-link :href="serverHref">{{$t('network.text_26')}}</help-link>
           </div>
         </a-form-item>
         <a-form-item key="host" :label="$t('dictionary.host')" v-if="backend_type === 'host'">
@@ -32,18 +30,18 @@
             v-decorator="decorators.host_backend"
             resource="hosts"
             :params="hostParams"
-            :select-props="{ placeholder: '请选择宿主机' }" />
+            :select-props="{ placeholder: $t('network.text_62') }" />
         </a-form-item>
-        <a-form-item key="ip" label="IP地址" v-if="backend_type === 'ip'" extra="支持通过IP地址选择未被OneCloud纳管的服务器作为后端服务器">
-          <a-input v-decorator="decorators.ip_backend" placeholder="请输入IP" />
+        <a-form-item key="ip" :label="$t('network.text_213')" v-if="backend_type === 'ip'" :extra="$t('network.text_337')">
+          <a-input v-decorator="decorators.ip_backend" :placeholder="$t('network.text_338')" />
         </a-form-item>
-        <a-form-item label="端口" extra="端口范围是1-65535，同一台服务器在一个组中，端口不可以重复">
+        <a-form-item :label="$t('network.text_165')" :extra="$t('network.text_339')">
           <a-input-number v-decorator="decorators.port" />
         </a-form-item>
-        <a-form-item label="权重" :extra="`权重范围是0-${params.maxWeight}，权重越大转发到该服务器的请求越多`">
+        <a-form-item :label="$t('network.text_166')" :extra="$t('network.text_333', [params.maxWeight])">
           <a-input-number v-decorator="decorators.weight" />
         </a-form-item>
-        <a-form-item v-if="isOneCloud" label="SSL" extra="通过加密方式访问后端服务器">
+        <a-form-item v-if="isOneCloud" label="SSL" :extra="$t('network.text_340')">
           <a-switch v-decorator="decorators.ssl" />
         </a-form-item>
       </a-form>
@@ -87,13 +85,13 @@ export default {
     backendTypes () {
       if (!this.isOneCloud) {
         return {
-          guest: '指定虚拟机',
+          guest: this.$t('network.text_341'),
         }
       }
       const _ = {
-        guest: '指定虚拟机',
-        host: '指定宿主机',
-        ip: '外部机器',
+        guest: this.$t('network.text_341'),
+        host: this.$t('network.text_342'),
+        ip: this.$t('network.text_71'),
       }
       const { isAdminMode, isDomainMode } = this.$store.getters
       if (!isAdminMode && !isDomainMode) {
@@ -109,7 +107,7 @@ export default {
           {
             initialValue: 'guest',
             rules: [
-              { required: true, message: '请选择类型' },
+              { required: true, message: this.$t('network.text_343') },
             ],
           },
         ],
@@ -117,7 +115,7 @@ export default {
           'guest_backend',
           {
             rules: [
-              { required: isRequired('guest'), message: '请指定虚拟机' },
+              { required: isRequired('guest'), message: this.$t('network.text_344') },
             ],
           },
         ],
@@ -125,7 +123,7 @@ export default {
           'host_backend',
           {
             rules: [
-              { required: isRequired('host'), message: '请指定宿主机' },
+              { required: isRequired('host'), message: this.$t('network.text_345') },
             ],
           },
         ],
@@ -134,7 +132,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: isRequired('ip'), message: '请指定IP' },
+              { required: isRequired('ip'), message: this.$t('network.text_346') },
               { validator: this.$validate('IPv4', false) },
             ],
           },
@@ -145,8 +143,8 @@ export default {
             validateFirst: true,
             initialValue: 1,
             rules: [
-              { required: true, message: '请输入端口' },
-              { type: 'number', min: 1, max: 65535, message: '端口范围在1-65535之间' },
+              { required: true, message: this.$t('network.text_176') },
+              { type: 'number', min: 1, max: 65535, message: this.$t('network.text_347') },
             ],
           },
         ],
@@ -156,8 +154,8 @@ export default {
             validateFirst: true,
             initialValue: 1,
             rules: [
-              { required: true, message: '请输入权重' },
-              { type: 'number', min: 0, max: this.params.maxWeight, message: `端口范围在1-${this.params.maxWeight}之间` },
+              { required: true, message: this.$t('network.text_177') },
+              { type: 'number', min: 0, max: this.params.maxWeight, message: this.$t('network.text_348', [this.params.maxWeight]) },
             ],
           },
         ],

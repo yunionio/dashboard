@@ -38,7 +38,7 @@ export default {
         getParams: this.getParam,
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('network.text_21'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
@@ -46,7 +46,7 @@ export default {
           },
           brand: getBrandFilter(),
           ip_addr: {
-            label: '地址',
+            label: this.$t('network.text_191'),
             filter: true,
             formatter: val => {
               return `ip_addr.contains("${val}")`
@@ -60,7 +60,7 @@ export default {
             label: '区域',
           },
           charge_type: {
-            label: '计费方式',
+            label: this.$t('network.text_192'),
             dropdown: true,
             multiple: false,
             // distinctField: {
@@ -68,8 +68,8 @@ export default {
             //   key: 'charge_type',
             // },
             items: [
-              { label: '按流量计费', key: 'traffic' },
-              { label: '按带宽计费', key: 'bandwidth' },
+              { label: this.$t('network.text_193'), key: 'traffic' },
+              { label: this.$t('network.text_194'), key: 'bandwidth' },
             ],
           },
         },
@@ -79,25 +79,25 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
-          { label: '地址', key: 'ip_addr' },
-          { label: '带宽', key: 'bandwidth' },
-          { label: '云账号', key: 'account' },
-          { label: '状态', key: 'status' },
-          { label: '计费方式', key: 'charge_type' },
-          { label: '绑定资源', key: 'associate_name' },
+          { label: this.$t('network.text_21'), key: 'name' },
+          { label: this.$t('network.text_191'), key: 'ip_addr' },
+          { label: this.$t('network.text_195'), key: 'bandwidth' },
+          { label: this.$t('network.text_196'), key: 'account' },
+          { label: this.$t('network.text_27'), key: 'status' },
+          { label: this.$t('network.text_192'), key: 'charge_type' },
+          { label: this.$t('network.text_197'), key: 'associate_name' },
           { label: this.$t('dictionary.project'), key: 'tenant' },
-          { label: '平台', key: 'provider' },
-          { label: '区域', key: 'region' },
+          { label: this.$t('network.text_198'), key: 'provider' },
+          { label: this.$t('network.text_199'), key: 'region' },
         ],
       },
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('network.text_26'),
           permission: 'eips_create',
           action: () => {
             this.createDialog('EipCreateDialog', {
-              title: '新建',
+              title: this.$t('network.text_26'),
               onManager: this.onManager,
               refresh: this.refresh,
             })
@@ -107,11 +107,11 @@ export default {
           }),
         },
         {
-          label: '批量操作',
+          label: this.$t('network.text_200'),
           actions: () => {
             return [
               {
-                label: '同步状态',
+                label: this.$t('network.text_201'),
                 action: () => {
                   this.onManager('batchPerformAction', {
                     steadyStatus: ['running', 'ready'],
@@ -122,14 +122,14 @@ export default {
                 },
               },
               {
-                label: '删除',
+                label: this.$t('network.text_131'),
                 permission: 'eips_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     vm: this,
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    title: '删除',
+                    title: this.$t('network.text_131'),
                     name: this.$t('dictionary.eip'),
                     onManager: this.onManager,
                   })

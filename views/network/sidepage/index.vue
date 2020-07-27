@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="IP子网"
+    :title="$t('network.text_565')"
     icon="res-network"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
@@ -56,14 +56,14 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'network-detail' },
-        { label: 'IP使用情况', key: 'i-p-list' },
+        { label: this.$t('network.text_67'), key: 'network-detail' },
+        { label: this.$t('network.text_669'), key: 'i-p-list' },
         // { label: '宿主机IP', key: 'host-machineip' },
         // { label: '主机IP', key: 'host-ip' },
-        { label: '预留IP', key: 'reserved-ip-list' },
+        { label: this.$t('network.text_651'), key: 'reserved-ip-list' },
         // { label: '负载均衡IP', key: 'lb-ip' },
         // { label: '弹性网卡IP', key: 'flex-ip' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('network.text_150'), key: 'event-drawer' },
       ],
     }
   },

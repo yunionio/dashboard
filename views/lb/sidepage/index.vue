@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="实例"
+    :title="$t('network.text_303')"
     icon="res-lb"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
@@ -47,10 +47,10 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'lb-detail' },
-        { label: '监听', key: 'loadbalancerlisteners-list' },
-        { label: '后端服务器组', key: 'loadbalancerbackendgroups-list' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('network.text_67'), key: 'lb-detail' },
+        { label: this.$t('network.text_138'), key: 'loadbalancerlisteners-list' },
+        { label: this.$t('network.text_139'), key: 'loadbalancerbackendgroups-list' },
+        { label: this.$t('network.text_150'), key: 'event-drawer' },
       ],
     }
   },

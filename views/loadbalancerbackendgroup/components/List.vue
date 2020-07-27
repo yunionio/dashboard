@@ -44,11 +44,11 @@ export default {
       }),
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('network.text_26'),
           permission: 'lb_loadbalancerbackendgroups_create',
           action: () => {
             this.createDialog('LoadbalancerbackendgroupsCreateDialog', {
-              title: '新建',
+              title: this.$t('network.text_26'),
               loadbalancer: this.resId,
               onManager: this.onManager,
               refresh: this.refresh,
@@ -61,15 +61,15 @@ export default {
           },
         },
         {
-          label: '删除',
+          label: this.$t('network.text_131'),
           permission: 'lb_loadbalancerbackendgroups_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,
               data: this.list.selectedItems,
               columns: this.columns,
-              title: '删除',
-              name: '后端服务器组',
+              title: this.$t('network.text_131'),
+              name: this.$t('network.text_139'),
               onManager: this.onManager,
             })
           },

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="二层网络" />
+    <page-header :title="$t('network.text_571')" />
     <page-body>
       <wire-list :id="listId" />
     </page-body>

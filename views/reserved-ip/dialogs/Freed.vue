@@ -36,7 +36,7 @@ export default {
         await manager.rpc({ methodname: 'DoBatchReleaseReservedIps', params })
         this.cancelDialog()
         this.params.refresh()
-        this.$message.success('操作成功')
+        this.$message.success(this.$t('network.text_290'))
       } finally {
         this.loading = false
       }

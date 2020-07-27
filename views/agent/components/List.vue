@@ -34,14 +34,14 @@ export default {
         getParams: this.getParam,
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('network.text_21'),
             filter: true,
             formatter: val => {
               return `name.contains(${val})`
             },
           },
           cluster: {
-            label: '集群',
+            label: this.$t('network.text_19'),
             dropdown: true,
             distinctField: {
               type: 'extra_field',
@@ -59,18 +59,18 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
-          { label: '集群', key: 'cluster' },
-          { label: '主备', key: 'ha_state' },
+          { label: this.$t('network.text_21'), key: 'name' },
+          { label: this.$t('network.text_19'), key: 'cluster' },
+          { label: this.$t('network.text_22'), key: 'ha_state' },
           { label: 'IP', key: 'ip' },
-          { label: '上一次心跳', key: 'hb_last_seen' },
-          { label: '可用区', key: 'zone' },
-          { label: '软件版本', key: 'version' },
+          { label: this.$t('network.text_23'), key: 'hb_last_seen' },
+          { label: this.$t('network.text_24'), key: 'zone' },
+          { label: this.$t('network.text_25'), key: 'version' },
         ],
       },
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('network.text_26'),
           permission: 'lb_loadbalancers_create',
           action: () => {
             this.$router.push({

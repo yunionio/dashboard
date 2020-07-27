@@ -39,14 +39,14 @@ export default {
         steadyStatus: Object.values(expectStatus.network).flat(),
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('network.text_21'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
             },
           },
           mac: {
-            label: 'MAC地址',
+            label: this.$t('network.text_228'),
             filter: true,
             // jointFilter: true,
             formatter: val => {
@@ -56,7 +56,7 @@ export default {
           status: getStatusFilter('network'),
           brand: getBrandFilter(),
           associate_type: {
-            label: '绑定设备类型',
+            label: this.$t('network.text_229'),
             filter: true,
             formatter: val => {
               return `associate_type.contains("${val}")`
@@ -69,18 +69,18 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
-          { label: 'MAC地址', key: 'mac' },
-          { label: '状态', key: 'status' },
-          { label: '平台', key: 'brand' },
-          { label: '绑定设备类型(VPC)', key: 'associate_type' },
-          { label: 'CPU绑定设备', key: 'associate_id' },
-          { label: '云账号', key: 'account' },
+          { label: this.$t('network.text_21'), key: 'name' },
+          { label: this.$t('network.text_228'), key: 'mac' },
+          { label: this.$t('network.text_27'), key: 'status' },
+          { label: this.$t('network.text_198'), key: 'brand' },
+          { label: this.$t('network.text_230'), key: 'associate_type' },
+          { label: this.$t('network.text_231'), key: 'associate_id' },
+          { label: this.$t('network.text_196'), key: 'account' },
           { label: this.$t('dictionary.project'), key: 'tenant' },
-          { label: '区域', key: 'region' },
-          { label: '可用区', key: 'zone' },
-          { label: '共享范围', key: 'public_scope' },
-          { label: `所属${this.$t('dictionary.domain')}`, key: 'project_domain' },
+          { label: this.$t('network.text_199'), key: 'region' },
+          { label: this.$t('network.text_24'), key: 'zone' },
+          { label: this.$t('network.text_232'), key: 'public_scope' },
+          { label: this.$t('network.text_233', [this.$t('dictionary.domain')]), key: 'project_domain' },
         ],
       },
       groupActions: [

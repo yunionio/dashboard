@@ -34,7 +34,7 @@ export default {
         },
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('network.text_21'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
@@ -45,7 +45,7 @@ export default {
       columns: [
         {
           field: 'name',
-          title: '名称',
+          title: this.$t('network.text_21'),
           minWidth: 100,
           showOverflow: 'ellipsis',
         },
@@ -87,7 +87,7 @@ export default {
         },
         {
           field: 'mem_size',
-          title: '内存',
+          title: this.$t('network.text_707'),
           minWidth: 100,
           showOverflow: 'ellipsis',
           formatter: ({ cellValue, row }) => {
@@ -100,7 +100,7 @@ export default {
         },
         {
           field: 'storage_size',
-          title: '存储',
+          title: this.$t('network.text_708'),
           minWidth: 70,
           showOverflow: 'ellipsis',
           formatter: ({ cellValue, row }) => {
@@ -134,7 +134,7 @@ export default {
         },
         {
           field: 'server_id',
-          title: '初始账号',
+          title: this.$t('network.text_709'),
           minWidth: 70,
           showOverflow: 'ellipsis',
           slots: {

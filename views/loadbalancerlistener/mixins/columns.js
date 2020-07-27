@@ -5,6 +5,7 @@ import {
   getStatusTableColumn,
   getProjectTableColumn,
 } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   components: {
@@ -15,7 +16,7 @@ export default {
       getNameDescriptionTableColumn({
         onManager: this.onManager,
         hideField: true,
-        title: '名称',
+        title: i18n.t('network.text_21'),
         slotCallback: row => {
           return (
             <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
@@ -25,13 +26,13 @@ export default {
       getStatusTableColumn({ statusModule: 'lb' }),
       {
         field: 'listener_type&listener_port',
-        title: '前端协议:端口',
+        title: i18n.t('network.text_472'),
         minWidth: 150,
         formatter: ({ row }) => `${row.listener_type}:${row.listener_port}`,
       },
       {
         field: 'scheduler',
-        title: '调度算法',
+        title: i18n.t('network.text_423'),
         minWidth: 100,
         formatter: ({ row }) => {
           if (!row.scheduler || row.redirect === 'raw') return '-'
@@ -41,7 +42,7 @@ export default {
       },
       {
         field: 'backend_group',
-        title: '后端服务器组',
+        title: i18n.t('network.text_139'),
         minWidth: 200,
         formatter: ({ row }) => {
           if (!row.backend_group || row.redirect === 'raw') return '-'
@@ -52,13 +53,13 @@ export default {
         minWidth: 100,
         statusModule: 'lbHealth',
         field: 'health_check',
-        title: '健康检查',
+        title: i18n.t('network.text_469'),
         slotCallback: (row) => {
           return row.redirect === 'raw' ? '-' : null
         },
       }),
-      getStatusTableColumn({ minWidth: 100, statusModule: 'lbAcl', field: 'acl_status', title: '访问控制' }),
-      getStatusTableColumn({ minWidth: 100, statusModule: 'lbRedirect', field: 'redirect', title: '重定向' }),
+      getStatusTableColumn({ minWidth: 100, statusModule: 'lbAcl', field: 'acl_status', title: i18n.t('network.text_142') }),
+      getStatusTableColumn({ minWidth: 100, statusModule: 'lbRedirect', field: 'redirect', title: i18n.t('network.text_368') }),
       getProjectTableColumn(),
     ]
   },

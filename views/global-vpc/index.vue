@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="全局VPC" />
+    <page-header :title="$t('network.text_242')" />
     <page-body>
       <list :id="listId" />
     </page-body>

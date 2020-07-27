@@ -4,6 +4,7 @@ import {
   getPublicScopeTableColumn,
   getProjectDomainTableColumn,
 } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -21,7 +22,7 @@ export default {
       getStatusTableColumn({ statusModule: 'globalVpc' }),
       {
         field: 'vpc_count',
-        title: 'VPC数量',
+        title: i18n.t('network.text_243'),
         width: 100,
       },
       getPublicScopeTableColumn({ vm: this, resource: 'globalvpcs' }),

@@ -1,15 +1,16 @@
 import { getCopyWithContentTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
     this.columns = [
       getCopyWithContentTableColumn({
         field: 'ip_addr',
-        title: 'IP地址',
+        title: i18n.t('network.text_213'),
       }),
       {
         field: 'notes',
-        title: '备注',
+        title: i18n.t('network.text_668'),
         minWidth: 100,
         slots: {
           default: ({ row }, h) => {
@@ -17,7 +18,7 @@ export default {
               h('list-body-cell-wrap', {
                 props: {
                   formRules: [
-                    { required: true, message: '请输入备注' },
+                    { required: true, message: i18n.t('network.text_671') },
                   ],
                   row,
                   edit: true,

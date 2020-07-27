@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="转发策略"
+    :title="$t('network.text_141')"
     icon="res-lblistenerrule"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
@@ -43,8 +43,8 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'loadbalancerlistenerrule-detail' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('network.text_67'), key: 'loadbalancerlistenerrule-detail' },
+        { label: this.$t('network.text_150'), key: 'event-drawer' },
       ],
     }
   },

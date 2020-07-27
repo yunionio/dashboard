@@ -2,22 +2,19 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{params.title}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.loadbalanceragent')" :count="params.data.length" action="部署" />
+      <dialog-selected-tips :name="$t('dictionary.loadbalanceragent')" :count="params.data.length" :action="$t('network.text_41')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 2)" />
-      <a-divider orientation="left">指定系统用户</a-divider>
+      <a-divider orientation="left">{{$t('network.text_42')}}</a-divider>
       <a-form
         :form="form.fc">
-        <a-form-item label="项目" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.proj" placeholder="字母开头，数字和字母大小写组合，长度为2-128个字符，不含'.','_','@'" />
+        <a-form-item :label="$t('network.text_43')" v-bind="formItemLayout">
+          <a-input v-decorator="decorators.proj" :placeholder="$t('network.text_44')" />
         </a-form-item>
         <a-form-item v-bind="formItemLayout">
           <template slot="label">
-            <span>
-              系统用户
-              <a-tooltip placement="topLeft">
+            <span>{{$t('network.text_45')}}<a-tooltip placement="topLeft">
                 <template slot="title">
-                  <div>需要使用系统管理员用户，如需创建，请参照一下命令
-                  <br />climc user-create lbagent --password XXX --system-account
+                  <div>{{$t('network.text_46')}}<br />climc user-create lbagent --password XXX --system-account
                   <br />climc project-add-user system lbagent admin</div>
                 </template>
                 <a-icon type="info-circle" />
@@ -32,26 +29,19 @@
             :mapper="userMapper"
             :label-format="labelFormat"
             idKey="name"
-            :select-props="{ placeholder: '需要选择有管理员权限的用户' }"
+            :select-props="{ placeholder: $t('network.text_47') }"
             style="width: 320px" />
         </a-form-item>
-        <a-form-item label="密码" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.pass" type="password" placeholder="请输入系统用户的密码" />
+        <a-form-item :label="$t('network.text_48')" v-bind="formItemLayout">
+          <a-input v-decorator="decorators.pass" type="password" :placeholder="$t('network.text_49')" />
         </a-form-item>
-        <a-divider orientation="left">指定目标主机</a-divider>
+        <a-divider orientation="left">{{$t('network.text_50')}}</a-divider>
         <a-form-item v-bind="formItemLayout">
           <template slot="label">
-            <span>
-              部署类型
-              <a-tooltip placement="topLeft" :overlayStyle="{'max-width': '400px'}">
-                 <div slot="title" style="width: 400px">
-                    支持3种部署类型：
-                    <br />1. 支持选择本地IDC或私有云平台的运行状态的虚拟机。
-                    <br />2. 支持选择宿主机列表所有运行状态的宿主机。
-                    <br />3. 支持通过IP地址选择非OneCloud纳管的外部机器，需要满足以下要求：
-                    <div class="pl-2">a. 控制节点的Ansible Server可以访问目标机器</div>
-                    <div class="pl-2">b. 目标机器存在cloudroot用户且支持sudo免密登录</div>
-                    <div class="pl-2">c. 目标机器允许管理员通过公钥免密登录，通过climc sshkeypair-show --admin命令获取公钥</div>
+            <span>{{$t('network.text_51')}}<a-tooltip placement="topLeft" :overlayStyle="{'max-width': '400px'}">
+                 <div slot="title" style="width: 400px">{{$t('network.text_52')}}<br />{{$t('network.text_53')}}<br />{{$t('network.text_54')}}<br />{{$t('network.text_55')}}<div class="pl-2">{{$t('network.text_56')}}</div>
+                    <div class="pl-2">{{$t('network.text_57')}}</div>
+                    <div class="pl-2">{{$t('network.text_58')}}</div>
                   </div>
                 <a-icon type="info-circle" />
               </a-tooltip>
@@ -61,7 +51,7 @@
             <a-radio-button v-for="(item, index) in nameServers" :value="item.value" :key="index">{{item.label}}</a-radio-button>
           </a-radio-group>
           <a-form-item v-if="this.hostName === ''">
-            <a-input v-decorator="decorators.ip" placeholder="请输入外部机器的IP" />
+            <a-input v-decorator="decorators.ip" :placeholder="$t('network.text_59')" />
           </a-form-item>
           <a-form-item class="mb-0" v-if="this.hostName === 'server'">
             <base-select
@@ -72,10 +62,10 @@
               :mapper="serverMapper"
               :params="serversParams"
               :label-format="labelFormat"
-              :select-props="{ placeholder: '请选择云主机' }"
+              :select-props="{ placeholder: $t('network.text_60') }"
               @change="handleServerChange"
               @update:resList="serversSuccess" />
-              <a-alert v-if="isOut" message="如果您需要再次部署，请确保节点已经从旧机器下线" banner />
+              <a-alert v-if="isOut" :message="$t('network.text_61')" banner />
           </a-form-item>
           <a-form-item v-if="this.hostName === 'host'">
             <base-select
@@ -84,22 +74,19 @@
               resource="hosts"
               :params="hostsParams"
               :label-format="labelFormat"
-              :select-props="{ placeholder: '请选择宿主机' }"
+              :select-props="{ placeholder: $t('network.text_62') }"
               style="width: 320px" />
           </a-form-item>
         </a-form-item>
-        <a-form-item label="Yum源地址" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.repo_base_url" placeholder="请输入Yum源地址" />
+        <a-form-item :label="$t('network.text_63')" v-bind="formItemLayout">
+          <a-input v-decorator="decorators.repo_base_url" :placeholder="$t('network.text_64')" />
         </a-form-item>
         <a-form-item v-bind="tailFormItemLayout">
-          <a-checkbox v-decorator="decorators.repo_sslverify">Yum源TLS校验</a-checkbox>
+          <a-checkbox v-decorator="decorators.repo_sslverify">{{$t('network.text_65')}}</a-checkbox>
         </a-form-item>
       </a-form>
       <a-alert v-if="isRunning">
-        <div slot="message">
-          提示：
-          检测到该任务正在执行中，点击
-          <a @click="openAsbook(ansiblePlaybookId)">详情</a>
+        <div slot="message">{{$t('network.text_66')}}<a @click="openAsbook(ansiblePlaybookId)">{{$t('network.text_67')}}</a>
         </div>
       </a-alert>
     </div>
@@ -135,7 +122,7 @@ export default {
             validateTrigger: ['blur', 'change'],
             initialValue: 'system',
             rules: [
-              { required: true, message: '请输入项目' },
+              { required: true, message: this.$t('network.text_68') },
             ],
           },
         ],
@@ -144,7 +131,7 @@ export default {
           {
             validateTrigger: ['blur', 'change'],
             rules: [
-              { required: true, message: '请选择系统管理员用户' },
+              { required: true, message: this.$t('network.text_69') },
             ],
           },
         ],
@@ -153,7 +140,7 @@ export default {
           {
             validateTrigger: ['blur', 'change'],
             rules: [
-              { required: true, message: '请输入系统用户的密码' },
+              { required: true, message: this.$t('network.text_49') },
             ],
           },
         ],
@@ -168,7 +155,7 @@ export default {
           {
             validateTrigger: ['blur'],
             rules: [
-              { required: true, message: '请输入外部机器的IP' },
+              { required: true, message: this.$t('network.text_59') },
             ],
           },
         ],
@@ -177,7 +164,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请选择宿主机' },
+              { required: true, message: this.$t('network.text_62') },
             ],
           },
         ],
@@ -187,7 +174,7 @@ export default {
             validateFirst: true,
             validateTrigger: ['blur', 'change'],
             rules: [
-              { required: true, message: '请选择云主机' },
+              { required: true, message: this.$t('network.text_60') },
               { validator: this.serverOldCheck },
             ],
           },
@@ -202,7 +189,7 @@ export default {
             validateTrigger: ['blur'],
             // initialValue: `${location.protocol}//${location.host}/yumrepo`,
             rules: [
-              { required: true, message: '请输入Yum源地址' },
+              { required: true, message: this.$t('network.text_64') },
               { validator: this.$validate('url') },
             ],
           },
@@ -235,8 +222,8 @@ export default {
       },
       nameServers: [
         { label: this.$t('dictionary.server'), value: 'server' },
-        { label: '宿主机', value: 'host' },
-        { label: '外部机器', value: '' },
+        { label: this.$t('network.text_70'), value: 'host' },
+        { label: this.$t('network.text_71'), value: '' },
       ],
       hostName: 'server',
       deploymentHost: '',
@@ -331,7 +318,7 @@ export default {
     // 更改云主机时与旧的云主机校验
     serverOldCheck (rule, value, callback) {
       if (this.isDeleteServer) {
-        return callback(new Error('该云主机已被删除，请重新选择云主机'))
+        return callback(new Error(this.$t('network.text_72')))
       }
       return callback()
     },
@@ -408,7 +395,7 @@ export default {
     },
     openAsbook (ansiblePlaybookId) {
       this.createDialog('AnsibleplaybookDialog', {
-        title: '部署信息',
+        title: this.$t('network.text_73'),
         ansiblePlaybookId,
       })
     },

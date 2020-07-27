@@ -31,7 +31,7 @@ export default {
         getParams: this.getParam,
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('network.text_21'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
@@ -39,10 +39,10 @@ export default {
           },
           cloudaccount: getAccountFilter(),
           vpc: {
-            label: '所属VPC',
+            label: this.$t('network.text_535'),
           },
           region: {
-            label: '区域',
+            label: this.$t('network.text_199'),
           },
           brand: getBrandFilter(),
           project_domain: getProjectDomainFilter(),
@@ -51,13 +51,13 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
-          { label: '所属VPC', key: 'vpc' },
-          { label: '区域', key: 'region' },
-          { label: '云账号', key: 'manager' },
-          { label: '条目（路由表类型 目标网段 下一跳）', key: 'routes' },
-          { label: '共享范围', key: 'public_scope' },
-          { label: `所属${this.$t('dictionary.domain')}`, key: 'project_domain' },
+          { label: this.$t('network.text_21'), key: 'name' },
+          { label: this.$t('network.text_535'), key: 'vpc' },
+          { label: this.$t('network.text_199'), key: 'region' },
+          { label: this.$t('network.text_196'), key: 'manager' },
+          { label: this.$t('network.text_672'), key: 'routes' },
+          { label: this.$t('network.text_232'), key: 'public_scope' },
+          { label: this.$t('network.text_233', [this.$t('dictionary.domain')]), key: 'project_domain' },
         ],
       },
       groupActions: [

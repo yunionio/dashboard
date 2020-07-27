@@ -1,6 +1,6 @@
 <template>
   <div v-loading="true">
-    <page-header :title="`${isUpdate ? '修改' : '新建'}负载均衡监听`" />
+    <page-header :title="$t('network.text_465', [isUpdate ? $t('network.text_130') : $t('network.text_26')])" />
     <page-body>
       <steps v-show="!isLbRedirected" v-model="step" />
       <components :is="component" :step="step" ref="formRef" :isUpdate="isUpdate" />
@@ -8,14 +8,14 @@
     <page-footer>
       <template v-slot:right>
         <template v-if="isLbRedirected">
-          <a-button type="primary" class="mr-2" @click="isUpdate ? update() : validateForm() " :loading="loading">确定</a-button>
+          <a-button type="primary" class="mr-2" @click="isUpdate ? update() : validateForm() " :loading="loading">{{$t('network.text_30')}}</a-button>
         </template>
         <template v-else>
-          <a-button @click="prev" v-if="!isFirstStep" class="mr-2">上一步</a-button>
+          <a-button @click="prev" v-if="!isFirstStep" class="mr-2">{{$t('network.text_466')}}</a-button>
           <a-button :type="isUpdate ? '' : 'primary'" class="mr-2" @click="next" :loading="isUpdate ? false : loading" v-if="isUpdate ? !isLastStep : true">{{ nextStepTitle }}</a-button>
-          <a-button :type="isUpdate ? 'primary' : ''" class="mr-2" v-if="isUpdate" @click="update" :loading="loading">修改监听</a-button>
+          <a-button :type="isUpdate ? 'primary' : ''" class="mr-2" v-if="isUpdate" @click="update" :loading="loading">{{$t('network.text_467')}}</a-button>
         </template>
-        <a-button @click="cancel">取消</a-button>
+        <a-button @click="cancel">{{$t('network.text_31')}}</a-button>
       </template>
     </page-footer>
   </div>
@@ -57,9 +57,9 @@ export default {
       loading: false,
       step: {
         steps: [
-          { title: '协议&监听', component: 'Protocol' },
-          { title: '后端服务器组', component: 'Backendgroup' },
-          { title: '健康检查', component: 'Healthcheck' },
+          { title: this.$t('network.text_468'), component: 'Protocol' },
+          { title: this.$t('network.text_139'), component: 'Backendgroup' },
+          { title: this.$t('network.text_469'), component: 'Healthcheck' },
         ],
         currentStep: 0,
       },
@@ -139,7 +139,7 @@ export default {
       this.loading = true
       try {
         await new this.$Manager('loadbalancerlisteners').create({ data })
-        this.$message.success('操作成功')
+        this.$message.success(this.$t('network.text_290'))
         this.loading = false
         this.cancel()
       } catch (error) {

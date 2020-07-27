@@ -1,23 +1,24 @@
+import i18n from '@/locales'
 export const LB_SCHEDULER_MAP = {
   rr: {
-    text: '轮询',
-    desc: '按照访问顺序依次将外部请求依序分发到后端服务器。',
+    text: i18n.t('network.text_6'),
+    desc: i18n.t('network.text_7'),
   },
   wrr: {
-    text: '加权轮询',
-    desc: '权重值越高的后端服务器，被轮询到的次数（概率）也越高',
+    text: i18n.t('network.text_8'),
+    desc: i18n.t('network.text_9'),
   },
   wlc: {
-    text: '加权最小连接数',
-    desc: '除了根据每台后端服务器设定的权重值来进行轮询，同时还考虑后端服务器的实际负载（即连接数）。<br />当权重值相同时，当前连接数越小的后端服务器被轮询到的次数（概率）也越高。',
+    text: i18n.t('network.text_10'),
+    desc: i18n.t('network.text_11'),
   },
   sch: {
-    text: '基于源IP一致性哈希',
-    desc: '基于源IP地址的一致性hash，相同的源地址会调度到相同的后端服务器。',
+    text: i18n.t('network.text_12'),
+    desc: i18n.t('network.text_13'),
   },
   tch: {
-    text: '基于四元组一致性哈希',
-    desc: '基于四元组的一致性hash（源IP+目的IP+源端口+目的端口），相同的流会调度到相同的后端服务器。',
+    text: i18n.t('network.text_14'),
+    desc: i18n.t('network.text_15'),
   },
 }
 

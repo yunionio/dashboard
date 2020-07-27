@@ -1,13 +1,13 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">新建二层网络</div>
+    <div slot="header">{{$t('network.text_696')}}</div>
     <div slot="body">
       <a-form
         :form="form.fc">
-        <a-form-item v-bind="formItemLayout" :label="`指定${$t('dictionary.domain')}`" v-if="$store.getters.isAdminMode">
+        <a-form-item v-bind="formItemLayout" :label="$t('network.text_205', [$t('dictionary.domain')])" v-if="$store.getters.isAdminMode">
           <domain-select v-decorator="decorators.project_domain" />
         </a-form-item>
-        <a-form-item label="名称" v-bind="formItemLayout">
+        <a-form-item :label="$t('network.text_21')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')"  />
         </a-form-item>
         <a-form-item label="VPC" v-bind="formItemLayout" :validateStatus="vpcValidateStatus" :help="vpcHelp" :required="true">
@@ -16,7 +16,7 @@
               <a-select
                 v-decorator="decorators.area"
                 @change="handleAreaChange"
-                placeholder="区域">
+                :placeholder="$t('network.text_199')">
                 <a-select-option v-for="item in areas" :value="item.value" :key="item.value">
                   {{item.label}}
                 </a-select-option>
@@ -33,19 +33,19 @@
             </a-col>
           </a-row>
         </a-form-item>
-        <a-form-item label="可用区" v-bind="formItemLayout">
+        <a-form-item :label="$t('network.text_24')" v-bind="formItemLayout">
           <a-select
               v-decorator="decorators.zone"
-              placeholder="可用区">
+              :placeholder="$t('network.text_24')">
             <a-select-option v-for="item in zones" :value="item.value" :key="item.value">
               {{item.label}}
             </a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item label="带宽" v-bind="formItemLayout">
+        <a-form-item :label="$t('network.text_195')" v-bind="formItemLayout">
           <a-select
               v-decorator="decorators.bandwidth"
-              placeholder="网络带宽">
+              :placeholder="$t('network.text_697')">
             <a-select-option v-for="item in bandwidthOptions" :value="item.value" :key="item.value">
               {{item.label}}
             </a-select-option>
@@ -91,7 +91,7 @@ export default {
           if (data.length === 0) {
             callback()
           }
-          callback(new Error('该名称已经存在'))
+          callback(new Error(this.$t('network.text_698')))
         })
     }
     return {
@@ -106,7 +106,7 @@ export default {
           'area',
           {
             rules: [
-              { required: true, message: '请选择区域' },
+              { required: true, message: this.$t('network.text_286') },
             ],
           },
         ],
@@ -114,7 +114,7 @@ export default {
           'vpc',
           {
             rules: [
-              { required: true, message: '请选择VPC' },
+              { required: true, message: this.$t('network.text_274') },
             ],
           },
         ],
@@ -122,7 +122,7 @@ export default {
           'zone',
           {
             rules: [
-              { required: true, message: '可用区' },
+              { required: true, message: this.$t('network.text_24') },
             ],
           },
         ],
@@ -133,7 +133,7 @@ export default {
             validateTrigger: ['change', 'blur'],
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('network.text_116') },
               { validator: this.$validate('resourceName') },
               { validator: validateName, trigger: ['blur'] },
             ],
@@ -143,7 +143,7 @@ export default {
           'bandwidth',
           {
             rules: [
-              { required: true, message: '请选择带宽' },
+              { required: true, message: this.$t('network.text_699') },
             ],
           },
         ],
@@ -254,12 +254,12 @@ export default {
       try {
         if (!this.form.fc.getFieldValue('area')) {
           this.vpcValidateStatus = 'error'
-          this.vpcHelp = '请选择区域'
+          this.vpcHelp = this.$t('network.text_286')
           this.loading = false
           return
         } else if (!this.form.fc.getFieldValue('vpc')) {
           this.vpcValidateStatus = 'error'
-          this.vpcHelp = '请选择VPC'
+          this.vpcHelp = this.$t('network.text_274')
           this.loading = false
           return
         }

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="集群" />
+    <page-header :title="$t('network.text_19')" />
     <page-body>
       <list :id="listId" :get-params="getParams" />
     </page-body>

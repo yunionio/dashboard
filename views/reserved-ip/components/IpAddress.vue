@@ -3,7 +3,7 @@
     <div class="d-flex align-items-start mb-2" v-for="(item, i) in networkList" :key="item.key">
       <a-form-item class="w-100 mb-0 mr-2">
         <a-input
-          placeholder="请输入IP地址"
+          :placeholder="$t('network.text_217')"
           v-decorator="decorators.networkConfig.ips(item.key, item.network)"
           @change="e => ipChange(e, i)" />
       </a-form-item>
@@ -11,8 +11,8 @@
     </div>
     <div class="d-flex align-items-center" v-if="networkCountRemaining > 0">
       <a-button type="primary" shape="circle" icon="plus" size="small" @click="add" />
-      <a-button type="link" @click="add">添加IP地址</a-button>
-      <span class="network-count-tips">您还可以添加 <span class="remain-num">{{ networkCountRemaining }}</span> 个</span>
+      <a-button type="link" @click="add">{{$t('network.text_670')}}</a-button>
+      <span class="network-count-tips">{{$t('network.text_169')}}<span class="remain-num">{{ networkCountRemaining }}</span>{{$t('network.text_170')}}</span>
     </div>
   </div>
 </template>

@@ -1,8 +1,8 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">绑定</div>
+    <div slot="header">{{$t('network.text_202')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.eip')" :count="params.data.length" action="绑定" />
+      <dialog-selected-tips :name="$t('dictionary.eip')" :count="params.data.length" :action="$t('network.text_202')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
@@ -13,7 +13,7 @@
             resource="servers"
             :params="instanceParams"
             :remote-fn="q => ({ search: q })"
-            :select-props="{ placeholder: '请选择' }" />
+            :select-props="{ placeholder: $t('network.text_203') }" />
         </a-form-item>
       </a-form>
     </div>
@@ -43,7 +43,7 @@ export default {
           'instance_id',
           {
             rules: [
-              { required: true, message: '请选择要绑定的云服务器' },
+              { required: true, message: this.$t('network.text_204') },
             ],
           },
         ],

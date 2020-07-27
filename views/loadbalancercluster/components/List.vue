@@ -34,7 +34,7 @@ export default {
         getParams: this.getParam,
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('network.text_21'),
             filter: true,
             formatter: val => {
               return `name.contains(${val})`
@@ -51,17 +51,17 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
-          { label: '区域', key: 'region' },
+          { label: this.$t('network.text_21'), key: 'name' },
+          { label: this.$t('network.text_199'), key: 'region' },
         ],
       },
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('network.text_26'),
           permission: 'lb_loadbalancercluster_create',
           action: () => {
             this.createDialog('LoadbalancerclusterCreateDialog', {
-              title: '新建集群',
+              title: this.$t('network.text_357'),
               data: this.list.selectedItems,
               onManager: this.onManager,
               refresh: this.refresh,

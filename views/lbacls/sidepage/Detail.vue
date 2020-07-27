@@ -25,7 +25,7 @@ export default {
       baseInfo: [
         {
           field: 'acl_entries',
-          title: '源地址 | 备注',
+          title: this.$t('network.text_312'),
           formatter: ({ cellValue }) => {
             return cellValue ? cellValue.map(item => <div>{item.cidr}</div>) : '-'
           },

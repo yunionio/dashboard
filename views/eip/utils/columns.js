@@ -1,14 +1,15 @@
+import i18n from '@/locales'
 export const getAssociateNameTableColumn = (vm) => {
   return {
     field: 'associate_name',
-    title: '绑定资源',
+    title: i18n.t('network.text_197'),
     minWidth: 120,
     slots: {
       default: ({ row }, h) => {
         const type = {
-          server: '虚拟机',
-          natgateway: 'NAT网关',
-          lb: '负载均衡实例',
+          server: i18n.t('network.text_226'),
+          natgateway: i18n.t('network.text_227'),
+          lb: i18n.t('network.text_137'),
         }
         if (!row.associate_name) return '-'
         const text = `${row.associate_name}(${type[row.associate_type] || '-'})`

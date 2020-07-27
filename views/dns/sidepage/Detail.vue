@@ -25,7 +25,7 @@ export default {
       baseInfo: [
         {
           field: 'records',
-          title: '记录值',
+          title: this.$t('network.text_152'),
         },
         {
           field: 'ttl',
@@ -33,9 +33,9 @@ export default {
         },
         {
           field: 'enabled',
-          title: '状态',
+          title: this.$t('network.text_27'),
           formatter: ({ cellValue }) => {
-            return <span style={{ color: cellValue ? '#67C23A' : '#F56C6C' }}>{cellValue ? '启用' : '禁用' }</span>
+            return <span style={{ color: cellValue ? '#67C23A' : '#F56C6C' }}>{cellValue ? this.$t('network.text_189') : this.$t('network.text_190') }</span>
           },
         },
       ],

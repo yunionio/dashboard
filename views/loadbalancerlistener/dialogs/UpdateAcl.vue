@@ -1,8 +1,8 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">调整访问控制</div>
+    <div slot="header">{{$t('network.text_470')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.lb_listener')" :count="params.data.length" action="调整访问控制" />
+      <dialog-selected-tips :name="$t('dictionary.lb_listener')" :count="params.data.length" :action="$t('network.text_470')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" v-bind="formItemLayout">
         <acl :decorators="decorators" :form="form" />
@@ -50,7 +50,7 @@ export default {
           'acl',
           {
             rules: [
-              { required: true, message: '请选择访问控制' },
+              { required: true, message: this.$t('network.text_363') },
             ],
           },
         ],

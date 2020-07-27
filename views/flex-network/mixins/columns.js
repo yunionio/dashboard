@@ -7,6 +7,7 @@ import {
   getProjectDomainTableColumn,
   getTagTableColumn,
 } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -21,27 +22,27 @@ export default {
         },
       }),
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'networkinterface', columns: () => this.columns }),
-      getCopyWithContentTableColumn({ field: 'mac', title: 'MAC地址' }),
+      getCopyWithContentTableColumn({ field: 'mac', title: i18n.t('network.text_228') }),
       getStatusTableColumn({ statusModule: 'network' }),
       getPublicScopeTableColumn({ vm: this, resource: 'networkinterfaces' }),
       getProjectDomainTableColumn(),
       getBrandTableColumn(),
       getCopyWithContentTableColumn({
         field: 'account',
-        title: '云账号',
+        title: i18n.t('network.text_196'),
         minWidth: 110,
       }),
       getCopyWithContentTableColumn({
         field: 'cloudregion',
-        title: '区域',
+        title: i18n.t('network.text_199'),
         minWidth: 120,
       }),
       getCopyWithContentTableColumn({
         field: 'associate_type',
-        title: '绑定设备类型(VPC)',
+        title: i18n.t('network.text_230'),
         minWidth: 160,
       }),
-      getCopyWithContentTableColumn({ field: 'associate_id', title: '绑定设备' }),
+      getCopyWithContentTableColumn({ field: 'associate_id', title: i18n.t('network.text_234') }),
     ]
   },
 }

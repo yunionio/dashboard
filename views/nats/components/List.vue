@@ -16,10 +16,11 @@ import expectStatus from '@/constants/expectStatus'
 import { getStatusFilter, getBrandFilter, getAccountFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
+import i18n from '@/locales'
 
 const BillingType = {
-  postpaid: '后付费',
-  prepaid: '预付费',
+  postpaid: i18n.t('network.text_533'),
+  prepaid: i18n.t('network.text_534'),
 }
 
 export default {
@@ -40,7 +41,7 @@ export default {
         steadyStatus: Object.values(expectStatus.nat).flat(),
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('network.text_21'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
@@ -50,16 +51,16 @@ export default {
           cloudaccount: getAccountFilter(),
           brand: getBrandFilter('network_manage_brands'),
           vpc: {
-            label: '所属VPC',
+            label: this.$t('network.text_535'),
           },
           region: {
-            label: '区域',
+            label: this.$t('network.text_199'),
           },
           nat_spec: {
-            label: '型号',
+            label: this.$t('network.text_536'),
           },
           billing_type: {
-            label: '付费类型',
+            label: this.$t('network.text_537'),
             dropdown: true,
             multiple: true,
             items: Object.keys(BillingType).map((k) => {
@@ -75,22 +76,22 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
-          { label: '状态', key: 'status' },
-          { label: '型号', key: 'nat_spec' },
-          { label: '所属VPC', key: 'vpc' },
-          { label: '平台', key: 'provider' },
-          { label: '区域', key: 'region' },
-          { label: '云账号', key: 'manager' },
-          { label: '付费类型', key: 'billing_type' },
-          { label: '创建时间', key: 'created_at' },
-          { label: '共享范围', key: 'public_scope' },
-          { label: `所属${this.$t('dictionary.domain')}`, key: 'project_domain' },
+          { label: this.$t('network.text_21'), key: 'name' },
+          { label: this.$t('network.text_27'), key: 'status' },
+          { label: this.$t('network.text_536'), key: 'nat_spec' },
+          { label: this.$t('network.text_535'), key: 'vpc' },
+          { label: this.$t('network.text_198'), key: 'provider' },
+          { label: this.$t('network.text_199'), key: 'region' },
+          { label: this.$t('network.text_196'), key: 'manager' },
+          { label: this.$t('network.text_537'), key: 'billing_type' },
+          { label: this.$t('network.text_313'), key: 'created_at' },
+          { label: this.$t('network.text_232'), key: 'public_scope' },
+          { label: this.$t('network.text_233', [this.$t('dictionary.domain')]), key: 'project_domain' },
         ],
       },
       groupActions: [
         {
-          label: '同步状态',
+          label: this.$t('network.text_201'),
           action: () => {
             this.onManager('batchPerformAction', {
               steadyStatus: ['running', 'ready'],

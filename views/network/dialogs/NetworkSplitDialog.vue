@@ -1,16 +1,16 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">分割IP子网</div>
+    <div slot="header">{{$t('network.text_632')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.network')" :count="params.data.length" action="分割IP子网" />
+      <dialog-selected-tips :name="$t('dictionary.network')" :count="params.data.length" :action="$t('network.text_632')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
-        <a-form-item label="新IP子网名称" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.name" placeholer="请输入新IP子网名称" />
+        <a-form-item :label="$t('network.text_633')" v-bind="formItemLayout">
+          <a-input v-decorator="decorators.name" :placeholer="$t('network.text_634')" />
         </a-form-item>
-        <a-form-item label="新IP子网起始IP" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.split_ip" placeholer="分割起始IP，例如：192.168.1.80" />
+        <a-form-item :label="$t('network.text_635')" v-bind="formItemLayout">
+          <a-input v-decorator="decorators.split_ip" :placeholer="$t('network.text_636')" />
         </a-form-item>
       </a-form>
     </div>
@@ -39,7 +39,7 @@ export default {
           'name',
           {
             rules: [
-              { required: true, message: 'IP子网名称不能为空' },
+              { required: true, message: this.$t('network.text_637') },
             ],
           },
         ],
@@ -48,7 +48,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '分割起始IP不能为空' },
+              { required: true, message: this.$t('network.text_638') },
               { validator: this.$validate('IPv4') },
             ],
           },
@@ -79,7 +79,7 @@ export default {
       try {
         const values = await this.form.fc.validateFields()
         if (values.split_ip === this.params.data[0].guest_ip_start || values.split_ip === this.params.data[0].guest_ip_end) {
-          this.$message.error('新网络的起始IP不能写为原网络的起始IP或者终止IP')
+          this.$message.error(this.$t('network.text_639'))
           return
         }
         this.loading = true

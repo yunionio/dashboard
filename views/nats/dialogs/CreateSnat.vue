@@ -4,25 +4,24 @@
     <div slot="body">
       <a-form
         :form="form.fc">
-        <a-form-item label="名称" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.name" placeholder="字母开头，数字和字母大小写组合，长度为2-128个字符，不含'.','_','@'" />
+        <a-form-item :label="$t('network.text_21')" v-bind="formItemLayout">
+          <a-input v-decorator="decorators.name" :placeholder="$t('network.text_44')" />
         </a-form-item>
-        <a-form-item label="子网" v-bind="formItemLayout">
+        <a-form-item :label="$t('network.text_551')" v-bind="formItemLayout">
           <base-select
             v-decorator="decorators.network"
             :params="networkParams"
-            :select-props="{ placeholder: '请选择子网' }"
+            :select-props="{ placeholder: $t('network.text_552') }"
             resource="networks"
             :filterable="true" />
         </a-form-item>
-        <a-form-item label="公网IP地址" v-bind="formItemLayout">
-          <template #extra>
-            没有我想要的,可以前往 <router-link :to="{ name: 'Eip' }" target="_blank">{{$t('dictionary.eip')}}</router-link>
+        <a-form-item :label="$t('network.text_539')" v-bind="formItemLayout">
+          <template #extra>{{$t('network.text_540')}}<router-link :to="{ name: 'Eip' }" target="_blank">{{$t('dictionary.eip')}}</router-link>
           </template>
           <base-select
             v-decorator="decorators.ip"
             :params="eipParams"
-            :select-props="{ placeholder: '请选择公网IP地址' }"
+            :select-props="{ placeholder: $t('network.text_541') }"
             resource="eips"
             :labelFormat="labelFormat"
             :resList.sync="eipOptions"
@@ -58,7 +57,7 @@ export default {
             validateTrigger: ['blur'],
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('network.text_116') },
               { validator: this.$validate('serverCreateName') },
             ],
           },
@@ -67,7 +66,7 @@ export default {
           'network',
           {
             rules: [
-              { required: true, message: '请选择子网' },
+              { required: true, message: this.$t('network.text_552') },
             ],
           },
         ],
@@ -75,7 +74,7 @@ export default {
           'ip',
           {
             rules: [
-              { required: true, message: '请选择公网IP地址' },
+              { required: true, message: this.$t('network.text_541') },
             ],
           },
         ],

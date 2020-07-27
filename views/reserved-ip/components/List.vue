@@ -34,24 +34,24 @@ export default {
         getParams: this.getParam,
         filterOptions: {
           ip_addr: {
-            label: 'IP地址',
+            label: this.$t('network.text_213'),
           },
         },
       }),
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: 'IP子网', key: 'network' },
-          { label: 'IP地址', key: 'ip_addr' },
-          { label: '备注', key: 'notes' },
+          { label: this.$t('network.text_565'), key: 'network' },
+          { label: this.$t('network.text_213'), key: 'ip_addr' },
+          { label: this.$t('network.text_668'), key: 'notes' },
         ],
       },
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('network.text_26'),
           action: () => {
             this.createDialog('ReservedIpCreateDialog', {
-              title: '新建',
+              title: this.$t('network.text_26'),
               onManager: this.onManager,
               refresh: this.refresh,
               network: this.data,
@@ -64,22 +64,22 @@ export default {
             }
             return {
               validate,
-              tooltip: !validate ? '权限不足' : null,
+              tooltip: !validate ? this.$t('network.text_627') : null,
               buttonType: 'primary',
             }
           },
         },
         {
-          label: '释放',
+          label: this.$t('network.text_666'),
           permission: 'reservedips_delete',
           action: () => {
             this.createDialog('ReservedIPFreedDialog', {
-              title: '释放',
+              title: this.$t('network.text_666'),
               onManager: this.onManager,
               refresh: this.refresh,
               columns: this.columns,
               data: this.list.selectedItems,
-              name: '预留IP',
+              name: this.$t('network.text_651'),
             })
           },
           meta: () => {

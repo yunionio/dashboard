@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="NAT网关"
+    :title="$t('network.text_227')"
     icon="res-nat"
     :res-name="detailData.name"
     :actions="params.actions"
@@ -44,10 +44,10 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'nat-detail' },
+        { label: this.$t('network.text_67'), key: 'nat-detail' },
         { label: 'SNAT', key: 'snat' },
         { label: 'DNAT', key: 'dnat' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('network.text_150'), key: 'event-drawer' },
       ],
     }
   },

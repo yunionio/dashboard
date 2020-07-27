@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="二层网络"
+    :title="$t('network.text_571')"
     icon="res-wire"
     :res-name="detailData.name"
     :actions="params.actions"
@@ -52,12 +52,12 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'wire-detail' },
-        { label: 'IP子网', key: 'network-list' },
-        { label: '物理机', key: 'baremetals-list' },
-        { label: '宿主机', key: 'hosts-list' },
-        { label: '资源统计', key: 'dashboarde' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('network.text_67'), key: 'wire-detail' },
+        { label: this.$t('network.text_565'), key: 'network-list' },
+        { label: this.$t('network.text_598'), key: 'baremetals-list' },
+        { label: this.$t('network.text_70'), key: 'hosts-list' },
+        { label: this.$t('network.text_710'), key: 'dashboarde' },
+        { label: this.$t('network.text_150'), key: 'event-drawer' },
       ],
     }
   },

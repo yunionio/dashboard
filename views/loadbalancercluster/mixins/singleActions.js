@@ -1,13 +1,14 @@
+import i18n from '@/locales'
 export default {
   created () {
     this.singleActions = [
       {
-        label: '删除',
+        label: i18n.t('network.text_131'),
         permission: 'lb_loadbalancercertificates_delete',
         action: (obj) => {
           this.createDialog('ClusterDeleteDialog', {
             vm: this,
-            title: '删除',
+            title: i18n.t('network.text_131'),
             data: [obj],
             columns: this.columns,
             onManager: this.onManager,
@@ -17,7 +18,7 @@ export default {
           if (!obj.can_delete) {
             return {
               validate: false,
-              tooltip: '请确认负载均衡实例已经迁移至其它集群',
+              tooltip: i18n.t('network.text_359'),
             }
           }
           return {

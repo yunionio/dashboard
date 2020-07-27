@@ -34,7 +34,7 @@ export default {
         },
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('network.text_21'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
@@ -45,7 +45,7 @@ export default {
       columns: [
         {
           field: 'name',
-          title: '名称',
+          title: this.$t('network.text_21'),
         },
         getEnabledTableColumn(),
         getStatusTableColumn({ statusModule: 'server' }),
@@ -55,7 +55,7 @@ export default {
         },
         {
           field: 'spec',
-          title: '规格',
+          title: this.$t('network.text_268'),
           formatter: ({ cellValue, row }) => {
             const g = function (sz, prefix) {
               if (!prefix || prefix.length === 0) {
@@ -101,9 +101,9 @@ export default {
         },
         {
           field: 'guests',
-          title: '分配',
+          title: this.$t('network.text_704'),
           formatter: ({ cellValue, row }) => {
-            return cellValue ? '已分配' : '未分配'
+            return cellValue ? this.$t('network.text_705') : this.$t('network.text_706')
           },
         },
         {

@@ -1,9 +1,10 @@
 import { BAND_WIDTH_OPTION } from '../../../constants'
+import i18n from '@/locales'
 
 export const getBandwidthTableColumn = () => {
   return {
     field: 'bandwidth',
-    title: '带宽',
+    title: i18n.t('network.text_195'),
     minWidth: 100,
     sortable: true,
     showOverflow: 'ellipsis',

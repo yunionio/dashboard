@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="集群"
+    :title="$t('network.text_19')"
     icon="res-cluster"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
@@ -47,10 +47,10 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'Loadbalancercluster-detail' },
-        { label: '节点', key: 'agent-list' },
-        { label: '实例', key: 'lb-list' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('network.text_67'), key: 'Loadbalancercluster-detail' },
+        { label: this.$t('network.text_20'), key: 'agent-list' },
+        { label: this.$t('network.text_303'), key: 'lb-list' },
+        { label: this.$t('network.text_150'), key: 'event-drawer' },
       ],
     }
   },

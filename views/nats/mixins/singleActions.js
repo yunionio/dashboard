@@ -1,10 +1,11 @@
 import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
+import i18n from '@/locales'
 
 export default {
   created () {
     this.singleActions = [
       {
-        label: '同步状态',
+        label: i18n.t('network.text_201'),
         action: obj => {
           this.onManager('performAction', {
             steadyStatus: ['running', 'ready'],

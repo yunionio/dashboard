@@ -1,8 +1,9 @@
+import i18n from '@/locales'
 export default {
   created () {
     this.singleActions = [
       {
-        label: '修改',
+        label: i18n.t('network.text_130'),
         permission: 'lb_loadbalancerlistenerrules_update',
         action: (obj) => {
           this.createDialog('LoadbalancerlistenerruleUpdateDialog', {
@@ -15,13 +16,13 @@ export default {
         meta: obj => this.$getDeleteResult(obj),
       },
       {
-        label: '删除',
+        label: i18n.t('network.text_131'),
         permission: 'lb_loadbalancerlistenerrules_delete',
         action: (obj) => {
           this.createDialog('DeleteResDialog', {
             vm: this,
-            title: '删除',
-            name: '转发策略',
+            title: i18n.t('network.text_131'),
+            name: i18n.t('network.text_141'),
             data: [obj],
             columns: this.columns,
             onManager: this.onManager,

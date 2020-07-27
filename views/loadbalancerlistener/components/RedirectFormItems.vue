@@ -1,10 +1,10 @@
 <template>
   <div>
-    <a-form-item label="重定向">
+    <a-form-item :label="$t('network.text_368')">
       <a-switch v-decorator="decorators.redirect" @change="handleRedirectChange" />
     </a-form-item>
     <template v-if="form.fc.getFieldValue('redirect') || form.fc.getFieldValue('redirect') === 'off'">
-      <a-form-item label="重定向方式">
+      <a-form-item :label="$t('network.text_369')">
         <a-radio-group v-decorator="decorators.redirect_code">
           <a-radio-button v-for="(item, k) in $t('redirect_code')" :value="parseInt(k)" :key="k">
               {{item.name}}
@@ -14,7 +14,7 @@
             </a-radio-button>
           </a-radio-group>
       </a-form-item>
-      <a-form-item label="重定向至">
+      <a-form-item :label="$t('network.text_370')">
         <a-input v-show="false" v-decorator="decorators.check" />
         <a-input-group compact>
           <a-row class="w-100">
@@ -28,12 +28,12 @@
             </a-col>
             <a-col :span="10">
               <a-form-item class="mb-0">
-                <a-input v-decorator="decorators.redirect_host" placeholder="请输入域名或IP地址（端口号）" />
+                <a-input v-decorator="decorators.redirect_host" :placeholder="$t('network.text_371')" />
               </a-form-item>
             </a-col>
             <a-col :span="10">
               <a-form-item class="mb-0">
-                <a-input v-decorator="decorators.redirect_path" placeholder="请输入URL路径" />
+                <a-input v-decorator="decorators.redirect_path" :placeholder="$t('network.text_372')" />
               </a-form-item>
             </a-col>
           </a-row>
@@ -73,7 +73,7 @@ export default {
               validator: (rule, value, _callback) => {
                 /* eslint-disable no-useless-escape */
                 if (value && !/^\/(\w+\/?)+$/.test(value)) {
-                  _callback(new Error('请输入以“/”开头的正确路径'))
+                  _callback(new Error(this.$t('network.text_373')))
                 }
                 _callback()
               },
@@ -93,7 +93,7 @@ export default {
                       _callback()
                     }
                     if (listener_type === redirect_scheme && !redirect_host && !redirect_path) {
-                      return _callback(new Error('重定向后的URL地址不能与重定向之前相同'))
+                      return _callback(new Error(this.$t('network.text_374')))
                     } else {
                       _callback()
                     }

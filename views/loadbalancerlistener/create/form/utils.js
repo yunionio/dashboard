@@ -1,5 +1,6 @@
 import { schedulerProviderMaps } from '@Network/views/loadbalancerlistener/constants'
 import { REGEXP } from '@/utils/validate'
+import i18n from '@/locales'
 
 const { IPv4, domain } = REGEXP
 
@@ -11,7 +12,7 @@ const domainValidator = (rule, value, cb) => {
   } else if (domain.regexp.test(value)) {
     cb()
   } else {
-    cb(Error('请输入合法域名或者IP'))
+    cb(Error(i18n.t('network.text_446')))
   }
 }
 
@@ -22,7 +23,7 @@ const stickySessionCookieTimeout = {
       initialValue: 1000,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 1, max: 86400, message: '输入范围在 1 - 86400 之间', trigger: 'blur' },
+        { type: 'integer', min: 1, max: 86400, message: i18n.t('network.text_447'), trigger: 'blur' },
       ],
     },
   ],
@@ -32,7 +33,7 @@ const stickySessionCookieTimeout = {
       initialValue: 1000,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 1, max: 86400, message: '输入范围在 1 - 86400 之间', trigger: 'blur' },
+        { type: 'integer', min: 1, max: 86400, message: i18n.t('network.text_447'), trigger: 'blur' },
       ],
     },
   ],
@@ -42,7 +43,7 @@ const stickySessionCookieTimeout = {
       initialValue: 1000,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 30, max: 3600, message: '输入范围在 1 - 86400 之间', trigger: 'blur' },
+        { type: 'integer', min: 30, max: 3600, message: i18n.t('network.text_447'), trigger: 'blur' },
       ],
     },
   ],
@@ -64,7 +65,7 @@ const clientIdleTimeout = {
       initialValue: 90,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 0, max: 600, message: '输入范围在 0-600 之间', trigger: 'blur' },
+        { type: 'integer', min: 0, max: 600, message: i18n.t('network.text_448'), trigger: 'blur' },
       ],
     },
   ],
@@ -74,7 +75,7 @@ const clientIdleTimeout = {
       initialValue: 15,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 1, max: 60, message: '输入范围在 1-60 之间', trigger: 'blur' },
+        { type: 'integer', min: 1, max: 60, message: i18n.t('network.text_449'), trigger: 'blur' },
       ],
     },
   ],
@@ -90,7 +91,7 @@ const clientRequestTimeout = {
       initialValue: 10,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 0, max: 600, message: '输入范围在 0-600 之间', trigger: 'blur' },
+        { type: 'integer', min: 0, max: 600, message: i18n.t('network.text_448'), trigger: 'blur' },
       ],
     },
   ],
@@ -100,7 +101,7 @@ const clientRequestTimeout = {
       initialValue: 60,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 1, max: 180, message: '输入范围在 1-180 之间', trigger: 'blur' },
+        { type: 'integer', min: 1, max: 180, message: i18n.t('network.text_450'), trigger: 'blur' },
       ],
     },
   ],
@@ -143,7 +144,7 @@ const healthCheckTimeout = {
       initialValue: 5,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 1, max: 300, message: '请输入范围在 1-300 之间', trigger: 'blur' },
+        { type: 'integer', min: 1, max: 300, message: i18n.t('network.text_451'), trigger: 'blur' },
       ],
     },
   ],
@@ -153,7 +154,7 @@ const healthCheckTimeout = {
       initialValue: 3,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 1, max: 300, message: '请输入范围在 1-300 之间', trigger: 'blur' },
+        { type: 'integer', min: 1, max: 300, message: i18n.t('network.text_451'), trigger: 'blur' },
       ],
     },
   ],
@@ -163,7 +164,7 @@ const healthCheckTimeout = {
       initialValue: 2,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 2, max: 60, message: '请输入范围在 2-60 之间', trigger: 'blur' },
+        { type: 'integer', min: 2, max: 60, message: i18n.t('network.text_452'), trigger: 'blur' },
       ],
     },
   ],
@@ -173,7 +174,7 @@ const healthCheckTimeout = {
       initialValue: 2,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 1, max: 50, message: '请输入范围在 1-50 之间', trigger: 'blur' },
+        { type: 'integer', min: 1, max: 50, message: i18n.t('network.text_453'), trigger: 'blur' },
       ],
     },
   ],
@@ -183,7 +184,7 @@ const healthCheckTimeout = {
       initialValue: 5,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 2, max: 120, message: '请输入范围在 2-120 之间', trigger: 'blur' },
+        { type: 'integer', min: 2, max: 120, message: i18n.t('network.text_454'), trigger: 'blur' },
       ],
     },
   ],
@@ -199,7 +200,7 @@ const healthCheckInterval = {
       initialValue: 5,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 1, max: 1000, message: '请输入范围在 1-1000 之间', trigger: 'blur' },
+        { type: 'integer', min: 1, max: 1000, message: i18n.t('network.text_455'), trigger: 'blur' },
       ],
     },
   ],
@@ -209,7 +210,7 @@ const healthCheckInterval = {
       initialValue: 5,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 1, max: 50, message: '请输入范围在 1-50 之间', trigger: 'blur' },
+        { type: 'integer', min: 1, max: 50, message: i18n.t('network.text_453'), trigger: 'blur' },
       ],
     },
   ],
@@ -219,7 +220,7 @@ const healthCheckInterval = {
       initialValue: 5,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 5, max: 300, message: '请输入范围在 5-300 之间', trigger: 'blur' },
+        { type: 'integer', min: 5, max: 300, message: i18n.t('network.text_456'), trigger: 'blur' },
       ],
     },
   ],
@@ -229,7 +230,7 @@ const healthCheckInterval = {
       initialValue: 5,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 1, max: 50, message: '请输入范围在 1-50 之间', trigger: 'blur' },
+        { type: 'integer', min: 1, max: 50, message: i18n.t('network.text_453'), trigger: 'blur' },
       ],
     },
   ],
@@ -239,7 +240,7 @@ const healthCheckInterval = {
       initialValue: 10,
       normalize: v => Number(v),
       rules: [
-        { type: 'enum', enum: [10, 30], message: '输入值应该是10或者30', trigger: 'blur' },
+        { type: 'enum', enum: [10, 30], message: i18n.t('network.text_457'), trigger: 'blur' },
       ],
     },
   ],
@@ -249,7 +250,7 @@ const healthCheckInterval = {
       initialValue: 30,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 5, max: 300, message: '请输入范围在 5-300 之间', trigger: 'blur' },
+        { type: 'integer', min: 5, max: 300, message: i18n.t('network.text_456'), trigger: 'blur' },
       ],
     },
   ],
@@ -265,7 +266,7 @@ const healthCheckRise = {
       initialValue: 3,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 1, max: 1000, message: '请输入范围在 1-1000 之间', trigger: 'blur' },
+        { type: 'integer', min: 1, max: 1000, message: i18n.t('network.text_455'), trigger: 'blur' },
       ],
     },
   ],
@@ -275,7 +276,7 @@ const healthCheckRise = {
       initialValue: 3,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 2, max: 10, message: '请输入范围在 2-10 之间', trigger: 'blur' },
+        { type: 'integer', min: 2, max: 10, message: i18n.t('network.text_458'), trigger: 'blur' },
       ],
     },
   ],
@@ -285,7 +286,7 @@ const healthCheckRise = {
       initialValue: 3,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 2, max: 10, message: '请输入范围在 2-10 之间', trigger: 'blur' },
+        { type: 'integer', min: 2, max: 10, message: i18n.t('network.text_458'), trigger: 'blur' },
       ],
     },
   ],
@@ -295,7 +296,7 @@ const healthCheckRise = {
       initialValue: 3,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 1, max: 10, message: '请输入范围在 1-10 之间', trigger: 'blur' },
+        { type: 'integer', min: 1, max: 10, message: i18n.t('network.text_459'), trigger: 'blur' },
       ],
     },
   ],
@@ -305,7 +306,7 @@ const healthCheckRise = {
       initialValue: 3,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 2, max: 10, message: '请输入范围在 2-10 之间', trigger: 'blur' },
+        { type: 'integer', min: 2, max: 10, message: i18n.t('network.text_458'), trigger: 'blur' },
       ],
     },
   ],
@@ -315,7 +316,7 @@ const healthCheckRise = {
       initialValue: 5,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 2, max: 10, message: '请输入范围在 2-10 之间', trigger: 'blur' },
+        { type: 'integer', min: 2, max: 10, message: i18n.t('network.text_458'), trigger: 'blur' },
       ],
     },
   ],
@@ -331,7 +332,7 @@ const healthCheckFall = {
       initialValue: 3,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 2, max: 1000, message: '请输入范围在 1-1000 之间', trigger: 'blur' },
+        { type: 'integer', min: 2, max: 1000, message: i18n.t('network.text_455'), trigger: 'blur' },
       ],
     },
   ],
@@ -341,7 +342,7 @@ const healthCheckFall = {
       initialValue: 3,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 2, max: 10, message: '请输入范围在 1-10 之间', trigger: 'blur' },
+        { type: 'integer', min: 2, max: 10, message: i18n.t('network.text_459'), trigger: 'blur' },
       ],
     },
   ],
@@ -351,7 +352,7 @@ const healthCheckFall = {
       initialValue: 3,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 2, max: 10, message: '请输入范围在 1-10 之间', trigger: 'blur' },
+        { type: 'integer', min: 2, max: 10, message: i18n.t('network.text_459'), trigger: 'blur' },
       ],
     },
   ],
@@ -361,7 +362,7 @@ const healthCheckFall = {
       initialValue: 2,
       normalize: v => Number(v),
       rules: [
-        { type: 'integer', min: 2, max: 10, message: '请输入范围在 1-10 之间', trigger: 'blur' },
+        { type: 'integer', min: 2, max: 10, message: i18n.t('network.text_459'), trigger: 'blur' },
       ],
     },
   ],
@@ -397,7 +398,7 @@ export const getDecorators = ({ provider, vm, loadbalancer }) => {
       {
         validateFirst: true,
         rules: [
-          { required: true, message: '请输入名称' },
+          { required: true, message: i18n.t('network.text_116') },
           { validator: vm.$validate('resourceName') },
         ],
       },
@@ -408,8 +409,8 @@ export const getDecorators = ({ provider, vm, loadbalancer }) => {
         validateFirst: true,
         normalize: v => Number(v),
         rules: [
-          { type: 'integer', required: true, message: '请输入监听端口', trigger: 'blur' },
-          { type: 'integer', min: 1, max: 65535, message: '请输入范围在 1-65535 之间', trigger: 'blur' },
+          { type: 'integer', required: true, message: i18n.t('network.text_350'), trigger: 'blur' },
+          { type: 'integer', min: 1, max: 65535, message: i18n.t('network.text_351'), trigger: 'blur' },
         ],
       },
     ],
@@ -418,7 +419,7 @@ export const getDecorators = ({ provider, vm, loadbalancer }) => {
       {
         initialValue: provider === 'aws_application' ? 'http' : 'tcp',
         rules: [
-          { required: true, message: '请选择协议' },
+          { required: true, message: i18n.t('network.text_460') },
         ],
       },
     ],
@@ -427,7 +428,7 @@ export const getDecorators = ({ provider, vm, loadbalancer }) => {
       {
         initialValue: schedulerProviderMaps[provider][0].key,
         rules: [
-          { required: true, message: '请选择调度策略' },
+          { required: true, message: i18n.t('network.text_461') },
         ],
       },
     ],
@@ -435,7 +436,7 @@ export const getDecorators = ({ provider, vm, loadbalancer }) => {
       'certificate',
       {
         rules: [
-          { required: true, message: '请选择证书' },
+          { required: true, message: i18n.t('network.text_421') },
         ],
       },
     ],
@@ -456,7 +457,7 @@ export const getDecorators = ({ provider, vm, loadbalancer }) => {
       'sticky_session_cookie',
       {
         rules: [
-          { required: true, message: '请选择证书' },
+          { required: true, message: i18n.t('network.text_421') },
         ],
       },
     ],
@@ -478,7 +479,7 @@ export const getDecorators = ({ provider, vm, loadbalancer }) => {
       'acl',
       {
         rules: [
-          { required: true, message: '请选择访问控制' },
+          { required: true, message: i18n.t('network.text_363') },
         ],
       },
     ],
@@ -488,7 +489,7 @@ export const getDecorators = ({ provider, vm, loadbalancer }) => {
         initialValue: 5,
         normalize: v => Number(v),
         rules: [
-          { type: 'integer', min: 0, max: 180, message: '请输入范围在 0-180 之间', trigger: 'blur' },
+          { type: 'integer', min: 0, max: 180, message: i18n.t('network.text_462'), trigger: 'blur' },
         ],
       },
     ],
@@ -498,7 +499,7 @@ export const getDecorators = ({ provider, vm, loadbalancer }) => {
         initialValue: 90,
         normalize: v => Number(v),
         rules: [
-          { type: 'integer', min: 0, max: 600, message: '请输入范围在 0-180 之间', trigger: 'blur' },
+          { type: 'integer', min: 0, max: 600, message: i18n.t('network.text_462'), trigger: 'blur' },
         ],
       },
     ],
@@ -544,7 +545,7 @@ export const getDecorators = ({ provider, vm, loadbalancer }) => {
       'backend_group',
       {
         rules: [
-          { required: true, message: '请选择后端服务器组' },
+          { required: true, message: i18n.t('network.text_394') },
         ],
       },
     ],
@@ -562,7 +563,7 @@ export const getDecorators = ({ provider, vm, loadbalancer }) => {
       {
         initialValue: '/',
         rules: [
-          { required: true, message: '请输入健康检查路径' },
+          { required: true, message: i18n.t('network.text_402') },
         ],
       },
     ],
@@ -579,7 +580,7 @@ export const getDecorators = ({ provider, vm, loadbalancer }) => {
       {
         initialValue: ['http_2xx', 'http_3xx'],
         rules: [
-          { required: true, message: '请选择正常状态码' },
+          { required: true, message: i18n.t('network.text_463') },
         ],
       },
     ],
@@ -591,7 +592,7 @@ export const getDecorators = ({ provider, vm, loadbalancer }) => {
       'health_check_req',
       {
         rules: [
-          { type: 'string', pattern: /^\w+$/, message: '只允许包含字母、数字字符，最大长度限制为500字符', max: 500 },
+          { type: 'string', pattern: /^\w+$/, message: i18n.t('network.text_464'), max: 500 },
         ],
       },
     ],
@@ -599,7 +600,7 @@ export const getDecorators = ({ provider, vm, loadbalancer }) => {
       'health_check_exp',
       {
         rules: [
-          { type: 'string', pattern: /^\w+$/, message: '只允许包含字母、数字字符，最大长度限制为500字符', max: 500 },
+          { type: 'string', pattern: /^\w+$/, message: i18n.t('network.text_464'), max: 500 },
         ],
       },
     ],

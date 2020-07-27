@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="节点" />
+    <page-header :title="$t('network.text_20')" />
     <page-body>
       <list :id="listId" :get-params="getParams" />
     </page-body>

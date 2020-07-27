@@ -43,7 +43,7 @@ export default {
         }),
         {
           field: 'networks',
-          title: 'IP子网',
+          title: this.$t('network.text_565'),
           slots: {
             default: ({ row }, h) => {
               if (!row.networks) return row.networks || 0
@@ -55,7 +55,7 @@ export default {
         },
         getCopyWithContentTableColumn({
           field: 'region',
-          title: '区域',
+          title: this.$t('network.text_199'),
           hideField: true,
           slotCallback: row => {
             if (!row.region) return '-'

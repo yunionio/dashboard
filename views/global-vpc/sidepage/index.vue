@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="全局VPC"
+    :title="$t('network.text_242')"
     icon="res-gpu"
     :res-name="detailData.name"
     :actions="params.actions"
@@ -46,9 +46,9 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'detail' },
+        { label: this.$t('network.text_67'), key: 'detail' },
         { label: 'VPC', key: 'vpc-list' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('network.text_150'), key: 'event-drawer' },
       ],
     }
   },

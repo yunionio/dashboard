@@ -30,11 +30,11 @@ export default {
       ],
       extraInfo: [
         {
-          title: '其他信息',
+          title: this.$t('network.text_38'),
           items: [
             getCopyWithContentTableColumn({
               field: 'loadbalancer',
-              title: '负载均衡实例',
+              title: this.$t('network.text_137'),
               hideField: true,
               slotCallback: row => {
                 if (!row.loadbalancer) return '-'
@@ -45,15 +45,15 @@ export default {
             }),
             {
               field: 'address',
-              title: 'IP地址',
+              title: this.$t('network.text_213'),
             },
             {
               field: 'port',
-              title: '端口',
+              title: this.$t('network.text_165'),
             },
             {
               field: 'weight',
-              title: '权重',
+              title: this.$t('network.text_166'),
             },
             {
               field: 'vpc',
@@ -61,11 +61,11 @@ export default {
             },
             {
               field: 'zone',
-              title: '可用区',
+              title: this.$t('network.text_24'),
             },
             {
               field: 'ssl',
-              title: '证书',
+              title: this.$t('network.text_143'),
             },
           ],
         },

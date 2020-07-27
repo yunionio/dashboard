@@ -1,6 +1,6 @@
 <template>
   <a-form :form="form.fc" class="mt-3" v-bind="formItemLayout">
-    <a-form-item label="后端服务器组">
+    <a-form-item :label="$t('network.text_139')">
       <base-select
         isDefaultSelect
         ref="backendgroupsRef"
@@ -10,10 +10,10 @@
         :params="backendgroupParams"
         :item.sync="backendgroup"
         @change="fetchBackendList"
-        :select-props="{ placeholder: '请选择后端服务器组' }" />
-        <div slot="extra">没有想要的后端服务器组？可以立即 <a @click="openBackendgroupsCreate">新建</a></div>
+        :select-props="{ placeholder: $t('network.text_394') }" />
+        <div slot="extra">{{$t('network.text_395')}}<a @click="openBackendgroupsCreate">{{$t('network.text_26')}}</a></div>
     </a-form-item>
-    <a-form-item label="后端服务器" :extra="backendgroup.name ? `${backendgroup.name} 后端服务器组所包含的服务器` : ''">
+    <a-form-item :label="$t('network.text_140')" ::extra="backendgroup.name ? $t('network.text_396', [backendgroup.name]) : ''">
       <vxe-grid size="mini" border :columns="backendColumns" :data="backendList" />
     </a-form-item>
   </a-form>

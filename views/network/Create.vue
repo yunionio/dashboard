@@ -1,14 +1,14 @@
 <template>
   <div>
-    <page-header title="新建IP子网" />
+    <page-header :title="$t('network.text_570')" />
     <a-form class="mt-3" :form="form.fc" @submit.prevent="handleSubmit">
-      <a-form-item :label="`指定${$t('dictionary.project')}`" class="mt-3 mb-0" v-bind="formItemLayout">
+      <a-form-item :label="$t('network.text_205', [$t('dictionary.project')])" class="mt-3 mb-0" v-bind="formItemLayout">
         <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" @update:domain="handleDomainChange" />
       </a-form-item>
-      <a-form-item label="名称" v-bind="formItemLayout">
+      <a-form-item :label="$t('network.text_21')" v-bind="formItemLayout">
         <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
       </a-form-item>
-      <a-form-item label="平台" v-bind="formItemLayout">
+      <a-form-item :label="$t('network.text_198')" v-bind="formItemLayout">
         <a-radio-group v-decorator="decorators.platform_type" @change="handlePlatformChange">
           <a-radio-button
             v-for="item of platformOpts"
@@ -24,21 +24,21 @@
           :vpc-params="vpcParams"
           :decorator="decorators.cloudregionVpc" />
       </a-form-item>
-      <a-form-item label="二层网络" v-bind="formItemLayout" v-if="show || isShowWire">
+      <a-form-item :label="$t('network.text_571')" v-bind="formItemLayout" v-if="show || isShowWire">
         <base-select
           resource="wires"
           v-decorator="decorators.wire"
-          :selectProps="{ 'placeholder': '请选择二层网络' }"
+          :selectProps="{ 'placeholder': $t('network.text_572') }"
           :isDefaultSelect="true"
           :labelFormat="wireLabelFormat"
           :params="wireParams" />
       </a-form-item>
-      <a-form-item label="可用区" extra="同一 VPC 下可以有不同可用区的子网，同一 VPC 下不同可用区的子网默认可以内网互通。" v-bind="formItemLayout" v-if="!show && !isShowWire">
-        <a-select v-decorator="decorators.zone" placeholder="请选择可用区">
+      <a-form-item :label="$t('network.text_24')" :extra="$t('network.text_573')" v-bind="formItemLayout" v-if="!show && !isShowWire">
+        <a-select v-decorator="decorators.zone" :placeholder="$t('network.text_287')">
           <a-select-option v-for="item in zoneList" :key="item.id" :value="item.id">{{item.name}}</a-select-option>
         </a-select>
       </a-form-item>
-      <a-form-item label="服务器类型" v-bind="formItemLayout" v-if="show">
+      <a-form-item :label="$t('network.text_574')" v-bind="formItemLayout" v-if="show">
         <a-radio-group v-decorator="decorators.server_type">
           <a-radio-button
             v-for="item of serverTypeOpts"
@@ -46,57 +46,55 @@
             :value="item.key">{{ item.label }}</a-radio-button>
         </a-radio-group>
       </a-form-item>
-      <a-form-item label="子网网段" v-bind="formItemLayout" :validate-status="ipSubnetsValidateStatus" :help="ipSubnetsHelp" required v-if="show">
+      <a-form-item :label="$t('network.text_575')" v-bind="formItemLayout" :validate-status="ipSubnetsValidateStatus" :help="ipSubnetsHelp" required v-if="show">
         <template slot="extra">
-          <div>1.VLAN ID用于网络物理隔离，默认1，相同VLAN ID的IP子网互通，不同VLAN ID的IP子网不通。</div>
-          <div>2.创建多个IP子网时，系统自动分配名称，例如：名称为net，增加3个IP子网，名称依次为net0、net1、net。</div>
+          <div>{{$t('network.text_576')}}</div>
+          <div>{{$t('network.text_577')}}</div>
         </template>
         <ip-subnets :decorator="decorators.ipSubnets" @clear-error="clearIpSubnetsError" />
       </a-form-item>
-      <a-form-item label="子网网段" extra="子网的 CIDR 必须是所在 VPC CIDR 的一部分，且不能和该 VPC 下已有子网的 CIDR 重叠。" v-bind="formItemLayout" v-if="!show && !isGroupGuestIpPrefix">
-        <a-input v-decorator="decorators.guest_ip_prefix(0)" placeholder="请输入IP段" />
+      <a-form-item :label="$t('network.text_575')" :extra="$t('network.text_578')" v-bind="formItemLayout" v-if="!show && !isGroupGuestIpPrefix">
+        <a-input v-decorator="decorators.guest_ip_prefix(0)" :placeholder="$t('network.text_579')" />
       </a-form-item>
-      <a-form-item label="子网网段" v-bind="formItemLayout" :validate-status="guestIpPrefixValidateStatus" :help="guestIpPrefixHelp" required v-if="isGroupGuestIpPrefix">
+      <a-form-item :label="$t('network.text_575')" v-bind="formItemLayout" :validate-status="guestIpPrefixValidateStatus" :help="guestIpPrefixHelp" required v-if="isGroupGuestIpPrefix">
         <template slot="extra">
-          <div>子网的 CIDR 必须是所在 VPC CIDR 的一部分，且不能和该 VPC 下已有子网的 CIDR 重叠。</div>
-          <div>创建多个IP子网时，系统自动分配名称，例如：名称为net，增加3个IP子网，名称依次为net0、net1、net。</div>
+          <div>{{$t('network.text_578')}}</div>
+          <div>{{$t('network.text_580')}}</div>
         </template>
         <div class="d-flex" v-for="(item, i) in guestIpPrefix" :key="item.key">
           <a-form-item>
-            <a-input v-decorator="decorators.guest_ip_prefix(i)" placeholder="请输入子网网段" />
+            <a-input v-decorator="decorators.guest_ip_prefix(i)" :placeholder="$t('network.text_581')" />
           </a-form-item>
           <a-button shape="circle" icon="minus" size="small" v-if="guestIpPrefix.length > 1" @click="decrease(i)" class="mt-2 ml-2" />
         </div>
         <div class="d-flex align-items-center" v-if="remain > 0">
           <a-button type="primary" shape="circle" icon="plus" size="small" @click="addGuestIpPrefix" />
-          <a-button type="link" @click="addGuestIpPrefix">添加子网网段</a-button>
-          <span class="count-tips">您还可以添加 <span class="remain-num">{{ remain }}</span> 个</span>
+          <a-button type="link" @click="addGuestIpPrefix">{{$t('network.text_582')}}</a-button>
+          <span class="count-tips">{{$t('network.text_169')}}<span class="remain-num">{{ remain }}</span>{{$t('network.text_170')}}</span>
         </div>
       </a-form-item>
       <a-collapse :bordered="false"  v-if="show">
-        <a-collapse-panel header="高级配置" key="1" forceRender>
+        <a-collapse-panel :header="$t('network.text_94')" key="1" forceRender>
            <a-form-item v-bind="formItemLayout">
-            <span slot="label">地址分配策略</span>
+            <span slot="label">{{$t('network.text_583')}}</span>
             <a-radio-group v-decorator="decorators.alloc_policy">
               <a-radio-button
                 v-for="item of allocPolicyoptions"
                 :key="item.key"
                 :value="item.key">{{ item.label }}</a-radio-button>
             </a-radio-group>
-            <span slot="extra" v-if="form.fc.getFieldValue('alloc_policy') === 'none'">
-              缺省策略为：物理机从低地址分配，虚拟机从高地址分配
-            </span>
+            <span slot="extra" v-if="form.fc.getFieldValue('alloc_policy') === 'none'">{{$t('network.text_584')}}</span>
           </a-form-item>
-          <a-form-item label="域名服务器" v-bind="formItemLayout">
+          <a-form-item :label="$t('network.text_585')" v-bind="formItemLayout">
             <a-input :placeholder="$t('validator.IPv4')" v-decorator="decorators.guest_dns" />
           </a-form-item>
            <a-form-item v-bind="formItemLayout">
-            <span slot="label">主机域名后缀</span>
+            <span slot="label">{{$t('network.text_586')}}</span>
             <template slot="extra">
-              <div>系统为主机分配IP时，会同时创建一条指向该IP的域名记录，域名由主机名称+主机域名后缀组成。例如：</div>
-              <div>主机名称为vm01，主机ip为192.168.1.1</div>
-              <div>主机域名后缀为gh.baidu.com</div>
-              <div>主机创建成功后，ping vm01.gh.baidu.com就会得到vm01的ip</div>
+              <div>{{$t('network.text_587')}}</div>
+              <div>{{$t('network.text_588')}}</div>
+              <div>{{$t('network.text_589')}}</div>
+              <div>{{$t('network.text_590')}}</div>
             </template>
             <a-input :placeholder="$t('validator.domain')" v-decorator="decorators.guest_domain" />
           </a-form-item>
@@ -104,7 +102,7 @@
       </a-collapse>
       <page-footer>
         <template v-slot:right>
-          <a-button type="primary" html-type="submit" class="ml-3" :loading="submiting" size="large">确定</a-button>
+          <a-button type="primary" html-type="submit" class="ml-3" :loading="submiting" size="large">{{$t('network.text_30')}}</a-button>
         </template>
       </page-footer>
     </a-form>
@@ -142,7 +140,7 @@ const masks = {
 function validateGateway (rule, value, callback) {
   // 只需要查看是否是以 0 结尾
   const ipItems = value.split('.')
-  const msg = '网关不能以0结尾'
+  const msg = this.$t('network.text_591')
   if (ipItems[ipItems.length - 1] === '0') {
     callback(msg)
   } else {
@@ -209,7 +207,7 @@ export default {
             validateTrigger: ['change', 'blur'],
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('network.text_116') },
               { validator: this.$validate('resourceName') },
             ],
           },
@@ -236,7 +234,7 @@ export default {
             {
               initialValue: { key: '', label: '' },
               rules: [
-                { validator: isRequired(), message: '请选择VPC' },
+                { validator: isRequired(), message: this.$t('network.text_274') },
               ],
             },
           ],
@@ -245,7 +243,7 @@ export default {
           'wire',
           {
             rules: [
-              { required: true, message: '请选择二层网络' },
+              { required: true, message: this.$t('network.text_572') },
             ],
           },
         ],
@@ -253,7 +251,7 @@ export default {
           'zone',
           {
             rules: [
-              { required: true, message: '请选择可用区' },
+              { required: true, message: this.$t('network.text_287') },
             ],
           },
         ],
@@ -263,7 +261,7 @@ export default {
             initialValue: 'guest',
             validateTrigger: ['change', 'blur'],
             rules: [
-              { required: true, message: '请选择服务器类型' },
+              { required: true, message: this.$t('network.text_592') },
             ],
           },
         ],
@@ -301,7 +299,7 @@ export default {
               validateTrigger: ['change', 'blur'],
               validateFirst: true,
               rules: [
-                { required: true, message: '请输入起始IP' },
+                { required: true, message: this.$t('network.text_593') },
                 { validator: this.$validate('IPv4') },
               ],
             },
@@ -313,7 +311,7 @@ export default {
               validateTrigger: ['change', 'blur'],
               validateFirst: true,
               rules: [
-                { required: true, message: '请输入结束IP' },
+                { required: true, message: this.$t('network.text_594') },
                 { validator: this.$validate('IPv4') },
               ],
             },
@@ -324,7 +322,7 @@ export default {
               initialValue: '24',
               validateTrigger: ['change', 'blur'],
               rules: [
-                { required: true, message: '请选择子网掩码' },
+                { required: true, message: this.$t('network.text_595') },
               ],
             },
           ],
@@ -335,7 +333,7 @@ export default {
               validateTrigger: ['change', 'blur'],
               validateFirst: true,
               rules: [
-                { required: true, message: '请输入默认网关' },
+                { required: true, message: this.$t('network.text_596') },
                 { validator: this.$validate('IPv4') },
                 { validator: validateGateway },
               ],
@@ -355,30 +353,30 @@ export default {
             validateTrigger: ['change', 'blur'],
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入目标网段' },
+              { required: true, message: this.$t('network.text_597') },
               { validator: this.validatePublicIpPrefix },
             ],
           },
         ],
       },
       serverTypeOpts: [
-        { label: '虚拟机', key: 'guest' },
-        { label: '物理机', key: 'baremetal' },
-        { label: '容器', key: 'container' },
+        { label: this.$t('network.text_226'), key: 'guest' },
+        { label: this.$t('network.text_598'), key: 'baremetal' },
+        { label: this.$t('network.text_599'), key: 'container' },
         { label: 'PXE', key: 'pxe' },
         { label: 'IPMI', key: 'ipmi' },
-        { label: '弹性公网IP', key: 'eip' },
+        { label: this.$t('network.text_221'), key: 'eip' },
       ],
       allocPolicyoptions: [
-        { label: '缺省策略', key: 'none' },
-        { label: '从高地址分配', key: 'stepdown' },
-        { label: '从低地址分配', key: 'stepup' },
-        { label: '随机分配', key: 'random' },
+        { label: this.$t('network.text_600'), key: 'none' },
+        { label: this.$t('network.text_601'), key: 'stepdown' },
+        { label: this.$t('network.text_602'), key: 'stepup' },
+        { label: this.$t('network.text_603'), key: 'random' },
       ],
       platformOpts: [
-        { label: '本地IDC', key: 'idc' },
-        { label: '私有云', key: 'private' },
-        { label: '公有云', key: 'public' },
+        { label: this.$t('network.text_207'), key: 'idc' },
+        { label: this.$t('network.text_208'), key: 'private' },
+        { label: this.$t('network.text_209'), key: 'public' },
       ],
       isShowWire: true,
       isGroupGuestIpPrefix: false,
@@ -533,7 +531,7 @@ export default {
           const min = masks[provider].min
           const max = masks[provider].max
           if (masks[provider] && (maskNum < min || maskNum > max)) {
-            callback(new Error(`子网掩码错误，IP子网掩码的范围是${min}~${max}`))
+            callback(new Error(this.$t('network.text_604', [min, max])))
           }
         }
       }
@@ -625,12 +623,12 @@ export default {
         const values = await this.form.fc.validateFields()
         if (values.platform_type === 'idc' && !this.isGroupGuestIpPrefix && (R.isNil(values.startip) || R.isEmpty(values.startip))) {
           this.ipSubnetsValidateStatus = 'error'
-          this.ipSubnetsHelp = '至少添加一个子网网段'
+          this.ipSubnetsHelp = this.$t('network.text_605')
           return
         }
         if (this.isGroupGuestIpPrefix && (R.isNil(values.guest_ip_prefix) || R.isEmpty(values.guest_ip_prefix))) {
           this.guestIpPrefixValidateStatus = 'error'
-          this.guestIpPrefixHelp = '至少添加一个子网网段'
+          this.guestIpPrefixHelp = this.$t('network.text_605')
           return
         }
         const data = this.genData(values)

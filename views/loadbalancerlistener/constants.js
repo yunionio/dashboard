@@ -1,10 +1,11 @@
+import i18n from '@/locales'
 export const schedulerMaps = {
-  rr: { key: 'rr', label: '轮询(RR)', tooltip: '轮询(rr)：按照访问顺序依次将外部请求依序分发到后端服务器。' },
-  wrr: { key: 'wrr', label: '加权轮询(WRR)', tooltip: '加权轮询(wrr)：权重值越高的后端服务器，被轮询到的次数（概率）也越高。' },
-  wlc: { key: 'wlc', label: '加权最小连接数(WLC)', tooltip: '加权最小连接数(wlc)：除了根据每台后端服务器设定的权重值来进行轮询，同时还考虑后端服务器的实际负载（即连接数）。' },
-  sch: { key: 'sch', label: '源IP一致性哈希(SCH)', tooltip: '基于源IP一致性哈希(sch)：基于源IP地址的一致性hash，相同的源地址会调度到相同的后端服务器。' },
-  tch: { key: 'tch', label: '四元组的一致性哈希(TCH)', tooltip: '基于四元组一致性哈希(tch)：基于四元组的一致性hash（源IP+目的IP+源端口+目的端口）。' },
-  qch: { key: 'qch', label: 'QUIC Connection ID一致性哈希(QCH)', tooltip: '基于QUIC Connection ID一致性(qch)：相同的QUIC Connection ID会调度到相同的后端服务器。' },
+  rr: { key: 'rr', label: i18n.t('network.text_375'), tooltip: i18n.t('network.text_386') },
+  wrr: { key: 'wrr', label: i18n.t('network.text_376'), tooltip: i18n.t('network.text_387') },
+  wlc: { key: 'wlc', label: i18n.t('network.text_377'), tooltip: i18n.t('network.text_388') },
+  sch: { key: 'sch', label: i18n.t('network.text_378'), tooltip: i18n.t('network.text_389') },
+  tch: { key: 'tch', label: i18n.t('network.text_390'), tooltip: i18n.t('network.text_391') },
+  qch: { key: 'qch', label: i18n.t('network.text_392'), tooltip: i18n.t('network.text_393') },
 }
 
 export const schedulerProviderMaps = {

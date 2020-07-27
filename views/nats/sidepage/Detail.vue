@@ -11,10 +11,11 @@
 import {
   getCopyWithContentTableColumn,
 } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 const BillingType = {
-  postpaid: '后付费',
-  prepaid: '预付费',
+  postpaid: i18n.t('network.text_533'),
+  prepaid: i18n.t('network.text_534'),
 }
 
 export default {
@@ -32,26 +33,26 @@ export default {
   data () {
     return {
       baseInfo: [
-        getCopyWithContentTableColumn({ field: 'vpc', title: '所属VPC' }),
+        getCopyWithContentTableColumn({ field: 'vpc', title: this.$t('network.text_535') }),
         {
           field: 'region',
-          title: '区域',
+          title: this.$t('network.text_199'),
         },
       ],
       extraInfo: [
         {
-          title: '其他信息',
+          title: this.$t('network.text_38'),
           items: [
             {
               field: 'manager_project',
-              title: '项目',
+              title: this.$t('network.text_43'),
               formatter: ({ cellValue }) => {
                 return cellValue || '-'
               },
             },
             {
               field: 'billing_type',
-              title: '付费类型',
+              title: this.$t('network.text_537'),
               formatter: ({ cellValue }) => {
                 return BillingType[cellValue]
               },

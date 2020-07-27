@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="后端服务器"
+    :title="$t('network.text_140')"
     icon="res-vminstance"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
@@ -43,8 +43,8 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'loadbalancerbackend-detail' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('network.text_67'), key: 'loadbalancerbackend-detail' },
+        { label: this.$t('network.text_150'), key: 'event-drawer' },
       ],
     }
   },

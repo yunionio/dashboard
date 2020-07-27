@@ -1,3 +1,4 @@
+import i18n from '@/locales'
 export default {
   data () {
     return {
@@ -9,10 +10,10 @@ export default {
   created () {
     this.singleActions = [
       {
-        label: '部署',
+        label: i18n.t('network.text_41'),
         action: (obj) => {
           this.createDialog('AgentDeployDialog', {
-            title: '部署',
+            title: i18n.t('network.text_41'),
             data: [obj],
             columns: this.columns,
             onManager: this.onManager,
@@ -21,13 +22,13 @@ export default {
         },
       },
       {
-        label: '下线',
+        label: i18n.t('network.text_126'),
         action: (obj) => {
           this.createDialog('DisableDialog', {
-            title: '下线',
+            title: i18n.t('network.text_126'),
             columns: this.columns,
             data: [obj],
-            alert: '提示：下线操作会把节点配置从部署主机中删除',
+            alert: i18n.t('network.text_127'),
             ok: async () => {
               try {
                 const { data } = await new this.$Manager('loadbalanceragents').performAction({
@@ -43,7 +44,7 @@ export default {
                   //   path: `/lbagent/asbook?ansiblePlaybookId=${data.deployment.ansible_playbook_undeployment}&loadbalanceragentId=${obj.id}`,
                   // })
                   this.createDialog('AnsibleplaybookDialog', {
-                    title: '下线信息',
+                    title: i18n.t('network.text_128'),
                     ansiblePlaybookId: data.deployment.ansible_playbook_undeployment,
                     loadbalanceragentId: obj.id,
                   })
@@ -67,11 +68,11 @@ export default {
         },
       },
       {
-        label: '更多',
+        label: i18n.t('network.text_129'),
         actions: (obj) => {
           return [
             {
-              label: '修改',
+              label: i18n.t('network.text_130'),
               action: () => {
                 this.$router.push({
                   name: 'AgentForm',
@@ -82,7 +83,7 @@ export default {
               },
             },
             {
-              label: '设置心跳超时时间',
+              label: i18n.t('network.text_74'),
               action: () => {
                 this.createDialog('AgentUpdateDialog', {
                   data: [obj],
@@ -92,15 +93,15 @@ export default {
               },
             },
             {
-              label: '删除',
+              label: i18n.t('network.text_131'),
               action: (obj) => {
                 this.createDialog('DeleteResDialog', {
                   vm: this,
-                  title: '删除',
+                  title: i18n.t('network.text_131'),
                   data: [obj],
                   columns: this.columns,
                   onManager: this.onManager,
-                  alert: '提示：删除操作仅涉及数据库记录，实际节点的下线计划需要管理员计划实施',
+                  alert: i18n.t('network.text_132'),
                   content: () => {
                     const change = (bool) => {
                       this.okButtonProps.disabled = !bool

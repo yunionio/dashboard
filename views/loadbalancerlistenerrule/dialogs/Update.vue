@@ -1,32 +1,28 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">修改转发策略</div>
+    <div slot="header">{{$t('network.text_532')}}</div>
     <div slot="body">
-      <dialog-selected-tips name="转发策略" :count="params.data.length" action="修改转发策略" />
+      <dialog-selected-tips :name="$t('network.text_141')" :count="params.data.length" :action="$t('network.text_532')" />
       <dialog-table :data="params.data" :columns="columns" />
       <a-form :form="form.fc" v-bind="formItemLayout">
         <redirect-form-items v-if="isOneCloud" :form="form" @redirectChange="handleRedirectChange" />
         <template v-if="!isRedirect">
-          <a-form-item label="后端服务器组">
+          <a-form-item :label="$t('network.text_139')">
             <base-select
               resource="loadbalancerbackendgroups"
               need-params
               :params="bgParams"
               filterable
               v-decorator="decorators.backend_group"
-              :select-props="{ placeholder: '请选择后端服务器组' }" />
+              :select-props="{ placeholder: $t('network.text_394') }" />
           </a-form-item>
-          <a-form-item v-if="isOneCloud" label="限定接受请求速率">
-            <div slot="extra">
-              0为默认，表示不限速
-            </div>
-            <a-input :min="0" v-decorator="decorators.http_request_rate" addonAfter="次/秒" type="number" />
+          <a-form-item v-if="isOneCloud" :label="$t('network.text_527')">
+            <div slot="extra">{{$t('network.text_438')}}</div>
+            <a-input :min="0" v-decorator="decorators.http_request_rate" :addonAfter="$t('network.text_439')" type="number" />
           </a-form-item>
-          <a-form-item v-if="isOneCloud" label="限定同源IP发送请求速率">
-            <div slot="extra">
-              限制同一源地址对转发策略发送请求的速率，0为默认值，表示不限速
-            </div>
-            <a-input :min="0" v-decorator="decorators.http_request_rate_per_src" addonAfter="次/秒" type="number" />
+          <a-form-item v-if="isOneCloud" :label="$t('network.text_440')">
+            <div slot="extra">{{$t('network.text_528')}}</div>
+            <a-input :min="0" v-decorator="decorators.http_request_rate_per_src" :addonAfter="$t('network.text_439')" type="number" />
           </a-form-item>
         </template>
       </a-form>
@@ -63,7 +59,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请选择后端服务器组' },
+              { required: true, message: this.$t('network.text_394') },
             ],
           },
         ],

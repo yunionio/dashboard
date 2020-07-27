@@ -20,10 +20,10 @@ export default {
     schedulerTypeOpts: {
       type: Array,
       default: () => [
-        { key: 'rr', label: '轮询(RR)' },
-        { key: 'wrr', label: '加权轮询(WRR)' },
-        { key: 'wlc', label: '加权最小连接数(WLC)' },
-        { key: 'sch', label: '源IP一致性哈希(SCH)' },
+        { key: 'rr', label: this.$t('network.text_375') },
+        { key: 'wrr', label: this.$t('network.text_376') },
+        { key: 'wlc', label: this.$t('network.text_377') },
+        { key: 'sch', label: this.$t('network.text_378') },
       ],
     },
     form: {

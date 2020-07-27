@@ -3,10 +3,10 @@
     <div slot="header">{{params.title}}</div>
     <div slot="body">
       <a-descriptions bordered size="small">
-        <a-descriptions-item label="名称">
+        <a-descriptions-item :label="$t('network.text_21')">
           {{ansibleplaybookData.name}}
         </a-descriptions-item>
-        <a-descriptions-item label="状态">
+        <a-descriptions-item :label="$t('network.text_27')">
           <status :status="ansibleplaybookData.status" statusModule="ansiblePlaybook" />
         </a-descriptions-item>
       </a-descriptions>
@@ -15,17 +15,17 @@
       </div>
     </div>
     <div slot="footer">
-      <a-button class="ml-2 mr-2" @click="handleRun" :disabled="this.isRunning">重新执行</a-button>
+      <a-button class="ml-2 mr-2" @click="handleRun" :disabled="this.isRunning">{{$t('network.text_28')}}</a-button>
        <a-popconfirm
           class=""
           placement="topRight"
-          title="提示：确认要终止执行？"
-          ok-text="确定"
-          cancel-text="取消"
+          :title="$t('network.text_29')"
+          ok-:text="$t('network.text_30')"
+          cancel-:text="$t('network.text_31')"
           @confirm="handleStop">
-        <a-button class="" :disabled="!this.isRunning">终止执行</a-button>
+        <a-button class="" :disabled="!this.isRunning">{{$t('network.text_32')}}</a-button>
       </a-popconfirm>
-      <a-button class="ml-2" @click="cancelDialog">关闭</a-button>
+      <a-button class="ml-2" @click="cancelDialog">{{$t('network.text_33')}}</a-button>
     </div>
   </base-dialog>
 </template>
@@ -48,7 +48,7 @@ export default {
       columns: [
         {
           field: 'name',
-          title: '任务名称',
+          title: this.$t('network.text_34'),
         },
       ],
       cmOptions: {
@@ -63,26 +63,26 @@ export default {
       baseInfo: [
         {
           field: 'start_time',
-          title: '开始时间',
+          title: this.$t('network.text_35'),
           formatter: ({ cellValue }) => {
-            return this.$moment(cellValue).format('YYYY年MM月DD日 HH:mm:ss')
+            return this.$moment(cellValue).format(this.$t('network.text_36'))
           },
         },
         {
           field: 'end_time',
-          title: '结束时间',
+          title: this.$t('network.text_37'),
           formatter: ({ cellValue }) => {
-            return this.$moment(cellValue).format('YYYY年MM月DD日 HH:mm:ss')
+            return this.$moment(cellValue).format(this.$t('network.text_36'))
           },
         },
       ],
       extraInfo: [
         {
-          title: '其他信息',
+          title: this.$t('network.text_38'),
           items: [
             {
               field: 'output',
-              title: '日志',
+              title: this.$t('network.text_39'),
               slots: {
                 default: ({ row }, h) => {
                   return [
@@ -129,7 +129,7 @@ export default {
     async handleStop () {
       try {
         await this.ansibleEvents.stop()
-        this.$message.success('中止成功')
+        this.$message.success(this.$t('network.text_40'))
         this.refresh()
       } catch (err) {
         throw err

@@ -1,13 +1,13 @@
 <template>
   <div>
-    <div class="detail-title">监控数据</div>
+    <div class="detail-title">{{$t('network.text_487')}}</div>
     <monitor-control v-model="form" @refresh="fetchData" />
     <div class="mt-5">
-      <div class="title mt-2">网络流量({{bpsUnit}}/s)</div>
+      <div class="title mt-2">{{$t('network.text_488', [bpsUnit])}}</div>
       <influx-line :options="netOpt" :time-format="timeFormat" />
-      <div class="title mt-3">连接速率(次/s)</div>
+      <div class="title mt-3">{{$t('network.text_489')}}</div>
       <influx-line :options="connectOpt" :time-format="timeFormat" />
-      <div class="title mt-3">异常状态(次/s)</div>
+      <div class="title mt-3">{{$t('network.text_490')}}</div>
       <influx-line :options="negativeOpt" :time-format="timeFormat" />
     </div>
   </div>
@@ -108,8 +108,8 @@ const lbQuery = (fieldType, lsType, lsId, host, time, aggregate, isRule) => {
   let fill = 'fill(none)'
   if (isObject(selected)) selected = selected[lsType]
   if (isObject(pxname)) pxname = pxname[lsType]
-  if (!selected) console.error(`没有找到监听类型为 ${lsType} 的 ${fieldType} 数据的 selected 字段`)
-  if (!selected) console.error(`没有找到监听类型为 ${lsType} 的 ${fieldType} 数据 pxname 字段`)
+  if (!selected) console.error(this.$t('network.text_491', [lsType, fieldType]))
+  if (!selected) console.error(this.$t('network.text_492', [lsType, fieldType]))
   if (groupBy) groupByStr = `group by time(${groupBy})`
   if (fieldType === 'status') {
     time = ''
@@ -156,11 +156,11 @@ export default {
       if (timeRange <= 3600 * 24) { // 小于1天
         return 'HH:mm:ss'
       } else if (timeRange >= (3600 * 24) && timeRange <= (3600 * 24 * 30)) { // 大于1天，小于30天
-        return 'DD日: HH:mm:ss'
+        return this.$t('network.text_493')
       } else if (timeRange >= (3600 * 24 * 30) && timeRange <= (3600 * 24 * 30 * 12)) { // 大于1月，小于1年
-        return 'MM月DD日: HH:mm:ss'
+        return this.$t('network.text_494')
       } else { // 大于1年
-        return 'YYYY年MM月DD日: HH:mm:ss'
+        return this.$t('network.text_495')
       }
     },
   },

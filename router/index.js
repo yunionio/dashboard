@@ -21,11 +21,12 @@ import AgentForm from '@Network/views/agent/form'
 import Layout from '@/layouts/RouterView'
 
 import { hasSetupKey } from '@/utils/auth'
+import i18n from '@/locales'
 
 export default {
   index: 4,
   meta: {
-    label: '网络',
+    label: i18n.t('network.text_16'),
     icon: 'menu-network',
   },
   menus: [
@@ -34,7 +35,7 @@ export default {
      */
     {
       meta: {
-        label: '基础网络',
+        label: i18n.t('network.text_711'),
       },
       submenus: [
         {
@@ -42,6 +43,7 @@ export default {
           meta: {
             label: '全局VPC',
             permission: 'network_globalvpcs_list',
+            t: 'dictionary.globalvpc',
             hidden: () => !hasSetupKey('google'),
           },
           component: Layout,
@@ -90,6 +92,7 @@ export default {
           meta: {
             label: '二层网络',
             permission: 'wires_list',
+            t: 'dictionary.wire',
             hidden: () => !hasSetupKey(['onestack', 'vmware', 'zstack', 'dstack']),
             // hidden: () => !hasServices(['esxiagent', 'hostagent', 'bmagent']) && !hasBrands('ZStack'),
           },
@@ -122,6 +125,7 @@ export default {
           meta: {
             label: 'IP子网',
             permission: 'networks_list',
+            t: 'dictionary.network',
             hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'baremetal', 'vmware']),
           },
           component: Layout,
@@ -165,7 +169,7 @@ export default {
      */
     {
       meta: {
-        label: '网络服务',
+        label: i18n.t('network.text_712'),
       },
       submenus: [
         {
@@ -173,6 +177,7 @@ export default {
           meta: {
             label: '弹性公网IP',
             permission: 'eips_list',
+            t: 'dictionary.eip',
             hidden: () => !hasSetupKey(['onestack', 'private', 'public']),
           },
           component: Layout,
@@ -189,6 +194,7 @@ export default {
           meta: {
             label: 'NAT网关',
             permission: 'natgateways_list',
+            t: 'dictionary.nat',
             hidden: () => !hasSetupKey(['aliyun', 'huawei']),
           },
           component: Layout,
@@ -205,6 +211,7 @@ export default {
           meta: {
             label: '域名服务',
             permission: 'dnsrecords_list',
+            t: 'dictionary.dns',
             hidden: () => !hasSetupKey(['onestack', 'baremetal', 'vmware']),
           },
           component: Layout,
@@ -223,7 +230,7 @@ export default {
      */
     {
       meta: {
-        label: '负载均衡',
+        label: i18n.t('network.text_713'),
         hidden: () => !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s']),
         labelAlias: '网络负载均衡',
         // hidden: () => !hasServices('lbagent') && !hasHypervisors(['aliyun', 'qcloud', 'huawei', 'aws']),
@@ -232,7 +239,7 @@ export default {
         {
           path: '/lb',
           meta: {
-            label: '实例',
+            label: i18n.t('network.text_714'),
             permission: 'lb_loadbalancers_list',
           },
           component: Layout,
@@ -262,7 +269,7 @@ export default {
         {
           path: '/lbacl',
           meta: {
-            label: '访问控制',
+            label: i18n.t('network.text_715'),
             permission: 'lb_loadbalanceracls_list',
           },
           component: Layout,
@@ -277,7 +284,7 @@ export default {
         {
           path: '/lbcert',
           meta: {
-            label: '证书',
+            label: i18n.t('network.text_716'),
             permission: 'lb_loadbalancercertificates_list',
           },
           component: Layout,
@@ -296,15 +303,15 @@ export default {
      */
     {
       meta: {
-        label: '负载均衡集群',
+        label: i18n.t('network.text_17'),
         hidden: () => !hasSetupKey(['lb', 'k8s']),
-        labelAlias: '网络负载均衡集群',
+        labelAlias: i18n.t('network.text_18'),
       },
       submenus: [
         {
           path: '/cluster',
           meta: {
-            label: '集群',
+            label: i18n.t('network.text_19'),
             permission: 'lb_loadbalancerclusters_list',
           },
           component: Layout,
@@ -319,7 +326,7 @@ export default {
         {
           path: '/lbagent',
           meta: {
-            label: '节点',
+            label: i18n.t('network.text_20'),
             permission: 'lb_loadbalanceragents_list',
           },
           component: Layout,

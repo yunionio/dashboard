@@ -3,6 +3,7 @@ import {
   getTimeTableColumn,
   getProjectTableColumn,
 } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -10,7 +11,7 @@ export default {
       getNameDescriptionTableColumn({
         onManager: this.onManager,
         hideField: true,
-        title: '策略组名称',
+        title: i18n.t('network.text_291'),
         slotCallback: row => {
           return (
             <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
@@ -19,7 +20,7 @@ export default {
       }),
       {
         field: 'acl_entries',
-        title: '源地址 | 备注',
+        title: i18n.t('network.text_312'),
         width: 150,
         type: 'expand',
         slots: {
@@ -56,7 +57,7 @@ export default {
       getTimeTableColumn(),
       {
         field: 'updated_at',
-        title: '更新时间',
+        title: i18n.t('network.text_314'),
         width: 150,
         formatter: ({ cellValue }) => {
           return this.$moment(cellValue).format()

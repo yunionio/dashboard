@@ -1,38 +1,38 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">新建VPC</div>
+    <div slot="header">{{$t('network.text_683')}}</div>
     <div slot="body">
       <a-form
         :form="form.fc">
-        <a-form-item v-bind="formItemLayout" :label="`指定${$t('dictionary.domain')}`" v-if="$store.getters.isAdminMode">
+        <a-form-item v-bind="formItemLayout" :label="$t('network.text_205', [$t('dictionary.domain')])" v-if="$store.getters.isAdminMode">
           <domain-select v-decorator="decorators.project_domain" @change="handleDomainChange" />
         </a-form-item>
-        <a-form-item label="名称" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.name" placeholder="字母开头，数字和字母大小写组合，长度为2-20个字符，可含'-','_'" />
+        <a-form-item :label="$t('network.text_21')" v-bind="formItemLayout">
+          <a-input v-decorator="decorators.name" :placeholder="$t('network.text_684')" />
         </a-form-item>
-        <a-form-item label="平台" v-bind="formItemLayout">
+        <a-form-item :label="$t('network.text_198')" v-bind="formItemLayout">
           <a-radio-group v-decorator="decorators.platform">
-            <a-radio-button value="idc">本地IDC</a-radio-button>
-            <a-radio-button value="private_cloud">私有云</a-radio-button>
-            <a-radio-button value="public_cloud">公有云</a-radio-button>
+            <a-radio-button value="idc">{{$t('network.text_207')}}</a-radio-button>
+            <a-radio-button value="private_cloud">{{$t('network.text_208')}}</a-radio-button>
+            <a-radio-button value="public_cloud">{{$t('network.text_209')}}</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item label="区域" v-bind="formItemLayout" v-if="platform !== 'idc'">
+        <a-form-item :label="$t('network.text_199')" v-bind="formItemLayout" v-if="platform !== 'idc'">
           <cloudprovider-region
            @update:region="handleRegionChange"
            :decorator="decorators"
            :cloudproviderParams="cloudproviderParams"
            :regionParamsExtra="regionParamsExtra" />
         </a-form-item>
-        <a-form-item label="区域" v-bind="formItemLayout" v-else>
+        <a-form-item :label="$t('network.text_199')" v-bind="formItemLayout" v-else>
           <base-select
             resource="cloudregions"
             v-decorator="decorators.idcRegion"
-            :selectProps="{ 'placeholder': '请选择区域' }"
+            :selectProps="{ 'placeholder': $t('network.text_286') }"
             :params="idcCloudRegionParams" />
         </a-form-item>
-        <a-form-item v-if="!isGoogle || platform !== 'public_cloud'" label="目标网段" v-bind="formItemLayout" :extra="platform !== 'idc' ? '一旦创建成功，网段不能修改。支持使用 192.168.0.0/16、172.16.0.0/12、10.0.0.0/8 及其子网作为VPC地址段。' : '一旦创建成功，网段不能修改。'">
-          <a-input v-decorator="decorators.cidr_block" placeholder="请输入IP段，例如：192.168.0.0/16" v-if="platform !== 'idc'" />
+        <a-form-item v-if="!isGoogle || platform !== 'public_cloud'" :label="$t('network.text_244')" v-bind="formItemLayout" :extra="platform !== 'idc' ? $t('network.text_685') : $t('network.text_686')">
+          <a-input v-decorator="decorators.cidr_block" :placeholder="$t('network.text_687')" v-if="platform !== 'idc'" />
           <a-select v-decorator="decorators.cidr_block" v-else>
             <a-select-option value="192.168.0.0/16">192.168.0.0/16</a-select-option>
             <a-select-option value="172.16.0.0/12">172.16.0.0/12</a-select-option>
@@ -82,7 +82,7 @@ export default {
             validateFirst: true,
             validateTrigger: ['blur'],
             rules: [
-              { required: true, message: '请输入VPC名称' },
+              { required: true, message: this.$t('network.text_688') },
               { validator: this.$validate('broadName') },
             ],
           },
@@ -97,7 +97,7 @@ export default {
           'cloudprovider',
           {
             rules: [
-              { required: true, message: '请输入区域' },
+              { required: true, message: this.$t('network.text_689') },
             ],
           },
         ],
@@ -105,7 +105,7 @@ export default {
           'region',
           {
             rules: [
-              { required: true, message: '请输入区域' },
+              { required: true, message: this.$t('network.text_689') },
             ],
           },
         ],
@@ -113,7 +113,7 @@ export default {
           'idcRegion',
           {
             rules: [
-              { required: true, message: '请输入区域' },
+              { required: true, message: this.$t('network.text_689') },
             ],
           },
         ],
@@ -123,7 +123,7 @@ export default {
             validateFirst: true,
             validateTrigger: ['blur'],
             rules: [
-              { required: true, message: '目标网段不能为空' },
+              { required: true, message: this.$t('network.text_690') },
               { validator: this.$validate('CIDR') },
             ],
           },
@@ -208,14 +208,14 @@ export default {
       }
       const data = await new this.$Manager('reservedips').list({ params })
       if (data.data.data.length >= 1) {
-        callback(new Error('该IP已被预留,请勿重复添加'))
+        callback(new Error(this.$t('network.text_645')))
       } else {
         const ips = Object.values(this.form.fc.getFieldValue('networkIps'))
         const ipsRepreat = Array.from(new Set(ips))
         if (ipsRepreat.length === ips.length) {
           callback()
         } else {
-          callback(new Error('请勿重复添加相同IP'))
+          callback(new Error(this.$t('network.text_644')))
         }
       }
     },

@@ -8,6 +8,7 @@ import Acl from '@Network/views/loadbalancerlistener/components/Acl'
 import { getInitialValue } from '@/utils/common/ant'
 import NameRepeated from '@/sections/NameRepeated'
 import { HYPERVISORS_MAP } from '@/constants'
+import i18n from '@/locales'
 
 export default {
   components: {
@@ -111,20 +112,20 @@ export default {
       backendColumns: [
         {
           field: 'name',
-          title: '后端名称',
+          title: i18n.t('network.text_433'),
           minWidth: '30%',
         },
         {
           field: 'address',
-          title: 'IP地址',
+          title: i18n.t('network.text_213'),
         },
         {
           field: 'port',
-          title: '端口',
+          title: i18n.t('network.text_165'),
         },
         {
           field: 'weight',
-          title: '权重',
+          title: i18n.t('network.text_166'),
         },
       ],
     }
@@ -140,7 +141,7 @@ export default {
   methods: {
     openBackendgroupsCreate () {
       this.createDialog('LoadbalancerbackendgroupsCreateDialog', {
-        title: '新建后端服务器组',
+        title: i18n.t('network.text_434'),
         loadbalancer: this.lbDetail.id,
         onManager: this.onManager,
         refresh: async () => {

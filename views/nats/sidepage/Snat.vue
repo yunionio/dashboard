@@ -38,7 +38,7 @@ export default {
         },
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('network.text_21'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
@@ -50,18 +50,18 @@ export default {
       columns: [
         getCopyWithContentTableColumn({
           field: 'name',
-          title: 'SNAT名称',
+          title: this.$t('network.text_564'),
         }),
         {
           field: 'ip',
-          title: '公网IP地址',
+          title: this.$t('network.text_539'),
         },
         {
           field: 'sn',
-          title: 'IP子网',
+          title: this.$t('network.text_565'),
           formatter: ({ row }) => {
             if (row.network) {
-              return `${row.network.name} (起:${row.network.guest_ip_start} 止:${row.network.guest_ip_end})`
+              return this.$t('network.text_566', [row.network.name, row.network.guest_ip_start, row.network.guest_ip_end])
             }
             return '-'
           },
@@ -70,11 +70,11 @@ export default {
       ],
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('network.text_26'),
           permission: 'server_create',
           action: () => {
             this.createDialog('SNatCreateDialog', {
-              title: '新建SNAT条目',
+              title: this.$t('network.text_567'),
               data: this.data,
               columns: this.columns,
               onManager: this.onManager,
@@ -85,16 +85,16 @@ export default {
           }),
         },
         {
-          label: '删除',
+          label: this.$t('network.text_131'),
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,
               data: this.list.selectedItems,
               columns: this.columns,
-              title: '删除SNAT条目',
+              title: this.$t('network.text_568'),
               onManager: this.onManager,
-              name: 'SNAT条目',
-              alert: '提示：请在删除前确认数据已备份，删除后数据无法找回',
+              name: this.$t('network.text_569'),
+              alert: this.$t('network.text_563'),
             })
           },
           meta: () => {
@@ -106,16 +106,16 @@ export default {
       ],
       singleActions: [
         {
-          label: '删除',
+          label: this.$t('network.text_131'),
           action: (obj) => {
             this.createDialog('DeleteResDialog', {
               vm: this,
-              title: '删除SNAT条目',
+              title: this.$t('network.text_568'),
               data: [obj],
               columns: this.columns,
               onManager: this.onManager,
-              name: 'SNAT条目',
-              alert: '提示：请在删除前确认数据已备份，删除后数据无法找回',
+              name: this.$t('network.text_569'),
+              alert: this.$t('network.text_563'),
             })
           },
         },

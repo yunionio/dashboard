@@ -31,11 +31,11 @@ export default {
       ],
       extraInfo: [
         {
-          title: '配置信息',
+          title: this.$t('network.text_308'),
           items: [
             getCopyWithContentTableColumn({
               field: 'loadbalancer',
-              title: '负载均衡实例',
+              title: this.$t('network.text_137'),
               hideField: true,
               slotCallback: row => {
                 if (!row.loadbalancer) return '-'
@@ -46,26 +46,26 @@ export default {
             }),
             {
               field: 'listener',
-              title: '监听',
+              title: this.$t('network.text_138'),
             },
             {
               field: 'domain',
-              title: '域名',
+              title: this.$t('network.text_156'),
             },
             {
               field: 'path',
-              title: 'URL路径',
+              title: this.$t('network.text_524'),
             },
             {
               field: 'redirect',
-              title: '重定向',
+              title: this.$t('network.text_368'),
               formatter: ({ row }) => {
-                return row.redirect === 'raw' ? '已开启' : '未开启'
+                return row.redirect === 'raw' ? this.$t('network.text_481') : this.$t('network.text_480')
               },
             },
             {
               field: 'redirect_code',
-              title: '重定向方式',
+              title: this.$t('network.text_369'),
               formatter: ({ row }) => {
                 if (row.redirect !== 'raw') return '-'
                 return this.$t('redirect_code')[row.redirect_code] ? this.$t('redirect_code')[row.redirect_code].name : '-'
@@ -73,7 +73,7 @@ export default {
             },
             {
               field: 'redirect_scheme',
-              title: '重定向至',
+              title: this.$t('network.text_370'),
               formatter: ({ row }) => {
                 if (row.redirect !== 'raw') return '-'
                 return [row.redirect_scheme, row.redirect_host, row.redirect_path].filter(item => !!item).join('、')
@@ -81,7 +81,7 @@ export default {
             },
             getCopyWithContentTableColumn({
               field: 'backend_group',
-              title: '后端服务器组',
+              title: this.$t('network.text_139'),
               hideField: true,
               slotCallback: row => {
                 if (this.isRedirect) return '-'
@@ -93,18 +93,18 @@ export default {
             }),
             {
               field: 'http_request_rate',
-              title: '限定接收请求速率',
+              title: this.$t('network.text_437'),
               formatter: ({ row }) => {
                 if (this.isRedirect) return '-'
-                return row.http_request_rate + ' 秒'
+                return row.http_request_rate + this.$t('network.text_76')
               },
             },
             {
               field: 'http_request_rate_per_src',
-              title: '限定同源IP发送请求速率',
+              title: this.$t('network.text_440'),
               formatter: ({ row }) => {
                 if (this.isRedirect) return '-'
-                return row.http_request_rate_per_src + ' 秒'
+                return row.http_request_rate_per_src + this.$t('network.text_76')
               },
             },
             // {

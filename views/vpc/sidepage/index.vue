@@ -47,10 +47,10 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'vpc-detail' },
-        { label: 'IP子网', key: 'network-list' },
+        { label: this.$t('network.text_67'), key: 'vpc-detail' },
+        { label: this.$t('network.text_565'), key: 'network-list' },
         { label: this.$t('dictionary.route_table'), key: 'route-table-list' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('network.text_150'), key: 'event-drawer' },
       ],
     }
   },
