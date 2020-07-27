@@ -4,6 +4,7 @@ import _ from 'lodash'
 import DomainProject from '@/sections/DomainProject'
 import { isRequired } from '@/utils/validate'
 import CloudproviderRegionZone from '@/sections/CloudproviderRegionZone'
+import i18n from '@/locales'
 
 export default {
   components: {
@@ -56,7 +57,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入主机名称' },
+              { required: true, message: i18n.t('network.text_283') },
               { validator: this.$validate('resourceName') },
             ],
           },
@@ -65,7 +66,7 @@ export default {
           'cluster_id',
           {
             rules: [
-              { required: true, message: '请选择集群', trigger: 'change' },
+              { required: true, message: i18n.t('network.text_79'), trigger: 'change' },
             ],
           },
         ],
@@ -73,7 +74,7 @@ export default {
           'vpc',
           {
             rules: [
-              { required: true, message: '请选择VPC', trigger: 'change' },
+              { required: true, message: i18n.t('network.text_274'), trigger: 'change' },
             ],
           },
         ],
@@ -81,7 +82,7 @@ export default {
           'network',
           {
             rules: [
-              { required: true, message: '请选择网络', trigger: 'change' },
+              { required: true, message: i18n.t('network.text_284'), trigger: 'change' },
             ],
           },
         ],
@@ -90,7 +91,7 @@ export default {
           {
             initialValue: { key: '', label: '' },
             rules: [
-              { validator: isRequired(), message: '请选择账号' },
+              { validator: isRequired(), message: i18n.t('network.text_285') },
             ],
           },
         ],
@@ -99,7 +100,7 @@ export default {
           {
             initialValue: { key: '', label: '' },
             rules: [
-              { validator: isRequired(), message: '请选择区域' },
+              { validator: isRequired(), message: i18n.t('network.text_286') },
             ],
           },
         ],
@@ -108,7 +109,7 @@ export default {
           {
             initialValue: { key: '', label: '' },
             rules: [
-              { validator: isRequired(), message: '请选择可用区' },
+              { validator: isRequired(), message: i18n.t('network.text_287') },
             ],
           },
         ],
@@ -116,7 +117,7 @@ export default {
           'loadbalancer_spec',
           {
             rules: [
-              { required: true, message: '请选择规格' },
+              { required: true, message: i18n.t('network.text_269') },
             ],
           },
         ],
@@ -137,7 +138,7 @@ export default {
           {
             initialValue: 1,
             rules: [
-              { required: true, message: '请输入带宽', trigger: 'change' },
+              { required: true, message: i18n.t('network.text_288'), trigger: 'change' },
             ],
           },
         ],
@@ -151,7 +152,7 @@ export default {
           'eip',
           {
             rules: [
-              { required: true, message: '请选择弹性公网IP' },
+              { required: true, message: i18n.t('network.text_278') },
             ],
           },
         ],
@@ -228,7 +229,7 @@ export default {
     validateIp () {
       const remainIps = this.networkObj.ports - this.networkObj.ports_used
       if (remainIps && remainIps < 8) {
-        this.$message.warning('指定的IP子网必须有大于或等于8个的可用IP才可以被选择创建实例')
+        this.$message.warning(i18n.t('network.text_276'))
         return false
       }
       return true

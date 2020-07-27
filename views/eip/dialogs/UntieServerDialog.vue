@@ -1,8 +1,8 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">解绑</div>
+    <div slot="header">{{$t('network.text_219')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.eip')" :count="params.data.length" action="解绑" />
+      <dialog-selected-tips :name="$t('dictionary.eip')" :count="params.data.length" :action="$t('network.text_219')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
     </div>
     <div slot="footer">

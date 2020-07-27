@@ -34,22 +34,22 @@ export default {
         getAssociateNameTableColumn(this),
         {
           field: 'ip_addr',
-          title: 'IP地址',
+          title: this.$t('network.text_213'),
         },
         {
           field: 'bandwidth',
-          title: '带宽',
+          title: this.$t('network.text_195'),
           formatter: ({ cellValue }) => {
             return sizestr(cellValue, 'M', 1024)
           },
         },
         {
           field: 'charge_type',
-          title: '计费方式',
+          title: this.$t('network.text_192'),
           formatter: ({ cellValue }) => {
             const type = {
-              traffic: '按流量计费',
-              bandwidth: '按带宽计费',
+              traffic: this.$t('network.text_193'),
+              bandwidth: this.$t('network.text_194'),
             }
             return type[cellValue]
           },

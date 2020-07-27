@@ -33,7 +33,7 @@ export default {
         getParams: this.getParam,
         filterOptions: {
           name: {
-            label: '策略组名称',
+            label: this.$t('network.text_291'),
             filter: true,
             formatter: val => {
               return `name.contains(${val})`
@@ -46,7 +46,7 @@ export default {
         getTimeTableColumn(),
         {
           field: 'updated_at',
-          title: '更新时间',
+          title: this.$t('network.text_314'),
           width: 150,
           formatter: ({ cellValue }) => {
             return this.$moment(cellValue).format()

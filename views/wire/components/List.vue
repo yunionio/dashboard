@@ -36,14 +36,14 @@ export default {
         getParams: this.getParam,
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('network.text_21'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
             },
           },
           bandwidth: {
-            label: '宽带',
+            label: this.$t('network.text_694'),
             dropdown: true,
             multiple: true,
             items: BAND_WIDTH_OPTION.map(({ label, value }) => {
@@ -54,7 +54,7 @@ export default {
             label: 'VPC',
           },
           region: {
-            label: '区域',
+            label: this.$t('network.text_199'),
           },
           project_domains: getProjectDomainFilter(),
         },
@@ -62,23 +62,23 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
-          { label: '带宽', key: 'bandwidth' },
+          { label: this.$t('network.text_21'), key: 'name' },
+          { label: this.$t('network.text_195'), key: 'bandwidth' },
           { label: 'VPC', key: 'vpc' },
-          { label: '网络数量', key: 'networks' },
+          { label: this.$t('network.text_695'), key: 'networks' },
           { label: this.$t('dictionary.project'), key: 'tenant' },
-          { label: '平台', key: 'provider' },
-          { label: '云账号', key: 'manager' },
-          { label: '共享范围', key: 'public_scope' },
-          { label: `所属${this.$t('dictionary.domain')}`, key: 'project_domain' },
+          { label: this.$t('network.text_198'), key: 'provider' },
+          { label: this.$t('network.text_196'), key: 'manager' },
+          { label: this.$t('network.text_232'), key: 'public_scope' },
+          { label: this.$t('network.text_233', [this.$t('dictionary.domain')]), key: 'project_domain' },
         ],
       },
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('network.text_26'),
           action: () => {
             this.createDialog('WireCreateDialog', {
-              title: '新建',
+              title: this.$t('network.text_26'),
               onManager: this.onManager,
             })
           },
@@ -100,14 +100,14 @@ export default {
                 resource: 'wires',
               }),
               {
-                label: '删除',
+                label: this.$t('network.text_131'),
                 permission: 'wires_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     vm: this,
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    title: '删除',
+                    title: this.$t('network.text_131'),
                     name: this.$t('dictionary.hostwire'),
                     onManager: this.onManager,
                   })

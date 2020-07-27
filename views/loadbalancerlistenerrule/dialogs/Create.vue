@@ -1,48 +1,40 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">新建转发策略</div>
+    <div slot="header">{{$t('network.text_521')}}</div>
     <div slot="body">
       <a-form
         v-bind="formItemLayout"
         :form="form.fc">
-        <a-form-item label="名称">
-          <a-input v-decorator="decorators.name"  placeholder="请输入" />
+        <a-form-item :label="$t('network.text_21')">
+          <a-input v-decorator="decorators.name"  :placeholder="$t('network.text_522')" />
         </a-form-item>
-        <a-form-item label="域名">
+        <a-form-item :label="$t('network.text_156')">
           <div slot="extra">
-            <!-- - 泛解析域名：*.test.com，*一定在第一个字符，并且是*.或者*aaa.的格式，*不能在最后。<br /> -->
-            域名仅支持精确匹配
-          </div>
-          <a-input v-decorator="decorators.domain" placeholder="请输入" />
+            <!-- - 泛解析域名：*.test.com，*一定在第一个字符，并且是*.或者*aaa.的格式，*不能在最后。<br /> -->{{$t('network.text_523')}}</div>
+          <a-input v-decorator="decorators.domain" :placeholder="$t('network.text_522')" />
         </a-form-item>
-        <a-form-item label="URL路径">
-          <div slot="extra">
-            以"/"开头，但不能只填“/”，URL路径支持前缀匹配，匹配所有以设置的路径开头的URL路径。
-          </div>
-          <a-input v-decorator="decorators.path" placeholder="请输入" />
+        <a-form-item :label="$t('network.text_524')">
+          <div slot="extra">{{$t('network.text_525')}}</div>
+          <a-input v-decorator="decorators.path" :placeholder="$t('network.text_522')" />
         </a-form-item>
          <redirect-form-items v-if="isOneCloud" :form="form" @redirectChange="handleRedirectChange" />
          <template v-if="!isRedirect">
-          <a-form-item label="后端服务器组">
+          <a-form-item :label="$t('network.text_139')">
             <base-select
               resource="loadbalancerbackendgroups"
               need-params
               :params="bgParams"
               filterable
               v-decorator="decorators.backend_group"
-              :select-props="{ placeholder: '请选择后端服务器组' }" />
+              :select-props="{ placeholder: $t('network.text_394') }" />
           </a-form-item>
-          <a-form-item v-if="isOneCloud" label="限定接受请求速率">
-            <div slot="extra">
-              0为默认，表示不限速
-            </div>
-            <a-input :min="0" v-decorator="decorators.http_request_rate" addonAfter="次/秒" type="number" />
+          <a-form-item v-if="isOneCloud" :label="$t('network.text_527')">
+            <div slot="extra">{{$t('network.text_438')}}</div>
+            <a-input :min="0" v-decorator="decorators.http_request_rate" :addonAfter="$t('network.text_439')" type="number" />
           </a-form-item>
-          <a-form-item v-if="isOneCloud" label="限定同源IP发送请求速率">
-            <div slot="extra">
-              限制同一源地址对转发策略发送请求的速率，0为默认值，表示不限速
-            </div>
-            <a-input :min="0" v-decorator="decorators.http_request_rate_per_src" addonAfter="次/秒" type="number" />
+          <a-form-item v-if="isOneCloud" :label="$t('network.text_440')">
+            <div slot="extra">{{$t('network.text_528')}}</div>
+            <a-input :min="0" v-decorator="decorators.http_request_rate_per_src" :addonAfter="$t('network.text_439')" type="number" />
           </a-form-item>
         </template>
       </a-form>
@@ -80,10 +72,10 @@ export default {
       // }
     }
     const urlRules = [
-      { pattern: /^\/.+/, message: '请根据提示输入规范URL', trigger: 'blur' },
+      { pattern: /^\/.+/, message: this.$t('network.text_529'), trigger: 'blur' },
     ]
     if (this.params.lbListenerData.provider && this.params.lbListenerData.provider.toLowerCase() === 'qcloud') {
-      urlRules.unshift({ required: true, message: '请输入URL' })
+      urlRules.unshift({ required: true, message: this.$t('network.text_530') })
     }
     return {
       isRedirect: false,
@@ -97,7 +89,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('network.text_116') },
               { validator: this.$validate('resourceName') },
             ],
           },
@@ -107,7 +99,7 @@ export default {
           {
             rules: [
               // { required: true, message: '请输入域名' },
-              { validator: customDomain, message: '请根据提示输入规范域名', trigger: 'blur' },
+              { validator: customDomain, message: this.$t('network.text_531'), trigger: 'blur' },
             ],
           },
         ],
@@ -123,7 +115,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请选择后端服务器组' },
+              { required: true, message: this.$t('network.text_394') },
             ],
           },
         ],

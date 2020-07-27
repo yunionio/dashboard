@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="证书"
+    :title="$t('network.text_143')"
     icon="res-lbcert"
     :res-name="detailData.name"
     :actions="params.actions"
@@ -48,10 +48,10 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'lbcert-detail' },
-        { label: '监听', key: 'loadbalancerlisteners-list' },
-        { label: '缓存列表', key: 'lbcert-cache-list' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('network.text_67'), key: 'lbcert-detail' },
+        { label: this.$t('network.text_138'), key: 'loadbalancerlisteners-list' },
+        { label: this.$t('network.text_316'), key: 'lbcert-cache-list' },
+        { label: this.$t('network.text_150'), key: 'event-drawer' },
       ],
     }
   },

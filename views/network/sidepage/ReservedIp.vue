@@ -26,11 +26,11 @@ export default {
       columns: [
         {
           field: 'ip_addr',
-          title: 'IP地址',
+          title: this.$t('network.text_213'),
         },
         {
           field: 'notes',
-          title: '备注',
+          title: this.$t('network.text_668'),
         },
       ],
     }

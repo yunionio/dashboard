@@ -1,4 +1,5 @@
 import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -13,12 +14,12 @@ export default {
         resource: 'globalvpcs',
       }),
       {
-        label: '删除',
+        label: i18n.t('network.text_131'),
         action: (obj) => {
           this.createDialog('DeleteResDialog', {
             vm: this,
             name: this.$t('dictionary.globalvpc'),
-            title: '删除',
+            title: i18n.t('network.text_131'),
             data: [obj],
             columns: this.columns,
             onManager: this.onManager,

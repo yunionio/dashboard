@@ -25,7 +25,7 @@ export default {
       baseInfo: [
         {
           field: 'zone',
-          title: '可用区',
+          title: this.$t('network.text_24'),
           formatter: ({ row }) => {
             return `${row.region} ${row.zone}`
           },

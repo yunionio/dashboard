@@ -1,18 +1,18 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">更换证书</div>
+    <div slot="header">{{$t('network.text_366')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.lb_listener')" :count="params.data.length" action="调整访问控制" />
+      <dialog-selected-tips :name="$t('dictionary.lb_listener')" :count="params.data.length" :action="$t('network.text_470')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" v-bind="formItemLayout">
-        <a-form-item label="新证书">
+        <a-form-item :label="$t('network.text_471')">
           <base-select
             v-decorator="decorators.certificate"
             resource="loadbalancercertificates"
             :params="certificateParams"
             show-sync
-            :select-props="{ placeholder: '请选择证书' }" />
-          <div slot="extra">没有想要的？可以前往<help-link href="/lbcert"> 新建证书</help-link></div>
+            :select-props="{ placeholder: $t('network.text_421') }" />
+          <div slot="extra">{{$t('network.text_422')}}<help-link href="/lbcert">{{$t('network.text_321')}}</help-link></div>
         </a-form-item>
       </a-form>
     </div>
@@ -42,7 +42,7 @@ export default {
           {
             initialValue: this.params.lbDetail.id,
             rules: [
-              { required: true, message: '请选择证书' },
+              { required: true, message: this.$t('network.text_421') },
             ],
           },
         ],

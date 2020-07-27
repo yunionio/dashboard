@@ -48,7 +48,7 @@ export default {
       if (this.$route.name === 'LbcertList') {
         return [
           {
-            label: '更换证书',
+            label: this.$t('network.text_366'),
             permission: 'lb_loadbalancerlisteners_update',
             action: () => {
               this.createDialog('LbListenerUpdateCertificate', {
@@ -70,7 +70,7 @@ export default {
               if (!isHttps) {
                 return {
                   validate: false,
-                  tooltip: '仅https协议支持此操作',
+                  tooltip: this.$t('network.text_367'),
                 }
               }
               return { validate: true }
@@ -80,7 +80,7 @@ export default {
       }
       return [
         {
-          label: '新建',
+          label: this.$t('network.text_26'),
           permission: 'lb_loadbalancerlisteners_create',
           action: () => {
             this.createDialog('LbListenerFormDialog', {
@@ -96,15 +96,15 @@ export default {
           },
         },
         {
-          label: '删除',
+          label: this.$t('network.text_131'),
           permission: 'lb_loadbalancerlisteners_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,
               data: this.list.selectedItems,
               columns: this.columns,
-              title: '删除',
-              name: '监听',
+              title: this.$t('network.text_131'),
+              name: this.$t('network.text_138'),
               onManager: this.onManager,
             })
           },

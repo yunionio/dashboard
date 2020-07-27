@@ -1,15 +1,16 @@
+import i18n from '@/locales'
 export default {
   created () {
     this.singleActions = [
       {
-        label: '释放',
+        label: i18n.t('network.text_666'),
         action: (obj) => {
           this.createDialog('ReservedIPFreedDialog', {
-            title: '释放',
+            title: i18n.t('network.text_666'),
             data: [obj],
             columns: this.columns,
             onManager: this.onManager,
-            name: '预留IP',
+            name: i18n.t('network.text_651'),
             refresh: this.refresh,
           })
         },

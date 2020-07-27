@@ -3,6 +3,7 @@ import {
   getTagTableColumn,
   getRegionTableColumn,
 } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -10,7 +11,7 @@ export default {
       getNameDescriptionTableColumn({
         vm: this,
         hideField: true,
-        title: '名称',
+        title: i18n.t('network.text_21'),
         onManager: this.onManager,
         slotCallback: row => {
           return (
@@ -21,13 +22,13 @@ export default {
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'loadbalanceragent', columns: () => this.columns }),
       {
         field: 'cluster',
-        title: '集群',
+        title: i18n.t('network.text_19'),
         showOverflow: 'ellipsis',
         minWidth: 100,
       },
       {
         field: 'ha_state',
-        title: '主备',
+        title: i18n.t('network.text_22'),
         width: 70,
       },
       {
@@ -37,7 +38,7 @@ export default {
       },
       {
         field: 'hb_last_seen',
-        title: '上一次心跳',
+        title: i18n.t('network.text_23'),
         width: 100,
         formatter: ({ cellValue }) => {
           return this.$moment(cellValue).fromNow()
@@ -46,7 +47,7 @@ export default {
       getRegionTableColumn(),
       {
         field: 'version',
-        title: '软件版本',
+        title: i18n.t('network.text_25'),
         width: 250,
       },
     ]

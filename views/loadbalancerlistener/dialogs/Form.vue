@@ -1,6 +1,6 @@
 <template>
   <base-dialog :width="1000" @cancel="cancelDialog">
-    <div slot="header">{{isUpdate ? '修改' : '新建'}}负载均衡监听</div>
+    <div slot="header">{{isUpdate ? $t('network.text_130') : $t('network.text_26')}}负载均衡监听</div>
     <div slot="body">
       <steps v-show="!isLbRedirected" v-model="step" />
       <a-spin :spinning="spinning">
@@ -18,14 +18,14 @@
     </div>
     <div slot="footer">
       <template v-if="isLbRedirected">
-        <a-button type="primary" class="mr-2" @click="isUpdate ? update() : validateForm() " :loading="loading">确定</a-button>
+        <a-button type="primary" class="mr-2" @click="isUpdate ? update() : validateForm() " :loading="loading">{{$t('network.text_30')}}</a-button>
       </template>
       <template v-else>
-        <a-button @click="prev" v-if="!isFirstStep" class="mr-2">上一步</a-button>
+        <a-button @click="prev" v-if="!isFirstStep" class="mr-2">{{$t('network.text_466')}}</a-button>
         <a-button type="primary" class="mr-2" @click="next" :loading="isUpdate ? false : loading" v-if="!isLastStep">{{ nextStepTitle }}</a-button>
-        <a-button type="primary" class="mr-2" v-if="isLastStep" @click="isUpdate ? update() : validateForm()" :loading="loading">确定</a-button>
+        <a-button type="primary" class="mr-2" v-if="isLastStep" @click="isUpdate ? update() : validateForm()" :loading="loading">{{$t('network.text_30')}}</a-button>
       </template>
-      <a-button @click="cancel">取消</a-button>
+      <a-button @click="cancel">{{$t('network.text_31')}}</a-button>
     </div>
   </base-dialog>
 </template>
@@ -70,9 +70,9 @@ export default {
       listenerData: {},
       step: {
         steps: [
-          { title: '协议&监听', component: 'Protocol' },
-          { title: '后端服务器组', component: 'Backendgroup' },
-          { title: '健康检查', component: 'Healthcheck' },
+          { title: this.$t('network.text_468'), component: 'Protocol' },
+          { title: this.$t('network.text_139'), component: 'Backendgroup' },
+          { title: this.$t('network.text_469'), component: 'Healthcheck' },
         ],
         currentStep: 0,
       },
@@ -189,7 +189,7 @@ export default {
             data,
           },
         })
-        this.$message.success('操作成功')
+        this.$message.success(this.$t('network.text_290'))
         this.loading = false
         this.cancel()
       } catch (error) {

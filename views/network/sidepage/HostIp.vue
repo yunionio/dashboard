@@ -26,19 +26,19 @@ export default {
       columns: [
         {
           field: 'guest',
-          title: '云主机',
+          title: this.$t('network.text_657'),
         },
         {
           field: 'ip_addr',
-          title: 'IP地址',
+          title: this.$t('network.text_213'),
         },
         {
           field: 'mac_addr',
-          title: 'MAC地址',
+          title: this.$t('network.text_228'),
         },
         {
           field: 'driver',
-          title: '驱动(driver)',
+          title: this.$t('network.text_658'),
         },
       ],
     }

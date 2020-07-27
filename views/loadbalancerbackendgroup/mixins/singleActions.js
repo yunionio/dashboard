@@ -1,14 +1,15 @@
+import i18n from '@/locales'
 export default {
   created () {
     this.singleActions = [
       {
-        label: '删除',
+        label: i18n.t('network.text_131'),
         permission: 'lb_loadbalancerbackendgroups_delete',
         action: (obj) => {
           this.createDialog('DeleteResDialog', {
             vm: this,
-            title: '删除',
-            name: '后端服务器组',
+            title: i18n.t('network.text_131'),
+            name: i18n.t('network.text_139'),
             data: [obj],
             columns: this.columns.slice(0, 2),
             onManager: this.onManager,
@@ -18,7 +19,7 @@ export default {
           if (!obj.can_delete) {
             return {
               validate: false,
-              tooltip: '已关联监听，不可删除',
+              tooltip: i18n.t('network.text_356'),
             }
           }
           return {

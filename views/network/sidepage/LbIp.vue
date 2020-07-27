@@ -25,17 +25,17 @@ export default {
       columns: [
         {
           field: 'loadbalancer',
-          title: '负载均衡',
+          title: this.$t('network.text_667'),
         },
         {
           field: 'ip_addr',
-          title: '服务地址',
+          title: this.$t('network.text_248'),
         },
         {
           field: 'created_at',
-          title: '创建时间',
+          title: this.$t('network.text_313'),
           formatter: ({ cellValue }) => {
-            return this.$moment(cellValue).format('YYYY年MM月DD日 HH:mm:ss')
+            return this.$moment(cellValue).format(this.$t('network.text_36'))
           },
         },
       ],

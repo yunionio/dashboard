@@ -1,27 +1,23 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">新建弹性公网IP</div>
+    <div slot="header">{{$t('network.text_206')}}</div>
     <div slot="body">
       <a-form
         :form="form.fc">
-        <a-form-item :label="`指定${$t('dictionary.project')}`" v-bind="formItemLayout" class="mb-0">
+        <a-form-item :label="$t('network.text_205', [$t('dictionary.project')])" v-bind="formItemLayout" class="mb-0">
           <domain-project :fc="form.fc" :form-layout="formItemLayout" :decorators="{ project: decorators.project, domain: decorators.domain }" @update:domain="domainChange" />
         </a-form-item>
-         <a-form-item label="名称" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.name" placeholder="字母开头，数字和字母大小写组合，长度为2-128个字符，不含'.','_','@'" />
+         <a-form-item :label="$t('network.text_21')" v-bind="formItemLayout">
+          <a-input v-decorator="decorators.name" :placeholder="$t('network.text_44')" />
         </a-form-item>
-        <a-form-item label="平台" v-bind="formItemLayout">
+        <a-form-item :label="$t('network.text_198')" v-bind="formItemLayout">
           <a-radio-group v-decorator="decorators.platform" @change="platformChange">
-            <a-radio-button value="idc">本地IDC</a-radio-button>
-            <a-radio-button value="private_cloud">
-              私有云
-            </a-radio-button>
-            <a-radio-button value="public_cloud">
-              公有云
-            </a-radio-button>
+            <a-radio-button value="idc">{{$t('network.text_207')}}</a-radio-button>
+            <a-radio-button value="private_cloud">{{$t('network.text_208')}}</a-radio-button>
+            <a-radio-button value="public_cloud">{{$t('network.text_209')}}</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item label="云账号" v-bind="formItemLayout"  v-if="selectedPlatform !== 'idc'" key="manager">
+        <a-form-item :label="$t('network.text_196')" v-bind="formItemLayout"  v-if="selectedPlatform !== 'idc'" key="manager">
           <base-select
             :remote="true"
             v-decorator="decorators.manager"
@@ -32,10 +28,10 @@
             :remote-fn="q => ({ filter: `name.contains(${q})` })"
             @update:item="providerChange"
             :isDefaultSelect="true"
-            :select-props="{ placeholder: '平台、账号、子账号' }"
+            :select-props="{ placeholder: $t('network.text_210') }"
             style="width: 320px" />
         </a-form-item>
-        <a-form-item label="区域" v-bind="formItemLayout" key="region">
+        <a-form-item :label="$t('network.text_199')" v-bind="formItemLayout" key="region">
            <base-select
             :remote="true"
             v-decorator="decorators.region"
@@ -44,11 +40,11 @@
             :remote-fn="q => ({ search: q })"
             @update:item="regionChange"
             :isDefaultSelect="true"
-            :select-props="{ placeholder: '请选择' }"
+            :select-props="{ placeholder: $t('network.text_203') }"
             style="width: 320px" />
         </a-form-item>
         <template v-if="(providerC === 'zstack' || providerC === 'openstack') || (selectedPlatform === 'idc' && this.selectedRegionItem && this.selectedRegionItem.id)">
-          <a-form-item label="指定IP子网" v-bind="formItemLayout">
+          <a-form-item :label="$t('network.text_211')" v-bind="formItemLayout">
             <base-select
               :remote="true"
               needParams
@@ -56,9 +52,9 @@
               resource="networks"
               :params="networkParams"
               :remote-fn="q => ({ filter: `name.contains(${q})` })"
-              :select-props="{ placeholder: '请选择IP子网' }" />
+              :select-props="{ placeholder: $t('network.text_212') }" />
           </a-form-item>
-          <a-form-item label="IP地址" v-bind="formItemLayout">
+          <a-form-item :label="$t('network.text_213')" v-bind="formItemLayout">
             <a-radio-group v-model="inputIpType">
               <template  v-for="(v, k) in this.$t('passwordInputTypes')">
                 <a-radio-button v-if="['random', 'password'].indexOf(k) > -1" :value="k" :key="k">
@@ -66,11 +62,11 @@
                 </a-radio-button>
                </template>
             </a-radio-group>
-            <a-input v-if="inputIpType === 'password'" v-decorator="decorators.ip_addr" placeholder="请输入子网内IP" />
+            <a-input v-if="inputIpType === 'password'" v-decorator="decorators.ip_addr" :placeholder="$t('network.text_214')" />
           </a-form-item>
         </template>
         <template v-if="(showBandwidth && selectedPlatform === 'public_cloud') || selectedPlatform === 'idc'">
-          <a-form-item label="带宽" v-bind="formItemLayout">
+          <a-form-item :label="$t('network.text_195')" v-bind="formItemLayout">
             <div class="d-flex align-items-center">
               <a-input-number v-if="selectedPlatform === 'idc'" style="width: 120px" :precision="0" :min="1" :max="200" v-decorator="decorators.bandwidth" />
                <a-tooltip v-else placement="top" :title="`范围在 1～${maxBandwidth}Mbps`">
@@ -86,7 +82,7 @@
                 </a-tooltip>
             </div>
           </a-form-item>
-          <a-form-item label="计费方式" v-bind="formItemLayout" v-if="selectedPlatform !== 'idc' ">
+          <a-form-item :label="$t('network.text_192')" v-bind="formItemLayout" v-if="selectedPlatform !== 'idc' ">
             <a-radio-group v-decorator="decorators.charge_type" @change="chargeTypeChange">
               <a-radio-button v-for="item in chargeTypeOptions" :value="item.value" :key="item.value">
                 {{item.label}}
@@ -151,7 +147,7 @@ export default {
           'manager',
           {
             rules: [
-              { required: true, message: '请选择云账号' },
+              { required: true, message: this.$t('network.text_215') },
             ],
           },
         ],
@@ -159,7 +155,7 @@ export default {
           'region',
           {
             rules: [
-              { required: true, message: '请选择地区' },
+              { required: true, message: this.$t('network.text_216') },
             ],
           },
         ],
@@ -175,7 +171,7 @@ export default {
           'network',
           {
             rules: [
-              { required: true, message: '请选择IP子网' },
+              { required: true, message: this.$t('network.text_212') },
             ],
           },
         ],
@@ -184,7 +180,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入IP地址' },
+              { required: true, message: this.$t('network.text_217') },
               { validator: this.$validate('IPv4') },
             ],
           },
@@ -200,7 +196,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请填写名称' },
+              { required: true, message: this.$t('network.text_218') },
               { validator: this.$validate('serverName') },
             ],
           },
@@ -289,12 +285,12 @@ export default {
     chargeTypeOptions () {
       if (this.showBandwidth) {
         return [
-          { label: '按流量计费', value: 'traffic' },
-          { label: '按带宽计费', value: 'bandwidth' },
+          { label: this.$t('network.text_193'), value: 'traffic' },
+          { label: this.$t('network.text_194'), value: 'bandwidth' },
         ]
       } else {
         return [
-          { label: '按流量计费', value: 'traffic' },
+          { label: this.$t('network.text_193'), value: 'traffic' },
         ]
       }
     },

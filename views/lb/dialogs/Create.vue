@@ -4,28 +4,17 @@
     <div slot="body">
       <a-form
         :form="form.fc">
-        <a-form-item label="策略组名称" v-bind="formItemLayout" v-if="params.type === 'create'">
-          <a-input v-decorator="decorators.name" placeholder="字母开头，数字和字母大小写组合，长度为2-128个字符，不含'.','_','@'" />
+        <a-form-item :label="$t('network.text_291')" v-bind="formItemLayout" v-if="params.type === 'create'">
+          <a-input v-decorator="decorators.name" :placeholder="$t('network.text_44')" />
         </a-form-item>
         <a-form-item v-bind="formItemLayout">
-          <span slot="label">批量添加地址
-            <a-tooltip>
-              <div slot="title">
-                每个条目一行，以回车分隔<br />
-                每个条目的地址/地址段和备注以|分隔，如“192.168.1.0/24|备注”<br />
-                地址例如：192.168.1.1|备注<br />
-                地址段例如：192.168.1.1/24|备注<br />
-                备注为可选，限制16个字符以内
-              </div>
+          <span slot="label">{{$t('network.text_292')}}<a-tooltip>
+              <div slot="title">{{$t('network.text_293')}}<br />{{$t('network.text_294')}}<br />{{$t('network.text_295')}}<br />{{$t('network.text_296')}}<br />{{$t('network.text_297')}}</div>
               <a-icon type="info-circle" />
             </a-tooltip>
           </span>
           <a-textarea v-decorator="decorators.acl_entries"
-            placeholder="每个条目一行，以回车分隔
-每个条目的地址/地址段和备注以|分隔，如“192.168.1.0/24|备注”
-地址例如：192.168.1.1|备注
-地址段例如：192.168.1.1/24|备注
-备注为可选，限制16个字符以内"
+            :placeholder="$t('network.text_298')"
             rows="8" />
         </a-form-item>
       </a-form>
@@ -70,13 +59,13 @@ const ipsValidate = (rule, value, cb) => {
   })
   if (valid) {
     if (isRepeat) {
-      cb(new Error('请输入不同的IP'))
+      cb(new Error(this.$t('network.text_299')))
     } else {
-      if (!descValid) cb(new Error('请输入16字符以内的备注'))
+      if (!descValid) cb(new Error(this.$t('network.text_300')))
       cb()
     }
   } else {
-    cb(new Error('请输入合法的IP'))
+    cb(new Error(this.$t('network.text_301')))
   }
 }
 
@@ -110,7 +99,7 @@ export default {
             validateFirst: true,
             validateTrigger: ['blur'],
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('network.text_116') },
               { validator: this.$validate('serverName') },
             ],
           },
@@ -121,7 +110,7 @@ export default {
             validateFirst: true,
             validateTrigger: ['blur'],
             rules: [
-              { required: true, message: '批量添加地址不能为空' },
+              { required: true, message: this.$t('network.text_302') },
               { validator: ipsValidate },
             ],
           },

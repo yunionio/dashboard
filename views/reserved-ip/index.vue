@@ -1,6 +1,6 @@
 <template>
   <div>
-   <page-header title="预留IP" />
+   <page-header :title="$t('network.text_651')" />
    <page-body>
      <reserved-ip-list :id="listId" />
    </page-body>

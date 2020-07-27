@@ -66,21 +66,21 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
-          { label: '服务地址', key: 'address' },
+          { label: this.$t('network.text_21'), key: 'name' },
+          { label: this.$t('network.text_248'), key: 'address' },
           { label: 'VPC', key: 'vpc' },
-          { label: '状态', key: 'status' },
-          { label: '计费方式', key: 'charge_type' },
-          { label: '类型', key: 'loadbalancer_spec' },
+          { label: this.$t('network.text_27'), key: 'status' },
+          { label: this.$t('network.text_192'), key: 'charge_type' },
+          { label: this.$t('network.text_249'), key: 'loadbalancer_spec' },
           { label: this.$t('dictionary.domain'), key: 'project_domain' },
-          { label: '项目', key: 'tenant' },
-          { label: '区域', key: 'region' },
-          { label: '云账号', key: 'account' },
+          { label: this.$t('network.text_43'), key: 'tenant' },
+          { label: this.$t('network.text_199'), key: 'region' },
+          { label: this.$t('network.text_196'), key: 'account' },
         ],
       },
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('network.text_26'),
           permission: 'lb_loadbalancers_create',
           actions: () => [
             {
@@ -100,7 +100,7 @@ export default {
               },
             },
             {
-              label: '阿里云',
+              label: this.$t('network.text_250'),
               action: () => {
                 this.$router.push({
                   path: '/lb/create',
@@ -116,7 +116,7 @@ export default {
               },
             },
             {
-              label: '腾讯云',
+              label: this.$t('network.text_251'),
               action: () => {
                 this.$router.push({
                   path: '/lb/create',
@@ -132,7 +132,7 @@ export default {
               },
             },
             {
-              label: '华为云',
+              label: this.$t('network.text_252'),
               action: () => {
                 this.$router.push({
                   path: '/lb/create',
@@ -171,7 +171,7 @@ export default {
           },
         },
         {
-          label: '批量操作',
+          label: this.$t('network.text_200'),
           actions: () => {
             return [
               ...getEnabledSwitchActions(this, undefined, undefined, {
@@ -213,10 +213,10 @@ export default {
                 ],
               }),
               {
-                label: '更改集群',
+                label: this.$t('network.text_253'),
                 action: () => {
                   this.createDialog('LbUpdateCluster', {
-                    title: '更改集群',
+                    title: this.$t('network.text_253'),
                     data: this.list.selectedItems,
                     columns: this.columns,
                     onManager: this.onManager,
@@ -232,13 +232,13 @@ export default {
                   if (!isOneCloud) {
                     return {
                       validate: false,
-                      tooltip: '仅OneCloud平台支持此操作',
+                      tooltip: this.$t('network.text_254'),
                     }
                   }
                   if (Object.keys(zonsIds).length > 1) {
                     return {
                       validate: false,
-                      tooltip: '请选择同一可用区下的负载均衡实例',
+                      tooltip: this.$t('network.text_255'),
                     }
                   }
                   return {
@@ -247,12 +247,12 @@ export default {
                 },
               },
               {
-                label: '删除',
+                label: this.$t('network.text_131'),
                 permission: 'lb_loadbalancers_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     vm: this,
-                    title: '删除',
+                    title: this.$t('network.text_131'),
                     data: this.list.selectedItems,
                     columns: this.columns,
                     onManager: this.onManager,

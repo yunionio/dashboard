@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="访问控制" />
+    <page-header :title="$t('network.text_142')" />
     <page-body>
       <list :id="listId" :get-params="getParams" />
     </page-body>

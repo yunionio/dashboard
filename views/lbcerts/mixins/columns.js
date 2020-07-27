@@ -2,6 +2,7 @@ import {
   getNameDescriptionTableColumn,
   getProjectTableColumn,
 } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -9,7 +10,7 @@ export default {
       getNameDescriptionTableColumn({
         onManager: this.onManager,
         hideField: true,
-        title: '证书名称',
+        title: i18n.t('network.text_317'),
         slotCallback: row => {
           return (
             <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
@@ -18,7 +19,7 @@ export default {
       }),
       {
         field: 'common_name',
-        title: '证书域名',
+        title: i18n.t('network.text_318'),
         width: 150,
         formatter: ({ cellValue }) => {
           return cellValue || '-'
@@ -26,15 +27,15 @@ export default {
       },
       {
         field: 'not_after',
-        title: '过期时间',
+        title: i18n.t('network.text_319'),
         width: 150,
         formatter: ({ cellValue }) => {
-          return cellValue ? this.$moment(cellValue).format('YYYY年MM月DD日 HH:mm:ss') : '-'
+          return cellValue ? this.$moment(cellValue).format(i18n.t('network.text_36')) : '-'
         },
       },
       {
         field: 'subject_alternative_names',
-        title: '关联扩展域名',
+        title: i18n.t('network.text_320'),
         width: 150,
         formatter: ({ cellValue }) => {
           return cellValue || '-'

@@ -1,14 +1,14 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">修改带宽</div>
+    <div slot="header">{{$t('network.text_220')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.eip')" :count="params.data.length" action="修改带宽" />
+      <dialog-selected-tips :name="$t('dictionary.eip')" :count="params.data.length" :action="$t('network.text_220')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
-        <a-form-item label="带宽" v-bind="formItemLayout">
+        <a-form-item :label="$t('network.text_195')" v-bind="formItemLayout">
           <a-input-number v-if="isOneCloud" style="width: 120px" :precision="0" :min="1" v-decorator="decorators.bandwidth" />
-          <a-tooltip v-else placement="top" :title="`范围在 1～${maxBandwidth}Mbps`">
+          <a-tooltip v-else placement="top" :title="$t('monitor.text_8', maxBandwidth)">
             <a-input-number style="width: 120px" :precision="0" :min="1" :max="200" v-decorator="decorators.bandwidth" />
           </a-tooltip>
           <span class="ml-2">Mbps</span>

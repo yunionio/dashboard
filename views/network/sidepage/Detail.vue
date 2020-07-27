@@ -36,22 +36,22 @@ export default {
         getPublicScopeTableColumn({ vm: this, resource: 'natgateways' }),
         {
           field: 'guest_ip_start',
-          title: 'IP范围',
+          title: this.$t('network.text_653'),
           formatter: ({ cellValue, row }) => {
             return `${cellValue}-${row.guest_ip_end}`
           },
         },
         {
           field: 'guest_ip_mask',
-          title: '子网掩码',
+          title: this.$t('network.text_609'),
         },
         {
           field: 'guest_gateway',
-          title: '网关',
+          title: this.$t('network.text_654'),
         },
         {
           field: 'ports',
-          title: '使用情况',
+          title: this.$t('network.text_622'),
           slots: {
             default: ({ row }) => {
               return [
@@ -64,7 +64,7 @@ export default {
         },
         {
           field: 'schedtags',
-          title: '调度标签',
+          title: this.$t('network.text_630'),
           formatter: ({ cellValue, row }) => {
             if (row.schedtags && row.schedtags.length > 0) {
               const schedtags = row.schedtags.map(v => v.name)
@@ -76,7 +76,7 @@ export default {
       ],
       extraInfo: [
         {
-          title: '配置信息',
+          title: this.$t('network.text_308'),
           items: [
             getCopyWithContentTableColumn({
               field: 'vpc',
@@ -91,18 +91,18 @@ export default {
             }),
             {
               field: 'dns',
-              title: '域名服务器',
+              title: this.$t('network.text_585'),
             },
             {
               field: 'domain',
-              title: '主机域名后缀',
+              title: this.$t('network.text_586'),
               formatter: ({ cellValue }) => {
                 return cellValue || '-'
               },
             },
             {
               field: 'wire',
-              title: '二层网络',
+              title: this.$t('network.text_571'),
               slots: {
                 default: ({ row }) => {
                   return [
@@ -113,18 +113,18 @@ export default {
             },
             {
               field: 'server_type',
-              title: 'IP类型',
+              title: this.$t('network.text_655'),
               formatter: ({ cellValue }) => {
                 if (cellValue === 'baremetal') {
-                  return '物理机'
+                  return this.$t('network.text_598')
                 }
                 if (cellValue === 'container') {
-                  return '容器'
+                  return this.$t('network.text_599')
                 }
                 if (cellValue === 'guest') {
-                  return '虚拟机'
+                  return this.$t('network.text_226')
                 }
-                return '未知'
+                return this.$t('network.text_507')
               },
             },
             {

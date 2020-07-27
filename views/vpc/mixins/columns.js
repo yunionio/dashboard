@@ -9,6 +9,7 @@ import {
   getProjectDomainTableColumn,
   getTagTableColumn,
 } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -26,18 +27,18 @@ export default {
       getStatusTableColumn({ statusModule: 'vpc' }),
       getCopyWithContentTableColumn({
         field: 'cidr_block',
-        title: '目标网段',
+        title: i18n.t('network.text_244'),
         sortable: true,
       }),
       {
         field: 'wire_count',
-        title: '二层网络',
+        title: i18n.t('network.text_571'),
         width: 100,
         sortable: true,
       },
       {
         field: 'network_count',
-        title: 'IP子网数量',
+        title: i18n.t('network.text_682'),
         width: 100,
         sortable: true,
         slots: {

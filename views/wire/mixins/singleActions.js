@@ -1,10 +1,11 @@
 import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
+import i18n from '@/locales'
 
 export default {
   created () {
     this.singleActions = [
       {
-        label: '修改属性',
+        label: i18n.t('network.text_606'),
         action: obj => {
           this.createDialog('WireUpdateDialog', {
             data: [obj],
@@ -15,7 +16,7 @@ export default {
         },
       },
       {
-        label: '更多',
+        label: i18n.t('network.text_129'),
         actions: obj => {
           return [
             getDomainChangeOwnerAction(this, {
@@ -28,14 +29,14 @@ export default {
               resource: 'wires',
             }),
             {
-              label: '删除',
+              label: i18n.t('network.text_131'),
               permission: 'wires_delete',
               action: () => {
                 this.createDialog('DeleteResDialog', {
                   vm: this,
                   data: [obj],
                   columns: this.columns,
-                  title: '删除',
+                  title: i18n.t('network.text_131'),
                   name: this.$t('dictionary.hostwire'),
                   onManager: this.onManager,
                 })

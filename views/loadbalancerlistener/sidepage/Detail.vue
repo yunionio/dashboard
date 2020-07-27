@@ -32,18 +32,18 @@ export default {
       ],
       extraInfo: [
         {
-          title: '配置信息',
+          title: this.$t('network.text_308'),
           items: [
             {
               field: 'listener_type/listener_port',
-              title: '前端协议/端口',
+              title: this.$t('network.text_477'),
               formatter: ({ row }) => {
                 return `${row.listener_type.toUpperCase()}: ${row.listener_port}`
               },
             },
             getCopyWithContentTableColumn({
               field: 'loadbalancer',
-              title: '负载均衡实例',
+              title: this.$t('network.text_137'),
               hideField: true,
               slotCallback: row => {
                 if (!row.loadbalancer) return '-'
@@ -54,7 +54,7 @@ export default {
             }),
             getCopyWithContentTableColumn({
               field: 'backend_group',
-              title: '后端服务器组',
+              title: this.$t('network.text_139'),
               hideField: true,
               slotCallback: row => {
                 if (this.isRedirect) return '-'
@@ -67,74 +67,74 @@ export default {
           ],
         },
         {
-          title: '高级信息',
+          title: this.$t('network.text_478'),
           items: [
             {
               field: 'sticky_session',
-              title: '调度算法',
+              title: this.$t('network.text_423'),
               formatter: ({ row }) => {
                 return this.isRedirect ? '-' : this.$t('schedulerTypeOpts')[row.scheduler]
               },
             },
             {
               field: 'sticky_session',
-              title: '会话保持',
+              title: this.$t('network.text_479'),
               formatter: ({ row }) => {
                 if (this.isRedirect) return '-'
-                if (row.sticky_session === 'off') return '未开启'
-                return '已开启'
+                if (row.sticky_session === 'off') return this.$t('network.text_480')
+                return this.$t('network.text_481')
               },
             },
             {
               field: 'sticky_session_type',
-              title: 'Cookie处理方式',
+              title: this.$t('network.text_380'),
               formatter: ({ row }) => {
                 if (this.isRedirect) return '-'
-                if (row.sticky_session_type === 'insert') return '植入 Cookie'
-                else if (row.sticky_session_type === 'server') return '重写 Cookie'
+                if (row.sticky_session_type === 'insert') return this.$t('network.text_384')
+                else if (row.sticky_session_type === 'server') return this.$t('network.text_385')
                 else return '-'
               },
             },
             {
               field: 'sticky_session_cookie',
-              title: 'Cookie名称',
+              title: this.$t('network.text_381'),
               formatter: ({ row }) => {
                 if (this.isRedirect) return '-'
-                if (row.sticky_session_type === 'insert') return '植入 Cookie'
-                else if (row.sticky_session_type === 'server') return '重写 Cookie'
+                if (row.sticky_session_type === 'insert') return this.$t('network.text_384')
+                else if (row.sticky_session_type === 'server') return this.$t('network.text_385')
                 else return '-'
               },
             },
             {
               field: 'sticky_session_cookie_timeout',
-              title: '会话超时时间',
+              title: this.$t('network.text_383'),
               formatter: ({ row }) => {
                 if (this.isRedirect) return '-'
-                return `${row.sticky_session_cookie_timeout} 秒`
+                return this.$t('network.text_188', [row.sticky_session_cookie_timeout])
               },
             },
             {
               field: 'acl_type',
-              title: '访问控制',
+              title: this.$t('network.text_142'),
               formatter: ({ row }) => {
                 if (row.acl_status === 'on') {
                   return [
-                    <div>{row.acl_type === 'white' ? '白名单' : '黑名单'} <side-page-trigger permission='lb_loadbalanceracls_get' name='LbaclSidePage' id={row.acl_id} vm={this}>{ row.acl_name }</side-page-trigger></div>,
+                    <div>{row.acl_type === 'white' ? this.$t('network.text_482') : this.$t('network.text_483')} <side-page-trigger permission='lb_loadbalanceracls_get' name='LbaclSidePage' id={row.acl_id} vm={this}>{ row.acl_name }</side-page-trigger></div>,
                   ]
                 }
-                return '未开启'
+                return this.$t('network.text_480')
               },
             },
             {
               field: 'redirect',
-              title: '重定向',
+              title: this.$t('network.text_368'),
               formatter: ({ row }) => {
-                return row.redirect === 'raw' ? '已开启' : '未开启'
+                return row.redirect === 'raw' ? this.$t('network.text_481') : this.$t('network.text_480')
               },
             },
             {
               field: 'redirect_code',
-              title: '重定向方式',
+              title: this.$t('network.text_369'),
               formatter: ({ row }) => {
                 if (row.redirect !== 'raw') return '-'
                 return this.$t('redirect_code')[row.redirect_code] ? this.$t('redirect_code')[row.redirect_code].name : '-'
@@ -142,7 +142,7 @@ export default {
             },
             {
               field: 'redirect_scheme',
-              title: '重定向至',
+              title: this.$t('network.text_370'),
               formatter: ({ row }) => {
                 if (row.redirect !== 'raw') return '-'
                 return [row.redirect_scheme, row.redirect_host, row.redirect_path].filter(item => !!item).join('、')
@@ -150,89 +150,89 @@ export default {
             },
             {
               field: 'backend_connect_timeout',
-              title: '后端连接超时时间',
+              title: this.$t('network.text_435'),
               formatter: ({ row }) => {
                 if (this.isRedirect) return '-'
-                return row.backend_connect_timeout + '秒'
+                return row.backend_connect_timeout + this.$t('network.text_76')
               },
             },
             {
               field: 'backend_idle_timeout',
-              title: '后端连接空闲时间',
+              title: this.$t('network.text_436'),
               formatter: ({ row }) => {
                 if (this.isRedirect) return '-'
-                return row.backend_idle_timeout + '秒'
+                return row.backend_idle_timeout + this.$t('network.text_76')
               },
             },
             {
               field: 'client_idle_timeout',
-              title: '连接空闲超时时间',
+              title: this.$t('network.text_424'),
               formatter: ({ row }) => {
-                return row.client_idle_timeout + ' 秒'
+                return row.client_idle_timeout + this.$t('network.text_76')
               },
             },
             {
               field: 'client_request_timeout',
-              title: '连接请求超时时间',
+              title: this.$t('network.text_425'),
               formatter: ({ row }) => {
-                return row.client_request_timeout + ' 秒'
+                return row.client_request_timeout + this.$t('network.text_76')
               },
             },
             {
               field: 'http_request_rate',
-              title: '限定接收请求速率',
+              title: this.$t('network.text_437'),
               formatter: ({ row }) => {
                 if (this.isRedirect) return '-'
-                return row.http_request_rate + ' 秒'
+                return row.http_request_rate + this.$t('network.text_76')
               },
             },
             {
               field: 'http_request_rate_per_src',
-              title: '限定同源IP发送请求速率',
+              title: this.$t('network.text_440'),
               formatter: ({ row }) => {
                 if (this.isRedirect) return '-'
-                return row.http_request_rate_per_src + ' 秒'
+                return row.http_request_rate_per_src + this.$t('network.text_76')
               },
             },
             {
               field: 'enable_http2',
               title: 'HTTP2.0',
               formatter: ({ row }) => {
-                return row.enable_http2 ? '已开启' : '未开启'
+                return row.enable_http2 ? this.$t('network.text_481') : this.$t('network.text_480')
               },
             },
             {
               field: 'gzip',
-              title: 'Gzip数据压缩',
+              title: this.$t('network.text_427'),
               formatter: ({ row }) => {
                 if (this.isRedirect) return '-'
-                return row.gzip ? '已开启' : '未开启'
+                return row.gzip ? this.$t('network.text_481') : this.$t('network.text_480')
               },
             },
             {
               field: 'xforwarded_for',
-              title: '获取客户端真实IP',
+              title: this.$t('network.text_428'),
               formatter: ({ row }) => {
                 if (this.isRedirect) return '-'
                 if (row.xforwarded_for || row.send_proxy !== 'off') {
-                  return '已开启'
+                  return this.$t('network.text_481')
                 }
-                return '未开启'
+                return this.$t('network.text_480')
               },
             },
             {
               field: 'egress_mbps',
-              title: '带宽峰值',
+              title: this.$t('network.text_484'),
               formatter: ({ row }) => {
                 if (this.isRedirect) return '-'
-                if (row.egress_mbps === 0) return '无限制'
+                if (row.egress_mbps === 0) return this.$t('network.text_485')
                 if (R.is(Number, row.egress_mbps)) return `${row.egress_mbps} Mbps`
                 return '-'
               },
             },
             {
               field: 'send_proxy',
-              title: '设置PROXY协议',
+              title: this.$t('network.text_442'),
               formatter: ({ row }) => {
                 if (this.isRedirect) return '-'
                 return this.$t('listenerProxyOpts')[row.send_proxy]
@@ -240,28 +240,28 @@ export default {
             },
             {
               field: 'client_request_timeout',
-              title: '附加HTTP头部字段',
+              title: this.$t('network.text_444'),
               formatter: ({ row }) => {
                 if (this.isRedirect) return '-'
-                return row.xforwarded_for ? '通过X-Forwarded-For字段获取客户端真实IP' : '-'
+                return row.xforwarded_for ? this.$t('network.text_445') : '-'
               },
             },
           ],
         },
         {
-          title: '健康检查',
+          title: this.$t('network.text_469'),
           items: [
             {
               field: 'health_check',
-              title: '启用健康检查',
+              title: this.$t('network.text_474'),
               formatter: ({ row }) => {
                 if (this.isRedirect) return '-'
-                return row.health_check === 'on' ? '已开启' : '未开启'
+                return row.health_check === 'on' ? this.$t('network.text_481') : this.$t('network.text_480')
               },
             },
             {
               field: 'health_check_type',
-              title: '健康检查协议',
+              title: this.$t('network.text_400'),
               formatter: ({ row }) => {
                 if (this.isRedirect) return '-'
                 if (row.health_check_type) {
@@ -272,7 +272,7 @@ export default {
             },
             {
               field: 'health_check_uri',
-              title: '健康检查路径',
+              title: this.$t('network.text_401'),
               formatter: ({ row }) => {
                 if (this.isRedirect) return '-'
                 return row.health_check_uri
@@ -280,7 +280,7 @@ export default {
             },
             {
               field: 'health_check_domain',
-              title: '健康检查域名',
+              title: this.$t('network.text_403'),
               formatter: ({ row }) => {
                 if (this.isRedirect) return '-'
                 return row.health_check_domain
@@ -288,7 +288,7 @@ export default {
             },
             {
               field: 'health_check_http_code',
-              title: '正常状态码',
+              title: this.$t('network.text_405'),
               formatter: ({ row }) => {
                 if (this.isRedirect) return '-'
                 return row.health_check_http_code
@@ -296,39 +296,39 @@ export default {
             },
             {
               field: 'health_check_timeout',
-              title: '健康检查响应超时时间',
+              title: this.$t('network.text_406'),
               formatter: ({ row }) => {
                 if (this.isRedirect) return '-'
-                return row.health_check_timeout + ' 秒'
+                return row.health_check_timeout + this.$t('network.text_76')
               },
             },
             {
               field: 'health_check_interval',
-              title: '健康检查间隔时间',
+              title: this.$t('network.text_408'),
               formatter: ({ row }) => {
                 if (this.isRedirect) return '-'
-                return row.health_check_interval + ' 秒'
+                return row.health_check_interval + this.$t('network.text_76')
               },
             },
             {
               field: 'health_check_rise',
-              title: '健康检查健康阈值',
+              title: this.$t('network.text_410'),
               formatter: ({ row }) => {
                 if (this.isRedirect) return '-'
-                return row.health_check_rise + ' 次'
+                return row.health_check_rise + this.$t('network.text_411')
               },
             },
             {
               field: 'health_check_fall',
-              title: '健康检查不健康阈值',
+              title: this.$t('network.text_413'),
               formatter: ({ row }) => {
                 if (this.isRedirect) return '-'
-                return row.health_check_fall + ' 次'
+                return row.health_check_fall + this.$t('network.text_411')
               },
             },
             {
               field: 'health_check_req',
-              title: '健康检查请求',
+              title: this.$t('network.text_414'),
               formatter: ({ row }) => {
                 if (this.isRedirect) return '-'
                 return row.health_check_req
@@ -336,7 +336,7 @@ export default {
             },
             {
               field: 'health_check_exp',
-              title: '健康检查返回结果',
+              title: this.$t('network.text_416'),
               formatter: ({ row }) => {
                 if (this.isRedirect) return '-'
                 return row.health_check_exp

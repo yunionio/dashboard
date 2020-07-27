@@ -33,7 +33,7 @@ export default {
         getParams: this.getParam,
         filterOptions: {
           name: {
-            label: '证书名称',
+            label: this.$t('network.text_317'),
             filter: true,
             formatter: val => {
               return `name.contains(${val})`
@@ -46,20 +46,20 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '证书名称', key: 'name' },
-          { label: '证书域名', key: 'common_name' },
-          { label: '过期时间', key: 'not_after' },
-          { label: '关联扩展域名', key: 'subject_alternative_names' },
+          { label: this.$t('network.text_317'), key: 'name' },
+          { label: this.$t('network.text_318'), key: 'common_name' },
+          { label: this.$t('network.text_319'), key: 'not_after' },
+          { label: this.$t('network.text_320'), key: 'subject_alternative_names' },
           { label: this.$t('dictionary.project'), key: 'tenant' },
         ],
       },
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('network.text_26'),
           permission: 'lb_loadbalancercertificates_create',
           action: () => {
             this.createDialog('LbcertsCreateDialog', {
-              title: '新建证书',
+              title: this.$t('network.text_321'),
               data: this.list.selectedItems,
               onManager: this.onManager,
             })
@@ -72,12 +72,12 @@ export default {
           },
         },
         {
-          label: '删除',
+          label: this.$t('network.text_131'),
           permission: 'lb_loadbalancercertificates_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,
-              title: '删除',
+              title: this.$t('network.text_131'),
               data: this.list.selectedItems,
               columns: this.columns,
               onManager: this.onManager,

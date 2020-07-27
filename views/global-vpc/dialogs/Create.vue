@@ -2,11 +2,11 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{params.title}}</div>
     <a-form slot="body" :form="form.fc" class="mt-3" v-bind="formItemLayout">
-      <a-form-item v-bind="formItemLayout" :label="`指定${$t('dictionary.domain')}`" v-if="$store.getters.isAdminMode">
+      <a-form-item v-bind="formItemLayout" :label="$t('network.text_205', [$t('dictionary.domain')])" v-if="$store.getters.isAdminMode">
         <domain-select v-decorator="decorators.project_domain" />
       </a-form-item>
-      <a-form-item label="名称">
-        <a-input v-decorator="decorators.name" placeholder="请输入名称" />
+      <a-form-item :label="$t('network.text_21')">
+        <a-input v-decorator="decorators.name" :placeholder="$t('network.text_116')" />
       </a-form-item>
     </a-form>
     <div slot="footer">
@@ -51,7 +51,7 @@ export default {
             initialValue: initialValues.name,
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('network.text_116') },
               { validator: validateForm('resourceName') },
             ],
           },

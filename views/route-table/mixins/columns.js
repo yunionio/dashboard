@@ -6,22 +6,23 @@ import {
   getProjectDomainTableColumn,
   getBrandTableColumn,
 } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 const routeType = {
-  system: '系统路由',
-  custom: '自定义路由',
-  bgp: 'BGP路由',
-  ip: '自定义路由',
-  peering: '对等连接路由',
+  system: i18n.t('network.text_673'),
+  custom: i18n.t('network.text_674'),
+  bgp: i18n.t('network.text_675'),
+  ip: i18n.t('network.text_674'),
+  peering: i18n.t('network.text_676'),
 }
 
 const nextHopType = {
-  Instance: 'ECS实例',
-  HaVip: '高可用虚拟IP',
-  RouterInterface: '路由器接口',
-  NetworkInterface: '弹性网卡',
-  VpnGateway: 'VPN网关',
-  IPv6Gateway: 'IPv6网关',
+  Instance: i18n.t('network.text_677'),
+  HaVip: i18n.t('network.text_678'),
+  RouterInterface: i18n.t('network.text_679'),
+  NetworkInterface: i18n.t('network.text_241'),
+  VpnGateway: i18n.t('network.text_680'),
+  IPv6Gateway: i18n.t('network.text_681'),
 }
 
 export default {
@@ -30,7 +31,7 @@ export default {
       getCopyWithContentTableColumn(),
       {
         field: 'routes',
-        title: '条目（路由表类型 目标网段 下一跳）',
+        title: i18n.t('network.text_672'),
         minWidth: 220,
         showOverflow: 'title',
         slots: {
@@ -59,7 +60,7 @@ export default {
       },
       {
         field: 'vpc',
-        title: '所属VPC',
+        title: i18n.t('network.text_535'),
         minWidth: 120,
         showOverflow: 'ellipsis',
       },

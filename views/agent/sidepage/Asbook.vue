@@ -1,8 +1,8 @@
 <template>
   <div class="ansible-playbook">
     <refresh-button class="flex-shrink-0" :loading="isRunning" @refresh="refresh" />
-    <a-button class="flex-shrink-0 ml-2" @click="handleRun" :disabled="this.isRunning">重新执行</a-button>
-    <a-button class="flex-shrink-0 ml-2" @click="handleStop" :disabled="!this.isRunning">终止执行</a-button>
+    <a-button class="flex-shrink-0 ml-2" @click="handleRun" :disabled="this.isRunning">{{$t('network.text_28')}}</a-button>
+    <a-button class="flex-shrink-0 ml-2" @click="handleStop" :disabled="!this.isRunning">{{$t('network.text_32')}}</a-button>
     <detail
       :data="resourceData"
       :base-info="baseInfo"
@@ -37,7 +37,7 @@ export default {
       columns: [
         {
           field: 'name',
-          title: '任务名称',
+          title: this.$t('network.text_34'),
         },
       ],
       cmOptions: {
@@ -52,22 +52,22 @@ export default {
       baseInfo: [
         {
           field: 'start_time',
-          title: '开始时间',
+          title: this.$t('network.text_35'),
           formatter: ({ cellValue }) => {
-            return this.$moment(cellValue).format('YYYY年MM月DD日 HH:mm:ss')
+            return this.$moment(cellValue).format(this.$t('network.text_36'))
           },
         },
         {
           field: 'end_time',
-          title: '结束时间',
+          title: this.$t('network.text_37'),
           formatter: ({ cellValue }) => {
-            return this.$moment(cellValue).format('YYYY年MM月DD日 HH:mm:ss')
+            return this.$moment(cellValue).format(this.$t('network.text_36'))
           },
         },
       ],
       extraInfo: [
         {
-          title: '输出日志',
+          title: this.$t('network.text_133'),
           items: [
             {
               field: 'output',
@@ -117,15 +117,15 @@ export default {
     },
     handleStop () {
       this.createDialog('DisableDialog', {
-        title: '中止',
-        name: '节点',
+        title: this.$t('network.text_134'),
+        name: this.$t('network.text_20'),
         columns: this.columns,
         data: [this.ansibleplaybookData],
-        alert: '提示：确认要终止执行？',
+        alert: this.$t('network.text_29'),
         ok: async () => {
           try {
             await this.ansibleEvents.stop()
-            this.$message.success('中止成功')
+            this.$message.success(this.$t('network.text_40'))
             this.refresh()
           } catch (error) {
             throw error

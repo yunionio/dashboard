@@ -1,4 +1,5 @@
 import { PROVIDER_MAP } from '@/constants'
+import i18n from '@/locales'
 
 const validateProvider = (rows) => {
   for (let i = 0; i < rows.length; i++) {
@@ -6,7 +7,7 @@ const validateProvider = (rows) => {
     const notSupport = ['huawei', 'aws', 'qcloud'].includes(row.provider.toLowerCase())
     // eslint-disable-next-line no-undef
     const label = notSupport ? _.get(PROVIDER_MAP, `[${row.provider}].label`) : ''
-    const tooltip = label ? `【${label}】暂不支持该操作` : ''
+    const tooltip = label ? i18n.t('network.text_309', [label]) : ''
     if (notSupport) {
       return {
         validate: false,
@@ -24,7 +25,7 @@ export function validateEnabled (rows) {
   if (rows.length === 1 && rowItem.status === 'enabled') {
     return {
       validate: false,
-      tooltip: '启用状态下不支持此操作',
+      tooltip: i18n.t('network.text_310'),
     }
   }
   return {
@@ -38,7 +39,7 @@ export function validateDisable (rows) {
   if (rows.length === 1 && rowItem.status === 'disabled') {
     return {
       validate: false,
-      tooltip: '禁用状态下不支持此操作',
+      tooltip: i18n.t('network.text_311'),
     }
   }
   return {

@@ -27,7 +27,7 @@ export default {
         resource: 'dnsrecords',
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('network.text_21'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
@@ -38,18 +38,18 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
-          { label: '记录值', key: 'records' },
+          { label: this.$t('network.text_21'), key: 'name' },
+          { label: this.$t('network.text_152'), key: 'records' },
           { label: 'TTL', key: 'ttl' },
-          { label: '启用状态', key: 'enabled' },
+          { label: this.$t('network.text_153'), key: 'enabled' },
         ],
       },
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('network.text_26'),
           action: () => {
             this.createDialog('DnsCreateDialog', {
-              title: '新建域名服务',
+              title: this.$t('network.text_154'),
               data: this.list.selectedItems,
               onManager: this.onManager,
               refresh: this.refresh,
@@ -68,12 +68,12 @@ export default {
             return [
               ...getEnabledSwitchActions(this),
               {
-                label: '删除',
+                label: this.$t('network.text_131'),
                 permission: 'vpcs_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     vm: this,
-                    title: '删除',
+                    title: this.$t('network.text_131'),
                     name: this.$t('dictionary.dnsrecord'),
                     data: this.list.selectedItems,
                     columns: this.columns,

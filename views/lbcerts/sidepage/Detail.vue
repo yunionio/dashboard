@@ -25,7 +25,7 @@ export default {
       baseInfo: [
         {
           field: 'fingerprint',
-          title: '指纹',
+          title: this.$t('network.text_332'),
           showOverflow: 'ellipsis',
           width: '120px',
           slots: {
@@ -37,11 +37,11 @@ export default {
         },
         {
           field: 'common_name',
-          title: '证书域名',
+          title: this.$t('network.text_318'),
         },
         {
           field: 'not_after',
-          title: '过期时间',
+          title: this.$t('network.text_319'),
         },
       ],
       extraInfo: [],

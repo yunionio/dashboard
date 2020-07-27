@@ -34,7 +34,7 @@ export default {
         steadyStatus: Object.values(expectStatus.globalVpc).flat(),
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('network.text_21'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
@@ -47,10 +47,10 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
-          { label: '状态', key: 'status' },
-          { label: '共享范围', key: 'public_scope' },
-          { label: `所属${this.$t('dictionary.domain')}`, key: 'project_domain' },
+          { label: this.$t('network.text_21'), key: 'name' },
+          { label: this.$t('network.text_27'), key: 'status' },
+          { label: this.$t('network.text_232'), key: 'public_scope' },
+          { label: this.$t('network.text_233', [this.$t('dictionary.domain')]), key: 'project_domain' },
         ],
       },
       groupActions: [
@@ -82,14 +82,14 @@ export default {
                 resource: 'globalvpcs',
               }),
               {
-                label: '删除',
+                label: this.$t('network.text_131'),
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     vm: this,
                     name: this.$t('dictionary.globalvpc'),
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    title: '删除',
+                    title: this.$t('network.text_131'),
                     onManager: this.onManager,
                   })
                 },

@@ -2,16 +2,12 @@
   <a-form class="mb-4  d-flex" v-if="ruleOpts.length > 0">
     <div class="pr-2">
       <a-radio-group v-model="type" @change="handleTypeChange">
-        <a-radio-button :value="1">
-          监听
-        </a-radio-button>
-        <a-radio-button :value="2">
-          转发策略
-        </a-radio-button>
+        <a-radio-button :value="1">{{$t('network.text_138')}}</a-radio-button>
+        <a-radio-button :value="2">{{$t('network.text_141')}}</a-radio-button>
       </a-radio-group>
     </div>
     <div style="width: 240px" v-if="type === 2">
-      <a-select placeholder="选择转发策略" @change="handleRuleChange">
+      <a-select :placeholder="$t('network.text_486')" @change="handleRuleChange">
         <a-select-option v-for="item in ruleOpts" :key="item.id" :value="item.id" :row="item">{{item.name}}</a-select-option>
       </a-select>
     </div>

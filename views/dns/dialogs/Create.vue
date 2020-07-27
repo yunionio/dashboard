@@ -3,47 +3,38 @@
     <div slot="header">{{params.title}}</div>
     <div slot="body">
       <template v-if="params.type !== 'create'">
-        <dialog-selected-tips :name="$t('dictionary.dns')" :count="params.data.length" :action="params.type === 'update' ? '修改' : '克隆'" />
+        <dialog-selected-tips :name="$t('dictionary.dns')" :count="params.data.length" :action="params.type === 'update' ? $t('network.text_130') : $t('network.text_155')" />
         <dialog-table :data="params.data" :columns="params.columns.slice(0, 4)" />
       </template>
       <a-form
         :form="form.fc">
-        <a-form-item label="域名" v-bind="formItemLayout" v-if="enableType('A/AAAA', 'CNAME', 'SRV')" extra="请输入完整域名，否则该创建可能会无效">
-          <a-input v-decorator="decorators.name" placeholder="请输入域名" />
+        <a-form-item :label="$t('network.text_156')" v-bind="formItemLayout" v-if="enableType('A/AAAA', 'CNAME', 'SRV')" :extra="$t('network.text_157')">
+          <a-input v-decorator="decorators.name" :placeholder="$t('network.text_158')" />
         </a-form-item>
-        <a-form-item label="域名" v-bind="formItemLayout" v-if="enableType('PTR')" extra="请输入完整域名，否则该创建可能会无效">
+        <a-form-item :label="$t('network.text_156')" v-bind="formItemLayout" v-if="enableType('PTR')" :extra="$t('network.text_157')">
           <template #extra>
-            <div>
-              记录类型为PTR时，请将要反解的IP反转后填入，如 IP是 1.2.3.4 ，那么请填写 4.3.2.1
-            </div>
+            <div>{{$t('network.text_159')}}</div>
           </template>
-          <a-input v-decorator="decorators.ptrName" placeholder="请输入域名">
+          <a-input v-decorator="decorators.ptrName" :placeholder="$t('network.text_158')">
             <div slot="addonAfter">.in-addr.arpa</div>
           </a-input>
         </a-form-item>
-        <a-form-item label="记录类型" v-bind="formItemLayout">
+        <a-form-item :label="$t('network.text_160')" v-bind="formItemLayout">
           <a-radio-group @change="recordTypeChange" v-model="formMsg.recordType">
             <a-radio-button :key="n" :value="item" v-for="(item, n) in recordTypeOptions">{{item}}</a-radio-button>
           </a-radio-group>
         </a-form-item>
         <a-form-item v-bind="formItemLayout">
-          <span slot="label">
-            记录值
-              <a-tooltip class="item" effect="dark" placement="top">
+          <span slot="label">{{$t('network.text_152')}}<a-tooltip class="item" effect="dark" placement="top">
                 <a-icon type="info-circle" />
-                <div slot="title">
-                  A-将域名指向一个IPV4地址
-                  <br />CNAME-将域名指向另外一个域名
-                  <br />AAAA-将域名指向一个IPV6地址
-                  <br />PTR-用于从地址反解到域名
-                </div>
+                <div slot="title">{{$t('network.text_161')}}<br />{{$t('network.text_162')}}<br />{{$t('network.text_163')}}<br />{{$t('network.text_164')}}</div>
               </a-tooltip>
           </span>
           <a-row :gutter="4" v-if="enableType('SRV')">
-            <a-col :span="10" class="text-center">域名</a-col>
-            <a-col :span="4" class="text-center">端口</a-col>
-            <a-col :span="4" class="text-center">权重</a-col>
-            <a-col :span="4" class="text-center">优先级</a-col>
+            <a-col :span="10" class="text-center">{{$t('network.text_156')}}</a-col>
+            <a-col :span="4" class="text-center">{{$t('network.text_165')}}</a-col>
+            <a-col :span="4" class="text-center">{{$t('network.text_166')}}</a-col>
+            <a-col :span="4" class="text-center">{{$t('network.text_81')}}</a-col>
           </a-row>
           <a-row
             :gutter="4"
@@ -52,7 +43,7 @@
             v-for="(obj, n) in recordList">
             <a-col :span="10" v-if="enableType('A/AAAA')">
               <a-form-item>
-                <a-select placeholder="请选择记录类型" v-decorator="recordConfig(n, obj.key)[`key[${n}]`]">
+                <a-select :placeholder="$t('network.text_167')" v-decorator="recordConfig(n, obj.key)[`key[${n}]`]">
                   <a-select-option
                     :key="i"
                     :value="item.value"
@@ -93,8 +84,8 @@
           </a-row>
           <div class="d-flex align-items-center" v-if="enableType('A/AAAA', 'SRV') && remain > 0">
             <a-button type="primary" shape="circle" icon="plus" size="small" @click="addItem" />
-            <a-button type="link" @click="addItem">添加新记录</a-button>
-            <span class="network-count-tips">您还可以添加 <span class="remain-num">{{ remain }}</span> 个</span>
+            <a-button type="link" @click="addItem">{{$t('network.text_168')}}</a-button>
+            <span class="network-count-tips">{{$t('network.text_169')}}<span class="remain-num">{{ remain }}</span>{{$t('network.text_170')}}</span>
           </div>
         </a-form-item>
         <a-form-item v-bind="formItemLayout">
@@ -102,17 +93,14 @@
             TTL
               <a-tooltip class="item" effect="dark" placement="top">
                 <a-icon type="info-circle" />
-                <div slot="title">
-                  TTL为缓存的生存时间，默认最常用的 600 秒。
-                </div>
+                <div slot="title">{{$t('network.text_171')}}</div>
               </a-tooltip>
           </span>
           <a-input-number
             v-decorator="decorators.ttl"
-            placeholder="请输入TTL"
+            :placeholder="$t('network.text_172')"
             :min="0"
-            :max="86400" />秒
-        </a-form-item>
+            :max="86400" />{{$t('network.text_76')}}</a-form-item>
       </a-form>
     </div>
     <div slot="footer">
@@ -157,7 +145,7 @@ export default {
             validateFirst: true,
             validateTrigger: ['blur'],
             rules: [
-              { required: true, message: '请输入名字' },
+              { required: true, message: this.$t('network.text_173') },
               { validator: this.checkName },
               // { validator: this.$validate('broadName') },
             ],
@@ -169,7 +157,7 @@ export default {
             validateFirst: true,
             validateTrigger: ['blur'],
             rules: [
-              { required: true, message: '请输入名字' },
+              { required: true, message: this.$t('network.text_173') },
               { validator: this.$validate('IPv4') },
             ],
           },
@@ -181,7 +169,7 @@ export default {
             validateFirst: true,
             validateTrigger: ['blur'],
             rules: [
-              { required: true, message: '请输入ttl' },
+              { required: true, message: this.$t('network.text_174') },
             ],
           },
         ],
@@ -200,7 +188,7 @@ export default {
             initialValue: this.recordList[0].record,
             rules: [{
               required: true,
-              message: '请输入记录值',
+              message: this.$t('network.text_175'),
             }],
           },
         ],
@@ -211,7 +199,7 @@ export default {
             validateTrigger: ['blur'],
             rules: [{
               required: true,
-              message: '请输入域名',
+              message: this.$t('network.text_158'),
             }, {
               validator: this.$validate('domain'),
             }],
@@ -224,7 +212,7 @@ export default {
             validateTrigger: ['blur'],
             rules: [{
               required: true,
-              message: '请输入端口',
+              message: this.$t('network.text_176'),
             }],
           },
         ],
@@ -235,7 +223,7 @@ export default {
             validateTrigger: ['blur'],
             rules: [{
               required: true,
-              message: '请输入权重',
+              message: this.$t('network.text_177'),
             }],
           },
         ],
@@ -246,7 +234,7 @@ export default {
             validateTrigger: ['blur'],
             rules: [{
               required: true,
-              message: '请输入优先级',
+              message: this.$t('network.text_117'),
             }],
           },
         ],
@@ -280,22 +268,22 @@ export default {
   methods: {
     checkName (rule, value, callback) {
       if (!value) {
-        return callback(new Error('请输入域名'))
+        return callback(new Error(this.$t('network.text_158')))
       }
       if (IPv4.regexp.test(value) || !domain.regexp.test(value)) {
-        return callback(new Error('请输入合法域名'))
+        return callback(new Error(this.$t('network.text_178')))
       }
 
       if (this.formMsg.recordType === 'SRV') {
         const parts = value.split('.')
         if (parts.length < 3) {
-          return callback(new Error('请输入合法的SRV域名'))
+          return callback(new Error(this.$t('network.text_179')))
         }
         for (let i = 0; i < parts.length; i++) {
           if (i < 2 && (parts[i].length < 2 || parts[i][0] !== '_')) {
-            return callback(new Error('请输入合法SRV域名'))
+            return callback(new Error(this.$t('network.text_180')))
           } else if (i >= 2 && parts[i].length === 0) {
-            return callback(new Error('请输入合法SRV域名'))
+            return callback(new Error(this.$t('network.text_180')))
           }
         }
       }
@@ -423,19 +411,19 @@ export default {
       if (values.key) {
         const key = values.key[n]
         if (key === 'A') {
-          return '请输入 IPv4 格式的记录值'
+          return this.$t('network.text_181')
         }
         if (key === 'AAAA') {
-          return '请输入 IPv6 格式的记录值'
+          return this.$t('network.text_182')
         }
       }
       if (values.host) {
-        return '请输入域名'
+        return this.$t('network.text_158')
       }
       if (this.formMsg.recordType === 'A/AAAA') {
-        return '请输入 IPv4 格式的记录值'
+        return this.$t('network.text_181')
       }
-      return '请输入记录值'
+      return this.$t('network.text_175')
     },
     doCreate (data) {
       if (this.params.type === 'create') {
@@ -532,7 +520,7 @@ export default {
         }
       })
       if (!itemValid) {
-        this.$message.error('记录类型为A，请填写合法IPv4，记录类型为AAAA，请填写合法IPv6')
+        this.$message.error(this.$t('network.text_183'))
       }
       validformdata = itemValid
       return validformdata

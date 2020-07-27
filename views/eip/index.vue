@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="弹性公网IP" />
+    <page-header :title="$t('network.text_221')" />
     <page-body>
       <eip-list :id="listId" />
     </page-body>

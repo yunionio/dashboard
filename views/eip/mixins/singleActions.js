@@ -1,4 +1,5 @@
 import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
+import i18n from '@/locales'
 
 const noChangeBandwidth = ['azure']
 
@@ -6,7 +7,7 @@ export default {
   created () {
     this.singleActions = [
       {
-        label: '修改带宽',
+        label: i18n.t('network.text_220'),
         permission: 'eips_perform_change_bandwidth',
         action: (obj) => {
           this.createDialog('EipUpdateDialog', {
@@ -19,7 +20,7 @@ export default {
           if (!obj.associate_name) {
             return {
               validate: false,
-              tooltip: '请您先绑定机器',
+              tooltip: i18n.t('network.text_222'),
             }
           }
           let { brand } = obj
@@ -28,14 +29,14 @@ export default {
             if (noChangeBandwidth.includes(brand)) {
               return {
                 validate: false,
-                tooltip: `${typeClouds.getHosttype()[brand].label}无法修改带宽`,
+                tooltip: i18n.t('network.text_223', [typeClouds.getHosttype()[brand].label]),
               }
             }
             const plaform = findPlatform(brand)
             if (plaform && plaform !== 'public') {
               return {
                 validate: false,
-                tooltip: '仅公有云eip支持修改带宽',
+                tooltip: i18n.t('network.text_224'),
               }
             }
           }
@@ -45,11 +46,11 @@ export default {
         },
       },
       {
-        label: '更多',
+        label: i18n.t('network.text_129'),
         actions: obj => {
           return [
             {
-              label: '绑定',
+              label: i18n.t('network.text_202'),
               permission: 'eips_perform_associate',
               action: () => {
                 this.createDialog('EipBindServerDialog', {
@@ -66,7 +67,7 @@ export default {
               },
             },
             {
-              label: '解绑',
+              label: i18n.t('network.text_219'),
               permission: 'eips_perform_dissociate',
               action: () => {
                 this.createDialog('EipUntieServerDialog', {
@@ -88,7 +89,7 @@ export default {
               },
             },
             {
-              label: '同步状态',
+              label: i18n.t('network.text_201'),
               action: () => {
                 this.onManager('performAction', {
                   steadyStatus: ['running', 'ready'],
@@ -103,7 +104,7 @@ export default {
               }),
             },
             {
-              label: `更改${this.$t('dictionary.project')}`,
+              label: i18n.t('network.text_225', [i18n.t('dictionary.project')]),
               permission: 'eips_perform_change_owner',
               action: () => {
                 this.createDialog('ChangeOwenrDialog', {
@@ -129,14 +130,14 @@ export default {
               },
             },
             {
-              label: '删除',
+              label: i18n.t('network.text_131'),
               permission: 'eips_delete',
               action: () => {
                 this.createDialog('DeleteResDialog', {
                   vm: this,
                   data: [obj],
                   columns: this.columns,
-                  title: '删除',
+                  title: i18n.t('network.text_131'),
                   name: this.$t('dictionary.eip'),
                   onManager: this.onManager,
                 })

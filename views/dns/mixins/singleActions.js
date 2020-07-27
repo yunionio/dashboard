@@ -1,13 +1,14 @@
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
+import i18n from '@/locales'
 
 export default {
   created () {
     this.singleActions = [
       {
-        label: '修改',
+        label: i18n.t('network.text_130'),
         action: (obj) => {
           this.createDialog('DnsCreateDialog', {
-            title: '修改',
+            title: i18n.t('network.text_130'),
             data: [obj],
             columns: this.columns,
             onManager: this.onManager,
@@ -20,15 +21,15 @@ export default {
         }),
       },
       {
-        label: '更多',
+        label: i18n.t('network.text_129'),
         actions: obj => {
           return [
             ...getEnabledSwitchActions(this, obj),
             {
-              label: '克隆',
+              label: i18n.t('network.text_155'),
               action: () => {
                 this.createDialog('DnsCreateDialog', {
-                  title: '克隆',
+                  title: i18n.t('network.text_155'),
                   data: [obj],
                   columns: this.columns,
                   onManager: this.onManager,
@@ -38,12 +39,12 @@ export default {
               },
             },
             {
-              label: '删除',
+              label: i18n.t('network.text_131'),
               permission: 'dnsrecords_delete',
               action: () => {
                 this.createDialog('DeleteResDialog', {
                   vm: this,
-                  title: '删除',
+                  title: i18n.t('network.text_131'),
                   name: this.$t('dictionary.dnsrecord'),
                   data: [obj],
                   columns: this.columns,

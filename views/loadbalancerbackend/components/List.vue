@@ -54,7 +54,7 @@ export default {
       }
       return [
         {
-          label: '新建',
+          label: this.$t('network.text_26'),
           permission: 'lb_loadbalancerbackends_create',
           action: () => {
             const w100Providers = ['aliyun', 'huawei', 'qcloud', 'aws']
@@ -65,7 +65,7 @@ export default {
               }
             }
             this.createDialog('LoadbalancerbackendCreateDialog', {
-              title: '新建',
+              title: this.$t('network.text_26'),
               data: this.list.selectedItems,
               onManager: this.onManager,
               refresh: this.refresh,

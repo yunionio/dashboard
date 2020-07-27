@@ -43,11 +43,11 @@ export default {
       }),
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('network.text_26'),
           permission: 'lb_loadbalancerlistenerrules_create',
           action: () => {
             this.createDialog('LoadbalancerlistenerruleCreateDialog', {
-              title: '新建',
+              title: this.$t('network.text_26'),
               data: this.list.selectedItems,
               onManager: this.onManager,
               refresh: this.refresh,

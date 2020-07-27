@@ -24,7 +24,7 @@ export default {
   created () {
     this.singleActions = [
       {
-        label: '调整标签',
+        label: i18n.t('network.text_648'),
         permission: 'schedtags_list,networks_perform_set_schedtag',
         action: (obj) => {
           this.createDialog('AdjustLabelDialog', {
@@ -40,11 +40,11 @@ export default {
         },
       },
       {
-        label: '更多',
+        label: i18n.t('network.text_129'),
         actions: obj => {
           return [
             {
-              label: '修改属性',
+              label: i18n.t('network.text_606'),
               permission: 'networks_update',
               action: () => {
                 const updatePath = this.$router.resolve(this.$route.path)
@@ -55,14 +55,14 @@ export default {
                 const { brand, canUpdate } = canAdjustConfig(obj)
                 const platform = findPlatform(brand)
                 if (!canUpdate) {
-                  tooltip = `${PROVIDER_FILTER_CN[platform]}的IP子网不能修改属性`
+                  tooltip = i18n.t('network.text_649', [PROVIDER_FILTER_CN[platform]])
                 }
                 if (this.isPower(obj)) {
                   const { hasbrand, canUpdate } = canAdjustConfig(obj)
                   if (obj.cloud_env === 'onpremise' && obj.vpc_id !== 'default') {
                     return {
                       validate: false,
-                      tooltip: '本地IDC的VPC下新建的IP子网不支持该操作',
+                      tooltip: i18n.t('network.text_650'),
                     }
                   }
                   if (!hasbrand) {
@@ -76,7 +76,7 @@ export default {
                     tooltip,
                   }
                 } else {
-                  tooltip = '权限不足'
+                  tooltip = i18n.t('network.text_627')
                   return {
                     validate: false,
                     tooltip,
@@ -85,7 +85,7 @@ export default {
               },
             },
             {
-              label: `更改${this.$t('dictionary.project')}`,
+              label: i18n.t('network.text_225', [i18n.t('dictionary.project')]),
               permission: 'networks_perform_change_owner',
               action: () => {
                 this.createDialog('ChangeOwenrDialog', {
@@ -133,7 +133,7 @@ export default {
             //   },
             // },
             {
-              label: '分割IP子网',
+              label: i18n.t('network.text_632'),
               permission: 'networks_perform_split',
               action: () => {
                 this.createDialog('NetworkSplitDialog', {
@@ -148,12 +148,12 @@ export default {
                   if (obj.external_id && obj.external_id.length > 0) { // 是公网 IP
                     return {
                       validate: false,
-                      tooltip: '公网 IP 不支持该操作',
+                      tooltip: i18n.t('network.text_624'),
                     }
                   } else if (obj.cloud_env === 'onpremise' && obj.vpc_id !== 'default') {
                     return {
                       validate: false,
-                      tooltip: '本地IDC的VPC下新建的IP子网不支持该操作',
+                      tooltip: i18n.t('network.text_650'),
                     }
                   } else {
                     return {
@@ -163,19 +163,19 @@ export default {
                 } else {
                   return {
                     validate: false,
-                    tooltip: '权限不足',
+                    tooltip: i18n.t('network.text_627'),
                   }
                 }
               },
             },
             {
-              label: '预留IP',
+              label: i18n.t('network.text_651'),
               permission: 'reservedips_create',
               action: (obj) => {
                 this.createDialog('NetworkReversedIPDialog', {
                   data: [obj],
                   columns: this.columns,
-                  title: '预留IP',
+                  title: i18n.t('network.text_651'),
                   onManager: this.onManager,
                 })
               },
@@ -183,7 +183,7 @@ export default {
                 if (!this.isPower(obj)) {
                   return {
                     validate: false,
-                    tooltip: '权限不足',
+                    tooltip: i18n.t('network.text_627'),
                   }
                 }
                 return {
@@ -192,7 +192,7 @@ export default {
               },
             },
             {
-              label: '同步状态',
+              label: i18n.t('network.text_201'),
               permission: 'networks_perform_syncstatus',
               action: () => {
                 this.onManager('performAction', {
@@ -207,13 +207,13 @@ export default {
                 if (!this.isPower(obj)) {
                   return {
                     validate: false,
-                    tooltip: '权限不足',
+                    tooltip: i18n.t('network.text_627'),
                   }
                 }
                 if (obj.brand.toLowerCase() === 'onecloud') {
                   return {
                     validate: false,
-                    tooltip: '本地IDC资源不支持该操作',
+                    tooltip: i18n.t('network.text_652'),
                   }
                 }
                 return {
@@ -222,14 +222,14 @@ export default {
               },
             },
             {
-              label: '删除',
+              label: i18n.t('network.text_131'),
               permission: 'networks_delete',
               action: () => {
                 this.createDialog('DeleteResDialog', {
                   vm: this,
                   data: [obj],
                   columns: this.columns,
-                  title: '删除',
+                  title: i18n.t('network.text_131'),
                   name: this.$t('dictionary.network'),
                   onManager: this.onManager,
                 })
@@ -238,7 +238,7 @@ export default {
                 if (!this.isPower(obj)) {
                   return {
                     validate: false,
-                    tooltip: '权限不足',
+                    tooltip: i18n.t('network.text_627'),
                   }
                 }
                 if (!this.$getDeleteResult(obj).validate) {

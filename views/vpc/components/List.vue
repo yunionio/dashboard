@@ -43,7 +43,7 @@ export default {
         steadyStatus: Object.values(expectStatus.vpc).flat(),
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('network.text_21'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
@@ -53,7 +53,7 @@ export default {
           cloudaccount: getAccountFilter(),
           brand: getBrandFilter(),
           cidr_block: {
-            label: '目标网段',
+            label: this.$t('network.text_244'),
           },
           project_domains: getProjectDomainFilter(),
           region: {
@@ -64,24 +64,24 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
-          { label: '状态', key: 'status' },
-          { label: '目标网段', key: 'cidr_block' },
-          { label: '区域', key: 'region' },
-          { label: '平台', key: 'provider' },
-          { label: '云账号', key: 'manager' },
-          { label: '二层网络', key: 'wire_count' },
-          { label: 'IP子网数量', key: 'network_count' },
-          { label: '共享范围', key: 'public_scope' },
-          { label: `所属${this.$t('dictionary.domain')}`, key: 'project_domain' },
+          { label: this.$t('network.text_21'), key: 'name' },
+          { label: this.$t('network.text_27'), key: 'status' },
+          { label: this.$t('network.text_244'), key: 'cidr_block' },
+          { label: this.$t('network.text_199'), key: 'region' },
+          { label: this.$t('network.text_198'), key: 'provider' },
+          { label: this.$t('network.text_196'), key: 'manager' },
+          { label: this.$t('network.text_571'), key: 'wire_count' },
+          { label: this.$t('network.text_682'), key: 'network_count' },
+          { label: this.$t('network.text_232'), key: 'public_scope' },
+          { label: this.$t('network.text_233', [this.$t('dictionary.domain')]), key: 'project_domain' },
         ],
       },
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('network.text_26'),
           action: () => {
             this.createDialog('VpcCreateDialog', {
-              title: '新建',
+              title: this.$t('network.text_26'),
               data: this.list.selectedItems,
               onManager: this.onManager,
               refresh: this.refresh,
@@ -94,11 +94,11 @@ export default {
           },
         },
         {
-          label: '批量操作',
+          label: this.$t('network.text_200'),
           actions: () => {
             return [
               {
-                label: '同步状态',
+                label: this.$t('network.text_201'),
                 action: () => {
                   this.onManager('batchPerformAction', {
                     steadyStatus: ['running', 'ready'],
@@ -111,7 +111,7 @@ export default {
                   if (this.list.selectedItems.some(v => v.brand.toLowerCase() === 'onecloud')) {
                     return {
                       validate: false,
-                      tooltip: '选中项中不能包含本地IDC资源',
+                      tooltip: this.$t('network.text_628'),
                     }
                   }
                   return {
@@ -129,12 +129,12 @@ export default {
                 resource: 'vpcs',
               }),
               {
-                label: '删除',
+                label: this.$t('network.text_131'),
                 permission: 'vpcs_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     vm: this,
-                    title: '删除',
+                    title: this.$t('network.text_131'),
                     name: this.$t('dictionary.vpc'),
                     data: this.list.selectedItems,
                     columns: this.columns,

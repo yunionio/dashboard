@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="后端服务器组"
+    :title="$t('network.text_139')"
     icon="res-lbbackendgroup"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
@@ -45,9 +45,9 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'loadbalancerbackendgroup-detail' },
-        { label: '后端服务器', key: 'loadbalancerbackend-list' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('network.text_67'), key: 'loadbalancerbackendgroup-detail' },
+        { label: this.$t('network.text_140'), key: 'loadbalancerbackend-list' },
+        { label: this.$t('network.text_150'), key: 'event-drawer' },
       ],
     }
   },

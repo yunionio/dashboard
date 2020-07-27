@@ -5,6 +5,7 @@ import {
   getStatusTableColumn,
   getProjectTableColumn,
 } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   components: {
@@ -15,7 +16,7 @@ export default {
       getNameDescriptionTableColumn({
         onManager: this.onManager,
         hideField: true,
-        title: '名称',
+        title: i18n.t('network.text_21'),
         slotCallback: row => {
           return (
             <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
@@ -25,7 +26,7 @@ export default {
       getStatusTableColumn({ statusModule: 'lb' }),
       {
         field: 'listeners',
-        title: '关联监听',
+        title: i18n.t('network.text_355'),
         type: 'expand',
         width: 100,
         slots: {

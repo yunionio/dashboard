@@ -9,6 +9,7 @@ import {
   getTagTableColumn,
 } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -25,14 +26,14 @@ export default {
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'server', columns: () => this.columns }),
       {
         field: 'ip_addr',
-        title: '地址',
+        title: i18n.t('network.text_191'),
         width: 140,
       },
       getStatusTableColumn({ statusModule: 'eip' }),
       getAssociateNameTableColumn(),
       {
         field: 'bandwidth',
-        title: '带宽',
+        title: i18n.t('network.text_195'),
         minWidth: 80,
         showOverflow: 'ellipsis',
         formatter: ({ cellValue }) => {
@@ -41,14 +42,14 @@ export default {
       },
       {
         field: 'charge_type',
-        title: '计费方式',
+        title: i18n.t('network.text_192'),
         minWidth: 80,
         formatter: ({ cellValue }) => {
           if (cellValue === 'traffic') {
-            return '按流量计费'
+            return i18n.t('network.text_193')
           }
           if (cellValue === 'bandwidth') {
-            return '按带宽计费'
+            return i18n.t('network.text_194')
           }
           return cellValue
         },
@@ -56,7 +57,7 @@ export default {
       getBrandTableColumn(),
       getCopyWithContentTableColumn({
         field: 'account',
-        title: '云账号',
+        title: i18n.t('network.text_196'),
       }),
       getProjectTableColumn(),
       getRegionTableColumn(),

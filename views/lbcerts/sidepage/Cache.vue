@@ -31,7 +31,7 @@ export default {
         getParams: this.getParam,
         filterOptions: {
           name: {
-            label: '证书名称',
+            label: this.$t('network.text_317'),
             filter: true,
             formatter: val => {
               return `name.contains(${val})`
@@ -40,15 +40,15 @@ export default {
         },
       }),
       columns: [
-        getCopyWithContentTableColumn({ title: '证书名称' }),
+        getCopyWithContentTableColumn({ title: this.$t('network.text_317') }),
         {
           field: 'common_name',
-          title: '证书域名',
+          title: this.$t('network.text_318'),
           width: 70,
         },
         {
           field: 'not_after',
-          title: '过期时间',
+          title: this.$t('network.text_319'),
           width: 150,
           formatter: ({ cellValue }) => {
             return this.$moment(cellValue).format()
@@ -56,7 +56,7 @@ export default {
         },
         {
           field: 'subject_alternative_names',
-          title: '关联扩展域名',
+          title: this.$t('network.text_320'),
           width: 100,
         },
         getBrandTableColumn(),

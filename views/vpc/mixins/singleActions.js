@@ -1,10 +1,11 @@
 import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
+import i18n from '@/locales'
 
 export default {
   created () {
     this.singleActions = [
       {
-        label: '同步状态',
+        label: i18n.t('network.text_201'),
         action: obj => {
           this.onManager('performAction', {
             steadyStatus: ['running', 'ready'],
@@ -18,7 +19,7 @@ export default {
           if (obj.brand.toLowerCase() === 'onecloud') {
             return {
               validate: false,
-              tooltip: '本地IDC资源不支持该操作',
+              tooltip: i18n.t('network.text_652'),
             }
           }
           return {
@@ -27,7 +28,7 @@ export default {
         },
       },
       {
-        label: '更多',
+        label: i18n.t('network.text_129'),
         actions: obj => {
           return [
             getDomainChangeOwnerAction(this, {
@@ -40,12 +41,12 @@ export default {
               resource: 'vpcs',
             }),
             {
-              label: '删除',
+              label: i18n.t('network.text_131'),
               permission: 'vpcs_delete',
               action: () => {
                 this.createDialog('DeleteResDialog', {
                   vm: this,
-                  title: '删除',
+                  title: i18n.t('network.text_131'),
                   name: this.$t('dictionary.vpc'),
                   data: [obj],
                   columns: this.columns,

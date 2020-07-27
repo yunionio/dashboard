@@ -2,9 +2,9 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{this.params.title}}</div>
     <div slot="body">
-      <dialog-selected-tips name="集群" :count="params.data.length" :action="params.title" />
+      <dialog-selected-tips :name="$t('network.text_19')" :count="params.data.length" :action="params.title" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
-      <a-checkbox class="mt-2" v-model="canDelete">删除集群会同时删除集群中的转发节点，请确认集群内转发节点已全部下线？</a-checkbox>
+      <a-checkbox class="mt-2" v-model="canDelete">{{$t('network.text_358')}}</a-checkbox>
     </div>
     <div slot="footer">
       <a-button :disabled="!canDelete" type="primary" @click="handleConfirm" :loading="loading">{{ $t("dialog.ok") }}</a-button>
@@ -42,7 +42,7 @@ export default {
           })
         }
         this.cancelDialog()
-        this.$message.success('操作成功')
+        this.$message.success(this.$t('network.text_290'))
       } catch (error) {
         this.loading = false
         throw error

@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="detail-title">后端健康状态</div>
+    <div class="detail-title">{{$t('network.text_501')}}</div>
     <vxe-grid :data="listData" :columns="columns">
-      <span slot="empty">{{isRedirect ? '重定向类型监听（转发策略）无后端服务器组' : '暂无数据'}}</span>
+      <span slot="empty">{{isRedirect ? $t('network.text_502') : $t('network.text_503')}}</span>
     </vxe-grid>
   </div>
 </template>
@@ -24,14 +24,14 @@ export default {
       columns: [
         {
           field: 'svname',
-          title: '后端服务器组 (IP:端口)',
+          title: this.$t('network.text_504'),
           formatter: ({ row }) => {
             return `${row.name}（${row.address}:${row.port}）`
           },
         },
         {
           field: 'check_status',
-          title: '状态',
+          title: this.$t('network.text_27'),
           slots: {
             default: ({ row }, h) => {
               if (!row.check_status) return '-'
@@ -58,16 +58,16 @@ export default {
         },
         {
           field: 'check_code',
-          title: '状态码',
+          title: this.$t('network.text_505'),
           formatter: ({ row }) => row.check_code || '-',
         },
         {
           field: 'weight',
-          title: '权重',
+          title: this.$t('network.text_166'),
         },
         {
           field: 'time',
-          title: '更新时间',
+          title: this.$t('network.text_314'),
           formatter: ({ row }) => this.$moment(row.updated_at).format(),
         },
       ],

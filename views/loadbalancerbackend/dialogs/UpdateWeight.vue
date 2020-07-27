@@ -1,11 +1,11 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">修改权重</div>
+    <div slot="header">{{$t('network.text_352')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.lb_backend')" :count="params.data.length" action="修改权重" />
+      <dialog-selected-tips :name="$t('dictionary.lb_backend')" :count="params.data.length" :action="$t('network.text_352')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" v-bind="formItemLayout">
-        <a-form-item label="权重">
+        <a-form-item :label="$t('network.text_166')">
           <a-input-number :min="0" :max="maxWeight" v-decorator="decorators.weight" />
         </a-form-item>
       </a-form>
@@ -40,8 +40,8 @@ export default {
             initialValue: this.params.data[0].weight,
             validateFirst: true,
             rules: [
-              { type: 'integer', required: true, message: '请输入权重', trigger: 'blur' },
-              { type: 'integer', min: 0, max: this.maxWeight, message: `请输入范围在 0-${this.maxWeight} 之间`, trigger: 'blur' },
+              { type: 'integer', required: true, message: this.$t('network.text_177'), trigger: 'blur' },
+              { type: 'integer', min: 0, max: this.maxWeight, message: this.$t('network.text_353', [this.maxWeight]), trigger: 'blur' },
             ],
           },
         ],

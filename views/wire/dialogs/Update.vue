@@ -1,15 +1,15 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">修改属性</div>
+    <div slot="header">{{$t('network.text_606')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.wire')" :count="params.data.length" action="修改属性" />
+      <dialog-selected-tips :name="$t('dictionary.wire')" :count="params.data.length" :action="$t('network.text_606')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
-        <a-form-item label="带宽" v-bind="formItemLayout">
+        <a-form-item :label="$t('network.text_195')" v-bind="formItemLayout">
           <a-select
               v-decorator="decorators.bandwidth"
-              placeholder="网络带宽">
+              :placeholder="$t('network.text_697')">
             <a-select-option v-for="item in bandwidthOptions" :value="item.value" :key="item.value">
               {{item.label}}
             </a-select-option>
@@ -17,7 +17,7 @@
         </a-form-item>
         <a-form-item label="MTU" v-bind="formItemLayout">
           <a-input-number :min="68" :max="9216" :step="50" v-decorator="decorators.mtu" />
-          <div class="add-desc">网络传输数据包的大小，MTU参数的范围在 <b>68字节</b> ~ <b>9216字节</b>，通常设置为1500</div>
+          <div class="add-desc">{{$t('network.text_700')}}</div>
         </a-form-item>
       </a-form>
     </div>
@@ -48,7 +48,7 @@ export default {
           {
             initialValue: this.params.data[0].bandwidth.toString(),
             rules: [
-              { required: true, message: '请选择带宽' },
+              { required: true, message: this.$t('network.text_699') },
             ],
           },
         ],

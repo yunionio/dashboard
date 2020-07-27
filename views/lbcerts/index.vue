@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="证书" />
+    <page-header :title="$t('network.text_143')" />
     <page-body>
       <list :id="listId" :get-params="getParams" />
     </page-body>

@@ -1,6 +1,6 @@
 <template>
   <div>
-   <page-header title="域名服务" />
+   <page-header :title="$t('network.text_184')" />
    <page-body>
      <list :id="listId" />
    </page-body>

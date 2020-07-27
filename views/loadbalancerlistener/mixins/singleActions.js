@@ -2,6 +2,7 @@ import * as R from 'ramda'
 import { LB_LISTENEER_ACTION_POLICIES } from '@Network/constants/lb'
 import { PROVIDER_MAP } from '@/constants'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
+import i18n from '@/locales'
 
 export default {
   computed: {
@@ -10,7 +11,7 @@ export default {
       if (name === 'LbcertList') {
         return [
           {
-            label: '更换证书',
+            label: i18n.t('network.text_366'),
             permission: 'lb_loadbalancerlisteners_update',
             action: (obj) => {
               this.createDialog('LbListenerUpdateCertificate', {
@@ -26,7 +27,7 @@ export default {
               if (row.listener_type !== 'https') {
                 return {
                   validate: false,
-                  tooltip: '仅https协议支持此操作',
+                  tooltip: i18n.t('network.text_367'),
                 }
               }
               return {
@@ -38,7 +39,7 @@ export default {
       }
       return [
         {
-          label: '修改',
+          label: i18n.t('network.text_130'),
           permission: 'lb_loadbalancerlisteners_update',
           action: obj => {
             this.createDialog('LbListenerFormDialog', {
@@ -55,7 +56,7 @@ export default {
               const spec = this.list ? this.data.loadbalancer_spec : this.detailData.loadbalancer_spec
               if (spec === 'network') {
                 validate = false
-                tooltip = 'AWS网络型暂不支持修改监听'
+                tooltip = i18n.t('network.text_473')
               }
             }
             return {
@@ -65,13 +66,13 @@ export default {
           },
         },
         {
-          label: '删除',
+          label: i18n.t('network.text_131'),
           permission: 'lb_loadbalancerlisteners_delete',
           action: (obj) => {
             this.createDialog('DeleteResDialog', {
               vm: this,
-              title: '删除',
-              name: '监听',
+              title: i18n.t('network.text_131'),
+              name: i18n.t('network.text_138'),
               data: [obj],
               columns: this.columns,
               onManager: this.onManager,
@@ -80,7 +81,7 @@ export default {
           meta: obj => this.$getDeleteResult(obj),
         },
         {
-          label: '更多',
+          label: i18n.t('network.text_129'),
           actions: row => [
             ...getEnabledSwitchActions(this, row, ['lb_loadbalancerlisteners_enable', 'lb_loadbalancerlisteners_disable'], {
               metas: [
@@ -117,7 +118,7 @@ export default {
               ],
             }),
             {
-              label: '调整访问控制',
+              label: i18n.t('network.text_470'),
               permission: 'lb_loadbalancerlisteners_update',
               action: (obj) => {
                 this.createDialog('LbListenerUpdateAclDialog', {
@@ -132,7 +133,7 @@ export default {
               },
             },
             {
-              label: '启用健康检查',
+              label: i18n.t('network.text_474'),
               permission: 'lb_loadbalancerlisteners_udpate',
               action: (row) => {
                 this.onManager('update', {
@@ -146,14 +147,14 @@ export default {
                 if (row.redirect === 'raw') {
                   return {
                     validate: false,
-                    tooltip: '重定向类型的监听不支持此操作',
+                    tooltip: i18n.t('network.text_475'),
                   }
                 }
                 return this.getActionMeta(row.health_check === 'off', row, 'enableHealthCheck')
               },
             },
             {
-              label: '停用健康检查',
+              label: i18n.t('network.text_476'),
               permission: 'lb_loadbalancerlisteners_udpate',
               action: (row) => {
                 this.onManager('update', {
@@ -167,7 +168,7 @@ export default {
                 if (row.redirect === 'raw') {
                   return {
                     validate: false,
-                    tooltip: '重定向类型的监听不支持此操作',
+                    tooltip: i18n.t('network.text_475'),
                   }
                 }
                 return this.getActionMeta(row.health_check === 'on', row, 'disableHealthCheck')
@@ -185,7 +186,7 @@ export default {
         if ((R.is(Function, providerItem[action]) && providerItem[action](row) === false) || providerItem[action] === false) {
           return {
             validate: false,
-            tooltip: `【${PROVIDER_MAP[row.provider].label}】暂不支持该操作`,
+            tooltip: i18n.t('network.text_309', [PROVIDER_MAP[row.provider].label]),
           }
         }
       }

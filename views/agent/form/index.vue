@@ -1,12 +1,12 @@
 <template>
   <a-spin :spinning="loading">
-    <page-header title="新建节点" />
+    <page-header :title="$t('network.text_78')" />
     <page-body>
       <a-form :form="form.fc" v-bind="formItemLayout">
-        <a-form-item label="名称">
-          <a-input :disabled="!!lbAgentId" v-decorator="decorators.name" placeholder="字母开头，数字和字母大小写组合，长度为2-128个字符，不含'.','_','@'" />
+        <a-form-item :label="$t('network.text_21')">
+          <a-input :disabled="!!lbAgentId" v-decorator="decorators.name" :placeholder="$t('network.text_44')" />
         </a-form-item>
-        <a-form-item label="集群" v-bind="formItemLayout">
+        <a-form-item :label="$t('network.text_19')" v-bind="formItemLayout">
           <base-select
             :disabled="!!lbAgentId"
             v-decorator="decorators.cluster_id"
@@ -14,83 +14,82 @@
             remote
             :remote-fn="q => ({ filter: `name.contains(${q})` })"
             showSync
-            :select-props="{ placeholder: '请选择集群' }" />
-          <p slot="extra">
-            没有我想要的，立即 <a-button type="link" size="small" @click="createCluster">新建</a-button>
+            :select-props="{ placeholder: $t('network.text_79') }" />
+          <p slot="extra">{{$t('network.text_80')}}<a-button type="link" size="small" @click="createCluster">{{$t('network.text_26')}}</a-button>
           </p>
         </a-form-item>
-        <a-form-item label="优先级" extra="指定VRRP实例优先级，优先级大的为主">
-          <a-tooltip title="优先级">
+        <a-form-item :label="$t('network.text_81')" :extra="$t('network.text_82')">
+          <a-tooltip :title="$t('network.text_81')">
             <a-input-number v-decorator="decorators.vrrp_priority" :max="255" :min="1" />
           </a-tooltip>
         </a-form-item>
-        <a-form-item label="抢占模式" extra="高优先级VRRP SLAVE实例见到低优先级的VRRP MASTER实例时，是否抢占完成MASTER角色切换">
-          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.vrrp_preempt" />
+        <a-form-item :label="$t('network.text_83')" :extra="$t('network.text_84')">
+          <a-switch :checkedChildren="$t('network.text_85')" :unCheckedChildren="$t('network.text_86')" v-decorator="decorators.vrrp_preempt" />
         </a-form-item>
-        <a-form-item label="VRRP路由ID" extra="主备组的ID值必须相同。同一个二层网络中，不同集群的VRRP路由ID必须不同">
+        <a-form-item :label="$t('network.text_87')" :extra="$t('network.text_88')">
           <a-input-number v-decorator="decorators.virtual_router_id" :max="255" :min="1" />
         </a-form-item>
-        <a-form-item label="VRRP网口" extra="VRRP实例广播通告用的网卡名">
-          <a-input v-decorator="decorators.vrrp_interface" placeholder="请输入网卡名称，例如：eth0" />
+        <a-form-item :label="$t('network.text_89')" :extra="$t('network.text_90')">
+          <a-input v-decorator="decorators.vrrp_interface" :placeholder="$t('network.text_91')" />
         </a-form-item>
-        <a-form-item label="VRRP通告间隔" extra="VRRP广播通告间隔，关系到故障时自动切换的灵敏度">
-          <a-input v-decorator="decorators.vrrp_advert_int" type="number" addonAfter="秒" />
+        <a-form-item :label="$t('network.text_92')" :extra="$t('network.text_93')">
+          <a-input v-decorator="decorators.vrrp_advert_int" type="number" :addonAfter="$t('network.text_76')" />
         </a-form-item>
         <a-collapse :bordered="false">
-         <a-collapse-panel header="高级配置" key="1" forceRender>
-            <a-form-item label="VRRP密码" extra="主备组的VRRP密码必须相同，为空则密码默认为YunionLB">
+         <a-collapse-panel :header="$t('network.text_94')" key="1" forceRender>
+            <a-form-item :label="$t('network.text_95')" :extra="$t('network.text_96')">
               <a-input v-decorator="decorators.vrrp_pass" />
             </a-form-item>
-            <a-form-item v-if="!lbAgentId" label="转发实例心跳超时时间">
-              <a-input v-decorator="decorators.hb_timeout" type="Number" addonAfter="秒" />
+            <a-form-item v-if="!lbAgentId" :label="$t('network.text_75')">
+              <a-input v-decorator="decorators.hb_timeout" type="Number" :addonAfter="$t('network.text_76')" />
             </a-form-item>
             <a-collapse @change="handleCollapseChange">
-              <a-collapse-panel key="telegraf" header="配置Telegraf参数" forceRender>
-                <a-form-item label="InfluxDB地址" extra="请输入InfluxDB的IP地址，例如： https://192.168.222.171:30086 ，用于收集负载均衡的监控数据。选填，为空系统则会根据后端服务自动获取">
+              <a-collapse-panel key="telegraf" :header="$t('network.text_97')" forceRender>
+                <a-form-item :label="$t('network.text_98')" :extra="$t('network.text_99')">
                   <a-row :gutter="8">
                     <a-col :span="12">
-                      <a-input v-decorator="decorators.telegraf_influx_db_output_url" placeholder="例如：https://192.168.222.171:30086" />
+                      <a-input v-decorator="decorators.telegraf_influx_db_output_url" :placeholder="$t('network.text_100')" />
                     </a-col>
                     <a-col :span="12">
-                      <a-checkbox class="ml-4" v-decorator="decorators.telegraf_influx_db_output_unsafe_ssl">忽略https证书校验</a-checkbox>
+                      <a-checkbox class="ml-4" v-decorator="decorators.telegraf_influx_db_output_unsafe_ssl">{{$t('network.text_101')}}</a-checkbox>
                     </a-col>
                   </a-row>
                 </a-form-item>
-                <a-form-item label="InfluxDB数据库名称">
+                <a-form-item :label="$t('network.text_102')">
                   <a-input v-decorator="decorators.telegraf_influx_db_output_name" />
                 </a-form-item>
-                <a-form-item label="监控数据采集间隔">
-                  <a-input v-decorator="decorators.telegraf_haproxy_input_interval" type="Number" addonAfter="秒" />
+                <a-form-item :label="$t('network.text_103')">
+                  <a-input v-decorator="decorators.telegraf_haproxy_input_interval" type="Number" :addonAfter="$t('network.text_76')" />
                 </a-form-item>
-                <a-form-item label="配置模板">
+                <a-form-item :label="$t('network.text_104')">
                   <code-mirror v-decorator="decorators.telegraf_conf_tmpl" :options="cmOptions" />
                 </a-form-item>
               </a-collapse-panel>
-              <a-collapse-panel key="haproxy" header="配置HAProxy参数" forceRender>
-                <a-form-item label="HAProxy线程数">
+              <a-collapse-panel key="haproxy" :header="$t('network.text_105')" forceRender>
+                <a-form-item :label="$t('network.text_106')">
                   <a-input v-decorator="decorators.haproxy_global_nbthread" type="Number" />
                 </a-form-item>
-                <a-form-item label="日志输出设置" extra="例如：/dev/log（转发节点本地系统日志）、IP（远端的syslog服务器）、IP:Port（默认为UDP 514）；为空则表示不记录日志">
-                  <a-input v-decorator="decorators.haproxy_global_log" placeholder="请输入日志输出位置" />
+                <a-form-item :label="$t('network.text_107')" :extra="$t('network.text_108')">
+                  <a-input v-decorator="decorators.haproxy_global_log" :placeholder="$t('network.text_109')" />
                 </a-form-item>
-                <a-form-item label="记录HTTP日志">
+                <a-form-item :label="$t('network.text_110')">
                   <a-switch v-decorator="decorators.haproxy_log_http" />
                 </a-form-item>
-                <a-form-item label="记录TCP日志">
+                <a-form-item :label="$t('network.text_111')">
                   <a-switch v-decorator="decorators.haproxy_log_tcp" />
                 </a-form-item>
-                 <a-form-item label="记录Normal日志">
+                 <a-form-item :label="$t('network.text_112')">
                   <a-switch v-decorator="decorators.haproxy_log_normal" />
                 </a-form-item>
-                <a-form-item label="请求中最大http头数">
-                  <a-input v-decorator="decorators.haproxy_tune_http_maxhdr" extra="为空则表示为默认值101" type="Number" />
+                <a-form-item :label="$t('network.text_113')">
+                  <a-input v-decorator="decorators.haproxy_tune_http_maxhdr" :extra="$t('network.text_114')" type="Number" />
                 </a-form-item>
-                <a-form-item label="配置模板">
+                <a-form-item :label="$t('network.text_104')">
                   <code-mirror v-decorator="decorators.haproxy_conf_tmpl" :options="cmOptions" />
                 </a-form-item>
               </a-collapse-panel>
-              <a-collapse-panel key="keepalived" header="配置Keepalived参数" forceRender>
-                <a-form-item label="配置模板">
+              <a-collapse-panel key="keepalived" :header="$t('network.text_115')" forceRender>
+                <a-form-item :label="$t('network.text_104')">
                   <code-mirror v-decorator="decorators.keepalived_conf_tmpl" :options="cmOptions" />
                 </a-form-item>
               </a-collapse-panel>
@@ -138,7 +137,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('network.text_116') },
               { validator: this.$validate('resourceName') },
             ],
           },
@@ -147,7 +146,7 @@ export default {
           'cluster_id',
           {
             rules: [
-              { required: true, message: '请选择集群' },
+              { required: true, message: this.$t('network.text_79') },
             ],
           },
         ],
@@ -157,7 +156,7 @@ export default {
             normalize: v => Number(v),
             initialValue: 3600,
             rules: [
-              { type: 'integer', min: 600, max: 3600, message: '请输入范围在 600-3600 之间', trigger: 'blur' },
+              { type: 'integer', min: 600, max: 3600, message: this.$t('network.text_77'), trigger: 'blur' },
             ],
           },
         ],
@@ -166,7 +165,7 @@ export default {
           {
             initialValue: 1,
             rules: [
-              { required: true, message: '请输入优先级' },
+              { required: true, message: this.$t('network.text_117') },
             ],
           },
         ],
@@ -175,7 +174,7 @@ export default {
           {
             initialValue: 1,
             rules: [
-              { required: true, message: '请输入VRRP路由ID' },
+              { required: true, message: this.$t('network.text_118') },
             ],
           },
         ],
@@ -183,7 +182,7 @@ export default {
           'vrrp.interface',
           {
             rules: [
-              { required: true, message: '请输入网卡名称' },
+              { required: true, message: this.$t('network.text_119') },
             ],
           },
         ],
@@ -193,7 +192,7 @@ export default {
             valuePropName: 'checked',
             initialValue: false,
             rules: [
-              { required: true, message: '请选择抢占模式' },
+              { required: true, message: this.$t('network.text_120') },
             ],
           },
         ],
@@ -203,8 +202,8 @@ export default {
             normalize: v => Number(v),
             initialValue: 1,
             rules: [
-              { required: true, message: '请输入VRRP通告间隔' },
-              { type: 'integer', min: 1, max: 255, message: '请输入范围在 1-255 之间', trigger: 'blur' },
+              { required: true, message: this.$t('network.text_121') },
+              { type: 'integer', min: 1, max: 255, message: this.$t('network.text_122'), trigger: 'blur' },
             ],
           },
         ],
@@ -232,7 +231,7 @@ export default {
           {
             normalize: v => Number(v),
             rules: [
-              { type: 'integer', min: 1, max: 600, message: '请输入范围在 1-600 之间', trigger: 'blur' },
+              { type: 'integer', min: 1, max: 600, message: this.$t('network.text_123'), trigger: 'blur' },
             ],
           },
         ],
@@ -241,7 +240,7 @@ export default {
           {
             normalize: v => Number(v),
             rules: [
-              { type: 'integer', min: 1, max: 64, message: '请输入范围在 1-64 之间', trigger: 'blur' },
+              { type: 'integer', min: 1, max: 64, message: this.$t('network.text_124'), trigger: 'blur' },
             ],
           },
         ],
@@ -272,7 +271,7 @@ export default {
             initialValue: 101,
             normalize: v => Number(v),
             rules: [
-              { type: 'integer', min: 1, max: 32767, message: '请输入范围在 1-32767 之间', trigger: 'blur' },
+              { type: 'integer', min: 1, max: 32767, message: this.$t('network.text_125'), trigger: 'blur' },
             ],
           },
         ],
@@ -309,7 +308,7 @@ export default {
   methods: {
     createCluster () {
       this.createDialog('LoadbalancerclusterCreateDialog', {
-        title: '新建',
+        title: this.$t('network.text_26'),
       })
     },
     handleClusterChange (id) {

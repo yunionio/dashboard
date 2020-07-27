@@ -30,11 +30,11 @@ export default {
       ],
       extraInfo: [
         {
-          title: '其他信息',
+          title: this.$t('network.text_38'),
           items: [
             getCopyWithContentTableColumn({
               field: 'loadbalancer',
-              title: '负载均衡实例',
+              title: this.$t('network.text_137'),
               hideField: true,
               slotCallback: row => {
                 if (!row.loadbalancer) return '-'
@@ -49,11 +49,11 @@ export default {
             },
             {
               field: 'cloudregion',
-              title: '区域',
+              title: this.$t('network.text_199'),
             },
             {
               field: 'zone',
-              title: '可用区',
+              title: this.$t('network.text_24'),
             },
           ],
         },

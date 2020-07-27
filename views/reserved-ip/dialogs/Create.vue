@@ -1,10 +1,10 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">新建</div>
+    <div slot="header">{{$t('network.text_26')}}</div>
     <div slot="body">
       <a-form
         :form="form.fc">
-        <a-form-item label="指定IP子网" v-bind="formItemLayout">
+        <a-form-item :label="$t('network.text_211')" v-bind="formItemLayout">
           <template v-if="hasNetwork">
             <div>
               <span>{{ params.network.name }}（{{ params.network.guest_ip_start }} - {{ params.network.guest_ip_end }}，vlan={{ params.network.vlan_id }}）</span>
@@ -19,16 +19,16 @@
               resource="networks"
               :params="networkParams"
               :remote-fn="q => ({ filter: `name.contains(${q})` })"
-              :select-props="{ placeholder: '请选择IP子网' }" />
+              :select-props="{ placeholder: $t('network.text_212') }" />
           </template>
         </a-form-item>
-        <a-form-item label="IP地址" v-bind="formItemLayout" required>
+        <a-form-item :label="$t('network.text_213')" v-bind="formItemLayout" required>
           <ip-address
             :decorators="decorators" />
         </a-form-item>
-        <a-form-item label="预留原因" v-bind="formItemLayout">
+        <a-form-item :label="$t('network.text_641')" v-bind="formItemLayout">
           <a-textarea
-            placeholder="请填写预留原因"
+            :placeholder="$t('network.text_643')"
             v-decorator="decorators.notes"
             :autosize="{ minRows: 2, maxRows: 6 }" />
         </a-form-item>
@@ -66,7 +66,7 @@ export default {
           'network',
           {
             rules: [
-              { required: true, message: '请选择IP子网' },
+              { required: true, message: this.$t('network.text_212') },
             ],
           },
         ],
@@ -78,7 +78,7 @@ export default {
               validateTrigger: ['change'],
               rules: [{
                 required: true,
-                message: '请输入IP地址',
+                message: this.$t('network.text_217'),
               }, {
                 validator: this.IPValidator,
               }, {
@@ -91,7 +91,7 @@ export default {
           'notes',
           {
             rules: [
-              { required: true, message: '请填写预留原因' },
+              { required: true, message: this.$t('network.text_643') },
             ],
           },
         ],
@@ -121,7 +121,7 @@ export default {
   methods: {
     IPValidator (rule, value, callback) {
       if (validate(value, 'IPv4') === false || validate(value, 'IPv4').result === false) {
-        callback(new Error('请输入合法的IP'))
+        callback(new Error(this.$t('network.text_301')))
       } else {
         callback()
       }
@@ -134,12 +134,12 @@ export default {
         try {
           const data = await new this.$Manager('reservedips').list({ params })
           if (data.data.data.length >= 1) {
-            return callback(new Error('该IP已被预留,请勿重复添加'))
+            return callback(new Error(this.$t('network.text_645')))
           } else {
             const ipsVal = Object.values(this.form.fc.getFieldValue('networkIps'))
             const ipsKey = Object.keys(this.form.fc.getFieldValue('networkIps'))
             if (ipsVal.indexOf(value) !== -1 && ipsKey[ipsVal.indexOf(value)] !== i) {
-              return callback(new Error('请勿重复添加相同IP'))
+              return callback(new Error(this.$t('network.text_644')))
             }
             return callback()
             // const ipsRepreat = Array.from(new Set(ips))

@@ -1,8 +1,8 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">合并IP子网</div>
+    <div slot="header">{{$t('network.text_623')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.network')" :count="params.data.length" action="合并IP子网" />
+      <dialog-selected-tips :name="$t('dictionary.network')" :count="params.data.length" :action="$t('network.text_623')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
     </div>
     <div slot="footer">

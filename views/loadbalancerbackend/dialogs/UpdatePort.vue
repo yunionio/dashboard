@@ -1,11 +1,11 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">修改端口</div>
+    <div slot="header">{{$t('network.text_349')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.lb_backend')" :count="params.data.length" action="修改端口" />
+      <dialog-selected-tips :name="$t('dictionary.lb_backend')" :count="params.data.length" :action="$t('network.text_349')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" v-bind="formItemLayout">
-        <a-form-item label="端口">
+        <a-form-item :label="$t('network.text_165')">
           <a-input-number :min="1" :max="65535" v-decorator="decorators.port" />
         </a-form-item>
       </a-form>
@@ -40,8 +40,8 @@ export default {
             initialValue: this.params.data[0].port,
             validateFirst: true,
             rules: [
-              { type: 'integer', required: true, message: '请输入监听端口', trigger: 'blur' },
-              { type: 'integer', min: 1, max: 65535, message: '请输入范围在 1-65535 之间', trigger: 'blur' },
+              { type: 'integer', required: true, message: this.$t('network.text_350'), trigger: 'blur' },
+              { type: 'integer', min: 1, max: 65535, message: this.$t('network.text_351'), trigger: 'blur' },
             ],
           },
         ],

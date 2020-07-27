@@ -8,11 +8,11 @@
         <a-form-item
           v-for="(item, i) in ipList"
           :key="item.key"
-          :label="i === 0 ? 'IP地址' : ''"
+          :label="i === 0 ? $t('network.text_213') : ''"
           v-bind="i === 0 ? formItemLayout : formItemLayoutWithOutLabel">
           <a-input
             v-decorator="ipDecorator(item, i)"
-            placeholder="请输入IP地址"
+            :placeholder="$t('network.text_217')"
             style="width: 60%; margin-right: 8px" />
           <a-button
             shape="circle"
@@ -25,17 +25,14 @@
         <a-form-item v-bind="formItemLayoutWithOutLabel" style="position:relative; top: -14px">
           <div class="d-flex align-items-center" v-if="remain">
             <a-button type="primary" shape="circle" icon="plus" size="small" @click="addIP" />
-            <a-button type="link" @click="addIP">添加新IP地址</a-button>
-            <span class="count-tips">
-              您还可以添加
-              <span class="remain-num">{{remain}}</span> 个
-            </span>
+            <a-button type="link" @click="addIP">{{$t('network.text_640')}}</a-button>
+            <span class="count-tips">{{$t('network.text_169')}}<span class="remain-num">{{remain}}</span>{{$t('network.text_170')}}</span>
           </div>
         </a-form-item>
-        <a-form-item label="预留原因" v-bind="formItemLayout">
+        <a-form-item :label="$t('network.text_641')" v-bind="formItemLayout">
           <a-textarea v-decorator="['notes', {
-            rules: [{ max: 200, message: '输入的字符长度不能大于200'}],
-          }]" placeholder="请填写预留原因" :rows="2" />
+            rules: [{ max: 200, message: $t('network.text_642')}],
+          }]" :placeholder="$t('network.text_643')" :rows="2" />
         </a-form-item>
       </a-form>
     </div>
@@ -90,7 +87,7 @@ export default {
       const ipData = this.form.fc.getFieldValue('ipData') || {}
       const ips = Object.values(ipData)
       if (ips.filter(ip => ip === value).length >= 2) {
-        return _callback('请勿重复添加相同IP')
+        return _callback(this.$t('network.text_644'))
       }
       const manager = new this.$Manager('reservedips', 'v2')
       try {
@@ -100,7 +97,7 @@ export default {
             network: this.params.data[0].id,
           },
         })
-        if (data && data.length > 0) return _callback('该IP已被预留,请勿重复添加')
+        if (data && data.length > 0) return _callback(this.$t('network.text_645'))
       } catch {
         _callback()
       }
@@ -111,9 +108,9 @@ export default {
         validateFirst: true,
         rules: [
           {
-            required: true, message: '请填写IP地址',
+            required: true, message: this.$t('network.text_646'),
           },
-          { validator: validateForm('IPv4'), message: '请输入合法IP' },
+          { validator: validateForm('IPv4'), message: this.$t('network.text_647') },
           { validator: this.ipBlur, trigger: ['change'] },
         ],
       }]

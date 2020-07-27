@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="监听"
+    :title="$t('network.text_138')"
     icon="res-lblistener"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
@@ -49,12 +49,12 @@ export default {
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   computed: {
     detailTabs () {
-      const ruleItem = { label: '转发策略', key: 'loadbalancerlistenerrule-list' }
-      const dashboardItem = { label: '监控', key: 'loadbalancerlistener-dashboard' }
+      const ruleItem = { label: this.$t('network.text_141'), key: 'loadbalancerlistenerrule-list' }
+      const dashboardItem = { label: this.$t('network.text_520'), key: 'loadbalancerlistener-dashboard' }
       const rules = [
-        { label: '详情', key: 'loadbalancerlistener-detail' },
-        { label: '后端服务器', key: 'loadbalancerbackend-list' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('network.text_67'), key: 'loadbalancerlistener-detail' },
+        { label: this.$t('network.text_140'), key: 'loadbalancerbackend-list' },
+        { label: this.$t('network.text_150'), key: 'event-drawer' },
       ]
       if (this.detailData.redirect === 'raw') {
         rules.splice(1, 1)

@@ -54,7 +54,7 @@ export default {
         steadyStatus: Object.values(expectStatus.network).flat(),
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('network.text_21'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
@@ -68,18 +68,18 @@ export default {
             },
           },
           status: {
-            label: '状态',
+            label: this.$t('network.text_27'),
             dropdown: true,
             items: [
-              { label: '初始化', key: 'init' },
-              { label: '正在创建', key: 'pending' },
-              { label: '正常', key: 'available' },
-              { label: '异常', key: 'failed' },
-              { label: '开始删除', key: 'start_delete' },
-              { label: '正在删除', key: 'deleting' },
-              { label: '已删除', key: 'deleted' },
-              { label: '删除失败', key: 'delete_failed' },
-              { label: '未知', key: 'unknown' },
+              { label: this.$t('network.text_613'), key: 'init' },
+              { label: this.$t('network.text_614'), key: 'pending' },
+              { label: this.$t('network.text_615'), key: 'available' },
+              { label: this.$t('network.text_616'), key: 'failed' },
+              { label: this.$t('network.text_617'), key: 'start_delete' },
+              { label: this.$t('network.text_618'), key: 'deleting' },
+              { label: this.$t('network.text_619'), key: 'deleted' },
+              { label: this.$t('network.text_620'), key: 'delete_failed' },
+              { label: this.$t('network.text_507'), key: 'unknown' },
             ],
             filter: true,
             formatter: val => {
@@ -87,12 +87,12 @@ export default {
             },
           },
           server_type: {
-            label: '类型',
+            label: this.$t('network.text_249'),
             dropdown: true,
             items: [
-              { label: '物理机', key: 'baremetal' },
-              { label: '容器', key: 'container' },
-              { label: '虚拟机', key: 'guest' },
+              { label: this.$t('network.text_598'), key: 'baremetal' },
+              { label: this.$t('network.text_599'), key: 'container' },
+              { label: this.$t('network.text_226'), key: 'guest' },
               { label: 'PXE', key: 'pxe' },
               { label: 'IPMI', key: 'ipmi' },
             ],
@@ -102,13 +102,13 @@ export default {
           projects: getTenantFilter(),
           domain: getDomainFilter(),
           region: {
-            label: '区域',
+            label: this.$t('network.text_199'),
           },
           vpc: {
             label: 'VPC',
           },
           wire: {
-            label: '二层网络',
+            label: this.$t('network.text_571'),
             // filter: true,
             // formatter: val => {
             //   return `wire.contains("${val}")`
@@ -120,25 +120,25 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
-          { label: '开始IP', key: 'guest_ip_start' },
-          { label: '结束IP', key: 'guest_ip_end' },
-          { label: '类型', key: 'server_type' },
-          { label: '状态', key: 'status' },
-          { label: '使用情况', key: 'ports' },
-          { label: '平台', key: 'brand' },
-          { label: '二层网络', key: 'wire' },
+          { label: this.$t('network.text_21'), key: 'name' },
+          { label: this.$t('network.text_621'), key: 'guest_ip_start' },
+          { label: this.$t('network.text_608'), key: 'guest_ip_end' },
+          { label: this.$t('network.text_249'), key: 'server_type' },
+          { label: this.$t('network.text_27'), key: 'status' },
+          { label: this.$t('network.text_622'), key: 'ports' },
+          { label: this.$t('network.text_198'), key: 'brand' },
+          { label: this.$t('network.text_571'), key: 'wire' },
           { label: 'VLAN', key: 'vlan_id' },
           { label: 'VPC', key: 'vpc' },
           { label: this.$t('dictionary.project'), key: 'tenant' },
-          { label: '云账号', key: 'account' },
-          { label: '区域', key: 'region' },
-          { label: '可用区', key: 'zone' },
+          { label: this.$t('network.text_196'), key: 'account' },
+          { label: this.$t('network.text_199'), key: 'region' },
+          { label: this.$t('network.text_24'), key: 'zone' },
         ],
       },
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('network.text_26'),
           permission: 'networks_create',
           action: () => {
             this.$router.push('/network/create')
@@ -154,7 +154,7 @@ export default {
           actions: () => {
             return [
               {
-                label: `更改${this.$t('dictionary.project')}`,
+                label: this.$t('network.text_225', [this.$t('dictionary.project')]),
                 permission: 'networks_perform_change_owner',
                 action: () => {
                   this.createDialog('ChangeOwenrDialog', {
@@ -171,7 +171,7 @@ export default {
                     tooltip: '',
                   }
                   if (this.isProjectMode) {
-                    ret.tooltip = `仅系统或${this.$t('dictionary.domain')}管理员支持该操作`
+                    ret.tooltip = this.$t('monitor.text_9', [this.$t('dictionary.domain')])
                     return ret
                   }
                   const f = this.eachValidates((obj) => {
@@ -233,7 +233,7 @@ export default {
               //   },
               // },
               {
-                label: '合并IP子网',
+                label: this.$t('network.text_623'),
                 permission: 'networks_perform_merge',
                 action: () => {
                   this.createDialog('NetworkConcatDialog', {
@@ -253,14 +253,14 @@ export default {
                   let tooltip = ''
                   if (this.list.selectedItems.length === 2) {
                     if (this.list.selectedItems.every(v => v.external_id && v.external_id.length > 0)) { // 是公网 IP
-                      tooltip = '公网 IP 不支持该操作'
+                      tooltip = this.$t('network.text_624')
                     } else {
                       if (!this.link(this.list.selectedItems)) {
-                        tooltip = '请选择规范的两个IP子网'
+                        tooltip = this.$t('network.text_625')
                       }
                     }
                   } else {
-                    tooltip = '请选择两个IP子网'
+                    tooltip = this.$t('network.text_626')
                   }
                   return {
                     validate: this.allowConcat,
@@ -269,7 +269,7 @@ export default {
                 },
               },
               {
-                label: '同步状态',
+                label: this.$t('network.text_201'),
                 permission: 'networks_perform_syncstatus',
                 action: () => {
                   this.onManager('batchPerformAction', {
@@ -283,13 +283,13 @@ export default {
                   if (this.list.selectedItems.some(item => !this.isPower(item))) {
                     return {
                       validate: false,
-                      tooltip: '权限不足',
+                      tooltip: this.$t('network.text_627'),
                     }
                   }
                   if (this.list.selectedItems.some(v => v.brand.toLowerCase() === 'onecloud')) {
                     return {
                       validate: false,
-                      tooltip: '选中项中不能包含本地IDC资源',
+                      tooltip: this.$t('network.text_628'),
                     }
                   }
                   return {
@@ -298,14 +298,14 @@ export default {
                 },
               },
               {
-                label: '删除',
+                label: this.$t('network.text_131'),
                 permission: 'networks_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     vm: this,
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    title: '删除',
+                    title: this.$t('network.text_131'),
                     name: this.$t('dictionary.network'),
                     onManager: this.onManager,
                   })

@@ -5,6 +5,8 @@
 </template>
 
 <script>
+import i18n from '@/locales'
+
 const NO_DATA = {
   title: {
     show: true,
@@ -12,7 +14,7 @@ const NO_DATA = {
       color: 'grey',
       fontSize: 20,
     },
-    text: '暂无数据',
+    text: i18n.t('network.text_503'),
     left: 'center',
     top: 'center',
   },
@@ -59,7 +61,7 @@ export default {
             })
           })
         } else {
-          console.error('没有传递必传参数 time，无法绘图')
+          console.error(this.$t('network.text_506'))
           return NO_DATA
         }
         source = source.concat(values)

@@ -5,7 +5,7 @@
       <dialog-selected-tips :name="$t('dictionary.loadbalancer')" :count="params.data.length" :action="params.title" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" v-bind="formItemLayout">
-        <a-form-item label="集群">
+        <a-form-item :label="$t('network.text_19')">
           <base-select
             remote
             showSync
@@ -13,9 +13,8 @@
             v-decorator="decorators.cluster_id"
             resource="loadbalancerclusters"
             :remote-fn="q => ({ filter: `name.contains(${q})` })"
-            :select-props="{ placeholder: '请选择集群' }" />
-          <!-- <p slot="extra" v-if="this.params.data.length === 1">
-            没有我想要的，立即 <a-button type="link" size="small" @click="createCluster">新建</a-button>
+            :select-props="{ placeholder: $t('network.text_79') }" />
+          <!-- <p slot="extra" v-if="this.params.data.length === 1">{{$t('network.text_80')}}<a-button type="link" size="small" @click="createCluster">{{$t('network.text_26')}}</a-button>
           </p> -->
         </a-form-item>
       </a-form>
@@ -47,7 +46,7 @@ export default {
           {
             initialValue: this.params.data[0].cluster_id,
             rules: [
-              { required: true, message: '请选择集群' },
+              { required: true, message: this.$t('network.text_79') },
             ],
           },
         ],
@@ -74,7 +73,7 @@ export default {
   methods: {
     createCluster () {
       this.createDialog('LoadbalancerclusterCreateDialog', {
-        title: '新建',
+        title: this.$t('network.text_26'),
       })
     },
     async handleConfirm () {

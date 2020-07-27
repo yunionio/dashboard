@@ -10,13 +10,14 @@ import {
   getPublicScopeTableColumn,
   getTagTableColumn,
 } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
     this.columns = [
       {
         field: 'name',
-        title: '名称',
+        title: i18n.t('network.text_21'),
         sortable: true,
         showOverflow: 'ellipsis',
         minWidth: 100,
@@ -50,7 +51,7 @@ export default {
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'network', columns: () => this.columns }),
       {
         field: 'ip',
-        title: 'IP地址',
+        title: i18n.t('network.text_213'),
         width: 160,
         slots: {
           default: ({ row }) => {
@@ -63,16 +64,16 @@ export default {
       },
       {
         field: 'server_type',
-        title: '类型',
+        title: i18n.t('network.text_249'),
         width: 100,
         formatter: ({ cellValue }) => {
-          return this.$t('networkServerType')[cellValue] || '未知'
+          return this.$t('networkServerType')[cellValue] || i18n.t('network.text_507')
         },
       },
       getStatusTableColumn({ statusModule: 'network' }),
       {
         field: 'ports',
-        title: '使用情况',
+        title: i18n.t('network.text_622'),
         minWidth: 100,
         slots: {
           default: ({ row }) => {
@@ -83,7 +84,7 @@ export default {
           },
         },
       },
-      getCopyWithContentTableColumn({ field: 'wire', title: '二层网络' }),
+      getCopyWithContentTableColumn({ field: 'wire', title: i18n.t('network.text_571') }),
       {
         field: 'vlan_id',
         title: 'VLAN',
@@ -92,7 +93,7 @@ export default {
       getCopyWithContentTableColumn({ field: 'vpc', title: 'VPC' }),
       {
         field: 'schedtag',
-        title: '调度标签',
+        title: i18n.t('network.text_630'),
         width: 120,
         type: 'expand',
         slots: {
@@ -108,7 +109,7 @@ export default {
         },
       },
       getBrandTableColumn(),
-      getCopyWithContentTableColumn({ field: 'account', title: '云账号' }),
+      getCopyWithContentTableColumn({ field: 'account', title: i18n.t('network.text_196') }),
       getPublicScopeTableColumn({ vm: this, resource: 'networks' }),
       getProjectTableColumn(),
       getRegionTableColumn(),

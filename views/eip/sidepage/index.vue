@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="弹性公网IP"
+    :title="$t('network.text_221')"
     icon="res-eip"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
@@ -43,8 +43,8 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'eip-detail' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('network.text_67'), key: 'eip-detail' },
+        { label: this.$t('network.text_150'), key: 'event-drawer' },
       ],
     }
   },

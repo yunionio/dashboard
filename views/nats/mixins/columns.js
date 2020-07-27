@@ -8,16 +8,17 @@ import {
   getPublicScopeTableColumn,
   getProjectDomainTableColumn,
 } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 const NatSpec = {
-  small: '小型',
-  medium: '中型',
-  large: '大型',
-  'x-large': '超大型',
+  small: i18n.t('network.text_553'),
+  medium: i18n.t('network.text_554'),
+  large: i18n.t('network.text_555'),
+  'x-large': i18n.t('network.text_556'),
 }
 const BillingType = {
-  postpaid: '后付费',
-  prepaid: '预付费',
+  postpaid: i18n.t('network.text_533'),
+  prepaid: i18n.t('network.text_534'),
 }
 
 export default {
@@ -34,7 +35,7 @@ export default {
       }),
       {
         field: 'nat_spec',
-        title: '型号',
+        title: i18n.t('network.text_536'),
         showOverflow: 'ellipsis',
         minWidth: 100,
         formatter: ({ cellValue }) => {
@@ -42,20 +43,20 @@ export default {
           return NatSpec[spec] || spec
         },
       },
-      getCopyWithContentTableColumn({ field: 'vpc', title: '所属VPC' }),
+      getCopyWithContentTableColumn({ field: 'vpc', title: i18n.t('network.text_535') }),
       getBrandTableColumn(),
       getPublicScopeTableColumn({ vm: this, resource: 'natgateways' }),
       getProjectDomainTableColumn(),
       {
         field: 'region',
-        title: '区域',
+        title: i18n.t('network.text_199'),
         width: 150,
       },
       getStatusTableColumn({ statusModule: 'nat' }),
       getAccountTableColumn(),
       {
         field: 'billing_type',
-        title: '付费类型',
+        title: i18n.t('network.text_537'),
         showOverflow: 'ellipsis',
         minWidth: 100,
         formatter: ({ cellValue }) => {

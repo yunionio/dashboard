@@ -22,7 +22,7 @@ export default {
         getParams: this.getParams,
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('network.text_21'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
@@ -40,7 +40,7 @@ export default {
         }),
         {
           field: 'cidr_block',
-          title: '目标网段',
+          title: this.$t('network.text_244'),
           slots: {
             default: ({ row }) => {
               const ips = row.cidr_block

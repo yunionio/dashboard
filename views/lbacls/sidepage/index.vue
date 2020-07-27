@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="访问控制"
+    :title="$t('network.text_142')"
     icon="res-lbacl"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
@@ -45,9 +45,9 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'lbacl-detail' },
-        { label: '缓存列表', key: 'lbacl-cache-list' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('network.text_67'), key: 'lbacl-detail' },
+        { label: this.$t('network.text_316'), key: 'lbacl-cache-list' },
+        { label: this.$t('network.text_150'), key: 'event-drawer' },
       ],
     }
   },

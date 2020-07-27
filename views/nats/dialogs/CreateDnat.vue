@@ -4,41 +4,40 @@
     <div slot="body">
       <a-form
         :form="form.fc">
-        <a-form-item label="条目名称" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.name" placeholder="字母开头，数字和字母大小写组合，长度为2-128个字符，不含'.','_','@'" />
+        <a-form-item :label="$t('network.text_538')" v-bind="formItemLayout">
+          <a-input v-decorator="decorators.name" :placeholder="$t('network.text_44')" />
         </a-form-item>
-        <a-form-item label="公网IP地址" v-bind="formItemLayout">
-          <template #extra>
-            没有我想要的,可以前往 <router-link :to="{ name: 'Eip' }" target="_blank">{{$t('dictionary.eip')}}</router-link>
+        <a-form-item :label="$t('network.text_539')" v-bind="formItemLayout">
+          <template #extra>{{$t('network.text_540')}}<router-link :to="{ name: 'Eip' }" target="_blank">{{$t('dictionary.eip')}}</router-link>
           </template>
           <base-select
             v-decorator="decorators.ip"
             :params="eipParams"
-            :select-props="{ placeholder: '请选择公网IP地址' }"
+            :select-props="{ placeholder: $t('network.text_541') }"
             resource="eips"
             :showSync="true"
             :labelFormat="eiplabelFormat"
             :resList.sync="eipOptions"
             :mapper="eipsMapper" />
         </a-form-item>
-        <a-form-item label="云服务器" v-bind="formItemLayout">
+        <a-form-item :label="$t('network.text_542')" v-bind="formItemLayout">
           <base-select
             v-decorator="decorators.server"
             :params="serverParams"
-            :select-props="{ placeholder: '请选择云服务器' }"
+            :select-props="{ placeholder: $t('network.text_543') }"
             resource="servers"
             :filterable="true"
             :labelFormat="serverlabelFormat"
             :resList.sync="serverOptions"
             :mapper="serversMapper" />
         </a-form-item>
-        <a-form-item label="公网端口" v-bind="formItemLayout" extra="取值范围：1~65535">
+        <a-form-item :label="$t('network.text_544')" v-bind="formItemLayout" :extra="$t('network.text_545')">
           <a-input-number :min="1" :max="65535" v-decorator="decorators.externalPort" />
         </a-form-item>
-        <a-form-item label="私网端口" v-bind="formItemLayout" extra="取值范围：1~65535">
+        <a-form-item :label="$t('network.text_546')" v-bind="formItemLayout" :extra="$t('network.text_545')">
           <a-input-number :min="1" :max="65535" v-decorator="decorators.internalPort" />
         </a-form-item>
-        <a-form-item label="协议类型" v-bind="formItemLayout">
+        <a-form-item :label="$t('network.text_547')" v-bind="formItemLayout">
           <a-select v-decorator="decorators.protocol">
             <a-select-option value="tcp">TCP</a-select-option>
             <a-select-option value="udp">UDP</a-select-option>
@@ -74,7 +73,7 @@ export default {
             validateTrigger: ['change', 'blur'],
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('network.text_116') },
               { validator: this.$validate('serverCreateName') },
             ],
           },
@@ -83,7 +82,7 @@ export default {
           'ip',
           {
             rules: [
-              { required: true, message: '请选择公网IP地址' },
+              { required: true, message: this.$t('network.text_541') },
             ],
           },
         ],
@@ -91,7 +90,7 @@ export default {
           'server',
           {
             rules: [
-              { required: true, message: '请选择云服务器' },
+              { required: true, message: this.$t('network.text_543') },
             ],
           },
         ],
@@ -101,7 +100,7 @@ export default {
             validateTrigger: ['blur'],
             validateFirst: true,
             rules: [
-              { required: true, message: '外网端口不能为空' },
+              { required: true, message: this.$t('network.text_548') },
             ],
           },
         ],
@@ -111,7 +110,7 @@ export default {
             validateTrigger: ['blur'],
             validateFirst: true,
             rules: [
-              { required: true, message: '内网端口不能为空' },
+              { required: true, message: this.$t('network.text_549') },
             ],
           },
         ],
@@ -119,7 +118,7 @@ export default {
           'protocol',
           {
             rules: [
-              { required: true, message: '协议不能为空' },
+              { required: true, message: this.$t('network.text_550') },
             ],
           },
         ],

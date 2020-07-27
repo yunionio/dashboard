@@ -31,13 +31,13 @@ export default {
         },
         {
           field: 'networkinterface_id',
-          title: '虚拟网卡ID',
+          title: this.$t('network.text_656'),
         },
         {
           field: 'primary',
-          title: '主IP',
+          title: this.$t('network.text_237'),
           formatter: ({ cellValue }) => {
-            return cellValue ? '是' : '否'
+            return cellValue ? this.$t('network.text_238') : this.$t('network.text_239')
           },
         },
       ],

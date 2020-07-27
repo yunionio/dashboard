@@ -24,7 +24,7 @@ export default {
   },
   data () {
     const formatDate = ({ cellValue }) => {
-      return this.$moment(cellValue).format('YYYY年MM月DD日 HH:mm:ss')
+      return this.$moment(cellValue).format(this.$t('network.text_36'))
     }
     return {
       deploymentServer: {},
@@ -40,33 +40,33 @@ export default {
       baseInfo: [
         {
           field: 'cluster',
-          title: '集群',
+          title: this.$t('network.text_19'),
         },
         {
           field: 'ha_state',
-          title: '主备',
+          title: this.$t('network.text_22'),
         },
         {
           field: 'hb_last_seen',
-          title: '上一次心跳',
+          title: this.$t('network.text_23'),
           formatter: ({ row }) => {
             return row.hb_last_seen ? this.$moment(row.hb_last_seen).fromNow() : '-'
           },
         },
         {
           field: 'zone',
-          title: '可用区',
+          title: this.$t('network.text_24'),
         },
         {
           field: 'hb_timeout',
-          title: '转发实例心跳超时时间',
+          title: this.$t('network.text_75'),
           formatter: ({ row }) => {
             return `${row.hb_timeout}s`
           },
         },
         {
           field: 'deployment',
-          title: '部署机器',
+          title: this.$t('network.text_135'),
           slots: {
             default: ({ row }, h) => {
               if (this.deploymentServer.id) {
@@ -80,88 +80,88 @@ export default {
       ],
       extraInfo: [
         {
-          title: '同步时间戳',
+          title: this.$t('network.text_136'),
           items: [
             {
               field: 'loadbalancers',
-              title: '负载均衡实例',
+              title: this.$t('network.text_137'),
               formatter: formatDate,
             },
             {
               field: 'loadbalancer_listeners',
-              title: '监听',
+              title: this.$t('network.text_138'),
               formatter: formatDate,
             },
             {
               field: 'loadbalancer_backend_groups',
-              title: '后端服务器组',
+              title: this.$t('network.text_139'),
               formatter: formatDate,
             },
             {
               field: 'loadbalancer_backends',
-              title: '后端服务器',
+              title: this.$t('network.text_140'),
               formatter: formatDate,
             },
             {
               field: 'loadbalancer_listener_rules',
-              title: '转发策略',
+              title: this.$t('network.text_141'),
               formatter: formatDate,
             },
             {
               field: 'loadbalancer_acls',
-              title: '访问控制',
+              title: this.$t('network.text_142'),
               formatter: formatDate,
             },
             {
               field: 'loadbalancer_certificates',
-              title: '证书',
+              title: this.$t('network.text_143'),
               formatter: formatDate,
             },
           ],
         },
         {
-          title: 'VRRP转发实例配置信息',
+          title: this.$t('network.text_144'),
           items: [
             {
               field: 'params.vrrp.virtual_router_id',
-              title: 'VRRP路由ID',
+              title: this.$t('network.text_87'),
             },
             {
               field: 'params.vrrp.priority',
-              title: '优先级',
+              title: this.$t('network.text_81'),
             },
             {
               field: 'params.vrrp.preempt',
-              title: '抢占模式',
+              title: this.$t('network.text_83'),
               formatter: ({ row }) => {
-                return row.params.vrrp.preempt ? '开启' : '关闭'
+                return row.params.vrrp.preempt ? this.$t('network.text_145') : this.$t('network.text_33')
               },
             },
             {
               field: 'params.vrrp.interface',
-              title: 'VRRP网口',
+              title: this.$t('network.text_89'),
             },
             {
               field: 'params.vrrp.advert_int',
-              title: 'VRRP通告间隔',
+              title: this.$t('network.text_92'),
               formatter: ({ row }) => `${row.params.vrrp.advert_int || 0}s`,
             },
             {
               field: 'params.vrrp.pass',
-              title: 'VRRP密码',
+              title: this.$t('network.text_95'),
             },
           ],
         },
         {
-          title: 'HAProxy配置信息',
+          title: this.$t('network.text_146'),
           items: [
             {
               field: 'params.haproxy.global_nbthread',
-              title: 'HAProxy线程数',
+              title: this.$t('network.text_106'),
             },
             {
               field: 'params.haproxy.global_log',
-              title: '日志输出设置',
+              title: this.$t('network.text_107'),
               formatter: ({ row }) => {
                 const { haproxy } = row.params
                 if (haproxy && haproxy.global_log) {
@@ -172,32 +172,32 @@ export default {
             },
             {
               field: 'params.haproxy.log_http',
-              title: '记录HTTP日志',
+              title: this.$t('network.text_110'),
               formatter: ({ row }) => {
-                return row.params.haproxy.log_http ? '开启' : '关闭'
+                return row.params.haproxy.log_http ? this.$t('network.text_145') : this.$t('network.text_33')
               },
             },
             {
               field: 'params.haproxy.log_tcp',
-              title: '记录TCP日志',
+              title: this.$t('network.text_111'),
               formatter: ({ row }) => {
-                return row.params.haproxy.log_tcp ? '开启' : '关闭'
+                return row.params.haproxy.log_tcp ? this.$t('network.text_145') : this.$t('network.text_33')
               },
             },
             {
               field: 'params.haproxy.log_normal',
-              title: '记录Normal日志',
+              title: this.$t('network.text_112'),
               formatter: ({ row }) => {
-                return row.params.haproxy.log_normal ? '开启' : '关闭'
+                return row.params.haproxy.log_normal ? this.$t('network.text_145') : this.$t('network.text_33')
               },
             },
             {
               field: 'params.haproxy.tune_http_maxhdr',
-              title: '请求中最大http头数',
+              title: this.$t('network.text_113'),
             },
             {
               field: 'params.haproxy_conf_tmpl',
-              title: '配置模板',
+              title: this.$t('network.text_104'),
               slots: {
                 default: ({ row }, h) => {
                   return [
@@ -209,33 +209,33 @@ export default {
           ],
         },
         {
-          title: 'Telegraf配置信息',
+          title: this.$t('network.text_147'),
           items: [
             {
               field: 'params.telegraf.haproxy_input_interval',
-              title: '监控数据采集间隔',
+              title: this.$t('network.text_103'),
               formatter: ({ row }) => {
                 return `${row.params.telegraf.haproxy_input_interval || 0}s`
               },
             },
             {
               field: 'params.telegraf.influx_db_output_name',
-              title: 'InfluxDB数据库名称',
+              title: this.$t('network.text_102'),
             },
             {
               field: 'params.telegraf.influx_db_output_url',
-              title: 'InfluxDB地址',
+              title: this.$t('network.text_98'),
               formatter: ({ row }) => {
                 let str = row.params.telegraf.influx_db_output_url || '-'
                 if (row && row.params && row.params.telegraf && row.params.telegraf.influx_db_output_url) {
-                  str += ' (忽略证书校验)'
+                  str += this.$t('network.text_148')
                 }
                 return str
               },
             },
             {
               field: 'params.telegraf_conf_tmpl',
-              title: '配置模板',
+              title: this.$t('network.text_104'),
               slots: {
                 default: ({ row }, h) => {
                   return [
@@ -247,11 +247,11 @@ export default {
           ],
         },
         {
-          title: 'KeepAlived配置信息',
+          title: this.$t('network.text_149'),
           items: [
             {
               field: 'params.keepalived_conf_tmpl',
-              title: '配置模板',
+              title: this.$t('network.text_104'),
               slots: {
                 default: ({ row }, h) => {
                   return [
