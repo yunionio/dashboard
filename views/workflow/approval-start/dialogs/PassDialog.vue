@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{ action }}</div>
     <div slot="body">
-      <dialog-selected-tips name="工单" :count="params.data.length" :action="action" />
+      <dialog-selected-tips :name="$t('common_198')" :count="params.data.length" :action="action" />
       <dialog-table :data="params.data" :columns="columns" />
       <a-form
         :form="form.fc"
@@ -29,8 +29,8 @@
             <a-select-option v-for="item of roleOptions" :value="item.id" :key="item.id">{{ item.name }}</a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item label="备注">
-          <a-input placeholder="请输入备注" v-decorator="decorators.remarks" />
+        <a-form-item :label="$t('common_157')">
+          <a-input :placeholder="$t('common_367')" v-decorator="decorators.remarks" />
         </a-form-item>
       </a-form>
     </div>
@@ -59,7 +59,7 @@ export default {
   data () {
     return {
       loading: false,
-      action: '通过',
+      action: this.$t('common_368'),
       projectOptions: [],
       roleOptions: [],
       projectLoading: false,
@@ -71,13 +71,18 @@ export default {
         projects: [
           'projects',
           {
-            rules: [{ required: true, message: `${this.$t('dictionary.project')}不能为空` }],
+            rules: [
+              {
+                required: true,
+                message: this.$t('dictionary.project') + this.$t('common_369'),
+              },
+            ],
           },
         ],
         roles: [
           'roles',
           {
-            rules: [{ required: true, message: `${this.$t('dictionary.role')}不能为空` }],
+            rules: [{ required: true, message: this.$t('dictionary.role') + this.$t('common_369') }],
           },
         ],
         remarks: [
@@ -93,8 +98,8 @@ export default {
         },
       },
       columns: [
-        getProcessDefinitionNameTableColumn({ field: 'process_instance.process_definition_name', title: '名称' }),
-        getResourceNameTableColumn({ title: '资源' }),
+        getProcessDefinitionNameTableColumn({ field: 'process_instance.process_definition_name', title: this.$t('common_186') }),
+        getResourceNameTableColumn({ title: this.$t('common_357') }),
         getInitiatorTableColumn({ field: 'process_instance.start_user_name' }),
       ],
     }
@@ -146,7 +151,7 @@ export default {
           if (this.params.success && R.is(Function, this.params.success)) {
             this.params.success(res)
           }
-          this.$message.success('操作成功')
+          this.$message.success(this.$t('common_360'))
         }
         this.cancelDialog()
       } catch (error) {

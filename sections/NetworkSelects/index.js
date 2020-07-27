@@ -1,4 +1,5 @@
 import * as R from 'ramda'
+import i18n from '@/locales'
 
 export default {
   name: 'NetworkSelects',
@@ -16,14 +17,14 @@ export default {
       type: Object,
       default: () => {
         return {
-          vpc: '请选择VPC',
-          network: '请选择IP子网',
+          vpc: i18n.t('common_226'),
+          network: i18n.t('common_227'),
         }
       },
     },
     label: {
       type: String,
-      default: 'IP子网',
+      default: i18n.t('common_228'),
     },
     types: {
       type: Array,
@@ -191,7 +192,7 @@ export default {
         return <a-select-option key={id} value={id}>{this.vpcFormat ? this.vpcFormat(item) : name }</a-select-option>
       })
       return (
-        <a-select disabled={disabled} onChange={_handleChange} showSearch placeholder="请选择VPC" loading={vpcLoading} filterOption={filterOption} >
+        <a-select disabled={disabled} onChange={_handleChange} showSearch placeholder={i18n.t('common_226')} loading={vpcLoading} filterOption={filterOption} >
           {options}
         </a-select>
       )
@@ -268,7 +269,7 @@ export default {
         </a-select-option>
       })
       return (
-        <a-select disabled={disabled} showSearch placeholder="请选择IP子网" onChange={_handleChange} loading={networkLoading} filterOption={filterOption} >
+        <a-select disabled={disabled} showSearch placeholder={i18n.t('common_227')} onChange={_handleChange} loading={networkLoading} filterOption={filterOption} >
           {options}
         </a-select>
       )

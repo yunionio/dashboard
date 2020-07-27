@@ -10,11 +10,11 @@
     v-if="item.menus">
     <li class="l1-menu-item" :class="{ active: activeMenu.index === item.index }">
       <a class="d-flex align-items-center" @click="handleL1LinkClick">
-        <div class="l1-menu-item-icon">
+        <div class="l1-menu-item-icon flex-shrink-0 flex-grow-0">
           <icon :type="item.meta.icon" />
         </div>
-        <div class="l1-menu-item-label flex-fill text-truncate mr-2">{{ getLabel(item.meta) }}</div>
-        <div class="l1-menu-item-right-icon">
+        <div class="l1-menu-item-label flex-fill text-truncate mr-2" :title="getLabel(item.meta)">{{ getLabel(item.meta) }}</div>
+        <div class="l1-menu-item-right-icon flex-shrink-0 flex-grow-0">
           <a-icon type="right" />
         </div>
       </a>
@@ -26,13 +26,14 @@
             <div
               class="l2-menu-group"
               v-if="l2.submenus">
-              <div class="l2-menu-group-title">{{ getLabel(l2.meta) }}</div>
+              <div class="l2-menu-group-title" :title="getLabel(l2.meta)">{{ getLabel(l2.meta) }}</div>
               <router-link
                 v-for="(sitem, sidx) of l2.submenus"
                 v-show="showMenu(sitem)"
                 :key="sidx"
                 class="l2-menu-item text-truncate"
                 :to="sitem.path"
+                :title="getLabel(sitem.meta)"
                 tag="a"
                 active-class="active"
                 @click.native="handleL2LinkClick">
@@ -43,6 +44,7 @@
               v-else
               class="l2-menu-item text-truncate"
               :to="l2.path"
+              :title="getLabel(l2.meta)"
               tag="a"
               active-class="active"
               @click.native="handleL2LinkClick">
@@ -60,7 +62,7 @@
       <div class="l1-menu-item-icon">
         <icon :type="item.meta.icon" />
       </div>
-      <div class="l1-menu-item-label flex-fill text-truncate mr-2">{{ getLabel(item.meta) }}</div>
+      <div class="l1-menu-item-label flex-fill text-truncate mr-2" :title="getLabel(item.meta)">{{ getLabel(item.meta) }}</div>
     </a>
   </li>
 </template>

@@ -6,7 +6,7 @@
     <template slot="val" slot-scope="text, record">
       <a-tooltip>
         <template slot="title">
-          {{ `范围：${record.min || 0} ~ ${record.max === Infinity ? '无限制' : record.max}` }}
+          {{ `${$t('common_235')}：${record.min || 0} ~ ${record.max === Infinity ? $t('common_216') : record.max}` }}
         </template>
         <a-input-number
           class="input-number"
@@ -47,13 +47,13 @@ export default {
           label: 'CPU',
           max: 0,
           step: 10,
-          unit: '核',
+          unit: this.$t('common_60'),
           originQuota: 0,
           remaining: 0,
         },
         {
           key: 'memory',
-          label: '内存',
+          label: this.$t('common_236'),
           max: 0,
           step: 1024,
           unit: 'GB',
@@ -62,7 +62,7 @@ export default {
         },
         {
           key: 'storage',
-          label: '存储',
+          label: this.$t('common_237'),
           max: 0,
           step: 10,
           unit: 'GB',
@@ -71,28 +71,28 @@ export default {
         },
         {
           key: 'image',
-          label: '镜像',
+          label: this.$t('common_238'),
           max: 0,
           step: 5,
-          unit: '个',
+          unit: this.$t('common_61'),
           originQuota: 0,
           remaining: 0,
         },
         {
           key: 'count',
-          label: '主机',
+          label: this.$t('common_239'),
           max: 0,
           step: 5,
-          unit: '台',
+          unit: this.$t('common_62'),
           originQuota: 0,
           remaining: 0,
         },
         {
           key: 'port',
-          label: 'IP地址',
+          label: this.$t('common_240'),
           max: 0,
           step: 10,
-          unit: '个',
+          unit: this.$t('common_61'),
           originQuota: 0,
           remaining: 0,
         },
@@ -101,40 +101,40 @@ export default {
           label: 'GPU',
           max: 0,
           step: 10,
-          unit: '个',
+          unit: this.$t('common_61'),
           originQuota: 0,
           remaining: 0,
         },
         {
           key: 'eip',
-          label: '弹性公网IP',
+          label: this.$t('common_241'),
           max: 0,
           step: 1,
-          unit: '个',
+          unit: this.$t('common_61'),
           originQuota: 0,
           remaining: 0,
         },
         {
           key: 'snapshot',
-          label: '快照',
+          label: this.$t('common_242'),
           max: 0,
           step: 1,
-          unit: '个',
+          unit: this.$t('common_61'),
           originQuota: 0,
           remaining: 0,
         },
         {
           key: 'bucket',
-          label: '桶',
+          label: this.$t('common_243'),
           max: 0,
           step: 1,
-          unit: '个',
+          unit: this.$t('common_61'),
           originQuota: 0,
           remaining: 0,
         },
         {
           key: 'object_gb',
-          label: '对象大小',
+          label: this.$t('common_244'),
           max: 0,
           step: 10,
           unit: 'GB',
@@ -143,48 +143,48 @@ export default {
         },
         {
           key: 'object_cnt',
-          label: '对象数量',
+          label: this.$t('common_65'),
           max: 0,
           step: 1,
-          unit: '个',
+          unit: this.$t('common_61'),
           originQuota: 0,
           remaining: 0,
         },
         // 项目配额
         {
           key: 'secgroup',
-          label: '安全组',
+          label: this.$t('common_245'),
           max: 0,
           step: 1,
-          unit: '个',
+          unit: this.$t('common_61'),
           originQuota: 0,
           remaining: 0,
         },
         // 区域配额
         {
           key: 'rds',
-          label: 'RDS实例',
+          label: this.$t('common_246'),
           max: 0,
           step: 1,
-          unit: '个',
+          unit: this.$t('common_61'),
           originQuota: 0,
           remaining: 0,
         },
         {
           key: 'cache',
-          label: 'Redis实例',
+          label: this.$t('common_247'),
           max: 0,
           step: 1,
-          unit: '个',
+          unit: this.$t('common_61'),
           originQuota: 0,
           remaining: 0,
         },
         {
           key: 'loadbalancer',
-          label: '负载均衡',
+          label: this.$t('common_248'),
           max: 0,
           step: 1,
-          unit: '个',
+          unit: this.$t('common_61'),
           originQuota: 0,
           remaining: 0,
         },
@@ -197,7 +197,7 @@ export default {
     quotaOptionsColumns () {
       const quotaCols = [
         {
-          title: '名称',
+          title: this.$t('common_186'),
           dataIndex: 'label',
         },
         // {
@@ -206,12 +206,12 @@ export default {
         //   scopedSlots: { customRender: 'remaining' },
         // },
         {
-          title: '值',
+          title: this.$t('common_249'),
           dataIndex: 'val',
           scopedSlots: { customRender: 'val' },
         },
         {
-          title: '单位',
+          title: this.$t('common_250'),
           dataIndex: 'unit',
         },
       ]
@@ -280,7 +280,7 @@ export default {
         }
         this.quota = quotaData
       } catch (error) {
-        this.$message.error('获取配额错误！')
+        this.$message.error(this.$t('common_251'))
         throw error
       }
     },
@@ -323,7 +323,7 @@ export default {
         }
         this.quota = quotaData
       } catch (error) {
-        this.$message.error('获取配额错误！')
+        this.$message.error(this.$t('common_251'))
         throw error
       }
     },

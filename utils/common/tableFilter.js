@@ -31,7 +31,7 @@ export function mapperStatusToItems (items, statusModule) {
   })
 }
 
-export function getNameFilter ({ field = 'name', label = '名称' } = {}) {
+export function getNameFilter ({ field = 'name', label = i18n.t('common_186') } = {}) {
   return {
     label,
     filter: true,
@@ -43,7 +43,7 @@ export function getNameFilter ({ field = 'name', label = '名称' } = {}) {
 
 export function getBrandFilter (key) {
   return {
-    label: '平台',
+    label: i18n.t('common_283'),
     dropdown: true,
     multiple: true,
     items: getBrandItems(key),
@@ -51,7 +51,7 @@ export function getBrandFilter (key) {
 }
 
 export function getStatusFilter (params) {
-  let label = '状态'
+  let label = i18n.t('common_284')
   let statusModule = ''
   let field = 'status'
   if (R.type(params) === 'Object') {
@@ -94,7 +94,7 @@ export function getTenantFilter () {
 
 export function getAccountFilter () {
   return {
-    label: '云账号',
+    label: i18n.t('common_295'),
     dropdown: true,
     multiple: true,
     distinctField: {
@@ -117,7 +117,7 @@ export function getIpFilter () {
 
 export function getOsTypeFilter () {
   return {
-    label: '系统类型',
+    label: i18n.t('common_302'),
     dropdown: true,
     multiple: true,
     items: [
@@ -133,13 +133,13 @@ export function getOsTypeFilter () {
 }
 
 export function getEnabledFilter (params = {}) {
-  const { label = '启用状态' } = params
+  const { label = i18n.t('common_285') } = params
   return {
     label,
     dropdown: true,
     items: [
-      { label: '启用', key: true },
-      { label: '禁用', key: false },
+      { label: i18n.t('common_303'), key: true },
+      { label: i18n.t('common_304'), key: false },
     ],
   }
 }
@@ -162,14 +162,14 @@ export function getFilter (params = {}) {
 
 export function getPublicFilter () {
   return {
-    label: '共享模式',
+    label: i18n.t('common_286'),
     filter: true,
     dropdown: true,
     multiple: true,
     items: [
-      { label: '私有', key: 'account_domain' },
-      { label: '共享云账号', key: 'system' },
-      { label: '共享订阅', key: 'provider_domain' },
+      { label: i18n.t('common_287'), key: 'account_domain' },
+      { label: i18n.t('common_288'), key: 'system' },
+      { label: i18n.t('common_289'), key: 'provider_domain' },
     ],
     formatter: val => {
       return `share_mode.contains("${val}")`
@@ -179,7 +179,7 @@ export function getPublicFilter () {
 
 export function getHostFilter () {
   return {
-    label: '宿主机',
+    label: i18n.t('common_305'),
     filter: true,
     jointFilter: true,
     formatter: val => {

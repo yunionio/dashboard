@@ -6,6 +6,7 @@
 import * as R from 'ramda'
 import { mapActions } from 'vuex'
 import { uuid } from '@/utils/utils'
+import i18n from '@/locales'
 
 export default {
   props: {
@@ -115,7 +116,7 @@ export default {
     // 默认打开抽屉的方法，组件有自定义的情况可以覆盖
     sidePageTriggerHandle (templateContext, sidepageName, options, params = {}) {
       if (!sidepageName) {
-        throw Error('请填入要打开的抽屉名称')
+        throw Error(i18n.t('common_79'))
       }
       this.replaceSidePage(sidepageName, {
         templateContext,

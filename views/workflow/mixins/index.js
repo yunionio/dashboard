@@ -1,3 +1,4 @@
+import i18n from '@/locales'
 export default {
   data () {
     return {
@@ -5,23 +6,23 @@ export default {
       tabPanels: [
         {
           name: 'me-process',
-          label: '我发起的',
+          label: i18n.t('common_412'),
         },
         {
           name: 'approval-start',
-          label: '待我审批',
+          label: i18n.t('common_203'),
         },
         {
           name: 'approved-done',
-          label: '我已审批',
+          label: i18n.t('common_413'),
         },
         {
           name: 'me-partake',
-          label: '我参与的',
+          label: i18n.t('common_414'),
         },
         {
           name: 'third-process',
-          label: '第三方',
+          label: i18n.t('common_415'),
         },
       ],
     }

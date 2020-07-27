@@ -11,14 +11,14 @@
         :item.sync="schedtagItem"
         :params="schedtagParams"
         @change="schedtagChange"
-        :select-props="{ allowClear: true, placeholder: '请选择调度标签' }" />
+        :select-props="{ allowClear: true, placeholder: $t('common_255') }" />
     </a-form-item>
     <a-form-item class="mb-0 w-50" :wrapperCol="{ span: 24 }">
       <base-select
         class="w-100"
         v-decorator="decorators.policy"
         :options="policyOpts"
-        :select-props="{ allowClear: true, placeholder: '请选择调度标签偏好' }" />
+        :select-props="{ allowClear: true, placeholder: $t('common_256') }" />
     </a-form-item>
   </div>
 </template>

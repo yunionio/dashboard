@@ -81,15 +81,15 @@ export default {
           {
             initialValue: allExportKeys,
             rules: [
-              { required: true, message: '至少选择一列数据' },
+              { required: true, message: this.$t('common_94') },
             ],
           },
         ],
       },
       allExportKeys,
       exportType: this.params.options.exportType || {
-        all: { label: '全部', key: 'all' },
-        custom: { label: '根据当前列表筛选条件', key: 'custom' },
+        all: { label: this.$t('common_95'), key: 'all' },
+        custom: { label: this.$t('common_96'), key: 'custom' },
       },
       indeterminate: false,
       checkAll: true,

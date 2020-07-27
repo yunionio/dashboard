@@ -1,5 +1,6 @@
 import { mapGetters } from 'vuex'
 import { WORKFLOW_TYPES } from '@/constants/workflow'
+import i18n from '@/locales'
 
 export default {
   computed: {
@@ -8,7 +9,7 @@ export default {
   created () {
     this.singleActions = [
       {
-        label: '通过',
+        label: i18n.t('common_368'),
         action: obj => {
           this.createDialog('WorkflowPassDialog', {
             vm: this,
@@ -28,7 +29,7 @@ export default {
         },
       },
       {
-        label: '处理',
+        label: i18n.t('common_366'),
         action: obj => {
           this.createDialog('WorkflowHandingDialog', {
             vm: this,
@@ -54,7 +55,7 @@ export default {
         },
       },
       {
-        label: '驳回',
+        label: i18n.t('common_370'),
         action: obj => {
           this.createDialog('WorkflowRejectDialog', {
             vm: this,
@@ -74,7 +75,7 @@ export default {
         },
       },
       {
-        label: '反馈',
+        label: i18n.t('common_363'),
         action: obj => {
           this.createDialog('WorkflowFeedbackDialog', {
             vm: this,
@@ -100,7 +101,7 @@ export default {
         },
       },
       {
-        label: '结束',
+        label: i18n.t('common_356'),
         action: obj => {
           this.createDialog('WorkflowEndDialog', {
             vm: this,

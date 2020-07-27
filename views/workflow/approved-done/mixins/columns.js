@@ -8,6 +8,7 @@ import {
   getCopyWithContentTableColumn,
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 const R = require('ramda')
 
 export default {
@@ -15,7 +16,7 @@ export default {
     this.columns = [
       getCopyWithContentTableColumn({
         field: 'process_instance_id',
-        title: '编号',
+        title: i18n.t('common_350'),
         minWidth: 80,
         hideField: true,
         onManager: this.onManager,
@@ -33,7 +34,7 @@ export default {
       }),
       {
         field: 'initiator',
-        title: '申请人',
+        title: i18n.t('common_371'),
         minWidth: 80,
         showOverflow: 'title',
         formatter: ({ cellVal, row }) => {
@@ -42,7 +43,7 @@ export default {
       },
       {
         field: 'state',
-        title: '流程状态',
+        title: i18n.t('common_372'),
         minWidth: 80,
         showOverflow: 'title',
         slots: {
@@ -69,8 +70,8 @@ export default {
           },
         },
       },
-      getTimeTableColumn({ field: 'start_time', title: '创建日期' }),
-      getTimeTableColumn({ field: 'end_time', title: '结束日期' }),
+      getTimeTableColumn({ field: 'start_time', title: i18n.t('common_374') }),
+      getTimeTableColumn({ field: 'end_time', title: i18n.t('common_387') }),
     ]
   },
 }

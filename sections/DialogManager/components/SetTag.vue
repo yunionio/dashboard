@@ -1,19 +1,19 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">编辑标签</div>
+    <div slot="header">{{$t('common_105')}}</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" action="编辑标签" :name="params.tipName" />
+      <dialog-selected-tips :count="params.data.length" :action="$t('common_105')" :name="params.tipName" />
       <template v-if="params.columns">
         <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       </template>
       <!-- 共有云标签 -->
       <div class="tag-wrap" v-if="!isBatch">
         <a-divider orientation="left">
-          <div class="font-weight-normal" style="font-size: 14px;">以下标签为公有云同步的标签，不可更改</div>
+          <div class="font-weight-normal" style="font-size: 14px;">{{$t('common_106')}}</div>
         </a-divider>
         <div class="tag-list">
           <template v-if="extTags.length <= 0">
-            <loader no-data-text="暂无公有云标签" />
+            <loader no-data-:text="$t('common_107')" />
           </template>
           <template v-else>
             <template v-for="item of extTags">
@@ -35,7 +35,7 @@
         </a-divider>
         <div class="tag-list">
           <template v-if="userTags.length <= 0">
-            <loader no-data-text="暂无用户标签" />
+            <loader no-data-:text="$t('common_108')" />
           </template>
           <template v-else>
             <template v-for="item of userTags">
@@ -52,17 +52,17 @@
             </template>
           </template>
         </div>
-        <div class="text-color-help mt-2">注: 每个资源最多可绑定 20个标签</div>
+        <div class="text-color-help mt-2">{{$t('common_109')}}</div>
       </div>
       <div class="mt-2 d-flex">
         <div style="line-height: 40px;">
           <tag-select
             global
-            button-text="已有标签"
+            button-:text="$t('common_110')"
             resource="server"
             v-model="checked"
             :params="params.params" />
-          <a-button class="ml-2" v-if="!showForm" @click="() => showForm = true">新建标签</a-button>
+          <a-button class="ml-2" v-if="!showForm" @click="() => showForm = true">{{$t('common_111')}}</a-button>
         </div>
         <a-form
           class="ml-2"
@@ -70,14 +70,14 @@
           :form="form.fc"
           v-if="showForm">
           <a-form-item>
-            <a-input v-decorator="decorators.key" placeholder="标签键" />
+            <a-input v-decorator="decorators.key" :placeholder="$t('common_112')" />
           </a-form-item>
           <a-form-item>
-            <a-input v-decorator="decorators.value" placeholder="标签值" />
+            <a-input v-decorator="decorators.value" :placeholder="$t('common_113')" />
           </a-form-item>
           <a-form-item>
-            <a-button @click="addTag">添加</a-button>
-            <a-button @click="() => showForm = false" class="ml-2">取消</a-button>
+            <a-button @click="addTag">{{$t('common_114')}}</a-button>
+            <a-button @click="() => showForm = false" class="ml-2">{{$t('common_115')}}</a-button>
           </a-form-item>
         </a-form>
       </div>
@@ -127,7 +127,7 @@ export default {
           'key',
           {
             rules: [
-              { required: true, whitespace: true, message: '请输入标签键' },
+              { required: true, whitespace: true, message: this.$t('common_116') },
             ],
           },
         ],
@@ -154,7 +154,7 @@ export default {
       return this.isBatch && this.mode === 'add'
     },
     userTagTitle () {
-      return this.isBatchAddMode ? '新增标签' : '以下标签为用户自定义标签'
+      return this.isBatchAddMode ? this.$t('common_117') : this.$t('common_118')
     },
     userTags () {
       const ret = []
@@ -211,7 +211,7 @@ export default {
           num++
         }, this.checked)
         if (num > 20) {
-          this.$message.warning('每个资源最多可绑定20个标签，请调整后重试')
+          this.$message.warning(this.$t('common_119'))
           return
         }
         const ids = this.params.data.map(item => item.id)

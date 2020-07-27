@@ -4,11 +4,11 @@
       <a-progress :type="type" v-bind="progressProps" :percent="percent" :status="status" :format="format" />
       <div class="content mt-4" v-if="progress.msg">
         <div>
-          <span class="label">{{ progress.msg.currentLabel || '已分配' }}：</span>
+          <span class="label">{{ progress.msg.currentLabel || $t('common_233') }}：</span>
           <span class="text">{{ progress.msg.current }}</span>
         </div>
         <div>
-          <span class="label">{{ progress.msg.totalLabel || '总量' }}：</span>
+          <span class="label">{{ progress.msg.totalLabel || $t('common_234') }}：</span>
           <span class="value">{{ progress.msg.total }}</span>
         </div>
       </div>

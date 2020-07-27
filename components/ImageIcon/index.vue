@@ -19,7 +19,7 @@ export default {
           return true
         } else {
           if (val !== 'other') {
-            console.warn(`前端未集成${val}操作系统的icon`)
+            console.warn(this.$t('common_16', [val]))
           }
           return true
         }
@@ -41,7 +41,7 @@ export default {
         }
       } else {
         return {
-          label: '未知',
+          label: this.$t('common_17'),
           position: '0px 0px',
           isUnknow: true,
         }

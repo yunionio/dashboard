@@ -1,6 +1,6 @@
 <template>
   <div class="login-index-wrap flex-fill d-flex h-100 align-items-center">
-    <div class="login-index-left flex-fill">
+    <div class="login-index-left flex-fill pr-4">
       <h2>{{ $t('login.desc1') }}</h2>
       <h4>{{ $t('login.desc2') }}</h4>
       <h6>{{ $t('login.desc3') }}</h6>

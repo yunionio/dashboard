@@ -1,15 +1,15 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">设置共享</div>
+    <div slot="header">{{$t('common_100')}}</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" :name="params.name || '实例'" action="设置共享" />
+      <dialog-selected-tips :count="params.data.length" :name="params.name || $t('common_92')" :action="$t('common_100')" />
       <dialog-table :data="params.data" :columns="columns" />
       <a-form-model
         ref="form"
         :model="fd"
         :rules="rules"
         v-bind="formItemLayout">
-        <a-form-model-item label="共享范围" prop="type">
+        <a-form-model-item :label="$t('common_101')" prop="type">
           <a-radio-group v-model="fd.type" @change="handleTypeChange">
             <template v-for="item of typeOptions">
               <a-radio-button :key="item.key" :value="item.key">{{ item.label }}</a-radio-button>
@@ -144,7 +144,7 @@ export default {
       },
       rules: {
         type: [
-          { required: true, message: '请选择共享范围' },
+          { required: true, message: this.$t('common_102') },
         ],
         shared_domains: [
           { required: true, message: this.$t('rules.domain') },
@@ -182,9 +182,9 @@ export default {
       return this.params.columns
     },
     typeOptions () {
-      const none = { key: 'none', label: '不共享' }
-      const project = { key: 'project', label: `${this.$t('dictionary.project')}共享` }
-      const domain = { key: 'domain', label: `${this.$t('dictionary.domain')}共享` }
+      const none = { key: 'none', label: this.$t('common_103') }
+      const project = { key: 'project', label: this.$t('dictionary.projectthis') + this.$t('common_104') }
+      const domain = { key: 'domain', label: this.$t('dictionary.domainthis') + this.$t('common_104') }
       if (this.resScope === 'domain') {
         return [none, domain]
       }
@@ -273,7 +273,7 @@ export default {
           data = this.mergeSharedRes(data, this.params.data[0].shared_domains)
         }
         if (needAll) {
-          data.unshift({ id: 'all', name: '全部' })
+          data.unshift({ id: 'all', name: this.$t('common_95') })
         }
         this.domains = data
         this.domainLoaded = true
@@ -323,7 +323,7 @@ export default {
         if (!this.isBatch && this.params.data[0].shared_projects && this.params.data[0].shared_projects.length) {
           data = this.mergeSharedRes(data, this.params.data[0].shared_projects)
         }
-        data.unshift({ id: 'all', name: '全部' })
+        data.unshift({ id: 'all', name: this.$t('common_95') })
         this.projects = data
         this.projectLoaded = true
       } catch (error) {

@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="工单"
+    :title="$t('common_198')"
     icon="res-user"
     :res-name="detailData.name"
     :actions="params.actions"
@@ -39,7 +39,7 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'approval-done-detail' },
+        { label: this.$t('common_386'), key: 'approval-done-detail' },
       ],
     }
   },

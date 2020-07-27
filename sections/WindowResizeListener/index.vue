@@ -3,8 +3,8 @@
     <div class="mt-3">
       <a-icon type="arrows-alt" />
     </div>
-    <div class="mt-1">当前分辨率过低</div>
-    <div class="mt-1">请将分辨率调整为1280及以上</div>
+    <div class="mt-1">{{$t('common_275')}}</div>
+    <div class="mt-1">{{$t('common_276')}}</div>
   </div>
 </template>
 

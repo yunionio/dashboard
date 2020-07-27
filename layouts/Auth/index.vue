@@ -9,19 +9,19 @@
               <img class="auth-header-logo" :src="loginLogo" />
             </div>
             <!-- 多语言切换按钮 -->
-            <!-- <div class="auth-header-right flex-fill d-flex justify-content-end">
+            <div class="auth-header-right flex-fill d-flex justify-content-end">
               <a-dropdown :trigger="['click']">
                 <a-icon type="global" class="oc-pointer" />
-                <a-menu slot="overlay">
-                  <a-menu-item key="0">
-                    <a>简体中文</a>
+                <a-menu slot="overlay" @click="handleChangeLanguage">
+                  <a-menu-item key="zh-CN">
+                    <a>{{$t('common_68')}}</a>
                   </a-menu-item>
-                  <a-menu-item key="1">
+                  <a-menu-item key="en">
                     <a>English</a>
                   </a-menu-item>
                 </a-menu>
               </a-dropdown>
-            </div> -->
+            </div>
           </div>
         </div>
       </div>
@@ -57,6 +57,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { isChrome } from '@/utils/utils'
+import { setLanguage } from '@/utils/common/cookie'
 
 export default {
   name: 'AuthLayout',
@@ -106,6 +107,10 @@ export default {
         this.ticketLogging = false
         throw error
       }
+    },
+    handleChangeLanguage (e) {
+      setLanguage(e.key)
+      window.location.reload()
     },
   },
 }

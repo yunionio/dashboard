@@ -6,11 +6,11 @@ function getSelectedData (row, vm) {
 }
 
 export function disableDeleteAction (params = {}, dialogParams = {}) {
-  const { name = '实例' } = dialogParams
+  const { name = i18n.t('common_92') } = dialogParams
   const { list, onManager, columns, createDialog, ...optionParams } = params
   const getData = (row) => row ? [row] : list.selectedItems
   const options = {
-    label: '设置删除保护',
+    label: i18n.t('common_277'),
     action: (row) => {
       createDialog('ChangeDisableDelete', {
         name,
@@ -23,7 +23,7 @@ export function disableDeleteAction (params = {}, dialogParams = {}) {
       const validate = getData(row) && getData(row).length > 0
       return {
         validate: validate,
-        tooltip: !validate && `请选择需要操作的${name}`,
+        tooltip: !validate && i18n.t('common_278', [name]),
       }
     },
     ...optionParams,
@@ -36,9 +36,9 @@ export function getDomainChangeOwnerAction (vm, dialogParams = {}, params = {}) 
   if (!vm) {
     throw Error('not found vm instance')
   }
-  const { name = '实例', resource } = dialogParams
+  const { name = i18n.t('common_92'), resource } = dialogParams
   const options = {
-    label: `更改${i18n.t('dictionary.domain')}`,
+    label: i18n.t('common_279') + i18n.t('dictionary.domain'),
     action: row => {
       vm.createDialog('DomainChangeOwenrDialog', {
         vm,
@@ -62,7 +62,7 @@ export function getDomainChangeOwnerAction (vm, dialogParams = {}, params = {}) 
       if (!store.getters.l3PermissionEnable || !store.getters.isAdminMode) ret.validate = false
       if (data.some(item => item.is_public && item.public_scope !== 'none')) {
         ret.validate = false
-        ret.tooltip = '只有共享范围为不共享的才支持该操作'
+        ret.tooltip = i18n.t('common_280')
       }
       return ret
     },
@@ -75,9 +75,9 @@ export function getSetPublicAction (vm, dialogParams = {}, params = {}) {
   if (!vm) {
     throw Error('not found vm instance')
   }
-  const { name = '实例', scope, resource, apiVersion } = dialogParams
+  const { name = i18n.t('common_92'), scope, resource, apiVersion } = dialogParams
   const options = {
-    label: '设置共享',
+    label: i18n.t('common_100'),
     action: row => {
       vm.createDialog('SetPublicDialog', {
         vm,
@@ -95,7 +95,7 @@ export function getSetPublicAction (vm, dialogParams = {}, params = {}) {
       if (!store.getters.l3PermissionEnable && (scope === 'domain' || (store.getters.scopeResource && store.getters.scopeResource.domain.includes(resource)))) {
         return {
           validate: false,
-          tooltip: '仅在开启三级权限的情况下支持此操作',
+          tooltip: i18n.t('common_281'),
         }
       }
       if (params.meta) {

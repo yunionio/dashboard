@@ -9,13 +9,14 @@ import {
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import { WORKFLOW_TYPES } from '@/constants/workflow'
+import i18n from '@/locales'
 
 export default {
   created () {
     this.columns = [
       getCopyWithContentTableColumn({
         field: 'id',
-        title: '编号',
+        title: i18n.t('common_350'),
         hideField: true,
         minWidth: 80,
         onManager: this.onManager,
@@ -33,7 +34,7 @@ export default {
       }),
       {
         field: 'state',
-        title: '流程状态',
+        title: i18n.t('common_372'),
         minWidth: 80,
         showOverflow: 'title',
         slots: {
@@ -49,7 +50,7 @@ export default {
       },
       {
         field: 'audit_status',
-        title: '审批结果',
+        title: i18n.t('common_401'),
         minWidth: 80,
         showOverflow: 'title',
         slots: {
@@ -72,7 +73,7 @@ export default {
       },
       {
         field: 'status',
-        title: '执行结果',
+        title: i18n.t('common_402'),
         minWidth: 100,
         showOverflow: 'title',
         sortable: true,
@@ -90,7 +91,7 @@ export default {
       },
       {
         field: 'assignee',
-        title: '审批人',
+        title: i18n.t('common_399'),
         width: 80,
         showOverflow: 'title',
         slots: {
@@ -111,8 +112,8 @@ export default {
           },
         },
       },
-      getTimeTableColumn({ field: 'start_time', title: '创建日期' }),
-      getTimeTableColumn({ field: 'end_time', title: '结束日期' }),
+      getTimeTableColumn({ field: 'start_time', title: i18n.t('common_374') }),
+      getTimeTableColumn({ field: 'end_time', title: i18n.t('common_387') }),
     ]
   },
 }

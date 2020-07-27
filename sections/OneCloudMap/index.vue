@@ -1,7 +1,7 @@
 <template>
   <div class="onecloud-map-wrap">
     <div class="mb-2 onecloud-map-header">
-      <a-input v-model="search" class="w-100" placeholder="请输入关键词">
+      <a-input v-model="search" class="w-100" :placeholder="$t('common_229')">
         <template v-slot:prefix>
           <a-icon type="search" />
         </template>
@@ -10,7 +10,7 @@
     <!-- 最近访问 -->
     <template v-if="recentMaps && recentMaps.length">
       <div class="mb-4 mt-4 onecloud-map-recent-wrap">
-        <div class="font-weight-bold mb-2 map-recent-label">最近访问</div>
+        <div class="font-weight-bold mb-2 map-recent-label">{{$t('common_230')}}</div>
         <div class="onecloud-map-recent-list">
           <template v-for="item of recentMaps">
             <div class="onecloud-map-recent-item" :key="item.path">
@@ -40,7 +40,7 @@
     </template>
     <!-- 未匹配到搜索结果 -->
     <template v-if="search && !maps.length">
-      <div class="map-not-found-tips d-flex align-items-center mt-4">未找到与<a-tag color="red" class="ml-1 mr-1">{{ search }}</a-tag>相关的产品</div>
+      <div class="map-not-found-tips d-flex align-items-center mt-4">{{$t('common_231')}}<a-tag color="red" class="ml-1 mr-1">{{ search }}</a-tag>{{$t('common_232')}}</div>
     </template>
   </div>
 </template>

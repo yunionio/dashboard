@@ -1,4 +1,5 @@
 import { initProjectQuota, initDomainQuota } from '@/constants/quota'
+import i18n from '@/locales'
 
 export function initQuota (mdf = 'project') {
   if (mdf === 'project') {
@@ -11,68 +12,68 @@ export const domainQuotaOptions = [
   // 域配额
   {
     key: 'cloudaccount',
-    label: '云账号',
+    label: i18n.t('common_295'),
     max: 0,
     step: 1,
-    unit: '个',
+    unit: i18n.t('common_61'),
     remaining: 0,
   },
   {
     key: 'globalvpc',
-    label: '全局VPC',
+    label: i18n.t('common_307'),
     max: 0,
     step: 1,
-    unit: '个',
+    unit: i18n.t('common_61'),
     remaining: 0,
   },
   // 认证配额
   {
     key: 'group',
-    label: '组',
+    label: i18n.t('common_308'),
     max: 0,
     step: 1,
-    unit: '个',
+    unit: i18n.t('common_61'),
     remaining: 0,
   },
   {
     key: 'policy',
-    label: '权限',
+    label: i18n.t('common_309'),
     max: 0,
     step: 1,
-    unit: '个',
+    unit: i18n.t('common_61'),
     remaining: 0,
   },
   {
     key: 'project',
-    label: '项目',
+    label: i18n.t('common_310'),
     max: 0,
     step: 1,
-    unit: '个',
+    unit: i18n.t('common_61'),
     remaining: 0,
   },
   {
     key: 'role',
-    label: '角色',
+    label: i18n.t('common_311'),
     max: 0,
     step: 1,
-    unit: '个',
+    unit: i18n.t('common_61'),
     remaining: 0,
   },
   {
     key: 'user',
-    label: '用户',
+    label: i18n.t('common_312'),
     max: 0,
     step: 1,
-    unit: '个',
+    unit: i18n.t('common_61'),
     remaining: 0,
   },
   // 基础设施配额
   {
     key: 'host',
-    label: '宿主机',
+    label: i18n.t('common_305'),
     max: 0,
     step: 1,
-    unit: '个',
+    unit: i18n.t('common_61'),
     remaining: 0,
   },
   {
@@ -80,7 +81,7 @@ export const domainQuotaOptions = [
     label: 'VPC',
     max: 0,
     step: 1,
-    unit: '个',
+    unit: i18n.t('common_61'),
     remaining: 0,
   },
 ]

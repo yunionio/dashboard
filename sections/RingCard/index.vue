@@ -39,9 +39,9 @@ export default {
           left: '55%',
           bottom: '20%',
           data: [
-            '50%以下: 4',
-            '50-80%以下: 0',
-            '80%以上: 4',
+            this.$t('common_252'),
+            this.$t('common_253'),
+            this.$t('common_254'),
           ],
         },
         series: [

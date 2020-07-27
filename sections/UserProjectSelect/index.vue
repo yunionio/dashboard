@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-alert banner :message="`请选择你要进入的${this.$t('dictionary.project')}`" />
+    <a-alert banner :message="$t('common_274', [this.$t('dictionary.project')])" />
     <div class="mt-2 d-flex flex-wrap list">
       <template v-for="item of projects">
         <div

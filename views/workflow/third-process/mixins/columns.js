@@ -6,13 +6,14 @@ import {
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import { getWorkflowType } from '@/constants/workflow'
+import i18n from '@/locales'
 
 export default {
   created () {
     this.columns = [
       getCopyWithContentTableColumn({
         field: 'id',
-        title: '编号',
+        title: i18n.t('common_350'),
         hideField: true,
         minWidth: 80,
         onManager: this.onManager,
@@ -24,7 +25,7 @@ export default {
       }),
       {
         field: 'process_definition_key',
-        title: '工单类型',
+        title: i18n.t('common_375'),
         minWidth: 80,
         showOverflow: 'title',
         slots: {
@@ -50,7 +51,7 @@ export default {
       getCommentTableColumn(),
       {
         field: 'status',
-        title: '流程状态',
+        title: i18n.t('common_372'),
         minWidth: 80,
         showOverflow: 'title',
         slots: {
@@ -59,8 +60,8 @@ export default {
           },
         },
       },
-      getTimeTableColumn({ field: 'created_at', title: '创建日期' }),
-      getTimeTableColumn({ field: 'end_at', title: '结束日期' }),
+      getTimeTableColumn({ field: 'created_at', title: i18n.t('common_374') }),
+      getTimeTableColumn({ field: 'end_at', title: i18n.t('common_387') }),
     ]
   },
 }

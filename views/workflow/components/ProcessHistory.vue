@@ -33,19 +33,19 @@ export default {
     this.processHistoryColumns = [
       {
         field: 'activity_name',
-        title: '审批环节',
+        title: this.$t('common_391'),
         minWidth: 80,
         showOverflow: 'title',
       },
       {
         field: 'task_assignee_name',
-        title: '处理人',
+        title: this.$t('common_392'),
         minWidth: 80,
         showOverflow: 'title',
       },
       {
         field: 'task_approved',
-        title: '处理结果',
+        title: this.$t('common_364'),
         minWidth: 80,
         showOverflow: 'title',
         slots: {
@@ -60,7 +60,7 @@ export default {
       },
       {
         field: 'comment',
-        title: '备注',
+        title: this.$t('common_157'),
         minWidth: 80,
         showOverflow: 'title',
         formatter: ({ cellValue, row }) => {
@@ -68,7 +68,7 @@ export default {
           return row.task.local_variables.comment
         },
       },
-      getTimeTableColumn({ field: 'end_time', title: '处理日期' }),
+      getTimeTableColumn({ field: 'end_time', title: this.$t('common_393') }),
     ]
   },
   methods: {
@@ -107,7 +107,7 @@ export default {
           this.errorLogs = row.task.local_variables.biz_message || this.processInstanceInfo.variables.biz_message
           return [
             <span class="error-approved">{txt}</span>,
-            <span class="error-link">(详情请查看<span class="error-log" onClick={ this.showErrorLog.bind(this) }>错误日志</span>)</span>,
+            <span class="error-link">({this.$t('common_394')}<span class="error-log" onClick={ this.showErrorLog.bind(this) }>{this.$t('common_458')}</span>)</span>,
           ]
         }
         return [

@@ -105,6 +105,11 @@ export default {
       return this.config && this.config.dropdown
     },
   },
+  watch: {
+    search (val) {
+      this.$emit('update:search', val)
+    },
+  },
   methods: {
     clear () {
       this.$emit('update-show', false)

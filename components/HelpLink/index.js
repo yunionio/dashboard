@@ -1,4 +1,5 @@
 import router from '@/router'
+import i18n from '@/locales'
 
 export default {
   name: 'HelpLink',
@@ -18,7 +19,7 @@ export default {
     const format = path => {
       if (path.startsWith('http')) return path
       if (!path.startsWith('/')) {
-        console.error('请填写绝对路径')
+        console.error(i18n.t('common_15'))
         path += '/'
       }
       if (path.startsWith('/v1') || path.startsWith('/v2')) {

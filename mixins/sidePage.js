@@ -1,5 +1,6 @@
 import * as R from 'ramda'
 import _ from 'lodash'
+import i18n from '@/locales'
 
 class WaitStatusJob {
   constructor (status, data) {
@@ -363,10 +364,10 @@ export default {
         if (!managerArgs.ids) managerArgs.ids = ids
       }
       if (!managerArgs) {
-        throw Error('managerArgs 不能为空')
+        throw Error(i18n.t('common_74'))
       }
       if (!R.is(Object, managerArgs)) {
-        throw Error('managerArgs 须为对象，对应至manager的具体方法接受的参数')
+        throw Error(i18n.t('common_75'))
       }
       const promise = this.manager[on]({ ...managerArgs }).then(res => {
         if (refreshActions.includes(on)) {

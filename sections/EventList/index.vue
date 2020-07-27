@@ -46,40 +46,40 @@ export default {
         getParams: this.getParam,
         filterOptions: {
           obj_name: {
-            label: '资源名称',
+            label: this.$t('common_151'),
           },
           tenant: {
-            label: `所属${this.$t('dictionary.project')}`,
+            label: this.$t('common_152') + this.$t('dictionary.project'),
           },
           user: {
-            label: '发起人',
+            label: this.$t('common_153'),
             filter: true,
             formatter: val => {
               return `user.contains("${val}")`
             },
           },
           action: {
-            label: '操作',
+            label: this.$t('common_154'),
           },
         },
       }),
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '类型', key: 'obj_type' },
-          { label: '操作', key: 'action' },
-          { label: '资源名称', key: 'obj_name' },
-          { label: '执行状态', key: 'success' },
-          { label: '操作时间', key: 'start_time' },
-          { label: '发起人', key: 'user' },
-          { label: `所属${this.$t('dictionary.domain')}`, key: 'owner_domain' },
-          { label: `所属${this.$t('dictionary.project')}`, key: 'owner_tenant' },
-          { label: '备注', key: 'notes' },
+          { label: this.$t('common_56'), key: 'obj_type' },
+          { label: this.$t('common_154'), key: 'action' },
+          { label: this.$t('common_151'), key: 'obj_name' },
+          { label: this.$t('common_155'), key: 'success' },
+          { label: this.$t('common_156'), key: 'start_time' },
+          { label: this.$t('common_153'), key: 'user' },
+          { label: this.$t('common_152') + this.$t('dictionary.domain'), key: 'owner_domain' },
+          { label: this.$t('common_152') + this.$t('dictionary.project'), key: 'owner_tenant' },
+          { label: this.$t('common_157'), key: 'notes' },
         ],
         limit: () => Object.keys(this.list.data).length,
         export: 'custom',
         exportType: {
-          custom: { label: '本页显示日志', key: 'custom' },
+          custom: { label: this.$t('common_158'), key: 'custom' },
         },
       },
       columns: [
@@ -90,26 +90,26 @@ export default {
           showOverflow: 'ellipsis',
         },
         getCopyWithContentTableColumn({
-          title: '类型',
+          title: this.$t('common_56'),
           field: 'obj_type',
           hideField: true,
           slotCallback: row => this.$te(`dictionary.${row.obj_type}`) ? this.$t(`dictionary.${row.obj_type}`) : row.obj_type,
         }),
         getCopyWithContentTableColumn({
-          title: '操作',
+          title: this.$t('common_154'),
           field: 'action',
         }),
         getCopyWithContentTableColumn({
-          title: '资源名称',
+          title: this.$t('common_151'),
           field: 'obj_name',
         }),
         {
-          title: '执行状态',
+          title: this.$t('common_155'),
           field: 'success',
           width: 80,
           slots: {
             default: ({ row }) => {
-              const txt = row.success ? '成功' : '失败'
+              const txt = row.success ? this.$t('common_159') : this.$t('common_160')
               const color = row.success ? '#67C23A' : '#F56C6C'
               return [<span style={{ color }}>{ txt }</span>]
             },
@@ -117,11 +117,11 @@ export default {
         },
         getTimeTableColumn({
           field: 'start_time',
-          title: '操作时间',
+          title: this.$t('common_156'),
         }),
         {
           field: 'user',
-          title: '发起人',
+          title: this.$t('common_153'),
           showOverflow: 'title',
           minWidth: 120,
           slots: {
@@ -143,7 +143,7 @@ export default {
         },
         {
           field: 'owner_tenant',
-          title: `所属${this.$t('dictionary.project')}`,
+          title: this.$t('common_152') + this.$t('dictionary.project'),
           showOverflow: 'title',
           minWidth: 120,
           slots: {
@@ -161,7 +161,7 @@ export default {
         },
         {
           field: 'notes',
-          title: '备注',
+          title: this.$t('common_157'),
           width: 70,
           slots: {
             default: ({ row, column }) => {

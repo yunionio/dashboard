@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">已加入权限组</div>
+    <div slot="header">{{$t('common_322')}}</div>
     <div slot="body">
       <page-list
         :list="list"
@@ -38,14 +38,14 @@ export default {
         },
         {
           field: 'cloudpolicies',
-          title: '权限',
+          title: this.$t('common_309'),
           type: 'expand',
           slots: {
             default: ({ row }) => {
-              return [`${(row.cloudpolicies && row.cloudpolicies.length) || 0}个`]
+              return [this.$t('common_323', [(row.cloudpolicies && row.cloudpolicies.length) || 0])]
             },
             content: ({ row }) => {
-              if (R.isNil(row.feCloudpolicies) || R.isEmpty(row.feCloudpolicies)) return '无关联权限'
+              if (R.isNil(row.feCloudpolicies) || R.isEmpty(row.feCloudpolicies)) return this.$t('common_324')
               return [
                 <vxe-grid
                   showOverflow='title'

@@ -92,7 +92,7 @@ export default {
         if (opt && !opt.sysUnusable) {
           options.push({
             ...opt,
-            label: opt.key === 'nova' ? '以镜像为系统盘' : opt.label,
+            label: opt.key === 'nova' ? this.$t('common_18') : opt.label,
           })
         }
       }

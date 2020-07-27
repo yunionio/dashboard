@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- <page-header title="工单" /> -->
+    <!-- <page-header :title="$t('common_198')" /> -->
     <a-tabs v-model="curProcess" @change="curProcessHandle" :animated="false">
       <a-tab-pane
         v-for="obj in tabPanels"

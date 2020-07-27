@@ -1,8 +1,9 @@
+import i18n from '@/locales'
 export default {
   created () {
     this.singleActions = [
       {
-        label: '撤销',
+        label: i18n.t('common_403'),
         action: obj => {
           this.createDialog('WorkflowRevokeDialog', {
             vm: this,

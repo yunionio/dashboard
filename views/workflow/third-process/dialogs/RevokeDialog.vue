@@ -2,13 +2,13 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{ action }}</div>
     <div slot="body">
-      <dialog-selected-tips name="工单" :count="params.data.length" :action="action" />
+      <dialog-selected-tips :name="$t('common_198')" :count="params.data.length" :action="action" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc"
         v-bind="formItemLayout">
-        <a-form-item label="备注">
-          <a-input placeholder="请输入备注" v-decorator="decorators.remarks" />
+        <a-form-item :label="$t('common_157')">
+          <a-input :placeholder="$t('common_367')" v-decorator="decorators.remarks" />
         </a-form-item>
       </a-form>
     </div>
@@ -30,7 +30,7 @@ export default {
   data () {
     return {
       loading: false,
-      action: '撤销工单',
+      action: this.$t('common_400'),
       form: {
         fc: this.$form.createForm(this),
       },
@@ -68,7 +68,7 @@ export default {
           if (this.params.success && R.is(Function, this.params.success)) {
             this.params.success()
           }
-          this.$message.success('操作成功')
+          this.$message.success(this.$t('common_360'))
         }
         this.cancelDialog()
       } catch (error) {

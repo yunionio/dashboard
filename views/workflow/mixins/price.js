@@ -1,36 +1,37 @@
 import { getServerConf } from '../utils'
+import i18n from '@/locales'
 
 export default {
   methods: {
     initPriceInfo () {
       const priceInfo = [
         {
-          title: '费用信息',
+          title: i18n.t('common_416'),
           items: [
             {
               field: 'billingType',
-              title: '计费方式',
+              title: i18n.t('common_10'),
               formatter: ({ cellValue, row }) => {
                 const serverConf = getServerConf(row)
                 const durationUnit = {
-                  h: '小时',
-                  w: '周',
-                  d: '天',
-                  m: '月',
-                  y: '年',
+                  h: i18n.t('common_11'),
+                  w: i18n.t('common_417'),
+                  d: i18n.t('common_12'),
+                  m: i18n.t('common_13'),
+                  y: i18n.t('common_14'),
                 }
                 const duration = serverConf.duration
                 if (!duration || serverConf.billing_type === 'postpaid') {
-                  return '按量付费'
+                  return i18n.t('common_1')
                 }
                 const d = parseInt(duration)
                 const unit = duration.substr(-1)
-                return `包年包月(${d}${durationUnit[unit.toLowerCase()]})`
+                return i18n.t('common_418', [d, durationUnit[unit.toLowerCase()]])
               },
             },
             {
               field: 'price',
-              title: '费用估算',
+              title: i18n.t('common_419'),
               formatter: ({ cellValue, row }) => {
                 return this.variables.price || 0
               },

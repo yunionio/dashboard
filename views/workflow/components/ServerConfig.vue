@@ -23,7 +23,7 @@ export default {
       serverConfigColumns: [
         {
           field: 'name',
-          title: '主机名称',
+          title: this.$t('common_388'),
           minWidth: 80,
           showOverflow: 'title',
           formatter: ({ cellVal, row }) => {
@@ -32,7 +32,7 @@ export default {
         },
         {
           field: 'project',
-          title: '所属项目',
+          title: this.$t('common_389'),
           minWidth: 80,
           showOverflow: 'title',
           formatter: ({ cellVal, row }) => {
@@ -41,23 +41,23 @@ export default {
         },
         {
           field: 'beforeConfig',
-          title: '调整前配置',
+          title: this.$t('common_395'),
           minWidth: 80,
           showOverflow: 'title',
           formatter: ({ cellVal, row }) => {
-            return `${row.before && row.before.cpu}核${sizestr(row.before && row.before.memory, 'M', 1024)}${sizestr(row.before && row.before.disk, 'M', 1024)}`
+            return `${row.before && row.before.cpu}${this.$t('common_390')}${sizestr(row.before && row.before.memory, 'M', 1024)}${sizestr(row.before && row.before.disk, 'M', 1024)}`
           },
         },
         {
           field: 'afterConfig',
-          title: '调整后配置',
+          title: this.$t('common_397'),
           minWidth: 80,
           showOverflow: 'title',
           formatter: ({ cellVal, row }) => {
             if (row.after && row.after.disk) {
-              return `${row.after && row.after.cpu}核${sizestr(row.after && row.after.memory, 'M', 1024)}${sizestr(row.after && row.after.disk, 'M', 1024)}`
+              return `${row.after && row.after.cpu}${this.$t('common_390')}${sizestr(row.after && row.after.memory, 'M', 1024)}${sizestr(row.after && row.after.disk, 'M', 1024)}`
             }
-            return `${row.after && row.after.cpu}核${sizestr(row.after && row.after.memory, 'M', 1024)}`
+            return `${row.after && row.after.cpu}${this.$t('common_390')}${sizestr(row.after && row.after.memory, 'M', 1024)}`
           },
         },
       ],

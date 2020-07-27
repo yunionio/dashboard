@@ -19,7 +19,7 @@ export default {
     return {
       fullscreen: false,
       background: '255, 255, 255, 1',
-      text: '加载中…',
+      text: this.$t('common_67'),
       iconSrc: null,
       iconWidth: null,
       iconHeight: null,

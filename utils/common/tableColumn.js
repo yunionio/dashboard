@@ -43,7 +43,7 @@ export const getProjectTableColumn = ({ field = 'tenant', title = i18n.t('dictio
   }
 }
 
-export const getRegionTableColumn = ({ field = 'region', title = '区域' } = {}) => {
+export const getRegionTableColumn = ({ field = 'region', title = i18n.t('common_282') } = {}) => {
   return {
     field,
     title,
@@ -71,7 +71,7 @@ export const getRegionTableColumn = ({ field = 'region', title = '区域' } = {}
   }
 }
 
-export const getBrandTableColumn = ({ field = 'brand', title = '平台', hidden = false, width = 70 } = {}) => {
+export const getBrandTableColumn = ({ field = 'brand', title = i18n.t('common_283'), hidden = false, width = 70 } = {}) => {
   return {
     field,
     title,
@@ -90,7 +90,7 @@ export const getBrandTableColumn = ({ field = 'brand', title = '平台', hidden 
   }
 }
 
-export const getStatusTableColumn = ({ field = 'status', title = '状态', statusModule, sortable = true, minWidth = 80, slotCallback } = {}) => {
+export const getStatusTableColumn = ({ field = 'status', title = i18n.t('common_284'), statusModule, sortable = true, minWidth = 80, slotCallback } = {}) => {
   return {
     field,
     title,
@@ -116,7 +116,7 @@ export const getStatusTableColumn = ({ field = 'status', title = '状态', statu
   }
 }
 
-export const getEnabledTableColumn = ({ field = 'enabled', title = '启用状态', minWidth = 90 } = {}) => {
+export const getEnabledTableColumn = ({ field = 'enabled', title = i18n.t('common_285'), minWidth = 90 } = {}) => {
   return getStatusTableColumn({
     field,
     title,
@@ -125,11 +125,11 @@ export const getEnabledTableColumn = ({ field = 'enabled', title = '启用状态
   })
 }
 
-export const getPublicTableColumn = ({ field = 'share_mode', title = '共享模式' } = {}) => {
+export const getPublicTableColumn = ({ field = 'share_mode', title = i18n.t('common_286') } = {}) => {
   const shareMode = {
-    account_domain: '私有',
-    system: '共享云账号',
-    provider_domain: '共享订阅',
+    account_domain: i18n.t('common_287'),
+    system: i18n.t('common_288'),
+    provider_domain: i18n.t('common_289'),
   }
   return {
     field,
@@ -144,7 +144,7 @@ export const getPublicTableColumn = ({ field = 'share_mode', title = '共享模�
 }
 
 export const getNameDescriptionTableColumn = ({
-  title = '名称',
+  title = i18n.t('common_186'),
   field = 'name',
   slotCallback,
   onManager,
@@ -206,7 +206,7 @@ export const getNameDescriptionTableColumn = ({
 
 export const getCopyWithContentTableColumn = ({
   field = 'name',
-  title = '名称',
+  title = i18n.t('common_186'),
   hideField,
   message,
   sortable,
@@ -258,7 +258,7 @@ export const getIpsTableColumn = ({ field = 'ips', title = 'IP', vm } = {}) => {
         let ret = []
         if (row.eip) {
           ret.push(
-            <list-body-cell-wrap row={row} field="eip" copy><span class="text-color-help">({ row.eip_mode === 'elastic_ip' ? '弹性' : '公有' })</span></list-body-cell-wrap>,
+            <list-body-cell-wrap row={row} field="eip" copy><span class="text-color-help">({ row.eip_mode === 'elastic_ip' ? i18n.t('common_290') : i18n.t('common_291') })</span></list-body-cell-wrap>,
           )
         }
         if (row.ips) {
@@ -285,7 +285,7 @@ export const getSwitchTableColumn = ({ field, title, change }) => {
           if (checked === 'false') checked = false
         }
         return [
-          <a-switch checked={ checked } checkedChildren='开' unCheckedChildren='关' onChange={ change } />,
+          <a-switch checked={ checked } checkedChildren={i18n.t('common_292')} unCheckedChildren={i18n.t('common_293')} onChange={ change } />,
         ]
       },
     },
@@ -294,7 +294,7 @@ export const getSwitchTableColumn = ({ field, title, change }) => {
 
 export const getTagTableColumn = ({
   field = 'metadata',
-  title = '标签',
+  title = i18n.t('common_266'),
   ignoreKeys,
   needExt,
   resource,
@@ -327,7 +327,7 @@ export const getTagTableColumn = ({
   }
 }
 
-export const isPublicTableColumn = ({ field = 'is_public', title = '共享范围' } = {}) => {
+export const isPublicTableColumn = ({ field = 'is_public', title = i18n.t('common_101') } = {}) => {
   return {
     field,
     title,
@@ -336,7 +336,7 @@ export const isPublicTableColumn = ({ field = 'is_public', title = '共享范围
     formatter: ({ row }) => {
       let text = ''
       if (row.is_public === false || row.is_public === 'false') {
-        text = '私有'
+        text = i18n.t('common_287')
         if (row.shared_projects) {
           text = i18n.t('shareScope.project')
         }
@@ -354,7 +354,7 @@ export const isPublicTableColumn = ({ field = 'is_public', title = '共享范围
 }
 export const getTimeTableColumn = ({
   field = 'created_at',
-  title = '创建时间',
+  title = i18n.t('common_294'),
   sortable = false,
   fromNow = false,
 } = {}) => {
@@ -372,7 +372,7 @@ export const getTimeTableColumn = ({
 
 export const getAccountTableColumn = ({
   field = 'account',
-  title = '云账号',
+  title = i18n.t('common_295'),
 } = {}) => {
   return {
     field,
@@ -384,7 +384,7 @@ export const getAccountTableColumn = ({
   }
 }
 
-export const getBillingTypeTableColumn = ({ field = 'billing_type', title = '计费方式', width = '120px' } = {}) => {
+export const getBillingTypeTableColumn = ({ field = 'billing_type', title = i18n.t('common_10'), width = '120px' } = {}) => {
   return {
     field,
     title,
@@ -403,7 +403,7 @@ export const getBillingTypeTableColumn = ({ field = 'billing_type', title = '计
           const date = dateArr.join('')
           const seconds = moment(row.expired_at).diff(new Date()) / 1000
           const textColor = seconds / 24 / 60 / 60 < 7 ? '#DD2727' : '#53627C'
-          const text = seconds < 0 ? '已过期' : `${date.substring(0, date.length - 1)}后到期`
+          const text = seconds < 0 ? i18n.t('common_296') : i18n.t('common_297', [date.substring(0, date.length - 1)])
           ret.push(<div style={{ color: textColor }}>{ text }</div>)
         }
         return ret
@@ -414,7 +414,7 @@ export const getBillingTypeTableColumn = ({ field = 'billing_type', title = '计
 
 export const getPublicScopeTableColumn = ({
   field = 'public_scope',
-  title = '共享范围',
+  title = i18n.t('common_101'),
   vm,
   resource,
   width = '110px',
@@ -437,10 +437,10 @@ export const getPublicScopeTableColumn = ({
             <a onClick={() => {
               vm.createDialog('CommonDialog', {
                 hiddenCancel: true,
-                header: '共享范围',
+                header: i18n.t('common_101'),
                 body: () => {
                   return [
-                    <a-alert class='mb-2' message={ `该资源已共享给以下${sharedProjects.length}个项目` } />,
+                    <a-alert class='mb-2' message={ i18n.t('common_298', [sharedProjects.length]) } />,
                     <dialog-table
                       vxeGridProps={{ showOverflow: 'title' }}
                       data={ sharedProjects }
@@ -453,11 +453,11 @@ export const getPublicScopeTableColumn = ({
                           }),
                           getCopyWithContentTableColumn({
                             field: 'name',
-                            title: '名称',
+                            title: i18n.t('common_186'),
                           }),
                           getCopyWithContentTableColumn({
                             field: 'domain',
-                            title: `所属${i18n.t('dictionary.domain')}`,
+                            title: i18n.t('common_299') + i18n.t('dictionary.domain'),
                           }),
                         ]
                       } />,
@@ -473,10 +473,10 @@ export const getPublicScopeTableColumn = ({
               <a onClick={() => {
                 vm.createDialog('CommonDialog', {
                   hiddenCancel: true,
-                  header: '共享范围',
+                  header: i18n.t('common_101'),
                   body: () => {
                     return [
-                      <a-alert class='mb-2' message={ `该资源已共享给以下${sharedDomains.length}个域` } />,
+                      <a-alert class='mb-2' message={ i18n.t('common_300', [sharedDomains.length]) } />,
                       <dialog-table
                         vxeGridProps={{ showOverflow: 'title' }}
                         data={ sharedDomains }
@@ -489,7 +489,7 @@ export const getPublicScopeTableColumn = ({
                             }),
                             getCopyWithContentTableColumn({
                               field: 'name',
-                              title: '名称',
+                              title: i18n.t('common_186'),
                             }),
                           ]
                         } />,
@@ -512,7 +512,7 @@ export const getPublicScopeTableColumn = ({
 
 export const getProjectDomainTableColumn = ({
   field = 'project_domain',
-  title = `所属${i18n.t('dictionary.domain')}`,
+  title = i18n.t('common_299') + i18n.t('dictionary.domain'),
   sortable = true,
 } = {}) => {
   return getCopyWithContentTableColumn({
@@ -526,7 +526,7 @@ export const getProjectDomainTableColumn = ({
 export const getBillingTableColumn = ({
   vm,
   field = 'billing_type',
-  title = '计费方式',
+  title = i18n.t('common_10'),
   width = 120,
   showOverflow = 'ellipsis',
 } = {}) => {
@@ -549,24 +549,24 @@ export const getBillingTableColumn = ({
           })
         }
         if (billingType === 'postpaid') {
-          ret.push(<div style={{ color: '#0A1F44' }}>按量付费</div>)
+          ret.push(<div style={{ color: '#0A1F44' }}>{ i18n.t('common_454') }</div>)
         } else if (billingType === 'prepaid') {
-          ret.push(<div style={{ color: '#0A1F44' }}>包年包月</div>)
+          ret.push(<div style={{ color: '#0A1F44' }}>{ i18n.t('包年包月') }</div>)
         }
         if (row.expired_at) {
           const time = vm.$moment(row.expired_at).format()
           let tooltipCon = <div slot="help"></div>
           if (billingType === 'postpaid') {
             if (hasPermission({ key: 'server_perform_cancel_expire' })) {
-              tooltipCon = <div slot="help">虚拟机会在 { time } 释放，<span class="link-color" style="cursor: pointer" onClick={ openVmSetDurationDialog }>去设置</span></div>
+              tooltipCon = <div slot="help">{ i18n.t('common_301', [time]) }<span class="link-color" style="cursor: pointer" onClick={ openVmSetDurationDialog }>{ i18n.t('common_453') }</span></div>
             } else {
-              tooltipCon = <div slot="help">虚拟机会在 { time } 释放</div>
+              tooltipCon = <div slot="help">{ i18n.t('common_301', [time]) }</div>
             }
           } else if (billingType === 'prepaid') {
             if (row.auto_renew) {
-              tooltipCon = <div slot="help">虚拟机会在 { time } 释放，到期自动续费</div>
+              tooltipCon = <div slot="help">{ i18n.t('common_301', [time]) }{ i18n.t('common_451') }</div>
             } else {
-              tooltipCon = <div slot="help">虚拟机会在 { time } 释放，到期不续费</div>
+              tooltipCon = <div slot="help">{ i18n.t('common_301', [time]) }{ i18n.t('common_452')}</div>
             }
           }
           const help = <a-tooltip>
@@ -579,7 +579,7 @@ export const getBillingTableColumn = ({
           const date = dateArr.join('')
           const seconds = vm.$moment(row.expired_at).diff(new Date()) / 1000
           const textColor = seconds / 24 / 60 / 60 < 7 ? '#DD2727' : '#53627C'
-          const text = seconds < 0 ? '已过期' : `${date.substring(0, date.length - 1)}后到期`
+          const text = seconds < 0 ? i18n.t('common_296') : i18n.t('common_297', [date.substring(0, date.length - 1)])
           ret.push(<div style={{ color: textColor }}>{ text } { help }</div>)
         }
         return ret

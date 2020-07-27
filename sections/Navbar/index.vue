@@ -2,34 +2,35 @@
   <div class="navbar-wrap d-flex align-items-center" @click.stop.prevent="handleCloseSidebar">
     <div v-if="!isHiddenMenu">
       <template v-if="authInfoLoaded && isShowMenu">
-        <a-tooltip title="导航菜单" placement="right">
-          <div class="d-flex align-items-center navbar-item-trigger justify-content-center global-map-btn ml-1" @click.stop.prevent="handleToggleSidebar">
+        <a-tooltip :title="$t('common_209')" placement="right">
+          <div class="d-flex align-items-center navbar-item-trigger justify-content-center global-map-btn ml-1 flex-shrink-0 flex-grow-0" @click.stop.prevent="handleToggleSidebar">
             <icon type="menu" style="font-size: 24px;" />
           </div>
         </a-tooltip>
       </template>
       <template v-else>
-        <div class="d-flex align-items-center h-100 navbar-item-trigger">
+        <div class="d-flex align-items-center h-100 navbar-item-trigger flex-shrink-0 flex-grow-0">
           <icon type="menu" style="font-size: 24px; cursor: default;" />
         </div>
       </template>
     </div>
-    <div class="flex-fill d-flex align-items-center h-100">
-      <div class="header-logo ml-2">
+    <div class="flex-fill d-flex align-items-center h-100 flex-shrink-0 flex-grow-0">
+      <router-link to="/" tag="div" class="header-logo ml-2">
         <img class="logo" :src="logo" />
-      </div>
-      <router-link to="/" class="header-title ml-3">管理控制台</router-link>
+      </router-link>
     </div>
     <!-- 全局搜索 -->
-    <div class="navbar-item d-flex align-items-center w-25 globar-search-wrapper" v-if="showGlobalSearch">
-      <global-search class="mx-2" />
+    <div class="navbar-item d-flex align-items-center flex-fill" v-if="showGlobalSearch">
+      <div class="globar-search-wrapper px-2">
+        <global-search />
+      </div>
     </div>
     <!-- 系统选择 -->
-    <div class="navbar-item d-flex align-items-center justify-content-end" v-if="products && showSystemChoose">
+    <div class="navbar-item d-flex align-items-center justify-content-end flex-shrink-0 flex-grow-0" v-if="products && showSystemChoose">
       <a-dropdown :trigger="['click']" :getPopupContainer="triggerNode => triggerNode.parentNode">
         <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
           <icon type="navbar-setting" />
-          <span class="ml-2 text-truncate">云管平台</span>
+          <span class="ml-2 text-truncate products-label">{{$t('common_211')}}</span>
           <icon type="caret-down" style="font-size: 24px; line-height: normal;" />
         </div>
         <a-menu slot="overlay" @click="productChange">
@@ -38,7 +39,7 @@
       </a-dropdown>
     </div>
     <!-- 视图选择 -->
-    <div class="navbar-item d-flex align-items-center justify-content-end" v-if="showViewSelection">
+    <div class="navbar-item d-flex align-items-center justify-content-end flex-shrink-0 flex-grow-0" v-if="showViewSelection">
       <a-popover
         trigger="click"
         v-model="viewChangePopoverVisible"
@@ -50,7 +51,7 @@
             <template v-if="systemProject">
               <li class="item-link" @click="() => projectChange(systemProject.id, 'system')">
                 <div class="d-flex h-100 align-items-center">
-                  <div class="flex-fill text-truncate">{{ isOperation ? '系统管理后台' : '管理后台' }}</div>
+                  <div class="flex-fill text-truncate">{{ isOperation ? $t('common_212') : $t('common_213') }}</div>
                   <div style="width: 20px;" class="ml-1">
                     <a-icon v-show="scope === 'system' && systemProject.id === userInfo.projectId" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
                   </div>
@@ -60,7 +61,7 @@
             <!-- 域管理后台 -->
             <template v-if="domainProjects && domainProjects.length">
               <li>
-                <div>{{ isOperation ? '管理后台' : `${$t('dictionary.domain')}管理后台` }}</div>
+                <div>{{ isOperation ? $t('common_213') : `${$t('dictionary.domain')}${$t('common_214')}` }}</div>
                 <ul class="list-unstyled">
                   <template v-for="item of domainProjects">
                     <li class="item-link" :key="item.id" @click="() => projectChange(item.id, 'domain')">
@@ -78,7 +79,7 @@
             <!-- 项目 -->
             <template v-if="projects && projects.length">
               <li>
-                <div>普通项目</div>
+                <div>{{$t('common_215')}}</div>
                 <ul class="list-unstyled">
                   <template v-for="item of projects">
                     <li class="item-link" :key="item.id" @click="() => projectChange(item.id, 'project')">
@@ -104,14 +105,14 @@
     </div>
     <slot name="frontNavbar" />
     <!-- 消息中心 -->
-    <notify-popover class="navbar-item" :notifyMenuTitleUsedText="notifyMenuTitleUsedText" v-if="showNotify" />
+    <notify-popover class="navbar-item flex-shrink-0 flex-grow-0" :notifyMenuTitleUsedText="notifyMenuTitleUsedText" v-if="showNotify" />
     <!-- 工单 -->
-    <work-order-popover class="navbar-item" :workOrderMenuTitleUsedText="workOrderMenuTitleUsedText" v-if="showWorkOrder && itsmServiceEnable" />
+    <work-order-popover class="navbar-item flex-shrink-0 flex-grow-0" :workOrderMenuTitleUsedText="workOrderMenuTitleUsedText" v-if="showWorkOrder && itsmServiceEnable" />
     <slot name="behindNavbar" />
     <!-- 设置 -->
-    <setting-popover class="navbar-item" :settingMenuTitleUsedText="settingMenuTitleUsedText" />
+    <setting-popover class="navbar-item flex-shrink-0 flex-grow-0" :settingMenuTitleUsedText="settingMenuTitleUsedText" />
     <!-- 帮助 -->
-    <help-popover class="navbar-item" v-if="showHelp" />
+    <help-popover class="navbar-item flex-shrink-0 flex-grow-0" v-if="showHelp" />
     <!-- 用户 -->
     <slot name="userPopover" />
   </div>
@@ -241,13 +242,13 @@ export default {
     viewLabel () {
       if (this.reLogging) return '-'
       if (this.$store.getters['auth/isAdmin']) {
-        return this.isOperation ? '系统管理后台' : '管理后台'
+        return this.isOperation ? this.$t('common_212') : this.$t('common_213')
       }
       let ret = this.userInfo.projectName || '-'
       let managerLabel = ''
       if (this.$store.getters['auth/isDomain']) {
         ret = this.userInfo.projectDomain || '-'
-        managerLabel = this.isOperation ? '管理后台' : `（${this.$t('dictionary.domain')}管理后台）`
+        managerLabel = this.isOperation ? this.$t('common_213') : this.$t('dictionary.domain') + this.$t('dictionary.common_213')
       }
       return ret + managerLabel
     },
@@ -279,33 +280,33 @@ export default {
       // 过期
       if (this.computeStatus.expired) {
         return {
-          message: `您的授权证书已过期，如您需要升级到其它版本或更新许可证，请将您的服务器识别码和升级需求发送电子邮件至 ${this.email}，我们将尽快与您联系！`,
+          message: this.$t('common_217', [this.email]),
         }
       }
       // 超过配额
       if (this.computeStatus.prohibited) {
         return {
-          message: `您的授权CPU配额已到达上限，如您需要升级到其它版本或更新许可证，请将您的服务器识别码和升级需求发送电子邮件至 ${this.email}，我们将尽快与您联系！`,
+          message: this.$t('common_218', [this.email]),
           to: 'licenses',
         }
       }
       // 即将过期
       if (this.computeStatus.expire > 0 && days < 30) {
         return {
-          message: `您的授权证书即将过期，如您需要升级到其它版本或更新许可证，请将您的服务器识别码和升级需求发送电子邮件至 ${this.email}，我们将尽快与您联系！`,
+          message: this.$t('common_219', [this.email]),
         }
       }
       // 即将超出配额
       if (this.computeStatus.exceeded) {
         return {
-          message: `您的授权CPU配额即将到达上限，如您需要升级到其它版本或更新许可证，请将您的服务器识别码和升级需求发送电子邮件至 ${this.email}，我们将尽快与您联系！`,
+          message: this.$t('common_220', [this.email]),
           to: 'licenses',
         }
       }
       // 发现未被授权的服务器
       if (this.unAuthServiceNumbers && this.unAuthServiceNumbers.length) {
         return {
-          message: `发现未被授权的服务器，您需要及时更新license，否则可能会导致系统服务不可用。请将您的服务器识别码和变更需求发送电子邮件至 ${this.email}，我们将尽快与您联系！`,
+          message: this.$t('common_221', [this.email]),
           to: 'licenses',
         }
       }
@@ -488,9 +489,9 @@ export default {
                 data: {
                   apiServer: {
                     messageOptions: [
-                      '当前配置的控制台地址为：',
+                      this.$t('common_222'),
                       ['a', { attrs: { href: apiServer } }, apiServer],
-                      '，请使用该地址访问',
+                      this.$t('common_223'),
                     ],
                     interval: 1000 * 60 * 60 * 24,
                   },
@@ -512,7 +513,7 @@ export default {
         messageOptions.push([
           'router-link',
           { class: 'ml-2', props: { to: this.licenseMessage.to } },
-          '查看详情',
+          this.$t('common_224'),
         ])
       }
       this.$store.dispatch('common/updateObject', {
@@ -535,7 +536,7 @@ export default {
         (!R.isEmpty(userInfo.projects) && !R.isNil(userInfo.projects))
       ) {
         this.createDialog('CommonDialog', {
-          header: `选择${this.$t('dictionary.project')}`,
+          header: this.$t('common_225') + this.$t('dictionary.project'),
           body: () => {
             return this.$createElement(UserProjectSelect, {
               props: {
@@ -605,9 +606,11 @@ export default {
 }
 .globar-search-wrapper {
   max-width: 450px;
+  width: 100%;
 }
 .header-logo {
   line-height: 1;
+  cursor: pointer;
   img {
     width: 45px;
   }
@@ -618,6 +621,9 @@ export default {
   font-weight: 400;
   font-size: 18px;
   color: rgba(0,0,0,.85);
+}
+.products-label {
+  max-width: 150px;
 }
 .current-view-label {
   max-width: 150px;

@@ -2,6 +2,7 @@ import { getServerConf } from '../utils'
 import { ALL_STORAGE } from '@Compute/constants'
 import { HYPERVISORS_MAP } from '@/constants'
 import BrandIcon from '@/sections/BrandIcon'
+import i18n from '@/locales'
 
 export default {
   methods: {
@@ -18,9 +19,9 @@ export default {
         }
       } catch (error) {
         this.$notification.error({
-          message: '错误提示',
+          message: i18n.t('common_426'),
           description:
-            '获取工单资源信息失败',
+            i18n.t('common_427'),
         })
         this.loaded = true
         throw error
@@ -29,11 +30,11 @@ export default {
     initServerInfo () {
       const serverInfo = [
         {
-          title: '资源信息',
+          title: i18n.t('common_385'),
           items: [
             {
               field: 'name',
-              title: '名称',
+              title: i18n.t('common_186'),
               formatter: ({ cellValue, row }) => {
                 const serverConf = getServerConf(row)
                 return serverConf.generate_name
@@ -41,7 +42,7 @@ export default {
             },
             {
               field: 'region',
-              title: '区域',
+              title: i18n.t('common_282'),
               formatter: ({ cellValue, row }) => {
                 if (row.zoneInfo && row.zoneInfo.name) {
                   return `${row.regionInfo && row.regionInfo.name} ${row.zoneInfo && row.zoneInfo.name}`
@@ -51,7 +52,7 @@ export default {
             },
             {
               field: 'hypervisor',
-              title: '平台',
+              title: i18n.t('common_283'),
               slots: {
                 default: ({ row }, h) => {
                   const serverConf = getServerConf(row)
@@ -65,25 +66,25 @@ export default {
             },
             {
               field: 'config',
-              title: '配置',
+              title: i18n.t('common_428'),
               formatter: ({ cellValue, row }) => {
                 const serverConf = getServerConf(row)
                 const cpu = serverConf.vcpu_count || (row.skuInfo && row.skuInfo.cpu_core_count)
                 const memory = serverConf.vmem_size || (row.skuInfo && row.skuInfo.memory_size_mb)
-                return `${cpu || '-'}核${(memory / 1024) || '-'}GB`
+                return (cpu || '-') + i18n.t('common_429') + ((memory / 1024) || '-') + 'GB'
               },
             },
             {
               field: 'count',
-              title: '机器数量',
+              title: i18n.t('common_430'),
               formatter: ({ cellValue, row }) => {
                 const serverConf = getServerConf(row)
-                return `${serverConf.__count__ || '1'}台`
+                return serverConf.__count__ + i18n.t('common_431')
               },
             },
             {
               field: 'sysdisks',
-              title: '系统盘',
+              title: i18n.t('common_432'),
               formatter: ({ cellValue, row }) => {
                 const serverConf = getServerConf(row)
                 return this.getDiskInfo(row, serverConf).sysDisk || '-'
@@ -91,7 +92,7 @@ export default {
             },
             {
               field: 'disks',
-              title: '数据盘',
+              title: i18n.t('common_433'),
               formatter: ({ cellValue, row }) => {
                 const serverConf = getServerConf(row)
                 return this.getDiskInfo(row, serverConf).dataDisk || '-'
@@ -126,14 +127,14 @@ export default {
                 let str = ''
                 for (const k in gpu) {
                   const n = gpu[k]
-                  str += `、${n}块（${k}）`
+                  str += i18n.t('common_434', [n, k])
                 }
                 return str.slice(1)
               },
             },
             {
               field: 'project',
-              title: `所属${this.$t('dictionary.project')}`,
+              title: i18n.t('common_152') + i18n.t('dictionary.project'),
               formatter: ({ cellValue, row }) => {
                 const v = this.variables
                 const domain = v.project_domian
@@ -144,20 +145,20 @@ export default {
             },
             {
               field: 'duration',
-              title: '到期释放',
+              title: i18n.t('common_435'),
               formatter: ({ cellValue, row }) => {
                 const serverConf = getServerConf(row)
                 const durationUnit = {
-                  h: '小时',
-                  w: '周',
-                  d: '天',
-                  m: '月',
-                  y: '年',
+                  h: i18n.t('common_11'),
+                  w: i18n.t('common_417'),
+                  d: i18n.t('common_12'),
+                  m: i18n.t('common_13'),
+                  y: i18n.t('common_14'),
                 }
                 if (serverConf.duration) {
                   const duration = parseInt(serverConf.duration)
                   const unit = serverConf.duration.substr(-1)
-                  return `创建成功后${duration}${durationUnit[unit.toLowerCase()]}释放`
+                  return i18n.t('common_436', [duration, durationUnit[unit.toLowerCase()]])
                 }
                 return '-'
               },

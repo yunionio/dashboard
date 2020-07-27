@@ -1,19 +1,19 @@
 <template>
   <base-dialog @cancel="cancelDialog" :width="400">
-    <div slot="header">更改密码</div>
+    <div slot="header">{{$t('common_135')}}</div>
     <div slot="body">
       <a-form :form="form.fc">
-        <a-form-item label="旧密码" v-bind="formItemLayout">
-          <a-input-password v-decorator="decorators.password_old" placeholder="输入旧密码" />
+        <a-form-item :label="$t('common_136')" v-bind="formItemLayout">
+          <a-input-password v-decorator="decorators.password_old" :placeholder="$t('common_137')" />
         </a-form-item>
-        <a-form-item label="新密码" v-bind="formItemLayout">
-          <a-input-password v-decorator="decorators.password_new" placeholder="输入新密码" />
+        <a-form-item :label="$t('common_138')" v-bind="formItemLayout">
+          <a-input-password v-decorator="decorators.password_new" :placeholder="$t('common_139')" />
         </a-form-item>
-        <a-form-item label="确认密码" v-bind="formItemLayout">
-          <a-input-password v-decorator="decorators.com_password" placeholder="再次输入新密码" />
+        <a-form-item :label="$t('common_140')" v-bind="formItemLayout">
+          <a-input-password v-decorator="decorators.com_password" :placeholder="$t('common_141')" />
         </a-form-item>
-        <a-form-item label="MFA安全码" v-bind="formItemLayout" v-if="userInfo.enable_mfa && userInfo.system_totp_on">
-          <a-input v-decorator="decorators.passcode" placeholder="MFA安全码" />
+        <a-form-item :label="$t('common_142')" v-bind="formItemLayout" v-if="userInfo.enable_mfa && userInfo.system_totp_on">
+          <a-input v-decorator="decorators.passcode" :placeholder="$t('common_142')" />
         </a-form-item>
       </a-form>
     </div>
@@ -35,7 +35,7 @@ export default {
   data () {
     const validatePassword = async (rule, value, callback) => {
       if (this.minPasswordLen) {
-        if (value.length < this.minPasswordLen) return callback(new Error(`最少${this.minPasswordLen}位字符`))
+        if (value.length < this.minPasswordLen) return callback(new Error(this.$t('common_143', [this.minPasswordLen])))
         return callback()
       }
       const manager = new this.$Manager('services', 'v1')
@@ -54,7 +54,7 @@ export default {
           const len = configRes.data.config && configRes.data.config.default && configRes.data.config.default.password_minimal_length
           if (len) {
             this.minPasswordLen = len
-            if (value.length < len) return callback(new Error(`最少${len}位字符`))
+            if (value.length < len) return callback(new Error(this.$t('common_143', [len])))
           }
         }
         return callback()
@@ -76,7 +76,7 @@ export default {
             validateFirst: true,
             validateTrigger: ['blur'],
             rules: [
-              { required: true, message: '旧密码不能为空' },
+              { required: true, message: this.$t('common_144') },
             ],
           },
         ],
@@ -86,7 +86,7 @@ export default {
             validateFirst: true,
             validateTrigger: ['blur'],
             rules: [
-              { required: true, message: '新密码不能为空' },
+              { required: true, message: this.$t('common_145') },
               { validator: validatePassword },
             ],
           },
@@ -97,7 +97,7 @@ export default {
             validateFirst: true,
             validateTrigger: ['blur'],
             rules: [
-              { required: true, message: '请再次输入新密码' },
+              { required: true, message: this.$t('common_146') },
               { validator: this.checkComPassword },
             ],
           },
@@ -106,7 +106,7 @@ export default {
           'passcode',
           {
             rules: [
-              { required: true, message: 'MFA安全码不能为空' },
+              { required: true, message: this.$t('common_147') },
             ],
           },
         ],
@@ -132,7 +132,7 @@ export default {
     checkComPassword (rule, value, callback) {
       const password = this.form.fc.getFieldValue('password_new')
       if (password !== value) {
-        callback(new Error('两次密码不统一'))
+        callback(new Error(this.$t('common_148')))
       }
       callback()
     },

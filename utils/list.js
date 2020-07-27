@@ -9,6 +9,7 @@ import _ from 'lodash'
 import { Manager } from '@/utils/manager'
 import storage from '@/utils/storage'
 import { isUserTag } from '@/utils/common/tag'
+import i18n from '@/locales'
 
 const STORAGE_LIST_LIMIT_KEY = '__oc_list_limit__'
 
@@ -902,10 +903,10 @@ class CreateList {
       ids = [ids]
     }
     if (!managerArgs) {
-      throw Error('managerArgs 不能为空')
+      throw Error(i18n.t('common_74'))
     }
     if (!R.is(Object, managerArgs)) {
-      throw Error('managerArgs 须为对象，对应至manager的具体方法接受的参数')
+      throw Error(i18n.t('common_75'))
     }
     const promise = this.manager[on]({ ...managerArgs }).then(res => {
       if (refreshActions.includes(on)) {

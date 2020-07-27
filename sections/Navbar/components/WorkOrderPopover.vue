@@ -2,7 +2,7 @@
   <div>
     <a-popover trigger="click" :getPopupContainer="triggerNode => triggerNode.parentNode">
       <div class="trigger d-flex align-items-center justify-content-center">
-        <span v-if="workOrderMenuTitleUsedText">工单</span>
+        <span v-if="workOrderMenuTitleUsedText">{{$t('common_198')}}</span>
         <a-badge :count="statistics" :overflowCount="99" v-else>
           <icon type="navbar-process" style="font-size: 24px;" />
         </a-badge>
@@ -10,20 +10,20 @@
       <template v-slot:content>
         <div class="work-order-wrap">
           <div class="work-order-header d-flex align-items-center">
-            <div class="flex-fill title">工单中心</div>
+            <div class="flex-fill title">{{$t('common_199')}}</div>
           </div>
-          <div class="mt-2 text-color-help" style="font-size: 12px;"><a-icon type="user" /><span class="ml-2">待处理工单</span></div>
+          <div class="mt-2 text-color-help" style="font-size: 12px;"><a-icon type="user" /><span class="ml-2">{{$t('common_200')}}</span></div>
           <ul class="work-list">
-            <li @click="goHistoricProcess">未完成的工单<a>{{workflowStatistics['nr-historic-process-instance'] || 0}}</a>条</li>
-            <li @click="goProcessTask">待我审批<a>{{workflowStatistics['nr-process-task'] || 0}}</a>条</li>
+            <li @click="goHistoricProcess">{{$t('common_201')}}<a>{{workflowStatistics['nr-historic-process-instance'] || 0}}</a>{{$t('common_202')}}</li>
+            <li @click="goProcessTask">{{$t('common_203')}}<a>{{workflowStatistics['nr-process-task'] || 0}}</a>{{$t('common_202')}}</li>
           </ul>
           <template v-if="!isAdminMode && isShowWorkflow">
-            <div class="mt-2 text-color-help" style="font-size: 12px;"><a-icon type="plus" /><span class="ml-2">新建工单</span></div>
+            <div class="mt-2 text-color-help" style="font-size: 12px;"><a-icon type="plus" /><span class="ml-2">{{$t('common_204')}}</span></div>
             <ul class="work-list">
-              <li @click="joinProjectHandle" v-if="projectEnabled">申请加入{{ $t('dictionary.project') }}</li>
-              <li @click="customeServiceHandle" v-if="customerServiceEnabled">申请技术支持</li>
-              <li @click="applyProjectQuotaHandle" v-if="projectQuotaEnabled">申请{{ $t('dictionary.project') }}配额</li>
-              <li @click="applyDomainQuotaHandle" v-if="isDomainMode && domainQuotaEnabled">申请{{ $t('dictionary.domain') }}配额</li>
+              <li @click="joinProjectHandle" v-if="projectEnabled">{{$t('common_205')}}{{$t('dictionary.project')}} }}</li>
+              <li @click="customeServiceHandle" v-if="customerServiceEnabled">{{$t('common_206')}}</li>
+              <li @click="applyProjectQuotaHandle" v-if="projectQuotaEnabled">{{$t('common_207')}}{{$t('dictionary.project')}}{{$t('common_208')}}</li>
+              <li @click="applyDomainQuotaHandle" v-if="isDomainMode && domainQuotaEnabled">{{$t('common_207')}}{{$t('dictionary.domain')}}{{$t('common_208')}}</li>
             </ul>
           </template>
         </div>
