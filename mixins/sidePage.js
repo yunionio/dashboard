@@ -202,9 +202,11 @@ export default {
       })
     },
     compareStatusWithList (data) {
-      const detailStatus = data.status
-      const listStatus = this.listRowData.status
-      if (detailStatus && listStatus && detailStatus !== listStatus) {
+      const detailStatus = {}
+      const listStatus = {}
+      Object.keys(this.steadyStatus).forEach(key => { detailStatus[key] = data[key] })
+      Object.keys(this.steadyStatus).forEach(key => { listStatus[key] = this.listRowData[key] })
+      if (detailStatus && listStatus && !R.equals(detailStatus, listStatus)) {
         this.singleRefresh(data[this.idKey], this.steadyStatus)
       }
     },
