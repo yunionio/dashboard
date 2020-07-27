@@ -1,6 +1,6 @@
 <template>
   <base-dialog :width="900" @cancel="cancelDialog">
-    <div slot="header">修改权限</div>
+    <div slot="header">{{$t('db.text_203')}}</div>
     <a-form :form="form.fc" class="mt-3" slot="body">
       <dialog-selected-tips :name="$t('dictionary.dbinstanceaccounts')" :action="params.title" :count="params.data.length" />
       <dialog-table :columns="params.columns.slice(0, 3)" :data="params.data" />
@@ -50,7 +50,7 @@ export default {
             initialValue: initialValues.name,
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('db.text_136') },
               { validator: validateForm('serverName') },
             ],
           },
@@ -59,7 +59,7 @@ export default {
           'account_privilege',
           {
             initialValue: 'read',
-            rules: [{ required: true, message: '请输入名称' }],
+            rules: [{ required: true, message: this.$t('db.text_136') }],
           },
         ],
         password: [
@@ -67,7 +67,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入密码' },
+              { required: true, message: this.$t('db.text_207') },
               { validator: passwordValidator },
             ],
           },
@@ -77,7 +77,7 @@ export default {
           {
             initialValue: initialValues.ip_list,
             rules: [
-              { required: true, message: '请再次确认密码' },
+              { required: true, message: this.$t('db.text_208') },
               { validator: this.rulesCheckPassword },
             ],
           },
@@ -90,7 +90,7 @@ export default {
     rulesCheckPassword (rule, value, callback) {
       const form = this.form.fc
       if (value && value !== form.getFieldValue('password')) {
-        callback(new Error('两次输入的密码不一致'))
+        callback(new Error(this.$t('db.text_209')))
       } else {
         callback()
       }

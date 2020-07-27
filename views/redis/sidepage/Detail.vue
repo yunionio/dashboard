@@ -39,10 +39,10 @@ export default {
       ],
       extraInfo: [
         {
-          title: '数据库信息',
+          title: this.$t('db.text_166'),
           items: [
             {
-              title: '类型版本',
+              title: this.$t('db.text_112'),
               slots: {
                 default: ({ row }) => {
                   return `${row.engine || ''} ${row.engine_version || ''}`
@@ -50,7 +50,7 @@ export default {
               },
             },
             {
-              title: '节点类型',
+              title: this.$t('db.text_271'),
               slots: {
                 default: ({ row }) => {
                   return NODE_TYPE[row.node_type]
@@ -58,7 +58,7 @@ export default {
               },
             },
             {
-              title: '性能类型',
+              title: this.$t('db.text_272'),
               slots: {
                 default: ({ row }) => {
                   return PERFORMANCE_TYPE[row.performance_type] || '-'
@@ -66,7 +66,7 @@ export default {
               },
             },
             {
-              title: '可维护时间段',
+              title: this.$t('db.text_167'),
               slots: {
                 default: ({ row }) => {
                   if (row.maintain_start_time && row.maintain_end_time) {
@@ -78,7 +78,7 @@ export default {
             },
             {
               field: 'instance_type',
-              title: '实例规格',
+              title: this.$t('db.text_168'),
             },
             {
               field: 'cpu_arch',
@@ -91,11 +91,11 @@ export default {
             },
             {
               field: 'arch_type',
-              title: '储存架构',
+              title: this.$t('db.text_322'),
             },
             {
               field: 'capacity_mb',
-              title: '内存',
+              title: this.$t('db.text_132'),
               slots: {
                 default: ({ row }) => {
                   return sizestr(row.capacity_mb, 'M', 1024)
@@ -105,11 +105,11 @@ export default {
           ],
         },
         {
-          title: '链接信息',
+          title: this.$t('db.text_171'),
           items: [
             {
               field: 'private_ip_addr',
-              title: '内网地址',
+              title: this.$t('db.text_172'),
               slots: {
                 default: ({ row }) => {
                   const pri = row.private_dns || row.private_ip_addr
@@ -122,14 +122,14 @@ export default {
             },
             {
               field: 'public_ip_addr',
-              title: '外网地址',
+              title: this.$t('db.text_173'),
               slots: {
                 default: ({ row }) => {
                   const pub = row.public_dns || row.public_ip_addr
                   const port = row.public_connect_port
-                  const btnTxt = port ? '关闭外网地址' : '开启外网地址'
+                  const btnTxt = port ? this.$t('db.text_174') : this.$t('db.text_175')
                   const isRunning = row.status === 'running'
-                  const notRunninTip = !isRunning ? '仅运行中的实例支持此操作' : null
+                  const notRunninTip = !isRunning ? this.$t('db.text_156') : null
                   let RenderSwitchBtn = null
                   if (isRunning) {
                     RenderSwitchBtn = (<a-button type="link" onClick={() => this.handleSwitchPublicAddress(!port)}>{btnTxt}</a-button>)
@@ -163,7 +163,7 @@ export default {
             },
             {
               field: 'network',
-              title: '子网',
+              title: this.$t('db.text_176'),
               slots: {
                 default: ({ row }) => {
                   return row.network || '-'
@@ -172,21 +172,21 @@ export default {
             },
             {
               field: 'auth_mode',
-              title: '访问方式',
+              title: this.$t('db.text_323'),
               slots: {
                 default: ({ row }) => {
-                  return row.auth_mode === 'on' ? '密码访问' : '免密访问'
+                  return row.auth_mode === 'on' ? this.$t('db.text_324') : this.$t('db.text_325')
                 },
               },
             },
           ],
         },
         {
-          title: '其他信息',
+          title: this.$t('db.text_179'),
           items: [
             getSwitchTableColumn({
               field: 'disable_delete',
-              title: '删除保护',
+              title: this.$t('db.text_145'),
               change: val => {
                 this.onManager('update', {
                   id: this.data.id,
@@ -224,12 +224,12 @@ export default {
     handleSwitchPublicAddress (bool) {
       const txts = {
         true: {
-          title: '确认开启外网地址？',
-          content: '开启外网地址后将外网IP设置白名单即可访问',
+          title: this.$t('db.text_180'),
+          content: this.$t('db.text_326'),
         },
         false: {
-          title: '确认关闭外网地址？',
-          content: '关闭外网地址后外网IP将无法访问',
+          title: this.$t('db.text_181'),
+          content: this.$t('db.text_182'),
         },
       }
       this.createDialog('ConfirmDialog', {

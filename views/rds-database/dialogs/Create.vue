@@ -2,18 +2,18 @@
   <base-dialog @cancel="cancelDialog" :width="900">
     <div slot="header">{{params.title}}</div>
     <a-form slot="body" :form="form.fc" class="mt-3">
-      <a-form-item  v-bind="formItemLayout" label="数据库名称">
+      <a-form-item  v-bind="formItemLayout" :label="$t('db.text_232')">
         <a-input :placeholder="$t('validator.dbName')" v-decorator="decorators.name" />
       </a-form-item>
-      <a-form-item  v-bind="formItemLayout" label="字符集">
-        <a-select allowClear showSearch placeholder="请选择字符集" v-decorator="decorators.character_set">
+      <a-form-item  v-bind="formItemLayout" :label="$t('db.text_233')">
+        <a-select allowClear showSearch :placeholder="$t('db.text_234')" v-decorator="decorators.character_set">
           <a-select-option
             v-for="item in CHARACTER_SET"
             :key="item"
             :value="item">{{ item }}</a-select-option>
         </a-select>
       </a-form-item>
-      <a-form-item v-bind="formItemLayout" label="账号" v-if="this.params.rdsItem.brand !== 'Google'">
+      <a-form-item v-bind="formItemLayout" :label="$t('db.text_188')" v-if="this.params.rdsItem.brand !== 'Google'">
         <database-privileges :rdsItem="params.rdsItem" />
       </a-form-item>
     </a-form>
@@ -68,7 +68,7 @@ export default {
             initialValue: initialValues.name,
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('db.text_136') },
               { validator: validateForm('dbName') },
             ],
           },
@@ -77,7 +77,7 @@ export default {
           'character_set',
           {
             initialValue: 'utf8',
-            rules: [{ required: true, message: '请选择字符集' }],
+            rules: [{ required: true, message: this.$t('db.text_234') }],
           },
         ],
       }

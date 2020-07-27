@@ -2,6 +2,7 @@ import { ENGINE_ARCH } from '../constants/index.js'
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { sizestr } from '@/utils/utils'
 import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getNameDescriptionTableColumn, getBrandTableColumn, getTagTableColumn, getBillingTableColumn } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -20,7 +21,7 @@ export default {
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'elasticcache', columns: () => this.columns }),
       {
         field: 'arch_type',
-        title: '实例类型',
+        title: i18n.t('db.text_119'),
         width: 100,
         slots: {
           default: ({ row }) => {
@@ -31,7 +32,7 @@ export default {
       },
       {
         field: 'instance_type',
-        title: '配置',
+        title: i18n.t('db.text_109'),
         width: 50,
         slots: {
           default: ({ row }) => {
@@ -41,7 +42,7 @@ export default {
       },
       {
         field: 'engine',
-        title: '类型版本',
+        title: i18n.t('db.text_112'),
         width: 100,
         slots: {
           default: ({ row }) => {
@@ -51,7 +52,7 @@ export default {
       },
       {
         field: 'password',
-        title: '密码',
+        title: i18n.t('db.text_195'),
         width: 50,
         slots: {
           default: ({ row }) => {
@@ -61,7 +62,7 @@ export default {
       },
       {
         field: 'private_dns',
-        title: '链接地址',
+        title: i18n.t('db.text_152'),
         minWidth: 200,
         showOverflow: 'ellipsis',
         slots: {
@@ -85,15 +86,15 @@ export default {
               )
             }
             return [
-              connection('内网', pri),
-              connection('外网', pub),
+              connection(i18n.t('db.text_153'), pri),
+              connection(i18n.t('db.text_154'), pub),
             ]
           },
         },
       },
       {
         field: 'private_connect_port',
-        title: '端口',
+        title: i18n.t('db.text_303'),
         width: 100,
         slots: {
           default: ({ row }) => {
@@ -113,7 +114,7 @@ export default {
       },
       {
         field: 'account',
-        title: '云账号',
+        title: i18n.t('db.text_67'),
         minWidth: 100,
         slots: {
           default: ({ row }) => {

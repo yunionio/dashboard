@@ -8,7 +8,7 @@
       <dialog-selected-tips :name="$t('dictionary.elasticcaches')" :count="params.data.length" :action="params.title" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <!-- <a-form :form="form.fc">
-        <a-form-item label="计费方式" v-bind="formItemLayout">
+        <a-form-item :label="$t('db.text_54')" v-bind="formItemLayout">
           <a-radio-group v-decorator="['duration', {initialValue: (params.data && params.data.length > 0) ? (params.data[0].duration || '1M') : '1M' }]">
               <a-radio-button
                 :key="item.value"
@@ -56,7 +56,7 @@ export default {
           'boot_order',
           {
             rules: [
-              { required: true, message: '请选择启动介质' },
+              { required: true, message: this.$t('db.text_148') },
             ],
           },
         ],
@@ -67,9 +67,9 @@ export default {
     alertMsg () {
       const data = this.params.data[0]
       if (data.auth_mode !== 'on') {
-        return '关闭免密访问后，应用程序必须通过用户名/密码认证访问Redis，请确认应用程序的连接方式，以免对业务系统造成影响'
+        return this.$t('db.text_292')
       } else {
-        return '数据库Redis支持在VPC网络内的免密访问，开启成功后可以通过免认证的方式访问Redis，设置免密后可以支持VPC内的服务器免认证访问Redis，免密访问具有安全隐患，请及时关闭'
+        return this.$t('db.text_293')
       }
     },
   },

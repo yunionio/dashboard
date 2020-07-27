@@ -1,18 +1,18 @@
 <template>
     <base-dialog @cancel="cancelDialog">
-        <div slot="header">创建账号</div>
+        <div slot="header">{{$t('db.text_282')}}</div>
         <a-form slot="body" :form="form.fc" class="mt-3">
-            <a-form-item  v-bind="formItemLayout" label="账户名称">
+            <a-form-item  v-bind="formItemLayout" :label="$t('db.text_283')">
                 <a-input :placeholder="$t('validator.dbName')" v-decorator="decorators.name" />
             </a-form-item>
-            <a-form-item v-bind="formItemLayout" label="权限设置">
+            <a-form-item v-bind="formItemLayout" :label="$t('db.text_284')">
                <a-radio-group v-decorator="decorators.account_privilege">
                   <a-radio v-for="k in Object.keys(privileges)" :key="k" :value="k">
                     {{privileges[k]}}
                   </a-radio>
               </a-radio-group>
             </a-form-item>
-            <a-form-item label="密码" v-bind="formItemLayout">
+            <a-form-item :label="$t('db.text_195')" v-bind="formItemLayout">
               <server-password :loginTypes="loginTypes" :decorator="decorators.loginConfig" :form="form" />
             </a-form-item>
         </a-form>
@@ -61,7 +61,7 @@ export default {
             initialValue: initialValues.name,
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('db.text_136') },
               { validator: validateForm('dbName') },
             ],
           },
@@ -70,7 +70,7 @@ export default {
           'account_privilege',
           {
             initialValue: 'read',
-            rules: [{ required: true, message: '请输入名称' }],
+            rules: [{ required: true, message: this.$t('db.text_136') }],
           },
         ],
         password: [
@@ -78,7 +78,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入密码' },
+              { required: true, message: this.$t('db.text_207') },
               { validator: passwordValidator },
             ],
           },
@@ -88,7 +88,7 @@ export default {
           {
             initialValue: initialValues.ip_list,
             rules: [
-              { required: true, message: '请再次确认密码' },
+              { required: true, message: this.$t('db.text_208') },
               { validator: this.rulesCheckPassword },
             ],
           },
@@ -109,7 +109,7 @@ export default {
     rulesCheckPassword (rule, value, callback) {
       const form = this.form.fc
       if (value && value !== form.getFieldValue('password')) {
-        callback(new Error('两次输入的密码不一致'))
+        callback(new Error(this.$t('db.text_209')))
       } else {
         callback()
       }

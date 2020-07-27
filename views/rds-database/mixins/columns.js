@@ -1,5 +1,6 @@
 import { RDS_ACCOUNT_PRIVILEGES } from '@DB/constants'
 import { getStatusTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -17,7 +18,7 @@ export default {
       getStatusTableColumn({ statusModule: 'rdsDatabase' }),
       {
         field: 'dbinstanceprivileges',
-        title: '已授权的账户',
+        title: i18n.t('db.text_235'),
         minWidth: 200,
         slots: {
           default: ({ row }) => {

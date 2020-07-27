@@ -6,19 +6,17 @@
             <dialog-selected-tips :name="$t('dictionary.elasticcaches')" :count="params.data.length" :action="params.title" />
             <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
           </template>
-          <a-form-item v-bind="formItemLayout" label="名称">
+          <a-form-item v-bind="formItemLayout" :label="$t('db.text_60')">
             <template v-if="params.data && params.data.length > 0">
               {{params.data[0].name}}
             </template>
             <a-input v-else :placeholder="$t('validator.dbName')" v-decorator="decorators.name" />
           </a-form-item>
-          <a-form-item v-bind="formItemLayout" label="IP地址/地段名">
-            <a-textarea placeholder="例：10.10.10.1 或者 10.10.0.0/10"
+          <a-form-item v-bind="formItemLayout" :label="$t('db.text_294')">
+            <a-textarea :placeholder="$t('db.text_295')"
               :autosize="{ minRows: 4, maxRows: 7 }"
               v-decorator="decorators['ip_list']" />
-              <div style="line-height:20px;color:#999">有多个IP地址/地址段，请用“，”进行分割。每个实例最多添加20个IP地址/地址段，请用“，”进行分割。每个实例最多添加20个IP地址
-                ，您还可以添加<b style="color:#666">{{20 - (this.params.allIPList.length + (this.form.fc.getFieldValue('ip_list') ? this.form.fc.getFieldValue('ip_list').split(',').length : 0))}}</b>个IP地址/地址段
-              </div>
+              <div style="line-height:20px;color:#999">{{$t('db.text_296')}}<b style="color:#666">{{20 - (this.params.allIPList.length + (this.form.fc.getFieldValue('ip_list') ? this.form.fc.getFieldValue('ip_list').split(',').length : 0))}}</b>{{$t('db.text_297')}}</div>
           </a-form-item>
         </a-form>
          <div slot="footer">
@@ -39,7 +37,7 @@ export default {
   data () {
     return {
       loading: false,
-      title: '新建',
+      title: this.$t('db.text_41'),
       form: {
         fc: this.$form.createForm(this),
       },
@@ -60,7 +58,7 @@ export default {
             initialValue: initialValues.name,
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('db.text_136') },
               { validator: validateForm('dbName') },
             ],
           },
@@ -72,7 +70,7 @@ export default {
             validateFirst: true,
             validateTrigger: 'blur',
             rules: [
-              { required: true, message: '请添加IP地址/地段名' },
+              { required: true, message: this.$t('db.text_298') },
               { validator: this.validateIps },
             ],
           },
@@ -99,19 +97,19 @@ export default {
         const ips = [...this.params.allIPList, ...value.split(',')]
         const ipsLength = ips.length
         if (ipsLength >= 20) {
-          _callback('每个实例最多添加20个IP地址/地址段')
+          _callback(this.$t('db.text_299'))
         }
         for (let i = 0; i < ipsLength; i++) {
           const _item = ips[i]
           const [_ip, _u] = _item.split('/')
           if (_ip && !REG_IP.test(_ip)) {
-            _callback(`${_item}格式不对`)
+            _callback(this.$t('db.text_300', [_item]))
           }
           if (_u && !REG_NUM.test(_u)) {
-            _callback(`地址段${_u}只能是数字`)
+            _callback(this.$t('db.text_301', [_u]))
           }
           if (ips && ips.indexOf(_item, (i + 1)) > -1) {
-            return _callback(`实例中不允许出现重复IP“${_item}”`)
+            return _callback(this.$t('db.text_302', [_item]))
           }
         }
         this.ipsLength = ipsLength

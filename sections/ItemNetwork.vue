@@ -1,7 +1,7 @@
 <template>
   <network-selects
     ref="NETWORK"
-    label="网络"
+    :label="$t('db.text_32')"
     :isDefaultFetch="false"
     :vpcFormat="vpcFormat"
     :vpcParams="getVpcParams"

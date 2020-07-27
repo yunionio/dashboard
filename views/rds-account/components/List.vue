@@ -50,7 +50,7 @@ export default {
         getStatusTableColumn({ statusModule: 'rdsAccount' }),
         {
           field: 'password',
-          title: '密码',
+          title: this.$t('db.text_195'),
           minWidth: 100,
           slots: {
             default: ({ row }) => {
@@ -59,9 +59,9 @@ export default {
           },
         },
         {
-          field: '已授权的数据库',
+          field: this.$t('db.text_194'),
           minWidth: 200,
-          title: '权限',
+          title: this.$t('db.text_196'),
           slots: {
             default: ({ row }) => {
               if (row.dbinstanceprivileges && row.dbinstanceprivileges.length > 0) {
@@ -75,11 +75,11 @@ export default {
       ],
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('db.text_41'),
           action: () => {
             this.createDialog('RDSAccountCreateDialog', {
               list: this.list,
-              title: '新建账号',
+              title: this.$t('db.text_197'),
               rdsItem: this.data,
             })
           },
@@ -90,19 +90,19 @@ export default {
               if (!isRunning) {
                 return {
                   validate: false,
-                  tooltip: '仅在运行中状态下支持新建操作',
+                  tooltip: this.$t('db.text_198'),
                 }
               }
               if (engine === 'SQLServer' && provider === 'Huawei') {
                 return {
                   validate: false,
-                  tooltip: 'SQLServer数据库引擎，暂不支持此操作',
+                  tooltip: this.$t('db.text_199'),
                 }
               }
               if (engine === 'PostgreSQL' && provider === 'Huawei') {
                 return {
                   validate: false,
-                  tooltip: '华为云PostgreSQL数据库引擎，暂不支持此操作',
+                  tooltip: this.$t('db.text_200'),
                 }
               }
               return {
@@ -119,7 +119,7 @@ export default {
       ],
       singleActions: [
         {
-          label: '重置密码',
+          label: this.$t('db.text_201'),
           action: (obj) => {
             this.createDialog('RedisAccountLisResetPwdDialog', {
               data: [obj],
@@ -131,17 +131,17 @@ export default {
             if (this.commonMeta.isHuawei) {
               return {
                 validate: false,
-                tooltip: '华为云不支持此操作',
+                tooltip: this.$t('db.text_202'),
               }
             }
             return this.commonMeta
           },
         },
         {
-          label: '修改权限',
+          label: this.$t('db.text_203'),
           action: (obj) => {
             this.createDialog('RDSAccountUpdatePrivilegeDialog', {
-              title: '修改权限',
+              title: this.$t('db.text_203'),
               initialValues: {
                 account_privilege: obj.account_privilege,
               },
@@ -156,13 +156,13 @@ export default {
             if (isHuawei && obj.name === 'root') {
               return {
                 validate: false,
-                tooltip: '华为云主账号不支持此操作',
+                tooltip: this.$t('db.text_204'),
               }
             }
             if (isGoogle) {
               return {
                 validate: false,
-                tooltip: '谷歌云不支持此操作',
+                tooltip: this.$t('db.text_205'),
               }
             }
             return {
@@ -171,12 +171,12 @@ export default {
           },
         },
         {
-          label: '删除',
+          label: this.$t('db.text_42'),
           action: (obj) => {
             this.createDialog('RedisWhiteListDeleteDialog', {
               data: [obj],
               columns: this.columns,
-              title: '删除账号',
+              title: this.$t('db.text_206'),
               list: this.list,
             })
           },
@@ -199,7 +199,7 @@ export default {
       const isGoogle = this.data.brand === 'Google'
       let tooltip = ''
       if (!isRunning) {
-        tooltip = '仅在运行中状态下支持新建操作'
+        tooltip = this.$t('db.text_198')
       }
       return {
         isRunning,

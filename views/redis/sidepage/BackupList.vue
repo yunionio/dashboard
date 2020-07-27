@@ -43,12 +43,12 @@ export default {
           //   ],
           // },
           backup_mode: {
-            label: '备份类型',
+            label: this.$t('db.text_36'),
             dropdown: true,
             multiple: true,
             items: [
-              { label: '手动备份', key: 'manual' },
-              { label: '自动备份', key: 'automated' },
+              { label: this.$t('db.text_316'), key: 'manual' },
+              { label: this.$t('db.text_317'), key: 'automated' },
             ],
           },
         },
@@ -57,17 +57,17 @@ export default {
         getCopyWithContentTableColumn(),
         {
           field: 'backup_mode',
-          title: '备份类型',
+          title: this.$t('db.text_36'),
           width: 100,
           slots: {
             default: ({ row }) => {
-              return row.backup_mode === 'manual' ? '手动备份' : '自动备份'
+              return row.backup_mode === 'manual' ? this.$t('db.text_316') : this.$t('db.text_317')
             },
           },
         },
         {
           field: 'engine',
-          title: '类型版本',
+          title: this.$t('db.text_112'),
           width: 100,
           slots: {
             default: ({ row }) => {
@@ -77,7 +77,7 @@ export default {
         },
         {
           field: 'backup_size_mb',
-          title: '大小',
+          title: this.$t('db.text_38'),
           width: 100,
           slots: {
             default: ({ row }) => {
@@ -88,7 +88,7 @@ export default {
         getBrandTableColumn(),
         getStatusTableColumn({ statusModule: 'redisBackup' }),
         {
-          title: '备份开始/结束时间',
+          title: this.$t('db.text_39'),
           minWidth: 150,
           slots: {
             default: ({ row }) => {
@@ -106,7 +106,7 @@ export default {
       ],
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('db.text_41'),
           action: () => {
             this.createDialog('BackupListCreate', {
               list: this.list,
@@ -122,11 +122,11 @@ export default {
             // }
             if (this.data.brand === 'Huawei') {
               validate = false
-              tooltip = '华为云暂时不支持此操作'
+              tooltip = this.$t('db.text_318')
             }
             if (this.data.status !== 'running') {
               validate = false
-              tooltip = '仅运行中的实例支持此操作'
+              tooltip = this.$t('db.text_156')
             }
             return {
               buttonType: 'primary',
@@ -138,7 +138,7 @@ export default {
       ],
       singleActions: [
         {
-          label: '恢复',
+          label: this.$t('db.text_45'),
           action: (obj) => {
             this.createDialog('RedisBackupResumeDialog', {
               data: [obj],
@@ -151,11 +151,11 @@ export default {
             let tooltip = ''
             if (this.data.brand === 'Huawei' && this.data.arch_type === 'single') {
               validate = false
-              tooltip = '华为云基础版不支持此操作'
+              tooltip = this.$t('db.text_319')
             }
             if (row.status !== 'running' && row.status !== 'success') {
               validate = false
-              tooltip = '仅正常状态下的备份支持此操作'
+              tooltip = this.$t('db.text_320')
             }
             return {
               validate,
@@ -171,7 +171,7 @@ export default {
       const isHuawei = this.data.brand === 'Huawei'
       return {
         validate: !isHuawei,
-        tooltip: isHuawei ? '华为云不支持创建白名单' : null,
+        tooltip: isHuawei ? this.$t('db.text_321') : null,
       }
     },
   },

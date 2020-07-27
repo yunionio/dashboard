@@ -11,14 +11,14 @@
     <template v-else>
       <a-alert
         v-if="brand !== 'huawei'"
-        message="当前云厂商暂未对接"
+        :message="$t('db.text_183')"
         class="mb-2"
-        description="目前仅阿里云和华为云支持查看监控数据"
+        :description="$t('db.text_184')"
         type="warning" />
       <a-alert
         v-if="brand === 'huawei'"
         message=""
-        description="华为云RDS监控调用接口正在完善中,目前无法调取数据,后续开放我们会支持数据展示,请知悉"
+        :description="$t('db.text_185')"
         type="warning" />
     </template>
   </div>
@@ -145,7 +145,7 @@ export default {
           let label = ''
           if (fromItem === 'disk') {
             tag = 'path'
-            label = '路径: '
+            label = this.$t('db.text_186')
           }
           const columns = ['time']
           const values = series[0].values.map(val => [val[0]])

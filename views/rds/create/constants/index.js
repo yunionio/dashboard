@@ -1,4 +1,5 @@
 import validateForm from '@/utils/validate'
+import i18n from '@/locales'
 
 export const DECORATORS = {
   duration: {
@@ -21,7 +22,7 @@ export const DECORATORS = {
       {
         initialValue: undefined,
         rules: [
-          { required: true, message: '请选择项目', trigger: 'change' },
+          { required: true, message: i18n.t('db.text_134'), trigger: 'change' },
         ],
       },
     ],
@@ -30,7 +31,7 @@ export const DECORATORS = {
       {
         initialValue: undefined,
         rules: [
-          { required: true, message: '请选择域', trigger: 'change' },
+          { required: true, message: i18n.t('db.text_135'), trigger: 'change' },
         ],
       },
     ],
@@ -42,7 +43,7 @@ export const DECORATORS = {
       validateTrigger: ['change', 'blur'],
       validateFirst: true,
       rules: [
-        { required: true, message: '请输入名称' },
+        { required: true, message: i18n.t('db.text_136') },
         { validator: validateForm('resourceCreateName') },
       ],
     },
@@ -59,7 +60,7 @@ export const DECORATORS = {
       {
         initialValue: undefined, // { key: '', label: '' }
         rules: [
-          { validator: true, message: '请选择关联密钥' },
+          { validator: true, message: i18n.t('db.text_137') },
         ],
       },
     ],
@@ -75,7 +76,7 @@ export const DECORATORS = {
       'secgroup',
       {
         rules: [
-          { required: true, message: '请选择安全组' },
+          { required: true, message: i18n.t('db.text_138') },
         ],
       },
     ],

@@ -8,10 +8,10 @@
       <a-form
         class="mt-3"
         :form="form.fc">
-        <a-form-item label="删除保护" v-bind="formItemLayout">
+        <a-form-item :label="$t('db.text_145')" v-bind="formItemLayout">
           <a-radio-group  v-decorator="decorators.disable_delete">
-            <a-radio :value="true">启用</a-radio>
-            <a-radio :value="false">禁用</a-radio>
+            <a-radio :value="true">{{$t('db.text_146')}}</a-radio>
+            <a-radio :value="false">{{$t('db.text_147')}}</a-radio>
           </a-radio-group>
         </a-form-item>
       </a-form>

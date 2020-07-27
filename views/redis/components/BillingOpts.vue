@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-form-item label="计费方式" v-bind="formItemLayout">
+    <a-form-item :label="$t('db.text_54')" v-bind="formItemLayout">
       <a-radio-group v-decorator="decorators['billing_type']">
         <a-radio-button
           :key="key"

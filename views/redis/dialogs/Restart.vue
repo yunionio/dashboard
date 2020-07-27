@@ -49,7 +49,7 @@ export default {
         }
         this.cancelDialog()
         this.params.refresh()
-        this.$message.success('操作成功')
+        this.$message.success(this.$t('db.text_149'))
       } catch (error) {
         this.loading = false
         throw error

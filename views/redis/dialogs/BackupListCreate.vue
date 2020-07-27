@@ -1,13 +1,13 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">创建备份</div>
+    <div slot="header">{{$t('db.text_287')}}</div>
     <a-form slot="body" :form="form.fc" class="mt-3">
-      <a-form-item v-bind="formItemLayout" label="名称">
-        <a-input placeholder="以字母开头，由小写字母，数字、下划线组成。长度不超过16个字符" v-decorator="decorators.name" />
+      <a-form-item v-bind="formItemLayout" :label="$t('db.text_60')">
+        <a-input :placeholder="$t('db.text_288')" v-decorator="decorators.name" />
         <name-repeated v-slot:extra res="dbinstancebackups" :name="form.fc.getFieldValue('name')" />
       </a-form-item>
-      <a-form-item v-bind="formItemLayout" label="描述">
-        <a-textarea placeholder="请输入描述信息"
+      <a-form-item v-bind="formItemLayout" :label="$t('db.text_219')">
+        <a-textarea :placeholder="$t('db.text_220')"
         :autosize="{ minRows: 4, maxRows: 7 }"
         v-decorator="decorators.description" />
       </a-form-item>
@@ -52,7 +52,7 @@ export default {
             initialValue: initialValues.name,
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('db.text_136') },
               { validator: validateForm('serverName') },
             ],
           },
@@ -62,7 +62,7 @@ export default {
           {
             initialValue: initialValues.ip_list,
             rules: [
-              { max: 200, message: '长度不能大于200' },
+              { max: 200, message: this.$t('db.text_289') },
             ],
           },
         ],
@@ -74,7 +74,7 @@ export default {
     rulesCheckPassword (rule, value, callback) {
       const form = this.form.fc
       if (value && value !== form.getFieldValue('password')) {
-        callback(new Error('两次输入的密码不一致'))
+        callback(new Error(this.$t('db.text_209')))
       } else {
         callback()
       }

@@ -1,10 +1,11 @@
 import { disableDeleteAction } from '@/utils/common/tableActions'
+import i18n from '@/locales'
 
 export default {
   created () {
     this.singleActions = [
       {
-        label: '同步状态',
+        label: i18n.t('db.text_69'),
         action: (obj) => {
           this.onManager('performAction', {
             steadyStatus: 'running',
@@ -14,22 +15,22 @@ export default {
             },
           }).then(ret => {
             if (ret.status === 200) {
-              this.$message.success('操作成功')
+              this.$message.success(i18n.t('db.text_149'))
             }
           })
         },
       },
       {
-        label: '更多',
+        label: i18n.t('db.text_155'),
         actions: (obj) => {
           const isRunning = obj.status.toLowerCase() === 'running'
-          const notRunninTip = !isRunning ? '仅运行中的实例支持此操作' : null
+          const notRunninTip = !isRunning ? i18n.t('db.text_156') : null
           return [
             {
-              label: '重启',
+              label: i18n.t('db.text_70'),
               action: () => {
                 this.createDialog('RDSRestartdialog', {
-                  title: '重启',
+                  title: i18n.t('db.text_70'),
                   data: [obj],
                   columns: this.columns,
                   onManager: this.onManager,
@@ -44,10 +45,10 @@ export default {
               },
             },
             {
-              label: '续费',
+              label: i18n.t('db.text_157'),
               action: () => {
                 this.createDialog('RedisRenewDialog', {
-                  title: '续费',
+                  title: i18n.t('db.text_157'),
                   data: [obj],
                   columns: this.columns,
                   onManager: this.onManager,
@@ -59,15 +60,15 @@ export default {
                 const validate = (isRunning && isPrepaid)
                 return {
                   validate: validate,
-                  tooltip: notRunninTip || (!isPrepaid ? '仅包年包月的实例支持此操作' : null),
+                  tooltip: notRunninTip || (!isPrepaid ? i18n.t('db.text_158') : null),
                 }
               },
             },
             {
-              label: '调整配置',
+              label: i18n.t('db.text_159'),
               action: () => {
                 this.createDialog('RSDSetConfig', {
-                  title: '调整配置',
+                  title: i18n.t('db.text_159'),
                   data: [obj],
                   columns: this.columns,
                   onManager: this.onManager,
@@ -82,10 +83,10 @@ export default {
               },
             },
             {
-              label: `更改${this.$t('dictionary.project')}`,
+              label: i18n.t('db.text_160', [i18n.t('dictionary.project')]),
               action: () => {
                 this.createDialog('ChangeOwenrDialog', {
-                  title: `更改${this.$t('dictionary.project')}`,
+                  title: i18n.t('db.text_160', [i18n.t('dictionary.project')]),
                   data: [obj],
                   columns: this.columns,
                   onManager: this.onManager,
@@ -96,7 +97,7 @@ export default {
               },
             },
             {
-              label: '到期释放',
+              label: i18n.t('db.text_71'),
               action: () => {
                 this.createDialog('SetDurationDialog', {
                   data: [obj],
@@ -112,7 +113,7 @@ export default {
                   tooltip: null,
                 }
                 if (obj.billing_type === 'prepaid') {
-                  ret.tooltip = '包年包月机器，不支持此操作'
+                  ret.tooltip = i18n.t('db.text_72')
                   return ret
                 }
                 ret.validate = true
@@ -123,12 +124,12 @@ export default {
               name: this.$t('dictionary.dbinstances'),
             }),
             {
-              label: '删除',
+              label: i18n.t('db.text_42'),
               permission: 'rds_dbinstances_delete',
               action: () => {
                 this.createDialog('DeleteResDialog', {
                   vm: this,
-                  title: '删除',
+                  title: i18n.t('db.text_42'),
                   data: [obj],
                   columns: this.columns,
                   onManager: this.onManager,
@@ -140,9 +141,9 @@ export default {
                 let tooltip = ''
                 const seconds = this.$moment(obj.expired_at).diff(new Date()) / 1000
                 if (obj.disable_delete) {
-                  tooltip = '请点击修改属性禁用删除保护后重试'
+                  tooltip = i18n.t('db.text_161')
                 } else if (obj.billing_type === 'prepaid' && seconds > 0) {
-                  tooltip = '实例未到期不允许删除'
+                  tooltip = i18n.t('db.text_75')
                 }
                 return {
                   validate: !tooltip,

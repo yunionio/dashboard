@@ -1,12 +1,13 @@
+import i18n from '@/locales'
 
 export default {
   created () {
     this.singleActions = [
       {
-        label: '恢复',
+        label: i18n.t('db.text_45'),
         action: (obj) => {
           this.createDialog('RDSBackupRecovery', {
-            title: '恢复',
+            title: i18n.t('db.text_45'),
             data: [obj],
             columns: this.columns,
             onManager: this.onManager,
@@ -16,12 +17,12 @@ export default {
         meta: (obj) => {
           return {
             validate: obj.status === 'ready',
-            tooltip: obj.status !== 'ready' ? '正常状态下的备份，才可恢复' : '',
+            tooltip: obj.status !== 'ready' ? i18n.t('db.text_224') : '',
           }
         },
       },
       {
-        label: '同步状态',
+        label: i18n.t('db.text_69'),
         action: obj => {
           this.onManager('performAction', {
             steadyStatus: ['running', 'ready'],
@@ -36,12 +37,12 @@ export default {
         }),
       },
       {
-        label: '删除',
+        label: i18n.t('db.text_42'),
         permission: 'rds_dbinstancebackups_delete',
         action: (obj) => {
           this.createDialog('DeleteResDialog', {
-            title: '删除',
-            name: '备份',
+            title: i18n.t('db.text_42'),
+            name: i18n.t('db.text_44'),
             data: [obj],
             columns: this.columns,
             onManager: this.onManager,
@@ -52,7 +53,7 @@ export default {
           if (this.data.brand === 'Aliyun') {
             return {
               validate: false,
-              tooltip: '阿里云平台不支持此操作',
+              tooltip: i18n.t('db.text_214'),
             }
           }
           return {

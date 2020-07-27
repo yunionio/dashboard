@@ -41,12 +41,12 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'detail' },
-        { label: '账号', key: 'account-list' },
-        { label: '数据库管理', key: 'database-list' },
-        { label: '备份管理', key: 'backup-list' },
-        { label: '监控', key: 'monitor' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('db.text_187'), key: 'detail' },
+        { label: this.$t('db.text_188'), key: 'account-list' },
+        { label: this.$t('db.text_189'), key: 'database-list' },
+        { label: this.$t('db.text_190'), key: 'backup-list' },
+        { label: this.$t('db.text_191'), key: 'monitor' },
+        { label: this.$t('db.text_192'), key: 'event-drawer' },
       ],
     }
   },

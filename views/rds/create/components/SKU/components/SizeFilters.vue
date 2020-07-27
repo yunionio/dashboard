@@ -1,16 +1,16 @@
 <template>
   <div>
-    <a-form-item label="CPU核数" v-bind="formItemLayout">
+    <a-form-item :label="$t('db.text_131')" v-bind="formItemLayout">
       <a-radio-group v-decorator="['vcpu_count']" @change="getMemsMb">
-        <a-radio-button :key="cpu" :value="cpu" v-for="cpu in cpus">{{cpu}}核</a-radio-button>
+        <a-radio-button :key="cpu" :value="cpu" v-for="cpu in cpus">{{$t('db.text_125', [cpu])}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-form-item label="内存" v-bind="formItemLayout">
+    <a-form-item :label="$t('db.text_132')" v-bind="formItemLayout">
       <a-radio-group v-decorator="['vmem_size_mb']" @change="$emit('change')">
         <a-radio-button :key="size" :value="size" v-for="size in mems_mbs">{{sizestr(size, 'M', 1024)}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-form-item label="可用区" v-bind="formItemLayout">
+    <a-form-item :label="$t('db.text_133')" v-bind="formItemLayout">
       <slot name="zone" v-if="$slots.zone" />
       <a-radio-group v-else v-decorator="['zones']" @change="$emit('change')">
         <a-radio-button :key="id" :value="id" v-for="(zone, id) of zones">{{zone}}</a-radio-button>

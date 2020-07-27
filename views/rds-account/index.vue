@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="账号" />
+    <page-header :title="$t('db.text_188')" />
     <page-body>
       <rds-list />
     </page-body>

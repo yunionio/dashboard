@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="实例列表" />
+    <page-header :title="$t('db.text_150')" />
     <page-body>
       <rds-list :id="listId" />
     </page-body>

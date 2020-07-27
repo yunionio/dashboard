@@ -18,7 +18,7 @@ export default {
       baseInfo: [
         {
           field: 'dbinstanceprivileges',
-          title: '已授权的账户',
+          title: this.$t('db.text_235'),
           slots: {
             default: ({ row }) => {
               if (row.dbinstanceprivileges && row.dbinstanceprivileges.length > 0) {

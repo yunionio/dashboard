@@ -1,21 +1,21 @@
 <template>
   <div v-if="dbInstance">
-     <a-form-item label="数据库引擎" v-bind="formItemLayout">
+     <a-form-item :label="$t('db.text_57')" v-bind="formItemLayout">
       <a-radio-group v-decorator="['engine']" :disabled="!!disableds.engine" @change="getVersion">
         <a-radio-button :key="engine" :value="engine" v-for="(value, engine) of engines">{{engine}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-form-item label="数据库版本" v-bind="formItemLayout">
+    <a-form-item :label="$t('db.text_63')" v-bind="formItemLayout">
       <a-radio-group v-decorator="['engine_version']" :disabled="!!disableds.engine_version" @change="getCategory">
         <a-radio-button :key="key" :value="key" v-for="key in engine_versions"> {{versionCn(key)}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-form-item label="实例类型" v-bind="formItemLayout">
+    <a-form-item :label="$t('db.text_119')" v-bind="formItemLayout">
       <a-radio-group v-decorator="['category']"  @change="getStorage" :disabled="!!disableds.category">
         <a-radio-button :key="key" :value="key" v-for="key in categorys">{{formatCategoryLabel(key)}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-form-item label="存储类型" v-bind="formItemLayout">
+    <a-form-item :label="$t('db.text_120')" v-bind="formItemLayout">
       <a-radio-group v-decorator="['storage_type']" @change="handleStorage" :disabled="!!disableds.storage_type">
         <a-radio-button :key="item" :value="item" v-for="item of storage_types">{{formatStorageLabel(item)}}</a-radio-button>
       </a-radio-group>

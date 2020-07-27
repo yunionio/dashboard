@@ -45,7 +45,7 @@ export default {
         const date = dateArr.join('')
         const seconds = this.$moment(row.expired_at).diff(new Date()) / 1000
         const textColor = seconds / 24 / 60 / 60 < 7 ? '#DD2727' : '#53627C'
-        const text = seconds < 0 ? '已过期' : `${date.substring(0, date.length - 1)}后到期`
+        const text = seconds < 0 ? this.$t('db.text_162') : this.$t('db.text_163', [date.substring(0, date.length - 1)])
         ret.push(<div style={{ color: textColor }}>{text}</div>)
       }
       return ret
@@ -54,7 +54,7 @@ export default {
       baseInfo: [
         getBrandTableColumn(),
         {
-          title: '计费方式',
+          title: this.$t('db.text_54'),
           slots: {
             default: ({ row }) => {
               return formatPostpaid(row)
@@ -63,7 +63,7 @@ export default {
         },
         {
           field: 'region',
-          title: '区域',
+          title: this.$t('db.text_40'),
           slots: {
             default: ({ row }) => {
               if (!row.region_id) return row.region || '-'
@@ -88,7 +88,7 @@ export default {
         },
         {
           field: 'zone',
-          title: '可用区',
+          title: this.$t('db.text_133'),
           slots: {
             default: ({ row }) => {
               const ret = []
@@ -99,7 +99,7 @@ export default {
                 if (!value) break
                 ret.push(
                   <div>
-                    {value}({i > 1 ? '备' : '主'})
+                    {value}({i > 1 ? this.$t('db.text_164') : this.$t('db.text_165')})
                   </div>,
                 )
               }
@@ -110,11 +110,11 @@ export default {
       ],
       extraInfo: [
         {
-          title: '数据库信息',
+          title: this.$t('db.text_166'),
           items: [
             {
               field: 'engine',
-              title: '数据库引擎',
+              title: this.$t('db.text_57'),
               slots: {
                 default: ({ row }) => {
                   return `${row.engine} ${row.engine_version}`
@@ -123,19 +123,19 @@ export default {
             },
             {
               field: 'maintain_time',
-              title: '可维护时间段',
+              title: this.$t('db.text_167'),
             },
             {
               field: 'instance_type',
-              title: '实例规格',
+              title: this.$t('db.text_168'),
             },
             {
               field: 'iops',
-              title: '最大IOPS',
+              title: this.$t('db.text_169'),
             },
             {
               field: 'category',
-              title: '实例类型',
+              title: this.$t('db.text_119'),
               slots: {
                 default: ({ row }) => {
                   return DBINSTANCE_CATEGORY[row.category] || row.category || '-'
@@ -144,7 +144,7 @@ export default {
             },
             {
               field: 'storage_type',
-              title: '存储类型',
+              title: this.$t('db.text_120'),
               slots: {
                 default: ({ row }) => {
                   return DBINSTANCE_STORAGE_TYPE[row.storage_type] || row.storage_type || '-'
@@ -156,13 +156,13 @@ export default {
               title: 'CPU',
               slots: {
                 default: ({ row }) => {
-                  return `${row.vcpu_count} 核`
+                  return this.$t('db.text_170', [row.vcpu_count])
                 },
               },
             },
             {
               field: 'vmem_size_mb',
-              title: '内存',
+              title: this.$t('db.text_132'),
               slots: {
                 default: ({ row }) => {
                   return sizestr(row.vmem_size_mb, 'M', 1024)
@@ -172,11 +172,11 @@ export default {
           ],
         },
         {
-          title: '链接信息',
+          title: this.$t('db.text_171'),
           items: [
             {
               field: 'internal_connection_str',
-              title: '内网地址',
+              title: this.$t('db.text_172'),
               slots: {
                 default: ({ row }) => {
                   if (row.internal_connection_str) {
@@ -188,13 +188,13 @@ export default {
             },
             {
               field: 'connection_str',
-              title: '外网地址',
+              title: this.$t('db.text_173'),
               slots: {
                 default: ({ row }) => {
                   const addr = row.connection_str
-                  const btnTxt = addr ? '关闭外网地址' : '开启外网地址'
+                  const btnTxt = addr ? this.$t('db.text_174') : this.$t('db.text_175')
                   const isRunning = row.status === 'running'
-                  const notRunninTip = !isRunning ? '仅运行中的实例支持此操作' : null
+                  const notRunninTip = !isRunning ? this.$t('db.text_156') : null
                   let RenderSwitchBtn = null
                   // 华为云不支持开启外网地址和关闭外网地址
                   if (row.provider !== 'Huawei') {
@@ -227,7 +227,7 @@ export default {
             },
             {
               field: 'network',
-              title: '子网',
+              title: this.$t('db.text_176'),
               slots: {
                 default: ({ row }) => {
                   return row.network || '-'
@@ -236,7 +236,7 @@ export default {
             },
             {
               field: 'secgroup',
-              title: '安全组',
+              title: this.$t('db.text_144'),
               slots: {
                 default: ({ row }) => {
                   return row.secgroup || '-'
@@ -246,25 +246,25 @@ export default {
           ],
         },
         {
-          title: '存储/备份统计',
+          title: this.$t('db.text_177'),
           items: [
             {
               field: 'disk_size_gb',
-              title: '存储空间',
+              title: this.$t('db.text_116'),
               slots: {
                 default: ({ row }) => {
-                  return `共 ${row.disk_size_gb}G`
+                  return this.$t('db.text_178', [row.disk_size_gb])
                 },
               },
             },
           ],
         },
         {
-          title: '其他信息',
+          title: this.$t('db.text_179'),
           items: [
             getSwitchTableColumn({
               field: 'disable_delete',
-              title: '删除保护',
+              title: this.$t('db.text_145'),
               change: val => {
                 this.onManager('update', {
                   id: this.data.id,
@@ -283,11 +283,11 @@ export default {
     handleSwitchPublicAddress (bool) {
       const txts = {
         true: {
-          title: '确认开启外网地址？',
+          title: this.$t('db.text_180'),
         },
         false: {
-          title: '确认关闭外网地址？',
-          content: '关闭外网地址后外网IP将无法访问',
+          title: this.$t('db.text_181'),
+          content: this.$t('db.text_182'),
         },
       }
       this.createDialog('ConfirmDialog', {

@@ -27,10 +27,11 @@ import * as R from 'ramda'
 import { NODE_TYPE, BILL_TYPES_MAP } from '@DB/views/redis/constants'
 import PageListEmpty from '@/components/PageList/Loader'
 import { sizestr } from '@/utils/utils'
+import i18n from '@/locales'
 
 const ELASTIC_CACHE_STORAGE_TYPE = {
-  inmemory: '内存',
-  hybrid: '混合存储',
+  inmemory: i18n.t('db.text_132'),
+  hybrid: i18n.t('db.text_277'),
 }
 export default {
   name: 'SKUList',
@@ -51,7 +52,7 @@ export default {
       skuDecorator: [
         'sku',
         {
-          rules: [{ required: true, message: '请选择套餐' }],
+          rules: [{ required: true, message: this.$t('db.text_258') }],
         },
       ],
     }
@@ -71,14 +72,14 @@ export default {
     tableColumn () {
       const column = [
         { type: 'radio', width: 40 },
-        { field: 'name', title: '规格' },
+        { field: 'name', title: this.$t('db.text_123') },
         {
           field: 'provider',
-          title: '平台',
+          title: this.$t('db.text_51'),
         },
         {
           field: 'node_type',
-          title: '节点类型',
+          title: this.$t('db.text_271'),
           slots: {
             default: ({ row }) => {
               return NODE_TYPE[row.node_type] || row.node_type
@@ -87,7 +88,7 @@ export default {
         },
         {
           field: 'memory_size_mb',
-          title: '内存(GB)',
+          title: this.$t('db.text_278'),
           sortable: true,
           slots: {
             default: ({ row }) => {
@@ -98,7 +99,7 @@ export default {
         { field: 'cpu_arch', title: 'CPU' },
         {
           field: 'storage_type',
-          title: '存储架构',
+          title: this.$t('db.text_279'),
           slots: {
             default: ({ row }) => {
               const gb = row.disk_size_gb ? <span class='warning-color'>（{`${row.disk_size_gb}G`}）</span> : null
@@ -111,10 +112,10 @@ export default {
             },
           },
         },
-        { field: 'max_connections', title: '最大链接数', sortable: true },
+        { field: 'max_connections', title: this.$t('db.text_127'), sortable: true },
         {
           field: 'rate',
-          title: '价格',
+          title: this.$t('db.text_128'),
           sortable: true,
           slots: {
             default: ({ row: { rate } }) => {
@@ -124,10 +125,10 @@ export default {
               const isPackage = this.form.getFieldValue('billing_type') === BILL_TYPES_MAP.prepaid.key
               if (rate) {
                 let price = rate.hour_price
-                let unit = '小时'
+                let unit = this.$t('db.text_129')
                 if (isPackage) {
                   price = rate.month_price
-                  unit = '月'
+                  unit = this.$t('db.text_130')
                 }
                 return [
                   <span style="color: rgb(230, 139, 80);">{ price.toFixed(2) }</span>,

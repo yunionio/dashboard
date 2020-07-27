@@ -1,16 +1,16 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">修改属性</div>
+    <div slot="header">{{$t('db.text_290')}}</div>
     <div slot="body">
       <dialog-selected-tips :name="$t('dictionary.elasticcaches')" :count="params.data.length" :action="params.title" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         class="mt-3"
         :form="form.fc">
-        <a-form-item label="删除保护" v-bind="formItemLayout">
+        <a-form-item :label="$t('db.text_145')" v-bind="formItemLayout">
           <a-radio-group  v-decorator="decorators.disable_delete">
-            <a-radio :value="true">启用</a-radio>
-            <a-radio :value="false">禁用</a-radio>
+            <a-radio :value="true">{{$t('db.text_146')}}</a-radio>
+            <a-radio :value="false">{{$t('db.text_147')}}</a-radio>
           </a-radio-group>
         </a-form-item>
       </a-form>
@@ -75,7 +75,7 @@ export default {
           },
         })
         this.cancelDialog()
-        this.$message.success('操作成功')
+        this.$message.success(this.$t('db.text_149'))
       } catch (error) {
         this.loading = false
         throw error

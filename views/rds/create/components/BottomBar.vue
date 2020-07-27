@@ -22,7 +22,7 @@
     <template v-slot:right>
        <div class="d-flex align-items-center">
           <div class="mr-4 d-flex align-items-center">
-            <div class="text-truncate">费用估算：</div>
+            <div class="text-truncate">{{$t('db.text_108')}}</div>
             <div class="ml-2 prices">
               <div class="hour text-truncate">
                 <template v-if="price">
@@ -36,7 +36,7 @@
           </div>
       </div>
       <div class="btns-wrapper d-flex align-items-center">
-        <a-button @click="doCreate" :loading="loading" type="primary" class="ml-3">新建</a-button>
+        <a-button @click="doCreate" :loading="loading" type="primary" class="ml-3">{{$t('db.text_41')}}</a-button>
       </div>
     </template>
   </page-footer>
@@ -74,15 +74,15 @@ export default {
       const { sku = {} } = this.values
       const ret = [
         [
-          { label: '名称', labelClass: 'label-w-50', value: this.values.generate_name, valueClass: 'name-value' },
-          { label: '区域', labelClass: 'label-w-50', value: sku.region },
+          { label: this.$t('db.text_60'), labelClass: 'label-w-50', value: this.values.generate_name, valueClass: 'name-value' },
+          { label: this.$t('db.text_40'), labelClass: 'label-w-50', value: sku.region },
         ],
         [
-          { label: '配置', labelClass: 'label-w-80', value: `${sizestr(sku.vmem_size_mb, 'M', 1024)}内存` },
-          { label: '系列', labelClass: 'label-w-50', value: sku.name },
+          { label: this.$t('db.text_109'), labelClass: 'label-w-80', value: this.$t('db.text_110', [sizestr(sku.vmem_size_mb, 'M', 1024)]) },
+          { label: this.$t('db.text_111'), labelClass: 'label-w-50', value: sku.name },
         ],
         [
-          { label: '类型版本', labelClass: 'label-w-80', value: `${this.values.engine || '-'}${this.values.engine_version || ''}` },
+          { label: this.$t('db.text_112'), labelClass: 'label-w-80', value: `${this.values.engine || '-'}${this.values.engine_version || ''}` },
         ],
       ]
       return ret
@@ -131,11 +131,11 @@ export default {
         if (this.isPackage && this.durationNum) {
           const _day = (this.price / 30 / this.durationNum).toFixed(2)
           const _hour = numerify((parseFloat(_day) / 24), '0,0.00')
-          return `(合${this.currency}${_day}/天  ${this.currency}${_hour}/小时)`
+          return this.$t('db.text_113', [this.currency, _day, this.currency, _hour])
         } else {
           const _day = numerify(this.price * 24, '0,0.00')
           const _month = numerify(this.priceTotal.month_price, '0,0.00')
-          return `(合${this.currency}${_day}/天 ${this.currency}${_month}/月)`
+          return this.$t('db.text_114', [this.currency, _day, this.currency, _month])
         }
       }
       return '--'
@@ -152,7 +152,7 @@ export default {
   methods: {
     formatToPrice (val) {
       let ret = `${this.currency} ${numerify(val, '0,0.00')}`
-      ret += !this.isPackage ? ' / 时' : ''
+      ret += !this.isPackage ? this.$t('db.text_115') : ''
       return ret
     },
     async _getPrice () {

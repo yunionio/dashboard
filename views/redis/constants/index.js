@@ -1,51 +1,52 @@
 
 import validateForm, { isRequired } from '@/utils/validate'
+import i18n from '@/locales'
 
 // 公有云计费方式配置选项
 export const BILL_TYPES_MAP = {
   postpaid: {
-    label: '按量付费',
+    label: i18n.t('db.text_55'),
     key: 'postpaid',
   },
   prepaid: {
-    label: '包年包月',
+    label: i18n.t('db.text_56'),
     key: 'prepaid',
   },
 }
 
 export const BUY_DURATIONS_OPTIONS = [
   {
-    label: '1个月',
+    label: i18n.t('db.text_240'),
     value: '1M',
     unit: 'M',
   },
   {
-    label: '2个月',
+    label: i18n.t('db.text_241'),
     value: '2M',
     unit: 'M',
   },
   {
-    label: '3个月',
+    label: i18n.t('db.text_242'),
     value: '3M',
     unit: 'M',
   },
   {
-    label: '半年',
+    label: i18n.t('db.text_243'),
     value: '6M',
     unit: 'M',
   },
   {
-    label: '1年',
+    label: i18n.t('db.text_244'),
     value: '1Y',
     unit: 'Y',
   },
   {
-    label: '2年',
+    label: i18n.t('db.text_245'),
     value: '2Y',
     unit: 'Y',
   },
   {
-    label: '3年',
+    label: i18n.t('db.text_246'),
     value: '3Y',
     unit: 'Y',
   },
@@ -53,35 +54,35 @@ export const BUY_DURATIONS_OPTIONS = [
 
 // 账号权限
 export const ACCOUNT_PRIVILEGES = {
-  read: '只读',
-  write: '读写',
-  repl: '复制',
+  read: i18n.t('db.text_6'),
+  write: i18n.t('db.text_5'),
+  repl: i18n.t('db.text_247'),
 }
 
 export const ENGINE_KEYS = ['single', 'master', 'cluster', 'rwsplit']
 // Elasticache机型翻译
 export const ENGINE_ARCH = {
-  single: '基础版',
-  master: '高可用',
-  cluster: '集群',
-  rwsplit: '读写分离',
+  single: i18n.t('db.text_76'),
+  master: i18n.t('db.text_77'),
+  cluster: i18n.t('db.text_248'),
+  rwsplit: i18n.t('db.text_249'),
 }
 
 export const NODE_KEYS = ['single', 'double', 'readone', 'readthree', 'readfive']
 // 节点类型翻译
 export const NODE_TYPE = {
-  readthree: '只读节点（3个）',
-  readone: '只读节点（1个）',
-  readfive: '只读节点（5个）',
-  single: '单副本',
-  double: '双副本',
+  readthree: i18n.t('db.text_250'),
+  readone: i18n.t('db.text_251'),
+  readfive: i18n.t('db.text_252'),
+  single: i18n.t('db.text_253'),
+  double: i18n.t('db.text_254'),
 }
 
 export const PERFORMANCE_TYPE_KEYS = ['standard', 'enhanced']
 // 性能类型
 export const PERFORMANCE_TYPE = {
-  standard: '标准性能',
-  enhanced: '增强性能',
+  standard: i18n.t('db.text_255'),
+  enhanced: i18n.t('db.text_256'),
 }
 
 // capbilit接口所需要的参数
@@ -114,7 +115,7 @@ export const DECORATORS = {
       {
         initialValue: undefined,
         rules: [
-          { required: true, message: '请选择项目', trigger: 'change' },
+          { required: true, message: i18n.t('db.text_134'), trigger: 'change' },
         ],
       },
     ],
@@ -123,7 +124,7 @@ export const DECORATORS = {
       {
         initialValue: undefined,
         rules: [
-          { required: true, message: '请选择域', trigger: 'change' },
+          { required: true, message: i18n.t('db.text_135'), trigger: 'change' },
         ],
       },
     ],
@@ -135,7 +136,7 @@ export const DECORATORS = {
       validateTrigger: ['change', 'blur'],
       validateFirst: true,
       rules: [
-        { required: true, message: '请输入名称' },
+        { required: true, message: i18n.t('db.text_136') },
         { validator: validateForm('serverName') },
       ],
     },
@@ -145,7 +146,7 @@ export const DECORATORS = {
     {
       initialValue: 1,
       rules: [
-        { required: true, message: '请输入数量' },
+        { required: true, message: i18n.t('db.text_257') },
       ],
     },
   ],
@@ -159,7 +160,7 @@ export const DECORATORS = {
     'sku',
     {
       rules: [
-        { required: true, message: '请选择套餐' },
+        { required: true, message: i18n.t('db.text_258') },
       ],
     },
   ],
@@ -169,7 +170,7 @@ export const DECORATORS = {
       {
         initialValue: { key: '', label: '' },
         rules: [
-          { validator: isRequired(), message: '请选择区域' },
+          { validator: isRequired(), message: i18n.t('db.text_259') },
         ],
       },
     ],
@@ -178,7 +179,7 @@ export const DECORATORS = {
       {
         initialValue: { key: '', label: '' },
         rules: [
-          { validator: isRequired(), message: '请选择可用区' },
+          { validator: isRequired(), message: i18n.t('db.text_260') },
         ],
       },
     ],
@@ -209,7 +210,7 @@ export const DECORATORS = {
       {
         initialValue: undefined, // { key: '', label: '' }
         rules: [
-          { validator: true, message: '请选择关联密钥' },
+          { validator: true, message: i18n.t('db.text_137') },
         ],
       },
     ],
@@ -220,7 +221,7 @@ export const DECORATORS = {
       {
         initialValue: undefined,
         rules: [
-          { required: true, message: '请选择VPC' },
+          { required: true, message: i18n.t('db.text_261') },
         ],
       },
     ],
@@ -229,7 +230,7 @@ export const DECORATORS = {
       {
         initialValue: undefined,
         rules: [
-          { required: true, message: '请选择IP子网' },
+          { required: true, message: i18n.t('db.text_262') },
         ],
       },
     ],

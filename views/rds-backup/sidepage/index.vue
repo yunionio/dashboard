@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="RDS备份管理"
+    :title="$t('db.text_228')"
     icon="res-rds-backup"
     :res-name="detailData.name"
     :tabs="detailTabs"
@@ -33,8 +33,8 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'rds-backup-detail' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('db.text_187'), key: 'rds-backup-detail' },
+        { label: this.$t('db.text_192'), key: 'event-drawer' },
       ],
     }
   },

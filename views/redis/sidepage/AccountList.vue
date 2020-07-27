@@ -40,7 +40,7 @@ export default {
         getStatusTableColumn({ statusModule: 'redisAccount' }),
         {
           field: 'password',
-          title: '密码',
+          title: this.$t('db.text_195'),
           width: 100,
           slots: {
             default: ({ row }) => {
@@ -50,17 +50,17 @@ export default {
         },
         {
           field: 'account_type',
-          title: '账号类型',
+          title: this.$t('db.text_309'),
           minWidth: 100,
           slots: {
             default: ({ row }) => {
-              return row.account_type === 'admin' ? '管理员' : '普通账号'
+              return row.account_type === 'admin' ? this.$t('db.text_310') : this.$t('db.text_311')
             },
           },
         },
         {
           field: 'ip',
-          title: '权限',
+          title: this.$t('db.text_196'),
           minWidth: 150,
           slots: {
             default: ({ row }) => {
@@ -71,7 +71,7 @@ export default {
       ],
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('db.text_41'),
           action: () => {
             this.createDialog('RedisAccountDialog', {
               list: this.list,
@@ -83,11 +83,11 @@ export default {
             let tooltip = ''
             if (this.data.brand === 'Huawei') {
               validate = false
-              tooltip = '华为云不支持此操作'
+              tooltip = this.$t('db.text_202')
             }
             if (this.data.brand === 'Aliyun' && this.data.engine_version === '2.8') {
               validate = false
-              tooltip = '阿里云Redis2.8不支持此操作'
+              tooltip = this.$t('db.text_312')
             }
             return {
               buttonType: 'primary',
@@ -99,7 +99,7 @@ export default {
       ],
       singleActions: [
         {
-          label: '重置密码',
+          label: this.$t('db.text_201'),
           action: (obj) => {
             this.createDialog('RedisAccountLisResetPwdDialog', {
               data: [obj],
@@ -111,10 +111,10 @@ export default {
           meta: () => this.commonMeta,
         },
         {
-          label: '修改权限',
+          label: this.$t('db.text_203'),
           action: (obj) => {
             this.createDialog('RedisAccountListSetPrivilegeDialog', {
-              title: '修改权限',
+              title: this.$t('db.text_203'),
               initialValues: {
                 account_privilege: obj.account_privilege,
               },
@@ -128,17 +128,17 @@ export default {
             const isAdmin = obj.account_type === 'admin'
             return {
               validate: this.commonMeta.validate && !isAdmin,
-              tooltip: this.commonMeta.tooltip || (isAdmin ? '阿里云主账号不支持此操作' : null),
+              tooltip: this.commonMeta.tooltip || (isAdmin ? this.$t('db.text_313') : null),
             }
           },
         },
         {
-          label: '删除',
+          label: this.$t('db.text_42'),
           action: (obj) => {
             this.createDialog('RedisWhiteListDeleteDialog', {
               data: [obj],
               columns: this.columns,
-              title: '删除白名单',
+              title: this.$t('db.text_314'),
               list: this.list,
             })
           },
@@ -146,10 +146,10 @@ export default {
             const isHuawei = this.data.brand === 'Huawei'
             let tooltip = ''
             if (isHuawei) {
-              tooltip = '华为云不支持此操作'
+              tooltip = this.$t('db.text_202')
             }
             if (obj.account_type === 'admin') {
-              tooltip = '主账号不允许删除'
+              tooltip = this.$t('db.text_315')
             }
             return {
               validate: !tooltip,
@@ -165,7 +165,7 @@ export default {
       const isHuawei = this.data.brand === 'Huawei'
       return {
         validate: !isHuawei,
-        tooltip: isHuawei ? '华为云不支持此操作' : null,
+        tooltip: isHuawei ? this.$t('db.text_202') : null,
       }
     },
   },

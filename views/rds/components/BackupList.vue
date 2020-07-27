@@ -11,9 +11,10 @@ import { getStatusTableColumn, getNameDescriptionTableColumn } from '@/utils/com
 import WindowsMixin from '@/mixins/windows'
 import expectStatus from '@/constants/expectStatus'
 import { sizestr } from '@/utils/utils'
+import i18n from '@/locales'
 const BACKUP_TYPE = {
-  automated: '自动',
-  manual: '手动',
+  automated: i18n.t('db.text_33'),
+  manual: i18n.t('db.text_34'),
 }
 export default {
   name: 'RDSBAckupList',
@@ -46,11 +47,11 @@ export default {
         }),
         {
           field: 'dbinstance',
-          title: '实例名称',
+          title: this.$t('db.text_35'),
         },
         {
           field: 'backup_mode',
-          title: '备份类型',
+          title: this.$t('db.text_36'),
           slots: {
             default: ({ row }) => {
               return BACKUP_TYPE[row.backup_mode]
@@ -59,7 +60,7 @@ export default {
         },
         {
           id: 'engine',
-          title: '数据库类型',
+          title: this.$t('db.text_37'),
           slots: {
             default: ({ row }) => {
               return `${row.engine || ''} ${row.engine_version || ''}`
@@ -68,7 +69,7 @@ export default {
         },
         {
           id: 'backup_size_mb',
-          title: '大小',
+          title: this.$t('db.text_38'),
           slots: {
             default: ({ row }) => {
               return sizestr(row.backup_size_mb, 'M', 1024)
@@ -78,7 +79,7 @@ export default {
         getStatusTableColumn({ statusModule: 'rdsBackup' }),
         // getBrandTableColumn(),
         {
-          title: '备份开始/结束时间',
+          title: this.$t('db.text_39'),
           slots: {
             default: ({ row }) => {
               return `${this.$moment(row.start_time).format()} / ${this.$moment(row.end_time).format()}`
@@ -87,7 +88,7 @@ export default {
         },
         {
           id: 'region',
-          title: '区域',
+          title: this.$t('db.text_40'),
           slots: {
             default: ({ row }) => {
               return row.region
@@ -97,7 +98,7 @@ export default {
       ],
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('db.text_41'),
           action: () => {
             this.createDialog('RDSBackupCreate', {
               list: this.list,
@@ -110,15 +111,15 @@ export default {
           },
         },
         {
-          label: '删除',
+          label: this.$t('db.text_42'),
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,
               data: this.list.selectedItems,
               columns: this.columns,
-              title: '删除备份',
+              title: this.$t('db.text_43'),
               list: this.list,
-              name: '备份',
+              name: this.$t('db.text_44'),
             })
           },
           meta: () => this.$getDeleteResult(this.list.selectedItems),
@@ -126,10 +127,10 @@ export default {
       ],
       singleActions: [
         {
-          label: '恢复',
+          label: this.$t('db.text_45'),
           action: (obj) => {
             this.createDialog('RDSBackupRecovery', {
-              title: '恢复',
+              title: this.$t('db.text_45'),
               data: [obj],
               columns: this.columns,
               list: this.list,
@@ -137,11 +138,11 @@ export default {
           },
         },
         {
-          label: '删除',
+          label: this.$t('db.text_42'),
           action: (obj) => {
             this.createDialog('DeleteResDialog', {
               vm: this,
-              title: '删除',
+              title: this.$t('db.text_42'),
               data: [obj],
               columns: this.columns,
             })

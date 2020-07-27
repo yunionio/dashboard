@@ -20,8 +20,8 @@
       <p slot="help">
         {{
           formatSku
-          ? `已选择: ${formatSku}`
-          : '请选择套餐'
+          ? $t('db.text_121', [formatSku])
+          : $t('db.text_339')
         }}
       </p>
     </a-form-item>
@@ -56,7 +56,7 @@ export default {
     formatSku () {
       if (this.selectedSku) {
         const { name, vmem_size_mb, iops, vcpu_count } = this.selectedSku
-        return `${name} （${vcpu_count}核, ${sizestr(vmem_size_mb, 'M', 1024)}, IOPS:${iops}）`
+        return this.$t('db.text_122', [name, vcpu_count, sizestr(vmem_size_mb, 'M', 1024), iops])
       }
       return ''
     },
@@ -68,7 +68,7 @@ export default {
         },
         {
           field: 'name',
-          title: '规格',
+          title: this.$t('db.text_123'),
           minWidth: 200,
           slots: {
             default: ({ row }) => {
@@ -81,18 +81,18 @@ export default {
         },
         {
           field: 'vcpu_count',
-          title: 'CPU(核)',
+          title: this.$t('db.text_124'),
           sortable: true,
           minWidth: 200,
           slots: {
             default: ({ row }) => {
-              return `${row.vcpu_count}核`
+              return this.$t('db.text_125', [row.vcpu_count])
             },
           },
         },
         {
           field: 'vmem_size_mb',
-          title: '内存（GB）',
+          title: this.$t('db.text_126'),
           sortable: true,
           minWidth: 200,
           slots: {
@@ -103,7 +103,7 @@ export default {
         },
         {
           field: 'max_connections',
-          title: '最大链接数',
+          title: this.$t('db.text_127'),
           minWidth: 140,
           sortable: true,
         },
@@ -115,7 +115,7 @@ export default {
         },
         {
           field: 'rate',
-          title: '价格',
+          title: this.$t('db.text_128'),
           sortable: true,
           minWidth: 140,
           slots: {
@@ -126,10 +126,10 @@ export default {
               const isPackage = this.form.getFieldValue('billing_type') === BILL_TYPES_MAP.prepaid.key
               if (rate) {
                 let price = rate.hour_price
-                let unit = '小时'
+                let unit = this.$t('db.text_129')
                 if (isPackage) {
                   price = rate.month_price
-                  unit = '月'
+                  unit = this.$t('db.text_130')
                 }
                 const currencys = {
                   USD: '$',

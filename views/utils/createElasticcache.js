@@ -18,6 +18,7 @@ import { IMAGES_TYPE_MAP } from '@/constants/compute'
 import { HYPERVISORS_MAP } from '@/constants'
 import validateForm, { isRequired } from '@/utils/validate'
 import store from '@/store'
+import i18n from '@/locales'
 
 export const decorators = {
   generate_name: [
@@ -27,7 +28,7 @@ export const decorators = {
       validateTrigger: ['change', 'blur'],
       validateFirst: true,
       rules: [
-        { required: true, message: '请输入名称' },
+        { required: true, message: i18n.t('db.text_136') },
         { validator: validateForm('serverName') },
       ],
     },
@@ -48,7 +49,7 @@ export const decorators = {
     'sku',
     {
       rules: [
-        { required: true, message: '请选择套餐' },
+        { required: true, message: i18n.t('db.text_258') },
       ],
     },
   ],
@@ -58,7 +59,7 @@ export const decorators = {
       {
         initialValue: { key: '', label: '' },
         rules: [
-          { validator: isRequired(), message: '请选择区域' },
+          { validator: isRequired(), message: i18n.t('db.text_259') },
         ],
       },
     ],
@@ -67,7 +68,7 @@ export const decorators = {
       {
         initialValue: { key: '', label: '' },
         rules: [
-          { validator: isRequired(), message: '请选择可用区' },
+          { validator: isRequired(), message: i18n.t('db.text_260') },
         ],
       },
     ],
@@ -98,7 +99,7 @@ export const decorators = {
       {
         initialValue: undefined, // { key: '', label: '' }
         rules: [
-          { validator: isRequired(), message: '请选择关联密钥' },
+          { validator: isRequired(), message: i18n.t('db.text_137') },
         ],
       },
     ],
@@ -109,7 +110,7 @@ export const decorators = {
       {
         initialValue: undefined,
         rules: [
-          { required: true, message: '请选择VPC' },
+          { required: true, message: i18n.t('db.text_261') },
         ],
       },
     ],
@@ -118,7 +119,7 @@ export const decorators = {
       {
         initialValue: undefined,
         rules: [
-          { required: true, message: '请选择IP子网' },
+          { required: true, message: i18n.t('db.text_262') },
         ],
       },
     ],
@@ -554,17 +555,17 @@ export class GenCreateData {
       for (let i = 0, len = data.filters.length; i < len; i++) {
         const item = data.filters[i]
         if (item.filter === 'disk_schedtag') {
-          const obj = genErrorObj(item, `${item.count} 台宿主机被 ${item.filter} 标签过滤`)
+          const obj = genErrorObj(item, i18n.t('db.text_333', [item.count,item.filter]))
           ret.push(obj)
         } else if (item.filter.startsWith('host')) {
-          const obj = genErrorObj(item, `${item.count} 台 ${FORECAST_FILTERS_MAP[item.filter]}`)
+          const obj = genErrorObj(item, i18n.t('db.text_334', [item.count,FORECAST_FILTERS_MAP[item.filter]]))
           ret.push(obj)
         } else {
           if (item.count > 0) {
-            const obj = genErrorObj(item, FORECAST_FILTERS_MAP[item.filter] || `${item.count} 台主机被 ${item.filter} 标签过滤`)
+            const obj = genErrorObj(item, FORECAST_FILTERS_MAP[item.filter] || i18n.t('db.text_335', [item.count,item.filter]))
             ret.push(obj)
           } else {
-            const obj = genErrorObj(item, '被过滤')
+            const obj = genErrorObj(item, i18n.t('db.text_336'))
             ret.push(obj)
           }
         }
@@ -574,11 +575,11 @@ export class GenCreateData {
         return total + parseInt(current.capacity)
       }, 0)
       ret.push({
-        message: `最多可以创建 ${count} 台主机`,
+        message: i18n.t('db.text_337', [count]),
       })
     } else {
       ret.push({
-        message: '创建主机参数错误',
+        message: i18n.t('db.text_338'),
       })
     }
     return ret
