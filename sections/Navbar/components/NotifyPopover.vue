@@ -2,27 +2,27 @@
   <div>
     <a-popover trigger="click" v-model="visible" @visibleChange="handleVisibleChange" :getPopupContainer="triggerNode => triggerNode.parentNode">
       <div class="trigger d-flex align-items-center justify-content-center">
-        <span v-if="notifyMenuTitleUsedText">消息</span>
+        <span v-if="notifyMenuTitleUsedText">{{$t('common_190')}}</span>
         <icon type="navbar-notify" style="font-size: 24px;" v-else />
       </div>
       <template v-slot:content>
         <div class="notify-wrap">
           <div class="notify-header d-flex align-items-center">
-            <div class="flex-fill title">消息中心</div>
-            <a v-if="showMore && $appConfig.isPrivate" @click="toMore">查看更多</a>
+            <div class="flex-fill title">{{$t('common_191')}}</div>
+            <a v-if="showMore && $appConfig.isPrivate" @click="toMore">{{$t('common_192')}}</a>
           </div>
           <div class="loading" v-if="loading">
             <loading-block :layout="loadingLayout" />
           </div>
           <template v-else>
-            <div class="no-data" v-if="noData">暂无数据</div>
+            <div class="no-data" v-if="noData">{{$t('common_193')}}</div>
             <ul class="notify-list" v-else>
               <li
                 v-for="item of data"
                 :key="item.id"
                 class="notify-item">
                 <div class="item-header d-flex">
-                  <div class="item-header-type">服务消息</div>
+                  <div class="item-header-type">{{$t('common_194')}}</div>
                   <div class="item-header-time flex-fill text-right">{{ $moment(item.create_at).format() }}</div>
                 </div>
                 <div class="item-content mt-2">{{ item.topic }}</div>

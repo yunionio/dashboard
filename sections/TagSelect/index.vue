@@ -20,13 +20,13 @@
             :class="{ checked: checkedKeys.includes(withoutUserMetaKey) && value[withoutUserMetaKey][0] === true }"
             @click="handleKeyClick(withoutUserMetaKey, true)">
             <div class="title d-flex align-items-center">
-              <div class="flex-fill mr-4 text-truncate">无本地标签资源</div>
+              <div class="flex-fill mr-4 text-truncate">{{$t('common_260')}}</div>
               <a-icon class="check-icon" type="check" />
             </div>
           </li>
         </ul>
         <ul class="tag-list" v-if="showUserTags">
-          <li class="tag-tip">本地标签</li>
+          <li class="tag-tip">{{$t('common_261')}}</li>
           <li
             class="tag-item"
             v-for="item of userTags"
@@ -41,7 +41,7 @@
           </li>
         </ul>
         <ul class="tag-list" v-if="showExtTags">
-          <li class="tag-tip">外部标签</li>
+          <li class="tag-tip">{{$t('common_262')}}</li>
           <li
             class="tag-item"
             v-for="item of extTags"
@@ -57,11 +57,11 @@
         </ul>
         <ul :style="valueWrapStyle" v-if="showValue" class="tag-list values-wrap" ref="value-wrap">
           <li class="d-flex align-items-center tag-tip">
-            <div class="flex-fill" style="font-size: 12px;">标签值：</div>
-            <div class="val-search"><input style="width: 145px;" :value="search" placeholder="关键字搜索" @input="handleSearch" /></div>
+            <div class="flex-fill" style="font-size: 12px;">{{$t('common_263')}}</div>
+            <div class="val-search"><input style="width: 145px;" :value="search" :placeholder="$t('common_264')" @input="handleSearch" /></div>
           </li>
           <template v-if="currentValue.length <= 0">
-            <li>未匹配到有效值</li>
+            <li>{{$t('common_265')}}</li>
           </template>
           <template v-else v-for="item of currentValue">
             <li
@@ -88,6 +88,7 @@ import { mapGetters } from 'vuex'
 import debounce from 'lodash/debounce'
 import Clickoutside from '@/directives/clickoutside'
 import { getTagTitle } from '@/utils/common/tag'
+import i18n from '@/locales'
 
 export default {
   name: 'TagSelect',
@@ -101,7 +102,7 @@ export default {
     },
     buttonText: {
       type: String,
-      default: '标签',
+      default: i18n.t('common_266'),
     },
     params: Object,
     ignoreKeys: {

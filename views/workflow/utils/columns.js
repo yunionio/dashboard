@@ -1,6 +1,7 @@
 import _ from 'lodash'
+import i18n from '@/locales'
 
-export const getProcessDefinitionNameTableColumn = ({ field = 'process_definition_name', title = '工单类型' } = {}) => {
+export const getProcessDefinitionNameTableColumn = ({ field = 'process_definition_name', title = i18n.t('common_375') } = {}) => {
   return {
     field,
     title,
@@ -14,7 +15,7 @@ export const getProcessDefinitionNameTableColumn = ({ field = 'process_definitio
   }
 }
 
-export const getResourceNameTableColumn = ({ field = 'resource_name', title = '资源名称' } = {}) => {
+export const getResourceNameTableColumn = ({ field = 'resource_name', title = i18n.t('common_151') } = {}) => {
   return {
     field,
     title,
@@ -39,7 +40,7 @@ export const getResourceNameTableColumn = ({ field = 'resource_name', title = '�
   }
 }
 
-export const getResourceProjectTableColumn = ({ field = 'resource_project_name', title = '项目' } = {}) => {
+export const getResourceProjectTableColumn = ({ field = 'resource_project_name', title = i18n.t('common_310') } = {}) => {
   return {
     field,
     title,
@@ -61,7 +62,7 @@ export const getResourceProjectTableColumn = ({ field = 'resource_project_name',
 export const getInitiatorTableColumn = ({ field = 'initiator' } = {}) => {
   return {
     field,
-    title: '申请人',
+    title: i18n.t('common_371'),
     minWidth: 80,
     showOverflow: 'title',
     slots: {
@@ -75,7 +76,7 @@ export const getInitiatorTableColumn = ({ field = 'initiator' } = {}) => {
 export const getCommentTableColumn = () => {
   return {
     field: 'comment',
-    title: '问题描述',
+    title: i18n.t('common_438'),
     minWidth: 80,
     showOverflow: 'title',
     slots: {

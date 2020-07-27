@@ -1,14 +1,15 @@
+import i18n from '@/locales'
 export const BILL_TYPES_MAP = {
-  postpaid: '按量付费',
-  prepaid: '包年包月',
+  postpaid: i18n.t('common_1'),
+  prepaid: i18n.t('common_2'),
 }
 
 export const BUY_DURATIONS_OPTIONS = {
-  '1M': '1个月',
-  '2M': '2个月',
-  '3M': '3个月',
-  '6M': '半年',
-  '1Y': '1年',
-  '2Y': '2年',
-  '3Y': '3年',
+  '1M': i18n.t('common_3'),
+  '2M': i18n.t('common_4'),
+  '3M': i18n.t('common_5'),
+  '6M': i18n.t('common_6'),
+  '1Y': i18n.t('common_7'),
+  '2Y': i18n.t('common_8'),
+  '3Y': i18n.t('common_9'),
 }

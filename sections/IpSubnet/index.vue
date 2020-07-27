@@ -1,10 +1,10 @@
 <template>
   <div class="d-flex">
     <a-form-item>
-      <a-input v-decorator="decorator.startip" placeholder="起始IP地址" />
+      <a-input v-decorator="decorator.startip" :placeholder="$t('common_161')" />
     </a-form-item>
     <a-form-item class="ml-2">
-      <a-input v-decorator="decorator.endip" placeholder="结束IP地址" />
+      <a-input v-decorator="decorator.endip" :placeholder="$t('common_162')" />
     </a-form-item>
     <a-form-item class="ml-2">
       <a-select v-decorator="decorator.netmask">
@@ -15,7 +15,7 @@
       </a-select>
     </a-form-item>
     <a-form-item class="ml-2">
-      <a-input v-decorator="decorator.gateway" placeholder="默认网关" />
+      <a-input v-decorator="decorator.gateway" :placeholder="$t('common_163')" />
     </a-form-item>
     <a-form-item class="ml-2">
       <a-input v-decorator="decorator.vlan" placeholder="VLAN ID" />

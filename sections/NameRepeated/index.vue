@@ -3,7 +3,7 @@
     <span v-if="show">{{ text }}</span>
     <span v-else-if="loading && !defaultText">
       <a-icon type="sync" class="mr-1" spin />
-      <span>正在验证名称是否重复</span>
+      <span>{{$t('common_183')}}</span>
     </span>
   </div>
 </template>
@@ -48,7 +48,7 @@ export default {
     },
     text () {
       if (this.isRepeated) {
-        return '名称重复，系统默认追加“-1”'
+        return this.$t('common_184')
       }
       return this.defaultText || ''
     },

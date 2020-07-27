@@ -32,13 +32,13 @@ export default {
         sortKeys: ['create_time'],
         filterOptions: {
           id: {
-            label: '编号',
+            label: this.$t('common_350'),
           },
           resource_name: {
-            label: '资源名称',
+            label: this.$t('common_151'),
           },
           resource_project: {
-            label: '项目',
+            label: this.$t('common_310'),
           },
         },
       }),

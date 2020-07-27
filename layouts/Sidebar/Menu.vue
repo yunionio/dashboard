@@ -2,7 +2,7 @@
   <div class="level-2-wrap" :class="{ 'light-theme': light }">
     <scrollbar
       class="level-2-menu">
-      <div class="title">{{ getLabel(l2Menu.meta) }}</div>
+      <div class="title text-truncate pr-2" :title="getLabel(l2Menu.meta)">{{ getLabel(l2Menu.meta) }}</div>
       <div
         class="level-3-item"
         v-for="(citem, cidx) of menus"
@@ -10,13 +10,14 @@
         <div
           class="group-menu"
           v-if="citem.submenus">
-          <div class="level-3-group-title">{{ getLabel(citem.meta) }}</div>
+          <div class="level-3-group-title text-truncate pr-2" :title="getLabel(citem.meta)">{{ getLabel(citem.meta) }}</div>
           <router-link
             v-for="(sitem, sidx) of citem.submenus"
             v-show="showMenu(sitem)"
             :key="sidx"
-            class="menu-item"
+            class="menu-item text-truncate pr-2"
             :to="sitem.path"
+            :title="getLabel(sitem.meta)"
             tag="a"
             active-class="active">
             {{ getLabel(sitem.meta) }}
@@ -24,8 +25,9 @@
         </div>
         <router-link
           v-else
-          class="menu-item"
+          class="menu-item text-truncate pr-2"
           :to="citem.path"
+          :title="getLabel(citem.meta)"
           tag="a"
           active-class="active">
           {{ getLabel(citem.meta) }}

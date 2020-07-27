@@ -13,6 +13,7 @@ import router from '@/router'
 import { getHttpErrorMessage, getHttpReqMessage, getErrorBody } from '@/utils/error'
 import { uuid, genReferRouteQuery } from '@/utils/utils'
 import { SHOW_SYSTEM_RESOURCE } from '@/constants'
+import i18n from '@/locales'
 
 const http = axios.create({
   baseURL: process.env.VUE_APP_BASE_API,
@@ -34,7 +35,7 @@ function hiddenLoading () {
 function showLoading () {
   hiddenLoading()
   loadingTimer = setTimeout(() => {
-    hiddenLoadingMessage = message.loading('数据加载中，请稍候', 0)
+    hiddenLoadingMessage = message.loading(i18n.t('common.text00122'), 0)
   }, 1500)
 }
 
@@ -75,7 +76,7 @@ const resolveError = error => {
 }
 
 const showErrorNotify = ({ errorMsg, reqMsg }) => {
-  const message = R.is(Array, errorMsg) ? '批量操作错误' : errorMsg.class
+  const message = R.is(Array, errorMsg) ? i18n.t('common.text00123') : errorMsg.class
   const description = R.is(Array, errorMsg) ? errorMsg[0].class : errorMsg.detail
   const key = `notification-${uuid(32)}`
   notification.error({

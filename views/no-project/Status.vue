@@ -1,6 +1,6 @@
 <template>
   <div class="p-4">
-    <page-header title="我发的工单" />
+    <page-header :title="$t('common_345')" />
     <page-body>
       <me-process />
     </page-body>

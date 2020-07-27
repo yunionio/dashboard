@@ -99,7 +99,7 @@ export default {
     projectsLabelFormat (item) {
       return <div class='d-flex'>
         <span class='text-truncate flex-fill mr-2' title={ item.name }>{ item.name }</span>
-        {(this.isAdminMode && this.l3PermissionEnable) ? <span style="color: #8492a6; font-size: 13px">所属{this.$t('dictionary.domain')}: {item.project_domain}</span> : null}
+        {(this.isAdminMode && this.l3PermissionEnable) ? <span style="color: #8492a6; font-size: 13px">{this.$t('common_257')}{this.$t('dictionary.domain')}: {item.project_domain}</span> : null}
       </div>
     },
   },

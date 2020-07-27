@@ -2,24 +2,24 @@
   <div class="wrap shadow-lg bg-white rounded">
     <a-card>
       <div class="wrap-inner">
-        <h5>管理员已开启登录保护，请按照以下步骤开启虚拟MFA</h5>
+        <h5>{{$t('common_83')}}</h5>
         <div class="setup-wrap-top">
           <div class="setup-tip">
             <div>
               <i class="tip-icon fa fa-hand-o-right" />
-              <span class="tip-text">第1步 获取OneLogin Protect</span>
+              <span class="tip-text">{{$t('common_84')}}</span>
             </div>
             <div class="qr-wrap">
               <div>
                 <div class="qr-code-bg-wrap" :style="{ backgroundImage: `url(${oneloginprotectAppQr})` }" />
               </div>
             </div>
-            <div class="qr-tip">扫相应二维码获取应用，或打开应用商店搜索OneLogin Protect下载应用</div>
+            <div class="qr-tip">{{$t('common_85')}}</div>
           </div>
           <div class="setup-tip">
             <div>
               <i class="tip-icon fa fa-hand-o-right" />
-              <span class="tip-text">第2步 获取安全码</span>
+              <span class="tip-text">{{$t('common_86')}}</span>
             </div>
             <div class="qr-wrap">
               <template v-if="secret">
@@ -28,20 +28,20 @@
                 </div>
               </template>
             </div>
-            <div class="qr-tip">打开OneLogin Protect App，扫描二维码，获取安全码</div>
+            <div class="qr-tip">{{$t('common_87')}}</div>
           </div>
         </div>
         <div class="setup-wrap-bottom">
           <div class="setup-tip">
             <i class="tip-icon fa fa-hand-o-right" />
-            <span class="tip-text">第3步 输入安全码</span>
+            <span class="tip-text">{{$t('common_88')}}</span>
           </div>
           <div class="code-wrap">
             <security-code ref="security-code" v-model="securityCode" :error="error" @completed="onValid" @clear="onClear" blurOnComplete />
           </div>
           <div class="status-tip">
-            <div v-if="error" class="error">安全码错误，请重新输入</div>
-            <div v-if="loading" class="loading"><i class="fa fa-refresh fa-spin" />正在验证</div>
+            <div v-if="error" class="error">{{$t('common_89')}}</div>
+            <div v-if="loading" class="loading"><i class="fa fa-refresh fa-spin" />{{$t('common_90')}}</div>
           </div>
         </div>
       </div>

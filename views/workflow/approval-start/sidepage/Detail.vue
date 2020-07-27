@@ -58,21 +58,21 @@ export default {
       baseInfo: [
         {
           field: 'initiator_name',
-          title: '申请人',
+          title: this.$t('common_371'),
           formatter: ({ cellValue, row }) => {
             return row.variables.initiator_name || row.process_instance.start_user_name
           },
         },
         {
           field: 'process_definition_key',
-          title: '工单类型',
+          title: this.$t('common_375'),
           formatter: ({ cellValue, row }) => {
             const pdk = row.variables.process_definition_key || row.process_definition_key
             const objType = getWorkflowType(pdk)
             return objType && objType.name
           },
         },
-        getTimeTableColumn({ field: 'create_time', title: '创建日期' }),
+        getTimeTableColumn({ field: 'create_time', title: this.$t('common_374') }),
       ],
       extraInfo: [],
       loadingLayout: [
@@ -151,7 +151,7 @@ export default {
     initServerConfigInfo () {
       const serverConfigs = JSON.parse(this.variables.serverConf || '[]')
       const serverConfList = {
-        title: '配置调整情况',
+        title: this.$t('common_376'),
         field: 'serverConfList',
         slots: {
           default: ({ row }, h) => {
@@ -179,7 +179,7 @@ export default {
     getProcessInstanceData (processInstanceInfo) {
       if (this.proccessDefinitionKey !== WORKFLOW_TYPES.CUSTOMER_SERVICE) {
         processInstanceInfo.log.unshift({
-          activity_name: '提交工单',
+          activity_name: this.$t('common_377'),
           task_assignee_name: processInstanceInfo.variables && processInstanceInfo.variables.initiator_name,
           end_time: processInstanceInfo.start_time,
           task: {
@@ -202,15 +202,15 @@ export default {
       })
       if (this.proccessDefinitionKey === WORKFLOW_TYPES.APPLY_MACHINE || this.proccessDefinitionKey === WORKFLOW_TYPES.APPLY_SERVER_CHANGECONFIG) {
         processList.push({
-          title: '部署',
-          assignees: ['自动部署'],
+          title: this.$t('common_378'),
+          assignees: [this.$t('common_379')],
         })
       }
       this.processList = processList
     },
     initProcessHistorys () {
       const processHistory = {
-        title: '处理记录',
+        title: this.$t('common_380'),
         field: 'processHistory',
         slots: {
           default: ({ row }, h) => {
@@ -224,11 +224,11 @@ export default {
     },
     initProcessList () {
       this.processList.unshift({
-        title: '提交工单',
+        title: this.$t('common_377'),
         assignees: this.processInstanceInfo.variables && this.processInstanceInfo.variables.initiator_name,
       })
       const processList = {
-        title: '审批流程',
+        title: this.$t('common_381'),
         field: 'processList',
         slots: {
           default: ({ row }, h) => {
@@ -244,18 +244,18 @@ export default {
       const variables = this.data.variables
       const projectInfo = [
         {
-          title: `申请${this.$t('dictionary.project')}情况`,
+          title: this.$t('common_382', [this.$t('dictionary.project')]),
           items: [
             {
               field: 'description',
-              title: '备注',
+              title: this.$t('common_157'),
               formatter: ({ cellValue, row }) => {
                 return variables.description || '-'
               },
             },
             {
               field: 'project',
-              title: '加入项目',
+              title: this.$t('common_384'),
               formatter: ({ cellValue, row }) => {
                 return variables.joinProjectName || '-'
               },
@@ -267,7 +267,7 @@ export default {
     },
     initDeleteServerInfo () {
       const deleteServerList = {
-        title: '资源信息',
+        title: this.$t('common_385'),
         field: 'deleteServerList',
         slots: {
           default: ({ row }, h) => {

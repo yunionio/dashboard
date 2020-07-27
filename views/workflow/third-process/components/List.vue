@@ -32,7 +32,7 @@ export default {
         sortKeys: ['create_time'],
         filterOptions: {
           id: {
-            label: '编号',
+            label: this.$t('common_350'),
           },
         },
       }),

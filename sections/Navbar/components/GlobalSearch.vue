@@ -1,8 +1,5 @@
 <template>
-  <div class="w-100">
-    <!-- <a-input-search v-model="value" placeholder="请输入您要搜索资源的名称或IP" style="width: 300px" @search="onSearch" /> -->
-    <search-box :options="options" :value="value" @input="search" placeholder="请输入您要搜索资源的名称或IP" @click.stop.prevent="handleCloseSidebar" />
-  </div>
+  <search-box :options="options" :value="value" @input="search" :placeholder="$t('common_185')" @click.stop.prevent="handleCloseSidebar" />
 </template>
 
 <script>
@@ -18,7 +15,7 @@ export default {
       value: {},
       options: {
         name: {
-          label: '名称',
+          label: this.$t('common_186'),
         },
         ip: {
           label: 'IP',

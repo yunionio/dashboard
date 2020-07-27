@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="公有云子账号" />
+    <page-header :title="$t('common_325')" />
     <page-body>
       <page-list
         :list="list"
@@ -44,7 +44,7 @@ export default {
       },
       singleActions: [
         {
-          label: '查看权限',
+          label: this.$t('common_326'),
           permission: 'cloudpolicy_list',
           action: (obj) => {
             this.createDialog('CloudgroupListForClouduserForUserDialog', {
@@ -56,12 +56,12 @@ export default {
       columns: [
         {
           field: 'name',
-          title: '用户名',
+          title: this.$t('common_327'),
           showOverflow: 'title',
         },
         {
           field: 'password',
-          title: '密码',
+          title: this.$t('common_328'),
           width: 50,
           slots: {
             default: ({ row }) => {
@@ -72,7 +72,7 @@ export default {
         getBrandTableColumn(),
         {
           field: 'iam_login_url',
-          title: '登录地址',
+          title: this.$t('common_329'),
           showOverflow: 'title',
           slots: {
             default: ({ row }) => {

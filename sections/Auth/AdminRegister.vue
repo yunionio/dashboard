@@ -1,6 +1,6 @@
 <template>
   <div class="wrap shadow-lg bg-white rounded">
-    <h4 class="text-center">管理员注册</h4>
+    <h4 class="text-center">{{$t('common_80')}}</h4>
     <a-form-model
       ref="form"
       :model="fd"
@@ -74,7 +74,7 @@ export default {
         ],
         email: [
           { required: true, message: this.$t('auth.register.email.validate') },
-          { type: 'email', message: '请输入邮箱地址' },
+          { type: 'email', message: this.$t('common_81') },
         ],
         mobile: [
           { required: true, message: this.$t('auth.register.mobile.validate') },
@@ -85,7 +85,7 @@ export default {
           {
             validator: (rule, value, _callback) => {
               if (value && value !== this.fd.account_password) {
-                _callback('密码输入不一致')
+                _callback(this.$t('common_82'))
               } else {
                 _callback()
               }

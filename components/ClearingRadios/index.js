@@ -1,3 +1,4 @@
+import i18n from '@/locales'
 export default {
   name: 'ClearingRadios',
   inject: ['form'],
@@ -63,7 +64,7 @@ export default {
     ) : null
     return (
       <div>
-        <a-form-item labelCol={this.labelCol} wrapperCol={this.wrapperCol} label="计费方式">
+        <a-form-item labelCol={this.labelCol} wrapperCol={this.wrapperCol} label={i18n.t('common_10')}>
           {getFieldDecorator('billing_type', {
             initialValue: this.billing_type,
           })(

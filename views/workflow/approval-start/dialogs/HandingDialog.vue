@@ -2,13 +2,13 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{ action }}</div>
     <div slot="body">
-      <dialog-selected-tips name="工单" :count="params.data.length" :action="action" />
+      <dialog-selected-tips :name="$t('common_198')" :count="params.data.length" :action="action" />
       <dialog-table :data="params.data" :columns="columns" />
       <a-form
         :form="form.fc"
         v-bind="formItemLayout">
-        <a-form-item label="处理结果">
-          <a-textarea placeholder="请输入处理结果" v-decorator="decorators.remarks" />
+        <a-form-item :label="$t('common_364')">
+          <a-textarea :placeholder="$t('common_365')" v-decorator="decorators.remarks" />
         </a-form-item>
       </a-form>
     </div>
@@ -35,7 +35,7 @@ export default {
   data () {
     return {
       loading: false,
-      action: '处理',
+      action: this.$t('common_366'),
       form: {
         fc: this.$form.createForm(this),
       },
@@ -44,7 +44,7 @@ export default {
           'remarks',
           {
             rules: [
-              { required: true, message: '请输入处理结果' },
+              { required: true, message: this.$t('common_365') },
             ],
           },
         ],
@@ -58,8 +58,8 @@ export default {
         },
       },
       columns: [
-        getProcessDefinitionNameTableColumn({ field: 'process_instance.process_definition_name', title: '名称' }),
-        getResourceNameTableColumn({ title: '资源' }),
+        getProcessDefinitionNameTableColumn({ field: 'process_instance.process_definition_name', title: this.$t('common_186') }),
+        getResourceNameTableColumn({ title: this.$t('common_357') }),
         getInitiatorTableColumn({ field: 'process_instance.start_user_name' }),
       ],
     }
@@ -97,7 +97,7 @@ export default {
           if (this.params.success && R.is(Function, this.params.success)) {
             this.params.success(res)
           }
-          this.$message.success('操作成功')
+          this.$message.success(this.$t('common_360'))
         }
         this.cancelDialog()
       } catch (error) {

@@ -1,26 +1,27 @@
 import { WORKFLOW_TYPES } from '@/constants/workflow'
 import { sizestr } from '@/utils/utils'
+import i18n from '@/locales'
 
 export const statusMap = function (pdk) {
   const mp = {
     ACTIVE: {
-      text: pdk === WORKFLOW_TYPES.CUSTOMER_SERVICE ? '待处理' : '待审批',
+      text: pdk === WORKFLOW_TYPES.CUSTOMER_SERVICE ? i18n.t('common_439') : i18n.t('common_440'),
       color: '#f6a100',
     },
     COMPLETED: {
-      text: '已完成',
+      text: i18n.t('common_441'),
       color: '#7ed321',
     },
     EXTERNALLY_TERMINATED: {
-      text: '已撤销',
+      text: i18n.t('common_442'),
       color: '#8a94a6',
     },
     CUSTOM_TODO: {
-      text: '待处理',
+      text: i18n.t('common_439'),
       color: '#f6a100',
     },
     CUSTOM_DOING: {
-      text: '处理中',
+      text: i18n.t('common_443'),
       color: '#f6a100',
     },
   }
@@ -31,11 +32,11 @@ export const statusMap = function (pdk) {
 export const auditStatusMap = function (pdk) {
   const mp = {
     approved: {
-      text: '通过',
+      text: i18n.t('common_368'),
       color: '#7ed321',
     },
     refused: {
-      text: pdk === WORKFLOW_TYPES.CUSTOMER_SERVICE ? '不满意' : '驳回',
+      text: pdk === WORKFLOW_TYPES.CUSTOMER_SERVICE ? i18n.t('common_444') : i18n.t('common_370'),
       color: '#F56C6C',
     },
   }
@@ -45,16 +46,16 @@ export const auditStatusMap = function (pdk) {
 // 状态结果
 export const approveStatusMap = {
   ServiceTask_Onecloud: {
-    true: '调用接口成功',
-    false: '调用接口失败',
+    true: i18n.t('common_445'),
+    false: i18n.t('common_446'),
   },
   ServiceTask_StatusCheck: {
-    true: '服务调用成功',
-    false: '服务调用失败',
+    true: i18n.t('common_447'),
+    false: i18n.t('common_448'),
   },
   UserTask_User_Confirm: {
-    true: '用户重试',
-    false: '用户放弃',
+    true: i18n.t('common_449'),
+    false: i18n.t('common_450'),
   },
 }
 
@@ -74,7 +75,7 @@ export function getIncrementFlag (newVal, oldVal, unit) {
   }
 }
 
-export const diff = (compareValue, baseValue, unit = '个') => {
+export const diff = (compareValue, baseValue, unit = i18n.t('common_61')) => {
   if (!compareValue) compareValue = 0
   if (!baseValue) baseValue = 0
   let sign = '+'

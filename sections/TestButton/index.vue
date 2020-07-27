@@ -1,5 +1,5 @@
 <template>
-  <a-button v-bind="config" @click="handleTest">连接测试</a-button>
+  <a-button v-bind="config" @click="handleTest">{{$t('common_269')}}</a-button>
 </template>
 
 <script>
@@ -43,8 +43,8 @@ export default {
         await this.post()
         if (this.isSuccessAlert) {
           this.$notification.success({
-            message: '测试连接成功',
-            description: '请点击确定继续',
+            message: this.$t('common_270'),
+            description: this.$t('common_271'),
           })
         }
       } catch (err) {

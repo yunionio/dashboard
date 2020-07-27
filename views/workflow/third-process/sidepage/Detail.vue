@@ -36,35 +36,35 @@ export default {
       baseInfo: [
         {
           field: 'domain',
-          title: '域',
+          title: this.$t('common_437'),
           formatter: ({ cellValue, row }) => {
             return this.variables.resource_domain_name || '-'
           },
         },
         {
           field: 'project',
-          title: '项目',
+          title: this.$t('common_310'),
           formatter: ({ cellValue, row }) => {
             return this.variables.resource_project_name || '-'
           },
         },
         {
           field: 'status',
-          title: '状态',
+          title: this.$t('common_284'),
           formatter: ({ cellValue, row }) => {
             return this.data.status || '-'
           },
         },
         {
           field: 'initiator_name',
-          title: '申请人',
+          title: this.$t('common_371'),
           formatter: ({ cellValue, row }) => {
             return this.data.start_user_name || '-'
           },
         },
         {
           field: 'process_definition_key',
-          title: '工单类型',
+          title: this.$t('common_375'),
           formatter: ({ cellValue, row }) => {
             const pdk = this.variables.process_definition_key || this.process_definition_key
             const objType = getWorkflowType(pdk)
@@ -72,8 +72,8 @@ export default {
           },
         },
         getCommentTableColumn(),
-        getTimeTableColumn({ field: 'created_at', title: '创建日期' }),
-        getTimeTableColumn({ field: 'end_at', title: '结束日期' }),
+        getTimeTableColumn({ field: 'created_at', title: this.$t('common_374') }),
+        getTimeTableColumn({ field: 'end_at', title: this.$t('common_387') }),
       ],
       extraInfo: [],
     }

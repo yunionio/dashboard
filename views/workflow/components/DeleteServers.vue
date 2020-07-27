@@ -23,7 +23,7 @@ export default {
       serverColumns: [
         {
           field: 'name',
-          title: '主机名称',
+          title: this.$t('common_388'),
           minWidth: 80,
           showOverflow: 'title',
           formatter: ({ cellVal, row }) => {
@@ -32,7 +32,7 @@ export default {
         },
         {
           field: 'tenant',
-          title: '所属项目',
+          title: this.$t('common_389'),
           minWidth: 80,
           showOverflow: 'title',
           formatter: ({ cellVal, row }) => {
@@ -50,11 +50,11 @@ export default {
         },
         {
           field: 'conf',
-          title: '主机名称',
+          title: this.$t('common_388'),
           minWidth: 80,
           showOverflow: 'title',
           formatter: ({ cellVal, row }) => {
-            return `${row.vcpu_count}核${sizestr(row.vmem_size, 'M', 1024)}${row.disk ? sizestr(row.disk, 'M', 1024) : ''}`
+            return `${row.vcpu_count}${this.$t('common_390')}${sizestr(row.vmem_size, 'M', 1024)}${row.disk ? sizestr(row.disk, 'M', 1024) : ''}`
           },
         },
       ],

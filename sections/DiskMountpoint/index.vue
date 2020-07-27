@@ -7,12 +7,12 @@
         :options="filetypeOpts"
         :item.sync="filetype"
         v-decorator="decorators.filetype"
-        :select-props="{ allowClear: true, placeholder: '文件类型' }" />
+        :select-props="{ allowClear: true, placeholder: $t('common_149') }" />
     </a-form-item>
     <a-form-item class="mb-0" v-if="filetype !== 'swap'" :wrapperCol="{ span: 24 }">
       <a-input
         v-decorator="decorators.mountPath"
-        placeholder="非系统目录" />
+        :placeholder="$t('common_150')" />
     </a-form-item>
   </div>
 </template>

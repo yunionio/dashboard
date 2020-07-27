@@ -4,14 +4,14 @@
     overlay-class-name="tag-table-column-wrap">
     <template slot="title">
       <div class="d-flex align-items-center">
-        <div class="flex-fill">已绑定标签</div>
-        <a class="font-weight-normal" @click="handleEdit" v-if="!inBaseDialog">编辑标签</a>
+        <div class="flex-fill">{{$t('common_267')}}</div>
+        <a class="font-weight-normal" @click="handleEdit" v-if="!inBaseDialog">{{$t('common_105')}}</a>
       </div>
     </template>
     <template slot="content">
       <div class="tag-table-column">
         <template v-if="tags.length <= 0">
-          <loader no-data-text="暂未绑定标签" />
+          <loader no-data-:text="$t('common_268')" />
         </template>
         <template v-else>
           <template v-for="item of tags">

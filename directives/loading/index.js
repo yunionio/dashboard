@@ -1,5 +1,6 @@
 import vue from 'vue'
 import maskLoading from './mask.vue'
+import i18n from '@/locales'
 
 const Mask = vue.extend(maskLoading)
 
@@ -42,7 +43,7 @@ export default {
       data: {
         fullscreen: !!binding.modifiers.fullscreen,
         background: background || '255, 255, 255, 1',
-        text: text || '加载中…',
+        text: text || i18n.t('common_67'),
         color: color || null,
         fontSize: fontSize || null,
       },

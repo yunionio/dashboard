@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex flex-wrap">
     <a-tooltip>
-      <template slot="title">暗色菜单风格</template>
+      <template slot="title">{{$t('common_272')}}</template>
       <div class="setting-theme-item" @click="changeTheme('dark')">
         <img src="./assets/dark-theme-icon.svg" alt="dark" />
         <div class="setting-theme-selectIcon" v-if="theme === 'dark'">
@@ -10,7 +10,7 @@
       </div>
     </a-tooltip>
     <a-tooltip>
-      <template slot="title">亮色菜单风格</template>
+      <template slot="title">{{$t('common_273')}}</template>
       <div class="setting-theme-item" @click="changeTheme('light')">
         <img src="./assets/light-theme-icon.svg" alt="light" />
         <div class="setting-theme-selectIcon" v-if="theme === 'light'">

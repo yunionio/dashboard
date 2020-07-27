@@ -2,17 +2,24 @@
   <div>
     <a-popover trigger="click" :getPopupContainer="triggerNode => triggerNode.parentNode">
       <div class="trigger d-flex align-items-center justify-content-center">
-        <span v-if="settingMenuTitleUsedText">设置</span>
+        <span v-if="settingMenuTitleUsedText">{{$t('common_195')}}</span>
         <a-icon type="setting" style="font-size: 24px;" v-else />
       </div>
       <template v-slot:content>
         <div class="setting-wrap">
           <div class="setting-item">
-            <h3 class="setting-title">整体风格设置</h3>
+            <h3 class="setting-title">{{$t('common_459')}}</h3>
+            <a-button-group size="small">
+              <a-button :type="language.value === 'zh-CN' ? 'primary' : 'default'" @click="() => handleChangeLanguage('zh-CN')">简</a-button>
+              <a-button :type="language.value === 'en' ? 'primary' : 'default'" @click="() => handleChangeLanguage('en')">En</a-button>
+            </a-button-group>
+          </div>
+          <div class="setting-item">
+            <h3 class="setting-title">{{$t('common_196')}}</h3>
             <theme-replacer />
           </div>
           <div class="setting-item">
-            <h3 class="setting-title">主题色</h3>
+            <h3 class="setting-title">{{$t('common_197')}}</h3>
             <theme-color-replacer />
           </div>
         </div>
@@ -22,11 +29,13 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import ThemeColorReplacer from '@/sections/ThemeColorReplacer'
 import ThemeReplacer from '@/sections/ThemeReplacer'
+import { setLanguage } from '@/utils/common/cookie'
 
 export default {
-  name: 'NotifyPopover',
+  name: 'SettingPopover',
   components: {
     ThemeColorReplacer,
     ThemeReplacer,
@@ -35,6 +44,18 @@ export default {
     settingMenuTitleUsedText: {
       type: Boolean,
       default: false,
+    },
+  },
+  computed: {
+    ...mapGetters(['common']),
+    language () {
+      return this.common.language
+    },
+  },
+  methods: {
+    handleChangeLanguage (val) {
+      setLanguage(val)
+      window.location.reload()
     },
   },
 }

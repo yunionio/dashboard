@@ -12,7 +12,7 @@
         <a-form-item>
           <a-select label-in-value  v-decorator="decorator.vpc" allow-clear :placeholder="$t('common.text00046')" @change="vpcChange">
             <a-select-option v-for="item in vpcOpts" :key="item.id">
-              {{ item.account ? `${ item.account }/` : '' }}{{ item.name === 'Default' ? `Default（经典网络）` : item.name }}{{ item.cidr_block ? `（${item.cidr_block}）` : '' }}
+              {{ item.account ? `${ item.account }/` : '' }}{{ item.name === 'Default' ? `${$t('common.common_91')}` : item.name }}{{ item.cidr_block ? `（${item.cidr_block}）` : '' }}
             </a-select-option>
           </a-select>
         </a-form-item>

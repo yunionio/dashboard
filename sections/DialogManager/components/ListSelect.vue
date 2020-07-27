@@ -15,7 +15,7 @@
           </template>
           <div class="clearfix">
             <div class="mini-text text-color-help float-left">{{ params.dialogParams.selectedTip || $t('common.text00041') }}：{{ details.length }}</div>
-            <div class="mini-text select-all-close ml-2 float-left" @click="clearAllChoose" v-if="details.length > 0">清空</div>
+            <div class="mini-text select-all-close ml-2 float-left" @click="clearAllChoose" v-if="details.length > 0">{{$t('common_97')}}</div>
           </div>
         </div>
       </div>
@@ -24,11 +24,11 @@
           ref="page-list"
           v-bind="listProps"
           @radio-change="handleRadioChange" />
-        <a-button type="link" size="small" class="choose-all" @click="chooseAllHandle" v-if="isShowChooseAll">本页全选</a-button>
+        <a-button type="link" size="small" class="choose-all" @click="chooseAllHandle" v-if="isShowChooseAll">{{$t('common_98')}}</a-button>
       </div>
     </div>
     <div slot="footer">
-      <a-button @click="handleOk">选择</a-button>
+      <a-button @click="handleOk">{{$t('common_99')}}</a-button>
       <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
     </div>
   </base-dialog>

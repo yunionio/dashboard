@@ -8,13 +8,14 @@ import {
   getCopyWithContentTableColumn,
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
     this.columns = [
       getCopyWithContentTableColumn({
         field: 'process_instance_id',
-        title: '编号',
+        title: i18n.t('common_350'),
         minWidth: 80,
         hideField: true,
         onManager: this.onManager,
@@ -32,7 +33,7 @@ export default {
       }),
       {
         field: 'initiator',
-        title: '申请人',
+        title: i18n.t('common_371'),
         minWidth: 80,
         showOverflow: 'title',
         formatter: ({ cellVal, row }) => {
@@ -41,7 +42,7 @@ export default {
       },
       {
         field: 'state',
-        title: '流程状态',
+        title: i18n.t('common_372'),
         minWidth: 80,
         showOverflow: 'title',
         slots: {
@@ -57,7 +58,7 @@ export default {
       },
       {
         field: 'step',
-        title: '当前环节',
+        title: i18n.t('common_373'),
         minWidth: 80,
         showOverflow: 'title',
         formatter: ({ cellVal, row }) => {
@@ -69,7 +70,7 @@ export default {
           return ''
         },
       },
-      getTimeTableColumn({ field: 'create_time', title: '创建日期' }),
+      getTimeTableColumn({ field: 'create_time', title: i18n.t('common_374') }),
     ]
   },
 }

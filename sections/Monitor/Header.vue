@@ -6,7 +6,7 @@
       <slot name="radio-button-append" />
     </a-radio-group>
     <div class="ant-form-item-label">
-      <label title="时间粒度">时间粒度</label>
+      <label :title="$t('common_166')">{{$t('common_166')}}</label>
     </div>
     <a-select :value="timeGroup" @change="timeGroupChange">
       <a-select-option v-for="item in timeGroupOpts" :key="item.key" :value="item.key">{{ item.label }}</a-select-option>
@@ -16,6 +16,7 @@
 
 <script>
 import RefreshButton from '@/components/PageList/RefreshButton'
+import i18n from '@/locales'
 
 export default {
   name: 'MonitorHeader',
@@ -40,58 +41,58 @@ export default {
       default: () => ({
         [`${1}h`]: {
           key: `${1}h`,
-          label: '近1小时',
+          label: i18n.t('common_167'),
           timeFormat: 'YYYY-MM-DD HH:mm',
           timeGroupOpts: [
-            { key: '1m', label: '1分钟' },
-            { key: '5m', label: '5分钟' },
+            { key: '1m', label: i18n.t('common_168') },
+            { key: '5m', label: i18n.t('common_169') },
           ],
         },
         [`${24}h`]: {
           key: `${24}h`,
-          label: '近1天',
+          label: i18n.t('common_170'),
           timeFormat: 'YYYY-MM-DD HH:mm',
           timeGroupOpts: [
-            { key: '5m', label: '5分钟' },
-            { key: '10m', label: '10分钟' },
-            { key: '30m', label: '30分钟' },
-            { key: '1h', label: '1小时' },
+            { key: '5m', label: i18n.t('common_169') },
+            { key: '10m', label: i18n.t('common_171') },
+            { key: '30m', label: i18n.t('common_172') },
+            { key: '1h', label: i18n.t('common_173') },
           ],
         },
         [`${7}d`]: {
           key: `${7}d`,
-          label: '近1周',
+          label: i18n.t('common_174'),
           timeFormat: 'YYYY-MM-DD HH:mm',
           timeGroupOpts: [
-            { key: '30m', label: '30分钟' },
-            { key: '1h', label: '1小时' },
+            { key: '30m', label: i18n.t('common_172') },
+            { key: '1h', label: i18n.t('common_173') },
           ],
         },
         [`${30}d`]: {
           key: `${30}d`,
-          label: '近1月',
-          timeFormat: 'YYYY-MM-DD HH时',
+          label: i18n.t('common_175'),
+          timeFormat: i18n.t('common_176'),
           timeGroupOpts: [
-            { key: '6h', label: '6小时' },
-            { key: '1d', label: '1天' },
+            { key: '6h', label: i18n.t('common_177') },
+            { key: '1d', label: i18n.t('common_178') },
           ],
         },
         [`${30 * 3}d`]: {
           key: `${30 * 3}d`,
-          label: '近3月',
+          label: i18n.t('common_179'),
           timeFormat: 'YYYY-MM-DD',
           timeGroupOpts: [
-            { key: '1d', label: '1天' },
-            { key: '2d', label: '2天' },
+            { key: '1d', label: i18n.t('common_178') },
+            { key: '2d', label: i18n.t('common_180') },
           ],
         },
         [`${30 * 6}d`]: {
           key: `${30 * 6}d`,
-          label: '近6月',
+          label: i18n.t('common_181'),
           timeFormat: 'YYYY-MM-DD',
           timeGroupOpts: [
-            { key: '1d', label: '1天' },
-            { key: '7d', label: '7天' },
+            { key: '1d', label: i18n.t('common_178') },
+            { key: '7d', label: i18n.t('common_182') },
           ],
         },
       }),

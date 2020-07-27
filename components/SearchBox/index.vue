@@ -33,15 +33,14 @@
           :value-separator="valueSeparator"
           :default-search-key="defaultSearchKey"
           :fetch-distinct-field="fetchDistinctField"
+          :search.sync="autocompleterSearch"
           @focus-input="focusInput"
           @confirm="handleSearch"
           @remove-tag="handleRemoveTag"
           @update-show="handleUpdateShow" />
       </li>
-      <li class="mb-1 mt-1">
-        <div class="text-weak help-tips">{{ placeholder }}</div>
-      </li>
     </ul>
+    <div v-if="!hidePlaceholder" class="text-weak help-tips text-truncate">{{ placeholder }}</div>
     <a-icon type="search" class="cursor-pointer" @click.stop="search" />
   </div>
 </template>
@@ -84,7 +83,14 @@ export default {
       // 是否显示过滤选提示器
       showCompleter: false,
       newValues: {},
+      // 同步input的输入value
+      autocompleterSearch: '',
     }
+  },
+  computed: {
+    hidePlaceholder () {
+      return (!R.isEmpty(this.autocompleterSearch) && this.focus) || !R.isEmpty(this.value)
+    },
   },
   created () {
     // 选择的key分隔符
@@ -166,6 +172,7 @@ export default {
 .search-box-wrap {
   width: 100%;
   height: auto;
+  position: relative;
   > ul {
     white-space: nowrap;
     display: inline-block;
@@ -180,8 +187,12 @@ export default {
     }
   }
   .help-tips {
+    position: absolute;
     font-size: 12px;
     line-height: 24px;
+    top: 7px;
+    left: 12px;
+    right: 36px;
   }
 }
 </style>

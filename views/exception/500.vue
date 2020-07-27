@@ -1,8 +1,8 @@
 <template>
-  <a-result status="500" title="500" subTitle="抱歉，服务器出错了">
+  <a-result status="500" title="500" :subTitle="$t('common_344')">
     <template v-slot:extra>
       <a-button type="primary">
-        <router-link to="/">返回首页</router-link>
+        <router-link to="/">{{$t('common_342')}}</router-link>
       </a-button>
     </template>
   </a-result>

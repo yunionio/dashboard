@@ -3,11 +3,11 @@
     <div slot="body">
       <div class="titles">
          <img class="logo" :src="logo" alt="" />
-         <h2>OneCloud 授权激活</h2>
-         <p v-if="updateInfo.current_version">软件版本：{{updateInfo.current_version}}</p>
+         <h2>{{$t('common_120')}}</h2>
+         <p v-if="updateInfo.current_version">{{$t('common_121', [updateInfo.current_version])}}</p>
       </div>
       <a-form class="form" label-align="right" :form="form.fc" v-bind="formItemLayout">
-        <a-form-item v-if="allSn && allSn.length > 0" label="服务器识别码">
+        <a-form-item v-if="allSn && allSn.length > 0" :label="$t('common_122')">
           <div>
             <div class="flex-fill d-flex all-sn align-items-end">
               <div class="border pb-2 px-3">
@@ -21,7 +21,7 @@
             </div>
           </div>
         </a-form-item>
-        <a-form-item label="License文件上传">
+        <a-form-item :label="$t('common_123')">
           <a-upload-dragger
             name="license"
             :headers="headers"
@@ -32,14 +32,14 @@
             <p class="ant-upload-drag-icon">
               <a-icon type="cloud-upload" />
             </p>
-            <p class="ant-upload-text">单击或将文件拖到该区域以上传</p>
-            <p class="ant-upload-hint">license文件扩展名为.lic,大小不超过10KB</p>
+            <p class="ant-upload-text">{{$t('common_124')}}</p>
+            <p class="ant-upload-hint">{{$t('common_125')}}</p>
           </a-upload-dragger>
           <div slot="extra"  v-if="license || email">
-            <div class="mt-2 mb-1">还没有License? 您可以通过以下途径获取：</div>
+            <div class="mt-2 mb-1">{{$t('common_126')}}</div>
             <ul>
-              <li v-if="license">线上<help-link :href="license">申请免费License</help-link></li>
-              <li v-if="email">联系<a :href="`mailto:${email}`">{{ email }}</a> 获得支持</li>
+              <li v-if="license">{{$t('common_127')}}<help-link :href="license">{{$t('common_128')}}</help-link></li>
+              <li v-if="email">{{$t('common_129')}}<a :href="`mailto:${email}`">{{ email }}</a>{{$t('common_130')}}</li>
             </ul>
           </div>
         </a-form-item>
@@ -126,11 +126,11 @@ export default {
     },
     beforeUpload (file) {
       if (!file.name.endsWith('.lic')) {
-        this.$message.info('文件扩展名必须为.lic')
+        this.$message.info(this.$t('common_131'))
         return
       }
       if (file.size > 10240) {
-        this.$message.info('文件大小超过10K限制')
+        this.$message.info(this.$t('common_132'))
         return
       }
       this.fileList = [file]
@@ -168,7 +168,7 @@ export default {
       this.loading = true
       try {
         if (!this.fileList || this.fileList.length === 0) {
-          this.$message.info('请选择License文件上传')
+          this.$message.info(this.$t('common_133'))
           return false
         }
         const file = this.fileList[0]
@@ -180,7 +180,7 @@ export default {
         })
         this.goGuide()
         this.cancelDialog()
-        this.$message.success('授权成功')
+        this.$message.success(this.$t('common_134'))
       } catch (error) {
         throw error
       } finally {

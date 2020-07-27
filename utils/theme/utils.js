@@ -1,36 +1,37 @@
 import { message } from 'ant-design-vue'
 import themeColor from './colors.js'
+import i18n from '@/locales'
 
 // let lessNodesAppended
 const colorList = [
   {
-    key: '薄暮', color: '#F5222D',
+    key: i18n.t('common_313'), color: '#F5222D',
   },
   {
-    key: '火山', color: '#FA541C',
+    key: i18n.t('common_314'), color: '#FA541C',
   },
   {
-    key: '日暮', color: '#FAAD14',
+    key: i18n.t('common_315'), color: '#FAAD14',
   },
   {
-    key: '明青', color: '#13C2C2',
+    key: i18n.t('common_316'), color: '#13C2C2',
   },
   {
-    key: '极光绿', color: '#52C41A',
+    key: i18n.t('common_317'), color: '#52C41A',
   },
   {
-    key: '拂晓蓝（默认）', color: '#1890FF',
+    key: i18n.t('common_318'), color: '#1890FF',
   },
   {
-    key: '极客蓝', color: '#2F54EB',
+    key: i18n.t('common_319'), color: '#2F54EB',
   },
   {
-    key: '酱紫', color: '#722ED1',
+    key: i18n.t('common_320'), color: '#722ED1',
   },
 ]
 
 const updateThemeColor = newPrimaryColor => {
-  const hideMessage = message.loading('正在切换主题！', 0)
+  const hideMessage = message.loading(i18n.t('common_321'), 0)
   themeColor.changeColor(newPrimaryColor).finally(() => {
     hideMessage()
   })

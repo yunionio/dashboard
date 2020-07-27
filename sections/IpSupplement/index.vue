@@ -6,7 +6,7 @@
     trigger="click">
     <template slot="title">
       <div class="d-flex align-items-center">
-        <div class="flex-fill">补充IP</div>
+        <div class="flex-fill">{{$t('common_164')}}</div>
       </div>
     </template>
     <template slot="content">
@@ -16,7 +16,7 @@
         @submit="onSubmit"
         @cancel="this.hideForm" />
     </template>
-    <span class="oc-popover-desc">-<a-icon class="setup-icon" type="tool" />(可补IP)</span>
+    <span class="oc-popover-desc">-<a-icon class="setup-icon" type="tool" />{{$t('common_165')}}</span>
   </a-popover>
 </template>
 

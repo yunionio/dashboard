@@ -44,7 +44,7 @@ export default {
       } else {
         const _k = resource.substring(0, resource.length - 1)
         const txt = this.$t(`dictionary.${_k}`)
-        return txt.indexOf('dictionary') === -1 ? txt : '实例'
+        return txt.indexOf('dictionary') === -1 ? txt : this.$t('common_92')
       }
     },
     config () {
@@ -79,7 +79,7 @@ export default {
           })
         }
         this.cancelDialog()
-        this.$message.success('执行成功')
+        this.$message.success(this.$t('common_93'))
       } catch (err) {
         throw err
       } finally {

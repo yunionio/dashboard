@@ -1,6 +1,7 @@
 // import { message } from 'ant-design-vue'
 import * as R from 'ramda'
-import ERROR_INFO from '@/constants/error'
+// import ERROR_INFO from '@/constants/error'
+import i18n from '@/locales'
 
 export const getErrorBody = data => {
   if (R.is(String, data)) {
@@ -16,15 +17,15 @@ export const getErrorBody = data => {
   return data
 }
 
-const replaceErrorMessage = (obj, arr) => {
-  const { message = '', fields = [] } = obj
-  return message.replace(/\{(\w+)\}/g, (all, $1) => {
-    if (fields[arr[$1]]) {
-      return fields[arr[$1]]
-    }
-    return arr[$1]
-  })
-}
+// const replaceErrorMessage = (obj, arr) => {
+//   const { message = '', fields = [] } = obj
+//   return message.replace(/\{(\w+)\}/g, (all, $1) => {
+//     if (fields[arr[$1]]) {
+//       return fields[arr[$1]]
+//     }
+//     return arr[$1]
+//   })
+// }
 
 // 获取http请求报错信息
 export const getHttpErrorMessage = (err, isErrorBody = false) => {
@@ -47,22 +48,23 @@ export const getHttpErrorMessage = (err, isErrorBody = false) => {
     }
   }
   // 默认为错误的元信息
-  let ret = errorBody.details
+  const ret = errorBody.details
   // 查到对应的class翻译信息
-  const errorInfo = ERROR_INFO[errorBody.class]
-  if (errorInfo) {
-    if (errorBody.data) {
-      const { id = '', fields = [] } = errorBody.data
-      // 查到对应class的details翻译信息
-      const errorInfoDetails = errorInfo.details || {}
-      const detail = errorInfoDetails[id]
-      if (detail) {
-        ret = `${replaceErrorMessage(detail['zh-CN'], fields)}`
-      }
-    }
-  }
+  // const errorInfo = ERROR_INFO[errorBody.class]
+  // if (errorInfo) {
+  //   if (errorBody.data) {
+  //     const { id = '', fields = [] } = errorBody.data
+  //     // 查到对应class的details翻译信息
+  //     const errorInfoDetails = errorInfo.details || {}
+  //     const detail = errorInfoDetails[id]
+  //     if (detail) {
+  //       ret = `${replaceErrorMessage(detail['zh-CN'], fields)}`
+  //     }
+  //   }
+  // }
   return {
-    class: errorInfo ? errorInfo['zh-CN'] : errorBody.class,
+    // class: errorInfo ? errorInfo['zh-CN'] : errorBody.class,
+    class: errorBody.class,
     detail: ret,
     resource: !isErrorBody ? err.response.data : err,
   }
@@ -96,7 +98,7 @@ export const getDeleteResult = (row, deleteField = 'can_delete', failKey = 'dele
         try {
           deleteFailReason = JSON.parse(row[failKey])
         } catch (error) {
-          console.warn(`${failKey}格式匹配错误`)
+          console.warn(i18n.t('common_306', [failKey]))
         }
       }
       if (deleteFailReason) {

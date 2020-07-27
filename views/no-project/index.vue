@@ -1,15 +1,15 @@
 <template>
   <div>
-    <a-result status="403" title="403" :subTitle="`抱歉，您不属于任何${$t('dictionary.project')}，您可以做以下操作：`">
+    <a-result status="403" title="403" :subTitle="$t('common_346', [$t('dictionary.project')])">
       <template v-slot:extra>
         <div>
-          <a-button type="primary" @click="joinProject" v-if="showJoinBtn">申请加入{{ $t('dictionary.project') }}</a-button>
-          <a-button class="ml-2" @click="handleLogout">切换账号</a-button>
-          <a-button class="ml-2" @click="handleLogout">退出登录</a-button>
+          <a-button type="primary" @click="joinProject" v-if="showJoinBtn">{{$t('common_205')}}{{$t('dictionary.project')}} }}</a-button>
+          <a-button class="ml-2" @click="handleLogout">{{$t('common_347')}}</a-button>
+          <a-button class="ml-2" @click="handleLogout">{{$t('common_348')}}</a-button>
         </div>
         <div class="mt-2" v-if="showJoinBtn">
           <a-button type="link">
-            <router-link to="/no-project-status">我已申请，点击查看状态</router-link>
+            <router-link to="/no-project-status">{{$t('common_349')}}</router-link>
           </a-button>
         </div>
       </template>

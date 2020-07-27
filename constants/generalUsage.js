@@ -1,6 +1,7 @@
 // 此文件用于 general-usage 和 usage 接口的字段映射
 import * as R from 'ramda'
 import { UNITS, sizestr } from '@/utils/utils'
+import i18n from '@/locales'
 
 export const usageMap = {
   cpu: {
@@ -15,7 +16,7 @@ export const usageMap = {
         domain: 'hosts.any_pool.cpu',
       },
     },
-    unit: '核',
+    unit: i18n.t('common_60'),
   },
   memory: {
     field: {
@@ -57,7 +58,7 @@ export const usageMap = {
         domain: 'all.ports',
       },
     },
-    unit: '个',
+    unit: i18n.t('common_61'),
   },
   host: {
     field: {
@@ -68,7 +69,7 @@ export const usageMap = {
         system: 'hosts',
       },
     },
-    unit: '台',
+    unit: i18n.t('common_62'),
   },
   server: {
     field: {
@@ -100,7 +101,7 @@ export const usageMap = {
         project: 'pending_delete_servers.any_pool',
       },
     },
-    unit: '台',
+    unit: i18n.t('common_62'),
   },
   baremetal: {
     field: {
@@ -113,7 +114,7 @@ export const usageMap = {
         system: 'baremetals',
       },
     },
-    unit: '台',
+    unit: i18n.t('common_62'),
   },
   gpu: {
     field: {
@@ -126,7 +127,7 @@ export const usageMap = {
         system: 'isolated_devices.any_pool',
       },
     },
-    unit: '颗',
+    unit: i18n.t('common_63'),
   },
   eip: {
     field: {
@@ -146,7 +147,7 @@ export const usageMap = {
         project: 'eip',
       },
     },
-    unit: '个',
+    unit: i18n.t('common_61'),
   },
   diskAttach: {
     field: {
@@ -197,14 +198,14 @@ export const resourceMap = {
       domain: 'servers',
       project: 'servers',
     },
-    unit: '台',
+    unit: i18n.t('common_62'),
   },
   cpu: {
     field: {
       domain: 'servers.any_pool.cpu',
       project: 'servers.any_pool.cpu',
     },
-    unit: '核',
+    unit: i18n.t('common_60'),
   },
   disk: {
     field: {
@@ -225,28 +226,28 @@ export const resourceMap = {
       domain: 'domain.imgiso.total.count',
       project: 'imgiso.total.count',
     },
-    unit: '个',
+    unit: i18n.t('common_61'),
   },
   gpu: {
     field: {
       domain: 'running_servers.isolated_devices',
       project: 'running_servers.isolated_devices',
     },
-    unit: '颗',
+    unit: i18n.t('common_63'),
   },
   ip: {
     field: {
       domain: 'nics',
       project: 'nics',
     },
-    unit: '个',
+    unit: i18n.t('common_61'),
   },
   eip: {
     field: {
       domain: 'eip.used',
       project: 'eip.used',
     },
-    unit: '个',
+    unit: i18n.t('common_61'),
   },
 }
 
@@ -259,8 +260,8 @@ export const bucketMap = {
         project: 'buckets',
       },
     },
-    label: '桶数量',
-    unit: '个',
+    label: i18n.t('common_64'),
+    unit: i18n.t('common_61'),
   },
   bucketObjects: {
     field: {
@@ -270,8 +271,8 @@ export const bucketMap = {
         project: 'bucket_objects',
       },
     },
-    label: '对象数量',
-    unit: '个',
+    label: i18n.t('common_65'),
+    unit: i18n.t('common_61'),
   },
   bucketBytes: {
     field: {
@@ -281,7 +282,7 @@ export const bucketMap = {
         project: 'bucket_bytes',
       },
     },
-    label: '桶大小',
+    label: i18n.t('common_66'),
     unit: 'B',
   },
 }

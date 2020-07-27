@@ -17,8 +17,8 @@
     <a-form-item :extra="extra" class="mt-2">
       <div class="d-flex">
         <div style="line-height: 40px;">
-          <tag-select global v-model="checked" :params="params" button-text="已有标签" />
-          <a-button class="ml-2" v-if="!showForm" @click="() => showForm = true">新建</a-button>
+          <tag-select global v-model="checked" :params="params" button-:text="$t('common_110')" />
+          <a-button class="ml-2" v-if="!showForm" @click="() => showForm = true">{{$t('common_258')}}</a-button>
         </div>
         <a-form
           class="ml-2"
@@ -26,14 +26,14 @@
           :form="tagForm.fc"
           v-if="showForm">
           <a-form-item>
-            <a-input v-decorator="decorators.key" placeholder="标签键" />
+            <a-input v-decorator="decorators.key" :placeholder="$t('common_112')" />
           </a-form-item>
           <a-form-item>
-            <a-input v-decorator="decorators.value" placeholder="标签值" />
+            <a-input v-decorator="decorators.value" :placeholder="$t('common_113')" />
           </a-form-item>
           <a-form-item>
-            <a-button @click="addTag">添加</a-button>
-            <a-button @click="() => showForm = false" class="ml-2">取消</a-button>
+            <a-button @click="addTag">{{$t('common_114')}}</a-button>
+            <a-button @click="() => showForm = false" class="ml-2">{{$t('common_115')}}</a-button>
           </a-form-item>
         </a-form>
       </div>
@@ -45,6 +45,7 @@
 import * as R from 'ramda'
 import { getTagColor, getTagTitle } from '@/utils/common/tag'
 import TagSelect from '@/sections/TagSelect'
+import i18n from '@/locales'
 
 export default {
   name: 'Tag',
@@ -54,7 +55,7 @@ export default {
   props: {
     extra: {
       type: String,
-      default: '每个资源最多可绑定20个标签',
+      default: i18n.t('common_259'),
     },
     value: {
       type: Object,
@@ -75,7 +76,7 @@ export default {
           'key',
           {
             rules: [
-              { required: true, whitespace: true, message: '请输入标签键' },
+              { required: true, whitespace: true, message: this.$t('common_116') },
             ],
           },
         ],

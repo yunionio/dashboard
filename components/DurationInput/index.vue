@@ -20,10 +20,10 @@ export default {
     durationOptions: {
       type: Array,
       default: () => [
-        { label: '小时', key: 'h' },
-        { label: '天', key: 'd' },
-        { label: '月', key: 'm' },
-        { label: '年', key: 'y' },
+        { label: this.$t('common_11'), key: 'h' },
+        { label: this.$t('common_12'), key: 'd' },
+        { label: this.$t('common_13'), key: 'm' },
+        { label: this.$t('common_14'), key: 'y' },
       ],
     },
   },

@@ -2,10 +2,10 @@
   <div class="email-activate">
     <div id="confirm" v-show="mailVerify.confirm">
       <div class="box1">
-        <h2>用户邮箱激活</h2>
-        <div class="desc">请点击【确认激活】的按钮，完成OneCloud系统内用户邮箱的激活</div>
+        <h2>{{$t('common_330')}}</h2>
+        <div class="desc">{{$t('common_331')}}</div>
         <div class="btn-group">
-          <a-button class="btn login" @click="confirmVerification">确认激活</a-button>
+          <a-button class="btn login" @click="confirmVerification">{{$t('common_332')}}</a-button>
         </div>
       </div>
     </div>
@@ -14,10 +14,10 @@
       <div>
         <div class="box1">
           <a-icon type="close-circle" theme="twoTone" twoToneColor="#f5222d" />
-          <h4>你的邮箱：激活失败</h4>
-          <div class="desc">你可以点击【登录系统】按钮来进入OneCloud系统</div>
+          <h4>{{$t('common_333')}}</h4>
+          <div class="desc">{{$t('common_334')}}</div>
           <div class="btn-group">
-            <a-button class="btn login" @click="login">登录系统</a-button>
+            <a-button class="btn login" @click="login">{{$t('common_335')}}</a-button>
           </div>
         </div>
       </div>
@@ -27,10 +27,10 @@
       <div>
         <div class="box1">
           <a-icon type="close-circle" theme="twoTone" twoToneColor="#f5222d" />
-          <h2 style="text-align: center">激活链接失效/不合法</h2>
-          <div class="desc">验证时间已超过24小时，需要重新发送激活链接/激活链接不合法，更正后重试</div>
+          <h2 style="text-align: center">{{$t('common_336')}}</h2>
+          <div class="desc">{{$t('common_337')}}</div>
           <div class="btn-group">
-            <a-button class="btn login" @click="login">登录系统</a-button>
+            <a-button class="btn login" @click="login">{{$t('common_335')}}</a-button>
           </div>
         </div>
 
@@ -41,10 +41,10 @@
       <div>
         <div class="box1">
           <a-icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
-          <h4 style="text-align: center">您的邮箱已经激活成功</h4>
-          <div class="desc">你可以点击【登录系统】按钮来进入OneCloud系统</div>
+          <h4 style="text-align: center">{{$t('common_338')}}</h4>
+          <div class="desc">{{$t('common_334')}}</div>
           <div class="btn-group">
-            <a-button class="btn login" @click="login">登录系统</a-button>
+            <a-button class="btn login" @click="login">{{$t('common_335')}}</a-button>
           </div>
         </div>
 
@@ -81,7 +81,7 @@ export default {
     const id = this.$route.params.id
     const token = this.$route.params.token
     if (!id || !token) {
-      this.$message.error('不合法的网址')
+      this.$message.error(this.$t('common_339'))
     }
     this.id = id
     this.token = token
@@ -102,7 +102,7 @@ export default {
           }
         })
         .catch((err) => {
-          this.retText = '错误的请求'
+          this.retText = this.$t('common_340')
           console.log('err', err)
           this.mailVerify.error = true
         })
