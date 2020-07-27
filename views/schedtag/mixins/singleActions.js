@@ -1,17 +1,18 @@
 import { mapGetters } from 'vuex'
+import i18n from '@/locales'
 
 export default {
   computed: mapGetters(['isAdminMode']),
   created () {
     this.singleActions = [
       {
-        label: '更改所属',
+        label: i18n.t('cloudenv.text_423'),
         action: obj => {
           this.createDialog('SetOwnerDialog', {
             data: [obj],
             columns: this.columns,
-            title: '更改所属',
-            tipName: '调度标签',
+            title: i18n.t('cloudenv.text_423'),
+            tipName: i18n.t('cloudenv.text_18'),
             onManager: this.onManager,
             tipname: this.$t('dictionary.schedtag'),
           })
@@ -28,12 +29,12 @@ export default {
         },
       },
       {
-        label: '偏好设置',
+        label: i18n.t('cloudenv.text_422'),
         action: obj => {
           this.createDialog('SetStrategyDialog', {
             data: [obj],
             columns: this.columns,
-            title: '偏好设置',
+            title: i18n.t('cloudenv.text_422'),
             onManager: this.onManager,
           })
         },
@@ -49,13 +50,13 @@ export default {
         },
       },
       {
-        label: '删除',
+        label: i18n.t('cloudenv.text_108'),
         action: obj => {
           this.createDialog('DeleteResDialog', {
             vm: this,
             data: [obj],
             columns: this.columns,
-            title: '删除',
+            title: i18n.t('cloudenv.text_108'),
             name: this.$t('dictionary.schedtag'),
             onManager: this.onManager,
             success: () => {

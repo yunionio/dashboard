@@ -14,8 +14,9 @@ import SingleActionsMixin from '../mixins/singleActions'
 import { STRATEGY_OPT } from '@Cloudenv/constants/sched'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import i18n from '@/locales'
 
-const RES_TYPES = { hosts: '宿主机、物理机', storages: '存储', networks: '网络' }
+const RES_TYPES = { hosts: i18n.t('cloudenv.text_5'), storages: i18n.t('cloudenv.text_6'), networks: i18n.t('cloudenv.text_7') }
 
 const getParams = { details: true }
 
@@ -33,20 +34,20 @@ export default {
         getParams,
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('cloudenv.text_95'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
             },
           },
           default_strategy: {
-            label: '偏好',
+            label: this.$t('cloudenv.text_413'),
             dropdown: true,
             multiple: true,
             items: STRATEGY_OPT,
           },
           resource_type: {
-            label: '资源类型',
+            label: this.$t('cloudenv.text_384'),
             dropdown: true,
             multiple: true,
             items: Object.keys(RES_TYPES).map(key => {
@@ -58,17 +59,17 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
-          { label: '偏好', key: 'default_strategy' },
-          { label: '资源类型', key: 'resource_type' },
-          { label: '资源数量', key: 'resource_count' },
-          { label: '关联动态调度标签', key: 'dynamic_schedtag_count' },
-          { label: '关联调度策略', key: 'schedpolicy_count' },
+          { label: this.$t('cloudenv.text_95'), key: 'name' },
+          { label: this.$t('cloudenv.text_413'), key: 'default_strategy' },
+          { label: this.$t('cloudenv.text_384'), key: 'resource_type' },
+          { label: this.$t('cloudenv.text_417'), key: 'resource_count' },
+          { label: this.$t('cloudenv.text_418'), key: 'dynamic_schedtag_count' },
+          { label: this.$t('cloudenv.text_419'), key: 'schedpolicy_count' },
         ],
       },
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('cloudenv.text_104'),
           action: () => {
             this.createDialog('CreateSchedtagDialog', {
               onManager: this.onManager,
@@ -87,13 +88,13 @@ export default {
           },
         },
         {
-          label: '删除',
+          label: this.$t('cloudenv.text_108'),
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,
               data: this.list.selectedItems,
               columns: this.columns,
-              title: '删除调度标签',
+              title: this.$t('cloudenv.text_420'),
               name: this.$t('dictionary.schedtag'),
               onManager: this.onManager,
             })

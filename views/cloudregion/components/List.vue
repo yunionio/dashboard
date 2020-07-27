@@ -25,18 +25,18 @@ export default {
         getParams: { cloud_env: 'private_or_onpremise' },
         filterOptions: {
           name: getNameFilter(),
-          enabled: getEnabledFilter({ label: '状态' }),
+          enabled: getEnabledFilter({ label: this.$t('cloudenv.text_98') }),
         },
       }),
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
-          { label: '状态', key: 'status' },
-          { label: '云服务器', key: 'guest_count' },
+          { label: this.$t('cloudenv.text_95'), key: 'name' },
+          { label: this.$t('cloudenv.text_98'), key: 'status' },
+          { label: this.$t('cloudenv.text_369'), key: 'guest_count' },
           { label: 'VPC', key: 'vpc_count' },
-          { label: '可用区', key: 'zone_count' },
-          { label: '平台', key: 'provider' },
+          { label: this.$t('cloudenv.text_11'), key: 'zone_count' },
+          { label: this.$t('cloudenv.text_102'), key: 'provider' },
         ],
         getParams: {
           cloud_env: 'private_or_onpremise',

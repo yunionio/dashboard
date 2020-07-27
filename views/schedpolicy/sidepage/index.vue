@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="调度策略"
+    :title="$t('cloudenv.text_19')"
     icon="res-schedpolicy"
     :res-name="detailData.name"
     :actions="params.actions"
@@ -41,8 +41,8 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'schedpolicy-detail' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('cloudenv.text_237'), key: 'schedpolicy-detail' },
+        { label: this.$t('cloudenv.text_15'), key: 'event-drawer' },
       ],
     }
   },

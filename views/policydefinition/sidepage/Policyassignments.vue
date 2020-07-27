@@ -31,7 +31,7 @@ export default {
         filterOptions: {},
       }),
       columns: [
-        getCopyWithContentTableColumn({ field: 'project_domain', title: '名称' }),
+        getCopyWithContentTableColumn({ field: 'project_domain', title: this.$t('cloudenv.text_95') }),
       ],
     }
   },

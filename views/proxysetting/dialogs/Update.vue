@@ -1,8 +1,8 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">修改属性</div>
+    <div slot="header">{{$t('cloudenv.text_406')}}</div>
     <div slot="body">
-      <dialog-selected-tips name="代理" :count="params.data.length" action="修改属性" />
+      <dialog-selected-tips :name="$t('cloudenv.text_14')" :count="params.data.length" :action="$t('cloudenv.text_406')" />
       <dialog-table class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc"
@@ -73,12 +73,12 @@ export default {
           const { ok, reason } = data[k]
           if (ok) {
             this.$notification.success({
-              message: `${this.$t('proxysettings')[k]}测试连接成功`,
-              description: '请点击确定继续',
+              message: this.$t('cloudenv.text_407', [this.$t('proxysettings')[k]]),
+              description: this.$t('cloudenv.text_408'),
             })
           } else {
             this.$notification.error({
-              message: `${this.$t('proxysettings')[k]}测试连接失败`,
+              message: this.$t('cloudenv.text_409', this.$t('proxysettings')[k]),
               description: reason,
             })
           }

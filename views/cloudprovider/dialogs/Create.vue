@@ -1,39 +1,31 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">新建订阅</div>
+    <div slot="header">{{$t('cloudenv.text_340')}}</div>
     <div slot="body">
       <a-alert class="mb-3" type="warning">
         <template slot="message">
-          <div>
-            新建订阅需要满足以下2个条件：
-          </div>
-          <div>1.国际区的云账号，中国大陆地区的云账号不支持该操作 </div>
-          <div>2.录入的APP必须被授予Owner的权限，操作步骤请点击查看帮助  <help-link href="/">详情</help-link></div>
+          <div>{{$t('cloudenv.text_341')}}</div>
+          <div>{{$t('cloudenv.text_342')}}</div>
+          <div>{{$t('cloudenv.text_343')}}<help-link href="/">{{$t('cloudenv.text_237')}}</help-link></div>
         </template>
       </a-alert>
       <a-form :form="form.fc" v-bind="formItemLayout">
-        <a-form-item label="EA账号">
+        <a-form-item :label="$t('cloudenv.text_344')">
           <base-select
             showSync
             isDefaultSelect
             :resource="`cloudaccounts/${params.data.id}/enrollment-accounts`"
             v-decorator="decorators.enrollmentAccountId"
-            :selectProps="{ 'placeholder': '请选择EA账号' }" />
-            <div slot="extra">
-              需要指定使用哪个EA账号新建订阅
-            </div>
+            :selectProps="{ 'placeholder': $t('cloudenv.text_345') }" />
+            <div slot="extra">{{$t('cloudenv.text_346')}}</div>
         </a-form-item>
-        <a-form-item label="订阅名称">
-          <a-input v-decorator="decorators.name" placeholder="请输入订阅名称" />
+        <a-form-item :label="$t('cloudenv.text_347')">
+          <a-input v-decorator="decorators.name" :placeholder="$t('cloudenv.text_348')" />
         </a-form-item>
-        <a-form-item label="用途">
-          <a-select v-decorator="decorators.offerType" placeholder="请选择用途">
-            <a-select-option value="MS-AZR-0017P">
-              生产
-            </a-select-option>
-            <a-select-option value="MS-AZR-0148P">
-              开发/测试
-            </a-select-option>
+        <a-form-item :label="$t('cloudenv.text_349')">
+          <a-select v-decorator="decorators.offerType" :placeholder="$t('cloudenv.text_350')">
+            <a-select-option value="MS-AZR-0017P">{{$t('cloudenv.text_351')}}</a-select-option>
+            <a-select-option value="MS-AZR-0148P">{{$t('cloudenv.text_352')}}</a-select-option>
           </a-select>
         </a-form-item>
       </a-form>
@@ -64,7 +56,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('cloudenv.text_190') },
             ],
           },
         ],
@@ -72,7 +64,7 @@ export default {
           'enrollment_account_id',
           {
             rules: [
-              { required: true, message: '请选择EA账号' },
+              { required: true, message: this.$t('cloudenv.text_345') },
             ],
           },
         ],
@@ -81,7 +73,7 @@ export default {
           {
             initialValue: 'MS-AZR-0017P',
             rules: [
-              { required: true, message: '请选择用途' },
+              { required: true, message: this.$t('cloudenv.text_350') },
             ],
           },
         ],

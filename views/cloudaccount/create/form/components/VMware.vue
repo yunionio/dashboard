@@ -1,21 +1,21 @@
 <template>
   <div>
     <a-form :form="form.fc" v-bind="formLayout">
-      <a-form-item label="名称">
-        <a-input v-decorator="decorators.name" placeholder="请输入名称" />
+      <a-form-item :label="$t('cloudenv.text_95')">
+        <a-input v-decorator="decorators.name" :placeholder="$t('cloudenv.text_190')" />
       </a-form-item>
-      <a-form-item label="vCenter地址" extra="请输入ip地址或者域名">
-        <a-input v-decorator="decorators.host" placeholder="请输入ip地址或者域名" />
+      <a-form-item :label="$t('cloudenv.text_264')" :extra="$t('cloudenv.text_265')">
+        <a-input v-decorator="decorators.host" :placeholder="$t('cloudenv.text_265')" />
       </a-form-item>
-      <a-form-item label="端口">
+      <a-form-item :label="$t('cloudenv.text_266')">
         <a-input v-decorator="decorators.port" />
       </a-form-item>
       <a-form-item :label="keySecretField.label.k">
         <a-input v-decorator="decorators.username" :placeholder="keySecretField.placeholder.k" />
         <div slot="extra">
-           <span class="mr-3">提示：VMware账号添加后暂不支持修改</span>
-          {{ `如何获取${keySecretField.text}的${keySecretField.label.k }？点击查看帮助` }}
-          <help-link :href="docs[provider.toLowerCase()]"> 详情</help-link>
+           <span class="mr-3">{{$t('cloudenv.text_267')}}</span>
+           {{$t('cloudenv.text_236', [keySecretField.text, keySecretField.label.k])}}
+           <help-link :href="docs[provider.toLowerCase()]">{{$t('cloudenv.text_237')}}</help-link>
         </div>
       </a-form-item>
       <a-form-item :label="keySecretField.label.s">
@@ -54,7 +54,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('cloudenv.text_190') },
               { validator: this.$validate('resourceName') },
             ],
           },
@@ -64,8 +64,8 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入vCenter地址' },
-              { validator: this.$validate(['url', 'IPv4'], true, 'some'), trigger: ['blur', 'change'], message: '请输入域名或者ip' },
+              { required: true, message: this.$t('cloudenv.text_268') },
+              { validator: this.$validate(['url', 'IPv4'], true, 'some'), trigger: ['blur', 'change'], message: this.$t('cloudenv.text_269') },
             ],
           },
         ],
@@ -74,7 +74,7 @@ export default {
           {
             initialValue: 443,
             rules: [
-              { type: 'number', min: 0, max: 65535, message: '端口范围在 0-65535 之间', trigger: 'blur', transform: (v) => parseFloat(v) },
+              { type: 'number', min: 0, max: 65535, message: this.$t('cloudenv.text_270'), trigger: 'blur', transform: (v) => parseFloat(v) },
             ],
           },
         ],

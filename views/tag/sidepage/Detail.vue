@@ -29,7 +29,7 @@ export default {
       baseInfo: [
         {
           field: 'count',
-          title: '绑定资源数量',
+          title: this.$t('cloudenv.text_474'),
           slots: {
             default: ({ row }) => {
               return row.count > 0 ? [<a onClick={ () => this.$emit('tab-change', 'bind-resource') }>{ `${row.count}` }</a>] : 0
@@ -38,7 +38,7 @@ export default {
         },
         {
           field: 'color',
-          title: '颜色',
+          title: this.$t('cloudenv.text_475'),
           slots: {
             default: ({ row }) => {
               const color = getTagColor(row.key, row.value)

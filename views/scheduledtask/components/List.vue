@@ -33,23 +33,23 @@ export default {
         getParams: { details: true },
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('cloudenv.text_95'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
             },
           },
           enabled: {
-            label: '启用状态',
+            label: this.$t('cloudenv.text_97'),
             dropdown: true,
             items: [
-              { label: '启用', key: true },
-              { label: '禁用', key: false },
+              { label: this.$t('cloudenv.text_334'), key: true },
+              { label: this.$t('cloudenv.text_335'), key: false },
             ],
           },
           status: getStatusFilter('scheduledtask'),
           operation: {
-            label: '操作动作',
+            label: this.$t('cloudenv.text_425'),
             dropdown: true,
             items: Object.keys(this.$t('cloudenv.ScheduledtaskRuleAction')).map((k) => {
               return {
@@ -64,19 +64,19 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
-          { label: '启用状态', key: 'enabled' },
-          { label: '状态', key: 'status' },
-          { label: '操作动作', key: 'operation' },
-          { label: '资源绑定', key: 'label_type' },
-          { label: '策略详情', key: 'timer_desc' },
-          { label: '创建时间', key: 'created_at' },
+          { label: this.$t('cloudenv.text_95'), key: 'name' },
+          { label: this.$t('cloudenv.text_97'), key: 'enabled' },
+          { label: this.$t('cloudenv.text_98'), key: 'status' },
+          { label: this.$t('cloudenv.text_425'), key: 'operation' },
+          { label: this.$t('cloudenv.text_426'), key: 'label_type' },
+          { label: this.$t('cloudenv.text_427'), key: 'timer_desc' },
+          { label: this.$t('cloudenv.text_428'), key: 'created_at' },
           { label: this.$t('dictionary.project'), key: 'tenant' },
         ],
       },
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('cloudenv.text_104'),
           permission: 'scheduledtasks_create',
           action: () => {
             this.$router.push({
@@ -94,7 +94,7 @@ export default {
           actions: () => {
             return [
               {
-                label: '启用',
+                label: this.$t('cloudenv.text_334'),
                 permission: 'scheduledtasks_perform_enable',
                 action: () => {
                   this.list.batchPerformAction('enable', null, this.list.steadyStatus)
@@ -103,12 +103,12 @@ export default {
                   const validate = this.list.selectedItems.length && this.list.selectedItems.every(item => !item.enabled)
                   return {
                     validate,
-                    tooltip: !validate ? '请选择已经禁用的定时任务' : '',
+                    tooltip: !validate ? this.$t('cloudenv.text_429') : '',
                   }
                 },
               },
               {
-                label: '禁用',
+                label: this.$t('cloudenv.text_335'),
                 permission: 'scheduledtasks_perform_disable',
                 action: () => {
                   this.createDialog('ScheduledtaskDisabledDialog', {
@@ -121,20 +121,20 @@ export default {
                   const validate = this.list.selectedItems.length && this.list.selectedItems.every(item => item.enabled)
                   return {
                     validate,
-                    tooltip: !validate ? '请选择已经启用的定时任务' : '',
+                    tooltip: !validate ? this.$t('cloudenv.text_430') : '',
                   }
                 },
               },
               {
-                label: '删除',
+                label: this.$t('cloudenv.text_108'),
                 permission: 'scheduledtasks_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     vm: this,
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    title: '删除',
-                    name: '定时任务',
+                    title: this.$t('cloudenv.text_108'),
+                    name: this.$t('cloudenv.text_431'),
                     onManager: this.onManager,
                   })
                 },

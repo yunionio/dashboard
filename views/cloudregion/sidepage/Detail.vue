@@ -27,11 +27,11 @@ export default {
   data () {
     return {
       baseInfo: [
-        getEnabledTableColumn({ title: '启用状态' }),
+        getEnabledTableColumn({ title: this.$t('cloudenv.text_97') }),
         getBrandTableColumn({ field: 'provider' }),
         {
           field: 'zone_count',
-          title: '可用区（数量）',
+          title: this.$t('cloudenv.text_370'),
           slots: {
             default: ({ row }) => {
               return row.zone_count > 0 ? [<a onClick={ () => this.$emit('tab-change', 'zone-list') }>{ row.zone_count }</a>] : 0
@@ -40,7 +40,7 @@ export default {
         },
         {
           field: 'vpc_count',
-          title: 'VPC（数量）',
+          title: this.$t('cloudenv.text_371'),
           slots: {
             default: ({ row }) => {
               return row.vpc_count > 0 ? [<a onClick={ () => this.$emit('tab-change', 'v-p-c-list') }>{ row.vpc_count }</a>] : 0
@@ -49,7 +49,7 @@ export default {
         },
         {
           field: 'network_count',
-          title: 'IP子网（数量）',
+          title: this.$t('cloudenv.text_372'),
           slots: {
             default: ({ row }) => {
               return row.network_count > 0 ? [<a onClick={ () => this.$emit('tab-change', 'network-list') }>{ row.network_count }</a>] : 0
@@ -58,16 +58,16 @@ export default {
         },
         {
           field: 'guest_count',
-          title: `${this.$t('dictionary.server')}(数量)`,
+          title: this.$t('cloudenv.text_373', [this.$t('dictionary.server')]),
         },
       ],
       extraInfo: [
         {
-          title: '其他信息',
+          title: this.$t('cloudenv.text_359'),
           items: [
             {
               field: 'location',
-              title: '位置',
+              title: this.$t('cloudenv.text_374'),
             },
           ],
         },

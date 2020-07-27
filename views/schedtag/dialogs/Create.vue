@@ -1,16 +1,16 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">新建调度标签</div>
+    <div slot="header">{{$t('cloudenv.text_421')}}</div>
     <div slot="body">
       <a-form
         :form="form.fc">
-        <a-form-item label="名称" v-bind="formItemLayout">
+        <a-form-item :label="$t('cloudenv.text_95')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
         </a-form-item>
-        <a-form-item label="偏好" v-bind="formItemLayout">
+        <a-form-item :label="$t('cloudenv.text_413')" v-bind="formItemLayout">
           <strategy-radio :decorator="decorators.default_strategy" />
         </a-form-item>
-        <a-form-item label="资源类型" v-bind="formItemLayout">
+        <a-form-item :label="$t('cloudenv.text_384')" v-bind="formItemLayout">
           <a-radio-group v-decorator="decorators.resource_type">
             <a-radio-button
               v-for="item in resourceTypeOpts"
@@ -50,7 +50,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('cloudenv.text_190') },
               { validator: this.$validate('resourceName') },
             ],
           },
@@ -69,9 +69,9 @@ export default {
         ],
       },
       resourceTypeOpts: [
-        { key: 'hosts', label: '宿主机、物理机' },
-        { key: 'storages', label: '存储' },
-        { key: 'networks', label: '网络' },
+        { key: 'hosts', label: this.$t('cloudenv.text_5') },
+        { key: 'storages', label: this.$t('cloudenv.text_6') },
+        { key: 'networks', label: this.$t('cloudenv.text_7') },
       ],
       formItemLayout: {
         wrapperCol: {

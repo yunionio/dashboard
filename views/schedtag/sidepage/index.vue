@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="调度标签"
+    :title="$t('cloudenv.text_18')"
     icon="res-schedtag"
     :res-name="detailData.name"
     :actions="params.actions"
@@ -44,13 +44,13 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'schedtag-detail' },
-        { label: '物理机', key: 'physicalmachine-list' },
-        { label: '宿主机', key: 'host-list' },
-        { label: '存储', key: 'storage-list' },
-        { label: '网络', key: 'network-list' },
-        { label: '资源统计', key: 'dashboard' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('cloudenv.text_237'), key: 'schedtag-detail' },
+        { label: this.$t('cloudenv.text_424'), key: 'physicalmachine-list' },
+        { label: this.$t('cloudenv.text_101'), key: 'host-list' },
+        { label: this.$t('cloudenv.text_6'), key: 'storage-list' },
+        { label: this.$t('cloudenv.text_7'), key: 'network-list' },
+        { label: this.$t('cloudenv.text_319'), key: 'dashboard' },
+        { label: this.$t('cloudenv.text_15'), key: 'event-drawer' },
       ],
     }
   },

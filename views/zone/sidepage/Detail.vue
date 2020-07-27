@@ -26,7 +26,7 @@ export default {
       baseInfo: [
         getCopyWithContentTableColumn({
           field: 'cloudregion',
-          title: '区域',
+          title: this.$t('cloudenv.text_10'),
           hideField: true,
           slotCallback: row => {
             if (!row.cloudregion) return '-'
@@ -35,40 +35,40 @@ export default {
         }),
         {
           field: 'baremetals',
-          title: '物理机(数量)',
+          title: this.$t('cloudenv.text_485'),
         },
         {
           field: 'baremetals_enabled',
-          title: '可用物理机',
+          title: this.$t('cloudenv.text_476'),
         },
         {
           field: 'hosts',
-          title: '宿主机(数量)',
+          title: this.$t('cloudenv.text_486'),
         },
         {
           field: 'hosts_enabled',
-          title: '可用宿主机',
+          title: this.$t('cloudenv.text_487'),
         },
         {
           field: 'storages',
-          title: '存储(数量)',
+          title: this.$t('cloudenv.text_488'),
         },
         {
           field: 'wires',
-          title: '二层网络(数量)',
+          title: this.$t('cloudenv.text_489'),
         },
         {
           field: 'networks',
-          title: 'IP子网(数量)',
+          title: this.$t('cloudenv.text_490'),
         },
       ],
       extraInfo: [
         {
-          title: '其他信息',
+          title: this.$t('cloudenv.text_359'),
           items: [
             {
               field: 'location',
-              title: '位置',
+              title: this.$t('cloudenv.text_374'),
             },
           ],
         },

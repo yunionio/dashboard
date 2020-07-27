@@ -1,11 +1,12 @@
 import { mapGetters } from 'vuex'
+import i18n from '@/locales'
 
 export default {
   computed: mapGetters(['isAdminMode']),
   created () {
     this.singleActions = [
       {
-        label: '关联资源',
+        label: i18n.t('cloudenv.text_454'),
         permission: 'scheduledtasks_update',
         action: (obj) => {
           this.createDialog('ScheduledtaskEditDialog', {
@@ -23,11 +24,11 @@ export default {
         },
       },
       {
-        label: '更多',
+        label: i18n.t('cloudenv.text_311'),
         actions: () => {
           return [
             {
-              label: '启用',
+              label: i18n.t('cloudenv.text_334'),
               permission: 'scheduledtasks_perform_enable',
               action: (obj) => {
                 this.createDialog('ScheduledtaskEnabledDialog', {
@@ -39,12 +40,12 @@ export default {
               meta: (obj) => {
                 return {
                   validate: !obj.enabled,
-                  tooltip: obj.enabled ? '请选择已禁用的定时任务' : '',
+                  tooltip: obj.enabled ? i18n.t('cloudenv.text_455') : '',
                 }
               },
             },
             {
-              label: '禁用',
+              label: i18n.t('cloudenv.text_335'),
               permission: 'scheduledtasks_perform_disable',
               action: (obj) => {
                 this.createDialog('ScheduledtaskDisabledDialog', {
@@ -56,19 +57,19 @@ export default {
               meta: (obj) => {
                 return {
                   validate: obj.enabled,
-                  tooltip: !obj.enabled ? '请选择已启用的定时任务' : '',
+                  tooltip: !obj.enabled ? i18n.t('cloudenv.text_456') : '',
                 }
               },
             },
             {
-              label: '删除',
+              label: i18n.t('cloudenv.text_108'),
               permission: 'scheduledtasks_delete',
               action: obj => {
                 this.createDialog('DeleteResDialog', {
                   vm: this,
                   data: [obj],
                   columns: this.columns,
-                  title: '删除',
+                  title: i18n.t('cloudenv.text_108'),
                   onManager: this.onManager,
                   success: () => {
                     this.destroySidePages()

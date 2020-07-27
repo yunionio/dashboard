@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="调度标签" />
+    <page-header :title="$t('cloudenv.text_18')" />
     <page-body>
       <schedtag-list :id="listId" />
     </page-body>

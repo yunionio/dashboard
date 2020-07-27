@@ -31,16 +31,16 @@ export default {
       columns: [
         {
           field: 'name',
-          title: '名称',
+          title: this.$t('cloudenv.text_95'),
         },
       ],
       singleActions: [
         {
-          label: '解绑',
+          label: this.$t('cloudenv.text_452'),
           permission: 'scheduledtasks_perform_set_label',
           action: (row) => {
             this.createDialog('RelatedResourceRemoveDialog', {
-              title: '解绑',
+              title: this.$t('cloudenv.text_452'),
               data: [row],
               resData: this.data,
               columns: this.columns,
@@ -56,7 +56,7 @@ export default {
       ],
       groupActions: [
         {
-          label: '关联资源',
+          label: this.$t('cloudenv.text_454'),
           permission: 'scheduledtasks_perform_set_label',
           action: () => {
             this.createDialog('ScheduledtaskEditDialog', {

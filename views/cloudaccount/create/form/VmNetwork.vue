@@ -1,21 +1,19 @@
 <template>
   <div>
     <a-alert :showIcon="false" banner>
-      <div slot="message">
-        注意事项：对接VMware账号需保证本地IP子网包含该vCenter下所有宿主机的IP，若无对应IP子网则无法使用和同步该宿主机下的资源。
-        <div style="margin-left: 68px">您可在下方新建缺失的IP子网，无需新建关闭下方配置IP子网开关即可</div>
+      <div slot="message">{{$t('cloudenv.text_225')}}<div style="margin-left: 68px">{{$t('cloudenv.text_226')}}</div>
       </div>
    </a-alert>
     <a-form class="mt-3" :form="form.fc">
-      <a-divider orientation="left">基础配置</a-divider>
-      <a-form-item label="配置IP子网" v-bind="formLayout">
-        <a-switch checkedChildren="开" unCheckedChildren="关" v-model="configNetwork" />
+      <a-divider orientation="left">{{$t('cloudenv.text_227')}}</a-divider>
+      <a-form-item :label="$t('cloudenv.text_228')" v-bind="formLayout">
+        <a-switch :checkedChildren="$t('cloudenv.text_84')" :unCheckedChildren="$t('cloudenv.text_85')" v-model="configNetwork" />
       </a-form-item>
       <template v-if="configNetwork">
-        <a-form-item label="子网名称" v-bind="formLayout">
+        <a-form-item :label="$t('cloudenv.text_184')" v-bind="formLayout">
           <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
         </a-form-item>
-        <a-form-item label="二层网络" class="mb-0" v-bind="formLayout">
+        <a-form-item :label="$t('cloudenv.text_229')" class="mb-0" v-bind="formLayout">
           <cloudregion-vpc-wire
             :vpc-params="params.vpc"
             :cloudregion-params="params.cloudregion"
@@ -24,7 +22,7 @@
             :decorator="decorators.cloudregionVpcWire" />
         </a-form-item>
         <a-form-item v-bind="formLayout">
-          <span slot="label">IP子网<help-tooltip class="ml-1" name="networkIpSubnets" /></span>
+          <span slot="label">{{$t('cloudenv.text_181')}}<help-tooltip class="ml-1" name="networkIpSubnets" /></span>
           <ip-subnets :decorator="decorators.ipSubnets" />
         </a-form-item>
       </template>
@@ -41,7 +39,7 @@ import { isRequired } from '@/utils/validate'
 function validateGateway (rule, value, callback) {
   // 只需要查看是否是以 0 结尾
   const ipItems = value.split('.')
-  const msg = '网关不能以0结尾'
+  const msg = this.$t('cloudenv.text_230')
   if (ipItems[ipItems.length - 1] === '0') {
     callback(msg)
   } else {
@@ -71,7 +69,7 @@ export default {
             validateTrigger: ['change', 'blur'],
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('cloudenv.text_190') },
               { validator: this.$validate('resourceName') },
             ],
           },
@@ -81,7 +79,7 @@ export default {
             'cloudregion',
             {
               rules: [
-                { validator: isRequired(), message: '请选择区域' },
+                { validator: isRequired(), message: this.$t('cloudenv.text_231') },
               ],
             },
           ],
@@ -89,7 +87,7 @@ export default {
             'vpc',
             {
               rules: [
-                { validator: isRequired(), message: '请选择VPC' },
+                { validator: isRequired(), message: this.$t('cloudenv.text_232') },
               ],
             },
           ],
@@ -97,7 +95,7 @@ export default {
             'wire',
             {
               rules: [
-                { validator: isRequired(), message: '请选择二层网络' },
+                { validator: isRequired(), message: this.$t('cloudenv.text_233') },
               ],
             },
           ],
@@ -109,7 +107,7 @@ export default {
               validateTrigger: ['change', 'blur'],
               validateFirst: true,
               rules: [
-                { required: true, message: '请输入起始IP' },
+                { required: true, message: this.$t('cloudenv.text_191') },
                 { validator: this.$validate('IPv4') },
               ],
             },
@@ -120,7 +118,7 @@ export default {
               validateTrigger: ['change', 'blur'],
               validateFirst: true,
               rules: [
-                { required: true, message: '请输入结束IP' },
+                { required: true, message: this.$t('cloudenv.text_192') },
                 { validator: this.$validate('IPv4') },
               ],
             },
@@ -131,7 +129,7 @@ export default {
               initialValue: '24',
               validateTrigger: ['change', 'blur'],
               rules: [
-                { required: true, message: '请选择子网掩码' },
+                { required: true, message: this.$t('cloudenv.text_234') },
               ],
             },
           ],
@@ -141,7 +139,7 @@ export default {
               validateTrigger: ['change', 'blur'],
               validateFirst: true,
               rules: [
-                { required: true, message: '请输入默认网关' },
+                { required: true, message: this.$t('cloudenv.text_235') },
                 { validator: this.$validate('IPv4') },
                 { validator: validateGateway },
               ],

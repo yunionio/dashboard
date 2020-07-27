@@ -3,6 +3,7 @@ import {
   getNameDescriptionTableColumn,
   getBrandTableColumn,
 } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -16,7 +17,7 @@ export default {
           )
         },
       }),
-      getEnabledTableColumn({ title: '启用状态' }),
+      getEnabledTableColumn({ title: i18n.t('cloudenv.text_97') }),
       {
         field: 'guest_count',
         title: this.$t('dictionary.server'),
@@ -30,7 +31,7 @@ export default {
       },
       {
         field: 'zone_count',
-        title: '可用区',
+        title: i18n.t('cloudenv.text_11'),
         width: 70,
       },
       getBrandTableColumn({ field: 'provider' }),

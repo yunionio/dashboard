@@ -4,6 +4,7 @@ import {
   getNameDescriptionTableColumn,
   getCopyWithContentTableColumn,
 } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -19,7 +20,7 @@ export default {
       }),
       {
         field: 'account',
-        title: '订阅（Subscription）ID',
+        title: i18n.t('cloudenv.text_353'),
         showOverflow: 'ellipsis',
         minWidth: 160,
         slots: {
@@ -38,7 +39,7 @@ export default {
       getStatusTableColumn({ statusModule: 'cloudaccount' }),
       {
         field: 'last_auto_sync',
-        title: '同步时间',
+        title: i18n.t('cloudenv.text_103'),
         width: 80,
         slots: {
           default: ({ row }) => {
@@ -59,17 +60,17 @@ export default {
       },
       getStatusTableColumn({
         field: 'sync_status',
-        title: '同步状态',
+        title: i18n.t('cloudenv.text_354'),
         minWidth: 100,
         statusModule: 'cloudaccountSyncStatus',
       }),
       getCopyWithContentTableColumn({
         field: 'project_domain',
-        title: `所属${this.$t('dictionary.domain')}`,
+        title: i18n.t('cloudenv.text_355', [i18n.t('dictionary.domain')]),
       }),
       getCopyWithContentTableColumn({
         field: 'tenant',
-        title: `资源默认归属${this.$t('dictionary.project')}`,
+        title: i18n.t('cloudenv.text_356', [i18n.t('dictionary.project')]),
         minWidth: 140,
       }),
     ]

@@ -1,12 +1,12 @@
 <template>
  <div>
-   <a-form-item label="密钥匙录入方式">
+   <a-form-item :label="$t('cloudenv.text_113')">
     <a-radio-group @change="handleTypeChange" v-model="type">
-        <a-radio-button :value="1">JSON文件导入</a-radio-button>
-        <a-radio-button :value="2">手动表单录入</a-radio-button>
+        <a-radio-button :value="1">{{$t('cloudenv.text_114')}}</a-radio-button>
+        <a-radio-button :value="2">{{$t('cloudenv.text_115')}}</a-radio-button>
       </a-radio-group>
    </a-form-item>
-   <a-form-item label="选择文件" v-if="type === 1" class="google-account-file">
+   <a-form-item :label="$t('cloudenv.text_116')" v-if="type === 1" class="google-account-file">
     <a-upload-dragger
       v-bind="uploadDraggerConfig"
       :beforeUpload="handleBeforeUpload"
@@ -16,10 +16,8 @@
         <p class="ant-upload-drag-icon">
         <a-icon type="inbox" />
       </p>
-        <p class="ant-upload-text">可将JSON文件拖拽到此处，或直接上传</p>
-        <p class="ant-upload-hint">
-          获取JSON文件路径：请登录 Google Cloud 控制台 - IAM 和管理（IAM & admin） - 服务账号（Service accounts） 获取 JSON 密钥文件
-        </p>
+        <p class="ant-upload-text">{{$t('cloudenv.text_117')}}</p>
+        <p class="ant-upload-hint">{{$t('cloudenv.text_118')}}</p>
       </div>
     </a-upload-dragger>
     <a-input v-show="false" v-decorator="decorators.file" type="text" />
@@ -47,7 +45,7 @@ export default {
     decorators () {
       return {
         file: ['file', {
-          rules: [{ required: true, message: '请导入JSON文件' }],
+          rules: [{ required: true, message: this.$t('cloudenv.text_119') }],
         }],
       }
     },
@@ -92,11 +90,11 @@ export default {
       const isJson = file.name.endsWith('.json')
       const isLt2M = file.size / 1024 / 1024 < 2
       if (!isJson) {
-        this.$message.error('只能上传json文件!')
+        this.$message.error(this.$t('cloudenv.text_120'))
         return false
       }
       if (!isLt2M) {
-        this.$message.error('上传文件大小不超过2MB!')
+        this.$message.error(this.$t('cloudenv.text_121'))
         return false
       }
       file.text().then(jsonStr => {

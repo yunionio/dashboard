@@ -1,32 +1,30 @@
 <template>
   <div>
     <a-form :form="form.fc" v-bind="formLayout">
-      <a-form-item label="名称">
-        <a-input v-decorator="decorators.name" placeholder="请输入名称" />
+      <a-form-item :label="$t('cloudenv.text_95')">
+        <a-input v-decorator="decorators.name" :placeholder="$t('cloudenv.text_190')" />
       </a-form-item>
-      <a-form-item label="区域">
+      <a-form-item :label="$t('cloudenv.text_10')">
         <base-select
           :options="environments"
           v-decorator="decorators.environment"
-          :selectProps="{ placeholder: '请选择区域' }" />
+          :selectProps="{ placeholder: $t('cloudenv.text_231') }" />
       </a-form-item>
       <a-form-item>
-        <span slot="label">
-          租户(Tenant)ID
-          <!-- <a-tooltip placement="top">
+        <span slot="label">{{$t('cloudenv.text_239')}}<!-- <a-tooltip placement="top">
             <a-icon type="question-circle" color="grey" />
             <div slot="title">
-              <a class="link-color" target="_blank" :href="docs[provider.toLowerCase()]">{{ `如何获取${keySecretField.text}的${keySecretField.label.k }？点击查看帮助详情` }}</a>
+              <a class="link-color" target="_blank" :href="docs[provider.toLowerCase()]">{{$t('cloudenv.text_240', [keySecretField.text, keySecretField.label.k])}}</a>
             </div>
           </a-tooltip> -->
         </span>
-        <a-input v-decorator="decorators.directory_id" placeholder="请输入目录ID" />
+        <a-input v-decorator="decorators.directory_id" :placeholder="$t('cloudenv.text_241')" />
       </a-form-item>
       <a-form-item :label="keySecretField.label.k">
         <a-input v-decorator="decorators.username" :placeholder="keySecretField.placeholder.k" />
         <div slot="extra">
-          {{ `如何获取${keySecretField.text}的${keySecretField.label.k }？点击查看帮助` }}
-          <help-link :href="docs[provider.toLowerCase()]"> 详情</help-link>
+          {{$t('cloudenv.text_236', [keySecretField.text, keySecretField.label.k])}}
+          <help-link :href="docs[provider.toLowerCase()]">{{$t('cloudenv.text_237')}}</help-link>
         </div>
       </a-form-item>
       <a-form-item :label="keySecretField.label.s">
@@ -35,7 +33,7 @@
       <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" />
       <proxy-setting :fc="form.fc" :fd="form.fd" ref="proxySetting" />
       <auto-sync :fc="form.fc" :form-layout="formLayout" />
-      <!-- <a-form-item label="账单密钥">
+      <!-- <a-form-item :label="$t('cloudenv.text_242')">
         <a-input v-decorator="decorators.balanceKey" type="textarea" rows="4" />
       </a-form-item> -->
     </a-form>
@@ -74,7 +72,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('cloudenv.text_190') },
               { validator: this.$validate('resourceName') },
             ],
           },
@@ -83,7 +81,7 @@ export default {
           'environment',
           {
             rules: [
-              { required: true, message: '请输入区域', trigger: 'change' },
+              { required: true, message: this.$t('cloudenv.text_238'), trigger: 'change' },
             ],
           },
         ],
@@ -91,7 +89,7 @@ export default {
           'directory_id',
           {
             rules: [
-              { required: true, message: '请输入租户（Tenant）ID', trigger: 'blur' },
+              { required: true, message: this.$t('cloudenv.text_243'), trigger: 'blur' },
             ],
           },
         ],

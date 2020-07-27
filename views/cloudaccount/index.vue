@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="云账号" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
+    <page-header :title="$t('cloudenv.text_12')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
     <page-body>
       <cloudaccount-list :id="listId" :cloud-env="cloudEnv" />
     </page-body>

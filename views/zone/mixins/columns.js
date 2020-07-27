@@ -1,6 +1,7 @@
 import {
   getNameDescriptionTableColumn,
 } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -16,7 +17,7 @@ export default {
       }),
       {
         field: 'hosts',
-        title: '物理机/可用物理机',
+        title: i18n.t('cloudenv.text_483'),
         width: 140,
         formatter: ({ row }) => {
           return `${row.hosts}/${row.hosts_enabled}`
@@ -24,7 +25,7 @@ export default {
       },
       {
         field: 'baremetals',
-        title: '受管物理机/可用受管物理机',
+        title: i18n.t('cloudenv.text_484'),
         width: 180,
         formatter: ({ row }) => {
           return `${row.baremetals}/${row.baremetals_enabled}`
@@ -32,7 +33,7 @@ export default {
       },
       {
         field: 'wires',
-        title: '二层网络',
+        title: i18n.t('cloudenv.text_229'),
         width: 70,
       },
     ]

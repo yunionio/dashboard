@@ -4,6 +4,7 @@ import {
   getBrandTableColumn,
   getStatusTableColumn,
 } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -20,14 +21,14 @@ export default {
       getStatusTableColumn({ statusModule: 'cloudgroup' }),
       {
         field: 'cloudpolicies',
-        title: '权限',
+        title: i18n.t('cloudenv.text_329'),
         type: 'expand',
         slots: {
           default: ({ row }) => {
-            return [`${(row.cloudpolicies && row.cloudpolicies.length) || 0}个`]
+            return [i18n.t('cloudenv.text_245', [(row.cloudpolicies && row.cloudpolicies.length) || 0])]
           },
           content: ({ row }) => {
-            if (R.isNil(row.feCloudpolicies) || R.isEmpty(row.feCloudpolicies)) return '无关联权限'
+            if (R.isNil(row.feCloudpolicies) || R.isEmpty(row.feCloudpolicies)) return i18n.t('cloudenv.text_330')
             return [
               <vxe-grid
                 showOverflow='title'

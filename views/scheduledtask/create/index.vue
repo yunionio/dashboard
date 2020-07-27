@@ -1,31 +1,31 @@
 <template>
   <div class="scheduletask">
-    <page-header title="新建定时任务" />
+    <page-header :title="$t('cloudenv.text_432')" />
     <a-form :form="form.fc" v-bind="formItemLayout" hideRequiredMark>
-      <a-form-item :label="`指定${$t('dictionary.project')}`" class="mt-3 mb-0" v-bind="formItemLayout">
+      <a-form-item :label="$t('cloudenv.text_410', [$t('dictionary.project')])" class="mt-3 mb-0" v-bind="formItemLayout">
         <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
       </a-form-item>
-      <a-form-item label="名称">
-        <a-input placeholder="请输入名称" v-decorator="decorators.name" />
+      <a-form-item :label="$t('cloudenv.text_95')">
+        <a-input :placeholder="$t('cloudenv.text_190')" v-decorator="decorators.name" />
       </a-form-item>
-      <a-form-item label="触发频率">
+      <a-form-item :label="$t('cloudenv.text_433')">
         <a-radio-group v-decorator="decorators.cycle_type">
           <a-radio-button v-for="(v, k) in $t('cloudenv.ScheduledtaskGroupCycleType')" :key="k" :value="k">{{v}}</a-radio-button>
         </a-radio-group>
       </a-form-item>
-      <a-form-item label="触发星期" v-if="form.fc.getFieldValue('cycleTimer.cycle_type') === 'week'">
+      <a-form-item :label="$t('cloudenv.text_434')" v-if="form.fc.getFieldValue('cycleTimer.cycle_type') === 'week'">
         <a-select v-decorator="decorators.weekDays" mode="multiple">
           <a-select-option v-for="(v, k) in $t('flexGroupSubCycleTypeWeek')" :key="k" :value="parseInt(k)">{{v}}</a-select-option>
         </a-select>
       </a-form-item>
-      <a-form-item label="触发日期" v-if="form.fc.getFieldValue('cycleTimer.cycle_type') === 'month'">
+      <a-form-item :label="$t('cloudenv.text_435')" v-if="form.fc.getFieldValue('cycleTimer.cycle_type') === 'month'">
         <a-select v-decorator="decorators.monthDays" mode="multiple">
-          <a-select-option v-for="i in 31" :key="i" :value="parseInt(i)">{{i}}号</a-select-option>
+          <a-select-option v-for="i in 31" :key="i" :value="parseInt(i)">{{$t('cloudenv.text_436', [i])}}</a-select-option>
         </a-select>
       </a-form-item>
       <!-- 单次策略 -->
       <template v-if="form.fc.getFieldValue('cycleTimer.cycle_type') === 'one'">
-        <a-form-item label="触发时间">
+        <a-form-item :label="$t('cloudenv.text_437')">
           <a-date-picker
             :showTime="{
               format: 'HH:mm',
@@ -38,40 +38,40 @@
       </template>
       <!-- 非单次策略 -->
       <template v-if="form.fc.getFieldValue('cycleTimer.cycle_type') !== 'one'">
-        <a-form-item label="触发时间">
+        <a-form-item :label="$t('cloudenv.text_437')">
           <a-time-picker v-decorator="decorators.hourMinute" format="HH:mm" />
         </a-form-item>
-        <a-form-item label="有效时间">
+        <a-form-item :label="$t('cloudenv.text_438')">
           <a-range-picker
             v-decorator="decorators.startEndTime"
             :disabledDate="disabledDate"
             format="YYYY-MM-DD" />
         </a-form-item>
       </template>
-      <a-form-item label="资源类型">
+      <a-form-item :label="$t('cloudenv.text_384')">
         <a-select v-decorator="decorators.resourceType">
           <a-select-option v-for="(v, k) in $t('cloudenv.ScheduledtaskResourceType')" :key="k" :value="k">{{v}}</a-select-option>
         </a-select>
       </a-form-item>
-      <a-form-item label="操作动作">
+      <a-form-item :label="$t('cloudenv.text_425')">
         <a-radio-group v-decorator="decorators.action">
           <a-radio-button v-for="(v, k) in $t('cloudenv.ScheduledtaskRuleAction')" :key="k" :value="k">{{v}}</a-radio-button>
         </a-radio-group>
       </a-form-item>
-      <a-form-item label="绑定资源" v-show="false">
+      <a-form-item :label="$t('cloudenv.text_439')" v-show="false">
         <a-radio-group v-decorator="decorators.labelType">
           <a-radio-button v-for="(v, k) in $t('cloudenv.ScheduledtaskLabelType')" :key="k" :value="k">{{v}}</a-radio-button>
         </a-radio-group>
       </a-form-item>
-      <a-form-item label="指定虚拟机" v-if="form.fc.getFieldValue('labelType') === 'id'">
+      <a-form-item :label="$t('cloudenv.text_440')" v-if="form.fc.getFieldValue('labelType') === 'id'">
         <list-select
           v-decorator="decorators.servers"
           :list-props="serverProps"
           :multiple="true"
           :formatter="formatter" />
       </a-form-item>
-      <a-form-item label="标签" class="mb-0" v-if="form.fc.getFieldValue('labelType') === 'tag'">
-        <tag v-decorator="decorators.tag" extra="最多可绑定20个标签" />
+      <a-form-item :label="$t('cloudenv.text_16')" class="mb-0" v-if="form.fc.getFieldValue('labelType') === 'tag'">
+        <tag v-decorator="decorators.tag" :extra="$t('cloudenv.text_441')" />
       </a-form-item>
     </a-form>
     <page-footer>
@@ -103,7 +103,7 @@ export default {
   data () {
     const validateTag = function (rule, value, callback) {
       if (R.is(Object, value) && Object.keys(value).length > 20) {
-        return callback(new Error('标签不可超过20个'))
+        return callback(new Error(this.$t('cloudenv.text_442')))
       }
       callback()
     }
@@ -139,7 +139,7 @@ export default {
           {
             initialValue: 'day',
             rules: [
-              { required: true, message: '请选择重复周期' },
+              { required: true, message: this.$t('cloudenv.text_443') },
             ],
           },
         ],
@@ -148,7 +148,7 @@ export default {
           {
             initialValue: [1, 2, 3, 4, 5],
             rules: [
-              { required: true, message: '请选择触发星期' },
+              { required: true, message: this.$t('cloudenv.text_444') },
             ],
           },
         ],
@@ -157,7 +157,7 @@ export default {
           {
             initialValue: [1],
             rules: [
-              { required: true, message: '请选择触发日期' },
+              { required: true, message: this.$t('cloudenv.text_445') },
             ],
           },
         ],
@@ -167,7 +167,7 @@ export default {
           {
             // initialValue: [1],
             rules: [
-              { required: true, message: '请选择触发时间' },
+              { required: true, message: this.$t('cloudenv.text_446') },
             ],
           },
         ],
@@ -177,7 +177,7 @@ export default {
           {
             // initialValue: [1],
             rules: [
-              { required: true, message: '请选择有效期' },
+              { required: true, message: this.$t('cloudenv.text_447') },
             ],
           },
         ],
@@ -185,7 +185,7 @@ export default {
           'timer.execTime',
           {
             rules: [
-              { required: true, message: '触发时间' },
+              { required: true, message: this.$t('cloudenv.text_437') },
             ],
           },
         ],
@@ -194,7 +194,7 @@ export default {
           {
             initialValue: 'server',
             rules: [
-              { required: true, message: '请选择资源类型' },
+              { required: true, message: this.$t('cloudenv.text_448') },
             ],
           },
         ],
@@ -203,7 +203,7 @@ export default {
           {
             initialValue: 'start',
             rules: [
-              { required: true, message: '请选择执行动作' },
+              { required: true, message: this.$t('cloudenv.text_449') },
             ],
           },
         ],
@@ -212,7 +212,7 @@ export default {
           {
             initialValue: 'id',
             rules: [
-              { required: true, message: '请选择资源绑定' },
+              { required: true, message: this.$t('cloudenv.text_450') },
             ],
           },
         ],
@@ -224,7 +224,7 @@ export default {
           {
             // initialValue: { 'user:a': '3', 'user:b': '9' },
             rules: [
-              { required: true, message: '请选择标签' },
+              { required: true, message: this.$t('cloudenv.text_451') },
               { validator: validateTag },
             ],
           },

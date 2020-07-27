@@ -5,7 +5,7 @@ import { getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 export const getAccessUrlTableColumn = () => {
   return {
     field: 'access_url',
-    title: '环境',
+    title: i18n.t('cloudenv.text_96'),
     minWidth: 100,
     showOverflow: 'ellipsis',
     slots: {
@@ -29,7 +29,7 @@ export const getAccessUrlTableColumn = () => {
 export const getBalanceTableColumn = () => {
   return {
     field: 'balance',
-    title: '余额',
+    title: i18n.t('cloudenv.text_100'),
     minWidth: 70,
     showOverflow: 'ellipsis',
     formatter: ({ row }) => {
@@ -44,7 +44,7 @@ export const getBalanceTableColumn = () => {
 export const getGuestCountTableColumn = () => {
   return {
     field: 'guest_count',
-    title: '虚拟机',
+    title: i18n.t('cloudenv.text_99'),
     width: 60,
   }
 }
@@ -52,7 +52,7 @@ export const getGuestCountTableColumn = () => {
 export const getHostCountTableColumn = () => {
   return {
     field: 'host_count',
-    title: '宿主机',
+    title: i18n.t('cloudenv.text_101'),
     minWidth: 70,
   }
 }
@@ -62,7 +62,7 @@ export const getPublicScopeTableColumn = ({
 } = {}) => {
   return {
     field: 'public_scope',
-    title: '共享范围',
+    title: i18n.t('cloudenv.text_282'),
     width: 110,
     showOverflow: 'title',
     slots: {
@@ -75,7 +75,7 @@ export const getPublicScopeTableColumn = ({
               <a onClick={() => {
                 vm.createDialog('CommonDialog', {
                   hiddenCancel: true,
-                  header: '共享范围',
+                  header: i18n.t('cloudenv.text_282'),
                   body: () => {
                     return (
                       <dialog-table
@@ -90,7 +90,7 @@ export const getPublicScopeTableColumn = ({
                             }),
                             getCopyWithContentTableColumn({
                               field: 'name',
-                              title: '名称',
+                              title: i18n.t('cloudenv.text_95'),
                             }),
                           ]
                         } />
@@ -105,7 +105,7 @@ export const getPublicScopeTableColumn = ({
               <a onClick={() => {
                 vm.createDialog('CommonDialog', {
                   hiddenCancel: true,
-                  header: '共享范围',
+                  header: i18n.t('cloudenv.text_282'),
                   body: () => {
                     return (
                       <dialog-table
@@ -120,7 +120,7 @@ export const getPublicScopeTableColumn = ({
                             }),
                             getCopyWithContentTableColumn({
                               field: 'name',
-                              title: '名称',
+                              title: i18n.t('cloudenv.text_95'),
                             }),
                           ]
                         } />

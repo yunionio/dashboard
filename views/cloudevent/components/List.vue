@@ -45,42 +45,42 @@ export default {
         apiVersion: 'v1',
         idKey: 'event_id',
         filterOptions: {
-          name: getNameFilter({ label: '资源名称' }),
+          name: getNameFilter({ label: this.$t('cloudenv.text_320') }),
           brand: getBrandFilter(),
           account: {
-            label: '账号',
+            label: this.$t('cloudenv.text_94'),
           },
           manager: {
-            label: '订阅',
+            label: this.$t('cloudenv.text_318'),
           },
           service: {
-            label: '服务类型',
+            label: this.$t('cloudenv.text_321'),
           },
           action: {
-            label: '操作类型',
+            label: this.$t('cloudenv.text_322'),
           },
         },
       }),
       columns: [
         getCopyWithContentTableColumn({
-          title: '资源名称',
+          title: this.$t('cloudenv.text_320'),
           field: 'name',
         }),
         getCopyWithContentTableColumn({
-          title: '服务类型',
+          title: this.$t('cloudenv.text_321'),
           field: 'service',
         }),
         getCopyWithContentTableColumn({
-          title: '操作类型',
+          title: this.$t('cloudenv.text_322'),
           field: 'action',
         }),
         {
-          title: '执行状态',
+          title: this.$t('cloudenv.text_323'),
           field: 'success',
           width: 80,
           slots: {
             default: ({ row }) => {
-              const txt = row.success ? '成功' : '失败'
+              const txt = row.success ? this.$t('cloudenv.text_324') : this.$t('cloudenv.text_325')
               const color = row.success ? '#67C23A' : '#F56C6C'
               return [<span style={{ color }}>{ txt }</span>]
             },
@@ -88,22 +88,22 @@ export default {
         },
         getTimeTableColumn({
           field: 'created_at',
-          title: '操作时间',
+          title: this.$t('cloudenv.text_326'),
         }),
         getBrandTableColumn({
           field: 'provider',
         }),
         getCopyWithContentTableColumn({
           field: 'account',
-          title: '账号',
+          title: this.$t('cloudenv.text_94'),
         }),
         getCopyWithContentTableColumn({
           field: 'manager',
-          title: '订阅',
+          title: this.$t('cloudenv.text_318'),
         }),
         {
           field: 'notes',
-          title: '备注',
+          title: this.$t('cloudenv.text_327'),
           width: 70,
           slots: {
             default: ({ row, column }) => {
@@ -123,20 +123,20 @@ export default {
       exportDataOptions: {
         items: [
           // { label: 'ID', key: 'id' },
-          { label: '资源名称', key: 'name' },
-          { label: '服务类型', key: 'service' },
-          { label: '操作类型', key: 'action' },
-          { label: '执行状态', key: 'success' },
-          { label: '操作时间', key: 'created_at' },
-          { label: '平台', key: 'provider' },
-          { label: '账号', key: 'account' },
-          { label: '订阅', key: 'manager' },
+          { label: this.$t('cloudenv.text_320'), key: 'name' },
+          { label: this.$t('cloudenv.text_321'), key: 'service' },
+          { label: this.$t('cloudenv.text_322'), key: 'action' },
+          { label: this.$t('cloudenv.text_323'), key: 'success' },
+          { label: this.$t('cloudenv.text_326'), key: 'created_at' },
+          { label: this.$t('cloudenv.text_102'), key: 'provider' },
+          { label: this.$t('cloudenv.text_94'), key: 'account' },
+          { label: this.$t('cloudenv.text_318'), key: 'manager' },
           // { label: '备注', key: 'notes' },
         ],
         limit: () => Object.keys(this.list.data).length,
         export: 'custom',
         exportType: {
-          custom: { label: '本页显示日志', key: 'custom' },
+          custom: { label: this.$t('cloudenv.text_328'), key: 'custom' },
         },
       },
     }

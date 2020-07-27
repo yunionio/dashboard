@@ -29,7 +29,7 @@ export default {
         getParams: { details: true },
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('cloudenv.text_95'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
@@ -40,15 +40,15 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
-          { label: '状态', key: 'status' },
-          { label: '类型', key: 'category' },
-          { label: '参数', key: 'parameters' },
+          { label: this.$t('cloudenv.text_95'), key: 'name' },
+          { label: this.$t('cloudenv.text_98'), key: 'status' },
+          { label: this.$t('cloudenv.text_360'), key: 'category' },
+          { label: this.$t('cloudenv.text_389'), key: 'parameters' },
         ],
       },
       groupActions: [
         {
-          label: '同步状态',
+          label: this.$t('cloudenv.text_354'),
           permission: 'policydefinition_perform_syncstatus',
           action: () => {
             this.list.batchPerformAction('syncstatus', {}, { status: Object.values(expectStatus.policydefinition).flat() })

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="代理" />
+    <page-header :title="$t('cloudenv.text_14')" />
     <page-body>
       <proxysetting-list :id="listId" />
     </page-body>
