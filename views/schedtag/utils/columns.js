@@ -29,7 +29,7 @@ export const getResourceCountTableColumn = () => {
     title: i18n.t('cloudenv.text_417'),
     width: 80,
     formatter: ({ row }) => {
-      return row.host_count || row.other_count || '0'
+      return row.resource_count || '0'
     },
   }
 }
