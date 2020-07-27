@@ -47,10 +47,10 @@ export default {
           //   label: '区域',
           // },
           storage_class: {
-            label: '存储类型',
+            label: this.$t('storage.text_38'),
           },
           acl: {
-            label: '读写权限',
+            label: this.$t('storage.text_93'),
             dropdown: true,
             items: Object.keys(ACL_TYPE).map(k => {
               return { label: ACL_TYPE[k], key: k }
@@ -65,23 +65,23 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
-          { label: '状态', key: 'status' },
-          { label: '存储类型', key: 'storage_class' },
-          { label: '读写权限', key: 'acl' },
-          { label: '平台', key: 'provider' },
-          { label: '云账号', key: 'manager' },
-          { label: '区域', key: 'region' },
+          { label: this.$t('storage.text_40'), key: 'name' },
+          { label: this.$t('storage.text_41'), key: 'status' },
+          { label: this.$t('storage.text_38'), key: 'storage_class' },
+          { label: this.$t('storage.text_93'), key: 'acl' },
+          { label: this.$t('storage.text_46'), key: 'provider' },
+          { label: this.$t('storage.text_94'), key: 'manager' },
+          { label: this.$t('storage.text_47'), key: 'region' },
           { label: this.$t('dictionary.project'), key: 'tenant' },
         ],
       },
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('storage.text_31'),
           permission: 'buckets_create',
           action: () => {
             this.createDialog('BucketCreateDialog', {
-              title: '新建存储桶',
+              title: this.$t('storage.text_95'),
               onManager: this.onManager,
               refresh: this.refresh,
             })
@@ -93,7 +93,7 @@ export default {
           },
         },
         {
-          label: '批量操作',
+          label: this.$t('storage.text_33'),
           actions: () => {
             return [
               getSetPublicAction(this, {
@@ -102,11 +102,11 @@ export default {
                 resource: 'buckets',
               }),
               {
-                label: `更改${this.$t('dictionary.project')}`,
+                label: this.$t('storage.text_96', [this.$t('dictionary.project')]),
                 permission: 'buckets_perform_change_owner',
                 action: row => {
                   this.createDialog('ChangeOwenrDialog', {
-                    name: '存储桶',
+                    name: this.$t('storage.text_18'),
                     data: this.list.selectedItems,
                     columns: this.columns,
                     onManager: this.onManager,
@@ -127,16 +127,16 @@ export default {
                   const validate = R.uniq(domainIds).length === 1
                   return {
                     validate,
-                    tooltip: !validate && `请选择同一个${this.$t('dictionary.domain')}下的存储桶`,
+                    tooltip: !validate && this.$t('storage.text_97', [this.$t('dictionary.domain')]),
                   }
                 },
               },
               {
-                label: '设置上限',
+                label: this.$t('storage.text_99'),
                 permission: 'buckets_perform_limit',
                 action: row => {
                   this.createDialog('BucketUpdateBucketLimitDialog', {
-                    title: '设置上限',
+                    title: this.$t('storage.text_99'),
                     data: this.list.selectedItems,
                     columns: this.columns,
                     onManager: this.onManager,
@@ -145,7 +145,7 @@ export default {
                 },
               },
               {
-                label: '同步状态',
+                label: this.$t('storage.text_100'),
                 action: () => {
                   this.onManager('batchPerformAction', {
                     id: this.list.selectedItems.map(item => item.id),
@@ -157,14 +157,14 @@ export default {
                 },
               },
               {
-                label: '删除',
+                label: this.$t('storage.text_36'),
                 permission: 'buckets_delete',
                 action: obj => {
                   this.createDialog('DeleteResDialog', {
                     vm: this,
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    title: '删除',
+                    title: this.$t('storage.text_36'),
                     onManager: this.onManager,
                     refresh: this.refresh,
                   })

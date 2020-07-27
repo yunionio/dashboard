@@ -6,10 +6,10 @@
       <dialog-table :data="params.data" :columns="columns" />
       <a-form :form="form.fc" v-bind="formItemLayout">
         <form-items :storage_type="storage_type" :edit="true" />
-         <!-- <a-form-item label="超售比" v-if="params.data[0].brand.toLowerCase() !== 'zstack'">
+         <!-- <a-form-item :label="$t('storage.text_60')" v-if="params.data[0].brand.toLowerCase() !== 'zstack'">
           <a-input-number :step="0.1" v-decorator="decorators.commit_bound" :min="0" />
         </a-form-item> -->
-        <a-form-item label="介质类型">
+        <a-form-item :label="$t('storage.text_39')">
           <a-select v-decorator="decorators.medium_type" style="width: 200px">
             <a-select-option v-for="(val, key) in MEDIUM_TYPES"  :key="key" :value="key">{{val}}</a-select-option>
           </a-select>
@@ -48,7 +48,7 @@ export default {
         getCopyWithContentTableColumn(),
         {
           field: 'medium_type',
-          title: '介质类型',
+          title: this.$t('storage.text_39'),
           formatter: ({ row }) => {
             return MEDIUM_TYPES[row.medium_type] || row.medium_type
           },
@@ -75,7 +75,7 @@ export default {
           {
             initialValue: this.params.data[0].commit_bound || 1,
             rules: [
-              { required: true, message: '请设置超售比' },
+              { required: true, message: this.$t('storage.text_61') },
             ],
           },
         ],

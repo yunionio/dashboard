@@ -3,15 +3,15 @@
     <div slot="header">{{this.params.title}}</div>
     <div slot="body">
       <a-form :form="form.fc" v-bind="formItemLayout">
-        <a-form-item label="链接有效时间" v-if="isPrivate">
-          <a-input class="w-50" @change="getUrl" v-decorator="decorators.expire_seconds" placeholder="请输入整数">
-            <span slot="addonAfter">秒</span>
+        <a-form-item :label="$t('storage.text_103')" v-if="isPrivate">
+          <a-input class="w-50" @change="getUrl" v-decorator="decorators.expire_seconds" :placeholder="$t('storage.text_104')">
+            <span slot="addonAfter">{{$t('storage.text_105')}}</span>
           </a-input>
-          <span slot="extra">您可以设置链接地址可访问的有效时间，访问者可以在有效时间内，通过此链接访问该文件。</span>
+          <span slot="extra">{{$t('storage.text_106')}}</span>
         </a-form-item>
         <a-form-item label="URL">
-           <a-textarea :value="url || '暂无URL'" :disabled="true" autosize />
-           <a style="font-size: 12px" v-clipboard:copy="url">复制文件URL<copy v-if="url" class="ml-1" :message="url" /></a>
+           <a-textarea :value="url || $t('storage.text_107')" :disabled="true" autosize />
+           <a style="font-size: 12px" v-clipboard:copy="url">{{$t('storage.text_108')}}<copy v-if="url" class="ml-1" :message="url" /></a>
         </a-form-item>
       </a-form>
     </div>
@@ -54,7 +54,7 @@ export default {
           initialValue: 7200,
           validateFirst: true,
           rules: [
-            { type: 'integer', message: '请输入整数', transform: (v) => parseFloat(v) },
+            { type: 'integer', message: this.$t('storage.text_104'), transform: (v) => parseFloat(v) },
           ],
         }],
       }

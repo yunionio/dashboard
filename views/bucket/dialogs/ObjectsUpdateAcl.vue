@@ -6,7 +6,7 @@
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" v-bind="formItemLayout">
         <a-spin :spinning="getAclsLoading">
-          <a-form-item label="读写权限">
+          <a-form-item :label="$t('storage.text_93')">
             <a-radio-group v-decorator="decorators.acl">
               <a-radio-button v-for="k in acls" :key="k" :value="k">{{$t('storageAclTypes')[k]}}</a-radio-button>
             </a-radio-group>

@@ -3,10 +3,10 @@
     <div slot="header">{{this.params.title}}</div>
     <div slot="body">
       <a-form :form="form.fc" v-bind="formItemLayout">
-        <a-form-item label="上传至">
+        <a-form-item :label="$t('storage.text_117')">
           {{uploadTo}}
         </a-form-item>
-        <a-form-item label="选择文件" class="upload-file-item pb-3">
+        <a-form-item :label="$t('storage.text_118')" class="upload-file-item pb-3">
           <a-upload-dragger
             v-decorator="decorators.files"
             @change="hanldeFileChange"
@@ -15,17 +15,17 @@
               <p class="ant-upload-drag-icon">
               <a-icon type="inbox" />
             </p>
-             <p class="ant-upload-text">可将多个文件拖拽到此处，或点击 <a>直接上传</a></p>
+             <p class="ant-upload-text">{{$t('storage.text_119')}}<a>{{$t('storage.text_120')}}</a></p>
             </div>
           </a-upload-dragger>
         </a-form-item>
       </a-form>
       <div style="text-align: center;margin-top:10px;font-size: 12px;" v-if="statusNums">
-        <span>正在上传：{{statusNums.uploading}}</span>
+        <span>{{$t('storage.text_121', [statusNums.uploading])}}</span>
         <a-divider type="vertical" />
-        <span>已经完成：{{statusNums.done}}</span>
+        <span>{{$t('storage.text_122', [statusNums.done])}}</span>
         <a-divider type="vertical" />
-        <span>无法上传：{{statusNums.error}}</span>
+        <span>{{$t('storage.text_123', [statusNums.error])}}</span>
       </div>
     </div>
   </base-dialog>
@@ -54,7 +54,7 @@ export default {
       decorators: {
         files: ['files', {
           rules: [
-            { required: true, message: '请选择上传文件' },
+            { required: true, message: this.$t('storage.text_124') },
           ],
         }],
       },
@@ -137,9 +137,9 @@ export default {
     handleCancel () {
       if (document.getElementsByClassName('ant-upload-list-item-uploading').length) {
         this.createDialog('ConfirmDialog', {
-          title: '列表中还有未完成上传的文件。',
+          title: this.$t('storage.text_125'),
           width: '550px',
-          content: '关闭对话框会取消所有未上传成功的文件，是否确定？',
+          content: this.$t('storage.text_126'),
           onOk: () => {
             this.cancelDialog()
             this.params.list.fetchData()

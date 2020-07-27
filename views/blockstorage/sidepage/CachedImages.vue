@@ -30,7 +30,7 @@ export default {
         getParams: this.getParams,
         idKey: 'cachedimage_id',
         filterOptions: {
-          image: getFilter({ field: 'image', title: '名称' }),
+          image: getFilter({ field: 'image', title: this.$t('storage.text_40') }),
         },
       }),
       columns: [
@@ -39,7 +39,7 @@ export default {
         }),
         {
           field: 'size',
-          title: '文件大小',
+          title: this.$t('storage.text_71'),
           minWidth: 80,
           formatter: ({ row }) => {
             return sizestr(row.size, 'B', 1024)
@@ -48,23 +48,23 @@ export default {
         getStatusTableColumn({ statusModule: 'hostImageCache' }),
         getCopyWithContentTableColumn({
           field: 'path',
-          title: '路径',
+          title: this.$t('storage.text_72'),
           minWidth: 200,
         }),
         getCopyWithContentTableColumn({
           field: 'reference',
-          title: '引用',
+          title: this.$t('storage.text_73'),
           minWidth: 80,
         }),
       ],
       groupActions: [
         {
-          label: '释放缓存',
+          label: this.$t('storage.text_74'),
           action: row => {
             this.createDialog('UncacheImageDialog', {
               data: this.list.selectedItems,
               columns: this.columns,
-              title: '释放缓存',
+              title: this.$t('storage.text_74'),
               list: this.list,
               resItem: this.data,
             })
@@ -79,12 +79,12 @@ export default {
       ],
       singleActions: [
         {
-          label: '释放缓存',
+          label: this.$t('storage.text_74'),
           action: row => {
             this.createDialog('UncacheImageDialog', {
               data: [row],
               columns: this.columns,
-              title: '释放缓存',
+              title: this.$t('storage.text_74'),
               list: this.list,
               resItem: this.data,
             })
@@ -93,7 +93,7 @@ export default {
             const isValidate = !row.reference
             return {
               validate: isValidate,
-              tooltip: !isValidate && '如需清除，请先删除当前宿主机上引用这个镜像的虚拟主机',
+              tooltip: !isValidate && this.$t('storage.text_75'),
             }
           },
         },

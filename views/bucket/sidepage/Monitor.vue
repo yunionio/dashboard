@@ -10,8 +10,8 @@
     </div>
     <a-alert
       v-else
-      message="当前云厂商暂未对接"
-      description="目前仅阿里云和华为云支持查看监控数据"
+      :message="$t('storage.text_148')"
+      :description="$t('storage.text_149')"
       type="warning" />
   </div>
 </template>

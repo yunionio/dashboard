@@ -5,8 +5,8 @@
       <dialog-selected-tips :count="params.data.length" :action="this.params.title" :name="$t('dictionary.blockstorage')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" v-bind="formItemLayout">
-        <a-form-item label="调度标签">
-          <a-select :loading="schedTagsLoading" allowClear showSearch :filterOption="filterOption" mode="multiple" v-decorator="decorators.schedTags" placeholder="请选择调度标签（可多选）">
+        <a-form-item :label="$t('storage.text_45')">
+          <a-select :loading="schedTagsLoading" allowClear showSearch :filterOption="filterOption" mode="multiple" v-decorator="decorators.schedTags" :placeholder="$t('storage.text_63')">
             <a-select-option v-for="item in schedTags" :key="item.id" :value="item.id">{{item.name}}</a-select-option>
           </a-select>
         </a-form-item>

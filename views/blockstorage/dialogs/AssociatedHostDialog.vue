@@ -5,13 +5,13 @@
       <dialog-selected-tips :name="$t('dictionary.blockstorage')" :count="params.data.length" :action="this.params.title" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" v-bind="formItemLayout">
-        <a-form-item label="宿主机">
-          <a-select :loading="hostsLoading" allowClear showSearch :filterOption="filterOption" mode="multiple" v-decorator="decorators.host" placeholder="请选择宿主机（可多选）">
+        <a-form-item :label="$t('storage.text_50')">
+          <a-select :loading="hostsLoading" allowClear showSearch :filterOption="filterOption" mode="multiple" v-decorator="decorators.host" :placeholder="$t('storage.text_51')">
             <a-select-option v-for="item in hosts" :key="item.id" :value="item.id">{{item.name}}</a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item label="挂载点" v-if="!isHiddenDir">
-          <a-input v-decorator="decorators.dir"  placeholder="挂载点不能为空，格式如: /data" />
+        <a-form-item :label="$t('storage.text_52')" v-if="!isHiddenDir">
+          <a-input v-decorator="decorators.dir"  :placeholder="$t('storage.text_53')" />
         </a-form-item>
       </a-form>
     </div>
@@ -50,7 +50,7 @@ export default {
           'host',
           {
             rules: [
-              { required: true, message: '宿主机不能为空' },
+              { required: true, message: this.$t('storage.text_54') },
             ],
           },
         ],
@@ -58,7 +58,7 @@ export default {
           'dir',
           {
             rules: [
-              { required: true, message: '挂载点不能为空，格式如: /data' },
+              { required: true, message: this.$t('storage.text_53') },
             ],
           },
         ],

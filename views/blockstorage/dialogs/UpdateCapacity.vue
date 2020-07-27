@@ -5,7 +5,7 @@
       <dialog-selected-tips :count="params.data.length" :action="this.params.title" :name="$t('dictionary.blockstorage')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" v-bind="formItemLayout">
-       <a-form-item label="容量上限">
+       <a-form-item :label="$t('storage.text_59')">
           <a-input style="width: 150px" name="capacity" v-decorator="decorators.capacity" @blur="handelBlur">
             <span slot="addonAfter">
               GB

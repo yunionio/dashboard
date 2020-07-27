@@ -1,7 +1,7 @@
 <template>
   <base-side-page
    @cancel="cancelSidePage"
-    title="存储桶"
+    :title="$t('storage.text_18')"
     icon="res-bucket"
     :res-name="detailData.name"
     :tabs="detailTabs"
@@ -38,10 +38,10 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'detail' },
-        { label: '文件列表', key: 'objects' },
-        { label: '监控', key: 'monitor' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('storage.text_81'), key: 'detail' },
+        { label: this.$t('storage.text_169'), key: 'objects' },
+        { label: this.$t('storage.text_170'), key: 'monitor' },
+        { label: this.$t('storage.text_85'), key: 'event-drawer' },
       ],
     }
   },

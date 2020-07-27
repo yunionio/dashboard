@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{this.params.title}}</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" :action="this.params.title" name="文件" />
+      <dialog-selected-tips :count="params.data.length" :action="this.params.title" :name="$t('storage.text_112')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" v-bind="formItemLayout">
         <a-form-item :label="key" v-for="(val, key) in TYPES" :key="key">
@@ -37,10 +37,10 @@ export default {
       },
       TYPES: {
         'Content-Type': '',
-        'Content-Encoding': '编码',
-        'Content-Language': '语言',
-        'Content-Disposition': '内容呈现方式，inline表示可以在浏览器中和页面内容一起显示（如图片），attachment表示是下载的内容',
-        'Cache-Control': '缓存控制',
+        'Content-Encoding': this.$t('storage.text_113'),
+        'Content-Language': this.$t('storage.text_114'),
+        'Content-Disposition': this.$t('storage.text_115'),
+        'Cache-Control': this.$t('storage.text_116'),
       },
     }
   },

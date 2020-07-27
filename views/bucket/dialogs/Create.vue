@@ -3,17 +3,14 @@
     <div slot="header">{{this.params.title}}</div>
     <div slot="body">
       <a-form :form="form.fc" v-bind="formItemLayout">
-        <a-form-item :label="`指定${$t('dictionary.project')}`" class="mb-0" v-bind="formItemLayout">
+        <a-form-item :label="$t('storage.text_55', [$t('dictionary.project')])" class="mb-0" v-bind="formItemLayout">
           <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
         </a-form-item>
-        <a-form-item label="名称">
-          <a-input placeholder="请输入名称" v-decorator="decorators.name" />
-          <span slot="extra">
-            4~62个字节，小写字母与数字开头和结尾，中间可以为：小写字母、数字、.-_:
-            <br />Azure名称不允许出现 -
-          </span>
+        <a-form-item :label="$t('storage.text_40')">
+          <a-input :placeholder="$t('storage.text_56')" v-decorator="decorators.name" />
+          <span slot="extra">{{$t('storage.text_101')}}<br />{{$t('storage.text_102')}}</span>
         </a-form-item>
-         <a-form-item label="区域">
+         <a-form-item :label="$t('storage.text_47')">
           <cloud-provider-region @cloudregionChange="handleCloudregionChange" ref="providerRegionRef" :cloudprovideParams="scopeParams" :cloudregionParams="scopeParams" />
         </a-form-item>
       </a-form>
@@ -89,12 +86,12 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('storage.text_56') },
               {
                 validator: (rule, value, _callback) => {
                   const isAzure = this.cloudregion.provider === 'Azure'
                   if (isAzure && (value && value.indexOf('-'))) {
-                    _callback(new Error('Azure名称不允许出现 -'))
+                    _callback(new Error(this.$t('storage.text_102')))
                   }
                   return this.$validate('bucketName')(rule, value, _callback)
                 },
@@ -139,7 +136,7 @@ export default {
         this.form.fc.setFields({
           name: {
             value: name,
-            errors: [new Error('Azure名称不允许出现 -')],
+            errors: [new Error(this.$t('storage.text_102'))],
           },
         })
       } else if (name) {

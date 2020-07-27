@@ -43,14 +43,14 @@ export default {
       const manager = ['manager', {
         rules: [
           {
-            required: isRequired, message: '请选择子账号/账号',
+            required: isRequired, message: this.$t('storage.text_92'),
           },
         ],
       }]
       const cloudregion = ['cloudregion_id', {
         rules: [
           {
-            required: isRequired, message: '请选择区域',
+            required: isRequired, message: this.$t('storage.text_57'),
           },
         ],
       }]
