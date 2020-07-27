@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="调度策略" />
+    <page-header :title="$t('cloudenv.text_19')" />
     <page-body>
       <schedpolicy-list :id="listId" />
     </page-body>

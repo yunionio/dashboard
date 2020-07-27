@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="定时任务"
+    :title="$t('cloudenv.text_431')"
     icon="res-policydefinition"
     :res-name="detailData.name"
     :actions="params.actions"
@@ -49,10 +49,10 @@ export default {
   computed: {
     detailTabs () {
       const tabs = [
-        { label: '详情', key: 'scheduledtask-detail' },
-        { label: '任务历史', key: 'task-history' },
-        { label: '关联资源', key: 'related-resource' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('cloudenv.text_237'), key: 'scheduledtask-detail' },
+        { label: this.$t('cloudenv.text_464'), key: 'task-history' },
+        { label: this.$t('cloudenv.text_454'), key: 'related-resource' },
+        { label: this.$t('cloudenv.text_15'), key: 'event-drawer' },
       ]
       return tabs
     },

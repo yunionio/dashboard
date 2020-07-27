@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="区域" />
+    <page-header :title="$t('cloudenv.text_10')" />
     <page-body>
       <cloudregion-list :id="listId" />
     </page-body>

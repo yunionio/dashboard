@@ -1,23 +1,24 @@
+import i18n from '@/locales'
 export default {
   created () {
     this.singleActions = [
       {
-        label: '调整策略',
+        label: i18n.t('cloudenv.text_383'),
         action: (obj) => {
           this.createDialog('UpdateDynamicschedtagDialog', {
             data: [obj],
             columns: this.columns,
-            title: '调整策略',
+            title: i18n.t('cloudenv.text_383'),
             onManager: this.onManager,
           })
         },
       },
       {
-        label: '更多',
+        label: i18n.t('cloudenv.text_311'),
         actions: obj => {
           return [
             {
-              label: '启用',
+              label: i18n.t('cloudenv.text_334'),
               action: obj => {
                 this.onManager('update', {
                   id: obj.id,
@@ -33,7 +34,7 @@ export default {
               },
             },
             {
-              label: '禁用',
+              label: i18n.t('cloudenv.text_335'),
               action: obj => {
                 this.onManager('update', {
                   id: obj.id,
@@ -49,13 +50,13 @@ export default {
               },
             },
             {
-              label: '删除',
+              label: i18n.t('cloudenv.text_108'),
               action: () => {
                 this.createDialog('DeleteResDialog', {
                   vm: this,
                   data: [obj],
                   columns: this.columns,
-                  title: '删除动态调度标签',
+                  title: i18n.t('cloudenv.text_379'),
                   name: this.$t('dictionary.dynamicschedtag'),
                   onManager: this.onManager,
                 })

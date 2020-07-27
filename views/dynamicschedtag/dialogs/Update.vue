@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">修改动态调度标签</div>
+    <div slot="header">{{$t('cloudenv.text_382')}}</div>
     <div slot="body">
       <dynamicschedtag-form ref="formRef" :update-value="params.data[0]" />
     </div>
@@ -44,7 +44,7 @@ export default {
         await this.doCreate(values)
         this.loading = false
         this.cancelDialog()
-        this.$message.success('操作成功')
+        this.$message.success(this.$t('cloudenv.text_381'))
       } catch (error) {
         this.loading = false
       }

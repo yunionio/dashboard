@@ -1,26 +1,24 @@
 <template>
   <div>
     <a-form :form="form.fc"  v-bind="formLayout">
-      <a-form-item label="名称">
-        <a-input v-decorator="decorators.name" placeholder="请输入名称" />
+      <a-form-item :label="$t('cloudenv.text_95')">
+        <a-input v-decorator="decorators.name" :placeholder="$t('cloudenv.text_190')" />
       </a-form-item>
       <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" />
       <upload-json-file :fc="form.fc">
         <a-form-item label="project_id">
-          <a-input v-decorator="decorators.project_id" placeholder="请输入project_id" />
-          <div slot="extra">
-            {{ `如何获取Google云project_id？点击查看帮助` }}
-            <help-link :href="docs['google']"> 详情</help-link>
+          <a-input v-decorator="decorators.project_id" :placeholder="$t('cloudenv.text_247')" />
+          <div slot="extra">{{$t('cloudenv.text_248', [ `如何获取Google云project_id？点击查看帮助` ])}}<help-link :href="docs['google']">{{$t('cloudenv.text_237')}}</help-link>
           </div>
         </a-form-item>
         <a-form-item label="private_key_id">
-          <a-input v-decorator="decorators.private_key_id" placeholder="请输入private_key_id" />
+          <a-input v-decorator="decorators.private_key_id" :placeholder="$t('cloudenv.text_162')" />
         </a-form-item>
         <a-form-item label="private_key">
-          <a-textarea style="overflow-y:auto" :autosize="{ minRows: 3, maxRows: 35 }" v-decorator="decorators.private_key" placeholder="请输入private_key" />
+          <a-textarea style="overflow-y:auto" :autosize="{ minRows: 3, maxRows: 35 }" v-decorator="decorators.private_key" :placeholder="$t('cloudenv.text_161')" />
         </a-form-item>
         <a-form-item label="client_email">
-          <a-input v-decorator="decorators.client_email" placeholder="请输入client_email" />
+          <a-input v-decorator="decorators.client_email" :placeholder="$t('cloudenv.text_249')" />
         </a-form-item>
       </upload-json-file>
       <proxy-setting :fc="form.fc" :fd="form.fd" ref="proxySetting" />
@@ -58,7 +56,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('cloudenv.text_190') },
               { validator: this.$validate('resourceName') },
             ],
           },
@@ -67,7 +65,7 @@ export default {
           'gcp_project_id',
           {
             rules: [
-              { required: true, message: '请输入project_id' },
+              { required: true, message: this.$t('cloudenv.text_247') },
             ],
           },
         ],
@@ -75,7 +73,7 @@ export default {
           'gcp_private_key_id',
           {
             rules: [
-              { required: true, message: '请输入private_key_id' },
+              { required: true, message: this.$t('cloudenv.text_162') },
             ],
           },
         ],
@@ -83,7 +81,7 @@ export default {
           'gcp_private_key',
           {
             rules: [
-              { required: true, message: '请输入private_key' },
+              { required: true, message: this.$t('cloudenv.text_161') },
             ],
           },
         ],
@@ -91,8 +89,8 @@ export default {
           'gcp_client_email',
           {
             rules: [
-              { required: true, message: '请输入client_email' },
-              { type: 'email', message: '请输入正确的邮箱地址' },
+              { required: true, message: this.$t('cloudenv.text_249') },
+              { type: 'email', message: this.$t('cloudenv.text_250') },
             ],
           },
         ],

@@ -2,6 +2,7 @@ import { mapGetters } from 'vuex'
 import { changeToArr } from '@/utils/utils'
 import expectStatus from '@/constants/expectStatus'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
+import i18n from '@/locales'
 
 const steadyStatus = {
   status: Object.values(expectStatus.cloudaccount).flat(),
@@ -15,7 +16,7 @@ export default {
   created () {
     this.singleActions = [
       {
-        label: '全量同步',
+        label: i18n.t('cloudenv.text_105'),
         permission: 'cloudaccounts_perform_sync',
         action: (obj) => {
           this.onManager('performAction', {
@@ -33,12 +34,12 @@ export default {
         meta: (obj) => this.syncPolicy(obj),
       },
       {
-        label: '更多',
+        label: i18n.t('cloudenv.text_311'),
         actions: obj => {
           const ownerDomain = this.$store.getters.isAdminMode || obj.domain_id === this.$store.getters.userInfo.projectDomainId
           return [
             {
-              label: '设置自动同步',
+              label: i18n.t('cloudenv.text_106'),
               permission: 'cloudaccounts_perform_enable_auto_sync,cloudaccounts_perform_disable_auto_sync',
               action: () => {
                 this.createDialog('CloudaccountSetAutoSyncDialog', {
@@ -51,7 +52,7 @@ export default {
               meta: () => this.setAutoSyncPolicy(obj, ownerDomain),
             },
             {
-              label: '更新账号密码',
+              label: i18n.t('cloudenv.text_298'),
               permission: 'cloudaccounts_perform_update_credential',
               action: obj => {
                 this.createDialog('CloudaccountUpdateDialog', {
@@ -63,7 +64,7 @@ export default {
               meta: obj => {
                 const ownerDomain = this.$store.getters.isAdminMode || obj.domain_id === this.$store.getters.userInfo.projectDomainId
                 let tooltip
-                if (!obj.enabled) tooltip = '请先启用云账号'
+                if (!obj.enabled) tooltip = i18n.t('cloudenv.text_312')
                 return {
                   validate: obj.enabled && ownerDomain,
                   tooltip,
@@ -71,7 +72,7 @@ export default {
               },
             },
             {
-              label: '更新账单文件',
+              label: i18n.t('cloudenv.text_168'),
               permission: 'cloudaccounts_perform_update_credential',
               action: obj => {
                 this.$router.push({
@@ -89,7 +90,7 @@ export default {
               },
             },
             {
-              label: '连接测试',
+              label: i18n.t('cloudenv.text_107'),
               permission: 'cloudaccounts_perform_sync',
               action: () => {
                 this.onManager('performAction', {
@@ -102,8 +103,8 @@ export default {
               },
               meta: () => {
                 let tooltip
-                if (!obj.enabled) tooltip = '请先启用云账号'
-                if (obj.enable_auto_sync) tooltip = '请先取消设置自动同步'
+                if (!obj.enabled) tooltip = i18n.t('cloudenv.text_312')
+                if (obj.enable_auto_sync) tooltip = i18n.t('cloudenv.text_313')
                 return {
                   validate: (obj.enabled && !obj.enable_auto_sync) && ownerDomain,
                   tooltip,
@@ -111,7 +112,7 @@ export default {
               },
             },
             {
-              label: '设置共享',
+              label: i18n.t('cloudenv.text_281'),
               action: () => {
                 this.createDialog('CloudaccountSetShareDialog', {
                   data: [obj],
@@ -123,9 +124,9 @@ export default {
               meta: () => {
                 let tooltip = ''
                 if (!this.l3PermissionEnable) {
-                  tooltip = '未开启三级权限，无法操作'
+                  tooltip = i18n.t('cloudenv.text_314')
                 } else if (!this.$store.getters.isAdminMode) {
-                  tooltip = '仅系统管理后台下可以操作'
+                  tooltip = i18n.t('cloudenv.text_315')
                 }
                 return {
                   validate: this.l3PermissionEnable && this.$store.getters.isAdminMode,
@@ -134,11 +135,11 @@ export default {
               },
             },
             {
-              label: '设置代理',
+              label: i18n.t('cloudenv.text_316'),
               permission: 'proxysettings_list',
               action: () => {
                 this.createDialog('UpdateProxySettingDialog', {
-                  title: '设置代理',
+                  title: i18n.t('cloudenv.text_316'),
                   data: [obj],
                   columns: this.columns,
                   onManager: this.onManager,
@@ -165,14 +166,14 @@ export default {
               ],
             }),
             {
-              label: '删除',
+              label: i18n.t('cloudenv.text_108'),
               permission: 'cloudaccounts_delete',
               action: () => {
                 this.createDialog('DeleteResDialog', {
                   vm: this,
                   data: [obj],
                   columns: this.columns,
-                  title: '删除云账号',
+                  title: i18n.t('cloudenv.text_109'),
                   name: this.$t('dictionary.cloudaccount'),
                   onManager: this.onManager,
                 })
@@ -191,14 +192,14 @@ export default {
       if (!items.length) return { validate: false }
       const enabledValid = items.every(obj => {
         if (!obj.enabled) {
-          tooltip = '请先启用云账号'
+          tooltip = i18n.t('cloudenv.text_312')
           return false
         }
         return true
       })
       const autoSyncValid = items.every(obj => {
         if (obj.enable_auto_sync) {
-          tooltip = '请先取消设置自动同步'
+          tooltip = i18n.t('cloudenv.text_313')
           return false
         }
         return true
@@ -215,7 +216,7 @@ export default {
       if (!items.length) return { validate: false }
       const enabledValid = items.every(obj => {
         if (!obj.enabled) {
-          tooltip = '请先启用云账号'
+          tooltip = i18n.t('cloudenv.text_312')
           return false
         }
         return true

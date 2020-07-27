@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="标签"
+    :title="$t('cloudenv.text_16')"
     icon="res-tag"
     :res-name="detailData.name"
     :actions="params.actions"
@@ -36,8 +36,8 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'tag-detail' },
-        { label: '绑定资源', key: 'bind-resource' },
+        { label: this.$t('cloudenv.text_237'), key: 'tag-detail' },
+        { label: this.$t('cloudenv.text_439'), key: 'bind-resource' },
         // { label: '操作日志', key: 'event-drawer' },
       ],
     }

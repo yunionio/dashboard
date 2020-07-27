@@ -47,15 +47,15 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
-          { label: 'https代理', key: 'https_proxy' },
-          { label: 'http代理', key: 'http_proxy' },
-          { label: '不走代理', key: 'no_proxy' },
+          { label: this.$t('cloudenv.text_95'), key: 'name' },
+          { label: this.$t('cloudenv.text_395'), key: 'https_proxy' },
+          { label: this.$t('cloudenv.text_398'), key: 'http_proxy' },
+          { label: this.$t('cloudenv.text_403'), key: 'no_proxy' },
         ],
       },
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('cloudenv.text_104'),
           permission: 'proxysettings_create',
           action: () => {
             this.createDialog('ProxysettingCreateDialog', {
@@ -85,7 +85,7 @@ export default {
               const row = this.list.selectedItems[i]
               if (row.id === 'DIRECT') {
                 return {
-                  tooltip: '直接代理不支持此操作',
+                  tooltip: this.$t('cloudenv.text_404'),
                   validate: false,
                 }
               }
@@ -93,7 +93,7 @@ export default {
               if (isDomainMode && (userInfo.projectDomainId !== row.domain_id)) {
                 return {
                   validate: false,
-                  tooltip: '他人共享代理不支持该操作',
+                  tooltip: this.$t('cloudenv.text_405'),
                 }
               }
             }
@@ -103,13 +103,13 @@ export default {
           },
         }),
         {
-          label: '删除',
+          label: this.$t('cloudenv.text_108'),
           permission: 'proxysettings_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               data: this.list.selectedItems,
               columns: this.columns,
-              title: '删除',
+              title: this.$t('cloudenv.text_108'),
               name: this.$t('dictionary.proxysetting'),
               onManager: this.onManager,
             })

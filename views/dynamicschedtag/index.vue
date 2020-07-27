@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="动态调度标签" />
+    <page-header :title="$t('cloudenv.text_20')" />
     <page-body>
       <dynamicschedtag-list :id="listId" />
     </page-body>

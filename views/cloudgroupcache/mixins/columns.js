@@ -2,12 +2,13 @@ import {
   getStatusTableColumn,
   getNameDescriptionTableColumn,
 } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
     this.columns = [
       getNameDescriptionTableColumn({
-        title: '云上用户组',
+        title: i18n.t('cloudenv.text_332'),
         onManager: this.onManager,
         hideField: true,
         showDesc: false,

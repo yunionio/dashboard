@@ -31,7 +31,7 @@ export default {
         getParams: { details: true, scheduled_task: this.resId },
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('cloudenv.text_95'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
@@ -46,12 +46,12 @@ export default {
           minWidth: '200',
         },
         getStatusTableColumn({ statusModule: 'scheduledtaskactivity' }),
-        getTimeTableColumn({ title: '开始时间' }),
-        getTimeTableColumn({ field: 'end_time', title: '结束时间' }),
+        getTimeTableColumn({ title: this.$t('cloudenv.text_461') }),
+        getTimeTableColumn({ field: 'end_time', title: this.$t('cloudenv.text_462') }),
       ],
       singleActions: [
         {
-          label: '查看',
+          label: this.$t('cloudenv.text_463'),
           action: (row) => {
             this.createDialog('EventLogDialog', {
               data: row.reason,

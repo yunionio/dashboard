@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="区域"
+    :title="$t('cloudenv.text_10')"
     icon="res-region"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
@@ -35,12 +35,12 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'cloudregion-detail' },
-        { label: '可用区', key: 'zone-list' },
+        { label: this.$t('cloudenv.text_237'), key: 'cloudregion-detail' },
+        { label: this.$t('cloudenv.text_11'), key: 'zone-list' },
         { label: 'VPC', key: 'v-p-c-list' },
-        { label: 'IP子网', key: 'network-list' },
-        { label: '资源统计', key: 'dashboard' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('cloudenv.text_181'), key: 'network-list' },
+        { label: this.$t('cloudenv.text_319'), key: 'dashboard' },
+        { label: this.$t('cloudenv.text_15'), key: 'event-drawer' },
       ],
     }
   },

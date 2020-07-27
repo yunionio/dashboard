@@ -1,13 +1,13 @@
 <template>
   <div>
-    <a-form-item label="自动同步" v-bind="formLayout">
-      <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.enable_auto_sync" @change="change" />
+    <a-form-item :label="$t('cloudenv.text_83')" v-bind="formLayout">
+      <a-switch :checkedChildren="$t('cloudenv.text_84')" :unCheckedChildren="$t('cloudenv.text_85')" v-decorator="decorators.enable_auto_sync" @change="change" />
     </a-form-item>
-    <a-form-item label="时间间隔" v-bind="formLayout" v-if="showSecond">
-      <a-input style="width: 180px" v-decorator="decorators.sync_interval_seconds" addonAfter="分钟" type="number" />
-      <div v-if="!fc.getFieldError('sync_interval_seconds')" slot="extra">最少时间间隔为 30 分钟</div>
+    <a-form-item :label="$t('cloudenv.text_86')" v-bind="formLayout" v-if="showSecond">
+      <a-input style="width: 180px" v-decorator="decorators.sync_interval_seconds" :addonAfter="$t('cloudenv.text_87')" type="number" />
+      <div v-if="!fc.getFieldError('sync_interval_seconds')" slot="extra">{{$t('cloudenv.text_88')}}</div>
     </a-form-item>
-    <!-- <a-form-item label="是否共享" v-bind="formLayout">
+    <!-- <a-form-item :label="$t('cloudenv.text_89')" v-bind="formLayout">
       <a-switch v-decorator="decorators.is_public" />
     </a-form-item> -->
   </div>
@@ -41,7 +41,7 @@ export default {
             initialValue: 60,
             normalize: v => Number(v),
             rules: [
-              { type: 'integer', min: 30, message: '最少时间间隔为 30 分钟', trigger: 'blur' },
+              { type: 'integer', min: 30, message: this.$t('cloudenv.text_88'), trigger: 'blur' },
             ],
           },
         ],

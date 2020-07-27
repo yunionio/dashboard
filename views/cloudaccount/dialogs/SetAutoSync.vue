@@ -1,20 +1,20 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">设置自动同步</div>
+    <div slot="header">{{$t('cloudenv.text_106')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.cloudaccount')" :count="params.data.length" action="设置自动同步" />
+      <dialog-selected-tips :name="$t('dictionary.cloudaccount')" :count="params.data.length" :action="$t('cloudenv.text_106')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
-        <a-form-item label="自动同步" v-bind="formItemLayout">
-          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.enable_auto_sync" @change="enableChange" />
+        <a-form-item :label="$t('cloudenv.text_83')" v-bind="formItemLayout">
+          <a-switch :checkedChildren="$t('cloudenv.text_84')" :unCheckedChildren="$t('cloudenv.text_85')" v-decorator="decorators.enable_auto_sync" @change="enableChange" />
         </a-form-item>
-        <a-form-item label="时间间隔" v-bind="formItemLayout" v-if="showTime">
+        <a-form-item :label="$t('cloudenv.text_86')" v-bind="formItemLayout" v-if="showTime">
           <a-input-number
             v-decorator="decorators.sync_interval_seconds"
             :min="30" />
-          <span class="ml-1">分钟</span>
-          <div slot="extra">最少时间间隔为30分钟</div>
+          <span class="ml-1">{{$t('cloudenv.text_87')}}</span>
+          <div slot="extra">{{$t('cloudenv.text_280')}}</div>
         </a-form-item>
       </a-form>
     </div>

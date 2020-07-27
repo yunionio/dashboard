@@ -1,4 +1,5 @@
 import { getNameDescriptionTableColumn, getEnabledTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -15,11 +16,11 @@ export default {
       getEnabledTableColumn(),
       getCopyWithContentTableColumn({
         field: 'schedtag',
-        title: '调度标签',
+        title: i18n.t('cloudenv.text_18'),
       }),
       getCopyWithContentTableColumn({
         field: 'condition',
-        title: '条件',
+        title: i18n.t('cloudenv.text_22'),
       }),
     ]
   },

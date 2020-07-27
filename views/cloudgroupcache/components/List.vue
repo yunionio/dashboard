@@ -35,7 +35,7 @@ export default {
         steadyStatus: Object.values(expectStatus.cloudgroup).flat(),
         filterOptions: {
           cloudaccount: {
-            label: '云账号',
+            label: this.$t('cloudenv.text_12'),
           },
         },
       }),

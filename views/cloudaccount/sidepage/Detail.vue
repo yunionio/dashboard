@@ -38,7 +38,7 @@ export default {
         getPublicScopeTableColumn({ vm: this, resource: 'cloudaccounts' }),
         {
           field: 'account',
-          title: '账号',
+          title: this.$t('cloudenv.text_94'),
           slots: {
             default: ({ row }) => {
               return [
@@ -51,7 +51,7 @@ export default {
         },
         {
           field: 'proxy_setting.name',
-          title: '代理',
+          title: this.$t('cloudenv.text_14'),
           slots: {
             default: ({ row }) => {
               if (row.proxy_setting) {
@@ -69,7 +69,7 @@ export default {
         getEnabledTableColumn(),
         {
           field: 'last_sync',
-          title: '同步时间',
+          title: this.$t('cloudenv.text_103'),
           formatter: ({ row }) => {
             return this.$moment(row.last_sync).format()
           },
@@ -77,10 +77,10 @@ export default {
       ],
       extraInfo: [
         {
-          title: '账号信息',
+          title: this.$t('cloudenv.text_317'),
           items: [
             getAccessUrlTableColumn(),
-            getStatusTableColumn({ statusModule: 'cloudaccountHealthStatus', title: '健康状态', field: 'health_status' }),
+            getStatusTableColumn({ statusModule: 'cloudaccountHealthStatus', title: this.$t('cloudenv.text_93'), field: 'health_status' }),
             getBalanceTableColumn(),
             getGuestCountTableColumn(),
             getHostCountTableColumn(),

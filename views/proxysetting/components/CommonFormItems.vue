@@ -1,23 +1,16 @@
 <template>
   <div>
-    <a-form-item label="https代理">
+    <a-form-item :label="$t('cloudenv.text_395')">
       <a-input v-decorator="decorators.https_proxy" />
-      <div slot="extra">
-        例如：http|https|socks5://proxy.example.com:8080 <br />
-        若请求的url是https，优先使用https代理，可以为空，为空则使用http代理
-      </div>
+      <div slot="extra">{{$t('cloudenv.text_396')}}<br />{{$t('cloudenv.text_397')}}</div>
     </a-form-item>
-    <a-form-item label="http代理">
+    <a-form-item :label="$t('cloudenv.text_398')">
       <a-input v-decorator="decorators.http_proxy" />
-      <div slot="extra">
-        例如：http|https|socks5://proxy.example.com:8081 <br />
-        建议https代理和http代理至少填写一个，可以为空，为空则代表直连
-      </div>
+      <div slot="extra">{{$t('cloudenv.text_399')}}<br />{{$t('cloudenv.text_400')}}</div>
     </a-form-item>
-    <a-form-item label="不走代理地址">
+    <a-form-item :label="$t('cloudenv.text_401')">
       <a-input v-decorator="decorators.no_proxy" />
-      <div slot="extra">
-        不经过代理连接的地址列表，多个以英文状态的逗号分隔，例如：<br />
+      <div slot="extra">{{$t('cloudenv.text_402')}}<br />
         foo.com,.bar.com,7.7.7.7,8.8.8.8/8,9.9.9.9:80
       </div>
     </a-form-item>

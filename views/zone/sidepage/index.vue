@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="可用区"
+    :title="$t('cloudenv.text_11')"
     icon="res-zone"
     :res-name="detailData.name"
     :actions="params.actions"
@@ -46,10 +46,10 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'zone-detail' },
-        { label: '宿主机', key: 'host-list' },
-        { label: '资源统计', key: 'dashboard' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('cloudenv.text_237'), key: 'zone-detail' },
+        { label: this.$t('cloudenv.text_101'), key: 'host-list' },
+        { label: this.$t('cloudenv.text_319'), key: 'dashboard' },
+        { label: this.$t('cloudenv.text_15'), key: 'event-drawer' },
       ],
     }
   },

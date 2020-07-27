@@ -1,8 +1,8 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">解绑</div>
+    <div slot="header">{{$t('cloudenv.text_452')}}</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" action="解绑" name="虚拟机" />
+      <dialog-selected-tips :count="params.data.length" :action="$t('cloudenv.text_452')" :name="$t('cloudenv.text_99')" />
       <dialog-table :data="params.data" :columns="columns" />
     </div>
     <div slot="footer">

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="可用区" />
+    <page-header :title="$t('cloudenv.text_11')" />
     <page-body>
       <zone-list :getParams="getParams" :id="listId" />
     </page-body>

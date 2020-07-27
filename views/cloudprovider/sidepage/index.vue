@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="订阅"
+    :title="$t('cloudenv.text_318')"
     icon="onecloud"
     :res-name="detailData.name"
     :actions="params.actions"
@@ -42,12 +42,12 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'cloudaccount-detail' },
-        { label: '区域', key: 'cloudproviderregion-list' },
+        { label: this.$t('cloudenv.text_237'), key: 'cloudaccount-detail' },
+        { label: this.$t('cloudenv.text_10'), key: 'cloudproviderregion-list' },
         { label: this.$t('dictionary.project'), key: 'externalproject-list' },
-        { label: '云上配额', key: 'cloudaccount-quota-list' },
-        { label: '资源统计', key: 'usage' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('cloudenv.text_362'), key: 'cloudaccount-quota-list' },
+        { label: this.$t('cloudenv.text_319'), key: 'usage' },
+        { label: this.$t('cloudenv.text_15'), key: 'event-drawer' },
       ],
     }
   },

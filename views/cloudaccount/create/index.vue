@@ -1,6 +1,6 @@
 <template>
   <div class="cloudaccount-create">
-    <page-header title="新建云账号" />
+    <page-header :title="$t('cloudenv.text_271')" />
     <steps class="my-3" v-model="step" />
     <keep-alive>
       <component :prepareNetData="prepareNetData" :is="currentComponent" :current-item.sync="currentItem" :account="newAccountInfo" ref="stepRef" :provider="currentItem.provider" /><!-- provider 是为了 VmNetwork 的 prop 不报错 -->
@@ -8,7 +8,7 @@
     <page-footer>
       <div slot="left">
         <div class="d-flex align-items-center">
-          <div class="mr-2">已选择: </div>
+          <div class="mr-2">{{$t('cloudenv.text_272')}}</div>
           <div class="item d-flex p-1 mb-0 align-items-center active">
             <img :src="currentItem.logo" />
             <h5 class="ml-2" v-if="showName(currentItem)">{{ currentItem.name }}</h5>
@@ -16,10 +16,10 @@
         </div>
       </div>
       <div slot="right">
-        <a-button class="mr-3" @click="perv" v-if="!isFirstStep">上一步</a-button>
+        <a-button class="mr-3" @click="perv" v-if="!isFirstStep">{{$t('cloudenv.text_273')}}</a-button>
         <a-button :disabled="nextDisabled" class="mr-3" type="primary"  @click="next" :loading="loading">{{ nextStepTitle }}</a-button>
         <test-button v-if="currentComponent === 'create-cloudaccount' || currentComponent === 'bill-form'" class="mr-3" :post="testPost" />
-        <a-button @click="cancel">{{currentComponent === 'bill-form' ? '跳 过': '取 消'}}</a-button>
+        <a-button @click="cancel">{{currentComponent === 'bill-form' ? $t('cloudenv.text_274'): $t('cloudenv.text_170')}}</a-button>
       </div>
     </page-footer>
   </div>
@@ -78,9 +78,9 @@ export default {
   computed: {
     nextText () {
       if (this.step.currentStep >= this.step.steps.length - 1) {
-        return '确定'
+        return this.$t('cloudenv.text_275')
       }
-      return '下一步'
+      return this.$t('cloudenv.text_276')
     },
     stepKey () {
       return this.step.steps[this.step.currentStep].key
@@ -136,21 +136,21 @@ export default {
     changeSteps (val) {
       if (val && val.provider === 'VMware') {
         this.step.steps = [
-          { title: '选择云平台', key: 'select-cloudaccount' },
-          { title: '配置云账号', key: 'create-cloudaccount' },
-          { title: '配置物理机IP', key: 'host-network' },
-          { title: '配置虚拟机IP', key: 'guest-network' },
+          { title: this.$t('cloudenv.text_277'), key: 'select-cloudaccount' },
+          { title: this.$t('cloudenv.text_278'), key: 'create-cloudaccount' },
+          { title: this.$t('cloudenv.text_175'), key: 'host-network' },
+          { title: this.$t('cloudenv.text_176'), key: 'guest-network' },
         ]
       } else if (this.isBill) {
         this.step.steps = [
-          { title: '选择云平台', key: 'select-cloudaccount' },
-          { title: '配置云账号', key: 'create-cloudaccount' },
-          { title: '账单文件访问信息（可选）', key: 'bill-form' },
+          { title: this.$t('cloudenv.text_277'), key: 'select-cloudaccount' },
+          { title: this.$t('cloudenv.text_278'), key: 'create-cloudaccount' },
+          { title: this.$t('cloudenv.text_279'), key: 'bill-form' },
         ]
       } else {
         this.step.steps = [
-          { title: '选择云平台', key: 'select-cloudaccount' },
-          { title: '配置云账号', key: 'create-cloudaccount' },
+          { title: this.$t('cloudenv.text_277'), key: 'select-cloudaccount' },
+          { title: this.$t('cloudenv.text_278'), key: 'create-cloudaccount' },
         ]
       }
     },

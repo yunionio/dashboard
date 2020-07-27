@@ -1,16 +1,17 @@
 import { getSetPublicAction } from '@/utils/common/tableActions'
+import i18n from '@/locales'
 
 export default {
   created () {
     this.singleActions = [
       {
-        label: '修改属性',
+        label: i18n.t('cloudenv.text_406'),
         permission: 'proxysettings_update',
         action: (row) => {
           this.createDialog('ProxysettingUpdateDialog', {
             data: [row],
             columns: this.columns,
-            title: '修改属性',
+            title: i18n.t('cloudenv.text_406'),
             onManager: this.onManager,
           })
         },
@@ -24,14 +25,14 @@ export default {
         meta: this.commonMeta,
       }),
       {
-        label: '删除',
+        label: i18n.t('cloudenv.text_108'),
         permission: 'proxysettings_delete',
         action: (row) => {
           this.createDialog('DeleteResDialog', {
             vm: this,
             data: [row],
             columns: this.columns,
-            title: '删除',
+            title: i18n.t('cloudenv.text_108'),
             name: this.$t('dictionary.proxysetting'),
             onManager: this.onManager,
           })
@@ -47,20 +48,20 @@ export default {
       if (!row.can_delete && action === 'delete') {
         return {
           validate: false,
-          tooltip: '已关联云账号，请取消关联云账号后重试',
+          tooltip: i18n.t('cloudenv.text_412'),
         }
       }
       if (isDirect) {
         return {
           validate: false,
-          tooltip: '直接代理不支持此操作',
+          tooltip: i18n.t('cloudenv.text_404'),
         }
       }
       const { isDomainMode, userInfo } = this.$store.getters
       if (isDomainMode && (userInfo.projectDomainId !== row.domain_id)) {
         return {
           validate: false,
-          tooltip: '他人共享代理不支持该操作',
+          tooltip: i18n.t('cloudenv.text_405'),
         }
       }
       return {

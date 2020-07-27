@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="更新账单文件" />
+    <page-header :title="$t('cloudenv.text_168')" />
     <div style="padding: 7px" />
     <a-spin :spinning="!isRender">
       <content-info :params="params" v-if="isRender" />
@@ -8,9 +8,9 @@
     <bill-form ref="BILL_FORM" />
     <page-footer>
       <div slot="right">
-        <a-button class="mr-3" type="primary" @click="handleConfirm" :loading="loading">确 定</a-button>
+        <a-button class="mr-3" type="primary" @click="handleConfirm" :loading="loading">{{$t('cloudenv.text_169')}}</a-button>
         <test-button class="mr-3" :post="testPost" />
-        <a-button @click="cancel">取 消</a-button>
+        <a-button @click="cancel">{{$t('cloudenv.text_170')}}</a-button>
       </div>
     </page-footer>
   </div>

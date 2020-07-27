@@ -1,15 +1,15 @@
 <template>
   <a-form
     :form="form.fc">
-    <a-form-item label="名称" v-bind="formItemLayout" v-if="!updateValue">
+    <a-form-item :label="$t('cloudenv.text_95')" v-bind="formItemLayout" v-if="!updateValue">
       <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
     </a-form-item>
-    <a-form-item label="调度标签" v-bind="formItemLayout">
+    <a-form-item :label="$t('cloudenv.text_18')" v-bind="formItemLayout">
       <base-select
         v-decorator="decorators.schedtag"
         resource="schedtags"
         :params="schedtagParams"
-        :select-props="{ placeholder: '请选择调度标签' }" />
+        :select-props="{ placeholder: $t('cloudenv.text_378') }" />
     </a-form-item>
     <condition-select @conditionValsChange="conditionValsChange" :decorators="decorators" :formItemLayout="formItemLayout" />
   </a-form>

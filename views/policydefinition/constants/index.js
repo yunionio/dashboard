@@ -1,11 +1,12 @@
+import i18n from '@/locales'
 export const CategoryMap = {
-  tag: '标签',
-  cloudregion: '地域',
+  tag: i18n.t('cloudenv.text_16'),
+  cloudregion: i18n.t('cloudenv.text_9'),
 }
 
 export const ConditionMap = {
-  in: '包含',
-  contains: '包含',
-  not_in: '不包含',
-  except: '排除',
+  in: i18n.t('cloudenv.text_390'),
+  contains: i18n.t('cloudenv.text_390'),
+  not_in: i18n.t('cloudenv.text_391'),
+  except: i18n.t('cloudenv.text_392'),
 }

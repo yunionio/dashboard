@@ -1,15 +1,15 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">设置共享</div>
+    <div slot="header">{{$t('cloudenv.text_281')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.cloudaccount')" :count="params.data.length" action="设置共享" />
+      <dialog-selected-tips :name="$t('dictionary.cloudaccount')" :count="params.data.length" :action="$t('cloudenv.text_281')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form-model
         ref="form"
         :model="fd"
         :rules="rules"
         v-bind="formItemLayout">
-        <a-form-model-item label="共享范围" prop="share_mode" :extra="extra">
+        <a-form-model-item :label="$t('cloudenv.text_282')" prop="share_mode" :extra="extra">
           <a-radio-group v-model="fd.share_mode">
             <template v-for="item of shareModeOptions">
               <a-radio-button :key="item.key" :value="item.key">{{ item.label }}</a-radio-button>
@@ -108,19 +108,19 @@ export default {
       },
       rules: {
         share_mode: [
-          { required: true, message: '请选择共享范围' },
+          { required: true, message: this.$t('cloudenv.text_283') },
         ],
         provider_shared_domains: [
-          { required: true, message: `请选择${this.$t('dictionary.domain')}` },
+          { required: true, message: this.$t('cloudenv.text_284', [this.$t('dictionary.domain')]) },
         ],
         system_shared_domains: [
-          { required: true, message: `请选择${this.$t('dictionary.domain')}` },
+          { required: true, message: this.$t('cloudenv.text_284', [this.$t('dictionary.domain')]) },
         ],
       },
       shareModeOptions: [
-        { key: 'account_domain', label: '不共享' },
-        { key: 'provider_domain', label: '共享云订阅' },
-        { key: 'system', label: '共享云账号' },
+        { key: 'account_domain', label: this.$t('cloudenv.text_285') },
+        { key: 'provider_domain', label: this.$t('cloudenv.text_286') },
+        { key: 'system', label: this.$t('cloudenv.text_287') },
       ],
       formItemLayout: {
         wrapperCol: {
@@ -141,9 +141,9 @@ export default {
     ...mapGetters(['l3PermissionEnable']),
     extra () {
       const shareModeExtra = {
-        account_domain: `只有该${this.$t('dictionary.cloudaccount')}所属${this.$t('dictionary.domain')}下的任意${this.$t('dictionary.project')}可以使用该${this.$t('dictionary.cloudaccount')}下的任意订阅创建资源`,
-        provider_domain: `根据设置指定或所有${this.$t('dictionary.domain')}下的任意${this.$t('dictionary.project')}可以使用该${this.$t('dictionary.cloudaccount')}下的指定订阅，该类型设置完成后，还需要单独在订阅列表进行 【更改${this.$t('dictionary.project')}】 设置才可生效`,
-        system: `根据设置，指定或所有${this.$t('dictionary.domain')}下的任意${this.$t('dictionary.project')}可以使用该${this.$t('dictionary.cloudaccount')}下的任意订阅创建资源`,
+        account_domain: this.$t('cloudenv.text_288', [this.$t('dictionary.cloudaccount'), this.$t('dictionary.domain'), this.$t('dictionary.project'), this.$t('dictionary.cloudaccount')]),
+        provider_domain: this.$t('cloudenv.text_293', [this.$t('dictionary.domain'), this.$t('dictionary.project'), this.$t('dictionary.cloudaccount'), this.$t('dictionary.project')]),
+        system: this.$t('cloudenv.text_296', [this.$t('dictionary.domain'), this.$t('dictionary.project'), this.$t('dictionary.cloudaccount')]),
       }
       return shareModeExtra[this.fd.share_mode]
     },
@@ -222,7 +222,7 @@ export default {
         if (!this.isBatch && this.params.data[0].shared_domains && this.params.data[0].shared_domains.length) {
           data = this.mergeSharedRes(data, this.params.data[0].shared_domains)
         }
-        data.unshift({ id: 'all', name: '全部' })
+        data.unshift({ id: 'all', name: this.$t('cloudenv.text_297') })
         return data
       } catch (error) {
         throw error

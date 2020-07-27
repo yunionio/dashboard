@@ -1,16 +1,14 @@
 <template>
-  <a-form-item label="代理" v-if="isPermission">
+  <a-form-item :label="$t('cloudenv.text_14')" v-if="isPermission">
     <div class="d-flex align-items-center w-50">
       <a-select class="base-select" :loading="loading" showSearch :filterOption="filterOption" v-decorator="decorator">
         <a-select-option v-for="item of proxyOpts" :key="item.id" :value="item.id">
-          {{item.name}} {{item.id === 'DIRECT' ? '（直连）' :  null}}
+          {{item.name}} {{item.id === 'DIRECT' ? $t('cloudenv.text_110') :  null}}
         </a-select-option>
       </a-select>
       <a @click="fetchQueryProxy"><a-icon :spin="loading" type="sync" class="ml-2" /></a>
     </div>
-    <div slot="extra">
-      某些云厂商需要设置代理才可以正常访问，例如谷歌云。
-      <div>没有想要的？可以前往 <span class="link-color oc-pointer" @click="createProxySetting">新建</span></div>
+    <div slot="extra">{{$t('cloudenv.text_111')}}<div>{{$t('cloudenv.text_112')}}<span class="link-color oc-pointer" @click="createProxySetting">{{$t('cloudenv.text_104')}}</span></div>
     </div>
   </a-form-item>
 </template>

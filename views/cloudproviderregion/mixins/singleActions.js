@@ -1,10 +1,11 @@
+import i18n from '@/locales'
 
 export default {
   created () {
     const ownerDomain = obj => this.$store.getters.isAdminMode || obj.cloudaccount_domain_id === this.$store.getters.userInfo.projectDomainId
     this.singleActions = [
       {
-        label: '设置同步',
+        label: i18n.t('cloudenv.text_363'),
         action: obj => {
           this.createDialog('cloudproviderregionsSetAutoSyncDialog', {
             data: [obj],
@@ -20,7 +21,7 @@ export default {
         },
       },
       {
-        label: '全量同步',
+        label: i18n.t('cloudenv.text_105'),
         permission: 'cloudaccounts_perform_sync',
         action: obj => {
           new this.$Manager('cloudproviders').performAction({
@@ -33,14 +34,14 @@ export default {
             },
           }).then(() => {
             this.list.refresh()
-            this.$message.success('同步完成')
+            this.$message.success(i18n.t('cloudenv.text_367'))
           })
         },
         meta: obj => {
           const isIdle = obj.sync_status === 'idle'
           return {
             validate: isIdle,
-            tooltip: !isIdle && `${this.$t('status.cloudaccountSyncStatus')[obj.sync_status]}状态下不支持此操作`,
+            tooltip: !isIdle && i18n.t('cloudenv.text_368', [this.$t('status.cloudaccountSyncStatus')]),
           }
         },
       },

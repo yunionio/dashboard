@@ -1,21 +1,21 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">新建可用区</div>
+    <div slot="header">{{$t('cloudenv.text_480')}}</div>
     <div slot="body">
       <a-form
         :form="form.fc">
-        <a-form-item label="名称" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.name" placeholder="请输入名称" />
+        <a-form-item :label="$t('cloudenv.text_95')" v-bind="formItemLayout">
+          <a-input v-decorator="decorators.name" :placeholder="$t('cloudenv.text_190')" />
         </a-form-item>
-        <a-form-item label="区域" v-bind="formItemLayout">
+        <a-form-item :label="$t('cloudenv.text_10')" v-bind="formItemLayout">
           <base-select
             resource="cloudregions"
             v-decorator="decorators.region"
-            :selectProps="{ 'placeholder': '请选择区域' }"
+            :selectProps="{ 'placeholder': $t('cloudenv.text_231') }"
             :params="{ 'cloud_env': 'private_or_onpremise', 'brand': 'OneCloud' }" />
         </a-form-item>
-        <a-form-item label="位置" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.location" placeholder="请输入位置、例如望京、酒仙桥等" />
+        <a-form-item :label="$t('cloudenv.text_374')" v-bind="formItemLayout">
+          <a-input v-decorator="decorators.location" :placeholder="$t('cloudenv.text_481')" />
         </a-form-item>
       </a-form>
     </div>
@@ -45,7 +45,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('cloudenv.text_190') },
               // { validator: this.$validate('resourceName') },
             ],
           },
@@ -54,7 +54,7 @@ export default {
           'region',
           {
             rules: [
-              { required: true, message: '请选择区域' },
+              { required: true, message: this.$t('cloudenv.text_231') },
             ],
           },
         ],
@@ -62,7 +62,7 @@ export default {
           'location',
           {
             rules: [
-              { required: true, message: '请输入位置' },
+              { required: true, message: this.$t('cloudenv.text_482') },
             ],
           },
         ],

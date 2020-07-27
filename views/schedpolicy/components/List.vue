@@ -33,33 +33,33 @@ export default {
           name: getNameFilter(),
           enabled: getEnabledFilter(),
           strategy: {
-            label: '偏好',
+            label: this.$t('cloudenv.text_413'),
             dropdown: true,
             multiple: true,
             items: STRATEGY_OPT,
           },
           schedtag: getFilter({
             field: 'schedtag',
-            title: '调度标签',
+            title: this.$t('cloudenv.text_18'),
           }),
         },
       }),
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
-          { label: '启用状态', key: 'enabled' },
-          { label: '偏好', key: 'strategy' },
-          { label: '调度标签', key: 'schedtag' },
-          { label: '条件', key: 'condition' },
+          { label: this.$t('cloudenv.text_95'), key: 'name' },
+          { label: this.$t('cloudenv.text_97'), key: 'enabled' },
+          { label: this.$t('cloudenv.text_413'), key: 'strategy' },
+          { label: this.$t('cloudenv.text_18'), key: 'schedtag' },
+          { label: this.$t('cloudenv.text_22'), key: 'condition' },
         ],
       },
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('cloudenv.text_104'),
           action: () => {
             this.createDialog('CreateSchedpolicyDialog', {
-              title: '创建调度策略',
+              title: this.$t('cloudenv.text_414'),
               onManager: this.onManager,
             })
           },
@@ -70,13 +70,13 @@ export default {
           },
         },
         {
-          label: '删除',
+          label: this.$t('cloudenv.text_108'),
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,
               data: this.list.selectedItems,
               columns: this.columns,
-              title: '删除调度策略',
+              title: this.$t('cloudenv.text_415'),
               name: this.$t('dictionary.schedpolicie'),
               onManager: this.onManager,
             })

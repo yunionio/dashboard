@@ -1,12 +1,12 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">偏好设置</div>
+    <div slot="header">{{$t('cloudenv.text_422')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.schedtag')" :count="params.data.length" action="偏好设置" />
+      <dialog-selected-tips :name="$t('dictionary.schedtag')" :count="params.data.length" :action="$t('cloudenv.text_422')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
-        <a-form-item label="偏好" v-bind="formItemLayout">
+        <a-form-item :label="$t('cloudenv.text_413')" v-bind="formItemLayout">
           <strategy-radio :decorator="decorators.default_strategy" />
         </a-form-item>
       </a-form>

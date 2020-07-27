@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="动态调度标签"
+    :title="$t('cloudenv.text_20')"
     icon="res-dynamicschedtag"
     :res-name="detailData.name"
     :actions="params.actions"
@@ -41,8 +41,8 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'dynamicschedtag-detail' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('cloudenv.text_237'), key: 'dynamicschedtag-detail' },
+        { label: this.$t('cloudenv.text_15'), key: 'event-drawer' },
       ],
     }
   },

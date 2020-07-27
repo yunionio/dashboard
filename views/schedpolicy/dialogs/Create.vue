@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">新建调度策略</div>
+    <div slot="header">{{$t('cloudenv.text_416')}}</div>
     <div slot="body">
       <schedpolicy-form ref="formRef" />
     </div>
@@ -43,7 +43,7 @@ export default {
         await this.doCreate(values)
         this.loading = false
         this.cancelDialog()
-        this.$message.success('操作成功')
+        this.$message.success(this.$t('cloudenv.text_381'))
       } catch (error) {
         this.loading = false
       }
