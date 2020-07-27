@@ -107,7 +107,7 @@ export default {
     },
     isShowAutoDelete () {
       const brand = this.params.data[0].brand
-      return this.type === SERVER_TYPE.idc || brand === BRAND_MAP.openstack.brand
+      return this.type === SERVER_TYPE.idc || brand === BRAND_MAP.OpenStack.brand
     },
     isOpenWorkflow () {
       return this.checkWorkflowEnabled(this.WORKFLOW_TYPES.APPLY_SERVER_DELETE)
