@@ -243,7 +243,7 @@ export default {
         if (R.is(Function, this.fetchDataCallback)) {
           await this.fetchDataCallback()
         }
-        if (this.isList) {
+        if (this.isList && this.steadyStatus) {
           this.compareStatusWithList(data)
         }
         return response
