@@ -20,8 +20,8 @@
       </router-link>
     </div>
     <!-- 全局搜索 -->
-    <div class="navbar-item d-flex align-items-center flex-fill" v-if="showGlobalSearch">
-      <div class="globar-search-wrapper px-2">
+    <div class="navbar-item d-flex align-items-center flex-fill">
+      <div class="globar-search-wrapper px-2" v-if="showGlobalSearch">
         <global-search />
       </div>
     </div>
