@@ -204,8 +204,10 @@ export default {
     compareStatusWithList (data) {
       const detailStatus = {}
       const listStatus = {}
-      Object.keys(this.steadyStatus).forEach(key => { detailStatus[key] = data[key] })
-      Object.keys(this.steadyStatus).forEach(key => { listStatus[key] = this.listRowData[key] })
+      Object.keys(this.steadyStatus).forEach(key => {
+        detailStatus[key] = data[key]
+        listStatus[key] = this.listRowData[key]
+      })
       if (detailStatus && listStatus && !R.equals(detailStatus, listStatus)) {
         this.singleRefresh(data[this.idKey], this.steadyStatus)
       }
