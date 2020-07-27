@@ -37,7 +37,7 @@ export default {
       }),
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('helm.text_68'),
           permission: 'k8s_repos_create',
           action: () => {
             this.createDialog('ChartCreateDialog', {
@@ -51,7 +51,7 @@ export default {
           }),
         },
         {
-          label: '删除',
+          label: this.$t('helm.text_69'),
           permission: 'k8s_repos_delete',
           action: () => {
             const data = this.list.selectedItems
@@ -59,8 +59,8 @@ export default {
               vm: this,
               data,
               columns: this.columns,
-              title: '删除',
-              name: 'Helm仓库地址',
+              title: this.$t('helm.text_69'),
+              name: this.$t('helm.text_6'),
               onManager: this.onManager,
             })
           },
@@ -69,7 +69,7 @@ export default {
             const validate = this.list.selectedItems.length > 0 && isAdmin && this.list.selectedItems.every(val => val.can_delete)
             let tooltip = ''
             if (!isAdmin) {
-              tooltip = '仅系统管理员可操作'
+              tooltip = this.$t('helm.text_89')
             }
             return {
               validate,

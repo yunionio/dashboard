@@ -1,3 +1,4 @@
+import i18n from '@/locales'
 export default {
   created () {
     this.singleActions = [
@@ -30,15 +31,15 @@ export default {
       //   },
       // },
       {
-        label: '删除',
+        label: i18n.t('helm.text_69'),
         permission: 'k8s_releases_delete',
         action: (obj) => {
           this.createDialog('DeleteResDialog', {
             vm: this,
             data: [obj],
             columns: this.columns,
-            title: '删除',
-            name: '虚拟机实例',
+            title: i18n.t('helm.text_69'),
+            name: i18n.t('helm.text_3'),
             onManager: this.onManager,
           })
         },

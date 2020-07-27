@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="任务"
+    :title="$t('helm.text_66')"
     icon="res-k8s-job"
     :res-name="detailData.name"
     :actions="params.actions"
@@ -29,7 +29,7 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '输出日志', key: 'logs' },
+        { label: this.$t('helm.text_67'), key: 'logs' },
       ],
     }
   },

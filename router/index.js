@@ -10,6 +10,7 @@ import Scheduledtask from '@Cloudenv/views/scheduledtask'
 import ScheduledtaskCreate from '@Cloudenv/views/scheduledtask/create'
 import Layout from '@/layouts/RouterView'
 import { hasSetupKey } from '@/utils/auth'
+import i18n from '@/locales'
 
 let Monitor = { meta: { hidden: true } }
 if (process.env.VUE_APP_IS_PRIVATE) {
@@ -23,20 +24,20 @@ if (process.env.VUE_APP_IS_PRIVATE) {
 export default {
   index: 7,
   meta: {
-    label: '运维工具',
+    label: i18n.t('helm.text_1'),
     icon: 'menu-helm',
   },
   menus: [
     {
       meta: {
-        label: '编排',
+        label: i18n.t('helm.text_2'),
       },
       submenus: [
         {
           path: '/vm-release',
           component: Layout,
           meta: {
-            label: '虚拟机实例',
+            label: i18n.t('helm.text_3'),
             permission: 'k8s_releases_list',
             hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'k8s', 'vmware']),
           },
@@ -57,7 +58,7 @@ export default {
           path: '/k8s-release',
           component: Layout,
           meta: {
-            label: '容器实例',
+            label: i18n.t('helm.text_4'),
             permission: 'k8s_releases_list',
             hidden: () => !hasSetupKey(['k8s']),
           },
@@ -77,7 +78,7 @@ export default {
         {
           path: '/k8s-chart',
           meta: {
-            label: '应用市场',
+            label: i18n.t('helm.text_5'),
             permission: 'k8s_charts_list',
             hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'k8s', 'vmware']),
           },
@@ -103,7 +104,7 @@ export default {
         {
           path: '/k8s-repo',
           meta: {
-            label: 'Helm仓库地址',
+            label: i18n.t('helm.text_6'),
             permission: 'k8s_repos_list',
             hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'k8s', 'vmware']),
             invisible: () => true,
@@ -122,14 +123,14 @@ export default {
     Monitor,
     {
       meta: {
-        label: '常用工具',
+        label: i18n.t('helm.text_7'),
       },
       submenus: [
         {
           path: '/scheduledtask',
           meta: {
             hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'vmware']),
-            label: '定时任务',
+            label: i18n.t('helm.text_8'),
           },
           component: Layout,
           children: [

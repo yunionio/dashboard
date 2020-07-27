@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="Helm仓库地址(Repo)" />
+    <page-header :title="$t('helm.text_95')" />
     <page-body>
       <repo-list :id="listId" />
     </page-body>

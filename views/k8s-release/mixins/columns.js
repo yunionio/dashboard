@@ -1,5 +1,6 @@
 import { k8sStatusColumn } from '@K8S/utils/tableColumns'
 import { getNameDescriptionTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -17,7 +18,7 @@ export default {
       }),
       {
         field: 'metadata',
-        title: '应用',
+        title: i18n.t('helm.text_75'),
         minWidth: 200,
         formatter: ({ row }) => {
           let text = row.chart || '-'
@@ -30,7 +31,7 @@ export default {
       k8sStatusColumn({ statusModule: 'release' }),
       {
         field: 'namespace',
-        title: '命名空间',
+        title: i18n.t('helm.text_32'),
         sortable: true,
         minWidth: 200,
       },

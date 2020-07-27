@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="发布(Release)"
+    :title="$t('helm.text_77')"
     icon="res-k8s-release"
     :res-name="detailData.name"
     :actions="params.actions"
@@ -60,17 +60,17 @@ export default {
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   computed: {
     detailTabs () {
-      const detailTabs = [{ label: '详情', key: 'detail' }]
+      const detailTabs = [{ label: this.$t('helm.text_78'), key: 'detail' }]
       if (!this.detailData.resources) return detailTabs
       const allResourceArr = [
-        { label: '无状态', key: 'deployment' },
-        { label: '有状态', key: 'statefulset' },
-        { label: '配置项', key: 'configmap' },
-        { label: '保密字典', key: 'secret' },
-        { label: '守护进程', key: 'daemonset' },
-        { label: '角色', key: 'clusterrole' },
-        { label: '角色绑定', key: 'clusterrolebinding' },
-        { label: '服务账户', key: 'serviceaccount' },
+        { label: this.$t('helm.text_79'), key: 'deployment' },
+        { label: this.$t('helm.text_80'), key: 'statefulset' },
+        { label: this.$t('helm.text_81'), key: 'configmap' },
+        { label: this.$t('helm.text_82'), key: 'secret' },
+        { label: this.$t('helm.text_83'), key: 'daemonset' },
+        { label: this.$t('helm.text_84'), key: 'clusterrole' },
+        { label: this.$t('helm.text_85'), key: 'clusterrolebinding' },
+        { label: this.$t('helm.text_86'), key: 'serviceaccount' },
       ]
       allResourceArr.forEach(item => {
         const resource = item.key

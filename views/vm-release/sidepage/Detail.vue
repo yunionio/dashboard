@@ -30,7 +30,7 @@ export default {
       baseInfo: [
         {
           field: 'name',
-          title: '名称',
+          title: this.$t('helm.text_16'),
           slots: {
             default: ({ row }) => {
               return [
@@ -44,7 +44,7 @@ export default {
         k8sStatusColumn({ statusModule: 'release' }),
         {
           field: 'metadata',
-          title: '应用',
+          title: this.$t('helm.text_75'),
           formatter: ({ row }) => `${row.chart}/${row.chart_version || ''}`,
         },
       ],

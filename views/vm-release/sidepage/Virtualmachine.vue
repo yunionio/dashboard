@@ -21,7 +21,7 @@ export default {
       columns: [
         {
           field: 'name',
-          title: '名称',
+          title: this.$t('helm.text_16'),
           minWidth: 100,
           slots: {
             default: ({ row }) => {
@@ -60,16 +60,16 @@ export default {
         },
         {
           field: 'instanceType',
-          title: '套餐',
+          title: this.$t('helm.text_99'),
         },
         {
           field: 'vcpuCount',
           title: 'CPU',
-          formatter: ({ row }) => R.is(Number, row.vcpuCount) ? `${row.vcpuCount} 核` : '-',
+          formatter: ({ row }) => R.is(Number, row.vcpuCount) ? this.$t('helm.text_100', [row.vcpuCount]) : '-',
         },
         {
           field: 'vmemSizeGB',
-          title: '内存',
+          title: this.$t('helm.text_101'),
           formatter: ({ row }) => R.is(Number, row.vcpuCount) ? `${row.vmemSizeGB} GB` : '-',
         },
       ],

@@ -5,13 +5,13 @@
     :card-fields="cardFields">
     <template #group-actions-append>
       <div class="d-flex align-items-center ml-3">
-        <span class="chart-form-label">类型：</span>
+        <span class="chart-form-label">{{$t('helm.text_9')}}</span>
         <base-select
           v-model="type"
           :options="typeOpts"
           isDefaultSelect
-          :select-props="{ placeholder: '请选择' }" />
-        <span class="chart-form-labe ml-3">仓库：</span>
+          :select-props="{ placeholder: $t('helm.text_10') }" />
+        <span class="chart-form-labe ml-3">{{$t('helm.text_11')}}</span>
         <base-select
           version="v1"
           v-model="repo"
@@ -19,14 +19,14 @@
           idKey="name"
           :params="repoParams"
           isDefaultSelect
-          :select-props="{ placeholder: '请选择' }" />
+          :select-props="{ placeholder: $t('helm.text_10') }" />
       </div>
     </template>
     <template #tool-actions-between>
-      <a-button @click="toRepo" type="link" size="small">仓库管理</a-button>
+      <a-button @click="toRepo" type="link" size="small">{{$t('helm.text_12')}}</a-button>
     </template>
     <template #tool-actions-append>
-      <search-box :options="options" :value="searchValue" @input="search" placeholder="请输入您要应用的名称" />
+      <search-box :options="options" :value="searchValue" @input="search" :placeholder="$t('helm.text_13')" />
     </template>
   </page-card-list>
 </template>
@@ -52,8 +52,8 @@ export default {
         title: 'name',
         desc: 'chart.description',
         description: row => {
-          if (row.type === 'internal') return '虚拟机类型'
-          if (row.type === 'external') return '容器类型'
+          if (row.type === 'internal') return this.$t('helm.text_14')
+          if (row.type === 'external') return this.$t('helm.text_15')
           return '-'
         },
       },
@@ -61,12 +61,12 @@ export default {
       repo: undefined,
       type: this.$route.query.type || 'internal',
       typeOpts: [
-        { key: 'internal', label: '虚拟机类型' },
-        { key: 'external', label: '容器类型' },
+        { key: 'internal', label: this.$t('helm.text_14') },
+        { key: 'external', label: this.$t('helm.text_15') },
       ],
       options: {
         name: {
-          label: '名称',
+          label: this.$t('helm.text_16'),
         },
         // type: {
         //   label: '类型',
@@ -85,7 +85,7 @@ export default {
         }),
         {
           field: 'created_at',
-          title: '创建时间',
+          title: this.$t('helm.text_17'),
           formatter: ({ cellValue }) => {
             return this.$moment(cellValue).format()
           },
@@ -93,7 +93,7 @@ export default {
       ],
       singleActions: [
         {
-          label: '部署',
+          label: this.$t('helm.text_18'),
           // permission: 'k8s_charts_create',
           action: (obj) => {
             this.$router.push({

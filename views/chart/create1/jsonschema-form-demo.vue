@@ -15,42 +15,42 @@ export default {
         properties: {
           name: {
             type: 'string',
-            title: '姓名',
+            title: this.$t('helm.text_48'),
           },
           phone: {
             type: 'string',
-            title: '手机',
+            title: this.$t('helm.text_49'),
             pattern: '^1[3578]\\d{9}$',
-            description: '请输入正确的手机号码',
+            description: this.$t('helm.text_50'),
           },
           hobby: {
-            title: '爱好',
+            title: this.$t('helm.text_51'),
             type: 'array',
             items: {
               type: 'string',
-              title: '爱好',
-              enum: ['乒乓球', '足球', '篮球'],
+              title: this.$t('helm.text_51'),
+              enum: [this.$t('helm.text_52'), this.$t('helm.text_53'), this.$t('helm.text_54')],
             },
           },
           contacts: {
             type: 'array',
-            title: '通讯录',
+            title: this.$t('helm.text_55'),
             items: {
               type: 'object',
               properties: {
                 name: {
                   type: 'string',
-                  title: '姓名',
+                  title: this.$t('helm.text_48'),
                 },
                 phone: {
                   type: 'string',
-                  title: '手机',
+                  title: this.$t('helm.text_49'),
                   pattern: '^1[3578]\\d{9}$',
-                  description: '请输入正确的手机号码',
+                  description: this.$t('helm.text_50'),
                 },
                 sex: {
                   type: 'string',
-                  title: '性别',
+                  title: this.$t('helm.text_56'),
                   enum: ['1', '2'],
                 },
               },
@@ -59,17 +59,17 @@ export default {
           },
           birthday: {
             type: 'string',
-            title: '出生日期',
+            title: this.$t('helm.text_57'),
             format: 'date',
           },
           job: {
             type: 'string',
-            title: '职业',
+            title: this.$t('helm.text_58'),
             enums: ['IT', 'Teacher', 'Doctor'],
           },
           agree: {
             type: 'boolean',
-            title: '同意协议',
+            title: this.$t('helm.text_59'),
           },
         },
         required: ['name', 'phone', 'hobby', 'contacts', 'birthday', 'agree'],
@@ -87,7 +87,7 @@ export default {
         },
         'name',
         {
-          title: '联系方式',
+          title: this.$t('helm.text_60'),
           key: 'phone',
         },
         'hobby',
@@ -110,16 +110,16 @@ export default {
         },
       ],
       model: {
-        name: '王昌彬',
-        hobby: ['足球', '乒乓球'],
+        name: this.$t('helm.text_61'),
+        hobby: [this.$t('helm.text_53'), this.$t('helm.text_52')],
         contacts: [
           {
-            name: '王瑶',
+            name: this.$t('helm.text_62'),
             phone: '15268801392',
             sex: '2',
           },
           {
-            name: '王瑶1',
+            name: this.$t('helm.text_63'),
             phone: '15268801391',
             sex: '1',
           },
@@ -134,21 +134,21 @@ export default {
     onSubmit (data) {
       console.log('submit: ', data)
       const model = {
-        name: '王昌彬',
-        hobby: ['足球', '乒乓球'],
+        name: this.$t('helm.text_61'),
+        hobby: [this.$t('helm.text_53'), this.$t('helm.text_52')],
         contacts: [
           {
-            name: '王瑶',
+            name: this.$t('helm.text_62'),
             phone: '15268801392',
             sex: '2',
           },
           {
-            name: '王瑶1',
+            name: this.$t('helm.text_63'),
             phone: '15268801391',
             sex: '1',
           },
           {
-            name: '王瑶2',
+            name: this.$t('helm.text_64'),
             phone: '15268801391',
             sex: '1',
           },

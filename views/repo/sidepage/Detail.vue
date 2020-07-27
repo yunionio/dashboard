@@ -30,7 +30,7 @@ export default {
       baseInfo: [
         {
           field: 'name',
-          title: '名称',
+          title: this.$t('helm.text_16'),
           slots: {
             default: ({ row }) => {
               return [
@@ -43,7 +43,7 @@ export default {
         },
         {
           field: 'url',
-          title: 'URL地址',
+          title: this.$t('helm.text_96'),
         },
         isPublicTableColumn(),
       ],

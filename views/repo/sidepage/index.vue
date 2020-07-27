@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="存储声明(Persistentvolumeclaim)"
+    :title="$t('helm.text_98')"
     icon="res-k8s-repo"
     :res-name="detailData.name"
     :actions="params.actions"
@@ -36,7 +36,7 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'detail' },
+        { label: this.$t('helm.text_78'), key: 'detail' },
       ],
     }
   },

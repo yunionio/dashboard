@@ -1,19 +1,19 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{ params.formType === 'update' ? '修改' : '新建'}}Helm仓库地址</div>
+    <div slot="header">{{ params.formType === 'update' ? $t('helm.text_90') : $t('helm.text_68')}}Helm仓库地址</div>
     <div slot="body">
-      <dialog-selected-tips v-if="params.data" :count="params.data.length" name="Helm仓库地址" action="修改" />
+      <dialog-selected-tips v-if="params.data" :count="params.data.length" :name="$t('helm.text_6')" :action="$t('helm.text_90')" />
       <dialog-table v-if="params.columns" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         v-bind="formItemLayout"
         :form="form.fc">
-        <a-form-item label="名称">
-          <a-input v-decorator="decorators.name" placeholder="请输入名称" />
+        <a-form-item :label="$t('helm.text_16')">
+          <a-input v-decorator="decorators.name" :placeholder="$t('helm.text_28')" />
         </a-form-item>
         <a-form-item label="URL">
-          <a-input v-decorator="decorators.url" placeholder="请输入URL，如: http://mirror.azure.cn/kubernetes/charts/" />
+          <a-input v-decorator="decorators.url" :placeholder="$t('helm.text_91')" />
         </a-form-item>
-        <a-form-item label="类型">
+        <a-form-item :label="$t('helm.text_92')">
           <a-radio-group v-decorator="decorators.type">
             <a-radio-button
               v-for="item in typeOpts"
@@ -21,7 +21,7 @@
               :key="item.key">{{ item.label }}</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item label="是否为公有" v-if="$store.getters.isAdminMode">
+        <a-form-item :label="$t('helm.text_93')" v-if="$store.getters.isAdminMode">
           <a-switch v-decorator="decorators.is_public" />
         </a-form-item>
       </a-form>
@@ -54,8 +54,8 @@ export default {
         fd: {},
       },
       typeOpts: [
-        { key: 'internal', label: '虚拟机类型' },
-        { key: 'external', label: '容器类型' },
+        { key: 'internal', label: this.$t('helm.text_14') },
+        { key: 'external', label: this.$t('helm.text_15') },
       ],
       decorators: {
         name: [
@@ -64,7 +64,7 @@ export default {
             initialValue: initialValue.name,
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('helm.text_28') },
               { validator: this.$validate('k8sName') },
             ],
           },
@@ -81,7 +81,7 @@ export default {
             initialValue: initialValue.url,
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入URL', trigger: 'blur' },
+              { required: true, message: this.$t('helm.text_94'), trigger: 'blur' },
               { validator: this.$validate('url') },
             ],
           },

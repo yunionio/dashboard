@@ -1,3 +1,4 @@
+import i18n from '@/locales'
 export default {
   created () {
     this.singleActions = [
@@ -29,7 +30,7 @@ export default {
       //   },
       // },
       {
-        label: '删除',
+        label: i18n.t('helm.text_69'),
         permission: 'k8s_releases_delete',
         action: (obj) => {
           const requestParams = {
@@ -42,8 +43,8 @@ export default {
             vm: this,
             data: [obj],
             columns: this.columns,
-            title: '删除',
-            name: '容器实例',
+            title: i18n.t('helm.text_69'),
+            name: i18n.t('helm.text_4'),
             onManager: this.onManager,
             requestParams,
           })
