@@ -23,11 +23,15 @@ export const getResourceNameTableColumn = ({ field = 'resource_name', title = 'è
     slots: {
       default: ({ row }, h) => {
         if (!row.variables) return '-'
-        const paramter = row.variables['server-create-paramter'] || row.variables.paramter
+        const paramter = row.variables['server-create-paramter'] || row.variables.parameter
         const rs = paramter ? JSON.parse(paramter) : {}
+        let name = rs.generate_name || rs.name
+        if (Array.isArray(rs)) {
+          name = rs.map((item) => item.name).join(',')
+        }
         return [
-          <list-body-cell-wrap copy row={row} hideField={ true } message={ rs.generate_name }>
-            { rs.generate_name }
+          <list-body-cell-wrap copy row={row} hideField={ true } message={ name }>
+            { name }
           </list-body-cell-wrap>,
         ]
       },
