@@ -159,6 +159,7 @@ export default {
             rules: [
               { required: this.ipmi_ip_addr_required, message: '请输入IPMI地址' },
               { validator: this.validateIpAddr },
+              { validator: this.checkIpInNetwork },
             ],
           },
         ],
@@ -446,6 +447,17 @@ export default {
       }
       return callback()
     },
+    checkIpInNetwork (rule, value, callback) {
+      if (value) {
+        return this.getIpAddr(value).then((res) => {
+          const data = res.data.data || []
+          if (data.length === 0) {
+            return callback(new Error('输入的IP没有创建'))
+          }
+        })
+      }
+      return callback()
+    },
     validateNet (rule, value, callback) {
       if (value && value.access_ip) {
         if (!isWithinRange(value.access_ip, value.access_net.guest_ip_start, value.access_net.guest_ip_end)) {
@@ -474,6 +486,15 @@ export default {
           project_domain,
         })
       })
+    },
+    getIpAddr (val) {
+      return new this.$Manager('networks')
+        .list({
+          params: {
+            server_type: 'ipmi',
+            ip: val,
+          },
+        })
     },
   },
 }
