@@ -51,7 +51,7 @@ export default {
           'name',
           {
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('monitor.text_7') },
             ],
           },
         ],
