@@ -16,13 +16,13 @@
         </div>
       </div>
       <!-- 第三方登录 -->
-      <div class="flex-shrink-0 flex-grow-0">
+      <div class="flex-shrink-0 flex-grow-0" style="display: none;">
         <template v-if="idps.length > 0">
           <div class="fast-login-wrap">
             <div class="fast-login-title d-flex justify-content-center align-items-center"><span class="mr-2" />{{ $t('auth.login.fast.login.title') }}<span class="ml-2" /></div>
             <template v-for="(item, idx) of idps">
               <div class="fast-login-items mt-2 mb-2" :key="idx">
-                <a class="fast-login-item d-flex align-items-center justify-content-center ml-2 mr-2">
+                <a class="fast-login-item d-flex align-items-center justify-content-center ml-2 mr-2" @click="handleClickIdp(item)">
                   <a-tooltip placement="top">
                     <template slot="title">
                       <span>{{ item.tooltip }}</span>
@@ -102,6 +102,14 @@ export default {
         query: this.$route.query,
       })
     }
+  },
+  methods: {
+    handleClickIdp (idpItem) {
+      console.log(idpItem)
+      const { origin } = window.location
+      const { id } = idpItem
+      window.location.href = `${origin}/api/v1/auth/sso/redirect/${id}`
+    },
   },
 }
 </script>
