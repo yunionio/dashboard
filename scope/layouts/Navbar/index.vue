@@ -4,14 +4,14 @@
       <div class="header-logo ml-2">
         <img class="logo" :src="logo" />
       </div>
-      <h1 class="header-title ml-3">管理控制台</h1>
+      <h1 class="header-title ml-3">{{ $t('common_210') }}</h1>
     </div>
     <!-- 系统选择 -->
     <div class="navbar-item d-flex align-items-center justify-content-end" v-if="products">
       <a-dropdown :trigger="['click']">
         <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
           <icon type="navbar-setting" />
-          <span class="ml-2">云管平台</span>
+          <span class="ml-2">{{ $t('common_211') }}</span>
           <icon type="caret-down" style="font-size: 24px; line-height: normal;" />
         </div>
         <a-menu slot="overlay" @click="productChange">
@@ -29,17 +29,17 @@
         </div>
         <a-menu slot="overlay" @click="projectChange">
           <a-menu-item scope="project" :key="`${projects[0].id}$$project$$${true}`">
-            <a-radio :checked="scope === 'project'" />普通{{ $t('dictionary.project') }}
+            <a-radio :checked="scope === 'project'" />{{ $t('scope.text_253', [$t('dictionary.project')]) }}
           </a-menu-item>
           <template v-if="systemProject || domainProject">
             <template v-if="!systemProject && domainProject">
               <a-menu-item scope="domain" :key="`${domainProject.id}$$domain`">
-                <a-radio :checked="scope === 'domain'" />{{ $t('dictionary.domain') }}管理后台
+                <a-radio :checked="scope === 'domain'" />{{ $t('dictionary.domain') }}{{ $t('common_213') }}
               </a-menu-item>
             </template>
             <template v-else>
               <a-menu-item scope="system" :key="`${systemProject.id}$$system`">
-                <a-radio :checked="scope === 'system'" />管理后台
+                <a-radio :checked="scope === 'system'" />{{ $t('common_213') }}
               </a-menu-item>
             </template>
           </template>
@@ -67,7 +67,7 @@
           <icon type="navbar-user" style="font-size: 24px;" />
         </div>
         <a-menu slot="overlay" @click="userMenuClick">
-          <a-menu-item key="logout">退出</a-menu-item>
+          <a-menu-item key="logout">{{ $t('scope.text_6') }}</a-menu-item>
         </a-menu>
       </a-dropdown>
     </div>
@@ -106,12 +106,12 @@ export default {
       return R.find(R.propEq('domain_capable', true))(this.projects)
     },
     viewLabel () {
-      let ret = `普通${this.$t('dictionary.project')}`
+      let ret = this.$t('scope.text_253', [this.$t('dictionary.project')])
       if (this.$store.getters['auth/isAdmin']) {
-        ret = '管理后台'
+        ret = this.$t('common_213')
       }
       if (this.$store.getters['auth/isDomain']) {
-        ret = `${this.$t('dictionary.domain')}管理后台`
+        ret = `${this.$t('dictionary.domain')}${this.$t('common_213')}`
       }
       return ret
     },
