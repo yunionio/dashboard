@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="节点"
+    :title="$t('k8s.text_21')"
     icon="res-vminstance"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
@@ -44,7 +44,7 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('k8s.text_202'), key: 'event-drawer' },
       ],
     }
   },

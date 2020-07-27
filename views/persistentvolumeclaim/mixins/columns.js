@@ -1,5 +1,6 @@
 import { k8sStatusColumn } from '@K8S/utils/tableColumns'
 import { getNameDescriptionTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -17,18 +18,18 @@ export default {
       }),
       {
         field: 'namespace',
-        title: '命名空间',
+        title: i18n.t('k8s.text_23'),
         sortable: true,
       },
       k8sStatusColumn(),
       {
         field: 'volume',
-        title: '存储卷',
+        title: i18n.t('k8s.text_311'),
         minWidth: 120,
       },
       {
         field: 'capacity.storage',
-        title: '存储总量',
+        title: i18n.t('k8s.text_312'),
         width: 70,
         formatter: ({ row }) => {
           return row.capacity ? (row.capacity.storage || '0Gi') : '-'
@@ -36,22 +37,22 @@ export default {
       },
       {
         field: 'accessModes',
-        title: '访问模式',
+        title: i18n.t('k8s.text_313'),
         formatter: ({ row }) => row.accessModes.join('，'),
       },
       {
         field: 'storageClass',
-        title: '存储类',
+        title: i18n.t('k8s.text_22'),
       },
       {
         field: 'unused',
-        title: '使用情况',
+        title: i18n.t('k8s.text_301'),
         slots: {
           default: ({ row }, h) => {
-            let text = '未被使用'
+            let text = i18n.t('k8s.text_303')
             let className = 'success-color'
             if (row.mountedBy && row.mountedBy.length > 0) {
-              text = '被使用'
+              text = i18n.t('k8s.text_302')
               className = 'error-color'
             }
             return [<div class={className}>{text}</div>]

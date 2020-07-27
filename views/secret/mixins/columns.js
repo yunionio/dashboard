@@ -1,4 +1,5 @@
 import { getNameDescriptionTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -16,13 +17,13 @@ export default {
       }),
       {
         field: 'namespace',
-        title: '命名空间',
+        title: i18n.t('k8s.text_23'),
         width: 120,
         sortable: true,
       },
       {
         field: 'type',
-        title: '类型',
+        title: i18n.t('k8s.text_34'),
       },
       getTimeTableColumn({ field: 'creationTimestamp', fromNow: true, sortable: true }),
     ]

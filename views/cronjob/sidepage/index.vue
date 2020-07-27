@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="定时任务(CronJob)"
+    :title="$t('k8s.text_226')"
     icon="res-k8s-cronjob"
     :res-name="detailData.name"
     :actions="params.actions"
@@ -41,11 +41,11 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'detail' },
-        { label: '激活任务', key: 'active-jobs' },
-        { label: '未激活任务', key: 'inactive-jobs' },
-        { label: '事件', key: 'events-sidepage' },
-        { label: '源信息', key: 'source-information-sidepage' },
+        { label: this.$t('k8s.text_217'), key: 'detail' },
+        { label: this.$t('k8s.text_227'), key: 'active-jobs' },
+        { label: this.$t('k8s.text_228'), key: 'inactive-jobs' },
+        { label: this.$t('k8s.text_218'), key: 'events-sidepage' },
+        { label: this.$t('k8s.text_219'), key: 'source-information-sidepage' },
       ],
     }
   },

@@ -1,12 +1,12 @@
 <template>
   <div>
-    <page-header title="新建集群" />
+    <page-header :title="$t('k8s.text_146')" />
     <a-alert :showIcon="false" banner class="mt-2">
       <template slot="message">
         <div>
-          <p>控制节点(controlplane)：同时运行 kube-apiserver 和 etcd 的节点，默认不运行pod，建议部署 1个或 3个</p>
-          <p>计算节点(node)：只运行 pod 的节点</p>
-          <p>无可用平台，请从“功能选择”配置OneStack、VMWare或OpenStack环境，以确保系统有可用资源创建容器集群</p>
+          <p>{{$t('k8s.text_147')}}</p>
+          <p>{{$t('k8s.text_148')}}</p>
+          <p>{{$t('k8s.text_149')}}</p>
         </div>
       </template>
     </a-alert>
@@ -14,7 +14,7 @@
       class="mt-3"
       :form="form.fc">
       <a-form-item
-        label="平台"
+        :label="$t('k8s.text_150')"
         v-bind="formItemLayout">
         <a-radio-group v-decorator="decorators.hypervisor" @change="hypervisorChange">
           <a-radio-button v-for="item in hypervisorsC" :key="item.value" :value="item.value">
@@ -22,46 +22,46 @@
           </a-radio-button>
         </a-radio-group>
       </a-form-item>
-      <a-form-item label="区域" class="mb-0" v-bind="formItemLayout">
+      <a-form-item :label="$t('k8s.text_151')" class="mb-0" v-bind="formItemLayout">
         <cloudregion-zone
           :zone-params="params.zone"
           :cloudregion-params="params.region"
           :decorator="decorators.regionZone" />
       </a-form-item>
       <a-form-item
-        label="名称"
+        :label="$t('k8s.text_41')"
         v-bind="formItemLayout">
         <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverName')" />
       </a-form-item>
-      <a-form-item label="机器配置" v-bind="formItemLayout">
+      <a-form-item :label="$t('k8s.text_152')" v-bind="formItemLayout">
         <server-config :decorator="decorators.serverConfig" :network-params="params.network" />
       </a-form-item>
-      <a-form-item label="版本" v-bind="formItemLayout">
+      <a-form-item :label="$t('k8s.text_153')" v-bind="formItemLayout">
         <base-select
           v-decorator="decorators.version"
           :options="k8sVersionOps"
           :filterable="true"
-          :select-props="{ placeholder: '输入关键词搜索' }" />
+          :select-props="{ placeholder: $t('k8s.text_154') }" />
       </a-form-item>
-      <a-form-item label="设置为公有" v-bind="formItemLayout" v-if="isAdminMode">
-        <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.is_public" />
+      <a-form-item :label="$t('k8s.text_155')" v-bind="formItemLayout" v-if="isAdminMode">
+        <a-switch :checkedChildren="$t('k8s.text_156')" :unCheckedChildren="$t('k8s.text_157')" v-decorator="decorators.is_public" />
       </a-form-item>
-      <a-form-item label="镜像仓库" v-bind="formItemLayout">
-        <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.isConfigImage" @change="isConfigImageChange" />
+      <a-form-item :label="$t('k8s.text_158')" v-bind="formItemLayout">
+        <a-switch :checkedChildren="$t('k8s.text_156')" :unCheckedChildren="$t('k8s.text_157')" v-decorator="decorators.isConfigImage" @change="isConfigImageChange" />
       </a-form-item>
       <a-form-item
         v-if="isConfigImage"
-        label="镜像仓库地址"
+        :label="$t('k8s.text_52')"
         v-bind="formItemLayout"
-        extra="比如: registry.hub.docker.com/yunion">
-        <a-input v-decorator="decorators.image_repository_url" placeholder="请输入镜像仓库的地址" />
+        :extra="$t('k8s.text_159')">
+        <a-input v-decorator="decorators.image_repository_url" :placeholder="$t('k8s.text_160')" />
       </a-form-item>
       <a-form-item v-if="isConfigImage" :wrapper-col="{ span: 20, offset: 3 }">
-        <a-checkbox v-decorator="decorators.image_repository_insecure">是否为不安全</a-checkbox>
+        <a-checkbox v-decorator="decorators.image_repository_insecure">{{$t('k8s.text_161')}}</a-checkbox>
       </a-form-item>
       <a-form-item :wrapper-col="{ span: 20, offset: 3 }">
         <a-button class="mr-2" type="primary" @click="handleConfirm" :loading="loading">{{$t('dialog.ok')}}</a-button>
-        <a-button @click="cancel">取消</a-button>
+        <a-button @click="cancel">{{$t('k8s.text_162')}}</a-button>
       </a-form-item>
     </a-form>
   </div>
@@ -81,7 +81,7 @@ function checkIpInSegment (i, networkData) {
     if (isIn) {
       _callback()
     } else {
-      _callback('输入的IP不在选择子网网段中')
+      _callback(this.$t('k8s.text_163'))
     }
   }
 }
@@ -113,7 +113,7 @@ export default {
           'hypervisor',
           {
             rules: [
-              { required: true, message: '请选择平台' },
+              { required: true, message: this.$t('k8s.text_164') },
             ],
           },
         ],
@@ -123,7 +123,7 @@ export default {
             {
               initialValue: { key: '', label: '' },
               rules: [
-                { required: true, message: '请选择区域' },
+                { required: true, message: this.$t('k8s.text_165') },
               ],
             },
           ],
@@ -132,7 +132,7 @@ export default {
             {
               initialValue: { key: '', label: '' },
               rules: [
-                { required: true, message: '请选择可用区' },
+                { required: true, message: this.$t('k8s.text_166') },
               ],
             },
           ],
@@ -142,7 +142,7 @@ export default {
           {
             validateTrigger: 'blur',
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('k8s.text_60') },
               { validator: this.$validate('serverName') },
             ],
           },
@@ -153,7 +153,7 @@ export default {
             {
               initialValue: 4,
               rules: [
-                { required: true, message: '请输入CPU核数' },
+                { required: true, message: this.$t('k8s.text_99') },
                 { validator: this.validator('vcpu_count') },
               ],
             },
@@ -163,7 +163,7 @@ export default {
             {
               initialValue: 4,
               rules: [
-                { required: true, message: '请输入内存大小' },
+                { required: true, message: this.$t('k8s.text_167') },
                 { validator: this.validator('vmem_size') },
               ],
             },
@@ -173,7 +173,7 @@ export default {
             {
               initialValue: 100,
               rules: [
-                { required: true, message: '请输入磁盘大小' },
+                { required: true, message: this.$t('k8s.text_168') },
                 { validator: this.validator('disk') },
               ],
             },
@@ -182,7 +182,7 @@ export default {
             `network[${i}]`,
             {
               rules: [
-                { required: true, message: '请选择IP子网' },
+                { required: true, message: this.$t('k8s.text_122') },
               ],
             },
           ],
@@ -193,7 +193,7 @@ export default {
               validateTrigger: ['blur', 'change'],
               rules: [{
                 required: true,
-                message: '请输入ip',
+                message: this.$t('k8s.text_169'),
               }, {
                 validator: checkIpInSegment(i, networkData),
               }],
@@ -204,7 +204,7 @@ export default {
             {
               initialValue: 1,
               rules: [
-                { required: true, message: '请填写数量' },
+                { required: true, message: this.$t('k8s.text_170') },
               ],
             },
           ],
@@ -236,7 +236,7 @@ export default {
           'image_repository_url',
           {
             rules: [
-              { required: true, message: '请输入镜像仓库地址' },
+              { required: true, message: this.$t('k8s.text_53') },
             ],
           },
         ],
@@ -288,7 +288,7 @@ export default {
       })
       this.form.fc.getFieldDecorator('hypervisor', { preserve: true, initialValue: opts.length ? opts[0].value : '' })
       if (!opts.length) {
-        this.$message.error('无可用平台')
+        this.$message.error(this.$t('k8s.text_171'))
       }
       return opts
     },
@@ -337,15 +337,15 @@ export default {
       return (rule, value, _callback) => {
         if (type === 'vcpu_count') {
           if (value < 4 || value > 32) {
-            return _callback('输入范围 4 - 32 核')
+            return _callback(this.$t('k8s.text_172'))
           }
         } else if (type === 'vmem_size') {
           if (value < 4 || value > 128) {
-            return _callback('输入范围 4 - 128 G')
+            return _callback(this.$t('k8s.text_173'))
           }
         } else if (type === 'disk') {
           if (value < 1 || value > 500) {
-            return _callback('输入范围 40 - 500 G')
+            return _callback(this.$t('k8s.text_174'))
           }
         }
         return _callback()
@@ -407,7 +407,7 @@ export default {
         const genValues = this.genData(values)
         const hasControl = genValues.machines.some(val => val.role === 'controlplane')
         if (!hasControl) {
-          this.$message.warning('新建集群中最少有一台机器是控制节点')
+          this.$message.warning(this.$t('k8s.text_175'))
           this.loading = false
           return
         }

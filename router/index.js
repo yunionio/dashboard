@@ -36,25 +36,26 @@ import K8sSecretCreate from '@K8S/views/secret/create'
 import Layout from '@/layouts/RouterView'
 
 import { hasSetupKey } from '@/utils/auth'
+import i18n from '@/locales'
 
 export default {
   index: 3,
   meta: {
-    label: '容器',
+    label: i18n.t('k8s.text_1'),
     icon: 'menu-k8s',
     hidden: () => !hasSetupKey('k8s'),
   },
   menus: [
     {
       meta: {
-        label: '应用',
-        labelAlias: '容器应用',
+        label: i18n.t('k8s.text_2'),
+        labelAlias: i18n.t('k8s.text_3'),
       },
       submenus: [
         {
           path: '/k8s-deployment',
           meta: {
-            label: '无状态',
+            label: i18n.t('k8s.text_4'),
             permission: 'k8s_deployments_list',
           },
           component: Layout,
@@ -74,7 +75,7 @@ export default {
         {
           path: '/k8s-statefulset',
           meta: {
-            label: '有状态',
+            label: i18n.t('k8s.text_5'),
             permission: 'k8s_statefulsets_list',
           },
           component: Layout,
@@ -94,7 +95,7 @@ export default {
         {
           path: '/k8s-daemonset',
           meta: {
-            label: '守护进程',
+            label: i18n.t('k8s.text_6'),
             permission: 'k8s_daemonsets_list',
           },
           component: Layout,
@@ -114,7 +115,7 @@ export default {
         {
           path: '/k8s-job',
           meta: {
-            label: '任务',
+            label: i18n.t('k8s.text_7'),
             permission: 'k8s_jobs_list',
           },
           component: Layout,
@@ -134,7 +135,7 @@ export default {
         {
           path: '/k8s-cronjob',
           meta: {
-            label: '定时任务',
+            label: i18n.t('k8s.text_8'),
             permission: 'k8s_cronjobs_list',
           },
           component: Layout,
@@ -154,7 +155,7 @@ export default {
         {
           path: '/k8s-pod',
           meta: {
-            label: '容器组',
+            label: i18n.t('k8s.text_9'),
             permission: 'k8s_pods_list',
           },
           component: Layout,
@@ -169,7 +170,7 @@ export default {
         {
           path: '/k8s-persistentvolumeclaim',
           meta: {
-            label: '存储声明',
+            label: i18n.t('k8s.text_10'),
             permission: 'k8s_persistentvolumeclaims_list',
           },
           component: Layout,
@@ -190,14 +191,14 @@ export default {
     },
     {
       meta: {
-        label: '服务与负载均衡',
-        labelAlias: '容器服务与负载均衡',
+        label: i18n.t('k8s.text_11'),
+        labelAlias: i18n.t('k8s.text_12'),
       },
       submenus: [
         {
           path: '/k8s-service',
           meta: {
-            label: '服务',
+            label: i18n.t('k8s.text_13'),
             permission: 'k8s_services_list',
           },
           component: Layout,
@@ -217,7 +218,7 @@ export default {
         {
           path: '/k8s-ingress',
           meta: {
-            label: '路由',
+            label: i18n.t('k8s.text_14'),
             permission: 'k8s_ingresses_list',
           },
           component: Layout,
@@ -238,14 +239,14 @@ export default {
     },
     {
       meta: {
-        label: '应用配置',
-        labelAlias: '容器应用配置',
+        label: i18n.t('k8s.text_15'),
+        labelAlias: i18n.t('k8s.text_16'),
       },
       submenus: [
         {
           path: '/k8s-configmap',
           meta: {
-            label: '配置项',
+            label: i18n.t('k8s.text_17'),
             permission: 'k8s_configmaps_list',
           },
           component: Layout,
@@ -265,7 +266,7 @@ export default {
         {
           path: '/k8s-secret',
           meta: {
-            label: '保密字典',
+            label: i18n.t('k8s.text_18'),
             permission: 'k8s_secrets_list',
           },
           component: Layout,
@@ -286,14 +287,14 @@ export default {
     },
     {
       meta: {
-        label: '集群',
-        labelAlias: '容器集群',
+        label: i18n.t('k8s.text_19'),
+        labelAlias: i18n.t('k8s.text_20'),
       },
       submenus: [
         {
           path: '/k8s-cluster',
           meta: {
-            label: '集群',
+            label: i18n.t('k8s.text_19'),
             permission: 'k8s_kubeclusters_list',
           },
           component: Layout,
@@ -318,7 +319,7 @@ export default {
         {
           path: '/k8s-node',
           meta: {
-            label: '节点',
+            label: i18n.t('k8s.text_21'),
             permission: 'k8s_k8sNode_list',
           },
           component: Layout,
@@ -333,7 +334,7 @@ export default {
         {
           path: '/k8s-storageclass',
           meta: {
-            label: '存储类',
+            label: i18n.t('k8s.text_22'),
             permission: 'k8s_storageclasses_list',
           },
           component: Layout,
@@ -353,7 +354,7 @@ export default {
         {
           path: '/k8s-namespace',
           meta: {
-            label: '命名空间',
+            label: i18n.t('k8s.text_23'),
             permission: 'k8s_namespace_list',
           },
           component: Layout,
@@ -373,7 +374,7 @@ export default {
         {
           path: '/k8s-rbacrole',
           meta: {
-            label: '角色',
+            label: i18n.t('k8s.text_24'),
             permission: 'k8s_rbacroles_list',
           },
           component: Layout,
@@ -388,7 +389,7 @@ export default {
         {
           path: '/k8s-rbacrolebind',
           meta: {
-            label: '角色绑定',
+            label: i18n.t('k8s.text_25'),
             permission: 'k8s_rbacrolebindings_list',
           },
           component: Layout,
@@ -403,7 +404,7 @@ export default {
         {
           path: '/k8s-serviceaccount',
           meta: {
-            label: '服务账户',
+            label: i18n.t('k8s.text_26'),
             permission: 'k8s_serviceaccounts_list',
           },
           component: Layout,
@@ -418,7 +419,7 @@ export default {
         {
           path: '/k8s-kubecomponent',
           meta: {
-            label: '服务组件',
+            label: i18n.t('k8s.text_27'),
             permission: 'k8s_kubeclusters_list', // 服务组件权限和 集群list 权限一致
           },
           component: Layout,

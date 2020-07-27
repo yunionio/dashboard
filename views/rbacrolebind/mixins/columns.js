@@ -1,11 +1,12 @@
 import { getTimeTableColumn } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
     this.columns = [
       {
         field: 'name',
-        title: '名称',
+        title: i18n.t('k8s.text_41'),
         width: 300,
         slots: {
           default: ({ row }, h) => {
@@ -16,13 +17,13 @@ export default {
       },
       {
         field: 'namespace',
-        title: '命名空间',
+        title: i18n.t('k8s.text_23'),
         width: 100,
         sortable: true,
       },
       {
         field: 'type',
-        title: '类型',
+        title: i18n.t('k8s.text_34'),
         width: 150,
       },
       getTimeTableColumn({ field: 'creationTimestamp', fromNow: true, sortable: true }),

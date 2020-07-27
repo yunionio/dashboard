@@ -16,28 +16,29 @@
       </a-form-item>
       <a-button v-if="firstCanDelete || labelList.length > 1" type="danger" shape="circle" icon="delete" @click="del(item)" class="mt-1 ml-3" />
     </div>
-    <a-button type="primary" icon="plus" @click="add">添加{{ title }}</a-button>
+    <a-button type="primary" icon="plus" @click="add">{{$t('k8s.text_81', [ title ])}}</a-button>
   </div>
 </template>
 
 <script>
 import * as R from 'ramda'
 import { uuid } from '@/utils/utils'
+import i18n from '@/locales'
 
 export default {
   name: 'K8SLables',
   props: {
     title: {
       type: String,
-      default: '标签',
+      default: i18n.t('k8s.text_82'),
     },
     keyLabel: {
       type: String,
-      default: '键',
+      default: i18n.t('k8s.text_83'),
     },
     valueLabel: {
       type: String,
-      default: '值',
+      default: i18n.t('k8s.text_84'),
     },
     decorators: {
       type: Object,
@@ -45,11 +46,11 @@ export default {
     },
     keyPlaceholder: {
       type: String,
-      default: '例如：FOO',
+      default: i18n.t('k8s.text_85'),
     },
     valuePlaceholder: {
       type: String,
-      default: '例如：FOO',
+      default: i18n.t('k8s.text_85'),
     },
     keyBaseSelectProps: {
       type: Object,

@@ -28,7 +28,7 @@ export default {
       baseInfo: [
         {
           field: 'name',
-          title: '名称',
+          title: this.$t('k8s.text_41'),
           slots: {
             default: ({ row }) => {
               return [
@@ -43,11 +43,11 @@ export default {
         k8sLabelColumn(),
         {
           field: 'cluster',
-          title: '集群',
+          title: this.$t('k8s.text_19'),
         },
         {
           field: 'namespace',
-          title: '命名空间',
+          title: this.$t('k8s.text_23'),
         },
         {
           field: 'podIP',
@@ -55,19 +55,19 @@ export default {
         },
         {
           field: 'restartCount',
-          title: '重启次数',
+          title: this.$t('k8s.text_317'),
         },
         {
           field: 'nodeName',
-          title: '节点',
+          title: this.$t('k8s.text_21'),
         },
         {
           field: 'qosClass',
-          title: 'QoS 等级',
+          title: this.$t('k8s.text_318'),
         },
         {
           field: 'creationTimestamp',
-          title: '创建时间',
+          title: this.$t('k8s.text_74'),
           formatter: ({ row }) => {
             return (row.creationTimestamp && this.$moment(row.creationTimestamp).format()) || '-'
           },

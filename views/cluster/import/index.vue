@@ -1,28 +1,28 @@
 <template>
   <div>
-    <page-header title="导入集群" />
+    <page-header :title="$t('k8s.text_177')" />
     <a-form
       class="mt-3"
       :form="form.fc">
       <a-form-item
-        label="名称"
+        :label="$t('k8s.text_41')"
         v-bind="formItemLayout">
-        <a-input v-decorator="decorators.name" placeholder="请输入名称" />
+        <a-input v-decorator="decorators.name" :placeholder="$t('k8s.text_60')" />
       </a-form-item>
       <!-- <a-form-item
-        label="API Server 地址"
-        extra="请输入集群的API Server地址，例如：https://<IP>:<Port>/"
+        :label="$t('k8s.text_178')"
+        :extra="$t('k8s.text_179')<IP>:<Port>/"
         v-bind="formItemLayout">
-        <a-input v-decorator="decorators.api_server" placeholder="请输入API Server 地址" />
+        <a-input v-decorator="decorators.api_server" :placeholder="$t('k8s.text_180')" />
       </a-form-item> -->
       <a-form-item
-        label="KubeConfig 配置"
+        :label="$t('k8s.text_181')"
         v-bind="formItemLayout">
         <code-mirror v-decorator="decorators.kubeconfig" :options="cmOptions" />
       </a-form-item>
       <a-form-item :wrapper-col="{ span: 20, offset: 3 }">
-        <a-button class="mr-2" type="primary" @click="doImport" :loading="loading">导入</a-button>
-        <a-button @click="cancel">取消</a-button>
+        <a-button class="mr-2" type="primary" @click="doImport" :loading="loading">{{$t('k8s.text_143')}}</a-button>
+        <a-button @click="cancel">{{$t('k8s.text_162')}}</a-button>
       </a-form-item>
     </a-form>
   </div>
@@ -40,7 +40,7 @@ export default {
           return _callback()
         })
         .catch(() => {
-          return _callback('请输入正确的yaml地址')
+          return _callback(this.$t('k8s.text_182'))
         })
     }
     return {
@@ -54,7 +54,7 @@ export default {
           {
             validateTrigger: 'blur',
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('k8s.text_60') },
             ],
           },
         ],
@@ -72,7 +72,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入文件内容' },
+              { required: true, message: this.$t('k8s.text_183') },
               { validator },
             ],
           },
@@ -106,7 +106,7 @@ export default {
         }
         await new this.$Manager('kubeclusters', 'v1').create({ data })
         this.loading = false
-        this.$message.success('创建成功')
+        this.$message.success(this.$t('k8s.text_184'))
         this.cancel()
       } catch (error) {
         this.loading = false

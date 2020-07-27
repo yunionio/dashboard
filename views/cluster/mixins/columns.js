@@ -3,6 +3,7 @@ import {
   getStatusTableColumn,
   getProjectTableColumn,
 } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -20,14 +21,14 @@ export default {
       }),
       {
         field: 'mode',
-        title: '集群类型',
+        title: i18n.t('k8s.text_186'),
         minWidth: 80,
         formatter: ({ cellValue }) => {
           switch (cellValue) {
             case 'customize':
-              return '自建'
+              return i18n.t('k8s.text_187')
             case 'import':
-              return '导入'
+              return i18n.t('k8s.text_143')
             default:
               return '-'
           }
@@ -35,14 +36,14 @@ export default {
       },
       {
         field: 'resource_type',
-        title: '资源类型',
+        title: i18n.t('k8s.text_188'),
         width: 70,
         formatter: ({ cellValue }) => {
           switch (cellValue) {
             case 'guest':
-              return '云服务器'
+              return i18n.t('k8s.text_189')
             case 'host':
-              return '宿主机'
+              return i18n.t('k8s.text_190')
             default:
               return '-'
           }
@@ -50,7 +51,7 @@ export default {
       },
       {
         field: 'version',
-        title: '版本',
+        title: i18n.t('k8s.text_153'),
         width: 100,
         slots: {
           default: ({ row }, h) => {
@@ -62,15 +63,15 @@ export default {
       },
       {
         field: 'machines',
-        title: '节点数量',
+        title: i18n.t('k8s.text_191'),
         width: 70,
       },
       {
         field: 'is_public',
-        title: '是否公有',
+        title: i18n.t('k8s.text_192'),
         width: 70,
         formatter: ({ cellValue }) => {
-          return cellValue ? '公有' : '私有'
+          return cellValue ? i18n.t('k8s.text_193') : i18n.t('k8s.text_194')
         },
       },
       getStatusTableColumn({ statusModule: 'kubecluster' }),

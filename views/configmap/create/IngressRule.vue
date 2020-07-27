@@ -2,7 +2,7 @@
   <div>
     <a-card v-for="item in ruleList" class="mb-3" :key="item.key">
       <a-form-item>
-        <a-input v-decorator="decorators.host(item.key)" placeholder="请输入host" />
+        <a-input v-decorator="decorators.host(item.key)" :placeholder="$t('k8s.text_205')" />
       </a-form-item>
       <a-card class="mb-2" v-for="val in item.routes" :key="val.k">
         <a-row :gutter="1">
@@ -17,7 +17,7 @@
                 :params="serviceParams"
                 id-key="name"
                 :item.sync="val.service"
-                :select-props="{  placeholder: '请选择服务' }" />
+                :select-props="{  placeholder: $t('k8s.text_206') }" />
             </a-form-item>
           </a-col>
           <a-col :span="8">
@@ -27,20 +27,20 @@
                 idKey="port"
                 nameKey="port"
                 v-decorator="decorators.services(item.key).servicePort(val.k)"
-                :select-props="{  placeholder: '请选择端口' }" /> -->
-              <a-select v-decorator="decorators.services(item.key).servicePort(val.k)" placeholder="请选择端口">
+                :select-props="{  placeholder: $t('k8s.text_207') }" /> -->
+              <a-select v-decorator="decorators.services(item.key).servicePort(val.k)" :placeholder="$t('k8s.text_207')">
                 <a-select-option v-for="v in genPortOpts(val.service)" :key="v.port" :value="v.port">{{ v.port }}</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
         </a-row>
         <a-form-item>
-          <a-input v-decorator="decorators.services(item.key).servicePath(val.k)" placeholder="请输入Path，以 / 开头" />
+          <a-input v-decorator="decorators.services(item.key).servicePath(val.k)" :placeholder="$t('k8s.text_208')" />
         </a-form-item>
       </a-card>
-      <a-button class="mt-2" type="primary" icon="plus" @click="addRoute(item)">添加路由</a-button>
+      <a-button class="mt-2" type="primary" icon="plus" @click="addRoute(item)">{{$t('k8s.text_209')}}</a-button>
     </a-card>
-    <a-button type="primary" icon="plus" @click="addRule">添加规则</a-button>
+    <a-button type="primary" icon="plus" @click="addRule">{{$t('k8s.text_210')}}</a-button>
   </div>
 </template>
 

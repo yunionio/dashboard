@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="角色(RbacRole)" />
+    <page-header :title="$t('k8s.text_330')" />
     <page-body>
       <k8s-rbac-role-list :id="listId" :getParams="getParams" />
     </page-body>

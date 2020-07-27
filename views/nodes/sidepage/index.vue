@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="节点"
+    :title="$t('k8s.text_21')"
     icon="res-k8s-node"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
@@ -55,11 +55,11 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'k8s-node-detail' },
-        { label: '容器组', key: 'pod-list' },
-        { label: '状态', key: 'status-sidepage' },
-        { label: '事件', key: 'events-sidepage' },
-        { label: '源信息', key: 'source-information-sidepage' },
+        { label: this.$t('k8s.text_217'), key: 'k8s-node-detail' },
+        { label: this.$t('k8s.text_9'), key: 'pod-list' },
+        { label: this.$t('k8s.text_35'), key: 'status-sidepage' },
+        { label: this.$t('k8s.text_218'), key: 'events-sidepage' },
+        { label: this.$t('k8s.text_219'), key: 'source-information-sidepage' },
       ],
     }
   },

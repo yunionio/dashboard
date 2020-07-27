@@ -32,7 +32,7 @@ export default {
           minWidth: 100,
           showOverflow: 'ellipsis',
           formatter: ({ cellValue }) => {
-            return this.$moment(cellValue).format('YYYY年MM月DD日 HH:mm:ss')
+            return this.$moment(cellValue).format(this.$t('k8s.text_37'))
           },
         },
         {

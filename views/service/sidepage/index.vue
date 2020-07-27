@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="服务(Service)"
+    :title="$t('k8s.text_341')"
     icon="res-k8s-service"
     :res-name="detailData.name"
     :actions="params.actions"
@@ -40,10 +40,10 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'detail' },
-        { label: '容器组', key: 'pod-list' },
-        { label: '事件', key: 'events-sidepage' },
-        { label: '源信息', key: 'source-information-sidepage' },
+        { label: this.$t('k8s.text_217'), key: 'detail' },
+        { label: this.$t('k8s.text_9'), key: 'pod-list' },
+        { label: this.$t('k8s.text_218'), key: 'events-sidepage' },
+        { label: this.$t('k8s.text_219'), key: 'source-information-sidepage' },
       ],
     }
   },

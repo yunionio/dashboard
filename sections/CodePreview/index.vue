@@ -7,8 +7,8 @@
         <a-button
           type="link"
           v-clipboard:copy="item.content"
-          v-clipboard:success="_ => $message.success('已复制')"
-          v-clipboard:error="_ => $message.error('复制失败')"><a-icon type="copy" />复制内容</a-button>
+          v-clipboard:success="_ => $message.success($t('k8s.text_31'))"
+          v-clipboard:error="_ => $message.error($t('k8s.text_32'))"><a-icon type="copy" />{{$t('k8s.text_33')}}</a-button>
       </div>
       <template v-if="item.showContent">
         <pre class="code-preview-item_content" v-if="item.key === 'ca.crt'">{{ item.content }}</pre>

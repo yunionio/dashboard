@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">查看/更新</div>
+    <div slot="header">{{$t('k8s.text_47')}}</div>
     <div class="k8s-edit-yaml-dialog w-100" v-if="configText" slot="body">
       <code-mirror v-model="configText" :options="cmOptions" />
     </div>
@@ -46,14 +46,14 @@ export default {
       try {
         data = jsYaml.safeLoad(this.configText)
       } catch (error) {
-        this.$message.error('解析yaml出错，请填写正确的yaml配置')
+        this.$message.error(this.$t('k8s.text_48'))
         throw error
       }
       await this.params.manager.update({
         id: qs,
         data,
       })
-      this.$message.success('操作成功')
+      this.$message.success(this.$t('k8s.text_46'))
       this.params.refresh()
       this.cancelDialog()
       if (R.is(Function, this.params.success)) this.params.success()

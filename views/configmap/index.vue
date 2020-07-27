@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="配置项(Configmap)" />
+    <page-header :title="$t('k8s.text_214')" />
     <page-body>
       <configmap-list :id="listId" />
     </page-body>

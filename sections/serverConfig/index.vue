@@ -2,15 +2,15 @@
   <div>
     <a-card class="mb-2 card" hoverable v-for="(item, i) in serverConfigList" :key="item.key">
       <a-form-item label="CPU" v-bind="formItemLayout">
-        <a-input-number v-decorator="decorator.vcpu_count(i)" :formatter="value => `${value}核`" :parser="value => value.replace('核', '')" :min="2" :max="32" />
+        <a-input-number v-decorator="decorator.vcpu_count(i)" :formatter="value =>{{$t('k8s.text_119', [value])}}" :parser="value => value.replace($t('k8s.text_100'), '')" :min="2" :max="32" />
       </a-form-item>
-      <a-form-item label="内存" v-bind="formItemLayout">
+      <a-form-item :label="$t('k8s.text_101')" v-bind="formItemLayout">
         <a-input-number v-decorator="decorator.vmem_size(i)" :formatter="value => `${value}G`" :parser="value => value.replace('G', '')" :min="1" :max="128" />
       </a-form-item>
-      <a-form-item label="磁盘" v-bind="formItemLayout">
+      <a-form-item :label="$t('k8s.text_120')" v-bind="formItemLayout">
         <a-input-number v-decorator="decorator.disk(i)" :formatter="value => `${value}G`" :parser="value => value.replace('G', '')" :min="40" :max="500" />
       </a-form-item>
-      <a-form-item label="IP子网" v-bind="formItemLayout" required>
+      <a-form-item :label="$t('k8s.text_121')" v-bind="formItemLayout" required>
         <a-row :gutter="8">
           <a-col :span="12">
             <a-form-item
@@ -26,24 +26,24 @@
                 :need-params="true"
                 :params="networkParams"
                 :mapper="networkResourceMapper"
-                :select-props="{ allowClear: true, placeholder: '请选择IP子网' }" />
+                :select-props="{ allowClear: true, placeholder: $t('k8s.text_122') }" />
             </a-form-item>
           </a-col>
           <a-col :span="12">
             <a-form-item class="mb-0 mr-2" v-if="item.ipShow" :wrapperCol="{ span: 24 }">
               <a-input
-                placeholder="请输入子网内的IP地址"
+                :placeholder="$t('k8s.text_123')"
                 @change="e => ipChange(e, i)"
                 v-decorator="decorator.ip(i, item.network)" />
             </a-form-item>
-            <a-button v-else type="link" class="mr-1 mt-1" @click="showIp(item)">手动配置IP</a-button>
+            <a-button v-else type="link" class="mr-1 mt-1" @click="showIp(item)">{{$t('k8s.text_124')}}</a-button>
           </a-col>
         </a-row>
       </a-form-item>
       <a-form-item :label="$t('dictionary.role')" v-bind="formItemLayout">
         <a-select
           v-decorator="decorator.role(i)"
-          :placeholder="`请选择${$t('dictionary.role')}`">
+          :placeholder="$t('k8s.text_118', [$t('dictionary.role')])">
           <a-select-option
             v-for="item in roleList"
             :key="item.value"
@@ -52,15 +52,15 @@
           </a-select-option>
         </a-select>
       </a-form-item>
-      <a-form-item label="数量" v-bind="formItemLayout" extra="机器数量范围：1-10 台">
+      <a-form-item :label="$t('k8s.text_125')" v-bind="formItemLayout" :extra="$t('k8s.text_126')">
         <a-input-number v-decorator="decorator.num(i)" :min="1" :max="item.ipShow ? 1 : 10" />
       </a-form-item>
       <a-button v-if="serverConfigList.length > 1" shape="circle" icon="minus" size="small" @click="decrease(item.key, i)" class="mt-2 decrease" />
     </a-card>
     <div class="d-flex align-items-center" v-if="serverConfigRemaining > 0">
       <a-button type="primary" shape="circle" icon="plus" size="small" @click="add" />
-      <a-button type="link" @click="add">添加机器</a-button>
-      <span class="network-count-tips">您还可以添加 <span class="remain-num">{{ serverConfigRemaining }}</span> 种机器配置</span>
+      <a-button type="link" @click="add">{{$t('k8s.text_127')}}</a-button>
+      <span class="network-count-tips">{{$t('k8s.text_128')}}<span class="remain-num">{{ serverConfigRemaining }}</span>{{$t('k8s.text_129')}}</span>
     </div>
   </div>
 </template>

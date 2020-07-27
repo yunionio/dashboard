@@ -1,41 +1,41 @@
 <template>
   <div class="w-75">
     <a-form :form="form.fc" v-bind="formItemLayout">
-      <a-form-item label="类型">
+      <a-form-item :label="$t('k8s.text_34')">
         <a-radio-group v-model="form.fd.type">
-          <a-radio-button value="keypair">镜像仓库密钥</a-radio-button>
+          <a-radio-button value="keypair">{{$t('k8s.text_332')}}</a-radio-button>
           <a-radio-button value="cephCSI">Ceph CSI</a-radio-button>
         </a-radio-group>
       </a-form-item>
-      <a-form-item label="名称">
-        <a-input placeholder="请输入名称" v-decorator="decorators.name" />
+      <a-form-item :label="$t('k8s.text_41')">
+        <a-input :placeholder="$t('k8s.text_60')" v-decorator="decorators.name" />
       </a-form-item>
-      <a-form-item label="集群">
+      <a-form-item :label="$t('k8s.text_19')">
         <cluster-select v-decorator="decorators.cluster" @input="setCluster" />
       </a-form-item>
-      <a-form-item label="命名空间">
+      <a-form-item :label="$t('k8s.text_23')">
         <namespace-select v-decorator="decorators.namespace" @input="setNamespace" :cluster="cluster" :namespaceObj.sync="namespaceObj" />
       </a-form-item>
       <template v-if="form.fd.type === 'keypair'">
-        <a-form-item label="镜像仓库地址">
-          <a-input v-decorator="decorators.server" placeholder="请输入镜像仓库地址" />
+        <a-form-item :label="$t('k8s.text_52')">
+          <a-input v-decorator="decorators.server" :placeholder="$t('k8s.text_53')" />
         </a-form-item>
-        <a-form-item label="用户名">
-          <a-input v-decorator="decorators.user" placeholder="请输入用户名" />
+        <a-form-item :label="$t('k8s.text_54')">
+          <a-input v-decorator="decorators.user" :placeholder="$t('k8s.text_55')" />
         </a-form-item>
-        <a-form-item label="密码">
-          <a-input v-decorator="decorators.password" placeholder="请输入密码" show-password />
+        <a-form-item :label="$t('k8s.text_56')">
+          <a-input v-decorator="decorators.password" :placeholder="$t('k8s.text_57')" show-password />
         </a-form-item>
-        <a-form-item label="邮箱">
-          <a-input v-decorator="decorators.email" placeholder="请输入邮箱" />
+        <a-form-item :label="$t('k8s.text_58')">
+          <a-input v-decorator="decorators.email" :placeholder="$t('k8s.text_59')" />
         </a-form-item>
       </template>
       <template v-else>
         <a-form-item label="UserId">
-          <a-input v-decorator="decorators.userId" placeholder="例如 admin" />
+          <a-input v-decorator="decorators.userId" :placeholder="$t('k8s.text_333')" />
         </a-form-item>
         <a-form-item label="UserKey">
-          <a-input v-decorator="decorators.userKey" placeholder="例如 AQAc8m5e754hHhAAvWYtFivfs9bvhRm6P51QXA==" />
+          <a-input v-decorator="decorators.userKey" :placeholder="$t('k8s.text_334')" />
         </a-form-item>
       </template>
     </a-form>
@@ -89,8 +89,8 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
-              { min: 2, max: 24, message: '长度在 2 到 24 个字符', trigger: 'blur' },
+              { required: true, message: this.$t('k8s.text_60') },
+              { min: 2, max: 24, message: this.$t('k8s.text_132'), trigger: 'blur' },
               { validator: this.$validate('k8sName') },
             ],
           },
@@ -100,7 +100,7 @@ export default {
           {
             initialValue: this.$store.state.common.k8s.cluster,
             rules: [
-              { required: true, message: '请选择集群' },
+              { required: true, message: this.$t('k8s.text_30') },
             ],
           },
         ],
@@ -109,7 +109,7 @@ export default {
           {
             initialValue: this.$store.state.common.k8s.namespace,
             rules: [
-              { required: true, message: '请选择命名空间' },
+              { required: true, message: this.$t('k8s.text_61') },
             ],
           },
         ],
@@ -117,7 +117,7 @@ export default {
           'server',
           {
             rules: [
-              { required: true, message: '请输入镜像仓库地址', trigger: 'blur' },
+              { required: true, message: this.$t('k8s.text_53'), trigger: 'blur' },
             ],
           },
         ],
@@ -125,7 +125,7 @@ export default {
           'user',
           {
             rules: [
-              { required: true, message: '请输入用户名', trigger: 'blur' },
+              { required: true, message: this.$t('k8s.text_55'), trigger: 'blur' },
             ],
           },
         ],
@@ -133,7 +133,7 @@ export default {
           'password',
           {
             rules: [
-              { required: true, message: '请输入密码', trigger: 'blur' },
+              { required: true, message: this.$t('k8s.text_57'), trigger: 'blur' },
             ],
           },
         ],
@@ -141,7 +141,7 @@ export default {
           'userId',
           {
             rules: [
-              { required: true, message: '请输入UserId', trigger: 'blur' },
+              { required: true, message: this.$t('k8s.text_335'), trigger: 'blur' },
             ],
           },
         ],
@@ -149,7 +149,7 @@ export default {
           'userKey',
           {
             rules: [
-              { required: true, message: '请输入UserKey', trigger: 'blur' },
+              { required: true, message: this.$t('k8s.text_336'), trigger: 'blur' },
             ],
           },
         ],
@@ -192,7 +192,7 @@ export default {
           params.cephCSI.userKey = values.userKey
         }
         await this._doCreate(params)
-        this.$message.success('操作成功')
+        this.$message.success(this.$t('k8s.text_46'))
       } catch (error) {
         throw error
       }

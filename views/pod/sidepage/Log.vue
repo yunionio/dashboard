@@ -1,15 +1,15 @@
 <template>
   <div>
     <a-form-model :model="form" layout="inline">
-      <a-form-model-item label="容器">
+      <a-form-model-item :label="$t('k8s.text_1')">
         <a-select style="min-width: 200px;" v-model="form.activeContainer" @change="fetchUrl">
           <a-select-option v-for="item in containers" :value="item.name" :key="item.name">{{ item.name }}</a-select-option>
         </a-select>
       </a-form-model-item>
-      <a-form-model-item label="开启过滤">
+      <a-form-model-item :label="$t('k8s.text_319')">
         <a-switch v-model="form.showTime" />
       </a-form-model-item>
-      <a-form-model-item label="近期时间" v-if="form.showTime">
+      <a-form-model-item :label="$t('k8s.text_320')" v-if="form.showTime">
         <duration-second-input v-model="form.time" :durationOptions="durationOptions" />
       </a-form-model-item>
     </a-form-model>
@@ -36,9 +36,9 @@ export default {
       },
       connectParams: '',
       durationOptions: [
-        { label: '小时', key: 'hours' },
-        { label: '分', key: 'minutes' },
-        { label: '天', key: 'days' },
+        { label: this.$t('k8s.text_321'), key: 'hours' },
+        { label: this.$t('k8s.text_322'), key: 'minutes' },
+        { label: this.$t('k8s.text_323'), key: 'days' },
       ],
     }
   },

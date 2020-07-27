@@ -1,5 +1,6 @@
 import { k8sStatusColumn } from '@K8S/utils/tableColumns'
 import { getNameDescriptionTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -22,14 +23,14 @@ export default {
       },
       {
         field: 'namespace',
-        title: '命名空间',
+        title: i18n.t('k8s.text_23'),
         width: 120,
         sortable: true,
       },
       k8sStatusColumn({ path: 'warnings' }),
       {
         field: 'restartCount',
-        title: '重启次数',
+        title: i18n.t('k8s.text_317'),
         minWidth: '80px',
       },
       getTimeTableColumn({ field: 'creationTimestamp', fromNow: true, sortable: true }),

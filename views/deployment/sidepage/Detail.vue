@@ -28,7 +28,7 @@ export default {
       baseInfo: [
         {
           field: 'name',
-          title: '名称',
+          title: this.$t('k8s.text_41'),
           slots: {
             default: ({ row }) => {
               return [
@@ -42,26 +42,26 @@ export default {
         k8sStatusColumn(),
         {
           field: 'cluster',
-          title: '集群',
+          title: this.$t('k8s.text_19'),
         },
         {
           field: 'namespace',
-          title: '命名空间',
+          title: this.$t('k8s.text_23'),
         },
         {
           field: 'podsInfo',
-          title: '容器组',
+          title: this.$t('k8s.text_9'),
           width: 70,
           formatter: ({ row }) => {
             return row.podsInfo.running + ' / ' + row.podsInfo.current
           },
         },
         k8sImageColumn(),
-        k8sImageColumn({ field: 'initContainerImages', title: '初始化镜像' }),
+        k8sImageColumn({ field: 'initContainerImages', title: this.$t('k8s.text_66') }),
         k8sLabelColumn(),
         {
           field: 'creationTimestamp',
-          title: '创建时间',
+          title: this.$t('k8s.text_74'),
           formatter: ({ row }) => {
             return (row.creationTimestamp && this.$moment(row.creationTimestamp).format()) || '-'
           },

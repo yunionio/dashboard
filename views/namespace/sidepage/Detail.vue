@@ -27,10 +27,10 @@ export default {
   data () {
     return {
       baseInfo: [
-        getCopyWithContentTableColumn({ field: 'cluster', title: '集群' }),
+        getCopyWithContentTableColumn({ field: 'cluster', title: this.$t('k8s.text_19') }),
         {
           field: 'status',
-          title: '状态',
+          title: this.$t('k8s.text_35'),
           width: 200,
           slots: {
             default: ({ row }, h) => {
@@ -41,7 +41,7 @@ export default {
         },
         {
           field: 'creationTimestamp',
-          title: '创建时间',
+          title: this.$t('k8s.text_74'),
           formatter: ({ cellValue }) => {
             return this.$moment(cellValue).format()
           },

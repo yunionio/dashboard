@@ -1,11 +1,11 @@
 <template>
   <a-form-model :model="formData" size="small" ref="formRef" class="w-75" :label-col="labelCol" :wrapper-col="wrapperCol" :rules="rules">
     <a-divider content-position="left">Grafana</a-divider>
-    <a-form-model-item label="grafana 登录用户名" prop="grafana.adminUser">
-      <a-input v-model="formData.grafana.adminUser" placeholder="请输入grafana 登录用户名，如：admin" />
+    <a-form-model-item :label="$t('k8s.text_272')" prop="grafana.adminUser">
+      <a-input v-model="formData.grafana.adminUser" :placeholder="$t('k8s.text_273')" />
     </a-form-model-item>
-    <a-form-model-item label="grafana 登录密码" prop="grafana.adminPassword">
-      <a-input-password v-model="formData.grafana.adminPassword" placeholder="请输入grafana 登录密码" />
+    <a-form-model-item :label="$t('k8s.text_274')" prop="grafana.adminPassword">
+      <a-input-password v-model="formData.grafana.adminPassword" :placeholder="$t('k8s.text_275')" />
     </a-form-model-item>
     <storage v-model="formData.grafana.storage" prop="grafana.storage" />
     <a-divider content-position="left">Loki</a-divider>
@@ -13,8 +13,8 @@
     <a-divider content-position="left">Prometheus</a-divider>
     <storage v-model="formData.prometheus.storage" prop="prometheus.storage" />
     <a-form-model-item :wrapper-col="{ span: 20, offset: 3 }">
-      <a-button class="mr-2" type="primary" @click="submitForm('formRef')">确定</a-button>
-      <a-button @click="cancel">取消</a-button>
+      <a-button class="mr-2" type="primary" @click="submitForm('formRef')">{{$t('k8s.text_260')}}</a-button>
+      <a-button @click="cancel">{{$t('k8s.text_162')}}</a-button>
     </a-form-model-item>
   </a-form-model>
 </template>
@@ -65,13 +65,13 @@ export default {
     return {
       rules: {
         'grafana.adminUser': [
-          { required: true, message: '请输入 grafana 登录用户名', trigger: 'blur' },
+          { required: true, message: this.$t('k8s.text_276'), trigger: 'blur' },
         ],
         'grafana.adminPassword': [
-          { required: true, message: '请输入 grafana 登录密码', trigger: 'blur' },
+          { required: true, message: this.$t('k8s.text_277'), trigger: 'blur' },
         ],
         'grafana.storage': [
-          { required: true, message: '请输入 storageClass 名称', trigger: 'blur' },
+          { required: true, message: this.$t('k8s.text_278'), trigger: 'blur' },
         ],
       },
       labelCol: { span: 5 },

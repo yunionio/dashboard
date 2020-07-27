@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="无状态(Deployment)"
+    :title="$t('k8s.text_236')"
     icon="res-k8s-deployment"
     :res-name="detailData.name"
     :actions="params.actions"
@@ -42,11 +42,11 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'detail' },
-        { label: '容器组', key: 'pod-list' },
-        { label: '服务', key: 'service-list' },
-        { label: '事件', key: 'events-sidepage' },
-        { label: '源信息', key: 'source-information-sidepage' },
+        { label: this.$t('k8s.text_217'), key: 'detail' },
+        { label: this.$t('k8s.text_9'), key: 'pod-list' },
+        { label: this.$t('k8s.text_13'), key: 'service-list' },
+        { label: this.$t('k8s.text_218'), key: 'events-sidepage' },
+        { label: this.$t('k8s.text_219'), key: 'source-information-sidepage' },
       ],
     }
   },

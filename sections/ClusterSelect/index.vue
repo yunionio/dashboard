@@ -1,5 +1,5 @@
 <template>
-  <a-select :disabled="disabled" :value="value" @change="clusterChange" placeholder="请选择集群">
+  <a-select :disabled="disabled" :value="value" @change="clusterChange" :placeholder="$t('k8s.text_30')">
     <a-select-option
       v-for="item in clusterOps"
       :key="item.id"

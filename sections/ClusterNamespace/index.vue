@@ -1,14 +1,14 @@
 <template>
   <div class="d-flex">
     <div>
-      <span>集群&nbsp;</span>
+      <span>{{$t('k8s.text_28')}}</span>
       <cluster-select
         :value="cluster"
         @input="setCluster"
         style="width: 140px;" />
     </div>
     <div class="ml-2" v-if="!ignoreNamespace">
-      <span>命名空间&nbsp;</span>
+      <span>{{$t('k8s.text_29')}}</span>
       <namespace-select
         :value="namespace"
         @input="setNamespace"

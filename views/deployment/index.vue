@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="无状态(Deployment)" />
+    <page-header :title="$t('k8s.text_236')" />
     <page-body>
       <deployment-list :id="listId" />
     </page-body>

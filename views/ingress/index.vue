@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="路由(Ingress)" />
+    <page-header :title="$t('k8s.text_239')" />
     <page-body>
       <ingress-list :id="listId" />
     </page-body>

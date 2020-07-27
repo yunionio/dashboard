@@ -1,30 +1,30 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{ params.title || '新建' }}</div>
+    <div slot="header">{{ params.title || $t('k8s.text_49') }}</div>
     <div slot="body">
       <a-form
         v-bind="formItemLayout"
         :form="form.fc">
-        <a-form-item label="密钥名称">
-          <a-input v-decorator="decorators.name" placeholder="请输入密钥名称" />
+        <a-form-item :label="$t('k8s.text_50')">
+          <a-input v-decorator="decorators.name" :placeholder="$t('k8s.text_51')" />
         </a-form-item>
-        <a-form-item label="集群">
+        <a-form-item :label="$t('k8s.text_19')">
           <cluster-select v-decorator="decorators.cluster" :setDefault="false" :disabled="true" />
         </a-form-item>
-        <a-form-item label="命名空间">
+        <a-form-item :label="$t('k8s.text_23')">
           <namespace-select v-decorator="decorators.namespace" :cluster="params.cluster" :setDefault="false" :disabled="true" />
         </a-form-item>
-        <a-form-item label="镜像仓库地址" prop="server">
-          <a-input v-decorator="decorators.server" placeholder="请输入镜像仓库地址" />
+        <a-form-item :label="$t('k8s.text_52')" prop="server">
+          <a-input v-decorator="decorators.server" :placeholder="$t('k8s.text_53')" />
         </a-form-item>
-        <a-form-item label="用户名">
-          <a-input v-decorator="decorators.user" placeholder="请输入用户名" />
+        <a-form-item :label="$t('k8s.text_54')">
+          <a-input v-decorator="decorators.user" :placeholder="$t('k8s.text_55')" />
         </a-form-item>
-        <a-form-item label="密码">
-          <a-input-password v-decorator="decorators.password" placeholder="请输入密码" />
+        <a-form-item :label="$t('k8s.text_56')">
+          <a-input-password v-decorator="decorators.password" :placeholder="$t('k8s.text_57')" />
         </a-form-item>
-        <a-form-item label="邮箱">
-          <a-input v-decorator="decorators.email" placeholder="请输入邮箱" />
+        <a-form-item :label="$t('k8s.text_58')">
+          <a-input v-decorator="decorators.email" :placeholder="$t('k8s.text_59')" />
         </a-form-item>
       </a-form>
     </div>
@@ -76,7 +76,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('k8s.text_60') },
               { validator: this.$validate('k8sName') },
             ],
           },
@@ -86,7 +86,7 @@ export default {
           {
             initialValue: this.params.cluster,
             rules: [
-              { required: true, message: '请选择集群', trigger: 'blur' },
+              { required: true, message: this.$t('k8s.text_30'), trigger: 'blur' },
             ],
           },
         ],
@@ -95,7 +95,7 @@ export default {
           {
             initialValue: this.params.namespace,
             rules: [
-              { required: true, message: '请选择命名空间', trigger: 'blur' },
+              { required: true, message: this.$t('k8s.text_61'), trigger: 'blur' },
             ],
           },
         ],
@@ -103,7 +103,7 @@ export default {
           'server',
           {
             rules: [
-              { required: true, message: '请输入镜像仓库地址', trigger: 'blur' },
+              { required: true, message: this.$t('k8s.text_53'), trigger: 'blur' },
             ],
           },
         ],
@@ -111,7 +111,7 @@ export default {
           'user',
           {
             rules: [
-              { required: true, message: '请输入用户', trigger: 'blur' },
+              { required: true, message: this.$t('k8s.text_62'), trigger: 'blur' },
             ],
           },
         ],
@@ -119,7 +119,7 @@ export default {
           'password',
           {
             rules: [
-              { required: true, message: '请输入密码', trigger: 'blur' },
+              { required: true, message: this.$t('k8s.text_57'), trigger: 'blur' },
             ],
           },
         ],

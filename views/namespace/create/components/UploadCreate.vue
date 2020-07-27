@@ -3,7 +3,7 @@
     class="mt-3"
     :form="form.fc">
     <a-form-item
-      label="集群"
+      :label="$t('k8s.text_19')"
       v-bind="formItemLayout">
       <cluster-select
         @input="setCluster"
@@ -12,8 +12,8 @@
         style="width: 140px;" />
     </a-form-item>
     <a-form-item
-      label="上传"
-      extra="可以选择配置文件后上传，只能选择 *.yaml 文件或者 *.json 文件"
+      :label="$t('k8s.text_290')"
+      :extra="$t('k8s.text_291')"
       v-bind="formItemLayout">
       <a-upload
         name="file"
@@ -22,12 +22,12 @@
         v-decorator="decorators.yaml"
         @change="handleFileChange"
         accept="application/x-yaml,application/json">
-        <a-button> <a-icon type="upload" />选择文件</a-button>
+        <a-button> <a-icon type="upload" />{{$t('k8s.text_292')}}</a-button>
       </a-upload>
     </a-form-item>
     <a-form-item :wrapper-col="{ span: 20, offset: 3 }">
-      <a-button class="mr-2" type="primary" @click="handleConfirm" :loading="loading">上传</a-button>
-      <a-button @click="cancel">取消</a-button>
+      <a-button class="mr-2" type="primary" @click="handleConfirm" :loading="loading">{{$t('k8s.text_290')}}</a-button>
+      <a-button @click="cancel">{{$t('k8s.text_162')}}</a-button>
     </a-form-item>
   </a-form>
 </template>
@@ -55,7 +55,7 @@ export default {
           'cluster',
           {
             rules: [
-              { required: true, message: '请选择集群' },
+              { required: true, message: this.$t('k8s.text_30') },
             ],
           },
         ],
@@ -63,7 +63,7 @@ export default {
           'yaml',
           {
             rules: [
-              { required: true, message: '请请填入 YAML 或者 JSON 文件内容' },
+              { required: true, message: this.$t('k8s.text_289') },
             ],
           },
         ],
@@ -106,7 +106,7 @@ export default {
         this.form.fc.setFieldsValue({ yaml: evt.target.result })
       }
       fr.onerror = () => {
-        this.$message.error('读取文件内容出错')
+        this.$message.error(this.$t('k8s.text_293'))
       }
     },
     doCreate (data) {
@@ -123,7 +123,7 @@ export default {
         const values = await this.form.fc.validateFields()
         await this.doCreate(values)
         this.loading = false
-        this.$message.success('创建成功')
+        this.$message.success(this.$t('k8s.text_184'))
         this.$router.push('/k8s-namespace')
       } catch (error) {
         this.loading = false

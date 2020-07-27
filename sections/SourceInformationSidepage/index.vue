@@ -4,9 +4,9 @@
     <a-button
       class="mt-2 mr-2"
       v-clipboard:copy="text"
-      v-clipboard:success="_ => $message.success('已复制')"
-      v-clipboard:error="_ => $message.error('复制失败')"><a-icon type="copy" />复制内容</a-button>
-    <a-button type="primary" @click="update">更新</a-button>
+      v-clipboard:success="_ => $message.success($t('k8s.text_31'))"
+      v-clipboard:error="_ => $message.error($t('k8s.text_32'))"><a-icon type="copy" />{{$t('k8s.text_33')}}</a-button>
+    <a-button type="primary" @click="update">{{$t('k8s.text_95')}}</a-button>
   </div>
 </template>
 
@@ -68,7 +68,7 @@ export default {
         id: `${this.data.name}/rawdata` + params,
         data,
       }).then(({ data }) => {
-        this.$message.success(`修改 ${this.data.name} YAML配置文件成功`)
+        this.$message.success(this.$t('k8s.text_96', [this.data.name]))
       })
     },
   },

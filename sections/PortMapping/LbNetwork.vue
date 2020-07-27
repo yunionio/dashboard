@@ -5,7 +5,7 @@
       :params="params"
       resource="networks"
       v-decorator="decorator"
-      :selectProps="{ placeholder: '请选择负载均衡网络' }" />
+      :selectProps="{ placeholder: $t('k8s.text_87') }" />
   </a-form-item>
 </template>
 

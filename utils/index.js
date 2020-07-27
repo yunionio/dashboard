@@ -1,16 +1,17 @@
 import * as R from 'ramda'
 import { RESTART_POLICY_OPTS } from '@K8S/constants'
 import store from '@/store'
+import i18n from '@/locales'
 
 const validateValidPath = (rule, value, callback) => {
   if (value.startsWith('/')) {
     if (value === '/') {
-      callback(new Error('挂载点不能为 /'))
+      callback(new Error(i18n.t('k8s.text_130')))
     } else {
       callback()
     }
   } else {
-    callback(new Error('挂载点以 / 开头'))
+    callback(new Error(i18n.t('k8s.text_131')))
   }
 }
 
@@ -86,8 +87,8 @@ export function getCreateDecorators (resource) {
       {
         validateFirst: true,
         rules: [
-          { required: true, message: '请输入名称' },
-          { min: 2, max: 24, message: '长度在 2 到 24 个字符', trigger: 'blur' },
+          { required: true, message: i18n.t('k8s.text_60') },
+          { min: 2, max: 24, message: i18n.t('k8s.text_132'), trigger: 'blur' },
           { validator: this.$validate('k8sName') },
         ],
       },
@@ -97,7 +98,7 @@ export function getCreateDecorators (resource) {
       {
         initialValue: store.state.common.k8s.cluster,
         rules: [
-          { required: true, message: '请选择集群', trigger: 'blur' },
+          { required: true, message: i18n.t('k8s.text_30'), trigger: 'blur' },
         ],
       },
     ],
@@ -106,7 +107,7 @@ export function getCreateDecorators (resource) {
       {
         initialValue: store.state.common.k8s.namespace,
         rules: [
-          { required: true, message: '请选择命名空间', trigger: 'blur' },
+          { required: true, message: i18n.t('k8s.text_61'), trigger: 'blur' },
         ],
       },
     ],
@@ -127,7 +128,7 @@ export function getCreateDecorators (resource) {
         'imagePullSecrets',
         {
           rules: [
-            { required: true, message: '请选择密钥' },
+            { required: true, message: i18n.t('k8s.text_133') },
           ],
         },
       ],
@@ -151,7 +152,7 @@ export function getCreateDecorators (resource) {
           {
             initialValue: 1,
             rules: [
-              { required: true, message: '请输入服务端口' },
+              { required: true, message: i18n.t('k8s.text_134') },
             ],
           },
         ],
@@ -160,7 +161,7 @@ export function getCreateDecorators (resource) {
           {
             initialValue: 1,
             rules: [
-              { required: true, message: '请输入目标端口' },
+              { required: true, message: i18n.t('k8s.text_135') },
             ],
           },
         ],
@@ -169,7 +170,7 @@ export function getCreateDecorators (resource) {
           {
             initialValue: 'TCP',
             rules: [
-              { required: true, message: '请选择协议' },
+              { required: true, message: i18n.t('k8s.text_136') },
             ],
           },
         ],
@@ -185,7 +186,7 @@ export function getCreateDecorators (resource) {
       'schedule',
       {
         rules: [
-          { required: true, message: '请输入调度策略，例如：*/1 * * * *' },
+          { required: true, message: i18n.t('k8s.text_137') },
         ],
       },
     ],
@@ -194,7 +195,7 @@ export function getCreateDecorators (resource) {
         `labelKeys[${i}]`,
         {
           rules: [
-            { required: true, message: '请输入键' },
+            { required: true, message: i18n.t('k8s.text_138') },
             { validator: this.$validate('k8sLabel') },
           ],
         },
@@ -203,7 +204,7 @@ export function getCreateDecorators (resource) {
         `labelValues[${i}]`,
         {
           rules: [
-            { required: true, message: '请输入值' },
+            { required: true, message: i18n.t('k8s.text_139') },
             { validator: this.$validate('k8sLabel') },
           ],
         },
@@ -214,7 +215,7 @@ export function getCreateDecorators (resource) {
         `annotationsKeys[${i}]`,
         {
           rules: [
-            { required: true, message: '请输入键' },
+            { required: true, message: i18n.t('k8s.text_138') },
             { validator: this.$validate('k8sLabel') },
           ],
         },
@@ -223,7 +224,7 @@ export function getCreateDecorators (resource) {
         `annotationsValues[${i}]`,
         {
           rules: [
-            { required: true, message: '请输入值' },
+            { required: true, message: i18n.t('k8s.text_139') },
             { validator: this.$validate('k8sLabel') },
           ],
         },
@@ -234,7 +235,7 @@ export function getCreateDecorators (resource) {
         `containerNames[${i}]`,
         {
           rules: [
-            { required: true, message: '请输入名称' },
+            { required: true, message: i18n.t('k8s.text_60') },
             { validator: this.$validate('k8sLabel') },
           ],
         },
@@ -243,7 +244,7 @@ export function getCreateDecorators (resource) {
         `containerimages[${i}]`,
         {
           rules: [
-            { required: true, message: '请输入镜像' },
+            { required: true, message: i18n.t('k8s.text_67') },
           ],
         },
       ],
@@ -264,7 +265,7 @@ export function getCreateDecorators (resource) {
           `containerVolumeMountNames[${i}][${j}]`,
           {
             rules: [
-              { required: true, message: '请选择' },
+              { required: true, message: i18n.t('k8s.text_77') },
             ],
           },
         ],
@@ -272,7 +273,7 @@ export function getCreateDecorators (resource) {
           `containerVolumeMountPaths[${i}][${j}]`,
           {
             rules: [
-              { required: true, message: '请输入' },
+              { required: true, message: i18n.t('k8s.text_140') },
               { validator: validateValidPath, trigger: 'blur' },
             ],
           },
@@ -283,7 +284,7 @@ export function getCreateDecorators (resource) {
           `containerEnvNames[${i}][${j}]`,
           {
             rules: [
-              { required: true, message: '请输入' },
+              { required: true, message: i18n.t('k8s.text_140') },
             ],
           },
         ],
@@ -291,7 +292,7 @@ export function getCreateDecorators (resource) {
           `containerEnvValues[${i}][${j}]`,
           {
             rules: [
-              { required: true, message: '请输入' },
+              { required: true, message: i18n.t('k8s.text_140') },
             ],
           },
         ],

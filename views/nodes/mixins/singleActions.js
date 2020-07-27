@@ -1,8 +1,9 @@
+import i18n from '@/locales'
 export default {
   created () {
     this.singleActions = [
       {
-        label: '设置为可调度',
+        label: i18n.t('k8s.text_298'),
         permission: 'k8s_nodes_perform_uncordon',
         action: obj => {
           new this.$Manager('k8s_nodes', 'v1').performAction({
@@ -20,7 +21,7 @@ export default {
         },
       },
       {
-        label: '设置为不可调度',
+        label: i18n.t('k8s.text_299'),
         permission: 'k8s_nodes_perform_cordon',
         action: obj => {
           new this.$Manager('k8s_nodes', 'v1').performAction({
@@ -38,7 +39,7 @@ export default {
         },
       },
       {
-        label: '查看/编辑',
+        label: i18n.t('k8s.text_215'),
         permission: 'k8s_nodes_update',
         action: async obj => {
           const manager = new this.$Manager('k8s_nodes', 'v1')

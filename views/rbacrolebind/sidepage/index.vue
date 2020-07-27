@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="角色绑定(RbacRoleBinding)"
+    :title="$t('k8s.text_331')"
     icon="res-k8s-rbacrolebinding"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
@@ -49,8 +49,8 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'k8s-rbac-role-bind-detail' },
-        { label: '源信息', key: 'source-information-sidepage' },
+        { label: this.$t('k8s.text_217'), key: 'k8s-rbac-role-bind-detail' },
+        { label: this.$t('k8s.text_219'), key: 'source-information-sidepage' },
       ],
     }
   },

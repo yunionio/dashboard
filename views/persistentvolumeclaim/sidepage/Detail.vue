@@ -31,7 +31,7 @@ export default {
       baseInfo: [
         {
           field: 'name',
-          title: '名称',
+          title: this.$t('k8s.text_41'),
           slots: {
             default: ({ row }) => {
               return [
@@ -44,7 +44,7 @@ export default {
         },
         {
           field: 'mountedBy',
-          title: '所属容器组',
+          title: this.$t('k8s.text_314'),
           slots: {
             default: ({ row }) => {
               const handleOpenSidepage = (name) => {
@@ -79,29 +79,29 @@ export default {
         k8sStatusColumn(),
         {
           field: 'cluster',
-          title: '集群',
+          title: this.$t('k8s.text_19'),
         },
         {
           field: 'namespace',
-          title: '命名空间',
+          title: this.$t('k8s.text_23'),
         },
 
         {
           field: 'accessModes',
-          title: '访问模式',
+          title: this.$t('k8s.text_313'),
           formatter: ({ row }) => row.accessModes && row.accessModes.join('，'),
         },
         {
           field: 'volume',
-          title: '存储卷',
+          title: this.$t('k8s.text_311'),
         },
         {
           field: 'storageClass',
-          title: '存储类',
+          title: this.$t('k8s.text_22'),
         },
         {
           field: 'capacity.storage',
-          title: '存储总量',
+          title: this.$t('k8s.text_312'),
           width: 70,
           formatter: ({ row }) => {
             return row.capacity ? (row.capacity.storage || '0Gi') : '-'
@@ -109,13 +109,13 @@ export default {
         },
         {
           field: 'unused',
-          title: '使用情况',
+          title: this.$t('k8s.text_301'),
           slots: {
             default: ({ row }, h) => {
-              let text = '未被使用'
+              let text = this.$t('k8s.text_303')
               let className = 'success-color'
               if (row.mountedBy && row.mountedBy.length > 0) {
-                text = '被使用'
+                text = this.$t('k8s.text_302')
                 className = 'error-color'
               }
               return [<div class={className}>{text}</div>]
@@ -124,12 +124,12 @@ export default {
         },
         {
           field: 'creationTimestamp',
-          title: '创建时间',
+          title: this.$t('k8s.text_74'),
           formatter: ({ row }) => {
             return (row.creationTimestamp && this.$moment(row.creationTimestamp).format()) || '-'
           },
         },
-        k8sLabelColumn({ field: 'annotations', title: '注释' }),
+        k8sLabelColumn({ field: 'annotations', title: this.$t('k8s.text_142') }),
       ],
     }
   },

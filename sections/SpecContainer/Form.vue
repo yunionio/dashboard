@@ -1,45 +1,45 @@
 <template>
   <div>
-    <a-form-item label="名称">
-      <a-input placeholder="请输入名称" v-decorator="decorators.name" />
+    <a-form-item :label="$t('k8s.text_41')">
+      <a-input :placeholder="$t('k8s.text_60')" v-decorator="decorators.name" />
     </a-form-item>
-    <a-form-item label="容器镜像">
-      <a-input placeholder="请输入容器镜像" v-decorator="decorators.image" />
+    <a-form-item :label="$t('k8s.text_97')">
+      <a-input :placeholder="$t('k8s.text_98')" v-decorator="decorators.image" />
     </a-form-item>
     <a-form-item label="CPU">
-      <a-input placeholder="请输入CPU核数" type="number" v-decorator="decorators.cpu" addonAfter="核" :min="1" @blur="e => formatInput(e, 'cpu')" />
+      <a-input :placeholder="$t('k8s.text_99')" type="number" v-decorator="decorators.cpu" addonAfter="$t('k8s.text_100')" :min="1" @blur="e => formatInput(e, 'cpu')" />
     </a-form-item>
-    <a-form-item label="内存">
-      <a-input placeholder="请输入内存" type="number" v-decorator="decorators.memory" addonAfter="G" :min="1" @blur="e => formatInput(e, 'memory')" />
+    <a-form-item :label="$t('k8s.text_101')">
+      <a-input :placeholder="$t('k8s.text_102')" type="number" v-decorator="decorators.memory" addonAfter="G" :min="1" @blur="e => formatInput(e, 'memory')" />
     </a-form-item>
-    <a-form-item label="容器命令">
-      <a-input placeholder="容器命令，选填" v-decorator="decorators.command" />
+    <a-form-item :label="$t('k8s.text_103')">
+      <a-input :placeholder="$t('k8s.text_104')" v-decorator="decorators.command" />
     </a-form-item>
-    <a-form-item label="命令参数">
-      <a-input placeholder="命令参数，选填" v-decorator="decorators.arg" />
+    <a-form-item :label="$t('k8s.text_105')">
+      <a-input :placeholder="$t('k8s.text_106')" v-decorator="decorators.arg" />
     </a-form-item>
-    <a-form-item label="数据卷">
+    <a-form-item :label="$t('k8s.text_107')">
       <labels
         :decorators="decorators.volumeMount"
-        title="存储声明"
-        keyLabel="存储声明"
-        valueLabel="挂载点"
-        keyPlaceholder="请选择存储卷"
-        valuePlaceholder="例如：/mnt"
+        :title="$t('k8s.text_10')"
+        :keyLabel="$t('k8s.text_10')"
+        :valueLabel="$t('k8s.text_108')"
+        :keyPlaceholder="$t('k8s.text_109')"
+        :valuePlaceholder="$t('k8s.text_110')"
         :keyBaseSelectProps="keyBaseSelectProps" />
     </a-form-item>
-    <a-form-item label="环境变量">
-      <labels :decorators="decorators.env" title="变量" keyLabel="变量" />
+    <a-form-item :label="$t('k8s.text_111')">
+      <labels :decorators="decorators.env" :title="$t('k8s.text_112')" :keyLabel="$t('k8s.text_112')" />
     </a-form-item>
     <a-form-item label="">
-      <a-checkbox v-decorator="decorators.privileged">以特权模式运行</a-checkbox>
+      <a-checkbox v-decorator="decorators.privileged">{{$t('k8s.text_113')}}</a-checkbox>
     </a-form-item>
   </div>
 </template>
 
 <script>
-import Labels from '@K8S/sections/Labels'
 import * as R from 'ramda'
+import Labels from '@K8S/sections/Labels'
 
 export default {
   name: 'K8SSpecContainerForm',

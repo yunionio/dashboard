@@ -46,11 +46,11 @@ export default {
         filterOptions: {
           name: getNameFilter(),
           unused: {
-            label: '使用情况',
+            label: this.$t('k8s.text_301'),
             dropdown: true,
             items: [
-              { label: '被使用', key: false },
-              { label: '未被使用', key: true },
+              { label: this.$t('k8s.text_302'), key: false },
+              { label: this.$t('k8s.text_303'), key: true },
             ],
           },
         },
@@ -64,7 +64,7 @@ export default {
       }),
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('k8s.text_49'),
           permission: 'k8s_persistentvolumeclaims_create',
           action: () => {
             this.$router.push({ path: '/k8s-persistentvolumeclaim/create' })
@@ -74,7 +74,7 @@ export default {
           }),
         },
         {
-          label: '删除',
+          label: this.$t('k8s.text_201'),
           permission: 'k8s_persistentvolumeclaims_delete',
           action: () => {
             const data = this.list.selectedItems
@@ -87,8 +87,8 @@ export default {
               vm: this,
               data,
               columns: this.columns,
-              title: '删除',
-              name: '存储声明',
+              title: this.$t('k8s.text_201'),
+              name: this.$t('k8s.text_10'),
               onManager: this.onManager,
               idKey: 'name',
               requestData,
@@ -102,15 +102,15 @@ export default {
               const unique = Array.from(new Set(namespaces))
               if (unique.length > 1) {
                 validate = false
-                tooltip = '请选择同一个命名空间下的资源'
+                tooltip = this.$t('k8s.text_203')
               }
               if (this.list.selectedItems.some(item => item.mountedBy && item.mountedBy.length !== 0)) {
                 validate = false
-                tooltip = '请选择【未被使用】的存储卷'
+                tooltip = this.$t('k8s.text_304')
               }
             } else {
               validate = false
-              tooltip = '请选择需要删除的资源，且为同一命名空间下的资源'
+              tooltip = this.$t('k8s.text_204')
             }
             return {
               validate,

@@ -46,39 +46,39 @@ export default {
   data () {
     return {
       cpu: {
-        title: 'CPU(核)',
+        title: this.$t('k8s.text_282'),
         percent: this.data.allocatedResources.cpuRequests / this.data.allocatedResources.cpuCapacity || 0,
         msg: {
           current: (this.data.allocatedResources.cpuRequests / 1000),
-          currentLabel: '已分配',
+          currentLabel: this.$t('k8s.text_300'),
           total: (this.data.allocatedResources.cpuCapacity / 1000),
         },
       },
       memory: {
-        title: '内存',
+        title: this.$t('k8s.text_101'),
         percent: this.data.allocatedResources.memoryRequests / this.data.allocatedResources.memoryCapacity || 0,
         msg: {
           current: sizestr(this.data.allocatedResources.memoryRequests, 'B', 1024),
-          currentLabel: '已分配',
+          currentLabel: this.$t('k8s.text_300'),
           total: sizestr(this.data.allocatedResources.memoryCapacity, 'B', 1024),
         },
       },
       pod: {
-        title: '容器组',
+        title: this.$t('k8s.text_9'),
         percent: this.data.allocatedResources.allocatedPods / this.data.allocatedResources.podCapacity || 0,
         msg: {
           current: this.data.allocatedResources.allocatedPods,
-          currentLabel: '已分配',
+          currentLabel: this.$t('k8s.text_300'),
           total: this.data.allocatedResources.podCapacity,
         },
       },
       baseInfo: [
-        getCopyWithContentTableColumn({ field: 'cluster', title: '集群' }),
+        getCopyWithContentTableColumn({ field: 'cluster', title: this.$t('k8s.text_19') }),
         {
           field: 'unschedulable',
-          title: '可调度',
+          title: this.$t('k8s.text_296'),
           formatter: ({ cellValue }) => {
-            return !cellValue ? '可调度' : '不可调度'
+            return !cellValue ? this.$t('k8s.text_296') : this.$t('k8s.text_297')
           },
         },
       ],
@@ -100,7 +100,7 @@ export default {
           minWidth: 100,
           showOverflow: 'ellipsis',
           formatter: ({ cellValue }) => {
-            return this.$moment(cellValue).format('YYYY年MM月DD日 HH:mm:ss')
+            return this.$moment(cellValue).format(this.$t('k8s.text_37'))
           },
         },
         {

@@ -1,10 +1,10 @@
 <template>
   <div class="port-mapping">
-    <a-form-item class="mb-0" :extra="(isImportCluster && form.fc.getFieldValue(decorators.serviceType[0]) === 'external') ? '导入的集群无法选择网络' : ''">
+    <a-form-item class="mb-0" :extra="(isImportCluster && form.fc.getFieldValue(decorators.serviceType[0]) === 'external') ? $t('k8s.text_91') : ''">
       <a-radio-group v-decorator="decorators.serviceType">
-        <a-radio-button v-if="!ignoreNone" value="none">无</a-radio-button>
-        <a-radio-button value="internal">内部</a-radio-button>
-        <a-radio-button value="external">外部</a-radio-button>
+        <a-radio-button v-if="!ignoreNone" value="none">{{$t('k8s.text_75')}}</a-radio-button>
+        <a-radio-button value="internal">{{$t('k8s.text_92')}}</a-radio-button>
+        <a-radio-button value="external">{{$t('k8s.text_93')}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
     <lb-network
@@ -18,7 +18,7 @@
         <port :decorators="getDecorators(item)" :protocolDisabled="getProtocolDisabled(i)" @protocolChange="protocolChange" />
         <a-button v-if="portList.length > 1" type="danger" shape="circle" icon="delete" @click="del(item)" class="mt-1 ml-2" />
       </div>
-      <a-button type="primary" icon="plus" @click="add">添加端口</a-button>
+      <a-button type="primary" icon="plus" @click="add">{{$t('k8s.text_94')}}</a-button>
     </div>
   </div>
 </template>

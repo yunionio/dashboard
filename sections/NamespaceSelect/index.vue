@@ -3,7 +3,7 @@
     show-search
     :disabled="disabled"
     @change="change"
-    placeholder="请选择命名空间"
+    :placeholder="$t('k8s.text_61')"
     style="min-width: 200px;"
     :filter-option="filterOption"
     option-filter-prop="children"

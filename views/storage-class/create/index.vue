@@ -1,11 +1,11 @@
 <template>
   <div>
-    <page-header title="新建存储类" />
+    <page-header :title="$t('k8s.text_307')" />
     <a-form
       class="mt-3"
       :form="form.fc">
       <a-form-item
-        label="存储系统"
+        :label="$t('k8s.text_348')"
         v-bind="formItemLayout">
         <a-radio-group v-decorator="decorators.storageType">
           <a-radio-button value="cephCSI">
@@ -14,12 +14,12 @@
         </a-radio-group>
       </a-form-item>
       <a-form-item
-        label="名称"
+        :label="$t('k8s.text_41')"
         v-bind="formItemLayout">
-        <a-input v-decorator="decorators.name" placeholder="请输入名称" />
+        <a-input v-decorator="decorators.name" :placeholder="$t('k8s.text_60')" />
       </a-form-item>
       <a-form-item
-        label="集群"
+        :label="$t('k8s.text_19')"
         v-bind="formItemLayout">
         <cluster-select
           v-decorator="decorators.cluster"
@@ -27,7 +27,7 @@
           style="width: 140px;" />
       </a-form-item>
       <a-form-item
-        label="保密字典"
+        :label="$t('k8s.text_18')"
         class="mb-0"
         required
         v-bind="formItemLayout">
@@ -52,28 +52,28 @@
                 :need-params="true"
                 filterable
                 showSync
-                placeholder="请选择保密字典" />
-              <div class="ml-2" style="font-size: 12px;">没有想要的？可以前往 <a-button  style="font-size: 12px;" type="link" @click="toCreateSecret">新建保密字典</a-button></div>
+                :placeholder="$t('k8s.text_349')" />
+              <div class="ml-2" style="font-size: 12px;">{{$t('k8s.text_306')}}<a-button  style="font-size: 12px;" type="link" @click="toCreateSecret">{{$t('k8s.text_350')}}</a-button></div>
             </a-form-item>
           </a-col>
         </a-row>
       </a-form-item>
       <a-form-item
-        label="Ceph 集群"
+        :label="$t('k8s.text_351')"
         v-bind="formItemLayout">
-        <a-select v-decorator="decorators.clusterId" placeholder="请选择">
+        <a-select v-decorator="decorators.clusterId" :placeholder="$t('k8s.text_77')">
           <a-select-option v-for="item in cephcsiOpts" :value="item.clusterId" :key="item.clusterId">{{item.clusterId}}</a-select-option>
         </a-select>
       </a-form-item>
       <a-form-item
         label="Pool"
         v-bind="formItemLayout">
-        <a-select v-decorator="decorators.pool" placeholder="请先填入上述表单后，Pool会自动更新">
+        <a-select v-decorator="decorators.pool" :placeholder="$t('k8s.text_352')">
           <a-select-option v-for="item in poolOpts" :value="item" :key="item">{{item}}</a-select-option>
         </a-select>
       </a-form-item>
       <a-form-item
-        label="文件系统"
+        :label="$t('k8s.text_353')"
         v-bind="formItemLayout">
         <a-select v-decorator="decorators.csiFsType">
           <a-select-option value="ext4">ext4</a-select-option>
@@ -82,14 +82,12 @@
       </a-form-item>
       <a-form-item :wrapper-col="{ span: 20, offset: 3 }">
         <a-button class="mr-2" type="primary" @click="handleConfirm" :loading="loading">{{$t('dialog.ok')}}</a-button>
-        <a-button @click="cancel">取消</a-button>
+        <a-button @click="cancel">{{$t('k8s.text_162')}}</a-button>
       </a-form-item>
     </a-form>
     <base-dialog v-if="showCreateCephCSI" @cancel="() => showCreateCephCSI = false">
-      <div slot="header">部署CephCSI</div>
-      <div slot="body">
-        服务组件 CephCSI 尚未部署，请先部署
-      </div>
+      <div slot="header">{{$t('k8s.text_354')}}</div>
+      <div slot="body">{{$t('k8s.text_355')}}</div>
       <div slot="footer">
         <a-button type="primary" @click="createCephCSI">{{ $t('dialog.ok') }}</a-button>
       </div>
@@ -140,7 +138,7 @@ export default {
           {
             validateTrigger: 'blur',
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('k8s.text_60') },
             ],
           },
         ],
@@ -149,7 +147,7 @@ export default {
           {
             initialValue: initCluster,
             rules: [
-              { required: true, message: '请选择集群' },
+              { required: true, message: this.$t('k8s.text_30') },
             ],
           },
         ],
@@ -157,7 +155,7 @@ export default {
           'secretNamespace',
           {
             rules: [
-              { required: true, message: '请选择命名空间' },
+              { required: true, message: this.$t('k8s.text_61') },
             ],
           },
         ],
@@ -165,7 +163,7 @@ export default {
           'secretName',
           {
             rules: [
-              { required: true, message: '请选择保密字典' },
+              { required: true, message: this.$t('k8s.text_349') },
             ],
           },
         ],
@@ -173,7 +171,7 @@ export default {
           'clusterId',
           {
             rules: [
-              { required: true, message: '请选择clusterId' },
+              { required: true, message: this.$t('k8s.text_356') },
             ],
           },
         ],
@@ -181,7 +179,7 @@ export default {
           'pool',
           {
             rules: [
-              { required: true, message: '请选择pool' },
+              { required: true, message: this.$t('k8s.text_357') },
             ],
           },
         ],
@@ -306,7 +304,7 @@ export default {
         const values = await this.form.fc.validateFields()
         await this.doCreate(values)
         this.loading = false
-        this.$message.success('创建成功')
+        this.$message.success(this.$t('k8s.text_184'))
         this.$router.push('/k8s-storageclass')
       } catch (error) {
         this.loading = false

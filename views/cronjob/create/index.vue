@@ -1,13 +1,13 @@
 <template>
   <div>
-    <page-header title="新建定时任务(CronJob)" />
+    <page-header :title="$t('k8s.text_225')" />
     <page-body>
       <form-create ref="FormCreateRef" />
     </page-body>
     <page-footer>
       <div slot="right">
-        <a-button class="mr-3" type="primary" @click="confirm" :loading="loading">确 定</a-button>
-        <a-button @click="cancel">取 消</a-button>
+        <a-button class="mr-3" type="primary" @click="confirm" :loading="loading">{{$t('k8s.text_212')}}</a-button>
+        <a-button @click="cancel">{{$t('k8s.text_213')}}</a-button>
       </div>
     </page-footer>
   </div>

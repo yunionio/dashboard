@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="服务账户(ServiceAccount)" />
+    <page-header :title="$t('k8s.text_345')" />
     <page-body>
       <k8s-service-account-list :id="listId" :getParams="getParams" />
     </page-body>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="新建守护进程(Daemonset)" />
+    <page-header :title="$t('k8s.text_230')" />
     <page-body>
       <!-- <a-tabs v-model="activeTab">
         <a-tab-pane v-for="item in tabs" :tab="item.label" :key="item.component">
@@ -11,8 +11,8 @@
     </page-body>
     <page-footer>
       <div slot="right">
-        <a-button class="mr-3" type="primary" @click="confirm" :loading="loading">确 定</a-button>
-        <a-button @click="cancel">取 消</a-button>
+        <a-button class="mr-3" type="primary" @click="confirm" :loading="loading">{{$t('k8s.text_212')}}</a-button>
+        <a-button @click="cancel">{{$t('k8s.text_213')}}</a-button>
       </div>
     </page-footer>
   </div>
@@ -32,15 +32,15 @@ export default {
       activeTab: 'FormCreate',
       tabs: [
         {
-          label: '表单创建',
+          label: this.$t('k8s.text_231'),
           component: 'FormCreate',
         },
         {
-          label: '文本输入创建',
+          label: this.$t('k8s.text_232'),
           component: 'InputCreate',
         },
         {
-          label: '上传文件创建',
+          label: this.$t('k8s.text_233'),
           component: 'UploadCreate',
         },
       ],

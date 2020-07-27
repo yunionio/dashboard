@@ -1,16 +1,16 @@
 <template>
   <div class="w-75">
     <a-form :form="form.fc" v-bind="formItemLayout">
-      <a-form-item label="名称">
-        <a-input placeholder="请输入名称" v-decorator="decorators.name" />
+      <a-form-item :label="$t('k8s.text_41')">
+        <a-input :placeholder="$t('k8s.text_60')" v-decorator="decorators.name" />
       </a-form-item>
-      <a-form-item label="集群">
+      <a-form-item :label="$t('k8s.text_19')">
         <cluster-select v-decorator="decorators.cluster" @input="setCluster" />
       </a-form-item>
-      <a-form-item label="命名空间">
+      <a-form-item :label="$t('k8s.text_23')">
         <namespace-select v-decorator="decorators.namespace" :cluster="cluster" @input="setNamespace" :namespaceObj.sync="namespaceObj" />
       </a-form-item>
-      <a-form-item label="标签" required>
+      <a-form-item :label="$t('k8s.text_82')" required>
         <labels :decorators="decorators.labels" ref="labelRef" :firstCanDelete="false" />
       </a-form-item>
     </a-form>
@@ -47,8 +47,8 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
-              { min: 2, max: 24, message: '长度在 2 到 24 个字符', trigger: 'blur' },
+              { required: true, message: this.$t('k8s.text_60') },
+              { min: 2, max: 24, message: this.$t('k8s.text_132'), trigger: 'blur' },
               { validator: this.$validate('k8sName') },
             ],
           },
@@ -58,7 +58,7 @@ export default {
           {
             initialValue: this.$store.state.common.k8s.cluster,
             rules: [
-              { required: true, message: '请选择集群', trigger: 'blur' },
+              { required: true, message: this.$t('k8s.text_30'), trigger: 'blur' },
             ],
           },
         ],
@@ -67,7 +67,7 @@ export default {
           {
             initialValue: this.$store.state.common.k8s.namespace,
             rules: [
-              { required: true, message: '请选择命名空间', trigger: 'blur' },
+              { required: true, message: this.$t('k8s.text_61'), trigger: 'blur' },
             ],
           },
         ],
@@ -76,7 +76,7 @@ export default {
             `labelKeys[${i}]`,
             {
               rules: [
-                { required: true, message: '请输入键' },
+                { required: true, message: this.$t('k8s.text_138') },
               ],
             },
           ],
@@ -84,7 +84,7 @@ export default {
             `labelValues[${i}]`,
             {
               rules: [
-                { required: true, message: '请输入值' },
+                { required: true, message: this.$t('k8s.text_139') },
               ],
             },
           ],
@@ -122,7 +122,7 @@ export default {
           data: labels,
         }
         await this._doCreate(params)
-        this.$message.success('操作成功')
+        this.$message.success(this.$t('k8s.text_46'))
       } catch (error) {
         throw error
       }

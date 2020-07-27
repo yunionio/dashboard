@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="任务(Job)" />
+    <page-header :title="$t('k8s.text_242')" />
     <page-body>
       <job-list :id="listId" />
     </page-body>

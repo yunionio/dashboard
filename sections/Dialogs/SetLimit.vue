@@ -1,14 +1,14 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">设置副本数</div>
+    <div slot="header">{{$t('k8s.text_68')}}</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" name="资源" action="设置副本数" />
+      <dialog-selected-tips :count="params.data.length" :name="$t('k8s.text_64')" :action="$t('k8s.text_68')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         v-bind="formItemLayout"
         :form="form.fc">
-        <a-form-item label="副本数" v-if="!params.hideReplicas">
-          <a-input v-decorator="decorators.replicas" :min="0" type="number" placeholder="请输入副本数" addonAfter="个" @blur="change" />
+        <a-form-item :label="$t('k8s.text_69')" v-if="!params.hideReplicas">
+          <a-input v-decorator="decorators.replicas" :min="0" type="number" :placeholder="$t('k8s.text_70')" :addonAfter="$t('k8s.text_71')" @blur="change" />
         </a-form-item>
       </a-form>
     </div>
@@ -41,7 +41,7 @@ export default {
           'replicas',
           {
             rules: [
-              { required: true, message: '请输入副本数' },
+              { required: true, message: this.$t('k8s.text_70') },
             ],
           },
         ],

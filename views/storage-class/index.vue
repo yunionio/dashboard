@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="存储类(Storageclasses)" />
+    <page-header :title="$t('k8s.text_358')" />
     <page-body>
       <k8sstorageclasses-list :id="listId" :getParams="getParams" />
     </page-body>

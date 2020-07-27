@@ -1,4 +1,5 @@
 import { getNameDescriptionTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -16,13 +17,13 @@ export default {
       }),
       {
         field: 'namespace',
-        title: '命名空间',
+        title: i18n.t('k8s.text_23'),
         width: 120,
         sortable: true,
       },
       {
         field: 'endpoints',
-        title: '端点',
+        title: i18n.t('k8s.text_240'),
         slots: {
           default: ({ row }) => {
             return row.endpoints.filter(v => v.host).map(v => {

@@ -1,12 +1,13 @@
 import { sizestr } from '@/utils/utils'
 import { getTimeTableColumn } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
     this.columns = [
       {
         field: 'name',
-        title: '名称',
+        title: i18n.t('k8s.text_41'),
         width: 300,
         slots: {
           default: ({ row }, h) => {
@@ -41,7 +42,7 @@ export default {
       },
       {
         field: 'status',
-        title: '状态',
+        title: i18n.t('k8s.text_35'),
         minWidth: 70,
         slots: {
           default: ({ row }, h) => {
@@ -51,7 +52,7 @@ export default {
       },
       {
         field: 'cpuRequests/cpuCapacity',
-        title: 'CPU(核)',
+        title: i18n.t('k8s.text_282'),
         minWidth: 70,
         formatter: ({ row }) => {
           return (row.allocatedResources.cpuRequests / 1000) + ' / ' + (row.allocatedResources.cpuCapacity / 1000)
@@ -59,7 +60,7 @@ export default {
       },
       {
         field: 'memoryRequests/memoryCapacity',
-        title: '内存',
+        title: i18n.t('k8s.text_101'),
         minWidth: 70,
         formatter: ({ row }) => {
           return sizestr(row.allocatedResources.memoryRequests, 'B', 1024) + ' / ' + sizestr(row.allocatedResources.memoryCapacity, 'B', 1024)
@@ -67,7 +68,7 @@ export default {
       },
       {
         field: 'allocatedPods/podCapacity',
-        title: '容器组',
+        title: i18n.t('k8s.text_9'),
         minWidth: 70,
         formatter: ({ row }) => {
           return row.allocatedResources.allocatedPods + ' / ' + row.allocatedResources.podCapacity
@@ -75,10 +76,10 @@ export default {
       },
       {
         field: 'unschedulable',
-        title: '可调度',
+        title: i18n.t('k8s.text_296'),
         minWidth: 70,
         formatter: ({ cellValue }) => {
-          return !cellValue ? '可调度' : '不可调度'
+          return !cellValue ? i18n.t('k8s.text_296') : i18n.t('k8s.text_297')
         },
       },
       getTimeTableColumn({ field: 'creationTimestamp', fromNow: true, sortable: true }),

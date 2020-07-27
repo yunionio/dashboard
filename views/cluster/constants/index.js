@@ -1,8 +1,9 @@
+import i18n from '@/locales'
 export const KUBE_PROVIDER = 'onecloud'
 
 export const NODE_ROLE_MAP = {
-  controlplane: '控制节点',
-  node: '计算节点',
+  controlplane: i18n.t('k8s.text_144'),
+  node: i18n.t('k8s.text_145'),
 }
 
 export const GUEST_DEFAULT_CONFIG = {

@@ -1,16 +1,17 @@
+import i18n from '@/locales'
 export default {
   created () {
     this.singleActions = [
       {
-        label: '删除',
+        label: i18n.t('k8s.text_201'),
         permission: 'k8s_namespaces_delete',
         action: (obj) => {
           this.createDialog('DeleteResDialog', {
             vm: this,
             data: [obj],
             columns: this.columns,
-            title: '删除命名空间',
-            name: '命名空间',
+            title: i18n.t('k8s.text_284'),
+            name: i18n.t('k8s.text_23'),
             onManager: this.onManager,
             requestData: {
               cluster: obj.clusterID,
@@ -25,7 +26,7 @@ export default {
         },
       },
       {
-        label: '查看/编辑',
+        label: i18n.t('k8s.text_215'),
         permission: 'k8s_namespaces_update',
         action: async obj => {
           const manager = new this.$Manager('namespaces', 'v1')

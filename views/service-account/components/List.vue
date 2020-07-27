@@ -62,15 +62,15 @@ export default {
       }),
       groupActions: [
         {
-          label: '删除',
+          label: this.$t('k8s.text_201'),
           permission: 'k8s_rbacroles_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,
               data: this.list.selectedItems,
               columns: this.columns,
-              title: '删除角色',
-              name: '角色',
+              title: this.$t('k8s.text_328'),
+              name: this.$t('k8s.text_24'),
               onManager: this.onManager,
               idKey: 'name',
               ok: (ids, data) => {
@@ -96,7 +96,7 @@ export default {
               if (unique.length > 1) {
                 return {
                   validate: false,
-                  tooltip: '请选择同一个命名空间下的资源',
+                  tooltip: this.$t('k8s.text_203'),
                 }
               }
               return {
@@ -106,7 +106,7 @@ export default {
             } else {
               return {
                 validate: false,
-                tooltip: '请选择需要删除的资源，且为同一命名空间下的资源',
+                tooltip: this.$t('k8s.text_204'),
               }
             }
           },

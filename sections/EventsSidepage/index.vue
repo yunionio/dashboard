@@ -29,24 +29,24 @@ export default {
       columns: [
         {
           field: 'message',
-          title: '内容',
+          title: this.$t('k8s.text_72'),
           minWidth: 150,
           showOverflow: 'title',
         },
         {
           field: 'sourceComponent',
-          title: '来源',
+          title: this.$t('k8s.text_73'),
           width: 120,
         },
         {
           field: 'reason',
-          title: '原因',
+          title: this.$t('k8s.text_39'),
           minWidth: 70,
           showOverflow: 'ellipsis',
         },
         {
           field: 'creationTimestamp',
-          title: '创建时间',
+          title: this.$t('k8s.text_74'),
           minWidth: 100,
           showOverflow: 'ellipsis',
           formatter: ({ row }) => {

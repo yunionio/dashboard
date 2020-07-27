@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="容器组(Pod)"
+    :title="$t('k8s.text_316')"
     icon="res-k8s-pod"
     :res-name="detailData.name"
     :actions="params.actions"
@@ -49,14 +49,14 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'detail' },
-        { label: '终端', key: 'terminal' },
-        { label: '日志', key: 'log' },
-        { label: '容器', key: 'container-sidepage' },
-        { label: '初始化容器', key: 'init-container-sidepage' },
-        { label: '现状', key: 'condition-sidepage' },
-        { label: '事件', key: 'events-sidepage' },
-        { label: '源信息', key: 'source-information-sidepage' },
+        { label: this.$t('k8s.text_217'), key: 'detail' },
+        { label: this.$t('k8s.text_324'), key: 'terminal' },
+        { label: this.$t('k8s.text_325'), key: 'log' },
+        { label: this.$t('k8s.text_1'), key: 'container-sidepage' },
+        { label: this.$t('k8s.text_326'), key: 'init-container-sidepage' },
+        { label: this.$t('k8s.text_327'), key: 'condition-sidepage' },
+        { label: this.$t('k8s.text_218'), key: 'events-sidepage' },
+        { label: this.$t('k8s.text_219'), key: 'source-information-sidepage' },
       ],
     }
   },

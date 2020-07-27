@@ -1,11 +1,12 @@
 import { getTimeTableColumn } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
     this.columns = [
       {
         field: 'name',
-        title: '名称',
+        title: i18n.t('k8s.text_41'),
         width: 300,
         slots: {
           default: ({ row }, h) => {
@@ -16,7 +17,7 @@ export default {
       },
       {
         field: 'status',
-        title: '状态',
+        title: i18n.t('k8s.text_35'),
         width: 200,
         slots: {
           default: ({ row }, h) => {

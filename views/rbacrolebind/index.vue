@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="角色绑定(RbacRoleBinding)" />
+    <page-header :title="$t('k8s.text_331')" />
     <page-body>
       <k8s-rbac-role-bind-list :id="listId" :getParams="getParams" />
     </page-body>

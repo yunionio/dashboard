@@ -26,7 +26,7 @@ export default {
       baseInfo: [
         {
           field: 'name',
-          title: '名称',
+          title: this.$t('k8s.text_41'),
           slots: {
             default: ({ row }) => {
               return [
@@ -39,15 +39,15 @@ export default {
         },
         {
           field: 'cluster',
-          title: '集群',
+          title: this.$t('k8s.text_19'),
         },
         {
           field: 'namespace',
-          title: '命名空间',
+          title: this.$t('k8s.text_23'),
         },
         {
           field: 'endpoints',
-          title: '端点',
+          title: this.$t('k8s.text_240'),
           slots: {
             default: ({ row }) => {
               return row.endpoints.filter(v => v.host).map(v => {
@@ -61,7 +61,7 @@ export default {
         },
         {
           field: 'creationTimestamp',
-          title: '创建时间',
+          title: this.$t('k8s.text_74'),
           formatter: ({ row }) => {
             return (row.creationTimestamp && this.$moment(row.creationTimestamp).format()) || '-'
           },

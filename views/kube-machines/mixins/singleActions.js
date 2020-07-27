@@ -1,14 +1,15 @@
+import i18n from '@/locales'
 export default {
   created () {
     this.singleActions = [
       {
-        label: '删除',
+        label: i18n.t('k8s.text_201'),
         permission: 'k8s_kubemachines_delete',
         action: (obj) => {
           this.createDialog('DeleteResDialog', {
             data: [obj],
             columns: this.columns,
-            title: '删除',
+            title: i18n.t('k8s.text_201'),
             onManager: this.onManager,
             success: () => {
               this.destroySidePages()

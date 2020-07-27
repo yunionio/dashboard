@@ -48,7 +48,7 @@ export default {
       }),
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('k8s.text_49'),
           permission: 'k8s_cronjobs_create',
           action: () => {
             this.$router.push({ path: '/k8s-cronjob/create' })
@@ -58,7 +58,7 @@ export default {
           }),
         },
         {
-          label: '删除',
+          label: this.$t('k8s.text_201'),
           permission: 'k8s_cronjobs_delete',
           action: () => {
             const data = this.list.selectedItems
@@ -71,8 +71,8 @@ export default {
               vm: this,
               data,
               columns: this.columns,
-              title: '删除',
-              name: '定时任务',
+              title: this.$t('k8s.text_201'),
+              name: this.$t('k8s.text_8'),
               onManager: this.onManager,
               idKey: 'name',
               requestData,
@@ -86,11 +86,11 @@ export default {
               const unique = Array.from(new Set(namespaces))
               if (unique.length > 1) {
                 validate = false
-                tooltip = '请选择同一个命名空间下的资源'
+                tooltip = this.$t('k8s.text_203')
               }
             } else {
               validate = false
-              tooltip = '请选择需要删除的资源，且为同一命名空间下的资源'
+              tooltip = this.$t('k8s.text_204')
             }
             return {
               validate,
