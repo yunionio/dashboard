@@ -189,7 +189,7 @@ export default {
     if (this.isList) {
       this.$watch('listRowData', (val, oldVal) => {
         if (!R.equals(val, oldVal)) {
-          this.data.data = { ...val }
+          this.data.data = { ...(this.data.data || {}), ...val }
         }
       })
     }
@@ -207,6 +207,17 @@ export default {
         id: this.sidePageData.parentWindowId,
         currentTab: val,
       })
+    },
+    compareStatusWithList (data) {
+      const detailStatus = {}
+      const listStatus = {}
+      Object.keys(this.steadyStatus).forEach(key => {
+        detailStatus[key] = data[key]
+        listStatus[key] = this.listRowData[key]
+      })
+      if (detailStatus && listStatus && !R.equals(detailStatus, listStatus)) {
+        this.singleRefresh(data[this.idKey], this.steadyStatus)
+      }
     },
     async fetchData () {
       this.loading = true
@@ -230,6 +241,9 @@ export default {
         this.checkSteadyStatus()
         if (R.is(Function, this.fetchDataCallback)) {
           await this.fetchDataCallback()
+        }
+        if (this.isList) {
+          this.compareStatusWithList(data)
         }
         return response
       } catch (error) {
