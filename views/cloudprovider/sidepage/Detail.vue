@@ -31,7 +31,7 @@ export default {
         getBrandTableColumn({ field: 'provider' }),
         {
           field: 'account',
-          title: '账号',
+          title: this.$t('cloudenv.text_94'),
           slots: {
             default: ({ row }) => {
               return [
@@ -45,7 +45,7 @@ export default {
         getEnabledTableColumn(),
         {
           field: 'last_sync',
-          title: '同步时间',
+          title: this.$t('cloudenv.text_103'),
           formatter: ({ row }) => {
             return this.$moment(row.last_sync).format()
           },
@@ -53,9 +53,9 @@ export default {
       ],
       extraInfo: [
         {
-          title: '其他信息',
+          title: this.$t('cloudenv.text_359'),
           items: [
-            getStatusTableColumn({ statusModule: 'cloudaccountHealthStatus', title: '健康状态', field: 'health_status' }),
+            getStatusTableColumn({ statusModule: 'cloudaccountHealthStatus', title: this.$t('cloudenv.text_93'), field: 'health_status' }),
           ],
         },
       ],

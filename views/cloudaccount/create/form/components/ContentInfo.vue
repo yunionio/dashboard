@@ -1,6 +1,6 @@
 <template>
   <div class="h-desc-bg mb-2">
-    <h5 class="h-title">以下<em>{{params.data.length}}个</em>云账号将进行更新账单文件</h5>
+    <h5 class="h-title">{{$t('cloudenv.text_244')}}<em>{{$t('cloudenv.text_245', [params.data.length])}}</em>{{$t('cloudenv.text_246')}}</h5>
     <div class="pl-4 pr-4 pb-2">
       <a-row>
         <a-col :span="24">
@@ -49,11 +49,11 @@ export default {
         getAccessUrlTableColumn(),
         getEnabledTableColumn(),
         getStatusTableColumn({ statusModule: 'cloudaccount' }),
-        getStatusTableColumn({ statusModule: 'cloudaccountHealthStatus', title: '健康状态', field: 'health_status', minWidth: 90 }),
+        getStatusTableColumn({ statusModule: 'cloudaccountHealthStatus', title: this.$t('cloudenv.text_93'), field: 'health_status', minWidth: 90 }),
         getGuestCountTableColumn(),
         getBalanceTableColumn(),
         getHostCountTableColumn(),
-        getCopyWithContentTableColumn({ field: 'account', title: '账号' }),
+        getCopyWithContentTableColumn({ field: 'account', title: this.$t('cloudenv.text_94') }),
         getBrandTableColumn(),
       ]
     },

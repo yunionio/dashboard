@@ -1,9 +1,10 @@
 import { CategoryMap, ConditionMap } from '../constants'
+import i18n from '@/locales'
 
 export const getCategoryTableColumn = () => {
   return {
     field: 'category',
-    title: '类型',
+    title: i18n.t('cloudenv.text_360'),
     minWidth: 70,
     showOverflow: 'title',
     formatter: ({ row }) => {
@@ -15,11 +16,11 @@ export const getCategoryTableColumn = () => {
 export const getConditionTableColumn = () => {
   return {
     field: 'condition',
-    title: '策略',
+    title: i18n.t('cloudenv.text_21'),
     minWidth: 70,
     showOverflow: 'title',
     formatter: ({ row }) => {
-      return `要求${ConditionMap[row.condition]}` || '-'
+      return i18n.t('cloudenv.text_394', [ConditionMap[row.condition]]) || '-'
     },
   }
 }
@@ -27,7 +28,7 @@ export const getConditionTableColumn = () => {
 export const getParameterTableColumn = () => {
   return {
     field: 'parameter',
-    title: '参数',
+    title: i18n.t('cloudenv.text_389'),
     minWidth: 70,
     showOverflow: 'title',
     formatter: ({ row }) => {

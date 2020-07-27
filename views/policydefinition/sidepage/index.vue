@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="策略"
+    :title="$t('cloudenv.text_21')"
     icon="res-policydefinition"
     :res-name="detailData.name"
     :actions="params.actions"
@@ -43,9 +43,9 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'policydefinition-detail' },
-        { label: '域', key: 'policyassignments-list' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('cloudenv.text_237'), key: 'policydefinition-detail' },
+        { label: this.$t('cloudenv.text_393'), key: 'policyassignments-list' },
+        { label: this.$t('cloudenv.text_15'), key: 'event-drawer' },
       ],
     }
   },

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="策略" />
+    <page-header :title="$t('cloudenv.text_21')" />
     <page-body>
       <policydefinition-list :id="listId" />
     </page-body>

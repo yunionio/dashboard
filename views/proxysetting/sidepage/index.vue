@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="代理"
+    :title="$t('cloudenv.text_14')"
     icon="res-proxysetting"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
@@ -35,9 +35,9 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'detail' },
-        { label: '云账号', key: 'cloudaccount-list' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('cloudenv.text_237'), key: 'detail' },
+        { label: this.$t('cloudenv.text_12'), key: 'cloudaccount-list' },
+        { label: this.$t('cloudenv.text_15'), key: 'event-drawer' },
       ],
     }
   },

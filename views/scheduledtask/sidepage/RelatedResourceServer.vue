@@ -43,7 +43,7 @@ export default {
         steadyStatus: Object.values(expectStatus.scalingserver).flat().concat(Object.values(expectStatus.server).flat()),
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('cloudenv.text_95'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
@@ -60,7 +60,7 @@ export default {
           addLock: true,
           addBackup: true,
           formRules: [
-            { required: true, message: '请输入名称' },
+            { required: true, message: this.$t('cloudenv.text_190') },
             { validator: this.$validate('serverCreateName') },
           ],
           slotCallback: row => {
@@ -71,7 +71,7 @@ export default {
         }),
         {
           field: 'os_type',
-          title: '系统',
+          title: this.$t('cloudenv.text_457'),
           width: 50,
           slots: {
             default: ({ row }) => {
@@ -80,17 +80,17 @@ export default {
                 name = 'Windows'
               }
               const version = (row.metadata && row.metadata.os_version) ? `${row.metadata.os_version}` : ''
-              const tooltip = (version.includes(name) ? version : `${name} ${version}`) || '未知' // 去重
+              const tooltip = (version.includes(name) ? version : `${name} ${version}`) || this.$t('cloudenv.text_458') // 去重
               return [
                 <SystemIcon tooltip={ tooltip } name={ name } />,
               ]
             },
           },
         },
-        getStatusTableColumn({ title: '状态', statusModule: 'server', width: 130 }),
+        getStatusTableColumn({ title: this.$t('cloudenv.text_98'), statusModule: 'server', width: 130 }),
         {
           field: 'instance_type',
-          title: '配置',
+          title: this.$t('cloudenv.text_459'),
           showOverflow: 'ellipsis',
           minWidth: 120,
           sortable: true,
@@ -107,7 +107,7 @@ export default {
         },
         {
           field: 'isolated_time',
-          title: '关联时间',
+          title: this.$t('cloudenv.text_460'),
           minWidth: 100,
           formatter: ({ row }) => {
             const labelDetails = this.data.label_details
@@ -117,7 +117,7 @@ export default {
         },
         {
           field: 'host',
-          title: '宿主机',
+          title: this.$t('cloudenv.text_101'),
           sortable: true,
           showOverflow: 'ellipsis',
           minWidth: 100,
@@ -134,11 +134,11 @@ export default {
       ],
       singleActions: [
         {
-          label: '解绑',
+          label: this.$t('cloudenv.text_452'),
           permission: 'scheduledtasks_perform_set_label',
           action: (row) => {
             this.createDialog('RelatedResourceRemoveDialog', {
-              title: '解绑',
+              title: this.$t('cloudenv.text_452'),
               data: [row],
               resData: this.data,
               columns: this.columns,
@@ -156,14 +156,14 @@ export default {
       ],
       groupActions: [
         {
-          label: '关联资源',
+          label: this.$t('cloudenv.text_454'),
           permission: 'scheduledtasks_perform_set_label',
           action: () => {
             this.createDialog('ScheduledtaskEditDialog', {
               data: [this.data],
               columns: this.columns,
               onManager: this.onManager,
-              title: '关联资源',
+              title: this.$t('cloudenv.text_454'),
               success: (labels) => {
                 this.list.getParams = {
                   filter: `id.in(${labels.join(',')})`,
@@ -179,11 +179,11 @@ export default {
           },
         },
         {
-          label: '解绑',
+          label: this.$t('cloudenv.text_452'),
           permission: 'scheduledtasks_perform_set_label',
           action: () => {
             this.createDialog('RelatedResourceRemoveDialog', {
-              title: '解绑',
+              title: this.$t('cloudenv.text_452'),
               data: this.list.selectedItems,
               resData: this.data,
               columns: this.columns,

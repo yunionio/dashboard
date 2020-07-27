@@ -49,17 +49,17 @@ export default {
           health_status: getStatusFilter({
             field: 'health_status',
             statusModule: 'cloudaccountHealthStatus',
-            title: '健康状态',
+            title: this.$t('cloudenv.text_93'),
           }),
           brand: getBrandFilter(),
           account: {
-            label: '账号',
+            label: this.$t('cloudenv.text_94'),
             filter: true,
             formatter: val => {
               return `account.contains("${val}")`
             },
           },
-          enable_auto_sync: getEnabledFilter({ label: '自动同步' }),
+          enable_auto_sync: getEnabledFilter({ label: this.$t('cloudenv.text_83') }),
           share_mode: getPublicFilter(),
           domain: getDomainFilter(),
         },
@@ -67,23 +67,23 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
-          { label: '环境', key: 'access_url' },
-          { label: '启用状态', key: 'enabled' },
-          { label: '状态', key: 'status' },
-          { label: '健康状态', key: 'health_status' },
-          { label: '虚拟机', key: 'guest_count' },
-          { label: '余额', key: 'balance' },
-          { label: '宿主机', key: 'host_count' },
-          { label: '云账号', key: 'account' },
-          { label: '平台', key: 'brand' },
-          { label: '自动同步', key: 'enable_auto_sync' },
-          { label: '同步时间', key: 'last_auto_sync' },
+          { label: this.$t('cloudenv.text_95'), key: 'name' },
+          { label: this.$t('cloudenv.text_96'), key: 'access_url' },
+          { label: this.$t('cloudenv.text_97'), key: 'enabled' },
+          { label: this.$t('cloudenv.text_98'), key: 'status' },
+          { label: this.$t('cloudenv.text_93'), key: 'health_status' },
+          { label: this.$t('cloudenv.text_99'), key: 'guest_count' },
+          { label: this.$t('cloudenv.text_100'), key: 'balance' },
+          { label: this.$t('cloudenv.text_101'), key: 'host_count' },
+          { label: this.$t('cloudenv.text_12'), key: 'account' },
+          { label: this.$t('cloudenv.text_102'), key: 'brand' },
+          { label: this.$t('cloudenv.text_83'), key: 'enable_auto_sync' },
+          { label: this.$t('cloudenv.text_103'), key: 'last_auto_sync' },
         ],
       },
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('cloudenv.text_104'),
           permission: 'cloudaccounts_create',
           action: () => {
             this.$router.push({ name: 'CloudaccountCreate' })
@@ -100,7 +100,7 @@ export default {
             const ownerDomain = this.$store.getters.isAdminMode || this.list.selectedItems.every(obj => obj.domain_id === this.$store.getters.userInfo.projectDomainId)
             return [
               {
-                label: '全量同步',
+                label: this.$t('cloudenv.text_105'),
                 permission: 'cloudaccounts_perform_sync',
                 action: () => {
                   this.list.batchPerformAction('sync', { full_sync: true, force: true }, this.list.steadyStatus)
@@ -108,7 +108,7 @@ export default {
                 meta: () => this.syncPolicy(this.list.selectedItems),
               },
               {
-                label: '设置自动同步',
+                label: this.$t('cloudenv.text_106'),
                 permission: 'cloudaccounts_perform_enable_auto_sync,cloudaccounts_perform_disable_auto_sync',
                 action: () => {
                   this.createDialog('CloudaccountSetAutoSyncDialog', {
@@ -121,7 +121,7 @@ export default {
                 meta: () => this.setAutoSyncPolicy(this.list.selectedItems),
               },
               {
-                label: '连接测试',
+                label: this.$t('cloudenv.text_107'),
                 permission: 'cloudaccounts_perform_sync',
                 action: () => {
                   this.list.batchPerformAction('sync', null, this.list.steadyStatus)
@@ -145,14 +145,14 @@ export default {
                 ],
               }),
               {
-                label: '删除',
+                label: this.$t('cloudenv.text_108'),
                 permission: 'cloudaccounts_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     vm: this,
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    title: '删除云账号',
+                    title: this.$t('cloudenv.text_109'),
                     name: this.$t('dictionary.cloudaccount'),
                     onManager: this.onManager,
                   })

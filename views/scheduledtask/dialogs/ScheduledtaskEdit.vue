@@ -2,21 +2,21 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{ title }}</div>
     <div slot="body">
-      <dialog-selected-tips name="定时任务" class="mt-3" :count="params.data.length" :action="title" />
+      <dialog-selected-tips :name="$t('cloudenv.text_431')" class="mt-3" :count="params.data.length" :action="title" />
       <dialog-table v-if="params.columns && params.columns.length" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc"
         v-bind="formItemLayout"
         hideRequiredMark>
-        <a-form-item label="指定虚拟机" v-if="isServer">
+        <a-form-item :label="$t('cloudenv.text_440')" v-if="isServer">
           <list-select
             v-decorator="decorators.servers"
             :list-props="serverProps"
             :multiple="true"
             :formatter="formatter" />
         </a-form-item>
-        <a-form-item label="标签" class="mb-0" v-if="isTag">
-          <tag v-decorator="decorators.tag" extra="最多可绑定20个标签" />
+        <a-form-item :label="$t('cloudenv.text_16')" class="mb-0" v-if="isTag">
+          <tag v-decorator="decorators.tag" :extra="$t('cloudenv.text_441')" />
         </a-form-item>
       </a-form>
     </div>
@@ -45,7 +45,7 @@ export default {
   data () {
     const validateTag = function (rule, value, callback) {
       if (R.is(Object, value) && Object.keys(value).length > 20) {
-        return callback(new Error('标签不可超过20个'))
+        return callback(new Error(this.$t('cloudenv.text_442')))
       }
       callback()
     }
@@ -76,7 +76,7 @@ export default {
           {
             initialValue: getInitTags(labels),
             rules: [
-              { required: true, message: '请选择标签' },
+              { required: true, message: this.$t('cloudenv.text_451') },
               { validator: validateTag },
             ],
           },
@@ -100,7 +100,7 @@ export default {
       return this.params.data.every((item) => item.label_type === 'tag')
     },
     title () {
-      return this.params.title || '关联资源'
+      return this.params.title || this.$t('cloudenv.text_454')
     },
   },
   methods: {

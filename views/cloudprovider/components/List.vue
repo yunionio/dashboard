@@ -37,7 +37,7 @@ export default {
         steadyStatus: Object.values(expectStatus.cloudaccount).flat(),
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('cloudenv.text_95'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
@@ -47,7 +47,7 @@ export default {
       }),
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('cloudenv.text_104'),
           action: () => {
             this.createDialog('cloudproviderCreateDialog', {
               data: this.data,
@@ -59,12 +59,12 @@ export default {
             return {
               buttonType: 'primary',
               validate: this.data.brand === 'Azure',
-              tooltip: this.data.brand !== 'Azure' && '仅Azure平台支持此操作',
+              tooltip: this.data.brand !== 'Azure' && this.$t('cloudenv.text_333'),
             }
           },
         },
         {
-          label: '启用',
+          label: this.$t('cloudenv.text_334'),
           action: () => {
             this.list.batchPerformAction('enable', null).then(() => {
               this.$bus.$emit('CloudAccountListSingleRefresh', [this.data.id])
@@ -78,7 +78,7 @@ export default {
           },
         },
         {
-          label: '禁用',
+          label: this.$t('cloudenv.text_335'),
           action: () => {
             this.list.batchPerformAction('disable', null).then(() => {
               this.$bus.$emit('CloudAccountListSingleRefresh', [this.data.id])
@@ -92,14 +92,14 @@ export default {
           },
         },
         {
-          label: `更改${this.$t('dictionary.project')}`,
+          label: this.$t('cloudenv.text_294', [this.$t('dictionary.project')]),
           action: () => {
             if (isAccountDomain(this.data)) {
               this.createDialog('ChangeProjectDialog', {
                 data: this.list.selectedItems,
                 columns: this.columns,
                 onManager: this.onManager,
-                alertMessage: `更改${this.$t('dictionary.project')}时若同时修改${this.$t('dictionary.domain')}，该订阅所属${this.$t('dictionary.domain')}会同步修改`,
+                alertMessage: this.$t('cloudenv.text_336', [this.$t('dictionary.project'), this.$t('dictionary.domain'), this.$t('dictionary.domain')]),
               })
             } else {
               this.createDialog('ChangeOwenrDialog', {
@@ -108,7 +108,7 @@ export default {
                 onManager: this.onManager,
                 action: 'change-project',
                 resource: 'cloudproviders',
-                alertMessage: `更改${this.$t('dictionary.project')}时若同时修改${this.$t('dictionary.domain')}，该订阅所属${this.$t('dictionary.domain')}会同步修改`,
+                alertMessage: this.$t('cloudenv.text_336', [this.$t('dictionary.project'), this.$t('dictionary.domain'), this.$t('dictionary.domain')]),
               })
             }
           },

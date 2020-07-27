@@ -21,7 +21,7 @@
               :item.sync="form.fi.cloudprovider" />
           </a-form-item>
         </template>
-        <a-form-item label="用户名" :extra="nameExtra">
+        <a-form-item :label="$t('cloudenv.text_375')" :extra="nameExtra">
           <a-input v-decorator="decorators.generate_name" :placeholder="namePlaceholder"  @change="e => { form.fi.generate_name = e.target.value }" />
           <name-repeated
             v-slot:extra
@@ -80,7 +80,7 @@ export default {
             validateFirst: true,
             rules: this.params.cloudaccount.brand === 'Google' ? [
               { required: true, message: this.$t('common.text00042') },
-              { validator: this.$validate('email'), message: '请输入正确的Google账号' },
+              { validator: this.$validate('email'), message: this.$t('cloudenv.text_376') },
             ] : [],
           },
         ],
@@ -132,7 +132,7 @@ export default {
           },
           {
             field: 'description',
-            title: '备注',
+            title: this.$t('cloudenv.text_327'),
             showOverflow: 'title',
           },
         ],
@@ -158,7 +158,7 @@ export default {
       return this.params.cloudaccount.brand === 'Google'
     },
     namePlaceholder () {
-      return this.isGoogle ? '请输入Google云账号' : this.form.fi.user.name
+      return this.isGoogle ? this.$t('cloudenv.text_377') : this.form.fi.user.name
     },
     nameRepeatParams () {
       if (this.isGoogle) {

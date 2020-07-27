@@ -1,6 +1,7 @@
 import { mapGetters } from 'vuex'
 import { changeToArr } from '@/utils/utils'
 import expectStatus from '@/constants/expectStatus'
+import i18n from '@/locales'
 
 const steadyStatus = Object.values(expectStatus.cloudaccount).flat()
 
@@ -13,7 +14,7 @@ export default {
     const isAccountDomain = data => data.share_mode === 'account_domain'
     this.singleActions = [
       {
-        label: `更改${this.$t('dictionary.project')}`,
+        label: this.$t('cloudenv.text_294', [this.$t('dictionary.project')]),
         action: obj => {
           if (isAccountDomain(this.data)) {
             this.createDialog('ChangeProjectDialog', {
@@ -21,7 +22,7 @@ export default {
               data: [obj],
               columns: this.columns,
               onManager: this.onManager,
-              projectLabel: `资源默认归属${this.$t('dictionary.project')}`,
+              projectLabel: this.$t('cloudenv.text_294', [this.$t('dictionary.project')]),
               formItemLayout: {
                 wrapperCol: {
                   span: 19,
@@ -38,8 +39,8 @@ export default {
               columns: this.columns,
               onManager: this.onManager,
               action: 'change-project',
-              projectLabel: `资源默认归属${this.$t('dictionary.project')}`,
-              alertMessage: `更改${this.$t('dictionary.project')}时若同时修改${this.$t('dictionary.domain')}，该订阅所属${this.$t('dictionary.domain')}会同步修改`,
+              projectLabel: this.$t('cloudenv.text_294', [this.$t('dictionary.project')]),
+              alertMessage: this.$t('cloudenv.text_336', [this.$t('dictionary.project'), this.$t('dictionary.domain'), this.$t('dictionary.domain')]),
               formItemLayout: {
                 wrapperCol: {
                   span: 19,
@@ -54,7 +55,7 @@ export default {
         },
         meta: obj => {
           let tooltip
-          if (!obj.enabled) tooltip = '请先启用'
+          if (!obj.enabled) tooltip = i18n.t('cloudenv.text_357')
           return {
             validate: obj.enabled && ownerDomain(obj),
             tooltip,
@@ -62,7 +63,7 @@ export default {
         },
       },
       {
-        label: '全量同步',
+        label: i18n.t('cloudenv.text_105'),
         action: obj => {
           this.onManager('performAction', {
             id: obj.id,
@@ -86,15 +87,15 @@ export default {
           let tooltip
           let validate = true
           if (!ownerDomain(obj)) {
-            tooltip = '权限不足'
+            tooltip = i18n.t('cloudenv.text_358')
             validate = false
           }
           if (!obj.enabled) {
-            tooltip = '请先启用'
+            tooltip = i18n.t('cloudenv.text_357')
             validate = false
           }
           if (this.data.enable_auto_sync) {
-            tooltip = '请先取消设置自动同步'
+            tooltip = i18n.t('cloudenv.text_313')
             validate = false
           }
           return {
@@ -104,11 +105,11 @@ export default {
         },
       },
       {
-        label: '更多',
+        label: i18n.t('cloudenv.text_311'),
         actions: obj => {
           return [
             {
-              label: '启用',
+              label: i18n.t('cloudenv.text_334'),
               action: () => {
                 this.onManager('performAction', {
                   id: obj.id,
@@ -124,7 +125,7 @@ export default {
               },
             },
             {
-              label: '禁用',
+              label: i18n.t('cloudenv.text_335'),
               action: () => {
                 this.onManager('performAction', {
                   id: obj.id,
@@ -151,14 +152,14 @@ export default {
       if (!items.length) return { validate: false }
       const enabledValid = items.every(obj => {
         if (!obj.enabled) {
-          tooltip = '请先启用云账号'
+          tooltip = i18n.t('cloudenv.text_312')
           return false
         }
         return true
       })
       const autoSyncValid = items.every(obj => {
         if (obj.enable_auto_sync) {
-          tooltip = '请先取消设置自动同步'
+          tooltip = i18n.t('cloudenv.text_313')
           return false
         }
         return true
@@ -174,7 +175,7 @@ export default {
       if (!items.length) return { validate: false }
       const enabledValid = items.every(obj => {
         if (!obj.enabled) {
-          tooltip = '请先启用云账号'
+          tooltip = i18n.t('cloudenv.text_312')
           return false
         }
         return true

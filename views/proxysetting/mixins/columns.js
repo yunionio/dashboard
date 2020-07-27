@@ -4,6 +4,7 @@ import {
   getProjectDomainTableColumn,
   getPublicScopeTableColumn,
 } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -29,21 +30,21 @@ export default {
         },
         slotCallback: row => {
           return (
-            <side-page-trigger name="ProxysettingSidePage" id={row.id} list={this.list} vm={this}>{ row.name } {row.id === 'DIRECT' && '（直连）'}</side-page-trigger>
+            <side-page-trigger name="ProxysettingSidePage" id={row.id} list={this.list} vm={this}>{ row.name } {row.id === 'DIRECT' && i18n.t('cloudenv.text_110')}</side-page-trigger>
           )
         },
       }),
       getCopyWithContentTableColumn({
         field: 'https_proxy',
-        title: 'https代理',
+        title: i18n.t('cloudenv.text_395'),
       }),
       getCopyWithContentTableColumn({
         field: 'http_proxy',
-        title: 'http代理',
+        title: i18n.t('cloudenv.text_398'),
       }),
       getCopyWithContentTableColumn({
         field: 'no_proxy',
-        title: '不走代理地址',
+        title: i18n.t('cloudenv.text_401'),
       }),
       getPublicScopeTableColumn({ vm: this, resource: 'proxysettings' }),
       getProjectDomainTableColumn({ sortable: false }),

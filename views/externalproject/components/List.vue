@@ -28,7 +28,7 @@ export default {
         getParams: this.getParams,
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('cloudenv.text_95'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
@@ -39,11 +39,11 @@ export default {
       columns: [
         {
           field: 'name',
-          title: `云上${this.$t('dictionary.project')}`,
+          title: this.$t('cloudenv.text_386', [this.$t('dictionary.project')]),
         },
         {
           field: 'tenant',
-          title: `本地${this.$t('dictionary.project')}`,
+          title: this.$t('cloudenv.text_387', [this.$t('dictionary.project')]),
           slots: {
             default: ({ row }) => {
               return [
@@ -54,17 +54,17 @@ export default {
         },
         getTimeTableColumn({
           field: 'created_at',
-          title: '同步时间',
+          title: this.$t('cloudenv.text_103'),
         }),
       ],
       groupActions: [
         {
-          label: `切换本地${this.$t('dictionary.project')}`,
+          label: this.$t('cloudenv.text_388', [this.$t('dictionary.project')]),
           permission: 'externalprojects_update',
           action: obj => {
             this.createDialog('ChangeProjectDialog', {
               data: this.list.selectedItems,
-              title: `切换本地${this.$t('dictionary.project')}`,
+              title: this.$t('cloudenv.text_388', [this.$t('dictionary.project')]),
               name: this.$t('dictionary.project'),
               columns: this.columns,
               onManager: this.onManager,
@@ -79,12 +79,12 @@ export default {
       ],
       singleActions: [
         {
-          label: `切换本地${this.$t('dictionary.project')}`,
+          label: this.$t('cloudenv.text_388', [this.$t('dictionary.project')]),
           permission: 'externalprojects_update',
           action: obj => {
             this.createDialog('ChangeProjectDialog', {
               data: [obj],
-              title: `切换本地${this.$t('dictionary.project')}`,
+              title: this.$t('cloudenv.text_388', [this.$t('dictionary.project')]),
               name: this.$t('dictionary.project'),
               columns: this.columns,
               onManager: this.onManager,

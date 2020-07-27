@@ -1,5 +1,5 @@
 <template>
-  <a-form-item class="no-line-height" label="条件" v-bind="formItemLayout">
+  <a-form-item class="no-line-height" :label="$t('cloudenv.text_22')" v-bind="formItemLayout">
     <a-input-group compact>
       <a-select v-decorator="decorators.conditionKey">
         <a-select-option value="projects">{{ $t('dictionary.project') }}</a-select-option>

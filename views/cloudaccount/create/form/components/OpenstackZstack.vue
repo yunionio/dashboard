@@ -1,25 +1,25 @@
 <template>
   <div>
-    <a-alert v-if="isOpenstack" class="my-2" message="OpenStack账号导入成功后，你需要到存储–块存储列表设置本次导入存储的容量，否则新建虚拟机会失败" banner />
+    <a-alert v-if="isOpenstack" class="my-2" :message="$t('cloudenv.text_252')" banner />
     <a-form :form="form.fc" v-bind="formLayout">
-      <a-form-item label="名称">
-        <a-input v-decorator="decorators.name" placeholder="请输入名称" />
+      <a-form-item :label="$t('cloudenv.text_95')">
+        <a-input v-decorator="decorators.name" :placeholder="$t('cloudenv.text_190')" />
       </a-form-item>
-      <a-form-item label="认证地址">
+      <a-form-item :label="$t('cloudenv.text_253')">
         <a-input v-decorator="decorators.auth_url" :placeholder="urlPlaceholder" />
       </a-form-item>
       <a-form-item :label="keySecretField.label.k">
         <a-input v-decorator="decorators.username" :placeholder="keySecretField.placeholder.k" />
         <div slot="extra">
-          {{ `如何获取${keySecretField.text}的${keySecretField.label.k }？点击查看帮助` }}
-          <help-link :href="docs[provider.toLowerCase()]"> 详情</help-link>
+          {{$t('cloudenv.text_236', [keySecretField.text, keySecretField.label.k])}}
+          <help-link :href="docs[provider.toLowerCase()]">{{$t('cloudenv.text_237')}}</help-link>
         </div>
       </a-form-item>
       <a-form-item :label="keySecretField.label.s">
         <a-input-password v-decorator="decorators.password" :placeholder="keySecretField.placeholder.s" />
       </a-form-item>
-      <a-form-item label="项目"  v-if="isOpenstack">
-        <a-input v-decorator="decorators.project_name" placeholder="请输入OpenStack的项目，如：admin" />
+      <a-form-item :label="$t('cloudenv.text_254')"  v-if="isOpenstack">
+        <a-input v-decorator="decorators.project_name" :placeholder="$t('cloudenv.text_255')" />
       </a-form-item>
       <a-form-item label="Domain Name"  v-if="isOpenstack">
         <a-input v-decorator="decorators.domain_name" />
@@ -60,9 +60,9 @@ export default {
     },
     urlPlaceholder () {
       if (this.isOpenstack) {
-        return '例如：http://host:port/v3'
+        return this.$t('cloudenv.text_256')
       }
-      return '例如：http://host:8080/'
+      return this.$t('cloudenv.text_257')
     },
   },
   deactivated () {
@@ -77,7 +77,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('cloudenv.text_190') },
               { validator: this.$validate('resourceName') },
             ],
           },
@@ -86,7 +86,7 @@ export default {
           'auth_url',
           {
             rules: [
-              { required: true, message: '请选择认证地址' },
+              { required: true, message: this.$t('cloudenv.text_258') },
             ],
           },
         ],
@@ -110,7 +110,7 @@ export default {
           'project_name',
           {
             rules: [
-              { required: true, message: '请输入项目' },
+              { required: true, message: this.$t('cloudenv.text_259') },
             ],
           },
         ],

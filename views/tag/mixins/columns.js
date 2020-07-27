@@ -1,9 +1,10 @@
+import i18n from '@/locales'
 export default {
   created () {
     this.columns = [
       {
         field: 'key',
-        title: '标签（键：值）',
+        title: i18n.t('cloudenv.text_473'),
         showOverflow: 'ellipsis',
         minWidth: 100,
         slots: {
@@ -21,7 +22,7 @@ export default {
       },
       {
         field: 'count',
-        title: '绑定资源数量',
+        title: i18n.t('cloudenv.text_474'),
         minWidth: 60,
         formatter: ({ row }) => {
           return `${row.count || 0}`
@@ -29,7 +30,7 @@ export default {
       },
       {
         field: 'color',
-        title: '颜色',
+        title: i18n.t('cloudenv.text_475'),
         width: 60,
         slots: {
           default: ({ row }) => {

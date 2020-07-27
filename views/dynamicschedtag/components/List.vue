@@ -28,20 +28,20 @@ export default {
         getParams: { details: true },
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('cloudenv.text_95'),
             filter: true,
             formatter: val => {
               return `name.contains('${val}')`
             },
           },
           enabled: {
-            label: '启用状态',
+            label: this.$t('cloudenv.text_97'),
             dropdown: true,
             multiple: true,
             items: ENABLED_OPTS,
           },
           schedpolicies: {
-            label: '调度标签',
+            label: this.$t('cloudenv.text_18'),
             filter: true,
             jointFilter: true,
             formatter: val => {
@@ -53,15 +53,15 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
-          { label: '启用状态', key: 'enabled' },
-          { label: '调度标签', key: 'schedtag' },
-          { label: '条件', key: 'condition' },
+          { label: this.$t('cloudenv.text_95'), key: 'name' },
+          { label: this.$t('cloudenv.text_97'), key: 'enabled' },
+          { label: this.$t('cloudenv.text_18'), key: 'schedtag' },
+          { label: this.$t('cloudenv.text_22'), key: 'condition' },
         ],
       },
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('cloudenv.text_104'),
           action: () => {
             this.createDialog('CreateDynamicschedtagDialog', {
               onManager: this.onManager,
@@ -74,13 +74,13 @@ export default {
           },
         },
         {
-          label: '删除',
+          label: this.$t('cloudenv.text_108'),
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,
               data: this.list.selectedItems,
               columns: this.columns,
-              title: '删除动态调度标签',
+              title: this.$t('cloudenv.text_379'),
               name: this.$t('dictionary.dynamicschedtag'),
               onManager: this.onManager,
             })

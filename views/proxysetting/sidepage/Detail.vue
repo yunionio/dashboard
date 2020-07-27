@@ -28,15 +28,15 @@ export default {
       baseInfo: [
         getCopyWithContentTableColumn({
           field: 'https_proxy',
-          title: 'https代理',
+          title: this.$t('cloudenv.text_395'),
         }),
         getCopyWithContentTableColumn({
           field: 'http_proxy',
-          title: 'http代理',
+          title: this.$t('cloudenv.text_398'),
         }),
         getCopyWithContentTableColumn({
           field: 'no_proxy',
-          title: '不走代理地址',
+          title: this.$t('cloudenv.text_401'),
         }),
       ],
     }

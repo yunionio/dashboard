@@ -1,26 +1,27 @@
 import { mapGetters } from 'vuex'
+import i18n from '@/locales'
 
 export default {
   computed: mapGetters(['isAdminMode']),
   created () {
     this.singleActions = [
       {
-        label: '调整策略',
+        label: i18n.t('cloudenv.text_383'),
         action: (obj) => {
           this.createDialog('UpdateSchedpolicyDialog', {
             data: [obj],
             columns: this.columns,
-            title: '调整策略',
+            title: i18n.t('cloudenv.text_383'),
             onManager: this.onManager,
           })
         },
       },
       {
-        label: '更多',
+        label: i18n.t('cloudenv.text_311'),
         actions: obj => {
           return [
             {
-              label: '启用',
+              label: i18n.t('cloudenv.text_334'),
               action: obj => {
                 this.onManager('update', {
                   id: obj.id,
@@ -36,7 +37,7 @@ export default {
               },
             },
             {
-              label: '禁用',
+              label: i18n.t('cloudenv.text_335'),
               action: obj => {
                 this.onManager('update', {
                   id: obj.id,
@@ -52,13 +53,13 @@ export default {
               },
             },
             {
-              label: '删除',
+              label: i18n.t('cloudenv.text_108'),
               action: () => {
                 this.createDialog('DeleteResDialog', {
                   vm: this,
                   data: [obj],
                   columns: this.columns,
-                  title: '删除调度策略',
+                  title: i18n.t('cloudenv.text_415'),
                   name: this.$t('dictionary.schedpolicie'),
                   onManager: this.onManager,
                 })

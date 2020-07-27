@@ -4,7 +4,7 @@ import i18n from '@/locales'
 export const getOperationColumns = () => {
   return {
     field: 'operation',
-    title: '操作动作',
+    title: i18n.t('cloudenv.text_425'),
     width: 80,
     showOverflow: 'title',
     formatter: ({ row }) => {
@@ -16,7 +16,7 @@ export const getOperationColumns = () => {
 export const getResourceColumns = () => {
   return {
     field: 'operation',
-    title: '资源绑定',
+    title: i18n.t('cloudenv.text_426'),
     width: 80,
     showOverflow: 'title',
     formatter: ({ row }) => {
@@ -28,7 +28,7 @@ export const getResourceColumns = () => {
 export const getResourceTypeColumns = () => {
   return {
     field: 'resource_type',
-    title: '资源类型',
+    title: i18n.t('cloudenv.text_384'),
     width: 110,
     showOverflow: 'title',
     formatter: ({ row }) => {
@@ -40,7 +40,7 @@ export const getResourceTypeColumns = () => {
 export const getResourceNumberColumns = (that) => {
   return {
     field: 'labels',
-    title: '资源数量',
+    title: i18n.t('cloudenv.text_417'),
     width: 110,
     showOverflow: 'title',
     formatter: ({ row }) => {
@@ -52,7 +52,7 @@ export const getResourceNumberColumns = (that) => {
 export const getLabelTypeColumns = () => {
   return {
     field: 'label_type',
-    title: '资源绑定',
+    title: i18n.t('cloudenv.text_426'),
     width: 110,
     showOverflow: 'title',
     formatter: ({ row }) => {
@@ -64,7 +64,7 @@ export const getLabelTypeColumns = () => {
 export const getCycleTypeCloumns = () => {
   return {
     field: 'cycle_type',
-    title: '触发频率',
+    title: i18n.t('cloudenv.text_433'),
     width: 80,
     formatter: ({ row }) => {
       if (row.scheduled_type === 'timing') {
@@ -78,17 +78,17 @@ export const getCycleTypeCloumns = () => {
 export const getCycleTimerColumns = ({ timeFormat = 'YYYY-MM-DD HH:mm:ss' } = {}) => {
   return {
     field: 'cycle_timer',
-    title: '策略详情',
+    title: i18n.t('cloudenv.text_427'),
     minWidth: 200,
     showOverflow: 'title',
     slots: {
       default: ({ row }, h) => {
         const hour = row.cycle_timer.hour
         const minute = row.cycle_timer.minute
-        const timer = `${hour > 9 ? hour : `0${hour}`}:${minute > 9 ? minute : `0${minute}`}触发`
+        const timer = i18n.t('cloudenv.text_465', [`${hour > 9 ? hour : `0${hour}`}:${minute > 9 ? minute : `0${minute}`}`])
         if (row.scheduled_type === 'cycle') {
           const cycleType = i18n.t('cloudenv.ScheduledtaskGroupCycleType')[row.cycle_timer.cycle_type]
-          const startEndTime = `有效时间为${moment(row.cycle_timer.start_time).format(timeFormat)}至${moment(row.cycle_timer.end_time).format(timeFormat)}`
+          const startEndTime = i18n.t('cloudenv.text_466', [moment(row.cycle_timer.start_time).format(timeFormat), moment(row.cycle_timer.end_time).format(timeFormat)])
           if (row.cycle_timer.cycle_type === 'day') {
             return `${cycleType} ${timer} ${startEndTime}`
           } else if (row.cycle_timer.cycle_type === 'week') {
@@ -98,12 +98,12 @@ export const getCycleTimerColumns = ({ timeFormat = 'YYYY-MM-DD HH:mm:ss' } = {}
             return `${cycleType} 【${weekDays.join('|')}】 ${timer} ${startEndTime}`
           } if (row.cycle_timer.cycle_type === 'month') {
             const monthDays = row.cycle_timer.month_days.map((v) => {
-              return `${v}号`
+              return i18n.t('cloudenv.text_436', [v])
             })
             return `${cycleType} 【${monthDays.join('|')}】 ${timer} ${startEndTime}`
           }
         } else {
-          return `${moment(row.timer.exec_time).format(timeFormat)}触发`
+          return i18n.t('cloudenv.text_467', [moment(row.timer.exec_time).format(timeFormat)])
         }
       },
     },
@@ -113,7 +113,7 @@ export const getCycleTimerColumns = ({ timeFormat = 'YYYY-MM-DD HH:mm:ss' } = {}
 export const getTimerDescColumns = () => {
   return {
     field: 'timer_desc',
-    title: '策略详情',
+    title: i18n.t('cloudenv.text_427'),
     minWidth: 300,
     showOverflow: 'title',
     formatter: ({ row }) => {

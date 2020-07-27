@@ -33,7 +33,7 @@ export default {
         idKey: 'cloudregion_id',
         filterOptions: {
           joint_filter: {
-            label: '名称',
+            label: this.$t('cloudenv.text_95'),
             jointFilter: true,
             formatter: val => {
               return `cloudregions.id(cloudregion_id).name.contains('${val}')`
@@ -43,7 +43,7 @@ export default {
       }),
       groupActions: [
         {
-          label: '设置同步',
+          label: this.$t('cloudenv.text_363'),
           action: () => {
             this.createDialog('cloudproviderregionsSetAutoSyncDialog', {
               data: this.list.selectedItems,

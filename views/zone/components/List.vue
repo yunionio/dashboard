@@ -32,7 +32,7 @@ export default {
         getParams: this.getParams,
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('cloudenv.text_95'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
@@ -43,12 +43,12 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
-          { label: '物理机', key: 'hosts' },
-          { label: '可用物理机', key: 'hosts_enabled' },
-          { label: '受管物理机', key: 'baremetals' },
-          { label: '可用受管物理机', key: 'baremetals_enabled' },
-          { label: '二层网络', key: 'wires' },
+          { label: this.$t('cloudenv.text_95'), key: 'name' },
+          { label: this.$t('cloudenv.text_424'), key: 'hosts' },
+          { label: this.$t('cloudenv.text_476'), key: 'hosts_enabled' },
+          { label: this.$t('cloudenv.text_477'), key: 'baremetals' },
+          { label: this.$t('cloudenv.text_478'), key: 'baremetals_enabled' },
+          { label: this.$t('cloudenv.text_229'), key: 'wires' },
         ],
         getParams: {
           cloud_env: 'private_or_onpremise',
@@ -56,10 +56,10 @@ export default {
       },
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('cloudenv.text_104'),
           action: () => {
             this.createDialog('CreateZoneDialog', {
-              title: '创建可用区',
+              title: this.$t('cloudenv.text_479'),
               onManager: this.onManager,
             })
           },

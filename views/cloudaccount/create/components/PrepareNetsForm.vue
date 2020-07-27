@@ -1,40 +1,36 @@
 <template>
   <div>
     <a-divider v-if="!allSuccess" orientation="left" class="mt-5 mb-3">
-      {{ type === 'host' ? '配置物理机IP' : '配置虚拟机IP' }}
+      {{ type === 'host' ? $t('cloudenv.text_175') : $t('cloudenv.text_176') }}
     </a-divider>
     <a-alert v-if="list.length > 0" class="mb-3 mt-3" :type="allSuccess? 'success' : 'warning'" show-icon>
       <template slot="message" v-if="type === 'host'">
-        {{allSuccess ? '恭喜已有网络全部满足,点击“下一步”即可' : `发现该域子网目前不包含该账号下的IP为${noSuitableIps.join(' 、 ')}的宿主机，您需要新建${noSuitableIps.length}个包含上述宿主机IP的子网，否则您无法使用或同步该宿主机下资源` }}
+        {{allSuccess ? $t('cloudenv.text_177') :  $t('cloudenv.text_178', [noSuitableIps.join(' 、 '), noSuitableIps.length])}}
       </template>
       <template  slot="message" v-if="type === 'guest'">
-        {{allSuccess ? '恭喜已有网络全部满足,点击“确定”即可' : `发现该域子网目前不包含该账号下的IP为${noSuitableIps.join(' 、 ')}的虚拟机，您需要新建${noSuitableIps.length}个包含上述虚拟机IP的子网,否则您可能无法正常使用上述虚拟机` }}
+        {{allSuccess ? $t('cloudenv.text_179') : $t('cloudenv.text_180', [noSuitableIps.join(' 、 '), noSuitableIps.length]) }}
       </template>
     </a-alert>
-    <a-form-item label="IP子网" v-if="!allSuccess">
+    <a-form-item :label="$t('cloudenv.text_181')" v-if="!allSuccess">
       <a-radio-group v-if="type !== 'host'" v-decorator="['isCreate', { initialValue: true }]" button-style="solid">
-        <a-radio-button :value="true">
-          创建IP子网
-        </a-radio-button>
-        <a-radio-button :value="false">
-          暂不创建
-        </a-radio-button>
+        <a-radio-button :value="true">{{$t('cloudenv.text_182')}}</a-radio-button>
+        <a-radio-button :value="false">{{$t('cloudenv.text_183')}}</a-radio-button>
       </a-radio-group>
       <div v-show="form.fc.getFieldValue('isCreate') || form.fc.getFieldValue('isCreate') === undefined">
         <a-row :gutter="10" v-for="k in form.fc.getFieldValue('keys')" :key="k">
           <a-col :span="4">
             <a-form-item>
-              <a-input  v-decorator="formatDecorator(k, 'name')" placeholder="子网名称" />
+              <a-input  v-decorator="formatDecorator(k, 'name')" :placeholder="$t('cloudenv.text_184')" />
             </a-form-item>
           </a-col>
           <a-col :span="5">
             <a-form-item>
-              <a-input @change="handleIpChange" v-decorator="formatDecorator(k, 'guest_ip_start')" placeholder="起始IP地址" />
+              <a-input @change="handleIpChange" v-decorator="formatDecorator(k, 'guest_ip_start')" :placeholder="$t('cloudenv.text_185')" />
             </a-form-item>
           </a-col>
           <a-col :span="5">
             <a-form-item>
-              <a-input @change="handleIpChange" v-decorator="formatDecorator(k, 'guest_ip_end')" placeholder="结束IP地址" />
+              <a-input @change="handleIpChange" v-decorator="formatDecorator(k, 'guest_ip_end')" :placeholder="$t('cloudenv.text_186')" />
             </a-form-item>
           </a-col>
           <a-col :span="2">
@@ -46,7 +42,7 @@
           </a-col>
           <a-col :span="5">
             <a-form-item>
-              <a-input v-decorator="formatDecorator(k, 'guest_gateway')" placeholder="默认网关地址" />
+              <a-input v-decorator="formatDecorator(k, 'guest_gateway')" :placeholder="$t('cloudenv.text_187')" />
             </a-form-item>
           </a-col>
           <a-col :span="2">
@@ -55,11 +51,11 @@
         </a-row>
         <div class="d-flex align-items-center">
           <a-button type="primary" shape="circle" icon="plus" size="small" @click="handleAdd" />
-          <a-button type="link" @click="handleAdd">添加新IP子网</a-button>
+          <a-button type="link" @click="handleAdd">{{$t('cloudenv.text_188')}}</a-button>
         </div>
       </div>
       <div v-show="!form.fc.getFieldValue('isCreate') && form.fc.getFieldValue('isCreate') !== undefined" class="mt-2">
-          <a-alert message="提示:暂不创建子网,无法匹配网络的虚拟机同步下来IP会为空, 你也可以在导入云账号完成后在网络-IP子网 列表创建" type="warning" show-icon />
+          <a-alert :message="$t('cloudenv.text_189')" type="warning" show-icon />
       </div>
     </a-form-item>
   </div>
@@ -125,7 +121,7 @@ export default {
           validateTrigger: ['change', 'blur'],
           validateFirst: true,
           rules: [
-            { required: true, message: '请输入名称' },
+            { required: true, message: this.$t('cloudenv.text_190') },
             { validator: this.$validate('resourceName') },
           ],
         },
@@ -133,7 +129,7 @@ export default {
           validateTrigger: ['change', 'blur'],
           validateFirst: true,
           rules: [
-            { required: true, message: '请输入起始IP' },
+            { required: true, message: this.$t('cloudenv.text_191') },
             { validator: this.$validate('IPv4') },
           ],
         },
@@ -141,7 +137,7 @@ export default {
           validateTrigger: ['change', 'blur'],
           validateFirst: true,
           rules: [
-            { required: true, message: '请输入结束IP' },
+            { required: true, message: this.$t('cloudenv.text_192') },
             { validator: this.$validate('IPv4') },
           ],
         },
@@ -152,7 +148,7 @@ export default {
           validateTrigger: ['change', 'blur'],
           validateFirst: true,
           rules: [
-            { required: true, message: '请输入网关地址' },
+            { required: true, message: this.$t('cloudenv.text_193') },
             { validator: this.$validate('IPv4') },
             { validator: this.validateGateway },
           ],

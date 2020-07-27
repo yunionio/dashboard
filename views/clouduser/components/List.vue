@@ -49,7 +49,7 @@ export default {
           { label: 'ID', key: 'id' },
           { label: this.$t('cloudenv.clouduser_list_t1'), key: 'name' },
           { label: this.$t('cloudenv.clouduser_list_t5'), key: 'is_console_login' },
-          { label: '状态', key: 'status' },
+          { label: this.$t('cloudenv.text_98'), key: 'status' },
           { label: this.$t('cloudenv.clouduser_list_t3'), key: 'iam_login_url' },
           { label: this.$t('cloudenv.clouduser_list_t4'), key: 'owner_name' },
         ],

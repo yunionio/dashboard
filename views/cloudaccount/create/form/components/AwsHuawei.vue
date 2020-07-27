@@ -1,21 +1,21 @@
 <template>
   <div>
     <a-form :form="form.fc" v-bind="formLayout">
-      <a-form-item label="名称">
-        <a-input v-decorator="decorators.name" placeholder="请输入名称" />
+      <a-form-item :label="$t('cloudenv.text_95')">
+        <a-input v-decorator="decorators.name" :placeholder="$t('cloudenv.text_190')" />
       </a-form-item>
-      <a-form-item label="区域">
+      <a-form-item :label="$t('cloudenv.text_10')">
         <base-select
           :options="environments"
           v-decorator="decorators.environment"
-          :selectProps="{ placeholder: '请选择区域' }" />
+          :selectProps="{ placeholder: $t('cloudenv.text_231') }" />
       </a-form-item>
       <a-form-item :label="keySecretField.label.k">
         <a-input v-decorator="decorators.username" :placeholder="keySecretField.placeholder.k" />
         <div slot="extra">
-            {{ `如何获取${keySecretField.text}的${keySecretField.label.k }？点击查看帮助` }}
-            <help-link :href="docs[provider.toLowerCase()]"> 详情</help-link>
-          </div>
+          {{$t('cloudenv.text_236', [keySecretField.text, keySecretField.label.k])}}
+          <help-link :href="docs[provider.toLowerCase()]">{{$t('cloudenv.text_237')}}</help-link>
+        </div>
       </a-form-item>
       <a-form-item :label="keySecretField.label.s">
         <a-input-password v-decorator="decorators.password" :placeholder="keySecretField.placeholder.s" />
@@ -65,7 +65,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('cloudenv.text_190') },
               { validator: this.$validate('resourceName') },
             ],
           },
@@ -74,7 +74,7 @@ export default {
           'environment',
           {
             rules: [
-              { required: true, message: '请输入区域', trigger: 'change' },
+              { required: true, message: this.$t('cloudenv.text_238'), trigger: 'change' },
             ],
           },
         ],

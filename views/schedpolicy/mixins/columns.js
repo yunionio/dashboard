@@ -1,5 +1,6 @@
 import { STRATEGY_CN } from '@Cloudenv/constants/sched'
 import { getNameDescriptionTableColumn, getEnabledTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -16,19 +17,19 @@ export default {
       getEnabledTableColumn(),
       {
         field: 'strategy',
-        title: '偏好',
+        title: i18n.t('cloudenv.text_413'),
         width: 80,
         formatter: ({ row }) => {
-          return STRATEGY_CN[row.strategy] || '无'
+          return STRATEGY_CN[row.strategy] || i18n.t('cloudenv.text_4')
         },
       },
       getCopyWithContentTableColumn({
         field: 'schedtag',
-        title: '调度标签',
+        title: i18n.t('cloudenv.text_18'),
       }),
       getCopyWithContentTableColumn({
         field: 'condition',
-        title: '条件',
+        title: i18n.t('cloudenv.text_22'),
       }),
     ]
   },

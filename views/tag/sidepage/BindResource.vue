@@ -82,7 +82,7 @@ export default {
       list: {},
       singleActions: [
         {
-          label: '解绑',
+          label: this.$t('cloudenv.text_452'),
           action: obj => {
             this.createDialog('TagUnbindDialog', {
               columns: this.columns,
@@ -117,7 +117,7 @@ export default {
           addLock: true,
           addBackup: true,
           formRules: [
-            { required: true, message: '请输入名称' },
+            { required: true, message: this.$t('cloudenv.text_190') },
             { validator: this.$validate('serverCreateName') },
           ],
           slotCallback: row => {
@@ -151,20 +151,20 @@ export default {
           steadyStatus: expectStatus[val] && Object.values(expectStatus[val]) && Object.values(expectStatus[val]).flat(),
           filterOptions: {
             name: {
-              label: '名称',
+              label: this.$t('cloudenv.text_95'),
               filter: true,
               formatter: val => {
                 return `name.contains("${val}")`
               },
             },
             brand: {
-              label: '平台',
+              label: this.$t('cloudenv.text_102'),
               dropdown: true,
               multiple: true,
               items: getBrandItems('brands'),
             },
             status: {
-              label: '状态',
+              label: this.$t('cloudenv.text_98'),
               dropdown: true,
               multiple: true,
               distinctField: {

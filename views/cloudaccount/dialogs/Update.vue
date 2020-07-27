@@ -1,22 +1,22 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">更新账号密码</div>
+    <div slot="header">{{$t('cloudenv.text_298')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.cloudaccount')" :count="params.data.length" action="更新账号密码" />
+      <dialog-selected-tips :name="$t('dictionary.cloudaccount')" :count="params.data.length" :action="$t('cloudenv.text_298')" />
       <dialog-table class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc"
          v-bind="formItemLayout">
         <a-form-item label="AppID" v-if="isQcloud">
-          <a-input v-decorator="decorators.app_id" placeholder="请输入App ID" />
+          <a-input v-decorator="decorators.app_id" :placeholder="$t('cloudenv.text_260')" />
           <div slot="extra" class="text-right">
-            <help-link :href="doc">如何获取腾讯云的 App ID 和密钥？</help-link>
+            <help-link :href="doc">{{$t('cloudenv.text_299')}}</help-link>
           </div>
         </a-form-item>
-        <a-form-item label="租户（Tenant） ID" v-if="isAzure">
-          <a-input v-decorator="decorators.directory_id" placeholder="请输入租户（Tenant）ID" />
+        <a-form-item :label="$t('cloudenv.text_300')" v-if="isAzure">
+          <a-input v-decorator="decorators.directory_id" :placeholder="$t('cloudenv.text_243')" />
           <div slot="extra" class="text-right">
-            <help-link :href="doc">如何获取Azure的租户（Tenant） ID ？</help-link>
+            <help-link :href="doc">{{$t('cloudenv.text_301')}}</help-link>
           </div>
         </a-form-item>
         <upload-json-file :fc="form.fc" v-if="isGoogle">
@@ -31,9 +31,9 @@
           <a-form-item :label="field.label.k">
             <a-input v-decorator="decorators.keyId" :disabled="isVMware" :placeholder="field.placeholder.k" />
             <div slot="extra" class="text-right d-flex">
-              <span v-if="isVMware">VMware平台暂不支持更新账号</span>
+              <span v-if="isVMware">{{$t('cloudenv.text_302')}}</span>
               <div class="flex-grow-1">
-                <help-link :href="doc">如何获取{{ field.text }} {{ field.label.k }} 和 {{ field.label.s }}？</help-link>
+                <help-link :href="doc">{{$t('cloudenv.text_303', [ field.text , field.label.k , field.label.s ])}}</help-link>
               </div>
             </div>
           </a-form-item>
@@ -41,14 +41,14 @@
             <a-input-password v-decorator="decorators.keySecret" :placeholder="field.placeholder.s" type="password" />
           </a-form-item>
          </div>
-        <!-- <a-form-item label="账单密钥" v-if="isAzure">
+        <!-- <a-form-item :label="$t('cloudenv.text_242')" v-if="isAzure">
           <a-textarea v-decorator="decorators.balanceKey" rows="4" />
         </a-form-item> -->
-        <a-form-item label="项目" v-if="isOpenStack">
-          <a-input v-decorator="decorators.project_name" placeholder="请输入OpenStack的项目，如：admin" />
+        <a-form-item :label="$t('cloudenv.text_254')" v-if="isOpenStack">
+          <a-input v-decorator="decorators.project_name" :placeholder="$t('cloudenv.text_255')" />
         </a-form-item>
-        <a-form-item label="端点类型" v-if="isOpenStack">
-          <a-select v-decorator="decorators.endpoint_type" placeholder="请选择端点类型">
+        <a-form-item :label="$t('cloudenv.text_304')" v-if="isOpenStack">
+          <a-select v-decorator="decorators.endpoint_type" :placeholder="$t('cloudenv.text_305')">
             <a-select-option
               v-for="item in endpointTypeOpts"
               :key="item.key"
@@ -93,7 +93,7 @@ export default {
           {
             initialValue: isVMware ? this.params.data[0].account : undefined,
             rules: [
-              { required: true, message: '请输入密钥ID' },
+              { required: true, message: this.$t('cloudenv.text_306') },
             ],
           },
         ],
@@ -101,7 +101,7 @@ export default {
           keySecretFields[provider].s,
           {
             rules: [
-              { required: true, message: '请输入密码' },
+              { required: true, message: this.$t('cloudenv.text_150') },
             ],
           },
         ],
@@ -109,7 +109,7 @@ export default {
           'directory_id',
           {
             rules: [
-              { required: true, message: '请输入租户（Tenant）ID' },
+              { required: true, message: this.$t('cloudenv.text_243') },
             ],
           },
         ],
@@ -120,7 +120,7 @@ export default {
           'app_id',
           {
             rules: [
-              { required: true, message: '请输入APP ID' },
+              { required: true, message: this.$t('cloudenv.text_307') },
             ],
           },
         ],
@@ -131,7 +131,7 @@ export default {
           'project_name',
           {
             rules: [
-              { required: true, message: 'openstack 项目不能为空' },
+              { required: true, message: this.$t('cloudenv.text_308') },
             ],
           },
         ],

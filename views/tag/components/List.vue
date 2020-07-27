@@ -31,7 +31,7 @@ export default {
         getParams: this.getParam,
         filterOptions: {
           search: {
-            label: '关键词',
+            label: this.$t('cloudenv.text_468'),
           },
         },
       }),

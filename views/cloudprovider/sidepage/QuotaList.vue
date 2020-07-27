@@ -32,21 +32,21 @@ export default {
         },
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('cloudenv.text_95'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
             },
           },
           quota_type: {
-            label: '类型',
+            label: this.$t('cloudenv.text_360'),
             filter: true,
             formatter: val => {
               return `quota_type.contains("${val}")`
             },
           },
           cloudregion: {
-            label: '区域',
+            label: this.$t('cloudenv.text_10'),
             // filter: true,
             // formatter: val => {
             //   return `cloudregion.contains("${val}")`
@@ -57,7 +57,7 @@ export default {
       columns: [
         {
           field: 'name',
-          title: '名称',
+          title: this.$t('cloudenv.text_95'),
           minWidth: 150,
           slots: {
             default: ({ row }, h) => {
@@ -73,15 +73,15 @@ export default {
         },
         getCopyWithContentTableColumn({
           field: 'quota_type',
-          title: '类型',
+          title: this.$t('cloudenv.text_360'),
         }),
         getCopyWithContentTableColumn({
           field: 'cloudregion',
-          title: '区域',
+          title: this.$t('cloudenv.text_10'),
         }),
         {
           field: 'used_count',
-          title: '使用情况',
+          title: this.$t('cloudenv.text_361'),
           minWidth: 330,
           sortable: true,
           slots: {

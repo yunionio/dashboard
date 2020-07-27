@@ -87,7 +87,7 @@ export default {
   },
   render () {
     const Thead = () => {
-      const tds = [<td>序号</td>, <td> 名称 </td>, <td> { this.type === 'host' ? '宿主机IP' : '虚拟机IP' }</td>, <td>网络是否满足</td>]
+      const tds = [<td>序号</td>, <td> 名称 </td>, <td> { this.type === 'host' ? this.$t('cloudenv.text_171') : this.$t('cloudenv.text_172') }</td>, <td>网络是否满足</td>]
       return (
         <tr class="thead">
           { (this.listData && this.listData.length > 0) ? this.listData[0].map(() => tds) : null }
@@ -137,7 +137,7 @@ export default {
                 <Tbody />
               </tbody>
             </table>
-            : <a-alert show-icon message={this.type === 'host' ? '无法获取该云账号物理机IP' : '该账号下暂无虚拟机'} type="error" class="mt-4" />
+            : <a-alert show-icon message={this.type === 'host' ? this.$t('cloudenv.text_173') : this.$t('cloudenv.text_174')} type="error" class="mt-4" />
         }
 
       </div>

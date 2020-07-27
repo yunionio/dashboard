@@ -13,6 +13,7 @@ import {
   getNameDescriptionTableColumn,
   getProjectDomainTableColumn,
 } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -29,10 +30,10 @@ export default {
       getAccessUrlTableColumn(),
       getEnabledTableColumn(),
       getStatusTableColumn({ statusModule: 'cloudaccount' }),
-      getStatusTableColumn({ statusModule: 'cloudaccountHealthStatus', title: '健康状态', field: 'health_status', minWidth: 90 }),
+      getStatusTableColumn({ statusModule: 'cloudaccountHealthStatus', title: i18n.t('cloudenv.text_93'), field: 'health_status', minWidth: 90 }),
       {
         field: 'probe_at',
-        title: '检查时间',
+        title: i18n.t('cloudenv.text_309'),
         minWidth: 100,
         slots: {
           default: ({ row }) => {
@@ -48,12 +49,12 @@ export default {
       getGuestCountTableColumn(),
       getBalanceTableColumn(),
       getHostCountTableColumn(),
-      getCopyWithContentTableColumn({ field: 'account', title: '账号' }),
+      getCopyWithContentTableColumn({ field: 'account', title: i18n.t('cloudenv.text_94') }),
       getBrandTableColumn(),
-      getEnabledTableColumn({ field: 'enable_auto_sync', title: '自动同步', minWidth: 90 }),
+      getEnabledTableColumn({ field: 'enable_auto_sync', title: i18n.t('cloudenv.text_83'), minWidth: 90 }),
       {
         field: 'last_auto_sync',
-        title: '同步时间',
+        title: i18n.t('cloudenv.text_103'),
         minWidth: 70,
         showOverflow: 'title',
         slots: {
@@ -77,7 +78,7 @@ export default {
       getProjectDomainTableColumn(),
       {
         field: 'tenant',
-        title: `资源归属${this.$t('dictionary.project')}`,
+        title: i18n.t('cloudenv.text_310', [i18n.t('dictionary.project')]),
         minWidth: 120,
         showOverflow: 'title',
         slots: {

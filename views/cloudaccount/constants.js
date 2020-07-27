@@ -1,4 +1,5 @@
 import { typeClouds } from '@/utils/common/hypervisor'
+import i18n from '@/locales'
 const DOCS_PATH = `${window.location.origin}/docs/docs/user/multiplecloud/cloudaccount/cloudaccount/`
 const providerMap = typeClouds.getProviderlowcase()
 const aliyunLogo = require('../../../../src/assets/images/providers/aliyun.svg')
@@ -118,47 +119,47 @@ export const CLOUDACCOUNT_TYPES = {
 }
 
 export const ENV_TITLE = {
-  public: '公有云',
-  storage: '对象存储',
-  private: '私有云 & 虚拟化平台',
+  public: i18n.t('cloudenv.text_122'),
+  storage: i18n.t('cloudenv.text_123'),
+  private: i18n.t('cloudenv.text_124'),
 }
 
 export const CLOUDACCOUNT_DOCS = {
-  aliyun: `${DOCS_PATH}#新建阿里云账号`,
-  azure: `${DOCS_PATH}#新建azure账号`,
-  aws: `${DOCS_PATH}#新建aws账号`,
-  qcloud: `${DOCS_PATH}#新建腾讯云账号`,
-  huawei: `${DOCS_PATH}#新建华为云账号`,
-  ucloud: `${DOCS_PATH}#新建ucloud账号`,
-  zstack: `${DOCS_PATH}#新建zstack-dstack账号`,
-  dstack: `${DOCS_PATH}#新建zstack-dstack账号`,
-  openstack: `${DOCS_PATH}#新建openstack账号`,
-  vmware: `${DOCS_PATH}#新建vmware账号`,
-  s3: `${DOCS_PATH}#新建s3账号`,
-  ceph: `${DOCS_PATH}#新建ceph账号`,
-  xsky: `${DOCS_PATH}#新建xsky账号`,
-  google: `${DOCS_PATH}#新建google账号`,
-  ctyun: `${DOCS_PATH}#新建天翼云账号`,
+  aliyun: i18n.t('cloudenv.text_125', [DOCS_PATH]),
+  azure: i18n.t('cloudenv.text_126', [DOCS_PATH]),
+  aws: i18n.t('cloudenv.text_127', [DOCS_PATH]),
+  qcloud: i18n.t('cloudenv.text_128', [DOCS_PATH]),
+  huawei: i18n.t('cloudenv.text_129', [DOCS_PATH]),
+  ucloud: i18n.t('cloudenv.text_130', [DOCS_PATH]),
+  zstack: i18n.t('cloudenv.text_131', [DOCS_PATH]),
+  dstack: i18n.t('cloudenv.text_131', [DOCS_PATH]),
+  openstack: i18n.t('cloudenv.text_132', [DOCS_PATH]),
+  vmware: i18n.t('cloudenv.text_133', [DOCS_PATH]),
+  s3: i18n.t('cloudenv.text_134', [DOCS_PATH]),
+  ceph: i18n.t('cloudenv.text_135', [DOCS_PATH]),
+  xsky: i18n.t('cloudenv.text_136', [DOCS_PATH]),
+  google: i18n.t('cloudenv.text_137', [DOCS_PATH]),
+  ctyun: i18n.t('cloudenv.text_138', [DOCS_PATH]),
 }
 
 export const ACCESS_URL = {
   huawei: {
-    InternationalCloud: '全球区',
-    ChinaCloud: '中国区',
+    InternationalCloud: i18n.t('cloudenv.text_139'),
+    ChinaCloud: i18n.t('cloudenv.text_140'),
   },
   aws: {
-    InternationalCloud: '全球区',
-    ChinaCloud: '中国区',
+    InternationalCloud: i18n.t('cloudenv.text_139'),
+    ChinaCloud: i18n.t('cloudenv.text_140'),
   },
   azure: {
-    AzureChinaCloud: '中国区',
-    AzurePublicCloud: '全球区',
-    AzureUSGovernmentCloud: '美国政务区',
-    AzureGermanCloud: '德国区',
+    AzureChinaCloud: i18n.t('cloudenv.text_140'),
+    AzurePublicCloud: i18n.t('cloudenv.text_139'),
+    AzureUSGovernmentCloud: i18n.t('cloudenv.text_141'),
+    AzureGermanCloud: i18n.t('cloudenv.text_142'),
   },
   ctyun: {
-    InternationalCloud: '全球区',
-    ChinaCloud: '中国区',
+    InternationalCloud: i18n.t('cloudenv.text_139'),
+    ChinaCloud: i18n.t('cloudenv.text_140'),
   },
 }
 
@@ -166,27 +167,27 @@ export const keySecretFields = {
   aliyun: {
     k: 'access_key_id',
     s: 'access_key_secret',
-    text: '阿里云',
+    text: i18n.t('cloudenv.text_143'),
     placeholder: {
-      k: '请输入Access Key ID',
-      s: '请输入Access Key Secret',
+      k: i18n.t('cloudenv.text_144'),
+      s: i18n.t('cloudenv.text_145'),
     },
     label: {
-      k: '密钥ID',
-      s: '密码',
+      k: i18n.t('cloudenv.text_146'),
+      s: i18n.t('cloudenv.text_147'),
     },
   },
   qcloud: {
     k: 'secret_id',
     s: 'secret_key',
-    text: '腾讯云',
+    text: i18n.t('cloudenv.text_148'),
     placeholder: {
-      k: '请输入SecretId',
-      s: '请输入密码',
+      k: i18n.t('cloudenv.text_149'),
+      s: i18n.t('cloudenv.text_150'),
     },
     label: {
-      k: '密钥ID',
-      s: '密码',
+      k: i18n.t('cloudenv.text_146'),
+      s: i18n.t('cloudenv.text_147'),
     },
   },
   openstack: {
@@ -194,12 +195,12 @@ export const keySecretFields = {
     s: 'password',
     text: 'OpenStack',
     placeholder: {
-      k: '请输入账号',
-      s: '请输入密码',
+      k: i18n.t('cloudenv.text_151'),
+      s: i18n.t('cloudenv.text_150'),
     },
     label: {
-      k: '账号',
-      s: '密码',
+      k: i18n.t('cloudenv.text_94'),
+      s: i18n.t('cloudenv.text_147'),
     },
   },
   vmware: {
@@ -207,12 +208,12 @@ export const keySecretFields = {
     s: 'password',
     text: 'VMware',
     placeholder: {
-      k: '请输入账号',
-      s: '请输入密码',
+      k: i18n.t('cloudenv.text_151'),
+      s: i18n.t('cloudenv.text_150'),
     },
     label: {
-      k: '账号',
-      s: '密码',
+      k: i18n.t('cloudenv.text_94'),
+      s: i18n.t('cloudenv.text_147'),
     },
   },
   azure: {
@@ -220,25 +221,25 @@ export const keySecretFields = {
     s: 'client_secret',
     text: 'Azure',
     placeholder: {
-      k: '请输入应用程序ID',
-      s: '请输入客户端密码',
+      k: i18n.t('cloudenv.text_152'),
+      s: i18n.t('cloudenv.text_153'),
     },
     label: {
-      k: '客户端ID',
-      s: '客户端密码',
+      k: i18n.t('cloudenv.text_154'),
+      s: i18n.t('cloudenv.text_155'),
     },
   },
   huawei: {
     k: 'access_key_id',
     s: 'access_key_secret',
-    text: '华为云',
+    text: i18n.t('cloudenv.text_156'),
     placeholder: {
-      k: '请输入Access Key ID',
-      s: '请输入Access Key Secret',
+      k: i18n.t('cloudenv.text_144'),
+      s: i18n.t('cloudenv.text_145'),
     },
     label: {
-      k: '密钥ID',
-      s: '密码',
+      k: i18n.t('cloudenv.text_146'),
+      s: i18n.t('cloudenv.text_147'),
     },
   },
   aws: {
@@ -246,12 +247,12 @@ export const keySecretFields = {
     s: 'access_key_secret',
     text: 'AWS',
     placeholder: {
-      k: '请输入Access Key ID',
-      s: '请输入Access Key Secret',
+      k: i18n.t('cloudenv.text_144'),
+      s: i18n.t('cloudenv.text_145'),
     },
     label: {
-      k: '密钥ID',
-      s: '密码',
+      k: i18n.t('cloudenv.text_146'),
+      s: i18n.t('cloudenv.text_147'),
     },
   },
   ucloud: {
@@ -259,12 +260,12 @@ export const keySecretFields = {
     s: 'access_key_secret',
     text: 'UCloud',
     placeholder: {
-      k: '请输入PublicKey',
-      s: '请输入PrivateKey',
+      k: i18n.t('cloudenv.text_157'),
+      s: i18n.t('cloudenv.text_158'),
     },
     label: {
-      k: '公钥',
-      s: '私钥',
+      k: i18n.t('cloudenv.text_159'),
+      s: i18n.t('cloudenv.text_160'),
     },
   },
   dstack: {
@@ -272,12 +273,12 @@ export const keySecretFields = {
     s: 'password',
     text: 'DStack',
     placeholder: {
-      k: '请输入Access Key ID',
-      s: '请输入Access Key Secret',
+      k: i18n.t('cloudenv.text_144'),
+      s: i18n.t('cloudenv.text_145'),
     },
     label: {
-      k: '密钥ID',
-      s: '密码',
+      k: i18n.t('cloudenv.text_146'),
+      s: i18n.t('cloudenv.text_147'),
     },
   },
   zstack: {
@@ -285,12 +286,12 @@ export const keySecretFields = {
     s: 'password',
     text: 'ZStack',
     placeholder: {
-      k: '请输入Access Key ID',
-      s: '请输入Access Key Secret',
+      k: i18n.t('cloudenv.text_144'),
+      s: i18n.t('cloudenv.text_145'),
     },
     label: {
-      k: '密钥ID',
-      s: '密码',
+      k: i18n.t('cloudenv.text_146'),
+      s: i18n.t('cloudenv.text_147'),
     },
   },
   s3: {
@@ -298,12 +299,12 @@ export const keySecretFields = {
     s: 'access_key_secret',
     text: 'S3',
     placeholder: {
-      k: '请输入Access Key ID',
-      s: '请输入Access Key Secret',
+      k: i18n.t('cloudenv.text_144'),
+      s: i18n.t('cloudenv.text_145'),
     },
     label: {
-      k: '密钥ID',
-      s: '密码',
+      k: i18n.t('cloudenv.text_146'),
+      s: i18n.t('cloudenv.text_147'),
     },
   },
   ceph: {
@@ -311,12 +312,12 @@ export const keySecretFields = {
     s: 'access_key_secret',
     text: 'Ceph',
     placeholder: {
-      k: '请输入Access Key ID',
-      s: '请输入Access Key Secret',
+      k: i18n.t('cloudenv.text_144'),
+      s: i18n.t('cloudenv.text_145'),
     },
     label: {
-      k: '密钥ID',
-      s: '密码',
+      k: i18n.t('cloudenv.text_146'),
+      s: i18n.t('cloudenv.text_147'),
     },
   },
   xsky: {
@@ -324,12 +325,12 @@ export const keySecretFields = {
     s: 'access_key_secret',
     text: 'XSKY',
     placeholder: {
-      k: '请输入账号',
-      s: '请输入密码',
+      k: i18n.t('cloudenv.text_151'),
+      s: i18n.t('cloudenv.text_150'),
     },
     label: {
-      k: '账号',
-      s: '密码',
+      k: i18n.t('cloudenv.text_94'),
+      s: i18n.t('cloudenv.text_147'),
     },
   },
   google: {
@@ -337,8 +338,8 @@ export const keySecretFields = {
     k: 'gcp_private_key_id',
     text: 'Google',
     placeholder: {
-      s: '请输入private_key',
-      k: '请输入private_key_id',
+      s: i18n.t('cloudenv.text_161'),
+      k: i18n.t('cloudenv.text_162'),
     },
     label: {
       s: 'private_key',
@@ -348,21 +349,21 @@ export const keySecretFields = {
   ctyun: {
     k: 'access_key_id',
     s: 'access_key_secret',
-    text: '天翼云',
+    text: i18n.t('cloudenv.text_163'),
     placeholder: {
-      k: '请输入Access Key ID',
-      s: '请输入Access Key Secret',
+      k: i18n.t('cloudenv.text_144'),
+      s: i18n.t('cloudenv.text_145'),
     },
     label: {
-      k: '密钥ID',
-      s: '密码',
+      k: i18n.t('cloudenv.text_146'),
+      s: i18n.t('cloudenv.text_147'),
     },
   },
 }
 
 export const BILL_BUCKET_URL_DOCS = {
-  aliyun: `${DOCS_PATH}#如何获取账单存储桶url`,
-  aws: `${DOCS_PATH}#如何获取账单存储桶url-1`,
-  huawei: `${DOCS_PATH}#如何获取账单存储桶url-2`,
-  google: `${DOCS_PATH}#如何获取账单文件的存储桶url以及文件前缀`,
+  aliyun: i18n.t('cloudenv.text_164', [DOCS_PATH]),
+  aws: i18n.t('cloudenv.text_165', [DOCS_PATH]),
+  huawei: i18n.t('cloudenv.text_166', [DOCS_PATH]),
+  google: i18n.t('cloudenv.text_167', [DOCS_PATH]),
 }

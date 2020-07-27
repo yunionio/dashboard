@@ -1,16 +1,14 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">设置同步</div>
+    <div slot="header">{{$t('cloudenv.text_363')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.region')" :count="params.data.length" action="设置同步" />
+      <dialog-selected-tips :name="$t('dictionary.region')" :count="params.data.length" :action="$t('cloudenv.text_363')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
-        <a-form-item label="同步" v-bind="formItemLayout">
-          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.enabled" />
-          <div slot="extra">
-            同步云上资源时，自否同步该区域资源
-          </div>
+        <a-form-item :label="$t('cloudenv.text_364')" v-bind="formItemLayout">
+          <a-switch :checkedChildren="$t('cloudenv.text_84')" :unCheckedChildren="$t('cloudenv.text_85')" v-decorator="decorators.enabled" />
+          <div slot="extra">{{$t('cloudenv.text_365')}}</div>
         </a-form-item>
       </a-form>
     </div>

@@ -34,7 +34,7 @@ export default {
         filterOptions: {
           name: getNameFilter(),
           description: {
-            label: '描述',
+            label: this.$t('cloudenv.text_331'),
             filter: true,
             formatter: val => `description.contains(${val})`,
           },

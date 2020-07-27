@@ -1,15 +1,15 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">新建代理</div>
+    <div slot="header">{{$t('cloudenv.text_411')}}</div>
     <div slot="body">
       <a-form
         v-bind="formLayout"
         :form="form.fc">
-        <a-form-item :label="`指定${$t('dictionary.domain')}`" v-bind="formLayout">
+        <a-form-item :label="$t('cloudenv.text_410', [$t('dictionary.domain')])" v-bind="formLayout">
           <domain-select v-if="isAdminMode && l3PermissionEnable" v-decorator="decorators.project_domain" :params="domainParams" />
           <template v-else> {{userInfo.domain.name}} </template>
         </a-form-item>
-        <a-form-item label="名称">
+        <a-form-item :label="$t('cloudenv.text_95')">
           <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
         </a-form-item>
         <common-form-items />
@@ -56,7 +56,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('cloudenv.text_190') },
               { validator: this.$validate('resourceName') },
             ],
           },
@@ -66,7 +66,7 @@ export default {
           {
             initialValue: projectDomainInitialValue,
             rules: [
-              { required: true, message: `请选择${this.$t('dictionary.domain')}` },
+              { required: true, message: this.$t('cloudenv.text_284', [this.$t('dictionary.domain')]) },
             ],
           },
         ],
@@ -114,12 +114,12 @@ export default {
           console.log(ok)
           if (ok) {
             this.$notification.success({
-              message: `${this.$t('proxysettings')[k]}测试连接成功`,
-              description: '请点击确定继续',
+              message: this.$t('cloudenv.text_407', [this.$t('proxysettings')[k]]),
+              description: this.$t('cloudenv.text_408'),
             })
           } else {
             this.$notification.error({
-              message: `${this.$t('proxysettings')[k]}测试连接失败`,
+              message: this.$t('cloudenv.text_409', [this.$t('proxysettings')[k]]),
               description: reason,
             })
           }

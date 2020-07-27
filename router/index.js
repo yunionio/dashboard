@@ -15,24 +15,25 @@ import Layout from '@/layouts/RouterView'
 import { hasSetupKey } from '@/utils/auth'
 
 import store from '@/store'
+import i18n from '@/locales'
 
 export default {
   index: 9,
   meta: {
-    label: '多云管理',
+    label: i18n.t('cloudenv.text_8'),
     icon: 'onecloud',
   },
   menus: [
     {
       meta: {
-        label: '地域',
+        label: i18n.t('cloudenv.text_9'),
         hidden: () => !hasSetupKey(['onestack', 'private', 'vmware']),
       },
       submenus: [
         {
           path: '/cloudregion',
           meta: {
-            label: '区域',
+            label: i18n.t('cloudenv.text_10'),
             permission: 'areas_list',
           },
           component: Layout,
@@ -47,7 +48,7 @@ export default {
         {
           path: '/zone',
           meta: {
-            label: '可用区',
+            label: i18n.t('cloudenv.text_11'),
             permission: 'zones_list',
           },
           component: Layout,
@@ -63,13 +64,13 @@ export default {
     },
     {
       meta: {
-        label: '云账号',
+        label: i18n.t('cloudenv.text_12'),
       },
       submenus: [
         {
           path: '/cloudaccount',
           meta: {
-            label: '云账号',
+            label: i18n.t('cloudenv.text_12'),
             permission: 'cloudaccounts_list',
             hidden: () => !hasSetupKey(['private', 'vmware', 'public', 'storage']),
           },
@@ -95,7 +96,7 @@ export default {
         {
           path: '/cloudgroup',
           meta: {
-            label: '权限组',
+            label: i18n.t('cloudenv.text_13'),
             permission: 'cloudgroup_list',
             t: 'dictionary.cloudgroup',
             hidden: () => store.getters.isProjectMode || !hasSetupKey(['aliyun', 'huawei', 'qcloud', 'aws', 'azure', 'google']),
@@ -112,7 +113,7 @@ export default {
         {
           path: '/proxysetting',
           meta: {
-            label: '代理',
+            label: i18n.t('cloudenv.text_14'),
             permission: 'proxysettings_list',
             hidden: () => !hasSetupKey(['private', 'vmware', 'public', 'storage']),
           },
@@ -128,7 +129,7 @@ export default {
         {
           path: '/cloudevent',
           meta: {
-            label: '操作日志',
+            label: i18n.t('cloudenv.text_15'),
             permission: 'cloudevents_list',
             t: 'dictionary.cloudevents',
             hidden: () => !hasSetupKey(['aliyun', 'aws', 'azure', 'huawei', 'qcloud']),
@@ -146,13 +147,13 @@ export default {
     },
     {
       meta: {
-        label: '标签',
+        label: i18n.t('cloudenv.text_16'),
       },
       submenus: [
         {
           path: '/tag',
           meta: {
-            label: '标签',
+            label: i18n.t('cloudenv.text_16'),
           },
           component: Layout,
           children: [
@@ -167,14 +168,14 @@ export default {
     },
     {
       meta: {
-        label: '调度',
+        label: i18n.t('cloudenv.text_17'),
         hidden: () => !hasSetupKey(['onestack', 'private', 'vmware']),
       },
       submenus: [
         {
           path: '/schedtag',
           meta: {
-            label: '调度标签',
+            label: i18n.t('cloudenv.text_18'),
             permission: 'schedtags_list',
           },
           component: Layout,
@@ -189,7 +190,7 @@ export default {
         {
           path: '/schedpolicy',
           meta: {
-            label: '调度策略',
+            label: i18n.t('cloudenv.text_19'),
             permission: 'schedpolicies_list',
           },
           component: Layout,
@@ -204,7 +205,7 @@ export default {
         {
           path: '/dynamicschedtag',
           meta: {
-            label: '动态调度标签',
+            label: i18n.t('cloudenv.text_20'),
             permission: 'dynamicschedtags_list',
           },
           component: Layout,
@@ -220,14 +221,14 @@ export default {
     },
     {
       meta: {
-        label: '策略',
+        label: i18n.t('cloudenv.text_21'),
         hidden: true,
       },
       submenus: [
         {
           path: '/policydefinition',
           meta: {
-            label: '策略',
+            label: i18n.t('cloudenv.text_21'),
             permission: 'policydefinitions_list',
           },
           component: Layout,

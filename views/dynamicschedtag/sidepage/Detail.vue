@@ -26,11 +26,11 @@ export default {
         getEnabledTableColumn(),
         {
           field: 'resource_type',
-          title: '资源类型',
+          title: this.$t('cloudenv.text_384'),
         },
         getCopyWithContentTableColumn({
           field: 'schedtag',
-          title: '标签(调度标签)',
+          title: this.$t('cloudenv.text_385'),
           hideField: true,
           slotCallback: row => {
             if (!row.schedtag) return '-'
@@ -39,7 +39,7 @@ export default {
         }),
         {
           field: 'condition',
-          title: '条件',
+          title: this.$t('cloudenv.text_22'),
         },
       ],
     }
