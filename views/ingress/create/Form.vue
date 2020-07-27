@@ -1,16 +1,16 @@
 <template>
   <div class="w-75">
     <a-form :form="form.fc" v-bind="formItemLayout">
-      <a-form-item label="名称">
-        <a-input placeholder="请输入名称" v-decorator="decorators.name" />
+      <a-form-item :label="$t('k8s.text_41')">
+        <a-input :placeholder="$t('k8s.text_60')" v-decorator="decorators.name" />
       </a-form-item>
-      <a-form-item label="集群">
+      <a-form-item :label="$t('k8s.text_19')">
         <cluster-select v-decorator="decorators.cluster" @input="setCluster" />
       </a-form-item>
-      <a-form-item label="命名空间">
+      <a-form-item :label="$t('k8s.text_23')">
         <namespace-select v-decorator="decorators.namespace" :cluster="cluster" @input="setNamespace" :namespaceObj.sync="namespaceObj" />
       </a-form-item>
-      <a-form-item label="路由" required>
+      <a-form-item :label="$t('k8s.text_14')" required>
         <ingress-rule :decorators="decorators.rule" :namespace="namespaceObj.name" :cluster="cluster"  />
       </a-form-item>
     </a-form>
@@ -28,7 +28,7 @@ const validateValidPath = (rule, value, callback) => {
   if (value.startsWith('/')) {
     callback()
   } else {
-    callback(new Error('挂载点以 / 开头'))
+    callback(new Error(this.$t('k8s.text_131')))
   }
 }
 
@@ -57,8 +57,8 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
-              { min: 2, max: 24, message: '长度在 2 到 24 个字符', trigger: 'blur' },
+              { required: true, message: this.$t('k8s.text_60') },
+              { min: 2, max: 24, message: this.$t('k8s.text_132'), trigger: 'blur' },
               { validator: this.$validate('k8sName') },
             ],
           },
@@ -68,7 +68,7 @@ export default {
           {
             initialValue: this.$store.state.common.k8s.cluster,
             rules: [
-              { required: true, message: '请选择集群', trigger: 'blur' },
+              { required: true, message: this.$t('k8s.text_30'), trigger: 'blur' },
             ],
           },
         ],
@@ -77,7 +77,7 @@ export default {
           {
             initialValue: this.$store.state.common.k8s.namespace,
             rules: [
-              { required: true, message: '请选择命名空间', trigger: 'blur' },
+              { required: true, message: this.$t('k8s.text_61'), trigger: 'blur' },
             ],
           },
         ],
@@ -86,7 +86,7 @@ export default {
             `hosts[${i}]`,
             {
               rules: [
-                { required: true, message: '请输入host', trigger: 'blur' },
+                { required: true, message: this.$t('k8s.text_205'), trigger: 'blur' },
               ],
             },
           ],
@@ -95,7 +95,7 @@ export default {
               `serviceNames[${i}][${j}]`,
               {
                 rules: [
-                  { required: true, message: '请选择服务' },
+                  { required: true, message: this.$t('k8s.text_206') },
                 ],
               },
             ],
@@ -104,7 +104,7 @@ export default {
               {
                 validateFirst: true,
                 rules: [
-                  { required: true, message: '请输入Path', trigger: 'blur' },
+                  { required: true, message: this.$t('k8s.text_237'), trigger: 'blur' },
                   { validator: validateValidPath },
                 ],
               },
@@ -113,7 +113,7 @@ export default {
               `servicePorts[${i}][${j}]`,
               {
                 rules: [
-                  { type: 'number', required: true, message: '请选择端口', trigger: 'blur' },
+                  { type: 'number', required: true, message: this.$t('k8s.text_207'), trigger: 'blur' },
                 ],
               },
             ],
@@ -165,7 +165,7 @@ export default {
           rules,
         }
         await this._doCreate(params)
-        this.$message.success('操作成功')
+        this.$message.success(this.$t('k8s.text_46'))
       } catch (error) {
         throw error
       }

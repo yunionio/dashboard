@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="角色(RbacRole)"
+    :title="$t('k8s.text_330')"
     icon="res-k8s-rbacrole"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
@@ -49,8 +49,8 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'k8s-rbac-role-detail' },
-        { label: '源信息', key: 'source-information-sidepage' },
+        { label: this.$t('k8s.text_217'), key: 'k8s-rbac-role-detail' },
+        { label: this.$t('k8s.text_219'), key: 'source-information-sidepage' },
       ],
     }
   },

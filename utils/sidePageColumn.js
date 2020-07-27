@@ -1,3 +1,4 @@
+import i18n from '@/locales'
 const commonColumns = [
   {
     field: 'key',
@@ -28,7 +29,7 @@ const taintsColumns = [
 
 export const operatingSystemColumn = () => {
   return {
-    title: '操作系统',
+    title: i18n.t('k8s.text_141'),
     field: 'operatingSystem',
     slots: {
       default: ({ row }, h) => {
@@ -43,7 +44,7 @@ export const operatingSystemColumn = () => {
 
 export const annotateColumn = () => {
   return {
-    title: '注释',
+    title: i18n.t('k8s.text_142'),
     field: 'annotate',
     slots: {
       default: ({ row }, h) => {
@@ -58,7 +59,7 @@ export const annotateColumn = () => {
 
 export const tagColumn = () => {
   return {
-    title: '标签',
+    title: i18n.t('k8s.text_82'),
     field: 'tag',
     slots: {
       default: ({ row }, h) => {

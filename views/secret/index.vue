@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="保密字典(Secret)" />
+    <page-header :title="$t('k8s.text_338')" />
     <page-body>
       <secret-list :id="listId" />
     </page-body>

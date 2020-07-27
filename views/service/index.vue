@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="服务(Service)" />
+    <page-header :title="$t('k8s.text_341')" />
     <page-body>
       <service-list :id="listId" />
     </page-body>

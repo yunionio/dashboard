@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="容器组(Pod)" />
+    <page-header :title="$t('k8s.text_316')" />
     <page-body>
       <pod-list :id="listId" />
     </page-body>

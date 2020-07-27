@@ -1,8 +1,9 @@
+import i18n from '@/locales'
 export default {
   created () {
     this.singleActions = [
       {
-        label: '查看/编辑',
+        label: i18n.t('k8s.text_215'),
         permission: 'k8s_persistentvolumeclaims_update',
         action: async obj => {
           const manager = new this.$Manager('persistentvolumeclaims', 'v1')
@@ -21,7 +22,7 @@ export default {
         },
       },
       {
-        label: '删除',
+        label: i18n.t('k8s.text_201'),
         permission: 'k8s_persistentvolumeclaims_delete',
         action: (obj) => {
           const requestParams = {
@@ -33,8 +34,8 @@ export default {
           this.createDialog('DeleteResDialog', {
             data: [obj],
             columns: this.columns,
-            title: '删除',
-            name: '存储声明',
+            title: i18n.t('k8s.text_201'),
+            name: i18n.t('k8s.text_10'),
             onManager: this.onManager,
             idKey: 'name',
             requestParams,
@@ -48,7 +49,7 @@ export default {
           let tooltip = ''
           if (obj.mountedBy && obj.mountedBy.length > 0) {
             validate = false
-            tooltip = '请选择【未被使用】的存储卷'
+            tooltip = i18n.t('k8s.text_304')
           }
           return {
             validate,

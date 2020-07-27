@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="集群"
+    :title="$t('k8s.text_19')"
     icon="res-k8s-kubecluster"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
@@ -46,8 +46,8 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '节点', key: 'kube-machine-list' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('k8s.text_21'), key: 'kube-machine-list' },
+        { label: this.$t('k8s.text_202'), key: 'event-drawer' },
       ],
     }
   },

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="新建" />
+    <page-header :title="$t('k8s.text_49')" />
     <a-form-model
       class="mt-3"
       ref="formRef"
@@ -9,12 +9,12 @@
       :wrapper-col="wrapperCol">
       <a-card class="mb-2 card" hoverable v-for="(item, i) in formData.config" :key="item.key">
         <a-form-model-item
-          label="集群名称"
+          :label="$t('k8s.text_243')"
           :prop="'config.' + i + '.clusterId'"
           :rules="[
-            { required: true, message: '请输入clusterId', trigger: 'blur' },
+            { required: true, message: $t('k8s.text_244'), trigger: 'blur' },
           ]">
-          <a-input v-model="item.clusterId" placeholder="例如 office-cluster" />
+          <a-input v-model="item.clusterId" :placeholder="$t('k8s.text_245')" />
         </a-form-model-item>
         <a-form-model-item label="Mon Hosts">
           <a-form-model-item
@@ -22,24 +22,24 @@
             :key="val.key"
             :prop="'config.' + i + '.monitors.' + k + '.monitor'"
             :rules="[
-              { required: true, message: '请输入monitor地址', trigger: 'blur' },
+              { required: true, message: $t('k8s.text_246'), trigger: 'blur' },
             ]">
             <div class="d-flex align-items-center">
-              <a-input v-model="val.monitor" placeholder="例如 192.168.1.2:6789" />
+              <a-input v-model="val.monitor" :placeholder="$t('k8s.text_247')" />
               <a-icon type="minus-circle" style="color: #F56C6C;" class="cursor-pointer ml-2" v-if="item.monitors.length > 1" @click="decreaseMonitor(item, k)" />
               <!-- <i style="color: #F56C6C;" class="cursor-pointer ml-2" v-if="item.monitors.length > 1" @click="decreaseMonitor(item, k)" /> -->
             </div>
           </a-form-model-item>
-          <a-button type="link" size="small" @click="addMonitor(item)">添加 Mon Host 地址</a-button>
+          <a-button type="link" size="small" @click="addMonitor(item)">{{$t('k8s.text_248')}}</a-button>
         </a-form-model-item>
         <div class="d-flex flex-row-reverse">
-          <a-button style="color: #F56C6C;" type="link" v-if="formData.config.length > 1" @click="decreaseConfig(item)">删除</a-button>
+          <a-button style="color: #F56C6C;" type="link" v-if="formData.config.length > 1" @click="decreaseConfig(item)">{{$t('k8s.text_201')}}</a-button>
         </div>
       </a-card>
-      <a-button type="link" size="small" @click="addConfig">添加</a-button>
+      <a-button type="link" size="small" @click="addConfig">{{$t('k8s.text_249')}}</a-button>
       <a-form-model-item :wrapper-col="{ span: 20, offset: 3 }">
         <a-button class="mr-2" type="primary" @click="handleConfirm('formRef')" :loading="loading">{{$t('dialog.ok')}}</a-button>
-        <a-button @click="cancel">取消</a-button>
+        <a-button @click="cancel">{{$t('k8s.text_162')}}</a-button>
       </a-form-model-item>
     </a-form-model>
   </div>

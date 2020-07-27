@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="定时任务(CronJob)" />
+    <page-header :title="$t('k8s.text_226')" />
     <page-body>
       <cron-job-list :id="listId" />
     </page-body>

@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="服务账户(ServiceAccount)"
+    :title="$t('k8s.text_345')"
     icon="res-k8s-serviceaccount"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
@@ -49,8 +49,8 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'k8s-service-account-detail' },
-        { label: '源信息', key: 'source-information-sidepage' },
+        { label: this.$t('k8s.text_217'), key: 'k8s-service-account-detail' },
+        { label: this.$t('k8s.text_219'), key: 'source-information-sidepage' },
       ],
     }
   },

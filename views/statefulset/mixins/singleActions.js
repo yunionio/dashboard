@@ -1,8 +1,9 @@
+import i18n from '@/locales'
 export default {
   created () {
     this.singleActions = [
       {
-        label: '设置镜像',
+        label: i18n.t('k8s.text_63'),
         permission: 'k8s_statefulsets_update',
         action: obj => {
           this.createDialog('K8SSetImageDialog', {
@@ -17,7 +18,7 @@ export default {
         },
       },
       {
-        label: '设置副本数',
+        label: i18n.t('k8s.text_68'),
         permission: 'k8s_statefulsets_update',
         action: obj => {
           this.createDialog('K8SSetLimitDialog', {
@@ -32,10 +33,10 @@ export default {
         },
       },
       {
-        label: '更多',
+        label: i18n.t('k8s.text_196'),
         actions: obj => [
           {
-            label: '查看/编辑',
+            label: i18n.t('k8s.text_215'),
             permission: 'k8s_statefulsets_update',
             action: async () => {
               const manager = new this.$Manager('statefulsets', 'v1')
@@ -57,7 +58,7 @@ export default {
             },
           },
           {
-            label: '删除',
+            label: i18n.t('k8s.text_201'),
             permission: 'k8s_statefulsets_delete',
             action: () => {
               const requestParams = {
@@ -70,8 +71,8 @@ export default {
                 vm: this,
                 data: [obj],
                 columns: this.columns,
-                title: '删除',
-                name: '有状态',
+                title: i18n.t('k8s.text_201'),
+                name: i18n.t('k8s.text_5'),
                 onManager: this.onManager,
                 idKey: 'name',
                 requestParams,

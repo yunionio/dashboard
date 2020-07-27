@@ -1,6 +1,7 @@
 import {
   getNameDescriptionTableColumn,
 } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   computed: {
@@ -8,7 +9,7 @@ export default {
       if (this.$store.getters.scope === 'project') {
         return [
           {
-            label: '查看 kubeconfig',
+            label: i18n.t('k8s.text_195'),
             permission: 'k8s_kubeclusters_get_kubeconfig',
             action: obj => {
               this.createDialog('ClusterShowKubeConfigDialog', {
@@ -22,7 +23,7 @@ export default {
       }
       return [
         {
-          label: '查看 kubeconfig',
+          label: i18n.t('k8s.text_195'),
           permission: 'k8s_kubeclusters_get_kubeconfig',
           action: obj => {
             this.createDialog('ClusterShowKubeConfigDialog', {
@@ -33,11 +34,11 @@ export default {
           },
         },
         {
-          label: '更多',
+          label: i18n.t('k8s.text_196'),
           actions: obj => {
             return [
               {
-                label: '设置为私有',
+                label: i18n.t('k8s.text_197'),
                 permission: 'k8s_kubeclusters_perform_private',
                 action: () => {
                   this.onManager('performAction', {
@@ -46,7 +47,7 @@ export default {
                       action: 'private',
                     },
                   }).then(() => {
-                    this.$message.success(`设置为私有仅当前${this.$t('dictionary.project')}可见`)
+                    this.$message.success(i18n.t('k8s.text_198', [i18n.t('dictionary.project')]))
                   })
                 },
                 meta: (obj) => {
@@ -56,7 +57,7 @@ export default {
                 },
               },
               {
-                label: '设置为公有',
+                label: i18n.t('k8s.text_155'),
                 permission: 'k8s_kubeclusters_perform_public',
                 action: () => {
                   this.onManager('performAction', {
@@ -65,7 +66,7 @@ export default {
                       action: 'public',
                     },
                   }).then(() => {
-                    this.$message.success(`设置为公有将全部${this.$t('dictionary.project')}可见`)
+                    this.$message.success(i18n.t('k8s.text_200', [i18n.t('dictionary.project')]))
                   })
                 },
                 meta: (obj) => {
@@ -75,7 +76,7 @@ export default {
                 },
               },
               {
-                label: '删除',
+                label: i18n.t('k8s.text_201'),
                 permission: 'k8s_kubeclusters_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
@@ -93,7 +94,7 @@ export default {
                       }),
                       {
                         field: 'version',
-                        title: '版本',
+                        title: i18n.t('k8s.text_153'),
                         slots: {
                           default: ({ row }, h) => {
                             return [
@@ -104,10 +105,10 @@ export default {
                       },
                       {
                         field: 'machines',
-                        title: '节点数量',
+                        title: i18n.t('k8s.text_191'),
                       },
                     ],
-                    title: '删除',
+                    title: i18n.t('k8s.text_201'),
                     name: this.$t('dictionary.kubecluster'),
                     onManager: this.onManager,
                     success: () => {

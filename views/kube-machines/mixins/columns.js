@@ -7,6 +7,7 @@ import {
 import { HYPERVISORS_MAP } from '@/constants'
 import BrandIcon from '@/sections/BrandIcon'
 import { sizestr } from '@/utils/utils'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -23,12 +24,12 @@ export default {
       }),
       {
         field: 'cluster',
-        title: '集群',
+        title: i18n.t('k8s.text_19'),
         minWidth: 50,
       },
       {
         field: 'role',
-        title: '角色',
+        title: i18n.t('k8s.text_24'),
         minWidth: 50,
         slots: {
           default: ({ row }, h) => {
@@ -40,7 +41,7 @@ export default {
       getStatusTableColumn({ statusModule: 'kubemachines' }),
       {
         field: 'cpuRequests/cpuCapacity',
-        title: 'CPU(核)',
+        title: i18n.t('k8s.text_282'),
         minWidth: 70,
         formatter: ({ row }) => {
           if (row.machine_node && R.is(Object, row.machine_node.allocatedResources)) {
@@ -52,7 +53,7 @@ export default {
       },
       {
         field: 'memoryRequests/memoryCapacity',
-        title: '内存',
+        title: i18n.t('k8s.text_101'),
         minWidth: 70,
         formatter: ({ row }) => {
           if (row.machine_node && R.is(Object, row.machine_node.allocatedResources)) {
@@ -64,12 +65,12 @@ export default {
       },
       {
         field: 'address',
-        title: 'IP地址',
+        title: i18n.t('k8s.text_283'),
         minWidth: 100,
         showOverflow: 'ellipsis',
       },
       {
-        title: '平台',
+        title: i18n.t('k8s.text_150'),
         field: 'hypervisor',
         slots: {
           default: ({ row }, h) => {

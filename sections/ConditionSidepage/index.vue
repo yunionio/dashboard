@@ -16,29 +16,29 @@ export default {
       columns: [
         {
           field: 'type',
-          title: '类型',
+          title: this.$t('k8s.text_34'),
         },
         {
           field: 'status',
-          title: '状态',
+          title: this.$t('k8s.text_35'),
         },
         {
           field: 'lastProbeTime',
-          title: '最近心跳',
-          formatter: ({ row }) => row.lastProbeTime ? this.$moment(row.lastProbeTime).format('YYYY年MM月DD日 HH:mm:ss') : '-',
+          title: this.$t('k8s.text_36'),
+          formatter: ({ row }) => row.lastProbeTime ? this.$moment(row.lastProbeTime).format(this.$t('k8s.text_37')) : '-',
         },
         {
           field: 'lastTransitionTime',
-          title: '最近更改',
-          formatter: ({ row }) => row.lastTransitionTime ? this.$moment(row.lastTransitionTime).format('YYYY年MM月DD日 HH:mm:ss') : '-',
+          title: this.$t('k8s.text_38'),
+          formatter: ({ row }) => row.lastTransitionTime ? this.$moment(row.lastTransitionTime).format(this.$t('k8s.text_37')) : '-',
         },
         {
           field: 'reason',
-          title: '原因',
+          title: this.$t('k8s.text_39'),
         },
         {
           field: 'message',
-          title: '消息',
+          title: this.$t('k8s.text_40'),
         },
       ],
     }

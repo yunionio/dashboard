@@ -5,7 +5,7 @@
       :params="params"
       resource="loadbalancerclusters"
       v-decorator="decorator"
-      :selectProps="{ placeholder: '请选择负载均衡集群' }" />
+      :selectProps="{ placeholder: $t('k8s.text_86') }" />
   </a-form-item>
 </template>
 

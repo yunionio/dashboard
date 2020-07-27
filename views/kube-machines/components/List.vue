@@ -6,7 +6,7 @@
       :group-actions="groupActions"
       :single-actions="singleActions"
       :columns="columns" />
-    <a-alert v-else message="非自建类型的集群暂不支持节点管理" banner />
+    <a-alert v-else :message="$t('k8s.text_279')" banner />
   </div>
 </template>
 
@@ -40,7 +40,7 @@ export default {
         getParams: { details: true, cluster: this.resId },
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('k8s.text_41'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
@@ -50,11 +50,11 @@ export default {
       }),
       groupActions: [
         {
-          label: '添加节点',
+          label: this.$t('k8s.text_280'),
           permission: 'k8s_kubeclusters_perform_add_machines',
           action: () => {
             this.createDialog('CreateKubemachinesDialog', {
-              title: '新建',
+              title: this.$t('k8s.text_49'),
               data: this.data,
               onManager: this.onManager,
               refresh: this.refresh,
@@ -65,15 +65,15 @@ export default {
           }),
         },
         {
-          label: '删除',
+          label: this.$t('k8s.text_201'),
           permission: 'k8s_kubemachines_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,
               data: this.list.selectedItems,
               columns: this.columns,
-              title: '删除',
-              name: '节点',
+              title: this.$t('k8s.text_201'),
+              name: this.$t('k8s.text_21'),
               onManager: this.onManager,
               success: () => {
                 this.destroySidePages()

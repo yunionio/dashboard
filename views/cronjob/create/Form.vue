@@ -1,37 +1,37 @@
 <template>
   <div class="w-75">
     <a-form :form="form.fc" v-bind="formItemLayout">
-      <a-form-item label="名称">
-        <a-input placeholder="请输入名称" v-decorator="decorators.name" />
+      <a-form-item :label="$t('k8s.text_41')">
+        <a-input :placeholder="$t('k8s.text_60')" v-decorator="decorators.name" />
       </a-form-item>
-      <a-form-item label="集群">
+      <a-form-item :label="$t('k8s.text_19')">
         <cluster-select v-decorator="decorators.cluster" @input="setCluster" />
       </a-form-item>
-      <a-form-item label="命名空间">
+      <a-form-item :label="$t('k8s.text_23')">
         <namespace-select v-decorator="decorators.namespace" @input="setNamespace" :cluster="cluster" :namespaceObj.sync="namespaceObj" />
       </a-form-item>
-      <a-form-item label="镜像密钥">
+      <a-form-item :label="$t('k8s.text_220')">
         <image-secret
           :form="form"
           :decorators="decorators.imageSecrets"
           :namespace="namespaceObj.name"
           :cluster="cluster" />
       </a-form-item>
-      <a-form-item label="重启策略">
+      <a-form-item :label="$t('k8s.text_221')">
         <restart-policy-select
           :decorator="decorators.restartPolicy"
           type="cronjob" />
       </a-form-item>
-      <a-form-item label="调度策略">
-        <a-input placeholder="请输入调度策略，例如：*/1 * * * *" v-decorator="decorators.schedule" />
+      <a-form-item :label="$t('k8s.text_222')">
+        <a-input :placeholder="$t('k8s.text_137')" v-decorator="decorators.schedule" />
       </a-form-item>
       <a-collapse :bordered="false" class="mb-3">
-        <a-collapse-panel header="高级配置" key="1">
-          <a-form-item label="标签">
+        <a-collapse-panel :header="$t('k8s.text_223')" key="1">
+          <a-form-item :label="$t('k8s.text_82')">
             <labels :decorators="decorators.labels" />
           </a-form-item>
-          <a-form-item label="备注">
-            <labels :decorators="decorators.annotations" title="备注" />
+          <a-form-item :label="$t('k8s.text_224')">
+            <labels :decorators="decorators.annotations" :title="$t('k8s.text_224')" />
           </a-form-item>
         </a-collapse-panel>
       </a-collapse>
@@ -151,7 +151,7 @@ export default {
         }
         if (!R.isEmpty(service)) params.service = service
         await this._doCreate(params)
-        this.$message.success('操作成功')
+        this.$message.success(this.$t('k8s.text_46'))
       } catch (error) {
         throw error
       }

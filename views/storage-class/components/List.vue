@@ -46,7 +46,7 @@ export default {
       }),
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('k8s.text_49'),
           permission: 'k8s_storageclasses_create',
           action: () => {
             this.$router.push({ path: '/k8s-storageclass/create' })
@@ -56,15 +56,15 @@ export default {
           }),
         },
         {
-          label: '删除',
+          label: this.$t('k8s.text_201'),
           permission: 'k8s_storageclasses_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,
               data: this.list.selectedItems,
               columns: this.columns,
-              title: '删除存储类',
-              name: '存储类',
+              title: this.$t('k8s.text_347'),
+              name: this.$t('k8s.text_22'),
               onManager: this.onManager,
               requestData: {
                 cluster: this.list.selectedItems[0].clusterID,
@@ -81,7 +81,7 @@ export default {
               if (unique.length > 1) {
                 return {
                   validate: false,
-                  tooltip: '请选择同一个命名空间下的资源',
+                  tooltip: this.$t('k8s.text_203'),
                 }
               }
               return {
@@ -91,7 +91,7 @@ export default {
             } else {
               return {
                 validate: false,
-                tooltip: '请选择需要删除的资源，且为同一命名空间下的资源',
+                tooltip: this.$t('k8s.text_204'),
               }
             }
           },

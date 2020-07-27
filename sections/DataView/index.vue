@@ -4,7 +4,7 @@
       <div class="data-view-item_title mb-1">{{ item.title }}</div>
       <code-mirror v-model="item.content" :options="cmOptions" />
     </div>
-    <a-button class="mt-4" type="primary" v-if="dataList && dataList.length" @click="update" :loading="loading">更新配置</a-button>
+    <a-button class="mt-4" type="primary" v-if="dataList && dataList.length" @click="update" :loading="loading">{{$t('k8s.text_45')}}</a-button>
   </div>
 </template>
 
@@ -67,7 +67,7 @@ export default {
             data: { data },
           },
         })
-        this.$message.success('操作成功')
+        this.$message.success(this.$t('k8s.text_46'))
         this.loading = false
       } catch (error) {
         this.loading = false

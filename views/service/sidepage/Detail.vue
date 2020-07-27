@@ -26,7 +26,7 @@ export default {
       baseInfo: [
         {
           field: 'name',
-          title: '名称',
+          title: this.$t('k8s.text_41'),
           slots: {
             default: ({ row }) => {
               return [
@@ -39,16 +39,16 @@ export default {
         },
         {
           field: 'cluster',
-          title: '集群',
+          title: this.$t('k8s.text_19'),
         },
         {
           field: 'namespace',
-          title: '命名空间',
+          title: this.$t('k8s.text_23'),
         },
 
         {
           field: 'type',
-          title: '类型',
+          title: this.$t('k8s.text_34'),
         },
         {
           field: 'clusterIP',
@@ -56,11 +56,11 @@ export default {
         },
         {
           field: 'sessionAffinity',
-          title: '会话保持',
+          title: this.$t('k8s.text_344'),
         },
         {
           field: 'internalEndpoint',
-          title: '内部接入端',
+          title: this.$t('k8s.text_342'),
           minWidth: 200,
           slots: {
             default: ({ row }) => {
@@ -75,7 +75,7 @@ export default {
         },
         {
           field: 'externalEndpoints',
-          title: '外部接入端',
+          title: this.$t('k8s.text_343'),
           slots: {
             default: ({ row }) => {
               if (row.externalEndpoints && row.externalEndpoints.length) {
@@ -89,11 +89,11 @@ export default {
         },
         {
           field: 'type',
-          title: '类型',
+          title: this.$t('k8s.text_34'),
         },
         {
           field: 'creationTimestamp',
-          title: '创建时间',
+          title: this.$t('k8s.text_74'),
           formatter: ({ row }) => {
             return (row.creationTimestamp && this.$moment(row.creationTimestamp).format()) || '-'
           },

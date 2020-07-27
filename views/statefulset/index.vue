@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="有状态(Statefulset)" />
+    <page-header :title="$t('k8s.text_346')" />
     <page-body>
       <statefulset-list :id="listId" />
     </page-body>

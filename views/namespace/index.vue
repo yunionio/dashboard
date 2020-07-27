@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="命名空间(Namespace)" />
+    <page-header :title="$t('k8s.text_295')" />
     <page-body>
       <k8snamespace-list :id="listId" :getParams="getParams" />
     </page-body>

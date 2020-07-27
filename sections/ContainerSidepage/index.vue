@@ -22,21 +22,21 @@ export default {
       columns: [
         {
           field: 'name',
-          title: '名称',
+          title: this.$t('k8s.text_41'),
         },
         {
           field: 'image',
-          title: '镜像',
+          title: this.$t('k8s.text_42'),
         },
         k8sEnvColumn(),
         {
           field: 'commands',
-          title: '命令',
+          title: this.$t('k8s.text_43'),
           formatter: ({ row }) => row.commands ? `[ ${row.commands} ]` : '-',
         },
         {
           field: 'args',
-          title: '参数',
+          title: this.$t('k8s.text_44'),
           formatter: ({ row }) => row.args ? `[ ${row.args} ]` : '-',
         },
       ],

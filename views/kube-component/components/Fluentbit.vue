@@ -1,41 +1,41 @@
 <template>
   <a-form-model :model="formData" size="small" ref="formRef" class="w-75" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
-    <a-form-model-item label="启用 Elasticsearch">
+    <a-form-model-item :label="$t('k8s.text_250')">
       <a-switch v-model="formData.es.enabled" />
     </a-form-model-item>
     <template v-if="formData.es.enabled">
-      <a-form-model-item label="Elasticsearch index 名称" prop="es.index">
-        <a-input v-model="formData.es.index" placeholder="请输入Elasticsearch index 名称" />
+      <a-form-model-item :label="$t('k8s.text_251')" prop="es.index">
+        <a-input v-model="formData.es.index" :placeholder="$t('k8s.text_252')" />
       </a-form-model-item>
-      <a-form-model-item label="Elasticsearch 集群连接地址" prop="es.host">
-        <a-input v-model="formData.es.host" placeholder="请输入Elasticsearch集群连接地址，例如：10.168.26.182" />
+      <a-form-model-item :label="$t('k8s.text_253')" prop="es.host">
+        <a-input v-model="formData.es.host" :placeholder="$t('k8s.text_254')" />
       </a-form-model-item>
-      <a-form-model-item label="端口" prop="es.port">
+      <a-form-model-item :label="$t('k8s.text_255')" prop="es.port">
         <a-input v-model="formData.es.port" />
       </a-form-model-item>
-      <a-form-model-item label="类型" prop="es.type">
+      <a-form-model-item :label="$t('k8s.text_34')" prop="es.type">
         <a-input v-model="formData.es.type" />
       </a-form-model-item>
     </template>
     <a-divider />
-    <a-form-model-item label="启用 Kafka">
+    <a-form-model-item :label="$t('k8s.text_256')">
       <a-switch v-model="formData.kafka.enabled" />
     </a-form-model-item>
     <template v-if="formData.kafka.enabled">
-      <a-form-model-item label="kafka broker 地址">
+      <a-form-model-item :label="$t('k8s.text_257')">
         <a-form-model-item
           v-for="(val, i) in formData.kafka.brokers"
           :key="val.key"
           :prop="'kafka.brokers.' + i + '.value'"
           :rules="[
-            { required: true, message: '请输入kafka broker 地址，例如：192.168.222.10:9092', trigger: 'blur' },
+            { required: true, message: $t('k8s.text_258'), trigger: 'blur' },
           ]">
           <div class="d-flex align-items-center">
-            <a-input v-model="val.value" placeholder="请输入kafka broker 地址，例如：192.168.222.10:9092" />
+            <a-input v-model="val.value" :placeholder="$t('k8s.text_258')" />
             <a-icon type="minus-circle" style="color: #F56C6C;" class="a-icon-remove-outline cursor-pointer ml-2" v-if="formData.kafka.brokers.length > 1" @click="decreaseBroker(val)" />
           </div>
         </a-form-model-item>
-        <a-button type="link" size="small" @click="addBroker">添加</a-button>
+        <a-button type="link" size="small" @click="addBroker">{{$t('k8s.text_249')}}</a-button>
       </a-form-model-item>
       <a-form-model-item label="topics">
         <a-form-model-item
@@ -43,19 +43,19 @@
           :key="val.key"
           :prop="'kafka.topics.' + i + '.value'"
           :rules="[
-            { required: true, message: '请输入topic，例如：fluent-bit', trigger: 'blur' },
+            { required: true, message: $t('k8s.text_259'), trigger: 'blur' },
           ]">
           <div class="d-flex align-items-center">
-            <a-input v-model="val.value" placeholder="请输入topic，例如：fluent-bit" />
+            <a-input v-model="val.value" :placeholder="$t('k8s.text_259')" />
             <a-icon type="minus-circle" style="color: #F56C6C;" class="a-icon-remove-outline cursor-pointer ml-2" v-if="formData.kafka.topics.length > 1" @click="decreaseTopic(val)" />
           </div>
         </a-form-model-item>
-        <a-button type="link" size="small" @click="addTopic">添加</a-button>
+        <a-button type="link" size="small" @click="addTopic">{{$t('k8s.text_249')}}</a-button>
       </a-form-model-item>
     </template>
     <a-form-model-item :wrapper-col="{ span: 20, offset: 3 }">
-      <a-button class="mr-2" type="primary" @click="submitForm('formRef')">确定</a-button>
-      <a-button @click="cancel">取消</a-button>
+      <a-button class="mr-2" type="primary" @click="submitForm('formRef')">{{$t('k8s.text_260')}}</a-button>
+      <a-button @click="cancel">{{$t('k8s.text_162')}}</a-button>
     </a-form-model-item>
   </a-form-model>
 </template>
@@ -93,16 +93,16 @@ export default {
     return {
       rules: {
         'es.index': [
-          { required: true, message: '请输入Elasticsearch index 名称', trigger: 'blur' },
+          { required: true, message: this.$t('k8s.text_252'), trigger: 'blur' },
         ],
         'es.host': [
-          { required: true, message: '请输入Elasticsearch 集群连接地址', trigger: 'blur' },
+          { required: true, message: this.$t('k8s.text_261'), trigger: 'blur' },
         ],
         'es.port': [
-          { required: true, message: '请输入端口', trigger: 'blur' },
+          { required: true, message: this.$t('k8s.text_262'), trigger: 'blur' },
         ],
         'es.type': [
-          { required: true, message: '请输入类型', trigger: 'blur' },
+          { required: true, message: this.$t('k8s.text_263'), trigger: 'blur' },
         ],
       },
       formData,
@@ -127,7 +127,7 @@ export default {
     },
     submitForm (formName) {
       if (!this.formData.es.enabled && !this.formData.kafka.enabled) {
-        this.$message.warning('请最少启用Es或者Kafka')
+        this.$message.warning(this.$t('k8s.text_264'))
         return
       }
       this.$refs[formName].validate((valid) => {

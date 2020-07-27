@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="节点" />
+    <page-header :title="$t('k8s.text_21')" />
     <page-body>
       <kubemachines-list :id="listId" :getParams="getParams" />
     </page-body>

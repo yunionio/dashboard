@@ -44,7 +44,7 @@ export default {
       }),
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('k8s.text_49'),
           permission: 'k8s_kubeclusters_create',
           action: () => {
             this.$router.push({ path: '/k8s-cluster/create' })
@@ -54,7 +54,7 @@ export default {
           }),
         },
         {
-          label: '导入',
+          label: this.$t('k8s.text_143'),
           permission: 'k8s_kubeclusters_create',
           action: () => {
             this.$router.push({ path: '/k8s-cluster/import' })

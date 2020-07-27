@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="服务组件" />
+    <page-header :title="$t('k8s.text_27')" />
     <page-body>
       <kube-component-list :id="listId" />
     </page-body>

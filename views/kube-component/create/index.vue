@@ -38,7 +38,7 @@ export default {
           },
         })
         this.loading = false
-        this.$message.success('操作成功')
+        this.$message.success(this.$t('k8s.text_46'))
         this.$router.push('/k8s-kubecomponent')
       } catch (error) {
         this.loading = false

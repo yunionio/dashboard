@@ -2,8 +2,8 @@
   <div>
     <a-form-item class="mb-0">
       <a-radio-group v-decorator="decorators.secretType" @change="secretTypeChange">
-        <a-radio-button value="none">无</a-radio-button>
-        <a-radio-button value="select">已有密钥</a-radio-button>
+        <a-radio-button value="none">{{$t('k8s.text_75')}}</a-radio-button>
+        <a-radio-button value="select">{{$t('k8s.text_76')}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
     <a-form-item v-if="secretType === 'select'">
@@ -14,10 +14,8 @@
         idKey="name"
         :params="params"
         :need-params="true"
-        :select-props="{ mode: 'multiple', placeholder: '请选择' }" />
-      <div slot="extra">
-        没有想要的密钥？可以立即
-        <a-button type="link" @click="createImageSecret">新建密钥</a-button>
+        :select-props="{ mode: 'multiple', placeholder: $t('k8s.text_77') }" />
+      <div slot="extra">{{$t('k8s.text_78')}}<a-button type="link" @click="createImageSecret">{{$t('k8s.text_79')}}</a-button>
       </div>
     </a-form-item>
   </div>
@@ -66,7 +64,7 @@ export default {
     },
     createImageSecret () {
       this.createDialog('K8SImageSecretCreateDialog', {
-        title: '新建镜像密钥',
+        title: this.$t('k8s.text_80'),
         cluster: this.cluster,
         namespace: this.namespace,
         success: name => {

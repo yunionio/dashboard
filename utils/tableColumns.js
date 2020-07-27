@@ -1,10 +1,11 @@
 import * as R from 'ramda'
 import _ from 'lodash'
+import i18n from '@/locales'
 
 export const k8sStatusColumn = ({ path = 'podsInfo.warnings', statusModule = 'k8s_resource' } = {}) => {
   return {
     field: 'status',
-    title: '状态',
+    title: i18n.t('k8s.text_35'),
     width: 100,
     slots: {
       default: ({ row }, h) => {
@@ -32,7 +33,7 @@ export const k8sStatusColumn = ({ path = 'podsInfo.warnings', statusModule = 'k8
   }
 }
 
-export const k8sLabelColumn = ({ field = 'labels', title = '标签' } = {}) => {
+export const k8sLabelColumn = ({ field = 'labels', title = i18n.t('k8s.text_82') } = {}) => {
   return {
     field,
     title,
@@ -58,7 +59,7 @@ export const k8sLabelColumn = ({ field = 'labels', title = '标签' } = {}) => {
   }
 }
 
-export const k8sImageColumn = ({ field = 'containerImages', title = '镜像', itemField = 'image' } = {}) => {
+export const k8sImageColumn = ({ field = 'containerImages', title = i18n.t('k8s.text_42'), itemField = 'image' } = {}) => {
   return {
     field,
     title,
@@ -78,7 +79,7 @@ export const k8sImageColumn = ({ field = 'containerImages', title = '镜像', it
   }
 }
 
-export const k8sEnvColumn = ({ field = 'env', title = '环境变量' } = {}) => {
+export const k8sEnvColumn = ({ field = 'env', title = i18n.t('k8s.text_111') } = {}) => {
   return {
     field,
     title,

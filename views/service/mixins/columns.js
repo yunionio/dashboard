@@ -1,4 +1,5 @@
 import { getNameDescriptionTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -16,7 +17,7 @@ export default {
       }),
       {
         field: 'namespace',
-        title: '命名空间',
+        title: i18n.t('k8s.text_23'),
         sortable: true,
       },
       {
@@ -34,7 +35,7 @@ export default {
       },
       {
         field: 'internalEndpoint',
-        title: '内部接入端',
+        title: i18n.t('k8s.text_342'),
         minWidth: 200,
         slots: {
           default: ({ row }) => {
@@ -49,7 +50,7 @@ export default {
       },
       {
         field: 'externalEndpoints',
-        title: '外部接入端',
+        title: i18n.t('k8s.text_343'),
         slots: {
           default: ({ row }) => {
             if (row.externalEndpoints && row.externalEndpoints.length) {
@@ -63,7 +64,7 @@ export default {
       },
       {
         field: 'type',
-        title: '类型',
+        title: i18n.t('k8s.text_34'),
       },
       getTimeTableColumn({ field: 'creationTimestamp', fromNow: true, sortable: true }),
     ]

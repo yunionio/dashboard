@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="存储声明(Persistentvolumeclaim)" />
+    <page-header :title="$t('k8s.text_310')" />
     <page-body>
       <persistentvolumeclaim-list :id="listId" />
     </page-body>

@@ -1,22 +1,20 @@
 <template>
   <div class="w-75">
     <a-form :form="form.fc" v-bind="formItemLayout">
-      <a-form-item label="名称">
-        <a-input placeholder="请输入名称" v-decorator="decorators.name" />
+      <a-form-item :label="$t('k8s.text_41')">
+        <a-input :placeholder="$t('k8s.text_60')" v-decorator="decorators.name" />
       </a-form-item>
-      <a-form-item label="磁盘大小">
+      <a-form-item :label="$t('k8s.text_305')">
         <a-input-number v-decorator="decorators.size" :min="1" :max="500" /> G
       </a-form-item>
-      <a-form-item label="集群">
+      <a-form-item :label="$t('k8s.text_19')">
         <cluster-select v-decorator="decorators.cluster" @input="setCluster" />
       </a-form-item>
-      <a-form-item label="命名空间">
+      <a-form-item :label="$t('k8s.text_23')">
         <namespace-select v-decorator="decorators.namespace" @input="setNamespace" :cluster="cluster" />
       </a-form-item>
-      <a-form-item label="存储类">
-        <div slot="extra">
-          没有想要的？可以前往
-          <help-link :href="storageClassHref"> 新建存储类</help-link>
+      <a-form-item :label="$t('k8s.text_22')">
+        <div slot="extra">{{$t('k8s.text_306')}}<help-link :href="storageClassHref">{{$t('k8s.text_307')}}</help-link>
         </div>
         <base-select
           show-sync
@@ -27,7 +25,7 @@
           :resList.sync="storageclassOpts"
           :need-params="true"
           :params="storageclassParams"
-          :select-props="{ placeholder: '请选择存储类' }" />
+          :select-props="{ placeholder: $t('k8s.text_308') }" />
       </a-form-item>
     </a-form>
   </div>
@@ -70,8 +68,8 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
-              { min: 2, max: 24, message: '长度在 2 到 24 个字符', trigger: 'blur' },
+              { required: true, message: this.$t('k8s.text_60') },
+              { min: 2, max: 24, message: this.$t('k8s.text_132'), trigger: 'blur' },
               { validator: this.$validate('k8sName') },
             ],
           },
@@ -81,7 +79,7 @@ export default {
           {
             initialValue: this.$store.state.common.k8s.cluster,
             rules: [
-              { required: true, message: '请选择集群', trigger: 'blur' },
+              { required: true, message: this.$t('k8s.text_30'), trigger: 'blur' },
             ],
           },
         ],
@@ -90,7 +88,7 @@ export default {
           {
             initialValue: this.$store.state.common.k8s.namespace,
             rules: [
-              { required: true, message: '请选择命名空间', trigger: 'blur' },
+              { required: true, message: this.$t('k8s.text_61'), trigger: 'blur' },
             ],
           },
         ],
@@ -104,7 +102,7 @@ export default {
           'storageClass',
           {
             rules: [
-              { required: true, message: '请选择存储类', trigger: 'blur' },
+              { required: true, message: this.$t('k8s.text_308'), trigger: 'blur' },
             ],
           },
         ],
@@ -163,7 +161,7 @@ export default {
           size: values.size + 'G',
         }
         await this._doCreate(params)
-        this.$message.success('操作成功')
+        this.$message.success(this.$t('k8s.text_46'))
       } catch (error) {
         throw error
       }

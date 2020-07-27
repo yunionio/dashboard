@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="mb-2">
-      <span>集群&nbsp;</span>
+      <span>{{$t('k8s.text_28')}}</span>
       <cluster-select
         :value="cluster"
         @input="setCluster"
@@ -15,7 +15,7 @@
       :card-fields="cardFields"
       :group-actions="groupActions"
       :single-actions="singleActions" />
-    <a-alert v-else message="无可用服务组件" banner />
+    <a-alert v-else :message="$t('k8s.text_265')" banner />
   </div>
 </template>
 
@@ -49,7 +49,7 @@ export default {
         },
         title: 'name',
         content: [{
-          title: '启用状态',
+          title: this.$t('k8s.text_266'),
           field: 'enabled',
           slots: (data) => {
             return (<div class='status'>
@@ -58,7 +58,7 @@ export default {
           },
         },
         {
-          title: '状态',
+          title: this.$t('k8s.text_35'),
           field: 'status',
           slots: (data) => {
             if (!data.status) {
@@ -73,7 +73,7 @@ export default {
       groupActions: [],
       singleActions: [
         {
-          label: '新建',
+          label: this.$t('k8s.text_49'),
           action: obj => {
             this.$router.push({
               path: '/k8s-kubecomponent/create',
@@ -89,7 +89,7 @@ export default {
           }),
         },
         {
-          label: '更新',
+          label: this.$t('k8s.text_95'),
           action: obj => {
             this.$router.push({
               path: '/k8s-kubecomponent/update',
@@ -104,7 +104,7 @@ export default {
           }),
         },
         {
-          label: '禁用',
+          label: this.$t('k8s.text_267'),
           action: obj => {
             return new this.$Manager('kubeclusters', 'v1').performAction({
               id: this.cluster,
@@ -123,7 +123,7 @@ export default {
           }),
         },
         {
-          label: '启用',
+          label: this.$t('k8s.text_268'),
           action: obj => {
             return new this.$Manager('kubeclusters', 'v1').performAction({
               id: this.cluster,
@@ -142,12 +142,12 @@ export default {
           }),
         },
         {
-          label: '删除',
+          label: this.$t('k8s.text_201'),
           action: obj => {
             this.createDialog('DeleteResDialog', {
               vm: this,
               data: [obj],
-              title: '删除',
+              title: this.$t('k8s.text_201'),
               name: obj.name,
               idKey: 'name',
               ok: (ids, data) => {

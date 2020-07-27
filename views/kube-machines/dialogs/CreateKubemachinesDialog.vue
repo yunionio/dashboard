@@ -1,25 +1,25 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">新建</div>
+    <div slot="header">{{$t('k8s.text_49')}}</div>
     <div slot="body">
       <a-alert :showIcon="false" banner class="mt-2">
         <template slot="message">
           <div>
-            <p>控制节点(controlplane)：同时运行 kube-apiserver 和 etcd 的节点，默认不运行pod，建议部署 1个或 3个</p>
-            <p>计算节点(node)：只运行 pod 的节点</p>
+            <p>{{$t('k8s.text_147')}}</p>
+            <p>{{$t('k8s.text_148')}}</p>
           </div>
         </template>
       </a-alert>
       <a-form
       class="mt-3"
       :form="form.fc">
-        <a-form-item label="区域" class="mb-0" v-bind="formItemLayout">
+        <a-form-item :label="$t('k8s.text_151')" class="mb-0" v-bind="formItemLayout">
           <cloudregion-zone
             :zone-params="param.zone"
             :cloudregion-params="param.region"
             :decorator="decorators.regionZone" />
         </a-form-item>
-        <a-form-item label="机器配置" v-bind="formItemLayout">
+        <a-form-item :label="$t('k8s.text_152')" v-bind="formItemLayout">
           <server-config :decorator="decorators.serverConfig" :network-params="param.network" />
         </a-form-item>
       </a-form>
@@ -46,7 +46,7 @@ function checkIpInSegment (i, networkData) {
     if (isIn) {
       _callback()
     } else {
-      _callback('输入的IP不在选择子网网段中')
+      _callback(this.$t('k8s.text_163'))
     }
   }
 }
@@ -81,7 +81,7 @@ export default {
             {
               initialValue: { key: '', label: '' },
               rules: [
-                { required: true, message: '请选择区域' },
+                { required: true, message: this.$t('k8s.text_165') },
               ],
             },
           ],
@@ -90,7 +90,7 @@ export default {
             {
               initialValue: { key: '', label: '' },
               rules: [
-                { required: true, message: '请选择可用区' },
+                { required: true, message: this.$t('k8s.text_166') },
               ],
             },
           ],
@@ -101,7 +101,7 @@ export default {
             {
               initialValue: 4,
               rules: [
-                { required: true, message: '请输入CPU核数' },
+                { required: true, message: this.$t('k8s.text_99') },
                 { validator: this.validator('vcpu_count') },
               ],
             },
@@ -111,7 +111,7 @@ export default {
             {
               initialValue: 4,
               rules: [
-                { required: true, message: '请输入内存大小' },
+                { required: true, message: this.$t('k8s.text_167') },
                 { validator: this.validator('vmem_size') },
               ],
             },
@@ -121,7 +121,7 @@ export default {
             {
               initialValue: 100,
               rules: [
-                { required: true, message: '请输入磁盘大小' },
+                { required: true, message: this.$t('k8s.text_168') },
                 { validator: this.validator('disk') },
               ],
             },
@@ -130,7 +130,7 @@ export default {
             `network[${i}]`,
             {
               rules: [
-                { required: true, message: '请选择IP子网' },
+                { required: true, message: this.$t('k8s.text_122') },
               ],
             },
           ],
@@ -141,7 +141,7 @@ export default {
               validateTrigger: ['blur', 'change'],
               rules: [{
                 required: true,
-                message: '请输入ip',
+                message: this.$t('k8s.text_169'),
               }, {
                 validator: checkIpInSegment(i, networkData),
               }],
@@ -203,15 +203,15 @@ export default {
       return (rule, value, _callback) => {
         if (type === 'vcpu_count') {
           if (value < 4 || value > 32) {
-            return _callback('输入范围 4 - 32 核')
+            return _callback(this.$t('k8s.text_172'))
           }
         } else if (type === 'vmem_size') {
           if (value < 4 || value > 128) {
-            return _callback('输入范围 4 - 128 G')
+            return _callback(this.$t('k8s.text_173'))
           }
         } else if (type === 'disk') {
           if (value < 1 || value > 128) {
-            return _callback('输入范围 40 - 500 G')
+            return _callback(this.$t('k8s.text_174'))
           }
         }
         return _callback()
@@ -255,7 +255,7 @@ export default {
         const genValues = this.genData(values)
         await this.doCreate(genValues)
         this.loading = false
-        this.$message.success('创建节点成功，并开始部署')
+        this.$message.success(this.$t('k8s.text_281'))
         this.params.refresh()
         this.cancelDialog()
       } catch (error) {

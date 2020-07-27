@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="集群(Cluster)" />
+    <page-header :title="$t('k8s.text_185')" />
     <page-body>
       <kubecluster-list :id="listId" :getParams="getParams" />
     </page-body>

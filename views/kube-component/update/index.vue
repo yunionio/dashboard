@@ -2,7 +2,7 @@
   <div style="height: 400px">
     <!-- <component-form v-if="resData.config" @submit="submit" :config="resData.config" /> -->
     <component :is="component" v-if="loaded" @submit="submit" :updateData="resData" :isUpdate="true" />
-    <a-alert v-else message="无可用服务组件" banner />
+    <a-alert v-else :message="$t('k8s.text_265')" banner />
   </div>
 </template>
 
@@ -64,7 +64,7 @@ export default {
           },
         })
         this.loading = false
-        this.$message.success('操作成功')
+        this.$message.success(this.$t('k8s.text_46'))
         this.$router.push('/k8s-kubecomponent')
       } catch (error) {
         this.loading = false

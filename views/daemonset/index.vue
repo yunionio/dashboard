@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="守护进程(Daemonset)" />
+    <page-header :title="$t('k8s.text_234')" />
     <page-body>
       <daemonset-list :id="listId" />
     </page-body>

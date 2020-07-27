@@ -27,21 +27,21 @@ export default {
   data () {
     return {
       baseInfo: [
-        getCopyWithContentTableColumn({ field: 'cluster', title: '集群' }),
+        getCopyWithContentTableColumn({ field: 'cluster', title: this.$t('k8s.text_19') }),
         {
           field: 'isDefault',
-          title: '默认',
+          title: this.$t('k8s.text_359'),
           formatter: ({ cellValue }) => {
-            return cellValue ? '是' : '否'
+            return cellValue ? this.$t('k8s.text_360') : this.$t('k8s.text_361')
           },
         },
         {
           field: 'provisioner',
-          title: '供应者',
+          title: this.$t('k8s.text_362'),
         },
         {
           field: 'creationTimestamp',
-          title: '创建时间',
+          title: this.$t('k8s.text_74'),
           formatter: ({ cellValue }) => {
             return this.$moment(cellValue).format()
           },

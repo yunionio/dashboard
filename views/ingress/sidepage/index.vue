@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="路由(Ingress)"
+    :title="$t('k8s.text_239')"
     icon="res-k8s-ingress"
     :res-name="detailData.name"
     :actions="params.actions"
@@ -38,9 +38,9 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'detail' },
-        { label: '服务', key: 'service-list' },
-        { label: '源信息', key: 'source-information-sidepage' },
+        { label: this.$t('k8s.text_217'), key: 'detail' },
+        { label: this.$t('k8s.text_13'), key: 'service-list' },
+        { label: this.$t('k8s.text_219'), key: 'source-information-sidepage' },
       ],
     }
   },

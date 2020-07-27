@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="存储类(Storageclasses)"
+    :title="$t('k8s.text_358')"
     icon="res-k8s-storageclass"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
@@ -51,9 +51,9 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'k8s-storageclass-detail' },
-        { label: '事件', key: 'events-sidepage' },
-        { label: '源信息', key: 'source-information-sidepage' },
+        { label: this.$t('k8s.text_217'), key: 'k8s-storageclass-detail' },
+        { label: this.$t('k8s.text_218'), key: 'events-sidepage' },
+        { label: this.$t('k8s.text_219'), key: 'source-information-sidepage' },
       ],
     }
   },
