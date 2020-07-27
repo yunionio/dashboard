@@ -1,6 +1,7 @@
 import AccessInfo from '../components/AccessInfo'
 import { ACL_TYPE } from '@Storage/constants/index.js'
 import { getNameDescriptionTableColumn, getStatusTableColumn, getBrandTableColumn, getRegionTableColumn, getAccountTableColumn, getProjectTableColumn, getPublicScopeTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -9,7 +10,7 @@ export default {
         onManager: this.onManager,
         hideField: true,
         formRules: [
-          { required: true, message: '请输入名称' },
+          { required: true, message: i18n.t('storage.text_56') },
           { validator: this.$validate('bucketName') },
         ],
         slotCallback: row => {
@@ -22,7 +23,7 @@ export default {
       getStatusTableColumn({ statusModule: 'bucket' }),
       {
         field: 'storage_class',
-        title: '存储类型',
+        title: i18n.t('storage.text_38'),
         width: 120,
         formatter: ({ row }) => {
           return row.storage_class || '-'
@@ -30,7 +31,7 @@ export default {
       },
       {
         field: 'acl',
-        title: '读写权限',
+        title: i18n.t('storage.text_93'),
         width: 120,
         formatter: ({ row }) => {
           return ACL_TYPE[row.acl] || row.acl || '-'
@@ -38,7 +39,7 @@ export default {
       },
       {
         field: 'access-info',
-        title: '后端访问信息',
+        title: i18n.t('storage.text_91'),
         width: 120,
         slots: {
           default: ({ row }) => {

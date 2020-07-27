@@ -2,11 +2,12 @@ import BlockStorage from '@Storage/views/blockstorage'
 import Bucket from '@Storage/views/bucket'
 import Layout from '@/layouts/RouterView'
 import { hasSetupKey } from '@/utils/auth'
+import i18n from '@/locales'
 
 export default {
   index: 5,
   meta: {
-    label: '存储',
+    label: i18n.t('storage.text_16'),
     icon: 'menu-storage',
   },
   menus: [
@@ -16,6 +17,7 @@ export default {
     {
       meta: {
         label: '块存储',
+        t: 'dictionary.blockstorage',
       },
       submenus: [
         {
@@ -23,6 +25,7 @@ export default {
           meta: {
             label: '块存储',
             permission: 'storages_list',
+            t: 'dictionary.blockstorage',
             hidden: () => !hasSetupKey(['onestack', 'private', 'vmware']),
           },
           component: Layout,
@@ -41,13 +44,13 @@ export default {
      */
     {
       meta: {
-        label: '对象存储',
+        label: i18n.t('storage.text_17'),
       },
       submenus: [
         {
           path: '/bucket',
           meta: {
-            label: '存储桶',
+            label: i18n.t('storage.text_18'),
             permission: 'buckets_list',
             hidden: () => !hasSetupKey(['aliyun', 'aws', 'azure', 'huawei', 'qcloud', 'google', 'storage']),
           },

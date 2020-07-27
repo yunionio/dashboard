@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="块存储"
+    :title="$t('storage.text_37')"
     icon="res-blockstorage"
     :res-name="detailData.name"
     :tabs="detailTabs"
@@ -57,12 +57,12 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'detail' },
-        { label: '宿主机', key: 'host-list' },
-        { label: '硬盘', key: 'disk-list' },
-        { label: '回收站', key: 'disk-recovery-list' },
-        { label: '镜像缓存', key: 'cached-images' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('storage.text_81'), key: 'detail' },
+        { label: this.$t('storage.text_50'), key: 'host-list' },
+        { label: this.$t('storage.text_82'), key: 'disk-list' },
+        { label: this.$t('storage.text_83'), key: 'disk-recovery-list' },
+        { label: this.$t('storage.text_84'), key: 'cached-images' },
+        { label: this.$t('storage.text_85'), key: 'event-drawer' },
       ],
     }
   },
@@ -76,19 +76,19 @@ export default {
     getColumns () {
       if (this.params.windowData.currentTab === 'disk-recovery-list') {
         return [
-          getCopyWithContentTableColumn({ field: 'name', title: '名称' }),
+          getCopyWithContentTableColumn({ field: 'name', title: this.$t('storage.text_40') }),
           getCopyWithContentTableColumn({ field: 'guest', title: this.$t('dictionary.server') }),
           {
             field: 'disk_type',
-            title: '类型',
+            title: this.$t('storage.text_86'),
             width: 70,
             formatter: ({ cellValue }) => {
-              return cellValue === 'sys' ? '系统盘' : '数据盘'
+              return cellValue === 'sys' ? this.$t('storage.text_87') : this.$t('storage.text_88')
             },
           },
           getStatusTableColumn({ statusModule: 'disk' }),
           getProjectTableColumn(),
-          getTimeTableColumn({ field: 'auto_delete_at', title: '自动清除时间' }),
+          getTimeTableColumn({ field: 'auto_delete_at', title: this.$t('storage.text_89') }),
         ]
       }
       return null
@@ -103,13 +103,13 @@ export default {
         frontGroupActions: function () {
           return [
             {
-              label: '关联宿主机',
+              label: this.$t('storage.text_66'),
               permission: 'storages_perform_storages',
               action: row => {
                 this.createDialog('AssociatedHostDialog', {
                   data: [me.detailData],
                   columns: this.columns,
-                  title: '关联宿主机',
+                  title: this.$t('storage.text_66'),
                   list: this.list,
                   onManager: this.onManager,
                   refresh: this.refresh,
@@ -118,15 +118,15 @@ export default {
               meta: row => {
                 return {
                   validate: me.isBlockStorage,
-                  tooltip: !me.isBlockStorage && 'Ceph、GPFS或NFS类型的存储支持该操作',
+                  tooltip: !me.isBlockStorage && this.$t('storage.text_67'),
                 }
               },
             },
             {
-              label: '取消关联宿主机',
+              label: this.$t('storage.text_90'),
               action: () => {
                 this.createDialog('UnAssociatedHostDialog', {
-                  title: '取消关联宿主机',
+                  title: this.$t('storage.text_90'),
                   data: this.list.selectedItems,
                   columns: this.columns,
                   list: this.list,
@@ -144,10 +144,10 @@ export default {
         frontSingleActions: function () {
           return [
             {
-              label: '取消关联宿主机',
+              label: this.$t('storage.text_90'),
               action: (row) => {
                 this.createDialog('UnAssociatedHostDialog', {
-                  title: '取消关联宿主机',
+                  title: this.$t('storage.text_90'),
                   data: [row],
                   columns: this.columns,
                   list: this.list,

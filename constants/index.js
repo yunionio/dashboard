@@ -1,22 +1,23 @@
+import i18n from '@/locales'
 export const STORAGE_TYPES = {
-  local: '本地存储',
-  baremetal: '物理机存储',
+  local: i18n.t('storage.text_1'),
+  baremetal: i18n.t('storage.text_2'),
   sheepdog: 'Sheepdog',
   rbd: 'Ceph',
-  docker: '容器存储',
+  docker: i18n.t('storage.text_3'),
   nas: 'NAS',
   vsan: 'vSAN',
   nfs: 'NFS',
   gpfs: 'GPFS',
-  localstorage: '本地云盘',
-  ceph: '共享云盘',
+  localstorage: i18n.t('storage.text_4'),
+  ceph: i18n.t('storage.text_5'),
   iscsi: 'iscsi',
 }
 
 export const MEDIUM_TYPES = {
-  rotate: '机械盘',
-  ssd: '固态盘',
-  hybrid: '混合盘',
+  rotate: i18n.t('storage.text_6'),
+  ssd: i18n.t('storage.text_7'),
+  hybrid: i18n.t('storage.text_8'),
 }
 
 export const formItemLayout = {
@@ -25,19 +26,19 @@ export const formItemLayout = {
 }
 
 export const ACL_TYPE = {
-  private: '本账号读写',
-  'public-read': '本账号写公开读',
-  'public-read-write': '公开读写',
+  private: i18n.t('storage.text_9'),
+  'public-read': i18n.t('storage.text_10'),
+  'public-read-write': i18n.t('storage.text_11'),
 }
 
 export const OSS_MONITOR_OPTS = {
   aliyun: [
     {
       name: 'GetObjectE2eLatency',
-      label: 'GetObject请求平均E2E延时',
+      label: i18n.t('storage.text_12'),
       seleteItem: 'req_late',
       fromItem: 'oss_latency',
-      as: 'GET类请求次数',
+      as: i18n.t('storage.text_13'),
       unit: 'ms',
       transfer: 1,
       tag: {
@@ -46,10 +47,10 @@ export const OSS_MONITOR_OPTS = {
     },
     {
       name: 'GetObjectCount',
-      label: 'GetObject成功请求数',
+      label: i18n.t('storage.text_14'),
       seleteItem: 'req_count',
       fromItem: 'oss_req',
-      as: 'GetObject成功请求数',
+      as: i18n.t('storage.text_14'),
       unit: '',
       transfer: 1,
       tag: {
@@ -60,10 +61,10 @@ export const OSS_MONITOR_OPTS = {
   huawei: [
     {
       name: 'GetObjectE2eLatency',
-      label: 'GET类请求次数',
+      label: i18n.t('storage.text_13'),
       seleteItem: 'req_count',
       fromItem: 'oss_req',
-      as: 'GET类请求次数',
+      as: i18n.t('storage.text_13'),
       unit: '',
       transfer: 1,
       tag: {
@@ -72,10 +73,10 @@ export const OSS_MONITOR_OPTS = {
     },
     {
       name: 'first_byte_latency',
-      label: 'GET类请求首字节平均时延',
+      label: i18n.t('storage.text_15'),
       seleteItem: 'req_late',
       fromItem: 'oss_latency',
-      as: 'GET类请求首字节平均时延',
+      as: i18n.t('storage.text_15'),
       unit: 'ms',
       transfer: 1,
       tag: {

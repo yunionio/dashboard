@@ -6,8 +6,7 @@
     :single-actions="singleActions">
       <div slot="table-prepend" class="d-flex align-items-center pt-2 pb-2">
         <span>
-         <a-icon type="folder-open" theme="filled" style="color: rgb(245,200, 61);font-size:15px" /> 当前文件目录：
-        </span>
+         <a-icon type="folder-open" theme="filled" style="color: rgb(245,200, 61);font-size:15px" />{{$t('storage.text_150')}}</span>
         <a-breadcrumb>
            <a-breadcrumb-item>
              <a-button  style="padding:0" type="link" @click="nextPage('')"> {{data.name}} </a-button>
@@ -29,13 +28,13 @@ import { sizestrWithUnit } from '@/utils/utils'
 
 const validDirName = (rule, value, callback) => {
   if (value === '') {
-    callback(new Error('请输入文件夹名称'))
+    callback(new Error(this.$t('storage.text_151')))
   } else if (value.startsWith('/')) {
-    callback(new Error('不能以 / 开头作为文件夹名称'))
+    callback(new Error(this.$t('storage.text_152')))
   } else if (value.includes('//')) {
     callback(new Error('不允许文件夹名称里包含连续的//'))
   } else if (value === '..') {
-    callback(new Error('不允许以 .. 作为文件夹名称'))
+    callback(new Error(this.$t('storage.text_153')))
   } else {
     callback()
   }
@@ -61,7 +60,7 @@ export default {
         idKey: 'key',
         filterOptions: {
           prefix: {
-            label: '文件名称',
+            label: this.$t('storage.text_154'),
             formatter: val => {
               return `${this.prefix}${val}`
             },
@@ -71,7 +70,7 @@ export default {
       columns: [
         {
           field: 'name',
-          title: '文件名称',
+          title: this.$t('storage.text_154'),
           minWidth: 120,
           showOverflow: 'ellipsis',
           slots: {
@@ -104,7 +103,7 @@ export default {
         },
         {
           field: 'acl',
-          title: '读写权限',
+          title: this.$t('storage.text_93'),
           width: 120,
           formatter: ({ row }) => {
             return ACL_TYPE[row.acl] || row.acl || '-'
@@ -112,7 +111,7 @@ export default {
         },
         {
           field: 'size_bytes',
-          title: '大小',
+          title: this.$t('storage.text_155'),
           minWidth: 100,
           formatter: ({ row }) => {
             return row.size_bytes ? sizestrWithUnit(row.size_bytes, 'B', 1024) : '-'
@@ -120,7 +119,7 @@ export default {
         },
         {
           field: 'storage_class',
-          title: '存储类型',
+          title: this.$t('storage.text_38'),
           width: 120,
           formatter: ({ row }) => {
             return row.storage_class || '-'
@@ -128,7 +127,7 @@ export default {
         },
         {
           field: 'last_modified',
-          title: '更新时间',
+          title: this.$t('storage.text_156'),
           width: 100,
           formatter: ({ row }) => {
             return row.last_modified ? this.$moment(row.last_modified).fromNow() : '-'
@@ -137,10 +136,10 @@ export default {
       ],
       groupActions: [
         {
-          label: '上传文件',
+          label: this.$t('storage.text_157'),
           action: () => {
             this.createDialog('ObjectsUploadFileDialog', {
-              title: '上传文件',
+              title: this.$t('storage.text_157'),
               list: this.list,
               resId: this.data.id,
               resItem: this.data,
@@ -153,15 +152,15 @@ export default {
             return {
               buttonType: 'primary',
               validate: isValidate,
-              tooltip: !isValidate && 'Azure平台根目录不允许上传文件',
+              tooltip: !isValidate && this.$t('storage.text_158'),
             }
           },
         },
         {
-          label: '新建文件夹',
+          label: this.$t('storage.text_159'),
           action: (row) => {
             this.createDialog('SmartFormDialog', {
-              title: '新建文件夹',
+              title: this.$t('storage.text_159'),
               data: [row],
               list: this.list,
               width: 600,
@@ -174,14 +173,14 @@ export default {
               decorators: {
                 key: ['key', {
                   rules: [
-                    { required: true, message: '请输入文件夹名称' },
-                    { type: 'string', min: 1, max: 254, message: '1~254 个字符，可用数字、中英文和常见字符的组合', trigger: 'blur' },
+                    { required: true, message: this.$t('storage.text_151') },
+                    { type: 'string', min: 1, max: 254, message: this.$t('storage.text_160'), trigger: 'blur' },
                     { validator: validDirName, trigger: 'blur' },
                   ],
                 },
                 {
-                  label: '文件夹名称',
-                  placeholder: '请输入文件名称',
+                  label: this.$t('storage.text_161'),
+                  placeholder: this.$t('storage.text_162'),
                   extra: () => {
                     return <div>
                         1. 请使用符合要求的 UTF-8 字符，可用数字、中英文和可见字符的组合 <br />
@@ -197,14 +196,14 @@ export default {
           },
         },
         {
-          label: '批量操作',
+          label: this.$t('storage.text_33'),
           actions: (row) => {
             return [
               {
-                label: '设置HTTP头',
+                label: this.$t('storage.text_163'),
                 action: async (row) => {
                   this.createDialog('ObjectsUpdateHttpDialog', {
-                    title: '设置HTTP头',
+                    title: this.$t('storage.text_163'),
                     data: this.list.selectedItems,
                     resName: this.resName,
                     columns: this.columns,
@@ -218,10 +217,10 @@ export default {
                 },
               },
               {
-                label: '设置读写权限',
+                label: this.$t('storage.text_138'),
                 action: () => {
                   this.createDialog('ObjectsUpdateAclDialog', {
-                    title: '设置读写权限',
+                    title: this.$t('storage.text_138'),
                     bucket: this.data,
                     data: this.list.selectedItems,
                     resName: this.resName,
@@ -237,16 +236,16 @@ export default {
                 },
               },
               {
-                label: '删除',
+                label: this.$t('storage.text_36'),
                 action: (row) => {
                   this.createDialog('ObjectsDeleteDialog', {
-                    alert: '提示：删除操作会同时删除目录下所有文件，删除后数据不可恢复和访问。',
+                    alert: this.$t('storage.text_164'),
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    title: '删除',
+                    title: this.$t('storage.text_36'),
                     resName: this.resName,
                     list: this.list,
-                    name: '文件',
+                    name: this.$t('storage.text_112'),
                   })
                 },
               },
@@ -261,7 +260,7 @@ export default {
       ],
       singleActions: [
         {
-          label: '下载',
+          label: this.$t('storage.text_165'),
           action: (row) => {
             objectsModel.getUrl(row, this.data.name, this.accessUrl).then((url) => {
               url && window.open(url)
@@ -274,15 +273,15 @@ export default {
           },
         },
         {
-          label: '更多',
+          label: this.$t('storage.text_65'),
           actions: () => {
             return [
               {
-                label: '生成临时URL',
+                label: this.$t('storage.text_166'),
                 action: async (row) => {
                   // await curl = controller.getUrl(row, this.data.name)
                   this.createDialog('ObjectsCreateUrlDialog', {
-                    title: '生成URL',
+                    title: this.$t('storage.text_167'),
                     data: [row],
                     resName: this.resName,
                     accessUrl: this.accessUrl,
@@ -297,10 +296,10 @@ export default {
                 },
               },
               {
-                label: '设置读写权限',
+                label: this.$t('storage.text_138'),
                 action: async (row) => {
                   this.createDialog('ObjectsUpdateAclDialog', {
-                    title: '设置读写权限',
+                    title: this.$t('storage.text_138'),
                     data: [row],
                     bucket: this.data,
                     resName: this.resName,
@@ -316,10 +315,10 @@ export default {
                 },
               },
               {
-                label: '设置HTTP头',
+                label: this.$t('storage.text_163'),
                 action: async (row) => {
                   this.createDialog('ObjectsUpdateHttpDialog', {
-                    title: '设置HTTP头',
+                    title: this.$t('storage.text_163'),
                     data: [row],
                     resName: this.resName,
                     columns: this.columns,
@@ -333,16 +332,16 @@ export default {
                 },
               },
               {
-                label: '删除',
+                label: this.$t('storage.text_36'),
                 action: (row) => {
                   this.createDialog('ObjectsDeleteDialog', {
-                    alert: '提示：删除操作会同时删除目录下所有文件，删除后数据不可恢复和访问。',
+                    alert: this.$t('storage.text_164'),
                     data: [row],
                     columns: this.columns,
-                    title: '删除',
+                    title: this.$t('storage.text_36'),
                     resName: this.resName,
                     list: this.list,
-                    name: this.isDir(row.key) ? '文件夹' : '文件',
+                    name: this.isDir(row.key) ? this.$t('storage.text_168') : this.$t('storage.text_112'),
                   })
                 },
               },

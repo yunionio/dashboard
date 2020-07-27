@@ -2,6 +2,7 @@ import _ from 'lodash'
 import { STORAGE_TYPES, MEDIUM_TYPES } from '@Storage/constants/index.js'
 import { sizestr } from '@/utils/utils'
 import { getNameDescriptionTableColumn, getEnabledTableColumn, getStatusTableColumn, getBrandTableColumn, getPublicScopeTableColumn, getProjectDomainTableColumn, getTagTableColumn, getRegionTableColumn } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -18,7 +19,7 @@ export default {
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'storage', columns: () => this.columns }),
       {
         field: 'capacity',
-        title: '实际容量',
+        title: i18n.t('storage.text_42'),
         width: 100,
         formatter: ({ row }) => {
           return sizestr(row.capacity, 'M', 1024)
@@ -26,7 +27,7 @@ export default {
       },
       {
         field: 'virtual_capacity',
-        title: '虚拟容量',
+        title: i18n.t('storage.text_43'),
         width: 100,
         formatter: ({ row }) => {
           if (!row.virtual_capacity) return '-'
@@ -35,7 +36,7 @@ export default {
       },
       {
         field: 'used_capacity',
-        title: '分配',
+        title: i18n.t('storage.text_44'),
         width: 100,
         formatter: ({ row }) => {
           if (!row.used_capacity) return '-'
@@ -46,7 +47,7 @@ export default {
       getStatusTableColumn({ statusModule: 'blockstorage' }),
       {
         field: 'storage_type',
-        title: '存储类型',
+        title: i18n.t('storage.text_38'),
         width: 100,
         formatter: ({ row }) => {
           return STORAGE_TYPES[row.storage_type] || row.storage_type
@@ -57,7 +58,7 @@ export default {
       getBrandTableColumn(),
       {
         field: 'medium_type',
-        title: '介质类型',
+        title: i18n.t('storage.text_39'),
         width: 120,
         formatter: ({ row }) => {
           return MEDIUM_TYPES[row.medium_type] || row.medium_type
@@ -65,7 +66,7 @@ export default {
       },
       {
         field: 'schedtag',
-        title: '调度标签',
+        title: i18n.t('storage.text_45'),
         width: 120,
         type: 'expand',
         slots: {

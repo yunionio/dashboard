@@ -43,7 +43,7 @@ export default {
         getEnabledTableColumn(),
         {
           field: 'storage_type',
-          title: '存储类型',
+          title: this.$t('storage.text_38'),
           slots: {
             default: ({ row }) => {
               return STORAGE_TYPES[row.storage_type] || '-'
@@ -52,7 +52,7 @@ export default {
         },
         {
           field: 'medium_type',
-          title: '介质类型 ',
+          title: this.$t('storage.text_39'),
           slots: {
             default: ({ row }) => {
               return MEDIUM_TYPES[row.medium_type] || '-'
@@ -66,11 +66,11 @@ export default {
     extraInfo () {
       const _extraInfo = [
         {
-          title: '用量统计',
+          title: this.$t('storage.text_76'),
           items: [
             {
               field: 'capacity',
-              title: '实际容量',
+              title: this.$t('storage.text_42'),
               slots: {
                 default: ({ row }) => {
                   return this._sizestr(row.capacity)
@@ -79,7 +79,7 @@ export default {
             },
             {
               field: 'commit_bound',
-              title: '超售比',
+              title: this.$t('storage.text_60'),
               slots: {
                 default: ({ row }) => {
                   return [
@@ -90,7 +90,7 @@ export default {
             },
             {
               field: 'virtual_capacity',
-              title: '虚拟容量',
+              title: this.$t('storage.text_43'),
               slots: {
                 default: ({ row }) => {
                   return this._sizestr(row.virtual_capacity)
@@ -99,11 +99,11 @@ export default {
             },
             {
               field: 'commit_rate',
-              title: '分配率',
+              title: this.$t('storage.text_77'),
             },
             {
               field: 'used_capacity',
-              title: '分配',
+              title: this.$t('storage.text_44'),
               slots: {
                 default: ({ row }) => {
                   return this._sizestr(row.used_capacity)
@@ -112,7 +112,7 @@ export default {
             },
             {
               field: 'reserved',
-              title: '预留',
+              title: this.$t('storage.text_78'),
               slots: {
                 default: ({ row }) => {
                   return this._sizestr(row.reserved)
@@ -121,7 +121,7 @@ export default {
             },
             {
               field: 'waste_capacity',
-              title: '浪费',
+              title: this.$t('storage.text_79'),
               slots: {
                 default: ({ row }) => {
                   return this._sizestr(row.waste_capacity)
@@ -133,7 +133,7 @@ export default {
       ]
       if (this.data.storage_type === 'rbd') {
         return _extraInfo.concat({
-          title: '配置信息',
+          title: this.$t('storage.text_80'),
           items: [
             {
               field: 'storage_conf.mon_host',
@@ -162,7 +162,7 @@ export default {
       this.createDialog('BlockStorageUpdateCommitBoundDialog', {
         data: [this.data],
         columns: this.columns,
-        title: '调整超售比',
+        title: this.$t('storage.text_34'),
         onManager: this.onManager,
         refresh: this.refresh,
       })

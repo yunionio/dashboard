@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="存储桶" />
+    <page-header :title="$t('storage.text_18')" />
     <page-body>
       <list :id="listId" />
     </page-body>

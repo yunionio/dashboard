@@ -3,21 +3,21 @@
   <div>
     <template v-if="storage_type === 'rbd'">
       <a-form-item label="Ceph Mon Host" v-if="!edit">
-        <a-input placeholder="例如: 192.168.1.1,192.168.1.2" v-decorator="decorators.rbd_mon_host" />
+        <a-input :placeholder="$t('storage.text_19')" v-decorator="decorators.rbd_mon_host" />
       </a-form-item>
       <a-form-item label="Ceph Key">
-        <a-input placeholder="例如：AQCP4L1aORs8HRAAdcVS2y2R1oERNa+3xyacTA==" v-decorator="decorators.rbd_key" />
+        <a-input :placeholder="$t('storage.text_20')" v-decorator="decorators.rbd_key" />
       </a-form-item>
       <a-form-item label="Ceph Pool" v-if="!edit">
-          <a-input placeholder="请输入存储池名称" v-decorator="decorators.rbd_pool" />
+          <a-input :placeholder="$t('storage.text_21')" v-decorator="decorators.rbd_pool" />
       </a-form-item>
     </template>
     <template v-if="storage_type === 'nfs'">
       <a-form-item label="NFS Host">
-        <a-input placeholder="例如: 192.168.1.1,192.168.1.2" v-decorator="decorators.nfs_host" />
+        <a-input :placeholder="$t('storage.text_19')" v-decorator="decorators.nfs_host" />
       </a-form-item>
       <a-form-item label="NFS Shared Dir">
-        <a-input placeholder="例如：/nfs_root/" v-decorator="decorators.nfs_shared_dir" />
+        <a-input :placeholder="$t('storage.text_22')" v-decorator="decorators.nfs_shared_dir" />
       </a-form-item>
     </template>
   </div>
@@ -42,17 +42,17 @@ export default {
         const pattern = /^(?=(\b|\D))(((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))\.){3}((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))(?=(\b|\D))$/
         const ips = value.split(',')
         if (!value || value === '') {
-          return _callback(new Error('必须输入Ceph Mon Host'))
+          return _callback(new Error(this.$t('storage.text_23')))
         }
         ips.forEach((item) => {
           const [ip, dir] = item.split(':')
           if (!pattern.test(ip)) {
-            return _callback(new Error('请输入合法的Ceph Mon Host，例如: 192.168.1.1,192.168.1.2'))
+            return _callback(new Error(this.$t('storage.text_24')))
           } else {
             if (dir) {
               const reg = /^\/.+/
               if (!reg.test(dir)) {
-                return _callback(new Error('请输入合法的Ceph Mon Host，例如: 192.168.1.1,192.168.1.2'))
+                return _callback(new Error(this.$t('storage.text_24')))
               }
             }
           }
@@ -63,9 +63,9 @@ export default {
         return (rule, value, _callback) => {
           const pattern = /^[+=./a-zA-Z0-9_-]+$/
           if (!value || value === '') {
-            return _callback(new Error(`必须指定${name}`))
+            return _callback(new Error(this.$t('storage.text_25', [name])))
           } else if (!pattern.test(value)) {
-            return _callback(new Error(`必须指定${name}`))
+            return _callback(new Error(this.$t('storage.text_25', [name])))
           } else {
             _callback()
           }
@@ -77,7 +77,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入Ceph Mon Host' },
+              { required: true, message: this.$t('storage.text_26') },
               { validator: hostCheckValid },
             ],
           },
@@ -87,7 +87,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '必须指定Rbd Key', trigger: 'blur' },
+              { required: true, message: this.$t('storage.text_27'), trigger: 'blur' },
               { validator: commonCheckValid('Rbd Key') },
             ],
           },
@@ -98,7 +98,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '必须指定Ceph Pool', trigger: 'blur' },
+              { required: true, message: this.$t('storage.text_28'), trigger: 'blur' },
               { validator: commonCheckValid('Ceph Pool') },
             ],
           },
@@ -108,7 +108,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '必须指定NFS Host', trigger: 'blur' },
+              { required: true, message: this.$t('storage.text_29'), trigger: 'blur' },
               { validator: hostCheckValid, trigger: 'blur' },
             ],
           },
@@ -117,7 +117,7 @@ export default {
           'nfs_shared_dir',
           {
             rules: [
-              { required: true, message: '必须指定NFS Shared Dir', trigger: 'blur' },
+              { required: true, message: this.$t('storage.text_30'), trigger: 'blur' },
             ],
           },
         ],

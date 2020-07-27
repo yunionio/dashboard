@@ -1,10 +1,11 @@
 import { getSetPublicAction } from '@/utils/common/tableActions'
+import i18n from '@/locales'
 
 export default {
   created () {
     this.singleActions = [
       {
-        label: '同步状态',
+        label: i18n.t('storage.text_100'),
         permission: 'server_perform_syncstatus',
         action: (row) => {
           this.onManager('performAction', {
@@ -22,15 +23,15 @@ export default {
         },
       },
       {
-        label: '更多',
+        label: i18n.t('storage.text_65'),
         actions: row => {
           return [
             {
-              label: '设置上限',
+              label: i18n.t('storage.text_99'),
               permission: 'buckets_perform_limit',
               action: row => {
                 this.createDialog('BucketUpdateBucketLimitDialog', {
-                  title: '设置上限',
+                  title: i18n.t('storage.text_99'),
                   data: [row],
                   columns: this.columns,
                   onManager: this.onManager,
@@ -44,10 +45,10 @@ export default {
               resource: 'buckets',
             }),
             {
-              label: '设置读写权限',
+              label: i18n.t('storage.text_138'),
               action: row => {
                 this.createDialog('ObjectsUpdateAclDialog', {
-                  title: '设置读写权限',
+                  title: i18n.t('storage.text_138'),
                   data: [row],
                   bucket: row,
                   resName: row.name,
@@ -63,11 +64,11 @@ export default {
               // },
             },
             {
-              label: `更改${this.$t('dictionary.project')}`,
+              label: this.$t('storage.text_96', [this.$t('dictionary.project')]),
               permission: 'buckets_perform_change_owner',
               action: row => {
                 this.createDialog('ChangeOwenrDialog', {
-                  name: '存储桶',
+                  name: i18n.t('storage.text_18'),
                   data: [row],
                   columns: this.columns,
                   onManager: this.onManager,
@@ -90,15 +91,15 @@ export default {
               },
             },
             {
-              label: '删除',
+              label: i18n.t('storage.text_36'),
               permission: 'buckets_delete',
               action: row => {
                 this.createDialog('DeleteResDialog', {
                   vm: this,
                   data: [row],
                   columns: this.columns,
-                  title: '删除',
-                  name: '存储桶',
+                  title: i18n.t('storage.text_36'),
+                  name: i18n.t('storage.text_18'),
                   onManager: this.onManager,
                   refresh: this.refresh,
                 })

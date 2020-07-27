@@ -1,34 +1,35 @@
 import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
+import i18n from '@/locales'
 
 export default {
   created () {
     this.singleActions = [
       {
-        label: '修改属性',
+        label: i18n.t('storage.text_64'),
         permission: 'storages_update',
         action: row => {
           this.createDialog('BlockStorageUpdateStorageDialog', {
             data: [row],
             columns: this.columns,
-            title: '修改属性',
+            title: i18n.t('storage.text_64'),
             onManager: this.onManager,
             refresh: this.refresh,
           })
         },
       },
       {
-        label: '更多',
+        label: i18n.t('storage.text_65'),
         actions: (row) => {
           return [
             ...getEnabledSwitchActions(this),
             {
-              label: '关联宿主机',
+              label: i18n.t('storage.text_66'),
               permission: 'storages_perform_storages',
               action: row => {
                 this.createDialog('AssociatedHostDialog', {
                   data: [row],
                   columns: this.columns,
-                  title: '关联宿主机',
+                  title: i18n.t('storage.text_66'),
                   onManager: this.onManager,
                   refresh: this.refresh,
                 })
@@ -37,18 +38,18 @@ export default {
                 const validate = ['rbd', 'nfs', 'gpfs'].includes(row.storage_type)
                 return {
                   validate,
-                  tooltip: !validate && 'Ceph、GPFS或NFS类型的存储支持该操作',
+                  tooltip: !validate && i18n.t('storage.text_67'),
                 }
               },
             },
             {
-              label: '调整超售比',
+              label: i18n.t('storage.text_34'),
               permission: 'storages_update',
               action: row => {
                 this.createDialog('BlockStorageUpdateCommitBoundDialog', {
                   data: [row],
                   columns: this.columns,
-                  title: '调整超售比',
+                  title: i18n.t('storage.text_34'),
                   onManager: this.onManager,
                   refresh: this.refresh,
                 })
@@ -56,18 +57,18 @@ export default {
               meta: row => {
                 return {
                   validate: row.provider !== 'ZStack',
-                  tooltip: row.provider === 'ZStack' && '该平台暂不支持此操作',
+                  tooltip: row.provider === 'ZStack' && i18n.t('storage.text_68'),
                 }
               },
             },
             {
-              label: '调整容量',
+              label: i18n.t('storage.text_69'),
               permission: 'storages_update_capacity',
               action: row => {
                 this.createDialog('BlockStorageUpdateCapacityDialog', {
                   data: [row],
                   columns: this.columns,
-                  title: '调整容量',
+                  title: i18n.t('storage.text_69'),
                   onManager: this.onManager,
                   refresh: this.refresh,
                 })
@@ -79,12 +80,12 @@ export default {
               },
             },
             {
-              label: '调度标签',
+              label: i18n.t('storage.text_45'),
               action: row => {
                 this.createDialog('BlockStorageUpdateTagsDialog', {
                   data: [row],
                   columns: this.columns,
-                  title: '调度标签',
+                  title: i18n.t('storage.text_45'),
                   onManager: this.onManager,
                   refresh: this.refresh,
                 })
@@ -102,7 +103,7 @@ export default {
                 }
                 if (isLocal) {
                   ret.validate = false
-                  ret.tooltip = '本地存储不支持该操作，默认与该宿主机一致'
+                  ret.tooltip = i18n.t('storage.text_70')
                 }
                 return ret
               },
@@ -120,7 +121,7 @@ export default {
                 }
                 if (isLocal) {
                   ret.validate = false
-                  ret.tooltip = '本地存储不支持该操作，默认与该宿主机一致'
+                  ret.tooltip = i18n.t('storage.text_70')
                 }
                 return ret
               },
@@ -141,13 +142,13 @@ export default {
             //   }),
             // },
             {
-              label: '删除',
+              label: i18n.t('storage.text_36'),
               permission: 'storages_delete',
               action: row => {
                 this.createDialog('DeleteResDialog', {
                   vm: this,
-                  title: '删除',
-                  name: '块存储',
+                  title: i18n.t('storage.text_36'),
+                  name: i18n.t('storage.text_37'),
                   data: [row],
                   columns: this.columns,
                   onManager: this.onManager,

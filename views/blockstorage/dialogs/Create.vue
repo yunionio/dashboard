@@ -3,24 +3,24 @@
     <div slot="header">{{this.params.title}}</div>
     <div slot="body">
       <a-form :form="form.fc" v-bind="formItemLayout">
-        <a-form-item label="名称">
-          <a-input placeholder="请输入名称" v-decorator="decorators.name" />
+        <a-form-item :label="$t('storage.text_40')">
+          <a-input :placeholder="$t('storage.text_56')" v-decorator="decorators.name" />
         </a-form-item>
-        <a-form-item :label="`指定${$t('dictionary.domain')}`">
+        <a-form-item :label="$t('storage.text_55', [$t('dictionary.domain')])">
           <domain-select v-if="isAdminMode && l3PermissionEnable" v-decorator="decorators.project_domain" />
           <template v-else> {{userInfo.domain.name}} </template>
         </a-form-item>
-        <a-form-item label="区域">
+        <a-form-item :label="$t('storage.text_47')">
           <cloudregion-zone
             :cloudregionParams="{cloud_env: 'onpremise'}"
             :decorator="decorators.regionZone" />
         </a-form-item>
-        <a-form-item label="介质类型">
+        <a-form-item :label="$t('storage.text_39')">
           <a-radio-group v-decorator="decorators.medium_type" buttonStyle="solid">
             <a-radio-button v-for="(v, k) in MEDIUM_TYPES" :key="v" :value="k">{{v}}</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item label="存储类型">
+        <a-form-item :label="$t('storage.text_38')">
           <a-radio-group v-decorator="decorators.storage_type" buttonStyle="solid">
             <template v-for="(v, k) in STORAGE_TYPES">
               <a-radio-button v-if="storageTypes.indexOf(k) > -1" :key="k"  :value="k">{{v}}</a-radio-button>
@@ -85,7 +85,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('storage.text_56') },
               { validator: this.$validate('snapshotName') },
             ],
           },
@@ -96,7 +96,7 @@ export default {
             {
               initialValue: { key: '', label: '' },
               rules: [
-                { required: true, message: '请选择区域' },
+                { required: true, message: this.$t('storage.text_57') },
               ],
             },
           ],
@@ -105,7 +105,7 @@ export default {
             {
               initialValue: { key: '', label: '' },
               rules: [
-                { required: true, message: '请选择可用区' },
+                { required: true, message: this.$t('storage.text_58') },
               ],
             },
           ],

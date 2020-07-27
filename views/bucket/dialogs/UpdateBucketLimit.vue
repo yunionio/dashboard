@@ -2,24 +2,24 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{this.params.title}}</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" :action="this.params.title" name="存储桶" />
+      <dialog-selected-tips :count="params.data.length" :action="this.params.title" :name="$t('storage.text_18')" />
       <dialog-table :data="params.data" :columns="columns" />
       <a-form :form="form.fc" v-bind="formItemLayout">
-        <a-form-item label="容量上限">
+        <a-form-item :label="$t('storage.text_59')">
           <a-input class="w-50" name="size_bytes" v-decorator="decorators.size_bytes" @blur="handelBlur">
             <a-select slot="addonAfter" style="width: 80px" v-decorator="decorators.size_bytes_unit">
               <a-select-option v-for="item in sizeUnitOpts" :key="item.value" :value="item.value">{{item.label}}</a-select-option>
             </a-select>
           </a-input>
-           <span slot="extra">0代表无限制</span>
+           <span slot="extra">{{$t('storage.text_127')}}</span>
         </a-form-item>
-         <a-form-item label="对象上限">
+         <a-form-item :label="$t('storage.text_128')">
           <a-input class="w-50" name="object_count" v-decorator="decorators.object_count" @blur="handelBlur">
             <a-select slot="addonAfter" type="number" style="width: 80px" v-decorator="decorators.object_count_unit">
               <a-select-option v-for="item in unitOpts" :key="item.value" :value="item.value">{{item.label}}</a-select-option>
             </a-select>
           </a-input>
-          <span slot="extra">0代表无限制</span>
+          <span slot="extra">{{$t('storage.text_127')}}</span>
         </a-form-item>
       </a-form>
     </div>
@@ -55,11 +55,11 @@ export default {
         { value: Math.pow(1024, 6), label: 'EB' },
       ],
       unitOpts: [
-        { value: 1, label: '个' },
-        { value: 10, label: '十' },
-        { value: 100, label: '百' },
-        { value: 1000, label: '千' },
-        { value: 10000, label: '万' },
+        { value: 1, label: this.$t('storage.text_129') },
+        { value: 10, label: this.$t('storage.text_130') },
+        { value: 100, label: this.$t('storage.text_131') },
+        { value: 1000, label: this.$t('storage.text_132') },
+        { value: 10000, label: this.$t('storage.text_133') },
       ],
     }
   },
@@ -74,7 +74,7 @@ export default {
         this.params.columns[0],
         {
           field: 'size_bytes_limit',
-          title: '容量上线',
+          title: this.$t('storage.text_134'),
           width: 120,
           formatter: ({ row }) => {
             return sizestrC(row.size_bytes_limit, 'B', 1024)
@@ -82,7 +82,7 @@ export default {
         },
         {
           field: 'object_cnt_limit',
-          title: '文件数量上限',
+          title: this.$t('storage.text_135'),
           width: 120,
           formatter: ({ row }) => {
             return row.object_cnt_limit
@@ -102,7 +102,7 @@ export default {
             initialValue: Math.round(size_bytes_limit / (1024 * 1024 * 1024)),
             validateFirst: true,
             rules: [
-              { required: true, message: '请设置容量上限' },
+              { required: true, message: this.$t('storage.text_136') },
             ],
           },
         ],
@@ -115,7 +115,7 @@ export default {
             initialValue: Math.round(object_cnt_limit),
             validateFirst: true,
             rules: [
-              { required: true, message: '请设置对象上限' },
+              { required: true, message: this.$t('storage.text_137') },
             ],
           },
         ],

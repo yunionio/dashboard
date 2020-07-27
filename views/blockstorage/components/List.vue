@@ -34,10 +34,10 @@ export default {
   data () {
     const groupActions = [
       {
-        label: '新建',
+        label: this.$t('storage.text_31'),
         action: () => {
           this.createDialog('BlockStorageCreateDialog', {
-            title: '新建块存储',
+            title: this.$t('storage.text_32'),
             onManager: this.onManager,
             refresh: this.refresh,
           })
@@ -50,18 +50,18 @@ export default {
         },
       },
       {
-        label: '批量操作',
+        label: this.$t('storage.text_33'),
         actions: () => {
           return [
             ...getEnabledSwitchActions(this),
             {
-              label: '调整超售比',
+              label: this.$t('storage.text_34'),
               permission: 'storages_update',
               action: row => {
                 this.createDialog('BlockStorageUpdateCommitBoundDialog', {
                   data: this.list.selectedItems,
                   columns: this.columns,
-                  title: '调整超售比',
+                  title: this.$t('storage.text_34'),
                   onManager: this.onManager,
                   refresh: this.refresh,
                 })
@@ -70,7 +70,7 @@ export default {
                 const validate = this.list.selectedItems.every(item => item.brand !== 'ZStack')
                 return {
                   validate,
-                  tooltip: !validate && 'ZStack平台暂不支持此操作',
+                  tooltip: !validate && this.$t('storage.text_35'),
                 }
               },
             },
@@ -108,13 +108,13 @@ export default {
             //   },
             // },
             {
-              label: '删除',
+              label: this.$t('storage.text_36'),
               permission: 'storages_delete',
               action: row => {
                 this.createDialog('DeleteResDialog', {
                   vm: this,
-                  title: '删除',
-                  name: '块存储',
+                  title: this.$t('storage.text_36'),
+                  name: this.$t('storage.text_37'),
                   data: this.list.selectedItems,
                   columns: this.columns,
                   onManager: this.onManager,
@@ -144,7 +144,7 @@ export default {
           status: getStatusFilter({ statusModule: 'blockstorage' }),
           brand: getBrandFilter(),
           storage_type: {
-            label: '存储类型',
+            label: this.$t('storage.text_38'),
             filter: true,
             dropdown: true,
             items: Object.keys(STORAGE_TYPES).map(key => {
@@ -155,7 +155,7 @@ export default {
             },
           },
           medium_type: {
-            label: '介质类型',
+            label: this.$t('storage.text_39'),
             filter: true,
             dropdown: true,
             items: Object.keys(MEDIUM_TYPES).map(key => {
@@ -178,18 +178,18 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
-          { label: '状态', key: 'status' },
-          { label: '实际容量', key: 'capacity' },
-          { label: '虚拟容量', key: 'virtual_capacity' },
-          { label: '分配', key: 'used_capacity' },
-          { label: '存储类型', key: 'storage_type' },
-          { label: '介质类型', key: 'medium_type' },
-          { label: '调度标签', key: 'schedtag' },
-          { label: '平台', key: 'provider' },
-          { label: '区域', key: 'region' },
-          { label: '共享范围', key: 'public_scope' },
-          { label: `所属${this.$t('dictionary.domain')}`, key: 'project_domain' },
+          { label: this.$t('storage.text_40'), key: 'name' },
+          { label: this.$t('storage.text_41'), key: 'status' },
+          { label: this.$t('storage.text_42'), key: 'capacity' },
+          { label: this.$t('storage.text_43'), key: 'virtual_capacity' },
+          { label: this.$t('storage.text_44'), key: 'used_capacity' },
+          { label: this.$t('storage.text_38'), key: 'storage_type' },
+          { label: this.$t('storage.text_39'), key: 'medium_type' },
+          { label: this.$t('storage.text_45'), key: 'schedtag' },
+          { label: this.$t('storage.text_46'), key: 'provider' },
+          { label: this.$t('storage.text_47'), key: 'region' },
+          { label: this.$t('storage.text_48'), key: 'public_scope' },
+          { label: this.$t('storage.text_49', [this.$t('dictionary.domain')]), key: 'project_domain' },
         ],
       },
       handleOpenSidepage (row) {

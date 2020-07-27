@@ -79,7 +79,7 @@ export default {
         getBrandTableColumn(),
         getCopyWithContentTableColumn({
           field: 'cloudregion',
-          title: '区域',
+          title: this.$t('storage.text_47'),
           hideField: true,
           slotCallback: row => {
             if (!row.cloudregion) return '-'
@@ -90,12 +90,12 @@ export default {
         }),
         {
           field: 'storage_class',
-          title: '存储类型',
+          title: this.$t('storage.text_38'),
         },
       ],
       extraInfo: [
         {
-          title: '访问域名',
+          title: this.$t('storage.text_139'),
           field: 'url',
           slots: {
             default: ({ row }, h) => {
@@ -118,7 +118,7 @@ export default {
                 },
                 {
                   field: 'description',
-                  title: '描述',
+                  title: this.$t('storage.text_140'),
                 },
               ]
               return [
@@ -132,53 +132,53 @@ export default {
           items: [
             {
               field: 'size_bytes',
-              title: '存储用量',
+              title: this.$t('storage.text_141'),
               formatter: ({ row }) => {
                 return sizestrWithUnit(row.size_bytes, 'B', 1024)
               },
             },
             {
               field: 'object_cnt',
-              title: '文件数量',
+              title: this.$t('storage.text_142'),
               formatter: ({ row }) => {
-                return `${row.object_cnt || 0} 个`
+                return this.$t('storage.text_143', [row.object_cnt || 0])
               },
             },
           ],
         },
         {
-          title: '用量上限',
+          title: this.$t('storage.text_144'),
           items: [
             {
               field: 'size_bytes_limit',
-              title: '容量上限',
+              title: this.$t('storage.text_59'),
               formatter: ({ row }) => {
                 if (row.size_bytes_limit > 0) {
                   return sizestrWithUnit(row.size_bytes_limit, 'B', 1024)
                 } else {
-                  return '无限制'
+                  return this.$t('storage.text_145')
                 }
               },
             },
             {
               field: 'object_cnt_limit',
-              title: '文件数量上限',
+              title: this.$t('storage.text_135'),
               formatter: ({ row }) => {
                 if (row.object_cnt_limit > 0) {
-                  return `${row.object_cnt_limit}个`
+                  return this.$t('storage.text_146', [row.object_cnt_limit])
                 } else {
-                  return '无限制'
+                  return this.$t('storage.text_145')
                 }
               },
             },
           ],
         },
         {
-          title: '访问权限',
+          title: this.$t('storage.text_147'),
           items: [
             {
               field: 'acl',
-              title: '读写权限',
+              title: this.$t('storage.text_93'),
               slots: {
                 default: ({ row }) => {
                   return [
@@ -196,7 +196,7 @@ export default {
   methods: {
     handleSetAcl (row) {
       this.createDialog('ObjectsUpdateAclDialog', {
-        title: '设置读写权限',
+        title: this.$t('storage.text_138'),
         data: [row],
         bucket: row,
         resName: row.name,
