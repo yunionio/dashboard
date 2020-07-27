@@ -4,7 +4,7 @@
       {{ item.name }}
       <!-- <div class="d-flex align-items-center">
         <span class="flex-fill mr-2">{{ item.name }}</span>
-        <a-tag v-show="item.feData.cached" color="green">已缓存</a-tag>
+        <a-tag v-show="item.feData.cached" color="green">{{$t('compute.text_152')}}</a-tag>
       </div> -->
     </a-select-option>
   </a-select>

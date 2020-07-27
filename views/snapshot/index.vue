@@ -4,7 +4,7 @@
       <snapshot-list :list="list" v-bind="$props" />
     </template>
     <template v-else>
-      <page-header title="硬盘快照" />
+      <page-header :title="$t('compute.text_101')" />
       <page-body>
         <snapshot-list :list="list" />
       </page-body>
@@ -36,7 +36,7 @@ export default {
         steadyStatus,
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('compute.text_228'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
@@ -48,7 +48,7 @@ export default {
           domain: getDomainFilter(),
           account: getAccountFilter(),
           disk_name: {
-            label: '硬盘',
+            label: this.$t('compute.text_100'),
             jointFilter: true,
             filter: true,
             formatter: val => {
@@ -56,12 +56,12 @@ export default {
             },
           },
           disk_type: {
-            label: '磁盘类型',
+            label: this.$t('compute.text_381'),
             dropdown: true,
             multiple: true,
             items: [
-              { label: '数据盘', key: 'data' },
-              { label: '系统盘', key: 'sys' },
+              { label: this.$t('compute.text_50'), key: 'data' },
+              { label: this.$t('compute.text_49'), key: 'sys' },
             ],
           },
         },

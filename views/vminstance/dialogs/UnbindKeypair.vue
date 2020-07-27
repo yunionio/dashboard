@@ -1,13 +1,13 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">解绑密钥</div>
+    <div slot="header">{{$t('compute.text_364')}}</div>
     <div slot="body">
-      <a-alert class="mb-2" v-if="isOpenStack" message="OpenStack机器在解绑密钥后需手动重置密码" type="warning" />
-      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" action="解绑密钥" />
+      <a-alert class="mb-2" v-if="isOpenStack" :message="$t('compute.text_1267')" type="warning" />
+      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_364')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
-        <a-form-item label="自动启动" v-bind="formItemLayout" extra="解绑密钥成功后是否自动启动">
-          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.auto_start" :disabled="form.fi.disableAutoStart" />
+        <a-form-item :label="$t('compute.text_494')" v-bind="formItemLayout" :extra="$t('compute.text_1268')">
+          <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.auto_start" :disabled="form.fi.disableAutoStart" />
         </a-form-item>
       </a-form>
     </div>

@@ -1,11 +1,11 @@
 <template>
   <div>
-    <page-header :title="id ? '修改属性' : '新建模板'" />
+    <page-header :title="id ? $t('compute.text_247') : $t('compute.text_248')" />
     <a-form class="mt-3" :form="form" v-bind="formItemLayout">
-      <a-form-item label="名称">
+      <a-form-item :label="$t('compute.text_228')">
         <a-input :disabled="!!id" v-decorator="decorators.name" :placeholder="$t('validator.serverName')" />
       </a-form-item>
-      <a-form-item label="主机">
+      <a-form-item :label="$t('compute.text_90')">
         <code-mirror v-decorator="decorators.hosts" @input="(v) => handleCodeInput('hosts', v)" :options="cmOptions" style="line-height: 25px" view-height="120px" :is-scroll="true" />
       </a-form-item>
       <!-- 文件上传 -->
@@ -13,18 +13,18 @@
       <a-form-item label="playbook" required>
         <code-mirror v-decorator="decorators.playbook" @input="(v) => handleCodeInput('playbook', v)" :options="cmOptions" style="line-height: 25px"  view-height="300px" :is-scroll="true" />
       </a-form-item>
-      <a-form-item label="立即执行" required>
-        <a-switch :defaultChecked="decorators.start[1].initialValue" v-decorator="decorators.start" checkedChildren="开" unCheckedChildren="关" />
-        <span slot="extra">创建成功后，会立即执行一次</span>
+      <a-form-item :label="$t('compute.text_249')" required>
+        <a-switch :defaultChecked="decorators.start[1].initialValue" v-decorator="decorators.start" :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" />
+        <span slot="extra">{{$t('compute.text_250')}}</span>
       </a-form-item>
-      <a-form-item label="时间间隔" required>
+      <a-form-item :label="$t('compute.text_242')" required>
         <a-input-number v-decorator="decorators.hour" :min="1" @blur="handleNumBlur" />
-        <span slot="extra">每隔多长时间，执行一次，单位是小时</span>
+        <span slot="extra">{{$t('compute.text_251')}}</span>
       </a-form-item>
     </a-form>
     <page-footer>
-      <a-button type="primary" @click="handleConfirm" :loading="loading" class="ml-3">确定</a-button>
-      <a-button type="primary" @click="handleCancel" :loading="loading" class="ml-3">取消</a-button>
+      <a-button type="primary" @click="handleConfirm" :loading="loading" class="ml-3">{{$t('compute.text_162')}}</a-button>
+      <a-button type="primary" @click="handleCancel" :loading="loading" class="ml-3">{{$t('compute.text_135')}}</a-button>
     </page-footer>
   </div>
 </template>
@@ -94,7 +94,7 @@ export default {
             validateTrigger: 'blur',
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('compute.text_210') },
               { validator: this.$validate('serverName') },
             ],
           },
@@ -105,18 +105,18 @@ export default {
             initialValue: hostStr,
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入主机' },
+              { required: true, message: this.$t('compute.text_252') },
               {
                 validator: (rule, value, _callback) => {
                   const arr = value.split(' ')
                   if (arr && arr.length > 0) {
                     if (arr[0] !== 'HOSTNAME') {
-                      return _callback('请输入正确格式，如：HOSTNAME key=value key=value')
+                      return _callback(this.$t('compute.text_253'))
                     }
                     for (let i = 1; i < arr.length; i++) {
                       const _itemArr = arr[i].split('=')
                       if (_itemArr.length !== 2) {
-                        return _callback('请输入正确格式，如：HOSTNAME key=value key=value')
+                        return _callback(this.$t('compute.text_253'))
                       }
                     }
                   }
@@ -132,7 +132,7 @@ export default {
             validateFirst: true,
             initialValue: moduleStr,
             rules: [
-              { required: true, message: '请输入playbook' },
+              { required: true, message: this.$t('compute.text_254') },
               {
                 validator: (rule, value, _callback) => {
                   const modeItems = value.replace(/[\r\n]/g, '<br/>').split('<br/>')
@@ -141,15 +141,15 @@ export default {
                       const items = modeItems[i].split(' ')
                       const [name, ...values] = items
                       if (this.modNames.indexOf(name) === -1) {
-                        return _callback('请输入正确格式，如：package key=value key=value')
+                        return _callback(this.$t('compute.text_255'))
                       }
                       if (!values || values.length === 0) {
-                        return _callback('请输入正确格式，如：package key=value key=value')
+                        return _callback(this.$t('compute.text_255'))
                       }
                       for (let j = 0; j < values.length; j++) {
                         const arr = values[j].split('=')
                         if (arr.length !== 2) {
-                          return _callback('请输入正确格式，如：package key=value key=value')
+                          return _callback(this.$t('compute.text_255'))
                         }
                       }
                     }

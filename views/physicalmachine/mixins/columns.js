@@ -2,6 +2,7 @@ import { getMaintenanceTableColumn } from '../utils/columns'
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { getRegionTableColumn, getStatusTableColumn, getEnabledTableColumn, getNameDescriptionTableColumn, getCopyWithContentTableColumn, getTagTableColumn, getPublicScopeTableColumn, getProjectDomainTableColumn } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -10,7 +11,7 @@ export default {
         onManager: this.onManager,
         hideField: true,
         formRules: [
-          { required: true, message: '请输入名称' },
+          { required: true, message: i18n.t('compute.text_210') },
           { validator: this.$validate('serverCreateName') },
         ],
         slotCallback: row => {
@@ -20,7 +21,7 @@ export default {
         },
         cellWrapSlots: row => {
           return {
-            append: () => row.is_import ? (<a-tooltip title="托管的物理机，不可转化为宿主机"><icon class='ml-2' type='res-physicalmachine' style={{ color: '#1890ff' }} /></a-tooltip>) : null,
+            append: () => row.is_import ? (<a-tooltip title={i18n.t('compute.text_846')}><icon class='ml-2' type='res-physicalmachine' style={{ color: '#1890ff' }} /></a-tooltip>) : null,
           }
         },
       }),
@@ -55,7 +56,7 @@ export default {
       },
       {
         field: 'spec',
-        title: '规格',
+        title: i18n.t('compute.text_178'),
         width: 120,
         showOverflow: 'ellipsis',
         formatter: ({ row }) => {
@@ -101,7 +102,7 @@ export default {
       },
       {
         field: 'manufacture',
-        title: '品牌',
+        title: i18n.t('compute.text_847'),
         width: 70,
         slots: {
           default: ({ row }) => {
@@ -128,7 +129,7 @@ export default {
       getCopyWithContentTableColumn({ field: 'sn', title: 'SN' }),
       getCopyWithContentTableColumn({
         field: 'server',
-        title: '分配',
+        title: i18n.t('compute.text_602'),
         hideField: true,
         slotCallback: row => {
           if (!row.server) return '-'
@@ -139,11 +140,11 @@ export default {
       }),
       {
         field: 'login_ssh',
-        title: '初始账号',
+        title: i18n.t('compute.text_566'),
         width: 70,
         slots: {
           default: ({ row }) => {
-            return [<PasswordFetcher serverId={ row.server_id ? row.server_id : row.id } resourceType={row.server_id ? 'servers' : 'baremetal_ssh' } disabled={ row.is_import } promptText={row.is_import ? '托管物理机，无法查看账号信息' : '' } />]
+            return [<PasswordFetcher serverId={ row.server_id ? row.server_id : row.id } resourceType={row.server_id ? 'servers' : 'baremetal_ssh' } disabled={ row.is_import } promptText={row.is_import ? i18n.t('compute.text_848') : '' } />]
           },
         },
       },

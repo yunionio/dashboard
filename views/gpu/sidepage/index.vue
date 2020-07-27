@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="透传设备"
+    :title="$t('compute.text_113')"
     icon="res-gpu"
     :res-name="detailData.name"
     :actions="params.actions"
@@ -41,9 +41,9 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'gpu-detail' },
-        { label: `关联${this.$t('dictionary.server')}`, key: 'servers-list' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('compute.text_238'), key: 'gpu-detail' },
+        { label: this.$t('compute.text_483', [this.$t('dictionary.server')]), key: 'servers-list' },
+        { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }
   },

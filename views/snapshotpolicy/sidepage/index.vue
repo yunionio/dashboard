@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="快照策略"
+    :title="$t('compute.text_461')"
     icon="res-kuaizhaocelue"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
@@ -42,10 +42,10 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'snapshot-policy-detail' },
-        { label: '关联硬盘', key: 'snapshot-policy-disk' },
-        { label: '缓存列表', key: 'snapshot-policy-cache' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('compute.text_238'), key: 'snapshot-policy-detail' },
+        { label: this.$t('compute.text_1084'), key: 'snapshot-policy-disk' },
+        { label: this.$t('compute.text_692'), key: 'snapshot-policy-cache' },
+        { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }
   },

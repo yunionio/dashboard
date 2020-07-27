@@ -35,29 +35,29 @@ export default {
         getBillingTypeTableColumn(),
         {
           field: 'disk_size',
-          title: '容量',
+          title: this.$t('compute.text_397'),
           formatter: ({ cellValue }) => {
             return cellValue ? sizestr(cellValue, 'M', 1024) : '-'
           },
         },
         {
           field: 'disk_type',
-          title: '磁盘类型',
+          title: this.$t('compute.text_381'),
           formatter: ({ cellValue }) => {
-            return cellValue === 'sys' ? '系统盘' : '数据盘'
+            return cellValue === 'sys' ? this.$t('compute.text_49') : this.$t('compute.text_50')
           },
         },
         getUnusedTableColumn(),
         {
           field: 'disk_format',
-          title: '格式',
+          title: this.$t('compute.text_398'),
           formatter: ({ cellValue }) => {
             return cellValue || '-'
           },
         },
         {
           field: 'medium_type',
-          title: '介质类型',
+          title: this.$t('compute.text_396'),
           formatter: ({ cellValue }) => {
             return MEDIUM_MAP[cellValue]
           },
@@ -79,7 +79,7 @@ export default {
         },
         {
           field: 'snapshotpolicies',
-          title: '快照策略',
+          title: this.$t('compute.text_461'),
           formatter: ({ row }, h) => {
             if (row.snapshotpolicies && row.snapshotpolicies.length > 0) {
               return row.snapshotpolicies.map(item => item.name).join('、')

@@ -3,16 +3,14 @@
     <div slot="header">{{action}}</div>
     <div slot="body">
       <a-alert class="mb-2" type="warning">
-        <div slot="message">
-          系统盘上该时刻之后的数据将被清除。请谨慎操作! 只有已停止的实例和当前磁盘没有创建中的快照才可以回滚磁盘。
-        </div>
+        <div slot="message">{{$t('compute.text_1067')}}</div>
       </a-alert>
       <dialog-selected-tips :name="$t('dictionary.snapshot')" :count="params.data.length" :action="action" />
       <dialog-table :data="params.data" :columns="columns" />
       <a-form
         :form="form.fc">
-        <a-form-item label="自动启动" v-bind="formItemLayout" extra="回滚硬盘后是否自动启动">
-          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.autoStart" :disabled="disabled" />
+        <a-form-item :label="$t('compute.text_494')" v-bind="formItemLayout" :extra="$t('compute.text_1068')">
+          <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.autoStart" :disabled="disabled" />
         </a-form-item>
       </a-form>
     </div>
@@ -33,7 +31,7 @@ export default {
   data () {
     return {
       loading: false,
-      action: '回滚硬盘',
+      action: this.$t('compute.text_1069'),
       form: {
         fc: this.$form.createForm(this),
       },

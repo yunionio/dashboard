@@ -1,13 +1,13 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">调整调度标签</div>
+    <div slot="header">{{$t('compute.text_540')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="params.name || $t('dictionary.host')" :count="params.data.length" action="调整调度标签" />
+      <dialog-selected-tips :name="params.name || $t('dictionary.host')" :count="params.data.length" :action="$t('compute.text_540')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 2)" />
        <a-form
         :form="form.fc">
-        <a-form-item label="调度标签" v-bind="formItemLayout">
-          <a-select v-decorator="decorators.schedTags" placeholder="请选择调度标签" mode="multiple">
+        <a-form-item :label="$t('compute.text_541')" v-bind="formItemLayout">
+          <a-select v-decorator="decorators.schedTags" :placeholder="$t('compute.text_123')" mode="multiple">
             <a-select-option v-for="item in schedTags" :key="item.id" :value="item.id">
               {{item.name}}
             </a-select-option>

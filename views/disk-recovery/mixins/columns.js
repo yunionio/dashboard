@@ -1,5 +1,6 @@
 import * as R from 'ramda'
 import { getBrandTableColumn, getStatusTableColumn, getCopyWithContentTableColumn, getProjectTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   props: {
@@ -24,21 +25,21 @@ export default {
         return column
       }
       column = [
-        getCopyWithContentTableColumn({ field: 'name', title: '名称' }),
-        getCopyWithContentTableColumn({ field: 'storage', title: '存储' }),
+        getCopyWithContentTableColumn({ field: 'name', title: i18n.t('compute.text_228') }),
+        getCopyWithContentTableColumn({ field: 'storage', title: i18n.t('compute.text_99') }),
         getCopyWithContentTableColumn({ field: 'guest', title: this.$t('dictionary.server') }),
         {
           field: 'disk_type',
-          title: '类型',
+          title: i18n.t('compute.text_175'),
           width: 70,
           formatter: ({ cellValue }) => {
-            return cellValue === 'sys' ? '系统盘' : '数据盘'
+            return cellValue === 'sys' ? i18n.t('compute.text_49') : i18n.t('compute.text_50')
           },
         },
         getStatusTableColumn({ statusModule: 'disk' }),
         getProjectTableColumn(),
         getBrandTableColumn(),
-        getTimeTableColumn({ field: 'auto_delete_at', title: '自动清除时间' }),
+        getTimeTableColumn({ field: 'auto_delete_at', title: i18n.t('compute.text_480') }),
       ]
       return column
     },

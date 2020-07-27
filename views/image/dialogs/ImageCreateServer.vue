@@ -6,7 +6,7 @@
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
-        <a-form-item label="平台" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_176')" v-bind="formItemLayout">
           <a-radio-group v-decorator="decorators.platform">
             <a-radio-button v-for="obj in cloudEnvOpts" :value="obj.key" :key="obj.key" v-show="obj.key">
               {{ obj.label }}
@@ -34,7 +34,7 @@ export default {
   data () {
     return {
       loading: false,
-      action: '新建虚拟机',
+      action: this.$t('compute.text_663'),
       cloudEnvOptions: getCloudEnvOptions('compute_engine_brands'),
       form: {
         fc: this.$form.createForm(this),

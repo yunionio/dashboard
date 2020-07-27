@@ -3,10 +3,7 @@
     <div slot="header">{{action}}</div>
     <div slot="body">
       <a-alert class="mb-2" type="warning">
-        <div slot="message">
-          状态异常的实例不支持主机克隆<br />
-          开机状态下克隆主机时无法同步克隆过程中产生的数据<br />
-          主机克隆会先生成一个主机快照，快照占用配额资源，建议及时清除无用快照<br />
+        <div slot="message">{{$t('compute.text_1199')}}<br />{{$t('compute.text_1200')}}<br />{{$t('compute.text_1201')}}<br />
         </div>
       </a-alert>
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="action" />
@@ -14,16 +11,16 @@
         :data="params.data"
         :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc">
-        <a-form-item v-bind="formItemLayout" label="克隆方式">
+        <a-form-item v-bind="formItemLayout" :label="$t('compute.text_1202')">
           <a-radio-group
             v-decorator="decorators.cloneType">
-            <a-radio value="newSnapshot">新主机快照克隆</a-radio>
-            <a-radio value="oldSnapshot" :disabled="oldSnapshotDisabled">已有主机快照克隆</a-radio>
+            <a-radio value="newSnapshot">{{$t('compute.text_1203')}}</a-radio>
+            <a-radio value="oldSnapshot" :disabled="oldSnapshotDisabled">{{$t('compute.text_1204')}}</a-radio>
           </a-radio-group>
         </a-form-item>
         <a-form-item
           v-bind="formItemLayout"
-          label="名称">
+          :label="$t('compute.text_228')">
           <a-input
             v-decorator="decorators.name"
             :placeholder="$t('validator.resourceCreateName')" />
@@ -31,19 +28,19 @@
             v-slot:extra
             res="servers"
             :name="form.fd.name"
-            default-text="名称支持有序后缀占位符‘#’，用法举例，名称host##，数量2，创建后实例的名称依次为host01、host02，已有同名实例，序号顺延" />
+            default-:text="$t('compute.text_893')" />
         </a-form-item>
-        <a-form-item label="数量" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_294')" v-bind="formItemLayout">
           <a-input-number v-decorator="decorators.count" :max="5" :min="1" :step="1" step-strictly />
         </a-form-item>
-        <a-form-item label="自动删除" v-bind="formItemLayout" extra="克隆完成后删除本次克隆生成的主机快照" v-if="isNewSnapshotClone">
-          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.auto_delete_instance_snapshot" />
+        <a-form-item :label="$t('compute.text_1205')" v-bind="formItemLayout" :extra="$t('compute.text_1206')" v-if="isNewSnapshotClone">
+          <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.auto_delete_instance_snapshot" />
         </a-form-item>
-        <a-form-item label="主机快照" v-bind="formItemLayout" v-else>
+        <a-form-item :label="$t('compute.text_102')" v-bind="formItemLayout" v-else>
           <base-select
             :options="snapshotOptions"
             v-decorator="decorators.snapshot"
-            :select-props="{ placeholder: '请选择主机快照' }" />
+            :select-props="{ placeholder: $t('compute.text_1207') }" />
         </a-form-item>
       </a-form>
     </div>
@@ -70,7 +67,7 @@ export default {
   data () {
     return {
       loading: false,
-      action: '主机克隆',
+      action: this.$t('compute.text_1208'),
       form: {
         fc: this.$form.createForm(this, {
           name: 'clone_deep_create_form',
@@ -93,7 +90,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入主机名称' },
+              { required: true, message: this.$t('compute.text_1043') },
               { validator: this.$validate('resourceCreateName') },
             ],
           },
@@ -103,7 +100,7 @@ export default {
           {
             initialValue: 1,
             rules: [
-              { required: true, message: '请选择数量' },
+              { required: true, message: this.$t('compute.text_1195') },
             ],
           },
         ],
@@ -118,7 +115,7 @@ export default {
           'snapshot',
           {
             rules: [
-              { required: true, message: '请选择主机快照', trigger: 'change' },
+              { required: true, message: this.$t('compute.text_1207'), trigger: 'change' },
             ],
           },
         ],

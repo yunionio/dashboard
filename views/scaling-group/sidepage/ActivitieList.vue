@@ -46,28 +46,28 @@ export default {
         getStatusTableColumn({ statusModule: 'scalingactivitie', minWidth: 100 }),
         {
           field: 'trigger_desc',
-          title: '起因描述',
+          title: this.$t('compute.text_956'),
           minWidth: 200,
         },
         {
           field: 'action_desc',
-          title: '行为描述',
+          title: this.$t('compute.text_957'),
           minWidth: 200,
         },
         getTimeTableColumn({
           field: 'start_time',
-          title: '开始时间',
+          title: this.$t('compute.text_230'),
           sortable: true,
         }),
         getTimeTableColumn({
           field: 'end_time',
-          title: '结束时间',
+          title: this.$t('compute.text_231'),
           sortable: true,
         }),
       ],
       singleActions: [
         {
-          label: '查看',
+          label: this.$t('compute.text_958'),
           action: (row) => {
             this.createDialog('EventLogDialog', {
               data: row.reason,

@@ -1,11 +1,11 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">迁移</div>
+    <div slot="header">{{$t('compute.text_1127')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" action="迁移" />
+      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_1127')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
-        <a-form-item label="宿主机" v-bind="formItemLayout" extra="提示信息：宿主机为空时，系统会自动选择宿主机">
+        <a-form-item :label="$t('compute.text_111')" v-bind="formItemLayout" :extra="$t('compute.text_1164')">
           <base-select
             v-decorator="decorators.host"
             resource="hosts"
@@ -13,13 +13,13 @@
             :remote-fn="q => ({ filter: `name.contains(${q})` })"
             :params="hostsParams"
             :mapper="hostsMapper"
-            :select-props="{ allowClear: true, placeholder: '请选择宿主机' }" />
+            :select-props="{ allowClear: true, placeholder: $t('compute.text_314') }" />
         </a-form-item>
-        <a-form-item label="强制迁移" v-bind="formItemLayout" v-if="isSingle" extra="若宿主机宕机且虚拟机使用共享存储，可打开“强制迁移”">
-          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.rescue_mode" />
+        <a-form-item :label="$t('compute.text_1261')" v-bind="formItemLayout" v-if="isSingle" :extra="$t('compute.text_1262')">
+          <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.rescue_mode" />
         </a-form-item>
-        <a-form-item label="自动启动" v-bind="formItemLayout" v-if="isSingle && firstData.status === 'ready'" extra="迁移成功后是否自动启动">
-          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.auto_start" />
+        <a-form-item :label="$t('compute.text_494')" v-bind="formItemLayout" v-if="isSingle && firstData.status === 'ready'" :extra="$t('compute.text_1263')">
+          <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.auto_start" />
         </a-form-item>
       </a-form>
     </div>
@@ -49,7 +49,7 @@ export default {
           'host',
           {
             rules: [
-              { required: false, message: '请选择宿主机', trigger: 'change' },
+              { required: false, message: this.$t('compute.text_314'), trigger: 'change' },
             ],
           },
         ],

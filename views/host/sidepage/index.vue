@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="宿主机"
+    :title="$t('compute.text_111')"
     icon="res-host"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
@@ -50,16 +50,16 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'host-detail' },
-        { label: '资源统计', key: 'dashboard' },
-        { label: '虚拟机', key: 'vminstance-list' },
-        { label: '网络', key: 'network-list' },
-        { label: '存储', key: 'storage-list' },
-        { label: 'GPU卡', key: 'gpu-list' },
-        { label: '回收站', key: 'server-recovery' },
-        { label: '监控', key: 'monitor' },
+        { label: this.$t('compute.text_238'), key: 'host-detail' },
+        { label: this.$t('compute.text_606'), key: 'dashboard' },
+        { label: this.$t('compute.text_91'), key: 'vminstance-list' },
+        { label: this.$t('compute.text_104'), key: 'network-list' },
+        { label: this.$t('compute.text_99'), key: 'storage-list' },
+        { label: this.$t('compute.text_607'), key: 'gpu-list' },
+        { label: this.$t('compute.text_114'), key: 'server-recovery' },
+        { label: this.$t('compute.text_608'), key: 'monitor' },
         // { label: '报警', key: 'alert' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }
   },

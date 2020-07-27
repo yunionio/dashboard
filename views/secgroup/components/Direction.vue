@@ -9,6 +9,7 @@
 <script>
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
+import i18n from '@/locales'
 
 const PROTOCOL = {
   any: 'ANY',
@@ -18,8 +19,8 @@ const PROTOCOL = {
 }
 
 const ACTIONS = {
-  allow: '允许',
-  deny: '拒绝',
+  allow: i18n.t('compute.text_976'),
+  deny: i18n.t('compute.text_977'),
 }
 
 export default {
@@ -40,7 +41,7 @@ export default {
     },
   },
   data () {
-    const title = this.type === 'out' ? '目标' : '来源'
+    const title = this.type === 'out' ? this.$t('compute.text_978') : this.$t('compute.text_979')
     return {
       list: this.$list.createList(this, {
         resource: 'secgrouprules',
@@ -59,7 +60,7 @@ export default {
             },
           },
           ports: {
-            label: '端口',
+            label: this.$t('compute.text_349'),
             filter: true,
             formatter: val => {
               // if ((val && val.toLowerCase(val)) === 'all') {
@@ -79,32 +80,32 @@ export default {
         },
         {
           field: 'protocol',
-          title: '协议',
+          title: this.$t('compute.text_980'),
           formatter: ({ cellValue, row }) => {
             return PROTOCOL[cellValue] || row.protocol
           },
         },
         {
           field: 'ports',
-          title: '端口',
+          title: this.$t('compute.text_349'),
           formatter: ({ cellValue, row }) => {
             return cellValue === 'any' ? 'ALL' : !row.ports ? 'ALL' : row.ports
           },
         },
         {
           field: 'action',
-          title: '策略',
+          title: this.$t('compute.text_694'),
           formatter: ({ cellValue, row }) => {
             return ACTIONS[cellValue] || row.action
           },
         },
         {
           field: 'priority',
-          title: '优先级',
+          title: this.$t('compute.text_981'),
         },
         {
           field: 'description',
-          title: '备注',
+          title: this.$t('compute.text_312'),
           slots: {
             default: ({ row }, h) => {
               const ret = []
@@ -125,7 +126,7 @@ export default {
       ],
       singleActions: [
         {
-          label: '编辑',
+          label: this.$t('compute.text_982'),
           permission: 'secgrouprules_update',
           action: obj => {
             this.createDialog('EditRulesDialog', {
@@ -144,7 +145,7 @@ export default {
           },
         },
         {
-          label: '克隆',
+          label: this.$t('compute.text_983'),
           permission: 'secgrouprules_create',
           action: obj => {
             this.createDialog('EditRulesDialog', {
@@ -164,15 +165,15 @@ export default {
           },
         },
         {
-          label: '删除',
+          label: this.$t('compute.text_261'),
           permission: 'secgrouprules_delete',
           action: obj => {
             this.createDialog('DeleteResDialog', {
               vm: this,
               data: [obj],
               columns: this.columns,
-              title: '删除',
-              name: '规则',
+              title: this.$t('compute.text_261'),
+              name: this.$t('compute.text_984'),
               onManager: this.onManager,
               refresh: this.refresh,
             })
@@ -186,7 +187,7 @@ export default {
       ],
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('compute.text_18'),
           permission: 'secgrouprules_create',
           action: () => {
             this.createDialog('EditRulesDialog', {
@@ -206,15 +207,15 @@ export default {
           },
         },
         {
-          label: '删除',
+          label: this.$t('compute.text_261'),
           permission: 'secgrouprules_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,
               data: this.list.selectedItems,
               columns: this.columns,
-              title: '删除',
-              name: '规则',
+              title: this.$t('compute.text_261'),
+              name: this.$t('compute.text_984'),
               onManager: this.onManager,
             })
           },

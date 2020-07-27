@@ -6,10 +6,10 @@
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
-        <a-form-item label="是否限速" v-bind="formItemLayout">
-          <a-switch checkedChildren="开" unCheckedChildren="关" v-model="form.fi.isSetSpeed" />
+        <a-form-item :label="$t('compute.text_1247')" v-bind="formItemLayout">
+          <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-model="form.fi.isSetSpeed" />
         </a-form-item>
-        <a-form-item label="最大IOPS" v-bind="formItemLayout" v-show="form.fi.isSetSpeed">
+        <a-form-item :label="$t('compute.text_1248')" v-bind="formItemLayout" v-show="form.fi.isSetSpeed">
           <a-input-number :max="2048" :min="1" :step="50" v-decorator="decorators.bps" />
         </a-form-item>
       </a-form>
@@ -34,7 +34,7 @@ export default {
     const bps = Boolean(parseInt(bpsVal))
     return {
       loading: false,
-      action: '设置磁盘速度',
+      action: this.$t('compute.text_1249'),
       form: {
         fc: this.$form.createForm(this),
         fi: {
@@ -47,7 +47,7 @@ export default {
           {
             initialValue: bps ? parseInt(bpsVal) : 1,
             rules: [
-              { required: true, message: '请输入磁盘速度' },
+              { required: true, message: this.$t('compute.text_1250') },
             ],
           },
         ],

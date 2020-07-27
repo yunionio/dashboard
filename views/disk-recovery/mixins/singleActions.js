@@ -1,15 +1,16 @@
+import i18n from '@/locales'
 export default {
   created () {
     this.singleActions = [
       {
-        label: '清除',
+        label: i18n.t('compute.text_477'),
         permission: 'disks_delete',
         action: obj => {
           this.createDialog('DeleteResDialog', {
             vm: this,
             data: [obj],
             columns: this.columns,
-            title: '清除',
+            title: i18n.t('compute.text_477'),
             name: this.$t('dictionary.disk'),
             requestParams: { override_pending_delete: true },
             onManager: this.onManager,
@@ -22,7 +23,7 @@ export default {
         },
       },
       {
-        label: '恢复',
+        label: i18n.t('compute.text_478'),
         permission: 'disks_perform_cancel_delete',
         action: (obj) => {
           this.createDialog('DiskRestoreDialog', {

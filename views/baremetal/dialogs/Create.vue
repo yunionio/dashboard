@@ -1,13 +1,13 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">新增磁盘配置</div>
+    <div slot="header">{{$t('compute.text_323')}}</div>
     <div slot="body">
       <a-form
         :form="form.fc">
-        <a-form-item label="配置" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_295')" v-bind="formItemLayout">
           <a-row :gutter="8">
             <a-col :span="22">
-              <a-cascader :options="disksOptions" v-decorator="decorators.option" placeholder="请选择" @change="cascaderChange" />
+              <a-cascader :options="disksOptions" v-decorator="decorators.option" :placeholder="$t('compute.text_219')" @change="cascaderChange" />
             </a-col>
             <a-col :span="2">
               <a-tooltip :title="coutTitle">
@@ -45,7 +45,7 @@ export default {
           'option',
           {
             rules: [
-              { required: true, message: '请选择配置项' },
+              { required: true, message: this.$t('compute.text_324') },
             ],
           },
         ],
@@ -54,7 +54,7 @@ export default {
           {
             initialValue: 0,
             rules: [
-              { required: true, message: '请选择配置项' },
+              { required: true, message: this.$t('compute.text_324') },
             ],
           },
         ],
@@ -71,7 +71,7 @@ export default {
         Linux: [
           {
             value: 'none',
-            label: '不做Raid',
+            label: this.$t('compute.text_325'),
             min: 1,
             step: 1,
           },
@@ -79,7 +79,7 @@ export default {
         PCIE: [
           {
             value: 'none',
-            label: '不做Raid',
+            label: this.$t('compute.text_325'),
             min: 1,
             step: 1,
           },
@@ -87,7 +87,7 @@ export default {
         MPT2SAS: [
           {
             value: 'none',
-            label: '不做Raid',
+            label: this.$t('compute.text_325'),
             min: 1,
             step: 1,
           },
@@ -115,7 +115,7 @@ export default {
         MPT3SAS: [
           {
             value: 'none',
-            label: '不做Raid',
+            label: this.$t('compute.text_325'),
             min: 1,
             step: 1,
           },
@@ -143,7 +143,7 @@ export default {
         MegaRaid: [
           {
             value: 'none',
-            label: '不做Raid',
+            label: this.$t('compute.text_325'),
             min: 1,
             step: 1,
           },
@@ -176,7 +176,7 @@ export default {
         HPSARaid: [
           {
             value: 'none',
-            label: '不做Raid',
+            label: this.$t('compute.text_325'),
             min: 1,
             step: 1,
           },
@@ -208,7 +208,7 @@ export default {
         MarvelRaid: [
           {
             value: 'none',
-            label: '不做Raid',
+            label: this.$t('compute.text_325'),
             min: 1,
             step: 1,
           },
@@ -244,7 +244,7 @@ export default {
   },
   computed: {
     coutTitle () {
-      return `可选磁盘块数${this.mincount}~${this.maxcount}`
+      return this.$t('compute.text_326', [this.mincount, this.maxcount])
     },
   },
   created () {

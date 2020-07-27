@@ -2,19 +2,19 @@
   <div>
     <mode-select :decorators="decorators" ignore-mode="batch" />
     <template v-if="isSingle">
-      <a-form-item label="物理机名称" extra="该物理机在系统中显示的名字">
+      <a-form-item :label="$t('compute.text_772')" :extra="$t('compute.text_773')">
         <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverName')" />
       </a-form-item>
-      <a-form-item label="IPMI地址" extra="请输入已配置好的BMC的信息">
+      <a-form-item :label="$t('compute.text_774')" :extra="$t('compute.text_775')">
         <a-input v-decorator="decorators.ipmi_ip_addr" />
       </a-form-item>
-      <a-form-item label="IPMI用户名" extra="请输入已配置好的BMC的信息">
+      <a-form-item :label="$t('compute.text_776')" :extra="$t('compute.text_775')">
         <a-input v-decorator="decorators.ipmi_username" />
       </a-form-item>
-      <a-form-item label="IPMI密码" extra="请输入已配置好的BMC的信息">
+      <a-form-item :label="$t('compute.text_777')" :extra="$t('compute.text_775')">
         <a-input-password v-decorator="decorators.ipmi_password" />
       </a-form-item>
-      <a-form-item label="管理口IP" extra="会根据输入的IP子网或者IP地址设置物理机的管理口IP">
+      <a-form-item :label="$t('compute.text_778')" :extra="$t('compute.text_779')">
         <net-select v-decorator="decorators.net" :project-domain="fd.project_domain" />
       </a-form-item>
     </template>
@@ -25,7 +25,7 @@
         download-url="/v1/downloads/BatchHostISORegister" />
     </template>
     <a-form-item :wrapper-col="offsetWrapperCol">
-      <a-checkbox v-decorator="decorators.no_prepare">只注册不引导</a-checkbox>
+      <a-checkbox v-decorator="decorators.no_prepare">{{$t('compute.text_780')}}</a-checkbox>
     </a-form-item>
   </div>
 </template>

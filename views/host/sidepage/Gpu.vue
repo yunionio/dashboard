@@ -34,11 +34,11 @@ export default {
       columns: [
         {
           field: 'dev_type',
-          title: '设备类型',
+          title: this.$t('compute.text_481'),
         },
         {
           field: 'model',
-          title: '设备型号',
+          title: this.$t('compute.text_482'),
           slots: {
             default: ({ cellValue, row }, h) => {
               const device = row.vendor_device_id.split(':')[0]
@@ -54,14 +54,14 @@ export default {
         },
         {
           field: 'guest_id',
-          title: '关联主机',
+          title: this.$t('compute.text_232'),
           formatter: ({ cellValue, row }) => {
             return row.guest || cellValue
           },
         },
         {
           field: '',
-          title: '宿主机预留资源',
+          title: this.$t('compute.text_501'),
           minWidth: 100,
           showOverflow: 'title',
           slots: {

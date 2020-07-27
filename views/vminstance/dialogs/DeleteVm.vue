@@ -1,17 +1,18 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">删除</div>
+    <div slot="header">{{$t('compute.text_261')}}</div>
     <div slot="body">
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="this.params.title" />
       <dialog-table v-if="params.columns && params.columns.length" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc" v-show="isShowAutoDelete">
-        <a-form-item label="同时删除快照" v-bind="formItemLayout">
-          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.autoDelete" @change="autoDeleteChangeHandle" />
+        <a-form-item :label="$t('compute.text_420')" v-bind="formItemLayout">
+          <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.autoDelete" @change="autoDeleteChangeHandle" />
         </a-form-item>
         <a-form-item v-if="!form.fd.autoDelete" v-bind="formItemLayoutWithoutLabel">
-          该主机包含快照 {{ snapshot.list.length }} 个
+          {{ $t('compute.text_1212', [snapshot.list.length]) }}
         </a-form-item>
+        <a-form-item v-if="!form.fd.autoDelete" v-bind="formItemLayoutWithoutLabel">{{$t('compute.text_1212', [ snapshot.list.length ])}}</a-form-item>
       </a-form>
       <dialog-table v-if="form.fd.autoDelete" :data="snapshot.list" :columns="snapshot.columns" />
     </div>
@@ -43,7 +44,7 @@ export default {
         columns: [
           {
             field: 'name',
-            title: '名称',
+            title: this.$t('compute.text_228'),
             showOverflow: 'ellipsis',
             width: 200,
             formatter: ({ row }) => {
@@ -52,15 +53,15 @@ export default {
           },
           {
             field: 'snapshot_type',
-            title: '快照类型',
+            title: this.$t('compute.text_1213'),
             minWidth: 200,
             formatter: ({ row }) => {
-              return row.is_disk ? '硬盘快照' : '主机快照'
+              return row.is_disk ? this.$t('compute.text_101') : this.$t('compute.text_102')
             },
           },
           {
             field: 'disk_type',
-            title: '磁盘类型',
+            title: this.$t('compute.text_381'),
             minWidth: 200,
             formatter: ({ row }) => {
               return DISK_TYPES[row.disk_type] || row.disk_type
@@ -143,7 +144,7 @@ export default {
         ids: ids.join(','),
       }
       await this.createWorkflow(variables)
-      this.$message.success('主机删除流程已提交')
+      this.$message.success(this.$t('compute.text_1214'))
       this.$router.push('/workflow')
     },
     async handleDelete () {
@@ -170,7 +171,7 @@ export default {
           this.params.success(response)
         }
       }
-      this.$message.success('操作成功')
+      this.$message.success(this.$t('compute.text_423'))
     },
     autoDeleteChangeHandle (val) {
       this.form.fd.autoDelete = val

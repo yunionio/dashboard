@@ -1,12 +1,12 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">合并安全组</div>
+    <div slot="header">{{$t('compute.text_1012')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.secgroup')" :count="params.data.length" action="合并" />
+      <dialog-selected-tips :name="$t('dictionary.secgroup')" :count="params.data.length" :action="$t('compute.text_1013')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
-        <a-form-item label="指定要合并安全组" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_1014')" v-bind="formItemLayout">
           <a-select v-decorator="decorators.name" mode="multiple">
             <a-select-option v-for="item in secgroupOps" :key="item.id" :value="item.id">
               {{item.name}}
@@ -40,7 +40,7 @@ export default {
           'name',
           {
             rules: [
-              { required: true, message: '请选择要合并的安全组名称' },
+              { required: true, message: this.$t('compute.text_1015') },
             ],
           },
         ],

@@ -1,22 +1,22 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">创建相同配置</div>
+    <div slot="header">{{$t('compute.text_359')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" action="创建相同配置" />
+      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_359')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
-        <a-form-item label="名称" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_228')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceCreateName')"  @change="e => { form.fi.generate_name = e.target.value }" />
           <name-repeated
             v-slot:extra
             res="servers"
             :name="form.fi.generate_name"
-            default-text="名称支持有序后缀占位符‘#’，用法举例，名称host##，数量2，创建后实例的名称依次为host01、host02，已有同名实例，序号顺延" />
+            default-:text="$t('compute.text_893')" />
         </a-form-item>
-        <a-form-item label="数量" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_294')" v-bind="formItemLayout">
           <a-input-number v-decorator="decorators.__count__" :min="1" :max="10" :step="1" :parser="Math.round" />
         </a-form-item>
-        <a-form-item label="操作系统" v-bind="formItemLayout" v-if="isPublic">
+        <a-form-item :label="$t('compute.text_267')" v-bind="formItemLayout" v-if="isPublic">
           <os-select
             :type="type"
             :form="form"
@@ -84,7 +84,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('compute.text_210') },
               { validator: this.$validate('resourceCreateName') },
             ],
           },
@@ -94,7 +94,7 @@ export default {
           {
             initialValue: 1,
             rules: [
-              { required: true, message: '请选择数量' },
+              { required: true, message: this.$t('compute.text_1195') },
             ],
           },
         ],
@@ -103,7 +103,7 @@ export default {
             'prefer_manager',
             {
               rules: [
-                { required: true, message: '请选择云账号' },
+                { required: true, message: this.$t('compute.text_149') },
               ],
             },
           ],
@@ -111,7 +111,7 @@ export default {
             'os',
             {
               rules: [
-                { required: true, message: '请选择操作系统' },
+                { required: true, message: this.$t('compute.text_153') },
               ],
             },
           ],
@@ -119,7 +119,7 @@ export default {
             'image',
             {
               rules: [
-                { required: true, message: '请选择镜像' },
+                { required: true, message: this.$t('compute.text_214') },
               ],
             },
           ],
@@ -235,12 +235,12 @@ export default {
         const data = this.genCloneData(values)
         if (this.params.type === 'baremetal') {
           if (this.specificationList.length) {
-            this.$message.warning('无可用规格，无法创建')
+            this.$message.warning(this.$t('compute.text_1196'))
             return
           } else {
             const specificationItem = this.specificationList.filter(item => { return item.id === data.host_id })
             if (R.isEmpty(specificationItem.spec) || R.isNil(specificationItem.spec)) {
-              this.$message.warning('无相同规格，无法创建')
+              this.$message.warning(this.$t('compute.text_1197'))
               return
             }
           }
@@ -251,7 +251,7 @@ export default {
           params: data,
         })
         if (!schedulerReponse.data.can_create) {
-          this.$message.warning('资源不满足条件，无法创建相同配置的机器')
+          this.$message.warning(this.$t('compute.text_1198'))
           return
         }
         if (this.checkWorkflowEnabled(this.WORKFLOW_TYPES.APPLY_MACHINE)) {
@@ -261,7 +261,7 @@ export default {
             'server-create-paramter': JSON.stringify(data),
           }
           await this.createWorkflow(variables)
-          this.$message.success(`主机 ${data.name} 创建请求流程已提交`)
+          this.$message.success(this.$t('compute.text_1045', [data.name]))
           this.$router.push('/workflow')
         } else {
           await this.params.onManager('create', {

@@ -1,15 +1,15 @@
 <template>
   <div class="severtemplate-create-server">
-    <page-header :title="`新建${this.$t('dictionary.server')}`" />
+    <page-header :title="$t('compute.text_1039', [this.$t('dictionary.server')])" />
     <a-form :form="form.fc" class="mt-3"  v-bind="formItemLayout">
-      <a-form-item label="名称" extra="名称支持序号占位符‘#’，用法如下。 名称：host## 数量：2、实例为：host01、host02">
+      <a-form-item :label="$t('compute.text_228')" :extra="$t('compute.text_1040')">
         <a-input v-decorator="decorators.generate_name" :placeholder="$t('validator.resourceCreateName')" />
       </a-form-item>
-      <a-form-item label="数量">
+      <a-form-item :label="$t('compute.text_294')">
         <a-input-number v-decorator="decorators.count" :min="1" :max="100" />
       </a-form-item>
-      <a-form-item label="申请原因" v-if="isOpenWorkflow">
-        <a-input v-decorator="decorators.reason" placeholder="请输入主机申请原因" />
+      <a-form-item :label="$t('compute.text_1041')" v-if="isOpenWorkflow">
+        <a-input v-decorator="decorators.reason" :placeholder="$t('compute.text_1042')" />
       </a-form-item>
       <page-footer>
         <template v-slot:right>
@@ -19,9 +19,9 @@
             class="mr-2"
             @click="submit"
             style="width: 120px;"
-            :loading="loading">{{ isOpenWorkflow ? '提交工单' : $t('dialog.ok') }}</a-button>
-          <a-button size="large" style="width: 120px;" @click="goBack">取消</a-button>
-          <side-errors error-title="创建主机失败" :errors.sync="errors" />
+            :loading="loading">{{ isOpenWorkflow ? $t('compute.text_288') : $t('dialog.ok') }}</a-button>
+          <a-button size="large" style="width: 120px;" @click="goBack">{{$t('compute.text_135')}}</a-button>
+          <side-errors error-:title="$t('compute.text_290')" :errors.sync="errors" />
         </template>
       </page-footer>
     </a-form>
@@ -56,7 +56,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入主机名称' },
+              { required: true, message: this.$t('compute.text_1043') },
               { validator: this.$validate('resourceCreateName') },
             ],
           },
@@ -67,7 +67,7 @@ export default {
             initialValue: 1,
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入数量' },
+              { required: true, message: this.$t('compute.text_211') },
             ],
           },
         ],
@@ -105,7 +105,7 @@ export default {
           this.serverConfig = data.content
         })
         .catch(() => {
-          this.$message.error('获取主机模板数据失败，无法完成部署')
+          this.$message.error(this.$t('compute.text_1044'))
         })
     },
     doCreateWorkflow (values) {
@@ -126,7 +126,7 @@ export default {
       return new this.$Manager('process-instances', 'v1')
         .create({ data: { variables } })
         .then(() => {
-          this.$message.success(`主机 ${params.generate_name} 创建请求流程已提交`)
+          this.$message.success(this.$t('compute.text_1045', [params.generate_name]))
           this.goWorkflow()
         })
     },
@@ -155,7 +155,7 @@ export default {
           }
         })
         .catch(err => {
-          this.$message.error(`创建失败: ${err}`)
+          this.$message.error(this.$t('compute.text_321', [err]))
         })
     },
     createServer (data) {
@@ -163,7 +163,7 @@ export default {
       delete data.vmem_size
       new this.$Manager('servers', 'v2').create({ data })
         .then(res => {
-          this.$message.success('操作成功，开始创建')
+          this.$message.success(this.$t('compute.text_322'))
           this.goVminstance()
         })
     },

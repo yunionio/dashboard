@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="自动快照策略" />
+    <page-header :title="$t('compute.text_103')" />
     <page-body>
       <snapshot-policy-list :id="listId" />
     </page-body>

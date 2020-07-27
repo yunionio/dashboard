@@ -25,27 +25,27 @@ export function checkIpInSegment (i, networkData) {
     if (isIn) {
       cb()
     } else {
-      cb(new Error('输入的IP不在选择子网网段中'))
+      cb(new Error(i18n.t('compute.text_205')))
     }
   }
 }
 
 export function diskValidator (rule, value, callback) {
   if (R.isNil(value) || R.isEmpty(value)) {
-    return callback(new Error('请填写合法的路径'))
+    return callback(new Error(i18n.t('compute.text_206')))
   }
   if (!value.startsWith('/')) {
-    return callback(new Error('路径必须以 / 开头'))
+    return callback(new Error(i18n.t('compute.text_207')))
   }
   if (value === '/') {
-    return callback(new Error('不能挂载到 / 目录下'))
+    return callback(new Error(i18n.t('compute.text_208')))
   }
   callback()
 }
 
 function validateTag (rule, value, callback) {
   if (R.is(Object, value) && Object.keys(value).length > 20) {
-    return callback(new Error('标签不可超过20个'))
+    return callback(new Error(i18n.t('compute.text_209')))
   }
   callback()
 }
@@ -82,7 +82,7 @@ export const createVmDecorators = type => {
         validateTrigger: 'blur',
         validateFirst: true,
         rules: [
-          { required: true, message: '请输入名称' },
+          { required: true, message: i18n.t('compute.text_210') },
           { validator: validateForm('resourceCreateName') },
         ],
       },
@@ -95,7 +95,7 @@ export const createVmDecorators = type => {
       {
         initialValue: 1,
         rules: [
-          { required: true, message: '请输入数量' },
+          { required: true, message: i18n.t('compute.text_211') },
         ],
       },
     ],
@@ -105,7 +105,7 @@ export const createVmDecorators = type => {
         {
           initialValue: { key: '', label: '' },
           rules: [
-            { validator: isRequired(), message: '请选择区域' },
+            { validator: isRequired(), message: i18n.t('compute.text_212') },
           ],
         },
       ],
@@ -114,7 +114,7 @@ export const createVmDecorators = type => {
         {
           initialValue: { key: '', label: '' },
           rules: [
-            { validator: isRequired(), message: '请选择可用区' },
+            { validator: isRequired(), message: i18n.t('compute.text_213') },
           ],
         },
       ],
@@ -124,7 +124,7 @@ export const createVmDecorators = type => {
         'prefer_manager',
         {
           rules: [
-            { required: true, message: '请选择云账号' },
+            { required: true, message: i18n.t('compute.text_149') },
           ],
         },
       ],
@@ -133,7 +133,7 @@ export const createVmDecorators = type => {
         {
           initialValue: '',
           rules: [
-            { required: true, message: '请选择操作系统' },
+            { required: true, message: i18n.t('compute.text_153') },
           ],
         },
       ],
@@ -142,7 +142,7 @@ export const createVmDecorators = type => {
         {
           initialValue: { key: '', label: '' },
           rules: [
-            { validator: isRequired(), message: '请选择镜像' },
+            { validator: isRequired(), message: i18n.t('compute.text_214') },
           ],
         },
       ],
@@ -165,7 +165,7 @@ export const createVmDecorators = type => {
         {
           initialValue: undefined, // { key: '', label: '' }
           rules: [
-            { required: true, message: '请选择关联密钥' },
+            { required: true, message: i18n.t('compute.text_203') },
           ],
         },
       ],
@@ -175,7 +175,7 @@ export const createVmDecorators = type => {
           initialValue: '',
           validateFirst: true,
           rules: [
-            { required: true, message: '请输入密码' },
+            { required: true, message: i18n.t('compute.text_204') },
             { validator: validateForm('sshPassword') },
           ],
         },
@@ -185,7 +185,7 @@ export const createVmDecorators = type => {
       'hypervisor',
       {
         rules: [
-          { required: true, message: '请选择平台' },
+          { required: true, message: i18n.t('compute.text_215') },
         ],
       },
     ],
@@ -201,7 +201,7 @@ export const createVmDecorators = type => {
         'gpu',
         {
           rules: [
-            { required: true, message: '请选择GPU型号' },
+            { required: true, message: i18n.t('compute.text_147') },
           ],
         },
       ],
@@ -228,7 +228,7 @@ export const createVmDecorators = type => {
       'sku',
       {
         rules: [
-          { validator: isRequired(true, 'id'), message: '请选择套餐' },
+          { validator: isRequired(true, 'id'), message: i18n.t('compute.text_216') },
         ],
       },
     ],
@@ -237,7 +237,7 @@ export const createVmDecorators = type => {
         'systemDiskType',
         {
           rules: [
-            { validator: isRequired(), message: '请选择磁盘类型' },
+            { validator: isRequired(), message: i18n.t('compute.text_121') },
           ],
         },
       ],
@@ -245,7 +245,7 @@ export const createVmDecorators = type => {
         'systemDiskSize',
         {
           rules: [
-            { required: true, message: '请输入磁盘大小' },
+            { required: true, message: i18n.t('compute.text_122') },
           ],
         },
       ],
@@ -255,7 +255,7 @@ export const createVmDecorators = type => {
           validateTrigger: ['change', 'blur'],
           rules: [{
             required: true,
-            message: '请选择调度标签',
+            message: i18n.t('compute.text_123'),
           }],
         },
       ],
@@ -265,7 +265,7 @@ export const createVmDecorators = type => {
           validateTrigger: ['blur', 'change'],
           rules: [{
             required: true,
-            message: '请选择调度标签',
+            message: i18n.t('compute.text_123'),
           }],
         },
       ],
@@ -275,7 +275,7 @@ export const createVmDecorators = type => {
         `dataDiskTypes[${i}]`,
         {
           rules: [
-            { validator: isRequired(), message: '请选择磁盘类型' },
+            { validator: isRequired(), message: i18n.t('compute.text_121') },
           ],
         },
       ],
@@ -283,7 +283,7 @@ export const createVmDecorators = type => {
         `dataDiskSizes[${i}]`,
         {
           rules: [
-            { required: true, message: '请输入磁盘大小' },
+            { required: true, message: i18n.t('compute.text_122') },
           ],
         },
       ],
@@ -293,7 +293,7 @@ export const createVmDecorators = type => {
           validateTrigger: ['change', 'blur'],
           rules: [{
             required: true,
-            message: '请选择调度标签',
+            message: i18n.t('compute.text_123'),
           }],
         },
       ],
@@ -303,7 +303,7 @@ export const createVmDecorators = type => {
           validateTrigger: ['blur', 'change'],
           rules: [{
             required: true,
-            message: '请选择调度标签',
+            message: i18n.t('compute.text_123'),
           }],
         },
       ],
@@ -313,7 +313,7 @@ export const createVmDecorators = type => {
           validateTrigger: ['blur', 'change'],
           rules: [{
             required: true,
-            message: '请选择快照',
+            message: i18n.t('compute.text_124'),
           }],
         },
       ],
@@ -323,7 +323,7 @@ export const createVmDecorators = type => {
           validateTrigger: ['blur', 'change'],
           rules: [{
             required: true,
-            message: '请选择文件系统',
+            message: i18n.t('compute.text_125'),
           }],
         },
       ],
@@ -333,7 +333,7 @@ export const createVmDecorators = type => {
           validateTrigger: ['blur', 'change'],
           rules: [{
             required: true,
-            message: '请填写挂载点',
+            message: i18n.t('compute.text_126'),
           }, {
             validator: diskValidator,
           }],
@@ -354,7 +354,7 @@ export const createVmDecorators = type => {
             validateTrigger: ['change', 'blur'],
             rules: [{
               required: true,
-              message: '请选择VPC',
+              message: i18n.t('compute.text_194'),
             }],
           },
         ],
@@ -364,7 +364,7 @@ export const createVmDecorators = type => {
             validateTrigger: ['change', 'blur'],
             rules: [{
               required: true,
-              message: '请选择ip子网',
+              message: i18n.t('compute.text_217'),
             }],
           },
         ],
@@ -376,7 +376,7 @@ export const createVmDecorators = type => {
             rules: [
               {
                 required: true,
-                message: '请输入ip',
+                message: i18n.t('compute.text_218'),
               },
               {
                 validator: validateForm('IPv4'),
@@ -395,7 +395,7 @@ export const createVmDecorators = type => {
             validateTrigger: ['change', 'blur'],
             rules: [{
               required: true,
-              message: '请选择调度标签',
+              message: i18n.t('compute.text_123'),
             }],
           },
         ],
@@ -418,7 +418,7 @@ export const createVmDecorators = type => {
         'schedPolicyHost',
         {
           rules: [
-            { required: true, message: '请选择' },
+            { required: true, message: i18n.t('compute.text_219') },
           ],
         },
       ],
@@ -429,7 +429,7 @@ export const createVmDecorators = type => {
             validateTrigger: ['change', 'blur'],
             rules: [{
               required: true,
-              message: '请选择调度标签',
+              message: i18n.t('compute.text_123'),
             }],
           },
         ],
@@ -444,7 +444,7 @@ export const createVmDecorators = type => {
         'cloudprovider',
         {
           rules: [
-            { required: true, message: '请选择云账号' },
+            { required: true, message: i18n.t('compute.text_149') },
           ],
         },
       ],
@@ -543,7 +543,7 @@ export const createVmDecorators = type => {
         'eip',
         {
           rules: [
-            { required: true, message: '请选择弹性公网IP' },
+            { required: true, message: i18n.t('compute.text_145') },
           ],
         },
       ],
@@ -560,7 +560,7 @@ export const createVmDecorators = type => {
         {
           validateFirst: true,
           rules: [
-            { required: true, message: '请选择安全组' },
+            { required: true, message: i18n.t('compute.text_190') },
             // { validator: secgroupValidator }, // Azure和Ucloud的安全组最大关联一个，动态效验放在组件内部
           ],
         },
@@ -580,7 +580,7 @@ export const createVmDecorators = type => {
         {
           validateFirst: true,
           rules: [
-            { required: true, message: '请输入模板名称' },
+            { required: true, message: i18n.t('compute.text_220') },
             { validator: validateForm('resourceName') },
           ],
         },
@@ -609,7 +609,7 @@ export class Decorator {
         if (decorators[dec]) {
           this.decorators[dec] = decorators[dec]
         } else {
-          console.error(`FE：创建云服务器未声明decorator ${dec}`)
+          console.error(i18n.t('compute.text_221', [dec]))
         }
       })
     }
@@ -1103,17 +1103,17 @@ export class GenCreateData {
       for (let i = 0, len = data.filters.length; i < len; i++) {
         const item = data.filters[i]
         if (item.filter === 'disk_schedtag') {
-          const obj = genErrorObj(item, `${item.count} 台宿主机被 ${item.filter} 标签过滤`)
+          const obj = genErrorObj(item, i18n.t('compute.text_222', [item.count, item.filter]))
           ret.push(obj)
         } else if (item.filter.startsWith('host')) {
-          const obj = genErrorObj(item, `${item.count} 台 ${FORECAST_FILTERS_MAP[item.filter]}`)
+          const obj = genErrorObj(item, i18n.t('compute.text_223', [item.count, FORECAST_FILTERS_MAP[item.filter]]))
           ret.push(obj)
         } else {
           if (item.count > 0) {
-            const obj = genErrorObj(item, FORECAST_FILTERS_MAP[item.filter] || `${item.count} 台主机被 ${item.filter} 标签过滤`)
+            const obj = genErrorObj(item, FORECAST_FILTERS_MAP[item.filter] || i18n.t('compute.text_224', [item.count, item.filter]))
             ret.push(obj)
           } else {
-            const obj = genErrorObj(item, '被过滤')
+            const obj = genErrorObj(item, i18n.t('compute.text_225'))
             ret.push(obj)
           }
         }
@@ -1123,11 +1123,11 @@ export class GenCreateData {
         return total + parseInt(current.capacity)
       }, 0)
       ret.push({
-        message: `最多可以创建 ${count} 台主机`,
+        message: i18n.t('compute.text_226', [count]),
       })
     } else {
       ret.push({
-        message: '创建主机参数错误',
+        message: i18n.t('compute.text_227'),
       })
     }
     return ret

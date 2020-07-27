@@ -1,8 +1,8 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">立即执行</div>
+    <div slot="header">{{$t('compute.text_249')}}</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" action="立即执行" name="伸缩策略" />
+      <dialog-selected-tips :count="params.data.length" :action="$t('compute.text_249')" :name="$t('compute.text_949')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
     </div>
     <div slot="footer">
@@ -38,7 +38,7 @@ export default {
           },
         })
         this.cancelDialog()
-        this.$message.success('执行成功')
+        this.$message.success(this.$t('compute.text_911'))
       } catch (err) {
         throw err
       } finally {

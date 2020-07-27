@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="透传设备" />
+    <page-header :title="$t('compute.text_113')" />
     <page-body>
       <gpu-list :id="listId" />
     </page-body>

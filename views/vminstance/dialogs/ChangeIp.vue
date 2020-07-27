@@ -1,16 +1,16 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">更换IP</div>
+    <div slot="header">{{$t('compute.text_390')}}</div>
     <div slot="body">
       <a-alert class="mb-2" type="warning">
         <template v-slot:message>
-          <div>更换IP后，重启网络或重启机器后生效</div>
+          <div>{{$t('compute.text_1189')}}</div>
         </template>
       </a-alert>
-      <dialog-selected-tips :count="params.data.length" action="更换IP" />
+      <dialog-selected-tips :count="params.data.length" :action="$t('compute.text_390')" />
       <dialog-table :data="params.data" :columns="columns" />
       <a-form :form="form.fc" hideRequiredMark>
-        <a-form-item label="IP子网" v-bind="formItemLayout" class="mb-0">
+        <a-form-item :label="$t('compute.text_106')" v-bind="formItemLayout" class="mb-0">
           <a-row :gutter="20">
             <a-col :span="14">
               <a-form-item :help="help">
@@ -23,7 +23,7 @@
                   remote
                   :label-format="item => `${item.name}(${item.guest_ip_start} - ${item.guest_ip_end}, vlan=${item.vlan_id})`"
                   :remote-fn="q => ({ filter: `name.contains(${q})` })"
-                  :select-props="{ placeholder: '请选择IP子网' }"
+                  :select-props="{ placeholder: $t('compute.text_195') }"
                   :mapper="mapper" />
               </a-form-item>
             </a-col>
@@ -32,7 +32,7 @@
                 <a-input
                   class="w-100"
                   v-decorator="decorators.ip"
-                  placeholder="请输入子网内的IP地址，非必填" />
+                  :placeholder="$t('compute.text_1190')" />
               </a-form-item>
             </a-col>
           </a-row>
@@ -62,15 +62,15 @@ export default {
       let msg
       if (!R.isNil(value) && !R.isEmpty(value)) {
         if (R.isEmpty(this.form.fi.network)) {
-          msg = '请选择子网'
+          msg = this.$t('compute.text_1191')
           return callback(msg)
         }
         if (validate(value, 'IPv4') !== true) {
-          msg = '输入合法IP地址'
+          msg = this.$t('compute.text_1192')
           return callback(msg)
         }
         if (!isWithinRange(value, this.form.fi.network.guest_ip_start, this.form.fi.network.guest_ip_end)) {
-          msg = '输入的IP不在子网内'
+          msg = this.$t('compute.text_1193')
           return callback(msg)
         }
       }
@@ -89,7 +89,7 @@ export default {
           'network',
           {
             rules: [
-              { required: true, message: '请选择子网' },
+              { required: true, message: this.$t('compute.text_1191') },
             ],
           },
         ],
@@ -131,7 +131,7 @@ export default {
     },
     help () {
       if (this.params.hypervisor === HYPERVISORS_MAP.esxi.key) {
-        return 'VMware平台暂不支持更改IP功能，此处修改仅仅修改界面展示IP，请根据实际情况操作'
+        return this.$t('compute.text_1194')
       }
       return ''
     },

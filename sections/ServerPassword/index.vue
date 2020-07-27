@@ -9,9 +9,7 @@
       </a-radio-group>
     </a-form-item>
     <a-form-item v-if="(loginTypeMap && loginTypeMap.keypair) && vmLoginType === loginTypeMap.keypair.key">
-      <div slot="extra">
-        没有想要的密钥？可以前往
-        <help-link :href="href"> 新建密钥</help-link>
+      <div slot="extra">{{$t('compute.text_201')}}<help-link :href="href">{{$t('compute.text_202')}}</help-link>
       </div>
       <base-select
         class="w-50"
@@ -19,13 +17,13 @@
         resource="keypairs"
         :isDefaultSelect="true"
         :showSync="true"
-        :select-props="{ allowClear: true, placeholder: '请选择关联密钥' }" />
+        :select-props="{ allowClear: true, placeholder: $t('compute.text_203') }" />
     </a-form-item>
     <a-form-item v-if="(loginTypeMap && loginTypeMap.password) && vmLoginType === loginTypeMap.password.key">
       <a-input-password
         class="w-50"
         v-decorator="decorators.password"
-        placeholder="请输入密码" />
+        :placeholder="$t('compute.text_204')" />
     </a-form-item>
   </div>
 </template>
@@ -34,6 +32,7 @@
 import * as R from 'ramda'
 import { LOGIN_TYPES_MAP } from '@Compute/constants'
 import { passwordValidator } from '@/utils/validate'
+import i18n from '@/locales'
 
 const DEFAULT_DECORATOR = {
   password: [
@@ -41,7 +40,7 @@ const DEFAULT_DECORATOR = {
     {
       validateFirst: true,
       rules: [
-        { required: true, message: '请输入密码' },
+        { required: true, message: i18n.t('compute.text_204') },
         { validator: passwordValidator },
       ],
     },

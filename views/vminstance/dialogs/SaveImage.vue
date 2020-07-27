@@ -1,24 +1,24 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">保存镜像</div>
+    <div slot="header">{{$t('compute.text_1236')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" action="保存镜像" />
+      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_1236')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
-        <a-form-item label="镜像类别" v-bind="formItemLayout" v-if="isKvm">
+        <a-form-item :label="$t('compute.text_1237')" v-bind="formItemLayout" v-if="isKvm">
           <a-radio-group v-decorator="decorators.type" @change="handleTypeChange">
             <a-radio-button :value="types.system.key">{{ types.system.label }}</a-radio-button>
             <a-radio-button :value="types.host.key">{{ types.host.label }}</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item label="名称" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_228')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.generate_name" :placeholder="$t('validator.imageName')" @change="e => {form.fi.generate_name = e.target.value}" />
         </a-form-item>
-        <a-form-item label="自动启动" v-bind="formItemLayout">
-          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.auto_start" />
+        <a-form-item :label="$t('compute.text_494')" v-bind="formItemLayout">
+          <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.auto_start" />
           <template v-slot:extra>
-            <div>保存镜像成功后是否自动启动</div>
-            <div v-if="form.fi.type === types.host.key" class="mt-2">友情提示：该主机镜像占用镜像配额 {{ diskCount }} 个</div>
+            <div>{{$t('compute.text_1238')}}</div>
+            <div v-if="form.fi.type === types.host.key" class="mt-2">{{$t('compute.text_1239', [ diskCount ])}}</div>
           </template>
         </a-form-item>
       </a-form>
@@ -45,11 +45,11 @@ export default {
     const types = {
       host: {
         key: 'host',
-        label: '创建主机镜像',
+        label: this.$t('compute.text_1240'),
       },
       system: {
         key: 'system',
-        label: '创建系统镜像',
+        label: this.$t('compute.text_1241'),
       },
     }
     const typeInitialValue = types.system.key
@@ -76,7 +76,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('compute.text_210') },
               { validator: this.$validate('imageName') },
               { validator: this.checkTemplateName },
             ],
@@ -137,7 +137,7 @@ export default {
     },
     checkTemplateName (rule, value, callback) {
       if (!value) {
-        return callback(new Error('请输入镜像名称'))
+        return callback(new Error(this.$t('compute.text_660')))
       }
       return new this.$Manager('images', 'v1').list({
         params: {
@@ -147,7 +147,7 @@ export default {
       }).then(res => {
         const data = res.data.data
         if (!R.isNil(data) && !R.isEmpty(data)) {
-          callback(new Error('输入的镜像名称已存在'))
+          callback(new Error(this.$t('compute.text_662')))
         } else {
           callback()
         }

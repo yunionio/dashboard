@@ -32,18 +32,18 @@ export default {
         getEnabledTableColumn(),
         {
           field: 'cpu_core_count',
-          title: 'CPU核数',
+          title: this.$t('compute.text_1058'),
         },
         {
           field: 'memory_size_mb',
-          title: '内存容量',
+          title: this.$t('compute.text_1059'),
           formatter: ({ cellValue }) => {
             return sizestr(cellValue, 'M', 1024) + 'B'
           },
         },
         {
           field: 'total_guest_count',
-          title: `关联${this.$t('dictionary.server')}数量`,
+          label: this.$t('compute.text_699', [this.$t('dictionary.server')]),
           slots: {
             default: ({ row }) => {
               if (row.total_guest_count <= 0) return row.total_guest_count
@@ -53,16 +53,16 @@ export default {
         },
         {
           field: 'brand',
-          title: '平台',
+          title: this.$t('compute.text_176'),
         },
       ],
       extraInfo: [
         {
-          title: '其他信息',
+          title: this.$t('compute.text_497'),
           items: [
             {
               field: 'last_sync',
-              title: '同步时间',
+              title: this.$t('compute.text_1060'),
               formatter: ({ row }) => {
                 return this.$moment(row.last_sync).format()
               },

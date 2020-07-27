@@ -1,6 +1,7 @@
 import status from '@/locales/zh-CN'
 import { BRAND_MAP } from '@/constants'
 import { typeClouds } from '@/utils/common/hypervisor'
+import i18n from '@/locales'
 
 const { snapshot: snapshotStatus } = status.status
 const _tran = (enArr, status = snapshotStatus) => {
@@ -14,7 +15,7 @@ export const RollbackDiskValidate = {
       tooltip: null,
     }
     if (obj.is_sub_snapshot) {
-      ret.tooltip = '此快照为主机快照子快照，不可操作'
+      ret.tooltip = i18n.t('compute.text_1062')
       return ret
     }
     const supportBrands = [
@@ -27,21 +28,21 @@ export const RollbackDiskValidate = {
     ]
     if (!supportBrands.includes(obj.brand)) {
       if (!obj.guest) {
-        ret.tooltip = '请选择有虚拟机的快照'
+        ret.tooltip = i18n.t('compute.text_1073')
         return ret
       }
       if (obj.guest_status && obj.guest_status !== 'ready') {
-        ret.tooltip = '请选择虚拟机状态为关机的快照'
+        ret.tooltip = i18n.t('compute.text_1074')
         return ret
       }
       if (obj.disk_status && obj.disk_status !== 'ready') {
-        ret.tooltip = '请选择磁盘状态为可用的快照'
+        ret.tooltip = i18n.t('compute.text_1075')
         return ret
       }
     }
     const status = ['ready']
     ret.validate = status.includes(obj.status)
-    ret.tooltip = ret.validate ? '' : `仅在快照状态为【${_tran(status)}】下可以进行该操作`
+    ret.tooltip = ret.validate ? '' : i18n.t('compute.text_1076', [_tran(status)])
     return ret
   },
   vmware (obj) {
@@ -55,7 +56,7 @@ export const RollbackDiskValidate = {
   openstack (obj) {
     const ret = {
       validate: false,
-      tooltip: `${BRAND_MAP[obj.brand].label}不支持快照回滚硬盘`,
+      tooltip: i18n.t('compute.text_1077', [BRAND_MAP[obj.brand].label]),
     }
     return ret
   },
@@ -71,7 +72,7 @@ export const RollbackDiskValidate = {
     const ret = RollbackDiskValidate.base(obj)
     if (obj.guest && obj.guest_status !== 'ready') {
       ret.validate = false
-      ret.tooltip = `${BRAND_MAP[obj.brand].label}只有硬盘为未挂载或者已挂载但是主机处于关机状态的快照才支持回滚`
+      ret.tooltip = i18n.t('compute.text_1078', [BRAND_MAP[obj.brand].label])
     }
     return ret
   },
@@ -79,45 +80,45 @@ export const RollbackDiskValidate = {
     const ret = RollbackDiskValidate.base(obj)
     if (obj.guest && obj.guest_status !== 'ready') {
       ret.validate = false
-      ret.tooltip = `${BRAND_MAP[obj.brand].label}只有硬盘为未挂载或者已挂载但是主机处于关机状态的快照才支持回滚`
+      ret.tooltip = i18n.t('compute.text_1078', [BRAND_MAP[obj.brand].label])
     }
     return ret
   },
   aws (obj) {
     const ret = { validate: false }
-    ret.tooltip = `${BRAND_MAP[obj.brand].label}不支持快照回滚硬盘`
+    ret.tooltip = i18n.t('compute.text_1077', [BRAND_MAP[obj.brand].label])
     return ret
   },
   huawei (obj) {
     const ret = RollbackDiskValidate.base(obj)
     if (obj.guest) {
       ret.validate = false
-      ret.tooltip = `${BRAND_MAP[obj.brand].label}请选择未挂载磁盘的快照`
+      ret.tooltip = i18n.t('compute.text_1079', [BRAND_MAP[obj.brand].label])
     }
     return ret
   },
   azure (obj) {
     const ret = { validate: false }
-    ret.tooltip = `${BRAND_MAP[obj.brand].label}不支持快照回滚硬盘`
+    ret.tooltip = i18n.t('compute.text_1077', [BRAND_MAP[obj.brand].label])
     return ret
   },
   ucloud (obj) {
     const ret = RollbackDiskValidate.base(obj)
     if (obj.guest) {
       ret.validate = false
-      ret.tooltip = `${BRAND_MAP[obj.brand].label}请选择未挂载磁盘的快照`
+      ret.tooltip = i18n.t('compute.text_1079', [BRAND_MAP[obj.brand].label])
       return ret
     }
     if (obj.disk_type !== 'data') {
       ret.validate = false
-      ret.tooltip = `${BRAND_MAP[obj.brand].label}请选择硬盘类型为数据盘的快照`
+      ret.tooltip = i18n.t('compute.text_1080', [BRAND_MAP[obj.brand].label])
       return ret
     }
     return ret
   },
   google (obj) {
     const ret = { validate: false }
-    ret.tooltip = `${BRAND_MAP[obj.brand].label}不支持快照回滚硬盘`
+    ret.tooltip = i18n.t('compute.text_1077', [BRAND_MAP[obj.brand].label])
     return ret
   },
 }

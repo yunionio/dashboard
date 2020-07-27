@@ -14,11 +14,11 @@
         </span>
       </template>
     </div>
-    <a-form-item extra="每个资源最多可绑定20个标签" class="mt-2">
+    <a-form-item :extra="$t('compute.text_1146')" class="mt-2">
       <div class="d-flex">
         <div style="line-height: 40px;">
-          <tag-select global v-model="checked" :params="params" button-text="已有标签" />
-          <a-button class="ml-2" v-if="!showForm" @click="() => showForm = true">新建</a-button>
+          <tag-select global v-model="checked" :params="params" button-:text="$t('compute.text_1147')" />
+          <a-button class="ml-2" v-if="!showForm" @click="() => showForm = true">{{$t('compute.text_18')}}</a-button>
         </div>
         <a-form
           class="ml-2"
@@ -26,14 +26,14 @@
           :form="tagForm.fc"
           v-if="showForm">
           <a-form-item>
-            <a-input v-decorator="decorators.key" placeholder="标签键" />
+            <a-input v-decorator="decorators.key" :placeholder="$t('compute.text_1148')" />
           </a-form-item>
           <a-form-item>
-            <a-input v-decorator="decorators.value" placeholder="标签值" />
+            <a-input v-decorator="decorators.value" :placeholder="$t('compute.text_1149')" />
           </a-form-item>
           <a-form-item>
-            <a-button @click="addTag">添加</a-button>
-            <a-button @click="() => showForm = false" class="ml-2">取消</a-button>
+            <a-button @click="addTag">{{$t('compute.text_822')}}</a-button>
+            <a-button @click="() => showForm = false" class="ml-2">{{$t('compute.text_135')}}</a-button>
           </a-form-item>
         </a-form>
       </div>
@@ -63,7 +63,7 @@ export default {
           'key',
           {
             rules: [
-              { required: true, whitespace: true, message: '请输入标签键' },
+              { required: true, whitespace: true, message: this.$t('compute.text_1150') },
             ],
           },
         ],

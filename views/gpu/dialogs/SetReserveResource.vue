@@ -42,7 +42,7 @@ export default {
     }
     const initValue = this.params.data[0]
     return {
-      title: '设置预留资源',
+      title: this.$t('compute.text_490'),
       loading: false,
       form: {
         fc: this.$form.createForm(this),
@@ -88,7 +88,7 @@ export default {
         }),
         {
           field: 'model',
-          title: '设备型号',
+          title: this.$t('compute.text_482'),
           minWidth: 120,
           showOverflow: 'ellipsis',
           slots: {
@@ -108,7 +108,7 @@ export default {
         },
         getCopyWithContentTableColumn({
           field: 'host',
-          title: '所在宿主机',
+          title: this.$t('compute.text_484'),
           hideField: true,
           slotCallback: row => row.host || row.host_id,
         }),

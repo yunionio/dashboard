@@ -21,7 +21,7 @@ export default {
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
-      action: `解绑${this.$t('dictionary.secgroup')}`,
+      action: this.$t('compute.text_1024', [this.$t('dictionary.secgroup')]),
       loading: false,
       form: {
         fc: this.$form.createForm(this),

@@ -29,13 +29,13 @@ export default {
       columns: [
         {
           field: 'storage',
-          title: '名称',
+          title: this.$t('compute.text_228'),
           showOverflow: 'ellipsis',
           minWidth: 120,
         },
         {
           field: 'capacity',
-          title: '容量',
+          title: this.$t('compute.text_397'),
           showOverflow: 'ellipsis',
           minWidth: 70,
           formatter: ({ cellValue }) => {
@@ -44,7 +44,7 @@ export default {
         },
         {
           field: 'used_capacity',
-          title: '分配',
+          title: this.$t('compute.text_602'),
           showOverflow: 'ellipsis',
           minWidth: 70,
           formatter: ({ cellValue }) => {
@@ -53,7 +53,7 @@ export default {
         },
         {
           field: 'waste_capacity',
-          title: '浪费',
+          title: this.$t('compute.text_603'),
           showOverflow: 'ellipsis',
           minWidth: 70,
           formatter: ({ cellValue }) => {
@@ -62,17 +62,17 @@ export default {
         },
         {
           field: 'storage_type',
-          title: '存储类型',
+          title: this.$t('compute.text_380'),
           showOverflow: 'ellipsis',
           minWidth: 100,
           formatter: ({ cellValue }) => {
             switch (cellValue) {
               case 'local':
-                return '本地存储'
+                return this.$t('compute.text_575')
               case 'baremetal':
-                return '物理机存储'
+                return this.$t('compute.text_604')
               case 'nas':
-                return '网络存储'
+                return this.$t('compute.text_605')
               case 'vsan':
                 return 'vSAN'
               default:
@@ -83,7 +83,7 @@ export default {
         getEnabledTableColumn(),
         {
           field: 'mount_point',
-          title: '挂载点',
+          title: this.$t('compute.text_327'),
           showOverflow: 'ellipsis',
           minWidth: 120,
         },

@@ -1,6 +1,7 @@
 import { sizestr } from '@/utils/utils'
 import SystemIcon from '@/sections/SystemIcon'
 import { getStatusTableColumn, getNameDescriptionTableColumn, getProjectTableColumn, getPublicScopeTableColumn, getTimeTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -19,14 +20,14 @@ export default {
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'guestimage', columns: () => this.columns }),
       {
         field: 'child_image',
-        title: '子镜像',
+        title: i18n.t('compute.text_618'),
         width: 150,
         type: 'expand',
         slots: {
           default: ({ row }) => {
             const arr = [...(row.data_images || [])]
             arr.push(row.root_image.name)
-            return `${arr.length}个`
+            return i18n.t('compute.text_619', [arr.length])
           },
           content: ({ row }) => {
             let list = []
@@ -44,7 +45,7 @@ export default {
       },
       {
         field: 'disk_format',
-        title: '格式',
+        title: i18n.t('compute.text_398'),
         width: 100,
         formatter: ({ cellValue }) => {
           return cellValue && cellValue.toUpperCase()
@@ -52,7 +53,7 @@ export default {
       },
       {
         field: 'os_type',
-        title: '系统',
+        title: i18n.t('compute.text_338'),
         width: 60,
         slots: {
           default: ({ row }) => {
@@ -61,7 +62,7 @@ export default {
             if (name.includes('Windows') || name.includes('windows')) {
               name = 'Windows'
             }
-            const tooltip = (row.properties.os_version ? `${name} ${row.properties.os_version}` : name) || '未知'
+            const tooltip = (row.properties.os_version ? `${name} ${row.properties.os_version}` : name) || i18n.t('compute.text_339')
             return [
               <SystemIcon tooltip={ tooltip } name={ name } />,
             ]
@@ -70,7 +71,7 @@ export default {
       },
       {
         field: 'size',
-        title: '镜像大小',
+        title: i18n.t('compute.text_610'),
         minWidth: 100,
         formatter: ({ cellValue }) => {
           return sizestr(cellValue, 'B', 1024)
@@ -81,11 +82,11 @@ export default {
       getProjectTableColumn(),
       {
         field: 'is_standard',
-        title: '镜像类型',
+        title: i18n.t('compute.text_611'),
         width: 100,
         formatter: ({ cellValue }) => {
-          if (cellValue) return '公共镜像'
-          return '自定义镜像'
+          if (cellValue) return i18n.t('compute.text_620')
+          return i18n.t('compute.text_621')
         },
       },
       getTimeTableColumn(),

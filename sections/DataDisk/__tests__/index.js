@@ -4,6 +4,7 @@ import DataDisk from '../index'
 import { diskValidator } from '@Compute/utils/createServer'
 import Disk from '@Compute/sections/Disk'
 import { isRequired } from '@/utils/validate'
+import i18n from '@/locales'
 
 let decorator = null
 let store = null
@@ -112,7 +113,7 @@ beforeEach(() => {
       `dataDiskTypes[${i}]`,
       {
         rules: [
-          { validator: isRequired(), message: '请选择磁盘类型' },
+          { validator: isRequired(), message: i18n.t('compute.text_121') },
         ],
       },
     ],
@@ -120,7 +121,7 @@ beforeEach(() => {
       `dataDiskSizes[${i}]`,
       {
         rules: [
-          { required: true, message: '请输入磁盘大小' },
+          { required: true, message: i18n.t('compute.text_122') },
         ],
       },
     ],
@@ -130,7 +131,7 @@ beforeEach(() => {
         validateTrigger: ['change', 'blur'],
         rules: [{
           required: true,
-          message: '请选择调度标签',
+          message: i18n.t('compute.text_123'),
         }],
       },
     ],
@@ -140,7 +141,7 @@ beforeEach(() => {
         validateTrigger: ['blur', 'change'],
         rules: [{
           required: true,
-          message: '请选择调度标签',
+          message: i18n.t('compute.text_123'),
         }],
       },
     ],
@@ -150,7 +151,7 @@ beforeEach(() => {
         validateTrigger: ['blur', 'change'],
         rules: [{
           required: true,
-          message: '请选择快照',
+          message: i18n.t('compute.text_124'),
         }],
       },
     ],
@@ -160,7 +161,7 @@ beforeEach(() => {
         validateTrigger: ['blur', 'change'],
         rules: [{
           required: true,
-          message: '请选择文件系统',
+          message: i18n.t('compute.text_125'),
         }],
       },
     ],
@@ -170,7 +171,7 @@ beforeEach(() => {
         validateTrigger: ['blur', 'change'],
         rules: [{
           required: true,
-          message: '请填写挂载点',
+          message: i18n.t('compute.text_126'),
         }, {
           validator: diskValidator,
         }],
@@ -226,7 +227,7 @@ expect.extend({
     })
     if (!valid) {
       result.pass = false
-      result.message = () => `${JSON.stringify(obj)} 的字段 dataDiskSizes 和 dataDiskTypes 不符合规范`
+      result.message = () => i18n.t('compute.text_127', [JSON.stringify(obj)])
     }
     return result
   },

@@ -1,30 +1,30 @@
 <template>
   <div>
-    <page-header :title="isInstallOperationSystem ? '安装操作系统' : '新建裸金属服务器'" />
+    <page-header :title="isInstallOperationSystem ? $t('compute.text_298') : $t('compute.text_299')" />
     <a-form
       class="mt-3"
       :form="form.fc"
       @submit="handleConfirm">
-      <a-divider orientation="left">基础配置</a-divider>
-      <a-form-item :label="`指定${$t('dictionary.project')}`" class="mb-0" v-bind="formItemLayout">
+      <a-divider orientation="left">{{$t('compute.text_300')}}</a-divider>
+      <a-form-item :label="$t('compute.text_297', [$t('dictionary.project')])" class="mb-0" v-bind="formItemLayout">
         <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" :project.sync="projectId" />
       </a-form-item>
-      <a-form-item label="区域" class="mb-0" v-bind="formItemLayout" v-if="!isInstallOperationSystem">
+      <a-form-item :label="$t('compute.text_177')" class="mb-0" v-bind="formItemLayout" v-if="!isInstallOperationSystem">
         <cloudregion-zone
           :zone-params="params.zone"
           :cloudregion-params="params.region"
           :decorator="decorators.regionZone" />
       </a-form-item>
       <a-form-item
-        label="名称"
+        :label="$t('compute.text_228')"
         v-bind="formItemLayout"
-        extra="名称支持序号占位符‘#’，用法如下：名称：host## 数量：2,实例为：host01、host02，已有同名实例，序号顺延">
+        :extra="$t('compute.text_301')">
         <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceCreateName')" />
       </a-form-item>
-      <a-form-item label="数量" v-bind="formItemLayout">
+      <a-form-item :label="$t('compute.text_294')" v-bind="formItemLayout">
         <a-input-number v-decorator="decorators.count" :min="1" :max="100" :disabled="isInstallOperationSystem" />
       </a-form-item>
-      <a-form-item v-bind="formItemLayout" label="操作系统" extra="操作系统会根据选择的虚拟化平台和可用区域的变化而变化，公共镜像的维护请联系管理员">
+      <a-form-item v-bind="formItemLayout" :label="$t('compute.text_267')" :extra="$t('compute.text_302')">
         <os-select
           type="baremetal"
           :form="form"
@@ -35,14 +35,14 @@
           @updateImageMsg="setSelectedImage"
           :imageType.sync="osSelectImageType" />
       </a-form-item>
-      <a-form-item v-bind="formItemLayout" label="规格">
+      <a-form-item v-bind="formItemLayout" :label="$t('compute.text_178')">
         <a-select v-decorator="decorators.specifications" :disabled="isInstallOperationSystem" @change="specificationChange">
           <a-select-option v-for="i in specOptions" :key="i.value" :value="i.value">
             {{i.text}}
           </a-select-option>
         </a-select>
       </a-form-item>
-      <a-form-item v-bind="formItemLayout" label="硬盘配置">
+      <a-form-item v-bind="formItemLayout" :label="$t('compute.text_303')">
         <div class="d-flex flex-wrap">
           <template v-for="(item, idx) of diskOptionsDate">
             <div :key="idx" class="disk-option-item">
@@ -50,14 +50,14 @@
                 <template slot="title">
                   <icon type="res-disk" />
                   {{ item.title }}
-                  <a-tooltip title="磁盘配置分区合法">
+                  <a-tooltip :title="$t('compute.text_304')">
                     <a-icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" v-show="(idx === 0 && !isShowFalseIcon) || idx !== 0" />
                   </a-tooltip>
-                  <a-tooltip title="磁盘配置分区非法：请完成剩余磁盘分区设置，若未配置将导致操作失败">
+                  <a-tooltip :title="$t('compute.text_305')">
                     <a-icon type="close-circle" theme="twoTone" twoToneColor="#eb2f96" v-show="idx === 0 && isShowFalseIcon" />
                   </a-tooltip>
                 </template>
-                <a href="javascript:;" slot="extra" @click="handleDiskItemRemove(idx)" v-show="idx === diskOptionsDate.length - 1">删除</a>
+                <a href="javascript:;" slot="extra" @click="handleDiskItemRemove(idx)" v-show="idx === diskOptionsDate.length - 1">{{$t('compute.text_261')}}</a>
                 <div class="d-flex align-items-center">
                   <ve-pie :data="item.chartData" :settings="chartSettings" :events="chartFun(idx)" width="200px" height="200px" :legend-visible="false" />
                   <div class="flex-fill ml-2">
@@ -68,7 +68,7 @@
                         </a-checkbox>
                       </div>
                     </template>
-                    <a-tag color="blue">可用容量: {{item.size}}</a-tag>
+                    <a-tag color="blue">{{$t('compute.text_306', [item.size])}}</a-tag>
                   </div>
                 </div>
               </a-card>
@@ -77,15 +77,13 @@
         </div>
       </a-form-item>
       <a-form-item :wrapper-col="{ span: 20, offset: 3 }">
-        <a-button type="primary" @click="addDisk" :disabled="specOptions.length === 0">
-          新增磁盘
-        </a-button>
+        <a-button type="primary" @click="addDisk" :disabled="specOptions.length === 0">{{$t('compute.text_307')}}</a-button>
       </a-form-item>
-      <a-form-item label="管理员密码" v-bind="formItemLayout" v-if="!isCheckedIso">
+      <a-form-item :label="$t('compute.text_308')" v-bind="formItemLayout" v-if="!isCheckedIso">
         <server-password :form="form" :login-types="loginTypes" :isSnapshotImageType="false" :decorator="decorators.loginConfig" />
       </a-form-item>
-      <a-divider orientation="left">高级配置</a-divider>
-      <a-form-item label="网络" v-bind="formItemLayout" class="mb-0">
+      <a-divider orientation="left">{{$t('compute.text_309')}}</a-divider>
+      <a-form-item :label="$t('compute.text_104')" v-bind="formItemLayout" class="mb-0">
         <server-network
           :form="form"
           :decorator="decorators.network"
@@ -98,9 +96,9 @@
           :vpcResourceMapper="vpcResourceMapper" />
       </a-form-item>
       <a-form-item :wrapper-col="{ span: 20, offset: 3 }">
-        <a-checkbox v-model="isBonding">启用bonding</a-checkbox>
+        <a-checkbox v-model="isBonding">{{$t('compute.text_310')}}</a-checkbox>
       </a-form-item>
-      <a-form-item label="调度策略" v-bind="formItemLayout" class="mb-0" v-if="!isInstallOperationSystem">
+      <a-form-item :label="$t('compute.text_311')" v-bind="formItemLayout" class="mb-0" v-if="!isInstallOperationSystem">
         <sched-policy
           server-type="baremetal"
           :disabled-host="policyHostDisabled"
@@ -110,7 +108,7 @@
           @change="hostChange"
           :hostData="filterHostData" />
       </a-form-item>
-      <a-form-item label="备注" v-bind="formItemLayout" v-if="isInstallOperationSystem">
+      <a-form-item :label="$t('compute.text_312')" v-bind="formItemLayout" v-if="isInstallOperationSystem">
         <a-input v-decorator="decorators.description" />
       </a-form-item>
       <bottom-bar
@@ -151,7 +149,7 @@ function checkIpInSegment (i, networkData) {
     if (isIn) {
       cb()
     } else {
-      cb(new Error('输入的IP不在选择子网网段中'))
+      cb(new Error(this.$t('compute.text_205')))
     }
   }
 }
@@ -235,7 +233,7 @@ export default {
             validateTrigger: 'blur',
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('compute.text_210') },
               { validator: this.$validate('resourceCreateName') },
             ],
           },
@@ -246,7 +244,7 @@ export default {
             {
               initialValue: { key: '', label: '' },
               rules: [
-                { required: true, message: '请选择区域' },
+                { required: true, message: this.$t('compute.text_212') },
               ],
             },
           ],
@@ -255,7 +253,7 @@ export default {
             {
               initialValue: { key: '', label: '' },
               rules: [
-                { required: true, message: '请选择可用区' },
+                { required: true, message: this.$t('compute.text_213') },
               ],
             },
           ],
@@ -272,7 +270,7 @@ export default {
             {
               initialValue: '',
               rules: [
-                { required: true, message: '请选择操作系统' },
+                { required: true, message: this.$t('compute.text_153') },
               ],
             },
           ],
@@ -281,7 +279,7 @@ export default {
             {
               initialValue: { key: '', label: '' },
               rules: [
-                { validator: isRequired(), message: '请选择镜像' },
+                { validator: isRequired(), message: this.$t('compute.text_214') },
               ],
             },
           ],
@@ -296,7 +294,7 @@ export default {
           'specifications',
           {
             rules: [
-              { required: true, message: '请选择规格' },
+              { required: true, message: this.$t('compute.text_313') },
             ],
           },
         ],
@@ -312,7 +310,7 @@ export default {
             {
               initialValue: undefined, // { key: '', label: '' }
               rules: [
-                { validator: isRequired(), message: '请选择关联密钥' },
+                { validator: isRequired(), message: this.$t('compute.text_203') },
               ],
             },
           ],
@@ -322,7 +320,7 @@ export default {
               initialValue: '',
               validateFirst: true,
               rules: [
-                { required: true, message: '请输入密码' },
+                { required: true, message: this.$t('compute.text_204') },
                 { validator: validateForm('sshPassword') },
               ],
             },
@@ -342,7 +340,7 @@ export default {
                 validateTrigger: ['change', 'blur'],
                 rules: [{
                   required: true,
-                  message: '请选择VPC',
+                  message: this.$t('compute.text_194'),
                 }],
               },
             ],
@@ -352,7 +350,7 @@ export default {
                 validateTrigger: ['change', 'blur'],
                 rules: [{
                   required: true,
-                  message: '请选择ip子网',
+                  message: this.$t('compute.text_217'),
                 }],
               },
             ],
@@ -363,7 +361,7 @@ export default {
                 validateTrigger: ['blur', 'change'],
                 rules: [{
                   required: true,
-                  message: '请输入ip',
+                  message: this.$t('compute.text_218'),
                 }, {
                   validator: checkIpInSegment(i, networkData),
                 }],
@@ -377,7 +375,7 @@ export default {
                 validateTrigger: ['change', 'blur'],
                 rules: [{
                   required: true,
-                  message: '请选择调度标签',
+                  message: this.$t('compute.text_123'),
                 }],
               },
             ],
@@ -387,7 +385,7 @@ export default {
                 validateTrigger: ['blur', 'change'],
                 rules: [{
                   required: true,
-                  message: '请选择调度标签',
+                  message: this.$t('compute.text_123'),
                 }],
               },
             ],
@@ -404,7 +402,7 @@ export default {
             'schedPolicyHost',
             {
               rules: [
-                { required: true, message: '请选择宿主机' },
+                { required: true, message: this.$t('compute.text_314') },
               ],
             },
           ],
@@ -415,7 +413,7 @@ export default {
                 validateTrigger: ['change', 'blur'],
                 rules: [{
                   required: true,
-                  message: '请选择调度标签',
+                  message: this.$t('compute.text_123'),
                 }],
               },
             ],
@@ -425,7 +423,7 @@ export default {
                 validateTrigger: ['blur', 'change'],
                 rules: [{
                   required: true,
-                  message: '请选择调度标签',
+                  message: this.$t('compute.text_123'),
                 }],
               },
             ],
@@ -487,7 +485,7 @@ export default {
         itemStyle: {
           color: function (params) {
             const colorList = ['#afa3f5', '#00d488', '#3feed4', '#3bafff', '#f1bb4c', 'rgba(250,250,250,0.5)']
-            if (params.data.name === '剩余') {
+            if (params.data.name === this.$t('compute.text_315')) {
               return '#e3e3e3'
             } else {
               return colorList[params.dataIndex]
@@ -604,7 +602,7 @@ export default {
           // 每一项是否有分配磁盘
           if (i > 0) {
             const rowsLength = this.diskOptionsDate[i].chartData.rows.length
-            if ((rowsLength === 1 && this.diskOptionsDate[i].chartData.rows[0].name !== '剩余') || (rowsLength > 1)) {
+            if ((rowsLength === 1 && this.diskOptionsDate[i].chartData.rows[0].name !== this.$t('compute.text_315')) || (rowsLength > 1)) {
               isDistribution = true
             }
           }
@@ -851,7 +849,7 @@ export default {
     // 添加硬盘配置
     addDisk () {
       this.createDialog('BaremetalCreateDiskDialog', {
-        title: '新建',
+        title: this.$t('compute.text_18'),
         list: this.list,
         diskData: this.diskData,
         diskOptionsDate: this.diskOptionsDate,
@@ -931,14 +929,14 @@ export default {
         const imageDiskSize = this.selectedImage.min_disk / 1024
         if (imageDiskSize >= defaultSize) {
           sizeNumber = sizeNumber - imageDiskSize
-          option.chartData.rows.push({ name: '/(系统)', size: imageDiskSize })
+          option.chartData.rows.push({ name: this.$t('compute.text_316'), size: imageDiskSize })
         } else {
           sizeNumber = sizeNumber - defaultSize
           option.chartData.rows.push({ name: '/', size: defaultSize })
         }
       }
       option.remainder = sizeNumber
-      option.chartData.rows.push({ name: '剩余', size: sizeNumber })
+      option.chartData.rows.push({ name: this.$t('compute.text_315'), size: sizeNumber })
       this.diskOptionsDate.push(option)
       data.computeCount--
       if (data.option[2] === 'none' && data.computeCount > 0) {
@@ -959,16 +957,16 @@ export default {
       this.diskOptionsDate.forEach(item => {
         nameArr = nameArr.concat(item.chartData.rows)
       })
-      nameArr = nameArr.filter(item => item.name !== '剩余')
+      nameArr = nameArr.filter(item => item.name !== this.$t('compute.text_315'))
       this.createDialog('DiskOptionsUpdateDialog', {
-        title: e.name === '剩余' ? '创建新分区' : '更新分区',
+        title: e.name === this.$t('compute.text_315') ? this.$t('compute.text_317') : this.$t('compute.text_318'),
         list: this.list,
         item: this.diskOptionsDate[idx],
         nameArr,
         selectedArea: selectedArea[0],
         updateData: (values) => {
           const updateItem = this.diskOptionsDate[idx].chartData.rows
-          if (e.name === '剩余') {
+          if (e.name === this.$t('compute.text_315')) {
             // 创建新分区
             updateItem.unshift({ name: values.name, size: values.size, format: values.format })
             if (values.size === this.diskOptionsDate[idx].remainder || values.method === 'autoextend') {
@@ -992,10 +990,10 @@ export default {
             if (this.diskOptionsDate[idx].remainder > values.size) {
               updateItem[updateItem.length - 1].size = updateItem[updateItem.length - 1].size + oldSize - values.size
               this.diskOptionsDate[idx].remainder = this.diskOptionsDate[idx].remainder + oldSize - values.size
-              if (updateItem[updateItem.length - 1].name === '剩余') {
+              if (updateItem[updateItem.length - 1].name === this.$t('compute.text_315')) {
                 updateItem[updateItem.length - 1].size = this.diskOptionsDate[idx].remainder
               } else {
-                updateItem.push({ name: '剩余', size: this.diskOptionsDate[idx].remainder })
+                updateItem.push({ name: this.$t('compute.text_315'), size: this.diskOptionsDate[idx].remainder })
               }
             } else {
               if (values.method === 'autoextend') {
@@ -1005,10 +1003,10 @@ export default {
               }
               this.diskOptionsDate[idx].remainder = (oldSize - values.size) + this.diskOptionsDate[idx].remainder
               if (this.diskOptionsDate[idx].remainder === 0) return
-              if (updateItem[updateItem.length - 1].name === '剩余') {
+              if (updateItem[updateItem.length - 1].name === this.$t('compute.text_315')) {
                 updateItem[updateItem.length - 1].size = this.diskOptionsDate[idx].remainder
               } else {
-                updateItem.push({ name: '剩余', size: this.diskOptionsDate[idx].remainder })
+                updateItem.push({ name: this.$t('compute.text_315'), size: this.diskOptionsDate[idx].remainder })
               }
             }
           }
@@ -1054,8 +1052,8 @@ export default {
       // 判断数据盘是否合法
       if (this.diskOptionsDate.length > 0) {
         if (this.isShowFalseIcon) {
-          this.$message.error('磁盘配置分区非法')
-          throw new Error('磁盘配置分区非法')
+          this.$message.error(this.$t('compute.text_319'))
+          throw new Error(this.$t('compute.text_319'))
         }
         // 将系统盘放置首位
         const systemDisk = this.diskOptionsDate[0].chartData.rows.pop()
@@ -1096,7 +1094,7 @@ export default {
               if (!rows[j].format) {
                 Reflect.deleteProperty(option, 'fs')
               }
-              if (rows[j].name === '剩余') {
+              if (rows[j].name === this.$t('compute.text_315')) {
                 Reflect.deleteProperty(option, 'mountpoint')
               }
             }
@@ -1182,7 +1180,7 @@ export default {
         .create({ data: { variables } })
         .then(() => {
           this.submiting = false
-          this.$message.success(`裸金属 ${params.name} 创建请求流程已提交`)
+          this.$message.success(this.$t('compute.text_320', [params.name]))
           this.$router.push('/workflow')
         })
         .catch(() => {
@@ -1201,7 +1199,7 @@ export default {
           }
         })
         .catch(err => {
-          this.$message.error(`创建失败: ${err}`)
+          this.$message.error(this.$t('compute.text_321', [err]))
           this.submiting = false
         })
     },
@@ -1212,7 +1210,7 @@ export default {
         this.serverM.batchCreate({ data, count })
           .then(res => {
             this.submiting = false
-            this.$message.success('操作成功，开始创建')
+            this.$message.success(this.$t('compute.text_322'))
             if (this.isInstallOperationSystem) {
               this.$router.push('/physicalmachine')
             } else {
@@ -1226,7 +1224,7 @@ export default {
         this.serverM.create({ data })
           .then(res => {
             this.submiting = false
-            this.$message.success('操作成功，开始创建')
+            this.$message.success(this.$t('compute.text_322'))
             if (this.isInstallOperationSystem) {
               this.$router.push('/physicalmachine')
             } else {
@@ -1265,17 +1263,17 @@ export default {
         for (let i = 0, len = data.filters.length; i < len; i++) {
           const item = data.filters[i]
           if (item.filter === 'disk_schedtag') {
-            const obj = genErrorObj(item, `${item.count} 台宿主机被 ${item.filter} 标签过滤`)
+            const obj = genErrorObj(item, this.$t('compute.text_222', [item.count, item.filter]))
             ret.push(obj)
           } else if (item.filter.startsWith('host')) {
-            const obj = genErrorObj(item, `${item.count} 台 ${FORECAST_FILTERS_MAP[item.filter]}`)
+            const obj = genErrorObj(item, this.$t('compute.text_223', [item.count, FORECAST_FILTERS_MAP[item.filter]]))
             ret.push(obj)
           } else {
             if (item.count > 0) {
-              const obj = genErrorObj(item, FORECAST_FILTERS_MAP[item.filter] || `${item.count} 台主机被 ${item.filter} 标签过滤`)
+              const obj = genErrorObj(item, FORECAST_FILTERS_MAP[item.filter] || this.$t('compute.text_224', [item.count, item.filter]))
               ret.push(obj)
             } else {
-              const obj = genErrorObj(item, '被过滤')
+              const obj = genErrorObj(item, this.$t('compute.text_225'))
               ret.push(obj)
             }
           }
@@ -1285,11 +1283,11 @@ export default {
           return total + parseInt(current.capacity)
         }, 0)
         ret.push({
-          message: `最多可以创建 ${count} 台主机`,
+          message: this.$t('compute.text_226', [count]),
         })
       } else {
         ret.push({
-          message: '创建主机参数错误',
+          message: this.$t('compute.text_227'),
         })
       }
       return ret

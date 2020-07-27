@@ -1,6 +1,6 @@
 <template>
   <div class="data-disk">
-    <template v-if="dataDisks.length === 0 && disabled"><span class="warning-color">无数据盘</span></template>
+    <template v-if="dataDisks.length === 0 && disabled"><span class="warning-color">{{$t('compute.text_128')}}</span></template>
     <template v-else>
       <div class="d-flex" v-for="(item, i) in dataDisks" :key="item.key">
         <disk
@@ -22,8 +22,8 @@
       </div>
       <div class="d-flex align-items-center" v-if="diskRemain > 0 && !disabled">
         <a-button type="primary" shape="circle" icon="plus" size="small" @click="add" />
-        <a-button type="link" @click="add">添加新磁盘</a-button>
-        <span class="count-tips">您还可以添加 <span class="remain-num">{{ diskRemain }}</span> 块</span>
+        <a-button type="link" @click="add">{{$t('compute.text_129')}}</a-button>
+        <span class="count-tips">{{$t('compute.text_130')}}<span class="remain-num">{{ diskRemain }}</span>{{$t('compute.text_131')}}</span>
       </div>
     </template>
   </div>
@@ -308,7 +308,7 @@ export default {
           value[`dataDiskPolicys[${key}]`] = policy
         }
         if (snapshot && (filetype || mountPath)) {
-          console.error('DataDisk组件报错：磁盘的快照和挂载点不能共存')
+          console.error(this.$t('compute.text_132'))
         }
         if (snapshot) { // 磁盘快照
           value[`dataDiskSnapshots[${key}]`] = snapshot

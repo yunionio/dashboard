@@ -38,7 +38,7 @@
         resource="eips"
         :params="params"
         :showSync="true"
-        :select-props="{ allowClear: true, placeholder: '请选择弹性公网IP' }" />
+        :select-props="{ allowClear: true, placeholder: $t('compute.text_145') }" />
     </a-form-item>
   </div>
 </template>
@@ -48,15 +48,16 @@ import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import { EIP_TYPES_MAP as types } from '@Compute/constants'
 import { typeClouds } from '@/utils/common/hypervisor'
+import i18n from '@/locales'
 
 const chargeTypes = {
   traffic: {
     key: 'traffic',
-    label: '按流量计费',
+    label: i18n.t('compute.text_20'),
   },
   bandwidth: {
     key: 'bandwidth',
-    label: '按固定带宽',
+    label: i18n.t('compute.text_21'),
   },
 }
 

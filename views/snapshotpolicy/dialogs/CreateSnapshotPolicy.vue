@@ -3,26 +3,22 @@
     <div slot="header">{{action}}</div>
     <div slot="body">
       <a-alert class="mb-2" type="warning">
-        <div slot="message">
-          创建快照会暂时降低存储I/O性能，出现短暂瞬间变慢。建议您避开业务高峰创建快照
-         <br />设定的自动快照时间与实际创建时间可能存在一定差异，快照数据以实际创造时间为准
-         <br />每个硬盘自动快照配额有限，超出配额后最早创建的自动快照会被自动删除
-        </div>
+        <div slot="message">{{$t('compute.text_1087')}}<br />{{$t('compute.text_1088')}}<br />{{$t('compute.text_1089')}}</div>
       </a-alert>
       <a-form :form="form.fc" hideRequiredMark>
-        <a-form-item :label="`指定${$t('dictionary.project')}`" v-bind="formItemLayout" class="mb-0">
+        <a-form-item :label="$t('compute.text_297', [$t('dictionary.project')])" v-bind="formItemLayout" class="mb-0">
           <domain-project :fc="form.fc" :form-layout="formItemLayout" :decorators="{ project: decorators.project, domain: decorators.domain }" />
         </a-form-item>
-        <a-form-item label="策略名称" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_428')" v-bind="formItemLayout">
           <a-input
             v-decorator="decorators.generate_name"
-            placeholder="字母开头，数字和字母大小写组合，长度为2-128个字符，不含'.','_','@'"
+            :placeholder="$t('compute.text_1090')"
             @change="nameChangeHandle" />
           <div slot="extra" v-if="showRepeatTips">
-            <div>名称重复，系统默认追加“-1”</div>
+            <div>{{$t('compute.text_1091')}}</div>
           </div>
         </a-form-item>
-        <a-form-item label="备份日期" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_431')" v-bind="formItemLayout">
           <a-checkbox-group v-decorator="decorators.repeat_weekdays">
             <a-checkbox
               v-for="(week, idx) of weekOptions"
@@ -30,7 +26,7 @@
               :value="idx + 1">{{ week }}</a-checkbox>
             </a-checkbox-group>
         </a-form-item>
-        <a-form-item label="备份时间" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_432')" v-bind="formItemLayout">
           <a-button-group v-decorator="decorators.time_points">
             <a-button
                 class="select-btn"
@@ -41,11 +37,11 @@
                 @click="timeSelectHandle(idx)">{{ time }}</a-button>
           </a-button-group>
         </a-form-item>
-        <a-form-item label="保留时间" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_433')" v-bind="formItemLayout">
           <a-radio-group v-decorator="decorators.alwaysReserved">
             <div class="mb-2">
               <a-radio :value="false">
-                <span class="mr-2">自定义保留时长</span>
+                <span class="mr-2">{{$t('compute.text_1092')}}</span>
                 <a-input-number
                   size="small"
                   v-decorator="decorators.retention_days"
@@ -53,11 +49,11 @@
                   :max="49"
                   :min="1"
                   step-strictly />
-                <span style="color: #606266;" class="ml-2">天</span>
+                <span style="color: #606266;" class="ml-2">{{$t('compute.text_1093')}}</span>
               </a-radio>
             </div>
             <div>
-              <a-radio :value="true">永久保留</a-radio>
+              <a-radio :value="true">{{$t('compute.text_1094')}}</a-radio>
             </div>
           </a-radio-group>
         </a-form-item>
@@ -89,7 +85,7 @@ export default {
     const domain = this.params.extParams && this.params.extParams.domain
     return {
       loading: false,
-      action: '新建策略',
+      action: this.$t('compute.text_1095'),
       form: {
         fc: this.$form.createForm(this, { onValuesChange: this.onValuesChange }),
         fd: {
@@ -106,7 +102,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: "字母开头，数字和字母大小写组合，长度为2-128个字符，不含'.','_','@'" },
+              { required: true, message: this.$t('compute.text_1090') },
               { validator: validateForm('serverName') },
             ],
           },
@@ -115,7 +111,7 @@ export default {
           'repeat_weekdays',
           {
             rules: [
-              { required: true, message: '请选择备份日期' },
+              { required: true, message: this.$t('compute.text_1096') },
             ],
           },
         ],
@@ -123,7 +119,7 @@ export default {
           'time_points',
           {
             rules: [
-              { required: true, message: '请选择备份时间' },
+              { required: true, message: this.$t('compute.text_1097') },
             ],
           },
         ],

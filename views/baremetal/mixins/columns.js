@@ -2,6 +2,7 @@ import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import SystemIcon from '@/sections/SystemIcon'
 import { sizestr } from '@/utils/utils'
 import { getProjectTableColumn, getStatusTableColumn, getCopyWithContentTableColumn, getIpsTableColumn, getNameDescriptionTableColumn, getTagTableColumn, getRegionTableColumn } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -21,7 +22,7 @@ export default {
       getIpsTableColumn({ field: 'ip', title: 'IP' }),
       {
         field: 'instance_type',
-        title: '配置',
+        title: i18n.t('compute.text_295'),
         showOverflow: 'ellipsis',
         minWidth: 120,
         sortable: true,
@@ -44,7 +45,7 @@ export default {
       },
       {
         field: 'os_type',
-        title: '系统',
+        title: i18n.t('compute.text_338'),
         width: 50,
         slots: {
           default: ({ row }) => {
@@ -53,7 +54,7 @@ export default {
               name = 'Windows'
             }
             const version = (row.metadata && row.metadata.os_version) ? `${row.metadata.os_version}` : ''
-            const tooltip = (version.includes(name) ? version : `${name} ${version}`) || '未知' // 去重
+            const tooltip = (version.includes(name) ? version : `${name} ${version}`) || i18n.t('compute.text_339') // 去重
             return [
               <SystemIcon tooltip={ tooltip } name={ name } />,
             ]
@@ -62,7 +63,7 @@ export default {
       },
       {
         field: 'login_account',
-        title: '密码',
+        title: i18n.t('compute.text_340'),
         width: 50,
         slots: {
           default: ({ row }) => {
@@ -74,7 +75,7 @@ export default {
       getProjectTableColumn(),
       getCopyWithContentTableColumn({
         field: 'host',
-        title: '物理机',
+        title: i18n.t('compute.text_112'),
         hideField: true,
         slotCallback: row => {
           if (!row.host) return '-'

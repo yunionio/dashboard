@@ -1,9 +1,7 @@
 <template>
   <base-dialog @cancel="cancelDialog" width="480px">
     <div slot="header">{{ action }}</div>
-    <div slot="body">
-      是否确认移除？
-    </div>
+    <div slot="body">{{$t('compute.text_1020')}}</div>
     <div slot="footer">
       <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
       <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
@@ -20,7 +18,7 @@ export default {
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
-      action: '移除',
+      action: this.$t('compute.text_950'),
       loading: false,
     }
   },
@@ -38,7 +36,7 @@ export default {
         })
         this.params.refresh && this.params.refresh()
         this.cancelDialog()
-        this.$message.success('移除成功')
+        this.$message.success(this.$t('compute.text_1021'))
       } finally {
         this.loading = false
       }

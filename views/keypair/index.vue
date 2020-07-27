@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="密钥" />
+    <page-header :title="$t('compute.text_108')" />
     <page-body>
       <key-pair-list :id="listId" />
     </page-body>

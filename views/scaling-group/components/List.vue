@@ -38,7 +38,7 @@ export default {
         steadyStatus: Object.values(expectStatus.scalinggroup).flat(),
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('compute.text_228'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
@@ -49,7 +49,7 @@ export default {
           projects: getTenantFilter(),
           domain: getDomainFilter(),
           brand: {
-            label: '平台',
+            label: this.$t('compute.text_176'),
             dropdown: true,
             multiple: true,
             items: [
@@ -60,28 +60,28 @@ export default {
           //   label: '区域',
           // },
           guest_template: {
-            label: '主机模版',
+            label: this.$t('compute.text_873'),
           },
         },
       }),
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
-          { label: '启用状态', key: 'enabled' },
-          { label: '状态', key: 'status' },
-          { label: '主机模版', key: 'guest_template' },
-          { label: '当前实例数', key: 'instance_number' },
-          { label: '期望实例数', key: 'desire_instance_number' },
-          { label: '最小实例数', key: 'min_instance_number' },
-          { label: '最大实例数', key: 'max_instance_number' },
+          { label: this.$t('compute.text_228'), key: 'name' },
+          { label: this.$t('compute.text_241'), key: 'enabled' },
+          { label: this.$t('compute.text_268'), key: 'status' },
+          { label: this.$t('compute.text_873'), key: 'guest_template' },
+          { label: this.$t('compute.text_874'), key: 'instance_number' },
+          { label: this.$t('compute.text_875'), key: 'desire_instance_number' },
+          { label: this.$t('compute.text_876'), key: 'min_instance_number' },
+          { label: this.$t('compute.text_877'), key: 'max_instance_number' },
           { label: this.$t('dictionary.project'), key: 'tenant' },
-          { label: '平台', key: 'brand' },
+          { label: this.$t('compute.text_176'), key: 'brand' },
         ],
       },
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('compute.text_18'),
           permission: 'scalinggroups_create',
           action: () => {
             this.$router.push({
@@ -97,7 +97,7 @@ export default {
           actions: () => {
             return [
               {
-                label: '启用',
+                label: this.$t('compute.text_656'),
                 permission: 'scalinggroups_perform_enable',
                 action: () => {
                   this.createDialog('ScalingGroupEnable', {
@@ -111,7 +111,7 @@ export default {
                 }),
               },
               {
-                label: '禁用',
+                label: this.$t('compute.text_569'),
                 permission: 'scalinggroups_perform_disable',
                 action: () => {
                   this.createDialog('ScalingGroupDisable', {
@@ -125,12 +125,12 @@ export default {
                 }),
               },
               {
-                label: '删除',
+                label: this.$t('compute.text_261'),
                 permission: 'scalinggroups_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
-                    title: '删除',
-                    name: '弹性伸缩组',
+                    title: this.$t('compute.text_261'),
+                    name: this.$t('compute.text_95'),
                     data: this.list.selectedItems,
                     columns: this.columns,
                     onManager: this.onManager,

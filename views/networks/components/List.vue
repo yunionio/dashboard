@@ -45,10 +45,10 @@ export default {
       }),
       groupActions: [
         {
-          label: '添加网卡',
+          label: this.$t('compute.text_199'),
           action: () => {
             this.createDialog('VmSetNetworkDialog', {
-              title: '添加网卡',
+              title: this.$t('compute.text_199'),
               data: [this.data],
               columns: this.serverColumns,
               resId: this.resId,
@@ -60,10 +60,10 @@ export default {
             const isOneCloud = this.data.hypervisor === typeClouds.hypervisorMap.kvm.key
             let tooltip = null
             if (!isOneCloud) {
-              tooltip = '只有OneCloud主机支持此操作'
+              tooltip = this.$t('compute.text_355')
             }
             if (this.list.total >= 8) {
-              tooltip = '网卡最多支持添加8个'
+              tooltip = this.$t('compute.text_731')
             }
             return {
               buttonType: 'primary',

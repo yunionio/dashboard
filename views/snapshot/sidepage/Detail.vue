@@ -34,23 +34,23 @@ export default {
         getBrandTableColumn(),
         {
           field: 'size',
-          title: '快照大小',
+          title: this.$t('compute.text_422'),
           formatter: ({ cellValue, row }) => {
             return sizestr(cellValue, 'M', 1024)
           },
         },
         {
           field: 'created_by',
-          title: '创建方式',
+          title: this.$t('compute.text_1070'),
           formatter: ({ cellValue }) => {
             return CREATE_METHODS[cellValue]
           },
         },
         {
           field: 'resource',
-          title: '快照类别',
+          title: this.$t('compute.text_1071'),
           formatter: ({ cellValue }) => {
-            return '硬盘快照'
+            return this.$t('compute.text_101')
           },
         },
         {
@@ -72,14 +72,14 @@ export default {
         },
         {
           field: 'disk_type',
-          title: '磁盘属性',
+          title: this.$t('compute.text_1072'),
           formatter: ({ cellValue }) => {
-            return cellValue === 'sys' ? '系统盘' : '数据盘'
+            return cellValue === 'sys' ? this.$t('compute.text_49') : this.$t('compute.text_50')
           },
         },
         {
           field: 'disk',
-          title: '硬盘',
+          title: this.$t('compute.text_100'),
           slots: {
             default: ({ row }, h) => {
               if (row.disk_status) {

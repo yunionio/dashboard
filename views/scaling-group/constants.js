@@ -1,4 +1,5 @@
 import validateForm from '@/utils/validate'
+import i18n from '@/locales'
 
 export const BRANDS = ['OneCloud', 'Azure']
 
@@ -24,7 +25,7 @@ export const DECORATORS = {
       validateTrigger: ['change', 'blur'],
       validateFirst: true,
       rules: [
-        { required: true, message: '请输入名称' },
+        { required: true, message: i18n.t('compute.text_210') },
         { validator: validateForm('serverCreateName') },
       ],
     },
@@ -33,7 +34,7 @@ export const DECORATORS = {
     'guest_template_id',
     {
       rules: [
-        { required: true, message: '请选择模版' },
+        { required: true, message: i18n.t('compute.text_878') },
       ],
     },
   ],
@@ -42,7 +43,7 @@ export const DECORATORS = {
     {
       initialValue: 0,
       rules: [
-        { required: true, message: '请输入最小实例数' },
+        { required: true, message: i18n.t('compute.text_879') },
       ],
     },
   ],
@@ -51,7 +52,7 @@ export const DECORATORS = {
     {
       initialValue: 2,
       rules: [
-        { required: true, message: '请输入最大实例数' },
+        { required: true, message: i18n.t('compute.text_880') },
       ],
     },
   ],
@@ -60,7 +61,7 @@ export const DECORATORS = {
     {
       initialValue: 0,
       rules: [
-        { required: true, message: '请输入期望实例数' },
+        { required: true, message: i18n.t('compute.text_881') },
       ],
     },
   ],
@@ -68,7 +69,7 @@ export const DECORATORS = {
     'brand',
     {
       rules: [
-        { required: true, message: '暂无平台不可新建' },
+        { required: true, message: i18n.t('compute.text_882') },
       ],
     },
   ],
@@ -83,7 +84,7 @@ export const DECORATORS = {
     {
       initialValue: 180,
       rules: [
-        { required: true, message: '请输入健康状况检查宽限期' },
+        { required: true, message: i18n.t('compute.text_883') },
       ],
     },
   ],
@@ -92,7 +93,7 @@ export const DECORATORS = {
     {
       initialValue: 'normal',
       rules: [
-        { required: true, message: '选择健康检测方式' },
+        { required: true, message: i18n.t('compute.text_884') },
       ],
     },
   ],
@@ -100,7 +101,7 @@ export const DECORATORS = {
     'loadbalancer_id',
     {
       rules: [
-        { required: true, message: '请选择负载均衡' },
+        { required: true, message: i18n.t('compute.text_885') },
       ],
     },
   ],
@@ -108,7 +109,7 @@ export const DECORATORS = {
     'lb_backend_group',
     {
       rules: [
-        { required: true, message: '请选择负后台服务器组' },
+        { required: true, message: i18n.t('compute.text_886') },
       ],
     },
   ],
@@ -116,7 +117,7 @@ export const DECORATORS = {
     'loadbalancer_backend_port',
     {
       rules: [
-        { required: true, message: '请输入服务器组端口' },
+        { required: true, message: i18n.t('compute.text_887') },
       ],
     },
   ],
@@ -125,7 +126,7 @@ export const DECORATORS = {
     {
       initialValue: 50,
       rules: [
-        { required: true, message: '请输入权重' },
+        { required: true, message: i18n.t('compute.text_888') },
       ],
     },
   ],
@@ -134,7 +135,7 @@ export const DECORATORS = {
     {
       initialValue: 'earliest',
       rules: [
-        { required: true, message: '请选择实例移除策略' },
+        { required: true, message: i18n.t('compute.text_889') },
       ],
     },
   ],
@@ -143,7 +144,7 @@ export const DECORATORS = {
     {
       initialValue: 300,
       rules: [
-        { required: true, message: '请选择检查周期' },
+        { required: true, message: i18n.t('compute.text_890') },
       ],
     },
   ],

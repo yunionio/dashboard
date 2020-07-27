@@ -2,6 +2,7 @@ import _ from 'lodash'
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { getRegionTableColumn, getStatusTableColumn, getBrandTableColumn, getEnabledTableColumn, getNameDescriptionTableColumn, getPublicScopeTableColumn, getProjectDomainTableColumn, getTagTableColumn, getAccountTableColumn } from '@/utils/common/tableColumn'
 import { sizestr, percentstr } from '@/utils/utils'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -11,7 +12,7 @@ export default {
         hideField: true,
         addBackup: true,
         formRules: [
-          { required: true, message: '请输入名称' },
+          { required: true, message: i18n.t('compute.text_210') },
           { validator: this.$validate('serverCreateName') },
         ],
         slotCallback: row => {
@@ -21,7 +22,7 @@ export default {
         },
         cellWrapSlots: row => {
           return {
-            append: () => row.is_baremetal ? (<a-tooltip title="有IPMI信息，可转换为物理机"><icon class='ml-2' type='res-host' style={{ color: '#1890ff' }} /></a-tooltip>) : null,
+            append: () => row.is_baremetal ? (<a-tooltip title={i18n.t('compute.text_562')}><icon class='ml-2' type='res-host' style={{ color: '#1890ff' }} /></a-tooltip>) : null,
           }
         },
       }),
@@ -54,7 +55,7 @@ export default {
           },
         },
       },
-      getStatusTableColumn({ field: 'host_status', title: '服务', statusModule: 'host_status' }),
+      getStatusTableColumn({ field: 'host_status', title: i18n.t('compute.text_502'), statusModule: 'host_status' }),
       {
         field: 'nonsystem_guests',
         title: '#VM',
@@ -65,7 +66,7 @@ export default {
       },
       {
         field: 'cpu_count',
-        title: '物理CPU',
+        title: i18n.t('compute.text_563'),
         minWidth: 80,
         showOverflow: 'title',
         formatter: ({ cellValue, row }) => {
@@ -78,7 +79,7 @@ export default {
       },
       {
         field: 'mem_size',
-        title: '物理内存',
+        title: i18n.t('compute.text_564'),
         minWidth: 80,
         showOverflow: 'title',
         formatter: ({ cellValue, row }) => {
@@ -91,7 +92,7 @@ export default {
       },
       {
         field: 'storage_size',
-        title: '物理存储',
+        title: i18n.t('compute.text_565'),
         minWidth: 80,
         showOverflow: 'title',
         formatter: ({ cellValue, row }) => {
@@ -110,7 +111,7 @@ export default {
       },
       {
         field: 'schedtag',
-        title: '调度标签',
+        title: i18n.t('compute.text_541'),
         width: 120,
         type: 'expand',
         slots: {
@@ -146,7 +147,7 @@ export default {
       },
       {
         field: 'server_id',
-        title: '初始账号',
+        title: i18n.t('compute.text_566'),
         width: 70,
         slots: {
           default: ({ cellValue, row }) => {

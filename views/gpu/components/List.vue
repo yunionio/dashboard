@@ -37,21 +37,21 @@ export default {
         filterOptions: {
           name: getNameFilter(),
           dev_type: {
-            label: '设备类型',
+            label: this.$t('compute.text_481'),
             filter: true,
             formatter: val => {
               return `dev_type.contains("${val}")`
             },
           },
           model: {
-            label: '设备型号',
+            label: this.$t('compute.text_482'),
             filter: true,
             formatter: val => {
               return `model.contains("${val}")`
             },
           },
           guest: {
-            label: `关联${this.$t('dictionary.server')}`,
+            label: this.$t('compute.text_483', [this.$t('dictionary.server')]),
             filter: true,
             jointFilter: true,
             formatter: val => {
@@ -59,7 +59,7 @@ export default {
             },
           },
           host: {
-            label: '所在宿主机',
+            label: this.$t('compute.text_484'),
             filter: true,
             jointFilter: true,
             formatter: val => {
@@ -80,20 +80,20 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
-          { label: '设备型号', key: 'model' },
-          { label: `关联${this.$t('dictionary.server')}`, key: 'guest' },
-          { label: '所在宿主机', key: 'host' },
+          { label: this.$t('compute.text_228'), key: 'name' },
+          { label: this.$t('compute.text_482'), key: 'model' },
+          { label: this.$t('compute.text_483', [this.$t('dictionary.server')]), key: 'guest' },
+          { label: this.$t('compute.text_484'), key: 'host' },
         ],
       },
       groupActions: [
         {
-          label: `取消关联${this.$t('dictionary.server')}`,
+          label: this.$t('compute.text_485', [this.$t('dictionary.server')]),
           action: () => {
             this.createDialog('DetachGpuDialog', {
               data: this.list.selectedItems,
               columns: this.columns,
-              title: `取消关联${this.$t('dictionary.server')}`,
+              title: this.$t('compute.text_485', [this.$t('dictionary.server')]),
               refresh: this.refresh,
             })
           },
@@ -102,7 +102,7 @@ export default {
             if (item.length <= 0) {
               return {
                 validate: false,
-                tooltip: '请先选择要解绑的GPU卡',
+                tooltip: this.$t('compute.text_486'),
               }
             }
             const validateGuestStatus = item.every(item => item.guest_id && item.guest_status === 'ready')
@@ -110,13 +110,13 @@ export default {
             if (!validateGuestId) {
               return {
                 validate: false,
-                tooltip: `请选择已关联${this.$t('dictionary.server')}的GPU卡`,
+                tooltip: this.$t('compute.text_487', [this.$t('dictionary.server')]),
               }
             }
             if (!validateGuestStatus) {
               return {
                 validate: false,
-                tooltip: `关联${this.$t('dictionary.server')}在【关机】的状态下支持该操作`,
+                tooltip: this.$t('compute.text_489', [this.$t('dictionary.server')]),
               }
             }
             return {
@@ -125,7 +125,7 @@ export default {
           },
         },
         {
-          label: '设置预留资源',
+          label: this.$t('compute.text_490'),
           action: () => {
             this.createDialog('SetReserveResourceDialog', {
               onManager: this.onManager,
@@ -139,7 +139,7 @@ export default {
             if (item.length <= 0) {
               return {
                 validate: false,
-                tooltip: '请选择要设置预留资源的GPU卡',
+                tooltip: this.$t('compute.text_491'),
               }
             }
             return {

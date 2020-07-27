@@ -9,6 +9,7 @@ import {
 } from '@/utils/common/tableColumn'
 import SystemIcon from '@/sections/SystemIcon'
 import { sizestr } from '@/utils/utils'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -19,7 +20,7 @@ export default {
         // addLock: true,
         addBackup: true,
         formRules: [
-          { required: true, message: '请输入名称' },
+          { required: true, message: i18n.t('compute.text_210') },
           { validator: this.$validate('resourceCreateName') },
         ],
         slotCallback: row => {
@@ -30,7 +31,7 @@ export default {
       }),
       {
         field: 'instance_type',
-        title: '配置',
+        title: i18n.t('compute.text_295'),
         showOverflow: 'ellipsis',
         minWidth: 120,
         sortable: true,
@@ -51,7 +52,7 @@ export default {
       },
       {
         field: 'os_type',
-        title: '系统',
+        title: i18n.t('compute.text_338'),
         width: 50,
         slots: {
           default: ({ row }) => {
@@ -60,7 +61,7 @@ export default {
               name = 'Windows'
             }
             const version = (row.metadata && row.metadata.os_version) ? `${row.metadata.os_version}` : ''
-            const tooltip = (version.includes(name) ? version : `${name} ${version}`) || '未知' // 去重
+            const tooltip = (version.includes(name) ? version : `${name} ${version}`) || i18n.t('compute.text_339') // 去重
             return [
               <SystemIcon tooltip={ tooltip } name={ name } />,
             ]
@@ -69,7 +70,7 @@ export default {
       },
       {
         field: 'config_info.image',
-        title: '系统镜像',
+        title: i18n.t('compute.text_97'),
         showOverflow: 'ellipsis',
         minWidth: 190,
       },

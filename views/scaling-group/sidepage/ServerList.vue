@@ -43,7 +43,7 @@ export default {
         steadyStatus: Object.values(expectStatus.scalingserver).flat().concat(Object.values(expectStatus.server).flat()),
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('compute.text_228'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
@@ -61,7 +61,7 @@ export default {
           addLock: true,
           addBackup: true,
           formRules: [
-            { required: true, message: '请输入名称' },
+            { required: true, message: this.$t('compute.text_210') },
             { validator: this.$validate('serverCreateName') },
           ],
           slotCallback: row => {
@@ -73,7 +73,7 @@ export default {
         getIpsTableColumn({ field: 'ip', title: 'IP' }),
         {
           field: 'os_type',
-          title: '系统',
+          title: this.$t('compute.text_338'),
           width: 50,
           slots: {
             default: ({ row }) => {
@@ -82,7 +82,7 @@ export default {
                 name = 'Windows'
               }
               const version = (row.metadata && row.metadata.os_version) ? `${row.metadata.os_version}` : ''
-              const tooltip = (version.includes(name) ? version : `${name} ${version}`) || '未知' // 去重
+              const tooltip = (version.includes(name) ? version : `${name} ${version}`) || this.$t('compute.text_339') // 去重
               return [
                 <SystemIcon tooltip={ tooltip } name={ name } />,
               ]
@@ -91,7 +91,7 @@ export default {
         },
         {
           field: 'password',
-          title: '密码',
+          title: this.$t('compute.text_340'),
           width: 50,
           slots: {
             default: ({ row }) => {
@@ -99,11 +99,11 @@ export default {
             },
           },
         },
-        getStatusTableColumn({ field: 'scaling_status', title: '状态', statusModule: 'scalingserver' }),
-        getStatusTableColumn({ title: '主机状态', statusModule: 'server', width: 130 }),
+        getStatusTableColumn({ field: 'scaling_status', title: this.$t('compute.text_268'), statusModule: 'scalingserver' }),
+        getStatusTableColumn({ title: this.$t('compute.text_973'), statusModule: 'server', width: 130 }),
         {
           field: 'instance_type',
-          title: '配置',
+          title: this.$t('compute.text_295'),
           showOverflow: 'ellipsis',
           minWidth: 120,
           sortable: true,
@@ -121,7 +121,7 @@ export default {
         getTimeTableColumn(),
         {
           field: 'host',
-          title: '宿主机',
+          title: this.$t('compute.text_111'),
           sortable: true,
           showOverflow: 'ellipsis',
           minWidth: 100,
@@ -135,14 +135,14 @@ export default {
             },
           },
         },
-        getCopyWithContentTableColumn({ field: 'account', title: '云账号' }),
+        getCopyWithContentTableColumn({ field: 'account', title: this.$t('compute.text_269') }),
       ],
       singleActions: [
         {
-          label: '移除',
+          label: this.$t('compute.text_950'),
           action: (row) => {
             this.createDialog('ScalingGroupServerRemoveDialog', {
-              title: '移除',
+              title: this.$t('compute.text_950'),
               data: [row],
               resId: this.data.id,
               columns: this.columns,
@@ -154,10 +154,10 @@ export default {
       ],
       groupActions: [
         {
-          label: '移除',
+          label: this.$t('compute.text_950'),
           action: (row) => {
             this.createDialog('ScalingGroupServerRemoveDialog', {
-              title: '移除',
+              title: this.$t('compute.text_950'),
               data: this.list.selectedItems,
               resId: this.data.id,
               columns: this.columns,

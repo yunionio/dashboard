@@ -1,20 +1,20 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">新建硬盘</div>
+    <div slot="header">{{$t('compute.text_409')}}</div>
     <div slot="body">
       <a-form
         :form="form.fc">
-        <a-form-item :label="`指定${$t('dictionary.project')}`" class="mb-0" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_297', [$t('dictionary.project')])" class="mb-0" v-bind="formItemLayout">
           <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
         </a-form-item>
-        <a-form-item label="区域" class="mb-0" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_177')" class="mb-0" v-bind="formItemLayout">
           <cloudregion-zone
             :zone-params="par.zone"
             :cloudregion.sync="currentCloudregion"
             :cloudregion-params="par.region"
             :decorator="decorators.regionZone" />
         </a-form-item>
-        <a-form-item label="名称" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_228')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceCreateName')" />
         </a-form-item>
         <a-form-item :label="storageLabel" v-bind="formItemLayout">
@@ -27,7 +27,7 @@
             </a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item label="容量" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_397')" v-bind="formItemLayout">
           <a-input-number :min="minDiskData" :max="maxDiskData" :step="step" v-decorator="decorators.size" /> GB
         </a-form-item>
       </a-form>
@@ -102,7 +102,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('compute.text_210') },
               { validator: this.$validate('resourceCreateName') },
             ],
           },
@@ -114,7 +114,7 @@ export default {
           'storage_id',
           {
             rules: [
-              { required: true, message: '请选择存储类型' },
+              { required: true, message: this.$t('compute.text_411') },
             ],
           },
         ],
@@ -133,7 +133,7 @@ export default {
             {
               initialValue: { key: '', label: '' },
               rules: [
-                { required: true, message: '请选择区域' },
+                { required: true, message: this.$t('compute.text_212') },
               ],
             },
           ],
@@ -142,7 +142,7 @@ export default {
             {
               initialValue: { key: '', label: '' },
               rules: [
-                { required: true, message: '请选择可用区' },
+                { required: true, message: this.$t('compute.text_213') },
               ],
             },
           ],
@@ -183,9 +183,9 @@ export default {
     },
     storageLabel () {
       if (['idc', 'private'].includes(this.diskType)) {
-        return '存储类型'
+        return this.$t('compute.text_380')
       }
-      return '介质类型'
+      return this.$t('compute.text_396')
     },
     par () {
       const project_domain = { project_domain: this.form.fd.domain.key || this.userInfo.domain.id }
@@ -271,7 +271,7 @@ export default {
               this.__storageChange(this.storageOpts[0].value)
             }
           } catch (error) {
-            throw new Error('存储类型解析出错：' + error)
+            throw new Error(this.$t('compute.text_412') + error)
           }
         })
     },
@@ -384,7 +384,7 @@ export default {
             label = storageProvider[storageType.toLowerCase()].label
           }
         } catch (error) {
-          console.warn(`没有找到 ${this.provider} 下面的 ${storageType}`)
+          console.warn(this.$t('compute.text_413', [this.provider, storageType]))
         }
         return {
           label: `${label}${storageName}`,
@@ -407,7 +407,7 @@ export default {
           this.maxDiskData = 2048
         }
       } catch (error) {
-        console.warn(`没有找到 ${CommonConstants.STORAGE_TYPES[provider]} 下面的 ${item.storage_type}`)
+        console.warn(this.$t('compute.text_413', [CommonConstants.STORAGE_TYPES[provider], item.storage_type]))
       }
       this.form.fc.setFieldsValue({ size: 10 })
       const size = this.form.fc.getFieldValue('size')

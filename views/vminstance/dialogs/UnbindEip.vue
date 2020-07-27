@@ -1,12 +1,12 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">解绑弹性公网IP</div>
+    <div slot="header">{{$t('compute.text_1264')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" action="解绑弹性公网IP" />
+      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_1264')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
-        <a-form-item label="是否释放" v-bind="formItemLayout" extra="取消绑定之后，立即释放弹性公网IP">
-          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.auto_delete" />
+        <a-form-item :label="$t('compute.text_1265')" v-bind="formItemLayout" :extra="$t('compute.text_1266')">
+          <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.auto_delete" />
         </a-form-item>
       </a-form>
     </div>

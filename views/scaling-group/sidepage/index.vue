@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="弹性伸缩组"
+    :title="$t('compute.text_95')"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
@@ -49,12 +49,12 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'detail' },
-        { label: '伸缩策略', key: 'rule-list' },
-        { label: '活动历史', key: 'activitie-list' },
-        { label: '当前实例', key: 'server-list' },
-        { label: '主机模版', key: 'server-template-list' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('compute.text_238'), key: 'detail' },
+        { label: this.$t('compute.text_949'), key: 'rule-list' },
+        { label: this.$t('compute.text_974'), key: 'activitie-list' },
+        { label: this.$t('compute.text_975'), key: 'server-list' },
+        { label: this.$t('compute.text_873'), key: 'server-template-list' },
+        { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }
   },

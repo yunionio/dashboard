@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="硬盘" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
+    <page-header :title="$t('compute.text_100')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
     <page-body>
       <disk-list :id="listId" :getParams="getParams" :cloud-env="cloudEnv" />
     </page-body>

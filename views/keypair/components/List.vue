@@ -31,7 +31,7 @@ export default {
         getParams: this.getParam,
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('compute.text_228'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
@@ -42,19 +42,19 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
-          { label: '公钥内容', key: 'public_key' },
-          { label: '指纹', key: 'fingerprint' },
-          { label: '类型', key: 'scheme' },
-          { label: `关联${this.$t('dictionary.server')}数量`, key: 'linked_guest_count' },
+          { label: this.$t('compute.text_228'), key: 'name' },
+          { label: this.$t('compute.text_725'), key: 'public_key' },
+          { label: this.$t('compute.text_726'), key: 'fingerprint' },
+          { label: this.$t('compute.text_175'), key: 'scheme' },
+          { label: this.$t('compute.text_699', [this.$t('dictionary.server')]), key: 'linked_guest_count' },
         ],
       },
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('compute.text_18'),
           action: () => {
             this.createDialog('CreateKeyPairDialog', {
-              title: '新建',
+              title: this.$t('compute.text_18'),
               onManager: this.onManager,
             })
           },
@@ -63,13 +63,13 @@ export default {
           }),
         },
         {
-          label: '删除',
+          label: this.$t('compute.text_261'),
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,
               data: this.list.selectedItems,
               columns: this.columns,
-              title: '删除',
+              title: this.$t('compute.text_261'),
               name: this.$t('dictionary.keypair'),
               onManager: this.onManager,
             })

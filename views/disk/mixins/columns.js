@@ -13,6 +13,7 @@ import {
   getAccountTableColumn,
 } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -21,7 +22,7 @@ export default {
         onManager: this.onManager,
         hideField: true,
         formRules: [
-          { required: true, message: '请输入名称' },
+          { required: true, message: i18n.t('compute.text_210') },
           { validator: this.$validate('resourceCreateName') },
         ],
         slotCallback: row => {
@@ -33,7 +34,7 @@ export default {
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'disk', columns: () => this.columns }),
       {
         field: 'disk_size',
-        title: '容量',
+        title: i18n.t('compute.text_397'),
         minWidth: 50,
         formatter: ({ cellValue }) => {
           return sizestr(cellValue, 'M', 1024)
@@ -41,15 +42,15 @@ export default {
       },
       {
         field: 'disk_format',
-        title: '格式',
+        title: i18n.t('compute.text_398'),
         width: 70,
       },
       {
         field: 'disk_type',
-        title: '磁盘类型',
+        title: i18n.t('compute.text_381'),
         width: 70,
         formatter: ({ cellValue }) => {
-          return cellValue === 'sys' ? '系统盘' : '数据盘'
+          return cellValue === 'sys' ? i18n.t('compute.text_49') : i18n.t('compute.text_50')
         },
       },
       getUnusedTableColumn(),
@@ -69,7 +70,7 @@ export default {
           },
         },
       },
-      getCopyWithContentTableColumn({ field: 'storage', title: '主存储' }),
+      getCopyWithContentTableColumn({ field: 'storage', title: i18n.t('compute.text_392') }),
       getTimeTableColumn(),
       getBrandTableColumn(),
       getRegionTableColumn(),
@@ -79,7 +80,7 @@ export default {
       getAccountTableColumn(),
       {
         field: 'medium_type',
-        title: '介质类型',
+        title: i18n.t('compute.text_396'),
         width: 70,
         formatter: ({ cellValue }) => {
           return MEDIUM_MAP[cellValue]

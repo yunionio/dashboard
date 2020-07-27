@@ -6,8 +6,8 @@
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
-        <a-form-item label="自动启动" v-bind="formItemLayout" extra="设置成功后是否自动启动">
-          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.autoStart" />
+        <a-form-item :label="$t('compute.text_494')" v-bind="formItemLayout" :extra="$t('compute.text_495')">
+          <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.autoStart" />
         </a-form-item>
       </a-form>
     </div>

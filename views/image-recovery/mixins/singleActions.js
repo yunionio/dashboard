@@ -1,15 +1,16 @@
+import i18n from '@/locales'
 export default {
   created () {
     this.singleActions = [
       {
-        label: '清除',
+        label: i18n.t('compute.text_477'),
         permission: 'images_delete',
         action: obj => {
           this.createDialog('DeleteResDialog', {
             vm: this,
             data: [obj],
             columns: this.columns,
-            title: '清除',
+            title: i18n.t('compute.text_477'),
             name: this.$t('dictionary.image'),
             onManager: this.onManager,
             requestParams: { override_pending_delete: true },
@@ -18,7 +19,7 @@ export default {
         meta: obj => this.$getDeleteResult(obj),
       },
       {
-        label: '恢复',
+        label: i18n.t('compute.text_478'),
         permission: 'images_perform_cancel_delete',
         action: (obj) => {
           this.createDialog('ImageRestoreDialog', {

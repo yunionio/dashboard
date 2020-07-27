@@ -48,7 +48,7 @@ export default {
       columns: [
         {
           field: 'metric',
-          title: '报警指标',
+          title: this.$t('compute.text_744'),
           width: '24%',
           formatter: ({ row }) => {
             if (!row.metric) return '-'
@@ -58,7 +58,7 @@ export default {
         },
         {
           field: 'window',
-          title: '查询周期',
+          title: this.$t('compute.text_733'),
           width: 80,
           formatter: ({ row }) => {
             if (!row.window) return '-'
@@ -70,11 +70,11 @@ export default {
         },
         {
           field: 'comparator',
-          title: '运算符',
+          title: this.$t('compute.text_745'),
         },
         {
           field: 'threshold',
-          title: '阈值',
+          title: this.$t('compute.text_736'),
           formatter: ({ row }) => {
             if (!row.metric) return '-'
             const { unit } = metricItems[row.metric]
@@ -89,7 +89,7 @@ export default {
         },
         {
           field: 'level',
-          title: '级别',
+          title: this.$t('compute.text_746'),
           slots: {
             default: ({ row }) => {
               const levelItem = LEVEL_CN[row.level]
@@ -102,7 +102,7 @@ export default {
         },
         {
           field: 'channel',
-          title: '报警方式',
+          title: this.$t('compute.text_739'),
           width: 80,
           formatter: ({ row }) => {
             return channelMap[row.channel] || row.channel
@@ -111,7 +111,7 @@ export default {
       ],
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('compute.text_18'),
           action: () => {
             this.createDialog('CreateNodeAlert', {
               list: this.list,
@@ -138,15 +138,15 @@ export default {
           },
         },
         {
-          label: '删除',
+          label: this.$t('compute.text_261'),
           permission: 'server_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,
               data: this.list.selectedItems,
               columns: this.columns,
-              title: '删除报警',
-              name: '报警记录',
+              title: this.$t('compute.text_747'),
+              name: this.$t('compute.text_748'),
               onManager: this.onManager,
             })
           },
@@ -159,22 +159,22 @@ export default {
       ],
       singleActions: [
         {
-          label: '删除',
+          label: this.$t('compute.text_261'),
           permission: 'server_delete',
           action: obj => {
             this.createDialog('DeleteResDialog', {
               vm: this,
               data: [obj],
               columns: this.columns,
-              title: '删除报警',
-              name: '报警记录',
+              title: this.$t('compute.text_747'),
+              name: this.$t('compute.text_748'),
               onManager: this.onManager,
             })
           },
           // meta: obj => this.$getDeleteResult(obj),
         },
         {
-          label: '修改',
+          label: this.$t('compute.text_749'),
           action: obj => {
             this.createDialog('UpdateNodeAlert', {
               data: [obj],

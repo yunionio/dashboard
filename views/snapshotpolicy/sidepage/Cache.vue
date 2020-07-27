@@ -38,23 +38,23 @@ export default {
         },
       }),
       columns: [
-        getCopyWithContentTableColumn({ field: 'name', title: '策略名称' }),
+        getCopyWithContentTableColumn({ field: 'name', title: this.$t('compute.text_428') }),
         getStatusTableColumn({ statusModule: 'snapshotpolcyCache' }),
         getTimeTableColumn(),
-        getTimeTableColumn({ field: 'updated_at', title: '更新时间' }),
+        getTimeTableColumn({ field: 'updated_at', title: this.$t('compute.text_691') }),
         getBrandTableColumn(),
         getRegionTableColumn(),
         getAccountTableColumn(),
       ],
       singleActions: [
         {
-          label: '删除',
+          label: this.$t('compute.text_261'),
           action: obj => {
             this.createDialog('DeleteResDialog', {
               vm: this,
               data: [obj],
               columns: this.columns,
-              title: '删除',
+              title: this.$t('compute.text_261'),
               onManager: this.list.onManager,
             })
           },

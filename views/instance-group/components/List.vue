@@ -32,7 +32,7 @@ export default {
         getParams: this.getParam,
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('compute.text_228'),
             filter: true,
             formatter: val => {
               return `name.contains(${val})`
@@ -40,19 +40,19 @@ export default {
           },
           status: getStatusFilter('instanceGroup'),
           force_dispersion: {
-            label: '策略',
+            label: this.$t('compute.text_694'),
             dropdown: true,
             items: [
-              { label: '强制', key: true },
-              { label: '非强制', key: false },
+              { label: this.$t('compute.text_695'), key: true },
+              { label: this.$t('compute.text_696'), key: false },
             ],
           },
           enabled: {
-            label: '启用状态',
+            label: this.$t('compute.text_241'),
             dropdown: true,
             items: [
-              { label: '启用', key: true },
-              { label: '禁用', key: false },
+              { label: this.$t('compute.text_656'), key: true },
+              { label: this.$t('compute.text_569'), key: false },
             ],
           },
           tenant: {
@@ -64,18 +64,18 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '启用状态', key: 'enabled' },
-          { label: '名称', key: 'name' },
-          { label: '策略', key: 'force_dispersion' },
-          { label: '粒度', key: 'granularity' },
-          { label: `绑定${this.$t('dictionary.server')}数量`, key: 'guest_count' },
+          { label: this.$t('compute.text_241'), key: 'enabled' },
+          { label: this.$t('compute.text_228'), key: 'name' },
+          { label: this.$t('compute.text_694'), key: 'force_dispersion' },
+          { label: this.$t('compute.text_697'), key: 'granularity' },
+          { label: this.$t('compute.text_698', [this.$t('dictionary.server')]), key: 'guest_count' },
           { label: this.$t('dictionary.project'), key: 'tenant' },
-          { label: '创建时间', key: 'created_at' },
+          { label: this.$t('compute.text_243'), key: 'created_at' },
         ],
       },
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('compute.text_18'),
           permission: 'instancegroups_create',
           action: () => {
             this.createDialog('InstanceGroupCreateDialog', {
@@ -90,13 +90,13 @@ export default {
           },
         },
         {
-          label: '删除',
+          label: this.$t('compute.text_261'),
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,
               data: this.list.selectedItems,
               columns: this.columns,
-              title: `删除${this.$t('dictionary.instancegroup')}`,
+              title: this.$t('compute.text_700', [this.$t('dictionary.instancegroup')]),
               name: this.$t('dictionary.instancegroup'),
               onManager: this.onManager,
             })

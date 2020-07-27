@@ -22,7 +22,7 @@ export default {
   data () {
     return {
       loading: false,
-      action: '挂起',
+      action: this.$t('compute.text_1128'),
     }
   },
   computed: {

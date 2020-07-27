@@ -21,9 +21,7 @@
         <loader :loading="skuLoading" />
       </template>
     </vxe-grid>
-    <div class="mt-1" v-if="selectedTip">
-      已选择：{{ selectedTip }}
-    </div>
+    <div class="mt-1" v-if="selectedTip">{{$t('compute.text_171', [ selectedTip ])}}</div>
   </div>
 </template>
 
@@ -33,9 +31,10 @@ import { ALL_SKU_CATEGORY_OPT, SKU_CATEGORY_MAP } from '@Compute/constants'
 import { Manager } from '@/utils/manager'
 import { PROVIDER_MAP, HYPERVISORS_MAP } from '@/constants'
 import { sizestr } from '@/utils/utils'
+import i18n from '@/locales'
 
 const keys = ['hour_price', 'month_price', 'year_price']
-const units = ['小时', '月', '年']
+const units = [i18n.t('compute.text_172'), i18n.t('compute.text_173'), i18n.t('compute.text_174')]
 
 export default {
   name: 'SKU',
@@ -62,7 +61,7 @@ export default {
       },
       default: () => ({
         key: 'hour_price',
-        unit: '小时',
+        unit: this.$t('compute.text_172'),
       }),
     },
     skuParams: {
@@ -105,10 +104,10 @@ export default {
     tableColumn () {
       const column = [
         { type: 'radio', width: 40 },
-        { field: 'instance_type_category_i18n', title: '类型' },
+        { field: 'instance_type_category_i18n', title: this.$t('compute.text_175') },
         {
           field: 'provider',
-          title: '平台',
+          title: this.$t('compute.text_176'),
           slots: {
             default: ({ row }) => {
               return [
@@ -117,15 +116,15 @@ export default {
             },
           },
         },
-        { field: 'region', title: '区域' },
-        { field: 'name', title: '规格' },
-        { field: 'cpu_core_count', title: 'CPU(核)' },
-        { field: 'memory_size_mb_compute', title: '内存(GB)' },
+        { field: 'region', title: this.$t('compute.text_177') },
+        { field: 'name', title: this.$t('compute.text_178') },
+        { field: 'cpu_core_count', title: this.$t('compute.text_179') },
+        { field: 'memory_size_mb_compute', title: this.$t('compute.text_180') },
       ]
       if (this.isPublic && this.hasMeterService) {
         column.push({
           field: 'hour_price',
-          title: '价格',
+          title: this.$t('compute.text_181'),
           slots: {
             default: ({ row }) => {
               const price = this.getFormatPrice(row.hour_price)
@@ -227,7 +226,12 @@ export default {
     },
     selectedTip () {
       if (this.selectedSkuData.id) {
-        return `${this.selectedSkuData.name} (${this.selectedSkuData.instance_type_category_i18n} ${this.selectedSkuData.cpu_core_count}核 ${sizestr(this.selectedSkuData.memory_size_mb, 'M', 1024)}B)`
+        return this.$t('compute.text_182', [
+          this.selectedSkuData.name,
+          this.selectedSkuData.instance_type_category_i18n,
+          this.selectedSkuData.cpu_core_count,
+          sizestr(this.selectedSkuData.memory_size_mb, 'M', 1024),
+        ])
       }
       return null
     },

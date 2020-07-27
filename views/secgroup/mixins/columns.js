@@ -5,6 +5,7 @@ import {
   getPublicScopeTableColumn,
   getTagTableColumn,
 } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -21,13 +22,13 @@ export default {
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'secgroup', columns: () => this.columns }),
       {
         field: 'rules',
-        title: '规则预览(策略，来源，协议，端口)',
+        title: i18n.t('compute.text_1025'),
         width: 220,
         type: 'expand',
         slots: {
           default: ({ row }) => {
             const len = (row.rules && row.rules.length) || 0
-            return `${len}个`
+            return i18n.t('compute.text_619', [len])
           },
           content: ({ row }, h) => {
             const inList = []
@@ -94,7 +95,7 @@ export default {
       },
       {
         field: 'guest_cnt',
-        title: '关联虚拟机',
+        title: i18n.t('compute.text_1023'),
         width: 80,
         slots: {
           default: ({ row }, h) => {

@@ -1,10 +1,11 @@
 import { getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
     this.columns = [
       {
-        title: '序号',
+        title: i18n.t('compute.text_375'),
         width: 50,
         slots: {
           default: ({ rowIndex }) => {
@@ -12,13 +13,13 @@ export default {
           },
         },
       },
-      getCopyWithContentTableColumn({ field: 'ifname', title: '网卡名称', sortable: true }),
-      getCopyWithContentTableColumn({ field: 'mac_addr', title: 'MAC地址', sortable: true }),
-      getCopyWithContentTableColumn({ field: 'ip_addr', title: 'IP地址', sortable: true }),
-      getCopyWithContentTableColumn({ field: 'driver', title: '驱动' }),
+      getCopyWithContentTableColumn({ field: 'ifname', title: i18n.t('compute.text_384'), sortable: true }),
+      getCopyWithContentTableColumn({ field: 'mac_addr', title: i18n.t('compute.text_385'), sortable: true }),
+      getCopyWithContentTableColumn({ field: 'ip_addr', title: i18n.t('compute.text_386'), sortable: true }),
+      getCopyWithContentTableColumn({ field: 'driver', title: i18n.t('compute.text_378') }),
       {
         field: 'guest_id',
-        title: '网络',
+        title: i18n.t('compute.text_104'),
         sortable: true,
         showOverflow: 'ellipsis',
         minWidth: 100,
@@ -35,7 +36,7 @@ export default {
       },
       {
         field: 'bw_limit',
-        title: '带宽限制',
+        title: i18n.t('compute.text_387'),
         width: 100,
         formatter: ({ row }) => {
           return `${row.bw_limit}Mbps`
@@ -43,7 +44,7 @@ export default {
         slots: {
           header: ({ column }) => {
             return [
-              <a-tooltip title='"0"代表带宽没有限制'>
+              <a-tooltip title={i18n.t('compute.text_388')}>
                 <span class='mr-1'>{ column.title }</span>
                 <icon type="question" />
               </a-tooltip>,

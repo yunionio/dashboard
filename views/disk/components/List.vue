@@ -44,27 +44,27 @@ export default {
           name: getNameFilter(),
           status: getStatusFilter('disk'),
           storage: {
-            label: '主存储',
+            label: this.$t('compute.text_392'),
             jointFilter: true,
           },
           guest: {
             label: this.$t('dictionary.server'),
           },
           disk_type: {
-            label: '磁盘类型',
+            label: this.$t('compute.text_381'),
             dropdown: true,
             // multiple: true,
             items: [
-              { label: '数据盘', key: 'data' },
-              { label: '系统盘', key: 'sys' },
+              { label: this.$t('compute.text_50'), key: 'data' },
+              { label: this.$t('compute.text_49'), key: 'sys' },
             ],
           },
           unused: {
-            label: '是否挂载',
+            label: this.$t('compute.text_393'),
             dropdown: true,
             items: [
-              { label: '已挂载', key: false },
-              { label: '待挂载', key: true },
+              { label: this.$t('compute.text_394'), key: false },
+              { label: this.$t('compute.text_395'), key: true },
             ],
           },
           brand: getBrandFilter(),
@@ -75,7 +75,7 @@ export default {
             label: '区域',
           },
           medium_type: {
-            label: '介质类型',
+            label: this.$t('compute.text_396'),
             dropdown: true,
             multiple: true,
             jointFilter: true,
@@ -97,25 +97,25 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
-          { label: '容量', key: 'disk_size' },
-          { label: '格式', key: 'disk_format' },
-          { label: '磁盘类型', key: 'disk_type' },
-          { label: '挂载机器数量', key: 'guest_count' },
-          { label: '主机', key: 'guest' },
-          { label: '主存储', key: 'storage' },
-          { label: '创建时间', key: 'created_at' },
-          { label: '状态', key: 'status' },
+          { label: this.$t('compute.text_228'), key: 'name' },
+          { label: this.$t('compute.text_397'), key: 'disk_size' },
+          { label: this.$t('compute.text_398'), key: 'disk_format' },
+          { label: this.$t('compute.text_381'), key: 'disk_type' },
+          { label: this.$t('compute.text_399'), key: 'guest_count' },
+          { label: this.$t('compute.text_90'), key: 'guest' },
+          { label: this.$t('compute.text_392'), key: 'storage' },
+          { label: this.$t('compute.text_243'), key: 'created_at' },
+          { label: this.$t('compute.text_268'), key: 'status' },
           { label: this.$t('dictionary.project'), key: 'tenant' },
-          { label: '平台', key: 'provider' },
-          { label: '区域', key: 'region' },
-          { label: '可用区', key: 'zone' },
-          { label: '介质类型', key: 'medium_type' },
+          { label: this.$t('compute.text_176'), key: 'provider' },
+          { label: this.$t('compute.text_177'), key: 'region' },
+          { label: this.$t('compute.text_270'), key: 'zone' },
+          { label: this.$t('compute.text_396'), key: 'medium_type' },
         ],
       },
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('compute.text_18'),
           permission: 'disks_create',
           actions: () => {
             return [
@@ -124,29 +124,29 @@ export default {
                 permission: 'disks_create',
                 action: () => {
                   this.createDialog('DiskCreateDialog', {
-                    title: '新建',
+                    title: this.$t('compute.text_18'),
                     onManager: this.onManager,
                     diskType: 'idc',
                   })
                 },
               },
               {
-                label: '私有云',
+                label: this.$t('compute.text_400'),
                 permission: 'disks_create',
                 action: () => {
                   this.createDialog('DiskCreateDialog', {
-                    title: '新建',
+                    title: this.$t('compute.text_18'),
                     onManager: this.onManager,
                     diskType: 'private',
                   })
                 },
               },
               {
-                label: '公有云',
+                label: this.$t('compute.text_401'),
                 permission: 'disks_create',
                 action: () => {
                   this.createDialog('DiskCreateDialog', {
-                    title: '新建',
+                    title: this.$t('compute.text_18'),
                     onManager: this.onManager,
                     diskType: 'public',
                   })
@@ -159,11 +159,11 @@ export default {
           }),
         },
         {
-          label: '批量操作',
+          label: this.$t('compute.text_275'),
           actions: () => {
             return [
               {
-                label: '同步状态',
+                label: this.$t('compute.text_282'),
                 permission: 'disks_perform_syncstatus',
                 action: () => {
                   this.onManager('batchPerformAction', {
@@ -175,13 +175,13 @@ export default {
                 },
               },
               {
-                label: '删除',
+                label: this.$t('compute.text_261'),
                 permission: 'disks_delete',
                 action: () => {
                   this.createDialog('DiskDeleteDialog', {
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    title: '删除',
+                    title: this.$t('compute.text_261'),
                     onManager: this.onManager,
                   })
                 },

@@ -3,7 +3,7 @@
     <div slot="header">{{params.title}}</div>
     <div slot="body">
       <!-- <a-alert class="mb-2" type="warning" :message="message" /> -->
-      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" action="添加网卡" />
+      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_199')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc">
         <network-config
@@ -62,7 +62,7 @@ export default {
             validateTrigger: ['change', 'blur'],
             rules: [{
               required: true,
-              message: '请选择VPC',
+              message: this.$t('compute.text_194'),
             }],
           },
         ],
@@ -72,7 +72,7 @@ export default {
             validateTrigger: ['change', 'blur'],
             rules: [{
               required: true,
-              message: '请选择ip子网',
+              message: this.$t('compute.text_217'),
             }],
           },
         ],
@@ -84,7 +84,7 @@ export default {
             rules: [
               {
                 required: true,
-                message: '请输入ip',
+                message: this.$t('compute.text_218'),
               },
               {
                 validator: this.$validate('IPv4'),

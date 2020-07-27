@@ -1,22 +1,22 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">新建{{ $t('dictionary.instancegroup') }}</div>
+    <div slot="header">{{$t('compute.text_709', [$t('dictionary.instancegroup')])}}</div>
     <div slot="body">
       <a-form
         :form="form.fc">
-        <a-form-item :label="`指定${$t('dictionary.project')}`" class="mb-0" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_297', [$t('dictionary.project')])" class="mb-0" v-bind="formItemLayout">
           <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
         </a-form-item>
-        <a-form-item label="名称" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_228')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
         </a-form-item>
-        <a-form-item label="策略" v-bind="formItemLayout" :extra="forceDispersionExtra">
+        <a-form-item :label="$t('compute.text_694')" v-bind="formItemLayout" :extra="forceDispersionExtra">
           <a-radio-group v-decorator="decorators.force_dispersion">
-            <a-radio-button :value="true">强制</a-radio-button>
-            <a-radio-button :value="false">非强制</a-radio-button>
+            <a-radio-button :value="true">{{$t('compute.text_695')}}</a-radio-button>
+            <a-radio-button :value="false">{{$t('compute.text_696')}}</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item label="粒度" v-bind="formItemLayout" extra="该组内虚拟机可以在同一宿主机存在的数量（范围 1 ~ 10 台）">
+        <a-form-item :label="$t('compute.text_697')" v-bind="formItemLayout" :extra="$t('compute.text_710')">
           <a-input-number :min="1" :max="10" :parser="Math.round" v-decorator="decorators.granularity" />
         </a-form-item>
       </a-form>
@@ -79,7 +79,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('compute.text_210') },
               { validator: this.$validate('resourceName') },
             ],
           },
@@ -96,8 +96,8 @@ export default {
             initialValue: 1,
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入粒度' },
-              { type: 'number', min: 1, max: 10, message: '范围为 1 ~ 10' },
+              { required: true, message: this.$t('compute.text_711') },
+              { type: 'number', min: 1, max: 10, message: this.$t('compute.text_712') },
             ],
           },
         ],
@@ -115,9 +115,9 @@ export default {
   computed: {
     ...mapGetters(['userInfo']),
     forceDispersionExtra () {
-      let s = '组内主机严格根据粒度要求分布在不同宿主机，当没有更多宿主机时，则创建失败'
+      let s = this.$t('compute.text_713')
       if (!this.form.fd.force_dispersion) {
-        s = '组内主机尽可能根据粒度要求分布在不同宿主机，当没有更多宿主机时，可以重复'
+        s = this.$t('compute.text_714')
       }
       return s
     },

@@ -1,11 +1,11 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">挂载ISO</div>
+    <div slot="header">{{$t('compute.text_366')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" action="挂载ISO" />
+      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_366')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
-        <a-form-item label="ISO镜像" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_1218')" v-bind="formItemLayout">
           <base-select
             class="w-100"
             remote
@@ -15,7 +15,7 @@
             resource="images"
             search-key="search"
             :params="imageParams"
-            :select-props="{ placeholder: '请选择ISO镜像' }" />
+            :select-props="{ placeholder: $t('compute.text_1219') }" />
         </a-form-item>
       </a-form>
     </div>
@@ -45,7 +45,7 @@ export default {
           'image_id',
           {
             rules: [
-              { required: true, message: '请选择ISO镜像' },
+              { required: true, message: this.$t('compute.text_1219') },
             ],
           },
         ],

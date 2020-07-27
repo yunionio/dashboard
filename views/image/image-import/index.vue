@@ -8,8 +8,8 @@
     </div>
     <div>
       <a-radio-group v-model="imported" @change="chooseHandle">
-        <a-radio-button :value="false">未导入</a-radio-button>
-        <a-radio-button :value="true">已导入</a-radio-button>
+        <a-radio-button :value="false">{{$t('compute.text_677')}}</a-radio-button>
+        <a-radio-button :value="true">{{$t('compute.text_678')}}</a-radio-button>
       </a-radio-group>
     </div>
     <page-card-list
@@ -52,7 +52,7 @@ export default {
     singleActions () {
       return [
         {
-          label: this.imported ? '已导入' : '导入',
+          label: this.imported ? this.$t('compute.text_678') : this.$t('compute.text_679'),
           action: obj => {
             const data = {
               name: obj.name,
@@ -104,11 +104,13 @@ export default {
       new this.$Manager('imageutils/imagesinfo', 'v1').list({ params: { market } }).then(({ data }) => {
         this.list.loading = false
         const osDesc = (image) => {
-          return `镜像格式: ${image.format || '-'}
-                  镜像大小: ${image.disk || '-'}GiB
-                  系统架构: ${image.arch || '-'}
-                  文件大小: ${sizestr(image.size, 'B', 1024) || '-'},
-                  更新日期: ${image.create_at || '-'}`
+          return this.$t('compute.text_680', [
+            image.format || '-',
+            (image.disk || '-') + 'GiB',
+            image.arch || '-',
+            sizestr(image.size, 'B', 1024) || '-',
+            image.create_at || '-',
+          ])
         }
         var publicImages = []
         for (const image of data) {

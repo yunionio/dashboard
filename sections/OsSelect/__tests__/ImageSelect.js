@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import ImageSelect from '../ImageSelect'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
 import { Manager } from '@/utils/manager'
+import i18n from '@/locales'
 
 const idcStandardImageList = [
   {
@@ -66,7 +67,7 @@ beforeEach(() => {
       'os',
       {
         initialValue: '',
-        rules: [{ required: true, message: '请选择操作系统' }],
+        rules: [{ required: true, message: i18n.t('compute.text_153') }],
       },
     ],
     image: [

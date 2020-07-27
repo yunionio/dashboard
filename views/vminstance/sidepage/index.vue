@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="虚拟机"
+    :title="$t('compute.text_91')"
     icon="res-vminstance"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
@@ -60,14 +60,14 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'vm-instance-detail' },
-        { label: '安全组', key: 'secgroup-list' },
+        { label: this.$t('compute.text_238'), key: 'vm-instance-detail' },
+        { label: this.$t('compute.text_105'), key: 'secgroup-list' },
         // { label: '宿主机', key: 'host-list' },
-        { label: '网络', key: 'network-list-for-vm-instance-sidepage' },
-        { label: '磁盘', key: 'disk-list-for-vm-instance-sidepage' },
-        { label: '监控', key: 'vm-instance-monitor-sidepage' },
-        { label: '报警', key: 'vm-instance-alert-sidepage' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('compute.text_104'), key: 'network-list-for-vm-instance-sidepage' },
+        { label: this.$t('compute.text_376'), key: 'disk-list-for-vm-instance-sidepage' },
+        { label: this.$t('compute.text_608'), key: 'vm-instance-monitor-sidepage' },
+        { label: this.$t('compute.text_1301'), key: 'vm-instance-alert-sidepage' },
+        { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }
   },
@@ -100,7 +100,7 @@ export default {
           return [
             {
               index: 1,
-              label: '关联安全组',
+              label: this.$t('compute.text_1116'),
               permission: 'server_perform_add_secgroup',
               action: () => {
                 this.createDialog('VmSetSecgroupDialog', {

@@ -42,7 +42,7 @@ export default {
         },
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('compute.text_228'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
@@ -58,25 +58,25 @@ export default {
             },
           },
           access_ip: {
-            label: '管理IP',
+            label: this.$t('compute.text_503'),
             filter: true,
             formatter: val => {
               return `access_ip.contains("${val}")`
             },
           },
           ipmi_ip: {
-            label: '带外IP',
+            label: this.$t('compute.text_504'),
             filter: true,
             formatter: val => {
               return `ipmi_ip.contains("${val}")`
             },
           },
           is_maintenance: {
-            label: '维护模式',
+            label: this.$t('compute.text_820'),
             dropdown: true,
             items: [
-              { label: '维护模式', key: true },
-              { label: '正常', key: false },
+              { label: this.$t('compute.text_820'), key: true },
+              { label: this.$t('compute.text_821'), key: false },
             ],
           },
           project_domain: getProjectDomainFilter(),
@@ -92,23 +92,23 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
-          { label: '启用状态', key: 'enabled' },
-          { label: '状态', key: 'status' },
-          { label: '管理IP', key: 'access_ip' },
-          { label: '带外IP', key: 'ipmi_ip' },
+          { label: this.$t('compute.text_228'), key: 'name' },
+          { label: this.$t('compute.text_241'), key: 'enabled' },
+          { label: this.$t('compute.text_268'), key: 'status' },
+          { label: this.$t('compute.text_503'), key: 'access_ip' },
+          { label: this.$t('compute.text_504'), key: 'ipmi_ip' },
           { label: 'SN', key: 'sn' },
-          { label: '分配', key: 'server' },
-          { label: '维护模式', key: 'is_maintenance' },
-          { label: '区域', key: 'region' },
-          { label: '可用区', key: 'zone' },
-          { label: '共享范围', key: 'public_scope' },
-          { label: `所属${this.$t('dictionary.domain')}`, key: 'project_domain' },
+          { label: this.$t('compute.text_602'), key: 'server' },
+          { label: this.$t('compute.text_820'), key: 'is_maintenance' },
+          { label: this.$t('compute.text_177'), key: 'region' },
+          { label: this.$t('compute.text_270'), key: 'zone' },
+          { label: this.$t('compute.text_505'), key: 'public_scope' },
+          { label: this.$t('compute.text_506', [this.$t('dictionary.domain')]), key: 'project_domain' },
         ],
       },
       groupActions: [
         {
-          label: '添加',
+          label: this.$t('compute.text_822'),
           action: () => {
             this.$router.push('/physicalmachine/add')
           },
@@ -119,12 +119,12 @@ export default {
           },
         },
         {
-          label: '批量操作',
+          label: this.$t('compute.text_275'),
           actions: (obj) => {
             return [
               ...getEnabledSwitchActions(this, obj),
               {
-                label: '开机',
+                label: this.$t('compute.text_272'),
                 action: (obj) => {
                   this.list.batchPerformAction('start', null, this.list.steadyStatus)
                 },
@@ -132,7 +132,7 @@ export default {
                   if (this.list.selectedItems.length <= 0) {
                     return {
                       validate: false,
-                      tooltip: '请选择处于关机状态的物理机',
+                      tooltip: this.$t('compute.text_823'),
                     }
                   }
                   for (let i = 0; i < this.list.selectedItems.length; i++) {
@@ -140,7 +140,7 @@ export default {
                     if (!obj.is_baremetal) {
                       return {
                         validate: false,
-                        tooltip: '请选择处于关机状态的物理机',
+                        tooltip: this.$t('compute.text_823'),
                       }
                     }
                     if (obj.server_id && obj.host_type === 'baremetal') {
@@ -151,7 +151,7 @@ export default {
                     if (obj.status !== 'ready') {
                       return {
                         validate: false,
-                        tooltip: '请选择处于关机状态的物理机',
+                        tooltip: this.$t('compute.text_823'),
                       }
                     }
                   }
@@ -161,7 +161,7 @@ export default {
                 },
               },
               {
-                label: '关机',
+                label: this.$t('compute.text_273'),
                 action: (obj) => {
                   this.list.batchPerformAction('stop', null, this.list.steadyStatus)
                 },
@@ -169,7 +169,7 @@ export default {
                   if (this.list.selectedItems.length <= 0) {
                     return {
                       validate: false,
-                      tooltip: '请选择处于运行中状态的物理机',
+                      tooltip: this.$t('compute.text_824'),
                     }
                   }
                   for (let i = 0; i < this.list.selectedItems.length; i++) {
@@ -177,7 +177,7 @@ export default {
                     if (!obj.is_baremetal) {
                       return {
                         validate: false,
-                        tooltip: '请选择处于运行中状态的物理机',
+                        tooltip: this.$t('compute.text_824'),
                       }
                     }
                     if (obj.server_id && obj.host_type === 'baremetal') {
@@ -188,7 +188,7 @@ export default {
                     if (obj.status !== 'running') {
                       return {
                         validate: false,
-                        tooltip: '请选择处于运行中状态的物理机',
+                        tooltip: this.$t('compute.text_824'),
                       }
                     }
                   }
@@ -198,7 +198,7 @@ export default {
                 },
               },
               {
-                label: '进入维护模式',
+                label: this.$t('compute.text_550'),
                 action: () => {
                   this.list.batchPerformAction('maintenance', null, this.list.steadyStatus)
                 },
@@ -242,7 +242,7 @@ export default {
                 },
               },
               {
-                label: '退出维护模式',
+                label: this.$t('compute.text_559'),
                 action: () => {
                   this.list.batchPerformAction('unmaintenance', null, this.list.steadyStatus)
                 },
@@ -286,7 +286,7 @@ export default {
                 },
               },
               {
-                label: '同步状态',
+                label: this.$t('compute.text_282'),
                 action: () => {
                   this.list.batchPerformAction('syncstatus', null, this.list.steadyStatus)
                 },
@@ -319,7 +319,7 @@ export default {
                 resource: 'hosts',
               }),
               {
-                label: '同步硬件配置',
+                label: this.$t('compute.text_825'),
                 action: () => {
                   this.list.batchPerformAction('prepare', null, this.list.steadyStatus)
                 },
@@ -343,7 +343,7 @@ export default {
                 },
               },
               {
-                label: '调度标签',
+                label: this.$t('compute.text_541'),
                 action: (obj) => {
                   this.createDialog('HostsAdjustLabelDialog', {
                     data: this.list.selectedItems,
@@ -356,7 +356,7 @@ export default {
                 }),
               },
               {
-                label: '编辑标签',
+                label: this.$t('compute.text_283'),
                 action: () => {
                   this.createDialog('SetTagDialog', {
                     data: this.list.selectedItems,
@@ -370,20 +370,20 @@ export default {
                 },
               },
               {
-                label: '删除',
+                label: this.$t('compute.text_261'),
                 permission: 'hosts_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     vm: this,
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    title: '删除',
+                    title: this.$t('compute.text_261'),
                     onManager: this.onManager,
                   })
                 },
                 meta: () => ({
                   validate: this.$getDeleteResult(this.list.selectedItems).validate,
-                  tooltip: this.$getDeleteResult(this.list.selectedItems).validate ? '' : '操作对象的当前状态不支持该操作: 物理机没有被禁用或未删除分配的裸金属服务器',
+                  tooltip: this.$getDeleteResult(this.list.selectedItems).validate ? '' : this.$t('compute.text_826'),
                 }),
               },
             ]

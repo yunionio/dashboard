@@ -1,13 +1,12 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">新建套餐</div>
+    <div slot="header">{{$t('compute.text_1054')}}</div>
     <div slot="body">
       <a-form
         :form="form.fc">
-        <a-form-item label="虚拟CPU核数" v-bind="formItemLayout" extra="输入范围1~256">
-          <a-input-number :min="1" :max="256" v-decorator="decorators.cpu_core_count" /> 核
-        </a-form-item>
-        <a-form-item label="虚拟内存容量" v-bind="formItemLayout" extra="输入范围0.5~512">
+        <a-form-item :label="$t('compute.text_1051')" v-bind="formItemLayout" :extra="$t('compute.text_1055')">
+          <a-input-number :min="1" :max="256" v-decorator="decorators.cpu_core_count" />{{$t('compute.text_167')}}</a-form-item>
+        <a-form-item :label="$t('compute.text_1052')" v-bind="formItemLayout" :extra="$t('compute.text_1056')">
           <a-input-number :min="0.5" :max="512" v-decorator="decorators.memory_size_mb" /> GB
         </a-form-item>
       </a-form>

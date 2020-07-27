@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="模板"
+    :title="$t('compute.text_257')"
     icon="res-servertemplate"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
@@ -40,9 +40,9 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'detail' },
-        { label: '主机列表', key: 'server-list' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('compute.text_238'), key: 'detail' },
+        { label: this.$t('compute.text_262'), key: 'server-list' },
+        { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }
   },

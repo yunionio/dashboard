@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="物理机"
+    :title="$t('compute.text_112')"
     icon="res-physicalmachine"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
@@ -49,13 +49,13 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'physicalmachine-detail' },
-        { label: '裸金属服务器', key: 'baremetal-list' },
-        { label: '网络', key: 'network-list' },
-        { label: '存储', key: 'storage-list' },
-        { label: 'GPU卡', key: 'gpu-list' },
-        { label: '硬件日志', key: 'bmc-log' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('compute.text_238'), key: 'physicalmachine-detail' },
+        { label: this.$t('compute.text_864'), key: 'baremetal-list' },
+        { label: this.$t('compute.text_104'), key: 'network-list' },
+        { label: this.$t('compute.text_99'), key: 'storage-list' },
+        { label: this.$t('compute.text_607'), key: 'gpu-list' },
+        { label: this.$t('compute.text_865'), key: 'bmc-log' },
+        { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }
   },

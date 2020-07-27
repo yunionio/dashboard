@@ -42,7 +42,7 @@ export default {
         getParams: this.getParam,
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('compute.text_228'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
@@ -64,7 +64,7 @@ export default {
             },
           },
           host: {
-            label: '物理机',
+            label: this.$t('compute.text_112'),
           },
           region: {
             label: '区域',
@@ -83,26 +83,26 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
-          { label: '私网IP', key: 'ips' },
+          { label: this.$t('compute.text_228'), key: 'name' },
+          { label: this.$t('compute.text_263'), key: 'ips' },
           { label: 'CPU', key: 'vcpu_count' },
-          { label: '内存(MB)', key: 'vmem_size' },
-          { label: '磁盘(MB)', key: 'disk' },
-          { label: '实例类型', key: 'instance_type' },
-          { label: '操作系统', key: 'os_distribution' },
-          { label: '状态', key: 'status' },
+          { label: this.$t('compute.text_264'), key: 'vmem_size' },
+          { label: this.$t('compute.text_265'), key: 'disk' },
+          { label: this.$t('compute.text_266'), key: 'instance_type' },
+          { label: this.$t('compute.text_267'), key: 'os_distribution' },
+          { label: this.$t('compute.text_268'), key: 'status' },
           { label: this.$t('dictionary.project'), key: 'tenant' },
-          { label: '平台', key: 'hypervisor' },
-          { label: '云账号', key: 'manager' },
-          { label: '区域', key: 'region' },
-          { label: '可用区', key: 'zone' },
-          { label: '用户标签', key: 'user_tags' },
+          { label: this.$t('compute.text_176'), key: 'hypervisor' },
+          { label: this.$t('compute.text_269'), key: 'manager' },
+          { label: this.$t('compute.text_177'), key: 'region' },
+          { label: this.$t('compute.text_270'), key: 'zone' },
+          { label: this.$t('compute.text_271'), key: 'user_tags' },
         ],
         getParams: () => ({ hypervisor: 'baremetal' }),
       },
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('compute.text_18'),
           permission: 'server_create',
           action: () => {
             this.$router.push({
@@ -119,7 +119,7 @@ export default {
           },
         },
         {
-          label: '开机',
+          label: this.$t('compute.text_272'),
           permission: 'server_perform_start',
           action: () => {
             const ids = this.list.selectedItems.map(item => item.id)
@@ -141,7 +141,7 @@ export default {
           },
         },
         {
-          label: '关机',
+          label: this.$t('compute.text_273'),
           permission: 'server_perform_stop',
           action: () => {
             this.createDialog('VmShutDownDialog', {
@@ -160,7 +160,7 @@ export default {
           },
         },
         {
-          label: '重启',
+          label: this.$t('compute.text_274'),
           permission: 'server_perform_restart',
           action: () => {
             this.createDialog('VmRestartDialog', {
@@ -179,11 +179,11 @@ export default {
           },
         },
         {
-          label: '批量操作',
+          label: this.$t('compute.text_275'),
           actions: () => {
             return [
               {
-                label: '重置密码',
+                label: this.$t('compute.text_276'),
                 permission: 'server_perform_deploy',
                 action: () => {
                   this.createDialog('VmResetPasswordDialog', {
@@ -198,7 +198,7 @@ export default {
                     if (hasKeypair) {
                       return {
                         validate: false, // 已绑定密钥的云服务器无法重置密码
-                        tooltip: '已绑定密钥的云服务器无法重置密码',
+                        tooltip: this.$t('compute.text_277'),
                       }
                     }
                     return {
@@ -208,12 +208,12 @@ export default {
                   }
                   return {
                     validate: false,
-                    tooltip: '请选择同一平台下的资源',
+                    tooltip: this.$t('compute.text_278'),
                   }
                 },
               },
               {
-                label: `更改${this.$t('dictionary.project')}`,
+                label: this.$t('compute.text_279', [this.$t('dictionary.project')]),
                 permission: 'server_perform_change_owner',
                 action: () => {
                   this.createDialog('ChangeOwenrDialog', {
@@ -231,14 +231,14 @@ export default {
                   const domains = this.list.selectedItems.map(item => item.domain_id)
                   if (R.uniq(domains).length !== 1) {
                     ret.validate = false
-                    ret.tooltip = `请选择同一个${this.$t('dictionary.domain')}下的机器`
+                    ret.tooltip = this.$t('compute.text_280', [this.$t('dictionary.domain')])
                     return ret
                   }
                   return ret
                 },
               },
               {
-                label: '同步状态',
+                label: this.$t('compute.text_282'),
                 permission: 'server_perform_syncstatus',
                 action: () => {
                   this.onManager('batchPerformAction', {
@@ -250,7 +250,7 @@ export default {
                 },
               },
               {
-                label: '编辑标签',
+                label: this.$t('compute.text_283'),
                 action: () => {
                   this.createDialog('SetTagDialog', {
                     data: this.list.selectedItems,
@@ -265,7 +265,7 @@ export default {
               },
               disableDeleteAction(this),
               {
-                label: '删除',
+                label: this.$t('compute.text_261'),
                 permission: 'server_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
@@ -273,7 +273,7 @@ export default {
                     data: this.list.selectedItems,
                     columns: this.columns,
                     onManager: this.onManager,
-                    title: '删除',
+                    title: this.$t('compute.text_261'),
                   })
                 },
                 meta: () => {
@@ -283,12 +283,12 @@ export default {
                   }
                   if (this.list.selectedItems.some(item => !item.can_delete)) {
                     ret.validate = false
-                    ret.tooltip = '点击【修改属性】解除删除保护后，重试'
+                    ret.tooltip = this.$t('compute.text_284')
                     return ret
                   }
                   if (this.list.selectedItems.some(item => item.billing_type === 'prepaid')) {
                     ret.validate = false
-                    ret.tooltip = '包年包月机器，不支持此操作'
+                    ret.tooltip = this.$t('compute.text_285')
                     return ret
                   }
                   return ret

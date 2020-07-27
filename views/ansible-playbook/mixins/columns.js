@@ -1,4 +1,5 @@
 import { getStatusTableColumn, getNameDescriptionTableColumn, getProjectTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -14,14 +15,14 @@ export default {
           )
         },
       }),
-      getStatusTableColumn({ statusModule: 'ansiblePlaybook', title: '上一次执行状态' }),
+      getStatusTableColumn({ statusModule: 'ansiblePlaybook', title: i18n.t('compute.text_229') }),
       getTimeTableColumn({
         field: 'start_time',
-        title: '开始时间',
+        title: i18n.t('compute.text_230'),
       }),
       getTimeTableColumn({
         field: 'end_time',
-        title: '结束时间',
+        title: i18n.t('compute.text_231'),
       }),
       getProjectTableColumn(),
     ]

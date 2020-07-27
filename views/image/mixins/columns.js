@@ -2,6 +2,7 @@ import FileProcess from '@Compute/views/image/components/FileProcess'
 import { sizestr } from '@/utils/utils'
 import SystemIcon from '@/sections/SystemIcon'
 import { getNameDescriptionTableColumn, getProjectTableColumn, getTimeTableColumn, getPublicScopeTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -17,14 +18,14 @@ export default {
           )
         },
         formRules: [
-          { required: true, message: '请输入名称' },
+          { required: true, message: i18n.t('compute.text_210') },
           { validator: this.$validate('imageName') },
         ],
       }),
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'image', columns: () => this.columns }),
       {
         field: 'disk_format',
-        title: '格式',
+        title: i18n.t('compute.text_398'),
         width: 100,
         formatter: ({ cellValue }) => {
           return cellValue && cellValue.toUpperCase()
@@ -32,7 +33,7 @@ export default {
       },
       {
         field: 'os_type',
-        title: '系统',
+        title: i18n.t('compute.text_338'),
         width: 60,
         slots: {
           default: ({ row }, h) => {
@@ -41,7 +42,7 @@ export default {
             if (name.includes('Windows') || name.includes('windows')) {
               name = 'Windows'
             }
-            const tooltip = (row.properties.os_version ? `${name} ${row.properties.os_version}` : name) || '未知'
+            const tooltip = (row.properties.os_version ? `${name} ${row.properties.os_version}` : name) || i18n.t('compute.text_339')
             return [
               <SystemIcon tooltip={ tooltip } name={ name } />,
             ]
@@ -50,7 +51,7 @@ export default {
       },
       {
         field: 'size',
-        title: '镜像大小',
+        title: i18n.t('compute.text_610'),
         minWidth: 100,
         formatter: ({ cellValue, row }) => {
           return sizestr(cellValue, 'B', 1024)
@@ -58,7 +59,7 @@ export default {
       },
       {
         field: 'status',
-        title: '状态',
+        title: i18n.t('compute.text_268'),
         sortable: true,
         showOverflow: 'ellipsis',
         minWidth: 80,
@@ -79,11 +80,11 @@ export default {
       // isPublicTableColumn(),
       {
         field: 'is_standard',
-        title: '镜像类型',
+        title: i18n.t('compute.text_611'),
         width: 100,
         formatter: ({ cellValue }) => {
-          if (cellValue === true || cellValue === 'true') return '公共镜像'
-          return '自定义镜像'
+          if (cellValue === true || cellValue === 'true') return i18n.t('compute.text_620')
+          return i18n.t('compute.text_621')
         },
       },
       getTimeTableColumn(),

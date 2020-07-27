@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="物理机" />
+    <page-header :title="$t('compute.text_112')" />
     <page-body>
       <physicalmachine-list :getParams="getParams" :id="listId" />
     </page-body>

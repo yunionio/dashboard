@@ -1,34 +1,32 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">新建快照</div>
+    <div slot="header">{{$t('compute.text_414')}}</div>
     <div slot="body">
       <a-alert class="mb-2" type="warning">
-        <div slot="message">
-          1. 状态异常的硬盘不支持创建快照. 2. 私有云仅支持本地硬盘创建快照（以镜像为系统盘的硬盘不支持创建快照）
-        </div>
+        <div slot="message">{{$t('compute.text_1251')}}</div>
       </a-alert>
-      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" action="新建快照" />
+      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_414')" />
       <dialog-table
         :data="params.data"
         :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc">
-        <a-form-item v-bind="formItemLayout" label="快照类别" v-if="isKvm">
+        <a-form-item v-bind="formItemLayout" :label="$t('compute.text_1071')" v-if="isKvm">
           <a-radio-group
             v-decorator="decorators.snapshotType"
             @change="snapshotTypeChangeHandle">
-            <a-radio value="disk">创建硬盘快照</a-radio>
-            <a-radio value="instance">创建主机快照</a-radio>
+            <a-radio value="disk">{{$t('compute.text_1252')}}</a-radio>
+            <a-radio value="instance">{{$t('compute.text_1253')}}</a-radio>
           </a-radio-group>
         </a-form-item>
         <a-form-item
           v-bind="formItemLayout"
-          label="选择磁盘"
+          :label="$t('compute.text_1254')"
           v-if="isDiskSnapshot">
           <base-select
             style="width: 100%"
             v-decorator="decorators.disk"
             :params="diskParams"
-            :select-props="{ placeholder: '请选择磁盘' }"
+            :select-props="{ placeholder: $t('compute.text_1085') }"
             resource="disks"
             idKey="disk_id"
             nameKey="disk"
@@ -39,13 +37,13 @@
         </a-form-item>
         <a-form-item
           v-bind="formItemLayout"
-          label="快照名称">
+          :label="$t('compute.text_415')">
           <a-input
             v-decorator="decorators.snapshotName"
             :placeholder="$t('validator.resourceName')" />
           <div slot="extra">
-            <div v-if="showRepeatTips">名称重复，系统默认追加“-1”</div>
-            <div v-show="!isDiskSnapshot">友情提示：该主机快照占用快照配额 {{ diskCount }} 个</div>
+            <div v-if="showRepeatTips">{{$t('compute.text_1091')}}</div>
+            <div v-show="!isDiskSnapshot">{{$t('compute.text_1255', [ diskCount ])}}</div>
           </div>
         </a-form-item>
       </a-form>
@@ -100,7 +98,7 @@ export default {
           'disk',
           {
             rules: [
-              { required: true, message: '请选择磁盘', trigger: 'change' },
+              { required: true, message: this.$t('compute.text_1085'), trigger: 'change' },
             ],
           },
         ],
@@ -109,7 +107,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入快照名称' },
+              { required: true, message: this.$t('compute.text_1256') },
               { validator: this.$validate('resourceName') },
             ],
           },

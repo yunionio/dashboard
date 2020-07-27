@@ -40,19 +40,19 @@ import { hasSetupKey } from '@/utils/auth'
 export default {
   index: 2,
   meta: {
-    label: '主机',
+    label: i18n.t('compute.text_90'),
     icon: 'menu-compute',
   },
   menus: [
     {
       meta: {
-        label: '主机',
+        label: i18n.t('compute.text_90'),
       },
       submenus: [
         {
           path: '/vminstance',
           meta: {
-            label: '虚拟机',
+            label: i18n.t('compute.text_91'),
             permission: 'servers_list',
             hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'vmware']),
           },
@@ -78,7 +78,7 @@ export default {
         {
           path: '/baremetal',
           meta: {
-            label: '裸金属',
+            label: i18n.t('compute.text_92'),
             permission: 'servers_list',
             hidden: () => !hasSetupKey(['baremetal']),
           },
@@ -99,7 +99,7 @@ export default {
         {
           path: '/instancegroup',
           meta: {
-            label: '主机组',
+            label: i18n.t('compute.text_93'),
             permission: 'instancegroups_list',
             t: 'dictionary.instancegroup',
             hidden: () => !hasSetupKey(['onestack']),
@@ -117,7 +117,7 @@ export default {
         {
           path: '/servertemplate',
           meta: {
-            label: '主机模板',
+            label: i18n.t('compute.text_94'),
             permission: 'servertemplates_list',
             hidden: () => !hasSetupKey(['onestack']),
           },
@@ -146,7 +146,7 @@ export default {
         {
           path: '/scalinggroup',
           meta: {
-            label: '弹性伸缩组',
+            label: i18n.t('compute.text_95'),
             permission: 'scalinggroups_list',
             hidden: () => !hasSetupKey(['onestack', 'azure']),
           },
@@ -170,13 +170,13 @@ export default {
     },
     {
       meta: {
-        label: '镜像',
+        label: i18n.t('compute.text_96'),
       },
       submenus: [
         {
           path: '/image',
           meta: {
-            label: '系统镜像',
+            label: i18n.t('compute.text_97'),
             permission: 'images_list',
             hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'baremetal', 'vmware']),
           },
@@ -197,7 +197,7 @@ export default {
         {
           path: '/host_image',
           meta: {
-            label: '主机镜像',
+            label: i18n.t('compute.text_98'),
             permission: 'guestimages_list',
             hidden: () => !hasSetupKey(['onestack']),
           },
@@ -214,13 +214,13 @@ export default {
     },
     {
       meta: {
-        label: '存储',
+        label: i18n.t('compute.text_99'),
       },
       submenus: [
         {
           path: '/disk',
           meta: {
-            label: '硬盘',
+            label: i18n.t('compute.text_100'),
             permission: 'disks_list',
             hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'baremetal', 'vmware']),
           },
@@ -236,7 +236,7 @@ export default {
         {
           path: '/disk-snapshot',
           meta: {
-            label: '硬盘快照',
+            label: i18n.t('compute.text_101'),
             permission: 'snapshots_list',
             hidden: () => !hasSetupKey(['onestack', 'private', 'public']),
           },
@@ -252,7 +252,7 @@ export default {
         {
           path: '/instance-snapshot',
           meta: {
-            label: '主机快照',
+            label: i18n.t('compute.text_102'),
             permission: 'instance_snapshots_list',
             hidden: () => !hasSetupKey(['onestack']),
           },
@@ -268,7 +268,7 @@ export default {
         {
           path: '/snapshotpolicy',
           meta: {
-            label: '自动快照策略',
+            label: i18n.t('compute.text_103'),
             permission: 'snapshotpolicy_list',
             hidden: () => !hasSetupKey(['onestack', 'aliyun', 'qcloud']),
           },
@@ -285,13 +285,13 @@ export default {
     },
     {
       meta: {
-        label: '网络',
+        label: i18n.t('compute.text_104'),
       },
       submenus: [
         {
           path: '/secgroup',
           meta: {
-            label: '安全组',
+            label: i18n.t('compute.text_105'),
             permission: 'secgroups_list',
             hidden: () => !hasSetupKey(['onestack', 'public', 'private']),
           },
@@ -307,7 +307,7 @@ export default {
         {
           path: '/network2',
           meta: {
-            label: 'IP子网',
+            label: i18n.t('compute.text_106'),
             permission: 'networks_list',
             hidden: () => !hasSetupKey(['onestack', 'public', 'private', 'baremetal', 'vmware']),
           },
@@ -333,7 +333,7 @@ export default {
         {
           path: '/eip2',
           meta: {
-            label: '弹性公网IP',
+            label: i18n.t('compute.text_107'),
             permission: 'eips_list',
             hidden: () => !hasSetupKey(['onestack', 'public', 'private']),
           },
@@ -350,13 +350,13 @@ export default {
     },
     {
       meta: {
-        label: '密钥',
+        label: i18n.t('compute.text_108'),
       },
       submenus: [
         {
           path: '/keypair',
           meta: {
-            label: '密钥',
+            label: i18n.t('compute.text_108'),
             hidden: () => !hasSetupKey(['onestack', 'public', 'private', 'baremetal', 'vmware']),
           },
           component: Layout,
@@ -373,13 +373,13 @@ export default {
     },
     {
       meta: {
-        label: '套餐',
+        label: i18n.t('compute.text_109'),
       },
       submenus: [
         {
           path: '/sku',
           meta: {
-            label: '套餐',
+            label: i18n.t('compute.text_109'),
             permission: 'serverskus_list',
             hidden: () => !hasSetupKey(['onestack', 'private', 'baremetal', 'vmware']),
           },
@@ -397,13 +397,13 @@ export default {
     },
     {
       meta: {
-        label: '基础资源',
+        label: i18n.t('compute.text_110'),
       },
       submenus: [
         {
           path: '/host',
           meta: {
-            label: '宿主机',
+            label: i18n.t('compute.text_111'),
             permission: 'hosts_list',
             hidden: () => !hasSetupKey(['onestack', 'private', 'vmware']),
             // hidden: () => {
@@ -427,7 +427,7 @@ export default {
         {
           path: '/physicalmachine',
           meta: {
-            label: '物理机',
+            label: i18n.t('compute.text_112'),
             permission: 'hosts_list',
             hidden: () => !hasSetupKey(['baremetal']),
             // hidden: () => {
@@ -455,7 +455,7 @@ export default {
         {
           path: '/gpu',
           meta: {
-            label: '透传设备',
+            label: i18n.t('compute.text_113'),
             permission: 'isolated_devices_list',
             hidden: () => !hasSetupKey(['onestack']),
             // hidden: () => {
@@ -522,7 +522,7 @@ export default {
     // },
     {
       meta: {
-        label: '回收站',
+        label: i18n.t('compute.text_114'),
         permission: 'recyclebins_list',
       },
       submenus: [
@@ -545,7 +545,7 @@ export default {
         {
           path: '/diskrecovery',
           meta: {
-            label: '硬盘',
+            label: i18n.t('compute.text_100'),
             permission: 'disks_list,disks_delete',
             hidden: () => !hasSetupKey(['onestack', 'public', 'private', 'vmware']),
           },
@@ -562,7 +562,7 @@ export default {
         {
           path: '/imagerecovery',
           meta: {
-            label: '镜像',
+            label: i18n.t('compute.text_96'),
             permission: 'images_list,images_delete',
             hidden: () => !hasSetupKey(['onestack', 'public', 'private', 'vmware']),
           },

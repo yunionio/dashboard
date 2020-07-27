@@ -2,6 +2,7 @@ import { Base64 } from 'js-base64'
 import qs from 'qs'
 import expectStatus from '@/constants/expectStatus'
 import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
+import i18n from '@/locales'
 
 export default {
   destroyed () {
@@ -11,12 +12,12 @@ export default {
     this.webconsoleManager = new this.$Manager('webconsole', 'v1')
     this.singleActions = [
       {
-        label: '远程终端',
+        label: i18n.t('compute.text_567'),
         actions: obj => {
           const ret = []
           if (obj.host_type === 'baremetal') {
             ret.push({
-              label: 'SOL远程终端',
+              label: i18n.t('compute.text_568'),
               action: () => {
                 this.webconsoleManager.objectRpc({ methodname: 'DoBaremetalConnect', objId: obj.id }).then((res) => {
                   this.openWebConsole(obj, res.data)
@@ -52,10 +53,10 @@ export default {
               meta,
             })
             ret.push({
-              label: `SSH ${ip} 自定义端口`,
+              label: i18n.t('compute.text_345', [ip]),
               action: () => {
                 this.createDialog('SmartFormDialog', {
-                  title: '自定义端口',
+                  title: i18n.t('compute.text_346'),
                   data: [obj],
                   list: this.list,
                   callback: async (data) => {
@@ -72,12 +73,12 @@ export default {
                       {
                         validateFirst: true,
                         rules: [
-                          { required: true, message: '请输入端口' },
+                          { required: true, message: i18n.t('compute.text_347') },
                           {
                             validator: (rule, value, _callback) => {
                               const num = parseFloat(value)
                               if (!/^\d+$/.test(value) || !num || num > 65535) {
-                                _callback('端口范围在 0-65535 之间')
+                                _callback(i18n.t('compute.text_348'))
                               }
                               _callback()
                             },
@@ -85,8 +86,8 @@ export default {
                         ],
                       },
                       {
-                        label: '端口',
-                        placeholder: '请输入端口号',
+                        label: i18n.t('compute.text_349'),
+                        placeholder: i18n.t('compute.text_350'),
                       },
                     ],
                   },
@@ -96,7 +97,7 @@ export default {
             })
           })
           ret.push({
-            label: 'Java控制台',
+            label: i18n.t('compute.text_351'),
             action: () => {
               return new this.$Manager('hosts').getSpecific({ id: obj.id, spec: 'jnlp' }).then(res => {
                 const blob = new Blob([res.data.jnlp], { type: 'application/x-java-jnlp-file' })
@@ -116,20 +117,20 @@ export default {
         },
       },
       {
-        label: '更多',
+        label: i18n.t('compute.text_352'),
         actions: (obj) => {
           return [
             {
-              label: '启用/禁用',
+              label: i18n.t('compute.text_849'),
               submenus: [
                 ...getEnabledSwitchActions(Object.assign({}, this, { resource: 'physicalmachine' }), obj, undefined, { resourceName: this.$t('dictionary.physicalmachine') }),
               ],
             },
             {
-              label: '设置',
+              label: i18n.t('compute.text_136'),
               submenus: [
                 {
-                  label: '调度标签',
+                  label: i18n.t('compute.text_541'),
                   action: () => {
                     this.createDialog('HostsAdjustLabelDialog', {
                       data: [obj],
@@ -139,7 +140,7 @@ export default {
                   },
                 },
                 {
-                  label: '同步状态',
+                  label: i18n.t('compute.text_282'),
                   action: () => {
                     this.onManager('performAction', {
                       id: obj.id,
@@ -153,7 +154,7 @@ export default {
                     if (obj.status === 'ready') {
                       return {
                         validate: false,
-                        tooltip: '处于关机状态的物理机不支持该操作',
+                        tooltip: i18n.t('compute.text_850'),
                       }
                     }
                     return {
@@ -171,7 +172,7 @@ export default {
                   resource: 'hosts',
                 }),
                 {
-                  label: '安装操作系统',
+                  label: i18n.t('compute.text_298'),
                   action: () => {
                     this.$router.push({
                       path: '/baremetal/create',
@@ -204,13 +205,13 @@ export default {
                     if (!obj.enabled) {
                       return {
                         validate: false,
-                        tooltip: '请启用物理机后重试',
+                        tooltip: i18n.t('compute.text_851'),
                       }
                     }
                     if (['running', 'ready'].indexOf(obj.status) < 0) {
                       return {
                         validate: false,
-                        tooltip: '处于关机或开机状态下的物理机支持该操作',
+                        tooltip: i18n.t('compute.text_852'),
                       }
                     }
                     return {
@@ -219,7 +220,7 @@ export default {
                   },
                 },
                 {
-                  label: '转换为宿主机',
+                  label: i18n.t('compute.text_828'),
                   action: () => {
                     this.createDialog('HostsConvertDialog', {
                       data: [obj],
@@ -247,13 +248,13 @@ export default {
                     if (!obj.enabled) {
                       return {
                         validate: false,
-                        tooltip: '请启用物理机后重试',
+                        tooltip: i18n.t('compute.text_851'),
                       }
                     }
                     if (['running', 'ready'].indexOf(obj.status) < 0) {
                       return {
                         validate: false,
-                        tooltip: '处于关机或开机状态下的物理机支持该操作',
+                        tooltip: i18n.t('compute.text_852'),
                       }
                     }
                     return {
@@ -262,7 +263,7 @@ export default {
                   },
                 },
                 {
-                  label: '同步硬件配置',
+                  label: i18n.t('compute.text_825'),
                   action: () => {
                     this.onManager('performAction', {
                       id: obj.id,
@@ -277,10 +278,10 @@ export default {
               ],
             },
             {
-              label: '状态',
+              label: i18n.t('compute.text_268'),
               submenus: [
                 {
-                  label: '开机',
+                  label: i18n.t('compute.text_272'),
                   action: () => {
                     this.onManager('performAction', {
                       id: obj.id,
@@ -302,7 +303,7 @@ export default {
                   },
                 },
                 {
-                  label: '关机',
+                  label: i18n.t('compute.text_273'),
                   action: () => {
                     this.onManager('performAction', {
                       id: obj.id,
@@ -339,7 +340,7 @@ export default {
               label: 'PXE',
               submenus: [
                 {
-                  label: '进入维护模式',
+                  label: i18n.t('compute.text_550'),
                   action: () => {
                     this.onManager('performAction', {
                       id: obj.id,
@@ -373,7 +374,7 @@ export default {
                     if (['running', 'ready'].indexOf(obj.status) < 0) {
                       return {
                         validate: false,
-                        tooltip: '处于开机或关机状态物理机支持该操作',
+                        tooltip: i18n.t('compute.text_853'),
                       }
                     }
                     return {
@@ -382,7 +383,7 @@ export default {
                   },
                 },
                 {
-                  label: '退出维护模式',
+                  label: i18n.t('compute.text_559'),
                   action: () => {
                     this.onManager('performAction', {
                       id: obj.id,
@@ -416,7 +417,7 @@ export default {
                     if (['running', 'ready'].indexOf(obj.status) < 0) {
                       return {
                         validate: false,
-                        tooltip: '处于开机或关机状态物理机支持该操作',
+                        tooltip: i18n.t('compute.text_853'),
                       }
                     }
                     return {
@@ -427,10 +428,10 @@ export default {
               ],
             },
             {
-              label: '删除',
+              label: i18n.t('compute.text_261'),
               submenus: [
                 {
-                  label: '删除',
+                  label: i18n.t('compute.text_261'),
                   action: () => {
                     this.createDialog('DeleteResDialog', {
                       name: this.$t('dictionary.physicalmachine'),
@@ -438,13 +439,13 @@ export default {
                       data: [obj],
                       columns: this.columns,
                       onManager: this.onManager,
-                      title: '删除',
+                      title: i18n.t('compute.text_261'),
                     })
                   },
                   meta: () => {
                     return {
                       validate: this.$getDeleteResult(obj).validate,
-                      tooltip: this.$getDeleteResult(obj).validate ? '' : '操作对象的当前状态不支持该操作: 物理机没有被禁用',
+                      tooltip: this.$getDeleteResult(obj).validate ? '' : i18n.t('compute.text_854'),
                     }
                   },
                 },

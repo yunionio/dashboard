@@ -48,7 +48,7 @@ export default {
       baseInfo: [
         {
           field: 'keypair',
-          title: '关联密钥',
+          title: this.$t('compute.text_33'),
           formatter: ({ row }) => {
             return row.config_info.keypair || '-'
           },
@@ -58,15 +58,15 @@ export default {
       ],
       extraInfo: [
         {
-          title: '配置信息',
+          title: this.$t('compute.text_368'),
           items: [
             {
               field: 'os_type',
-              title: '操作系统',
+              title: this.$t('compute.text_267'),
             },
             getCopyWithContentTableColumn({
               field: 'image',
-              title: '系统镜像',
+              title: this.$t('compute.text_97'),
               hideField: true,
               slotCallback: row => {
                 if (!row.config_info || !row.config_info.image) return '-'
@@ -89,7 +89,7 @@ export default {
             }),
             {
               field: 'config_info.network',
-              title: 'IP子网',
+              title: this.$t('compute.text_106'),
               slots: {
                 default: ({ row }) => {
                   if (row.config_info.nets && row.config_info.nets.length) {
@@ -101,13 +101,13 @@ export default {
                     }).filter(v => !!v)
                     return _.length > 0 ? _ : '-'
                   }
-                  return '默认'
+                  return this.$t('compute.text_1')
                 },
               },
             },
             {
-              field: 'secgroups',
-              title: '安全组',
+              field: 'config_info.secgroup',
+              title: this.$t('compute.text_105'),
               formatter: ({ row }) => {
                 if (row.secgroups && row.secgroups.length > 0) {
                   return row.secgroups.map(item => <a-tag>{item}</a-tag>)
@@ -117,14 +117,14 @@ export default {
             },
             {
               field: 'config_info.sys',
-              title: '系统盘',
+              title: this.$t('compute.text_49'),
               formatter: ({ row }) => {
                 return getDiskObj(row, 'sys')
               },
             },
             {
               field: 'config_info.disk',
-              title: '数据盘',
+              title: this.$t('compute.text_50'),
               formatter: ({ row }) => {
                 return getDiskObj(row, 'data')
               },
@@ -135,14 +135,14 @@ export default {
               formatter: ({ row }) => {
                 const { sku } = row.config_info
                 if (R.is(Object, sku)) {
-                  return `${sku.cpu_core_count || 0}核`
+                  return this.$t('compute.text_120', [sku.cpu_core_count || 0])
                 }
                 return '-'
               },
             },
             {
               field: 'config_info.memory_size_mb',
-              title: '内存',
+              title: this.$t('compute.text_369'),
               formatter: ({ row }) => {
                 const { sku } = row.config_info
                 if (R.is(Object, sku)) {
@@ -164,9 +164,9 @@ export default {
             },
             {
               field: 'config_info.gcounts',
-              title: 'GPU数量',
+              title: this.$t('compute.text_1049'),
               formatter: ({ row }) => {
-                return `${row.config_info.gcounts || 0}块`
+                return this.$t('compute.text_1050', [row.config_info.gcounts || 0])
               },
             },
             // {
@@ -181,7 +181,7 @@ export default {
             // },
             {
               field: 'config_info.reset_password',
-              title: '管理员密码',
+              title: this.$t('compute.text_308'),
               formatter: ({ row }) => {
                 if (row.config_info.reset_password === true) {
                   return LOGIN_TYPES_MAP.random.label

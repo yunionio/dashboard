@@ -3,14 +3,14 @@
     <div class="script-add-wrap">
       <template v-if="loading"><loader loading /></template>
       <template v-else>
-        <a-alert message="提示：在一台或多台已安装系统的物理机中运行以下命令" banner />
+        <a-alert :message="$t('compute.text_800')" banner />
         <code-mirror :value="value" :options="cmOptions" />
         <div class="text-right">
           <a-button
             type="link"
             icon="copy"
             class="pl-0 pr-0"
-            @click="handleCopy">点击复制</a-button>
+            @click="handleCopy">{{$t('compute.text_801')}}</a-button>
         </div>
       </template>
     </div>
@@ -61,9 +61,9 @@ export default {
     },
     handleCopy () {
       this.$copyText(this.value).then(() => {
-        this.$message.success('复制成功')
+        this.$message.success(this.$t('compute.text_802'))
       }).catch(() => {
-        this.$message.error('复制失败')
+        this.$message.error(this.$t('compute.text_803'))
       })
     },
   },

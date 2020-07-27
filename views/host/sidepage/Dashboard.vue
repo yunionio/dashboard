@@ -1,12 +1,12 @@
 <template>
   <div>
-    <a-divider orientation="left">容量统计</a-divider>
+    <a-divider orientation="left">{{$t('compute.text_572')}}</a-divider>
       <a-row class="mb-2" :gutter="{ lg: 24, xl: 12, xxl: 24 }">
         <a-col class="mb-3" :lg="12" :xl="6" v-for="item in progressList" :key="item.label">
           <progress-card :progress="item" />
         </a-col>
       </a-row>
-    <a-divider class="mt-3" orientation="left">实时监控</a-divider>
+    <a-divider class="mt-3" orientation="left">{{$t('compute.text_573')}}</a-divider>
     <a-spin :spinning="loading">
       <a-row class="mb-2" :gutter="{ lg: 24, xl: 12, xxl: 24 }">
         <a-col class="mb-3" :lg="12" :xl="6" v-for="item in gaugeList" :key="item.label">
@@ -148,7 +148,7 @@ export default {
               let unit = '%'
               let numerifyFloat = '0.00'
               let percent = maxNum / 100
-              if (value.label === '系统负载') {
+              if (value.label === this.$t('compute.text_517')) {
                 unit = ''
                 numerifyFloat = '0.0000'
                 percent = maxNum
@@ -189,7 +189,7 @@ export default {
           msg: {
             current,
             total,
-            currentLabel: '运行中',
+            currentLabel: this.$t('compute.text_574'),
           },
         }
       })()
@@ -197,11 +197,11 @@ export default {
         const current = obj.mem_commit || 0
         const total = (obj.mem_size - (obj.mem_reserved || 0)) || 0
         return {
-          title: '内存',
+          title: this.$t('compute.text_369'),
           percent: total ? (current / total) : 0,
           msg: {
             current: sizestrWithUnit(current, 'M', 1024),
-            currentLabel: '运行中',
+            currentLabel: this.$t('compute.text_574'),
             total: sizestrWithUnit(total, 'M', 1024),
           },
         }
@@ -210,7 +210,7 @@ export default {
         const current = obj.storage_used || 0
         const total = obj.storage_size || 0
         return {
-          title: '本地存储',
+          title: this.$t('compute.text_575'),
           percent: total ? (current / total) : 0,
           msg: {
             current: sizestrWithUnit(current, 'M', 1024),
@@ -226,9 +226,9 @@ export default {
           percent: total ? (current / total) : 0,
           msg: {
             current,
-            currentLabel: '运行中',
+            currentLabel: this.$t('compute.text_574'),
             total,
-            totalLabel: '总数',
+            totalLabel: this.$t('compute.text_576'),
           },
         }
       })()

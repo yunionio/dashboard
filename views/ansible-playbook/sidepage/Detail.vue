@@ -28,11 +28,11 @@ export default {
       baseInfo: [
         getTimeTableColumn({
           field: 'start_time',
-          title: '开始时间',
+          title: this.$t('compute.text_230'),
         }),
         getTimeTableColumn({
           field: 'end_time',
-          title: '结束时间',
+          title: this.$t('compute.text_231'),
         }),
       ],
     }

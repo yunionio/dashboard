@@ -1,17 +1,15 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">关联安全组</div>
+    <div slot="header">{{$t('compute.text_1116')}}</div>
     <div slot="body">
       <a-alert class="mb-2" type="warning" :message="message" />
-      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" action="关联安全组" />
+      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_1116')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <loader loading v-if="!(bindedSecgroupsLoaded && secgroupsInitLoaded)" />
       <a-form :form="form.fc" hideRequiredMark v-show="bindedSecgroupsLoaded && secgroupsInitLoaded">
-        <a-form-item label="安全组" v-bind="formItemLayout" v-if="bindedSecgroupsLoaded">
-          <div slot="extra">
-            最多支持选择{{max}}个安全组。没有想要的安全组？可以前往
-            <!-- <help-link :href="href"> 新建安全组</help-link> -->
-            <dialog-trigger :vm="params.vm" :extParams="{ tenant, domain }" name="新建安全组" value="CreateSecgroupDialog" resource="secgroups" @success="successCallback" />
+        <a-form-item :label="$t('compute.text_105')" v-bind="formItemLayout" v-if="bindedSecgroupsLoaded">
+          <div slot="extra">{{$t('compute.text_1242', [max])}}<!-- <help-link :href="href">{{$t('compute.text_189')}}</help-link> -->
+            <dialog-trigger :vm="params.vm" :extParams="{ tenant, domain }" :name="$t('compute.text_189')" value="CreateSecgroupDialog" resource="secgroups" @success="successCallback" />
           </div>
           <base-select
             ref="secgroupRef"
@@ -24,7 +22,7 @@
             :mapper="mapperSecgroups"
             :params="secgroupsParams"
             :init-loaded.sync="secgroupsInitLoaded"
-            :select-props="{ allowClear: true, placeholder: '请选择安全组', mode: 'multiple' }" />
+            :select-props="{ allowClear: true, placeholder: $t('compute.text_190'), mode: 'multiple' }" />
         </a-form-item>
       </a-form>
     </div>
@@ -47,8 +45,8 @@ export default {
   mixins: [DialogMixin, WindowsMixin],
   data () {
     const validateSecgroups = (rule, value, callback) => {
-      const maxError = this.isBindOne ? '最多关联一个' : '最多关联五个'
-      const minError = '最少关联一个'
+      const maxError = this.isBindOne ? this.$t('compute.text_1243') : this.$t('compute.text_1244')
+      const minError = this.$t('compute.text_192')
       const max = this.isBindOne ? 1 : 5
       if (value.length > max) {
         return callback(maxError)
@@ -104,9 +102,9 @@ export default {
       return this.isAzure || this.isUCloud || this.isZStack
     },
     message () {
-      let str = '提示信息：安全组最多可关联五个'
+      let str = this.$t('compute.text_1245')
       if (this.isBindOne) {
-        str = '提示信息：安全组最多可关联一个'
+        str = this.$t('compute.text_1246')
       }
       return str
     },

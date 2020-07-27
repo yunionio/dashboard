@@ -23,7 +23,7 @@
       <template v-slot:right>
         <div class="d-flex align-items-center">
           <!-- <div v-if="hasMeterService" class="mr-4 d-flex align-items-center">
-            <div class="text-truncate">费用估算：</div>
+            <div class="text-truncate">{{$t('compute.text_286')}}</div>
             <div class="ml-2 prices">
               <div class="hour text-truncate">
                 <template v-if="price">
@@ -32,7 +32,7 @@
                 <template v-else>---</template>
               </div>
               <div class="tips text-truncate" v-if="!isPackage">
-                <template v-if="priceTips">(合&yen;{{ priceTips.day }}/天 &yen;{{ priceTips.month }}/月)</template>
+                <template v-if="priceTips">{{$t('compute.text_287', [ priceTips.day , priceTips.month ])}}</template>
                 <template v-else>---</template>
               </div>
             </div>
@@ -44,9 +44,9 @@
             html-type="submit"
             style="width: 120px;"
             :loading="loading"
-            :disabled="!!errors.length">{{ isOpenWorkflow && !isInstallOperationSystem ? '提交工单' : '新 建' }}</a-button>
+            :disabled="!!errors.length">{{ isOpenWorkflow && !isInstallOperationSystem ? $t('compute.text_288') : $t('compute.text_289') }}</a-button>
         </div>
-        <side-errors error-title="创建主机失败" :errors="errors" @update:errors="changeErrors" />
+        <side-errors error-:title="$t('compute.text_290')" :errors="errors" @update:errors="changeErrors" />
       </template>
     </page-footer>
   </div>
@@ -137,7 +137,7 @@ export default {
       return ret
     },
     vmType () {
-      let ret = `通用${this.$t('dictionary.server')}`
+      let ret = this.$t('compute.text_291', [this.$t('dictionary.server')])
       if (this.fd.gpuEnable) {
         ret = `GPU${this.$t('dictionary.server')}`
       }
@@ -153,8 +153,8 @@ export default {
     config () {
       const ret = []
       const { cpu = 0, mem = '0M' } = this.selectedSpecItem
-      ret.push(`${cpu}核CPU`)
-      ret.push(`${sizestrWithUnit(mem.substr(0, mem.length - 1), 'M', 1024)}内存`)
+      ret.push(this.$t('compute.text_292', [cpu]))
+      ret.push(this.$t('compute.text_293', [sizestrWithUnit(mem.substr(0, mem.length - 1), 'M', 1024)]))
       return ret.join('、')
     },
     image () {
@@ -163,16 +163,16 @@ export default {
     tips () {
       const ret = [
         [
-          { label: '名称', labelClass: 'label-w-50', value: this.name, valueClass: 'name-value' },
-          { label: '数量', labelClass: 'label-w-50', value: this.fd.count },
+          { label: this.$t('compute.text_228'), labelClass: 'label-w-50', value: this.name, valueClass: 'name-value' },
+          { label: this.$t('compute.text_294'), labelClass: 'label-w-50', value: this.fd.count },
         ],
         [
-          { label: '区域', labelClass: 'label-w-50', value: this.zone },
-          { label: '类型', labelClass: 'label-w-50', value: this.vmType },
+          { label: this.$t('compute.text_177'), labelClass: 'label-w-50', value: this.zone },
+          { label: this.$t('compute.text_175'), labelClass: 'label-w-50', value: this.vmType },
         ],
         [
-          { label: '配置', labelClass: 'label-w-80', value: this.config },
-          { label: '操作系统', labelClass: 'label-w-80', value: this.image },
+          { label: this.$t('compute.text_295'), labelClass: 'label-w-80', value: this.config },
+          { label: this.$t('compute.text_267'), labelClass: 'label-w-80', value: this.image },
         ],
       ]
       return ret
@@ -201,7 +201,7 @@ export default {
       if (this.isPackage) {
         return ret
       }
-      ret += ' / 时'
+      ret += this.$t('compute.text_296')
       return ret
     },
   },

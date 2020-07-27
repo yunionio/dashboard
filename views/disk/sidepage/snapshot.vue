@@ -13,11 +13,12 @@ import {
 import WindowsMixin from '@/mixins/windows'
 import { sizestr } from '@/utils/utils'
 import expectStatus from '@/constants/expectStatus'
+import i18n from '@/locales'
 
 const DISK_TYPES = {
-  sys: '系统盘',
-  data: '数据盘',
-  'swap-swap': '分区',
+  sys: i18n.t('compute.text_49'),
+  data: i18n.t('compute.text_50'),
+  'swap-swap': i18n.t('compute.text_51'),
 }
 
 export default {
@@ -38,14 +39,14 @@ export default {
         getParams: { details: true, disk_id: this.resId },
         filterOptions: {
           name: {
-            label: '快照名称',
+            label: this.$t('compute.text_415'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
             },
           },
           disk_name: {
-            label: '硬盘',
+            label: this.$t('compute.text_100'),
             filter: true,
             formatter: val => {
               return `disk_name.contains("${val}")`
@@ -54,16 +55,16 @@ export default {
         },
       }),
       columns: [
-        getCopyWithContentTableColumn({ field: 'name', title: '快照名称' }),
+        getCopyWithContentTableColumn({ field: 'name', title: this.$t('compute.text_415') }),
         {
           field: 'disk_name',
-          title: '硬盘',
+          title: this.$t('compute.text_100'),
           minWidth: 50,
         },
         getBrandTableColumn(),
         {
           field: 'size',
-          title: '容量',
+          title: this.$t('compute.text_397'),
           minWidth: 50,
           formatter: ({ cellValue }) => {
             return sizestr(cellValue, 'M', 1024)
@@ -71,7 +72,7 @@ export default {
         },
         {
           field: 'disk_type',
-          title: '磁盘类型',
+          title: this.$t('compute.text_381'),
           width: 70,
           formatter: ({ cellValue }) => {
             return DISK_TYPES[cellValue]
@@ -80,7 +81,7 @@ export default {
         getStatusTableColumn({ statusModule: 'snapshot' }),
         {
           field: 'guest',
-          title: '服务器',
+          title: this.$t('compute.text_463'),
           minWidth: 100,
           showOverflow: 'ellipsis',
           slots: {
@@ -96,7 +97,7 @@ export default {
         },
         {
           field: 'created_at',
-          title: '创建时间',
+          title: this.$t('compute.text_243'),
           minWidth: 70,
           formatter: ({ cellValue }) => {
             return this.$moment(cellValue).format()

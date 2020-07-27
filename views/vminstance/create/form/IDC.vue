@@ -7,57 +7,57 @@
       @submit="submit"
       hideRequiredMark>
       <servertemplate v-if="isServertemplate" :decorators="decorators.servertemplate">
-        <a-form-item :label="`指定${$t('dictionary.project')}`">
+        <a-form-item :label="$t('compute.text_297', [$t('dictionary.project')])">
           <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
         </a-form-item>
       </servertemplate>
-      <!-- <a-divider orientation="left">基础配置</a-divider> -->
-      <a-form-item v-if="!isServertemplate" :label="`指定${$t('dictionary.project')}`">
+      <!-- <a-divider orientation="left">{{$t('compute.text_300')}}</a-divider> -->
+      <a-form-item v-if="!isServertemplate" :label="$t('compute.text_297', [$t('dictionary.project')])">
         <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
       </a-form-item>
-      <a-form-item label="区域" class="mb-0">
+      <a-form-item :label="$t('compute.text_177')" class="mb-0">
         <cloudregion-zone
           :zone-params="zoneParams"
           :cloudregion-params="cloudregionParams"
           :decorator="decorators.cloudregionZone" />
       </a-form-item>
-      <a-form-item label="名称" v-if="!isServertemplate">
+      <a-form-item :label="$t('compute.text_228')" v-if="!isServertemplate">
         <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceCreateName')" />
         <name-repeated
           v-slot:extra
           res="servers"
           :name="form.fd.name"
-          default-text="名称支持有序后缀占位符‘#’，用法举例，名称host##，数量2，创建后实例的名称依次为host01、host02，已有同名实例，序号顺延" />
+          default-:text="$t('compute.text_893')" />
       </a-form-item>
-      <a-form-item label="申请原因" v-if="isOpenWorkflow">
-        <a-input v-decorator="decorators.reason" placeholder="请输入主机申请原因" />
+      <a-form-item :label="$t('compute.text_1041')" v-if="isOpenWorkflow">
+        <a-input v-decorator="decorators.reason" :placeholder="$t('compute.text_1042')" />
       </a-form-item>
-      <a-form-item v-show="!isServertemplate" label="到期释放">
+      <a-form-item v-show="!isServertemplate" :label="$t('compute.text_1132')">
         <duration :decorators="decorators.duration" :form="form" />
       </a-form-item>
-      <a-form-item label="数量" v-show="!isServertemplate">
+      <a-form-item :label="$t('compute.text_294')" v-show="!isServertemplate">
         <a-input-number v-decorator="decorators.count" @blur="countBlur" :min="1" :max="100" />
       </a-form-item>
-      <a-form-item label="平台" extra="根据选择的区域不同，平台的可用类型不同且目前只有OneCloud支持GPU云服务器、云硬盘">
+      <a-form-item :label="$t('compute.text_176')" :extra="$t('compute.text_1151')">
         <hypervisor-radio :decorator="decorators.hypervisor" :type="form.fi.createType" :hypervisors="hypervisors" />
       </a-form-item>
-      <a-form-item v-if="form.fd.hypervisor === 'kvm'" label="是否配置GPU" extra="目前只有OneCloud支持GPU云服务器">
+      <a-form-item v-if="form.fd.hypervisor === 'kvm'" :label="$t('compute.text_1152')" :extra="$t('compute.text_1153')">
         <gpu :decorators="decorators.gpu" :gpu-options="gpuOptions" />
       </a-form-item>
-      <a-form-item label="CPU核数" class="mb-0">
+      <a-form-item :label="$t('compute.text_1058')" class="mb-0">
         <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" @change="cpuChange" />
       </a-form-item>
-      <a-form-item label="内存" class="mb-0">
+      <a-form-item :label="$t('compute.text_369')" class="mb-0">
         <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" />
       </a-form-item>
-      <a-form-item label="套餐" v-if="showSku">
+      <a-form-item :label="$t('compute.text_109')" v-if="showSku">
         <sku
           v-decorator="decorators.sku"
           :type="type"
           :sku-params="skuParam"
           :hypervisor="form.fd.hypervisor" />
       </a-form-item>
-      <a-form-item label="操作系统" extra="操作系统会根据选择的虚拟化平台和可用区域的变化而变化，公共镜像的维护请联系管理员">
+      <a-form-item :label="$t('compute.text_267')" :extra="$t('compute.text_302')">
         <os-select
           :type="type"
           :uefi="uefi"
@@ -69,7 +69,7 @@
           :cloudproviderParamsExtra="cloudproviderParamsExtra"
           @updateImageMsg="updateFi" />
       </a-form-item>
-      <a-form-item label="系统盘" class="mb-0">
+      <a-form-item :label="$t('compute.text_49')" class="mb-0">
         <system-disk
           v-if="form.fd.hypervisor"
           :decorator="decorators.systemDisk"
@@ -86,7 +86,7 @@
           :sizeDisabled="systemdiskSizeDisabled"
           :domain="project_domain" />
       </a-form-item>
-      <a-form-item label="数据盘">
+      <a-form-item :label="$t('compute.text_50')">
         <data-disk
           v-if="form.fd.hypervisor"
           ref="dataDiskRef"
@@ -104,10 +104,10 @@
           :isWindows="isWindows"
           :enableMointpoint="true" />
       </a-form-item>
-      <a-form-item label="管理员密码" v-if="!isIso">
+      <a-form-item :label="$t('compute.text_308')" v-if="!isIso">
         <server-password :form="form" :login-types="loginTypes" :isSnapshotImageType="isSnapshotImageType" :decorator="decorators.loginConfig" />
       </a-form-item>
-      <a-form-item label="网络" class="mb-0">
+      <a-form-item :label="$t('compute.text_104')" class="mb-0">
         <server-network
           :form="form"
           :isServertemplate="isServertemplate"
@@ -121,14 +121,14 @@
           :vpcResourceMapper="vpcResourceMapper"
           :networkResourceMapper="networkResourceMapper" />
       </a-form-item>
-      <a-form-item label="标签" class="mb-0">
+      <a-form-item :label="$t('compute.text_1154')" class="mb-0">
         <tag
           v-decorator="decorators.tag" />
       </a-form-item>
       <!-- <a-divider orientation="left" v-if="showAdvanceConfig">高级配置</a-divider> -->
       <a-collapse :bordered="false" v-model="collapseActive">
-        <a-collapse-panel header="高级配置" key="1">
-          <a-form-item label="安全组" v-if="isKvm">
+        <a-collapse-panel :header="$t('compute.text_309')" key="1">
+          <a-form-item :label="$t('compute.text_105')" v-if="isKvm">
             <secgroup-config
               :form="form"
               :isSnapshotImageType="isSnapshotImageType"
@@ -136,7 +136,7 @@
               :secgroup-params="secgroupParams"
               :hypervisor="form.fd.hypervisor" />
           </a-form-item>
-          <a-form-item v-show="!isServertemplate" label="调度策略" class="mb-0">
+          <a-form-item v-show="!isServertemplate" :label="$t('compute.text_311')" class="mb-0">
             <sched-policy
               :form="form"
               :server-type="form.fi.createType"
@@ -147,10 +147,10 @@
               :showSchedCloudprovider="showSchedCloudprovider"
               :cloudproviderParamsExtra="cloudproviderParamsExtra" />
           </a-form-item>
-          <a-form-item label="引导方式" class="mb-0" v-if="isKvm">
+          <a-form-item :label="$t('compute.text_1155')" class="mb-0" v-if="isKvm">
             <bios :decorator="decorators.bios" :uefi="uefi" />
           </a-form-item>
-          <a-form-item v-show="!isServertemplate" v-if="isKvm && isLocalDisk" label="备份机" extra="只有宿主机数量不少于2台时才可以使用该功能">
+          <a-form-item v-show="!isServertemplate" v-if="isKvm && isLocalDisk" :label="$t('compute.text_1156')" :extra="$t('compute.text_1157')">
             <backup
               :decorator="decorators.backup"
               :disabled="form.fd.systemDiskType"
@@ -158,7 +158,7 @@
               :domain="form.fd.domain"
               :availableHostCount="availableHostCount" />
           </a-form-item>
-          <a-form-item v-show="!isServertemplate" v-if="isKvm" :label="$t('dictionary.instancegroup')" extra="对资源的简单调度策略，组内的机器根据设置分布在不同的宿主机上，从而实现业务的高可用">
+          <a-form-item v-show="!isServertemplate" v-if="isKvm" :label="$t('dictionary.instancegroup')" :extra="$t('compute.text_1158')">
             <instance-groups :decorators="decorators.groups" :params="instanceGroupsParams" />
           </a-form-item>
         </a-collapse-panel>

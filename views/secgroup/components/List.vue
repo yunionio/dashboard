@@ -46,17 +46,17 @@ export default {
         getParams: this.getParam,
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('compute.text_228'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
             },
           },
           ip: {
-            label: '来源/目标',
+            label: this.$t('compute.text_985'),
           },
           ports: {
-            label: '端口',
+            label: this.$t('compute.text_349'),
           },
           projects: getTenantFilter(),
           domain: getDomainFilter(),
@@ -64,17 +64,17 @@ export default {
         responseData: this.responseData,
       }),
       exportDataOptions: {
-        title: '导出规则',
+        title: this.$t('compute.text_986'),
         resource: 'secgrouprules',
         items: [
-          { label: '规则ID', key: 'id' },
-          { label: '安全组名称', key: 'secgroup' },
-          { label: '安全组ID', key: 'secgroup_id' },
-          { label: '方向', key: 'direction' },
-          { label: '策略', key: 'action' },
-          { label: '协议', key: 'protocol' },
-          { label: '端口', key: 'ports' },
-          { label: '优先级', key: 'priority' },
+          { label: this.$t('compute.text_987'), key: 'id' },
+          { label: this.$t('compute.text_988'), key: 'secgroup' },
+          { label: this.$t('compute.text_989'), key: 'secgroup_id' },
+          { label: this.$t('compute.text_990'), key: 'direction' },
+          { label: this.$t('compute.text_694'), key: 'action' },
+          { label: this.$t('compute.text_980'), key: 'protocol' },
+          { label: this.$t('compute.text_349'), key: 'ports' },
+          { label: this.$t('compute.text_981'), key: 'priority' },
           { label: 'CIDR', key: 'cidr' },
           { label: this.$t('dictionary.project'), key: 'tenant' },
         ],
@@ -105,11 +105,11 @@ export default {
         [
           {
             index: 0,
-            label: '新建',
+            label: this.$t('compute.text_18'),
             permission: 'secgroups_create',
             action: () => {
               this.createDialog('CreateSecgroupDialog', {
-                title: '新建',
+                title: this.$t('compute.text_18'),
                 onManager: this.onManager,
                 refresh: this.refresh,
               })
@@ -120,13 +120,13 @@ export default {
           },
           {
             index: 2,
-            label: '批量追加规则',
+            label: this.$t('compute.text_991'),
             permission: 'secgroups_performAction',
             action: () => {
               this.createDialog('AddRulesDialog', {
                 data: this.list.selectedItems,
                 columns: this.columns,
-                title: '批量追加规则',
+                title: this.$t('compute.text_991'),
                 onManager: this.onManager,
                 refresh: this.refresh,
               })
@@ -145,7 +145,7 @@ export default {
               }
               return {
                 validate: false,
-                tooltip: '请选择私有安全组',
+                tooltip: this.$t('compute.text_992'),
               }
             },
           },
@@ -163,14 +163,14 @@ export default {
           }),
           {
             index: 3,
-            label: '删除',
+            label: this.$t('compute.text_261'),
             permission: 'secgroups_delete',
             action: () => {
               this.createDialog('DeleteResDialog', {
                 vm: this,
                 data: this.list.selectedItems,
                 columns: this.columns,
-                title: '删除',
+                title: this.$t('compute.text_261'),
                 name: this.$t('dictionary.secgroup'),
                 onManager: this.onManager,
               })

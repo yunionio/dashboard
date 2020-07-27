@@ -35,7 +35,7 @@ export default {
       baseInfo: [
         {
           field: 'keypair',
-          title: '关联密钥',
+          title: this.$t('compute.text_33'),
         },
         getBrandTableColumn(),
       ],
@@ -85,11 +85,11 @@ export default {
     extraInfo () {
       return [
         {
-          title: '配置信息',
+          title: this.$t('compute.text_368'),
           items: [
             {
               field: 'os_type',
-              title: '操作系统',
+              title: this.$t('compute.text_267'),
               formatter: ({ row }) => {
                 const distribution = (row.metadata && row.metadata.os_distribution) ? row.metadata.os_distribution : row.os_type
                 const { os_version: version = '' } = row.metadata || {}
@@ -99,7 +99,7 @@ export default {
             getCopyWithContentTableColumn({ field: 'ips', title: 'IP' }),
             getCopyWithContentTableColumn({
               field: 'image',
-              title: '系统镜像',
+              title: this.$t('compute.text_97'),
               hideField: true,
               message: this.diskInfos.image,
               slotCallback: row => {
@@ -113,19 +113,19 @@ export default {
               field: 'vcpu_count',
               title: 'CPU',
               formatter: ({ row }) => {
-                return row.vcpu_count + '核'
+                return row.vcpu_count + this.$t('compute.text_167')
               },
             },
             {
               field: 'vmem_size',
-              title: '内存',
+              title: this.$t('compute.text_369'),
               formatter: ({ row }) => {
                 return (row.vmem_size / 1024) + 'GB'
               },
             },
             {
               field: 'sysDisk',
-              title: '系统盘',
+              title: this.$t('compute.text_49'),
               formatter: ({ row }) => {
                 if (this.diskInfos.sysDisk) return <a onClick={ () => this.$emit('tab-change', 'disk-list-for-baremetal-sidepage') }>{this.diskInfos.sysDisk}</a>
                 return '-'
@@ -133,7 +133,7 @@ export default {
             },
             {
               field: 'dataDisk',
-              title: '数据盘',
+              title: this.$t('compute.text_50'),
               formatter: ({ row }) => {
                 if (this.diskInfos.dataDisk) return <a onClick={ () => this.$emit('tab-change', 'disk-list-for-baremetal-sidepage') }>{this.diskInfos.dataDisk}</a>
                 return '-'
@@ -169,13 +169,13 @@ export default {
                   ids[val.model] = val.id
                 })
                 return Object.keys(obj).map(k => {
-                  return <side-page-trigger permission='isolated_devices_get' name='GpuSidePage' id={ids[k]} vm={this}>{`${obj[k]}颗 （${k}）`}</side-page-trigger>
+                  return <side-page-trigger permission='isolated_devices_get' name='GpuSidePage' id={ids[k]} vm={this}>{this.$t('compute.text_370', [obj[k], k])}</side-page-trigger>
                 })
               },
             },
             getCopyWithContentTableColumn({
               field: 'host',
-              title: '物理机',
+              title: this.$t('compute.text_112'),
               hideField: true,
               slotCallback: row => {
                 if (!row.host) return '-'
@@ -188,11 +188,11 @@ export default {
           ],
         },
         {
-          title: '其他设置',
+          title: this.$t('compute.text_371'),
           items: [
             getSwitchTableColumn({
               field: 'disable_delete',
-              title: '删除保护',
+              title: this.$t('compute.text_372'),
               change: val => {
                 this.onManager('update', {
                   id: this.data.id,
@@ -219,9 +219,9 @@ export default {
         //   str += `、${parseInt(num / 1024)}GB（裸金属}）`
         // }
         if (num < 0) {
-          str += '、全盘使用（裸金属）'
+          str += this.$t('compute.text_373')
         } else {
-          str += `、${parseInt(num / 1024)}GB（裸金属）`
+          str += this.$t('compute.text_374', [parseInt(num / 1024)])
         }
       }
       return str.slice(1)

@@ -2,12 +2,12 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{this.params.name}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.host')" :count="params.data.length" action="宕机自动迁移" />
+      <dialog-selected-tips :name="$t('dictionary.host')" :count="params.data.length" :action="$t('compute.text_547')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
        <a-form
         :form="form.fc">
-        <a-form-item label="自动迁移" v-bind="formItemLayout" extra="当宿主机宕机后，其上的虚拟机(仅限硬盘为共享存储)是否会自动迁移到其他宿主机">
-          <a-switch v-decorator="decorators.enable" checkedChildren="开" unCheckedChildren="关" />
+        <a-form-item :label="$t('compute.text_548')" v-bind="formItemLayout" :extra="$t('compute.text_549')">
+          <a-switch v-decorator="decorators.enable" :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" />
         </a-form-item>
       </a-form>
     </div>

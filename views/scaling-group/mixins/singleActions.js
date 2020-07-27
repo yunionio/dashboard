@@ -1,17 +1,18 @@
 import expectStatus from '@/constants/expectStatus'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
+import i18n from '@/locales'
 
 export default {
   created () {
     this.singleActions = [
       ...getEnabledSwitchActions(this, undefined, ['scalinggroups_perform_enable', 'scalinggroups_perform_disable']),
       {
-        label: '删除',
+        label: i18n.t('compute.text_261'),
         permission: 'scalinggroups_delete',
         action: (obj) => {
           this.createDialog('DeleteResDialog', {
-            title: '删除',
-            name: '弹性伸缩组',
+            title: i18n.t('compute.text_261'),
+            name: i18n.t('compute.text_95'),
             data: [obj],
             columns: this.columns,
             onManager: this.onManager,
@@ -21,10 +22,10 @@ export default {
         meta: (obj) => {
           let tooltip = ''
           if (obj.enabled) {
-            tooltip = '请先禁用弹性伸缩组'
+            tooltip = i18n.t('compute.text_954')
           }
           if (obj.instance_number) {
-            tooltip = '伸缩组内虚拟机不为空，请删除后重试'
+            tooltip = i18n.t('compute.text_955')
           }
           return {
             validate: !obj.enabled && !obj.instance_number,

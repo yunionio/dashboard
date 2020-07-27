@@ -13,39 +13,40 @@
 
 <script>
 import * as R from 'ramda'
+import i18n from '@/locales'
 
 const OPTS = [
   {
     key: 'none',
-    label: '不设置',
+    label: i18n.t('compute.text_138'),
   },
   {
     key: '1h',
-    label: '1小时',
+    label: i18n.t('compute.text_139'),
   },
   {
     key: '6h',
-    label: '6小时',
+    label: i18n.t('compute.text_140'),
   },
   {
     key: '1d',
-    label: '1天',
+    label: i18n.t('compute.text_141'),
   },
   {
     key: '3d',
-    label: '3天',
+    label: i18n.t('compute.text_142'),
   },
   {
     key: '1w',
-    label: '1周',
+    label: i18n.t('compute.text_24'),
   },
   {
     key: '1m',
-    label: '1月',
+    label: i18n.t('compute.text_143'),
   },
   {
     key: 'custom',
-    label: '自定义',
+    label: i18n.t('compute.text_144'),
   },
 ]
 

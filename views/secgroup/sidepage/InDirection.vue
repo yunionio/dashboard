@@ -1,7 +1,7 @@
 <template>
   <div>
      <a-alert
-      message="提示：安全组未设置任何自定义放行规则，会导致无法访问云服务器端口，若需访问请添加安全组规则放行对应的端口"
+      :message="$t('compute.text_1031')"
       type="warning"
       style="margin-bottom: 20px" />
     <direction-list :type="getParams.type" :id="getParams.id" :isRead="isRead" />

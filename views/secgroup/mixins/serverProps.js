@@ -11,6 +11,7 @@ import {
   getIpFilter,
   getBrandFilter,
 } from '@/utils/common/tableFilter'
+import i18n from '@/locales'
 
 export default {
   data () {
@@ -50,7 +51,7 @@ export default {
       ],
       singleActions: [
         {
-          label: '移除',
+          label: i18n.t('compute.text_950'),
           width: 40,
           action: (obj) => {
             const secgrpId = secgrp_id || obj.secgrp_id
@@ -66,7 +67,7 @@ export default {
           meta: (obj) => {
             const ret = { validate: false, tooltip: null }
             if (obj.secgroups && obj.secgroups.length === 1) {
-              ret.tooltip = '该虚拟机只有一个安全组，不支持该操作'
+              ret.tooltip = i18n.t('compute.text_1026')
               return ret
             }
             return {

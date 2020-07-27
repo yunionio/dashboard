@@ -65,7 +65,7 @@ export default {
           ips: getIpFilter(),
           status: getStatusFilter('server'),
           os_type: {
-            label: '系统类型',
+            label: this.$t('compute.text_721'),
             dropdown: true,
             multiple: true,
             items: [
@@ -81,25 +81,25 @@ export default {
           projects: getTenantFilter(),
           domain: getDomainFilter(),
           billing_type: {
-            label: '计费方式',
+            label: this.$t('compute.text_498'),
             dropdown: true,
             items: [
-              { label: '按量付费', key: 'postpaid' },
-              { label: '包年包月', key: 'prepaid' },
+              { label: this.$t('compute.text_22'), key: 'postpaid' },
+              { label: this.$t('compute.text_23'), key: 'prepaid' },
             ],
           },
           cloudaccount: getAccountFilter(),
           host: getHostFilter(),
           gpu: {
-            label: '类型',
+            label: this.$t('compute.text_175'),
             dropdown: true,
             items: [
-              { label: `通用${this.$t('dictionary.server')}`, key: false },
+              { label: this.$t('compute.text_291', [this.$t('dictionary.server')]), key: false },
               { label: `GPU${this.$t('dictionary.server')}`, key: true },
             ],
           },
           region: {
-            label: '区域',
+            label: this.$t('compute.text_177'),
             dropdown: true,
             multiple: true,
             distinctField: {
@@ -113,29 +113,29 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '外部ID', key: 'external_id' },
-          { label: '名称', key: 'name' },
-          { label: '私网IP', key: 'ips' },
-          { label: '外网IP', key: 'eip' },
+          { label: this.$t('compute.text_1035'), key: 'external_id' },
+          { label: this.$t('compute.text_228'), key: 'name' },
+          { label: this.$t('compute.text_263'), key: 'ips' },
+          { label: this.$t('compute.text_1036'), key: 'eip' },
           { label: 'CPU', key: 'vcpu_count' },
-          { label: '内存(MB)', key: 'vmem_size' },
-          { label: '磁盘(MB)', key: 'disk' },
-          { label: '实例类型', key: 'instance_type' },
-          { label: '操作系统', key: 'os_distribution' },
-          { label: '状态', key: 'status' },
+          { label: this.$t('compute.text_264'), key: 'vmem_size' },
+          { label: this.$t('compute.text_265'), key: 'disk' },
+          { label: this.$t('compute.text_266'), key: 'instance_type' },
+          { label: this.$t('compute.text_267'), key: 'os_distribution' },
+          { label: this.$t('compute.text_268'), key: 'status' },
           { label: this.$t('dictionary.project'), key: 'tenant' },
-          { label: '平台', key: 'hypervisor' },
-          { label: '宿主机', key: 'host' },
-          { label: '云账号', key: 'manager' },
-          { label: '区域', key: 'region' },
-          { label: '可用区', key: 'zone' },
-          { label: '计费方式', key: 'billing_type' },
-          { label: '用户标签', key: 'user_tags' },
+          { label: this.$t('compute.text_176'), key: 'hypervisor' },
+          { label: this.$t('compute.text_111'), key: 'host' },
+          { label: this.$t('compute.text_269'), key: 'manager' },
+          { label: this.$t('compute.text_177'), key: 'region' },
+          { label: this.$t('compute.text_270'), key: 'zone' },
+          { label: this.$t('compute.text_498'), key: 'billing_type' },
+          { label: this.$t('compute.text_271'), key: 'user_tags' },
         ],
       },
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('compute.text_18'),
           permission: 'server_create',
           action: () => {
             this.$router.push({
@@ -152,7 +152,7 @@ export default {
           },
         },
         {
-          label: '开机',
+          label: this.$t('compute.text_272'),
           permission: 'server_perform_start',
           action: () => {
             const ids = this.list.selectedItems.map(item => item.id)
@@ -174,7 +174,7 @@ export default {
           },
         },
         {
-          label: '关机',
+          label: this.$t('compute.text_273'),
           permission: 'server_perform_stop',
           action: () => {
             this.createDialog('VmShutDownDialog', {
@@ -193,7 +193,7 @@ export default {
           },
         },
         {
-          label: '重启',
+          label: this.$t('compute.text_274'),
           permission: 'server_perform_restart',
           action: () => {
             this.createDialog('VmRestartDialog', {
@@ -212,11 +212,11 @@ export default {
           },
         },
         {
-          label: '批量操作',
+          label: this.$t('compute.text_275'),
           actions: () => {
             return [
               {
-                label: '修改属性',
+                label: this.$t('compute.text_247'),
                 action: () => {
                   this.createDialog('VmUpdateDialog', {
                     data: this.list.selectedItems,
@@ -228,12 +228,12 @@ export default {
                   const isOneCloud = this.list.selectedItems.every(item => item.brand === 'OneCloud')
                   return {
                     validate: isOneCloud,
-                    tooltip: !isOneCloud && '只有OneCloud主机支持此操作',
+                    tooltip: !isOneCloud && this.$t('compute.text_355'),
                   }
                 },
               },
               {
-                label: '重置密码',
+                label: this.$t('compute.text_276'),
                 permission: 'server_perform_deploy',
                 action: () => {
                   this.createDialog('VmResetPasswordDialog', {
@@ -250,7 +250,7 @@ export default {
                   const isBindKeypair = this.list.selectedItems.some((item) => { return item.keypair_id && item.keypair_id.toLowerCase() !== 'none' })
                   if (isBindKeypair) {
                     ret.validate = false
-                    ret.tooltip = '已绑定密钥的云服务器无法重置密码'
+                    ret.tooltip = this.$t('compute.text_277')
                     return ret
                   }
                   return {
@@ -260,7 +260,7 @@ export default {
                 },
               },
               {
-                label: '调整配置',
+                label: this.$t('compute.text_1100'),
                 permission: 'server_perform_change_config',
                 action: () => {
                   this.$router.push({
@@ -279,13 +279,13 @@ export default {
                     const isSomePrepaid = this.list.selectedItems.some((item) => { return item.billing_type === 'prepaid' })
                     if (isSomePrepaid) {
                       ret.validate = false
-                      ret.tooltip = this.isAdminMode ? '包年包月机器，不支持此操作' : '包年包月资源池的资源不支持此操作'
+                      ret.tooltip = this.isAdminMode ? this.$t('compute.text_285') : this.$t('compute.text_1110')
                       return ret
                     }
                     const isSomeBackupHost = this.list.selectedItems.some((item) => { return item.backup_host_id })
                     if (isSomeBackupHost) {
                       ret.validate = false
-                      ret.tooltip = '高可用机器，不支持此操作'
+                      ret.tooltip = this.$t('compute.text_1111')
                       return ret
                     }
                     ret.validate = cloudEnabled('adjustConfig', this.list.selectedItems)
@@ -309,12 +309,12 @@ export default {
                     return ret
                   }
                   ret.validate = false
-                  ret.tooltip = '请选择同一平台下的资源'
+                  ret.tooltip = this.$t('compute.text_278')
                   return ret
                 },
               },
               {
-                label: `更改${this.$t('dictionary.project')}`,
+                label: this.$t('compute.text_279', [this.$t('dictionary.project')]),
                 action: () => {
                   this.createDialog('ChangeOwenrDialog', {
                     data: this.list.selectedItems,
@@ -337,14 +337,14 @@ export default {
                   const domains = this.list.selectedItems.map(item => item.domain_id)
                   if (R.uniq(domains).length !== 1) {
                     ret.validate = false
-                    ret.tooltip = `请选择同一个${this.$t('dictionary.domain')}下的机器`
+                    ret.tooltip = this.$t('compute.text_280', [this.$t('dictionary.domain')])
                     return ret
                   }
                   return ret
                 },
               },
               {
-                label: '同步状态',
+                label: this.$t('compute.text_282'),
                 action: () => {
                   this.onManager('batchPerformAction', {
                     steadyStatus: ['running', 'ready'],
@@ -355,7 +355,7 @@ export default {
                 },
               },
               {
-                label: '设置GPU卡',
+                label: this.$t('compute.text_1112'),
                 action: () => {
                   this.createDialog('VmAttachGpuDialog', {
                     data: this.list.selectedItems,
@@ -381,29 +381,29 @@ export default {
                   })
                   if (!isAllAdmin) {
                     ret.validate = false
-                    ret.tooltip = '暂只有系统管理员支持该操作'
+                    ret.tooltip = this.$t('compute.text_1113')
                     return ret
                   }
                   if (!isAllReady) {
                     ret.validate = false
-                    ret.tooltip = '请选择关机的机器进行操作'
+                    ret.tooltip = this.$t('compute.text_1114')
                     return ret
                   }
                   if (!isAllIdc) {
                     ret.validate = false
-                    ret.tooltip = '请选择本地IDC的机器进行操作'
+                    ret.tooltip = this.$t('compute.text_1115')
                     return ret
                   }
                   if (isSomeVMware) {
                     ret.validate = false
-                    ret.tooltip = 'VMware暂不支持该操作'
+                    ret.tooltip = this.$t('compute.text_450')
                     return ret
                   }
                   return ret
                 },
               },
               {
-                label: '关联安全组',
+                label: this.$t('compute.text_1116'),
                 permission: 'server_perform_add_secgroup',
                 action: () => {
                   this.createDialog('VmSetSecgroupDialog', {
@@ -422,7 +422,7 @@ export default {
                 },
               },
               {
-                label: '编辑标签',
+                label: this.$t('compute.text_283'),
                 action: () => {
                   this.createDialog('SetTagDialog', {
                     data: this.list.selectedItems,
@@ -463,7 +463,7 @@ export default {
               //   },
               // },
               {
-                label: '续费',
+                label: this.$t('compute.text_1117'),
                 action: () => {
                   this.createDialog('VmResourceFeeDialog', {
                     data: this.list.selectedItems,
@@ -480,17 +480,17 @@ export default {
                   const isAllPrepaid = this.list.selectedItems.every(item => item.billing_type === 'prepaid')
                   if (!isAllPublic) {
                     ret.validate = false
-                    ret.tooltip = '仅公有云支持此操作'
+                    ret.tooltip = this.$t('compute.text_1118')
                   }
                   if (!isAllPrepaid) {
                     ret.validate = false
-                    ret.tooltip = '仅包年包月的资源支持此操作'
+                    ret.tooltip = this.$t('compute.text_1119')
                   }
                   return ret
                 },
               },
               {
-                label: '自动续费设置',
+                label: this.$t('compute.text_1120'),
                 action: () => {
                   this.createDialog('VmResourceRenewFeeDialog', {
                     data: this.list.selectedItems,
@@ -507,17 +507,17 @@ export default {
                   const isAllPrepaid = this.list.selectedItems.every(item => item.billing_type === 'prepaid')
                   if (!isAllPublic) {
                     ret.validate = false
-                    ret.tooltip = '仅公有云支持此操作'
+                    ret.tooltip = this.$t('compute.text_1118')
                   }
                   if (!isAllPrepaid) {
                     ret.validate = false
-                    ret.tooltip = '仅包年包月的资源支持此操作'
+                    ret.tooltip = this.$t('compute.text_1119')
                   }
                   return ret
                 },
               },
               {
-                label: '公网IP转EIP',
+                label: this.$t('compute.text_1121'),
                 action: () => {
                   this.createDialog('VmPublicIpToEipDialog', {
                     data: this.list.selectedItems,
@@ -533,11 +533,11 @@ export default {
                   const isSomeBindEip = this.list.selectedItems.some((item) => { return item.eip && item.eip_mode === 'elastic_ip' })
                   const isAllBindPublicIp = this.list.selectedItems.every((item) => { return item.eip_mode === 'public_ip' })
                   if (isSomeBindEip) {
-                    ret.tooltip = '已绑定弹性公网IP的虚拟机不支持该操作'
+                    ret.tooltip = this.$t('compute.text_1122')
                     return ret
                   }
                   if (!isAllBindPublicIp) {
-                    ret.tooltip = '只有已分配公网IP的虚拟机支持该操作'
+                    ret.tooltip = this.$t('compute.text_1123')
                     return ret
                   }
                   ret.validate = cloudEnabled('publicIpToEip', this.list.selectedItems)
@@ -546,7 +546,7 @@ export default {
                 },
               },
               {
-                label: '设置源/目标检查',
+                label: this.$t('compute.text_1124'),
                 action: () => {
                   this.createDialog('VmSourceTargetCheckDialog', {
                     data: this.list.selectedItems,
@@ -561,19 +561,19 @@ export default {
                   const isOk = this.list.selectedItems.every((item) => { return ['running', 'ready'].includes(item.status) })
                   if (!isAllOneCloud) {
                     ret.validate = false
-                    ret.tooltip = '暂只有OneCloud平台支持该操作'
+                    ret.tooltip = this.$t('compute.text_1125')
                     return ret
                   }
                   if (!isOk) {
                     ret.validate = false
-                    ret.tooltip = '只有运行中或关机状态的主机支持此操作'
+                    ret.tooltip = this.$t('compute.text_1126')
                     return ret
                   }
                   return ret
                 },
               },
               {
-                label: '迁移',
+                label: this.$t('compute.text_1127'),
                 action: () => {
                   this.createDialog('VmTransferDialog', {
                     data: this.list.selectedItems,
@@ -615,7 +615,7 @@ export default {
                 },
               },
               {
-                label: '挂起',
+                label: this.$t('compute.text_1128'),
                 permission: 'server_perform_suspend',
                 action: () => {
                   this.createDialog('VmSuspendDialog', {
@@ -633,12 +633,12 @@ export default {
                   const isAllRunning = this.list.selectedItems.every(item => item.status === 'running')
                   if (!isAllVMware) {
                     ret.validate = false
-                    ret.tooltip = '仅VMware支持此操作'
+                    ret.tooltip = this.$t('compute.text_1129')
                     return ret
                   }
                   if (!isAllRunning) {
                     ret.validate = false
-                    ret.tooltip = '请选择开机的机器进行操作'
+                    ret.tooltip = this.$t('compute.text_1130')
                     return ret
                   }
                   ret.validate = true
@@ -646,7 +646,7 @@ export default {
                 },
               },
               {
-                label: '恢复',
+                label: this.$t('compute.text_478'),
                 permission: 'server_perform_resume',
                 action: () => {
                   this.createDialog('VmResumeDialog', {
@@ -664,12 +664,12 @@ export default {
                   const isAllSuspend = this.list.selectedItems.every(item => item.status === 'suspend')
                   if (!isAllVMware) {
                     ret.validate = false
-                    ret.tooltip = '仅VMware支持此操作'
+                    ret.tooltip = this.$t('compute.text_1129')
                     return ret
                   }
                   if (!isAllSuspend) {
                     ret.validate = false
-                    ret.tooltip = '请选择挂起的机器进行操作'
+                    ret.tooltip = this.$t('compute.text_1131')
                     return ret
                   }
                   ret.validate = true
@@ -677,7 +677,7 @@ export default {
                 },
               },
               {
-                label: '重装系统',
+                label: this.$t('compute.text_357'),
                 permission: 'server_perform_rebuild_root',
                 action: () => {
                   this.createDialog('VmRebuildRootDialog', {
@@ -697,12 +697,12 @@ export default {
                     return ret
                   }
                   ret.validate = false
-                  ret.tooltip = '请选择同一平台下的资源'
+                  ret.tooltip = this.$t('compute.text_278')
                   return ret
                 },
               },
               {
-                label: '到期释放',
+                label: this.$t('compute.text_1132'),
                 permission: 'server_perform_cancel_expire',
                 action: () => {
                   this.createDialog('SetDurationDialog', {
@@ -722,7 +722,7 @@ export default {
                     return item.billing_type === 'prepaid'
                   })
                   if (isSomePrepaid) {
-                    ret.tooltip = '包年包月机器，不支持此操作'
+                    ret.tooltip = this.$t('compute.text_285')
                     return ret
                   }
                   // 暂只支持同时操作已设置到期或未设置到期释放的机器
@@ -733,7 +733,7 @@ export default {
                     return !item.expired_at
                   })
                   if (isSomeExpired && isSomeNotExpired) {
-                    ret.tooltip = '暂只支持同时操作已设置到期释放'
+                    ret.tooltip = this.$t('compute.text_1133')
                     return ret
                   }
                   ret.validate = true
@@ -742,7 +742,7 @@ export default {
               },
               disableDeleteAction(this, { name: this.$t('dictionary.server') }),
               {
-                label: '删除',
+                label: this.$t('compute.text_261'),
                 permission: 'server_delete',
                 action: () => {
                   this.createDialog('DeleteVmDialog', {
@@ -750,7 +750,7 @@ export default {
                     data: this.list.selectedItems,
                     columns: this.columns,
                     onManager: this.onManager,
-                    title: '删除',
+                    title: this.$t('compute.text_261'),
                   })
                 },
                 meta: () => {

@@ -1,15 +1,16 @@
 import { sizestr } from '@/utils/utils'
 import { getBrandTableColumn, getStatusTableColumn, getCopyWithContentTableColumn, getIpsTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import SystemIcon from '@/sections/SystemIcon'
+import i18n from '@/locales'
 
 export default {
   created () {
     this.columns = [
-      getCopyWithContentTableColumn({ field: 'name', title: '名称', sortable: true }),
+      getCopyWithContentTableColumn({ field: 'name', title: i18n.t('compute.text_228'), sortable: true }),
       getIpsTableColumn({ field: 'ips', title: 'IP' }),
       {
         field: 'instance_type',
-        title: '配置',
+        title: i18n.t('compute.text_295'),
         minWidth: 120,
         showOverflow: 'ellipsis',
         slots: {
@@ -25,7 +26,7 @@ export default {
       },
       {
         field: 'os_type',
-        title: '系统',
+        title: i18n.t('compute.text_338'),
         width: 60,
         slots: {
           default: ({ row }) => {
@@ -34,7 +35,7 @@ export default {
               name = 'Windows'
             }
             const version = (row.metadata && row.metadata.os_version) ? `${row.metadata.os_version}` : ''
-            const tooltip = (version.includes(name) ? version : `${name} ${version}`) || '未知' // 去重
+            const tooltip = (version.includes(name) ? version : `${name} ${version}`) || i18n.t('compute.text_339') // 去重
             return [
               <SystemIcon tooltip={ tooltip } name={ name } />,
             ]
@@ -42,9 +43,9 @@ export default {
         },
       },
       getStatusTableColumn({ statusModule: 'server' }),
-      getCopyWithContentTableColumn({ field: 'host', title: '宿主机' }),
+      getCopyWithContentTableColumn({ field: 'host', title: i18n.t('compute.text_111') }),
       getBrandTableColumn(),
-      getTimeTableColumn({ field: 'auto_delete_at', title: '自动清除时间' }),
+      getTimeTableColumn({ field: 'auto_delete_at', title: i18n.t('compute.text_480') }),
     ]
   },
 }

@@ -3,17 +3,14 @@
       <a-row>
         <a-col :span="8">
           <a-form-item>
-          CPU: <a-input-number v-decorator="decorators.cpu" :min="1" :precision="0" /> 核
+          CPU: <a-input-number v-decorator="decorators.cpu" :min="1" :precision="0" />{{$t('compute.text_167')}}</a-form-item>
+        </a-col>
+        <a-col :span="8">
+          <a-form-item>{{$t('compute.text_168')}}<a-input-number v-decorator="decorators.memory" :min="1" :precision="0" /> G
           </a-form-item>
         </a-col>
         <a-col :span="8">
-          <a-form-item>
-          内存: <a-input-number v-decorator="decorators.memory" :min="1" :precision="0" /> G
-          </a-form-item>
-        </a-col>
-        <a-col :span="8">
-          <a-form-item>
-          硬盘: <a-input-number v-decorator="decorators.disk" :min="1" :precision="0" /> G
+          <a-form-item>{{$t('compute.text_169')}}<a-input-number v-decorator="decorators.disk" :min="1" :precision="0" /> G
           </a-form-item>
         </a-col>
       </a-row>
@@ -22,6 +19,7 @@
 
 <script>
 import { sizestr } from '@/utils/utils'
+import i18n from '@/locales'
 
 export default {
   name: 'ReserveResource',
@@ -32,7 +30,7 @@ export default {
     },
     label: {
       type: String,
-      default: '预留宿主机资源',
+      default: i18n.t('compute.text_170'),
     },
     data: {
       type: Array,

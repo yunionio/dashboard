@@ -1,5 +1,6 @@
 import { mapGetters } from 'vuex'
 import { getSetPublicAction } from '@/utils/common/tableActions'
+import i18n from '@/locales'
 
 export default {
   computed: {
@@ -15,7 +16,7 @@ export default {
 
     const validateActionTooltip = function (obj) {
       if (obj.is_guest_image === true || obj.is_guest_image === 'true') {
-        return '主机镜像的子镜像无法操作'
+        return i18n.t('compute.text_622')
       }
       return ''
     }
@@ -26,7 +27,7 @@ export default {
 
     this.singleActions = [
       {
-        label: '修改属性',
+        label: i18n.t('compute.text_247'),
         permission: 'images_update',
         action: obj => {
           this.createDialog('ImageEditAttributesDialog', {
@@ -49,17 +50,17 @@ export default {
           } else if (this.isDomainMode) {
             return {
               validate: ownerDomain(obj),
-              tooltip: `非当前${this.$t('dictionary.domain')}下面的镜像无法修改属性`,
+              tooltip: i18n.t('compute.text_623', [i18n.t('dictionary.domain')]),
             }
           }
           return {
             validate: isOwnerProject(obj.tenant_id),
-            tooltip: !isOwnerProject(obj.tenant_id) ? `非当前${this.$t('dictionary.project')}下面的镜像无法修改属性` : '',
+            tooltip: !isOwnerProject(obj.tenant_id) ? i18n.t('compute.text_623', [i18n.t('dictionary.domain')]) : '',
           }
         },
       },
       {
-        label: '更多',
+        label: i18n.t('compute.text_352'),
         actions: obj => {
           return [
             getSetPublicAction(this, {
@@ -75,7 +76,7 @@ export default {
                     tooltip,
                   }
                 }
-                if (obj.is_standard) validate(false, '公共镜像不支持设置')
+                if (obj.is_standard) validate(false, i18n.t('compute.text_612'))
                 if (!validateAction(obj)) validate(false)
                 // 1、管理后台视图可以对所有镜像进行操作；
                 // 2、域管理后台视图只能对该域下的镜像进行操作，不能对其他域共享的镜像进行操作；
@@ -120,7 +121,7 @@ export default {
             //   },
             // },
             {
-              label: `更改${this.$t('dictionary.project')}`,
+              label: this.$t('compute.text_279', [this.$t('dictionary.project')]),
               action: () => {
                 this.createDialog('ChangeOwenrDialog', {
                   data: [obj],
@@ -138,19 +139,19 @@ export default {
                 }
                 if (!this.isAdminMode && !this.isDomainMode) {
                   ret.validate = false
-                  ret.tooltip = '只有管理员支持该操作'
+                  ret.tooltip = i18n.t('compute.text_613')
                   return ret
                 }
                 if (obj.is_public) {
                   ret.validate = false
-                  ret.tooltip = '只有不共享的镜像支持该操作'
+                  ret.tooltip = i18n.t('compute.text_614')
                   return ret
                 }
                 return ret
               },
             },
             {
-              label: '设置删除保护',
+              label: i18n.t('compute.text_615'),
               action: (row) => {
                 this.createDialog('ChangeDisableDelete', {
                   name: this.$t('dictionary.guestimage'),
@@ -161,14 +162,14 @@ export default {
               },
             },
             {
-              label: '删除',
+              label: i18n.t('compute.text_261'),
               permission: 'images_delete',
               action: () => {
                 this.createDialog('DeleteResDialog', {
                   vm: this,
                   data: [obj],
                   columns: this.columns,
-                  title: '删除',
+                  title: i18n.t('compute.text_261'),
                   name: this.$t('dictionary.guestimage'),
                   onManager: this.onManager,
                   requestData: {
@@ -180,7 +181,7 @@ export default {
                 if (this.isDomainAdmin && obj.domain_id !== this.userInfo.projectDomainId) {
                   return {
                     validate: false,
-                    tooltip: `${this.$t('dictionary.domain')}管理员只能删除本${this.$t('dictionary.domain')}下的镜像`,
+                    tooltip: i18n.t('compute.text_625', [i18n.t('dictionary.domain')]),
                   }
                 }
                 if (!validateAction(obj)) return { validate: false, tooltip: validateActionTooltip(obj) }

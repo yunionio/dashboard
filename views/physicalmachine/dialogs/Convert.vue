@@ -1,29 +1,29 @@
 <template>
   <base-dialog @cancel="cancelDialog" :width="900">
-    <div slot="header">转换为宿主机</div>
+    <div slot="header">{{$t('compute.text_828')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.physicalmachine')" :count="params.data.length" action="转换为宿主机" />
+      <dialog-selected-tips :name="$t('dictionary.physicalmachine')" :count="params.data.length" :action="$t('compute.text_828')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 2)" />
        <a-form
         :form="form.fc">
-        <a-form-item label="宿主机名称" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.name" placeholder="请填写宿主机名称" />
+        <a-form-item :label="$t('compute.text_829')" v-bind="formItemLayout">
+          <a-input v-decorator="decorators.name" :placeholder="$t('compute.text_830')" />
         </a-form-item>
-        <a-form-item label="宿主机类型" v-bind="formItemLayout">
-          <a-select v-decorator="decorators.host_type" placeholder="宿主机类型">
+        <a-form-item :label="$t('compute.text_831')" v-bind="formItemLayout">
+          <a-select v-decorator="decorators.host_type" :placeholder="$t('compute.text_831')">
             <a-select-option v-for="item in hostTypeOptions" :key="item.value" :value="item.value">
               {{item.text}}
             </a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item label="磁盘RAID配置" v-bind="formItemLayout">
-          <a-select v-decorator="decorators.raid" placeholder="磁盘RAID配置" @change="raidChange">
+        <a-form-item :label="$t('compute.text_832')" v-bind="formItemLayout">
+          <a-select v-decorator="decorators.raid" :placeholder="$t('compute.text_832')" @change="raidChange">
             <a-select-option v-for="item in raidOptions" :key="item.value" :value="item.value">
               {{item.text}}
             </a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item label="镜像" v-bind="formItemLayout" v-if="isShowImages">
+        <a-form-item :label="$t('compute.text_96')" v-bind="formItemLayout" v-if="isShowImages">
          <base-select
             :filterable="true"
             v-decorator="decorators.image"
@@ -34,9 +34,9 @@
             :mapper="imagesResourceMapper"
             :resList.sync="imagesData"
             @update:item="imagechange"
-            :select-props="{ placeholder: '系统盘镜像' }" />
+            :select-props="{ placeholder: $t('compute.text_833') }" />
         </a-form-item>
-        <a-form-item v-bind="formItemLayout" label="自定义磁盘配置" v-if="isShowImages">
+        <a-form-item v-bind="formItemLayout" :label="$t('compute.text_834')" v-if="isShowImages">
           <div class="d-flex flex-wrap">
             <template v-for="(item, idx) of diskOptionsDate">
               <div :key="idx" class="disk-option-item">
@@ -44,14 +44,14 @@
                   <template slot="title">
                     <icon type="res-disk" />
                     {{ item.title }}
-                    <a-tooltip title="磁盘配置分区合法">
+                    <a-tooltip :title="$t('compute.text_304')">
                       <a-icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" v-show="(idx === 0 && !isShowFalseIcon) || idx !== 0" />
                     </a-tooltip>
-                    <a-tooltip title="磁盘配置分区非法：请完成剩余磁盘分区设置，若未配置将导致操作失败">
+                    <a-tooltip :title="$t('compute.text_305')">
                       <a-icon type="close-circle" theme="twoTone" twoToneColor="#eb2f96" v-show="idx === 0 && isShowFalseIcon" />
                     </a-tooltip>
                   </template>
-                  <a href="javascript:;" slot="extra" @click="handleDiskItemRemove(idx)" v-show="idx === diskOptionsDate.length - 1">删除</a>
+                  <a href="javascript:;" slot="extra" @click="handleDiskItemRemove(idx)" v-show="idx === diskOptionsDate.length - 1">{{$t('compute.text_261')}}</a>
                   <div class="d-flex align-items-center">
                     <ve-pie :data="item.chartData" :settings="chartSettings" :events="chartFun(idx)" width="200px" height="200px" :legend-visible="false" />
                     <div class="flex-fill ml-2">
@@ -62,7 +62,7 @@
                           </a-checkbox>
                         </div>
                       </template>
-                      <a-tag color="blue">可用容量: {{item.size}}</a-tag>
+                      <a-tag color="blue">{{$t('compute.text_306', [item.size])}}</a-tag>
                     </div>
                   </div>
                 </a-card>
@@ -71,11 +71,9 @@
           </div>
         </a-form-item>
         <a-form-item :wrapper-col="{ span: 18, offset: 4 }" v-if="isShowImages">
-          <a-button type="primary" @click="addDisk">
-            新增磁盘
-          </a-button>
+          <a-button type="primary" @click="addDisk">{{$t('compute.text_307')}}</a-button>
         </a-form-item>
-        <a-form-item label="网络" v-bind="formItemLayout" class="mb-0" v-if="isShowImages">
+        <a-form-item :label="$t('compute.text_104')" v-bind="formItemLayout" class="mb-0" v-if="isShowImages">
           <server-network
             :form="form"
             :decorator="decorators.network"
@@ -88,7 +86,7 @@
             :vpcResourceMapper="vpcResourceMapper" />
         </a-form-item>
         <a-form-item :wrapper-col="{ span: 18, offset: 4 }" v-if="isShowImages">
-          <a-checkbox v-model="isBonding">启用bonding</a-checkbox>
+          <a-checkbox v-model="isBonding">{{$t('compute.text_310')}}</a-checkbox>
         </a-form-item>
       </a-form>
     </div>
@@ -115,7 +113,7 @@ function checkIpInSegment (i, networkData) {
     if (isIn) {
       cb()
     } else {
-      cb(new Error('输入的IP不在选择子网网段中'))
+      cb(new Error(this.$t('compute.text_205')))
     }
   }
 }
@@ -144,7 +142,7 @@ export default {
             validateFirst: true,
             rules: [
               {
-                required: true, message: '名称不能为空',
+                required: true, message: this.$t('compute.text_835'),
               },
               {
                 validator: this.$validate('serverCreateName'),
@@ -180,7 +178,7 @@ export default {
                 validateTrigger: ['change', 'blur'],
                 rules: [{
                   required: true,
-                  message: '请选择VPC',
+                  message: this.$t('compute.text_194'),
                 }],
               },
             ],
@@ -190,7 +188,7 @@ export default {
                 validateTrigger: ['change', 'blur'],
                 rules: [{
                   required: true,
-                  message: '请选择ip子网',
+                  message: this.$t('compute.text_217'),
                 }],
               },
             ],
@@ -201,7 +199,7 @@ export default {
                 validateTrigger: ['blur', 'change'],
                 rules: [{
                   required: true,
-                  message: '请输入ip',
+                  message: this.$t('compute.text_218'),
                 }, {
                   validator: checkIpInSegment(i, networkData),
                 }],
@@ -215,7 +213,7 @@ export default {
                 validateTrigger: ['change', 'blur'],
                 rules: [{
                   required: true,
-                  message: '请选择调度标签',
+                  message: this.$t('compute.text_123'),
                 }],
               },
             ],
@@ -225,7 +223,7 @@ export default {
                 validateTrigger: ['blur', 'change'],
                 rules: [{
                   required: true,
-                  message: '请选择调度标签',
+                  message: this.$t('compute.text_123'),
                 }],
               },
             ],
@@ -241,7 +239,7 @@ export default {
         },
       },
       hostTypeOptions: [
-        { text: 'KVM宿主机', value: 'hypervisor' },
+        { text: this.$t('compute.text_836'), value: 'hypervisor' },
       ],
       imagesParams: {},
       isShowImages: false,
@@ -262,7 +260,7 @@ export default {
         itemStyle: {
           color: function (params) {
             const colorList = ['#afa3f5', '#00d488', '#3feed4', '#3bafff', '#f1bb4c', 'rgba(250,250,250,0.5)']
-            if (params.data.name === '剩余') {
+            if (params.data.name === this.$t('compute.text_315')) {
               return '#e3e3e3'
             } else {
               return colorList[params.dataIndex]
@@ -327,15 +325,15 @@ export default {
       }
       if (flag) {
         return [
-          { text: '自定义配置', value: 'custom' },
+          { text: this.$t('compute.text_837'), value: 'custom' },
         ]
       }
       return [
-        { text: '默认配置 (最高冗余)', value: '' },
-        { text: 'RAID-1/RAID-10 (2倍冗余)', value: 'raid10' },
-        { text: 'RAID-5 (1.x倍冗余)', value: 'raid5' },
-        { text: 'RAID-0 (无冗余)', value: 'raid0' },
-        { text: '自定义配置', value: 'custom' },
+        { text: this.$t('compute.text_838'), value: '' },
+        { text: this.$t('compute.text_839'), value: 'raid10' },
+        { text: this.$t('compute.text_840'), value: 'raid5' },
+        { text: this.$t('compute.text_841'), value: 'raid0' },
+        { text: this.$t('compute.text_837'), value: 'custom' },
       ]
     },
     vpcResource () {
@@ -364,7 +362,7 @@ export default {
           // 每一项是否有分配磁盘
           if (i > 0) {
             const rowsLength = this.diskOptionsDate[i].chartData.rows.length
-            if ((rowsLength === 1 && this.diskOptionsDate[i].chartData.rows[0].name !== '剩余') || (rowsLength > 1)) {
+            if ((rowsLength === 1 && this.diskOptionsDate[i].chartData.rows[0].name !== this.$t('compute.text_315')) || (rowsLength > 1)) {
               isDistribution = true
             }
           }
@@ -432,7 +430,7 @@ export default {
     // 添加硬盘配置
     addDisk () {
       this.createDialog('BaremetalCreateDiskDialog', {
-        title: '新建',
+        title: this.$t('compute.text_18'),
         diskData: this.diskData,
         diskOptionsDate: this.diskOptionsDate,
         updateData: (data) => {
@@ -511,14 +509,14 @@ export default {
         const imageDiskSize = this.selectedImage.min_disk / 1024
         if (imageDiskSize >= defaultSize) {
           sizeNumber = sizeNumber - imageDiskSize
-          option.chartData.rows.push({ name: '/(系统)', size: imageDiskSize })
+          option.chartData.rows.push({ name: this.$t('compute.text_316'), size: imageDiskSize })
         } else {
           sizeNumber = sizeNumber - defaultSize
           option.chartData.rows.push({ name: '/', size: defaultSize })
         }
       }
       option.remainder = sizeNumber
-      option.chartData.rows.push({ name: '剩余', size: sizeNumber })
+      option.chartData.rows.push({ name: this.$t('compute.text_315'), size: sizeNumber })
       this.diskOptionsDate.push(option)
       data.computeCount--
       if (data.option[2] === 'none' && data.computeCount > 0) {
@@ -542,15 +540,15 @@ export default {
       this.diskOptionsDate.forEach(item => {
         nameArr = nameArr.concat(item.chartData.rows)
       })
-      nameArr = nameArr.filter(item => item.name !== '剩余')
+      nameArr = nameArr.filter(item => item.name !== this.$t('compute.text_315'))
       this.createDialog('DiskOptionsUpdateDialog', {
-        title: e.name === '剩余' ? '创建新分区' : '更新分区',
+        title: e.name === this.$t('compute.text_315') ? this.$t('compute.text_317') : this.$t('compute.text_318'),
         item: this.diskOptionsDate[idx],
         nameArr,
         selectedArea: selectedArea[0],
         updateData: (values) => {
           const updateItem = this.diskOptionsDate[idx].chartData.rows
-          if (e.name === '剩余') {
+          if (e.name === this.$t('compute.text_315')) {
             // 创建新分区
             updateItem.unshift({ name: values.name, size: values.size, format: values.format })
             if (values.size === this.diskOptionsDate[idx].remainder || values.method === 'autoextend') {
@@ -574,10 +572,10 @@ export default {
             if (this.diskOptionsDate[idx].remainder > values.size) {
               updateItem[updateItem.length - 1].size = updateItem[updateItem.length - 1].size + oldSize - values.size
               this.diskOptionsDate[idx].remainder = this.diskOptionsDate[idx].remainder + oldSize - values.size
-              if (updateItem[updateItem.length - 1].name === '剩余') {
+              if (updateItem[updateItem.length - 1].name === this.$t('compute.text_315')) {
                 updateItem[updateItem.length - 1].size = this.diskOptionsDate[idx].remainder
               } else {
-                updateItem.push({ name: '剩余', size: this.diskOptionsDate[idx].remainder })
+                updateItem.push({ name: this.$t('compute.text_315'), size: this.diskOptionsDate[idx].remainder })
               }
             } else {
               if (values.method === 'autoextend') {
@@ -587,10 +585,10 @@ export default {
               }
               this.diskOptionsDate[idx].remainder = (oldSize - values.size) + this.diskOptionsDate[idx].remainder
               if (this.diskOptionsDate[idx].remainder === 0) return
-              if (updateItem[updateItem.length - 1].name === '剩余') {
+              if (updateItem[updateItem.length - 1].name === this.$t('compute.text_315')) {
                 updateItem[updateItem.length - 1].size = this.diskOptionsDate[idx].remainder
               } else {
-                updateItem.push({ name: '剩余', size: this.diskOptionsDate[idx].remainder })
+                updateItem.push({ name: this.$t('compute.text_315'), size: this.diskOptionsDate[idx].remainder })
               }
             }
           }
@@ -674,8 +672,8 @@ export default {
           // 判断数据盘是否合法
           if (this.diskOptionsDate.length > 0) {
             if (this.isShowFalseIcon) {
-              this.$message.error('磁盘配置分区非法')
-              throw new Error('磁盘配置分区非法')
+              this.$message.error(this.$t('compute.text_319'))
+              throw new Error(this.$t('compute.text_319'))
             }
             // 将系统盘放置首位
             const systemDisk = this.diskOptionsDate[0].chartData.rows.pop()
@@ -709,7 +707,7 @@ export default {
                   if (!rows[j].format) {
                     Reflect.deleteProperty(option, 'fs')
                   }
-                  if (rows[j].name === '剩余') {
+                  if (rows[j].name === this.$t('compute.text_315')) {
                     Reflect.deleteProperty(option, 'mountpoint')
                   }
                 }
@@ -726,8 +724,8 @@ export default {
               nets,
             }
           } else {
-            this.$message.error('请新增自定义磁盘配置')
-            throw new Error('请新增自定义磁盘配置')
+            this.$message.error(this.$t('compute.text_842'))
+            throw new Error(this.$t('compute.text_842'))
           }
         } else {
           params = {

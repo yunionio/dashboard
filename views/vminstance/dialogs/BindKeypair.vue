@@ -1,18 +1,18 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">绑定密钥</div>
+    <div slot="header">{{$t('compute.text_361')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" action="绑定密钥" />
+      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_361')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
-        <a-form-item label="密钥对" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_1182')" v-bind="formItemLayout">
           <base-select
             v-decorator="decorators.keypair"
             resource="keypairs"
-            :select-props="{ allowClear: true, placeholder: '请选择要关联的密钥对' }" />
+            :select-props="{ allowClear: true, placeholder: $t('compute.text_1183') }" />
         </a-form-item>
-        <a-form-item label="自动启动" v-bind="formItemLayout" extra="绑定密钥成功后自动启动">
-          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.auto_start" :disabled="form.fi.disableAutoStart" />
+        <a-form-item :label="$t('compute.text_494')" v-bind="formItemLayout" :extra="$t('compute.text_1184')">
+          <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.auto_start" :disabled="form.fi.disableAutoStart" />
         </a-form-item>
       </a-form>
     </div>
@@ -54,7 +54,7 @@ export default {
           'keypair',
           {
             rules: [
-              { required: true, message: '请选择关联密钥', trigger: 'blur' },
+              { required: true, message: this.$t('compute.text_203'), trigger: 'blur' },
             ],
           },
         ],

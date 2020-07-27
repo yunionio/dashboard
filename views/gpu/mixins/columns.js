@@ -6,6 +6,7 @@ import {
   getCopyWithContentTableColumn,
   getRegionTableColumn,
 } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -25,12 +26,12 @@ export default {
       }),
       {
         field: 'dev_type',
-        title: '设备类型',
+        title: i18n.t('compute.text_481'),
         width: 120,
       },
       {
         field: 'model',
-        title: '设备型号',
+        title: i18n.t('compute.text_482'),
         minWidth: 120,
         showOverflow: 'ellipsis',
         slots: {
@@ -50,7 +51,7 @@ export default {
       },
       {
         field: 'guest',
-        title: `关联${this.$t('dictionary.server')}`,
+        title: this.$t('compute.text_483', [this.$t('dictionary.server')]),
         minWidth: 100,
         showOverflow: 'ellipsis',
         slots: {
@@ -68,7 +69,7 @@ export default {
       },
       getCopyWithContentTableColumn({
         field: 'host',
-        title: '所在宿主机',
+        title: i18n.t('compute.text_484'),
         hideField: true,
         slotCallback: row => row.host || row.host_id,
       }),

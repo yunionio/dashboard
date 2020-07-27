@@ -1,22 +1,21 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">删除</div>
+    <div slot="header">{{$t('compute.text_261')}}</div>
     <div slot="body">
       <a-alert class="mb-4" type="warning" v-if="isCeph">
-        <div slot="message">
-          ceph盘有快照不支持单独删除硬盘，删除硬盘需打开同时删除快照
-        </div>
+        <div slot="message">{{$t('compute.text_419')}}</div>
       </a-alert>
       <dialog-selected-tips :count="params.data.length" :name="$t('dictionary.disk')" :action="this.params.title" />
       <dialog-table v-if="params.columns && params.columns.length" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc" v-show="isShowAutoDelete">
-        <a-form-item label="同时删除快照" v-bind="formItemLayout">
-          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.autoDelete" @change="autoDeleteChangeHandle" />
+        <a-form-item label="$t('compute.text_420')" v-bind="formItemLayout">
+          <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.autoDelete" @change="autoDeleteChangeHandle" />
         </a-form-item>
         <a-form-item v-if="!form.fd.autoDelete" v-bind="formItemLayoutWithoutLabel">
-          该硬盘快照数量 {{ snapshot.list.length }} 个
+          {{ $t('compute.text_1310', [snapshot.list.length]) }}
         </a-form-item>
+        <a-form-item v-if="!form.fd.autoDelete" v-bind="formItemLayoutWithoutLabel">{{$t('compute.text_421', [ snapshot.list.length ])}}</a-form-item>
       </a-form>
       <dialog-table v-if="form.fd.autoDelete" :data="snapshot.list" :columns="snapshot.columns" />
     </div>
@@ -26,7 +25,6 @@
     </div>
   </base-dialog>
 </template>
-
 <script>
 import * as R from 'ramda'
 import { DISK_TYPES, SERVER_TYPE } from '@Compute/constants'
@@ -47,7 +45,7 @@ export default {
         columns: [
           {
             field: 'name',
-            title: '名称',
+            title: this.$t('compute.text_228'),
             minWidth: 200,
             formatter: ({ row }) => {
               return row.name
@@ -55,7 +53,7 @@ export default {
           },
           {
             field: 'size',
-            title: '快照大小',
+            title: this.$t('compute.text_422'),
             width: 70,
             formatter: ({ row }) => {
               return sizestr(row.size, 'M', 1024)
@@ -63,7 +61,7 @@ export default {
           },
           {
             field: 'disk_type',
-            title: '磁盘类型',
+            title: this.$t('compute.text_381'),
             width: 70,
             formatter: ({ row }) => {
               return DISK_TYPES[row.disk_type] || row.disk_type
@@ -149,7 +147,7 @@ export default {
             if (this.params.success && R.is(Function, this.params.success)) {
               this.params.success(res)
             }
-            this.$message.success('操作成功')
+            this.$message.success(this.$t('compute.text_423'))
           }
           this.cancelDialog()
         }

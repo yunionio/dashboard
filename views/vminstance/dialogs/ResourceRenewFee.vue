@@ -1,13 +1,13 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">设置自动续费</div>
+    <div slot="header">{{$t('compute.text_1232')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" action="设置自动续费" />
+      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_1232')" />
       <dialog-table :data="params.data" :columns="columns" />
       <a-form
         :form="form.fc">
-        <a-form-item label="自动续费" v-bind="formItemLayout">
-          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.autoRenew" />
+        <a-form-item :label="$t('compute.text_1233')" v-bind="formItemLayout">
+          <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.autoRenew" />
         </a-form-item>
       </a-form>
     </div>

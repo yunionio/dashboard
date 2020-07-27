@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="主机快照"
+    :title="$t('compute.text_102')"
     icon="res-instance-snapshot"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
@@ -40,9 +40,9 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'snapshot-detail' },
-        { label: '子快照', key: 'sub-snapshot-detail' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('compute.text_238'), key: 'snapshot-detail' },
+        { label: this.$t('compute.text_1081'), key: 'sub-snapshot-detail' },
+        { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }
   },

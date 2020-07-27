@@ -50,14 +50,14 @@ export default {
         getPublicScopeTableColumn({ vm: this, resource: 'images' }),
         {
           field: 'type',
-          title: '类型',
+          title: this.$t('compute.text_175'),
           formatter: ({ cellValue, row }) => {
-            return isStandard(row.is_standard) ? '公共镜像' : '自定义镜像'
+            return isStandard(row.is_standard) ? this.$t('compute.text_620') : this.$t('compute.text_621')
           },
         },
         {
           field: 'size',
-          title: '大小',
+          title: this.$t('compute.text_377'),
           formatter: ({ cellValue, row }) => {
             return sizestr(cellValue, 'B', 1024)
           },
@@ -65,55 +65,55 @@ export default {
       ],
       extraInfo: [
         {
-          title: '镜像属性',
+          title: this.$t('compute.text_629'),
           items: [
             {
               field: 'disk_format',
-              title: '磁盘格式',
+              title: this.$t('compute.text_630'),
             },
             {
               field: 'os_lang',
-              title: '系统语言',
+              title: this.$t('compute.text_631'),
               formatter: ({ cellValue, row }) => {
                 return (row.properties && row.properties.os_lang) || '-'
               },
             },
             {
               field: 'min_ram',
-              title: '最小内存要求',
+              title: this.$t('compute.text_632'),
               formatter: ({ cellValue, row }) => {
                 return sizestr(cellValue, 'M', 1024)
               },
             },
             {
               field: 'min_disk',
-              title: '最小磁盘要求',
+              title: this.$t('compute.text_633'),
               formatter: ({ cellValue, row }) => {
                 return sizestr(cellValue, 'M', 1024)
               },
             },
             {
               field: 'disk_driver',
-              title: '磁盘驱动',
+              title: this.$t('compute.text_634'),
               formatter: ({ cellValue, row }) => {
                 return (row.properties && row.properties.disk_driver) || '-'
               },
             },
             {
               field: 'net_driver',
-              title: '网卡驱动',
+              title: this.$t('compute.text_635'),
               formatter: ({ cellValue, row }) => {
                 return (row.properties && row.properties.net_driver) || '-'
               },
             },
             {
               field: 'hypervisor',
-              title: '应用平台',
+              title: this.$t('compute.text_636'),
             },
           ],
         },
         {
-          title: '多云镜像',
+          title: this.$t('compute.text_637'),
           field: 'cloudy_mirroring',
           slots: {
             default: ({ row }, h) => {
@@ -124,11 +124,11 @@ export default {
           },
         },
         {
-          title: '其他信息',
+          title: this.$t('compute.text_497'),
           items: [
             getSwitchTableColumn({
               field: 'protected',
-              title: '删除保护',
+              title: this.$t('compute.text_372'),
               change: val => {
                 this.onManager('update', {
                   id: this.data.id,
@@ -144,15 +144,15 @@ export default {
       imageColumns: [
         getCopyWithContentTableColumn({
           field: 'checksum',
-          title: '校验和',
+          title: this.$t('compute.text_638'),
         }),
         {
           field: 'format',
-          title: '格式',
+          title: this.$t('compute.text_398'),
         },
         {
           field: 'size',
-          title: '大小',
+          title: this.$t('compute.text_377'),
           formatter: ({ cellValue, row }) => {
             return sizestr(cellValue, 'B', 1024)
           },

@@ -4,21 +4,21 @@
     <div slot="body">
       <a-form
         :form="form.fc">
-        <a-form-item label="挂载点" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_327')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :disabled="isDisabled" />
         </a-form-item>
-        <a-form-item label="分区格式" v-bind="formItemLayout" v-if="!isDisabled">
-          <a-select v-decorator="decorators.format" placeholder="请选择分区格式">
+        <a-form-item :label="$t('compute.text_328')" v-bind="formItemLayout" v-if="!isDisabled">
+          <a-select v-decorator="decorators.format" :placeholder="$t('compute.text_329')">
             <a-select-option value="ext4">ext4</a-select-option>
             <a-select-option value="xfs">xfs</a-select-option>
             <a-select-option value="ntfs">ntfs</a-select-option>
             <a-select-option value="swap">swap</a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item label="分区大小" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_330')" v-bind="formItemLayout">
           <a-radio-group v-decorator="decorators.method" @change="handleMethodChange">
-            <a-radio value="autoextend" v-show="this.params.item.remainder !== 0">最大容量</a-radio>
-            <a-radio value="manual">手动输入</a-radio>
+            <a-radio value="autoextend" v-show="this.params.item.remainder !== 0">{{$t('compute.text_331')}}</a-radio>
+            <a-radio value="manual">{{$t('compute.text_332')}}</a-radio>
           </a-radio-group>
         </a-form-item>
         <a-form-item v-bind="tailFormItemLayout" v-if="isManual">
@@ -73,11 +73,11 @@ export default {
         name: [
           'name',
           {
-            initialValue: this.params.title === '更新分区' ? this.params.selectedArea.name : '',
+            initialValue: this.params.title === this.$t('compute.text_318') ? this.params.selectedArea.name : '',
             validateTrigger: ['change', 'blur'],
             validateFirst: true,
             rules: [
-              { required: true, message: '请填写名称' },
+              { required: true, message: this.$t('compute.text_333') },
               { validator: this.checkMountpoint },
             ],
           },
@@ -85,16 +85,16 @@ export default {
         format: [
           'format',
           {
-            initialValue: this.params.title === '更新分区' ? this.params.selectedArea.format : 'ext4',
+            initialValue: this.params.title === this.$t('compute.text_318') ? this.params.selectedArea.format : 'ext4',
             rules: [
-              { required: true, message: '请选择分区格式' },
+              { required: true, message: this.$t('compute.text_329') },
             ],
           },
         ],
         method: [
           'method',
           {
-            initialValue: this.params.title === '创建新分区' ? 'autoextend' : 'manual',
+            initialValue: this.params.title === this.$t('compute.text_317') ? 'autoextend' : 'manual',
             rules: [
               { required: true },
             ],
@@ -103,31 +103,31 @@ export default {
         size: [
           'size',
           {
-            initialValue: this.params.title === '更新分区' ? this.params.selectedArea.size : 1,
+            initialValue: this.params.title === this.$t('compute.text_318') ? this.params.selectedArea.size : 1,
             rules: [
               { required: true },
             ],
           },
         ],
       },
-      isManual: this.params.title !== '创建新分区',
+      isManual: this.params.title !== this.$t('compute.text_317'),
     }
   },
   computed: {
     maxNumber () {
-      if (this.params.title === '更新分区') {
+      if (this.params.title === this.$t('compute.text_318')) {
         return this.params.item.remainder + this.params.selectedArea.size
       }
       return this.params.item.remainder
     },
     coutTitle () {
-      if (this.params.title === '更新分区') {
-        return `最小:1GB 最大:${this.params.item.remainder + this.params.selectedArea.size}GB`
+      if (this.params.title === this.$t('compute.text_318')) {
+        return this.$t('compute.text_334', [this.params.item.remainder + this.params.selectedArea.size])
       }
-      return `最小:1GB 最大:${this.params.item.remainder}GB`
+      return this.$t('compute.text_334', [this.params.item.remainder])
     },
     isDisabled () {
-      if (this.params.title === '更新分区' && this.params.selectedArea.name === '/(系统)') {
+      if (this.params.title === this.$t('compute.text_318') && this.params.selectedArea.name === this.$t('compute.text_316')) {
         return true
       }
       return false
@@ -144,14 +144,14 @@ export default {
     checkMountpoint (rule, value, callback) {
       const pathReg = new RegExp('^(/[^/ ]*)+')
       if (!pathReg.test(value)) {
-        callback(new Error('挂载点必须以"/"头'))
+        callback(new Error(this.$t('compute.text_335')))
       }
       const checkName = this.params.nameArr.filter(item => item.name === value)
-      if (this.params.title === '更新分区' && checkName.length > 1) {
-        callback(new Error('名称已经存在'))
+      if (this.params.title === this.$t('compute.text_318') && checkName.length > 1) {
+        callback(new Error(this.$t('compute.text_337')))
       }
-      if (this.params.title === '创建新分区' && checkName.length > 0) {
-        callback(new Error('名称已经存在'))
+      if (this.params.title === this.$t('compute.text_317') && checkName.length > 0) {
+        callback(new Error(this.$t('compute.text_337')))
       }
       callback()
     },
@@ -168,13 +168,13 @@ export default {
     },
     async handleConfirm () {
       let values = await this.validateForm()
-      if (values.method === 'autoextend' && this.params.title === '创建新分区') {
+      if (values.method === 'autoextend' && this.params.title === this.$t('compute.text_317')) {
         values = {
           ...values,
           size: this.params.item.remainder,
         }
       }
-      if (values.method === 'autoextend' && this.params.title === '更新分区') {
+      if (values.method === 'autoextend' && this.params.title === this.$t('compute.text_318')) {
         values = {
           ...values,
           size: this.params.item.remainder + this.params.selectedArea.size,

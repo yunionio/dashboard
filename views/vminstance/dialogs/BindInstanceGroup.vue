@@ -4,8 +4,8 @@
     <div slot="body">
       <a-alert class="mb-2" type="warning">
         <template v-slot:message>
-          <div>新建虚拟机时加入{{ $t('dictionary.instancegroup') }}，将按照{{ $t('dictionary.instancegroup') }}内规则调度选择宿主机。</div>
-          <div class="mt-2">已创建的虚拟机加入{{ $t('dictionary.instancegroup') }}后虚拟机所属宿主机不会变化。</div>
+          <div>{{$t('compute.text_704', [$t('dictionary.instancegroup'), $t('dictionary.instancegroup')])}}</div>
+          <div class="mt-2">{{$t('compute.text_707', [$t('dictionary.instancegroup') ])}}</div>
         </template>
       </a-alert>
       <dialog-selected-tips :name="params.name || $t('dictionary.instancegroup')" :count="params.data.length" :action="action" />
@@ -14,7 +14,7 @@
         v-if="instanceGroupsLoaded"
         class="w-100"
         mode="multiple"
-        :placeholder="`请选择要绑定的${$t('dictionary.instancegroup')}`"
+        :placeholder="$t('compute.text_702', [$t('dictionary.instancegroup')])"
         :defaultValue="defaultSelected"
         :loading="instanceGroupsLoading"
         @search="debounceFetchInstanceGroups"
@@ -43,7 +43,7 @@ export default {
   data () {
     return {
       loading: false,
-      action: `加入${this.$t('dictionary.instancegroup')}`,
+      action: this.$t('compute.text_1181', [this.$t('dictionary.instancegroup')]),
       // 获取的主机列表
       instanceGroups: [],
       instanceGroupsLoading: false,

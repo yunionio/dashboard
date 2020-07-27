@@ -44,7 +44,7 @@ export default {
       ],
       groupActions: [
         {
-          label: '取消关联',
+          label: this.$t('compute.text_260'),
           action: () => {
             this.unbind(this.list.selectedItems)
           },
@@ -59,7 +59,7 @@ export default {
       ],
       singleActions: [
         {
-          label: '取消关联',
+          label: this.$t('compute.text_260'),
           action: (obj) => {
             this.unbind([obj])
           },
@@ -76,7 +76,7 @@ export default {
         data,
         resId: this.resId,
         columns: this.columns,
-        title: '删除',
+        title: this.$t('compute.text_261'),
         list: this.list,
       })
     },

@@ -161,7 +161,7 @@ export default {
           let label = ''
           if (fromItem === 'disk') {
             tag = 'path'
-            label = '路径: '
+            label = this.$t('compute.text_601')
           }
           const columns = ['time']
           const values = series[0].values.map(val => [val[0]])

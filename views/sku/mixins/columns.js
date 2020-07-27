@@ -4,6 +4,7 @@ import {
   getStatusTableColumn,
 } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -20,15 +21,15 @@ export default {
       }),
       {
         field: 'cpu_core_count',
-        title: '虚拟CPU核数',
+        title: i18n.t('compute.text_1051'),
         width: 100,
         formatter: ({ cellValue }) => {
-          return cellValue + '核'
+          return cellValue + i18n.t('compute.text_167')
         },
       },
       {
         field: 'memory_size_mb',
-        title: '虚拟内存容量',
+        title: i18n.t('compute.text_1052'),
         width: 100,
         formatter: ({ cellValue }) => {
           return sizestr(cellValue, 'M', 1024)
@@ -37,7 +38,7 @@ export default {
       getStatusTableColumn({ statusModule: 'sku' }),
       {
         field: 'total_guest_count',
-        title: `关联${this.$t('dictionary.server')}数量`,
+        title: this.$t('compute.text_699', [this.$t('dictionary.server')]),
         width: 120,
         slots: {
           default: ({ row }) => {

@@ -4,13 +4,13 @@
     <div slot="body">
       <a-alert class="mb-2" type="warning">
         <template v-slot:message>
-          <div>强制重启模式，会导致服务器实例当前未保存的数据丢失</div>
+          <div>{{$t('compute.text_1234')}}</div>
         </template>
       </a-alert>
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="action" />
       <vxe-grid class="mb-2" :data="params.data" :columns="columns" />
       <a-form :form="form.fc" hideRequiredMark>
-        <a-form-item label="强制重启" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_1235')" v-bind="formItemLayout">
           <a-switch v-decorator="decorators.autoStart" />
         </a-form-item>
       </a-form>
@@ -32,7 +32,7 @@ export default {
   data () {
     return {
       loading: false,
-      action: '重启',
+      action: this.$t('compute.text_274'),
       form: {
         fc: this.$form.createForm(this),
       },

@@ -1,13 +1,13 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">关联硬盘</div>
+    <div slot="header">{{$t('compute.text_1084')}}</div>
     <div slot="body">
       <a-alert class="mb-2" type="warning" :message="message" />
-      <dialog-selected-tips :count="params.data.length" action="关联硬盘" :name="$t('dictionary.snapshotpolicy')" />
+      <dialog-selected-tips :count="params.data.length" :action="$t('compute.text_1084')" :name="$t('dictionary.snapshotpolicy')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <loader loading v-if="!(bindedDisksLoaded && disksInitLoaded)" />
       <a-form :form="form.fc" hideRequiredMark v-show="bindedDisksLoaded && disksInitLoaded">
-        <a-form-item label="硬盘" v-bind="formItemLayout" v-if="bindedDisksLoaded">
+        <a-form-item :label="$t('compute.text_376')" v-bind="formItemLayout" v-if="bindedDisksLoaded">
           <base-select
             class="w-100"
             filterable
@@ -17,7 +17,7 @@
             :mapper="mapperDisks"
             :params="diskParams"
             :init-loaded.sync="disksInitLoaded"
-            :select-props="{ allowClear: true, placeholder: '请选择硬盘', mode: 'multiple' }" />
+            :select-props="{ allowClear: true, placeholder: $t('compute.text_1085'), mode: 'multiple' }" />
         </a-form-item>
       </a-form>
     </div>
@@ -74,7 +74,7 @@ export default {
       return this.params.data[0].provider === HYPERVISORS_MAP.ucloud.provider
     },
     message () {
-      return '多个时间点的快照策略暂不支持绑定，只支持解绑操作'
+      return this.$t('compute.text_1086')
     },
     diskParams () {
       return { limit: 20, tenant: this.params.data[0].tenant }
