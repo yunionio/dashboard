@@ -25,15 +25,15 @@ export default {
       ],
       extraInfo: [
         {
-          title: '实例信息',
+          title: this.$t('db.text_225'),
           items: [
             {
               field: 'tenant',
-              title: `所属${this.$t('dictionary.project')}`,
+              title: this.$t('db.text_226', [this.$t('dictionary.project')]),
             },
             {
               field: 'backup_size_mb',
-              title: '大小',
+              title: this.$t('db.text_38'),
               slots: {
                 default: ({ row }) => {
                   return `${row.backup_size_mb}GB`
@@ -42,31 +42,31 @@ export default {
             },
             {
               field: 'dbinstance',
-              title: '实例名称',
+              title: this.$t('db.text_35'),
             },
             {
               field: 'backup_mode',
-              title: '备份类型',
+              title: this.$t('db.text_36'),
             },
             {
               field: 'engine',
-              title: '数据库类型',
+              title: this.$t('db.text_37'),
             },
             {
               field: 'account',
-              title: '云账号',
+              title: this.$t('db.text_67'),
             },
             {
               field: 'account',
-              title: '子账号',
+              title: this.$t('db.text_227'),
             },
             {
               field: 'brand',
-              title: '平台',
+              title: this.$t('db.text_51'),
             },
             {
               field: 'region',
-              title: '区域',
+              title: this.$t('db.text_40'),
             },
           ],
         },

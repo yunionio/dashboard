@@ -1,15 +1,16 @@
+import i18n from '@/locales'
 
 export default {
   created () {
     this.singleActions = [
       {
-        label: '删除',
+        label: i18n.t('db.text_42'),
         action: (obj) => {
           this.createDialog('DeleteResDialog', {
             vm: this,
             data: [obj],
             columns: this.columns,
-            title: '删除',
+            title: i18n.t('db.text_42'),
             onManager: this.onManager,
             refresh: this.refresh,
           })

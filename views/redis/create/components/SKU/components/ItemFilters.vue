@@ -1,16 +1,16 @@
 <template>
   <div>
-    <a-form-item label="类型" v-bind="formItemLayout">
+    <a-form-item :label="$t('db.text_61')" v-bind="formItemLayout">
       <a-radio-group :disabled="!!disableds.engine" v-decorator="decorators.engine || ['engine', { initialValue: 'redis' }]" @change="getVersion">
         <a-radio-button :key="item" :value="item" v-for="item in engines">{{item}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-form-item label="版本" v-bind="formItemLayout">
+    <a-form-item :label="$t('db.text_236')" v-bind="formItemLayout">
       <a-radio-group :disabled="!!disableds.engine_version" v-decorator="decorators.engine_version || ['engine_version']" @change="getArcha">
         <a-radio-button :key="item" :value="item" v-for="item in engine_versions">{{item}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-form-item label="实例类型" v-bind="formItemLayout">
+    <a-form-item :label="$t('db.text_119')" v-bind="formItemLayout">
       <a-radio-group :disabled="!!disableds.local_category" v-decorator="decorators.local_category || ['local_category']" @change="getNodeTypes">
         <a-radio-button :key="item" :value="item" v-for="item in local_categorys">{{ENGINE_ARCH[item] || item}}</a-radio-button>
       </a-radio-group>
@@ -18,19 +18,19 @@
         {{archPoints(getFieldValue('local_category'))}}
       </div>
     </a-form-item>
-     <a-form-item label="节点类型" v-bind="formItemLayout">
+     <a-form-item :label="$t('db.text_271')" v-bind="formItemLayout">
       <a-radio-group v-decorator="decorators.nodeType || ['node_type']" @change="getPerformanceTypes">
          <a-radio-button :key="item" :value="item" v-for="item in node_types">{{NODE_TYPE[item]}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
-     <a-form-item label="性能类型" v-bind="formItemLayout">
+     <a-form-item :label="$t('db.text_272')" v-bind="formItemLayout">
       <a-radio-group v-decorator="decorators.performance_type || ['performance_type', { initialValue: 'standard' }]">
         <template v-for="item in performance_types">
            <a-radio-button v-if="item" :key="item" :value="item">{{PERFORMANCE_TYPE[item]}}</a-radio-button>
         </template>
       </a-radio-group>
     </a-form-item>
-    <a-form-item label="内存" v-bind="formItemLayout" v-if="memorys && memorys.length > 0">
+    <a-form-item :label="$t('db.text_132')" v-bind="formItemLayout" v-if="memorys && memorys.length > 0">
       <a-radio-group v-decorator="decorators.memory_size_mb || ['memory_size_mb']">
         <a-radio-button :key="size" :disabled="getIsMemoryDisabled(size)" :value="size" v-for="size in memorys">{{sizestr(size, 'M', 1024)}}</a-radio-button>
       </a-radio-group>
@@ -190,12 +190,12 @@ export default {
     },
     archPoints (type) {
       const points = {
-        single: '数据单副本 | 不支持数据持久化 | 不承诺数据可靠性',
-        ha: '数据双副本 | 数据持久化 | 提供数据可靠性',
-        proxy: '大容量 | 高性能| 支持分片',
-        master: '数据双副本 | 数据持久化 | 提供数据可靠性',
-        cluster: '大容量 | 高性能| 支持分片',
-        rwsplit: '高可用| 高性能｜高灵活的读写分离服务',
+        single: this.$t('db.text_273'),
+        ha: this.$t('db.text_274'),
+        proxy: this.$t('db.text_275'),
+        master: this.$t('db.text_274'),
+        cluster: this.$t('db.text_275'),
+        rwsplit: this.$t('db.text_276'),
       }
       return points[type]
     },

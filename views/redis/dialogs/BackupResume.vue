@@ -23,7 +23,7 @@ export default {
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
-      title: '恢复',
+      title: this.$t('db.text_45'),
       loading: false,
       privileges: ACCOUNT_PRIVILEGES,
       form: {

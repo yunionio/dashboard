@@ -2,7 +2,7 @@
   <div>
     <a-transfer
       :dataSource="dbList"
-      :titles="['未授权的账号', '已授权的账号']"
+      :titles="[$t('db.text_229'), $t('db.text_230')]"
       :listStyle="{
         width: '332px',
         height: '332px',

@@ -32,18 +32,18 @@ export default {
     tableColumn () {
       const column = [
         { type: 'radio', width: 40 },
-        { field: 'name', title: '实例名称' },
+        { field: 'name', title: this.$t('db.text_35') },
         {
-          title: '配置',
+          title: this.$t('db.text_109'),
           slots: {
             default: ({ row }) => {
-              return `${row.vcpu_count}核 ${sizestr(row.vmem_size_mb, 'M', 1024)}`
+              return this.$t('db.text_151', [row.vcpu_count, sizestr(row.vmem_size_mb, 'M', 1024)])
             },
           },
         },
         {
           id: 'engine',
-          title: '数据库引擎',
+          title: this.$t('db.text_57'),
           slots: {
             default: ({ row }) => {
               return `${row.engine || ''} ${row.engine_version || ''}`

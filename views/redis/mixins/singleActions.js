@@ -1,10 +1,11 @@
 import { disableDeleteAction } from '@/utils/common/tableActions'
+import i18n from '@/locales'
 
 export default {
   created () {
     this.singleActions = [
       {
-        label: '同步状态',
+        label: i18n.t('db.text_69'),
         action: (obj) => {
           this.onManager('performAction', {
             id: obj.id,
@@ -16,19 +17,19 @@ export default {
         },
       },
       {
-        label: '更多',
+        label: i18n.t('db.text_155'),
         actions: (obj) => {
           const { provider, status } = obj
           const isRunning = status.toLowerCase() === 'running'
-          const notRunninTip = !isRunning ? '仅运行中的实例支持此操作' : null
+          const notRunninTip = !isRunning ? i18n.t('db.text_156') : null
           const isAuthModeOn = obj.auth_mode === 'on'
           const setAuthMode = () => {
             if (!isAuthModeOn && obj.brand !== 'Huawei') {
               return {
-                label: '关闭免密访问',
+                label: i18n.t('db.text_304'),
                 action: () => {
                   this.createDialog('RedisUpdateAuthModeDialog', {
-                    title: '关闭免密访问',
+                    title: i18n.t('db.text_304'),
                     data: [obj],
                     columns: this.columns,
                     onManager: this.onManager,
@@ -45,10 +46,10 @@ export default {
               }
             }
             return {
-              label: '开启免密访问',
+              label: i18n.t('db.text_305'),
               action: () => {
                 this.createDialog('RedisUpdateAuthModeDialog', {
-                  title: '开启免密访问',
+                  title: i18n.t('db.text_305'),
                   data: [obj],
                   columns: this.columns,
                   onManager: this.onManager,
@@ -59,17 +60,17 @@ export default {
               meta: () => {
                 return {
                   validate: isRunning && obj.brand !== 'Huawei',
-                  tooltip: notRunninTip || (obj.brand === 'Huawei' && '华为云暂不支持此操作'),
+                  tooltip: notRunninTip || (obj.brand === 'Huawei' && i18n.t('db.text_306')),
                 }
               },
             }
           }
           return [
             {
-              label: '重启',
+              label: i18n.t('db.text_70'),
               action: () => {
                 this.createDialog('RedisRestartdialog', {
-                  title: '重启',
+                  title: i18n.t('db.text_70'),
                   data: [obj],
                   columns: this.columns,
                   onManager: this.onManager,
@@ -85,10 +86,10 @@ export default {
               },
             },
             {
-              label: '调整配置',
+              label: i18n.t('db.text_159'),
               action: () => {
                 this.createDialog('RedisSetConfigDialog', {
-                  title: '调整配置',
+                  title: i18n.t('db.text_159'),
                   data: [obj],
                   columns: this.columns,
                   onManager: this.onManager,
@@ -100,15 +101,15 @@ export default {
                 const isPrepaid = obj.billing_type === 'prepaid'
                 return {
                   validate: isRunning && !isPrepaid,
-                  tooltip: notRunninTip || (isPrepaid ? '仅包年包月的实例，暂不支持此操作' : ''),
+                  tooltip: notRunninTip || (isPrepaid ? i18n.t('db.text_307') : ''),
                 }
               },
             },
             {
-              label: '清空数据',
+              label: i18n.t('db.text_239'),
               action: () => {
                 this.createDialog('RedisClearDataDialog', {
-                  title: '清空数据',
+                  title: i18n.t('db.text_239'),
                   data: [obj],
                   columns: this.columns,
                   onManager: this.onManager,
@@ -124,10 +125,10 @@ export default {
               },
             },
             {
-              label: provider === 'Huawei' ? '修改密码' : '重置密码',
+              label: provider === 'Huawei' ? i18n.t('db.text_308') : i18n.t('db.text_201'),
               action: () => {
                 this.createDialog('RedisResetPassworddialog', {
-                  title: provider === 'Huawei' ? '修改密码' : '重置密码',
+                  title: provider === 'Huawei' ? i18n.t('db.text_308') : i18n.t('db.text_201'),
                   data: [obj],
                   columns: this.columns,
                   onManager: this.onManager,
@@ -143,10 +144,10 @@ export default {
               },
             },
             {
-              label: `更改${this.$t('dictionary.project')}`,
+              label: i18n.t('db.text_160', [i18n.t('dictionary.project')]),
               action: () => {
                 this.createDialog('ChangeOwenrDialog', {
-                  title: `更改${this.$t('dictionary.project')}`,
+                  title: i18n.t('db.text_160', [i18n.t('dictionary.project')]),
                   data: [obj],
                   columns: this.columns,
                   onManager: this.onManager,
@@ -158,7 +159,7 @@ export default {
             },
             setAuthMode(),
             {
-              label: '到期释放',
+              label: i18n.t('db.text_71'),
               action: () => {
                 this.createDialog('SetDurationDialog', {
                   data: [obj],
@@ -174,7 +175,7 @@ export default {
                   tooltip: null,
                 }
                 if (obj.billing_type === 'prepaid') {
-                  ret.tooltip = '包年包月机器，不支持此操作'
+                  ret.tooltip = i18n.t('db.text_72')
                   return ret
                 }
                 ret.validate = true
@@ -185,12 +186,12 @@ export default {
               name: this.$t('dictionary.elasticcaches'),
             }),
             {
-              label: '删除',
+              label: i18n.t('db.text_42'),
               permission: 'redis_elasticcaches_delete',
               action: () => {
                 this.createDialog('DeleteResDialog', {
                   vm: this,
-                  title: '删除',
+                  title: i18n.t('db.text_42'),
                   name: this.$t('dictionary.elasticcaches'),
                   data: [obj],
                   columns: this.columns,
@@ -202,9 +203,9 @@ export default {
                 let tooltip = ''
                 const seconds = this.$moment(obj.expired_at).diff(new Date()) / 1000
                 if (obj.disable_delete) {
-                  tooltip = '删除保护，如需解除，请点击【设置删除保护】'
+                  tooltip = i18n.t('db.text_74')
                 } else if (obj.billing_type === 'prepaid' && seconds > 0) {
-                  tooltip = '实例未到期不允许删除'
+                  tooltip = i18n.t('db.text_75')
                 }
                 return {
                   validate: !tooltip,

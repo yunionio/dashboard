@@ -41,12 +41,12 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'redis-detail' },
-        { label: '白名单设置', key: 'redis-white-list' },
-        { label: '账号管理', key: 'redis-account-list' },
-        { label: '备份列表', key: 'redis-backup-list' },
-        { label: '监控', key: 'monitor' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('db.text_187'), key: 'redis-detail' },
+        { label: this.$t('db.text_330'), key: 'redis-white-list' },
+        { label: this.$t('db.text_331'), key: 'redis-account-list' },
+        { label: this.$t('db.text_332'), key: 'redis-backup-list' },
+        { label: this.$t('db.text_191'), key: 'monitor' },
+        { label: this.$t('db.text_192'), key: 'event-drawer' },
       ],
     }
   },

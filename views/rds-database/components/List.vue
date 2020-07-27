@@ -38,10 +38,10 @@ export default {
       }),
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('db.text_41'),
           action: () => {
             this.createDialog('RDSDatabaseCreateDialog', {
-              title: '新建数据库',
+              title: this.$t('db.text_231'),
               rdsItem: this.data,
               onManager: this.onManager,
               refresh: this.refresh,
@@ -62,7 +62,7 @@ export default {
       const isRun = this.data.status === 'running'
       let tooltip = ''
       if (!isRun) {
-        tooltip = '仅在运行中状态下支持新建操作'
+        tooltip = this.$t('db.text_198')
       }
       return {
         validate: isRun,

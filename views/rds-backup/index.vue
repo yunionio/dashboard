@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="备份管理" />
+    <page-header :title="$t('db.text_190')" />
     <page-body>
       <backup-list :id="listId" />
     </page-body>

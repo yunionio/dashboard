@@ -31,8 +31,8 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'detail' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('db.text_187'), key: 'detail' },
+        { label: this.$t('db.text_192'), key: 'event-drawer' },
       ],
     }
   },

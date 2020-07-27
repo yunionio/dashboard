@@ -58,12 +58,12 @@ export default {
           validateFirst: true,
           rules: [
             {
-              required: this.isRequired, message: '请选择平台',
+              required: this.isRequired, message: this.$t('db.text_30'),
             },
             {
               validator: (rule, value, _callback) => {
                 if (!this.providerList || this.providerList.length === 0) {
-                  return _callback(new Error('该项目下没有可用平台'))
+                  return _callback(new Error(this.$t('db.text_31')))
                 }
                 _callback()
               },

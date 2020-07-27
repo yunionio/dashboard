@@ -1,22 +1,22 @@
 <template>
   <div class="server-create-index">
-    <page-header title="新建RDS" />
-    <a-divider orientation="left">基础配置</a-divider>
+    <page-header :title="$t('db.text_140')" />
+    <a-divider orientation="left">{{$t('db.text_141')}}</a-divider>
     <a-form hideRequiredMark :form="form.fc" class="mt-3"  v-bind="formItemLayout">
-      <a-form-item class="mb-0" :label="`指定${$t('dictionary.project')}`" v-bind="formItemLayout">
+      <a-form-item class="mb-0" :label="$t('db.text_139', [$t('dictionary.project')])" v-bind="formItemLayout">
         <domain-project :decorators="decorators.projectDomain" :fc="form.fc" :labelInValue="false" />
       </a-form-item>
-      <a-form-item label="名称" v-bind="formItemLayout">
+      <a-form-item :label="$t('db.text_60')" v-bind="formItemLayout">
         <a-input :placeholder="$t('validator.resourceCreateName')" v-decorator="decorators.generate_name" />
         <name-repeated
           v-slot:extra
           res="dbinstances"
           :name="form.getFieldValue('generate_name')"
-          default-text="名称支持有序后缀占位符‘#’，用法举例，名称host##，数量2，创建后实例的名称依次为host01、host02，已有同名实例，序号顺延"  />
+          default-:text="$t('db.text_142')"  />
       </a-form-item>
       <!-- 计费方式 -->
       <clearing-radios v-bind="formItemLayout" />
-      <a-form-item label="到期释放" v-if="form.fd.billing_type !== 'prepaid'">
+      <a-form-item :label="$t('db.text_71')" v-if="form.fd.billing_type !== 'prepaid'">
         <duration :decorators="decorators.duration" :form="form" />
       </a-form-item>
       <!-- 区域 -->
@@ -28,13 +28,13 @@
         :names="['city', 'provider', 'cloudregion']" />
       <!-- 套餐信息 -->
       <s-k-u ref="SKU" />
-      <a-form-item v-if="form.fd.provider !== 'Aliyun'" label="管理员密码">
+      <a-form-item v-if="form.fd.provider !== 'Aliyun'" :label="$t('db.text_143')">
         <server-password :loginTypes="loginTypes" :decorator="decorators.loginConfig" :form="form" />
       </a-form-item>
       <!-- 网络 -->
       <item-network ref="NETWORK" />
       <!-- 选择安全组 -->
-      <a-form-item v-if="form.getFieldValue('provider') === 'Huawei'" label="安全组">
+      <a-form-item v-if="form.getFieldValue('provider') === 'Huawei'" :label="$t('db.text_144')">
         <secgroup-config :max="1" :decorators="decorators.secgroup" />
       </a-form-item>
       <bottom-bar :values="form.getFieldsValue()" />

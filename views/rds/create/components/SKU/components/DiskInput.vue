@@ -1,9 +1,9 @@
 <template>
-  <a-form-item label="存储空间" v-bind="formItemLayout">
+  <a-form-item :label="$t('db.text_116')" v-bind="formItemLayout">
     <a-tooltip placement="top">
       <template slot="title">
-          <span v-if="selectedSku">存储范围在：{{numberProps.min}}GB ~ {{numberProps.max}}GB之间</span>
-          <span v-else>请选择实例规格</span>
+          <span v-if="selectedSku">{{$t('db.text_117', [numberProps.min,numberProps.max])}}</span>
+          <span v-else>{{$t('db.text_118')}}</span>
         </template>
       <a-input-number  v-bind="numberProps" @blur="handleBlurDiskSize" v-decorator="['disk_size_gb', { initialValue: numberProps.min }]" /> GB
     </a-tooltip>

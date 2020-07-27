@@ -5,7 +5,7 @@
            <dialog-selected-tips :name="$t('dictionary.elasticcaches')" :count="params.data.length" :action="params.title" />
            <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
            <a-form :form="form.fc" class="mt-5">
-              <a-form-item label="权限设置" v-bind="formItemLayout">
+              <a-form-item :label="$t('db.text_284')" v-bind="formItemLayout">
                 <a-radio-group v-decorator="decorators.account_privilege">
                     <a-radio v-for="k in Object.keys(privileges)" :key="k" :value="k">
                       {{privileges[k]}}

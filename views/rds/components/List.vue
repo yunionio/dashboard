@@ -39,23 +39,23 @@ export default {
         filterOptions: {
           name: getNameFilter(),
           status: getFilter({
-            title: '状态',
+            title: this.$t('db.text_46'),
             field: 'status',
             multiple: true,
             items: [
-              { label: '运行中', key: 'running' },
-              { label: '关机', key: 'ready' },
-              { label: '未知', key: 'unknown' },
-              { label: '调度失败', key: 'sched_fail' },
+              { label: this.$t('db.text_47'), key: 'running' },
+              { label: this.$t('db.text_48'), key: 'ready' },
+              { label: this.$t('db.text_49'), key: 'unknown' },
+              { label: this.$t('db.text_50'), key: 'sched_fail' },
             ],
           }),
           brand: {
-            label: '平台',
+            label: this.$t('db.text_51'),
             dropdown: true,
             multiple: true,
             items: [
-              { label: '阿里云', key: 'Aliyun' },
-              { label: '华为云', key: 'Huawei' },
+              { label: this.$t('db.text_52'), key: 'Aliyun' },
+              { label: this.$t('db.text_53'), key: 'Huawei' },
               { label: 'Google', key: 'Google' },
             ],
           },
@@ -63,15 +63,15 @@ export default {
           projects: getTenantFilter(),
           billing_type: getFilter({
             field: 'billing_type',
-            title: '计费方式',
+            title: this.$t('db.text_54'),
             items: [
-              { label: '按量付费', key: 'postpaid' },
-              { label: '包年包月', key: 'prepaid' },
+              { label: this.$t('db.text_55'), key: 'postpaid' },
+              { label: this.$t('db.text_56'), key: 'prepaid' },
             ],
           }),
           engine: getFilter({
             field: 'engine',
-            title: '数据库引擎',
+            title: this.$t('db.text_57'),
             items: [
               { label: 'MySQL', key: 'MySQL' },
               { label: 'PostgreSQL', key: 'PostgreSQL' },
@@ -80,14 +80,14 @@ export default {
           }),
           internal_connection_str: getFilter({
             field: 'internal_connection_str',
-            title: '链接地址-内网',
+            title: this.$t('db.text_58'),
           }),
           connection_str: getFilter({
             field: 'connection_str',
-            title: '链接地址-外网',
+            title: this.$t('db.text_59'),
           }),
           region: {
-            label: '区域',
+            label: this.$t('db.text_40'),
           },
           domain: getDomainFilter(),
         },
@@ -96,26 +96,26 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
-          { label: '类型', key: 'category' },
+          { label: this.$t('db.text_60'), key: 'name' },
+          { label: this.$t('db.text_61'), key: 'category' },
           { label: 'CPU', key: 'vcpu_count' },
-          { label: '内存(MB)', key: 'vmem_size_mb' },
-          { label: '数据库引擎', key: 'engine' },
-          { label: '数据库版本', key: 'engine_version' },
-          { label: '数据库端口号', key: 'port' },
-          { label: '内网链接地址', key: 'internal_connection_str' },
-          { label: '外网链接地址', key: 'connection_str' },
-          { label: '云账号', key: 'account' },
-          { label: '计费方式', key: 'billing_type' },
-          { label: '状态', key: 'status' },
+          { label: this.$t('db.text_62'), key: 'vmem_size_mb' },
+          { label: this.$t('db.text_57'), key: 'engine' },
+          { label: this.$t('db.text_63'), key: 'engine_version' },
+          { label: this.$t('db.text_64'), key: 'port' },
+          { label: this.$t('db.text_65'), key: 'internal_connection_str' },
+          { label: this.$t('db.text_66'), key: 'connection_str' },
+          { label: this.$t('db.text_67'), key: 'account' },
+          { label: this.$t('db.text_54'), key: 'billing_type' },
+          { label: this.$t('db.text_46'), key: 'status' },
           { label: this.$t('dictionary.project'), key: 'tenant' },
-          { label: '平台', key: 'provider' },
-          { label: '区域', key: 'region' },
+          { label: this.$t('db.text_51'), key: 'provider' },
+          { label: this.$t('db.text_40'), key: 'region' },
         ],
       },
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('db.text_41'),
           permission: 'rds_dbinstances_create',
           action: () => {
             this.$router.push('/rds/create')
@@ -130,10 +130,10 @@ export default {
           label: this.$t('common.batchAction'),
           actions: (obj) => {
             const selectedLength = this.list.selectedItems.length
-            const notSelectedTooltip = selectedLength <= 0 ? '请选择需要操作的实例' : ''
+            const notSelectedTooltip = selectedLength <= 0 ? this.$t('db.text_68') : ''
             return [
               {
-                label: '同步状态',
+                label: this.$t('db.text_69'),
                 action: (obj) => {
                   this.onManager('batchPerformAction', {
                     id: this.list.selectedItems.map(item => item.id),
@@ -150,10 +150,10 @@ export default {
                 },
               },
               {
-                label: '重启',
+                label: this.$t('db.text_70'),
                 action: () => {
                   this.createDialog('RDSRestartdialog', {
-                    title: '重启',
+                    title: this.$t('db.text_70'),
                     data: this.list.selectedItems,
                     columns: this.columns,
                     onManager: this.onManager,
@@ -168,7 +168,7 @@ export default {
                 },
               },
               {
-                label: '到期释放',
+                label: this.$t('db.text_71'),
                 action: () => {
                   this.createDialog('SetDurationDialog', {
                     data: this.list.selectedItems,
@@ -188,7 +188,7 @@ export default {
                     return item.billing_type === 'prepaid'
                   })
                   if (isSomePrepaid) {
-                    ret.tooltip = '包年包月机器，不支持此操作'
+                    ret.tooltip = this.$t('db.text_72')
                     return ret
                   }
                   // 暂只支持同时操作已设置到期或未设置到期释放的机器
@@ -199,7 +199,7 @@ export default {
                     return !item.expired_at
                   })
                   if (isSomeExpired && isSomeNotExpired) {
-                    ret.tooltip = '暂只支持同时操作已设置到期释放'
+                    ret.tooltip = this.$t('db.text_73')
                     return ret
                   }
                   ret.validate = true
@@ -210,12 +210,12 @@ export default {
                 name: this.$t('dictionary.dbinstances'),
               }),
               {
-                label: '删除',
+                label: this.$t('db.text_42'),
                 permission: 'rds_dbinstances_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     vm: this,
-                    title: '删除',
+                    title: this.$t('db.text_42'),
                     data: this.list.selectedItems,
                     columns: this.columns,
                     onManager: this.onManager,
@@ -228,19 +228,19 @@ export default {
                   let tooltip = ''
                   if (this.list.selectedItems.length === 0) {
                     validate = false
-                    tooltip = '请选择需要操作的实例'
+                    tooltip = this.$t('db.text_68')
                   }
                   if (this.list.selectedItems.length > 0) {
                     for (let i = 0; i < this.list.selectedItems.length; i++) {
                       const obj = this.list.selectedItems[i]
                       if (obj.disable_delete) {
-                        tooltip = '删除保护，如需解除，请点击【设置删除保护】'
+                        tooltip = this.$t('db.text_74')
                         validate = false
                         break
                       }
                       const seconds = this.$moment(obj.expired_at).diff(new Date()) / 1000
                       if (obj.billing_type === 'prepaid' && seconds > 0) {
-                        tooltip = '实例未到期不允许删除'
+                        tooltip = this.$t('db.text_75')
                         validate = false
                         break
                       }
@@ -256,7 +256,7 @@ export default {
           },
           meta: () => {
             const selectedLength = this.list.selectedItems.length
-            const notSelectedTooltip = selectedLength <= 0 ? '请选择需要操作的实例' : ''
+            const notSelectedTooltip = selectedLength <= 0 ? this.$t('db.text_68') : ''
             return {
               validate: selectedLength,
               tooltip: notSelectedTooltip,

@@ -56,10 +56,10 @@ export default {
       ],
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('db.text_41'),
           action: (obj) => {
             this.createDialog('RedisWhiteListFormDialog', {
-              title: '新建',
+              title: this.$t('db.text_41'),
               list: this.list,
               redisItem: this.data,
               allIPList: this.allIPList,
@@ -69,9 +69,9 @@ export default {
             const isHuawei = this.data.brand === 'Huawei'
             let tooltip = ''
             if (isHuawei) {
-              tooltip = '华为云不支持创建白名单'
+              tooltip = this.$t('db.text_321')
             } else if (this.list.total >= 4) {
-              tooltip = '仅支持创建4个白名单'
+              tooltip = this.$t('db.text_327')
             }
             return {
               buttonType: 'primary',
@@ -83,10 +83,10 @@ export default {
       ],
       singleActions: [
         {
-          label: '修改',
+          label: this.$t('db.text_328'),
           action: (obj) => {
             this.createDialog('RedisWhiteListFormDialog', {
-              title: '修改',
+              title: this.$t('db.text_328'),
               initialValues: {
                 name: obj.name,
                 ip_list: obj.ip_list,
@@ -102,24 +102,24 @@ export default {
             const isHuawei = this.data.brand === 'Huawei'
             return {
               validate: !isHuawei,
-              tooltip: isHuawei ? '华为云不支持此操作' : null,
+              tooltip: isHuawei ? this.$t('db.text_202') : null,
             }
           },
         },
         {
-          label: '删除',
+          label: this.$t('db.text_42'),
           action: (obj) => {
             this.createDialog('RedisWhiteListDeleteDialog', {
               data: [obj],
               columns: this.columns,
-              title: '删除白名单',
+              title: this.$t('db.text_314'),
               list: this.list,
             })
           },
           meta: (obj) => {
             let tooltip = ''
             if (obj.name === 'default') {
-              tooltip = 'default白名单不支持此操作'
+              tooltip = this.$t('db.text_329')
             }
             return {
               validate: !tooltip,

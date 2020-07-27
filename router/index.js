@@ -5,11 +5,12 @@ import RDSCreate from '@DB/views/rds/create'
 import RDSBackup from '@DB/views/rds-backup'
 import Layout from '@/layouts/RouterView'
 import { hasSetupKey } from '@/utils/auth'
+import i18n from '@/locales'
 
 export default {
   index: 6,
   meta: {
-    label: '数据库',
+    label: i18n.t('db.text_28'),
     icon: 'menu-db',
   },
   menus: [
@@ -27,6 +28,7 @@ export default {
           meta: {
             label: 'RDS实例',
             permission: 'rds_dbinstances_list',
+            t: 'dictionary.dbinstances',
             hidden: () => !hasSetupKey(['aliyun', 'huawei', 'google', 'aws']),
           },
           children: [
@@ -76,7 +78,7 @@ export default {
         {
           path: '/redis',
           meta: {
-            label: 'Redis实例',
+            label: i18n.t('db.text_29'),
             permission: 'redis_elasticcaches_list',
           },
           component: Layout,

@@ -18,12 +18,12 @@
           </template>
         </div>
       </div>
-      <!-- <div>费用估算</div> -->
+      <!-- <div>{{$t('db.text_263')}}</div> -->
     </template>
     <template v-slot:right>
       <div class="d-flex align-items-center">
           <div class="mr-4 d-flex align-items-center">
-            <div class="text-truncate">费用估算：</div>
+            <div class="text-truncate">{{$t('db.text_108')}}</div>
             <div class="ml-2 prices">
               <div class="hour text-truncate">
                 <template v-if="price">
@@ -37,13 +37,13 @@
           </div>
       </div>
       <div class="btns-wrapper d-flex align-items-center">
-        <a-button @click="doCreate" :loading="loading" type="primary" class="ml-3">新建</a-button>
+        <a-button @click="doCreate" :loading="loading" type="primary" class="ml-3">{{$t('db.text_41')}}</a-button>
       </div>
       <!-- <transition>
         <div v-if="errors.length" class="errors-wrap" v-clickoutside="closeError">
           <div class="title d-flex align-items-center">
             <i class="el-icon-error mr-2" />
-            <span>新建主机失败</span>
+            <span>{{$t('db.text_264')}}</span>
           </div>
           <div class="divider" />
           <ul class="list">
@@ -87,16 +87,16 @@ export default {
       const category = sku.local_category
       const ret = [
         [
-          { label: '名称', labelClass: 'label-w-50', value: this.values.generate_name, valueClass: 'name-value' },
-          { label: '数量', labelClass: 'label-w-50', value: count },
+          { label: this.$t('db.text_60'), labelClass: 'label-w-50', value: this.values.generate_name, valueClass: 'name-value' },
+          { label: this.$t('db.text_265'), labelClass: 'label-w-50', value: count },
         ],
         [
-          { label: '区域', labelClass: 'label-w-50', value: sku.region },
-          { label: '实例类型', labelClass: 'label-w-50', value: ENGINE_ARCH[category] },
+          { label: this.$t('db.text_40'), labelClass: 'label-w-50', value: sku.region },
+          { label: this.$t('db.text_119'), labelClass: 'label-w-50', value: ENGINE_ARCH[category] },
         ],
         [
-          { label: '配置', labelClass: 'label-w-80', value: `${sizestrWithUnit(sku.memory_size_mb, 'M', 1024)}内存` },
-          { label: '类型版本', labelClass: 'label-w-80', value: `${this.values.engine || '-'}${this.values.engine_version || ''}` },
+          { label: this.$t('db.text_109'), labelClass: 'label-w-80', value: this.$t('db.text_110', [sizestrWithUnit(sku.memory_size_mb, 'M', 1024)]) },
+          { label: this.$t('db.text_112'), labelClass: 'label-w-80', value: `${this.values.engine || '-'}${this.values.engine_version || ''}` },
         ],
       ]
       return ret
@@ -142,11 +142,11 @@ export default {
         if (this.isPackage && this.durationNum) {
           const _day = (this.price / 30 / this.durationNum).toFixed(2)
           const _hour = (parseFloat(_day) / 24).toFixed(2)
-          return `(合¥${_day}/天  ¥${_hour}/小时)`
+          return this.$t('db.text_266', [_day, _hour])
         } else {
           const _day = (this.price * 24).toFixed(2)
           const _month = (parseFloat(_day) * 30).toFixed(2)
-          return `(合¥${_day}/天 ¥${_month}/月)`
+          return this.$t('db.text_267', [_day, _month])
         }
       }
       return '--'
@@ -162,7 +162,7 @@ export default {
     },
     formatToPrice (val) {
       let ret = `¥ ${val.toFixed(2)}`
-      ret += !this.isPackage ? ' / 时' : ''
+      ret += !this.isPackage ? this.$t('db.text_115') : ''
       return ret
     },
     formatParams () {

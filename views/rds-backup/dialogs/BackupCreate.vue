@@ -1,18 +1,18 @@
 <template>
   <base-dialog @cancel="cancelDialog" :width="900">
-    <div slot="header">新建备份</div>
+    <div slot="header">{{$t('db.text_215')}}</div>
     <a-form slot="body" :form="form.fc" class="mt-3">
-      <a-form-item  v-bind="formItemLayout" label="名称">
-        <a-input v-decorator="decorators.name" placeholder="字母开头，数字和字母大小写组合，长度为2-128个字符，不含’.‘,’_‘,’@‘ " />
+      <a-form-item  v-bind="formItemLayout" :label="$t('db.text_60')">
+        <a-input v-decorator="decorators.name" :placeholder="$t('db.text_216')" />
         <name-repeated v-slot:extra res="dbinstancebackups" :name="form.fc.getFieldValue('name')" />
       </a-form-item>
-        <a-form-item v-bind="formItemLayout" label="实例" v-if="!params.rdsItem">
-        <a-select v-decorator="decorators.dbinstance" placeholder="请选中RDS实例" :loading="rdsListLoading">
+        <a-form-item v-bind="formItemLayout" :label="$t('db.text_217')" v-if="!params.rdsItem">
+        <a-select v-decorator="decorators.dbinstance" :placeholder="$t('db.text_218')" :loading="rdsListLoading">
           <a-select-option :key="item.id" v-for="item in rdsList">{{item.name}}</a-select-option>
         </a-select>
       </a-form-item>
-      <a-form-item v-bind="formItemLayout" label="描述">
-        <a-textarea :autosize="{ minRows: 2, maxRows: 6 }" v-decorator="decorators.description" placeholder="请输入描述信息" />
+      <a-form-item v-bind="formItemLayout" :label="$t('db.text_219')">
+        <a-textarea :autosize="{ minRows: 2, maxRows: 6 }" v-decorator="decorators.description" :placeholder="$t('db.text_220')" />
       </a-form-item>
     </a-form>
     <div slot="footer">
@@ -62,7 +62,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('db.text_136') },
               { validator: validateForm('serverName') },
             ],
           },
@@ -79,7 +79,7 @@ export default {
           'dbinstance',
           {
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('db.text_136') },
             ],
           },
         ],

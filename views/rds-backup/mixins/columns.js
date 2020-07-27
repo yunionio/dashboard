@@ -1,8 +1,9 @@
 import { getStatusTableColumn, getNameDescriptionTableColumn, getRegionTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
+import i18n from '@/locales'
 const BACKUP_TYPE = {
-  automated: '自动',
-  manual: '手动',
+  automated: i18n.t('db.text_33'),
+  manual: i18n.t('db.text_34'),
 }
 
 export default {
@@ -21,12 +22,12 @@ export default {
       {
         field: 'dbinstance',
         minWidth: 100,
-        title: '实例名称',
+        title: i18n.t('db.text_35'),
         showOverflow: 'ellipsis',
       },
       {
         field: 'backup_mode',
-        title: '备份类型',
+        title: i18n.t('db.text_36'),
         width: 100,
         slots: {
           default: ({ row }) => {
@@ -36,7 +37,7 @@ export default {
       },
       {
         field: 'engine',
-        title: '数据库引擎',
+        title: i18n.t('db.text_57'),
         width: 100,
         slots: {
           default: ({ row }) => {
@@ -46,7 +47,7 @@ export default {
       },
       {
         field: 'backup_size_mb',
-        title: '大小',
+        title: i18n.t('db.text_38'),
         width: 70,
         slots: {
           default: ({ row }) => {
@@ -58,7 +59,7 @@ export default {
       // getBrandTableColumn(),
       {
         field: 'start_time',
-        title: '备份开始/结束时间',
+        title: i18n.t('db.text_39'),
         minWidth: 150,
         slots: {
           default: ({ row }) => {

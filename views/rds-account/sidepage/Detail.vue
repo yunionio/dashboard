@@ -22,7 +22,7 @@ export default {
       baseInfo: [
         {
           field: 'dbinstanceprivileges',
-          title: '已授权的数据库',
+          title: this.$t('db.text_194'),
           slots: {
             default: ({ row }) => {
               if (row.dbinstanceprivileges && row.dbinstanceprivileges.length > 0) {

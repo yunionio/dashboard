@@ -43,7 +43,7 @@ export default {
           'boot_order',
           {
             rules: [
-              { required: true, message: '请选择启动介质' },
+              { required: true, message: this.$t('db.text_148') },
             ],
           },
         ],
@@ -75,7 +75,7 @@ export default {
           },
         })
         this.loading = false
-        this.$message.success('操作成功')
+        this.$message.success(this.$t('db.text_149'))
         this.cancelDialog()
         this.params.refresh()
       } catch (error) {

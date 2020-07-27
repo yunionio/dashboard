@@ -1,14 +1,14 @@
 <template>
     <base-dialog @cancel="cancelDialog">
-        <div slot="header">重置密码</div>
+        <div slot="header">{{$t('db.text_201')}}</div>
         <div slot="body">
-             <dialog-selected-tips :name="$t('dictionary.elasticcaches')" :count="params.data.length" action="重置密码" />
+             <dialog-selected-tips :name="$t('dictionary.elasticcaches')" :count="params.data.length" :action="$t('db.text_201')" />
             <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
             <a-form slot="body" :form="form.fc" class="mt-3">
-              <a-form-item v-bind="formItemLayout" label="账号名称">
+              <a-form-item v-bind="formItemLayout" :label="$t('db.text_285')">
                   {{this.params.data[0].name}}
               </a-form-item>
-              <a-form-item label="新密码" v-bind="formItemLayout">
+              <a-form-item :label="$t('db.text_286')" v-bind="formItemLayout">
                 <server-password :loginTypes="['random', 'password']" :decorator="decorators.loginConfig" />
               </a-form-item>
             </a-form>
@@ -56,7 +56,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入密码' },
+              { required: true, message: this.$t('db.text_207') },
               { validator: passwordValidator },
             ],
           },
@@ -66,7 +66,7 @@ export default {
           {
             initialValue: undefined,
             rules: [
-              { required: true, message: '请再次确认密码' },
+              { required: true, message: this.$t('db.text_208') },
               { validator: this.rulesCheckPassword },
             ],
           },
@@ -87,7 +87,7 @@ export default {
     rulesCheckPassword (rule, value, callback) {
       const form = this.form.fc
       if (value && value !== form.getFieldValue('password')) {
-        callback(new Error('两次输入的密码不一致'))
+        callback(new Error(this.$t('db.text_209')))
       } else {
         callback()
       }

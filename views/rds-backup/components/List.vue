@@ -16,9 +16,10 @@ import ListMixin from '@/mixins/list'
 import { getNameFilter, getFilter, getStatusFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import expectStatus from '@/constants/expectStatus'
+import i18n from '@/locales'
 const BACKUP_TYPE = {
-  automated: '自动',
-  manual: '手动',
+  automated: i18n.t('db.text_33'),
+  manual: i18n.t('db.text_34'),
 }
 export default {
   name: 'RDSBackupList',
@@ -48,11 +49,11 @@ export default {
           // }),
           dbinstance: {
             field: 'dbinstance',
-            label: '实例名称',
+            label: this.$t('db.text_35'),
           },
           engine: getFilter({
             field: 'engine',
-            title: '数据库引擎',
+            title: this.$t('db.text_57'),
             multiple: true,
             items: [
               { label: 'MySQL', key: 'MySQL' },
@@ -62,7 +63,7 @@ export default {
           }),
           backup_mode: getFilter({
             field: 'backup_mode',
-            title: '备份类型',
+            title: this.$t('db.text_36'),
             items: Object.keys(BACKUP_TYPE).map(key => {
               return { label: BACKUP_TYPE[key], key }
             }),
@@ -72,20 +73,20 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
-          { label: '实例名称', key: 'dbinstance' },
-          { label: '备份类型', key: 'backup_mode' },
-          { label: '数据库引擎', key: 'engine' },
-          { label: '大小', key: 'backup_size_mb' },
-          { label: '状态', key: 'status' },
-          { label: '备份开始时间', key: 'start_time' },
-          { label: '备份结束时间', key: 'end_time' },
-          { label: '区域', key: 'region' },
+          { label: this.$t('db.text_60'), key: 'name' },
+          { label: this.$t('db.text_35'), key: 'dbinstance' },
+          { label: this.$t('db.text_36'), key: 'backup_mode' },
+          { label: this.$t('db.text_57'), key: 'engine' },
+          { label: this.$t('db.text_38'), key: 'backup_size_mb' },
+          { label: this.$t('db.text_46'), key: 'status' },
+          { label: this.$t('db.text_210'), key: 'start_time' },
+          { label: this.$t('db.text_211'), key: 'end_time' },
+          { label: this.$t('db.text_40'), key: 'region' },
         ],
       },
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('db.text_41'),
           action: () => {
             this.createDialog('RDSBackupCreate', {
               rdsItem: this.data,
@@ -98,16 +99,16 @@ export default {
             return {
               buttonType: 'primary',
               validate: this.data.status === 'running',
-              tooltip: this.data.status === 'running' && '仅实例在运行中状态下支持新建操作',
+              tooltip: this.data.status === 'running' && this.$t('db.text_212'),
             }
           },
         },
         {
-          label: '批量操作',
+          label: this.$t('db.text_213'),
           actions: () => {
             return [
               {
-                label: '同步状态',
+                label: this.$t('db.text_69'),
                 action: () => {
                   this.onManager('batchPerformAction', {
                     steadyStatus: ['running', 'ready'],
@@ -118,13 +119,13 @@ export default {
                 },
               },
               {
-                label: '删除',
+                label: this.$t('db.text_42'),
                 permission: 'rds_dbinstancebackups_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     vm: this,
-                    name: '备份',
-                    title: '删除备份',
+                    name: this.$t('db.text_44'),
+                    title: this.$t('db.text_43'),
                     data: this.list.selectedItems,
                     columns: this.columns,
                     onManager: this.onManager,
@@ -135,7 +136,7 @@ export default {
                   if (this.data.brand === 'Aliyun') {
                     return {
                       validate: false,
-                      tooltip: '阿里云平台不支持此操作',
+                      tooltip: this.$t('db.text_214'),
                     }
                   }
                   return this.$getDeleteResult(this.list.selectedItems)

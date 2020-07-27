@@ -5,7 +5,7 @@
       <dialog-selected-tips :name="$t('dictionary.elasticcaches')" :count="params.data.length" :action="params.title" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc">
-        <a-form-item label="计费方式" v-bind="formItemLayout">
+        <a-form-item :label="$t('db.text_54')" v-bind="formItemLayout">
           <a-radio-group v-decorator="['duration', {initialValue: (params.data && params.data.length > 0) ? (params.data[0].duration || '1M') : '1M' }]">
               <a-radio-button
                 :key="item.value"
@@ -53,7 +53,7 @@ export default {
           'boot_order',
           {
             rules: [
-              { required: true, message: '请选择启动介质' },
+              { required: true, message: this.$t('db.text_148') },
             ],
           },
         ],
@@ -85,7 +85,7 @@ export default {
           },
         })
         this.loading = false
-        this.$message.success('操作成功')
+        this.$message.success(this.$t('db.text_149'))
         this.cancelDialog()
       } catch (error) {
         this.loading = false

@@ -1,6 +1,7 @@
 import { DBINSTANCE_CATEGORY } from '../constants/index.js'
 import { sizestr } from '@/utils/utils'
 import { getProjectTableColumn, getStatusTableColumn, getNameDescriptionTableColumn, getBrandTableColumn, getBillingTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -11,7 +12,7 @@ export default {
         addLock: true,
         addBackup: true,
         formRules: [
-          { required: true, message: '请输入名称' },
+          { required: true, message: i18n.t('db.text_136') },
           { validator: this.$validate('resourceCreateName') },
         ],
         slotCallback: row => {
@@ -23,7 +24,7 @@ export default {
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'dbinstance', columns: () => this.columns }),
       {
         field: 'category',
-        title: '类型',
+        title: i18n.t('db.text_61'),
         width: 100,
         slots: {
           default: ({ row }) => {
@@ -33,17 +34,17 @@ export default {
       },
       {
         field: 'vcpu_count',
-        title: '配置',
+        title: i18n.t('db.text_109'),
         width: 100,
         slots: {
           default: ({ row }) => {
-            return `${row.vcpu_count}核 ${sizestr(row.vmem_size_mb, 'M', 1024)}`
+            return i18n.t('db.text_151', [row.vcpu_count, sizestr(row.vmem_size_mb, 'M', 1024)])
           },
         },
       },
       {
         field: 'engine',
-        title: '数据库引擎',
+        title: i18n.t('db.text_57'),
         width: 100,
         slots: {
           default: ({ row }) => {
@@ -53,7 +54,7 @@ export default {
       },
       {
         field: 'internal_connection_str',
-        title: '链接地址',
+        title: i18n.t('db.text_152'),
         minWidth: 200,
         showOverflow: 'ellipsis',
         slots: {
@@ -77,14 +78,14 @@ export default {
               )
             }
             return [
-              connection('内网', pri),
-              connection('外网', pub),
+              connection(i18n.t('db.text_153'), pri),
+              connection(i18n.t('db.text_154'), pub),
             ]
           },
         },
       },
       {
-        title: '数据库端口号',
+        title: i18n.t('db.text_64'),
         field: 'port',
         width: 120,
         slots: {
@@ -94,7 +95,7 @@ export default {
       {
         field: 'account',
         minWidth: 100,
-        title: '云账号',
+        title: i18n.t('db.text_67'),
       },
       getBillingTableColumn({ vm: this }),
       getStatusTableColumn({ statusModule: 'rds' }),
@@ -104,7 +105,7 @@ export default {
         field: 'region',
         minWidth: 120,
         showOverflow: 'ellipsis',
-        title: '区域',
+        title: i18n.t('db.text_40'),
         slots: {
           default: ({ row }, h) => {
             const ret = []

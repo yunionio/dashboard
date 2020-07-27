@@ -10,8 +10,8 @@
     </div>
     <a-alert
       v-else
-      message="当前云厂商暂未对接"
-      description="目前仅阿里云和华为云支持查看监控数据"
+      :message="$t('db.text_183')"
+      :description="$t('db.text_184')"
       type="warning" />
   </div>
 </template>
@@ -134,7 +134,7 @@ export default {
           let label = ''
           if (fromItem === 'disk') {
             tag = 'path'
-            label = '路径: '
+            label = this.$t('db.text_186')
           }
           const columns = ['time']
           const values = series[0].values.map(val => [val[0]])

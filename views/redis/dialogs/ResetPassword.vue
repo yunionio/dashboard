@@ -5,10 +5,10 @@
       <dialog-selected-tips :name="$t('dictionary.elasticcaches')" :count="params.data.length" :action="params.title" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" class="mt-3">
-        <a-form-item v-if="this.params.data[0].provider === 'Huawei'" label="旧密码" v-bind="formItemLayout">
+        <a-form-item v-if="this.params.data[0].provider === 'Huawei'" :label="$t('db.text_291')" v-bind="formItemLayout">
            <a-input-password v-decorator="decorators.old_password" />
         </a-form-item>
-        <a-form-item label="新密码" v-bind="formItemLayout">
+        <a-form-item :label="$t('db.text_286')" v-bind="formItemLayout">
             <server-password :loginTypes="['random', 'password']" :decorator="decorators.loginConfig" />
         </a-form-item>
       </a-form>
@@ -58,7 +58,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入密码' },
+              { required: true, message: this.$t('db.text_207') },
               { validator: passwordValidator },
             ],
           },
@@ -107,7 +107,7 @@ export default {
         })
         this.cancelDialog()
         this.params.refresh()
-        this.$message.success('操作成功')
+        this.$message.success(this.$t('db.text_149'))
       } catch (error) {
         this.loading = false
         throw error
