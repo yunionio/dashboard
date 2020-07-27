@@ -1,22 +1,23 @@
 <template>
-  <div
-    :class="fullscreen ? 'oc-mask-fullscreen' : 'oc-mask'"
-    :style="{
-      background: 'rgba(' + background + ')',
-      fontSize: fontSize + 'px',
-      color: color
-    }">
-    <a-icon type="loading" class="mb-2" />
-    <span>{{ text }}</span>
-  </div>
+  <transition name="el-loading-fade" @after-leave="handleAfterLeave">
+    <div
+      v-show="visible"
+      class="oc-mask"
+      :style="{ backgroundColor: background || '' }"
+      :class="[customClass, { 'oc-mask-fullscreen': fullscreen }]">
+      <div class="oc-loading-spinner">
+        <a-icon type="loading" class="mb-2" />
+        <p v-if="text" class="el-loading-text">{{ text }}</p>
+      </div>
+    </div>
+  </transition>
 </template>
 
 <script>
-
 export default {
-  name: 'LoadingMask',
   data () {
     return {
+<<<<<<< HEAD
       fullscreen: false,
       background: '255, 255, 255, 1',
       text: this.$t('common_67'),
@@ -33,18 +34,23 @@ export default {
   mounted () {
     if (this.fullscreen) {
       document.body.style.overflow = 'hidden'
+=======
+      text: null,
+      background: null,
+      fullscreen: true,
+      visible: false,
+      customClass: '',
+>>>>>>> feature [3.4] 完全体v-loading指令
     }
   },
-  beforeUpdate () {},
-  updated () {},
-  activated () {},
-  deactivated () {},
-  beforeDestroy () {},
-  destroyed () {
-    document.body.style.overflowX = 'hidden'
+  methods: {
+    handleAfterLeave () {
+      this.$emit('after-leave')
+    },
+    setText (text) {
+      this.text = text
+    },
   },
-  errorCaptured () {},
-  methods: {},
 }
 </script>
 
@@ -55,7 +61,7 @@ export default {
   position: absolute;
   z-index: 3000;
   top: 0;
-  background: rgba(255, 255, 255, 1);
+  background: rgba(255, 255, 255, 0.9);
   width: 100%;
   height: 100%;
   color: @primary-color;
@@ -64,12 +70,14 @@ export default {
   align-items: center;
   font-size: 12px;
   flex-flow: column;
+  .oc-loading-spinner {
+    font-size: 30px;
+  }
 }
 .oc-mask-fullscreen {
   &:extend(.oc-mask);
   width: 100vw;
   height: 100vh;
   top: 0;
-  background: rgba(0, 0, 0, 0.5);
 }
 </style>
