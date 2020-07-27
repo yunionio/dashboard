@@ -17,7 +17,7 @@ export default {
   },
   data () {
     return {
-      cloudEnvOptions: [{ key: 'all', label: '全部' }, { key: 'normal', label: '自定义策略' }, { key: 'system', label: '默认策略' }],
+      cloudEnvOptions: [{ key: 'all', label: this.$t('monitor.text_3') }, { key: 'normal', label: this.$t('monitor.text_4') }, { key: 'system', label: this.$t('monitor.text_5') }],
       alertType: 'all',
     }
   },

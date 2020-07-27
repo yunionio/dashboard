@@ -4,10 +4,11 @@ import commonalertsUpdate from '@Monitor/views/commonalert/update'
 import Explorer from '@Monitor/views/explorer'
 import Layout from '@/layouts/RouterView'
 import { hasSetupKey } from '@/utils/auth'
+import i18n from '@/locales'
 
 export default {
   meta: {
-    label: '监控报警',
+    label: i18n.t('monitor.text_1'),
     t: 'dictionary.monitor_commonalert',
   },
   submenus: [
@@ -30,7 +31,7 @@ export default {
     {
       path: '/commonalerts',
       meta: {
-        label: '报警策略',
+        label: i18n.t('monitor.text_2'),
         t: 'dictionary.commonalert',
         permission: 'commonalerts_list',
         hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'vmware']),

@@ -38,7 +38,7 @@ export const strategyColumn = {
       const measurement = ((metricMaps[detail.measurement] || {}).label) || detail.measurement
       const reduce = (alertStrategyMaps[detail.reduce]) || detail.reduce
       const preiod = ((preiodMaps[row.period] || {}).label) || row.period
-      return `${measurement}，${detail.field}${reduce} ${detail.comparator} ${detail.threshold} 触发，查询周期 ${preiod}`
+      return i18n.t('monitor.text_6', [measurement, detail.field, reduce, detail.comparator, detail.threshold, preiod])
     }
     return '-'
   },
